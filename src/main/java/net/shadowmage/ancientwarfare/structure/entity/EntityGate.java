@@ -53,7 +53,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 
     public float openingSpeed = 0.f;//calculated speed of the opening gate -- used during animation
 
-    Gate gateType = Gate.basicWood;
+    Gate gateType = Gate.getGateByID(0);
 
     String ownerName;
     int health = 0;
@@ -154,6 +154,10 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
             }
         }
         super.handleHealthUpdate(par1);
+    }
+
+    public boolean isClosed(){
+        return gateStatus == 0 && edgePosition == 0;
     }
 
     public byte getOpeningStatus() {

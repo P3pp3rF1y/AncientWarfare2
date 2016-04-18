@@ -20,7 +20,6 @@
  */
 package net.shadowmage.ancientwarfare.vehicle.config;
 
-import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 
 public class AWVehicleStatics extends ModConfiguration {
@@ -33,26 +32,8 @@ public class AWVehicleStatics extends ModConfiguration {
     public static final String KEY_VEHICLE_ASCEND = "keybind.vehicle.ascend";
     public static final String KEY_VEHICLE_DESCEND = "keybind.vehicle.descend";
 
-    /**
-     * shared settings:
-     * NONE?
-     */
-    public static final String sharedSettings = "01_shared_settings";
-
-    /**
-     * server settings:
-     * npc worker tick rate / ticks per work unit
-     */
-    public static final String serverSettinngs = "02_server_settings";
-
-    /**
-     * client settings:
-     * --SET VIA PROXY / ClientOptions.INSTANCE
-     */
-    public static final String clientSettings = "03_client_settings";
-
-    public AWVehicleStatics(Configuration config) {
-        super(config);
+    public AWVehicleStatics(String mod) {
+        super(mod);
     }
 
     @Override
@@ -62,7 +43,6 @@ public class AWVehicleStatics extends ModConfiguration {
 
     @Override
     public void initializeValues() {
-        this.config.save();
     }
 
 }

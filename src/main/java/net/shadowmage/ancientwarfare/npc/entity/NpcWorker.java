@@ -42,6 +42,7 @@ public class NpcWorker extends NpcPlayerOwned implements IWorker {
         this.tasks.addTask(2, new NpcAIFollowPlayer(this));
         this.tasks.addTask(2, new NpcAIPlayerOwnedFollowCommand(this));
         this.tasks.addTask(3, new NpcAIFleeHostiles(this));
+        this.tasks.addTask(3, new NpcAIPlayerOwnedAlarmResponse(this));
         this.tasks.addTask(4, new NpcAIPlayerOwnedGetFood(this));
         this.tasks.addTask(5, new NpcAIPlayerOwnedIdleWhenHungry(this));
         this.tasks.addTask(6, (workAI = new NpcAIPlayerOwnedWork(this)));
@@ -88,10 +89,8 @@ public class NpcWorker extends NpcPlayerOwned implements IWorker {
     @Override
     public float getWorkEffectiveness(WorkType type) {
         if (canWorkAt(type)) {
-            float effectiveness = 1.f;
-            float level = this.getLevelingStats().getLevel();
+            float effectiveness = 1.f + this.getLevelingStats().getLevel() * 0.05F;
 
-            effectiveness += level * 0.05f;
             Item item = getHeldItem().getItem();
             if (item instanceof ItemTool) {
                 effectiveness += ((ItemTool) item).func_150913_i().getEfficiencyOnProperMaterial() * 0.05f;

@@ -29,5 +29,4 @@ public interface IStructurePluginManager extends IStructurePluginRegister {
 
     public void registerBlockHandler(String pluginName, Block block, Class<? extends TemplateRuleBlock> ruleClass);
 
-
 }

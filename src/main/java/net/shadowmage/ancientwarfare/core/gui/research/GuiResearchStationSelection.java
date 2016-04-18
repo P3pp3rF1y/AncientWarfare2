@@ -44,8 +44,7 @@ public class GuiResearchStationSelection extends GuiContainerBase<ContainerResea
     public void setupElements() {
         selectionArea.clearElements();
         queueArea.clearElements();
-        int goal;
-        goal = getContainer().currentGoal;
+        int goal = getContainer().currentGoal;
 
         int totalHeight = 8;
 
@@ -58,7 +57,6 @@ public class GuiResearchStationSelection extends GuiContainerBase<ContainerResea
         }
 
         queueArea.setAreaSize(totalHeight + 8);
-
 
         totalHeight = 8;
 
@@ -84,24 +82,12 @@ public class GuiResearchStationSelection extends GuiContainerBase<ContainerResea
         Label label = new Label(8, totalHeight + 1, name);
         queueArea.addGuiElement(label);
 
-        Tooltip selectableGoalTooltip = new Tooltip(110, 75);
-        selectableGoalTooltip.addTooltipElement(new Label(0, 0, StatCollector.translateToLocalFormatted("guistrings.research.research_time", g.getTotalResearchTime())));
-        selectableGoalTooltip.addTooltipElement(new Label(0, 10, "guistrings.research.resources_needed"));
-        int x = 0, y = 0;
-        for (ItemStack stack : g.getResources()) {
-            selectableGoalTooltip.addTooltipElement(new ItemSlot(x * 18, y * 18 + 20, stack, this));
-            x++;
-            if (x > 2) {
-                x = 0;
-                y++;
-            }
-        }
-        label.setTooltip(selectableGoalTooltip);
+        Tooltip selectableGoalTooltip = createGoal(label, g);
 
         if (removeButton) {
             GoalButton button = new GoalButton(200 - 8 - 12 - 12, totalHeight, 12, 12, g, false);
-            queueArea.addGuiElement(button);
             button.setTooltip(selectableGoalTooltip);
+            queueArea.addGuiElement(button);
         }
         return totalHeight + 12;
     }
@@ -116,8 +102,12 @@ public class GuiResearchStationSelection extends GuiContainerBase<ContainerResea
         selectionArea.addGuiElement(label);
 
         GoalButton button = new GoalButton(200 - 8 - 12 - 12, totalHeight, 12, 12, g, true);
+        button.setTooltip(createGoal(label, g));
         selectionArea.addGuiElement(button);
+        return totalHeight + 12;
+    }
 
+    private Tooltip createGoal(Label label, ResearchGoal g){
         Tooltip selectableGoalTooltip = new Tooltip(110, 75);
         selectableGoalTooltip.addTooltipElement(new Label(0, 0, StatCollector.translateToLocalFormatted("guistrings.research.research_time", g.getTotalResearchTime())));
         selectableGoalTooltip.addTooltipElement(new Label(0, 10, "guistrings.research.resources_needed"));
@@ -131,8 +121,7 @@ public class GuiResearchStationSelection extends GuiContainerBase<ContainerResea
             }
         }
         label.setTooltip(selectableGoalTooltip);
-        button.setTooltip(selectableGoalTooltip);
-        return totalHeight + 12;
+        return selectableGoalTooltip;
     }
 
     @Override

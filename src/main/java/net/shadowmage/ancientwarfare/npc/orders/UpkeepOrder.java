@@ -8,6 +8,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.npc.block.BlockTownHall;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.item.ItemUpkeepOrder;
 
 public class UpkeepOrder implements INBTSerialable {
@@ -65,6 +67,8 @@ public class UpkeepOrder implements INBTSerialable {
 
     public boolean addUpkeepPosition(World world, BlockPosition pos) {
         if(pos != null && world.getTileEntity(pos.x, pos.y, pos.z) instanceof IInventory) {
+            if (!AWNPCStatics.npcAllowUpkeepAnyInventory && (!(world.getBlock(pos.x, pos.y, pos.z) instanceof BlockTownHall)))
+                return false;
             upkeepPosition = pos;
             upkeepDimension = world.provider.dimensionId;
             blockSide = 0;

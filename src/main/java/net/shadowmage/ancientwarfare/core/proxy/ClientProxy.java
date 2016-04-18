@@ -11,8 +11,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.config.ConfigElement;
-import net.minecraftforge.common.config.Configuration;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.minecraftforge.common.config.Property;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.ConfigManager;
@@ -49,7 +48,7 @@ public class ClientProxy extends ClientProxyBase {
         NetworkHandler.registerGui(NetworkHandler.GUI_RESEARCH_STATION, GuiResearchStation.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_BACKPACK, GuiBackpack.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_RESEARCH_BOOK, GuiResearchBook.class);
-        InputHandler.instance.loadConfig(AncientWarfareCore.config);
+        InputHandler.instance.loadConfig();
 
         TileCraftingTableRender render = new TileCraftingTableRender(new ModelEngineeringStation(), "textures/model/core/tile_engineering_station.png");
         ClientRegistry.bindTileEntitySpecialRenderer(TileEngineeringStation.class, render);
@@ -94,15 +93,12 @@ public class ClientProxy extends ClientProxyBase {
                     ((this.owningScreen.titleLine2 == null ? "" : this.owningScreen.titleLine2) + " > " + this.name));
         }
 
-        @SuppressWarnings("rawtypes")
         private static List<IConfigElement> getKeybindElements() {
+            List<Property> props = InputHandler.instance.getKeyConfig("item_use");
             List<IConfigElement> list = new ArrayList<IConfigElement>();
-            Configuration config = AncientWarfareCore.config;
-            list.add(new ConfigElement(config.get(AWCoreStatics.keybinds, "keybind.alt_item_use_1", 44)));
-            list.add(new ConfigElement(config.get(AWCoreStatics.keybinds, "keybind.alt_item_use_2", 45)));
-            list.add(new ConfigElement(config.get(AWCoreStatics.keybinds, "keybind.alt_item_use_3", 46)));
-            list.add(new ConfigElement(config.get(AWCoreStatics.keybinds, "keybind.alt_item_use_4", 47)));
-            list.add(new ConfigElement(config.get(AWCoreStatics.keybinds, "keybind.alt_item_use_5", 48)));
+            for(Property property : props) {
+                list.add(new ConfigElement(property));
+            }
             return list;
         }
 

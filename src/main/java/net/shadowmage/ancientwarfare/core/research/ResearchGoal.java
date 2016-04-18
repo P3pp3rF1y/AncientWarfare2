@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.core.research;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
@@ -15,17 +16,19 @@ public class ResearchGoal {
 
     private static HashMap<Integer, ResearchGoal> goalsByID = new HashMap<Integer, ResearchGoal>();
     private static HashMap<String, ResearchGoal> goalsByName = new HashMap<String, ResearchGoal>();
+    private final Random random;
 
     private final int researchId;
     private final String researchName;
     private final Set<Integer> dependencies;//parsed shallow-dependency list
 
     private final List<ItemStack> researchResources;
+    private final List<OreSized> researchOres;
     private int researchTime;
 
     /**
-     * set the first time dependencies for this goal are queried.  further queries for full-dependencies
-     * will return this cached set
+     * set the first time dependencies for this goal are queried.
+     * further queries for full-dependencies will return this cached set
      */
     private Set<Integer> resolvedDependencies;//full dependency list
 
@@ -34,10 +37,21 @@ public class ResearchGoal {
         researchName = name;
         dependencies = new HashSet<Integer>();
         researchResources = new ArrayList<ItemStack>();
+        researchOres = new ArrayList<OreSized>();
+        random = new Random(researchName.hashCode());
     }
 
     public void addResource(ItemStack resource) {
         this.researchResources.add(resource);
+    }
+
+    public void addOre(String[] ore){
+        int size = 1;
+        if (ore.length > 3)
+            size = StringTools.safeParseInt(ore[3]);
+        else if (ore.length == 3)
+            size = StringTools.safeParseInt(ore[2]);
+        this.researchOres.add(new OreSized(ore[1].trim(), size));
     }
 
     public void setResearchTime(int time) {
@@ -56,6 +70,16 @@ public class ResearchGoal {
         return researchId;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        return this == o || o instanceof ResearchGoal && researchName.equals(((ResearchGoal) o).researchName);
+    }
+
+    @Override
+    public int hashCode() {
+        return researchName.hashCode();
+    }
+
     public ResearchGoal addDependencies(ResearchGoal... deps) {
         for (ResearchGoal dep : deps) {
             dependencies.add(dep.researchId);
@@ -64,11 +88,17 @@ public class ResearchGoal {
     }
 
     public List<ItemStack> getResources() {
-        return researchResources;
+        List<ItemStack> result = new ArrayList<ItemStack>();
+        result.addAll(researchResources);
+        for(OreSized ore : researchOres){
+            result.add(ore.getEquivalent(random));
+        }
+        return result;
     }
 
     /**
-     * return the direct dependencies for this goal -- does not include any sub-dependencies -- see {@link #resolveDependeciesFor(ResearchGoal)}
+     * return the direct dependencies for this goal -- does not include any sub-dependencies --
+     * {@see #resolveDependeciesFor(ResearchGoal)}
      */
     public Set<ResearchGoal> getDependencies() {
         return getGoalsFor(dependencies);
@@ -83,19 +113,42 @@ public class ResearchGoal {
         if (!AWCoreStatics.enableResearchResourceUse) {
             return true;
         }
-        boolean canStart = true;
         for (ItemStack stack : this.researchResources) {
             if (InventoryTools.getCountOf(inventory, side, stack) < stack.stackSize) {
-                canStart = false;
-                break;
+                return false;
             }
         }
-        if (canStart) {
-            for (ItemStack stack : this.researchResources) {
-                InventoryTools.removeItems(inventory, side, stack, stack.stackSize);
+
+        int count;
+        for(OreSized ore : researchOres){
+            count = 0;
+            for(ItemStack temp : ore.getEquivalents()) {
+                count += InventoryTools.getCountOf(inventory, side, temp);
+                if(count >= ore.size)
+                    break;
+            }
+            if(count < ore.size)
+                return false;
+        }
+
+        for (ItemStack stack : this.researchResources) {
+            InventoryTools.removeItems(inventory, side, stack, stack.stackSize);
+        }
+        int required;
+        ItemStack remove;
+        for(OreSized ore : researchOres){
+            required = ore.size;
+            for(ItemStack temp : ore.getEquivalents()) {
+                remove = InventoryTools.removeItems(inventory, side, temp, required);
+                if(remove != null){
+                    required -= remove.stackSize;
+                    if(required <= 0){
+                        break;
+                    }
+                }
             }
         }
-        return canStart;
+        return true;
     }
 
     public static void initializeResearch() {
@@ -160,15 +213,19 @@ public class ResearchGoal {
             }
             ItemStack stack = null;
             if(split.length>3) {
-                stack = StringTools.safeParseStack(split[1], split[2], split[3]);
-            }else if(split.length==3){
-                stack = StringTools.safeParseStack(split[1], "0", split[2]);
+                stack = StringTools.safeParseStack(split[1], split[2], split[3], false);
+            }else if(split.length>1){
+                stack = StringTools.safeParseStack(split[1], "0", split.length>2 ? split[2] : "1", false);
             }
-            if (stack == null) {
+            if(stack != null)
+                getGoal(name).addResource(stack);
+            else {
+                if(!OreDictionary.getOres(split[1].trim()).isEmpty()){
+                    getGoal(name).addOre(split);
+                    continue;
+                }
                 AWLog.logError("Could not define item from line: " + line);
-                continue;
             }
-            goalsByName.get(name).addResource(stack);
         }
     }
 
@@ -252,4 +309,26 @@ public class ResearchGoal {
         return goalsByName.values();
     }
 
+    private class OreSized{
+        private final String name;
+        private final int size;
+        private OreSized(String ore, int size){
+            this.name = ore;
+            if (size <= 0)
+                this.size = 1;
+            else
+                this.size = size;
+        }
+
+        public List<ItemStack> getEquivalents(){
+            return OreDictionary.getOres(name);
+        }
+
+        public ItemStack getEquivalent(Random random){
+            List<ItemStack> temps = getEquivalents();
+            ItemStack temp = temps.get(random.nextInt(temps.size())).copy();
+            temp.stackSize = size;
+            return temp;
+        }
+    }
 }

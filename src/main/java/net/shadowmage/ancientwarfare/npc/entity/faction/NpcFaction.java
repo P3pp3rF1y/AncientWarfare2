@@ -38,6 +38,16 @@ public abstract class NpcFaction extends NpcBase {
     }
 
     @Override
+    public final int getMaxSafePointTries() {
+        int i = super.getMaxSafePointTries();
+        if(i > 4)
+            i += worldObj.difficultySetting.getDifficultyId() * getMaxHealth() / 5;
+        if(i >= getHealth())
+            return (int)getHealth();
+        return i;
+    }
+
+    @Override
     protected boolean tryCommand(EntityPlayer player) {
         return player.capabilities.isCreativeMode && super.tryCommand(player);
     }

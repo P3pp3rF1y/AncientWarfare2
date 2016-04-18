@@ -70,7 +70,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
             }
             found = false;
             for (ItemStack stack3 : compactedCraft) {
-                if (InventoryTools.doItemStacksMatch(stack1, stack3)) {
+                if (InventoryTools.doItemStacksMatch(stack3, stack1)) {
                     stack3.stackSize++;
                     found = true;
                     break;
@@ -227,7 +227,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
 
     @Override
     public boolean isUseableByPlayer(EntityPlayer var1) {
-        return false;
+        return true;
     }
 
     @Override
@@ -292,10 +292,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
 
     private boolean canHold() {
         ItemStack test = outputSlot.getStackInSlot(0);
-        if (test == null) {
-            return false;
-        }//nothing to hold!!
-        return InventoryTools.canInventoryHold(outputInventory, -1, test);
+        return test != null && InventoryTools.canInventoryHold(outputInventory, -1, test);
     }
 
     @Override

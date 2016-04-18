@@ -25,8 +25,10 @@ public class ItemBlockInfo extends Item {
             if (pos != null) {
                 Block block = world.getBlock(pos.x, pos.y, pos.z);
                 int meta = world.getBlockMetadata(pos.x, pos.y, pos.z);
-                boolean entity = block.hasTileEntity(meta);
-                AWLog.logDebug("block: " + BlockDataManager.INSTANCE.getNameForBlock(block) + ", meta: " + meta + ", entity: " + entity);
+                AWLog.logDebug("block: " + BlockDataManager.INSTANCE.getNameForBlock(block) + ", meta: " + meta);
+                if(block.hasTileEntity(meta)){
+                    AWLog.logDebug("tile: " + world.getTileEntity(pos.x, pos.y, pos.z).getClass());
+                }
             }
         }
         return stack;

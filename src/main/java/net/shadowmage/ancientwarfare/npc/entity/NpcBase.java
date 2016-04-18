@@ -68,7 +68,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         super(par1World);
         levelingStats = new NpcLevelingStats(this);
         this.equipmentDropChances = new float[]{1.f, 1.f, 1.f, 1.f, 1.f};
-        this.width = 0.6f;
         this.func_110163_bv();//set persistence required=true
         this.navigator = new NpcNavigator(this);
         AncientWarfareNPC.statics.applyPathConfig(this);
@@ -239,11 +238,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     @Override
-    public PathNavigate getNavigator() {
-        if (this.ridingEntity instanceof EntityLiving) {
-            return ((EntityLiving) this.ridingEntity).getNavigator();
-        }
-        return super.getNavigator();
+    public int getMaxSafePointTries() {
+        return this.getAttackTarget() == null ? 4 : 4 + (int)(this.getHealth()/3);
     }
 
     @Override
@@ -253,6 +249,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             return -10;
         else if(below.getMaterial().isLiquid())//Don't try swimming too much
             return 0;
+        /*if(this.ridingEntity instanceof EntityCreature)
+            return ((EntityCreature)this.ridingEntity).getBlockPathWeight(varX, varY - 1, varZ);*/
         float level = worldObj.getLightBrightness(varX, varY, varZ);//Prefer lit areas
         if(level < 0)
             return 0;
@@ -405,6 +403,10 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     public final boolean attackEntityFrom(DamageSource source, float par2) {
         if (source.getEntity() != null && !canBeAttackedBy(source.getEntity()))
             return false;
+        if(source == DamageSource.inWall && this.ridingEntity instanceof EntityLiving) {
+            knockFromDamage(par2, worldObj.getBlock(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY + this.getEyeHeight()), MathHelper.floor_double(this.posZ)).getMaterial());
+            return false;
+        }
         if(source == DamageSource.cactus)
             knockFromDamage(par2, Material.cactus);
         else if(source == DamageSource.lava)
@@ -725,9 +727,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     @Override
     public void readSpawnData(ByteBuf buffer) {
-        long l1, l2;
-        l1 = buffer.readLong();
-        l2 = buffer.readLong();
+        long l1 = buffer.readLong();
+        long l2 = buffer.readLong();
         this.entityUniqueID = new UUID(l1, l2);
         ownerName = ByteBufUtils.readUTF8String(buffer);
         customTexRef = ByteBufUtils.readUTF8String(buffer);

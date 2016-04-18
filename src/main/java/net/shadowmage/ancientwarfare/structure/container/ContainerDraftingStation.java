@@ -56,6 +56,11 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
     }
 
     @Override
+    public boolean canInteractWith(EntityPlayer var1){
+        return tile.getDistanceFrom(var1.posX, var1.posY, var1.posZ) <= 64D;
+    }
+
+    @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
         ItemStack slotStackCopy = null;
         Slot theSlot = this.getSlot(slotClickedIndex);
@@ -138,11 +143,6 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
         NBTTagCompound tag = new NBTTagCompound();
         tag.setBoolean("start", true);
         this.sendDataToServer(tag);
-    }
-
-    @Override
-    public void handleNameSelection(String name) {
-        super.handleNameSelection(name);
     }
 
     @Override

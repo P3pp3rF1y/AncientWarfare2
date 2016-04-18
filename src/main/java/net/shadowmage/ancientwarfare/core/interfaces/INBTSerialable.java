@@ -33,7 +33,7 @@ public interface INBTSerialable {
                     T element = supplier.newInstance();
                     element.readFromNBT(tags.getCompoundTagAt(i));
                     list.add(element);
-                }catch (Throwable ignored){};
+                }catch (Throwable ignored){}
             }
             return list;
         }

@@ -136,4 +136,24 @@ public final class BlockGateProxy extends BlockContainer {
     public boolean canHarvestBlock(EntityPlayer player, int meta) {
         return false;
     }
+
+    //Actually "can go through", for mob pathing
+    @Override
+    public boolean getBlocksMovement(IBlockAccess world, int x, int y, int z){
+        TileEntity proxy = world.getTileEntity(x, y, z);
+        if(proxy instanceof TEGateProxy && ((TEGateProxy)proxy).isGateClosed()){
+            return false;
+        }
+        //Gate is probably open, Search identical neighbour
+        if(world.getBlock(x - 1, y, z) == this) {
+            return world.getBlock(x + 1, y, z) == this;
+        }else if(world.getBlock(x, y, z - 1) == this) {
+            return world.getBlock(x, y, z + 1) == this;
+        }else if(world.getBlock(x + 1 , y, z) == this) {
+            return world.getBlock(x - 1, y, z) == this;
+        }else if(world.getBlock(x, y, z + 1) == this){
+            return world.getBlock(x, y, z - 1) == this;
+        }
+        return true;
+    }
 }

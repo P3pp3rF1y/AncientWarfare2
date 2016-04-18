@@ -152,12 +152,12 @@ public class GuiResearchStation extends GuiContainerBase<ContainerResearchStatio
                 ResearchGoal g = ResearchGoal.getGoal(g1);
                 if (g != null) {
                     name = g.getName();
-                    ItemStack resource;
+                    List<ItemStack> resources = g.getResources();
                     for (int i = 0; i < layoutSlots.length; i++) {
-                        if (i >= g.getResources().size()) {
+                        if (i >= resources.size()) {
                             layoutSlots[i].setItem(null);
                         } else {
-                            resource = g.getResources().get(i);
+                            ItemStack resource = resources.get(i);
                             if (!InventoryTools.doItemStacksMatch(resource, layoutSlots[i].getStack())) {
                                 layoutSlots[i].setItem(resource.copy());
                             }

@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.npc.ai;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.ChunkCoordinates;
@@ -119,12 +120,11 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
     }
 
     protected final void setPath(double x, double y, double z){
-        PathEntity pathEntity = npc.getNavigator().getPathToXYZ(x, y, z);
-        trimPath(pathEntity);
+        PathEntity pathEntity = trimPath(npc.getNavigator().getPathToXYZ(x, y, z));
         npc.getNavigator().setPath(pathEntity, moveSpeed);
     }
 
-    protected void trimPath(PathEntity pathEntity){
+    protected PathEntity trimPath(PathEntity pathEntity){
         if(pathEntity!=null){
             int index = pathEntity.getCurrentPathIndex();
             PathPoint pathpoint = pathEntity.getPathPointFromIndex(index);
@@ -137,7 +137,12 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
                         break;
                     }
                 }
+            }else{
+                Vec3 vec = RandomPositionGenerator.findRandomTargetBlockAwayFrom(npc, MIN_RANGE, MIN_RANGE, Vec3.createVectorHelper(npc.posX, npc.posY, npc.posZ));
+                if(vec!=null)
+                    return npc.getNavigator().getPathToXYZ(vec.xCoord, vec.yCoord, vec.zCoord);
             }
         }
+        return pathEntity;
     }
 }

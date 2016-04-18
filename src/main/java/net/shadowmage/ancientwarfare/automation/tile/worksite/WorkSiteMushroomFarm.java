@@ -10,9 +10,7 @@ import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.tile.TreeFinder;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -36,13 +34,7 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
         blocksToPlantMushroom = new HashSet<BlockPosition>();
         blocksToPlantNetherWart = new HashSet<BlockPosition>();
 
-        this.inventory = new InventorySided(this, RotationType.FOUR_WAY, TOP_LENGTH + FRONT_LENGTH) {
-            @Override
-            public void markDirty() {
-                super.markDirty();
-                shouldCountResources = true;
-            }
-        };
+        this.inventory = new SlotListener(TOP_LENGTH + FRONT_LENGTH);
         InventoryTools.IndexHelper helper = new InventoryTools.IndexHelper();
         int[] topIndices = helper.getIndiceArrayForSpread(TOP_LENGTH);
         int[] frontIndices = helper.getIndiceArrayForSpread(FRONT_LENGTH);

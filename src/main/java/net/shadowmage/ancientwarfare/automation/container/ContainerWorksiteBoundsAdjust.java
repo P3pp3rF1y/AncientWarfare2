@@ -2,36 +2,28 @@ package net.shadowmage.ancientwarfare.automation.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteUserBlocks;
-import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedSite;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
-public class ContainerWorksiteBoundsAdjust extends ContainerBase {
+public class ContainerWorksiteBoundsAdjust extends ContainerTileBase {
 
-    public final int x, y, z;
-    public final BlockPosition min, max;
-    public final IBoundedSite worksite;
+    public BlockPosition min, max;
 
     public ContainerWorksiteBoundsAdjust(EntityPlayer player, int x, int y, int z) {
-        super(player);
-        this.x = x;
-        this.y = y;
-        this.z = z;
-        TileEntity te = player.worldObj.getTileEntity(x, y, z);
-        if(te instanceof IBoundedSite) {
-            worksite = (IBoundedSite) te;
-            min = worksite.getWorkBoundsMin().copy();
-            max = worksite.getWorkBoundsMax().copy();
+        super(player, x, y, z);
+        if(tileEntity instanceof IBoundedSite) {
+            min = getWorksite().getWorkBoundsMin().copy();
+            max = getWorksite().getWorkBoundsMax().copy();
         }else
             throw new IllegalArgumentException("Couldn't find work site");
     }
 
     @Override
     public void sendInitData() {
-        if (worksite instanceof TileWorksiteUserBlocks) {
-            TileWorksiteUserBlocks twub = (TileWorksiteUserBlocks) worksite;
+        if (tileEntity instanceof TileWorksiteUserBlocks) {
+            TileWorksiteUserBlocks twub = (TileWorksiteUserBlocks) tileEntity;
             NBTTagCompound tag = new NBTTagCompound();
             tag.setByteArray("checkedMap", twub.getTargetMap());
             sendDataToGui(tag);
@@ -44,17 +36,17 @@ public class ContainerWorksiteBoundsAdjust extends ContainerBase {
             if (tag.hasKey("min") && tag.hasKey("max")) {
                 BlockPosition min = new BlockPosition(tag.getCompoundTag("min"));
                 BlockPosition max = new BlockPosition(tag.getCompoundTag("max"));
-                worksite.setWorkBoundsMin(min);
-                worksite.setWorkBoundsMax(max);
-                worksite.onBoundsAdjusted();
-                worksite.onPostBoundsAdjusted();
+                getWorksite().setWorkBoundsMin(min);
+                getWorksite().setWorkBoundsMax(max);
+                getWorksite().onBoundsAdjusted();
+                getWorksite().onPostBoundsAdjusted();
             }
-            if (tag.hasKey("checkedMap") && worksite instanceof TileWorksiteUserBlocks) {
-                TileWorksiteUserBlocks twub = (TileWorksiteUserBlocks) worksite;
+            if (tag.hasKey("checkedMap") && tileEntity instanceof TileWorksiteUserBlocks) {
+                TileWorksiteUserBlocks twub = (TileWorksiteUserBlocks) tileEntity;
                 byte[] map = tag.getByteArray("checkedMap");
                 twub.setTargetBlocks(map);
             }
-            player.worldObj.markBlockForUpdate(x, y, z);
+            player.worldObj.markBlockForUpdate(getX(), getY(), getZ());
         }
     }
 
@@ -65,9 +57,25 @@ public class ContainerWorksiteBoundsAdjust extends ContainerBase {
             tag.setTag("min", min.writeToNBT(new NBTTagCompound()));
             tag.setTag("max", max.writeToNBT(new NBTTagCompound()));
         }
-        if (targetsAdjusted && worksite instanceof TileWorksiteUserBlocks) {
+        if (targetsAdjusted && tileEntity instanceof TileWorksiteUserBlocks) {
             tag.setByteArray("checkedMap", checkedMap);
         }
         sendDataToServer(tag);
+    }
+
+    public int getX() {
+        return tileEntity.xCoord;
+    }
+
+    public int getY() {
+        return tileEntity.yCoord;
+    }
+
+    public int getZ() {
+        return tileEntity.zCoord;
+    }
+
+    public IBoundedSite getWorksite() {
+        return (IBoundedSite) tileEntity;
     }
 }

@@ -3,6 +3,7 @@ package codechicken.nei.api;
 import codechicken.nei.recipe.ICraftingHandler;
 import codechicken.nei.recipe.IUsageHandler;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.item.ItemStack;
 
 /**
  * From NotEnoughItems.
@@ -21,6 +22,10 @@ public class API {
     }
 
     public static void registerGuiOverlayHandler(Class<? extends GuiContainer> classz, IOverlayHandler handler, String ident) {
+
+    }
+
+    public static void hideItem(ItemStack item){
 
     }
 }

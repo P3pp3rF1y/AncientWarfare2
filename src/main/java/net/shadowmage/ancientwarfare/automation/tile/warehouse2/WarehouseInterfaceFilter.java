@@ -4,6 +4,7 @@ import com.google.common.base.Predicate;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
+import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public final class WarehouseInterfaceFilter implements Predicate<ItemStack>, INBTSerialable {
@@ -25,12 +26,18 @@ public final class WarehouseInterfaceFilter implements Predicate<ItemStack>, INB
         if (item.getItem() != filterItem.getItem()) {
             return false;
         }//item not equivalent, obvious mis-match
-        return InventoryTools.doItemStacksMatch(item, filterItem);//finally, items were equal, no ignores' -- check both dmg and tag
+        return InventoryTools.doItemStacksMatch(filterItem, item);//finally, items were equal, no ignores' -- check both dmg and tag
     }
 
     @Override
     public boolean equals(Object object) {
         return object instanceof WarehouseInterfaceFilter && ((WarehouseInterfaceFilter) object).quantity == this.quantity && this.apply(((WarehouseInterfaceFilter) object).filterItem);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getFilterItem() != null ? new ItemQuantityMap.ItemHashEntry(getFilterItem()).hashCode() : 0;
+        return 31 * result + quantity;
     }
 
     @Override

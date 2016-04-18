@@ -3,12 +3,13 @@ package net.shadowmage.ancientwarfare.core.crafting;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.shadowmage.ancientwarfare.core.interfaces.IResearchRecipe;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class RecipeResearched extends ShapedOreRecipe {
+public class RecipeResearched extends ShapedOreRecipe implements IResearchRecipe {
 
     private final Set<Integer> neededResearch = new HashSet<Integer>();
     private int recipeWidth, recipeHeight;
@@ -18,7 +19,8 @@ public class RecipeResearched extends ShapedOreRecipe {
         setMirrored(false);
     }
 
-    protected final RecipeResearched addResearch(String... names) {
+    @Override
+    public final IResearchRecipe addResearch(String... names) {
         ResearchGoal g;
         for (String name : names) {
             name = name.startsWith("research.") ? name : "research." + name;
@@ -32,21 +34,17 @@ public class RecipeResearched extends ShapedOreRecipe {
         return this;
     }
 
-    protected final RecipeResearched addResearch(int... nums) {
-        ResearchGoal g;
-        for (int k : nums) {
-            g = ResearchGoal.getGoal(k);
-            if (g != null) {
-                neededResearch.add(k);
-            }
-        }
-        return this;
+    @Override
+    public Object[] getInputs() {
+        return getInput();
     }
 
+    @Override
     public Set<Integer> getNeededResearch() {
         return neededResearch;
     }
 
+    @Override
     public int getRecipeWidth() {
         if (recipeWidth == 0) {
             recipeWidth = ReflectionHelper.getPrivateValue(ShapedOreRecipe.class, this, "width");
@@ -54,6 +52,7 @@ public class RecipeResearched extends ShapedOreRecipe {
         return recipeWidth;
     }
 
+    @Override
     public int getRecipeHeight() {
         if (recipeHeight == 0) {
             recipeHeight = ReflectionHelper.getPrivateValue(ShapedOreRecipe.class, this, "height");

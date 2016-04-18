@@ -40,19 +40,11 @@ public class NpcAIFactionRideHorse extends NpcAIRideHorse {
             horse.setGrowingAge(0);
             horse.onSpawnWithEgg(null);
         }while (horse.getHorseType()!=0 || horse.isChild());
-        horse.setHorseSaddled(false);
         horse.setHorseTamed(true);
         this.horse = horse;
         npc.worldObj.spawnEntityInWorld(horse);
         npc.mountEntity(horse);
         onMountHorse();
-    }
-
-    @Override
-    protected void onMountHorse() {
-        super.onMountHorse();
-        horse.setEatingHaystack(false);
-        horse.setRearing(false);
     }
 
     public void readFromNBT(NBTTagCompound tag) {

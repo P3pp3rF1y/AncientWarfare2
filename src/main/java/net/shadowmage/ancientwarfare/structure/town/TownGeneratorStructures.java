@@ -342,11 +342,7 @@ public class TownGeneratorStructures {
         BlockPosition max = new BlockPosition(min.x + (width - 1), min.y + template.ySize, min.z + (length - 1));
         StructureBB bb = new StructureBB(min, max);
 
-        BlockPosition buildKey = bb.getRLCorner(face, new BlockPosition());
-        buildKey.moveRight(face, template.xOffset);
-        buildKey.moveBack(face, template.zOffset);
-        buildKey.y -= template.yOffset;
-        buildKey.y += gen.townBounds.min.y;
+        BlockPosition buildKey = bb.getRLCorner(face, new BlockPosition()).moveRight(face, template.xOffset).moveBack(face, template.zOffset).moveUp(gen.townBounds.min.y - template.yOffset);
         bb.offset(0, -template.yOffset, 0);
         gen.structureDoors.add(buildKey.copy());
         WorldGenTickHandler.INSTANCE.addStructureForGeneration(new StructureBuilder(gen.world, template, face, buildKey, bb));

@@ -38,7 +38,7 @@ public class RenderWindmillBlades extends TileEntitySpecialRenderer implements I
             GL11.glPushMatrix();
             bindTexture(texture);
             GL11.glTranslated(x + 0.5d, y + 0.5d, z + 0.5d);
-            renderModel(-getRotation(blade.rotation, blade.prevRotation, delta), blade.windmillDirection, (blade.windmillSize - 1) / 2);
+            renderModel(-blade.getRotation(delta), blade.windmillDirection, (blade.windmillSize - 1) / 2);
             GL11.glPopMatrix();
         } else if (blade.controlPos == null) {
             GL11.glPushMatrix();
@@ -54,11 +54,8 @@ public class RenderWindmillBlades extends TileEntitySpecialRenderer implements I
         if (rot[0] != 0) {
             GL11.glRotatef(rot[0], 1, 0, 0);
         }
-        if (rot[1] != 0) {
+        else if (rot[1] != 0) {
             GL11.glRotatef(rot[1], 0, 1, 0);
-        }
-        if (rot[2] != 0) {
-            GL11.glRotatef(rot[2], 0, 0, 1);
         }
 
         float textureWidth = model.textureWidth();
@@ -68,24 +65,18 @@ public class RenderWindmillBlades extends TileEntitySpecialRenderer implements I
 
         for (int i = 0; i < 4; i++) {
             GL11.glRotatef(90, 0, 0, 1);
-            GL11.glPushMatrix();
             bladeShaft.render(textureWidth, textureHeight);
             for (int k = 1; k < height; k++) {
                 blade.render(textureWidth, textureHeight);
                 if (k == height - 1) {
                     bladeJoint.render(textureWidth, textureHeight);
                 }
-                if (k < height - 1) {
+                else {
                     GL11.glTranslatef(0, 1, 0);
                 }
             }
-            GL11.glPopMatrix();
+            GL11.glTranslatef(0, 2 - height, 0);
         }
-    }
-
-    protected final float getRotation(double rotation, double prevRotation, float delta) {
-        double rd = rotation - prevRotation;
-        return (float) (prevRotation + rd * delta);
     }
 
     @Override
@@ -106,16 +97,6 @@ public class RenderWindmillBlades extends TileEntitySpecialRenderer implements I
         GL11.glTranslatef(0.5f, -0.25f, 0.5f);
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
         GL11.glScalef(0.35f, 0.35f, 0.35f);
-        float[] rot = ITorque.forgeDiretctionToRotationMatrix[2];
-        if (rot[0] != 0) {
-            GL11.glRotatef(rot[0], 1, 0, 0);
-        }
-        if (rot[1] != 0) {
-            GL11.glRotatef(rot[1], 0, 1, 0);
-        }
-        if (rot[2] != 0) {
-            GL11.glRotatef(rot[2], 0, 0, 1);
-        }
 
         float textureWidth = model.textureWidth();
         float textureHeight = model.textureHeight();
@@ -129,7 +110,7 @@ public class RenderWindmillBlades extends TileEntitySpecialRenderer implements I
             if (k == height - 1) {
                 bladeJoint.render(textureWidth, textureHeight);
             }
-            if (k < height - 1) {
+            else {
                 GL11.glTranslatef(0, 1, 0);
             }
         }

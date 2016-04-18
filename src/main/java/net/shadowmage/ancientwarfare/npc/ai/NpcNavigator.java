@@ -46,10 +46,44 @@ public class NpcNavigator extends PathNavigate {
         return !this.canNavigate() ? null : pathToEntity(target);
     }
 
+    @Override
+    public boolean setPath(PathEntity path, double speed){
+        if(hasMount()){
+            //System.out.println("Changing path from "+ Thread.currentThread().getStackTrace()[3]);
+            ((EntityLiving)entity.ridingEntity).getNavigator().setPath(path, speed);
+        }
+        return super.setPath(path, speed);
+    }
+
+    @Override
+    public void clearPathEntity(){
+        if(hasMount()) {
+            ((EntityLiving)entity.ridingEntity).getNavigator().clearPathEntity();
+            //System.out.println("Clearing path from " + Thread.currentThread().getStackTrace()[2]);
+        }
+        super.clearPathEntity();
+    }
+
+    @Override
+    public void onUpdateNavigation(){
+        super.onUpdateNavigation();
+        if(!noPath() && hasMount()) {
+            ((EntityLiving) entity.ridingEntity).getNavigator().onUpdateNavigation();
+        }
+    }
+
+    private boolean hasMount(){
+        return entity.ridingEntity instanceof EntityLiving;
+    }
+
+    private Entity mountOrEntity(){
+        return hasMount() ? entity.ridingEntity : entity;
+    }
+
     private PathEntity pathToEntity(Entity target)
     {
         ChunkCache chunkcache = cachePath(1, 16);
-        PathEntity pathentity = (new PathFind(chunkcache, doors, getCanBreakDoors(), getAvoidsWater(), swim)).createEntityPathTo(this.entity, target, this.getPathSearchRange());
+        PathEntity pathentity = (new PathFind(chunkcache, doors, getCanBreakDoors(), getAvoidsWater(), swim)).createEntityPathTo(mountOrEntity(), target, this.getPathSearchRange());
         this.worldObj.theProfiler.endSection();
         return pathentity;
     }
@@ -57,7 +91,7 @@ public class NpcNavigator extends PathNavigate {
     private PathEntity pathToXYZ(int x, int y, int z)
     {
         ChunkCache chunkcache = cachePath(0, 8);
-        PathEntity pathentity = (new PathFind(chunkcache, doors, getCanBreakDoors(), getAvoidsWater(), swim)).createEntityPathTo(this.entity, x, y, z, this.getPathSearchRange());
+        PathEntity pathentity = (new PathFind(chunkcache, doors, getCanBreakDoors(), getAvoidsWater(), swim)).createEntityPathTo(mountOrEntity(), x, y, z, this.getPathSearchRange());
         this.worldObj.theProfiler.endSection();
         return pathentity;
     }
@@ -77,7 +111,7 @@ public class NpcNavigator extends PathNavigate {
     @Override
     protected boolean canNavigate()
     {
-        return super.canNavigate() || this.entity.ridingEntity!=null;
+        return super.canNavigate() || hasMount();
     }
 
     /**
@@ -121,5 +155,19 @@ public class NpcNavigator extends PathNavigate {
 
             return true;
         }
+    }
+
+    @Override
+    public String toString(){
+        String result;
+        if(noPath())
+            result = "No Path " + (getPath()!=null ? getPath().getCurrentPathLength() : "");
+        else
+            result = "Path to " + getPath().getPathPointFromIndex(getPath().getCurrentPathIndex()).toString();
+        if(hasMount() && !((EntityLiving)entity.ridingEntity).getNavigator().noPath()){
+            PathEntity path = ((EntityLiving) entity.ridingEntity).getNavigator().getPath();
+            result += "AND Mount path to " + path.getPathPointFromIndex(path.getCurrentPathIndex()).toString();
+        }
+        return result;
     }
 }

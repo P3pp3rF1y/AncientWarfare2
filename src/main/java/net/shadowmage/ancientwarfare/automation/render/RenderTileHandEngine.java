@@ -6,7 +6,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileHandGenerator;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueBase;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelLoader;
@@ -33,10 +33,10 @@ public class RenderTileHandEngine extends TileEntitySpecialRenderer implements I
         bindTexture(texture);
         GL11.glTranslated(x + 0.5d, y, z + 0.5d);
 
-        TileHandGenerator handEngine = (TileHandGenerator) te;
+        TileTorqueBase handEngine = (TileTorqueBase) te;
         float outRotation = -handEngine.getClientOutputRotation(handEngine.getPrimaryFacing(), delta);
         float inRotation = -handEngine.getClientOutputRotation(ForgeDirection.UP, delta);//top side, not technically an 'output' rotation, but i'm lazy and not making a new method for it
-        renderModel(inRotation, outRotation, ((TileHandGenerator) te).getPrimaryFacing().ordinal());
+        renderModel(inRotation, outRotation, ((TileTorqueBase) te).getPrimaryFacing().ordinal());
         GL11.glPopMatrix();
     }
 
@@ -45,11 +45,8 @@ public class RenderTileHandEngine extends TileEntitySpecialRenderer implements I
         if (rot[0] != 0) {
             GL11.glRotatef(rot[0], 1, 0, 0);
         }
-        if (rot[1] != 0) {
+        else if (rot[1] != 0) {
             GL11.glRotatef(rot[1], 0, 1, 0);
-        }
-        if (rot[2] != 0) {
-            GL11.glRotatef(rot[2], 0, 0, 1);
         }
         outputGear.setRotation(0, 0, outR);
         inputGear.setRotation(0, inR, 0);

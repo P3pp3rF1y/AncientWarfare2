@@ -127,8 +127,6 @@ public class ItemStructureBuilder extends Item implements IItemKeyInterface, IBo
             return;
         }
         StructureBB bb = new StructureBB(hit.x, hit.y, hit.z, face, structure.xSize, structure.ySize, structure.zSize, structure.xOffset, structure.yOffset, structure.zOffset);
-        BlockPosition pos1 = bb.min;
-        BlockPosition pos2 = bb.max.copy();
-        Util.renderBoundingBox(player, pos1, pos2, delta);
+        Util.renderBoundingBox(player, bb.min, bb.max, delta);
     }
 }

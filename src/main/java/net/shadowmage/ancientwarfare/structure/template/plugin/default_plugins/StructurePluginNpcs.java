@@ -25,7 +25,7 @@ import net.minecraft.entity.EntityList;
 import net.shadowmage.ancientwarfare.npc.block.AWNPCBlockLoader;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
-import net.shadowmage.ancientwarfare.structure.template.plugin.StructureContentPlugin;
+import net.shadowmage.ancientwarfare.structure.api.StructureContentPlugin;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockLogic;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules.TemplateRuleEntityNpc;
 

@@ -353,12 +353,12 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
         restockArea.addGuiElement(new Button(70, totalHeight, 55, 12, Direction.getDirectionFor(restock.getWithdrawSide()).getTranslationKey()) {
             @Override
             protected void onPressed() {
-                int dir = restock.getDepositSide() + 1;
+                int dir = restock.getWithdrawSide() + 1;
                 if (dir >= 6) {
                     dir = 0;
                 }
                 setText(Direction.getDirectionFor(restock.getWithdrawSide()).getTranslationKey());
-                restock.setWithdrawPoint(restock.getDepositPoint(), dir);
+                restock.setWithdrawPoint(restock.getWithdrawPoint(), dir);
             }
         });
         totalHeight += 16;

@@ -11,10 +11,7 @@ import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraftforge.common.config.Configuration;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
-import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
@@ -56,19 +53,12 @@ public class AncientWarfareStructures {
             )
     public static CommonProxyBase proxy;
 
-    public static Configuration config;
-
-    public static org.apache.logging.log4j.Logger log;
-
     public static AWStructureStatics statics;
-
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent evt) {
         ModuleStatus.structuresLoaded = true;
-        log = AncientWarfareCore.log;
-        config = AWCoreStatics.getConfigFor("AncientWarfareStructures");
-        statics = new AWStructureStatics(config);
+        statics = new AWStructureStatics("AncientWarfareStructures");
 
         /**
          * Forge/FML registry
@@ -95,10 +85,6 @@ public class AncientWarfareStructures {
         NetworkHandler.registerContainer(NetworkHandler.GUI_GATE_CONTROL, ContainerGateControl.class);
         NetworkHandler.registerContainer(NetworkHandler.GUI_DRAFTING_STATION, ContainerDraftingStation.class);
         NetworkHandler.registerContainer(NetworkHandler.GUI_SOUND_BLOCK, ContainerSoundBlock.class);
-        /**
-         * load pre-init
-         */
-        statics.load();
         AWStructuresItemLoader.load();
         AWStructuresBlockLoader.load();
         proxy.registerClient();
@@ -118,8 +104,7 @@ public class AncientWarfareStructures {
         StructurePluginManager.INSTANCE.loadPlugins();
         WorldGenStructureManager.INSTANCE.loadBiomeList();
         TemplateLoader.INSTANCE.loadTemplates();
-        if (config.hasChanged())
-            config.save();
+        statics.save();
     }
 
     @SubscribeEvent

@@ -19,10 +19,7 @@ public class NpcAIMoveHome extends NpcAI<NpcBase> {
 
     @Override
     public boolean shouldExecute() {
-        if (!npc.getIsAIEnabled()) {
-            return false;
-        }
-        if (!npc.hasHome()) {
+        if (!npc.getIsAIEnabled() || !npc.hasHome()) {
             return false;
         }
         ChunkCoordinates cc = npc.getHomePosition();

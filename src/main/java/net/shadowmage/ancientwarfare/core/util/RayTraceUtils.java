@@ -18,7 +18,7 @@ public class RayTraceUtils {
         if (player.ridingEntity != null) {
             excluded.add(player.ridingEntity);
         }
-        float yOffset = player.worldObj.isRemote ? 0.f : 1.62f;
+        float yOffset = player.worldObj.isRemote ? 0.f : 1.62F;
         Vec3 look = player.getLookVec();
         look.xCoord *= range;
         look.yCoord *= range;
@@ -49,8 +49,6 @@ public class RayTraceUtils {
      */
     @SuppressWarnings("unchecked")
     public static MovingObjectPosition tracePath(World world, double x, double y, double z, double tx, double ty, double tz, float borderSize, HashSet<Entity> excluded) {
-        Vec3 startVec = Vec3.createVectorHelper(x, y, z);
-        Vec3 endVec = Vec3.createVectorHelper(tx, ty, tz);
         double minX = x < tx ? x : tx;
         double minY = y < ty ? y : ty;
         double minZ = z < tz ? z : tz;
@@ -59,21 +57,18 @@ public class RayTraceUtils {
         double maxZ = z > tz ? z : tz;
         AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ).expand(borderSize, borderSize, borderSize);
         List<Entity> allEntities = world.getEntitiesWithinAABBExcludingEntity(null, bb);
-        MovingObjectPosition blockHit = world.rayTraceBlocks(startVec, endVec);
-        startVec = Vec3.createVectorHelper(x, y, z);
-        endVec = Vec3.createVectorHelper(tx, ty, tz);
         Entity closestHitEntity = null;
         float closestHit = Float.POSITIVE_INFINITY;
-        float currentHit = 0.f;
-        AxisAlignedBB entityBb;// = ent.getBoundingBox();
+        float currentHit;
         MovingObjectPosition intercept;
+        Vec3 startVec = Vec3.createVectorHelper(x, y, z);
+        Vec3 endVec = Vec3.createVectorHelper(tx, ty, tz);
         for (Entity ent : allEntities) {
             if (ent.canBeCollidedWith() && !excluded.contains(ent)) {
-                float entBorder = ent.getCollisionBorderSize();
-                entityBb = ent.boundingBox;
+                AxisAlignedBB entityBb = ent.boundingBox;
                 if (entityBb != null) {
-                    entityBb = entityBb.expand(entBorder, entBorder, entBorder);
-                    intercept = entityBb.calculateIntercept(startVec, endVec);
+                    float entBorder = ent.getCollisionBorderSize();
+                    intercept = entityBb.expand(entBorder, entBorder, entBorder).calculateIntercept(startVec, endVec);
                     if (intercept != null) {
                         currentHit = (float) intercept.hitVec.distanceTo(startVec);
                         if (currentHit < closestHit || currentHit == 0) {
@@ -85,10 +80,11 @@ public class RayTraceUtils {
             }
         }
         if (closestHitEntity != null) {
-            blockHit = new MovingObjectPosition(closestHitEntity);
+            return new MovingObjectPosition(closestHitEntity);
         }
-        return blockHit;
+        startVec = Vec3.createVectorHelper(x, y, z);
+        endVec = Vec3.createVectorHelper(tx, ty, tz);
+        return world.rayTraceBlocks(startVec, endVec);
     }
-
 
 }

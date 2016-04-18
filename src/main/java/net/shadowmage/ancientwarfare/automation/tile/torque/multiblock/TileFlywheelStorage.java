@@ -12,9 +12,10 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBlockEvent;
 import net.shadowmage.ancientwarfare.core.util.BlockFinder;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TileFlywheelStorage extends TileEntity {
 
@@ -139,63 +140,36 @@ public class TileFlywheelStorage extends TileEntity {
     }
 
     protected boolean validateSetup() {
-        Set<BlockPosition> connectedPosSet = new HashSet<BlockPosition>();
-        BlockFinder.findConnectedSixWay(worldObj, xCoord, yCoord, zCoord, getBlockType(), getBlockMetadata(), connectedPosSet);
-        int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE, minZ = Integer.MAX_VALUE, maxX = Integer.MIN_VALUE, maxY = Integer.MIN_VALUE, maxZ = Integer.MIN_VALUE;
-        for (BlockPosition pos : connectedPosSet) {
-            if (pos.x < minX) {
-                minX = pos.x;
-            }
-            if (pos.x > maxX) {
-                maxX = pos.x;
-            }
-            if (pos.y < minY) {
-                minY = pos.y;
-            }
-            if (pos.y > maxY) {
-                maxY = pos.y;
-            }
-            if (pos.z < minZ) {
-                minZ = pos.z;
-            }
-            if (pos.z > maxZ) {
-                maxZ = pos.z;
-            }
-        }
-        int w = maxX - minX + 1;
-        int l = maxZ - minZ + 1;
-        int h = maxY - minY + 1;
-        int cube = w * l * h;
-        boolean valid = cube == connectedPosSet.size() && ((w == 1 && l == 1) || (w == 3 && l == 3));
+        List<BlockPosition> connectedPosSet = new ArrayList<BlockPosition>(30);
+        BlockFinder finder = new BlockFinder(worldObj, getBlockType(), getBlockMetadata());
+        Pair<BlockPosition, BlockPosition> corners = finder.cross(new BlockPosition(xCoord, yCoord, zCoord), new BlockPosition(3, worldObj.getActualHeight(), 3), connectedPosSet);
+        int minX = corners.getLeft().x, minY = corners.getLeft().y, minZ = corners.getLeft().z;
+        int w = corners.getRight().x - minX + 1, h = corners.getRight().y - minY + 1, l = corners.getRight().z - minZ + 1;
+        boolean valid = w == l && (w == 1 || w == 3)  && finder.box(corners, connectedPosSet);
         if (valid) {
             int cx = w == 1 ? minX : minX + 1;
             int cz = l == 1 ? minZ : minZ + 1;
-            int cy = minY;
-            setValidSetup(connectedPosSet, cx, cy, cz, w, h, getBlockMetadata());
+            setValidSetup(connectedPosSet, cx, minY, cz, w, h, getBlockMetadata());
         } else {
+            finder.connect(corners.getLeft(), connectedPosSet, ForgeDirection.UP, ForgeDirection.SOUTH, ForgeDirection.EAST);
             setInvalidSetup(connectedPosSet);
         }
         return valid;
     }
 
-    private void setValidSetup(Set<BlockPosition> set, int cx, int cy, int cz, int size, int height, int type) {
-        TileEntity te;
-        BlockPosition cp = new BlockPosition(cx, cy, cz);
-        controllerPos = cp;
-        for (BlockPosition pos : set) {
-            te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
-            if (te instanceof TileFlywheelStorage) {
-                ((TileFlywheelStorage) te).setController(cp);
-                ((TileFlywheelStorage) te).isControl = (pos.x == cx && pos.y == cy && pos.z == cz);
-            }
-        }
-        setTileAsController(cp.x, cp.y, cp.z, size, height, type);
-    }
-
-    private void setTileAsController(int x, int y, int z, int size, int height, int type) {
-        TileEntity te = worldObj.getTileEntity(x, y, z);
+    private void setValidSetup(List<BlockPosition> set, int cx, int cy, int cz, int size, int height, int type) {
+        controllerPos = new BlockPosition(cx, cy, cz);
+        TileEntity te = worldObj.getTileEntity(controllerPos.x, controllerPos.y, controllerPos.z);
         if (te instanceof TileFlywheelStorage) {
             ((TileFlywheelStorage) te).setAsController(size, height, type);
+            for (BlockPosition pos : set) {
+                te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
+                if (te instanceof TileFlywheelStorage) {
+                    ((TileFlywheelStorage) te).setController(controllerPos);
+                }
+            }
+        }else{
+            controllerPos = null;
         }
     }
 
@@ -224,7 +198,7 @@ public class TileFlywheelStorage extends TileEntity {
         this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
-    private void setInvalidSetup(Set<BlockPosition> set) {
+    private void setInvalidSetup(List<BlockPosition> set) {
         TileEntity te;
         controllerPos = null;
         isControl = false;

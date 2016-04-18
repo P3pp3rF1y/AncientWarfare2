@@ -11,21 +11,17 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.common.ForgeChunkManager;
-import net.minecraftforge.common.config.Configuration;
 import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
 import net.shadowmage.ancientwarfare.automation.chunkloader.AWChunkLoader;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.container.*;
 import net.shadowmage.ancientwarfare.automation.crafting.AWAutomationCrafting;
-import net.shadowmage.ancientwarfare.automation.gamedata.MailboxData;
 import net.shadowmage.ancientwarfare.automation.gamedata.MailboxTicker;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.proxy.RFProxy;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
-import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
 
@@ -36,7 +32,6 @@ import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
                 version = "@VERSION@",
                 dependencies = "required-after:AncientWarfare;after:CoFHCore;after:BuildCraft|Core"
         )
-
 public class AncientWarfareAutomation {
 
     @Instance(value = "AncientWarfareAutomation")
@@ -49,11 +44,7 @@ public class AncientWarfareAutomation {
             )
     public static CommonProxyBase proxy;
 
-    public static Configuration config;
-
-
     public static AWAutomationStatics statics;
-
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent evt) {
@@ -71,13 +62,7 @@ public class AncientWarfareAutomation {
         /**
          * setup module-owned config file and config-access class
          */
-        config = AWCoreStatics.getConfigFor("AncientWarfareAutomation");
-        statics = new AWAutomationStatics(config);
-
-        /**
-         * load pre-init
-         */
-        statics.load();//load config settings
+        statics = new AWAutomationStatics("AncientWarfareAutomation");
 
         /**
          * load items and blocks
@@ -129,14 +114,13 @@ public class AncientWarfareAutomation {
          * construct recipes, load plugins
          */
         AWAutomationCrafting.loadRecipes();
-        if (config.hasChanged())
-            config.save();
+        statics.save();
     }
 
     @SubscribeEvent
     public void onConfigChanged(OnConfigChangedEvent evt) {
         if (AncientWarfareCore.modID.equals(evt.modID)) {
-            proxy.onConfigChanged();
+            statics.save();
         }
     }
 }

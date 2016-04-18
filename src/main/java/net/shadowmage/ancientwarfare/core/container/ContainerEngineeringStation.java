@@ -9,28 +9,22 @@ import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
 
-public class ContainerEngineeringStation extends ContainerBase {
-
-    private final TileEngineeringStation station;
+public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeringStation> {
 
     public ContainerEngineeringStation(EntityPlayer player, int x, int y, int z) {
-        super(player);
-        station = (TileEngineeringStation) player.worldObj.getTileEntity(x, y, z);
-        if (station == null) {
-            throw new IllegalArgumentException(" tile may not be null!!");
-        }
+        super(player, x, y, z);
 
-        Slot slot = new SlotCrafting(player, station.layoutMatrix, station.result, 0, 3 * 18 + 3 * 18 + 8 + 18, 1 * 18 + 8) {
+        Slot slot = new SlotCrafting(player, tileEntity.layoutMatrix, tileEntity.result, 0, 3 * 18 + 3 * 18 + 8 + 18, 1 * 18 + 8) {
             @Override
             public void onPickupFromSlot(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack) {
-                station.preItemCrafted();
+                tileEntity.preItemCrafted();
                 super.onPickupFromSlot(par1EntityPlayer, par2ItemStack);
-                station.onItemCrafted();
+                tileEntity.onItemCrafted();
             }
         };
         addSlotToContainer(slot);
 
-        slot = new Slot(station.bookInventory, 0, 8, 18 + 8) {
+        slot = new Slot(tileEntity.bookInventory, 0, 8, 18 + 8) {
             @Override
             public boolean isItemValid(ItemStack par1ItemStack) {
                 return ItemResearchBook.getResearcherName(par1ItemStack) != null;
@@ -44,7 +38,7 @@ public class ContainerEngineeringStation extends ContainerBase {
             for (int x1 = 0; x1 < 3; x1++) {
                 x2 = x1 * 18 + 8 + 3 * 18;
                 slotNum = y1 * 3 + x1;
-                slot = new Slot(station.layoutMatrix, slotNum, x2, y2);
+                slot = new Slot(tileEntity.layoutMatrix, slotNum, x2, y2);
                 addSlotToContainer(slot);
             }
         }
@@ -54,7 +48,7 @@ public class ContainerEngineeringStation extends ContainerBase {
             for (int x1 = 0; x1 < 9; x1++) {
                 x2 = x1 * 18 + 8;
                 slotNum = y1 * 9 + x1;
-                slot = new Slot(station.extraSlots, slotNum, x2, y2);
+                slot = new Slot(tileEntity.extraSlots, slotNum, x2, y2);
                 addSlotToContainer(slot);
             }
         }
@@ -71,8 +65,8 @@ public class ContainerEngineeringStation extends ContainerBase {
             ItemStack slotStack = theSlot.getStack();
             slotStackCopy = slotStack.copy();
             int craftSlotStart = 2;
-            int storageSlotsStart = craftSlotStart + station.layoutMatrix.getSizeInventory();
-            int playerSlotStart = storageSlotsStart + station.extraSlots.getSizeInventory();
+            int storageSlotsStart = craftSlotStart + tileEntity.layoutMatrix.getSizeInventory();
+            int playerSlotStart = storageSlotsStart + tileEntity.extraSlots.getSizeInventory();
             int playerSlotEnd = playerSlotStart + playerSlots;
             if (slotClickedIndex < craftSlotStart)//book or result slot
             {

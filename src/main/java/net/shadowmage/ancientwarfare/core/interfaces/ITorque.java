@@ -13,12 +13,12 @@ public final class ITorque {
     public static final float[][] forgeDiretctionToRotationMatrix = new float[6][];
 
     static {
-        forgeDiretctionToRotationMatrix[0] = new float[]{-90, 0, 0};//d
-        forgeDiretctionToRotationMatrix[1] = new float[]{90, 0, 0};//u
-        forgeDiretctionToRotationMatrix[2] = new float[]{0, 0, 0};//n
-        forgeDiretctionToRotationMatrix[3] = new float[]{0, 180, 0};//s
-        forgeDiretctionToRotationMatrix[4] = new float[]{0, 90, 0};//w
-        forgeDiretctionToRotationMatrix[5] = new float[]{0, 270, 0};//e
+        forgeDiretctionToRotationMatrix[0] = new float[]{-90, 0};//d
+        forgeDiretctionToRotationMatrix[1] = new float[]{90, 0};//u
+        forgeDiretctionToRotationMatrix[2] = new float[]{0, 0};//n
+        forgeDiretctionToRotationMatrix[3] = new float[]{0, 180};//s
+        forgeDiretctionToRotationMatrix[4] = new float[]{0, 90};//w
+        forgeDiretctionToRotationMatrix[5] = new float[]{0, 270};//e
     }
 
     /**

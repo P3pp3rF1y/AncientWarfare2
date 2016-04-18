@@ -113,11 +113,7 @@ public class StructureBuilder implements IStructureBuilder {
             if (rule == null) {
                 continue;
             }
-            destination.x = rule.x;
-            destination.y = rule.y;
-            destination.z = rule.z;
-            BlockTools.rotateInArea(destination, template.xSize, template.zSize, turns);
-            destination.offsetBy(bb.min);
+            destination = BlockTools.rotateInArea(rule.getPosition(), template.xSize, template.zSize, turns).offsetBy(bb.min);
             try {
                 rule.handlePlacement(world, turns, destination.x, destination.y, destination.z, this);
             } catch (StructureBuildingException e) {
@@ -150,8 +146,10 @@ public class StructureBuilder implements IStructureBuilder {
             stc.setExtBlockMetadata(cx, y & 15, cz, meta);
             if (block.hasTileEntity(meta)) {
                 TileEntity te = block.createTileEntity(world, meta);
-                chunk.func_150812_a(cx, y, cz, te);//set TE in chunk data
-                world.addTileEntity(te);//add TE to world added/loaded TE list
+                if(te != null) {
+                    chunk.func_150812_a(cx, y, cz, te);//set TE in chunk data
+                    world.addTileEntity(te);//add TE to world added/loaded TE list
+                }
             }
             world.markBlockForUpdate(x, y, z);
             //TODO clean this up to send own list of block-changes, not rely upon vanilla to send changes. (as the client-side of this lags to all hell)
@@ -199,9 +197,7 @@ public class StructureBuilder implements IStructureBuilder {
     }
 
     protected void incrementDestination() {
-        destination.reassign(currentX, currentY, currentZ);
-        BlockTools.rotateInArea(destination, template.xSize, template.zSize, turns);
-        destination.offsetBy(bb.min);
+        destination = BlockTools.rotateInArea(new BlockPosition(currentX, currentY, currentZ), template.xSize, template.zSize, turns).offsetBy(bb.min);
     }
 
     /**

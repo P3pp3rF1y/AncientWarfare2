@@ -4,8 +4,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
-import net.shadowmage.ancientwarfare.core.crafting.RecipeResearched;
 import net.shadowmage.ancientwarfare.core.gui.elements.*;
+import net.shadowmage.ancientwarfare.core.interfaces.IResearchRecipe;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
@@ -14,7 +14,7 @@ import java.util.*;
 
 public class GuiResearchBook extends GuiContainerBase {
 
-    private RecipeResearched selectedRecipe = null;
+    private IResearchRecipe selectedRecipe = null;
     private ResearchGoal selectedGoal = null;
 
     private CompositeScrolled area;
@@ -61,7 +61,7 @@ public class GuiResearchBook extends GuiContainerBase {
     private void addRecipeModeControls() {
         int totalHeight = 8;
 
-        for (RecipeResearched recipe : AWCraftingManager.INSTANCE.getRecipes()) {
+        for (IResearchRecipe recipe : AWCraftingManager.INSTANCE.getRecipes()) {
             area.addGuiElement(new RecipeButton(8, totalHeight, recipe));
             totalHeight += 12;
         }
@@ -83,7 +83,7 @@ public class GuiResearchBook extends GuiContainerBase {
             if(canShow){
                 ItemStack[] ingredients = new ItemStack[selectedRecipe.getRecipeSize()];
                 for(int i = 0; i < ingredients.length; i++){
-                    Object object = selectedRecipe.getInput()[i];
+                    Object object = selectedRecipe.getInputs()[i];
                     if(object instanceof ItemStack){
                         ingredients[i] = (ItemStack) object;
                     }else if(object instanceof Iterable){
@@ -134,9 +134,9 @@ public class GuiResearchBook extends GuiContainerBase {
         totalHeight += 16;
 
         if (selectedGoal != null) {
-            List<RecipeResearched> recipes = AWCraftingManager.INSTANCE.getRecipes();
-            List<RecipeResearched> list = new ArrayList<RecipeResearched>();
-            for (RecipeResearched recipe : recipes) {
+            List<IResearchRecipe> recipes = AWCraftingManager.INSTANCE.getRecipes();
+            List<IResearchRecipe> list = new ArrayList<IResearchRecipe>();
+            for (IResearchRecipe recipe : recipes) {
                 if (recipe.getNeededResearch().contains(selectedGoal.getId())) {
                     list.add(recipe);
                 }
@@ -167,8 +167,8 @@ public class GuiResearchBook extends GuiContainerBase {
 
     private class RecipeSlot extends ItemSlot{
 
-        private final RecipeResearched researched;
-        public RecipeSlot(int i, int totalHeight, RecipeResearched recipe, ITooltipRenderer render) {
+        private final IResearchRecipe researched;
+        public RecipeSlot(int i, int totalHeight, IResearchRecipe recipe, ITooltipRenderer render) {
             super(8 + (18 * (i % 9)), totalHeight + 18 * (i / 9), recipe.getRecipeOutput(), render);
             setRenderItemQuantity(false);
             researched = recipe;
@@ -182,14 +182,14 @@ public class GuiResearchBook extends GuiContainerBase {
         }
     }
 
-    private Button getRecipeButton(int topLeftX, int topLeftY, RecipeResearched recipe){
+    private Button getRecipeButton(int topLeftX, int topLeftY, IResearchRecipe recipe){
         return new Button(topLeftX, topLeftY, 160, 12, recipe == null ? "guistrings.no_selection" : recipe.getRecipeOutput().getDisplayName());
     }
 
     private class RecipeButton extends Button {
-        final RecipeResearched recipe;
+        final IResearchRecipe recipe;
 
-        public RecipeButton(int topLeftX, int topLeftY, RecipeResearched recipe) {
+        public RecipeButton(int topLeftX, int topLeftY, IResearchRecipe recipe) {
             super(topLeftX, topLeftY, 160, 12, recipe == null ? "guistrings.no_selection" : recipe.getRecipeOutput().getDisplayName());
             this.recipe = recipe;
         }

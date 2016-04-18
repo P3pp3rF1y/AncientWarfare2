@@ -8,6 +8,7 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSid
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
+import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.EnumSet;
@@ -42,8 +43,10 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
     }
 
     private void offsetBounds(){
-        getWorkBoundsMax().y = yCoord - 1;
-        getWorkBoundsMin().y = 1;
+        BlockPosition pos = getWorkBoundsMax();
+        setWorkBoundsMax(pos.moveUp(yCoord - 1 - pos.y));
+        pos = getWorkBoundsMin();
+        setWorkBoundsMin(pos.moveUp(1 - pos.y));
         this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
@@ -178,7 +181,7 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
     private boolean canHarvest(int x, int y, int z) {
         //TODO add block-breaking exclusion list to config
         Block block = worldObj.getBlock(x, y, z);
-        if(block.isAir(worldObj, x, y, z)){
+        if(block.isAir(worldObj, x, y, z) || block.getMaterial().isLiquid()){
             return false;
         }
         int harvestLevel = block.getHarvestLevel(worldObj.getBlockMetadata(x, y, z));
@@ -195,11 +198,12 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
                 return false;
             }//else is harvestable, check the rest of the checks
         }
-        return !block.getMaterial().isLiquid() && block.getBlockHardness(worldObj, x, y, z) >= 0;
+        return block.getBlockHardness(worldObj, x, y, z) >= 0;
     }
 
     public void initWorkSite() {
-        this.getWorkBoundsMin().y = 1;
+        BlockPosition pos = getWorkBoundsMin();
+        setWorkBoundsMin(pos.moveUp(1 - pos.y));
         this.currentY = this.getWorkBoundsMax().y;
         this.currentX = this.getWorkBoundsMin().x;
         this.currentZ = this.getWorkBoundsMin().z;

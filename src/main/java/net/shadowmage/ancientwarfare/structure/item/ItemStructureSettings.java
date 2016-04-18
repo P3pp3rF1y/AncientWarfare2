@@ -34,9 +34,7 @@ public class ItemStructureSettings {
     String name;
 
     private ItemStructureSettings() {
-        pos1 = new BlockPosition();
-        pos2 = new BlockPosition();
-        key = new BlockPosition();
+
     }
 
     /**
@@ -54,15 +52,15 @@ public class ItemStructureSettings {
             settings.setKeys[i] = false;
         }
         if (tag.hasKey("pos1")) {
-            settings.pos1.read(tag.getCompoundTag("pos1"));
+            settings.pos1 = new BlockPosition(tag.getCompoundTag("pos1"));
             settings.setKeys[0] = true;
         }
         if (tag.hasKey("pos2")) {
-            settings.pos2.read(tag.getCompoundTag("pos2"));
+            settings.pos2 = new BlockPosition(tag.getCompoundTag("pos2"));
             settings.setKeys[1] = true;
         }
         if (tag.hasKey("buildKey")) {
-            settings.key.read(tag.getCompoundTag("buildKey"));
+            settings.key = new BlockPosition(tag.getCompoundTag("buildKey"));
             settings.setKeys[2] = true;
             settings.buildFace = tag.getCompoundTag("buildKey").getInteger("face");
         }
@@ -93,17 +91,17 @@ public class ItemStructureSettings {
     }
 
     public void setPos1(int x, int y, int z) {
-        pos1.reassign(x, y, z);
+        pos1 = new BlockPosition(x, y, z);
         setKeys[0] = true;
     }
 
     public void setPos2(int x, int y, int z) {
-        pos2.reassign(x, y, z);
+        pos2 = new BlockPosition(x, y, z);
         setKeys[1] = true;
     }
 
     public void setBuildKey(int x, int y, int z, int face) {
-        key.reassign(x, y, z);
+        key = new BlockPosition(x, y, z);
         buildFace = face;
         setKeys[2] = true;
     }

@@ -20,8 +20,6 @@
  */
 package net.shadowmage.ancientwarfare.structure.api;
 
-import net.shadowmage.ancientwarfare.structure.template.plugin.StructureContentPlugin;
-
 public interface IStructurePluginRegister {
 
     public void registerPlugin(StructureContentPlugin plugin);

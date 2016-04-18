@@ -56,8 +56,7 @@ public class TemplateRuleEntityHanging extends TemplateRuleVanillaEntity {
             throw new EntityPlacementException("Could not create entity for type: " + mobID);
         }
         int direction = (this.direction + turns) % 4;
-        hangTarget.reassign(x, y, z);
-        hangTarget.offsetForHorizontalDirection((direction + 2) % 4);
+        hangTarget = new BlockPosition(x, y, z, (direction + 2) % 4);
         tag.setByte("Direction", (byte) direction);
         tag.setInteger("TileX", hangTarget.x);
         tag.setInteger("TileY", hangTarget.y);

@@ -74,8 +74,7 @@ public class ItemSpawnerPlacer extends Item {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SPAWNER, 0, 0, 0);
         } else if (mophit != null && mophit.typeOfHit == MovingObjectType.BLOCK) {
             if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnerData")) {
-                BlockPosition hit = new BlockPosition(mophit.blockX, mophit.blockY, mophit.blockZ);
-                hit.offsetForMCSide(mophit.sideHit);
+                BlockPosition hit = new BlockPosition(mophit);
                 if (player.worldObj.setBlock(hit.x, hit.y, hit.z, Blocks.mob_spawner)) {
                     NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData");
                     tag.setInteger("x", hit.x);

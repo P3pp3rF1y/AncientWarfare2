@@ -59,23 +59,13 @@ public class SpawnerSettings {
 
     public static SpawnerSettings getDefaultSettings() {
         SpawnerSettings settings = new SpawnerSettings();
-        settings.maxDelay = 20 * 20;
-        settings.minDelay = 10 * 20;
         settings.playerRange = 16;
         settings.mobRange = 4;
         settings.maxNearbyMonsters = 8;
-        settings.respondToRedstone = false;
 
         EntitySpawnGroup group = new EntitySpawnGroup();
-        group.groupWeight = 1;
+        group.addSpawnSetting(new EntitySpawnSettings());
         settings.addSpawnGroup(group);
-
-        EntitySpawnSettings entity = new EntitySpawnSettings();
-        entity.setEntityToSpawn("Pig");
-        entity.setSpawnCountMin(2);
-        entity.setSpawnCountMax(4);
-        entity.remainingSpawnCount = -1;
-        group.addSpawnSetting(entity);
 
         return settings;
     }
@@ -265,24 +255,24 @@ public class SpawnerSettings {
         return lightSensitive;
     }
 
-    public final void setLightSensitive(boolean lightSensitive) {
-        this.lightSensitive = lightSensitive;
+    public final void toggleLightSensitive() {
+        this.lightSensitive = !lightSensitive;
     }
 
     public final boolean isRespondToRedstone() {
         return respondToRedstone;
     }
 
-    public final void setRespondToRedstone(boolean respondToRedstone) {
-        this.respondToRedstone = respondToRedstone;
+    public final void toggleRespondToRedstone() {
+        this.respondToRedstone = !respondToRedstone;
     }
 
     public final boolean getRedstoneMode() {
         return redstoneMode;
     }
 
-    public final void setRedstoneMode(boolean redstoneMode) {
-        this.redstoneMode = redstoneMode;
+    public final void toggleRedstoneMode() {
+        this.redstoneMode = !redstoneMode;
     }
 
     public final int getPlayerRange() {
@@ -373,20 +363,20 @@ public class SpawnerSettings {
         return debugMode;
     }
 
-    public final void setDebugMode(boolean mode) {
-        debugMode = mode;
+    public final void toggleDebugMode() {
+        debugMode = !debugMode;
     }
 
     public final boolean isTransparent() {
         return transparent;
     }
 
-    public final void setTransparent(boolean transparent) {
-        this.transparent = transparent;
+    public final void toggleTransparent() {
+        this.transparent = !transparent;
     }
 
     public static final class EntitySpawnGroup {
-        private int groupWeight;
+        private int groupWeight = 1;
         List<EntitySpawnSettings> entitiesToSpawn = new ArrayList<EntitySpawnSettings>();
 
         public EntitySpawnGroup() {
@@ -464,9 +454,10 @@ public class SpawnerSettings {
         String entityId = "Pig";
         NBTTagCompound customTag;
         List<WatchedData> customData = new ArrayList<WatchedData>();
-        int minToSpawn = 1;
+        int minToSpawn = 2;
         int maxToSpawn = 4;
         int remainingSpawnCount = -1;
+        boolean forced;
 
         public EntitySpawnSettings() {
 
@@ -481,6 +472,7 @@ public class SpawnerSettings {
             if (customTag != null) {
                 tag.setTag("customTag", customTag);
             }
+            tag.setBoolean("forced", forced);
             tag.setInteger("minToSpawn", minToSpawn);
             tag.setInteger("maxToSpawn", maxToSpawn);
             tag.setInteger("remainingSpawnCount", remainingSpawnCount);
@@ -496,6 +488,7 @@ public class SpawnerSettings {
             if (tag.hasKey("customTag")) {
                 customTag = tag.getCompoundTag("customTag");
             }
+            forced = tag.getBoolean("forced");
             minToSpawn = tag.getInteger("minToSpawn");
             maxToSpawn = tag.getInteger("maxToSpawn");
             remainingSpawnCount = tag.getInteger("remainingSpawnCount");
@@ -556,6 +549,10 @@ public class SpawnerSettings {
             this.remainingSpawnCount = total;
         }
 
+        public final void toggleForce(){
+            forced = !forced;
+        }
+
         private boolean shouldRemove() {
             return remainingSpawnCount == 0;
         }
@@ -578,6 +575,10 @@ public class SpawnerSettings {
 
         public final int getSpawnTotal() {
             return remainingSpawnCount;
+        }
+
+        public final boolean isForced(){
+            return forced;
         }
 
         public final NBTTagCompound getCustomTag() {
@@ -612,7 +613,7 @@ public class SpawnerSettings {
                     int z = zCoord - range + world.rand.nextInt(range*2+1);
                     for (int y = yCoord - range; y <= yCoord + range; y++) {
                         e.setLocationAndAngles(x + 0.5d, y, z + 0.5d, world.rand.nextFloat() * 360, 0);
-                        if (e instanceof EntityLiving) {
+                        if (!forced && e instanceof EntityLiving) {
                             doSpawn = ((EntityLiving) e).getCanSpawnHere();
                             if(doSpawn)
                                 break;

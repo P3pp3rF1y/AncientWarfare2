@@ -25,6 +25,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 import java.io.*;
@@ -269,13 +270,27 @@ public class StringTools {
      * @return the ItemStack instance, or null if any necessary argument is invalid
      */
     public static ItemStack safeParseStack(String name, String meta, String qty) {
+        return safeParseStack(name, meta, qty, true);
+    }
 
-        Item item = safeParseItem(name);
-        if (item == null) {
-            return null;
-        }
+    public static ItemStack safeParseStack(String name, String meta, String qty, boolean dictionary) {
+
         int i = StringTools.safeParseInt(qty);
         if (i <= 0) {
+            return null;
+        }
+        Item item = safeParseItem(name);
+        if (item == null) {
+            if(dictionary) {
+                List<ItemStack> list = OreDictionary.getOres(name);
+                for (ItemStack temp : list) {
+                    if (temp != null && temp.getMaxStackSize() >= i) {
+                        ItemStack result = temp.copy();
+                        result.stackSize = i;
+                        return result;
+                    }
+                }
+            }
             return null;
         }
         return new ItemStack(item, i, StringTools.safeParseInt(meta));

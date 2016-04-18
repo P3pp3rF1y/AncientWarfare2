@@ -31,10 +31,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteAutoCrafting;
+import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
-import net.shadowmage.ancientwarfare.core.crafting.RecipeResearched;
 import net.shadowmage.ancientwarfare.core.gui.crafting.GuiEngineeringStation;
+import net.shadowmage.ancientwarfare.core.interfaces.IResearchRecipe;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.awt.*;
@@ -52,6 +53,9 @@ public class AWNeiRecipeHandler extends TemplateRecipeHandler {
         if(ModuleStatus.automationLoaded){
             register(GuiWarehouseCraftingStation.class, new DefaultOverlayHandler(37, 2));
             register(GuiWorksiteAutoCrafting.class, new DefaultOverlayHandler(37, 2));
+        }
+        if(ModuleStatus.structuresLoaded){
+            API.hideItem(new ItemStack(AWBlocks.gateProxy));
         }
     }
 
@@ -100,8 +104,8 @@ public class AWNeiRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadCraftingRecipes(ItemStack result) {
-        List<RecipeResearched> allrecipes = AWCraftingManager.INSTANCE.getRecipes();
-        for (RecipeResearched irecipe : allrecipes) {
+        List<IResearchRecipe> allrecipes = AWCraftingManager.INSTANCE.getRecipes();
+        for (IResearchRecipe irecipe : allrecipes) {
             if (InventoryTools.doItemStacksMatch(irecipe.getRecipeOutput(), result)) {
                 arecipes.add(new AWCachedRecipe(irecipe));
             }
@@ -110,9 +114,9 @@ public class AWNeiRecipeHandler extends TemplateRecipeHandler {
 
     @Override
     public void loadUsageRecipes(ItemStack ingredient) {
-        List<RecipeResearched> allrecipes = AWCraftingManager.INSTANCE.getRecipes();
-        for (RecipeResearched irecipe : allrecipes) {
-            for (Object target : irecipe.getInput()) {
+        List<IResearchRecipe> allrecipes = AWCraftingManager.INSTANCE.getRecipes();
+        for (IResearchRecipe irecipe : allrecipes) {
+            for (Object target : irecipe.getInputs()) {
                 if (target == null) {
                     continue;
                 }
@@ -145,10 +149,10 @@ public class AWNeiRecipeHandler extends TemplateRecipeHandler {
         private final ArrayList<PositionedStack> ingredients;
         private final PositionedStack result;
 
-        public AWCachedRecipe(RecipeResearched recipe) {
+        public AWCachedRecipe(IResearchRecipe recipe) {
             result = new PositionedStack(recipe.getRecipeOutput().copy(), 119, 24);
             ingredients = new ArrayList<PositionedStack>();
-            setIngredients(recipe.getRecipeWidth(), recipe.getRecipeHeight(), recipe.getInput());
+            setIngredients(recipe.getRecipeWidth(), recipe.getRecipeHeight(), recipe.getInputs());
         }
 
         private void setIngredients(int width, int height, Object[] items) {

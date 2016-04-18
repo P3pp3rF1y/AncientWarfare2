@@ -57,15 +57,11 @@ public class GuiSpawnerAdvanced extends GuiContainerBase<ContainerSpawnerAdvance
         settingsMapByInput.clear();
 
         int totalHeight = 3;
-        Checkbox box;
-        NumberInput input;
-        Label label;
-        Button button;
 
-        box = new Checkbox(8, totalHeight, 16, 16, "guistrings.spawner.light_sensitive") {
+        Checkbox box = new Checkbox(8, totalHeight, 16, 16, "guistrings.spawner.light_sensitive") {
             @Override
             public void onToggled() {
-                getContainer().settings.setLightSensitive(checked());
+                getContainer().settings.toggleLightSensitive();
             }
         };
         box.setChecked(getContainer().settings.isLightSensitive());
@@ -75,7 +71,7 @@ public class GuiSpawnerAdvanced extends GuiContainerBase<ContainerSpawnerAdvance
         box = new Checkbox(8, totalHeight, 16, 16, "guistrings.spawner.redstone_sensitive") {
             @Override
             public void onToggled() {
-                getContainer().settings.setRespondToRedstone(checked());
+                getContainer().settings.toggleRespondToRedstone();
             }
         };
         box.setChecked(getContainer().settings.isRespondToRedstone());
@@ -85,7 +81,7 @@ public class GuiSpawnerAdvanced extends GuiContainerBase<ContainerSpawnerAdvance
         box = new Checkbox(8, totalHeight, 16, 16, "guistrings.spawner.redstone_mode") {
             @Override
             public void onToggled() {
-                getContainer().settings.setRedstoneMode(checked());
+                getContainer().settings.toggleRedstoneMode();
             }
         };
         box.setChecked(getContainer().settings.getRedstoneMode());
@@ -95,7 +91,7 @@ public class GuiSpawnerAdvanced extends GuiContainerBase<ContainerSpawnerAdvance
         box = new Checkbox(8, totalHeight, 16, 16, "guistrings.spawner.transparent") {
             @Override
             public void onToggled() {
-                getContainer().settings.setTransparent(checked());
+                getContainer().settings.toggleTransparent();
             }
         };
         box.setChecked(getContainer().settings.isTransparent());
@@ -105,18 +101,16 @@ public class GuiSpawnerAdvanced extends GuiContainerBase<ContainerSpawnerAdvance
         box = new Checkbox(8, totalHeight, 16, 16, "guistrings.spawner.debug_mode") {
             @Override
             public void onToggled() {
-                getContainer().settings.setDebugMode(checked());
+                getContainer().settings.toggleDebugMode();
             }
         };
         box.setChecked(getContainer().settings.isDebugMode());
         area.addGuiElement(box);
-        totalHeight += 16;
+        totalHeight += 20;
 
-        totalHeight += 4;
-
-        label = new Label(8, totalHeight, "guistrings.required_player_range");
+        Label label = new Label(8, totalHeight, "guistrings.required_player_range");
         area.addGuiElement(label);
-        input = new NumberInput(180, totalHeight, 50, getContainer().settings.getPlayerRange(), this) {
+        NumberInput input = new NumberInput(180, totalHeight, 50, getContainer().settings.getPlayerRange(), this) {
             @Override
             public void onValueUpdated(float value) {
                 getContainer().settings.setPlayerRange((int)value);
@@ -218,11 +212,9 @@ public class GuiSpawnerAdvanced extends GuiContainerBase<ContainerSpawnerAdvance
                 getContainer().settings.setBlockHardness(value);
             }
         };
+        input.setAllowNegative();
         area.addGuiElement(input);
-        totalHeight += 12;
-
-
-        totalHeight += 4;
+        totalHeight += 16;
 
         label = new Label(8, totalHeight, "guistrings.spawner.spawn_groups");
         area.addGuiElement(label);
@@ -230,7 +222,7 @@ public class GuiSpawnerAdvanced extends GuiContainerBase<ContainerSpawnerAdvance
 
         List<EntitySpawnGroup> spawnGroups = getContainer().settings.getSpawnGroups();
         List<EntitySpawnSettings> entitySettings;
-
+        Button button;
         for (EntitySpawnGroup group : spawnGroups) {
 
             button = new Button(256 - 16 - 95, totalHeight, 95, 12, "guistrings.spawner.remove_group") {
@@ -356,9 +348,7 @@ public class GuiSpawnerAdvanced extends GuiContainerBase<ContainerSpawnerAdvance
         button = new Button(8, totalHeight, 120, 12, "guistrings.spawner.add_group") {
             @Override
             protected void onPressed() {
-                EntitySpawnGroup g = new EntitySpawnGroup();
-                g.setWeight(1);
-                getContainer().settings.addSpawnGroup(g);
+                getContainer().settings.addSpawnGroup(new EntitySpawnGroup());
                 refreshGui();
             }
         };

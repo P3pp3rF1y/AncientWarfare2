@@ -65,33 +65,10 @@ public class GateRotatingBridge extends Gate {
             }
         } else {
             int heightAdj = max.y - min.y;
-            BlockPosition pos3 = max.copy();
-            pos3.y = min.y;
-            adjustBounds(pos3, heightAdj, gate.gateOrientation);
+            BlockPosition pos3 = max.moveUp(-heightAdj).moveForward(gate.gateOrientation, heightAdj);
             max = BlockTools.getMax(min, pos3).offset(1, 1, 1);
             min = BlockTools.getMin(min, pos3);
             gate.boundingBox.setBounds(min.x, min.y, min.z, max.x, max.y, max.z);
-        }
-    }
-
-    /**
-     * adjust the input position based on height/facing direction for the rotated (lowered)
-     * position of a gate
-     */
-    public static void adjustBounds(BlockPosition pos, int height, int facing) {
-        switch (facing) {
-            case 0://z++
-                pos.z += height;
-                break;
-            case 1://x--
-                pos.x -= height;
-                break;
-            case 2://z--
-                pos.z -= height;
-                break;
-            case 3://x++
-                pos.x += height;
-                break;
         }
     }
 
@@ -107,9 +84,7 @@ public class GateRotatingBridge extends Gate {
             BlockPosition min = BlockTools.getMin(gate.pos1, gate.pos2);
             BlockPosition max = BlockTools.getMax(gate.pos1, gate.pos2);
             int heightAdj = max.y - min.y;
-            BlockPosition pos3 = max.copy();
-            pos3.y = min.y;
-            adjustBounds(pos3, heightAdj, gate.gateOrientation);
+            BlockPosition pos3 = max.moveUp(-heightAdj).moveForward(gate.gateOrientation, heightAdj);
             max = BlockTools.getMax(min, pos3);
             min = BlockTools.getMin(min, pos3);
             Block id;
@@ -183,9 +158,7 @@ public class GateRotatingBridge extends Gate {
         BlockPosition min = BlockTools.getMin(gate.pos1, gate.pos2);
         BlockPosition max = BlockTools.getMax(gate.pos1, gate.pos2);
         int heightAdj = max.y - min.y;
-        BlockPosition pos3 = max.copy();
-        pos3.y = min.y;
-        adjustBounds(pos3, heightAdj, gate.gateOrientation);
+        BlockPosition pos3 = max.moveUp(-heightAdj).moveForward(gate.gateOrientation, heightAdj);
         max = BlockTools.getMax(min, pos3);
         min = BlockTools.getMin(min, pos3);
         placeBetween(gate, min, max);
@@ -197,9 +170,7 @@ public class GateRotatingBridge extends Gate {
         BlockPosition max = BlockTools.getMax(gate.pos1, gate.pos2);
         boolean widestOnXAxis = gate.pos1.x != gate.pos2.x;
         int heightAdj = max.y - min.y;
-        BlockPosition pos3 = max.copy();
-        pos3.y = min.y;
-        adjustBounds(pos3, heightAdj, gate.gateOrientation);
+        BlockPosition pos3 = max.moveUp(-heightAdj).moveForward(gate.gateOrientation, heightAdj);
         max = BlockTools.getMax(min, pos3);
         min = BlockTools.getMin(min, pos3);
         Block id;

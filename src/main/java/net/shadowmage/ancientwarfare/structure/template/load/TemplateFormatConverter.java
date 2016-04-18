@@ -197,8 +197,6 @@ public class TemplateFormatConverter {
         return output;
     }
 
-    int nextEntityID = 0;
-
     private TemplateRule parseOldBlockRule(List<String> lines) {
         int number = 0;
         int id = 0;

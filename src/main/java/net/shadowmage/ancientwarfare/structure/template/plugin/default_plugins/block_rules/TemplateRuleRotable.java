@@ -36,10 +36,8 @@ public class TemplateRuleRotable extends TemplateRuleBlock {
         }
         this.orientation = o.ordinal();
         if (worksite instanceof IBoundedSite && ((IBoundedSite) worksite).hasWorkBounds()) {
-            p1 = ((IBoundedSite) worksite).getWorkBoundsMin().copy().offset(-x, -y, -z);
-            p2 = ((IBoundedSite) worksite).getWorkBoundsMax().copy().offset(-x, -y, -z);
-            BlockTools.rotateAroundOrigin(p1, turns);
-            BlockTools.rotateAroundOrigin(p2, turns);
+            p1 = BlockTools.rotateAroundOrigin(((IBoundedSite) worksite).getWorkBoundsMin().offset(-x, -y, -z), turns);
+            p2 = BlockTools.rotateAroundOrigin(((IBoundedSite) worksite).getWorkBoundsMax().offset(-x, -y, -z), turns);
         }
         tag = new NBTTagCompound();
         worksite.writeToNBT(tag);
@@ -69,11 +67,9 @@ public class TemplateRuleRotable extends TemplateRuleBlock {
                 }
                 ((BlockRotationHandler.IRotatableTile) worksite).setPrimaryFacing(o);
                 if (worksite instanceof IBoundedSite && p1 != null && p2 != null) {
-                    BlockPosition pos1 = p1.copy(), pos2 = p2.copy();
-                    BlockTools.rotateAroundOrigin(pos1, turns);
-                    BlockTools.rotateAroundOrigin(pos2, turns);
-                    pos1.offset(x, y, z);
-                    pos2.offset(x, y, z);
+                    BlockPosition pos1, pos2;
+                    pos1 = BlockTools.rotateAroundOrigin(p1, turns).offset(x, y, z);
+                    pos2 = BlockTools.rotateAroundOrigin(p2, turns).offset(x, y, z);
                     ((IBoundedSite) worksite).setBounds(pos1, pos2);
                 }
                 world.markBlockForUpdate(x, y, z);

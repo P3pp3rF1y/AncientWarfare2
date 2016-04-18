@@ -23,16 +23,9 @@ public class ItemBlockWorksiteStatic extends ItemBlock {
 
     @Override
     public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
-        BlockPosition pos1 = new BlockPosition(x, y, z);
-        BlockPosition pos2 = new BlockPosition(x, y, z);
-
         int face = BlockTools.getPlayerFacingFromYaw(player.rotationYaw);
-
-        pos1.moveForward(face, 1);
-        pos1.moveLeft(face, 2);
-        pos2.reassign(pos1.x, pos1.y, pos1.z);
-        pos2.moveForward(face, 4);
-        pos2.moveRight(face, 4);
+        BlockPosition pos1 = new BlockPosition(x, y, z).moveForward(face, 1).moveLeft(face, 2);
+        BlockPosition pos2 = new BlockPosition(pos1).moveForward(face, 4).moveRight(face, 4);
         /**
          * TODO validate that block is not inside work bounds of any other nearby worksites ??
          * TODO validate that worksite does not intersect any others

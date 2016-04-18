@@ -22,6 +22,8 @@ package net.shadowmage.ancientwarfare.core.config;
 
 import net.minecraftforge.common.config.Configuration;
 
+import java.io.File;
+
 /**
  * static-data configuration class.
  * Each mod will need to construct its own subclass of this, adding static fields for necessary config items
@@ -29,18 +31,30 @@ import net.minecraftforge.common.config.Configuration;
  * @author Shadowmage
  */
 public abstract class ModConfiguration {
-
-    public Configuration config;
-    public static boolean updatedVersion = false;
-    public static boolean autoExportOnUpdate = false;
+    /**
+     * category names
+     */
+    public static final String generalOptions = "01_shared_settings";
+    public static final String serverOptions = "02_server_settings";
+    public static final String clientOptions = "03_client_settings";
+    public static final String configPathForFiles = "config/ancientwarfare/";
+    protected final Configuration config;
+    public boolean updatedVersion = false;
+    public boolean autoExportOnUpdate = false;
 
     public ModConfiguration(Configuration config) {
         this.config = config;
+        load();
     }
 
-    public void load() {
+    public ModConfiguration(String modid){
+        this(getConfigFor(modid));
+    }
+
+    private void load() {
         initializeCategories();
         initializeValues();
+        save();
     }
 
     protected abstract void initializeCategories();
@@ -51,12 +65,9 @@ public abstract class ModConfiguration {
         return this.config;
     }
 
-    public void saveConfig() {
-        this.config.save();
-    }
-
-    public int getKeyBindID(String name, int defaultID, String comment) {
-        return config.get("keybinds", name, defaultID, comment).getInt(defaultID);
+    public void save() {
+        if(config.hasChanged())
+            config.save();
     }
 
     public boolean updatedVersion() {
@@ -67,4 +78,7 @@ public abstract class ModConfiguration {
         return autoExportOnUpdate;
     }
 
+    public static Configuration getConfigFor(String modID) {
+        return new Configuration(new File(configPathForFiles, modID + ".cfg"));
+    }
 }

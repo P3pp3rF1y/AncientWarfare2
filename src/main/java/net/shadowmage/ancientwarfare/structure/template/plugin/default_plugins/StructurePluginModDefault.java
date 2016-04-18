@@ -22,8 +22,6 @@ package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins;
 
 import cpw.mods.fml.common.registry.GameData;
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
-import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityHanging;
 import net.minecraft.entity.EntityList;
@@ -31,14 +29,12 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.inventory.IInventory;
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
-import net.shadowmage.ancientwarfare.structure.template.plugin.StructureContentPlugin;
+import net.shadowmage.ancientwarfare.structure.api.StructureContentPlugin;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockLogic;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleModBlocks;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules.TemplateRuleEntityHanging;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules.TemplateRuleEntityLogic;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules.TemplateRuleVanillaEntity;
-
-import java.util.Map;
 
 public class StructurePluginModDefault implements StructureContentPlugin {
 

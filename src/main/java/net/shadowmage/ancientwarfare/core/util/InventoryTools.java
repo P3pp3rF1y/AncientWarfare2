@@ -29,7 +29,7 @@ public class InventoryTools {
             existing = inventory.getStackInSlot(index);
             if (existing == null) {
                 return true;
-            } else if (doItemStacksMatch(existing, stack)) {
+            } else if (doItemStacksMatch(stack, existing)) {
                 toMerge -= existing.getMaxStackSize() - existing.stackSize;
             }
             if (toMerge <= 0) {
@@ -157,7 +157,7 @@ public class InventoryTools {
         ItemStack slotStack;
         for (int index : slotIndices) {
             slotStack = inventory.getStackInSlot(index);
-            if (slotStack == null || !doItemStacksMatch(slotStack, filter)) {
+            if (slotStack == null || !doItemStacksMatch(filter, slotStack)) {
                 continue;
             }
             if (returnStack == null) {
@@ -248,7 +248,7 @@ public class InventoryTools {
         int stackSize;
         for (int fromIndex : fromIndices) {
             s1 = from.getStackInSlot(fromIndex);
-            if (s1 == null || !doItemStacksMatch(s1, filter, ignoreDamage, ignoreNBT)) {
+            if (s1 == null || !doItemStacksMatch(filter, s1, ignoreDamage, ignoreNBT)) {
                 continue;
             }
             stackSize = s1.stackSize;
@@ -346,7 +346,7 @@ public class InventoryTools {
         if (stack1 == stack2) {
             return true;
         }
-        return OreDictionary.itemMatches(stack1, stack2, true) && ItemStack.areItemStackTagsEqual(stack1, stack2);
+        return OreDictionary.itemMatches(stack1, stack2, stack1 != null && (stack1.isItemStackDamageable() || stack1.getItemDamage() != OreDictionary.WILDCARD_VALUE)) && ItemStack.areItemStackTagsEqual(stack1, stack2);
     }
 
     public static boolean doItemStacksMatch(ItemStack stack1, ItemStack stack2, boolean ignoreDamage, boolean ignoreNBT) {
