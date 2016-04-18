@@ -57,7 +57,7 @@ public class NpcAIPlayerOwnedCourier extends NpcAI<NpcCourier> {
     public void updateTask() {
         BlockPosition pos = order.get(routeIndex).getTarget();
         double dist = npc.getDistanceSq(pos.x, pos.y, pos.z);
-        if (dist > 5.d * 5.d) {
+        if (dist > AWNPCStatics.npcActionRange * AWNPCStatics.npcActionRange) {
             npc.addAITask(TASK_MOVE);
             ticksAtSite = 0;
             ticksToWork = 0;

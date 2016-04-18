@@ -41,7 +41,7 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
     public static final int SWIM = 4;
     public static final int HUNGRY = 8;
 
-    public static final int MIN_RANGE = 9, ACTION_RANGE = 25;
+    public static final int MIN_RANGE = 9;
 
     protected int moveRetryDelay;
     protected double moveSpeed = 1.d;

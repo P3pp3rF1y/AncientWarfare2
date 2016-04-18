@@ -43,13 +43,16 @@ import java.util.Map.Entry;
 
 public class AWNPCStatics extends ModConfiguration {
 
+    /** ********************************************SHARED SETTINGS************************************************ */
+    public static int npcActionRange = 5; // matches the action range of the player. Seems a little high for me but meh
+    
     /** ********************************************SERVER SETTINGS************************************************ */
     public static int maxNpcLevel = 10;
     public static int npcXpFromWork = 1;
     public static int npcXpFromTrade = 1;
     public static int npcXpFromAttack = 1;
     public static int npcXpFromKill = 5;
-    public static int npcXpFromMoveItem = 1;//TODO add to config
+    public static int npcXpFromMoveItem = 1;
     public static int npcWorkTicks = 50;
     public static int npcDefaultUpkeepWithdraw = 6000;//5 minutes
     public static boolean npcAllowUpkeepAnyInventory = true;
@@ -211,6 +214,11 @@ public class AWNPCStatics extends ModConfiguration {
                 "How much xp should an NPC gain each time it moves an item?\n" +
                 "Higher values will result in faster npc leveling.\n" +
                 "Applies to player-owned NPCs only.").getInt();
+        
+        npcActionRange = config.get(generalOptions, "npc_action_range", npcActionRange, "Action Range\nDefault=" + npcActionRange + "\n" +
+        		"The range in blocks that an NPC can perform an action on something.\n" +
+        		"This only affects workers, it does not affect the attack range of combat units nor medics.\n" +
+        		"If you want NPC's to move right next to their target, use a value of 2 - no lower!").getInt();
 
         npcWorkTicks = config.get(serverOptions, "npc_work_ticks", npcWorkTicks, "Time Between Work Ticks\nDefault=" + npcWorkTicks + "\n" +
                 "How many game ticks should pass between workers' processing work at a work-site.\n" +

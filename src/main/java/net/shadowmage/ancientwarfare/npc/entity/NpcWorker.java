@@ -22,6 +22,7 @@ import net.shadowmage.ancientwarfare.core.item.ItemQuill;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.*;
 import net.shadowmage.ancientwarfare.npc.ai.owned.*;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.item.ItemWorkOrder;
 import net.shadowmage.ancientwarfare.npc.orders.WorkOrder;
 
@@ -122,7 +123,7 @@ public class NpcWorker extends NpcPlayerOwned implements IWorker {
 
     @Override
     public double getWorkRangeSq(){
-        return NpcAI.ACTION_RANGE;
+        return AWNPCStatics.npcActionRange * AWNPCStatics.npcActionRange;
     }
 
     @Override

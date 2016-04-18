@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.npc.ai.owned;
 
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
@@ -56,7 +57,7 @@ public class NpcAIPlayerOwnedPriest extends NpcAI<NpcPlayerOwned> {
         }
         BlockPosition pos = npc.getTownHallPosition();
         double dist = npc.getDistanceSq(pos.x + 0.5d, pos.y, pos.z + 0.5d);
-        if (dist > ACTION_RANGE) {
+        if (dist > AWNPCStatics.npcActionRange * AWNPCStatics.npcActionRange) {
             moveToPosition(pos, dist);
             resurrectionDelay = 0;
         } else {

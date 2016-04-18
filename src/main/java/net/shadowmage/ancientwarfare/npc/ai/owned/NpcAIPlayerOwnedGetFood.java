@@ -4,6 +4,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 
 public class NpcAIPlayerOwnedGetFood extends NpcAI<NpcPlayerOwned> {
@@ -47,7 +48,7 @@ public class NpcAIPlayerOwnedGetFood extends NpcAI<NpcPlayerOwned> {
             return;
         }
         double dist = npc.getDistanceSq(pos.x + 0.5d, pos.y, pos.z + 0.5d);
-        if (dist > ACTION_RANGE) {
+        if (dist > AWNPCStatics.npcActionRange * AWNPCStatics.npcActionRange) {
             npc.addAITask(TASK_MOVE);
             moveToPosition(pos, dist);
         } else {
