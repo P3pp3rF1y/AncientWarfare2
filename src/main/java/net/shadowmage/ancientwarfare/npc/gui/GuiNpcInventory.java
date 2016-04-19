@@ -11,6 +11,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcInventory;
+import net.shadowmage.ancientwarfare.npc.entity.NpcCombat;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 
 public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
@@ -95,13 +96,14 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
         }
 
         ItemSlot slot;
-
-        slot = new ItemSlot(26, 8, new ItemStack(Items.iron_sword), this);
-        slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false).addTooltip("guistrings.npc.weapon_slot");
+        boolean isCombatNpc = getContainer().entity instanceof NpcCombat;
+        
+        slot = new ItemSlot(26, 8, new ItemStack(isCombatNpc ? Items.iron_sword : Items.iron_pickaxe), this);
+        slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false).addTooltip(isCombatNpc ? "guistrings.npc.weapon_slot" : "guistrings.npc.tool_slot");
         addGuiElement(slot);
 
         slot = new ItemSlot(26, 8 + 18 * 1, new ItemStack(AWNpcItemLoader.woodenShield), this);
-        slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false).addTooltip("guistrings.npc.shield_slot");
+        slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false).addTooltip(isCombatNpc ? "guistrings.npc.shield_slot" : "guistrings.npc.offhand_slot");
         addGuiElement(slot);
 
         slot = new ItemSlot(26, 8 + 18 * 2, new ItemStack(Items.iron_helmet), this);
