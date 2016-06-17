@@ -697,13 +697,15 @@ public class InventoryTools {
 
         @Override
         public int compare(ItemStack o1, ItemStack o2) {
-            int val;
+            int val = 0;
             if(!textInput.isEmpty()) {
                 val = compareViaTextInput(o1, o2);
-            }else{
-                val = sortType.compare(o1, o2);
             }
-            return val * sortOrder.mult;
+            
+            if (val == 0){
+                val = sortType.compare(o1, o2) * sortOrder.mult;
+            }
+            return val;
         }
 
         private int compareViaTextInput(ItemStack o1, ItemStack o2) {
@@ -711,16 +713,16 @@ public class InventoryTools {
             String n1 = o1.getDisplayName().toLowerCase(Locale.ENGLISH), n2 = o2.getDisplayName().toLowerCase(Locale.ENGLISH);
             if (n1.startsWith(input)){
                 if(!n2.startsWith(input))
-                    return 1;
+                    return -1;
             } else if (n2.startsWith(input)) {
-                return -1;
+                return 1;
             } else if (n1.contains(input)){
                 if(!n2.contains(input))
-                    return 1;
+                    return -1;
             } else if (n2.contains(input)) {
-                return -1;
+                return 1;
             }
-            return sortType.compare(o1, o2);
+            return 0;
         }
     }
 
