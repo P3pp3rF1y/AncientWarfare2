@@ -175,7 +175,7 @@ public class GuiResearchBook extends GuiContainerBase {
         }
 
         @Override
-        public void onSlotClicked(ItemStack stack) {
+        public void onSlotClicked(ItemStack stack, boolean rightClicked) {
             selectedRecipe = researched;
             researchMode = false;
             refreshGui();

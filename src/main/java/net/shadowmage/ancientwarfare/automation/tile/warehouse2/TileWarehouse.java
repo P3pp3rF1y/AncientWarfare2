@@ -15,11 +15,11 @@ public class TileWarehouse extends TileWarehouseBase {
     }
 
     @Override
-    public void handleSlotClick(EntityPlayer player, ItemStack filter, boolean shiftClick) {
+    public void handleSlotClick(EntityPlayer player, ItemStack filter, boolean shiftClick, boolean rightClick) {
         if (filter == null) {
             tryAddItem(player, player.inventory.getItemStack());
-        }else if (player.inventory.getItemStack() == null) {
-            tryGetItem(player, filter, shiftClick);
+        } else {
+            tryGetItem(player, filter, shiftClick, rightClick);
         }
     }
 
@@ -48,16 +48,40 @@ public class TileWarehouse extends TileWarehouseBase {
         }
     }
 
-    private void tryGetItem(EntityPlayer player, ItemStack filter, boolean shiftClick) {
+    private void tryGetItem(EntityPlayer player, ItemStack filter, boolean shiftClick, boolean rightClick) {
         List<IWarehouseStorageTile> destinations = new ArrayList<IWarehouseStorageTile>();
-        ItemStack newCursorStack = filter.copy();
-        newCursorStack.stackSize = 0;
+        ItemStack newCursorStack; 
+        
+        if (player.inventory.getItemStack() != null) {
+            newCursorStack = player.inventory.getItemStack().copy();
+            if (!(newCursorStack.isItemEqual(filter) && ItemStack.areItemStackTagsEqual(newCursorStack, filter)))
+                return;
+        } else {
+            newCursorStack = filter.copy();
+            newCursorStack.stackSize = 0;
+        }
+        
         storageMap.getDestinations(filter, destinations);
         int count;
         int toMove;
+        int toMoveMax = newCursorStack.getMaxStackSize();
+        if (rightClick && (toMoveMax > 1)) {
+            if (shiftClick) {
+                toMoveMax = Math.min(newCursorStack.stackSize + 1, toMoveMax);
+            } else {
+                int available = 0;
+                for (IWarehouseStorageTile tile : destinations) {
+                    available += tile.getQuantityStored(filter);
+                }
+                if (toMoveMax > available) {
+                    toMoveMax = available;
+                }
+                toMoveMax = (int) Math.ceil(toMoveMax / 2.0);
+            }
+        }
         for (IWarehouseStorageTile tile : destinations) {
             count = tile.getQuantityStored(filter);
-            toMove = newCursorStack.getMaxStackSize() - newCursorStack.stackSize;
+            toMove = toMoveMax - newCursorStack.stackSize;
             toMove = toMove > count ? count : toMove;
             if (toMove > 0) {
                 newCursorStack.stackSize += toMove;
@@ -65,11 +89,11 @@ public class TileWarehouse extends TileWarehouseBase {
                 changeCachedQuantity(filter, -toMove);
                 updateViewers();
             }
-            if (newCursorStack.stackSize >= newCursorStack.getMaxStackSize()) {
+            if (newCursorStack.stackSize >= toMoveMax) {
                 break;
             }
         }
-        InventoryTools.updateCursorItem((EntityPlayerMP)player, newCursorStack, shiftClick);
+        InventoryTools.updateCursorItem((EntityPlayerMP)player, newCursorStack, !rightClick && shiftClick);
     }
 
 }

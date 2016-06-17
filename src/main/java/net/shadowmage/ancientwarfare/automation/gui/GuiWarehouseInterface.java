@@ -111,7 +111,7 @@ public class GuiWarehouseInterface extends GuiContainerBase<ContainerWarehouseIn
         }
 
         @Override
-        public void onSlotClicked(ItemStack stack) {
+        public void onSlotClicked(ItemStack stack, boolean rightClicked) {
             ItemStack in = stack == null ? null : stack.copy();
             this.setItem(in);
             if (in != null) {

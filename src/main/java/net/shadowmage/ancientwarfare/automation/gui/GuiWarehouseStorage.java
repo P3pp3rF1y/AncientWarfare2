@@ -33,7 +33,7 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
             @Override
             public boolean onEvent(GuiElement widget, ActivationEvent evt) {
                 if (evt.mButton == 0 && widget.isMouseOverElement(evt.mx, evt.my) && !area2.isMouseOverSubElement(evt.mx, evt.my)) {
-                    getContainer().handleClientRequestSpecific(null, isShiftKeyDown());
+                    getContainer().handleClientRequestSpecific(null, isShiftKeyDown(), false);
                 }
                 return true;
             }
@@ -105,8 +105,11 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
         for (ItemStack displayStack : displayStacks) {
             slot = new ItemSlot(4 + x * 18, 8 + y * 18, displayStack, this) {
                 @Override
-                public void onSlotClicked(ItemStack stack) {
-                    getContainer().handleClientRequestSpecific(getStack(), isShiftKeyDown());
+                public void onSlotClicked(ItemStack stack, boolean rightClicked) {
+                    ItemStack reqStack = getStack();
+                    if (!(rightClicked && isShiftKeyDown()) && (reqStack != null) && (stack != null) && (reqStack.isItemEqual(stack) && ItemStack.areItemStackTagsEqual(stack, reqStack)))
+                        reqStack = null;
+                    getContainer().handleClientRequestSpecific(reqStack, isShiftKeyDown(), rightClicked);
                 }
             };
             area2.addGuiElement(slot);
@@ -145,7 +148,7 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
         }
 
         @Override
-        public void onSlotClicked(ItemStack stack) {
+        public void onSlotClicked(ItemStack stack, boolean rightClicked) {
             ItemStack in = stack == null ? null : stack.copy();
             this.setItem(in);
             if (in != null) {

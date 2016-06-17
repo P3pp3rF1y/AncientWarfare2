@@ -41,7 +41,7 @@ public class ItemSlot extends GuiElement {
             public boolean onEvent(GuiElement widget, ActivationEvent evt) {
                 if (widget.isMouseOverElement(evt.mx, evt.my)) {
                     ItemStack stack = Minecraft.getMinecraft().thePlayer.inventory.getItemStack();
-                    onSlotClicked(stack);
+                    onSlotClicked(stack, evt.mButton == 1);
                 }
                 return true;
             }
@@ -185,7 +185,7 @@ public class ItemSlot extends GuiElement {
         GL11.glPopMatrix();
     }
 
-    public void onSlotClicked(ItemStack stack) {
+    public void onSlotClicked(ItemStack stack, boolean rightClicked) {
 
     }
 
