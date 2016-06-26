@@ -5,7 +5,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -13,12 +15,15 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileWindmillBlade;
+import net.shadowmage.ancientwarfare.core.item.ItemHammer;
 
 public class BlockWindmillBlade extends Block {
 
     public BlockWindmillBlade(String regName) {
-        super(Material.rock);
+        super(Material.wood);
         this.setBlockName(regName);
+        this.setHardness(1.f);
+        this.setHarvestLevel("axe", 1);
         this.setCreativeTab(AWAutomationItemLoader.automationTab);
     }
 
@@ -64,14 +69,14 @@ public class BlockWindmillBlade extends Block {
     public void onPostBlockPlaced(World world, int x, int y, int z, int meta) {
         super.onPostBlockPlaced(world, x, y, z, meta);
         TileWindmillBlade te = (TileWindmillBlade) world.getTileEntity(x, y, z);
-        te.blockPlaced();
+        //te.blockPlaced();
     }
 
     @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int face) {
         TileWindmillBlade te = (TileWindmillBlade) world.getTileEntity(x, y, z);
+        te.blockBroken(); // Need to be called here to find and invalidate the entire mill 
         super.breakBlock(world, x, y, z, block, face);
-        te.blockBroken();//have to call post block-break so that the tile properly sees the block/tile as gone
     }
 
     @Override
@@ -84,4 +89,14 @@ public class BlockWindmillBlade extends Block {
         return true;
     }
 
+    @Override
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float fx, float fy, float fz) {
+        ItemStack held = player.getHeldItem();
+        if (held != null && held.getItem() instanceof ItemHammer) {
+            TileWindmillBlade te = (TileWindmillBlade) world.getTileEntity(x, y, z);
+            te.blockPlaced();
+            return true;
+        }
+        return false;
+    }
 }
