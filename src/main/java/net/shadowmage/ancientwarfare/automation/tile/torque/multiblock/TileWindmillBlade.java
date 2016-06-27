@@ -68,8 +68,25 @@ public class TileWindmillBlade extends TileEntity {
     }
 
     public void blockBroken() {
-        if(!worldObj.isRemote)
-        informNeighborsToValidate();
+        if ((!worldObj.isRemote) && (this.controlPos != null)) {
+            BlockPosition controller = controlPos.copy();
+            TileWindmillBlade controllerTE = isControl?this:(TileWindmillBlade) worldObj.getTileEntity(controlPos.x, controlPos.y, controlPos.z);
+            int dY = controllerTE.windmillSize/2;
+            int dX = (controllerTE.windmillDirection == 4)?0:dY;
+            int dZ = (controllerTE.windmillDirection == 2)?0:dY;
+            for(int x = controller.x - dX; x <= controller.x + dX; x++){
+                for(int y = controller.y - dY; y <= controller.y + dY; y++){
+                    for(int z = controller.z - dZ; z <= controller.z + dZ; z++){
+                        TileEntity te = worldObj.getTileEntity(x, y, z);
+                        if (te instanceof TileWindmillBlade) {
+                            TileWindmillBlade tb = (TileWindmillBlade) te;
+                            if (tb.controlPos != null && tb.controlPos.equals(controller))
+                                ((TileWindmillBlade) te).setController(null);
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public TileWindmillBlade getMaster() {

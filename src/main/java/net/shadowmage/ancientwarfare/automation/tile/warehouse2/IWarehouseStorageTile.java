@@ -31,7 +31,7 @@ public interface IWarehouseStorageTile {
 
     public void removeViewer(ContainerWarehouseStorage containerWarehouseStorage);
 
-    public void handleSlotClick(EntityPlayer player, ItemStack item, boolean isShiftClick);
+    public void handleSlotClick(EntityPlayer player, ItemStack item, boolean isShiftClick, boolean isRightClick);
 
     public ItemStack tryAdd(ItemStack stack);
 

@@ -165,13 +165,14 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
     }
 
     @Override
-    public void handleSlotClick(EntityPlayer player, ItemStack filter, boolean shiftClick) {
-        if (filter != null && player.inventory.getItemStack() == null) {
-            tryGetItem(player, filter, shiftClick);
-        } else if (player.inventory.getItemStack() != null) {
+    public void handleSlotClick(EntityPlayer player, ItemStack filter, boolean shiftClick, boolean rightClick) {
+        if ((filter == null) && (player.inventory.getItemStack() != null)) {
             tryAddItem(player, player.inventory.getItemStack());
+        } else {
+            tryGetItem(player, filter, shiftClick, rightClick);
         }
     }
+
 
     private void tryAddItem(EntityPlayer player, ItemStack cursorStack) {
         int stackSize = cursorStack.stackSize;
@@ -190,13 +191,31 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
         }
     }
 
-    private void tryGetItem(EntityPlayer player, ItemStack filter, boolean shiftClick) {
-        ItemStack newCursorStack = filter.copy();
-        newCursorStack.stackSize = 0;
-        int count;
-        int toMove;
-        count = getQuantityStored(filter);
-        toMove = newCursorStack.getMaxStackSize() - newCursorStack.stackSize;
+    private void tryGetItem(EntityPlayer player, ItemStack filter, boolean shiftClick, boolean rightClick) {
+        ItemStack newCursorStack;
+
+        if (player.inventory.getItemStack() != null) {
+            newCursorStack = player.inventory.getItemStack().copy();
+            if (!(newCursorStack.isItemEqual(filter) && ItemStack.areItemStackTagsEqual(newCursorStack, filter)))
+                return;
+        } else {
+            newCursorStack = filter.copy();
+            newCursorStack.stackSize = 0;
+        }
+
+        int count = getQuantityStored(filter);
+        int toMoveMax = newCursorStack.getMaxStackSize();
+        if (rightClick && (toMoveMax > 1)) {
+            if (shiftClick) {
+                toMoveMax = Math.min(newCursorStack.stackSize + 1, toMoveMax);
+            } else {
+                if (toMoveMax > count) {
+                    toMoveMax = count;
+                }
+                toMoveMax = (int) Math.ceil(toMoveMax / 2.0);
+            }
+        }
+        int toMove = toMoveMax - newCursorStack.stackSize;
         toMove = toMove > count ? count : toMove;
         if (toMove > 0) {
             newCursorStack.stackSize += toMove;
@@ -206,6 +225,6 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
                 twb.changeCachedQuantity(filter, -toMove);
             }
         }
-        InventoryTools.updateCursorItem((EntityPlayerMP)player, newCursorStack, shiftClick);
+        InventoryTools.updateCursorItem((EntityPlayerMP)player, newCursorStack, !rightClick && shiftClick);
     }
 }

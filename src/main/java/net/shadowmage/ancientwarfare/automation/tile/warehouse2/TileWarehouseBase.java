@@ -100,7 +100,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
         return 3;
     }
 
-    public abstract void handleSlotClick(EntityPlayer player, ItemStack filter, boolean shiftClick);
+    public abstract void handleSlotClick(EntityPlayer player, ItemStack filter, boolean shiftClick, boolean rightClick);
 
     public void changeCachedQuantity(ItemStack filter, int change) {
         if (change > 0) {

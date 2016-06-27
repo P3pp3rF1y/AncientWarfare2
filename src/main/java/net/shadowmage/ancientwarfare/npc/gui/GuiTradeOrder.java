@@ -191,7 +191,7 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
         stack = stack == null ? null : stack.copy();
         final ItemSlot slot = new ItemSlot(x, y, stack, this) {
             @Override
-            public void onSlotClicked(ItemStack stack) {
+            public void onSlotClicked(ItemStack stack, boolean rightClicked) {
                 stack = stack == null ? null : stack.copy();
                 setItem(stack);
                 trade.setInputStack(slotNum, stack);
@@ -208,7 +208,7 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
         stack = stack == null ? null : stack.copy();
         final ItemSlot slot = new ItemSlot(x, y, stack, this) {
             @Override
-            public void onSlotClicked(ItemStack stack) {
+            public void onSlotClicked(ItemStack stack, boolean rightClicked) {
                 stack = stack == null ? null : stack.copy();
                 setItem(stack);
                 trade.setOutputStack(slotNum, stack);
@@ -384,7 +384,7 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
     private int addDepositEntry(final POTradeDepositEntry entry, final int index, int startHeight) {
         ItemSlot slot = new ItemSlot(8, startHeight, entry.getFilter(), this) {
             @Override
-            public void onSlotClicked(ItemStack stack) {
+            public void onSlotClicked(ItemStack stack, boolean rightClicked) {
                 stack = stack == null ? null : stack.copy();
                 entry.setFilter(stack);
                 setItem(stack);
@@ -419,7 +419,7 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
     private int addWithdrawEntry(final POTradeWithdrawEntry entry, final int index, int startHeight) {
         ItemSlot slot = new ItemSlot(8, startHeight, entry.getFilter(), this) {
             @Override
-            public void onSlotClicked(ItemStack stack) {
+            public void onSlotClicked(ItemStack stack, boolean rightClicked) {
                 stack = stack == null ? null : stack.copy();
                 entry.setFilter(stack);
                 setItem(stack);

@@ -22,6 +22,7 @@ public class BlockFlywheelStorage extends Block {
 
     public BlockFlywheelStorage(String regName) {
         super(Material.rock);
+        this.setHardness(2.f);
         this.setBlockName(regName);
         this.setCreativeTab(AWAutomationItemLoader.automationTab);
     }
