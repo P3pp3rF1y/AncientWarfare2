@@ -5,8 +5,8 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Tooltip;
 
 public interface ITooltipRenderer {
 
-    public void handleItemStackTooltipRender(ItemStack stack);
+    public void handleItemStackTooltipRender(ItemStack itemStack, int mouseX, int mouseY);
 
-    public void handleElementTooltipRender(Tooltip o);
+    public void handleElementTooltipRender(Tooltip tooltip, int mouseX, int mouseY);
 
 }

@@ -5,6 +5,7 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
@@ -51,7 +52,7 @@ public class ItemSlot extends GuiElement {
 
     public void addTooltip(String text){
         if(tooltip==null) {
-            tooltip = new Tooltip(Minecraft.getMinecraft().fontRenderer.getStringWidth(text), 10);
+            tooltip = new Tooltip(Minecraft.getMinecraft().fontRenderer.getStringWidth(StatCollector.translateToLocal(text)), 8);
         }
         tooltip.addTooltipElement(new Label(0, 0, text));
         this.renderTooltip = true;
@@ -148,9 +149,9 @@ public class ItemSlot extends GuiElement {
                 }
                 if (renderTooltip && this.render != null) {
                     if (this.tooltip != null) {
-                        this.render.handleElementTooltipRender(tooltip);
+                        this.render.handleElementTooltipRender(tooltip, mouseX, mouseY);
                     } else if(this.item != null){
-                        this.render.handleItemStackTooltipRender(item);
+                        this.render.handleItemStackTooltipRender(item, mouseX, mouseY);
                     }
                 }
             }

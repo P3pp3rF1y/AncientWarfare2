@@ -156,7 +156,7 @@ public abstract class GuiElement {
                 hoverStart = tick;
             } else if (tick - hoverStart > 500)//0.5 seconds
             {
-                rend.handleElementTooltipRender(tooltip);
+                rend.handleElementTooltipRender(tooltip, mouseX, mouseY);
             }
         } else {
             hoverStart = -1;

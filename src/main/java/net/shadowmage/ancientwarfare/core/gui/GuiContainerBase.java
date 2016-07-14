@@ -73,19 +73,17 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
     }
 
     @Override
-    public void handleItemStackTooltipRender(ItemStack stack) {
-        int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
-        int y = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
-        this.tooltipStack = stack;
-        this.tooltipX = x;
-        this.tooltipY = y;
+    public void handleItemStackTooltipRender(ItemStack itemStack, int mouseX, int mouseY) {
+        this.tooltipStack = itemStack;
+        this.tooltipX = mouseX;
+        this.tooltipY = mouseY;
     }
 
     @Override
-    public void handleElementTooltipRender(Tooltip tooltipObject) {
-        this.elementTooltip = tooltipObject;
-        elementTooltipX = Mouse.getEventX() * this.width / this.mc.displayWidth;
-        elementTooltipY = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+    public void handleElementTooltipRender(Tooltip tooltip, int mouseX, int mouseY) {
+        this.elementTooltip = tooltip;
+        elementTooltipX = mouseX;
+        elementTooltipY = mouseY;
     }
 
     protected void clearElements() {

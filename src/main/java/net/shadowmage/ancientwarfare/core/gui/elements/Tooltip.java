@@ -25,15 +25,18 @@ public class Tooltip {
     }
 
     public void renderTooltip(int mouseX, int mouseY, float partialTick) {
-        int width = Minecraft.getMinecraft().displayWidth;
-        int height = Minecraft.getMinecraft().displayHeight;
-        if (mouseX + this.width > width) {
+        int screenWidth = Minecraft.getMinecraft().displayWidth;
+        int screenHeight = Minecraft.getMinecraft().displayHeight;
+        if (mouseX + this.width > screenWidth) {
             mouseX -= 28 + this.width;
         }
-        if (mouseY + this.height + 6 > height) {
-            mouseY = height - this.height - 6;
+        if (mouseY + this.height + 6 > screenHeight) {
+            mouseY = screenHeight - this.height - 6;
         }
 
+        // tooltip needs a right-offset from cursor
+        mouseX += 12;
+        
         pushViewport(mouseX - 4, mouseY - 4, this.width + 8, this.height + 8);
 
         for (GuiElement element : this.children) {

@@ -125,9 +125,9 @@ public class CompositeItemSlots extends CompositeScrolled {
             GL11.glDisable(GL11.GL_BLEND);
             if (slot.renderTooltip && slot.getStack() != null && render != null) {
                 if (slot.tooltip != null) {
-                    this.render.handleElementTooltipRender(slot.tooltip);
+                    this.render.handleElementTooltipRender(slot.tooltip, mouseX, mouseY);
                 } else {
-                    this.render.handleItemStackTooltipRender(slot.getStack());
+                    this.render.handleItemStackTooltipRender(slot.getStack(), mouseX, mouseY);
                 }
             }
         }
