@@ -272,14 +272,13 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
             }
             int movedTotal = 0;
             int toMove = 0;
-            int moved = 0;
             for (ItemStack filter : filters) {
                 if (filter == null) {
                     continue;
                 }
                 int foundCount = InventoryTools.getCountOf(from, fromSide, filter);
                 toMove = (int) (foundCount * (1f/(float)filter.stackSize));
-                moved = InventoryTools.transferItems(from, to, filter, toMove, fromSide, toSide, ignoreDamage, ignoreTag);
+                InventoryTools.transferItems(from, to, filter, toMove, fromSide, toSide, ignoreDamage, ignoreTag);
                 movedTotal++;
             }
             
