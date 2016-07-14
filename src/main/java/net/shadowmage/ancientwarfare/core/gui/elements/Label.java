@@ -11,6 +11,7 @@ public class Label extends GuiElement {
     public Label(int topLeftX, int topLeftY, String text) {
         super(topLeftX, topLeftY);
         setText(text);
+        this.setTooltipIfFound(text);
         this.height = 8;
         this.width = Minecraft.getMinecraft().fontRenderer.getStringWidth(this.text);
     }

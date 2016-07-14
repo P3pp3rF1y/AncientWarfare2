@@ -19,6 +19,7 @@ public class Button extends GuiElement {
     public Button(int topLeftX, int topLeftY, int width, int height, String text) {
         super(topLeftX, topLeftY, width, height);
         this.setText(text);
+        this.setTooltipIfFound(text);
         this.addNewListener(new Listener(Listener.MOUSE_UP) {
             @Override
             public boolean onEvent(GuiElement widget, ActivationEvent evt) {

@@ -23,6 +23,7 @@ public class Tab extends GuiElement {
         super(topLeftX, topLeftY);
         this.width = Minecraft.getMinecraft().fontRenderer.getStringWidth(label) + 6;
         this.label = label;
+        this.setTooltipIfFound(label);
         this.height = 14;
         this.parent = parentCaller;
         this.top = top;

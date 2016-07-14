@@ -6,6 +6,7 @@ import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
+import net.shadowmage.ancientwarfare.core.util.TextUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -171,17 +172,36 @@ public abstract class GuiElement {
         this.tooltip = tip;
     }
     
-    public void addTooltip(String text){
+    public void addTooltip(String text) {
+        addTooltip(text, 40);
+    }
+    
+    public void addTooltip(String text, int maxWidthInChars) {
+        // wrap around \n characters
         List<String> textLines = Arrays.asList(StatCollector.translateToLocal(text).split("\\\\n"));
-        int width = Minecraft.getMinecraft().fontRenderer.getStringWidth(textLines.get(0));
+        
+        // perform additional word-wrapping to maxWidthInChars, if required
+        List<String> textLinesWrapped = new ArrayList<String>();
+        for (int i = 0; i < textLines.size(); i++) {
+            if (textLines.get(i).length() > maxWidthInChars) {
+                // line is too long, perform additional splitting
+                List<String> lineSplit = TextUtils.split(text, maxWidthInChars);
+                for (String line : lineSplit) {
+                    textLinesWrapped.add(line);
+                }
+            } else
+                textLinesWrapped.add(textLines.get(i));
+        }
+        
+        int width = Minecraft.getMinecraft().fontRenderer.getStringWidth(textLinesWrapped.get(0));
         int height = 0;
         
-        // pre-calculate the width and height (necessary for multiline tooltips) 
-        for (int i = 0; i < textLines.size(); i++) {
-            int lineWidth = Minecraft.getMinecraft().fontRenderer.getStringWidth(textLines.get(i));
+        // pre-calculate the width and height (necessary for multiline tooltips)
+        for (int i = 0; i < textLinesWrapped.size(); i++) {
+            int lineWidth = Minecraft.getMinecraft().fontRenderer.getStringWidth(textLinesWrapped.get(i));
             if (lineWidth > width)
                 width = lineWidth;
-            height = addLineSpacing(height, i, textLines.size());
+            height = addLineSpacing(height, i, textLinesWrapped.size());
         }
         
         if (tooltip==null) {
@@ -189,24 +209,42 @@ public abstract class GuiElement {
         }
 
         height = 0;
-        for (int i = 0; i < textLines.size(); i++) {
-            tooltip.addTooltipElement(new Label(0, height, textLines.get(i)));
-            height = addLineSpacing(height, i, textLines.size());
+        for (int i = 0; i < textLinesWrapped.size(); i++) {
+            tooltip.addTooltipElement(new Label(0, height, textLinesWrapped.get(i)));
+            height = addLineSpacing(height, i, textLinesWrapped.size());
         }
         this.renderTooltip = true;
     }
     
     // for multi-line tooltip formatting
     private int addLineSpacing(int height, int lineNumber, int totalLines) {
-        if (lineNumber == 0 && totalLines > 1)
-            // extra spacing below the header of the first line
-            height += 12;
-        else if (lineNumber + 1 == totalLines)
-            // no line spacing required for the last line
+        if (lineNumber + 1 == totalLines)
+            // no line spacing for the last line
             height += 8;
         else
             height += 10;
         return height;
+    }
+    
+    public void setTooltipIfFound(String name) {
+        String tooltipKey = name + ".tooltip";
+        if (tryTooltipSet(tooltipKey))
+            return;
+        int endIndex = name.lastIndexOf(".");
+        if (endIndex > 0) {
+            // replace the last .segment of this key with ".all" and see if it has a tooltip
+            tooltipKey = name.substring(0, endIndex) + ".*.tooltip";
+            tryTooltipSet(tooltipKey);
+        }
+    }
+    
+    private boolean tryTooltipSet(String key) {
+        String translated = StatCollector.translateToLocal(key);
+        if (!translated.equals(key)) {
+            addTooltip(translated);
+            return true;
+        }
+        return false;
     }
 
     public boolean selected() {
