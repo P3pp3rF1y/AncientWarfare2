@@ -183,10 +183,12 @@ public abstract class GuiElement {
         // perform additional word-wrapping to maxWidthInChars, if required
         List<String> textLinesWrapped = new ArrayList<String>();
         for (int i = 0; i < textLines.size(); i++) {
+            System.out.println(textLines.get(i));
             if (textLines.get(i).length() > maxWidthInChars) {
                 // line is too long, perform additional splitting
-                List<String> lineSplit = TextUtils.split(text, maxWidthInChars);
+                List<String> lineSplit = TextUtils.split(textLines.get(i), maxWidthInChars);
                 for (String line : lineSplit) {
+                    System.out.println(line);
                     textLinesWrapped.add(line);
                 }
             } else
@@ -227,23 +229,29 @@ public abstract class GuiElement {
     }
     
     public void setTooltipIfFound(String name) {
-        String tooltipKey = name + ".tooltip";
-        if (tryTooltipSet(tooltipKey))
-            return;
+        String tooltipFound = null;
+        String tooltipCheck;
         int endIndex = name.lastIndexOf(".");
         if (endIndex > 0) {
             // replace the last .segment of this key with ".all" and see if it has a tooltip
-            tooltipKey = name.substring(0, endIndex) + ".*.tooltip";
-            tryTooltipSet(tooltipKey);
+            tooltipCheck = name.substring(0, endIndex) + ".*.tooltip";
+            if (isTooltipAvailable(tooltipCheck)) {
+                tooltipFound = tooltipCheck;
+            }
         }
+        // even if there is a wildcard tooltip found, we still want to check for a more specific one
+        tooltipCheck = name + ".tooltip";
+        if (isTooltipAvailable(tooltipCheck))
+            tooltipFound = tooltipCheck; 
+        
+        if (tooltipFound != null)
+            addTooltip(StatCollector.translateToLocal(tooltipFound));
     }
     
-    private boolean tryTooltipSet(String key) {
+    private boolean isTooltipAvailable(String key) {
         String translated = StatCollector.translateToLocal(key);
-        if (!translated.equals(key)) {
-            addTooltip(translated);
+        if (!translated.equals(key))
             return true;
-        }
         return false;
     }
 
