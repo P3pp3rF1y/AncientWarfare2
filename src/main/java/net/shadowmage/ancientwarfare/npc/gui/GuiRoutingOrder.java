@@ -39,7 +39,7 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
         ItemSlot slot;
         Label label;
         Button button;
-        int totalHeight = 8;
+        int totalHeight = 12;
         int index = 0;
 
         Block block;
@@ -67,7 +67,7 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
             area.addGuiElement(button);
 
             labelString = point.getRouteType().getTranslationKey();
-            button = new IndexedButton(8 + 55 + 2, totalHeight + 10, 80, 12, labelString, index) {
+            button = new IndexedButton(8 + 55 + 2, totalHeight + 10, 79, 12, labelString, index) {
                 @Override
                 protected void onPressed() {
                     getContainer().routingOrder.changeRouteType(index);
@@ -76,28 +76,44 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
                 }
             };
             area.addGuiElement(button);
-
-            button = new IndexedButton(8 + 55 + 80 + 4, totalHeight + 10, 12, 12, "+", index) {
+            
+            labelString = point.getIgnoreDamage() ? EnumChatFormatting.RED.toString() + EnumChatFormatting.STRIKETHROUGH.toString() : "";
+            labelString += StatCollector.translateToLocal("guistrings.dmg");
+            button = new IndexedButton(8 + 55 + 2 + 79 + 2, totalHeight + 10, 38, 12, labelString, index) {
                 @Override
                 protected void onPressed() {
-                    getContainer().routingOrder.increment(index);
-                    refreshGui();
+                    getContainer().routingOrder.toggleIgnoreDamage(index);
                     hasChanged = true;
+                    refreshGui();
                 }
             };
+            button.addTooltip(StatCollector.translateToLocal("guistrings.dmg.tooltipprefix." + (point.getIgnoreDamage() ? "disabled" : "enabled")) + StatCollector.translateToLocal("guistrings.dmg.tooltip"), 28);
             area.addGuiElement(button);
 
-            button = new IndexedButton(8 + 55 + 80 + 12 + 6, totalHeight + 10, 12, 12, "-", index) {
+            labelString = point.getIgnoreTag() ? EnumChatFormatting.RED.toString() + EnumChatFormatting.STRIKETHROUGH.toString() : "";
+            labelString += StatCollector.translateToLocal("guistrings.tag");
+            button = new IndexedButton(8 + 55 + 2 + 79 + 2 + 38 + 2, totalHeight + 10, 38, 12, labelString, index) {
                 @Override
                 protected void onPressed() {
-                    getContainer().routingOrder.decrement(index);
-                    refreshGui();
+                    getContainer().routingOrder.toggleIgnoreTag(index);
                     hasChanged = true;
+                    refreshGui();
                 }
             };
+            button.addTooltip(StatCollector.translateToLocal("guistrings.tag.tooltipprefix." + (point.getIgnoreTag() ? "disabled" : "enabled")) + StatCollector.translateToLocal("guistrings.tag.tooltip"), 28);
             area.addGuiElement(button);
-
-            button = new IndexedButton(8 + 55 + 80 + 12 + 12 + 8, totalHeight + 10, 55, 12, "guistrings.npc.remove_point", index) {
+            
+            for (int i = 0; i < point.getFilterSize(); i++) {
+                slot = new IndexedRoutePointItemSlot(9 + i * 18, totalHeight + 10 + 12 + 2, point.getFilterInSlot(i), this, point, i) {
+                    @Override
+                    public void onSlotClicked(ItemStack stack) {
+                        onFilterSlotClicked(this, point, index, stack);
+                    }
+                };
+                area.addGuiElement(slot);
+            }
+            
+            button = new IndexedButton(8 + 55 + 2 + 80 + 2 + 40 + 2 + 40, totalHeight, 12, 9, "guistrings.npc.remove_point", index) {
                 @Override
                 protected void onPressed() {
                     getContainer().routingOrder.remove(index);
@@ -107,44 +123,32 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
             };
             area.addGuiElement(button);
 
-            for (int i = 0; i < point.getFilterSize(); i++) {
-                slot = new IndexedRoutePointItemSlot(8 + i * 18, totalHeight + 10 + 12 + 2, point.getFilterInSlot(i), this, point, i) {
-                    @Override
-                    public void onSlotClicked(ItemStack stack) {
-                        onFilterSlotClicked(this, point, index, stack);
-                    }
-                };
-                area.addGuiElement(slot);
-            }
-
-            labelString = point.getIgnoreDamage() ? EnumChatFormatting.RED.toString() + EnumChatFormatting.STRIKETHROUGH.toString() : "";
-            labelString += StatCollector.translateToLocal("guistrings.dmg");
-            button = new IndexedButton(8 + 8 * 18, totalHeight + 10 + 12 + 2, 40, 12, labelString, index) {
+            button = new IndexedButton(8 + 55 + 2 + 80 + 2 + 40 + 2 + 40, totalHeight + 15, 12, 12, "guistrings.moveup", index) {
                 @Override
                 protected void onPressed() {
-                    getContainer().routingOrder.toggleIgnoreDamage(index);
-                    hasChanged = true;
+                    getContainer().routingOrder.increment(index);
                     refreshGui();
+                    hasChanged = true;
                 }
             };
             area.addGuiElement(button);
 
-            labelString = point.getIgnoreTag() ? EnumChatFormatting.RED.toString() + EnumChatFormatting.STRIKETHROUGH.toString() : "";
-            labelString += StatCollector.translateToLocal("guistrings.tag");
-            button = new IndexedButton(8 + 8 * 18 + 40, totalHeight + 10 + 12 + 2, 40, 12, labelString, index) {
+            button = new IndexedButton(8 + 55 + 2 + 80 + 2 + 40 + 2 + 40, totalHeight + 29, 12, 12, "guistrings.movedown", index) {
                 @Override
                 protected void onPressed() {
-                    getContainer().routingOrder.toggleIgnoreTag(index);
-                    hasChanged = true;
+                    getContainer().routingOrder.decrement(index);
                     refreshGui();
+                    hasChanged = true;
                 }
             };
             area.addGuiElement(button);
 
-            totalHeight += 18 + 10 + 12 + 4;
+            totalHeight += 18 + 10 + 12 + 8;
 
             area.addGuiElement(new Line(0, totalHeight - 1, xSize - 13, totalHeight - 1, 1, 0x000000ff));
 
+            totalHeight += 6;
+            
             index++;
         }
         area.setAreaSize(totalHeight);

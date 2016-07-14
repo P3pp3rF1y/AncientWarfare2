@@ -183,12 +183,10 @@ public abstract class GuiElement {
         // perform additional word-wrapping to maxWidthInChars, if required
         List<String> textLinesWrapped = new ArrayList<String>();
         for (int i = 0; i < textLines.size(); i++) {
-            System.out.println(textLines.get(i));
             if (textLines.get(i).length() > maxWidthInChars) {
                 // line is too long, perform additional splitting
                 List<String> lineSplit = TextUtils.split(textLines.get(i), maxWidthInChars);
                 for (String line : lineSplit) {
-                    System.out.println(line);
                     textLinesWrapped.add(line);
                 }
             } else

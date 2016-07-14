@@ -93,7 +93,7 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
         RouteType routeType = RouteType.FILL_TARGET_TO;
         BlockPosition target = new BlockPosition();
         int blockSide = 0;
-        ItemStack[] filters = new ItemStack[8];
+        ItemStack[] filters = new ItemStack[12];
 
         private RoutePoint(NBTTagCompound tag) {
             readFromNBT(tag);
