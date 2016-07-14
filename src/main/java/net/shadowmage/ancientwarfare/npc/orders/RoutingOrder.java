@@ -262,6 +262,29 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
             }
             return moved;
         }
+        
+        private int depositRatio(IInventory from, IInventory to, boolean reversed) {
+            int fromSide = -1;
+            int toSide = getBlockSide();
+            if (reversed) {
+                fromSide = getBlockSide();
+                toSide = -1;
+            }
+            int movedTotal = 0;
+            int toMove = 0;
+            int moved = 0;
+            for (ItemStack filter : filters) {
+                if (filter == null) {
+                    continue;
+                }
+                int foundCount = InventoryTools.getCountOf(from, fromSide, filter);
+                toMove = (int) (foundCount * (1f/(float)filter.stackSize));
+                moved = InventoryTools.transferItems(from, to, filter, toMove, fromSide, toSide, ignoreDamage, ignoreTag);
+                movedTotal++;
+            }
+            
+            return movedTotal;
+        }
 
         private final void readFromNBT(NBTTagCompound tag) {
             routeType = RouteType.values()[tag.getInteger("type")];
@@ -337,7 +360,17 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
         /**
          * withdraw all items in target inventory except those matching filters
          */
-        WITHDRAW_ALL_EXCEPT("route.withdraw.no_match");
+        WITHDRAW_ALL_EXCEPT("route.withdraw.no_match"),
+        
+        /**
+         * deposit specified ratio of items (ratio is 1/filterStacksize)
+         */
+        DEPOSIT_RATIO("route.deposit.ratio"),
+        
+        /**
+         * withdraw specified ratio of items (ratio is 1/filterStacksize)
+         */
+        WITHDRAW_RATIO("route.withdraw.ratio");
 
         final String key;
 
@@ -386,6 +419,12 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
 
             case WITHDRAW_ALL_OF:
                 return p.depositAllItems(target, npc, true);
+                
+            case DEPOSIT_RATIO:
+                return p.depositRatio(npc, target, false);
+
+            case WITHDRAW_RATIO:
+                return p.depositRatio(target, npc, true);
 
             default:
                 return 0;

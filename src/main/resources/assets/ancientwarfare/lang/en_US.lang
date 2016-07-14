@@ -471,9 +471,9 @@ route.deposit.no_match.tooltip=Try to PUT ALL items EXCEPT the matches TO the ta
 route.withdraw.no_match=Take Except
 route.withdraw.no_match.tooltip=Try to TAKE ALL items EXCEPT the matches FROM the target inventory. Stack sizes are ignored - courier will take all non-matches until backpack full or inventory no longer has any.
 route.deposit.ratio=Put Ratio
-route.deposit.ratio.tooltip=Try to PUT a specified ratio of matching items TO the target inventory. Setting the stack size in the filter determines the ratio - 2 is half, 3 is a third, 4 is a quarter, etc.
+route.deposit.ratio.tooltip=Try to PUT a specified ratio of matching items TO the target inventory. Item stack size in the filter determines the ratio where a stack of 2 is half, 3 is a third, etc.
 route.withdraw.ratio=Take Ratio
-route.withdraw.ratio.tooltip=Try to TAKE a specified ratio of matching items FROM the target inventory. Setting the stack size in the filter determines the ratio - 2 is half, 3 is a third, 4 is a quarter, etc.
+route.withdraw.ratio.tooltip=Try to TAKE a specified ratio of matching items FROM the target inventory. Item stack size in the filter determines the ratio where a stack of 2 is half, 3 is a third, etc.
 
 #research guis/items/misc
 guistrings.research.current_goal=Current Goal
