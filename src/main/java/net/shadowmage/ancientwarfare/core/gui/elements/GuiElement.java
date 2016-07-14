@@ -1,11 +1,14 @@
 package net.shadowmage.ancientwarfare.core.gui.elements;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -27,6 +30,7 @@ public abstract class GuiElement {
     protected boolean visible;
     protected boolean selected;//isFocused -- for text-input lines / etc
     protected boolean scrollInput = false;//if should intercept scroll input, mostly used inside compositescrolled containers, really should only be true for number input widget
+    protected boolean renderTooltip = true;
 
     protected Tooltip tooltip;
     protected long hoverStart;
@@ -165,6 +169,44 @@ public abstract class GuiElement {
 
     public void setTooltip(Tooltip tip) {
         this.tooltip = tip;
+    }
+    
+    public void addTooltip(String text){
+        List<String> textLines = Arrays.asList(StatCollector.translateToLocal(text).split("\\\\n"));
+        int width = Minecraft.getMinecraft().fontRenderer.getStringWidth(textLines.get(0));
+        int height = 0;
+        
+        // pre-calculate the width and height (necessary for multiline tooltips) 
+        for (int i = 0; i < textLines.size(); i++) {
+            int lineWidth = Minecraft.getMinecraft().fontRenderer.getStringWidth(textLines.get(i));
+            if (lineWidth > width)
+                width = lineWidth;
+            height = addLineSpacing(height, i, textLines.size());
+        }
+        
+        if (tooltip==null) {
+            tooltip = new Tooltip(width, height);
+        }
+
+        height = 0;
+        for (int i = 0; i < textLines.size(); i++) {
+            tooltip.addTooltipElement(new Label(0, height, textLines.get(i)));
+            height = addLineSpacing(height, i, textLines.size());
+        }
+        this.renderTooltip = true;
+    }
+    
+    // for multi-line tooltip formatting
+    private int addLineSpacing(int height, int lineNumber, int totalLines) {
+        if (lineNumber == 0 && totalLines > 1)
+            // extra spacing below the header of the first line
+            height += 12;
+        else if (lineNumber + 1 == totalLines)
+            // no line spacing required for the last line
+            height += 8;
+        else
+            height += 10;
+        return height;
     }
 
     public boolean selected() {

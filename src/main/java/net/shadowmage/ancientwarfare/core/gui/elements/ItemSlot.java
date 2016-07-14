@@ -10,6 +10,10 @@ import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
+
+import java.util.Arrays;
+import java.util.List;
+
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -27,7 +31,6 @@ public class ItemSlot extends GuiElement {
     private ItemStack item;
     protected ITooltipRenderer render;
     protected boolean highlightOnMouseOver = true;
-    protected boolean renderTooltip = true;
     protected boolean renderItemQuantity = true;
     protected boolean renderSlotBackground = true;
     protected boolean renderLabel = false;
@@ -48,14 +51,6 @@ public class ItemSlot extends GuiElement {
             }
         };
         addNewListener(listener);
-    }
-
-    public void addTooltip(String text){
-        if(tooltip==null) {
-            tooltip = new Tooltip(Minecraft.getMinecraft().fontRenderer.getStringWidth(StatCollector.translateToLocal(text)), 8);
-        }
-        tooltip.addTooltipElement(new Label(0, 0, text));
-        this.renderTooltip = true;
     }
 
     public void setRenderLabel(boolean val) {
