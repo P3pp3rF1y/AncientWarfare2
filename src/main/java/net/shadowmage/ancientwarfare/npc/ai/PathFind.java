@@ -88,6 +88,10 @@ public class PathFind extends PathFinder{
                                 return -2;
                             }
                         }
+                    } else {
+                        block = entity.worldObj.getBlock(l, i1 - 1, j1);
+                        if (block.getRenderType() == FENCE || block instanceof BlockWall)
+                            return -2;
                     }
                 }
             }
