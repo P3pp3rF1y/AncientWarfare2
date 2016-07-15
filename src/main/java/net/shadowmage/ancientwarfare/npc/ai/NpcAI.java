@@ -21,7 +21,7 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
      * used during npc-ai task-rendering to determine how many bits to loop through
      * of the task bitfield -- needs to be increased if more task types / bits are added
      */
-    public static final int NUMBER_OF_TASKS = 10;
+    public static final int NUMBER_OF_TASKS = 14;
     public static final int TASK_ATTACK = 1;
     public static final int TASK_UPKEEP = 2;
     public static final int TASK_IDLE_HUNGRY = 4;
@@ -32,6 +32,11 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
     public static final int TASK_FOLLOW = 128;
     public static final int TASK_WANDER = 256;
     public static final int TASK_MOVE = 512;
+    public static final int TASK_ALARM = 1024;
+    public static final int TASK_FLEE = 2048;
+    public static final int TASK_SLEEP = 4096;
+    public static final int TASK_RAIN = 8192;
+    
 
     /**
      * internal flag used to determine exclusion types

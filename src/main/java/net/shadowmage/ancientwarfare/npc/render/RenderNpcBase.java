@@ -322,6 +322,14 @@ public class RenderNpcBase extends RenderBiped {
                 return "ancientwarfare:textures/entity/npc/ai/task_wander.png";
             case NpcAI.TASK_MOVE:
                 return "ancientwarfare:textures/entity/npc/ai/task_move.png";
+            case NpcAI.TASK_ALARM:
+                return "ancientwarfare:textures/entity/npc/ai/task_alarm.png";
+            case NpcAI.TASK_FLEE:
+                return "ancientwarfare:textures/entity/npc/ai/task_flee.png";
+            case NpcAI.TASK_SLEEP:
+                return "minecraft:textures/items/bed.png";
+            case NpcAI.TASK_RAIN:
+                return "ancientwarfare:textures/entity/npc/ai/task_rain.png";
             default:
                 return null;
         }

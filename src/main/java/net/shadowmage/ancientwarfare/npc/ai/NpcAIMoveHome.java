@@ -48,6 +48,10 @@ public class NpcAIMoveHome extends NpcAI<NpcBase> {
     @Override
     public void startExecuting() {
         npc.addAITask(TASK_GO_HOME);
+        if (!npc.worldObj.isDaytime())
+            npc.addAITask(TASK_SLEEP);
+        else if (npc.worldObj.isRaining())
+            npc.addAITask(TASK_RAIN);
     }
 
     @Override
@@ -66,7 +70,7 @@ public class NpcAIMoveHome extends NpcAI<NpcBase> {
 
     @Override
     public void resetTask() {
-        npc.removeAITask(TASK_GO_HOME);
+        npc.removeAITask(TASK_GO_HOME + TASK_RAIN + TASK_SLEEP);
     }
 
 }

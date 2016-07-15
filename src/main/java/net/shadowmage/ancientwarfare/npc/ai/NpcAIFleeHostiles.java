@@ -56,7 +56,9 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
         }
         Collections.sort(list, sorter);
         EntityLiving fleeTarget = (EntityLiving) list.get(0);
-        //TODO check if can-see the target?
+        // TODO
+        //if (!this.npc.canEntityBeSeen(fleeTarget))
+        //    return false;
         boolean flee = false;
         if (npc.getTownHallPosition() != null || npc.hasHome()) {
             flee = true;
@@ -72,6 +74,12 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
             npc.setAttackTarget(fleeTarget);
         }
         return flee;
+    }
+
+    @Override
+    public void startExecuting() {
+        npc.addAITask(TASK_GO_HOME);
+        npc.addAITask(TASK_FLEE);
     }
 
     /**
@@ -137,6 +145,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
         fleeVector = null;
         npc.getNavigator().clearPathEntity();
         npc.setAttackTarget(null);
+        npc.removeAITask(TASK_GO_HOME + TASK_FLEE);
     }
 
 }

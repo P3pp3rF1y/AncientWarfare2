@@ -36,7 +36,7 @@ public class NpcAIPlayerOwnedAlarmResponse extends NpcAI<NpcPlayerOwned> {
      */
     @Override
     public void startExecuting() {
-        npc.addAITask(TASK_GO_HOME);
+        npc.addAITask(TASK_ALARM);
     }
     
     /**
@@ -63,6 +63,6 @@ public class NpcAIPlayerOwnedAlarmResponse extends NpcAI<NpcPlayerOwned> {
     @Override
     public void resetTask() {
         moveRetryDelay = 0;
-        npc.removeAITask(TASK_GO_HOME + TASK_MOVE);
+        npc.removeAITask(TASK_ALARM + TASK_MOVE);
     }
 }
