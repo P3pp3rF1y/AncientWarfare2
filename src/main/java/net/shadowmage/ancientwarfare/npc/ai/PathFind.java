@@ -1,12 +1,18 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
+import java.util.HashSet;
+
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
 import net.minecraft.pathfinding.PathFinder;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 
 public class PathFind extends PathFinder{
     private static final int RAIL = 9, FENCE = 11;
@@ -17,6 +23,8 @@ public class PathFind extends PathFinder{
         this.doorAllowed = openDoor;
         this.closedPath = closedDoor;
     }
+    
+    private static HashSet<String> BLOCKS_TO_AVOID;
 
     /**
      * Checks if an entity collides with blocks at a position.
@@ -90,14 +98,55 @@ public class PathFind extends PathFinder{
                         }
                     } else {
                         block = entity.worldObj.getBlock(l, i1 - 1, j1);
-                        if (block.getRenderType() == FENCE || block instanceof BlockWall)
+                        if (AWNPCStatics.pathfinderAvoidFences) {
+                            if (block.getRenderType() == FENCE || block instanceof BlockFence || block instanceof BlockWall) {
+                                return -2;
+                            }
+                        }
+                        if (AWNPCStatics.pathfinderAvoidChests) {
+                            if (block.getRenderType() == 22 || block instanceof BlockChest) {
+                                return -2;
+                            }
+                        }
+                        if (BLOCKS_TO_AVOID == null)
+                            blockBlacklistInit();
+                        if (blockBlacklistContains(block)) {
                             return -2;
+                        }
                     }
                 }
             }
         }
 
         return trapOrWater ? 2 : 1;
+    }
+
+    private void blockBlacklistInit() {
+        BLOCKS_TO_AVOID = new HashSet<String>();
+        AncientWarfareCore.log.info("Building pathfinding block exclusion custom list...");
+        String[] avoidList = AWNPCStatics.pathfinderAvoidCustom.split(";");
+        for (String blockName : avoidList) {
+            blockName = blockName.trim();
+            if (!blockName.equals("")) {
+                String[] blockId = blockName.split(":");
+                if (blockId[0] == null || blockId[1] == null) {
+                    AncientWarfareCore.log.warn(" - Invalid block: " + blockName);
+                    continue;
+                }
+                if (GameRegistry.findBlock(blockId[0], blockId[1]) == null) {
+                    AncientWarfareCore.log.warn(" - Block not found: " + blockName);
+                    continue;
+                }
+                BLOCKS_TO_AVOID.add(blockId[0] + ":" + blockId[1]);
+            }
+        }
+        AncientWarfareCore.log.info("...added " + BLOCKS_TO_AVOID.size() + " blocks to pathfinding blacklist");
+    }
+    
+    private boolean blockBlacklistContains(Block block) {
+        if (BLOCKS_TO_AVOID.contains(GameRegistry.findUniqueIdentifierFor(block).toString()))
+            return true;
+        return false;
     }
 
     private boolean isDoor(Block block) {

@@ -73,6 +73,12 @@ public class AWNPCStatics extends ModConfiguration {
 
     /** ********************************************RECIPE SETTINGS************************************************ */
     private static final String recipeSettings = "04_recipe_settings";
+    
+    /** ********************************************PATHFINDER SETTINGS************************************************ */
+    private static final String pathfinderSettings = "05_pathfinder_settings";
+    public static boolean pathfinderAvoidFences = true;
+    public static boolean pathfinderAvoidChests = true;
+    public static String pathfinderAvoidCustom = "";
 
     /** ********************************************FOOD SETTINGS************************************************ */
     private Configuration foodConfig;
@@ -145,6 +151,11 @@ public class AWNPCStatics extends ModConfiguration {
                 "Enable / Disable specific recipes, or remove the research requirements from specific recipes.\n" +
                 "Affect only server-side operations.  Will need to be set for dedicated servers, and single\n" +
                 "player (or LAN worlds).  Clients playing on remote servers can ignore these settings.");
+        
+        config.addCustomCategoryComment(pathfinderSettings, "Pathfinder Blacklisting\n" +
+                "This section specifies blocks that the global pathfinder (all NPC's use it) will avoid pathing OVER or\n" +
+                "THROUGH. Unless you like NPC's jumping on chests and getting stuck on fences, you should leave these all.\n" +
+                "You can also add custom mod blocks here.");
 
         foodConfig = getConfigFor("AncientWarfareNpcFood");
         foodConfig.addCustomCategoryComment(foodSettings, "Food Value Options\n" +
@@ -215,11 +226,6 @@ public class AWNPCStatics extends ModConfiguration {
                 "Higher values will result in faster npc leveling.\n" +
                 "Applies to player-owned NPCs only.").getInt();
         
-        npcActionRange = config.get(generalOptions, "npc_action_range", npcActionRange, "Action Range\nDefault=" + npcActionRange + "\n" +
-        		"The range in blocks that an NPC can perform an action on something.\n" +
-        		"This only affects workers, it does not affect the attack range of combat units nor medics.\n" +
-        		"If you want NPC's to move right next to their target, use a value of 2 - no lower!").getInt();
-
         npcWorkTicks = config.get(serverOptions, "npc_work_ticks", npcWorkTicks, "Time Between Work Ticks\nDefault=" + npcWorkTicks + "\n" +
                 "How many game ticks should pass between workers' processing work at a work-site.\n" +
                 "Lower values result in more work output, higher values result in less work output.").getInt();
@@ -259,6 +265,27 @@ public class AWNPCStatics extends ModConfiguration {
         renderFriendlyHealth = config.get(clientOptions, "render_friendly_health", true);
         renderHostileHealth = config.get(clientOptions, "render_hostile_health", true);
         renderTeamColors = config.get(clientOptions, "render_team_colors", true);
+        
+        npcActionRange = config.get(generalOptions, "npc_action_range", npcActionRange, "Action Range\nDefault=" + npcActionRange + "\n" +
+                "The range in blocks that an NPC can perform an action on something.\n" +
+                "This only affects workers, it does not affect the attack range of combat units nor medics.\n" +
+                "If you want NPC's to move right next to their target, use a value of 2 - no lower!").getInt();
+        
+        pathfinderAvoidFences = config.get(pathfinderSettings, "pathfinder_avoid_fences", pathfinderAvoidFences, "Avoid Fences\nDefault=" + pathfinderAvoidFences + "\n" +
+                "Avoid vanilla fences and walls, including anything that uses the same rendertype or extends BlockFence/BlockWall,\n" +
+                "which may include mod-added fences and walls.").getBoolean();
+        
+        pathfinderAvoidChests = config.get(pathfinderSettings, "pathfinder_avoid_chests", pathfinderAvoidChests, "Avoid Chests\nDefault=" + pathfinderAvoidChests + "\n" +
+                "Avoid vanilla chests, including anything that uses the same rendertype or extends BlockChest, which may include\n" +
+                "mod-added fences.").getBoolean();
+        
+        // is this really necessary?
+        //pathfinderAvoidOverheightened = config.get(pathfinderSettings, "pathfinder_avoid_overheightened", pathfinderAvoidOverheightened, "Avoid 'Overheightened' Blocks\nDefault=" + pathfinderAvoidOverheightened + "\n" +
+        //        "Avoid any block which is 'overheightened' - that is, any block which reports a max height of > 1.").getBoolean();
+        
+        pathfinderAvoidCustom = config.get(pathfinderSettings, "pathfinder_avoid_others", pathfinderAvoidCustom, "Avoid Other blocks\nDefault=" + pathfinderAvoidCustom + "\n" +
+                "List of custom blocks you also want NPC's to avoid. Use the format:\n" +
+                "modid:blockname;modid.blockname;").getString();
     }
 
     public void postInitCallback() {
