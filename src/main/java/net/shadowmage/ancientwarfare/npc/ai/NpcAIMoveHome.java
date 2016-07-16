@@ -7,6 +7,9 @@ public class NpcAIMoveHome extends NpcAI<NpcBase> {
 
     private final float dayRange, nightRange;
     private final float dayLeash, nightLeash;
+    
+    private int ticker = 0;
+    private final int tickerMax = 40; // check for changed time/weather every two seconds
 
     public NpcAIMoveHome(NpcBase npc, float dayRange, float nightRange, float dayLeash, float nightLeash) {
         super(npc);
@@ -48,10 +51,6 @@ public class NpcAIMoveHome extends NpcAI<NpcBase> {
     @Override
     public void startExecuting() {
         npc.addAITask(TASK_GO_HOME);
-        if (!npc.worldObj.isDaytime())
-            npc.addAITask(TASK_SLEEP);
-        else if (npc.worldObj.isRaining())
-            npc.addAITask(TASK_RAIN);
     }
 
     @Override
@@ -65,6 +64,18 @@ public class NpcAIMoveHome extends NpcAI<NpcBase> {
         } else {
             npc.removeAITask(TASK_MOVE);
             npc.getNavigator().clearPathEntity();
+        }
+        ticker++;
+        if (ticker == tickerMax) {
+            if (!npc.worldObj.isDaytime())
+                npc.addAITask(TASK_SLEEP);
+            else
+                npc.removeAITask(TASK_SLEEP);
+            if (npc.worldObj.isRaining())
+                npc.addAITask(TASK_RAIN);
+            else
+                npc.removeAITask(TASK_RAIN);
+            ticker = 0;
         }
     }
 
