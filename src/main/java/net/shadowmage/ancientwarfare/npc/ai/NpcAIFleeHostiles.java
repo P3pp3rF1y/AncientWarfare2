@@ -25,7 +25,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
     double distanceFromEntity = 16;
     private Vec3 fleeVector;
     private int stayOutOfSightTimer = 0;
-    private int fearLevel = 200; // fear makes NPC's wait/flee for progressively longer periods
+    private int fearLevel = 0; // fear makes NPC's wait/flee for progressively longer periods
     boolean homeCompromised = false;
 
     public NpcAIFleeHostiles(NpcPlayerOwned npc) {
