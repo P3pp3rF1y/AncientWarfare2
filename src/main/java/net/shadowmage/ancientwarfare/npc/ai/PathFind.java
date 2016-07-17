@@ -7,6 +7,7 @@ import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Blocks;
+import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathFinder;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.MathHelper;
@@ -25,6 +26,96 @@ public class PathFind extends PathFinder{
     }
     
     private static HashSet<String> BLOCKS_TO_AVOID;
+    
+    
+    /**
+     * Internal implementation of creating a path from an entity to a point
+     */
+    @Override
+    protected PathEntity createEntityPathTo(Entity entity, double targetX, double targetY, double targetZ, float maxDistance) {
+        this.path.clearPath();
+        this.pointMap.clearMap();
+        boolean isPathingInWater = this.isPathingInWater;
+        int startY = MathHelper.floor_double(entity.boundingBox.minY + 0.5D);
+
+        if (this.canEntityDrown && entity.isInWater()) {
+            startY = (int)entity.boundingBox.minY;
+            for (Block block = this.worldMap.getBlock(MathHelper.floor_double(entity.posX), startY, MathHelper.floor_double(entity.posZ)); block == Blocks.flowing_water || block == Blocks.water; block = this.worldMap.getBlock(MathHelper.floor_double(entity.posX), startY, MathHelper.floor_double(entity.posZ)))
+                ++startY;
+            this.isPathingInWater = false;
+        }
+        
+        int endX = MathHelper.floor_double(targetX - (double)(entity.width / 2.0F));
+        int endY = MathHelper.floor_double(targetY);
+        int endZ = MathHelper.floor_double(targetZ - (double)(entity.width / 2.0F));
+        int unusedX = MathHelper.floor_float(entity.width + 1.0F);
+        int unusedY = MathHelper.floor_float(entity.height + 1.0F);
+        int unusedZ = MathHelper.floor_float(entity.width + 1.0F);
+        
+        int[] origin = getNearestClearPos(entity, startY);
+
+        PathPoint pointStart = this.openPoint(origin[0], startY, origin[1]);
+        PathPoint pointEnd = this.openPoint(endX, endY, endZ);
+        PathPoint pointUnused = new PathPoint(unusedX, unusedY, unusedZ);
+        PathEntity pathentity = this.addToPath(entity, pointStart, pointEnd, pointUnused, maxDistance);
+        this.isPathingInWater = isPathingInWater;
+        return pathentity;
+    }
+    
+    private int[] getNearestClearPos(final Entity entity, final int startY) {
+        int[] origin = new int[] {0, 0};
+        
+        // Vanilla way - checks the closest block to the entity's NW corner.
+        // we won't bother with this, it's so unreliable
+        /*
+        origin[0] = MathHelper.floor_double(entity.boundingBox.minX);
+        origin[1] = MathHelper.floor_double(entity.boundingBox.minZ);
+        if (positionAllowsMovement(origin, startY))
+            return origin;
+        */
+        // try rounding to nearest (this is usually good enough)
+        origin[0] = (int) Math.round(entity.boundingBox.minX);
+        origin[1] = (int) Math.round(entity.boundingBox.minZ);
+        if (positionAllowsMovement(origin, startY))
+            return origin;
+        // try the NE corner
+        origin[0] = (int) Math.round(entity.boundingBox.maxX);
+        if (positionAllowsMovement(origin, startY))
+            return origin;
+        // try the SE corner
+        origin[1] = (int) Math.round(entity.boundingBox.maxZ);
+        if (positionAllowsMovement(origin, startY))
+            return origin;
+        // try the SW corner
+        origin[0] = (int) Math.round(entity.boundingBox.minX);
+        if (positionAllowsMovement(origin, startY))
+            return origin;
+        
+        // Tough luck. Return vanilla values and fix it yourself! 
+        origin[0] = MathHelper.floor_double(entity.boundingBox.minX);
+        origin[1] = MathHelper.floor_double(entity.boundingBox.minZ);
+        return origin;
+    }
+
+    private boolean positionAllowsMovement(final int[] origin, final int startY) {
+        return !this.worldMap.getBlock(origin[0], startY, origin[1]).getMaterial().blocksMovement();
+    }
+
+    /**
+     * Returns a mapped point or creates and adds one
+     */
+    private final PathPoint openPoint(int p_75854_1_, int p_75854_2_, int p_75854_3_) {
+        int l = PathPoint.makeHash(p_75854_1_, p_75854_2_, p_75854_3_);
+        PathPoint pathpoint = (PathPoint)this.pointMap.lookup(l);
+
+        if (pathpoint == null)
+        {
+            pathpoint = new PathPoint(p_75854_1_, p_75854_2_, p_75854_3_);
+            this.pointMap.addKey(l, pathpoint);
+        }
+
+        return pathpoint;
+    }
 
     /**
      * Checks if an entity collides with blocks at a position.
