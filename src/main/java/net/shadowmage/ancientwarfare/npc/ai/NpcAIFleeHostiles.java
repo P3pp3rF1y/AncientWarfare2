@@ -74,12 +74,15 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
     }
     
     private EntityLiving getClosestVisibleHostile() {
-        List list = this.npc.worldObj.selectEntitiesWithinAABB(EntityLiving.class, this.npc.boundingBox.expand(this.distanceFromEntity, 3.0D, this.distanceFromEntity), this.selector);
-        if (list.isEmpty())
+        List nearbyHostiles = this.npc.worldObj.selectEntitiesWithinAABB(EntityLiving.class, this.npc.boundingBox.expand(this.distanceFromEntity, 3.0D, this.distanceFromEntity), this.selector);
+        if (nearbyHostiles.isEmpty())
             return null;
-        Collections.sort(list, sorter);
-        EntityLiving fleeTarget = (EntityLiving) list.get(0);
-        return this.npc.canEntityBeSeen(fleeTarget) ? fleeTarget : null;
+        Collections.sort(nearbyHostiles, sorter);
+        for (Object hostile : nearbyHostiles) {
+            if (this.npc.canEntityBeSeen((EntityLiving)hostile))
+                return (EntityLiving) hostile;
+        }
+        return null;
     }
 
     @Override
@@ -95,9 +98,23 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
      */
     @Override
     public boolean continueExecuting() {
-        if (!npc.getIsAIEnabled() || npc.getAttackTarget() == null || npc.getAttackTarget().isDead)
-            return false;
-        return stayOutOfSightTimer != 0 || npc.getAttackTarget().getDistanceSqToEntity(this.npc) < distanceFromEntity * distanceFromEntity;
+        boolean fleeTargetAlive = false;
+        boolean shouldPanic = true;
+        if (npc.getIsAIEnabled() && (npc.getAttackTarget() != null && !npc.getAttackTarget().isDead))
+            fleeTargetAlive = true;
+        else
+            fearLevel = MAX_STAY_AWAY; // cap the fear level in the event of hostile's death
+        
+        if (stayOutOfSightTimer == 0)
+            shouldPanic = false;
+        
+        if (!shouldPanic)
+            if (getClosestVisibleHostile() != null) {
+                stayOutOfSightTimer = MAX_STAY_AWAY + fearLevel;
+                shouldPanic = true;
+            }
+        
+        return shouldPanic;
     }
 
     @Override
