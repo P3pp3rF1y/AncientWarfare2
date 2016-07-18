@@ -44,7 +44,7 @@ import java.util.Map.Entry;
 public class AWNPCStatics extends ModConfiguration {
 
     /** ********************************************SHARED SETTINGS************************************************ */
-    public static int npcActionRange = 5; // matches the action range of the player. Seems a little high for me but meh
+    public static int npcActionRange = 2;
     
     /** ********************************************SERVER SETTINGS************************************************ */
     public static int maxNpcLevel = 10;
@@ -267,9 +267,9 @@ public class AWNPCStatics extends ModConfiguration {
         renderTeamColors = config.get(clientOptions, "render_team_colors", true);
         
         npcActionRange = config.get(generalOptions, "npc_action_range", npcActionRange, "Action Range\nDefault=" + npcActionRange + "\n" +
-                "The range in blocks that an NPC can perform an action on something.\n" +
-                "This only affects workers, it does not affect the attack range of combat units nor medics.\n" +
-                "If you want NPC's to move right next to their target, use a value of 2 - no lower!").getInt();
+                "The range in blocks that an NPC can perform an action on something. The player has an action\n" +
+                "range of 5. Only affects workers, no effect on the attack range of combat units nor medics.\n" +
+                "Minimum value of 2 unless you want NPC's to bug-out and get stuck.").getInt();
         
         pathfinderAvoidFences = config.get(pathfinderSettings, "pathfinder_avoid_fences", pathfinderAvoidFences, "Avoid Fences\nDefault=" + pathfinderAvoidFences + "\n" +
                 "Avoid vanilla fences and walls, including anything that uses the same rendertype or extends BlockFence/BlockWall,\n" +
