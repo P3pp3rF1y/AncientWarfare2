@@ -4,6 +4,8 @@
 /logs
 /.gradle
 /eclipse
+/gradle/
+/libs/
 /.settings
 /.classpath
 /.metadata
