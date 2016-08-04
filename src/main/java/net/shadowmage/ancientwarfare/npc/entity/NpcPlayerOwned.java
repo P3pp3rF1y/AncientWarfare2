@@ -340,7 +340,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
     @Override
     public void onLivingUpdate() {
         super.onLivingUpdate();
-        if (foodValueRemaining > 0) {
+        if (foodValueRemaining > 0 && !getSleeping()) {
             foodValueRemaining--;
         }
     }

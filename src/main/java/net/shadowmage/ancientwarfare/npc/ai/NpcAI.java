@@ -53,7 +53,6 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
     private double maxPFDist;
     private double maxPFDistSq;
 
-
     protected T npc;
 
     public NpcAI(T npc) {
@@ -73,6 +72,17 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
 
     protected final void moveToPosition(BlockPosition pos, double sqDist) {
         moveToPosition(pos.x, pos.y, pos.z, sqDist);
+    }
+    
+    /**
+     * Forced move without delay. Should only be used in logic that has it's own delay.
+     * @param pos
+     * @param sqDist
+     * @param forced
+     */
+    protected final void moveToPosition(BlockPosition pos, double sqDist, boolean forced) {
+        moveRetryDelay = 0;
+        moveToPosition(pos, sqDist);
     }
 
     protected final void moveToPosition(double x, double y, double z, double sqDist) {

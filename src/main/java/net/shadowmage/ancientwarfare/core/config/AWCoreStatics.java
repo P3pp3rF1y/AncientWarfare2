@@ -10,6 +10,7 @@ public class AWCoreStatics extends ModConfiguration{
 
     public static boolean DEBUG = true;
     public static final String resourcePath = "/assets/ancientwarfare/resources/";
+    public static int timekeeperRefreshRate = 60;
 
     /**
      * category names
@@ -48,6 +49,10 @@ public class AWCoreStatics extends ModConfiguration{
         DEBUG = config.getBoolean("debug_ouput", generalOptions, false,
                 "Enable extra debug console output and runtime checks.\n" +
                 "Can degrade performance if left on and lead to large log files.");
+        
+        timekeeperRefreshRate = config.get("timekeeper_refresh_rate", generalOptions, timekeeperRefreshRate,
+                "How often the built-in timekeeper will update it's time. Specified in ticks.\n" +
+                "Timekeeper is currently only used by NPC's to determine the time of day.").getInt();
 
         /**
          * server options

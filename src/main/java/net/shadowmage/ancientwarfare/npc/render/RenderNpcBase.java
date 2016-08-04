@@ -22,6 +22,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.shadowmage.ancientwarfare.core.util.AWTextureManager;
+import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -34,20 +35,63 @@ import static net.minecraftforge.client.IItemRenderer.ItemRenderType.EQUIPPED;
 import static net.minecraftforge.client.IItemRenderer.ItemRendererHelper.BLOCK_3D;
 
 public class RenderNpcBase extends RenderBiped {
-
+    
+    private boolean isSleeping;
+    
     //func_147906_a---drawLabel
     List<Integer> renderTasks = new ArrayList<Integer>();
 
     public RenderNpcBase() {
         super(new ModelBiped(), 0.6f);
     }
+    
+    @Override
+    protected void rotateCorpse(EntityLivingBase entity, float parFloat1, float parFloat2, float parFloat3) {
+        NpcBase npc = (NpcBase) entity;
+        isSleeping = npc.getSleeping();
+        if (isSleeping) {
+            BlockPosition bedPos = npc.getBedPosition();
+            float bedDirection = npc.getBedOrientationInDegrees(bedPos.x, bedPos.y, bedPos.z);
+            if (bedDirection != -1) {
+                GL11.glRotatef(bedDirection, 0.0F, 1.0F, 0.0F);
+                GL11.glRotatef(this.getDeathMaxRotation(entity), 0.0F, 0.0F, 1.0F);
+                GL11.glRotatef(270.0F, 0.0F, 1.0F, 0.0F);
+                return;
+            }
+            isSleeping = false;
+        }
+        super.rotateCorpse(entity, parFloat1, parFloat2, parFloat3);
+    }
 
     @Override
     public void doRender(Entity par1Entity, double x, double y, double z, float par8, float par9) {
-        super.doRender(par1Entity, x, y, z, par8, par9);
-        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-
         NpcBase npc = (NpcBase) par1Entity;
+        isSleeping = npc.getSleeping();
+        if (isSleeping) {
+            // render the body a bit offset because we're manually shifting the bounding box
+            double xOffset = x;
+            double zOffset = z;
+            switch (npc.getBedDirection()) {
+                case 0:
+                    zOffset -= 0.9f;
+                    break;
+                case 1:
+                    xOffset += 0.9f;
+                    break;
+                case 2:
+                    zOffset += 0.9f;
+                    break;
+                case 3:
+                    xOffset -= 0.9f;
+                    break;
+            }
+            super.doRender(par1Entity, xOffset, y, zOffset, par8, par9);
+        } else
+            super.doRender(par1Entity, x, y, z, par8, par9);
+        
+        if (isSleeping)
+            y -= 1.5f;
+        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         if (npc.isHostileTowards(player)) {
             if (AWNPCStatics.renderHostileNames.getBoolean()) {
                 String name = getNameForRender(npc, true);

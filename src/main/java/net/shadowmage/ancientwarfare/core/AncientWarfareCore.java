@@ -19,6 +19,7 @@ import net.shadowmage.ancientwarfare.core.container.ContainerEngineeringStation;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchBook;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchStation;
 import net.shadowmage.ancientwarfare.core.crafting.AWCoreCrafting;
+import net.shadowmage.ancientwarfare.core.gamedata.Timekeeper;
 import net.shadowmage.ancientwarfare.core.item.AWCoreItemLoader;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
@@ -69,6 +70,7 @@ public class AncientWarfareCore {
          */
         NetworkHandler.INSTANCE.registerNetwork();//register network handler, server side
         FMLCommonHandler.instance().bus().register(ResearchTracker.INSTANCE);
+        FMLCommonHandler.instance().bus().register(Timekeeper.INSTANCE);
         FMLCommonHandler.instance().bus().register(this);
 
 

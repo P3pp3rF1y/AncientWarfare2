@@ -2,8 +2,12 @@ package net.shadowmage.ancientwarfare.npc.entity;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockBed;
+import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.*;
@@ -22,6 +26,7 @@ import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.core.gamedata.Timekeeper;
 import net.shadowmage.ancientwarfare.core.interfaces.IEntityPacketHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -36,6 +41,8 @@ import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 import net.shadowmage.ancientwarfare.npc.item.ItemShield;
 import net.shadowmage.ancientwarfare.npc.skin.NpcSkinManager;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public abstract class NpcBase extends EntityCreature implements IEntityAdditionalSpawnData, IOwnable, IEntityPacketHandler {
@@ -63,6 +70,11 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     private int armorValue = -1;//faction based only
     private int maxHealthOverride = -1;
     private String customTexRef = "";//might as well allow for player-owned as well...
+    
+    private int bedDirection;
+    private BlockPosition cachedBedPos;
+    private boolean foundBed = false;
+    private boolean rainedOn = false;
 
     public NpcBase(World par1World) {
         super(par1World);
@@ -78,6 +90,10 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         super.entityInit();
         this.getDataWatcher().addObject(20, Integer.valueOf(0));//ai tasks
         this.getDataWatcher().addObjectByDataType(21, 5);//5 for ItemStack
+        this.getDataWatcher().addObject(12, Integer.valueOf(0)); // ownedBed posX
+        this.getDataWatcher().addObject(13, Integer.valueOf(0)); // ownedBed posY
+        this.getDataWatcher().addObject(14, Integer.valueOf(0)); // ownedBed posZ
+        this.getDataWatcher().addObject(15, Byte.valueOf((byte) 0)); // isSleeping flag
     }
 
     @Override
@@ -298,10 +314,25 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
      * Should still allow for a combat NPC to attack targets outside his home range.
      */
     public boolean shouldBeAtHome() {
-        if (getAttackTarget() != null || !hasHome() || worldObj.provider.hasNoSky) {
+        if (getAttackTarget() != null || !hasHome()) {
             return false;
-        }//if is at night, or if it is under rain, return true
-        return !worldObj.isDaytime() || worldObj.canLightningStrikeAt(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
+        }
+        if (worldObj.canLightningStrikeAt(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)))
+            setRainedOn(true);
+        return shouldSleep() || isWaitingForRainToStop();
+    }
+    
+    private boolean isWaitingForRainToStop() {
+        if (!this.worldObj.isRaining()) {
+            // rain has stopped, reset
+            setRainedOn(false);
+            return false;
+        }
+        return rainedOn;
+    }
+    
+    public void setRainedOn(boolean rainedOn) {
+        this.rainedOn = rainedOn;
     }
 
     public void setIsAIEnabled(boolean val) {
@@ -401,6 +432,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     @Override
     public final boolean attackEntityFrom(DamageSource source, float par2) {
+        if (getSleeping()) // prevent suffocation damage (allows bunk beds and such)
+            return false;
         if (source.getEntity() != null && !canBeAttackedBy(source.getEntity()))
             return false;
         if(source == DamageSource.inWall && this.ridingEntity instanceof EntityLiving) {
@@ -904,6 +937,21 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             int[] ccia = tag.getIntArray("home");
             setHomeArea(ccia[0], ccia[1], ccia[2], ccia[3]);
         }
+        if (tag.hasKey("bedDirection"))
+            setBedDirection(tag.getInteger("bedDirection"));
+        if (tag.hasKey("isSleeping"))
+            setSleeping(tag.getBoolean("isSleeping"));
+        if (tag.hasKey("cachedBedPos")) {
+            int[] cachedBedPos = tag.getIntArray("cachedBedPos");
+            this.cachedBedPos = new BlockPosition(cachedBedPos[0], cachedBedPos[1], cachedBedPos[2]);
+        }
+        if (tag.hasKey("bedPos")) {
+            int[] bedPos = tag.getIntArray("bedPos");
+            this.setBedPosition(new BlockPosition(bedPos[0], bedPos[1], bedPos[2]));
+        }
+        if (tag.hasKey("foundBed"))
+            this.foundBed = tag.getBoolean("foundBed");
+        
         readBaseTags(tag);
         onWeaponInventoryChanged();
     }
@@ -961,7 +1009,18 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         ChunkCoordinates cc = getHomePosition();
         int[] ccia = new int[]{cc.posX, cc.posY, cc.posZ, getHomeRange()};
         tag.setIntArray("home", ccia);
-        writeBaseTags(tag);
+        tag.setString("owner", ownerName);
+        tag.setInteger("attackDamageOverride", attackDamage);
+        tag.setInteger("armorValueOverride", armorValue);
+        tag.setString("customTex", customTexRef);
+        tag.setBoolean("aiEnabled", aiEnabled);
+        tag.setInteger("bedDirection", bedDirection);
+        tag.setBoolean("isSleeping", this.getSleeping());
+        BlockPosition bedPos = this.getBedPosition();
+        tag.setIntArray("bedPos", new int[]{bedPos.x, bedPos.y, bedPos.z});
+        if (cachedBedPos != null)
+            tag.setIntArray("cachedBedPos", new int[]{cachedBedPos.x, cachedBedPos.y, cachedBedPos.z});
+        tag.setBoolean("foundBed", foundBed);
     }
 
     private void writeBaseTags(NBTTagCompound tag){
@@ -982,11 +1041,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             tag.setString("name", getCustomNameTag());
         }
         checkOwnerName();
-        tag.setString("owner", ownerName);
-        tag.setInteger("attackDamageOverride", attackDamage);
-        tag.setInteger("armorValueOverride", armorValue);
-        tag.setString("customTex", customTexRef);
-        tag.setBoolean("aiEnabled", aiEnabled);
     }
 
     public final ResourceLocation getTexture() {
@@ -1056,5 +1110,266 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     public double getDistanceSq(BlockPosition pos) {
         return getDistanceSq(pos.x + 0.5d, pos.y, pos.z + 0.5d);
+    }
+    
+    public BlockPosition findBed() {
+        if (!foundBed) {
+            int originX = MathHelper.floor_double(this.posX);
+            int originY = MathHelper.floor_double(this.posY);
+            int originZ = MathHelper.floor_double(this.posZ);
+            int maxSearchRange = 6;
+            int minX = originX - maxSearchRange;
+            int maxX = originX + maxSearchRange;
+            int minY = originY - maxSearchRange;
+            int maxY = originY + maxSearchRange;
+            int minZ = originZ - maxSearchRange;
+            int maxZ = originZ + maxSearchRange;
+            List<BlockPosition> foundBeds = new ArrayList<BlockPosition>();
+            for (int x = minX; x <= maxX; x++) {
+                for (int y = minY; y <= maxY; y++) {
+                    for (int z = minZ; z <= maxZ; z++) {
+                        if (this.worldObj.getBlock(x, y, z) instanceof BlockBed) {
+                            int bedMeta = this.worldObj.getBlockMetadata(x, y, z);
+                            if (!BlockBed.isBlockHeadOfBed(bedMeta))
+                                continue;
+                            if (!BlockBed.func_149976_c(bedMeta)) { // occupied check
+                                foundBeds.add(new BlockPosition(x, y, z));
+                            }
+                        }
+                    }
+                }
+            }
+        
+            int closetBedIndex = -1;
+            for (int i = 0; i < foundBeds.size(); i++) {
+                float bedDistance = foundBeds.get(i).getCenterDistanceFrom(originX, originY, originZ);
+                if ((closetBedIndex == -1) || (bedDistance < foundBeds.get(closetBedIndex).getCenterDistanceFrom(originX, originY, originZ)))
+                    closetBedIndex = i;
+            }
+            if (closetBedIndex == -1) {
+                foundBed = false;
+                return null;
+            }
+            foundBed = true;
+            cachedBedPos = foundBeds.get(closetBedIndex);
+        }
+        
+        if (this.worldObj.getBlock(cachedBedPos.x, cachedBedPos.y, cachedBedPos.z) instanceof BlockBed) {
+            setBedDirection(BlockBed.getDirection(worldObj.getBlockMetadata(cachedBedPos.x, cachedBedPos.y, cachedBedPos.z)));
+            return cachedBedPos;
+        }
+        else {
+            foundBed = false;
+            return null; // try again in a while
+        }
+    }
+    
+    public boolean lieDown(BlockPosition pos) {
+        if (!foundBed)
+            return false;
+        if (worldObj.blockExists(pos.x, pos.y, pos.z) && worldObj.getBlock(pos.x, pos.y, pos.z) instanceof BlockBed) {
+            int bedMeta = this.worldObj.getBlockMetadata(pos.x, pos.y, pos.z);
+            if (BlockBed.func_149976_c(bedMeta)) {
+                // occupied check
+                foundBed = false;
+                return false;
+            }
+            BlockBed.func_149979_a(worldObj, pos.x, pos.y, pos.z, true);
+            setBedPosition(pos);
+            setSleeping(true);
+            this.setPositionToBed();
+            return true;
+        }
+        return false;
+    }
+    
+    public void wakeUp() {
+        setSleeping(false);
+        
+        BlockPosition bedPos = getBedPosition();
+        // set vacant
+        BlockBed.func_149979_a(this.worldObj, bedPos.x, bedPos.y, bedPos.z, false);
+        
+        
+        // Try placing the NPC to an empty spot next to the bed. We don't want them standing on top of the bed, chance for suffocation
+        switch (getBedDirection()) {
+            case 1:
+                if (tryMovingToBedside(bedPos.x + 0.5, bedPos.y, bedPos.z - 0.5)) return;
+                if (tryMovingToBedside(bedPos.x + 0.5, bedPos.y, bedPos.z + 1.5)) return;
+                if (tryMovingToBedside(bedPos.x + 1.5, bedPos.y, bedPos.z - 0.5)) return;
+                if (tryMovingToBedside(bedPos.x + 1.5, bedPos.y, bedPos.z + 1.5)) return;
+                break;
+            case 3:
+                if (tryMovingToBedside(bedPos.x + 0.5, bedPos.y, bedPos.z - 0.5)) return;
+                if (tryMovingToBedside(bedPos.x + 0.5, bedPos.y, bedPos.z + 1.5)) return;
+                if (tryMovingToBedside(bedPos.x - 0.5, bedPos.y, bedPos.z - 0.5)) return;
+                if (tryMovingToBedside(bedPos.x - 0.5, bedPos.y, bedPos.z + 1.5)) return;
+                break;
+            case 0:
+                if (tryMovingToBedside(bedPos.x - 0.5, bedPos.y, bedPos.z + 0.5)) return;
+                if (tryMovingToBedside(bedPos.x + 1.5, bedPos.y, bedPos.z + 0.5)) return;
+                if (tryMovingToBedside(bedPos.x - 0.5, bedPos.y, bedPos.z - 0.5)) return;
+                if (tryMovingToBedside(bedPos.x + 1.5, bedPos.y, bedPos.z - 0.5)) return;
+                break;
+            case 2:
+                if (tryMovingToBedside(bedPos.x - 0.5, bedPos.y, bedPos.z + 0.5)) return;
+                if (tryMovingToBedside(bedPos.x + 1.5, bedPos.y, bedPos.z + 0.5)) return;
+                if (tryMovingToBedside(bedPos.x - 0.5, bedPos.y, bedPos.z + 1.5)) return;
+                if (tryMovingToBedside(bedPos.x + 1.5, bedPos.y, bedPos.z + 1.5)) return;
+                break;
+        }
+        setSleeping(false);
+    }
+    
+    private boolean tryMovingToBedside(double x, double y, double z) {
+        System.out.println(x + "x" + y + "x" + z);
+        if (worldObj.getBlock((int)Math.floor(x), (int)Math.floor(y), (int)Math.floor(z)).getMaterial().blocksMovement())
+            return false;
+        if (worldObj.getBlock((int)Math.floor(x), (int)Math.floor(y + 1.0), (int)Math.floor(z)).getMaterial().blocksMovement())
+            return false;
+        if (!worldObj.getBlock((int)Math.floor(x), (int)Math.floor(y - 1.0), (int)Math.floor(z)).getMaterial().blocksMovement())
+            return false;
+        this.aiEnabled = false;
+        this.setPosition(x, y, z);
+        this.aiEnabled = true;
+        setSleeping(false);
+        return true;
+    }
+    
+    public final BlockPosition getBedPosition() {
+        return new BlockPosition(getDataWatcher().getWatchableObjectInt(12), getDataWatcher().getWatchableObjectInt(13), getDataWatcher().getWatchableObjectInt(14));
+    }
+    
+    private final void setBedPosition(BlockPosition pos) {
+        this.getDataWatcher().updateObject(12, Integer.valueOf(pos.x));
+        this.getDataWatcher().updateObject(13, Integer.valueOf(pos.y));
+        this.getDataWatcher().updateObject(14, Integer.valueOf(pos.z));
+    }
+    
+    @Override
+    public void setPosition(double posX, double posY, double posZ) {
+        if (getSleeping()) {
+            this.posX = posX;
+            this.posY = posY;
+            this.posZ = posZ;
+            float width = this.width / 2.0F;
+            float height = this.height;
+            
+            double minX = posX - (double) width;
+            double minZ = posZ - (double) width;
+            double maxX = posX + (double) width;
+            double maxZ = posZ + (double) width;
+            
+            switch (this.getBedDirection()) {
+                case 0:
+                case 2:
+                    minZ -= 0.6f;
+                    maxZ += 0.6f;
+                    break;
+                case 1:
+                case 3:
+                    minX -= 0.6f;
+                    maxX += 0.6f;
+                    break;
+            }
+            
+            this.boundingBox.setBounds(minX, posY - (double)this.yOffset + (double)this.ySize, minZ, maxX, posY - (double)this.yOffset + (double)this.ySize + (double) height - 1.5f, maxZ);
+            return;
+        }
+        
+        super.setPosition(posX, posY, posZ);
+    }
+    
+    // TODO: sitting around when idle
+    //@Override
+    //public boolean isRiding() {
+    //    return true;
+    //}
+    
+    public void setPositionToBed() {
+        int posX = cachedBedPos.x;
+        int posZ = cachedBedPos.z;
+        
+        float xOffset = 0.5F;
+        float zOffset = 0.5F;
+        
+        switch (this.getBedDirection()) {
+            case 0:
+                zOffset -= 0.5f;
+                break;
+            case 1:
+                xOffset += 0.5f;
+                break;
+            case 2:
+                zOffset += 0.5f;
+                break;
+            case 3:
+                xOffset -= 0.5f;
+                break;
+        }
+        setPosition(cachedBedPos.x + xOffset, cachedBedPos.y + 0.6, cachedBedPos.z + zOffset);
+    }
+    
+    public boolean isBedCacheValid() {
+        return (worldObj.getBlock(cachedBedPos.x, cachedBedPos.y, cachedBedPos.z) instanceof BlockBed);
+    }
+    
+    @Override
+    public void onCollideWithPlayer(EntityPlayer player) {
+        if (!getSleeping())
+            super.onCollideWithPlayer(player);
+    }
+    
+    @Override
+    public boolean canBePushed() {
+        return (!getSleeping());
+    }
+    
+    @Override
+    protected void collideWithEntity(Entity entity) {
+        if (!getSleeping())
+            super.collideWithEntity(entity);
+    }
+    
+    public void setSleeping(boolean isSleeping) {
+        this.getDataWatcher().updateObject(15, Byte.valueOf((byte) (isSleeping ? 1 : 0)));
+    }
+    
+    public boolean getSleeping() {
+        if (getDataWatcher() == null)
+            return false;
+        return getDataWatcher().getWatchableObjectByte(15) == 1 ? true : false;
+    }
+    
+    public void setBedDirection(int direction) {
+        bedDirection = direction;
+    }
+    
+    public int getBedDirection() {
+        return bedDirection;
+    }
+    
+    public boolean shouldSleep() {
+        return Timekeeper.INSTANCE.isNighttime();
+    }
+    
+    // Only used by the renderer
+    @SideOnly(Side.CLIENT)
+    public float getBedOrientationInDegrees(int x, int y, int z) {
+        Block bed = worldObj.getBlock(x, y, z);
+        if (bed != null && bed instanceof BlockBed) {
+            setBedDirection(bed.getBedDirection(worldObj, x, y, z));
+            switch (bedDirection) {
+                case 0:
+                    return 90.0F;
+                case 1:
+                    return 0.0F;
+                case 2:
+                    return 270.0F;
+                case 3:
+                    return 180.0F;
+            }
+        }
+        return -1;
     }
 }
