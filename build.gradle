@@ -1,7 +1,3 @@
-import org.apache.tools.ant.filters.ReplaceTokens
-
-ext.versionFile = file('gradle.properties')
-
 buildscript {
     repositories {
         mavenCentral()
@@ -28,8 +24,10 @@ version = project.major +"."+ project.minor +"."+  project.build+"-"+ project.re
 group = "shadowmage"
 archivesBaseName = "ancientwarfare"
 
+import org.apache.tools.ant.filters.ReplaceTokens
+
 task updateVersion(type:Copy){
-    ant.propertyfile(file: versionFile) {
+    ant.propertyfile(file: 'gradle.properties') {
         entry(key: 'build', type: 'int', operation: '+', value: 001)
     }
     from(sourceSets.main.java.srcDirs){
