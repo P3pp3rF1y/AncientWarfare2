@@ -242,8 +242,8 @@ public final class BlockPosition {
         final int prime = 16777619;
         long result = prime ^ x;
         result = (prime * result) ^ z;
-        result = (prime * result) ^ y;
-        return Long.hashCode(result + 17);
+        result = (prime * result) ^ y + 17;
+        return ((Long)result).hashCode();
     }
 
     @Override

@@ -295,7 +295,7 @@ public class ItemQuantityMap {
             if (itemTag != null) {
                 hash = 31 * hash + itemTag.hashCode();
             }
-            return Long.hashCode(hash);
+            return ((Long)hash).hashCode();
         }
 
         @Override
