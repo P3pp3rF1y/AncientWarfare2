@@ -88,9 +88,16 @@ public class AWNPCStatics extends ModConfiguration {
 
     /** ********************************************TARGET SETTINGS************************************************ */
     private Configuration targetConfig;
-    private static final String targetSettings = "01_target_settings";
+    private static final String targetSettings = "00_new_targeting_settings";
+    private static final String targetSettingsLegacy = "01_target_settings";
     private HashMap<String, List<String>> entityTargetSettings;
     private List<String> entitiesToTargetNpcs;
+    public static boolean autoTargetting = true;
+    public static boolean autoTargettingConfigLos = true;
+    private ArrayList<String> autoTargettingMobExclude;
+    private ArrayList<String> autoTargettingMobInclude;
+    private ArrayList<String> autoTargettingMobForce;
+    public static int autoTargettingMobForcePriority = 2;
 
     /** ********************************************FACTION STARTING VALUE SETTINGS************************************************ */
     private Configuration factionConfig;
@@ -166,8 +173,14 @@ public class AWNPCStatics extends ModConfiguration {
                 "player (or LAN worlds).  Clients playing on remote servers can ignore these settings.");
 
         targetConfig = getConfigFor("AncientWarfareNpcTargeting");
-        targetConfig.addCustomCategoryComment(targetSettings, "Custom NPC Targeting Options\n" +
-                "Add / remove vanilla / mod-added entities from the NPC targeting lists.\n" +
+        targetConfig.addCustomCategoryComment(targetSettings, "NPC Targeting/AI Settings\n" +
+                "Define the logic for mob and NPC target AI (i.e. attacking and fleeing) here.\n" + 
+                "Affects only server-side operations.  Will need to be set for dedicated servers, and single\n" +
+                "player (or LAN worlds).  Clients playing on remote servers can ignore these settings.");
+        
+        targetConfig.addCustomCategoryComment(targetSettingsLegacy, "Legacy NPC Targeting Lists\n" +
+                "Add / remove entities from the NPC targeting lists. All settings here have no effect unless 'auto_targetting' is\n" +
+                "set to false in the section above. \n" + 
                 "Affect only server-side operations.  Will need to be set for dedicated servers, and single\n" +
                 "player (or LAN worlds).  Clients playing on remote servers can ignore these settings.");
 
@@ -314,39 +327,82 @@ public class AWNPCStatics extends ModConfiguration {
     }
 
     private void loadTargetValues() {
+        String[] targets;
+        
+        autoTargetting = targetConfig.get(targetSettings, "auto_targetting", autoTargetting, "Use new automatic AI injection for hostile entities. If true, anything that uses the vanilla \n" + 
+                                                                                             "'New AI' tasks and is hostile to the player will automagically be injected with hostility for all NPC's too.\n" + 
+                                                                                             "Will not work for mods which use custom AI tasks, nor 'Old AI' mobs e.g. Blazes, Spiders, etc. \n" + 
+                                                                                             "NOTE! Setting this to false will completely disable this section, and revert to the old behavior (see next section).").getBoolean();
+        
+        autoTargettingConfigLos = targetConfig.get(targetSettings, "auto_targetting.config.los", autoTargettingConfigLos, "Auto AI injection requires line-of-sight targetting?\n" + 
+                                                                                                                          "With old method, mobs did not need line-of-sight before the decided to chase an NPC. \n" +
+                                                                                                                          "This new auto-inject, they do need LOS. You can disable that here if you like.").getBoolean();
+        
+        targets = targetConfig.get(targetSettings, "auto_targetting.exclude", new String[]{}, "Exclude entities from auto-injection, i.e. 'force passive'. Any entities here\n" + 
+                                                                                              "will *not* target NPC's, and NPC's in turn will not be alarmed by these entities.\n" +
+                                                                                              "Note that the mob will only be excluded if it is also NOT listed on the include list below.").getStringList();
+        autoTargettingMobExclude = new ArrayList<String>();
+        Collections.addAll(autoTargettingMobExclude, targets);
+        
+        /*
+         * TODO
+         * Problem:
+         * No straightforward way to detect if a mob is ranged or melee, or can attack at all.
+         * Is the presence of vanilla AI tasks good enough for this? Need to look at other mod-added mobs. 
+         *  
+        targets = targetConfig.get(targetSettings, "auto_targetting.include", new String[]{}, "Include entities for auto-injection, i.e. 'force hostile'. Use this to attempt a forced-injection of NPC-attack AI on mobs.\n" + 
+                                                                                              "This does NOT guarantee that the mob will successfully target NPC's and in some cases could cause compatibility issues and AI bugs on the entity.\n" + 
+                                                                                              "One probably-safe use of this list is for entites which can attack but don't target the player by default e.g. neutral mobs.\n" + 
+                                                                                              "NOTE that adding entities here will not preserve the 'neutrality' towards NPC's though - they will still attack NPC's on sight.\n" + 
+                                                                                              "If an entity listed here does not have any attack capability, it will be silently skipped.").getStringList();
+        autoTargettingMobInclude = new ArrayList<String>();
+        Collections.addAll(autoTargettingMobInclude, targets);
+        
+        targets = targetConfig.get(targetSettings, "auto_targetting.force", new String[]{}, "Force entities for AI target injection, i.e. 'force combat capability'.\n" + 
+                                                                                            "This is an absolute last resort. Combat AI against NPC's will be injected even if the entity has no\n" + 
+                                                                                            "recognizable attack logic. Things will probably go horribly wrong if you use this, you have been warned!\n" +
+                                                                                            "Anything in this list will override the other include and exclude lists.").getStringList();
+        autoTargettingMobForce = new ArrayList<String>();
+        Collections.addAll(autoTargettingMobForce, targets);
+        
+        autoTargettingMobForcePriority = targetConfig.get(targetSettings, "auto_targetting.force.priority", autoTargettingMobForcePriority, "Task priority for forced attack AI injections\n" + 
+                                                                                                                                            "Should always be 1 or higher.").getInt(); 
+        */
+        
+        // old stuff from here on
         entityTargetSettings = new HashMap<String, List<String>>();
         String[] defaultTargets = new String[]{"Zombie", "Skeleton", "Slime"};
-        String[] targets;
-
-        targets = targetConfig.get(targetSettings, "combat.targets", defaultTargets, "Default targets for: unassigned combat npc").getStringList();
+        
+        targets = targetConfig.get(targetSettingsLegacy, "enemies_to_target_npcs", defaultTargets, "What mob types should have AI inserted to enable them to target NPCs?\n" +
+                "Should work with any new-ai enabled mob type; vanilla or mod-added (but might not work with mod-added entities with custom AI).\n" + 
+                "NOTE! This is a LEGACY option! This option ONLY works if the 'auto_inject_mobs' option at the top is changed to false.").getStringList();
+        entitiesToTargetNpcs = new ArrayList<String>();
+        Collections.addAll(entitiesToTargetNpcs, targets);
+        
+        targets = targetConfig.get(targetSettingsLegacy, "combat.targets", defaultTargets, "Default targets for: unassigned combat npc").getStringList();
         addTargetMapping("combat", "", targets);
 
-        targets = targetConfig.get(targetSettings, "combat.archer.targets", defaultTargets, "Default targets for: player-owned archer").getStringList();
+        targets = targetConfig.get(targetSettingsLegacy, "combat.archer.targets", defaultTargets, "Default targets for: player-owned archer").getStringList();
         addTargetMapping("combat", "archer", targets);
 
-        targets = targetConfig.get(targetSettings, "combat.soldier.targets", defaultTargets, "Default targets for: player-owned soldier").getStringList();
+        targets = targetConfig.get(targetSettingsLegacy, "combat.soldier.targets", defaultTargets, "Default targets for: player-owned soldier").getStringList();
         addTargetMapping("combat", "soldier", targets);
 
-        targets = targetConfig.get(targetSettings, "combat.leader.targets", defaultTargets, "Default targets for: player-owned leader npc").getStringList();
+        targets = targetConfig.get(targetSettingsLegacy, "combat.leader.targets", defaultTargets, "Default targets for: player-owned leader npc").getStringList();
         addTargetMapping("combat", "leader", targets);
 
-        targets = targetConfig.get(targetSettings, "combat.medic.targets", defaultTargets, "Default targets for: player-owned medic npc").getStringList();
+        targets = targetConfig.get(targetSettingsLegacy, "combat.medic.targets", defaultTargets, "Default targets for: player-owned medic npc").getStringList();
         addTargetMapping("combat", "medic", targets);
 
-        targets = targetConfig.get(targetSettings, "combat.engineer.targets", defaultTargets, "Default targets for: player-owned engineer npc").getStringList();
+        targets = targetConfig.get(targetSettingsLegacy, "combat.engineer.targets", defaultTargets, "Default targets for: player-owned engineer npc").getStringList();
         addTargetMapping("combat", "engineer", targets);
 
         for (String name : factionNames) {
             for(String sub : factionNpcSubtypes){
-                targets = targetConfig.get(targetSettings, name + "." + sub + ".targets", defaultTargets, "Default targets for: " + name + " "+ asName(sub)).getStringList();
+                targets = targetConfig.get(targetSettingsLegacy, name + "." + sub + ".targets", defaultTargets, "Default targets for: " + name + " "+ asName(sub)).getStringList();
                 addTargetMapping(name, sub, targets);
             }
         }
-
-        targets = targetConfig.get(targetSettings, "enemies_to_target_npcs", defaultTargets, "What mob types should have AI inserted to enable them to target NPCs?\n" +
-                "Should work with any new-ai enabled mob type; vanilla or mod-added (but might not work with mod-added entities with custom AI).").getStringList();
-        entitiesToTargetNpcs = new ArrayList<String>();
-        Collections.addAll(entitiesToTargetNpcs, targets);
     }
 
     private String asName(String npcSubtype){
@@ -371,7 +427,21 @@ public class AWNPCStatics extends ModConfiguration {
     }
 
     public boolean shouldEntityTargetNpcs(String entityName) {
+        if (autoTargetting) {
+            // check forced first
+            //if (autoTargettingMobForce.contains(entityName))
+            //    return true;
+            // check include next
+            //if (autoTargettingMobInclude.contains(entityName))
+            //    return true;
+            // finally check if it's excluded
+            return (!autoTargettingMobExclude.contains(entityName));
+        }
         return entitiesToTargetNpcs.contains(entityName);
+    }
+    
+    public boolean isForcedEntity(String entityName) {
+        return autoTargettingMobForce.contains(entityName);
     }
 
     public List<String> getValidTargetsFor(String npcType, String npcSubtype) {
