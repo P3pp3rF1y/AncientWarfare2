@@ -117,13 +117,25 @@ public class TileFlywheelStorage extends TileEntity {
 
     public void blockBroken() {
         if (isControl) {
-            informNeighborsToValidate();
+            TileEntity tileEntity;
+            for(int i = -1; i < 3; i++){
+                for(int j = -1; j < setHeight + 1; j++){
+                    for(int k = -1; k < 3; k++){
+                        tileEntity = worldObj.getTileEntity(xCoord + i, yCoord + j, zCoord + k);
+                        if(tileEntity instanceof TileFlywheelStorage){
+                            ((TileFlywheelStorage) tileEntity).setController(null);
+                        }
+                    }
+                }
+            }
+            isControl = false;
         } else if (controllerPos != null) {
             TileFlywheelStorage controller = getController();
-            if (controller == null || controller == this) {
-                informNeighborsToValidate();
-            } else {
+            controllerPos = null;
+            if (controller != null) {
                 controller.validateSetup();
+            } else {
+                informNeighborsToValidate();
             }
         } else {
             informNeighborsToValidate();
@@ -135,24 +147,24 @@ public class TileFlywheelStorage extends TileEntity {
     }
 
     public final void setController(BlockPosition pos) {
-        this.controllerPos = pos == null ? null : pos.copy();
+        this.controllerPos = pos;
+        markDirty();
         worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
     protected boolean validateSetup() {
-        List<BlockPosition> connectedPosSet = new ArrayList<BlockPosition>(30);
-        BlockFinder finder = new BlockFinder(worldObj, getBlockType(), getBlockMetadata());
-        Pair<BlockPosition, BlockPosition> corners = finder.cross(new BlockPosition(xCoord, yCoord, zCoord), new BlockPosition(3, worldObj.getActualHeight(), 3), connectedPosSet);
+        BlockFinder finder = new BlockFinder(worldObj, getBlockType(), getBlockMetadata(), 30);
+        Pair<BlockPosition, BlockPosition> corners = finder.cross(new BlockPosition(xCoord, yCoord, zCoord), new BlockPosition(3, worldObj.getActualHeight(), 3));
         int minX = corners.getLeft().x, minY = corners.getLeft().y, minZ = corners.getLeft().z;
         int w = corners.getRight().x - minX + 1, h = corners.getRight().y - minY + 1, l = corners.getRight().z - minZ + 1;
-        boolean valid = w == l && (w == 1 || w == 3)  && finder.box(corners, connectedPosSet);
+        boolean valid = w == l && (w == 1 || w == 3)  && finder.box(corners);
         if (valid) {
             int cx = w == 1 ? minX : minX + 1;
             int cz = l == 1 ? minZ : minZ + 1;
-            setValidSetup(connectedPosSet, cx, minY, cz, w, h, getBlockMetadata());
+            setValidSetup(finder.getPositions(), cx, minY, cz, w, h, getBlockMetadata());
         } else {
-            finder.connect(corners.getLeft(), connectedPosSet, ForgeDirection.UP, ForgeDirection.SOUTH, ForgeDirection.EAST);
-            setInvalidSetup(connectedPosSet);
+            finder.connect(corners.getLeft(), new BlockPosition(w, h, l));
+            setInvalidSetup(finder.getPositions());
         }
         return valid;
     }
@@ -195,6 +207,7 @@ public class TileFlywheelStorage extends TileEntity {
             }
         }
         this.maxEnergyStored = (double) setCube * energyPerBlockForType;
+        markDirty();
         this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 

@@ -5,19 +5,28 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BlockFinder {
     private final World world;
     private final Block blockType;
     private final int metaValue;
-    public BlockFinder(World worldIn, Block type, int meta){
+    private final List<BlockPosition> positions;
+    public BlockFinder(World worldIn, Block type, int meta, int size){
         world = worldIn;
         blockType = type;
         metaValue = meta;
+        positions = new ArrayList<BlockPosition>(size);
     }
 
-    public Pair<BlockPosition, BlockPosition> cross(BlockPosition center, BlockPosition max, List<BlockPosition> positions) {
+    /**
+     * Collect block type in a cross pattern
+     * @param center the center of the cross pattern
+     * @param max the arms max length of the cross pattern
+     * @return the corners of the box containing the cross
+     */
+    public Pair<BlockPosition, BlockPosition> cross(BlockPosition center, BlockPosition max) {
         positions.add(center);
         int minX = center.x - 1;
         for (;center.x - minX <= max.x && isTypeAt(minX, center.y, center.z); minX--){
@@ -52,7 +61,13 @@ public class BlockFinder {
         return Pair.of(new BlockPosition(minX, minY, minZ), new BlockPosition(maxX, maxY, maxZ));
     }
 
-    public boolean box(Pair<BlockPosition, BlockPosition> corners, List<BlockPosition> positions){
+    /**
+     * Collect blocks between corners in a box pattern
+     * Fail fast if block type doesn't apply
+     * @param corners Bottom North West corner and Upper South East corner
+     * @return true if all blocks between corners apply conditions
+     */
+    public boolean box(Pair<BlockPosition, BlockPosition> corners){
         BlockPosition temp;
         for(int x = corners.getLeft().x; x <= corners.getRight().x; x++){
             for(int y = corners.getLeft().y; y <= corners.getRight().y; y++){
@@ -70,17 +85,36 @@ public class BlockFinder {
         return true;
     }
 
-    public void connect(BlockPosition center, List<BlockPosition> positions, ForgeDirection... directions){
-        if(isTypeAt(center.x, center.y, center.z)) {
-            if (!positions.contains(center))
-                positions.add(center);
-            for (ForgeDirection direction : directions) {
-                connect(center.offset(direction.offsetX, direction.offsetY, direction.offsetZ), positions, directions);
+    /**
+     * Collect all blocks that apply
+     * @param corner Bottom North West corner
+     * @param limit the max size parameters
+     */
+    public void connect(BlockPosition corner, BlockPosition limit){
+        BlockPosition temp;
+        for(int i = 0; i < limit.x; i++){
+            for(int j = 0; j < limit.y; j++){
+                for(int k = 0; k < limit.z; k++){
+                    temp = corner.offset(i, j, k);
+                    if(!positions.contains(temp) && isTypeAt(temp.x, temp.y, temp.z)){
+                        positions.add(temp);
+                    }
+                }
             }
         }
     }
 
-    public boolean isTypeAt(int x, int y, int z){
+    /**
+     * The conditions applied on the block type
+     */
+    private boolean isTypeAt(int x, int y, int z){
         return world.getBlock(x, y, z) == blockType && world.getBlockMetadata(x, y, z) == metaValue;
+    }
+
+    /**
+     * The collected block positions
+     */
+    public List<BlockPosition> getPositions() {
+        return positions;
     }
 }
