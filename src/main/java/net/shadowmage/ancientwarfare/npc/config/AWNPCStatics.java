@@ -280,7 +280,7 @@ public class AWNPCStatics extends ModConfiguration {
 
     private void loadTargetValues() {
         entityTargetSettings = new HashMap<String, List<String>>();
-        String[] defaultTargets = new String[]{"Zombie", "Skeleton", "Slime"};
+        String[] defaultTargets = new String[]{"Zombie", "Skeleton", "Slime", "Spider"};
         String[] targets;
 
         targets = targetConfig.get(targetSettings, "combat.targets", defaultTargets, "Default targets for: unassigned combat npc").getStringList();
@@ -295,7 +295,7 @@ public class AWNPCStatics extends ModConfiguration {
         targets = targetConfig.get(targetSettings, "combat.leader.targets", defaultTargets, "Default targets for: player-owned leader npc").getStringList();
         addTargetMapping("combat", "leader", targets);
 
-        targets = targetConfig.get(targetSettings, "combat.medic.targets", defaultTargets, "Default targets for: player-owned medic npc").getStringList();
+        targets = targetConfig.get(targetSettings, "combat.medic.targets", new String[]{"Zombie", "Skeleton", "Slime", "Spider", "Creeper"}, "Default targets for: player-owned medic npc").getStringList();
         addTargetMapping("combat", "medic", targets);
 
         targets = targetConfig.get(targetSettings, "combat.engineer.targets", defaultTargets, "Default targets for: player-owned engineer npc").getStringList();
