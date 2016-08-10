@@ -32,12 +32,11 @@ public class NpcAIMedicBase extends NpcAI<NpcBase> {
         sorter = new Sorter(npc);
         selector = new IEntitySelector() {
             @Override
-            public boolean isEntityApplicable(Entity var1) {
-                if (var1 instanceof EntityLivingBase) {
-                    EntityLivingBase e = (EntityLivingBase) var1;
-                    if (e.isEntityAlive() && e.getHealth() < e.getMaxHealth() && !NpcAIMedicBase.this.npc.isHostileTowards(e)) {
+            public boolean isEntityApplicable(Entity selectedEntity) {
+                if (selectedEntity instanceof EntityLivingBase) {
+                    EntityLivingBase e = (EntityLivingBase) selectedEntity;
+                    if (e.isEntityAlive() && e.getHealth() < e.getMaxHealth() && !NpcAIMedicBase.this.npc.isHostileTowards(e))
                         return true;
-                    }
                 }
                 return false;
             }

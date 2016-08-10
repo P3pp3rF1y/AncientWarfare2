@@ -370,37 +370,39 @@ public class AWNPCStatics extends ModConfiguration {
         */
         
         // old stuff from here on
-        entityTargetSettings = new HashMap<String, List<String>>();
-        String[] defaultTargets = new String[]{"Zombie", "Skeleton", "Slime"};
-        
-        targets = targetConfig.get(targetSettingsLegacy, "enemies_to_target_npcs", defaultTargets, "What mob types should have AI inserted to enable them to target NPCs?\n" +
-                "Should work with any new-ai enabled mob type; vanilla or mod-added (but might not work with mod-added entities with custom AI).\n" + 
-                "NOTE! This is a LEGACY option! This option ONLY works if the 'auto_inject_mobs' option at the top is changed to false.").getStringList();
-        entitiesToTargetNpcs = new ArrayList<String>();
-        Collections.addAll(entitiesToTargetNpcs, targets);
-        
-        targets = targetConfig.get(targetSettingsLegacy, "combat.targets", defaultTargets, "Default targets for: unassigned combat npc").getStringList();
-        addTargetMapping("combat", "", targets);
-
-        targets = targetConfig.get(targetSettingsLegacy, "combat.archer.targets", defaultTargets, "Default targets for: player-owned archer").getStringList();
-        addTargetMapping("combat", "archer", targets);
-
-        targets = targetConfig.get(targetSettingsLegacy, "combat.soldier.targets", defaultTargets, "Default targets for: player-owned soldier").getStringList();
-        addTargetMapping("combat", "soldier", targets);
-
-        targets = targetConfig.get(targetSettingsLegacy, "combat.leader.targets", defaultTargets, "Default targets for: player-owned leader npc").getStringList();
-        addTargetMapping("combat", "leader", targets);
-
-        targets = targetConfig.get(targetSettingsLegacy, "combat.medic.targets", defaultTargets, "Default targets for: player-owned medic npc").getStringList();
-        addTargetMapping("combat", "medic", targets);
-
-        targets = targetConfig.get(targetSettingsLegacy, "combat.engineer.targets", defaultTargets, "Default targets for: player-owned engineer npc").getStringList();
-        addTargetMapping("combat", "engineer", targets);
-
-        for (String name : factionNames) {
-            for(String sub : factionNpcSubtypes){
-                targets = targetConfig.get(targetSettingsLegacy, name + "." + sub + ".targets", defaultTargets, "Default targets for: " + name + " "+ asName(sub)).getStringList();
-                addTargetMapping(name, sub, targets);
+        if (!autoTargetting) {
+            entityTargetSettings = new HashMap<String, List<String>>();
+            String[] defaultTargets = new String[]{"Zombie", "Skeleton", "Slime"};
+            
+            targets = targetConfig.get(targetSettingsLegacy, "enemies_to_target_npcs", defaultTargets, "What mob types should have AI inserted to enable them to target NPCs?\n" +
+                    "Should work with any new-ai enabled mob type; vanilla or mod-added (but might not work with mod-added entities with custom AI).\n" + 
+                    "NOTE! This is a LEGACY option! This option ONLY works if the 'auto_inject_mobs' option at the top is changed to false.").getStringList();
+            entitiesToTargetNpcs = new ArrayList<String>();
+            Collections.addAll(entitiesToTargetNpcs, targets);
+            
+            targets = targetConfig.get(targetSettingsLegacy, "combat.targets", defaultTargets, "Default targets for: unassigned combat npc").getStringList();
+            addTargetMapping("combat", "", targets);
+    
+            targets = targetConfig.get(targetSettingsLegacy, "combat.archer.targets", defaultTargets, "Default targets for: player-owned archer").getStringList();
+            addTargetMapping("combat", "archer", targets);
+    
+            targets = targetConfig.get(targetSettingsLegacy, "combat.soldier.targets", defaultTargets, "Default targets for: player-owned soldier").getStringList();
+            addTargetMapping("combat", "soldier", targets);
+    
+            targets = targetConfig.get(targetSettingsLegacy, "combat.leader.targets", defaultTargets, "Default targets for: player-owned leader npc").getStringList();
+            addTargetMapping("combat", "leader", targets);
+    
+            targets = targetConfig.get(targetSettingsLegacy, "combat.medic.targets", defaultTargets, "Default targets for: player-owned medic npc").getStringList();
+            addTargetMapping("combat", "medic", targets);
+    
+            targets = targetConfig.get(targetSettingsLegacy, "combat.engineer.targets", defaultTargets, "Default targets for: player-owned engineer npc").getStringList();
+            addTargetMapping("combat", "engineer", targets);
+    
+            for (String name : factionNames) {
+                for(String sub : factionNpcSubtypes){
+                    targets = targetConfig.get(targetSettingsLegacy, name + "." + sub + ".targets", defaultTargets, "Default targets for: " + name + " "+ asName(sub)).getStringList();
+                    addTargetMapping(name, sub, targets);
+                }
             }
         }
     }
@@ -427,17 +429,16 @@ public class AWNPCStatics extends ModConfiguration {
     }
 
     public boolean shouldEntityTargetNpcs(String entityName) {
-        if (autoTargetting) {
-            // check forced first
-            //if (autoTargettingMobForce.contains(entityName))
-            //    return true;
-            // check include next
-            //if (autoTargettingMobInclude.contains(entityName))
-            //    return true;
-            // finally check if it's excluded
-            return (!autoTargettingMobExclude.contains(entityName));
-        }
-        return entitiesToTargetNpcs.contains(entityName);
+        if (!autoTargetting) // old targetting in use
+            return entitiesToTargetNpcs.contains(entityName);
+        // check forced first
+        //if (autoTargettingMobForce.contains(entityName))
+        //    return true;
+        // check include next
+        //if (autoTargettingMobInclude.contains(entityName))
+        //    return true;
+        // finally check if it's excluded
+        return (!autoTargettingMobExclude.contains(entityName));
     }
     
     public boolean isForcedEntity(String entityName) {

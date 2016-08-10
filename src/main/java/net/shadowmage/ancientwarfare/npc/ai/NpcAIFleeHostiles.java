@@ -32,12 +32,12 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
         super(npc);
         selector = new IEntitySelector() {
             @Override
-            public boolean isEntityApplicable(Entity var1) {
-                if(var1.isEntityAlive()) {
-                    if (var1 instanceof NpcBase) {
-                        return ((NpcBase) var1).isHostileTowards(NpcAIFleeHostiles.this.npc);
-                    }
-                    return AncientWarfareNPC.statics.shouldEntityTargetNpcs(EntityList.getEntityString(var1));
+            public boolean isEntityApplicable(Entity selectedEntity) {
+                if(selectedEntity.isEntityAlive()) {
+                    if (selectedEntity instanceof NpcBase)
+                        return ((NpcBase) selectedEntity).isHostileTowards(NpcAIFleeHostiles.this.npc);
+                    else
+                        return AncientWarfareNPC.statics.shouldEntityTargetNpcs(EntityList.getEntityString(selectedEntity));
                 }
                 return false;
             }
