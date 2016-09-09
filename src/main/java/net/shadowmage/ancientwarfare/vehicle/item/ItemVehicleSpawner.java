@@ -82,11 +82,15 @@ public class ItemVehicleSpawner extends Item {
             return stack;
         }
         String type = stack.getTagCompound().getString("type");
+        
+        // TODO
+        /*
         Entity e = AWEntityRegistry.createEntity(type, player.worldObj);
         if (e != null) {
             e.setPosition(player.posX, player.posY, player.posZ);//TODO set position from player clicked-on target
             player.worldObj.spawnEntityInWorld(e);
         }
+        */
         return stack;
     }
 }

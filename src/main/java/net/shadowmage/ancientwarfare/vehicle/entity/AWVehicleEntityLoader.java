@@ -28,11 +28,11 @@ public class AWVehicleEntityLoader {
     }
 
     private static void registerVehicleEntity(EntityDeclaration reg, String icon) {
-        if (!vehicleTypes.contains(reg.getEntityName())) {
-            vehicleTypes.add(reg.getEntityName());
+        if (!vehicleTypes.contains(reg.name())) {
+            vehicleTypes.add(reg.name());
         }
         AWEntityRegistry.registerEntity(reg);
-        regNameToIcon.put(reg.getEntityName(), icon);
+        regNameToIcon.put(reg.name(), icon);
     }
 
     public static List<String> getVehicleTypes() {
@@ -46,7 +46,27 @@ public class AWVehicleEntityLoader {
     private static class VehiculeDeclaration extends EntityDeclaration {
 
         public VehiculeDeclaration(Class<? extends Entity> entityClass, String entityName) {
-            super(entityClass, entityName, nextID++, AncientWarfareVehicles.instance, 120, 3, true);
+            super(entityClass, entityName, nextID++);
+        }
+
+        @Override
+        public Object mod() {
+            return AncientWarfareVehicles.instance;
+        }
+
+        @Override
+        public int trackingRange() {
+            return 120;
+        }
+
+        @Override
+        public int updateFrequency() {
+            return 3;
+        }
+
+        @Override
+        public boolean sendsVelocityUpdates() {
+            return true;
         }
     }
 }
