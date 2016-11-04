@@ -13,6 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedRideHorse;
@@ -127,9 +128,8 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
         }//cannot validate, unloaded...assume good
         TileEntity te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
         if (te instanceof TileTownHall) {
-            if (canBeCommandedBy(((TileTownHall) te).getOwnerName())) {
+            if (hasCommandPermissions(((TileTownHall) te).getOwnerName()))
                 return true;
-            }
         }
         setTownHallPosition(null);
         return false;
@@ -164,28 +164,27 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
     public void setPlayerCommand(Command cmd) {
         this.playerIssuedCommand = cmd;
     }
+    
+    
 
     @Override
-    public boolean isHostileTowards(Entity e) {
-        if (AncientWarfareNPC.statics.shouldEntityIgnoreNpcs(EntityList.getEntityString(e)))
+    public boolean isHostileTowards(Entity entityTarget) {
+        if (AncientWarfareNPC.statics.shouldEntityIgnoreNpcs(EntityList.getEntityString(entityTarget)))
             return false;
-        if (e instanceof NpcPlayerOwned) {
-            NpcPlayerOwned npc = (NpcPlayerOwned) e;
-            Team t = npc.getTeam();
-            return t != getTeam();
-        } else if (e instanceof NpcFaction) {
-            NpcFaction npc = (NpcFaction) e;
-            return npc.isHostileTowards(this);//cheap trick to determine if should be hostile or not using the faction-based npcs standing towards this players npcs...handled in NpcFaction
-        } else if (e instanceof EntityPlayer) {
-            Team t = ((EntityPlayer) e).getTeam();
-            return t != getTeam();
+        else if ((entityTarget instanceof NpcPlayerOwned) || (entityTarget instanceof EntityPlayer)) {
+            if (isEntitySameTeamOrFriends(entityTarget)) {
+                return false;
+            } else
+                return true;
+        } else if (entityTarget instanceof NpcFaction) {
+            return ((NpcFaction) entityTarget).isHostileTowards(this); // hostility is based on faction standing
         } else {
             // TODO
             // This is for forced inclusions, which we don't currently support in new auto-targeting. This 
             // is complicated because reasons. See comments in the AWNPCStatics class for details.
             
             if (!AncientWarfareNPC.statics.autoTargetting) {
-                String n = EntityList.getEntityString(e);
+                String n = EntityList.getEntityString(entityTarget);
                 List<String> targets = AncientWarfareNPC.statics.getValidTargetsFor(getNpcType(), getNpcSubType());
                 if (targets.contains(n)) {
                     return true;
@@ -197,28 +196,24 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
 
     @Override
     public boolean canTarget(Entity e) {
-        if (e instanceof NpcPlayerOwned) {
-            Team t = ((NpcPlayerOwned) e).getTeam();
-            return t != getTeam();//do not allow npcs to target their own teams npcs
-        } else if (e instanceof EntityPlayer) {
-            Team t = ((EntityPlayer) e).getTeam();
-            return t != getTeam();//do not allow npcs to target their own teams players
-        }
+        if (isEntitySameTeamOrFriends(e))
+            return false; // don't let npcs target their own teams npcs/players
         return e instanceof EntityLivingBase;
     }
 
     @Override
     public boolean canBeAttackedBy(Entity e) {
-        if (e instanceof NpcPlayerOwned) {
-            return ((NpcPlayerOwned) e).getTeam() != getTeam();//can only be attacked by non-same team -- disable friendly fire and combat amongst neutrals
-        }
+        if (isEntitySameTeamOrFriends(e))
+            return false; // can only be attacked by different team - prevent friendly fire and neutral infighting
         return true;
     }
 
+    /*
     protected boolean isHostileTowards(Team team) {
         Team a = getTeam();
         return a != null && !a.isSameTeam(team);
     }
+    */
 
     @Override
     public void onWeaponInventoryChanged() {
@@ -278,9 +273,8 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
 
     @Override
     protected boolean tryCommand(EntityPlayer player) {
-        if (this.canBeCommandedBy(player.getCommandSenderName()) && (getTeam() == null || getTeam().isSameTeam(player.getTeam()))) {
+        if (hasCommandPermissions(player.getCommandSenderName()))
             return super.tryCommand(player);
-        }
         return false;
     }
 

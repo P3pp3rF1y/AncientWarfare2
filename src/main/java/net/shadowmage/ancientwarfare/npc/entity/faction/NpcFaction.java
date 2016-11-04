@@ -53,7 +53,7 @@ public abstract class NpcFaction extends NpcBase {
     }
 
     @Override
-    public boolean canBeCommandedBy(String playerName) {
+    public boolean hasCommandPermissions(String playerName) {
         return false;
     }
 

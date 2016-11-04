@@ -67,7 +67,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
         List<NpcPlayerOwned> npcs = getNpcsInArea();
         BlockPosition pos = new BlockPosition(xCoord, yCoord, zCoord);
         for (NpcPlayerOwned npc : npcs) {
-            if (npc.canBeCommandedBy(getOwnerName())) {
+            if (npc.hasCommandPermissions(getOwnerName())) {
                 npc.handleTownHallBroadcast(this, pos);
             }
         }

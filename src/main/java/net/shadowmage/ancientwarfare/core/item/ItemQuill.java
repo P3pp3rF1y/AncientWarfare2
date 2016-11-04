@@ -100,14 +100,11 @@ public class ItemQuill extends Item {
         if (pos != null) {
             TileEntity te = player.worldObj.getTileEntity(pos.x, pos.y, pos.z);
             if (te instanceof IWorkSite && ((IWorkSite) te).getWorkType() == IWorkSite.WorkType.RESEARCH) {
-                IWorkSite ters = (IWorkSite) te;
-                if (ters.hasWork()) {
-                    Team team = ters.getTeam();
-                    if ((team!=null && team.isSameTeam(player.getTeam())) || (te instanceof IOwnable && ((IOwnable)te).isOwner(player))) {
-                        ters.addEnergyFromPlayer(player);
-                        stack.damageItem(1, player);
-                        //TODO add chat message
-                    }
+                IWorkSite teResearchStation = (IWorkSite) te;
+                if (teResearchStation.hasWork()) {
+                    teResearchStation.addEnergyFromPlayer(player);
+                    stack.damageItem(1, player);
+                    //TODO add chat message
                 }
             }
         }

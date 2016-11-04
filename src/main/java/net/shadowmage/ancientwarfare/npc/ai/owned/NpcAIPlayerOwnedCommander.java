@@ -34,7 +34,7 @@ public class NpcAIPlayerOwnedCommander extends NpcAI<NpcBase> {
     }
 
     protected boolean canBeCommanded(NpcBase npc){
-        return npc.canBeCommandedBy(this.npc.getOwnerName());
+        return npc.hasCommandPermissions(this.npc.getOwnerName());
     }
 
     @Override

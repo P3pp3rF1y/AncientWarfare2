@@ -22,6 +22,7 @@ import net.shadowmage.ancientwarfare.core.block.IconRotationMap;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
+import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.lang.reflect.Constructor;
@@ -110,11 +111,13 @@ public class BlockWorksiteBase extends Block implements IRotatableBlock {
         TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof IInteractableTile) {
             boolean canClick = false;
-            if(te instanceof IOwnable && ((IOwnable) te).isOwner(player)){
+            if(te instanceof IOwnable && ((IOwnable) te).isOwner(player))
                 canClick = true;
-            }else if(te instanceof IWorkSite) {
-                Team t1 = ((IWorkSite) te).getTeam();
-                if(player.getTeam() == t1)
+            else if(te instanceof IWorkSite) {
+                IWorkSite site = ((IWorkSite) te);
+                if ((player.getTeam() != null) && (player.getTeam() == site.getTeam()))
+                    canClick = true;
+                if (ModAccessors.FTBU.areFriends(player.getCommandSenderName(), site.getOwnerName()))
                     canClick = true;
             }
             if (canClick) {

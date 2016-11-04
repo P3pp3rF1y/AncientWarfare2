@@ -19,6 +19,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathPoint;
+import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
@@ -29,6 +30,7 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.gamedata.Timekeeper;
 import net.shadowmage.ancientwarfare.core.interfaces.IEntityPacketHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
+import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketEntity;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -371,24 +373,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
      */
     public boolean hasAltGui() {
         return false;
-    }
-
-    /**
-     * Used by command baton and town-hall to determine if this NPC is commandable by a player / team
-     */
-    public boolean canBeCommandedBy(String playerName) {
-        if (ownerName.isEmpty()) {
-            return false;
-        }
-        if (playerName == null) {
-            return false;
-        }
-        Team team = getTeam();
-        if (team == null) {
-            return playerName.equals(ownerName);
-        } else {
-            return team.isSameTeam(worldObj.getScoreboard().getPlayersTeam(playerName));
-        }
     }
 
     protected boolean tryCommand(EntityPlayer player) {
@@ -871,7 +855,27 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     public Team getTeam() {
         return worldObj.getScoreboard().getPlayersTeam(ownerName);
     }
-
+     
+    public boolean hasCommandPermissions(String playerName) {
+        // ensure the NPC is actually owned
+        if (ownerName.isEmpty())
+            return false;
+        if (playerName == null)
+            return false;
+        // check if same player
+        if (playerName.equals(getOwnerName()))
+            return true;
+        // check if same team
+        Team npcTeam = getTeam();
+        if (npcTeam != null)
+            if (npcTeam.isSameTeam(worldObj.getScoreboard().getPlayersTeam(playerName)))
+                return true;
+        // check if friends in FTBUtils
+        if (ModAccessors.FTBU.areFriends(getOwnerName(), playerName))
+            return true;
+        return false;
+    }
+    
     @Override
     protected int getExperiencePoints(EntityPlayer attacker){
         if(attacker!=null && isHostileTowards(attacker) && canBeAttackedBy(attacker)){
@@ -889,6 +893,27 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     public abstract boolean canTarget(Entity e);
 
     public abstract boolean canBeAttackedBy(Entity e);
+    
+    public boolean isEntitySameTeamOrFriends(Entity entityTarget) {
+        Team targetTeam;
+        String targetOwnerOrName;
+        if (entityTarget instanceof NpcPlayerOwned) {
+            targetTeam = ((NpcPlayerOwned) entityTarget).getTeam();
+            targetOwnerOrName = ((NpcPlayerOwned) entityTarget).getOwnerName();
+        } else if (entityTarget instanceof EntityPlayer) {
+            targetTeam = ((EntityPlayer) entityTarget).getTeam();
+            targetOwnerOrName = ((EntityPlayer) entityTarget).getCommandSenderName();
+        } else
+            return false;
+        
+        if (targetTeam != null)
+            if (targetTeam.isSameTeam(getTeam()))
+                return true;
+        if (ModAccessors.FTBU.areFriends(targetOwnerOrName, getOwnerName()))
+            return true;
+        
+        return false;
+    }
 
     public final EntityLivingBase getFollowingEntity() {
         if (followingPlayerName == null) {
@@ -898,7 +923,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     public final void setFollowingEntity(EntityLivingBase entity) {
-        if (entity instanceof EntityPlayer && canBeCommandedBy(entity.getCommandSenderName())) {
+        if (entity instanceof EntityPlayer && hasCommandPermissions(entity.getCommandSenderName())) {
             this.followingPlayerName = entity.getCommandSenderName();
         }
     }

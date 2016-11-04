@@ -117,7 +117,7 @@ public class NpcAIPlayerOwnedCourier extends NpcAI<NpcCourier> {
         if (te instanceof IInventory) {
             if(te instanceof IOwnable){
                 String name = ((IOwnable) te).getOwnerName();
-                if(name != null && !npc.canBeCommandedBy(name)){
+                if(name != null && !npc.hasCommandPermissions(name)){
                     return null;
                 }
             }

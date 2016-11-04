@@ -30,6 +30,8 @@ public interface IWorkSite extends ITorqueTile {
     public WorkType getWorkType();
 
     public Team getTeam();
+    
+    public String getOwnerName();
 
     public EnumSet<WorksiteUpgrade> getUpgrades();
 

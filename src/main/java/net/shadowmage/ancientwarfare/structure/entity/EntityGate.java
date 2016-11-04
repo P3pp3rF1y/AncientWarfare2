@@ -31,6 +31,7 @@ import net.minecraft.scoreboard.Team;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.interfaces.IEntityPacketHandler;
+import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketEntity;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -204,7 +205,16 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
         if (this.worldObj.isRemote) {
             return true;
         }
-        boolean canInteract = par1EntityPlayer.getCommandSenderName().equals(ownerName) || par1EntityPlayer.getTeam()!=null && par1EntityPlayer.getTeam().isSameTeam(this.getTeam());
+        
+        boolean canInteract = false;
+        if (ownerName.isEmpty()); 
+            canInteract = true; // neutral/worldgen gates
+        if (par1EntityPlayer.getCommandSenderName().equals(ownerName))
+            canInteract = true; // owned gates
+        if (par1EntityPlayer.getTeam()!=null && par1EntityPlayer.getTeam().isSameTeam(this.getTeam()))
+            canInteract = true; // same team gates
+        if (ModAccessors.FTBU.areFriends(par1EntityPlayer.getCommandSenderName(), this.ownerName))
+            canInteract = true; // friend gates
         if(canInteract){
             if (par1EntityPlayer.isSneaking()) {
                 NetworkHandler.INSTANCE.openGui(par1EntityPlayer, NetworkHandler.GUI_GATE_CONTROL, getEntityId(), 0, 0);
