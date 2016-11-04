@@ -433,6 +433,10 @@ public class AWNPCStatics extends ModConfiguration {
         entityTargetSettings.put(type, collection);
     }
 
+    /**
+     * Used for determining if AI injection should be done. To check if the entity
+     * already DOES have the desire to attack NPC's, use NpcAI.doesTargetNpcs instead.
+     */
     public boolean shouldEntityTargetNpcs(String entityName) {
         if (!autoTargetting) // old targetting in use
             return entitiesToTargetNpcs.contains(entityName);
@@ -445,25 +449,6 @@ public class AWNPCStatics extends ModConfiguration {
         // finally check if it's excluded
         return (!autoTargettingMobExclude.contains(entityName));
     }
-    
-    public boolean shouldEntityIgnoreNpcs(String entityName) {
-        if (!autoTargetting)
-            return false;  // this method is only useful for the new auto-targetting AI
-        // check forced first 
-        //if (autoTargettingMobForce.contains(entityName))
-        //    return false;
-        // check include next
-        //if (autoTargettingMobInclude.contains(entityName))
-        //    return false;
-        // finally check if it's excluded
-        return (autoTargettingMobExclude.contains(entityName));
-    }
-    
-    /*
-    public boolean isForcedEntity(String entityName) {
-        return autoTargettingMobForce.contains(entityName);
-    }
-    */
 
     public List<String> getValidTargetsFor(String npcType, String npcSubtype) {
         String type = npcType + (npcSubtype.isEmpty() ? "" : "." + npcSubtype);

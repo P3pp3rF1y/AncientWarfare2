@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
@@ -59,8 +60,8 @@ public abstract class NpcFaction extends NpcBase {
 
     @Override
     public boolean isHostileTowards(Entity e) {
-        if (AncientWarfareNPC.statics.shouldEntityIgnoreNpcs(EntityList.getEntityString(e)))
-            return false;
+        if (NpcAI.isAlwaysHostileToNpcs(e))
+            return true;
         if (e instanceof EntityPlayer) {
             int standing = FactionTracker.INSTANCE.getStandingFor(worldObj, e.getCommandSenderName(), getFaction());
             if (getNpcFullType().endsWith("elite")) {

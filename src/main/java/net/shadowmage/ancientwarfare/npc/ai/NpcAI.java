@@ -1,14 +1,25 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
+import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Vec3;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 /**
@@ -47,6 +58,8 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
     public static final int HUNGRY = 8;
 
     public static final int MIN_RANGE = 9;
+    
+    private static HashSet<String> HOSTILE_ENTITIES = new HashSet<String>();
 
     protected int moveRetryDelay;
     protected double moveSpeed = 1.d;
@@ -159,5 +172,18 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
             }
         }
         return pathEntity;
+    }
+    
+    /**
+     * Returns true if the given entity targets/attacks NPC's
+     */
+    public static boolean isAlwaysHostileToNpcs(Entity entity) {
+        if (HOSTILE_ENTITIES.contains(EntityList.getEntityString(entity)))
+            return true;
+        return false;
+    }
+    
+    public static void addHostileEntity(Entity entity) {
+        HOSTILE_ENTITIES.add(EntityList.getEntityString(entity));
     }
 }

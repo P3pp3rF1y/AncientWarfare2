@@ -20,7 +20,7 @@ import java.util.List;
 public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 
     private static int MAX_STAY_AWAY = 50, MAX_FLEE_RANGE = 16, HEIGHT_CHECK = 7, PURSUE_RANGE = 16 * 16;
-    private final IEntitySelector selector;
+    private final IEntitySelector hostileSelector;
     private final Comparator sorter;
     double distanceFromEntity = 16;
     private Vec3 fleeVector;
@@ -30,14 +30,14 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 
     public NpcAIFleeHostiles(NpcPlayerOwned npc) {
         super(npc);
-        selector = new IEntitySelector() {
+        hostileSelector = new IEntitySelector() {
             @Override
             public boolean isEntityApplicable(Entity selectedEntity) {
                 if(selectedEntity.isEntityAlive()) {
                     if (selectedEntity instanceof NpcBase)
                         return ((NpcBase) selectedEntity).isHostileTowards(NpcAIFleeHostiles.this.npc);
                     else
-                        return AncientWarfareNPC.statics.shouldEntityTargetNpcs(EntityList.getEntityString(selectedEntity));
+                        return NpcAI.isAlwaysHostileToNpcs(selectedEntity);
                 }
                 return false;
             }
@@ -74,7 +74,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
     }
     
     private EntityLiving getClosestVisibleHostile() {
-        List nearbyHostiles = this.npc.worldObj.selectEntitiesWithinAABB(EntityLiving.class, this.npc.boundingBox.expand(this.distanceFromEntity, 3.0D, this.distanceFromEntity), this.selector);
+        List nearbyHostiles = this.npc.worldObj.selectEntitiesWithinAABB(EntityLiving.class, this.npc.boundingBox.expand(this.distanceFromEntity, 3.0D, this.distanceFromEntity), this.hostileSelector);
         if (nearbyHostiles.isEmpty())
             return null;
         Collections.sort(nearbyHostiles, sorter);

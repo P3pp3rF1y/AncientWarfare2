@@ -14,6 +14,7 @@ import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public class EventHandler {
@@ -64,6 +65,7 @@ public class EventHandler {
                 }
                 if (targetTaskPriority != -1) {
                     entity.targetTasks.addTask(targetTaskPriority, new EntityAINearestAttackableTarget(entity, NpcBase.class, 0, AncientWarfareNPC.statics.autoTargettingConfigLos));
+                    NpcAI.addHostileEntity(entity);
                     //System.out.println("Injected EntityAINearestAttackableTarget on " + EntityList.getEntityString(entity) + " @" + targetTaskPriority);
                 }
             }
@@ -72,11 +74,9 @@ public class EventHandler {
             EntityCreature e = (EntityCreature) event.entity;
             if (event.entity instanceof EntitySkeleton) {
                 EntitySkeleton skel = (EntitySkeleton) event.entity;
-                if (skel.getSkeletonType() == 0)//normal
-                {
+                if (skel.getSkeletonType() == 0) { //normal
                     e.targetTasks.addTask(2, new EntityAINearestAttackableTarget(e, NpcBase.class, 0, false));
-                } else//wither
-                {
+                } else { //wither
                     e.tasks.addTask(3, new EntityAIAttackOnCollide(e, NpcBase.class, 1.d, false));
                     e.targetTasks.addTask(2, new EntityAINearestAttackableTarget(e, NpcBase.class, 0, false));
                 }

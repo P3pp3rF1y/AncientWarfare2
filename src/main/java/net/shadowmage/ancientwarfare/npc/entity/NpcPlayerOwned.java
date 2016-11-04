@@ -16,6 +16,7 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedRideHorse;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
@@ -169,8 +170,8 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
 
     @Override
     public boolean isHostileTowards(Entity entityTarget) {
-        if (AncientWarfareNPC.statics.shouldEntityIgnoreNpcs(EntityList.getEntityString(entityTarget)))
-            return false;
+        if (NpcAI.isAlwaysHostileToNpcs(entityTarget))
+            return true;
         else if ((entityTarget instanceof NpcPlayerOwned) || (entityTarget instanceof EntityPlayer)) {
             if (isEntitySameTeamOrFriends(entityTarget)) {
                 return false;
