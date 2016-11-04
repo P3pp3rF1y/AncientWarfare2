@@ -204,7 +204,7 @@ public class TemplateLoader {
     private int loadTemplatesFromZipStream(ZipInputStream zis) {
         int parsed = 0;
         StructureTemplate template;
-        ZipEntry entry;
+        ZipEntry entry = null;
         try {
             while ((entry = zis.getNextEntry()) != null) {
                 if (entry.isDirectory()) {
