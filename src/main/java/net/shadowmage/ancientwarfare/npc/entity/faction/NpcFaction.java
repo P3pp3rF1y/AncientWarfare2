@@ -59,6 +59,8 @@ public abstract class NpcFaction extends NpcBase {
 
     @Override
     public boolean isHostileTowards(Entity e) {
+        if (AncientWarfareNPC.statics.shouldEntityIgnoreNpcs(EntityList.getEntityString(e)))
+            return false;
         if (e instanceof EntityPlayer) {
             int standing = FactionTracker.INSTANCE.getStandingFor(worldObj, e.getCommandSenderName(), getFaction());
             if (getNpcFullType().endsWith("elite")) {
@@ -76,10 +78,16 @@ public abstract class NpcFaction extends NpcBase {
             NpcFaction npc = (NpcFaction) e;
             return AncientWarfareNPC.statics.shouldFactionBeHostileTowards(getFaction(), npc.getFaction());
         } else {
-            List<String> targets = AncientWarfareNPC.statics.getValidTargetsFor(getNpcFullType(), "");
-            String t = EntityList.getEntityString(e);
-            if (targets.contains(t)) {
-                return true;
+            // TODO
+            // This is for forced inclusions, which we don't currently support in new auto-targeting. This 
+            // is complicated because reasons. See comments in the AWNPCStatics class for details.
+            
+            if (!AncientWarfareNPC.statics.autoTargetting) {
+                List<String> targets = AncientWarfareNPC.statics.getValidTargetsFor(getNpcFullType(), "");
+                String t = EntityList.getEntityString(e);
+                if (targets.contains(t)) {
+                    return true;
+                }
             }
         }
         return false;

@@ -33,9 +33,11 @@ public class EventHandler {
         if (AncientWarfareNPC.statics.autoTargetting) {
             // Use new "auto injection"
             EntityCreature entity = (EntityCreature) event.entity;
-            if (entity.tasks.taskEntries.size() > 0) {
+            if (entity.tasks.taskEntries.size() > 0) { // verify that the entity uses new AI
                 int taskPriority = -1;
                 Iterator taskEntriesIterator = entity.tasks.taskEntries.iterator();
+                // now we want to search for this entities existing "EntityAIAttackOnCollide" task
+                // so we can inject NPC targetting with the same priority
                 while (taskEntriesIterator.hasNext()) {
                     EntityAITaskEntry taskEntry = (EntityAITaskEntry) taskEntriesIterator.next();
                     if (taskEntry.action instanceof EntityAIAttackOnCollide) {
@@ -51,6 +53,8 @@ public class EventHandler {
             if (entity.targetTasks.taskEntries.size() > 0) {
                 int targetTaskPriority = -1;
                 Iterator taskEntriesIterator = entity.targetTasks.taskEntries.iterator();
+                // Again search for a task to use for the same priority as our attack NPC task, but
+                // look for "EntityAINearestAttackableTarget" instead which is for ranged units
                 while (taskEntriesIterator.hasNext()) {
                     EntityAITaskEntry taskEntry = (EntityAITaskEntry) taskEntriesIterator.next();
                     if (taskEntry.action instanceof EntityAINearestAttackableTarget) {

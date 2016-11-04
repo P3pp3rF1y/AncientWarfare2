@@ -335,12 +335,13 @@ public class AWNPCStatics extends ModConfiguration {
                                                                                              "NOTE! Setting this to false will completely disable this section, and revert to the old behavior (see next section).").getBoolean();
         
         autoTargettingConfigLos = targetConfig.get(targetSettings, "auto_targetting.config.los", autoTargettingConfigLos, "Auto AI injection requires line-of-sight targetting?\n" + 
-                                                                                                                          "With old method, mobs did not need line-of-sight before the decided to chase an NPC. \n" +
-                                                                                                                          "This new auto-inject, they do need LOS. You can disable that here if you like.").getBoolean();
+                                                                                                                          "With old method, mobs did not need line-of-sight before they decided to chase an NPC. \n" +
+                                                                                                                          "With the new AI they do need LOS by default. Disable it here if you want for some reason.").getBoolean();
         
-        targets = targetConfig.get(targetSettings, "auto_targetting.exclude", new String[]{}, "Exclude entities from auto-injection, i.e. 'force passive'. Any entities here\n" + 
+        targets = targetConfig.get(targetSettings, "auto_targetting.exclude", new String[]{}, "Exclude these entities from auto-injection, i.e. 'force passive'. Any entities listed here\n" + 
                                                                                               "will *not* target NPC's, and NPC's in turn will not be alarmed by these entities.\n" +
-                                                                                              "Note that the mob will only be excluded if it is also NOT listed on the include list below.").getStringList();
+                                                                                              "Note that the mob will only be excluded if it is also NOT listed on the include list below.\n" + 
+                                                                                              "You can use NEI Integration mod to dump Entity names.").getStringList();
         autoTargettingMobExclude = new ArrayList<String>();
         Collections.addAll(autoTargettingMobExclude, targets);
         
@@ -441,9 +442,24 @@ public class AWNPCStatics extends ModConfiguration {
         return (!autoTargettingMobExclude.contains(entityName));
     }
     
+    public boolean shouldEntityIgnoreNpcs(String entityName) {
+        if (!autoTargetting)
+            return false;  // this method is only useful for the new auto-targetting AI
+        // check forced first 
+        //if (autoTargettingMobForce.contains(entityName))
+        //    return false;
+        // check include next
+        //if (autoTargettingMobInclude.contains(entityName))
+        //    return false;
+        // finally check if it's excluded
+        return (autoTargettingMobExclude.contains(entityName));
+    }
+    
+    /*
     public boolean isForcedEntity(String entityName) {
         return autoTargettingMobForce.contains(entityName);
     }
+    */
 
     public List<String> getValidTargetsFor(String npcType, String npcSubtype) {
         String type = npcType + (npcSubtype.isEmpty() ? "" : "." + npcSubtype);

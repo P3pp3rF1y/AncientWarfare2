@@ -167,6 +167,8 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
 
     @Override
     public boolean isHostileTowards(Entity e) {
+        if (AncientWarfareNPC.statics.shouldEntityIgnoreNpcs(EntityList.getEntityString(e)))
+            return false;
         if (e instanceof NpcPlayerOwned) {
             NpcPlayerOwned npc = (NpcPlayerOwned) e;
             Team t = npc.getTeam();
@@ -178,10 +180,16 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
             Team t = ((EntityPlayer) e).getTeam();
             return t != getTeam();
         } else {
-            String n = EntityList.getEntityString(e);
-            List<String> targets = AncientWarfareNPC.statics.getValidTargetsFor(getNpcType(), getNpcSubType());
-            if (targets.contains(n)) {
-                return true;
+            // TODO
+            // This is for forced inclusions, which we don't currently support in new auto-targeting. This 
+            // is complicated because reasons. See comments in the AWNPCStatics class for details.
+            
+            if (!AncientWarfareNPC.statics.autoTargetting) {
+                String n = EntityList.getEntityString(e);
+                List<String> targets = AncientWarfareNPC.statics.getValidTargetsFor(getNpcType(), getNpcSubType());
+                if (targets.contains(n)) {
+                    return true;
+                }
             }
         }
         return false;
