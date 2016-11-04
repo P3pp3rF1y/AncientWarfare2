@@ -11,6 +11,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcInventory;
+import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcCombat;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 
@@ -49,16 +50,21 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
             }
         };
         addGuiElement(textureInput);
+        
+        Button button;
 
-        Button button = new Button(buttonX, 36, 75, 12, "guistrings.npc.repack") {
-            @Override
-            protected void onPressed() {
-                getContainer().repack();
-                closeGui();
-            }
-        };
-        addGuiElement(button);
-
+        if (getContainer().entity instanceof NpcBase) {
+            
+            button = new Button(buttonX, 36, 75, 12, "guistrings.npc.togglefollow") {
+                @Override
+                protected void onPressed() {
+                    getContainer().togglefollow();
+                    closeGui();
+                }
+            };
+            addGuiElement(button);
+        }
+        
         button = new Button(buttonX, 48, 75, 12, "guistrings.npc.set_home") {
             @Override
             protected void onPressed() {
@@ -84,9 +90,18 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
             };
             addGuiElement(button);
         }
+        
+        button = new Button(buttonX, 84, 75, 12, "guistrings.npc.repack") {
+            @Override
+            protected void onPressed() {
+                getContainer().repack();
+                closeGui();
+            }
+        };
+        addGuiElement(button);
 
         if (player.capabilities.isCreativeMode) {
-            button = new Button(buttonX, 84, 75, 12, "guistrings.npc.creative_gui") {
+            button = new Button(buttonX, 96, 75, 12, "guistrings.npc.creative_gui") {
                 @Override
                 protected void onPressed() {
                     NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_CREATIVE, getContainer().entity.getEntityId(), 0, 0);

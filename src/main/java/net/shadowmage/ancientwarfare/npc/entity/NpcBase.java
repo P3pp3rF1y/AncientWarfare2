@@ -902,6 +902,10 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             this.followingPlayerName = entity.getCommandSenderName();
         }
     }
+    
+    public final void clearFollowingEntity() {
+        this.followingPlayerName = null;
+    }
 
     @Override
     public boolean allowLeashing() {

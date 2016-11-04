@@ -33,4 +33,10 @@ public class ContainerNpcBase<T extends NpcBase> extends ContainerEntityBase<T> 
         tag.setBoolean("clearHome", true);
         sendDataToServer(tag);
     }
+    
+    public void togglefollow() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setBoolean("togglefollow", true);
+        sendDataToServer(tag);
+    }
 }

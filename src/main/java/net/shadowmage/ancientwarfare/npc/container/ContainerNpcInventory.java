@@ -39,6 +39,11 @@ public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
                 entity.setHomeAreaAtCurrentPosition();
             } else if (tag.hasKey("clearHome")) {
                 entity.detachHome();
+            } else if (tag.hasKey("togglefollow")) {
+                if (entity.getFollowingEntity() != null && entity.getFollowingEntity().getCommandSenderName().equals(player.getCommandSenderName()))
+                    entity.clearFollowingEntity();
+                else
+                    entity.setFollowingEntity(player);
             }
             if (tag.hasKey("customTexture")) {
                 entity.setCustomTexRef(tag.getString("customTexture"));
