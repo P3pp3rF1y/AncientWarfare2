@@ -913,6 +913,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     public final void repackEntity(EntityPlayer player) {
+        // we already hide the button but we need to prevent repack server-side too
+        if (AWNPCStatics.repackCreativeOnly && !player.capabilities.isCreativeMode)
+            return;
         if (!player.worldObj.isRemote && isEntityAlive()) {
             onRepack();
             ItemStack item = InventoryTools.mergeItemStack(player.inventory, this.getItemToSpawn(), -1);

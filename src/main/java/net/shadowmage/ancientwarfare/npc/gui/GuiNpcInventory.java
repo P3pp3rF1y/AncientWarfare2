@@ -10,6 +10,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcInventory;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcCombat;
@@ -91,14 +92,16 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
             addGuiElement(button);
         }
         
-        button = new Button(buttonX, 84, 75, 12, "guistrings.npc.repack") {
-            @Override
-            protected void onPressed() {
-                getContainer().repack();
-                closeGui();
-            }
-        };
-        addGuiElement(button);
+        if (!AWNPCStatics.repackCreativeOnly || (AWNPCStatics.repackCreativeOnly && player.capabilities.isCreativeMode)) {
+            button = new Button(buttonX, 84, 75, 12, "guistrings.npc.repack") {
+                @Override
+                protected void onPressed() {
+                    getContainer().repack();
+                    closeGui();
+                }
+            };
+            addGuiElement(button);
+        }
 
         if (player.capabilities.isCreativeMode) {
             button = new Button(buttonX, 96, 75, 12, "guistrings.npc.creative_gui") {
