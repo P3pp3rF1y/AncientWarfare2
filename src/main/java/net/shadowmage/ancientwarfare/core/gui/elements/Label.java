@@ -11,9 +11,6 @@ public class Label extends GuiElement {
     public Label(int topLeftX, int topLeftY, String text) {
         super(topLeftX, topLeftY);
         setText(text);
-        this.setTooltipIfFound(text);
-        this.height = 8;
-        this.width = Minecraft.getMinecraft().fontRenderer.getStringWidth(this.text);
     }
 
     public Label setRenderCentered() {
@@ -44,8 +41,11 @@ public class Label extends GuiElement {
         if (text == null)
             text = "";
         this.text = StatCollector.translateToLocal(text);
+        this.setTooltipIfFound(text);
+        this.width = Minecraft.getMinecraft().fontRenderer.getStringWidth(this.text);
+        this.height = 8;
     }
-
+    
     public String getText() {
         return text;
     }
