@@ -44,6 +44,7 @@ import net.shadowmage.ancientwarfare.npc.item.ItemShield;
 import net.shadowmage.ancientwarfare.npc.skin.NpcSkinManager;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -63,8 +64,12 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     private ResourceLocation currentTexture = null;
     public static final int ORDER_SLOT = 5, UPKEEP_SLOT = 6, SHIELD_SLOT = 7;
     public ItemStack ordersStack;
-
     public ItemStack upkeepStack;
+    
+    // used for flee/distress AI
+    // this isn't really useful yet, combat NPC's will attack any mob they come in
+    // contact with during a distress response
+    public LinkedHashSet<Entity> nearbyHostiles = new LinkedHashSet<Entity>();
 
     private boolean aiEnabled = true;
 
@@ -474,9 +479,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     @Override
     public void setAttackTarget(EntityLivingBase entity) {
-        if (entity != null && !canTarget(entity)) {
+        if (entity != null && !canTarget(entity))
             return;
-        }
         super.setAttackTarget(entity);
     }
 

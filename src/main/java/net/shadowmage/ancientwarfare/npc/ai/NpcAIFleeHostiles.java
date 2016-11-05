@@ -4,44 +4,56 @@ import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Vec3;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.npc.entity.NpcCombat;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 
     private static int MAX_STAY_AWAY = 50, MAX_FLEE_RANGE = 16, HEIGHT_CHECK = 7, PURSUE_RANGE = 16 * 16;
-    private final IEntitySelector hostileSelector;
+    private final IEntitySelector hostileOrFriendlyCombatNpcSelector;
     private final Comparator sorter;
     double distanceFromEntity = 16;
     private Vec3 fleeVector;
     private int stayOutOfSightTimer = 0;
     private int fearLevel = 0; // fear makes NPC's wait/flee for progressively longer periods
-    boolean homeCompromised = false;
+    private boolean homeCompromised = false;
+    private LinkedHashSet<NpcCombat> nearbySoldiers = new LinkedHashSet<NpcCombat>();
+    
+    private int ticker = 0;
+    private int tickerMax = 5; // scan for hostiles every 5 ticks
 
     public NpcAIFleeHostiles(NpcPlayerOwned npc) {
         super(npc);
-        hostileSelector = new IEntitySelector() {
+        hostileOrFriendlyCombatNpcSelector = new IEntitySelector() {
             @Override
             public boolean isEntityApplicable(Entity selectedEntity) {
                 if(selectedEntity.isEntityAlive()) {
-                    if (selectedEntity instanceof NpcBase)
+                    if (selectedEntity instanceof NpcBase) {
+                        if (((NpcBase)selectedEntity).getNpcSubType().equals("soldier"))
+                            if (((NpcBase)selectedEntity).hasCommandPermissions(npc.getOwnerName()))
+                                    return true; // is a friendly soldier
                         return ((NpcBase) selectedEntity).isHostileTowards(NpcAIFleeHostiles.this.npc);
-                    else
+                    } else
                         return NpcAI.isAlwaysHostileToNpcs(selectedEntity);
                 }
                 return false;
             }
         };
+        
         sorter = new EntityAINearestAttackableTarget.Sorter(npc);
         this.setMutexBits(ATTACK + MOVE);
     }
@@ -55,34 +67,52 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
         if (fearLevel > 0)
             fearLevel--;
         
+        ticker++;
+        if (ticker != tickerMax)
+            return false;
+        ticker = 0;
+        
         boolean flee = false;
-        EntityLiving fleeTarget = getClosestVisibleHostile();
-        if (fleeTarget != null) {
+        findNearbyRelevantEntities();
+        if (!npc.nearbyHostiles.isEmpty()) {
+            Entity nearestHostile = npc.nearbyHostiles.iterator().next();
             if (npc.getTownHallPosition() != null || npc.hasHome())
                 flee = true;
             else {
-                fleeVector = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.npc, MAX_FLEE_RANGE, HEIGHT_CHECK, Vec3.createVectorHelper(fleeTarget.posX, fleeTarget.posY, fleeTarget.posZ));
-                if (fleeVector == null || fleeTarget.getDistanceSq(fleeVector.xCoord, fleeVector.yCoord, fleeVector.zCoord) < fleeTarget.getDistanceSqToEntity(this.npc))
+                fleeVector = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.npc, MAX_FLEE_RANGE, HEIGHT_CHECK, Vec3.createVectorHelper(nearestHostile.posX, nearestHostile.posY, nearestHostile.posZ));
+                if (fleeVector == null || nearestHostile.getDistanceSq(fleeVector.xCoord, fleeVector.yCoord, fleeVector.zCoord) < nearestHostile.getDistanceSqToEntity(this.npc))
                     flee = false; //did not find random flee-towards target, perhaps retry next tick
                 else
                     flee = true;
             }
+            if (flee) {
+                if (nearestHostile instanceof EntityLivingBase)
+                    npc.setAttackTarget((EntityLivingBase) nearestHostile);
+                else
+                    AncientWarfareCore.log.error("Attempted to flee an entity that isn't EntityLiving: '" + EntityList.getEntityString(nearestHostile) + "', ignoring! Please report this error.");
+            }
         }
-        if (flee)
-            npc.setAttackTarget(fleeTarget);
         return flee;
     }
     
-    private EntityLiving getClosestVisibleHostile() {
-        List nearbyHostiles = this.npc.worldObj.selectEntitiesWithinAABB(EntityLiving.class, this.npc.boundingBox.expand(this.distanceFromEntity, 3.0D, this.distanceFromEntity), this.hostileSelector);
-        if (nearbyHostiles.isEmpty())
-            return null;
-        Collections.sort(nearbyHostiles, sorter);
-        for (Object hostile : nearbyHostiles) {
-            if (this.npc.canEntityBeSeen((EntityLiving)hostile))
-                return (EntityLiving) hostile;
+    private void findNearbyRelevantEntities() {
+        npc.nearbyHostiles.clear();
+        nearbySoldiers.clear();
+        List nearbyHostilesOrFriendlySoldiers = this.npc.worldObj.selectEntitiesWithinAABB(EntityLiving.class, this.npc.boundingBox.expand(this.distanceFromEntity, 3.0D, this.distanceFromEntity), this.hostileOrFriendlyCombatNpcSelector);
+        if (nearbyHostilesOrFriendlySoldiers.isEmpty())
+            return;
+        
+        Collections.sort(nearbyHostilesOrFriendlySoldiers, sorter);
+        for (Object entity : nearbyHostilesOrFriendlySoldiers) {
+            if (npc.canEntityBeSeen((Entity)entity)) {
+                if (entity instanceof NpcBase) {
+                        if (((NpcBase)entity).getNpcSubType().equals("soldier"))
+                            if (((NpcBase)entity).hasCommandPermissions(npc.getOwnerName()))
+                                nearbySoldiers.add((NpcCombat)entity);
+                } else
+                        npc.nearbyHostiles.add((Entity)entity);
+            }
         }
-        return null;
     }
 
     @Override
@@ -105,13 +135,16 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
         else
             fearLevel = MAX_STAY_AWAY; // cap the fear level in the event of hostile's death
         
-        if (stayOutOfSightTimer == 0)
+        if (stayOutOfSightTimer == 0) {
+            findNearbyRelevantEntities(); // rescan for hostiles
             shouldPanic = false;
+        }
         
         if (!shouldPanic)
-            if (getClosestVisibleHostile() != null) {
+            if (!npc.nearbyHostiles.isEmpty()) {
                 stayOutOfSightTimer = MAX_STAY_AWAY + fearLevel;
                 shouldPanic = true;
+                announceDistress();
             }
         
         return shouldPanic;
@@ -133,8 +166,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
             pos = new BlockPosition(cc.posX, cc.posY, cc.posZ);
             if (distSq < MIN_RANGE) {
                 // NPC is home, check for visible hostiles
-                EntityLiving fleeTarget = getClosestVisibleHostile();
-                if (fleeTarget != null) {
+                if (!npc.nearbyHostiles.isEmpty()) {
                     homeCompromised = true;
                     npc.addAITask(TASK_ALARM);
                 }
@@ -182,5 +214,21 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
         npc.removeAITask(TASK_GO_HOME + TASK_FLEE + TASK_ALARM);
         homeCompromised = false;
     }
+    
+    
+    private void announceDistress() {
+        for (NpcCombat soldier : nearbySoldiers) {
+            soldier.respondToDistress(npc);
+        }
+        /*
+        List nearbyFriendlyCombatNpcs = this.npc.worldObj.selectEntitiesWithinAABB(EntityLiving.class, this.npc.boundingBox.expand(this.distanceFromEntity, 3.0D, this.distanceFromEntity), friendlyCombatNpcSelector);
+        if (nearbyFriendlyCombatNpcs.isEmpty())
+            return;
+        for (Object defender : nearbyFriendlyCombatNpcs) {
+            ((NpcCombat)defender).respondToDistress(npc);
+        }
+        */
+    }
+    
 
 }

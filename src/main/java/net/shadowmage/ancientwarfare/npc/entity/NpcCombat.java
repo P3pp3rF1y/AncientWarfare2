@@ -25,6 +25,8 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
     private EntityAIBase collideAI;
     private EntityAIBase arrowAI;
     private NpcAIPlayerOwnedPatrol patrolAI;
+    
+    private NpcBase distressedTarget;
 
     public NpcCombat(World par1World) {
         super(par1World);
@@ -50,6 +52,7 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
         //6--empty....
         //7==combat task, inserted from onweaponinventoryupdated
         this.tasks.addTask(8, new NpcAIMedicBase(this));
+        this.tasks.addTask(8, new NpcAIDistressResponse(this));
         this.tasks.addTask(9, (patrolAI = new NpcAIPlayerOwnedPatrol(this)));
 
         this.tasks.addTask(10, new NpcAIMoveHome(this, 50F, 5F, 20F, 5F));
@@ -119,9 +122,9 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
         if (stack != null && stack.getItem() != null) {
             Item item = stack.getItem();
             Collection<String> tools = item.getToolClasses(stack);
-            if(tools.contains("axe")){
+            if(tools.contains("axe")) {
                 return "medic";
-            }else if(tools.contains("hammer"))
+            } else if(tools.contains("hammer"))
                 return "engineer";
             if (isBow(item)) {
                 return "archer";
@@ -159,4 +162,16 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
         RangeAttackHelper.DEFAULT.doRangedAttack(this, par1EntityLivingBase, par2);
     }
 
+    public void respondToDistress(NpcBase source) {
+        // TODO: Target prioritizing or something...?
+        distressedTarget = source;
+    }
+
+    public NpcBase getDistressedTarget() {
+        return distressedTarget;
+    }
+    
+    public void clearDistress() {
+        distressedTarget = null;
+    }
 }
