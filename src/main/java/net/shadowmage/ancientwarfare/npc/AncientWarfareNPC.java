@@ -11,6 +11,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
@@ -112,6 +113,7 @@ public class AncientWarfareNPC {
         proxy.loadSkins();
         AWNPCEntityLoader.loadNpcSubtypeEquipment();
         statics.save();
+        ForgeChunkManager.setForcedChunkLoadingCallback(instance, new AW2NpcChunkloaderCallback());
     }
 
     @SubscribeEvent

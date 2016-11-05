@@ -7,13 +7,18 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.common.ForgeChunkManager.Type;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
+import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.tile.TileOwned;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.container.ContainerTownHall;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
@@ -34,6 +39,8 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
     private final InventoryBasic inventory = new InventoryBasic(27);
 
     private List<ContainerTownHall> viewers = new ArrayList<ContainerTownHall>();
+    
+    private ForgeChunkManager.Ticket ticket;
 
     public TileTownHall(){
         super("owner");
@@ -41,16 +48,44 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
 
     @Override
     public void updateEntity() {
-        if (worldObj.isRemote) {
+        if (worldObj.isRemote)
             return;
-        }
         updateDelayTicks--;
         if (updateDelayTicks <= 0) {
             broadcast();
             updateDelayTicks = AWNPCStatics.townUpdateFreq;
+            if (AWNPCStatics.townChunkLoadRadius > -1)
+                loadChunks();
         }
     }
 
+    private void loadChunks() {
+        while(ticket == null)
+            ticket = ForgeChunkManager.requestTicket(AncientWarfareNPC.instance, worldObj, Type.NORMAL);
+        if (ticket==null)
+            return; // no permision?
+            
+        ticket.getModData().setInteger("blockX", xCoord);
+        ticket.getModData().setInteger("blockY", yCoord);
+        ticket.getModData().setInteger("blockZ", zCoord);
+       
+        for (int chunkX = (xCoord>>4) - AWNPCStatics.townChunkLoadRadius; chunkX <= (xCoord>>4) + AWNPCStatics.townChunkLoadRadius; chunkX++)
+            for (int chunkZ = (zCoord>>4) - AWNPCStatics.townChunkLoadRadius; chunkZ <= (zCoord>>4) + AWNPCStatics.townChunkLoadRadius; chunkZ++)
+                ForgeChunkManager.forceChunk(ticket, new ChunkCoordIntPair(chunkX, chunkZ));
+    }
+    
+    public void unloadChunks() {
+        for (int chunkX = (xCoord>>4) - AWNPCStatics.townChunkLoadRadius; chunkX <= (xCoord>>4) + AWNPCStatics.townChunkLoadRadius; chunkX++)
+            for (int chunkZ = (zCoord>>4) - AWNPCStatics.townChunkLoadRadius; chunkZ <= (zCoord>>4) + AWNPCStatics.townChunkLoadRadius; chunkZ++)
+                ForgeChunkManager.unforceChunk(ticket, new ChunkCoordIntPair(chunkX, chunkZ));
+    }
+    
+    public void loadTicket(ForgeChunkManager.Ticket ticket) {
+        if (this.ticket == null)
+               this.ticket = ticket;
+        loadChunks();
+    }
+    
     public void addViewer(ContainerTownHall viewer) {
         if (!viewers.contains(viewer)) {
             viewers.add(viewer);
@@ -125,6 +160,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
         tag.setTag("deathNotices", entryList);
         tag.setInteger("range", broadcastRange);
         tag.setBoolean("alarmActive", alarmActive);
+        
     }
 
     @Override

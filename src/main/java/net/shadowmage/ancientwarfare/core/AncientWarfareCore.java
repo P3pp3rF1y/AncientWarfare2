@@ -11,6 +11,9 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.WorldEvent;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.command.CommandResearch;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
@@ -20,6 +23,7 @@ import net.shadowmage.ancientwarfare.core.container.ContainerResearchBook;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchStation;
 import net.shadowmage.ancientwarfare.core.crafting.AWCoreCrafting;
 import net.shadowmage.ancientwarfare.core.gamedata.Timekeeper;
+import net.shadowmage.ancientwarfare.core.interop.InteropFtbuChunkData;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.item.AWCoreItemLoader;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -73,6 +77,7 @@ public class AncientWarfareCore {
         FMLCommonHandler.instance().bus().register(ResearchTracker.INSTANCE);
         FMLCommonHandler.instance().bus().register(Timekeeper.INSTANCE);
         FMLCommonHandler.instance().bus().register(this);
+        MinecraftForge.EVENT_BUS.register(this);
 
 
         /**
@@ -116,6 +121,22 @@ public class AncientWarfareCore {
         if (modID.equals(evt.modID)) {
             statics.save();
             proxy.onConfigChanged();
+        }
+    }
+    
+    @SubscribeEvent
+    public void onWorldLoad(WorldEvent.Load event) {
+        if (ModAccessors.FTBU_LOADED) {
+            World world = event.world;
+            if (!world.isRemote) {
+                if (world.provider.dimensionId == 0) {
+                    InteropFtbuChunkData.INSTANCE = (InteropFtbuChunkData) world.mapStorage.loadData(InteropFtbuChunkData.class, InteropFtbuChunkData.ID);
+                    if (InteropFtbuChunkData.INSTANCE == null) {
+                        InteropFtbuChunkData.INSTANCE = new InteropFtbuChunkData(InteropFtbuChunkData.ID);
+                        world.mapStorage.setData(InteropFtbuChunkData.ID, InteropFtbuChunkData.INSTANCE);
+                    }
+                }
+            }
         }
     }
 }

@@ -1,22 +1,33 @@
 package net.shadowmage.ancientwarfare.npc.block;
 
+import java.util.ArrayList;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import ftb.utils.world.LMPlayerServer;
+import ftb.utils.world.LMWorldServer;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.IconRotationMap;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
+import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 
@@ -102,5 +113,24 @@ public class BlockTownHall extends Block implements IRotatableBlock {
             else
                 tileTownHall.alarmActive = false;
         }
+    }
+    
+    @Override
+    public void onBlockPlacedBy(World world, int posX, int posY, int posZ, EntityLivingBase placer, ItemStack is) {
+        if (!world.isRemote) {
+            //((TileTownHall) world.getTileEntity(posX, posY, posZ)).setOwnedChunks(ModAccessors.FTBU.claimChunks(placer, posX, posY, posZ));
+            ModAccessors.FTBU.claimChunks(world, placer, posX, posY, posZ);
+        }
+    }
+    
+    @Override
+    public boolean removedByPlayer(World world, EntityPlayer player, int posX, int posY, int posZ, boolean willHarvest) {
+        if (!world.isRemote) {
+            String teOwner = ((TileTownHall) world.getTileEntity(posX, posY, posZ)).getOwnerName();
+            ModAccessors.FTBU.unclaimChunks(world, teOwner, posX, posY, posZ);
+            ((TileTownHall) world.getTileEntity(posX, posY, posZ)).unloadChunks();
+            //System.out.println(((TileTownHall) world.getTileEntity(posX, posY, posZ)).getOwnerName());
+        }
+        return super.removedByPlayer(world, player, posX, posY, posZ, willHarvest);
     }
 }

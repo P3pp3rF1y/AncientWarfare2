@@ -59,6 +59,8 @@ public class AWNPCStatics extends ModConfiguration {
     public static boolean npcAllowUpkeepAnyInventory = true;
     public static int townMaxRange = 100;
     public static int townUpdateFreq = 100; //5 second broadcast frequency
+    public static int townChunkClaimRadius = 1;
+    public static int townChunkLoadRadius = -1;
     public static boolean exportEntityNames = false;
     public static boolean npcAIDebugMode = false;
 
@@ -255,7 +257,22 @@ public class AWNPCStatics extends ModConfiguration {
         townUpdateFreq = config.get(serverOptions, "town_hall_ticks", townUpdateFreq, "Default=" + townUpdateFreq + "\n" +
                 "How many game ticks should pass between Town Hall updates." +
                 "This affect how an NPC can change its selected Town Hall by moving to different places.\n" +
-                "Lower values will make an NPC change its Town Hall faster, but is more costly for a server.").getInt();
+                "Lower values will make an NPC change its Town Hall faster, but is more costly for a server.\n" +
+                "If chunk loading is available (via FTBU_AW2), this also set the frequency of force-loading chunks.").getInt();
+        
+        townChunkClaimRadius = config.get(serverOptions, "town_hall_chunk_claim_radius", townChunkClaimRadius, "Default=" + townChunkClaimRadius + "\n" +
+                "[ REQUIRES FTBU_AW2 ]\n" +
+                "Specify the claimed chunk radius around Town Hall, not inclusive of the Town Hall chunk itself.\n" +
+                "E.g. 0 would claim the chunk of the Town Hall only, 1 = a 3x3 chunk area centered on the Town Hall.\n" +
+                "Warning: changing this value will NOT update existing worlds. You will have to manually destroy/replace\n" +
+                "every Town Hall block to reflect any new value you set.").getInt();
+        
+        townChunkLoadRadius = config.get(serverOptions, "town_hall_chunk_load_radius", townChunkLoadRadius, "Default=" + townChunkLoadRadius + "\n" +
+                "Specify the loaded chunk radius around Town Hall, not inclusive of the Town Hall chunk itself.\n" +
+                "E.g. 2 = a 5x5 chunk area centered on the Town Hall, 3 = a 7x7 area.\n" +
+                "If using chunk claiming via FTBU_AW2, you probably want this to be at least 1 higher than the claim radius.\n" +
+                "WARNING - There is a good chance you'll want to edit the forgeChunkLoading config - the default mod limit of\n"+
+                "25 chunks per ticket may be too low (each Town Hall has it's own ticket), as well as total ticket limit.").getInt();
 
         factionLossOnDeath = factionConfig.get(factionSettings, "faction_loss_on_kill", factionLossOnDeath, "Faction Loss On Kill\nDefault=10\n" +
                 "How much faction standing should be lost if you or one of your minions kills a faction based NPC.").getInt();
