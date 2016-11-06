@@ -7,11 +7,18 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
+import ftb.lib.FTBLib;
+import ftb.lib.api.notification.MouseAction;
+import ftb.lib.api.notification.Notification;
 import ftb.utils.api.FriendsAPI;
+import ftb.utils.mod.FTBU;
 import ftb.utils.world.LMPlayerServer;
 import ftb.utils.world.LMWorldServer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -20,12 +27,6 @@ import net.shadowmage.ancientwarfare.core.interop.InteropFtbuChunkData.ChunkLoca
 import net.shadowmage.ancientwarfare.core.interop.InteropFtbuChunkData.TownHallOwner;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 
-/**
- * TODO:
- * FTBU supports notifications. Change the log output messages here to use Notifications instead!
- * @author CosmicDan
- *
- */
 public class InteropFtbu implements InteropFtbuInterface {
     @Override
     public boolean areFriends(String player1, String player2) {
@@ -79,22 +80,47 @@ public class InteropFtbu implements InteropFtbuInterface {
         }
     }
     
-    
+    private void notifyPlayer(String ownerName, String title, IChatComponent msg, List<IChatComponent> hoverTextLines) {
+        if (ownerName.isEmpty())
+            return;
+        LMPlayerServer p = LMWorldServer.inst.getPlayer(ownerName);
+        if (p != null) {
+            IChatComponent cc = FTBU.mod.chatComponent(title);
+            cc.getChatStyle().setColor(EnumChatFormatting.RED);
+            Notification n = new Notification("claim_change" + p.world.getMCWorld().getTotalWorldTime(), cc, 6000);
+            n.setDesc(msg);
+            
+            MouseAction mouse = new MouseAction();
+            for(IChatComponent hoverTextLine : hoverTextLines)
+                mouse.hover.add(hoverTextLine);
+            n.setMouseAction(mouse);
+            
+            if (p.getPlayer() != null)
+                FTBLib.notifyPlayer(p.getPlayer(), n);
+        } else {
+            // TODO
+            System.out.println("Target player is not online!");
+        }
+    }
 
     @Override
     public void unclaimChunks(World world, String ownerName, int posX, int posY, int posZ) {
         LMPlayerServer p = LMWorldServer.inst.getPlayer(ownerName);
         Chunk origin = world.getChunkFromBlockCoords(posX, posZ);
-        AncientWarfareCore.log.info("Removing TownHall owner for BlockPos: " + posX + "x" + posY + "x" + posZ);
+        //AncientWarfareCore.log.info("Removing TownHall owner for BlockPos: " + posX + "x" + posY + "x" + posZ);
+        String targetPlayerToNotify = "";
+        String notificationTitle = "";
+        IChatComponent notificationMsg = null;
+        List<IChatComponent> hoverTextLines = new ArrayList<IChatComponent>();
         for (int chunkX = origin.xPosition - AWNPCStatics.townChunkClaimRadius; chunkX <= origin.xPosition + AWNPCStatics.townChunkClaimRadius; chunkX++) {
             for (int chunkZ = origin.zPosition - AWNPCStatics.townChunkClaimRadius; chunkZ <= origin.zPosition + AWNPCStatics.townChunkClaimRadius; chunkZ++) {
-                AncientWarfareCore.log.info("Checking chunk at BlockPos for unclaiming: " + chunkX*16 + "x" + chunkZ*16);
+                //AncientWarfareCore.log.info("Checking chunk at BlockPos for unclaiming: " + chunkX*16 + "x" + chunkZ*16);
                 // check if this chunk is claimed
                 ChunkLocation thisChunk = new ChunkLocation(chunkX, chunkZ, world.provider.dimensionId);
                 List<TownHallOwner> townHallOwners = InteropFtbuChunkData.INSTANCE.chunkClaims.get(thisChunk);
                 if (townHallOwners == null) {
                     // shouldn't happen! Or maybe it can? I don't know lol
-                    AncientWarfareCore.log.info(" - Chunk was claimed but had no Town Hall owner? Meh, unclaim it and just return");
+                    //AncientWarfareCore.log.info(" - Chunk was claimed but had no Town Hall owner? Meh, unclaim it and just return");
                     p.unclaimChunk(world.provider.dimensionId, chunkX, chunkZ);
                     return;
                 }
@@ -108,10 +134,19 @@ public class InteropFtbu implements InteropFtbuInterface {
                     TownHallOwner townHallOwner = townHallOwnersIterator.next();
                     if (townHallOwner.equals(destroyedTownHall)) {
                         if (townHallIndex == 0) {
-                            AncientWarfareCore.log.info(" - Removed a destroyed town hall that owned and was controlling this chunk, possible territory loss...");
+                            //AncientWarfareCore.log.info(" - Removed a destroyed town hall that owned and was controlling this chunk, possible territory loss...");
                             removedOwner = true;
-                        } else
-                            AncientWarfareCore.log.info(" - Removed a destroyed town hall that wasn't controlling the chunk. Territory unchanged.");
+                        } else {
+                            if (targetPlayerToNotify.isEmpty()) {
+                                // least concerning notification
+                                targetPlayerToNotify = townHallOwner.getOwnerName();
+                                notificationTitle = "notification.townhall_lost";
+                                notificationMsg = FTBU.mod.chatComponent("notification.townhall_lost_secondary.msg");
+                                hoverTextLines.add(FTBU.mod.chatComponent("notification.chunk_position", origin.xPosition, origin.zPosition));
+                                hoverTextLines.add(FTBU.mod.chatComponent("notification.click_to_remove"));
+                            }
+                            //AncientWarfareCore.log.info(" - Removed a destroyed town hall that wasn't controlling the chunk. Territory unchanged.");
+                        }
                         townHallOwnersIterator.remove();
                     }
                     townHallIndex++;
@@ -125,26 +160,52 @@ public class InteropFtbu implements InteropFtbuInterface {
                     boolean chunkIsStillOwned = false;
                     for (TownHallOwner townHallOwner : townHallOwners) {
                         if (townHallOwner.getOwnerName().equals(ownerName)) {
-                            AncientWarfareCore.log.info(" ... found an existing Town Hall for the same owner. This chunk claim is unchanged.");
+                            //AncientWarfareCore.log.info(" ... found an existing Town Hall for the same owner. This chunk claim is unchanged.");
+                            if (targetPlayerToNotify.isEmpty()) {
+                                // least concerning notification
+                                targetPlayerToNotify = townHallOwner.getOwnerName();
+                                notificationTitle = "notification.townhall_lost";
+                                notificationMsg = FTBU.mod.chatComponent("notification.townhall_lost_secondary.msg");
+                                hoverTextLines.add(FTBU.mod.chatComponent("notification.chunk_position", origin.xPosition, origin.zPosition));
+                                hoverTextLines.add(FTBU.mod.chatComponent("notification.click_to_remove"));
+                            }
                             chunkIsStillOwned = true;
                         }
                     }
                     if (!chunkIsStillOwned) {
                         // Original player lost the chunk but another player has a stake on it
-                        AncientWarfareCore.log.info(" ... territory lost to a nearby player: " + townHallOwners.get(0).getOwnerName());
+                        //AncientWarfareCore.log.info(" ... territory lost to a nearby player: " + townHallOwners.get(0).getOwnerName());
                         p.unclaimChunk(world.provider.dimensionId, chunkX, chunkZ);
                         LMPlayerServer pNew = LMWorldServer.inst.getPlayer(townHallOwners.get(0).getOwnerName());
                         pNew.claimChunk(world.provider.dimensionId, chunkX, chunkZ);
+                        
+                        // very concerning notification
+                        targetPlayerToNotify = p.getProfile().getName();
+                        notificationTitle = "notification.townhall_lost";
+                        notificationMsg = FTBU.mod.chatComponent("notification.townhall_lost_flipped.msg", townHallOwners.get(0).getOwnerName());
+                        hoverTextLines.clear();
+                        hoverTextLines.add(FTBU.mod.chatComponent("notification.chunk_position", origin.xPosition, origin.zPosition));
+                        hoverTextLines.add(FTBU.mod.chatComponent("notification.click_to_remove"));
                     }
                 } else {
                     // there is no owner of the chunk left at all
-                    AncientWarfareCore.log.info(" ... no owner left, territory relinquished to the wilderness.");
+                    //AncientWarfareCore.log.info(" ... no owner left, territory relinquished to the wilderness.");
                     p.unclaimChunk(world.provider.dimensionId, chunkX, chunkZ);
                     InteropFtbuChunkData.INSTANCE.chunkClaims.remove(thisChunk);
+                    // somewhat concerning notification (don't replace a flipped notification)
+                    if (targetPlayerToNotify.isEmpty()) {
+                        targetPlayerToNotify = p.getProfile().getName();
+                        notificationTitle = "notification.townhall_lost";
+                        notificationMsg = FTBU.mod.chatComponent("notification.townhall_lost_wilderness.msg");
+                        hoverTextLines.clear();
+                        hoverTextLines.add(FTBU.mod.chatComponent("notification.chunk_position", origin.xPosition, origin.zPosition));
+                        hoverTextLines.add(FTBU.mod.chatComponent("notification.click_to_remove"));
+                    }
                 }
                 
             }
         }
+        notifyPlayer(targetPlayerToNotify, notificationTitle, notificationMsg, hoverTextLines);
         InteropFtbuChunkData.INSTANCE.markDirty();
     }
 
