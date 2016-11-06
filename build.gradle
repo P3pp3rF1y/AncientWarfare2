@@ -28,6 +28,9 @@ version = project.major +"."+ project.minor +"."+  project.build+"-"+ project.re
 group = "shadowmage"
 archivesBaseName = "ancientwarfare"
 
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
 task updateVersion(type:Copy){
     ant.propertyfile(file: versionFile) {
         entry(key: 'build', type: 'int', operation: '+', value: 001)
