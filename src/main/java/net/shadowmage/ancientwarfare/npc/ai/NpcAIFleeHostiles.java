@@ -36,7 +36,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
     private int ticker = 0;
     private int tickerMax = 5; // scan for hostiles every 5 ticks
 
-    public NpcAIFleeHostiles(NpcPlayerOwned npc) {
+    public NpcAIFleeHostiles(final NpcPlayerOwned npc) {
         super(npc);
         hostileOrFriendlyCombatNpcSelector = new IEntitySelector() {
             @Override
