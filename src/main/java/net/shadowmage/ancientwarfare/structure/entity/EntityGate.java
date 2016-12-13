@@ -207,7 +207,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
         }
         
         boolean canInteract = false;
-        if (ownerName.isEmpty()); 
+        if (ownerName == null || ownerName.isEmpty()); 
             canInteract = true; // neutral/worldgen gates
         if (par1EntityPlayer.getCommandSenderName().equals(ownerName))
             canInteract = true; // owned gates
