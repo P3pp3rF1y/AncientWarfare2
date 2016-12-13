@@ -361,7 +361,7 @@ public class AWNPCStatics extends ModConfiguration {
         
         targets = targetConfig.get(targetSettings, "auto_targetting.exclude", new String[]{}, "Exclude these entities from auto-injection, i.e. 'force passive'. Any entities listed here\n" + 
                                                                                               "will *not* target NPC's, and NPC's in turn will not be alarmed by these entities.\n" +
-                                                                                              "Note that the mob will only be excluded if it is also NOT listed on the include list below.\n" + 
+                                                                                              //"Note that the mob will only be excluded if it is also NOT listed on the include list below.\n" + 
                                                                                               "Check the AncientWarfareNpc.cfg for a setting to export entity names.").getStringList();
         autoTargettingMobExclude = new ArrayList<String>();
         Collections.addAll(autoTargettingMobExclude, targets);

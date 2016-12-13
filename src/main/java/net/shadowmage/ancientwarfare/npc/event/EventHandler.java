@@ -1,6 +1,8 @@
 package net.shadowmage.ancientwarfare.npc.event;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -34,16 +36,20 @@ public class EventHandler {
         if (AncientWarfareNPC.statics.autoTargetting) {
             // Use new "auto injection"
             EntityCreature entity = (EntityCreature) event.entity;
+            
+            // only for melee units
             if (entity.tasks.taskEntries.size() > 0) { // verify that the entity uses new AI
                 int taskPriority = -1;
                 Iterator taskEntriesIterator = entity.tasks.taskEntries.iterator();
-                // now we want to search for this entities existing "EntityAIAttackOnCollide" task
+                // search for entity's existing "EntityAIAttackOnCollide" task
                 // so we can inject NPC targetting with the same priority
                 while (taskEntriesIterator.hasNext()) {
                     EntityAITaskEntry taskEntry = (EntityAITaskEntry) taskEntriesIterator.next();
                     if (taskEntry.action instanceof EntityAIAttackOnCollide) {
-                        if (((EntityAIAttackOnCollide)taskEntry.action).classTarget == EntityPlayer.class)
+                        if (((EntityAIAttackOnCollide)taskEntry.action).classTarget == EntityPlayer.class) {
+                            // TODO: Task-based exclusions?
                             taskPriority = taskEntry.priority;
+                        }
                     }
                 }
                 if (taskPriority != -1) {
@@ -51,6 +57,8 @@ public class EventHandler {
                     //System.out.println("Injected EntityAIAttackOnCollide on " + EntityList.getEntityString(entity) + " @" + taskPriority);
                 }
             }
+            
+            // all mobs that can attack somebody should have targetTasks
             if (entity.targetTasks.taskEntries.size() > 0) {
                 int targetTaskPriority = -1;
                 Iterator taskEntriesIterator = entity.targetTasks.taskEntries.iterator();
@@ -59,12 +67,15 @@ public class EventHandler {
                 while (taskEntriesIterator.hasNext()) {
                     EntityAITaskEntry taskEntry = (EntityAITaskEntry) taskEntriesIterator.next();
                     if (taskEntry.action instanceof EntityAINearestAttackableTarget) {
-                        if (((EntityAINearestAttackableTarget)taskEntry.action).targetClass == EntityPlayer.class)
+                        if (((EntityAINearestAttackableTarget)taskEntry.action).targetClass == EntityPlayer.class) {
+                            // TODO: Task-based exclusions?
                             targetTaskPriority = taskEntry.priority;
+                        }
                     }
                 }
                 if (targetTaskPriority != -1) {
                     entity.targetTasks.addTask(targetTaskPriority, new EntityAINearestAttackableTarget(entity, NpcBase.class, 0, AncientWarfareNPC.statics.autoTargettingConfigLos));
+                    // add this entity to the internal list of hostile mobs, so NPC's know to fight it
                     NpcAI.addHostileEntity(entity);
                     //System.out.println("Injected EntityAINearestAttackableTarget on " + EntityList.getEntityString(entity) + " @" + targetTaskPriority);
                 }
