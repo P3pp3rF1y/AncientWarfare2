@@ -10,7 +10,7 @@ public class AWCoreStatics extends ModConfiguration{
 
     public static boolean DEBUG = true;
     public static final String resourcePath = "/assets/ancientwarfare/resources/";
-    public static int timekeeperRefreshRate = 60;
+    public static int timekeeperRefreshRate = 10;
 
     /**
      * category names
@@ -50,9 +50,10 @@ public class AWCoreStatics extends ModConfiguration{
                 "Enable extra debug console output and runtime checks.\n" +
                 "Can degrade performance if left on and lead to large log files.");
         
-        timekeeperRefreshRate = config.get("timekeeper_refresh_rate", generalOptions, timekeeperRefreshRate,
+        timekeeperRefreshRate = config.get(generalOptions, "timekeeper_refresh_rate", timekeeperRefreshRate,
                 "How often the built-in timekeeper will update it's time. Specified in ticks.\n" +
-                "Timekeeper is currently only used by NPC's to determine the time of day.").getInt();
+                "Timekeeper is used by NPC's to determine the time of day, possibly others.\n" + 
+                "The Reign Additionals mod from the Reign modpack also uses it for it's HUD clock.").getInt();
 
         /**
          * server options

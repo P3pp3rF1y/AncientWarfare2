@@ -75,7 +75,7 @@ public class AncientWarfareCore {
          */
         NetworkHandler.INSTANCE.registerNetwork();//register network handler, server side
         FMLCommonHandler.instance().bus().register(ResearchTracker.INSTANCE);
-        FMLCommonHandler.instance().bus().register(Timekeeper.INSTANCE);
+        FMLCommonHandler.instance().bus().register(new Timekeeper());
         FMLCommonHandler.instance().bus().register(this);
         MinecraftForge.EVENT_BUS.register(this);
 

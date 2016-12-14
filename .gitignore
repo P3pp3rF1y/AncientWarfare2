@@ -11,3 +11,8 @@
 /.metadata
 /.idea
 *.iml
+
+/src/main/java/ftb/
+/src/main/java/latmod/
+/src/main/resources/assets/ftbl/
+/src/main/resources/assets/ftbu/

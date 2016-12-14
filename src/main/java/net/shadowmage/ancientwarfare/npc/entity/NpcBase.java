@@ -1386,7 +1386,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
     
     public boolean shouldSleep() {
-        return Timekeeper.INSTANCE.isNighttime();
+        return Timekeeper.isNighttime();
     }
     
     // Only used by the renderer

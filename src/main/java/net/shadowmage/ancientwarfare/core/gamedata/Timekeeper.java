@@ -6,12 +6,15 @@ import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 
 public final class Timekeeper {
-    public static final Timekeeper INSTANCE = new Timekeeper();
+    //public static final Timekeeper INSTANCE = new Timekeeper();
     
-    private int timeOfDayInTicks;
-    private int TICKER = 0;
+    private static int timeOfDayInTicks;
+    private static int timeOfDayHour;
+    private static int timeOfDayMinute;
     
-    private Timekeeper() {}
+    private static int TICKER = 0;
+    
+    public Timekeeper() {}
 
     @SubscribeEvent
     public void serverTick(WorldTickEvent event) {
@@ -20,6 +23,8 @@ public final class Timekeeper {
             if (TICKER >= AWCoreStatics.timekeeperRefreshRate) {
                 TICKER = 0;
                 timeOfDayInTicks = (int) (event.world.getWorldTime() % 24000);
+                timeOfDayHour = timeOfDayInTicks / 1000 + 6;
+                timeOfDayMinute = (timeOfDayInTicks % 1000) * 60 / 1000;
             }
         }
     }
@@ -29,15 +34,23 @@ public final class Timekeeper {
      * Get the current time of day in ticks (roughly, has an update rate
      * specified by timekeeper refreshrate config - default 100 ticks) 
      */
-    public int getTimeInTicks() {
+    public static int getTimeOfDayInTicks() {
         return timeOfDayInTicks;
     }
     
-    public boolean isDaytime() {
+    public static int getTimeOfDayHour() {
+        return timeOfDayHour;
+    }
+    
+    public static int getTimeOfDayMinute() {
+        return timeOfDayMinute;
+    }
+    
+    public static boolean isDaytime() {
         return (timeOfDayInTicks < 12000);
     }
     
-    public boolean isNighttime() {
+    public static boolean isNighttime() {
         return (timeOfDayInTicks > 12000);
     }
 }
