@@ -9,6 +9,7 @@ public final class Timekeeper {
     //public static final Timekeeper INSTANCE = new Timekeeper();
     
     private static int timeOfDayInTicks;
+    private static int timeOfDayHourRaw;
     private static int timeOfDayHour;
     private static int timeOfDayMinute;
     
@@ -23,7 +24,8 @@ public final class Timekeeper {
             if (TICKER >= AWCoreStatics.timekeeperRefreshRate) {
                 TICKER = 0;
                 timeOfDayInTicks = (int) (event.world.getWorldTime() % 24000);
-                timeOfDayHour = timeOfDayInTicks / 1000 + 6;
+                timeOfDayHourRaw = timeOfDayInTicks / 1000;
+                timeOfDayHour = timeOfDayHourRaw + 6 - (timeOfDayHourRaw > 17 ? 24 : 0);
                 timeOfDayMinute = (timeOfDayInTicks % 1000) * 60 / 1000;
             }
         }
@@ -36,6 +38,10 @@ public final class Timekeeper {
      */
     public static int getTimeOfDayInTicks() {
         return timeOfDayInTicks;
+    }
+    
+    public static int getTimeOfDayHourRaw() {
+        return timeOfDayHourRaw;
     }
     
     public static int getTimeOfDayHour() {
