@@ -1,8 +1,10 @@
 package net.shadowmage.ancientwarfare.core.gamedata;
 
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
+import net.minecraft.client.Minecraft;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 
 public final class Timekeeper {
@@ -20,14 +22,29 @@ public final class Timekeeper {
     @SubscribeEvent
     public void serverTick(WorldTickEvent event) {
         if (event.phase == Phase.END) {
-            TICKER++;
-            if (TICKER >= AWCoreStatics.timekeeperRefreshRate) {
-                TICKER = 0;
-                timeOfDayInTicks = (int) (event.world.getWorldTime() % 24000);
-                timeOfDayHourRaw = timeOfDayInTicks / 1000;
-                timeOfDayHour = timeOfDayHourRaw + 6 - (timeOfDayHourRaw > 17 ? 24 : 0);
-                timeOfDayMinute = (timeOfDayInTicks % 1000) * 60 / 1000;
+            // for SSP and SMP servers 
+            tickTimekeeper(event.world.getWorldTime());
+        }
+    }
+    
+    @SubscribeEvent
+    public void clientTick(ClientTickEvent event) {
+        if (!Minecraft.getMinecraft().isSingleplayer()) {
+            // for SMP clients only
+            if (Minecraft.getMinecraft().theWorld != null) {
+                tickTimekeeper(Minecraft.getMinecraft().theWorld.getWorldTime());
             }
+        }
+    }
+    
+    private void tickTimekeeper(long worldTime) {
+        TICKER++;
+        if (TICKER >= AWCoreStatics.timekeeperRefreshRate) {
+            TICKER = 0;
+            timeOfDayInTicks = (int) (worldTime % 24000);
+            timeOfDayHourRaw = timeOfDayInTicks / 1000;
+            timeOfDayHour = timeOfDayHourRaw + 6 - (timeOfDayHourRaw > 17 ? 24 : 0);
+            timeOfDayMinute = (timeOfDayInTicks % 1000) * 60 / 1000;
         }
     }
     
