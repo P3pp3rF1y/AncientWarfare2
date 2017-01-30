@@ -7,11 +7,13 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
@@ -96,10 +98,12 @@ public class BlockTownHall extends Block implements IRotatableBlock {
      * their own) Args: x, y, z, neighbor Block
      */
     @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
+    public void onNeighborBlockChange(World world, int posX, int posY, int posZ, Block block) {
         if (!world.isRemote) {
-            TileTownHall tileTownHall = (TileTownHall) world.getTileEntity(x, y, z);
-            if (world.isBlockIndirectlyGettingPowered(x, y, z))
+            if (dropBlockIfNotStable(world, posX, posY, posZ, block))
+                return;
+            TileTownHall tileTownHall = (TileTownHall) world.getTileEntity(posX, posY, posZ);
+            if (world.isBlockIndirectlyGettingPowered(posX, posY, posZ))
                 tileTownHall.alarmActive = true;
             else
                 tileTownHall.alarmActive = false;
@@ -109,9 +113,25 @@ public class BlockTownHall extends Block implements IRotatableBlock {
     @Override
     public void onBlockPlacedBy(World world, int posX, int posY, int posZ, EntityLivingBase placer, ItemStack is) {
         if (!world.isRemote) {
-            //((TileTownHall) world.getTileEntity(posX, posY, posZ)).setOwnedChunks(ModAccessors.FTBU.claimChunks(placer, posX, posY, posZ));
+            if (dropBlockIfNotStable(world, posX, posY, posZ, world.getBlock(posX, posY, posZ)))
+                return;
             ModAccessors.FTBU.claimChunks(world, placer, posX, posY, posZ);
         }
+    }
+    
+    private boolean dropBlockIfNotStable(World world, int posX, int posY, int posZ, Block block) {
+        if (!world.isSideSolid(posX - 1, posY, posZ, ForgeDirection.EAST,  false) &&
+                !world.isSideSolid(posX + 1, posY, posZ, ForgeDirection.WEST,  false) &&
+                !world.isSideSolid(posX, posY, posZ - 1, ForgeDirection.SOUTH, false) &&
+                !world.isSideSolid(posX, posY, posZ + 1, ForgeDirection.NORTH, false) &&
+                !world.isSideSolid(posX, posY + 1, posZ, ForgeDirection.DOWN, false) &&
+                !World.doesBlockHaveSolidTopSurface(world, posX, posY - 1, posZ)) {
+            this.breakBlock(world, posX, posY, posZ, block, world.getBlockMetadata(posX, posY, posZ));
+            this.dropBlockAsItem(world, posX, posY, posZ, world.getBlockMetadata(posX, posY, posZ), 0);
+            world.setBlock(posX, posY, posZ, Blocks.air, 0, 3);
+            return true;
+        }
+        return false;
     }
     
     @Override
