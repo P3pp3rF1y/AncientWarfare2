@@ -13,10 +13,7 @@ import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -115,6 +112,7 @@ public class StructureTemplateManagerClient {
         }
     }
 
+    /*
     private String getMD5(File file) throws IOException {
         MessageDigest md;
         try {
@@ -139,6 +137,7 @@ public class StructureTemplateManagerClient {
         fis.close();
         return md5;
     }
+    */
 
     public void addStructureImage(String imageName, BufferedImage image) {
         String pathBase = AWCoreStatics.configPathForFiles + "structures/image_cache/";

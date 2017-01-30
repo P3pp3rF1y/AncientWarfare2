@@ -11,7 +11,7 @@ public class TileOwned extends TileEntity implements IOwnable{
     private String ownerName;
     private UUID owner;
     private final String tagKey;
-    public TileOwned(){
+    public TileOwned() {
         tagKey = "ownerName";
     }
 

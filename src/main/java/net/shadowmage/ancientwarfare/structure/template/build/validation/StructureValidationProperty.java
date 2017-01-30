@@ -193,7 +193,6 @@ public class StructureValidationProperty {
         }
     }
 
-    @SuppressWarnings("unchecked")
     public void writeToNBT(NBTTagCompound tag) {
         switch (dataType) {
             case DATA_TYPE_INT: {

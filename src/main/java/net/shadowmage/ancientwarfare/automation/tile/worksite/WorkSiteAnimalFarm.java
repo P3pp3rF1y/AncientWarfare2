@@ -156,7 +156,6 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 //  AWLog.logDebug("counting animal farm resources.."+wheatCount+","+seedCount+","+carrotCount+","+bucketCount+","+shears);
     }
 
-    @SuppressWarnings("unchecked")
     private void rescan() {
 //  AWLog.logDebug("rescanning animal farm");
         pigsToBreed.clear();
@@ -383,7 +382,6 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         return true;
     }
 
-    @SuppressWarnings("unchecked")
     private void pickupEggs() {
         List<EntityItem> items = getEntitiesWithinBounds(EntityItem.class);
         ItemStack stack;

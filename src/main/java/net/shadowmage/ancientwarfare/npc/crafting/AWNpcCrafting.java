@@ -21,7 +21,6 @@ public class AWNpcCrafting {
     /**
      * load any recipes for automation module recipes
      */
-    @SuppressWarnings("unchecked")
     public static void loadRecipes() {
         RecipeSorter.register("ancientwarfare:order_copy", OrderCopyingRecipe.class, RecipeSorter.Category.SHAPED, "after:minecraft:shaped");
         GameRegistry.addRecipe(new OrderCopyingRecipe(AWItems.upkeepOrder));

@@ -57,7 +57,6 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
         this.setMutexBits(ATTACK + MOVE);
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public boolean shouldExecute() {
         if (!npc.getIsAIEnabled())
@@ -94,6 +93,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
         return flee;
     }
     
+    @SuppressWarnings("unchecked")
     private void findNearbyRelevantEntities() {
         npc.nearbyHostiles.clear();
         nearbySoldiers.clear();
@@ -127,11 +127,8 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
      */
     @Override
     public boolean continueExecuting() {
-        boolean fleeTargetAlive = false;
         boolean shouldPanic = true;
-        if (npc.getIsAIEnabled() && (npc.getAttackTarget() != null && !npc.getAttackTarget().isDead))
-            fleeTargetAlive = true;
-        else
+        if (npc.getIsAIEnabled() && (npc.getAttackTarget() == null || npc.getAttackTarget().isDead))
             fearLevel = MAX_STAY_AWAY; // cap the fear level in the event of hostile's death
         
         if (stayOutOfSightTimer == 0) {

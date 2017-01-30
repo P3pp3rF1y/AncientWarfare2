@@ -56,18 +56,17 @@ public class TileCraftingTableRender extends TileEntitySpecialRenderer implement
         GL11.glPopMatrix();
     }
 
-    private float getRotation(ForgeDirection d) {
-        switch (d) {
-            case NORTH:
-                return 0.f;
+    private float getRotation(ForgeDirection direction) {
+        switch (direction) {
             case SOUTH:
                 return 180.f;
             case EAST:
                 return 270.f;
             case WEST:
                 return 90.f;
+            default:
+                return 0.f;
         }
-        return 0.f;
     }
 
 }

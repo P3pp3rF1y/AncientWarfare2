@@ -105,7 +105,7 @@ public class BlockAdvancedSpawner extends Block {
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
+    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer entityPlayer) {
         TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof TileAdvancedSpawner) {
             ItemStack item = new ItemStack(this);
@@ -114,7 +114,7 @@ public class BlockAdvancedSpawner extends Block {
             item.setTagInfo("spawnerSettings", settings);
             return item;
         }
-        return super.getPickBlock(target, world, x, y, z);
+        return super.getPickBlock(target, world, x, y, z, entityPlayer);
     }
 
     @Override

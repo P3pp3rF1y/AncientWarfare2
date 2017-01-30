@@ -83,7 +83,7 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
      */
     @Override
     public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-        return this.material.func_150995_f() == par2ItemStack.getItem();
+        return this.material.getRepairItemStack() == par2ItemStack;
     }
 
     /**
