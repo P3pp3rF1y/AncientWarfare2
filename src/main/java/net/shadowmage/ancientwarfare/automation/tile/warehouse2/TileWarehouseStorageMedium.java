@@ -1,7 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
-import net.shadowmage.ancientwarfare.core.inventory.InventorySlotlessBasic;
-
 public final class TileWarehouseStorageMedium extends TileWarehouseStorage {
 
     public TileWarehouseStorageMedium() {

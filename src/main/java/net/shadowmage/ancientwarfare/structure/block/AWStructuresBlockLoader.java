@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.structure.block;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.ItemBlock;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;

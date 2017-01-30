@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.core.util;
 
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;

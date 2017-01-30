@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;

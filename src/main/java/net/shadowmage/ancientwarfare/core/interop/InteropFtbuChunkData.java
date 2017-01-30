@@ -10,7 +10,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.common.util.Constants.NBT;
-import net.shadowmage.ancientwarfare.core.interop.InteropFtbuChunkData.ChunkLocation;
 
 public class InteropFtbuChunkData extends WorldSavedData {
     public static final String ID = "AW2_InteropFtbuChunkData";

@@ -1,7 +1,5 @@
 package net.shadowmage.ancientwarfare.structure.crafting;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.structure.gates.types.Gate;
 

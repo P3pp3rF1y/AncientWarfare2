@@ -1,12 +1,8 @@
 package net.shadowmage.ancientwarfare.core.gamedata;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.storage.MapStorage;
-import net.minecraftforge.event.world.WorldEvent;
-
-import java.util.HashMap;
 
 /**
  * Helps building specific world data.

@@ -5,8 +5,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 
-import java.util.HashMap;
-
 public class AWEntityRegistry {
 
     /**

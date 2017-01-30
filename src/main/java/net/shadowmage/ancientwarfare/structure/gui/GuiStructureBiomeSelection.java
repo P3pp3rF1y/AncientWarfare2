@@ -8,7 +8,6 @@ import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.elements.*;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 
-import java.util.HashMap;
 import java.util.Set;
 
 public class GuiStructureBiomeSelection extends GuiContainerBase {

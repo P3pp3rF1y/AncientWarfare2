@@ -1,12 +1,9 @@
 package net.shadowmage.ancientwarfare.npc.ai.owned;
 
-import net.minecraft.inventory.IInventory;
-import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
-import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 
 public class NpcAIPlayerOwnedAlarmResponse extends NpcAI<NpcPlayerOwned> {
 

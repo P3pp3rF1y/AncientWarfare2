@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.entity.EntityList;
-import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;

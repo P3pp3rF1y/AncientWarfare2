@@ -114,7 +114,7 @@ public class AWCraftingManager {
                     craft_par[i - 3] = crafting_item;//The item value
                 }
             }
-            ArrayList list = new ArrayList();
+            ArrayList<Object> list = new ArrayList<Object>();
             for (Object object : craft_par) {
                 if (object != null) {
                     list.add(object);

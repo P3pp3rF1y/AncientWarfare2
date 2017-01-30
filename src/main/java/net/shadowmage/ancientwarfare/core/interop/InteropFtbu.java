@@ -2,11 +2,7 @@ package net.shadowmage.ancientwarfare.core.interop;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.UUID;
-
 import ftb.lib.FTBLib;
 import ftb.lib.api.notification.MouseAction;
 import ftb.lib.api.notification.Notification;
@@ -15,11 +11,8 @@ import ftb.utils.mod.FTBU;
 import ftb.utils.world.LMPlayerServer;
 import ftb.utils.world.LMWorldServer;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
-import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;

@@ -1,8 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
-import akka.Main;
 import net.minecraft.util.ChunkCoordinates;
-import net.shadowmage.ancientwarfare.core.gamedata.Timekeeper;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;

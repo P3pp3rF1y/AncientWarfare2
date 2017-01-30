@@ -21,8 +21,6 @@ import net.shadowmage.ancientwarfare.core.block.IconRotationMap;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-import java.util.Locale;
-
 public class BlockMailbox extends Block implements IRotatableBlock {
 
     IconRotationMap iconMap = new IconRotationMap();

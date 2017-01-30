@@ -1,9 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.event;
 
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
-
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.entity.EntityCreature;

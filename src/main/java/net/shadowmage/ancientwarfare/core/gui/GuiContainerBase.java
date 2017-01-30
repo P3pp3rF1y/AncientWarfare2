@@ -15,8 +15,6 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Tooltip;
 import net.shadowmage.ancientwarfare.core.interfaces.IContainerGuiCallback;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 import net.shadowmage.ancientwarfare.core.interfaces.IWidgetSelection;
-import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.network.PacketGui;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;

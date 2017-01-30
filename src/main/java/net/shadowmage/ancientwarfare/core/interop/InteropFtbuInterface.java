@@ -1,11 +1,6 @@
 package net.shadowmage.ancientwarfare.core.interop;
 
-import java.util.ArrayList;
-import java.util.UUID;
-
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.World;
 
 public interface InteropFtbuInterface {

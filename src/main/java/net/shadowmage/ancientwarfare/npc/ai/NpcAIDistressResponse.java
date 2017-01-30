@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
-import net.minecraft.entity.Entity;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcCombat;
 

@@ -4,7 +4,6 @@ import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.automation.container.ContainerTorqueGeneratorSterling;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
-import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.ProgressBar;
 
