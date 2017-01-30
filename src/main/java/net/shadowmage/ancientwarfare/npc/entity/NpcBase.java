@@ -1258,7 +1258,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
     
     private boolean tryMovingToBedside(double x, double y, double z) {
-        System.out.println(x + "x" + y + "x" + z);
+        //System.out.println(x + "x" + y + "x" + z);
         if (worldObj.getBlock((int)Math.floor(x), (int)Math.floor(y), (int)Math.floor(z)).getMaterial().blocksMovement())
             return false;
         if (worldObj.getBlock((int)Math.floor(x), (int)Math.floor(y + 1.0), (int)Math.floor(z)).getMaterial().blocksMovement())

@@ -63,9 +63,9 @@ public class InteropFtbu implements InteropFtbuInterface {
                     List<TownHallOwner> townHallOwners = InteropFtbuChunkData.INSTANCE.chunkClaims.get(thisChunk);
                     if (townHallOwners == null) { //unclaimed chunk, make a new TownHallInfo list
                         townHallOwners = new ArrayList<TownHallOwner>();
-                        AncientWarfareCore.log.info("Claiming new chunk at BlockPos: " + chunkX*16 + "x" + chunkZ*16);
-                    } else {
-                        AncientWarfareCore.log.info("Already claimed chunk at BlockPos: " + chunkX*16 + "x" + chunkZ*16);
+                        //AncientWarfareCore.log.info("Claiming new chunk at BlockPos: " + chunkX*16 + "x" + chunkZ*16);
+                    //} else {
+                    //    AncientWarfareCore.log.info("Already claimed chunk at BlockPos: " + chunkX*16 + "x" + chunkZ*16);
                     }
                     // add this townhall to the chunkclaim entry
                     townHallOwners.add(new TownHallOwner(ownerName, posX, posY, posZ));
