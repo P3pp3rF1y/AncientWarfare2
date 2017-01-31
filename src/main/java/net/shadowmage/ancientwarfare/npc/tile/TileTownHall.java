@@ -247,10 +247,12 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
             } else if (nearbyEntity instanceof NpcPlayerOwned) {
                 if (keepOwner) {
                     if (((NpcPlayerOwned)nearbyEntity).hasCommandPermissions(getOwnerName())) {
-                        if (Math.abs(yCoord - nearbyEntity.posY) > AWNPCStatics.townActiveNpcSearchHeight)
-                            retVal = 1;
-                        else
-                            return 2;
+                        if (((NpcPlayerOwned)nearbyEntity).getFoodRemaining() > 0) {
+                            if (Math.abs(yCoord - nearbyEntity.posY) > AWNPCStatics.townActiveNpcSearchHeight)
+                                retVal = 1;
+                            else
+                                return 2;
+                        }
                     }
                 } else {
                     boolean foundNpcOwner = false;
@@ -261,9 +263,11 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
                             foundNpcOwner = true;
                         }
                         if (((NpcPlayerOwned)nearbyEntity).hasCommandPermissions(owner.getKey().ownerName))
-                            if (Math.abs(yCoord - nearbyEntity.posY) > AWNPCStatics.townActiveNpcSearchHeight)
-                                // this previously-found player can command this npc, give them a point
-                                owner.setValue(owner.getValue() + 1);
+                            if (((NpcPlayerOwned)nearbyEntity).getFoodRemaining() > 0) {
+                                if (Math.abs(yCoord - nearbyEntity.posY) > AWNPCStatics.townActiveNpcSearchHeight)
+                                    // this previously-found player can command this npc, give them a point
+                                    owner.setValue(owner.getValue() + 1);
+                            }
                     }
                     if (!foundNpcOwner)
                         // an NPC was found nearby with no nearby owner, so give the owner a point
