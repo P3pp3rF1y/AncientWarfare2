@@ -808,6 +808,12 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         ownerId = player.getUniqueID();
         setOwnerName(player.getCommandSenderName());
     }
+    
+    @Override
+    public void setOwner(String ownerName, UUID ownerUuid){
+        setOwnerName(ownerName);
+        ownerId = ownerUuid;
+    }
 
     public void setOwnerName(String name) {
         if (name == null) {
@@ -850,6 +856,11 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     @Override
     public String getOwnerName() {
         return ownerName;
+    }
+    
+    @Override
+    public UUID getOwnerUuid() {
+        return ownerId;
     }
 
     @Override

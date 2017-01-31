@@ -33,6 +33,7 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwna
 
     protected UUID owningPlayer;
     private EntityPlayer owner;
+    private String ownerName;
 
     StructureBuilderTicked builder;
     private boolean shouldRemove = false;
@@ -162,6 +163,12 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwna
     public void setOwner(EntityPlayer player) {
         this.owningPlayer = player.getUniqueID();
     }
+    
+    @Override
+    public void setOwner(String ownerName, UUID ownerUuid) {
+        this.ownerName = ownerName;
+        this.owningPlayer = ownerUuid;
+    }
 
     @Override
     public boolean isOwner(EntityPlayer player){
@@ -171,6 +178,11 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwna
     @Override
     public String getOwnerName(){
         return getOwnerAsPlayer().getCommandSenderName();
+    }
+    
+    @Override
+    public UUID getOwnerUuid() {
+        return owningPlayer;
     }
 
     public final EntityPlayer getOwnerAsPlayer() {

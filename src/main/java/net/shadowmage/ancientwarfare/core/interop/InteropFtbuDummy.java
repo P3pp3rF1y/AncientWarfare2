@@ -1,6 +1,10 @@
 package net.shadowmage.ancientwarfare.core.interop;
 
+import java.util.List;
+
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 
 public class InteropFtbuDummy implements InteropFtbuInterface {
@@ -16,4 +20,12 @@ public class InteropFtbuDummy implements InteropFtbuInterface {
 
     @Override
     public void unclaimChunks(World world, String ownerName, int posX, int posY, int posZ) {}
+
+    @Override
+    public void notifyPlayer(String ownerName, String title, IChatComponent msg, List<IChatComponent> hoverTextLines) {}
+    
+    @Override
+    public IChatComponent chatComponent(String s, Object... obj) { 
+        return new ChatComponentTranslation(s, obj);
+    }
 }

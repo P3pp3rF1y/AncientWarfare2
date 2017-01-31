@@ -61,6 +61,9 @@ public class AWNPCStatics extends ModConfiguration {
     public static int townUpdateFreq = 100; //5 second broadcast frequency
     public static int townChunkClaimRadius = 1;
     public static int townChunkLoadRadius = -1;
+    public static boolean townActiveNpcSearch = false;
+    public static double townActiveNpcSearchCooldown = 3.0;
+    public static int townActiveNpcSearchHeight = 15;
     public static boolean exportEntityNames = false;
     public static boolean npcAIDebugMode = false;
 
@@ -273,6 +276,20 @@ public class AWNPCStatics extends ModConfiguration {
                 "If using chunk claiming via FTBU_AW2, you probably want this to be at least 1 higher than the claim radius.\n" +
                 "WARNING - There is a good chance you'll want to edit the forgeChunkLoading config - the default mod limit of\n"+
                 "25 chunks per ticket may be too low (each Town Hall has it's own ticket), as well as total ticket limit.").getInt();
+        
+        townActiveNpcSearch = config.get(serverOptions, "town_hall_active_requires_nearby_npc_or_player", townActiveNpcSearch, "Nearby NPC or Player required for chunk claim/loading activation \nDefault=" + townActiveNpcSearch + "\n" +
+                "If you have chunk claim/loading enabled via FTBU_AW2 options, you can enable this to only keep the claims/loads 'active' while there is an NPC within range.\n" +
+                "The range will be the same chunk radius as the chunk loading radius, and will not function if it's disabled (i.e. set to -1).").getBoolean();
+        
+        townActiveNpcSearchCooldown = config.get(serverOptions, "town_hall_active_cooldown_minutes", townActiveNpcSearchCooldown, "Default=" + townActiveNpcSearchCooldown + "\n" +
+                "If the Town Hall active check is enabled, it will check for nearby NPC's or players every this-many real-world minutes. If none are found, \n" +
+                "it will send a notification warning to any online friendly players. If there are no friendly players or NPC's nearby still after a SECOND \n" +
+                "countdown has elapsed, then the chunk claim/load will be lost temporarily lost.\n" +
+                "The counter will still continue, scanning for nearby players/NPC's of ANY team. When in this 'inactive' phase, the owner of the claims CAN FLIP.\n"+
+                "Players can also force an update (or inactive claim) by simply opening the Town Hall GUI.").getDouble(); 
+
+        townActiveNpcSearchHeight = config.get(serverOptions, "town_hall_active_search_height", townActiveNpcSearchHeight, "Default=" + townActiveNpcSearchHeight + "\n" +
+                "Search range in blocks upwards/downwards (either direction) to check for friendly NPC's/Players when determining active status (if enabled).").getInt();
 
         factionLossOnDeath = factionConfig.get(factionSettings, "faction_loss_on_kill", factionLossOnDeath, "Faction Loss On Kill\nDefault=10\n" +
                 "How much faction standing should be lost if you or one of your minions kills a faction based NPC.").getInt();

@@ -10,16 +10,29 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.common.util.Constants.NBT;
+import net.shadowmage.ancientwarfare.core.interop.InteropFtbuChunkData.TownHallOwner;
 
 public class InteropFtbuChunkData extends WorldSavedData {
     public static final String ID = "AW2_InteropFtbuChunkData";
     
     public static InteropFtbuChunkData INSTANCE;
     
-    public Map<ChunkLocation, List<TownHallOwner>> chunkClaims = new HashMap<ChunkLocation, List<TownHallOwner>>();
+    private Map<ChunkLocation, List<TownHallOwner>> chunkClaims = new HashMap<ChunkLocation, List<TownHallOwner>>();
     
     public InteropFtbuChunkData(String tagName) {
         super(tagName);
+    }
+    
+    public synchronized List<TownHallOwner> chunkClaimsGet(ChunkLocation chunkLocation) {
+        return INSTANCE.chunkClaims.get(chunkLocation);
+    }
+    
+    public synchronized List<TownHallOwner> chunkClaimsPut(ChunkLocation chunkLocation, List<TownHallOwner> townHallOwners) {
+        return INSTANCE.chunkClaims.put(chunkLocation, townHallOwners);
+    }
+    
+    public synchronized List<TownHallOwner> chunkClaimsRemove(ChunkLocation chunkLocation) {
+        return INSTANCE.chunkClaims.remove(chunkLocation);
     }
 
     @Override

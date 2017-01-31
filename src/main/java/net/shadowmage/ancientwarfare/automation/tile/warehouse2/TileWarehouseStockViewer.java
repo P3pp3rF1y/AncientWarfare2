@@ -100,10 +100,21 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
         this.owner = player.getUniqueID();
         this.ownerName = player.getCommandSenderName();
     }
+    
+    @Override
+    public void setOwner(String ownerName, UUID ownerUuid) {
+        this.ownerName = ownerName;
+        this.owner = ownerUuid;
+    }
 
     @Override
     public String getOwnerName() {
         return ownerName;
+    }
+    
+    @Override
+    public UUID getOwnerUuid() {
+        return owner;
     }
 
     @Override

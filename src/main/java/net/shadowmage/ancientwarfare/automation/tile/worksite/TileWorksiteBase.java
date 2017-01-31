@@ -191,6 +191,11 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
     public final String getOwnerName() {
         return owningPlayer;
     }
+    
+    @Override
+    public final UUID getOwnerUuid() {
+        return ownerId;
+    }
 
     public final EntityPlayer getOwnerAsPlayer() {
         if(!isOwnerReal()) {
@@ -225,6 +230,13 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
             this.owningPlayer = player.getCommandSenderName();
             this.ownerId = player.getUniqueID();
         }
+    }
+    
+    @Override
+    public final void setOwner(String ownerName, UUID ownerUuid) {
+        owningPlayer = ownerName;
+        ownerId = ownerUuid;
+        owner = AncientWarfareCore.proxy.getFakePlayer(getWorldObj(), ownerName, ownerUuid);
     }
 
 //*************************************** TORQUE INTERACTION METHODS ***************************************//

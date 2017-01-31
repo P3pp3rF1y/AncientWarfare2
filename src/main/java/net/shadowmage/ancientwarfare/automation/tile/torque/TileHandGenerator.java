@@ -15,10 +15,12 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 
 import java.util.EnumSet;
+import java.util.UUID;
 
 public class TileHandGenerator extends TileTorqueSingleCell implements IWorkSite, IOwnable {
 
     String ownerName = "";
+    UUID ownerId = null;
     private final TorqueCell inputCell;
 
     /**
@@ -162,11 +164,23 @@ public class TileHandGenerator extends TileTorqueSingleCell implements IWorkSite
     @Override
     public void setOwner(EntityPlayer player) {
         this.ownerName = player.getCommandSenderName();
+        this.ownerId = player.getUniqueID();
+    }
+    
+    @Override
+    public void setOwner(String ownerName, UUID ownerUuid) {
+        this.ownerName = ownerName;
+        this.ownerId = ownerUuid;
     }
 
     @Override
     public String getOwnerName() {
         return ownerName;
+    }
+    
+    @Override
+    public UUID getOwnerUuid() {
+        return ownerId;
     }
 
     @Override

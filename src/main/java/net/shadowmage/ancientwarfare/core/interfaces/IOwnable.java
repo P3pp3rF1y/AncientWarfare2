@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.core.interfaces;
 
+import java.util.UUID;
+
 import net.minecraft.entity.player.EntityPlayer;
 
 /**
@@ -10,8 +12,12 @@ import net.minecraft.entity.player.EntityPlayer;
 public interface IOwnable {
 
     public void setOwner(EntityPlayer player);
+    
+    public void setOwner(String ownerName, UUID ownerUuid);
 
     public String getOwnerName();
+    
+    public UUID getOwnerUuid();
 
     public boolean isOwner(EntityPlayer player);
 }

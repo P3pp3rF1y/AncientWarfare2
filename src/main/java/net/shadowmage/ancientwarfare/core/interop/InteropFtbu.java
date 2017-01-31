@@ -11,6 +11,7 @@ import ftb.utils.mod.FTBU;
 import ftb.utils.world.LMPlayerServer;
 import ftb.utils.world.LMWorldServer;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
@@ -20,7 +21,7 @@ import net.shadowmage.ancientwarfare.core.interop.InteropFtbuChunkData.ChunkLoca
 import net.shadowmage.ancientwarfare.core.interop.InteropFtbuChunkData.TownHallOwner;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 
-public class InteropFtbu implements InteropFtbuInterface {
+public class InteropFtbu extends InteropFtbuDummy {
     @Override
     public boolean areFriends(String player1, String player2) {
         if (FriendsAPI.areFriends(player1, player2))
@@ -53,7 +54,7 @@ public class InteropFtbu implements InteropFtbuInterface {
                     // Chunk was claimed successfully (or already was), build the ChunkLocation key
                     ChunkLocation thisChunk = new ChunkLocation(chunkX, chunkZ, world.provider.dimensionId);
                     // check if this key already exists
-                    List<TownHallOwner> townHallOwners = InteropFtbuChunkData.INSTANCE.chunkClaims.get(thisChunk);
+                    List<TownHallOwner> townHallOwners = InteropFtbuChunkData.INSTANCE.chunkClaimsGet(thisChunk);
                     if (townHallOwners == null) { //unclaimed chunk, make a new TownHallInfo list
                         townHallOwners = new ArrayList<TownHallOwner>();
                         //AncientWarfareCore.log.info("Claiming new chunk at BlockPos: " + chunkX*16 + "x" + chunkZ*16);
@@ -62,7 +63,7 @@ public class InteropFtbu implements InteropFtbuInterface {
                     }
                     // add this townhall to the chunkclaim entry
                     townHallOwners.add(new TownHallOwner(ownerName, posX, posY, posZ));
-                    InteropFtbuChunkData.INSTANCE.chunkClaims.put(thisChunk, townHallOwners);
+                    InteropFtbuChunkData.INSTANCE.chunkClaimsPut(thisChunk, townHallOwners);
                     // attempt chunk claim regardless; if already owned by a different player it will silently fail
                     p.claimChunk(world.provider.dimensionId, chunkX, chunkZ);
                 }
@@ -73,12 +74,13 @@ public class InteropFtbu implements InteropFtbuInterface {
         }
     }
     
-    private void notifyPlayer(String ownerName, String title, IChatComponent msg, List<IChatComponent> hoverTextLines) {
+    @Override
+    public void notifyPlayer(String ownerName, String title, IChatComponent msg, List<IChatComponent> hoverTextLines) {
         if (ownerName.isEmpty())
             return;
         LMPlayerServer p = LMWorldServer.inst.getPlayer(ownerName);
         if (p != null) {
-            IChatComponent cc = FTBU.mod.chatComponent(title);
+            IChatComponent cc = chatComponent(title);
             cc.getChatStyle().setColor(EnumChatFormatting.RED);
             Notification n = new Notification("claim_change" + p.world.getMCWorld().getTotalWorldTime(), cc, 6000);
             n.setDesc(msg);
@@ -110,7 +112,7 @@ public class InteropFtbu implements InteropFtbuInterface {
                 //AncientWarfareCore.log.info("Checking chunk at BlockPos for unclaiming: " + chunkX*16 + "x" + chunkZ*16);
                 // check if this chunk is claimed
                 ChunkLocation thisChunk = new ChunkLocation(chunkX, chunkZ, world.provider.dimensionId);
-                List<TownHallOwner> townHallOwners = InteropFtbuChunkData.INSTANCE.chunkClaims.get(thisChunk);
+                List<TownHallOwner> townHallOwners = InteropFtbuChunkData.INSTANCE.chunkClaimsGet(thisChunk);
                 if (townHallOwners == null) {
                     // shouldn't happen! Or maybe it can? I don't know lol
                     //AncientWarfareCore.log.info(" - Chunk was claimed but had no Town Hall owner? Meh, unclaim it and just return");
@@ -133,10 +135,10 @@ public class InteropFtbu implements InteropFtbuInterface {
                             if (targetPlayerToNotify.isEmpty()) {
                                 // least concerning notification
                                 targetPlayerToNotify = townHallOwner.getOwnerName();
-                                notificationTitle = "notification.townhall_lost";
-                                notificationMsg = FTBU.mod.chatComponent("notification.townhall_lost_secondary.msg");
-                                hoverTextLines.add(FTBU.mod.chatComponent("notification.chunk_position", origin.xPosition, origin.zPosition));
-                                hoverTextLines.add(FTBU.mod.chatComponent("notification.click_to_remove"));
+                                notificationTitle = "ftbu_aw2.notification.townhall_lost";
+                                notificationMsg = chatComponent("ftbu_aw2.notification.townhall_lost_secondary.msg");
+                                hoverTextLines.add(chatComponent("ftbu_aw2.notification.chunk_position", origin.xPosition, origin.zPosition));
+                                hoverTextLines.add(chatComponent("ftbu_aw2.notification.click_to_remove"));
                             }
                             //AncientWarfareCore.log.info(" - Removed a destroyed town hall that wasn't controlling the chunk. Territory unchanged.");
                         }
@@ -157,10 +159,10 @@ public class InteropFtbu implements InteropFtbuInterface {
                             if (targetPlayerToNotify.isEmpty()) {
                                 // least concerning notification
                                 targetPlayerToNotify = townHallOwner.getOwnerName();
-                                notificationTitle = "notification.townhall_lost";
-                                notificationMsg = FTBU.mod.chatComponent("notification.townhall_lost_secondary.msg");
-                                hoverTextLines.add(FTBU.mod.chatComponent("notification.chunk_position", origin.xPosition, origin.zPosition));
-                                hoverTextLines.add(FTBU.mod.chatComponent("notification.click_to_remove"));
+                                notificationTitle = "ftbu_aw2.notification.townhall_lost";
+                                notificationMsg = chatComponent("ftbu_aw2.notification.townhall_lost_secondary.msg");
+                                hoverTextLines.add(chatComponent("ftbu_aw2.notification.chunk_position", origin.xPosition, origin.zPosition));
+                                hoverTextLines.add(chatComponent("ftbu_aw2.notification.click_to_remove"));
                             }
                             chunkIsStillOwned = true;
                         }
@@ -174,25 +176,25 @@ public class InteropFtbu implements InteropFtbuInterface {
                         
                         // very concerning notification
                         targetPlayerToNotify = p.getProfile().getName();
-                        notificationTitle = "notification.townhall_lost";
-                        notificationMsg = FTBU.mod.chatComponent("notification.townhall_lost_flipped.msg", townHallOwners.get(0).getOwnerName());
+                        notificationTitle = "ftbu_aw2.notification.townhall_lost";
+                        notificationMsg = chatComponent("ftbu_aw2.notification.townhall_lost_flipped.msg", townHallOwners.get(0).getOwnerName());
                         hoverTextLines.clear();
-                        hoverTextLines.add(FTBU.mod.chatComponent("notification.chunk_position", origin.xPosition, origin.zPosition));
-                        hoverTextLines.add(FTBU.mod.chatComponent("notification.click_to_remove"));
+                        hoverTextLines.add(chatComponent("ftbu_aw2.notification.chunk_position", origin.xPosition, origin.zPosition));
+                        hoverTextLines.add(chatComponent("ftbu_aw2.notification.click_to_remove"));
                     }
                 } else {
                     // there is no owner of the chunk left at all
                     //AncientWarfareCore.log.info(" ... no owner left, territory relinquished to the wilderness.");
                     p.unclaimChunk(world.provider.dimensionId, chunkX, chunkZ);
-                    InteropFtbuChunkData.INSTANCE.chunkClaims.remove(thisChunk);
+                    InteropFtbuChunkData.INSTANCE.chunkClaimsRemove(thisChunk);
                     // somewhat concerning notification (don't replace a flipped notification)
                     if (targetPlayerToNotify.isEmpty()) {
                         targetPlayerToNotify = p.getProfile().getName();
-                        notificationTitle = "notification.townhall_lost";
-                        notificationMsg = FTBU.mod.chatComponent("notification.townhall_lost_wilderness.msg");
+                        notificationTitle = "ftbu_aw2.notification.townhall_lost";
+                        notificationMsg = chatComponent("ftbu_aw2.notification.townhall_lost_wilderness.msg");
                         hoverTextLines.clear();
-                        hoverTextLines.add(FTBU.mod.chatComponent("notification.chunk_position", origin.xPosition, origin.zPosition));
-                        hoverTextLines.add(FTBU.mod.chatComponent("notification.click_to_remove"));
+                        hoverTextLines.add(chatComponent("ftbu_aw2.notification.chunk_position", origin.xPosition, origin.zPosition));
+                        hoverTextLines.add(chatComponent("ftbu_aw2.notification.click_to_remove"));
                     }
                 }
                 
@@ -202,5 +204,6 @@ public class InteropFtbu implements InteropFtbuInterface {
         InteropFtbuChunkData.INSTANCE.markDirty();
     }
 
+    
     
 }
