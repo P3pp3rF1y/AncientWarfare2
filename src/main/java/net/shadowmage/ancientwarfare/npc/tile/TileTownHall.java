@@ -68,7 +68,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
         if (worldObj == null || worldObj.isRemote)
             return;
         
-        if (AWNPCStatics.townChunkLoadRadius > -1) {
+        if (AWNPCStatics.townActiveNpcSearch && AWNPCStatics.townChunkLoadRadius > -1) {
             if (--activeCheckTicks <= 0) {
                 activeCheckTicks = (int) (AWNPCStatics.townActiveNpcSearchCooldown * 20 * 60);
                 int nearbyValidEntity = isNpcOrPlayerNearby(isActive); 
