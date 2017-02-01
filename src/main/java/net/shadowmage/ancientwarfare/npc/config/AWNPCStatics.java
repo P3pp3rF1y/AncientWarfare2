@@ -62,7 +62,8 @@ public class AWNPCStatics extends ModConfiguration {
     public static int townChunkClaimRadius = 1;
     public static int townChunkLoadRadius = -1;
     public static boolean townActiveNpcSearch = false;
-    public static double townActiveNpcSearchCooldown = 3.0;
+    public static double townActiveNpcSearchRateFactor = 0.2;
+    public static double townActiveNpcSearchLimit = 5.0;
     public static int townActiveNpcSearchHeight = 15;
     public static boolean exportEntityNames = false;
     public static boolean npcAIDebugMode = false;
@@ -281,12 +282,14 @@ public class AWNPCStatics extends ModConfiguration {
                 "If you have chunk claim/loading enabled via FTBU_AW2 options, you can enable this to only keep the claims/loads 'active' while there is an NPC within range.\n" +
                 "The range will be the same chunk radius as the chunk loading radius, and will not function if it's disabled (i.e. set to -1).").getBoolean();
         
-        townActiveNpcSearchCooldown = config.get(serverOptions, "town_hall_active_cooldown_minutes", townActiveNpcSearchCooldown, "Default=" + townActiveNpcSearchCooldown + "\n" +
-                "If the Town Hall active check is enabled, it will check for nearby NPC's or players every this-many real-world minutes. If none are found, \n" +
-                "it will send a notification warning to any online friendly players. If there are no friendly players or NPC's nearby still after a SECOND \n" +
-                "countdown has elapsed, then the chunk claim/load will be lost temporarily lost.\n" +
-                "The counter will still continue, scanning for nearby players/NPC's of ANY team. When in this 'inactive' phase, the owner of the claims CAN FLIP.\n"+
-                "Players can also force an update (or inactive claim) by simply opening the Town Hall GUI.").getDouble(); 
+        townActiveNpcSearchRateFactor = config.get(serverOptions, "town_hall_active_check_rate", townActiveNpcSearchRateFactor, "Default=" + townActiveNpcSearchRateFactor + "\n" +
+                "If the Town Hall active check is enabled, it will check for nearby NPC's or players by this factor of the town_hall_active_check_limit setting.\n" +
+                "E.g. if the town_hall_active_check_limit is 5.0 (5 minutes), setting this to 0.2 will check every minute.").getDouble();
+        
+        townActiveNpcSearchLimit = config.get(serverOptions, "town_hall_active_check_limit", townActiveNpcSearchLimit, "Default=" + townActiveNpcSearchLimit + "\n" +
+                "Configure the starting countdown value (in minutes) that inactive Town Halls (i.e. no friendly player or NPC nearby) will progress a stage\n" +
+                "of abandonment. If it is reached once, it will send a warning to the player of abandonment - if reached again, it will abandon. \n" +
+                "The limit is also reset (and capture/reactivate if relevant) if a player opens the Town Hall GUI OR if an NPC takes food from it.").getDouble();
 
         townActiveNpcSearchHeight = config.get(serverOptions, "town_hall_active_search_height", townActiveNpcSearchHeight, "Default=" + townActiveNpcSearchHeight + "\n" +
                 "Search range in blocks upwards/downwards (either direction) to check for friendly NPC's/Players when determining active status (if enabled).").getInt();
