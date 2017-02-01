@@ -416,7 +416,14 @@ public class StringTools {
      * @param path to file, incl. filename + extension, running-dir relative
      */
     public static List<String> getResourceLines(String path) {
-        InputStream is = AncientWarfareCore.class.getResourceAsStream(path);
+        InputStream is = null;
+        File overrideFile = new File("resources" + path);
+        if (overrideFile.exists())
+            try {
+                is = new FileInputStream(overrideFile);
+            } catch (FileNotFoundException e) {} // shouldn't happen
+        else
+            is = AncientWarfareCore.class.getResourceAsStream(path);
         ArrayList<String> lines = new ArrayList<String>();
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         String line;
