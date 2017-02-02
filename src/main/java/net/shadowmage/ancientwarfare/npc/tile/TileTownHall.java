@@ -11,6 +11,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraftforge.common.ForgeChunkManager;
@@ -116,7 +117,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
                             return;
                         }
                         // notify player of the neglect/abandonment
-                        ModAccessors.FTBU.notifyPlayer(getOwnerName(), notificationTitle, notificationMsg, notificationTooltip);
+                        ModAccessors.FTBU.notifyPlayer(EnumChatFormatting.RED, getOwnerName(), notificationTitle, notificationMsg, notificationTooltip);
                     } else {
                         // neglected check has increased, but not advanced a stage yet...
                     }
@@ -162,7 +163,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
             List<IChatComponent> notificationTooltip = new ArrayList<IChatComponent>();
             notificationTooltip.add(ModAccessors.FTBU.chatComponent("ftbu_aw2.notification.chunk_position", xCoord>>4 , zCoord>>4));
             notificationTooltip.add(ModAccessors.FTBU.chatComponent("ftbu_aw2.notification.click_to_remove"));
-            ModAccessors.FTBU.notifyPlayer(getOwnerName(), notificationTitle, notificationMsg, notificationTooltip);
+            ModAccessors.FTBU.notifyPlayer(EnumChatFormatting.GREEN, getOwnerName(), notificationTitle, notificationMsg, notificationTooltip);
         } else {
             // new owner. Notify both players of the capture
             String notificationTitle = "ftbu_aw2.notification.townhall_captured";
@@ -171,10 +172,10 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
             notificationTooltip.add(ModAccessors.FTBU.chatComponent("ftbu_aw2.notification.chunk_position", xCoord>>4 , zCoord>>4));
             notificationTooltip.add(ModAccessors.FTBU.chatComponent("ftbu_aw2.notification.click_to_remove"));
             
-            ModAccessors.FTBU.notifyPlayer(oldOwner, notificationTitle, notificationMsg, notificationTooltip);
+            ModAccessors.FTBU.notifyPlayer(EnumChatFormatting.RED, oldOwner, notificationTitle, notificationMsg, notificationTooltip);
             
             notificationMsg = ModAccessors.FTBU.chatComponent("ftbu_aw2.notification.townhall_captured.msg.gained", oldOwner);
-            ModAccessors.FTBU.notifyPlayer(getOwnerName(), notificationTitle, notificationMsg, notificationTooltip);
+            ModAccessors.FTBU.notifyPlayer(EnumChatFormatting.GREEN, getOwnerName(), notificationTitle, notificationMsg, notificationTooltip);
         }
         
         

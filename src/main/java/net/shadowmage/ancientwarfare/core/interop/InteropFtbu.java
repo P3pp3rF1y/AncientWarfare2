@@ -74,14 +74,16 @@ public class InteropFtbu extends InteropFtbuDummy {
         }
     }
     
+    
+    
     @Override
-    public void notifyPlayer(String ownerName, String title, IChatComponent msg, List<IChatComponent> hoverTextLines) {
+    public void notifyPlayer(EnumChatFormatting titleColor, String ownerName, String title, IChatComponent msg, List<IChatComponent> hoverTextLines) {
         if (ownerName.isEmpty())
             return;
         LMPlayerServer p = LMWorldServer.inst.getPlayer(ownerName);
         if (p != null) {
             IChatComponent cc = chatComponent(title);
-            cc.getChatStyle().setColor(EnumChatFormatting.RED);
+            cc.getChatStyle().setColor(titleColor);
             Notification n = new Notification("claim_change" + p.world.getMCWorld().getTotalWorldTime(), cc, 6000);
             n.setDesc(msg);
             
@@ -200,7 +202,7 @@ public class InteropFtbu extends InteropFtbuDummy {
                 
             }
         }
-        notifyPlayer(targetPlayerToNotify, notificationTitle, notificationMsg, hoverTextLines);
+        notifyPlayer(EnumChatFormatting.RED, targetPlayerToNotify, notificationTitle, notificationMsg, hoverTextLines);
         InteropFtbuChunkData.INSTANCE.markDirty();
     }
 
