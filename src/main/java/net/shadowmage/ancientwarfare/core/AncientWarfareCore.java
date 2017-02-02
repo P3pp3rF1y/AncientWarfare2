@@ -123,20 +123,4 @@ public class AncientWarfareCore {
             proxy.onConfigChanged();
         }
     }
-    
-    @SubscribeEvent
-    public void onWorldLoad(WorldEvent.Load event) {
-        if (ModAccessors.FTBU_LOADED) {
-            World world = event.world;
-            if (!world.isRemote) {
-                if (world.provider.dimensionId == 0) {
-                    InteropFtbuChunkData.INSTANCE = (InteropFtbuChunkData) world.mapStorage.loadData(InteropFtbuChunkData.class, InteropFtbuChunkData.ID);
-                    if (InteropFtbuChunkData.INSTANCE == null) {
-                        InteropFtbuChunkData.INSTANCE = new InteropFtbuChunkData(InteropFtbuChunkData.ID);
-                        world.mapStorage.setData(InteropFtbuChunkData.ID, InteropFtbuChunkData.INSTANCE);
-                    }
-                }
-            }
-        }
-    }
 }

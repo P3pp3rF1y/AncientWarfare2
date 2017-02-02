@@ -54,7 +54,7 @@ public class InteropFtbu extends InteropFtbuDummy {
                     // Chunk was claimed successfully (or already was), build the ChunkLocation key
                     ChunkLocation thisChunk = new ChunkLocation(chunkX, chunkZ, world.provider.dimensionId);
                     // check if this key already exists
-                    List<TownHallOwner> townHallOwners = InteropFtbuChunkData.INSTANCE.chunkClaimsGet(thisChunk);
+                    List<TownHallOwner> townHallOwners = InteropFtbuChunkData.get(world).chunkClaimsGet(thisChunk);
                     if (townHallOwners == null) { //unclaimed chunk, make a new TownHallInfo list
                         townHallOwners = new ArrayList<TownHallOwner>();
                         //AncientWarfareCore.log.info("Claiming new chunk at BlockPos: " + chunkX*16 + "x" + chunkZ*16);
@@ -63,12 +63,12 @@ public class InteropFtbu extends InteropFtbuDummy {
                     }
                     // add this townhall to the chunkclaim entry
                     townHallOwners.add(new TownHallOwner(ownerName, posX, posY, posZ));
-                    InteropFtbuChunkData.INSTANCE.chunkClaimsPut(thisChunk, townHallOwners);
+                    InteropFtbuChunkData.get(world).chunkClaimsPut(thisChunk, townHallOwners);
                     // attempt chunk claim regardless; if already owned by a different player it will silently fail
                     p.claimChunk(world.provider.dimensionId, chunkX, chunkZ);
                 }
             }
-            InteropFtbuChunkData.INSTANCE.markDirty();
+            InteropFtbuChunkData.get(world).markDirty();
         } else {
             // ?
         }
@@ -114,7 +114,7 @@ public class InteropFtbu extends InteropFtbuDummy {
                 //AncientWarfareCore.log.info("Checking chunk at BlockPos for unclaiming: " + chunkX*16 + "x" + chunkZ*16);
                 // check if this chunk is claimed
                 ChunkLocation thisChunk = new ChunkLocation(chunkX, chunkZ, world.provider.dimensionId);
-                List<TownHallOwner> townHallOwners = InteropFtbuChunkData.INSTANCE.chunkClaimsGet(thisChunk);
+                List<TownHallOwner> townHallOwners = InteropFtbuChunkData.get(world).chunkClaimsGet(thisChunk);
                 if (townHallOwners == null) {
                     // shouldn't happen! Or maybe it can? I don't know lol
                     //AncientWarfareCore.log.info(" - Chunk was claimed but had no Town Hall owner? Meh, unclaim it and just return");
@@ -188,7 +188,7 @@ public class InteropFtbu extends InteropFtbuDummy {
                     // there is no owner of the chunk left at all
                     //AncientWarfareCore.log.info(" ... no owner left, territory relinquished to the wilderness.");
                     p.unclaimChunk(world.provider.dimensionId, chunkX, chunkZ);
-                    InteropFtbuChunkData.INSTANCE.chunkClaimsRemove(thisChunk);
+                    InteropFtbuChunkData.get(world).chunkClaimsRemove(thisChunk);
                     // somewhat concerning notification (don't replace a flipped notification)
                     if (targetPlayerToNotify.isEmpty()) {
                         targetPlayerToNotify = p.getProfile().getName();
@@ -203,7 +203,7 @@ public class InteropFtbu extends InteropFtbuDummy {
             }
         }
         notifyPlayer(EnumChatFormatting.RED, targetPlayerToNotify, notificationTitle, notificationMsg, hoverTextLines);
-        InteropFtbuChunkData.INSTANCE.markDirty();
+        InteropFtbuChunkData.get(world).markDirty();
     }
 
     

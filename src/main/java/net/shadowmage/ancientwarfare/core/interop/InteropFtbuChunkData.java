@@ -8,14 +8,12 @@ import java.util.Map;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.common.util.Constants.NBT;
-import net.shadowmage.ancientwarfare.core.interop.InteropFtbuChunkData.TownHallOwner;
 
 public class InteropFtbuChunkData extends WorldSavedData {
     public static final String ID = "AW2_InteropFtbuChunkData";
-    
-    public static InteropFtbuChunkData INSTANCE;
     
     private Map<ChunkLocation, List<TownHallOwner>> chunkClaims = new HashMap<ChunkLocation, List<TownHallOwner>>();
     
@@ -23,16 +21,20 @@ public class InteropFtbuChunkData extends WorldSavedData {
         super(tagName);
     }
     
+    public InteropFtbuChunkData() {
+        super(ID);
+    }
+
     public synchronized List<TownHallOwner> chunkClaimsGet(ChunkLocation chunkLocation) {
-        return INSTANCE.chunkClaims.get(chunkLocation);
+        return chunkClaims.get(chunkLocation);
     }
     
     public synchronized List<TownHallOwner> chunkClaimsPut(ChunkLocation chunkLocation, List<TownHallOwner> townHallOwners) {
-        return INSTANCE.chunkClaims.put(chunkLocation, townHallOwners);
+        return chunkClaims.put(chunkLocation, townHallOwners);
     }
     
     public synchronized List<TownHallOwner> chunkClaimsRemove(ChunkLocation chunkLocation) {
-        return INSTANCE.chunkClaims.remove(chunkLocation);
+        return chunkClaims.remove(chunkLocation);
     }
 
     @Override
@@ -213,4 +215,13 @@ public class InteropFtbuChunkData extends WorldSavedData {
         }
     }
     
+    public static InteropFtbuChunkData get(World world) {
+        // perWorldStorage == different data for each dimension
+        InteropFtbuChunkData data = (InteropFtbuChunkData) world.perWorldStorage.loadData(InteropFtbuChunkData.class, ID);
+        if (data == null) {
+            data = new InteropFtbuChunkData();
+            world.setItemData(ID, data);
+        }
+        return data;
+    }
 }
