@@ -10,6 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
@@ -48,6 +49,8 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
     private boolean isNeglected = false;
     private int neglectedChecksSoFar = 0;
     
+    public boolean isHq = false;
+    
     private String oldOwner = null;
     
     private int ticketRetry = 0;
@@ -81,18 +84,18 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
                         // town hall has advanced a stage of neglect
                         neglectedChecksSoFar = 0;
                         String notificationTitle = "";
-                        IChatComponent notificationMsg = null;
-                        List<IChatComponent> notificationTooltip = new ArrayList<IChatComponent>();
+                        ChatComponentTranslation notificationMsg = null;
+                        List<ChatComponentTranslation> notificationTooltip = new ArrayList<ChatComponentTranslation>();
                         
                         if (isNeglected && isActive) {
                             // neglected flag already set, abandon the town hall
                             notificationTitle = "ftbu_aw2.notification.townhall_abandoned";
-                            notificationMsg = ModAccessors.FTBU.chatComponent("ftbu_aw2.notification.townhall_abandoned.msg");
-                            notificationTooltip.add(ModAccessors.FTBU.chatComponent("ftbu_aw2.notification.townhall_abandoned.tooltip.1"));
-                            notificationTooltip.add(ModAccessors.FTBU.chatComponent("ftbu_aw2.notification.townhall_abandoned.tooltip.2"));
-                            notificationTooltip.add(ModAccessors.FTBU.chatComponent("ftbu_aw2.notification.townhall_abandoned.tooltip.3"));
-                            notificationTooltip.add(ModAccessors.FTBU.chatComponent("ftbu_aw2.notification.chunk_position", xCoord>>4 , zCoord>>4));
-                            notificationTooltip.add(ModAccessors.FTBU.chatComponent("ftbu_aw2.notification.click_to_remove"));
+                            notificationMsg = new ChatComponentTranslation("ftbu_aw2.notification.townhall_abandoned.msg");
+                            notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.townhall_abandoned.tooltip.1"));
+                            notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.townhall_abandoned.tooltip.2"));
+                            notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.townhall_abandoned.tooltip.3"));
+                            notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.chunk_position", xCoord>>4 , zCoord>>4));
+                            notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.click_to_remove"));
                             
                             isActive = false;
                             isNeglected = false;
@@ -101,15 +104,15 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
                         } else if (isActive) {
                             // send neglect warning, reset timer and set neglected flag
                             notificationTitle = "ftbu_aw2.notification.townhall_neglected";
-                            notificationMsg = ModAccessors.FTBU.chatComponent("ftbu_aw2.notification.townhall_neglected.msg", AWNPCStatics.townActiveNpcSearchLimit);
+                            notificationMsg = new ChatComponentTranslation("ftbu_aw2.notification.townhall_neglected.msg", AWNPCStatics.townActiveNpcSearchLimit);
                             if (nearbyValidEntity == 0)
-                                notificationTooltip.add(ModAccessors.FTBU.chatComponent("ftbu_aw2.notification.townhall_neglected.tooltip.1"));
+                                notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.townhall_neglected.tooltip.1"));
                             else
-                                notificationTooltip.add(ModAccessors.FTBU.chatComponent("ftbu_aw2.notification.townhall_neglected.tooltip.1.alt"));
-                            notificationTooltip.add(ModAccessors.FTBU.chatComponent("ftbu_aw2.notification.townhall_neglected.tooltip.2", AWNPCStatics.townActiveNpcSearchLimit));
-                            notificationTooltip.add(ModAccessors.FTBU.chatComponent("ftbu_aw2.notification.townhall_neglected.tooltip.3"));
-                            notificationTooltip.add(ModAccessors.FTBU.chatComponent("ftbu_aw2.notification.chunk_position", xCoord>>4 , zCoord>>4));
-                            notificationTooltip.add(ModAccessors.FTBU.chatComponent("ftbu_aw2.notification.click_to_remove"));
+                                notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.townhall_neglected.tooltip.1.alt"));
+                            notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.townhall_neglected.tooltip.2", AWNPCStatics.townActiveNpcSearchLimit));
+                            notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.townhall_neglected.tooltip.3"));
+                            notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.chunk_position", xCoord>>4 , zCoord>>4));
+                            notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.click_to_remove"));
                             
                             isNeglected = true;
                         } else {
@@ -159,22 +162,22 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
             // same owner as before (or no old owner, so assume it's the same)
             // show a "claim secured" type message to the current owner, regardless if neglected/abandoned
             String notificationTitle = "ftbu_aw2.notification.townhall_secured";
-            IChatComponent notificationMsg = ModAccessors.FTBU.chatComponent("ftbu_aw2.notification.townhall_secured.msg");
-            List<IChatComponent> notificationTooltip = new ArrayList<IChatComponent>();
-            notificationTooltip.add(ModAccessors.FTBU.chatComponent("ftbu_aw2.notification.chunk_position", xCoord>>4 , zCoord>>4));
-            notificationTooltip.add(ModAccessors.FTBU.chatComponent("ftbu_aw2.notification.click_to_remove"));
+            ChatComponentTranslation notificationMsg = new ChatComponentTranslation("ftbu_aw2.notification.townhall_secured.msg");
+            List<ChatComponentTranslation> notificationTooltip = new ArrayList<ChatComponentTranslation>();
+            notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.chunk_position", xCoord>>4 , zCoord>>4));
+            notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.click_to_remove"));
             ModAccessors.FTBU.notifyPlayer(EnumChatFormatting.GREEN, getOwnerName(), notificationTitle, notificationMsg, notificationTooltip);
         } else {
             // new owner. Notify both players of the capture
             String notificationTitle = "ftbu_aw2.notification.townhall_captured";
-            IChatComponent notificationMsg = ModAccessors.FTBU.chatComponent("ftbu_aw2.notification.townhall_captured.msg.lost", getOwnerName());
-            List<IChatComponent> notificationTooltip = new ArrayList<IChatComponent>();
-            notificationTooltip.add(ModAccessors.FTBU.chatComponent("ftbu_aw2.notification.chunk_position", xCoord>>4 , zCoord>>4));
-            notificationTooltip.add(ModAccessors.FTBU.chatComponent("ftbu_aw2.notification.click_to_remove"));
+            ChatComponentTranslation notificationMsg = new ChatComponentTranslation("ftbu_aw2.notification.townhall_captured.msg.lost", getOwnerName());
+            List<ChatComponentTranslation> notificationTooltip = new ArrayList<ChatComponentTranslation>();
+            notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.chunk_position", xCoord>>4 , zCoord>>4));
+            notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.click_to_remove"));
             
             ModAccessors.FTBU.notifyPlayer(EnumChatFormatting.RED, oldOwner, notificationTitle, notificationMsg, notificationTooltip);
             
-            notificationMsg = ModAccessors.FTBU.chatComponent("ftbu_aw2.notification.townhall_captured.msg.gained", oldOwner);
+            notificationMsg = new ChatComponentTranslation("ftbu_aw2.notification.townhall_captured.msg.gained", oldOwner);
             ModAccessors.FTBU.notifyPlayer(EnumChatFormatting.GREEN, getOwnerName(), notificationTitle, notificationMsg, notificationTooltip);
         }
         
@@ -372,6 +375,8 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
             isNeglected = (tag.getBoolean("isNeglected"));
         if (tag.hasKey("oldOwner"))
             oldOwner = (tag.getString("oldOwner"));
+        if (tag.hasKey("isHq"))
+            isHq = (tag.getBoolean("isHq"));
     }
 
     @Override
@@ -389,6 +394,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
         tag.setBoolean("isNeglected", isNeglected);
         if (oldOwner != null)
             tag.setString("oldOwner", oldOwner);
+        tag.setBoolean("isHq", isHq);
     }
 
     @Override

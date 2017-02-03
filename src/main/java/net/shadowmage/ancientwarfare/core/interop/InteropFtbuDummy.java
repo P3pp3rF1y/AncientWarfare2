@@ -23,10 +23,5 @@ public class InteropFtbuDummy implements InteropFtbuInterface {
     public void unclaimChunks(World world, String ownerName, int posX, int posY, int posZ) {}
 
     @Override
-    public void notifyPlayer(EnumChatFormatting titleColor, String ownerName, String title, IChatComponent msg, List<IChatComponent> hoverTextLines) {}
-    
-    @Override
-    public IChatComponent chatComponent(String s, Object... obj) { 
-        return new ChatComponentTranslation(s, obj);
-    }
+    public void notifyPlayer(EnumChatFormatting titleColor, String ownerName, String title, ChatComponentTranslation msg, List<ChatComponentTranslation> hoverTextLines) {}
 }

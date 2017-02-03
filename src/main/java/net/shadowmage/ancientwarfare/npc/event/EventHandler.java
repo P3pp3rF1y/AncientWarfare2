@@ -12,9 +12,11 @@ import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.npc.gamedata.HeadquartersTracker;
 
 public class EventHandler {
     private EventHandler() {
@@ -24,6 +26,14 @@ public class EventHandler {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onEntityJoinWorld(EntityJoinWorldEvent event) {
+        if (event.entity instanceof EntityPlayer) {
+            if (ModAccessors.FTBU_LOADED && !HeadquartersTracker.get(event.world).validateCurrentHq(event.entity.getCommandSenderName(), event.world)) {
+                System.out.println("NOTIFY MISSING HQ!");
+                HeadquartersTracker.notifyHqMissing(event.entity.getCommandSenderName());
+            } else {
+                System.out.println("HQ not missing");
+            }
+        }
         if (event.entity instanceof NpcBase)
             return;
         if (!(event.entity instanceof EntityCreature))

@@ -158,6 +158,7 @@ tile.structure_builder_ticked.name=Survival Structure Builder
 #npc
 tile.town_hall.name=Town Hall
 tile.recruiting_station.name=Recruiting Station
+tile.headquarters.name=Headquarters
 #vehicle
 
 #guistrings
@@ -728,3 +729,10 @@ ftbu_aw2.notification.townhall_captured.msg.lost=Lost to %s
 ftbu_aw2.notification.townhall_captured.msg.gained=Gained from %s
 ftbu_aw2.notification.townhall_secured=Town Hall reinforced!
 ftbu_aw2.notification.townhall_secured.msg=Territory secured.
+ftbu_aw2.notification.townhall_newhq=Headquarters established!
+ftbu_aw2.notification.townhall_newhq.msg=New HQ for dimension set.
+ftbu_aw2.notification.townhall_hqmissing=No headquarters found!
+ftbu_aw2.notification.townhall_hqmissing.msg=See tooltip for details...
+ftbu_aw2.notification.townhall_hqmissing.tooltip.1=You might want to set a HQ to take
+ftbu_aw2.notification.townhall_hqmissing.tooltip.2=advantage of it's capability. Just
+ftbu_aw2.notification.townhall_hqmissing.tooltip.3=(re)place a Town Hall to set HQ.

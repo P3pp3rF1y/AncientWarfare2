@@ -77,12 +77,12 @@ public class InteropFtbu extends InteropFtbuDummy {
     
     
     @Override
-    public void notifyPlayer(EnumChatFormatting titleColor, String ownerName, String title, IChatComponent msg, List<IChatComponent> hoverTextLines) {
+    public void notifyPlayer(EnumChatFormatting titleColor, String ownerName, String title, ChatComponentTranslation msg, List<ChatComponentTranslation> hoverTextLines) {
         if (ownerName.isEmpty())
             return;
         LMPlayerServer p = LMWorldServer.inst.getPlayer(ownerName);
         if (p != null) {
-            IChatComponent cc = chatComponent(title);
+            IChatComponent cc = new ChatComponentTranslation(title);
             cc.getChatStyle().setColor(titleColor);
             Notification n = new Notification("claim_change" + p.world.getMCWorld().getTotalWorldTime(), cc, 6000);
             n.setDesc(msg);
@@ -107,8 +107,8 @@ public class InteropFtbu extends InteropFtbuDummy {
         //AncientWarfareCore.log.info("Removing TownHall owner for BlockPos: " + posX + "x" + posY + "x" + posZ);
         String targetPlayerToNotify = "";
         String notificationTitle = "";
-        IChatComponent notificationMsg = null;
-        List<IChatComponent> hoverTextLines = new ArrayList<IChatComponent>();
+        ChatComponentTranslation notificationMsg = null;
+        List<ChatComponentTranslation> hoverTextLines = new ArrayList<ChatComponentTranslation>();
         for (int chunkX = origin.xPosition - AWNPCStatics.townChunkClaimRadius; chunkX <= origin.xPosition + AWNPCStatics.townChunkClaimRadius; chunkX++) {
             for (int chunkZ = origin.zPosition - AWNPCStatics.townChunkClaimRadius; chunkZ <= origin.zPosition + AWNPCStatics.townChunkClaimRadius; chunkZ++) {
                 //AncientWarfareCore.log.info("Checking chunk at BlockPos for unclaiming: " + chunkX*16 + "x" + chunkZ*16);
@@ -138,9 +138,9 @@ public class InteropFtbu extends InteropFtbuDummy {
                                 // least concerning notification
                                 targetPlayerToNotify = townHallOwner.getOwnerName();
                                 notificationTitle = "ftbu_aw2.notification.townhall_lost";
-                                notificationMsg = chatComponent("ftbu_aw2.notification.townhall_lost_secondary.msg");
-                                hoverTextLines.add(chatComponent("ftbu_aw2.notification.chunk_position", origin.xPosition, origin.zPosition));
-                                hoverTextLines.add(chatComponent("ftbu_aw2.notification.click_to_remove"));
+                                notificationMsg = new ChatComponentTranslation("ftbu_aw2.notification.townhall_lost_secondary.msg");
+                                hoverTextLines.add(new ChatComponentTranslation("ftbu_aw2.notification.chunk_position", origin.xPosition, origin.zPosition));
+                                hoverTextLines.add(new ChatComponentTranslation("ftbu_aw2.notification.click_to_remove"));
                             }
                             //AncientWarfareCore.log.info(" - Removed a destroyed town hall that wasn't controlling the chunk. Territory unchanged.");
                         }
@@ -162,9 +162,9 @@ public class InteropFtbu extends InteropFtbuDummy {
                                 // least concerning notification
                                 targetPlayerToNotify = townHallOwner.getOwnerName();
                                 notificationTitle = "ftbu_aw2.notification.townhall_lost";
-                                notificationMsg = chatComponent("ftbu_aw2.notification.townhall_lost_secondary.msg");
-                                hoverTextLines.add(chatComponent("ftbu_aw2.notification.chunk_position", origin.xPosition, origin.zPosition));
-                                hoverTextLines.add(chatComponent("ftbu_aw2.notification.click_to_remove"));
+                                notificationMsg = new ChatComponentTranslation("ftbu_aw2.notification.townhall_lost_secondary.msg");
+                                hoverTextLines.add(new ChatComponentTranslation("ftbu_aw2.notification.chunk_position", origin.xPosition, origin.zPosition));
+                                hoverTextLines.add(new ChatComponentTranslation("ftbu_aw2.notification.click_to_remove"));
                             }
                             chunkIsStillOwned = true;
                         }
@@ -179,10 +179,10 @@ public class InteropFtbu extends InteropFtbuDummy {
                         // very concerning notification
                         targetPlayerToNotify = p.getProfile().getName();
                         notificationTitle = "ftbu_aw2.notification.townhall_lost";
-                        notificationMsg = chatComponent("ftbu_aw2.notification.townhall_lost_flipped.msg", townHallOwners.get(0).getOwnerName());
+                        notificationMsg = new ChatComponentTranslation("ftbu_aw2.notification.townhall_lost_flipped.msg", townHallOwners.get(0).getOwnerName());
                         hoverTextLines.clear();
-                        hoverTextLines.add(chatComponent("ftbu_aw2.notification.chunk_position", origin.xPosition, origin.zPosition));
-                        hoverTextLines.add(chatComponent("ftbu_aw2.notification.click_to_remove"));
+                        hoverTextLines.add(new ChatComponentTranslation("ftbu_aw2.notification.chunk_position", origin.xPosition, origin.zPosition));
+                        hoverTextLines.add(new ChatComponentTranslation("ftbu_aw2.notification.click_to_remove"));
                     }
                 } else {
                     // there is no owner of the chunk left at all
@@ -193,10 +193,10 @@ public class InteropFtbu extends InteropFtbuDummy {
                     if (targetPlayerToNotify.isEmpty()) {
                         targetPlayerToNotify = p.getProfile().getName();
                         notificationTitle = "ftbu_aw2.notification.townhall_lost";
-                        notificationMsg = chatComponent("ftbu_aw2.notification.townhall_lost_wilderness.msg");
+                        notificationMsg = new ChatComponentTranslation("ftbu_aw2.notification.townhall_lost_wilderness.msg");
                         hoverTextLines.clear();
-                        hoverTextLines.add(chatComponent("ftbu_aw2.notification.chunk_position", origin.xPosition, origin.zPosition));
-                        hoverTextLines.add(chatComponent("ftbu_aw2.notification.click_to_remove"));
+                        hoverTextLines.add(new ChatComponentTranslation("ftbu_aw2.notification.chunk_position", origin.xPosition, origin.zPosition));
+                        hoverTextLines.add(new ChatComponentTranslation("ftbu_aw2.notification.click_to_remove"));
                     }
                 }
                 

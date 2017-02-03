@@ -1,5 +1,9 @@
 package net.shadowmage.ancientwarfare.npc.block;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map.Entry;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -11,6 +15,9 @@ import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -21,23 +28,18 @@ import net.shadowmage.ancientwarfare.core.block.IconRotationMap;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.npc.gamedata.HeadquartersTracker;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 
-public class BlockTownHall extends Block implements IRotatableBlock {
+public class BlockTownHall extends Block {
 
-    private final IconRotationMap iconMap = new IconRotationMap();
-
+    public IIcon[] icons = new IIcon[6];
+    
     public BlockTownHall() {
         super(Material.rock);
         this.setCreativeTab(AWNpcItemLoader.npcTab);
         setHardness(2.f);
-        setIcon(RelativeSide.TOP, "ancientwarfare:npc/town_hall_top");
-        setIcon(RelativeSide.BOTTOM, "ancientwarfare:npc/town_hall_bottom");
-        setIcon(RelativeSide.LEFT, "ancientwarfare:npc/town_hall_side");
-        setIcon(RelativeSide.RIGHT, "ancientwarfare:npc/town_hall_side");
-        setIcon(RelativeSide.FRONT, "ancientwarfare:npc/town_hall_side");
-        setIcon(RelativeSide.REAR, "ancientwarfare:npc/town_hall_side");
     }
 
     @Override
@@ -50,31 +52,20 @@ public class BlockTownHall extends Block implements IRotatableBlock {
     }
 
     @Override
-    public RotationType getRotationType() {
-        return RotationType.FOUR_WAY;
-    }
-
-    @Override
-    public boolean invertFacing() {
-        return true;
-    }
-
-    @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister register) {
-        iconMap.registerIcons(register);
+        icons[0] = register.registerIcon("ancientwarfare:npc/town_hall_bottom");
+        icons[1] = register.registerIcon("ancientwarfare:npc/town_hall_top");
+        icons[2] = register.registerIcon("ancientwarfare:npc/town_hall_side");
+        icons[3] = register.registerIcon("ancientwarfare:npc/town_hall_side");
+        icons[4] = register.registerIcon("ancientwarfare:npc/town_hall_side");
+        icons[5] = register.registerIcon("ancientwarfare:npc/town_hall_side");
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
-        return iconMap.getIcon(this, meta, side);
-    }
-
-    @Override
-    public BlockTownHall setIcon(RelativeSide side, String texName) {
-        iconMap.setIcon(this, side, texName);
-        return this;
+        return icons[side];
     }
 
     @Override
@@ -92,7 +83,7 @@ public class BlockTownHall extends Block implements IRotatableBlock {
         TileEntity te = world.getTileEntity(x, y, z);
         return te instanceof IInteractableTile && ((IInteractableTile) te).onBlockClicked(player);
     }
-    
+
     /**
      * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
      * their own) Args: x, y, z, neighbor Block
@@ -109,17 +100,26 @@ public class BlockTownHall extends Block implements IRotatableBlock {
                 tileTownHall.alarmActive = false;
         }
     }
-    
+
     @Override
     public void onBlockPlacedBy(World world, int posX, int posY, int posZ, EntityLivingBase placer, ItemStack is) {
         if (!world.isRemote) {
             if (dropBlockIfNotStable(world, posX, posY, posZ, world.getBlock(posX, posY, posZ)))
                 return;
             ModAccessors.FTBU.claimChunks(world, placer, posX, posY, posZ);
+            
+            if (placer instanceof EntityPlayer && ModAccessors.FTBU_LOADED) {
+                if (!HeadquartersTracker.get(world).validateCurrentHq(placer.getCommandSenderName(), world)) {
+                    world.setBlock(posX, posY, posZ, AWNPCBlockLoader.headquarters, 0, 3);
+                    HeadquartersTracker.get(world).setNewHq(placer.getCommandSenderName(), world, posX, posY, posZ);
+                    HeadquartersTracker.notifyHqNew(placer.getCommandSenderName(), posX, posZ);
+                }
+            }
+            
         }
     }
-    
-    private boolean dropBlockIfNotStable(World world, int posX, int posY, int posZ, Block block) {
+
+    public boolean dropBlockIfNotStable(World world, int posX, int posY, int posZ, Block block) {
         if (!world.isSideSolid(posX - 1, posY, posZ, ForgeDirection.EAST,  false) &&
                 !world.isSideSolid(posX + 1, posY, posZ, ForgeDirection.WEST,  false) &&
                 !world.isSideSolid(posX, posY, posZ - 1, ForgeDirection.SOUTH, false) &&
@@ -133,14 +133,13 @@ public class BlockTownHall extends Block implements IRotatableBlock {
         }
         return false;
     }
-    
+
     @Override
     public boolean removedByPlayer(World world, EntityPlayer player, int posX, int posY, int posZ, boolean willHarvest) {
         if (!world.isRemote) {
             String teOwner = ((TileTownHall) world.getTileEntity(posX, posY, posZ)).getOwnerName();
             ModAccessors.FTBU.unclaimChunks(world, teOwner, posX, posY, posZ);
             ((TileTownHall) world.getTileEntity(posX, posY, posZ)).unloadChunks();
-            //System.out.println(((TileTownHall) world.getTileEntity(posX, posY, posZ)).getOwnerName());
         }
         return super.removedByPlayer(world, player, posX, posY, posZ, willHarvest);
     }
