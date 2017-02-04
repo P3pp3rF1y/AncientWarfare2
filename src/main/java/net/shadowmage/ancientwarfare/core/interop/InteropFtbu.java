@@ -8,7 +8,9 @@ import ftb.lib.api.notification.MouseAction;
 import ftb.lib.api.notification.Notification;
 import ftb.utils.api.FriendsAPI;
 import ftb.utils.mod.FTBU;
+import ftb.utils.world.LMPlayer;
 import ftb.utils.world.LMPlayerServer;
+import ftb.utils.world.LMWorldClient;
 import ftb.utils.world.LMWorldServer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ChatComponentTranslation;
@@ -80,7 +82,16 @@ public class InteropFtbu extends InteropFtbuDummy {
     public void notifyPlayer(EnumChatFormatting titleColor, String ownerName, String title, ChatComponentTranslation msg, List<ChatComponentTranslation> hoverTextLines) {
         if (ownerName.isEmpty())
             return;
+        
+        // CLIENT-SIDE WIP
+        //LMPlayer p;
+        //if (LMWorldServer.inst == null)
+        //    p = LMWorldClient.inst.getPlayer(ownerName);
+        //else
+        //    p = LMWorldServer.inst.getPlayer(ownerName);
+        
         LMPlayerServer p = LMWorldServer.inst.getPlayer(ownerName);
+        
         if (p != null) {
             IChatComponent cc = new ChatComponentTranslation(title);
             cc.getChatStyle().setColor(titleColor);

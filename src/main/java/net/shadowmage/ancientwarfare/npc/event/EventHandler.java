@@ -26,14 +26,16 @@ public class EventHandler {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onEntityJoinWorld(EntityJoinWorldEvent event) {
+        
+        // TODO: NEED TO PERFORM CLIENT-SIDE ONLY, BUT NEED TO UPDATE NOTIFY CODE TO SUPPORT IT
+        /*
         if (event.entity instanceof EntityPlayer) {
             if (ModAccessors.FTBU_LOADED && !HeadquartersTracker.get(event.world).validateCurrentHq(event.entity.getCommandSenderName(), event.world)) {
-                System.out.println("NOTIFY MISSING HQ!");
                 HeadquartersTracker.notifyHqMissing(event.entity.getCommandSenderName());
-            } else {
-                System.out.println("HQ not missing");
             }
         }
+        */
+        
         if (event.entity instanceof NpcBase)
             return;
         if (!(event.entity instanceof EntityCreature))
