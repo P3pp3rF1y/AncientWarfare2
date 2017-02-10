@@ -82,6 +82,8 @@ public class AWAutomationStatics extends ModConfiguration {
     public static final double torqueToMj = 1.d;
 
     public static Property renderWorkBounds;
+    
+    public static String[] crop_farm_blocks = new String[]{"minecraft:grass|minecraft:farmland", "minecraft:dirt|minecraft:farmland", "GardenCore:garden_soil|GardenCore:garden_farmland"};
 
     public AWAutomationStatics(String mod) {
         super(mod);
@@ -223,6 +225,10 @@ public class AWAutomationStatics extends ModConfiguration {
         enable_energy_client_updates = config.getBoolean("enable_client_energy_animations", clientOptions, enable_energy_client_updates,
                 "Enable client-side animation of power tiles. Disabling may improve rendering performance on low-end machines");
         renderWorkBounds = config.get(clientOptions, "render_work_bounds", true);
+        
+        crop_farm_blocks = config.get(serverOptions, "crop_farm_blocks", crop_farm_blocks, "List of farmable blocks\n" +
+                "List of blocks pairs - untilled and tilled version - that the crop farm should use for farming. Use the format:\n" +
+                "modid:farmableBlock|modid.tilledFarmableBlock").getStringList();
     }
 
 }

@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.BlockStem;
@@ -17,14 +18,20 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.api.IAncientWarfareFarmable;
 import net.shadowmage.ancientwarfare.api.IAncientWarfarePlantable;
+import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
+import scala.actors.threadpool.Arrays;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
@@ -36,6 +43,8 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
 
     private int plantableCount;
     private int bonemealCount;
+    
+    private final static List<Block[]> blocksTillableAndTilled = new ArrayList<Block[]>();
 
     public WorkSiteCropFarm() {
 
@@ -43,6 +52,39 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
         blocksToHarvest = new HashSet<BlockPosition>();
         blocksToPlant = new HashSet<BlockPosition>();
         blocksToFertilize = new HashSet<BlockPosition>();
+        
+        if (blocksTillableAndTilled.size() == 0) {
+            AncientWarfareCore.log.info("Building crop farmable block list...");
+            for (String entry : AWAutomationStatics.crop_farm_blocks) {
+                String[] farmablePair = entry.split("\\|");
+                if (farmablePair.length != 2) {
+                    AncientWarfareCore.log.error("Invalid entry: " + entry);
+                    continue;
+                }
+                Block[] farmablePairBlocks = new Block[2];
+                for (int i = 0; i < 2; i++) {
+                    if (!farmablePair[i].trim().equals("")) {
+                        String[] blockId = farmablePair[i].split(":");
+                        if (blockId[0] != null && blockId[1] != null) {
+                            Block block = GameRegistry.findBlock(blockId[0], blockId[1]);
+                            if (block != null) {
+                                farmablePairBlocks[i] = block;
+                            } else {
+                                // just dummy the block entry so we can silently ignore this missing block
+                                farmablePairBlocks[i] = Blocks.air;
+                            }
+                        }
+                    }
+                }
+                if (farmablePairBlocks[0] == null || farmablePairBlocks[1] == null) {
+                    AncientWarfareCore.log.error("Invalid entry: " + entry);
+                    continue;
+                } else if (farmablePairBlocks[0] != Blocks.air && farmablePairBlocks[1] != Blocks.air) {
+                    blocksTillableAndTilled.add(farmablePairBlocks);
+                    AncientWarfareCore.log.info("...added " + farmablePair[0] + " > " + farmablePair[1] + " as " + farmablePairBlocks[0].getLocalizedName() + " > " + farmablePairBlocks[1].getLocalizedName());
+                }
+            }
+        }
 
         InventoryTools.IndexHelper helper = new InventoryTools.IndexHelper();
         int[] topIndices = helper.getIndiceArrayForSpread(TOP_LENGTH);
@@ -89,7 +131,11 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
     }
 
     private boolean isTillable(Block block){
-        return block == Blocks.grass || block == Blocks.dirt;
+        for (Block farmableBlockPair[] : blocksTillableAndTilled) {
+            if (block == farmableBlockPair[0])
+                return true;
+        }
+        return false;
     }
 
     @Override
@@ -131,8 +177,11 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
             block = worldObj.getBlock(position.x, position.y - 1, position.z);
             if (isTillable(block)) {
                 blocksToTill.add(new BlockPosition(position.x, position.y - 1, position.z));
-            } else if (block == Blocks.farmland) {
-                blocksToPlant.add(position);
+            } else {
+                for (Block farmableBlockPair[] : blocksTillableAndTilled) {
+                    if (block == farmableBlockPair[1])
+                        blocksToPlant.add(position);
+                }
             }
         } else if (block instanceof BlockStem) {
             if (!((IGrowable) block).func_149851_a(worldObj, position.x, position.y, position.z, worldObj.isRemote)) {
@@ -168,6 +217,7 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
 
     @Override
     protected boolean processWork() {
+        
         Iterator<BlockPosition> it;
         BlockPosition position;
         Block block;
@@ -177,7 +227,12 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
                 it.remove();
                 block = worldObj.getBlock(position.x, position.y, position.z);
                 if (isTillable(block) && canReplace(position.x, position.y + 1, position.z)) {
-                    worldObj.setBlock(position.x, position.y, position.z, Blocks.farmland);
+                    //for (Block farmableBlockPair[] : blocksTillableAndTilled) {
+                    for (int i = 0; i < blocksTillableAndTilled.size(); i++) {
+                        if (block == blocksTillableAndTilled.get(i)[0]) {
+                            worldObj.setBlock(position.x, position.y, position.z, blocksTillableAndTilled.get(i)[1]);
+                        }
+                    }
                     return true;
                 }
             }
