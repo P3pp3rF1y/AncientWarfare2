@@ -83,7 +83,7 @@ public class InteropFtbu extends InteropFtbuDummy {
     
     @Override
     public void notifyPlayer(EnumChatFormatting titleColor, String ownerName, String title, ChatComponentTranslation msg, List<ChatComponentTranslation> hoverTextLines) {
-        if (ownerName.isEmpty())
+        if (ownerName.isEmpty() || LMWorldServer.inst == null)
             return;
         
         // CLIENT-SIDE WIP
