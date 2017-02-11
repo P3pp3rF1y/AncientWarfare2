@@ -171,10 +171,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
         if (NpcAI.isAlwaysHostileToNpcs(entityTarget))
             return true;
         else if ((entityTarget instanceof NpcPlayerOwned) || (entityTarget instanceof EntityPlayer)) {
-            if (isEntitySameTeamOrFriends(entityTarget)) {
-                return false;
-            } else
-                return true;
+            return !isEntitySameTeamOrFriends(entityTarget);
         } else if (entityTarget instanceof NpcFaction) {
             return ((NpcFaction) entityTarget).isHostileTowards(this); // hostility is based on faction standing
         } else {

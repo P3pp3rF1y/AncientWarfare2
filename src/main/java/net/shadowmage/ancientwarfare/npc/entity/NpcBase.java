@@ -921,10 +921,10 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         if (targetTeam != null)
             if (targetTeam.isSameTeam(getTeam()))
                 return true;
-        if (ModAccessors.FTBU.areFriends(targetOwnerOrName, getOwnerName()))
-            return true;
-        
-        return false;
+        if (entityTarget.worldObj.isRemote) {
+            return ModAccessors.FTBU.isFriendOfClient(entityTarget.getUniqueID());
+        }
+        return ModAccessors.FTBU.areFriends(targetOwnerOrName, getOwnerName());
     }
 
     public final EntityLivingBase getFollowingEntity() {

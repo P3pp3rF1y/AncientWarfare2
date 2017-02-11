@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.interop;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.ArrayList;
 import java.util.Iterator;
 import ftb.lib.FTBLib;
@@ -26,9 +27,11 @@ import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 public class InteropFtbu extends InteropFtbuDummy {
     @Override
     public boolean areFriends(String player1, String player2) {
-        if (FriendsAPI.areFriends(player1, player2))
-            return true;
-        return false;
+        return FriendsAPI.areFriends(player1, player2);
+    }
+    
+    public boolean isFriendOfClient(UUID otherPlayer) { 
+        return FriendsAPI.isClientFriend(otherPlayer);
     }
 
     @Override

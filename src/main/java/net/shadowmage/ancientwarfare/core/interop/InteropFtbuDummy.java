@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.interop;
 
 import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ChatComponentTranslation;
@@ -12,6 +13,9 @@ public class InteropFtbuDummy implements InteropFtbuInterface {
 
     @Override
     public boolean areFriends(String player1, String player2) { return false; }
+    
+    @Override
+    public boolean isFriendOfClient(UUID otherPlayer) { return false; };
 
     @Override
     public void claimChunks(World world, String ownerName, int posX, int posY, int posZ) {}
