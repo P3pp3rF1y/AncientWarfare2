@@ -2,10 +2,11 @@ package net.shadowmage.ancientwarfare.core.gamedata;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -14,9 +15,28 @@ import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.common.util.Constants.NBT;
 
 public class ChunkClaims extends WorldSavedData {
-    public static final String ID = "AW2_InteropFtbuChunkData";
+    public static final String ID = "AW2_ChunkClaimData";
     
-    private Map<ChunkLocation, LinkedHashSet<TownHallOwner>> chunkClaims = new HashMap<ChunkLocation, LinkedHashSet<TownHallOwner>>();
+    /**
+     *  DIMENSION_CHUNK_CLAIM_ENTRIES<Integer, LinkedHashMap<Integer, ChunkClaimEntry>>
+     *      Integer [dimId]
+     *      LinkedHashMap<Integer, ChunkClaimEntry>
+     *          Integer [index]
+     *          ChunkClaimEntry
+     *              ChunkClaimInfo chunkClaimInfo;
+     *                  int chunkX;
+     *                  int chunkZ;
+     *                  int dimensionId;
+     *              LinkedHashSet<TownHallEntry> townHallEntries;
+     *                  TownHallEntry
+     *                      String ownerName
+     *                      int posX
+     *                      int posY
+     *                      int posZ
+     *              
+     */
+    protected static Map<Integer, LinkedHashMap<Integer, ChunkClaimEntry>> DIMENSION_CHUNK_CLAIM_ENTRIES = new LinkedHashMap<Integer, LinkedHashMap<Integer, ChunkClaimEntry>>(); 
+    
     
     public ChunkClaims(String tagName) {
         super(tagName);
@@ -26,77 +46,106 @@ public class ChunkClaims extends WorldSavedData {
         super(ID);
     }
 
-    
-    
-    /*
-    public synchronized LinkedHashSet<TownHallOwner> chunkClaimsGet(ChunkLocation chunkLocation) {
-        return chunkClaims.get(chunkLocation);
+    public synchronized void addTownHallEntry(ChunkClaimInfo reqChunkClaimInfo, TownHallEntry newTownHallEntry) {
+        // get ChunkClaimEntries collection for the requested dimension, if any
+        LinkedHashMap<Integer, ChunkClaimEntry> chunkClaimEntries = DIMENSION_CHUNK_CLAIM_ENTRIES.get(reqChunkClaimInfo.getDimensionId());
+        // make a new ChunkClaimEntry for this dimension if it wasn't found
+        if (chunkClaimEntries == null)
+            chunkClaimEntries = new LinkedHashMap<Integer, ChunkClaimEntry>();
+        
+        // find the ChunkClaimEntry for this ChunkClaimInfo, if any
+        int chunkClaimEntryIndex = chunkClaimEntries.size();
+        for (Entry<Integer, ChunkClaimEntry> chunkClaimEntryWithIndex : chunkClaimEntries.entrySet())
+            if (chunkClaimEntryWithIndex.getValue().chunkClaimInfo == reqChunkClaimInfo)
+                chunkClaimEntryIndex = chunkClaimEntryWithIndex.getKey();
+        ChunkClaimEntry chunkClaimEntry = chunkClaimEntries.get(chunkClaimEntryIndex);
+        // make a new chunkClaimEntry if it wasn't found
+        if (chunkClaimEntry == null)
+            chunkClaimEntry = new ChunkClaimEntry(reqChunkClaimInfo, new LinkedHashSet<TownHallEntry>());
+        
+        // add the provided TownHallEntry to this ChunkClaimEntry's townHallEntries collection
+        chunkClaimEntry.townHallEntries.add(newTownHallEntry);
+        // put our modified chunkClaimEntry back into the ChunkClaimEntry collection
+        chunkClaimEntries.put(chunkClaimEntryIndex, chunkClaimEntry);
+        // put the ChunkClaimEntry collection back into our master collection
+        DIMENSION_CHUNK_CLAIM_ENTRIES.put(reqChunkClaimInfo.dimensionId, chunkClaimEntries);
+        this.markDirty();
     }
-    
-    public synchronized LinkedHashSet<TownHallOwner> chunkClaimsPut(ChunkLocation chunkLocation, LinkedHashSet<TownHallOwner> townHallOwners) {
-        return chunkClaims.put(chunkLocation, townHallOwners);
-    }
-    
-    public synchronized LinkedHashSet<TownHallOwner> chunkClaimsRemove(ChunkLocation chunkLocation) {
-        return chunkClaims.remove(chunkLocation);
-    }
-    */
 
     @Override
     public void readFromNBT(NBTTagCompound nbtLoad) {
-        chunkClaims.clear();
-        NBTTagList chunkClaimsTag = nbtLoad.getTagList("ChunkClaims", NBT.TAG_COMPOUND);
-        NBTTagCompound chuckClaimTag;
-        String keyChunkLocation;
-        String valueTownHallOwnerList;
+        DIMENSION_CHUNK_CLAIM_ENTRIES.clear();
+        NBTTagList chunkClaimsTag = nbtLoad.getTagList("DIMENSION_CHUNK_CLAIM_ENTRIES", NBT.TAG_COMPOUND);
         for (int i = 0; i < chunkClaimsTag.tagCount(); i++) {
-            chuckClaimTag = chunkClaimsTag.getCompoundTagAt(i);
+            NBTTagCompound chuckClaimTag = chunkClaimsTag.getCompoundTagAt(i);
             
             // get the key (ChunkLocation) from String
-            keyChunkLocation = chuckClaimTag.getString("keyChunkLocation");
-            ChunkLocation thisChunk = ChunkLocation.fromString(keyChunkLocation);
+            String savedChunkClaimEntryInfo = chuckClaimTag.getString("savedChunkClaimEntryInfo");
+            ChunkClaimInfo chunkClaimEntryInfo = ChunkClaimInfo.fromString(savedChunkClaimEntryInfo);
             
-            // get the value list (TownHallOwner's) from semicolon-delimitered String...
-            valueTownHallOwnerList = chuckClaimTag.getString("valueTownHallOwnerList");
-            List<String> townHallOwnerListRaw = Arrays.asList(valueTownHallOwnerList.split(";"));
-            // ... and rebuild a TownHallOwner list
-            LinkedHashSet<TownHallOwner> townHallOwners = new LinkedHashSet<TownHallOwner>();
-            for (String townHallOwnerRaw : townHallOwnerListRaw)
-                townHallOwners.add(TownHallOwner.fromString(townHallOwnerRaw));
-            // all done, add the chunkclaim entry
-            chunkClaims.put(thisChunk, townHallOwners);
+            // get the value (TownHallEntry list as semicolon-delimitered string)
+            String savedTownHallEntries = chuckClaimTag.getString("savedTownHallEntries");
+            List<String> savedTownHallEntriesAsList = Arrays.asList(savedTownHallEntries.split(";"));
+            
+            // loop over the entries and add them as normal
+            for (String savedTownHallEntry : savedTownHallEntriesAsList) {
+                if (!savedTownHallEntry.isEmpty()) {
+                    TownHallEntry townHallEntry = TownHallEntry.fromString(savedTownHallEntry);
+                    addTownHallEntry(chunkClaimEntryInfo, townHallEntry);
+                }
+            }
         }
     }
 
     @Override
     public void writeToNBT(NBTTagCompound nbtSave) {
         NBTTagList chunkClaimsTag = new NBTTagList();
-        for(Map.Entry<ChunkLocation, LinkedHashSet<TownHallOwner>> entry : chunkClaims.entrySet()) {
-            // convert the key (ChunkLocation) to String
-            String keyChunkLocation = entry.getKey().toString();
-            
-            // convert the value list (TownHallOwner's) to semicolon-delimitered String
-            List<String> townHallOwnerListRaw = new ArrayList<String>();
-            for (TownHallOwner townHallOwners : entry.getValue()) {
-                townHallOwnerListRaw.add(townHallOwners.toString());
+        for (Entry<Integer, LinkedHashMap<Integer, ChunkClaimEntry>> chunkClaimEntries : DIMENSION_CHUNK_CLAIM_ENTRIES.entrySet()) {
+            // we don't care about the key (dimId) of our masterlist here, since it's already stored in each ChunkClaimInfo
+            for (Entry<Integer, ChunkClaimEntry> chunkClaimEntryWithIndex : chunkClaimEntries.getValue().entrySet()) {
+                ChunkClaimEntry chunkClaimEntry = chunkClaimEntryWithIndex.getValue();
+                
+                String savedChunkClaimEntryInfo = chunkClaimEntry.chunkClaimInfo.toString();
+                List<String> savedTownHallEntriesAsList = new ArrayList<String>();
+                for (TownHallEntry townHallEntry : chunkClaimEntry.townHallEntries) {
+                    savedTownHallEntriesAsList.add(townHallEntry.toString());
+                }
+                String savedTownHallEntries = String.join(";", savedTownHallEntriesAsList);
+                
+                // saved data built, now build the actual NBT
+                NBTTagCompound chuckClaimTag = new NBTTagCompound();
+                chuckClaimTag.setString("savedChunkClaimEntryInfo", savedChunkClaimEntryInfo);
+                chuckClaimTag.setString("savedTownHallEntries", savedTownHallEntries);
+                chunkClaimsTag.appendTag(chuckClaimTag);
             }
-            String valueTownHallOwnerList = String.join(";", townHallOwnerListRaw);
-            
-            // all done, build and save NBT
-            NBTTagCompound chuckClaimTag = new NBTTagCompound();
-            chuckClaimTag.setString("keyChunkLocation", keyChunkLocation);
-            chuckClaimTag.setString("valueTownHallOwnerList", valueTownHallOwnerList);
-            chunkClaimsTag.appendTag(chuckClaimTag);
         }
-        nbtSave.setTag("ChunkClaims", chunkClaimsTag);
+        nbtSave.setTag("DIMENSION_CHUNK_CLAIM_ENTRIES", chunkClaimsTag);
+    }
+    
+    public class ChunkClaimEntry {
+        private final ChunkClaimInfo chunkClaimInfo;
+        private final LinkedHashSet<TownHallEntry> townHallEntries;
+        
+        public ChunkClaimEntry(ChunkClaimInfo chunkClaimInfo, LinkedHashSet<TownHallEntry> townHallEntries) {
+            this.chunkClaimInfo = chunkClaimInfo;
+            this.townHallEntries = townHallEntries;
+        }
+
+        public ChunkClaimInfo getChunkClaimInfo() {
+            return chunkClaimInfo;
+        }
+
+        public LinkedHashSet<TownHallEntry> getTownHallEntries() {
+            return townHallEntries;
+        }
     }
 
-    public static class ChunkLocation {
+    public static class ChunkClaimInfo {
         private int chunkX;
         private int chunkZ;
         private int dimensionId;
         
-        public ChunkLocation(int chunkX, int chunkZ, int dimensionId) {
+        public ChunkClaimInfo(int chunkX, int chunkZ, int dimensionId) {
             this.chunkX = chunkX;
             this.chunkZ = chunkZ;
             this.dimensionId = dimensionId;
@@ -119,9 +168,9 @@ public class ChunkClaims extends WorldSavedData {
             return chunkX + "," + chunkZ + "," + dimensionId;
         }
         
-        public static ChunkLocation fromString(String chunkLocationRaw) {
+        public static ChunkClaimInfo fromString(String chunkLocationRaw) {
             String[] split = chunkLocationRaw.split(",");
-            return new ChunkLocation(Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2]));
+            return new ChunkClaimInfo(Integer.parseInt(split[0]), Integer.parseInt(split[1]), Integer.parseInt(split[2]));
         }
         
         @Override
@@ -130,7 +179,7 @@ public class ChunkClaims extends WorldSavedData {
                 return true;
             if (obj == null || obj.getClass() != this.getClass())
                 return false;
-            ChunkLocation chunkLocationOther = (ChunkLocation) obj;
+            ChunkClaimInfo chunkLocationOther = (ChunkClaimInfo) obj;
             if (chunkLocationOther.chunkX != chunkX)
                 return false;
             if (chunkLocationOther.chunkZ != chunkZ)
@@ -151,13 +200,13 @@ public class ChunkClaims extends WorldSavedData {
         }
     }
     
-    public static class TownHallOwner {
+    public static class TownHallEntry {
         private String ownerName;
         private int posX;
         private int posY;
         private int posZ;
         
-        public TownHallOwner(String ownerName, int posX, int posY, int posZ) {
+        public TownHallEntry(String ownerName, int posX, int posY, int posZ) {
             this.ownerName = ownerName;
             this.posX = posX;
             this.posY = posY;
@@ -185,9 +234,9 @@ public class ChunkClaims extends WorldSavedData {
             return ownerName + "," + posX + "," + posY + "," + posZ;
         }
         
-        public static TownHallOwner fromString(String townHallOwnerRaw) {
+        public static TownHallEntry fromString(String townHallOwnerRaw) {
             String[] split = townHallOwnerRaw.split(",");
-            return new TownHallOwner(split[0], Integer.parseInt(split[1]), Integer.parseInt(split[2]), Integer.parseInt(split[3]));
+            return new TownHallEntry(split[0], Integer.parseInt(split[1]), Integer.parseInt(split[2]), Integer.parseInt(split[3]));
         }
         
         @Override
@@ -196,7 +245,7 @@ public class ChunkClaims extends WorldSavedData {
                 return true;
             if (obj == null || obj.getClass() != this.getClass())
                 return false;
-            TownHallOwner townHallOther = (TownHallOwner) obj;
+            TownHallEntry townHallOther = (TownHallEntry) obj;
             if (!townHallOther.ownerName.equals(ownerName))
                 return false;
             if (townHallOther.posX != posX)
@@ -221,7 +270,7 @@ public class ChunkClaims extends WorldSavedData {
     }
     
     public static ChunkClaims get(World world) {
-        // mapStorage == one set of data for every world
+        // mapStorage == one set of data for all worlds
         ChunkClaims data = (ChunkClaims) world.mapStorage.loadData(ChunkClaims.class, ID);
         if (data == null) {
             data = new ChunkClaims();

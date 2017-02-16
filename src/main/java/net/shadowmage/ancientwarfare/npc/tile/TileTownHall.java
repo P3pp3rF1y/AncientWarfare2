@@ -15,6 +15,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Type;
 import net.minecraftforge.common.util.Constants;
@@ -37,6 +38,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import ftb.utils.world.LMPlayerServer;
+import ftb.utils.world.LMWorldServer;
 
 public class TileTownHall extends TileOwned implements IInventory, IInteractableTile {
 
@@ -76,6 +80,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
         if (AWNPCStatics.townActiveNpcSearch && AWNPCStatics.townChunkLoadRadius > -1) {
             if (--activeCheckTicks <= 0) {
                 activeCheckTicks = (int) (AWNPCStatics.townActiveNpcSearchLimit * 20 * 60 * AWNPCStatics.townActiveNpcSearchRateFactor);
+                System.out.println("TE update");
                 int nearbyValidEntity = isNpcOrPlayerNearby(isActive);
                 if (nearbyValidEntity < 2) {
                     // no valid npc/player nearby
@@ -99,7 +104,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
                             
                             isActive = false;
                             isNeglected = false;
-                            ModAccessors.FTBU.unclaimChunks(worldObj, getOwnerName(), xCoord, yCoord, zCoord);
+                            //ModAccessors.FTBU.unclaimChunks(worldObj, getOwnerName(), xCoord, yCoord, zCoord);
                             unloadChunks();
                         } else if (isActive) {
                             // send neglect warning, reset timer and set neglected flag
@@ -127,7 +132,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
                 } else {
                     // town hall has a player/NPC in range
                     neglectedChecksSoFar = 0;
-                    checkAndNotifyOwner(false);
+                    checkAndNotifyOwner();
                     isActive = true;
                     isNeglected = false;
                 }
@@ -153,8 +158,9 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
         forceUpdate();
     }
     
-    private void checkAndNotifyOwner(boolean hasCaptureOccured) {
-        if (!hasCaptureOccured && isActive && !isNeglected)
+    
+    private void checkAndNotifyOwner() {
+        if (isActive && !isNeglected)
             return;
         
         boolean ownerUnchanged = getOwnerName().equals(oldOwner) || oldOwner == null;
@@ -181,10 +187,17 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
             ModAccessors.FTBU.notifyPlayer(EnumChatFormatting.GREEN, getOwnerName(), notificationTitle, notificationMsg, notificationTooltip);
         }
         
-        
-        ModAccessors.FTBU.claimChunks(worldObj, getOwnerName(), xCoord, yCoord, zCoord);
+        // manually claim the chunks immediately, don't wait for the worker thread
+        LMPlayerServer lmPlayerServer = LMWorldServer.inst.getPlayer(getOwnerName());
+        Chunk thisChunk = worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
+        for (int chunkX = thisChunk.xPosition - AWNPCStatics.townChunkClaimRadius; chunkX <= thisChunk.xPosition + AWNPCStatics.townChunkClaimRadius; chunkX++) {
+            for (int chunkZ = thisChunk.zPosition - AWNPCStatics.townChunkClaimRadius; chunkZ <= thisChunk.zPosition + AWNPCStatics.townChunkClaimRadius; chunkZ++) {
+                lmPlayerServer.claimChunk(worldObj.provider.dimensionId, chunkX, chunkZ);
+            }
+        }
         oldOwner = null;
     }
+    
 
     private void loadChunks() {
         if (--ticketRetry > 0)
@@ -250,13 +263,14 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
      * @return 0 if no valid entity in range. 1 if within x/z but outside y, 2 if within x/y/z
      */
     private int isNpcOrPlayerNearby(boolean keepOwner) {
-        int minX = (xCoord >> 4) * 16 - (AWNPCStatics.townChunkLoadRadius * 16);
-        int minY = 0;
-        int minZ = (zCoord >> 4) * 16 - (AWNPCStatics.townChunkLoadRadius * 16);
-        int maxX = (xCoord >> 4) * 16 + (AWNPCStatics.townChunkLoadRadius * 16);
-        int maxY = this.worldObj.getActualHeight();
-        int maxZ = (zCoord >> 4) * 16 + (AWNPCStatics.townChunkLoadRadius * 16);
+        Chunk thisChunk = this.worldObj.getChunkFromBlockCoords(xCoord, zCoord);
         
+        int minX = thisChunk.xPosition * 16 - AWNPCStatics.townChunkLoadRadius * 16;
+        int minY = 0;
+        int minZ = thisChunk.zPosition * 16 - AWNPCStatics.townChunkLoadRadius * 16;
+        int maxX = thisChunk.xPosition * 16 + (AWNPCStatics.townChunkLoadRadius + 1) * 16;
+        int maxY = this.worldObj.getActualHeight();
+        int maxZ = thisChunk.zPosition * 16 + (AWNPCStatics.townChunkLoadRadius + 1) * 16;
         
         AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ);
         List<EntityLivingBase> nearbyEntities = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, bb);
@@ -334,6 +348,10 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
         }
         
         return retVal;
+    }
+    
+    public boolean isInactive() {
+        return !isActive;
     }
 
     public void clearDeathNotices() {
@@ -510,7 +528,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
                     oldOwner = getOwnerName();
                     setOwner(player);
                     // just unclaim the chunks. A player who had a pre-existing stake (i.e. via a nearby town hall) will get priority
-                    ModAccessors.FTBU.unclaimChunks(worldObj, oldOwner, xCoord, yCoord, zCoord);
+                    //ModAccessors.FTBU.unclaimChunks(worldObj, oldOwner, xCoord, yCoord, zCoord);
                 }
             }
             

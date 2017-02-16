@@ -10,6 +10,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -113,6 +114,12 @@ public class AncientWarfareCore {
     @EventHandler
     public void serverStartingEvent(FMLServerStartingEvent evt) {
         evt.registerServerCommand(new CommandResearch());
+        ModAccessors.FTBU.startWorkerThread();
+    }
+    
+    @EventHandler
+    public void serverStoppingEvent(FMLServerStoppingEvent evt) {
+        ModAccessors.FTBU.stopWorkerThread();
     }
 
     @SubscribeEvent
