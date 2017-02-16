@@ -23,7 +23,6 @@ import net.shadowmage.ancientwarfare.core.container.ContainerResearchBook;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchStation;
 import net.shadowmage.ancientwarfare.core.crafting.AWCoreCrafting;
 import net.shadowmage.ancientwarfare.core.gamedata.Timekeeper;
-import net.shadowmage.ancientwarfare.core.interop.InteropFtbuChunkData;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.item.AWCoreItemLoader;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;

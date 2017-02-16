@@ -25,8 +25,6 @@ import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
-import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
-import scala.actors.threadpool.Arrays;
 
 import java.util.ArrayList;
 import java.util.HashSet;

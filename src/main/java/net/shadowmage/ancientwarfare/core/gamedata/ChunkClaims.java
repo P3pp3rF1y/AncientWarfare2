@@ -1,4 +1,4 @@
-package net.shadowmage.ancientwarfare.core.interop;
+package net.shadowmage.ancientwarfare.core.gamedata;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,16 +12,16 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.common.util.Constants.NBT;
 
-public class InteropFtbuChunkData extends WorldSavedData {
+public class ChunkClaims extends WorldSavedData {
     public static final String ID = "AW2_InteropFtbuChunkData";
     
     private Map<ChunkLocation, List<TownHallOwner>> chunkClaims = new HashMap<ChunkLocation, List<TownHallOwner>>();
     
-    public InteropFtbuChunkData(String tagName) {
+    public ChunkClaims(String tagName) {
         super(tagName);
     }
     
-    public InteropFtbuChunkData() {
+    public ChunkClaims() {
         super(ID);
     }
 
@@ -215,11 +215,11 @@ public class InteropFtbuChunkData extends WorldSavedData {
         }
     }
     
-    public static InteropFtbuChunkData get(World world) {
+    public static ChunkClaims get(World world) {
         // perWorldStorage == different data for each dimension
-        InteropFtbuChunkData data = (InteropFtbuChunkData) world.perWorldStorage.loadData(InteropFtbuChunkData.class, ID);
+        ChunkClaims data = (ChunkClaims) world.perWorldStorage.loadData(ChunkClaims.class, ID);
         if (data == null) {
-            data = new InteropFtbuChunkData();
+            data = new ChunkClaims();
             world.setItemData(ID, data);
         }
         return data;
