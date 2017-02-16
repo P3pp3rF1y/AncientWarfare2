@@ -189,12 +189,16 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
         
         // manually claim the chunks immediately, don't wait for the worker thread
         LMPlayerServer lmPlayerServer = LMWorldServer.inst.getPlayer(getOwnerName());
-        Chunk thisChunk = worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
-        for (int chunkX = thisChunk.xPosition - AWNPCStatics.townChunkClaimRadius; chunkX <= thisChunk.xPosition + AWNPCStatics.townChunkClaimRadius; chunkX++) {
-            for (int chunkZ = thisChunk.zPosition - AWNPCStatics.townChunkClaimRadius; chunkZ <= thisChunk.zPosition + AWNPCStatics.townChunkClaimRadius; chunkZ++) {
-                lmPlayerServer.claimChunk(worldObj.provider.dimensionId, chunkX, chunkZ);
+        if (lmPlayerServer != null) {
+            // we can only do this if the player is actually online 
+            Chunk thisChunk = worldObj.getChunkFromBlockCoords(this.xCoord, this.zCoord);
+            for (int chunkX = thisChunk.xPosition - AWNPCStatics.townChunkClaimRadius; chunkX <= thisChunk.xPosition + AWNPCStatics.townChunkClaimRadius; chunkX++) {
+                for (int chunkZ = thisChunk.zPosition - AWNPCStatics.townChunkClaimRadius; chunkZ <= thisChunk.zPosition + AWNPCStatics.townChunkClaimRadius; chunkZ++) {
+                    lmPlayerServer.claimChunk(worldObj.provider.dimensionId, chunkX, chunkZ);
+                }
             }
         }
+            
         oldOwner = null;
     }
     
