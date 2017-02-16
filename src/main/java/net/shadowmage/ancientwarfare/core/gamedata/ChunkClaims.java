@@ -26,6 +26,9 @@ public class ChunkClaims extends WorldSavedData {
         super(ID);
     }
 
+    
+    
+    /*
     public synchronized LinkedHashSet<TownHallOwner> chunkClaimsGet(ChunkLocation chunkLocation) {
         return chunkClaims.get(chunkLocation);
     }
@@ -37,6 +40,7 @@ public class ChunkClaims extends WorldSavedData {
     public synchronized LinkedHashSet<TownHallOwner> chunkClaimsRemove(ChunkLocation chunkLocation) {
         return chunkClaims.remove(chunkLocation);
     }
+    */
 
     @Override
     public void readFromNBT(NBTTagCompound nbtLoad) {
@@ -217,8 +221,8 @@ public class ChunkClaims extends WorldSavedData {
     }
     
     public static ChunkClaims get(World world) {
-        // perWorldStorage == different data for each dimension
-        ChunkClaims data = (ChunkClaims) world.perWorldStorage.loadData(ChunkClaims.class, ID);
+        // mapStorage == one set of data for every world
+        ChunkClaims data = (ChunkClaims) world.mapStorage.loadData(ChunkClaims.class, ID);
         if (data == null) {
             data = new ChunkClaims();
             world.setItemData(ID, data);
