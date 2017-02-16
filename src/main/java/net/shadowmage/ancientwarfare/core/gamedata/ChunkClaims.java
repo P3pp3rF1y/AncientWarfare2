@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.core.gamedata;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +16,7 @@ import net.minecraftforge.common.util.Constants.NBT;
 public class ChunkClaims extends WorldSavedData {
     public static final String ID = "AW2_InteropFtbuChunkData";
     
-    private Map<ChunkLocation, List<TownHallOwner>> chunkClaims = new HashMap<ChunkLocation, List<TownHallOwner>>();
+    private Map<ChunkLocation, LinkedHashSet<TownHallOwner>> chunkClaims = new HashMap<ChunkLocation, LinkedHashSet<TownHallOwner>>();
     
     public ChunkClaims(String tagName) {
         super(tagName);
@@ -25,15 +26,15 @@ public class ChunkClaims extends WorldSavedData {
         super(ID);
     }
 
-    public synchronized List<TownHallOwner> chunkClaimsGet(ChunkLocation chunkLocation) {
+    public synchronized LinkedHashSet<TownHallOwner> chunkClaimsGet(ChunkLocation chunkLocation) {
         return chunkClaims.get(chunkLocation);
     }
     
-    public synchronized List<TownHallOwner> chunkClaimsPut(ChunkLocation chunkLocation, List<TownHallOwner> townHallOwners) {
+    public synchronized LinkedHashSet<TownHallOwner> chunkClaimsPut(ChunkLocation chunkLocation, LinkedHashSet<TownHallOwner> townHallOwners) {
         return chunkClaims.put(chunkLocation, townHallOwners);
     }
     
-    public synchronized List<TownHallOwner> chunkClaimsRemove(ChunkLocation chunkLocation) {
+    public synchronized LinkedHashSet<TownHallOwner> chunkClaimsRemove(ChunkLocation chunkLocation) {
         return chunkClaims.remove(chunkLocation);
     }
 
@@ -55,7 +56,7 @@ public class ChunkClaims extends WorldSavedData {
             valueTownHallOwnerList = chuckClaimTag.getString("valueTownHallOwnerList");
             List<String> townHallOwnerListRaw = Arrays.asList(valueTownHallOwnerList.split(";"));
             // ... and rebuild a TownHallOwner list
-            List<TownHallOwner> townHallOwners = new ArrayList<TownHallOwner>();
+            LinkedHashSet<TownHallOwner> townHallOwners = new LinkedHashSet<TownHallOwner>();
             for (String townHallOwnerRaw : townHallOwnerListRaw)
                 townHallOwners.add(TownHallOwner.fromString(townHallOwnerRaw));
             // all done, add the chunkclaim entry
@@ -66,7 +67,7 @@ public class ChunkClaims extends WorldSavedData {
     @Override
     public void writeToNBT(NBTTagCompound nbtSave) {
         NBTTagList chunkClaimsTag = new NBTTagList();
-        for(Map.Entry<ChunkLocation, List<TownHallOwner>> entry : chunkClaims.entrySet()) {
+        for(Map.Entry<ChunkLocation, LinkedHashSet<TownHallOwner>> entry : chunkClaims.entrySet()) {
             // convert the key (ChunkLocation) to String
             String keyChunkLocation = entry.getKey().toString();
             

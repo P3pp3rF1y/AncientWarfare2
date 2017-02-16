@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.UUID;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
+
 import ftb.lib.FTBLib;
 import ftb.lib.api.notification.MouseAction;
 import ftb.lib.api.notification.Notification;
@@ -60,9 +62,9 @@ public class InteropFtbu extends InteropFtbuDummy {
                     // Chunk was claimed successfully (or already was), build the ChunkLocation key
                     ChunkLocation thisChunk = new ChunkLocation(chunkX, chunkZ, world.provider.dimensionId);
                     // check if this key already exists
-                    List<TownHallOwner> townHallOwners = ChunkClaims.get(world).chunkClaimsGet(thisChunk);
+                    LinkedHashSet<TownHallOwner> townHallOwners = ChunkClaims.get(world).chunkClaimsGet(thisChunk);
                     if (townHallOwners == null) { //unclaimed chunk, make a new TownHallInfo list
-                        townHallOwners = new ArrayList<TownHallOwner>();
+                        townHallOwners = new LinkedHashSet<TownHallOwner>();
                         //AncientWarfareCore.log.info("Claiming new chunk at BlockPos: " + chunkX*16 + "x" + chunkZ*16);
                     //} else {
                     //    AncientWarfareCore.log.info("Already claimed chunk at BlockPos: " + chunkX*16 + "x" + chunkZ*16);
@@ -129,7 +131,7 @@ public class InteropFtbu extends InteropFtbuDummy {
                 //AncientWarfareCore.log.info("Checking chunk at BlockPos for unclaiming: " + chunkX*16 + "x" + chunkZ*16);
                 // check if this chunk is claimed
                 ChunkLocation thisChunk = new ChunkLocation(chunkX, chunkZ, world.provider.dimensionId);
-                List<TownHallOwner> townHallOwners = ChunkClaims.get(world).chunkClaimsGet(thisChunk);
+                LinkedHashSet<TownHallOwner> townHallOwners = ChunkClaims.get(world).chunkClaimsGet(thisChunk);
                 if (townHallOwners == null) {
                     // shouldn't happen! Or maybe it can? I don't know lol
                     //AncientWarfareCore.log.info(" - Chunk was claimed but had no Town Hall owner? Meh, unclaim it and just return");
@@ -188,13 +190,13 @@ public class InteropFtbu extends InteropFtbuDummy {
                         // Original player lost the chunk but another player has a stake on it
                         //AncientWarfareCore.log.info(" ... territory lost to a nearby player: " + townHallOwners.get(0).getOwnerName());
                         p.unclaimChunk(world.provider.dimensionId, chunkX, chunkZ);
-                        LMPlayerServer pNew = LMWorldServer.inst.getPlayer(townHallOwners.get(0).getOwnerName());
+                        LMPlayerServer pNew = LMWorldServer.inst.getPlayer(townHallOwners.iterator().next().getOwnerName());
                         pNew.claimChunk(world.provider.dimensionId, chunkX, chunkZ);
                         
                         // very concerning notification
                         targetPlayerToNotify = p.getProfile().getName();
                         notificationTitle = "ftbu_aw2.notification.townhall_lost";
-                        notificationMsg = new ChatComponentTranslation("ftbu_aw2.notification.townhall_lost_flipped.msg", townHallOwners.get(0).getOwnerName());
+                        notificationMsg = new ChatComponentTranslation("ftbu_aw2.notification.townhall_lost_flipped.msg", townHallOwners.iterator().next().getOwnerName());
                         hoverTextLines.clear();
                         hoverTextLines.add(new ChatComponentTranslation("ftbu_aw2.notification.chunk_position", origin.xPosition, origin.zPosition));
                         hoverTextLines.add(new ChatComponentTranslation("ftbu_aw2.notification.click_to_remove"));
