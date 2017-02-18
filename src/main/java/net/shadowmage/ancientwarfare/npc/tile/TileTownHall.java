@@ -3,17 +3,14 @@ package net.shadowmage.ancientwarfare.npc.tile;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
 import net.minecraft.world.ChunkCoordIntPair;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.ForgeChunkManager;
@@ -80,7 +77,6 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
         if (AWNPCStatics.townActiveNpcSearch && AWNPCStatics.townChunkLoadRadius > -1) {
             if (--activeCheckTicks <= 0) {
                 activeCheckTicks = (int) (AWNPCStatics.townActiveNpcSearchLimit * 20 * 60 * AWNPCStatics.townActiveNpcSearchRateFactor);
-                System.out.println("TE update");
                 int nearbyValidEntity = isNpcOrPlayerNearby(isActive);
                 if (nearbyValidEntity < 2) {
                     // no valid npc/player nearby
