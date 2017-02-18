@@ -58,6 +58,11 @@ public class AWCraftingManager {
     }
 
     private void addRecipe(IResearchRecipe recipe) {
+        if (!AWCoreStatics.useResearchSystem) {
+            GameRegistry.addRecipe(recipe);
+            return;
+        }
+        
         Item item = recipe.getRecipeOutput().getItem();
         if (AWCoreStatics.isItemCraftable(item)) {
             if (!recipe.getNeededResearch().isEmpty() && AWCoreStatics.isItemResearched(item)) {
