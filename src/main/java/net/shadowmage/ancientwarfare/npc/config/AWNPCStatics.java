@@ -339,7 +339,7 @@ public class AWNPCStatics extends ModConfiguration {
         
         pathfinderAvoidCustom = config.get(pathfinderSettings, "pathfinder_avoid_others", pathfinderAvoidCustom, "Avoid Other blocks\nDefault=" + pathfinderAvoidCustom + "\n" +
                 "List of custom blocks you also want NPC's to avoid. Use the format:\n" +
-                "modid:blockname;modid.blockname;").getString();
+                "modid:blockname:meta;modid.blockname:meta;").getString();
     }
 
     public void postInitCallback() {

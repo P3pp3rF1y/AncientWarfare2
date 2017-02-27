@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
+import java.lang.reflect.Array;
 import java.util.HashSet;
 
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -13,6 +14,7 @@ import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.npc.ai.PathFind.BlockAvoidEntry;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 
 public class PathFind extends PathFinder{
@@ -25,8 +27,7 @@ public class PathFind extends PathFinder{
         this.closedPath = closedDoor;
     }
     
-    private static HashSet<String> BLOCKS_TO_AVOID;
-    
+    private static BlockAvoidEntry[] BLOCKS_TO_AVOID;
     
     /**
      * Internal implementation of creating a path from an entity to a point
@@ -201,7 +202,8 @@ public class PathFind extends PathFinder{
                         }
                         if (BLOCKS_TO_AVOID == null)
                             blockBlacklistInit();
-                        if (blockBlacklistContains(block)) {
+
+                        if (blockBlacklistContains(block, entity.worldObj.getBlockMetadata(l, i1, j1))) {
                             return -2;
                         }
                     }
@@ -213,34 +215,68 @@ public class PathFind extends PathFinder{
     }
 
     private void blockBlacklistInit() {
-        BLOCKS_TO_AVOID = new HashSet<String>();
+        HashSet<BlockAvoidEntry> blocksToAvoid = new HashSet<BlockAvoidEntry>();
         AncientWarfareCore.log.info("Building pathfinding block exclusion custom list...");
         String[] avoidList = AWNPCStatics.pathfinderAvoidCustom.split(";");
         for (String blockName : avoidList) {
             blockName = blockName.trim();
             if (!blockName.equals("")) {
                 String[] blockId = blockName.split(":");
+                if (Array.getLength(blockId) != 2 || Array.getLength(blockId) != 3 ) {
+                    AncientWarfareCore.log.warn(" - Invalid block: " + blockName);
+                    continue;
+                }
                 if (blockId[0] == null || blockId[1] == null) {
                     AncientWarfareCore.log.warn(" - Invalid block: " + blockName);
                     continue;
                 }
-                if (GameRegistry.findBlock(blockId[0], blockId[1]) == null) {
+                Block block = GameRegistry.findBlock(blockId[0], blockId[1]);
+                if (block == null) {
                     AncientWarfareCore.log.warn(" - Block not found: " + blockName);
                     continue;
                 }
-                BLOCKS_TO_AVOID.add(blockId[0] + ":" + blockId[1]);
+                int meta = -1;
+                if (Array.getLength(blockId) == 3) {
+                    try {
+                        meta = Integer.parseInt(blockId[2]);
+                        if (meta < 0 || meta > 15)
+                            throw new NumberFormatException();
+                    } catch (NumberFormatException e) {
+                        AncientWarfareCore.log.warn(" - Meta value invalid : '" + blockId[2] + "', must be a number between 0 and 15");
+                        continue;
+                    }
+                }
+                blocksToAvoid.add(new BlockAvoidEntry(block, meta));
             }
         }
-        AncientWarfareCore.log.info("...added " + BLOCKS_TO_AVOID.size() + " blocks to pathfinding blacklist");
+        
+        BLOCKS_TO_AVOID = blocksToAvoid.toArray(new BlockAvoidEntry[0]);
+        AncientWarfareCore.log.info("...added " + BLOCKS_TO_AVOID.length + " blocks to pathfinding blacklist");
     }
     
-    private boolean blockBlacklistContains(Block block) {
-        if (BLOCKS_TO_AVOID.contains(GameRegistry.findUniqueIdentifierFor(block).toString()))
-            return true;
+    private boolean blockBlacklistContains(Block block, int meta) {
+        for (BlockAvoidEntry blockAvoidEntry : BLOCKS_TO_AVOID) {
+            if (blockAvoidEntry.block == block) {
+                if (blockAvoidEntry.meta == -1)
+                    return true;
+                if (blockAvoidEntry.meta == meta)
+                    return true;
+            }
+        }
         return false;
     }
 
     private boolean isDoor(Block block) {
         return block instanceof BlockDoor || block instanceof BlockFenceGate;
+    }
+    
+    public class BlockAvoidEntry {
+        protected final Block block;
+        protected final int meta;
+        
+        public BlockAvoidEntry (Block block, int meta) {
+            this.block = block;
+            this.meta = meta;
+        }
     }
 }
