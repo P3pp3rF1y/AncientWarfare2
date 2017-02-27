@@ -134,7 +134,7 @@ public class BlockTownHall extends Block {
             // notify the player
             Chunk thisChunk = world.getChunkFromBlockCoords(posX, posZ);
             String notificationTitle = "ftbu_aw2.notification.townhall_lost";
-            ChatComponentTranslation notificationMsg = new ChatComponentTranslation("ftbu_aw2.notification.townhall_lost.msg", thisChunk.xPosition, thisChunk.zPosition);
+            ChatComponentTranslation notificationMsg = new ChatComponentTranslation("ftbu_aw2.notification.chunk_position", thisChunk.xPosition, thisChunk.zPosition);
             List<ChatComponentTranslation> notificationTooltip = new ArrayList<ChatComponentTranslation>();
             notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.click_to_remove"));
             ModAccessors.FTBU.notifyPlayer(EnumChatFormatting.RED, ((TileTownHall) world.getTileEntity(posX, posY, posZ)).getOwnerName(), notificationTitle, notificationMsg, notificationTooltip);
