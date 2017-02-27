@@ -1065,6 +1065,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         if (cachedBedPos != null)
             tag.setIntArray("cachedBedPos", new int[]{cachedBedPos.x, cachedBedPos.y, cachedBedPos.z});
         tag.setBoolean("foundBed", foundBed);
+        writeBaseTags(tag);
     }
 
     private void writeBaseTags(NBTTagCompound tag){
