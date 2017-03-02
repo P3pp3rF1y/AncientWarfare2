@@ -1,10 +1,11 @@
 package net.shadowmage.ancientwarfare.core.gamedata;
 
+import java.awt.Point;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 
-import ftb.utils.world.LMPlayerServer;
 import ftb.utils.world.LMWorldServer;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
@@ -34,7 +35,6 @@ public class ChunkClaimWorkerThread extends Thread {
         try {
             while (true) {
                 if (IS_ENABLED) {
-                    // iterate over DIMENSION_CHUNK_CLAIM_ENTRIES every cycle
                     Iterator<Entry<Integer, LinkedHashMap<Integer, ChunkClaimEntry>>> chunkClaimEntriesIterator = ChunkClaims.get(DimensionManager.getWorld(0)).chunkClaimsPerDimension.entrySet().iterator();
                     while (chunkClaimEntriesIterator.hasNext()) {
                         Entry<Integer, LinkedHashMap<Integer, ChunkClaimEntry>> thisEntry = chunkClaimEntriesIterator.next();
@@ -44,17 +44,19 @@ public class ChunkClaimWorkerThread extends Thread {
                         if (world == null)
                             continue;
                         
+                        HashMap<Point, String> chunksToClaim = new HashMap<Point, String>();
+                        HashMap<Point, String> chunksToUnclaim = new HashMap<Point, String>();
+                        
                         // iterate over ChunkClaimEntry sets
                         Iterator<Entry<Integer, ChunkClaimEntry>> chunkClaimEntrySets = thisEntry.getValue().entrySet().iterator();
                         while (chunkClaimEntrySets.hasNext()) {
                             Entry<Integer, ChunkClaimEntry> chunkClaimEntryWithIndex = chunkClaimEntrySets.next();
                             ChunkClaimEntry chunkClaimEntry = chunkClaimEntryWithIndex.getValue();
                             ChunkClaimInfo chunkClaimInfo = chunkClaimEntry.getChunkClaimInfo();
-                            LMPlayerServer lmPlayerServer;
                             TownHallEntry townHallEntry;
                             Iterator<TownHallEntry> townHallEntryIterator;
                             
-                            // First verify that all TownHallsEntries are still valid
+                            // First verify that all TownHallsEntries are still valid. Also note the HQ chunks.
                             townHallEntryIterator = chunkClaimEntry.getTownHallEntries().iterator();
                             boolean isFirstTownHall = true;
                             while (townHallEntryIterator.hasNext()) {
@@ -71,10 +73,9 @@ public class ChunkClaimWorkerThread extends Thread {
                                 if (isRemoved || ((TileTownHall)world.getTileEntity(townHallEntry.getPosX(), townHallEntry.getPosY(), townHallEntry.getPosZ())).isInactive()) {
                                     // town hall is removed, or found but inactive - unclaim chunks if it is the first town hall for this chunk
                                     if (isFirstTownHall) {
-                                        lmPlayerServer = LMWorldServer.inst.getPlayer(townHallEntry.getOwnerName());
                                         for (int chunkX = chunkClaimInfo.getChunkX() - AWNPCStatics.townChunkClaimRadius; chunkX <= chunkClaimInfo.getChunkX() + AWNPCStatics.townChunkClaimRadius; chunkX++) {
                                             for (int chunkZ = chunkClaimInfo.getChunkZ() - AWNPCStatics.townChunkClaimRadius; chunkZ <= chunkClaimInfo.getChunkZ() + AWNPCStatics.townChunkClaimRadius; chunkZ++) {
-                                                lmPlayerServer.unclaimChunk(chunkClaimInfo.getDimensionId(), chunkX, chunkZ);
+                                                chunksToUnclaim.put(new Point(chunkX, chunkZ), townHallEntry.getOwnerName());
                                             }
                                         }
                                     }
@@ -86,18 +87,44 @@ public class ChunkClaimWorkerThread extends Thread {
                             townHallEntryIterator = chunkClaimEntry.getTownHallEntries().iterator();
                             while (townHallEntryIterator.hasNext()) {
                                 townHallEntry = townHallEntryIterator.next();
-                                if (!((TileTownHall)world.getTileEntity(townHallEntry.getPosX(), townHallEntry.getPosY(), townHallEntry.getPosZ())).isInactive()) {
-                                    lmPlayerServer = LMWorldServer.inst.getPlayer(townHallEntry.getOwnerName());
+                                TileTownHall tileEntity = ((TileTownHall)world.getTileEntity(townHallEntry.getPosX(), townHallEntry.getPosY(), townHallEntry.getPosZ()));
+                                if (tileEntity.isHq || !tileEntity.isInactive()) {
                                     for (int chunkX = chunkClaimInfo.getChunkX() - AWNPCStatics.townChunkClaimRadius; chunkX <= chunkClaimInfo.getChunkX() + AWNPCStatics.townChunkClaimRadius; chunkX++) {
                                         for (int chunkZ = chunkClaimInfo.getChunkZ() - AWNPCStatics.townChunkClaimRadius; chunkZ <= chunkClaimInfo.getChunkZ() + AWNPCStatics.townChunkClaimRadius; chunkZ++) {
-                                            lmPlayerServer.claimChunk(chunkClaimInfo.getDimensionId(), chunkX, chunkZ);
+                                            chunksToClaim.put(new Point(chunkX, chunkZ), townHallEntry.getOwnerName());
                                         }
                                     }
                                 }
                             }
                         }
+                        
+                        // done walking through chunkClaimEntrySets, built our claim/unclaim maps...
+                        // ... now check the claim/unclaim maps to decide what needs to be done
+                        for (Entry<Point, String> chunkToUnclaimEntry : chunksToUnclaim.entrySet()) {
+                            boolean shouldUnclaim = false;
+                            if (chunksToClaim.containsKey(chunkToUnclaimEntry.getKey())) {
+                                // this particular chunk is being unclaimed by one townhall and another is also requesting to claim
+                                if (!chunksToClaim.get(chunkToUnclaimEntry.getKey()).equals(chunkToUnclaimEntry.getValue())) {
+                                    // conflicting claim has a different owner so remove the old one 
+                                    shouldUnclaim = true;
+                                }
+                            } else {
+                                // no conflicting/overlapping claim at all, so still unclaim it
+                                shouldUnclaim = true;
+                            }
+                            
+                            if (shouldUnclaim) {
+                                LMWorldServer.inst.getPlayer(chunkToUnclaimEntry.getValue()).unclaimChunk(dimId, chunkToUnclaimEntry.getKey().x, chunkToUnclaimEntry.getKey().y);
+                            }
+                        }
+                        
+                        for (Entry<Point, String> chunkToClaimEntry : chunksToClaim.entrySet()) {
+                            LMWorldServer.inst.getPlayer(chunkToClaimEntry.getValue()).claimChunk(dimId, chunkToClaimEntry.getKey().x, chunkToClaimEntry.getKey().y);
+                        }
+                        
                     }
                 }
+                
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {}

@@ -724,6 +724,7 @@ ftbu_aw2.notification.townhall_abandoned.tooltip.3=risk of being captured!
 ftbu_aw2.notification.townhall_captured=Town Hall captured!
 ftbu_aw2.notification.townhall_captured.msg.lost=Lost to %s
 ftbu_aw2.notification.townhall_captured.msg.gained=Gained from %s
+ftbu_aw2.notification.townhall_destroyed.msg=Destroyed by %s
 ftbu_aw2.notification.townhall_secured=Town Hall reinforced!
 ftbu_aw2.notification.townhall_secured.msg=Territory secured.
 ftbu_aw2.notification.townhall_newhq=Headquarters established!

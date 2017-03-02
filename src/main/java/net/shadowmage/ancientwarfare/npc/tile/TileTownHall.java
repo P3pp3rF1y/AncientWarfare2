@@ -151,8 +151,8 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
     
     @Override
     public void markDirty() {
-        super.markDirty();
         forceUpdate();
+        super.markDirty();
     }
     
     
@@ -182,6 +182,12 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
             
             notificationMsg = new ChatComponentTranslation("ftbu_aw2.notification.townhall_captured.msg.gained", oldOwner);
             ModAccessors.FTBU.notifyPlayer(EnumChatFormatting.GREEN, getOwnerName(), notificationTitle, notificationMsg, notificationTooltip);
+            
+            
+            LMPlayerServer lmPlayerServer = LMWorldServer.inst.getPlayer(getOwnerName());
+            if (lmPlayerServer != null) {
+                
+            }
         }
         
         // manually claim the chunks immediately, don't wait for the worker thread
@@ -526,18 +532,17 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
                 // different player to the owner has used the town hall
                 if (!ModAccessors.FTBU.areFriends(player.getCommandSenderName(), getOwnerName())) {
                     // players are NOT friends
-                    if (this.isHq) {
-                        // is a HQ, drop it instead of claiming
+                    this.isHq = false;
+                    if (this.isActive) {
+                        // drop the town hall
                         BlockTownHall block = (BlockTownHall) worldObj.getBlock(xCoord, yCoord, zCoord); 
                         block.dropBlock(worldObj, xCoord, yCoord, zCoord, block);
                         return true;
                     } else {
-                        //  capture town hall
+                        // capture the town hall
                         oldOwner = getOwnerName();
                         setOwner(player);
                     }
-                    // just unclaim the chunks. A player who had a pre-existing stake (i.e. via a nearby town hall) will get priority
-                    //ModAccessors.FTBU.unclaimChunks(worldObj, oldOwner, xCoord, yCoord, zCoord);
                 }
             }
             

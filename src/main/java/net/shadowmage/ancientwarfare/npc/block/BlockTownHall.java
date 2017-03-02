@@ -138,15 +138,19 @@ public class BlockTownHall extends Block {
     @Override
     public boolean removedByPlayer(World world, EntityPlayer player, int posX, int posY, int posZ, boolean willHarvest) {
         if (!world.isRemote) {
-            // notify the player
-            Chunk thisChunk = world.getChunkFromBlockCoords(posX, posZ);
-            String notificationTitle = "ftbu_aw2.notification.townhall_lost";
-            ChatComponentTranslation notificationMsg = new ChatComponentTranslation("ftbu_aw2.notification.chunk_position", thisChunk.xPosition, thisChunk.zPosition);
-            List<ChatComponentTranslation> notificationTooltip = new ArrayList<ChatComponentTranslation>();
-            notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.click_to_remove"));
-            ModAccessors.FTBU.notifyPlayer(EnumChatFormatting.RED, ((TileTownHall) world.getTileEntity(posX, posY, posZ)).getOwnerName(), notificationTitle, notificationMsg, notificationTooltip);
-            
-            ((TileTownHall) world.getTileEntity(posX, posY, posZ)).unloadChunks();
+            // check if the player who removed it is different
+            String townHallOwner = ((TileTownHall) world.getTileEntity(posX, posY, posZ)).getOwnerName();
+            if (!player.getCommandSenderName().equals(townHallOwner)) {
+                // notify the owner that this new player captured their town hall
+                Chunk thisChunk = world.getChunkFromBlockCoords(posX, posZ);
+                String notificationTitle = "ftbu_aw2.notification.townhall_lost";
+                ChatComponentTranslation notificationMsg = new ChatComponentTranslation("ftbu_aw2.notification.townhall_destroyed.msg", player.getCommandSenderName());
+                List<ChatComponentTranslation> notificationTooltip = new ArrayList<ChatComponentTranslation>();
+                notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.chunk_position", thisChunk.xPosition, thisChunk.zPosition));
+                notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.click_to_remove"));
+                ModAccessors.FTBU.notifyPlayer(EnumChatFormatting.RED, townHallOwner, notificationTitle, notificationMsg, notificationTooltip);
+                ((TileTownHall) world.getTileEntity(posX, posY, posZ)).unloadChunks();
+            }
         }
         return super.removedByPlayer(world, player, posX, posY, posZ, willHarvest);
     }
