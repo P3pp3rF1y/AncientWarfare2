@@ -35,7 +35,7 @@ public class ChunkClaimWorkerThread extends Thread {
             while (true) {
                 if (IS_ENABLED) {
                     // iterate over DIMENSION_CHUNK_CLAIM_ENTRIES every cycle
-                    Iterator<Entry<Integer, LinkedHashMap<Integer, ChunkClaimEntry>>> chunkClaimEntriesIterator = ChunkClaims.DIMENSION_CHUNK_CLAIM_ENTRIES.entrySet().iterator();
+                    Iterator<Entry<Integer, LinkedHashMap<Integer, ChunkClaimEntry>>> chunkClaimEntriesIterator = ChunkClaims.get(DimensionManager.getWorld(0)).DIMENSION_CHUNK_CLAIM_ENTRIES.entrySet().iterator();
                     while (chunkClaimEntriesIterator.hasNext()) {
                         Entry<Integer, LinkedHashMap<Integer, ChunkClaimEntry>> thisEntry = chunkClaimEntriesIterator.next();
                         // ensure the dimension for this ChunkClaimEntry map is loaded, skip it if not
@@ -114,11 +114,13 @@ public class ChunkClaimWorkerThread extends Thread {
 
     public synchronized void enable() {
         IS_ENABLED = true;
+        ChunkClaims.setStale();
         AncientWarfareCore.log.info("ChunkClaimWorkerThread enabled (resumed)!");
     }
     
     public synchronized void disable() {
         IS_ENABLED = false;
+        ChunkClaims.setStale();
         AncientWarfareCore.log.info("ChunkClaimWorkerThread disabled (paused)!");
     }
 }

@@ -35,8 +35,8 @@ public class ChunkClaims extends WorldSavedData {
      *                      int posZ
      *              
      */
-    protected static Map<Integer, LinkedHashMap<Integer, ChunkClaimEntry>> DIMENSION_CHUNK_CLAIM_ENTRIES = new LinkedHashMap<Integer, LinkedHashMap<Integer, ChunkClaimEntry>>(); 
     
+    protected Map<Integer, LinkedHashMap<Integer, ChunkClaimEntry>> DIMENSION_CHUNK_CLAIM_ENTRIES = new LinkedHashMap<Integer, LinkedHashMap<Integer, ChunkClaimEntry>>();
     
     public ChunkClaims(String tagName) {
         super(tagName);
@@ -269,13 +269,32 @@ public class ChunkClaims extends WorldSavedData {
         }
     }
     
+    private static boolean IS_STALE = true;
+    private static ChunkClaims INSTANCE;
+    
     public static ChunkClaims get(World world) {
-        // mapStorage == one set of data for all worlds
-        ChunkClaims data = (ChunkClaims) world.mapStorage.loadData(ChunkClaims.class, ID);
-        if (data == null) {
-            data = new ChunkClaims();
-            world.setItemData(ID, data);
+        if (IS_STALE) {
+            // mapStorage == one set of data for all worlds
+            INSTANCE = (ChunkClaims) world.mapStorage.loadData(ChunkClaims.class, ID);
+            if (INSTANCE == null) {
+                INSTANCE = new ChunkClaims();
+                world.setItemData(ID, INSTANCE);
+            }
+            IS_STALE = false;
         }
-        return data;
+        return INSTANCE;
     }
+    
+    @Override
+    public void markDirty() {
+        super.markDirty();
+        setStale();
+    }
+    
+    public static void setStale() {
+        IS_STALE = true;
+    }
+    
+    
+    //public static 
 }
