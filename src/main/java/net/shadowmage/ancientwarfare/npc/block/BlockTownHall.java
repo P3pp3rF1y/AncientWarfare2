@@ -40,6 +40,9 @@ public class BlockTownHall extends Block {
     @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
         IInventory tile = (IInventory) world.getTileEntity(x, y, z);
+        if (tile instanceof TileTownHall) {
+            ((TileTownHall) tile).isHq = false; // is this even necessary?
+        }
         if (tile != null) {
             InventoryTools.dropInventoryInWorld(world, tile, x, y, z);
         }
@@ -102,10 +105,10 @@ public class BlockTownHall extends Block {
             if (dropBlockIfNotStable(world, posX, posY, posZ, world.getBlock(posX, posY, posZ)))
                 return;
             ModAccessors.FTBU.addClaim(world, placer, posX, posY, posZ);
-            
             if (placer instanceof EntityPlayer && ModAccessors.FTBU_LOADED) {
                 if (!HeadquartersTracker.get(world).validateCurrentHq(placer.getCommandSenderName(), world)) {
                     world.setBlock(posX, posY, posZ, AWNPCBlockLoader.headquarters, 0, 3);
+                    ((TileTownHall) world.getTileEntity(posX, posY, posZ)).isHq = true;
                     HeadquartersTracker.get(world).setNewHq(placer.getCommandSenderName(), world, posX, posY, posZ);
                     HeadquartersTracker.notifyHqNew(placer.getCommandSenderName(), posX, posZ);
                 }
@@ -120,12 +123,16 @@ public class BlockTownHall extends Block {
                 !world.isSideSolid(posX, posY, posZ + 1, ForgeDirection.NORTH, false) &&
                 !world.isSideSolid(posX, posY + 1, posZ, ForgeDirection.DOWN, false) &&
                 !World.doesBlockHaveSolidTopSurface(world, posX, posY - 1, posZ)) {
-            this.breakBlock(world, posX, posY, posZ, block, world.getBlockMetadata(posX, posY, posZ));
-            this.dropBlockAsItem(world, posX, posY, posZ, world.getBlockMetadata(posX, posY, posZ), 0);
-            world.setBlock(posX, posY, posZ, Blocks.air, 0, 3);
+            this.dropBlock(world, posX, posY, posZ, block);
             return true;
         }
         return false;
+    }
+    
+    public void dropBlock(World world, int posX, int posY, int posZ, Block block) {
+        this.breakBlock(world, posX, posY, posZ, block, world.getBlockMetadata(posX, posY, posZ));
+        this.dropBlockAsItem(world, posX, posY, posZ, world.getBlockMetadata(posX, posY, posZ), 0);
+        world.setBlock(posX, posY, posZ, Blocks.air, 0, 3);
     }
 
     @Override

@@ -44,6 +44,10 @@ public class HeadquartersTracker extends WorldSavedData {
         return INSTANCES.get(dimId);
     }
     
+    public static void setStale(int dimId) {
+        IS_STALE.put(dimId, true);
+    }
+    
     private Map<String, int[]> playerHeadquarters = new HashMap<String, int[]>();
     
     public HeadquartersTracker() {
@@ -63,6 +67,7 @@ public class HeadquartersTracker extends WorldSavedData {
         if (!isValid) {
             // HQ position was assigned but no longer valid
             playerHeadquarters.put(ownerName, new int[] {});
+            setStale(world.provider.dimensionId);
             markDirty();
         }
         return isValid;
@@ -86,6 +91,7 @@ public class HeadquartersTracker extends WorldSavedData {
     public synchronized void setNewHq(String ownerName, World world, int posX, int posY, int posZ) {
         if (isBlockHq(ownerName, world, posX, posY, posZ)) {
             playerHeadquarters.put(ownerName, new int[] {posX, posY, posZ});
+            setStale(world.provider.dimensionId);
             markDirty();
         }
     }

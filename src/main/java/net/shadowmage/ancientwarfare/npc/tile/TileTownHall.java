@@ -25,6 +25,7 @@ import net.shadowmage.ancientwarfare.core.tile.TileOwned;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
+import net.shadowmage.ancientwarfare.npc.block.BlockTownHall;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.container.ContainerTownHall;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
@@ -74,7 +75,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
         if (worldObj == null || worldObj.isRemote)
             return;
         
-        if (AWNPCStatics.townActiveNpcSearch && AWNPCStatics.townChunkLoadRadius > -1) {
+        if (!isHq && AWNPCStatics.townActiveNpcSearch && AWNPCStatics.townChunkLoadRadius > -1) {
             if (--activeCheckTicks <= 0) {
                 activeCheckTicks = (int) (AWNPCStatics.townActiveNpcSearchLimit * 20 * 60 * AWNPCStatics.townActiveNpcSearchRateFactor);
                 int nearbyValidEntity = isNpcOrPlayerNearby(isActive);
@@ -524,9 +525,17 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
             if (!player.getCommandSenderName().equals(getOwnerName())) {
                 // different player to the owner has used the town hall
                 if (!ModAccessors.FTBU.areFriends(player.getCommandSenderName(), getOwnerName())) {
-                    // players are NOT friends - capture the town hall!
-                    oldOwner = getOwnerName();
-                    setOwner(player);
+                    // players are NOT friends
+                    if (this.isHq) {
+                        // is a HQ, drop it instead of claiming
+                        BlockTownHall block = (BlockTownHall) worldObj.getBlock(xCoord, yCoord, zCoord); 
+                        block.dropBlock(worldObj, xCoord, yCoord, zCoord, block);
+                        return true;
+                    } else {
+                        //  capture town hall
+                        oldOwner = getOwnerName();
+                        setOwner(player);
+                    }
                     // just unclaim the chunks. A player who had a pre-existing stake (i.e. via a nearby town hall) will get priority
                     //ModAccessors.FTBU.unclaimChunks(worldObj, oldOwner, xCoord, yCoord, zCoord);
                 }

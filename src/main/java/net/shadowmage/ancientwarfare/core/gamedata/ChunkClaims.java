@@ -37,8 +37,8 @@ public class ChunkClaims extends WorldSavedData {
     
     @Override
     public void markDirty() {
-        super.markDirty();
         setStale();
+        super.markDirty();
     }
     
     public static void setStale() {
