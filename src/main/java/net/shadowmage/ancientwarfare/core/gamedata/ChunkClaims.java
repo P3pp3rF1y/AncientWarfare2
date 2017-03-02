@@ -85,13 +85,15 @@ public class ChunkClaims extends WorldSavedData {
     
     public LinkedHashSet<TownHallEntry> getClaimStakes(int chunkX, int chunkZ, int dimId) {
         HashMap<Point, Integer> chunkClaimIndexMap = chunkClaimsPerDimensionIndexMap.get(dimId);
-        Point requestedChunk = new Point(chunkX, chunkZ);
-        Integer chunkClaimIndex = chunkClaimIndexMap.get(requestedChunk);
-        if (chunkClaimIndex != null) {
-            ChunkClaimEntry chunkClaimEntry = chunkClaimsPerDimension.get(dimId).get(chunkClaimIndex);
-            if (chunkClaimEntry != null) {
-                if (chunkClaimEntry.townHallEntries != null && chunkClaimEntry.townHallEntries.size() > 0) {
-                    return chunkClaimEntry.townHallEntries;
+        if (chunkClaimIndexMap != null) {
+            Point requestedChunk = new Point(chunkX, chunkZ);
+            Integer chunkClaimIndex = chunkClaimIndexMap.get(requestedChunk);
+            if (chunkClaimIndex != null) {
+                ChunkClaimEntry chunkClaimEntry = chunkClaimsPerDimension.get(dimId).get(chunkClaimIndex);
+                if (chunkClaimEntry != null) {
+                    if (chunkClaimEntry.townHallEntries != null && chunkClaimEntry.townHallEntries.size() > 0) {
+                        return chunkClaimEntry.townHallEntries;
+                    }
                 }
             }
         }
