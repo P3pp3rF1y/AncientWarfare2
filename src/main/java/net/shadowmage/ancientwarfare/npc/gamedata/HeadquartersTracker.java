@@ -15,6 +15,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.common.util.Constants.NBT;
+import net.shadowmage.ancientwarfare.core.gamedata.ChunkClaims;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.npc.block.AWNPCBlockLoader;
 import net.shadowmage.ancientwarfare.npc.block.BlockHeadquarters;
@@ -24,8 +25,26 @@ import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 public class HeadquartersTracker extends WorldSavedData {
     public static final String ID = "AW2_HeadquartersTracker";
     
-    // temp, set to private after
-    public Map<String, int[]> playerHeadquarters = new HashMap<String, int[]>();
+    private static HashMap<Integer, Boolean> IS_STALE = new HashMap<Integer, Boolean>();
+    private static HashMap<Integer, HeadquartersTracker> INSTANCES = new HashMap<Integer, HeadquartersTracker>();
+    
+    public static HeadquartersTracker get(World world) {
+        int dimId = world.provider.dimensionId;
+        Boolean isStale = IS_STALE.get(dimId);
+        if (isStale == null || isStale) {
+            // use per-dimension storage to let each dimension have it's own HQ
+            HeadquartersTracker instance = (HeadquartersTracker) world.perWorldStorage.loadData(HeadquartersTracker.class, ID);
+            if (instance == null) {
+                instance = new HeadquartersTracker();
+                world.setItemData(ID, instance);
+            }
+            INSTANCES.put(dimId, instance);
+            IS_STALE.put(dimId, false);
+        }
+        return INSTANCES.get(dimId);
+    }
+    
+    private Map<String, int[]> playerHeadquarters = new HashMap<String, int[]>();
     
     public HeadquartersTracker() {
         super(ID);
@@ -113,15 +132,5 @@ public class HeadquartersTracker extends WorldSavedData {
             playerHeadquartersTag.appendTag(playerHeadquartersEntry);
         }
         compound.setTag("playerHeadquarters", playerHeadquartersTag);
-    }
-
-    public static HeadquartersTracker get(World world) {
-        // use per-dimension storage to let each dimension have it's own HQ 
-        HeadquartersTracker data = (HeadquartersTracker) world.perWorldStorage.loadData(HeadquartersTracker.class, ID);
-        if (data == null) {
-            data = new HeadquartersTracker();
-            world.setItemData(ID, data);
-        }
-        return data;
     }
 }
