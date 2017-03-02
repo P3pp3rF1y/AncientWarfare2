@@ -35,7 +35,7 @@ public class ChunkClaimWorkerThread extends Thread {
             while (true) {
                 if (IS_ENABLED) {
                     // iterate over DIMENSION_CHUNK_CLAIM_ENTRIES every cycle
-                    Iterator<Entry<Integer, LinkedHashMap<Integer, ChunkClaimEntry>>> chunkClaimEntriesIterator = ChunkClaims.get(DimensionManager.getWorld(0)).DIMENSION_CHUNK_CLAIM_ENTRIES.entrySet().iterator();
+                    Iterator<Entry<Integer, LinkedHashMap<Integer, ChunkClaimEntry>>> chunkClaimEntriesIterator = ChunkClaims.get(DimensionManager.getWorld(0)).chunkClaimsPerDimension.entrySet().iterator();
                     while (chunkClaimEntriesIterator.hasNext()) {
                         Entry<Integer, LinkedHashMap<Integer, ChunkClaimEntry>> thisEntry = chunkClaimEntriesIterator.next();
                         // ensure the dimension for this ChunkClaimEntry map is loaded, skip it if not
@@ -43,8 +43,6 @@ public class ChunkClaimWorkerThread extends Thread {
                         World world = DimensionManager.getWorld(dimId);
                         if (world == null)
                             continue;
-                        
-                        //LinkedHashSet<ChunkClaimInfo> claimsToRemove = new LinkedHashSet<ChunkClaimInfo>();
                         
                         // iterate over ChunkClaimEntry sets
                         Iterator<Entry<Integer, ChunkClaimEntry>> chunkClaimEntrySets = thisEntry.getValue().entrySet().iterator();

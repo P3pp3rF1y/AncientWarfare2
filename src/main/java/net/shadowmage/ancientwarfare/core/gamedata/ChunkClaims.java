@@ -1,7 +1,9 @@
 package net.shadowmage.ancientwarfare.core.gamedata;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -17,8 +19,34 @@ import net.minecraftforge.common.util.Constants.NBT;
 public class ChunkClaims extends WorldSavedData {
     public static final String ID = "AW2_ChunkClaimData";
     
+    private static boolean IS_STALE = true;
+    private static ChunkClaims INSTANCE;
+    
+    public static ChunkClaims get(World world) {
+        if (IS_STALE) {
+            // mapStorage == one set of data for all worlds
+            INSTANCE = (ChunkClaims) world.mapStorage.loadData(ChunkClaims.class, ID);
+            if (INSTANCE == null) {
+                INSTANCE = new ChunkClaims();
+                world.setItemData(ID, INSTANCE);
+            }
+            IS_STALE = false;
+        }
+        return INSTANCE;
+    }
+    
+    @Override
+    public void markDirty() {
+        super.markDirty();
+        setStale();
+    }
+    
+    public static void setStale() {
+        IS_STALE = true;
+    }
+    
     /**
-     *  DIMENSION_CHUNK_CLAIM_ENTRIES<Integer, LinkedHashMap<Integer, ChunkClaimEntry>>
+     *  chunkClaimsPerDimension<Integer, LinkedHashMap<Integer, ChunkClaimEntry>>
      *      Integer [dimId]
      *      LinkedHashMap<Integer, ChunkClaimEntry>
      *          Integer [index]
@@ -35,8 +63,17 @@ public class ChunkClaims extends WorldSavedData {
      *                      int posZ
      *              
      */
+    protected Map<Integer, LinkedHashMap<Integer, ChunkClaimEntry>> chunkClaimsPerDimension = new LinkedHashMap<Integer, LinkedHashMap<Integer, ChunkClaimEntry>>();
     
-    protected Map<Integer, LinkedHashMap<Integer, ChunkClaimEntry>> DIMENSION_CHUNK_CLAIM_ENTRIES = new LinkedHashMap<Integer, LinkedHashMap<Integer, ChunkClaimEntry>>();
+    /**
+     *  This map is used for 'reverse lookups' of ChunkClaimEntry objects from the main list of chunk claims. Purpose is for faster lookup of chunk claims when given chunk co-ordinates.
+     *  chunkClaimsPerDimensionIndexMap<Integer, LinkedHashMap<Point, Integer>>
+     *      Integer [dimId]
+     *      LinkedHashMap<Point, Integer>
+     *          Point [chunkX, chunkZ corresponding to ChunkClaimEntry]
+     *          Integer [index corresponding to ChunkClaimEntry]
+     */
+    protected Map<Integer, HashMap<Point, Integer>> chunkClaimsPerDimensionIndexMap = new HashMap<Integer, HashMap<Point, Integer>>();
     
     public ChunkClaims(String tagName) {
         super(tagName);
@@ -45,36 +82,68 @@ public class ChunkClaims extends WorldSavedData {
     public ChunkClaims() {
         super(ID);
     }
+    
+    public LinkedHashSet<TownHallEntry> getClaimStakes(int chunkX, int chunkZ, int dimId) {
+        HashMap<Point, Integer> chunkClaimIndexMap = chunkClaimsPerDimensionIndexMap.get(dimId);
+        Point requestedChunk = new Point(chunkX, chunkZ);
+        Integer chunkClaimIndex = chunkClaimIndexMap.get(requestedChunk);
+        if (chunkClaimIndex != null) {
+            ChunkClaimEntry chunkClaimEntry = chunkClaimsPerDimension.get(dimId).get(chunkClaimIndex);
+            if (chunkClaimEntry != null) {
+                if (chunkClaimEntry.townHallEntries != null && chunkClaimEntry.townHallEntries.size() > 0) {
+                    return chunkClaimEntry.townHallEntries;
+                }
+            }
+        }
+        return null;
+    }
 
     public synchronized void addTownHallEntry(ChunkClaimInfo reqChunkClaimInfo, TownHallEntry newTownHallEntry) {
         // get ChunkClaimEntries collection for the requested dimension, if any
-        LinkedHashMap<Integer, ChunkClaimEntry> chunkClaimEntries = DIMENSION_CHUNK_CLAIM_ENTRIES.get(reqChunkClaimInfo.getDimensionId());
-        // make a new ChunkClaimEntry for this dimension if it wasn't found
-        if (chunkClaimEntries == null)
-            chunkClaimEntries = new LinkedHashMap<Integer, ChunkClaimEntry>();
+        LinkedHashMap<Integer, ChunkClaimEntry> chunkClaimEntries = chunkClaimsPerDimension.get(reqChunkClaimInfo.getDimensionId());
         
-        // find the ChunkClaimEntry for this ChunkClaimInfo, if any
+        // make a new ChunkClaimEntry for this dimension if it wasn't found
+        if (chunkClaimEntries == null) {
+            chunkClaimEntries = new LinkedHashMap<Integer, ChunkClaimEntry>();
+        }
+        
+        // create a new index 
         int chunkClaimEntryIndex = chunkClaimEntries.size();
-        for (Entry<Integer, ChunkClaimEntry> chunkClaimEntryWithIndex : chunkClaimEntries.entrySet())
-            if (chunkClaimEntryWithIndex.getValue().chunkClaimInfo == reqChunkClaimInfo)
-                chunkClaimEntryIndex = chunkClaimEntryWithIndex.getKey();
+        for (Entry<Integer, ChunkClaimEntry> chunkClaimEntryWithIndex : chunkClaimEntries.entrySet()) {
+            if (chunkClaimEntryWithIndex.getValue().chunkClaimInfo == reqChunkClaimInfo) {
+                // re-use existing index, this chunk already has claims
+                chunkClaimEntryIndex = chunkClaimEntryWithIndex.getKey();                
+            }
+        }
+        
+        // get the ChunkClaimEntry for this ChunkClaimInfo, if any
         ChunkClaimEntry chunkClaimEntry = chunkClaimEntries.get(chunkClaimEntryIndex);
-        // make a new chunkClaimEntry if it wasn't found
-        if (chunkClaimEntry == null)
+        
+        if (chunkClaimEntry == null) {
+            // this chunk is unclaimed (index is new) so make a new entry
             chunkClaimEntry = new ChunkClaimEntry(reqChunkClaimInfo, new LinkedHashSet<TownHallEntry>());
+            
+            // also create the entry for chunkClaimIndexMap
+            HashMap<Point, Integer> chunkClaimIndexMap = new HashMap<Point, Integer>();
+            Point chunkClaimPos = new Point(reqChunkClaimInfo.chunkX, reqChunkClaimInfo.chunkZ);
+            chunkClaimIndexMap.put(chunkClaimPos, chunkClaimEntryIndex);
+            chunkClaimsPerDimensionIndexMap.put(reqChunkClaimInfo.dimensionId, chunkClaimIndexMap);
+        }
+        
         
         // add the provided TownHallEntry to this ChunkClaimEntry's townHallEntries collection
         chunkClaimEntry.townHallEntries.add(newTownHallEntry);
         // put our modified chunkClaimEntry back into the ChunkClaimEntry collection
         chunkClaimEntries.put(chunkClaimEntryIndex, chunkClaimEntry);
         // put the ChunkClaimEntry collection back into our master collection
-        DIMENSION_CHUNK_CLAIM_ENTRIES.put(reqChunkClaimInfo.dimensionId, chunkClaimEntries);
+        chunkClaimsPerDimension.put(reqChunkClaimInfo.dimensionId, chunkClaimEntries);
         this.markDirty();
     }
 
     @Override
     public void readFromNBT(NBTTagCompound nbtLoad) {
-        DIMENSION_CHUNK_CLAIM_ENTRIES.clear();
+        chunkClaimsPerDimension.clear();
+        chunkClaimsPerDimensionIndexMap.clear();
         NBTTagList chunkClaimsTag = nbtLoad.getTagList("DIMENSION_CHUNK_CLAIM_ENTRIES", NBT.TAG_COMPOUND);
         for (int i = 0; i < chunkClaimsTag.tagCount(); i++) {
             NBTTagCompound chuckClaimTag = chunkClaimsTag.getCompoundTagAt(i);
@@ -100,7 +169,7 @@ public class ChunkClaims extends WorldSavedData {
     @Override
     public void writeToNBT(NBTTagCompound nbtSave) {
         NBTTagList chunkClaimsTag = new NBTTagList();
-        for (Entry<Integer, LinkedHashMap<Integer, ChunkClaimEntry>> chunkClaimEntries : DIMENSION_CHUNK_CLAIM_ENTRIES.entrySet()) {
+        for (Entry<Integer, LinkedHashMap<Integer, ChunkClaimEntry>> chunkClaimEntries : chunkClaimsPerDimension.entrySet()) {
             // we don't care about the key (dimId) of our masterlist here, since it's already stored in each ChunkClaimInfo
             for (Entry<Integer, ChunkClaimEntry> chunkClaimEntryWithIndex : chunkClaimEntries.getValue().entrySet()) {
                 ChunkClaimEntry chunkClaimEntry = chunkClaimEntryWithIndex.getValue();
@@ -268,33 +337,4 @@ public class ChunkClaims extends WorldSavedData {
             return result;
         }
     }
-    
-    private static boolean IS_STALE = true;
-    private static ChunkClaims INSTANCE;
-    
-    public static ChunkClaims get(World world) {
-        if (IS_STALE) {
-            // mapStorage == one set of data for all worlds
-            INSTANCE = (ChunkClaims) world.mapStorage.loadData(ChunkClaims.class, ID);
-            if (INSTANCE == null) {
-                INSTANCE = new ChunkClaims();
-                world.setItemData(ID, INSTANCE);
-            }
-            IS_STALE = false;
-        }
-        return INSTANCE;
-    }
-    
-    @Override
-    public void markDirty() {
-        super.markDirty();
-        setStale();
-    }
-    
-    public static void setStale() {
-        IS_STALE = true;
-    }
-    
-    
-    //public static 
 }
