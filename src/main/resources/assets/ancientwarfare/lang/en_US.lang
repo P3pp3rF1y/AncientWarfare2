@@ -415,6 +415,7 @@ guistrings.npc.npc_type=Npc Type
 guistrings.npc.npc_name=Name
 guistrings.npc.npc_texture=Skin
 guistrings.npc.death_cause=Cause Of Death: %s
+guistrings.npc.death_position=Position Of Death: %s x %s x %s
 guistrings.npc.can_res=Can Res: %b
 guistrings.npc.resurrected=Resurrected: %b
 guistrings.npc.clear_death_list=Clear List

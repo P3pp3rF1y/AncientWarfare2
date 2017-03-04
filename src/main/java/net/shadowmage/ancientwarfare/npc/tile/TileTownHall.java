@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import codechicken.lib.math.MathHelper;
 import ftb.utils.world.LMPlayerServer;
 import ftb.utils.world.LMWorldServer;
 
@@ -492,6 +493,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
         public boolean resurrected;
         public boolean canRes;
         public boolean beingResurrected;
+        public int[] pos;
 
         public NpcDeathEntry(NBTTagCompound tag) {
             readFromNBT(tag);
@@ -503,6 +505,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
             this.npcName = npc.getCustomNameTag();
             this.deathCause = source.damageType;
             this.canRes = canRes;
+            this.pos = new int[]{MathHelper.floor_double(npc.posX), MathHelper.floor_double(npc.posY), MathHelper.floor_double(npc.posZ)};
         }
 
         public final void readFromNBT(NBTTagCompound tag) {
@@ -512,6 +515,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
             deathCause = tag.getString("deathCause");
             resurrected = tag.getBoolean("resurrected");
             canRes = tag.getBoolean("canRes");
+            pos = tag.getIntArray("pos");
         }
 
         public NBTTagCompound writeToNBT(NBTTagCompound tag) {
@@ -521,6 +525,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
             tag.setString("deathCause", deathCause);
             tag.setBoolean("resurrected", resurrected);
             tag.setBoolean("canRes", canRes);
+            tag.setIntArray("pos", pos);
             return tag;
         }
     }

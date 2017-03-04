@@ -58,6 +58,13 @@ public class GuiTownHallDeathList extends GuiContainerBase<ContainerTownHall> {
             label = new Label(8, totalHeight, labelText);
             area.addGuiElement(label);
             totalHeight += 12;
+            
+            if (entry.pos != null && entry.pos.length == 3) {
+                labelText = StatCollector.translateToLocalFormatted("guistrings.npc.death_position", entry.pos[0], entry.pos[1], entry.pos[2]);
+                label = new Label(8, totalHeight, labelText);
+                area.addGuiElement(label);
+                totalHeight += 12;
+            }
 
             labelText = StatCollector.translateToLocalFormatted("guistrings.npc.can_res", entry.canRes);
             label = new Label(8, totalHeight, labelText);
