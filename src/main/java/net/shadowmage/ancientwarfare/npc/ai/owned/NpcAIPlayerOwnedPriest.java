@@ -74,8 +74,10 @@ public class NpcAIPlayerOwnedPriest extends NpcAI<NpcPlayerOwned> {
         NpcBase resdNpc = ItemNpcSpawner.createNpcFromItem(npc.worldObj, entryToRes.stackToSpawn);
         entryToRes.beingResurrected = false;
         if (resdNpc != null) {
-            resdNpc.ordersStack = null;
-            resdNpc.upkeepStack = null;
+            if (!AWNPCStatics.persistOrdersOnDeath) {
+                resdNpc.ordersStack = null;
+                resdNpc.upkeepStack = null;
+            }
             for (int i = 0; i < 5; i++) {
                 resdNpc.setCurrentItemOrArmor(i, null);
             }

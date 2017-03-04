@@ -46,6 +46,7 @@ public class AWNPCStatics extends ModConfiguration {
     /** ********************************************SHARED SETTINGS************************************************ */
     public static int npcActionRange = 2;
     public static boolean repackCreativeOnly = false;
+    public static boolean persistOrdersOnDeath = true;
     
     /** ********************************************SERVER SETTINGS************************************************ */
     public static int maxNpcLevel = 10;
@@ -324,6 +325,9 @@ public class AWNPCStatics extends ModConfiguration {
         
         repackCreativeOnly = config.get(generalOptions, "npc_repack_creative_only", repackCreativeOnly, "Repack only available for Creative players?\nDefault=" + repackCreativeOnly + "\n" +
                 "If true, the 'Repack' option for NPC's will be unavailable outside of Creative mode.").getBoolean();
+        
+        persistOrdersOnDeath = config.get(generalOptions, "npc_death_keep_orders_items", persistOrdersOnDeath, "NPC's will keep orders items on death?\nDefault=" + persistOrdersOnDeath + "\n" +
+                "If true, an NPC who dies and manages to notify a nearby town hall will keep their orders items on their body. So if/when a priest resurrects them, they will have the orders items on them still. If there is no Town Hall nearby to catch the death however, the will drop on the ground as normal.").getBoolean();
         
         pathfinderAvoidFences = config.get(pathfinderSettings, "pathfinder_avoid_fences", pathfinderAvoidFences, "Avoid Fences\nDefault=" + pathfinderAvoidFences + "\n" +
                 "Avoid vanilla fences and walls, including anything that uses the same rendertype or extends BlockFence/BlockWall,\n" +

@@ -492,6 +492,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     @Override
     protected final void dropEquipment(boolean par1, int par2) {
         if (!worldObj.isRemote) {
+            if (this instanceof NpcPlayerOwned) {
+                System.out.println("~~~" + ((NpcPlayerOwned)this).deathNotifiedTownhall);
+            }
             ItemStack stack;
             for (int i = 0; i < equipmentDropChances.length; i++) {
                 stack = getEquipmentInSlot(i);
@@ -500,17 +503,19 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
                 }
                 setCurrentItemOrArmor(i, null);
             }
-            if (ordersStack != null) {
-                entityDropItem(ordersStack, 0.f);
-            }
-            if (upkeepStack != null) {
-                entityDropItem(upkeepStack, 0.f);
+            if (!AWNPCStatics.persistOrdersOnDeath) {
+                if (ordersStack != null) {
+                    entityDropItem(ordersStack, 0.f);
+                }
+                if (upkeepStack != null) {
+                    entityDropItem(upkeepStack, 0.f);
+                }
+                ordersStack = null;
+                upkeepStack = null;
             }
             if (getShieldStack() != null) {
                 entityDropItem(getShieldStack(), 0.f);
             }
-            ordersStack = null;
-            upkeepStack = null;
             setShieldStack(null);
         }
     }

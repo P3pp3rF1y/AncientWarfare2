@@ -28,6 +28,7 @@ import java.util.List;
 public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
 
     public boolean isAlarmed = false;
+    public boolean deathNotifiedTownhall = false;
     
     private Command playerIssuedCommand;//TODO load/save
     private int foodValueRemaining = 0;
@@ -55,6 +56,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
             validateTownHallPosition();
             TileTownHall townHall = getTownHall();
             if (townHall != null) {
+                deathNotifiedTownhall = true;
                 townHall.handleNpcDeath(this, source);
             }
         }
