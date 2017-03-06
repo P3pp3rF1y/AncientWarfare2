@@ -222,12 +222,12 @@ public class PathFind extends PathFinder{
             blockName = blockName.trim();
             if (!blockName.equals("")) {
                 String[] blockId = blockName.split(":");
-                if (Array.getLength(blockId) != 2 || Array.getLength(blockId) != 3 ) {
-                    AncientWarfareCore.log.warn(" - Invalid block: " + blockName);
+                if (Array.getLength(blockId) != 2 && Array.getLength(blockId) != 3 ) {
+                    AncientWarfareCore.log.warn(" - Invalid block (bad length of " + Array.getLength(blockId) + "): " + blockName);
                     continue;
                 }
                 if (blockId[0] == null || blockId[1] == null) {
-                    AncientWarfareCore.log.warn(" - Invalid block: " + blockName);
+                    AncientWarfareCore.log.warn(" - Invalid block (parse/format error): " + blockName);
                     continue;
                 }
                 Block block = GameRegistry.findBlock(blockId[0], blockId[1]);
