@@ -15,6 +15,7 @@ import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
+import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
@@ -254,10 +255,14 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         scanForAnimals(animals, cowsToBreed, maxCowCount);
         for (EntityAnimal animal : animals) {
             if (animal.getGrowingAge() >= 0) {
-                cowsToMilk++;
-                if (cowsToMilk > maxCowCount) {
-                    cowsToMilk = maxCowCount;
-                    break;
+                // try to get HarderWildlife extended entity properties
+                if (ModAccessors.HARDER_WILDLIFE.getMilkable(animal)) {
+                    ModAccessors.HARDER_WILDLIFE.doMilking(animal);
+                    cowsToMilk++;
+                    if (cowsToMilk > maxCowCount) {
+                        cowsToMilk = maxCowCount;
+                        break;
+                    }
                 }
             }
         }
@@ -266,7 +271,6 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
     @Override
     protected boolean processWork() {
 //  AWLog.logDebug("processing animal farm work!");
-
         if (!cowsToBreed.isEmpty() && wheatCount >= 2) {
             if (tryBreeding(cowsToBreed)) {
                 wheatCount -= 2;
@@ -327,7 +331,12 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
     }
 
     private boolean tryMilking() {
-        return cowsToMilk > 0 && worldObj.rand.nextInt(cowsToMilk + getFortune()) > maxCowCount / 2;
+        if (cowsToMilk > 0) {
+            if (ModAccessors.HARDER_WILDLIFE_LOADED)
+                return true;
+            return worldObj.rand.nextInt(cowsToMilk + getFortune()) > maxCowCount / 2;
+        }
+        return false;
     }
 
     private boolean tryShearing() {

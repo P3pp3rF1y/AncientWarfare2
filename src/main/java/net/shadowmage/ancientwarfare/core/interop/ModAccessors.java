@@ -6,6 +6,8 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 public class ModAccessors {
     public static InteropFtbuInterface FTBU;
     public static boolean FTBU_LOADED = false;
+    public static InteropHarderWildlifeInterface HARDER_WILDLIFE;
+    public static boolean HARDER_WILDLIFE_LOADED = false;
     
     public static void init() {
         try {
@@ -16,6 +18,15 @@ public class ModAccessors {
             } else {
                 AncientWarfareCore.log.info("FTBU_AW2 not found.");
                 FTBU = Class.forName("net.shadowmage.ancientwarfare.core.interop.InteropFtbuDummy").asSubclass(InteropFtbuInterface.class).newInstance();
+            }
+            
+            if (Loader.isModLoaded("HarderWildlife")) {
+                AncientWarfareCore.log.info("HarderWildlife found!");
+                HARDER_WILDLIFE = Class.forName("net.shadowmage.ancientwarfare.core.interop.InteropHarderWildlife").asSubclass(InteropHarderWildlifeInterface.class).newInstance();
+                HARDER_WILDLIFE_LOADED = true;
+            } else {
+                AncientWarfareCore.log.info("HarderWildlife not found.");
+                HARDER_WILDLIFE = Class.forName("net.shadowmage.ancientwarfare.core.interop.InteropHarderWildlifeDummy").asSubclass(InteropHarderWildlifeInterface.class).newInstance();
             }
         } catch (Exception e) {
             // shouldn't happen
