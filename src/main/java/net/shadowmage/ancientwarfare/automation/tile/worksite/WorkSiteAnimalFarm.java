@@ -11,12 +11,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.core.util.ItemWrapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +48,8 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
     private List<Integer> sheepToShear = new ArrayList<Integer>();
     private List<Integer> entitiesToCull = new ArrayList<Integer>();
 
+    private ArrayList<ItemWrapper> animalDrops = new ArrayList<ItemWrapper>(); 
+    
     public WorkSiteAnimalFarm() {
         this.shouldCountResources = true;
 
@@ -115,9 +119,9 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
             rescan();
             workerRescanDelay = 200;
         }
-        worldObj.theProfiler.endStartSection("EggPickup");
-        if (worldObj.getWorldTime() % 20 == 0) {
-            pickupEggs();
+        worldObj.theProfiler.endStartSection("ItemPickup");
+        if (worldObj.getWorldTime() % 128 == 0) {
+            pickupDrops();
         }
         worldObj.theProfiler.endSection();
     }
@@ -382,17 +386,28 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         return true;
     }
 
-    private void pickupEggs() {
+    private void pickupDrops() {
+        if (animalDrops.size() == 0) {
+            animalDrops = ItemWrapper.buildList("Animal Farm drops", AWAutomationStatics.animal_farm_pickups);
+        }
+        
         List<EntityItem> items = getEntitiesWithinBounds(EntityItem.class);
         ItemStack stack;
         for (EntityItem item : items) {
             stack = item.getEntityItem();
-            if (item.isEntityAlive() && stack != null && stack.getItem() == Items.egg) {
-                stack = InventoryTools.mergeItemStack(inventory, stack, inventory.getRawIndices(RelativeSide.TOP));
-                if (stack != null) {
-                    item.setEntityItemStack(stack);
-                }else{
-                    item.setDead();
+            if (item.isEntityAlive() && stack != null && stack.getItem() != null) {
+                Item droppedItem = stack.getItem();
+                for (ItemWrapper animalDrop : animalDrops) {
+                    if (droppedItem.equals(animalDrop.item)) {
+                        if (animalDrop.damage == -1 || animalDrop.damage == stack.getItemDamage()) {
+                            stack = InventoryTools.mergeItemStack(inventory, stack, inventory.getRawIndices(RelativeSide.TOP));
+                            if (stack != null) {
+                                item.setEntityItemStack(stack);
+                            } else {
+                                item.setDead();
+                            }
+                        }
+                    }
                 }
             }
         }

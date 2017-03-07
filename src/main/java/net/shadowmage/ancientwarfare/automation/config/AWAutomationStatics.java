@@ -84,6 +84,7 @@ public class AWAutomationStatics extends ModConfiguration {
     public static Property renderWorkBounds;
     
     public static String[] crop_farm_blocks = new String[]{"minecraft:grass|minecraft:farmland", "minecraft:dirt|minecraft:farmland", "GardenCore:garden_soil|GardenCore:garden_farmland"};
+    public static String[] animal_farm_pickups = new String[]{"minecraft:leather", "minecraft:beef", "minecraft:cooked_beef", "minecraft:chicken", "minecraft:cooked_chicken", "minecraft:feather", "minecraft:egg", "minecraft:wool", "minecraft:cooked_porkchop", "minecraft:porkchop", "HarderWildlife:rawLeather"};
 
     public AWAutomationStatics(String mod) {
         super(mod);
@@ -229,6 +230,10 @@ public class AWAutomationStatics extends ModConfiguration {
         crop_farm_blocks = config.get(serverOptions, "crop_farm_blocks", crop_farm_blocks, "List of farmable blocks\n" +
                 "List of blocks pairs - untilled and tilled version - that the crop farm should use for farming. Use the format:\n" +
                 "modid:farmableBlock|modid.tilledFarmableBlock").getStringList();
+        
+        animal_farm_pickups = config.get(serverOptions, "animal_farm_pickups", animal_farm_pickups, "List of items that Animal Farms can pickup\n" +
+                "Animal farms will periodically pickup any of these items detected (if they're not caught on-demand by the farmer culling animals).\n" +
+                "Use the format modid:itemid[:itemDamage]").getStringList();
     }
 
 }
