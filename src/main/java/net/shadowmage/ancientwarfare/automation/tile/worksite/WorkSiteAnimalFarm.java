@@ -49,7 +49,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
     private List<Integer> sheepToShear = new ArrayList<Integer>();
     private List<Integer> entitiesToCull = new ArrayList<Integer>();
 
-    private ArrayList<ItemWrapper> animalDrops = new ArrayList<ItemWrapper>(); 
+    private static ArrayList<ItemWrapper> ANIMAL_DROPS = new ArrayList<ItemWrapper>(); 
     
     public WorkSiteAnimalFarm() {
         this.shouldCountResources = true;
@@ -396,8 +396,8 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
     }
 
     private void pickupDrops() {
-        if (animalDrops.size() == 0) {
-            animalDrops = ItemWrapper.buildList("Animal Farm drops", AWAutomationStatics.animal_farm_pickups);
+        if (ANIMAL_DROPS.size() == 0) {
+            ANIMAL_DROPS = ItemWrapper.buildList("Animal Farm drops", AWAutomationStatics.animal_farm_pickups);
         }
         
         List<EntityItem> items = getEntitiesWithinBounds(EntityItem.class);
@@ -406,7 +406,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
             stack = item.getEntityItem();
             if (item.isEntityAlive() && stack != null && stack.getItem() != null) {
                 Item droppedItem = stack.getItem();
-                for (ItemWrapper animalDrop : animalDrops) {
+                for (ItemWrapper animalDrop : ANIMAL_DROPS) {
                     if (droppedItem.equals(animalDrop.item)) {
                         if (animalDrop.damage == -1 || animalDrop.damage == stack.getItemDamage()) {
                             stack = InventoryTools.mergeItemStack(inventory, stack, inventory.getRawIndices(RelativeSide.TOP));
