@@ -492,9 +492,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     @Override
     protected final void dropEquipment(boolean par1, int par2) {
         if (!worldObj.isRemote) {
-            if (this instanceof NpcPlayerOwned) {
-                System.out.println("~~~" + ((NpcPlayerOwned)this).deathNotifiedTownhall);
-            }
             ItemStack stack;
             for (int i = 0; i < equipmentDropChances.length; i++) {
                 stack = getEquipmentInSlot(i);

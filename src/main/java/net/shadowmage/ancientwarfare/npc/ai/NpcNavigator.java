@@ -4,6 +4,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.pathfinding.PathFinder;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
@@ -83,7 +84,7 @@ public class NpcNavigator extends PathNavigate {
     private PathEntity pathToEntity(Entity target)
     {
         ChunkCache chunkcache = cachePath(1, 16);
-        PathEntity pathentity = (new PathFind(chunkcache, doors, getCanBreakDoors(), getAvoidsWater(), swim)).createEntityPathTo(mountOrEntity(), target, this.getPathSearchRange());
+        PathEntity pathentity = (new PathFinder(chunkcache, doors, getCanBreakDoors(), getAvoidsWater(), swim)).createEntityPathTo(mountOrEntity(), target, this.getPathSearchRange());
         this.worldObj.theProfiler.endSection();
         return pathentity;
     }
@@ -91,7 +92,7 @@ public class NpcNavigator extends PathNavigate {
     private PathEntity pathToXYZ(int x, int y, int z)
     {
         ChunkCache chunkcache = cachePath(0, 8);
-        PathEntity pathentity = (new PathFind(chunkcache, doors, getCanBreakDoors(), getAvoidsWater(), swim)).createEntityPathTo(mountOrEntity(), x, y, z, this.getPathSearchRange());
+        PathEntity pathentity = (new PathFinder(chunkcache, doors, getCanBreakDoors(), getAvoidsWater(), swim)).createEntityPathTo(mountOrEntity(), x, y, z, this.getPathSearchRange());
         this.worldObj.theProfiler.endSection();
         return pathentity;
     }

@@ -1,8 +1,13 @@
 package net.shadowmage.ancientwarfare.npc.event;
 
 import java.util.Iterator;
+
+import com.cosmicdan.pathfindertweaks.events.PathfinderEvent.PathfinderCheckCanPathBlock;
+
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.eventhandler.Event.Result;
+import net.minecraft.block.BlockDoor;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.IRangedAttackMob;
@@ -19,9 +24,8 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.gamedata.HeadquartersTracker;
 
 public class EventHandler {
-    private EventHandler() {
-    }
-
+    private EventHandler() {}
+    
     public static final EventHandler INSTANCE = new EventHandler();
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -116,4 +120,16 @@ public class EventHandler {
         }
     }
 
+    
+    @SubscribeEvent
+    public void pathfinderCheckCanPathBlock(PathfinderCheckCanPathBlock event) {
+        if (event.entity instanceof NpcBase) {
+            if (event.block instanceof BlockDoor) {
+                event.setResult(Result.ALLOW);
+            }
+        }
+        
+    }
+    
+    
 }

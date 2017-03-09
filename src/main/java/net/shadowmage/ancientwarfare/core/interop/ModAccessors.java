@@ -9,6 +9,7 @@ public class ModAccessors {
     public static InteropHarderWildlifeInterface HARDER_WILDLIFE;
     public static boolean HARDER_WILDLIFE_LOADED = false;
     
+    
     public static void init() {
         try {
             if (Loader.isModLoaded("FTBU_AW2")) {
@@ -27,6 +28,10 @@ public class ModAccessors {
             } else {
                 AncientWarfareCore.log.info("HarderWildlife not found.");
                 HARDER_WILDLIFE = Class.forName("net.shadowmage.ancientwarfare.core.interop.InteropHarderWildlifeDummy").asSubclass(InteropHarderWildlifeInterface.class).newInstance();
+            }
+            
+            if (Loader.isModLoaded("pathfindertweaks")) {
+                
             }
         } catch (Exception e) {
             // shouldn't happen

@@ -81,12 +81,6 @@ public class AWNPCStatics extends ModConfiguration {
 
     /** ********************************************RECIPE SETTINGS************************************************ */
     private static final String recipeSettings = "04_recipe_settings";
-    
-    /** ********************************************PATHFINDER SETTINGS************************************************ */
-    private static final String pathfinderSettings = "05_pathfinder_settings";
-    public static boolean pathfinderAvoidFences = true;
-    public static boolean pathfinderAvoidChests = true;
-    public static String pathfinderAvoidCustom = "";
 
     /** ********************************************FOOD SETTINGS************************************************ */
     private Configuration foodConfig;
@@ -166,11 +160,6 @@ public class AWNPCStatics extends ModConfiguration {
                 "Enable / Disable specific recipes, or remove the research requirements from specific recipes.\n" +
                 "Affect only server-side operations.  Will need to be set for dedicated servers, and single\n" +
                 "player (or LAN worlds).  Clients playing on remote servers can ignore these settings.");
-        
-        config.addCustomCategoryComment(pathfinderSettings, "Pathfinder Blacklisting\n" +
-                "This section specifies blocks that the global pathfinder (all NPC's use it) will avoid pathing OVER or\n" +
-                "THROUGH. Unless you like NPC's jumping on chests and getting stuck on fences, you should leave these all.\n" +
-                "You can also add custom mod blocks here.");
 
         foodConfig = getConfigFor("AncientWarfareNpcFood");
         foodConfig.addCustomCategoryComment(foodSettings, "Food Value Options\n" +
@@ -328,22 +317,6 @@ public class AWNPCStatics extends ModConfiguration {
         
         persistOrdersOnDeath = config.get(generalOptions, "npc_death_keep_orders_items", persistOrdersOnDeath, "NPC's will keep orders items on death?\nDefault=" + persistOrdersOnDeath + "\n" +
                 "If true, an NPC who dies and manages to notify a nearby town hall will keep their orders items on their body. So if/when a priest resurrects them, they will have the orders items on them still. If there is no Town Hall nearby to catch the death however, the will drop on the ground as normal.").getBoolean();
-        
-        pathfinderAvoidFences = config.get(pathfinderSettings, "pathfinder_avoid_fences", pathfinderAvoidFences, "Avoid Fences\nDefault=" + pathfinderAvoidFences + "\n" +
-                "Avoid vanilla fences and walls, including anything that uses the same rendertype or extends BlockFence/BlockWall,\n" +
-                "which may include mod-added fences and walls.").getBoolean();
-        
-        pathfinderAvoidChests = config.get(pathfinderSettings, "pathfinder_avoid_chests", pathfinderAvoidChests, "Avoid Chests\nDefault=" + pathfinderAvoidChests + "\n" +
-                "Avoid vanilla chests, including anything that uses the same rendertype or extends BlockChest, which may include\n" +
-                "mod-added fences.").getBoolean();
-        
-        // is this really necessary?
-        //pathfinderAvoidOverheightened = config.get(pathfinderSettings, "pathfinder_avoid_overheightened", pathfinderAvoidOverheightened, "Avoid 'Overheightened' Blocks\nDefault=" + pathfinderAvoidOverheightened + "\n" +
-        //        "Avoid any block which is 'overheightened' - that is, any block which reports a max height of > 1.").getBoolean();
-        
-        pathfinderAvoidCustom = config.get(pathfinderSettings, "pathfinder_avoid_others", pathfinderAvoidCustom, "Avoid Other blocks\nDefault=" + pathfinderAvoidCustom + "\n" +
-                "List of custom blocks you also want NPC's to avoid. Use the format:\n" +
-                "modid:blockname:meta;modid.blockname:meta;").getString();
     }
 
     public void postInitCallback() {
