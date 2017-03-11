@@ -28,9 +28,9 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
         return index >= 0 && index < size();
     }
 
-    public void changeRouteType(int index) {
+    public void changeRouteType(int index, boolean isRmb) {
         if (check(index)) {
-            get(index).changeRouteType();
+            get(index).changeRouteType(isRmb);
         }
     }
 
@@ -108,8 +108,8 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
             blockSide = blockSide == 5 ? 0 : blockSide + 1;
         }
 
-        private void changeRouteType() {
-            routeType = routeType.next();
+        private void changeRouteType(boolean isRmb) {
+            routeType = isRmb ? routeType.previous() : routeType.next();
         }
 
         public void setFilter(int index, ItemStack stack) {
@@ -384,11 +384,23 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
         public static RouteType next(RouteType type) {
             return type == null ? RouteType.FILL_TARGET_TO : type.next();
         }
+        
+        public static RouteType previous(RouteType type) {
+            return type == null ? RouteType.FILL_TARGET_TO : type.previous();
+        }
 
         public RouteType next() {
             int ordinal = ordinal() + 1;
             if (ordinal >= RouteType.values().length) {
                 ordinal = 0;
+            }
+            return RouteType.values()[ordinal];
+        }
+        
+        public RouteType previous() {
+            int ordinal = ordinal() - 1;
+            if (ordinal < 0) {
+                ordinal = RouteType.values().length - 1;
             }
             return RouteType.values()[ordinal];
         }

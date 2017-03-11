@@ -25,7 +25,7 @@ public class Button extends GuiElement {
             public boolean onEvent(GuiElement widget, ActivationEvent evt) {
                 if (pressed && enabled && visible && isMouseOverElement(evt.mx, evt.my)) {
                     Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
-                    onPressed();
+                    onPressed(evt.mButton);
                 }
                 pressed = false;
                 return true;
@@ -74,7 +74,17 @@ public class Button extends GuiElement {
      * uses built-in click listener for sound to trigger method
      */
     protected void onPressed() {
-
+        
     }
+    
+    /**
+     * Button-sensitive version of onPressed. 0 = LMB, 1 = RMB
+     * @param mButton
+     */
+    protected void onPressed(int mButton) {
+        onPressed(); // backwards compatibility
+    }
+    
+    
 
 }

@@ -128,8 +128,5 @@ public class EventHandler {
                 event.setResult(Result.ALLOW);
             }
         }
-        
     }
-    
-    
 }

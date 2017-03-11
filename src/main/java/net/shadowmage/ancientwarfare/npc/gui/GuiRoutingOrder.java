@@ -69,8 +69,8 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
             labelString = point.getRouteType().getTranslationKey();
             button = new IndexedButton(8 + 55 + 2, totalHeight + 10, 79, 12, labelString, index) {
                 @Override
-                protected void onPressed() {
-                    getContainer().routingOrder.changeRouteType(index);
+                protected void onPressed(int mButton) {
+                    getContainer().routingOrder.changeRouteType(index, mButton == 1);
                     refreshGui();
                     hasChanged = true;
                 }
