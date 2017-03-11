@@ -478,6 +478,10 @@ route.deposit.ratio=Put Ratio
 route.deposit.ratio.tooltip=Try to PUT a specified ratio of matching items TO the target inventory. Item stack size in the filter determines the ratio where a stack of 2 is half, 3 is a third, etc.
 route.withdraw.ratio=Take Ratio
 route.withdraw.ratio.tooltip=Try to TAKE a specified ratio of matching items FROM the target inventory. Item stack size in the filter determines the ratio where a stack of 2 is half, 3 is a third, etc.
+route.deposit.exact=Put Exact
+route.deposit.exact.tooltip=Try to PUT the EXACT amount(s) specified TO the target inventory. If the courier does not have the stack EXACTLY, or it cannot COMPLETELY fit in the destination, it will NOT transfer.
+route.withdraw.exact=Take Exact
+route.withdraw.exact.tooltip=Try to TAKE the EXACT amount(s) specified FROM the target inventory. If a stack does not exist EXACTLY in the target, or the courier cannot COMPLETELY hold it, it will NOT transfer.
 
 #research guis/items/misc
 guistrings.research.current_goal=Current Goal

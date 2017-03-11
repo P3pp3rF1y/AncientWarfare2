@@ -284,6 +284,34 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
             
             return movedTotal;
         }
+        
+        private int depositExact(IInventory from, IInventory to, boolean reversed) {
+            int fromSide = -1;
+            int toSide = getBlockSide();
+            if (reversed) {
+                fromSide = getBlockSide();
+                toSide = -1;
+            }
+            int movedTotal = 0;
+            int toMove = 0;
+            int foundCount = 0;
+            int moved;
+            for (ItemStack filter : filters) {
+                if (filter == null) {
+                    continue;
+                }
+                foundCount = InventoryTools.getCountOf(from, fromSide, filter);
+                toMove = filter.stackSize;
+                if (foundCount < toMove) {
+                    continue;
+                }
+                if (!InventoryTools.canInventoryHold(to, toSide, filter))
+                    continue;
+                moved = InventoryTools.transferItems(from, to, filter, toMove, fromSide, toSide, ignoreDamage, ignoreTag);
+                movedTotal += moved / filter.getMaxStackSize();
+            }
+            return movedTotal;
+        }
 
         private final void readFromNBT(NBTTagCompound tag) {
             routeType = RouteType.values()[tag.getInteger("type")];
@@ -369,7 +397,17 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
         /**
          * withdraw specified ratio of items (ratio is 1/filterStacksize)
          */
-        WITHDRAW_RATIO("route.withdraw.ratio");
+        WITHDRAW_RATIO("route.withdraw.ratio"),
+        
+        /**
+         * deposit exact number of items (or none at all if not possible)
+         */
+        DEPOSIT_EXACT("route.deposit.exact"),
+        
+        /**
+         * withdraw exact number of items (or none at all if not possible)
+         */
+        WITHDRAW_EXACT("route.withdraw.exact");
 
         final String key;
 
@@ -436,6 +474,12 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
 
             case WITHDRAW_RATIO:
                 return p.depositRatio(target, npc, true);
+                
+            case DEPOSIT_EXACT:
+                return p.depositExact(npc, target, false);
+            
+            case WITHDRAW_EXACT:
+                return p.depositExact(target, npc, true);
 
             default:
                 return 0;
