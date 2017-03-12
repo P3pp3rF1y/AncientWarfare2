@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockBush;
 import net.minecraft.block.BlockFlower;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.block.material.Material;
@@ -175,6 +176,9 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
                 Iterator<BlockPosition> it = blocksToPlant.iterator();
                 while (it.hasNext() && (position = it.next()) != null) {
                     it.remove();
+                    if (isUnwantedPlant(worldObj.getBlock(position.x, position.y, position.z))) {
+                        worldObj.setBlock(position.x, position.y, position.z, Blocks.air);
+                    }
                     if (canReplace(position.x, position.y, position.z) && tryPlace(stack, position.x, position.y, position.z, ForgeDirection.UP)) {
                         saplingCount--;
                         return true;
@@ -291,8 +295,14 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
                 blocksToFertilize.add(pos.copy());
             } else if (block.getMaterial() == Material.wood) {
                 addTreeBlocks(block, pos);
+            } else if (isUnwantedPlant(block)) {
+                blocksToPlant.add(pos.copy());
             }
         }
+    }
+    
+    private boolean isUnwantedPlant(Block block) {
+        return block instanceof BlockBush && !(block instanceof BlockSapling);
     }
 
     private void addLeaves(BlockPosition position, int offset, byte xOrYOrZ){
