@@ -19,6 +19,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.tile.TreeFinder;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
+import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -146,6 +147,7 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
                                     }
                                 }
                                 worldObj.setBlockToAir(position.x, position.y, position.z);
+                                ModAccessors.ENVIROMINE.schedulePhysUpdate(worldObj, position.x, position.y, position.z, true, "Normal");
                                 return true;
                             }
                         }
@@ -178,6 +180,7 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
                     it.remove();
                     if (isUnwantedPlant(worldObj.getBlock(position.x, position.y, position.z))) {
                         worldObj.setBlock(position.x, position.y, position.z, Blocks.air);
+                        ModAccessors.ENVIROMINE.schedulePhysUpdate(worldObj, position.x, position.y, position.z, true, "Normal");
                     }
                     if (canReplace(position.x, position.y, position.z) && tryPlace(stack, position.x, position.y, position.z, ForgeDirection.UP)) {
                         saplingCount--;

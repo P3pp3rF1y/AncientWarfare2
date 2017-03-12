@@ -9,6 +9,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.shadowmage.ancientwarfare.api.IAncientWarfareFarmable;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
+import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
@@ -70,6 +71,7 @@ public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded i
             if (!worldObj.setBlockToAir(x, y, z)) {
                 return false;
             }
+            ModAccessors.ENVIROMINE.schedulePhysUpdate(worldObj, x, y, z, true, "Normal");
         }
         for (ItemStack stack : stacks) {
             stack = InventoryTools.mergeItemStack(inventory, stack, combinedIndices);//was already validated that items would fit via canInventoryHold call
