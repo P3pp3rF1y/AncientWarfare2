@@ -462,10 +462,10 @@ guistrings.npc.orders.position_added=Position added
 guistrings.npc.inventory=Inventory
 
 #routing order route-types
-route.fill.target=Fill Upto
-route.fill.target.tooltip=Try to FILL target inventory TO these amounts. Courier will not deposit anything if the inventory already has these stack sizes (or more).
-route.fill.courier=Take Upto
-route.fill.courier.tooltip=Try to TAKE these amounts FROM target inventory. Courier will not take anything if they are already carrying the specified numbers (or more) in the backpack.
+route.fill.upto=Fill Upto
+route.fill.upto.tooltip=Try to FILL target inventory TO these amounts. Courier will not deposit anything if the inventory already has these stack sizes (or more).
+route.take.upto=Take Upto
+route.take.upto.tooltip=Try to TAKE these amounts FROM target inventory. Courier will not take anything if they are already carrying the specified numbers (or more) in the backpack.
 route.deposit.match=Put Any
 route.deposit.match.tooltip=Try to PUT ANY matches TO the target inventory. Stack sizes are ignored - will fill until target is full of matches or courier no longer holds any.
 route.withdraw.match=Take Any
@@ -482,6 +482,10 @@ route.deposit.exact=Put Exact
 route.deposit.exact.tooltip=Try to PUT the EXACT amount(s) specified TO the target inventory. If the courier does not have the stack EXACTLY, or it cannot COMPLETELY fit in the destination, it will NOT transfer.
 route.withdraw.exact=Take Exact
 route.withdraw.exact.tooltip=Try to TAKE the EXACT amount(s) specified FROM the target inventory. If a stack does not exist EXACTLY in the target, or the courier cannot COMPLETELY hold it, it will NOT transfer.
+route.fill.minimum=Fill Minimum
+route.fill.minimum.tooltip=Try to FILL a MINIMUM of the amount(s) specified TO the target inventory. Same as 'Fill Upto', except it will only put items if the target will result in having AT LEAST this amount. This check if performed PER STACK.
+route.take.minimum=Take Minimum
+route.take.minimum.tooltip=Try to TAKE a MINIMUM of the amount(s) specified FROM the target inventory. Same as 'Take Upto', except it will only take items if the courier will result in having AT LEAST this amount. This check if performed PER STACK.
 
 #research guis/items/misc
 guistrings.research.current_goal=Current Goal

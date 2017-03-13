@@ -312,6 +312,44 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
             }
             return movedTotal;
         }
+        
+        private int fillAtLeast(IInventory from, IInventory to, boolean reversed) {
+            int fromSide = -1;
+            int toSide = getBlockSide();
+            if (reversed) {
+                fromSide = getBlockSide();
+                toSide = -1;
+            }
+            int movedTotal = 0;
+            int toMove = 0;
+            int foundCount = 0;
+            int existingCount = 0;
+            int moved;
+            for (ItemStack filter : filters) {
+                if (filter == null) {
+                    continue;
+                }
+                foundCount = InventoryTools.getCountOf(from, fromSide, filter);
+                existingCount = InventoryTools.getCountOf(to, toSide, filter);
+                toMove = filter.stackSize - existingCount; // we only want to move items up to the specified filter size
+                if (toMove < 1) {
+                    // the target already has more than the filter specifies
+                    continue;
+                }
+                
+                if (foundCount < toMove) {
+                    // the source doesn't have enough to fulfill the minimum requirement
+                    continue;
+                }
+                ItemStack filterAdjusted = filter.copy();
+                filterAdjusted.stackSize = toMove;
+                if (!InventoryTools.canInventoryHold(to, toSide, filterAdjusted))
+                    continue;
+                moved = InventoryTools.transferItems(from, to, filterAdjusted, foundCount, fromSide, toSide, ignoreDamage, ignoreTag);
+                movedTotal += moved / filter.getMaxStackSize();
+            }
+            return movedTotal;
+        }
 
         private final void readFromNBT(NBTTagCompound tag) {
             routeType = RouteType.values()[tag.getInteger("type")];
@@ -360,12 +398,12 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
         /**
          * fill target up to the specified quantity from couriers inventory
          */
-        FILL_TARGET_TO("route.fill.target"),
+        FILL_TARGET_TO("route.fill.upto"),
 
         /**
          * fill courier up to the specified quantity from targets inventory
          */
-        FILL_COURIER_TO("route.fill.courier"),
+        FILL_COURIER_TO("route.take.upto"),
 
         /**
          * deposit any of the specified items from courier into target inventory
@@ -407,7 +445,17 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
         /**
          * withdraw exact number of items (or none at all if not possible)
          */
-        WITHDRAW_EXACT("route.withdraw.exact");
+        WITHDRAW_EXACT("route.withdraw.exact"),
+        
+        /**
+         * deposit a minimum of items
+         */
+        FILL_MINIMUM("route.fill.minimum"),
+        
+        /**
+         * withdraw a minimum of items
+         */
+        TAKE_MINIMUM("route.take.minimum");
 
         final String key;
 
@@ -480,6 +528,12 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
             
             case WITHDRAW_EXACT:
                 return p.depositExact(target, npc, true);
+            
+            case FILL_MINIMUM:
+                return p.fillAtLeast(npc, target, false);
+                
+            case TAKE_MINIMUM:
+                return p.fillAtLeast(target, npc, true);
 
             default:
                 return 0;
