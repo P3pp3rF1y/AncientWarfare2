@@ -213,6 +213,8 @@ public class TemplateLoader {
                 AWLog.logDebug("parsing entry: " + entry.getName());
                 if (entry.getName().toLowerCase(Locale.ENGLISH).endsWith(".png")) {
                     loadStructureImage(entry.getName(), zis);
+                } else if (entry.getName().toLowerCase(Locale.ENGLISH).endsWith(".jpg")) {
+                    loadStructureImage(entry.getName(), zis);
                 } else if (entry.getName().toLowerCase(Locale.ENGLISH).endsWith("." + AWStructureStatics.townTemplateExtension)) {
                     loadTownTemplateFromZip(entry, zis);
                 } else if (entry.getName().toLowerCase(Locale.ENGLISH).endsWith("." + AWStructureStatics.templateExtension)) {
@@ -362,7 +364,7 @@ public class TemplateLoader {
     }
 
     private boolean isProbableImage(File file) {
-        return isProbableFile(file, ".png");
+        return isProbableFile(file, ".png") || isProbableFile(file, ".jpg");
     }
 
 }

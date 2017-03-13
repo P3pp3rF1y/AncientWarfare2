@@ -78,11 +78,11 @@ public class StructureTemplateManagerClient {
 
     public void addTemplate(StructureTemplateClient template) {
         clientTemplates.put(template.name, template);
-        loadTemplateImage(template.name + ".png");
+        loadTemplateImage(template.name + ".jpg");
     }
 
     public ResourceLocation getImageFor(String templateName) {
-        return clientTemplateImages.get(templateName + ".png");
+        return clientTemplateImages.get(templateName + ".jpg");
     }
 
 
@@ -144,7 +144,7 @@ public class StructureTemplateManagerClient {
         File file;
         try {
             file = new File(pathBase + imageName);
-            ImageIO.write(image, "png", file);
+            ImageIO.write(image, "jpg", file);
         } catch (IOException e) {
             e.printStackTrace();
         }
