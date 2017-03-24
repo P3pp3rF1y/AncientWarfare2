@@ -3,10 +3,13 @@ package net.shadowmage.ancientwarfare.automation.proxy;
 import cpw.mods.fml.client.config.DummyConfigElement.DummyCategoryElement;
 import cpw.mods.fml.client.config.IConfigElement;
 import cpw.mods.fml.client.registry.ClientRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.config.ConfigElement;
+import net.shadowmage.ancientwarfare.automation.KeyHandler;
 import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.gui.*;
@@ -32,6 +35,7 @@ public class ClientProxyAutomation extends ClientProxyBase {
     @Override
     public void registerClient() {
         registerClientOptions();
+        FMLCommonHandler.instance().bus().register(new KeyHandler(Minecraft.getMinecraft()));
 
         NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_INVENTORY_SIDE_ADJUST, GuiWorksiteInventorySideSelection.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_ANIMAL_CONTROL, GuiWorksiteAnimalControl.class);
@@ -116,6 +120,7 @@ public class ClientProxyAutomation extends ClientProxyBase {
 
     @SuppressWarnings("rawtypes")
     public static final class AutomationCategory extends DummyCategoryElement {
+        public static final ConfigElement renderWorkBounds = new ConfigElement(AWAutomationStatics.renderWorkBounds);
 
         @SuppressWarnings("unchecked")
         public AutomationCategory(String name) {
@@ -124,7 +129,7 @@ public class ClientProxyAutomation extends ClientProxyBase {
 
         private static List<IConfigElement> getElementList() {
             ArrayList<IConfigElement> list = new ArrayList<IConfigElement>();
-            list.add(new ConfigElement(AWAutomationStatics.renderWorkBounds));
+            list.add(renderWorkBounds);
             return list;
         }
     }
