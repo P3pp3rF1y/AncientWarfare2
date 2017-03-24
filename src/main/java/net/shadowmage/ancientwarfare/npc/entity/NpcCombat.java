@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.ai.*;
 import net.shadowmage.ancientwarfare.npc.ai.owned.*;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.item.ItemCombatOrder;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 
@@ -158,8 +159,10 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
     }
 
     @Override
-    public void attackEntityWithRangedAttack(EntityLivingBase par1EntityLivingBase, float par2) {
-        RangeAttackHelper.DEFAULT.doRangedAttack(this, par1EntityLivingBase, par2);
+    public void attackEntityWithRangedAttack(EntityLivingBase target, float force) {
+        // minimum precision = 10.0f, slowly reaches 0 (or close to it) as the NPC reaches max level
+        float precision = 10.0f - ( (float) this.getLevelingStats().getBaseLevel() / (float) AWNPCStatics.maxNpcLevel * 10.0f );
+        RangeAttackHelper.doRangedAttack(this, target, force, precision);
     }
 
     public void respondToDistress(NpcBase source) {

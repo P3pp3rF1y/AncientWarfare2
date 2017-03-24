@@ -16,6 +16,7 @@ import net.shadowmage.ancientwarfare.npc.ai.*;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionArcherStayAtHome;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRangedAttack;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRideHorse;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.RangeAttackHelper;
 
 public abstract class NpcFactionMountedArcher extends NpcFactionMounted implements IRangedAttackMob {
@@ -60,8 +61,8 @@ public abstract class NpcFactionMountedArcher extends NpcFactionMounted implemen
     }
 
     @Override
-    public void attackEntityWithRangedAttack(EntityLivingBase par1EntityLivingBase, float par2) {
-        RangeAttackHelper.DEFAULT.doRangedAttack(this, par1EntityLivingBase, par2);
+    public void attackEntityWithRangedAttack(EntityLivingBase target, float force) {
+        RangeAttackHelper.doRangedAttack(this, target, force, 1.0f);
     }
 
 }

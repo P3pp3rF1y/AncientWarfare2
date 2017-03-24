@@ -68,6 +68,7 @@ public class AWNPCStatics extends ModConfiguration {
     public static int townActiveNpcSearchHeight = 15;
     public static boolean exportEntityNames = false;
     public static boolean npcAIDebugMode = false;
+    public static double archerRange = 16.0;
 
     /**
      * TODO add these to config
@@ -298,6 +299,9 @@ public class AWNPCStatics extends ModConfiguration {
         exportEntityNames = config.get(serverOptions, "export_entity_names", exportEntityNames, "Export entity name list\nDefault=" + exportEntityNames + "\n" +
                 "If true, a text file will be created in the main ancientwarfare config directory containing a list of all registered in-game entity names.\n" +
                 "These names may be used to populate the NPC target lists.").getBoolean();
+        
+        archerRange = config.get(serverOptions, "archer_attack_range", archerRange, "Archer attack range\nDefault=" + archerRange + "\n" +
+                "Attack range of all archers, except mounted archers who are half of this value.").getDouble();
 
         renderAI = config.get(clientOptions, "render_npc_ai", true);
         renderWorkPoints = config.get(clientOptions, "render_work_points", true);

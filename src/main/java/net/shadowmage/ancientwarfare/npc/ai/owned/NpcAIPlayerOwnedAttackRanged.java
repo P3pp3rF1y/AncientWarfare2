@@ -3,12 +3,13 @@ package net.shadowmage.ancientwarfare.npc.ai.owned;
 import net.minecraft.entity.IRangedAttackMob;
 import net.shadowmage.ancientwarfare.npc.ai.AIHelper;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttack;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public class NpcAIPlayerOwnedAttackRanged extends NpcAIAttack<NpcBase> {
 
     private final IRangedAttackMob rangedAttacker;
-    private double attackDistance = 16.d * 16.d;
+    private double attackDistance = AWNPCStatics.archerRange * AWNPCStatics.archerRange;
 
     public NpcAIPlayerOwnedAttackRanged(NpcBase npc) {
         super(npc);

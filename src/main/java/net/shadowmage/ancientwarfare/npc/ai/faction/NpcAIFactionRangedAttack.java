@@ -4,17 +4,21 @@ import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.util.ChunkCoordinates;
 import net.shadowmage.ancientwarfare.npc.ai.AIHelper;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttack;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionMountedArcher;
 
 public class NpcAIFactionRangedAttack extends NpcAIAttack<NpcBase> {
 
     private final IRangedAttackMob rangedAttacker;
-    private double attackDistanceSq = 16.d * 16.d;
+    private double attackDistanceSq = AWNPCStatics.archerRange * AWNPCStatics.archerRange;
 
     public NpcAIFactionRangedAttack(NpcBase npc) {
         super(npc);
         this.rangedAttacker = (IRangedAttackMob) npc;//will classcastexception if improperly used..
         this.moveSpeed = 1.d;
+        if (npc instanceof NpcFactionMountedArcher)
+            attackDistanceSq /= 2;
     }
 
     @Override
