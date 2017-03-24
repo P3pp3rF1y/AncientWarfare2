@@ -71,7 +71,12 @@ public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded i
             if (!worldObj.setBlockToAir(x, y, z)) {
                 return false;
             }
-            ModAccessors.ENVIROMINE.schedulePhysUpdate(worldObj, x, y, z, true, "Normal");
+
+            if (ModAccessors.TREECAPITATOR_LOADED)
+                ModAccessors.TREECAPITATOR.doTreecapitate(worldObj, block, meta, x, y, z);
+            
+            if (ModAccessors.ENVIROMINE_LOADED)
+                ModAccessors.ENVIROMINE.schedulePhysUpdate(worldObj, x, y, z, true, "Normal");
         }
         for (ItemStack stack : stacks) {
             stack = InventoryTools.mergeItemStack(inventory, stack, combinedIndices);//was already validated that items would fit via canInventoryHold call

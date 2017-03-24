@@ -91,15 +91,12 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
     @Override
     public void onBoundsAdjusted() {
         validateCollection(blocksToFertilize);
-        int chops = blocksToChop.size();
         validateCollection(blocksToChop);
-        if(blocksToChop.size() != chops){
-            markDirty();
-        }
         validateCollection(blocksToPlant);
         if(!hasShears){
             blocksToShear.clear();
         }
+        markDirty();
     }
 
     @Override

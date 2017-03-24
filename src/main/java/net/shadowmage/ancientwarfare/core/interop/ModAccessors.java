@@ -10,6 +10,9 @@ public class ModAccessors {
     public static boolean HARDER_WILDLIFE_LOADED = false;
     public static InteropEnviromineInterface ENVIROMINE;
     public static boolean ENVIROMINE_LOADED = false;
+    public static InteropTreecapitatorInterface TREECAPITATOR;
+    public static boolean TREECAPITATOR_LOADED = false;
+    
     
     
     public static void init() {
@@ -31,6 +34,7 @@ public class ModAccessors {
                 AncientWarfareCore.log.info("HarderWildlife not found.");
                 HARDER_WILDLIFE = Class.forName("net.shadowmage.ancientwarfare.core.interop.InteropHarderWildlifeDummy").asSubclass(InteropHarderWildlifeInterface.class).newInstance();
             }
+            
             if (Loader.isModLoaded("enviromine")) {
                 AncientWarfareCore.log.info("Enviromine found!");
                 ENVIROMINE = Class.forName("net.shadowmage.ancientwarfare.core.interop.InteropEnviromine").asSubclass(InteropEnviromineInterface.class).newInstance();
@@ -38,6 +42,15 @@ public class ModAccessors {
             } else {
                 AncientWarfareCore.log.info("Enviromine not found.");
                 ENVIROMINE = Class.forName("net.shadowmage.ancientwarfare.core.interop.InteropEnviromineDummy").asSubclass(InteropEnviromineInterface.class).newInstance();
+            }
+            
+            if (Loader.isModLoaded("Treecapitator")) {
+                AncientWarfareCore.log.info("Treecapitator found!");
+                TREECAPITATOR = Class.forName("net.shadowmage.ancientwarfare.core.interop.InteropTreecapitator").asSubclass(InteropTreecapitatorInterface.class).newInstance();
+                TREECAPITATOR_LOADED = true;
+            } else {
+                AncientWarfareCore.log.info("Treecapitator not found.");
+                TREECAPITATOR = Class.forName("net.shadowmage.ancientwarfare.core.interop.InteropTreecapitatorDummy").asSubclass(InteropTreecapitatorInterface.class).newInstance();
             }
         } catch (Exception e) {
             // shouldn't happen
