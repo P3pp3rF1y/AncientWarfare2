@@ -58,19 +58,28 @@ public class HeadquartersTracker extends WorldSavedData {
         super(id);
     }
     
-    public synchronized boolean validateCurrentHq(String ownerName, World world) {
+    /**
+     * 
+     * @return An int array of x/y/z co-ords of the owner's HQ position, or null if it doesn't exist 
+     */
+    public int[] getHqPos(String ownerName, World world) {
         int[] hqPos = playerHeadquarters.get(ownerName);
-        if (hqPos == null || hqPos.length != 3) {
-            return false;
-        }
-        boolean isValid = isBlockHq(ownerName, world, hqPos[0], hqPos[1], hqPos[2]);
-        if (!isValid) {
+        if (hqPos == null || hqPos.length != 3 || !isBlockHq(ownerName, world, hqPos[0], hqPos[1], hqPos[2]))
+            return null;
+        else
+            return hqPos;
+    }
+    
+    public synchronized boolean validateCurrentHq(String ownerName, World world) {
+        int[] hqPos = getHqPos(ownerName, world);
+        if (hqPos == null) {
             // HQ position was assigned but no longer valid
             playerHeadquarters.put(ownerName, new int[] {});
             setStale(world.provider.dimensionId);
             markDirty();
-        }
-        return isValid;
+            return false;
+        } else
+            return true;
     }
     
     public synchronized boolean isBlockHq(String ownerName, World world, int posX, int posY, int posZ) {
@@ -101,6 +110,7 @@ public class HeadquartersTracker extends WorldSavedData {
         ChatComponentTranslation notificationMsg = new ChatComponentTranslation("ftbu_aw2.notification.townhall_newhq.msg");
         List<ChatComponentTranslation> notificationTooltip = new ArrayList<ChatComponentTranslation>();
         notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.chunk_position", posX, posZ));
+        notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.townhall_newhq.tooltip"));
         notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.click_to_remove"));
         ModAccessors.FTBU.notifyPlayer(EnumChatFormatting.BLUE, ownerName, notificationTitle, notificationMsg, notificationTooltip);
     }

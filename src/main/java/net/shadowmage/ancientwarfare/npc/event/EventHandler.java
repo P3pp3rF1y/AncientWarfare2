@@ -17,7 +17,9 @@ import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
+import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -120,12 +122,26 @@ public class EventHandler {
         }
     }
 
-    
     @SubscribeEvent
     public void pathfinderCheckCanPathBlock(PathfinderCheckCanPathBlock event) {
         if (event.entity instanceof NpcBase) {
             if (event.block instanceof BlockDoor) {
                 event.setResult(Result.ALLOW);
+            }
+        }
+    }
+    
+    @SubscribeEvent
+    public void onPlayerRespawn(PlayerEvent.Clone event) {
+        if (event.entityPlayer.worldObj.isRemote)
+            return;
+        if (event.wasDeath) {
+            if (event.entityPlayer.getBedLocation(event.entityPlayer.dimension) == null) {
+                // player has no bed in the respawned dimension
+                int[] hqPos = HeadquartersTracker.get(event.entityPlayer.worldObj).getHqPos(event.entityPlayer.getCommandSenderName(), event.entityPlayer.worldObj);
+                if (hqPos != null) {
+                    EntityTools.teleportPlayerToBlock(event.entityPlayer, event.entityPlayer.worldObj, hqPos, true);
+                }
             }
         }
     }

@@ -739,6 +739,7 @@ ftbu_aw2.notification.townhall_secured=Town Hall reinforced!
 ftbu_aw2.notification.townhall_secured.msg=Territory secured.
 ftbu_aw2.notification.townhall_newhq=Headquarters established!
 ftbu_aw2.notification.townhall_newhq.msg=New HQ for dimension set.
+ftbu_aw2.notification.townhall_newhq.tooltip=If overworld, this will act as a fallback respawn point (if no bed is found) and also the destination for teleport events.
 ftbu_aw2.notification.townhall_hqmissing=No headquarters found!
 ftbu_aw2.notification.townhall_hqmissing.msg=See tooltip for details...
 ftbu_aw2.notification.townhall_hqmissing.tooltip.1=You might want to set a HQ to claim
