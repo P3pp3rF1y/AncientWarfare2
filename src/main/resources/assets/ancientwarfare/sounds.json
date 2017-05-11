@@ -1,8 +1,23 @@
 {
-"bard.tune1": {"category": "neutral", "sounds": [{"name": "npc/bard/drums-103", "stream": false}]},
-"bard.tune2": {"category": "neutral", "sounds": [{"name": "npc/bard/lord-112", "stream": false}]},
-"bard.tune3": {"category": "neutral", "sounds": [{"name": "npc/bard/master-122", "stream": false}]},
-"bard.tune4": {"category": "neutral", "sounds": [{"name": "npc/bard/suonatore_di_liuto", "stream": false}]},
-"bard.tune5": {"category": "neutral", "sounds": [{"name": "npc/bard/teller-130-1", "stream": false}]},
-"bard.tune6": {"category": "neutral", "sounds": [{"name": "npc/bard/teller-130-2", "stream": false}]}
+    "bard.tune1": {"category": "neutral", "sounds": [{"name": "npc/bard/drums-103", "stream": false}]},
+    "bard.tune2": {"category": "neutral", "sounds": [{"name": "npc/bard/lord-112", "stream": false}]},
+    "bard.tune3": {"category": "neutral", "sounds": [{"name": "npc/bard/master-122", "stream": false}]},
+    "bard.tune4": {"category": "neutral", "sounds": [{"name": "npc/bard/suonatore_di_liuto", "stream": false}]},
+    "bard.tune5": {"category": "neutral", "sounds": [{"name": "npc/bard/teller-130-1", "stream": false}]},
+    "bard.tune6": {"category": "neutral", "sounds": [{"name": "npc/bard/teller-130-2", "stream": false}]},
+
+    "teleport.in": {
+        "category": "neutral",
+        "sounds": [{
+            "name": "events/teleport_in",
+            "stream": false
+        }]
+    },
+    "teleport.out": {
+        "category": "neutral",
+        "sounds": [{
+            "name": "events/teleport_out",
+            "stream": false
+        }]
+    }
 }

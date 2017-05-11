@@ -1,12 +1,18 @@
 package net.shadowmage.ancientwarfare.npc.container;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
+import net.shadowmage.ancientwarfare.core.util.EntityTools;
+import net.shadowmage.ancientwarfare.npc.gamedata.HeadquartersTracker;
+import net.shadowmage.ancientwarfare.npc.tile.TileTeleportHub;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall.NpcDeathEntry;
 
@@ -33,6 +39,29 @@ public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
 
     @Override
     public void handlePacketData(NBTTagCompound tag) {
+        if (tag.hasKey("playerName")) {
+            if (!tileEntity.getWorldObj().isRemote) {
+                int[] tpHubPos = HeadquartersTracker.get(tileEntity.getWorldObj()).getTeleportHubPosition(tileEntity.getWorldObj());
+                if (tpHubPos != null) {
+                    TileEntity te = tileEntity.getWorldObj().getTileEntity(tpHubPos[0], tpHubPos[1], tpHubPos[2]);
+                    if (te instanceof TileTeleportHub) {
+                        String playerName = tag.getString("playerName");
+                        List<EntityPlayerMP> playerList = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
+                        for (EntityPlayerMP entityPlayer : playerList) {
+                            if (entityPlayer.getCommandSenderName().equals(playerName)) {
+                                final float randomPitch = (float) (Math.random() * (1.1f - 0.9f) + 0.9f);
+                                tileEntity.getWorldObj().playSoundAtEntity(entityPlayer, "ancientwarfare:teleport.out", 0.6F, randomPitch);
+                                ((TileTeleportHub) te).addArrival(playerName);
+                                EntityTools.teleportPlayerToBlock(entityPlayer, entityPlayer.worldObj, tpHubPos, false);
+                                entityPlayer.worldObj.playSoundAtEntity(entityPlayer, "ancientwarfare:teleport.in", 0.6F, randomPitch);
+                            }
+                        }
+                    }
+                }
+            }
+            // we don't need to do anything else
+            return;
+        }
         if (tag.hasKey("deathList")) {
             deathList.clear();
             NBTTagList list = tag.getTagList("deathList", Constants.NBT.TAG_COMPOUND);
@@ -74,6 +103,12 @@ public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
         tileEntity.setRange(value);
         NBTTagCompound tag = new NBTTagCompound();
         tag.setInteger("range", value);
+        sendDataToServer(tag);
+    }
+    
+    public void teleportPlayer(String playerName) {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("playerName", playerName);
         sendDataToServer(tag);
     }
 

@@ -7,6 +7,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
 import net.shadowmage.ancientwarfare.npc.container.ContainerTownHall;
+import net.shadowmage.ancientwarfare.npc.gamedata.HeadquartersTracker;
 
 public class GuiTownHallInventory extends GuiContainerBase<ContainerTownHall> {
 
@@ -20,7 +21,7 @@ public class GuiTownHallInventory extends GuiContainerBase<ContainerTownHall> {
     @Override
     public void initElements() {
         this.getContainer().addSlots();
-        Button button = new Button(8, 8, 75, 12, "guistrings.npc.death_list") {
+        Button button = new Button(8, 8, 40, 12, "guistrings.npc.death_list") {
             @Override
             protected void onPressed() {
                 getContainer().removeSlots();
@@ -28,8 +29,21 @@ public class GuiTownHallInventory extends GuiContainerBase<ContainerTownHall> {
             }
         };
         addGuiElement(button);
-        addGuiElement(new Label(90, 10, "guistrings.npc.town_range"));
-        input = new NumberInput(125, 8, 45, getContainer().tileEntity.getRange(), this);
+        
+        int[] tpHubPos = HeadquartersTracker.get(player.worldObj).getTeleportHubPosition(this.player.worldObj);
+        if (tpHubPos != null ) {
+            button = new Button(50, 8, 54, 12, "Visit Hub") {
+                @Override
+                protected void onPressed() {
+                    Minecraft.getMinecraft().displayGuiScreen(null);
+                    getContainer().teleportPlayer(player.getCommandSenderName());
+                }
+            };
+            addGuiElement(button);
+        }
+        
+        addGuiElement(new Label(110, 10, "guistrings.npc.town_range"));
+        input = new NumberInput(145, 8, 24, getContainer().tileEntity.getRange(), this);
         input.setIntegerValue();
         addGuiElement(input);
     }

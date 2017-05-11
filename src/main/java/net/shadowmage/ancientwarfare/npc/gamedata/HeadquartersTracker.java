@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.npc.gamedata;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -15,16 +14,15 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.common.util.Constants.NBT;
-import net.shadowmage.ancientwarfare.core.gamedata.ChunkClaims;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
-import net.shadowmage.ancientwarfare.npc.block.AWNPCBlockLoader;
 import net.shadowmage.ancientwarfare.npc.block.BlockHeadquarters;
-import net.shadowmage.ancientwarfare.npc.block.BlockTownHall;
+import net.shadowmage.ancientwarfare.npc.block.BlockTeleportHub;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 
 public class HeadquartersTracker extends WorldSavedData {
     public static final String ID = "AW2_HeadquartersTracker";
     
+    // key = dimId for all these HashMaps
     private static HashMap<Integer, Boolean> IS_STALE = new HashMap<Integer, Boolean>();
     private static HashMap<Integer, HeadquartersTracker> INSTANCES = new HashMap<Integer, HeadquartersTracker>();
     
@@ -49,6 +47,7 @@ public class HeadquartersTracker extends WorldSavedData {
     }
     
     private Map<String, int[]> playerHeadquarters = new HashMap<String, int[]>();
+    private int[] teleportHubPosition = null;
     
     public HeadquartersTracker() {
         super(ID);
@@ -110,7 +109,9 @@ public class HeadquartersTracker extends WorldSavedData {
         ChatComponentTranslation notificationMsg = new ChatComponentTranslation("ftbu_aw2.notification.townhall_newhq.msg");
         List<ChatComponentTranslation> notificationTooltip = new ArrayList<ChatComponentTranslation>();
         notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.chunk_position", posX, posZ));
-        notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.townhall_newhq.tooltip"));
+        notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.townhall_newhq.tooltip.1"));
+        notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.townhall_newhq.tooltip.2"));
+        notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.townhall_newhq.tooltip.3"));
         notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.click_to_remove"));
         ModAccessors.FTBU.notifyPlayer(EnumChatFormatting.BLUE, ownerName, notificationTitle, notificationMsg, notificationTooltip);
     }
@@ -124,6 +125,19 @@ public class HeadquartersTracker extends WorldSavedData {
         notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.townhall_hqmissing.tooltip.3"));
         ModAccessors.FTBU.notifyPlayer(EnumChatFormatting.GOLD, ownerName, notificationTitle, notificationMsg, notificationTooltip);
     }
+    
+    public int[] getTeleportHubPosition(World world) {
+        if (teleportHubPosition != null) {
+            if (!(world.getBlock(teleportHubPosition[0], teleportHubPosition[1], teleportHubPosition[2]) instanceof BlockTeleportHub))
+                teleportHubPosition = null;
+        }
+        return teleportHubPosition;
+    }
+    
+    public void setTeleportHubPosition(int posX, int posY, int posZ) {
+        teleportHubPosition = new int[]{posX, posY, posZ};
+        markDirty();
+    }
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {
@@ -134,6 +148,9 @@ public class HeadquartersTracker extends WorldSavedData {
             String ownerName = playerHeadquartersEntry.getString("ownerName");
             int[] hqPos = playerHeadquartersEntry.getIntArray("hqPos");
             playerHeadquarters.put(ownerName, hqPos);
+        }
+        if (compound.hasKey("teleportHubPosition")) {
+            teleportHubPosition = compound.getIntArray("teleportHubPosition");
         }
     }
 
@@ -148,5 +165,6 @@ public class HeadquartersTracker extends WorldSavedData {
             playerHeadquartersTag.appendTag(playerHeadquartersEntry);
         }
         compound.setTag("playerHeadquarters", playerHeadquartersTag);
+        compound.setIntArray("teleportHubPosition", teleportHubPosition);
     }
 }
