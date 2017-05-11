@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.core.interop;
 import java.util.List;
 import java.util.UUID;
 
+import ftb.utils.world.LMPlayerServer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
@@ -15,7 +16,7 @@ public class InteropFtbuDummy implements InteropFtbuInterface {
     public boolean areFriends(String player1, String player2) { return false; }
     
     @Override
-    public boolean isFriendOfClient(UUID otherPlayer) { return false; };
+    public boolean isFriendOfClient(UUID otherPlayer) { return false; }
 
     @Override
     public void addClaim(World world, String ownerName, int posX, int posY, int posZ) {}
@@ -30,8 +31,11 @@ public class InteropFtbuDummy implements InteropFtbuInterface {
     public void notifyPlayer(EnumChatFormatting titleColor, String ownerName, String title, ChatComponentTranslation msg, List<ChatComponentTranslation> hoverTextLines) {}
     
     @Override
-    public void startWorkerThread() {};
+    public LMPlayerServer getChunkClaimOwner(int dimId, int chunkX, int chunkY) { return null; }
     
     @Override
-    public void stopWorkerThread() {};
+    public void startWorkerThread() {}
+    
+    @Override
+    public void stopWorkerThread() {}
 }

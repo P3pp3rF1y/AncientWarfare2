@@ -9,6 +9,7 @@ import ftb.lib.api.notification.Notification;
 import ftb.utils.api.FriendsAPI;
 import ftb.utils.world.LMPlayerServer;
 import ftb.utils.world.LMWorldServer;
+import ftb.utils.world.claims.ClaimedChunk;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
@@ -76,6 +77,14 @@ public class InteropFtbu extends InteropFtbuDummy {
             System.out.println("Target player is not online!");
         }
     }
+    
+    @Override
+    public LMPlayerServer getChunkClaimOwner(int dimId, int chunkX, int chunkY) {
+        ClaimedChunk claim = LMWorldServer.inst.claimedChunks.getChunk(dimId, chunkX, chunkY);
+        if (claim == null)
+            return null;
+        return claim.getOwnerS();
+    } 
 
     @Override
     public void startWorkerThread() {
