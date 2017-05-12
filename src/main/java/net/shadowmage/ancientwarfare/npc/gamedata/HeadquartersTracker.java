@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.cosmicdan.pathfindertweaks.Main;
+
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -30,8 +32,15 @@ public class HeadquartersTracker extends WorldSavedData {
         int dimId = world.provider.dimensionId;
         Boolean isStale = IS_STALE.get(dimId);
         if (isStale == null || isStale) {
+            HeadquartersTracker instance = null;
             // use per-dimension storage to let each dimension have it's own HQ
-            HeadquartersTracker instance = (HeadquartersTracker) world.perWorldStorage.loadData(HeadquartersTracker.class, ID);
+            try {
+                instance = (HeadquartersTracker) world.perWorldStorage.loadData(HeadquartersTracker.class, ID);
+            } catch (Exception e) {
+                // just incase we have corrupted world data
+                e.printStackTrace();
+                Main.LOGGER.error("Headquarters tracker data was corrupted and reset!");
+            }
             if (instance == null) {
                 instance = new HeadquartersTracker();
                 world.setItemData(ID, instance);
