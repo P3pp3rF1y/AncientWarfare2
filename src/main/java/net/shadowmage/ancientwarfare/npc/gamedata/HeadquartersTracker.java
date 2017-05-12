@@ -34,16 +34,10 @@ public class HeadquartersTracker extends WorldSavedData {
         if (isStale == null || isStale) {
             HeadquartersTracker instance = null;
             // use per-dimension storage to let each dimension have it's own HQ
-            try {
-                instance = (HeadquartersTracker) world.perWorldStorage.loadData(HeadquartersTracker.class, ID);
-            } catch (Exception e) {
-                // just incase we have corrupted world data
-                e.printStackTrace();
-                Main.LOGGER.error("Headquarters tracker data was corrupted and reset!");
-            }
+            instance = (HeadquartersTracker) world.perWorldStorage.loadData(HeadquartersTracker.class, ID);
             if (instance == null) {
                 instance = new HeadquartersTracker();
-                world.setItemData(ID, instance);
+                world.perWorldStorage.setData(ID, instance);
             }
             INSTANCES.put(dimId, instance);
             IS_STALE.put(dimId, false);
@@ -174,6 +168,7 @@ public class HeadquartersTracker extends WorldSavedData {
             playerHeadquartersTag.appendTag(playerHeadquartersEntry);
         }
         compound.setTag("playerHeadquarters", playerHeadquartersTag);
-        compound.setIntArray("teleportHubPosition", teleportHubPosition);
+        if (teleportHubPosition != null && teleportHubPosition.length == 3)
+            compound.setIntArray("teleportHubPosition", teleportHubPosition);
     }
 }
