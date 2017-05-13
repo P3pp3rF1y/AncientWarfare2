@@ -44,7 +44,7 @@ import java.util.Map.Entry;
 public class AWNPCStatics extends ModConfiguration {
 
     /** ********************************************SHARED SETTINGS************************************************ */
-    public static int npcActionRange = 2;
+    public static int npcActionRange = 3;
     public static boolean repackCreativeOnly = false;
     public static boolean persistOrdersOnDeath = true;
     
@@ -314,7 +314,7 @@ public class AWNPCStatics extends ModConfiguration {
         npcActionRange = config.get(generalOptions, "npc_action_range", npcActionRange, "Action Range\nDefault=" + npcActionRange + "\n" +
                 "The range in blocks that an NPC can perform an action on something. The player has an action\n" +
                 "range of 5. Only affects workers, no effect on the attack range of combat units nor medics.\n" +
-                "Minimum value of 2 unless you want NPC's to bug-out and get stuck.").getInt();
+                "Minimum value of 3 unless you want NPC's to bug-out and get stuck at random.").getInt();
         
         repackCreativeOnly = config.get(generalOptions, "npc_repack_creative_only", repackCreativeOnly, "Repack only available for Creative players?\nDefault=" + repackCreativeOnly + "\n" +
                 "If true, the 'Repack' option for NPC's will be unavailable outside of Creative mode.").getBoolean();
