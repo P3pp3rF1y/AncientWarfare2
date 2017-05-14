@@ -1,13 +1,19 @@
 package net.shadowmage.ancientwarfare.npc.event;
 
+import java.util.HashSet;
 import java.util.Iterator;
 
+import com.cosmicdan.pathfindertweaks.events.PathfinderEvent.PathfinderAvoidAdditionalEvent;
 import com.cosmicdan.pathfindertweaks.events.PathfinderEvent.PathfinderCheckCanPathBlock;
 
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.eventhandler.Event.Result;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockChest;
 import net.minecraft.block.BlockDoor;
+import net.minecraft.block.BlockFence;
+import net.minecraft.block.BlockWall;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.IRangedAttackMob;
@@ -19,9 +25,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
+import net.shadowmage.ancientwarfare.core.util.BlockAndMeta;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.gamedata.HeadquartersTracker;
 
@@ -127,6 +135,43 @@ public class EventHandler {
         if (event.entity instanceof NpcBase) {
             if (event.block instanceof BlockDoor) {
                 event.setResult(Result.ALLOW);
+            }
+        }
+    }
+    
+    @SubscribeEvent
+    public void pathfinderAvoidAdditionals(PathfinderAvoidAdditionalEvent event) {
+        //System.out.println("Firing!");
+        if (AWNPCStatics.pathfinderAvoidChests || AWNPCStatics.pathfinderAvoidFences || AWNPCStatics.getPathfinderAvoidCustomBlocks() != null) {
+            if (event.posX == 193 && event.posZ == 188) {
+                System.out.println("Checking block at " + event.posX + " x " + event.posY + " x " + event.posZ);
+            }
+            Block block = event.entity.worldObj.getBlock(event.posX, event.posY, event.posZ);
+            int meta = event.entity.worldObj.getBlockMetadata(event.posX, event.posY, event.posZ);
+            if (AWNPCStatics.pathfinderAvoidChests) {
+                if (block.getRenderType() == 22 || block instanceof BlockChest) {
+                    if (event.posX == 193 && event.posZ == 188) {
+                        System.out.println("DENY!");
+                    }
+                    event.setResult(Result.DENY);
+                    return;
+                }
+            }
+            if (AWNPCStatics.pathfinderAvoidFences) {
+                if (block.getRenderType() == 11 || block instanceof BlockFence || block instanceof BlockWall) {
+                    event.setResult(Result.DENY);
+                    return;
+                }
+            }
+            if (AWNPCStatics.getPathfinderAvoidCustomBlocks() != null) {
+                for ( BlockAndMeta blockAndMeta : AWNPCStatics.getPathfinderAvoidCustomBlocks() ) {
+                    if ( Block.isEqualTo(blockAndMeta.block, block) ) {
+                        if ( blockAndMeta.meta == -1 || blockAndMeta.meta == meta ) {
+                            event.setResult(Result.DENY);
+                            return;
+                        }
+                    }
+                }
             }
         }
     }

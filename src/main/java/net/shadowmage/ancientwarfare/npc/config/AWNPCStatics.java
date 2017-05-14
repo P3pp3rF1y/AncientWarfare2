@@ -30,6 +30,7 @@ import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
+import net.shadowmage.ancientwarfare.core.util.BlockAndMeta;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 import java.io.File;
@@ -83,6 +84,15 @@ public class AWNPCStatics extends ModConfiguration {
     /** ********************************************RECIPE SETTINGS************************************************ */
     private static final String recipeSettings = "04_recipe_settings";
 
+    /** ********************************************PATHFINDER SETTINGS************************************************ */
+    private static final String pathfinderSettings = "05_pathfinder_settings";
+    public static boolean pathfinderAvoidFences = true;
+    public static boolean pathfinderAvoidChests = true;
+    // use getPathfinderAvoidCustomBlocks getter for these
+    private static BlockAndMeta[] PATHFINDER_AVOID_CUSTOM;
+    private static boolean PATHFINDER_AVOID_CUSTOM_BUILT = false;
+    private static String[] PATHFINDER_AVOID_CUSTOM_RAW = {""};
+    
     /** ********************************************FOOD SETTINGS************************************************ */
     private Configuration foodConfig;
     private static final String foodSettings = "01_food_settings";
@@ -162,6 +172,11 @@ public class AWNPCStatics extends ModConfiguration {
                 "Affect only server-side operations.  Will need to be set for dedicated servers, and single\n" +
                 "player (or LAN worlds).  Clients playing on remote servers can ignore these settings.");
 
+        config.addCustomCategoryComment(pathfinderSettings, "Pathfinder Blacklisting\n" +
+                "This section is for specifying blocks that the NPC's pathfinding will avoid pathing OVER or THROUGH.\n" +
+                "Unless you like NPC's jumping on chests and getting stuck on fences, you should leave these all.\n" +
+                "You can also add custom mod blocks here.");
+        
         foodConfig = getConfigFor("AncientWarfareNpcFood");
         foodConfig.addCustomCategoryComment(foodSettings, "Food Value Options\n" +
                 "The value specified is the number of ticks that the item will feed the NPC for.\n" +
@@ -321,6 +336,18 @@ public class AWNPCStatics extends ModConfiguration {
         
         persistOrdersOnDeath = config.get(generalOptions, "npc_death_keep_orders_items", persistOrdersOnDeath, "NPC's will keep orders items on death?\nDefault=" + persistOrdersOnDeath + "\n" +
                 "If true, an NPC who dies and manages to notify a nearby town hall will keep their orders items on their body. So if/when a priest resurrects them, they will have the orders items on them still. If there is no Town Hall nearby to catch the death however, the will drop on the ground as normal.").getBoolean();
+        
+        pathfinderAvoidFences = config.get(pathfinderSettings, "pathfinder_avoid_fences", pathfinderAvoidFences, "Avoid Fences/Walls\nDefault=" + pathfinderAvoidFences + "\n" +
+                "Avoid vanilla fences and walls, including anything that uses the same rendertype or extends BlockFence/BlockWall,\n" +
+                "which may include mod-added fences and walls.").getBoolean();
+
+        pathfinderAvoidChests = config.get(pathfinderSettings, "pathfinder_avoid_chests", pathfinderAvoidChests, "Avoid Chests\nDefault=" + pathfinderAvoidChests + "\n" +
+                "Avoid vanilla chests, including anything that uses the same rendertype or extends BlockChest, which may include\n" +
+                "mod-added chests.").getBoolean();
+
+        PATHFINDER_AVOID_CUSTOM_RAW = config.get(pathfinderSettings, "pathfinder_avoid_others", PATHFINDER_AVOID_CUSTOM_RAW, "Avoid Other blocks\nDefault=" + PATHFINDER_AVOID_CUSTOM_RAW + "\n" +
+                "List of custom blocks you also want NPC's to avoid.\n" +
+                "Put each block on a new line. Use the format modId:blockName[:meta]").getStringList();
     }
 
     public void postInitCallback() {
@@ -710,6 +737,16 @@ public class AWNPCStatics extends ModConfiguration {
         pathConfig.save();
         foodConfig.save();
         factionConfig.save();
+    }
+    
+    public static BlockAndMeta[] getPathfinderAvoidCustomBlocks() {
+        if (!PATHFINDER_AVOID_CUSTOM_BUILT) {
+            PATHFINDER_AVOID_CUSTOM = BlockAndMeta.buildList("Pathfinder custom avoidances", PATHFINDER_AVOID_CUSTOM_RAW);
+            PATHFINDER_AVOID_CUSTOM_BUILT = true;
+            if (PATHFINDER_AVOID_CUSTOM != null && PATHFINDER_AVOID_CUSTOM.length == 0)
+                PATHFINDER_AVOID_CUSTOM = null;
+        }
+        return PATHFINDER_AVOID_CUSTOM;
     }
 
     private static class Path {
