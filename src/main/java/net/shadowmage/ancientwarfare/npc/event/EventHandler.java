@@ -143,16 +143,10 @@ public class EventHandler {
     public void pathfinderAvoidAdditionals(PathfinderAvoidAdditionalEvent event) {
         //System.out.println("Firing!");
         if (AWNPCStatics.pathfinderAvoidChests || AWNPCStatics.pathfinderAvoidFences || AWNPCStatics.getPathfinderAvoidCustomBlocks() != null) {
-            if (event.posX == 193 && event.posZ == 188) {
-                System.out.println("Checking block at " + event.posX + " x " + event.posY + " x " + event.posZ);
-            }
             Block block = event.entity.worldObj.getBlock(event.posX, event.posY, event.posZ);
             int meta = event.entity.worldObj.getBlockMetadata(event.posX, event.posY, event.posZ);
             if (AWNPCStatics.pathfinderAvoidChests) {
                 if (block.getRenderType() == 22 || block instanceof BlockChest) {
-                    if (event.posX == 193 && event.posZ == 188) {
-                        System.out.println("DENY!");
-                    }
                     event.setResult(Result.DENY);
                     return;
                 }
