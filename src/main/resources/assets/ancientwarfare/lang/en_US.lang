@@ -723,6 +723,7 @@ entity.AncientWarfareStructure.aw_gate.name=Gate
 #ftbu_interop_notifications
 ftbu_aw2.notification.townhall_lost=Town Hall lost!
 ftbu_aw2.notification.chunk_position=Region: %s x %s
+ftbu_aw2.notification.chunk_name_and_position=%s at %s x %s
 ftbu_aw2.notification.click_to_remove=Click to remove notification
 ftbu_aw2.notification.townhall_neglected=Town Hall neglected!
 ftbu_aw2.notification.townhall_neglected.msg=%s minutes to reinforce!

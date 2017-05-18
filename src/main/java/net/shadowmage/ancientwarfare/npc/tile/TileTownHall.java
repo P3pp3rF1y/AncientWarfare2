@@ -45,6 +45,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
 
     public boolean alarmActive = false;
     
+    public String name = "Unnamed";
     private int broadcastRange = AWNPCStatics.townMaxRange;
     private int updateDelayTicks = 0;
     private int activeCheckTicks = 0;
@@ -53,6 +54,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
     private int neglectedChecksSoFar = 0;
     
     public boolean isHq = false;
+    public int[] tpHubPos; // used in HQ GUI container
     
     private String oldOwner = null;
     
@@ -97,7 +99,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
                             notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.townhall_abandoned.tooltip.1"));
                             notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.townhall_abandoned.tooltip.2"));
                             notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.townhall_abandoned.tooltip.3"));
-                            notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.chunk_position", xCoord>>4 , zCoord>>4));
+                            notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.chunk_name_and_position", name, xCoord>>4 , zCoord>>4));
                             notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.click_to_remove"));
                             
                             isActive = false;
@@ -114,7 +116,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
                                 notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.townhall_neglected.tooltip.1.alt"));
                             notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.townhall_neglected.tooltip.2", AWNPCStatics.townActiveNpcSearchLimit));
                             notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.townhall_neglected.tooltip.3"));
-                            notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.chunk_position", xCoord>>4 , zCoord>>4));
+                            notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.chunk_name_and_position", name, xCoord>>4 , zCoord>>4));
                             notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.click_to_remove"));
                             
                             isNeglected = true;
@@ -168,7 +170,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
             String notificationTitle = "ftbu_aw2.notification.townhall_secured";
             ChatComponentTranslation notificationMsg = new ChatComponentTranslation("ftbu_aw2.notification.townhall_secured.msg");
             List<ChatComponentTranslation> notificationTooltip = new ArrayList<ChatComponentTranslation>();
-            notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.chunk_position", xCoord>>4 , zCoord>>4));
+            notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.chunk_name_and_position", name, xCoord>>4 , zCoord>>4));
             notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.click_to_remove"));
             ModAccessors.FTBU.notifyPlayer(EnumChatFormatting.GREEN, getOwnerName(), notificationTitle, notificationMsg, notificationTooltip);
         } else {
@@ -176,7 +178,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
             String notificationTitle = "ftbu_aw2.notification.townhall_captured";
             ChatComponentTranslation notificationMsg = new ChatComponentTranslation("ftbu_aw2.notification.townhall_captured.msg.lost", getOwnerName());
             List<ChatComponentTranslation> notificationTooltip = new ArrayList<ChatComponentTranslation>();
-            notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.chunk_position", xCoord>>4 , zCoord>>4));
+            notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.chunk_name_and_position", name, xCoord>>4 , zCoord>>4));
             notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.click_to_remove"));
             
             ModAccessors.FTBU.notifyPlayer(EnumChatFormatting.RED, oldOwner, notificationTitle, notificationMsg, notificationTooltip);
@@ -390,9 +392,10 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
             entry = new NpcDeathEntry(entryList.getCompoundTagAt(i));
             deathNotices.add(entry);
         }
-        if(tag.hasKey("range")){
+        if(tag.hasKey("name"))
+            name = tag.getString("name");
+        if(tag.hasKey("range"))
             setRange(tag.getInteger("range"));
-        }
         if (tag.hasKey("alarmActive"))
             alarmActive = (tag.getBoolean("alarmActive"));
         if (tag.hasKey("isActive"))
@@ -414,6 +417,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
             entryList.appendTag(entry.writeToNBT(new NBTTagCompound()));
         }
         tag.setTag("deathNotices", entryList);
+        tag.setString("name", name);
         tag.setInteger("range", broadcastRange);
         tag.setBoolean("alarmActive", alarmActive);
         tag.setBoolean("isActive", isActive);
@@ -562,7 +566,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
     public List<NpcDeathEntry> getDeathList() {
         return deathNotices;
     }
-
+    
     public int getRange(){
         return broadcastRange;
     }

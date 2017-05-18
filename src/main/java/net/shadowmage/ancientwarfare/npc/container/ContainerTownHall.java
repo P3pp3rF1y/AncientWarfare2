@@ -69,22 +69,38 @@ public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
                 deathList.add(new NpcDeathEntry(list.getCompoundTagAt(i)));
             }
             refreshGui();
-        }
-        else if (tag.hasKey("clear")) {
+        } else if (tag.hasKey("clear")) {
             tileEntity.clearDeathNotices();
         }
-        if(tag.hasKey("range")){
+        
+        if (tag.hasKey("isHq")) {
+            tileEntity.isHq = tag.getBoolean("isHq");
+            refreshGui();
+        }
+        
+        if (tag.hasKey("tpHubPos")) {
+            tileEntity.tpHubPos = tag.getIntArray("tpHubPos");
+        }
+        
+        if (tag.hasKey("range")) {
             tileEntity.setRange(tag.getInteger("range"));
             refreshGui();
         }
-        if(!tileEntity.getWorldObj().isRemote){
+        
+        if (tag.hasKey("name")) {
+            tileEntity.name = tag.getString("name");
+            refreshGui();
+        }
+        
+        if (!tileEntity.getWorldObj().isRemote){
             tileEntity.markDirty();
         }
     }
 
     @Override
     public void sendInitData() {
-        sendDeathListToClient(true);
+        sendHqDataToClient();
+        sendTownHallDataToClient(false);
     }
 
     @Override
@@ -92,17 +108,24 @@ public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
         super.onContainerClosed(par1EntityPlayer);
         tileEntity.removeViewer(this);
     }
-
+    
     public void onTownHallDeathListUpdated() {
         this.deathList.clear();
         this.deathList.addAll(tileEntity.getDeathList());
-        sendDeathListToClient(false);
+        sendTownHallDataToClient(true);
     }
 
     public void setRange(int value){
         tileEntity.setRange(value);
         NBTTagCompound tag = new NBTTagCompound();
         tag.setInteger("range", value);
+        sendDataToServer(tag);
+    }
+    
+    public void setName(String name){
+        tileEntity.name = name;
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setString("name", name);
         sendDataToServer(tag);
     }
     
@@ -117,16 +140,27 @@ public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
         tag.setBoolean("clear", true);
         sendDataToServer(tag);
     }
+    
+    private void sendHqDataToClient() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setBoolean("isHq", tileEntity.isHq);
+        int[] tpHubPos = HeadquartersTracker.get(tileEntity.getWorldObj()).getTeleportHubPosition(tileEntity.getWorldObj());
+        if (tpHubPos != null)
+            tag.setIntArray("tpHubPos", tpHubPos);
+        sendDataToClient(tag);
+    }
 
-    private void sendDeathListToClient(boolean withRange) {
+    private void sendTownHallDataToClient(boolean onlyDeathList) {
         NBTTagList list = new NBTTagList();
         for (NpcDeathEntry entry : deathList) {
             list.appendTag(entry.writeToNBT(new NBTTagCompound()));
         }
         NBTTagCompound tag = new NBTTagCompound();
         tag.setTag("deathList", list);
-        if(withRange)
+        if (!onlyDeathList) {
             tag.setInteger("range", tileEntity.getRange());
+            tag.setString("name", tileEntity.name);
+        }
         sendDataToClient(tag);
     }
 

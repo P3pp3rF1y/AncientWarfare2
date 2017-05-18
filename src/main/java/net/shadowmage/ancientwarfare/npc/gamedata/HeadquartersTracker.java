@@ -24,29 +24,13 @@ import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 public class HeadquartersTracker extends WorldSavedData {
     public static final String ID = "AW2_HeadquartersTracker";
     
-    // key = dimId for all these HashMaps
-    private static HashMap<Integer, Boolean> IS_STALE = new HashMap<Integer, Boolean>();
-    private static HashMap<Integer, HeadquartersTracker> INSTANCES = new HashMap<Integer, HeadquartersTracker>();
-    
     public static HeadquartersTracker get(World world) {
-        int dimId = world.provider.dimensionId;
-        Boolean isStale = IS_STALE.get(dimId);
-        if (isStale == null || isStale) {
-            HeadquartersTracker instance = null;
-            // use per-dimension storage to let each dimension have it's own HQ
-            instance = (HeadquartersTracker) world.perWorldStorage.loadData(HeadquartersTracker.class, ID);
-            if (instance == null) {
-                instance = new HeadquartersTracker();
-                world.perWorldStorage.setData(ID, instance);
-            }
-            INSTANCES.put(dimId, instance);
-            IS_STALE.put(dimId, false);
+        HeadquartersTracker hqTracker = (HeadquartersTracker) world.perWorldStorage.loadData(HeadquartersTracker.class, ID);
+        if (hqTracker == null) {
+            hqTracker = new HeadquartersTracker();
+            world.perWorldStorage.setData(ID, hqTracker);
         }
-        return INSTANCES.get(dimId);
-    }
-    
-    public static void setStale(int dimId) {
-        IS_STALE.put(dimId, true);
+        return hqTracker;
     }
     
     private Map<String, int[]> playerHeadquarters = new HashMap<String, int[]>();
@@ -77,7 +61,6 @@ public class HeadquartersTracker extends WorldSavedData {
         if (hqPos == null) {
             // HQ position was assigned but no longer valid
             playerHeadquarters.put(ownerName, new int[] {});
-            setStale(world.provider.dimensionId);
             markDirty();
             return false;
         } else
@@ -102,7 +85,6 @@ public class HeadquartersTracker extends WorldSavedData {
     public synchronized void setNewHq(String ownerName, World world, int posX, int posY, int posZ) {
         if (isBlockHq(ownerName, world, posX, posY, posZ)) {
             playerHeadquarters.put(ownerName, new int[] {posX, posY, posZ});
-            setStale(world.provider.dimensionId);
             markDirty();
         }
     }
@@ -153,7 +135,8 @@ public class HeadquartersTracker extends WorldSavedData {
             playerHeadquarters.put(ownerName, hqPos);
         }
         if (compound.hasKey("teleportHubPosition")) {
-            teleportHubPosition = compound.getIntArray("teleportHubPosition");
+            int[] tpHub = compound.getIntArray("teleportHubPosition");
+            setTeleportHubPosition(tpHub[0], tpHub[1], tpHub[2]);
         }
     }
 
