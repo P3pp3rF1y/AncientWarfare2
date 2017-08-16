@@ -1,14 +1,14 @@
 package net.shadowmage.ancientwarfare.npc.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.gamedata.HeadquartersTracker;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
@@ -19,7 +19,7 @@ public class BlockTeleportHub extends Block {
     public IIcon[] icons = new IIcon[6];
     
     public BlockTeleportHub() {
-        super(Material.rock);
+        super(Material.ROCK);
         this.setCreativeTab(AWNpcItemLoader.npcTab);
         setHardness(2.f);
     }
@@ -42,12 +42,12 @@ public class BlockTeleportHub extends Block {
     }
 
     @Override
-    public boolean hasTileEntity(int metadata) {
+    public boolean hasTileEntity(IBlockState state) {
         return true;
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata) {
+    public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileTeleportHub();
     }
     

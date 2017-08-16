@@ -16,7 +16,7 @@ import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.tile.TreeFinder;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
@@ -179,7 +179,7 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
                         worldObj.setBlock(position.x, position.y, position.z, Blocks.air);
                         ModAccessors.ENVIROMINE.schedulePhysUpdate(worldObj, position.x, position.y, position.z, true, "Normal");
                     }
-                    if (canReplace(position.x, position.y, position.z) && tryPlace(stack, position.x, position.y, position.z, ForgeDirection.UP)) {
+                    if (canReplace(position.x, position.y, position.z) && tryPlace(stack, position.x, position.y, position.z, EnumFacing.UP)) {
                         saplingCount--;
                         return true;
                     }

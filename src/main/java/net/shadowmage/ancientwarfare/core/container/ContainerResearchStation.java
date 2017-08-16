@@ -4,7 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
@@ -148,10 +148,10 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
             }
         }
         if (tag.hasKey("inventoryDirection")) {
-            tileEntity.inventoryDirection = ForgeDirection.getOrientation(tag.getInteger("inventoryDirection"));
+            tileEntity.inventoryDirection = EnumFacing.getOrientation(tag.getInteger("inventoryDirection"));
         }
         if (tag.hasKey("inventorySide")) {
-            tileEntity.inventorySide = ForgeDirection.getOrientation(tag.getInteger("inventorySide"));
+            tileEntity.inventorySide = EnumFacing.getOrientation(tag.getInteger("inventorySide"));
         }
         if(!player.worldObj.isRemote){
             tileEntity.markDirty();
@@ -165,7 +165,7 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
         if (player.worldObj.isRemote) {
             return;
         }
-        tileEntity.addTorque(ForgeDirection.UNKNOWN, AWCoreStatics.researchPerTick);//do research whenever the GUI is open
+        tileEntity.addTorque(EnumFacing.UNKNOWN, AWCoreStatics.researchPerTick);//do research whenever the GUI is open
         NBTTagCompound tag = null;
         String name = tileEntity.getCrafterName();
         /**
@@ -253,18 +253,18 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
     }
 
     public void onSidePressed() {
-        int o = (tileEntity.inventorySide.ordinal() + 1)% ForgeDirection.VALID_DIRECTIONS.length;
+        int o = (tileEntity.inventorySide.ordinal() + 1)% EnumFacing.VALID_DIRECTIONS.length;
         NBTTagCompound tag = new NBTTagCompound();
         tag.setInteger("inventorySide", o);
         sendDataToServer(tag);
-        tileEntity.inventorySide = ForgeDirection.getOrientation(o);
+        tileEntity.inventorySide = EnumFacing.getOrientation(o);
     }
 
     public void onDirPressed() {
-        int o = (tileEntity.inventoryDirection.ordinal() + 1)% ForgeDirection.VALID_DIRECTIONS.length;
+        int o = (tileEntity.inventoryDirection.ordinal() + 1)% EnumFacing.VALID_DIRECTIONS.length;
         NBTTagCompound tag = new NBTTagCompound();
         tag.setInteger("inventoryDirection", o);
         sendDataToServer(tag);
-        tileEntity.inventoryDirection = ForgeDirection.getOrientation(o);
+        tileEntity.inventoryDirection = EnumFacing.getOrientation(o);
     }
 }

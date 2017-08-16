@@ -3,7 +3,7 @@ package net.shadowmage.ancientwarfare.automation.block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaft;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaftHeavy;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaftLight;
@@ -16,7 +16,7 @@ public class BlockTorqueTransportShaft extends BlockTorqueTransportConduit {
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata) {
+    public TileEntity createTileEntity(World world, IBlockState state) {
         switch (metadata) {
             case 0:
                 return new TileTorqueShaftLight();
@@ -32,10 +32,10 @@ public class BlockTorqueTransportShaft extends BlockTorqueTransportConduit {
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
         float min = 0.1875f, max = 0.8125f;
         float x1 = min, y1 = min, z1 = min, x2 = max, y2 = max, z2 = max;
-        TileEntity te = world.getTileEntity(x, y, z);
+        TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileTorqueShaft) {
-            TileTorqueShaft tile = (TileTorqueShaft) world.getTileEntity(x, y, z);
-            ForgeDirection d = tile.getPrimaryFacing();
+            TileTorqueShaft tile = (TileTorqueShaft) world.getTileEntity(pos);
+            EnumFacing d = tile.getPrimaryFacing();
             int s1 = d.ordinal();
             if (s1 == 0 || s1 == 1)//up/down
             {

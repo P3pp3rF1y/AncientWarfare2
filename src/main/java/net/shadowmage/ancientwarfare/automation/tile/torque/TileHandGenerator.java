@@ -5,7 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.scoreboard.Team;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
@@ -73,7 +73,7 @@ public class TileHandGenerator extends TileTorqueSingleCell implements IWorkSite
         int percent = (int) (inputCell.getPercentFull() * 100d);
         if (percent != clientInputDestEnergy) {
             clientInputDestEnergy = percent;
-            sendSideRotation(ForgeDirection.UP, percent);
+            sendSideRotation(EnumFacing.UP, percent);
         }
     }
 
@@ -102,9 +102,9 @@ public class TileHandGenerator extends TileTorqueSingleCell implements IWorkSite
     }
 
     @Override
-    protected void handleClientRotationData(ForgeDirection side, int value) {
+    protected void handleClientRotationData(EnumFacing side, int value) {
         super.handleClientRotationData(side, value);
-        if (side == ForgeDirection.UP) {
+        if (side == EnumFacing.UP) {
             clientInputDestEnergy = value;
         }
     }
@@ -218,27 +218,27 @@ public class TileHandGenerator extends TileTorqueSingleCell implements IWorkSite
     }
 
     @Override
-    public double getMaxTorque(ForgeDirection from) {
+    public double getMaxTorque(EnumFacing from) {
         return inputCell.getMaxEnergy() + torqueCell.getMaxEnergy();
     }
 
     @Override
-    public double getTorqueStored(ForgeDirection from) {
+    public double getTorqueStored(EnumFacing from) {
         return inputCell.getEnergy() + torqueCell.getEnergy();
     }
 
     @Override
-    public double addTorque(ForgeDirection from, double energy) {
+    public double addTorque(EnumFacing from, double energy) {
         if (from == getPrimaryFacing()) {
             return 0;
-        } else if (from == ForgeDirection.UP || from == ForgeDirection.UNKNOWN) {
+        } else if (from == EnumFacing.UP || from == EnumFacing.UNKNOWN) {
             return inputCell.addEnergy(energy);
         }
         return 0;
     }
 
     @Override
-    public double drainTorque(ForgeDirection from, double energy) {
+    public double drainTorque(EnumFacing from, double energy) {
         if (from == getPrimaryFacing()) {
             return torqueCell.drainEnergy(energy);
         }
@@ -246,7 +246,7 @@ public class TileHandGenerator extends TileTorqueSingleCell implements IWorkSite
     }
 
     @Override
-    public double getMaxTorqueOutput(ForgeDirection from) {
+    public double getMaxTorqueOutput(EnumFacing from) {
         if (from == getPrimaryFacing()) {
             return torqueCell.getMaxTickOutput();
         }
@@ -254,27 +254,27 @@ public class TileHandGenerator extends TileTorqueSingleCell implements IWorkSite
     }
 
     @Override
-    public double getMaxTorqueInput(ForgeDirection from) {
+    public double getMaxTorqueInput(EnumFacing from) {
         return 0;
     }
 
     @Override
-    public boolean canInputTorque(ForgeDirection from) {
+    public boolean canInputTorque(EnumFacing from) {
         return false;
     }
 
     @Override
-    public float getClientOutputRotation(ForgeDirection from, float delta) {
+    public float getClientOutputRotation(EnumFacing from, float delta) {
         if (from == getPrimaryFacing()) {
             return getRotation(rotation, prevRotation, delta);
-        } else if (from == ForgeDirection.UP) {
+        } else if (from == EnumFacing.UP) {
             return getRotation(inputRotation, prevInputRotation, delta);
         }
         return 0;
     }
 
     @Override
-    public boolean useOutputRotation(ForgeDirection from) {
+    public boolean useOutputRotation(EnumFacing from) {
         return true;
     }
 

@@ -26,7 +26,7 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;

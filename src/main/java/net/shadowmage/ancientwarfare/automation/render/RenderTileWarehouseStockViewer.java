@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockViewer.WarehouseStockFilter;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
@@ -26,7 +26,7 @@ public class RenderTileWarehouseStockViewer extends TileEntitySpecialRenderer {
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick) {
         TileWarehouseStockViewer tile = (TileWarehouseStockViewer) te;
-        ForgeDirection d = ForgeDirection.getOrientation(te.getBlockMetadata()).getOpposite();
+        EnumFacing d = EnumFacing.getOrientation(te.getBlockMetadata()).getOpposite();
         float r = getRotationFromDirection(d);
 
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);
@@ -43,7 +43,7 @@ public class RenderTileWarehouseStockViewer extends TileEntitySpecialRenderer {
         GL11.glPopMatrix();
     }
 
-    float getRotationFromDirection(ForgeDirection d) {
+    float getRotationFromDirection(EnumFacing d) {
         switch (d) {
             case NORTH:
                 return 180.f;

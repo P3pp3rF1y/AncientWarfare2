@@ -15,7 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.api.IAncientWarfareFarmable;
 import net.shadowmage.ancientwarfare.api.IAncientWarfarePlantable;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
@@ -275,7 +275,7 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
                             continue;
                         }
                         if (isPlantable(stack)) {
-                            if(tryPlace(stack, position.x, position.y, position.z, ForgeDirection.UP)) {
+                            if(tryPlace(stack, position.x, position.y, position.z, EnumFacing.UP)) {
                                 plantableCount--;
                                 if (stack.stackSize <= 0) {
                                     setInventorySlotContents(i, null);

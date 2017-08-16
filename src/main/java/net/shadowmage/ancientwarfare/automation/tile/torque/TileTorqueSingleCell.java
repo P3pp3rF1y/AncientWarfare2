@@ -3,7 +3,7 @@ package net.shadowmage.ancientwarfare.automation.tile.torque;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
@@ -88,7 +88,7 @@ public abstract class TileTorqueSingleCell extends TileTorqueBase {
     }
 
     @Override
-    protected void handleClientRotationData(ForgeDirection side, int value) {
+    protected void handleClientRotationData(EnumFacing side, int value) {
         AWLog.logDebug("receiving sided rotation data: " + side + " :: " + value);
         if (side == orientation) {
             clientDestEnergyState = value;
@@ -97,37 +97,37 @@ public abstract class TileTorqueSingleCell extends TileTorqueBase {
     }
 
     @Override
-    public double getMaxTorque(ForgeDirection from) {
+    public double getMaxTorque(EnumFacing from) {
         return torqueCell.getMaxEnergy();
     }
 
     @Override
-    public double getTorqueStored(ForgeDirection from) {
+    public double getTorqueStored(EnumFacing from) {
         return torqueCell.getEnergy();
     }
 
     @Override
-    public double addTorque(ForgeDirection from, double energy) {
+    public double addTorque(EnumFacing from, double energy) {
         return torqueCell.addEnergy(energy);
     }
 
     @Override
-    public double drainTorque(ForgeDirection from, double energy) {
+    public double drainTorque(EnumFacing from, double energy) {
         return torqueCell.drainEnergy(energy);
     }
 
     @Override
-    public double getMaxTorqueOutput(ForgeDirection from) {
+    public double getMaxTorqueOutput(EnumFacing from) {
         return canOutputTorque(from) ? torqueCell.getMaxTickOutput() : 0;
     }
 
     @Override
-    public double getMaxTorqueInput(ForgeDirection from) {
+    public double getMaxTorqueInput(EnumFacing from) {
         return canInputTorque(from) ? torqueCell.getMaxTickInput() : 0;
     }
 
     @Override
-    public boolean useOutputRotation(ForgeDirection from) {
+    public boolean useOutputRotation(EnumFacing from) {
         return true;
     }
 
@@ -137,17 +137,17 @@ public abstract class TileTorqueSingleCell extends TileTorqueBase {
     }
 
     @Override
-    public boolean canOutputTorque(ForgeDirection towards) {
+    public boolean canOutputTorque(EnumFacing towards) {
         return towards == orientation;
     }
 
     @Override
-    public boolean canInputTorque(ForgeDirection from) {
+    public boolean canInputTorque(EnumFacing from) {
         return from == orientation.getOpposite();
     }
 
     @Override
-    public float getClientOutputRotation(ForgeDirection from, float delta) {
+    public float getClientOutputRotation(EnumFacing from, float delta) {
         return from == orientation ? getRotation(rotation, prevRotation, delta) : 0;
     }
 

@@ -7,9 +7,9 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationTyp
 public abstract class BlockTorqueGenerator extends BlockTorqueBase {
 
     protected BlockTorqueGenerator(String regName) {
-        super(Material.rock);
+        super(Material.ROCK);
         this.setCreativeTab(AWAutomationItemLoader.automationTab);
-        this.setBlockName(regName);
+        this.setUnlocalizedName(regName);
     }
 
     @Override

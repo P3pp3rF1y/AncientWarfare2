@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileWaterwheel;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelLoader;
@@ -39,7 +39,7 @@ public class RenderTileWaterwheel extends TileEntitySpecialRenderer implements I
         GL11.glPushMatrix();
         TileWaterwheel wheel = (TileWaterwheel) te;
 
-        ForgeDirection d = wheel.getPrimaryFacing();
+        EnumFacing d = wheel.getPrimaryFacing();
         GL11.glTranslated(x + 0.5d, y, z + 0.5d);
 
         float rot[] = gearboxRotationMatrix[d.ordinal()];

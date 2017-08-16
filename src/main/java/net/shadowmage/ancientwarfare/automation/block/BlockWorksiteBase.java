@@ -1,17 +1,16 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
@@ -24,8 +23,10 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.lang.reflect.Constructor;
 
+@ParametersAreNonnullByDefault
 public class BlockWorksiteBase extends Block implements IRotatableBlock {
 
     IconRotationMap iconMap = new IconRotationMap();
@@ -34,9 +35,9 @@ public class BlockWorksiteBase extends Block implements IRotatableBlock {
     private Constructor<? extends TileEntity> tile;
 
     public BlockWorksiteBase(String regName) {
-        super(Material.wood);
+        super(Material.WOOD);
         this.setCreativeTab(AWAutomationItemLoader.automationTab);
-        this.setBlockName(regName);
+        this.setUnlocalizedName(regName);
         setHardness(2.f);
     }
 
@@ -57,6 +58,7 @@ public class BlockWorksiteBase extends Block implements IRotatableBlock {
 
     public BlockWorksiteBase setTileEntity(Class<? extends TileEntity> clzz) {
         try {
+            //TODO replace with interface and ::new
             tile = clzz.getConstructor();
         } catch (Exception e) {
         }
@@ -70,7 +72,7 @@ public class BlockWorksiteBase extends Block implements IRotatableBlock {
      * returned tiles must implement IOwnable if they want owner-name set from ItemBlockWorksite<br>
      */
     @Override
-    public TileEntity createTileEntity(World world, int metadata) {
+    public TileEntity createTileEntity(World world, IBlockState state) {
         try {
             return tile.newInstance();
         } catch (Exception e) {
@@ -79,10 +81,11 @@ public class BlockWorksiteBase extends Block implements IRotatableBlock {
     }
 
     @Override
-    public boolean hasTileEntity(int metadata) {
+    public boolean hasTileEntity(IBlockState state) {
         return tile != null;
     }
 
+/*
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister p_149651_1_) {
@@ -98,16 +101,17 @@ public class BlockWorksiteBase extends Block implements IRotatableBlock {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
-        TileEntity te = world.getTileEntity(x, y, z);
+        TileEntity te = world.getTileEntity(pos);
         if (te instanceof IRotatableTile) {
             return getIcon(side, ((IRotatableTile) te).getPrimaryFacing().ordinal());
         }
         return super.getIcon(world, x, y, z, side);
     }
+*/
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-        TileEntity te = world.getTileEntity(x, y, z);
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        TileEntity te = world.getTileEntity(pos);
         if (te instanceof IInteractableTile) {
             boolean canClick = false;
             if(te instanceof IOwnable && ((IOwnable) te).isOwner(player))
@@ -116,7 +120,7 @@ public class BlockWorksiteBase extends Block implements IRotatableBlock {
                 IWorkSite site = ((IWorkSite) te);
                 if ((player.getTeam() != null) && (player.getTeam() == site.getTeam()))
                     canClick = true;
-                if (ModAccessors.FTBU.areFriends(player.getCommandSenderName(), site.getOwnerName()))
+                if (ModAccessors.FTBU.areFriends(player.getName(), site.getOwnerName()))
                     canClick = true;
             }
             if (canClick) {
@@ -137,12 +141,12 @@ public class BlockWorksiteBase extends Block implements IRotatableBlock {
     }
 
     @Override
-    public final boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis) {
-        if (axis == ForgeDirection.DOWN || axis == ForgeDirection.UP) {
-            TileEntity te = worldObj.getTileEntity(x, y, z);
+    public final boolean rotateBlock(World worldObj, BlockPos pos, EnumFacing facing) {
+        if (facing == EnumFacing.DOWN || facing == EnumFacing.UP) {
+            TileEntity te = worldObj.getTileEntity(pos);
             if (te instanceof IRotatableTile) {
                 if(!worldObj.isRemote) {
-                    ForgeDirection o = ((IRotatableTile) te).getPrimaryFacing().getRotation(axis);
+                    EnumFacing o = ((IRotatableTile) te).getPrimaryFacing().rotateAround(facing.getAxis());
                     ((IRotatableTile) te).setPrimaryFacing(o);//twb will send update packets / etc
                 }
                 return true;
@@ -152,29 +156,29 @@ public class BlockWorksiteBase extends Block implements IRotatableBlock {
     }
 
     @Override
-    public final ForgeDirection[] getValidRotations(World worldObj, int x, int y, int z) {
-        return new ForgeDirection[]{ForgeDirection.DOWN, ForgeDirection.UP};
+    public final EnumFacing[] getValidRotations(World worldObj, BlockPos pos) {
+        return new EnumFacing[]{EnumFacing.DOWN, EnumFacing.UP};
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-        TileEntity te = world.getTileEntity(x, y, z);
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+        TileEntity te = world.getTileEntity(pos);
         if (te instanceof IInventory) {
-            InventoryTools.dropInventoryInWorld(world, (IInventory) te, x, y, z);
+            InventoryTools.dropInventoryInWorld(world, (IInventory) te, pos);
         }
         if (te instanceof IWorkSite) {
             ((IWorkSite) te).onBlockBroken();
         }
-        super.breakBlock(world, x, y, z, block, meta);
+        super.breakBlock(world, pos, state);
     }
 
     @Override
-    public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+    public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
         return 5;
     }
 
     @Override
-    public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+    public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
         return 20;
     }
 }

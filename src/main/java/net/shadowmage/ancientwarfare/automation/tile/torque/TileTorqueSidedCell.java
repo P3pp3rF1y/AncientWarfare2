@@ -6,7 +6,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
@@ -38,7 +38,7 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
         double max = getMaxTransfer();
         double eff = getEfficiency();
         for (int i = 0; i < storage.length; i++) {
-            storage[i] = new SidedTorqueCell(max, max, max, eff, ForgeDirection.values()[i], this);
+            storage[i] = new SidedTorqueCell(max, max, max, eff, EnumFacing.values()[i], this);
         }
     }
 
@@ -136,18 +136,18 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
     }
 
     @Override
-    protected void handleClientRotationData(ForgeDirection side, int value) {
+    protected void handleClientRotationData(EnumFacing side, int value) {
         clientDestEnergyState = value;
         this.networkUpdateTicks = AWAutomationStatics.energyMinNetworkUpdateFrequency;
     }
 
     @Override
-    public boolean canInputTorque(ForgeDirection from) {
+    public boolean canInputTorque(EnumFacing from) {
         return from != orientation;
     }
 
     @Override
-    public boolean canOutputTorque(ForgeDirection towards) {
+    public boolean canOutputTorque(EnumFacing towards) {
         return towards == orientation;
     }
 
@@ -167,9 +167,9 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
     protected void buildConnections() {
         boolean[] connections = new boolean[DIRECTION_LENGTH];
         ITorqueTile[] cache = getTorqueCache();
-        ForgeDirection dir;
+        EnumFacing dir;
         for (int i = 0; i < cache.length; i++) {
-            dir = ForgeDirection.values()[i];
+            dir = EnumFacing.values()[i];
             if (cache[i] != null) {
                 connections[i] = (cache[i].canInputTorque(dir.getOpposite()) && canOutputTorque(dir)) || (cache[i].canOutputTorque(dir.getOpposite()) && canInputTorque(dir));
             }
@@ -189,42 +189,42 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
     }
 
     @Override
-    public double getMaxTorque(ForgeDirection from) {
+    public double getMaxTorque(EnumFacing from) {
         return storage[from.ordinal()].getMaxEnergy();
     }
 
     @Override
-    public double getTorqueStored(ForgeDirection from) {
+    public double getTorqueStored(EnumFacing from) {
         return storage[from.ordinal()].getEnergy();
     }
 
     @Override
-    public double addTorque(ForgeDirection from, double energy) {
+    public double addTorque(EnumFacing from, double energy) {
         return storage[from.ordinal()].addEnergy(energy);
     }
 
     @Override
-    public double drainTorque(ForgeDirection from, double energy) {
+    public double drainTorque(EnumFacing from, double energy) {
         return storage[from.ordinal()].drainEnergy(energy);
     }
 
     @Override
-    public double getMaxTorqueOutput(ForgeDirection from) {
+    public double getMaxTorqueOutput(EnumFacing from) {
         return storage[from.ordinal()].getMaxTickOutput();
     }
 
     @Override
-    public double getMaxTorqueInput(ForgeDirection from) {
+    public double getMaxTorqueInput(EnumFacing from) {
         return storage[from.ordinal()].getMaxTickInput();
     }
 
     @Override
-    public boolean useOutputRotation(ForgeDirection from) {
+    public boolean useOutputRotation(EnumFacing from) {
         return true;
     }
 
     @Override
-    public float getClientOutputRotation(ForgeDirection from, float delta) {
+    public float getClientOutputRotation(EnumFacing from, float delta) {
         return getRotation(rotation, prevRotation, delta);
     }
 
@@ -266,9 +266,9 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
     @Override
     protected double getTotalTorque() {
         double d = 0;
-        ForgeDirection dir;
+        EnumFacing dir;
         for (int i = 0; i < storage.length; i++) {
-            dir = ForgeDirection.values()[i];
+            dir = EnumFacing.values()[i];
             if (canInputTorque(dir) || canOutputTorque(dir)) {
                 d += storage[i].getEnergy();
             }

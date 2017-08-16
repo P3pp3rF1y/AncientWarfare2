@@ -1,8 +1,8 @@
 package net.shadowmage.ancientwarfare.core.item;
 
 import com.google.common.collect.Multimap;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -15,7 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
@@ -151,7 +151,7 @@ public class ItemHammer extends Item implements IItemKeyInterface {
         } else {
             Block block = world.getBlock(hit.blockX, hit.blockY, hit.blockZ);
             if(!block.isAir(world, hit.blockX, hit.blockY, hit.blockZ)) {
-                if (block.rotateBlock(world, hit.blockX, hit.blockY, hit.blockZ, ForgeDirection.getOrientation(hit.sideHit)))
+                if (block.rotateBlock(world, hit.blockX, hit.blockY, hit.blockZ, EnumFacing.getOrientation(hit.sideHit)))
                     playSound(world, hit, "tile.piston.out");
                 else
                     playBlockSound(world, hit, block);

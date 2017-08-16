@@ -7,7 +7,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.api.IAncientWarfarePlantable;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -69,8 +69,8 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
         return worldObj.getBlock(x, y, z).isReplaceable(worldObj, x, y, z);
     }
 
-    protected boolean tryPlace(ItemStack stack, int x, int y, int z, ForgeDirection face){
-        ForgeDirection direction = face.getOpposite();
+    protected boolean tryPlace(ItemStack stack, int x, int y, int z, EnumFacing face){
+        EnumFacing direction = face.getOpposite();
         if(stack.getItem() instanceof IAncientWarfarePlantable) {
             return ((IAncientWarfarePlantable) stack.getItem()).tryPlant(worldObj, x + direction.offsetX, y + direction.offsetY, z + direction.offsetZ, stack.copy());
         }

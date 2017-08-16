@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.proxy;
 
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
@@ -32,7 +32,7 @@ public class RFProxy {
         return false;
     }
 
-    public double transferPower(ITorqueTile generator, ForgeDirection from, TileEntity target) {
+    public double transferPower(ITorqueTile generator, EnumFacing from, TileEntity target) {
         return 0;
     }
 

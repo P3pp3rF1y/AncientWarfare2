@@ -5,7 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueBase;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
@@ -33,7 +33,7 @@ public class ItemBlockTorqueTile extends ItemBlock {
             if (te instanceof IOwnable) {
                 ((IOwnable) te).setOwner(player);
             }
-            te.setPrimaryFacing(ForgeDirection.getOrientation(metadata));
+            te.setPrimaryFacing(EnumFacing.getOrientation(metadata));
         }
         return val;
     }

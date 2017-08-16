@@ -31,7 +31,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.event.world.BlockEvent;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 
@@ -270,22 +270,22 @@ public class BlockTools {
         return (MathHelper.floor_double(adjYaw)) % 4;
     }
 
-    public static ForgeDirection getForgeDirectionFromFacing(int facing) {
+    public static EnumFacing getForgeDirectionFromFacing(int facing) {
         switch (facing) {
             case 0: {
-                return ForgeDirection.SOUTH;
+                return EnumFacing.SOUTH;
             }
             case 1: {
-                return ForgeDirection.WEST;
+                return EnumFacing.WEST;
             }
             case 2: {
-                return ForgeDirection.NORTH;
+                return EnumFacing.NORTH;
             }
             case 3: {
-                return ForgeDirection.EAST;
+                return EnumFacing.EAST;
             }
             default: {
-                return ForgeDirection.NORTH;
+                return EnumFacing.NORTH;
             }
         }
     }

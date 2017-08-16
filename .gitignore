@@ -1,18 +1,15 @@
-/build
-/bin
-/runtime
-/logs
-/.gradle
-/eclipse
-/gradle/
-/libs/
-/.settings
-/.classpath
-/.metadata
-/.idea
-*.iml
+/* ignore everything that's not specifically excluded below
 
-/src/main/java/ftb/
-/src/main/java/latmod/
-/src/main/resources/assets/ftbl/
-/src/main/resources/assets/ftbu/
+!gradle
+!project_resources
+!releases
+!src
+!z_unused
+
+!.gitignore
+!build.gradle
+!gradle.properties
+!gradlew
+!gradlew.bat
+!LICENSE.txt
+!README.md

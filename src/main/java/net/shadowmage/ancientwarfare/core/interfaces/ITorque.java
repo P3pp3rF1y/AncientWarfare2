@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.core.interfaces;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 public final class ITorque {
     private ITorque() {
@@ -33,36 +33,36 @@ public final class ITorque {
         /**
          * Return the maximum amount of energy store-able in the passed in block side
          */
-        double getMaxTorque(ForgeDirection from);
+        double getMaxTorque(EnumFacing from);
 
         /**
          * Return the value of energy accessible from the passed in block side
          */
-        double getTorqueStored(ForgeDirection from);
+        double getTorqueStored(EnumFacing from);
 
         /**
          * Add energy to the specified block side, up to the specified amount.<br>
          * Return the value of energy actually added, or 0 for none.
          */
-        double addTorque(ForgeDirection from, double energy);
+        double addTorque(EnumFacing from, double energy);
 
         /**
          * Remove energy from the specified block side, up to the specified amount.<br>
          * Return the value of energy actually removed, or 0 for none.
          */
-        double drainTorque(ForgeDirection from, double energy);
+        double drainTorque(EnumFacing from, double energy);
 
         /**
          * Return the maximum amount of torque that the given side may output AT THIS TIME.<br>
          * Analogous to the 'simulate' actions from other energy frameworks
          */
-        double getMaxTorqueOutput(ForgeDirection from);
+        double getMaxTorqueOutput(EnumFacing from);
 
         /**
          * Return the maximum amount of torque that the given side may accept AT THIS TIME.<br>
          * Analogous to the 'simulate' actions from other energy frameworks
          */
-        double getMaxTorqueInput(ForgeDirection from);
+        double getMaxTorqueInput(EnumFacing from);
 
         /**
          * Return true if this tile can output torque from the given block side.<br>
@@ -70,7 +70,7 @@ public final class ITorque {
          * Must return the same value between calls, or issue a neighbor-block update when the value changes.<br>
          * You may return true from this method but return 0 for getMaxOutput() for 'toggleable' sides (side will connect but not always accept power)
          */
-        boolean canOutputTorque(ForgeDirection from);
+        boolean canOutputTorque(EnumFacing from);
 
         /**
          * Return true if this tile can input torque into the given block side.<br>
@@ -78,18 +78,18 @@ public final class ITorque {
          * Must return the same value between calls, or issue a neighbor-block update when the value changes.
          * You may return true from this method but return 0 for getMaxInput() for 'toggleable' sides (side will connect but not always accept power)
          */
-        boolean canInputTorque(ForgeDirection from);
+        boolean canInputTorque(EnumFacing from);
 
         /**
          * Used by client for rendering of torque tiles.  If TRUE this tiles neighbor will
          * use this tiles output rotation values for rendering of the corresponding input side on the neighbor.
          */
-        boolean useOutputRotation(ForgeDirection from);
+        boolean useOutputRotation(EnumFacing from);
 
         /**
          * Return output shaft rotation for the given side.  Will only be called if useOutputRotation(from) returns true.
          */
-        float getClientOutputRotation(ForgeDirection from, float delta);
+        float getClientOutputRotation(EnumFacing from, float delta);
     }
 
     /**
@@ -185,10 +185,10 @@ public final class ITorque {
      */
     public static class SidedTorqueCell extends TorqueCell {
 
-        ForgeDirection dir;
+        EnumFacing dir;
         ITorqueTile owner;
 
-        public SidedTorqueCell(double in, double out, double max, double eff, ForgeDirection dir, ITorqueTile owner) {
+        public SidedTorqueCell(double in, double out, double max, double eff, EnumFacing dir, ITorqueTile owner) {
             super(in, out, max, eff);
             this.dir = dir;
             this.owner = owner;

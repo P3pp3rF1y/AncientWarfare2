@@ -1,13 +1,15 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.TileChunkLoaderSimple;
@@ -19,8 +21,8 @@ public class BlockChunkLoaderSimple extends Block {
     BlockIconMap iconMap = new BlockIconMap();
 
     protected BlockChunkLoaderSimple(String regName) {
-        super(Material.rock);
-        this.setBlockName(regName);
+        super(Material.ROCK);
+        this.setUnlocalizedName(regName);
         this.setCreativeTab(AWAutomationItemLoader.automationTab);
         setHardness(2.f);
         String icon = "ancientwarfare:automation/" + regName + "_bottom";
@@ -38,6 +40,7 @@ public class BlockChunkLoaderSimple extends Block {
         return this;
     }
 
+/*
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister reg) {
@@ -50,40 +53,40 @@ public class BlockChunkLoaderSimple extends Block {
         return iconMap.getIconFor(side, meta);
     }
 
+*/
     @Override
-    public boolean hasTileEntity(int metadata) {
+    public boolean hasTileEntity(IBlockState state) {
         return true;
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata) {
+    public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileChunkLoaderSimple();
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, Block block, int wtf) {
-        TileEntity te = world.getTileEntity(x, y, z);
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+        TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileChunkLoaderSimple) {
             ((TileChunkLoaderSimple) te).releaseTicket();
         }
-        super.breakBlock(world, x, y, z, block, wtf);
+        super.breakBlock(world, pos, state);
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
-        TileEntity te = world.getTileEntity(x, y, z);
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        TileEntity te = world.getTileEntity(pos);
         return te instanceof IInteractableTile && ((IInteractableTile) te).onBlockClicked(player);
     }
 
     @Override
-    public void onPostBlockPlaced(World world, int x, int y, int z, int blockMeta) {
-        super.onPostBlockPlaced(world, x, y, z, blockMeta);
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+        super.onBlockPlacedBy(world, pos, state, placer, stack);
         if (!world.isRemote) {
-            TileEntity te = world.getTileEntity(x, y, z);
+            TileEntity te = world.getTileEntity(pos);
             if (te instanceof TileChunkLoaderSimple) {
                 ((TileChunkLoaderSimple) te).setupInitialTicket();
             }
         }
     }
-
 }

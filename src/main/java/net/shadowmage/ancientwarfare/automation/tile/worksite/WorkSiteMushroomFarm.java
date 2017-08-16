@@ -8,7 +8,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.tile.TreeFinder;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
@@ -124,7 +124,7 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
                 if(isFarmable(block)) {
                     while (it.hasNext() && (pos = it.next()) != null) {
                         it.remove();
-                        if(tryPlace(item, pos.x, pos.y, pos.z, ForgeDirection.UP)) {//plant the mushroom, decrease stack size
+                        if(tryPlace(item, pos.x, pos.y, pos.z, EnumFacing.UP)) {//plant the mushroom, decrease stack size
                             mushroomCount--;
                             if (item.stackSize <= 0) {
                                 setInventorySlotContents(i, null);
@@ -147,7 +147,7 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
                 if (item.getItem() == Items.nether_wart) {
                     while (it.hasNext() && (pos = it.next()) != null) {
                         it.remove();
-                        if(tryPlace(item, pos.x, pos.y, pos.z, ForgeDirection.UP)) {
+                        if(tryPlace(item, pos.x, pos.y, pos.z, EnumFacing.UP)) {
                             netherWartCount--;
                             if (item.stackSize <= 0) {
                                 setInventorySlotContents(i, null);

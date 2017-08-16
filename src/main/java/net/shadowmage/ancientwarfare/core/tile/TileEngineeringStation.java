@@ -9,7 +9,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
@@ -18,7 +18,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class TileEngineeringStation extends TileEntity implements IRotatableTile,IInvBasic {
 
-    ForgeDirection facing = ForgeDirection.NORTH;
+    EnumFacing facing = EnumFacing.NORTH;
     ItemStack[] matrixShadow;
 
     public InventoryCrafting layoutMatrix;
@@ -104,7 +104,7 @@ public class TileEngineeringStation extends TileEntity implements IRotatableTile
 
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        facing = ForgeDirection.getOrientation(pkt.func_148857_g().getInteger("facing"));
+        facing = EnumFacing.getOrientation(pkt.func_148857_g().getInteger("facing"));
         this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }
 
@@ -115,7 +115,7 @@ public class TileEngineeringStation extends TileEntity implements IRotatableTile
         InventoryTools.readInventoryFromNBT(extraSlots, tag.getCompoundTag("extraInventory"));
         InventoryTools.readInventoryFromNBT(result, tag.getCompoundTag("resultInventory"));
         InventoryTools.readInventoryFromNBT(layoutMatrix, tag.getCompoundTag("layoutMatrix"));
-        facing = ForgeDirection.values()[tag.getInteger("facing")];
+        facing = EnumFacing.values()[tag.getInteger("facing")];
     }
 
     @Override
@@ -142,12 +142,12 @@ public class TileEngineeringStation extends TileEntity implements IRotatableTile
     }
 
     @Override
-    public ForgeDirection getPrimaryFacing() {
+    public EnumFacing getPrimaryFacing() {
         return facing;
     }
 
     @Override
-    public void setPrimaryFacing(ForgeDirection face) {
+    public void setPrimaryFacing(EnumFacing face) {
         this.facing = face;
         this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
     }

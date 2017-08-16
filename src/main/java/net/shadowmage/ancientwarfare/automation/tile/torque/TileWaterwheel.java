@@ -6,7 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 
@@ -73,27 +73,27 @@ public class TileWaterwheel extends TileTorqueSingleCell {
         rotationDirection = tag.getByte("rotationDirection");
     }
 
-    private ForgeDirection getRight(ForgeDirection in) {
+    private EnumFacing getRight(EnumFacing in) {
         switch (in) {
             case NORTH: {
-                return ForgeDirection.EAST;
+                return EnumFacing.EAST;
             }
             case EAST: {
-                return ForgeDirection.SOUTH;
+                return EnumFacing.SOUTH;
             }
             case SOUTH: {
-                return ForgeDirection.WEST;
+                return EnumFacing.WEST;
             }
             case WEST: {
-                return ForgeDirection.NORTH;
+                return EnumFacing.NORTH;
             }
             default:
-                return ForgeDirection.NORTH;
+                return EnumFacing.NORTH;
         }
     }
 
     private boolean validateBlocks() {
-        ForgeDirection d = orientation.getOpposite();
+        EnumFacing d = orientation.getOpposite();
         int x = xCoord + d.offsetX;
         int y = yCoord + d.offsetY;
         int z = zCoord + d.offsetZ;
@@ -101,8 +101,8 @@ public class TileWaterwheel extends TileTorqueSingleCell {
         //must have air inside the inner two blocks
         if(getValidationType(x, y + 1, z) != 1 || getValidationType(x, y, z) != 1)
             return false;
-        ForgeDirection dr = getRight(d);
-        ForgeDirection dl = dr.getOpposite();
+        EnumFacing dr = getRight(d);
+        EnumFacing dl = dr.getOpposite();
         int x1 = x + dr.offsetX;
         int z1 = z + dr.offsetZ;
         int x2 = x + dl.offsetX;

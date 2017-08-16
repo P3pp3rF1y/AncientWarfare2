@@ -4,7 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
@@ -118,7 +118,7 @@ public class TownGenerator {
         for (int i = 0; i < 10; i++) {
             int x = minX + rng.nextInt(16);
             int z = minZ + rng.nextInt(16);
-            if (world.isAirBlock(x, y, z) && world.isAirBlock(x, y + 1, z) && world.isSideSolid(x, y - 1, z, ForgeDirection.UP)) {
+            if (world.isAirBlock(x, y, z) && world.isAirBlock(x, y + 1, z) && world.isSideSolid(x, y - 1, z, EnumFacing.UP)) {
                 villager.setPosition(x + 0.5d, y, z + 0.5d);
                 world.spawnEntityInWorld(villager);
                 return;

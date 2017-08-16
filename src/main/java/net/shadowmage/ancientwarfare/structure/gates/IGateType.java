@@ -22,7 +22,7 @@ package net.shadowmage.ancientwarfare.structure.gates;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;

@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque;
 
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileWindmillBlade;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
@@ -28,7 +28,7 @@ public class TileWindmillController extends TileTorqueSingleCell {
 
     private TileWindmillBlade getControlledBlade() {
         TileEntity te;
-        ForgeDirection d = getPrimaryFacing().getOpposite();
+        EnumFacing d = getPrimaryFacing().getOpposite();
         int x = xCoord + d.offsetX;
         int y = yCoord + d.offsetY;
         int z = zCoord + d.offsetZ;
@@ -42,7 +42,7 @@ public class TileWindmillController extends TileTorqueSingleCell {
     }
 
     @Override
-    public boolean canInputTorque(ForgeDirection from) {
+    public boolean canInputTorque(EnumFacing from) {
         return false;
     }
 

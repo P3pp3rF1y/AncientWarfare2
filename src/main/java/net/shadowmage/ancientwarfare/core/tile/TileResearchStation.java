@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
@@ -26,7 +26,7 @@ import java.util.List;
 
 public class TileResearchStation extends TileOwned implements IWorkSite, IInventory, IInvBasic, ITorqueTile, IInteractableTile, IRotatableTile {
 
-    ForgeDirection orientation = ForgeDirection.NORTH;//default for old blocks
+    EnumFacing orientation = EnumFacing.NORTH;//default for old blocks
 
     private final InventoryBasic bookInventory = new InventoryBasic(1, this);
     private final InventoryBasic resourceInventory = new InventoryBasic(9, this);
@@ -35,8 +35,8 @@ public class TileResearchStation extends TileOwned implements IWorkSite, IInvent
     int startCheckDelayMax = 40;
 
     public boolean useAdjacentInventory;
-    public ForgeDirection inventoryDirection = ForgeDirection.NORTH;
-    public ForgeDirection inventorySide = ForgeDirection.NORTH;
+    public EnumFacing inventoryDirection = EnumFacing.NORTH;
+    public EnumFacing inventorySide = EnumFacing.NORTH;
 
     double maxEnergyStored = 1600;
     double maxInput = 100;
@@ -70,27 +70,27 @@ public class TileResearchStation extends TileOwned implements IWorkSite, IInvent
     }//NOOP
 
     @Override
-    public float getClientOutputRotation(ForgeDirection from, float delta) {
+    public float getClientOutputRotation(EnumFacing from, float delta) {
         return 0;
     }
 
     @Override
-    public boolean useOutputRotation(ForgeDirection from) {
+    public boolean useOutputRotation(EnumFacing from) {
         return false;
     }
 
     @Override
-    public double getMaxTorqueOutput(ForgeDirection from) {
+    public double getMaxTorqueOutput(EnumFacing from) {
         return 0;
     }
 
     @Override
-    public boolean canOutputTorque(ForgeDirection towards) {
+    public boolean canOutputTorque(EnumFacing towards) {
         return false;
     }
 
     @Override
-    public double addTorque(ForgeDirection from, double energy) {
+    public double addTorque(EnumFacing from, double energy) {
         if (canInputTorque(from)) {
             if (energy + getTorqueStored(from) > getMaxTorque(from)) {
                 energy = getMaxTorque(from) - getTorqueStored(from);
@@ -105,22 +105,22 @@ public class TileResearchStation extends TileOwned implements IWorkSite, IInvent
     }
 
     @Override
-    public double getMaxTorque(ForgeDirection from) {
+    public double getMaxTorque(EnumFacing from) {
         return maxEnergyStored;
     }
 
     @Override
-    public double getTorqueStored(ForgeDirection from) {
+    public double getTorqueStored(EnumFacing from) {
         return storedEnergy;
     }
 
     @Override
-    public double getMaxTorqueInput(ForgeDirection from) {
+    public double getMaxTorqueInput(EnumFacing from) {
         return maxInput;
     }
 
     @Override
-    public boolean canInputTorque(ForgeDirection from) {
+    public boolean canInputTorque(EnumFacing from) {
         return true;
     }
 
@@ -157,10 +157,10 @@ public class TileResearchStation extends TileOwned implements IWorkSite, IInvent
         this.useAdjacentInventory = tag.getBoolean("useAdjacentInventory");
         this.storedEnergy = tag.getDouble("storedEnergy");
         if (tag.hasKey("orientation")) {
-            setPrimaryFacing(ForgeDirection.values()[tag.getInteger("orientation")]);
+            setPrimaryFacing(EnumFacing.values()[tag.getInteger("orientation")]);
         }
-        this.inventoryDirection = ForgeDirection.getOrientation(tag.getInteger("inventoryDirection"));
-        this.inventorySide = ForgeDirection.getOrientation(tag.getInteger("inventorySide"));
+        this.inventoryDirection = EnumFacing.getOrientation(tag.getInteger("inventoryDirection"));
+        this.inventorySide = EnumFacing.getOrientation(tag.getInteger("inventorySide"));
     }
 
     @Override
@@ -332,17 +332,17 @@ public class TileResearchStation extends TileOwned implements IWorkSite, IInvent
     }
 
     @Override
-    public ForgeDirection getPrimaryFacing() {
+    public EnumFacing getPrimaryFacing() {
         return orientation;
     }
 
     @Override
-    public void setPrimaryFacing(ForgeDirection face) {
+    public void setPrimaryFacing(EnumFacing face) {
         this.orientation = face;
     }
 
     @Override
-    public double drainTorque(ForgeDirection from, double energy) {
+    public double drainTorque(EnumFacing from, double energy) {
         return 0;
     }
 

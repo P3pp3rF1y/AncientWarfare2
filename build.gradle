@@ -4,7 +4,7 @@ ext.versionFile = file('gradle.properties')
 
 buildscript {
     repositories {
-        mavenCentral()
+        jcenter()
         maven {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
@@ -15,21 +15,24 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
     }
 }
 
-apply plugin: 'forge'
+// We apply the 'forge' plugin, so ForgeGradle can do it's stuff.
+apply plugin: 'net.minecraftforge.gradle.forge'
+
 minecraft{
-    version = "1.7.10-10.13.4.1614-1.7.10"
-    runDir = "eclipse"
+    version = minecraft_version + "-" + forge_version
+    mappings = mcp_mappings
+    runDir = "run"
 }
 version = project.major +"."+ project.minor +"."+  project.build+"-"+ project.releasetype + "-MC" +minecraft.version
 group = "shadowmage"
 archivesBaseName = "ancientwarfare"
 
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 task updateVersion(type:Copy){
     ant.propertyfile(file: versionFile) {

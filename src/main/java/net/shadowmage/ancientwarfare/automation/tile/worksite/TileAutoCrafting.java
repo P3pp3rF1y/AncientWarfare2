@@ -5,7 +5,7 @@ import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
@@ -247,10 +247,10 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
 
     @Override
     public int[] getAccessibleSlotsFromSide(int side) {
-        ForgeDirection d = ForgeDirection.getOrientation(side);
-        if (d == ForgeDirection.UP) {
+        EnumFacing d = EnumFacing.getOrientation(side);
+        if (d == EnumFacing.UP) {
             return resourceSlotIndices;
-        } else if (d == ForgeDirection.DOWN) {
+        } else if (d == EnumFacing.DOWN) {
             return outputSlotIndices;
         }
         return new int[0];
@@ -258,12 +258,12 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
 
     @Override
     public boolean canInsertItem(int slot, ItemStack var2, int side) {
-        return ForgeDirection.getOrientation(side) == ForgeDirection.UP;//top, insert only
+        return EnumFacing.getOrientation(side) == EnumFacing.UP;//top, insert only
     }
 
     @Override
     public boolean canExtractItem(int slot, ItemStack var2, int side) {
-        return ForgeDirection.getOrientation(side) == ForgeDirection.DOWN;//bottom, extract only
+        return EnumFacing.getOrientation(side) == EnumFacing.DOWN;//bottom, extract only
     }
 
     @Override

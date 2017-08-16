@@ -1,81 +1,97 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControlLarge;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControlLight;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControlMedium;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 
-import java.util.List;
-
 public class BlockFlywheel extends BlockTorqueBase {
+    static final PropertyEnum<Type> TYPE = PropertyEnum.create("type", Type.class);
 
     public BlockFlywheel(String regName) {
-        super(Material.rock);
+        super(Material.ROCK);
         this.setCreativeTab(AWAutomationItemLoader.automationTab);
-        this.setBlockName(regName);
+        this.setUnlocalizedName(regName);
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, TYPE);
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return getDefaultState().withProperty(TYPE, Type.byMetadata(meta));
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(TYPE).getMeta();
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess world, BlockPos pos, EnumFacing side) {
         return false;
     }
 
     @Override
-    public boolean isOpaqueCube() {
+    public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
 
     @Override
-    public boolean isNormalCube() {
+    public boolean isNormalCube(IBlockState state) {
         return false;
     }
 
     @Override
-    public boolean isNormalCube(IBlockAccess world, int x, int y, int z) {
+    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
         return false;
     }
 
     @Override
-    public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
         return true;
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata) {
-        switch (metadata) {
-            case 0:
+    public TileEntity createTileEntity(World world, IBlockState state) {
+        switch (state.getValue(TYPE)) {
+            case LIGHT:
                 return new TileFlywheelControlLight();
-            case 1:
+            case MEDIUM:
                 return new TileFlywheelControlMedium();
-            case 2:
+            case LARGE:
                 return new TileFlywheelControlLarge();
         }
         return null;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
-    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
-        list.add(new ItemStack(item, 1, 0));
-        list.add(new ItemStack(item, 1, 1));
-        list.add(new ItemStack(item, 1, 2));
+    public void getSubBlocks(CreativeTabs item, NonNullList<ItemStack> items) {
+        items.add(new ItemStack(this, 1, 0));
+        items.add(new ItemStack(this, 1, 1));
+        items.add(new ItemStack(this, 1, 2));
     }
 
+/*
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister register) {
@@ -98,6 +114,7 @@ public class BlockFlywheel extends BlockTorqueBase {
         }
         return Blocks.iron_block.getIcon(side, 0);
     }
+*/
 
     @Override
     public boolean invertFacing() {
@@ -109,4 +126,27 @@ public class BlockFlywheel extends BlockTorqueBase {
         return RotationType.FOUR_WAY;
     }
 
+    public enum Type implements IStringSerializable {
+        LIGHT(0),
+        MEDIUM(1),
+        LARGE(2);
+
+        private int meta;
+        Type(int meta) {
+            this.meta = meta;
+        }
+
+        @Override
+        public String getName() {
+            return name().toLowerCase();
+        }
+
+        public int getMeta() {
+            return meta;
+        }
+
+        public static Type byMetadata(int meta) {
+            return values()[meta];
+        }
+    }
 }

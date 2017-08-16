@@ -15,7 +15,7 @@ public class TemplateRuleFlowerPot extends TemplateRuleVanillaBlocks {
 
     public TemplateRuleFlowerPot(World world, int x, int y, int z, Block block, int meta, int turns) {
         super(world, x, y, z, block, meta, turns);
-        TileEntity te = world.getTileEntity(x, y, z);
+        TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileEntityFlowerPot) {
             TileEntityFlowerPot tefp = (TileEntityFlowerPot) te;
             Item item = tefp.getFlowerPotItem();
@@ -39,7 +39,7 @@ public class TemplateRuleFlowerPot extends TemplateRuleVanillaBlocks {
         super.handlePlacement(world, turns, x, y, z, builder);
         if (itemName != null) {
             Item item = (Item) Item.itemRegistry.getObject(itemName);
-            TileEntity te = world.getTileEntity(x, y, z);
+            TileEntity te = world.getTileEntity(pos);
             if (item != null && te instanceof TileEntityFlowerPot) {
                 TileEntityFlowerPot tefp = (TileEntityFlowerPot) te;
                 tefp.func_145964_a(item, itemMeta);

@@ -2,8 +2,8 @@ package net.shadowmage.ancientwarfare.npc.entity;
 
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
@@ -22,7 +22,7 @@ import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.gamedata.Timekeeper;
 import net.shadowmage.ancientwarfare.core.interfaces.IEntityPacketHandler;
@@ -275,7 +275,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         if(level < 0)
             return 0;
         else
-            return level + (below.isSideSolid(worldObj, varX, varY - 1, varZ, ForgeDirection.UP) ? 1 : 0);
+            return level + (below.isSideSolid(worldObj, varX, varY - 1, varZ, EnumFacing.UP) ? 1 : 0);
     }
 
     @Override

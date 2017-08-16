@@ -1,6 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque;
 
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 
 public abstract class TileDistributor extends TileTorqueSidedCell {
@@ -17,7 +17,7 @@ public abstract class TileDistributor extends TileTorqueSidedCell {
             if (i == in) {
                 continue;
             }
-            out += transferPowerTo(ForgeDirection.values()[i]);
+            out += transferPowerTo(EnumFacing.values()[i]);
         }
         return out;
     }
@@ -62,12 +62,12 @@ public abstract class TileDistributor extends TileTorqueSidedCell {
     }
 
     @Override
-    public boolean canInputTorque(ForgeDirection from) {
+    public boolean canInputTorque(EnumFacing from) {
         return from == orientation.getOpposite();
     }
 
     @Override
-    public boolean canOutputTorque(ForgeDirection from) {
+    public boolean canOutputTorque(EnumFacing from) {
         return from != orientation.getOpposite();
     }
 

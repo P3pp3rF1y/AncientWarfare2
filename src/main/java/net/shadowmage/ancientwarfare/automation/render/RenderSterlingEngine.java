@@ -6,7 +6,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileSterlingEngine;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelLoader;
@@ -36,8 +36,8 @@ public class RenderSterlingEngine extends TileEntitySpecialRenderer implements I
     @Override
     public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTick) {
         TileSterlingEngine tt = (TileSterlingEngine) tile;
-        ForgeDirection d = tt.getPrimaryFacing();
-        float baseRotation = d == ForgeDirection.SOUTH ? 180.f : d == ForgeDirection.WEST ? 270.f : d == ForgeDirection.EAST ? 90.f : 0.f;
+        EnumFacing d = tt.getPrimaryFacing();
+        float baseRotation = d == EnumFacing.SOUTH ? 180.f : d == EnumFacing.WEST ? 270.f : d == EnumFacing.EAST ? 90.f : 0.f;
 
         float rotation = -(tt.getClientOutputRotation(d, partialTick));
 

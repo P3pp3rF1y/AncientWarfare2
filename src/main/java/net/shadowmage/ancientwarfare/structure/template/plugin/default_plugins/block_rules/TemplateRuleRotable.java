@@ -6,7 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedSite;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -29,10 +29,10 @@ public class TemplateRuleRotable extends TemplateRuleBlock {
         super(world, x, y, z, block, meta, turns);
         this.blockName = BlockDataManager.INSTANCE.getNameForBlock(block);
         this.meta = meta;
-        TileEntity worksite = world.getTileEntity(x, y, z);
-        ForgeDirection o = ((BlockRotationHandler.IRotatableTile) worksite).getPrimaryFacing();
+        TileEntity worksite = world.getTileEntity(pos);
+        EnumFacing o = ((BlockRotationHandler.IRotatableTile) worksite).getPrimaryFacing();
         for (int i = 0; i < turns; i++) {
-            o = o.getRotation(ForgeDirection.UP);
+            o = o.getRotation(EnumFacing.UP);
         }
         this.orientation = o.ordinal();
         if (worksite instanceof IBoundedSite && ((IBoundedSite) worksite).hasWorkBounds()) {
@@ -55,15 +55,15 @@ public class TemplateRuleRotable extends TemplateRuleBlock {
     public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) {
         Block block = BlockDataManager.INSTANCE.getBlockForName(blockName);
         if(world.setBlock(x, y, z, block, meta, 2)) {
-            TileEntity worksite = world.getTileEntity(x, y, z);
+            TileEntity worksite = world.getTileEntity(pos);
             if(worksite != null) {
                 tag.setInteger("x", x);
                 tag.setInteger("y", y);
                 tag.setInteger("z", z);
                 worksite.readFromNBT(tag);
-                ForgeDirection o = ForgeDirection.getOrientation(orientation);
+                EnumFacing o = EnumFacing.getOrientation(orientation);
                 for (int i = 0; i < turns; i++) {
-                    o = o.getRotation(ForgeDirection.UP);
+                    o = o.getRotation(EnumFacing.UP);
                 }
                 ((BlockRotationHandler.IRotatableTile) worksite).setPrimaryFacing(o);
                 if (worksite instanceof IBoundedSite && p1 != null && p2 != null) {

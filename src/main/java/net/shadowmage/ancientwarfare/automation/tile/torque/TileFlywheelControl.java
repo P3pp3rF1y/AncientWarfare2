@@ -4,7 +4,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileFlywheelStorage;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 
@@ -145,7 +145,7 @@ public abstract class TileFlywheelControl extends TileTorqueSingleCell {
     }
 
     @Override
-    public double getMaxTorqueOutput(ForgeDirection from) {
+    public double getMaxTorqueOutput(EnumFacing from) {
         if (powered) {
             return 0;
         }
@@ -153,36 +153,36 @@ public abstract class TileFlywheelControl extends TileTorqueSingleCell {
     }
 
     @Override
-    public double getMaxTorque(ForgeDirection from) {
+    public double getMaxTorque(EnumFacing from) {
         TorqueCell cell = getCell(from);
         return cell == null ? 0 : cell.getMaxEnergy();
     }
 
     @Override
-    public double getTorqueStored(ForgeDirection from) {
+    public double getTorqueStored(EnumFacing from) {
         TorqueCell cell = getCell(from);
         return cell == null ? 0 : cell.getEnergy();
     }
 
     @Override
-    public double addTorque(ForgeDirection from, double energy) {
+    public double addTorque(EnumFacing from, double energy) {
         TorqueCell cell = getCell(from);
         return cell == null ? 0 : cell.addEnergy(energy);
     }
 
     @Override
-    public double drainTorque(ForgeDirection from, double energy) {
+    public double drainTorque(EnumFacing from, double energy) {
         TorqueCell cell = getCell(from);
         return cell == null ? 0 : cell.drainEnergy(energy);
     }
 
     @Override
-    public double getMaxTorqueInput(ForgeDirection from) {
+    public double getMaxTorqueInput(EnumFacing from) {
         TorqueCell cell = getCell(from);
         return cell == null ? 0 : cell.getMaxTickInput();
     }
 
-    private TorqueCell getCell(ForgeDirection from) {
+    private TorqueCell getCell(EnumFacing from) {
         if (from == orientation) {
             return torqueCell;
         } else if (from == orientation.getOpposite()) {

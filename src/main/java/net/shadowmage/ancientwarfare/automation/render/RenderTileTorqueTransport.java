@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueSidedCell;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
@@ -78,7 +78,7 @@ public class RenderTileTorqueTransport extends TileEntitySpecialRenderer impleme
         float[] rotationArray;
         float rx, ry, rz;
 
-        ForgeDirection d;
+        EnumFacing d;
         ModelPiece piece;
 
         //render heads
@@ -87,14 +87,14 @@ public class RenderTileTorqueTransport extends TileEntitySpecialRenderer impleme
             if (connections[i]) {
                 piece = gearHeads[i];
                 rotationArray = headRotationDirectionMatrix[i];
-                if (conduit.canOutputTorque(ForgeDirection.getOrientation(i))) {
+                if (conduit.canOutputTorque(EnumFacing.getOrientation(i))) {
                     rx = rotationArray[0] * rotation;
                     ry = rotationArray[1] * rotation;
                     rz = rotationArray[2] * rotation;
                     piece.setRotation(rx, ry, rz);
                 } else {
                     if (neighbors != null && neighbors[i] != null && neighbors[i].useOutputRotation(null)) {
-                        float r = neighbors[i].getClientOutputRotation(ForgeDirection.values()[i].getOpposite(), delta);
+                        float r = neighbors[i].getClientOutputRotation(EnumFacing.values()[i].getOpposite(), delta);
                         rx = rotationArray[0] * r;
                         ry = rotationArray[1] * r;
                         rz = rotationArray[2] * r;

@@ -6,7 +6,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
@@ -34,7 +34,7 @@ public class ItemBlockWorksiteStatic extends ItemBlock {
 
         boolean val = super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
         if (val) {
-            TileEntity worksite = world.getTileEntity(x, y, z);
+            TileEntity worksite = world.getTileEntity(pos);
             if (worksite instanceof IBoundedSite) {
                 ((IBoundedSite) worksite).setBounds(pos1, pos2);
             }
@@ -42,7 +42,7 @@ public class ItemBlockWorksiteStatic extends ItemBlock {
                 ((IOwnable) worksite).setOwner(player);
             }
             if (worksite instanceof IRotatableTile) {
-                ForgeDirection o = ForgeDirection.values()[ormetadata];
+                EnumFacing o = EnumFacing.values()[ormetadata];
                 ((IRotatableTile) worksite).setPrimaryFacing(o);
             }
             world.markBlockForUpdate(x, y, z);

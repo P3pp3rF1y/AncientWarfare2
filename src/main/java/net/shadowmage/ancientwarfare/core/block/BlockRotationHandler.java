@@ -7,7 +7,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -19,13 +19,13 @@ import java.util.Locale;
 
 public class BlockRotationHandler {
 
-    public static int getRotatedMeta(IRotatableBlock block, int meta, ForgeDirection axis) {
+    public static int getRotatedMeta(IRotatableBlock block, int meta, EnumFacing axis) {
         RotationType t = block.getRotationType();
         if (t == RotationType.NONE) {
             return meta;
         }
-        ForgeDirection rotator = t == RotationType.FOUR_WAY ? ForgeDirection.DOWN : axis;
-        ForgeDirection face = ForgeDirection.getOrientation(meta);
+        EnumFacing rotator = t == RotationType.FOUR_WAY ? EnumFacing.DOWN : axis;
+        EnumFacing face = EnumFacing.getOrientation(meta);
         face = face.getRotation(rotator);
         return face.ordinal();
     }
@@ -34,15 +34,15 @@ public class BlockRotationHandler {
         return getFaceForPlacement(entity, block, sideHit).ordinal();
     }
 
-    public static ForgeDirection getFaceForPlacement(EntityLivingBase entity, IRotatableBlock block, int sideHit) {
+    public static EnumFacing getFaceForPlacement(EntityLivingBase entity, IRotatableBlock block, int sideHit) {
         if (block.getRotationType() == RotationType.NONE) {
-            return ForgeDirection.NORTH;
+            return EnumFacing.NORTH;
         }
         int f = BlockTools.getPlayerFacingFromYaw(entity.rotationYaw);
-        ForgeDirection face = BlockTools.getForgeDirectionFromFacing(f);
+        EnumFacing face = BlockTools.getForgeDirectionFromFacing(f);
         if (block.getRotationType() == RotationType.SIX_WAY) {
             if (sideHit == 0 || sideHit == 1) {
-                face = ForgeDirection.getOrientation(sideHit).getOpposite();
+                face = EnumFacing.getOrientation(sideHit).getOpposite();
             }
         }
         if (block.invertFacing()) {
@@ -56,13 +56,15 @@ public class BlockRotationHandler {
 
         public boolean invertFacing();
 
+/* TODO reimplement this icon stuff
         public Block setIcon(RelativeSide side, String texName);
+*/
     }
 
     public interface IRotatableTile {
-        public ForgeDirection getPrimaryFacing();
+        public EnumFacing getPrimaryFacing();
 
-        public void setPrimaryFacing(ForgeDirection face);
+        public void setPrimaryFacing(EnumFacing face);
     }
 
     public static enum RotationType {

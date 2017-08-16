@@ -6,7 +6,8 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBlockEvent;
@@ -16,7 +17,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 
-public class TileFlywheelStorage extends TileEntity {
+public class TileFlywheelStorage extends TileEntity implements ITickable {
 
     public BlockPosition controllerPos;
     public boolean isControl = false;//set to true if this is the control block for a setup
@@ -28,10 +29,9 @@ public class TileFlywheelStorage extends TileEntity {
     private int networkUpdateTicks = 0;
 
     @Override
-    public void updateEntity() {
-        super.updateEntity();
+    public void update() {
         if (isControl) {
-            if (worldObj.isRemote) {
+            if (world.isRemote) {
                 clientNetworkUpdate();
             } else {
                 serverNetworkUpdate();
@@ -226,7 +226,7 @@ public class TileFlywheelStorage extends TileEntity {
     private void informNeighborsToValidate() {
         TileEntity te;
         int x, y, z;
-        for (ForgeDirection d : ForgeDirection.VALID_DIRECTIONS) {
+        for (EnumFacing d : EnumFacing.VALID_DIRECTIONS) {
             x = xCoord + d.offsetX;
             y = yCoord + d.offsetY;
             z = zCoord + d.offsetZ;

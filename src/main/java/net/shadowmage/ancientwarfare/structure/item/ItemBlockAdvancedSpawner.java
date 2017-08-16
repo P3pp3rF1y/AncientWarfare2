@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.item;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,7 +37,7 @@ public class ItemBlockAdvancedSpawner extends ItemBlock implements IItemKeyInter
         }
         boolean val = super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
         if (!world.isRemote && val) {
-            TileEntity te = world.getTileEntity(x, y, z);
+            TileEntity te = world.getTileEntity(pos);
             if (te instanceof TileAdvancedSpawner) {
                 TileAdvancedSpawner tile = (TileAdvancedSpawner) te;
                 SpawnerSettings settings = new SpawnerSettings();

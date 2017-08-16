@@ -20,8 +20,8 @@
  */
 package net.shadowmage.ancientwarfare.structure.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -38,7 +38,7 @@ import java.util.Random;
 public final class BlockGateProxy extends BlockContainer {
 
     public BlockGateProxy() {
-        super(Material.rock);
+        super(Material.ROCK);
         this.setBlockTextureName("ancientwarfare:structure/gate_proxy");
         this.setCreativeTab(null);
         this.setResistance(2000.f);
@@ -46,7 +46,7 @@ public final class BlockGateProxy extends BlockContainer {
     }
 
     @Override
-    public boolean hasTileEntity(int metadata) {
+    public boolean hasTileEntity(IBlockState state) {
         return true;
     }
 
@@ -72,7 +72,7 @@ public final class BlockGateProxy extends BlockContainer {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess world, BlockPos pos, EnumFacing side) {
         return false;
     }
 
@@ -82,18 +82,18 @@ public final class BlockGateProxy extends BlockContainer {
     }
 
     @Override
-    public boolean isNormalCube(IBlockAccess world, int x, int y, int z){
+    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos){
         return true;
     }
 
     @Override
-    public boolean isOpaqueCube() {
+    public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
 
     @Override
     public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
-        TileEntity proxy = world.getTileEntity(x, y, z);
+        TileEntity proxy = world.getTileEntity(pos);
         if(proxy instanceof TEGateProxy){
             return ((TEGateProxy) proxy).onBlockPicked(target);
         }
@@ -107,13 +107,13 @@ public final class BlockGateProxy extends BlockContainer {
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int face, float vecX, float vecY, float vecZ) {
-        TileEntity proxy = world.getTileEntity(x, y, z);
+        TileEntity proxy = world.getTileEntity(pos);
         return proxy instanceof TEGateProxy && ((TEGateProxy) proxy).onBlockClicked(player);
     }
 
     @Override
     public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
-        TileEntity proxy = world.getTileEntity(x, y, z);
+        TileEntity proxy = world.getTileEntity(pos);
         if(proxy instanceof TEGateProxy){
             ((TEGateProxy) proxy).onBlockAttacked(player);
         }else if(player != null && player.capabilities.isCreativeMode){
@@ -140,7 +140,7 @@ public final class BlockGateProxy extends BlockContainer {
     //Actually "can go through", for mob pathing
     @Override
     public boolean getBlocksMovement(IBlockAccess world, int x, int y, int z){
-        TileEntity proxy = world.getTileEntity(x, y, z);
+        TileEntity proxy = world.getTileEntity(pos);
         if(proxy instanceof TEGateProxy && ((TEGateProxy)proxy).isGateClosed()){
             return false;
         }

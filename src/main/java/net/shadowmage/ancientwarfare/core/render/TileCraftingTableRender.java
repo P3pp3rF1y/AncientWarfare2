@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.model.crafting_table.ModelCraftingBase;
 import org.lwjgl.opengl.GL11;
@@ -56,7 +56,7 @@ public class TileCraftingTableRender extends TileEntitySpecialRenderer implement
         GL11.glPopMatrix();
     }
 
-    private float getRotation(ForgeDirection direction) {
+    private float getRotation(EnumFacing direction) {
         switch (direction) {
             case SOUTH:
                 return 180.f;

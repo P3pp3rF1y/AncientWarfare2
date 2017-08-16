@@ -1,14 +1,14 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface;
@@ -21,8 +21,8 @@ public class BlockWarehouseInterface extends Block {
     private BlockIconMap iconMap = new BlockIconMap();
 
     public BlockWarehouseInterface(String regName) {
-        super(Material.rock);
-        this.setBlockName(regName);
+        super(Material.ROCK);
+        this.setUnlocalizedName(regName);
         setCreativeTab(AWAutomationItemLoader.automationTab);
         setHardness(2.f);
     }
@@ -45,24 +45,24 @@ public class BlockWarehouseInterface extends Block {
     }
 
     @Override
-    public boolean hasTileEntity(int metadata) {
+    public boolean hasTileEntity(IBlockState state) {
         return true;
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata) {
+    public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileWarehouseInterface();
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int sideHit, float hitX, float hitY, float hitZ) {
-        TileEntity te = world.getTileEntity(x, y, z);
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        TileEntity te = world.getTileEntity(pos);
         return te instanceof IInteractableTile && ((IInteractableTile) te).onBlockClicked(player);
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-        TileEntity te = world.getTileEntity(x, y, z);
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+        TileEntity te = world.getTileEntity(pos);
         if (te instanceof IInventory) {
             InventoryTools.dropInventoryInWorld(world, (IInventory) te, x, y, z);
         }

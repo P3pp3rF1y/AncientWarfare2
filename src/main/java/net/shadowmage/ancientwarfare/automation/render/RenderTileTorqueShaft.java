@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaft;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
@@ -45,7 +45,7 @@ public class RenderTileTorqueShaft extends TileEntitySpecialRenderer implements 
         GL11.glTranslated(x + 0.5d, y + 0.5d, z + 0.5d);
 
         TileTorqueShaft shaft = (TileTorqueShaft) te;
-        ForgeDirection d = shaft.getPrimaryFacing();
+        EnumFacing d = shaft.getPrimaryFacing();
         float[] rotations = gearboxRotationMatrix[d.ordinal()];
         if (rotations[0] != 0) {
             GL11.glRotatef(rotations[0], 1, 0, 0);

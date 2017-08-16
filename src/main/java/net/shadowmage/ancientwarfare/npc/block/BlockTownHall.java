@@ -3,8 +3,8 @@ package net.shadowmage.ancientwarfare.npc.block;
 import java.util.ArrayList;
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -16,10 +16,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IIcon;
+
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
@@ -32,14 +32,14 @@ public class BlockTownHall extends Block {
     public IIcon[] icons = new IIcon[6];
     
     public BlockTownHall() {
-        super(Material.rock);
+        super(Material.ROCK);
         this.setCreativeTab(AWNpcItemLoader.npcTab);
         setHardness(2.f);
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-        IInventory tile = (IInventory) world.getTileEntity(x, y, z);
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+        IInventory tile = (IInventory) world.getTileEntity(pos);
         if (tile instanceof TileTownHall) {
             ((TileTownHall) tile).isHq = false; // is this even necessary?
         }
@@ -67,18 +67,18 @@ public class BlockTownHall extends Block {
     }
 
     @Override
-    public boolean hasTileEntity(int metadata) {
+    public boolean hasTileEntity(IBlockState state) {
         return true;
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata) {
+    public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileTownHall();
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int sideHit, float hitX, float hitY, float hitZ) {
-        TileEntity te = world.getTileEntity(x, y, z);
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        TileEntity te = world.getTileEntity(pos);
         return te instanceof IInteractableTile && ((IInteractableTile) te).onBlockClicked(player);
     }
 
@@ -117,11 +117,11 @@ public class BlockTownHall extends Block {
     }
 
     public boolean dropBlockIfNotStable(World world, int posX, int posY, int posZ, Block block) {
-        if (!world.isSideSolid(posX - 1, posY, posZ, ForgeDirection.EAST,  false) &&
-                !world.isSideSolid(posX + 1, posY, posZ, ForgeDirection.WEST,  false) &&
-                !world.isSideSolid(posX, posY, posZ - 1, ForgeDirection.SOUTH, false) &&
-                !world.isSideSolid(posX, posY, posZ + 1, ForgeDirection.NORTH, false) &&
-                !world.isSideSolid(posX, posY + 1, posZ, ForgeDirection.DOWN, false) &&
+        if (!world.isSideSolid(posX - 1, posY, posZ, EnumFacing.EAST,  false) &&
+                !world.isSideSolid(posX + 1, posY, posZ, EnumFacing.WEST,  false) &&
+                !world.isSideSolid(posX, posY, posZ - 1, EnumFacing.SOUTH, false) &&
+                !world.isSideSolid(posX, posY, posZ + 1, EnumFacing.NORTH, false) &&
+                !world.isSideSolid(posX, posY + 1, posZ, EnumFacing.DOWN, false) &&
                 !World.doesBlockHaveSolidTopSurface(world, posX, posY - 1, posZ)) {
             this.dropBlock(world, posX, posY, posZ, block);
             return true;

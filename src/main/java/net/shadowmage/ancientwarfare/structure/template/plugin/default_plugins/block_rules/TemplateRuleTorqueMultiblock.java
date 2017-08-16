@@ -23,7 +23,7 @@ public class TemplateRuleTorqueMultiblock extends TemplateRuleBlock {
         this.blockName = BlockDataManager.INSTANCE.getNameForBlock(block);
         this.meta = meta;
         this.tag = new NBTTagCompound();
-        TileEntity tile = world.getTileEntity(x, y, z);
+        TileEntity tile = world.getTileEntity(pos);
         tile.writeToNBT(tag);
     }
 
@@ -39,7 +39,7 @@ public class TemplateRuleTorqueMultiblock extends TemplateRuleBlock {
     public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) {
         Block block = BlockDataManager.INSTANCE.getBlockForName(blockName);
         if(world.setBlock(x, y, z, block, meta, 3)) {
-            TileEntity tile = world.getTileEntity(x, y, z);
+            TileEntity tile = world.getTileEntity(pos);
             if(tile != null) {
                 tag.setInteger("x", x);
                 tag.setInteger("y", y);

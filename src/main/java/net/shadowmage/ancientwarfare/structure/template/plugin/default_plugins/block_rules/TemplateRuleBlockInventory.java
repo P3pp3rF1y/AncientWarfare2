@@ -47,7 +47,7 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
 
     public TemplateRuleBlockInventory(World world, int x, int y, int z, Block block, int meta, int turns) {
         super(world, x, y, z, block, meta, turns);
-        TileEntity te = world.getTileEntity(x, y, z);
+        TileEntity te = world.getTileEntity(pos);
         if (te instanceof IInventory) {
             IInventory inventory = (IInventory) te;
             if (inventory.getSizeInventory() <= 0) {
@@ -89,7 +89,7 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
         super.handlePlacement(world, turns, x, y, z, builder);
         int localMeta = BlockDataManager.INSTANCE.getRotatedMeta(block, this.meta, turns);
         world.setBlockMetadataWithNotify(x, y, z, localMeta, 3);
-        TileEntity te = world.getTileEntity(x, y, z);
+        TileEntity te = world.getTileEntity(pos);
         if (!(te instanceof IInventory)) {
             return;
         }

@@ -7,7 +7,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -179,7 +179,7 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
             if (stack == null) {
                 continue;
             }
-            if (stack.getItem() == Item.getItemFromBlock(Blocks.cactus) && tryPlace(stack, p.x, p.y, p.z, ForgeDirection.UP)){
+            if (stack.getItem() == Item.getItemFromBlock(Blocks.cactus) && tryPlace(stack, p.x, p.y, p.z, EnumFacing.UP)){
                 cactusCount--;
                 return true;
             }
@@ -197,7 +197,7 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
             if (stack == null) {
                 continue;
             }
-            if (stack.getItem() == Items.reeds && tryPlace(stack, p.x, p.y, p.z, ForgeDirection.UP)){
+            if (stack.getItem() == Items.reeds && tryPlace(stack, p.x, p.y, p.z, EnumFacing.UP)){
                 reedCount--;
                 return true;
             }
@@ -209,15 +209,15 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
         if (!canReplace(p.x, p.y, p.z)) {
             return false;
         }
-        ForgeDirection meta = null;
+        EnumFacing meta = null;
         if (isJungleLog(p.x - 1, p.y, p.z)) {
-            meta = ForgeDirection.EAST;
+            meta = EnumFacing.EAST;
         } else if (isJungleLog(p.x + 1, p.y, p.z)) {
-            meta = ForgeDirection.WEST;
+            meta = EnumFacing.WEST;
         } else if (isJungleLog(p.x, p.y, p.z - 1)) {
-            meta = ForgeDirection.SOUTH;
+            meta = EnumFacing.SOUTH;
         } else if (isJungleLog(p.x, p.y, p.z + 1)) {
-            meta = ForgeDirection.NORTH;
+            meta = EnumFacing.NORTH;
         }
         if(meta == null)
             return false;

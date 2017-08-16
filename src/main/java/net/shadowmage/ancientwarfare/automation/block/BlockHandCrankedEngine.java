@@ -1,14 +1,14 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileHandGenerator;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
@@ -16,16 +16,17 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationTyp
 public class BlockHandCrankedEngine extends BlockTorqueBase {
 
     protected BlockHandCrankedEngine(String regName) {
-        super(Material.rock);
+        super(Material.ROCK);
         this.setCreativeTab(AWAutomationItemLoader.automationTab);
-        this.setBlockName(regName);
+        this.setUnlocalizedName(regName);
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata) {
+    public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileHandGenerator();
     }
 
+/*
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int p_149691_1_, int p_149691_2_) {
@@ -37,6 +38,7 @@ public class BlockHandCrankedEngine extends BlockTorqueBase {
     public void registerBlockIcons(IIconRegister register) {
     }
 
+*/
     @Override
     public RotationType getRotationType() {
         return RotationType.FOUR_WAY;
@@ -49,17 +51,17 @@ public class BlockHandCrankedEngine extends BlockTorqueBase {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess world, BlockPos pos, EnumFacing side) {
         return false;
     }
 
     @Override
-    public boolean isOpaqueCube() {
+    public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
 
     @Override
-    public boolean isNormalCube() {
+    public boolean isNormalCube(IBlockState state) {
         return false;
     }
 

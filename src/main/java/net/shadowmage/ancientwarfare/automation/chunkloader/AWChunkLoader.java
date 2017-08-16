@@ -25,7 +25,7 @@ public final class AWChunkLoader implements LoadingCallback {
                 int x = posTag.getInteger("x");
                 int y = posTag.getInteger("y");
                 int z = posTag.getInteger("z");
-                TileEntity te = world.getTileEntity(x, y, z);
+                TileEntity te = world.getTileEntity(pos);
                 if (te instanceof IChunkLoaderTile) {
                     ((IChunkLoaderTile) te).setTicket(tk);
                 }

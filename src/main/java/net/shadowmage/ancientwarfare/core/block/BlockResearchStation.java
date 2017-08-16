@@ -1,14 +1,14 @@
 package net.shadowmage.ancientwarfare.core.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
@@ -23,7 +23,7 @@ public class BlockResearchStation extends Block implements IRotatableBlock {
     BlockIconMap iconMap = new BlockIconMap();
 
     public BlockResearchStation() {
-        super(Material.rock);
+        super(Material.ROCK);
         this.setCreativeTab(AWCoreBlockLoader.coreTab);
         iconMap.setIconTexture(0, 0, "ancientwarfare:core/research_station_bottom");
         iconMap.setIconTexture(1, 0, "ancientwarfare:core/research_station_top");
@@ -47,24 +47,24 @@ public class BlockResearchStation extends Block implements IRotatableBlock {
     }
 
     @Override
-    public boolean hasTileEntity(int metadata) {
+    public boolean hasTileEntity(IBlockState state) {
         return true;
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata) {
+    public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileResearchStation();
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int sideHit, float hitX, float hitY, float hitZ) {
-        TileEntity te = world.getTileEntity(x, y, z);
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        TileEntity te = world.getTileEntity(pos);
         return te instanceof IInteractableTile && ((IInteractableTile) te).onBlockClicked(player);
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-        TileEntity tile = world.getTileEntity(x, y, z);
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+        TileEntity tile = world.getTileEntity(pos);
         if (tile instanceof IInventory) {
             InventoryTools.dropInventoryInWorld(world, (IInventory)tile, x, y, z);
         }
@@ -73,17 +73,17 @@ public class BlockResearchStation extends Block implements IRotatableBlock {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess world, BlockPos pos, EnumFacing side) {
         return false;
     }
 
     @Override
-    public boolean isOpaqueCube() {
+    public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
 
     @Override
-    public boolean isNormalCube() {
+    public boolean isNormalCube(IBlockState state) {
         return false;
     }
 

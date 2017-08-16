@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -26,7 +26,7 @@ public class BlockAdvancedSpawner extends Block {
     IIcon transparentIcon;
 
     public BlockAdvancedSpawner() {
-        super(Material.rock);
+        super(Material.ROCK);
         this.setCreativeTab(AWStructuresItemLoader.structureTab);
         this.setBlockTextureName("ancientwarfare:structure/advanced_spawner");
         setHardness(2.f);
@@ -35,7 +35,7 @@ public class BlockAdvancedSpawner extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
-        TileEntity te = world.getTileEntity(x, y, z);
+        TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileAdvancedSpawner) {
             TileAdvancedSpawner spawner = (TileAdvancedSpawner) te;
             if (spawner.getSettings().isTransparent()) {
@@ -52,12 +52,12 @@ public class BlockAdvancedSpawner extends Block {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess world, BlockPos pos, EnumFacing side) {
         return true;
     }
 
     @Override
-    public boolean isOpaqueCube() {
+    public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
 
@@ -76,18 +76,18 @@ public class BlockAdvancedSpawner extends Block {
     }
 
     @Override
-    public boolean hasTileEntity(int metadata) {
+    public boolean hasTileEntity(IBlockState state) {
         return true;
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata) {
+    public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileAdvancedSpawner();
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-        TileEntity te = world.getTileEntity(x, y, z);
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+        TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileAdvancedSpawner) {
             ((TileAdvancedSpawner) te).onBlockBroken();
         }
@@ -96,7 +96,7 @@ public class BlockAdvancedSpawner extends Block {
 
     @Override
     public float getBlockHardness(World world, int x, int y, int z) {
-        TileEntity te = world.getTileEntity(x, y, z);
+        TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileAdvancedSpawner) {
             TileAdvancedSpawner spawner = (TileAdvancedSpawner) te;
             return spawner.getBlockHardness();
@@ -106,7 +106,7 @@ public class BlockAdvancedSpawner extends Block {
 
     @Override
     public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer entityPlayer) {
-        TileEntity te = world.getTileEntity(x, y, z);
+        TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileAdvancedSpawner) {
             ItemStack item = new ItemStack(this);
             NBTTagCompound settings = new NBTTagCompound();
@@ -118,7 +118,7 @@ public class BlockAdvancedSpawner extends Block {
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int sideHit, float hitX, float hitY, float hitZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (player.capabilities.isCreativeMode) {
             if (!world.isRemote) {
                 if (player.isSneaking()) {

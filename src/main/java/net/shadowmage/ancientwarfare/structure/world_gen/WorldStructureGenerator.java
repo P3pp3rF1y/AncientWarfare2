@@ -26,7 +26,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -135,7 +135,7 @@ public class WorldStructureGenerator implements IWorldGenerator {
                 int y = world.getPrecipitationHeight(x, z) - 1;
                 if(p2.y >= y && y > 0 && world.canSnowAtBody(x, y + 1, z, true)) {
                     Block block = world.getBlock(x, y, z);
-                    if (block != Blocks.air && block.isSideSolid(world, x, y, z, ForgeDirection.UP)) {
+                    if (block != Blocks.air && block.isSideSolid(world, x, y, z, EnumFacing.UP)) {
                         world.setBlock(x, y + 1, z, Blocks.snow_layer);
                     }
                 }

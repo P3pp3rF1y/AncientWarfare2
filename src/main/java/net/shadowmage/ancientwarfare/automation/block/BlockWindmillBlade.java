@@ -1,16 +1,16 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileWindmillBlade;
 
@@ -18,13 +18,13 @@ public class BlockWindmillBlade extends Block {
 
     public BlockWindmillBlade(String regName) {
         super(Material.wood);
-        this.setBlockName(regName);
+        this.setUnlocalizedName(regName);
         this.setCreativeTab(AWAutomationItemLoader.automationTab);
     }
 
     @Override
     public boolean onBlockEventReceived(World world, int x, int y, int z, int a, int b) {
-        TileEntity tileentity = world.getTileEntity(x, y, z);
+        TileEntity tileentity = world.getTileEntity(pos);
         return tileentity != null && tileentity.receiveClientEvent(a, b);
     }
 
@@ -35,17 +35,17 @@ public class BlockWindmillBlade extends Block {
     }
 
     @Override
-    public boolean isOpaqueCube() {
+    public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
 
     @Override
-    public boolean isNormalCube() {
+    public boolean isNormalCube(IBlockState state) {
         return false;
     }
 
     @Override
-    public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
         return false;
     }
 
@@ -63,34 +63,34 @@ public class BlockWindmillBlade extends Block {
     @Override
     public void onPostBlockPlaced(World world, int x, int y, int z, int meta) {
         super.onPostBlockPlaced(world, x, y, z, meta);
-        TileWindmillBlade te = (TileWindmillBlade) world.getTileEntity(x, y, z);
+        TileWindmillBlade te = (TileWindmillBlade) world.getTileEntity(pos);
         te.blockPlaced();
     }
 
     @Override
     public void breakBlock(World world, int x, int y, int z, Block block, int face) {
-        TileWindmillBlade te = (TileWindmillBlade) world.getTileEntity(x, y, z);
+        TileWindmillBlade te = (TileWindmillBlade) world.getTileEntity(pos);
         super.breakBlock(world, x, y, z, block, face);
         te.blockBroken();//have to call post block-break so that the tile properly sees the block/tile as gone
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata) {
+    public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileWindmillBlade();
     }
 
     @Override
-    public boolean hasTileEntity(int metadata) {
+    public boolean hasTileEntity(IBlockState state) {
         return true;
     }
 
     @Override
-    public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+    public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
         return 60;
     }
 
     @Override
-    public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face) {
+    public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
         return 20;
     }
 }

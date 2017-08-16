@@ -8,6 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.oredict.OreDictionary;
@@ -415,6 +416,10 @@ public class InventoryTools {
         z += world.rand.nextFloat() * 0.6f - 0.3f;
         entityToSpawn = new EntityItem(world, x, y, z, item);
         world.spawnEntityInWorld(entityToSpawn);
+    }
+
+    public static void dropInventoryInWorld(World world, IInventory localInventory, BlockPos pos) {
+        dropInventoryInWorld(world, localInventory, pos.getX(), pos.getY(), pos.getZ());
     }
 
     public static void dropInventoryInWorld(World world, IInventory localInventory, double x, double y, double z) {

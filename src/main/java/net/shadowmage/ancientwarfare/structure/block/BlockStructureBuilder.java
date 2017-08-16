@@ -1,13 +1,13 @@
 package net.shadowmage.ancientwarfare.structure.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.block.BlockIconMap;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
@@ -18,7 +18,7 @@ public class BlockStructureBuilder extends Block {
     private BlockIconMap iconMap = new BlockIconMap();
 
     public BlockStructureBuilder() {
-        super(Material.rock);
+        super(Material.ROCK);
         this.setCreativeTab(AWStructuresItemLoader.structureTab);
         setHardness(2.f);
     }
@@ -41,19 +41,19 @@ public class BlockStructureBuilder extends Block {
     }
 
     @Override
-    public boolean hasTileEntity(int metadata) {
+    public boolean hasTileEntity(IBlockState state) {
         return true;
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata) {
+    public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileStructureBuilder();
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
         if (!world.isRemote) {
-            TileEntity te = world.getTileEntity(x, y, z);
+            TileEntity te = world.getTileEntity(pos);
             if (te instanceof TileStructureBuilder) {
                 ((TileStructureBuilder) te).onBlockBroken();
             }
@@ -63,7 +63,7 @@ public class BlockStructureBuilder extends Block {
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float vecX, float vecY, float vecZ) {
         if (!world.isRemote) {
-            TileEntity te = world.getTileEntity(x, y, z);
+            TileEntity te = world.getTileEntity(pos);
             if (te instanceof TileStructureBuilder) {
                 TileStructureBuilder builder = (TileStructureBuilder) te;
                 builder.onBlockClicked(player);

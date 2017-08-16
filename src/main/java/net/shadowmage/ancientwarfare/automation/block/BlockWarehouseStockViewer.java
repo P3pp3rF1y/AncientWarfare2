@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -10,10 +10,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
@@ -26,8 +26,8 @@ import java.util.List;
 public class BlockWarehouseStockViewer extends Block implements IRotatableBlock {
 
     public BlockWarehouseStockViewer(String regName) {
-        super(Material.rock);
-        this.setBlockName(regName);
+        super(Material.ROCK);
+        this.setUnlocalizedName(regName);
         this.setCreativeTab(AWAutomationItemLoader.automationTab);
         setHardness(2.f);
     }
@@ -45,7 +45,7 @@ public class BlockWarehouseStockViewer extends Block implements IRotatableBlock 
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess world, BlockPos pos, EnumFacing side) {
         return true;
     }
 
@@ -55,7 +55,7 @@ public class BlockWarehouseStockViewer extends Block implements IRotatableBlock 
     }
 
     @Override
-    public boolean isOpaqueCube() {
+    public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
 
@@ -78,7 +78,7 @@ public class BlockWarehouseStockViewer extends Block implements IRotatableBlock 
     @Override
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
         int meta = world.getBlockMetadata(x, y, z);
-        ForgeDirection d = ForgeDirection.getOrientation(meta).getOpposite();
+        EnumFacing d = EnumFacing.getOrientation(meta).getOpposite();
         float wmin = 0.125f;
         float wmax = 0.875f;
         float hmin = 0.375f;
@@ -124,25 +124,25 @@ public class BlockWarehouseStockViewer extends Block implements IRotatableBlock 
     }
 
     @Override
-    public boolean hasTileEntity(int metadata) {
+    public boolean hasTileEntity(IBlockState state) {
         return true;
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata) {
+    public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileWarehouseStockViewer();
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int sideHit, float hitX, float hitY, float hitZ) {
-        TileEntity te = world.getTileEntity(x, y, z);
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        TileEntity te = world.getTileEntity(pos);
         return te instanceof IInteractableTile && ((IInteractableTile) te).onBlockClicked(player);
     }
 
     @Override
     public boolean onBlockEventReceived(World world, int x, int y, int z, int a, int b) {
         super.onBlockEventReceived(world, x, y, z, a, b);
-        TileEntity tileentity = world.getTileEntity(x, y, z);
+        TileEntity tileentity = world.getTileEntity(pos);
         return tileentity != null && tileentity.receiveClientEvent(a, b);
     }
 

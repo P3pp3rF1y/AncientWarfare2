@@ -1,7 +1,13 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -10,7 +16,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
@@ -23,40 +29,41 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationTyp
 import java.util.List;
 
 public class BlockTorqueDistributor extends BlockTorqueBase {
+    static final PropertyEnum<Type> TYPE = PropertyEnum.create("type", Type.class);
 
     protected BlockTorqueDistributor(String regName) {
-        super(Material.rock);
+        super(Material.ROCK);
         this.setCreativeTab(AWAutomationItemLoader.automationTab);
-        this.setBlockName(regName);
+        this.setUnlocalizedName(regName);
     }
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess world, BlockPos pos, EnumFacing side) {
         return false;
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata) {
-        switch (metadata) {
-            case 0:
+    public TileEntity createTileEntity(World world, IBlockState state) {
+        switch (state.getValue(TYPE)) {
+            case LIGHT:
                 return new TileDistributorLight();
-            case 1:
+            case MEDIUM:
                 return new TileDistributorMedium();
-            case 2:
+            case HEAVY:
                 return new TileDistributorHeavy();
         }
         return new TileDistributorLight();
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
-    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
-        list.add(new ItemStack(item, 1, 0));
-        list.add(new ItemStack(item, 1, 1));
-        list.add(new ItemStack(item, 1, 2));
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
+        items.add(new ItemStack(this, 1, 0));
+        items.add(new ItemStack(this, 1, 1));
+        items.add(new ItemStack(this, 1, 2));
     }
 
+/*
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister register) {
@@ -68,6 +75,7 @@ public class BlockTorqueDistributor extends BlockTorqueBase {
         return Blocks.iron_block.getIcon(0, 0);
     }
 
+*/
     @Override
     public RotationType getRotationType() {
         return RotationType.SIX_WAY;
@@ -79,12 +87,12 @@ public class BlockTorqueDistributor extends BlockTorqueBase {
     }
 
     @Override
-    public boolean isOpaqueCube() {
+    public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
 
     @Override
-    public boolean isNormalCube() {
+    public boolean isNormalCube(IBlockState state) {
         return false;
     }
 
@@ -104,9 +112,9 @@ public class BlockTorqueDistributor extends BlockTorqueBase {
     public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
         float min = 0.1875f, max = 0.8125f;
         float x1 = min, y1 = min, z1 = min, x2 = max, y2 = max, z2 = max;
-        TileEntity te = world.getTileEntity(x, y, z);
+        TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileTorqueSidedCell) {
-            TileTorqueSidedCell tile = (TileTorqueSidedCell) world.getTileEntity(x, y, z);
+            TileTorqueSidedCell tile = (TileTorqueSidedCell) world.getTileEntity(pos);
             boolean[] sides = tile.getConnections();
             if (sides[0]) {
                 y1 = 0.f;
@@ -128,6 +136,29 @@ public class BlockTorqueDistributor extends BlockTorqueBase {
             }
         }
         setBlockBounds(x1, y1, z1, x2, y2, z2);
+    }
+    public enum Type implements IStringSerializable {
+        LIGHT(0),
+        MEDIUM(1),
+        HEAVY(2);
+
+        private int meta;
+        Type(int meta) {
+            this.meta = meta;
+        }
+
+        @Override
+        public String getName() {
+            return name().toLowerCase();
+        }
+
+        public int getMeta() {
+            return meta;
+        }
+
+        public static Type byMetadata(int meta) {
+            return values()[meta];
+        }
     }
 
 }

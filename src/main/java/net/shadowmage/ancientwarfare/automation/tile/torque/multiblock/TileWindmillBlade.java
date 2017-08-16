@@ -6,7 +6,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.util.BlockFinder;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
@@ -156,7 +156,7 @@ public class TileWindmillBlade extends TileEntity {
     private void informNeighborsToValidate() {
         TileEntity te;
         int x, y, z;
-        for (ForgeDirection d : ForgeDirection.VALID_DIRECTIONS) {
+        for (EnumFacing d : EnumFacing.VALID_DIRECTIONS) {
             x = xCoord + d.offsetX;
             y = yCoord + d.offsetY;
             z = zCoord + d.offsetZ;

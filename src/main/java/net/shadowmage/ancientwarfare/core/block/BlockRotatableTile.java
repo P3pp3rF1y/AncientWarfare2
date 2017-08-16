@@ -1,11 +1,11 @@
 package net.shadowmage.ancientwarfare.core.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.util.IIcon;
+
 import net.minecraft.world.IBlockAccess;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
@@ -34,7 +34,7 @@ public abstract class BlockRotatableTile extends Block implements IRotatableBloc
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
-        IRotatableTile tile = (IRotatableTile) world.getTileEntity(x, y, z);
+        IRotatableTile tile = (IRotatableTile) world.getTileEntity(pos);
         return iconMap.getIcon(this, tile.getPrimaryFacing().ordinal(), side);
     }
 

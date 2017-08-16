@@ -1,17 +1,20 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueBase;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
@@ -33,21 +36,22 @@ public abstract class BlockTorqueBase extends Block implements IRotatableBlock {
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int sideHit, float hitX, float hitY, float hitZ) {
-        TileEntity te = world.getTileEntity(x, y, z);
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        TileEntity te = world.getTileEntity(pos);
         return te instanceof IInteractableTile && ((IInteractableTile) te).onBlockClicked(player);
     }
 
     @Override
-    public boolean isNormalCube(IBlockAccess world, int x, int y, int z) {
+    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
         return false;
     }
 
     @Override
-    public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
         return false;
     }
 
+/*
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister register) {
@@ -62,7 +66,7 @@ public abstract class BlockTorqueBase extends Block implements IRotatableBlock {
         IRotatableTile tt = (IRotatableTile) block.getTileEntity(x, y, z);
         int meta = 2;
         if (tt != null) {
-            ForgeDirection d = tt.getPrimaryFacing();
+            EnumFacing d = tt.getPrimaryFacing();
             if (d != null) {
                 meta = d.ordinal();
             }
@@ -101,63 +105,66 @@ public abstract class BlockTorqueBase extends Block implements IRotatableBlock {
         return iconMaps.get(meta).getIcon(side);
     }
 
+*/
+
     @Override
-    public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ) {
-        TileEntity te = world.getTileEntity(x, y, z);
+    public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
+        TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileTorqueBase) {
             ((TileTorqueBase) te).onNeighborTileChanged();
         }
-        super.onNeighborChange(world, x, y, z, tileX, tileY, tileZ);
+        super.onNeighborChange(world, pos, neighbor);
     }
 
     @Override
-    public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
-        TileEntity te = world.getTileEntity(x, y, z);
+    public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
+        TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileTorqueBase) {
             ((TileTorqueBase) te).onNeighborTileChanged();
         }
-        super.onNeighborBlockChange(world, x, y, z, block);
+        super.neighborChanged(state, world, pos, block, fromPos);
     }
 
     @Override
-    public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis) {
-        if (worldObj.isRemote) {
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis) {
+        if (world.isRemote) { //TODO is this needed or it's always server side?
             return false;
         }
-        IRotatableTile tt = (IRotatableTile) worldObj.getTileEntity(x, y, z);
-        int meta = tt.getPrimaryFacing().ordinal();
-        int rMeta = BlockRotationHandler.getRotatedMeta(this, meta, axis);
-        if (rMeta != meta) {
-            tt.setPrimaryFacing(ForgeDirection.getOrientation(rMeta));
-            worldObj.markBlockForUpdate(x, y, z);
+        IRotatableTile tt = (IRotatableTile) world.getTileEntity(pos);
+        EnumFacing facing = tt.getPrimaryFacing();
+        EnumFacing rotatedFacing = facing.rotateAround(axis.getAxis());
+        if (facing != rotatedFacing) {
+            tt.setPrimaryFacing(rotatedFacing);
+            IBlockState state = world.getBlockState(pos);
+            world.notifyBlockUpdate(pos, state, state, 3);
             return true;
         }
         return false;
     }
 
     @Override
-    public boolean onBlockEventReceived(World world, int x, int y, int z, int a, int b) {
-        TileEntity tileentity = world.getTileEntity(x, y, z);
-        return tileentity != null && tileentity.receiveClientEvent(a, b);
+    public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param) {
+        TileEntity tileentity = world.getTileEntity(pos);
+        return tileentity != null && tileentity.receiveClientEvent(id, param);
     }
 
     @Override
-    public boolean hasTileEntity(int metadata) {
+    public boolean hasTileEntity(IBlockState state) {
         return true;
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-        TileEntity te = world.getTileEntity(x, y, z);
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+        TileEntity te = world.getTileEntity(pos);
         if (te instanceof IInventory) {
-            InventoryTools.dropInventoryInWorld(world, (IInventory) te, x, y, z);
+            InventoryTools.dropInventoryInWorld(world, (IInventory) te, pos);
         }
-        super.breakBlock(world, x, y, z, block, meta);
+        super.breakBlock(world, pos, state);
     }
 
     @Override
     public int damageDropped(int meta) {
-        return meta;
+        return meta; //TODO is there a common property that needs to be treated here / otherwise the individual child classes should handle their stuff
     }
 
 }

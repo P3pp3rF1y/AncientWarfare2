@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.core.block;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,7 +15,7 @@ import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
 public class BlockEngineeringStation extends BlockRotatableTile {
 
     protected BlockEngineeringStation() {
-        super(Material.rock);
+        super(Material.ROCK);
         this.setCreativeTab(AWCoreBlockLoader.coreTab);
         setIcon(RelativeSide.ANY_SIDE, "ancientwarfare:core/engineering_station_bottom");
         setIcon(RelativeSide.BOTTOM, "ancientwarfare:core/engineering_station_bottom");
@@ -28,12 +28,12 @@ public class BlockEngineeringStation extends BlockRotatableTile {
     }
 
     @Override
-    public boolean hasTileEntity(int metadata) {
+    public boolean hasTileEntity(IBlockState state) {
         return true;
     }
 
     @Override
-    public TileEntity createTileEntity(World world, int metadata) {
+    public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileEngineeringStation();
     }
 
@@ -46,8 +46,8 @@ public class BlockEngineeringStation extends BlockRotatableTile {
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, Block block, int meta) {
-        TileEngineeringStation tile = (TileEngineeringStation) world.getTileEntity(x, y, z);
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+        TileEngineeringStation tile = (TileEngineeringStation) world.getTileEntity(pos);
         if (tile != null) {
             tile.onBlockBreak();
         }
@@ -66,17 +66,17 @@ public class BlockEngineeringStation extends BlockRotatableTile {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(net.minecraft.world.IBlockAccess world, int x, int y, int z, int side) {
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess world, BlockPos pos, EnumFacing side) {
         return false;
     }
 
     @Override
-    public boolean isOpaqueCube() {
+    public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
 
     @Override
-    public boolean isNormalCube() {
+    public boolean isNormalCube(IBlockState state) {
         return false;
     }
 

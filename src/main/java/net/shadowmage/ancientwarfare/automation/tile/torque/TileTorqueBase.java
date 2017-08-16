@@ -10,7 +10,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.proxy.RFProxy;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
@@ -24,11 +24,11 @@ import net.shadowmage.ancientwarfare.core.network.PacketBlockEvent;
 @Optional.Interface(iface = "cofh.api.energy.IEnergyHandler", modid = "CoFHCore", striprefs = true)
 public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, IInteractableTile, IRotatableTile, IEnergyHandler {
 
-    public static final int DIRECTION_LENGTH = ForgeDirection.VALID_DIRECTIONS.length;
+    public static final int DIRECTION_LENGTH = EnumFacing.VALID_DIRECTIONS.length;
     /**
      * The primary facing direction for this tile.  Default to north for uninitialized tiles (null is not a valid value)
      */
-    protected ForgeDirection orientation = ForgeDirection.NORTH;
+    protected EnumFacing orientation = EnumFacing.NORTH;
 
     /**
      * used by server to limit packet sending<br>
@@ -53,31 +53,31 @@ public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, 
     //*************************************** COFH RF METHODS ***************************************//
     @Optional.Method(modid = "CoFHCore")
     @Override
-    public final int getEnergyStored(ForgeDirection from) {
+    public final int getEnergyStored(EnumFacing from) {
         return (int) (getTorqueStored(from) * AWAutomationStatics.torqueToRf);
     }
 
     @Optional.Method(modid = "CoFHCore")
     @Override
-    public final int getMaxEnergyStored(ForgeDirection from) {
+    public final int getMaxEnergyStored(EnumFacing from) {
         return (int) (getMaxTorque(from) * AWAutomationStatics.torqueToRf);
     }
 
     @Optional.Method(modid = "CoFHCore")
     @Override
-    public final boolean canConnectEnergy(ForgeDirection from) {
+    public final boolean canConnectEnergy(EnumFacing from) {
         return canOutputTorque(from) || canInputTorque(from);
     }
 
     @Optional.Method(modid = "CoFHCore")
     @Override
-    public final int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+    public final int extractEnergy(EnumFacing from, int maxExtract, boolean simulate) {
         return 0;
     }
 
     @Optional.Method(modid = "CoFHCore")
     @Override
-    public final int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+    public final int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
         if (!canInputTorque(from)) {
             return 0;
         }
@@ -108,11 +108,11 @@ public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, 
             throw new RuntimeException("Attempt to build neighbor cache on null world!!");
         }
         ITorqueTile[] torqueCache = new ITorqueTile[DIRECTION_LENGTH];
-        ForgeDirection dir;
+        EnumFacing dir;
         TileEntity te;
         int x, y, z;
         for (int i = 0; i < torqueCache.length; i++) {
-            dir = ForgeDirection.values()[i];
+            dir = EnumFacing.values()[i];
             if (!canOutputTorque(dir) && !canInputTorque(dir)) {
                 continue;
             }
@@ -132,11 +132,11 @@ public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, 
 
     private void buildRFCache() {
         TileEntity[] rfCache = new TileEntity[DIRECTION_LENGTH];
-        ForgeDirection dir;
+        EnumFacing dir;
         TileEntity te;
         int x, y, z;
         for (int i = 0; i < rfCache.length; i++) {
-            dir = ForgeDirection.values()[i];
+            dir = EnumFacing.values()[i];
             if (!canOutputTorque(dir) && !canInputTorque(dir)) {
                 continue;
             }
@@ -183,7 +183,7 @@ public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, 
 //*************************************** generic stuff ***************************************//
 
     @Override
-    public final void setPrimaryFacing(ForgeDirection d) {
+    public final void setPrimaryFacing(EnumFacing d) {
         this.orientation = d;
         this.worldObj.func_147453_f(xCoord, yCoord, zCoord, getBlockType());
         this.invalidateNeighborCache();
@@ -191,7 +191,7 @@ public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, 
     }
 
     @Override
-    public final ForgeDirection getPrimaryFacing() {
+    public final EnumFacing getPrimaryFacing() {
         return orientation;
     }
 
@@ -221,7 +221,7 @@ public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, 
         throw new UnsupportedOperationException();
     }
 
-    protected abstract void handleClientRotationData(ForgeDirection side, int value);
+    protected abstract void handleClientRotationData(EnumFacing side, int value);
 
     /**
      * @return the TOTAL amount stored in the entire tile (not just one side), used by on-right-click functionality
@@ -257,12 +257,12 @@ public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, 
         }
     }
 
-    protected void sendSideRotation(ForgeDirection side, int value) {
+    protected void sendSideRotation(EnumFacing side, int value) {
         int valueBits = (value & 0xff);
         sendDataToClient(side.ordinal(), valueBits);
     }
 
-    protected final double transferPowerTo(ForgeDirection from) {
+    protected final double transferPowerTo(EnumFacing from) {
         double transferred = 0;
         ITorqueTile[] tc = getTorqueCache();
         if (tc[from.ordinal()] != null) {
@@ -302,7 +302,7 @@ public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, 
         if (worldObj.isRemote) {
             if (a < DIRECTION_LENGTH) {
                 networkUpdateTicks = AWAutomationStatics.energyMinNetworkUpdateFrequency;
-                handleClientRotationData(ForgeDirection.values()[a], b);
+                handleClientRotationData(EnumFacing.values()[a], b);
             }
         }
         return true;
@@ -313,7 +313,7 @@ public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        orientation = ForgeDirection.getOrientation(tag.getInteger("orientation"));
+        orientation = EnumFacing.getOrientation(tag.getInteger("orientation"));
     }
 
     @Override
@@ -339,7 +339,7 @@ public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, 
 
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        orientation = ForgeDirection.getOrientation(pkt.func_148857_g().getInteger("orientation"));
+        orientation = EnumFacing.getOrientation(pkt.func_148857_g().getInteger("orientation"));
         this.invalidateNeighborCache();
         this.worldObj.func_147453_f(xCoord, yCoord, zCoord, getBlockType());
         this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);//uhh..why am i doing this on client?

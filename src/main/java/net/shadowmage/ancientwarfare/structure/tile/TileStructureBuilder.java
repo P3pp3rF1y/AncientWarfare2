@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.tile;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,7 +13,7 @@ import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentTranslation;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
@@ -80,17 +80,17 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwna
     }//NOOP
 
     @Override
-    public float getClientOutputRotation(ForgeDirection from, float delta) {
+    public float getClientOutputRotation(EnumFacing from, float delta) {
         return 0;
     }
 
     @Override
-    public boolean useOutputRotation(ForgeDirection from) {
+    public boolean useOutputRotation(EnumFacing from) {
         return false;
     }
 
     @Override
-    public double addTorque(ForgeDirection from, double energy) {
+    public double addTorque(EnumFacing from, double energy) {
         if (canInputTorque(from)) {
             if (energy + getTorqueStored(null) > getMaxTorque(null)) {
                 energy = getMaxTorque(null) - getTorqueStored(null);
@@ -105,22 +105,22 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwna
     }
 
     @Override
-    public double getMaxTorque(ForgeDirection from) {
+    public double getMaxTorque(EnumFacing from) {
         return maxEnergyStored;
     }
 
     @Override
-    public double getTorqueStored(ForgeDirection from) {
+    public double getTorqueStored(EnumFacing from) {
         return storedEnergy;
     }
 
     @Override
-    public double getMaxTorqueInput(ForgeDirection from) {
+    public double getMaxTorqueInput(EnumFacing from) {
         return maxInput;
     }
 
     @Override
-    public boolean canInputTorque(ForgeDirection from) {
+    public boolean canInputTorque(EnumFacing from) {
         return true;
     }
 
@@ -305,17 +305,17 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwna
     }
 
     @Override
-    public double getMaxTorqueOutput(ForgeDirection from) {
+    public double getMaxTorqueOutput(EnumFacing from) {
         return 0;
     }
 
     @Override
-    public boolean canOutputTorque(ForgeDirection towards) {
+    public boolean canOutputTorque(EnumFacing towards) {
         return false;
     }
 
     @Override
-    public double drainTorque(ForgeDirection from, double energy) {
+    public double drainTorque(EnumFacing from, double energy) {
         return 0;
     }
 

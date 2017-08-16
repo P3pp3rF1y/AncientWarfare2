@@ -4,7 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.gamedata.MailboxData;
 import net.shadowmage.ancientwarfare.automation.gamedata.MailboxData.DeliverableItem;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
@@ -218,12 +218,12 @@ public class TileMailbox extends TileOwned implements ISidedInventory, IRotatabl
     }
 
     @Override
-    public ForgeDirection getPrimaryFacing() {
-        return ForgeDirection.getOrientation(getBlockMetadata());
+    public EnumFacing getPrimaryFacing() {
+        return EnumFacing.getOrientation(getBlockMetadata());
     }
 
     @Override
-    public void setPrimaryFacing(ForgeDirection face) {
+    public void setPrimaryFacing(EnumFacing face) {
         worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, face.ordinal(), 0);
     }
 

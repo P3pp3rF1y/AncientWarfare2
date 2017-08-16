@@ -33,7 +33,7 @@ public class TemplateRuleBlockLogic extends TemplateRuleVanillaBlocks {
 
     public TemplateRuleBlockLogic(World world, int x, int y, int z, Block block, int meta, int turns) {
         super(world, x, y, z, block, meta, turns);
-        TileEntity te = world.getTileEntity(x, y, z);
+        TileEntity te = world.getTileEntity(pos);
         if(te!=null) {
             te.writeToNBT(tag);
             tag.removeTag("x");
@@ -50,7 +50,7 @@ public class TemplateRuleBlockLogic extends TemplateRuleVanillaBlocks {
         super.handlePlacement(world, turns, x, y, z, builder);
         int localMeta = BlockDataManager.INSTANCE.getRotatedMeta(block, this.meta, turns);
         world.setBlockMetadataWithNotify(x, y, z, localMeta, 3);
-        TileEntity te = world.getTileEntity(x, y, z);
+        TileEntity te = world.getTileEntity(pos);
         if (te != null) {
             tag.setInteger("x", x);
             tag.setInteger("y", y);

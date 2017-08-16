@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueBase;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
@@ -35,7 +35,7 @@ public class RenderTileHandEngine extends TileEntitySpecialRenderer implements I
 
         TileTorqueBase handEngine = (TileTorqueBase) te;
         float outRotation = -handEngine.getClientOutputRotation(handEngine.getPrimaryFacing(), delta);
-        float inRotation = -handEngine.getClientOutputRotation(ForgeDirection.UP, delta);//top side, not technically an 'output' rotation, but i'm lazy and not making a new method for it
+        float inRotation = -handEngine.getClientOutputRotation(EnumFacing.UP, delta);//top side, not technically an 'output' rotation, but i'm lazy and not making a new method for it
         renderModel(inRotation, outRotation, ((TileTorqueBase) te).getPrimaryFacing().ordinal());
         GL11.glPopMatrix();
     }

@@ -12,7 +12,7 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.item.ItemWorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
@@ -40,7 +40,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
 
     private EnumSet<WorksiteUpgrade> upgrades = EnumSet.noneOf(WorksiteUpgrade.class);
 
-    private ForgeDirection orientation = ForgeDirection.NORTH;
+    private EnumFacing orientation = EnumFacing.NORTH;
 
     private final TorqueCell torqueCell;
 
@@ -53,31 +53,31 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
     //*************************************** COFH RF METHODS ***************************************//
     @Optional.Method(modid = "CoFHCore")
     @Override
-    public final int getEnergyStored(ForgeDirection from) {
+    public final int getEnergyStored(EnumFacing from) {
         return (int) (getTorqueStored(from) * AWAutomationStatics.torqueToRf);
     }
 
     @Optional.Method(modid = "CoFHCore")
     @Override
-    public final int getMaxEnergyStored(ForgeDirection from) {
+    public final int getMaxEnergyStored(EnumFacing from) {
         return (int) (getMaxTorque(from) * AWAutomationStatics.torqueToRf);
     }
 
     @Optional.Method(modid = "CoFHCore")
     @Override
-    public final boolean canConnectEnergy(ForgeDirection from) {
+    public final boolean canConnectEnergy(EnumFacing from) {
         return canOutputTorque(from) || canInputTorque(from);
     }
 
     @Optional.Method(modid = "CoFHCore")
     @Override
-    public final int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+    public final int extractEnergy(EnumFacing from, int maxExtract, boolean simulate) {
         return 0;
     }
 
     @Optional.Method(modid = "CoFHCore")
     @Override
-    public final int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+    public final int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
         if (!canInputTorque(from)) {
             return 0;
         }
@@ -156,7 +156,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
         } else {
             worldObj.theProfiler.startSection("Check For Work");
             double ePerUse = IWorkSite.WorksiteImplementation.getEnergyPerActivation(efficiencyBonusFactor);
-            boolean hasWork = getTorqueStored(ForgeDirection.UNKNOWN) >= ePerUse && hasWorksiteWork();
+            boolean hasWork = getTorqueStored(EnumFacing.UNKNOWN) >= ePerUse && hasWorksiteWork();
             if (hasWork) {
                 worldObj.theProfiler.endStartSection("Process Work");
                 if (processWork()) {
@@ -242,62 +242,62 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
 //*************************************** TORQUE INTERACTION METHODS ***************************************//
 
     @Override
-    public final float getClientOutputRotation(ForgeDirection from, float delta) {
+    public final float getClientOutputRotation(EnumFacing from, float delta) {
         return 0;
     }
 
     @Override
-    public final boolean useOutputRotation(ForgeDirection from) {
+    public final boolean useOutputRotation(EnumFacing from) {
         return false;
     }
 
     @Override
-    public final double getMaxTorqueOutput(ForgeDirection from) {
+    public final double getMaxTorqueOutput(EnumFacing from) {
         return 0;
     }
 
     @Override
-    public final boolean canOutputTorque(ForgeDirection towards) {
+    public final boolean canOutputTorque(EnumFacing towards) {
         return false;
     }
 
     @Override
-    public final double drainTorque(ForgeDirection from, double energy) {
+    public final double drainTorque(EnumFacing from, double energy) {
         return 0;
     }
 
     @Override
     public final void addEnergyFromWorker(IWorker worker) {
-        addTorque(ForgeDirection.UNKNOWN, AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType()) * AWAutomationStatics.hand_cranked_generator_output);
+        addTorque(EnumFacing.UNKNOWN, AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType()) * AWAutomationStatics.hand_cranked_generator_output);
     }
 
     @Override
     public final void addEnergyFromPlayer(EntityPlayer player) {
-        addTorque(ForgeDirection.UNKNOWN, AWCoreStatics.energyPerWorkUnit * AWAutomationStatics.hand_cranked_generator_output);
+        addTorque(EnumFacing.UNKNOWN, AWCoreStatics.energyPerWorkUnit * AWAutomationStatics.hand_cranked_generator_output);
     }
 
     @Override
-    public final double addTorque(ForgeDirection from, double energy) {
+    public final double addTorque(EnumFacing from, double energy) {
         return torqueCell.addEnergy(energy);
     }
 
     @Override
-    public final double getMaxTorque(ForgeDirection from) {
+    public final double getMaxTorque(EnumFacing from) {
         return torqueCell.getMaxEnergy();
     }
 
     @Override
-    public final double getTorqueStored(ForgeDirection from) {
+    public final double getTorqueStored(EnumFacing from) {
         return torqueCell.getEnergy();
     }
 
     @Override
-    public final double getMaxTorqueInput(ForgeDirection from) {
+    public final double getMaxTorqueInput(EnumFacing from) {
         return torqueCell.getMaxTickInput();
     }
 
     @Override
-    public final boolean canInputTorque(ForgeDirection from) {
+    public final boolean canInputTorque(EnumFacing from) {
         return true;
     }
 
@@ -318,12 +318,12 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
     }
 
     @Override
-    public final ForgeDirection getPrimaryFacing() {
+    public final EnumFacing getPrimaryFacing() {
         return orientation;
     }
 
     @Override
-    public final void setPrimaryFacing(ForgeDirection face) {
+    public final void setPrimaryFacing(EnumFacing face) {
         orientation = face;
         this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
         markDirty();//notify neighbors of tile change
@@ -391,7 +391,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
         }
 
         if (tag.hasKey("orientation")) {
-            orientation = ForgeDirection.values()[tag.getInteger("orientation")];
+            orientation = EnumFacing.values()[tag.getInteger("orientation")];
         }
         updateEfficiency();
     }
@@ -425,7 +425,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
             }
         }
         updateEfficiency();
-        orientation = ForgeDirection.values()[pkt.func_148857_g().getInteger("orientation")];
+        orientation = EnumFacing.values()[pkt.func_148857_g().getInteger("orientation")];
         markDirty();
     }
 

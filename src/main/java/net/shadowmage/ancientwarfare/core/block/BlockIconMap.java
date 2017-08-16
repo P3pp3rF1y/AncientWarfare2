@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.core.block;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.util.IIcon;
+
 
 import java.util.HashMap;
 import java.util.Map;

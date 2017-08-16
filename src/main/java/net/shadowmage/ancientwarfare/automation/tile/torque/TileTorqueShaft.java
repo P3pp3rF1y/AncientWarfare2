@@ -1,6 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque;
 
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
@@ -103,7 +103,7 @@ public abstract class TileTorqueShaft extends TileTorqueSingleCell {
     }
 
     @Override
-    public float getClientOutputRotation(ForgeDirection from, float delta) {
+    public float getClientOutputRotation(EnumFacing from, float delta) {
         return prev() == null ? getRotation(rotation, prevRotation, delta) : prev().getClientOutputRotation(from, delta);
     }
 
