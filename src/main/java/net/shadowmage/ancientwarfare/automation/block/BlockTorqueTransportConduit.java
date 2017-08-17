@@ -1,17 +1,21 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileConduitHeavy;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileConduitLight;
@@ -19,9 +23,8 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.TileConduitMedium;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueSidedCell;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 
-import java.util.List;
-
 public class BlockTorqueTransportConduit extends BlockTorqueBase {
+    static final PropertyEnum<Type> TYPE = PropertyEnum.create("type", Type.class);
 
     protected BlockTorqueTransportConduit(String regName) {
         super(Material.ROCK);
@@ -31,24 +34,38 @@ public class BlockTorqueTransportConduit extends BlockTorqueBase {
     }
 
     @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, TYPE);
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return getDefaultState().withProperty(TYPE, Type.byMetadata(meta));
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(TYPE).getMeta();
+    }
+
+    @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        switch (metadata) {
-            case 0:
+        switch (state.getValue(TYPE)) {
+            case LIGHT:
                 return new TileConduitLight();
-            case 1:
+            case MEDIUM:
                 return new TileConduitMedium();
-            case 2:
+            case HEAVY:
                 return new TileConduitHeavy();
         }
         return new TileConduitLight();
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
-    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
-        list.add(new ItemStack(item, 1, 0));
-        list.add(new ItemStack(item, 1, 1));
-        list.add(new ItemStack(item, 1, 2));
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> list) {
+        list.add(new ItemStack(this, 1, 0));
+        list.add(new ItemStack(this, 1, 1));
+        list.add(new ItemStack(this, 1, 2));
     }
 
     @Override
@@ -77,6 +94,7 @@ public class BlockTorqueTransportConduit extends BlockTorqueBase {
         return false;
     }
 
+/*
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
@@ -94,21 +112,11 @@ public class BlockTorqueTransportConduit extends BlockTorqueBase {
         }
         return Blocks.iron_block.getIcon(side, 0);
     }
-
+*/
     @Override
-    public void setBlockBoundsForItemRender() {
-        float min = 0.1875f, max = 0.8125f;
-        setBlockBounds(min, 0, min, max, 1, max);
-    }
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+        //TODO static AABBs and combination created based on the boolean array
 
-    @Override
-    public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
-        setBlockBoundsBasedOnState(world, x, y, z);
-        return super.getCollisionBoundingBoxFromPool(world, x, y, z);
-    }
-
-    @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
         float min = 0.1875f, max = 0.8125f;
         float x1 = min, y1 = min, z1 = min, x2 = max, y2 = max, z2 = max;
         TileEntity te = world.getTileEntity(pos);
@@ -134,7 +142,30 @@ public class BlockTorqueTransportConduit extends BlockTorqueBase {
                 x2 = 1.f;
             }
         }
-        setBlockBounds(x1, y1, z1, x2, y2, z2);
+        return new AxisAlignedBB(x1, y1, z1, x2, y2, z2);
     }
 
+    public enum Type implements IStringSerializable {
+        LIGHT(0),
+        MEDIUM(1),
+        HEAVY(2);
+
+        private int meta;
+        Type(int meta) {
+            this.meta = meta;
+        }
+
+        @Override
+        public String getName() {
+            return name().toLowerCase();
+        }
+
+        public int getMeta() {
+            return meta;
+        }
+
+        public static Type byMetadata(int meta) {
+            return values()[meta];
+        }
+    }
 }

@@ -1,24 +1,25 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
-
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface;
-import net.shadowmage.ancientwarfare.core.block.BlockIconMap;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class BlockWarehouseInterface extends Block {
 
+/*
     private BlockIconMap iconMap = new BlockIconMap();
+*/
 
     public BlockWarehouseInterface(String regName) {
         super(Material.ROCK);
@@ -27,6 +28,7 @@ public class BlockWarehouseInterface extends Block {
         setHardness(2.f);
     }
 
+/*
     public BlockWarehouseInterface setIcon(int meta, int side, String texName) {
         this.iconMap.setIconTexture(side, meta, texName);
         return this;
@@ -43,6 +45,7 @@ public class BlockWarehouseInterface extends Block {
     public IIcon getIcon(int side, int meta) {
         return iconMap.getIconFor(side, meta);
     }
+*/
 
     @Override
     public boolean hasTileEntity(IBlockState state) {
@@ -64,8 +67,8 @@ public class BlockWarehouseInterface extends Block {
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
         TileEntity te = world.getTileEntity(pos);
         if (te instanceof IInventory) {
-            InventoryTools.dropInventoryInWorld(world, (IInventory) te, x, y, z);
+            InventoryTools.dropInventoryInWorld(world, (IInventory) te, pos);
         }
-        super.breakBlock(world, x, y, z, block, meta);
+        super.breakBlock(world, pos, state);
     }
 }

@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
@@ -25,7 +26,7 @@ import javax.annotation.ParametersAreNonnullByDefault;
 
 @ParametersAreNonnullByDefault
 public class BlockMailbox extends Block implements IRotatableBlock {
-    private static final PropertyDirection FACING = PropertyDirection.create("facing", EnumFacing.Plane.HORIZONTAL);
+    private static final PropertyDirection FACING = BlockHorizontal.FACING;
 
     IconRotationMap iconMap = new IconRotationMap();
 

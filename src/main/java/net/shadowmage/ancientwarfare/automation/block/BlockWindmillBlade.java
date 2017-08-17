@@ -1,36 +1,34 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileWindmillBlade;
 
 public class BlockWindmillBlade extends Block {
 
     public BlockWindmillBlade(String regName) {
-        super(Material.wood);
+        super(Material.WOOD);
         this.setUnlocalizedName(regName);
         this.setCreativeTab(AWAutomationItemLoader.automationTab);
     }
 
     @Override
-    public boolean onBlockEventReceived(World world, int x, int y, int z, int a, int b) {
+    public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param) {
         TileEntity tileentity = world.getTileEntity(pos);
-        return tileentity != null && tileentity.receiveClientEvent(a, b);
+        return tileentity != null && tileentity.receiveClientEvent(id, param);
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(net.minecraft.world.IBlockAccess access, int x, int y, int z, int side) {
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
         return false;
     }
 
@@ -49,6 +47,7 @@ public class BlockWindmillBlade extends Block {
         return false;
     }
 
+/*
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
@@ -59,19 +58,20 @@ public class BlockWindmillBlade extends Block {
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister register) {
     }
+*/
 
     @Override
-    public void onPostBlockPlaced(World world, int x, int y, int z, int meta) {
-        super.onPostBlockPlaced(world, x, y, z, meta);
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+        super.onBlockPlacedBy(world, pos, state, placer, stack);
         TileWindmillBlade te = (TileWindmillBlade) world.getTileEntity(pos);
         te.blockPlaced();
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, Block block, int face) {
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
         TileWindmillBlade te = (TileWindmillBlade) world.getTileEntity(pos);
-        super.breakBlock(world, x, y, z, block, face);
-        te.blockBroken();//have to call post block-break so that the tile properly sees the block/tile as gone
+        super.breakBlock(world, pos, state);
+        te.blockBroken();//have to call post block-break so that the tile properly sees the block/tile as gone //TODO invalidate?
     }
 
     @Override

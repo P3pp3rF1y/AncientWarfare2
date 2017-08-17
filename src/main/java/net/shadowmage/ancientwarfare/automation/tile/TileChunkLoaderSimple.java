@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.ForgeChunkManager.Type;
@@ -15,11 +15,6 @@ public class TileChunkLoaderSimple extends TileEntity implements IChunkLoaderTil
 
     public TileChunkLoaderSimple() {
 
-    }
-
-    @Override
-    public boolean canUpdate() {
-        return false;
     }
 
     public void releaseTicket() {
@@ -45,7 +40,7 @@ public class TileChunkLoaderSimple extends TileEntity implements IChunkLoaderTil
     }
 
     public void setupInitialTicket() {
-        this.chunkTicket = ForgeChunkManager.requestTicket(AncientWarfareAutomation.instance, worldObj, Type.NORMAL);
+        this.chunkTicket = ForgeChunkManager.requestTicket(AncientWarfareAutomation.instance, world, Type.NORMAL);
         if (this.chunkTicket != null) {
             writeDataToTicket();
             forceTicketChunks();
@@ -53,19 +48,20 @@ public class TileChunkLoaderSimple extends TileEntity implements IChunkLoaderTil
     }
 
     protected void writeDataToTicket() {
-        AWChunkLoader.INSTANCE.writeDataToTicket(chunkTicket, xCoord, yCoord, zCoord);
+        AWChunkLoader.INSTANCE.writeDataToTicket(chunkTicket, pos);
     }
 
     protected void forceTicketChunks() {
-        int cx = xCoord >> 4;
-        int cz = zCoord >> 4;
+        int cx = pos.getX() >> 4;
+        int cz = pos.getZ() >> 4;
         for (int x = cx - 1; x <= cx + 1; x++) {
             for (int z = cz - 1; z <= cz + 1; z++) {
-                ChunkCoordIntPair ccip = new ChunkCoordIntPair(x, z);
-                ForgeChunkManager.forceChunk(this.chunkTicket, ccip);
+                ChunkPos chunkPos = new ChunkPos(x, z);
+                ForgeChunkManager.forceChunk(this.chunkTicket, chunkPos);
             }
         }
-//  AWLog.logDebug("ticket now has chunks: "+tk.getChunkList());
+//TODO either uncomment and log chunk loading info or just remove this
+        //  AWLog.logDebug("ticket now has chunks: "+tk.getChunkList());
 //  AWLog.logDebug("total forced chunks are: "+ForgeChunkManager.getPersistentChunksFor(worldObj));
     }
 }

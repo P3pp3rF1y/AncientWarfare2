@@ -1,13 +1,13 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.tileentity.TileEntity;
-
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileSterlingEngine;
 
 public class BlockTorqueGeneratorSterling extends BlockTorqueGenerator {
@@ -37,6 +37,7 @@ public class BlockTorqueGeneratorSterling extends BlockTorqueGenerator {
         return false;
     }
 
+/*
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister register) {
@@ -47,5 +48,6 @@ public class BlockTorqueGeneratorSterling extends BlockTorqueGenerator {
     public IIcon getIcon(int side, int meta) {
         return Blocks.iron_block.getIcon(side, 0);
     }
+*/
 
 }

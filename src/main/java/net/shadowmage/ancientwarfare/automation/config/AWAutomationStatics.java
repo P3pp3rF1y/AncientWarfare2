@@ -24,7 +24,7 @@ import net.minecraftforge.common.config.Property;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 
 public class AWAutomationStatics extends ModConfiguration {
-
+    //TODO config annotations
     public static int conduitRenderID = -1;
     public static int sterlingEngineRenderID = -1;
 

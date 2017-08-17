@@ -1,29 +1,32 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorageLarge;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorageMedium;
-import net.shadowmage.ancientwarfare.core.block.BlockIconMap;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 
-import java.util.List;
-
 public class BlockWarehouseStorage extends Block {
+    static final PropertyEnum<Size> SIZE = PropertyEnum.create("size", Size.class);
 
+/*
     private BlockIconMap iconMap = new BlockIconMap();
+*/
 
     public BlockWarehouseStorage(String regName) {
         super(Material.ROCK);
@@ -32,22 +35,40 @@ public class BlockWarehouseStorage extends Block {
         setHardness(2.f);
     }
 
-    public BlockWarehouseStorage setIcon(int meta, int side, String texName) {
-        this.iconMap.setIconTexture(side, meta, texName);
-        return this;
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, SIZE);
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister reg) {
-        iconMap.registerIcons(reg);
+    public IBlockState getStateFromMeta(int meta) {
+        return getDefaultState().withProperty(SIZE, Size.byMetadata(meta));
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-        return iconMap.getIconFor(side, meta);
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(SIZE).getMeta();
     }
+
+    /*
+		public BlockWarehouseStorage setIcon(int meta, int side, String texName) {
+			this.iconMap.setIconTexture(side, meta, texName);
+			return this;
+		}
+
+		@Override
+		@SideOnly(Side.CLIENT)
+		public void registerBlockIcons(IIconRegister reg) {
+			iconMap.registerIcons(reg);
+		}
+
+		@Override
+		@SideOnly(Side.CLIENT)
+		public IIcon getIcon(int side, int meta) {
+			return iconMap.getIconFor(side, meta);
+		}
+
+	 */
 
     @Override
     public boolean hasTileEntity(IBlockState state) {
@@ -56,22 +77,21 @@ public class BlockWarehouseStorage extends Block {
 
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        switch (metadata) {
-            case 1:
+        switch (state.getValue(SIZE)) {
+            case MEDIUM:
                 return new TileWarehouseStorageMedium();
-            case 2:
+            case LARGE:
                 return new TileWarehouseStorageLarge();
             default:
                 return new TileWarehouseStorage();
         }
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
-    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
-        list.add(new ItemStack(item, 1, 0));
-        list.add(new ItemStack(item, 1, 1));
-        list.add(new ItemStack(item, 1, 2));
+    public void getSubBlocks(CreativeTabs itemIn, NonNullList<ItemStack> items) {
+        items.add(new ItemStack(this, 1, 0));
+        items.add(new ItemStack(this, 1, 1));
+        items.add(new ItemStack(this, 1, 2));
     }
 
     @Override
@@ -81,24 +101,47 @@ public class BlockWarehouseStorage extends Block {
     }
 
     @Override
-    public void breakBlock(World world, int x, int y, int z, Block block, int fortune) {
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
         TileWarehouseStorage tile = (TileWarehouseStorage) world.getTileEntity(pos);
         if (tile != null) {
             tile.onTileBroken();
         }
-        super.breakBlock(world, x, y, z, block, fortune);
+        super.breakBlock(world, pos, state);
     }
 
     @Override
-    public int damageDropped(int meta) {
-        return meta;
+    public int damageDropped(IBlockState state) {
+        return state.getValue(SIZE).getMeta();
     }
 
     @Override
-    public boolean onBlockEventReceived(World world, int x, int y, int z, int eventID, int eventParam) {
-        super.onBlockEventReceived(world, x, y, z, eventID, eventParam);
+    public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param) {
+        super.eventReceived(state, world, pos, id, param);
         TileEntity tileentity = world.getTileEntity(pos);
-        return tileentity != null && tileentity.receiveClientEvent(eventID, eventParam);
+        return tileentity != null && tileentity.receiveClientEvent(id, param);
     }
 
+    public enum Size implements IStringSerializable {
+        STANDARD(0),
+        MEDIUM(1),
+        LARGE(2);
+
+        private int meta;
+        Size(int meta) {
+            this.meta = meta;
+        }
+
+        @Override
+        public String getName() {
+            return name().toLowerCase();
+        }
+
+        public int getMeta() {
+            return meta;
+        }
+
+        public static Size byMetadata(int meta) {
+            return values()[meta];
+        }
+    }
 }

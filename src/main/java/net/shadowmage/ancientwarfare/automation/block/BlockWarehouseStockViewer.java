@@ -1,29 +1,31 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 
-import java.util.List;
+import javax.annotation.Nullable;
 
 public class BlockWarehouseStockViewer extends Block implements IRotatableBlock {
+    private static final PropertyDirection FACING = BlockDirectional.FACING;
 
     public BlockWarehouseStockViewer(String regName) {
         super(Material.ROCK);
@@ -33,10 +35,28 @@ public class BlockWarehouseStockViewer extends Block implements IRotatableBlock 
     }
 
     @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, FACING);
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return getDefaultState().withProperty(FACING, EnumFacing.VALUES[meta]);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(FACING).ordinal();
+    }
+
+
+    /*
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister p_149651_1_) {
 
     }
+*/
 
     @Override
     public RotationType getRotationType() {
@@ -50,17 +70,12 @@ public class BlockWarehouseStockViewer extends Block implements IRotatableBlock 
     }
 
     @Override
-    public boolean isBlockSolid(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
-        return false;
-    }
-
-    @Override
     public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
 
     @Override
-    public boolean renderAsNormalBlock() {
+    public boolean isNormalCube(IBlockState state) {
         return false;
     }
 
@@ -69,49 +84,40 @@ public class BlockWarehouseStockViewer extends Block implements IRotatableBlock 
         return true;
     }
 
-    @SuppressWarnings("rawtypes")
+    @Nullable
     @Override
-    public void addCollisionBoxesToList(World p_149743_1_, int p_149743_2_, int p_149743_3_, int p_149743_4_, AxisAlignedBB p_149743_5_, List p_149743_6_, Entity p_149743_7_) {
-        //noop for no collisions
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+        return NULL_AABB;
     }
 
     @Override
-    public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
-        int meta = world.getBlockMetadata(x, y, z);
-        EnumFacing d = EnumFacing.getOrientation(meta).getOpposite();
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        //TODO static AABBs
+
         float wmin = 0.125f;
         float wmax = 0.875f;
         float hmin = 0.375f;
         float hmax = 0.875f;
-        switch (d) {
+        switch (state.getValue(FACING)) {
             case EAST: {
-                setBlockBounds(wmax, hmin, 0, 1.f, hmax, 1);
+                return new AxisAlignedBB(wmax, hmin, 0, 1.f, hmax, 1);
             }
-            break;
             case WEST: {
-                setBlockBounds(0, hmin, 0, wmin, hmax, 1);
+                return new AxisAlignedBB(0, hmin, 0, wmin, hmax, 1);
             }
-            break;
             case NORTH: {
-                setBlockBounds(0, hmin, 0, 1, hmax, wmin);
+                return new AxisAlignedBB(0, hmin, 0, 1, hmax, wmin);
             }
-            break;
             case SOUTH: {
-                setBlockBounds(0, hmin, wmax, 1, hmax, 1);
+                return new AxisAlignedBB(0, hmin, wmax, 1, hmax, 1);
             }
-            break;
             default: {
-                setBlockBounds(0, 0, 0, 1, 1, 1);
+                return new AxisAlignedBB(0, 0, 0, 1, 1, 1);
             }
-            break;
         }
     }
 
-    @Override
-    public void setBlockBoundsForItemRender() {
-        setBlockBounds(0.875f, 0.375f, 0.f, 1.f, 0.875f, 1.f);
-    }
-
+    /*
     @Override
     public BlockWarehouseStockViewer setIcon(RelativeSide side, String texName) {
         return this;
@@ -122,6 +128,7 @@ public class BlockWarehouseStockViewer extends Block implements IRotatableBlock 
     public IIcon getIcon(int side, int meta) {
         return Blocks.planks.getIcon(0, 0);
     }
+*/
 
     @Override
     public boolean hasTileEntity(IBlockState state) {
@@ -140,10 +147,9 @@ public class BlockWarehouseStockViewer extends Block implements IRotatableBlock 
     }
 
     @Override
-    public boolean onBlockEventReceived(World world, int x, int y, int z, int a, int b) {
-        super.onBlockEventReceived(world, x, y, z, a, b);
+    public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param) {
+        super.eventReceived(state, world, pos, id, param);
         TileEntity tileentity = world.getTileEntity(pos);
-        return tileentity != null && tileentity.receiveClientEvent(a, b);
+        return tileentity != null && tileentity.receiveClientEvent(id, param);
     }
-
 }

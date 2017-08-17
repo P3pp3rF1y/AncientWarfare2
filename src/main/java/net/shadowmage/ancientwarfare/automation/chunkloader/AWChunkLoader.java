@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.chunkloader;
 
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager.LoadingCallback;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
@@ -21,11 +21,7 @@ public final class AWChunkLoader implements LoadingCallback {
     public void ticketsLoaded(List<Ticket> tickets, World world) {
         for (Ticket tk : tickets) {
             if (!tk.isPlayerTicket() && tk.getModId().startsWith(AncientWarfareCore.modID) && tk.getModData().hasKey("tilePosition")) {
-                NBTTagCompound posTag = tk.getModData().getCompoundTag("tilePosition");
-                int x = posTag.getInteger("x");
-                int y = posTag.getInteger("y");
-                int z = posTag.getInteger("z");
-                TileEntity te = world.getTileEntity(pos);
+                TileEntity te = world.getTileEntity(BlockPos.fromLong(tk.getModData().getLong("tilePosition")));
                 if (te instanceof IChunkLoaderTile) {
                     ((IChunkLoaderTile) te).setTicket(tk);
                 }
@@ -33,12 +29,8 @@ public final class AWChunkLoader implements LoadingCallback {
         }
     }
 
-    public void writeDataToTicket(Ticket tk, int x, int y, int z) {
-        NBTTagCompound posTag = new NBTTagCompound();
-        posTag.setInteger("x", x);
-        posTag.setInteger("y", y);
-        posTag.setInteger("z", z);
-        tk.getModData().setTag("tilePosition", posTag);
+    public void writeDataToTicket(Ticket tk, BlockPos pos) {
+        tk.getModData().setLong("tilePosition", pos.toLong());
     }
 
 }
