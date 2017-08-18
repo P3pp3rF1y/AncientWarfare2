@@ -29,11 +29,11 @@ public class ItemResearchBook extends Item {
         super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
         String name = getResearcherName(par1ItemStack);
         if (name == null) {
-            par3List.add(StatCollector.translateToLocal("guistrings.research.researcher_name") + ": " + StatCollector.translateToLocal("guistrings.research.no_researcher"));
-            par3List.add(StatCollector.translateToLocal("guistrings.research.right_click_to_bind"));
+            par3List.add(I18n.format("guistrings.research.researcher_name") + ": " + I18n.format("guistrings.research.no_researcher"));
+            par3List.add(I18n.format("guistrings.research.right_click_to_bind"));
         } else {
-            par3List.add(StatCollector.translateToLocal("guistrings.research.researcher_name") + ": " + name);
-            par3List.add(StatCollector.translateToLocal("guistrings.research.right_click_to_view"));
+            par3List.add(I18n.format("guistrings.research.researcher_name") + ": " + name);
+            par3List.add(I18n.format("guistrings.research.right_click_to_view"));
         }
     }
 

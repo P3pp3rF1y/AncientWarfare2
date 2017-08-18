@@ -161,7 +161,7 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
             }
             int moved = 0;
             ItemStack stack;
-            int stackSize = 0;
+            int.setCount(0);
             int fromIndices[] = InventoryTools.getSlotsForSide(from, fromSide);
             boolean shouldMove;
             for (int index : fromIndices) {
@@ -170,7 +170,7 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
                     continue;
                 }
                 shouldMove = false;
-                stackSize = stack.stackSize;
+               .setCount(stack.stackSize);
                 for (ItemStack filter : filters) {
                     if (filter == null) {
                         continue;
@@ -203,7 +203,7 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
             }
             int moved = 0;
             ItemStack stack;
-            int stackSize = 0;
+            int.setCount(0);
             int fromIndices[] = InventoryTools.getSlotsForSide(from, fromSide);
             boolean shouldMove;
             for (int index : fromIndices) {
@@ -212,7 +212,7 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
                     continue;
                 }
                 shouldMove = true;
-                stackSize = stack.stackSize;
+               .setCount(stack.stackSize);
                 for (ItemStack filter : filters) {
                     if (filter == null) {
                         continue;
@@ -342,7 +342,7 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
                     continue;
                 }
                 ItemStack filterAdjusted = filter.copy();
-                filterAdjusted.stackSize = toMove;
+                filterAdjusted.setCount(toMove);
                 if (!InventoryTools.canInventoryHold(to, toSide, filterAdjusted))
                     continue;
                 moved = InventoryTools.transferItems(from, to, filterAdjusted, foundCount, fromSide, toSide, ignoreDamage, ignoreTag);

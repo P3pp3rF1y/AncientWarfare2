@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.automation.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
@@ -14,7 +15,7 @@ public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCra
 
     public ContainerWorksiteAutoCrafting(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
-        IInventory inventory = tileEntity.craftMatrix;
+        InventoryCrafting inventory = tileEntity.craftMatrix;
 
         //slot 0 = outputSlot
         //slot 1 = bookSlot
@@ -74,7 +75,7 @@ public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCra
 
     @Override
     public void handlePacketData(NBTTagCompound tag) {
-        if (!player.worldObj.isRemote && tag.hasKey("craft")) {
+        if (!player.world.isRemote && tag.hasKey("craft")) {
             tileEntity.tryCraftItem();
         }
     }
@@ -116,15 +117,15 @@ public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCra
                     return null;
                 }
             }
-            if (slotStack.stackSize == 0) {
-                theSlot.putStack(null);
+            if (slotStack.getCount() == 0) {
+                theSlot.putStack(ItemStack.EMPTY);
             } else {
                 theSlot.onSlotChanged();
             }
-            if (slotStack.stackSize == slotStackCopy.stackSize) {
+            if (slotStack.getCount() == slotStackCopy.getCount()) {
                 return null;
             }
-            theSlot.onPickupFromSlot(par1EntityPlayer, slotStack);
+            theSlot.onTake(par1EntityPlayer, slotStack);
         }
         return slotStackCopy;
     }

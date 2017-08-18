@@ -28,17 +28,17 @@ public class ItemConstructionToolLakes extends Item {
         if (pos == null) {
             return stack;
         }
-        Block block = player.worldObj.getBlock(pos.x, pos.y, pos.z);
-        if (!block.isAir(player.worldObj, pos.x, pos.y, pos.z)) {
+        Block block = player.world.getBlock(pos.x, pos.y, pos.z);
+        if (!block.isAir(player.world, pos.x, pos.y, pos.z)) {
             return stack;
         }
-        FloodFillPathfinder pf = new FloodFillPathfinder(player.worldObj, pos.x, pos.y, pos.z, block, 0, false, true);
+        FloodFillPathfinder pf = new FloodFillPathfinder(player.world, pos.x, pos.y, pos.z, block, 0, false, true);
         Set<BlockPosition> blocks = pf.doFloodFill();
         for (BlockPosition p : blocks) {
-            player.worldObj.setBlock(p.x, p.y, p.z, Blocks.flowing_water);
+            player.world.setBlock(p.x, p.y, p.z, Blocks.flowing_water);
         }
         if (!player.capabilities.isCreativeMode) {
-            stack.stackSize--;
+            stack.shrink(1);
         }
         return stack;
     }

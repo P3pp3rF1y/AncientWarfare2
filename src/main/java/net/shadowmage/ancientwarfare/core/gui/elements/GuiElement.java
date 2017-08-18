@@ -178,7 +178,7 @@ public abstract class GuiElement {
     
     public void addTooltip(String text, int maxWidthInChars) {
         // wrap around \n characters
-        List<String> textLines = Arrays.asList(StatCollector.translateToLocal(text).split("\\\\n"));
+        List<String> textLines = Arrays.asList(I18n.format(text).split("\\\\n"));
         
         // perform additional word-wrapping to maxWidthInChars, if required
         List<String> textLinesWrapped = new ArrayList<String>();
@@ -243,11 +243,11 @@ public abstract class GuiElement {
             tooltipFound = tooltipCheck; 
         
         if (tooltipFound != null)
-            addTooltip(StatCollector.translateToLocal(tooltipFound));
+            addTooltip(I18n.format(tooltipFound));
     }
     
     private boolean isTooltipAvailable(String key) {
-        String translated = StatCollector.translateToLocal(key);
+        String translated = I18n.format(key);
         if (!translated.equals(key))
             return true;
         return false;

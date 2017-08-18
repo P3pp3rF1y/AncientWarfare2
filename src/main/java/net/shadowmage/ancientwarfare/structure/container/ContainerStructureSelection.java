@@ -18,7 +18,7 @@ public class ContainerStructureSelection extends ContainerStructureSelectionBase
 
     @Override
     public void handlePacketData(NBTTagCompound tag) {
-        if (!player.worldObj.isRemote && tag.hasKey("structName")) {
+        if (!player.world.isRemote && tag.hasKey("structName")) {
             buildSettings = ItemStructureSettings.getSettingsFor(player.getHeldItem());
             buildSettings.setName(tag.getString("structName"));
             ItemStructureSettings.setSettingsFor(player.getHeldItem(), buildSettings);

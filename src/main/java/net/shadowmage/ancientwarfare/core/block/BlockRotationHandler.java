@@ -30,25 +30,20 @@ public class BlockRotationHandler {
         return face.ordinal();
     }
 
-    public static int getMetaForPlacement(EntityLivingBase entity, IRotatableBlock block, int sideHit) {
-        return getFaceForPlacement(entity, block, sideHit).ordinal();
-    }
-
-    public static EnumFacing getFaceForPlacement(EntityLivingBase entity, IRotatableBlock block, int sideHit) {
+    public static EnumFacing getFaceForPlacement(EntityLivingBase entity, IRotatableBlock block, EnumFacing sideHit) {
         if (block.getRotationType() == RotationType.NONE) {
             return EnumFacing.NORTH;
         }
-        int f = BlockTools.getPlayerFacingFromYaw(entity.rotationYaw);
-        EnumFacing face = BlockTools.getForgeDirectionFromFacing(f);
+        EnumFacing facing = entity.getHorizontalFacing();
         if (block.getRotationType() == RotationType.SIX_WAY) {
-            if (sideHit == 0 || sideHit == 1) {
-                face = EnumFacing.getOrientation(sideHit).getOpposite();
+            if (sideHit.getAxis() == EnumFacing.Axis.Y) {
+                facing = sideHit.getOpposite();
             }
         }
         if (block.invertFacing()) {
-            face = face.getOpposite();
+            facing = facing.getOpposite();
         }
-        return face;
+        return facing;
     }
 
     public interface IRotatableBlock {
@@ -422,7 +417,7 @@ public class BlockRotationHandler {
                 int qty = var2 > stack.stackSize ? stack.stackSize : var2;
                 stack.stackSize -= qty;
                 ItemStack returnStack = stack.copy();
-                returnStack.stackSize = qty;
+                returnStack.setCount(qty);
                 if (stack.stackSize <= 0) {
                     inventorySlots[var1] = null;
                 }

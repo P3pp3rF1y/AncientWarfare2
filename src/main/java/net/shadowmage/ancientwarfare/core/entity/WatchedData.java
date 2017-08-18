@@ -46,7 +46,7 @@ public class WatchedData extends DataWatcher.WatchableObject{
             }else if(this == STRING){
                 return compound.getString(TAG);
             }else if(this == STACK){
-                return ItemStack.loadItemStackFromNBT(compound.getCompoundTag(TAG));
+                return new ItemStack(compound.getCompoundTag(TAG));
             }
             return null;
         }

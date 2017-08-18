@@ -74,7 +74,7 @@ public class ContainerNpcCreativeControls extends ContainerNpcBase<NpcBase> {
 
     @Override
     public void onContainerClosed(EntityPlayer par1EntityPlayer) {
-        if (hasChanged && !player.worldObj.isRemote) {
+        if (hasChanged && !player.world.isRemote) {
             hasChanged = false;
             entity.setOwnerName(ownerName);
             entity.setCustomTexRef(customTexRef);

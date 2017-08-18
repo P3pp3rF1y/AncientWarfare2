@@ -1,9 +1,10 @@
 package net.shadowmage.ancientwarfare.core.network;
 
-import cpw.mods.fml.common.network.internal.FMLProxyPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.PacketBuffer;
+import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 
 import java.util.HashMap;
 
@@ -47,12 +48,14 @@ public abstract class PacketBase {
 
     public static PacketBase readPacket(ByteBuf data) {
         PacketBase pkt = readHeaderFromStream(data);
-        pkt.readFromStream(data);
+        if (pkt != null) {
+            pkt.readFromStream(data);
+        }
         return pkt;
     }
 
     public final FMLProxyPacket getFMLPacket() {
-        ByteBuf buf = Unpooled.buffer();
+        PacketBuffer buf = new PacketBuffer(Unpooled.buffer());
         writeHeaderToStream(buf);
         writeToStream(buf);
         return new FMLProxyPacket(buf, NetworkHandler.CHANNELNAME);

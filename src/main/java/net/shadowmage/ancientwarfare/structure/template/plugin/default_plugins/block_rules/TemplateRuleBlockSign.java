@@ -64,7 +64,7 @@ public class TemplateRuleBlockSign extends TemplateRuleVanillaBlocks {
                     te.signText[i] = this.signContents[i];
                 }
             }
-            world.markBlockForUpdate(x, y, z);
+            world.notifyBlockUpdate(x, y, z);
         }
     }
 

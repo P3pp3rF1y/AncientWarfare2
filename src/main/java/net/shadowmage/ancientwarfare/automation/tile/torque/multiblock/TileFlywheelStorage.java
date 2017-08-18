@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque.multiblock;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
@@ -8,6 +9,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBlockEvent;
@@ -19,7 +21,7 @@ import java.util.List;
 
 public class TileFlywheelStorage extends TileEntity implements ITickable {
 
-    public BlockPosition controllerPos;
+    public BlockPos controllerPos;
     public boolean isControl = false;//set to true if this is the control block for a setup
     public int setWidth, setHeight, setCube, setType;//validation params, only 'valid' in the control block.  used by rendering
     public double storedEnergy, maxEnergyStored, maxRpm = 100;
@@ -87,9 +89,8 @@ public class TileFlywheelStorage extends TileEntity implements ITickable {
     }
 
     protected final void sendDataToClient(int type, int data) {
-        PacketBlockEvent pkt = new PacketBlockEvent();
-        pkt.setParams(xCoord, yCoord, zCoord, getBlockType(), (byte) type, (short) data);
-        NetworkHandler.sendToAllTrackingChunk(worldObj, xCoord >> 4, zCoord >> 4, pkt);
+        PacketBlockEvent pkt = new PacketBlockEvent(pos, getBlockType(), (byte) type, (short) data);
+        NetworkHandler.sendToAllTrackingChunk(world, pos.getX() >> 4, pos.getZ() >> 4, pkt);
     }
 
     @Override
@@ -99,7 +100,7 @@ public class TileFlywheelStorage extends TileEntity implements ITickable {
 
     @Override
     public boolean receiveClientEvent(int a, int b) {
-        if (worldObj.isRemote) {
+        if (world.isRemote) {
             if (a == 1) {
                 clientDestEnergy = b;
                 networkUpdateTicks = AWAutomationStatics.energyMinNetworkUpdateFrequency;
@@ -120,7 +121,7 @@ public class TileFlywheelStorage extends TileEntity implements ITickable {
             for(int i = -1; i < 3; i++){
                 for(int j = -1; j < setHeight + 1; j++){
                     for(int k = -1; k < 3; k++){
-                        tileEntity = worldObj.getTileEntity(xCoord + i, yCoord + j, zCoord + k);
+                        tileEntity = world.getTileEntity(pos.add(i, j, k));
                         if(tileEntity instanceof TileFlywheelStorage){
                             ((TileFlywheelStorage) tileEntity).setController(null);
                         }
@@ -145,15 +146,16 @@ public class TileFlywheelStorage extends TileEntity implements ITickable {
         validateSetup();
     }
 
-    public final void setController(BlockPosition pos) {
+    public final void setController(BlockPos pos) {
         this.controllerPos = pos;
         markDirty();
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        IBlockState state = world.getBlockState(pos);
+        world.notifyBlockUpdate(pos, state, state, 3);
     }
 
     protected boolean validateSetup() {
-        BlockFinder finder = new BlockFinder(worldObj, getBlockType(), getBlockMetadata(), 30);
-        Pair<BlockPosition, BlockPosition> corners = finder.cross(new BlockPosition(xCoord, yCoord, zCoord), new BlockPosition(3, worldObj.getActualHeight(), 3));
+        BlockFinder finder = new BlockFinder(world, getBlockType(), getBlockMetadata(), 30);
+        Pair<BlockPosition, BlockPosition> corners = finder.cross(pos, new BlockPosition(3, world.getActualHeight(), 3));
         int minX = corners.getLeft().x, minY = corners.getLeft().y, minZ = corners.getLeft().z;
         int w = corners.getRight().x - minX + 1, h = corners.getRight().y - minY + 1, l = corners.getRight().z - minZ + 1;
         boolean valid = w == l && (w == 1 || w == 3)  && finder.box(corners);
@@ -170,11 +172,11 @@ public class TileFlywheelStorage extends TileEntity implements ITickable {
 
     private void setValidSetup(List<BlockPosition> set, int cx, int cy, int cz, int size, int height, int type) {
         controllerPos = new BlockPosition(cx, cy, cz);
-        TileEntity te = worldObj.getTileEntity(controllerPos.x, controllerPos.y, controllerPos.z);
+        TileEntity te = world.getTileEntity(controllerPos.x, controllerPos.y, controllerPos.z);
         if (te instanceof TileFlywheelStorage) {
             ((TileFlywheelStorage) te).setAsController(size, height, type);
             for (BlockPosition pos : set) {
-                te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
+                te = world.getTileEntity(pos.x, pos.y, pos.z);
                 if (te instanceof TileFlywheelStorage) {
                     ((TileFlywheelStorage) te).setController(controllerPos);
                 }
@@ -207,7 +209,7 @@ public class TileFlywheelStorage extends TileEntity implements ITickable {
         }
         this.maxEnergyStored = (double) setCube * energyPerBlockForType;
         markDirty();
-        this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        this.world.notifyBlockUpdate(xCoord, yCoord, zCoord);
     }
 
     private void setInvalidSetup(List<BlockPosition> set) {
@@ -215,7 +217,7 @@ public class TileFlywheelStorage extends TileEntity implements ITickable {
         controllerPos = null;
         isControl = false;
         for (BlockPosition pos : set) {
-            te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
+            te = world.getTileEntity(pos.x, pos.y, pos.z);
             if (te instanceof TileFlywheelStorage) {
                 ((TileFlywheelStorage) te).setController(null);
                 ((TileFlywheelStorage) te).isControl = false;
@@ -230,7 +232,7 @@ public class TileFlywheelStorage extends TileEntity implements ITickable {
             x = xCoord + d.offsetX;
             y = yCoord + d.offsetY;
             z = zCoord + d.offsetZ;
-            te = worldObj.getTileEntity(x, y, z);
+            te = world.getTileEntity(x, y, z);
             if (te instanceof TileFlywheelStorage) {
                 ((TileFlywheelStorage) te).validateSetup();
             }
@@ -239,7 +241,7 @@ public class TileFlywheelStorage extends TileEntity implements ITickable {
 
     public TileFlywheelStorage getController() {
         if (controllerPos != null) {
-            TileEntity te = worldObj.getTileEntity(controllerPos.x, controllerPos.y, controllerPos.z);
+            TileEntity te = world.getTileEntity(controllerPos.x, controllerPos.y, controllerPos.z);
             return te instanceof TileFlywheelStorage ? (TileFlywheelStorage) te : null;
         }
         return null;

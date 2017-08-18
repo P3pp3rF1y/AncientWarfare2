@@ -5,6 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
@@ -13,8 +14,8 @@ import net.shadowmage.ancientwarfare.core.util.Trig;
 
 import java.util.*;
 
-public class MailboxData extends WorldSavedData {
-
+public class MailboxData implements extends WorldSavedData {
+//TODO world capability
     private MailboxSet publicMailboxes = new MailboxSet("public");
     private HashMap<String, MailboxSet> privateMailboxes = new HashMap<String, MailboxSet>();
 
@@ -341,7 +342,7 @@ public class MailboxData extends WorldSavedData {
         }
 
         private void readFromNBT(NBTTagCompound tag) {
-            item = ItemStack.loadItemStackFromNBT(tag.getCompoundTag("item"));
+            item = new ItemStack(tag.getCompoundTag("item"));
             deliveryTime = tag.getInteger("time");
             originDimension = tag.getInteger("dim");
             this.x = tag.getInteger("x");

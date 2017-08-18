@@ -13,7 +13,7 @@ public class ContainerSpawnerAdvancedBlock extends ContainerSpawnerAdvancedBase 
 
     public ContainerSpawnerAdvancedBlock(EntityPlayer player, int x, int y, int z) {
         super(player);
-        TileEntity te = player.worldObj.getTileEntity(x, y, z);
+        TileEntity te = player.world.getTileEntity(x, y, z);
         if (te instanceof TileAdvancedSpawner) {
             spawner = (TileAdvancedSpawner) te;
             settings = spawner.getSettings();
@@ -38,7 +38,7 @@ public class ContainerSpawnerAdvancedBlock extends ContainerSpawnerAdvancedBase 
             } else {
                 spawner.getSettings().readFromNBT(tag.getCompoundTag("spawnerSettings"));
                 spawner.markDirty();
-                spawner.getWorldObj().markBlockForUpdate(spawner.xCoord, spawner.yCoord, spawner.zCoord);
+                spawner.getWorldObj().notifyBlockUpdate(spawner.xCoord, spawner.yCoord, spawner.zCoord);
             }
         }
     }

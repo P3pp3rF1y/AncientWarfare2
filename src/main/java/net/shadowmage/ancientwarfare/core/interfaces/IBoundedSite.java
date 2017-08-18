@@ -1,37 +1,37 @@
 package net.shadowmage.ancientwarfare.core.interfaces;
 
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.minecraft.util.math.BlockPos;
 
 public interface IBoundedSite {
 
-    public BlockPosition getWorkBoundsMin();
+    BlockPos getWorkBoundsMin();
 
-    public BlockPosition getWorkBoundsMax();
+    BlockPos getWorkBoundsMax();
 
-    public boolean userAdjustableBlocks();
+    boolean userAdjustableBlocks();
 
-    public boolean hasWorkBounds();
+    boolean hasWorkBounds();
 
-    public int getBoundsMaxWidth();
+    int getBoundsMaxWidth();
 
-    public int getBoundsMaxHeight();
+    int getBoundsMaxHeight();
 
-    public void setBounds(BlockPosition p1, BlockPosition p2);
+    void setBounds(BlockPos p1, BlockPos p2);
 
-    public void setWorkBoundsMax(BlockPosition max);
+    void setWorkBoundsMax(BlockPos max);
 
-    public void setWorkBoundsMin(BlockPosition min);
+    void setWorkBoundsMin(BlockPos min);
 
     /**
      * Called from container when a user adjusts work bounds for a block.
      * Tile should take the opportunity to revalidate the selection and/or offset bounds
      * for tile special placement/offset/whatever
      */
-    public void onBoundsAdjusted();
+    void onBoundsAdjusted();
 
     /**
      * Called from container AFTER bounds have been adjusted.  Tile should take this opportunity
      * to reseat any chunkloading or re-init any scan stuff
      */
-    public void onPostBoundsAdjusted();
+    void onPostBoundsAdjusted();
 }

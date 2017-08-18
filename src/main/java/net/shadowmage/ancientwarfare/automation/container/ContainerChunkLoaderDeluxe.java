@@ -3,7 +3,8 @@ package net.shadowmage.ancientwarfare.automation.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.math.ChunkPos;
+
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.TileChunkLoaderDeluxe;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
@@ -13,11 +14,11 @@ import java.util.Set;
 
 public class ContainerChunkLoaderDeluxe extends ContainerTileBase<TileChunkLoaderDeluxe> {
 
-    public Set<ChunkCoordIntPair> ccipSet = new HashSet<ChunkCoordIntPair>();
+    public Set<ChunkPos> ccipSet = new HashSet<ChunkPos>();
 
     public ContainerChunkLoaderDeluxe(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
-        if (!player.worldObj.isRemote) {
+        if (!player.world.isRemote) {
             ccipSet = tileEntity.getForcedChunks();
             tileEntity.addViewer(this);
         }
@@ -35,17 +36,17 @@ public class ContainerChunkLoaderDeluxe extends ContainerTileBase<TileChunkLoade
             ccipSet.clear();
             NBTTagList list = tag.getTagList("chunkList", Constants.NBT.TAG_COMPOUND);
             NBTTagCompound ccipTag;
-            ChunkCoordIntPair ccip;
+            ChunkPos ccip;
             for (int i = 0; i < list.tagCount(); i++) {
                 ccipTag = list.getCompoundTagAt(i);
-                ccip = new ChunkCoordIntPair(ccipTag.getInteger("x"), ccipTag.getInteger("z"));
+                ccip = new ChunkPos(ccipTag.getInteger("x"), ccipTag.getInteger("z"));
                 ccipSet.add(ccip);
             }
 //    AWLog.logDebug("received forced chunk set of: "+ccipSet);
             refreshGui();
         }
         else if (tag.hasKey("forced")) {
-            ChunkCoordIntPair ccip = new ChunkCoordIntPair(tag.getInteger("x"), tag.getInteger("z"));
+            ChunkPos ccip = new ChunkPos(tag.getInteger("x"), tag.getInteger("z"));
             tileEntity.addOrRemoveChunk(ccip);
             //should trigger an updateViewers and then a re-send of forced chunk list from tile
         }
@@ -60,25 +61,25 @@ public class ContainerChunkLoaderDeluxe extends ContainerTileBase<TileChunkLoade
         NBTTagCompound tag = new NBTTagCompound();
         NBTTagList list = new NBTTagList();
         NBTTagCompound ccipTag;
-        for (ChunkCoordIntPair ccip : this.ccipSet) {
+        for (ChunkPos chunkPos : this.ccipSet) {
             ccipTag = new NBTTagCompound();
-            ccipTag.setInteger("x", ccip.chunkXPos);
-            ccipTag.setInteger("z", ccip.chunkZPos);
+            ccipTag.setInteger("x", chunkPos.getXStart());
+            ccipTag.setInteger("z", chunkPos.getZStart());
             list.appendTag(ccipTag);
         }
         tag.setTag("chunkList", list);
         sendDataToClient(tag);
     }
 
-    public void force(ChunkCoordIntPair ccip){
+    public void force(ChunkPos ccip){
         NBTTagCompound tag = new NBTTagCompound();
         tag.setBoolean("forced", true);
-        tag.setInteger("x", ccip.chunkXPos);
-        tag.setInteger("z", ccip.chunkZPos);
+        tag.setInteger("x", ccip.getXStart());
+        tag.setInteger("z", ccip.getZStart());
         sendDataToServer(tag);
     }
 
-    public void onChunkLoaderSetUpdated(Set<ChunkCoordIntPair> ccipSet) {
+    public void onChunkLoaderSetUpdated(Set<ChunkPos> ccipSet) {
         this.ccipSet.clear();
         this.ccipSet.addAll(ccipSet);
         sendChunkList();

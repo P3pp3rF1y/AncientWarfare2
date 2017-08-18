@@ -58,7 +58,7 @@ public class InventoryTools {
         ItemQuantityMap itemQuantities = new ItemQuantityMap();
 
         for (ItemStack stack : stacks) {
-            itemQuantities.addCount(stack, stack.stackSize);
+            itemQuantities.addCount(stack, stack.getCount());
         }
 
         for (int slot : slots) {
@@ -66,7 +66,7 @@ public class InventoryTools {
             if (stack == null) {
                 emptySlots++;
             } else if (itemQuantities.contains(stack)) {
-                itemQuantities.decreaseCount(stack, stack.getMaxStackSize() - stack.stackSize);
+                itemQuantities.decreaseCount(stack, stack.getMaxStackSize() - stack.getCount());
             }
         }
 
@@ -110,7 +110,7 @@ public class InventoryTools {
             toMove = stack.stackSize;
             slotStack = inventory.getStackInSlot(index);
             if (doItemStacksMatch(stack, slotStack)) {
-                if (toMove > slotStack.getMaxStackSize() - slotStack.stackSize) {
+                if (toMove > slotStack.getMaxStackSize() - slotStack.getCount()) {
                     toMove = slotStack.getMaxStackSize() - slotStack.stackSize;
                 }
                 stack.stackSize -= toMove;
@@ -163,7 +163,7 @@ public class InventoryTools {
             }
             if (returnStack == null) {
                 returnStack = filter.copy();
-                returnStack.stackSize = 0;
+                returnStack.setCount(0);
             }
             toMove = slotStack.stackSize;
             if (toMove > quantity) {
@@ -252,13 +252,13 @@ public class InventoryTools {
             if (s1 == null || !doItemStacksMatch(filter, s1, ignoreDamage, ignoreNBT)) {
                 continue;
             }
-            stackSize = s1.stackSize;
+           .setCount(s1.stackSize);
             if (s1.stackSize > toMove)//move partial stack
             {
                 s2 = s1.copy();
-                s2.stackSize = toMove;
+                s2.setCount(toMove);
                 s1.stackSize -= toMove;
-                stackSize = s2.stackSize;
+               .setCount(s2.stackSize);
                 s2 = mergeItemStack(to, s2, toSide);
                 if (s2 != null)//partial merge, destination full, break out
                 {
@@ -406,6 +406,9 @@ public class InventoryTools {
     /**
      * drops the input itemstack into the world at the input position;
      */
+    public static void dropItemInWorld(World world, ItemStack item, BlockPos pos) {
+        dropItemInWorld(world, item, pos.getX(), pos.getY(), pos.getZ());
+    }
     public static void dropItemInWorld(World world, ItemStack item, double x, double y, double z) {
         if (item == null || world == null || world.isRemote) {
             return;
@@ -415,7 +418,7 @@ public class InventoryTools {
         y += world.rand.nextFloat() * 0.6f + 1 - 0.3f;
         z += world.rand.nextFloat() * 0.6f - 0.3f;
         entityToSpawn = new EntityItem(world, x, y, z, item);
-        world.spawnEntityInWorld(entityToSpawn);
+        world.spawnEntity(entityToSpawn);
     }
 
     public static void dropInventoryInWorld(World world, IInventory localInventory, BlockPos pos) {
@@ -486,7 +489,7 @@ public class InventoryTools {
         NBTTagCompound tag = new NBTTagCompound();
         tag.setString("item", Item.itemRegistry.getNameForObject(stack.getItem()));
         tag.setInteger("damage", stack.getItemDamage());
-        tag.setInteger("quantity", stack.stackSize);
+        tag.setInteger("quantity", stack.getCount());
         if (stack.stackTagCompound != null) {
             tag.setTag("stackTag", stack.stackTagCompound.copy());
         }
@@ -539,7 +542,7 @@ public class InventoryTools {
             qty = map.get(wrap1);
             while (qty > 0) {
                 outStack = wrap1.getItemStack();
-                outStack.stackSize = qty > outStack.getMaxStackSize() ? outStack.getMaxStackSize() : qty;
+                outStack.setCount(qty > outStack.getMaxStackSize() ? outStack.getMaxStackSize() : qty);
                 qty -= outStack.stackSize;
                 out.add(outStack);
             }
@@ -575,7 +578,7 @@ public class InventoryTools {
             }
             if (tmax > 0) {
                 copy = inStack.copy();
-                copy.stackSize = tmax;
+                copy.setCount(tmax);
                 out.add(copy);
             }
         }
@@ -590,7 +593,7 @@ public class InventoryTools {
     public static List<ItemStack> compactStackList3(List<ItemStack> in) {
         ItemQuantityMap map = new ItemQuantityMap();
         for (ItemStack stack : in) {
-            map.addCount(stack, stack.stackSize);
+            map.addCount(stack, stack.getCount());
         }
         return map.getItems();
     }

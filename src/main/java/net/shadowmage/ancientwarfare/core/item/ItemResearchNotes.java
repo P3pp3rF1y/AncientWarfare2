@@ -34,7 +34,7 @@ public class ItemResearchNotes extends Item {
             String name = tag.getString("researchName");
             ResearchGoal goal = ResearchGoal.getGoal(name);
             if (goal != null) {
-                researchName = StatCollector.translateToLocal(name);
+                researchName = I18n.format(name);
                 known = ResearchTracker.INSTANCE.hasPlayerCompleted(par2EntityPlayer.worldObj, par2EntityPlayer.getCommandSenderName(), goal.getId());
             } else {
                 researchName = "missing_goal_for_id_" + researchName;
@@ -42,11 +42,11 @@ public class ItemResearchNotes extends Item {
         }
         par3List.add(researchName);
         if (known) {
-            par3List.add(StatCollector.translateToLocal("guistrings.research.known_research"));
-            par3List.add(StatCollector.translateToLocal("guistrings.research.click_to_add_progress"));
+            par3List.add(I18n.format("guistrings.research.known_research"));
+            par3List.add(I18n.format("guistrings.research.click_to_add_progress"));
         } else {
-            par3List.add(StatCollector.translateToLocal("guistrings.research.unknown_research"));
-            par3List.add(StatCollector.translateToLocal("guistrings.research.click_to_learn"));
+            par3List.add(I18n.format("guistrings.research.unknown_research"));
+            par3List.add(I18n.format("guistrings.research.click_to_learn"));
         }
     }
 
@@ -79,16 +79,16 @@ public class ItemResearchNotes extends Item {
             String name = tag.getString("researchName");
             ResearchGoal goal = ResearchGoal.getGoal(name);
             if (goal != null) {
-                boolean known = ResearchTracker.INSTANCE.hasPlayerCompleted(player.worldObj, player.getCommandSenderName(), goal.getId());
+                boolean known = ResearchTracker.INSTANCE.hasPlayerCompleted(player.world, player.getCommandSenderName(), goal.getId());
                 if (!known) {
-                    if (ResearchTracker.INSTANCE.addResearchFromNotes(player.worldObj, player.getCommandSenderName(), goal.getId()) && !player.capabilities.isCreativeMode) {
+                    if (ResearchTracker.INSTANCE.addResearchFromNotes(player.world, player.getCommandSenderName(), goal.getId()) && !player.capabilities.isCreativeMode) {
                         player.addChatMessage(new ChatComponentTranslation("guistrings.research.learned_from_item"));
-                        stack.stackSize--;
+                        stack.shrink(1);
                     }
                 } else {
-                    if (ResearchTracker.INSTANCE.addProgressFromNotes(player.worldObj, player.getCommandSenderName(), goal.getId()) && !player.capabilities.isCreativeMode) {
+                    if (ResearchTracker.INSTANCE.addProgressFromNotes(player.world, player.getCommandSenderName(), goal.getId()) && !player.capabilities.isCreativeMode) {
                         player.addChatMessage(new ChatComponentTranslation("guistrings.research.added_progress"));
-                        stack.stackSize--;
+                        stack.shrink(1);
                     }
                 }
             }

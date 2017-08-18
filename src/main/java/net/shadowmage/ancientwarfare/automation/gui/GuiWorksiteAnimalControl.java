@@ -75,7 +75,7 @@ public class GuiWorksiteAnimalControl extends GuiContainerBase<ContainerWorksite
     @Override
     protected boolean onGuiCloseRequested() {
         getContainer().sendSettingsToServer();
-        NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_ANIMAL_FARM, getContainer().tileEntity.xCoord, getContainer().tileEntity.yCoord, getContainer().tileEntity.zCoord);
+        NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_ANIMAL_FARM, getContainer().tileEntity.getPos());
         return false;
     }
 

@@ -61,7 +61,7 @@ public class GuiResearchStationSelection extends GuiContainerBase<ContainerResea
         totalHeight = 8;
 
         if (getContainer().researcherName != null) {
-            for (Integer g : ResearchTracker.INSTANCE.getResearchableGoals(player.worldObj, getContainer().researcherName)) {
+            for (Integer g : ResearchTracker.INSTANCE.getResearchableGoals(player.world, getContainer().researcherName)) {
                 totalHeight = addSelectableGoal(totalHeight, g);
             }
         }
@@ -74,9 +74,9 @@ public class GuiResearchStationSelection extends GuiContainerBase<ContainerResea
         if (g == null) {
             return totalHeight;
         }
-        String name = StatCollector.translateToLocal(g.getName());
+        String name = I18n.format(g.getName());
         if (!removeButton) {
-            name = name + " (" + StatCollector.translateToLocal("guistrings.research.current_goal") + ")";
+            name = name + " (" + I18n.format("guistrings.research.current_goal") + ")";
         }
 
         Label label = new Label(8, totalHeight + 1, name);
@@ -109,7 +109,7 @@ public class GuiResearchStationSelection extends GuiContainerBase<ContainerResea
 
     private Tooltip createGoal(Label label, ResearchGoal g){
         Tooltip selectableGoalTooltip = new Tooltip(110, 75);
-        selectableGoalTooltip.addTooltipElement(new Label(0, 0, StatCollector.translateToLocalFormatted("guistrings.research.research_time", g.getTotalResearchTime())));
+        selectableGoalTooltip.addTooltipElement(new Label(0, 0, I18n.format("guistrings.research.research_time", g.getTotalResearchTime())));
         selectableGoalTooltip.addTooltipElement(new Label(0, 10, "guistrings.research.resources_needed"));
         int x = 0, y = 0;
         for (ItemStack stack : g.getResources()) {

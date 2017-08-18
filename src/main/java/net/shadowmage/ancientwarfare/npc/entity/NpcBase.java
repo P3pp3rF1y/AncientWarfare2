@@ -701,7 +701,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     @Override
     public String getCommandSenderName() {
-        String name = StatCollector.translateToLocal("entity.AncientWarfareNpc." + getNpcFullType() + ".name");
+        String name = I18n.format("entity.AncientWarfareNpc." + getNpcFullType() + ".name");
         if (hasCustomNameTag()) {
             name = name + " : " + getCustomNameTag();
         }
@@ -725,7 +725,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     @Override
-    public final ItemStack getPickedResult(MovingObjectPosition target) {
+    public final ItemStack getPickedResult(RayTraceResult target) {
         EntityPlayer player = AncientWarfareCore.proxy.getClientPlayer();
         if (player != null) {
             PacketEntity pkt = new PacketEntity(this);
@@ -955,11 +955,11 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         // we already hide the button but we need to prevent repack server-side too
         if (AWNPCStatics.repackCreativeOnly && !player.capabilities.isCreativeMode)
             return;
-        if (!player.worldObj.isRemote && isEntityAlive()) {
+        if (!player.world.isRemote && isEntityAlive()) {
             onRepack();
             ItemStack item = InventoryTools.mergeItemStack(player.inventory, this.getItemToSpawn(), -1);
             if (item != null) {
-                InventoryTools.dropItemInWorld(player.worldObj, item, player.posX, player.posY, player.posZ);
+                InventoryTools.dropItemInWorld(player.world, item, player.posX, player.posY, player.posZ);
             }
         }
         setDead();

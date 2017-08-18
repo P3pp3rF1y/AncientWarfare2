@@ -141,7 +141,7 @@ public class AWNpcCrafting {
             } else {
                 retStack.setTagCompound(null);
             }
-            retStack.stackSize = 2;
+            retStack.setCount(2);
             return retStack;
         }
 

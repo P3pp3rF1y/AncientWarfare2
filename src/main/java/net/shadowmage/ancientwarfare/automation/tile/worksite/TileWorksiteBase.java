@@ -117,7 +117,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
     public void addUpgrade(WorksiteUpgrade upgrade) {
         upgrades.add(upgrade);
         updateEfficiency();
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        worldObj.notifyBlockUpdate(xCoord, yCoord, zCoord);
         markDirty();
     }
 
@@ -125,7 +125,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
     public void removeUpgrade(WorksiteUpgrade upgrade) {
         upgrades.remove(upgrade);
         updateEfficiency();
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        worldObj.notifyBlockUpdate(xCoord, yCoord, zCoord);
         markDirty();
     }
 
@@ -325,7 +325,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
     @Override
     public final void setPrimaryFacing(EnumFacing face) {
         orientation = face;
-        this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        this.worldObj.notifyBlockUpdate(xCoord, yCoord, zCoord);
         markDirty();//notify neighbors of tile change
     }
 

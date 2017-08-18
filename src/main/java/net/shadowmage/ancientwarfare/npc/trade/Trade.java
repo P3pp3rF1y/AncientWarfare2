@@ -50,7 +50,7 @@ public abstract class Trade {
         }
         list = InventoryTools.compactStackList3(list);
         for (ItemStack stack : list) {
-            if (InventoryTools.getCountOf(player.inventory, -1, stack) < stack.stackSize) {
+            if (InventoryTools.getCountOf(player.inventory, -1, stack) < stack.getCount()) {
                 return;
             }
         }
@@ -66,7 +66,7 @@ public abstract class Trade {
             if (inputStack == null) {
                 continue;
             }
-            ItemStack result = InventoryTools.removeItems(player.inventory, -1, inputStack, inputStack.stackSize);//remove from trade grid
+            ItemStack result = InventoryTools.removeItems(player.inventory, -1, inputStack, inputStack.getCount());//remove from trade grid
             if(result!=null && storage!=null)
                 InventoryTools.mergeItemStack(storage, result, -1);//merge into storage
         }
@@ -75,12 +75,12 @@ public abstract class Trade {
                 continue;
             }
             if(storage!=null)
-                outputStack = InventoryTools.removeItems(storage, -1, outputStack, outputStack.stackSize);//remove from storage
+                outputStack = InventoryTools.removeItems(storage, -1, outputStack, outputStack.getCount());//remove from storage
             else
                 outputStack = outputStack.copy();
             outputStack = InventoryTools.mergeItemStack(player.inventory, outputStack, -1);//merge into player inventory, drop any unused portion on next line
-            if (outputStack != null && !player.worldObj.isRemote) {//only drop into world if on server!
-                InventoryTools.dropItemInWorld(player.worldObj, outputStack, player.posX, player.posY, player.posZ);
+            if (outputStack != null && !player.world.isRemote) {//only drop into world if on server!
+                InventoryTools.dropItemInWorld(player.world, outputStack, player.posX, player.posY, player.posZ);
             }
         }
     }

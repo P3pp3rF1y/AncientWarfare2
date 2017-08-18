@@ -98,7 +98,7 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
         for (ItemHashEntry entry : getContainer().itemMap.keySet()) {
             qty = getContainer().itemMap.getCount(entry);
             stack = entry.getItemStack();
-            stack.stackSize = qty;
+            stack.setCount(qty);
             displayStacks.add(stack);
         }
 
@@ -149,7 +149,7 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
             ItemStack in = stack == null ? null : stack.copy();
             this.setItem(in);
             if (in != null) {
-                in.stackSize = 1;
+                in.setCount(1);
             }
             filter.setFilterItem(in == null ? null : in.copy());
             getContainer().sendFiltersToServer();

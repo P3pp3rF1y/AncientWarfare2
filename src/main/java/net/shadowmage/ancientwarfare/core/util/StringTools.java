@@ -286,7 +286,7 @@ public class StringTools {
                 for (ItemStack temp : list) {
                     if (temp != null && temp.getMaxStackSize() >= i) {
                         ItemStack result = temp.copy();
-                        result.stackSize = i;
+                        result.setCount(i);
                         return result;
                     }
                 }

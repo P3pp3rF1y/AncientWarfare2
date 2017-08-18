@@ -28,7 +28,7 @@ public class ItemQuill extends Item {
         this.setUnlocalizedName(regName);
         this.setTextureName("ancientwarfare:core/" + regName);
         this.attackDamage = 1.f + material.getDamageVsEntity();
-        this.maxStackSize = 1;
+        this.ma.setCount(1);
         this.setMaxDamage(material.getMaxUses());
         this.setCreativeTab(AWCoreBlockLoader.coreTab);
         this.setHarvestLevel("quill", material.getHarvestLevel());
@@ -37,7 +37,7 @@ public class ItemQuill extends Item {
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
-        list.add(StatCollector.translateToLocal("guistrings.core.quill.work_mode"));
+        list.add(I18n.format("guistrings.core.quill.work_mode"));
     }
 
     public ToolMaterial getMaterial() {
@@ -96,7 +96,7 @@ public class ItemQuill extends Item {
         }
         BlockPosition pos = BlockTools.getBlockClickedOn(player, world, false);
         if (pos != null) {
-            TileEntity te = player.worldObj.getTileEntity(pos.x, pos.y, pos.z);
+            TileEntity te = player.world.getTileEntity(pos.x, pos.y, pos.z);
             if (te instanceof IWorkSite && ((IWorkSite) te).getWorkType() == IWorkSite.WorkType.RESEARCH) {
                 IWorkSite teResearchStation = (IWorkSite) te;
                 if (teResearchStation.hasWork()) {

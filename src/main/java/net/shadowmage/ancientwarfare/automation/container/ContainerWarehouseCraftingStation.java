@@ -1,7 +1,9 @@
 package net.shadowmage.ancientwarfare.automation.container;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
@@ -16,6 +18,10 @@ import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 
+import javax.annotation.ParametersAreNonnullByDefault;
+
+@ParametersAreNonnullByDefault
+@MethodsReturnNonnullByDefault
 public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWarehouseCraftingStation> {
 
     private ItemQuantityMap itemMap = new ItemQuantityMap();
@@ -24,14 +30,16 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 
     public ContainerWarehouseCraftingStation(final EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
-        IInventory inventory = tileEntity.layoutMatrix;
+        InventoryCrafting inventory = tileEntity.layoutMatrix;
 
         Slot slot = new SlotCrafting(player, inventory, tileEntity.result, 0, 3 * 18 + 3 * 18 + 8 + 18, 1 * 18 + 8) {
             @Override
-            public void onPickupFromSlot(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack) {
+            public ItemStack onTake(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack) {
                 tileEntity.preItemCrafted();
-                super.onPickupFromSlot(par1EntityPlayer, par2ItemStack);
+                ItemStack ret = super.onTake(par1EntityPlayer, par2ItemStack);
                 tileEntity.onItemCrafted();
+
+                return ret;
             }
         };
         addSlotToContainer(slot);
@@ -74,7 +82,7 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
-        ItemStack slotStackCopy = null;
+        ItemStack slotStackCopy = ItemStack.EMPTY;
         Slot theSlot = this.getSlot(slotClickedIndex);
         if (theSlot != null && theSlot.getHasStack()) {
             ItemStack slotStack = theSlot.getStack();
@@ -84,18 +92,18 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
             {
                 if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotStart + playerSlots, false))//merge into player inventory
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
-            if (slotStack.stackSize == 0) {
-                theSlot.putStack(null);
+            if (slotStack.getCount() == 0) {
+                theSlot.putStack(ItemStack.EMPTY);
             } else {
                 theSlot.onSlotChanged();
             }
-            if (slotStack.stackSize == slotStackCopy.stackSize) {
-                return null;
+            if (slotStack.getCount() == slotStackCopy.getCount()) {
+                return ItemStack.EMPTY;
             }
-            theSlot.onPickupFromSlot(par1EntityPlayer, slotStack);
+            theSlot.onTake(par1EntityPlayer, slotStack);
         }
         return slotStackCopy;
     }

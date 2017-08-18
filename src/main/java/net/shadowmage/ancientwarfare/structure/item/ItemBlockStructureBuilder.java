@@ -42,7 +42,7 @@ public class ItemBlockStructureBuilder extends ItemBlock implements IBoxRenderer
         if (par1ItemStack.hasTagCompound() && par1ItemStack.getTagCompound().hasKey("structureName")) {
             name = par1ItemStack.getTagCompound().getString("structureName");
         }
-        par3List.add(StatCollector.translateToLocal("guistrings.structure.structure_name") + ": " + name);
+        par3List.add(I18n.format("guistrings.structure.structure_name") + ": " + name);
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -97,7 +97,7 @@ public class ItemBlockStructureBuilder extends ItemBlock implements IBoxRenderer
         if (t == null) {
             return;
         }
-        BlockPosition hit = BlockTools.getBlockClickedOn(player, player.worldObj, true);
+        BlockPosition hit = BlockTools.getBlockClickedOn(player, player.world, true);
         if (hit == null) {
             return;
         }

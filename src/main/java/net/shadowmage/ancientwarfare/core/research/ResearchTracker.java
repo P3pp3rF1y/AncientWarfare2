@@ -28,8 +28,8 @@ public final class ResearchTracker {
      */
     @SubscribeEvent
     public void playerLogInEvent(PlayerEvent.PlayerLoggedInEvent evt) {
-        getResearchData(evt.player.worldObj).onPlayerLogin(evt.player);
-        PacketResearchInit init = new PacketResearchInit(getResearchData(evt.player.worldObj));
+        getResearchData(evt.player.world).onPlayerLogin(evt.player);
+        PacketResearchInit init = new PacketResearchInit(getResearchData(evt.player.world));
         NetworkHandler.sendToPlayer((EntityPlayerMP) evt.player, init);
     }
 

@@ -21,7 +21,7 @@
 package net.shadowmage.ancientwarfare.structure.entity;
 
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.Vec3;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
@@ -108,7 +108,7 @@ public class DualBoundingBox extends AxisAlignedBB{
     }
 
     @Override
-    public MovingObjectPosition calculateIntercept(Vec3 vec3_1, Vec3 vec3_2) {
+    public RayTraceResult calculateIntercept(Vec3 vec3_1, Vec3 vec3_2) {
         return getBoundingBox(minX, minY - yOffset, minZ, maxX, maxY, maxZ).calculateIntercept(vec3_1, vec3_2);
     }
 

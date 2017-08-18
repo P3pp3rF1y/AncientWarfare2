@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.container;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
@@ -49,22 +49,22 @@ public class ContainerTorqueGeneratorSterling extends ContainerTileBase<TileSter
         if (g != energy) {
             energy = g;
             int e = (int) (g * 1000.d / tileEntity.getMaxTorque(tileEntity.getPrimaryFacing()));
-            for (Object crafter : this.crafters) {
-                ((ICrafting) crafter).sendProgressBarUpdate(this, 0, e);
+            for (IContainerListener listener : this.listeners) {
+                listener.sendWindowProperty(this, 0, e);
             }
         }
         int b = tileEntity.getBurnTime();
         if (b != burnTime) {
             burnTime = b;
-            for (Object crafter : this.crafters) {
-                ((ICrafting) crafter).sendProgressBarUpdate(this, 1, b);
+            for (IContainerListener listener : this.listeners) {
+                listener.sendWindowProperty(this, 1, b);
             }
         }
         b = tileEntity.getBurnTimeBase();
         if (b != burnTimeBase) {
             burnTimeBase = b;
-            for (Object crafter : this.crafters) {
-                ((ICrafting) crafter).sendProgressBarUpdate(this, 2, b);
+            for (IContainerListener listener : this.listeners) {
+                listener.sendWindowProperty(this, 2, b);
             }
         }
     }
@@ -87,8 +87,8 @@ public class ContainerTorqueGeneratorSterling extends ContainerTileBase<TileSter
         {
             this.mergeItemStack(stackFromSlot, 0, slots, false);
         }
-        if (stackFromSlot.stackSize == 0) {
-            slot.putStack(null);
+        if (stackFromSlot.getCount() == 0) {
+            slot.putStack(ItemStack.EMPTY);
         } else {
             slot.onSlotChanged();
         }

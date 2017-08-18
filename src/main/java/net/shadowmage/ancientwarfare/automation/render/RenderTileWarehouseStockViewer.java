@@ -1,3 +1,4 @@
+/*
 package net.shadowmage.ancientwarfare.automation.render;
 
 import net.minecraft.client.Minecraft;
@@ -58,10 +59,12 @@ public class RenderTileWarehouseStockViewer extends TileEntitySpecialRenderer {
         }
     }
 
-    /**
+    */
+/**
      * matrix should be setup so that 0,0 is upper-left-hand corner of the sign-board, with a
      * transformation of 1 being 1 BLOCK
-     */
+     *//*
+
     private void renderSignContents(TileWarehouseStockViewer tile) {
         GL11.glPushMatrix();
         GL11.glTranslatef(0, 0, -0.002f);//move out from block face slightly, for depth-buffer/z-fighting
@@ -94,3 +97,4 @@ public class RenderTileWarehouseStockViewer extends TileEntitySpecialRenderer {
     }
 
 }
+*/

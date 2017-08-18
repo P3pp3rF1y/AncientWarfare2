@@ -48,7 +48,7 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
         String labelString;
         for (RoutePoint point : entries) {
             pos = point.getTarget();
-            block = player.worldObj.getBlock(pos.x, pos.y, pos.z);
+            block = player.world.getBlock(pos.x, pos.y, pos.z);
             label = new Label(8, totalHeight, block == null ? "" : block.getLocalizedName());
             area.addGuiElement(label);
 
@@ -78,7 +78,7 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
             area.addGuiElement(button);
             
             labelString = point.getIgnoreDamage() ? EnumChatFormatting.RED.toString() + EnumChatFormatting.STRIKETHROUGH.toString() : "";
-            labelString += StatCollector.translateToLocal("guistrings.dmg");
+            labelString += I18n.format("guistrings.dmg");
             button = new IndexedButton(8 + 55 + 2 + 79 + 2, totalHeight + 10, 38, 12, labelString, index) {
                 @Override
                 protected void onPressed() {
@@ -87,11 +87,11 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
                     refreshGui();
                 }
             };
-            button.addTooltip(StatCollector.translateToLocal("guistrings.dmg.tooltipprefix." + (point.getIgnoreDamage() ? "disabled" : "enabled")) + StatCollector.translateToLocal("guistrings.dmg.tooltip"), 28);
+            button.addTooltip(I18n.format("guistrings.dmg.tooltipprefix." + (point.getIgnoreDamage() ? "disabled" : "enabled")) + I18n.format("guistrings.dmg.tooltip"), 28);
             area.addGuiElement(button);
 
             labelString = point.getIgnoreTag() ? EnumChatFormatting.RED.toString() + EnumChatFormatting.STRIKETHROUGH.toString() : "";
-            labelString += StatCollector.translateToLocal("guistrings.tag");
+            labelString += I18n.format("guistrings.tag");
             button = new IndexedButton(8 + 55 + 2 + 79 + 2 + 38 + 2, totalHeight + 10, 38, 12, labelString, index) {
                 @Override
                 protected void onPressed() {
@@ -100,7 +100,7 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
                     refreshGui();
                 }
             };
-            button.addTooltip(StatCollector.translateToLocal("guistrings.tag.tooltipprefix." + (point.getIgnoreTag() ? "disabled" : "enabled")) + StatCollector.translateToLocal("guistrings.tag.tooltip"), 28);
+            button.addTooltip(I18n.format("guistrings.tag.tooltipprefix." + (point.getIgnoreTag() ? "disabled" : "enabled")) + I18n.format("guistrings.tag.tooltip"), 28);
             area.addGuiElement(button);
             
             for (int i = 0; i < point.getFilterSize(); i++) {
@@ -165,7 +165,7 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
             {
                 slot.getStack().stackSize -= 32;
                 if (slot.getStack().stackSize < 1) {
-                    slot.getStack().stackSize = 1;
+                    slot.getStack().setCount(1);
                 }
                 point.setFilter(index, slot.getStack());
             }
@@ -178,7 +178,7 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
             {
                 slot.getStack().stackSize -= 1;
                 if (slot.getStack().stackSize < 1) {
-                    slot.getStack().stackSize = 1;
+                    slot.getStack().setCount(1);
                 }
                 point.setFilter(index, slot.getStack());
             }
@@ -196,7 +196,7 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
                     {
                         slot.getStack().stackSize -= stack.stackSize;
                         if (slot.getStack().stackSize < 1) {
-                            slot.getStack().stackSize = 1;
+                            slot.getStack().setCount(1);
                         }
                         point.setFilter(index, slot.getStack());
                     }

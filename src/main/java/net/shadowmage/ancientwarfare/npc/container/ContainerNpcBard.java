@@ -30,7 +30,7 @@ public class ContainerNpcBard extends ContainerNpcBase<NpcBard> {
     }
 
     public void sendTuneDataToServer() {
-        if (player.worldObj.isRemote)//handles sending new/updated/changed data back to server on GUI close.  the last GUI to close will be the one whose data 'sticks'
+        if (player.world.isRemote)//handles sending new/updated/changed data back to server on GUI close.  the last GUI to close will be the one whose data 'sticks'
         {
             NBTTagCompound tag = new NBTTagCompound();
             tag.setTag("tuneData", data.writeToNBT(new NBTTagCompound()));

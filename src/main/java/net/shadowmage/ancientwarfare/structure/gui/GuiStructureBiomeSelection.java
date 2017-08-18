@@ -28,7 +28,7 @@ public class GuiStructureBiomeSelection extends GuiContainerBase {
     @Override
     public void initElements() {
 
-        addGuiElement(new Label(8, 8, StatCollector.translateToLocal("guistrings.select_biomes") + ":"));
+        addGuiElement(new Label(8, 8, I18n.format("guistrings.select_biomes") + ":"));
 
         whiteList = new Checkbox(8, 20, 16, 16, "guistrings.biome_whitelist") {
             @Override

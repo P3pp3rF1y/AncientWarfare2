@@ -40,7 +40,7 @@ public class Label extends GuiElement {
     public void setText(String text) {
         if (text == null)
             text = "";
-        this.text = StatCollector.translateToLocal(text);
+        this.text = I18n.format(text);
         this.setTooltipIfFound(text);
         this.width = Minecraft.getMinecraft().fontRenderer.getStringWidth(this.text);
         this.height = 8;

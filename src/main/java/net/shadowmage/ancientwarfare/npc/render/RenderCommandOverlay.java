@@ -7,8 +7,8 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.RayTraceResult.MovingObjectType;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.shadowmage.ancientwarfare.core.util.RayTraceUtils;
@@ -25,14 +25,14 @@ public final class RenderCommandOverlay {
      * TODO move this off into separate class for datas, as this is a _render_ class...
      */
     private List<Entity> targetEntities;
-    private MovingObjectPosition target;
+    private RayTraceResult target;
     private String targetString;
 
     private RenderCommandOverlay() {
         targetEntities = Collections.emptyList();
     }
 
-    public MovingObjectPosition getClientTarget() {
+    public RayTraceResult getClientTarget() {
         return target;
     }
 
@@ -59,12 +59,12 @@ public final class RenderCommandOverlay {
             }
             ScaledResolution sr = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
             int x = sr.getScaledWidth() - 10;
-            String header = StatCollector.translateToLocal("guistrings.npc.target");
+            String header = I18n.format("guistrings.npc.target");
             mc.fontRenderer.drawStringWithShadow(header, x - mc.fontRenderer.getStringWidth(header), 0, 0xffffffff);
             if (targetString != null) {
                 mc.fontRenderer.drawStringWithShadow(targetString, x - mc.fontRenderer.getStringWidth(targetString), 10, 0xffffffff);
             }
-            mc.fontRenderer.drawStringWithShadow(StatCollector.translateToLocal("guistrings.npc.commanded"), 10, 0, 0xffffffff);
+            mc.fontRenderer.drawStringWithShadow(I18n.format("guistrings.npc.commanded"), 10, 0, 0xffffffff);
             for (int i = 0; i < entityNames.size(); i++) {
                 mc.fontRenderer.drawStringWithShadow(entityNames.get(i), 10, 10 + 10 * i, 0xffffffff);
             }
@@ -80,7 +80,7 @@ public final class RenderCommandOverlay {
         if (mc.thePlayer.getCurrentEquippedItem() == null || !(mc.thePlayer.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton)) {
             return;
         }
-        MovingObjectPosition pos = target;
+        RayTraceResult pos = target;
         if (pos != null) {
             AxisAlignedBB bb = null;
             if (pos.typeOfHit == MovingObjectType.BLOCK) {

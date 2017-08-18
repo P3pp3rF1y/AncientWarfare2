@@ -25,8 +25,8 @@ public class ItemBackpack extends Item {
     @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
     public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
-        list.add(StatCollector.translateToLocalFormatted("guistrings.core.backpack.size", ((stack.getItemDamage() + 1) * 9)));
-        list.add(StatCollector.translateToLocal("guistrings.core.backpack.click_to_open"));
+        list.add(I18n.format("guistrings.core.backpack.size", ((stack.getItemDamage() + 1) * 9)));
+        list.add(I18n.format("guistrings.core.backpack.click_to_open"));
     }
 
     @Override

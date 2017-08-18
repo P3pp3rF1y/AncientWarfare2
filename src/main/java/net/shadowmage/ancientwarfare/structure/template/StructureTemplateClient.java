@@ -101,7 +101,7 @@ public class StructureTemplateClient {
             ItemStack stack;
             for (int i = 0; i < stackList.tagCount(); i++) {
                 stackTag = stackList.getCompoundTagAt(i);
-                stack = ItemStack.loadItemStackFromNBT(stackTag);
+                stack = new ItemStack(stackTag);
                 if (stack != null) {
                     template.resourceList.add(stack);
                 }

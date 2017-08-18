@@ -1,6 +1,8 @@
 package net.shadowmage.ancientwarfare.core.util;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -9,14 +11,15 @@ import java.util.List;
 
 public class BlockFinder {
     private final World world;
+    //TODO see if there's good way to change this to IBlockState instead
     private final Block blockType;
     private final int metaValue;
-    private final List<BlockPosition> positions;
+    private final List<BlockPos> positions;
     public BlockFinder(World worldIn, Block type, int meta, int size){
         world = worldIn;
         blockType = type;
         metaValue = meta;
-        positions = new ArrayList<BlockPosition>(size);
+        positions = new ArrayList<>(size);
     }
 
     /**
@@ -25,39 +28,39 @@ public class BlockFinder {
      * @param max the arms max length of the cross pattern
      * @return the corners of the box containing the cross
      */
-    public Pair<BlockPosition, BlockPosition> cross(BlockPosition center, BlockPosition max) {
+    public Pair<BlockPos, BlockPos> cross(BlockPos center, BlockPos max) {
         positions.add(center);
-        int minX = center.x - 1;
-        for (;center.x - minX <= max.x && isTypeAt(minX, center.y, center.z); minX--){
-            positions.add(new BlockPosition(minX, center.y, center.z));
+        int minX = center.getX() - 1;
+        for (;center.getX() - minX <= max.getX() && isTypeAt(minX, center.getY(), center.getZ()); minX--){
+            positions.add(new BlockPos(minX, center.getY(), center.getZ()));
         }
         minX++;
-        int maxX = center.x + 1;
-        for (;maxX - minX <= max.x && isTypeAt(maxX, center.y, center.z); maxX++){
-            positions.add(new BlockPosition(maxX, center.y, center.z));
+        int maxX = center.getX() + 1;
+        for (;maxX - minX <= max.getX() && isTypeAt(maxX, center.getY(), center.getZ()); maxX++){
+            positions.add(new BlockPos(maxX, center.getY(), center.getZ()));
         }
         maxX--;
-        int minY = center.y - 1;
-        for (;center.y - minY <= max.y && isTypeAt(center.x, minY, center.z); minY--){
-            positions.add(new BlockPosition(center.x, minY, center.z));
+        int minY = center.getY() - 1;
+        for (;center.getY() - minY <= max.getY() && isTypeAt(center.getX(), minY, center.getZ()); minY--){
+            positions.add(new BlockPos(center.getX(), minY, center.getZ()));
         }
         minY++;
-        int maxY = center.y + 1;
-        for (;maxY - minY <= max.y && isTypeAt(center.x, maxY, center.z); maxY++){
-            positions.add(new BlockPosition(center.x, maxY, center.z));
+        int maxY = center.getY() + 1;
+        for (;maxY - minY <= max.getY() && isTypeAt(center.getX(), maxY, center.getZ()); maxY++){
+            positions.add(new BlockPos(center.getX(), maxY, center.getZ()));
         }
         maxY--;
-        int minZ = center.z - 1;
-        for (;center.z - minZ <= max.z && isTypeAt(center.x, center.y, minZ); minZ--){
-            positions.add(new BlockPosition(center.x, center.y, minZ));
+        int minZ = center.getZ() - 1;
+        for (;center.getZ() - minZ <= max.getZ() && isTypeAt(center.getX(), center.getY(), minZ); minZ--){
+            positions.add(new BlockPos(center.getX(), center.getY(), minZ));
         }
         minZ++;
-        int maxZ = center.z + 1;
-        for (;maxZ - minZ <= max.z && isTypeAt(center.x, center.y, maxZ); maxZ++){
-            positions.add(new BlockPosition(center.x, center.y, maxZ));
+        int maxZ = center.getZ() + 1;
+        for (;maxZ - minZ <= max.getZ() && isTypeAt(center.getX(), center.getY(), maxZ); maxZ++){
+            positions.add(new BlockPos(center.getX(), center.getY(), maxZ));
         }
         maxZ--;
-        return Pair.of(new BlockPosition(minX, minY, minZ), new BlockPosition(maxX, maxY, maxZ));
+        return Pair.of(new BlockPos(minX, minY, minZ), new BlockPos(maxX, maxY, maxZ));
     }
 
     /**
@@ -66,14 +69,14 @@ public class BlockFinder {
      * @param corners Bottom North West corner and Upper South East corner
      * @return true if all blocks between corners apply conditions
      */
-    public boolean box(Pair<BlockPosition, BlockPosition> corners){
-        BlockPosition temp;
-        for(int x = corners.getLeft().x; x <= corners.getRight().x; x++){
-            for(int y = corners.getLeft().y; y <= corners.getRight().y; y++){
-                for(int z = corners.getLeft().z; z <= corners.getRight().z; z++){
-                    temp = new BlockPosition(x, y, z);
+    public boolean box(Pair<BlockPos, BlockPos> corners){
+        BlockPos temp;
+        for(int x = corners.getLeft().getX(); x <= corners.getRight().getX(); x++){
+            for(int y = corners.getLeft().getY(); y <= corners.getRight().getY(); y++){
+                for(int z = corners.getLeft().getZ(); z <= corners.getRight().getZ(); z++){
+                    temp = new BlockPos(x, y, z);
                     if(!positions.contains(temp)){
-                        if(isTypeAt(x, y, z))
+                        if(isTypeAt(temp))
                             positions.add(temp);
                         else
                             return false;
@@ -89,13 +92,13 @@ public class BlockFinder {
      * @param corner Bottom North West corner
      * @param limit the max size parameters
      */
-    public void connect(BlockPosition corner, BlockPosition limit){
-        BlockPosition temp;
-        for(int i = 0; i < limit.x; i++){
-            for(int j = 0; j < limit.y; j++){
-                for(int k = 0; k < limit.z; k++){
-                    temp = corner.offset(i, j, k);
-                    if(!positions.contains(temp) && isTypeAt(temp.x, temp.y, temp.z)){
+    public void connect(BlockPos corner, BlockPos limit){
+        BlockPos temp;
+        for(int i = 0; i < limit.getX(); i++){
+            for(int j = 0; j < limit.getY(); j++){
+                for(int k = 0; k < limit.getZ(); k++){
+                    temp = corner.add(i, j, k);
+                    if(!positions.contains(temp) && isTypeAt(temp)){
                         positions.add(temp);
                     }
                 }
@@ -107,13 +110,18 @@ public class BlockFinder {
      * The conditions applied on the block type
      */
     private boolean isTypeAt(int x, int y, int z){
-        return world.getBlock(x, y, z) == blockType && world.getBlockMetadata(x, y, z) == metaValue;
+        return isTypeAt(new BlockPos(x, y, z));
+    }
+
+    private boolean isTypeAt(BlockPos pos){
+        IBlockState state = world.getBlockState(pos);
+        return state.getBlock() == blockType && state.getBlock().getMetaFromState(state) == metaValue;
     }
 
     /**
      * The collected block positions
      */
-    public List<BlockPosition> getPositions() {
+    public List<BlockPos> getPositions() {
         return positions;
     }
 }

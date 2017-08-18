@@ -68,19 +68,19 @@ public class ItemBlockAdvancedSpawner extends ItemBlock implements IItemKeyInter
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
         List<String> list = (List<String>) par3List;
         if (!par1ItemStack.hasTagCompound() || !par1ItemStack.getTagCompound().hasKey("spawnerSettings")) {
-            list.add(StatCollector.translateToLocal("guistrings.corrupt_item"));
+            list.add(I18n.format("guistrings.corrupt_item"));
             return;
         }
         SpawnerSettings tooltipSettings = new SpawnerSettings();
         tooltipSettings.readFromNBT(par1ItemStack.getTagCompound().getCompoundTag("spawnerSettings"));
         List<EntitySpawnGroup> groups = tooltipSettings.getSpawnGroups();
-        list.add(StatCollector.translateToLocal("guistrings.spawner.group_count") + ": " + groups.size());
+        list.add(I18n.format("guistrings.spawner.group_count") + ": " + groups.size());
         EntitySpawnGroup group;
         for (int i = 0; i < groups.size(); i++) {
             group = groups.get(i);
-            list.add(StatCollector.translateToLocal("guistrings.spawner.group_number") + ": " + (i + 1) + " " + StatCollector.translateToLocal("guistrings.spawner.group_weight") + ": " + group.getWeight());
+            list.add(I18n.format("guistrings.spawner.group_number") + ": " + (i + 1) + " " + I18n.format("guistrings.spawner.group_weight") + ": " + group.getWeight());
             for (EntitySpawnSettings set : group.getEntitiesToSpawn()) {
-                list.add("  " + StatCollector.translateToLocal("guistrings.spawner.entity_type") + ": " + StatCollector.translateToLocal(set.getEntityName()) + " " + set.getSpawnMin() + " to " + set.getSpawnMax() + " (" + (set.getSpawnTotal() < 0 ? "infinite" : set.getSpawnTotal()) + " total)");
+                list.add("  " + I18n.format("guistrings.spawner.entity_type") + ": " + I18n.format(set.getEntityName()) + " " + set.getSpawnMin() + " to " + set.getSpawnMax() + " (" + (set.getSpawnTotal() < 0 ? "infinite" : set.getSpawnTotal()) + " total)");
             }
         }
     }

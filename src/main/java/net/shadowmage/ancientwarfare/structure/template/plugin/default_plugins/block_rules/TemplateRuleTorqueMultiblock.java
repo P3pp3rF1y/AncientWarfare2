@@ -46,7 +46,7 @@ public class TemplateRuleTorqueMultiblock extends TemplateRuleBlock {
                 tag.setInteger("z", z);
                 tile.readFromNBT(tag);
             }
-            world.markBlockForUpdate(x, y, z);
+            world.notifyBlockUpdate(x, y, z);
             block.onPostBlockPlaced(world, x, y, z, meta);
         }
     }

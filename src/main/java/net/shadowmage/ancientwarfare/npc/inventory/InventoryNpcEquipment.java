@@ -46,11 +46,11 @@ public class InventoryNpcEquipment implements IInventory {
     public ItemStack decrStackSize(int slot, int amount) {
         ItemStack item = getStackInSlot(slot);
         if (item != null) {
-            if (amount > item.stackSize) {
+            if (amount > item.getCount()) {
                 amount = item.stackSize;
             }
             ItemStack copy = item.copy();
-            copy.stackSize = amount;
+            copy.setCount(amount);
             item.stackSize -= amount;
             if (item.stackSize <= 0) {
                 setInventorySlotContents(slot, null);

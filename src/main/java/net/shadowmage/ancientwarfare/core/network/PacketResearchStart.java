@@ -38,9 +38,9 @@ public class PacketResearchStart extends PacketBase {
     @Override
     protected void execute(EntityPlayer player) {
         if (start) {
-            ResearchTracker.INSTANCE.startResearch(player.worldObj, playerName, toAdd);
+            ResearchTracker.INSTANCE.startResearch(player.world, playerName, toAdd);
         } else {
-            ResearchTracker.INSTANCE.finishResearch(player.worldObj, playerName, toAdd);
+            ResearchTracker.INSTANCE.finishResearch(player.world, playerName, toAdd);
         }
     }
 

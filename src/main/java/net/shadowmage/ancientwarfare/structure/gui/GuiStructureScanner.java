@@ -30,7 +30,7 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 
     @Override
     public void initElements() {
-        Label label = new Label(8, 8, StatCollector.translateToLocal("guistrings.input_name") + ":");
+        Label label = new Label(8, 8, I18n.format("guistrings.input_name") + ":");
         this.addGuiElement(label);
 
         nameInput = new Text(8, 8 + 12, 160, "", this);
@@ -65,7 +65,7 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
         includeOnExport = box;
         totalHeight += 16 + 8;
 
-        validationTypeLabel = new Label(8, totalHeight, StatCollector.translateToLocal("guistrings.validation_type") + " " + validationType.getName());
+        validationTypeLabel = new Label(8, totalHeight, I18n.format("guistrings.validation_type") + " " + validationType.getName());
         this.addGuiElement(validationTypeLabel);
         totalHeight += 10;
 
@@ -108,7 +108,7 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 
     @Override
     public void setupElements() {
-        validationTypeLabel.setText(StatCollector.translateToLocal("guistrings.validation_type") + " " + validationType.getName());
+        validationTypeLabel.setText(I18n.format("guistrings.validation_type") + " " + validationType.getName());
     }
 
     private void export() {

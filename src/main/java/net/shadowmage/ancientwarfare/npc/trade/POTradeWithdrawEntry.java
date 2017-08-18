@@ -40,7 +40,7 @@ public final class POTradeWithdrawEntry extends POTradeTransferEntry {
             @Override
             public void doTransfer(IInventory storage, IInventory move, int side, ItemStack filter) {
                 int count = InventoryTools.getCountOf(storage, -1, filter);
-                if (count < filter.stackSize) {
+                if (count < filter.getCount()) {
                     InventoryTools.transferItems(move, storage, filter, filter.stackSize - count, side, -1);
                 }
             }

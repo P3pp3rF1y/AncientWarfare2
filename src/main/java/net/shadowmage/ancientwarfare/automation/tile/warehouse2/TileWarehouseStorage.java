@@ -30,7 +30,7 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
 
     @Override
     public ItemStack tryAdd(ItemStack cursorStack) {
-        int moved = insertItem(cursorStack, cursorStack.stackSize);
+        int moved = insertItem(cursorStack, cursorStack.getCount());
         cursorStack.stackSize -= moved;
         TileWarehouseBase twb = (TileWarehouseBase) getController();
         if (twb != null) {
@@ -155,7 +155,7 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
 
     @Override
     public boolean onBlockClicked(EntityPlayer player) {
-        if (!player.worldObj.isRemote) {
+        if (!player.world.isRemote) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_STORAGE, xCoord, yCoord, zCoord);
         }
         return true;
@@ -171,9 +171,9 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
     }
 
     private void tryAddItem(EntityPlayer player, ItemStack cursorStack) {
-        int stackSize = cursorStack.stackSize;
+        int.setCount(cursorStack.stackSize);
         int moved;
-        moved = insertItem(cursorStack, cursorStack.stackSize);
+        moved = insertItem(cursorStack, cursorStack.getCount());
         cursorStack.stackSize -= moved;
         TileWarehouseBase twb = (TileWarehouseBase) getController();
         if (twb != null) {
@@ -182,14 +182,14 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
         if (cursorStack.stackSize <= 0) {
             player.inventory.setItemStack(null);
         }
-        if (stackSize != cursorStack.stackSize) {
+        if (stackSize != cursorStack.getCount()) {
             ((EntityPlayerMP)player).updateHeldItem();
         }
     }
 
     private void tryGetItem(EntityPlayer player, ItemStack filter, boolean shiftClick) {
         ItemStack newCursorStack = filter.copy();
-        newCursorStack.stackSize = 0;
+        newCursorStack.setCount(0);
         int count;
         int toMove;
         count = getQuantityStored(filter);

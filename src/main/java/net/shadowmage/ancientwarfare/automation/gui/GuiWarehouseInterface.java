@@ -115,7 +115,7 @@ public class GuiWarehouseInterface extends GuiContainerBase<ContainerWarehouseIn
             ItemStack in = stack == null ? null : stack.copy();
             this.setItem(in);
             if (in != null) {
-                in.stackSize = 1;
+                in.setCount(1);
             }
             filter.setFilterQuantity(0);
             filter.setFilterItem(in == null ? null : in.copy());

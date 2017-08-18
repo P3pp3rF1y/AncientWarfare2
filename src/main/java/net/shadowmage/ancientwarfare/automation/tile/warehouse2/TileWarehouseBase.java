@@ -137,7 +137,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
         if (stack == null) {
             return false;
         }
-        int stackSize = stack.stackSize;
+        int.setCount(stack.stackSize);
         int moved;
         int toMove = request.count;
         int stackMove;
@@ -195,8 +195,8 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
             found = source.getQuantityStored(request.requestedItem);
             if (found > 0) {
                 stack = request.requestedItem.copy();
-                stack.stackSize = found > stack.getMaxStackSize() ? stack.getMaxStackSize() : found;
-                stackSize = stack.stackSize;
+                stack.setCount(found > stack.getMaxStackSize() ? stack.getMaxStackSize() : found);
+               .setCount(stack.stackSize);
                 stack = InventoryTools.mergeItemStack(tile.inventory, stack, -1);
                 if (stack == null || stack.stackSize != stackSize) {
                     moved = stack == null ? stackSize : stackSize - stack.stackSize;
@@ -423,7 +423,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 
     @Override
     public final boolean onBlockClicked(EntityPlayer player) {
-        if (!player.worldObj.isRemote) {
+        if (!player.world.isRemote) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_CONTROL, xCoord, yCoord, zCoord);
         }
         return true;
@@ -468,7 +468,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
         storageMap.getDestinations(stack, destinations);
         int moved = 0;
         for (IWarehouseStorageTile tile : destinations) {
-            moved = tile.insertItem(stack, stack.stackSize);
+            moved = tile.insertItem(stack, stack.getCount());
             stack.stackSize -= moved;
             changeCachedQuantity(stack, moved);
             if (stack.stackSize <= 0) {
@@ -498,7 +498,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
     @Override
     protected void onBoundsSet() {
         setWorkBoundsMax(getWorkBoundsMax().moveUp(getWorkBoundsMin().y + getBoundsMaxHeight() - getWorkBoundsMax().y));
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        worldObj.notifyBlockUpdate(xCoord, yCoord, zCoord);
     }
 
 }

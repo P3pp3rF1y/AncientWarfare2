@@ -50,7 +50,7 @@ public abstract class GuiWorksiteBase extends GuiContainerBase<ContainerWorksite
         Button button = new Button(8, ySize - 8 - 12, 50, 12, "guistrings.inventory.setsides") {
             @Override
             protected void onPressed() {
-                NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_INVENTORY_SIDE_ADJUST, getContainer().tileEntity.xCoord, getContainer().tileEntity.yCoord, getContainer().tileEntity.zCoord);
+                NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_INVENTORY_SIDE_ADJUST, getContainer().tileEntity.getPos());
             }
         };
         addGuiElement(button);
@@ -60,7 +60,7 @@ public abstract class GuiWorksiteBase extends GuiContainerBase<ContainerWorksite
         Button button = new Button(58, ySize - 8 - 12, 50, 12, "guistrings.automation.adjust_bounds") {
             @Override
             protected void onPressed() {
-                NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_BOUNDS, getContainer().tileEntity.xCoord, getContainer().tileEntity.yCoord, getContainer().tileEntity.zCoord);
+                NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_BOUNDS, getContainer().tileEntity.getPos());
             }
         };
         addGuiElement(button);

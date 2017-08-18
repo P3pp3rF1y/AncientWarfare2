@@ -157,7 +157,7 @@ public class ItemQuantityMap {
             qty = map.get(wrap1);
             while (qty > 0) {
                 outStack = wrap1.getItemStack().copy();
-                outStack.stackSize = qty > outStack.getMaxStackSize() ? outStack.getMaxStackSize() : qty;
+                outStack.setCount(qty > outStack.getMaxStackSize() ? outStack.getMaxStackSize() : qty);
                 qty -= outStack.stackSize;
                 items.add(outStack);
             }
@@ -175,7 +175,7 @@ public class ItemQuantityMap {
         ItemStack outStack;
         for (ItemHashEntry wrap1 : map.keySet()) {
             outStack = wrap1.getItemStack().copy();
-            outStack.stackSize = map.get(wrap1);
+            outStack.setCount(map.get(wrap1));
             items.add(outStack);
         }
     }

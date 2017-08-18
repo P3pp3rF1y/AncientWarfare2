@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.gui;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
@@ -14,7 +14,6 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStac
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortType;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -50,7 +49,7 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
                 super.onToggled();
                 sortOrder = checked() ? SortOrder.ASCENDING : SortOrder.DESCENDING;
                 String name = sortOrder.name().toLowerCase(Locale.ENGLISH);
-                label = StatCollector.translateToLocal("guistrings.automation." + name);
+                label = I18n.format("guistrings.automation." + name);
                 refreshGui();
             }
         };
@@ -83,12 +82,12 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
         Button b = new Button(8, 240 - 8 - 12, 40, 12, "guistrings.automation.adjust_bounds") {
             @Override
             protected void onPressed() {
-                NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_BOUNDS, getContainer().tileEntity.xCoord, getContainer().tileEntity.yCoord, getContainer().tileEntity.zCoord);
+                NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_BOUNDS, getContainer().tileEntity.getPos());
             }
         };
         addGuiElement(b);
 
-        storedLabel = new Label(8 + 40 + 4, 240 - 8 - 11, StatCollector.translateToLocalFormatted("guistrings.warehouse.storage", getContainer().currentStored, getContainer().maxStorage));
+        storedLabel = new Label(8 + 40 + 4, 240 - 8 - 11, I18n.format("guistrings.warehouse.storage", getContainer().currentStored, getContainer().maxStorage));
         addGuiElement(storedLabel);
     }
 
@@ -96,15 +95,15 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
     public void setupElements() {
         area.clearElements();
         addInventoryViewElements();
-        storedLabel.setText(StatCollector.translateToLocalFormatted("guistrings.warehouse.storage", getContainer().currentStored, getContainer().maxStorage));
+        storedLabel.setText(I18n.format("guistrings.warehouse.storage", getContainer().currentStored, getContainer().maxStorage));
     }
 
     private void addInventoryViewElements() {
         ItemStack stack;
-        List<ItemStack> displayStacks = new ArrayList<ItemStack>();
+        List<ItemStack> displayStacks = new ArrayList<>();
         for (ItemHashEntry entry : getContainer().itemMap.keySet()) {
             stack = entry.getItemStack();
-            stack.stackSize = getContainer().itemMap.getCount(entry);
+            stack.setCount(getContainer().itemMap.getCount(entry));
             displayStacks.add(stack);
         }
 
@@ -135,7 +134,7 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
         sorter.setSortType(sortType);
         sorter.setSortOrder(sortOrder);
         sorter.setTextInput(input.getText());
-        Collections.sort(items, sorter);
+        items.sort(sorter);
     }
 
 }

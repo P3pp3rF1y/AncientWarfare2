@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.item;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -21,17 +22,18 @@ import static net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLo
 public class AWAutomationItemLoader {
 
     public static final CreativeTabs automationTab = new CreativeTabs("tabs.automation") {
+        //TODO make sure item is not null when instantiated
+        private final ItemStack ICON_ITEM = new ItemStack(AWItems.automationHammerIron);
         @Override
         @SideOnly(Side.CLIENT)
-        public Item getTabIconItem() {
-            return AWItems.automationHammerIron;
+        public ItemStack getTabIconItem() {
+            return ICON_ITEM;
         }
 
         @Override
-        @SideOnly(Side.CLIENT)
-        public void displayAllReleventItems(java.util.List par1List) {
-            super.displayAllReleventItems(par1List);
-            Collections.sort(par1List, sorter);
+        public void displayAllRelevantItems(NonNullList<ItemStack> list) {
+            super.displayAllRelevantItems(list);
+            Collections.sort(list, sorter);
         }
     };
 
@@ -76,7 +78,7 @@ public class AWAutomationItemLoader {
 
         private int getItemPriority(Item item) {
             if (item instanceof ItemBlock) {
-                Block block = ((ItemBlock) item).field_150939_a;
+                Block block = ((ItemBlock) item).getBlock();
                 if (block instanceof BlockChunkLoaderSimple) {
                     return 10;
                 } else if (block instanceof BlockFlywheel) {

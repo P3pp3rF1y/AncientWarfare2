@@ -3,7 +3,7 @@ package net.shadowmage.ancientwarfare.automation.tile;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.container.ContainerChunkLoaderDeluxe;
@@ -17,7 +17,7 @@ import java.util.Set;
 
 public class TileChunkLoaderDeluxe extends TileChunkLoaderSimple implements IInteractableTile {
 
-    private final Set<ChunkCoordIntPair> ccipSet = new HashSet<ChunkCoordIntPair>();
+    private final Set<ChunkPos> ccipSet = new HashSet<ChunkPos>();
 
     private final List<ContainerChunkLoaderDeluxe> viewers = new ArrayList<ContainerChunkLoaderDeluxe>();
 
@@ -27,7 +27,7 @@ public class TileChunkLoaderDeluxe extends TileChunkLoaderSimple implements IInt
 
     @Override
     public boolean onBlockClicked(EntityPlayer player) {
-        if (!player.worldObj.isRemote) {
+        if (!player.world.isRemote) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_CHUNK_LOADER_DELUXE, xCoord, yCoord, zCoord);
         }
         return true;
@@ -41,7 +41,7 @@ public class TileChunkLoaderDeluxe extends TileChunkLoaderSimple implements IInt
         viewers.remove(viewer);
     }
 
-    public void addOrRemoveChunk(ChunkCoordIntPair ccip) {
+    public void addOrRemoveChunk(ChunkPos ccip) {
         if (ccipSet.contains(ccip)) {
             ccipSet.remove(ccip);
             ForgeChunkManager.unforceChunk(chunkTicket, ccip);
@@ -59,17 +59,17 @@ public class TileChunkLoaderDeluxe extends TileChunkLoaderSimple implements IInt
         }
     }
 
-    public Set<ChunkCoordIntPair> getForcedChunks() {
-        return new HashSet<ChunkCoordIntPair>(ccipSet);
+    public Set<ChunkPos> getForcedChunks() {
+        return new HashSet<ChunkPos>(ccipSet);
     }
 
     @Override
     protected void forceTicketChunks() {
         int cx = xCoord >> 4;
         int cz = zCoord >> 4;
-        ChunkCoordIntPair ccip1 = new ChunkCoordIntPair(cx, cz);
+        ChunkPos ccip1 = new ChunkPos(cx, cz);
         ForgeChunkManager.forceChunk(this.chunkTicket, ccip1);
-        for (ChunkCoordIntPair ccip : ccipSet) {
+        for (ChunkPos ccip : ccipSet) {
             ForgeChunkManager.forceChunk(this.chunkTicket, ccip);
         }
 //  AWLog.logDebug("ticket now has chunks: "+tk.getChunkList());
@@ -81,11 +81,11 @@ public class TileChunkLoaderDeluxe extends TileChunkLoaderSimple implements IInt
         super.readFromNBT(tag);
         NBTTagList list = tag.getTagList("chunkList", Constants.NBT.TAG_COMPOUND);
         NBTTagCompound ccipTag;
-        ChunkCoordIntPair ccip;
+        ChunkPos ccip;
         ccipSet.clear();
         for (int i = 0; i < list.tagCount(); i++) {
             ccipTag = list.getCompoundTagAt(i);
-            ccip = new ChunkCoordIntPair(ccipTag.getInteger("x"), ccipTag.getInteger("z"));
+            ccip = new ChunkPos(ccipTag.getInteger("x"), ccipTag.getInteger("z"));
             ccipSet.add(ccip);
         }
     }
@@ -95,7 +95,7 @@ public class TileChunkLoaderDeluxe extends TileChunkLoaderSimple implements IInt
         super.writeToNBT(tag);
         NBTTagList list = new NBTTagList();
         NBTTagCompound ccipTag;
-        for (ChunkCoordIntPair ccip : this.ccipSet) {
+        for (ChunkPos ccip : this.ccipSet) {
             ccipTag = new NBTTagCompound();
             ccipTag.setInteger("x", ccip.chunkXPos);
             ccipTag.setInteger("z", ccip.chunkZPos);

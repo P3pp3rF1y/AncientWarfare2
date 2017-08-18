@@ -82,12 +82,12 @@ public class ContainerSpawnerAdvancedInventoryBase extends ContainerBase {
                     return null;
                 }
             }
-            if (slotStack.stackSize == 0) {
+            if (slotStack.getCount() == 0) {
                 theSlot.putStack(null);
             } else {
                 theSlot.onSlotChanged();
             }
-            if (slotStack.stackSize == slotStackCopy.stackSize) {
+            if (slotStack.getCount() == slotStackCopy.getCount()) {
                 return null;
             }
             theSlot.onPickupFromSlot(par1EntityPlayer, slotStack);

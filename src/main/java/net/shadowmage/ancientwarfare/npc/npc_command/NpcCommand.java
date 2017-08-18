@@ -3,8 +3,8 @@ package net.shadowmage.ancientwarfare.npc.npc_command;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.RayTraceResult.MovingObjectType;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
@@ -36,7 +36,7 @@ public class NpcCommand {
     /**
      * client-side handle command. called from command baton key handler
      */
-    public static void handleCommandClient(CommandType type, MovingObjectPosition hit) {
+    public static void handleCommandClient(CommandType type, RayTraceResult hit) {
         if (hit != null && hit.typeOfHit != MovingObjectType.MISS) {
             if (hit.typeOfHit == MovingObjectType.ENTITY && hit.entityHit != null) {
                 NetworkHandler.sendToServer(new PacketNpcCommand(type, hit.entityHit));
@@ -56,7 +56,7 @@ public class NpcCommand {
         } else {
             cmd = new Command(type, x);
         }
-        List<Entity> targets = ItemCommandBaton.getCommandedEntities(player.worldObj, player.getCurrentEquippedItem());
+        List<Entity> targets = ItemCommandBaton.getCommandedEntities(player.world, player.getCurrentEquippedItem());
         for (Entity e : targets) {
             if (e instanceof NpcPlayerOwned) {
                 ((NpcPlayerOwned) e).handlePlayerCommand(cmd);

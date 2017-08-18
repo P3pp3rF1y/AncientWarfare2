@@ -30,7 +30,7 @@ public class GuiStructureBlockSelection extends GuiContainerBase {
 
     @Override
     public void initElements() {
-        Label label = new Label(8, 8, StatCollector.translateToLocal("guistrings.select_blocks") + ":");
+        Label label = new Label(8, 8, I18n.format("guistrings.select_blocks") + ":");
         addGuiElement(label);
 
         Button button = new Button(256 - 8 - 55, 8, 55, 12, "guistrings.done") {

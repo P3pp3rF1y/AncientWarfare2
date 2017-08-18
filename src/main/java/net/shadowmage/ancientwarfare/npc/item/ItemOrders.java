@@ -21,9 +21,9 @@ public abstract class ItemOrders extends Item implements IItemKeyInterface {
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
-        list.add(StatCollector.translateToLocal("guistrings.npc.orders.open_gui"));
+        list.add(I18n.format("guistrings.npc.orders.open_gui"));
         String key = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
-        list.add(StatCollector.translateToLocalFormatted("guistrings.npc.orders.add_position", key));
+        list.add(I18n.format("guistrings.npc.orders.add_position", key));
     }
 
     @Override

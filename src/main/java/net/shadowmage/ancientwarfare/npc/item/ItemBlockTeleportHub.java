@@ -16,8 +16,8 @@ public class ItemBlockTeleportHub extends ItemBlock {
     
     @Override
     public void addInformation(ItemStack itemStack, EntityPlayer entityPlayer, List tooltip, boolean par4) {
-        tooltip.add(StatCollector.translateToLocal("tile.teleportHub.tooltip.1"));
-        tooltip.add(StatCollector.translateToLocal("tile.teleportHub.tooltip.2"));
-        tooltip.add(StatCollector.translateToLocal("tile.teleportHub.tooltip.3"));
+        tooltip.add(I18n.format("tile.teleportHub.tooltip.1"));
+        tooltip.add(I18n.format("tile.teleportHub.tooltip.2"));
+        tooltip.add(I18n.format("tile.teleportHub.tooltip.3"));
     }
 }

@@ -69,12 +69,12 @@ public class ItemGateSpawner extends Item implements IItemKeyInterface, IBoxRend
             tag = new NBTTagCompound();
         }
         if (tag.hasKey("pos1") && tag.hasKey("pos2")) {
-            list.add(StatCollector.translateToLocal("guistrings.gate.construct"));
+            list.add(I18n.format("guistrings.gate.construct"));
         } else {
             String key = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
-            list.add(StatCollector.translateToLocalFormatted("guistrings.gate.use_primary_item_key", key));
+            list.add(I18n.format("guistrings.gate.use_primary_item_key", key));
         }
-        list.add(StatCollector.translateToLocal("guistrings.gate.clear_item"));
+        list.add(I18n.format("guistrings.gate.clear_item"));
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
@@ -136,7 +136,7 @@ public class ItemGateSpawner extends Item implements IItemKeyInterface, IBoxRend
                 entity.setOwnerName(player.getCommandSenderName());
                 world.spawnEntityInWorld(entity);
                 if (!player.capabilities.isCreativeMode) {
-                    stack.stackSize--;
+                    stack.shrink(1);
                 }
                 tag.removeTag("pos1");
                 tag.removeTag("pos2");
@@ -173,7 +173,7 @@ public class ItemGateSpawner extends Item implements IItemKeyInterface, IBoxRend
 
     @Override
     public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
-        BlockPosition hit = BlockTools.getBlockClickedOn(player, player.worldObj, true);
+        BlockPosition hit = BlockTools.getBlockClickedOn(player, player.world, true);
         if (hit == null) {
             return;
         }
@@ -211,20 +211,20 @@ public class ItemGateSpawner extends Item implements IItemKeyInterface, IBoxRend
                 if (tag.hasKey("pos2")) {
                     p2 = new BlockPosition(tag.getCompoundTag("pos2"));
                 } else {
-                    p2 = BlockTools.getBlockClickedOn(player, player.worldObj, true);
+                    p2 = BlockTools.getBlockClickedOn(player, player.world, true);
                     if (p2 == null) {
                         return;
                     }
                 }
             } else {
-                p1 = BlockTools.getBlockClickedOn(player, player.worldObj, true);
+                p1 = BlockTools.getBlockClickedOn(player, player.world, true);
                 if (p1 == null) {
                     return;
                 }
                 p2 = p1;
             }
         } else {
-            p1 = BlockTools.getBlockClickedOn(player, player.worldObj, true);
+            p1 = BlockTools.getBlockClickedOn(player, player.world, true);
             if (p1 == null) {
                 return;
             }

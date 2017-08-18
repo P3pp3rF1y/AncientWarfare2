@@ -110,7 +110,7 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
                 inventory.setInventorySlotContents(i, stack == null ? null : stack.copy());
             }
         }
-        world.markBlockForUpdate(x, y, z);
+        world.notifyBlockUpdate(x, y, z);
     }
 
     public void generateLootFor(IInventory inventory, Random rng) {

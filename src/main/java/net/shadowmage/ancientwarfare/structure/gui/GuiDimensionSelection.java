@@ -33,7 +33,7 @@ public class GuiDimensionSelection extends GuiContainerBase {
 
     @Override
     public void initElements() {
-        Label label = new Label(8, 8, StatCollector.translateToLocal("guistrings.select_dimensions") + ":");
+        Label label = new Label(8, 8, I18n.format("guistrings.select_dimensions") + ":");
         addGuiElement(label);
 
         area = new CompositeScrolled(this, 0, 40, 256, 200);
@@ -96,7 +96,7 @@ public class GuiDimensionSelection extends GuiContainerBase {
         final int dim;
 
         public DimensionButton(int topLeftX, int topLeftY, int width, int height, int dim) {
-            super(topLeftX, topLeftY, width, height, StatCollector.translateToLocalFormatted("guistrings.dimension", dim));
+            super(topLeftX, topLeftY, width, height, I18n.format("guistrings.dimension", dim));
             this.dim = dim;
         }
 

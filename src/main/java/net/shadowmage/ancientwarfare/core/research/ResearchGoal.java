@@ -114,7 +114,7 @@ public class ResearchGoal {
             return true;
         }
         for (ItemStack stack : this.researchResources) {
-            if (InventoryTools.getCountOf(inventory, side, stack) < stack.stackSize) {
+            if (InventoryTools.getCountOf(inventory, side, stack) < stack.getCount()) {
                 return false;
             }
         }
@@ -132,7 +132,7 @@ public class ResearchGoal {
         }
 
         for (ItemStack stack : this.researchResources) {
-            InventoryTools.removeItems(inventory, side, stack, stack.stackSize);
+            InventoryTools.removeItems(inventory, side, stack, stack.getCount());
         }
         int required;
         ItemStack remove;
@@ -327,7 +327,7 @@ public class ResearchGoal {
         public ItemStack getEquivalent(Random random){
             List<ItemStack> temps = getEquivalents();
             ItemStack temp = temps.get(random.nextInt(temps.size())).copy();
-            temp.stackSize = size;
+            temp.setCount(size);
             return temp;
         }
     }

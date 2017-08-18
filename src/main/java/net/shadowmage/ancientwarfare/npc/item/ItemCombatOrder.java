@@ -43,9 +43,9 @@ public class ItemCombatOrder extends ItemOrders {
             order.clear();
             order.write(stack);
         } else {
-            BlockPosition pos = BlockTools.getBlockClickedOn(player, player.worldObj, false);
+            BlockPosition pos = BlockTools.getBlockClickedOn(player, player.world, false);
             if (pos != null) {
-                order.addPatrolPoint(player.worldObj, pos);
+                order.addPatrolPoint(player.world, pos);
                 order.write(stack);
                 addMessage(player);
             }

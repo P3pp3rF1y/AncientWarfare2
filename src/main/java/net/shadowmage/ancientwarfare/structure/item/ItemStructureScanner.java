@@ -41,16 +41,16 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IBo
             ItemStructureSettings viewSettings = ItemStructureSettings.getSettingsFor(par1ItemStack);
             String key = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
             if (!viewSettings.hasPos1()) {
-                list.add(StatCollector.translateToLocalFormatted("guistrings.structure.scanner.select_first_pos", key));
+                list.add(I18n.format("guistrings.structure.scanner.select_first_pos", key));
                 list.add("(1/4)");
             } else if (!viewSettings.hasPos2()) {
-                list.add(StatCollector.translateToLocalFormatted("guistrings.structure.scanner.select_second_pos", key));
+                list.add(I18n.format("guistrings.structure.scanner.select_second_pos", key));
                 list.add("(2/4)");
             } else if (!viewSettings.hasBuildKey()) {
-                list.add(StatCollector.translateToLocalFormatted("guistrings.structure.scanner.select_offset", key));
+                list.add(I18n.format("guistrings.structure.scanner.select_offset", key));
                 list.add("(3/4)");
             } else {
-                list.add(key + " : " + StatCollector.translateToLocal("guistrings.structure.scanner.click_to_process"));
+                list.add(key + " : " + I18n.format("guistrings.structure.scanner.click_to_process"));
                 list.add("(4/4)");
             }
         }
@@ -107,7 +107,7 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IBo
         if (!MinecraftServer.getServer().getConfigurationManager().func_152607_e(player.getGameProfile())) {
             return;
         }
-        BlockPosition hit = BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());
+        BlockPosition hit = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
         if (hit == null) {
             return;
         }
@@ -134,12 +134,12 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IBo
         if (settings.hasPos1()) {
             pos1 = settings.pos1();
         } else {
-            pos1 = BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());
+            pos1 = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
         }
         if (settings.hasPos2()) {
             pos2 = settings.pos2();
         } else {
-            pos2 = BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());
+            pos2 = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
         }
         if (pos1 != null && pos2 != null) {
             min = BlockTools.getMin(pos1, pos2);

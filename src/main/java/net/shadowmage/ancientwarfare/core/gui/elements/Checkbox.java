@@ -35,7 +35,7 @@ public class Checkbox extends GuiElement {
      */
     public Checkbox(int topLeftX, int topLeftY, int width, int height, String label) {
         super(topLeftX, topLeftY, width, height);
-        this.label = StatCollector.translateToLocal(label);
+        this.label = I18n.format(label);
         this.setTooltipIfFound(label);
         this.addNewListener(new Listener(Listener.MOUSE_UP) {
             @Override

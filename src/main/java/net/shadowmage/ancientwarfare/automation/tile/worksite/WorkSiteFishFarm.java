@@ -40,7 +40,7 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
         setWorkBoundsMax(pos.moveUp(yCoord - 1 - pos.y));
         pos = getWorkBoundsMin();
         setWorkBoundsMin(pos.moveUp(yCoord - 5 - pos.y));
-        this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        this.worldObj.notifyBlockUpdate(xCoord, yCoord, zCoord);
     }
 
     @Override
@@ -50,7 +50,7 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
         setWorkBoundsMax(pos.moveUp(yCoord - 1 - pos.y));
         pos = getWorkBoundsMin();
         setWorkBoundsMin(pos.moveUp(yCoord - 5 - pos.y));
-        this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        this.worldObj.notifyBlockUpdate(xCoord, yCoord, zCoord);
     }
 
     @Override
@@ -148,7 +148,7 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
 
     @Override
     public boolean onBlockClicked(EntityPlayer player) {
-        if (!player.worldObj.isRemote) {
+        if (!player.world.isRemote) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_FISH_FARM, xCoord, yCoord, zCoord);
         }
         return true;

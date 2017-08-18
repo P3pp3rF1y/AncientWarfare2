@@ -46,7 +46,7 @@ public class GuiWarehouseStockViewer extends GuiContainerBase<ContainerWarehouse
             area.addGuiElement(button);
 
             text = String.valueOf(filter.getQuantity());
-            label = new Label(178 - 16 - 12 - 2 - fontRendererObj.getStringWidth(text), totalHeight + 4, String.valueOf(filter.getQuantity()));
+            label = new Label(178 - 16 - 12 - 2 - fontRenderer.getStringWidth(text), totalHeight + 4, String.valueOf(filter.getQuantity()));
             area.addGuiElement(label);
 
             text = filter.getFilterItem() == null ? "Empty Filter" : filter.getFilterItem().getDisplayName();
@@ -101,7 +101,7 @@ public class GuiWarehouseStockViewer extends GuiContainerBase<ContainerWarehouse
             ItemStack in = stack == null ? null : stack.copy();
             this.setItem(in);
             if (in != null) {
-                in.stackSize = 1;
+                in.setCount(1);
             }
             filter.setItem(in == null ? null : in.copy());
             getContainer().sendFiltersToServer();

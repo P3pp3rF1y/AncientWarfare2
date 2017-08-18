@@ -97,7 +97,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
     }
 
     @Override
-    public ItemStack getPickedResult(MovingObjectPosition target){
+    public ItemStack getPickedResult(RayTraceResult target){
         return Gate.getItemToConstruct(this.gateType.getGlobalID());
     }
 

@@ -25,11 +25,11 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
         super(player, x, y, z);
         researcherName = tileEntity.getCrafterName();
         useAdjacentInventory = tileEntity.useAdjacentInventory;
-        if (!player.worldObj.isRemote) {
+        if (!player.world.isRemote) {
             if (researcherName != null) {
-                currentGoal = ResearchTracker.INSTANCE.getCurrentGoal(player.worldObj, researcherName);
-                progress = ResearchTracker.INSTANCE.getProgress(player.worldObj, researcherName);
-                queuedResearch.addAll(ResearchTracker.INSTANCE.getResearchQueueFor(player.worldObj, researcherName));
+                currentGoal = ResearchTracker.INSTANCE.getCurrentGoal(player.world, researcherName);
+                progress = ResearchTracker.INSTANCE.getProgress(player.world, researcherName);
+                queuedResearch.addAll(ResearchTracker.INSTANCE.getResearchQueueFor(player.world, researcherName));
             }
         }
 
@@ -79,12 +79,12 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
                     return null;
                 }
             }
-            if (slotStack.stackSize == 0) {
+            if (slotStack.getCount() == 0) {
                 theSlot.putStack(null);
             } else {
                 theSlot.onSlotChanged();
             }
-            if (slotStack.stackSize == slotStackCopy.stackSize) {
+            if (slotStack.getCount() == slotStackCopy.getCount()) {
                 return null;
             }
             theSlot.onPickupFromSlot(par1EntityPlayer, slotStack);
@@ -143,7 +143,7 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
         }
         if (tag.hasKey("useAdjacentInventory")) {
             this.useAdjacentInventory = tag.getBoolean("useAdjacentInventory");
-            if (!player.worldObj.isRemote) {
+            if (!player.world.isRemote) {
                 tileEntity.useAdjacentInventory = useAdjacentInventory;
             }
         }
@@ -153,7 +153,7 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
         if (tag.hasKey("inventorySide")) {
             tileEntity.inventorySide = EnumFacing.getOrientation(tag.getInteger("inventorySide"));
         }
-        if(!player.worldObj.isRemote){
+        if(!player.world.isRemote){
             tileEntity.markDirty();
         }
         this.refreshGui();
@@ -162,7 +162,7 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
     @Override
     public void detectAndSendChanges() {
         super.detectAndSendChanges();
-        if (player.worldObj.isRemote) {
+        if (player.world.isRemote) {
             return;
         }
         tileEntity.addTorque(EnumFacing.UNKNOWN, AWCoreStatics.researchPerTick);//do research whenever the GUI is open
@@ -183,18 +183,18 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
             tag = new NBTTagCompound();
             researcherName = name;
             tag.setString("researcherName", name);
-            currentGoal = ResearchTracker.INSTANCE.getCurrentGoal(player.worldObj, researcherName);
+            currentGoal = ResearchTracker.INSTANCE.getCurrentGoal(player.world, researcherName);
             tag.setInteger("currentGoal", currentGoal);
-            progress = ResearchTracker.INSTANCE.getProgress(player.worldObj, researcherName);
+            progress = ResearchTracker.INSTANCE.getProgress(player.world, researcherName);
             tag.setInteger("progress", progress);
         }else {
-            int g = ResearchTracker.INSTANCE.getCurrentGoal(player.worldObj, researcherName);
+            int g = ResearchTracker.INSTANCE.getCurrentGoal(player.world, researcherName);
             if (g != currentGoal) {
                 tag = new NBTTagCompound();
                 currentGoal = g;
                 tag.setInteger("currentGoal", currentGoal);
             }
-            int p = ResearchTracker.INSTANCE.getProgress(player.worldObj, researcherName);
+            int p = ResearchTracker.INSTANCE.getProgress(player.world, researcherName);
             if (p != progress) {
                 if (tag == null) {
                     tag = new NBTTagCompound();
@@ -208,7 +208,7 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
          * synch queued research
          */
         if (researcherName != null) {
-            List<Integer> queue = ResearchTracker.INSTANCE.getResearchQueueFor(player.worldObj, researcherName);
+            List<Integer> queue = ResearchTracker.INSTANCE.getResearchQueueFor(player.world, researcherName);
             if (!queue.equals(queuedResearch)) {
                 if (tag == null) {
                     tag = new NBTTagCompound();

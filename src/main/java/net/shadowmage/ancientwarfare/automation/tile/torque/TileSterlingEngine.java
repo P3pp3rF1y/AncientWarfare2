@@ -48,7 +48,7 @@ public class TileSterlingEngine extends TileTorqueSingleCell implements IInvento
 
     @Override
     public boolean onBlockClicked(EntityPlayer player) {
-        if (!player.worldObj.isRemote) {
+        if (!player.world.isRemote) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_TORQUE_GENERATOR_STERLING, xCoord, yCoord, zCoord);
         }
         return true;

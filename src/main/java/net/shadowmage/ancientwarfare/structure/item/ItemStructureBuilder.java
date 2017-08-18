@@ -58,7 +58,7 @@ public class ItemStructureBuilder extends Item implements IItemKeyInterface, IBo
         if (viewSettings.hasName()) {
             structure = viewSettings.name;
         }
-        list.add(StatCollector.translateToLocal("guistrings.current_structure") + " " + StatCollector.translateToLocal(structure));
+        list.add(I18n.format("guistrings.current_structure") + " " + I18n.format(structure));
     }
 
     @Override
@@ -73,7 +73,7 @@ public class ItemStructureBuilder extends Item implements IItemKeyInterface, IBo
 
     @Override
     public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
-        if (player == null || player.worldObj.isRemote) {
+        if (player == null || player.world.isRemote) {
             return;
         }
         ItemStructureSettings buildSettings = ItemStructureSettings.getSettingsFor(stack);
@@ -83,18 +83,18 @@ public class ItemStructureBuilder extends Item implements IItemKeyInterface, IBo
                 player.addChatComponentMessage(new ChatComponentTranslation("guistrings.template.not_found"));
                 return;
             }
-            BlockPosition bpHit = BlockTools.getBlockClickedOn(player, player.worldObj, true);
+            BlockPosition bpHit = BlockTools.getBlockClickedOn(player, player.world, true);
             if (bpHit == null) {
                 return;
             }//no hit position, clicked on air
-            StructureBuilder builder = new StructureBuilder(player.worldObj, template, BlockTools.getPlayerFacingFromYaw(player.rotationYaw), bpHit.x, bpHit.y, bpHit.z);
+            StructureBuilder builder = new StructureBuilder(player.world, template, BlockTools.getPlayerFacingFromYaw(player.rotationYaw), bpHit.x, bpHit.y, bpHit.z);
             builder.instantConstruction();
             if (!player.capabilities.isCreativeMode) {
                 int slot = player.inventory.currentItem;
-                if (stack.stackSize == 1) {
+                if (stack.getCount() == 1) {
                     player.inventory.setInventorySlotContents(slot, null);
                 } else {
-                    stack.stackSize--;
+                    stack.shrink(1);
                 }
             }
         } else {
@@ -104,7 +104,7 @@ public class ItemStructureBuilder extends Item implements IItemKeyInterface, IBo
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        if (!player.worldObj.isRemote && !player.isSneaking() && player.capabilities.isCreativeMode) {
+        if (!player.world.isRemote && !player.isSneaking() && player.capabilities.isCreativeMode) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_BUILDER, 0, 0, 0);
         }
         return stack;
@@ -121,7 +121,7 @@ public class ItemStructureBuilder extends Item implements IItemKeyInterface, IBo
         if (structure == null) {
             return;
         }
-        BlockPosition hit = BlockTools.getBlockClickedOn(player, player.worldObj, true);
+        BlockPosition hit = BlockTools.getBlockClickedOn(player, player.world, true);
         int face = BlockTools.getPlayerFacingFromYaw(player.rotationYaw);
         if (hit == null) {
             return;

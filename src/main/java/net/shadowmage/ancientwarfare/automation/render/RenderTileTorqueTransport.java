@@ -1,3 +1,4 @@
+/*
 package net.shadowmage.ancientwarfare.automation.render;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -31,9 +32,11 @@ public class RenderTileTorqueTransport extends TileEntitySpecialRenderer impleme
         textures[2] = heavy;
     }
 
-    /**
+    */
+/**
      * really should be called optionalStaticInitialization()... but w/e
-     */
+     *//*
+
     private void constructModel() {
         if (model == null) {
             ModelLoader loader = new ModelLoader();
@@ -143,3 +146,4 @@ public class RenderTileTorqueTransport extends TileEntitySpecialRenderer impleme
     }
 
 }
+*/

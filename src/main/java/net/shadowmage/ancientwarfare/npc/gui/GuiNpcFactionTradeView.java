@@ -97,7 +97,7 @@ public class GuiNpcFactionTradeView extends GuiContainerBase<ContainerNpcFaction
         };
         area.addGuiElement(tradeButton);
 
-        Label available = new Label(startWidth, startHeight, StatCollector.translateToLocalFormatted("guistrings.trades_available", trade.getCurrentAvailable()));
+        Label available = new Label(startWidth, startHeight, I18n.format("guistrings.trades_available", trade.getCurrentAvailable()));
         area.addGuiElement(available);
 
         startHeight += 18 * gridY;//input/output grid size

@@ -21,7 +21,7 @@ public class ItemBlockInfo extends Item {
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         if(!world.isRemote) {
-            BlockPosition pos = BlockTools.getBlockClickedOn(player, player.worldObj, false);
+            BlockPosition pos = BlockTools.getBlockClickedOn(player, player.world, false);
             if (pos != null) {
                 Block block = world.getBlock(pos.x, pos.y, pos.z);
                 int meta = world.getBlockMetadata(pos.x, pos.y, pos.z);

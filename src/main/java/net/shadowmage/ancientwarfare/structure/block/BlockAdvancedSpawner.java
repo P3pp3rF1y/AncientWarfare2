@@ -12,7 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -105,7 +105,7 @@ public class BlockAdvancedSpawner extends Block {
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z, EntityPlayer entityPlayer) {
+    public ItemStack getPickBlock(RayTraceResult target, World world, int x, int y, int z, EntityPlayer entityPlayer) {
         TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileAdvancedSpawner) {
             ItemStack item = new ItemStack(this);

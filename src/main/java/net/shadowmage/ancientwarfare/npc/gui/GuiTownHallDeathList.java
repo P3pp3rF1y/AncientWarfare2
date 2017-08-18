@@ -44,35 +44,35 @@ public class GuiTownHallDeathList extends GuiContainerBase<ContainerTownHall> {
         Label label;
         String labelText;
         for (NpcDeathEntry entry : deathList) {
-            labelText = StatCollector.translateToLocal("guistrings.npc.npc_name");
+            labelText = I18n.format("guistrings.npc.npc_name");
             label = new Label(8, totalHeight, labelText + ": " + entry.npcName);
             area.addGuiElement(label);
             totalHeight += 12;
 
-            labelText = StatCollector.translateToLocal("guistrings.npc.npc_type");
-            label = new Label(8, totalHeight, labelText + ": " + StatCollector.translateToLocal("entity.AncientWarfareNpc." + entry.npcType + ".name"));
+            labelText = I18n.format("guistrings.npc.npc_type");
+            label = new Label(8, totalHeight, labelText + ": " + I18n.format("entity.AncientWarfareNpc." + entry.npcType + ".name"));
             area.addGuiElement(label);
             totalHeight += 12;
 
-            labelText = StatCollector.translateToLocalFormatted("guistrings.npc.death_cause", entry.deathCause);
+            labelText = I18n.format("guistrings.npc.death_cause", entry.deathCause);
             label = new Label(8, totalHeight, labelText);
             area.addGuiElement(label);
             totalHeight += 12;
             
             if (entry.pos != null && entry.pos.length == 3) {
-                labelText = StatCollector.translateToLocalFormatted("guistrings.npc.death_position", entry.pos[0], entry.pos[1], entry.pos[2]);
+                labelText = I18n.format("guistrings.npc.death_position", entry.pos[0], entry.pos[1], entry.pos[2]);
                 label = new Label(8, totalHeight, labelText);
                 area.addGuiElement(label);
                 totalHeight += 12;
             }
 
-            labelText = StatCollector.translateToLocalFormatted("guistrings.npc.can_res", entry.canRes);
+            labelText = I18n.format("guistrings.npc.can_res", entry.canRes);
             label = new Label(8, totalHeight, labelText);
             area.addGuiElement(label);
             totalHeight += 12;
 
             if (entry.canRes) {
-                labelText = StatCollector.translateToLocalFormatted("guistrings.npc.resurrected", entry.resurrected);
+                labelText = I18n.format("guistrings.npc.resurrected", entry.resurrected);
                 label = new Label(8, totalHeight, labelText);
                 area.addGuiElement(label);
                 totalHeight += 12;

@@ -224,8 +224,8 @@ public class GuiResearchBook extends GuiContainerBase {
     private class ResearchSorter implements Comparator<ResearchGoal> {
         @Override
         public int compare(ResearchGoal arg0, ResearchGoal arg1) {
-            String nameA = StatCollector.translateToLocal(arg0.getName());
-            String nameB = StatCollector.translateToLocal(arg1.getName());
+            String nameA = I18n.format(arg0.getName());
+            String nameB = I18n.format(arg1.getName());
             return nameA.compareTo(nameB);
         }
     }

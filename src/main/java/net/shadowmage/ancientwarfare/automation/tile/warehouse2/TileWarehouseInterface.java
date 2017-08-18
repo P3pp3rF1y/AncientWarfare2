@@ -135,7 +135,7 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
 
     @Override
     public boolean onBlockClicked(EntityPlayer player) {
-        if (!player.worldObj.isRemote) {
+        if (!player.world.isRemote) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_OUTPUT, xCoord, yCoord, zCoord);
         }
         return true;

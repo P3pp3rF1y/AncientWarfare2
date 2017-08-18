@@ -78,13 +78,13 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
             }
             if (!found) {
                 stack2 = stack1.copy();
-                stack2.stackSize = 1;
+                stack2.setCount(1);
                 compactedCraft.add(stack2);
             }
         }
         found = true;
         for (ItemStack stack3 : compactedCraft) {
-            if (InventoryTools.getCountOf(resourceInventory, -1, stack3) < stack3.stackSize) {
+            if (InventoryTools.getCountOf(resourceInventory, -1, stack3) < stack3.getCount()) {
                 found = false;
                 break;
             }
@@ -268,7 +268,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
 
     @Override
     public boolean onBlockClicked(EntityPlayer player) {
-        if (!player.worldObj.isRemote) {
+        if (!player.world.isRemote) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_AUTO_CRAFT, xCoord, yCoord, zCoord);
         }
         return true;

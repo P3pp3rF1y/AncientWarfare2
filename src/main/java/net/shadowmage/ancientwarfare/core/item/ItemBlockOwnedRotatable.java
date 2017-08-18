@@ -25,10 +25,10 @@ public class ItemBlockOwnedRotatable extends ItemBlock {
 
     @Override
     public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
-        metadata = BlockRotationHandler.getMetaForPlacement(player, rotatable, side);
+        metadata = BlockRotationHandler.getFaceForPlacement(player, rotatable, side);
         boolean val = super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
         if (val) {
-            TileEntity te = player.worldObj.getTileEntity(x, y, z);
+            TileEntity te = player.world.getTileEntity(x, y, z);
             if (te instanceof IOwnable) {
                 ((IOwnable) te).setOwner(player);
             }

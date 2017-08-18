@@ -151,7 +151,7 @@ public class StructureBuilder implements IStructureBuilder {
                     world.addTileEntity(te);//add TE to world added/loaded TE list
                 }
             }
-            world.markBlockForUpdate(x, y, z);
+            world.notifyBlockUpdate(x, y, z);
             //TODO clean this up to send own list of block-changes, not rely upon vanilla to send changes. (as the client-side of this lags to all hell)
         }
     }

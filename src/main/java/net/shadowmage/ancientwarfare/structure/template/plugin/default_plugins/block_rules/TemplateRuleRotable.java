@@ -72,7 +72,7 @@ public class TemplateRuleRotable extends TemplateRuleBlock {
                     pos2 = BlockTools.rotateAroundOrigin(p2, turns).offset(x, y, z);
                     ((IBoundedSite) worksite).setBounds(pos1, pos2);
                 }
-                world.markBlockForUpdate(x, y, z);
+                world.notifyBlockUpdate(x, y, z);
             }
         }
     }

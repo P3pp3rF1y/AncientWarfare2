@@ -33,7 +33,7 @@ public class ContainerWarehouseControl extends ContainerTileBase<TileWarehouseBa
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int slotClickedIndex) {
-        if (player.worldObj.isRemote) {
+        if (player.world.isRemote) {
             return null;
         }
         Slot slot = this.getSlot(slotClickedIndex);
@@ -55,7 +55,7 @@ public class ContainerWarehouseControl extends ContainerTileBase<TileWarehouseBa
             NBTTagCompound reqTag = tag.getCompoundTag("slotClick");
             ItemStack item = null;
             if (reqTag.hasKey("reqItem")) {
-                item = ItemStack.loadItemStackFromNBT(reqTag.getCompoundTag("reqItem"));
+                item = new ItemStack(reqTag.getCompoundTag("reqItem"));
             }
             tileEntity.handleSlotClick(player, item, reqTag.getBoolean("isShiftClick"));
         }

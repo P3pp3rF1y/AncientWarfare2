@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.container;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -8,6 +9,7 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySi
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.core.inventory.SlotFiltered;
 
+@MethodsReturnNonnullByDefault
 public class ContainerWorksiteBase extends ContainerTileBase<TileWorksiteBoundedInventory> {
 
     public final InventorySided inventory;
@@ -43,7 +45,7 @@ public class ContainerWorksiteBase extends ContainerTileBase<TileWorksiteBounded
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
         Slot slot = this.getSlot(slotClickedIndex);
         if (slot == null || !slot.getHasStack()) {
-            return null;
+            return ItemStack.EMPTY;
         }
         int slots = tileEntity.getSizeInventory();
         ItemStack stackFromSlot = slot.getStack();
@@ -52,12 +54,12 @@ public class ContainerWorksiteBase extends ContainerTileBase<TileWorksiteBounded
         } else {
             this.mergeItemStack(stackFromSlot, 0, slots, true);
         }
-        if (stackFromSlot.stackSize == 0) {
-            slot.putStack(null);
+        if (stackFromSlot.getCount() == 0) {
+            slot.putStack(ItemStack.EMPTY);
         } else {
             slot.onSlotChanged();
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 
 }

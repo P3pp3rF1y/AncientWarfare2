@@ -181,7 +181,7 @@ public class TileWindmillBlade extends TileEntity {
         }
         if(dirty){
             markDirty();
-            worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            worldObj.notifyBlockUpdate(xCoord, yCoord, zCoord);
         }
     }
 
@@ -215,7 +215,7 @@ public class TileWindmillBlade extends TileEntity {
         windmillSize = ySize;
         this.isControl = true;
         markDirty();
-        this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        this.worldObj.notifyBlockUpdate(xCoord, yCoord, zCoord);
     }
 
     @Override

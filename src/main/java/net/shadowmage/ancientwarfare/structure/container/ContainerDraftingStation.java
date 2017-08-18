@@ -25,7 +25,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
 
     public ContainerDraftingStation(EntityPlayer player, int x, int y, int z) {
         super(player);
-        tile = (TileDraftingStation) player.worldObj.getTileEntity(x, y, z);
+        tile = (TileDraftingStation) player.world.getTileEntity(x, y, z);
         if (tile == null) {
             throw new IllegalArgumentException("No drafting station");
         }
@@ -83,12 +83,12 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
                     return null;
                 }
             }
-            if (slotStack.stackSize == 0) {
+            if (slotStack.getCount() == 0) {
                 theSlot.putStack(null);
             } else {
                 theSlot.onSlotChanged();
             }
-            if (slotStack.stackSize == slotStackCopy.stackSize) {
+            if (slotStack.getCount() == slotStackCopy.getCount()) {
                 return null;
             }
             theSlot.onPickupFromSlot(par1EntityPlayer, slotStack);
@@ -126,7 +126,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
         ItemStack stack;
         for (int i = 0; i < list.tagCount(); i++) {
             tag = list.getCompoundTagAt(i);
-            stack = ItemStack.loadItemStackFromNBT(tag);
+            stack = new ItemStack(tag);
             if (stack != null) {
                 resources.add(stack);
             }
@@ -148,7 +148,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
     @Override
     public void handlePacketData(NBTTagCompound tag) {
         if (tag.hasKey("structName")) {
-            if (player.worldObj.isRemote) {
+            if (player.world.isRemote) {
                 this.structureName = tag.getString("structName");
             } else {
                 tile.setTemplate(tag.getString("structName"));

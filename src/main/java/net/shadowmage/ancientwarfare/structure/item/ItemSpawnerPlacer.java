@@ -28,8 +28,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.RayTraceResult.MovingObjectType;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -48,43 +48,43 @@ public class ItemSpawnerPlacer extends Item {
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
-        list.add(StatCollector.translateToLocal("guistrings.selected_mob") + ":");
+        list.add(I18n.format("guistrings.selected_mob") + ":");
         if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnerData")) {
             NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData");
             String mobID = tag.getString("EntityId");
             if (mobID.isEmpty()) {
-                list.add(StatCollector.translateToLocal("guistrings.no_selection"));
+                list.add(I18n.format("guistrings.no_selection"));
             } else {
-                list.add(StatCollector.translateToLocal("entity." + mobID + ".name"));
+                list.add(I18n.format("entity." + mobID + ".name"));
             }
         } else {
-            list.add(StatCollector.translateToLocal("guistrings.no_selection"));
+            list.add(I18n.format("guistrings.no_selection"));
         }
-        list.add(EnumChatFormatting.RED + StatCollector.translateToLocal("guistrings.spawner.warning_1"));
-        list.add(EnumChatFormatting.RED + StatCollector.translateToLocal("guistrings.spawner.warning_2"));
+        list.add(EnumChatFormatting.RED + I18n.format("guistrings.spawner.warning_1"));
+        list.add(EnumChatFormatting.RED + I18n.format("guistrings.spawner.warning_2"));
     }
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        if (player == null || player.worldObj == null || player.worldObj.isRemote || stack == null) {
+        if (player == null || player.world == null || player.world.isRemote || stack == null) {
             return stack;
         }
-        MovingObjectPosition mophit = getMovingObjectPositionFromPlayer(player.worldObj, player, false);
+        RayTraceResult mophit = getRayTraceResultFromPlayer(player.world, player, false);
         if (player.capabilities.isCreativeMode && player.isSneaking()) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SPAWNER, 0, 0, 0);
         } else if (mophit != null && mophit.typeOfHit == MovingObjectType.BLOCK) {
             if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnerData")) {
                 BlockPosition hit = new BlockPosition(mophit);
-                if (player.worldObj.setBlock(hit.x, hit.y, hit.z, Blocks.mob_spawner)) {
+                if (player.world.setBlock(hit.x, hit.y, hit.z, Blocks.mob_spawner)) {
                     NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData");
                     tag.setInteger("x", hit.x);
                     tag.setInteger("y", hit.y);
                     tag.setInteger("z", hit.z);
-                    TileEntity te = player.worldObj.getTileEntity(hit.x, hit.y, hit.z);
+                    TileEntity te = player.world.getTileEntity(hit.x, hit.y, hit.z);
                     te.readFromNBT(tag);
 
                     if (!player.capabilities.isCreativeMode) {
-                        stack.stackSize--;
+                        stack.shrink(1);
                     }
                 }
             } else {

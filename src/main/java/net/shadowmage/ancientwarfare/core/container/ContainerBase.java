@@ -11,8 +11,6 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketGui;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-import java.util.List;
-
 public class ContainerBase extends Container {
 
     public final EntityPlayer player;
@@ -71,7 +69,7 @@ public class ContainerBase extends Container {
      * server side method to send a data-packet to the client-side GUI attached to the client-side version of this container
      */
     protected final void sendDataToGui(NBTTagCompound data) {
-        if (!player.worldObj.isRemote) {
+        if (!player.world.isRemote) {
             PacketGui pkt = new PacketGui();
             pkt.setTag("gui", data);
             NetworkHandler.sendToPlayer((EntityPlayerMP) player, pkt);
@@ -82,7 +80,7 @@ public class ContainerBase extends Container {
      * send data from client-container to server container
      */
     protected void sendDataToServer(NBTTagCompound data) {
-        if (player.worldObj.isRemote) {
+        if (player.world.isRemote) {
             PacketGui pkt = new PacketGui();
             pkt.setData(data);
             NetworkHandler.sendToServer(pkt);
@@ -93,7 +91,7 @@ public class ContainerBase extends Container {
      * send data from server container to client container
      */
     protected void sendDataToClient(NBTTagCompound data) {
-        if (!player.worldObj.isRemote) {
+        if (!player.world.isRemote) {
             PacketGui pkt = new PacketGui();
             pkt.setData(data);
             NetworkHandler.sendToPlayer((EntityPlayerMP) player, pkt);
@@ -149,9 +147,9 @@ public class ContainerBase extends Container {
      */
     @SuppressWarnings("unchecked")
     public void removeSlots() {
-        for (Slot s : ((List<Slot>) this.inventorySlots)) {
-            if (s.yDisplayPosition >= 0) {
-                s.yDisplayPosition -= 10000;
+        for (Slot s : this.inventorySlots) {
+            if (s.yPos >= 0) {
+                s.yPos -= 10000;
             }
         }
     }
@@ -161,9 +159,9 @@ public class ContainerBase extends Container {
      */
     @SuppressWarnings("unchecked")
     public void addSlots() {
-        for (Slot s : ((List<Slot>) this.inventorySlots)) {
-            if (s.yDisplayPosition < 0) {
-                s.yDisplayPosition += 10000;
+        for (Slot s : this.inventorySlots) {
+            if (s.yPos < 0) {
+                s.yPos += 10000;
             }
         }
     }
@@ -173,7 +171,7 @@ public class ContainerBase extends Container {
      */
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int slotClickedIndex) {
-        return null;
+        return ItemStack.EMPTY;
     }
 
     /**
@@ -191,28 +189,28 @@ public class ContainerBase extends Container {
         start = iterateBackwards ? endBeforeIndex : startIndex;
         stop = iterateBackwards ? startIndex : endBeforeIndex;
         if (incomingStack.isStackable()) {
-            for (currentIndex = start; incomingStack.stackSize > 0 && currentIndex != stop; currentIndex += iterator) {
+            for (currentIndex = start; incomingStack.getCount() > 0 && currentIndex != stop; currentIndex += iterator) {
                 slotFromContainer = this.getSlot(currentIndex);
                 if (!slotFromContainer.isItemValid(incomingStack)) {
                     continue;
                 }
                 stackFromSlot = slotFromContainer.getStack();
-                if (stackFromSlot == null || !InventoryTools.doItemStacksMatch(incomingStack, stackFromSlot, !incomingStack.getHasSubtypes(), false)) {
+                if (stackFromSlot.isEmpty() || !InventoryTools.doItemStacksMatch(incomingStack, stackFromSlot, !incomingStack.getHasSubtypes(), false)) {
                     continue;
                 }
-                transferAmount = stackFromSlot.getMaxStackSize() - stackFromSlot.stackSize;
-                if (transferAmount > incomingStack.stackSize) {
-                    transferAmount = incomingStack.stackSize;
+                transferAmount = stackFromSlot.getMaxStackSize() - stackFromSlot.getCount();
+                if (transferAmount > incomingStack.getCount()) {
+                    transferAmount = incomingStack.getCount();
                 }
                 if (transferAmount > 0) {
-                    incomingStack.stackSize -= transferAmount;
-                    stackFromSlot.stackSize += transferAmount;
+                    incomingStack.shrink(transferAmount);
+                    stackFromSlot.grow(transferAmount);
                     slotFromContainer.onSlotChanged();
                 }
             }
         }
-        if (incomingStack.stackSize > 0) {
-            for (currentIndex = start; incomingStack.stackSize > 0 && currentIndex != stop; currentIndex += iterator) {
+        if (incomingStack.getCount() > 0) {
+            for (currentIndex = start; incomingStack.getCount() > 0 && currentIndex != stop; currentIndex += iterator) {
                 slotFromContainer = this.getSlot(currentIndex);
                 if (!slotFromContainer.isItemValid(incomingStack)) {
                     continue;
@@ -220,12 +218,12 @@ public class ContainerBase extends Container {
                 if (!slotFromContainer.getHasStack()) {
                     slotFromContainer.putStack(incomingStack.copy());
                     slotFromContainer.onSlotChanged();
-                    incomingStack.stackSize = 0;
+                    incomingStack.setCount(0);
                     break;
                 }
             }
         }
-        return incomingStack.stackSize == 0;
+        return incomingStack.getCount() == 0;
     }
 
 }

@@ -45,7 +45,7 @@ public class GuiWorksiteFishControl extends GuiContainerBase<ContainerWorksiteFi
     @Override
     protected boolean onGuiCloseRequested() {
         getContainer().sendSettingsToServer();
-        NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_FISH_FARM, getContainer().tileEntity.xCoord, getContainer().tileEntity.yCoord, getContainer().tileEntity.zCoord);
+        NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_FISH_FARM, getContainer().tileEntity.getPos());
         return false;
     }
 

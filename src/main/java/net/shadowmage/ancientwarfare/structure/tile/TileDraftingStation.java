@@ -69,8 +69,8 @@ public class TileDraftingStation extends TileEntity implements IInvBasic {
             for (int i = 0; i < neededResources.size(); i++) {
                 stack1 = neededResources.get(i);
                 if (InventoryTools.doItemStacksMatch(stack1, stack2)) {
-                    stack1.stackSize--;
-                    stack2.stackSize--;
+                    stack1.shrink(1);
+                    stack2.shrink(1);
                     if (stack1.stackSize <= 0) {
                         neededResources.remove(i);
                     }

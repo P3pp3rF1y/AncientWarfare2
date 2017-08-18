@@ -112,7 +112,7 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
 
     @Override
     public void setupElements() {
-        typeLabel.setText(StatCollector.translateToLocal("guistrings.validation_type") + ": " + parent.validationType.getName());
+        typeLabel.setText(I18n.format("guistrings.validation_type") + ": " + parent.validationType.getName());
 
         int totalHeight = 0;
         area.clearElements();

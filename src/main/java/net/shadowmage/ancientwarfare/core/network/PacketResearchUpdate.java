@@ -42,13 +42,13 @@ public class PacketResearchUpdate extends PacketBase {
     protected void execute(EntityPlayer player) {
         if (live) {
             if (add) {
-                ResearchTracker.INSTANCE.addResearch(player.worldObj, playerName, toAdd);
+                ResearchTracker.INSTANCE.addResearch(player.world, playerName, toAdd);
             }
         } else {
             if (add) {
-                ResearchTracker.INSTANCE.addQueuedGoal(player.worldObj, playerName, toAdd);
+                ResearchTracker.INSTANCE.addQueuedGoal(player.world, playerName, toAdd);
             } else {
-                ResearchTracker.INSTANCE.removeQueuedGoal(player.worldObj, playerName, toAdd);
+                ResearchTracker.INSTANCE.removeQueuedGoal(player.world, playerName, toAdd);
             }
         }
     }

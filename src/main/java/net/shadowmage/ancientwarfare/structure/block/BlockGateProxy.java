@@ -27,7 +27,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
@@ -92,7 +92,7 @@ public final class BlockGateProxy extends BlockContainer {
     }
 
     @Override
-    public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z) {
+    public ItemStack getPickBlock(RayTraceResult target, World world, int x, int y, int z) {
         TileEntity proxy = world.getTileEntity(pos);
         if(proxy instanceof TEGateProxy){
             return ((TEGateProxy) proxy).onBlockPicked(target);

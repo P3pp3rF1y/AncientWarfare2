@@ -1,15 +1,16 @@
 package net.shadowmage.ancientwarfare.core.network;
 
-import cpw.mods.fml.common.network.FMLEventChannel;
-import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
-import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.fml.common.network.FMLEventChannel;
+import net.minecraftforge.fml.common.network.IGuiHandler;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+import net.minecraftforge.fml.common.network.internal.FMLNetworkHandler;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 
@@ -120,12 +121,12 @@ public final class NetworkHandler implements IGuiHandler {
     }
 
     public static void sendToAllTracking(Entity e, PacketBase pkt) {
-        WorldServer server = (WorldServer) e.worldObj;
-        server.getEntityTracker().func_151247_a(e, pkt.getFMLPacket());
+        WorldServer server = (WorldServer) e.world;
+        server.getEntityTracker().sendToTracking(e, pkt.getFMLPacket());
     }
 
     public static void sendToAllNear(World world, int x, int y, int z, double range, PacketBase pkt) {
-        INSTANCE.channel.sendToAllAround(pkt.getFMLPacket(), new TargetPoint(world.provider.dimensionId, x, y, z, range));
+        INSTANCE.channel.sendToAllAround(pkt.getFMLPacket(), new TargetPoint(world.provider.getDimension(), x, y, z, range));
     }
 
     /**
@@ -137,8 +138,8 @@ public final class NetworkHandler implements IGuiHandler {
     @SuppressWarnings("unchecked")
     public static void sendToAllTrackingChunk(World world, int cx, int cz, PacketBase pkt) {
         WorldServer server = (WorldServer) world;
-        for (EntityPlayer p : (List<EntityPlayer>) server.playerEntities) {
-            if (server.getPlayerManager().isPlayerWatchingChunk((EntityPlayerMP) p, cx, cz)) {
+        for (EntityPlayer p : server.playerEntities) {
+            if (server.getPlayerChunkMap().isPlayerWatchingChunk((EntityPlayerMP) p, cx, cz)) {
                 sendToPlayer((EntityPlayerMP) p, pkt);
             }
         }
@@ -180,13 +181,16 @@ public final class NetworkHandler implements IGuiHandler {
         INSTANCE.guiClasses.put(id, guiClazz);
     }
 
+    public final void openGui(EntityPlayer player, int id, BlockPos pos) {
+        openGui(player, id, pos.getX(), pos.getY(), pos.getZ());
+    }
     public final void openGui(EntityPlayer player, int id, int x, int y, int z) {
-        if (player.worldObj.isRemote) {
+        if (player.world.isRemote) {
             PacketGui pkt = new PacketGui();
             pkt.setOpenGui(id, x, y, z);
             sendToServer(pkt);
         } else {
-            FMLNetworkHandler.openGui(player, AncientWarfareCore.instance, id, player.worldObj, x, y, z);
+            FMLNetworkHandler.openGui(player, AncientWarfareCore.instance, id, player.world, x, y, z);
             if (player.openContainer instanceof ContainerBase) {
                 ((ContainerBase) player.openContainer).sendInitData();
             }

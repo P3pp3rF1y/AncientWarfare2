@@ -31,7 +31,7 @@ public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
             addSlotToContainer(new Slot(tileEntity, i, xPos, yPos));
         }
         addPlayerSlots(8 + 3 * 18 + 8 + 16);
-        if (!player.worldObj.isRemote) {
+        if (!player.world.isRemote) {
             deathList.addAll(tileEntity.getDeathList());
             tileEntity.addViewer(this);
         }
@@ -187,12 +187,12 @@ public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
                     return null;
                 }
             }
-            if (slotStack.stackSize == 0) {
+            if (slotStack.getCount() == 0) {
                 theSlot.putStack(null);
             } else {
                 theSlot.onSlotChanged();
             }
-            if (slotStack.stackSize == slotStackCopy.stackSize) {
+            if (slotStack.getCount() == slotStackCopy.getCount()) {
                 return null;
             }
             theSlot.onPickupFromSlot(par1EntityPlayer, slotStack);

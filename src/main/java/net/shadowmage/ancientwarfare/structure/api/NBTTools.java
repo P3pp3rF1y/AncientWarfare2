@@ -36,7 +36,7 @@ public class NBTTools {
     public static NBTTagCompound writeItemStack(ItemStack stack, NBTTagCompound tag) {
         tag.setString("item", Item.itemRegistry.getNameForObject(stack.getItem()));
         tag.setInteger("damage", stack.getItemDamage());
-        tag.setInteger("quantity", stack.stackSize);
+        tag.setInteger("quantity", stack.getCount());
         if (stack.stackTagCompound != null) {
             tag.setTag("stackTag", stack.stackTagCompound.copy());
         }

@@ -1,3 +1,4 @@
+/*
 package net.shadowmage.ancientwarfare.automation.render;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -119,3 +120,4 @@ public class RenderWindmillBlades extends TileEntitySpecialRenderer implements I
     }
 
 }
+*/

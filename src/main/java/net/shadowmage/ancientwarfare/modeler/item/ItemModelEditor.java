@@ -26,7 +26,7 @@ public class ItemModelEditor extends Item {
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-        par3List.add(StatCollector.translateToLocal("guistrings.modeler.right_click_to_open"));
+        par3List.add(I18n.format("guistrings.modeler.right_click_to_open"));
     }
 
     public ItemModelEditor(String localizationKey) {

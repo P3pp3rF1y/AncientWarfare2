@@ -325,7 +325,7 @@ public class TileResearchStation extends TileOwned implements IWorkSite, IInvent
     @Override
     public boolean onBlockClicked(EntityPlayer player) {
         //TODO validate team/owner status
-        if (!player.worldObj.isRemote) {
+        if (!player.world.isRemote) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_RESEARCH_STATION, xCoord, yCoord, zCoord);
         }
         return true;

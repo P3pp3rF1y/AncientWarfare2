@@ -47,7 +47,7 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
         setWorkBoundsMax(pos.moveUp(yCoord - 1 - pos.y));
         pos = getWorkBoundsMin();
         setWorkBoundsMin(pos.moveUp(1 - pos.y));
-        this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        this.worldObj.notifyBlockUpdate(xCoord, yCoord, zCoord);
     }
 
     @Override
@@ -210,7 +210,7 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
         this.validateX = this.currentX;
         this.validateY = this.currentY;
         this.validateZ = this.currentZ;
-        this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);//resend work-bounds change
+        this.worldObj.notifyBlockUpdate(xCoord, yCoord, zCoord);//resend work-bounds change
     }
 
     @Override
@@ -246,7 +246,7 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 
     @Override
     public boolean onBlockClicked(EntityPlayer player) {
-        if (!player.worldObj.isRemote) {
+        if (!player.world.isRemote) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_QUARRY, xCoord, yCoord, zCoord);
         }
         return true;

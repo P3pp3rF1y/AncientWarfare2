@@ -51,7 +51,7 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
         this.filters.addAll(filters);
         shouldUpdate = false;//set to false, as we are manually updating right now
         recountFilters(false);//recount filters, do not send update
-        this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);//to re-send description packet to client with new filters
+        this.worldObj.notifyBlockUpdate(xCoord, yCoord, zCoord);//to re-send description packet to client with new filters
     }
 
     /**
@@ -119,7 +119,7 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
 
     @Override
     public boolean onBlockClicked(EntityPlayer player) {
-        if (!player.worldObj.isRemote) {
+        if (!player.world.isRemote) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_STOCK, xCoord, yCoord, zCoord);
         }
         return true;

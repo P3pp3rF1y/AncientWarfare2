@@ -294,7 +294,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
                 }
                 while (eaten < amount && stack.stackSize > 0) {
                     eaten += val;
-                    stack.stackSize--;
+                    stack.shrink(1);
                     inventory.markDirty();
                 }
                 if (stack.stackSize <= 0) {
@@ -310,7 +310,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
                 }
                 while (eaten < amount && stack.stackSize > 0) {
                     eaten += val;
-                    stack.stackSize--;
+                    stack.shrink(1);
                     inventory.markDirty();
                 }
                 if (stack.stackSize <= 0) {
@@ -328,7 +328,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
             int value = AncientWarfareNPC.statics.getFoodValue(player.getHeldItem());
             if(value>0){
                 if(!worldObj.isRemote){
-                    player.getHeldItem().stackSize--;
+                    player.getHeldItem().shrink(1);
                 }
                 foodValueRemaining += value;
                 return true;

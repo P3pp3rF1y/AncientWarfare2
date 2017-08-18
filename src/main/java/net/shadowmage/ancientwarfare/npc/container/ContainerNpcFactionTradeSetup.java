@@ -44,7 +44,7 @@ public class ContainerNpcFactionTradeSetup extends ContainerNpcBase<NpcFactionTr
     }
 
     public void onGuiClosed() {
-        if (player.worldObj.isRemote && tradesChanged) {
+        if (player.world.isRemote && tradesChanged) {
             tradeList.removeEmptyTrades();
             NBTTagCompound tag = new NBTTagCompound();
             tradeList.writeToNBT(tag);

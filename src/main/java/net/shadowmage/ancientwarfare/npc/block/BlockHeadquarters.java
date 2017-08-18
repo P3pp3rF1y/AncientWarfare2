@@ -35,7 +35,7 @@ public class BlockHeadquarters extends BlockTownHall {
     
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if (!player.worldObj.isRemote) {
+        if (!player.world.isRemote) {
             TileEntity te = world.getTileEntity(pos);
             String currentOwnerName = ((TileTownHall) te).getOwnerName();
             if (!player.getCommandSenderName().equals(currentOwnerName)) {

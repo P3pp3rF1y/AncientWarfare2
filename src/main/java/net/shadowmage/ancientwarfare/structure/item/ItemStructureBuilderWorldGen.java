@@ -35,7 +35,7 @@ public class ItemStructureBuilderWorldGen extends Item implements IItemKeyInterf
         if (viewSettings.hasName()) {
             structure = viewSettings.name;
         }
-        list.add(StatCollector.translateToLocal("guistrings.current_structure") + " " + StatCollector.translateToLocal(structure));
+        list.add(I18n.format("guistrings.current_structure") + " " + I18n.format(structure));
     }
 
     @Override
@@ -50,7 +50,7 @@ public class ItemStructureBuilderWorldGen extends Item implements IItemKeyInterf
 
     @Override
     public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
-        if (player == null || player.worldObj.isRemote) {
+        if (player == null || player.world.isRemote) {
             return;
         }
         ItemStructureSettings buildSettings = ItemStructureSettings.getSettingsFor(stack);
@@ -60,13 +60,13 @@ public class ItemStructureBuilderWorldGen extends Item implements IItemKeyInterf
                 player.addChatComponentMessage(new ChatComponentTranslation("guistrings.template.not_found"));
                 return;
             }
-            BlockPosition bpHit = BlockTools.getBlockClickedOn(player, player.worldObj, true);
+            BlockPosition bpHit = BlockTools.getBlockClickedOn(player, player.world, true);
             if(bpHit == null){
                 player.addChatComponentMessage(new ChatComponentTranslation("block.not_found"));
                 return;
             }
-            StructureMap map = AWGameData.INSTANCE.getData(player.worldObj, StructureMap.class);
-            WorldStructureGenerator.INSTANCE.attemptStructureGenerationAt(player.worldObj, bpHit.x, bpHit.y, bpHit.z, BlockTools.getPlayerFacingFromYaw(player.rotationYaw), template, map);
+            StructureMap map = AWGameData.INSTANCE.getData(player.world, StructureMap.class);
+            WorldStructureGenerator.INSTANCE.attemptStructureGenerationAt(player.world, bpHit.x, bpHit.y, bpHit.z, BlockTools.getPlayerFacingFromYaw(player.rotationYaw), template, map);
         } else {
             player.addChatComponentMessage(new ChatComponentTranslation("guistrings.structure.no_selection"));
         }
@@ -74,7 +74,7 @@ public class ItemStructureBuilderWorldGen extends Item implements IItemKeyInterf
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        if (!player.worldObj.isRemote && !player.isSneaking()) {
+        if (!player.world.isRemote && !player.isSneaking()) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_BUILDER, 0, 0, 0);
         }
         return stack;

@@ -25,7 +25,7 @@ public class ContainerTradeOrder extends ContainerBase {
 
     @Override
     public void onContainerClosed(EntityPlayer par1EntityPlayer) {
-        if (!player.worldObj.isRemote) {
+        if (!player.world.isRemote) {
             orders.write(player.getCurrentEquippedItem());
         }
         super.onContainerClosed(par1EntityPlayer);

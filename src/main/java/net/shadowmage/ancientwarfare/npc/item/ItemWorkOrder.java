@@ -37,8 +37,8 @@ public class ItemWorkOrder extends ItemOrders {
     public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
         WorkOrder wo = WorkOrder.getWorkOrder(stack);
         if (wo != null) {
-            BlockPosition hit = BlockTools.getBlockClickedOn(player, player.worldObj, false);
-            if (wo.addWorkPosition(player.worldObj, hit)) {
+            BlockPosition hit = BlockTools.getBlockClickedOn(player, player.world, false);
+            if (wo.addWorkPosition(player.world, hit)) {
                 wo.write(stack);
                 addMessage(player);
             }else{

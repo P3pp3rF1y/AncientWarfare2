@@ -51,7 +51,7 @@ public class ContainerWarehouseInterface extends ContainerTileBase<TileWarehouse
     public void handlePacketData(NBTTagCompound tag) {
         if (tag.hasKey("filterList")) {
             List<WarehouseInterfaceFilter> filters = INBTSerialable.Helper.read(tag, "filterList", WarehouseInterfaceFilter.class);
-            if (player.worldObj.isRemote) {
+            if (player.world.isRemote) {
                 this.filters = filters;
                 refreshGui();
             } else {

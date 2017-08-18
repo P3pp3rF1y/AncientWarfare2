@@ -4,7 +4,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
 import net.shadowmage.ancientwarfare.automation.chunkloader.AWChunkLoader;
@@ -115,7 +115,7 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
             return;
         }
         AWChunkLoader.INSTANCE.writeDataToTicket(chunkTicket, xCoord, yCoord, zCoord);
-        ChunkCoordIntPair ccip = new ChunkCoordIntPair(xCoord >> 4, zCoord >> 4);
+        ChunkPos ccip = new ChunkPos(xCoord >> 4, zCoord >> 4);
         ForgeChunkManager.forceChunk(chunkTicket, ccip);
         if (hasWorkBounds()) {
             int minX = getWorkBoundsMin().x >> 4;
@@ -124,7 +124,7 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
             int maxZ = getWorkBoundsMax().z >> 4;
             for (int x = minX; x <= maxX; x++) {
                 for (int z = minZ; z <= maxZ; z++) {
-                    ccip = new ChunkCoordIntPair(x, z);
+                    ccip = new ChunkPos(x, z);
                     ForgeChunkManager.forceChunk(chunkTicket, ccip);
                 }
             }

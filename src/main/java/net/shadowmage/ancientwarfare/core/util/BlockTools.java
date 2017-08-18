@@ -25,10 +25,10 @@ package net.shadowmage.ancientwarfare.core.util;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraft.util.EnumFacing;
@@ -112,14 +112,14 @@ public class BlockTools {
      * will return null if nothing is in range
      */
     @SuppressWarnings("rawtypes")
-    public static BlockPosition getBlockClickedOn(EntityPlayer player, World world, boolean offset) {
+    public static BlockPos getBlockClickedOn(EntityPlayer player, World world, boolean offset) {
         float scaleFactor = 1.0F;
         float rotPitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * scaleFactor;
         float rotYaw = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw) * scaleFactor;
         double testX = player.prevPosX + (player.posX - player.prevPosX) * scaleFactor;
-        double testY = player.prevPosY + (player.posY - player.prevPosY) * scaleFactor + 1.62D - player.yOffset;
+        double testY = player.prevPosY + (player.posY - player.prevPosY) * scaleFactor + 1.62D - player.getYOffset();
         double testZ = player.prevPosZ + (player.posZ - player.prevPosZ) * scaleFactor;
-        Vec3 testVector = Vec3.createVectorHelper(testX, testY, testZ);
+        Vec3d testVector = new Vec3d(testX, testY, testZ);
         float var14 = MathHelper.cos(-rotYaw * 0.017453292F - (float) Math.PI);
         float var15 = MathHelper.sin(-rotYaw * 0.017453292F - (float) Math.PI);
         float var16 = -MathHelper.cos(-rotPitch * 0.017453292F);
@@ -127,8 +127,8 @@ public class BlockTools {
         float vectorX = var15 * var16;
         float vectorZ = var14 * var16;
         double reachLength = 5.0D;
-        Vec3 testVectorFar = testVector.addVector(vectorX * reachLength, vectorY * reachLength, vectorZ * reachLength);
-        MovingObjectPosition testHitPosition = world.rayTraceBlocks(testVector, testVectorFar, true);
+        Vec3d testVectorFar = testVector.addVector(vectorX * reachLength, vectorY * reachLength, vectorZ * reachLength);
+        RayTraceResult testHitPosition = world.rayTraceBlocks(testVector, testVectorFar, true);
 
         /**
          * if nothing was hit, return null

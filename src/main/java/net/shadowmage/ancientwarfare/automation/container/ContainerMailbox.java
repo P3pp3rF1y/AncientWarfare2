@@ -61,8 +61,8 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
         y1 = 8 + 12 + 12 + 4 * 18;
         guiHeight = addPlayerSlots(y1 + 12) + 8 + 24;
 
-        if (!player.worldObj.isRemote) {
-            MailboxData data = AWGameData.INSTANCE.getData(player.worldObj, MailboxData.class);
+        if (!player.world.isRemote) {
+            MailboxData data = AWGameData.INSTANCE.getData(player.world, MailboxData.class);
             publicBoxNames.addAll(data.getPublicBoxNames());
             privateBoxNames.addAll(data.getPrivateBoxNames(tileEntity.getOwnerName()));
             privateBox = tileEntity.isPrivateBox();
@@ -140,7 +140,7 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
             }
         }
         if (tag.hasKey("addMailbox") || tag.hasKey("deleteMailbox")) {
-            MailboxData data = AWGameData.INSTANCE.getData(player.worldObj, MailboxData.class);
+            MailboxData data = AWGameData.INSTANCE.getData(player.world, MailboxData.class);
             String name = tag.getString("addMailbox");
             if(!name.isEmpty())
                 data.addMailbox(tileEntity.isPrivateBox() ? tileEntity.getOwnerName() : null, name);
@@ -187,7 +187,7 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
             RelativeSide base = RelativeSide.values()[slotTag.getInteger("baseSide")];
             RelativeSide access = RelativeSide.values()[slotTag.getInteger("accessSide")];
             sideMap.put(base, access);
-            if (!player.worldObj.isRemote) {
+            if (!player.world.isRemote) {
                 tileEntity.inventory.remapSideAccess(base, access);
             }
         }
@@ -276,7 +276,7 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
         /**
          * detect changes to public or private names list
          */
-        MailboxData data = AWGameData.INSTANCE.getData(player.worldObj, MailboxData.class);
+        MailboxData data = AWGameData.INSTANCE.getData(player.world, MailboxData.class);
         if (!publicBoxNames.equals(data.getPublicBoxNames())) {
             if (tag == null) {
                 tag = new NBTTagCompound();
@@ -380,15 +380,15 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
         if (theSlot != null && theSlot.getHasStack()) {
             ItemStack slotStack = theSlot.getStack();
             slotStackCopy = slotStack.copy();
-            if (slotStack.stackSize == 0) {
-                theSlot.putStack(null);
+            if (slotStack.getCount() == 0) {
+                theSlot.putStack(ItemStack.EMPTY);
             } else {
                 theSlot.onSlotChanged();
             }
-            if (slotStack.stackSize == slotStackCopy.stackSize) {
+            if (slotStack.getCount() == slotStackCopy.getCount()) {
                 return null;
             }
-            theSlot.onPickupFromSlot(par1EntityPlayer, slotStack);
+            theSlot.onTake(par1EntityPlayer, slotStack);
         }
         return slotStackCopy;
     }

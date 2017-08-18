@@ -187,7 +187,7 @@ public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, 
         this.orientation = d;
         this.worldObj.func_147453_f(xCoord, yCoord, zCoord, getBlockType());
         this.invalidateNeighborCache();
-        this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        this.worldObj.notifyBlockUpdate(xCoord, yCoord, zCoord);
     }
 
     @Override
@@ -342,7 +342,7 @@ public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, 
         orientation = EnumFacing.getOrientation(pkt.func_148857_g().getInteger("orientation"));
         this.invalidateNeighborCache();
         this.worldObj.func_147453_f(xCoord, yCoord, zCoord, getBlockType());
-        this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);//uhh..why am i doing this on client?
+        this.worldObj.notifyBlockUpdate(xCoord, yCoord, zCoord);//uhh..why am i doing this on client?
     }
 
 }

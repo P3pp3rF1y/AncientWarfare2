@@ -25,12 +25,12 @@ package net.shadowmage.ancientwarfare.core.util;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 public final class BlockPosition {
-
+    //TODO replace with BlockPos
     public final int x, y, z;
 
     public BlockPosition() {
@@ -90,7 +90,7 @@ public final class BlockPosition {
      * 4=west<br>
      * 5=east<br>
      */
-    public BlockPosition(MovingObjectPosition pos) {
+    public BlockPosition(RayTraceResult pos) {
         switch (pos.sideHit) {
             case 0:
                 this.x = pos.blockX;

@@ -37,7 +37,7 @@ public class ItemNpcSpawner extends Item {
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
-        list.add(StatCollector.translateToLocal("guistrings.npc.spawner.right_click_to_place"));
+        list.add(I18n.format("guistrings.npc.spawner.right_click_to_place"));
     }
 
     @Override
@@ -58,18 +58,18 @@ public class ItemNpcSpawner extends Item {
         if(world.isRemote){
             return stack;
         }
-        BlockPosition hit = BlockTools.getBlockClickedOn(player, player.worldObj, true);
+        BlockPosition hit = BlockTools.getBlockClickedOn(player, player.world, true);
         if (hit == null) {
             return stack;
         }
-        NpcBase npc = createNpcFromItem(player.worldObj, stack);
+        NpcBase npc = createNpcFromItem(player.world, stack);
         if (npc != null) {
             npc.setOwner(player);
             npc.setPosition(hit.x + 0.5d, hit.y, hit.z + 0.5d);
             npc.setHomeAreaAtCurrentPosition();
-            player.worldObj.spawnEntityInWorld(npc);
+            player.world.spawnEntityInWorld(npc);
             if (!player.capabilities.isCreativeMode) {
-                stack.stackSize--;
+                stack.shrink(1);
             }
         }
         return stack;

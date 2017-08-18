@@ -43,7 +43,7 @@ public class Button extends GuiElement {
     }
 
     public final void setText(String text) {
-        this.text = StatCollector.translateToLocal(text);
+        this.text = I18n.format(text);
         int tw = Minecraft.getMinecraft().fontRenderer.getStringWidth(this.text);
         if(tw > width){
             width = tw;

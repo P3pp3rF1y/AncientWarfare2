@@ -237,7 +237,7 @@ public class ModelWidget extends GuiElement {
 
     private void enableModelLighting() {
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        int bright = player.worldObj.getLightBrightnessForSkyBlocks((int) player.posX, (int) player.posY, (int) player.posZ, 0);
+        int bright = player.world.getLightBrightnessForSkyBlocks((int) player.posX, (int) player.posY, (int) player.posZ, 0);
 
         int var11 = bright % 65536;
         int var12 = bright / 65536;

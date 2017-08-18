@@ -73,7 +73,7 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
             if (q > 0) {
                 warehouse.decreaseCountOf(layoutStack, 1);
                 layoutStack = layoutStack.copy();
-                layoutStack.stackSize = 1;
+                layoutStack.setCount(1);
                 layoutMatrix.setInventorySlotContents(i, layoutStack);
             }
         }
@@ -144,7 +144,7 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
 
     @Override
     public boolean onBlockClicked(EntityPlayer player) {
-        if (!player.worldObj.isRemote) {
+        if (!player.world.isRemote) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_CRAFTING, xCoord, yCoord, zCoord);
         }
         return true;

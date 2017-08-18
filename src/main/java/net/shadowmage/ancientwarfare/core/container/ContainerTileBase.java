@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.core.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 
 /**
  * Created by Olivier on 05/02/2015.
@@ -10,19 +11,19 @@ import net.minecraft.tileentity.TileEntity;
 public class ContainerTileBase<T extends TileEntity> extends ContainerBase {
     public final T tileEntity;
 
-    public ContainerTileBase(EntityPlayer player, int x, int y, int z) {
+    public ContainerTileBase(EntityPlayer player, BlockPos pos) {
         super(player);
-        tileEntity = (T) player.worldObj.getTileEntity(x, y, z);
+        tileEntity = (T) player.world.getTileEntity(pos);
         if (tileEntity == null) {
             throw new IllegalArgumentException("Tile is null");
         }
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer var1){
-        if(tileEntity instanceof IInventory && !((IInventory) tileEntity).isUseableByPlayer(var1))
+    public boolean canInteractWith(EntityPlayer player){
+        if(tileEntity instanceof IInventory && !((IInventory) tileEntity).isUsableByPlayer(player))
             return false;
-        return tileEntity.getDistanceFrom(var1.posX, var1.posY, var1.posZ) <= 64D;
+        return tileEntity.getDistanceSq(player.posX, player.posY, player.posZ) <= 64D;
     }
 
     @Override

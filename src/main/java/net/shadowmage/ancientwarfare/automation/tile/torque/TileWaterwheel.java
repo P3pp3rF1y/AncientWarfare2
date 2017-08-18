@@ -38,7 +38,7 @@ public class TileWaterwheel extends TileTorqueSingleCell {
                 boolean valid = validateBlocks();
                 if (valid != validSetup) {
                     validSetup = valid;
-                    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                    worldObj.notifyBlockUpdate(xCoord, yCoord, zCoord);
                 }
             }
             if (validSetup)//server, update power gen

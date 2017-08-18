@@ -28,7 +28,7 @@ public class ContainerStructureScanner extends ContainerBase {
             boolean include = tag.getBoolean("export");
             String name = tag.getString("name");
             NBTTagCompound validation = tag.getCompoundTag("validation");
-            if (ItemStructureScanner.scanStructure(player.worldObj, settings.pos1(), settings.pos2(), settings.buildKey(), settings.face(), name, include, validation))
+            if (ItemStructureScanner.scanStructure(player.world, settings.pos1(), settings.pos2(), settings.buildKey(), settings.face(), name, include, validation))
                 settings.clearSettings();
         }
         if (tag.hasKey("reset")) {

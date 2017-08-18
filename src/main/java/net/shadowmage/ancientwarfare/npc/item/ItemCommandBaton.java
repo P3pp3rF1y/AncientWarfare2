@@ -11,8 +11,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.RayTraceResult.MovingObjectType;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -46,27 +46,27 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
     @Override
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
         String keyText, text;
-        text = "RMB" + " = " + StatCollector.translateToLocal("guistrings.npc.baton.add_remove");
+        text = "RMB" + " = " + I18n.format("guistrings.npc.baton.add_remove");
         list.add(text);
 
         keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
-        text = keyText + " = " + StatCollector.translateToLocal("guistrings.npc.baton.clear");
+        text = keyText + " = " + I18n.format("guistrings.npc.baton.clear");
         list.add(text);
 
         keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_1);
-        text = keyText + " = " + StatCollector.translateToLocal("guistrings.npc.baton.attack");
+        text = keyText + " = " + I18n.format("guistrings.npc.baton.attack");
         list.add(text);
 
         keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_2);
-        text = keyText + " = " + StatCollector.translateToLocal("guistrings.npc.baton.move");
+        text = keyText + " = " + I18n.format("guistrings.npc.baton.move");
         list.add(text);
 
         keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_3);
-        text = keyText + " = " + StatCollector.translateToLocal("guistrings.npc.baton.home");
+        text = keyText + " = " + I18n.format("guistrings.npc.baton.home");
         list.add(text);
 
         keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_4);
-        text = keyText + " = " + StatCollector.translateToLocal("guistrings.npc.baton.upkeep");
+        text = keyText + " = " + I18n.format("guistrings.npc.baton.upkeep");
         list.add(text);
     }
 
@@ -124,7 +124,7 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
         if (player.isSneaking()) {
             //TODO openGUI
         } else {
-            MovingObjectPosition pos = RayTraceUtils.getPlayerTarget(player, range, 0);
+            RayTraceResult pos = RayTraceUtils.getPlayerTarget(player, range, 0);
             if (pos != null && pos.typeOfHit == MovingObjectType.ENTITY && pos.entityHit instanceof NpcBase) {
                 NpcBase npc = (NpcBase) pos.entityHit;
                 if (npc.hasCommandPermissions(player.getCommandSenderName())) {
@@ -144,13 +144,13 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
     public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key) {
         switch (key) {
             case KEY_0: {
-                MovingObjectPosition hit = new MovingObjectPosition(player);
+                RayTraceResult hit = new RayTraceResult(player);
                 NpcCommand.handleCommandClient(CommandType.CLEAR_COMMAND, hit);
             }
             break;
             case KEY_1://attack
             {
-                MovingObjectPosition hit = RayTraceUtils.getPlayerTarget(player, range, 0);
+                RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, range, 0);
                 if (hit != null) {
                     CommandType c = hit.typeOfHit == MovingObjectType.ENTITY ? CommandType.ATTACK : CommandType.ATTACK_AREA;
                     NpcCommand.handleCommandClient(c, hit);
@@ -159,7 +159,7 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
             break;
             case KEY_2://move/guard
             {
-                MovingObjectPosition hit = RayTraceUtils.getPlayerTarget(player, range, 0);
+                RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, range, 0);
                 if (hit != null) {
                     CommandType c = hit.typeOfHit == MovingObjectType.ENTITY ? CommandType.GUARD : CommandType.MOVE;
                     NpcCommand.handleCommandClient(c, hit);
@@ -167,7 +167,7 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
             }
             break;
             case KEY_3: {
-                MovingObjectPosition hit = RayTraceUtils.getPlayerTarget(player, range, 0);
+                RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, range, 0);
                 if (hit != null && hit.typeOfHit == MovingObjectType.BLOCK) {
                     CommandType c = player.isSneaking() ? CommandType.CLEAR_HOME : CommandType.SET_HOME;
                     NpcCommand.handleCommandClient(c, hit);
@@ -175,7 +175,7 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
             }
             break;
             case KEY_4: {
-                MovingObjectPosition hit = RayTraceUtils.getPlayerTarget(player, range, 0);
+                RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, range, 0);
                 if (hit != null && hit.typeOfHit == MovingObjectType.BLOCK) {
                     CommandType c = player.isSneaking() ? CommandType.CLEAR_UPKEEP : CommandType.SET_UPKEEP;
                     NpcCommand.handleCommandClient(c, hit);

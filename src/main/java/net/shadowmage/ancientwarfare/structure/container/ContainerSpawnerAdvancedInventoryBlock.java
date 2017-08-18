@@ -16,8 +16,8 @@ public class ContainerSpawnerAdvancedInventoryBlock extends ContainerSpawnerAdva
     public ContainerSpawnerAdvancedInventoryBlock(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
 
-        TileEntity te = player.worldObj.getTileEntity(x, y, z);
-        if (!player.worldObj.isRemote && te instanceof TileAdvancedSpawner) {
+        TileEntity te = player.world.getTileEntity(x, y, z);
+        if (!player.world.isRemote && te instanceof TileAdvancedSpawner) {
             spawner = (TileAdvancedSpawner) te;
             settings = spawner.getSettings();
         } else {
@@ -35,7 +35,7 @@ public class ContainerSpawnerAdvancedInventoryBlock extends ContainerSpawnerAdva
 
     @Override
     public void sendInitData() {
-        if (!player.worldObj.isRemote) {
+        if (!player.world.isRemote) {
             sendSettingsToClient();
         }
     }
@@ -52,12 +52,12 @@ public class ContainerSpawnerAdvancedInventoryBlock extends ContainerSpawnerAdva
     @Override
     public void handlePacketData(NBTTagCompound tag) {
         if (tag.hasKey("spawnerSettings")) {
-            if (player.worldObj.isRemote) {
+            if (player.world.isRemote) {
                 settings.readFromNBT(tag.getCompoundTag("spawnerSettings"));
                 this.refreshGui();
             } else {
                 spawner.readFromNBT(tag);
-                player.worldObj.markBlockForUpdate(spawner.xCoord, spawner.yCoord, spawner.zCoord);
+                player.world.notifyBlockUpdate(spawner.xCoord, spawner.yCoord, spawner.zCoord);
             }
         }
     }

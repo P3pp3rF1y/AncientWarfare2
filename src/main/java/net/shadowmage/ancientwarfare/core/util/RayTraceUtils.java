@@ -3,7 +3,7 @@ package net.shadowmage.ancientwarfare.core.util;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 
@@ -12,13 +12,13 @@ import java.util.List;
 
 public class RayTraceUtils {
 
-    public static MovingObjectPosition getPlayerTarget(EntityPlayer player, float range, float border) {
+    public static RayTraceResult getPlayerTarget(EntityPlayer player, float range, float border) {
         HashSet<Entity> excluded = new HashSet<Entity>();
         excluded.add(player);
         if (player.ridingEntity != null) {
             excluded.add(player.ridingEntity);
         }
-        float yOffset = player.worldObj.isRemote ? 0.f : 1.62F;
+        float yOffset = player.world.isRemote ? 0.f : 1.62F;
         Vec3 look = player.getLookVec();
         look.xCoord *= range;
         look.yCoord *= range;
@@ -26,10 +26,10 @@ public class RayTraceUtils {
         look.xCoord += player.posX;
         look.yCoord += player.posY + yOffset;
         look.zCoord += player.posZ;
-        return tracePath(player.worldObj, player.posX, player.posY + yOffset, player.posZ, look.xCoord, look.yCoord, look.zCoord, border, excluded);
+        return tracePath(player.world, player.posX, player.posY + yOffset, player.posZ, look.xCoord, look.yCoord, look.zCoord, border, excluded);
     }
 
-    public static MovingObjectPosition tracePathWithYawPitch(World world, float x, float y, float z, float yaw, float pitch, float range, float borderSize, HashSet<Entity> excluded) {
+    public static RayTraceResult tracePathWithYawPitch(World world, float x, float y, float z, float yaw, float pitch, float range, float borderSize, HashSet<Entity> excluded) {
         float tx = x + (Trig.sinDegrees(yaw + 180) * range * Trig.cosDegrees(pitch));
         float ty = (-Trig.sinDegrees(pitch) * range) + y;
         float tz = z + (Trig.cosDegrees(yaw) * range * Trig.cosDegrees(pitch));
@@ -45,10 +45,10 @@ public class RayTraceUtils {
      * @param tz         endZ
      * @param borderSize extra area to examine around line for entities
      * @param excluded   any excluded entities (the player, etc)
-     * @return a MovingObjectPosition of either the block hit (no entity hit), the entity hit (hit an entity), or null for nothing hit
+     * @return a RayTraceResult of either the block hit (no entity hit), the entity hit (hit an entity), or null for nothing hit
      */
     @SuppressWarnings("unchecked")
-    public static MovingObjectPosition tracePath(World world, double x, double y, double z, double tx, double ty, double tz, float borderSize, HashSet<Entity> excluded) {
+    public static RayTraceResult tracePath(World world, double x, double y, double z, double tx, double ty, double tz, float borderSize, HashSet<Entity> excluded) {
         double minX = x < tx ? x : tx;
         double minY = y < ty ? y : ty;
         double minZ = z < tz ? z : tz;
@@ -60,7 +60,7 @@ public class RayTraceUtils {
         Entity closestHitEntity = null;
         float closestHit = Float.POSITIVE_INFINITY;
         float currentHit;
-        MovingObjectPosition intercept;
+        RayTraceResult intercept;
         Vec3 startVec = Vec3.createVectorHelper(x, y, z);
         Vec3 endVec = Vec3.createVectorHelper(tx, ty, tz);
         for (Entity ent : allEntities) {
@@ -80,7 +80,7 @@ public class RayTraceUtils {
             }
         }
         if (closestHitEntity != null) {
-            return new MovingObjectPosition(closestHitEntity);
+            return new RayTraceResult(closestHitEntity);
         }
         startVec = Vec3.createVectorHelper(x, y, z);
         endVec = Vec3.createVectorHelper(tx, ty, tz);

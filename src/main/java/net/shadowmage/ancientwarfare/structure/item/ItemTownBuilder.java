@@ -28,7 +28,7 @@ public class ItemTownBuilder extends Item implements IItemKeyInterface {
 //    {
 //    structure = viewSettings.name;
 //    }  
-//  list.add(StatCollector.translateToLocal("guistrings.current_structure")+" "+StatCollector.translateToLocal(structure));
+//  list.add(I18n.format("guistrings.current_structure")+" "+I18n.format(structure));
 //  }
 
     @Override
@@ -43,11 +43,11 @@ public class ItemTownBuilder extends Item implements IItemKeyInterface {
 
     @Override
     public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
-        if (player == null || player.worldObj.isRemote) {
+        if (player == null || player.world.isRemote) {
             return;
         }
         long t1 = System.nanoTime();
-        WorldTownGenerator.INSTANCE.attemptGeneration(player.worldObj, MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posZ));
+        WorldTownGenerator.INSTANCE.attemptGeneration(player.world, MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posZ));
         long t2 = System.nanoTime();
         AWLog.logDebug("Total Town gen nanos (incl. validation): " + (t2 - t1));
     }

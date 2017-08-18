@@ -234,8 +234,8 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
         BlockPosition pos = point.getPosition();
         Label blockName = new Label(8, startHeight, "Unknown Block");
         Label posLabel = new Label(8, startHeight + 12, pos.toString());
-        if (player.worldObj.blockExists(pos.x, pos.y, pos.z)) {
-            blockName.setText(player.worldObj.getBlock(pos.x, pos.y, pos.z).getUnlocalizedName());
+        if (player.world.blockExists(pos.x, pos.y, pos.z)) {
+            blockName.setText(player.world.getBlock(pos.x, pos.y, pos.z).getUnlocalizedName());
         }
         routeArea.addGuiElement(blockName);
         routeArea.addGuiElement(posLabel);

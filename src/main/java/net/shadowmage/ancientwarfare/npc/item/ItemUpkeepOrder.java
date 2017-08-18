@@ -34,8 +34,8 @@ public class ItemUpkeepOrder extends ItemOrders {
     public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
         UpkeepOrder upkeepOrder = UpkeepOrder.getUpkeepOrder(stack);
         if (upkeepOrder != null) {
-            BlockPosition hit = BlockTools.getBlockClickedOn(player, player.worldObj, false);
-            if (upkeepOrder.addUpkeepPosition(player.worldObj, hit)) {
+            BlockPosition hit = BlockTools.getBlockClickedOn(player, player.world, false);
+            if (upkeepOrder.addUpkeepPosition(player.world, hit)) {
                 upkeepOrder.write(stack);
                 player.addChatComponentMessage(new ChatComponentTranslation("guistrings.npc.upkeep_point_set"));
             } else 

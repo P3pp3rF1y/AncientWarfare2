@@ -11,7 +11,7 @@ public class ContainerEntityBase<T extends Entity> extends ContainerBase {
 
     public ContainerEntityBase(EntityPlayer player, int id) {
         super(player);
-        entity = (T) player.worldObj.getEntityByID(id);
+        entity = (T) player.world.getEntityByID(id);
         if (entity == null) {
             throw new IllegalArgumentException("Id wasn't a valid entity");
         }

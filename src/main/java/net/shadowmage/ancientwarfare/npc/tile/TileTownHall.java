@@ -11,7 +11,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.world.ChunkCoordIntPair;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Type;
@@ -228,13 +228,13 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
        
         for (int chunkX = (xCoord>>4) - AWNPCStatics.townChunkLoadRadius; chunkX <= (xCoord>>4) + AWNPCStatics.townChunkLoadRadius; chunkX++)
             for (int chunkZ = (zCoord>>4) - AWNPCStatics.townChunkLoadRadius; chunkZ <= (zCoord>>4) + AWNPCStatics.townChunkLoadRadius; chunkZ++)
-                ForgeChunkManager.forceChunk(ticket, new ChunkCoordIntPair(chunkX, chunkZ));
+                ForgeChunkManager.forceChunk(ticket, new ChunkPos(chunkX, chunkZ));
     }
     
     public void unloadChunks() {
         for (int chunkX = (xCoord>>4) - AWNPCStatics.townChunkLoadRadius; chunkX <= (xCoord>>4) + AWNPCStatics.townChunkLoadRadius; chunkX++)
             for (int chunkZ = (zCoord>>4) - AWNPCStatics.townChunkLoadRadius; chunkZ <= (zCoord>>4) + AWNPCStatics.townChunkLoadRadius; chunkZ++)
-                ForgeChunkManager.unforceChunk(ticket, new ChunkCoordIntPair(chunkX, chunkZ));
+                ForgeChunkManager.unforceChunk(ticket, new ChunkPos(chunkX, chunkZ));
     }
     
     public void loadTicket(ForgeChunkManager.Ticket ticket) {
@@ -536,7 +536,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
 
     @Override
     public boolean onBlockClicked(EntityPlayer player) {
-        if (!player.worldObj.isRemote) {
+        if (!player.world.isRemote) {
             if (!player.getCommandSenderName().equals(getOwnerName())) {
                 // different player to the owner has used the town hall
                 if (!ModAccessors.FTBU.areFriends(player.getCommandSenderName(), getOwnerName())) {

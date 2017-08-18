@@ -26,7 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.RayTraceResult;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 
 import java.util.List;
@@ -74,7 +74,7 @@ public class TEGateProxy extends TileEntity {
         }
     }
 
-    public ItemStack onBlockPicked(MovingObjectPosition target) {
+    public ItemStack onBlockPicked(RayTraceResult target) {
         if(this.owner != null){
             return owner.getPickedResult(target);
         }

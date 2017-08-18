@@ -1,16 +1,13 @@
 package net.shadowmage.ancientwarfare.automation.proxy;
 
-import cpw.mods.fml.client.config.DummyConfigElement.DummyCategoryElement;
-import cpw.mods.fml.client.config.IConfigElement;
-import cpw.mods.fml.client.registry.ClientRegistry;
-import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.client.Minecraft;
-import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.config.ConfigElement;
+import net.minecraftforge.fml.client.config.DummyConfigElement.DummyCategoryElement;
+import net.minecraftforge.fml.client.config.IConfigElement;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.shadowmage.ancientwarfare.automation.KeyHandler;
-import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.gui.*;
 import net.shadowmage.ancientwarfare.automation.model.ModelAutoCraftingStation;
@@ -66,63 +63,61 @@ public class ClientProxyAutomation extends ClientProxyBase {
 
         TileCraftingTableRender tctr = new TileCraftingTableRender(new ModelAutoCraftingStation(), "textures/model/automation/tile_auto_crafting.png");
         ClientRegistry.bindTileEntitySpecialRenderer(TileAutoCrafting.class, tctr);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.worksiteAutoCrafting), tctr);
+        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.worksiteAutoCrafting), tctr);
 
         //*********************************************CONDUIT / TRANSPORT RENDERS***************************************************************//
 
         RenderTileTorqueTransport conduitRender = new RenderTileTorqueTransport(new ResourceLocation("ancientwarfare", "textures/model/automation/torque_conduit_light.png"), new ResourceLocation("ancientwarfare", "textures/model/automation/torque_conduit_medium.png"), new ResourceLocation("ancientwarfare", "textures/model/automation/torque_conduit_heavy.png"));
         ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueSidedCell.class, conduitRender);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.torqueConduit), conduitRender);
+        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.torqueConduit), conduitRender);
 
         RenderTileTorqueTransport distributorRender = new RenderTileTorqueTransport(new ResourceLocation("ancientwarfare", "textures/model/automation/torque_distributor_light.png"), new ResourceLocation("ancientwarfare", "textures/model/automation/torque_distributor_medium.png"), new ResourceLocation("ancientwarfare", "textures/model/automation/torque_distributor_heavy.png"));
         ClientRegistry.bindTileEntitySpecialRenderer(TileDistributor.class, distributorRender);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.torqueDistributor), distributorRender);
+        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.torqueDistributor), distributorRender);
 
         RenderTileTorqueShaft shaftRender = new RenderTileTorqueShaft(new ResourceLocation("ancientwarfare", "textures/model/automation/torque_shaft_light.png"), new ResourceLocation("ancientwarfare", "textures/model/automation/torque_shaft_medium.png"), new ResourceLocation("ancientwarfare", "textures/model/automation/torque_shaft_heavy.png"));
         ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueShaft.class, shaftRender);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.torqueShaft), shaftRender);
+        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.torqueShaft), shaftRender);
 
 
         //*********************************************STORAGE RENDERS***************************************************************//
         RenderTileTorqueFlywheelController storageControlRender = new RenderTileTorqueFlywheelController();
         ClientRegistry.bindTileEntitySpecialRenderer(TileFlywheelControl.class, storageControlRender);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.flywheel), storageControlRender);
+        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.flywheel), storageControlRender);
 
         RenderTileFlywheelStorage storageRender = new RenderTileFlywheelStorage();
         ClientRegistry.bindTileEntitySpecialRenderer(TileFlywheelStorage.class, storageRender);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.flywheelStorage), storageRender);
+        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.flywheelStorage), storageRender);
 
         //*********************************************GENERATOR RENDERS***************************************************************//
         RenderSterlingEngine sterlingRender = new RenderSterlingEngine();
         ClientRegistry.bindTileEntitySpecialRenderer(TileSterlingEngine.class, sterlingRender);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.torqueGeneratorSterling), sterlingRender);
+        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.torqueGeneratorSterling), sterlingRender);
 
         RenderTileWaterwheel waterwheelRender = new RenderTileWaterwheel();
         ClientRegistry.bindTileEntitySpecialRenderer(TileWaterwheel.class, waterwheelRender);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.torqueGeneratorWaterwheel), waterwheelRender);
+        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.torqueGeneratorWaterwheel), waterwheelRender);
 
         RenderTileHandEngine handGeneratorRender = new RenderTileHandEngine();
         ClientRegistry.bindTileEntitySpecialRenderer(TileHandGenerator.class, handGeneratorRender);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.handCrankedEngine), handGeneratorRender);
+        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.handCrankedEngine), handGeneratorRender);
 
         RenderWindmillControl windmillControlRender = new RenderWindmillControl();
         ClientRegistry.bindTileEntitySpecialRenderer(TileWindmillController.class, windmillControlRender);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.windmillControl), windmillControlRender);
+        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.windmillControl), windmillControlRender);
 
         RenderWindmillBlades bladeRender = new RenderWindmillBlades();
         ClientRegistry.bindTileEntitySpecialRenderer(TileWindmillBlade.class, bladeRender);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.windmillBlade), bladeRender);
+        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.windmillBlade), bladeRender);
     }
 
     private void registerClientOptions() {
         ConfigManager.registerConfigCategory(new AutomationCategory("awconfig.automation_config"));
     }
 
-    @SuppressWarnings("rawtypes")
     public static final class AutomationCategory extends DummyCategoryElement {
         public static final ConfigElement renderWorkBounds = new ConfigElement(AWAutomationStatics.renderWorkBounds);
 
-        @SuppressWarnings("unchecked")
         public AutomationCategory(String name) {
             super(name, name, getElementList());
         }

@@ -12,7 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.minecraft.util.EnumFacing;
@@ -35,7 +35,7 @@ public class ItemHammer extends Item implements IItemKeyInterface {
         this.setTextureName("ancientwarfare:core/" + regName);
         this.attackDamage = 4.f + material.getDamageVsEntity();
         this.material = material;
-        this.maxStackSize = 1;
+        this.ma.setCount(1);
         this.setMaxDamage(material.getMaxUses());
         this.setHarvestLevel("hammer", material.getHarvestLevel());
     }
@@ -94,11 +94,11 @@ public class ItemHammer extends Item implements IItemKeyInterface {
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
         String key = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
-        list.add(StatCollector.translateToLocalFormatted("guistrings.core.hammer.use_primary_item_key", key));
+        list.add(I18n.format("guistrings.core.hammer.use_primary_item_key", key));
         if (stack.hasTagCompound() && stack.getTagCompound().getBoolean("workMode")) {
-            list.add(StatCollector.translateToLocal("guistrings.core.hammer.work_mode"));
+            list.add(I18n.format("guistrings.core.hammer.work_mode"));
         } else {
-            list.add(StatCollector.translateToLocal("guistrings.core.hammer.rotate_mode"));
+            list.add(I18n.format("guistrings.core.hammer.rotate_mode"));
         }
     }
 
@@ -109,7 +109,7 @@ public class ItemHammer extends Item implements IItemKeyInterface {
 
     @Override
     public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
-        if (player.worldObj.isRemote) {
+        if (player.world.isRemote) {
             return;
         }
         boolean mode = false;
@@ -120,7 +120,7 @@ public class ItemHammer extends Item implements IItemKeyInterface {
         }
         mode = !mode;
         stack.getTagCompound().setBoolean("workMode", mode);
-        player.worldObj.playSoundEffect(player.posX, player.posY, player.posZ, "random.click", 0.3F, 0.6F);
+        player.world.playSoundEffect(player.posX, player.posY, player.posZ, "random.click", 0.3F, 0.6F);
     }
 
     @Override
@@ -128,7 +128,7 @@ public class ItemHammer extends Item implements IItemKeyInterface {
         if(world.isRemote){
             return stack;
         }
-        MovingObjectPosition hit = getMovingObjectPositionFromPlayer(world, player, false);
+        RayTraceResult hit = getRayTraceResultFromPlayer(world, player, false);
         if (hit == null) {
             return stack;
         }
@@ -160,11 +160,11 @@ public class ItemHammer extends Item implements IItemKeyInterface {
         return stack;
     }
 
-    private void playSound(World world, MovingObjectPosition hit, String sound){
+    private void playSound(World world, RayTraceResult hit, String sound){
         world.playSoundEffect(hit.blockX, hit.blockY, hit.blockZ, sound, 0.2F, world.rand.nextFloat() * 0.15F + 0.6F);
     }
 
-    private void playBlockSound(World world, MovingObjectPosition hit, Block block){
+    private void playBlockSound(World world, RayTraceResult hit, Block block){
         if(block.stepSound != null){
             world.playSoundEffect(hit.blockX, hit.blockY, hit.blockZ, block.stepSound.func_150496_b(), block.stepSound.getVolume() * 0.5F, block.stepSound.getPitch() * 0.8F);
         }

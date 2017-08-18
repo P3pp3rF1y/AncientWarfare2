@@ -96,7 +96,7 @@ public class RenderNpcBase extends RenderBiped {
             if (AWNPCStatics.renderHostileNames.getBoolean()) {
                 String name = getNameForRender(npc, true);
                 if (AWNPCStatics.renderTeamColors.getBoolean()) {
-                    ScorePlayerTeam playerTeam = player.worldObj.getScoreboard().getTeam(player.getCommandSenderName());
+                    ScorePlayerTeam playerTeam = player.world.getScoreboard().getTeam(player.getCommandSenderName());
                     ScorePlayerTeam npcTeam = (ScorePlayerTeam) npc.getTeam();
                     if (npcTeam != null && npcTeam != playerTeam) {
                         name = npcTeam.getColorPrefix() + name + npcTeam.getColorSuffix();
@@ -109,7 +109,7 @@ public class RenderNpcBase extends RenderBiped {
             if (AWNPCStatics.renderFriendlyNames.getBoolean()) {
                 String name = getNameForRender(npc, false);
                 if (AWNPCStatics.renderTeamColors.getBoolean()) {
-                    ScorePlayerTeam playerTeam = player.worldObj.getScoreboard().getTeam(player.getCommandSenderName());
+                    ScorePlayerTeam playerTeam = player.world.getScoreboard().getTeam(player.getCommandSenderName());
                     ScorePlayerTeam npcTeam = (ScorePlayerTeam) npc.getTeam();
                     if (npcTeam != null && npcTeam != playerTeam) {
                         name = npcTeam.getColorPrefix() + name + npcTeam.getColorSuffix();

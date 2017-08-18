@@ -1,9 +1,8 @@
 package net.shadowmage.ancientwarfare.automation.gamedata;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.Phase;
-import cpw.mods.fml.common.gameevent.TickEvent.ServerTickEvent;
 import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 
 public final class MailboxTicker {
@@ -13,8 +12,8 @@ public final class MailboxTicker {
     }
 
     @SubscribeEvent
-    public void serverTick(ServerTickEvent evt) {
-        if (evt.phase == Phase.END) {
+    public void serverTick(TickEvent.ServerTickEvent evt) {
+        if (evt.phase == TickEvent.Phase.END) {
             MinecraftServer server = MinecraftServer.getServer();
             if (server != null && server.getEntityWorld() != null) {
                 AWGameData.INSTANCE.getData(server.getEntityWorld(), MailboxData.class).onTick(1);

@@ -46,7 +46,7 @@ public class GuiResearchStation extends GuiContainerBase<ContainerResearchStatio
         }
         researchGoalLabel = new Label(80, 8 + 18 * 2, name);
         addGuiElement(researchGoalLabel);
-        addGuiElement(new Label(8, 8 + 18 * 2, StatCollector.translateToLocal("guistrings.research.current_goal") + ":"));
+        addGuiElement(new Label(8, 8 + 18 * 2, I18n.format("guistrings.research.current_goal") + ":"));
 
         bar = new ProgressBar(70, 8 + 18 * 2 + 12, 178 - 70 - 8, 12);
         addGuiElement(bar);

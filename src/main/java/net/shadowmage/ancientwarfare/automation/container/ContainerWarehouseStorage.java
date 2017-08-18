@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.container;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -16,6 +17,7 @@ import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntr
 import java.util.ArrayList;
 import java.util.List;
 
+@MethodsReturnNonnullByDefault
 public class ContainerWarehouseStorage extends ContainerTileBase<TileWarehouseStorage> {
 
     private boolean shouldSynch = true;
@@ -33,20 +35,20 @@ public class ContainerWarehouseStorage extends ContainerTileBase<TileWarehouseSt
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int slotClickedIndex) {
-        if (player.worldObj.isRemote) {
-            return null;
+        if (player.world.isRemote) {
+            return ItemStack.EMPTY;
         }
         Slot slot = this.getSlot(slotClickedIndex);
         if (slot == null || !slot.getHasStack()) {
-            return null;
+            return ItemStack.EMPTY;
         }
         ItemStack stack = slot.getStack();
         stack = tileEntity.tryAdd(stack);
         if (stack == null) {
-            slot.putStack(null);
+            slot.putStack(ItemStack.EMPTY);
         }
         detectAndSendChanges();
-        return null;
+        return ItemStack.EMPTY;
     }
 
     public void handleClientRequestSpecific(ItemStack stack, boolean isShiftClick) {
@@ -77,7 +79,7 @@ public class ContainerWarehouseStorage extends ContainerTileBase<TileWarehouseSt
     public void handlePacketData(NBTTagCompound tag) {
         if (tag.hasKey("filterList")) {
             List<WarehouseStorageFilter> filters = INBTSerialable.Helper.read(tag, "filterList", WarehouseStorageFilter.class);
-            if (player.worldObj.isRemote) {
+            if (player.world.isRemote) {
                 this.filters = filters;
                 refreshGui();
             } else {
@@ -88,7 +90,7 @@ public class ContainerWarehouseStorage extends ContainerTileBase<TileWarehouseSt
             NBTTagCompound reqTag = tag.getCompoundTag("slotClick");
             ItemStack item = null;
             if (reqTag.hasKey("reqItem")) {
-                item = ItemStack.loadItemStackFromNBT(reqTag.getCompoundTag("reqItem"));
+                item = new ItemStack(reqTag.getCompoundTag("reqItem"));
             }
             tileEntity.handleSlotClick(player, item, reqTag.getBoolean("isShiftClick"));
         }

@@ -50,7 +50,7 @@ public class POTrade extends Trade {
      */
     public boolean isAvailable(IInventory storage) {
         for (ItemStack stack : compactOutput) {
-            if (InventoryTools.getCountOf(storage, -1, stack) < stack.stackSize) {
+            if (InventoryTools.getCountOf(storage, -1, stack) < stack.getCount()) {
                 return false;
             }
         }

@@ -39,7 +39,7 @@ public class FactionTracker {
     }
 
     private void onPlayerLogin(EntityPlayer player) {
-        FactionData data = AWGameData.INSTANCE.getData(player.worldObj, FactionData.class);
+        FactionData data = AWGameData.INSTANCE.getData(player.world, FactionData.class);
         data.onPlayerLogin(player);
         sendFactionEntry(player, data);
     }

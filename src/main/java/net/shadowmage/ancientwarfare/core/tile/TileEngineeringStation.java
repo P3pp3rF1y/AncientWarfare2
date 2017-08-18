@@ -105,7 +105,7 @@ public class TileEngineeringStation extends TileEntity implements IRotatableTile
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         facing = EnumFacing.getOrientation(pkt.func_148857_g().getInteger("facing"));
-        this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        this.worldObj.notifyBlockUpdate(xCoord, yCoord, zCoord);
     }
 
     @Override
@@ -149,7 +149,7 @@ public class TileEngineeringStation extends TileEntity implements IRotatableTile
     @Override
     public void setPrimaryFacing(EnumFacing face) {
         this.facing = face;
-        this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        this.worldObj.notifyBlockUpdate(xCoord, yCoord, zCoord);
     }
 
     public void onBlockBreak(){

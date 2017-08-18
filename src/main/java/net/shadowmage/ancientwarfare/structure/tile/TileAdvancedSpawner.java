@@ -61,7 +61,7 @@ public class TileAdvancedSpawner extends TileEntity {
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         settings.readFromNBT(pkt.func_148857_g());
         worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
-        worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        worldObj.notifyBlockUpdate(xCoord, yCoord, zCoord);
     }
 
     public SpawnerSettings getSettings() {
@@ -70,7 +70,7 @@ public class TileAdvancedSpawner extends TileEntity {
 
     public void setSettings(SpawnerSettings settings) {
         this.settings = settings;
-        this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        this.worldObj.notifyBlockUpdate(xCoord, yCoord, zCoord);
     }
 
     public float getBlockHardness() {
