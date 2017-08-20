@@ -2,9 +2,9 @@ package net.shadowmage.ancientwarfare.npc.ai.owned;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -52,7 +52,7 @@ public class NpcAIPlayerOwnedWork extends NpcAI<NpcBase> {
     @Override
     public void updateTask() {
         WorkEntry entry = order.get(workIndex);
-        BlockPosition pos = entry.getPosition();
+        BlockPos pos = entry.getPosition();
         double dist = npc.getDistanceSq(pos.x, pos.y, pos.z);
 //  AWLog.logDebug("distance to site: "+dist);
         if (dist > ((IWorker)npc).getWorkRangeSq()) {
@@ -78,8 +78,8 @@ public class NpcAIPlayerOwnedWork extends NpcAI<NpcBase> {
     protected void workAtSite(WorkEntry entry) {
         ticksAtSite++;
         if(ticksAtSite == 1){
-            BlockPosition pos = entry.getPosition();
-            TileEntity te = npc.worldObj.getTileEntity(pos.x, pos.y, pos.z);
+            BlockPos pos = entry.getPosition();
+            TileEntity te = npc.world.getTileEntity(pos.x, pos.y, pos.z);
             if (!(te instanceof IWorkSite) || !((IWorker) npc).canWorkAt(((IWorkSite)te).getWorkType()) || !((IWorkSite) te).hasWork()) {
                 setMoveToNextSite();
                 return;
@@ -90,8 +90,8 @@ public class NpcAIPlayerOwnedWork extends NpcAI<NpcBase> {
         }
         if (ticksAtSite >= AWNPCStatics.npcWorkTicks) {
             ticksAtSite = 0;
-            BlockPosition pos = entry.getPosition();
-            TileEntity te = npc.worldObj.getTileEntity(pos.x, pos.y, pos.z);
+            BlockPos pos = entry.getPosition();
+            TileEntity te = npc.world.getTileEntity(pos.x, pos.y, pos.z);
             if (te instanceof IWorkSite) {
                 IWorkSite site = (IWorkSite) te;
                 if (((IWorker) npc).canWorkAt(site.getWorkType())) {

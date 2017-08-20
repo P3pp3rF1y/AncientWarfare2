@@ -1,8 +1,8 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
 import net.minecraft.block.Block;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -32,9 +32,9 @@ public final class TreeFinder {
         max = offsets.length;
     }
 
-    public void findAttachedTreeBlocks(Block blockType, World world, BlockPosition pos, Set<BlockPosition> addTo) {
-        ArrayList<BlockPosition> openList = new ArrayList<BlockPosition>(max*2);
-        HashSet<BlockPosition> badNodes = new HashSet<BlockPosition>();
+    public void findAttachedTreeBlocks(Block blockType, World world, BlockPos pos, Set<BlockPos> addTo) {
+        ArrayList<BlockPos> openList = new ArrayList<>(max * 2);
+        HashSet<BlockPos> badNodes = new HashSet<>();
         openList.add(pos);
         while (!openList.isEmpty()){
             pos = openList.remove(openList.size() - 1);
@@ -43,10 +43,10 @@ public final class TreeFinder {
         }
     }
 
-    private void addNeighborNodes(World world, BlockPosition pos, Block blockType, List<BlockPosition> openList, Set<BlockPosition> badNodes, Set<BlockPosition> foundNodes) {
+    private void addNeighborNodes(World world, BlockPos pos, Block blockType, List<BlockPos> openList, Set<BlockPos> badNodes, Set<BlockPos> foundNodes) {
 
         for (int i = 0; i < max; i++) {
-            BlockPosition n = pos.offset(offsets[i][0], offsets[i][1], offsets[i][2]);
+            BlockPos n = pos.add(offsets[i][0], offsets[i][1], offsets[i][2]);
             if (!badNodes.contains(n) && !openList.contains(n) && !foundNodes.contains(n)) {
                 if (isTree(world, n, blockType)) {
                     openList.add(n);
@@ -57,8 +57,8 @@ public final class TreeFinder {
         }
     }
 
-    private static boolean isTree(World world, BlockPosition pos, Block blockType) {
-        return world.getBlock(pos.x, pos.y, pos.z) == blockType;
+    private static boolean isTree(World world, BlockPos pos, Block blockType) {
+        return world.getBlockState(pos).getBlock() == blockType;
     }
 
 }

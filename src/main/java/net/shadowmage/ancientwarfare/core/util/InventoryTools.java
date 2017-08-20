@@ -24,14 +24,14 @@ public class InventoryTools {
     }
 
     public static boolean canInventoryHold(IInventory inventory, int[] slots, ItemStack stack) {
-        int toMerge = stack.stackSize;
+        int toMerge = stack.getCount();
         ItemStack existing;
         for (int index : slots) {
             existing = inventory.getStackInSlot(index);
             if (existing == null) {
                 return true;
             } else if (doItemStacksMatch(stack, existing)) {
-                toMerge -= existing.getMaxStackSize() - existing.stackSize;
+                toMerge -= existing.getMaxStackSize() - existing.getCount();
             }
             if (toMerge <= 0) {
                 break;
@@ -107,18 +107,18 @@ public class InventoryTools {
         int toMove;
         ItemStack slotStack;
         for (int index : slotIndices) {
-            toMove = stack.stackSize;
+            toMove = stack.getCount();
             slotStack = inventory.getStackInSlot(index);
             if (doItemStacksMatch(stack, slotStack)) {
                 if (toMove > slotStack.getMaxStackSize() - slotStack.getCount()) {
-                    toMove = slotStack.getMaxStackSize() - slotStack.stackSize;
+                    toMove = slotStack.getMaxStackSize() - slotStack.getCount();
                 }
-                stack.stackSize -= toMove;
-                slotStack.stackSize += toMove;
+                stack.shrink(toMove);
+                slotStack.grow(toMove);
                 inventory.setInventorySlotContents(index, slotStack);
                 inventory.markDirty();
             }
-            if (stack.stackSize <= 0)//merged stack fully;
+            if (stack.getCount() <= 0)//merged stack fully;
             {
                 return null;
             }
@@ -165,17 +165,17 @@ public class InventoryTools {
                 returnStack = filter.copy();
                 returnStack.setCount(0);
             }
-            toMove = slotStack.stackSize;
+            toMove = slotStack.getCount();
             if (toMove > quantity) {
                 toMove = quantity;
             }
             if (toMove + returnStack.stackSize > returnStack.getMaxStackSize()) {
-                toMove = returnStack.getMaxStackSize() - returnStack.stackSize;
+                toMove = returnStack.getMaxStackSize() - returnStack.getCount();
             }
-            returnStack.stackSize += toMove;
-            slotStack.stackSize -= toMove;
+            returnStack.grow(toMove);
+            slotStack.shrink(toMove);
             quantity -= toMove;
-            if (slotStack.stackSize <= 0) {
+            if (slotStack.getCount() <= 0) {
                 inventory.setInventorySlotContents(index, null);
             }
             inventory.markDirty();
@@ -252,18 +252,18 @@ public class InventoryTools {
             if (s1 == null || !doItemStacksMatch(filter, s1, ignoreDamage, ignoreNBT)) {
                 continue;
             }
-           .setCount(s1.stackSize);
+            stackSize = s1.getCount();
             if (s1.stackSize > toMove)//move partial stack
             {
                 s2 = s1.copy();
                 s2.setCount(toMove);
-                s1.stackSize -= toMove;
-               .setCount(s2.stackSize);
+                s1.shrink(toMove);
+                stackSize = s2.getCount();
                 s2 = mergeItemStack(to, s2, toSide);
                 if (s2 != null)//partial merge, destination full, break out
                 {
-                    moved += stackSize - s2.stackSize;
-                    toMove -= stackSize - s2.stackSize;
+                    moved += stackSize - s2.getCount();
+                    toMove -= stackSize - s2.getCount();
                     mergeItemStack(from, s2, fromSide);//put back the remainder of the partial stack that was copied out
                     from.markDirty();
                     break;
@@ -276,8 +276,8 @@ public class InventoryTools {
                 s1 = mergeItemStack(to, s1, toSide);
                 if (s1 != null)//destination inventory was full, break out
                 {
-                    moved += stackSize - s1.stackSize;
-                    toMove -= stackSize - s1.stackSize;
+                    moved += stackSize - s1.getCount();
+                    toMove -= stackSize - s1.getCount();
                     from.markDirty();
                     break;
                 } else {
@@ -334,7 +334,7 @@ public class InventoryTools {
         for (int slotIndice : slotIndices) {
             stack = inv.getStackInSlot(slotIndice);
             if (stack != null && doItemStacksMatch(filter, stack)) {
-                count += stack.stackSize;
+                count += stack.getCount();
             }
         }
         return count;
@@ -533,7 +533,7 @@ public class InventoryTools {
             if (map.containsKey(wrap)) {
                 count = map.get(wrap);
             }
-            count += stack.stackSize;
+            count += stack.getCount();
             map.put(wrap, count);
         }
         int qty;
@@ -543,7 +543,7 @@ public class InventoryTools {
             while (qty > 0) {
                 outStack = wrap1.getItemStack();
                 outStack.setCount(qty > outStack.getMaxStackSize() ? outStack.getMaxStackSize() : qty);
-                qty -= outStack.stackSize;
+                qty -= outStack.getCount();
                 out.add(outStack);
             }
         }
@@ -561,16 +561,16 @@ public class InventoryTools {
         int tmax;
         ItemStack copy;
         for (ItemStack inStack : in) {
-            tmax = inStack.stackSize;
+            tmax = inStack.getCount();
             for (ItemStack outStack : out) {
-                if (!InventoryTools.doItemStacksMatch(inStack, outStack) || outStack.stackSize >= outStack.getMaxStackSize()) {
+                if (!InventoryTools.doItemStacksMatch(inStack, outStack) || outStack.getCount() >= outStack.getMaxStackSize()) {
                     continue;
                 }
-                transfer = outStack.getMaxStackSize() - outStack.stackSize;
+                transfer = outStack.getMaxStackSize() - outStack.getCount();
                 if (transfer > tmax) {
                     transfer = tmax;
                 }
-                outStack.stackSize += transfer;
+                outStack.grow(transfer);
                 tmax -= transfer;
                 if (tmax <= 0) {
                     break;
@@ -610,7 +610,7 @@ public class InventoryTools {
             QUANTITY("sort_type_quantity"){
                 @Override
                 public int compare(ItemStack o1, ItemStack o2){
-                    int r = o1.stackSize - o2.stackSize;
+                    int r = o1.stackSize - o2.getCount();
                     if(r == 0){
                         return super.compare(o1, o2);
                     }

@@ -8,7 +8,6 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSid
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.EnumSet;
@@ -43,11 +42,11 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
     }
 
     private void offsetBounds(){
-        BlockPosition pos = getWorkBoundsMax();
+        BlockPos pos = getWorkBoundsMax();
         setWorkBoundsMax(pos.moveUp(yCoord - 1 - pos.y));
         pos = getWorkBoundsMin();
         setWorkBoundsMin(pos.moveUp(1 - pos.y));
-        this.worldObj.notifyBlockUpdate(xCoord, yCoord, zCoord);
+        this.world.notifyBlockUpdate(xCoord, yCoord, zCoord);
     }
 
     @Override
@@ -86,7 +85,7 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
             initWorkSite();
             hasDoneInit = true;
         }
-        worldObj.theProfiler.startSection("Incremental Scan");
+        world.profiler.startSection("Incremental Scan");
         if (canHarvest(validateX, validateY, validateZ)) {
             currentX = validateX;
             currentY = validateY;
@@ -95,7 +94,7 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
         } else {
             incrementValidationPosition();
         }
-        worldObj.theProfiler.endSection();
+        world.profiler.endSection();
     }
 
     @Override
@@ -180,11 +179,11 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 
     private boolean canHarvest(int x, int y, int z) {
         //TODO add block-breaking exclusion list to config
-        Block block = worldObj.getBlock(x, y, z);
-        if(block.isAir(worldObj, x, y, z) || block.getMaterial().isLiquid()){
+        Block block = world.getBlock(x, y, z);
+        if(block.isAir(world, x, y, z) || block.getMaterial().isLiquid()){
             return false;
         }
-        int harvestLevel = block.getHarvestLevel(worldObj.getBlockMetadata(x, y, z));
+        int harvestLevel = block.getHarvestLevel(world.getBlockMetadata(x, y, z));
         if (harvestLevel >= 2) {
             int toolLevel = 1;
             if (getUpgrades().contains(WorksiteUpgrade.TOOL_QUALITY_3)) {
@@ -198,11 +197,11 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
                 return false;
             }//else is harvestable, check the rest of the checks
         }
-        return block.getBlockHardness(worldObj, x, y, z) >= 0;
+        return block.getBlockHardness(world, x, y, z) >= 0;
     }
 
     public void initWorkSite() {
-        BlockPosition pos = getWorkBoundsMin();
+        BlockPos pos = getWorkBoundsMin();
         setWorkBoundsMin(pos.moveUp(1 - pos.y));
         this.currentY = this.getWorkBoundsMax().y;
         this.currentX = this.getWorkBoundsMin().x;
@@ -210,7 +209,7 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
         this.validateX = this.currentX;
         this.validateY = this.currentY;
         this.validateZ = this.currentZ;
-        this.worldObj.notifyBlockUpdate(xCoord, yCoord, zCoord);//resend work-bounds change
+        this.world.notifyBlockUpdate(xCoord, yCoord, zCoord);//resend work-bounds change
     }
 
     @Override

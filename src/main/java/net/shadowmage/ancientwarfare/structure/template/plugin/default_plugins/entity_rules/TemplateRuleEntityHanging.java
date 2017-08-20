@@ -25,7 +25,6 @@ import net.minecraft.entity.EntityHanging;
 import net.minecraft.entity.EntityList;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuildingException.EntityPlacementException;
 
@@ -34,7 +33,7 @@ public class TemplateRuleEntityHanging extends TemplateRuleVanillaEntity {
     public NBTTagCompound tag = new NBTTagCompound();
     public int direction;
 
-    BlockPosition hangTarget = new BlockPosition();//cached location for use during placement
+    BlockPos hangTarget = new BlockPos();//cached location for use during placement
 
     public TemplateRuleEntityHanging(World world, Entity entity, int turns, int x, int y, int z) {
         super(world, entity, turns, x, y, z);
@@ -56,7 +55,7 @@ public class TemplateRuleEntityHanging extends TemplateRuleVanillaEntity {
             throw new EntityPlacementException("Could not create entity for type: " + mobID);
         }
         int direction = (this.direction + turns) % 4;
-        hangTarget = new BlockPosition(x, y, z, (direction + 2) % 4);
+        hangTarget = new BlockPos(x, y, z, (direction + 2) % 4);
         tag.setByte("Direction", (byte) direction);
         tag.setInteger("TileX", hangTarget.x);
         tag.setInteger("TileY", hangTarget.y);

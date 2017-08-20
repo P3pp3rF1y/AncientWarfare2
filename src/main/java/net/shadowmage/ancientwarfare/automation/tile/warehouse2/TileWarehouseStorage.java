@@ -31,12 +31,12 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
     @Override
     public ItemStack tryAdd(ItemStack cursorStack) {
         int moved = insertItem(cursorStack, cursorStack.getCount());
-        cursorStack.stackSize -= moved;
+        cursorStack.shrink(moved);
         TileWarehouseBase twb = (TileWarehouseBase) getController();
         if (twb != null) {
             twb.changeCachedQuantity(cursorStack, moved);
         }
-        if (cursorStack.stackSize <= 0) {
+        if (cursorStack.getCount() <= 0) {
             return null;
         }
         return cursorStack;
@@ -52,7 +52,7 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
         addItems(qtm);
         List<ItemStack> list = qtm.getItems();
         for (ItemStack stack : list) {
-            InventoryTools.dropItemInWorld(worldObj, stack, xCoord, yCoord, zCoord);
+            InventoryTools.dropItemInWorld(world, stack, pos);
         }
     }
 
@@ -129,7 +129,7 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
 
     @Override
     public void addViewer(ContainerWarehouseStorage containerWarehouseStorage) {
-        if (!hasWorldObj() || worldObj.isRemote) {
+        if (!hasWorld() || world.isRemote) {
             return;
         }
         viewers.add(containerWarehouseStorage);
@@ -156,7 +156,7 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
     @Override
     public boolean onBlockClicked(EntityPlayer player) {
         if (!player.world.isRemote) {
-            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_STORAGE, xCoord, yCoord, zCoord);
+            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_STORAGE, pos);
         }
         return true;
     }
@@ -171,16 +171,16 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
     }
 
     private void tryAddItem(EntityPlayer player, ItemStack cursorStack) {
-        int.setCount(cursorStack.stackSize);
+        int stackSize = cursorStack.getCount();
         int moved;
         moved = insertItem(cursorStack, cursorStack.getCount());
-        cursorStack.stackSize -= moved;
+        cursorStack.shrink(moved);
         TileWarehouseBase twb = (TileWarehouseBase) getController();
         if (twb != null) {
             twb.changeCachedQuantity(cursorStack, moved);
         }
-        if (cursorStack.stackSize <= 0) {
-            player.inventory.setItemStack(null);
+        if (cursorStack.getCount() <= 0) {
+            player.inventory.setItemStack(ItemStack.EMPTY);
         }
         if (stackSize != cursorStack.getCount()) {
             ((EntityPlayerMP)player).updateHeldItem();
@@ -193,10 +193,10 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
         int count;
         int toMove;
         count = getQuantityStored(filter);
-        toMove = newCursorStack.getMaxStackSize() - newCursorStack.stackSize;
+        toMove = newCursorStack.getMaxStackSize() - newCursorStack.getCount();
         toMove = toMove > count ? count : toMove;
         if (toMove > 0) {
-            newCursorStack.stackSize += toMove;
+            newCursorStack.grow(toMove);
             extractItem(filter, toMove);
             TileWarehouseBase twb = (TileWarehouseBase) getController();
             if (twb != null) {

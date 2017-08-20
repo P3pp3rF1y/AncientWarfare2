@@ -32,7 +32,7 @@ public class ContainerWorksiteInventorySideSelection extends ContainerTileBase<T
     public void handlePacketData(NBTTagCompound tag) {
         handleAccessMapTag(tag);
         if (tag.hasKey("closeGUI")) {
-            tileEntity.onBlockClicked(player);//hack to open the worksites GUI
+            tileEntity.onBlockClicked(player, null);//hack to open the worksites GUI
         }
         refreshGui();
     }

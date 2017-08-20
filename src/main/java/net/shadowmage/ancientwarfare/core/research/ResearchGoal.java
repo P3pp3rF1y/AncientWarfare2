@@ -141,7 +141,7 @@ public class ResearchGoal {
             for(ItemStack temp : ore.getEquivalents()) {
                 remove = InventoryTools.removeItems(inventory, side, temp, required);
                 if(remove != null){
-                    required -= remove.stackSize;
+                    required -= remove.getCount();
                     if(required <= 0){
                         break;
                     }

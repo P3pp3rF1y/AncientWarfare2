@@ -28,13 +28,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
-import net.minecraft.util.*;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.interfaces.IEntityPacketHandler;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketEntity;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.gates.types.Gate;
 import net.shadowmage.ancientwarfare.structure.gates.types.GateRotatingBridge;
@@ -46,8 +45,8 @@ import net.shadowmage.ancientwarfare.structure.gates.types.GateRotatingBridge;
  */
 public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IEntityPacketHandler {
 
-    public BlockPosition pos1;
-    public BlockPosition pos2;
+    public BlockPos pos1;
+    public BlockPos pos2;
 
     public float edgePosition;//the bottom/opening edge of the gate (closed should correspond to pos1)
     public float edgeMax;//the 'fully extended' position of the gate
@@ -79,7 +78,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
     }
 
     public Team getTeam() {
-        return worldObj.getScoreboard().getPlayersTeam(ownerName);
+        return world.getScoreboard().getPlayersTeam(ownerName);
     }
 
     public Gate getGateType() {
@@ -102,21 +101,21 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
     }
 
     public void repackEntity() {
-        if (worldObj.isRemote || isDead) {
+        if (world.isRemote || isDead) {
             return;
         }
         gateType.onGateStartOpen(this);//catch gates that have proxy blocks still in the world
         gateType.onGateStartClose(this);//
         ItemStack item = Gate.getItemToConstruct(this.gateType.getGlobalID());
-        EntityItem entity = new EntityItem(worldObj, posX, posY + 0.5d, posZ, item);
-        this.worldObj.spawnEntityInWorld(entity);
+        EntityItem entity = new EntityItem(world, posX, posY + 0.5d, posZ, item);
+        this.world.spawnEntityInWorld(entity);
         this.setDead();
     }
 
     @Override
     public void setDead() {
         super.setDead();
-        if (!this.worldObj.isRemote) {
+        if (!this.world.isRemote) {
             //catch gates that have proxy blocks still in the world
             gateType.onGateStartOpen(this);
             gateType.onGateStartClose(this);
@@ -125,8 +124,8 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 
     protected void setOpeningStatus(byte op) {
         this.gateStatus = op;
-        if (!this.worldObj.isRemote) {
-            this.worldObj.setEntityState(this, op);
+        if (!this.world.isRemote) {
+            this.world.setEntityState(this, op);
         }
         if (op == -1) {
             this.gateType.onGateStartClose(this);
@@ -144,12 +143,12 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
             k = pos1.y;
         if(pos2.y > k)
             k = pos2.y;
-        return this.worldObj.getLightBrightnessForSkyBlocks(i, k, j, 0);
+        return this.world.getLightBrightnessForSkyBlocks(i, k, j, 0);
     }
 
     @Override
     public void handleHealthUpdate(byte par1) {
-        if (worldObj.isRemote) {
+        if (world.isRemote) {
             if (par1 == -1 || par1 == 0 || par1 == 1) {
                 this.setOpeningStatus(par1);
             }
@@ -176,7 +175,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
         if (val < health) {
             this.hurtAnimationTicks = 20;
         }
-        if (val < health && !this.worldObj.isRemote) {
+        if (val < health && !this.world.isRemote) {
             PacketEntity pkt = new PacketEntity(this);
             pkt.packetData.setInteger("health", val);
             NetworkHandler.sendToAllTracking(this, pkt);
@@ -202,18 +201,18 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 
     @Override
     public boolean interactFirst(EntityPlayer par1EntityPlayer) {
-        if (this.worldObj.isRemote) {
+        if (this.world.isRemote) {
             return true;
         }
         
         boolean canInteract = false;
         if (ownerName == null || ownerName.isEmpty()); 
             canInteract = true; // neutral/worldgen gates
-        if (par1EntityPlayer.getCommandSenderName().equals(ownerName))
+        if (par1EntityPlayer.getName().equals(ownerName))
             canInteract = true; // owned gates
         if (par1EntityPlayer.getTeam()!=null && par1EntityPlayer.getTeam().isSameTeam(this.getTeam()))
             canInteract = true; // same team gates
-        if (ModAccessors.FTBU.areFriends(par1EntityPlayer.getCommandSenderName(), this.ownerName))
+        if (ModAccessors.FTBU.areFriends(par1EntityPlayer.getName(), this.ownerName))
             canInteract = true; // friend gates
         if(canInteract){
             if (par1EntityPlayer.isSneaking()) {
@@ -223,7 +222,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
             }
             return true;
         } else {
-            par1EntityPlayer.addChatMessage(new ChatComponentTranslation("guistrings.gate.use_error"));
+            par1EntityPlayer.sendMessage(new TextComponentTranslation("guistrings.gate.use_error"));
         }
         return false;
     }
@@ -273,8 +272,8 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 
         if (!hasSetWorldEntityRadius) {
             hasSetWorldEntityRadius = true;
-            BlockPosition min = BlockTools.getMin(pos1, pos2);
-            BlockPosition max = BlockTools.getMax(pos1, pos2);
+            BlockPos min = BlockTools.getMin(pos1, pos2);
+            BlockPos max = BlockTools.getMax(pos1, pos2);
             int xSize = max.x - min.x + 1;
             int zSize = max.z - min.z + 1;
             int ySize = max.y - min.y + 1;
@@ -288,13 +287,13 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
     }
 
     protected void checkForPowerUpdates() {
-        if (this.worldObj.isRemote) {
+        if (this.world.isRemote) {
             return;
         }
         boolean activate = false;
         int y = pos2.y < pos1.y ? pos2.y : pos1.y;
-        boolean foundPowerA = this.worldObj.isBlockIndirectlyGettingPowered(pos1.x, y, pos1.z);
-        boolean foundPowerB = this.worldObj.isBlockIndirectlyGettingPowered(pos2.x, y, pos2.z);
+        boolean foundPowerA = this.world.isBlockIndirectlyGettingPowered(pos1.x, y, pos1.z);
+        boolean foundPowerB = this.world.isBlockIndirectlyGettingPowered(pos2.x, y, pos2.z);
         if (foundPowerA && !wasPoweredA) {
             activate = true;
         }
@@ -317,7 +316,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
         if(isInsensitiveTo(par1DamageSource) || par2 < 0){
             return false;
         }
-        if (this.worldObj.isRemote) {
+        if (this.world.isRemote) {
             return true;
         }
 //  if(Config.gatesOnlyDamageByRams)
@@ -425,8 +424,8 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 //Data
     @Override
     protected void readEntityFromNBT(NBTTagCompound tag) {
-        this.pos1 = new BlockPosition(tag.getCompoundTag("pos1"));
-        this.pos2 = new BlockPosition(tag.getCompoundTag("pos2"));
+        this.pos1 = new BlockPos(tag.getCompoundTag("pos1"));
+        this.pos2 = new BlockPos(tag.getCompoundTag("pos2"));
         this.setGateType(Gate.getGateByID(tag.getInteger("type")));
         this.ownerName = tag.getString("owner");
         this.edgePosition = tag.getFloat("edge");
@@ -473,8 +472,8 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 
     @Override
     public void readSpawnData(ByteBuf data) {
-        this.pos1 = new BlockPosition(data.readInt(), data.readInt(), data.readInt());
-        this.pos2 = new BlockPosition(data.readInt(), data.readInt(), data.readInt());
+        this.pos1 = new BlockPos(data.readInt(), data.readInt(), data.readInt());
+        this.pos2 = new BlockPos(data.readInt(), data.readInt(), data.readInt());
         this.gateType = Gate.getGateByID(data.readInt());
         this.edgePosition = data.readFloat();
         this.edgeMax = data.readFloat();

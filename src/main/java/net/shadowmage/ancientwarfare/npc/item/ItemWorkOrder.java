@@ -4,7 +4,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.npc.orders.WorkOrder;
 
@@ -14,8 +13,8 @@ import java.util.Collection;
 public class ItemWorkOrder extends ItemOrders {
 
     @Override
-    public Collection<? extends BlockPosition> getPositionsForRender(ItemStack stack) {
-        Collection<BlockPosition> positionList = new ArrayList<BlockPosition>();
+    public Collection<? extends BlockPos> getPositionsForRender(ItemStack stack) {
+        Collection<BlockPos> positionList = new ArrayList<BlockPos>();
         WorkOrder order = WorkOrder.getWorkOrder(stack);
         if (order != null && !order.isEmpty()) {
             for (WorkOrder.WorkEntry e : order.getEntries()) {
@@ -37,7 +36,7 @@ public class ItemWorkOrder extends ItemOrders {
     public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
         WorkOrder wo = WorkOrder.getWorkOrder(stack);
         if (wo != null) {
-            BlockPosition hit = BlockTools.getBlockClickedOn(player, player.world, false);
+            BlockPos hit = BlockTools.getBlockClickedOn(player, player.world, false);
             if (wo.addWorkPosition(player.world, hit)) {
                 wo.write(stack);
                 addMessage(player);

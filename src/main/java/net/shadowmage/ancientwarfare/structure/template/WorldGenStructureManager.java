@@ -25,7 +25,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
@@ -42,7 +41,7 @@ public class WorldGenStructureManager {
     List<StructureEntry> searchCache = new ArrayList<StructureEntry>();
     List<StructureTemplate> trimmedPotentialStructures = new ArrayList<StructureTemplate>();
     HashMap<String, Integer> distancesFound = new HashMap<String, Integer>();
-    BlockPosition rearBorderPos = new BlockPosition(0, 0, 0);
+    BlockPos rearBorderPos = new BlockPos(0, 0, 0);
 
     public static final WorldGenStructureManager INSTANCE = new WorldGenStructureManager();
 
@@ -123,7 +122,7 @@ public class WorldGenStructureManager {
 
         int remainingValueCache = AWStructureStatics.maxClusterValue - foundValue;
         StructureValidator settings;
-        int dim = world.provider.dimensionId;
+        int dim = world.provider.getDimension();
         for (StructureTemplate template : potentialStructures)//loop through initial structures, only adding to 2nd list those which meet biome, unique, value, and minDuplicate distance settings
         {
             settings = template.getValidationSettings();

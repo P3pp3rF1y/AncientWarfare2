@@ -23,12 +23,10 @@ package net.shadowmage.ancientwarfare.structure.item;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.event.IBoxRenderer;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
@@ -80,10 +78,10 @@ public class ItemStructureBuilder extends Item implements IItemKeyInterface, IBo
         if (buildSettings.hasName()) {
             StructureTemplate template = StructureTemplateManager.INSTANCE.getTemplate(buildSettings.name);
             if (template == null) {
-                player.addChatComponentMessage(new ChatComponentTranslation("guistrings.template.not_found"));
+                player.addChatComponentMessage(new TextComponentTranslation("guistrings.template.not_found"));
                 return;
             }
-            BlockPosition bpHit = BlockTools.getBlockClickedOn(player, player.world, true);
+            BlockPos bpHit = BlockTools.getBlockClickedOn(player, player.world, true);
             if (bpHit == null) {
                 return;
             }//no hit position, clicked on air
@@ -98,7 +96,7 @@ public class ItemStructureBuilder extends Item implements IItemKeyInterface, IBo
                 }
             }
         } else {
-            player.addChatComponentMessage(new ChatComponentTranslation("guistrings.structure.no_selection"));
+            player.addChatComponentMessage(new TextComponentTranslation("guistrings.structure.no_selection"));
         }
     }
 
@@ -121,7 +119,7 @@ public class ItemStructureBuilder extends Item implements IItemKeyInterface, IBo
         if (structure == null) {
             return;
         }
-        BlockPosition hit = BlockTools.getBlockClickedOn(player, player.world, true);
+        BlockPos hit = BlockTools.getBlockClickedOn(player, player.world, true);
         int face = BlockTools.getPlayerFacingFromYaw(player.rotationYaw);
         if (hit == null) {
             return;

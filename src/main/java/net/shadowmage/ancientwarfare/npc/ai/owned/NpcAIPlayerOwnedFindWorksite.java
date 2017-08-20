@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.npc.ai.owned;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcWorker;
@@ -38,8 +37,8 @@ public class NpcAIPlayerOwnedFindWorksite extends NpcAI<NpcWorker> {
         lastExecuted = npc.ticksExisted;
         if (npc.autoWorkTarget != null)//validate existing position
         {
-            BlockPosition pos = npc.autoWorkTarget;
-            TileEntity te = npc.worldObj.getTileEntity(pos.x, pos.y, pos.z);
+            BlockPos pos = npc.autoWorkTarget;
+            TileEntity te = npc.world.getTileEntity(pos.x, pos.y, pos.z);
             if (te instanceof IWorkSite) {
                 IWorkSite site = (IWorkSite) te;
                 if (!npc.canWorkAt(site.getWorkType()))
@@ -61,7 +60,7 @@ public class NpcAIPlayerOwnedFindWorksite extends NpcAI<NpcWorker> {
         int x = MathHelper.floor_double(npc.posX);
         int y = MathHelper.floor_double(npc.posY);
         int z = MathHelper.floor_double(npc.posZ);
-        List<TileEntity> tiles = WorldTools.getTileEntitiesInArea(npc.worldObj, x - range, y - range / 2, z - range, x + range, y + range / 2, z + range);
+        List<TileEntity> tiles = WorldTools.getTileEntitiesInArea(npc.world, x - range, y - range / 2, z - range, x + range, y + range / 2, z + range);
         IWorkSite site;
         TileEntity closestSite = null;
         double closestDist = -1;
@@ -81,7 +80,7 @@ public class NpcAIPlayerOwnedFindWorksite extends NpcAI<NpcWorker> {
             }
         }
         if (closestSite != null) {
-            npc.autoWorkTarget = new BlockPosition(closestSite.xCoord, closestSite.yCoord, closestSite.zCoord);
+            npc.autoWorkTarget = new BlockPos(closestSite.xCoord, closestSite.yCoord, closestSite.zCoord);
         }
     }
 

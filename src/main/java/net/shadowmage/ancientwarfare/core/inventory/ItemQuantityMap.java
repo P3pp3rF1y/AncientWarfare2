@@ -158,7 +158,7 @@ public class ItemQuantityMap {
             while (qty > 0) {
                 outStack = wrap1.getItemStack().copy();
                 outStack.setCount(qty > outStack.getMaxStackSize() ? outStack.getMaxStackSize() : qty);
-                qty -= outStack.stackSize;
+                qty -= outStack.getCount();
                 items.add(outStack);
             }
         }

@@ -3,13 +3,11 @@ package net.shadowmage.ancientwarfare.npc.gui;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.block.Direction;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.*;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.npc.container.ContainerRoutingOrder;
 import net.shadowmage.ancientwarfare.npc.orders.RoutingOrder.RoutePoint;
@@ -43,7 +41,7 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
         int index = 0;
 
         Block block;
-        BlockPosition pos;
+        BlockPos pos;
 
         String labelString;
         for (RoutePoint point : entries) {
@@ -159,11 +157,11 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
         if (slot.getStack() != null && isShiftKeyDown()) {
             if (Mouse.getEventButton() == 0)//left
             {
-                slot.getStack().stackSize += 32;
+                slot.getStack().grow(32);
                 point.setFilter(index, slot.getStack());
             } else if (Mouse.getEventButton() == 1)//right
             {
-                slot.getStack().stackSize -= 32;
+                slot.getStack().shrink(32);
                 if (slot.getStack().stackSize < 1) {
                     slot.getStack().setCount(1);
                 }
@@ -172,11 +170,11 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
         } else if (slot.getStack() != null && isCtrlKeyDown()) {
             if (Mouse.getEventButton() == 0)//left
             {
-                slot.getStack().stackSize += 1;
+                slot.getStack().grow(1);
                 point.setFilter(index, slot.getStack());
             } else if (Mouse.getEventButton() == 1)//right
             {
-                slot.getStack().stackSize -= 1;
+                slot.getStack().shrink(1);
                 if (slot.getStack().stackSize < 1) {
                     slot.getStack().setCount(1);
                 }
@@ -190,11 +188,11 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
                 if (InventoryTools.doItemStacksMatch(stack, slot.getStack())) {
                     if (Mouse.getEventButton() == 0)//left
                     {
-                        slot.getStack().stackSize += stack.stackSize;
+                        slot.getStack().grow(stack.getCount());
                         point.setFilter(index, slot.getStack());
                     } else if (Mouse.getEventButton() == 1)//right
                     {
-                        slot.getStack().stackSize -= stack.stackSize;
+                        slot.getStack().shrink(stack.getCount());
                         if (slot.getStack().stackSize < 1) {
                             slot.getStack().setCount(1);
                         }

@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 
@@ -78,7 +77,7 @@ public class TownPartQuadrant {
                 zEnd = zStart + zDir.zDirection * (zSize - 1);
                 zIndex = zDir == Direction.NORTH ? (zDivs - 1) - z : z;
 
-                sbb = new StructureBB(new BlockPosition(xStart, y1, zStart), new BlockPosition(xEnd, y2, zEnd));
+                sbb = new StructureBB(new BlockPos(xStart, y1, zStart), new BlockPos(xEnd, y2, zEnd));
                 borders = gridRoads ? getBordersGrid(xIndex, zIndex) : getBordersExterior(x, z);
                 distFromTownCenter = Trig.getDistance(sbb.getCenterX(), y1, sbb.getCenterZ(), gen.maximalBounds.getCenterX(), y1, gen.maximalBounds.getCenterZ());
                 block = new TownPartBlock(this, sbb, xIndex, zIndex, borders, distFromTownCenter);

@@ -24,7 +24,6 @@ import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.entity.RotateBoundingBox;
@@ -48,8 +47,8 @@ public class GateRotatingBridge extends Gate {
         if (gate.pos1 == null || gate.pos2 == null) {
             return;
         }
-        BlockPosition min = BlockTools.getMin(gate.pos1, gate.pos2);
-        BlockPosition max = BlockTools.getMax(gate.pos1, gate.pos2);
+        BlockPos min = BlockTools.getMin(gate.pos1, gate.pos2);
+        BlockPos max = BlockTools.getMax(gate.pos1, gate.pos2);
         if(gate.edgePosition == 0){
             gate.boundingBox.setBounds(min.x, min.y, min.z, max.x + 1, max.y + 1, max.z + 1);
         } else if (gate.edgePosition < gate.edgeMax) {
@@ -65,7 +64,7 @@ public class GateRotatingBridge extends Gate {
             }
         } else {
             int heightAdj = max.y - min.y;
-            BlockPosition pos3 = max.moveUp(-heightAdj).moveForward(gate.gateOrientation, heightAdj);
+            BlockPos pos3 = max.moveUp(-heightAdj).moveForward(gate.gateOrientation, heightAdj);
             max = BlockTools.getMax(min, pos3).offset(1, 1, 1);
             min = BlockTools.getMin(min, pos3);
             gate.boundingBox.setBounds(min.x, min.y, min.z, max.x, max.y, max.z);
@@ -81,17 +80,17 @@ public class GateRotatingBridge extends Gate {
             return super.canActivate(gate, false);
         } else {
 //    boolean wideOnXAxis = gate.pos1.x!=gate.pos2.x;  
-            BlockPosition min = BlockTools.getMin(gate.pos1, gate.pos2);
-            BlockPosition max = BlockTools.getMax(gate.pos1, gate.pos2);
+            BlockPos min = BlockTools.getMin(gate.pos1, gate.pos2);
+            BlockPos max = BlockTools.getMax(gate.pos1, gate.pos2);
             int heightAdj = max.y - min.y;
-            BlockPosition pos3 = max.moveUp(-heightAdj).moveForward(gate.gateOrientation, heightAdj);
+            BlockPos pos3 = max.moveUp(-heightAdj).moveForward(gate.gateOrientation, heightAdj);
             max = BlockTools.getMax(min, pos3);
             min = BlockTools.getMin(min, pos3);
             Block id;
             for (int x = min.x; x <= max.x; x++) {
                 for (int z = min.z; z <= max.z; z++) {
-                    id = gate.worldObj.getBlock(x, min.y, z);
-                    if (!id.isAir(gate.worldObj, x, min.y, z) && id != AWBlocks.gateProxy) {
+                    id = gate.world.getBlock(x, min.y, z);
+                    if (!id.isAir(gate.world, x, min.y, z) && id != AWBlocks.gateProxy) {
                         return false;
                     }
 
@@ -102,9 +101,9 @@ public class GateRotatingBridge extends Gate {
     }
 
     @Override
-    public void setInitialBounds(EntityGate gate, BlockPosition pos1, BlockPosition pos2) {
-        BlockPosition min = BlockTools.getMin(pos1, pos2);
-        BlockPosition max = BlockTools.getMax(pos1, pos2);
+    public void setInitialBounds(EntityGate gate, BlockPos pos1, BlockPos pos2) {
+        BlockPos min = BlockTools.getMin(pos1, pos2);
+        BlockPos max = BlockTools.getMax(pos1, pos2);
         boolean wideOnXAxis = min.x != max.x;
         float width = wideOnXAxis ? max.x - min.x + 1 : max.z - min.z + 1;
         float xOffset = wideOnXAxis ? width * 0.5f : 0.5f;
@@ -117,18 +116,18 @@ public class GateRotatingBridge extends Gate {
 
     @Override
     public void onGateStartOpen(EntityGate gate) {
-        if (gate.worldObj.isRemote) {
+        if (gate.world.isRemote) {
             return;
         }
-        BlockPosition min = BlockTools.getMin(gate.pos1, gate.pos2).offset(0, 1, 0);
-        BlockPosition max = BlockTools.getMax(gate.pos1, gate.pos2);
-        removeBetween(gate.worldObj, min, max);
+        BlockPos min = BlockTools.getMin(gate.pos1, gate.pos2).offset(0, 1, 0);
+        BlockPos max = BlockTools.getMax(gate.pos1, gate.pos2);
+        removeBetween(gate.world, min, max);
 
 //  int heightAdj = max.y - min.y;
-//  BlockPosition pos3 = max.copy();
+//  BlockPos pos3 = max.copy();
 //  pos3.y = min.y;
 //  adjustBounds(pos3, heightAdj, gate.gateOrientation);  
-//  BlockPosition minTemp = min.copy();
+//  BlockPos minTemp = min.copy();
 //  min = BlockTools.getMin(min, pos3);    
 //  max = BlockTools.getMax(minTemp, pos3);
 //  for(int x = min.x; x <= max.x; x++)
@@ -137,11 +136,11 @@ public class GateRotatingBridge extends Gate {
 //      {
 //      for(int z = min.z; z<= max.z; z++)
 //        {
-//        id = gate.worldObj.getBlock(x, y, z);
+//        id = gate.world.getBlock(x, y, z);
 //        if(id==Blocks.air)
 //          {
-//          gate.worldObj.setBlock(x, y, z, AWStructuresItemLoader.gateProxy);
-//          TileEntity te = gate.worldObj.getTileEntity(x, y, z);
+//          gate.world.setBlock(x, y, z, AWStructuresItemLoader.gateProxy);
+//          TileEntity te = gate.world.getTileEntity(x, y, z);
 //          if(te!=null && te instanceof TEGateProxy)
 //            {
 //            TEGateProxy teg = (TEGateProxy)te;
@@ -155,10 +154,10 @@ public class GateRotatingBridge extends Gate {
 
     @Override
     public void onGateFinishOpen(EntityGate gate) {
-        BlockPosition min = BlockTools.getMin(gate.pos1, gate.pos2);
-        BlockPosition max = BlockTools.getMax(gate.pos1, gate.pos2);
+        BlockPos min = BlockTools.getMin(gate.pos1, gate.pos2);
+        BlockPos max = BlockTools.getMax(gate.pos1, gate.pos2);
         int heightAdj = max.y - min.y;
-        BlockPosition pos3 = max.moveUp(-heightAdj).moveForward(gate.gateOrientation, heightAdj);
+        BlockPos pos3 = max.moveUp(-heightAdj).moveForward(gate.gateOrientation, heightAdj);
         max = BlockTools.getMax(min, pos3);
         min = BlockTools.getMin(min, pos3);
         placeBetween(gate, min, max);
@@ -166,11 +165,11 @@ public class GateRotatingBridge extends Gate {
 
     @Override
     public void onGateStartClose(EntityGate gate) {
-        BlockPosition min = BlockTools.getMin(gate.pos1, gate.pos2);
-        BlockPosition max = BlockTools.getMax(gate.pos1, gate.pos2);
+        BlockPos min = BlockTools.getMin(gate.pos1, gate.pos2);
+        BlockPos max = BlockTools.getMax(gate.pos1, gate.pos2);
         boolean widestOnXAxis = gate.pos1.x != gate.pos2.x;
         int heightAdj = max.y - min.y;
-        BlockPosition pos3 = max.moveUp(-heightAdj).moveForward(gate.gateOrientation, heightAdj);
+        BlockPos pos3 = max.moveUp(-heightAdj).moveForward(gate.gateOrientation, heightAdj);
         max = BlockTools.getMax(min, pos3);
         min = BlockTools.getMin(min, pos3);
         Block id;
@@ -180,9 +179,9 @@ public class GateRotatingBridge extends Gate {
                     if ((widestOnXAxis && z == gate.pos1.z) || (!widestOnXAxis && x == gate.pos1.x)) {
                         continue;
                     }
-                    id = gate.worldObj.getBlock(x, y, z);
+                    id = gate.world.getBlock(x, y, z);
                     if (id == AWBlocks.gateProxy) {
-                        gate.worldObj.setBlockToAir(x, y, z);
+                        gate.world.setBlockToAir(x, y, z);
                     }
                 }
             }
@@ -194,10 +193,10 @@ public class GateRotatingBridge extends Gate {
         super.onGateFinishClose(gate);
 //  boolean widestOnXAxis = gate.pos1.x != gate.pos2.x;
 //  int heightAdj = max.y - min.y;
-//  BlockPosition pos3 = max.copy();
+//  BlockPos pos3 = max.copy();
 //  pos3.y = min.y;
 //  adjustBounds(pos3, heightAdj, gate.gateOrientation);  
-//  BlockPosition minTemp = min.copy();
+//  BlockPos minTemp = min.copy();
 //  min = BlockTools.getMin(min, pos3);    
 //  max = BlockTools.getMax(minTemp, pos3);
 //  Block id;
@@ -211,10 +210,10 @@ public class GateRotatingBridge extends Gate {
 //          {
 //          continue;
 //          }
-//        id = gate.worldObj.getBlock(x, y, z);
+//        id = gate.world.getBlock(x, y, z);
 //        if(id==AWStructuresItemLoader.gateProxy)
 //          {
-//          gate.worldObj.setBlockToAir(x, y, z);
+//          gate.world.setBlockToAir(x, y, z);
 //          }
 //        }
 //      }

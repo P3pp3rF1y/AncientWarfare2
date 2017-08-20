@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.npc.ai.owned;
 
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -55,7 +54,7 @@ public class NpcAIPlayerOwnedPriest extends NpcAI<NpcPlayerOwned> {
         if (entryToRes == null || entryToRes.resurrected) {
             return;
         }
-        BlockPosition pos = npc.getTownHallPosition();
+        BlockPos pos = npc.getTownHallPosition();
         double dist = npc.getDistanceSq(pos.x + 0.5d, pos.y, pos.z + 0.5d);
         if (dist > AWNPCStatics.npcActionRange * AWNPCStatics.npcActionRange) {
             moveToPosition(pos, dist);
@@ -71,7 +70,7 @@ public class NpcAIPlayerOwnedPriest extends NpcAI<NpcPlayerOwned> {
     }
 
     protected void resurrectTarget() {
-        NpcBase resdNpc = ItemNpcSpawner.createNpcFromItem(npc.worldObj, entryToRes.stackToSpawn);
+        NpcBase resdNpc = ItemNpcSpawner.createNpcFromItem(npc.world, entryToRes.stackToSpawn);
         entryToRes.beingResurrected = false;
         if (resdNpc != null) {
             if (!AWNPCStatics.persistOrdersOnDeath) {
@@ -87,7 +86,7 @@ public class NpcAIPlayerOwnedPriest extends NpcAI<NpcPlayerOwned> {
             resdNpc.setPositionAndRotation(npc.posX, npc.posY, npc.posZ, npc.rotationYaw, npc.rotationPitch);
             resdNpc.knockBack(npc, 0, 2 * npc.getRNG().nextDouble() - 1, 2 * npc.getRNG().nextDouble() - 1);
             resdNpc.motionY = 0;
-            entryToRes.resurrected = npc.worldObj.spawnEntityInWorld(resdNpc);
+            entryToRes.resurrected = npc.world.spawnEntityInWorld(resdNpc);
         }
         npc.getTownHall().informViewers();
         entryToRes = null;

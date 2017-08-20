@@ -103,7 +103,7 @@ public class WatchedData extends DataWatcher.WatchableObject{
             else if(this == STACK) {
                 ItemStack stack = (ItemStack) value;
                 String result = Item.itemRegistry.getNameForObject(stack.getItem());
-                return result + "," + stack.getItemDamage() + "," + stack.stackSize;
+                return result + "," + stack.getItemDamage() + "," + stack.getCount();
             }
             return value.toString();
         }

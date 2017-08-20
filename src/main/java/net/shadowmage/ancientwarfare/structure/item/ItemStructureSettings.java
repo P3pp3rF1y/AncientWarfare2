@@ -22,14 +22,13 @@ package net.shadowmage.ancientwarfare.structure.item;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 public class ItemStructureSettings {
 
     boolean[] setKeys = new boolean[4];
-    BlockPosition pos1;
-    BlockPosition pos2;
-    BlockPosition key;
+    BlockPos pos1;
+    BlockPos pos2;
+    BlockPos key;
     int buildFace;
     String name;
 
@@ -52,15 +51,15 @@ public class ItemStructureSettings {
             settings.setKeys[i] = false;
         }
         if (tag.hasKey("pos1")) {
-            settings.pos1 = new BlockPosition(tag.getCompoundTag("pos1"));
+            settings.pos1 = new BlockPos(tag.getCompoundTag("pos1"));
             settings.setKeys[0] = true;
         }
         if (tag.hasKey("pos2")) {
-            settings.pos2 = new BlockPosition(tag.getCompoundTag("pos2"));
+            settings.pos2 = new BlockPos(tag.getCompoundTag("pos2"));
             settings.setKeys[1] = true;
         }
         if (tag.hasKey("buildKey")) {
-            settings.key = new BlockPosition(tag.getCompoundTag("buildKey"));
+            settings.key = new BlockPos(tag.getCompoundTag("buildKey"));
             settings.setKeys[2] = true;
             settings.buildFace = tag.getCompoundTag("buildKey").getInteger("face");
         }
@@ -91,17 +90,17 @@ public class ItemStructureSettings {
     }
 
     public void setPos1(int x, int y, int z) {
-        pos1 = new BlockPosition(x, y, z);
+        pos1 = new BlockPos(x, y, z);
         setKeys[0] = true;
     }
 
     public void setPos2(int x, int y, int z) {
-        pos2 = new BlockPosition(x, y, z);
+        pos2 = new BlockPos(x, y, z);
         setKeys[1] = true;
     }
 
     public void setBuildKey(int x, int y, int z, int face) {
-        key = new BlockPosition(x, y, z);
+        key = new BlockPos(x, y, z);
         buildFace = face;
         setKeys[2] = true;
     }
@@ -127,15 +126,15 @@ public class ItemStructureSettings {
         return setKeys[3];
     }
 
-    public BlockPosition pos1() {
+    public BlockPos pos1() {
         return pos1;
     }
 
-    public BlockPosition pos2() {
+    public BlockPos pos2() {
         return pos2;
     }
 
-    public BlockPosition buildKey() {
+    public BlockPos buildKey() {
         return key;
     }
 

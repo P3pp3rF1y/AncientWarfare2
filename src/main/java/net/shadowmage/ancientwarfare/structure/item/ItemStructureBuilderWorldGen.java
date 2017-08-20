@@ -3,13 +3,11 @@ package net.shadowmage.ancientwarfare.structure.item;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
@@ -57,18 +55,18 @@ public class ItemStructureBuilderWorldGen extends Item implements IItemKeyInterf
         if (buildSettings.hasName()) {
             StructureTemplate template = StructureTemplateManager.INSTANCE.getTemplate(buildSettings.name);
             if (template == null) {
-                player.addChatComponentMessage(new ChatComponentTranslation("guistrings.template.not_found"));
+                player.addChatComponentMessage(new TextComponentTranslation("guistrings.template.not_found"));
                 return;
             }
-            BlockPosition bpHit = BlockTools.getBlockClickedOn(player, player.world, true);
+            BlockPos bpHit = BlockTools.getBlockClickedOn(player, player.world, true);
             if(bpHit == null){
-                player.addChatComponentMessage(new ChatComponentTranslation("block.not_found"));
+                player.addChatComponentMessage(new TextComponentTranslation("block.not_found"));
                 return;
             }
             StructureMap map = AWGameData.INSTANCE.getData(player.world, StructureMap.class);
             WorldStructureGenerator.INSTANCE.attemptStructureGenerationAt(player.world, bpHit.x, bpHit.y, bpHit.z, BlockTools.getPlayerFacingFromYaw(player.rotationYaw), template, map);
         } else {
-            player.addChatComponentMessage(new ChatComponentTranslation("guistrings.structure.no_selection"));
+            player.addChatComponentMessage(new TextComponentTranslation("guistrings.structure.no_selection"));
         }
     }
 

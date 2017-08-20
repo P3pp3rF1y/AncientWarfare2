@@ -1,9 +1,11 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface.InterfaceEmptyRequest;
@@ -11,7 +13,6 @@ import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInt
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBounded;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
@@ -66,8 +67,8 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 
     @Override
     public void onBoundsAdjusted() {
-        BlockPosition max = getWorkBoundsMax();
-        setWorkBoundsMax(max.moveUp(getWorkBoundsMin().y + getBoundsMaxHeight() - max.y));
+        BlockPos max = getWorkBoundsMax();
+        setWorkBoundsMax(max.up(getWorkBoundsMin().getY() + getBoundsMaxHeight() - max.getY()));
         this.interfacesToEmpty.clear();
         this.interfacesToFill.clear();
         for (TileWarehouseInterface i : interfaceTiles) {
@@ -137,22 +138,22 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
         if (stack == null) {
             return false;
         }
-        int.setCount(stack.stackSize);
+        int count = stack.getCount();
         int moved;
         int toMove = request.count;
         int stackMove;
         List<IWarehouseStorageTile> potentialStorage = new ArrayList<IWarehouseStorageTile>();
         storageMap.getDestinations(stack, potentialStorage);
         for (IWarehouseStorageTile dest : potentialStorage) {
-            stackMove = toMove > stack.stackSize ? stack.stackSize : toMove;
+            stackMove = toMove > stack.getCount() ? stack.getCount() : toMove;
             moved = dest.insertItem(stack, stackMove);
             if (moved > 0) {
                 changeCachedQuantity(stack, moved);
             }
-            stack.stackSize -= moved;
+            stack.shrink(moved);
             toMove -= moved;
-            if (stack.stackSize != stackSize) {
-                if (stack.stackSize <= 0) {
+            if (stack.getCount() != count) {
+                if (stack.getCount() <= 0) {
                     tile.inventory.setInventorySlotContents(request.slotNum, null);
                 }
                 return true;
@@ -196,10 +197,10 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
             if (found > 0) {
                 stack = request.requestedItem.copy();
                 stack.setCount(found > stack.getMaxStackSize() ? stack.getMaxStackSize() : found);
-               .setCount(stack.stackSize);
+                stackSize = stack.getCount();
                 stack = InventoryTools.mergeItemStack(tile.inventory, stack, -1);
-                if (stack == null || stack.stackSize != stackSize) {
-                    moved = stack == null ? stackSize : stackSize - stack.stackSize;
+                if (stack == null || stack.getCount() != stackSize) {
+                    moved = stack == null ? stackSize : stackSize - stack.getCount();
                     source.extractItem(request.requestedItem, moved);
                     cachedItemMap.decreaseCount(request.requestedItem, moved);
                     updateViewers();
@@ -254,13 +255,13 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
     }
 
     private void scanForInitialTiles() {
-        BlockPosition max = getWorkBoundsMax();
+        BlockPos max = getWorkBoundsMax();
         if(max == null)
             return;
-        BlockPosition min = getWorkBoundsMin();
+        BlockPos min = getWorkBoundsMin();
         if(min == null)
             return;
-        List<TileEntity> tiles = WorldTools.getTileEntitiesInArea(worldObj, min.x, min.y, min.z, max.x, max.y, max.z);
+        List<TileEntity> tiles = WorldTools.getTileEntitiesInArea(world, min.getX(), min.getY(), min.getZ(), max.getX(), max.getY(), max.getZ());
         for (TileEntity te : tiles) {
             if (te instanceof IControlledTile && ((IControlledTile) te).getController() == null) {
                 addControlledTile((IControlledTile) te);
@@ -277,14 +278,14 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
     }
 
     public final void addViewer(ContainerWarehouseControl viewer) {
-        if (!hasWorldObj() || worldObj.isRemote) {
+        if (!hasWorld() || world.isRemote) {
             return;
         }
         viewers.add(viewer);
     }
 
     public final void addCraftingViewer(ContainerWarehouseCraftingStation viewer) {
-        if (!hasWorldObj() || worldObj.isRemote) {
+        if (!hasWorld() || world.isRemote) {
             return;
         }
         craftingViewers.add(viewer);
@@ -311,7 +312,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
     }
 
     public final void addStorageTile(IWarehouseStorageTile tile) {
-        if (worldObj.isRemote) {
+        if (world.isRemote) {
             return;
         }
         if (!storageTiles.contains(tile)) {
@@ -334,7 +335,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
     }
 
     public final void addInterfaceTile(TileWarehouseInterface tile) {
-        if (worldObj.isRemote) {
+        if (world.isRemote) {
             return;
         }
         if (!interfaceTiles.contains(tile)) {
@@ -356,7 +357,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
     }
 
     public final void onIterfaceInventoryChanged(TileWarehouseInterface tile) {
-        if (worldObj.isRemote) {
+        if (world.isRemote) {
             return;
         }
         interfacesToFill.remove(tile);
@@ -370,14 +371,14 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
     }
 
     public final void onStorageFilterChanged(IWarehouseStorageTile tile, List<WarehouseStorageFilter> oldFilters, List<WarehouseStorageFilter> newFilters) {
-        if (worldObj.isRemote) {
+        if (world.isRemote) {
             return;
         }
         storageMap.updateTileFilters(tile, oldFilters, newFilters);
     }
 
     public final void addStockViewer(TileWarehouseStockViewer viewer) {
-        if (worldObj.isRemote) {
+        if (world.isRemote) {
             return;
         }
         stockViewers.add(viewer);
@@ -401,11 +402,6 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
     }
 
     @Override
-    public final BlockPosition getPosition() {
-        return new BlockPosition(xCoord, yCoord, zCoord);
-    }
-
-    @Override
     public final void removeControlledTile(IControlledTile tile) {
         if (tile instanceof IWarehouseStorageTile) {
             removeStorageTile((IWarehouseStorageTile) tile);
@@ -424,7 +420,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
     @Override
     public final boolean onBlockClicked(EntityPlayer player) {
         if (!player.world.isRemote) {
-            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_CONTROL, xCoord, yCoord, zCoord);
+            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_CONTROL, pos);
         }
         return true;
     }
@@ -439,7 +435,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
     }
 
     public void decreaseCountOf(ItemStack layoutStack, int i) {
-        if (worldObj.isRemote) {
+        if (world.isRemote) {
             cachedItemMap.decreaseCount(layoutStack, i);
             return;
         }
@@ -469,13 +465,13 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
         int moved = 0;
         for (IWarehouseStorageTile tile : destinations) {
             moved = tile.insertItem(stack, stack.getCount());
-            stack.stackSize -= moved;
+            stack.shrink(moved);
             changeCachedQuantity(stack, moved);
-            if (stack.stackSize <= 0) {
+            if (stack.getCount() <= 0) {
                 break;
             }
         }
-        if (stack.stackSize <= 0) {
+        if (stack.getCount() <= 0) {
             return null;
         }
         return stack;
@@ -485,10 +481,10 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         if (tag.hasKey("min")) {
-            setWorkBoundsMin(new BlockPosition(tag.getCompoundTag("min")));
+            setWorkBoundsMin(BlockPos.fromLong(tag.getLong("min")));
         }
         if (tag.hasKey("max")) {
-            setWorkBoundsMax(new BlockPosition(tag.getCompoundTag("max")));
+            setWorkBoundsMax(BlockPos.fromLong(tag.getLong("max")));
         }
     }
 
@@ -497,8 +493,9 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
      */
     @Override
     protected void onBoundsSet() {
-        setWorkBoundsMax(getWorkBoundsMax().moveUp(getWorkBoundsMin().y + getBoundsMaxHeight() - getWorkBoundsMax().y));
-        worldObj.notifyBlockUpdate(xCoord, yCoord, zCoord);
+        setWorkBoundsMax(getWorkBoundsMax().up(getWorkBoundsMin().getY() + getBoundsMaxHeight() - getWorkBoundsMax().getY()));
+        IBlockState state = world.getBlockState(pos);
+        world.notifyBlockUpdate(pos, state, state, 3);
     }
 
 }

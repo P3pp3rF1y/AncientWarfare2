@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.npc.trade;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +42,7 @@ public final class POTradeRoute {
         route.remove(index);
     }
 
-    public void addRoutePoint(BlockPosition pos) {
+    public void addRoutePoint(BlockPos pos) {
         POTradePoint p = new POTradePoint();
         p.position = pos;
         p.delay = 20 * 60;

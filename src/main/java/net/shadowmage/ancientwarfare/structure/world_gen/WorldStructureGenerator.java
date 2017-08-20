@@ -24,12 +24,11 @@ import cpw.mods.fml.common.IWorldGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
-import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
@@ -94,9 +93,9 @@ public class WorldStructureGenerator implements IWorldGenerator {
         }
         
         int face = rng.nextInt(4);
-        world.theProfiler.startSection("AWTemplateSelection");
+        world.profiler.startSection("AWTemplateSelection");
         StructureTemplate template = WorldGenStructureManager.INSTANCE.selectTemplateForGeneration(world, rng, x, y, z, face);
-        world.theProfiler.endSection();
+        world.profiler.endSection();
         AWLog.logDebug("Template selection took: " + (System.currentTimeMillis() - t1) + " ms.");
         if (template == null) {
             return;
@@ -105,11 +104,11 @@ public class WorldStructureGenerator implements IWorldGenerator {
         if(map == null){
             return;
         }
-        world.theProfiler.startSection("AWTemplateGeneration");
+        world.profiler.startSection("AWTemplateGeneration");
         if (attemptStructureGenerationAt(world, x, y, z, face, template, map)) {
             AWLog.log(String.format("Generated structure: %s at %s, %s, %s, time: %sms", template.name, x, y, z, (System.currentTimeMillis() - t1)));
         }
-        world.theProfiler.endSection();
+        world.profiler.endSection();
     }
 
     public static int getTargetY(World world, int x, int z, boolean skipWater) {
@@ -128,8 +127,8 @@ public class WorldStructureGenerator implements IWorldGenerator {
     }
 
     public static void sprinkleSnow(World world, StructureBB bb, int border) {
-        BlockPosition p1 = bb.min.offset(- border, 0, -border);
-        BlockPosition p2 = bb.max.offset(border, 0, border);
+        BlockPos p1 = bb.min.offset(- border, 0, -border);
+        BlockPos p2 = bb.max.offset(border, 0, border);
         for (int x = p1.x; x <= p2.x; x++) {
             for (int z = p1.z; z <= p2.z; z++) {
                 int y = world.getPrecipitationHeight(x, z) - 1;

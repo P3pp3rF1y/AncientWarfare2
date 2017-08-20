@@ -21,14 +21,13 @@
 package net.shadowmage.ancientwarfare.structure.entity;
 
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.Vec3;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.minecraft.util.math.RayTraceResult;
 
 public class DualBoundingBox extends AxisAlignedBB{
 
     private double yOffset;
-    public DualBoundingBox(BlockPosition min, BlockPosition max) {
+    public DualBoundingBox(BlockPos min, BlockPos max) {
         super(min.x, min.y, min.z, max.x + 1, max.y + 1, max.z + 1);
     }
 

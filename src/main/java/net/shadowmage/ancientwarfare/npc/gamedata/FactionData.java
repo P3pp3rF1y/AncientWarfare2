@@ -18,7 +18,7 @@ public class FactionData extends WorldSavedData {
     }
 
     public void onPlayerLogin(EntityPlayer player) {
-        String name = player.getCommandSenderName();
+        String name = player.getName();
         if (!playerFactionEntries.containsKey(name)) {
             playerFactionEntries.put(name, new FactionEntry(name));
             markDirty();

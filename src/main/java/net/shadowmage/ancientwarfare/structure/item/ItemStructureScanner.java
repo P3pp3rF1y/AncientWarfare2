@@ -5,13 +5,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.event.IBoxRenderer;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
@@ -66,20 +64,20 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IBo
             scanSettings.clearSettings();
             ItemStructureSettings.setSettingsFor(stack, scanSettings);
         } else if (scanSettings.hasPos1() && scanSettings.hasPos2() && scanSettings.hasBuildKey()) {
-            BlockPosition key = scanSettings.key;
+            BlockPos key = scanSettings.key;
             if (player.getDistance(key.x + 0.5d, key.y, key.z + 0.5d) > 10) {
-                player.addChatMessage(new ChatComponentTranslation("guistrings.structure.scanner.too_far"));
+                player.sendMessage(new TextComponentTranslation("guistrings.structure.scanner.too_far"));
                 return stack;
             }
-            player.addChatMessage(new ChatComponentTranslation("guistrings.structure.scanner.exporting"));
+            player.sendMessage(new TextComponentTranslation("guistrings.structure.scanner.exporting"));
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SCANNER, 0, 0, 0);
         }
         return stack;
     }
 
-    public static boolean scanStructure(World world, BlockPosition pos1, BlockPosition pos2, BlockPosition key, int face, String name, boolean include, NBTTagCompound tag) {
-        BlockPosition min = BlockTools.getMin(pos1, pos2);
-        BlockPosition max = BlockTools.getMax(pos1, pos2);
+    public static boolean scanStructure(World world, BlockPos pos1, BlockPos pos2, BlockPos key, int face, String name, boolean include, NBTTagCompound tag) {
+        BlockPos min = BlockTools.getMin(pos1, pos2);
+        BlockPos max = BlockTools.getMax(pos1, pos2);
         int turns = (6-face)%4;
         StructureTemplate template = TemplateScanner.scan(world, min, max, key, turns, name);
 
@@ -107,22 +105,22 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IBo
         if (!MinecraftServer.getServer().getConfigurationManager().func_152607_e(player.getGameProfile())) {
             return;
         }
-        BlockPosition hit = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
+        BlockPos hit = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
         if (hit == null) {
             return;
         }
         ItemStructureSettings scanSettings = ItemStructureSettings.getSettingsFor(stack);
         if (!scanSettings.hasPos1()) {
             scanSettings.setPos1(hit.x, hit.y, hit.z);
-            player.addChatMessage(new ChatComponentTranslation("guistrings.structure.scanner.set_first_pos"));
+            player.sendMessage(new TextComponentTranslation("guistrings.structure.scanner.set_first_pos"));
         } else if (!scanSettings.hasPos2()) {
             scanSettings.setPos2(hit.x, hit.y, hit.z);
-            player.addChatMessage(new ChatComponentTranslation("guistrings.structure.scanner.set_second_pos"));
+            player.sendMessage(new TextComponentTranslation("guistrings.structure.scanner.set_second_pos"));
         } else if (!scanSettings.hasBuildKey()) {
             scanSettings.setBuildKey(hit.x, hit.y, hit.z, BlockTools.getPlayerFacingFromYaw(player.rotationYaw));
-            player.addChatMessage(new ChatComponentTranslation("guistrings.structure.scanner.set_offset_pos"));
+            player.sendMessage(new TextComponentTranslation("guistrings.structure.scanner.set_offset_pos"));
         } else {
-            player.addChatMessage(new ChatComponentTranslation("guistrings.structure.scanner.click_to_process"));
+            player.sendMessage(new TextComponentTranslation("guistrings.structure.scanner.click_to_process"));
         }
         ItemStructureSettings.setSettingsFor(stack, scanSettings);
     }
@@ -130,7 +128,7 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IBo
     @Override
     public void renderBox(EntityPlayer player, ItemStack stack, float delta) {
         ItemStructureSettings settings = ItemStructureSettings.getSettingsFor(stack);
-        BlockPosition pos1, pos2, min, max;
+        BlockPos pos1, pos2, min, max;
         if (settings.hasPos1()) {
             pos1 = settings.pos1();
         } else {

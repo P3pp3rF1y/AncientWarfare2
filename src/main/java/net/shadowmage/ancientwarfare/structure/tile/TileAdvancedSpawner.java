@@ -27,11 +27,11 @@ public class TileAdvancedSpawner extends TileEntity {
 
     @Override
     public void updateEntity() {
-        if (!hasWorldObj() || worldObj.isRemote) {
+        if (!hasWorld() || world.isRemote) {
             return;
         }
-        if (settings.worldObj == null) {
-            settings.setWorld(worldObj, xCoord, yCoord, zCoord);
+        if (settings.world == null) {
+            settings.setWorld(world, xCoord, yCoord, zCoord);
         }
         settings.onUpdate();
     }
@@ -60,8 +60,8 @@ public class TileAdvancedSpawner extends TileEntity {
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         settings.readFromNBT(pkt.func_148857_g());
-        worldObj.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
-        worldObj.notifyBlockUpdate(xCoord, yCoord, zCoord);
+        world.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
+        world.notifyBlockUpdate(xCoord, yCoord, zCoord);
     }
 
     public SpawnerSettings getSettings() {
@@ -70,7 +70,7 @@ public class TileAdvancedSpawner extends TileEntity {
 
     public void setSettings(SpawnerSettings settings) {
         this.settings = settings;
-        this.worldObj.notifyBlockUpdate(xCoord, yCoord, zCoord);
+        this.world.notifyBlockUpdate(xCoord, yCoord, zCoord);
     }
 
     public float getBlockHardness() {
@@ -78,20 +78,20 @@ public class TileAdvancedSpawner extends TileEntity {
     }
 
     public void onBlockBroken() {
-        if (worldObj.isRemote) {
+        if (world.isRemote) {
             return;
         }
         int xp = settings.getXpToDrop();
         while (xp > 0) {
             int j = EntityXPOrb.getXPSplit(xp);
             xp -= j;
-            this.worldObj.spawnEntityInWorld(new EntityXPOrb(this.worldObj, this.xCoord + 0.5d, this.yCoord, this.zCoord + 0.5d, j));
+            this.world.spawnEntityInWorld(new EntityXPOrb(this.world, this.xCoord + 0.5d, this.yCoord, this.zCoord + 0.5d, j));
         }
         InventoryBasic inv = settings.getInventory();
         ItemStack item;
         for (int i = 0; i < inv.getSizeInventory(); i++) {
             item = inv.getStackInSlot(i);
-            InventoryTools.dropItemInWorld(worldObj, item, xCoord, yCoord, zCoord);
+            InventoryTools.dropItemInWorld(world, item, xCoord, yCoord, zCoord);
         }
     }
 

@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.core.block;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -10,7 +9,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
-import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.EnumSet;
@@ -25,7 +23,7 @@ public class BlockRotationHandler {
             return meta;
         }
         EnumFacing rotator = t == RotationType.FOUR_WAY ? EnumFacing.DOWN : axis;
-        EnumFacing face = EnumFacing.getOrientation(meta);
+        EnumFacing face = EnumFacing.VALUES[meta];
         face = face.getRotation(rotator);
         return face.ordinal();
     }
@@ -415,13 +413,13 @@ public class BlockRotationHandler {
             ItemStack stack = inventorySlots[var1];
             if (stack != null) {
                 int qty = var2 > stack.stackSize ? stack.stackSize : var2;
-                stack.stackSize -= qty;
+                stack.shrink(qty);
                 ItemStack returnStack = stack.copy();
                 returnStack.setCount(qty);
-                if (stack.stackSize <= 0) {
+                if (stack.getCount() <= 0) {
                     inventorySlots[var1] = null;
                 }
-                if (returnStack.stackSize <= 0) {
+                if (returnStack.getCount() <= 0) {
                     returnStack = null;
                 }
                 markDirty();

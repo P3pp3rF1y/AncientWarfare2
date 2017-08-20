@@ -4,24 +4,23 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class POTradeRestockData {
-    private BlockPosition withdrawPoint;
+    private BlockPos withdrawPoint;
     private int withdrawSide;
     private List<POTradeWithdrawEntry> withdrawList = new ArrayList<POTradeWithdrawEntry>();
-    private BlockPosition depositPoint;
+    private BlockPos depositPoint;
     private int depositSide;
     private List<POTradeDepositEntry> depositList = new ArrayList<POTradeDepositEntry>();
 
-    public BlockPosition getDepositPoint() {
+    public BlockPos getDepositPoint() {
         return depositPoint;
     }
 
-    public BlockPosition getWithdrawPoint() {
+    public BlockPos getWithdrawPoint() {
         return withdrawPoint;
     }
 
@@ -65,12 +64,12 @@ public class POTradeRestockData {
         withdrawList.remove(index);
     }
 
-    public void setDepositPoint(BlockPosition pos, int side) {
+    public void setDepositPoint(BlockPos pos, int side) {
         depositPoint = pos;
         depositSide = side;
     }
 
-    public void setWithdrawPoint(BlockPosition pos, int side) {
+    public void setWithdrawPoint(BlockPos pos, int side) {
         withdrawPoint = pos;
         withdrawSide = side;
     }
@@ -89,11 +88,11 @@ public class POTradeRestockData {
 
     public void readFromNBT(NBTTagCompound tag) {
         if (tag.hasKey("withdrawPoint")) {
-            withdrawPoint = new BlockPosition(tag.getCompoundTag("withdrawPoint"));
+            withdrawPoint = new BlockPos(tag.getCompoundTag("withdrawPoint"));
             withdrawSide = tag.getInteger("withdrawSide");
         }
         if (tag.hasKey("depositPoint")) {
-            depositPoint = new BlockPosition(tag.getCompoundTag("depositPoint"));
+            depositPoint = new BlockPos(tag.getCompoundTag("depositPoint"));
             depositSide = tag.getInteger("depositSide");
         }
 

@@ -22,7 +22,6 @@ package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
@@ -82,7 +81,7 @@ public class StructureValidatorUnderwater extends StructureValidator {
     }
 
     @Override
-    public void preGeneration(World world, BlockPosition pos, int face, StructureTemplate template, StructureBB bb) {
+    public void preGeneration(World world, BlockPos pos, int face, StructureTemplate template, StructureBB bb) {
         prePlacementBorder(world, template, bb);
         prePlacementUnderfill(world, template, bb);
     }

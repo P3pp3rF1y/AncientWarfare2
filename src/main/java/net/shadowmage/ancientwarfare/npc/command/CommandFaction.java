@@ -4,7 +4,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
@@ -52,7 +52,7 @@ public class CommandFaction extends CommandBase {
                 throw new WrongUsageException("command.aw.faction.set.usage");
             }
             FactionTracker.INSTANCE.setStandingFor(var1.getEntityWorld(), playerName, faction, amt);
-            var1.addChatMessage(new ChatComponentTranslation("command.aw.faction.set", playerName, faction, amt));
+            var1.sendMessage(new TextComponentTranslation("command.aw.faction.set", playerName, faction, amt));
         } else if (cmd.toLowerCase(Locale.ENGLISH).equals("setall")) {
             if (var2.length < 3) {
                 throw new WrongUsageException("command.aw.faction.setall.usage");
@@ -66,14 +66,14 @@ public class CommandFaction extends CommandBase {
             }
             for (String faction : AWNPCStatics.factionNames) {
                 FactionTracker.INSTANCE.setStandingFor(var1.getEntityWorld(), playerName, faction, amt);
-                var1.addChatMessage(new ChatComponentTranslation("command.aw.faction.set", playerName, faction, amt));
+                var1.sendMessage(new TextComponentTranslation("command.aw.faction.set", playerName, faction, amt));
             }
         } else if (cmd.toLowerCase(Locale.ENGLISH).equals("get")) {
             World world = var1.getEntityWorld();
-            var1.addChatMessage(new ChatComponentTranslation("command.aw.faction.status.player", playerName));
+            var1.sendMessage(new TextComponentTranslation("command.aw.faction.status.player", playerName));
             for (String faction : AWNPCStatics.factionNames) {
                 int standing = FactionTracker.INSTANCE.getStandingFor(world, playerName, faction);
-                var1.addChatMessage(new ChatComponentTranslation("command.aw.faction.status.value", faction, standing));
+                var1.sendMessage(new TextComponentTranslation("command.aw.faction.status.value", faction, standing));
             }
         }
     }

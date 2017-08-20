@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.npc.ai.owned;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcWorker;
@@ -36,7 +35,7 @@ public class NpcAIPlayerOwnedWorkRandom extends NpcAI<NpcWorker> {
 
     @Override
     public void updateTask() {
-        BlockPosition pos = npc.autoWorkTarget;
+        BlockPos pos = npc.autoWorkTarget;
         double dist = npc.getDistanceSq(pos.x, pos.y, pos.z);
         if (dist > npc.getWorkRangeSq()) {
             npc.addAITask(TASK_MOVE);
@@ -61,8 +60,8 @@ public class NpcAIPlayerOwnedWorkRandom extends NpcAI<NpcWorker> {
         }
         if (ticksAtSite >= AWNPCStatics.npcWorkTicks) {
             ticksAtSite = 0;
-            BlockPosition pos = npc.autoWorkTarget;
-            TileEntity te = npc.worldObj.getTileEntity(pos.x, pos.y, pos.z);
+            BlockPos pos = npc.autoWorkTarget;
+            TileEntity te = npc.world.getTileEntity(pos.x, pos.y, pos.z);
             if (te instanceof IWorkSite) {
                 IWorkSite site = (IWorkSite) te;
                 if (npc.canWorkAt(site.getWorkType()) && site.hasWork()) {

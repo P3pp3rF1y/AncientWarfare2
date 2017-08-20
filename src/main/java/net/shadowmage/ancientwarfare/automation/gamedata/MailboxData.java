@@ -4,8 +4,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldSavedData;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
@@ -231,7 +229,7 @@ public class MailboxData implements extends WorldSavedData {
         }
 
         private List<DeliverableItem> getDeliverableItems(List<DeliverableItem> items, World world, int x, int y, int z) {
-            int dim = world.provider.dimensionId;
+            int dim = world.provider.getDimension();
             int time = 0;
             int timePerBlock = 10;//set time from config for per-block time
             int timeForDimension = 100;//set time from config for cross-dimensional items
@@ -294,7 +292,7 @@ public class MailboxData implements extends WorldSavedData {
             DeliverableItem item;
             ItemStack stack;
             for (TileMailbox box : receivers) {
-                dim = box.getWorldObj().provider.dimensionId;
+                dim = box.getWorld().provider.getDimension();
                 x = box.xCoord;
                 y = box.yCoord;
                 z = box.zCoord;

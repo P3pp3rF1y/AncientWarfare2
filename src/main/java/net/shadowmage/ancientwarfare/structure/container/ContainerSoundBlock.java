@@ -38,7 +38,7 @@ public class ContainerSoundBlock extends ContainerTileBase<TileSoundBlock> {
         tileEntity.setRedstoneInteraction(redstoneInteraction);
         range = tag.getInteger("range");
         tileEntity.setPlayerRange(range);
-        if(!tileEntity.getWorldObj().isRemote){
+        if(!tileEntity.getWorld().isRemote){
             tileEntity.markDirty();
         }
         refreshGui();

@@ -15,7 +15,7 @@ public class NpcNavigator extends PathNavigate {
     private boolean swim;
     private boolean doors = true;
     public NpcNavigator(EntityLiving living) {
-        super(living, living.worldObj);
+        super(living, living.world);
         this.entity = living;
     }
 
@@ -32,7 +32,7 @@ public class NpcNavigator extends PathNavigate {
     }
 
     public void onWorldChange(){
-        this.worldObj = entity.worldObj;
+        this.world = entity.world;
     }
 
     @Override
@@ -85,7 +85,7 @@ public class NpcNavigator extends PathNavigate {
     {
         ChunkCache chunkcache = cachePath(1, 16);
         PathEntity pathentity = (new PathFinder(chunkcache, doors, getCanBreakDoors(), getAvoidsWater(), swim)).createEntityPathTo(mountOrEntity(), target, this.getPathSearchRange());
-        this.worldObj.theProfiler.endSection();
+        this.world.profiler.endSection();
         return pathentity;
     }
 
@@ -93,17 +93,17 @@ public class NpcNavigator extends PathNavigate {
     {
         ChunkCache chunkcache = cachePath(0, 8);
         PathEntity pathentity = (new PathFinder(chunkcache, doors, getCanBreakDoors(), getAvoidsWater(), swim)).createEntityPathTo(mountOrEntity(), x, y, z, this.getPathSearchRange());
-        this.worldObj.theProfiler.endSection();
+        this.world.profiler.endSection();
         return pathentity;
     }
 
     private ChunkCache cachePath(int h, int r){
-        this.worldObj.theProfiler.startSection("pathfind");
+        this.world.profiler.startSection("pathfind");
         int i = MathHelper.floor_double(this.entity.posX);
         int j = MathHelper.floor_double(this.entity.posY + h);
         int k = MathHelper.floor_double(this.entity.posZ);
         int l = (int)(this.getPathSearchRange() + r);
-        return new ChunkCache(this.worldObj, i - l, j - l, k - l, i + l, j + l, k + l, 0);
+        return new ChunkCache(this.world, i - l, j - l, k - l, i + l, j + l, k + l, 0);
     }
 
     /**
@@ -139,7 +139,7 @@ public class NpcNavigator extends PathNavigate {
 
                     if (d2 * vecX + d3 * vecZ >= 0.0D)
                     {
-                        Material material = this.worldObj.getBlock(i2, yOffset - 1, j2).getMaterial();
+                        Material material = this.world.getBlock(i2, yOffset - 1, j2).getMaterial();
 
                         if (material == Material.air || material == Material.lava || material == Material.fire || material == Material.cactus)
                         {

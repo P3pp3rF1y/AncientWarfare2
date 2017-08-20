@@ -7,7 +7,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.item.ItemOrders;
@@ -20,10 +19,10 @@ public final class RenderWorkLines {
 
     public static final RenderWorkLines INSTANCE = new RenderWorkLines();
 
-    private final List<BlockPosition> positionList;
+    private final List<BlockPos> positionList;
 
     private RenderWorkLines() {
-        positionList = new ArrayList<BlockPosition>();
+        positionList = new ArrayList<BlockPos>();
     }
 
     @SubscribeEvent
@@ -57,10 +56,10 @@ public final class RenderWorkLines {
     }
 
     private void renderListOfPoints(EntityPlayer player, float partialTick) {
-        AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(0, 0, 0, 1, 1, 1);
-        BlockPosition prev = null;
+        AxisAlignedBB bb = new AxisAlignedBB(0, 0, 0, 1, 1, 1);
+        BlockPos prev = null;
         int index = 1;
-        for (BlockPosition point : positionList) {
+        for (BlockPos point : positionList) {
             bb.setBounds(0, 0, 0, 1, 1, 1);
             bb.offset(point.x, point.y, point.z);
             bb = RenderTools.adjustBBForPlayerPos(bb, player, partialTick);

@@ -1,7 +1,5 @@
 package net.shadowmage.ancientwarfare.npc.item;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,11 +7,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
-
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.npc.entity.AWNPCEntityLoader;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -58,7 +55,7 @@ public class ItemNpcSpawner extends Item {
         if(world.isRemote){
             return stack;
         }
-        BlockPosition hit = BlockTools.getBlockClickedOn(player, player.world, true);
+        BlockPos hit = BlockTools.getBlockClickedOn(player, player.world, true);
         if (hit == null) {
             return stack;
         }

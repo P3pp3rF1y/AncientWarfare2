@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
@@ -166,7 +165,7 @@ public class TownGeneratorStructures {
         }
     }
 
-    private static void generateLamps(World world, TownPartBlock block, StructureTemplate lamp, List<BlockPosition> doors) {
+    private static void generateLamps(World world, TownPartBlock block, StructureTemplate lamp, List<BlockPos> doors) {
         Direction xDir = block.quadrant.getXDir();
         Direction zDir = block.quadrant.getZDir();
         int xStart, zStart, xMove, zMove, size, x, z, xBits, zBits;
@@ -227,7 +226,7 @@ public class TownGeneratorStructures {
         }
     }
 
-    private static void generateLamp(World world, StructureTemplate t, List<BlockPosition> doors, int x, int y, int z, Direction streetSide) {
+    private static void generateLamp(World world, StructureTemplate t, List<BlockPos> doors, int x, int y, int z, Direction streetSide) {
         if (checkForNeighboringDoor(doors, x, z, streetSide.getOpposite())) {
             return;
         }
@@ -254,10 +253,10 @@ public class TownGeneratorStructures {
         WorldGenTickHandler.INSTANCE.addStructureForGeneration(new StructureBuilder(world, t, 0, x, y, z));
     }
 
-    private static boolean checkForNeighboringDoor(List<BlockPosition> doors, int x, int z, Direction dir) {
+    private static boolean checkForNeighboringDoor(List<BlockPos> doors, int x, int z, Direction dir) {
         int x1 = x + dir.xDirection;
         int z1 = z + dir.zDirection;
-        for (BlockPosition p : doors) {
+        for (BlockPos p : doors) {
             if (p.x == x && p.z == z) {
                 return true;
             } else if (p.x == x1 && p.z == z1) {
@@ -338,11 +337,11 @@ public class TownGeneratorStructures {
         }
 
         //find corners of the bb for the structure
-        BlockPosition min = new BlockPosition(plot.bb.min.x + wAdj, gen.townBounds.min.y, plot.bb.min.z + lAdj);
-        BlockPosition max = new BlockPosition(min.x + (width - 1), min.y + template.ySize, min.z + (length - 1));
+        BlockPos min = new BlockPos(plot.bb.min.x + wAdj, gen.townBounds.min.y, plot.bb.min.z + lAdj);
+        BlockPos max = new BlockPos(min.x + (width - 1), min.y + template.ySize, min.z + (length - 1));
         StructureBB bb = new StructureBB(min, max);
 
-        BlockPosition buildKey = bb.getRLCorner(face, new BlockPosition()).moveRight(face, template.xOffset).moveBack(face, template.zOffset).moveUp(gen.townBounds.min.y - template.yOffset);
+        BlockPos buildKey = bb.getRLCorner(face, new BlockPos()).moveRight(face, template.xOffset).moveBack(face, template.zOffset).moveUp(gen.townBounds.min.y - template.yOffset);
         bb.offset(0, -template.yOffset, 0);
         gen.structureDoors.add(buildKey.copy());
         WorldGenTickHandler.INSTANCE.addStructureForGeneration(new StructureBuilder(gen.world, template, face, buildKey, bb));

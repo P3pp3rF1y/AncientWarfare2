@@ -1,6 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.minecraft.util.math.BlockPos;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,26 +8,26 @@ import java.util.List;
 
 public abstract class TileWorksiteBlockBased extends TileWorksiteBoundedInventory {
 
-    private final List<BlockPosition> blocksToUpdate = new ArrayList<BlockPosition>();
+    private final List<BlockPos> blocksToUpdate = new ArrayList<>();
 
-    protected abstract void fillBlocksToProcess(Collection<BlockPosition> addTo);
+    protected abstract void fillBlocksToProcess(Collection<BlockPos> addTo);
 
-    protected abstract void scanBlockPosition(BlockPosition pos);
+    protected abstract void scanBlockPosition(BlockPos pos);
 
     protected abstract void updateBlockWorksite();
 
     @Override
     protected final void updateWorksite() {
-        worldObj.theProfiler.startSection("Incremental Scan");
+        world.profiler.startSection("Incremental Scan");
         if (blocksToUpdate.isEmpty() && hasWorkBounds()) {
             fillBlocksToProcess(blocksToUpdate);
         }
         if (!blocksToUpdate.isEmpty()) {
-            int rand = worldObj.rand.nextInt(blocksToUpdate.size());
-            BlockPosition pos = blocksToUpdate.remove(rand);
+            int rand = world.rand.nextInt(blocksToUpdate.size());
+            BlockPos pos = blocksToUpdate.remove(rand);
             scanBlockPosition(pos);
         }
-        worldObj.theProfiler.endSection();
+        world.profiler.endSection();
         updateBlockWorksite();
     }
 }

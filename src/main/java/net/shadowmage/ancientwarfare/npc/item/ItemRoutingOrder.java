@@ -2,11 +2,10 @@ package net.shadowmage.ancientwarfare.npc.item;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.RayTraceResult.MovingObjectType;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.RayTraceUtils;
 import net.shadowmage.ancientwarfare.npc.orders.RoutingOrder;
 
@@ -16,8 +15,8 @@ import java.util.Collection;
 public class ItemRoutingOrder extends ItemOrders {
 
     @Override
-    public Collection<? extends BlockPosition> getPositionsForRender(ItemStack stack) {
-        Collection<BlockPosition> positionList = new ArrayList<BlockPosition>();
+    public Collection<? extends BlockPos> getPositionsForRender(ItemStack stack) {
+        Collection<BlockPos> positionList = new ArrayList<BlockPos>();
         RoutingOrder order = RoutingOrder.getRoutingOrder(stack);
         if (order != null && !order.isEmpty()) {
             for (RoutingOrder.RoutePoint e : order.getEntries()) {

@@ -58,7 +58,7 @@ public class NpcAIMedicBase extends NpcAI<NpcBase> {
         injuredRecheckDelay = injuredRecheckDelayMax;
         double dist = npc.getEntityAttribute(SharedMonsterAttributes.followRange).getAttributeValue();
         AxisAlignedBB bb = npc.boundingBox.expand(dist, dist / 2, dist);
-        List<EntityLivingBase> potentialTargets = npc.worldObj.selectEntitiesWithinAABB(EntityLivingBase.class, bb, selector);
+        List<EntityLivingBase> potentialTargets = npc.world.selectEntitiesWithinAABB(EntityLivingBase.class, bb, selector);
         if (potentialTargets.isEmpty()) {
             return false;
         }

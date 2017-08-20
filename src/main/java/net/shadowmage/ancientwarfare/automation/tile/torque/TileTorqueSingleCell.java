@@ -40,7 +40,7 @@ public abstract class TileTorqueSingleCell extends TileTorqueBase {
     @Override
     public void updateEntity() {
         super.updateEntity();
-        if (!worldObj.isRemote) {
+        if (!world.isRemote) {
             serverNetworkUpdate();
             torqueIn = torqueCell.getEnergy() - prevEnergy;
             torqueLoss = applyPowerDrain(torqueCell);

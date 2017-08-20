@@ -39,7 +39,7 @@ public class ContainerStructureScanner extends ContainerBase {
     @Override
     public void onContainerClosed(EntityPlayer par1EntityPlayer) {
         super.onContainerClosed(par1EntityPlayer);
-        if (par1EntityPlayer.worldObj.isRemote) {
+        if (par1EntityPlayer.world.isRemote) {
             return;
         }
         ItemStack builderItem = par1EntityPlayer.getHeldItem();

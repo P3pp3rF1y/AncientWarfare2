@@ -26,7 +26,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
@@ -37,30 +36,30 @@ public class StructureBuilder implements IStructureBuilder {
 
     protected StructureTemplate template;
     protected World world;
-    protected BlockPosition buildOrigin;
+    protected BlockPos buildOrigin;
     protected int buildFace;
     protected int turns;
     protected int maxPriority = 4;
     protected int currentPriority;//current build priority...may not be needed anymore?
     protected int currentX, currentY, currentZ;//coords in template
     protected int destXSize, destYSize, destZSize;
-    protected BlockPosition destination;
+    protected BlockPos destination;
 
     protected StructureBB bb;
 
     private boolean isFinished = false;
 
     public StructureBuilder(World world, StructureTemplate template, int face, int x, int y, int z) {
-        this(world, template, face, new BlockPosition(x, y, z), new StructureBB(x, y, z, face, template));
+        this(world, template, face, new BlockPos(x, y, z), new StructureBB(x, y, z, face, template));
     }
 
-    public StructureBuilder(World world, StructureTemplate template, int face, BlockPosition buildKey, StructureBB bb) {
+    public StructureBuilder(World world, StructureTemplate template, int face, BlockPos buildKey, StructureBB bb) {
         this.world = world;
         this.template = template;
         this.buildFace = face;
         this.bb = bb;
         buildOrigin = buildKey;
-        destination = new BlockPosition();
+        destination = new BlockPos();
         currentX = currentY = currentZ = 0;
         destXSize = template.xSize;
         destYSize = template.ySize;
@@ -89,8 +88,8 @@ public class StructureBuilder implements IStructureBuilder {
     }
 
     protected StructureBuilder() {
-        destination = new BlockPosition();
-        buildOrigin = new BlockPosition();
+        destination = new BlockPos();
+        buildOrigin = new BlockPos();
     }
 
     public void instantConstruction() {
@@ -197,7 +196,7 @@ public class StructureBuilder implements IStructureBuilder {
     }
 
     protected void incrementDestination() {
-        destination = BlockTools.rotateInArea(new BlockPosition(currentX, currentY, currentZ), template.xSize, template.zSize, turns).offsetBy(bb.min);
+        destination = BlockTools.rotateInArea(new BlockPos(currentX, currentY, currentZ), template.xSize, template.zSize, turns).offsetBy(bb.min);
     }
 
     /**

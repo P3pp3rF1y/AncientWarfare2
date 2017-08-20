@@ -76,7 +76,7 @@ public class FactionTracker {
     }
 
     private void sendFactionEntry(EntityPlayer player, FactionData data) {
-        FactionEntry entry = data.getEntryFor(player.getCommandSenderName());
+        FactionEntry entry = data.getEntryFor(player.getName());
         NBTTagCompound tag = new NBTTagCompound();
         NBTTagCompound initTag = entry.writeToNBT(new NBTTagCompound());
         tag.setTag("factionInit", initTag);

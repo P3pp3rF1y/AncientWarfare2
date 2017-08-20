@@ -110,21 +110,21 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 
     @Override
     protected void updateWorksite() {
-        worldObj.theProfiler.startSection("Count Resources");
+        world.profiler.startSection("Count Resources");
         if (shouldCountResources) {
             countResources();
             this.shouldCountResources = false;
         }
-        worldObj.theProfiler.endStartSection("Animal Rescan");
+        world.profiler.endStartSection("Animal Rescan");
         if (workerRescanDelay-- <= 0) {
             rescan();
             workerRescanDelay = 200;
         }
-        worldObj.theProfiler.endStartSection("ItemPickup");
-        if (worldObj.getWorldTime() % 128 == 0) {
+        world.profiler.endStartSection("ItemPickup");
+        if (world.getWorldTime() % 128 == 0) {
             pickupDrops();
         }
-        worldObj.theProfiler.endSection();
+        world.profiler.endSection();
     }
 
     private void countResources() {
@@ -140,11 +140,11 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
                 continue;
             }
             if (stack.getItem() == Items.carrot) {
-                carrotCount += stack.stackSize;
+                carrotCount += stack.getCount();
             } else if (stack.getItem() == Items.wheat_seeds) {
-                seedCount += stack.stackSize;
+                seedCount += stack.getCount();
             } else if (stack.getItem() == Items.wheat) {
-                wheatCount += stack.stackSize;
+                wheatCount += stack.getCount();
             }
         }
         for (int i = TOP_LENGTH + FRONT_LENGTH; i < getSizeInventory(); i++) {
@@ -153,7 +153,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
                 continue;
             }
             if (stack.getItem() == Items.bucket) {
-                bucketCount += stack.stackSize;
+                bucketCount += stack.getCount();
             } else if (stack.getItem() instanceof ItemShears) {
                 shears = stack;
             }
@@ -316,8 +316,8 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         EntityPair pair;
         if (!targets.isEmpty()) {
             pair = targets.remove(0);
-            animalA = pair.getEntityA(worldObj);
-            animalB = pair.getEntityB(worldObj);
+            animalA = pair.getEntityA(world);
+            animalB = pair.getEntityB(world);
             if (!(animalA instanceof EntityAnimal) || !(animalB instanceof EntityAnimal)) {
                 return false;
             }
@@ -334,7 +334,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         if (cowsToMilk > 0) {
             if (ModAccessors.HARDER_WILDLIFE_LOADED)
                 return true;
-            return worldObj.rand.nextInt(cowsToMilk + getFortune()) > maxCowCount / 2;
+            return world.rand.nextInt(cowsToMilk + getFortune()) > maxCowCount / 2;
         }
         return false;
     }
@@ -343,11 +343,11 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         if(shears == null || sheepToShear.isEmpty()) {
             return false;
         }
-        EntitySheep sheep = (EntitySheep) worldObj.getEntityByID(sheepToShear.remove(0));
-        if (sheep == null || !sheep.isShearable(shears, worldObj, xCoord, yCoord, zCoord)) {
+        EntitySheep sheep = (EntitySheep) world.getEntityByID(sheepToShear.remove(0));
+        if (sheep == null || !sheep.isShearable(shears, world, xCoord, yCoord, zCoord)) {
             return false;
         }
-        ArrayList<ItemStack> items = sheep.onSheared(shears, worldObj, xCoord, yCoord, zCoord, getFortune());
+        ArrayList<ItemStack> items = sheep.onSheared(shears, world, xCoord, yCoord, zCoord, getFortune());
         for (ItemStack item : items) {
             addStackToInventory(item, RelativeSide.TOP);
         }
@@ -359,7 +359,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         EntityAnimal animal;
         int fortune = getFortune();
         while (!entitiesToCull.isEmpty()) {
-            entity = worldObj.getEntityByID(entitiesToCull.remove(0));
+            entity = world.getEntityByID(entitiesToCull.remove(0));
             if (entity instanceof EntityAnimal && entity.isEntityAlive()) {
                 animal = (EntityAnimal) entity;
                 if (animal.isInLove() || animal.getGrowingAge() < 0) {
@@ -374,7 +374,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
                     stack = item.getEntityItem();
                     if (stack != null) {
                         if (fortune > 0) {
-                            stack.stackSize += worldObj.rand.nextInt(fortune);
+                            stack.grow(world.rand.nextInt(fortune));
                         }
                         this.addStackToInventory(stack, RelativeSide.TOP);
                     }

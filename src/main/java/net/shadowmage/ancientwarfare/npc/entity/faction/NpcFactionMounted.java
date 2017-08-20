@@ -16,7 +16,7 @@ public abstract class NpcFactionMounted extends NpcFaction {
 
     @Override
     public void onDeath(DamageSource source) {
-        if (!worldObj.isRemote) {
+        if (!world.isRemote) {
             if (horseAI != null) {
                 horseAI.onKilled();
             }

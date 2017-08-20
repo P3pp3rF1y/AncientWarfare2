@@ -1,8 +1,5 @@
 package net.shadowmage.ancientwarfare.core.interop;
 
-import java.util.List;
-import java.util.UUID;
-
 import ftb.lib.FTBLib;
 import ftb.lib.api.notification.MouseAction;
 import ftb.lib.api.notification.Notification;
@@ -11,9 +8,9 @@ import ftb.utils.world.LMPlayerServer;
 import ftb.utils.world.LMWorldServer;
 import ftb.utils.world.claims.ClaimedChunk;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
@@ -21,6 +18,9 @@ import net.shadowmage.ancientwarfare.core.gamedata.ChunkClaimWorkerThread;
 import net.shadowmage.ancientwarfare.core.gamedata.ChunkClaims;
 import net.shadowmage.ancientwarfare.core.gamedata.ChunkClaims.ChunkClaimInfo;
 import net.shadowmage.ancientwarfare.core.gamedata.ChunkClaims.TownHallEntry;
+
+import java.util.List;
+import java.util.UUID;
 
 public class InteropFtbu extends InteropFtbuDummy {
     
@@ -37,7 +37,7 @@ public class InteropFtbu extends InteropFtbuDummy {
     
     @Override
     public void addClaim(World world, EntityLivingBase placer, int posX, int posY, int posZ) {
-        addClaim(world, placer.getCommandSenderName(), posX, posY, posZ);
+        addClaim(world, placer.getName(), posX, posY, posZ);
     }
     
     @Override
@@ -45,7 +45,7 @@ public class InteropFtbu extends InteropFtbuDummy {
         LMPlayerServer p = LMWorldServer.inst.getPlayer(ownerName);
         if (p != null) {
             Chunk newChunkClaim = world.getChunkFromBlockCoords(posX, posZ);
-            ChunkClaimInfo newChunkClaimInfo = new ChunkClaimInfo(newChunkClaim.xPosition, newChunkClaim.zPosition, world.provider.dimensionId);
+            ChunkClaimInfo newChunkClaimInfo = new ChunkClaimInfo(newChunkClaim.xPosition, newChunkClaim.zPosition, world.provider.getDimension());
             ChunkClaims.get(world).addTownHallEntry(newChunkClaimInfo, new TownHallEntry(ownerName, posX, posY, posZ));
         } else {
             AncientWarfareCore.log.error("A chunk claim action was requested at " + posX + "x" + posY + "x" + posZ + " but the player name '" + ownerName + "' could not be found...");
@@ -53,14 +53,14 @@ public class InteropFtbu extends InteropFtbuDummy {
     }
     
     @Override
-    public void notifyPlayer(EnumChatFormatting titleColor, String ownerName, String title, ChatComponentTranslation msg, List<ChatComponentTranslation> hoverTextLines) {
+    public void notifyPlayer(EnumChatFormatting titleColor, String ownerName, String title, TextComponentTranslation msg, List<TextComponentTranslation> hoverTextLines) {
         if (ownerName.isEmpty() || LMWorldServer.inst == null)
             return;
         
         LMPlayerServer p = LMWorldServer.inst.getPlayer(ownerName);
         
         if (p != null) {
-            IChatComponent cc = new ChatComponentTranslation(title);
+            IChatComponent cc = new TextComponentTranslation(title);
             cc.getChatStyle().setColor(titleColor);
             Notification n = new Notification("claim_change" + p.world.getMCWorld().getTotalWorldTime(), cc, 6000);
             n.setDesc(msg);

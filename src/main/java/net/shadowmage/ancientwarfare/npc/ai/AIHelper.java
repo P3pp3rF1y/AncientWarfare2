@@ -19,7 +19,7 @@ public final class AIHelper {
                 com.domochevsky.quiverbow.weapons._WeaponBase weapon = (com.domochevsky.quiverbow.weapons._WeaponBase) held.getItem();
                 if (weapon.isMobUsable()) {
                     entityLiving.faceEntity(target, 30.0F, 30.0F);
-                    weapon.doSingleFire(held, entityLiving.worldObj, entityLiving);//The "quiver bow" firing method
+                    weapon.doSingleFire(held, entityLiving.world, entityLiving);//The "quiver bow" firing method
                     return weapon.getMaxCooldown() + 1; // The "quiver bow" attack delay
 
                 }

@@ -6,7 +6,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBackpack;
 import net.shadowmage.ancientwarfare.core.item.ItemBackpack;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.orders.TradeOrder;
@@ -39,12 +38,12 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
     /**
      * the currently selected waypoint to move towards, should never be null if valid orders item is present
      */
-    private BlockPosition waypoint;
+    private BlockPos waypoint;
 
     /**
      * currently selected shelter position, used by shelter code, should be null when not in use
      */
-    private BlockPosition shelterPoint;
+    private BlockPos shelterPoint;
 
     /**
      * convenience access fields;
@@ -128,7 +127,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
             if (index < 0) {
                 index = orders.getRoute().size() - 1;
             }
-            BlockPosition wp2 = orders.getRoute().get(index).getPosition();
+            BlockPos wp2 = orders.getRoute().get(index).getPosition();
             double d1 = npc.getDistanceSq(waypoint);
             double d2 = npc.getDistanceSq(wp2);
             shelterPoint = d1 < d2 ? waypoint : wp2;
@@ -172,8 +171,8 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
     }
 
     protected boolean tryWithdrawUpkeep() {
-        BlockPosition p = npc.getUpkeepPoint();
-        TileEntity te = npc.worldObj.getTileEntity(p.x, p.y, p.z);
+        BlockPos p = npc.getUpkeepPoint();
+        TileEntity te = npc.world.getTileEntity(p.x, p.y, p.z);
         if (te instanceof IInventory) {
             return npc.withdrawFood((IInventory) te, npc.getUpkeepBlockSide());
         }
@@ -194,7 +193,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
             deposit = false;
             at_deposit = false;
         } else if (orders.getRestockData().getDepositPoint() != null) {
-            BlockPosition p = orders.getRestockData().getDepositPoint();
+            BlockPos p = orders.getRestockData().getDepositPoint();
             double d = npc.getDistanceSq(p);
             if (d > MIN_RANGE) {
                 npc.addAITask(TASK_MOVE);
@@ -216,7 +215,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
             restock = false;
             at_withdraw = false;
         } else if (orders.getRestockData().getWithdrawPoint() != null) {
-            BlockPosition p = orders.getRestockData().getWithdrawPoint();
+            BlockPos p = orders.getRestockData().getWithdrawPoint();
             double d = npc.getDistanceSq(p);
             if (d > MIN_RANGE) {
                 npc.addAITask(TASK_MOVE);
@@ -275,8 +274,8 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
         ItemStack backpack = npc.getHeldItem();
         if (backpack != null && backpack.getItem() instanceof ItemBackpack) {
             InventoryBackpack inv = ItemBackpack.getInventoryFor(backpack);
-            BlockPosition pos = orders.getRestockData().getDepositPoint();
-            TileEntity te = npc.worldObj.getTileEntity(pos.x, pos.y, pos.z);
+            BlockPos pos = orders.getRestockData().getDepositPoint();
+            TileEntity te = npc.world.getTileEntity(pos.x, pos.y, pos.z);
             if (te instanceof IInventory) {
                 IInventory dep = (IInventory) te;
                 orders.getRestockData().doDeposit(inv, dep, orders.getRestockData().getDepositSide());
@@ -289,8 +288,8 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
         ItemStack backpack = npc.getHeldItem();
         if (backpack != null && backpack.getItem() instanceof ItemBackpack) {
             InventoryBackpack inv = ItemBackpack.getInventoryFor(backpack);
-            BlockPosition pos = orders.getRestockData().getWithdrawPoint();
-            TileEntity te = npc.worldObj.getTileEntity(pos.x, pos.y, pos.z);
+            BlockPos pos = orders.getRestockData().getWithdrawPoint();
+            TileEntity te = npc.world.getTileEntity(pos.x, pos.y, pos.z);
             if (te instanceof IInventory) {
                 orders.getRestockData().doWithdraw(inv, (IInventory) te, orders.getRestockData().getWithdrawSide());
                 ItemBackpack.writeBackpackToItem(inv, backpack);

@@ -21,7 +21,7 @@ public class TileOwned extends TileEntity implements IOwnable {
 
     @Override
     public final void setOwner(EntityPlayer player) {
-        ownerName = player.getCommandSenderName();
+        ownerName = player.getName();
         owner = player.getUniqueID();
     }
     
@@ -47,18 +47,18 @@ public class TileOwned extends TileEntity implements IOwnable {
             return false;
         if(owner!=null)
             return player.getUniqueID().equals(owner);
-        return player.getCommandSenderName().equals(ownerName);
+        return player.getName().equals(ownerName);
     }
 
     private void checkOwnerName(){
-        if(hasWorldObj()){
+        if(hasWorld()){
             if(owner!=null) {
-                EntityPlayer player = worldObj.func_152378_a(owner);
+                EntityPlayer player = world.func_152378_a(owner);
                 if (player != null) {
                     setOwner(player);
                 }
             }else if(ownerName!=null){
-                EntityPlayer player = worldObj.getPlayerEntityByName(ownerName);
+                EntityPlayer player = world.getPlayerEntityByName(ownerName);
                 if(player!=null){
                     setOwner(player);
                 }

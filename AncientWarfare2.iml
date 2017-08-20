@@ -83,7 +83,18 @@
     <orderEntry type="module-library" scope="PROVIDED">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/minecraft/deobfedDeps/compileDummy.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/minecraft/deobfedDeps/deobf/cofh/RedstoneFlux/1.12-2.0.0.1/RedstoneFlux-1.12-2.0.0.1.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/minecraft/deobfedDeps/deobf/cofh/RedstoneFlux/1.12-2.0.0.1/RedstoneFlux-1.12-2.0.0.1-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="PROVIDED">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/minecraft/deobfedDeps/compileDummy.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES/>
@@ -92,7 +103,7 @@
     <orderEntry type="module-library" scope="PROVIDED">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/minecraft/deobfedDeps/providedDummy.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/minecraft/deobfedDeps/providedDummy.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES/>
@@ -101,561 +112,190 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.mojang/authlib/1.5.25/9834cdf236c22e84b946bba989e2f94ef5897c3c/authlib-1.5.25.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.mojang/authlib/1.5.25/9834cdf236c22e84b946bba989e2f94ef5897c3c/authlib-1.5.25.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.mojang/authlib/1.5.25/18840707f662a3236542716fff61c659584f3e6c/authlib-1.5.25-sources.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.mojang/authlib/1.5.25/18840707f662a3236542716fff61c659584f3e6c/authlib-1.5.25-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.1/f7be08ec23c21485b9b5a1cf1654c2ec8c58168d/jsr305-3.0.1.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.1/f7be08ec23c21485b9b5a1cf1654c2ec8c58168d/jsr305-3.0.1.jar!/"/>
         </CLASSES>
         <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.1/3d7ec36bbfbf5d7259356a6b8fec0ce4f96e3f47/jsr305-3.0.1-javadoc.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.1/3d7ec36bbfbf5d7259356a6b8fec0ce4f96e3f47/jsr305-3.0.1-javadoc.jar!/"/>
         </JAVADOC>
         <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.1/a2926c057ca3b662b9db194c869bdbe7d3bb8aef/jsr305-3.0.1-sources.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.google.code.findbugs/jsr305/3.0.1/a2926c057ca3b662b9db194c869bdbe7d3bb8aef/jsr305-3.0.1-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.mojang/patchy/1.1/aef610b34a1be37fa851825f12372b78424d8903/patchy-1.1.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.mojang/patchy/1.1/aef610b34a1be37fa851825f12372b78424d8903/patchy-1.1.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.mojang/patchy/1.1/5e398295fbcb8fb590e3e3bddace13f659792e50/patchy-1.1-sources.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.mojang/patchy/1.1/5e398295fbcb8fb590e3e3bddace13f659792e50/patchy-1.1-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/oshi-project/oshi-core/1.1/9ddf7b048a8d701be231c0f4f95fd986198fd2d8/oshi-core-1.1.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/oshi-project/oshi-core/1.1/9ddf7b048a8d701be231c0f4f95fd986198fd2d8/oshi-core-1.1.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/oshi-project/oshi-core/1.1/1ec1ab1e6ac5a1572edfd0dd9ac95e83684b8a65/oshi-core-1.1-sources.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/oshi-project/oshi-core/1.1/1ec1ab1e6ac5a1572edfd0dd9ac95e83684b8a65/oshi-core-1.1-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.mojang/text2speech/1.10.3/48fd510879dff266c3815947de66e3d4809f8668/text2speech-1.10.3.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.mojang/text2speech/1.10.3/48fd510879dff266c3815947de66e3d4809f8668/text2speech-1.10.3.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.mojang/text2speech/1.10.3/404339fe43d1011ee046a249b0ec7ae9ce04a834/text2speech-1.10.3-sources.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.mojang/text2speech/1.10.3/404339fe43d1011ee046a249b0ec7ae9ce04a834/text2speech-1.10.3-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/ca.weblite/java-objc-bridge/1.0.0/6ef160c3133a78de015830860197602ca1c855d3/java-objc-bridge-1.0.0.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/ca.weblite/java-objc-bridge/1.0.0/6ef160c3133a78de015830860197602ca1c855d3/java-objc-bridge-1.0.0.jar!/"/>
         </CLASSES>
         <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/ca.weblite/java-objc-bridge/1.0.0/fb0092f22cb4fe8e631452f577b7a238778abf2a/java-objc-bridge-1.0.0-javadoc.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/ca.weblite/java-objc-bridge/1.0.0/fb0092f22cb4fe8e631452f577b7a238778abf2a/java-objc-bridge-1.0.0-javadoc.jar!/"/>
         </JAVADOC>
         <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/ca.weblite/java-objc-bridge/1.0.0/865837a198189aee737019561ece842827f24278/java-objc-bridge-1.0.0-sources.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/ca.weblite/java-objc-bridge/1.0.0/865837a198189aee737019561ece842827f24278/java-objc-bridge-1.0.0-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna/4.4.0/cb208278274bf12ebdb56c61bd7407e6f774d65a/jna-4.4.0.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna/4.4.0/cb208278274bf12ebdb56c61bd7407e6f774d65a/jna-4.4.0.jar!/"/>
         </CLASSES>
         <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna/4.4.0/dbaa5b1f9a44db1a2ba9070f4b6469ee0f62c3c3/jna-4.4.0-javadoc.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna/4.4.0/dbaa5b1f9a44db1a2ba9070f4b6469ee0f62c3c3/jna-4.4.0-javadoc.jar!/"/>
         </JAVADOC>
         <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna/4.4.0/9d45d3dc35711eef7267d8b4fc2c0dc482ef9fd2/jna-4.4.0-sources.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/jna/4.4.0/9d45d3dc35711eef7267d8b4fc2c0dc482ef9fd2/jna-4.4.0-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/platform/3.4.0/e3f70017be8100d3d6923f50b3d2ee17714e9c13/platform-3.4.0.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/platform/3.4.0/e3f70017be8100d3d6923f50b3d2ee17714e9c13/platform-3.4.0.jar!/"/>
         </CLASSES>
         <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/platform/3.4.0/805360594738e77e7da892f7f6ea563ab246c586/platform-3.4.0-javadoc.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/platform/3.4.0/805360594738e77e7da892f7f6ea563ab246c586/platform-3.4.0-javadoc.jar!/"/>
         </JAVADOC>
         <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/platform/3.4.0/2f42653596d0044f0ab456620cba54c9cf53c5ca/platform-3.4.0-sources.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/net.java.dev.jna/platform/3.4.0/2f42653596d0044f0ab456620cba54c9cf53c5ca/platform-3.4.0-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.ibm.icu/icu4j-core-mojang/51.2/63d216a9311cca6be337c1e458e587f99d382b84/icu4j-core-mojang-51.2.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.ibm.icu/icu4j-core-mojang/51.2/63d216a9311cca6be337c1e458e587f99d382b84/icu4j-core-mojang-51.2.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.ibm.icu/icu4j-core-mojang/51.2/814397ccbafff1132758e551c37396c528d7f2d7/icu4j-core-mojang-51.2-sources.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.ibm.icu/icu4j-core-mojang/51.2/814397ccbafff1132758e551c37396c528d7f2d7/icu4j-core-mojang-51.2-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/net.minecraft/launchwrapper/1.12/111e7bea9c968cdb3d06ef4632bf7ff0824d0f36/launchwrapper-1.12.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/net.minecraft/launchwrapper/1.12/111e7bea9c968cdb3d06ef4632bf7ff0824d0f36/launchwrapper-1.12.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/net.minecraft/launchwrapper/1.12/fd80cad9a1b967ce2ff20529dc54e520d5338d7/launchwrapper-1.12-sources.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/net.minecraft/launchwrapper/1.12/fd80cad9a1b967ce2ff20529dc54e520d5338d7/launchwrapper-1.12-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/net.sf.jopt-simple/jopt-simple/5.0.3/cdd846cfc4e0f7eefafc02c0f5dce32b9303aa2a/jopt-simple-5.0.3.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/net.sf.jopt-simple/jopt-simple/5.0.3/cdd846cfc4e0f7eefafc02c0f5dce32b9303aa2a/jopt-simple-5.0.3.jar!/"/>
         </CLASSES>
         <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/net.sf.jopt-simple/jopt-simple/5.0.3/e1daf4f0bf1b85eb69b0b9d82d05f5842c77559f/jopt-simple-5.0.3-javadoc.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/net.sf.jopt-simple/jopt-simple/5.0.3/e1daf4f0bf1b85eb69b0b9d82d05f5842c77559f/jopt-simple-5.0.3-javadoc.jar!/"/>
         </JAVADOC>
         <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/net.sf.jopt-simple/jopt-simple/5.0.3/36d4348605fd4605d36c8641495f3e78756e454b/jopt-simple-5.0.3-sources.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/net.sf.jopt-simple/jopt-simple/5.0.3/36d4348605fd4605d36c8641495f3e78756e454b/jopt-simple-5.0.3-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/io.netty/netty-all/4.1.9.Final/97860965d6a0a6b98e7f569f3f966727b8db75/netty-all-4.1.9.Final.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/io.netty/netty-all/4.1.9.Final/97860965d6a0a6b98e7f569f3f966727b8db75/netty-all-4.1.9.Final.jar!/"/>
         </CLASSES>
         <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/io.netty/netty-all/4.1.9.Final/e69a6d93a78793fbf8a820fe69bac56d2f20a187/netty-all-4.1.9.Final-javadoc.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/io.netty/netty-all/4.1.9.Final/e69a6d93a78793fbf8a820fe69bac56d2f20a187/netty-all-4.1.9.Final-javadoc.jar!/"/>
         </JAVADOC>
         <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/io.netty/netty-all/4.1.9.Final/69b921f5e296428c88c2ea4418e630443a699b06/netty-all-4.1.9.Final-sources.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/io.netty/netty-all/4.1.9.Final/69b921f5e296428c88c2ea4418e630443a699b06/netty-all-4.1.9.Final-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/21.0/3a3d111be1be1b745edfa7d91678a12d7ed38709/guava-21.0.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/21.0/3a3d111be1be1b745edfa7d91678a12d7ed38709/guava-21.0.jar!/"/>
         </CLASSES>
         <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/21.0/7d48c9b5304b8bab31d1ed7c9ef9670b646866c0/guava-21.0-javadoc.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/21.0/7d48c9b5304b8bab31d1ed7c9ef9670b646866c0/guava-21.0-javadoc.jar!/"/>
         </JAVADOC>
         <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/21.0/b9ed26b8c23fe7cd3e6b463b34e54e5c6d9536d5/guava-21.0-sources.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.google.guava/guava/21.0/b9ed26b8c23fe7cd3e6b463b34e54e5c6d9536d5/guava-21.0-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.5/6c6c702c89bfff3cd9e80b04d668c5e190d588c6/commons-lang3-3.5.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.5/6c6c702c89bfff3cd9e80b04d668c5e190d588c6/commons-lang3-3.5.jar!/"/>
         </CLASSES>
         <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.5/337310e98410d577aca675930bb46405a0a8fb0c/commons-lang3-3.5-javadoc.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.5/337310e98410d577aca675930bb46405a0a8fb0c/commons-lang3-3.5-javadoc.jar!/"/>
         </JAVADOC>
         <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.5/f7d878153e86a1cdddf6b37850e00a9f8bff726f/commons-lang3-3.5-sources.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-lang3/3.5/f7d878153e86a1cdddf6b37850e00a9f8bff726f/commons-lang3-3.5-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.5/2852e6e05fbb95076fc091f6d1780f1f8fe35e0f/commons-io-2.5.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.5/2852e6e05fbb95076fc091f6d1780f1f8fe35e0f/commons-io-2.5.jar!/"/>
         </CLASSES>
         <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.5/b219c20b7b44a4da22cb1898bfc6bfbb100f33c7/commons-io-2.5-javadoc.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.5/b219c20b7b44a4da22cb1898bfc6bfbb100f33c7/commons-io-2.5-javadoc.jar!/"/>
         </JAVADOC>
         <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.5/caf033a4a7c37b4a8ff3ea084cba591539b0b69/commons-io-2.5-sources.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/commons-io/commons-io/2.5/caf033a4a7c37b4a8ff3ea084cba591539b0b69/commons-io-2.5-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.mojang/realms/1.10.17/e6a623bf93a230b503b0e3ae18c196fcd5aa3299/realms-1.10.17.jar!/"/>
-        </CLASSES>
-        <JAVADOC/>
-        <SOURCES/>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.3.3/18f4247ff4572a074444572cee34647c43e7c9c7/httpclient-4.3.3.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.3.3/81ad2c81206a9aaba4c3337902fc60e1d80b686d/httpclient-4.3.3-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.3.3/65cba03c4f6207f2885f88206fcf52c53f8d111b/httpclient-4.3.3-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.10/4b95f4897fa13f2cd904aee711aeafc0c5295cd8/commons-codec-1.10.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.10/8176f1eb181cde7c9e4b5290f0365652777b3b87/commons-codec-1.10-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.10/11fb3d88ae7e3b757d70237064210ceb954a5a04/commons-codec-1.10-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.paulscode/librarylwjglopenal/20100824/73e80d0794c39665aec3f62eee88ca91676674ef/librarylwjglopenal-20100824.jar!/"/>
-        </CLASSES>
-        <JAVADOC/>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.paulscode/librarylwjglopenal/20100824/ecfc8dac1d41bef748997e4edf563d486923ee1e/librarylwjglopenal-20100824-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl_util/2.9.4-nightly-20150209/d51a7c040a721d13efdfbd34f8b257b2df882ad0/lwjgl_util-2.9.4-nightly-20150209.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl_util/2.9.4-nightly-20150209/8745139bfa975ef5d79576d0fc59521d776902f4/lwjgl_util-2.9.4-nightly-20150209-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl_util/2.9.4-nightly-20150209/2e3787f55c68a245e994f88755795b3a7684b3/lwjgl_util-2.9.4-nightly-20150209-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl/2.9.4-nightly-20150209/697517568c68e78ae0b4544145af031c81082dfe/lwjgl-2.9.4-nightly-20150209.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl/2.9.4-nightly-20150209/da903f6e4b2174d415cf6c8c5ea21b2b5f990a4/lwjgl-2.9.4-nightly-20150209-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl/2.9.4-nightly-20150209/7da2cff65127b558a66e8e38456174161723d3a7/lwjgl-2.9.4-nightly-20150209-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/net.java.jinput/jinput/2.0.5/39c7796b469a600f72380316f6b1f11db6c2c7c4/jinput-2.0.5.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/net.java.jinput/jinput/2.0.5/695a26a9a58e8495c1e3ce7b7f3bec23ecf2ef16/jinput-2.0.5-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/net.java.jinput/jinput/2.0.5/82604cfeb87b9ab70ed70aa19a137de8ceb21504/jinput-2.0.5-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/net.java.jutils/jutils/1.0.0/e12fe1fda814bd348c1579329c86943d2cd3c6a6/jutils-1.0.0.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/net.java.jutils/jutils/1.0.0/1ad2673c8dded38030ed77ba393b0253051bb768/jutils-1.0.0-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/net.java.jutils/jutils/1.0.0/d18678a00b216863206a1bb6190507e02a32971b/jutils-1.0.0-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.0/c4ba5371a29ac9b2ad6129b1d39ea38750043eff/gson-2.8.0.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.0/4791230388bf03457c7e235b69479b46a5931861/gson-2.8.0-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.0/baf95d8519fc1a11d388f8543cb40cd2bb9d66dc/gson-2.8.0-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-compress/1.8.1/a698750c16740fd5b3871425f4cb3bbaa87f529d/commons-compress-1.8.1.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-compress/1.8.1/8e9724537be2a09287d7483c6b4a0c9a0bddf944/commons-compress-1.8.1-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-compress/1.8.1/3caea4421428752206c7a94c3e3097f0c47f1bb8/commons-compress-1.8.1-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.1.3/f6f66e966c70a83ffbdb6f17a0919eaf7c8aca7f/commons-logging-1.1.3.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.1.3/8a9805acc4e492afb6a400b6e32cfd98ed263caa/commons-logging-1.1.3-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.1.3/28bb0405fddaf04f15058fbfbe01fe2780d7d3b6/commons-logging-1.1.3-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.3.2/31fbbff1ddbf98f3aa7377c94d33b0447c646b6e/httpcore-4.3.2.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.3.2/37b4a5362830a9b29e68f1a1d179f3aa544fb623/httpcore-4.3.2-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.3.2/4809f38359edeea9487f747e09aa58ec8d3a54c5/httpcore-4.3.2-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/it.unimi.dsi/fastutil/7.1.0/9835253257524c1be7ab50c057aa2d418fb72082/fastutil-7.1.0.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/it.unimi.dsi/fastutil/7.1.0/2815415482b446185884c6354e4743d14fbdbb05/fastutil-7.1.0-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/it.unimi.dsi/fastutil/7.1.0/4a33438326f2fea664656d63d655c349d4131e14/fastutil-7.1.0-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-core/2.8.1/4ac28ff2f1ddf05dae3043a190451e8c46b73c31/log4j-core-2.8.1.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-core/2.8.1/1147684e2e3c2f959fc9b69af236d89e1869b59c/log4j-core-2.8.1-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-core/2.8.1/a0a7f683da620c345b502fff04d1e46cde2e8d9/log4j-core-2.8.1-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.8.1/e801d13612e22cad62a3f4f3fe7fdbe6334a8e72/log4j-api-2.8.1.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.8.1/beb0e5374901d855d4396ac859ebd67c70e09ea8/log4j-api-2.8.1-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.8.1/a5edb6b8c77843c8be98e0cb1f875699e76ee122/log4j-api-2.8.1-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/jline/jline/2.13/2d9530d0a25daffaffda7c35037b046b627bb171/jline-2.13.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/jline/jline/2.13/77f395bce7cad8f3da6f6f3526d1923e8ea35942/jline-2.13-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/jline/jline/2.13/e290282bf7683ae3307e85bdc5d5e08424dfb893/jline-2.13-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-debug-all/5.2/3354e11e2b34215f06dab629ab88e06aca477c19/asm-debug-all-5.2.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-debug-all/5.2/6ba4b7ff53413c639920b522b613d7d7fb4fe68b/asm-debug-all-5.2-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-debug-all/5.2/ed60d4287d18996bc940f26656c570532b20d863/asm-debug-all-5.2-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.typesafe.akka/akka-actor_2.11/2.3.3/ed62e9fc709ca0f2ff1a3220daa8b70a2870078e/akka-actor_2.11-2.3.3.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.typesafe.akka/akka-actor_2.11/2.3.3/d81a273b777f369b260b031f99bac327aff69281/akka-actor_2.11-2.3.3-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.typesafe.akka/akka-actor_2.11/2.3.3/9dbceb71c4fd943b4eb4607847261075a989d47f/akka-actor_2.11-2.3.3-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.typesafe/config/1.2.1/f771f71fdae3df231bcd54d5ca2d57f0bf93f467/config-1.2.1.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.typesafe/config/1.2.1/855ac28cc00935e194ae6809828fc2397ecf8ace/config-1.2.1-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.typesafe/config/1.2.1/bdacf4f82ce9b29cd474bfde2e91eeb0ca623d28/config-1.2.1-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-actors-migration_2.11/1.1.0/dfa8bc42b181d5b9f1a5dd147f8ae308b893eb6f/scala-actors-migration_2.11-1.1.0.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-actors-migration_2.11/1.1.0/2d7a5d0f4b3fba0fa95311cabd66e3dc2efbb8c8/scala-actors-migration_2.11-1.1.0-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-actors-migration_2.11/1.1.0/6bccac72dae4d369537e313d12087c1ca295e84f/scala-actors-migration_2.11-1.1.0-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.scala-lang.plugins/scala-continuations-plugin_2.11.1/1.0.2/f361a3283452c57fa30c1ee69448995de23c60f7/scala-continuations-plugin_2.11.1-1.0.2.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.scala-lang.plugins/scala-continuations-plugin_2.11.1/1.0.2/16960d5491945a59d05cb5175e5cf558b38a1429/scala-continuations-plugin_2.11.1-1.0.2-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.scala-lang.plugins/scala-continuations-plugin_2.11.1/1.0.2/c6f3c092ab731f3cf83fdb376ebc465a243c1f4c/scala-continuations-plugin_2.11.1-1.0.2-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-compiler/2.11.1/56ea2e6c025e0821f28d73ca271218b8dd04926a/scala-compiler-2.11.1.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-compiler/2.11.1/51ae4b6c6d782c52a20cf1386fcbfa7491c1d26d/scala-compiler-2.11.1-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-compiler/2.11.1/b031d401aabbf7f5f725db500575da3dff90065f/scala-compiler-2.11.1-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.scala-lang.plugins/scala-continuations-library_2.11/1.0.2/e517c53a7e9acd6b1668c5a35eccbaa3bab9aac/scala-continuations-library_2.11-1.0.2.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.scala-lang.plugins/scala-continuations-library_2.11/1.0.2/5f0bb62bfd94ee7854f8f627e92c621f7f31e284/scala-continuations-library_2.11-1.0.2-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.scala-lang.plugins/scala-continuations-library_2.11/1.0.2/495afc106eeaa1b3367f6be0bc3768c398e4d360/scala-continuations-library_2.11-1.0.2-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.scala-lang.modules/scala-parser-combinators_2.11/1.0.1/f05d7345bf5a58924f2837c6c1f4d73a938e1ff0/scala-parser-combinators_2.11-1.0.1.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.scala-lang.modules/scala-parser-combinators_2.11/1.0.1/1078474ef0f67e27e5c53bfbe404c2a99fadaf6f/scala-parser-combinators_2.11-1.0.1-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.scala-lang.modules/scala-parser-combinators_2.11/1.0.1/34d013c02d0b73794ba2911552896dd9c00f34c3/scala-parser-combinators_2.11-1.0.1-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-reflect/2.11.1/6580347e61cc7f8e802941e7fde40fa83b8badeb/scala-reflect-2.11.1.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-reflect/2.11.1/96f9e99e677be9d3f6f41e6fb2a66b329309ffa7/scala-reflect-2.11.1-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-reflect/2.11.1/d4c5628e197a0d6af8e9b93a9be32190c547bc8a/scala-reflect-2.11.1-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.scala-lang.modules/scala-swing_2.11/1.0.1/b1cdd92bd47b1e1837139c1c53020e86bb9112ae/scala-swing_2.11-1.0.1.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.scala-lang.modules/scala-swing_2.11/1.0.1/205c7295348ced192a726fcedd0b40cfa45da2ee/scala-swing_2.11-1.0.1-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.scala-lang.modules/scala-swing_2.11/1.0.1/d4bda4281db2ec74b105c5acf2326d160b79164e/scala-swing_2.11-1.0.1-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.scala-lang.modules/scala-xml_2.11/1.0.2/820fbca7e524b530fdadc594c39d49a21ea0337e/scala-xml_2.11-1.0.2.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.scala-lang.modules/scala-xml_2.11/1.0.2/a06d053a9d8ccf4518b0db56c66abea9f47fee7c/scala-xml_2.11-1.0.2-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.scala-lang.modules/scala-xml_2.11/1.0.2/312c3557d1ca0b34820f3b3fc5404a47936ceb26/scala-xml_2.11-1.0.2-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-actors/2.11.0/8ccfb6541de179bb1c4d45cf414acee069b7f78b/scala-actors-2.11.0.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-actors/2.11.0/c07dbf25e7e3b78fb9adbd9c790662b06caef931/scala-actors-2.11.0-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-actors/2.11.0/e1dfa274766d5278166b0d660294fe96396693b2/scala-actors-2.11.0-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-library/2.11.1/e11da23da3eabab9f4777b9220e60d44c1aab6a/scala-library-2.11.1.jar!/"/>
-        </CLASSES>
-        <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-library/2.11.1/319900df0d487b36d5b41e1459e37bc270ba8328/scala-library-2.11.1-javadoc.jar!/"/>
-        </JAVADOC>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-library/2.11.1/8355e4b6841f772a287167666bad6e9860ac4d3c/scala-library-2.11.1-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/lzma/lzma/0.0.1/521616dc7487b42bef0e803bd2fa3faf668101d7/lzma-0.0.1.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.mojang/realms/1.10.17/e6a623bf93a230b503b0e3ae18c196fcd5aa3299/realms-1.10.17.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES/>
@@ -664,88 +304,369 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/net.sf.trove4j/trove4j/3.0.3/42ccaf4761f0dfdfa805c9e340d99a755907e2dd/trove4j-3.0.3.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.3.3/18f4247ff4572a074444572cee34647c43e7c9c7/httpclient-4.3.3.jar!/"/>
         </CLASSES>
         <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/net.sf.trove4j/trove4j/3.0.3/dc5c824f98a9bf2e20a2ccfff83e71be2040cc7d/trove4j-3.0.3-javadoc.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.3.3/81ad2c81206a9aaba4c3337902fc60e1d80b686d/httpclient-4.3.3-javadoc.jar!/"/>
         </JAVADOC>
         <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/net.sf.trove4j/trove4j/3.0.3/109c5be93362e6e651e417c51d1863477a22969c/trove4j-3.0.3-sources.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpclient/4.3.3/65cba03c4f6207f2885f88206fcf52c53f8d111b/httpclient-4.3.3-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.paulscode/codecjorbis/20101023/c73b5636faf089d9f00e8732a829577de25237ee/codecjorbis-20101023.jar!/"/>
-        </CLASSES>
-        <JAVADOC/>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.paulscode/codecjorbis/20101023/4ca2436396bc14ebd78b7db1d4e11ca607c8705e/codecjorbis-20101023-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.paulscode/codecwav/20101023/12f031cfe88fef5c1dd36c563c0a3a69bd7261da/codecwav-20101023.jar!/"/>
-        </CLASSES>
-        <JAVADOC/>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.paulscode/codecwav/20101023/71ec00b9b9c1a6a2c3a8a25f481a23ddb5b21ddb/codecwav-20101023-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.paulscode/libraryjavasound/20101123/5c5e304366f75f9eaa2e8cca546a1fb6109348b3/libraryjavasound-20101123.jar!/"/>
-        </CLASSES>
-        <JAVADOC/>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.paulscode/libraryjavasound/20101123/945ff5711de27751cf699641d1ea316ba6cf7589/libraryjavasound-20101123-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.paulscode/soundsystem/20120107/419c05fe9be71f792b2d76cfc9b67f1ed0fec7f6/soundsystem-20120107.jar!/"/>
-        </CLASSES>
-        <JAVADOC/>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/com.paulscode/soundsystem/20120107/1b9f4eb11ef11fede7fd76a2e5e8203c2a8adcd/soundsystem-20120107-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/java3d/vecmath/1.5.2/79846ba34cbd89e2422d74d53752f993dcc2ccaf/vecmath-1.5.2.jar!/"/>
-        </CLASSES>
-        <JAVADOC/>
-        <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/java3d/vecmath/1.5.2/42442b23189fbef9353c1751055610b63dd57e85/vecmath-1.5.2-sources.jar!/"/>
-        </SOURCES>
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.fusesource.jansi/jansi/1.11/655c643309c2f45a56a747fda70e3fadf57e9f11/jansi-1.11.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.10/4b95f4897fa13f2cd904aee711aeafc0c5295cd8/commons-codec-1.10.jar!/"/>
         </CLASSES>
         <JAVADOC>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.fusesource.jansi/jansi/1.11/b27814181cfd1b1c22ea6a287aeace376c53ffa7/jansi-1.11-javadoc.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.10/8176f1eb181cde7c9e4b5290f0365652777b3b87/commons-codec-1.10-javadoc.jar!/"/>
         </JAVADOC>
         <SOURCES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.fusesource.jansi/jansi/1.11/2f0e4b53b6b0eec426dad7118bf54b3deb58000b/jansi-1.11-sources.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/commons-codec/commons-codec/1.10/11fb3d88ae7e3b757d70237064210ceb954a5a04/commons-codec-1.10-sources.jar!/"/>
         </SOURCES>
       </library>
     </orderEntry>
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/net.java.jinput/jinput-platform/2.0.5/7ff832a6eb9ab6a767f1ade2b548092d0fa64795/jinput-platform-2.0.5-natives-linux.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.paulscode/librarylwjglopenal/20100824/73e80d0794c39665aec3f62eee88ca91676674ef/librarylwjglopenal-20100824.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.paulscode/librarylwjglopenal/20100824/ecfc8dac1d41bef748997e4edf563d486923ee1e/librarylwjglopenal-20100824-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl_util/2.9.4-nightly-20150209/d51a7c040a721d13efdfbd34f8b257b2df882ad0/lwjgl_util-2.9.4-nightly-20150209.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl_util/2.9.4-nightly-20150209/8745139bfa975ef5d79576d0fc59521d776902f4/lwjgl_util-2.9.4-nightly-20150209-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl_util/2.9.4-nightly-20150209/2e3787f55c68a245e994f88755795b3a7684b3/lwjgl_util-2.9.4-nightly-20150209-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl/2.9.4-nightly-20150209/697517568c68e78ae0b4544145af031c81082dfe/lwjgl-2.9.4-nightly-20150209.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl/2.9.4-nightly-20150209/da903f6e4b2174d415cf6c8c5ea21b2b5f990a4/lwjgl-2.9.4-nightly-20150209-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl/2.9.4-nightly-20150209/7da2cff65127b558a66e8e38456174161723d3a7/lwjgl-2.9.4-nightly-20150209-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/net.java.jinput/jinput/2.0.5/39c7796b469a600f72380316f6b1f11db6c2c7c4/jinput-2.0.5.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/net.java.jinput/jinput/2.0.5/695a26a9a58e8495c1e3ce7b7f3bec23ecf2ef16/jinput-2.0.5-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/net.java.jinput/jinput/2.0.5/82604cfeb87b9ab70ed70aa19a137de8ceb21504/jinput-2.0.5-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/net.java.jutils/jutils/1.0.0/e12fe1fda814bd348c1579329c86943d2cd3c6a6/jutils-1.0.0.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/net.java.jutils/jutils/1.0.0/1ad2673c8dded38030ed77ba393b0253051bb768/jutils-1.0.0-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/net.java.jutils/jutils/1.0.0/d18678a00b216863206a1bb6190507e02a32971b/jutils-1.0.0-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.0/c4ba5371a29ac9b2ad6129b1d39ea38750043eff/gson-2.8.0.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.0/4791230388bf03457c7e235b69479b46a5931861/gson-2.8.0-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.8.0/baf95d8519fc1a11d388f8543cb40cd2bb9d66dc/gson-2.8.0-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-compress/1.8.1/a698750c16740fd5b3871425f4cb3bbaa87f529d/commons-compress-1.8.1.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-compress/1.8.1/8e9724537be2a09287d7483c6b4a0c9a0bddf944/commons-compress-1.8.1-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.apache.commons/commons-compress/1.8.1/3caea4421428752206c7a94c3e3097f0c47f1bb8/commons-compress-1.8.1-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.1.3/f6f66e966c70a83ffbdb6f17a0919eaf7c8aca7f/commons-logging-1.1.3.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.1.3/8a9805acc4e492afb6a400b6e32cfd98ed263caa/commons-logging-1.1.3-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/commons-logging/commons-logging/1.1.3/28bb0405fddaf04f15058fbfbe01fe2780d7d3b6/commons-logging-1.1.3-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.3.2/31fbbff1ddbf98f3aa7377c94d33b0447c646b6e/httpcore-4.3.2.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.3.2/37b4a5362830a9b29e68f1a1d179f3aa544fb623/httpcore-4.3.2-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.apache.httpcomponents/httpcore/4.3.2/4809f38359edeea9487f747e09aa58ec8d3a54c5/httpcore-4.3.2-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/it.unimi.dsi/fastutil/7.1.0/9835253257524c1be7ab50c057aa2d418fb72082/fastutil-7.1.0.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/it.unimi.dsi/fastutil/7.1.0/2815415482b446185884c6354e4743d14fbdbb05/fastutil-7.1.0-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/it.unimi.dsi/fastutil/7.1.0/4a33438326f2fea664656d63d655c349d4131e14/fastutil-7.1.0-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-core/2.8.1/4ac28ff2f1ddf05dae3043a190451e8c46b73c31/log4j-core-2.8.1.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-core/2.8.1/1147684e2e3c2f959fc9b69af236d89e1869b59c/log4j-core-2.8.1-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-core/2.8.1/a0a7f683da620c345b502fff04d1e46cde2e8d9/log4j-core-2.8.1-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.8.1/e801d13612e22cad62a3f4f3fe7fdbe6334a8e72/log4j-api-2.8.1.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.8.1/beb0e5374901d855d4396ac859ebd67c70e09ea8/log4j-api-2.8.1-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.apache.logging.log4j/log4j-api/2.8.1/a5edb6b8c77843c8be98e0cb1f875699e76ee122/log4j-api-2.8.1-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/jline/jline/2.13/2d9530d0a25daffaffda7c35037b046b627bb171/jline-2.13.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/jline/jline/2.13/77f395bce7cad8f3da6f6f3526d1923e8ea35942/jline-2.13-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/jline/jline/2.13/e290282bf7683ae3307e85bdc5d5e08424dfb893/jline-2.13-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-debug-all/5.2/3354e11e2b34215f06dab629ab88e06aca477c19/asm-debug-all-5.2.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-debug-all/5.2/6ba4b7ff53413c639920b522b613d7d7fb4fe68b/asm-debug-all-5.2-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.ow2.asm/asm-debug-all/5.2/ed60d4287d18996bc940f26656c570532b20d863/asm-debug-all-5.2-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.typesafe.akka/akka-actor_2.11/2.3.3/ed62e9fc709ca0f2ff1a3220daa8b70a2870078e/akka-actor_2.11-2.3.3.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.typesafe.akka/akka-actor_2.11/2.3.3/d81a273b777f369b260b031f99bac327aff69281/akka-actor_2.11-2.3.3-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.typesafe.akka/akka-actor_2.11/2.3.3/9dbceb71c4fd943b4eb4607847261075a989d47f/akka-actor_2.11-2.3.3-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.typesafe/config/1.2.1/f771f71fdae3df231bcd54d5ca2d57f0bf93f467/config-1.2.1.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.typesafe/config/1.2.1/855ac28cc00935e194ae6809828fc2397ecf8ace/config-1.2.1-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.typesafe/config/1.2.1/bdacf4f82ce9b29cd474bfde2e91eeb0ca623d28/config-1.2.1-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-actors-migration_2.11/1.1.0/dfa8bc42b181d5b9f1a5dd147f8ae308b893eb6f/scala-actors-migration_2.11-1.1.0.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-actors-migration_2.11/1.1.0/2d7a5d0f4b3fba0fa95311cabd66e3dc2efbb8c8/scala-actors-migration_2.11-1.1.0-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-actors-migration_2.11/1.1.0/6bccac72dae4d369537e313d12087c1ca295e84f/scala-actors-migration_2.11-1.1.0-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.scala-lang.plugins/scala-continuations-plugin_2.11.1/1.0.2/f361a3283452c57fa30c1ee69448995de23c60f7/scala-continuations-plugin_2.11.1-1.0.2.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.scala-lang.plugins/scala-continuations-plugin_2.11.1/1.0.2/16960d5491945a59d05cb5175e5cf558b38a1429/scala-continuations-plugin_2.11.1-1.0.2-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.scala-lang.plugins/scala-continuations-plugin_2.11.1/1.0.2/c6f3c092ab731f3cf83fdb376ebc465a243c1f4c/scala-continuations-plugin_2.11.1-1.0.2-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-compiler/2.11.1/56ea2e6c025e0821f28d73ca271218b8dd04926a/scala-compiler-2.11.1.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-compiler/2.11.1/51ae4b6c6d782c52a20cf1386fcbfa7491c1d26d/scala-compiler-2.11.1-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-compiler/2.11.1/b031d401aabbf7f5f725db500575da3dff90065f/scala-compiler-2.11.1-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.scala-lang.plugins/scala-continuations-library_2.11/1.0.2/e517c53a7e9acd6b1668c5a35eccbaa3bab9aac/scala-continuations-library_2.11-1.0.2.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.scala-lang.plugins/scala-continuations-library_2.11/1.0.2/5f0bb62bfd94ee7854f8f627e92c621f7f31e284/scala-continuations-library_2.11-1.0.2-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.scala-lang.plugins/scala-continuations-library_2.11/1.0.2/495afc106eeaa1b3367f6be0bc3768c398e4d360/scala-continuations-library_2.11-1.0.2-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.scala-lang.modules/scala-parser-combinators_2.11/1.0.1/f05d7345bf5a58924f2837c6c1f4d73a938e1ff0/scala-parser-combinators_2.11-1.0.1.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.scala-lang.modules/scala-parser-combinators_2.11/1.0.1/1078474ef0f67e27e5c53bfbe404c2a99fadaf6f/scala-parser-combinators_2.11-1.0.1-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.scala-lang.modules/scala-parser-combinators_2.11/1.0.1/34d013c02d0b73794ba2911552896dd9c00f34c3/scala-parser-combinators_2.11-1.0.1-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-reflect/2.11.1/6580347e61cc7f8e802941e7fde40fa83b8badeb/scala-reflect-2.11.1.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-reflect/2.11.1/96f9e99e677be9d3f6f41e6fb2a66b329309ffa7/scala-reflect-2.11.1-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-reflect/2.11.1/d4c5628e197a0d6af8e9b93a9be32190c547bc8a/scala-reflect-2.11.1-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.scala-lang.modules/scala-swing_2.11/1.0.1/b1cdd92bd47b1e1837139c1c53020e86bb9112ae/scala-swing_2.11-1.0.1.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.scala-lang.modules/scala-swing_2.11/1.0.1/205c7295348ced192a726fcedd0b40cfa45da2ee/scala-swing_2.11-1.0.1-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.scala-lang.modules/scala-swing_2.11/1.0.1/d4bda4281db2ec74b105c5acf2326d160b79164e/scala-swing_2.11-1.0.1-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.scala-lang.modules/scala-xml_2.11/1.0.2/820fbca7e524b530fdadc594c39d49a21ea0337e/scala-xml_2.11-1.0.2.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.scala-lang.modules/scala-xml_2.11/1.0.2/a06d053a9d8ccf4518b0db56c66abea9f47fee7c/scala-xml_2.11-1.0.2-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.scala-lang.modules/scala-xml_2.11/1.0.2/312c3557d1ca0b34820f3b3fc5404a47936ceb26/scala-xml_2.11-1.0.2-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-actors/2.11.0/8ccfb6541de179bb1c4d45cf414acee069b7f78b/scala-actors-2.11.0.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-actors/2.11.0/c07dbf25e7e3b78fb9adbd9c790662b06caef931/scala-actors-2.11.0-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-actors/2.11.0/e1dfa274766d5278166b0d660294fe96396693b2/scala-actors-2.11.0-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-library/2.11.1/e11da23da3eabab9f4777b9220e60d44c1aab6a/scala-library-2.11.1.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-library/2.11.1/319900df0d487b36d5b41e1459e37bc270ba8328/scala-library-2.11.1-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.scala-lang/scala-library/2.11.1/8355e4b6841f772a287167666bad6e9860ac4d3c/scala-library-2.11.1-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/lzma/lzma/0.0.1/521616dc7487b42bef0e803bd2fa3faf668101d7/lzma-0.0.1.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES/>
@@ -754,7 +675,88 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/net.java.jinput/jinput-platform/2.0.5/385ee093e01f587f30ee1c8a2ee7d408fd732e16/jinput-platform-2.0.5-natives-windows.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/net.sf.trove4j/trove4j/3.0.3/42ccaf4761f0dfdfa805c9e340d99a755907e2dd/trove4j-3.0.3.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/net.sf.trove4j/trove4j/3.0.3/dc5c824f98a9bf2e20a2ccfff83e71be2040cc7d/trove4j-3.0.3-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/net.sf.trove4j/trove4j/3.0.3/109c5be93362e6e651e417c51d1863477a22969c/trove4j-3.0.3-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.paulscode/codecjorbis/20101023/c73b5636faf089d9f00e8732a829577de25237ee/codecjorbis-20101023.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.paulscode/codecjorbis/20101023/4ca2436396bc14ebd78b7db1d4e11ca607c8705e/codecjorbis-20101023-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.paulscode/codecwav/20101023/12f031cfe88fef5c1dd36c563c0a3a69bd7261da/codecwav-20101023.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.paulscode/codecwav/20101023/71ec00b9b9c1a6a2c3a8a25f481a23ddb5b21ddb/codecwav-20101023-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.paulscode/libraryjavasound/20101123/5c5e304366f75f9eaa2e8cca546a1fb6109348b3/libraryjavasound-20101123.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.paulscode/libraryjavasound/20101123/945ff5711de27751cf699641d1ea316ba6cf7589/libraryjavasound-20101123-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.paulscode/soundsystem/20120107/419c05fe9be71f792b2d76cfc9b67f1ed0fec7f6/soundsystem-20120107.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/com.paulscode/soundsystem/20120107/1b9f4eb11ef11fede7fd76a2e5e8203c2a8adcd/soundsystem-20120107-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/java3d/vecmath/1.5.2/79846ba34cbd89e2422d74d53752f993dcc2ccaf/vecmath-1.5.2.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/java3d/vecmath/1.5.2/42442b23189fbef9353c1751055610b63dd57e85/vecmath-1.5.2-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.fusesource.jansi/jansi/1.11/655c643309c2f45a56a747fda70e3fadf57e9f11/jansi-1.11.jar!/"/>
+        </CLASSES>
+        <JAVADOC>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.fusesource.jansi/jansi/1.11/b27814181cfd1b1c22ea6a287aeace376c53ffa7/jansi-1.11-javadoc.jar!/"/>
+        </JAVADOC>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.fusesource.jansi/jansi/1.11/2f0e4b53b6b0eec426dad7118bf54b3deb58000b/jansi-1.11-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/net.java.jinput/jinput-platform/2.0.5/7ff832a6eb9ab6a767f1ade2b548092d0fa64795/jinput-platform-2.0.5-natives-linux.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES/>
@@ -763,7 +765,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/net.java.jinput/jinput-platform/2.0.5/53f9c919f34d2ca9de8c51fc4e1e8282029a9232/jinput-platform-2.0.5-natives-osx.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/net.java.jinput/jinput-platform/2.0.5/385ee093e01f587f30ee1c8a2ee7d408fd732e16/jinput-platform-2.0.5-natives-windows.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES/>
@@ -772,7 +774,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl-platform/2.9.4-nightly-20150209/b84d5102b9dbfabfeb5e43c7e2828d98a7fc80e0/lwjgl-platform-2.9.4-nightly-20150209-natives-windows.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/net.java.jinput/jinput-platform/2.0.5/53f9c919f34d2ca9de8c51fc4e1e8282029a9232/jinput-platform-2.0.5-natives-osx.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES/>
@@ -781,7 +783,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl-platform/2.9.4-nightly-20150209/931074f46c795d2f7b30ed6395df5715cfd7675b/lwjgl-platform-2.9.4-nightly-20150209-natives-linux.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl-platform/2.9.4-nightly-20150209/b84d5102b9dbfabfeb5e43c7e2828d98a7fc80e0/lwjgl-platform-2.9.4-nightly-20150209-natives-windows.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES/>
@@ -790,7 +792,16 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl-platform/2.9.4-nightly-20150209/bcab850f8f487c3f4c4dbabde778bb82bd1a40ed/lwjgl-platform-2.9.4-nightly-20150209-natives-osx.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl-platform/2.9.4-nightly-20150209/931074f46c795d2f7b30ed6395df5715cfd7675b/lwjgl-platform-2.9.4-nightly-20150209-natives-linux.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES/>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/modules-2/files-2.1/org.lwjgl.lwjgl/lwjgl-platform/2.9.4-nightly-20150209/bcab850f8f487c3f4c4dbabde778bb82bd1a40ed/lwjgl-platform-2.9.4-nightly-20150209-natives-osx.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES/>
@@ -810,7 +821,18 @@
     <orderEntry type="module-library" scope="RUNTIME">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/minecraft/deobfedDeps/compileDummy.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/minecraft/deobfedDeps/deobf/cofh/RedstoneFlux/1.12-2.0.0.1/RedstoneFlux-1.12-2.0.0.1.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/minecraft/deobfedDeps/deobf/cofh/RedstoneFlux/1.12-2.0.0.1/RedstoneFlux-1.12-2.0.0.1-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="RUNTIME">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/minecraft/deobfedDeps/compileDummy.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES/>
@@ -819,7 +841,7 @@
     <orderEntry type="module-library" scope="RUNTIME">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/minecraft/deobfedDeps/providedDummy.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/minecraft/deobfedDeps/providedDummy.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES/>
@@ -828,7 +850,7 @@
     <orderEntry type="module-library" scope="RUNTIME">
       <library>
         <CLASSES>
-          <root url="file://C:/Users/jjanecek/.gradle/caches/minecraft/net/minecraftforge/forge/1.12-14.21.1.2443/start"/>
+          <root url="file://C:/Users/josef/.gradle/caches/minecraft/net/minecraftforge/forge/1.12-14.21.1.2443/start"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES/>
@@ -837,7 +859,18 @@
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/minecraft/deobfedDeps/compileDummy.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/minecraft/deobfedDeps/deobf/cofh/RedstoneFlux/1.12-2.0.0.1/RedstoneFlux-1.12-2.0.0.1.jar!/"/>
+        </CLASSES>
+        <JAVADOC/>
+        <SOURCES>
+          <root url="jar://C:/Users/josef/.gradle/caches/minecraft/deobfedDeps/deobf/cofh/RedstoneFlux/1.12-2.0.0.1/RedstoneFlux-1.12-2.0.0.1-sources.jar!/"/>
+        </SOURCES>
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" scope="TEST">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Users/josef/.gradle/caches/minecraft/deobfedDeps/compileDummy.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES/>
@@ -846,7 +879,7 @@
     <orderEntry type="module-library" scope="TEST">
       <library>
         <CLASSES>
-          <root url="jar://C:/Users/jjanecek/.gradle/caches/minecraft/deobfedDeps/providedDummy.jar!/"/>
+          <root url="jar://C:/Users/josef/.gradle/caches/minecraft/deobfedDeps/providedDummy.jar!/"/>
         </CLASSES>
         <JAVADOC/>
         <SOURCES/>

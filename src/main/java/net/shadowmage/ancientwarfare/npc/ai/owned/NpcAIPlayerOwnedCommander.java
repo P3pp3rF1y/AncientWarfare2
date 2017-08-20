@@ -60,7 +60,7 @@ public class NpcAIPlayerOwnedCommander extends NpcAI<NpcBase> {
         lastExecuted = npc.ticksExisted;
         double dist = npc.getEntityAttribute(SharedMonsterAttributes.followRange).getAttributeValue();
         AxisAlignedBB bb = npc.boundingBox.expand(dist, dist / 2, dist);
-        List<NpcBase> potentialTargets = npc.worldObj.selectEntitiesWithinAABB(NpcBase.class, bb, selector);
+        List<NpcBase> potentialTargets = npc.world.selectEntitiesWithinAABB(NpcBase.class, bb, selector);
         for(NpcBase npcBase : potentialTargets){
             npcBase.addPotionEffect(new PotionEffect(effect));
         }

@@ -1,6 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.minecraft.util.math.BlockPos;
 
 public interface IControllerTile {
 
@@ -8,6 +8,6 @@ public interface IControllerTile {
 
     public void removeControlledTile(IControlledTile tile);
 
-    public BlockPosition getPosition();
+    public BlockPos getPos();
 
 }

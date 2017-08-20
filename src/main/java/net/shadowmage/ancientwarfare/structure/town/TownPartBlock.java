@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 
 import java.util.ArrayList;
@@ -76,7 +75,7 @@ public class TownPartBlock {
                 zEnd = zStart + quadrant.getZDir().zDirection * (zSize - 1);
                 zIndex = quadrant.getZDir() == Direction.NORTH ? (zDivs - 1) - z : z;
 
-                plot = new TownPartPlot(this, new StructureBB(new BlockPosition(xStart, y1, zStart), new BlockPosition(xEnd, y2, zEnd)), xIndex, zIndex);
+                plot = new TownPartPlot(this, new StructureBB(new BlockPos(xStart, y1, zStart), new BlockPos(xEnd, y2, zEnd)), xIndex, zIndex);
                 setRoadBorders(plot);
 
                 plots.add(plot);

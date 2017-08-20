@@ -1,17 +1,17 @@
 package net.shadowmage.ancientwarfare.npc.block;
 
-import java.util.ArrayList;
-
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
+
+import java.util.ArrayList;
 
 public class BlockHeadquarters extends BlockTownHall {
 
@@ -38,9 +38,9 @@ public class BlockHeadquarters extends BlockTownHall {
         if (!player.world.isRemote) {
             TileEntity te = world.getTileEntity(pos);
             String currentOwnerName = ((TileTownHall) te).getOwnerName();
-            if (!player.getCommandSenderName().equals(currentOwnerName)) {
+            if (!player.getName().equals(currentOwnerName)) {
                 // different player to the owner has used the town hall
-                if (!ModAccessors.FTBU.areFriends(player.getCommandSenderName(), currentOwnerName)) {
+                if (!ModAccessors.FTBU.areFriends(player.getName(), currentOwnerName)) {
                     // new player is NOT a friend, change this HQ back to a town hall block
                     world.setBlock(x, y, z, AWNPCBlockLoader.townHall, 0, 3);
                     return world.getBlock(x, y, z).onBlockActivated(world, x, y, z, player, sideHit, hitX, hitY, hitZ);

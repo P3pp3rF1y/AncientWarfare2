@@ -32,7 +32,7 @@ public class TileSoundBlock extends TileEntity implements ISinger{
 
     @Override
     public void updateEntity() {
-        if (worldObj.isRemote) {
+        if (world.isRemote) {
             return;
         }
         if (playing) {
@@ -44,15 +44,15 @@ public class TileSoundBlock extends TileEntity implements ISinger{
                 if (tuneData.getPlayOnPlayerEntry()) {
                     if (playerCheckDelay-- <= 0) {
                         playerCheckDelay = 20;
-                        AxisAlignedBB aabb = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(playerRange, playerRange, playerRange);
+                        AxisAlignedBB aabb = new AxisAlignedBB(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(playerRange, playerRange, playerRange);
                         @SuppressWarnings("unchecked")
-                        List<EntityPlayer> list = worldObj.getEntitiesWithinAABB(EntityPlayer.class, aabb);
+                        List<EntityPlayer> list = world.getEntitiesWithinAABB(EntityPlayer.class, aabb);
                         if (list != null && !list.isEmpty()) {
                             startSong();
                         }
                     }
                 } else if (isRedstoneInteraction()) {
-                    if (worldObj.getBlockPowerInput(xCoord, yCoord, zCoord) > 0) {
+                    if (world.getBlockPowerInput(xCoord, yCoord, zCoord) > 0) {
                         startSong();
                     }
                 } else {
@@ -66,7 +66,7 @@ public class TileSoundBlock extends TileEntity implements ISinger{
         if (tuneData.getIsRandom()) {
             tuneIndex = 0;
             if (tuneData.size() > 0) {
-                tuneIndex = worldObj.rand.nextInt(tuneData.size());
+                tuneIndex = world.rand.nextInt(tuneData.size());
             }
         } else {
             tuneIndex++;
@@ -78,7 +78,7 @@ public class TileSoundBlock extends TileEntity implements ISinger{
             return;
         }
         playing = true;
-        playTime = tuneData.get(tuneIndex).play(worldObj, xCoord, yCoord, zCoord);
+        playTime = tuneData.get(tuneIndex).play(world, xCoord, yCoord, zCoord);
     }
 
     private void endSong() {
@@ -87,7 +87,7 @@ public class TileSoundBlock extends TileEntity implements ISinger{
         currentDelay = tuneData.getMinDelay();
         int diff = tuneData.getMaxDelay() - currentDelay;
         if (diff > 0) {
-            currentDelay += worldObj.rand.nextInt(diff);
+            currentDelay += world.rand.nextInt(diff);
         }
     }
 
@@ -98,7 +98,7 @@ public class TileSoundBlock extends TileEntity implements ISinger{
 
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt){
-        if(worldObj.isRemote && pkt.func_148853_f() == 0){
+        if(world.isRemote && pkt.func_148853_f() == 0){
             cacheFromNBT(pkt.func_148857_g());
         }
     }
@@ -163,8 +163,8 @@ public class TileSoundBlock extends TileEntity implements ISinger{
 
     public void setBlockCache(ItemStack itemStack){
         blockCache = Block.getBlockFromItem(itemStack.getItem());
-        worldObj.notifyBlockUpdate(xCoord, yCoord, zCoord);
-        worldObj.notifyBlockChange(xCoord, yCoord, zCoord, this.blockType);
+        world.notifyBlockUpdate(xCoord, yCoord, zCoord);
+        world.notifyBlockChange(xCoord, yCoord, zCoord, this.blockType);
         markDirty();
     }
 }

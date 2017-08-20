@@ -10,7 +10,6 @@ import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Vec3;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcCombat;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
@@ -97,7 +96,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
     private void findNearbyRelevantEntities() {
         npc.nearbyHostiles.clear();
         nearbySoldiers.clear();
-        List nearbyHostilesOrFriendlySoldiers = this.npc.worldObj.selectEntitiesWithinAABB(EntityLiving.class, this.npc.boundingBox.expand(this.distanceFromEntity, 3.0D, this.distanceFromEntity), this.hostileOrFriendlyCombatNpcSelector);
+        List nearbyHostilesOrFriendlySoldiers = this.npc.world.selectEntitiesWithinAABB(EntityLiving.class, this.npc.boundingBox.expand(this.distanceFromEntity, 3.0D, this.distanceFromEntity), this.hostileOrFriendlyCombatNpcSelector);
         if (nearbyHostilesOrFriendlySoldiers.isEmpty())
             return;
         
@@ -153,13 +152,13 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
             stayOutOfSightTimer = 0;
             return;
         }
-        BlockPosition pos = null;
+        BlockPos pos = null;
         double distSq = 0;
         
         if (npc.hasHome()) {
             distSq = npc.getDistanceSqFromHome();
             ChunkCoordinates cc = npc.getHomePosition();
-            pos = new BlockPosition(cc.posX, cc.posY, cc.posZ);
+            pos = new BlockPos(cc.posX, cc.posY, cc.posZ);
             if (distSq < MIN_RANGE) {
                 // NPC is home, check for visible hostiles
                 if (!npc.nearbyHostiles.isEmpty()) {
@@ -217,7 +216,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
             soldier.respondToDistress(npc);
         }
         /*
-        List nearbyFriendlyCombatNpcs = this.npc.worldObj.selectEntitiesWithinAABB(EntityLiving.class, this.npc.boundingBox.expand(this.distanceFromEntity, 3.0D, this.distanceFromEntity), friendlyCombatNpcSelector);
+        List nearbyFriendlyCombatNpcs = this.npc.world.selectEntitiesWithinAABB(EntityLiving.class, this.npc.boundingBox.expand(this.distanceFromEntity, 3.0D, this.distanceFromEntity), friendlyCombatNpcSelector);
         if (nearbyFriendlyCombatNpcs.isEmpty())
             return;
         for (Object defender : nearbyFriendlyCombatNpcs) {

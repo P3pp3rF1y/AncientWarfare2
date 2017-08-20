@@ -27,13 +27,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentTranslation;
-
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.event.IBoxRenderer;
@@ -110,9 +107,9 @@ public class ItemGateSpawner extends Item implements IItemKeyInterface, IBoxRend
             tag = new NBTTagCompound();
             stack.setTagCompound(tag);
         } else if (tag.hasKey("pos1") && tag.hasKey("pos2")) {
-            BlockPosition pos1 = new BlockPosition(tag.getCompoundTag("pos1"));
-            BlockPosition pos2 = new BlockPosition(tag.getCompoundTag("pos2"));
-            BlockPosition avg = BlockTools.getAverageOf(pos1, pos2);
+            BlockPos pos1 = new BlockPos(tag.getCompoundTag("pos1"));
+            BlockPos pos2 = new BlockPos(tag.getCompoundTag("pos2"));
+            BlockPos avg = BlockTools.getAverageOf(pos1, pos2);
             int max = 10;
             if(pos1.x - pos2.x > max)
                 max = pos1.x - pos2.x;
@@ -123,17 +120,17 @@ public class ItemGateSpawner extends Item implements IItemKeyInterface, IBoxRend
             else if(pos2.z - pos1.z > max)
                 max = pos2.z - pos1.z;
             if (player.getDistance(avg.x + 0.5, pos1.y + 0.5, avg.z + 0.5) > max && player.getDistance(avg.x + 0.5, pos2.y + 0.5, avg.z + 0.5) > max) {
-                player.addChatMessage(new ChatComponentTranslation("guistrings.gate.too_far"));
+                player.sendMessage(new TextComponentTranslation("guistrings.gate.too_far"));
                 return stack;
             }
             if (!canSpawnGate(world, pos1, pos2)) {
-                player.addChatMessage(new ChatComponentTranslation("guistrings.gate.exists"));
+                player.sendMessage(new TextComponentTranslation("guistrings.gate.exists"));
                 return stack;
             }
             byte facing = (byte) BlockTools.getPlayerFacingFromYaw(player.rotationYaw);
             EntityGate entity = Gate.constructGate(world, pos1, pos2, Gate.getGateByID(stack.getItemDamage()), facing);
             if (entity != null) {
-                entity.setOwnerName(player.getCommandSenderName());
+                entity.setOwnerName(player.getName());
                 world.spawnEntityInWorld(entity);
                 if (!player.capabilities.isCreativeMode) {
                     stack.shrink(1);
@@ -142,23 +139,23 @@ public class ItemGateSpawner extends Item implements IItemKeyInterface, IBoxRend
                 tag.removeTag("pos2");
                 stack.setTagCompound(tag);
             } else {
-                player.addChatMessage(new ChatComponentTranslation("guistrings.gate.need_to_clear"));
+                player.sendMessage(new TextComponentTranslation("guistrings.gate.need_to_clear"));
             }
         }
         return stack;
     }
 
     @SuppressWarnings("unchecked")
-    protected boolean canSpawnGate(World world, BlockPosition pos1, BlockPosition pos2) {
-        BlockPosition min = BlockTools.getMin(pos1, pos2);
-        BlockPosition max = BlockTools.getMax(pos1, pos2);
-        AxisAlignedBB newGateBB = AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x + 1, max.y + 1, max.z + 1);
+    protected boolean canSpawnGate(World world, BlockPos pos1, BlockPos pos2) {
+        BlockPos min = BlockTools.getMin(pos1, pos2);
+        BlockPos max = BlockTools.getMax(pos1, pos2);
+        AxisAlignedBB newGateBB = new AxisAlignedBB(min.x, min.y, min.z, max.x + 1, max.y + 1, max.z + 1);
         AxisAlignedBB oldGateBB;
         List<EntityGate> gates = world.getEntitiesWithinAABB(EntityGate.class, newGateBB);
         for (EntityGate gate : gates) {
             min = BlockTools.getMin(gate.pos1, gate.pos2);
             max = BlockTools.getMax(gate.pos1, gate.pos2);
-            oldGateBB = AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x + 1, max.y + 1, max.z + 1);
+            oldGateBB = new AxisAlignedBB(min.x, min.y, min.z, max.x + 1, max.y + 1, max.z + 1);
             if (oldGateBB.intersectsWith(newGateBB)) {
                 return false;
             }
@@ -173,7 +170,7 @@ public class ItemGateSpawner extends Item implements IItemKeyInterface, IBoxRend
 
     @Override
     public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
-        BlockPosition hit = BlockTools.getBlockClickedOn(player, player.world, true);
+        BlockPos hit = BlockTools.getBlockClickedOn(player, player.world, true);
         if (hit == null) {
             return;
         }
@@ -186,15 +183,15 @@ public class ItemGateSpawner extends Item implements IItemKeyInterface, IBoxRend
         if (!tag.hasKey("pos2")) {
             if (tag.hasKey("pos1")) {
                 Gate g = Gate.getGateByID(stack.getItemDamage());
-                if (g.arePointsValidPair(new BlockPosition(tag.getCompoundTag("pos1")), hit)) {
+                if (g.arePointsValidPair(new BlockPos(tag.getCompoundTag("pos1")), hit)) {
                     tag.setTag("pos2", hit.writeToNBT(new NBTTagCompound()));
-                    player.addChatMessage(new ChatComponentTranslation("guistrings.gate.set_pos_two"));
+                    player.sendMessage(new TextComponentTranslation("guistrings.gate.set_pos_two"));
                 } else {
-                    player.addChatMessage(new ChatComponentTranslation("guistrings.gate.invalid_position"));
+                    player.sendMessage(new TextComponentTranslation("guistrings.gate.invalid_position"));
                 }
             } else {
                 tag.setTag("pos1", hit.writeToNBT(new NBTTagCompound()));
-                player.addChatMessage(new ChatComponentTranslation("guistrings.gate.set_pos_one"));
+                player.sendMessage(new TextComponentTranslation("guistrings.gate.set_pos_one"));
             }
         }
         stack.setTagInfo("AWGateInfo", tag);
@@ -203,13 +200,13 @@ public class ItemGateSpawner extends Item implements IItemKeyInterface, IBoxRend
     @Override
     public void renderBox(EntityPlayer player, ItemStack stack, float delta) {
         NBTTagCompound tag = stack.getTagCompound();
-        BlockPosition p1, p2;
+        BlockPos p1, p2;
         if (tag != null && tag.hasKey("AWGateInfo")) {
             tag = tag.getCompoundTag("AWGateInfo");
             if (tag.hasKey("pos1")) {
-                p1 = new BlockPosition(tag.getCompoundTag("pos1"));
+                p1 = new BlockPos(tag.getCompoundTag("pos1"));
                 if (tag.hasKey("pos2")) {
-                    p2 = new BlockPosition(tag.getCompoundTag("pos2"));
+                    p2 = new BlockPos(tag.getCompoundTag("pos2"));
                 } else {
                     p2 = BlockTools.getBlockClickedOn(player, player.world, true);
                     if (p2 == null) {

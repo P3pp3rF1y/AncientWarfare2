@@ -20,11 +20,9 @@
  */
 package net.shadowmage.ancientwarfare.structure.gates;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
-
 import net.minecraft.util.ResourceLocation;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 
 public interface IGateType {
@@ -50,9 +48,11 @@ public interface IGateType {
      */
     public ResourceLocation getTexture();
 
+/* TODO readd in rendering
     public IIcon getIconTexture();
 
     public void registerIcons(IIconRegister reg);
+*/
 
     /**
      * return the speed at which the gate opens/closes when activated
@@ -83,14 +83,14 @@ public interface IGateType {
 
     public void onGateFinishClose(EntityGate gate);
 
-    public void setInitialBounds(EntityGate gate, BlockPosition pos1, BlockPosition pos2);
+    public void setInitialBounds(EntityGate gate, BlockPos pos1, BlockPos pos2);
 
     /**
      * a callback from the spawning item for validation of a chosen
      * pair of spawning points.  This is where the gate can reject
      * a starting position/setup if the points are not placed correctly.
      */
-    public boolean arePointsValidPair(BlockPosition pos1, BlockPosition pos2);
+    public boolean arePointsValidPair(BlockPos pos1, BlockPos pos2);
 
     public boolean canActivate(EntityGate gate, boolean open);
 

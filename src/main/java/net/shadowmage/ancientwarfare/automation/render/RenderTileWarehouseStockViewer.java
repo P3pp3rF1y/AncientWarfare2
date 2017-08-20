@@ -27,7 +27,7 @@ public class RenderTileWarehouseStockViewer extends TileEntitySpecialRenderer {
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick) {
         TileWarehouseStockViewer tile = (TileWarehouseStockViewer) te;
-        EnumFacing d = EnumFacing.getOrientation(te.getBlockMetadata()).getOpposite();
+        EnumFacing d = EnumFacing.VALUES[te.getBlockMetadata()).getOpposite(];
         float r = getRotationFromDirection(d);
 
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);

@@ -62,6 +62,6 @@ public class TileChunkLoaderSimple extends TileEntity implements IChunkLoaderTil
         }
 //TODO either uncomment and log chunk loading info or just remove this
         //  AWLog.logDebug("ticket now has chunks: "+tk.getChunkList());
-//  AWLog.logDebug("total forced chunks are: "+ForgeChunkManager.getPersistentChunksFor(worldObj));
+//  AWLog.logDebug("total forced chunks are: "+ForgeChunkManager.getPersistentChunksFor(world));
     }
 }

@@ -7,7 +7,6 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.container.ContainerUpkeepOrder;
 
 public class GuiUpkeepOrder extends GuiContainerBase<ContainerUpkeepOrder> {
@@ -26,7 +25,7 @@ public class GuiUpkeepOrder extends GuiContainerBase<ContainerUpkeepOrder> {
     @Override
     public void setupElements() {
         clearElements();
-        BlockPosition pos = getContainer().upkeepOrder.getUpkeepPosition();
+        BlockPos pos = getContainer().upkeepOrder.getUpkeepPosition();
         ItemSlot slot;
         Button button;
         Label label;

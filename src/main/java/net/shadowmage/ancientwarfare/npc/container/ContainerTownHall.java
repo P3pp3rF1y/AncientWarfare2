@@ -40,20 +40,20 @@ public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
     @Override
     public void handlePacketData(NBTTagCompound tag) {
         if (tag.hasKey("playerName")) {
-            if (!tileEntity.getWorldObj().isRemote) {
-                int[] tpHubPos = HeadquartersTracker.get(tileEntity.getWorldObj()).getTeleportHubPosition(tileEntity.getWorldObj());
+            if (!tileEntity.getWorld().isRemote) {
+                int[] tpHubPos = HeadquartersTracker.get(tileEntity.getWorld()).getTeleportHubPosition(tileEntity.getWorld());
                 if (tpHubPos != null) {
-                    TileEntity te = tileEntity.getWorldObj().getTileEntity(tpHubPos[0], tpHubPos[1], tpHubPos[2]);
+                    TileEntity te = tileEntity.getWorld().getTileEntity(tpHubPos[0], tpHubPos[1], tpHubPos[2]);
                     if (te instanceof TileTeleportHub) {
                         String playerName = tag.getString("playerName");
                         List<EntityPlayerMP> playerList = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
                         for (EntityPlayerMP entityPlayer : playerList) {
-                            if (entityPlayer.getCommandSenderName().equals(playerName)) {
+                            if (entityPlayer.getName().equals(playerName)) {
                                 final float randomPitch = (float) (Math.random() * (1.1f - 0.9f) + 0.9f);
-                                tileEntity.getWorldObj().playSoundAtEntity(entityPlayer, "ancientwarfare:teleport.out", 0.6F, randomPitch);
+                                tileEntity.getWorld().playSoundAtEntity(entityPlayer, "ancientwarfare:teleport.out", 0.6F, randomPitch);
                                 ((TileTeleportHub) te).addArrival(playerName);
-                                EntityTools.teleportPlayerToBlock(entityPlayer, entityPlayer.worldObj, tpHubPos, false);
-                                entityPlayer.worldObj.playSoundAtEntity(entityPlayer, "ancientwarfare:teleport.in", 0.6F, randomPitch);
+                                EntityTools.teleportPlayerToBlock(entityPlayer, entityPlayer.world, tpHubPos, false);
+                                entityPlayer.world.playSoundAtEntity(entityPlayer, "ancientwarfare:teleport.in", 0.6F, randomPitch);
                             }
                         }
                     }
@@ -92,7 +92,7 @@ public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
             refreshGui();
         }
         
-        if (!tileEntity.getWorldObj().isRemote){
+        if (!tileEntity.getWorld().isRemote){
             tileEntity.markDirty();
         }
     }
@@ -144,7 +144,7 @@ public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
     private void sendHqDataToClient() {
         NBTTagCompound tag = new NBTTagCompound();
         tag.setBoolean("isHq", tileEntity.isHq);
-        int[] tpHubPos = HeadquartersTracker.get(tileEntity.getWorldObj()).getTeleportHubPosition(tileEntity.getWorldObj());
+        int[] tpHubPos = HeadquartersTracker.get(tileEntity.getWorld()).getTeleportHubPosition(tileEntity.getWorld());
         if (tpHubPos != null)
             tag.setIntArray("tpHubPos", tpHubPos);
         sendDataToClient(tag);

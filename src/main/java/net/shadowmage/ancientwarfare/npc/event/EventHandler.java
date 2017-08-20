@@ -1,19 +1,11 @@
 package net.shadowmage.ancientwarfare.npc.event;
 
-import java.util.HashSet;
-import java.util.Iterator;
-
 import com.cosmicdan.pathfindertweaks.events.PathfinderEvent.PathfinderAvoidAdditionalEvent;
 import com.cosmicdan.pathfindertweaks.events.PathfinderEvent.PathfinderCheckCanPathBlock;
-
+import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.eventhandler.Event.Result;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockChest;
-import net.minecraft.block.BlockDoor;
-import net.minecraft.block.BlockFence;
-import net.minecraft.block.BlockWall;
+import net.minecraft.block.*;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.IRangedAttackMob;
@@ -33,6 +25,8 @@ import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.gamedata.HeadquartersTracker;
 
+import java.util.Iterator;
+
 public class EventHandler {
     private EventHandler() {}
     
@@ -42,8 +36,8 @@ public class EventHandler {
     public void onEntityJoinWorld(EntityJoinWorldEvent event) {
         
         if (event.entity instanceof EntityPlayer && !event.world.isRemote) {
-            if (ModAccessors.FTBU_LOADED && !HeadquartersTracker.get(event.world).validateCurrentHq(event.entity.getCommandSenderName(), event.world)) {
-                final String playerName = event.entity.getCommandSenderName();
+            if (ModAccessors.FTBU_LOADED && !HeadquartersTracker.get(event.world).validateCurrentHq(event.entity.getName(), event.world)) {
+                final String playerName = event.entity.getName();
                 Thread thread = new Thread(){
                     public void run(){
                         try {
@@ -143,8 +137,8 @@ public class EventHandler {
     public void pathfinderAvoidAdditionals(PathfinderAvoidAdditionalEvent event) {
         //System.out.println("Firing!");
         if (AWNPCStatics.pathfinderAvoidChests || AWNPCStatics.pathfinderAvoidFences || AWNPCStatics.getPathfinderAvoidCustomBlocks() != null) {
-            Block block = event.entity.worldObj.getBlock(event.posX, event.posY, event.posZ);
-            int meta = event.entity.worldObj.getBlockMetadata(event.posX, event.posY, event.posZ);
+            Block block = event.entity.world.getBlock(event.posX, event.posY, event.posZ);
+            int meta = event.entity.world.getBlockMetadata(event.posX, event.posY, event.posZ);
             if (AWNPCStatics.pathfinderAvoidChests) {
                 if (block.getRenderType() == 22 || block instanceof BlockChest) {
                     event.setResult(Result.DENY);
@@ -172,14 +166,14 @@ public class EventHandler {
     
     @SubscribeEvent
     public void onPlayerRespawn(PlayerEvent.Clone event) {
-        if (event.entityPlayer.worldObj.isRemote)
+        if (event.entityPlayer.world.isRemote)
             return;
         if (event.wasDeath) {
             if (event.entityPlayer.getBedLocation(event.entityPlayer.dimension) == null) {
                 // player has no bed in the respawned dimension
-                int[] hqPos = HeadquartersTracker.get(event.entityPlayer.worldObj).getHqPos(event.entityPlayer.getCommandSenderName(), event.entityPlayer.worldObj);
+                int[] hqPos = HeadquartersTracker.get(event.entityPlayer.world).getHqPos(event.entityPlayer.getName(), event.entityPlayer.world);
                 if (hqPos != null) {
-                    EntityTools.teleportPlayerToBlock(event.entityPlayer, event.entityPlayer.worldObj, hqPos, true);
+                    EntityTools.teleportPlayerToBlock(event.entityPlayer, event.entityPlayer.world, hqPos, true);
                 }
             }
         }

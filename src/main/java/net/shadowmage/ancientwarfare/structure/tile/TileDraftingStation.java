@@ -32,7 +32,7 @@ public class TileDraftingStation extends TileEntity implements IInvBasic {
 
     @Override
     public void updateEntity() {
-        if (!hasWorldObj() || worldObj.isRemote) {
+        if (!hasWorld() || world.isRemote) {
             return;
         }
         if (structureName != null) {
@@ -71,10 +71,10 @@ public class TileDraftingStation extends TileEntity implements IInvBasic {
                 if (InventoryTools.doItemStacksMatch(stack1, stack2)) {
                     stack1.shrink(1);
                     stack2.shrink(1);
-                    if (stack1.stackSize <= 0) {
+                    if (stack1.getCount() <= 0) {
                         neededResources.remove(i);
                     }
-                    if (stack2.stackSize <= 0) {
+                    if (stack2.getCount() <= 0) {
                         inputSlots.setInventorySlotContents(k, null);
                     }
                     break outerLoopLabel;
@@ -161,7 +161,7 @@ public class TileDraftingStation extends TileEntity implements IInvBasic {
     private void calcTime() {
         int count = 0;
         for (ItemStack item : this.neededResources) {
-            count += item.stackSize;
+            count += item.getCount();
         }
         this.totalTime = this.remainingTime = count;
     }

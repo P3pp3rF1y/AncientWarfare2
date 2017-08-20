@@ -1,15 +1,18 @@
 package net.shadowmage.ancientwarfare.core.tile;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.*;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCraftResult;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
@@ -80,7 +83,7 @@ public class TileEngineeringStation extends TileEntity implements IRotatableTile
     }
 
     private void onLayoutMatrixChanged() {
-        this.result.setInventorySlotContents(0, AWCraftingManager.INSTANCE.findMatchingRecipe(layoutMatrix, worldObj, getCrafterName()));
+        this.result.setInventorySlotContents(0, AWCraftingManager.INSTANCE.findMatchingRecipe(layoutMatrix, world, getCrafterName()));
     }
 
     @Override
@@ -104,8 +107,8 @@ public class TileEngineeringStation extends TileEntity implements IRotatableTile
 
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        facing = EnumFacing.getOrientation(pkt.func_148857_g().getInteger("facing"));
-        this.worldObj.notifyBlockUpdate(xCoord, yCoord, zCoord);
+        facing = EnumFacing.VALUES[pkt.func_148857_g().getInteger("facing")];
+        this.world.notifyBlockUpdate(xCoord, yCoord, zCoord);
     }
 
     @Override
@@ -149,13 +152,13 @@ public class TileEngineeringStation extends TileEntity implements IRotatableTile
     @Override
     public void setPrimaryFacing(EnumFacing face) {
         this.facing = face;
-        this.worldObj.notifyBlockUpdate(xCoord, yCoord, zCoord);
+        this.world.notifyBlockUpdate(xCoord, yCoord, zCoord);
     }
 
     public void onBlockBreak(){
-        InventoryTools.dropInventoryInWorld(worldObj, bookInventory, xCoord, yCoord, zCoord);
-        InventoryTools.dropInventoryInWorld(worldObj, extraSlots, xCoord, yCoord, zCoord);
-        InventoryTools.dropInventoryInWorld(worldObj, layoutMatrix, xCoord, yCoord, zCoord);
+        InventoryTools.dropInventoryInWorld(world, bookInventory, xCoord, yCoord, zCoord);
+        InventoryTools.dropInventoryInWorld(world, extraSlots, xCoord, yCoord, zCoord);
+        InventoryTools.dropInventoryInWorld(world, layoutMatrix, xCoord, yCoord, zCoord);
     }
 
 }

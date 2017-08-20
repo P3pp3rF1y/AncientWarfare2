@@ -1,7 +1,5 @@
 package net.shadowmage.ancientwarfare.npc.entity;
 
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-
 /**
  * Created by Olivier on 09/07/2015.
  */
@@ -13,7 +11,7 @@ public interface IKeepFood {
 
     public int getUpkeepDimensionId();
 
-    public void setUpkeepAutoPosition(BlockPosition pos);
+    public void setUpkeepAutoPosition(BlockPos pos);
 
-    public BlockPosition getUpkeepPoint();
+    public BlockPos getUpkeepPoint();
 }

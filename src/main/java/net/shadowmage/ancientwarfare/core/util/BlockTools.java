@@ -23,15 +23,13 @@
 package net.shadowmage.ancientwarfare.core.util;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.*;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraft.util.EnumFacing;
 import net.minecraftforge.event.world.BlockEvent;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 
@@ -89,12 +87,12 @@ public class BlockTools {
         return z;
     }
 
-    public static BlockPosition getAverageOf(BlockPosition... positions) {
+    public static BlockPos getAverageOf(BlockPos... positions) {
         float x = 0;
         float y = 0;
         float z = 0;
         int count = 0;
-        for (BlockPosition pos : positions) {
+        for (BlockPos pos : positions) {
             x += pos.x;
             y += pos.y;
             z += pos.z;
@@ -105,7 +103,7 @@ public class BlockTools {
             y /= count;
             z /= count;
         }
-        return new BlockPosition(x, y, z);
+        return new BlockPos(x, y, z);
     }
 
     /**
@@ -143,12 +141,12 @@ public class BlockTools {
         for (Entity testEntity : entitiesPossiblyHitByVector) {
             if (testEntity.canBeCollidedWith()) {
                 float bbExpansionSize = testEntity.getCollisionBorderSize();
-                AxisAlignedBB entityBB = testEntity.boundingBox.expand(bbExpansionSize, bbExpansionSize, bbExpansionSize);
+                AxisAlignedBB entityBB = testEntity.getEntityBoundingBox().expand(bbExpansionSize, bbExpansionSize, bbExpansionSize);
                 /**
                  * if an entity is hit, return its position
                  */
                 if (entityBB.isVecInside(testVector)) {
-                    return new BlockPosition(testEntity.posX, testEntity.posY, testEntity.posZ);
+                    return new BlockPos(testEntity.posX, testEntity.posY, testEntity.posZ);
                 }
             }
         }
@@ -182,10 +180,10 @@ public class BlockTools {
                     ++var42;
             }
         }
-        return new BlockPosition(var42, var43, var44);
+        return new BlockPos(var42, var43, var44);
     }
 
-    public static BlockPosition rotateAroundOrigin(BlockPosition pos, int turns) {
+    public static BlockPos rotateAroundOrigin(BlockPos pos, int turns) {
         for (int i = 0; i < turns; i++) {
             pos = rotateAroundOrigin(pos);
         }
@@ -195,8 +193,8 @@ public class BlockTools {
     /**
      * rotate a position around its origin (0,0,0), in 90' clockwise steps
      */
-    public static BlockPosition rotateAroundOrigin(BlockPosition pos) {
-        return new BlockPosition(-pos.z, pos.y, pos.x);
+    public static BlockPos rotateAroundOrigin(BlockPos pos) {
+        return new BlockPos(-pos.z, pos.y, pos.x);
     }
 
     /**
@@ -204,7 +202,7 @@ public class BlockTools {
      *
      * @return true if it does
      */
-    public static boolean isPositionWithinBounds(BlockPosition test, BlockPosition pos1, BlockPosition pos2) {
+    public static boolean isPositionWithinBounds(BlockPos test, BlockPos pos1, BlockPos pos2) {
         int min;
         int max;
         if (pos1.x < pos2.x) {
@@ -239,16 +237,16 @@ public class BlockTools {
     }
 
     /**
-     * return a new BlockPosition containing the minimum coordinates from the two passed in BlockPositions
+     * return a new BlockPos containing the minimum coordinates from the two passed in BlockPos
      */
-    public static BlockPosition getMin(BlockPosition pos1, BlockPosition pos2) {
-        return new BlockPosition(Math.min(pos1.x, pos2.x), Math.min(pos1.y, pos2.y), Math.min(pos1.z, pos2.z));
+    public static BlockPos getMin(BlockPos pos1, BlockPos pos2) {
+        return new BlockPos(Math.min(pos1.x, pos2.x), Math.min(pos1.y, pos2.y), Math.min(pos1.z, pos2.z));
     }
     /**
-     * return a new BlockPosition containing the maximum coordinates from the two passed in BlockPositions
+     * return a new BlockPos containing the maximum coordinates from the two passed in BlockPos
      */
-    public static BlockPosition getMax(BlockPosition pos1, BlockPosition pos2) {
-        return new BlockPosition(Math.max(pos1.x, pos2.x), Math.max(pos1.y, pos2.y), Math.max(pos1.z, pos2.z));
+    public static BlockPos getMax(BlockPos pos1, BlockPos pos2) {
+        return new BlockPos(Math.max(pos1.x, pos2.x), Math.max(pos1.y, pos2.y), Math.max(pos1.z, pos2.z));
     }
 
     /**
@@ -294,7 +292,7 @@ public class BlockTools {
      * rotates a given block-position in a given area by the number of turns.  Used by templates
      * to get a relative position.
      */
-    public static BlockPosition rotateInArea(BlockPosition pos, int xSize, int zSize, int turns) {
+    public static BlockPos rotateInArea(BlockPos pos, int xSize, int zSize, int turns) {
         int xSize1 = xSize;
         int zSize1 = zSize;
         int x = pos.x;
@@ -317,7 +315,7 @@ public class BlockTools {
             xSize1 = xSize;
             zSize1 = zSize;
         }
-        return new BlockPosition(x, pos.y, z);
+        return new BlockPos(x, pos.y, z);
     }
 
     public static boolean breakBlockAndDrop(World world, EntityPlayer player, int x, int y, int z) {
@@ -343,8 +341,8 @@ public class BlockTools {
     }
 
 
-    public static boolean canBreakBlock(World world, EntityPlayer player, int x, int y, int z, Block block, int meta) {
-        return !AWCoreStatics.fireBlockBreakEvents || !MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(x, y, z, world, block, meta, player));
+    public static boolean canBreakBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state) {
+        return !AWCoreStatics.fireBlockBreakEvents || !MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, player));
     }
 
 }

@@ -97,7 +97,7 @@ public class NpcAIDoor extends EntityAIBase {
     }
 
     protected boolean findDoor() {
-        this.door = this.theEntity.worldObj.getBlock(this.doorPosX, this.doorPosY, this.doorPosZ);
+        this.door = this.theEntity.world.getBlock(this.doorPosX, this.doorPosY, this.doorPosZ);
         if(door instanceof BlockDoor){
             return allDoors || door.getMaterial() == Material.wood;
         }
@@ -110,9 +110,9 @@ public class NpcAIDoor extends EntityAIBase {
 
     protected void doDoorInteraction(boolean isOpening) {
         if(door instanceof BlockDoor) {
-            ((BlockDoor)door).func_150014_a(this.theEntity.worldObj, this.doorPosX, this.doorPosY, this.doorPosZ, isOpening);
+            ((BlockDoor)door).func_150014_a(this.theEntity.world, this.doorPosX, this.doorPosY, this.doorPosZ, isOpening);
         }else if(door instanceof BlockFenceGate) {
-            int meta = this.theEntity.worldObj.getBlockMetadata(this.doorPosX, this.doorPosY, this.doorPosZ);
+            int meta = this.theEntity.world.getBlockMetadata(this.doorPosX, this.doorPosY, this.doorPosZ);
             if(isOpening){
                 if(!BlockFenceGate.isFenceGateOpen(meta)) {
                     int j1 = (MathHelper.floor_double((double)(this.theEntity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3) % 4;
@@ -120,28 +120,28 @@ public class NpcAIDoor extends EntityAIBase {
                     if (k1 == (j1 + 2) % 4) {
                         meta = j1;
                     }
-                    this.theEntity.worldObj.setBlockMetadataWithNotify(this.doorPosX, this.doorPosY, this.doorPosZ, meta | 4, 2);
-                    this.theEntity.worldObj.playAuxSFXAtEntity(null, 1003, this.doorPosX, this.doorPosY, this.doorPosZ, 0);
-                    Block block = this.theEntity.worldObj.getBlock(this.doorPosX, this.doorPosY + 1, this.doorPosZ);
+                    this.theEntity.world.setBlockMetadataWithNotify(this.doorPosX, this.doorPosY, this.doorPosZ, meta | 4, 2);
+                    this.theEntity.world.playAuxSFXAtEntity(null, 1003, this.doorPosX, this.doorPosY, this.doorPosZ, 0);
+                    Block block = this.theEntity.world.getBlock(this.doorPosX, this.doorPosY + 1, this.doorPosZ);
                     if(block instanceof BlockFenceGate){
-                        meta = this.theEntity.worldObj.getBlockMetadata(this.doorPosX, this.doorPosY + 1, this.doorPosZ);
+                        meta = this.theEntity.world.getBlockMetadata(this.doorPosX, this.doorPosY + 1, this.doorPosZ);
                         if(!BlockFenceGate.isFenceGateOpen(meta)) {
                             k1 = meta & 3;
                             if (k1 == (j1 + 2) % 4) {
                                 meta = j1;
                             }
-                            this.theEntity.worldObj.setBlockMetadataWithNotify(this.doorPosX, this.doorPosY + 1, this.doorPosZ, meta | 4, 2);
+                            this.theEntity.world.setBlockMetadataWithNotify(this.doorPosX, this.doorPosY + 1, this.doorPosZ, meta | 4, 2);
                         }
                     }
                 }
             }else if(BlockFenceGate.isFenceGateOpen(meta)) {
-                this.theEntity.worldObj.setBlockMetadataWithNotify(this.doorPosX, this.doorPosY, this.doorPosZ, meta & -5, 2);
-                this.theEntity.worldObj.playAuxSFXAtEntity(null, 1003, this.doorPosX, this.doorPosY, this.doorPosZ, 0);
-                Block block = this.theEntity.worldObj.getBlock(this.doorPosX, this.doorPosY + 1, this.doorPosZ);
+                this.theEntity.world.setBlockMetadataWithNotify(this.doorPosX, this.doorPosY, this.doorPosZ, meta & -5, 2);
+                this.theEntity.world.playAuxSFXAtEntity(null, 1003, this.doorPosX, this.doorPosY, this.doorPosZ, 0);
+                Block block = this.theEntity.world.getBlock(this.doorPosX, this.doorPosY + 1, this.doorPosZ);
                 if(block instanceof BlockFenceGate) {
-                    meta = this.theEntity.worldObj.getBlockMetadata(this.doorPosX, this.doorPosY + 1, this.doorPosZ);
+                    meta = this.theEntity.world.getBlockMetadata(this.doorPosX, this.doorPosY + 1, this.doorPosZ);
                     if (BlockFenceGate.isFenceGateOpen(meta)) {
-                        this.theEntity.worldObj.setBlockMetadataWithNotify(this.doorPosX, this.doorPosY + 1, this.doorPosZ, meta & -5, 2);
+                        this.theEntity.world.setBlockMetadataWithNotify(this.doorPosX, this.doorPosY + 1, this.doorPosZ, meta & -5, 2);
                     }
                 }
             }

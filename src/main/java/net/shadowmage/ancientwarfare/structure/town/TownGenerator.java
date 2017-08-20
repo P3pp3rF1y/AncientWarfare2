@@ -3,10 +3,9 @@ package net.shadowmage.ancientwarfare.structure.town;
 import net.minecraft.block.Block;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.init.Blocks;
-import net.minecraft.world.World;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
@@ -41,7 +40,7 @@ public class TownGenerator {
     public final List<StructureTemplate> houseTemplatesToGenerate = new ArrayList<StructureTemplate>();//weighted list
     public final List<StructureTemplate> cosmeticTemplatesToGenerate = new ArrayList<StructureTemplate>();//weighted list
     public final List<StructureTemplate> exteriorTemplatesToGenerate = new ArrayList<StructureTemplate>();//weighted list
-    public final List<BlockPosition> structureDoors = new ArrayList<BlockPosition>();//list of all positions for generated doors.  used during lamp-post generation to not generate directly in front of a door
+    public final List<BlockPos> structureDoors = new ArrayList<BlockPos>();//list of all positions for generated doors.  used during lamp-post generation to not generate directly in front of a door
 
     public TownGenerator(World world, TownBoundingArea area, TownTemplate template) {
         this.world = world;
@@ -194,28 +193,28 @@ public class TownGenerator {
 
         //northwest quadrant, pre-shrunk for road borders
         roadBorders = new boolean[]{true, false, false, true};
-        bb = new StructureBB(new BlockPosition(townBounds.min.x, y1, townBounds.min.z), new BlockPosition(centerX - 2, y2, centerZ - 2));
+        bb = new StructureBB(new BlockPos(townBounds.min.x, y1, townBounds.min.z), new BlockPos(centerX - 2, y2, centerZ - 2));
         tq = new TownPartQuadrant(Direction.WEST, Direction.NORTH, bb, roadBorders, this);
         tq.subdivide(template.getTownBlockSize(), template.getTownPlotSize(), true);
         quadrants[0] = tq;
 
         //northeast quadrant
         roadBorders = new boolean[]{true, true, false, false};
-        bb = new StructureBB(new BlockPosition(centerX + 1, y1, townBounds.min.z), new BlockPosition(townBounds.max.x, y2, centerZ - 2));
+        bb = new StructureBB(new BlockPos(centerX + 1, y1, townBounds.min.z), new BlockPos(townBounds.max.x, y2, centerZ - 2));
         tq = new TownPartQuadrant(Direction.EAST, Direction.NORTH, bb, roadBorders, this);
         tq.subdivide(template.getTownBlockSize(), template.getTownPlotSize(), true);
         quadrants[1] = tq;
 
         //southeast quadrant
         roadBorders = new boolean[]{false, true, true, false};
-        bb = new StructureBB(new BlockPosition(centerX + 1, y1, centerZ + 1), new BlockPosition(townBounds.max.x, y2, townBounds.max.z));
+        bb = new StructureBB(new BlockPos(centerX + 1, y1, centerZ + 1), new BlockPos(townBounds.max.x, y2, townBounds.max.z));
         tq = new TownPartQuadrant(Direction.EAST, Direction.SOUTH, bb, roadBorders, this);
         tq.subdivide(template.getTownBlockSize(), template.getTownPlotSize(), true);
         quadrants[2] = tq;
 
         //southwest quadrant
         roadBorders = new boolean[]{false, false, true, true};
-        bb = new StructureBB(new BlockPosition(townBounds.min.x, y1, centerZ + 1), new BlockPosition(centerX - 2, y2, townBounds.max.z));
+        bb = new StructureBB(new BlockPos(townBounds.min.x, y1, centerZ + 1), new BlockPos(centerX - 2, y2, townBounds.max.z));
         tq = new TownPartQuadrant(Direction.WEST, Direction.SOUTH, bb, roadBorders, this);
         tq.subdivide(template.getTownBlockSize(), template.getTownPlotSize(), true);
         quadrants[3] = tq;
@@ -248,7 +247,7 @@ public class TownGenerator {
         maxX = centerX - 3;
         maxZ = wallsBounds.min.z - 1;
         roadBorders = new boolean[]{false, false, false, false};//
-        bb = new StructureBB(new BlockPosition(minX, minY, minZ), new BlockPosition(maxX, maxY, maxZ));
+        bb = new StructureBB(new BlockPos(minX, minY, minZ), new BlockPos(maxX, maxY, maxZ));
         externalQuadrants[0] = new TownPartQuadrant(Direction.WEST, Direction.NORTH, bb, roadBorders, this);
 
         //2, northeast
@@ -256,7 +255,7 @@ public class TownGenerator {
         minZ = exteriorBounds.min.z;
         maxX = exteriorBounds.max.x;
         maxZ = wallsBounds.min.z - 1;
-        bb = new StructureBB(new BlockPosition(minX, minY, minZ), new BlockPosition(maxX, maxY, maxZ));
+        bb = new StructureBB(new BlockPos(minX, minY, minZ), new BlockPos(maxX, maxY, maxZ));
         externalQuadrants[1] = new TownPartQuadrant(Direction.EAST, Direction.NORTH, bb, roadBorders, this);
 
         //3 west, north-part
@@ -264,7 +263,7 @@ public class TownGenerator {
         minZ = wallsBounds.min.z;
         maxX = wallsBounds.min.x - 1;
         maxZ = centerZ - 3;
-        bb = new StructureBB(new BlockPosition(minX, minY, minZ), new BlockPosition(maxX, maxY, maxZ));
+        bb = new StructureBB(new BlockPos(minX, minY, minZ), new BlockPos(maxX, maxY, maxZ));
         externalQuadrants[2] = new TownPartQuadrant(Direction.WEST, Direction.NORTH, bb, roadBorders, this);
 
         //4 east, north-part
@@ -272,7 +271,7 @@ public class TownGenerator {
         minZ = wallsBounds.min.z;
         maxX = exteriorBounds.max.x;
         maxZ = centerZ - 3;
-        bb = new StructureBB(new BlockPosition(minX, minY, minZ), new BlockPosition(maxX, maxY, maxZ));
+        bb = new StructureBB(new BlockPos(minX, minY, minZ), new BlockPos(maxX, maxY, maxZ));
         externalQuadrants[3] = new TownPartQuadrant(Direction.EAST, Direction.NORTH, bb, roadBorders, this);
 
         //5 west, south-part
@@ -280,7 +279,7 @@ public class TownGenerator {
         minZ = centerZ + 2;
         maxX = wallsBounds.min.x - 1;
         maxZ = wallsBounds.max.z;
-        bb = new StructureBB(new BlockPosition(minX, minY, minZ), new BlockPosition(maxX, maxY, maxZ));
+        bb = new StructureBB(new BlockPos(minX, minY, minZ), new BlockPos(maxX, maxY, maxZ));
         externalQuadrants[4] = new TownPartQuadrant(Direction.WEST, Direction.NORTH, bb, roadBorders, this);
 
         //6 east, south-part
@@ -288,7 +287,7 @@ public class TownGenerator {
         minZ = centerZ + 2;
         maxX = exteriorBounds.max.x;
         maxZ = wallsBounds.max.z;
-        bb = new StructureBB(new BlockPosition(minX, minY, minZ), new BlockPosition(maxX, maxY, maxZ));
+        bb = new StructureBB(new BlockPos(minX, minY, minZ), new BlockPos(maxX, maxY, maxZ));
         externalQuadrants[5] = new TownPartQuadrant(Direction.EAST, Direction.NORTH, bb, roadBorders, this);
 
         //7 southwest
@@ -296,7 +295,7 @@ public class TownGenerator {
         minZ = wallsBounds.max.z + 1;
         maxX = centerX - 3;
         maxZ = exteriorBounds.max.z;
-        bb = new StructureBB(new BlockPosition(minX, minY, minZ), new BlockPosition(maxX, maxY, maxZ));
+        bb = new StructureBB(new BlockPos(minX, minY, minZ), new BlockPos(maxX, maxY, maxZ));
         externalQuadrants[6] = new TownPartQuadrant(Direction.WEST, Direction.SOUTH, bb, roadBorders, this);
 
         //8 southeast
@@ -304,7 +303,7 @@ public class TownGenerator {
         minZ = wallsBounds.max.z + 1;
         maxX = exteriorBounds.max.x;
         maxZ = exteriorBounds.max.z;
-        bb = new StructureBB(new BlockPosition(minX, minY, minZ), new BlockPosition(maxX, maxY, maxZ));
+        bb = new StructureBB(new BlockPos(minX, minY, minZ), new BlockPos(maxX, maxY, maxZ));
         externalQuadrants[7] = new TownPartQuadrant(Direction.EAST, Direction.SOUTH, bb, roadBorders, this);
 
         for (TownPartQuadrant tq1 : externalQuadrants) {

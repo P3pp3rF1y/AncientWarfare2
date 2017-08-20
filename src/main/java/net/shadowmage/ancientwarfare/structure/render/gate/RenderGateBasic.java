@@ -23,7 +23,6 @@ package net.shadowmage.ancientwarfare.structure.render.gate;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.model.ModelGateBasic;
 import org.lwjgl.opengl.GL11;
@@ -40,8 +39,8 @@ public class RenderGateBasic extends Render {
     public final void doRender(Entity entity, double d0, double d1, double d2, float f, float f1) {
         GL11.glPushMatrix();
         EntityGate g = (EntityGate) entity;
-        BlockPosition min = getMin(g);
-        BlockPosition max = getMax(g);
+        BlockPos min = getMin(g);
+        BlockPos max = getMax(g);
 
         boolean wideOnXAxis = min.x != max.x;
         float width;
@@ -89,11 +88,11 @@ public class RenderGateBasic extends Render {
         GL11.glPopMatrix();
     }
 
-    protected BlockPosition getMin(EntityGate gate) {
+    protected BlockPos getMin(EntityGate gate) {
         return gate.pos1;
     }
 
-    protected BlockPosition getMax(EntityGate gate) {
+    protected BlockPos getMax(EntityGate gate) {
         return gate.pos2;
     }
 

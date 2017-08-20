@@ -23,7 +23,6 @@ package net.shadowmage.ancientwarfare.structure.template.build.validation;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
@@ -34,8 +33,8 @@ import java.util.Set;
 
 public class StructureValidatorHarbor extends StructureValidator {
 
-    BlockPosition testMin = new BlockPosition();
-    BlockPosition testMax = new BlockPosition();
+    BlockPos testMin = new BlockPos();
+    BlockPos testMax = new BlockPos();
 
     Set<String> validTargetBlocks;
     Set<String> validTargetBlocksSide;
@@ -68,7 +67,7 @@ public class StructureValidatorHarbor extends StructureValidator {
          */
         Block block = world.getBlock(x, y - 1, z);
         if (block != null && validTargetBlocks.contains(BlockDataManager.INSTANCE.getNameForBlock(block))) {
-            testMin = new BlockPosition(x, y, z).moveForward(face, template.zOffset);
+            testMin = new BlockPos(x, y, z).moveForward(face, template.zOffset);
             int by = WorldStructureGenerator.getTargetY(world, testMin.x, testMin.z, false);
             if (y - by > getMaxFill()) {
                 return false;
@@ -83,7 +82,7 @@ public class StructureValidatorHarbor extends StructureValidator {
 
     @Override
     public int getAdjustedSpawnY(World world, int x, int y, int z, int face, StructureTemplate template, StructureBB bb) {
-        testMin = new BlockPosition(x, y, z).moveForward(face, template.zOffset);
+        testMin = new BlockPos(x, y, z).moveForward(face, template.zOffset);
         return WorldStructureGenerator.getTargetY(world, testMin.x, testMin.z, false) + 1;
     }
 
@@ -141,7 +140,7 @@ public class StructureValidatorHarbor extends StructureValidator {
     }
 
     @Override
-    public void preGeneration(World world, BlockPosition pos, int face, StructureTemplate template, StructureBB bb) {
+    public void preGeneration(World world, BlockPos pos, int face, StructureTemplate template, StructureBB bb) {
         prePlacementBorder(world, template, bb);
     }
 

@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
-import java.util.HashSet;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -10,8 +9,9 @@ import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Vec3;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+
+import java.util.HashSet;
 
 /**
  * AI template class with utility methods and member access for a non-specific NPC type
@@ -74,7 +74,7 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
         moveToPosition(x + 0.5d, y, z + 0.5d, sqDist);
     }
 
-    protected final void moveToPosition(BlockPosition pos, double sqDist) {
+    protected final void moveToPosition(BlockPos pos, double sqDist) {
         moveToPosition(pos.x, pos.y, pos.z, sqDist);
     }
     
@@ -84,7 +84,7 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
      * @param sqDist
      * @param forced
      */
-    protected final void moveToPosition(BlockPosition pos, double sqDist, boolean forced) {
+    protected final void moveToPosition(BlockPos pos, double sqDist, boolean forced) {
         moveRetryDelay = 0;
         moveToPosition(pos, sqDist);
     }

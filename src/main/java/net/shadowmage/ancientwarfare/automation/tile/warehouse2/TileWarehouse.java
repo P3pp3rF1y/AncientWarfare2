@@ -29,18 +29,18 @@ public class TileWarehouse extends TileWarehouseBase {
         }
         List<IWarehouseStorageTile> destinations = new ArrayList<IWarehouseStorageTile>();
         storageMap.getDestinations(cursorStack, destinations);
-        int.setCount(cursorStack.stackSize);
+        int stackSize = cursorStack.getCount();
         int moved;
         for (IWarehouseStorageTile tile : destinations) {
             moved = tile.insertItem(cursorStack, cursorStack.getCount());
-            cursorStack.stackSize -= moved;
+            cursorStack.shrink(moved);
             changeCachedQuantity(cursorStack, moved);
             updateViewers();
-            if (cursorStack.stackSize <= 0) {
+            if (cursorStack.getCount() <= 0) {
                 break;
             }
         }
-        if (cursorStack.stackSize <= 0) {
+        if (cursorStack.getCount() <= 0) {
             player.inventory.setItemStack(null);
         }
         if (stackSize != cursorStack.getCount()) {
@@ -57,15 +57,15 @@ public class TileWarehouse extends TileWarehouseBase {
         int toMove;
         for (IWarehouseStorageTile tile : destinations) {
             count = tile.getQuantityStored(filter);
-            toMove = newCursorStack.getMaxStackSize() - newCursorStack.stackSize;
+            toMove = newCursorStack.getMaxStackSize() - newCursorStack.getCount();
             toMove = toMove > count ? count : toMove;
             if (toMove > 0) {
-                newCursorStack.stackSize += toMove;
+                newCursorStack.grow(toMove);
                 tile.extractItem(filter, toMove);
                 changeCachedQuantity(filter, -toMove);
                 updateViewers();
             }
-            if (newCursorStack.stackSize >= newCursorStack.getMaxStackSize()) {
+            if (newCursorStack.getCount() >= newCursorStack.getMaxStackSize()) {
                 break;
             }
         }

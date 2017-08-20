@@ -26,7 +26,7 @@ public class ClientProxyBase extends CommonProxyBase {
 
     @Override
     public final World getWorld(int dimension) {
-        if(Minecraft.getMinecraft().theWorld.provider.dimensionId == dimension){
+        if(Minecraft.getMinecraft().theWorld.provider.getDimension() == dimension){
             return Minecraft.getMinecraft().theWorld;
         }
         return null;

@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.core.gui;
 
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.gui.elements.*;
@@ -75,7 +74,7 @@ public class GuiResearchBook extends GuiContainerBase {
             Set<Integer> depIds = selectedRecipe.getNeededResearch();
             boolean canShow = true;
             for (int num : depIds) {
-                if (!ResearchTracker.INSTANCE.hasPlayerCompleted(mc.theWorld, mc.thePlayer.getCommandSenderName(), num)) {
+                if (!ResearchTracker.INSTANCE.hasPlayerCompleted(mc.theWorld, mc.thePlayer.getName(), num)) {
                     canShow = false;
                     break;
                 }

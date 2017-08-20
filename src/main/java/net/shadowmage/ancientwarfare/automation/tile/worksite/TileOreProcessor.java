@@ -55,8 +55,8 @@ public class TileOreProcessor extends TileWorksiteBase implements ISidedInventor
     @Override
     public void onBlockBroken() {
         super.onBlockBroken();
-        if (!worldObj.isRemote) {
-            InventoryTools.dropInventoryInWorld(worldObj, inventory, xCoord, yCoord, zCoord);
+        if (!world.isRemote) {
+            InventoryTools.dropInventoryInWorld(world, inventory, xCoord, yCoord, zCoord);
         }
     }
 

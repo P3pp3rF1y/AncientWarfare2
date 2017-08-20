@@ -1,14 +1,13 @@
 package net.shadowmage.ancientwarfare.core.item;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagString;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -48,8 +47,8 @@ public class ItemResearchBook extends Item {
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         if(!world.isRemote) {
             if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey("researcherName")) {
-                stack.setTagInfo("researcherName", new NBTTagString(player.getCommandSenderName()));
-                player.addChatComponentMessage(new ChatComponentTranslation("guistrings.research.book_bound"));
+                stack.setTagInfo("researcherName", new NBTTagString(player.getName()));
+                player.addChatComponentMessage(new TextComponentTranslation("guistrings.research.book_bound"));
             } else {
                 NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_RESEARCH_BOOK, 0, 0, 0);
             }

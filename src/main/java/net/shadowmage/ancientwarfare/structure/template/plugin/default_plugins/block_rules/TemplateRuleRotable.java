@@ -5,11 +5,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedSite;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
@@ -22,7 +21,7 @@ public class TemplateRuleRotable extends TemplateRuleBlock {
     public String blockName;
     public int meta;
     public int orientation;
-    BlockPosition p1, p2;
+    BlockPos p1, p2;
     NBTTagCompound tag;
 
     public TemplateRuleRotable(World world, int x, int y, int z, Block block, int meta, int turns) {
@@ -61,13 +60,13 @@ public class TemplateRuleRotable extends TemplateRuleBlock {
                 tag.setInteger("y", y);
                 tag.setInteger("z", z);
                 worksite.readFromNBT(tag);
-                EnumFacing o = EnumFacing.getOrientation(orientation);
+                EnumFacing o = EnumFacing.VALUES[orientation];
                 for (int i = 0; i < turns; i++) {
                     o = o.getRotation(EnumFacing.UP);
                 }
                 ((BlockRotationHandler.IRotatableTile) worksite).setPrimaryFacing(o);
                 if (worksite instanceof IBoundedSite && p1 != null && p2 != null) {
-                    BlockPosition pos1, pos2;
+                    BlockPos pos1, pos2;
                     pos1 = BlockTools.rotateAroundOrigin(p1, turns).offset(x, y, z);
                     pos2 = BlockTools.rotateAroundOrigin(p2, turns).offset(x, y, z);
                     ((IBoundedSite) worksite).setBounds(pos1, pos2);
@@ -86,10 +85,10 @@ public class TemplateRuleRotable extends TemplateRuleBlock {
             this.tag = tag.getCompoundTag("teData");
         }
         if (tag.hasKey("pos1")) {
-            this.p1 = new BlockPosition(tag.getCompoundTag("pos1"));
+            this.p1 = new BlockPos(tag.getCompoundTag("pos1"));
         }
         if (tag.hasKey("pos2")) {
-            this.p2 = new BlockPosition(tag.getCompoundTag("pos2"));
+            this.p2 = new BlockPos(tag.getCompoundTag("pos2"));
         }
     }
 

@@ -90,7 +90,7 @@ public class RenderTileTorqueTransport extends TileEntitySpecialRenderer impleme
             if (connections[i]) {
                 piece = gearHeads[i];
                 rotationArray = headRotationDirectionMatrix[i];
-                if (conduit.canOutputTorque(EnumFacing.getOrientation(i))) {
+                if (conduit.canOutputTorque(EnumFacing.VALUES[i))] {
                     rx = rotationArray[0] * rotation;
                     ry = rotationArray[1] * rotation;
                     rz = rotationArray[2] * rotation;

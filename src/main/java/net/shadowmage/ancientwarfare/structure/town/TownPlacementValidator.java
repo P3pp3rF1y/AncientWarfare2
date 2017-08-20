@@ -5,7 +5,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.gamedata.TownMap;
@@ -100,7 +99,7 @@ public class TownPlacementValidator {
         if (map == null) {
             return true;
         }
-        StructureBB bb = new StructureBB(new BlockPosition(area.getBlockMinX(), area.getMinY(), area.getBlockMaxX()), new BlockPosition(area.getBlockMaxX(), area.getMaxY(), area.getBlockMaxZ()));
+        StructureBB bb = new StructureBB(new BlockPos(area.getBlockMinX(), area.getMinY(), area.getBlockMaxX()), new BlockPos(area.getBlockMaxX(), area.getMaxY(), area.getBlockMaxZ()));
         int size = Math.max(area.getChunkWidth(), area.getChunkLength());
         List<StructureEntry> entries = new ArrayList<StructureEntry>();
         map.getEntriesNear(world, area.getCenterX(), area.getCenterZ(), size, true, entries);

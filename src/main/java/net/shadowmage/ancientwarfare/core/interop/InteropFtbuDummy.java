@@ -1,15 +1,13 @@
 package net.shadowmage.ancientwarfare.core.interop;
 
-import java.util.List;
-import java.util.UUID;
-
 import ftb.utils.world.LMPlayerServer;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.gamedata.ChunkClaimWorkerThread;
+
+import java.util.List;
+import java.util.UUID;
 
 public class InteropFtbuDummy implements InteropFtbuInterface {
     @Override
@@ -28,7 +26,7 @@ public class InteropFtbuDummy implements InteropFtbuInterface {
     //public void unclaimChunks(World world, String ownerName, int posX, int posY, int posZ) {}
 
     @Override
-    public void notifyPlayer(EnumChatFormatting titleColor, String ownerName, String title, ChatComponentTranslation msg, List<ChatComponentTranslation> hoverTextLines) {}
+    public void notifyPlayer(EnumChatFormatting titleColor, String ownerName, String title, TextComponentTranslation msg, List<TextComponentTranslation> hoverTextLines) {}
     
     @Override
     public LMPlayerServer getChunkClaimOwner(int dimId, int chunkX, int chunkY) { return null; }

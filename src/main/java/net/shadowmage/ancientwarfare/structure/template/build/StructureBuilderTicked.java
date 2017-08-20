@@ -23,7 +23,6 @@ package net.shadowmage.ancientwarfare.structure.template.build;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
@@ -119,8 +118,8 @@ public class StructureBuilderTicked extends StructureBuilder {
             this.maxPriority = tag.getInteger("maxPriority");
             this.currentPriority = tag.getInteger("currentPriority");
 
-            this.bb = new StructureBB(new BlockPosition(tag.getCompoundTag("bbMin")), new BlockPosition(tag.getCompoundTag("bbMax")));
-            this.buildOrigin = new BlockPosition(tag.getCompoundTag("buildOrigin"));
+            this.bb = new StructureBB(new BlockPos(tag.getCompoundTag("bbMin")), new BlockPos(tag.getCompoundTag("bbMax")));
+            this.buildOrigin = new BlockPos(tag.getCompoundTag("buildOrigin"));
             this.incrementDestination();
         } else {
             invalid = true;

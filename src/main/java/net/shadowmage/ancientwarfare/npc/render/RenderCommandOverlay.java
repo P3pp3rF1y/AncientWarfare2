@@ -7,9 +7,8 @@ import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.RayTraceResult.MovingObjectType;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.shadowmage.ancientwarfare.core.util.RayTraceUtils;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
@@ -48,14 +47,14 @@ public final class RenderCommandOverlay {
                 if (target.typeOfHit == MovingObjectType.BLOCK) {
                     targetString = target.blockX + "," + target.blockY + "," + target.blockZ;
                 } else if (target.typeOfHit == MovingObjectType.ENTITY) {
-                    targetString = target.entityHit.getCommandSenderName();
+                    targetString = target.entityHit.getName();
                 }
             }
             targetEntities = ItemCommandBaton.getCommandedEntities(mc.theWorld, mc.thePlayer.getCurrentEquippedItem());
         } else if (!mc.gameSettings.showDebugInfo) {
             List<String> entityNames = new ArrayList<String>();
             for (Entity e : targetEntities) {
-                entityNames.add(e.getCommandSenderName());
+                entityNames.add(e.getName());
             }
             ScaledResolution sr = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
             int x = sr.getScaledWidth() - 10;
@@ -84,7 +83,7 @@ public final class RenderCommandOverlay {
         if (pos != null) {
             AxisAlignedBB bb = null;
             if (pos.typeOfHit == MovingObjectType.BLOCK) {
-                bb = AxisAlignedBB.getBoundingBox(pos.blockX, pos.blockY, pos.blockZ, pos.blockX + 1.d, pos.blockY + 1.d, pos.blockZ + 1.d).expand(0.1d, 0.1d, 0.1d);
+                bb = new AxisAlignedBB(pos.blockX, pos.blockY, pos.blockZ, pos.blockX + 1.d, pos.blockY + 1.d, pos.blockZ + 1.d).expand(0.1d, 0.1d, 0.1d);
             } else if (pos.typeOfHit == MovingObjectType.ENTITY && pos.entityHit.boundingBox != null && pos.entityHit instanceof EntityLivingBase) {
                 bb = pos.entityHit.boundingBox.copy();
                 Entity e = pos.entityHit;

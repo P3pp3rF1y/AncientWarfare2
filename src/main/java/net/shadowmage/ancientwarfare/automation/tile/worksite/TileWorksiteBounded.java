@@ -2,8 +2,9 @@ package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.network.play.server.SPacketUpdateTileEntity;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
@@ -11,7 +12,6 @@ import net.shadowmage.ancientwarfare.automation.chunkloader.AWChunkLoader;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IChunkLoaderTile;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
 import java.util.Collection;
@@ -24,12 +24,12 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
      * minimum position of the work area bounding box, or a single block position if bbMax is not set
      * must not be null if this block has a work-area
      */
-    private BlockPosition bbMin;
+    private BlockPos bbMin;
 
     /**
      * maximum position of the work bounding box.  May be null
      */
-    private BlockPosition bbMax;
+    private BlockPos bbMax;
 
     private ForgeChunkManager.Ticket chunkTicket = null;
 
@@ -78,17 +78,17 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
     }
 
     @Override
-    public final BlockPosition getWorkBoundsMin() {
+    public final BlockPos getWorkBoundsMin() {
         return bbMin;
     }
 
     @Override
-    public final BlockPosition getWorkBoundsMax() {
+    public final BlockPos getWorkBoundsMax() {
         return bbMax;
     }
 
     @Override
-    public final void setBounds(BlockPosition min, BlockPosition max) {
+    public final void setBounds(BlockPos min, BlockPos max) {
         setWorkBoundsMin(BlockTools.getMin(min, max));
         setWorkBoundsMax(BlockTools.getMax(min, max));
         onBoundsSet();
@@ -114,14 +114,14 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
         if (this.chunkTicket == null) {
             return;
         }
-        AWChunkLoader.INSTANCE.writeDataToTicket(chunkTicket, xCoord, yCoord, zCoord);
-        ChunkPos ccip = new ChunkPos(xCoord >> 4, zCoord >> 4);
+        AWChunkLoader.INSTANCE.writeDataToTicket(chunkTicket, pos);
+        ChunkPos ccip = new ChunkPos(pos.getX() >> 4, pos.getZ() >> 4);
         ForgeChunkManager.forceChunk(chunkTicket, ccip);
         if (hasWorkBounds()) {
-            int minX = getWorkBoundsMin().x >> 4;
-            int minZ = getWorkBoundsMin().z >> 4;
-            int maxX = getWorkBoundsMax().x >> 4;
-            int maxZ = getWorkBoundsMax().z >> 4;
+            int minX = getWorkBoundsMin().getX() >> 4;
+            int minZ = getWorkBoundsMin().getZ() >> 4;
+            int maxX = getWorkBoundsMax().getX() >> 4;
+            int maxZ = getWorkBoundsMax().getZ() >> 4;
             for (int x = minX; x <= maxX; x++) {
                 for (int z = minZ; z <= maxZ; z++) {
                     ccip = new ChunkPos(x, z);
@@ -136,7 +136,7 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
             ForgeChunkManager.releaseTicket(chunkTicket);
         }
         if (getUpgrades().contains(WorksiteUpgrade.BASIC_CHUNK_LOADER) || getUpgrades().contains(WorksiteUpgrade.QUARRY_CHUNK_LOADER)) {
-            setTicket(ForgeChunkManager.requestTicket(AncientWarfareAutomation.instance, worldObj, ForgeChunkManager.Type.NORMAL));
+            setTicket(ForgeChunkManager.requestTicket(AncientWarfareAutomation.instance, world, ForgeChunkManager.Type.NORMAL));
         }
     }
 
@@ -157,17 +157,17 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
         setupInitialTicket();
     }
 
-    public boolean isInBounds(BlockPosition pos) {
-        return pos.x >= bbMin.x && pos.x <= bbMax.x && pos.z >= bbMin.z && pos.z <= bbMax.z;
+    public boolean isInBounds(BlockPos pos) {
+        return pos.getX() >= bbMin.getX() && pos.getX() <= bbMax.getX() && pos.getZ() >= bbMin.getZ() && pos.getZ() <= bbMax.getZ();
     }
 
-    protected void validateCollection(Collection<BlockPosition> blocks) {
+    protected void validateCollection(Collection<BlockPos> blocks) {
         if(!hasWorkBounds()){
             blocks.clear();
             return;
         }
-        Iterator<BlockPosition> it = blocks.iterator();
-        BlockPosition pos;
+        Iterator<BlockPos> it = blocks.iterator();
+        BlockPos pos;
         while (it.hasNext() && (pos = it.next()) != null) {
             if (!isInBounds(pos)) {
                 it.remove();
@@ -176,7 +176,7 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
     }
 
     @Override
-    public final void setWorkBoundsMin(BlockPosition min) {
+    public final void setWorkBoundsMin(BlockPos min) {
         if(min != bbMin){
             bbMin = min;
             markDirty();
@@ -184,7 +184,7 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
     }
 
     @Override
-    public final void setWorkBoundsMax(BlockPosition max) {
+    public final void setWorkBoundsMax(BlockPos max) {
         if(max != bbMax){
             bbMax = max;
             markDirty();
@@ -194,16 +194,16 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
         if (hasWorkBounds()) {
-            AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1);
-            BlockPosition min = getWorkBoundsMin();
-            bb.minX = min.x < bb.minX ? min.x : bb.minX;
-            bb.minY = min.y < bb.minY ? min.y : bb.minY;
-            bb.minZ = min.z < bb.minZ ? min.z : bb.minZ;
-            BlockPosition max = getWorkBoundsMax();
-            bb.maxX = max.x + 1 > bb.maxX ? max.x + 1 : bb.maxX;
-            bb.maxY = max.y + 1 > bb.maxY ? max.y + 1 : bb.maxY;
-            bb.maxZ = max.z + 1 > bb.maxZ ? max.z + 1 : bb.maxZ;
-            return bb;
+            BlockPos min = getWorkBoundsMin();
+            int minX = Math.min(min.getX(), pos.getX());
+            int minY = Math.min(min.getY(), pos.getY());
+            int minZ = Math.min(min.getZ(), pos.getZ());
+            BlockPos max = getWorkBoundsMax();
+            int maxX = Math.max(max.getX() + 1, pos.getX() + 1);
+            int maxY = Math.max(max.getY() + 1, pos.getY() + 1);
+            int maxZ = Math.max(max.getZ() + 1, pos.getZ() + 1);
+
+            return new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
         }
         return super.getRenderBoundingBox();
     }
@@ -212,16 +212,16 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         if (tag.hasKey("bbMin")) {
-            bbMin = new BlockPosition(tag.getCompoundTag("bbMin"));
+            bbMin = BlockPos.fromLong(tag.getLong("bbMin"));
         }
         if (tag.hasKey("bbMax")) {
-            bbMax = new BlockPosition(tag.getCompoundTag("bbMax"));
+            bbMax = BlockPos.fromLong(tag.getLong("bbMax"));
         }
         if (bbMax == null) {
-            setWorkBoundsMax(new BlockPosition(xCoord, yCoord, zCoord + 1));
+            setWorkBoundsMax(pos.add(0,0,1));
         }
         if (bbMin == null) {
-            setWorkBoundsMin(new BlockPosition(xCoord, yCoord, zCoord + 1));
+            setWorkBoundsMin(pos.add(0,0,1));
         }
     }
 
@@ -229,10 +229,10 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         if (bbMin != null) {
-            tag.setTag("bbMin", bbMin.writeToNBT(new NBTTagCompound()));
+            tag.setLong("bbMin", bbMin.toLong());
         }
         if (bbMax != null) {
-            tag.setTag("bbMax", bbMax.writeToNBT(new NBTTagCompound()));
+            tag.setLong("bbMax", bbMax.toLong());
         }
     }
 
@@ -240,23 +240,23 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
     public NBTTagCompound getDescriptionPacketTag(NBTTagCompound tag) {
         super.getDescriptionPacketTag(tag);
         if (bbMin != null) {
-            tag.setTag("bbMin", bbMin.writeToNBT(new NBTTagCompound()));
+            tag.setLong("bbMin", bbMin.toLong());
         }
         if (bbMax != null) {
-            tag.setTag("bbMax", bbMax.writeToNBT(new NBTTagCompound()));
+            tag.setLong("bbMax", bbMax.toLong());
         }
         return tag;
     }
 
     @Override
-    public final void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+    public final void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
         super.onDataPacket(net, pkt);
-        NBTTagCompound tag = pkt.func_148857_g();
+        NBTTagCompound tag = pkt.getNbtCompound();
         if (tag.hasKey("bbMin")) {
-            bbMin = new BlockPosition(tag.getCompoundTag("bbMin"));
+            bbMin = BlockPos.fromLong(tag.getLong("bbMin"));
         }
         if (tag.hasKey("bbMax")) {
-            bbMax = new BlockPosition(tag.getCompoundTag("bbMax"));
+            bbMax = BlockPos.fromLong(tag.getLong("bbMax"));
         }
     }
 

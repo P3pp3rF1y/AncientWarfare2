@@ -86,7 +86,7 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
     @Override
     public void onWeaponInventoryChanged() {
         super.onWeaponInventoryChanged();
-        if (!worldObj.isRemote) {
+        if (!world.isRemote) {
             this.tasks.removeTask(arrowAI);
             this.tasks.removeTask(collideAI);
             ItemStack stack = getHeldItem();

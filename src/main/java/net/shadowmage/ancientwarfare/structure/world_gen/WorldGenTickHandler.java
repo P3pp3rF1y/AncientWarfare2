@@ -99,7 +99,7 @@ public final class WorldGenTickHandler {
         final int world, chunkX, chunkZ;
 
         public ChunkGenerationTicket(World world, int x, int z) {
-            this.world = world.provider.dimensionId;
+            this.world = world.provider.getDimension();
             this.chunkX = x;
             this.chunkZ = z;
         }

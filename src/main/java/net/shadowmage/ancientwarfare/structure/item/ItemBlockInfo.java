@@ -6,7 +6,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
@@ -21,7 +20,7 @@ public class ItemBlockInfo extends Item {
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
         if(!world.isRemote) {
-            BlockPosition pos = BlockTools.getBlockClickedOn(player, player.world, false);
+            BlockPos pos = BlockTools.getBlockClickedOn(player, player.world, false);
             if (pos != null) {
                 Block block = world.getBlock(pos.x, pos.y, pos.z);
                 int meta = world.getBlockMetadata(pos.x, pos.y, pos.z);

@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.npc.ai.owned;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityHorse;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.Command;
@@ -10,7 +9,7 @@ import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.CommandType;
 
 public class NpcAIPlayerOwnedFollowCommand extends NpcAI<NpcPlayerOwned> {
 
-    BlockPosition moveTargetPos = null;
+    BlockPos moveTargetPos = null;
 
     public NpcAIPlayerOwnedFollowCommand(NpcPlayerOwned npc) {
         super(npc);
@@ -67,7 +66,7 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI<NpcPlayerOwned> {
                 break;
             }
             case SET_UPKEEP: {
-                npc.setUpkeepAutoPosition(new BlockPosition(cmd.x, cmd.y, cmd.z));
+                npc.setUpkeepAutoPosition(new BlockPos(cmd.x, cmd.y, cmd.z));
                 break;
             }
             case CLEAR_COMMAND:
@@ -96,7 +95,7 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI<NpcPlayerOwned> {
 
     private void handleMoveCommand(Command cmd) {
         if (moveTargetPos == null || moveTargetPos.x != cmd.x || moveTargetPos.y != cmd.y || moveTargetPos.z != cmd.z) {
-            moveTargetPos = new BlockPosition(cmd.x, cmd.y, cmd.z);
+            moveTargetPos = new BlockPos(cmd.x, cmd.y, cmd.z);
         }
         double sqDist = npc.getDistanceSq(moveTargetPos);
         if (sqDist > MIN_RANGE) {
@@ -110,7 +109,7 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI<NpcPlayerOwned> {
      * move towards the commanded guard-entity.
      */
     private void handleGuardCommand(Command cmd) {
-        Entity e = cmd.getEntityTarget(npc.worldObj);
+        Entity e = cmd.getEntityTarget(npc.world);
         if (e == null) {
             npc.setPlayerCommand(null);//clear the command if the target entity cannot be found
             return;
@@ -132,7 +131,7 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI<NpcPlayerOwned> {
     private void handleAttackMoveCommand(Command cmd) {
         //move along path while looking for attack targets... -- if a target is found, the next 'shouldContinue' will break out of the AI task and allow the NPC to commence attack operations
         if (moveTargetPos == null || moveTargetPos.x != cmd.x || moveTargetPos.y != cmd.y || moveTargetPos.z != cmd.z) {
-            moveTargetPos = new BlockPosition(cmd.x, cmd.y, cmd.z);
+            moveTargetPos = new BlockPos(cmd.x, cmd.y, cmd.z);
         }
         double sqDist = npc.getDistanceSq(moveTargetPos);
         if (sqDist > MIN_RANGE) {

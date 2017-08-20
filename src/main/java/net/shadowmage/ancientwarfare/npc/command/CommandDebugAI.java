@@ -4,7 +4,7 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.gamedata.WorldData;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
@@ -44,7 +44,7 @@ public class CommandDebugAI extends CommandBase {
             throw new WrongUsageException("Couldn't find or build relevant data");
         }
         d.set("NpcAIDebugMode", AWNPCStatics.npcAIDebugMode);
-        var1.addChatMessage(new ChatComponentTranslation("command.aw.npcdebug.used"));
+        var1.sendMessage(new TextComponentTranslation("command.aw.npcdebug.used"));
     }
 
     @Override

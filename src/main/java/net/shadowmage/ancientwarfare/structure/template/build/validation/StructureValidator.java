@@ -27,7 +27,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
@@ -141,9 +140,9 @@ public abstract class StructureValidator {
     /**
      * after validation, do any necessary clearing or leveling/etc
      */
-    public abstract void preGeneration(World world, BlockPosition pos, int face, StructureTemplate template, StructureBB bb);
+    public abstract void preGeneration(World world, BlockPos pos, int face, StructureTemplate template, StructureBB bb);
 
-    public void postGeneration(World world, BlockPosition origin, StructureBB bb){
+    public void postGeneration(World world, BlockPos origin, StructureBB bb){
 
     }
 

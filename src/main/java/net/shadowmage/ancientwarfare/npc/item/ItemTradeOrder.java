@@ -2,11 +2,10 @@ package net.shadowmage.ancientwarfare.npc.item;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.RayTraceResult.MovingObjectType;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.RayTraceUtils;
 import net.shadowmage.ancientwarfare.npc.orders.TradeOrder;
 
@@ -16,8 +15,8 @@ import java.util.Collection;
 public class ItemTradeOrder extends ItemOrders {
 
     @Override
-    public Collection<? extends BlockPosition> getPositionsForRender(ItemStack stack) {
-        Collection<BlockPosition> positionList = new ArrayList<BlockPosition>();
+    public Collection<? extends BlockPos> getPositionsForRender(ItemStack stack) {
+        Collection<BlockPos> positionList = new ArrayList<BlockPos>();
         TradeOrder order = TradeOrder.getTradeOrder(stack);
         if (order != null && order.getRoute().size() > 0) {
             for (int i = 0; i < order.getRoute().size(); i++) {
@@ -47,7 +46,7 @@ public class ItemTradeOrder extends ItemOrders {
             return;
         }
         TradeOrder order = TradeOrder.getTradeOrder(stack);
-        BlockPosition pos = new BlockPosition(hit.blockX, hit.blockY, hit.blockZ);
+        BlockPos pos = new BlockPos(hit.blockX, hit.blockY, hit.blockZ);
         if (key == ItemKey.KEY_0) {
             order.getRoute().addRoutePoint(pos);
             order.write(stack);

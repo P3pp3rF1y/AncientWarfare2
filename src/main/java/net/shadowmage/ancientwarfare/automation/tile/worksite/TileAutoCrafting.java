@@ -1,11 +1,14 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.*;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
@@ -109,7 +112,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
         useResources();
         stack = InventoryTools.mergeItemStack(outputInventory, stack, -1);
         if (stack != null) {
-            InventoryTools.dropItemInWorld(worldObj, stack, xCoord, yCoord, zCoord);
+            InventoryTools.dropItemInWorld(world, stack, xCoord, yCoord, zCoord);
         }
     }
 
@@ -123,7 +126,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
             if(InventoryTools.removeItems(resourceInventory, -1, stack1, 1) != null) {
                 stack1 = InventoryTools.getConsumedItem(craftMatrix, resourceInventory, i, stack1);
                 if (stack1 != null) {
-                    InventoryTools.dropItemInWorld(worldObj, stack1, xCoord, yCoord, zCoord);
+                    InventoryTools.dropItemInWorld(world, stack1, xCoord, yCoord, zCoord);
                 }
             }
         }
@@ -162,7 +165,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
 
     /** ***********************************INVENTORY METHODS*********************************************** */
     private void onLayoutMatrixChanged() {
-        this.outputSlot.setInventorySlotContents(0, AWCraftingManager.INSTANCE.findMatchingRecipe(craftMatrix, worldObj, getCrafterName()));
+        this.outputSlot.setInventorySlotContents(0, AWCraftingManager.INSTANCE.findMatchingRecipe(craftMatrix, world, getCrafterName()));
     }
 
     @Override
@@ -247,7 +250,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
 
     @Override
     public int[] getAccessibleSlotsFromSide(int side) {
-        EnumFacing d = EnumFacing.getOrientation(side);
+        EnumFacing d = EnumFacing.VALUES[side];
         if (d == EnumFacing.UP) {
             return resourceSlotIndices;
         } else if (d == EnumFacing.DOWN) {
@@ -258,12 +261,12 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
 
     @Override
     public boolean canInsertItem(int slot, ItemStack var2, int side) {
-        return EnumFacing.getOrientation(side) == EnumFacing.UP;//top, insert only
+        return EnumFacing.VALUES[side] == EnumFacing.UP;//top, insert only
     }
 
     @Override
     public boolean canExtractItem(int slot, ItemStack var2, int side) {
-        return EnumFacing.getOrientation(side) == EnumFacing.DOWN;//bottom, extract only
+        return EnumFacing.VALUES[side] == EnumFacing.DOWN;//bottom, extract only
     }
 
     @Override

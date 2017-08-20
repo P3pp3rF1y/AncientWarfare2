@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.api;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
@@ -18,11 +19,9 @@ public interface IAncientWarfarePlantable {
     /**
      * Called when the crop farm tries to plant this crop
      * @param world
-     * @param x
-     * @param y
-     * @param z
+     * @param pos
      * @param stack a copy of the stack which the farm is trying to plant
      * @return true if planting is allowed, false if not
      */
-    boolean tryPlant(World world, int x, int y, int z, ItemStack stack);
+    boolean tryPlant(World world, BlockPos pos, ItemStack stack);
 }

@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.npc.ai.owned;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
@@ -19,7 +18,7 @@ public class NpcAIPlayerOwnedGetFood extends NpcAI<NpcPlayerOwned> {
         if (!npc.getIsAIEnabled()) {
             return false;
         }
-        return npc.requiresUpkeep() && npc.getUpkeepPoint() != null && npc.getFoodRemaining() == 0 && npc.getUpkeepDimensionId() == npc.worldObj.provider.dimensionId;
+        return npc.requiresUpkeep() && npc.getUpkeepPoint() != null && npc.getFoodRemaining() == 0 && npc.getUpkeepDimensionId() == npc.world.provider.getDimension();
     }
 
     @Override
@@ -27,7 +26,7 @@ public class NpcAIPlayerOwnedGetFood extends NpcAI<NpcPlayerOwned> {
         if (!npc.getIsAIEnabled()) {
             return false;
         }
-        return npc.requiresUpkeep() && npc.getUpkeepPoint() != null && npc.getFoodRemaining() < npc.getUpkeepAmount() && npc.getUpkeepDimensionId() == npc.worldObj.provider.dimensionId;
+        return npc.requiresUpkeep() && npc.getUpkeepPoint() != null && npc.getFoodRemaining() < npc.getUpkeepAmount() && npc.getUpkeepDimensionId() == npc.world.provider.getDimension();
     }
 
     /**
@@ -43,7 +42,7 @@ public class NpcAIPlayerOwnedGetFood extends NpcAI<NpcPlayerOwned> {
      */
     @Override
     public void updateTask() {
-        BlockPosition pos = npc.getUpkeepPoint();
+        BlockPos pos = npc.getUpkeepPoint();
         if (pos == null) {
             return;
         }
@@ -66,8 +65,8 @@ public class NpcAIPlayerOwnedGetFood extends NpcAI<NpcPlayerOwned> {
         npc.removeAITask(TASK_UPKEEP + TASK_MOVE);
     }
 
-    protected void tryUpkeep(BlockPosition pos) {
-        TileEntity te = npc.worldObj.getTileEntity(pos.x, pos.y, pos.z);
+    protected void tryUpkeep(BlockPos pos) {
+        TileEntity te = npc.world.getTileEntity(pos.x, pos.y, pos.z);
         if (te instanceof IInventory) {
             npc.withdrawFood((IInventory) te, npc.getUpkeepBlockSide());
         }

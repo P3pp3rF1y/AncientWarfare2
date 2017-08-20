@@ -6,8 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
@@ -35,7 +34,7 @@ public class ItemResearchNotes extends Item {
             ResearchGoal goal = ResearchGoal.getGoal(name);
             if (goal != null) {
                 researchName = I18n.format(name);
-                known = ResearchTracker.INSTANCE.hasPlayerCompleted(par2EntityPlayer.worldObj, par2EntityPlayer.getCommandSenderName(), goal.getId());
+                known = ResearchTracker.INSTANCE.hasPlayerCompleted(par2EntityPlayer.world, par2EntityPlayer.getName(), goal.getId());
             } else {
                 researchName = "missing_goal_for_id_" + researchName;
             }
@@ -79,15 +78,15 @@ public class ItemResearchNotes extends Item {
             String name = tag.getString("researchName");
             ResearchGoal goal = ResearchGoal.getGoal(name);
             if (goal != null) {
-                boolean known = ResearchTracker.INSTANCE.hasPlayerCompleted(player.world, player.getCommandSenderName(), goal.getId());
+                boolean known = ResearchTracker.INSTANCE.hasPlayerCompleted(player.world, player.getName(), goal.getId());
                 if (!known) {
-                    if (ResearchTracker.INSTANCE.addResearchFromNotes(player.world, player.getCommandSenderName(), goal.getId()) && !player.capabilities.isCreativeMode) {
-                        player.addChatMessage(new ChatComponentTranslation("guistrings.research.learned_from_item"));
+                    if (ResearchTracker.INSTANCE.addResearchFromNotes(player.world, player.getName(), goal.getId()) && !player.capabilities.isCreativeMode) {
+                        player.sendMessage(new TextComponentTranslation("guistrings.research.learned_from_item"));
                         stack.shrink(1);
                     }
                 } else {
-                    if (ResearchTracker.INSTANCE.addProgressFromNotes(player.world, player.getCommandSenderName(), goal.getId()) && !player.capabilities.isCreativeMode) {
-                        player.addChatMessage(new ChatComponentTranslation("guistrings.research.added_progress"));
+                    if (ResearchTracker.INSTANCE.addProgressFromNotes(player.world, player.getName(), goal.getId()) && !player.capabilities.isCreativeMode) {
+                        player.sendMessage(new TextComponentTranslation("guistrings.research.added_progress"));
                         stack.shrink(1);
                     }
                 }

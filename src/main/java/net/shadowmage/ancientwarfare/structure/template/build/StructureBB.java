@@ -20,7 +20,6 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.build;
 
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.Zone;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
@@ -28,7 +27,7 @@ import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 public class StructureBB extends Zone{
 
     public StructureBB(int minX, int minY, int minZ, int maxX, int maxY, int maxZ) {
-        super(new BlockPosition(minX, minY, minZ), new BlockPosition(maxX, maxY, maxZ));
+        super(new BlockPos(minX, minY, minZ), new BlockPos(maxX, maxY, maxZ));
     }
 
     public StructureBB(int x, int y, int z, int face, StructureTemplate template) {
@@ -40,12 +39,12 @@ public class StructureBB extends Zone{
          * we simply take the clicked on position
          * and walk left/forward/down by the structure offsets
          */
-        BlockPosition c1 = new BlockPosition(x, y, z).moveLeft(face, xOffset).moveForward(face, zOffset).moveUp(-yOffset);
+        BlockPos c1 = new BlockPos(x, y, z).moveLeft(face, xOffset).moveForward(face, zOffset).moveUp(-yOffset);
         /**
          * the second corner starts as a copy of the first corner
          * which then walks right, backwards, and up to arrive at the actual second corner
          */
-        BlockPosition c2 = c1.moveRight(face, xSize - 1).moveForward(face, -(zSize - 1)).moveUp(ySize - 1);
+        BlockPos c2 = c1.moveRight(face, xSize - 1).moveForward(face, -(zSize - 1)).moveUp(ySize - 1);
         /**
          * finally, set the min/max of this BB to the min/max of the two corners
          */
@@ -53,7 +52,7 @@ public class StructureBB extends Zone{
         this.max = BlockTools.getMax(c1, c2);
     }
 
-    public StructureBB(BlockPosition pos1, BlockPosition pos2) {
+    public StructureBB(BlockPos pos1, BlockPos pos2) {
         super(pos1, pos2);
     }
 
@@ -70,7 +69,7 @@ public class StructureBB extends Zone{
      * can be used to contract by specifying negative amounts...
      */
     public StructureBB expand(int x, int y, int z) {
-        min = min.sub(new BlockPosition(x, y, z));
+        min = min.sub(new BlockPos(x, y, z));
         max = max.offset(x, y, z);
         return this;
     }
@@ -103,7 +102,7 @@ public class StructureBB extends Zone{
      * 2-- z--==forward x--==left
      * 3-- x++==forward z--==left
      */
-    public StructureBB getFrontCorners(int face, BlockPosition min, BlockPosition max) {
+    public StructureBB getFrontCorners(int face, BlockPos min, BlockPos max) {
         min = getFLCorner(face, min);
         max = getFRCorner(face, max);
         int minX = Math.min(min.x, max.x);
@@ -111,12 +110,12 @@ public class StructureBB extends Zone{
         int minZ = Math.min(min.z, max.z);
         int maxZ = Math.max(min.z, max.z);
         StructureBB result = new StructureBB();
-        result.min = new BlockPosition(minX, min.y, minZ);
-        result.max = new BlockPosition(maxX, max.y, maxZ);
+        result.min = new BlockPos(minX, min.y, minZ);
+        result.max = new BlockPos(maxX, max.y, maxZ);
         return result;
     }
 
-    public StructureBB getLeftCorners(int face, BlockPosition min, BlockPosition max) {
+    public StructureBB getLeftCorners(int face, BlockPos min, BlockPos max) {
         min = getFLCorner(face, min);
         max = getRLCorner(face, max);
         int minX = Math.min(min.x, max.x);
@@ -124,12 +123,12 @@ public class StructureBB extends Zone{
         int minZ = Math.min(min.z, max.z);
         int maxZ = Math.max(min.z, max.z);
         StructureBB result = new StructureBB();
-        result.min = new BlockPosition(minX, min.y, minZ);
-        result.max = new BlockPosition(maxX, max.y, maxZ);
+        result.min = new BlockPos(minX, min.y, minZ);
+        result.max = new BlockPos(maxX, max.y, maxZ);
         return result;
     }
 
-    public StructureBB getRearCorners(int face, BlockPosition min, BlockPosition max) {
+    public StructureBB getRearCorners(int face, BlockPos min, BlockPos max) {
         min = getRLCorner(face, min);
         max = getRRCorner(face, max);
         int minX = Math.min(min.x, max.x);
@@ -137,12 +136,12 @@ public class StructureBB extends Zone{
         int minZ = Math.min(min.z, max.z);
         int maxZ = Math.max(min.z, max.z);
         StructureBB result = new StructureBB();
-        result.min = new BlockPosition(minX, min.y, minZ);
-        result.max = new BlockPosition(maxX, max.y, maxZ);
+        result.min = new BlockPos(minX, min.y, minZ);
+        result.max = new BlockPos(maxX, max.y, maxZ);
         return result;
     }
 
-    public StructureBB getRightCorners(int face, BlockPosition min, BlockPosition max) {
+    public StructureBB getRightCorners(int face, BlockPos min, BlockPos max) {
         min = getFRCorner(face, min);
         max = getRRCorner(face, max);
         int minX = Math.min(min.x, max.x);
@@ -150,21 +149,21 @@ public class StructureBB extends Zone{
         int minZ = Math.min(min.z, max.z);
         int maxZ = Math.max(min.z, max.z);
         StructureBB result = new StructureBB();
-        result.min = new BlockPosition(minX, min.y, minZ);
-        result.max = new BlockPosition(maxX, max.y, maxZ);
+        result.min = new BlockPos(minX, min.y, minZ);
+        result.max = new BlockPos(maxX, max.y, maxZ);
         return result;
     }
 
-    private BlockPosition getFLCorner(int face, BlockPosition out) {
+    private BlockPos getFLCorner(int face, BlockPos out) {
         switch (face) {
             case 0:
-                return new BlockPosition(max.x, min.y, min.z);
+                return new BlockPos(max.x, min.y, min.z);
 
             case 1:
-                return new BlockPosition(max.x, min.y, max.z);
+                return new BlockPos(max.x, min.y, max.z);
 
             case 2:
-                return new BlockPosition(min.x, min.y, max.z);
+                return new BlockPos(min.x, min.y, max.z);
 
             case 3:
                 return min;
@@ -172,53 +171,53 @@ public class StructureBB extends Zone{
         return out;
     }
 
-    private BlockPosition getFRCorner(int face, BlockPosition out) {
+    private BlockPos getFRCorner(int face, BlockPos out) {
         switch (face) {
             case 0:
                 return min;
 
             case 1:
-                return new BlockPosition(max.x, min.y, min.z);
+                return new BlockPos(max.x, min.y, min.z);
 
             case 2:
-                return new BlockPosition(max.x, min.y, max.z);
+                return new BlockPos(max.x, min.y, max.z);
 
             case 3:
-                return new BlockPosition(min.x, min.y, max.z);
+                return new BlockPos(min.x, min.y, max.z);
         }
         return out;
     }
 
-    public BlockPosition getRLCorner(int face, BlockPosition out) {
+    public BlockPos getRLCorner(int face, BlockPos out) {
         switch (face) {
             case 0:
-                return new BlockPosition(max.x, min.y, max.z);
+                return new BlockPos(max.x, min.y, max.z);
 
             case 1:
-                return new BlockPosition(min.x, min.y, max.z);
+                return new BlockPos(min.x, min.y, max.z);
 
             case 2:
                 return min;
 
             case 3:
-                return new BlockPosition(max.x, min.y, min.z);
+                return new BlockPos(max.x, min.y, min.z);
         }
         return out;
     }
 
-    private BlockPosition getRRCorner(int face, BlockPosition out) {
+    private BlockPos getRRCorner(int face, BlockPos out) {
         switch (face) {
             case 0:
-                return new BlockPosition(min.x, min.y, max.z);
+                return new BlockPos(min.x, min.y, max.z);
 
             case 1:
                 return min;
 
             case 2:
-                return new BlockPosition(max.x, min.y, min.z);
+                return new BlockPos(max.x, min.y, min.z);
 
             case 3:
-                return new BlockPosition(max.x, min.y, max.z);
+                return new BlockPos(max.x, min.y, max.z);
         }
         return out;
     }

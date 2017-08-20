@@ -51,7 +51,7 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
         this.filters.addAll(filters);
         shouldUpdate = false;//set to false, as we are manually updating right now
         recountFilters(false);//recount filters, do not send update
-        this.worldObj.notifyBlockUpdate(xCoord, yCoord, zCoord);//to re-send description packet to client with new filters
+        this.world.notifyBlockUpdate(xCoord, yCoord, zCoord);//to re-send description packet to client with new filters
     }
 
     /**
@@ -67,7 +67,7 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
                 if (count != filter.getQuantity()) {
                     filter.setQuantity(0);
                     if (sendToClients) {
-                        worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), index, count);
+                        world.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), index, count);
                     }
                 }
                 index++;
@@ -78,7 +78,7 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
                 if (count != filter.getQuantity()) {
                     filter.setQuantity(count);
                     if (sendToClients) {
-                        worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), index, count);
+                        world.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), index, count);
                     }
                 }
                 index++;
@@ -92,13 +92,13 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
             return false;
         if(owner!=null)
             return player.getUniqueID().equals(owner);
-        return player.getCommandSenderName().equals(ownerName);
+        return player.getName().equals(ownerName);
     }
 
     @Override
     public void setOwner(EntityPlayer player) {
         this.owner = player.getUniqueID();
-        this.ownerName = player.getCommandSenderName();
+        this.ownerName = player.getName();
     }
     
     @Override
@@ -156,7 +156,7 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
 
     @Override
     public boolean receiveClientEvent(int a, int b) {
-        if (worldObj.isRemote) {
+        if (world.isRemote) {
             if (a >= 0 && a < filters.size()) {
                 filters.get(a).setQuantity(b);
                 updateViewers();
@@ -166,14 +166,14 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
     }
 
     private void checkOwnerName(){
-        if(hasWorldObj()){
+        if(hasWorld()){
             if(owner!=null) {
-                EntityPlayer player = worldObj.func_152378_a(owner);
+                EntityPlayer player = world.func_152378_a(owner);
                 if (player != null) {
                     setOwner(player);
                 }
             }else if(ownerName!=null){
-                EntityPlayer player = worldObj.getPlayerEntityByName(ownerName);
+                EntityPlayer player = world.getPlayerEntityByName(ownerName);
                 if(player!=null){
                     setOwner(player);
                 }

@@ -1,6 +1,9 @@
 package net.shadowmage.ancientwarfare.structure.tile;
 
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -48,7 +51,7 @@ public class SpawnerSettings {
      * fields for a 'fake' tile-entity...set from the real tile-entity when it has its
      * world set (which is before first updateEntity() is called)
      */
-    public World worldObj;
+    public World world;
     int xCoord;
     int yCoord;
     int zCoord;
@@ -71,7 +74,7 @@ public class SpawnerSettings {
     }
 
     public void setWorld(World world, int x, int y, int z) {
-        this.worldObj = world;
+        this.world = world;
         this.xCoord = x;
         this.yCoord = y;
         this.zCoord = z;
@@ -86,12 +89,12 @@ public class SpawnerSettings {
             updateRedstoneModeToggle();
         }
         if (spawnGroups.isEmpty()) {
-            worldObj.setBlockToAir(xCoord, yCoord, zCoord);
+            world.setBlockToAir(xCoord, yCoord, zCoord);
         }
     }
 
     private void updateRedstoneModeToggle() {
-        prevRedstoneState = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) || worldObj.getBlockPowerInput(xCoord, yCoord, zCoord) > 0;
+        prevRedstoneState = world.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) || world.getBlockPowerInput(xCoord, yCoord, zCoord) > 0;
         if (respondToRedstone && !redstoneMode && !prevRedstoneState) {
             //noop
             return;
@@ -100,7 +103,7 @@ public class SpawnerSettings {
     }
 
     private void updateRedstoneModePulse() {
-        boolean powered = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) || worldObj.getBlockPowerInput(xCoord, yCoord, zCoord) > 0;
+        boolean powered = world.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) || world.getBlockPowerInput(xCoord, yCoord, zCoord) > 0;
         if (!prevRedstoneState && powered) {
             spawnEntities();
         }
@@ -113,7 +116,7 @@ public class SpawnerSettings {
         }
         if (spawnDelay <= 0) {
             int range = maxDelay - minDelay;
-            spawnDelay = minDelay + (range <= 0 ? 0 :  worldObj.rand.nextInt(range));
+            spawnDelay = minDelay + (range <= 0 ? 0 :  world.rand.nextInt(range));
             spawnEntities();
         }
     }
@@ -121,7 +124,7 @@ public class SpawnerSettings {
     @SuppressWarnings("unchecked")
     private void spawnEntities() {
         if (lightSensitive) {
-            int light = worldObj.getBlockLightValue(xCoord, yCoord, zCoord);
+            int light = world.getBlockLightValue(xCoord, yCoord, zCoord);
 
             //TODO check this light calculation stuff...
             if (light >= 8) {
@@ -129,7 +132,7 @@ public class SpawnerSettings {
             }
         }
         if (playerRange > 0) {
-            List<EntityPlayer> nearbyPlayers = worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(playerRange, playerRange, playerRange));
+            List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(playerRange, playerRange, playerRange));
             if (nearbyPlayers.isEmpty()) {
                 return;
             }
@@ -147,7 +150,7 @@ public class SpawnerSettings {
         }
 
         if (maxNearbyMonsters > 0 && mobRange > 0) {
-            int nearbyCount = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(mobRange, mobRange, mobRange)).size();
+            int nearbyCount = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(mobRange, mobRange, mobRange)).size();
             if (nearbyCount >= maxNearbyMonsters) {
                 AWLog.logDebug("skipping spawning because of too many nearby entities");
                 return;
@@ -159,7 +162,7 @@ public class SpawnerSettings {
         {
             totalWeight += group.groupWeight;
         }
-        int rand = totalWeight == 0 ? 0 : worldObj.rand.nextInt(totalWeight);//select an object
+        int rand = totalWeight == 0 ? 0 : world.rand.nextInt(totalWeight);//select an object
         int check = 0;
         EntitySpawnGroup toSpawn = null;
         int index = 0;
@@ -175,7 +178,7 @@ public class SpawnerSettings {
         }
 
         if (toSpawn != null) {
-            toSpawn.spawnEntities(worldObj, xCoord, yCoord, zCoord, index, range);
+            toSpawn.spawnEntities(world, xCoord, yCoord, zCoord, index, range);
             if (toSpawn.shouldRemove()) {
                 spawnGroups.remove(toSpawn);
             }

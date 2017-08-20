@@ -124,7 +124,7 @@ public class BlockWorksiteBase extends Block implements IRotatableBlock {
                     canClick = true;
             }
             if (canClick) {
-                return ((IInteractableTile) te).onBlockClicked(player);
+                return ((IInteractableTile) te).onBlockClicked(player, hand);
             }
         }
         return false;
@@ -141,11 +141,11 @@ public class BlockWorksiteBase extends Block implements IRotatableBlock {
     }
 
     @Override
-    public final boolean rotateBlock(World worldObj, BlockPos pos, EnumFacing facing) {
+    public final boolean rotateBlock(World world, BlockPos pos, EnumFacing facing) {
         if (facing == EnumFacing.DOWN || facing == EnumFacing.UP) {
-            TileEntity te = worldObj.getTileEntity(pos);
+            TileEntity te = world.getTileEntity(pos);
             if (te instanceof IRotatableTile) {
-                if(!worldObj.isRemote) {
+                if(!world.isRemote) {
                     EnumFacing o = ((IRotatableTile) te).getPrimaryFacing().rotateAround(facing.getAxis());
                     ((IRotatableTile) te).setPrimaryFacing(o);//twb will send update packets / etc
                 }
@@ -156,7 +156,7 @@ public class BlockWorksiteBase extends Block implements IRotatableBlock {
     }
 
     @Override
-    public final EnumFacing[] getValidRotations(World worldObj, BlockPos pos) {
+    public final EnumFacing[] getValidRotations(World world, BlockPos pos) {
         return new EnumFacing[]{EnumFacing.DOWN, EnumFacing.UP};
     }
 

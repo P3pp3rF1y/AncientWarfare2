@@ -1,19 +1,20 @@
 package net.shadowmage.ancientwarfare.structure.tile;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
@@ -22,14 +23,13 @@ import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilderTicked;
 
 import java.util.EnumSet;
 import java.util.UUID;
 
-public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwnable {
+public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwnable, ITickable {
 
     protected UUID owningPlayer;
     private EntityPlayer owner;
@@ -55,8 +55,8 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwna
     public AxisAlignedBB getRenderBoundingBox() {
         AxisAlignedBB bb = super.getRenderBoundingBox();
         if (clientBB != null) {
-            bb.addCoord(clientBB.min.x - xCoord, clientBB.min.y - yCoord, clientBB.min.z - zCoord);
-            bb.addCoord(clientBB.max.x - xCoord, clientBB.max.y - yCoord, clientBB.max.z - zCoord);
+            bb.expand(clientBB.min.x - pos.getX(), clientBB.min.y - pos.getY(), clientBB.min.z - pos.getZ());
+            bb.expand(clientBB.max.x - pos.getX(), clientBB.max.y - pos.getY(), clientBB.max.z - pos.getZ());
         }
         return bb;
     }
@@ -125,17 +125,17 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwna
     }
 
     @Override
-    public void updateEntity() {
-        if (!hasWorldObj() || worldObj.isRemote) {
+    public void update() {
+        if (!hasWorld() || world.isRemote) {
             return;
         }
         if (shouldRemove || builder == null || builder.invalid || builder.isFinished()) {
             shouldRemove = true;
-            worldObj.setBlockToAir(xCoord, yCoord, zCoord);
+            world.setBlockToAir(pos);
             return;
         }
         if (builder.getWorld() == null) {
-            builder.setWorld(worldObj);
+            builder.setWorld(world);
         }
         if (ModuleStatus.automationLoaded || ModuleStatus.npcsLoaded) {
             if (storedEnergy >= AWCoreStatics.energyPerWorkUnit) {
@@ -177,7 +177,7 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwna
 
     @Override
     public String getOwnerName(){
-        return getOwnerAsPlayer().getCommandSenderName();
+        return getOwnerAsPlayer().getName();
     }
     
     @Override
@@ -186,8 +186,8 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwna
     }
 
     public final EntityPlayer getOwnerAsPlayer() {
-        if(owner==null || !owner.isEntityAlive() || owner.isEntityInvulnerable()) {
-            owner = AncientWarfareCore.proxy.getFakePlayer(this.getWorldObj(), null, owningPlayer);
+        if(owner==null || !owner.isEntityAlive() || (owner instanceof FakePlayer)) { //TODO this condition needs looking into - no idea why owner needs to be set everytime
+            owner = AncientWarfareCore.proxy.getFakePlayer(this.getWorld(), null, owningPlayer);
         }
         return owner;
     }
@@ -203,7 +203,7 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwna
     }
 
     public void onBlockBroken() {
-        if (!worldObj.isRemote && !isStarted && builder != null && builder.getTemplate() != null) {
+        if (!world.isRemote && !isStarted && builder != null && builder.getTemplate() != null) {
             isStarted = true;//to prevent further drops
             ItemStack item = new ItemStack(AWBlocks.builderBlock);
             item.setTagInfo("structureName", new NBTTagString(builder.getTemplate().name));
@@ -215,7 +215,7 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwna
         int max = builder.getMaxPasses();
         float percent = builder.getPercentDoneWithPass() * 100.f;
         String perc = String.format("%.2f", percent)+"%";
-        player.addChatMessage(new ChatComponentTranslation("guistrings.structure.builder.state", perc, pass, max));
+        player.sendMessage(new TextComponentTranslation("guistrings.structure.builder.state", perc, pass, max));
     }
 
     @Override
@@ -234,7 +234,7 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwna
         super.onDataPacket(net, pkt);
         NBTTagCompound tag = pkt.func_148857_g();
         if (tag.hasKey("bbMin") && tag.hasKey("bbMax")) {
-            clientBB = new StructureBB(new BlockPosition(tag.getCompoundTag("bbMin")), new BlockPosition(tag.getCompoundTag("bbMax")));
+            clientBB = new StructureBB(new BlockPos(tag.getCompoundTag("bbMin")), new BlockPos(tag.getCompoundTag("bbMax")));
         }
     }
 
@@ -283,7 +283,7 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwna
     @Override
     public final Team getTeam() {
         if (owningPlayer != null) {
-            worldObj.getScoreboard().getPlayersTeam(getOwnerName());
+            world.getScoreboard().getPlayersTeam(getOwnerName());
         }
         return null;
     }

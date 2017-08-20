@@ -21,7 +21,6 @@
 package net.shadowmage.ancientwarfare.structure.world_gen;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 
@@ -44,7 +43,7 @@ public class StructureEntry {
     }
 
     public StructureEntry() {
-        bb = new StructureBB(new BlockPosition(), new BlockPosition());
+        bb = new StructureBB(new BlockPos(), new BlockPos());
     }//NBT constructor
 
     public void writeToNBT(NBTTagCompound tag) {
@@ -58,8 +57,8 @@ public class StructureEntry {
         value = tag.getInteger("value");
         int[] datas = tag.getIntArray("bb");
         if (datas.length >= 6) {
-            bb.min = new BlockPosition(datas[0], datas[1], datas[2]);
-            bb.max = new BlockPosition(datas[3], datas[4], datas[5]);
+            bb.min = new BlockPos(datas[0], datas[1], datas[2]);
+            bb.max = new BlockPos(datas[3], datas[4], datas[5]);
         }
     }
 

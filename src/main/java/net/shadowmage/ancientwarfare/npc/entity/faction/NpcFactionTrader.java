@@ -51,7 +51,7 @@ public abstract class NpcFactionTrader extends NpcFaction {
     @Override
     public void onUpdate() {
         super.onUpdate();
-        if (!worldObj.isRemote) {
+        if (!world.isRemote) {
             tradeList.tick();
         }
     }

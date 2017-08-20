@@ -9,11 +9,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
 import java.util.List;
@@ -28,7 +26,7 @@ public class ItemQuill extends Item {
         this.setUnlocalizedName(regName);
         this.setTextureName("ancientwarfare:core/" + regName);
         this.attackDamage = 1.f + material.getDamageVsEntity();
-        this.ma.setCount(1);
+        this.maxStackSize = 1;
         this.setMaxDamage(material.getMaxUses());
         this.setCreativeTab(AWCoreBlockLoader.coreTab);
         this.setHarvestLevel("quill", material.getHarvestLevel());
@@ -94,7 +92,7 @@ public class ItemQuill extends Item {
         if(world.isRemote){
             return stack;
         }
-        BlockPosition pos = BlockTools.getBlockClickedOn(player, world, false);
+        BlockPos pos = BlockTools.getBlockClickedOn(player, world, false);
         if (pos != null) {
             TileEntity te = player.world.getTileEntity(pos.x, pos.y, pos.z);
             if (te instanceof IWorkSite && ((IWorkSite) te).getWorkType() == IWorkSite.WorkType.RESEARCH) {

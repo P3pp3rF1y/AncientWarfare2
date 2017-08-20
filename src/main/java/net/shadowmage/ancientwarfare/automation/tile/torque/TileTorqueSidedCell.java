@@ -5,8 +5,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.Constants;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
@@ -49,7 +49,7 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
     @Override
     public void updateEntity() {
         super.updateEntity();
-        if (!worldObj.isRemote) {
+        if (!world.isRemote) {
             serverNetworkUpdate();
             torqueIn = getTotalTorque() - prevEnergy;
             balanceStorage();

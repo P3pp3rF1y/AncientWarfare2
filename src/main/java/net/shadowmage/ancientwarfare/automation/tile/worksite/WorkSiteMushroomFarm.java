@@ -6,14 +6,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
-import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.tile.TreeFinder;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.HashSet;
@@ -22,17 +21,17 @@ import java.util.Set;
 
 public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
 
-    private final Set<BlockPosition> blocksToHarvest;
-    private final Set<BlockPosition> blocksToPlantMushroom;
-    private final Set<BlockPosition> blocksToPlantNetherWart;
+    private final Set<BlockPos> blocksToHarvest;
+    private final Set<BlockPos> blocksToPlantMushroom;
+    private final Set<BlockPos> blocksToPlantNetherWart;
     private int mushroomCount;
     private int netherWartCount;
 
     public WorkSiteMushroomFarm() {
 
-        blocksToHarvest = new HashSet<BlockPosition>();
-        blocksToPlantMushroom = new HashSet<BlockPosition>();
-        blocksToPlantNetherWart = new HashSet<BlockPosition>();
+        blocksToHarvest = new HashSet<BlockPos>();
+        blocksToPlantMushroom = new HashSet<BlockPos>();
+        blocksToPlantNetherWart = new HashSet<BlockPos>();
 
         this.inventory = new SlotListener(TOP_LENGTH + FRONT_LENGTH);
         InventoryTools.IndexHelper helper = new InventoryTools.IndexHelper();
@@ -58,7 +57,7 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
     @Override
     protected boolean isFarmable(Block block, int x, int y, int z){
         if(super.isFarmable(block, x, y, z)) {
-            EnumPlantType type = ((IPlantable) block).getPlantType(worldObj, x, y, z);
+            EnumPlantType type = ((IPlantable) block).getPlantType(world, x, y, z);
             return type == EnumPlantType.Cave || type == EnumPlantType.Nether;
         }
         return false;
@@ -82,11 +81,11 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
                 continue;
             }
             if (item.getItem() == Items.nether_wart) {
-                netherWartCount += item.stackSize;
+                netherWartCount += item.getCount();
             } else {
                 Block block = Block.getBlockFromItem(item.getItem());
                 if(isFarmable(block))
-                    mushroomCount += item.stackSize;
+                    mushroomCount += item.getCount();
             }
         }
     }
@@ -98,14 +97,14 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
 
     @Override
     protected boolean processWork() {
-        Iterator<BlockPosition> it;
+        Iterator<BlockPos> it;
         if (!blocksToHarvest.isEmpty()) {
             it = blocksToHarvest.iterator();
-            BlockPosition pos;
+            BlockPos pos;
             Block block;
             while (it.hasNext() && (pos = it.next()) != null) {
                 it.remove();
-                block = worldObj.getBlock(pos.x, pos.y, pos.z);
+                block = world.getBlock(pos.x, pos.y, pos.z);
                 if (block instanceof BlockHugeMushroom || isFarmable(block, pos.x, pos.y, pos.z)) {
                     return harvestBlock(pos.x, pos.y, pos.z, RelativeSide.FRONT, RelativeSide.TOP);
                 }
@@ -113,7 +112,7 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
         }
         else if (mushroomCount>0 && !blocksToPlantMushroom.isEmpty()) {
             it = blocksToPlantMushroom.iterator();
-            BlockPosition pos;
+            BlockPos pos;
             ItemStack item;
             for (int i = TOP_LENGTH; i < getSizeInventory(); i++) {
                 item = getStackInSlot(i);
@@ -126,7 +125,7 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
                         it.remove();
                         if(tryPlace(item, pos.x, pos.y, pos.z, EnumFacing.UP)) {//plant the mushroom, decrease stack size
                             mushroomCount--;
-                            if (item.stackSize <= 0) {
+                            if (item.getCount() <= 0) {
                                 setInventorySlotContents(i, null);
                             }
                             return true;
@@ -137,7 +136,7 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
             }
         } else if (netherWartCount>0 && !blocksToPlantNetherWart.isEmpty()) {
             it = blocksToPlantNetherWart.iterator();
-            BlockPosition pos;
+            BlockPos pos;
             ItemStack item;
             for (int i = TOP_LENGTH; i < getSizeInventory(); i++) {
                 item = getStackInSlot(i);
@@ -149,7 +148,7 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
                         it.remove();
                         if(tryPlace(item, pos.x, pos.y, pos.z, EnumFacing.UP)) {
                             netherWartCount--;
-                            if (item.stackSize <= 0) {
+                            if (item.getCount() <= 0) {
                                 setInventorySlotContents(i, null);
                             }
                             return true;
@@ -176,25 +175,25 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
     }
 
     @Override
-    protected void scanBlockPosition(BlockPosition pos) {
-        Block block = worldObj.getBlock(pos.x, pos.y, pos.z);
-        if (block.isReplaceable(worldObj, pos.x, pos.y, pos.z)) {
-            if (Blocks.nether_wart.canPlaceBlockAt(worldObj, pos.x, pos.y, pos.z)) {
+    protected void scanBlockPosition(BlockPos pos) {
+        Block block = world.getBlock(pos.x, pos.y, pos.z);
+        if (block.isReplaceable(world, pos.x, pos.y, pos.z)) {
+            if (Blocks.nether_wart.canPlaceBlockAt(world, pos.x, pos.y, pos.z)) {
                 blocksToPlantNetherWart.add(pos);
-            } else if (Blocks.brown_mushroom.canPlaceBlockAt(worldObj, pos.x, pos.y, pos.z)) {
+            } else if (Blocks.brown_mushroom.canPlaceBlockAt(world, pos.x, pos.y, pos.z)) {
                 blocksToPlantMushroom.add(pos);
             }
         } else//not an air block, check for harvestable nether-wart
         {
             if (block == Blocks.nether_wart){
-                if(worldObj.getBlockMetadata(pos.x, pos.y, pos.z) >= 3)
+                if(world.getBlockMetadata(pos.x, pos.y, pos.z) >= 3)
                     blocksToHarvest.add(pos);
             } else if (block instanceof BlockHugeMushroom && !blocksToHarvest.contains(pos)) {
-                TreeFinder.DEFAULT.findAttachedTreeBlocks(block, worldObj, pos, blocksToHarvest);
+                TreeFinder.DEFAULT.findAttachedTreeBlocks(block, world, pos, blocksToHarvest);
             } else if (isFarmable(block, pos.x, pos.y, pos.z)){
-                Set<BlockPosition> harvestSet = new HashSet<BlockPosition>();
-                TreeFinder.DEFAULT.findAttachedTreeBlocks(block, worldObj, pos, harvestSet);
-                for (BlockPosition tp : harvestSet) {
+                Set<BlockPos> harvestSet = new HashSet<BlockPos>();
+                TreeFinder.DEFAULT.findAttachedTreeBlocks(block, world, pos, harvestSet);
+                for (BlockPos tp : harvestSet) {
                     if (!isTarget(tp) && !blocksToHarvest.contains(tp))//don't harvest user-set planting blocks...
                     {
                         blocksToHarvest.add(tp);

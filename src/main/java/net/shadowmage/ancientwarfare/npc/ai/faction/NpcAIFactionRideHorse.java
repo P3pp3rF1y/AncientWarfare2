@@ -33,7 +33,7 @@ public class NpcAIFactionRideHorse extends NpcAIRideHorse {
     }
 
     private void spawnHorse() {
-        EntityHorse horse = new EntityHorse(npc.worldObj);
+        EntityHorse horse = new EntityHorse(npc.world);
         horse.setLocationAndAngles(npc.posX, npc.posY, npc.posZ, npc.rotationYaw, npc.rotationPitch);
         do {
             horse.setHorseType(0);
@@ -42,7 +42,7 @@ public class NpcAIFactionRideHorse extends NpcAIRideHorse {
         }while (horse.getHorseType()!=0 || horse.isChild());
         horse.setHorseTamed(true);
         this.horse = horse;
-        npc.worldObj.spawnEntityInWorld(horse);
+        npc.world.spawnEntityInWorld(horse);
         npc.mountEntity(horse);
         onMountHorse();
     }

@@ -20,7 +20,6 @@
  */
 package net.shadowmage.ancientwarfare.structure.render.gate;
 
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import org.lwjgl.opengl.GL11;
@@ -32,12 +31,12 @@ public final class RenderGateDouble extends RenderGateBasic {
     }
 
     @Override
-    protected BlockPosition getMin(EntityGate gate) {
+    protected BlockPos getMin(EntityGate gate) {
         return BlockTools.getMin(gate.pos1, gate.pos2);
     }
 
     @Override
-    protected BlockPosition getMax(EntityGate gate) {
+    protected BlockPos getMax(EntityGate gate) {
         return BlockTools.getMax(gate.pos1, gate.pos2);
     }
 

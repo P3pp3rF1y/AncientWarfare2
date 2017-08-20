@@ -46,7 +46,7 @@ public class TileHandGenerator extends TileTorqueSingleCell implements IWorkSite
 
     @Override
     public void updateEntity() {
-        if (!worldObj.isRemote) {
+        if (!world.isRemote) {
             serverNetworkUpdate();
             torqueIn = torqueCell.getEnergy() - prevEnergy;
             balancePower();
@@ -153,17 +153,17 @@ public class TileHandGenerator extends TileTorqueSingleCell implements IWorkSite
 
     @Override
     public Team getTeam() {
-        return worldObj.getScoreboard().getPlayersTeam(ownerName);
+        return world.getScoreboard().getPlayersTeam(ownerName);
     }
 
     @Override
     public boolean isOwner(EntityPlayer player){
-        return player!=null && player.getCommandSenderName().equals(ownerName);
+        return player!=null && player.getName().equals(ownerName);
     }
 
     @Override
     public void setOwner(EntityPlayer player) {
-        this.ownerName = player.getCommandSenderName();
+        this.ownerName = player.getName();
         this.ownerId = player.getUniqueID();
     }
     
@@ -231,7 +231,7 @@ public class TileHandGenerator extends TileTorqueSingleCell implements IWorkSite
     public double addTorque(EnumFacing from, double energy) {
         if (from == getPrimaryFacing()) {
             return 0;
-        } else if (from == EnumFacing.UP || from == EnumFacing.UNKNOWN) {
+        } else if (from == EnumFacing.UP || from == null) {
             return inputCell.addEnergy(energy);
         }
         return 0;

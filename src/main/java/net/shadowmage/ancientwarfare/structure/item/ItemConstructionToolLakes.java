@@ -6,7 +6,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
 import java.util.Set;
@@ -24,7 +23,7 @@ public class ItemConstructionToolLakes extends Item {
         if(world.isRemote){
             return stack;
         }
-        BlockPosition pos = BlockTools.getBlockClickedOn(player, world, true);
+        BlockPos pos = BlockTools.getBlockClickedOn(player, world, true);
         if (pos == null) {
             return stack;
         }
@@ -33,8 +32,8 @@ public class ItemConstructionToolLakes extends Item {
             return stack;
         }
         FloodFillPathfinder pf = new FloodFillPathfinder(player.world, pos.x, pos.y, pos.z, block, 0, false, true);
-        Set<BlockPosition> blocks = pf.doFloodFill();
-        for (BlockPosition p : blocks) {
+        Set<BlockPos> blocks = pf.doFloodFill();
+        for (BlockPos p : blocks) {
             player.world.setBlock(p.x, p.y, p.z, Blocks.flowing_water);
         }
         if (!player.capabilities.isCreativeMode) {

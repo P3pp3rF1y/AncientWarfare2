@@ -45,7 +45,7 @@ public class NpcLevelingStats {
     }
 
     public void addExperience(int xpGained) {
-        if (npc.worldObj.isRemote) {
+        if (npc.world.isRemote) {
             return;
         }
         String type = npc.getNpcFullType();

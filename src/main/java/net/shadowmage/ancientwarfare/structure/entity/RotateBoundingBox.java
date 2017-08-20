@@ -22,14 +22,13 @@ package net.shadowmage.ancientwarfare.structure.entity;
 
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 public class RotateBoundingBox extends AxisAlignedBB{
     private final static float TO_RAD = (float) Math.PI / 180F;
     private final int facing;
     //From vertical axis
     private float angle;
-    public RotateBoundingBox(int face, BlockPosition min, BlockPosition max) {
+    public RotateBoundingBox(int face, BlockPos min, BlockPos max) {
         this(face, min.x, min.y, min.z, max.x, max.y, max.z);
     }
 

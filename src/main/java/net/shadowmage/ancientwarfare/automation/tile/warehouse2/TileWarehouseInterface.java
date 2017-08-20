@@ -29,7 +29,7 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
     }
 
     public void addViewer(ContainerWarehouseInterface viewer) {
-        if (!hasWorldObj() || worldObj.isRemote) {
+        if (!hasWorld() || world.isRemote) {
             return;
         }
         viewers.add(viewer);
@@ -59,7 +59,7 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
 
     @Override
     protected void updateTile() {
-        if (worldObj.isRemote) {
+        if (world.isRemote) {
             return;
         }
         if (!init) {
@@ -156,7 +156,7 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
     }
 
     public void recalcRequests() {
-        if (worldObj.isRemote) {
+        if (world.isRemote) {
             return;
         }
         fillRequests.clear();

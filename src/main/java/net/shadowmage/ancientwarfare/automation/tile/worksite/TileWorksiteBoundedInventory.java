@@ -1,16 +1,19 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.api.IAncientWarfareFarmable;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
@@ -48,52 +51,51 @@ public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded i
         int[] slots = inventory.getRawIndicesCombined(sides);
         stack = InventoryTools.mergeItemStack(inventory, stack, slots);
         if (stack != null) {
-            InventoryTools.dropItemInWorld(worldObj, stack, xCoord, yCoord, zCoord);
+            InventoryTools.dropItemInWorld(world, stack, pos);
         }
     }
 
-    protected boolean harvestBlock(int x, int y, int z, RelativeSide... relativeSides) {
+    protected boolean harvestBlock(BlockPos pos, RelativeSide... relativeSides) {
         int[] combinedIndices = inventory.getRawIndicesCombined(relativeSides);
-        Block block = worldObj.getBlock(x, y, z);
-        List<ItemStack> stacks;
+        IBlockState state = world.getBlockState(pos);
+        Block block = state.getBlock();
+        NonNullList<ItemStack> stacks = NonNullList.create();
         if(block instanceof IAncientWarfareFarmable) {
-            stacks = ((IAncientWarfareFarmable) block).doHarvest(worldObj, x, y, z, getFortune());
+            stacks = ((IAncientWarfareFarmable) block).doHarvest(world, pos, getFortune());
         } else {
-            int meta = worldObj.getBlockMetadata(x, y, z);
-            stacks = block.getDrops(worldObj, x, y, z, meta, getFortune());
+            block.getDrops(stacks, world, pos, state, getFortune());
             if (!InventoryTools.canInventoryHold(inventory, combinedIndices, stacks)) {
                 return false;
             }
-            if (!BlockTools.canBreakBlock(worldObj, getOwnerAsPlayer(), x, y, z, block, meta)) {
+            if (!BlockTools.canBreakBlock(world, getOwnerAsPlayer(), pos, state)) {
                 return false;
             }
-            worldObj.playAuxSFX(2001, x, y, z, Block.getIdFromBlock(block) + (meta << 12));
-            if (!worldObj.setBlockToAir(x, y, z)) {
+            world.playEvent(2001, pos, Block.getIdFromBlock(block) + (meta << 12));
+            if (!world.setBlockToAir(pos)) {
                 return false;
             }
 
             if (ModAccessors.TREECAPITATOR_LOADED)
-                ModAccessors.TREECAPITATOR.doTreecapitate(worldObj, block, meta, x, y, z);
+                ModAccessors.TREECAPITATOR.doTreecapitate(world, block, meta, x, y, z);
             
             if (ModAccessors.ENVIROMINE_LOADED)
-                ModAccessors.ENVIROMINE.schedulePhysUpdate(worldObj, x, y, z, true, "Normal");
+                ModAccessors.ENVIROMINE.schedulePhysUpdate(world, x, y, z, true, "Normal");
         }
         for (ItemStack stack : stacks) {
             stack = InventoryTools.mergeItemStack(inventory, stack, combinedIndices);//was already validated that items would fit via canInventoryHold call
             if (stack != null)//but just in case, drop into world anyway if not null..
             {
-                InventoryTools.dropItemInWorld(worldObj, stack, xCoord, yCoord, zCoord);
+                InventoryTools.dropItemInWorld(world, stack, pos);
             }
         }
         return true;
     }
 
-    @SuppressWarnings("unchecked")
-    protected <T> List<T> getEntitiesWithinBounds(Class<T> clazz){
-        BlockPosition p1 = getWorkBoundsMin();
-        BlockPosition p2 = getWorkBoundsMax();
-        AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(p1.x, p1.y, p1.z, p2.x + 1, p2.y + 1, p2.z + 1);
-        return worldObj.getEntitiesWithinAABB(clazz, bb);
+    protected <T extends Entity> List<T> getEntitiesWithinBounds(Class<? extends T> clazz){
+        BlockPos p1 = getWorkBoundsMin();
+        BlockPos p2 = getWorkBoundsMax();
+        AxisAlignedBB bb = new AxisAlignedBB(p1.getX(), p1.getY(), p1.getZ(), p2.getX() + 1, p2.getY() + 1, p2.getZ() + 1);
+        return world.getEntitiesWithinAABB(clazz, bb);
     }
 
     @Override

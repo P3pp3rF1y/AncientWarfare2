@@ -6,14 +6,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.block.BlockTownHall;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.item.ItemUpkeepOrder;
 
 public class UpkeepOrder implements INBTSerialable {
 
-    BlockPosition upkeepPosition;
+    BlockPos upkeepPosition;
     int upkeepDimension;
     int blockSide;
     int upkeepAmount = 6000;
@@ -52,7 +51,7 @@ public class UpkeepOrder implements INBTSerialable {
         return upkeepDimension;
     }
 
-    public BlockPosition getUpkeepPosition() {
+    public BlockPos getUpkeepPosition() {
         return upkeepPosition;
     }
 
@@ -64,12 +63,12 @@ public class UpkeepOrder implements INBTSerialable {
         return upkeepAmount;
     }
 
-    public boolean addUpkeepPosition(World world, BlockPosition pos) {
+    public boolean addUpkeepPosition(World world, BlockPos pos) {
         if(pos != null && world.getTileEntity(pos.x, pos.y, pos.z) instanceof IInventory) {
             if (!AWNPCStatics.npcAllowUpkeepAnyInventory && (!(world.getBlock(pos.x, pos.y, pos.z) instanceof BlockTownHall)))
                 return false;
             upkeepPosition = pos;
-            upkeepDimension = world.provider.dimensionId;
+            upkeepDimension = world.provider.getDimension();
             blockSide = 0;
             upkeepAmount = 6000;
             return true;
@@ -80,7 +79,7 @@ public class UpkeepOrder implements INBTSerialable {
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         if (tag.hasKey("upkeepPosition")) {
-            upkeepPosition = new BlockPosition(tag.getCompoundTag("upkeepPosition"));
+            upkeepPosition = new BlockPos(tag.getCompoundTag("upkeepPosition"));
             upkeepDimension = tag.getInteger("dim");
             blockSide = tag.getInteger("side");
             upkeepAmount = tag.getInteger("upkeepAmount");

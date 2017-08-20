@@ -6,7 +6,7 @@ import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureScanner;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureSettings;
@@ -45,22 +45,22 @@ public class CommandStructure extends CommandBase {
             boolean flag = StructureTemplateManager.INSTANCE.removeTemplate(name);
             if (flag)//check if var2.len>=3, pull string of end...if string==true, try delete template file for name
             {
-                ChatComponentTranslation txt = new ChatComponentTranslation("command.aw.structure.template_removed", name);
-                var1.addChatMessage(txt);
+                TextComponentTranslation txt = new TextComponentTranslation("command.aw.structure.template_removed", name);
+                var1.sendMessage(txt);
                 if (var2.length >= 3) {
                     boolean shouldDelete = var2[2].toLowerCase(Locale.ENGLISH).equals("true");
                     if (shouldDelete) {
                         if (deleteTemplateFile(name)) {
-                            txt = new ChatComponentTranslation("command.aw.structure.file_deleted", name);
+                            txt = new TextComponentTranslation("command.aw.structure.file_deleted", name);
                         } else {
-                            txt = new ChatComponentTranslation("command.aw.structure.file_not_found", name);
+                            txt = new TextComponentTranslation("command.aw.structure.file_not_found", name);
                         }
-                        var1.addChatMessage(txt);
+                        var1.sendMessage(txt);
                     }
                 }
             } else//send template not found message
             {
-                var1.addChatMessage(new ChatComponentTranslation("command.aw.structure.not_found", name));
+                var1.sendMessage(new TextComponentTranslation("command.aw.structure.not_found", name));
             }
         } else if (cmd.toLowerCase(Locale.ENGLISH).equals("build")) {
             if (var2.length < 5) {
@@ -86,15 +86,15 @@ public class CommandStructure extends CommandBase {
                 }
             }
             StructureTemplate template = StructureTemplateManager.INSTANCE.getTemplate(var2[1]);
-            ChatComponentTranslation txt;
+            TextComponentTranslation txt;
             if (template == null) {
-                txt = new ChatComponentTranslation("command.aw.structure.not_found", var2[1]);
+                txt = new TextComponentTranslation("command.aw.structure.not_found", var2[1]);
             } else {
                 StructureBuilder builder = new StructureBuilder(var1.getEntityWorld(), template, face, x, y, z);
                 builder.instantConstruction();
-                txt = new ChatComponentTranslation("command.aw.structure.built", var2[1], x, y, z);
+                txt = new TextComponentTranslation("command.aw.structure.built", var2[1], x, y, z);
             }
-            var1.addChatMessage(txt);
+            var1.sendMessage(txt);
         }else if(cmd.toLowerCase(Locale.ENGLISH).equals("save")){
             if(var1 instanceof EntityLivingBase){
                 ItemStack stack = ((EntityLivingBase) var1).getHeldItem();
@@ -104,10 +104,10 @@ public class CommandStructure extends CommandBase {
                         String name = settings.hasName() ? settings.name() : var2[1];
                         NBTTagCompound tagCompound = new NBTTagCompound();
                         if(ItemStructureScanner.scanStructure(var1.getEntityWorld(), settings.pos1(), settings.pos2(), settings.buildKey(), settings.face(), name, true, tagCompound)) {
-                            var1.addChatMessage(new ChatComponentTranslation("command.aw.structure.exported", var2[1]));
+                            var1.sendMessage(new TextComponentTranslation("command.aw.structure.exported", var2[1]));
                         }
                     }else{
-                        var1.addChatMessage(new ChatComponentTranslation("command.aw.structure.incomplete_data"));
+                        var1.sendMessage(new TextComponentTranslation("command.aw.structure.incomplete_data"));
                     }
                 }
             }

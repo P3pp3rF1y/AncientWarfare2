@@ -24,7 +24,7 @@ public class ContainerSpawnerAdvancedBlock extends ContainerSpawnerAdvancedBase 
 
     @Override
     public void sendInitData() {
-        if (!spawner.getWorldObj().isRemote) {
+        if (!spawner.getWorld().isRemote) {
             NetworkHandler.sendToPlayer((EntityPlayerMP) player, getSettingPacket());
         }
     }
@@ -32,13 +32,13 @@ public class ContainerSpawnerAdvancedBlock extends ContainerSpawnerAdvancedBase 
     @Override
     public void handlePacketData(NBTTagCompound tag) {
         if (tag.hasKey("spawnerSettings")) {
-            if (spawner.getWorldObj().isRemote) {
+            if (spawner.getWorld().isRemote) {
                 settings.readFromNBT(tag.getCompoundTag("spawnerSettings"));
                 this.refreshGui();
             } else {
                 spawner.getSettings().readFromNBT(tag.getCompoundTag("spawnerSettings"));
                 spawner.markDirty();
-                spawner.getWorldObj().notifyBlockUpdate(spawner.xCoord, spawner.yCoord, spawner.zCoord);
+                spawner.getWorld().notifyBlockUpdate(spawner.xCoord, spawner.yCoord, spawner.zCoord);
             }
         }
     }

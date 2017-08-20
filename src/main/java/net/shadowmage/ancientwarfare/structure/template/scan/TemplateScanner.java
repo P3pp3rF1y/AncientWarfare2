@@ -25,7 +25,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
@@ -44,7 +43,7 @@ public final class TemplateScanner {
      * @param turns # of turns for proper orientation
      */
     @SuppressWarnings("unchecked")
-    public static StructureTemplate scan(World world, BlockPosition min, BlockPosition max, BlockPosition key, int turns, String name) {
+    public static StructureTemplate scan(World world, BlockPos min, BlockPos max, BlockPos key, int turns, String name) {
         int xSize = max.x - min.x + 1;
         int ySize = max.y - min.y + 1;
         int zSize = max.z - min.z + 1;
@@ -70,12 +69,12 @@ public final class TemplateScanner {
         int index;
         int meta;
         int scanX, scanZ, scanY;
-        BlockPosition destination = new BlockPosition();
+        BlockPos destination = new BlockPos();
         int nextRuleID = 1;
         for (scanY = min.y; scanY <= max.y; scanY++) {
             for (scanZ = min.z; scanZ <= max.z; scanZ++) {
                 for (scanX = min.x; scanX <= max.x; scanX++) {
-                    destination = BlockTools.rotateInArea(new BlockPosition(scanX, scanY, scanZ).sub(min), xSize, zSize, turns);
+                    destination = BlockTools.rotateInArea(new BlockPos(scanX, scanY, scanZ).sub(min), xSize, zSize, turns);
 
                     scannedBlock = world.getBlock(scanX, scanY, scanZ);
 
@@ -114,7 +113,7 @@ public final class TemplateScanner {
         }//end scan y-level for
 
         List<TemplateRuleEntity> scannedEntityRules = new ArrayList<TemplateRuleEntity>();
-        List<Entity> entitiesInAABB = world.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(min.x, min.y, min.z, max.x + 1, max.y + 1, max.z + 1));
+        List<Entity> entitiesInAABB = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(min.x, min.y, min.z, max.x + 1, max.y + 1, max.z + 1));
         nextRuleID = 0;
         for (Entity e : entitiesInAABB) {
             int ex = MathHelper.floor_double(e.posX);
@@ -122,7 +121,7 @@ public final class TemplateScanner {
             int ez = MathHelper.floor_double(e.posZ);
             TemplateRuleEntity scannedEntityRule = StructurePluginManager.INSTANCE.getRuleForEntity(world, e, turns, ex, ey, ez);
             if (scannedEntityRule != null) {
-                destination = BlockTools.rotateInArea(new BlockPosition(ex, ey, ez).sub(min), xSize, zSize, turns);
+                destination = BlockTools.rotateInArea(new BlockPos(ex, ey, ez).sub(min), xSize, zSize, turns);
                 scannedEntityRule.ruleNumber = nextRuleID;
                 scannedEntityRule.setPosition(destination);
                 scannedEntityRules.add(scannedEntityRule);

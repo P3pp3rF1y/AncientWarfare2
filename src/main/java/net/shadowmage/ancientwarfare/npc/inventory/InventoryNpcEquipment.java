@@ -26,7 +26,7 @@ public class InventoryNpcEquipment implements IInventory {
 
     @Override
     public ItemStack getStackInSlot(int slot) {
-        if (npc.worldObj.isRemote) {
+        if (npc.world.isRemote) {
             return inventory[slot];
         } else {
             return npc.getEquipmentInSlot(slot);
@@ -35,7 +35,7 @@ public class InventoryNpcEquipment implements IInventory {
 
     @Override
     public void setInventorySlotContents(int slot, ItemStack stack) {
-        if (npc.worldObj.isRemote) {
+        if (npc.world.isRemote) {
             inventory[slot] = stack;
         } else {
             npc.setCurrentItemOrArmor(slot, stack);
@@ -47,12 +47,12 @@ public class InventoryNpcEquipment implements IInventory {
         ItemStack item = getStackInSlot(slot);
         if (item != null) {
             if (amount > item.getCount()) {
-                amount = item.stackSize;
+                amount = item.getCount();
             }
             ItemStack copy = item.copy();
             copy.setCount(amount);
-            item.stackSize -= amount;
-            if (item.stackSize <= 0) {
+            item.shrink(amount);
+            if (item.getCount() <= 0) {
                 setInventorySlotContents(slot, null);
             }
             return copy;

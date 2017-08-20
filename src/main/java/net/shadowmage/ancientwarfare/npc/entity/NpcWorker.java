@@ -19,7 +19,6 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite.WorkType;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.item.ItemHammer;
 import net.shadowmage.ancientwarfare.core.item.ItemQuill;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.*;
 import net.shadowmage.ancientwarfare.npc.ai.owned.*;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
@@ -30,7 +29,7 @@ import java.util.Collection;
 
 public class NpcWorker extends NpcPlayerOwned implements IWorker {
 
-    public BlockPosition autoWorkTarget;
+    public BlockPos autoWorkTarget;
     private NpcAIPlayerOwnedWork workAI;
     private NpcAIPlayerOwnedWorkRandom workRandomAI;
 
@@ -78,7 +77,7 @@ public class NpcWorker extends NpcPlayerOwned implements IWorker {
         }
     }
 
-    public void handleWorksiteBroadcast(IWorkSite site, BlockPosition pos) {
+    public void handleWorksiteBroadcast(IWorkSite site, BlockPos pos) {
 
     }
 
@@ -114,10 +113,10 @@ public class NpcWorker extends NpcPlayerOwned implements IWorker {
         if(order == null || !order.isNightShift()){
             return super.shouldBeAtHome();
         }else{
-            if (getAttackTarget() != null || !hasHome() || worldObj.provider.hasNoSky) {
+            if (getAttackTarget() != null || !hasHome() || world.provider.hasNoSky) {
                 return false;
             }
-            return worldObj.isDaytime() || worldObj.canLightningStrikeAt(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
+            return world.isDaytime() || world.canLightningStrikeAt(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
         }
     }
 

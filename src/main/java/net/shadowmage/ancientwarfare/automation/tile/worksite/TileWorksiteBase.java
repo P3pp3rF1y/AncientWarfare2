@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import cofh.api.energy.IEnergyHandler;
-import cpw.mods.fml.common.Optional;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,6 +12,8 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.fml.common.Optional;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.item.ItemWorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
@@ -107,7 +108,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
     @Override
     public void onBlockBroken() {
         for (WorksiteUpgrade ug : this.upgrades) {
-            InventoryTools.dropItemInWorld(worldObj, ItemWorksiteUpgrade.getStack(ug), xCoord, yCoord, zCoord);
+            InventoryTools.dropItemInWorld(world, ItemWorksiteUpgrade.getStack(ug), xCoord, yCoord, zCoord);
         }
         efficiencyBonusFactor = 0;
         upgrades.clear();
@@ -117,7 +118,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
     public void addUpgrade(WorksiteUpgrade upgrade) {
         upgrades.add(upgrade);
         updateEfficiency();
-        worldObj.notifyBlockUpdate(xCoord, yCoord, zCoord);
+        world.notifyBlockUpdate(xCoord, yCoord, zCoord);
         markDirty();
     }
 
@@ -125,7 +126,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
     public void removeUpgrade(WorksiteUpgrade upgrade) {
         upgrades.remove(upgrade);
         updateEfficiency();
-        worldObj.notifyBlockUpdate(xCoord, yCoord, zCoord);
+        world.notifyBlockUpdate(xCoord, yCoord, zCoord);
         markDirty();
     }
 
@@ -148,17 +149,17 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
 
     @Override
     public final void updateEntity() {
-        if (!hasWorldObj() || worldObj.isRemote) {
+        if (!hasWorld() || world.isRemote) {
             return;
         }
         if (workRetryDelay > 0) {
             workRetryDelay--;
         } else {
-            worldObj.theProfiler.startSection("Check For Work");
+            world.profiler.startSection("Check For Work");
             double ePerUse = IWorkSite.WorksiteImplementation.getEnergyPerActivation(efficiencyBonusFactor);
-            boolean hasWork = getTorqueStored(EnumFacing.UNKNOWN) >= ePerUse && hasWorksiteWork();
+            boolean hasWork = getTorqueStored(null) >= ePerUse && hasWorksiteWork();
             if (hasWork) {
-                worldObj.theProfiler.endStartSection("Process Work");
+                world.profiler.endStartSection("Process Work");
                 if (processWork()) {
                     torqueCell.setEnergy(torqueCell.getEnergy() - ePerUse);
                     markDirty();
@@ -166,11 +167,11 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
                     workRetryDelay = 20;
                 }
             }
-            worldObj.theProfiler.endSection();
+            world.profiler.endSection();
         }
-        worldObj.theProfiler.startSection("WorksiteBaseUpdate");
+        world.profiler.startSection("WorksiteBaseUpdate");
         updateWorksite();
-        worldObj.theProfiler.endSection();
+        world.profiler.endSection();
     }
 
     protected final void updateEfficiency() {
@@ -182,7 +183,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
     @Override
     public final Team getTeam() {
         if (owningPlayer != null) {
-            return worldObj.getScoreboard().getPlayersTeam(owningPlayer);
+            return world.getScoreboard().getPlayersTeam(owningPlayer);
         }
         return null;
     }
@@ -199,13 +200,13 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
 
     public final EntityPlayer getOwnerAsPlayer() {
         if(!isOwnerReal()) {
-            owner = AncientWarfareCore.proxy.getFakePlayer(getWorldObj(), owningPlayer, ownerId);
+            owner = AncientWarfareCore.proxy.getFakePlayer(getWorld(), owningPlayer, ownerId);
         }
         return owner;
     }
 
     private boolean isOwnerReal(){
-        return owner!=null && owner.isEntityAlive() && !owner.isEntityInvulnerable();
+        return owner!=null && owner.isEntityAlive() && !(owner instanceof FakePlayer);
     }
 
     @Override
@@ -216,7 +217,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
             return player.getGameProfile().equals(owner.getGameProfile());
         if(ownerId!=null)
             return player.getUniqueID().equals(ownerId);
-        return player.getCommandSenderName().equals(owningPlayer);
+        return player.getName().equals(owningPlayer);
     }
 
     @Override
@@ -227,7 +228,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
             this.ownerId = null;
         }else{
             this.owner = player;
-            this.owningPlayer = player.getCommandSenderName();
+            this.owningPlayer = player.getName();
             this.ownerId = player.getUniqueID();
         }
     }
@@ -236,7 +237,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
     public final void setOwner(String ownerName, UUID ownerUuid) {
         owningPlayer = ownerName;
         ownerId = ownerUuid;
-        owner = AncientWarfareCore.proxy.getFakePlayer(getWorldObj(), ownerName, ownerUuid);
+        owner = AncientWarfareCore.proxy.getFakePlayer(getWorld(), ownerName, ownerUuid);
     }
 
 //*************************************** TORQUE INTERACTION METHODS ***************************************//
@@ -268,12 +269,12 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
 
     @Override
     public final void addEnergyFromWorker(IWorker worker) {
-        addTorque(EnumFacing.UNKNOWN, AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType()) * AWAutomationStatics.hand_cranked_generator_output);
+        addTorque(null, AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType()) * AWAutomationStatics.hand_cranked_generator_output);
     }
 
     @Override
     public final void addEnergyFromPlayer(EntityPlayer player) {
-        addTorque(EnumFacing.UNKNOWN, AWCoreStatics.energyPerWorkUnit * AWAutomationStatics.hand_cranked_generator_output);
+        addTorque(null, AWCoreStatics.energyPerWorkUnit * AWAutomationStatics.hand_cranked_generator_output);
     }
 
     @Override
@@ -314,7 +315,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
 
     @Override
     public boolean hasWork() {
-        return torqueCell.getEnergy() < torqueCell.getMaxEnergy() && worldObj.getBlockPowerInput(xCoord, yCoord, zCoord) == 0;
+        return torqueCell.getEnergy() < torqueCell.getMaxEnergy() && world.getBlockPowerInput(xCoord, yCoord, zCoord) == 0;
     }
 
     @Override
@@ -325,7 +326,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
     @Override
     public final void setPrimaryFacing(EnumFacing face) {
         orientation = face;
-        this.worldObj.notifyBlockUpdate(xCoord, yCoord, zCoord);
+        this.world.notifyBlockUpdate(xCoord, yCoord, zCoord);
         markDirty();//notify neighbors of tile change
     }
 
@@ -337,7 +338,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
         tag.setDouble("storedEnergy", torqueCell.getEnergy());
         if (owningPlayer != null) {
             tag.setString("owner", owningPlayer);
-            if(ownerId == null && hasWorldObj()){
+            if(ownerId == null && hasWorld()){
                 getOwnerAsPlayer();
                 if(isOwnerReal()){
                     ownerId = owner.getUniqueID();

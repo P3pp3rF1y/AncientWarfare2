@@ -2,23 +2,19 @@ package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
-public abstract class TileControlled extends TileEntity implements IControlledTile {
+public abstract class TileControlled extends TileEntity implements IControlledTile, ITickable {
 
     private boolean init;
     private IControllerTile controller;
-    private BlockPosition controllerPosition;
+    private BlockPos controllerPosition;
 
     @Override
-    public final boolean canUpdate() {
-        return true;
-    }
-
-    @Override
-    public final void updateEntity() {
+    public final void update() {
         if (!init) {
             init = true;
             if (!loadController()) {
@@ -29,10 +25,10 @@ public abstract class TileControlled extends TileEntity implements IControlledTi
     }
 
     private boolean loadController() {
-        BlockPosition pos = controllerPosition;
+        BlockPos pos = controllerPosition;
         controllerPosition = null;
         if (pos != null && controller == null) {
-            TileEntity te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
+            TileEntity te = world.getTileEntity(pos);
             if (te instanceof IControllerTile && isValidController((IControllerTile) te)) {
                 ((IControllerTile) te).addControlledTile(this);
             }
@@ -43,10 +39,9 @@ public abstract class TileControlled extends TileEntity implements IControlledTi
     protected abstract void updateTile();
 
     protected void searchForController() {
-        BlockPosition pos = getPosition();
-        BlockPosition min = pos.offset(-16, -4, -16);
-        BlockPosition max = pos.offset(16, 4, 16);
-        for (TileEntity te : WorldTools.getTileEntitiesInArea(worldObj, min.x, min.y, min.z, max.x, max.y, max.z)) {
+        BlockPos min = pos.add(-16, -4, -16);
+        BlockPos max = pos.add(16, 4, 16);
+        for (TileEntity te : WorldTools.getTileEntitiesInArea(world, min.getX(), min.getY(), min.getZ(), max.getX(), max.getY(), max.getZ())) {
             if (te instanceof IControllerTile) {
                 if (isValidController((IControllerTile)te)) {
                     ((IControllerTile)te).addControlledTile(this);
@@ -57,7 +52,7 @@ public abstract class TileControlled extends TileEntity implements IControlledTi
     }
 
     protected boolean isValidController(IControllerTile tile) {
-        return tile instanceof TileWarehouseBase && BlockTools.isPositionWithinBounds(getPosition(), ((TileWarehouseBase) tile).getWorkBoundsMin(), ((TileWarehouseBase) tile).getWorkBoundsMax());
+        return tile instanceof TileWarehouseBase && BlockTools.isPositionWithinBounds(getPos(), ((TileWarehouseBase) tile).getWorkBoundsMin(), ((TileWarehouseBase) tile).getWorkBoundsMax());
     }
 
     @Override
@@ -81,7 +76,7 @@ public abstract class TileControlled extends TileEntity implements IControlledTi
     @Override
     public final void setController(IControllerTile tile) {
         this.controller = tile;
-        this.controllerPosition = tile == null ? null : tile.getPosition();
+        this.controllerPosition = tile == null ? null : tile.getPos();
     }
 
     @Override
@@ -90,15 +85,10 @@ public abstract class TileControlled extends TileEntity implements IControlledTi
     }
 
     @Override
-    public final BlockPosition getPosition() {
-        return new BlockPosition(xCoord, yCoord, zCoord);
-    }
-
-    @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         if (tag.hasKey("controllerPosition")) {
-            controllerPosition = new BlockPosition(tag.getCompoundTag("controllerPosition"));
+            controllerPosition = new BlockPos(tag.getCompoundTag("controllerPosition"));
         }
     }
 
@@ -114,11 +104,11 @@ public abstract class TileControlled extends TileEntity implements IControlledTi
     public final boolean equals(Object obj) {
         if (this == obj)
             return true;
-        return obj instanceof TileControlled && this.worldObj == ((TileControlled) obj).getWorldObj() && this.getPosition().equals(((TileControlled) obj).getPosition());
+        return obj instanceof TileControlled && this.world == ((TileControlled) obj).getWorld() && this.getPosition().equals(((TileControlled) obj).getPos());
     }
 
     @Override
     public final int hashCode() {
-        return this.getPosition().hashCode();
+        return this.getPos().hashCode();
     }
 }

@@ -7,10 +7,8 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
-import net.shadowmage.ancientwarfare.npc.block.BlockHeadquarters;
 import net.shadowmage.ancientwarfare.npc.block.BlockTeleportHub;
 import net.shadowmage.ancientwarfare.npc.container.ContainerTownHall;
-import net.shadowmage.ancientwarfare.npc.gamedata.HeadquartersTracker;
 
 public class GuiTownHallInventory extends GuiContainerBase<ContainerTownHall> {
 
@@ -51,7 +49,7 @@ public class GuiTownHallInventory extends GuiContainerBase<ContainerTownHall> {
                     @Override
                     protected void onPressed() {
                         Minecraft.getMinecraft().displayGuiScreen(null);
-                        getContainer().teleportPlayer(player.getCommandSenderName());
+                        getContainer().teleportPlayer(player.getName());
                     }
                 };
                 addGuiElement(button);

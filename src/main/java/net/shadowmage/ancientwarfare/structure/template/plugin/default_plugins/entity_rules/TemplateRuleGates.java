@@ -25,7 +25,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
@@ -40,8 +39,8 @@ public class TemplateRuleGates extends TemplateRuleEntity {
 
     String gateType;
     int orientation;
-    BlockPosition pos1 = new BlockPosition();
-    BlockPosition pos2 = new BlockPosition();
+    BlockPos pos1 = new BlockPos();
+    BlockPos pos2 = new BlockPos();
 
     /**
      * scanner-constructor.  called when scanning an entity.
@@ -69,11 +68,11 @@ public class TemplateRuleGates extends TemplateRuleEntity {
 
     @Override
     public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) throws EntityPlacementException {
-        BlockPosition p1 = BlockTools.rotateAroundOrigin(pos1, turns).offset(x, y, z);
-        BlockPosition p2 = BlockTools.rotateAroundOrigin(pos2, turns).offset(x, y, z);
+        BlockPos p1 = BlockTools.rotateAroundOrigin(pos1, turns).offset(x, y, z);
+        BlockPos p2 = BlockTools.rotateAroundOrigin(pos2, turns).offset(x, y, z);
 
-        BlockPosition min = BlockTools.getMin(p1, p2);
-        BlockPosition max = BlockTools.getMax(p1, p2);
+        BlockPos min = BlockTools.getMin(p1, p2);
+        BlockPos max = BlockTools.getMax(p1, p2);
         for (int x1 = min.x; x1 <= max.x; x1++) {
             for (int y1 = min.y; y1 <= max.y; y1++) {
                 for (int z1 = min.z; z1 <= max.z; z1++) {
@@ -93,8 +92,8 @@ public class TemplateRuleGates extends TemplateRuleEntity {
     public void parseRuleData(NBTTagCompound tag) {
         gateType = tag.getString("gateType");
         orientation = tag.getByte("orientation");
-        pos1 = new BlockPosition(tag.getCompoundTag("pos1"));
-        pos2 = new BlockPosition(tag.getCompoundTag("pos2"));
+        pos1 = new BlockPos(tag.getCompoundTag("pos1"));
+        pos2 = new BlockPos(tag.getCompoundTag("pos2"));
     }
 
     @Override

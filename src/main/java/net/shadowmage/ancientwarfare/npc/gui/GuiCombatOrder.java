@@ -5,7 +5,6 @@ import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.container.ContainerCombatOrder;
 
 public class GuiCombatOrder extends GuiContainerBase<ContainerCombatOrder> {
@@ -28,7 +27,7 @@ public class GuiCombatOrder extends GuiContainerBase<ContainerCombatOrder> {
         area.clearElements();
         Label label;
         Button button;
-        BlockPosition pos;
+        BlockPos pos;
         int totalHeight = 8;
         for (int i = 0; i < getContainer().combatOrder.size(); i++) {
             pos = getContainer().combatOrder.get(i);

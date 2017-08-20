@@ -26,12 +26,10 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.entity.DualBoundingBox;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
@@ -217,8 +215,8 @@ public class Gate implements IGateType {
         if (gate.pos1 == null || gate.pos2 == null) {
             return;
         }
-        BlockPosition min = BlockTools.getMin(gate.pos1, gate.pos2);
-        BlockPosition max = BlockTools.getMax(gate.pos1, gate.pos2);
+        BlockPos min = BlockTools.getMin(gate.pos1, gate.pos2);
+        BlockPos max = BlockTools.getMax(gate.pos1, gate.pos2);
         if(!(gate.boundingBox instanceof DualBoundingBox)) {
             try {
                 ObfuscationReflectionHelper.setPrivateValue(Entity.class, gate, new DualBoundingBox(min, max), "boundingBox", "field_70121_D");
@@ -234,14 +232,14 @@ public class Gate implements IGateType {
     }
 
     @Override
-    public boolean arePointsValidPair(BlockPosition pos1, BlockPosition pos2) {
+    public boolean arePointsValidPair(BlockPos pos1, BlockPos pos2) {
         return pos1.x == pos2.x || pos1.z == pos2.z;
     }
 
     @Override
-    public void setInitialBounds(EntityGate gate, BlockPosition pos1, BlockPosition pos2) {
-        BlockPosition min = BlockTools.getMin(pos1, pos2);
-        BlockPosition max = BlockTools.getMax(pos1, pos2);
+    public void setInitialBounds(EntityGate gate, BlockPos pos1, BlockPos pos2) {
+        BlockPos min = BlockTools.getMin(pos1, pos2);
+        BlockPos max = BlockTools.getMax(pos1, pos2);
         boolean wideOnXAxis = min.x != max.x;
         float width = wideOnXAxis ? max.x - min.x + 1 : max.z - min.z + 1;
         float xOffset = wideOnXAxis ? width * 0.5f : 0.5f;
@@ -254,12 +252,12 @@ public class Gate implements IGateType {
 
     @Override
     public void onGateStartOpen(EntityGate gate) {
-        if (gate.worldObj.isRemote) {
+        if (gate.world.isRemote) {
             return;
         }
-        BlockPosition min = BlockTools.getMin(gate.pos1, gate.pos2);
-        BlockPosition max = BlockTools.getMax(gate.pos1, gate.pos2);
-        removeBetween(gate.worldObj, min, max);
+        BlockPos min = BlockTools.getMin(gate.pos1, gate.pos2);
+        BlockPos max = BlockTools.getMax(gate.pos1, gate.pos2);
+        removeBetween(gate.world, min, max);
     }
 
     @Override
@@ -274,15 +272,15 @@ public class Gate implements IGateType {
 
     @Override
     public void onGateFinishClose(EntityGate gate) {
-        if (gate.worldObj.isRemote) {
+        if (gate.world.isRemote) {
             return;
         }
-        BlockPosition min = BlockTools.getMin(gate.pos1, gate.pos2);
-        BlockPosition max = BlockTools.getMax(gate.pos1, gate.pos2);
+        BlockPos min = BlockTools.getMin(gate.pos1, gate.pos2);
+        BlockPos max = BlockTools.getMax(gate.pos1, gate.pos2);
         placeBetween(gate, min, max);
     }
 
-    public final void removeBetween(World world, BlockPosition min, BlockPosition max){
+    public final void removeBetween(World world, BlockPos min, BlockPos max){
         Block id;
         for (int x = min.x; x <= max.x; x++) {
             for (int y = min.y; y <= max.y; y++) {
@@ -296,16 +294,16 @@ public class Gate implements IGateType {
         }
     }
 
-    public final void placeBetween(EntityGate gate, BlockPosition min, BlockPosition max){
+    public final void placeBetween(EntityGate gate, BlockPos min, BlockPos max){
         for (int x = min.x; x <= max.x; x++) {
             for (int y = min.y; y <= max.y; y++) {
                 for (int z = min.z; z <= max.z; z++) {
-                    Block block = gate.worldObj.getBlock(x, y, z);
-                    if (!block.isAir(gate.worldObj, x, y, z)) {
-                        block.dropBlockAsItem(gate.worldObj, x, y, z, gate.worldObj.getBlockMetadata(x, y, z), 0);
+                    Block block = gate.world.getBlock(x, y, z);
+                    if (!block.isAir(gate.world, x, y, z)) {
+                        block.dropBlockAsItem(gate.world, x, y, z, gate.world.getBlockMetadata(x, y, z), 0);
                     }
-                    if (gate.worldObj.setBlock(x, y, z, AWBlocks.gateProxy)) {
-                        TileEntity te = gate.worldObj.getTileEntity(x, y, z);
+                    if (gate.world.setBlock(x, y, z, AWBlocks.gateProxy)) {
+                        TileEntity te = gate.world.getTileEntity(x, y, z);
                         if (te instanceof TEGateProxy) {
                             ((TEGateProxy) te).setOwner(gate);
                         }
@@ -318,9 +316,9 @@ public class Gate implements IGateType {
     /**
      * @return a fully setup gate, or null if chosen spawn position is invalid (blocks in the way)
      */
-    public static EntityGate constructGate(World world, BlockPosition pos1, BlockPosition pos2, Gate type, byte facing) {
-        BlockPosition min = BlockTools.getMin(pos1, pos2);
-        BlockPosition max = BlockTools.getMax(pos1, pos2);
+    public static EntityGate constructGate(World world, BlockPos pos1, BlockPos pos2, Gate type, byte facing) {
+        BlockPos min = BlockTools.getMin(pos1, pos2);
+        BlockPos max = BlockTools.getMax(pos1, pos2);
         for (int x = min.x; x <= max.x; x++) {
             for (int y = min.y; y <= max.y; y++) {
                 for (int z = min.z; z <= max.z; z++) {

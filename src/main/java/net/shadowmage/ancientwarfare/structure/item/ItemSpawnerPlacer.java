@@ -26,14 +26,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.RayTraceResult.MovingObjectType;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 import java.util.List;
 
@@ -74,7 +72,7 @@ public class ItemSpawnerPlacer extends Item {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SPAWNER, 0, 0, 0);
         } else if (mophit != null && mophit.typeOfHit == MovingObjectType.BLOCK) {
             if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnerData")) {
-                BlockPosition hit = new BlockPosition(mophit);
+                BlockPos hit = new BlockPos(mophit);
                 if (player.world.setBlock(hit.x, hit.y, hit.z, Blocks.mob_spawner)) {
                     NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData");
                     tag.setInteger("x", hit.x);
@@ -88,10 +86,10 @@ public class ItemSpawnerPlacer extends Item {
                     }
                 }
             } else {
-                player.addChatComponentMessage(new ChatComponentTranslation("guistrings.spawner.nodata"));
+                player.addChatComponentMessage(new TextComponentTranslation("guistrings.spawner.nodata"));
             }
         } else {
-            player.addChatComponentMessage(new ChatComponentTranslation("guistrings.spawner.noblock"));
+            player.addChatComponentMessage(new TextComponentTranslation("guistrings.spawner.noblock"));
         }
         return stack;
     }

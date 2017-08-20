@@ -5,7 +5,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcCourier;
@@ -55,7 +54,7 @@ public class NpcAIPlayerOwnedCourier extends NpcAI<NpcCourier> {
 
     @Override
     public void updateTask() {
-        BlockPosition pos = order.get(routeIndex).getTarget();
+        BlockPos pos = order.get(routeIndex).getTarget();
         double dist = npc.getDistanceSq(pos.x, pos.y, pos.z);
         if (dist > AWNPCStatics.npcActionRange * AWNPCStatics.npcActionRange) {
             npc.addAITask(TASK_MOVE);
@@ -112,8 +111,8 @@ public class NpcAIPlayerOwnedCourier extends NpcAI<NpcCourier> {
     }
 
     private IInventory getTargetInventory() {
-        BlockPosition pos = order.get(routeIndex).getTarget();
-        TileEntity te = npc.worldObj.getTileEntity(pos.x, pos.y, pos.z);
+        BlockPos pos = order.get(routeIndex).getTarget();
+        TileEntity te = npc.world.getTileEntity(pos.x, pos.y, pos.z);
         if (te instanceof IInventory) {
             if(te instanceof IOwnable){
                 String name = ((IOwnable) te).getOwnerName();

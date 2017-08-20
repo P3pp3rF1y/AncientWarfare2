@@ -14,7 +14,7 @@ public class InteropTreecapitator extends InteropTreecapitatorDummy {
     
     @Override
     public void doTreecapitate(World world, Block block, int meta, int posX, int posY, int posZ) {
-        FakePlayer fakePlayer = FakePlayerFactory.get(MinecraftServer.getServer().worldServerForDimension(world.provider.dimensionId), AncientWarfareCore.gameProfile);
+        FakePlayer fakePlayer = FakePlayerFactory.get(MinecraftServer.getServer().worldServerForDimension(world.provider.getDimension()), AncientWarfareCore.gameProfile);
         fakePlayer.inventory.setInventorySlotContents(0, new ItemStack(Items.diamond_axe));
         new bspkrs.treecapitator.forge.ForgeEventHandler().onBlockHarvested(new BreakEvent(posX, posY, posZ, world, block, meta, fakePlayer));
     }

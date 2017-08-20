@@ -22,7 +22,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.shadowmage.ancientwarfare.core.util.AWTextureManager;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -50,7 +49,7 @@ public class RenderNpcBase extends RenderBiped {
         NpcBase npc = (NpcBase) entity;
         isSleeping = npc.getSleeping();
         if (isSleeping) {
-            BlockPosition bedPos = npc.getBedPosition();
+            BlockPos bedPos = npc.getBedPosition();
             float bedDirection = npc.getBedOrientationInDegrees(bedPos.x, bedPos.y, bedPos.z);
             if (bedDirection != -1) {
                 GL11.glRotatef(bedDirection, 0.0F, 1.0F, 0.0F);
@@ -96,7 +95,7 @@ public class RenderNpcBase extends RenderBiped {
             if (AWNPCStatics.renderHostileNames.getBoolean()) {
                 String name = getNameForRender(npc, true);
                 if (AWNPCStatics.renderTeamColors.getBoolean()) {
-                    ScorePlayerTeam playerTeam = player.world.getScoreboard().getTeam(player.getCommandSenderName());
+                    ScorePlayerTeam playerTeam = player.world.getScoreboard().getTeam(player.getName());
                     ScorePlayerTeam npcTeam = (ScorePlayerTeam) npc.getTeam();
                     if (npcTeam != null && npcTeam != playerTeam) {
                         name = npcTeam.getColorPrefix() + name + npcTeam.getColorSuffix();
@@ -105,11 +104,11 @@ public class RenderNpcBase extends RenderBiped {
                 renderColoredLabel(npc, name, x, y, z, 64, 0x20ff0000, 0xffff0000);
             }
         } else {
-            boolean canBeCommandedBy = npc.hasCommandPermissions(player.getCommandSenderName());
+            boolean canBeCommandedBy = npc.hasCommandPermissions(player.getName());
             if (AWNPCStatics.renderFriendlyNames.getBoolean()) {
                 String name = getNameForRender(npc, false);
                 if (AWNPCStatics.renderTeamColors.getBoolean()) {
-                    ScorePlayerTeam playerTeam = player.world.getScoreboard().getTeam(player.getCommandSenderName());
+                    ScorePlayerTeam playerTeam = player.world.getScoreboard().getTeam(player.getName());
                     ScorePlayerTeam npcTeam = (ScorePlayerTeam) npc.getTeam();
                     if (npcTeam != null && npcTeam != playerTeam) {
                         name = npcTeam.getColorPrefix() + name + npcTeam.getColorSuffix();
@@ -234,7 +233,7 @@ public class RenderNpcBase extends RenderBiped {
     }
 
     private String getNameForRender(NpcBase npc, boolean hostile) {
-        String customName = npc.hasCustomNameTag() ? npc.getCustomNameTag() : npc.getCommandSenderName();
+        String customName = npc.hasCustomNameTag() ? npc.getCustomNameTag() : npc.getName();
         boolean addHealth = (hostile && AWNPCStatics.renderHostileHealth.getBoolean()) || (!hostile && AWNPCStatics.renderFriendlyHealth.getBoolean());
         if (addHealth) {
             customName += " " + getHealthForRender(npc);

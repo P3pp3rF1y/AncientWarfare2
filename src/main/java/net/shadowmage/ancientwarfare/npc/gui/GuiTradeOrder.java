@@ -5,7 +5,6 @@ import net.shadowmage.ancientwarfare.core.block.Direction;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.*;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.container.ContainerTradeOrder;
 import net.shadowmage.ancientwarfare.npc.trade.*;
 
@@ -231,7 +230,7 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
     }
 
     private int addRoutePoint(final POTradePoint point, final int index, int startHeight) {
-        BlockPosition pos = point.getPosition();
+        BlockPos pos = point.getPosition();
         Label blockName = new Label(8, startHeight, "Unknown Block");
         Label posLabel = new Label(8, startHeight + 12, pos.toString());
         if (player.world.blockExists(pos.x, pos.y, pos.z)) {

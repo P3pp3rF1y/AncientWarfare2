@@ -3,8 +3,8 @@ package net.shadowmage.ancientwarfare.core.util;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.Vec3;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
 import java.util.HashSet;
@@ -55,7 +55,7 @@ public class RayTraceUtils {
         double maxX = x > tx ? x : tx;
         double maxY = y > ty ? y : ty;
         double maxZ = z > tz ? z : tz;
-        AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(minX, minY, minZ, maxX, maxY, maxZ).expand(borderSize, borderSize, borderSize);
+        AxisAlignedBB bb = new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ).expand(borderSize, borderSize, borderSize);
         List<Entity> allEntities = world.getEntitiesWithinAABBExcludingEntity(null, bb);
         Entity closestHitEntity = null;
         float closestHit = Float.POSITIVE_INFINITY;

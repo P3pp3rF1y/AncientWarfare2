@@ -30,7 +30,7 @@ public class TileSterlingEngine extends TileTorqueSingleCell implements IInvento
     @Override
     public void updateEntity() {
         super.updateEntity();
-        if (!worldObj.isRemote) {
+        if (!world.isRemote) {
             if (burnTime <= 0 && torqueCell.getEnergy() < torqueCell.getMaxEnergy()) {
                 //if fueled, consume one, set burn-ticks to fuel value
                 int ticks = TileEntityFurnace.getItemBurnTime(getStackInSlot(0));

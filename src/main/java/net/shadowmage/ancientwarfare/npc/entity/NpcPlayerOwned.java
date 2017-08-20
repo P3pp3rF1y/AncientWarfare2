@@ -12,7 +12,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedRideHorse;
@@ -35,8 +34,8 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
 
     protected NpcAIPlayerOwnedRideHorse horseAI;
 
-    private BlockPosition townHallPosition;
-    private BlockPosition upkeepAutoBlock;
+    private BlockPos townHallPosition;
+    private BlockPos upkeepAutoBlock;
 
     public NpcPlayerOwned(World par1World) {
         super(par1World);
@@ -49,7 +48,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
 
     @Override
     public void onDeath(DamageSource source) {
-        if (!worldObj.isRemote) {
+        if (!world.isRemote) {
             if (horseAI != null) {
                 horseAI.onKilled();
             }
@@ -73,7 +72,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
         return -1;
     }
 
-    public void setTownHallPosition(BlockPosition pos) {
+    public void setTownHallPosition(BlockPos pos) {
         if (pos != null) {
             this.townHallPosition = pos.copy();
         } else {
@@ -82,14 +81,14 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
     }
 
     @Override
-    public BlockPosition getTownHallPosition() {
+    public BlockPos getTownHallPosition() {
         return townHallPosition;
     }
 
     public TileTownHall getTownHall() {
-        BlockPosition pos = getTownHallPosition();
+        BlockPos pos = getTownHallPosition();
         if (pos != null) {
-            TileEntity te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
+            TileEntity te = world.getTileEntity(pos.x, pos.y, pos.z);
             if (te instanceof TileTownHall) {
                 return (TileTownHall) te;
             }
@@ -97,9 +96,9 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
         return null;
     }
 
-    public void handleTownHallBroadcast(TileTownHall tile, BlockPosition position) {
+    public void handleTownHallBroadcast(TileTownHall tile, BlockPos position) {
         validateTownHallPosition();
-        BlockPosition pos = getTownHallPosition();
+        BlockPos pos = getTownHallPosition();
         if (pos != null) {
             double curDist = getDistanceSq(pos.x + 0.5d, pos.y, pos.z + 0.5d);
             double newDist = getDistanceSq(position.x + 0.5d, position.y, position.z + 0.5d);
@@ -120,14 +119,14 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
     }
 
     private boolean validateTownHallPosition() {
-        BlockPosition pos = getTownHallPosition();
+        BlockPos pos = getTownHallPosition();
         if (pos == null) {
             return false;
         }
-        if (!worldObj.blockExists(pos.x, pos.y, pos.z)) {
+        if (!world.blockExists(pos.x, pos.y, pos.z)) {
             return true;
         }//cannot validate, unloaded...assume good
-        TileEntity te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
+        TileEntity te = world.getTileEntity(pos.x, pos.y, pos.z);
         if (te instanceof TileTownHall) {
             if (hasCommandPermissions(((TileTownHall) te).getOwnerName()))
                 return true;
@@ -148,7 +147,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
      */
     public void handlePlayerCommand(Command cmd) {
         if (cmd != null && cmd.type == CommandType.ATTACK) {
-            Entity e = cmd.getEntityTarget(worldObj);
+            Entity e = cmd.getEntityTarget(world);
             AWLog.logDebug("Handling attack command : " + e);
             if (e instanceof EntityLivingBase) {
                 EntityLivingBase elb = (EntityLivingBase) e;
@@ -229,7 +228,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
     }
 
     @Override
-    public BlockPosition getUpkeepPoint() {
+    public BlockPos getUpkeepPoint() {
         UpkeepOrder order = UpkeepOrder.getUpkeepOrder(upkeepStack);
         if (order != null) {
             return order.getUpkeepPosition();
@@ -238,7 +237,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
     }
 
     @Override
-    public void setUpkeepAutoPosition(BlockPosition pos) {
+    public void setUpkeepAutoPosition(BlockPos pos) {
         upkeepAutoBlock = pos;
     }
 
@@ -257,7 +256,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
         if (order != null) {
             return order.getUpkeepDimension();
         }
-        return worldObj.provider.dimensionId;
+        return world.provider.getDimension();
     }
 
     @Override
@@ -271,7 +270,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
 
     @Override
     protected boolean tryCommand(EntityPlayer player) {
-        if (hasCommandPermissions(player.getCommandSenderName()))
+        if (hasCommandPermissions(player.getName()))
             return super.tryCommand(player);
         return false;
     }
@@ -297,7 +296,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
                     stack.shrink(1);
                     inventory.markDirty();
                 }
-                if (stack.stackSize <= 0) {
+                if (stack.getCount() <= 0) {
                     inventory.setInventorySlotContents(i, null);
                 }
             }
@@ -313,7 +312,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
                     stack.shrink(1);
                     inventory.markDirty();
                 }
-                if (stack.stackSize <= 0) {
+                if (stack.getCount() <= 0) {
                     inventory.setInventorySlotContents(i, null);
                 }
             }
@@ -327,7 +326,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
         if(getFoodRemaining() < getUpkeepAmount()){
             int value = AncientWarfareNPC.statics.getFoodValue(player.getHeldItem());
             if(value>0){
-                if(!worldObj.isRemote){
+                if(!world.isRemote){
                     player.getHeldItem().shrink(1);
                 }
                 foodValueRemaining += value;
@@ -360,10 +359,10 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
             playerIssuedCommand = new Command(tag.getCompoundTag("command"));
         }
         if (tag.hasKey("townHall")) {
-            townHallPosition = new BlockPosition(tag.getCompoundTag("townHall"));
+            townHallPosition = new BlockPos(tag.getCompoundTag("townHall"));
         }
         if (tag.hasKey("upkeepPos")) {
-            upkeepAutoBlock = new BlockPosition(tag.getCompoundTag("upkeepPos"));
+            upkeepAutoBlock = new BlockPos(tag.getCompoundTag("upkeepPos"));
         }
         onOrdersInventoryChanged();
     }

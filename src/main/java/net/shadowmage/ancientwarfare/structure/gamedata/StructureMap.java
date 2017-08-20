@@ -55,13 +55,13 @@ public class StructureMap extends WorldSavedData {
     public Collection<StructureEntry> getEntriesNear(World world, int worldX, int worldZ, int chunkRadius, boolean expandBySize, Collection<StructureEntry> list) {
         int cx = worldX >> 4;
         int cz = worldZ >> 4;
-        return map.getEntriesNear(world.provider.dimensionId, cx, cz, chunkRadius, expandBySize, list);
+        return map.getEntriesNear(world.provider.getDimension(), cx, cz, chunkRadius, expandBySize, list);
     }
 
     public void setGeneratedAt(World world, int worldX, int worldY, int worldZ, int face, StructureEntry entry, boolean unique) {
         int cx = worldX >> 4;
         int cz = worldZ >> 4;
-        map.setGeneratedAt(world.provider.dimensionId, cx, cz, entry, unique);
+        map.setGeneratedAt(world.provider.getDimension(), cx, cz, entry, unique);
         this.markDirty();
     }
 

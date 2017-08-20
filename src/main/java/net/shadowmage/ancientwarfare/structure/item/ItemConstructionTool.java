@@ -1,17 +1,15 @@
 package net.shadowmage.ancientwarfare.structure.item;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.event.IBoxRenderer;
 
@@ -97,8 +95,8 @@ public class ItemConstructionTool extends Item implements IItemKeyInterface, IBo
 
     private void handleSolidFill(EntityPlayer player, ConstructionSettings settings) {
         if (settings.pos1 != null && settings.pos2 != null && settings.block != null) {
-            BlockPosition min = BlockTools.getMin(settings.pos1, settings.pos2);
-            BlockPosition max = BlockTools.getMax(settings.pos1, settings.pos2);
+            BlockPos min = BlockTools.getMin(settings.pos1, settings.pos2);
+            BlockPos max = BlockTools.getMax(settings.pos1, settings.pos2);
             for (int x = min.x; x <= max.x; x++) {
                 for (int z = min.z; z <= max.z; z++) {
                     for (int y = min.y; y <= max.y; y++) {
@@ -111,8 +109,8 @@ public class ItemConstructionTool extends Item implements IItemKeyInterface, IBo
 
     private void handleBoxFill(EntityPlayer player, ConstructionSettings settings) {
         if (settings.pos1 != null && settings.pos2 != null && settings.block != null) {
-            BlockPosition min = BlockTools.getMin(settings.pos1, settings.pos2);
-            BlockPosition max = BlockTools.getMax(settings.pos1, settings.pos2);
+            BlockPos min = BlockTools.getMin(settings.pos1, settings.pos2);
+            BlockPos max = BlockTools.getMax(settings.pos1, settings.pos2);
 
             for (int x = min.x; x <= max.x; x++) {
                 for (int z = min.z; z <= max.z; z++) {
@@ -137,12 +135,12 @@ public class ItemConstructionTool extends Item implements IItemKeyInterface, IBo
 
     private void handleLakeFill(EntityPlayer player, ConstructionSettings settings) {
         if (settings.block != null) {
-            BlockPosition pos = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
+            BlockPos pos = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
             if (pos != null) {
                 Block block = player.world.getBlock(pos.x, pos.y, pos.z);
                 int meta = player.world.getBlockMetadata(pos.x, pos.y, pos.z);
-                Set<BlockPosition> toFill = new FloodFillPathfinder(player.world, pos.x, pos.y, pos.z, block, meta, false, true).doFloodFill();
-                for (BlockPosition p1 : toFill) {
+                Set<BlockPos> toFill = new FloodFillPathfinder(player.world, pos.x, pos.y, pos.z, block, meta, false, true).doFloodFill();
+                for (BlockPos p1 : toFill) {
                     player.world.setBlock(p1.x, p1.y, p1.z, settings.block, settings.meta, 3);
                 }
             }
@@ -151,12 +149,12 @@ public class ItemConstructionTool extends Item implements IItemKeyInterface, IBo
 
     private void handleLayerFill(EntityPlayer player, ConstructionSettings settings) {
         if (settings.block != null) {
-            BlockPosition pos = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
+            BlockPos pos = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
             if (pos != null) {
                 Block block = player.world.getBlock(pos.x, pos.y, pos.z);
                 int meta = player.world.getBlockMetadata(pos.x, pos.y, pos.z);
-                Set<BlockPosition> toFill = new FloodFillPathfinder(player.world, pos.x, pos.y, pos.z, block, meta, false, false).doFloodFill();
-                for (BlockPosition p1 : toFill) {
+                Set<BlockPos> toFill = new FloodFillPathfinder(player.world, pos.x, pos.y, pos.z, block, meta, false, false).doFloodFill();
+                for (BlockPos p1 : toFill) {
                     player.world.setBlock(p1.x, p1.y, p1.z, settings.block, settings.meta, 3);
                 }
             }
@@ -182,7 +180,7 @@ public class ItemConstructionTool extends Item implements IItemKeyInterface, IBo
             break;
             case KEY_1://source block
             {
-                BlockPosition pos = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
+                BlockPos pos = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
                 if (pos != null) {
                     settings.block = player.world.getBlock(pos.x, pos.y, pos.z);
                     settings.meta = player.world.getBlockMetadata(pos.x, pos.y, pos.z);
@@ -192,7 +190,7 @@ public class ItemConstructionTool extends Item implements IItemKeyInterface, IBo
             return;
             case KEY_2://pos1
             {
-                BlockPosition pos = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
+                BlockPos pos = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
                 if (pos != null) {
                     settings.pos1 = pos;
                     writeConstructionSettings(stack, settings);
@@ -201,7 +199,7 @@ public class ItemConstructionTool extends Item implements IItemKeyInterface, IBo
             return;
             case KEY_3://pos2
             {
-                BlockPosition pos = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
+                BlockPos pos = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
                 if (pos != null) {
                     settings.pos2 = pos;
                     writeConstructionSettings(stack, settings);
@@ -241,8 +239,8 @@ public class ItemConstructionTool extends Item implements IItemKeyInterface, IBo
         if(settings==null){
             return;
         }
-        BlockPosition p1, p2;
-        BlockPosition p3 = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
+        BlockPos p1, p2;
+        BlockPos p3 = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
         p1 = settings.hasPos1() ? settings.pos1() : p3;
         p2 = settings.hasPos2() ? settings.pos2() : p3;
         if (p1 != null && p2 != null) {
@@ -256,16 +254,16 @@ public class ItemConstructionTool extends Item implements IItemKeyInterface, IBo
     public static final class ConstructionSettings {
         Block block;
         int meta;
-        BlockPosition pos1;
-        BlockPosition pos2;
+        BlockPos pos1;
+        BlockPos pos2;
         ConstructionType type = ConstructionType.SOLID_FILL;
 
         protected void readFromNBT(NBTTagCompound tag) {
             if (tag.hasKey("pos1")) {
-                pos1 = new BlockPosition(tag.getCompoundTag("pos1"));
+                pos1 = new BlockPos(tag.getCompoundTag("pos1"));
             }
             if (tag.hasKey("pos2")) {
-                pos2 = new BlockPosition(tag.getCompoundTag("pos2"));
+                pos2 = new BlockPos(tag.getCompoundTag("pos2"));
             }
             if (tag.hasKey("block")) {
                 block = Block.getBlockFromName(tag.getString("block"));
@@ -301,11 +299,11 @@ public class ItemConstructionTool extends Item implements IItemKeyInterface, IBo
             return pos2 != null;
         }
 
-        public BlockPosition pos1() {
+        public BlockPos pos1() {
             return pos1;
         }
 
-        public BlockPosition pos2() {
+        public BlockPos pos2() {
             return pos2;
         }
 

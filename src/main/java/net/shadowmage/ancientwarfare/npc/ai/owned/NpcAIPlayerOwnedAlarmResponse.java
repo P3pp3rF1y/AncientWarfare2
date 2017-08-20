@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.npc.ai.owned;
 
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
@@ -17,7 +16,7 @@ public class NpcAIPlayerOwnedAlarmResponse extends NpcAI<NpcPlayerOwned> {
         if (!npc.getIsAIEnabled()) {
             return false;
         }
-        return npc.getUpkeepPoint() != null && npc.getUpkeepDimensionId() == npc.worldObj.provider.dimensionId && npc.isAlarmed;
+        return npc.getUpkeepPoint() != null && npc.getUpkeepDimensionId() == npc.world.provider.getDimension() && npc.isAlarmed;
     }
     
     @Override
@@ -25,7 +24,7 @@ public class NpcAIPlayerOwnedAlarmResponse extends NpcAI<NpcPlayerOwned> {
         if (!npc.getIsAIEnabled()) {
             return false;
         }
-        return npc.getUpkeepPoint() != null && npc.getUpkeepDimensionId() == npc.worldObj.provider.dimensionId && npc.isAlarmed;
+        return npc.getUpkeepPoint() != null && npc.getUpkeepDimensionId() == npc.world.provider.getDimension() && npc.isAlarmed;
     }
 
     /**
@@ -41,7 +40,7 @@ public class NpcAIPlayerOwnedAlarmResponse extends NpcAI<NpcPlayerOwned> {
      */
     @Override
     public void updateTask() {
-        BlockPosition pos = npc.getUpkeepPoint();
+        BlockPos pos = npc.getUpkeepPoint();
         if (pos == null) {
             return;
         }

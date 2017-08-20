@@ -38,7 +38,7 @@ public class ContainerBackpack extends ContainerBase {
     @Override
     public void onContainerClosed(EntityPlayer par1EntityPlayer) {
         super.onContainerClosed(par1EntityPlayer);
-        if (!par1EntityPlayer.worldObj.isRemote) {
+        if (!par1EntityPlayer.world.isRemote) {
             ItemBackpack.writeBackpackToItem(inventory, par1EntityPlayer.getCurrentEquippedItem());
         }
     }

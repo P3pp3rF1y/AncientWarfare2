@@ -1,7 +1,10 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.*;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCraftResult;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -77,7 +80,7 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
                 layoutMatrix.setInventorySlotContents(i, layoutStack);
             }
         }
-        if (!worldObj.isRemote) {
+        if (!world.isRemote) {
             warehouse.updateViewers();
         }
     }
@@ -87,7 +90,7 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
         {
             return null;
         }
-        TileEntity te = worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
+        TileEntity te = world.getTileEntity(xCoord, yCoord - 1, zCoord);
         if (te instanceof TileWarehouseBase) {
             return (TileWarehouseBase) te;
         }
@@ -100,7 +103,7 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
     }
 
     private void onLayoutMatrixChanged() {
-        this.result.setInventorySlotContents(0, AWCraftingManager.INSTANCE.findMatchingRecipe(layoutMatrix, worldObj, getCrafterName()));
+        this.result.setInventorySlotContents(0, AWCraftingManager.INSTANCE.findMatchingRecipe(layoutMatrix, world, getCrafterName()));
     }
 
     public String getCrafterName() {

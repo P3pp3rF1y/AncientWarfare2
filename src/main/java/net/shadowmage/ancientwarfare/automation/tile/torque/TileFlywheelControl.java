@@ -27,7 +27,7 @@ public abstract class TileFlywheelControl extends TileTorqueSingleCell {
 
     @Override
     public void updateEntity() {
-        if (!worldObj.isRemote) {
+        if (!world.isRemote) {
             serverNetworkUpdate();
             torqueIn = torqueCell.getEnergy() - prevEnergy;
             torqueLoss = applyPowerDrain(torqueCell);
@@ -91,14 +91,14 @@ public abstract class TileFlywheelControl extends TileTorqueSingleCell {
         int x = xCoord;
         int y = yCoord - 1;
         int z = zCoord;
-        TileEntity te = worldObj.getTileEntity(x, y, z);
+        TileEntity te = world.getTileEntity(x, y, z);
         if (te instanceof TileFlywheelStorage) {
             TileFlywheelStorage fs = (TileFlywheelStorage) te;
             if (fs.controllerPos != null) {
                 x = fs.controllerPos.x;
                 y = fs.controllerPos.y;
                 z = fs.controllerPos.z;
-                te = worldObj.getTileEntity(x, y, z);
+                te = world.getTileEntity(x, y, z);
                 if (te instanceof TileFlywheelStorage) {
                     return (TileFlywheelStorage) te;
                 }
@@ -125,8 +125,8 @@ public abstract class TileFlywheelControl extends TileTorqueSingleCell {
     @Override
     public void onNeighborTileChanged() {
         super.onNeighborTileChanged();
-        if (!worldObj.isRemote) {
-            boolean p = worldObj.getBlockPowerInput(xCoord, yCoord, zCoord) > 0;
+        if (!world.isRemote) {
+            boolean p = world.getBlockPowerInput(xCoord, yCoord, zCoord) > 0;
             if (p != powered) {
                 powered = p;
                 sendDataToClient(7, powered ? 1 : 0);
@@ -136,7 +136,7 @@ public abstract class TileFlywheelControl extends TileTorqueSingleCell {
 
     @Override
     public boolean receiveClientEvent(int a, int b) {
-        if (worldObj.isRemote) {
+        if (world.isRemote) {
             if (a == 7) {
                 powered = b == 1;
             }

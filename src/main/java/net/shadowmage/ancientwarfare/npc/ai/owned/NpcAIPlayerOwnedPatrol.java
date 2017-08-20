@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.npc.ai.owned;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.orders.CombatOrder;
@@ -49,7 +48,7 @@ public class NpcAIPlayerOwnedPatrol extends NpcAI<NpcBase> {
         if (!npc.getIsAIEnabled() || npc.getAttackTarget() != null) {
             return false;
         }
-        return orders != null && ordersStack != null && orders.getPatrolDimension() == npc.worldObj.provider.dimensionId && !orders.isEmpty();
+        return orders != null && ordersStack != null && orders.getPatrolDimension() == npc.world.provider.getDimension() && !orders.isEmpty();
     }
 
     @Override
@@ -66,7 +65,7 @@ public class NpcAIPlayerOwnedPatrol extends NpcAI<NpcBase> {
                 setMoveToNextPoint();
             }
         } else {
-            BlockPosition pos = orders.get(patrolIndex);
+            BlockPos pos = orders.get(patrolIndex);
             double dist = npc.getDistanceSq(pos.x + 0.5d, pos.y, pos.z + 0.5d);
             if (dist > 2.d * 2.d) {
                 moveToPosition(pos, dist);

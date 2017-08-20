@@ -20,7 +20,6 @@
  */
 package net.shadowmage.ancientwarfare.structure.gates.types;
 
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 
@@ -34,9 +33,9 @@ public class GateDouble extends Gate{
     }
 
     @Override
-    public void setInitialBounds(EntityGate gate, BlockPosition pos1, BlockPosition pos2) {
-        BlockPosition min = BlockTools.getMin(pos1, pos2);
-        BlockPosition max = BlockTools.getMax(pos1, pos2);
+    public void setInitialBounds(EntityGate gate, BlockPos pos1, BlockPos pos2) {
+        BlockPos min = BlockTools.getMin(pos1, pos2);
+        BlockPos max = BlockTools.getMax(pos1, pos2);
         boolean wideOnXAxis = min.x != max.x;
         float width = wideOnXAxis ? max.x - min.x + 1 : max.z - min.z + 1;
         float xOffset = wideOnXAxis ? width * 0.5f : 0.5f;

@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
 import net.minecraft.util.ChunkCoordinates;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
@@ -84,7 +83,7 @@ public class NpcAIMoveHome extends NpcAI<NpcBase> {
                 stopMovement();
             else {
                 if ((ticker >= TICKER_MAX) && (npc.shouldSleep())) {
-                    BlockPosition pos = npc.findBed();
+                    BlockPos pos = npc.findBed();
                     if (pos != null) {
                         dist = npc.getDistanceSq(pos.x, pos.y, pos.z);
                         if (dist > AWNPCStatics.npcActionRange * AWNPCStatics.npcActionRange) {
@@ -110,7 +109,7 @@ public class NpcAIMoveHome extends NpcAI<NpcBase> {
             npc.addAITask(TASK_SLEEP);
         else
             npc.removeAITask(TASK_SLEEP);
-        if (npc.worldObj.isRaining())
+        if (npc.world.isRaining())
             npc.addAITask(TASK_RAIN);
         else
             npc.removeAITask(TASK_RAIN);

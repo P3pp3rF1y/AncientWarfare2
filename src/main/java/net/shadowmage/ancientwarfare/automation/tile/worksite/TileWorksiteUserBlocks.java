@@ -1,16 +1,18 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.IPlantable;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.common.util.FakePlayer;
 import net.shadowmage.ancientwarfare.api.IAncientWarfarePlantable;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.Collection;
@@ -40,17 +42,17 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
         return true;
     }
 
-    protected boolean isTarget(BlockPosition p) {
-        return isTarget(p.x, p.z);
+    protected boolean isTarget(BlockPos p) {
+        return isTarget(p.getX(), p.getZ());
     }
 
     protected boolean isTarget(int x1, int y1) {
-        int z = (y1 - getWorkBoundsMin().z) * SIZE + x1 - getWorkBoundsMin().x;
+        int z = (y1 - getWorkBoundsMin().getZ()) * SIZE + x1 - getWorkBoundsMin().getX();
         return z >= 0 && z < targetMap.length && targetMap[z] == 1;
     }
 
     protected boolean isBonemeal(ItemStack stack) {
-        return stack.getItem() == Items.dye && stack.getItemDamage() == 15;
+        return stack.getItem() == Items.DYE && stack.getItemDamage() == 15;
     }
 
     protected boolean isFarmable(Block block){
@@ -65,20 +67,21 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
         return block instanceof IPlantable;
     }
 
-    protected boolean canReplace(int x, int y, int z){
-        return worldObj.getBlock(x, y, z).isReplaceable(worldObj, x, y, z);
+    protected boolean canReplace(BlockPos pos){
+        IBlockState state = world.getBlockState(pos);
+        return state.getBlock().isReplaceable(world, pos);
     }
 
     protected boolean tryPlace(ItemStack stack, int x, int y, int z, EnumFacing face){
         EnumFacing direction = face.getOpposite();
         if(stack.getItem() instanceof IAncientWarfarePlantable) {
-            return ((IAncientWarfarePlantable) stack.getItem()).tryPlant(worldObj, x + direction.offsetX, y + direction.offsetY, z + direction.offsetZ, stack.copy());
+            return ((IAncientWarfarePlantable) stack.getItem()).tryPlant(world, x + direction.offsetX, y + direction.offsetY, z + direction.offsetZ, stack.copy());
         }
         EntityPlayer owner = getOwnerAsPlayer();
-        if(owner.isEntityInvulnerable()){
+        if(owner instanceof FakePlayer){
             owner.inventory.setInventorySlotContents(owner.inventory.currentItem, stack);
         }
-        return stack.tryPlaceItemIntoWorld(owner, worldObj, x + direction.offsetX, y + direction.offsetY, z + direction.offsetZ, face.ordinal(), 0.25F, 0.25F, 0.25F);
+        return stack.tryPlaceItemIntoWorld(owner, world, x + direction.offsetX, y + direction.offsetY, z + direction.offsetZ, face.ordinal(), 0.25F, 0.25F, 0.25F);
     }
 
     protected final void pickupItems() {
@@ -107,13 +110,13 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
     }
 
     @Override
-    protected void validateCollection(Collection<BlockPosition> blocks) {
+    protected void validateCollection(Collection<BlockPos> blocks) {
         if(!hasWorkBounds()){
             blocks.clear();
             return;
         }
-        Iterator<BlockPosition> it = blocks.iterator();
-        BlockPosition pos;
+        Iterator<BlockPos> it = blocks.iterator();
+        BlockPos pos;
         while (it.hasNext() && (pos = it.next()) != null) {
             if (!isInBounds(pos) || !isTarget(pos)) {
                 it.remove();
@@ -122,13 +125,13 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
     }
 
     @Override
-    protected void fillBlocksToProcess(Collection<BlockPosition> targets) {
-        BlockPosition min = getWorkBoundsMin();
-        BlockPosition max = getWorkBoundsMax();
+    protected void fillBlocksToProcess(Collection<BlockPos> targets) {
+        BlockPos min = getWorkBoundsMin();
+        BlockPos max = getWorkBoundsMax();
         for (int x = min.x; x < max.x + 1; x++) {
             for (int z = min.z; z < max.z + 1; z++) {
                 if (isTarget(x, z)) {
-                    targets.add(new BlockPosition(x, min.y, z));
+                    targets.add(new BlockPos(x, min.y, z));
                 }
             }
         }
@@ -177,16 +180,16 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
 
     @Override
     protected void updateBlockWorksite() {
-        worldObj.theProfiler.startSection("Items Pickup");
-        if (worldObj.getWorldTime() % 20 == 0) {
+        world.profiler.startSection("Items Pickup");
+        if (world.getWorldTime() % 20 == 0) {
             pickupItems();
         }
-        worldObj.theProfiler.endStartSection("Count Resources");
+        world.profiler.endStartSection("Count Resources");
         if (shouldCountResources) {
             countResources();
             shouldCountResources = false;
         }
-        worldObj.theProfiler.endSection();
+        world.profiler.endSection();
     }
 
     protected abstract void countResources();

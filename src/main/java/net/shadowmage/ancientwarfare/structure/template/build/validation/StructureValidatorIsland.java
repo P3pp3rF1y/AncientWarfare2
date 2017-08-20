@@ -23,7 +23,6 @@ package net.shadowmage.ancientwarfare.structure.template.build.validation;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
@@ -90,7 +89,7 @@ public class StructureValidatorIsland extends StructureValidator {
     }
 
     @Override
-    public void preGeneration(World world, BlockPosition pos, int face, StructureTemplate template, StructureBB bb) {
+    public void preGeneration(World world, BlockPos pos, int face, StructureTemplate template, StructureBB bb) {
         Block block;
         Set<String> validTargetBlocks = getTargetBlocks();
         for (int bx = bb.min.x; bx <= bb.max.x; bx++) {

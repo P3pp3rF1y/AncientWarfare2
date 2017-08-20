@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 
 public class TownPartPlot {
@@ -63,7 +62,7 @@ public class TownPartPlot {
         if (other.bb.min.z < bb.min.z) {
             z = other.bb.min.z;
         }
-        bb.min = new BlockPosition(x, bb.min.y, z);
+        bb.min = new BlockPos(x, bb.min.y, z);
         x = bb.max.x;
         z = bb.max.z;
         if (other.bb.max.x > bb.max.x) {
@@ -72,7 +71,7 @@ public class TownPartPlot {
         if (other.bb.max.z > bb.max.z) {
             z = other.bb.max.z;
         }
-        bb.max = new BlockPosition(x, bb.max.y, z);
+        bb.max = new BlockPos(x, bb.max.y, z);
         for (int i = 0; i < 4; i++) {
             if (other.roadBorders[i]) {
                 this.roadBorders[i] = true;
@@ -124,7 +123,7 @@ public class TownPartPlot {
         }
         minZ--;
         TownPartPlot p = block.getPlot(x, minZ);
-        this.bb.min = new BlockPosition(this.bb.min.x, this.bb.min.y, p.bb.min.z);
+        this.bb.min = new BlockPos(this.bb.min.x, this.bb.min.y, p.bb.min.z);
         return true;
     }
 
@@ -139,7 +138,7 @@ public class TownPartPlot {
         }
         maxZ++;
         TownPartPlot p = block.getPlot(x, maxZ);
-        this.bb.max = new BlockPosition(this.bb.max.x, this.bb.max.y, p.bb.max.z);
+        this.bb.max = new BlockPos(this.bb.max.x, this.bb.max.y, p.bb.max.z);
         return true;
     }
 
@@ -154,7 +153,7 @@ public class TownPartPlot {
         }
         minX--;
         TownPartPlot p = block.getPlot(minX, z);
-        this.bb.min = new BlockPosition(p.bb.min.x, this.bb.min.y, this.bb.min.z);
+        this.bb.min = new BlockPos(p.bb.min.x, this.bb.min.y, this.bb.min.z);
         return true;
     }
 
@@ -169,7 +168,7 @@ public class TownPartPlot {
         }
         maxX++;
         TownPartPlot p = block.getPlot(maxX, z);
-        this.bb.max = new BlockPosition(p.bb.max.x, this.bb.max.y, this.bb.max.z);
+        this.bb.max = new BlockPos(p.bb.max.x, this.bb.max.y, this.bb.max.z);
         return true;
     }
 

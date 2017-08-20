@@ -17,8 +17,8 @@ public class ResearchData extends WorldSavedData {
     }
 
     public void onPlayerLogin(EntityPlayer player) {
-        if (!playerResearchEntries.containsKey(player.getCommandSenderName())) {
-            playerResearchEntries.put(player.getCommandSenderName(), new ResearchEntry());
+        if (!playerResearchEntries.containsKey(player.getName())) {
+            playerResearchEntries.put(player.getName(), new ResearchEntry());
             this.markDirty();
         }
     }

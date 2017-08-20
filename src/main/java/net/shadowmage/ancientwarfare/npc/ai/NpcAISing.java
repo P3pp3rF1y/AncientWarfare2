@@ -55,7 +55,7 @@ public class NpcAISing extends NpcAI<NpcBase> {
                 if (playerCheckDelay <= 0) {
                     playerCheckDelay = PLAYER_DELAY;
                     AxisAlignedBB aabb = npc.boundingBox.expand(PLAYER_RANGE, PLAYER_RANGE, PLAYER_RANGE);
-                    List list = npc.worldObj.getEntitiesWithinAABB(EntityPlayer.class, aabb);
+                    List list = npc.world.getEntitiesWithinAABB(EntityPlayer.class, aabb);
                     if (!list.isEmpty()) {
                         setNextSong(data);
                     }
@@ -79,7 +79,7 @@ public class NpcAISing extends NpcAI<NpcBase> {
         SongPlayData.SongEntry entry = data.get(tuneIndex);
         maxPlayTime = (int) (entry.length() * 20.f);//convert minutes into ticks
         float volume = (float) entry.volume() * 0.03f;
-        npc.worldObj.playSoundAtEntity(npc, entry.name(), volume, 1.f);
+        npc.world.playSoundAtEntity(npc, entry.name(), volume, 1.f);
         playing = true;
         playTime = 0;
     }

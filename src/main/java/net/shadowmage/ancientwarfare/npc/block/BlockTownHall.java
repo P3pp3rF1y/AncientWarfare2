@@ -1,12 +1,8 @@
 package net.shadowmage.ancientwarfare.npc.block;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,18 +10,24 @@ import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.EnumChatFormatting;
-
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.npc.gamedata.HeadquartersTracker;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BlockTownHall extends Block {
 
@@ -79,7 +81,7 @@ public class BlockTownHall extends Block {
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         TileEntity te = world.getTileEntity(pos);
-        return te instanceof IInteractableTile && ((IInteractableTile) te).onBlockClicked(player);
+        return te instanceof IInteractableTile && ((IInteractableTile) te).onBlockClicked(player, hand);
     }
 
     /**
@@ -106,11 +108,11 @@ public class BlockTownHall extends Block {
                 return;
             ModAccessors.FTBU.addClaim(world, placer, posX, posY, posZ);
             if (placer instanceof EntityPlayer && ModAccessors.FTBU_LOADED) {
-                if (!HeadquartersTracker.get(world).validateCurrentHq(placer.getCommandSenderName(), world)) {
+                if (!HeadquartersTracker.get(world).validateCurrentHq(placer.getName(), world)) {
                     world.setBlock(posX, posY, posZ, AWNPCBlockLoader.headquarters, 0, 3);
                     ((TileTownHall) world.getTileEntity(posX, posY, posZ)).isHq = true;
-                    HeadquartersTracker.get(world).setNewHq(placer.getCommandSenderName(), world, posX, posY, posZ);
-                    HeadquartersTracker.notifyHqNew(placer.getCommandSenderName(), posX, posZ);
+                    HeadquartersTracker.get(world).setNewHq(placer.getName(), world, posX, posY, posZ);
+                    HeadquartersTracker.notifyHqNew(placer.getName(), posX, posZ);
                 }
             }
         }
@@ -140,14 +142,14 @@ public class BlockTownHall extends Block {
         if (!world.isRemote) {
             // check if the player who removed it is different
             String townHallOwner = ((TileTownHall) world.getTileEntity(posX, posY, posZ)).getOwnerName();
-            if (!player.getCommandSenderName().equals(townHallOwner)) {
+            if (!player.getName().equals(townHallOwner)) {
                 // notify the owner that this new player captured their town hall
                 Chunk thisChunk = world.getChunkFromBlockCoords(posX, posZ);
                 String notificationTitle = "ftbu_aw2.notification.townhall_lost";
-                ChatComponentTranslation notificationMsg = new ChatComponentTranslation("ftbu_aw2.notification.townhall_destroyed.msg", player.getCommandSenderName());
-                List<ChatComponentTranslation> notificationTooltip = new ArrayList<ChatComponentTranslation>();
-                notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.chunk_name_and_position", ((TileTownHall) world.getTileEntity(posX, posY, posZ)).name, thisChunk.xPosition, thisChunk.zPosition));
-                notificationTooltip.add(new ChatComponentTranslation("ftbu_aw2.notification.click_to_remove"));
+                TextComponentTranslation notificationMsg = new TextComponentTranslation("ftbu_aw2.notification.townhall_destroyed.msg", player.getName());
+                List<TextComponentTranslation> notificationTooltip = new ArrayList<TextComponentTranslation>();
+                notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.chunk_name_and_position", ((TileTownHall) world.getTileEntity(posX, posY, posZ)).name, thisChunk.xPosition, thisChunk.zPosition));
+                notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.click_to_remove"));
                 ModAccessors.FTBU.notifyPlayer(EnumChatFormatting.RED, townHallOwner, notificationTitle, notificationMsg, notificationTooltip);
                 ((TileTownHall) world.getTileEntity(posX, posY, posZ)).unloadChunks();
             }

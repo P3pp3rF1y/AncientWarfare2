@@ -4,7 +4,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.npc.orders.CombatOrder;
 
@@ -14,8 +13,8 @@ import java.util.Collection;
 public class ItemCombatOrder extends ItemOrders {
 
     @Override
-    public Collection<? extends BlockPosition> getPositionsForRender(ItemStack stack) {
-        Collection<BlockPosition> positionList = new ArrayList<BlockPosition>();
+    public Collection<? extends BlockPos> getPositionsForRender(ItemStack stack) {
+        Collection<BlockPos> positionList = new ArrayList<BlockPos>();
         CombatOrder order = CombatOrder.getCombatOrder(stack);
         if (order != null && !order.isEmpty()) {
             for (int i = 0; i < order.size(); i++) {
@@ -43,7 +42,7 @@ public class ItemCombatOrder extends ItemOrders {
             order.clear();
             order.write(stack);
         } else {
-            BlockPosition pos = BlockTools.getBlockClickedOn(player, player.world, false);
+            BlockPos pos = BlockTools.getBlockClickedOn(player, player.world, false);
             if (pos != null) {
                 order.addPatrolPoint(player.world, pos);
                 order.write(stack);

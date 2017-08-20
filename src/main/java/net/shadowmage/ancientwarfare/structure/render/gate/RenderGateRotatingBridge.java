@@ -23,7 +23,6 @@ package net.shadowmage.ancientwarfare.structure.render.gate;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.model.ModelGateBridge;
 import org.lwjgl.opengl.GL11;
@@ -40,8 +39,8 @@ public final class RenderGateRotatingBridge extends Render {
     public void doRender(Entity entity, double d0, double d1, double d2, float f, float f1) {
         GL11.glPushMatrix();
         EntityGate g = (EntityGate) entity;
-        BlockPosition min = g.pos1;
-        BlockPosition max = g.pos2;
+        BlockPos min = g.pos1;
+        BlockPos max = g.pos2;
 
         boolean wideOnXAxis = min.x != max.x;
 

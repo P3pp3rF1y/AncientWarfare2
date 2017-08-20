@@ -148,10 +148,10 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
             }
         }
         if (tag.hasKey("inventoryDirection")) {
-            tileEntity.inventoryDirection = EnumFacing.getOrientation(tag.getInteger("inventoryDirection"));
+            tileEntity.inventoryDirection = EnumFacing.VALUES[tag.getInteger("inventoryDirection")];
         }
         if (tag.hasKey("inventorySide")) {
-            tileEntity.inventorySide = EnumFacing.getOrientation(tag.getInteger("inventorySide"));
+            tileEntity.inventorySide = EnumFacing.VALUES[tag.getInteger("inventorySide")];
         }
         if(!player.world.isRemote){
             tileEntity.markDirty();
@@ -165,7 +165,7 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
         if (player.world.isRemote) {
             return;
         }
-        tileEntity.addTorque(EnumFacing.UNKNOWN, AWCoreStatics.researchPerTick);//do research whenever the GUI is open
+        tileEntity.addTorque(null, AWCoreStatics.researchPerTick);//do research whenever the GUI is open
         NBTTagCompound tag = null;
         String name = tileEntity.getCrafterName();
         /**
@@ -253,18 +253,18 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
     }
 
     public void onSidePressed() {
-        int o = (tileEntity.inventorySide.ordinal() + 1)% EnumFacing.VALID_DIRECTIONS.length;
+        int o = (tileEntity.inventorySide.ordinal() + 1)% EnumFacing.VALUES.length;
         NBTTagCompound tag = new NBTTagCompound();
         tag.setInteger("inventorySide", o);
         sendDataToServer(tag);
-        tileEntity.inventorySide = EnumFacing.getOrientation(o);
+        tileEntity.inventorySide = EnumFacing.VALUES[o];
     }
 
     public void onDirPressed() {
-        int o = (tileEntity.inventoryDirection.ordinal() + 1)% EnumFacing.VALID_DIRECTIONS.length;
+        int o = (tileEntity.inventoryDirection.ordinal() + 1)% EnumFacing.VALUES.length;
         NBTTagCompound tag = new NBTTagCompound();
         tag.setInteger("inventoryDirection", o);
         sendDataToServer(tag);
-        tileEntity.inventoryDirection = EnumFacing.getOrientation(o);
+        tileEntity.inventoryDirection = EnumFacing.VALUES[o];
     }
 }

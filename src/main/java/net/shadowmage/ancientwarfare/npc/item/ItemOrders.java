@@ -3,11 +3,9 @@ package net.shadowmage.ancientwarfare.npc.item;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
 import java.util.Collection;
 import java.util.List;
@@ -31,9 +29,9 @@ public abstract class ItemOrders extends Item implements IItemKeyInterface {
         return key == ItemKey.KEY_0;
     }
 
-    public abstract Collection<? extends BlockPosition> getPositionsForRender(ItemStack stack);
+    public abstract Collection<? extends BlockPos> getPositionsForRender(ItemStack stack);
 
     public void addMessage(EntityPlayer player){
-        player.addChatComponentMessage(new ChatComponentTranslation("guistrings.npc.orders.position_added"));
+        player.addChatComponentMessage(new TextComponentTranslation("guistrings.npc.orders.position_added"));
     }
 }

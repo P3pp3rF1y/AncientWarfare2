@@ -1,7 +1,5 @@
 package net.shadowmage.ancientwarfare.structure.item;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,9 +8,9 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.event.IBoxRenderer;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
@@ -79,7 +77,7 @@ public class ItemBlockStructureBuilder extends ItemBlock implements IBoxRenderer
                 StructureTemplate t = StructureTemplateManager.INSTANCE.getTemplate(name);
                 if (t != null) {
                     int face = BlockTools.getPlayerFacingFromYaw(player.rotationYaw);
-                    BlockPosition p = new BlockPosition(x, y, z).moveForward(face, t.zSize - 1 - t.zOffset + 1);
+                    BlockPos p = new BlockPos(x, y, z).moveForward(face, t.zSize - 1 - t.zOffset + 1);
                     tb.setBuilder(new StructureBuilderTicked(world, t, face, p.x, p.y, p.z));
                 }
             }
@@ -97,13 +95,13 @@ public class ItemBlockStructureBuilder extends ItemBlock implements IBoxRenderer
         if (t == null) {
             return;
         }
-        BlockPosition hit = BlockTools.getBlockClickedOn(player, player.world, true);
+        BlockPos hit = BlockTools.getBlockClickedOn(player, player.world, true);
         if (hit == null) {
             return;
         }
         Util.renderBoundingBox(player, hit, hit, delta);
         int face = BlockTools.getPlayerFacingFromYaw(player.rotationYaw);
-        BlockPosition p2 = hit.moveForward(face, t.zSize - 1 - t.zOffset + 1);
+        BlockPos p2 = hit.moveForward(face, t.zSize - 1 - t.zOffset + 1);
         StructureBB bb = new StructureBB(p2.x, p2.y, p2.z, face, t.xSize, t.ySize, t.zSize, t.xOffset, t.yOffset, t.zOffset);
         Util.renderBoundingBox(player, bb.min, bb.max, delta);
     }

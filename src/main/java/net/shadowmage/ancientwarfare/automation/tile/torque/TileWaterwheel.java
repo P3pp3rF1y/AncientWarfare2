@@ -31,14 +31,14 @@ public class TileWaterwheel extends TileTorqueSingleCell {
     @Override
     public void updateEntity() {
         super.updateEntity();
-        if (!worldObj.isRemote) {
+        if (!world.isRemote) {
             updateTick--;
             if (updateTick <= 0) {
                 updateTick = 20;
                 boolean valid = validateBlocks();
                 if (valid != validSetup) {
                     validSetup = valid;
-                    worldObj.notifyBlockUpdate(xCoord, yCoord, zCoord);
+                    world.notifyBlockUpdate(xCoord, yCoord, zCoord);
                 }
             }
             if (validSetup)//server, update power gen
@@ -140,16 +140,16 @@ public class TileWaterwheel extends TileTorqueSingleCell {
             if (validationGrid[4] != 2 || validationGrid[5] != 2 || getValidationType(x, y - 1, z) != 2) {
                 return false;
             }
-            int metaLeft = worldObj.getBlockMetadata(x2, y - 1, z2);
-            int metaRight = worldObj.getBlockMetadata(x1, y - 1, z1);
+            int metaLeft = world.getBlockMetadata(x2, y - 1, z2);
+            int metaRight = world.getBlockMetadata(x1, y - 1, z1);
             rotationDirection = (byte) (metaLeft < metaRight ? -1 : metaRight < metaLeft ? 1 : 0);
             return true;
         }
     }
 
     private byte getValidationType(int x, int y, int z) {
-        Block block = worldObj.getBlock(x, y, z);
-        if (block.isAir(worldObj, x, y, z)) {
+        Block block = world.getBlock(x, y, z);
+        if (block.isAir(world, x, y, z)) {
             return 1;
         }
         if (block.getMaterial() == Material.water) {
@@ -160,7 +160,7 @@ public class TileWaterwheel extends TileTorqueSingleCell {
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-        return AxisAlignedBB.getBoundingBox(xCoord - 3, yCoord - 3, zCoord - 3, xCoord + 4, yCoord + 4, zCoord + 4);
+        return new AxisAlignedBB(xCoord - 3, yCoord - 3, zCoord - 3, xCoord + 4, yCoord + 4, zCoord + 4);
     }
 
 }

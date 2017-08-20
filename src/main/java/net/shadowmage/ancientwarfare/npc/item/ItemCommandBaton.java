@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.item;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -11,15 +12,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.RayTraceResult.MovingObjectType;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.util.RayTraceUtils;
-import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.CommandType;
@@ -127,7 +127,7 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
             RayTraceResult pos = RayTraceUtils.getPlayerTarget(player, range, 0);
             if (pos != null && pos.typeOfHit == MovingObjectType.ENTITY && pos.entityHit instanceof NpcBase) {
                 NpcBase npc = (NpcBase) pos.entityHit;
-                if (npc.hasCommandPermissions(player.getCommandSenderName())) {
+                if (npc.hasCommandPermissions(player.getName())) {
                     onNpcClicked(player, npc, stack);
                 }
             }
@@ -252,17 +252,19 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
             } else {
                 ids.add(npc.getPersistentID());
             }
-            validateEntities(npc.worldObj);
+            validateEntities(npc.world);
             writeToStack(stack);
         }
 
         public List<Entity> getEntities(World world) {
-            List<Entity> in = new ArrayList<Entity>();
-            Entity e;
-            for (UUID id : ids) {
-                e = WorldTools.getEntityByUUID(world, id);
-                if (e != null) {
-                    in.add(e);
+            List<Entity> in = Lists.newArrayList();
+            if (world instanceof WorldServer) {
+                WorldServer worldServer = (WorldServer) world;
+                for (UUID id : ids) {
+                    Entity e = worldServer.getEntityFromUuid(id);
+                    if (e != null) {
+                        in.add(e);
+                    }
                 }
             }
             return in;
@@ -273,12 +275,15 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
          * should probably only be called on-right click, as operation may be costly
          */
         private void validateEntities(World world) {
-            Iterator<UUID> it = ids.iterator();
-            UUID id;
-            while (it.hasNext()) {
-                id = it.next();
-                if (id == null || WorldTools.getEntityByUUID(world, id) == null) {
-                    it.remove();
+            if (world instanceof WorldServer) {
+                WorldServer worldServer = (WorldServer) world;
+                Iterator<UUID> it = ids.iterator();
+                UUID id;
+                while (it.hasNext()) {
+                    id = it.next();
+                    if (id == null || worldServer.getEntityFromUuid(id) == null) {
+                        it.remove();
+                    }
                 }
             }
         }

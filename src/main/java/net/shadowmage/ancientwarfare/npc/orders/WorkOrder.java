@@ -5,12 +5,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.OrderingList;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.item.ItemWorkOrder;
@@ -62,9 +63,9 @@ public class WorkOrder extends OrderingList<WorkOrder.WorkEntry> implements INBT
     }
 
     //return true if successfully added
-    public boolean addWorkPosition(World world, BlockPosition position) {
+    public boolean addWorkPosition(World world, BlockPos position) {
         if (position != null && size() < MAX_SIZE) {
-            add(new WorkEntry(position, world.provider.dimensionId, 0));
+            add(new WorkEntry(position, world.provider.getDimension(), 0));
             return true;
         }
         return false;
@@ -99,7 +100,7 @@ public class WorkOrder extends OrderingList<WorkOrder.WorkEntry> implements INBT
 
     public static final class WorkEntry {
 
-        private BlockPosition position;
+        private BlockPos position;
         int dimension;
         private int workLength;
 
@@ -107,20 +108,20 @@ public class WorkOrder extends OrderingList<WorkOrder.WorkEntry> implements INBT
             readFromNBT(tag);
         }//nbt constructor
 
-        public WorkEntry(BlockPosition position, int dimension, int workLength) {
+        public WorkEntry(BlockPos position, int dimension, int workLength) {
             this.setPosition(position);
             this.dimension = dimension;
             this.setWorkLength(workLength);
         }
 
         public void readFromNBT(NBTTagCompound tag) {
-            setPosition(new BlockPosition(tag.getCompoundTag("pos")));
+            setPosition(BlockPos.fromLong(tag.getLong("pos")));
             dimension = tag.getInteger("dim");
             setWorkLength(tag.getInteger("length"));
         }
 
         public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-            tag.setTag("pos", getPosition().writeToNBT(new NBTTagCompound()));
+            tag.setLong("pos", getPosition().toLong());
             tag.setInteger("dim", dimension);
             tag.setInteger("length", getWorkLength());
             return tag;
@@ -130,20 +131,24 @@ public class WorkOrder extends OrderingList<WorkOrder.WorkEntry> implements INBT
          * @return the block
          */
         public Block getBlock() {
-            return getPosition().get(dimension);
+            //TODO likely needs fixing the world and may need the world passed in instead
+            World world = AncientWarfareCore.proxy.getWorld(dimension);
+            if(world==null)
+                return null;
+            return world.getBlockState(getPosition()).getBlock();
         }
 
         /**
          * @return the position
          */
-        public BlockPosition getPosition() {
+        public BlockPos getPosition() {
             return position;
         }
 
         /**
          * @param position the position to set
          */
-        public void setPosition(BlockPosition position) {
+        public void setPosition(BlockPos position) {
             this.position = position;
         }
 
@@ -167,8 +172,8 @@ public class WorkOrder extends OrderingList<WorkOrder.WorkEntry> implements INBT
             @Override
             public int getNextWorkIndex(int current, List<WorkEntry> orders, NpcBase npc){
                 for (int i = 0; i < orders.size(); i++) {
-                    BlockPosition pos = orders.get(i).getPosition();
-                    TileEntity te = npc.worldObj.getTileEntity(pos.x, pos.y, pos.z);
+                    BlockPos pos = orders.get(i).getPosition();
+                    TileEntity te = npc.world.getTileEntity(pos);
                     if (te instanceof IWorkSite) {
                         IWorkSite site = (IWorkSite) te;
                         if (((IWorker)npc).canWorkAt(site.getWorkType()) && site.hasWork()) {

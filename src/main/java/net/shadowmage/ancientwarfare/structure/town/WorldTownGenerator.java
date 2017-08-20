@@ -5,7 +5,6 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.gamedata.TownMap;
@@ -59,7 +58,7 @@ public class WorldTownGenerator implements IWorldGenerator {
          * add the town to the generated structure map, as a -really- large structure entry
          */
         StructureMap map = AWGameData.INSTANCE.getData(world, StructureMap.class);
-        StructureBB bb = new StructureBB(new BlockPosition(area.getBlockMinX(), area.getMinY(), area.getBlockMinZ()), new BlockPosition(area.getBlockMaxX(), area.getMaxY(), area.getBlockMaxZ()));
+        StructureBB bb = new StructureBB(new BlockPos(area.getBlockMinX(), area.getMinY(), area.getBlockMinZ()), new BlockPos(area.getBlockMaxX(), area.getMaxY(), area.getBlockMaxZ()));
         StructureEntry entry = new StructureEntry(bb, template.getTownTypeName(), template.getClusterValue());
         map.setGeneratedAt(world, area.getCenterX(), area.getSurfaceY(), area.getCenterZ(), 0, entry, false);
 

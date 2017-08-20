@@ -40,7 +40,7 @@ public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
             } else if (tag.hasKey("clearHome")) {
                 entity.detachHome();
             } else if (tag.hasKey("togglefollow")) {
-                if (entity.getFollowingEntity() != null && entity.getFollowingEntity().getCommandSenderName().equals(player.getCommandSenderName()))
+                if (entity.getFollowingEntity() != null && entity.getFollowingEntity().getName().equals(player.getName()))
                     entity.clearFollowingEntity();
                 else
                     entity.setFollowingEntity(player);

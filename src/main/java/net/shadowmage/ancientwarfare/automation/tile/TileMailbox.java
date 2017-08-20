@@ -39,15 +39,15 @@ public class TileMailbox extends TileOwned implements ISidedInventory, IRotatabl
 
     @Override
     public void updateEntity() {
-        if (!hasWorldObj() || worldObj.isRemote) {
+        if (!hasWorld() || world.isRemote) {
             return;
         }
         if (mailboxName != null)//try to receive mail
         {
-            MailboxData data = AWGameData.INSTANCE.getData(worldObj, MailboxData.class);
+            MailboxData data = AWGameData.INSTANCE.getData(world, MailboxData.class);
 
             List<DeliverableItem> items = new ArrayList<DeliverableItem>();
-            data.getDeliverableItems(privateBox ? getOwnerName() : null, mailboxName, items, worldObj, xCoord, yCoord, zCoord);
+            data.getDeliverableItems(privateBox ? getOwnerName() : null, mailboxName, items, world, xCoord, yCoord, zCoord);
             data.addMailboxReceiver(privateBox ? getOwnerName() : null, mailboxName, this);
 
             if (destinationName != null)//try to send mail
@@ -60,7 +60,7 @@ public class TileMailbox extends TileOwned implements ISidedInventory, IRotatabl
     private void trySendItems(MailboxData data) {
         ItemStack item;
         String owner = privateBox ? getOwnerName() : null;
-        int dim = worldObj.provider.dimensionId;
+        int dim = world.provider.getDimension();
         for (int k = inventory.getSizeInventory()/2; k < inventory.getSizeInventory(); k++) {
             item = inventory.getStackInSlot(k);
             if (item != null) {
@@ -80,7 +80,7 @@ public class TileMailbox extends TileOwned implements ISidedInventory, IRotatabl
     }
 
     public void setMailboxName(String name) {
-        if (worldObj.isRemote) {
+        if (world.isRemote) {
             return;
         }
         mailboxName = name;
@@ -88,7 +88,7 @@ public class TileMailbox extends TileOwned implements ISidedInventory, IRotatabl
     }
 
     public void setTargetName(String name) {
-        if (worldObj.isRemote) {
+        if (world.isRemote) {
             return;
         }
         destinationName = name;
@@ -108,7 +108,7 @@ public class TileMailbox extends TileOwned implements ISidedInventory, IRotatabl
     }
 
     public void setPrivateBox(boolean val) {
-        if (worldObj.isRemote) {
+        if (world.isRemote) {
             return;
         }
         if (val != privateBox) {
@@ -219,12 +219,12 @@ public class TileMailbox extends TileOwned implements ISidedInventory, IRotatabl
 
     @Override
     public EnumFacing getPrimaryFacing() {
-        return EnumFacing.getOrientation(getBlockMetadata());
+        return EnumFacing.VALUES[getBlockMetadata()];
     }
 
     @Override
     public void setPrimaryFacing(EnumFacing face) {
-        worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, face.ordinal(), 0);
+        world.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, face.ordinal(), 0);
     }
 
 }
