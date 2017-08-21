@@ -167,9 +167,9 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
     }
 
     @Override
-    public boolean onBlockClicked(EntityPlayer player) {
+    public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
         if (!player.world.isRemote) {
-            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_MUSHROOM_FARM, xCoord, yCoord, zCoord);
+            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_MUSHROOM_FARM, pos);
         }
         return true;
     }

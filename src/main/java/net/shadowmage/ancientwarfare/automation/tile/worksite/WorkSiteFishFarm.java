@@ -5,11 +5,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.FishingHooks;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
@@ -39,7 +41,7 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
         setWorkBoundsMax(pos.moveUp(yCoord - 1 - pos.y));
         pos = getWorkBoundsMin();
         setWorkBoundsMin(pos.moveUp(yCoord - 5 - pos.y));
-        this.world.notifyBlockUpdate(xCoord, yCoord, zCoord);
+        BlockTools.notifyBlockUpdate(this);
     }
 
     @Override
@@ -49,7 +51,7 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
         setWorkBoundsMax(pos.moveUp(yCoord - 1 - pos.y));
         pos = getWorkBoundsMin();
         setWorkBoundsMin(pos.moveUp(yCoord - 5 - pos.y));
-        this.world.notifyBlockUpdate(xCoord, yCoord, zCoord);
+        BlockTools.notifyBlockUpdate(this);
     }
 
     @Override
@@ -146,16 +148,16 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
     }
 
     @Override
-    public boolean onBlockClicked(EntityPlayer player) {
+    public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
         if (!player.world.isRemote) {
-            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_FISH_FARM, xCoord, yCoord, zCoord);
+            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_FISH_FARM, pos);
         }
         return true;
     }
 
     @Override
     public void openAltGui(EntityPlayer player) {
-        NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_FISH_CONTROL, xCoord, yCoord, zCoord);
+        NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_FISH_CONTROL, pos);
     }
 
     @Override

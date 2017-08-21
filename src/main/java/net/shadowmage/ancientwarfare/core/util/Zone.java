@@ -1,9 +1,10 @@
 package net.shadowmage.ancientwarfare.core.util;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.util.INBTSerializable;
 
-public class Zone implements INBTSerialable{
+public class Zone implements INBTSerializable<NBTTagCompound> {
 
     public BlockPos min, max;
 
@@ -41,21 +42,6 @@ public class Zone implements INBTSerialable{
         return isPositionIn(pos.x, pos.y, pos.z);
     }
 
-    @Override
-    public void readFromNBT(NBTTagCompound tag)
-    {
-        min = new BlockPos(tag.getCompoundTag("min"));
-        max = new BlockPos(tag.getCompoundTag("max"));
-    }
-
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag)
-    {
-        tag.setTag("min", min.writeToNBT(new NBTTagCompound()));
-        tag.setTag("max", max.writeToNBT(new NBTTagCompound()));
-        return tag;
-    }
-
     public boolean equals(BlockPos min, BlockPos max) {
         return min.equals(this.min) && max.equals(this.max);
     }
@@ -74,5 +60,19 @@ public class Zone implements INBTSerialable{
     public String toString()
     {
         return String.format("From %s to %s", min, max);
+    }
+
+    @Override
+    public NBTTagCompound serializeNBT() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setLong("min", min.toLong());
+        tag.setLong("max", max.toLong());
+        return tag;
+    }
+
+    @Override
+    public void deserializeNBT(NBTTagCompound tag) {
+        min = BlockPos.fromLong(tag.getLong("min"));
+        max = BlockPos.fromLong(tag.getLong("max"));
     }
 }

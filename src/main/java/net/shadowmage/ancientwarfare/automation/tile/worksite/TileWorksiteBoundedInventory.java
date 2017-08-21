@@ -132,8 +132,8 @@ public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded i
     }
 
     @Override
-    public final ItemStack getStackInSlotOnClosing(int var1) {
-        return inventory.getStackInSlotOnClosing(var1);
+    public final ItemStack removeStackFromSlot(int var1) {
+        return inventory.removeStackFromSlot(var1);
     }
 
     @Override
@@ -143,12 +143,12 @@ public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded i
 
     @Override
     public final String getInventoryName() {
-        return inventory.getInventoryName();
+        return inventory.getName();
     }
 
     @Override
     public final boolean hasCustomInventoryName() {
-        return inventory.hasCustomInventoryName();
+        return inventory.hasCustomName();
     }
 
     @Override
@@ -157,8 +157,8 @@ public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded i
     }
 
     @Override
-    public final boolean isUseableByPlayer(EntityPlayer var1) {
-        return inventory.isUseableByPlayer(var1);
+    public final boolean isUsableByPlayer(EntityPlayer var1) {
+        return inventory.isUsableByPlayer(var1);
     }
 
     @Override

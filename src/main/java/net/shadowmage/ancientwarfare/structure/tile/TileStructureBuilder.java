@@ -11,6 +11,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.relauncher.Side;
@@ -226,7 +227,7 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwna
             tag.setTag("bbMin", bb.min.writeToNBT(new NBTTagCompound()));
             tag.setTag("bbMax", bb.max.writeToNBT(new NBTTagCompound()));
         }
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);
+        return new S35PacketUpdateTileEntity(pos, 0, tag);
     }
 
     @Override

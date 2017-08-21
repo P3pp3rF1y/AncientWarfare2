@@ -1,8 +1,8 @@
 package net.shadowmage.ancientwarfare.core.tile;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInvBasic;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.IInventoryChangedListener;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
@@ -24,7 +24,7 @@ import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import java.util.EnumSet;
 import java.util.List;
 
-public class TileResearchStation extends TileOwned implements IWorkSite, IInventory, IInvBasic, ITorqueTile, IInteractableTile, IRotatableTile {
+public class TileResearchStation extends TileOwned implements IWorkSite, IInventory, IInventoryChangedListener, ITorqueTile, IInteractableTile, IRotatableTile {
 
     EnumFacing orientation = EnumFacing.NORTH;//default for old blocks
 
@@ -253,10 +253,10 @@ public class TileResearchStation extends TileOwned implements IWorkSite, IInvent
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int var1) {
+    public ItemStack removeStackFromSlot(int var1) {
         if(var1 < bookInventory.getSizeInventory())
-            return bookInventory.getStackInSlotOnClosing(var1);
-        return resourceInventory.getStackInSlotOnClosing(var1 - bookInventory.getSizeInventory());
+            return bookInventory.removeStackFromSlot(var1);
+        return resourceInventory.removeStackFromSlot(var1 - bookInventory.getSizeInventory());
     }
 
     @Override
@@ -269,17 +269,17 @@ public class TileResearchStation extends TileOwned implements IWorkSite, IInvent
     }
 
     @Override
-    public void onInventoryChanged(net.minecraft.inventory.InventoryBasic internal){
+    public void onInventoryChanged(IInventory internal){
         markDirty();
     }
 
     @Override
-    public String getInventoryName() {
+    public String getName() {
         return "research.station";
     }
 
     @Override
-    public boolean hasCustomInventoryName() {
+    public boolean hasCustomName() {
         return false;
     }
 
@@ -289,16 +289,16 @@ public class TileResearchStation extends TileOwned implements IWorkSite, IInvent
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer var1) {
+    public boolean isUsableByPlayer(EntityPlayer var1) {
         return true;
     }
 
     @Override
-    public void openInventory() {
+    public void openInventory(EntityPlayer player) {
     }
 
     @Override
-    public void closeInventory() {
+    public void closeInventory(EntityPlayer player) {
     }
 
     @Override
@@ -323,10 +323,10 @@ public class TileResearchStation extends TileOwned implements IWorkSite, IInvent
     }
 
     @Override
-    public boolean onBlockClicked(EntityPlayer player) {
+    public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
         //TODO validate team/owner status
         if (!player.world.isRemote) {
-            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_RESEARCH_STATION, xCoord, yCoord, zCoord);
+            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_RESEARCH_STATION, pos);
         }
         return true;
     }

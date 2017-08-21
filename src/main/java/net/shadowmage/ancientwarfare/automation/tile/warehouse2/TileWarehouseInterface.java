@@ -1,19 +1,25 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumHand;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseInterface;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
-import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.core.util.NBTSerializableUtils;
 
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class TileWarehouseInterface extends TileControlled implements IInventory, IInteractableTile {
 
     final InventoryBasic inventory = new InventoryBasic(27);
@@ -74,6 +80,11 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
     }
 
     @Override
+    public boolean isEmpty() {
+        return inventory.isEmpty();
+    }
+
+    @Override
     public ItemStack getStackInSlot(int var1) {
         return inventory.getStackInSlot(var1);
     }
@@ -81,14 +92,14 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
     @Override
     public ItemStack decrStackSize(int var1, int var2) {
         ItemStack stack = inventory.decrStackSize(var1, var2);
-        if(stack!=null)
+        if(!stack.isEmpty())
             markDirty();
         return stack;
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int var1) {
-        ItemStack stack = inventory.getStackInSlotOnClosing(var1);
+    public ItemStack removeStackFromSlot(int var1) {
+        ItemStack stack = inventory.removeStackFromSlot(var1);
         recalcRequests();
         return stack;
     }
@@ -101,12 +112,12 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
     }
 
     @Override
-    public String getInventoryName() {
-        return inventory.getInventoryName();
+    public String getName() {
+        return inventory.getName();
     }
 
     @Override
-    public boolean hasCustomInventoryName() {
+    public boolean hasCustomName() {
         return false;
     }
 
@@ -116,16 +127,16 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer var1) {
-        return inventory.isUseableByPlayer(var1);
+    public boolean isUsableByPlayer(EntityPlayer var1) {
+        return inventory.isUsableByPlayer(var1);
     }
 
     @Override
-    public void openInventory() {
+    public void openInventory(EntityPlayer player) {
     }//noop
 
     @Override
-    public void closeInventory() {
+    public void closeInventory(EntityPlayer player) {
     }//noop
 
     @Override
@@ -134,9 +145,29 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
     }
 
     @Override
-    public boolean onBlockClicked(EntityPlayer player) {
+    public int getField(int id) {
+        return inventory.getField(id);
+    }
+
+    @Override
+    public void setField(int id, int value) {
+        inventory.setField(id, value);
+    }
+
+    @Override
+    public int getFieldCount() {
+        return inventory.getFieldCount();
+    }
+
+    @Override
+    public void clear() {
+        inventory.clear();
+    }
+
+    @Override
+    public boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
         if (!player.world.isRemote) {
-            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_OUTPUT, xCoord, yCoord, zCoord);
+            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_OUTPUT, pos);
         }
         return true;
     }
@@ -145,14 +176,15 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         inventory.readFromNBT(tag.getCompoundTag("inventory"));
-        filters = INBTSerialable.Helper.read(tag, "filterList", WarehouseInterfaceFilter.class);
+        filters = NBTSerializableUtils.read(tag, "filterList", WarehouseInterfaceFilter.class);
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setTag("inventory", inventory.writeToNBT(new NBTTagCompound()));
-        INBTSerialable.Helper.write(tag, "filterList", getFilters());
+        NBTSerializableUtils.write(tag, "filterList", getFilters());
+        return tag;
     }
 
     public void recalcRequests() {
@@ -164,11 +196,11 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
         ItemStack stack;
         for (int i = 0; i < inventory.getSizeInventory(); i++) {
             stack = inventory.getStackInSlot(i);
-            if (stack == null) {
+            if (stack.isEmpty()) {
                 continue;
             }
             if (!matchesFilter(stack)) {
-                emptyRequests.add(new InterfaceEmptyRequest(i, stack.stackSize));
+                emptyRequests.add(new InterfaceEmptyRequest(i, stack.getCount()));
             } else//matches, remove extras
             {
                 int count = InventoryTools.getCountOf(inventory, -1, stack);

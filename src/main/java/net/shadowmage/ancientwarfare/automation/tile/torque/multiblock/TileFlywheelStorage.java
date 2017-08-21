@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque.multiblock;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -13,6 +12,7 @@ import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBlockEvent;
 import net.shadowmage.ancientwarfare.core.util.BlockFinder;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
@@ -149,8 +149,7 @@ public class TileFlywheelStorage extends TileEntity implements ITickable {
         this.controllerPos = pos;
         markDirty();
         if (controllerPos != null) {
-            IBlockState state = world.getBlockState(pos);
-            world.notifyBlockUpdate(pos, state, state, 3);
+            BlockTools.notifyBlockUpdate(this);
         }
     }
 
@@ -210,8 +209,7 @@ public class TileFlywheelStorage extends TileEntity implements ITickable {
         }
         this.maxEnergyStored = (double) setCube * energyPerBlockForType;
         markDirty();
-        IBlockState state = world.getBlockState(pos);
-        this.world.notifyBlockUpdate(pos, state, state, 3);
+        BlockTools.notifyBlockUpdate(this);
     }
 
     private void setInvalidSetup(List<BlockPos> set) {

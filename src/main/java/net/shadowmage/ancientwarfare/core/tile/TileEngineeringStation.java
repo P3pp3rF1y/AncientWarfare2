@@ -19,7 +19,7 @@ import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class TileEngineeringStation extends TileEntity implements IRotatableTile,IInvBasic {
+public class TileEngineeringStation extends TileEntity implements IRotatableTile,IInventoryChangedListener {
 
     EnumFacing facing = EnumFacing.NORTH;
     ItemStack[] matrixShadow;
@@ -87,14 +87,14 @@ public class TileEngineeringStation extends TileEntity implements IRotatableTile
     }
 
     @Override
-    public void onInventoryChanged(net.minecraft.inventory.InventoryBasic internal){
+    public void onInventoryChanged(IInventory internal){
         onLayoutMatrixChanged();
         markDirty();
     }
 
     @Override
-    public void setWorldObj(World world){
-        super.setWorldObj(world);
+    public void setWorld(World world){
+        super.setWorld(world);
         onLayoutMatrixChanged();
     }
 
@@ -108,7 +108,7 @@ public class TileEngineeringStation extends TileEntity implements IRotatableTile
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         facing = EnumFacing.VALUES[pkt.func_148857_g().getInteger("facing")];
-        this.world.notifyBlockUpdate(xCoord, yCoord, zCoord);
+        BlockTools.notifyBlockUpdate(this);
     }
 
     @Override
@@ -152,13 +152,13 @@ public class TileEngineeringStation extends TileEntity implements IRotatableTile
     @Override
     public void setPrimaryFacing(EnumFacing face) {
         this.facing = face;
-        this.world.notifyBlockUpdate(xCoord, yCoord, zCoord);
+        BlockTools.notifyBlockUpdate(this);
     }
 
     public void onBlockBreak(){
-        InventoryTools.dropInventoryInWorld(world, bookInventory, xCoord, yCoord, zCoord);
-        InventoryTools.dropInventoryInWorld(world, extraSlots, xCoord, yCoord, zCoord);
-        InventoryTools.dropInventoryInWorld(world, layoutMatrix, xCoord, yCoord, zCoord);
+        InventoryTools.dropInventoryInWorld(world, bookInventory, pos);
+        InventoryTools.dropInventoryInWorld(world, extraSlots, pos);
+        InventoryTools.dropInventoryInWorld(world, layoutMatrix, pos);
     }
 
 }

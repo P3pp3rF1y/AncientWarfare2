@@ -3,11 +3,11 @@ package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 import com.google.common.base.Predicate;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public final class WarehouseInterfaceFilter implements Predicate<ItemStack>, INBTSerialable {
+public final class WarehouseInterfaceFilter implements Predicate<ItemStack>, INBTSerializable<NBTTagCompound> {
 
     private ItemStack filterItem;
     private int quantity;
@@ -40,23 +40,6 @@ public final class WarehouseInterfaceFilter implements Predicate<ItemStack>, INB
         return 31 * result + quantity;
     }
 
-    @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        quantity = tag.getInteger("quantity");
-        if (tag.hasKey("filter")) {
-            filterItem = InventoryTools.readItemStack(tag.getCompoundTag("filter"));
-        }
-    }
-
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        tag.setInteger("quantity", quantity);
-        if (filterItem != null) {
-            tag.setTag("filter", InventoryTools.writeItemStack(filterItem));
-        }
-        return tag;
-    }
-
     public final ItemStack getFilterItem() {
         return filterItem;
     }
@@ -86,4 +69,21 @@ public final class WarehouseInterfaceFilter implements Predicate<ItemStack>, INB
         return filter;
     }
 
+    @Override
+    public NBTTagCompound serializeNBT() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("quantity", quantity);
+        if (filterItem != null) {
+            tag.setTag("filter", filterItem.writeToNBT(new NBTTagCompound()));
+        }
+        return tag;
+    }
+
+    @Override
+    public void deserializeNBT(NBTTagCompound tag) {
+        quantity = tag.getInteger("quantity");
+        if (tag.hasKey("filter")) {
+            filterItem = new ItemStack(tag.getCompoundTag("filter"));
+        }
+    }
 }

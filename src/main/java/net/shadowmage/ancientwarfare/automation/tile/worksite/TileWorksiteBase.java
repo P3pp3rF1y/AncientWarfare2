@@ -25,6 +25,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.EnumSet;
@@ -108,7 +109,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
     @Override
     public void onBlockBroken() {
         for (WorksiteUpgrade ug : this.upgrades) {
-            InventoryTools.dropItemInWorld(world, ItemWorksiteUpgrade.getStack(ug), xCoord, yCoord, zCoord);
+            InventoryTools.dropItemInWorld(world, ItemWorksiteUpgrade.getStack(ug), pos);
         }
         efficiencyBonusFactor = 0;
         upgrades.clear();
@@ -118,7 +119,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
     public void addUpgrade(WorksiteUpgrade upgrade) {
         upgrades.add(upgrade);
         updateEfficiency();
-        world.notifyBlockUpdate(xCoord, yCoord, zCoord);
+        BlockTools.notifyBlockUpdate(this);
         markDirty();
     }
 
@@ -126,7 +127,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
     public void removeUpgrade(WorksiteUpgrade upgrade) {
         upgrades.remove(upgrade);
         updateEfficiency();
-        world.notifyBlockUpdate(xCoord, yCoord, zCoord);
+        BlockTools.notifyBlockUpdate(this);
         markDirty();
     }
 
@@ -315,7 +316,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
 
     @Override
     public boolean hasWork() {
-        return torqueCell.getEnergy() < torqueCell.getMaxEnergy() && world.getBlockPowerInput(xCoord, yCoord, zCoord) == 0;
+        return torqueCell.getEnergy() < torqueCell.getMaxEnergy() && world.getStrongPower(pos) == 0;
     }
 
     @Override
@@ -326,7 +327,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
     @Override
     public final void setPrimaryFacing(EnumFacing face) {
         orientation = face;
-        this.world.notifyBlockUpdate(xCoord, yCoord, zCoord);
+        BlockTools.notifyBlockUpdate(this);
         markDirty();//notify neighbors of tile change
     }
 

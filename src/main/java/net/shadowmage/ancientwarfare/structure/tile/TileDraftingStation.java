@@ -1,6 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.tile;
 
-import net.minecraft.inventory.IInvBasic;
+import net.minecraft.inventory.IInventoryChangedListener;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
@@ -14,7 +14,7 @@ import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileDraftingStation extends TileEntity implements IInvBasic {
+public class TileDraftingStation extends TileEntity implements IInventoryChangedListener {
 
     private String structureName;//structure pulled from live structure list anytime a ref is needed
     private boolean isStarted;//has started compiling resources -- will need input to cancel
@@ -203,7 +203,7 @@ public class TileDraftingStation extends TileEntity implements IInvBasic {
     }
 
     @Override
-    public void onInventoryChanged(net.minecraft.inventory.InventoryBasic internal){
+    public void onInventoryChanged(IInventory internal){
         markDirty();
     }
 

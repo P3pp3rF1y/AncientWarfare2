@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInvBasic;
+import net.minecraft.inventory.IInventoryChangedListener;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -11,7 +11,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.EnumSet;
 
-public class TileOreProcessor extends TileWorksiteBase implements ISidedInventory,IInvBasic {
+public class TileOreProcessor extends TileWorksiteBase implements ISidedInventory,IInventoryChangedListener {
 
     private final InventoryBasic inventory;
 
@@ -20,12 +20,12 @@ public class TileOreProcessor extends TileWorksiteBase implements ISidedInventor
     }
 
     @Override
-    public void onInventoryChanged(net.minecraft.inventory.InventoryBasic internal) {
+    public void onInventoryChanged(IInventory internal) {
         markDirty();
     }
 
     @Override
-    public boolean onBlockClicked(EntityPlayer player) {
+    public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
         // TODO implement GUI
         return true;
     }
@@ -56,7 +56,7 @@ public class TileOreProcessor extends TileWorksiteBase implements ISidedInventor
     public void onBlockBroken() {
         super.onBlockBroken();
         if (!world.isRemote) {
-            InventoryTools.dropInventoryInWorld(world, inventory, xCoord, yCoord, zCoord);
+            InventoryTools.dropInventoryInWorld(world, inventory, pos);
         }
     }
 
@@ -100,8 +100,8 @@ public class TileOreProcessor extends TileWorksiteBase implements ISidedInventor
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int slot) {
-        return inventory.getStackInSlotOnClosing(slot);
+    public ItemStack removeStackFromSlot(int slot) {
+        return inventory.removeStackFromSlot(slot);
     }
 
     @Override
@@ -110,13 +110,13 @@ public class TileOreProcessor extends TileWorksiteBase implements ISidedInventor
     }
 
     @Override
-    public String getInventoryName() {
-        return inventory.getInventoryName();
+    public String getName() {
+        return inventory.getName();
     }
 
     @Override
-    public boolean hasCustomInventoryName() {
-        return inventory.hasCustomInventoryName();
+    public boolean hasCustomName() {
+        return inventory.hasCustomName();
     }
 
     @Override
@@ -125,16 +125,16 @@ public class TileOreProcessor extends TileWorksiteBase implements ISidedInventor
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer player) {
-        return inventory.isUseableByPlayer(player);
+    public boolean isUsableByPlayer(EntityPlayer player) {
+        return inventory.isUsableByPlayer(player);
     }
 
     @Override
-    public void openInventory() {
+    public void openInventory(EntityPlayer player) {
     }//NOOP
 
     @Override
-    public void closeInventory() {
+    public void closeInventory(EntityPlayer player) {
     }//NOOP
 
     @Override

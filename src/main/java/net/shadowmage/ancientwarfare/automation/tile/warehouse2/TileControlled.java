@@ -1,13 +1,18 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
+import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
-public abstract class TileControlled extends TileEntity implements IControlledTile, ITickable {
+import javax.annotation.Nullable;
+
+@MethodsReturnNonnullByDefault
+public abstract class TileControlled extends TileUpdatable implements IControlledTile, ITickable {
 
     private boolean init;
     private IControllerTile controller;
@@ -79,6 +84,7 @@ public abstract class TileControlled extends TileEntity implements IControlledTi
         this.controllerPosition = tile == null ? null : tile.getPos();
     }
 
+    @Nullable
     @Override
     public final IControllerTile getController() {
         return controller;
@@ -88,23 +94,24 @@ public abstract class TileControlled extends TileEntity implements IControlledTi
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         if (tag.hasKey("controllerPosition")) {
-            controllerPosition = new BlockPos(tag.getCompoundTag("controllerPosition"));
+            controllerPosition = BlockPos.fromLong(tag.getLong("controllerPosition"));
         }
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         if (controllerPosition != null) {
-            tag.setTag("controllerPosition", controllerPosition.writeToNBT(new NBTTagCompound()));
+            tag.setLong("controllerPosition", controllerPosition.toLong());
         }
+        return tag;
     }
 
     @Override
     public final boolean equals(Object obj) {
         if (this == obj)
             return true;
-        return obj instanceof TileControlled && this.world == ((TileControlled) obj).getWorld() && this.getPosition().equals(((TileControlled) obj).getPos());
+        return obj instanceof TileControlled && this.world == ((TileControlled) obj).getWorld() && this.getPos().equals(((TileControlled) obj).getPos());
     }
 
     @Override

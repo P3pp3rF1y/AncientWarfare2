@@ -4,13 +4,14 @@ import net.minecraft.block.Block;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.shadowmage.ancientwarfare.npc.block.BlockTownHall;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.item.ItemUpkeepOrder;
 
-public class UpkeepOrder implements INBTSerialable {
+public class UpkeepOrder implements INBTSerializable<NBTTagCompound> {
 
     BlockPos upkeepPosition;
     int upkeepDimension;
@@ -77,27 +78,6 @@ public class UpkeepOrder implements INBTSerialable {
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        if (tag.hasKey("upkeepPosition")) {
-            upkeepPosition = new BlockPos(tag.getCompoundTag("upkeepPosition"));
-            upkeepDimension = tag.getInteger("dim");
-            blockSide = tag.getInteger("side");
-            upkeepAmount = tag.getInteger("upkeepAmount");
-        }
-    }
-
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        if (upkeepPosition != null) {
-            tag.setTag("upkeepPosition", upkeepPosition.writeToNBT(new NBTTagCompound()));
-            tag.setInteger("dim", upkeepDimension);
-            tag.setInteger("side", blockSide);
-            tag.setInteger("upkeepAmount", upkeepAmount);
-        }
-        return tag;
-    }
-
-    @Override
     public String toString() {
         return "Upkeep Orders[" + upkeepPosition + "]";
     }
@@ -119,4 +99,25 @@ public class UpkeepOrder implements INBTSerialable {
         }
     }
 
+    @Override
+    public NBTTagCompound serializeNBT() {
+        NBTTagCompound tag = new NBTTagCompound();
+        if (upkeepPosition != null) {
+            tag.setTag("upkeepPosition", upkeepPosition.writeToNBT(new NBTTagCompound()));
+            tag.setInteger("dim", upkeepDimension);
+            tag.setInteger("side", blockSide);
+            tag.setInteger("upkeepAmount", upkeepAmount);
+        }
+        return tag;
+    }
+
+    @Override
+    public void deserializeNBT(NBTTagCompound tag) {
+        if (tag.hasKey("upkeepPosition")) {
+            upkeepPosition = BlockPos.fromLong(tag.getLong("upkeepPosition"));
+            upkeepDimension = tag.getInteger("dim");
+            blockSide = tag.getInteger("side");
+            upkeepAmount = tag.getInteger("upkeepAmount");
+        }
+    }
 }

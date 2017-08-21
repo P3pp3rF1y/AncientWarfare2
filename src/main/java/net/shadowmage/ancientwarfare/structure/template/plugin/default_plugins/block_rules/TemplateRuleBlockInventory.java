@@ -28,9 +28,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.WeightedRandomChestContent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.NBTTools;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
@@ -85,7 +87,7 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
     }
 
     @Override
-    public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) {
+    public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
         super.handlePlacement(world, turns, x, y, z, builder);
         int localMeta = BlockDataManager.INSTANCE.getRotatedMeta(block, this.meta, turns);
         world.setBlockMetadataWithNotify(x, y, z, localMeta, 3);
@@ -110,7 +112,7 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
                 inventory.setInventorySlotContents(i, stack == null ? null : stack.copy());
             }
         }
-        world.notifyBlockUpdate(x, y, z);
+        BlockTools.notifyBlockUpdate(world, pos);
     }
 
     public void generateLootFor(IInventory inventory, Random rng) {

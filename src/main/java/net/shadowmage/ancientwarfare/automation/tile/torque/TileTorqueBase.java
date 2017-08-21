@@ -2,15 +2,14 @@ package net.shadowmage.ancientwarfare.automation.tile.torque;
 
 import cofh.redstoneflux.api.IEnergyHandler;
 import cofh.redstoneflux.api.IEnergyReceiver;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.common.Optional;
@@ -23,9 +22,12 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBlockEvent;
+import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
+@MethodsReturnNonnullByDefault
 @Optional.Interface(iface = "cofh.redstoneflux.api.IEnergyHandler", modid = "redstoneflux", striprefs = true)
-public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, IInteractableTile, IRotatableTile, IEnergyHandler, IEnergyReceiver {
+public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTile, IInteractableTile, IRotatableTile, IEnergyHandler, IEnergyReceiver, ITickable {
 
     public static final int DIRECTION_LENGTH = EnumFacing.VALUES.length;
     /**
@@ -178,7 +180,7 @@ public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, 
         this.orientation = d;
         this.world.updateComparatorOutputLevel(pos, getBlockType());
         this.invalidateNeighborCache();
-        this.world.notifyBlockUpdate(xCoord, yCoord, zCoord);
+        BlockTools.notifyBlockUpdate(this);
     }
 
     @Override
@@ -306,33 +308,23 @@ public abstract class TileTorqueBase extends TileEntity implements ITorqueTile, 
         orientation = EnumFacing.VALUES[tag.getInteger("orientation")];
     }
 
+
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setInteger("orientation", orientation.ordinal());
-    }
 
-    @Override
-    public final Packet getDescriptionPacket() {
-        NBTTagCompound tag = getDescriptionTag();
-        if (tag == null) {
-            return null;
-        }
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, tag);
-    }
-
-    public NBTTagCompound getDescriptionTag() {
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setInteger("orientation", orientation.ordinal());
         return tag;
     }
 
-    @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        orientation = EnumFacing.VALUES[pkt.func_148857_g().getInteger("orientation")];
-        this.invalidateNeighborCache();
-        this.world.updateComparatorOutputLevel(xCoord, yCoord, zCoord, getBlockType());
-        this.world.notifyBlockUpdate(xCoord, yCoord, zCoord);//uhh..why am i doing this on client?
+    protected void writeUpdateNBT(NBTTagCompound tag) {
+        super.writeUpdateNBT(tag);
+        tag.setInteger("orientation", orientation.ordinal());
     }
 
+    protected void handleUpdateNBT(NBTTagCompound tag) {
+        handleUpdateNBT(tag);
+        orientation = EnumFacing.VALUES[tag.getInteger("orientation")];
+        this.invalidateNeighborCache(); //TODO is this needed on client??
+    }
 }

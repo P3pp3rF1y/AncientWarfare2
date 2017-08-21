@@ -1,21 +1,20 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque.multiblock;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
+import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.util.BlockFinder;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
 
-public class TileWindmillBlade extends TileEntity implements ITickable {
+public class TileWindmillBlade extends TileUpdatable implements ITickable {
 
     double bladeRpm = 20.d;
     double bladeRpt = bladeRpm * AWAutomationStatics.rpmToRpt;
@@ -179,8 +178,7 @@ public class TileWindmillBlade extends TileEntity implements ITickable {
         }
         if(dirty){
             markDirty();
-            IBlockState state = world.getBlockState(pos);
-            world.notifyBlockUpdate(pos, state, state, 3);
+            BlockTools.notifyBlockUpdate(this);
         }
     }
 
@@ -214,13 +212,12 @@ public class TileWindmillBlade extends TileEntity implements ITickable {
         windmillSize = ySize;
         this.isControl = true;
         markDirty();
-        IBlockState state = world.getBlockState(pos);
-        this.world.notifyBlockUpdate(pos, state, state, 3);
+        BlockTools.notifyBlockUpdate(this);
     }
 
     @Override
-    public Packet getDescriptionPacket() {
-        NBTTagCompound tag = new NBTTagCompound();
+    protected void writeUpdateNBT(NBTTagCompound tag) {
+        super.writeUpdateNBT(tag);
         tag.setBoolean("isControl", isControl);
         if (controlPos != null) {
             tag.setLong("controlPos", controlPos.toLong());
@@ -229,13 +226,11 @@ public class TileWindmillBlade extends TileEntity implements ITickable {
             tag.setInteger("size", windmillSize);
             tag.setInteger("direction", windmillDirection);
         }
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        super.onDataPacket(net, pkt);
-        NBTTagCompound tag = pkt.func_148857_g();
+    protected void handleUpdateNBT(NBTTagCompound tag) {
+        super.handleUpdateNBT(tag);
         controlPos = tag.hasKey("controlPos") ? BlockPos.fromLong(tag.getLong("controlPos")) : null;
         isControl = tag.getBoolean("isControl");
         if (isControl) {

@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.automation.tile;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.util.Constants;
@@ -26,9 +27,9 @@ public class TileChunkLoaderDeluxe extends TileChunkLoaderSimple implements IInt
     }
 
     @Override
-    public boolean onBlockClicked(EntityPlayer player) {
+    public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
         if (!player.world.isRemote) {
-            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_CHUNK_LOADER_DELUXE, xCoord, yCoord, zCoord);
+            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_CHUNK_LOADER_DELUXE, pos);
         }
         return true;
     }

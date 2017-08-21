@@ -1,13 +1,16 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileFlywheelStorage;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 
+import javax.annotation.Nullable;
+
+@MethodsReturnNonnullByDefault
 public abstract class TileFlywheelControl extends TileTorqueSingleCell {
 
     private boolean powered;
@@ -26,7 +29,8 @@ public abstract class TileFlywheelControl extends TileTorqueSingleCell {
     protected abstract double getMaxTransfer();
 
     @Override
-    public void updateEntity() {
+    public void update() {
+        //TODO is this really not supposed to call super.update?
         if (!world.isRemote) {
             serverNetworkUpdate();
             torqueIn = torqueCell.getEnergy() - prevEnergy;
@@ -87,18 +91,15 @@ public abstract class TileFlywheelControl extends TileTorqueSingleCell {
         }
     }
 
+    @Nullable
     public TileFlywheelStorage getControlledFlywheel() {
-        int x = xCoord;
-        int y = yCoord - 1;
-        int z = zCoord;
-        TileEntity te = world.getTileEntity(x, y, z);
+        BlockPos controllerPos = pos.offset(EnumFacing.DOWN);
+        TileEntity te = world.getTileEntity(controllerPos);
         if (te instanceof TileFlywheelStorage) {
             TileFlywheelStorage fs = (TileFlywheelStorage) te;
             if (fs.controllerPos != null) {
-                x = fs.controllerPos.x;
-                y = fs.controllerPos.y;
-                z = fs.controllerPos.z;
-                te = world.getTileEntity(x, y, z);
+                controllerPos = fs.controllerPos;
+                te = world.getTileEntity(controllerPos);
                 if (te instanceof TileFlywheelStorage) {
                     return (TileFlywheelStorage) te;
                 }
@@ -126,7 +127,7 @@ public abstract class TileFlywheelControl extends TileTorqueSingleCell {
     public void onNeighborTileChanged() {
         super.onNeighborTileChanged();
         if (!world.isRemote) {
-            boolean p = world.getBlockPowerInput(xCoord, yCoord, zCoord) > 0;
+            boolean p = world.getStrongPower(pos) > 0;
             if (p != powered) {
                 powered = p;
                 sendDataToClient(7, powered ? 1 : 0);
@@ -182,6 +183,7 @@ public abstract class TileFlywheelControl extends TileTorqueSingleCell {
         return cell == null ? 0 : cell.getMaxTickInput();
     }
 
+    @Nullable
     private TorqueCell getCell(EnumFacing from) {
         if (from == orientation) {
             return torqueCell;
@@ -192,25 +194,25 @@ public abstract class TileFlywheelControl extends TileTorqueSingleCell {
     }
 
     //*************************************** NBT / DATA PACKET ***************************************//
-    @Override
-    public NBTTagCompound getDescriptionTag() {
-        NBTTagCompound tag = super.getDescriptionTag();
-        tag.setBoolean("powered", powered);
-        return tag;
-    }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        super.onDataPacket(net, pkt);
-        NBTTagCompound tag = pkt.func_148857_g();
+    protected void handleUpdateNBT(NBTTagCompound tag) {
+        super.handleUpdateNBT(tag);
         powered = tag.getBoolean("powered");
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    protected void writeUpdateNBT(NBTTagCompound tag) {
+        super.writeUpdateNBT(tag);
+        tag.setBoolean("powered", powered);
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setBoolean("powered", powered);
         tag.setDouble("torqueEnergyIn", inputCell.getEnergy());
+        return tag;
     }
 
     @Override

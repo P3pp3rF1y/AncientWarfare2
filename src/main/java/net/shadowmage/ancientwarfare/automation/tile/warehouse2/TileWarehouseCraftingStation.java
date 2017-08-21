@@ -1,13 +1,11 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCraftResult;
-import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
@@ -17,7 +15,7 @@ import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class TileWarehouseCraftingStation extends TileEntity implements IInteractableTile,IInvBasic {
+public class TileWarehouseCraftingStation extends TileEntity implements IInteractableTile, IInventoryChangedListener {
 
     public InventoryCrafting layoutMatrix;
     public InventoryCraftResult result;
@@ -86,20 +84,15 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
     }
 
     public final TileWarehouseBase getWarehouse() {
-        if (yCoord <= 1)//could not possibly be a warehouse below...
+        if (pos.getY() <= 1)//could not possibly be a warehouse below...
         {
             return null;
         }
-        TileEntity te = world.getTileEntity(xCoord, yCoord - 1, zCoord);
+        TileEntity te = world.getTileEntity(pos.down());
         if (te instanceof TileWarehouseBase) {
             return (TileWarehouseBase) te;
         }
         return null;
-    }
-
-    @Override
-    public boolean canUpdate() {
-        return false;
     }
 
     private void onLayoutMatrixChanged() {
@@ -111,13 +104,13 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
     }
 
     @Override
-    public void setWorldObj(World world){
-        super.setWorldObj(world);
+    public void setWorld(World world){
+        super.setWorld(world);
         onLayoutMatrixChanged();
     }
 
     @Override
-    public void onInventoryChanged(net.minecraft.inventory.InventoryBasic internal){
+    public void onInventoryChanged(IInventory internal){
         onLayoutMatrixChanged();
         markDirty();
     }
@@ -131,7 +124,7 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
 
         NBTTagCompound inventoryTag = InventoryTools.writeInventoryToNBT(bookInventory, new NBTTagCompound());
@@ -143,12 +136,13 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
         inventoryTag = InventoryTools.writeInventoryToNBT(layoutMatrix, new NBTTagCompound());
         tag.setTag("layoutMatrix", inventoryTag);
 
+        return tag;
     }
 
     @Override
-    public boolean onBlockClicked(EntityPlayer player) {
+    public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
         if (!player.world.isRemote) {
-            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_CRAFTING, xCoord, yCoord, zCoord);
+            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_CRAFTING, pos);
         }
         return true;
     }

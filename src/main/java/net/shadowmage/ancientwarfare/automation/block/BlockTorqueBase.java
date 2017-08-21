@@ -16,6 +16,7 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableB
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.block.IconRotationMap;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.HashMap;
@@ -129,8 +130,7 @@ public abstract class BlockTorqueBase extends Block implements IRotatableBlock {
         EnumFacing rotatedFacing = facing.rotateAround(axis.getAxis());
         if (facing != rotatedFacing) {
             tt.setPrimaryFacing(rotatedFacing);
-            IBlockState state = world.getBlockState(pos);
-            world.notifyBlockUpdate(pos, state, state, 3);
+            BlockTools.notifyBlockUpdate(world, pos);
             return true;
         }
         return false;

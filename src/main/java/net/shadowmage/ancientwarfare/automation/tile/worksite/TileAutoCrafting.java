@@ -17,7 +17,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.ArrayList;
 
-public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventory, IInvBasic {
+public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventory, IInventoryChangedListener {
 
     public InventoryBasic bookSlot;
     public InventoryBasic outputInventory;
@@ -112,7 +112,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
         useResources();
         stack = InventoryTools.mergeItemStack(outputInventory, stack, -1);
         if (stack != null) {
-            InventoryTools.dropItemInWorld(world, stack, xCoord, yCoord, zCoord);
+            InventoryTools.dropItemInWorld(world, stack, pos);
         }
     }
 
@@ -126,7 +126,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
             if(InventoryTools.removeItems(resourceInventory, -1, stack1, 1) != null) {
                 stack1 = InventoryTools.getConsumedItem(craftMatrix, resourceInventory, i, stack1);
                 if (stack1 != null) {
-                    InventoryTools.dropItemInWorld(world, stack1, xCoord, yCoord, zCoord);
+                    InventoryTools.dropItemInWorld(world, stack1, pos);
                 }
             }
         }
@@ -158,8 +158,8 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
     }
 
     @Override
-    public void setWorldObj(World world){
-        super.setWorldObj(world);
+    public void setWorld(World world){
+        super.setWorld(world);
         onLayoutMatrixChanged();
     }
 
@@ -190,11 +190,11 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int var1) {
+    public ItemStack removeStackFromSlot(int var1) {
         if (var1 >= resourceInventory.getSizeInventory()) {
-            return outputInventory.getStackInSlotOnClosing(var1 - resourceInventory.getSizeInventory());
+            return outputInventory.removeStackFromSlot(var1 - resourceInventory.getSizeInventory());
         }
-        return resourceInventory.getStackInSlotOnClosing(var1);
+        return resourceInventory.removeStackFromSlot(var1);
     }
 
     @Override
@@ -207,19 +207,19 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
     }
 
     @Override
-    public void onInventoryChanged(net.minecraft.inventory.InventoryBasic internal){
+    public void onInventoryChanged(IInventory internal){
         if(internal == bookSlot)
             onLayoutMatrixChanged();
         markDirty();
     }
 
     @Override
-    public String getInventoryName() {
+    public String getName() {
         return "autocrafting";
     }
 
     @Override
-    public boolean hasCustomInventoryName() {
+    public boolean hasCustomName() {
         return false;
     }
 
@@ -229,17 +229,17 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer var1) {
+    public boolean isUsableByPlayer(EntityPlayer var1) {
         return true;
     }
 
     @Override
-    public void openInventory() {
+    public void openInventory(EntityPlayer player) {
 
     }
 
     @Override
-    public void closeInventory() {
+    public void closeInventory(EntityPlayer player) {
 
     }
 
@@ -270,9 +270,9 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
     }
 
     @Override
-    public boolean onBlockClicked(EntityPlayer player) {
+    public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
         if (!player.world.isRemote) {
-            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_AUTO_CRAFT, xCoord, yCoord, zCoord);
+            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_AUTO_CRAFT, pos);
         }
         return true;
     }

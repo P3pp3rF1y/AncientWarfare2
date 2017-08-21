@@ -2,11 +2,10 @@ package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class WarehouseStorageFilter implements INBTSerialable {
+public class WarehouseStorageFilter implements INBTSerializable<NBTTagCompound> {
 
     ItemHashEntry hashKey;
     ItemStack item;
@@ -28,18 +27,19 @@ public class WarehouseStorageFilter implements INBTSerialable {
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        if(tag.hasKey("item"))
-            setFilterItem(InventoryTools.readItemStack(tag.getCompoundTag("item")));
-        else
-            setFilterItem(null);
+    public NBTTagCompound serializeNBT() {
+        NBTTagCompound tag = new NBTTagCompound();
+        if (item != null) {
+            tag.setTag("item", item.writeToNBT(new NBTTagCompound()));
+        }
+        return tag;
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        if (item != null) {
-            tag.setTag("item", InventoryTools.writeItemStack(item));
-        }
-        return tag;
+    public void deserializeNBT(NBTTagCompound tag) {
+        if(tag.hasKey("item"))
+            setFilterItem(new ItemStack(tag.getCompoundTag("item")));
+        else
+            setFilterItem(null);
     }
 }

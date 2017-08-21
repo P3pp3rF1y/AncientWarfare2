@@ -20,8 +20,8 @@
  */
 package net.shadowmage.ancientwarfare.structure.entity;
 
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Vec3;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
 
 public class DualBoundingBox extends AxisAlignedBB{

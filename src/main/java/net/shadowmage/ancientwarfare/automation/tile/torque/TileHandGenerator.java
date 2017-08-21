@@ -2,8 +2,6 @@ package net.shadowmage.ancientwarfare.automation.tile.torque;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
@@ -45,7 +43,8 @@ public class TileHandGenerator extends TileTorqueSingleCell implements IWorkSite
     }
 
     @Override
-    public void updateEntity() {
+    public void update() {
+        //TODO really no call to super
         if (!world.isRemote) {
             serverNetworkUpdate();
             torqueIn = torqueCell.getEnergy() - prevEnergy;
@@ -184,17 +183,15 @@ public class TileHandGenerator extends TileTorqueSingleCell implements IWorkSite
     }
 
     @Override
-    public NBTTagCompound getDescriptionTag() {
-        NBTTagCompound tag = super.getDescriptionTag();
-        tag.setInteger("clientInputDestEnergy", clientInputDestEnergy);
-        return tag;
+    protected void handleUpdateNBT(NBTTagCompound tag) {
+        super.handleUpdateNBT(tag);
+        clientInputDestEnergy = tag.getInteger("clientInputDestEnergy");
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        super.onDataPacket(net, pkt);
-        NBTTagCompound tag = pkt.func_148857_g();
-        clientInputDestEnergy = tag.getInteger("clientInputDestEnergy");
+    protected void writeUpdateNBT(NBTTagCompound tag) {
+        super.writeUpdateNBT(tag);
+        tag.setInteger("clientInputDestEnergy", clientInputDestEnergy);
     }
 
     @Override
@@ -208,13 +205,14 @@ public class TileHandGenerator extends TileTorqueSingleCell implements IWorkSite
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         if (ownerName != null) {
             tag.setString("owner", ownerName);
         }
         tag.setDouble("inputEnergy", inputCell.getEnergy());
         tag.setInteger("clientInputEnergy", clientInputDestEnergy);
+        return tag;
     }
 
     @Override

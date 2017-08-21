@@ -23,6 +23,7 @@ package net.shadowmage.ancientwarfare.structure.template.build;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
@@ -127,7 +128,7 @@ public class StructureBuilder implements IStructureBuilder {
      * with priority > 0
      */
     @Override
-    public void placeBlock(int x, int y, int z, Block block, int meta, int priority) {
+    public void placeBlock(BlockPos pos, Block block, int meta, int priority) {
         if (y <= 0 || y >= world.getHeight()) {
             return;
         }
@@ -150,7 +151,7 @@ public class StructureBuilder implements IStructureBuilder {
                     world.addTileEntity(te);//add TE to world added/loaded TE list
                 }
             }
-            world.notifyBlockUpdate(x, y, z);
+            BlockTools.notifyBlockUpdate(world, pos);
             //TODO clean this up to send own list of block-changes, not rely upon vanilla to send changes. (as the client-side of this lags to all hell)
         }
     }

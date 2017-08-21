@@ -6,11 +6,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStorage;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
-import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySlotlessBasic;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.core.util.NBTSerializableUtils;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -117,14 +117,14 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         inventory.readFromNBT(tag.getCompoundTag("inventory"));
-        filters.addAll(INBTSerialable.Helper.read(tag, "filterList", WarehouseStorageFilter.class));
+        filters.addAll(NBTSerializableUtils.read(tag, "filterList", WarehouseStorageFilter.class));
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setTag("inventory", inventory.writeToNBT(new NBTTagCompound()));
-        INBTSerialable.Helper.write(tag, "filterList", filters);
+        NBTSerializableUtils.write(tag, "filterList", filters);
     }
 
     @Override
@@ -154,7 +154,7 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
     }
 
     @Override
-    public boolean onBlockClicked(EntityPlayer player) {
+    public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
         if (!player.world.isRemote) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_STORAGE, pos);
         }

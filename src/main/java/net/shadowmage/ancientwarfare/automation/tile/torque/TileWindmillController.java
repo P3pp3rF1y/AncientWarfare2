@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.automation.tile.torque;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileWindmillBlade;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
@@ -14,8 +15,8 @@ public class TileWindmillController extends TileTorqueSingleCell {
     }
 
     @Override
-    public void updateEntity() {
-        super.updateEntity();
+    public void update() {
+        super.update();
         if (!world.isRemote) {
             TileWindmillBlade blade = getControlledBlade();
             if (blade != null && blade.energy > 0) {
@@ -28,11 +29,8 @@ public class TileWindmillController extends TileTorqueSingleCell {
 
     private TileWindmillBlade getControlledBlade() {
         TileEntity te;
-        EnumFacing d = getPrimaryFacing().getOpposite();
-        int x = xCoord + d.offsetX;
-        int y = yCoord + d.offsetY;
-        int z = zCoord + d.offsetZ;
-        if (world.blockExists(x, y, z) && (te = world.getTileEntity(x, y, z)) instanceof TileWindmillBlade) {
+        BlockPos behind = pos.offset(getPrimaryFacing().getOpposite());
+        if (world.isBlockLoaded(behind) && (te = world.getTileEntity(behind)) instanceof TileWindmillBlade) {
             TileWindmillBlade blade = (TileWindmillBlade) te;
             if (blade.isControl) {
                 return blade;

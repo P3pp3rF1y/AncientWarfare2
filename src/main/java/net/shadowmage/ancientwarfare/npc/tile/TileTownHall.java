@@ -10,9 +10,9 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.chunk.Chunk;
@@ -25,7 +25,6 @@ import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.tile.TileOwned;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.block.BlockTownHall;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
@@ -98,7 +97,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
                             
                             isActive = false;
                             isNeglected = false;
-                            //ModAccessors.FTBU.unclaimChunks(world, getOwnerName(), xCoord, yCoord, zCoord);
+                            //ModAccessors.FTBU.unclaimChunks(world, getOwnerName(), pos);
                             unloadChunks();
                         } else if (isActive) {
                             // send neglect warning, reset timer and set neglected flag
@@ -253,7 +252,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
         AxisAlignedBB bb = new AxisAlignedBB(xCoord - broadcastRange, yCoord - broadcastRange / 2, zCoord - broadcastRange, xCoord + broadcastRange + 1, yCoord + broadcastRange / 2 + 1, zCoord + broadcastRange + 1);
         List<NpcPlayerOwned> entities = world.getEntitiesWithinAABB(NpcPlayerOwned.class, bb);
         if (entities.size() > 0) {
-            BlockPos pos = new BlockPos(xCoord, yCoord, zCoord);
+            BlockPos pos = new BlockPos(pos);
             for (Entity entity : entities) {
                 if (((NpcPlayerOwned)entity).hasCommandPermissions(getOwnerName())) {
                     ((NpcPlayerOwned)entity).handleTownHallBroadcast(this, pos);
@@ -440,8 +439,8 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int var1) {
-        return inventory.getStackInSlotOnClosing(var1);
+    public ItemStack removeStackFromSlot(int var1) {
+        return inventory.removeStackFromSlot(var1);
     }
 
     @Override
@@ -451,13 +450,13 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
     }
 
     @Override
-    public String getInventoryName() {
-        return inventory.getInventoryName();
+    public String getName() {
+        return inventory.getName();
     }
 
     @Override
-    public boolean hasCustomInventoryName() {
-        return inventory.hasCustomInventoryName();
+    public boolean hasCustomName() {
+        return inventory.hasCustomName();
     }
 
     @Override
@@ -466,16 +465,16 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer var1) {
+    public boolean isUsableByPlayer(EntityPlayer var1) {
         return true;
     }
 
     @Override
-    public void openInventory() {
+    public void openInventory(EntityPlayer player) {
     }
 
     @Override
-    public void closeInventory() {
+    public void closeInventory(EntityPlayer player) {
     }
 
     @Override
@@ -507,7 +506,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
         }
 
         public final void readFromNBT(NBTTagCompound tag) {
-            stackToSpawn = InventoryTools.readItemStack(tag.getCompoundTag("spawnerStack"));
+            stackToSpawn = new ItemStack(tag.getCompoundTag("spawnerStack"));
             npcType = tag.getString("npcType");
             npcName = tag.getString("npcName");
             deathCause = tag.getString("deathCause");
@@ -517,7 +516,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
         }
 
         public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-            tag.setTag("spawnerStack", InventoryTools.writeItemStack(stackToSpawn));
+            tag.setTag("spawnerStack", stackToSpawn.writeToNBT(new NBTTagCompound()));
             tag.setString("npcType", npcType);
             tag.setString("npcName", npcName);
             tag.setString("deathCause", deathCause);
@@ -529,7 +528,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
     }
 
     @Override
-    public boolean onBlockClicked(EntityPlayer player) {
+    public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
         if (!player.world.isRemote) {
             if (!player.getName().equals(getOwnerName())) {
                 // different player to the owner has used the town hall
@@ -538,8 +537,8 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
                     this.isHq = false;
                     if (this.isActive) {
                         // drop the town hall
-                        BlockTownHall block = (BlockTownHall) world.getBlock(xCoord, yCoord, zCoord);
-                        block.dropBlock(world, xCoord, yCoord, zCoord, block);
+                        BlockTownHall block = (BlockTownHall) world.getBlock(pos);
+                        block.dropBlock(world, pos, block);
                         return true;
                     } else {
                         // capture the town hall
@@ -552,7 +551,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
             forceUpdate();
             
             // open GUI
-            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_TOWN_HALL, xCoord, yCoord, zCoord);
+            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_TOWN_HALL, pos);
         }
         return true;
     }

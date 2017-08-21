@@ -1,6 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
-public enum Direction {
+public enum Direction { //TODO replace with EnumFacing
     SOUTH(0, 1),
     WEST(-1, 0),
     NORTH(0, -1),

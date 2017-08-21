@@ -10,9 +10,9 @@ import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseStorageFilter;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
-import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
+import net.shadowmage.ancientwarfare.core.util.NBTSerializableUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,20 +65,20 @@ public class ContainerWarehouseStorage extends ContainerTileBase<TileWarehouseSt
     @Override
     public void sendInitData() {
         NBTTagCompound tag = new NBTTagCompound();
-        INBTSerialable.Helper.write(tag, "filterList", filters);
+        NBTSerializableUtils.write(tag, "filterList", filters);
         sendDataToClient(tag);
     }
 
     public void sendFiltersToServer() {
         NBTTagCompound tag = new NBTTagCompound();
-        INBTSerialable.Helper.write(tag, "filterList", filters);
+        NBTSerializableUtils.write(tag, "filterList", filters);
         sendDataToServer(tag);
     }
 
     @Override
     public void handlePacketData(NBTTagCompound tag) {
         if (tag.hasKey("filterList")) {
-            List<WarehouseStorageFilter> filters = INBTSerialable.Helper.read(tag, "filterList", WarehouseStorageFilter.class);
+            List<WarehouseStorageFilter> filters = NBTSerializableUtils.read(tag, "filterList", WarehouseStorageFilter.class);
             if (player.world.isRemote) {
                 this.filters = filters;
                 refreshGui();

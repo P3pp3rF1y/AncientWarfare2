@@ -20,8 +20,8 @@
  */
 package net.shadowmage.ancientwarfare.structure.entity;
 
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.AxisAlignedBB;
 
 public class RotateBoundingBox extends AxisAlignedBB{
     private final static float TO_RAD = (float) Math.PI / 180F;

@@ -2,7 +2,7 @@ package net.shadowmage.ancientwarfare.structure.render;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 import org.lwjgl.opengl.GL11;

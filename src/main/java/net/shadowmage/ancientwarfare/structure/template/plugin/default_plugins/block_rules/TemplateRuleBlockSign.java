@@ -24,7 +24,9 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntitySign;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
@@ -48,11 +50,11 @@ public class TemplateRuleBlockSign extends TemplateRuleVanillaBlocks {
     }
 
     @Override
-    public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) {
+    public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
         Block block = Block.getBlockFromName(blockName);
 //  Block block = wall? Blocks.wall_sign : Blocks.standing_sign;//BlockDataManager.getBlockByName(blockName);
         int meta = 0;
-        if (block == Blocks.standing_sign) {
+        if (block == Blocks.STANDING_SIGN) {
             meta = (this.meta + 4 * turns) % 16;
         } else {
             meta = BlockDataManager.INSTANCE.getRotatedMeta(block, this.meta, turns);
@@ -64,7 +66,7 @@ public class TemplateRuleBlockSign extends TemplateRuleVanillaBlocks {
                     te.signText[i] = this.signContents[i];
                 }
             }
-            world.notifyBlockUpdate(x, y, z);
+            BlockTools.notifyBlockUpdate(world, pos);
         }
     }
 

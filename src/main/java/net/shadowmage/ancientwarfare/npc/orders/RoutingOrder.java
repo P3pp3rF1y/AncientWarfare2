@@ -5,14 +5,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.OrderingList;
 import net.shadowmage.ancientwarfare.npc.item.ItemRoutingOrder;
 
 import java.util.List;
 
-public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implements INBTSerialable {
+public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implements INBTSerializable<NBTTagCompound> {
 
     int routeDimension;
 
@@ -51,25 +51,6 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
         }
     }
 
-    @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        clear();
-        NBTTagList entryList = tag.getTagList("entryList", Constants.NBT.TAG_COMPOUND);
-        for (int i = 0; i < entryList.tagCount(); i++) {
-            add(new RoutePoint(entryList.getCompoundTagAt(i)));
-        }
-    }
-
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        NBTTagList list = new NBTTagList();
-        for (RoutePoint p : points) {
-            list.appendTag(p.writeToNBT(new NBTTagCompound()));
-        }
-        tag.setTag("entryList", list);
-        return tag;
-    }
-
     public static RoutingOrder getRoutingOrder(ItemStack stack) {
         if (stack != null && stack.getItem() instanceof ItemRoutingOrder) {
             RoutingOrder order = new RoutingOrder();
@@ -85,6 +66,34 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
         if (stack != null && stack.getItem() instanceof ItemRoutingOrder) {
             stack.setTagInfo("orders", writeToNBT(new NBTTagCompound()));
         }
+    }
+
+    @Override
+    public NBTTagCompound serializeNBT() {
+        NBTTagList list = new NBTTagList();
+        for (RoutePoint p : points) {
+            list.appendTag(p.writeToNBT(new NBTTagCompound()));
+        }
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setTag("entryList", list);
+        return tag;
+    }
+
+    @Override
+    public void deserializeNBT(NBTTagCompound tag) {
+        clear();
+        NBTTagList entryList = tag.getTagList("entryList", Constants.NBT.TAG_COMPOUND);
+        for (int i = 0; i < entryList.tagCount(); i++) {
+            add(new RoutePoint(entryList.getCompoundTagAt(i)));
+        }
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
     }
 
     public static class RoutePoint {
@@ -276,7 +285,7 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
                     continue;
                 }
                 int foundCount = InventoryTools.getCountOf(from, fromSide, filter);
-                toMove = (int) (foundCount * (1f/(float)filter.stackSize));
+                toMove = (int) (foundCount * (1f/(float)filter.getCount()));
                 InventoryTools.transferItems(from, to, filter, toMove, fromSide, toSide, ignoreDamage, ignoreTag);
                 movedTotal++;
             }
@@ -367,7 +376,7 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
                     System.arraycopy(filters, 0, temp, 0, filters.length);
                     filters = temp;
                 }
-                filters[slot] = InventoryTools.readItemStack(itemTag);
+                filters[slot] = new ItemStack(itemTag);
             }
         }
 
@@ -383,7 +392,7 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
                 if (filters[i] == null) {
                     continue;
                 }
-                itemTag = InventoryTools.writeItemStack(filters[i]);
+                itemTag = filters[i].writeToNBT(new NBTTagCompound());
                 itemTag.setInteger("slot", i);
                 filterList.appendTag(itemTag);
             }

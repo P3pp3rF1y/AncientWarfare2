@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
@@ -28,8 +29,8 @@ public class TileSterlingEngine extends TileTorqueSingleCell implements IInvento
     }
 
     @Override
-    public void updateEntity() {
-        super.updateEntity();
+    public void update() {
+        super.update();
         if (!world.isRemote) {
             if (burnTime <= 0 && torqueCell.getEnergy() < torqueCell.getMaxEnergy()) {
                 //if fueled, consume one, set burn-ticks to fuel value
@@ -47,9 +48,9 @@ public class TileSterlingEngine extends TileTorqueSingleCell implements IInvento
     }
 
     @Override
-    public boolean onBlockClicked(EntityPlayer player) {
+    public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
         if (!player.world.isRemote) {
-            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_TORQUE_GENERATOR_STERLING, xCoord, yCoord, zCoord);
+            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_TORQUE_GENERATOR_STERLING, pos);
         }
         return true;
     }
@@ -68,6 +69,11 @@ public class TileSterlingEngine extends TileTorqueSingleCell implements IInvento
     }
 
     @Override
+    public boolean isEmpty() {
+        return fuelInventory.isEmpty();
+    }
+
+    @Override
     public ItemStack getStackInSlot(int var1) {
         return fuelInventory.getStackInSlot(var1);
     }
@@ -81,8 +87,8 @@ public class TileSterlingEngine extends TileTorqueSingleCell implements IInvento
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int var1) {
-        return fuelInventory.getStackInSlotOnClosing(var1);
+    public ItemStack removeStackFromSlot(int var1) {
+        return fuelInventory.removeStackFromSlot(var1);
     }
 
     @Override
@@ -92,13 +98,13 @@ public class TileSterlingEngine extends TileTorqueSingleCell implements IInvento
     }
 
     @Override
-    public String getInventoryName() {
-        return fuelInventory.getInventoryName();
+    public String getName() {
+        return fuelInventory.getName();
     }
 
     @Override
-    public boolean hasCustomInventoryName() {
-        return fuelInventory.hasCustomInventoryName();
+    public boolean hasCustomName() {
+        return fuelInventory.hasCustomName();
     }
 
     @Override
@@ -107,23 +113,43 @@ public class TileSterlingEngine extends TileTorqueSingleCell implements IInvento
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer var1) {
-        return fuelInventory.isUseableByPlayer(var1);
+    public boolean isUsableByPlayer(EntityPlayer var1) {
+        return fuelInventory.isUsableByPlayer(var1);
     }
 
     @Override
-    public void openInventory() {
-        fuelInventory.openInventory();
+    public void openInventory(EntityPlayer player) {
+        fuelInventory.openInventory(player);
     }
 
     @Override
-    public void closeInventory() {
-        fuelInventory.closeInventory();
+    public void closeInventory(EntityPlayer player) {
+        fuelInventory.closeInventory(player);
     }
 
     @Override
     public boolean isItemValidForSlot(int var1, ItemStack var2) {
         return fuelInventory.isItemValidForSlot(var1, var2);
+    }
+
+    @Override
+    public int getField(int id) {
+        return fuelInventory.getField(id);
+    }
+
+    @Override
+    public void setField(int id, int value) {
+        fuelInventory.setField(id, value);
+    }
+
+    @Override
+    public int getFieldCount() {
+        return fuelInventory.getFieldCount();
+    }
+
+    @Override
+    public void clear() {
+        fuelInventory.clear();
     }
 
     @Override
@@ -137,11 +163,12 @@ public class TileSterlingEngine extends TileTorqueSingleCell implements IInvento
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setInteger("burnTicks", burnTime);
         tag.setInteger("burnTicksBase", burnTimeBase);
         tag.setTag("inventory", fuelInventory.writeToNBT(new NBTTagCompound()));
+        return tag;
     }
 
     @Override

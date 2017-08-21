@@ -9,6 +9,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class TileAdvancedSpawner extends TileEntity {
@@ -20,9 +21,9 @@ public class TileAdvancedSpawner extends TileEntity {
     }
 
     @Override
-    public void setWorldObj(World world) {
-        super.setWorldObj(world);
-        settings.setWorld(world, xCoord, yCoord, zCoord);
+    public void setWorld(World world) {
+        super.setWorld(world);
+        settings.setWorld(world, pos);
     }
 
     @Override
@@ -31,7 +32,7 @@ public class TileAdvancedSpawner extends TileEntity {
             return;
         }
         if (settings.world == null) {
-            settings.setWorld(world, xCoord, yCoord, zCoord);
+            settings.setWorld(world, pos);
         }
         settings.onUpdate();
     }
@@ -54,14 +55,14 @@ public class TileAdvancedSpawner extends TileEntity {
     public Packet getDescriptionPacket() {
         NBTTagCompound tag = new NBTTagCompound();
         settings.writeToNBT(tag);
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);
+        return new S35PacketUpdateTileEntity(pos, 0, tag);
     }
 
     @Override
     public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         settings.readFromNBT(pkt.func_148857_g());
-        world.markBlockRangeForRenderUpdate(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
-        world.notifyBlockUpdate(xCoord, yCoord, zCoord);
+        world.markBlockRangeForRenderUpdate(pos, pos);
+        BlockTools.notifyBlockUpdate(this);
     }
 
     public SpawnerSettings getSettings() {
@@ -70,7 +71,7 @@ public class TileAdvancedSpawner extends TileEntity {
 
     public void setSettings(SpawnerSettings settings) {
         this.settings = settings;
-        this.world.notifyBlockUpdate(xCoord, yCoord, zCoord);
+        BlockTools.notifyBlockUpdate(this);
     }
 
     public float getBlockHardness() {
@@ -91,7 +92,7 @@ public class TileAdvancedSpawner extends TileEntity {
         ItemStack item;
         for (int i = 0; i < inv.getSizeInventory(); i++) {
             item = inv.getStackInSlot(i);
-            InventoryTools.dropItemInWorld(world, item, xCoord, yCoord, zCoord);
+            InventoryTools.dropItemInWorld(world, item, pos);
         }
     }
 

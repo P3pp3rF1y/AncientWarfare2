@@ -6,7 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseInterfaceFilter;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
-import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
+import net.shadowmage.ancientwarfare.core.util.NBTSerializableUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,14 +43,14 @@ public class ContainerWarehouseInterface extends ContainerTileBase<TileWarehouse
 
     public NBTTagCompound getTagToSend(){
         NBTTagCompound tag = new NBTTagCompound();
-        INBTSerialable.Helper.write(tag, "filterList", filters);
+        NBTSerializableUtils.write(tag, "filterList", filters);
         return tag;
     }
 
     @Override
     public void handlePacketData(NBTTagCompound tag) {
         if (tag.hasKey("filterList")) {
-            List<WarehouseInterfaceFilter> filters = INBTSerialable.Helper.read(tag, "filterList", WarehouseInterfaceFilter.class);
+            List<WarehouseInterfaceFilter> filters = NBTSerializableUtils.read(tag, "filterList", WarehouseInterfaceFilter.class);
             if (player.world.isRemote) {
                 this.filters = filters;
                 refreshGui();

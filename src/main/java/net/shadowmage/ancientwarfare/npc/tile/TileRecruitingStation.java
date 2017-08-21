@@ -11,7 +11,7 @@ public class TileRecruitingStation extends TileOwned implements IInteractableTil
     }
 
     @Override
-    public boolean onBlockClicked(EntityPlayer player) {
+    public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
         // TODO Auto-generated method stub
         return false;
     }

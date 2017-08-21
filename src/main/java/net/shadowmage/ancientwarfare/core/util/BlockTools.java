@@ -26,6 +26,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.*;
 import net.minecraft.world.World;
@@ -345,4 +346,13 @@ public class BlockTools {
         return !AWCoreStatics.fireBlockBreakEvents || !MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, player));
     }
 
+    public static void notifyBlockUpdate(World world, BlockPos pos) {
+        IBlockState state = world.getBlockState(pos);
+        world.notifyBlockUpdate(pos, state, state, 3);
+
+    }
+
+    public static void notifyBlockUpdate(TileEntity tile) {
+        notifyBlockUpdate(tile.getWorld(), tile.getPos());
+    }
 }

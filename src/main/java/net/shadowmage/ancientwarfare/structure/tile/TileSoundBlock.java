@@ -8,8 +8,9 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.shadowmage.ancientwarfare.core.interfaces.ISinger;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.SongPlayData;
 
 import java.util.List;
@@ -44,7 +45,7 @@ public class TileSoundBlock extends TileEntity implements ISinger{
                 if (tuneData.getPlayOnPlayerEntry()) {
                     if (playerCheckDelay-- <= 0) {
                         playerCheckDelay = 20;
-                        AxisAlignedBB aabb = new AxisAlignedBB(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(playerRange, playerRange, playerRange);
+                        AxisAlignedBB aabb = new AxisAlignedBB(pos, xCoord + 1, yCoord + 1, zCoord + 1).expand(playerRange, playerRange, playerRange);
                         @SuppressWarnings("unchecked")
                         List<EntityPlayer> list = world.getEntitiesWithinAABB(EntityPlayer.class, aabb);
                         if (list != null && !list.isEmpty()) {
@@ -52,7 +53,7 @@ public class TileSoundBlock extends TileEntity implements ISinger{
                         }
                     }
                 } else if (isRedstoneInteraction()) {
-                    if (world.getBlockPowerInput(xCoord, yCoord, zCoord) > 0) {
+                    if (world.getStrongPower(pos) > 0) {
                         startSong();
                     }
                 } else {
@@ -78,7 +79,7 @@ public class TileSoundBlock extends TileEntity implements ISinger{
             return;
         }
         playing = true;
-        playTime = tuneData.get(tuneIndex).play(world, xCoord, yCoord, zCoord);
+        playTime = tuneData.get(tuneIndex).play(world, pos);
     }
 
     private void endSong() {
@@ -93,7 +94,7 @@ public class TileSoundBlock extends TileEntity implements ISinger{
 
     @Override
     public Packet getDescriptionPacket(){
-        return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, cacheToNBT(new NBTTagCompound()));
+        return new S35PacketUpdateTileEntity(pos, 0, cacheToNBT(new NBTTagCompound()));
     }
 
     @Override
@@ -163,8 +164,8 @@ public class TileSoundBlock extends TileEntity implements ISinger{
 
     public void setBlockCache(ItemStack itemStack){
         blockCache = Block.getBlockFromItem(itemStack.getItem());
-        world.notifyBlockUpdate(xCoord, yCoord, zCoord);
-        world.notifyBlockChange(xCoord, yCoord, zCoord, this.blockType);
+        BlockTools.notifyBlockUpdate(this);
+        world.notifyBlockChange(pos, this.blockType);
         markDirty();
     }
 }

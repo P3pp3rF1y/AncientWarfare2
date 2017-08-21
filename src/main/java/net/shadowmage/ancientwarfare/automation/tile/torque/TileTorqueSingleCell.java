@@ -1,8 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -13,6 +12,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
  *
  * @author Shadowmage
  */
+@MethodsReturnNonnullByDefault
 public abstract class TileTorqueSingleCell extends TileTorqueBase {
 
     TorqueCell torqueCell;
@@ -38,8 +38,7 @@ public abstract class TileTorqueSingleCell extends TileTorqueBase {
     }
 
     @Override
-    public void updateEntity() {
-        super.updateEntity();
+    public void update() {
         if (!world.isRemote) {
             serverNetworkUpdate();
             torqueIn = torqueCell.getEnergy() - prevEnergy;
@@ -152,17 +151,15 @@ public abstract class TileTorqueSingleCell extends TileTorqueBase {
     }
 
     @Override
-    public NBTTagCompound getDescriptionTag() {
-        NBTTagCompound tag = super.getDescriptionTag();
-        tag.setInteger("clientEnergy", clientDestEnergyState);
-        return tag;
+    protected void handleUpdateNBT(NBTTagCompound tag) {
+        super.handleUpdateNBT(tag);
+        clientDestEnergyState = tag.getInteger("clientEnergy");
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        super.onDataPacket(net, pkt);
-        NBTTagCompound tag = pkt.func_148857_g();
-        clientDestEnergyState = tag.getInteger("clientEnergy");
+    protected void writeUpdateNBT(NBTTagCompound tag) {
+        super.writeUpdateNBT(tag);
+        tag.setInteger("clientEnergy", clientDestEnergyState);
     }
 
     @Override
@@ -173,10 +170,10 @@ public abstract class TileTorqueSingleCell extends TileTorqueBase {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setDouble("torqueEnergy", torqueCell.getEnergy());
         tag.setInteger("clientEnergy", clientDestEnergyState);
+        return tag;
     }
-
 }

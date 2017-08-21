@@ -63,7 +63,7 @@ public class TEGateProxy extends TileEntity {
         }
     }
 
-    public boolean onBlockClicked(EntityPlayer player) {
+    public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
         return this.owner == null || this.owner.interactFirst(player);
     }
 
@@ -103,7 +103,7 @@ public class TEGateProxy extends TileEntity {
         }
         if (this.noParentTicks >= 100 || (owner != null && owner.isDead)) {
             owner = null;
-            this.world.setBlockToAir(xCoord, yCoord, zCoord);
+            this.world.setBlockToAir(pos);
         }
     }
 

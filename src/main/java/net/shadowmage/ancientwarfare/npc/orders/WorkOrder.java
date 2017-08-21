@@ -8,8 +8,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
-import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.util.OrderingList;
@@ -18,33 +18,10 @@ import net.shadowmage.ancientwarfare.npc.item.ItemWorkOrder;
 
 import java.util.List;
 
-public class WorkOrder extends OrderingList<WorkOrder.WorkEntry> implements INBTSerialable {
+public class WorkOrder extends OrderingList<WorkOrder.WorkEntry> implements INBTSerializable<NBTTagCompound> {
     public static final int MAX_SIZE = 8;
     private WorkPriorityType priorityType = WorkPriorityType.ROUTE;
     private boolean nightShift;
-
-    @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        clear();
-        NBTTagList entryList = tag.getTagList("entryList", Constants.NBT.TAG_COMPOUND);
-        for (int i = 0; i < entryList.tagCount(); i++) {
-            add(new WorkEntry(entryList.getCompoundTagAt(i)));
-        }
-        priorityType = WorkPriorityType.values()[tag.getInteger("priorityType")];
-        nightShift = tag.getBoolean("nightShift");
-    }
-
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        NBTTagList entryList = new NBTTagList();
-        for (WorkEntry entry : points) {
-            entryList.appendTag(entry.writeToNBT(new NBTTagCompound()));
-        }
-        tag.setTag("entryList", entryList);
-        tag.setInteger("priorityType", priorityType.ordinal());
-        tag.setBoolean("nightShift", nightShift);
-        return tag;
-    }
 
     public boolean isNightShift(){
         return nightShift;
@@ -80,7 +57,7 @@ public class WorkOrder extends OrderingList<WorkOrder.WorkEntry> implements INBT
         if (stack != null && stack.getItem() instanceof ItemWorkOrder) {
             WorkOrder order = new WorkOrder();
             if (stack.hasTagCompound() && stack.getTagCompound().hasKey("orders")) {
-                order.readFromNBT(stack.getTagCompound().getCompoundTag("orders"));
+                order.deserializeNBT(stack.getTagCompound().getCompoundTag("orders"));
             }
             return order;
         }
@@ -89,13 +66,37 @@ public class WorkOrder extends OrderingList<WorkOrder.WorkEntry> implements INBT
 
     public void write(ItemStack stack) {
         if (stack != null && stack.getItem() instanceof ItemWorkOrder) {
-            stack.setTagInfo("orders", writeToNBT(new NBTTagCompound()));
+            stack.setTagInfo("orders", serializeNBT());
         }
     }
 
     public void togglePriority() {
         WorkPriorityType[] type = WorkPriorityType.values();
         priorityType = type[(priorityType.ordinal() + 1) % type.length];
+    }
+
+    @Override
+    public NBTTagCompound serializeNBT() {
+        NBTTagCompound tag = new NBTTagCompound();
+        NBTTagList entryList = new NBTTagList();
+        for (WorkEntry entry : points) {
+            entryList.appendTag(entry.writeToNBT(new NBTTagCompound()));
+        }
+        tag.setTag("entryList", entryList);
+        tag.setInteger("priorityType", priorityType.ordinal());
+        tag.setBoolean("nightShift", nightShift);
+        return tag;
+    }
+
+    @Override
+    public void deserializeNBT(NBTTagCompound tag) {
+        clear();
+        NBTTagList entryList = tag.getTagList("entryList", Constants.NBT.TAG_COMPOUND);
+        for (int i = 0; i < entryList.tagCount(); i++) {
+            add(new WorkEntry(entryList.getCompoundTagAt(i)));
+        }
+        priorityType = WorkPriorityType.values()[tag.getInteger("priorityType")];
+        nightShift = tag.getBoolean("nightShift");
     }
 
     public static final class WorkEntry {

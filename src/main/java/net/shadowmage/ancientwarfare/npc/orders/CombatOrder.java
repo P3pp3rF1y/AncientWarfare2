@@ -3,13 +3,15 @@ package net.shadowmage.ancientwarfare.npc.orders;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagLong;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.shadowmage.ancientwarfare.core.util.OrderingList;
 import net.shadowmage.ancientwarfare.npc.item.ItemCombatOrder;
 
-public class CombatOrder extends OrderingList<BlockPos> implements INBTSerialable {
+public class CombatOrder extends OrderingList<BlockPos> implements INBTSerializable<NBTTagCompound> {
 
     int patrolDimensionId = 0;
 
@@ -29,31 +31,6 @@ public class CombatOrder extends OrderingList<BlockPos> implements INBTSerialabl
         return patrolDimensionId;
     }
 
-    @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        clear();
-        patrolDimensionId = tag.getInteger("dim");
-        if (tag.hasKey("pointList")) {
-            NBTTagList list = tag.getTagList("pointList", Constants.NBT.TAG_COMPOUND);
-            for (int i = 0; i < list.tagCount(); i++) {
-                add(new BlockPos(list.getCompoundTagAt(i)));
-            }
-        }
-    }
-
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        tag.setInteger("dim", patrolDimensionId);
-        if (!isEmpty()) {
-            NBTTagList list = new NBTTagList();
-            for (BlockPos point : points) {
-                list.appendTag(point.writeToNBT(new NBTTagCompound()));
-            }
-            tag.setTag("pointList", list);
-        }
-        return tag;
-    }
-
     public static CombatOrder getCombatOrder(ItemStack stack) {
         if (stack != null && stack.getItem() instanceof ItemCombatOrder) {
             CombatOrder order = new CombatOrder();
@@ -71,5 +48,30 @@ public class CombatOrder extends OrderingList<BlockPos> implements INBTSerialabl
         }
     }
 
+    @Override
+    public NBTTagCompound serializeNBT() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("dim", patrolDimensionId);
+        if (!isEmpty()) {
+            NBTTagList list = new NBTTagList();
+            for (BlockPos point : points) {
+                list.appendTag(new NBTTagLong(point.toLong()));
+            }
+            tag.setTag("pointList", list);
+        }
+        return tag;
+    }
 
+
+    @Override
+    public void deserializeNBT(NBTTagCompound tag) {
+        clear();
+        patrolDimensionId = tag.getInteger("dim");
+        if (tag.hasKey("pointList")) {
+            NBTTagList list = tag.getTagList("pointList", Constants.NBT.TAG_LONG);
+            for (int i = 0; i < list.tagCount(); i++) {
+                add(BlockPos.fromLong(((NBTTagLong)list.get(i)).getLong())); //TODO make sure that getting long from list here works correctly
+            }
+        }
+    }
 }

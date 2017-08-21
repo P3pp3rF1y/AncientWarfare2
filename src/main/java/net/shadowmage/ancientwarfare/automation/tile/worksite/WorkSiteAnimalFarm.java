@@ -344,10 +344,10 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
             return false;
         }
         EntitySheep sheep = (EntitySheep) world.getEntityByID(sheepToShear.remove(0));
-        if (sheep == null || !sheep.isShearable(shears, world, xCoord, yCoord, zCoord)) {
+        if (sheep == null || !sheep.isShearable(shears, world, pos)) {
             return false;
         }
-        ArrayList<ItemStack> items = sheep.onSheared(shears, world, xCoord, yCoord, zCoord, getFortune());
+        ArrayList<ItemStack> items = sheep.onSheared(shears, world, pos, getFortune());
         for (ItemStack item : items) {
             addStackToInventory(item, RelativeSide.TOP);
         }
@@ -388,9 +388,9 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
     }
 
     @Override
-    public boolean onBlockClicked(EntityPlayer player) {
+    public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
         if (!player.world.isRemote) {
-            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_ANIMAL_FARM, xCoord, yCoord, zCoord);
+            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_ANIMAL_FARM, pos);
         }
         return true;
     }
@@ -429,7 +429,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 
     @Override
     public void openAltGui(EntityPlayer player) {
-        NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_ANIMAL_CONTROL, xCoord, yCoord, zCoord);
+        NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_ANIMAL_CONTROL, pos);
     }
 
     @Override

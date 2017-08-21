@@ -1,12 +1,12 @@
 package net.shadowmage.ancientwarfare.automation.container;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteUserBlocks;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedSite;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
 public class ContainerWorksiteBoundsAdjust extends ContainerTileBase {
 
@@ -47,8 +47,7 @@ public class ContainerWorksiteBoundsAdjust extends ContainerTileBase {
                 byte[] map = tag.getByteArray("checkedMap");
                 twub.setTargetBlocks(map);
             }
-            IBlockState state = player.world.getBlockState(getPos());
-            player.world.notifyBlockUpdate(getPos(), state, state, 3);
+            BlockTools.notifyBlockUpdate(player.world, getPos());
         }
     }
 

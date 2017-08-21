@@ -47,7 +47,7 @@ public class TileMailbox extends TileOwned implements ISidedInventory, IRotatabl
             MailboxData data = AWGameData.INSTANCE.getData(world, MailboxData.class);
 
             List<DeliverableItem> items = new ArrayList<DeliverableItem>();
-            data.getDeliverableItems(privateBox ? getOwnerName() : null, mailboxName, items, world, xCoord, yCoord, zCoord);
+            data.getDeliverableItems(privateBox ? getOwnerName() : null, mailboxName, items, world, pos);
             data.addMailboxReceiver(privateBox ? getOwnerName() : null, mailboxName, this);
 
             if (destinationName != null)//try to send mail
@@ -64,7 +64,7 @@ public class TileMailbox extends TileOwned implements ISidedInventory, IRotatabl
         for (int k = inventory.getSizeInventory()/2; k < inventory.getSizeInventory(); k++) {
             item = inventory.getStackInSlot(k);
             if (item != null) {
-                data.addDeliverableItem(owner, destinationName, item, dim, xCoord, yCoord, zCoord);
+                data.addDeliverableItem(owner, destinationName, item, dim, pos);
                 inventory.setInventorySlotContents(k, null);
                 break;
             }
@@ -175,8 +175,8 @@ public class TileMailbox extends TileOwned implements ISidedInventory, IRotatabl
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int slot) {
-        return inventory.getStackInSlotOnClosing(slot);
+    public ItemStack removeStackFromSlot(int slot) {
+        return inventory.removeStackFromSlot(slot);
     }
 
     @Override
@@ -185,13 +185,13 @@ public class TileMailbox extends TileOwned implements ISidedInventory, IRotatabl
     }
 
     @Override
-    public String getInventoryName() {
-        return inventory.getInventoryName();
+    public String getName() {
+        return inventory.getName();
     }
 
     @Override
-    public boolean hasCustomInventoryName() {
-        return inventory.hasCustomInventoryName();
+    public boolean hasCustomName() {
+        return inventory.hasCustomName();
     }
 
     @Override
@@ -200,16 +200,16 @@ public class TileMailbox extends TileOwned implements ISidedInventory, IRotatabl
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer p_70300_1_) {
-        return inventory.isUseableByPlayer(p_70300_1_);
+    public boolean isUsableByPlayer(EntityPlayer p_70300_1_) {
+        return inventory.isUsableByPlayer(p_70300_1_);
     }
 
     @Override
-    public void openInventory() {
+    public void openInventory(EntityPlayer player) {
     }
 
     @Override
-    public void closeInventory() {
+    public void closeInventory(EntityPlayer player) {
     }
 
     @Override
@@ -224,7 +224,7 @@ public class TileMailbox extends TileOwned implements ISidedInventory, IRotatabl
 
     @Override
     public void setPrimaryFacing(EnumFacing face) {
-        world.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, face.ordinal(), 0);
+        world.setBlockMetadataWithNotify(pos, face.ordinal(), 0);
     }
 
 }

@@ -1,22 +1,25 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque;
 
-import net.minecraft.block.Block;
+import mcp.MethodsReturnNonnullByDefault;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
+@MethodsReturnNonnullByDefault
 public class TileWaterwheel extends TileTorqueSingleCell {
 
     public float wheelRotation;
     public float prevWheelRotation;
 
     private float rotTick;
-    private byte rotationDirection = 1;
+    private byte rotationDirection = 1; //TODO get rid of magic numbers used for this
 
     private int updateTick;
 
@@ -29,8 +32,8 @@ public class TileWaterwheel extends TileTorqueSingleCell {
     }
 
     @Override
-    public void updateEntity() {
-        super.updateEntity();
+    public void update() {
+        super.update();
         if (!world.isRemote) {
             updateTick--;
             if (updateTick <= 0) {
@@ -38,7 +41,7 @@ public class TileWaterwheel extends TileTorqueSingleCell {
                 boolean valid = validateBlocks();
                 if (valid != validSetup) {
                     validSetup = valid;
-                    world.notifyBlockUpdate(xCoord, yCoord, zCoord);
+                    BlockTools.notifyBlockUpdate(this);
                 }
             }
             if (validSetup)//server, update power gen
@@ -58,62 +61,36 @@ public class TileWaterwheel extends TileTorqueSingleCell {
     }
 
     @Override
-    public NBTTagCompound getDescriptionTag() {
-        NBTTagCompound tag = super.getDescriptionTag();
-        tag.setBoolean("validSetup", validSetup);
-        tag.setByte("rotationDirection", rotationDirection);
-        return tag;
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        super.onDataPacket(net, pkt);
-        NBTTagCompound tag = pkt.func_148857_g();
+    protected void handleUpdateNBT(NBTTagCompound tag) {
+        super.handleUpdateNBT(tag);
         validSetup = tag.getBoolean("validSetup");
         rotationDirection = tag.getByte("rotationDirection");
     }
 
-    private EnumFacing getRight(EnumFacing in) {
-        switch (in) {
-            case NORTH: {
-                return EnumFacing.EAST;
-            }
-            case EAST: {
-                return EnumFacing.SOUTH;
-            }
-            case SOUTH: {
-                return EnumFacing.WEST;
-            }
-            case WEST: {
-                return EnumFacing.NORTH;
-            }
-            default:
-                return EnumFacing.NORTH;
-        }
+    @Override
+    protected void writeUpdateNBT(NBTTagCompound tag) {
+        super.writeUpdateNBT(tag);
+        tag.setBoolean("validSetup", validSetup);
+        tag.setByte("rotationDirection", rotationDirection);
     }
 
     private boolean validateBlocks() {
         EnumFacing d = orientation.getOpposite();
-        int x = xCoord + d.offsetX;
-        int y = yCoord + d.offsetY;
-        int z = zCoord + d.offsetZ;
+        BlockPos innerPos = pos.offset(d);
         //quick check for invalid setup
         //must have air inside the inner two blocks
-        if(getValidationType(x, y + 1, z) != 1 || getValidationType(x, y, z) != 1)
+        if(getValidationType(innerPos.up()) != 1 || getValidationType(innerPos) != 1)
             return false;
-        EnumFacing dr = getRight(d);
-        EnumFacing dl = dr.getOpposite();
-        int x1 = x + dr.offsetX;
-        int z1 = z + dr.offsetZ;
-        int x2 = x + dl.offsetX;
-        int z2 = z + dl.offsetZ;
+        BlockPos right = innerPos.offset(d.rotateY());
+        BlockPos left = innerPos.offset(d.rotateYCCW());
+
         byte[] validationGrid = new byte[6];
-        validationGrid[0] = getValidationType(x2, y + 1, z2);
-        validationGrid[1] = getValidationType(x1, y + 1, z1);
-        validationGrid[2] = getValidationType(x2, y, z2);
-        validationGrid[3] = getValidationType(x1, y, z1);
-        validationGrid[4] = getValidationType(x2, y - 1, z2);
-        validationGrid[5] = getValidationType(x1, y - 1, z1);
+        validationGrid[0] = getValidationType(left.up());
+        validationGrid[1] = getValidationType(right.up());
+        validationGrid[2] = getValidationType(left);
+        validationGrid[3] = getValidationType(right);
+        validationGrid[4] = getValidationType(left.down());
+        validationGrid[5] = getValidationType(right.down());
         for (byte aValue : validationGrid) {
             if (aValue == 0) {
                 return false;
@@ -137,30 +114,32 @@ public class TileWaterwheel extends TileTorqueSingleCell {
             return false;
         } else//not a direct flow downwards, check underneath for flow
         {
-            if (validationGrid[4] != 2 || validationGrid[5] != 2 || getValidationType(x, y - 1, z) != 2) {
+            if (validationGrid[4] != 2 || validationGrid[5] != 2 || getValidationType(innerPos.down()) != 2) {
                 return false;
             }
-            int metaLeft = world.getBlockMetadata(x2, y - 1, z2);
-            int metaRight = world.getBlockMetadata(x1, y - 1, z1);
-            rotationDirection = (byte) (metaLeft < metaRight ? -1 : metaRight < metaLeft ? 1 : 0);
+            IBlockState stateLeft = world.getBlockState(left.down());
+            IBlockState stateRight = world.getBlockState(right.down());
+            int levelLeft = stateLeft.getMaterial() != Material.WATER ? 0 : stateLeft.getValue(BlockLiquid.LEVEL);
+            int levelRight = stateRight.getMaterial() != Material.WATER ? 0 : stateRight.getValue(BlockLiquid.LEVEL);
+            rotationDirection = (byte) (levelLeft < levelRight ? -1 : levelRight < levelLeft ? 1 : 0);
             return true;
         }
     }
 
-    private byte getValidationType(int x, int y, int z) {
-        Block block = world.getBlock(x, y, z);
-        if (block.isAir(world, x, y, z)) {
+    private byte getValidationType(BlockPos pos) {
+        if (world.isAirBlock(pos)) {
             return 1;
         }
-        if (block.getMaterial() == Material.water) {
+        IBlockState state = world.getBlockState(pos);
+        if (state.getMaterial() == Material.WATER) {
             return 2;
         }
-        return 0;
+        return 0;//TODO get rid of these magic numbers
     }
 
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-        return new AxisAlignedBB(xCoord - 3, yCoord - 3, zCoord - 3, xCoord + 4, yCoord + 4, zCoord + 4);
+        return new AxisAlignedBB(pos.getX() - 3, pos.getY() - 3, pos.getZ() - 3, pos.getX() + 4, pos.getY() + 4, pos.getZ() + 4);
     }
 
 }

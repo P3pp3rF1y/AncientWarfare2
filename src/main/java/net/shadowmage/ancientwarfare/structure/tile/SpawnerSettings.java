@@ -7,7 +7,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
@@ -52,9 +53,7 @@ public class SpawnerSettings {
      * world set (which is before first updateEntity() is called)
      */
     public World world;
-    int xCoord;
-    int yCoord;
-    int zCoord;
+    BlockPos pos;
 
     public SpawnerSettings() {
 
@@ -89,12 +88,12 @@ public class SpawnerSettings {
             updateRedstoneModeToggle();
         }
         if (spawnGroups.isEmpty()) {
-            world.setBlockToAir(xCoord, yCoord, zCoord);
+            world.setBlockToAir(pos);
         }
     }
 
     private void updateRedstoneModeToggle() {
-        prevRedstoneState = world.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) || world.getBlockPowerInput(xCoord, yCoord, zCoord) > 0;
+        prevRedstoneState = world.isBlockIndirectlyGettingPowered(pos) > 0 || world.getStrongPower(pos) > 0;
         if (respondToRedstone && !redstoneMode && !prevRedstoneState) {
             //noop
             return;
@@ -103,7 +102,7 @@ public class SpawnerSettings {
     }
 
     private void updateRedstoneModePulse() {
-        boolean powered = world.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) || world.getBlockPowerInput(xCoord, yCoord, zCoord) > 0;
+        boolean powered = world.isBlockIndirectlyGettingPowered(pos) > 0 || world.getStrongPower(pos) > 0;
         if (!prevRedstoneState && powered) {
             spawnEntities();
         }
@@ -124,7 +123,7 @@ public class SpawnerSettings {
     @SuppressWarnings("unchecked")
     private void spawnEntities() {
         if (lightSensitive) {
-            int light = world.getBlockLightValue(xCoord, yCoord, zCoord);
+            int light = world.getBlockLightValue(pos);
 
             //TODO check this light calculation stuff...
             if (light >= 8) {
@@ -132,7 +131,7 @@ public class SpawnerSettings {
             }
         }
         if (playerRange > 0) {
-            List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(playerRange, playerRange, playerRange));
+            List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos, xCoord + 1, yCoord + 1, zCoord + 1).expand(playerRange, playerRange, playerRange));
             if (nearbyPlayers.isEmpty()) {
                 return;
             }
@@ -150,7 +149,7 @@ public class SpawnerSettings {
         }
 
         if (maxNearbyMonsters > 0 && mobRange > 0) {
-            int nearbyCount = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(mobRange, mobRange, mobRange)).size();
+            int nearbyCount = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos, xCoord + 1, yCoord + 1, zCoord + 1).expand(mobRange, mobRange, mobRange)).size();
             if (nearbyCount >= maxNearbyMonsters) {
                 AWLog.logDebug("skipping spawning because of too many nearby entities");
                 return;
@@ -178,7 +177,7 @@ public class SpawnerSettings {
         }
 
         if (toSpawn != null) {
-            toSpawn.spawnEntities(world, xCoord, yCoord, zCoord, index, range);
+            toSpawn.spawnEntities(world, pos, index, range);
             if (toSpawn.shouldRemove()) {
                 spawnGroups.remove(toSpawn);
             }
@@ -636,7 +635,7 @@ public class SpawnerSettings {
             }
         }
 
-        //TODO  sendSoundPacket(world, xCoord, yCoord, zCoord);
+        //TODO  sendSoundPacket(world, pos);
         private void spawnEntityAt(Entity e, World world) {
             if(e instanceof EntityLiving){
                 ((EntityLiving) e).onSpawnWithEgg(null);

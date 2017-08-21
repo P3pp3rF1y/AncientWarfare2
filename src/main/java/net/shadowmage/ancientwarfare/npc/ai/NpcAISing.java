@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.shadowmage.ancientwarfare.core.interfaces.ISinger;
 import net.shadowmage.ancientwarfare.core.util.SongPlayData;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;

@@ -1,13 +1,17 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class TileWarehouse extends TileWarehouseBase {
 
     public TileWarehouse() {
@@ -16,15 +20,15 @@ public class TileWarehouse extends TileWarehouseBase {
 
     @Override
     public void handleSlotClick(EntityPlayer player, ItemStack filter, boolean shiftClick) {
-        if (filter == null) {
+        if (filter.isEmpty()) {
             tryAddItem(player, player.inventory.getItemStack());
-        }else if (player.inventory.getItemStack() == null) {
+        }else if (player.inventory.getItemStack().isEmpty()) {
             tryGetItem(player, filter, shiftClick);
         }
     }
 
     private void tryAddItem(EntityPlayer player, ItemStack cursorStack) {
-        if(cursorStack==null){
+        if(cursorStack.isEmpty()){
             return;
         }
         List<IWarehouseStorageTile> destinations = new ArrayList<IWarehouseStorageTile>();
@@ -41,7 +45,7 @@ public class TileWarehouse extends TileWarehouseBase {
             }
         }
         if (cursorStack.getCount() <= 0) {
-            player.inventory.setItemStack(null);
+            player.inventory.setItemStack(ItemStack.EMPTY);
         }
         if (stackSize != cursorStack.getCount()) {
             ((EntityPlayerMP)player).updateHeldItem();

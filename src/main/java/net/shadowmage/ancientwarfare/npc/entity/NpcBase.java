@@ -615,7 +615,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         NBTTagCompound equipmentTag;
         for (int i = 0; i < equipmentList.tagCount(); i++) {
             equipmentTag = equipmentList.getCompoundTagAt(i);
-            stack = InventoryTools.readItemStack(equipmentTag);
+            stack = new ItemStack(equipmentTag);
             if (equipmentTag.hasKey("slotNum")) {
                 setCurrentItemOrArmor(equipmentTag.getInteger("slotNum"), stack);
             }
@@ -636,7 +636,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             if (stack == null) {
                 continue;
             }
-            equipmentTag = InventoryTools.writeItemStack(stack);
+            equipmentTag = stack.writeToNBT(new NBTTagCompound());
             equipmentTag.setInteger("slotNum", i);
             equipmentList.appendTag(equipmentTag);
         }
@@ -1004,13 +1004,13 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     private void readBaseTags(NBTTagCompound tag){
         if (tag.hasKey("ordersStack")) {
-            setCurrentItemOrArmor(ORDER_SLOT, InventoryTools.readItemStack(tag.getCompoundTag("ordersStack")));
+            setCurrentItemOrArmor(ORDER_SLOT, new ItemStack(tag.getCompoundTag("ordersStack")));
         }
         if (tag.hasKey("upkeepStack")) {
-            setCurrentItemOrArmor(UPKEEP_SLOT, InventoryTools.readItemStack(tag.getCompoundTag("upkeepStack")));
+            setCurrentItemOrArmor(UPKEEP_SLOT, new ItemStack(tag.getCompoundTag("upkeepStack")));
         }
         if (tag.hasKey("shieldStack")) {
-            setShieldStack(InventoryTools.readItemStack(tag.getCompoundTag("shieldStack")));
+            setShieldStack(new ItemStack(tag.getCompoundTag("shieldStack")));
         }
         if (tag.hasKey("levelingStats")) {
             getLevelingStats().readFromNBT(tag.getCompoundTag("levelingStats"));
@@ -1072,13 +1072,13 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     private void writeBaseTags(NBTTagCompound tag){
         if (ordersStack != null) {
-            tag.setTag("ordersStack", InventoryTools.writeItemStack(ordersStack));
+            tag.setTag("ordersStack", ordersStack.writeToNBT(new NBTTagCompound()));
         }
         if (upkeepStack != null) {
-            tag.setTag("upkeepStack", InventoryTools.writeItemStack(upkeepStack));
+            tag.setTag("upkeepStack", upkeepStack.writeToNBT(new NBTTagCompound()));
         }
         if (getShieldStack() != null) {
-            tag.setTag("shieldStack", InventoryTools.writeItemStack(getShieldStack()));
+            tag.setTag("shieldStack", getShieldStack(.writeToNBT(new NBTTagCompound())));
         }
         tag.setTag("levelingStats", getLevelingStats().writeToNBT(new NBTTagCompound()));
         tag.setFloat("maxHealth", getMaxHealth());

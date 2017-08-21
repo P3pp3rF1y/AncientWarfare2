@@ -1,10 +1,11 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
-import net.minecraft.block.state.IBlockState;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseCraftingStation;
@@ -13,14 +14,19 @@ import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInt
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBounded;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public abstract class TileWarehouseBase extends TileWorksiteBounded implements IControllerTile {
 
     private boolean init;
@@ -154,7 +160,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
             toMove -= moved;
             if (stack.getCount() != count) {
                 if (stack.getCount() <= 0) {
-                    tile.inventory.setInventorySlotContents(request.slotNum, null);
+                    tile.inventory.setInventorySlotContents(request.slotNum, ItemStack.EMPTY);
                 }
                 return true;
             }
@@ -418,7 +424,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
     }
 
     @Override
-    public final boolean onBlockClicked(EntityPlayer player) {
+    public final boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
         if (!player.world.isRemote) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_CONTROL, pos);
         }
@@ -472,7 +478,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
             }
         }
         if (stack.getCount() <= 0) {
-            return null;
+            return ItemStack.EMPTY;
         }
         return stack;
     }
@@ -494,8 +500,6 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
     @Override
     protected void onBoundsSet() {
         setWorkBoundsMax(getWorkBoundsMax().up(getWorkBoundsMin().getY() + getBoundsMaxHeight() - getWorkBoundsMax().getY()));
-        IBlockState state = world.getBlockState(pos);
-        world.notifyBlockUpdate(pos, state, state, 3);
+        BlockTools.notifyBlockUpdate(this);
     }
-
 }

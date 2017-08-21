@@ -4,7 +4,6 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -432,7 +431,7 @@ public class InventoryTools {
         if (localInventory != null) {
             ItemStack stack;
             for (int i = 0; i < localInventory.getSizeInventory(); i++) {
-                stack = localInventory.getStackInSlotOnClosing(i);
+                stack = localInventory.removeStackFromSlot(i);
                 if (stack == null) {
                     continue;
                 }
@@ -452,10 +451,10 @@ public class InventoryTools {
         ItemStack item;
         for (int i = 0; i < inventory.getSizeInventory(); i++) {
             item = inventory.getStackInSlot(i);
-            if (item == null) {
+            if (item.isEmpty()) {
                 continue;
             }
-            itemTag = writeItemStack(item);
+            itemTag = item.writeToNBT(new NBTTagCompound());
             itemTag.setShort("slot", (short) i);
             itemList.appendTag(itemTag);
         }
@@ -476,45 +475,9 @@ public class InventoryTools {
         for (int i = 0; i < itemList.tagCount(); i++) {
             itemTag = itemList.getCompoundTagAt(i);
             slot = itemTag.getShort("slot");
-            item = readItemStack(itemTag);
+            item = new ItemStack(itemTag);
             inventory.setInventorySlotContents(slot, item);
         }
-    }
-
-    /**
-     * writes an item stack to nbt in a item-id agnostic format.<br>
-     * suitable for cross-save item-stack saving.
-     */
-    public static NBTTagCompound writeItemStack(ItemStack stack) {
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setString("item", Item.itemRegistry.getNameForObject(stack.getItem()));
-        tag.setInteger("damage", stack.getItemDamage());
-        tag.setInteger("quantity", stack.getCount());
-        if (stack.stackTagCompound != null) {
-            tag.setTag("stackTag", stack.stackTagCompound.copy());
-        }
-        return tag;
-    }
-
-    /**
-     * reads an item-stack written out via {@link InventoryTools#writeItemStack(ItemStack)}
-     */
-    public static ItemStack readItemStack(NBTTagCompound tag) {
-        if (tag.hasKey("item") && tag.hasKey("damage") && tag.hasKey("quantity")) {
-            Item item = (Item) Item.itemRegistry.getObject(tag.getString("item"));
-            if (item != null) {
-                int damage = tag.getInteger("damage");
-                int quantity = tag.getInteger("quantity");
-                NBTTagCompound stackTag = null;
-                if (tag.hasKey("stackTag")) {
-                    stackTag = tag.getCompoundTag("stackTag");
-                }
-                ItemStack stack = new ItemStack(item, quantity, damage);
-                stack.stackTagCompound = stackTag;
-                return stack;
-            }
-        }
-        return null;
     }
 
     /**

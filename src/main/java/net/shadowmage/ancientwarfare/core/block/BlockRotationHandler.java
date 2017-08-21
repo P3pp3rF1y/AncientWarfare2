@@ -7,9 +7,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.core.util.NBTSerializableUtils;
 
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -241,7 +241,7 @@ public class BlockRotationHandler {
         }
     }
 
-    public static class InventorySided implements ISidedInventory, INBTSerialable {
+    public static class InventorySided implements ISidedInventory, NBTSerializableUtils {
 
         private EnumSet<RelativeSide> validSides = EnumSet.of(RelativeSide.NONE);
 
@@ -429,7 +429,7 @@ public class BlockRotationHandler {
         }
 
         @Override
-        public ItemStack getStackInSlotOnClosing(int var1) {
+        public ItemStack removeStackFromSlot(int var1) {
             ItemStack stack = inventorySlots[var1];
             inventorySlots[var1] = null;
             markDirty();
@@ -443,12 +443,12 @@ public class BlockRotationHandler {
         }
 
         @Override
-        public String getInventoryName() {
+        public String getName() {
             return "aw_inventory_sided";
         }
 
         @Override
-        public boolean hasCustomInventoryName() {
+        public boolean hasCustomName() {
             return false;
         }
 
@@ -463,16 +463,16 @@ public class BlockRotationHandler {
         }
 
         @Override
-        public boolean isUseableByPlayer(EntityPlayer var1) {
+        public boolean isUsableByPlayer(EntityPlayer var1) {
             return true;
         }
 
         @Override
-        public void openInventory() {
+        public void openInventory(EntityPlayer player) {
         }
 
         @Override
-        public void closeInventory() {
+        public void closeInventory(EntityPlayer player) {
         }
 
         @Override

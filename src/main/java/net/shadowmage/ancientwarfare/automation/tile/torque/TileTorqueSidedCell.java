@@ -1,9 +1,8 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.util.Constants;
@@ -13,6 +12,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.SidedTorqueCell;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 
+@MethodsReturnNonnullByDefault
 public abstract class TileTorqueSidedCell extends TileTorqueBase {
 
     boolean connections[] = null;
@@ -47,8 +47,7 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
     protected abstract double getMaxTransfer();
 
     @Override
-    public void updateEntity() {
-        super.updateEntity();
+    public void update() {
         if (!world.isRemote) {
             serverNetworkUpdate();
             torqueIn = getTotalTorque() - prevEnergy;
@@ -229,16 +228,14 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
     }
 
     @Override
-    public NBTTagCompound getDescriptionTag() {
-        NBTTagCompound tag = super.getDescriptionTag();
+    protected void writeUpdateNBT(NBTTagCompound tag) {
+        super.writeUpdateNBT(tag);
         tag.setInteger("clientEnergy", clientDestEnergyState);
-        return tag;
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        super.onDataPacket(net, pkt);
-        NBTTagCompound tag = pkt.func_148857_g();
+    protected void handleUpdateNBT(NBTTagCompound tag) {
+        super.handleUpdateNBT(tag);
         clientDestEnergyState = tag.getInteger("clientEnergy");
     }
 
@@ -253,7 +250,7 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         NBTTagList list = new NBTTagList();
         for (SidedTorqueCell aStorage : storage) {
@@ -261,6 +258,8 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
         }
         tag.setTag("energyList", list);
         tag.setInteger("clientEnergy", clientDestEnergyState);
+
+        return tag;
     }
 
     @Override

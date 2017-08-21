@@ -93,7 +93,7 @@ public abstract class Trade {
             if (input[i] == null) {
                 continue;
             }
-            itemTag = InventoryTools.writeItemStack(input[i]);
+            itemTag = input[i].writeToNBT(new NBTTagCompound());
             itemTag.setInteger("slot", i);
             list.appendTag(itemTag);
         }
@@ -104,7 +104,7 @@ public abstract class Trade {
             if (output[i] == null) {
                 continue;
             }
-            itemTag = InventoryTools.writeItemStack(output[i]);
+            itemTag = output[i].writeToNBT(new NBTTagCompound());
             itemTag.setInteger("slot", i);
             list.appendTag(itemTag);
         }
@@ -118,13 +118,13 @@ public abstract class Trade {
         NBTTagList inputList = tag.getTagList("inputItems", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < inputList.tagCount(); i++) {
             itemTag = inputList.getCompoundTagAt(i);
-            input[itemTag.getInteger("slot")] = InventoryTools.readItemStack(itemTag);
+            input[itemTag.getInteger("slot")] = new ItemStack(itemTag);
         }
 
         NBTTagList outputList = tag.getTagList("outputItems", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < outputList.tagCount(); i++) {
             itemTag = outputList.getCompoundTagAt(i);
-            output[itemTag.getInteger("slot")] = InventoryTools.readItemStack(itemTag);
+            output[itemTag.getInteger("slot")] = new ItemStack(itemTag);
         }
     }
 }

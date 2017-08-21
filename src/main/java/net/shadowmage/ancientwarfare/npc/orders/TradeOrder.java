@@ -2,13 +2,13 @@ package net.shadowmage.ancientwarfare.npc.orders;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.core.interfaces.INBTSerialable;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.shadowmage.ancientwarfare.npc.item.ItemTradeOrder;
 import net.shadowmage.ancientwarfare.npc.trade.POTradeRestockData;
 import net.shadowmage.ancientwarfare.npc.trade.POTradeRoute;
 import net.shadowmage.ancientwarfare.npc.trade.TradeList;
 
-public class TradeOrder implements INBTSerialable {
+public class TradeOrder implements INBTSerializable<NBTTagCompound> {
 
     private POTradeRoute tradeRoute = new POTradeRoute();
     private POTradeRestockData restockEntry = new POTradeRestockData();
@@ -21,7 +21,7 @@ public class TradeOrder implements INBTSerialable {
         if (stack != null && stack.getItem() instanceof ItemTradeOrder) {
             TradeOrder order = new TradeOrder();
             if (stack.hasTagCompound() && stack.getTagCompound().hasKey("orders")) {
-                order.readFromNBT(stack.getTagCompound().getCompoundTag("orders"));
+                order.deserializeNBT(stack.getTagCompound().getCompoundTag("orders"));
             }
             return order;
         }
@@ -30,7 +30,7 @@ public class TradeOrder implements INBTSerialable {
 
     public void write(ItemStack stack) {
         if (stack != null && stack.getItem() instanceof ItemTradeOrder) {
-            stack.setTagInfo("orders", writeToNBT(new NBTTagCompound()));
+            stack.setTagInfo("orders", serializeNBT());
         }
     }
 
@@ -47,7 +47,16 @@ public class TradeOrder implements INBTSerialable {
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tag) {
+    public NBTTagCompound serializeNBT() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setTag("tradeList", tradeList.writeToNBT(new NBTTagCompound()));
+        tag.setTag("tradeRoute", tradeRoute.writeToNBT(new NBTTagCompound()));
+        tag.setTag("restockEntry", restockEntry.writeToNBT(new NBTTagCompound()));
+        return tag;
+    }
+
+    @Override
+    public void deserializeNBT(NBTTagCompound tag) {
         tradeList = new TradeList();
         tradeRoute = new POTradeRoute();
         restockEntry = new POTradeRestockData();
@@ -55,13 +64,4 @@ public class TradeOrder implements INBTSerialable {
         tradeRoute.readFromNBT(tag.getCompoundTag("tradeRoute"));
         restockEntry.readFromNBT(tag.getCompoundTag("restockEntry"));
     }
-
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        tag.setTag("tradeList", tradeList.writeToNBT(new NBTTagCompound()));
-        tag.setTag("tradeRoute", tradeRoute.writeToNBT(new NBTTagCompound()));
-        tag.setTag("restockEntry", restockEntry.writeToNBT(new NBTTagCompound()));
-        return tag;
-    }
-
 }

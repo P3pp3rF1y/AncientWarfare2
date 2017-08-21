@@ -14,6 +14,7 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableB
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
 import javax.annotation.ParametersAreNonnullByDefault;
 
@@ -46,8 +47,7 @@ public class ItemBlockWorksiteStatic extends ItemBlock {
                 EnumFacing facing = BlockRotationHandler.getFaceForPlacement(player, (IRotatableBlock) block, side);
                 ((IRotatableTile) worksite).setPrimaryFacing(facing);
             }
-            IBlockState state = world.getBlockState(pos);
-            world.notifyBlockUpdate(pos, state, state, 3);
+            BlockTools.notifyBlockUpdate(world, pos);
         }
         return val;
     }

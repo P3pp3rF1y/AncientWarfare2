@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.npc.trade;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 /**
  * Created by Olivier on 23/03/2015.
@@ -41,7 +40,7 @@ public abstract class POTradeTransferEntry {
 
     public final void readFromNBT(NBTTagCompound tag) {
         if (tag.hasKey("item")) {
-            filter = InventoryTools.readItemStack(tag.getCompoundTag("item"));
+            filter = new ItemStack(tag.getCompoundTag("item"));
         }
         type = getTypeFrom(tag.getInteger("type"));
     }
@@ -49,7 +48,7 @@ public abstract class POTradeTransferEntry {
 
     public final NBTTagCompound writeToNBT(NBTTagCompound tag) {
         if (filter != null) {
-            tag.setTag("item", InventoryTools.writeItemStack(filter));
+            tag.setTag("item", filter.writeToNBT(new NBTTagCompound()));
         }
         tag.setInteger("type", type.ordinal());
         return tag;

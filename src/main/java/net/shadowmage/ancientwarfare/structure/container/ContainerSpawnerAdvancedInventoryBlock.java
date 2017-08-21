@@ -6,6 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketGui;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 
@@ -57,7 +58,7 @@ public class ContainerSpawnerAdvancedInventoryBlock extends ContainerSpawnerAdva
                 this.refreshGui();
             } else {
                 spawner.readFromNBT(tag);
-                player.world.notifyBlockUpdate(spawner.xCoord, spawner.yCoord, spawner.zCoord);
+                BlockTools.notifyBlockUpdate(spawner);
             }
         }
     }

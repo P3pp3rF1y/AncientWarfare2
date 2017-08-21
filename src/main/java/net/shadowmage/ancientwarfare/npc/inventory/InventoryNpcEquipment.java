@@ -61,19 +61,19 @@ public class InventoryNpcEquipment implements IInventory {
     }
 
     @Override
-    public ItemStack getStackInSlotOnClosing(int var1) {
+    public ItemStack removeStackFromSlot(int var1) {
         ItemStack item = getStackInSlot(var1);
         this.setInventorySlotContents(var1, null);
         return item;
     }
 
     @Override
-    public String getInventoryName() {
+    public String getName() {
         return "AWNpcInventoryWrapper";
     }
 
     @Override
-    public boolean hasCustomInventoryName() {
+    public boolean hasCustomName() {
         return false;
     }
 
@@ -88,17 +88,17 @@ public class InventoryNpcEquipment implements IInventory {
     }
 
     @Override
-    public boolean isUseableByPlayer(EntityPlayer var1) {
+    public boolean isUsableByPlayer(EntityPlayer var1) {
         return npc.isEntityAlive();
     }
 
     @Override
-    public void openInventory() {
+    public void openInventory(EntityPlayer player) {
 
     }
 
     @Override
-    public void closeInventory() {
+    public void closeInventory(EntityPlayer player) {
 
     }
 

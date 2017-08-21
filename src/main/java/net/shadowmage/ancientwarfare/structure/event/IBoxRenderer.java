@@ -2,7 +2,7 @@ package net.shadowmage.ancientwarfare.structure.event;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
 /**

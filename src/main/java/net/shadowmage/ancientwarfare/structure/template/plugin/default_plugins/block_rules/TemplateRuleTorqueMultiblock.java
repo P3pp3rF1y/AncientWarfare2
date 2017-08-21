@@ -5,7 +5,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
@@ -36,7 +38,7 @@ public class TemplateRuleTorqueMultiblock extends TemplateRuleBlock {
     }
 
     @Override
-    public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) {
+    public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
         Block block = BlockDataManager.INSTANCE.getBlockForName(blockName);
         if(world.setBlock(x, y, z, block, meta, 3)) {
             TileEntity tile = world.getTileEntity(pos);
@@ -46,7 +48,7 @@ public class TemplateRuleTorqueMultiblock extends TemplateRuleBlock {
                 tag.setInteger("z", z);
                 tile.readFromNBT(tag);
             }
-            world.notifyBlockUpdate(x, y, z);
+            BlockTools.notifyBlockUpdate(world, pos);
             block.onPostBlockPlaced(world, x, y, z, meta);
         }
     }

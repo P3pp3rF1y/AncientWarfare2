@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedSite;
@@ -51,7 +52,7 @@ public class TemplateRuleRotable extends TemplateRuleBlock {
     }
 
     @Override
-    public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) {
+    public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
         Block block = BlockDataManager.INSTANCE.getBlockForName(blockName);
         if(world.setBlock(x, y, z, block, meta, 2)) {
             TileEntity worksite = world.getTileEntity(pos);
@@ -71,7 +72,7 @@ public class TemplateRuleRotable extends TemplateRuleBlock {
                     pos2 = BlockTools.rotateAroundOrigin(p2, turns).offset(x, y, z);
                     ((IBoundedSite) worksite).setBounds(pos1, pos2);
                 }
-                world.notifyBlockUpdate(x, y, z);
+                BlockTools.notifyBlockUpdate(world, pos);
             }
         }
     }

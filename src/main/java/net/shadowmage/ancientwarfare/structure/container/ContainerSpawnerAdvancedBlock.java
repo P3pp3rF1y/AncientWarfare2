@@ -5,6 +5,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 
 public class ContainerSpawnerAdvancedBlock extends ContainerSpawnerAdvancedBase {
@@ -38,7 +39,7 @@ public class ContainerSpawnerAdvancedBlock extends ContainerSpawnerAdvancedBase 
             } else {
                 spawner.getSettings().readFromNBT(tag.getCompoundTag("spawnerSettings"));
                 spawner.markDirty();
-                spawner.getWorld().notifyBlockUpdate(spawner.xCoord, spawner.yCoord, spawner.zCoord);
+                BlockTools.notifyBlockUpdate(spawner);
             }
         }
     }
