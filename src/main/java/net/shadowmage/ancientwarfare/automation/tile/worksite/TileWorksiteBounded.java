@@ -1,8 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
@@ -14,10 +13,12 @@ import net.shadowmage.ancientwarfare.core.interfaces.IChunkLoaderTile;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
+import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Iterator;
 
+@MethodsReturnNonnullByDefault
 public abstract class TileWorksiteBounded extends TileWorksiteBase implements IBoundedSite, IChunkLoaderTile {
 
     /**
@@ -77,11 +78,13 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
         return getWorkBoundsMin() != null && getWorkBoundsMax() != null;
     }
 
+    @Nullable
     @Override
     public final BlockPos getWorkBoundsMin() {
         return bbMin;
     }
 
+    @Nullable
     @Override
     public final BlockPos getWorkBoundsMax() {
         return bbMax;
@@ -226,7 +229,7 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         if (bbMin != null) {
             tag.setLong("bbMin", bbMin.toLong());
@@ -234,24 +237,24 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
         if (bbMax != null) {
             tag.setLong("bbMax", bbMax.toLong());
         }
+
+        return tag;
     }
 
     @Override
-    public NBTTagCompound getDescriptionPacketTag(NBTTagCompound tag) {
-        super.getDescriptionPacketTag(tag);
+    protected void writeUpdateNBT(NBTTagCompound tag) {
+        super.writeUpdateNBT(tag);
         if (bbMin != null) {
             tag.setLong("bbMin", bbMin.toLong());
         }
         if (bbMax != null) {
             tag.setLong("bbMax", bbMax.toLong());
         }
-        return tag;
     }
 
     @Override
-    public final void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-        super.onDataPacket(net, pkt);
-        NBTTagCompound tag = pkt.getNbtCompound();
+    protected void handleUpdateNBT(NBTTagCompound tag) {
+        super.handleUpdateNBT(tag);
         if (tag.hasKey("bbMin")) {
             bbMin = BlockPos.fromLong(tag.getLong("bbMin"));
         }
@@ -259,5 +262,4 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
             bbMax = BlockPos.fromLong(tag.getLong("bbMax"));
         }
     }
-
 }

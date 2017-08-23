@@ -1,11 +1,9 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStockViewer;
@@ -19,6 +17,7 @@ import net.shadowmage.ancientwarfare.core.util.NBTSerializableUtils;
 import javax.annotation.Nullable;
 import java.util.*;
 
+@MethodsReturnNonnullByDefault
 public class TileWarehouseStockViewer extends TileControlled implements IOwnable, IInteractableTile {
 
     private final List<WarehouseStockFilter> filters = new ArrayList<WarehouseStockFilter>();
@@ -77,7 +76,7 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
             }
         } else {
             for (WarehouseStockFilter filter : this.filters) {
-                count = filter.getFilterItem() == null ? 0 : twb.getCountOf(filter.getFilterItem());
+                count = filter.getFilterItem().isEmpty() ? 0 : twb.getCountOf(filter.getFilterItem());
                 if (count != filter.getQuantity()) {
                     filter.setQuantity(count);
                     if (sendToClients) {
@@ -146,24 +145,14 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
     @Override
     protected void writeUpdateNBT(NBTTagCompound tag) {
         super.writeUpdateNBT(tag);
+        NBTSerializableUtils.write(tag, "filterList", filters);
     }
 
     @Override
     protected void handleUpdateNBT(NBTTagCompound tag) {
         super.handleUpdateNBT(tag);
-    }
-
-    @Override
-    public Packet getDescriptionPacket() {
-        NBTTagCompound tag = new NBTTagCompound();
-        NBTSerializableUtils.write(tag, "filterList", filters);
-        return new S35PacketUpdateTileEntity(pos, 0, tag);
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         this.filters.clear();
-        this.filters.addAll(NBTSerializableUtils.read(pkt.func_148857_g(), "filterList", WarehouseStockFilter.class));
+        this.filters.addAll(NBTSerializableUtils.read(tag, "filterList", WarehouseStockFilter.class));
         updateViewers();
     }
 
@@ -181,7 +170,7 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
     private void checkOwnerName(){
         if(hasWorld()){
             if(owner!=null) {
-                EntityPlayer player = world.func_152378_a(owner);
+                EntityPlayer player = world.getPlayerEntityByUUID(owner);
                 if (player != null) {
                     setOwner(player);
                 }
@@ -204,13 +193,15 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         NBTSerializableUtils.write(tag, "filterList", filters);
         checkOwnerName();
         tag.setString("ownerName", ownerName);
         if(owner!=null)
             tag.setString("ownerId", owner.toString());
+
+        return tag;
     }
 
     public static class WarehouseStockFilter implements INBTSerializable<NBTTagCompound> {

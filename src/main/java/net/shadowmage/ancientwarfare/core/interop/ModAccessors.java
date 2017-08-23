@@ -10,7 +10,7 @@ public class ModAccessors {
     public static boolean HARDER_WILDLIFE_LOADED = false;
     public static InteropEnviromineInterface ENVIROMINE;
     public static boolean ENVIROMINE_LOADED = false;
-    public static InteropTreecapitatorInterface TREECAPITATOR;
+    //public static InteropTreecapitatorInterface TREECAPITATOR; //TODO implement integration with the new treecapitator port ??
     public static boolean TREECAPITATOR_LOADED = false;
     
     

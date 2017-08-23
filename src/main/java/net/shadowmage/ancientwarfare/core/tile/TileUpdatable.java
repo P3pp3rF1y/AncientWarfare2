@@ -8,7 +8,9 @@ import net.minecraft.tileentity.TileEntity;
 public abstract class TileUpdatable extends TileEntity {
     @Override
     public SPacketUpdateTileEntity getUpdatePacket() {
-        return new SPacketUpdateTileEntity(pos, 0, writeUpdateNBT(new NBTTagCompound()));
+        NBTTagCompound tag = new NBTTagCompound();
+        writeUpdateNBT(tag);
+        return new SPacketUpdateTileEntity(pos, 0, tag);
     }
 
     @Override
@@ -18,7 +20,9 @@ public abstract class TileUpdatable extends TileEntity {
 
     @Override
     public NBTTagCompound getUpdateTag() {
-        return writeUpdateNBT(super.getUpdateTag());
+        NBTTagCompound tag = super.getUpdateTag();
+        writeUpdateNBT(tag);
+        return tag;
     }
 
     @Override
@@ -28,10 +32,8 @@ public abstract class TileUpdatable extends TileEntity {
     }
 
     protected void writeUpdateNBT(NBTTagCompound tag) {
-        return tag;
     }
 
     protected void handleUpdateNBT(NBTTagCompound tag) {
-
     }
 }

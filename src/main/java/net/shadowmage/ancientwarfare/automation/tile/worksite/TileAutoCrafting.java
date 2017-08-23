@@ -1,13 +1,12 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
@@ -15,8 +14,12 @@ import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventory, IInventoryChangedListener {
 
     public InventoryBasic bookSlot;
@@ -41,7 +44,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
             @Override
             public void onCraftMatrixChanged(IInventory par1iInventory) {
                 onLayoutMatrixChanged();
-                onInventoryChanged(null);
+                onInventoryChanged(null); //TODO pass something else than null here - just pass in the inventory in parameter?
             }
         };
         craftMatrix = new InventoryCrafting(dummy, 3, 3);
@@ -60,7 +63,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
     }
 
     private boolean canCraft() {
-        if (outputSlot.getStackInSlot(0) == null) {
+        if (outputSlot.getStackInSlot(0).isEmpty()) {
             return false;
         }//no output stack, don't even bother checking
         ArrayList<ItemStack> compactedCraft = new ArrayList<ItemStack>();
@@ -68,13 +71,13 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
         boolean found;
         for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
             stack1 = craftMatrix.getStackInSlot(i);
-            if (stack1 == null) {
+            if (stack1.isEmpty()) {
                 continue;
             }
             found = false;
             for (ItemStack stack3 : compactedCraft) {
                 if (InventoryTools.doItemStacksMatch(stack3, stack1)) {
-                    stack3.stackSize++;
+                    stack3.grow(1);
                     found = true;
                     break;
                 }
@@ -120,7 +123,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
         ItemStack stack1;
         for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
             stack1 = craftMatrix.getStackInSlot(i);
-            if (stack1 == null) {
+            if (stack1.isEmpty()) {
                 continue;
             }
             if(InventoryTools.removeItems(resourceInventory, -1, stack1, 1) != null) {
@@ -140,20 +143,20 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        this.bookSlot.readFromNBT(tag.getCompoundTag("bookSlot"));
-        this.resourceInventory.readFromNBT(tag.getCompoundTag("resourceInventory"));
-        this.outputInventory.readFromNBT(tag.getCompoundTag("outputInventory"));
-        this.outputSlot.readFromNBT(tag.getCompoundTag("outputSlot"));
+        this.bookSlot.deserializeNBT(tag.getCompoundTag("bookSlot"));
+        this.resourceInventory.deserializeNBT(tag.getCompoundTag("resourceInventory"));
+        this.outputInventory.deserializeNBT(tag.getCompoundTag("outputInventory"));
+        this.outputSlot.deserializeNBT(tag.getCompoundTag("outputSlot"));
         InventoryTools.readInventoryFromNBT(craftMatrix, tag.getCompoundTag("craftMatrix"));
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        tag.setTag("bookSlot", bookSlot.writeToNBT(new NBTTagCompound()));
-        tag.setTag("resourceInventory", resourceInventory.writeToNBT(new NBTTagCompound()));
-        tag.setTag("outputInventory", outputInventory.writeToNBT(new NBTTagCompound()));
-        tag.setTag("outputSlot", outputSlot.writeToNBT(new NBTTagCompound()));
+        tag.setTag("bookSlot", bookSlot.serializeNBT());
+        tag.setTag("resourceInventory", resourceInventory.serializeNBT());
+        tag.setTag("outputInventory", outputInventory.serializeNBT());
+        tag.setTag("outputSlot", outputSlot.serializeNBT());
         tag.setTag("craftMatrix", InventoryTools.writeInventoryToNBT(craftMatrix, new NBTTagCompound()));
     }
 
@@ -171,6 +174,11 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
     @Override
     public int getSizeInventory() {
         return resourceInventory.getSizeInventory() + outputInventory.getSizeInventory();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return resourceInventory.isEmpty() && outputInventory.isEmpty();
     }
 
     @Override
@@ -249,28 +257,47 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
     }
 
     @Override
-    public int[] getAccessibleSlotsFromSide(int side) {
-        EnumFacing d = EnumFacing.VALUES[side];
-        if (d == EnumFacing.UP) {
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+        resourceInventory.clear();
+        outputInventory.clear();
+    }
+
+    @Override
+    public int[] getSlotsForFace(EnumFacing side) {
+        if (side == EnumFacing.UP) {
             return resourceSlotIndices;
-        } else if (d == EnumFacing.DOWN) {
+        } else if (side == EnumFacing.DOWN) {
             return outputSlotIndices;
         }
         return new int[0];
     }
 
     @Override
-    public boolean canInsertItem(int slot, ItemStack var2, int side) {
-        return EnumFacing.VALUES[side] == EnumFacing.UP;//top, insert only
+    public boolean canInsertItem(int slot, ItemStack var2, EnumFacing side) {
+        return side == EnumFacing.UP;//top, insert only
     }
 
     @Override
-    public boolean canExtractItem(int slot, ItemStack var2, int side) {
-        return EnumFacing.VALUES[side] == EnumFacing.DOWN;//bottom, extract only
+    public boolean canExtractItem(int slot, ItemStack var2, EnumFacing side) {
+        return side == EnumFacing.DOWN;//bottom, extract only
     }
 
     @Override
-    public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
+    public boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
         if (!player.world.isRemote) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_AUTO_CRAFT, pos);
         }
@@ -284,7 +311,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
 
     @Override
     protected boolean hasWorksiteWork() {
-        return canCraftLastCheck && canHoldLastCheck && outputSlot.getStackInSlot(0) != null;
+        return canCraftLastCheck && canHoldLastCheck && !outputSlot.getStackInSlot(0).isEmpty();
     }
 
     @Override
@@ -295,7 +322,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
 
     private boolean canHold() {
         ItemStack test = outputSlot.getStackInSlot(0);
-        return test != null && InventoryTools.canInventoryHold(outputInventory, -1, test);
+        return !test.isEmpty() && InventoryTools.canInventoryHold(outputInventory, -1, test);
     }
 
     @Override

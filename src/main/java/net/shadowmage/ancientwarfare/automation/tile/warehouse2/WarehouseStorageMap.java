@@ -7,8 +7,8 @@ import java.util.*;
 
 public class WarehouseStorageMap {
 
-    Set<IWarehouseStorageTile> unfilteredStorage = new HashSet<IWarehouseStorageTile>();
-    Map<ItemHashEntry, Set<IWarehouseStorageTile>> storageMap = new HashMap<ItemHashEntry, Set<IWarehouseStorageTile>>();
+    Set<IWarehouseStorageTile> unfilteredStorage = new HashSet<>();
+    Map<ItemHashEntry, Set<IWarehouseStorageTile>> storageMap = new HashMap<>();
 
     public final void addStorageTile(IWarehouseStorageTile tile) {
         addTileFilters(tile, tile.getFilters());
@@ -39,11 +39,7 @@ public class WarehouseStorageMap {
     }
 
     private Set<IWarehouseStorageTile> getOrCreateStorageSet(ItemHashEntry key) {
-        Set<IWarehouseStorageTile> set = storageMap.get(key);
-        if (set == null) {
-            set = new HashSet<IWarehouseStorageTile>();
-            storageMap.put(key, set);
-        }
+        Set<IWarehouseStorageTile> set = storageMap.computeIfAbsent(key, k -> new HashSet<>());
         return set;
     }
 

@@ -839,7 +839,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     private void checkOwnerName(){
         if(ownerId!=null){
-            EntityPlayer player = world.func_152378_a(ownerId);
+            EntityPlayer player = world.getPlayerEntityByUUID(ownerId);
             if(player!=null && !player.getName().equals(ownerName)){
                 setOwnerName(player.getName());
             }

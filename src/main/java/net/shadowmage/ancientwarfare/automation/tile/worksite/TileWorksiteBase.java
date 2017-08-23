@@ -1,17 +1,16 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
-import cofh.api.energy.IEnergyHandler;
+import cofh.redstoneflux.api.IEnergyProvider;
+import cofh.redstoneflux.api.IEnergyReceiver;
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.scoreboard.Team;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.common.Optional;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
@@ -24,15 +23,19 @@ import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import org.apache.commons.lang3.math.NumberUtils;
 
 import java.util.EnumSet;
 import java.util.UUID;
 
-@Optional.Interface(iface = "cofh.api.energy.IEnergyHandler", modid = "CoFHCore", striprefs = true)
-public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, IInteractableTile, IOwnable, IRotatableTile, IEnergyHandler {
+@MethodsReturnNonnullByDefault
+@Optional.Interface(iface = "cofh.api.energy.IEnergyProvider", modid = "redstoneflux", striprefs = true)
+@Optional.Interface(iface = "cofh.api.energy.IEnergyReceiver", modid = "redstoneflux", striprefs = true)
+public abstract class TileWorksiteBase extends TileUpdatable implements ITickable, IWorkSite, IInteractableTile, IOwnable, IRotatableTile, IEnergyProvider, IEnergyReceiver {
 
     private String owningPlayer = "";
     private UUID ownerId;
@@ -53,31 +56,31 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
     }
 
     //*************************************** COFH RF METHODS ***************************************//
-    @Optional.Method(modid = "CoFHCore")
+    @Optional.Method(modid = "redstoneflux")
     @Override
     public final int getEnergyStored(EnumFacing from) {
         return (int) (getTorqueStored(from) * AWAutomationStatics.torqueToRf);
     }
 
-    @Optional.Method(modid = "CoFHCore")
+    @Optional.Method(modid = "redstoneflux")
     @Override
     public final int getMaxEnergyStored(EnumFacing from) {
         return (int) (getMaxTorque(from) * AWAutomationStatics.torqueToRf);
     }
 
-    @Optional.Method(modid = "CoFHCore")
+    @Optional.Method(modid = "redstoneflux")
     @Override
     public final boolean canConnectEnergy(EnumFacing from) {
         return canOutputTorque(from) || canInputTorque(from);
     }
 
-    @Optional.Method(modid = "CoFHCore")
+    @Optional.Method(modid = "redstoneflux")
     @Override
     public final int extractEnergy(EnumFacing from, int maxExtract, boolean simulate) {
         return 0;
     }
 
-    @Optional.Method(modid = "CoFHCore")
+    @Optional.Method(modid = "redstoneflux")
     @Override
     public final int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
         if (!canInputTorque(from)) {
@@ -144,12 +147,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
     protected abstract void updateWorksite();
 
     @Override
-    public final boolean canUpdate() {
-        return true;
-    }
-
-    @Override
-    public final void updateEntity() {
+    public final void update() {
         if (!hasWorld() || world.isRemote) {
             return;
         }
@@ -334,7 +332,7 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
 //*************************************** NBT AND PACKET DATA METHODS ***************************************//
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setDouble("storedEnergy", torqueCell.getEnergy());
         if (owningPlayer != null) {
@@ -359,6 +357,8 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
             tag.setIntArray("upgrades", ug);
         }
         tag.setInteger("orientation", orientation.ordinal());
+
+        return tag;
     }
 
     @Override
@@ -383,10 +383,9 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
                 NBTTagList list = (NBTTagList) upgradeTag;
                 for (int i = 0; i < list.tagCount(); i++) {
                     String st = list.getStringTagAt(i);
-                    try {
-                        int ug = Integer.parseInt(st);
+                    int ug = NumberUtils.toInt(st, -1) ;
+                    if(ug > -1) {
                         upgrades.add(WorksiteUpgrade.values()[ug]);
-                    } catch (NumberFormatException e) {
                     }
                 }
             }
@@ -398,7 +397,9 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
         updateEfficiency();
     }
 
-    protected NBTTagCompound getDescriptionPacketTag(NBTTagCompound tag) {
+    @Override
+    protected void writeUpdateNBT(NBTTagCompound tag) {
+        super.writeUpdateNBT(tag);
         int[] ugs = new int[upgrades.size()];
         int i = 0;
         for (WorksiteUpgrade ug : upgrades) {
@@ -407,28 +408,20 @@ public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, 
         }
         tag.setIntArray("upgrades", ugs);
         tag.setInteger("orientation", orientation.ordinal());
-        return tag;
     }
 
     @Override
-    public final Packet getDescriptionPacket() {
-        NBTTagCompound tag = getDescriptionPacketTag(new NBTTagCompound());
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, tag);
-    }
-
-    @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        super.onDataPacket(net, pkt);
+    protected void handleUpdateNBT(NBTTagCompound tag) {
+        super.handleUpdateNBT(tag);
         upgrades.clear();
-        if (pkt.func_148857_g().hasKey("upgrades")) {
-            int[] ugs = pkt.func_148857_g().getIntArray("upgrades");
+        if (tag.hasKey("upgrades")) {
+            int[] ugs = tag.getIntArray("upgrades");
             for (int ug : ugs) {
                 upgrades.add(WorksiteUpgrade.values()[ug]);
             }
         }
         updateEfficiency();
-        orientation = EnumFacing.values()[pkt.func_148857_g().getInteger("orientation")];
+        orientation = EnumFacing.values()[tag.getInteger("orientation")];
         markDirty();
     }
-
 }

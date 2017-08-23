@@ -53,7 +53,7 @@ public class TileOwned extends TileEntity implements IOwnable {
     private void checkOwnerName(){
         if(hasWorld()){
             if(owner!=null) {
-                EntityPlayer player = world.func_152378_a(owner);
+                EntityPlayer player = world.getPlayerEntityByUUID(owner);
                 if (player != null) {
                     setOwner(player);
                 }

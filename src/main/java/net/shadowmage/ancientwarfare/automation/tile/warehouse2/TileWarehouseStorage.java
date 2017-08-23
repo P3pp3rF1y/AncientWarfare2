@@ -1,9 +1,11 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumHand;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStorage;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySlotlessBasic;
@@ -12,17 +14,21 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.NBTSerializableUtils;
 
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class TileWarehouseStorage extends TileControlled implements IWarehouseStorageTile, IInteractableTile {
 
     private InventorySlotlessBasic inventory;
-    private final List<WarehouseStorageFilter> filters = new ArrayList<WarehouseStorageFilter>();
+    private final List<WarehouseStorageFilter> filters = new ArrayList<>();
 
-    private final Set<ContainerWarehouseStorage> viewers = new HashSet<ContainerWarehouseStorage>();
+    private final Set<ContainerWarehouseStorage> viewers = new HashSet<>();
 
     public TileWarehouseStorage() {
         inventory = new InventorySlotlessBasic(getStorageAdditionSize());
@@ -37,7 +43,7 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
             twb.changeCachedQuantity(cursorStack, moved);
         }
         if (cursorStack.getCount() <= 0) {
-            return null;
+            return ItemStack.EMPTY;
         }
         return cursorStack;
     }
@@ -73,7 +79,7 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
 
     @Override
     public void setFilters(List<WarehouseStorageFilter> filters) {
-        List<WarehouseStorageFilter> old = new ArrayList<WarehouseStorageFilter>();
+        List<WarehouseStorageFilter> old = new ArrayList<>();
         old.addAll(this.filters);
         this.filters.clear();
         this.filters.addAll(filters);
@@ -121,10 +127,11 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setTag("inventory", inventory.writeToNBT(new NBTTagCompound()));
         NBTSerializableUtils.write(tag, "filterList", filters);
+        return tag;
     }
 
     @Override
@@ -154,7 +161,7 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
     }
 
     @Override
-    public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
+    public boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
         if (!player.world.isRemote) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_STORAGE, pos);
         }
@@ -163,9 +170,9 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
 
     @Override
     public void handleSlotClick(EntityPlayer player, ItemStack filter, boolean shiftClick) {
-        if (filter != null && player.inventory.getItemStack() == null) {
+        if (filter != null && player.inventory.getItemStack().isEmpty()) {
             tryGetItem(player, filter, shiftClick);
-        } else if (player.inventory.getItemStack() != null) {
+        } else if (!player.inventory.getItemStack().isEmpty()) {
             tryAddItem(player, player.inventory.getItemStack());
         }
     }

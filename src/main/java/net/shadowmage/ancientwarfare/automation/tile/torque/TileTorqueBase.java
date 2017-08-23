@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque;
 
-import cofh.redstoneflux.api.IEnergyHandler;
 import cofh.redstoneflux.api.IEnergyReceiver;
 import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,8 +25,8 @@ import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
 @MethodsReturnNonnullByDefault
-@Optional.Interface(iface = "cofh.redstoneflux.api.IEnergyHandler", modid = "redstoneflux", striprefs = true)
-public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTile, IInteractableTile, IRotatableTile, IEnergyHandler, IEnergyReceiver, ITickable {
+@Optional.Interface(iface = "cofh.redstoneflux.api.IEnergyReceiver", modid = "redstoneflux", striprefs = true)
+public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTile, IInteractableTile, IRotatableTile, IEnergyReceiver, ITickable {
 
     public static final int DIRECTION_LENGTH = EnumFacing.VALUES.length;
     /**
@@ -74,7 +73,7 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
         return canOutputTorque(from) || canInputTorque(from);
     }
 
-    @Optional.Method(modid = "CoFHCore")
+    @Optional.Method(modid = "redstoneflux")
     @Override
     public final int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
         if (!canInputTorque(from)) {

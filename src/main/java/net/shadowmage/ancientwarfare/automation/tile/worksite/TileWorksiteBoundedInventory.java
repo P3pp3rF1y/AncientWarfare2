@@ -70,13 +70,14 @@ public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded i
             if (!BlockTools.canBreakBlock(world, getOwnerAsPlayer(), pos, state)) {
                 return false;
             }
-            world.playEvent(2001, pos, Block.getIdFromBlock(block) + (meta << 12));
+            world.playEvent(2001, pos, Block.getStateId(state));
             if (!world.setBlockToAir(pos)) {
                 return false;
             }
 
             if (ModAccessors.TREECAPITATOR_LOADED)
-                ModAccessors.TREECAPITATOR.doTreecapitate(world, block, meta, x, y, z);
+                //TODO implement integration with the new treecapitator port ??
+                //ModAccessors.TREECAPITATOR.doTreecapitate(world, block, meta, x, y, z);
             
             if (ModAccessors.ENVIROMINE_LOADED)
                 ModAccessors.ENVIROMINE.schedulePhysUpdate(world, x, y, z, true, "Normal");

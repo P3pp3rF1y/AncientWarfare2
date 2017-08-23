@@ -175,14 +175,14 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        inventory.readFromNBT(tag.getCompoundTag("inventory"));
+        inventory.deserializeNBT(tag.getCompoundTag("inventory"));
         filters = NBTSerializableUtils.read(tag, "filterList", WarehouseInterfaceFilter.class);
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        tag.setTag("inventory", inventory.writeToNBT(new NBTTagCompound()));
+        tag.setTag("inventory", inventory.serializeNBT());
         NBTSerializableUtils.write(tag, "filterList", getFilters());
         return tag;
     }

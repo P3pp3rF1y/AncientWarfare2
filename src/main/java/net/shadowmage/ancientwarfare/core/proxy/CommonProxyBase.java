@@ -23,7 +23,7 @@ public class CommonProxyBase {
     public EntityPlayer getFakePlayer(World world, String name, UUID id) {
         EntityPlayer player;
         if(id!=null) {
-            player = world.func_152378_a(id);
+            player = world.getPlayerEntityByUUID(id);
             if(player!=null)
                 return player;
         }

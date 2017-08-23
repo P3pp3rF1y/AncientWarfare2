@@ -1,8 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque.multiblock;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.SPacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -11,14 +9,14 @@ import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBlockEvent;
+import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.util.BlockFinder;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import org.apache.commons.lang3.tuple.Pair;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
-public class TileFlywheelStorage extends TileEntity implements ITickable {
+public class TileFlywheelStorage extends TileUpdatable implements ITickable {
 
     public BlockPos controllerPos;
     public boolean isControl = false;//set to true if this is the control block for a setup
@@ -243,10 +241,9 @@ public class TileFlywheelStorage extends TileEntity implements ITickable {
         return null;
     }
 
-    @Nullable
     @Override
-    public SPacketUpdateTileEntity getUpdatePacket() {
-        NBTTagCompound tag = new NBTTagCompound();
+    protected void writeUpdateNBT(NBTTagCompound tag) {
+        super.writeUpdateNBT(tag);
         if (controllerPos != null) {
             tag.setLong("controllerPos", controllerPos.toLong());
             if (isControl) {
@@ -257,13 +254,11 @@ public class TileFlywheelStorage extends TileEntity implements ITickable {
                 tag.setInteger("clientEnergy", clientEnergy);
             }
         }
-        return new SPacketUpdateTileEntity(pos, 0, tag);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
-        super.onDataPacket(net, pkt);
-        NBTTagCompound tag = pkt.getNbtCompound();
+    protected void handleUpdateNBT(NBTTagCompound tag) {
+        super.handleUpdateNBT(tag);
         controllerPos = tag.hasKey("controllerPos") ? BlockPos.fromLong(tag.getLong("controllerPos")) : null;
         if (controllerPos != null) {
             isControl = tag.getBoolean("isControl");

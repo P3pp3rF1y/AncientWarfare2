@@ -1,16 +1,24 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.IInventoryChangedListener;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.EnumSet;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class TileOreProcessor extends TileWorksiteBase implements ISidedInventory,IInventoryChangedListener {
 
     private final InventoryBasic inventory;
@@ -25,30 +33,8 @@ public class TileOreProcessor extends TileWorksiteBase implements ISidedInventor
     }
 
     @Override
-    public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
+    public boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
         // TODO implement GUI
-        return true;
-    }
-
-    @Override
-    public int[] getAccessibleSlotsFromSide(int side) {
-        // TODO implement re-mappable relative block sides
-        return null;
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        //TODO set from recipe list
-        return true;
-    }
-
-    @Override
-    public boolean canInsertItem(int slot, ItemStack stack, int side) {
-        return slot == 0 && isItemValidForSlot(slot, stack);
-    }
-
-    @Override
-    public boolean canExtractItem(int slot, ItemStack stack, int side) {
         return true;
     }
 
@@ -85,8 +71,55 @@ public class TileOreProcessor extends TileWorksiteBase implements ISidedInventor
 //************************************** BRIDGE/TEMPLATE/ACCESSOR METHODS ****************************************//
 
     @Override
+    public int[] getSlotsForFace(EnumFacing side) {
+        // TODO implement re-mappable relative block sides
+        return null;
+    }
+
+    @Override
+    public boolean canInsertItem(int slot, ItemStack stack, EnumFacing side) {
+        return slot == 0 && isItemValidForSlot(slot, stack);
+    }
+
+    @Override
+    public boolean canExtractItem(int slot, ItemStack stack, EnumFacing side) {
+        return true;
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int slot, ItemStack stack) {
+        //TODO set from recipe list
+        return true;
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+        inventory.clear();
+    }
+
+    @Override
     public int getSizeInventory() {
         return inventory.getSizeInventory();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return inventory.isEmpty();
     }
 
     @Override
@@ -147,13 +180,12 @@ public class TileOreProcessor extends TileWorksiteBase implements ISidedInventor
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        inventory.readFromNBT(tag.getCompoundTag("inventory"));
+        inventory.deserializeNBT(tag.getCompoundTag("inventory"));
     }
 
     @Override
     public void writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        tag.setTag("inventory", inventory.writeToNBT(new NBTTagCompound()));
+        tag.setTag("inventory", inventory.serializeNBT());
     }
-
 }
