@@ -217,7 +217,7 @@ public class ResearchGoal {
             }else if(split.length>1){
                 stack = StringTools.safeParseStack(split[1], "0", split.length>2 ? split[2] : "1", false);
             }
-            if(stack != null)
+            if(!stack.isEmpty())
                 getGoal(name).addResource(stack);
             else {
                 if(!OreDictionary.getOres(split[1].trim()).isEmpty()){

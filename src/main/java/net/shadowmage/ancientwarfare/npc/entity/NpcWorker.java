@@ -132,12 +132,12 @@ public class NpcWorker extends NpcPlayerOwned implements IWorker {
 
     @Override
     public boolean isValidOrdersStack(ItemStack stack) {
-        return stack != null && stack.getItem() instanceof ItemWorkOrder;
+        return !stack.isEmpty() && stack.getItem() instanceof ItemWorkOrder;
     }
 
     protected WorkType getWorkTypeFromEquipment() {
         ItemStack stack = getHeldItem();
-        if (stack != null && stack.getItem() != null) {
+        if (!stack.isEmpty() && stack.getItem() != null) {
             if (stack.getItem() instanceof ItemHoe) {
                 return WorkType.FARMING;
             } else {

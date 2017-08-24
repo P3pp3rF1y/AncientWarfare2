@@ -54,7 +54,7 @@ public class WorkOrder extends OrderingList<WorkOrder.WorkEntry> implements INBT
     }
 
     public static WorkOrder getWorkOrder(ItemStack stack) {
-        if (stack != null && stack.getItem() instanceof ItemWorkOrder) {
+        if (!stack.isEmpty() && stack.getItem() instanceof ItemWorkOrder) {
             WorkOrder order = new WorkOrder();
             if (stack.hasTagCompound() && stack.getTagCompound().hasKey("orders")) {
                 order.deserializeNBT(stack.getTagCompound().getCompoundTag("orders"));
@@ -65,7 +65,7 @@ public class WorkOrder extends OrderingList<WorkOrder.WorkEntry> implements INBT
     }
 
     public void write(ItemStack stack) {
-        if (stack != null && stack.getItem() instanceof ItemWorkOrder) {
+        if (!stack.isEmpty() && stack.getItem() instanceof ItemWorkOrder) {
             stack.setTagInfo("orders", serializeNBT());
         }
     }

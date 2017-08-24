@@ -75,7 +75,7 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
 
     @Override
     public boolean isValidOrdersStack(ItemStack stack) {
-        return stack != null && stack.getItem() instanceof ItemCombatOrder;
+        return !stack.isEmpty() && stack.getItem() instanceof ItemCombatOrder;
     }
 
     @Override
@@ -120,7 +120,7 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
 
     protected String getSubtypeFromEquipment() {
         ItemStack stack = getHeldItem();
-        if (stack != null && stack.getItem() != null) {
+        if (!stack.isEmpty() && stack.getItem() != null) {
             Item item = stack.getItem();
             Collection<String> tools = item.getToolClasses(stack);
             if(tools.contains("axe")) {

@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -7,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -17,6 +19,7 @@ import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
 /**
@@ -29,6 +32,8 @@ import java.util.List;
  *
  * @author Shadowmage
  */
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded implements ISidedInventory {
 
     public InventorySided inventory;
@@ -50,7 +55,7 @@ public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded i
     public final void addStackToInventory(ItemStack stack, RelativeSide... sides) {
         int[] slots = inventory.getRawIndicesCombined(sides);
         stack = InventoryTools.mergeItemStack(inventory, stack, slots);
-        if (stack != null) {
+        if (!stack.isEmpty()) {
             InventoryTools.dropItemInWorld(world, stack, pos);
         }
     }
@@ -75,16 +80,19 @@ public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded i
                 return false;
             }
 
-            if (ModAccessors.TREECAPITATOR_LOADED)
+            if (ModAccessors.TREECAPITATOR_LOADED) {
                 //TODO implement integration with the new treecapitator port ??
                 //ModAccessors.TREECAPITATOR.doTreecapitate(world, block, meta, x, y, z);
-            
-            if (ModAccessors.ENVIROMINE_LOADED)
-                ModAccessors.ENVIROMINE.schedulePhysUpdate(world, x, y, z, true, "Normal");
+            }
+
+            if (ModAccessors.ENVIROMINE_LOADED) {
+                //TODO enviromine support
+                //ModAccessors.ENVIROMINE.schedulePhysUpdate(world, pos, true, "Normal");
+            }
         }
         for (ItemStack stack : stacks) {
             stack = InventoryTools.mergeItemStack(inventory, stack, combinedIndices);//was already validated that items would fit via canInventoryHold call
-            if (stack != null)//but just in case, drop into world anyway if not null..
+            if (!stack.isEmpty())//but just in case, drop into world anyway if not null..
             {
                 InventoryTools.dropItemInWorld(world, stack, pos);
             }
@@ -100,13 +108,14 @@ public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded i
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         if (inventory != null) {
             NBTTagCompound invTag = new NBTTagCompound();
             inventory.writeToNBT(invTag);
             tag.setTag("inventory", invTag);
         }
+        return tag;
     }
 
     @Override
@@ -120,6 +129,11 @@ public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded i
     @Override
     public final int getSizeInventory() {
         return inventory.getSizeInventory();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return false;
     }
 
     @Override
@@ -143,12 +157,12 @@ public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded i
     }
 
     @Override
-    public final String getInventoryName() {
+    public final String getName() {
         return inventory.getName();
     }
 
     @Override
-    public final boolean hasCustomInventoryName() {
+    public final boolean hasCustomName() {
         return inventory.hasCustomName();
     }
 
@@ -163,13 +177,13 @@ public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded i
     }
 
     @Override
-    public final void openInventory() {
-        inventory.openInventory();
+    public final void openInventory(EntityPlayer player) {
+        inventory.openInventory(player);
     }
 
     @Override
-    public final void closeInventory() {
-        inventory.closeInventory();
+    public final void closeInventory(EntityPlayer player) {
+        inventory.closeInventory(player);
     }
 
     @Override
@@ -178,18 +192,37 @@ public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded i
     }
 
     @Override
-    public final int[] getAccessibleSlotsFromSide(int var1) {
-        return inventory.getAccessibleSlotsFromSide(var1);
+    public int getField(int id) {
+        return inventory.getField(id);
     }
 
     @Override
-    public final boolean canInsertItem(int var1, ItemStack var2, int var3) {
-        return inventory.canInsertItem(var1, var2, var3);
+    public void setField(int id, int value) {
+        inventory.setField(id, value);
     }
 
     @Override
-    public final boolean canExtractItem(int var1, ItemStack var2, int var3) {
-        return inventory.canExtractItem(var1, var2, var3);
+    public int getFieldCount() {
+        return inventory.getFieldCount();
     }
 
+    @Override
+    public void clear() {
+        inventory.clear();
+    }
+
+    @Override
+    public int[] getSlotsForFace(EnumFacing side) {
+        return inventory.getSlotsForFace(side);
+    }
+
+    @Override
+    public boolean canInsertItem(int index, ItemStack stack, EnumFacing direction) {
+        return inventory.canInsertItem(index, stack, direction);
+    }
+
+    @Override
+    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
+        return inventory.canExtractItem(index, stack, direction);
+    }
 }

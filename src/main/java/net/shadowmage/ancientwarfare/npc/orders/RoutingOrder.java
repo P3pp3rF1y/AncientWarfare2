@@ -52,7 +52,7 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
     }
 
     public static RoutingOrder getRoutingOrder(ItemStack stack) {
-        if (stack != null && stack.getItem() instanceof ItemRoutingOrder) {
+        if (!stack.isEmpty() && stack.getItem() instanceof ItemRoutingOrder) {
             RoutingOrder order = new RoutingOrder();
             if (stack.hasTagCompound() && stack.getTagCompound().hasKey("orders")) {
                 order.readFromNBT(stack.getTagCompound().getCompoundTag("orders"));
@@ -63,7 +63,7 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
     }
 
     public void write(ItemStack stack) {
-        if (stack != null && stack.getItem() instanceof ItemRoutingOrder) {
+        if (!stack.isEmpty() && stack.getItem() instanceof ItemRoutingOrder) {
             stack.setTagInfo("orders", writeToNBT(new NBTTagCompound()));
         }
     }
@@ -191,7 +191,7 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
                 if (shouldMove) {
                     stack = InventoryTools.mergeItemStack(to, stack, toSide);
                     if (stack == null) {
-                        from.setInventorySlotContents(index, null);
+                        from.setInventorySlotContents(index, ItemStack.EMPTY);
                     }
                 }
                 if (stack == null || stack.getCount() != stackSize) {
@@ -233,7 +233,7 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
                 if (shouldMove) {
                     stack = InventoryTools.mergeItemStack(to, stack, toSide);
                     if (stack == null) {
-                        from.setInventorySlotContents(index, null);
+                        from.setInventorySlotContents(index, ItemStack.EMPTY);
                     }
                 }
                 if (stack == null || stack.getCount() != stackSize) {
@@ -339,7 +339,7 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
                 }
                 foundCount = InventoryTools.getCountOf(from, fromSide, filter);
                 existingCount = InventoryTools.getCountOf(to, toSide, filter);
-                toMove = filter.stackSize - existingCount; // we only want to move items up to the specified filter size
+                toMove = filter.getCount() - existingCount; // we only want to move items up to the specified filter size
                 if (toMove < 1) {
                     // the target already has more than the filter specifies
                     continue;

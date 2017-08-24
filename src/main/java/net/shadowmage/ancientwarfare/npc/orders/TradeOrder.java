@@ -18,7 +18,7 @@ public class TradeOrder implements INBTSerializable<NBTTagCompound> {
     }
 
     public static TradeOrder getTradeOrder(ItemStack stack) {
-        if (stack != null && stack.getItem() instanceof ItemTradeOrder) {
+        if (!stack.isEmpty() && stack.getItem() instanceof ItemTradeOrder) {
             TradeOrder order = new TradeOrder();
             if (stack.hasTagCompound() && stack.getTagCompound().hasKey("orders")) {
                 order.deserializeNBT(stack.getTagCompound().getCompoundTag("orders"));
@@ -29,7 +29,7 @@ public class TradeOrder implements INBTSerializable<NBTTagCompound> {
     }
 
     public void write(ItemStack stack) {
-        if (stack != null && stack.getItem() instanceof ItemTradeOrder) {
+        if (!stack.isEmpty() && stack.getItem() instanceof ItemTradeOrder) {
             stack.setTagInfo("orders", serializeNBT());
         }
     }

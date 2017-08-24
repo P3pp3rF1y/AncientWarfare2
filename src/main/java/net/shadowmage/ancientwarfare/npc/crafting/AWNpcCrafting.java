@@ -33,14 +33,14 @@ public class AWNpcCrafting {
                 "gf",
                 "gt",
                 'f', "foodBundle",
-                't', Items.wooden_pickaxe,
+                't', Items.WOODEN_PICKAXE,
                 'g', "ingotGold");
         //combat spawner
         AWCraftingManager.INSTANCE.createRecipe(ItemNpcSpawner.getStackForNpcType("combat", ""), "conscription",
                 "gf",
                 "gt",
                 'f', "foodBundle",
-                't', Items.wooden_sword,
+                't', Items.WOODEN_SWORD,
                 'g', "ingotGold");
         //courier bundle
         AWCraftingManager.INSTANCE.createRecipe(ItemNpcSpawner.getStackForNpcType("courier", ""), "trade",
@@ -56,14 +56,14 @@ public class AWNpcCrafting {
                 'f', "foodBundle",
                 't', Blocks.wool,
                 'g', "ingotGold",
-                'b', Items.book);
+                'b', Items.BOOK);
         //priest spawner
         AWCraftingManager.INSTANCE.createRecipe(ItemNpcSpawner.getStackForNpcType("priest", ""), "leadership",
                 "gf",
                 "gb",
                 'f', "foodBundle",
                 'g', "ingotGold",
-                'b', Items.book);
+                'b', Items.BOOK);
         //bard spawner
         AWCraftingManager.INSTANCE.createRecipe(ItemNpcSpawner.getStackForNpcType("bard", ""), "leadership",
                 "gf",

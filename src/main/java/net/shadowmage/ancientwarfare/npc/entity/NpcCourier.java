@@ -43,7 +43,7 @@ public class NpcCourier extends NpcPlayerOwned {
 
     @Override
     public boolean isValidOrdersStack(ItemStack stack) {
-        return stack != null && stack.getItem() instanceof ItemRoutingOrder;
+        return !stack.isEmpty() && stack.getItem() instanceof ItemRoutingOrder;
     }
 
     @Override

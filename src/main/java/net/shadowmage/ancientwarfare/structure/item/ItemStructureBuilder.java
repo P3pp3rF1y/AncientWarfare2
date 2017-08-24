@@ -90,7 +90,7 @@ public class ItemStructureBuilder extends Item implements IItemKeyInterface, IBo
             if (!player.capabilities.isCreativeMode) {
                 int slot = player.inventory.currentItem;
                 if (stack.getCount() == 1) {
-                    player.inventory.setInventorySlotContents(slot, null);
+                    player.inventory.setInventorySlotContents(slot, ItemStack.EMPTY);
                 } else {
                     stack.shrink(1);
                 }

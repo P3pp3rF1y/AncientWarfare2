@@ -65,7 +65,7 @@ public class TileMailbox extends TileOwned implements ISidedInventory, IRotatabl
             item = inventory.getStackInSlot(k);
             if (item != null) {
                 data.addDeliverableItem(owner, destinationName, item, dim, pos);
-                inventory.setInventorySlotContents(k, null);
+                inventory.setInventorySlotContents(k, ItemStack.EMPTY);
                 break;
             }
         }

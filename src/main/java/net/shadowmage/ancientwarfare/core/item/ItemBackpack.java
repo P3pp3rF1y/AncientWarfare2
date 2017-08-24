@@ -5,7 +5,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBackpack;
@@ -51,7 +50,7 @@ public class ItemBackpack extends Item {
     }
 
     public static InventoryBackpack getInventoryFor(ItemStack stack) {
-        if (stack != null && stack.getItem() instanceof ItemBackpack) {
+        if (!stack.isEmpty() && stack.getItem() instanceof ItemBackpack) {
             InventoryBackpack pack = new InventoryBackpack((stack.getItemDamage() + 1) * 9);
             if (stack.hasTagCompound() && stack.getTagCompound().hasKey("backpackItems")) {
                 InventoryTools.readInventoryFromNBT(pack, stack.getTagCompound().getCompoundTag("backpackItems"));
@@ -62,7 +61,7 @@ public class ItemBackpack extends Item {
     }
 
     public static void writeBackpackToItem(InventoryBackpack pack, ItemStack stack) {
-        if (stack != null && stack.getItem() instanceof ItemBackpack) {
+        if (!stack.isEmpty() && stack.getItem() instanceof ItemBackpack) {
             NBTTagCompound invTag = InventoryTools.writeInventoryToNBT(pack, new NBTTagCompound());
             stack.setTagInfo("backpackItems", invTag);
         }

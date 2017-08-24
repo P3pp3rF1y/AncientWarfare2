@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.core.util;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -7,6 +8,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -14,11 +16,15 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
 
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.*;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class InventoryTools {
 
-    public static boolean canInventoryHold(IInventory inventory, int side, ItemStack stack) {
+    public static boolean canInventoryHold(IInventory inventory, EnumFacing side, ItemStack stack) {
         return canInventoryHold(inventory, getSlotsForSide(inventory, side), stack);
     }
 
@@ -27,7 +33,7 @@ public class InventoryTools {
         ItemStack existing;
         for (int index : slots) {
             existing = inventory.getStackInSlot(index);
-            if (existing == null) {
+            if (existing.isEmpty()) {
                 return true;
             } else if (doItemStacksMatch(stack, existing)) {
                 toMerge -= existing.getMaxStackSize() - existing.getCount();
@@ -48,7 +54,7 @@ public class InventoryTools {
      * @param stacks    a list of item stacks, need not be compacted/optimal, must not contain null entries
      * @return true if input inventory can hold ALL of the input items
      */
-    public static boolean canInventoryHold(IInventory inventory, int side, List<ItemStack> stacks) {
+    public static boolean canInventoryHold(IInventory inventory, EnumFacing side, List<ItemStack> stacks) {
         return canInventoryHold(inventory, getSlotsForSide(inventory, side), stacks);
     }
 
@@ -62,7 +68,7 @@ public class InventoryTools {
 
         for (int slot : slots) {
             ItemStack stack = inventory.getStackInSlot(slot);
-            if (stack == null) {
+            if (stack.isEmpty()) {
                 emptySlots++;
             } else if (itemQuantities.contains(stack)) {
                 itemQuantities.decreaseCount(stack, stack.getMaxStackSize() - stack.getCount());
@@ -73,11 +79,11 @@ public class InventoryTools {
     }
 
     public static void updateCursorItem(EntityPlayerMP player, ItemStack stack, boolean shiftClick){
-        if (stack.stackSize > 0) {
+        if (!stack.isEmpty()) {
             if (shiftClick) {
-                stack = mergeItemStack(player.inventory, stack, -1);
+                stack = mergeItemStack(player.inventory, stack, (EnumFacing) null);
             }
-            if (stack != null) {
+            if (!stack.isEmpty()) {
                 player.inventory.setItemStack(stack);
                 player.updateHeldItem();
             }
@@ -95,7 +101,7 @@ public class InventoryTools {
      * @param side      or <0 for none
      * @return any remaining un-merged item, or null if completely merged
      */
-    public static ItemStack mergeItemStack(IInventory inventory, ItemStack stack, int side) {
+    public static ItemStack mergeItemStack(IInventory inventory, ItemStack stack, @Nullable EnumFacing side) {
         return mergeItemStack(inventory, stack, getSlotsForSide(inventory, side));
     }
 
@@ -117,22 +123,22 @@ public class InventoryTools {
                 inventory.setInventorySlotContents(index, slotStack);
                 inventory.markDirty();
             }
-            if (stack.getCount() <= 0)//merged stack fully;
+            if (stack.getCount() <= 0)//merged stack fully
             {
-                return null;
+                return ItemStack.EMPTY;
             }
         }
-        if (stack.stackSize > 0) {
+        if (!stack.isEmpty()) {
             for (int index : slotIndices) {
                 slotStack = inventory.getStackInSlot(index);
-                if (slotStack == null && inventory.isItemValidForSlot(index, stack)) {
+                if (slotStack.isEmpty() && inventory.isItemValidForSlot(index, stack)) {
                     inventory.setInventorySlotContents(index, stack);
                     inventory.markDirty();
-                    return null;//successful merge
+                    return ItemStack.EMPTY;//successful merge
                 }
             }
         } else {
-            return null;//successful merge
+            return ItemStack.EMPTY;//successful merge
         }
         return stack;//partial or unsuccessful merge
     }
@@ -144,43 +150,45 @@ public class InventoryTools {
      *
      * @return the removed item.
      */
-    public static ItemStack removeItems(IInventory inventory, int side, ItemStack filter, int quantity) {
+    public static ItemStack removeItems(IInventory inventory, @Nullable EnumFacing side, ItemStack filter, int quantity) {
         int[] slotIndices = getSlotsForSide(inventory, side);
         if (slotIndices == null) {
-            return null;
+            return ItemStack.EMPTY;
         }
         if (quantity > filter.getMaxStackSize()) {
             quantity = filter.getMaxStackSize();
         }
-        ItemStack returnStack = null;
-        int toMove;
+        ItemStack returnStack = ItemStack.EMPTY;
+        int returnCount = 0;
         ItemStack slotStack;
         for (int index : slotIndices) {
             slotStack = inventory.getStackInSlot(index);
-            if (slotStack == null || !doItemStacksMatch(filter, slotStack)) {
+            if (slotStack.isEmpty() || !doItemStacksMatch(filter, slotStack)) {
                 continue;
             }
-            if (returnStack == null) {
+            if (returnStack.isEmpty()) {
                 returnStack = filter.copy();
-                returnStack.setCount(0);
             }
-            toMove = slotStack.getCount();
+            int toMove = slotStack.getCount();
             if (toMove > quantity) {
                 toMove = quantity;
             }
-            if (toMove + returnStack.stackSize > returnStack.getMaxStackSize()) {
+            if (toMove + returnStack.getCount() > returnStack.getMaxStackSize()) {
                 toMove = returnStack.getMaxStackSize() - returnStack.getCount();
             }
-            returnStack.grow(toMove);
             slotStack.shrink(toMove);
             quantity -= toMove;
+            returnCount += toMove;
             if (slotStack.getCount() <= 0) {
-                inventory.setInventorySlotContents(index, null);
+                inventory.setInventorySlotContents(index, ItemStack.EMPTY);
             }
             inventory.markDirty();
             if (quantity <= 0) {
                 break;
             }
+        }
+        if (!returnStack.isEmpty()) {
+            returnStack.grow(returnCount);
         }
         return returnStack;
     }
@@ -192,26 +200,27 @@ public class InventoryTools {
      * @param storage the inventory where the result, a "container item" may be dropped into
      * @param index the craft slot where the item got consumed
      * @param itemStack the item consumed
-     * @return null, or the item to drop/manage differently
+     * @return ItemStack.EMPTY, or the item to drop/manage differently
      */
     public static ItemStack getConsumedItem(IInventory craft, IInventory storage, int index, ItemStack itemStack){
+/* TODO likely remove once TileAutoCrafting uses getRemainingItems of the crafting recipe
         if (itemStack.getItem().hasContainerItem(itemStack))
         {
             ItemStack container = itemStack.getItem().getContainerItem(itemStack);
-            if (container == null || (container.isItemStackDamageable() && container.getItemDamage() > container.getMaxDamage()))//Container is invalid
+            if (container.isEmpty() || (container.isItemStackDamageable() && container.getItemDamage() > container.getMaxDamage()))//Container is invalid
             {
-                return null;
+                return ItemStack.EMPTY;
             }
-            if (itemStack.getItem().doesContainerItemLeaveCraftingGrid(itemStack) || craft.getStackInSlot(index) != null)//Need to use storage space
+            if (itemStack.getItem().doesContainerItemLeaveCraftingGrid(itemStack) || !craft.getStackInSlot(index).isEmpty())//Need to use storage space
             {
-                return InventoryTools.mergeItemStack(storage, container, -1);//Merge into storage inventory, return any unmerged
+                return InventoryTools.mergeItemStack(storage, container, (EnumFacing) null);//Merge into storage inventory, return any unmerged
             }
             else
             {
                 craft.setInventorySlotContents(index, container);
             }
-        }
-        return null;
+        }*/
+        return ItemStack.EMPTY;
     }
 
     /**
@@ -224,7 +233,7 @@ public class InventoryTools {
      * @param fromSide the side of 'from' inventory to withdraw out of
      * @param toSide   the side of 'to' inventory to deposit into
      */
-    public static int transferItems(IInventory from, IInventory to, ItemStack filter, int quantity, int fromSide, int toSide) {
+    public static int transferItems(IInventory from, IInventory to, ItemStack filter, int quantity, EnumFacing fromSide, EnumFacing toSide) {
         return transferItems(from, to, filter, quantity, fromSide, toSide, false, false);
     }
 
@@ -240,7 +249,7 @@ public class InventoryTools {
      * @param ignoreDamage ignore item-damage when looking for items to move
      * @param ignoreNBT    ignore item-tag when looking for items to move
      */
-    public static int transferItems(IInventory from, IInventory to, ItemStack filter, int quantity, int fromSide, int toSide, boolean ignoreDamage, boolean ignoreNBT) {
+    public static int transferItems(IInventory from, IInventory to, ItemStack filter, int quantity, EnumFacing fromSide, EnumFacing toSide, boolean ignoreDamage, boolean ignoreNBT) {
         int moved = 0;
         int[] fromIndices = getSlotsForSide(from, fromSide);
         ItemStack s1, s2;
@@ -248,21 +257,20 @@ public class InventoryTools {
         int stackSize;
         for (int fromIndex : fromIndices) {
             s1 = from.getStackInSlot(fromIndex);
-            if (s1 == null || !doItemStacksMatch(filter, s1, ignoreDamage, ignoreNBT)) {
+            if (s1.isEmpty() || !doItemStacksMatch(filter, s1, ignoreDamage, ignoreNBT)) {
                 continue;
             }
             stackSize = s1.getCount();
-            if (s1.stackSize > toMove)//move partial stack
+            if (s1.getCount() > toMove)//move partial stack
             {
                 s2 = s1.copy();
                 s2.setCount(toMove);
                 s1.shrink(toMove);
                 stackSize = s2.getCount();
                 s2 = mergeItemStack(to, s2, toSide);
-                if (s2 != null)//partial merge, destination full, break out
+                if (!s2.isEmpty())//partial merge, destination full, break out
                 {
                     moved += stackSize - s2.getCount();
-                    toMove -= stackSize - s2.getCount();
                     mergeItemStack(from, s2, fromSide);//put back the remainder of the partial stack that was copied out
                     from.markDirty();
                     break;
@@ -273,16 +281,15 @@ public class InventoryTools {
                 }
             } else {
                 s1 = mergeItemStack(to, s1, toSide);
-                if (s1 != null)//destination inventory was full, break out
+                if (!s1.isEmpty())//destination inventory was full, break out
                 {
                     moved += stackSize - s1.getCount();
-                    toMove -= stackSize - s1.getCount();
                     from.markDirty();
                     break;
                 } else {
                     moved += stackSize;
                     toMove -= stackSize;
-                    from.setInventorySlotContents(fromIndex, null);
+                    from.setInventorySlotContents(fromIndex, ItemStack.EMPTY);
                     from.markDirty();
                 }
             }
@@ -296,7 +303,7 @@ public class InventoryTools {
     /**
      * return a count of how many slots in an inventory contain a certain item stack (any size)
      */
-    public static int getNumOfSlotsContaining(IInventory inv, int side, ItemStack filter) {
+    public static int getNumOfSlotsContaining(IInventory inv, EnumFacing side, ItemStack filter) {
         if (inv.getSizeInventory() <= 0) {
             return 0;
         }
@@ -308,7 +315,7 @@ public class InventoryTools {
         ItemStack stack;
         for (int slotIndice : slotIndices) {
             stack = inv.getStackInSlot(slotIndice);
-            if (stack != null && doItemStacksMatch(filter, stack)) {
+            if (!stack.isEmpty() && doItemStacksMatch(filter, stack)) {
                 count++;
             }
         }
@@ -320,7 +327,7 @@ public class InventoryTools {
      * if inv is not a sided inventory, or input side < 0, counts from entire inventory<br>
      * otherwise only returns the item count from the input side
      */
-    public static int getCountOf(IInventory inv, int side, ItemStack filter) {
+    public static int getCountOf(IInventory inv, EnumFacing side, ItemStack filter) {
         if (inv.getSizeInventory() <= 0) {
             return 0;
         }
@@ -332,7 +339,7 @@ public class InventoryTools {
         ItemStack stack;
         for (int slotIndice : slotIndices) {
             stack = inv.getStackInSlot(slotIndice);
-            if (stack != null && doItemStacksMatch(filter, stack)) {
+            if (!stack.isEmpty() && doItemStacksMatch(filter, stack)) {
                 count += stack.getCount();
             }
         }
@@ -346,17 +353,17 @@ public class InventoryTools {
         if (stack1 == stack2) {
             return true;
         }
-        return OreDictionary.itemMatches(stack1, stack2, stack1 != null && (stack1.isItemStackDamageable() || stack1.getItemDamage() != OreDictionary.WILDCARD_VALUE)) && ItemStack.areItemStackTagsEqual(stack1, stack2);
+        return OreDictionary.itemMatches(stack1, stack2, !stack1.isEmpty() && (stack1.isItemStackDamageable() || stack1.getItemDamage() != OreDictionary.WILDCARD_VALUE)) && ItemStack.areItemStackTagsEqual(stack1, stack2);
     }
 
     public static boolean doItemStacksMatch(ItemStack stack1, ItemStack stack2, boolean ignoreDamage, boolean ignoreNBT) {
         if (!ignoreDamage && !ignoreNBT) {
             return doItemStacksMatch(stack1, stack2);
         }
-        if (stack1 == null) {
-            return stack2 == null;
+        if (stack1.isEmpty()) {
+            return stack2.isEmpty();
         }
-        if (stack2 == null) {
+        if (stack2.isEmpty()) {
             return false;
         }
         if (stack1.getItem() != stack2.getItem()) {
@@ -375,10 +382,10 @@ public class InventoryTools {
         if (!useOreDictionary) {
             return doItemStacksMatch(stack1, stack2, !matchDamage, !matchNBT);
         } else {
-            if (stack1 == null) {
-                return stack2 == null;
+            if (stack1.isEmpty()) {
+                return stack2.isEmpty();
             }
-            if (stack2 == null) {
+            if (stack2.isEmpty()) {
                 return false;
             }
             if (stack1.getItem() == stack2.getItem()) {
@@ -409,7 +416,7 @@ public class InventoryTools {
         dropItemInWorld(world, item, pos.getX(), pos.getY(), pos.getZ());
     }
     public static void dropItemInWorld(World world, ItemStack item, double x, double y, double z) {
-        if (item == null || world == null || world.isRemote) {
+        if (item.isEmpty() || world == null || world.isRemote) {
             return;
         }
         EntityItem entityToSpawn;
@@ -432,7 +439,7 @@ public class InventoryTools {
             ItemStack stack;
             for (int i = 0; i < localInventory.getSizeInventory(); i++) {
                 stack = localInventory.removeStackFromSlot(i);
-                if (stack == null) {
+                if (stack.isEmpty()) {
                     continue;
                 }
                 dropItemInWorld(world, stack, x, y, z);
@@ -519,7 +526,6 @@ public class InventoryTools {
      * This particular method is on average 1/2 as fast as compactStackList, and also uses more memory.
      */
     public static void compactStackList2(List<ItemStack> in, List<ItemStack> out) {
-//  ItemStack inStack;
         int transfer = 0;
         int tmax;
         ItemStack copy;
@@ -569,11 +575,11 @@ public class InventoryTools {
      */
     public static final class ComparatorItemStack implements Comparator<ItemStack> {
 
-        public static enum SortType {
+        public enum SortType {
             QUANTITY("sort_type_quantity"){
                 @Override
                 public int compare(ItemStack o1, ItemStack o2){
-                    int r = o1.stackSize - o2.getCount();
+                    int r = o1.getCount() - o2.getCount();
                     if(r == 0){
                         return super.compare(o1, o2);
                     }
@@ -592,10 +598,10 @@ public class InventoryTools {
             },
             DAMAGE("sort_type_damage");
 
-            public final String name;
+            public final String unlocalizedName;
 
-            SortType(String name) {
-                this.name = name;
+            SortType(String unlocalizedName) {
+                this.unlocalizedName = unlocalizedName;
             }
 
             public SortType next() {
@@ -609,7 +615,7 @@ public class InventoryTools {
 
             @Override
             public String toString() {
-                return name;
+                return unlocalizedName;
             }
 
             public int compare(ItemStack o1, ItemStack o2){
@@ -699,9 +705,9 @@ public class InventoryTools {
         return new IndexHelper().getIndiceArrayForSpread(len);
     }
 
-    public static int[] getSlotsForSide(IInventory inventory, int side) {
-        if (side >= 0 && inventory instanceof ISidedInventory) {
-            return ((ISidedInventory) inventory).getAccessibleSlotsFromSide(side);
+    public static int[] getSlotsForSide(IInventory inventory, @Nullable EnumFacing side) {
+        if (side != null && inventory instanceof ISidedInventory) {
+            return ((ISidedInventory) inventory).getSlotsForFace(side);
         }
         return new IndexHelper().getIndiceArrayForSpread(inventory.getSizeInventory());
     }

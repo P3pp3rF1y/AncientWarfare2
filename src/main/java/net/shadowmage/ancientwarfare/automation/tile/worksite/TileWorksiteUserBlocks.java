@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
@@ -7,7 +8,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.FakePlayer;
@@ -15,11 +18,15 @@ import net.shadowmage.ancientwarfare.api.IAncientWarfarePlantable;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
+import javax.annotation.Nonnull;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
 
     protected static final int TOP_LENGTH = 27, FRONT_LENGTH = 3, BOTTOM_LENGTH = 3;
@@ -72,16 +79,16 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
         return state.getBlock().isReplaceable(world, pos);
     }
 
-    protected boolean tryPlace(ItemStack stack, int x, int y, int z, EnumFacing face){
+    protected boolean tryPlace(ItemStack stack, BlockPos pos, EnumFacing face){
         EnumFacing direction = face.getOpposite();
         if(stack.getItem() instanceof IAncientWarfarePlantable) {
-            return ((IAncientWarfarePlantable) stack.getItem()).tryPlant(world, x + direction.offsetX, y + direction.offsetY, z + direction.offsetZ, stack.copy());
+            return ((IAncientWarfarePlantable) stack.getItem()).tryPlant(world, pos.offset(direction), stack.copy());
         }
-        EntityPlayer owner = getOwnerAsPlayer();
+        EntityPlayer owner = getOwnerAsPlayer(); //TODO shouldn't this really only ever return fake player?
         if(owner instanceof FakePlayer){
-            owner.inventory.setInventorySlotContents(owner.inventory.currentItem, stack);
+            owner.setHeldItem(EnumHand.MAIN_HAND, stack);
         }
-        return stack.tryPlaceItemIntoWorld(owner, world, x + direction.offsetX, y + direction.offsetY, z + direction.offsetZ, face.ordinal(), 0.25F, 0.25F, 0.25F);
+        return stack.onItemUse(owner, world, pos.offset(direction), EnumHand.MAIN_HAND, face, 0.25F, 0.25F, 0.25F) == EnumActionResult.SUCCESS;
     }
 
     protected final void pickupItems() {
@@ -92,11 +99,11 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
         ItemStack stack;
         for (EntityItem item : items) {
             if(item.isEntityAlive()) {
-                stack = item.getEntityItem();
-                if (stack != null) {
+                stack = item.getItem();
+                if (!stack.isEmpty()) {
                     stack = InventoryTools.mergeItemStack(inventory, stack, indices);
-                    if (stack != null) {
-                        item.setEntityItemStack(stack);
+                    if (!stack.isEmpty()) {
+                        item.setItem(stack);
                     }else{
                         item.setDead();
                     }
@@ -128,10 +135,10 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
     protected void fillBlocksToProcess(Collection<BlockPos> targets) {
         BlockPos min = getWorkBoundsMin();
         BlockPos max = getWorkBoundsMax();
-        for (int x = min.x; x < max.x + 1; x++) {
-            for (int z = min.z; z < max.z + 1; z++) {
+        for (int x = min.getX(); x < max.getX() + 1; x++) {
+            for (int z = min.getZ(); z < max.getZ() + 1; z++) {
                 if (isTarget(x, z)) {
-                    targets.add(new BlockPos(x, min.y, z));
+                    targets.add(new BlockPos(x, min.getY(), z));
                 }
             }
         }
@@ -152,9 +159,10 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setByteArray("targetMap", targetMap);
+        return tag;
     }
 
     @Override
@@ -202,16 +210,16 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
 
         @Override
         public ItemStack decrStackSize(int var1, int var2) {
-            ItemStack result = super.decrStackSize(var1, var2);
-            if(result != null && getFilterForSlot(var1) != null)
+            @Nonnull ItemStack result = super.decrStackSize(var1, var2);
+            if(!result.isEmpty() && getFilterForSlot(var1) != null)
                 shouldCountResources = true;
             return result;
         }
 
         @Override
         public ItemStack removeStackFromSlot(int var1) {
-            ItemStack result = super.removeStackFromSlot(var1);
-            if(result != null && getFilterForSlot(var1) != null)
+            @Nonnull ItemStack result = super.removeStackFromSlot(var1);
+            if(!result.isEmpty() && getFilterForSlot(var1) != null)
                 shouldCountResources = true;
             return result;
         }

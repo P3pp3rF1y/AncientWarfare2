@@ -241,7 +241,7 @@ public class InputHandler {
                 return;
             }
             ItemStack stack = minecraft.thePlayer.getHeldItem();
-            if (stack != null && stack.getItem() instanceof IItemKeyInterface) {
+            if (!stack.isEmpty() && stack.getItem() instanceof IItemKeyInterface) {
                 if (((IItemKeyInterface) stack.getItem()).onKeyActionClient(minecraft.thePlayer, stack, key)) {
                     PacketItemInteraction pkt = new PacketItemInteraction(0, key);
                     NetworkHandler.sendToServer(pkt);

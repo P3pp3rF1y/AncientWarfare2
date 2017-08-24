@@ -116,7 +116,7 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
         ItemSlot slot;
         boolean isCombatNpc = getContainer().entity instanceof NpcCombat;
         
-        slot = new ItemSlot(26, 8, new ItemStack(isCombatNpc ? Items.iron_sword : Items.iron_pickaxe), this);
+        slot = new ItemSlot(26, 8, new ItemStack(isCombatNpc ? Items.IRON_SWORD : Items.IRON_PICKAXE), this);
         slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false).addTooltip(isCombatNpc ? "guistrings.npc.weapon_slot" : "guistrings.npc.tool_slot");
         addGuiElement(slot);
 
@@ -124,19 +124,19 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
         slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false).addTooltip(isCombatNpc ? "guistrings.npc.shield_slot" : "guistrings.npc.offhand_slot");
         addGuiElement(slot);
 
-        slot = new ItemSlot(26, 8 + 18 * 2, new ItemStack(Items.iron_helmet), this);
+        slot = new ItemSlot(26, 8 + 18 * 2, new ItemStack(Items.IRON_HELMET), this);
         slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false).addTooltip("guistrings.npc.helmet_slot");
         addGuiElement(slot);
 
-        slot = new ItemSlot(26, 8 + 18 * 3, new ItemStack(Items.iron_chestplate), this);
+        slot = new ItemSlot(26, 8 + 18 * 3, new ItemStack(Items.IRON_CHESTPLATE), this);
         slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false).addTooltip("guistrings.npc.chest_slot");
         addGuiElement(slot);
 
-        slot = new ItemSlot(26, 8 + 18 * 4, new ItemStack(Items.iron_leggings), this);
+        slot = new ItemSlot(26, 8 + 18 * 4, new ItemStack(Items.IRON_LEGGINGS), this);
         slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false).addTooltip("guistrings.npc.legs_slot");
         addGuiElement(slot);
 
-        slot = new ItemSlot(26, 8 + 18 * 5, new ItemStack(Items.iron_boots), this);
+        slot = new ItemSlot(26, 8 + 18 * 5, new ItemStack(Items.IRON_BOOTS), this);
         slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false).addTooltip("guistrings.npc.boots_slot");
         addGuiElement(slot);
 

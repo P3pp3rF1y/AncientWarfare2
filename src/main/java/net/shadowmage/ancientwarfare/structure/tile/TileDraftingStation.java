@@ -63,7 +63,7 @@ public class TileDraftingStation extends TileEntity implements IInventoryChanged
         outerLoopLabel:
         for (int k = 0; k < inputSlots.getSizeInventory(); k++) {
             stack2 = inputSlots.getStackInSlot(k);
-            if (stack2 == null) {
+            if (stack2.isEmpty()) {
                 continue;
             }
             for (int i = 0; i < neededResources.size(); i++) {
@@ -75,7 +75,7 @@ public class TileDraftingStation extends TileEntity implements IInventoryChanged
                         neededResources.remove(i);
                     }
                     if (stack2.getCount() <= 0) {
-                        inputSlots.setInventorySlotContents(k, null);
+                        inputSlots.setInventorySlotContents(k, ItemStack.EMPTY);
                     }
                     break outerLoopLabel;
                 }

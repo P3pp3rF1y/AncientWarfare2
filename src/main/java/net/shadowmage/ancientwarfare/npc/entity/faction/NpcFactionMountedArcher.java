@@ -16,14 +16,13 @@ import net.shadowmage.ancientwarfare.npc.ai.*;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionArcherStayAtHome;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRangedAttack;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRideHorse;
-import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.RangeAttackHelper;
 
 public abstract class NpcFactionMountedArcher extends NpcFactionMounted implements IRangedAttackMob {
 
     public NpcFactionMountedArcher(World par1World) {
         super(par1World);
-//  this.setCurrentItemOrArmor(0, new ItemStack(Items.bow));
+//  this.setCurrentItemOrArmor(0, new ItemStack(Items.BOW));
         IEntitySelector selector = new IEntitySelector() {
             @Override
             public boolean isEntityApplicable(Entity entity) {

@@ -37,7 +37,7 @@ public class ItemResearchBook extends Item {
     }
 
     public static final String getResearcherName(ItemStack stack) {
-        if (stack != null && stack.getItem() == AWItems.researchBook && stack.hasTagCompound() && stack.getTagCompound().hasKey("researcherName")) {
+        if (!stack.isEmpty() && stack.getItem() == AWItems.researchBook && stack.hasTagCompound() && stack.getTagCompound().hasKey("researcherName")) {
             return stack.getTagCompound().getString("researcherName");
         }
         return null;

@@ -127,7 +127,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
         for (int i = 0; i < list.tagCount(); i++) {
             tag = list.getCompoundTagAt(i);
             stack = new ItemStack(tag);
-            if (stack != null) {
+            if (!stack.isEmpty()) {
                 resources.add(stack);
             }
         }

@@ -53,7 +53,7 @@ public class InventoryNpcEquipment implements IInventory {
             copy.setCount(amount);
             item.shrink(amount);
             if (item.getCount() <= 0) {
-                setInventorySlotContents(slot, null);
+                setInventorySlotContents(slot, ItemStack.EMPTY);
             }
             return copy;
         }
@@ -63,7 +63,7 @@ public class InventoryNpcEquipment implements IInventory {
     @Override
     public ItemStack removeStackFromSlot(int var1) {
         ItemStack item = getStackInSlot(var1);
-        this.setInventorySlotContents(var1, null);
+        this.setInventorySlotContents(var1, ItemStack.EMPTY);
         return item;
     }
 

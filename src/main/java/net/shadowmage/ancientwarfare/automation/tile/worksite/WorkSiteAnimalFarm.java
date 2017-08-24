@@ -86,11 +86,11 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
     }
 
     private boolean isFood(Item item){
-        return item == Items.wheat_seeds || item == Items.wheat || item == Items.carrot;
+        return item == Items.WHEAT_SEEDS || item == Items.WHEAT || item == Items.CARROT;
     }
 
     private boolean isTool(Item item){
-        return item == Items.bucket || item instanceof ItemShears;
+        return item == Items.BUCKET || item instanceof ItemShears;
     }
 
     @Override
@@ -139,11 +139,11 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
             if (stack == null) {
                 continue;
             }
-            if (stack.getItem() == Items.carrot) {
+            if (stack.getItem() == Items.CARROT) {
                 carrotCount += stack.getCount();
-            } else if (stack.getItem() == Items.wheat_seeds) {
+            } else if (stack.getItem() == Items.WHEAT_SEEDS) {
                 seedCount += stack.getCount();
-            } else if (stack.getItem() == Items.wheat) {
+            } else if (stack.getItem() == Items.WHEAT) {
                 wheatCount += stack.getCount();
             }
         }
@@ -152,7 +152,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
             if (stack == null) {
                 continue;
             }
-            if (stack.getItem() == Items.bucket) {
+            if (stack.getItem() == Items.BUCKET) {
                 bucketCount += stack.getCount();
             } else if (stack.getItem() instanceof ItemShears) {
                 shears = stack;
@@ -274,28 +274,28 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         if (!cowsToBreed.isEmpty() && wheatCount >= 2) {
             if (tryBreeding(cowsToBreed)) {
                 wheatCount -= 2;
-                InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.FRONT), new ItemStack(Items.wheat), 2);
+                InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.FRONT), new ItemStack(Items.WHEAT), 2);
                 return true;
             }
         }
         if (!sheepToBreed.isEmpty() && wheatCount >= 2) {
             if (tryBreeding(sheepToBreed)) {
                 wheatCount -= 2;
-                InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.FRONT), new ItemStack(Items.wheat), 2);
+                InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.FRONT), new ItemStack(Items.WHEAT), 2);
                 return true;
             }
         }
         if (!chickensToBreed.isEmpty() && seedCount >= 2) {
             if (tryBreeding(chickensToBreed)) {
                 seedCount -= 2;
-                InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.FRONT), new ItemStack(Items.wheat_seeds), 2);
+                InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.FRONT), new ItemStack(Items.WHEAT_SEEDS), 2);
                 return true;
             }
         }
         if (!pigsToBreed.isEmpty() && carrotCount >= 2) {
             if (tryBreeding(pigsToBreed)) {
                 carrotCount -= 2;
-                InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.FRONT), new ItemStack(Items.carrot), 2);
+                InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.FRONT), new ItemStack(Items.CARROT), 2);
                 return true;
             }
         }
@@ -303,8 +303,8 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
             return true;
         }
         if (bucketCount > 0 && tryMilking()) {
-            InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.BOTTOM), new ItemStack(Items.bucket), 1);
-            this.addStackToInventory(new ItemStack(Items.milk_bucket), RelativeSide.TOP);
+            InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.BOTTOM), new ItemStack(Items.BUCKET), 1);
+            this.addStackToInventory(new ItemStack(Items.MILK_BUCKET), RelativeSide.TOP);
             return true;
         }
         return tryCulling();
@@ -372,7 +372,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
                 ItemStack stack;
                 for (EntityItem item : animal.capturedDrops) {
                     stack = item.getEntityItem();
-                    if (stack != null) {
+                    if (!stack.isEmpty()) {
                         if (fortune > 0) {
                             stack.grow(world.rand.nextInt(fortune));
                         }
@@ -404,13 +404,13 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         ItemStack stack;
         for (EntityItem item : items) {
             stack = item.getEntityItem();
-            if (item.isEntityAlive() && stack != null && stack.getItem() != null) {
+            if (item.isEntityAlive() && !stack.isEmpty() && stack.getItem() != null) {
                 Item droppedItem = stack.getItem();
                 for (ItemWrapper animalDrop : ANIMAL_DROPS) {
                     if (droppedItem.equals(animalDrop.item)) {
                         if (animalDrop.damage == -1 || animalDrop.damage == stack.getItemDamage()) {
                             stack = InventoryTools.mergeItemStack(inventory, stack, inventory.getRawIndices(RelativeSide.TOP));
-                            if (stack != null) {
+                            if (!stack.isEmpty()) {
                                 item.setEntityItemStack(stack);
                             } else {
                                 item.setDead();

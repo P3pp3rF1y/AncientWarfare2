@@ -17,7 +17,7 @@ public abstract class NpcFactionPriest extends NpcFaction {
 
     public NpcFactionPriest(World par1World) {
         super(par1World);
-//  setCurrentItemOrArmor(0, new ItemStack(Items.book));
+//  setCurrentItemOrArmor(0, new ItemStack(Items.BOOK));
         //TODO set in-hand item to...a cross? (or other holy symbol...an ankh?)
 
         this.tasks.addTask(0, new EntityAISwimming(this));

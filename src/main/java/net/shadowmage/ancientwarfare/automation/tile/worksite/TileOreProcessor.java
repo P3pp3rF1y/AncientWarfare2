@@ -184,8 +184,9 @@ public class TileOreProcessor extends TileWorksiteBase implements ISidedInventor
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setTag("inventory", inventory.serializeNBT());
+        return tag;
     }
 }

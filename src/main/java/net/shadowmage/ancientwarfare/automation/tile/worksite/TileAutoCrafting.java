@@ -67,7 +67,8 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
             return false;
         }//no output stack, don't even bother checking
         ArrayList<ItemStack> compactedCraft = new ArrayList<ItemStack>();
-        ItemStack stack1, stack2;
+        ItemStack stack1;
+        ItemStack stack2;
         boolean found;
         for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
             stack1 = craftMatrix.getStackInSlot(i);
@@ -90,7 +91,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
         }
         found = true;
         for (ItemStack stack3 : compactedCraft) {
-            if (InventoryTools.getCountOf(resourceInventory, -1, stack3) < stack3.getCount()) {
+            if (InventoryTools.getCountOf(resourceInventory, null, stack3) < stack3.getCount()) {
                 found = false;
                 break;
             }
@@ -113,22 +114,23 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
     private void craftItem() {
         ItemStack stack = this.outputSlot.getStackInSlot(0).copy();
         useResources();
-        stack = InventoryTools.mergeItemStack(outputInventory, stack, -1);
-        if (stack != null) {
+        stack = InventoryTools.mergeItemStack(outputInventory, stack, (EnumFacing) null);
+        if (!stack.isEmpty()) {
             InventoryTools.dropItemInWorld(world, stack, pos);
         }
     }
 
     private void useResources() {
+        //TODO this needs to use getRemainingItems of the recipe instead of the getConsumedItem logic
         ItemStack stack1;
         for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
             stack1 = craftMatrix.getStackInSlot(i);
             if (stack1.isEmpty()) {
                 continue;
             }
-            if(InventoryTools.removeItems(resourceInventory, -1, stack1, 1) != null) {
+            if(!InventoryTools.removeItems(resourceInventory, null, stack1, 1).isEmpty()) {
                 stack1 = InventoryTools.getConsumedItem(craftMatrix, resourceInventory, i, stack1);
-                if (stack1 != null) {
+                if (!stack1.isEmpty()) {
                     InventoryTools.dropItemInWorld(world, stack1, pos);
                 }
             }
@@ -151,13 +153,14 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setTag("bookSlot", bookSlot.serializeNBT());
         tag.setTag("resourceInventory", resourceInventory.serializeNBT());
         tag.setTag("outputInventory", outputInventory.serializeNBT());
         tag.setTag("outputSlot", outputSlot.serializeNBT());
         tag.setTag("craftMatrix", InventoryTools.writeInventoryToNBT(craftMatrix, new NBTTagCompound()));
+        return tag;
     }
 
     @Override
@@ -322,7 +325,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
 
     private boolean canHold() {
         ItemStack test = outputSlot.getStackInSlot(0);
-        return !test.isEmpty() && InventoryTools.canInventoryHold(outputInventory, -1, test);
+        return !test.isEmpty() && InventoryTools.canInventoryHold(outputInventory, (EnumFacing) null, test);
     }
 
     @Override

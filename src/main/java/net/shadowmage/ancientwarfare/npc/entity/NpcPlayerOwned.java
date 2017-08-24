@@ -291,13 +291,13 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
                 if (val <= 0) {
                     continue;
                 }
-                while (eaten < amount && stack.stackSize > 0) {
+                while (eaten < amount && !stack.isEmpty()) {
                     eaten += val;
                     stack.shrink(1);
                     inventory.markDirty();
                 }
                 if (stack.getCount() <= 0) {
-                    inventory.setInventorySlotContents(i, null);
+                    inventory.setInventorySlotContents(i, ItemStack.EMPTY);
                 }
             }
         } else {
@@ -307,13 +307,13 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
                 if (val <= 0) {
                     continue;
                 }
-                while (eaten < amount && stack.stackSize > 0) {
+                while (eaten < amount && !stack.isEmpty()) {
                     eaten += val;
                     stack.shrink(1);
                     inventory.markDirty();
                 }
                 if (stack.getCount() <= 0) {
-                    inventory.setInventorySlotContents(i, null);
+                    inventory.setInventorySlotContents(i, ItemStack.EMPTY);
                 }
             }
         }

@@ -162,7 +162,7 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
             for (int i = 0; i < list.tagCount(); i++) {
                 itemTag = list.getCompoundTagAt(i);
                 stack = NBTTools.readItemStack(itemTag);
-                if (stack != null) {
+                if (!stack.isEmpty()) {
                     slot = itemTag.getInteger("slot");
                     inventory[slot] = stack;
                 }
@@ -179,7 +179,7 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
             for (int i = 0; i < list.tagCount(); i++) {
                 itemTag = list.getCompoundTagAt(i);
                 stack = NBTTools.readItemStack(itemTag);
-                if (stack != null) {
+                if (!stack.isEmpty()) {
                     slot = itemTag.getInteger("slot");
                     equipment[slot] = stack;
                 }

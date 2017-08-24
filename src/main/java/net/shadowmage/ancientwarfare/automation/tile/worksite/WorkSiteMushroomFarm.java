@@ -43,7 +43,7 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
         ItemSlotFilter filter = new ItemSlotFilter() {
             @Override
             public boolean apply(ItemStack stack) {
-                if (stack == null || stack.getItem() == Items.nether_wart) {
+                if (stack == null || stack.getItem() == Items.NETHER_WART) {
                     return true;
                 } else {
                     Block block = Block.getBlockFromItem(stack.getItem());
@@ -80,7 +80,7 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
             if (item == null) {
                 continue;
             }
-            if (item.getItem() == Items.nether_wart) {
+            if (item.getItem() == Items.NETHER_WART) {
                 netherWartCount += item.getCount();
             } else {
                 Block block = Block.getBlockFromItem(item.getItem());
@@ -126,7 +126,7 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
                         if(tryPlace(item, pos.x, pos.y, pos.z, EnumFacing.UP)) {//plant the mushroom, decrease stack size
                             mushroomCount--;
                             if (item.getCount() <= 0) {
-                                setInventorySlotContents(i, null);
+                                setInventorySlotContents(i, ItemStack.EMPTY);
                             }
                             return true;
                         }
@@ -143,13 +143,13 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
                 if (item == null) {
                     continue;
                 }
-                if (item.getItem() == Items.nether_wart) {
+                if (item.getItem() == Items.NETHER_WART) {
                     while (it.hasNext() && (pos = it.next()) != null) {
                         it.remove();
                         if(tryPlace(item, pos.x, pos.y, pos.z, EnumFacing.UP)) {
                             netherWartCount--;
                             if (item.getCount() <= 0) {
-                                setInventorySlotContents(i, null);
+                                setInventorySlotContents(i, ItemStack.EMPTY);
                             }
                             return true;
                         }

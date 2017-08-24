@@ -32,7 +32,7 @@ public class CombatOrder extends OrderingList<BlockPos> implements INBTSerializa
     }
 
     public static CombatOrder getCombatOrder(ItemStack stack) {
-        if (stack != null && stack.getItem() instanceof ItemCombatOrder) {
+        if (!stack.isEmpty() && stack.getItem() instanceof ItemCombatOrder) {
             CombatOrder order = new CombatOrder();
             if (stack.hasTagCompound() && stack.getTagCompound().hasKey("orders")) {
                 order.readFromNBT(stack.getTagCompound().getCompoundTag("orders"));
@@ -43,7 +43,7 @@ public class CombatOrder extends OrderingList<BlockPos> implements INBTSerializa
     }
 
     public void write(ItemStack stack) {
-        if (stack != null && stack.getItem() instanceof ItemCombatOrder) {
+        if (!stack.isEmpty() && stack.getItem() instanceof ItemCombatOrder) {
             stack.setTagInfo("orders", writeToNBT(new NBTTagCompound()));
         }
     }

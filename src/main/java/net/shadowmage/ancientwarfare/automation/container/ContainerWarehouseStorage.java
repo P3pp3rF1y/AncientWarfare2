@@ -53,7 +53,7 @@ public class ContainerWarehouseStorage extends ContainerTileBase<TileWarehouseSt
 
     public void handleClientRequestSpecific(ItemStack stack, boolean isShiftClick) {
         NBTTagCompound tag = new NBTTagCompound();
-        if (stack != null) {
+        if (!stack.isEmpty()) {
             tag.setTag("reqItem", stack.writeToNBT(new NBTTagCompound()));
         }
         tag.setBoolean("isShiftClick", isShiftClick);

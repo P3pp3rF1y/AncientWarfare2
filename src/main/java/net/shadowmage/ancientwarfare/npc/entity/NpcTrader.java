@@ -49,7 +49,7 @@ public class NpcTrader extends NpcPlayerOwned {
 
     @Override
     public boolean isValidOrdersStack(ItemStack stack) {
-        return stack != null && stack.getItem() instanceof ItemTradeOrder;
+        return !stack.isEmpty() && stack.getItem() instanceof ItemTradeOrder;
     }
 
     @Override

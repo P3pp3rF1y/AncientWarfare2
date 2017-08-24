@@ -495,7 +495,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             ItemStack stack;
             for (int i = 0; i < equipmentDropChances.length; i++) {
                 stack = getEquipmentInSlot(i);
-                if (stack != null) {
+                if (!stack.isEmpty()) {
                     entityDropItem(stack, 0.f);
                 }
                 setCurrentItemOrArmor(i, null);

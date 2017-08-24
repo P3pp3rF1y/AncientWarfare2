@@ -433,17 +433,17 @@ public class AWNPCEntityLoader {
      * has to be called during post-init so that all items/etc are fully initialized
      */
     public static void loadNpcSubtypeEquipment() {
-        addNpcSubtypeEquipment("worker", "farmer", new ItemStack(Items.iron_hoe));
-        addNpcSubtypeEquipment("worker", "miner", new ItemStack(Items.iron_pickaxe));
-        addNpcSubtypeEquipment("worker", "lumberjack", new ItemStack(Items.iron_axe));
+        addNpcSubtypeEquipment("worker", "farmer", new ItemStack(Items.IRON_HOE));
+        addNpcSubtypeEquipment("worker", "miner", new ItemStack(Items.IRON_PICKAXE));
+        addNpcSubtypeEquipment("worker", "lumberjack", new ItemStack(Items.IRON_AXE));
         addNpcSubtypeEquipment("worker", "researcher", new ItemStack(AWItems.quillIron));
         addNpcSubtypeEquipment("worker", "craftsman", new ItemStack(AWItems.automationHammerIron));
 
         addNpcSubtypeEquipment("combat", "commander", new ItemStack(AWNpcItemLoader.commandBatonIron));
-        addNpcSubtypeEquipment("combat", "soldier", new ItemStack(Items.iron_sword));
-        addNpcSubtypeEquipment("combat", "archer", new ItemStack(Items.bow));
+        addNpcSubtypeEquipment("combat", "soldier", new ItemStack(Items.IRON_SWORD));
+        addNpcSubtypeEquipment("combat", "archer", new ItemStack(Items.BOW));
         addNpcSubtypeEquipment("combat", "engineer", new ItemStack(AWItems.automationHammerIron));
-        addNpcSubtypeEquipment("combat", "medic", new ItemStack(Items.iron_axe));
+        addNpcSubtypeEquipment("combat", "medic", new ItemStack(Items.IRON_AXE));
     }
 
     private static void addNpcRegistration(NpcDeclaration reg, String icon) {
@@ -525,7 +525,7 @@ public class AWNPCEntityLoader {
             NpcBase npc = (NpcBase) createEntity(world);
             if (!subType.isEmpty()) {
                 ItemStack stack = spawnEquipment.get(subType);
-                if (stack != null) {
+                if (!stack.isEmpty()) {
                     npc.setCurrentItemOrArmor(0, stack.copy());
                 }
             }

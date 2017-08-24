@@ -9,7 +9,6 @@ import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
-
 import org.lwjgl.opengl.GL11;
 
 /**
@@ -104,7 +103,7 @@ public class ItemSlot extends GuiElement {
                 GL11.glEnable(GL11.GL_DEPTH_TEST);//fix for chests / tile-renderers improper render stuff
                 itemRender.renderItemAndEffectIntoGUI(font, mc.getTextureManager(), item, renderX + 1, renderY + 1);
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
-                if (renderItemQuantity && item.stackSize > 1) {
+                if (renderItemQuantity && item.getCount() > 1) {
                     itemRender.renderItemOverlayIntoGUI(font, mc.getTextureManager(), item, renderX + 1, renderY + 1, "");
                     renderStackSize(renderX + 1, renderY + 1, item.stackSize, font);
                 }

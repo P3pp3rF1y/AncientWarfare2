@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.core.block;
 
+import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -7,27 +8,20 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
-import net.shadowmage.ancientwarfare.core.util.NBTSerializableUtils;
 
+import javax.annotation.Nullable;
+import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Locale;
 
+@MethodsReturnNonnullByDefault
+@ParametersAreNonnullByDefault
 public class BlockRotationHandler {
-
-    public static int getRotatedMeta(IRotatableBlock block, int meta, EnumFacing axis) {
-        RotationType t = block.getRotationType();
-        if (t == RotationType.NONE) {
-            return meta;
-        }
-        EnumFacing rotator = t == RotationType.FOUR_WAY ? EnumFacing.DOWN : axis;
-        EnumFacing face = EnumFacing.VALUES[meta];
-        face = face.getRotation(rotator);
-        return face.ordinal();
-    }
-
     public static EnumFacing getFaceForPlacement(EntityLivingBase entity, IRotatableBlock block, EnumFacing sideHit) {
         if (block.getRotationType() == RotationType.NONE) {
             return EnumFacing.NORTH;
@@ -60,7 +54,7 @@ public class BlockRotationHandler {
         public void setPrimaryFacing(EnumFacing face);
     }
 
-    public static enum RotationType {
+    public enum RotationType {
         /**
          * Can have 6 textures / inventories.<br>
          * Top, Bottom, Front, Rear, Left, Right<br>
@@ -94,7 +88,7 @@ public class BlockRotationHandler {
 //BOTTOM,TOP,FRONT,REAR,LEFT,RIGHT,NONE;
 //}
 
-    public static enum RelativeSide {
+    public enum RelativeSide {
         TOP("guistrings.inventory.side.top"),
         BOTTOM("guistrings.inventory.side.bottom"),
         FRONT("guistrings.inventory.side.front"),
@@ -104,12 +98,12 @@ public class BlockRotationHandler {
         ANY_SIDE("guistrings.inventory.side.all_sides"),
         NONE("guistrings.inventory.side.none");
 
-        private static final int DOWN = 0;
-        private static final int UP = 1;
-        private static final int NORTH = 2;
-        private static final int SOUTH = 3;
-        private static final int WEST = 4;
-        private static final int EAST = 5;
+        private static final int DOWN = EnumFacing.DOWN.ordinal();
+        private static final int UP = EnumFacing.UP.ordinal();
+        private static final int NORTH = EnumFacing.NORTH.ordinal();
+        private static final int SOUTH = EnumFacing.SOUTH.ordinal();
+        private static final int WEST = EnumFacing.WEST.ordinal();
+        private static final int EAST = EnumFacing.EAST.ordinal();
         //[side-viewed][block-facing]=relative side viewed
         public static final RelativeSide[][] sixWayMap = new RelativeSide[6][6];
         //[side-viewed][block-facing]=relative side viewed
@@ -121,85 +115,85 @@ public class BlockRotationHandler {
 //D,U,N,S,W,E
 //[side-viewed][block-facing]=relative side viewed
 //fourWayMap[X][0-1] SHOULD BE NEVER REFERENCED AS BLOCK CAN NEVER POINT U/D
-            sixWayMap[DOWN][0] = TOP;
-            sixWayMap[DOWN][1] = BOTTOM;
-            sixWayMap[DOWN][2] = ANY_SIDE;
-            sixWayMap[DOWN][3] = ANY_SIDE;
-            sixWayMap[DOWN][4] = ANY_SIDE;
-            sixWayMap[DOWN][5] = ANY_SIDE;
+            sixWayMap[DOWN][DOWN] = TOP;
+            sixWayMap[DOWN][UP] = BOTTOM;
+            sixWayMap[DOWN][NORTH] = ANY_SIDE;
+            sixWayMap[DOWN][SOUTH] = ANY_SIDE;
+            sixWayMap[DOWN][WEST] = ANY_SIDE;
+            sixWayMap[DOWN][EAST] = ANY_SIDE;
 
-            sixWayMap[UP][0] = BOTTOM;
-            sixWayMap[UP][1] = TOP;
-            sixWayMap[UP][2] = ANY_SIDE;
-            sixWayMap[UP][3] = ANY_SIDE;
-            sixWayMap[UP][4] = ANY_SIDE;
-            sixWayMap[UP][5] = ANY_SIDE;
+            sixWayMap[UP][DOWN] = BOTTOM;
+            sixWayMap[UP][UP] = TOP;
+            sixWayMap[UP][NORTH] = ANY_SIDE;
+            sixWayMap[UP][SOUTH] = ANY_SIDE;
+            sixWayMap[UP][WEST] = ANY_SIDE;
+            sixWayMap[UP][EAST] = ANY_SIDE;
 
-            sixWayMap[NORTH][0] = ANY_SIDE;
-            sixWayMap[NORTH][1] = ANY_SIDE;
-            sixWayMap[NORTH][2] = TOP;
-            sixWayMap[NORTH][3] = BOTTOM;
-            sixWayMap[NORTH][4] = ANY_SIDE;
-            sixWayMap[NORTH][5] = ANY_SIDE;
+            sixWayMap[NORTH][DOWN] = ANY_SIDE;
+            sixWayMap[NORTH][UP] = ANY_SIDE;
+            sixWayMap[NORTH][NORTH] = TOP;
+            sixWayMap[NORTH][SOUTH] = BOTTOM;
+            sixWayMap[NORTH][WEST]= ANY_SIDE;
+            sixWayMap[NORTH][EAST] = ANY_SIDE;
 
-            sixWayMap[SOUTH][0] = ANY_SIDE;
-            sixWayMap[SOUTH][1] = ANY_SIDE;
-            sixWayMap[SOUTH][2] = BOTTOM;
-            sixWayMap[SOUTH][3] = TOP;
-            sixWayMap[SOUTH][4] = ANY_SIDE;
-            sixWayMap[SOUTH][5] = ANY_SIDE;
+            sixWayMap[SOUTH][DOWN] = ANY_SIDE;
+            sixWayMap[SOUTH][UP] = ANY_SIDE;
+            sixWayMap[SOUTH][NORTH] = BOTTOM;
+            sixWayMap[SOUTH][SOUTH] = TOP;
+            sixWayMap[SOUTH][WEST]= ANY_SIDE;
+            sixWayMap[SOUTH][EAST] = ANY_SIDE;
 
-            sixWayMap[WEST][0] = ANY_SIDE;
-            sixWayMap[WEST][1] = ANY_SIDE;
-            sixWayMap[WEST][2] = ANY_SIDE;
-            sixWayMap[WEST][3] = ANY_SIDE;
-            sixWayMap[WEST][4] = TOP;
-            sixWayMap[WEST][5] = BOTTOM;
+            sixWayMap[WEST][DOWN] = ANY_SIDE;
+            sixWayMap[WEST][UP] = ANY_SIDE;
+            sixWayMap[WEST][NORTH] = ANY_SIDE;
+            sixWayMap[WEST][SOUTH] = ANY_SIDE;
+            sixWayMap[WEST][WEST]= TOP;
+            sixWayMap[WEST][EAST] = BOTTOM;
 
-            sixWayMap[EAST][0] = ANY_SIDE;
-            sixWayMap[EAST][1] = ANY_SIDE;
-            sixWayMap[EAST][2] = ANY_SIDE;
-            sixWayMap[EAST][3] = ANY_SIDE;
-            sixWayMap[EAST][4] = BOTTOM;
-            sixWayMap[EAST][5] = TOP;
+            sixWayMap[EAST][DOWN] = ANY_SIDE;
+            sixWayMap[EAST][UP] = ANY_SIDE;
+            sixWayMap[EAST][NORTH] = ANY_SIDE;
+            sixWayMap[EAST][SOUTH] = ANY_SIDE;
+            sixWayMap[EAST][WEST]= BOTTOM;
+            sixWayMap[EAST][EAST] = TOP;
 
-            fourWayMap[DOWN][0] = ANY_SIDE;
-            fourWayMap[DOWN][1] = ANY_SIDE;
-            fourWayMap[DOWN][2] = BOTTOM;
-            fourWayMap[DOWN][3] = BOTTOM;
+            fourWayMap[DOWN][DOWN] = ANY_SIDE;
+            fourWayMap[DOWN][UP] = ANY_SIDE;
+            fourWayMap[DOWN][NORTH] = BOTTOM;
+            fourWayMap[DOWN][SOUTH] = BOTTOM;
             fourWayMap[DOWN][WEST] = BOTTOM;
             fourWayMap[DOWN][EAST] = BOTTOM;
 
-            fourWayMap[UP][0] = ANY_SIDE;
-            fourWayMap[UP][1] = ANY_SIDE;
-            fourWayMap[UP][2] = TOP;
-            fourWayMap[UP][3] = TOP;
+            fourWayMap[UP][DOWN] = ANY_SIDE;
+            fourWayMap[UP][UP] = ANY_SIDE;
+            fourWayMap[UP][NORTH] = TOP;
+            fourWayMap[UP][SOUTH] = TOP;
             fourWayMap[UP][WEST] = TOP;
             fourWayMap[UP][EAST] = TOP;
 
-            fourWayMap[NORTH][0] = ANY_SIDE;
-            fourWayMap[NORTH][1] = ANY_SIDE;
+            fourWayMap[NORTH][DOWN] = ANY_SIDE;
+            fourWayMap[NORTH][UP] = ANY_SIDE;
             fourWayMap[NORTH][NORTH] = FRONT;
             fourWayMap[NORTH][SOUTH] = REAR;
             fourWayMap[NORTH][WEST] = RIGHT;
             fourWayMap[NORTH][EAST] = LEFT;
 
-            fourWayMap[SOUTH][0] = ANY_SIDE;
-            fourWayMap[SOUTH][1] = ANY_SIDE;
+            fourWayMap[SOUTH][DOWN] = ANY_SIDE;
+            fourWayMap[SOUTH][UP] = ANY_SIDE;
             fourWayMap[SOUTH][NORTH] = REAR;
             fourWayMap[SOUTH][SOUTH] = FRONT;
             fourWayMap[SOUTH][WEST] = LEFT;
             fourWayMap[SOUTH][EAST] = RIGHT;
 
-            fourWayMap[WEST][0] = ANY_SIDE;
-            fourWayMap[WEST][1] = ANY_SIDE;
+            fourWayMap[WEST][DOWN] = ANY_SIDE;
+            fourWayMap[WEST][UP] = ANY_SIDE;
             fourWayMap[WEST][NORTH] = LEFT;
             fourWayMap[WEST][SOUTH] = RIGHT;
             fourWayMap[WEST][WEST] = FRONT;
             fourWayMap[WEST][EAST] = REAR;
 
-            fourWayMap[EAST][0] = ANY_SIDE;
-            fourWayMap[EAST][1] = ANY_SIDE;
+            fourWayMap[EAST][DOWN] = ANY_SIDE;
+            fourWayMap[EAST][UP] = ANY_SIDE;
             fourWayMap[EAST][NORTH] = RIGHT;
             fourWayMap[EAST][SOUTH] = LEFT;
             fourWayMap[EAST][WEST] = REAR;
@@ -216,23 +210,24 @@ public class BlockRotationHandler {
             return key;
         }
 
-        public static RelativeSide getSideViewed(RotationType t, int meta, int side) {
+        public static RelativeSide getSideViewed(RotationType t, EnumFacing facing, EnumFacing side) {
             if (t == RotationType.FOUR_WAY) {
-                return fourWayMap[side][meta];
+                return fourWayMap[side.ordinal()][facing.ordinal()];
             } else if (t == RotationType.SIX_WAY) {
-                return sixWayMap[side][meta];
+                return sixWayMap[side.ordinal()][facing.ordinal()];
             }
             return ANY_SIDE;
         }
 
-        public static int getMCSideToAccess(RotationType t, int meta, RelativeSide access) {
+        @Nullable
+        public static EnumFacing getMCSideToAccess(RotationType t, EnumFacing facing, RelativeSide access) {
             RelativeSide[][] map = t == RotationType.FOUR_WAY ? fourWayMap : sixWayMap;
             for (int x = 0; x < map.length; x++) {
-                if (map[x][meta] == access) {
-                    return x;
+                if (map[x][facing.ordinal()] == access) {
+                    return EnumFacing.VALUES[x];
                 }
             }
-            return -1;
+            return null;
         }
 
         @Override
@@ -241,7 +236,7 @@ public class BlockRotationHandler {
         }
     }
 
-    public static class InventorySided implements ISidedInventory, NBTSerializableUtils {
+    public static class InventorySided implements ISidedInventory, INBTSerializable<NBTTagCompound> {
 
         private EnumSet<RelativeSide> validSides = EnumSet.of(RelativeSide.NONE);
 
@@ -357,9 +352,8 @@ public class BlockRotationHandler {
             extractInsertFlags.put(inventorySide, flags);
         }
 
-        public RelativeSide getInventorySide(int mcSide) {
-            int meta = te.getPrimaryFacing().ordinal();
-            RelativeSide rSide = RelativeSide.getSideViewed(rType, meta, mcSide);
+        public RelativeSide getInventorySide(EnumFacing mcSide) {
+            RelativeSide rSide = RelativeSide.getSideViewed(rType, te.getPrimaryFacing(), mcSide);
             rSide = accessMap.get(rSide);
             return rSide;
         }
@@ -369,14 +363,14 @@ public class BlockRotationHandler {
         }
 
         @Override
-        public int[] getAccessibleSlotsFromSide(int var1) {
-            RelativeSide iSide = getInventorySide(var1);
+        public int[] getSlotsForFace(EnumFacing side) {
+            RelativeSide iSide = getInventorySide(side);
             int[] slots = slotsByInventorySide.get(iSide);
             return slots == null ? new int[]{} : slots;
         }
 
         @Override
-        public boolean canInsertItem(int slot, ItemStack var2, int mcSide) {
+        public boolean canInsertItem(int slot, ItemStack var2, EnumFacing mcSide) {
             RelativeSide iSide = getInventorySide(mcSide);
             if (iSide == null) {
                 return false;
@@ -389,7 +383,7 @@ public class BlockRotationHandler {
         }
 
         @Override
-        public boolean canExtractItem(int slot, ItemStack var2, int mcSide) {
+        public boolean canExtractItem(int slot, ItemStack var2, EnumFacing mcSide) {
             RelativeSide iSide = getInventorySide(mcSide);
             if (iSide == null) {
                 return false;
@@ -404,6 +398,17 @@ public class BlockRotationHandler {
         }
 
         @Override
+        public boolean isEmpty() {
+            for(ItemStack stack : inventorySlots) {
+                if (!stack.isEmpty()) {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        @Override
         public ItemStack getStackInSlot(int var1) {
             return inventorySlots[var1];
         }
@@ -411,27 +416,27 @@ public class BlockRotationHandler {
         @Override
         public ItemStack decrStackSize(int var1, int var2) {
             ItemStack stack = inventorySlots[var1];
-            if (stack != null) {
-                int qty = var2 > stack.stackSize ? stack.stackSize : var2;
+            if (!stack.isEmpty()) {
+                int qty = var2 > stack.getCount() ? stack.getCount() : var2;
                 stack.shrink(qty);
                 ItemStack returnStack = stack.copy();
                 returnStack.setCount(qty);
                 if (stack.getCount() <= 0) {
-                    inventorySlots[var1] = null;
+                    inventorySlots[var1] = ItemStack.EMPTY;
                 }
                 if (returnStack.getCount() <= 0) {
-                    returnStack = null;
+                    returnStack = ItemStack.EMPTY;
                 }
                 markDirty();
                 return returnStack;
             }
-            return null;
+            return ItemStack.EMPTY;
         }
 
         @Override
         public ItemStack removeStackFromSlot(int var1) {
             ItemStack stack = inventorySlots[var1];
-            inventorySlots[var1] = null;
+            inventorySlots[var1] = ItemStack.EMPTY;
             markDirty();
             return stack;
         }
@@ -450,6 +455,12 @@ public class BlockRotationHandler {
         @Override
         public boolean hasCustomName() {
             return false;
+        }
+
+        @Nullable
+        @Override
+        public ITextComponent getDisplayName() {
+            return null;
         }
 
         @Override
@@ -482,7 +493,29 @@ public class BlockRotationHandler {
         }
 
         @Override
-        public void readFromNBT(NBTTagCompound tag) {
+        public int getField(int id) {
+            return 0;
+        }
+
+        @Override
+        public void setField(int id, int value) {
+
+        }
+
+        @Override
+        public int getFieldCount() {
+            return 0;
+        }
+
+        @Override
+        public void clear() {
+            for(int i=0; i < inventorySlots.length; i++) {
+                inventorySlots[i] = ItemStack.EMPTY;
+            }
+        }
+
+        @Override
+        public void deserializeNBT(NBTTagCompound tag) {
             InventoryTools.readInventoryFromNBT(this, tag);
             NBTTagCompound accessTag = tag.getCompoundTag("accessTag");
             int[] rMap = accessTag.getIntArray("rMap");
@@ -497,7 +530,8 @@ public class BlockRotationHandler {
         }
 
         @Override
-        public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+        public NBTTagCompound serializeNBT() {
+            NBTTagCompound tag = new NBTTagCompound();
             InventoryTools.writeInventoryToNBT(this, tag);
             int l = accessMap.size();
             int rMap[] = new int[l];
@@ -517,16 +551,12 @@ public class BlockRotationHandler {
             return tag;
         }
 
-        public int getAccessDirectionFor(RelativeSide blockSide) {
-            return RelativeSide.getMCSideToAccess(rType, te.getPrimaryFacing().ordinal(), blockSide);
+        public EnumFacing getAccessDirectionFor(RelativeSide blockSide) {
+            return RelativeSide.getMCSideToAccess(rType, te.getPrimaryFacing(), blockSide);
         }
 
         public EnumSet<RelativeSide> getValidSides() {
             return validSides;
         }
-
-
     }
-
-
 }

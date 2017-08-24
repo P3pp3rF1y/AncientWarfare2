@@ -35,6 +35,7 @@ public class ModAccessors {
                 HARDER_WILDLIFE = Class.forName("net.shadowmage.ancientwarfare.core.interop.InteropHarderWildlifeDummy").asSubclass(InteropHarderWildlifeInterface.class).newInstance();
             }
             
+/* TODO enviromine support
             if (Loader.isModLoaded("enviromine")) {
                 AncientWarfareCore.log.info("Enviromine found!");
                 ENVIROMINE = Class.forName("net.shadowmage.ancientwarfare.core.interop.InteropEnviromine").asSubclass(InteropEnviromineInterface.class).newInstance();
@@ -43,7 +44,9 @@ public class ModAccessors {
                 AncientWarfareCore.log.info("Enviromine not found.");
                 ENVIROMINE = Class.forName("net.shadowmage.ancientwarfare.core.interop.InteropEnviromineDummy").asSubclass(InteropEnviromineInterface.class).newInstance();
             }
-            
+*/
+
+/* TODO treecapitator support
             if (Loader.isModLoaded("Treecapitator")) {
                 AncientWarfareCore.log.info("Treecapitator found!");
                 TREECAPITATOR = Class.forName("net.shadowmage.ancientwarfare.core.interop.InteropTreecapitator").asSubclass(InteropTreecapitatorInterface.class).newInstance();
@@ -52,6 +55,7 @@ public class ModAccessors {
                 AncientWarfareCore.log.info("Treecapitator not found.");
                 TREECAPITATOR = Class.forName("net.shadowmage.ancientwarfare.core.interop.InteropTreecapitatorDummy").asSubclass(InteropTreecapitatorInterface.class).newInstance();
             }
+*/
         } catch (Exception e) {
             // shouldn't happen
         }

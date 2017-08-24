@@ -83,7 +83,7 @@ public class UpkeepOrder implements INBTSerializable<NBTTagCompound> {
     }
 
     public static UpkeepOrder getUpkeepOrder(ItemStack stack) {
-        if (stack != null && stack.getItem() instanceof ItemUpkeepOrder) {
+        if (!stack.isEmpty() && stack.getItem() instanceof ItemUpkeepOrder) {
             UpkeepOrder order = new UpkeepOrder();
             if (stack.hasTagCompound() && stack.getTagCompound().hasKey("orders")) {
                 order.readFromNBT(stack.getTagCompound().getCompoundTag("orders"));
@@ -94,7 +94,7 @@ public class UpkeepOrder implements INBTSerializable<NBTTagCompound> {
     }
 
     public void write(ItemStack stack) {
-        if (stack != null && stack.getItem() instanceof ItemUpkeepOrder) {
+        if (!stack.isEmpty() && stack.getItem() instanceof ItemUpkeepOrder) {
             stack.setTagInfo("orders", writeToNBT(new NBTTagCompound()));
         }
     }

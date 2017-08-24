@@ -163,13 +163,13 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
             ItemStack stack = null;
             for (int i = TOP_LENGTH; i < TOP_LENGTH + FRONT_LENGTH; i++) {
                 stack = getStackInSlot(i);
-                if (stack != null && isSapling(stack)) {
+                if (!stack.isEmpty() && isSapling(stack)) {
                     break;
                 } else {
                     stack = null;
                 }
             }
-            if (stack != null)//e.g. a sapling stack is present
+            if (!stack.isEmpty())//e.g. a sapling stack is present
             {
                 Iterator<BlockPos> it = blocksToPlant.iterator();
                 while (it.hasNext() && (position = it.next()) != null) {
@@ -193,11 +193,11 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
                     ItemStack stack;
                     for (int i = TOP_LENGTH + FRONT_LENGTH; i < getSizeInventory(); i++) {
                         stack = getStackInSlot(i);
-                        if (stack != null && isBonemeal(stack)) {
+                        if (!stack.isEmpty() && isBonemeal(stack)) {
                             if(ItemDye.applyBonemeal(stack, world, position.x, position.y, position.z, getOwnerAsPlayer())){
                                 bonemealCount--;
                                 if (stack.getCount() <= 0) {
-                                    setInventorySlotContents(i, null);
+                                    setInventorySlotContents(i, ItemStack.EMPTY);
                                 }
                             }
                             block = world.getBlock(position.x, position.y, position.z);

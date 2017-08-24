@@ -49,7 +49,7 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
         ItemSlotFilter filter = new ItemSlotFilter() {
             @Override
             public boolean apply(ItemStack stack) {
-                return stack == null || isCocoDye(stack) || stack.getItem() == Items.reeds || Block.getBlockFromItem(stack.getItem()) instanceof BlockCactus;
+                return stack == null || isCocoDye(stack) || stack.getItem() == Items.REEDS || Block.getBlockFromItem(stack.getItem()) instanceof BlockCactus;
             }
         };
         this.inventory.setFilterForSlots(filter, frontIndices);
@@ -64,7 +64,7 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
     }
 
     private boolean isCocoDye(ItemStack stack){
-        return stack.getItem() == Items.dye && stack.getItemDamage() == 3;
+        return stack.getItem() == Items.DYE && stack.getItemDamage() == 3;
     }
 
     @Override
@@ -145,7 +145,7 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
                     if (ItemDye.applyBonemeal(stack, world, p.x, p.y, p.z, getOwnerAsPlayer())) {
                         bonemealCount--;
                         if (stack.getCount() <= 0) {
-                            setInventorySlotContents(i, null);
+                            setInventorySlotContents(i, ItemStack.EMPTY);
                         }
                     }
                     if (((BlockCocoa) block).func_149851_a(world, p.x, p.y, p.z, world.isRemote)) {
@@ -196,7 +196,7 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
             if (stack == null) {
                 continue;
             }
-            if (stack.getItem() == Items.reeds && tryPlace(stack, p.x, p.y, p.z, EnumFacing.UP)){
+            if (stack.getItem() == Items.REEDS && tryPlace(stack, p.x, p.y, p.z, EnumFacing.UP)){
                 reedCount--;
                 return true;
             }
@@ -252,7 +252,7 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
             }
             if (isCocoDye(stack))
                 cocoaCount += stack.getCount();
-            else if(stack.getItem() == Items.reeds)
+            else if(stack.getItem() == Items.REEDS)
                 reedCount += stack.getCount();
             else if (Block.getBlockFromItem(stack.getItem()) instanceof BlockCactus)
                 cactusCount += stack.getCount();

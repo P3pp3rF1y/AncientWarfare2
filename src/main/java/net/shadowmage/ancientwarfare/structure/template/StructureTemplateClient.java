@@ -102,7 +102,7 @@ public class StructureTemplateClient {
             for (int i = 0; i < stackList.tagCount(); i++) {
                 stackTag = stackList.getCompoundTagAt(i);
                 stack = new ItemStack(stackTag);
-                if (stack != null) {
+                if (!stack.isEmpty()) {
                     template.resourceList.add(stack);
                 }
             }

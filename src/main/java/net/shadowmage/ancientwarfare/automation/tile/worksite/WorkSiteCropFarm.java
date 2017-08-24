@@ -273,7 +273,7 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
                             if(tryPlace(stack, position.x, position.y, position.z, EnumFacing.UP)) {
                                 plantableCount--;
                                 if (stack.getCount() <= 0) {
-                                    setInventorySlotContents(i, null);
+                                    setInventorySlotContents(i, ItemStack.EMPTY);
                                 }
                                 return true;
                             }
@@ -298,7 +298,7 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
                             if(ItemDye.applyBonemeal(stack, world, position.x, position.y, position.z, getOwnerAsPlayer())){
                                 bonemealCount--;
                                 if (stack.getCount() <= 0) {
-                                    setInventorySlotContents(i, null);
+                                    setInventorySlotContents(i, ItemStack.EMPTY);
                                 }
                             }
                             block = world.getBlock(position.x, position.y, position.z);

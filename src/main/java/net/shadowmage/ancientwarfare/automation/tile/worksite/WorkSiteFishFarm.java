@@ -98,7 +98,7 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
                     }
                 }
                 if (ink) {
-                    ItemStack inkItem = new ItemStack(Items.dye, 1, 0);
+                    ItemStack inkItem = new ItemStack(Items.DYE, 1, 0);
                     int fortune = getFortune();
                     if (fortune > 0) {
                         inkItem.grow(world.rand.nextInt(fortune + 1));
