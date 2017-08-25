@@ -1,11 +1,12 @@
 package net.shadowmage.ancientwarfare.automation.container;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.BlockPos;
 
 public class ContainerWorksiteTreeFarm extends ContainerWorksiteBase {
 
-    public ContainerWorksiteTreeFarm(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
+    public ContainerWorksiteTreeFarm(EntityPlayer player, BlockPos pos) {
+        super(player, pos);
 
         int layerY = 8;
         int labelGap = 12;

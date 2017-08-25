@@ -11,6 +11,6 @@ public final class SlotLimited extends Slot {
 
     @Override
     public boolean isItemValid(ItemStack par1ItemStack) {
-        return par1ItemStack!=null && inventory.isItemValidForSlot(getSlotIndex(), par1ItemStack);
+        return !par1ItemStack.isEmpty() && inventory.isItemValidForSlot(getSlotIndex(), par1ItemStack);
     }
 }

@@ -102,7 +102,7 @@ public class ItemNpcSpawner extends Item {
     public static ItemStack getSpawnerItemForNpc(NpcBase npc) {
         String type = npc.getNpcType();
         String sub = npc.getNpcSubType();
-        ItemStack stack = getStackForNpcType(type, sub);
+        @Nonnull ItemStack stack = getStackForNpcType(type, sub);
         NBTTagCompound tag = new NBTTagCompound();
         npc.writeAdditionalItemData(tag);
         stack.setTagInfo("npcStoredData", tag);
@@ -117,7 +117,7 @@ public class ItemNpcSpawner extends Item {
     }
 
     public static ItemStack getStackForNpcType(String type, String npcSubtype) {
-        ItemStack stack = new ItemStack(AWItems.npcSpawner);
+        @Nonnull ItemStack stack = new ItemStack(AWItems.npcSpawner);
         stack.setTagInfo("npcType", new NBTTagString(type));
         stack.setTagInfo("npcSubtype", new NBTTagString(npcSubtype));
         return stack;

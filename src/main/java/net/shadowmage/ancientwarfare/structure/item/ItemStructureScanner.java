@@ -35,7 +35,7 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IBo
     @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
-        if (par1ItemStack != null) {
+        if (!par1ItemStack.isEmpty()) {
             ItemStructureSettings viewSettings = ItemStructureSettings.getSettingsFor(par1ItemStack);
             String key = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
             if (!viewSettings.hasPos1()) {

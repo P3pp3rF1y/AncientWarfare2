@@ -5,11 +5,14 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseBase;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
+
+import javax.annotation.Nonnull;
 
 public class ContainerWarehouseControl extends ContainerTileBase<TileWarehouseBase> {
 
@@ -19,8 +22,8 @@ public class ContainerWarehouseControl extends ContainerTileBase<TileWarehouseBa
     public int maxStorage = 0;
     public int currentStored = 0;
 
-    public ContainerWarehouseControl(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
+    public ContainerWarehouseControl(EntityPlayer player, BlockPos pos) {
+        super(player, pos);
         addPlayerSlots(142);
         tileEntity.addViewer(this);
     }
@@ -34,26 +37,26 @@ public class ContainerWarehouseControl extends ContainerTileBase<TileWarehouseBa
     @Override
     public ItemStack transferStackInSlot(EntityPlayer player, int slotClickedIndex) {
         if (player.world.isRemote) {
-            return null;
+            return ItemStack.EMPTY;
         }
         Slot slot = this.getSlot(slotClickedIndex);
         if (slot == null || !slot.getHasStack()) {
-            return null;
+            return ItemStack.EMPTY;
         }
-        ItemStack stack = slot.getStack();
+        @Nonnull ItemStack stack = slot.getStack();
         stack = tileEntity.tryAdd(stack);
-        if (stack == null) {
-            slot.putStack(null);
+        if (stack.isEmpty()) {
+            slot.putStack(ItemStack.EMPTY);
         }
         detectAndSendChanges();
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override
     public void handlePacketData(NBTTagCompound tag) {
         if (tag.hasKey("slotClick")) {
             NBTTagCompound reqTag = tag.getCompoundTag("slotClick");
-            ItemStack item = null;
+            @Nonnull ItemStack item = ItemStack.EMPTY;
             if (reqTag.hasKey("reqItem")) {
                 item = new ItemStack(reqTag.getCompoundTag("reqItem"));
             }

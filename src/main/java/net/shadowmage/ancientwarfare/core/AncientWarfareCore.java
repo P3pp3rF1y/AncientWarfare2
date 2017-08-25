@@ -1,22 +1,19 @@
 package net.shadowmage.ancientwarfare.core;
 
-import java.util.UUID;
-
 import com.mojang.authlib.GameProfile;
-
-import cpw.mods.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.event.FMLServerStoppingEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.command.CommandResearch;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
@@ -33,6 +30,8 @@ import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 
+import java.util.UUID;
+
 @Mod
         (
                 name = "Ancient Warfare Core",
@@ -42,7 +41,7 @@ import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
         )
 public class AncientWarfareCore {
 
-    public static final String modID = "AncientWarfare";
+    public static final String modID = "ancientwarfare";
 
     @Instance(value = AncientWarfareCore.modID)
     public static AncientWarfareCore instance;
@@ -63,19 +62,19 @@ public class AncientWarfareCore {
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent evt) {
-        /**
+        /*
          * setup config file and logger
          */
         log = evt.getModLog();
         statics = new AWCoreStatics("AncientWarfare");
 
-        /**
+        /*
          * register blocks, items, tile entities, and entities
          */
         AWCoreBlockLoader.INSTANCE.load();
         AWCoreItemLoader.INSTANCE.load();
 
-        /**
+        /*
          * register server-side network handler and anything that needs loaded on the event busses
          */
         NetworkHandler.INSTANCE.registerNetwork();//register network handler, server side
@@ -85,7 +84,7 @@ public class AncientWarfareCore {
         MinecraftForge.EVENT_BUS.register(this);
 
 
-        /**
+        /*
          * register GUIs, containers, client-side network handler, renderers
          */
         proxy.registerClient();
@@ -97,15 +96,15 @@ public class AncientWarfareCore {
 
     @EventHandler
     public void init(FMLInitializationEvent evt) {
-        /**
+        /*
          * initialize any other core module information
          */
         ResearchGoal.initializeResearch();
-        /**
+        /*
          * register recipes
          */
         AWCoreCrafting.loadRecipes();
-        /**
+        /*
          * Setup FTBU_AW2 interoperability
          */
         ModAccessors.init();
@@ -129,7 +128,7 @@ public class AncientWarfareCore {
 
     @SubscribeEvent
     public void configChangedEvent(OnConfigChangedEvent evt) {
-        if (modID.equals(evt.modID)) {
+        if (modID.equals(evt.getModID())) {
             statics.save();
             proxy.onConfigChanged();
         }

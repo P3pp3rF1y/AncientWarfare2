@@ -66,7 +66,7 @@ public abstract class Trade {
             if (inputStack == null) {
                 continue;
             }
-            ItemStack result = InventoryTools.removeItems(player.inventory, -1, inputStack, inputStack.getCount());//remove from trade grid
+            @Nonnull ItemStack result = InventoryTools.removeItems(player.inventory, -1, inputStack, inputStack.getCount());//remove from trade grid
             if(result!=null && storage!=null)
                 InventoryTools.mergeItemStack(storage, result, -1);//merge into storage
         }

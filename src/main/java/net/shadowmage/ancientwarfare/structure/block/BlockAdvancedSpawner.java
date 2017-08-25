@@ -107,7 +107,7 @@ public class BlockAdvancedSpawner extends Block {
     public ItemStack getPickBlock(RayTraceResult target, World world, int x, int y, int z, EntityPlayer entityPlayer) {
         TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileAdvancedSpawner) {
-            ItemStack item = new ItemStack(this);
+            @Nonnull ItemStack item = new ItemStack(this);
             NBTTagCompound settings = new NBTTagCompound();
             ((TileAdvancedSpawner) te).getSettings().writeToNBT(settings);
             item.setTagInfo("spawnerSettings", settings);

@@ -64,7 +64,7 @@ public class ItemSpawnerPlacer extends Item {
 
     @Override
     public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-        if (player == null || player.world == null || player.world.isRemote || stack == null) {
+        if (player == null || player.world == null || player.world.isRemote || stack.isEmpty()) {
             return stack;
         }
         RayTraceResult mophit = getRayTraceResultFromPlayer(player.world, player, false);
@@ -73,7 +73,7 @@ public class ItemSpawnerPlacer extends Item {
         } else if (mophit != null && mophit.typeOfHit == MovingObjectType.BLOCK) {
             if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnerData")) {
                 BlockPos hit = new BlockPos(mophit);
-                if (player.world.setBlock(hit.x, hit.y, hit.z, Blocks.mob_spawner)) {
+                if (player.world.setBlock(hit.x, hit.y, hit.z, Blocks.MOB_SPAWNER)) {
                     NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData");
                     tag.setInteger("x", hit.x);
                     tag.setInteger("y", hit.y);

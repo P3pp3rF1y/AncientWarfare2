@@ -6,13 +6,21 @@ import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseCont
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
-import net.shadowmage.ancientwarfare.core.gui.elements.*;
+import net.shadowmage.ancientwarfare.core.gui.elements.Button;
+import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
+import net.shadowmage.ancientwarfare.core.gui.elements.CompositeItemSlots;
+import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
+import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
+import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
+import net.shadowmage.ancientwarfare.core.gui.elements.Label;
+import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortOrder;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortType;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -71,7 +79,7 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
             @Override
             public boolean onEvent(GuiElement widget, ActivationEvent evt) {
                 if (evt.mButton == 0 && widget.isMouseOverElement(evt.mx, evt.my) && !area.isMouseOverSubElement(evt.mx, evt.my)) {
-                    getContainer().handleClientRequestSpecific(null, isShiftKeyDown());
+                    getContainer().handleClientRequestSpecific(ItemStack.EMPTY, isShiftKeyDown());
                 }
                 return true;
             }
@@ -99,7 +107,7 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
     }
 
     private void addInventoryViewElements() {
-        ItemStack stack;
+        @Nonnull ItemStack stack;
         List<ItemStack> displayStacks = new ArrayList<>();
         for (ItemHashEntry entry : getContainer().itemMap.keySet()) {
             stack = entry.getItemStack();

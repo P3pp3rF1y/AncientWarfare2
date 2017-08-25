@@ -50,7 +50,7 @@ public class ItemBlockStructureBuilder extends ItemBlock implements IBoxRenderer
         if (displayCache == null) {
             displayCache = new ArrayList<ItemStack>();
             List<StructureTemplateClient> templates = StructureTemplateManagerClient.instance().getSurvivalStructures();
-            ItemStack item;
+            @Nonnull ItemStack item;
             for (StructureTemplateClient t : templates) {
                 item = new ItemStack(this);
                 item.setTagInfo("structureName", new NBTTagString(t.name));

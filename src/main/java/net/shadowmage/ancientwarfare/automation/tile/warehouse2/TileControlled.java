@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
@@ -11,7 +10,6 @@ import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 import javax.annotation.Nullable;
 
-@MethodsReturnNonnullByDefault
 public abstract class TileControlled extends TileUpdatable implements IControlledTile, ITickable {
 
     private boolean init;

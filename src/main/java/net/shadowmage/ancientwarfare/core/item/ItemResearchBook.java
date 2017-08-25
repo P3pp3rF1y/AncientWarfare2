@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.core.item;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -12,6 +13,7 @@ import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemResearchBook extends Item {
@@ -36,7 +38,8 @@ public class ItemResearchBook extends Item {
         }
     }
 
-    public static final String getResearcherName(ItemStack stack) {
+    @Nullable
+    public static String getResearcherName(ItemStack stack) {
         if (!stack.isEmpty() && stack.getItem() == AWItems.researchBook && stack.hasTagCompound() && stack.getTagCompound().hasKey("researcherName")) {
             return stack.getTagCompound().getString("researcherName");
         }

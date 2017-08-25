@@ -1,8 +1,11 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.*;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.IInventoryChangedListener;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -15,11 +18,8 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventory, IInventoryChangedListener {
 
     public InventoryBasic bookSlot;
@@ -67,8 +67,8 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
             return false;
         }//no output stack, don't even bother checking
         ArrayList<ItemStack> compactedCraft = new ArrayList<ItemStack>();
-        ItemStack stack1;
-        ItemStack stack2;
+        @Nonnull ItemStack stack1;
+        @Nonnull ItemStack stack2;
         boolean found;
         for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
             stack1 = craftMatrix.getStackInSlot(i);
@@ -112,7 +112,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
     }
 
     private void craftItem() {
-        ItemStack stack = this.outputSlot.getStackInSlot(0).copy();
+        @Nonnull ItemStack stack = this.outputSlot.getStackInSlot(0).copy();
         useResources();
         stack = InventoryTools.mergeItemStack(outputInventory, stack, (EnumFacing) null);
         if (!stack.isEmpty()) {
@@ -122,7 +122,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
 
     private void useResources() {
         //TODO this needs to use getRemainingItems of the recipe instead of the getConsumedItem logic
-        ItemStack stack1;
+        @Nonnull ItemStack stack1;
         for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
             stack1 = craftMatrix.getStackInSlot(i);
             if (stack1.isEmpty()) {
@@ -324,7 +324,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
     }
 
     private boolean canHold() {
-        ItemStack test = outputSlot.getStackInSlot(0);
+        @Nonnull ItemStack test = outputSlot.getStackInSlot(0);
         return !test.isEmpty() && InventoryTools.canInventoryHold(outputInventory, (EnumFacing) null, test);
     }
 

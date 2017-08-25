@@ -59,7 +59,7 @@ public class TileDraftingStation extends TileEntity implements IInventoryChanged
     }
 
     private boolean tryRemoveResource() {
-        ItemStack stack1, stack2;
+        @Nonnull ItemStack stack1, stack2;
         outerLoopLabel:
         for (int k = 0; k < inputSlots.getSizeInventory(); k++) {
             stack2 = inputSlots.getStackInSlot(k);
@@ -92,7 +92,7 @@ public class TileDraftingStation extends TileEntity implements IInventoryChanged
 
     private boolean tryFinish() {
         if (outputSlot.getStackInSlot(0) == null) {
-            ItemStack item = new ItemStack(AWBlocks.builderBlock);
+            @Nonnull ItemStack item = new ItemStack(AWBlocks.builderBlock);
             item.setTagInfo("structureName", new NBTTagString(structureName));
             outputSlot.setInventorySlotContents(0, item);
             return true;

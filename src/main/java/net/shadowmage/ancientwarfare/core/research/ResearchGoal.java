@@ -8,7 +8,14 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 public class ResearchGoal {
 
@@ -135,7 +142,7 @@ public class ResearchGoal {
             InventoryTools.removeItems(inventory, side, stack, stack.getCount());
         }
         int required;
-        ItemStack remove;
+        @Nonnull ItemStack remove;
         for(OreSized ore : researchOres){
             required = ore.size;
             for(ItemStack temp : ore.getEquivalents()) {
@@ -211,7 +218,7 @@ public class ResearchGoal {
                 AWLog.logError("Could not locate goal for name: " + name);
                 continue;
             }
-            ItemStack stack = null;
+            @Nonnull ItemStack stack = ItemStack.EMPTY;
             if(split.length>3) {
                 stack = StringTools.safeParseStack(split[1], split[2], split[3], false);
             }else if(split.length>1){
@@ -326,7 +333,7 @@ public class ResearchGoal {
 
         public ItemStack getEquivalent(Random random){
             List<ItemStack> temps = getEquivalents();
-            ItemStack temp = temps.get(random.nextInt(temps.size())).copy();
+            @Nonnull ItemStack temp = temps.get(random.nextInt(temps.size())).copy();
             temp.setCount(size);
             return temp;
         }

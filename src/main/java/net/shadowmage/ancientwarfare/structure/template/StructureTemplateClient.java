@@ -98,7 +98,7 @@ public class StructureTemplateClient {
         if (tag.hasKey("resourceList")) {
             NBTTagList stackList = tag.getTagList("resourceList", Constants.NBT.TAG_COMPOUND);
             NBTTagCompound stackTag;
-            ItemStack stack;
+            @Nonnull ItemStack stack;
             for (int i = 0; i < stackList.tagCount(); i++) {
                 stackTag = stackList.getCompoundTagAt(i);
                 stack = new ItemStack(stackTag);

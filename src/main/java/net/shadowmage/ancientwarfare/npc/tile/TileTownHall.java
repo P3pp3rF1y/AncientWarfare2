@@ -32,7 +32,11 @@ import net.shadowmage.ancientwarfare.npc.container.ContainerTownHall;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class TileTownHall extends TileOwned implements IInventory, IInteractableTile {
 
@@ -432,7 +436,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
 
     @Override
     public ItemStack decrStackSize(int var1, int var2) {
-        ItemStack stack = inventory.decrStackSize(var1, var2);
+        @Nonnull ItemStack stack = inventory.decrStackSize(var1, var2);
         if(stack!=null)
             markDirty();
         return stack;

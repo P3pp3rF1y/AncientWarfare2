@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.core.util;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -17,11 +16,12 @@ import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
 
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class InventoryTools {
 
     public static boolean canInventoryHold(IInventory inventory, EnumFacing side, ItemStack stack) {
@@ -30,7 +30,7 @@ public class InventoryTools {
 
     public static boolean canInventoryHold(IInventory inventory, int[] slots, ItemStack stack) {
         int toMerge = stack.getCount();
-        ItemStack existing;
+        @Nonnull ItemStack existing;
         for (int index : slots) {
             existing = inventory.getStackInSlot(index);
             if (existing.isEmpty()) {
@@ -67,7 +67,7 @@ public class InventoryTools {
         }
 
         for (int slot : slots) {
-            ItemStack stack = inventory.getStackInSlot(slot);
+            @Nonnull ItemStack stack = inventory.getStackInSlot(slot);
             if (stack.isEmpty()) {
                 emptySlots++;
             } else if (itemQuantities.contains(stack)) {
@@ -110,7 +110,7 @@ public class InventoryTools {
             return stack;
         }
         int toMove;
-        ItemStack slotStack;
+        @Nonnull ItemStack slotStack;
         for (int index : slotIndices) {
             toMove = stack.getCount();
             slotStack = inventory.getStackInSlot(index);
@@ -158,9 +158,9 @@ public class InventoryTools {
         if (quantity > filter.getMaxStackSize()) {
             quantity = filter.getMaxStackSize();
         }
-        ItemStack returnStack = ItemStack.EMPTY;
+        @Nonnull ItemStack returnStack = ItemStack.EMPTY;
         int returnCount = 0;
-        ItemStack slotStack;
+        @Nonnull ItemStack slotStack;
         for (int index : slotIndices) {
             slotStack = inventory.getStackInSlot(index);
             if (slotStack.isEmpty() || !doItemStacksMatch(filter, slotStack)) {
@@ -206,7 +206,7 @@ public class InventoryTools {
 /* TODO likely remove once TileAutoCrafting uses getRemainingItems of the crafting recipe
         if (itemStack.getItem().hasContainerItem(itemStack))
         {
-            ItemStack container = itemStack.getItem().getContainerItem(itemStack);
+            @Nonnull ItemStack container = itemStack.getItem().getContainerItem(itemStack);
             if (container.isEmpty() || (container.isItemStackDamageable() && container.getItemDamage() > container.getMaxDamage()))//Container is invalid
             {
                 return ItemStack.EMPTY;
@@ -252,7 +252,7 @@ public class InventoryTools {
     public static int transferItems(IInventory from, IInventory to, ItemStack filter, int quantity, EnumFacing fromSide, EnumFacing toSide, boolean ignoreDamage, boolean ignoreNBT) {
         int moved = 0;
         int[] fromIndices = getSlotsForSide(from, fromSide);
-        ItemStack s1, s2;
+        @Nonnull ItemStack s1, s2;
         int toMove = quantity;
         int stackSize;
         for (int fromIndex : fromIndices) {
@@ -312,7 +312,7 @@ public class InventoryTools {
             return 0;
         }
         int count = 0;
-        ItemStack stack;
+        @Nonnull ItemStack stack;
         for (int slotIndice : slotIndices) {
             stack = inv.getStackInSlot(slotIndice);
             if (!stack.isEmpty() && doItemStacksMatch(filter, stack)) {
@@ -336,7 +336,7 @@ public class InventoryTools {
             return 0;
         }
         int count = 0;
-        ItemStack stack;
+        @Nonnull ItemStack stack;
         for (int slotIndice : slotIndices) {
             stack = inv.getStackInSlot(slotIndice);
             if (!stack.isEmpty() && doItemStacksMatch(filter, stack)) {
@@ -436,7 +436,7 @@ public class InventoryTools {
             return;
         }
         if (localInventory != null) {
-            ItemStack stack;
+            @Nonnull ItemStack stack;
             for (int i = 0; i < localInventory.getSizeInventory(); i++) {
                 stack = localInventory.removeStackFromSlot(i);
                 if (stack.isEmpty()) {
@@ -455,7 +455,7 @@ public class InventoryTools {
     public static NBTTagCompound writeInventoryToNBT(IInventory inventory, NBTTagCompound tag) {
         NBTTagList itemList = new NBTTagList();
         NBTTagCompound itemTag;
-        ItemStack item;
+        @Nonnull ItemStack item;
         for (int i = 0; i < inventory.getSizeInventory(); i++) {
             item = inventory.getStackInSlot(i);
             if (item.isEmpty()) {
@@ -477,7 +477,7 @@ public class InventoryTools {
     public static void readInventoryFromNBT(IInventory inventory, NBTTagCompound tag) {
         NBTTagList itemList = tag.getTagList("itemList", Constants.NBT.TAG_COMPOUND);
         NBTTagCompound itemTag;
-        ItemStack item;
+        @Nonnull ItemStack item;
         int slot;
         for (int i = 0; i < itemList.tagCount(); i++) {
             itemTag = itemList.getCompoundTagAt(i);
@@ -507,7 +507,7 @@ public class InventoryTools {
             map.put(wrap, count);
         }
         int qty;
-        ItemStack outStack;
+        @Nonnull ItemStack outStack;
         for (ItemHashEntry wrap1 : map.keySet()) {
             qty = map.get(wrap1);
             while (qty > 0) {
@@ -528,7 +528,7 @@ public class InventoryTools {
     public static void compactStackList2(List<ItemStack> in, List<ItemStack> out) {
         int transfer = 0;
         int tmax;
-        ItemStack copy;
+        @Nonnull ItemStack copy;
         for (ItemStack inStack : in) {
             tmax = inStack.getCount();
             for (ItemStack outStack : out) {

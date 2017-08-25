@@ -1,14 +1,13 @@
 package net.shadowmage.ancientwarfare.automation.container;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseBase;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseCraftingStation;
@@ -18,25 +17,23 @@ import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import javax.annotation.Nonnull;
 
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
 public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWarehouseCraftingStation> {
 
     private ItemQuantityMap itemMap = new ItemQuantityMap();
     private final ItemQuantityMap cache = new ItemQuantityMap();
     private boolean shouldUpdate = true;
 
-    public ContainerWarehouseCraftingStation(final EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
+    public ContainerWarehouseCraftingStation(final EntityPlayer player, BlockPos pos) {
+        super(player, pos);
         InventoryCrafting inventory = tileEntity.layoutMatrix;
 
         Slot slot = new SlotCrafting(player, inventory, tileEntity.result, 0, 3 * 18 + 3 * 18 + 8 + 18, 1 * 18 + 8) {
             @Override
             public ItemStack onTake(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack) {
                 tileEntity.preItemCrafted();
-                ItemStack ret = super.onTake(par1EntityPlayer, par2ItemStack);
+                @Nonnull ItemStack ret = super.onTake(par1EntityPlayer, par2ItemStack);
                 tileEntity.onItemCrafted();
 
                 return ret;
@@ -82,10 +79,10 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
-        ItemStack slotStackCopy = ItemStack.EMPTY;
+        @Nonnull ItemStack slotStackCopy = ItemStack.EMPTY;
         Slot theSlot = this.getSlot(slotClickedIndex);
         if (theSlot != null && theSlot.getHasStack()) {
-            ItemStack slotStack = theSlot.getStack();
+            @Nonnull ItemStack slotStack = theSlot.getStack();
             slotStackCopy = slotStack.copy();
             int playerSlotStart = 2 + tileEntity.layoutMatrix.getSizeInventory();
             if (slotClickedIndex < playerSlotStart)//result slot, book slot

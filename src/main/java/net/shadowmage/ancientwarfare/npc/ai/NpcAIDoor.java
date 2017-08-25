@@ -99,7 +99,7 @@ public class NpcAIDoor extends EntityAIBase {
     protected boolean findDoor() {
         this.door = this.theEntity.world.getBlock(this.doorPosX, this.doorPosY, this.doorPosZ);
         if(door instanceof BlockDoor){
-            return allDoors || door.getMaterial() == Material.wood;
+            return allDoors || door.getMaterial() == Material.WOOD;
         }
         else if(door instanceof BlockFenceGate){
             return true;

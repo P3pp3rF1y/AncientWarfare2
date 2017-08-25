@@ -20,16 +20,31 @@
  */
 package net.shadowmage.ancientwarfare.core.util;
 
-import cpw.mods.fml.common.registry.GameData;
 import io.netty.buffer.ByteBuf;
-import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
-import java.io.*;
-import java.util.*;
+import javax.annotation.Nullable;
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Scanner;
+import java.util.Set;
 
 public class StringTools {
 
@@ -251,16 +266,17 @@ public class StringTools {
      * @param name of the item to search in the registries
      * @return the item instance, or null if none is found
      */
+    @Nullable
     public static Item safeParseItem(String name) {
-        Item item = GameData.getItemRegistry().getObject(name);
-        if (item == GameData.getItemRegistry().getDefaultValue()) {
-            Block block = GameData.getBlockRegistry().getObject(name);
-            if (block == GameData.getBlockRegistry().getDefaultValue())
-                return null;
-            else
-                return Item.getItemFromBlock(block);
+        ResourceLocation rl = new ResourceLocation(name);
+        if (ForgeRegistries.ITEMS.containsKey(rl)) {
+            return ForgeRegistries.ITEMS.getValue(rl);
         }
-        return item;
+        if (ForgeRegistries.BLOCKS.containsKey(rl)) {
+            //noinspection ConstantConditions
+            return Item.getItemFromBlock(ForgeRegistries.BLOCKS.getValue(rl));
+        }
+        return null;
     }
 
     /**
@@ -277,7 +293,7 @@ public class StringTools {
 
         int i = StringTools.safeParseInt(qty);
         if (i <= 0) {
-            return null;
+            return ItemStack.EMPTY;
         }
         Item item = safeParseItem(name);
         if (item == null) {
@@ -285,17 +301,18 @@ public class StringTools {
                 List<ItemStack> list = OreDictionary.getOres(name);
                 for (ItemStack temp : list) {
                     if (temp != null && temp.getMaxStackSize() >= i) {
-                        ItemStack result = temp.copy();
+                        @Nonnull ItemStack result = temp.copy();
                         result.setCount(i);
                         return result;
                     }
                 }
             }
-            return null;
+            return ItemStack.EMPTY;
         }
         return new ItemStack(item, i, StringTools.safeParseInt(meta));
     }
 
+    //TODO change all uses of these to NumberUtils
     public static int safeParseInt(String num) {
         try {
             return Integer.parseInt(num.trim());

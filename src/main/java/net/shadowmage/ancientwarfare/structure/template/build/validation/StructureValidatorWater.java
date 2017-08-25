@@ -35,7 +35,7 @@ public class StructureValidatorWater extends StructureValidator {
     @Override
     public boolean shouldIncludeForSelection(World world, int x, int y, int z, int face, StructureTemplate template) {
         Block block = world.getBlock(x, y - 1, z);
-        return block == Blocks.water || block == Blocks.flowing_water;
+        return block == Blocks.WATER || block == Blocks.FLOWING_WATER;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class StructureValidatorWater extends StructureValidator {
     @Override
     public void handleClearAction(World world, int x, int y, int z, StructureTemplate template, StructureBB bb) {
         if (y < bb.min.y + template.yOffset) {
-            world.setBlock(x, y, z, Blocks.water);
+            world.setBlock(x, y, z, Blocks.WATER);
         } else {
             super.handleClearAction(world, x, y, z, template, bb);
         }

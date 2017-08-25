@@ -206,7 +206,7 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwna
     public void onBlockBroken() {
         if (!world.isRemote && !isStarted && builder != null && builder.getTemplate() != null) {
             isStarted = true;//to prevent further drops
-            ItemStack item = new ItemStack(AWBlocks.builderBlock);
+            @Nonnull ItemStack item = new ItemStack(AWBlocks.builderBlock);
             item.setTagInfo("structureName", new NBTTagString(builder.getTemplate().name));
         }
     }

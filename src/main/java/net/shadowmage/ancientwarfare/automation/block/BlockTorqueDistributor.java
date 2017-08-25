@@ -82,7 +82,7 @@ public class BlockTorqueDistributor extends BlockTorqueBase {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
-        return Blocks.iron_block.getIcon(0, 0);
+        return Blocks.IRON_BLOCK.getIcon(0, 0);
     }
 
 */

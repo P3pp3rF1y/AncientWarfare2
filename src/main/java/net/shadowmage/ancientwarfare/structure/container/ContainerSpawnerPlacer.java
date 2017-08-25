@@ -33,7 +33,7 @@ public class ContainerSpawnerPlacer extends ContainerBase {
 
     public ContainerSpawnerPlacer(EntityPlayer player, int x, int y, int z) {
         super(player);
-        ItemStack stack = player.getHeldItem();
+        @Nonnull ItemStack stack = player.getHeldItem();
         if (isInValid(stack)) {
             throw new IllegalArgumentException("Incorrect held item");
         }
@@ -67,7 +67,7 @@ public class ContainerSpawnerPlacer extends ContainerBase {
     @Override
     public void handlePacketData(NBTTagCompound tag) {
         if (tag.hasKey("spawnerData")) {
-            ItemStack stack = player.getHeldItem();
+            @Nonnull ItemStack stack = player.getHeldItem();
             if (isInValid(stack)) {
                 return;
             }
@@ -97,6 +97,6 @@ public class ContainerSpawnerPlacer extends ContainerBase {
     }
 
     private boolean isInValid(ItemStack stack) {
-        return stack == null || stack.getItem() == null || !(stack.getItem() instanceof ItemSpawnerPlacer);
+        return stack.isEmpty() || stack.getItem() == null || !(stack.getItem() instanceof ItemSpawnerPlacer);
     }
 }

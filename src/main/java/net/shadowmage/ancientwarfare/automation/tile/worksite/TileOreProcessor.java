@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.IInventoryChangedListener;
@@ -14,11 +13,8 @@ import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.EnumSet;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class TileOreProcessor extends TileWorksiteBase implements ISidedInventory,IInventoryChangedListener {
 
     private final InventoryBasic inventory;

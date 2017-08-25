@@ -19,7 +19,7 @@ public class NpcAIPlayerOwnedCourier extends NpcAI<NpcCourier> {
     int ticksAtSite;
 
     RoutingOrder order;
-    ItemStack routeStack;
+    @Nonnull ItemStack routeStack;
 
     public NpcAIPlayerOwnedCourier(NpcCourier npc) {
         super(npc);

@@ -17,7 +17,7 @@ public final class WarehouseInterfaceFilter implements Predicate<ItemStack>, INB
 
     @Override
     public boolean apply(ItemStack item) {
-        if (item == null) {
+        if (item.isEmpty()) {
             return false;
         }
         if (filterItem == null) {

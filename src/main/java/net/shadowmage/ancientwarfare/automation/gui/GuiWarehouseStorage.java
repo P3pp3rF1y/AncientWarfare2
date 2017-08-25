@@ -6,10 +6,16 @@ import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseStorage
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
-import net.shadowmage.ancientwarfare.core.gui.elements.*;
+import net.shadowmage.ancientwarfare.core.gui.elements.Button;
+import net.shadowmage.ancientwarfare.core.gui.elements.CompositeItemSlots;
+import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
+import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
+import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
+import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +39,7 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
             @Override
             public boolean onEvent(GuiElement widget, ActivationEvent evt) {
                 if (evt.mButton == 0 && widget.isMouseOverElement(evt.mx, evt.my) && !area2.isMouseOverSubElement(evt.mx, evt.my)) {
-                    getContainer().handleClientRequestSpecific(null, isShiftKeyDown());
+                    getContainer().handleClientRequestSpecific(ItemStack.EMPTY, isShiftKeyDown());
                 }
                 return true;
             }
@@ -61,7 +67,7 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
             slot = new FilterItemSlot(8, totalHeight, filter, this);
             area.addGuiElement(slot);
 
-            name = filter.getFilterItem() == null ? "" : filter.getFilterItem().getDisplayName();
+            name = filter.getFilterItem().isEmpty() ? "" : filter.getFilterItem().getDisplayName();
 
             label = new Label(20 + 8, totalHeight + 4, name);
             area.addGuiElement(label);
@@ -76,7 +82,7 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
             button = new Button(8, totalHeight, 95, 12, "guistrings.automation.new_filter") {
                 @Override
                 protected void onPressed() {
-                    WarehouseStorageFilter filter = new WarehouseStorageFilter(null);
+                    WarehouseStorageFilter filter = new WarehouseStorageFilter(ItemStack.EMPTY);
                     getContainer().filters.add(filter);
                     getContainer().sendFiltersToServer();
                     refreshGui();
@@ -91,10 +97,10 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
     private void addInventoryViewElements() {
         ItemSlot slot;
         int qty;
-        ItemStack stack;
+        @Nonnull ItemStack stack;
         int x = 0, y = 0;
         int totalSize = 8;
-        List<ItemStack> displayStacks = new ArrayList<ItemStack>();
+        List<ItemStack> displayStacks = new ArrayList<>();
         for (ItemHashEntry entry : getContainer().itemMap.keySet()) {
             qty = getContainer().itemMap.getCount(entry);
             stack = entry.getItemStack();
@@ -146,12 +152,12 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
 
         @Override
         public void onSlotClicked(ItemStack stack) {
-            ItemStack in = stack == null ? null : stack.copy();
+            @Nonnull ItemStack in = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
             this.setItem(in);
-            if (in != null) {
+            if (!in.isEmpty()) {
                 in.setCount(1);
             }
-            filter.setFilterItem(in == null ? null : in.copy());
+            filter.setFilterItem(in.isEmpty() ? ItemStack.EMPTY : in.copy());
             getContainer().sendFiltersToServer();
         }
     }

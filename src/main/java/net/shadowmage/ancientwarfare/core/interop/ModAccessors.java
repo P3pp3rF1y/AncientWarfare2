@@ -1,6 +1,6 @@
 package net.shadowmage.ancientwarfare.core.interop;
 
-import cpw.mods.fml.common.Loader;
+import net.minecraftforge.fml.common.Loader;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 public class ModAccessors {

@@ -244,7 +244,7 @@ public class BlockDataManager {
             } else if (blockUnlocalizedNameToBlock.containsKey(name)) {
                 return blockUnlocalizedNameToBlock.get(name);
             }
-            return Blocks.air;
+            return Blocks.AIR;
         }
         return b;
     }

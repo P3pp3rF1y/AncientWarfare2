@@ -57,10 +57,10 @@ public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeri
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
-        ItemStack slotStackCopy = null;
+        @Nonnull ItemStack slotStackCopy = ItemStack.EMPTY;
         Slot theSlot = this.getSlot(slotClickedIndex);
         if (theSlot != null && theSlot.getHasStack()) {
-            ItemStack slotStack = theSlot.getStack();
+            @Nonnull ItemStack slotStack = theSlot.getStack();
             slotStackCopy = slotStack.copy();
             int craftSlotStart = 2;
             int storageSlotsStart = craftSlotStart + tileEntity.layoutMatrix.getSizeInventory();
@@ -83,7 +83,7 @@ public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeri
                 }
             }
             if (slotStack.getCount() == 0) {
-                theSlot.putStack(null);
+                theSlot.putStack(ItemStack.EMPTY);
             } else {
                 theSlot.onSlotChanged();
             }

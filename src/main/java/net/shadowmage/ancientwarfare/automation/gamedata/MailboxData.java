@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.automation.gamedata;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
@@ -10,7 +11,11 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSid
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 public class MailboxData implements extends WorldSavedData {
 //TODO world capability
@@ -66,7 +71,7 @@ public class MailboxData implements extends WorldSavedData {
         return set.deleteMailbox(name);
     }
 
-    public void addDeliverableItem(String owner, String name, ItemStack item, int dim, int x, int y, int z) {
+    public void addDeliverableItem(String owner, String name, ItemStack item, int dim, BlockPos pos) {
         MailboxSet set = owner == null ? publicMailboxes : getOrCreatePrivateMailbox(owner);
         MailboxEntry entry = set.getOrCreateMailbox(name);
 //  AWLog.logDebug("adding deliverable item to: "+set.owningPlayerName +" :: "+entry+ " of: "+item);
@@ -290,7 +295,7 @@ public class MailboxData implements extends WorldSavedData {
             int x, y, z;
             Iterator<DeliverableItem> it;
             DeliverableItem item;
-            ItemStack stack;
+            @Nonnull ItemStack stack;
             for (TileMailbox box : receivers) {
                 dim = box.getWorld().provider.getDimension();
                 x = box.xCoord;
@@ -307,7 +312,7 @@ public class MailboxData implements extends WorldSavedData {
                     if (item.deliveryTime >= time)//find if item is deliverable to this box
                     {
                         stack = InventoryTools.mergeItemStack(box.inventory, item.item, box.inventory.getAccessDirectionFor(RelativeSide.TOP));
-                        if (stack == null) {
+                        if (stack.isEmpty()) {
                             it.remove();
                         }
                         break;

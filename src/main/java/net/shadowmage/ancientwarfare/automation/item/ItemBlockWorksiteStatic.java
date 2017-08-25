@@ -16,9 +16,6 @@ import net.shadowmage.ancientwarfare.core.interfaces.IBoundedSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
-@ParametersAreNonnullByDefault
 public class ItemBlockWorksiteStatic extends ItemBlock {
 
     public ItemBlockWorksiteStatic(Block p_i45328_1_) {
@@ -30,7 +27,7 @@ public class ItemBlockWorksiteStatic extends ItemBlock {
         EnumFacing playerFacing = player.getHorizontalFacing();
         BlockPos pos1 = pos.offset(playerFacing).offset(playerFacing.rotateYCCW(), 2);
         BlockPos pos2 = pos.offset(playerFacing,4).offset(playerFacing.rotateY(), 4);
-        /**
+        /*
          * TODO validate that block is not inside work bounds of any other nearby worksites ??
          * TODO validate that worksite does not intersect any others
          */

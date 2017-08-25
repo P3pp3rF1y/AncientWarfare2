@@ -4,8 +4,12 @@ import com.cosmicdan.pathfindertweaks.events.PathfinderEvent.PathfinderAvoidAddi
 import com.cosmicdan.pathfindertweaks.events.PathfinderEvent.PathfinderCheckCanPathBlock;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.common.eventhandler.EventPriority;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockChest;
+import net.minecraft.block.BlockDoor;
+import net.minecraft.block.BlockFence;
+import net.minecraft.block.BlockWall;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.IRangedAttackMob;
@@ -14,8 +18,11 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.util.BlockAndMeta;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
@@ -137,8 +144,10 @@ public class EventHandler {
     public void pathfinderAvoidAdditionals(PathfinderAvoidAdditionalEvent event) {
         //System.out.println("Firing!");
         if (AWNPCStatics.pathfinderAvoidChests || AWNPCStatics.pathfinderAvoidFences || AWNPCStatics.getPathfinderAvoidCustomBlocks() != null) {
-            Block block = event.entity.world.getBlock(event.posX, event.posY, event.posZ);
-            int meta = event.entity.world.getBlockMetadata(event.posX, event.posY, event.posZ);
+            World world = event.entity.world;
+            BlockPos pos = event.getPos();
+            IBlockState state = world.getBlockState(pos);
+            Block block = state.getBlock();
             if (AWNPCStatics.pathfinderAvoidChests) {
                 if (block.getRenderType() == 22 || block instanceof BlockChest) {
                     event.setResult(Result.DENY);
@@ -154,7 +163,7 @@ public class EventHandler {
             if (AWNPCStatics.getPathfinderAvoidCustomBlocks() != null) {
                 for ( BlockAndMeta blockAndMeta : AWNPCStatics.getPathfinderAvoidCustomBlocks() ) {
                     if ( Block.isEqualTo(blockAndMeta.block, block) ) {
-                        if ( blockAndMeta.meta == -1 || blockAndMeta.meta == meta ) {
+                        if ( blockAndMeta.meta == -1 || blockAndMeta.meta == block.getMetaFromState(state) ) { //TODO can this avoid using meta?
                             event.setResult(Result.DENY);
                             return;
                         }

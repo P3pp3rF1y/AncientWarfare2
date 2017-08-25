@@ -55,7 +55,7 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
             if (inventory.getSizeInventory() <= 0) {
                 return;
             }
-            ItemStack keyStack = inventory.getStackInSlot(0);
+            @Nonnull ItemStack keyStack = inventory.getStackInSlot(0);
             boolean useKey = keyStack != null && (keyStack.getItem() == Items.GOLD_INGOT || keyStack.getItem() == Items.DIAMOND || keyStack.getItem() == Items.EMERALD);
             if (useKey) {
                 for (int i = 1; i < inventory.getSizeInventory(); i++) {
@@ -67,11 +67,11 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
             }
             this.randomLootLevel = useKey ? keyStack.getItem() == Items.GOLD_INGOT ? 1 : keyStack.getItem() == Items.DIAMOND ? 2 : 3 : 0;
             inventoryStacks = new ItemStack[inventory.getSizeInventory()];
-            ItemStack stack;
+            @Nonnull ItemStack stack;
             for (int i = 0; i < inventory.getSizeInventory(); i++) {
                 stack = inventory.getStackInSlot(i);
                 inventory.setInventorySlotContents(i, ItemStack.EMPTY);
-                inventoryStacks[i] = stack == null ? null : stack.copy();
+                inventoryStacks[i] = stack.isEmpty() ? null : stack.copy();
             }
             te.writeToNBT(tag);
             for (int i = 0; i < inventory.getSizeInventory(); i++) {
@@ -106,10 +106,10 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
             }//clear the inventory in prep for random loot stuff
             generateLootFor(inventory, world.rand);
         } else if (inventoryStacks != null) {
-            ItemStack stack;
+            @Nonnull ItemStack stack;
             for (int i = 0; i < inventory.getSizeInventory(); i++) {
                 stack = i < inventoryStacks.length ? inventoryStacks[i] : null;
-                inventory.setInventorySlotContents(i, stack == null ? null : stack.copy());
+                inventory.setInventorySlotContents(i, stack.isEmpty() ? null : stack.copy());
             }
         }
         BlockTools.notifyBlockUpdate(world, pos);
@@ -136,10 +136,10 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
         invData.setInteger("length", inventoryStacks.length);
         NBTTagCompound itemTag;
         NBTTagList list = new NBTTagList();
-        ItemStack stack;
+        @Nonnull ItemStack stack;
         for (int i = 0; i < inventoryStacks.length; i++) {
             stack = inventoryStacks[i];
-            if (stack == null) {
+            if (stack.isEmpty()) {
                 continue;
             }
             itemTag = NBTTools.writeItemStack(stack, new NBTTagCompound());
@@ -160,7 +160,7 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
             NBTTagCompound itemTag;
             NBTTagList list = inventoryTag.getTagList("inventoryContents", Constants.NBT.TAG_COMPOUND);
             int slot;
-            ItemStack stack;
+            @Nonnull ItemStack stack;
             for (int i = 0; i < list.tagCount(); i++) {
                 itemTag = list.getCompoundTagAt(i);
                 stack = NBTTools.readItemStack(itemTag);

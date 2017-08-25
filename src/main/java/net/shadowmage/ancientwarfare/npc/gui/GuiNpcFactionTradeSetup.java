@@ -3,7 +3,12 @@ package net.shadowmage.ancientwarfare.npc.gui;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
-import net.shadowmage.ancientwarfare.core.gui.elements.*;
+import net.shadowmage.ancientwarfare.core.gui.elements.Button;
+import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
+import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
+import net.shadowmage.ancientwarfare.core.gui.elements.Label;
+import net.shadowmage.ancientwarfare.core.gui.elements.Line;
+import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcFactionTradeSetup;
 import net.shadowmage.ancientwarfare.npc.trade.FactionTrade;
 import net.shadowmage.ancientwarfare.npc.trade.Trade;
@@ -140,36 +145,36 @@ public class GuiNpcFactionTradeSetup extends GuiContainerBase<ContainerNpcFactio
     }
 
     private void addTradeInputSlot(final Trade trade, int x, int y, final int slotNum) {
-        ItemStack stack = trade.getInputStack(slotNum);
-        stack = stack == null ? null : stack.copy();
+        @Nonnull ItemStack stack = trade.getInputStack(slotNum);
+        stack = stack.isEmpty() ? null : stack.copy();
         final ItemSlot slot = new ItemSlot(x, y, stack, this) {
             @Override
             public void onSlotClicked(ItemStack stack) {
-                stack = stack == null ? null : stack.copy();
+                stack = stack.isEmpty() ? null : stack.copy();
                 setItem(stack);
                 trade.setInputStack(slotNum, stack);
                 getContainer().tradesChanged = true;
             }
         };
-        if (stack == null) {
+        if (stack.isEmpty()) {
             slot.addTooltip("guistrings.npc.trade_input_slot");
         }
         area.addGuiElement(slot);
     }
 
     private void addTradeOutputSlot(final Trade trade, int x, int y, final int slotNum) {
-        ItemStack stack = trade.getOutputStack(slotNum);
-        stack = stack == null ? null : stack.copy();
+        @Nonnull ItemStack stack = trade.getOutputStack(slotNum);
+        stack = stack.isEmpty() ? null : stack.copy();
         final ItemSlot slot = new ItemSlot(x, y, stack, this) {
             @Override
             public void onSlotClicked(ItemStack stack) {
-                stack = stack == null ? null : stack.copy();
+                stack = stack.isEmpty() ? null : stack.copy();
                 setItem(stack);
                 trade.setOutputStack(slotNum, stack);
                 getContainer().tradesChanged = true;
             }
         };
-        if (stack == null) {
+        if (stack.isEmpty()) {
             slot.addTooltip("guistrings.npc.trade_output_slot");
         }
         area.addGuiElement(slot);

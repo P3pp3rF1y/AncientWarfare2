@@ -39,7 +39,7 @@ public class ItemSlot extends GuiElement {
             @Override
             public boolean onEvent(GuiElement widget, ActivationEvent evt) {
                 if (widget.isMouseOverElement(evt.mx, evt.my)) {
-                    ItemStack stack = Minecraft.getMinecraft().thePlayer.inventory.getItemStack();
+                    @Nonnull ItemStack stack = Minecraft.getMinecraft().thePlayer.inventory.getItemStack();
                     onSlotClicked(stack);
                 }
                 return true;

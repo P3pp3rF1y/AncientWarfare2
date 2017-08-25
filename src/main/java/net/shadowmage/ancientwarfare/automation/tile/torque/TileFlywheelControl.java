@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -10,7 +9,6 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 
 import javax.annotation.Nullable;
 
-@MethodsReturnNonnullByDefault
 public abstract class TileFlywheelControl extends TileTorqueSingleCell {
 
     private boolean powered;

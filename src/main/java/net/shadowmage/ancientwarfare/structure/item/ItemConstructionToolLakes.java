@@ -34,7 +34,7 @@ public class ItemConstructionToolLakes extends Item {
         FloodFillPathfinder pf = new FloodFillPathfinder(player.world, pos.x, pos.y, pos.z, block, 0, false, true);
         Set<BlockPos> blocks = pf.doFloodFill();
         for (BlockPos p : blocks) {
-            player.world.setBlock(p.x, p.y, p.z, Blocks.flowing_water);
+            player.world.setBlock(p.x, p.y, p.z, Blocks.FLOWING_WATER);
         }
         if (!player.capabilities.isCreativeMode) {
             stack.shrink(1);

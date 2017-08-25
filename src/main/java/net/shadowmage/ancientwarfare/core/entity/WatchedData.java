@@ -101,7 +101,7 @@ public class WatchedData extends DataWatcher.WatchableObject{
             else if(this == FLOAT)
                 return Float.toString((Float) value);
             else if(this == STACK) {
-                ItemStack stack = (ItemStack) value;
+                @Nonnull ItemStack stack = (ItemStack) value;
                 String result = Item.itemRegistry.getNameForObject(stack.getItem());
                 return result + "," + stack.getItemDamage() + "," + stack.getCount();
             }

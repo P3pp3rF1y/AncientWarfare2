@@ -73,7 +73,7 @@ public class RenderTileWarehouseStockViewer extends TileEntitySpecialRenderer {
         GL11.glScalef(1f, 1f, 0.0001f);//squash Z axis for 'flat' rendering of 3d blocks/items..LOLS
         FontRenderer fr = func_147498_b();
         GL11.glDisable(GL11.GL_LIGHTING);
-        ItemStack filterItem;
+        @Nonnull ItemStack filterItem;
         WarehouseStockFilter filter;
         String name = "";
         List<WarehouseStockFilter> filters = tile.getFilters();

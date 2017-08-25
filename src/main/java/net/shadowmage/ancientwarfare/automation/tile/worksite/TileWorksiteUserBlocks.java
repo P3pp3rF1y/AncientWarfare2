@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
@@ -19,14 +18,11 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nonnull;
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
 
     protected static final int TOP_LENGTH = 27, FRONT_LENGTH = 3, BOTTOM_LENGTH = 3;
@@ -64,13 +60,13 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
 
     protected boolean isFarmable(Block block){
         try{
-            return isFarmable(block, 0, 0, 0);
+            return isFarmable(block, new BlockPos(0, 0, 0));
         }catch (Exception e){
             return false;
         }
     }
 
-    protected boolean isFarmable(Block block, int x, int y, int z){
+    protected boolean isFarmable(Block block, BlockPos farmablePos){
         return block instanceof IPlantable;
     }
 
@@ -96,7 +92,7 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
         if(items.isEmpty())
             return;
         int[] indices = getIndicesForPickup();
-        ItemStack stack;
+        @Nonnull ItemStack stack;
         for (EntityItem item : items) {
             if(item.isEntityAlive()) {
                 stack = item.getItem();

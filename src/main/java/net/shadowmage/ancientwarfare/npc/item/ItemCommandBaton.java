@@ -24,7 +24,12 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.CommandType;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 public class ItemCommandBaton extends Item implements IItemKeyInterface {
 
@@ -187,14 +192,14 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
     }
 
     private void onNpcClicked(EntityPlayer player, NpcBase npc, ItemStack stack) {
-        if (player == null || npc == null || stack == null || stack.getItem() != this) {
+        if (player == null || npc == null || stack.isEmpty() || stack.getItem() != this) {
             return;
         }
         CommandSet.loadFromStack(stack).onNpcClicked(npc, stack);
     }
 
     public static List<Entity> getCommandedEntities(World world, ItemStack stack) {
-        if (world == null || stack == null || !(stack.getItem() instanceof ItemCommandBaton)) {
+        if (world == null || stack.isEmpty() || !(stack.getItem() instanceof ItemCommandBaton)) {
             return new ArrayList<Entity>();
         }
         return CommandSet.loadFromStack(stack).getEntities(world);

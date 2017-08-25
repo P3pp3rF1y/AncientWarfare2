@@ -1,20 +1,22 @@
 package net.shadowmage.ancientwarfare.automation.container;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileAutoCrafting;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 
+import javax.annotation.Nonnull;
+
 public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCrafting> {
 
-    public ContainerWorksiteAutoCrafting(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
+    public ContainerWorksiteAutoCrafting(EntityPlayer player, BlockPos pos) {
+        super(player, pos);
         InventoryCrafting inventory = tileEntity.craftMatrix;
 
         //slot 0 = outputSlot
@@ -82,10 +84,10 @@ public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCra
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
-        ItemStack slotStackCopy = null;
+        @Nonnull ItemStack slotStackCopy = ItemStack.EMPTY;
         Slot theSlot = this.getSlot(slotClickedIndex);
         if (theSlot != null && theSlot.getHasStack()) {
-            ItemStack slotStack = theSlot.getStack();
+            @Nonnull ItemStack slotStack = theSlot.getStack();
             slotStackCopy = slotStack.copy();
 
             int storageSlotsStart = 1 + 1 + tileEntity.craftMatrix.getSizeInventory();
@@ -96,25 +98,25 @@ public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCra
             {
                 if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             } else if (slotClickedIndex < storageSlotsStart)//craft matrix
             {
                 if (!this.mergeItemStack(slotStack, storageSlotsStart, outputSlotsStart, false))//merge into storage
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             } else if (slotClickedIndex < playerSlotStart)//storage slots
             {
                 if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             } else if (slotClickedIndex < playerSlotEnd)//player slots, merge into storage
             {
                 if (!this.mergeItemStack(slotStack, storageSlotsStart, outputSlotsStart, false))//merge into storage
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
             if (slotStack.getCount() == 0) {
@@ -123,7 +125,7 @@ public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCra
                 theSlot.onSlotChanged();
             }
             if (slotStack.getCount() == slotStackCopy.getCount()) {
-                return null;
+                return ItemStack.EMPTY;
             }
             theSlot.onTake(par1EntityPlayer, slotStack);
         }

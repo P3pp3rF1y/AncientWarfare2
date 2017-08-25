@@ -13,7 +13,7 @@ public class ContainerStructureScanner extends ContainerBase {
 
     public ContainerStructureScanner(EntityPlayer player, int x, int y, int z) {
         super(player);
-        ItemStack builderItem = player.getHeldItem();
+        @Nonnull ItemStack builderItem = player.getHeldItem();
         if (isInvalid(builderItem)) {
             throw new IllegalArgumentException("No scanner in hand");
         }
@@ -42,7 +42,7 @@ public class ContainerStructureScanner extends ContainerBase {
         if (par1EntityPlayer.world.isRemote) {
             return;
         }
-        ItemStack builderItem = par1EntityPlayer.getHeldItem();
+        @Nonnull ItemStack builderItem = par1EntityPlayer.getHeldItem();
         if (isInvalid(builderItem)) {
             return;
         }
@@ -50,7 +50,7 @@ public class ContainerStructureScanner extends ContainerBase {
     }
 
     private boolean isInvalid(ItemStack stack) {
-        return stack == null || stack.getItem() == null || !(stack.getItem() instanceof ItemStructureScanner);
+        return stack.isEmpty() || stack.getItem() == null || !(stack.getItem() instanceof ItemStructureScanner);
     }
 
     public void export(String name, boolean include, NBTTagCompound validation) {

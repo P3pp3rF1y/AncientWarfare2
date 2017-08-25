@@ -2,14 +2,18 @@ package net.shadowmage.ancientwarfare.core.gui.research;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.block.Direction;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchBook;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchStation;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiResearchBook;
-import net.shadowmage.ancientwarfare.core.gui.elements.*;
+import net.shadowmage.ancientwarfare.core.gui.elements.Button;
+import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
+import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
+import net.shadowmage.ancientwarfare.core.gui.elements.Label;
+import net.shadowmage.ancientwarfare.core.gui.elements.ProgressBar;
+import net.shadowmage.ancientwarfare.core.gui.elements.Tooltip;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import org.lwjgl.input.Mouse;
@@ -157,7 +161,7 @@ public class GuiResearchStation extends GuiContainerBase<ContainerResearchStatio
                         if (i >= resources.size()) {
                             layoutSlots[i].setItem(null);
                         } else {
-                            ItemStack resource = resources.get(i);
+                            @Nonnull ItemStack resource = resources.get(i);
                             if (!InventoryTools.doItemStacksMatch(resource, layoutSlots[i].getStack())) {
                                 layoutSlots[i].setItem(resource.copy());
                             }

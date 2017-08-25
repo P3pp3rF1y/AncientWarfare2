@@ -83,13 +83,13 @@ public class StructureValidatorGround extends StructureValidator {
             handleClearAction(world, x, y, z, template, bb);
         }
         BiomeGenBase biome = world.getBiomeGenForCoords(x, z);
-        Block fillBlock = Blocks.grass;
+        Block fillBlock = Blocks.GRASS;
         if (biome != null && biome.topBlock != null) {
             fillBlock = biome.topBlock;
         }
         int y = bb.min.y + template.yOffset + step - 1;
         Block block = world.getBlock(x, y, z);
-        if (block != null && block != Blocks.air && block != Blocks.flowing_water && block != Blocks.water && !AWStructureStatics.skippableBlocksContains(block)) {
+        if (block != null && block != Blocks.AIR && block != Blocks.FLOWING_WATER && block != Blocks.WATER && !AWStructureStatics.skippableBlocksContains(block)) {
             world.setBlock(x, y, z, fillBlock);
         }
 
@@ -97,7 +97,7 @@ public class StructureValidatorGround extends StructureValidator {
         for (int y1 = y + 1; y1 < world.getHeight(); y1++)//lazy clear block handling
         {
             block = world.getBlock(x, y1, z);
-            if (block == Blocks.air) {
+            if (block == Blocks.AIR) {
                 skipCount++;
                 if (skipCount >= 10)//exit out if 10 blocks are found that are not clearable
                 {

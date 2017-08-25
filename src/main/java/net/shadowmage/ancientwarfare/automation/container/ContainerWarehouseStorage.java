@@ -1,11 +1,11 @@
 package net.shadowmage.ancientwarfare.automation.container;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseStorageFilter;
@@ -14,10 +14,10 @@ import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
 import net.shadowmage.ancientwarfare.core.util.NBTSerializableUtils;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-@MethodsReturnNonnullByDefault
 public class ContainerWarehouseStorage extends ContainerTileBase<TileWarehouseStorage> {
 
     private boolean shouldSynch = true;
@@ -25,8 +25,8 @@ public class ContainerWarehouseStorage extends ContainerTileBase<TileWarehouseSt
     public ItemQuantityMap itemMap = new ItemQuantityMap();
     public List<WarehouseStorageFilter> filters = new ArrayList<WarehouseStorageFilter>();
 
-    public ContainerWarehouseStorage(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
+    public ContainerWarehouseStorage(EntityPlayer player, BlockPos pos) {
+        super(player, pos);
         tileEntity.addViewer(this);
 
         filters.addAll(tileEntity.getFilters());
@@ -42,9 +42,9 @@ public class ContainerWarehouseStorage extends ContainerTileBase<TileWarehouseSt
         if (slot == null || !slot.getHasStack()) {
             return ItemStack.EMPTY;
         }
-        ItemStack stack = slot.getStack();
+        @Nonnull ItemStack stack = slot.getStack();
         stack = tileEntity.tryAdd(stack);
-        if (stack == null) {
+        if (stack.isEmpty()) {
             slot.putStack(ItemStack.EMPTY);
         }
         detectAndSendChanges();
@@ -88,7 +88,7 @@ public class ContainerWarehouseStorage extends ContainerTileBase<TileWarehouseSt
         }
         else if (tag.hasKey("slotClick")) {
             NBTTagCompound reqTag = tag.getCompoundTag("slotClick");
-            ItemStack item = null;
+            @Nonnull ItemStack item = ItemStack.EMPTY;
             if (reqTag.hasKey("reqItem")) {
                 item = new ItemStack(reqTag.getCompoundTag("reqItem"));
             }

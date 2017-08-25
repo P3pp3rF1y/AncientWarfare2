@@ -524,7 +524,7 @@ public class AWNPCEntityLoader {
         public NpcBase createEntity(World world, String subType) {
             NpcBase npc = (NpcBase) createEntity(world);
             if (!subType.isEmpty()) {
-                ItemStack stack = spawnEquipment.get(subType);
+                @Nonnull ItemStack stack = spawnEquipment.get(subType);
                 if (!stack.isEmpty()) {
                     npc.setCurrentItemOrArmor(0, stack.copy());
                 }

@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import cofh.redstoneflux.api.IEnergyProvider;
 import cofh.redstoneflux.api.IEnergyReceiver;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,7 +31,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 import java.util.EnumSet;
 import java.util.UUID;
 
-@MethodsReturnNonnullByDefault
 @Optional.Interface(iface = "cofh.api.energy.IEnergyProvider", modid = "redstoneflux", striprefs = true)
 @Optional.Interface(iface = "cofh.api.energy.IEnergyReceiver", modid = "redstoneflux", striprefs = true)
 public abstract class TileWorksiteBase extends TileUpdatable implements ITickable, IWorkSite, IInteractableTile, IOwnable, IRotatableTile, IEnergyProvider, IEnergyReceiver {

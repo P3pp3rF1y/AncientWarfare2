@@ -20,12 +20,12 @@
  */
 package net.shadowmage.ancientwarfare.structure.event;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class StructureBoundingBoxRenderer {
 
@@ -44,9 +44,9 @@ public class StructureBoundingBoxRenderer {
         if (player == null) {
             return;
         }
-        ItemStack stack = player.getCurrentEquippedItem();
+        @Nonnull ItemStack stack = player.getCurrentEquippedItem();
         Item item;
-        if (stack == null || (item = stack.getItem()) == null) {
+        if (stack.isEmpty() || (item = stack.getItem()) == null) {
             return;
         }
         if (item instanceof IBoxRenderer) {

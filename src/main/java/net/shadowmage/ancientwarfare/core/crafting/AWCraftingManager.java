@@ -86,8 +86,8 @@ public class AWCraftingManager {
             if (split.length < 5) {
                 continue;
             }
-            ItemStack stack = StringTools.safeParseStack(split[1], split[2], split[3]);
-            if (stack == null) {
+            @Nonnull ItemStack stack = StringTools.safeParseStack(split[1], split[2], split[3]);
+            if (stack.isEmpty()) {
                 continue;
             }
             boolean shaped = true;

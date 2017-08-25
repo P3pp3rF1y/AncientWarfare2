@@ -6,7 +6,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -131,10 +130,11 @@ public class BlockTownHall extends Block {
         return false;
     }
     
-    public void dropBlock(World world, int posX, int posY, int posZ, Block block) {
-        this.breakBlock(world, posX, posY, posZ, block, world.getBlockMetadata(posX, posY, posZ));
-        this.dropBlockAsItem(world, posX, posY, posZ, world.getBlockMetadata(posX, posY, posZ), 0);
-        world.setBlock(posX, posY, posZ, Blocks.air, 0, 3);
+    public void dropBlock(World world, BlockPos pos) {
+        IBlockState state = world.getBlockState(pos);
+        this.breakBlock(world, pos, state);
+        this.dropBlockAsItem(world, pos, state, 0);
+        world.setBlockToAir(pos);
     }
 
     @Override

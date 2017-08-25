@@ -126,7 +126,7 @@ public class BlockWarehouseStockViewer extends Block implements IRotatableBlock 
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
-        return Blocks.planks.getIcon(0, 0);
+        return Blocks.PLANKS.getIcon(0, 0);
     }
 */
 

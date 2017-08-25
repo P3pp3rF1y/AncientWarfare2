@@ -42,7 +42,7 @@ public class ItemVehicleSpawner extends Item {
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs tab, List list) {
         List<String> types = AWVehicleEntityLoader.getVehicleTypes();
-        ItemStack stack;
+        @Nonnull ItemStack stack;
         for (String t : types) {
             stack = new ItemStack(item, 1);
             stack.setTagInfo("type", new NBTTagString(t));

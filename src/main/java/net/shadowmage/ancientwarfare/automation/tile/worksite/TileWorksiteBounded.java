@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -18,7 +17,6 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Iterator;
 
-@MethodsReturnNonnullByDefault
 public abstract class TileWorksiteBounded extends TileWorksiteBase implements IBoundedSite, IChunkLoaderTile {
 
     /**

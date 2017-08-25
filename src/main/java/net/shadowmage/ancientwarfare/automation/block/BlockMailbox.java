@@ -22,9 +22,6 @@ import net.shadowmage.ancientwarfare.core.block.IconRotationMap;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-import javax.annotation.ParametersAreNonnullByDefault;
-
-@ParametersAreNonnullByDefault
 public class BlockMailbox extends Block implements IRotatableBlock {
     private static final PropertyDirection FACING = BlockHorizontal.FACING;
 

@@ -1,20 +1,39 @@
 package net.shadowmage.ancientwarfare.npc.entity;
 
-import cpw.mods.fml.common.Loader;
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.ai.*;
+import net.minecraft.entity.ai.EntityAIBase;
+import net.minecraft.entity.ai.EntityAIRestrictOpenDoor;
+import net.minecraft.entity.ai.EntityAISwimming;
+import net.minecraft.entity.ai.EntityAIWatchClosest;
+import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.npc.ai.*;
-import net.shadowmage.ancientwarfare.npc.ai.owned.*;
+import net.minecraftforge.fml.common.Loader;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackMeleeLongRange;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackNearest;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIDistressResponse;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIDoor;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIHurt;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIMedicBase;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedAlarmResponse;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedAttackRanged;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedCommander;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedFollowCommand;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedGetFood;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedIdleWhenHungry;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedPatrol;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedRideHorse;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.item.ItemCombatOrder;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
@@ -89,7 +108,7 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
         if (!world.isRemote) {
             this.tasks.removeTask(arrowAI);
             this.tasks.removeTask(collideAI);
-            ItemStack stack = getHeldItem();
+            @Nonnull ItemStack stack = getHeldItem();
             if (stack!=null && isBow(stack.getItem())) {
                 this.tasks.addTask(7, arrowAI);
             } else {
@@ -119,7 +138,7 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
     }
 
     protected String getSubtypeFromEquipment() {
-        ItemStack stack = getHeldItem();
+        @Nonnull ItemStack stack = getHeldItem();
         if (!stack.isEmpty() && stack.getItem() != null) {
             Item item = stack.getItem();
             Collection<String> tools = item.getToolClasses(stack);

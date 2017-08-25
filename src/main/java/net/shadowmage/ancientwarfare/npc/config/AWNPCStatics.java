@@ -552,7 +552,7 @@ public class AWNPCStatics extends ModConfiguration {
      * returns the food value for a single size stack of the input item stack
      */
     public int getFoodValue(ItemStack stack) {
-        if (stack == null || stack.getItem() == null) {
+        if (stack.isEmpty() || stack.getItem() == null) {
             return 0;
         }
         String name = Item.itemRegistry.getNameForObject(stack.getItem());

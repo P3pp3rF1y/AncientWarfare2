@@ -5,6 +5,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.shadowmage.ancientwarfare.automation.gamedata.MailboxData;
 import net.shadowmage.ancientwarfare.automation.gamedata.MailboxData.DeliverableItem;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
@@ -15,10 +16,11 @@ import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.tile.TileOwned;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileMailbox extends TileOwned implements ISidedInventory, IRotatableTile {
+public class TileMailbox extends TileOwned implements ISidedInventory, IRotatableTile, ITickable {
 
     private boolean autoExport;//TODO : should automatically try and export from output side
     private boolean privateBox;
@@ -38,7 +40,7 @@ public class TileMailbox extends TileOwned implements ISidedInventory, IRotatabl
     }
 
     @Override
-    public void updateEntity() {
+    public void update() {
         if (!hasWorld() || world.isRemote) {
             return;
         }
@@ -58,12 +60,12 @@ public class TileMailbox extends TileOwned implements ISidedInventory, IRotatabl
     }
 
     private void trySendItems(MailboxData data) {
-        ItemStack item;
+        @Nonnull ItemStack item;
         String owner = privateBox ? getOwnerName() : null;
         int dim = world.provider.getDimension();
         for (int k = inventory.getSizeInventory()/2; k < inventory.getSizeInventory(); k++) {
             item = inventory.getStackInSlot(k);
-            if (item != null) {
+            if (!item.isEmpty()) {
                 data.addDeliverableItem(owner, destinationName, item, dim, pos);
                 inventory.setInventorySlotContents(k, ItemStack.EMPTY);
                 break;

@@ -1,10 +1,12 @@
 package net.shadowmage.ancientwarfare.structure.item;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -137,9 +139,9 @@ public class ItemConstructionTool extends Item implements IItemKeyInterface, IBo
         if (settings.block != null) {
             BlockPos pos = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
             if (pos != null) {
-                Block block = player.world.getBlock(pos.x, pos.y, pos.z);
-                int meta = player.world.getBlockMetadata(pos.x, pos.y, pos.z);
-                Set<BlockPos> toFill = new FloodFillPathfinder(player.world, pos.x, pos.y, pos.z, block, meta, false, true).doFloodFill();
+                IBlockState state = player.world.getBlockState(pos);
+                Block block = state.getBlock();
+                Set<BlockPos> toFill = new FloodFillPathfinder(player.world, pos, block, state, false, true).doFloodFill();
                 for (BlockPos p1 : toFill) {
                     player.world.setBlock(p1.x, p1.y, p1.z, settings.block, settings.meta, 3);
                 }
@@ -151,11 +153,11 @@ public class ItemConstructionTool extends Item implements IItemKeyInterface, IBo
         if (settings.block != null) {
             BlockPos pos = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
             if (pos != null) {
-                Block block = player.world.getBlock(pos.x, pos.y, pos.z);
-                int meta = player.world.getBlockMetadata(pos.x, pos.y, pos.z);
-                Set<BlockPos> toFill = new FloodFillPathfinder(player.world, pos.x, pos.y, pos.z, block, meta, false, false).doFloodFill();
+                IBlockState state = player.world.getBlockState(pos);
+                Block block = state.getBlock();
+                Set<BlockPos> toFill = new FloodFillPathfinder(player.world, pos, block, state, false, false).doFloodFill();
                 for (BlockPos p1 : toFill) {
-                    player.world.setBlock(p1.x, p1.y, p1.z, settings.block, settings.meta, 3);
+                    player.world.setBlockState(p1, settings.block, settings.meta, 3);
                 }
             }
         }
@@ -182,8 +184,9 @@ public class ItemConstructionTool extends Item implements IItemKeyInterface, IBo
             {
                 BlockPos pos = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
                 if (pos != null) {
-                    settings.block = player.world.getBlock(pos.x, pos.y, pos.z);
-                    settings.meta = player.world.getBlockMetadata(pos.x, pos.y, pos.z);
+                    IBlockState state = player.world.getBlockState(pos);
+                    settings.block = state.getBlock();
+                    settings.meta = state.getBlock().getMetaFromState(state);
                     writeConstructionSettings(stack, settings);
                 }
             }

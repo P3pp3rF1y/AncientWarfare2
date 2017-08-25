@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
@@ -15,14 +14,11 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.NBTSerializableUtils;
 
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class TileWarehouseStorage extends TileControlled implements IWarehouseStorageTile, IInteractableTile {
 
     private InventorySlotlessBasic inventory;
@@ -195,7 +191,7 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
     }
 
     private void tryGetItem(EntityPlayer player, ItemStack filter, boolean shiftClick) {
-        ItemStack newCursorStack = filter.copy();
+        @Nonnull ItemStack newCursorStack = filter.copy();
         newCursorStack.setCount(0);
         int count;
         int toMove;

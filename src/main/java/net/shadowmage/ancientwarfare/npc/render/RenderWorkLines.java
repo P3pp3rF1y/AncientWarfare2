@@ -1,12 +1,12 @@
 package net.shadowmage.ancientwarfare.npc.render;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.item.ItemOrders;
@@ -39,8 +39,8 @@ public final class RenderWorkLines {
         if (player == null) {
             return;
         }
-        ItemStack stack = player.getCurrentEquippedItem();
-        if (stack == null || stack.getItem() == null) {
+        @Nonnull ItemStack stack = player.getCurrentEquippedItem();
+        if (stack.isEmpty() || stack.getItem() == null) {
             return;
         }
         Item item = stack.getItem();

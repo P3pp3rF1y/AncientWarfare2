@@ -183,7 +183,7 @@ public class ContainerBase extends Container {
     @Override
     protected boolean mergeItemStack(ItemStack incomingStack, int startIndex, int endBeforeIndex, boolean iterateBackwards) {
         Slot slotFromContainer;
-        ItemStack stackFromSlot;
+        @Nonnull ItemStack stackFromSlot;
         int currentIndex, start, stop, transferAmount;
         int iterator = iterateBackwards ? -1 : 1;
         start = iterateBackwards ? endBeforeIndex : startIndex;

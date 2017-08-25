@@ -280,7 +280,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
         if (amount <= 0) {
             return true;
         }
-        ItemStack stack;
+        @Nonnull ItemStack stack;
         int val;
         int eaten = 0;
         if (side >= 0 && inventory instanceof ISidedInventory) {

@@ -46,7 +46,7 @@ public class BlockTorqueGeneratorSterling extends BlockTorqueGenerator {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
-        return Blocks.iron_block.getIcon(side, 0);
+        return Blocks.IRON_BLOCK.getIcon(side, 0);
     }
 */
 

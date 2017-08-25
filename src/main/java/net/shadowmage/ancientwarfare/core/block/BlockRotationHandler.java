@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.core.block;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -13,14 +12,12 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Locale;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class BlockRotationHandler {
     public static EnumFacing getFaceForPlacement(EntityLivingBase entity, IRotatableBlock block, EnumFacing sideHit) {
         if (block.getRotationType() == RotationType.NONE) {
@@ -415,11 +412,11 @@ public class BlockRotationHandler {
 
         @Override
         public ItemStack decrStackSize(int var1, int var2) {
-            ItemStack stack = inventorySlots[var1];
+            @Nonnull ItemStack stack = inventorySlots[var1];
             if (!stack.isEmpty()) {
                 int qty = var2 > stack.getCount() ? stack.getCount() : var2;
                 stack.shrink(qty);
-                ItemStack returnStack = stack.copy();
+                @Nonnull ItemStack returnStack = stack.copy();
                 returnStack.setCount(qty);
                 if (stack.getCount() <= 0) {
                     inventorySlots[var1] = ItemStack.EMPTY;
@@ -435,7 +432,7 @@ public class BlockRotationHandler {
 
         @Override
         public ItemStack removeStackFromSlot(int var1) {
-            ItemStack stack = inventorySlots[var1];
+            @Nonnull ItemStack stack = inventorySlots[var1];
             inventorySlots[var1] = ItemStack.EMPTY;
             markDirty();
             return stack;

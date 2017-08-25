@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -12,7 +11,6 @@ import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
-@MethodsReturnNonnullByDefault
 public class TileWaterwheel extends TileTorqueSingleCell {
 
     public float wheelRotation;

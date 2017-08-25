@@ -1,16 +1,16 @@
 package net.shadowmage.ancientwarfare.structure;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.*;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent;
-import cpw.mods.fml.common.registry.EntityRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
@@ -19,7 +19,16 @@ import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlockLoader;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.command.CommandStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
-import net.shadowmage.ancientwarfare.structure.container.*;
+import net.shadowmage.ancientwarfare.structure.container.ContainerDraftingStation;
+import net.shadowmage.ancientwarfare.structure.container.ContainerGateControl;
+import net.shadowmage.ancientwarfare.structure.container.ContainerSoundBlock;
+import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvanced;
+import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvancedBlock;
+import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvancedInventoryBlock;
+import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvancedInventoryItem;
+import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerPlacer;
+import net.shadowmage.ancientwarfare.structure.container.ContainerStructureScanner;
+import net.shadowmage.ancientwarfare.structure.container.ContainerStructureSelection;
 import net.shadowmage.ancientwarfare.structure.crafting.AWStructureCrafting;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
@@ -36,14 +45,15 @@ import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator
 @Mod
         (
                 name = "Ancient Warfare Structures",
-                modid = "AncientWarfareStructure",
+                modid = AncientWarfareStructures.modID,
                 version = "@VERSION@",
                 dependencies = "required-after:AncientWarfare"
         )
 
 public class AncientWarfareStructures {
+    public static final String modID = "ancientwarfarestructure";
 
-    @Instance(value = "AncientWarfareStructure")
+    @Instance(value = modID)
     public static AncientWarfareStructures instance;
 
     @SidedProxy
@@ -71,7 +81,7 @@ public class AncientWarfareStructures {
             if (AWStructureStatics.enableTownGeneration)
                 GameRegistry.registerWorldGenerator(WorldTownGenerator.INSTANCE, 2);
         }
-        EntityRegistry.registerModEntity(EntityGate.class, "aw_gate", 0, this, 250, 200, false);
+        EntityRegistry.registerModEntity(new ResourceLocation() EntityGate.class, "aw_gate", 0, this, 250, 200, false);
         /**
          * internal registry
          */

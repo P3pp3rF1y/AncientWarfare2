@@ -19,8 +19,19 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite.WorkType;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.item.ItemHammer;
 import net.shadowmage.ancientwarfare.core.item.ItemQuill;
-import net.shadowmage.ancientwarfare.npc.ai.*;
-import net.shadowmage.ancientwarfare.npc.ai.owned.*;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIDoor;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIFleeHostiles;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedAlarmResponse;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedFindWorksite;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedFollowCommand;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedGetFood;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedIdleWhenHungry;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedRideHorse;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedWork;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedWorkRandom;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.item.ItemWorkOrder;
 import net.shadowmage.ancientwarfare.npc.orders.WorkOrder;
@@ -95,7 +106,7 @@ public class NpcWorker extends NpcPlayerOwned implements IWorker {
             if (item instanceof ItemTool) {
                 effectiveness += ((ItemTool) item).func_150913_i().getEfficiencyOnProperMaterial() * 0.05f;
             } else if (item instanceof ItemHoe) {
-                ToolMaterial mat = ToolMaterial.valueOf(((ItemHoe) item).getToolMaterialName());
+                ToolMaterial mat = ToolMaterial.VALUEOf(((ItemHoe) item).getToolMaterialName());
                 effectiveness += mat.getEfficiencyOnProperMaterial() * 0.05f;
             } else if (item instanceof ItemHammer) {
                 effectiveness += ((ItemHammer) item).getMaterial().getEfficiencyOnProperMaterial() * 0.05f;
@@ -136,7 +147,7 @@ public class NpcWorker extends NpcPlayerOwned implements IWorker {
     }
 
     protected WorkType getWorkTypeFromEquipment() {
-        ItemStack stack = getHeldItem();
+        @Nonnull ItemStack stack = getHeldItem();
         if (!stack.isEmpty() && stack.getItem() != null) {
             if (stack.getItem() instanceof ItemHoe) {
                 return WorkType.FARMING;

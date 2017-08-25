@@ -28,7 +28,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
@@ -319,26 +323,26 @@ public class BlockTools {
         return new BlockPos(x, pos.y, z);
     }
 
-    public static boolean breakBlockAndDrop(World world, EntityPlayer player, int x, int y, int z) {
-        return breakBlock(world, player, x, y, z, 0, true);
+    public static boolean breakBlockAndDrop(World world, EntityPlayer player, BlockPos pos) {
+        return breakBlock(world, player, pos, 0, true);
     }
 
-    public static boolean breakBlock(World world, EntityPlayer player, int x, int y, int z, int fortune, boolean doDrop) {
+    public static boolean breakBlock(World world, EntityPlayer player, BlockPos pos, int fortune, boolean doDrop) {
         if (world.isRemote) {
             return false;
         }
-        Block block = world.getBlock(x, y, z);
-        if (block.isAir(world, x, y, z) || block.getBlockHardness(world, x, y, z) < 0) {
+        IBlockState state = world.getBlockState(pos);
+        Block block = state.getBlock();
+        if (world.isAirBlock(pos) || state.getBlockHardness(world, pos) < 0) {
             return false;
         }
         if (doDrop) {
-            int meta = world.getBlockMetadata(x, y, z);
-            if (!canBreakBlock(world, player, x, y, z, block, meta)) {
+            if (!canBreakBlock(world, player, pos, state)) {
                 return false;
             }
-            block.dropBlockAsItem(world, x, y, z, meta, fortune);
+            block.dropBlockAsItem(world, pos, state, fortune);
         }
-        return world.setBlockToAir(x, y, z);
+        return world.setBlockToAir(pos);
     }
 
 

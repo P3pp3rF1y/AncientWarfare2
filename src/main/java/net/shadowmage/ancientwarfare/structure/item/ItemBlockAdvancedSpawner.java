@@ -1,7 +1,5 @@
 package net.shadowmage.ancientwarfare.structure.item;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,8 +8,9 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
@@ -89,7 +88,7 @@ public class ItemBlockAdvancedSpawner extends ItemBlock implements IItemKeyInter
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs creativeTab, List stackList) {
-        ItemStack stack = new ItemStack(this.field_150939_a);
+        @Nonnull ItemStack stack = new ItemStack(this.field_150939_a);
         SpawnerSettings settings = SpawnerSettings.getDefaultSettings();
         NBTTagCompound defaultTag = new NBTTagCompound();
         settings.writeToNBT(defaultTag);

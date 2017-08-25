@@ -168,13 +168,13 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
                 toSide = -1;
             }
             int moved = 0;
-            ItemStack stack;
+            @Nonnull ItemStack stack;
             int stackSize = 0;
             int fromIndices[] = InventoryTools.getSlotsForSide(from, fromSide);
             boolean shouldMove;
             for (int index : fromIndices) {
                 stack = from.getStackInSlot(index);
-                if (stack == null) {
+                if (stack.isEmpty()) {
                     continue;
                 }
                 shouldMove = false;
@@ -190,11 +190,11 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
                 }
                 if (shouldMove) {
                     stack = InventoryTools.mergeItemStack(to, stack, toSide);
-                    if (stack == null) {
+                    if (stack.isEmpty()) {
                         from.setInventorySlotContents(index, ItemStack.EMPTY);
                     }
                 }
-                if (stack == null || stack.getCount() != stackSize) {
+                if (stack.isEmpty() || stack.getCount() != stackSize) {
                     moved++;
                     from.markDirty();
                 }
@@ -210,13 +210,13 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
                 toSide = -1;
             }
             int moved = 0;
-            ItemStack stack;
+            @Nonnull ItemStack stack;
             int stackSize = 0;
             int fromIndices[] = InventoryTools.getSlotsForSide(from, fromSide);
             boolean shouldMove;
             for (int index : fromIndices) {
                 stack = from.getStackInSlot(index);
-                if (stack == null) {
+                if (stack.isEmpty()) {
                     continue;
                 }
                 shouldMove = true;
@@ -232,11 +232,11 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
                 }
                 if (shouldMove) {
                     stack = InventoryTools.mergeItemStack(to, stack, toSide);
-                    if (stack == null) {
+                    if (stack.isEmpty()) {
                         from.setInventorySlotContents(index, ItemStack.EMPTY);
                     }
                 }
-                if (stack == null || stack.getCount() != stackSize) {
+                if (stack.isEmpty() || stack.getCount() != stackSize) {
                     moved++;
                     from.markDirty();
                 }
@@ -349,7 +349,7 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
                     // the source doesn't have enough to fulfill the minimum requirement
                     continue;
                 }
-                ItemStack filterAdjusted = filter.copy();
+                @Nonnull ItemStack filterAdjusted = filter.copy();
                 filterAdjusted.setCount(toMove);
                 if (!InventoryTools.canInventoryHold(to, toSide, filterAdjusted))
                     continue;

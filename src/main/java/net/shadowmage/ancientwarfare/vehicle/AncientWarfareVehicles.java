@@ -1,11 +1,11 @@
 package net.shadowmage.ancientwarfare.vehicle;
 
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
@@ -21,14 +21,15 @@ import net.shadowmage.ancientwarfare.vehicle.proxy.VehicleCommonProxy;
 @Mod
         (
                 name = "Ancient Warfare Vehicles",
-                modid = "AncientWarfareVehicle",
+                modid = AncientWarfareVehicles.modID,
                 version = "@VERSION@",
                 dependencies = "required-after:AncientWarfare"
         )
 
 public class AncientWarfareVehicles {
+    public static final String modID = "ancientwarfarevehicle";
 
-    @Instance(value = "AncientWarfareVehicle")
+    @Instance(value = modID)
     public static AncientWarfareVehicles instance;
 
     @SidedProxy

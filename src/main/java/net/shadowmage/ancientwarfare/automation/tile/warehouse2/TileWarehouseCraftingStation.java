@@ -1,7 +1,11 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.*;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.IInventoryChangedListener;
+import net.minecraft.inventory.InventoryCraftResult;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -14,6 +18,8 @@ import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+
+import javax.annotation.Nonnull;
 
 public class TileWarehouseCraftingStation extends TileEntity implements IInteractableTile, IInventoryChangedListener {
 
@@ -46,10 +52,10 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
      * called to shadow a copy of the input matrix, to know what to refill
      */
     public void preItemCrafted() {
-        ItemStack stack;
+        @Nonnull ItemStack stack;
         for (int i = 0; i < layoutMatrix.getSizeInventory(); i++) {
             stack = layoutMatrix.getStackInSlot(i);
-            matrixShadow[i] = stack == null ? null : stack.copy();
+            matrixShadow[i] = stack.isEmpty() ? null : stack.copy();
         }
     }
 
@@ -60,13 +66,13 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
         }
         AWLog.logDebug("crafting item...");
         int q;
-        ItemStack layoutStack;
+        @Nonnull ItemStack layoutStack;
         for (int i = 0; i < layoutMatrix.getSizeInventory(); i++) {
             layoutStack = matrixShadow[i];
             if (layoutStack == null) {
                 continue;
             }
-            if (layoutMatrix.getStackInSlot(i) != null) {
+            if (!layoutMatrix.getStackInSlot(i).isEmpty()) {
                 continue;
             }
             q = warehouse.getCountOf(layoutStack);

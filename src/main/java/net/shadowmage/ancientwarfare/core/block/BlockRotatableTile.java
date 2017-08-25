@@ -1,24 +1,20 @@
 package net.shadowmage.ancientwarfare.core.block;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-
-import net.minecraft.world.IBlockAccess;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 
 public abstract class BlockRotatableTile extends Block implements IRotatableBlock {
 
+/*
     private final IconRotationMap iconMap = new IconRotationMap();
+*/
 
     protected BlockRotatableTile(Material material) {
         super(material);
     }
 
+/*
     @Override
     public Block setIcon(RelativeSide side, String texName) {
         iconMap.setIcon(this, side, texName);
@@ -43,5 +39,6 @@ public abstract class BlockRotatableTile extends Block implements IRotatableBloc
     public IIcon getIcon(int side, int meta) {
         return iconMap.getIcon(this, meta, side);
     }
+*/
 
 }

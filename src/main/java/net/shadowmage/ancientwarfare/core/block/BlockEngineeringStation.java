@@ -1,13 +1,16 @@
 package net.shadowmage.ancientwarfare.core.block;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
@@ -17,6 +20,7 @@ public class BlockEngineeringStation extends BlockRotatableTile {
     protected BlockEngineeringStation() {
         super(Material.ROCK);
         this.setCreativeTab(AWCoreBlockLoader.coreTab);
+/*
         setIcon(RelativeSide.ANY_SIDE, "ancientwarfare:core/engineering_station_bottom");
         setIcon(RelativeSide.BOTTOM, "ancientwarfare:core/engineering_station_bottom");
         setIcon(RelativeSide.TOP, "ancientwarfare:core/engineering_station_top");
@@ -24,6 +28,7 @@ public class BlockEngineeringStation extends BlockRotatableTile {
         setIcon(RelativeSide.REAR, "ancientwarfare:core/engineering_station_front");
         setIcon(RelativeSide.LEFT, "ancientwarfare:core/engineering_station_side");
         setIcon(RelativeSide.RIGHT, "ancientwarfare:core/engineering_station_side");
+*/
         setHardness(2.f);
     }
 
@@ -38,9 +43,9 @@ public class BlockEngineeringStation extends BlockRotatableTile {
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float p_149727_7_, float p_149727_8_, float p_149727_9_) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (!world.isRemote) {
-            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_CRAFTING, x, y, z);
+            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_CRAFTING, pos);
         }
         return true;
     }
@@ -51,7 +56,7 @@ public class BlockEngineeringStation extends BlockRotatableTile {
         if (tile != null) {
             tile.onBlockBreak();
         }
-        super.breakBlock(world, x, y, z, block, meta);
+        super.breakBlock(world, pos, state);
     }
 
     @Override

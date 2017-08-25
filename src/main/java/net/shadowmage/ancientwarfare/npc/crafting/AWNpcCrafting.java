@@ -47,14 +47,14 @@ public class AWNpcCrafting {
                 "gf",
                 "gt",
                 'f', "foodBundle",
-                't', Blocks.wool,
+                't', Blocks.WOOL,
                 'g', "ingotGold");
         //trader spawner
         AWCraftingManager.INSTANCE.createRecipe(ItemNpcSpawner.getStackForNpcType("trader", ""), "trade",
                 "gf_",
                 "gtb",
                 'f', "foodBundle",
-                't', Blocks.wool,
+                't', Blocks.WOOL,
                 'g', "ingotGold",
                 'b', Items.BOOK);
         //priest spawner
@@ -83,12 +83,12 @@ public class AWNpcCrafting {
 
         @Override
         public boolean matches(InventoryCrafting var1, World var2) {
-            ItemStack order1 = null, order2 = null;
+            @Nonnull ItemStack order1 = ItemStack.EMPTY, order2 = ItemStack.EMPTY;
             boolean foundOtherStuff = false;
-            ItemStack stack;
+            @Nonnull ItemStack stack;
             for (int i = 0; i < var1.getSizeInventory(); i++) {
                 stack = var1.getStackInSlot(i);
-                if (stack == null) {
+                if (stack.isEmpty()) {
                     continue;
                 }
                 if (stack.getItem() == item) {
@@ -110,12 +110,12 @@ public class AWNpcCrafting {
 
         @Override
         public ItemStack getCraftingResult(InventoryCrafting var1) {
-            ItemStack order1 = null, order2 = null;
+            @Nonnull ItemStack order1 = ItemStack.EMPTY, order2 = ItemStack.EMPTY;
             boolean foundOtherStuff = false;
-            ItemStack stack;
+            @Nonnull ItemStack stack;
             for (int i = 0; i < var1.getSizeInventory(); i++) {
                 stack = var1.getStackInSlot(i);
-                if (stack == null) {
+                if (stack.isEmpty()) {
                     continue;
                 }
                 if (stack.getItem() == item) {
@@ -135,7 +135,7 @@ public class AWNpcCrafting {
             if (foundOtherStuff || order1 == null || order2 == null) {
                 return null;
             }
-            ItemStack retStack = order2.copy();
+            @Nonnull ItemStack retStack = order2.copy();
             if (order1.stackTagCompound != null) {
                 retStack.setTagCompound((NBTTagCompound) order1.stackTagCompound.copy());
             } else {

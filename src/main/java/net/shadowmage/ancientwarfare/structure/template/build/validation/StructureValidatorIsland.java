@@ -99,7 +99,7 @@ public class StructureValidatorIsland extends StructureValidator {
                     if (block != null && validTargetBlocks.contains(BlockDataManager.INSTANCE.getNameForBlock(block))) {
                         break;
                     } else {
-                        world.setBlock(bx, by, bz, Blocks.dirt);
+                        world.setBlock(bx, by, bz, Blocks.DIRT);
                     }
                 }
             }
@@ -110,7 +110,7 @@ public class StructureValidatorIsland extends StructureValidator {
     public void handleClearAction(World world, int x, int y, int z, StructureTemplate template, StructureBB bb) {
         int maxWaterY = bb.min.y + template.yOffset - 1;
         if (y <= maxWaterY) {
-            world.setBlock(x, y, z, Blocks.water);
+            world.setBlock(x, y, z, Blocks.WATER);
         } else {
             super.handleClearAction(world, x, y, z, template, bb);
         }

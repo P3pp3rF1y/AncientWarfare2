@@ -76,7 +76,7 @@ public class TemplateRuleGates extends TemplateRuleEntity {
         for (int x1 = min.x; x1 <= max.x; x1++) {
             for (int y1 = min.y; y1 <= max.y; y1++) {
                 for (int z1 = min.z; z1 <= max.z; z1++) {
-                    world.setBlock(x1, y1, z1, Blocks.air);
+                    world.setBlock(x1, y1, z1, Blocks.AIR);
                 }
             }
         }

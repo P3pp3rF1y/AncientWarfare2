@@ -61,15 +61,15 @@ public class TileEngineeringStation extends TileEntity implements IRotatableTile
      * called to shadow a copy of the input matrix, to know what to refill
      */
     public void preItemCrafted() {
-        ItemStack stack;
+        @Nonnull ItemStack stack;
         for (int i = 0; i < layoutMatrix.getSizeInventory(); i++) {
             stack = layoutMatrix.getStackInSlot(i);
-            matrixShadow[i] = stack == null ? null : stack.copy();
+            matrixShadow[i] = stack.isEmpty() ? null : stack.copy();
         }
     }
 
     public void onItemCrafted() {
-        ItemStack layoutStack;
+        @Nonnull ItemStack layoutStack;
         for (int i = 0; i < layoutMatrix.getSizeInventory(); i++) {
             layoutStack = matrixShadow[i];
             if (layoutStack == null) {

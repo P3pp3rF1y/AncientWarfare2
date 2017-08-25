@@ -12,6 +12,8 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
+import javax.annotation.Nonnull;
+
 public class TileSterlingEngine extends TileTorqueSingleCell implements IInventory {
 
     private final InventoryBasic fuelInventory = new InventoryBasic(1) {
@@ -80,8 +82,8 @@ public class TileSterlingEngine extends TileTorqueSingleCell implements IInvento
 
     @Override
     public ItemStack decrStackSize(int var1, int var2) {
-        ItemStack stack = fuelInventory.decrStackSize(var1, var2);
-        if(stack!=null)
+        @Nonnull ItemStack stack = fuelInventory.decrStackSize(var1, var2);
+        if(!stack.isEmpty())
             markDirty();
         return stack;
     }
@@ -158,7 +160,7 @@ public class TileSterlingEngine extends TileTorqueSingleCell implements IInvento
         burnTime = tag.getInteger("burnTicks");
         burnTimeBase = tag.getInteger("burnTicksBase");
         if (tag.hasKey("inventory")) {
-            fuelInventory.readFromNBT(tag.getCompoundTag("inventory"));
+            fuelInventory.deserializeNBT(tag.getCompoundTag("inventory"));
         }
     }
 
@@ -167,7 +169,7 @@ public class TileSterlingEngine extends TileTorqueSingleCell implements IInvento
         super.writeToNBT(tag);
         tag.setInteger("burnTicks", burnTime);
         tag.setInteger("burnTicksBase", burnTimeBase);
-        tag.setTag("inventory", fuelInventory.writeToNBT(new NBTTagCompound()));
+        tag.setTag("inventory", fuelInventory.serializeNBT());
         return tag;
     }
 

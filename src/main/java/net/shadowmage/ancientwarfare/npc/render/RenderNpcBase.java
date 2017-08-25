@@ -137,7 +137,7 @@ public class RenderNpcBase extends RenderBiped {
     protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2) {
         super.renderEquippedItems(par1EntityLiving, par2);
         NpcBase npc = (NpcBase) par1EntityLiving;
-        ItemStack itemstack = npc.getShieldStack();
+        @Nonnull ItemStack itemstack = npc.getShieldStack();
         Item item;
 
         //TODO clean up this copypasta code

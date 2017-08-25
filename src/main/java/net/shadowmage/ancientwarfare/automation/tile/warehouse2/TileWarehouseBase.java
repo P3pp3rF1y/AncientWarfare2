@@ -1,10 +1,10 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
@@ -18,15 +18,13 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public abstract class TileWarehouseBase extends TileWorksiteBounded implements IControllerTile {
 
     private boolean init;
@@ -140,8 +138,8 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
     }
 
     private boolean tryRemoveFromRequest(TileWarehouseInterface tile, InterfaceEmptyRequest request) {
-        ItemStack stack = tile.getStackInSlot(request.slotNum);
-        if (stack == null) {
+        @Nonnull ItemStack stack = tile.getStackInSlot(request.slotNum);
+        if (stack.isEmpty()) {
             return false;
         }
         int count = stack.getCount();
@@ -196,7 +194,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
         List<IWarehouseStorageTile> potentialStorage = new ArrayList<IWarehouseStorageTile>();
         storageMap.getDestinations(request.requestedItem, potentialStorage);
         int found, moved;
-        ItemStack stack;
+        @Nonnull ItemStack stack;
         int stackSize;
         for (IWarehouseStorageTile source : potentialStorage) {
             found = source.getQuantityStored(request.requestedItem);
@@ -204,9 +202,9 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
                 stack = request.requestedItem.copy();
                 stack.setCount(found > stack.getMaxStackSize() ? stack.getMaxStackSize() : found);
                 stackSize = stack.getCount();
-                stack = InventoryTools.mergeItemStack(tile.inventory, stack, -1);
-                if (stack == null || stack.getCount() != stackSize) {
-                    moved = stack == null ? stackSize : stackSize - stack.getCount();
+                stack = InventoryTools.mergeItemStack(tile.inventory, stack, (EnumFacing) null);
+                if (stack.isEmpty() || stack.getCount() != stackSize) {
+                    moved = stack.isEmpty() ? stackSize : stackSize - stack.getCount();
                     source.extractItem(request.requestedItem, moved);
                     cachedItemMap.decreaseCount(request.requestedItem, moved);
                     updateViewers();

@@ -39,12 +39,12 @@ public class StructureBB extends Zone{
          * we simply take the clicked on position
          * and walk left/forward/down by the structure offsets
          */
-        BlockPos c1 = new BlockPos(x, y, z).moveLeft(face, xOffset).moveForward(face, zOffset).moveUp(-yOffset);
+        BlockPos c1 = new BlockPos(x, y, z).moveLeft(face, xOffset).moveForward(face, zOffset).up(-yOffset);
         /**
          * the second corner starts as a copy of the first corner
          * which then walks right, backwards, and up to arrive at the actual second corner
          */
-        BlockPos c2 = c1.moveRight(face, xSize - 1).moveForward(face, -(zSize - 1)).moveUp(ySize - 1);
+        BlockPos c2 = c1.moveRight(face, xSize - 1).moveForward(face, -(zSize - 1)).up(ySize - 1);
         /**
          * finally, set the min/max of this BB to the min/max of the two corners
          */

@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,9 +14,12 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.NBTSerializableUtils;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
-@MethodsReturnNonnullByDefault
 public class TileWarehouseStockViewer extends TileControlled implements IOwnable, IInteractableTile {
 
     private final List<WarehouseStockFilter> filters = new ArrayList<WarehouseStockFilter>();
@@ -219,7 +221,7 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
 
         public void setItem(ItemStack item) {
             this.item = item;
-            this.hashKey = item == null ? null : new ItemHashEntry(item);
+            this.hashKey = item.isEmpty() ? null : new ItemHashEntry(item);
         }
 
         public void setQuantity(int quantity) {
@@ -246,7 +248,7 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
 
         @Override
         public void deserializeNBT(NBTTagCompound tag) {
-            setItem(tag.hasKey("item") ? new ItemStack(tag.getCompoundTag("item")) : null);
+            setItem(tag.hasKey("item") ? new ItemStack(tag.getCompoundTag("item")) : ItemStack.EMPTY);
             setQuantity(tag.getInteger("quantity"));
         }
     }

@@ -37,7 +37,14 @@ import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 public abstract class StructureValidator {
 
@@ -153,7 +160,7 @@ public abstract class StructureValidator {
      * validation type -- e.g. air or water
      */
     public void handleClearAction(World world, int x, int y, int z, StructureTemplate template, StructureBB bb){
-        world.setBlock(x, y, z, Blocks.air);
+        world.setBlock(x, y, z, Blocks.AIR);
     }
 
     public static boolean startLow(String text, String test){
@@ -507,13 +514,13 @@ public abstract class StructureValidator {
             handleClearAction(world, x, y, z, template, bb);
         }
         BiomeGenBase biome = world.getBiomeGenForCoords(x, z);
-        Block fillBlock = Blocks.grass;
+        Block fillBlock = Blocks.GRASS;
         if (biome != null && biome.topBlock != null) {
             fillBlock = biome.topBlock;
         }
         int y = bb.min.y + template.yOffset + step - 1;
         Block block = world.getBlock(x, y, z);
-        if (block != null && block != Blocks.air && block.getMaterial() != Material.water && !AWStructureStatics.skippableBlocksContains(block)) {
+        if (block != null && block != Blocks.AIR && block.getMaterial() != Material.WATER && !AWStructureStatics.skippableBlocksContains(block)) {
             world.setBlock(x, y, z, fillBlock);
         }
     }
@@ -527,13 +534,13 @@ public abstract class StructureValidator {
         maxFillY -= step;
         Block block;
         BiomeGenBase biome = world.getBiomeGenForCoords(x, z);
-        Block fillBlockID = Blocks.grass;
+        Block fillBlockID = Blocks.GRASS;
         if (biome != null && biome.topBlock != null) {
             fillBlockID = biome.topBlock;
         }
         for (int y = maxFillY; y > 1; y--) {
             block = world.getBlock(x, y, z);
-            if (AWStructureStatics.skippableBlocksContains(block) || block == Blocks.water || block == Blocks.flowing_water) {
+            if (AWStructureStatics.skippableBlocksContains(block) || block == Blocks.WATER || block == Blocks.FLOWING_WATER) {
                 world.setBlock(x, y, z, fillBlockID);
             }
         }
@@ -542,7 +549,7 @@ public abstract class StructureValidator {
     protected void underFill(World world, int x, int z, StructureTemplate template, StructureBB bb) {
         int topFilledY = WorldStructureGenerator.getTargetY(world, x, z, true);
         BiomeGenBase biome = world.getBiomeGenForCoords(x, z);
-        Block fillBlockID = Blocks.grass;
+        Block fillBlockID = Blocks.GRASS;
         if (biome != null && biome.topBlock != null) {
             fillBlockID = biome.topBlock;
         }

@@ -102,17 +102,17 @@ public class BlockFlywheel extends BlockTorqueBase {
     public IIcon getIcon(int side, int meta) {
         switch (meta) {
             case 0: {
-                return Blocks.planks.getIcon(side, 0);
+                return Blocks.PLANKS.getIcon(side, 0);
             }
             case 1: {
-                return Blocks.iron_block.getIcon(side, 0);
+                return Blocks.IRON_BLOCK.getIcon(side, 0);
             }
             case 2: {
                 //TODO change this to steel block icon...once I make a steel block...
-                return Blocks.iron_block.getIcon(side, 0);
+                return Blocks.IRON_BLOCK.getIcon(side, 0);
             }
         }
-        return Blocks.iron_block.getIcon(side, 0);
+        return Blocks.IRON_BLOCK.getIcon(side, 0);
     }
 */
 

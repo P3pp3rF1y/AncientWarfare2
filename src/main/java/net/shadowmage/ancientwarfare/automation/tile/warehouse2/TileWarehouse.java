@@ -1,17 +1,14 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class TileWarehouse extends TileWarehouseBase {
 
     public TileWarehouse() {
@@ -54,7 +51,7 @@ public class TileWarehouse extends TileWarehouseBase {
 
     private void tryGetItem(EntityPlayer player, ItemStack filter, boolean shiftClick) {
         List<IWarehouseStorageTile> destinations = new ArrayList<IWarehouseStorageTile>();
-        ItemStack newCursorStack = filter.copy();
+        @Nonnull ItemStack newCursorStack = filter.copy();
         newCursorStack.setCount(0);
         storageMap.getDestinations(filter, destinations);
         int count;

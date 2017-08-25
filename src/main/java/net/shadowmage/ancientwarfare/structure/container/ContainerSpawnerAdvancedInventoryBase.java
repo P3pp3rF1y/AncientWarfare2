@@ -62,10 +62,10 @@ public class ContainerSpawnerAdvancedInventoryBase extends ContainerBase {
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
-        ItemStack slotStackCopy = null;
+        @Nonnull ItemStack slotStackCopy = ItemStack.EMPTY;
         Slot theSlot = this.getSlot(slotClickedIndex);
         if (theSlot != null && theSlot.getHasStack()) {
-            ItemStack slotStack = theSlot.getStack();
+            @Nonnull ItemStack slotStack = theSlot.getStack();
             slotStackCopy = slotStack.copy();
             int playerSlotEnd = playerSlots;
             int storageSlots = playerSlotEnd + 9;
@@ -83,7 +83,7 @@ public class ContainerSpawnerAdvancedInventoryBase extends ContainerBase {
                 }
             }
             if (slotStack.getCount() == 0) {
-                theSlot.putStack(null);
+                theSlot.putStack(ItemStack.EMPTY);
             } else {
                 theSlot.onSlotChanged();
             }

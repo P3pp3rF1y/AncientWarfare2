@@ -1,20 +1,39 @@
 package net.shadowmage.ancientwarfare.automation;
 
-import cpw.mods.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
 import net.shadowmage.ancientwarfare.automation.chunkloader.AWChunkLoader;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
-import net.shadowmage.ancientwarfare.automation.container.*;
+import net.shadowmage.ancientwarfare.automation.container.ContainerChunkLoaderDeluxe;
+import net.shadowmage.ancientwarfare.automation.container.ContainerMailbox;
+import net.shadowmage.ancientwarfare.automation.container.ContainerTorqueGeneratorSterling;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseCraftingStation;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseInterface;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStockViewer;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStorage;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteAnimalControl;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteAnimalFarm;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteAutoCrafting;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteBoundsAdjust;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteCropFarm;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteFishControl;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteFishFarm;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteInventorySideSelection;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteMushroomFarm;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteQuarry;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteReedFarm;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteTreeFarm;
 import net.shadowmage.ancientwarfare.automation.crafting.AWAutomationCrafting;
 import net.shadowmage.ancientwarfare.automation.gamedata.MailboxTicker;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
@@ -28,13 +47,14 @@ import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
 @Mod
         (
                 name = "Ancient Warfare Automation",
-                modid = "AncientWarfareAutomation",
+                modid = AncientWarfareAutomation.modID,
                 version = "@VERSION@",
                 dependencies = "required-after:AncientWarfare;after:CoFHCore;after:BuildCraft|Core"
         )
 public class AncientWarfareAutomation {
+    public static final String modID = "ancientwarfareautomation";
 
-    @Instance(value = "AncientWarfareAutomation")
+    @Instance(value = modID)
     public static AncientWarfareAutomation instance;
 
     @SidedProxy
@@ -59,23 +79,23 @@ public class AncientWarfareAutomation {
         }
         RFProxy.loadInstance();
 
-        /**
+        /*
          * setup module-owned config file and config-access class
          */
         statics = new AWAutomationStatics("AncientWarfareAutomation");
 
-        /**
+        /*
          * load items and blocks
          */
         AWAutomationBlockLoader.load();
         AWAutomationItemLoader.load();
 
-        /**
+        /*
          * must be loaded after items/blocks, as it needs them registered
          */
         proxy.registerClient();
 
-        /**
+        /*
          * register containers
          */
         NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_INVENTORY_SIDE_ADJUST, ContainerWorksiteInventorySideSelection.class);
@@ -99,7 +119,7 @@ public class AncientWarfareAutomation {
         NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_STOCK, ContainerWarehouseStockViewer.class);
         NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_BOUNDS, ContainerWorksiteBoundsAdjust.class);
 
-        /**
+        /*
          * register tick-handlers
          */
         FMLCommonHandler.instance().bus().register(MailboxTicker.INSTANCE);
@@ -110,7 +130,7 @@ public class AncientWarfareAutomation {
 
     @EventHandler
     public void init(FMLInitializationEvent evt) {
-        /**
+        /*
          * construct recipes, load plugins
          */
         AWAutomationCrafting.loadRecipes();
@@ -119,7 +139,7 @@ public class AncientWarfareAutomation {
 
     @SubscribeEvent
     public void onConfigChanged(OnConfigChangedEvent evt) {
-        if (AncientWarfareCore.modID.equals(evt.modID)) {
+        if (AncientWarfareCore.modID.equals(evt.getModID())) {
             statics.save();
         }
     }

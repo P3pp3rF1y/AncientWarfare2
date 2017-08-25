@@ -1,6 +1,8 @@
 package net.shadowmage.ancientwarfare.structure.item;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
@@ -12,30 +14,28 @@ public class FloodFillPathfinder {
     private int maxDist = 40;//TODO set from config
 
     World world;
-    int x, y, z;//starting position
+    private BlockPos startingPos;
     Block block;//target flood fill block
-    int meta;
+    private IBlockState targetState;
     boolean searchUpwards;
     boolean searchDownwards;
 
-    ArrayList<BlockPos> openList = new ArrayList<BlockPos>();
-    Set<BlockPos> closedList = new HashSet<BlockPos>();
-    Set<BlockPos> neighborCache = new HashSet<BlockPos>();
-    Set<BlockPos> returnSet = new HashSet<BlockPos>();
+    ArrayList<BlockPos> openList = new ArrayList<>();
+    Set<BlockPos> closedList = new HashSet<>();
+    Set<BlockPos> neighborCache = new HashSet<>();
+    Set<BlockPos> returnSet = new HashSet<>();
 
-    public FloodFillPathfinder(World world, int x, int y, int z, Block block, int meta, boolean up, boolean down) {
+    public FloodFillPathfinder(World world, BlockPos startingPos, Block block, IBlockState targetState, boolean up, boolean down) {
         this.world = world;
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        this.startingPos = startingPos;
         this.block = block;
-        this.meta = meta;
+        this.targetState = targetState;
         this.searchUpwards = up;
         this.searchDownwards = down;
     }
 
     public Set<BlockPos> doFloodFill() {
-        openList.add(new BlockPos(x, y, z));
+        openList.add(startingPos);
         BlockPos pos;
         while (!openList.isEmpty()) {
             pos = openList.remove(0);
@@ -55,7 +55,8 @@ public class FloodFillPathfinder {
     }
 
     private boolean isValidPosition(BlockPos pos) {
-        return isWithinDist(pos) && world.getBlock(pos.x, pos.y, pos.z) == block && world.getBlockMetadata(pos.x, pos.y, pos.z) == meta;
+        IBlockState state = world.getBlockState(pos);
+        return isWithinDist(pos) && state.getBlock() == block && state.equals(targetState);
     }
 
     private boolean isWithinDist(BlockPos pos) {

@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.gui;
 
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteInventorySideSelection;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
@@ -43,12 +44,12 @@ public class GuiWorksiteInventorySideSelection extends GuiContainerBase<Containe
 
         SideButton sideButton;
         RelativeSide accessed;
-        int dir;
+        EnumFacing dir;
         for (RelativeSide side : RotationType.FOUR_WAY.getValidSides()) {
             label = new Label(8, height, side.getTranslationKey());
             addGuiElement(label);
 
-            dir = RelativeSide.getMCSideToAccess(RotationType.FOUR_WAY, getContainer().tileEntity.getPrimaryFacing().ordinal(), side);
+            dir = RelativeSide.getMCSideToAccess(RotationType.FOUR_WAY, getContainer().tileEntity.getPrimaryFacing(), side);
             label = new Label(74, height, Direction.getDirectionFor(dir).getTranslationKey());
             addGuiElement(label);
 

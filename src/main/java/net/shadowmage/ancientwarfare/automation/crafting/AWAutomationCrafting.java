@@ -16,17 +16,17 @@ public class AWAutomationCrafting {
      */
     public static void loadRecipes() {
 
-        ItemStack upgradeBoundsMed = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.SIZE_MEDIUM.ordinal());//engineering
-        ItemStack upgradeBoundsLarge = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.SIZE_LARGE.ordinal());//mathematics
-        ItemStack upgradeQuarryMed = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.QUARRY_MEDIUM.ordinal());//mining
-        ItemStack upgradeQuarryLarge = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.QUARRY_LARGE.ordinal());//machinery
-        ItemStack upgradeEnchantedTools1 = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.ENCHANTED_TOOLS_1.ordinal());//mathematics
-        ItemStack upgradeEnchantedTools2 = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.ENCHANTED_TOOLS_2.ordinal());//mass production
-        ItemStack upgradeQualityTools1 = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.TOOL_QUALITY_1.ordinal());//engineering
-        ItemStack upgradeQualityTools2 = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.TOOL_QUALITY_2.ordinal());//construction
-        ItemStack upgradeQualityTools3 = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.TOOL_QUALITY_3.ordinal());//refining
-        ItemStack upgradeBasicChunkloader = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.BASIC_CHUNK_LOADER.ordinal());//mathematics
-        ItemStack upgradeQuarryChunkloader = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.QUARRY_CHUNK_LOADER.ordinal());//machinery
+        @Nonnull ItemStack upgradeBoundsMed = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.SIZE_MEDIUM.ordinal());//engineering
+        @Nonnull ItemStack upgradeBoundsLarge = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.SIZE_LARGE.ordinal());//mathematics
+        @Nonnull ItemStack upgradeQuarryMed = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.QUARRY_MEDIUM.ordinal());//mining
+        @Nonnull ItemStack upgradeQuarryLarge = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.QUARRY_LARGE.ordinal());//machinery
+        @Nonnull ItemStack upgradeEnchantedTools1 = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.ENCHANTED_TOOLS_1.ordinal());//mathematics
+        @Nonnull ItemStack upgradeEnchantedTools2 = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.ENCHANTED_TOOLS_2.ordinal());//mass production
+        @Nonnull ItemStack upgradeQualityTools1 = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.TOOL_QUALITY_1.ordinal());//engineering
+        @Nonnull ItemStack upgradeQualityTools2 = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.TOOL_QUALITY_2.ordinal());//construction
+        @Nonnull ItemStack upgradeQualityTools3 = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.TOOL_QUALITY_3.ordinal());//refining
+        @Nonnull ItemStack upgradeBasicChunkloader = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.BASIC_CHUNK_LOADER.ordinal());//mathematics
+        @Nonnull ItemStack upgradeQuarryChunkloader = AWItems.worksiteUpgrade.getSubItem(WorksiteUpgrade.QUARRY_CHUNK_LOADER.ordinal());//machinery
 
         //TODO json recipes
         //TODO fence type agnostic recipes?
@@ -59,7 +59,7 @@ public class AWAutomationCrafting {
                 'f', Blocks.OAK_FENCE,
                 'i', "ingotIron");
 
-        ItemStack enchantedBook = new ItemStack(Items.ENCHANTED_BOOK);
+        @Nonnull ItemStack enchantedBook = new ItemStack(Items.ENCHANTED_BOOK);
         enchantedBook.addEnchantment(Enchantments.FORTUNE, 1);
 
         AWCraftingManager.INSTANCE.createRecipe(upgradeEnchantedTools1, "mathematics",

@@ -107,7 +107,7 @@ public void sendDataToGUI(NBTTagCompound tag)
 @Override
 public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex)
   {
-  ItemStack slotStackCopy = null;
+  ItemStack slotStackCopy = ItemStack.EMPTY;
   Slot theSlot = (Slot)this.inventorySlots.get(slotClickedIndex);
   if (theSlot != null && theSlot.getHasStack())
     {

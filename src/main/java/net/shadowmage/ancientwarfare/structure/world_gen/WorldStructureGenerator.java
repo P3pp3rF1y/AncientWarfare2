@@ -48,15 +48,15 @@ public class WorldStructureGenerator implements IWorldGenerator {
     public static final HashSet<String> defaultTargetBlocks = new HashSet<String>();
 
     static {
-        defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.dirt));
-        defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.grass));
-        defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.stone));
-        defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.sand));
-        defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.gravel));
-        defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.sandstone));
-        defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.clay));
-        defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.iron_ore));
-        defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.coal_ore));
+        defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.DIRT));
+        defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.GRASS));
+        defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.STONE));
+        defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.SAND));
+        defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.GRAVEL));
+        defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.SANDSTONE));
+        defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.CLAY));
+        defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.IRON_ORE));
+        defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.COAL_ORE));
     }
 
     public static final WorldStructureGenerator INSTANCE = new WorldStructureGenerator();
@@ -118,7 +118,7 @@ public class WorldStructureGenerator implements IWorldGenerator {
             if (AWStructureStatics.skippableBlocksContains(block)) {
                 continue;
             }
-            if (skipWater && (block == Blocks.water || block == Blocks.flowing_water)) {
+            if (skipWater && (block == Blocks.WATER || block == Blocks.FLOWING_WATER)) {
                 continue;
             }
             return y;
@@ -134,8 +134,8 @@ public class WorldStructureGenerator implements IWorldGenerator {
                 int y = world.getPrecipitationHeight(x, z) - 1;
                 if(p2.y >= y && y > 0 && world.canSnowAtBody(x, y + 1, z, true)) {
                     Block block = world.getBlock(x, y, z);
-                    if (block != Blocks.air && block.isSideSolid(world, x, y, z, EnumFacing.UP)) {
-                        world.setBlock(x, y + 1, z, Blocks.snow_layer);
+                    if (block != Blocks.AIR && block.isSideSolid(world, x, y, z, EnumFacing.UP)) {
+                        world.setBlock(x, y + 1, z, Blocks.SNOW_LAYER);
                     }
                 }
             }
@@ -162,8 +162,8 @@ public class WorldStructureGenerator implements IWorldGenerator {
         int prevY = y;
         StructureBB bb = new StructureBB(x, y, z, face, template.xSize, template.ySize, template.zSize, template.xOffset, template.yOffset, template.zOffset);
         y = template.getValidationSettings().getAdjustedSpawnY(world, x, y, z, face, template, bb);
-        bb.min = bb.min.moveUp(y - prevY);
-        bb.max = bb.max.moveUp(y - prevY);
+        bb.min = bb.min.up(y - prevY);
+        bb.max = bb.max.up(y - prevY);
         int xs = bb.getXSize();
         int zs = bb.getZSize();
         int size = ((xs > zs ? xs : zs) / 16) + 3;

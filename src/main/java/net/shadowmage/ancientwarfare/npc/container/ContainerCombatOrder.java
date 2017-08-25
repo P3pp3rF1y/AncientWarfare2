@@ -13,8 +13,8 @@ public class ContainerCombatOrder extends ContainerBase {
 
     public ContainerCombatOrder(EntityPlayer player, int x, int y, int z) {
         super(player);
-        ItemStack stack = player.getCurrentEquippedItem();
-        if (stack == null || stack.getItem() == null) {
+        @Nonnull ItemStack stack = player.getCurrentEquippedItem();
+        if (stack.isEmpty() || stack.getItem() == null) {
             throw new IllegalArgumentException("Cannot open Combat Order GUI for null stack/item.");
         }
         combatOrder = CombatOrder.getCombatOrder(stack);

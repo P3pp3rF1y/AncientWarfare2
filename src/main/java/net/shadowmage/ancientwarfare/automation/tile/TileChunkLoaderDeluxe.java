@@ -11,6 +11,7 @@ import net.shadowmage.ancientwarfare.automation.container.ContainerChunkLoaderDe
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -18,16 +19,16 @@ import java.util.Set;
 
 public class TileChunkLoaderDeluxe extends TileChunkLoaderSimple implements IInteractableTile {
 
-    private final Set<ChunkPos> ccipSet = new HashSet<ChunkPos>();
+    private final Set<ChunkPos> ccipSet = new HashSet<>();
 
-    private final List<ContainerChunkLoaderDeluxe> viewers = new ArrayList<ContainerChunkLoaderDeluxe>();
+    private final List<ContainerChunkLoaderDeluxe> viewers = new ArrayList<>();
 
     public TileChunkLoaderDeluxe() {
 
     }
 
     @Override
-    public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
+    public boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
         if (!player.world.isRemote) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_CHUNK_LOADER_DELUXE, pos);
         }
@@ -61,13 +62,13 @@ public class TileChunkLoaderDeluxe extends TileChunkLoaderSimple implements IInt
     }
 
     public Set<ChunkPos> getForcedChunks() {
-        return new HashSet<ChunkPos>(ccipSet);
+        return new HashSet<>(ccipSet);
     }
 
     @Override
     protected void forceTicketChunks() {
-        int cx = xCoord >> 4;
-        int cz = zCoord >> 4;
+        int cx = pos.getX() >> 4;
+        int cz = pos.getZ() >> 4;
         ChunkPos ccip1 = new ChunkPos(cx, cz);
         ForgeChunkManager.forceChunk(this.chunkTicket, ccip1);
         for (ChunkPos ccip : ccipSet) {
@@ -86,23 +87,24 @@ public class TileChunkLoaderDeluxe extends TileChunkLoaderSimple implements IInt
         ccipSet.clear();
         for (int i = 0; i < list.tagCount(); i++) {
             ccipTag = list.getCompoundTagAt(i);
-            ccip = new ChunkPos(ccipTag.getInteger("x"), ccipTag.getInteger("z"));
+            ccip = new ChunkPos(ccipTag.getInteger("x") >> 4, ccipTag.getInteger("z") >> 4);
             ccipSet.add(ccip);
         }
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         NBTTagList list = new NBTTagList();
         NBTTagCompound ccipTag;
-        for (ChunkPos ccip : this.ccipSet) {
+        for (ChunkPos chunkPos : this.ccipSet) {
             ccipTag = new NBTTagCompound();
-            ccipTag.setInteger("x", ccip.chunkXPos);
-            ccipTag.setInteger("z", ccip.chunkZPos);
+            ccipTag.setInteger("x", chunkPos.getXStart());
+            ccipTag.setInteger("z", chunkPos.getZStart());
             list.appendTag(ccipTag);
         }
         tag.setTag("chunkList", list);
+        return tag;
     }
 
 }

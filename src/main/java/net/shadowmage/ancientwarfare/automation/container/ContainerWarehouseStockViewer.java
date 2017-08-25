@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.automation.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockViewer.WarehouseStockFilter;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
@@ -14,8 +15,8 @@ public class ContainerWarehouseStockViewer extends ContainerTileBase<TileWarehou
 
     public final List<WarehouseStockFilter> filters = new ArrayList<WarehouseStockFilter>();
 
-    public ContainerWarehouseStockViewer(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
+    public ContainerWarehouseStockViewer(EntityPlayer player, BlockPos pos) {
+        super(player, pos);
         filters.addAll(tileEntity.getFilters());
         tileEntity.addViewer(this);
         addPlayerSlots(88);//240-8-4-4*18

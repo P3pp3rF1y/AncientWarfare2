@@ -1,11 +1,11 @@
 package net.shadowmage.ancientwarfare.core.input;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Property;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
@@ -14,7 +14,12 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketItemInteraction;
 import org.lwjgl.input.Keyboard;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class InputHandler {
 
@@ -240,7 +245,7 @@ public class InputHandler {
             if (minecraft.currentScreen != null) {
                 return;
             }
-            ItemStack stack = minecraft.thePlayer.getHeldItem();
+            @Nonnull ItemStack stack = minecraft.thePlayer.getHeldItem();
             if (!stack.isEmpty() && stack.getItem() instanceof IItemKeyInterface) {
                 if (((IItemKeyInterface) stack.getItem()).onKeyActionClient(minecraft.thePlayer, stack, key)) {
                     PacketItemInteraction pkt = new PacketItemInteraction(0, key);

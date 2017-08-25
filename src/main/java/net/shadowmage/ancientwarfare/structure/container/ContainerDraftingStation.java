@@ -62,10 +62,10 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
-        ItemStack slotStackCopy = null;
+        @Nonnull ItemStack slotStackCopy = ItemStack.EMPTY;
         Slot theSlot = this.getSlot(slotClickedIndex);
         if (theSlot != null && theSlot.getHasStack()) {
-            ItemStack slotStack = theSlot.getStack();
+            @Nonnull ItemStack slotStack = theSlot.getStack();
             slotStackCopy = slotStack.copy();
 
             int playerSlotStart = tile.inputSlots.getSizeInventory();
@@ -84,7 +84,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
                 }
             }
             if (slotStack.getCount() == 0) {
-                theSlot.putStack(null);
+                theSlot.putStack(ItemStack.EMPTY);
             } else {
                 theSlot.onSlotChanged();
             }
@@ -123,7 +123,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
 
     private void readResourceList(NBTTagList list, List<ItemStack> resources) {
         NBTTagCompound tag;
-        ItemStack stack;
+        @Nonnull ItemStack stack;
         for (int i = 0; i < list.tagCount(); i++) {
             tag = list.getCompoundTagAt(i);
             stack = new ItemStack(tag);

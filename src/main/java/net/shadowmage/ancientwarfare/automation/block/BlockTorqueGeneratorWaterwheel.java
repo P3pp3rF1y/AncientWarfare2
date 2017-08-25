@@ -51,7 +51,7 @@ public class BlockTorqueGeneratorWaterwheel extends BlockTorqueGenerator {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
-        return Blocks.planks.getIcon(side, 0);
+        return Blocks.PLANKS.getIcon(side, 0);
     }
 */
 }

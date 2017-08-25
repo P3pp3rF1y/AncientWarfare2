@@ -41,7 +41,7 @@ public class TemplateRuleBlockSign extends TemplateRuleVanillaBlocks {
         for (int i = 0; i < signContents.length; i++) {
             signContents[i] = te.signText[i];
         }
-        if (block == Blocks.standing_sign) {
+        if (block == Blocks.STANDING_SIGN) {
             this.meta = (meta + 4 * turns) % 16;
         }
     }
@@ -52,7 +52,7 @@ public class TemplateRuleBlockSign extends TemplateRuleVanillaBlocks {
     @Override
     public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
         Block block = Block.getBlockFromName(blockName);
-//  Block block = wall? Blocks.wall_sign : Blocks.standing_sign;//BlockDataManager.getBlockByName(blockName);
+//  Block block = wall? Blocks.WALL_SIGN : Blocks.STANDING_SIGN;//BlockDataManager.getBlockByName(blockName);
         int meta = 0;
         if (block == Blocks.STANDING_SIGN) {
             meta = (this.meta + 4 * turns) % 16;

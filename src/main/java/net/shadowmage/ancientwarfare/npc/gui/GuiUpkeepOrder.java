@@ -31,7 +31,7 @@ public class GuiUpkeepOrder extends GuiContainerBase<ContainerUpkeepOrder> {
         Label label;
 
         if (pos != null) {
-            ItemStack blockStack = new ItemStack(getContainer().upkeepOrder.getBlock());
+            @Nonnull ItemStack blockStack = new ItemStack(getContainer().upkeepOrder.getBlock());
             slot = new ItemSlot(8, 10, blockStack, this);
             addGuiElement(slot);
 

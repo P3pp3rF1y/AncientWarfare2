@@ -1,11 +1,12 @@
 package net.shadowmage.ancientwarfare.automation.container;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.BlockPos;
 
 public class ContainerWorksiteAnimalFarm extends ContainerWorksiteBase {
 
-    public ContainerWorksiteAnimalFarm(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
+    public ContainerWorksiteAnimalFarm(EntityPlayer player, BlockPos pos) {
+        super(player, pos);
 
         int layerY = 8;
         int labelGap = 12;

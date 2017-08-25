@@ -6,7 +6,11 @@ import net.minecraft.util.EnumChatFormatting;
 import net.shadowmage.ancientwarfare.core.block.Direction;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
-import net.shadowmage.ancientwarfare.core.gui.elements.*;
+import net.shadowmage.ancientwarfare.core.gui.elements.Button;
+import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
+import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
+import net.shadowmage.ancientwarfare.core.gui.elements.Label;
+import net.shadowmage.ancientwarfare.core.gui.elements.Line;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.npc.container.ContainerRoutingOrder;
@@ -181,7 +185,7 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
                 point.setFilter(index, slot.getStack());
             }
         } else {
-            if (stack == null) {
+            if (stack.isEmpty()) {
                 point.setFilter(index, null);
                 slot.setItem(null);
             } else {

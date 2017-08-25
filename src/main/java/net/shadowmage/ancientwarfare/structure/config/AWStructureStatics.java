@@ -75,7 +75,7 @@ public class AWStructureStatics extends ModConfiguration {
         this.config.addCustomCategoryComment(worldGenCategory, "Settings that effect all world-structure-generation.");
         this.config.addCustomCategoryComment(villageGenCategory, "Settings that effect the generation of vanilla villages.\nCurrently there are no village-generation options, and no structures will generate in villages.");
         this.config.addCustomCategoryComment(excludedEntitiesCategory, "Entities that will not show up in the Mob Spawner Placer entity selection list.\nAdd any mobs here that will crash if spawned via the vanilla mob-spawner (usually complex NBT-defined entities).");
-        this.config.addCustomCategoryComment(worldGenBlocks, "Blocks that should be skipped/ignored during world gen -- should list all plant blocks/logs/foliage");
+        this.config.addCustomCategoryComment(worldGenBlocks, "Blocks THAT should be skipped/ignored during world gen -- should list all plant blocks/logs/foliage");
         this.config.addCustomCategoryComment(targetBlocks, "List of target blocks to add to the target-block selection GUI.\nVanilla block names should be listed as the 1.7 registered name. \nMod blocks should be listed as their registered name");
         this.config.addCustomCategoryComment(scanSkippedBlocks, "List of blocks that the structure scanner will completely ignore.\nWhenever these blocks are encountered the template will instead fill that block position with a hard-air rule.\nAdd any blocks to this list that may cause crashes when scanned or duplicated.\nVanilla blocks should not need to be added, but some mod-blocks may.\nBlock names must be specified by fully-qualified name (e.g. \"minecraft:stone\")");
         this.config.addCustomCategoryComment(townValidTargetBlocksCategory, "List of blocks that are valid target blocks for town creation.\nAny solid block found that is not on this list will prevent a town from spawning in a given chunk");
@@ -145,7 +145,7 @@ public class AWStructureStatics extends ModConfiguration {
                 {
                         "AncientWarfareStructure:gate_proxy",//skip gate proxy blocks by default... possibly some others that need skipping as well
                 };
-        defaultSkippableBlocks = config.getStringList("scanner_skipped_blocks", scanSkippedBlocks, defaultSkippableBlocks, "Blocks to be skipped by structure scanner");
+        defaultSkippableBlocks = config.getStringList("scanner_skipped_blocks", scanSkippedBlocks, defaultSkippableBlocks, "Blocks TO be skipped by structure scanner");
         Collections.addAll(scannerSkippedBlocks, defaultSkippableBlocks);
     }
 
@@ -907,11 +907,11 @@ public class AWStructureStatics extends ModConfiguration {
     }
 
     public static boolean isValidTownTargetBlock(Block block) {
-        return !(block == null || block == Blocks.air) && townValidTargetBlocks.contains(BlockDataManager.INSTANCE.getNameForBlock(block));
+        return !(block == null || block == Blocks.AIR) && townValidTargetBlocks.contains(BlockDataManager.INSTANCE.getNameForBlock(block));
     }
 
     public static boolean skippableBlocksContains(Block block) {
-        return block == null || block == Blocks.air || skippableWorldGenBlocks.contains(BlockDataManager.INSTANCE.getNameForBlock(block));
+        return block == null || block == Blocks.AIR || skippableWorldGenBlocks.contains(BlockDataManager.INSTANCE.getNameForBlock(block));
     }
 
     public static Set<String> getUserDefinedTargetBlocks() {

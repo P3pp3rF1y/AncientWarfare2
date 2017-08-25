@@ -6,8 +6,14 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityFlying;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -19,6 +25,8 @@ import net.minecraft.scoreboard.Team;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.util.Constants;
@@ -75,7 +83,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     private int maxHealthOverride = -1;
     private String customTexRef = "";//might as well allow for player-owned as well...
     
-    private int bedDirection;
+    private EnumFacing bedDirection;
     private BlockPos cachedBedPos;
     private boolean foundBed = false;
     private boolean rainedOn = false;
@@ -175,7 +183,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     @Override
     public boolean attackEntityAsMob(Entity target) {
         float damage = (float) this.getAttackDamageOverride();
-        ItemStack shield = null;
+        @Nonnull ItemStack shield = ItemStack.EMPTY;
         if (damage < 0) {
             if (getShieldStack() != null) {
                 shield = getShieldStack().copy();
@@ -265,7 +273,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     @Override
     public float getBlockPathWeight(int varX, int varY, int varZ){
         Block below = world.getBlock(varX, varY - 1, varZ);
-        if(below.getMaterial() == Material.lava || below.getMaterial() == Material.cactus)//Avoid cacti and lava when wandering
+        if(below.getMaterial() == Material.LAVA || below.getMaterial() == Material.CACTUS)//Avoid cacti and lava when wandering
             return -10;
         else if(below.getMaterial().isLiquid())//Don't try swimming too much
             return 0;
@@ -406,7 +414,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
                 int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
                 int z = MathHelper.floor_double(this.posZ) + d1;
                 Material material = world.getBlock(x, y, z).getMaterial();
-                if(material.isLiquid() || material == Material.cactus) {
+                if(material.isLiquid() || material == Material.CACTUS) {
                     return;
                 }
                 this.entityCollisionReduction = 0.9F;
@@ -427,9 +435,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             return false;
         }
         if(source == DamageSource.cactus)
-            knockFromDamage(par2, Material.cactus);
+            knockFromDamage(par2, Material.CACTUS);
         else if(source == DamageSource.lava)
-            knockFromDamage(par2, Material.lava);
+            knockFromDamage(par2, Material.LAVA);
         else if(source == DamageSource.drown)
             jump();
         return super.attackEntityFrom(source, par2);
@@ -492,7 +500,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     @Override
     protected final void dropEquipment(boolean par1, int par2) {
         if (!world.isRemote) {
-            ItemStack stack;
+            @Nonnull ItemStack stack;
             for (int i = 0; i < equipmentDropChances.length; i++) {
                 stack = getEquipmentInSlot(i);
                 if (!stack.isEmpty()) {
@@ -611,7 +619,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
      */
     public final void readAdditionalItemData(NBTTagCompound tag) {
         NBTTagList equipmentList = tag.getTagList("equipment", Constants.NBT.TAG_COMPOUND);
-        ItemStack stack;
+        @Nonnull ItemStack stack;
         NBTTagCompound equipmentTag;
         for (int i = 0; i < equipmentList.tagCount(); i++) {
             equipmentTag = equipmentList.getCompoundTagAt(i);
@@ -629,11 +637,11 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
      */
     public final NBTTagCompound writeAdditionalItemData(NBTTagCompound tag) {
         NBTTagList equipmentList = new NBTTagList();
-        ItemStack stack;
+        @Nonnull ItemStack stack;
         NBTTagCompound equipmentTag;
         for (int i = 0; i < equipmentDropChances.length; i++) {
             stack = getEquipmentInSlot(i);
-            if (stack == null) {
+            if (stack.isEmpty()) {
                 continue;
             }
             equipmentTag = stack.writeToNBT(new NBTTagCompound());
@@ -957,7 +965,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             return;
         if (!player.world.isRemote && isEntityAlive()) {
             onRepack();
-            ItemStack item = InventoryTools.mergeItemStack(player.inventory, this.getItemToSpawn(), -1);
+            @Nonnull ItemStack item = InventoryTools.mergeItemStack(player.inventory, this.getItemToSpawn(), -1);
             if (item != null) {
                 InventoryTools.dropItemInWorld(player.world, item, player.posX, player.posY, player.posZ);
             }
@@ -1136,7 +1144,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     private void handlePickEntity(EntityPlayer player) {
-        ItemStack item = this.getItemToSpawn();
+        @Nonnull ItemStack item = this.getItemToSpawn();
         for (int i = 0; i < InventoryPlayer.getHotbarSize(); i++) {
             if (ItemStack.areItemStacksEqual(player.inventory.getStackInSlot(i), item)) {
                 player.inventory.currentItem = i;
@@ -1175,11 +1183,11 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             for (int x = minX; x <= maxX; x++) {
                 for (int y = minY; y <= maxY; y++) {
                     for (int z = minZ; z <= maxZ; z++) {
-                        if (this.world.getBlock(x, y, z) instanceof BlockBed) {
-                            int bedMeta = this.world.getBlockMetadata(x, y, z);
-                            if (!BlockBed.isBlockHeadOfBed(bedMeta))
+                        IBlockState state = world.getBlockState(new BlockPos(x, y, z));
+                        if (state.getBlock() instanceof BlockBed) {
+                            if (state.getValue(BlockBed.PART) != BlockBed.EnumPartType.HEAD)
                                 continue;
-                            if (!BlockBed.func_149976_c(bedMeta)) { // occupied check
+                            if (!state.getValue(BlockBed.OCCUPIED)) { // occupied check
                                 foundBeds.add(new BlockPos(x, y, z));
                             }
                         }
@@ -1201,8 +1209,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             cachedBedPos = foundBeds.get(closetBedIndex);
         }
         
-        if (this.world.getBlock(cachedBedPos.x, cachedBedPos.y, cachedBedPos.z) instanceof BlockBed) {
-            setBedDirection(BlockBed.getDirection(world.getBlockMetadata(cachedBedPos.x, cachedBedPos.y, cachedBedPos.z)));
+        IBlockState state = world.getBlockState(cachedBedPos);
+        if (state.getBlock() instanceof BlockBed) {
+            setBedDirection(state.getValue(BlockBed.FACING));
             return cachedBedPos;
         }
         else {
@@ -1214,14 +1223,15 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     public boolean lieDown(BlockPos pos) {
         if (!foundBed)
             return false;
-        if (world.blockExists(pos.x, pos.y, pos.z) && world.getBlock(pos.x, pos.y, pos.z) instanceof BlockBed) {
-            int bedMeta = this.world.getBlockMetadata(pos.x, pos.y, pos.z);
-            if (BlockBed.func_149976_c(bedMeta)) {
+        if (world.isBlockLoaded(pos) && world.getBlockState(pos).getBlock() instanceof BlockBed) {
+            IBlockState state = world.getBlockState(pos);
+            if (state.getValue(BlockBed.OCCUPIED)) {
                 // occupied check
                 foundBed = false;
                 return false;
             }
-            BlockBed.func_149979_a(world, pos.x, pos.y, pos.z, true);
+            state = state.withProperty(BlockBed.OCCUPIED, true);
+            world.setBlockState(pos, state);
             setBedPosition(pos);
             setSleeping(true);
             this.setPositionToBed();
@@ -1388,7 +1398,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         return getDataWatcher().getWatchableObjectByte(15) == 1 ? true : false;
     }
     
-    public void setBedDirection(int direction) {
+    public void setBedDirection(EnumFacing direction) {
         bedDirection = direction;
     }
     

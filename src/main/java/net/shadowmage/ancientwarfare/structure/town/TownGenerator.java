@@ -453,7 +453,7 @@ public class TownGenerator {
         Block block = template.getRoadFillBlock();
         int meta = template.getRoadFillMeta();
         world.setBlock(x, y, z, block, meta, 3);
-        world.setBlock(x, y - 1, z, Blocks.cobblestone, 0, 3);
+        world.setBlock(x, y - 1, z, Blocks.COBBLESTONE, 0, 3);
     }
 
 }

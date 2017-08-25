@@ -17,7 +17,7 @@ public class NpcAIPlayerOwnedPatrol extends NpcAI<NpcBase> {
     int maxTicksAtPoint = 50;//default 2.5 second idle at each point
 
     public CombatOrder orders;
-    ItemStack ordersStack;
+    @Nonnull ItemStack ordersStack;
 
     public NpcAIPlayerOwnedPatrol(NpcBase npc) {
         super(npc);

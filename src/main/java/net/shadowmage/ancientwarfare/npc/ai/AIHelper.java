@@ -1,11 +1,11 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
-import cpw.mods.fml.common.Loader;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.Loader;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public final class AIHelper {
@@ -13,7 +13,7 @@ public final class AIHelper {
 
     // Inserting QuiverBow ranged weapon usage here (for b78+)
     public static int doQuiverBowThing(EntityLiving entityLiving, Entity target){
-        ItemStack held = entityLiving.getHeldItem();
+        @Nonnull ItemStack held = entityLiving.getHeldItem();
         if (held!=null && Loader.isModLoaded("quiverchevsky")) {
             if (held.getItem() instanceof com.domochevsky.quiverbow.weapons._WeaponBase) {//A "quiver bow" is held
                 com.domochevsky.quiverbow.weapons._WeaponBase weapon = (com.domochevsky.quiverbow.weapons._WeaponBase) held.getItem();

@@ -66,11 +66,11 @@ public class TemplateRuleVanillaBlocks extends TemplateRuleBlock {
 
     @Override
     public void addResources(List<ItemStack> resources) {
-        if (block == null || block == Blocks.air) {
+        if (block == null || block == Blocks.AIR) {
             return;
         }
 
-        ItemStack stack = BlockDataManager.INSTANCE.getInventoryStackForBlock(block, meta);
+        @Nonnull ItemStack stack = BlockDataManager.INSTANCE.getInventoryStackForBlock(block, meta);
         if (!stack.isEmpty() && stack.getItem() == null) {
             throw new IllegalArgumentException("Could not create item for block: " + block + " (lookup name: " + blockName + ") meta: " + meta);
         }

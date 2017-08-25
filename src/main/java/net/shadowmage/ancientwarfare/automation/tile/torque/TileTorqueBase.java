@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque;
 
 import cofh.redstoneflux.api.IEnergyReceiver;
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -24,7 +23,9 @@ import net.shadowmage.ancientwarfare.core.network.PacketBlockEvent;
 import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
-@MethodsReturnNonnullByDefault
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 @Optional.Interface(iface = "cofh.redstoneflux.api.IEnergyReceiver", modid = "redstoneflux", striprefs = true)
 public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTile, IInteractableTile, IRotatableTile, IEnergyReceiver, ITickable {
 
@@ -188,8 +189,8 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
     }
 
     @Override
-    public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
-        ItemStack stack = player.getHeldItem(hand);
+    public boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
+        @Nonnull ItemStack stack = player.getHeldItem(hand);
         if (stack.isEmpty()) {
             if (!world.isRemote) {
                 player.sendMessage(new TextComponentTranslation("guistrings.automation.torque.values", String.format("%.2f", getTotalTorque()), String.format("%.2f", getTorqueIn()), String.format("%.2f",getTorqueOut()), String.format("%.2f",getTorqueLoss())));
@@ -322,7 +323,7 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
     }
 
     protected void handleUpdateNBT(NBTTagCompound tag) {
-        handleUpdateNBT(tag);
+        super.handleUpdateNBT(tag);
         orientation = EnumFacing.VALUES[tag.getInteger("orientation")];
         this.invalidateNeighborCache(); //TODO is this needed on client??
     }

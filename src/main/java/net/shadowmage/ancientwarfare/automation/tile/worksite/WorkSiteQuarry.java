@@ -1,13 +1,17 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.EnumSet;
@@ -21,8 +25,8 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
      * Current position within work bounds.
      * Incremented when work is processed.
      */
-    private int currentX, currentY, currentZ;//position within bounds that is the 'active' position
-    private int validateX, validateY, validateZ;
+    private BlockPos current;//position within bounds that is the 'active' position
+    private BlockPos validate;
 
     public WorkSiteQuarry() {
         this.inventory = new InventorySided(this, RotationType.FOUR_WAY, TOP_LENGTH);
@@ -42,22 +46,18 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
     }
 
     private void offsetBounds(){
-        BlockPos pos = getWorkBoundsMax();
-        setWorkBoundsMax(pos.moveUp(yCoord - 1 - pos.y));
-        pos = getWorkBoundsMin();
-        setWorkBoundsMin(pos.moveUp(1 - pos.y));
+        BlockPos boundsMax = getWorkBoundsMax();
+        setWorkBoundsMax(boundsMax.up(pos.getY() - 1 - boundsMax.getY()));
+        boundsMax = getWorkBoundsMin();
+        setWorkBoundsMin(boundsMax.up(1 - boundsMax.getY()));
         BlockTools.notifyBlockUpdate(this);
     }
 
     @Override
     public void onBoundsAdjusted() {
         offsetBounds();
-        currentX = getWorkBoundsMin().x;
-        currentY = getWorkBoundsMax().y;
-        currentZ = getWorkBoundsMin().z;
-        validateX = currentX;
-        validateY = currentY;
-        validateZ = currentZ;
+        current = new BlockPos(getWorkBoundsMin().getX(), getWorkBoundsMax().getY(), getWorkBoundsMin().getZ());
+        validate = current;
     }
 
     @Override
@@ -86,10 +86,8 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
             hasDoneInit = true;
         }
         world.profiler.startSection("Incremental Scan");
-        if (canHarvest(validateX, validateY, validateZ)) {
-            currentX = validateX;
-            currentY = validateY;
-            currentZ = validateZ;
+        if (canHarvest(validate)) {
+            current = validate;
             finished = false;
         } else {
             incrementValidationPosition();
@@ -100,12 +98,8 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
     @Override
     public void addUpgrade(WorksiteUpgrade upgrade) {
         super.addUpgrade(upgrade);
-        this.currentY = this.getWorkBoundsMax().y;
-        this.currentX = this.getWorkBoundsMin().x;
-        this.currentZ = this.getWorkBoundsMin().z;
-        this.validateX = this.currentX;
-        this.validateY = this.currentY;
-        this.validateZ = this.currentZ;
+        current = new BlockPos(getWorkBoundsMin().getX(), getWorkBoundsMax().getY(), getWorkBoundsMin().getZ());
+        validate = current;
         this.finished = false;
     }
 
@@ -122,7 +116,7 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
          * while the current position is invalid, increment to a valid one. generally the incremental scan
          * should have take care of this prior to processWork being called, but just in case...
          */
-        while (!canHarvest(currentX, currentY, currentZ)) {
+        while (!canHarvest(current)) {
             if (!incrementPosition()) {
                 /**
                  * if no valid position was found, set finished, exit
@@ -134,21 +128,21 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
         /**
          * if made it this far, a valid position was found, break it and add blocks to inventory
          */
-        return harvestBlock(currentX, currentY, currentZ, RelativeSide.TOP);
+        return harvestBlock(current, RelativeSide.TOP);
     }
 
     private boolean incrementPosition() {
         if (finished) {
             return false;
         }
-        currentX++;
-        if (currentX > getWorkBoundsMax().x) {
-            currentX = getWorkBoundsMin().x;
-            currentZ++;
-            if (currentZ > getWorkBoundsMax().z) {
-                currentZ = getWorkBoundsMin().z;
-                currentY--;
-                if (currentY <= 0) {
+        current = current.east();
+        if (current.getX() > getWorkBoundsMax().getX()) {
+            current = new BlockPos(getWorkBoundsMin().getX(), current.getY(), current.getZ());
+            current = current.south();
+            if (current.getZ() > getWorkBoundsMax().getZ()) {
+                current = new BlockPos(current.getX(), current.getY(), getWorkBoundsMin().getZ());
+                current = current.down();
+                if (current.getY() <= 0) {
                     return false;
                 }
             }
@@ -157,33 +151,30 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
     }
 
     private void incrementValidationPosition() {
-        validateX++;
-        if (validateY >= currentY && validateZ >= currentZ && validateX >= currentX) {//dont let validation pass current position
-            validateY = getWorkBoundsMax().y;
-            validateX = getWorkBoundsMin().x;
-            validateZ = getWorkBoundsMin().z;
-        } else if (validateX > getWorkBoundsMax().x) {
-            validateX = getWorkBoundsMin().x;
-            validateZ++;
-            if (validateZ > getWorkBoundsMax().z) {
-                validateZ = getWorkBoundsMin().z;
-                validateY--;
-                if (validateY <= 0) {
-                    validateY = getWorkBoundsMax().y;
-                    validateX = getWorkBoundsMin().x;
-                    validateZ = getWorkBoundsMin().z;
+        validate = validate.east();
+        if (validate.getY() >= current.getY() && validate.getZ() >= current.getZ() && validate.getX() >= current.getX()) {//dont let validation pass current position
+            validate = new BlockPos(getWorkBoundsMin().getX(), getWorkBoundsMax().getY(), getWorkBoundsMin().getZ());
+        } else if (validate.getX() > getWorkBoundsMax().getX()) {
+            validate = new BlockPos(getWorkBoundsMin().getX(), validate.getY(), validate.getZ());
+            validate = validate.south();
+            if (validate.getZ() > getWorkBoundsMax().getZ()) {
+                validate = new BlockPos(validate.getX(), validate.getY(), getWorkBoundsMin().getZ());
+                validate = validate.down();
+                if (validate.getY() <= 0) {
+                    validate = new BlockPos(getWorkBoundsMin().getX(), getWorkBoundsMax().getY(), getWorkBoundsMin().getZ());
                 }
             }
         }
     }
 
-    private boolean canHarvest(int x, int y, int z) {
+    private boolean canHarvest(BlockPos harvestPos) {
         //TODO add block-breaking exclusion list to config
-        Block block = world.getBlock(x, y, z);
-        if(block.isAir(world, x, y, z) || block.getMaterial().isLiquid()){
+        IBlockState state = world.getBlockState(harvestPos);
+        Block block = state.getBlock();
+        if(world.isAirBlock(harvestPos) || state.getMaterial().isLiquid()){
             return false;
         }
-        int harvestLevel = block.getHarvestLevel(world.getBlockMetadata(x, y, z));
+        int harvestLevel = block.getHarvestLevel(state);
         if (harvestLevel >= 2) {
             int toolLevel = 1;
             if (getUpgrades().contains(WorksiteUpgrade.TOOL_QUALITY_3)) {
@@ -197,18 +188,14 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
                 return false;
             }//else is harvestable, check the rest of the checks
         }
-        return block.getBlockHardness(world, x, y, z) >= 0;
+        return state.getBlockHardness(world, harvestPos) >= 0;
     }
 
     public void initWorkSite() {
-        BlockPos pos = getWorkBoundsMin();
-        setWorkBoundsMin(pos.moveUp(1 - pos.y));
-        this.currentY = this.getWorkBoundsMax().y;
-        this.currentX = this.getWorkBoundsMin().x;
-        this.currentZ = this.getWorkBoundsMin().z;
-        this.validateX = this.currentX;
-        this.validateY = this.currentY;
-        this.validateZ = this.currentZ;
+        BlockPos boundsMin = getWorkBoundsMin();
+        setWorkBoundsMin(boundsMin.up(1 - boundsMin.getY()));
+        current = new BlockPos(getWorkBoundsMin().getX(), getWorkBoundsMax().getY(), getWorkBoundsMin().getZ());
+        validate = current;
         BlockTools.notifyBlockUpdate(this);//resend work-bounds change
     }
 
@@ -220,27 +207,20 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        currentY = tag.getInteger("currentY");
-        currentX = tag.getInteger("currentX");
-        currentZ = tag.getInteger("currentZ");
-        validateX = tag.getInteger("validateX");
-        validateY = tag.getInteger("validateY");
-        validateZ = tag.getInteger("validateZ");
+        current = BlockPos.fromLong(tag.getLong("current"));
+        validate = BlockPos.fromLong(tag.getLong("validate"));
         finished = tag.getBoolean("finished");
         hasDoneInit = tag.getBoolean("init");
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        tag.setInteger("currentY", currentY);
-        tag.setInteger("currentX", currentX);
-        tag.setInteger("currentZ", currentZ);
-        tag.setInteger("validateX", validateX);
-        tag.setInteger("validateY", validateY);
-        tag.setInteger("validateZ", validateZ);
+        tag.setLong("current", current.toLong());
+        tag.setLong("validate", validate.toLong());
         tag.setBoolean("finished", finished);
         tag.setBoolean("init", hasDoneInit);
+        return tag;
     }
 
     @Override

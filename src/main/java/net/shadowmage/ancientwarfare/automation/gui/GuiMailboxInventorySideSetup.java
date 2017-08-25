@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.gui;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.container.ContainerMailbox;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
@@ -33,7 +34,7 @@ public class GuiMailboxInventorySideSetup extends GuiContainerBase<ContainerMail
         Label label;
         SideButton sideButton;
         RelativeSide accessed;
-        int dir;
+        EnumFacing dir;
 
         label = new Label(8, 6, "guistrings.automation.block_side");
         addGuiElement(label);
@@ -47,7 +48,7 @@ public class GuiMailboxInventorySideSetup extends GuiContainerBase<ContainerMail
             label = new Label(8, height, side.getTranslationKey());
             addGuiElement(label);
 
-            dir = RelativeSide.getMCSideToAccess(RotationType.FOUR_WAY, getContainer().tileEntity.getBlockMetadata(), side);
+            dir = RelativeSide.getMCSideToAccess(RotationType.FOUR_WAY, getContainer().tileEntity.getPrimaryFacing(), side);
             label = new Label(74, height, Direction.getDirectionFor(dir).getTranslationKey());
             addGuiElement(label);
 

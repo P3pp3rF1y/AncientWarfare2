@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.gamedata.MailboxData;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
@@ -15,6 +16,7 @@ import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,8 +35,8 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
     public List<String> publicBoxNames = new ArrayList<String>();
     public List<String> privateBoxNames = new ArrayList<String>();
 
-    public ContainerMailbox(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
+    public ContainerMailbox(EntityPlayer player, BlockPos pos) {
+        super(player, pos);
         InventorySided inventory = tileEntity.inventory;
 
         for (RelativeSide rSide : inventory.rType.getValidSides()) {
@@ -375,10 +377,10 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
-        ItemStack slotStackCopy = null;
+        @Nonnull ItemStack slotStackCopy = ItemStack.EMPTY;
         Slot theSlot = this.getSlot(slotClickedIndex);
         if (theSlot != null && theSlot.getHasStack()) {
-            ItemStack slotStack = theSlot.getStack();
+            @Nonnull ItemStack slotStack = theSlot.getStack();
             slotStackCopy = slotStack.copy();
             if (slotStack.getCount() == 0) {
                 theSlot.putStack(ItemStack.EMPTY);

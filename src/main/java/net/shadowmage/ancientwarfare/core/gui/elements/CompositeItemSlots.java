@@ -105,8 +105,8 @@ public class CompositeItemSlots extends CompositeScrolled {
     }
 
     private void renderSlotHighlight(ItemSlot slot, int mouseX, int mouseY) {
-        ItemStack stack = slot.getStack();
-        if (stack == null || stack.getItem() == null || !slot.visible) {
+        @Nonnull ItemStack stack = slot.getStack();
+        if (stack.isEmpty() || stack.getItem() == null || !slot.visible) {
             return;
         }
         if (slot.highlightOnMouseOver && slot.isMouseOverElement(mouseX, mouseY)) {
@@ -134,8 +134,8 @@ public class CompositeItemSlots extends CompositeScrolled {
     }
 
     private void renderOverlay(ItemSlot slot, int mouseX, int mouseY) {
-        ItemStack stack = slot.getStack();
-        if (stack == null || stack.getItem() == null || !slot.visible) {
+        @Nonnull ItemStack stack = slot.getStack();
+        if (stack.isEmpty() || stack.getItem() == null || !slot.visible) {
             return;
         }
         Minecraft mc = Minecraft.getMinecraft();
@@ -150,8 +150,8 @@ public class CompositeItemSlots extends CompositeScrolled {
     }
 
     private void renderItemStack(ItemSlot slot, int mouseX, int mouseY) {
-        ItemStack stack = slot.getStack();
-        if (stack == null || stack.getItem() == null || !slot.visible) {
+        @Nonnull ItemStack stack = slot.getStack();
+        if (stack.isEmpty() || stack.getItem() == null || !slot.visible) {
             return;
         }
         Minecraft mc = Minecraft.getMinecraft();

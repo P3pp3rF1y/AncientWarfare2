@@ -1,5 +1,8 @@
 package net.shadowmage.ancientwarfare.core.block;
 
+import net.minecraft.util.EnumFacing;
+
+//TODO really needed or just replace with something like getFacingLocalization?
 public enum Direction {
     DOWN("guistrings.inventory.direction.down"),
     UP("guistrings.inventory.direction.up"),
@@ -19,8 +22,8 @@ public enum Direction {
         return translationKey;
     }
 
-    public static Direction getDirectionFor(int direction) {
-        return direction < 0 || direction > 6 ? UNKNOWN : values()[direction];
+    public static Direction getDirectionFor(EnumFacing direction) {
+        return direction == null ? UNKNOWN : values()[direction.ordinal()];
     }
 
 }

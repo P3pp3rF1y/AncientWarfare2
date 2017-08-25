@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.core.inventory;
 
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -7,7 +8,12 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class ItemQuantityMap {
 
@@ -151,7 +157,7 @@ public class ItemQuantityMap {
      */
     public List<ItemStack> getItems() {
         List<ItemStack> items = new ArrayList<ItemStack>();
-        ItemStack outStack;
+        @Nonnull ItemStack outStack;
         int qty;
         for (ItemHashEntry wrap1 : map.keySet()) {
             qty = map.get(wrap1);
@@ -172,7 +178,7 @@ public class ItemQuantityMap {
      * @param items will be filled with the item-stacks from this map, must not be NULL
      */
     public void getCompactItems(List<ItemStack> items) {
-        ItemStack outStack;
+        @Nonnull ItemStack outStack;
         for (ItemHashEntry wrap1 : map.keySet()) {
             outStack = wrap1.getItemStack().copy();
             outStack.setCount(map.get(wrap1));
@@ -249,11 +255,11 @@ public class ItemQuantityMap {
          * @param item MUST NOT BE NULL
          */
         public ItemHashEntry(ItemStack item) {
-            if (item == null) {
+            if (item.isEmpty()) {
                 throw new IllegalArgumentException("Stack may not be null");
             }
             this.item = item.getItem();
-            if (this.item == null) {
+            if (this.item == Items.AIR) {
                 throw new IllegalArgumentException("Item may not be null");
             }
             this.damage = item.getItemDamage();
@@ -329,7 +335,7 @@ public class ItemQuantityMap {
             if (cacheStack != null) {
                 return cacheStack;
             } else {
-                ItemStack stack = new ItemStack(item, 1, damage);
+                @Nonnull ItemStack stack = new ItemStack(item, 1, damage);
                 if (itemTag != null) {
                     stack.setTagCompound((NBTTagCompound) itemTag.copy());
                 }

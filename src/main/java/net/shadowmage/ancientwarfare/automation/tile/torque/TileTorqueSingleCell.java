@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
@@ -12,7 +11,6 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
  *
  * @author Shadowmage
  */
-@MethodsReturnNonnullByDefault
 public abstract class TileTorqueSingleCell extends TileTorqueBase {
 
     TorqueCell torqueCell;

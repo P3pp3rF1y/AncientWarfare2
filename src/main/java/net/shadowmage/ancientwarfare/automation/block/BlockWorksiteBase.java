@@ -23,10 +23,8 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.lang.reflect.Constructor;
 
-@ParametersAreNonnullByDefault
 public class BlockWorksiteBase extends Block implements IRotatableBlock {
 
     IconRotationMap iconMap = new IconRotationMap();

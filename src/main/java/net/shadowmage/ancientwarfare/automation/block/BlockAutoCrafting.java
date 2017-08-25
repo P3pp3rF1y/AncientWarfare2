@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -37,7 +36,7 @@ public class BlockAutoCrafting extends BlockWorksiteBase {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
-        return Blocks.planks.getIcon(side, 0);
+        return Blocks.PLANKS.getIcon(side, 0);
     }
 
 */

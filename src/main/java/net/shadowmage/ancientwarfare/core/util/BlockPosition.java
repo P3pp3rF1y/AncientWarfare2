@@ -198,7 +198,7 @@ public final class BlockPosition {
         }
     }
 
-    public final BlockPosition moveUp(int amt){
+    public final BlockPosition up(int amt){
         return new BlockPosition(x, y + amt, z);
     }
 

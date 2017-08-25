@@ -136,7 +136,7 @@ public class StructureBuilder implements IStructureBuilder {
         ExtendedBlockStorage stc = chunk.getBlockStorageArray()[y >> 4];
         if (stc == null)//A block in a void subchunk
         {
-            if(block != Blocks.air)//Not changing anything
+            if(block != Blocks.AIR)//Not changing anything
                 world.setBlock(x, y, z, block, meta, 2);//using flag=2 -- no block update, but still send to clients (should help with issues of things popping off)
         } else {//unsurprisingly, direct chunk access is 2X faster than going through the world =\
             int cx = x & 15; //bitwise-and to scrub all bits above 15

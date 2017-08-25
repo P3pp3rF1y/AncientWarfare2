@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.item;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -16,11 +15,9 @@ import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-import javax.annotation.ParametersAreNonnullByDefault;
+import javax.annotation.Nonnull;
 import java.util.HashSet;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class ItemWorksiteUpgrade extends ItemBase {
 
     public ItemWorksiteUpgrade() {
@@ -41,7 +38,7 @@ public class ItemWorksiteUpgrade extends ItemBase {
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-        ItemStack stack = player.getHeldItem(hand);
+        @Nonnull ItemStack stack = player.getHeldItem(hand);
 
         if(world.isRemote){
             return new ActionResult<>(EnumActionResult.SUCCESS, stack);

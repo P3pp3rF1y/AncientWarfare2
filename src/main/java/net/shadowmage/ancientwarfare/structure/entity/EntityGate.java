@@ -106,7 +106,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
         }
         gateType.onGateStartOpen(this);//catch gates that have proxy blocks still in the world
         gateType.onGateStartClose(this);//
-        ItemStack item = Gate.getItemToConstruct(this.gateType.getGlobalID());
+        @Nonnull ItemStack item = Gate.getItemToConstruct(this.gateType.getGlobalID());
         EntityItem entity = new EntityItem(world, posX, posY + 0.5d, posZ, item);
         this.world.spawnEntityInWorld(entity);
         this.setDead();

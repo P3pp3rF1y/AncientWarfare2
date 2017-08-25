@@ -47,10 +47,10 @@ public class StructureValidatorHarbor extends StructureValidator {
         validTargetBlocksRear = new HashSet<String>();
         validTargetBlocks.addAll(WorldStructureGenerator.defaultTargetBlocks);
         validTargetBlocksSide.addAll(WorldStructureGenerator.defaultTargetBlocks);
-        validTargetBlocksRear.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.water));
-        validTargetBlocksRear.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.flowing_water));
-        validTargetBlocksSide.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.water));
-        validTargetBlocksSide.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.flowing_water));
+        validTargetBlocksRear.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.WATER));
+        validTargetBlocksRear.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.FLOWING_WATER));
+        validTargetBlocksSide.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.WATER));
+        validTargetBlocksSide.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.FLOWING_WATER));
     }
 
     @Override
@@ -73,7 +73,7 @@ public class StructureValidatorHarbor extends StructureValidator {
                 return false;
             }
             block = world.getBlock(testMin.x, by, testMin.z);
-            if (block == Blocks.water || block == Blocks.flowing_water) {
+            if (block == Blocks.WATER || block == Blocks.FLOWING_WATER) {
                 return true;
             }
         }
@@ -149,7 +149,7 @@ public class StructureValidatorHarbor extends StructureValidator {
         if (y >= bb.min.y + template.yOffset) {
             super.handleClearAction(world, x, y, z, template, bb);
         } else {
-            world.setBlock(x, y, z, Blocks.water);
+            world.setBlock(x, y, z, Blocks.WATER);
         }
     }
 

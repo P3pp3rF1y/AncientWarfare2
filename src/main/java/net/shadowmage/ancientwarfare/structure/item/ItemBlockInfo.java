@@ -1,9 +1,11 @@
 package net.shadowmage.ancientwarfare.structure.item;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -22,11 +24,11 @@ public class ItemBlockInfo extends Item {
         if(!world.isRemote) {
             BlockPos pos = BlockTools.getBlockClickedOn(player, player.world, false);
             if (pos != null) {
-                Block block = world.getBlock(pos.x, pos.y, pos.z);
-                int meta = world.getBlockMetadata(pos.x, pos.y, pos.z);
-                AWLog.logDebug("block: " + BlockDataManager.INSTANCE.getNameForBlock(block) + ", meta: " + meta);
-                if(block.hasTileEntity(meta)){
-                    AWLog.logDebug("tile: " + world.getTileEntity(pos.x, pos.y, pos.z).getClass());
+                IBlockState state = world.getBlockState(pos);
+                Block block = state.getBlock();
+                AWLog.logDebug("block: " + BlockDataManager.INSTANCE.getNameForBlock(block) + ", meta: " + block.getMetaFromState(state)); //TODO print property values?
+                if(block.hasTileEntity(state)){
+                    AWLog.logDebug("tile: " + world.getTileEntity(pos).getClass());
                 }
             }
         }

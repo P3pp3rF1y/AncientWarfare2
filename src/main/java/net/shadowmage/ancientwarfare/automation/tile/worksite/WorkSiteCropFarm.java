@@ -1,21 +1,25 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.BlockStem;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.api.IAncientWarfareFarmable;
 import net.shadowmage.ancientwarfare.api.IAncientWarfarePlantable;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
@@ -25,7 +29,11 @@ import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
 
@@ -41,10 +49,10 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
 
     public WorkSiteCropFarm() {
 
-        blocksToTill = new HashSet<BlockPos>();
-        blocksToHarvest = new HashSet<BlockPos>();
-        blocksToPlant = new HashSet<BlockPos>();
-        blocksToFertilize = new HashSet<BlockPos>();
+        blocksToTill = new HashSet<>();
+        blocksToHarvest = new HashSet<>();
+        blocksToPlant = new HashSet<>();
+        blocksToFertilize = new HashSet<>();
         
         if (blocksTillableAndTilled.size() == 0) {
             AncientWarfareCore.log.info("Building crop farmable block list...");
@@ -57,22 +65,19 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
                 Block[] farmablePairBlocks = new Block[2];
                 for (int i = 0; i < 2; i++) {
                     if (!farmablePair[i].trim().equals("")) {
-                        String[] blockId = farmablePair[i].split(":");
-                        if (blockId[0] != null && blockId[1] != null) {
-                            Block block = GameRegistry.findBlock(blockId[0], blockId[1]);
-                            if (block != null) {
-                                farmablePairBlocks[i] = block;
-                            } else {
-                                // just dummy the block entry so we can silently ignore this missing block
-                                farmablePairBlocks[i] = Blocks.air;
-                            }
+                        Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(farmablePair[i]));
+                        if (block != null) {
+                            farmablePairBlocks[i] = block;
+                        } else {
+                            // just dummy the block entry so we can silently ignore this missing block
+                            farmablePairBlocks[i] = Blocks.AIR;
                         }
                     }
                 }
                 if (farmablePairBlocks[0] == null || farmablePairBlocks[1] == null) {
                     AncientWarfareCore.log.error("Invalid entry: " + entry);
                     continue;
-                } else if (farmablePairBlocks[0] != Blocks.air && farmablePairBlocks[1] != Blocks.air) {
+                } else if (farmablePairBlocks[0] != Blocks.AIR && farmablePairBlocks[1] != Blocks.AIR) {
                     blocksTillableAndTilled.add(farmablePairBlocks);
                     AncientWarfareCore.log.info("...added " + farmablePair[0] + " > " + farmablePair[1] + " as " + farmablePairBlocks[0].getLocalizedName() + " > " + farmablePairBlocks[1].getLocalizedName());
                 }
@@ -90,7 +95,7 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
         ItemSlotFilter filter = new ItemSlotFilter() {
             @Override
             public boolean apply(ItemStack stack) {
-                return stack == null || isPlantable(stack);
+                return stack.isEmpty() || isPlantable(stack);
             }
         };
         this.inventory.setFilterForSlots(filter, frontIndices);
@@ -98,7 +103,7 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
         filter = new ItemSlotFilter() {
             @Override
             public boolean apply(ItemStack stack) {
-                return stack == null || isBonemeal(stack);
+                return stack.isEmpty() || isBonemeal(stack);
             }
         };
         this.inventory.setFilterForSlots(filter, bottomIndices);
@@ -113,12 +118,12 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
     }
 
     @Override
-    protected boolean isFarmable(Block block, int x, int y, int z) {
-        if(block instanceof IAncientWarfareFarmable && ((IAncientWarfareFarmable)block).isMature(world, x, y, z)) {
+    protected boolean isFarmable(Block block, BlockPos farmablePos) {
+        if(block instanceof IAncientWarfareFarmable && ((IAncientWarfareFarmable)block).isMature(world, farmablePos)) {
             return true;
         }
-        if(super.isFarmable(block, x, y, z)){
-            return ((IPlantable) block).getPlantType(world, x, y, z) == EnumPlantType.Crop;
+        if(super.isFarmable(block, farmablePos)){
+            return ((IPlantable) block).getPlantType(world, farmablePos) == EnumPlantType.Crop;
         }
         return block instanceof BlockCrops || block instanceof BlockStem;
     }
@@ -143,10 +148,10 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
     protected void countResources() {
         plantableCount = 0;
         bonemealCount = 0;
-        ItemStack stack;
+        @Nonnull ItemStack stack;
         for (int i = TOP_LENGTH; i < getSizeInventory(); i++) {
             stack = getStackInSlot(i);
-            if (stack == null) {
+            if (stack.isEmpty()) {
                 continue;
             }
             if (i < TOP_LENGTH + FRONT_LENGTH){
@@ -165,11 +170,12 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
 
     @Override
     protected void scanBlockPosition(BlockPos position) {
-        Block block = world.getBlock(position.x, position.y, position.z);
-        if (block.isReplaceable(world, position.x, position.y, position.z)) {
-            block = world.getBlock(position.x, position.y - 1, position.z);
+        IBlockState state = world.getBlockState(position);
+        Block block = world.getBlockState(position).getBlock();
+        if (block.isReplaceable(world, position)) {
+            block = world.getBlockState(position.down()).getBlock();
             if (isTillable(block)) {
-                blocksToTill.add(new BlockPos(position.x, position.y - 1, position.z));
+                blocksToTill.add(position.down());
             } else {
                 for (Block farmableBlockPair[] : blocksTillableAndTilled) {
                     if (block == farmableBlockPair[1])
@@ -177,35 +183,35 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
                 }
             }
         } else if (block instanceof BlockStem) {
-            if (!((IGrowable) block).func_149851_a(world, position.x, position.y, position.z, world.isRemote)) {
-                block = world.getBlock(position.x - 1, position.y, position.z);
-                if (melonOrPumpkin(block)) {
-                    blocksToHarvest.add(new BlockPos(position.x - 1, position.y, position.z));
+            if (!((IGrowable) block).canGrow(world, position, state, world.isRemote)) {
+                state = world.getBlockState(position.west());
+                if (melonOrPumpkin(state)) {
+                    blocksToHarvest.add(position.west());
                 }
-                block = world.getBlock(position.x + 1, position.y, position.z);
-                if (melonOrPumpkin(block)) {
-                    blocksToHarvest.add(new BlockPos(position.x + 1, position.y, position.z));
+                state = world.getBlockState(position.east());
+                if (melonOrPumpkin(state)) {
+                    blocksToHarvest.add(position.east());
                 }
-                block = world.getBlock(position.x, position.y, position.z - 1);
-                if (melonOrPumpkin(block)) {
-                    blocksToHarvest.add(new BlockPos(position.x, position.y, position.z - 1));
+                state = world.getBlockState(position.north());
+                if (melonOrPumpkin(state)) {
+                    blocksToHarvest.add(position.north());
                 }
-                block = world.getBlock(position.x, position.y, position.z + 1);
-                if (melonOrPumpkin(block)) {
-                    blocksToHarvest.add(new BlockPos(position.x, position.y, position.z + 1));
+                state = world.getBlockState(position.south());
+                if (melonOrPumpkin(state)) {
+                    blocksToHarvest.add(position.south());
                 }
             } else {
                 blocksToFertilize.add(position);
             }
-        } else if (block instanceof IGrowable && ((IGrowable) block).func_149851_a(world, position.x, position.y, position.z, world.isRemote)) {
+        } else if (block instanceof IGrowable && ((IGrowable) block).canGrow(world, position, state, world.isRemote)) {
             blocksToFertilize.add(position);
-        } else if (isFarmable(block, position.x, position.y, position.z)) {
+        } else if (isFarmable(block, position)) {
             blocksToHarvest.add(position);
         }
     }
 
-    private boolean melonOrPumpkin(Block block){
-        return block.getMaterial() == Material.gourd;
+    private boolean melonOrPumpkin(IBlockState state){
+        return state.getMaterial() == Material.GOURD;
     }
 
     @Override
@@ -218,12 +224,12 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
             it = blocksToTill.iterator();
             while (it.hasNext() && (position = it.next()) != null) {
                 it.remove();
-                block = world.getBlock(position.x, position.y, position.z);
-                if (isTillable(block) && canReplace(position.x, position.y + 1, position.z)) {
+                block = world.getBlockState(position).getBlock();
+                if (isTillable(block) && canReplace(position.up())) {
                     //for (Block farmableBlockPair[] : blocksTillableAndTilled) {
                     for (int i = 0; i < blocksTillableAndTilled.size(); i++) {
                         if (block == blocksTillableAndTilled.get(i)[0]) {
-                            world.setBlock(position.x, position.y, position.z, blocksTillableAndTilled.get(i)[1]);
+                            world.setBlockState(position, blocksTillableAndTilled.get(i)[1].getDefaultState());
                         }
                     }
                     return true;
@@ -233,18 +239,19 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
             it = blocksToHarvest.iterator();
             while (it.hasNext() && (position = it.next()) != null) {
                 it.remove();
-                block = world.getBlock(position.x, position.y, position.z);
-                if (melonOrPumpkin(block)) {
-                    return harvestBlock(position.x, position.y, position.z, RelativeSide.FRONT, RelativeSide.TOP);
+                IBlockState state = world.getBlockState(position);
+                block = state.getBlock();
+                if (melonOrPumpkin(state)) {
+                    return harvestBlock(position, RelativeSide.FRONT, RelativeSide.TOP);
                 }
                 else if (block instanceof IGrowable) {
-                    if (!((IGrowable) block).func_149851_a(world, position.x, position.y, position.z, world.isRemote) && !(block instanceof BlockStem)) {
+                    if (!((IGrowable) block).canGrow(world, position, state, world.isRemote) && !(block instanceof BlockStem)) {
                         if(Loader.isModLoaded("AgriCraft")){
                             if(!(block instanceof IAncientWarfareFarmable)) {//Not using the API
                                 Class<? extends Block> c = block.getClass();
                                 if ("com.InfinityRaider.AgriCraft.blocks.BlockCrop".equals(c.getName())) {//A crop from AgriCraft
                                     try {//Use the harvest method, hopefully dropping stuff
-                                        c.getDeclaredMethod("harvest", World.class, int.class, int.class, int.class, EntityPlayer.class).invoke(block, world, position.x, position.y, position.z, null);
+                                        c.getDeclaredMethod("harvest", World.class, int.class, int.class, int.class, EntityPlayer.class).invoke(block, world, position, null);
                                         return true;
                                     } catch (Throwable ignored) {
                                         return false;
@@ -252,25 +259,25 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
                                 }
                             }
                         }
-                        return harvestBlock(position.x, position.y, position.z, RelativeSide.FRONT, RelativeSide.TOP);
+                        return harvestBlock(position, RelativeSide.FRONT, RelativeSide.TOP);
                     }
-                }else if(isFarmable(block, position.x, position.y, position.z)){
-                    return harvestBlock(position.x, position.y, position.z, RelativeSide.FRONT, RelativeSide.TOP);
+                }else if(isFarmable(block, position)){
+                    return harvestBlock(position, RelativeSide.FRONT, RelativeSide.TOP);
                 }
             }
         } else if (hasToPlant()) {
             it = blocksToPlant.iterator();
             while (it.hasNext() && (position = it.next()) != null) {
                 it.remove();
-                if (canReplace(position.x, position.y, position.z)) {
-                    ItemStack stack;
+                if (canReplace(position)) {
+                    @Nonnull ItemStack stack;
                     for (int i = TOP_LENGTH; i < TOP_LENGTH + FRONT_LENGTH; i++) {
                         stack = getStackInSlot(i);
-                        if (stack == null) {
+                        if (stack.isEmpty()) {
                             continue;
                         }
                         if (isPlantable(stack)) {
-                            if(tryPlace(stack, position.x, position.y, position.z, EnumFacing.UP)) {
+                            if(tryPlace(stack, position, EnumFacing.UP)) {
                                 plantableCount--;
                                 if (stack.getCount() <= 0) {
                                     setInventorySlotContents(i, ItemStack.EMPTY);
@@ -286,34 +293,35 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
             it = blocksToFertilize.iterator();
             while (it.hasNext() && (position = it.next()) != null) {
                 it.remove();
-                block = world.getBlock(position.x, position.y, position.z);
+                IBlockState state = world.getBlockState(position);
+                block = state.getBlock();
                 if (block instanceof IGrowable) {
-                    ItemStack stack;
+                    @Nonnull ItemStack stack;
                     for (int i = TOP_LENGTH + FRONT_LENGTH; i < getSizeInventory(); i++) {
                         stack = getStackInSlot(i);
-                        if (stack == null) {
+                        if (stack.isEmpty()) {
                             continue;
                         }
                         if (isBonemeal(stack)) {
-                            if(ItemDye.applyBonemeal(stack, world, position.x, position.y, position.z, getOwnerAsPlayer())){
+                            if(ItemDye.applyBonemeal(stack, world, position, getOwnerAsPlayer(), EnumHand.MAIN_HAND)){
                                 bonemealCount--;
                                 if (stack.getCount() <= 0) {
                                     setInventorySlotContents(i, ItemStack.EMPTY);
                                 }
                             }
-                            block = world.getBlock(position.x, position.y, position.z);
+                            block = world.getBlockState(position).getBlock();
                             if(block instanceof IAncientWarfareFarmable) {
                                 IAncientWarfareFarmable farmable = (IAncientWarfareFarmable) block;
-                                if(farmable.isMature(world, position.x, position.y, position.z)) {
+                                if(farmable.isMature(world, position)) {
                                     blocksToHarvest.add(position);
-                                } else if(farmable.func_149851_a(world, position.x, position.y, position.z, world.isRemote)) {
+                                } else if(farmable.canGrow(world, position, state, world.isRemote)) {
                                     blocksToFertilize.add(position);
                                 }
                             }
                             else if (block instanceof IGrowable) {
-                                if (((IGrowable) block).func_149851_a(world, position.x, position.y, position.z, world.isRemote)) {
+                                if (((IGrowable) block).canGrow(world, position, state, world.isRemote)) {
                                     blocksToFertilize.add(position);
-                                } else if (isFarmable(block, position.x, position.y, position.z)) {
+                                } else if (isFarmable(block, position)) {
                                     blocksToHarvest.add(position);
                                 }
                             }

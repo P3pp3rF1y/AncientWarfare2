@@ -1,7 +1,5 @@
 package net.shadowmage.ancientwarfare.structure.block;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -10,9 +8,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
@@ -40,7 +39,7 @@ public class BlockSoundBlock extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta){
-        return Blocks.jukebox.getIcon(side, meta);
+        return Blocks.JUKEBOX.getIcon(side, meta);
     }
 
     @Override
@@ -61,7 +60,7 @@ public class BlockSoundBlock extends Block {
 
     @Override
     public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        ItemStack itemStack = player.getCurrentEquippedItem();
+        @Nonnull ItemStack itemStack = player.getCurrentEquippedItem();
         if(itemStack!=null && itemStack.getItem() instanceof ItemBlock){
             TileEntity tileEntity = world.getTileEntity(pos);
             if(tileEntity instanceof TileSoundBlock) {

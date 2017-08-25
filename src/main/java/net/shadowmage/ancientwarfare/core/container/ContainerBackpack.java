@@ -16,7 +16,7 @@ public class ContainerBackpack extends ContainerBase {
     public ContainerBackpack(EntityPlayer player, int x, int y, int z) {
         super(player);
 
-        ItemStack stack = player.getCurrentEquippedItem();
+        @Nonnull ItemStack stack = player.getCurrentEquippedItem();
         backpackSlotIndex = player.inventory.currentItem;
 
         inventory = ItemBackpack.getInventoryFor(stack);
@@ -74,11 +74,11 @@ public class ContainerBackpack extends ContainerBase {
 
     @Override
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
-        ItemStack slotStackCopy = null;
+        @Nonnull ItemStack slotStackCopy = ItemStack.EMPTY;
         Slot theSlot = this.getSlot(slotClickedIndex);
         int size = inventory.getSizeInventory();
         if (theSlot != null && theSlot.getHasStack()) {
-            ItemStack slotStack = theSlot.getStack();
+            @Nonnull ItemStack slotStack = theSlot.getStack();
             slotStackCopy = slotStack.copy();
             if (slotClickedIndex < size)//clicked in backpack
             {
@@ -93,7 +93,7 @@ public class ContainerBackpack extends ContainerBase {
                 }
             }
             if (slotStack.getCount() == 0) {
-                theSlot.putStack(null);
+                theSlot.putStack(ItemStack.EMPTY);
             } else {
                 theSlot.onSlotChanged();
             }

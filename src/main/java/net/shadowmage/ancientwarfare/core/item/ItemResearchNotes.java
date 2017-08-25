@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.core.item;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -62,7 +63,7 @@ public class ItemResearchNotes extends Item {
         /**
          * TODO sort list by ??
          */
-        ItemStack stack;
+        @Nonnull ItemStack stack;
         for (ResearchGoal goal : goals) {
             stack = new ItemStack(this);
             stack.setTagInfo("researchName", new NBTTagString(goal.getName()));

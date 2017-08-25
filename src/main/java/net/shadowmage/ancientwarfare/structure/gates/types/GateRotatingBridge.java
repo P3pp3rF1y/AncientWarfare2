@@ -64,7 +64,7 @@ public class GateRotatingBridge extends Gate {
             }
         } else {
             int heightAdj = max.y - min.y;
-            BlockPos pos3 = max.moveUp(-heightAdj).moveForward(gate.gateOrientation, heightAdj);
+            BlockPos pos3 = max.up(-heightAdj).moveForward(gate.gateOrientation, heightAdj);
             max = BlockTools.getMax(min, pos3).offset(1, 1, 1);
             min = BlockTools.getMin(min, pos3);
             gate.boundingBox.setBounds(min.x, min.y, min.z, max.x, max.y, max.z);
@@ -83,7 +83,7 @@ public class GateRotatingBridge extends Gate {
             BlockPos min = BlockTools.getMin(gate.pos1, gate.pos2);
             BlockPos max = BlockTools.getMax(gate.pos1, gate.pos2);
             int heightAdj = max.y - min.y;
-            BlockPos pos3 = max.moveUp(-heightAdj).moveForward(gate.gateOrientation, heightAdj);
+            BlockPos pos3 = max.up(-heightAdj).moveForward(gate.gateOrientation, heightAdj);
             max = BlockTools.getMax(min, pos3);
             min = BlockTools.getMin(min, pos3);
             Block id;
@@ -137,7 +137,7 @@ public class GateRotatingBridge extends Gate {
 //      for(int z = min.z; z<= max.z; z++)
 //        {
 //        id = gate.world.getBlock(x, y, z);
-//        if(id==Blocks.air)
+//        if(id==Blocks.AIR)
 //          {
 //          gate.world.setBlock(x, y, z, AWStructuresItemLoader.gateProxy);
 //          TileEntity te = gate.world.getTileEntity(x, y, z);
@@ -157,7 +157,7 @@ public class GateRotatingBridge extends Gate {
         BlockPos min = BlockTools.getMin(gate.pos1, gate.pos2);
         BlockPos max = BlockTools.getMax(gate.pos1, gate.pos2);
         int heightAdj = max.y - min.y;
-        BlockPos pos3 = max.moveUp(-heightAdj).moveForward(gate.gateOrientation, heightAdj);
+        BlockPos pos3 = max.up(-heightAdj).moveForward(gate.gateOrientation, heightAdj);
         max = BlockTools.getMax(min, pos3);
         min = BlockTools.getMin(min, pos3);
         placeBetween(gate, min, max);
@@ -169,7 +169,7 @@ public class GateRotatingBridge extends Gate {
         BlockPos max = BlockTools.getMax(gate.pos1, gate.pos2);
         boolean widestOnXAxis = gate.pos1.x != gate.pos2.x;
         int heightAdj = max.y - min.y;
-        BlockPos pos3 = max.moveUp(-heightAdj).moveForward(gate.gateOrientation, heightAdj);
+        BlockPos pos3 = max.up(-heightAdj).moveForward(gate.gateOrientation, heightAdj);
         max = BlockTools.getMax(min, pos3);
         min = BlockTools.getMin(min, pos3);
         Block id;

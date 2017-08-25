@@ -5,7 +5,12 @@ import net.minecraft.init.Blocks;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
 
 public final class TownTemplate {
     private String townTypeName;//
@@ -30,7 +35,7 @@ public final class TownTemplate {
     private int townPlotSize;//
     private int townBuildingWidthExpansion;//used to expand buildings by a set size, for use with structure templates that have no surrounding space in them, to ensure room between structures
 
-    private Block roadFillBlock = Blocks.gravel;//
+    private Block roadFillBlock = Blocks.GRAVEL;//
     private int roadFillMeta = 0;
 
     private int wallStyle;//0==no wall, 1==corner only, 2==random walls, 3==by pattern//

@@ -97,7 +97,7 @@ public class CommandStructure extends CommandBase {
             var1.sendMessage(txt);
         }else if(cmd.toLowerCase(Locale.ENGLISH).equals("save")){
             if(var1 instanceof EntityLivingBase){
-                ItemStack stack = ((EntityLivingBase) var1).getHeldItem();
+                @Nonnull ItemStack stack = ((EntityLivingBase) var1).getHeldItem();
                 if(stack!=null){
                     ItemStructureSettings settings = ItemStructureSettings.getSettingsFor(stack);
                     if(settings.hasPos1() && settings.hasPos2() && settings.hasBuildKey() && (settings.hasName() || var2.length>1)){

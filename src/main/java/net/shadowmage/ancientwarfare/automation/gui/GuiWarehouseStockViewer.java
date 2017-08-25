@@ -11,6 +11,8 @@ import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 
+import javax.annotation.Nonnull;
+
 public class GuiWarehouseStockViewer extends GuiContainerBase<ContainerWarehouseStockViewer> {
 
     private CompositeScrolled area;
@@ -49,7 +51,7 @@ public class GuiWarehouseStockViewer extends GuiContainerBase<ContainerWarehouse
             label = new Label(178 - 16 - 12 - 2 - fontRenderer.getStringWidth(text), totalHeight + 4, String.valueOf(filter.getQuantity()));
             area.addGuiElement(label);
 
-            text = filter.getFilterItem() == null ? "Empty Filter" : filter.getFilterItem().getDisplayName();
+            text = filter.getFilterItem().isEmpty() ? "Empty Filter" : filter.getFilterItem().getDisplayName();
             label = new Label(8 + 20, totalHeight + 4, text);
             area.addGuiElement(label);
 
@@ -59,7 +61,7 @@ public class GuiWarehouseStockViewer extends GuiContainerBase<ContainerWarehouse
             button = new Button(8, totalHeight + 4, 178 - 16 - 8, 12, "guistrings.automation.new_filter") {
                 @Override
                 protected void onPressed() {
-                    getContainer().filters.add(new WarehouseStockFilter(null, 0));
+                    getContainer().filters.add(new WarehouseStockFilter(ItemStack.EMPTY, 0));
                     getContainer().sendFiltersToServer();
                     refreshGui();
                 }
@@ -98,12 +100,12 @@ public class GuiWarehouseStockViewer extends GuiContainerBase<ContainerWarehouse
 
         @Override
         public void onSlotClicked(ItemStack stack) {
-            ItemStack in = stack == null ? null : stack.copy();
+            @Nonnull ItemStack in = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
             this.setItem(in);
-            if (in != null) {
+            if (!in.isEmpty()) {
                 in.setCount(1);
             }
-            filter.setItem(in == null ? null : in.copy());
+            filter.setItem(in.isEmpty() ? ItemStack.EMPTY : in.copy());
             getContainer().sendFiltersToServer();
         }
     }

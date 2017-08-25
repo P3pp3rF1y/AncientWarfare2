@@ -1,6 +1,14 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
-import net.minecraft.block.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockAir;
+import net.minecraft.block.BlockCactus;
+import net.minecraft.block.BlockCocoa;
+import net.minecraft.block.BlockOldLog;
+import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.BlockReed;
+import net.minecraft.block.IGrowable;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -8,11 +16,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
+import javax.annotation.Nonnull;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
@@ -32,11 +43,11 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
 
     public WorkSiteReedFarm() {
 
-        cocoaToPlant = new HashSet<BlockPos>();
-        cactusToPlant = new HashSet<BlockPos>();
-        reedToPlant = new HashSet<BlockPos>();
-        blocksToHarvest = new HashSet<BlockPos>();
-        cocoaToGrow = new HashSet<BlockPos>();
+        cocoaToPlant = new HashSet<>();
+        cactusToPlant = new HashSet<>();
+        reedToPlant = new HashSet<>();
+        blocksToHarvest = new HashSet<>();
+        cocoaToGrow = new HashSet<>();
 
         InventoryTools.IndexHelper helper = new InventoryTools.IndexHelper();
         int[] topIndices = helper.getIndiceArrayForSpread(TOP_LENGTH);
@@ -49,7 +60,7 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
         ItemSlotFilter filter = new ItemSlotFilter() {
             @Override
             public boolean apply(ItemStack stack) {
-                return stack == null || isCocoDye(stack) || stack.getItem() == Items.REEDS || Block.getBlockFromItem(stack.getItem()) instanceof BlockCactus;
+                return stack.isEmpty() || isCocoDye(stack) || stack.getItem() == Items.REEDS || Block.getBlockFromItem(stack.getItem()) instanceof BlockCactus;
             }
         };
         this.inventory.setFilterForSlots(filter, frontIndices);
@@ -57,7 +68,7 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
         filter = new ItemSlotFilter() {
             @Override
             public boolean apply(ItemStack stack) {
-                return stack == null || isBonemeal(stack);
+                return stack.isEmpty() || isBonemeal(stack);
             }
         };
         this.inventory.setFilterForSlots(filter, bottomIndices);
@@ -133,22 +144,23 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
     }
 
     private boolean applyBonemeal(BlockPos p) {
-        Block block = world.getBlock(p.x, p.y, p.z);
-        if (block instanceof BlockCocoa && ((BlockCocoa) block).func_149851_a(world, p.x, p.y, p.z, world.isRemote)) {
-            ItemStack stack;
+        IBlockState state = world.getBlockState(p);
+        Block block = state.getBlock();
+        if (block instanceof BlockCocoa && ((BlockCocoa) block).canGrow(world, p, state, world.isRemote)) {
+            @Nonnull ItemStack stack;
             for (int i = TOP_LENGTH + FRONT_LENGTH; i < getSizeInventory(); i++) {
                 stack = getStackInSlot(i);
-                if (stack == null) {
+                if (stack.isEmpty()) {
                     continue;
                 }
                 if (isBonemeal(stack)) {
-                    if (ItemDye.applyBonemeal(stack, world, p.x, p.y, p.z, getOwnerAsPlayer())) {
+                    if (ItemDye.applyBonemeal(stack, world, p, getOwnerAsPlayer(), EnumHand.MAIN_HAND)) {
                         bonemealCount--;
                         if (stack.getCount() <= 0) {
                             setInventorySlotContents(i, ItemStack.EMPTY);
                         }
                     }
-                    if (((BlockCocoa) block).func_149851_a(world, p.x, p.y, p.z, world.isRemote)) {
+                    if (((BlockCocoa) block).canGrow(world, p, state, world.isRemote)) {
                         cocoaToGrow.add(p);
                     } else {
                         blocksToHarvest.add(p);
@@ -161,24 +173,24 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
     }
 
     private boolean harvestBlock(BlockPos p) {
-        Block block = world.getBlock(p.x, p.y, p.z);
+        Block block = world.getBlockState(p).getBlock();
         if (block instanceof BlockCactus || block instanceof BlockReed || block instanceof BlockCocoa) {
-            return harvestBlock(p.x, p.y, p.z, RelativeSide.FRONT, RelativeSide.TOP);
+            return harvestBlock(p, RelativeSide.FRONT, RelativeSide.TOP);
         }
         return false;
     }
 
     private boolean plantCactus(BlockPos p) {
-        if (!canReplace(p.x, p.y, p.z) || !Blocks.cactus.canBlockStay(world, p.x, p.y, p.z)) {
+        if (!canReplace(p) || !Blocks.CACTUS.canBlockStay(world, p)) {
             return false;
         }
-        ItemStack stack;
+        @Nonnull ItemStack stack;
         for (int i = TOP_LENGTH; i < TOP_LENGTH + FRONT_LENGTH; i++) {
             stack = getStackInSlot(i);
-            if (stack == null) {
+            if (stack.isEmpty()) {
                 continue;
             }
-            if (stack.getItem() == Item.getItemFromBlock(Blocks.cactus) && tryPlace(stack, p.x, p.y, p.z, EnumFacing.UP)){
+            if (stack.getItem() == Item.getItemFromBlock(Blocks.CACTUS) && tryPlace(stack, p, EnumFacing.UP)){
                 cactusCount--;
                 return true;
             }
@@ -187,16 +199,16 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
     }
 
     private boolean plantReeds(BlockPos p) {
-        if (!canReplace(p.x, p.y, p.z) || !Blocks.reeds.canBlockStay(world, p.x, p.y, p.z)) {
+        if (!canReplace(p) || !Blocks.REEDS.canBlockStay(world, p)) {
             return false;
         }
-        ItemStack stack;
+        @Nonnull ItemStack stack;
         for (int i = TOP_LENGTH; i < TOP_LENGTH + FRONT_LENGTH; i++) {
             stack = getStackInSlot(i);
-            if (stack == null) {
+            if (stack.isEmpty()) {
                 continue;
             }
-            if (stack.getItem() == Items.REEDS && tryPlace(stack, p.x, p.y, p.z, EnumFacing.UP)){
+            if (stack.getItem() == Items.REEDS && tryPlace(stack, p, EnumFacing.UP)){
                 reedCount--;
                 return true;
             }
@@ -205,28 +217,28 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
     }
 
     private boolean plantCocoa(BlockPos p) {
-        if (!canReplace(p.x, p.y, p.z)) {
+        if (!canReplace(p)) {
             return false;
         }
         EnumFacing meta = null;
-        if (isJungleLog(p.x - 1, p.y, p.z)) {
+        if (isJungleLog(p.west())) {
             meta = EnumFacing.EAST;
-        } else if (isJungleLog(p.x + 1, p.y, p.z)) {
+        } else if (isJungleLog(p.east())) {
             meta = EnumFacing.WEST;
-        } else if (isJungleLog(p.x, p.y, p.z - 1)) {
+        } else if (isJungleLog(p.north())) {
             meta = EnumFacing.SOUTH;
-        } else if (isJungleLog(p.x, p.y, p.z + 1)) {
+        } else if (isJungleLog(p.south())) {
             meta = EnumFacing.NORTH;
         }
         if(meta == null)
             return false;
-        ItemStack stack;
+        @Nonnull ItemStack stack;
         for (int i = TOP_LENGTH; i < TOP_LENGTH + FRONT_LENGTH; i++) {
             stack = getStackInSlot(i);
-            if (stack == null) {
+            if (stack.isEmpty()) {
                 continue;
             }
-            if (isCocoDye(stack) && tryPlace(stack, p.x, p.y, p.z, meta)) {
+            if (isCocoDye(stack) && tryPlace(stack, p, meta)) {
                 cocoaCount--;
                 return true;
             }
@@ -234,8 +246,9 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
         return false;
     }
 
-    protected boolean isJungleLog(int x, int y, int z) {
-        return world.getBlock(x, y, z) == Blocks.log && BlockLog.func_150165_c(world.getBlockMetadata(x, y, z)) == 3;
+    protected boolean isJungleLog(BlockPos pos) {
+        IBlockState state = world.getBlockState(pos);
+        return state.getBlock() == Blocks.LOG && state.getValue(BlockOldLog.VARIANT) == BlockPlanks.EnumType.JUNGLE;
     }
 
     @Override
@@ -244,10 +257,10 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
         reedCount = 0;
         cocoaCount = 0;
         bonemealCount = 0;
-        ItemStack stack;
+        @Nonnull ItemStack stack;
         for (int i = TOP_LENGTH; i < TOP_LENGTH + FRONT_LENGTH; i++) {
             stack = getStackInSlot(i);
-            if (stack == null) {
+            if (stack.isEmpty()) {
                 continue;
             }
             if (isCocoDye(stack))
@@ -259,7 +272,7 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
         }
         for (int i = TOP_LENGTH + FRONT_LENGTH; i < getSizeInventory(); i++) {
             stack = getStackInSlot(i);
-            if (stack == null) {
+            if (stack.isEmpty()) {
                 continue;
             }
             if(isBonemeal(stack)){
@@ -287,29 +300,28 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
     }
 
     @Override
-    protected void scanBlockPosition(BlockPos pos) {
-        Block block = world.getBlock(pos.x, pos.y, pos.z);
-        if (block instanceof BlockCactus || block instanceof BlockReed)//find top of cactus/reeds, harvest from top down (leave 1 at bottom)
-        {
-            for (int y = pos.y + 4; y > pos.y; y--) {
-                if(world.getBlock(pos.x, y, pos.z) == block) {
-                    blocksToHarvest.add(new BlockPos(pos.x, y, pos.z));
+    protected void scanBlockPosition(BlockPos scanPos) {
+        Block block = world.getBlockState(scanPos).getBlock();
+        if (block instanceof BlockCactus || block instanceof BlockReed) {//find top of cactus/reeds, harvest from top down (leave 1 at bottom)
+            for (BlockPos current = scanPos.up(4); current.getY() > scanPos.getY(); current = current.down()) {
+                if(world.getBlockState(current) == block) {
+                    blocksToHarvest.add(current);
                 }
             }
         } else if (block instanceof BlockCocoa) {
-            if(!((IGrowable) block).func_149851_a(world, pos.x, pos.y, pos.z, world.isRemote)) {
-                blocksToHarvest.add(pos.copy());
+            if(!((IGrowable) block).canGrow(world, scanPos, world.getBlockState(scanPos), world.isRemote)) {
+                blocksToHarvest.add(scanPos);
             }else{
-                cocoaToGrow.add(pos.copy());
+                cocoaToGrow.add(scanPos);
             }
         } else if (block instanceof BlockAir)//check for plantability for each type
         {
-            if (Blocks.cactus.canBlockStay(world, pos.x, pos.y, pos.z)) {
-                cactusToPlant.add(pos.copy());
-            } else if (Blocks.reeds.canBlockStay(world, pos.x, pos.y, pos.z)) {
-                reedToPlant.add(pos.copy());
-            }else if (isJungleLog(pos.x - 1, pos.y, pos.z) || isJungleLog(pos.x + 1, pos.y, pos.z) || isJungleLog(pos.x, pos.y, pos.z - 1) || isJungleLog(pos.x, pos.y, pos.z + 1)) {
-                cocoaToPlant.add(pos.copy());
+            if (Blocks.CACTUS.canBlockStay(world, scanPos)) {
+                cactusToPlant.add(scanPos);
+            } else if (Blocks.REEDS.canBlockStay(world, scanPos)) {
+                reedToPlant.add(scanPos);
+            }else if (isJungleLog(scanPos.west()) || isJungleLog(scanPos.east()) || isJungleLog(scanPos.north()) || isJungleLog(scanPos.south())) {
+                cocoaToPlant.add(scanPos);
             }
         }
     }

@@ -1,18 +1,24 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.common.FishingHooks;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+
+import javax.annotation.Nonnull;
 
 public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
 
@@ -37,20 +43,20 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
     @Override
     protected void onBoundsSet() {
         super.onBoundsSet();
-        BlockPos pos = getWorkBoundsMax();
-        setWorkBoundsMax(pos.moveUp(yCoord - 1 - pos.y));
-        pos = getWorkBoundsMin();
-        setWorkBoundsMin(pos.moveUp(yCoord - 5 - pos.y));
+        BlockPos boundsMax = getWorkBoundsMax();
+        setWorkBoundsMax(boundsMax.up(pos.getY() - 1 - boundsMax.getY()));
+        boundsMax = getWorkBoundsMin();
+        setWorkBoundsMin(boundsMax.up(pos.getY() - 5 - boundsMax.getY()));
         BlockTools.notifyBlockUpdate(this);
     }
 
     @Override
     public void onBoundsAdjusted() {
         super.onBoundsAdjusted();
-        BlockPos pos = getWorkBoundsMax();
-        setWorkBoundsMax(pos.moveUp(yCoord - 1 - pos.y));
-        pos = getWorkBoundsMin();
-        setWorkBoundsMin(pos.moveUp(yCoord - 5 - pos.y));
+        BlockPos boundsMax = getWorkBoundsMax();
+        setWorkBoundsMax(boundsMax.up(pos.getY() - 1 - boundsMax.getY()));
+        boundsMax = getWorkBoundsMin();
+        setWorkBoundsMin(boundsMax.up(pos.getY() - 5 - boundsMax.getY()));
         BlockTools.notifyBlockUpdate(this);
     }
 
@@ -87,18 +93,14 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
                     ink = !fish;
                 }
                 if (fish) {
-                    ItemStack fishStack = FishingHooks.getRandomFishable(world.rand, 1F);
-                    if (fishStack != null) {
-                        int fortune = getFortune();
-                        if (fortune > 0) {
-                            fishStack.grow(world.rand.nextInt(fortune + 1));
-                        }
+                    LootContext.Builder context = new LootContext.Builder((WorldServer)world);
+                    context.withLuck(getFortune());
+                    for (@Nonnull ItemStack fishStack : this.world.getLootTableManager().getLootTableFromLocation(LootTableList.GAMEPLAY_FISHING).generateLootForPools(world.rand, context.build())) {
                         addStackToInventory(fishStack, RelativeSide.TOP);
-                        return true;
                     }
                 }
                 if (ink) {
-                    ItemStack inkItem = new ItemStack(Items.DYE, 1, 0);
+                    @Nonnull ItemStack inkItem = new ItemStack(Items.DYE, 1, 0);
                     int fortune = getFortune();
                     if (fortune > 0) {
                         inkItem.grow(world.rand.nextInt(fortune + 1));
@@ -115,10 +117,11 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
         waterBlockCount = 0;
         BlockPos min = getWorkBoundsMin();
         BlockPos max = getWorkBoundsMax();
-        for (int x = min.x; x <= max.x; x++) {
-            for (int z = min.z; z <= max.z; z++) {
-                for (int y = max.y; y >= min.y; y--) {
-                    if (world.getBlock(x, y, z).getMaterial() == Material.water) {
+        for (int x = min.getX(); x <= max.getX(); x++) {
+            for (int z = min.getZ(); z <= max.getZ(); z++) {
+                for (int y = max.getY(); y >= min.getY(); y--) {
+                    IBlockState state = world.getBlockState(new BlockPos(x, y, z));
+                    if (state.getMaterial() == Material.WATER) {
                         waterBlockCount++;
                     } else {
                         break;
@@ -136,10 +139,11 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setBoolean("fish", harvestFish);
         tag.setBoolean("ink", harvestInk);
+        return tag;
     }
 
     @Override

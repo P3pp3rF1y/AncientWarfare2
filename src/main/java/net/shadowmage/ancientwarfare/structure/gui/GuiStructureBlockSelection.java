@@ -4,10 +4,13 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
-import net.shadowmage.ancientwarfare.core.gui.elements.*;
+import net.shadowmage.ancientwarfare.core.gui.elements.Button;
+import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
+import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
+import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
+import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 
@@ -73,7 +76,7 @@ public class GuiStructureBlockSelection extends GuiContainerBase {
         String name;
         for (int i = 0; i < 256; i++) {
             block = Block.getBlockById(i);
-            if (block == null || block == Blocks.air) {
+            if (block == null || block == Blocks.AIR) {
                 continue;
             }
 
@@ -94,7 +97,7 @@ public class GuiStructureBlockSelection extends GuiContainerBase {
 
         for (String blockName : AWStructureStatics.getUserDefinedTargetBlocks()) {
             block = BlockDataManager.INSTANCE.getBlockForName(blockName);
-            if (block == null || block == Blocks.air || blockToBox.containsKey(block)) {
+            if (block == null || block == Blocks.AIR || blockToBox.containsKey(block)) {
                 continue;
             }
 
@@ -179,19 +182,19 @@ public class GuiStructureBlockSelection extends GuiContainerBase {
     private void addDefaults() {
         Set<Block> targetBlocks = new HashSet<Block>();
 
-        targetBlocks.add(Blocks.sand);
-        targetBlocks.add(Blocks.gravel);
-        targetBlocks.add(Blocks.stone);
-        targetBlocks.add(Blocks.grass);
-        targetBlocks.add(Blocks.dirt);
-        targetBlocks.add(Blocks.clay);
-        targetBlocks.add(Blocks.stained_hardened_clay);
-        targetBlocks.add(Blocks.gold_ore);
-        targetBlocks.add(Blocks.iron_ore);
-        targetBlocks.add(Blocks.diamond_ore);
-        targetBlocks.add(Blocks.redstone_ore);
-        targetBlocks.add(Blocks.lapis_ore);
-        targetBlocks.add(Blocks.coal_ore);
+        targetBlocks.add(Blocks.SAND);
+        targetBlocks.add(Blocks.GRAVEL);
+        targetBlocks.add(Blocks.STONE);
+        targetBlocks.add(Blocks.GRASS);
+        targetBlocks.add(Blocks.DIRT);
+        targetBlocks.add(Blocks.CLAY);
+        targetBlocks.add(Blocks.STAINED_HARDENED_CLAY);
+        targetBlocks.add(Blocks.GOLD_ORE);
+        targetBlocks.add(Blocks.IRON_ORE);
+        targetBlocks.add(Blocks.DIAMOND_ORE);
+        targetBlocks.add(Blocks.REDSTONE_ORE);
+        targetBlocks.add(Blocks.LAPIS_ORE);
+        targetBlocks.add(Blocks.COAL_ORE);
 
         Checkbox box;
         for (Block block : blockToBox.keySet()) {

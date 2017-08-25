@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.automation.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteAnimalFarm;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 
@@ -12,8 +13,8 @@ public class ContainerWorksiteAnimalControl extends ContainerTileBase<WorkSiteAn
     public int maxCows;
     public int maxChickens;
 
-    public ContainerWorksiteAnimalControl(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
+    public ContainerWorksiteAnimalControl(EntityPlayer player, BlockPos pos) {
+        super(player, pos);
         maxPigs = tileEntity.maxPigCount;
         maxSheep = tileEntity.maxSheepCount;
         maxCows = tileEntity.maxCowCount;

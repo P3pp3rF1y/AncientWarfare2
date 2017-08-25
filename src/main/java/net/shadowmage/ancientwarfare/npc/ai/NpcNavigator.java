@@ -141,12 +141,12 @@ public class NpcNavigator extends PathNavigate {
                     {
                         Material material = this.world.getBlock(i2, yOffset - 1, j2).getMaterial();
 
-                        if (material == Material.air || material == Material.lava || material == Material.fire || material == Material.cactus)
+                        if (material == Material.AIR || material == Material.LAVA || material == Material.FIRE || material == Material.CACTUS)
                         {
                             return false;
                         }
 
-                        if (material == Material.water && !this.entity.isInWater())
+                        if (material == Material.WATER && !this.entity.isInWater())
                         {
                             return false;
                         }

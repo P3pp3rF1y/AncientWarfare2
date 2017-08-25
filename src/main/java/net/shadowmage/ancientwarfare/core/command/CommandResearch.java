@@ -1,12 +1,15 @@
 package net.shadowmage.ancientwarfare.core.command;
 
 import net.minecraft.command.CommandBase;
+import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class CommandResearch extends CommandBase {
@@ -18,17 +21,17 @@ public class CommandResearch extends CommandBase {
     }
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "awresearch";
     }
 
     @Override
-    public String getCommandUsage(ICommandSender p_71518_1_) {
+    public String getUsage(ICommandSender sender) {
         return "command.aw.research.usage";
     }
 
     @Override
-    public void processCommand(ICommandSender sender, String[] commandParts) {
+    public void execute(MinecraftServer server, ICommandSender sender, String[] commandParts) throws CommandException {
         if (commandParts == null || commandParts.length < 2) {
             throw new WrongUsageException("command.aw.research.usage");
         }
@@ -67,9 +70,8 @@ public class CommandResearch extends CommandBase {
         }
     }
 
-    @SuppressWarnings("rawtypes")
     @Override
-    public List addTabCompletionOptions(ICommandSender sender, String[] text) {
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] text, @Nullable BlockPos targetPos) {
         return text.length == 1 ? getListOfStringsMatchingLastWord(text, "add", "remove", "fill", "clear") : text.length == 2 ? getListOfStringsMatchingLastWord(text, MinecraftServer.getServer().getAllUsernames()) : null;
     }
 

@@ -51,7 +51,7 @@ public class BlockWindmillBlade extends Block {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int side, int meta) {
-        return Blocks.glass.getIcon(side, 0);
+        return Blocks.GLASS.getIcon(side, 0);
     }
 
     @Override

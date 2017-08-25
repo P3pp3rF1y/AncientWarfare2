@@ -11,6 +11,8 @@ import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 
+import javax.annotation.Nonnull;
+
 public class GuiWarehouseInterface extends GuiContainerBase<ContainerWarehouseInterface> {
 
     private CompositeScrolled area;
@@ -112,13 +114,13 @@ public class GuiWarehouseInterface extends GuiContainerBase<ContainerWarehouseIn
 
         @Override
         public void onSlotClicked(ItemStack stack) {
-            ItemStack in = stack == null ? null : stack.copy();
+            @Nonnull ItemStack in = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
             this.setItem(in);
-            if (in != null) {
+            if (!in.isEmpty()) {
                 in.setCount(1);
             }
             filter.setFilterQuantity(0);
-            filter.setFilterItem(in == null ? null : in.copy());
+            filter.setFilterItem(in.isEmpty() ? ItemStack.EMPTY : in.copy());
             getContainer().sendFiltersToServer();
         }
     }

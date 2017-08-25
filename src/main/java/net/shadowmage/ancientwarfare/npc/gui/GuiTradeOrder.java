@@ -4,9 +4,21 @@ import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.block.Direction;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
-import net.shadowmage.ancientwarfare.core.gui.elements.*;
+import net.shadowmage.ancientwarfare.core.gui.elements.Button;
+import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
+import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
+import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
+import net.shadowmage.ancientwarfare.core.gui.elements.Label;
+import net.shadowmage.ancientwarfare.core.gui.elements.Line;
+import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
 import net.shadowmage.ancientwarfare.npc.container.ContainerTradeOrder;
-import net.shadowmage.ancientwarfare.npc.trade.*;
+import net.shadowmage.ancientwarfare.npc.trade.POTradeDepositEntry;
+import net.shadowmage.ancientwarfare.npc.trade.POTradePoint;
+import net.shadowmage.ancientwarfare.npc.trade.POTradeRestockData;
+import net.shadowmage.ancientwarfare.npc.trade.POTradeRoute;
+import net.shadowmage.ancientwarfare.npc.trade.POTradeWithdrawEntry;
+import net.shadowmage.ancientwarfare.npc.trade.Trade;
+import net.shadowmage.ancientwarfare.npc.trade.TradeList;
 
 import java.util.List;
 
@@ -186,34 +198,34 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
     }
 
     private void addTradeInputSlot(final Trade trade, int x, int y, final int slotNum) {
-        ItemStack stack = trade.getInputStack(slotNum);
-        stack = stack == null ? null : stack.copy();
+        @Nonnull ItemStack stack = trade.getInputStack(slotNum);
+        stack = stack.isEmpty() ? null : stack.copy();
         final ItemSlot slot = new ItemSlot(x, y, stack, this) {
             @Override
             public void onSlotClicked(ItemStack stack) {
-                stack = stack == null ? null : stack.copy();
+                stack = stack.isEmpty() ? null : stack.copy();
                 setItem(stack);
                 trade.setInputStack(slotNum, stack);
             }
         };
-        if (stack == null) {
+        if (stack.isEmpty()) {
             slot.addTooltip("guistrings.npc.trade_input_slot");
         }
         tradesArea.addGuiElement(slot);
     }
 
     private void addTradeOutputSlot(final Trade trade, int x, int y, final int slotNum) {
-        ItemStack stack = trade.getOutputStack(slotNum);
-        stack = stack == null ? null : stack.copy();
+        @Nonnull ItemStack stack = trade.getOutputStack(slotNum);
+        stack = stack.isEmpty() ? null : stack.copy();
         final ItemSlot slot = new ItemSlot(x, y, stack, this) {
             @Override
             public void onSlotClicked(ItemStack stack) {
-                stack = stack == null ? null : stack.copy();
+                stack = stack.isEmpty() ? null : stack.copy();
                 setItem(stack);
                 trade.setOutputStack(slotNum, stack);
             }
         };
-        if (stack == null) {
+        if (stack.isEmpty()) {
             slot.addTooltip("guistrings.npc.trade_output_slot");
         }
         tradesArea.addGuiElement(slot);
@@ -384,7 +396,7 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
         ItemSlot slot = new ItemSlot(8, startHeight, entry.getFilter(), this) {
             @Override
             public void onSlotClicked(ItemStack stack) {
-                stack = stack == null ? null : stack.copy();
+                stack = stack.isEmpty() ? null : stack.copy();
                 entry.setFilter(stack);
                 setItem(stack);
             }
@@ -419,7 +431,7 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
         ItemSlot slot = new ItemSlot(8, startHeight, entry.getFilter(), this) {
             @Override
             public void onSlotClicked(ItemStack stack) {
-                stack = stack == null ? null : stack.copy();
+                stack = stack.isEmpty() ? null : stack.copy();
                 entry.setFilter(stack);
                 setItem(stack);
             }

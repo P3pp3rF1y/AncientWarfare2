@@ -11,7 +11,11 @@ import net.shadowmage.ancientwarfare.structure.world_gen.WorldGenTickHandler;
 import net.shadowmage.ancientwarfare.structure.world_gen.WorldGenTickHandler.StructureGenerationCallbackTicket;
 import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Random;
 
 public class TownGeneratorStructures {
 
@@ -341,7 +345,7 @@ public class TownGeneratorStructures {
         BlockPos max = new BlockPos(min.x + (width - 1), min.y + template.ySize, min.z + (length - 1));
         StructureBB bb = new StructureBB(min, max);
 
-        BlockPos buildKey = bb.getRLCorner(face, new BlockPos()).moveRight(face, template.xOffset).moveBack(face, template.zOffset).moveUp(gen.townBounds.min.y - template.yOffset);
+        BlockPos buildKey = bb.getRLCorner(face, new BlockPos()).moveRight(face, template.xOffset).moveBack(face, template.zOffset).up(gen.townBounds.min.y - template.yOffset);
         bb.offset(0, -template.yOffset, 0);
         gen.structureDoors.add(buildKey.copy());
         WorldGenTickHandler.INSTANCE.addStructureForGeneration(new StructureBuilder(gen.world, template, face, buildKey, bb));

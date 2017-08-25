@@ -30,7 +30,7 @@ public class BlockHandCrankedEngine extends BlockTorqueBase {
     @Override
     @SideOnly(Side.CLIENT)
     public IIcon getIcon(int p_149691_1_, int p_149691_2_) {
-        return Blocks.iron_block.getIcon(p_149691_1_, p_149691_2_);
+        return Blocks.IRON_BLOCK.getIcon(p_149691_1_, p_149691_2_);
     }
 
     @Override

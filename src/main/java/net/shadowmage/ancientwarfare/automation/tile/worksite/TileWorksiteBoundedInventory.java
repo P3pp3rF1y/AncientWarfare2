@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -19,7 +18,6 @@ import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.List;
 
 /**
@@ -32,8 +30,6 @@ import java.util.List;
  *
  * @author Shadowmage
  */
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded implements ISidedInventory {
 
     public InventorySided inventory;
@@ -111,9 +107,7 @@ public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded i
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         if (inventory != null) {
-            NBTTagCompound invTag = new NBTTagCompound();
-            inventory.writeToNBT(invTag);
-            tag.setTag("inventory", invTag);
+            tag.setTag("inventory", inventory.serializeNBT());
         }
         return tag;
     }
@@ -122,7 +116,7 @@ public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded i
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         if (tag.hasKey("inventory") && inventory != null) {
-            inventory.readFromNBT(tag.getCompoundTag("inventory"));
+            inventory.deserializeNBT(tag.getCompoundTag("inventory"));
         }
     }
 

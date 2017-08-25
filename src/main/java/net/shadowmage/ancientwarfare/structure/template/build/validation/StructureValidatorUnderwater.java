@@ -88,7 +88,7 @@ public class StructureValidatorUnderwater extends StructureValidator {
 
     @Override
     public void handleClearAction(World world, int x, int y, int z, StructureTemplate template, StructureBB bb) {
-        world.setBlock(x, y, z, Blocks.water);
+        world.setBlock(x, y, z, Blocks.WATER);
     }
 
 }

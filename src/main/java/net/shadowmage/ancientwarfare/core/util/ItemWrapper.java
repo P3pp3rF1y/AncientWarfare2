@@ -1,11 +1,12 @@
 package net.shadowmage.ancientwarfare.core.util;
 
+import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
-
-import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.item.Item;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 public class ItemWrapper {
     public final Item item;
@@ -34,7 +35,7 @@ public class ItemWrapper {
                     continue;
                 }
                 
-                Item item = GameRegistry.findItem(itemId[0], itemId[1]);
+                Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemId[0] + ":" + itemId[1]));
                 
                 if (item == null) {
                     AncientWarfareCore.log.warn(" - Skipping missing item: " + itemName);

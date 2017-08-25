@@ -60,13 +60,13 @@ public class StructureBuilderWorldGen extends StructureBuilder {
     }
 
     protected Block getBiomeSpecificBlock(Block par1, int par2, BiomeGenBase biome) {
-        if (biome == BiomeGenBase.desert || biome == BiomeGenBase.desertHills || biome.topBlock == Blocks.sand) {
-            if (par1 == Blocks.log || par1 == Blocks.cobblestone || par1 == Blocks.planks || par1 == Blocks.gravel) {
-                return Blocks.sandstone;
+        if (biome == BiomeGenBase.desert || biome == BiomeGenBase.desertHills || biome.topBlock == Blocks.SAND) {
+            if (par1 == Blocks.LOG || par1 == Blocks.COBBLESTONE || par1 == Blocks.PLANKS || par1 == Blocks.GRAVEL) {
+                return Blocks.SANDSTONE;
             }
 
-            if (par1 == Blocks.oak_stairs || par1 == Blocks.stone_stairs) {
-                return Blocks.sandstone_stairs;
+            if (par1 == Blocks.OAK_STAIRS || par1 == Blocks.STONE_STAIRS) {
+                return Blocks.SANDSTONE_STAIRS;
             }
         }
 
@@ -77,11 +77,11 @@ public class StructureBuilderWorldGen extends StructureBuilder {
      * Gets the replacement block metadata for the current biome
      */
     protected int getBiomeSpecificBlockMetadata(Block par1, int par2, BiomeGenBase biome) {
-        if (biome == BiomeGenBase.desert || biome == BiomeGenBase.desertHills || biome.topBlock == Blocks.sand) {
-            if (par1 == Blocks.log || par1 == Blocks.cobblestone) {
+        if (biome == BiomeGenBase.desert || biome == BiomeGenBase.desertHills || biome.topBlock == Blocks.SAND) {
+            if (par1 == Blocks.LOG || par1 == Blocks.COBBLESTONE) {
                 return 0;
             }
-            if (par1 == Blocks.planks) {
+            if (par1 == Blocks.PLANKS) {
                 return 2;
             }
         }

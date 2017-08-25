@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
-import mcp.MethodsReturnNonnullByDefault;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -13,13 +12,11 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.NBTSerializableUtils;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.annotation.ParametersAreNonnullByDefault;
 import java.util.ArrayList;
 import java.util.List;
 
-@MethodsReturnNonnullByDefault
-@ParametersAreNonnullByDefault
 public class TileWarehouseInterface extends TileControlled implements IInventory, IInteractableTile {
 
     final InventoryBasic inventory = new InventoryBasic(27);
@@ -91,7 +88,7 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
 
     @Override
     public ItemStack decrStackSize(int var1, int var2) {
-        ItemStack stack = inventory.decrStackSize(var1, var2);
+        @Nonnull ItemStack stack = inventory.decrStackSize(var1, var2);
         if(!stack.isEmpty())
             markDirty();
         return stack;
@@ -99,7 +96,7 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
 
     @Override
     public ItemStack removeStackFromSlot(int var1) {
-        ItemStack stack = inventory.removeStackFromSlot(var1);
+        @Nonnull ItemStack stack = inventory.removeStackFromSlot(var1);
         recalcRequests();
         return stack;
     }
@@ -193,7 +190,7 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
         }
         fillRequests.clear();
         emptyRequests.clear();
-        ItemStack stack;
+        @Nonnull ItemStack stack;
         for (int i = 0; i < inventory.getSizeInventory(); i++) {
             stack = inventory.getStackInSlot(i);
             if (stack.isEmpty()) {
@@ -213,7 +210,7 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
 
         int count;
         for (WarehouseInterfaceFilter filter : filters) {
-            if (filter.getFilterItem() == null) {
+            if (filter.getFilterItem().isEmpty()) {
                 continue;
             }
             count = InventoryTools.getCountOf(inventory, -1, filter.getFilterItem());

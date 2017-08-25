@@ -2,7 +2,11 @@ package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.passive.*;
+import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntityPig;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -10,6 +14,7 @@ import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
@@ -21,6 +26,7 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.ItemWrapper;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +45,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
     private int bucketCount;
     private int carrotCount;
     private int seedCount;
-    private ItemStack shears = null;
+    private ItemStack shears = ItemStack.EMPTY;
 
     private List<EntityPair> pigsToBreed = new ArrayList<EntityPair>();
     private List<EntityPair> chickensToBreed = new ArrayList<EntityPair>();
@@ -70,16 +76,16 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         this.inventory.setAccessibleSideDefault(RelativeSide.BOTTOM, RelativeSide.BOTTOM, bottomIndices);//buckets/shears
         ItemSlotFilter filter = new ItemSlotFilter() {
             @Override
-            public boolean apply(ItemStack stack) {
-                return stack == null || isFood(stack.getItem());
+            public boolean apply(@Nullable ItemStack stack) {
+                return stack.isEmpty() || isFood(stack.getItem());
             }
         };
         inventory.setFilterForSlots(filter, frontIndices);
 
         filter = new ItemSlotFilter() {
             @Override
-            public boolean apply(ItemStack stack) {
-                return stack == null || isTool(stack.getItem());
+            public boolean apply(@Nullable ItemStack stack) {
+                return stack.isEmpty() || isTool(stack.getItem());
             }
         };
         inventory.setFilterForSlots(filter, bottomIndices);
@@ -105,7 +111,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
                 || (seedCount > 0 && !chickensToBreed.isEmpty())
                 || (wheatCount > 0 && (!cowsToBreed.isEmpty() || !sheepToBreed.isEmpty()))
                 || (bucketCount > 0 && cowsToMilk > 0)
-                || (shears != null && !sheepToShear.isEmpty());
+                || (!shears.isEmpty() && !sheepToShear.isEmpty());
     }
 
     @Override
@@ -132,11 +138,11 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         seedCount = 0;
         wheatCount = 0;
         bucketCount = 0;
-        shears = null;
-        ItemStack stack;
+        shears = ItemStack.EMPTY;
+        @Nonnull ItemStack stack;
         for (int i = TOP_LENGTH; i < TOP_LENGTH + FRONT_LENGTH; i++) {
             stack = getStackInSlot(i);
-            if (stack == null) {
+            if (stack.isEmpty()) {
                 continue;
             }
             if (stack.getItem() == Items.CARROT) {
@@ -149,7 +155,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         }
         for (int i = TOP_LENGTH + FRONT_LENGTH; i < getSizeInventory(); i++) {
             stack = getStackInSlot(i);
-            if (stack == null) {
+            if (stack.isEmpty()) {
                 continue;
             }
             if (stack.getItem() == Items.BUCKET) {
@@ -322,8 +328,8 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
                 return false;
             }
             if (animalA.isEntityAlive() && animalB.isEntityAlive()) {
-                ((EntityAnimal) animalA).func_146082_f(getOwnerAsPlayer());//setInLove(EntityPlayer breeder)
-                ((EntityAnimal) animalB).func_146082_f(getOwnerAsPlayer());//setInLove(EntityPlayer breeder)
+                ((EntityAnimal) animalA).setInLove(getOwnerAsPlayer());
+                ((EntityAnimal) animalB).setInLove(getOwnerAsPlayer());
                 return true;
             }
         }
@@ -340,14 +346,14 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
     }
 
     private boolean tryShearing() {
-        if(shears == null || sheepToShear.isEmpty()) {
+        if(shears.isEmpty() || sheepToShear.isEmpty()) {
             return false;
         }
         EntitySheep sheep = (EntitySheep) world.getEntityByID(sheepToShear.remove(0));
         if (sheep == null || !sheep.isShearable(shears, world, pos)) {
             return false;
         }
-        ArrayList<ItemStack> items = sheep.onSheared(shears, world, pos, getFortune());
+        List<ItemStack> items = sheep.onSheared(shears, world, pos, getFortune());
         for (ItemStack item : items) {
             addStackToInventory(item, RelativeSide.TOP);
         }
@@ -368,10 +374,10 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 
                 animal.captureDrops = true;
                 animal.arrowHitTimer = 10;
-                animal.attackEntityFrom(DamageSource.generic, animal.getHealth() + 1);
-                ItemStack stack;
+                animal.attackEntityFrom(DamageSource.GENERIC, animal.getHealth() + 1);
+                @Nonnull ItemStack stack;
                 for (EntityItem item : animal.capturedDrops) {
-                    stack = item.getEntityItem();
+                    stack = item.getItem();
                     if (!stack.isEmpty()) {
                         if (fortune > 0) {
                             stack.grow(world.rand.nextInt(fortune));
@@ -401,17 +407,17 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         }
         
         List<EntityItem> items = getEntitiesWithinBounds(EntityItem.class);
-        ItemStack stack;
+        @Nonnull ItemStack stack;
         for (EntityItem item : items) {
-            stack = item.getEntityItem();
-            if (item.isEntityAlive() && !stack.isEmpty() && stack.getItem() != null) {
+            stack = item.getItem();
+            if (item.isEntityAlive() && !stack.isEmpty() && stack.getItem() != Items.AIR) {
                 Item droppedItem = stack.getItem();
                 for (ItemWrapper animalDrop : ANIMAL_DROPS) {
                     if (droppedItem.equals(animalDrop.item)) {
                         if (animalDrop.damage == -1 || animalDrop.damage == stack.getItemDamage()) {
                             stack = InventoryTools.mergeItemStack(inventory, stack, inventory.getRawIndices(RelativeSide.TOP));
                             if (!stack.isEmpty()) {
-                                item.setEntityItemStack(stack);
+                                item.setItem(stack);
                             } else {
                                 item.setDead();
                             }
@@ -450,12 +456,13 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setInteger("maxChickens", maxChickenCount);
         tag.setInteger("maxCows", maxCowCount);
         tag.setInteger("maxPigs", maxPigCount);
         tag.setInteger("maxSheep", maxSheepCount);
+        return tag;
     }
 
     private static class EntityPair {

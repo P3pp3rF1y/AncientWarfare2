@@ -114,10 +114,10 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
             invData.setInteger("length", inventory.length);
             NBTTagCompound itemTag;
             NBTTagList list = new NBTTagList();
-            ItemStack stack;
+            @Nonnull ItemStack stack;
             for (int i = 0; i < inventory.length; i++) {
                 stack = inventory[i];
-                if (stack == null) {
+                if (stack.isEmpty()) {
                     continue;
                 }
                 itemTag = NBTTools.writeItemStack(stack, new NBTTagCompound());
@@ -132,10 +132,10 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
             invData.setInteger("length", equipment.length);
             NBTTagCompound itemTag;
             NBTTagList list = new NBTTagList();
-            ItemStack stack;
+            @Nonnull ItemStack stack;
             for (int i = 0; i < equipment.length; i++) {
                 stack = equipment[i];
-                if (stack == null) {
+                if (stack.isEmpty()) {
                     continue;
                 }
                 itemTag = NBTTools.writeItemStack(stack, new NBTTagCompound());
@@ -158,7 +158,7 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
             NBTTagCompound itemTag;
             NBTTagList list = tag.getTagList("inventoryContents", Constants.NBT.TAG_COMPOUND);
             int slot;
-            ItemStack stack;
+            @Nonnull ItemStack stack;
             for (int i = 0; i < list.tagCount(); i++) {
                 itemTag = list.getCompoundTagAt(i);
                 stack = NBTTools.readItemStack(itemTag);
@@ -175,7 +175,7 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
             NBTTagCompound itemTag;
             NBTTagList list = inventoryTag.getTagList("equipmentContents", Constants.NBT.TAG_COMPOUND);
             int slot;
-            ItemStack stack;
+            @Nonnull ItemStack stack;
             for (int i = 0; i < list.tagCount(); i++) {
                 itemTag = list.getCompoundTagAt(i);
                 stack = NBTTools.readItemStack(itemTag);
