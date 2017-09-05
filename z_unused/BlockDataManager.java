@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -42,20 +42,20 @@ public static BlockDataManager instance()
 public static void loadBlockList()
   {
   addBlock(0, "air");
-  /************************************ BASIC SUBTYPED BLOCKS ************************************/
+  /*********************************** BASIC SUBTYPED BLOCKS ************************************/
   addBlock(Block.stoneBrick).setIsBasicSubtype();
   addBlock(Block.cloth).setIsBasicSubtype();
   addBlock(Block.leaves).setIsBasicSubtype();
   addBlock(Block.cobblestoneWall).setIsBasicSubtype();
   
-  /************************************ ADVANCED SUBTYPED BLOCKS ************************************/
+  /*********************************** ADVANCED SUBTYPED BLOCKS ************************************/
   addBlock(Block.grass);  
   addBlock(Block.stoneSingleSlab);
   addBlock(Block.stoneDoubleSlab);
   addBlock(Block.woodSingleSlab);
   addBlock(Block.woodDoubleSlab);
   
-  /************************************ PRIORITY ONLY AND BASIC INVENTORIED BLOCK ENTRIES ************************************/
+  /*********************************** PRIORITY ONLY AND BASIC INVENTORIED BLOCK ENTRIES ************************************/
   addBlock(Block.waterMoving).setPriority(1).setBasicInventoryItem(Item.bucketWater.itemID, 0, 1);
   addBlock(Block.waterStill).setPriority(1).setBasicInventoryItem(Item.bucketWater.itemID, 0, 1);
   addBlock(Block.lavaStill).setPriority(1).setBasicInventoryItem(Item.bucketLava.itemID, 0, 1);
@@ -82,7 +82,7 @@ public static void loadBlockList()
   addBlock(Block.mushroomCapBrown).setPriority(1);
   addBlock(Block.mushroomCapRed).setPriority(1);
   
-  /************************************ ROTATABLE/METADATA BLOCKS ************************************/
+  /*********************************** ROTATABLE/METADATA BLOCKS ************************************/
   addBlock(Block.dropper).setRotatable().setMeta(0, 2, 5, 3, 4).setMeta(1, 1, 1, 1, 1).setMeta(2, 0, 0, 0, 0).setMeta(3, 10, 13, 11, 12);
   addBlock(Block.dispenser).setRotatable().setMeta(0, 2, 5, 3, 4).setMeta(1, 1, 1, 1, 1).setMeta(2, 0, 0, 0, 0).setMeta(3, 10, 13, 11, 12);
   addBlock(Block.hopperBlock).setRotatable().setMeta(0, 3, 4, 2, 5).setMeta(1, 0, 0, 0, 0).setMeta(2, 11, 12, 10, 13).setMeta(3, 8, 8, 8, 8);
@@ -144,7 +144,7 @@ public static void loadBlockList()
   addBlock(Block.redstoneComparatorActive).setPriority(1).setRotatable().setMeta(0, 2, 3, 0, 1).setBasicInventoryItem(Block.redstoneComparatorIdle.blockID, 0, 1);
   
   addBlock(Block.wood).setMeta(0, 0, 0, 0, 0).setRotatable().setMeta(1, 8, 4, 8, 4).setMeta(2, 1, 1, 1, 1).setMeta(3, 9, 5, 9, 5).setMeta(4, 2, 2, 2, 2).setMeta(5, 10, 6, 10, 6).setMeta(6, 3, 3, 3, 3).setMeta(7, 11, 7, 11, 7);
-  /**
+  /*
    * add single slabs, and double slabs for stone
    */
   int id = Block.stoneSingleSlab.blockID;
@@ -159,7 +159,7 @@ public static void loadBlockList()
     BlockInfo.setInventoryBlock(id2, i, id, i, 2);
     }
   
-  /**
+  /*
    * do the same for wood slabs
    */
   id = Block.woodSingleSlab.blockID;
@@ -203,7 +203,7 @@ public static void setMeta(int id, int set, int a, int b, int c, int d)
   return;
   }
 
-/**
+/*
  * convenience wrappers, passes params directly into BlockInfo.createEntryFor(.....)
  * @param block
  * @param priority

@@ -10,7 +10,7 @@ import java.util.*;
 
 public class ResearchData extends WorldSavedData {
 
-    private HashMap<String, ResearchEntry> playerResearchEntries = new HashMap<String, ResearchEntry>();
+    private HashMap<String, ResearchEntry> playerResearchEntries = new HashMap<>();
 
     public ResearchData(String par1Str) {
         super(par1Str);
@@ -168,8 +168,8 @@ public class ResearchData extends WorldSavedData {
     private static final class ResearchEntry {
         private int currentResearch = -1;
         private int currentProgress = -1;
-        private Set<Integer> completedResearch = new HashSet<Integer>();
-        private List<Integer> queuedResearch = new ArrayList<Integer>();
+        private Set<Integer> completedResearch = new HashSet<>();
+        private List<Integer> queuedResearch = new ArrayList<>();
 
         private boolean knowsResearch(int num) {
             return completedResearch.contains(num);
@@ -194,7 +194,7 @@ public class ResearchData extends WorldSavedData {
             }
         }
 
-        /**
+        /*
          * should only be called after a goal from the queue has sucessfully been started -- items used/etc
          */
         public void startResearch(int goal) {
@@ -301,7 +301,7 @@ public class ResearchData extends WorldSavedData {
                 return;
             }
 
-            List<Integer> goalsToValidate = new ArrayList<Integer>();
+            List<Integer> goalsToValidate = new ArrayList<>();
 
             Iterator<Integer> it = queuedResearch.iterator();
             Integer exam;
@@ -316,7 +316,7 @@ public class ResearchData extends WorldSavedData {
                 }
             }
 
-            Set<Integer> totalResearch = new HashSet<Integer>();
+            Set<Integer> totalResearch = new HashSet<>();
             totalResearch.addAll(completedResearch);
             totalResearch.addAll(queuedResearch);
             if (currentResearch >= 0) {

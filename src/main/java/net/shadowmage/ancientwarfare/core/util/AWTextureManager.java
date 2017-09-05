@@ -6,8 +6,8 @@ import net.minecraft.util.ResourceLocation;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
-/**
- * TODO clean this class up to use new image/file based texture classes
+/*
+ * TODO remove once rendering is moved to JSONs / baked models?
  *
  * @author Shadowmage
  */
@@ -22,8 +22,8 @@ public class AWTextureManager {
     private AWTextureManager() {
     }
 
-    private HashMap<String, ResourceLocation> locationTextures = new HashMap<String, ResourceLocation>();
-    private HashMap<String, TextureImageBased> imageBasedTextures = new HashMap<String, TextureImageBased>();
+    private HashMap<String, ResourceLocation> locationTextures = new HashMap<>();
+    private HashMap<String, TextureImageBased> imageBasedTextures = new HashMap<>();
 
     public void bindLocationTexture(String name) {
         if (!locationTextures.containsKey(name)) {

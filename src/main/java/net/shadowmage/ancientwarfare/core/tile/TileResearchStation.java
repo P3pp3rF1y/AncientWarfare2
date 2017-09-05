@@ -8,6 +8,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ITickable;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
@@ -24,9 +26,9 @@ import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import java.util.EnumSet;
 import java.util.List;
 
-public class TileResearchStation extends TileOwned implements IWorkSite, IInventory, IInventoryChangedListener, ITorqueTile, IInteractableTile, IRotatableTile {
+public class TileResearchStation extends TileOwned implements IWorkSite, IInventory, IInventoryChangedListener, ITorqueTile, IInteractableTile, IRotatableTile, ITickable {
 
-    EnumFacing orientation = EnumFacing.NORTH;//default for old blocks
+    private EnumFacing orientation = EnumFacing.NORTH;//default for old blocks
 
     private final InventoryBasic bookInventory = new InventoryBasic(1, this);
     private final InventoryBasic resourceInventory = new InventoryBasic(9, this);
@@ -129,7 +131,7 @@ public class TileResearchStation extends TileOwned implements IWorkSite, IInvent
     }
 
     @Override
-    public void updateEntity() {
+    public void update() {
         if (!hasWorld() || world.isRemote) {
             return;
         }
@@ -152,8 +154,8 @@ public class TileResearchStation extends TileOwned implements IWorkSite, IInvent
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        bookInventory.readFromNBT(tag.getCompoundTag("bookInventory"));
-        resourceInventory.readFromNBT(tag.getCompoundTag("resourceInventory"));
+        bookInventory.deserializeNBT(tag.getCompoundTag("bookInventory"));
+        resourceInventory.deserializeNBT(tag.getCompoundTag("resourceInventory"));
         this.useAdjacentInventory = tag.getBoolean("useAdjacentInventory");
         this.storedEnergy = tag.getDouble("storedEnergy");
         if (tag.hasKey("orientation")) {
@@ -164,15 +166,17 @@ public class TileResearchStation extends TileOwned implements IWorkSite, IInvent
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        tag.setTag("bookInventory", bookInventory.writeToNBT(new NBTTagCompound()));
-        tag.setTag("resourceInventory", resourceInventory.writeToNBT(new NBTTagCompound()));
+        tag.setTag("bookInventory", bookInventory.serializeNBT());
+        tag.setTag("resourceInventory", resourceInventory.serializeNBT());
         tag.setBoolean("useAdjacentInventory", useAdjacentInventory);
         tag.setDouble("storedEnergy", storedEnergy);
         tag.setInteger("orientation", orientation.ordinal());
         tag.setInteger("inventoryDirection", inventoryDirection.ordinal());
         tag.setInteger("inventorySide", inventorySide.ordinal());
+        return tag;
+
     }
 
     @Override
@@ -201,18 +205,13 @@ public class TileResearchStation extends TileOwned implements IWorkSite, IInvent
             if (goalInstance == null) {
                 return;
             }
-            if (goalInstance.tryStart(resourceInventory, -1)) {
+            if (goalInstance.tryStart(resourceInventory, null)) {
                 ResearchTracker.INSTANCE.startResearch(world, name, goalId);
             } else if (useAdjacentInventory) {
                 TileEntity t;
                 boolean started = false;
-                int x = xCoord + inventoryDirection.offsetX;
-                int y = yCoord + inventoryDirection.offsetY;
-                int z = zCoord + inventoryDirection.offsetZ;
-
-                if ((t = world.getTileEntity(x, y, z)) instanceof IInventory) {
-                    int side = inventorySide.ordinal();
-                    started = goalInstance.tryStart((IInventory) t, side);
+                if ((t = world.getTileEntity(pos.offset(inventoryDirection))) instanceof IInventory) {
+                    started = goalInstance.tryStart((IInventory) t, inventorySide);
                 }
                 if (started) {
                     ResearchTracker.INSTANCE.startResearch(world, name, goalId);
@@ -235,6 +234,11 @@ public class TileResearchStation extends TileOwned implements IWorkSite, IInvent
     @Override
     public int getSizeInventory() {
         return bookInventory.getSizeInventory() + resourceInventory.getSizeInventory();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return bookInventory.isEmpty() && resourceInventory.isEmpty();
     }
 
     @Override
@@ -304,6 +308,27 @@ public class TileResearchStation extends TileOwned implements IWorkSite, IInvent
     @Override
     public boolean isItemValidForSlot(int var1, ItemStack var2) {
         return var1 >= bookInventory.getSizeInventory() || ItemResearchBook.getResearcherName(var2) != null;
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+        //NOOP
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+        bookInventory.clear();
+        resourceInventory.clear();
     }
 
     @Override

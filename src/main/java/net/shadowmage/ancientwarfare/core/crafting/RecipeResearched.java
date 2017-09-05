@@ -1,8 +1,11 @@
+//TODO recipes
 package net.shadowmage.ancientwarfare.core.crafting;
 
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.interfaces.IResearchRecipe;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 
@@ -11,11 +14,11 @@ import java.util.Set;
 
 public class RecipeResearched extends ShapedOreRecipe implements IResearchRecipe {
 
-    private final Set<Integer> neededResearch = new HashSet<Integer>();
+    private final Set<Integer> neededResearch = new HashSet<>();
     private int recipeWidth, recipeHeight;
 
     public RecipeResearched(ItemStack output, Object... input) {
-        super(output, input);
+        super(new ResourceLocation(AncientWarfareCore.modID, output.getItem().getRegistryName().getResourcePath()), output, input);
         setMirrored(false);
     }
 
@@ -32,11 +35,6 @@ public class RecipeResearched extends ShapedOreRecipe implements IResearchRecipe
             }
         }
         return this;
-    }
-
-    @Override
-    public Object[] getInputs() {
-        return getInput();
     }
 
     @Override

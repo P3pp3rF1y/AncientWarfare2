@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
@@ -56,7 +57,7 @@ public class GuiWorkOrder extends GuiContainerBase<ContainerWorkOrder> {
         int totalHeight = 8;
         int index = 0;
         for (WorkEntry entry : entries) {
-            GuiElement element = new ItemSlot(8, totalHeight + 2, new ItemStack(entry.getBlock()), this);
+            GuiElement element = new ItemSlot(8, totalHeight + 2, new ItemStack(entry.getBlock(Minecraft.getMinecraft().world)), this);
             area.addGuiElement(element);
 
             element = new Label(8 + 20, totalHeight, entry.getPosition().toString());

@@ -23,7 +23,7 @@ public class RenderStructureBuilder extends TileEntitySpecialRenderer {
                 max = min;
             }
             if (min != null) {
-                renderBoundingBox(var1.xCoord, var1.yCoord, var1.zCoord, min, max, 1.f, 1.f, 1.f, 0.f);
+                renderBoundingBox(var1.x, var1.y, var1.z, min, max, 1.f, 1.f, 1.f, 0.f);
             }
             GL11.glPopAttrib();
             GL11.glPopMatrix();

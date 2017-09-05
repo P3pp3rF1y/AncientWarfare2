@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -37,7 +37,7 @@ private final HashMap<Integer, String> descriptions = new HashMap<Integer, Strin
 private final HashMap<Integer, List<String>> tooltips = new HashMap<Integer, List<String>>();
 private final HashMap<Integer, Icon> icons = new HashMap<Integer, Icon>();
 private final HashMap<Integer, String> iconTextures = new HashMap<Integer, String>();
-private final ArrayList<ItemStack> displayStackCache = new ArrayList<ItemStack>();
+private final ArrayList<ItemStack> displayStackCache = new ArrayList<>();
 
 public Description()
   {
@@ -60,7 +60,7 @@ public Description addTooltip(String tooltip, int damage)
   {  
   if(!this.tooltips.containsKey(damage))
     {
-    this.tooltips.put(damage, new ArrayList<String>());
+    this.tooltips.put(damage, new ArrayList<>());
     }
   this.tooltips.get(damage).add(tooltip);
   return this;

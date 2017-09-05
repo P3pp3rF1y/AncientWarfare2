@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -20,8 +20,6 @@
  */
 package net.shadowmage.ancientwarfare.structure.block;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,6 +28,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 
 import java.util.ArrayList;
@@ -62,7 +62,7 @@ public final class BlockGateProxy extends BlockContainer {
 
     @Override
     public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-        return new ArrayList<ItemStack>();
+        return new ArrayList<>();
     }
 
     @Override

@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -24,14 +24,14 @@ package shadowmage.ancient_structures.common.template.plugin;
 public abstract class StructureContentPlugin
 {
 
-/**
+/*
  * implementing classes should use this callback to register any 
  * block handlers with the passed in manager
  * @param manager
  */
 public abstract void addHandledBlocks(StructurePluginManager manager);
 
-/**
+/*
  * implementing classes should use this callback to register any 
  * entity handlers with the passed in manager
  * @param manager

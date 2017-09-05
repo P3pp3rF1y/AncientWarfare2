@@ -12,7 +12,7 @@ import net.shadowmage.ancientwarfare.core.util.StringTools;
 import java.util.HashMap;
 import java.util.List;
 
-/**
+/*
  * Block data manager
  * holds information regarding meta-rotations, build-priorities, and block-item
  * mappings.<br>
@@ -26,21 +26,21 @@ import java.util.List;
  */
 public class BlockDataManager {
 
-    /**
+    /*
      * Mapping of old 1.6 names to block instances, and vice-versa.  Used to enable loading of pre 1.7 templates.
      */
-    private HashMap<Block, String> blockToName = new HashMap<Block, String>();
-    private HashMap<String, Block> blockNameToBlock = new HashMap<String, Block>();
-    private HashMap<String, Block> blockUnlocalizedNameToBlock = new HashMap<String, Block>();
+    private HashMap<Block, String> blockToName = new HashMap<>();
+    private HashMap<String, Block> blockNameToBlock = new HashMap<>();
+    private HashMap<String, Block> blockUnlocalizedNameToBlock = new HashMap<>();
 
-    private HashMap<Block, BlockInfo> blockInfoMap = new HashMap<Block, BlockInfo>();
+    private HashMap<Block, BlockInfo> blockInfoMap = new HashMap<>();
 
     public static final BlockDataManager INSTANCE = new BlockDataManager();
 
     private BlockDataManager() {
     }
 
-    /**
+    /*
      * must be called during pre-init to load block info for templates to use
      */
     @SuppressWarnings("rawtypes")
@@ -60,7 +60,7 @@ public class BlockDataManager {
 
     }
 
-    /**
+    /*
      * loads OLD (1.6) block names from file -- used to enable loading of older templates
      */
     private void loadBlockNamesAndIDs(List<String> lines) {
@@ -190,7 +190,7 @@ public class BlockDataManager {
         }
     }
 
-    /**
+    /*
      * return the new meta for the input block after rotating clockwise 90' x the input number of turns
      */
     public int getRotatedMeta(Block block, int meta, int turns) {
@@ -205,7 +205,7 @@ public class BlockDataManager {
         return meta;
     }
 
-    /**
+    /*
      * return the build-priority for the block<br>
      * 0==solid block, no requisites, e.g. stone<br>
      * 1==second-pass building, e.g. torches<br>
@@ -219,7 +219,7 @@ public class BlockDataManager {
         return 0;
     }
 
-    /**
+    /*
      * get the 1.7 name for the input Block
      */
     public String getNameForBlock(Block block) {
@@ -233,7 +233,7 @@ public class BlockDataManager {
         return name;
     }
 
-    /**
+    /*
      * get the Block for the 1.7 name
      */
     public Block getBlockForName(String name) {
@@ -249,7 +249,7 @@ public class BlockDataManager {
         return b;
     }
 
-    /**
+    /*
      * return a proper sized item-stack for the input block, null if no item mapping / forced null mapping<br>
      * Returns a _new_ stack for each call of the method.<br>
      * Use the returned stack to copy, alter stack-size, etc.<br>
@@ -268,7 +268,7 @@ public class BlockDataManager {
 
         boolean singleItem = false;
         boolean hasRotation = false;
-        /**
+        /*
          * item-stack map, by block-meta.  if singleItem==true, will use index[0] instead of whatever is passed in
          */
         ItemStack[] metaStacks = new ItemStack[16];

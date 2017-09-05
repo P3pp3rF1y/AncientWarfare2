@@ -24,14 +24,14 @@ public class TileWindmillBlade extends TileUpdatable implements ITickable {
     public boolean isControl = false;//set to true if this is the control block for a setup
     protected float rotation, prevRotation;//used in rendering
 
-    /**
+    /*
      * the raw size of the windmill in blocks tall
      */
     public int windmillSize = 0;
 
     public double energy = 0;
 
-    /**
+    /*
      * 0/1 == INVALID
      * 2/3 == north/south face (expands on x-axis)
      * 4/5 == east/west face (expands on z-axis)
@@ -119,7 +119,7 @@ public class TileWindmillBlade extends TileUpdatable implements ITickable {
         int minX = corners.getLeft().getX(), minY = corners.getLeft().getY(), minZ = corners.getLeft().getZ();
         int xSize = corners.getRight().getX() - minX + 1, ySize = corners.getRight().getY() - minY + 1, zSize = corners.getRight().getZ() - minZ + 1;
 
-        /**
+        /*
          * if y size >= 5
          * and y size <= 17
          * and h%2==1 (is an odd size, 5, 7, 9, etc)
@@ -129,7 +129,7 @@ public class TileWindmillBlade extends TileUpdatable implements ITickable {
          */
         boolean valid = ySize >= 5 && ySize % 2 == 1 && (zSize == 1 || xSize == 1) && (zSize == ySize || xSize == ySize) && finder.box(corners);
         if (valid) {
-            /**
+            /*
              * calculate the control block coordinates from the min coordinate and sizes
              */
             int controlX, controlY, controlZ;

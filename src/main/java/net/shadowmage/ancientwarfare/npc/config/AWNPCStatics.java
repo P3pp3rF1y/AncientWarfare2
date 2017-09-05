@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -20,6 +20,7 @@
  */
 package net.shadowmage.ancientwarfare.npc.config;
 
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.item.Item;
@@ -44,12 +45,12 @@ import java.util.Map.Entry;
 
 public class AWNPCStatics extends ModConfiguration {
 
-    /** ********************************************SHARED SETTINGS************************************************ */
+    /* ********************************************SHARED SETTINGS************************************************ */
     public static int npcActionRange = 3;
     public static boolean repackCreativeOnly = false;
     public static boolean persistOrdersOnDeath = true;
     
-    /** ********************************************SERVER SETTINGS************************************************ */
+    /* ********************************************SERVER SETTINGS************************************************ */
     public static int maxNpcLevel = 10;
     public static int npcXpFromWork = 1;
     public static int npcXpFromTrade = 1;
@@ -71,35 +72,35 @@ public class AWNPCStatics extends ModConfiguration {
     public static boolean npcAIDebugMode = false;
     public static double archerRange = 16.0;
 
-    /**
+    /*
      * TODO add these to config
      */
     public static double npcLevelDamageMultiplier = 0.05;//damage bonus per npc level.  @ level 10 they do 2x the damage as at lvl 0
     public static int npcArcherAttackDamage = 3;//damage for npc archers...can be increased via enchanted weapons
-    /** ********************************************CLIENT SETTINGS************************************************ */
+    /* ********************************************CLIENT SETTINGS************************************************ */
     public static boolean loadDefaultSkinPack = true;
 
     public static Property renderAI, renderWorkPoints, renderFriendlyNames, renderHostileNames, renderFriendlyHealth, renderHostileHealth, renderTeamColors;
 
-    /** ********************************************RECIPE SETTINGS************************************************ */
+    /* ********************************************RECIPE SETTINGS************************************************ */
     private static final String recipeSettings = "04_recipe_settings";
 
-    /** ********************************************PATHFINDER SETTINGS************************************************ */
+    /* ********************************************PATHFINDER SETTINGS************************************************ */
     private static final String pathfinderSettings = "05_pathfinder_settings";
     public static boolean pathfinderAvoidFences = true;
     public static boolean pathfinderAvoidChests = true;
     // use getPathfinderAvoidCustomBlocks getter for these
-    private static BlockAndMeta[] PATHFINDER_AVOID_CUSTOM;
+    private static IBlockState[] PATHFINDER_AVOID_CUSTOM;
     private static boolean PATHFINDER_AVOID_CUSTOM_BUILT = false;
     private static String[] PATHFINDER_AVOID_CUSTOM_RAW = {""};
     
-    /** ********************************************FOOD SETTINGS************************************************ */
+    /* ********************************************FOOD SETTINGS************************************************ */
     private Configuration foodConfig;
     private static final String foodSettings = "01_food_settings";
     private HashMap<String, Integer> foodValues;
     private int foodMultiplier = 750;
 
-    /** ********************************************TARGET SETTINGS************************************************ */
+    /* ********************************************TARGET SETTINGS************************************************ */
     private Configuration targetConfig;
     private static final String targetSettings = "00_new_targeting_settings";
     private static final String targetSettingsLegacy = "01_target_settings";
@@ -112,7 +113,7 @@ public class AWNPCStatics extends ModConfiguration {
     private ArrayList<String> autoTargettingMobForce;
     public static int autoTargettingMobForcePriority = 2;
 
-    /** ********************************************FACTION STARTING VALUE SETTINGS************************************************ */
+    /* ********************************************FACTION STARTING VALUE SETTINGS************************************************ */
     private Configuration factionConfig;
     private static final String factionSettings = "01_faction_settings";
     public static int factionLossOnDeath = 10;//how much faction standing is lost when you (or one of your npcs) kills an enemy faction-based npc
@@ -120,22 +121,22 @@ public class AWNPCStatics extends ModConfiguration {
     private HashMap<String, Integer> defaultFactionStandings;
     private HashMap<String, HashMap<String, Boolean>> factionVsFactionStandings;
 
-/************************************************FACTION NAMES*************************************************/
+/***********************************************FACTION NAMES*************************************************/
 
     public static final String[] factionNames = new String[]{"bandit", "viking", "pirate", "desert", "native", "custom_1", "custom_2", "custom_3"};
     public static final String[] factionNpcSubtypes = new String[]{"soldier", "soldier.elite", "cavalry", "archer", "archer.elite", "mounted_archer", "leader", "leader.elite", "priest", "trader", "civilian.male", "civilian.female", "bard"};
 
-/************************************************NPC CONFIG*************************************************/
-    /** ********************************************NPC VALUES SETTINGS************************************************ */
+/***********************************************NPC CONFIG*************************************************/
+    /* ********************************************NPC VALUES SETTINGS************************************************ */
     private Configuration valuesConfig;
     private HashMap<String, Attribute> attributes;
 
-    /** ********************************************NPC PATH SETTINGS************************************************ */
+    /* ********************************************NPC PATH SETTINGS************************************************ */
     private Configuration pathConfig;
     private HashMap<String, Path> pathValues;
 
-/************************************************EQUIPMENT CONFIG*************************************************/
-    /** ********************************************NPC WEAPON SETTINGS************************************************ */
+/***********************************************EQUIPMENT CONFIG*************************************************/
+    /* ********************************************NPC WEAPON SETTINGS************************************************ */
 
     private static final String npcDefaultWeapons = "01_npc_weapons";
     private static final String npcOffhandItems = "02_npc_offhand";
@@ -391,7 +392,7 @@ public class AWNPCStatics extends ModConfiguration {
                                                                                               "will *not* target NPC's, and NPC's in turn will not be alarmed by these entities.\n" +
                                                                                               //"Note that the mob will only be excluded if it is also NOT listed on the include list below.\n" + 
                                                                                               "Check the AncientWarfareNpc.cfg for a setting to export entity names.").getStringList();
-        autoTargettingMobExclude = new ArrayList<String>();
+        autoTargettingMobExclude = new ArrayList<>();
         Collections.addAll(autoTargettingMobExclude, targets);
         
         /*
@@ -405,14 +406,14 @@ public class AWNPCStatics extends ModConfiguration {
                                                                                               "One probably-safe use of this list is for entites which can attack but don't target the player by default e.g. neutral mobs.\n" + 
                                                                                               "NOTE that adding entities here will not preserve the 'neutrality' towards NPC's though - they will still attack NPC's on sight.\n" + 
                                                                                               "If an entity listed here does not have any attack capability, it will be silently skipped.").getStringList();
-        autoTargettingMobInclude = new ArrayList<String>();
+        autoTargettingMobInclude = new ArrayList<>();
         Collections.addAll(autoTargettingMobInclude, targets);
         
         targets = targetConfig.get(targetSettings, "auto_targetting.force", new String[]{}, "Force entities for AI target injection, i.e. 'force combat capability'.\n" + 
                                                                                             "This is an absolute last resort. Combat AI against NPC's will be injected even if the entity has no\n" + 
                                                                                             "recognizable attack logic. Things will probably go horribly wrong if you use this, you have been warned!\n" +
                                                                                             "Anything in this list will override the other include and exclude lists.").getStringList();
-        autoTargettingMobForce = new ArrayList<String>();
+        autoTargettingMobForce = new ArrayList<>();
         Collections.addAll(autoTargettingMobForce, targets);
         
         autoTargettingMobForcePriority = targetConfig.get(targetSettings, "auto_targetting.force.priority", autoTargettingMobForcePriority, "Task priority for forced attack AI injections\n" + 
@@ -421,13 +422,13 @@ public class AWNPCStatics extends ModConfiguration {
         
         // old stuff from here on
         if (!autoTargetting) {
-            entityTargetSettings = new HashMap<String, List<String>>();
+            entityTargetSettings = new HashMap<>();
             String[] defaultTargets = new String[]{"Zombie", "Skeleton", "Slime"};
             
             targets = targetConfig.get(targetSettingsLegacy, "enemies_to_target_npcs", defaultTargets, "What mob types should have AI inserted to enable them to target NPCs?\n" +
                     "Should work with any new-ai enabled mob type; vanilla or mod-added (but might not work with mod-added entities with custom AI).\n" + 
                     "NOTE! This is a LEGACY option! This option ONLY works if the 'auto_inject_mobs' option at the top is changed to false.").getStringList();
-            entitiesToTargetNpcs = new ArrayList<String>();
+            entitiesToTargetNpcs = new ArrayList<>();
             Collections.addAll(entitiesToTargetNpcs, targets);
             
             targets = targetConfig.get(targetSettingsLegacy, "combat.targets", defaultTargets, "Default targets for: unassigned combat npc").getStringList();
@@ -470,7 +471,7 @@ public class AWNPCStatics extends ModConfiguration {
         String type = npcType + (npcSubtype.isEmpty() ? "" : "." + npcSubtype);
         List<String> collection;
         if (!entityTargetSettings.containsKey(type)) {
-            collection = new ArrayList<String>();
+            collection = new ArrayList<>();
         }else{
             collection = entityTargetSettings.get(type);
         }
@@ -478,7 +479,7 @@ public class AWNPCStatics extends ModConfiguration {
         entityTargetSettings.put(type, collection);
     }
 
-    /**
+    /*
      * Used for determining if AI injection should be done. To check if the entity
      * already DOES have the desire to attack NPC's, use NpcAI.doesTargetNpcs instead.
      */
@@ -512,7 +513,7 @@ public class AWNPCStatics extends ModConfiguration {
         foodConfig.get(foodSettings, "minecraft:spider_eye", 0, "Spider eye is a rejected food by default.");
 
         ConfigCategory category = foodConfig.getCategory(foodSettings);
-        foodValues = new HashMap<String, Integer>();
+        foodValues = new HashMap<>();
         String name;
         int value;
         for (Entry<String, Property> entry : category.entrySet()) {
@@ -523,13 +524,13 @@ public class AWNPCStatics extends ModConfiguration {
     }
 
     private void loadDefaultFactionStandings() {
-        defaultFactionStandings = new HashMap<String, Integer>();
-        factionVsFactionStandings = new HashMap<String, HashMap<String, Boolean>>();
+        defaultFactionStandings = new HashMap<>();
+        factionVsFactionStandings = new HashMap<>();
         String key;
         boolean val;
         for (String name : factionNames) {
             if (!this.factionVsFactionStandings.containsKey(name)) {
-                this.factionVsFactionStandings.put(name, new HashMap<String, Boolean>());
+                this.factionVsFactionStandings.put(name, new HashMap<>());
             }
             this.defaultFactionStandings.put(name, factionConfig.get(factionSettings, name + ".starting_faction_standing", -50,
                     "Default faction standing for: [" + name + "] for new players joining a game." +
@@ -548,7 +549,7 @@ public class AWNPCStatics extends ModConfiguration {
         }
     }
 
-    /**
+    /*
      * returns the food value for a single size stack of the input item stack
      */
     public int getFoodValue(ItemStack stack) {
@@ -574,8 +575,8 @@ public class AWNPCStatics extends ModConfiguration {
     private void initializeCustomValues() {
         valuesConfig = getConfigFor("AncientWarfareNpcValues");
         pathConfig = getConfigFor("AncientWarfareNpcPath");
-        attributes = new HashMap<String, Attribute>();
-        pathValues = new HashMap<String, Path>();
+        attributes = new HashMap<>();
+        pathValues = new HashMap<>();
         String key;
         for (String name : factionNames) {
             for (String type : factionNpcSubtypes) {
@@ -648,7 +649,7 @@ public class AWNPCStatics extends ModConfiguration {
     }
 
     public void initializeNpcEquipmentConfigs() {
-        eqmp = new HashMap<String, String[]>();
+        eqmp = new HashMap<>();
         String fullType;
         for (String faction : factionNames) {
             for (String type : factionNpcSubtypes) {

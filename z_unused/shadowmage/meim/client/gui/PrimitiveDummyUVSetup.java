@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -23,7 +23,7 @@ package shadowmage.meim.client.gui;
 public class PrimitiveDummyUVSetup extends PrimitiveUVSetup
 {
 
-/**
+/*
  * @param gui
  */
 public PrimitiveDummyUVSetup(GuiUVMap gui)

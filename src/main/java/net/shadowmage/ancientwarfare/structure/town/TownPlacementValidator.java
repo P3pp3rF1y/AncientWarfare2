@@ -18,7 +18,7 @@ public class TownPlacementValidator {
 
     private static int maxSize = 21;
 
-    /**
+    /*
      * input a single X, Y, Z coordinate to examine the nearby area for potential town generation.<br>
      * First examines the chunk that was at the input coordinates, and expands out from there attempting
      * to create the largest town-bounding area that it can.
@@ -60,7 +60,7 @@ public class TownPlacementValidator {
         area.chunkMaxZ = cz;
         expandBoundingArea(world, area);
 
-        /**
+        /*
          * Shrink town along x or z axis if ratio of sizes is > 2:1
          */
         int cw = area.getChunkWidth();
@@ -101,7 +101,7 @@ public class TownPlacementValidator {
         }
         StructureBB bb = new StructureBB(new BlockPos(area.getBlockMinX(), area.getMinY(), area.getBlockMaxX()), new BlockPos(area.getBlockMaxX(), area.getMaxY(), area.getBlockMaxZ()));
         int size = Math.max(area.getChunkWidth(), area.getChunkLength());
-        List<StructureEntry> entries = new ArrayList<StructureEntry>();
+        List<StructureEntry> entries = new ArrayList<>();
         map.getEntriesNear(world, area.getCenterX(), area.getCenterZ(), size, true, entries);
         for (StructureEntry e : entries) {
             if (e.getBB().crossWith(bb)) {
@@ -198,7 +198,7 @@ public class TownPlacementValidator {
         return total >= min && total <= max;
     }
 
-    /**
+    /*
      * return the highest Y that has a solid non-skipped block in it<br>
      * This implementation skips water, air, and any blocks on the world-gen skippable blocks list (trees, plants, etc)
      *

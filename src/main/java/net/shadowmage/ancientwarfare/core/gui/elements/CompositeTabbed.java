@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
+/*
  * Composite Tabbed Area <br>
  * <p/>
  * Must have at least one tab to be considered a valid element.<br>
@@ -22,8 +22,8 @@ import java.util.List;
  */
 public class CompositeTabbed extends Composite implements ITabCallback {
 
-    protected HashMap<Tab, List<GuiElement>> tabElements = new HashMap<Tab, List<GuiElement>>();
-    protected HashMap<String, Tab> tabs = new HashMap<String, Tab>();
+    protected HashMap<Tab, List<GuiElement>> tabElements = new HashMap<>();
+    protected HashMap<String, Tab> tabs = new HashMap<>();
     protected Tab currentTab = null;
 
     protected boolean hasTopTabs = false;
@@ -73,7 +73,7 @@ public class CompositeTabbed extends Composite implements ITabCallback {
         Tab t = new Tab(w, top ? 0 : height - 16, top, tabName, this);
         this.tabs.put(tabName, t);
         this.elements.add(t);
-        this.tabElements.put(t, new ArrayList<GuiElement>());
+        this.tabElements.put(t, new ArrayList<>());
         if (currentTab == null) {
             this.onTabSelected(t);
         }
@@ -112,7 +112,7 @@ public class CompositeTabbed extends Composite implements ITabCallback {
         if (tab == null) {
             return;
         }
-        tabs.remove(tab);
+        tabs.remove(tabName);
         tabElements.remove(tab);
         if (tab == this.currentTab) {
             if (tabs.isEmpty()) {

@@ -19,7 +19,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
     public boolean isFinished = false;
     private int remainingTime;
     private int totalTime;
-    public final List<ItemStack> neededResources = new ArrayList<ItemStack>();
+    public final List<ItemStack> neededResources = new ArrayList<>();
 
     private final TileDraftingStation tile;
 

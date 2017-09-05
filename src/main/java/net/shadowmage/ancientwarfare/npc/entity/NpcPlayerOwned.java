@@ -135,14 +135,14 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
         return false;
     }
 
-    /**
+    /*
      * Returns the currently following player-issues command, or null if none
      */
     public Command getCurrentCommand() {
         return playerIssuedCommand;
     }
 
-    /**
+    /*
      * input path from command baton - default implementation for player-owned NPC is to set current command==input command and then let AI do the rest
      */
     public void handlePlayerCommand(Command cmd) {

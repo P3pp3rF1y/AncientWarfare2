@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-/**
+/*
  * UV editor for MEIM
  *
  * @author Shadowmage
@@ -36,9 +36,9 @@ public class GuiUVEditor extends GuiContainerBase {
     ResourceLocation loc;
 
     //map of label-element combos, to select pieces through clicking on/in the piece list area
-    private HashMap<Label, ModelPiece> pieceMap = new HashMap<Label, ModelPiece>();
-    private HashMap<Label, Primitive> primitiveMap = new HashMap<Label, Primitive>();
-    private HashMap<String, GuiElement> widgetMap = new HashMap<String, GuiElement>();
+    private HashMap<Label, ModelPiece> pieceMap = new HashMap<>();
+    private HashMap<Label, Primitive> primitiveMap = new HashMap<>();
+    private HashMap<String, GuiElement> widgetMap = new HashMap<>();
 
     public GuiUVEditor(GuiModelEditor parent) {
         super(parent.getContainer(), 256, 256);
@@ -124,7 +124,7 @@ public class GuiUVEditor extends GuiContainerBase {
         updateTextureSize();
     }
 
-    /**
+    /*
      * builds a new buffered image and texture-rendering widget with the currently set texture size
      * subsequently calls updateTexture() to upload the new image to gfx texture
      */
@@ -134,7 +134,7 @@ public class GuiUVEditor extends GuiContainerBase {
         refreshGui();
     }
 
-    /**
+    /*
      * should be called whenever a piece moves and the texture needs updating;
      */
     private void updateTexture() {
@@ -143,7 +143,7 @@ public class GuiUVEditor extends GuiContainerBase {
                 GuiModelEditor.image.setRGB(x, y, 0xff000000);//clear image to default  black 0% alpha (opaque)
             }
         }
-        ArrayList<ModelPiece> pieces = new ArrayList<ModelPiece>();
+        ArrayList<ModelPiece> pieces = new ArrayList<>();
         GuiModelEditor.model.getPieces(pieces);
         for (ModelPiece piece : pieces) {
             for (Primitive primitive : piece.getPrimitives()) {
@@ -170,7 +170,7 @@ public class GuiUVEditor extends GuiContainerBase {
         textureControlArea.addGuiElement(label);
         totalHeight += 12;
 
-        /***************************************** X SIZE **********************************************/
+        /**************************************** X SIZE **********************************************/
         label = new Label(c0, totalHeight, "X:");
         textureControlArea.addGuiElement(label);
 
@@ -208,7 +208,7 @@ public class GuiUVEditor extends GuiContainerBase {
 
         totalHeight += 12;
 
-        /***************************************** Y SIZE **********************************************/
+        /**************************************** Y SIZE **********************************************/
         label = new Label(c0, totalHeight, "Y:");
         textureControlArea.addGuiElement(label);
 
@@ -262,12 +262,12 @@ public class GuiUVEditor extends GuiContainerBase {
             }
         };
         fileControlArea.addGuiElement(button);
-        /**
+        /*
          * TODO
          */
     }
 
-    /**
+    /*
      * add the primitive controls to the primitive control area
      */
     private void addPrimitiveControls() {
@@ -301,7 +301,7 @@ public class GuiUVEditor extends GuiContainerBase {
         PrimitiveBox currentBox = (PrimitiveBox) parent.getPrimitive();
 
 
-        /************************************* TX *********************************/
+        /************************************ TX *********************************/
         label = new Label(c0, totalHeight, "TX");
         primitiveControlArea.addGuiElement(label);
 
@@ -351,7 +351,7 @@ public class GuiUVEditor extends GuiContainerBase {
         totalHeight += 12;
 
 
-        /************************************* TY *********************************/
+        /************************************ TY *********************************/
         label = new Label(c0, totalHeight, "TY");
         primitiveControlArea.addGuiElement(label);
 
@@ -417,7 +417,7 @@ public class GuiUVEditor extends GuiContainerBase {
 
         PrimitiveTriangle currentBox = (PrimitiveTriangle) parent.getPrimitive();
 
-        /************************************* MOVE-ALL *********************************/
+        /************************************ MOVE-ALL *********************************/
         label = new Label(c0, totalHeight, "U");
         primitiveControlArea.addGuiElement(label);
 
@@ -480,7 +480,7 @@ public class GuiUVEditor extends GuiContainerBase {
 
         totalHeight += 12;
 
-        /************************************* U1 *********************************/
+        /************************************ U1 *********************************/
         label = new Label(c0, totalHeight, "U1");
         primitiveControlArea.addGuiElement(label);
 
@@ -531,7 +531,7 @@ public class GuiUVEditor extends GuiContainerBase {
         totalHeight += 12;
 
 
-        /************************************* V1 *********************************/
+        /************************************ V1 *********************************/
         label = new Label(c0, totalHeight, "V1");
         primitiveControlArea.addGuiElement(label);
 
@@ -582,7 +582,7 @@ public class GuiUVEditor extends GuiContainerBase {
         totalHeight += 12;
 
 
-        /************************************* U2 *********************************/
+        /************************************ U2 *********************************/
         label = new Label(c0, totalHeight, "U2");
         primitiveControlArea.addGuiElement(label);
 
@@ -633,7 +633,7 @@ public class GuiUVEditor extends GuiContainerBase {
         totalHeight += 12;
 
 
-        /************************************* V2 *********************************/
+        /************************************ V2 *********************************/
         label = new Label(c0, totalHeight, "V2");
         primitiveControlArea.addGuiElement(label);
 
@@ -684,7 +684,7 @@ public class GuiUVEditor extends GuiContainerBase {
         totalHeight += 12;
 
 
-        /************************************* U3 *********************************/
+        /************************************ U3 *********************************/
         label = new Label(c0, totalHeight, "U3");
         primitiveControlArea.addGuiElement(label);
 
@@ -735,7 +735,7 @@ public class GuiUVEditor extends GuiContainerBase {
         totalHeight += 12;
 
 
-        /************************************* V3 *********************************/
+        /************************************ V3 *********************************/
         label = new Label(c0, totalHeight, "V3");
         primitiveControlArea.addGuiElement(label);
 
@@ -786,7 +786,7 @@ public class GuiUVEditor extends GuiContainerBase {
         totalHeight += 12;
 
 
-        /************************************* ROTATE *********************************/
+        /************************************ ROTATE *********************************/
         label = new Label(c0, totalHeight, "ROT");
         primitiveControlArea.addGuiElement(label);
 
@@ -814,7 +814,7 @@ public class GuiUVEditor extends GuiContainerBase {
 
         totalHeight += 12;
 
-        /************************************* FLIP *********************************/
+        /************************************ FLIP *********************************/
 
     }
 
@@ -835,7 +835,7 @@ public class GuiUVEditor extends GuiContainerBase {
         PrimitiveQuad currentBox = (PrimitiveQuad) parent.getPrimitive();
 
 
-        /************************************* TX *********************************/
+        /************************************ TX *********************************/
         label = new Label(c0, totalHeight, "TX");
         primitiveControlArea.addGuiElement(label);
 
@@ -885,7 +885,7 @@ public class GuiUVEditor extends GuiContainerBase {
         totalHeight += 12;
 
 
-        /************************************* TY *********************************/
+        /************************************ TY *********************************/
         label = new Label(c0, totalHeight, "TY");
         primitiveControlArea.addGuiElement(label);
 
@@ -935,11 +935,11 @@ public class GuiUVEditor extends GuiContainerBase {
         totalHeight += 12;
     }
 
-    /**
+    /*
      * add the selectable piece list to the piece-list control area
      */
     private void addPieceList() {
-        ArrayList<ModelPiece> pieces = new ArrayList<ModelPiece>();
+        ArrayList<ModelPiece> pieces = new ArrayList<>();
         GuiModelEditor.model.getPieces(pieces);
 
         int totalHeight = 3;

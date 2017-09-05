@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -36,7 +36,7 @@ public static DamageType genericMissile = (DamageType) new DamageType("dmg.gener
 public static DamageType piercingMissile = (DamageType) new DamageType("dmg.piercingmissile").setDamageBypassesArmor().setProjectile();
 public static DamageType batteringDamage = (DamageType) new DamageType("dmg.battering");
 
-/**
+/*
  * @param par1Str
  */
 protected DamageType(String par1Str)

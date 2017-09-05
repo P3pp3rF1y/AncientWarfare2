@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -72,8 +72,8 @@ protected StructureValidator(StructureValidationType validationType)
   selectionWeight = 1;
   clusterValue = 1;  
   minDuplicateDistance = 8;
-  biomeList = new HashSet<String>();
-  validTargetBlocks = new HashSet<String>();
+  biomeList = new HashSet<>();
+  validTargetBlocks = new HashSet<>();
   }
 
 protected void readFromLines(List<String> lines)
@@ -83,7 +83,7 @@ protected void write(BufferedWriter writer) throws IOException
   {
   }
 
-/**
+/*
  * helper method to read data from tag -- to be overriden by
  * child-classes that have additional validation data set through gui
  */
@@ -103,7 +103,7 @@ public void readFromTag(NBTTagCompound tag)
   
   if(tag.hasKey("biomeList"))
     {
-    ArrayList<String> biomes = new ArrayList<String>();
+    ArrayList<String> biomes = new ArrayList<>();
     NBTTagList biomeList = tag.getTagList("biomeList");
     NBTTagString biomeTag;
     for(int i = 0; i <biomeList.tagCount(); i++)
@@ -115,7 +115,7 @@ public void readFromTag(NBTTagCompound tag)
     }
   if(tag.hasKey("blockList"))
     {
-    ArrayList<String> blocks = new ArrayList<String>();
+    ArrayList<String> blocks = new ArrayList<>();
     NBTTagList blockList = tag.getTagList("blockList");
     NBTTagString blockTag;
     for(int i = 0; i <blockList.tagCount(); i++)
@@ -141,12 +141,12 @@ protected void setDefaultSettings(StructureTemplate template)
   this.maxFill = size;
   }
 
-/**
+/*
  * should this template be included for selection for generation? should only validate block placement, most other stuff has been checked (dimension/biome/cluster value/etc)
  */
 public abstract boolean shouldIncludeForSelection(World world, int x, int y, int z, int face, StructureTemplate template);
 
-/**
+/*
  * if template should be included for selection, get the adjusted spawn Y level from the input block position.  this adjustedY will be used for validation and generation if template is selected and validated
  */
 public int getAdjustedSpawnY(World world, int x, int y, int z, int face, StructureTemplate template, StructureBB bb)
@@ -154,17 +154,17 @@ public int getAdjustedSpawnY(World world, int x, int y, int z, int face, Structu
   return y;
   }
 
-/**
+/*
  * if selected for placement, validate that placement. return false if placement is invalid 
  */
 public abstract boolean validatePlacement(World world, int x, int y, int z, int face, StructureTemplate template, StructureBB bb);
 
-/**
+/*
  * after validation, do any necessary clearing or leveling/etc
  */
 public abstract void preGeneration(World world, int x, int y, int z, int face, StructureTemplate template, StructureBB bb);
 
-/**
+/*
  * called from StructureBuilder when constructed with world-gen settings whenever a '0' rule is detected
  * in the template
  * implementations should fill the input x,y,z with whatever block is an appropriate 'fill' for that
@@ -175,14 +175,14 @@ public abstract void handleClearAction(World world, int x, int y, int z, Structu
 public static final StructureValidator parseValidator(List<String> lines)
   {
   String type = null;
-  List<String> tagLines = new ArrayList<String>();
+  List<String> tagLines = new ArrayList<>();
   Iterator<String> it = lines.iterator();
   String line;
   boolean unique = false, worldGen = false, biome = false, dimension = false, blocks = false;
   int selectionWeight=1, clusterValue=1, duplicate=1, maxLeveling = 0, maxFill = 0, borderSize = 0;
   int[] dimensions = null;
-  Set<String> biomes = new HashSet<String>();
-  Set<String> validTargetBlocks = new HashSet<String>();
+  Set<String> biomes = new HashSet<>();
+  Set<String> validTargetBlocks = new HashSet<>();
   
   while(it.hasNext() && (line=it.next())!=null)
     {   
@@ -351,7 +351,7 @@ public final void setBiomeList(Collection<String> biomes)
   this.biomeList.addAll(biomes);
   }
 
-//************************************************ UTILITY METHODS *************************************************//
+//*********************************************** UTILITY METHODS *************************************************//
 protected boolean validateBorderBlocks(World world, StructureTemplate template, StructureBB bb, int minY, int maxY, boolean skipWater)
   {
   int bx, bz;
@@ -384,7 +384,7 @@ protected boolean validateBorderBlocks(World world, StructureTemplate template, 
   return true;
   }
 
-/**
+/*
  * validates both top block height and block type for the input position and settings
  */
 protected boolean validateBlockHeightAndType(World world, int x, int z, int min, int max, boolean skipWater, Set<String> validBlocks)
@@ -392,7 +392,7 @@ protected boolean validateBlockHeightAndType(World world, int x, int z, int min,
   return validateBlockType(world, x, validateBlockHeight(world, x, z, min, max, skipWater), z, validBlocks);
   }
 
-/**
+/*
  * validates top block height at X, Z is >=  min and <= max (inclusive)
  * returns topFoundY or -1 if not within range
  */
@@ -407,7 +407,7 @@ protected int validateBlockHeight(World world, int x, int z, int minimumAcceptab
   return topFilledY;
   }
 
-/**
+/*
  * validates the target block at x,y,z is one of the input valid blocks
  */
 protected boolean validateBlockType(World world, int x, int y, int z, Set<String> validBlocks)
@@ -430,7 +430,7 @@ protected boolean validateBlockType(World world, int x, int y, int z, Set<String
   return true;  
   }
 
-/**
+/*
  * return the lowest acceptable Y level for a filled block
  * for the input template and BB
  */
@@ -444,7 +444,7 @@ protected int getMinY(StructureTemplate template, StructureBB bb)
   return minY;
   }
 
-/**
+/*
  * return the highest acceptable Y level for a filled block
  * for the input template and BB
  */

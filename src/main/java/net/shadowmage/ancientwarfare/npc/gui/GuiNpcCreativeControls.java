@@ -121,14 +121,14 @@ public class GuiNpcCreativeControls extends GuiContainerBase<ContainerNpcCreativ
 
     @Override
     protected boolean onGuiCloseRequested() {
-        /**
+        /*
          * if changes were made while gui was open, send these to server
          */
         if (hasChanged) {
             getContainer().sendChangesToServer();
         }
 
-        /**
+        /*
          * force opening of normal gui (whatever that may be for the npc) when advanced controls is closed
          */
         getContainer().entity.openGUI(player);

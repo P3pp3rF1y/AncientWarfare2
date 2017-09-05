@@ -57,7 +57,7 @@ public class NpcCourier extends NpcPlayerOwned {
         backpackInventory = ItemBackpack.getInventoryFor(getHeldItem());
     }
 
-    /**
+    /*
      * should be called from courier routing AI whenever work done>0, to ensure items are saved to backpack
      */
     public void updateBackpackItemContents() {

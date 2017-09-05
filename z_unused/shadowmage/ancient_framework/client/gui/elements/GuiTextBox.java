@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -32,7 +32,7 @@ import org.lwjgl.opengl.GL11;
 public class GuiTextBox extends Gui
 {
 
-/**
+/*
  * basic params
  */
 int xSize;
@@ -51,60 +51,60 @@ int backGroundColor;
 public boolean activated = false;
 boolean fileDirty = false;
 
-/**
+/*
  * the actual lines driving the char array to be displayed
  */
 List<String> lines;
 
-/**
+/*
  * cursor position on screen
  */
 int cursorPosX;
 int cursorPosY;
 
-/**
+/*
  * raw x and y of cursor relative to lines
  */
 int cursorRawX;
 int cursorRawY;
 
-/**
+/*
  * selection start xy
  */
 int selectionRawX;
 int selectionRawY;
 
-/**
+/*
  * selection end xy
  */
 int selectionEndRawX;
 int selectionEndRawY;
 
-/**
+/*
  * data stored in the clipboard.... attempt to grab input from system clipboard first?
  */
-List<String> clipboardLines = new ArrayList<String>();
+List<String> clipboardLines = new ArrayList<>();
 
 
-/**
+/*
  * leftMost char drawn
  * and topMost drawn char
  */
 int viewX;
 int viewY;
 
-/**
+/*
  * used to trigger updates in viewedChars array
  */
 int prevViewX;
 int prevViewY;
 
-/**
+/*
  * the data that is drawn onto the screen
  */
 char[][] screenChars;
 
-/**
+/*
  * if true, will update screen characters, and set to false
  */
 private boolean dirty = true;
@@ -235,7 +235,7 @@ public boolean onKeyTyped(char charValue, int keyCode)
     {
     this.handleCharAction(charValue);
     }  
-  /**
+  /*
    * TODO
    * shift+arrow keys--highlight selection
    * copy/cut/paste -- copy/cut/paste
@@ -584,7 +584,7 @@ public boolean isMouseOver(int x, int y)
   return false;
   }
 
-/**
+/*
  * has mouse button been depressed on this control?
  */
 private boolean buttonDown = false;
@@ -612,7 +612,7 @@ public boolean onMouseReleased(int buttonNum, int x, int y)
     }
   }
 
-/**
+/*
  * called when mouse is over, and button pressed
  * @param buttonNum
  * @param x raw screen x
@@ -733,7 +733,7 @@ private void renderCharAt(FontRenderer fontRenderer, int x, int y, char ch)
   
   }
 
-/**
+/*
  * @return the buttonDown
  */
 public boolean isButtonDown()
@@ -741,7 +741,7 @@ public boolean isButtonDown()
     return buttonDown;
   }
 
-/**
+/*
  * @param buttonDown the buttonDown to set
  */
 public void setButtonDown(boolean buttonDown)

@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.ai.owned;
 
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
@@ -57,9 +57,9 @@ public class NpcAIPlayerOwnedFindWorksite extends NpcAI<NpcWorker> {
     }
 
     private void findWorkTarget() {
-        int x = MathHelper.floor_double(npc.posX);
-        int y = MathHelper.floor_double(npc.posY);
-        int z = MathHelper.floor_double(npc.posZ);
+        int x = MathHelper.floor(npc.posX);
+        int y = MathHelper.floor(npc.posY);
+        int z = MathHelper.floor(npc.posZ);
         List<TileEntity> tiles = WorldTools.getTileEntitiesInArea(npc.world, x - range, y - range / 2, z - range, x + range, y + range / 2, z + range);
         IWorkSite site;
         TileEntity closestSite = null;
@@ -71,7 +71,7 @@ public class NpcAIPlayerOwnedFindWorksite extends NpcAI<NpcWorker> {
                 if (!npc.hasCommandPermissions(site.getOwnerName()))
                     continue;
                 if (npc.canWorkAt(site.getWorkType()) && site.hasWork()) {
-                    dist = npc.getDistanceSq(te.xCoord + 0.5d, te.yCoord, te.zCoord + 0.5d);
+                    dist = npc.getDistanceSq(te.x + 0.5d, te.y, te.z + 0.5d);
                     if (closestDist == -1 || dist < closestDist) {
                         closestDist = dist;
                         closestSite = te;
@@ -80,7 +80,7 @@ public class NpcAIPlayerOwnedFindWorksite extends NpcAI<NpcWorker> {
             }
         }
         if (closestSite != null) {
-            npc.autoWorkTarget = new BlockPos(closestSite.xCoord, closestSite.yCoord, closestSite.zCoord);
+            npc.autoWorkTarget = new BlockPos(closestSite.x, closestSite.y, closestSite.z);
         }
     }
 

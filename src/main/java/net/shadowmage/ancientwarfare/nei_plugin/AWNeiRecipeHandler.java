@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -151,7 +151,7 @@ public class AWNeiRecipeHandler extends TemplateRecipeHandler {
 
         public AWCachedRecipe(IResearchRecipe recipe) {
             result = new PositionedStack(recipe.getRecipeOutput().copy(), 119, 24);
-            ingredients = new ArrayList<PositionedStack>();
+            ingredients = new ArrayList<>();
             setIngredients(recipe.getRecipeWidth(), recipe.getRecipeHeight(), recipe.getInputs());
         }
 

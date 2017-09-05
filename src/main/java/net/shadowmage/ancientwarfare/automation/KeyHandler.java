@@ -22,7 +22,7 @@ public class KeyHandler {
             Keyboard.KEY_F8
     };
     
-    /** Make this public or provide a getter if you'll need access to the key bindings from elsewhere */
+    /* Make this public or provide a getter if you'll need access to the key bindings from elsewhere */
     public static final KeyBinding[] keys = new KeyBinding[desc.length];
     
     public KeyHandler(Minecraft mc) {

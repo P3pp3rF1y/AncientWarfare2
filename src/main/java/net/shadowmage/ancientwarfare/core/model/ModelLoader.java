@@ -11,7 +11,7 @@ public class ModelLoader {
 
     public ModelBaseAW loadModel(InputStream is) {
         Scanner scan = new Scanner(is);
-        ArrayList<String> lines = new ArrayList<String>();
+        ArrayList<String> lines = new ArrayList<>();
         while (scan.hasNext()) {
             lines.add(scan.next());
         }
@@ -35,7 +35,7 @@ public class ModelLoader {
             return null;
         }
         Scanner scan = new Scanner(fis);
-        ArrayList<String> lines = new ArrayList<String>();
+        ArrayList<String> lines = new ArrayList<>();
         while (scan.hasNext()) {
             lines.add(scan.next());
         }
@@ -57,8 +57,8 @@ public class ModelLoader {
     private ModelBaseAW parseOldModelLines(List<String> lines) {
         float importScale = 0.0625f;
         ModelBaseAW model = new ModelBaseAW();
-        HashMap<String, Integer> txMap = new HashMap<String, Integer>();
-        HashMap<String, Integer> tyMap = new HashMap<String, Integer>();
+        HashMap<String, Integer> txMap = new HashMap<>();
+        HashMap<String, Integer> tyMap = new HashMap<>();
         Iterator<String> it = lines.iterator();
         String line;
         String split[];

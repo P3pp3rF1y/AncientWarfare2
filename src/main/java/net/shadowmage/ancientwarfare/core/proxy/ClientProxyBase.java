@@ -15,7 +15,7 @@ public class ClientProxyBase extends CommonProxyBase {
 
     @Override
     public final EntityPlayer getClientPlayer() {
-        return Minecraft.getMinecraft().thePlayer;
+        return Minecraft.getMinecraft().player;
     }
 
     @Override
@@ -26,8 +26,8 @@ public class ClientProxyBase extends CommonProxyBase {
 
     @Override
     public final World getWorld(int dimension) {
-        if(Minecraft.getMinecraft().theWorld.provider.getDimension() == dimension){
-            return Minecraft.getMinecraft().theWorld;
+        if(Minecraft.getMinecraft().world.provider.getDimension() == dimension){
+            return Minecraft.getMinecraft().world;
         }
         return null;
     }

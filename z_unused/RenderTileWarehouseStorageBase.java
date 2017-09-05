@@ -45,9 +45,9 @@ public void renderTileEntityAt(TileEntity te, double x, double y, double z, floa
     {
     d = directions[b];
     r = 90 * b;
-    if(te.getWorldObj().isAirBlock(te.xCoord+d.offsetX, te.yCoord+d.offsetY, te.zCoord+d.offsetZ))
+    if(te.getWorldObj().isAirBlock(te.x+d.offsetX, te.y+d.offsetY, te.z+d.offsetZ))
       {
-      int i = te.getWorldObj().getLightBrightnessForSkyBlocks(te.xCoord+d.offsetX, te.yCoord+d.offsetY, te.zCoord+d.offsetZ, 0);
+      int i = te.getWorldObj().getCombinedLight(te.x+d.offsetX, te.y+d.offsetY, te.z+d.offsetZ, 0);
       int j = i % 65536;
       int k = i / 65536;
       OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
@@ -77,7 +77,7 @@ private void renderSignBoard(double x, double y, double z, float r)
   GL11.glPopMatrix();  
   }
 
-/**
+/*
  * matrix should be setup so that 0,0 is upper-left-hand corner of the sign-board, with a
  * transformation of 1 being 1 BLOCK
  */

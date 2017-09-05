@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -27,7 +27,7 @@ import net.minecraft.inventory.Slot;
 public class SlotNoPull extends Slot
 {
 
-/**
+/*
  * @param par1iInventory
  * @param par2
  * @param par3
@@ -38,7 +38,7 @@ public SlotNoPull(IInventory par1iInventory, int par2, int par3, int par4)
   super(par1iInventory, par2, par3, par4);
   }
 
-/**
+/*
  * Return whether this slot's stack can be taken from this slot.
  */
 public boolean canTakeStack(EntityPlayer par1EntityPlayer)

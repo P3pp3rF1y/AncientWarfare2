@@ -12,7 +12,7 @@ public class AWCoreStatics extends ModConfiguration{
     public static final String resourcePath = "/assets/ancientwarfare/resources/";
     public static int timekeeperRefreshRate = 10;
 
-    /**
+    /*
      * category names
      */
     private static final String worldGenSettings = "04_world_gen_settings";
@@ -22,7 +22,7 @@ public class AWCoreStatics extends ModConfiguration{
     private static final String recipeDetailSettings = "08_recipe_details";
     private static final String recipeResearchDetails = "09_recipe_research_details";
 
-    /**
+    /*
      * research options
      */
     public static boolean useResearchSystem = true;
@@ -30,7 +30,7 @@ public class AWCoreStatics extends ModConfiguration{
     public static double energyPerResearchUnit = 1D;
     public static double researchPerTick = 1;//TODO add to config
 
-    /**
+    /*
      * server options
      */
     public static boolean fireBlockBreakEvents = true;
@@ -43,7 +43,7 @@ public class AWCoreStatics extends ModConfiguration{
 
     @Override
     public void initializeValues(){
-        /**
+        /*
          * general options
          */
         DEBUG = config.getBoolean("debug_ouput", generalOptions, false,
@@ -55,7 +55,7 @@ public class AWCoreStatics extends ModConfiguration{
                 "Timekeeper is used by NPC's to determine the time of day, possibly others.\n" + 
                 "The Reign Additionals mod from the Reign modpack also uses it for it's HUD clock.").getInt();
 
-        /**
+        /*
          * server options
          */
         fireBlockBreakEvents = config.getBoolean("fire_block_break_events", serverOptions, fireBlockBreakEvents,
@@ -75,15 +75,15 @@ public class AWCoreStatics extends ModConfiguration{
                 "This is the base number and is further adjusted per worker by worker effectiveness.\n" +
                 "Setting to 0 or below effectively disables  workers.").getDouble();
 
-        /**
+        /*
          * client options
          */
 
-        /**
+        /*
          * core module world-gen options
          */
 
-        /**
+        /*
          * research settings
          */
         energyPerResearchUnit = config.get(researchSettings, "energy_used per_research_tick", energyPerResearchUnit, "Energy Per Research Unit\nDefault = 1\n" +
@@ -150,12 +150,12 @@ public class AWCoreStatics extends ModConfiguration{
     }
 
     public static boolean isItemCraftable(Item item) {
-        String name = Item.itemRegistry.getNameForObject(item);
+        String name = item.getRegistryName().toString();
         return get().getBoolean(name, recipeDetailSettings, true, "");
     }
 
     public static boolean isItemResearched(Item item) {
-        String name = Item.itemRegistry.getNameForObject(item);
+        String name = item.getRegistryName().toString();
         return get().getBoolean(name, recipeResearchDetails, true, "");
     }
 

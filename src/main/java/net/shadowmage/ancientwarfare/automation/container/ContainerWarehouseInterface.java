@@ -14,7 +14,7 @@ import java.util.List;
 
 public class ContainerWarehouseInterface extends ContainerTileBase<TileWarehouseInterface> {
 
-    public List<WarehouseInterfaceFilter> filters = new ArrayList<WarehouseInterfaceFilter>();
+    public List<WarehouseInterfaceFilter> filters = new ArrayList<>();
 
     public ContainerWarehouseInterface(EntityPlayer player, BlockPos pos) {
         super(player, pos);

@@ -4,7 +4,7 @@ import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
@@ -21,7 +21,7 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
         this.height = 0.5f;
     }
 
-    /**
+    /*
      * @param launchYaw   yaw angle for launching (global rotation)
      * @param launchPitch pitch angle for launching (0=horizon)
      * @param launchPower velocity in m/s
@@ -51,7 +51,7 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
         posZ += moveZ;
         setPosition(posX, posY, posZ);
         moveY -= Trig.gravityTick;
-        if (!worldObj.isRemote && !worldObj.isAirBlock(MathHelper.floor_double(posX), MathHelper.floor_double(posY), MathHelper.floor_double(posZ))) {
+        if (!worldObj.isRemote && !worldObj.isAirBlock(MathHelper.floor(posX), MathHelper.floor(posY), MathHelper.floor(posZ))) {
             setDead();
         }
     }

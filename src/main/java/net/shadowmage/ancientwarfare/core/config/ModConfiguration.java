@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -24,14 +24,14 @@ import net.minecraftforge.common.config.Configuration;
 
 import java.io.File;
 
-/**
+/*
  * static-data configuration class.
  * Each mod will need to construct its own subclass of this, adding static fields for necessary config items
  *
  * @author Shadowmage
  */
 public abstract class ModConfiguration {
-    /**
+    /*
      * category names
      */
     public static final String generalOptions = "01_shared_settings";

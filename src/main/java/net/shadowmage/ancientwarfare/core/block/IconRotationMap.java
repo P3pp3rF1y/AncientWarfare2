@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.core.block;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
-
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
@@ -10,8 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class IconRotationMap {
-    private final HashMap<RelativeSide, String> texNames = new HashMap<RelativeSide, String>();
-    private final HashMap<RelativeSide, IIcon> icons = new HashMap<RelativeSide, IIcon>();
+    private final HashMap<RelativeSide, String> texNames = new HashMap<>();
+    private final HashMap<RelativeSide, IIcon> icons = new HashMap<>();
 
     public void setIcon(IRotatableBlock block, RelativeSide side, String texName) {
         RotationType t = block.getRotationType();
@@ -25,7 +24,7 @@ public class IconRotationMap {
     }
 
     public void registerIcons(IIconRegister register) {
-        HashMap<String, IIcon> temp = new HashMap<String, IIcon>();
+        HashMap<String, IIcon> temp = new HashMap<>();
         IIcon icon;
         for (Map.Entry<RelativeSide,String> entry : texNames.entrySet()) {
             String name = entry.getValue();

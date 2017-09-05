@@ -65,7 +65,7 @@ protected GuiElement currentMouseElement;
 
 protected static final int WHITE = 0xffffffff;
 
-/**
+/*
  * gui controls...these are substitutes for the vanilla controlList...and allow for total control
  * over buttons and functions, while only overridding a minimal amount of vanilla code (and still allowing
  * for full use of the vanilla slot rendering and interface)
@@ -181,19 +181,19 @@ public void sendDataToServer(NBTTagCompound tag)
     }
   }
 
-/**
+/*
  * get the width of the GUI in pixels, max of 256
  * @return
  */
 public abstract int getXSize();
 
-/**
+/*
  * get the height of the GUI in pixels, max of 240 for visibility reasons
  * @return
  */
 public abstract int getYSize();
 
-/**
+/*
  * get the string filepath/name of the texture to be rendered as a background for this GUI
  * @return
  */
@@ -202,7 +202,7 @@ public String getGuiBackGroundTexture()
   return Statics.TEXTURE_PATH+"gui/guiBackgroundLarge.png";
   }
 
-/**
+/*
  * called to render any background layer effects (pretty much everything)
  * called every RENDER tick
  * @param mouseX
@@ -211,17 +211,17 @@ public String getGuiBackGroundTexture()
  */
 public abstract void renderExtraBackGround(int mouseX, int mouseY, float partialTime);
 
-/**
+/*
  * called every game-tick, to update screen contents if it has changed/can change
  */
 public abstract void updateScreenContents();
 
-/**
+/*
  * called on construction to add gui control elements
  */
 public abstract void setupControls();
 
-/**
+/*
  * called fron updateScreenContents if the boolean flag forceUpdate==true
  */
 public abstract void updateControls();
@@ -244,7 +244,7 @@ public GuiTab addGuiTab(int id, int x, int y, int width, int height, String text
   return tab;
   }
 
-/**
+/*
  * add a button with adjusted position relative to GUI topLeft corner
  * @param id
  * @param x
@@ -282,7 +282,7 @@ public GuiCheckBoxSimple addCheckBox(int id, int len, int high)
   return box;
   }
 
-/**
+/*
  * add an advanced textField box, includes callback methods for when text changes...
  * @param id
  * @param x
@@ -490,7 +490,7 @@ public void drawScreen(int par1, int par2, float par3)
   
   }
 
-/**
+/*
  * render an itemStack with tooltip and opt. qty/dmg overlay, at the specified x,y
  * @param x
  * @param y
@@ -547,7 +547,7 @@ public void renderItemStack(ItemStack stack, int x, int y, int mouseX, int mouse
   this.renderItemStack(stack, x, y, mouseX, mouseY, renderOverlay, false, tooltip, true);
   }
 
-/**
+/*
  * render the given list of strings as a tooltip at the given mouse x,y coordinates
  * @param x
  * @param y
@@ -603,7 +603,7 @@ protected void renderTooltip(int x, int y, List<String> info)
   this.drawGradientRect(renderX + widestLength + 2, renderY - 3 + 1, renderX + widestLength + 3, renderY + borderSize + 3 - 1, var11, var12);
   this.drawGradientRect(renderX - 3, renderY - 3, renderX + widestLength + 3, renderY - 3 + 1, var11, var11);
   this.drawGradientRect(renderX - 3, renderY + borderSize + 2, renderX + widestLength + 3, renderY + borderSize + 3, var12, var12);
-  /**
+  /*
    * re-grab a fresh iterator
    */
   it = info.iterator();
@@ -624,7 +624,7 @@ protected void renderTooltip(int x, int y, List<String> info)
   itemRenderer.zLevel = 0.0F;
   }
 
-/**
+/*
  * is mouse over slot (or designated area)?
  */
 protected boolean isMouseInRawArea(int slotX, int slotY, int slotWidth, int slotHeight, int mouseX, int mouseY)
@@ -632,7 +632,7 @@ protected boolean isMouseInRawArea(int slotX, int slotY, int slotWidth, int slot
   return mouseX >= slotX - 1 && mouseX < slotX + slotWidth + 1 && mouseY >= slotY - 1 && mouseY < slotY + slotHeight + 1;
   }
 
-/**
+/*
  * is mouse over slot (or designated area)?
  */
 protected boolean isMouseInAdjustedArea(int slotX, int slotY, int slotWidth, int slotHeight, int mouseX, int mouseY)
@@ -642,7 +642,7 @@ protected boolean isMouseInAdjustedArea(int slotX, int slotY, int slotWidth, int
   return mouseX >= slotX - 1 && mouseX < slotX + slotWidth + 1 && mouseY >= slotY - 1 && mouseY < slotY + slotHeight + 1;
   }
 
-/**
+/*
  * render a 50px X 10px status bar, at the X,Y location relative to the topleft of the actual GUI
  * @param x
  * @param y
@@ -655,7 +655,7 @@ public void render50pxStatusBar(int x, int y, int length)
   this.drawTexturedModalRect(guiLeft+x, guiTop+y, 0, 0, length, 10);
   }
 
-/**
+/*
  * method to render an entity onto screen, must be called as part of the background, or some crappy lighting will interfere with it from vanilla itemrendering code
  * 
  * @param mc
@@ -686,7 +686,7 @@ public void renderEntityIntoInventory(Minecraft mc, int xTrans, int yTrans, int 
   OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
   }
 
-/**
+/*
  * render a living entity into a container GUI, must be called as part of the background, or some crappy lighting will interfere with it from vanilla itemrendering code
  * @param par0Minecraft
  * @param living
@@ -772,7 +772,7 @@ public void handleMouseInput()
   super.handleMouseInput();
   }
 
-/**
+/*
  * @return
  */
 public FontRenderer getFontRenderer()

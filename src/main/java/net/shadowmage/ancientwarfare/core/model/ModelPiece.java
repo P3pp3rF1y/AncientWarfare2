@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -25,7 +25,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.util.*;
 
-/**
+/*
  * A single piece of a model.  A piece is a discrete static component of the model.  Pieces may be rotated and moved
  * relative to other pieces in the model (in contrast to boxes, which may not be altered).  All animation is done
  * by moving pieces relative to each-other and the model origin.
@@ -42,8 +42,8 @@ public class ModelPiece {
     private boolean visible = true;
     private float x, y, z;//manipulatable coordinates for this piece, relative to either model origin or parent-piece origin (if base piece or has parent)
     private float rx, ry, rz;//manipulatable rotation for this piece, relative to either model rotation or parent-piece rotation (if base piece or has parent)
-    private Set<ModelPiece> children = new HashSet<ModelPiece>();//the children of this piece
-    private List<Primitive> primitives = new ArrayList<Primitive>();//the list of boxes that make up this piece, really only used during first construction of display list
+    private Set<ModelPiece> children = new HashSet<>();//the children of this piece
+    private List<Primitive> primitives = new ArrayList<>();//the list of boxes that make up this piece, really only used during first construction of display list
     private ModelPiece parent;
 
     boolean compiled = false;

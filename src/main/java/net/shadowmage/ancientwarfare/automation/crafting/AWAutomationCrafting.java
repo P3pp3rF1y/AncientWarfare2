@@ -11,7 +11,7 @@ import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 
 public class AWAutomationCrafting {
 
-    /**
+    /*
      * load any recipes for automation module recipes
      */
     public static void loadRecipes() {

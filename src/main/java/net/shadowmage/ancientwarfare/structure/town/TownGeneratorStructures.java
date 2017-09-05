@@ -11,16 +11,12 @@ import net.shadowmage.ancientwarfare.structure.world_gen.WorldGenTickHandler;
 import net.shadowmage.ancientwarfare.structure.world_gen.WorldGenTickHandler.StructureGenerationCallbackTicket;
 import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class TownGeneratorStructures {
 
     public static void generateStructures(final TownGenerator gen) {
-        final List<TownPartBlock> blocks = new ArrayList<TownPartBlock>();
+        final List<TownPartBlock> blocks = new ArrayList<>();
         for (TownPartQuadrant tq : gen.quadrants) {
             tq.addBlocks(blocks);
         }
@@ -270,9 +266,9 @@ public class TownGeneratorStructures {
         return false;
     }
 
-//************************************************* UTILITY METHODS *******************************************************//
+//************************************************ UTILITY METHODS *******************************************************//
 
-    /**
+    /*
      * attempt to generate a structure at the given plot
      *
      * @return true if generated
@@ -314,7 +310,7 @@ public class TownGeneratorStructures {
         return true;
     }
 
-    /**
+    /*
      * @param gen    the town generator being used
      * @param plot     the pre-expanded plot that will have the structure generated on it
      * @param template the template to be generated
@@ -352,7 +348,7 @@ public class TownGeneratorStructures {
 //  AWLog.logDebug("added structure to tick handler for generation: "+template.name +" at: "+buildKey+" town bounds: "+gen.townBounds);
     }
 
-    /**
+    /*
      * pull a random template from the input generation list, does not remove
      */
     public static StructureTemplate getRandomTemplate(List<StructureTemplate> templatesToGenerate, Random rng) {

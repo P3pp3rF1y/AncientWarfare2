@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -48,7 +48,7 @@ public class NBTTools
 {
 
 
-/**
+/*
 * 0-END
 * 1-BYTE
 * 2-SHORT
@@ -63,7 +63,7 @@ public class NBTTools
 * 11-INT-ARRAY
 */
 
-/************************************************************ NBT STRING READ ********************************************************************************/
+/*********************************************************** NBT STRING READ ********************************************************************************/
 
 public static NBTTagCompound readNBTFrom(List<String> lines)
   {
@@ -176,7 +176,7 @@ public static NBTBase parseBaseTag(String leadLine, Iterator<String> it)
     }
   return null;
   }
-/************************************************************ NBT STRING WRITE ********************************************************************************/
+/*********************************************************** NBT STRING WRITE ********************************************************************************/
 
 public static void writeNBTToLines(NBTTagCompound tag, List<String> lines)
   {  
@@ -275,9 +275,9 @@ private static void writeCompoundTag(NBTTagCompound tag, List<String> lines)
   }
 
 
-/************************************************************ NBT STREAM WRITE ********************************************************************************/
+/*********************************************************** NBT STREAM WRITE ********************************************************************************/
 
-/**
+/*
  * Writes a compressed NBTTagCompound to the OutputStream
  */
 public static void writeNBTTagCompound(NBTTagCompound tag, DataOutputStream data) throws IOException
@@ -318,8 +318,8 @@ public static void writeTagToStream(NBTTagCompound tag, ByteArrayDataOutput data
   }
 
 
-/************************************************************ NBT STREAM READ ********************************************************************************/
-/**
+/*********************************************************** NBT STREAM READ ********************************************************************************/
+/*
  * Reads a compressed NBTTagCompound from the InputStream
  */
 public static NBTTagCompound readNBTTagCompound(DataInputStream data) throws IOException
@@ -337,7 +337,7 @@ public static NBTTagCompound readNBTTagCompound(DataInputStream data) throws IOE
     }
   }
 
-/**
+/*
  * read a tag from a datastream, using google iowrapper
  * @param data
  * @return

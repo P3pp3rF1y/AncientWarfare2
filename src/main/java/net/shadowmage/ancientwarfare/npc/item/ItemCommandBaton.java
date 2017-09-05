@@ -24,12 +24,7 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.CommandType;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class ItemCommandBaton extends Item implements IItemKeyInterface {
 
@@ -75,7 +70,7 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
         list.add(text);
     }
 
-    /**
+    /*
      * Return the enchantability factor of the item.
      */
     @Override
@@ -83,7 +78,7 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
         return this.material.getEnchantability();
     }
 
-    /**
+    /*
      * Return whether this item is repairable in an anvil.
      */
     @Override
@@ -91,7 +86,7 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
         return this.material.getRepairItemStack() == par2ItemStack;
     }
 
-    /**
+    /*
      * Raise the damage on the stack.
      */
     @Override
@@ -112,7 +107,7 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
     @Override
     public Multimap getAttributeModifiers(ItemStack stack) {
         Multimap multimap = super.getAttributeModifiers(stack);
-        multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Weapon modifier", this.attackDamage, 0));
+        multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", this.attackDamage, 0));
         return multimap;
     }
 
@@ -200,18 +195,18 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
 
     public static List<Entity> getCommandedEntities(World world, ItemStack stack) {
         if (world == null || stack.isEmpty() || !(stack.getItem() instanceof ItemCommandBaton)) {
-            return new ArrayList<Entity>();
+            return new ArrayList<>();
         }
         return CommandSet.loadFromStack(stack).getEntities(world);
     }
 
-    /**
+    /*
      * relies on NPCs transmitting their unique entity-id to client-side<br>
      *
      * @author Shadowmage
      */
     private static class CommandSet {
-        private Set<UUID> ids = new HashSet<UUID>();
+        private Set<UUID> ids = new HashSet<>();
 
         private CommandSet() {
         }
@@ -275,7 +270,7 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
             return in;
         }
 
-        /**
+        /*
          * should be called server side to clear out any old un-findable entity references.<br>
          * should probably only be called on-right click, as operation may be costly
          */

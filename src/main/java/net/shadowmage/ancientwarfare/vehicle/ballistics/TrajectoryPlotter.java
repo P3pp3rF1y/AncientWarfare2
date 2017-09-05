@@ -1,12 +1,12 @@
 package net.shadowmage.ancientwarfare.vehicle.ballistics;
 
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 public class TrajectoryPlotter {
 
-    /**
+    /*
      * @param dx       delta X (diff between launch and target position)
      * @param dy       delta Y (diff between launch and target position)
      * @param dz       delta Z (diff between launch and target position)
@@ -34,7 +34,7 @@ public class TrajectoryPlotter {
         return 0;//TODO what to return for an invalid angle?
     }
 
-    /**
+    /*
      * TODO
      * gets the max effective range of the unit at a given firing angle
      */
@@ -42,7 +42,7 @@ public class TrajectoryPlotter {
         return 0;
     }
 
-    /**
+    /*
      * @param x input hit x (horizontal distance)
      * @param y input hit y (vertical distance)
      * @param v velocity per second
@@ -62,7 +62,7 @@ public class TrajectoryPlotter {
         return new double[]{h, l};
     }
 
-    /**
+    /*
      * iterative finder -- uses derivation of motion equations rather than simulation of ballistic trajectory
      *
      * @return last tested launch velocity closest to actual destination velocity
@@ -87,7 +87,7 @@ public class TrajectoryPlotter {
         return testPower;
     }
 
-    /**
+    /*
      * http://en.wikipedia.org/wiki/Trajectory_of_a_projectile#Angle_.CE.B8_required_to_hit_coordinate_.28x.2Cy.29
      * return the height of the projectile at a given distance from launch<br>
      * used by iterative finder to 'cheat' doing exact duplications of trajectory
@@ -101,14 +101,14 @@ public class TrajectoryPlotter {
         double t = x / vx;//time on horizontal to reach x position
         double t2 = (t * t);
         double g12 = g / 2.d;
-        /**
+        /*
          * y = v0y t - 1/2 gt ^2
          */
         double y = vy * t - g12 * t2;
         return y;
     }
 
-    /**
+    /*
      * http://en.wikipedia.org/wiki/Trajectory_of_a_projectile#Angle_.CE.B8_required_to_hit_coordinate_.28x.2Cy.29
      * return the height of the projectile at a given distance from launch<br>
      * used by iterative finder to 'cheat' doing exact duplications of trajectory

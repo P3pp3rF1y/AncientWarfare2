@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ContainerWarehouseStockViewer extends ContainerTileBase<TileWarehouseStockViewer> {
 
-    public final List<WarehouseStockFilter> filters = new ArrayList<WarehouseStockFilter>();
+    public final List<WarehouseStockFilter> filters = new ArrayList<>();
 
     public ContainerWarehouseStockViewer(EntityPlayer player, BlockPos pos) {
         super(player, pos);
@@ -22,7 +22,7 @@ public class ContainerWarehouseStockViewer extends ContainerTileBase<TileWarehou
         addPlayerSlots(88);//240-8-4-4*18
     }
 
-    /**
+    /*
      * should be called from the tile whenever its client-side filters change
      */
     public void onFiltersChanged() {

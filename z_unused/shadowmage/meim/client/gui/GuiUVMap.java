@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -85,7 +85,7 @@ private final void initImage()
   this.updateImage();
   }
 
-/**
+/*
  * updates the image from the current model/pieces
  * updates the openGL texture
  * should be called whenever the image-contents need to be recalculated -- normally because a piece texture-mapping has changed
@@ -103,7 +103,7 @@ public final void updateImage()
         }
       }
     }  
-  List<ModelPiece> pieces = new ArrayList<ModelPiece>();
+  List<ModelPiece> pieces = new ArrayList<>();
   GuiModelEditor.model.getPieces(pieces);
   for(ModelPiece p : pieces)
     {
@@ -327,7 +327,7 @@ public void setupControls()
   
   
   
-  /**
+  /*
    * TODO after controls are setup, init texture from parent model pieces
    */
   }
@@ -375,7 +375,7 @@ protected void addSelectionControls()
   primitiveSelectionArea.elements.clear();
   pieceLabelMap.clear();
   primitiveLabelMap.clear();
-  List<ModelPiece> pieces = new ArrayList<ModelPiece>();
+  List<ModelPiece> pieces = new ArrayList<>();
   GuiModelEditor.model.getPieces(pieces);
   
   int totalHeight = 0;

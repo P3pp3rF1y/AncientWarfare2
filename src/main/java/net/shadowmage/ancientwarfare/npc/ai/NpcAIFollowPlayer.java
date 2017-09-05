@@ -14,7 +14,7 @@ public class NpcAIFollowPlayer extends NpcAI<NpcBase> {
         this.setMutexBits(MOVE + ATTACK);
     }
 
-    /**
+    /*
      * Returns whether the EntityAIBase should begin execution.
      */
     @Override
@@ -31,7 +31,7 @@ public class NpcAIFollowPlayer extends NpcAI<NpcBase> {
         return true;
     }
 
-    /**
+    /*
      * Execute a one shot task or start executing a continuous task
      */
     @Override
@@ -40,7 +40,7 @@ public class NpcAIFollowPlayer extends NpcAI<NpcBase> {
         this.npc.addAITask(TASK_FOLLOW);
     }
 
-    /**
+    /*
      * Resets the task
      */
     @Override
@@ -50,7 +50,7 @@ public class NpcAIFollowPlayer extends NpcAI<NpcBase> {
         this.npc.removeAITask(TASK_FOLLOW + TASK_MOVE);
     }
 
-    /**
+    /*
      * Updates the task
      */
     @Override

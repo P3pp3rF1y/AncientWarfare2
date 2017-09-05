@@ -15,8 +15,8 @@ public class TownTemplateManager {
     private final List<TownTemplate> searchCache;
 
     private TownTemplateManager() {
-        templates = new HashMap<String, TownTemplate>();
-        searchCache = new ArrayList<TownTemplate>();
+        templates = new HashMap<>();
+        searchCache = new ArrayList<>();
     }
 
     public void loadTemplate(TownTemplate template) {

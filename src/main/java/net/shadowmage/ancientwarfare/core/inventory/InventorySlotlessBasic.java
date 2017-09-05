@@ -13,7 +13,7 @@ public class InventorySlotlessBasic {
         this.totalSize = totalSize;
     }
 
-    /**
+    /*
      * add to the input map all items contained in this inventory
      */
     public void getItems(ItemQuantityMap map) {
@@ -29,7 +29,7 @@ public class InventorySlotlessBasic {
     }
 
     public int extractItem(ItemStack filter, int amount) {
-        if (amount <= 0 || filter == null) {
+        if (amount <= 0 || filter.isEmpty()) {
             return 0;
         }
         int count = itemMap.getCount(filter);
@@ -40,7 +40,7 @@ public class InventorySlotlessBasic {
     }
 
     public int insertItem(ItemStack filter, int amount) {
-        if (amount <= 0 || filter == null) {
+        if (amount <= 0 || filter.isEmpty()) {
             return 0;
         }
         if(amount > (totalSize - currentSize))

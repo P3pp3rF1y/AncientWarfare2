@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2015 Olivier Sylvain (aka GotoLink)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.

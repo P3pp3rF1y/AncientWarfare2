@@ -12,26 +12,15 @@ import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite.WorkType;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.item.ItemHammer;
 import net.shadowmage.ancientwarfare.core.item.ItemQuill;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIDoor;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIFleeHostiles;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
-import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedAlarmResponse;
-import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedFindWorksite;
-import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedFollowCommand;
-import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedGetFood;
-import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedIdleWhenHungry;
-import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedRideHorse;
-import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedWork;
-import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedWorkRandom;
+import net.shadowmage.ancientwarfare.npc.ai.*;
+import net.shadowmage.ancientwarfare.npc.ai.owned.*;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.item.ItemWorkOrder;
 import net.shadowmage.ancientwarfare.npc.orders.WorkOrder;
@@ -127,7 +116,7 @@ public class NpcWorker extends NpcPlayerOwned implements IWorker {
             if (getAttackTarget() != null || !hasHome() || world.provider.hasNoSky) {
                 return false;
             }
-            return world.isDaytime() || world.canLightningStrikeAt(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
+            return world.isDaytime() || world.canLightningStrikeAt(MathHelper.floor(this.posX), MathHelper.floor(this.posY), MathHelper.floor(this.posZ));
         }
     }
 

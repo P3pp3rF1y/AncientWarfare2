@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -56,7 +56,7 @@ import shadowmage.ancient_structures.common.template.plugin.default_plugins.enti
 public class StructurePluginVanillaHandler extends StructureContentPlugin
 {
 
-HashSet<Block> specialHandledBlocks = new HashSet<Block>();//just a temp cache to keep track of what blocks to not register with blanket block rule
+HashSet<Block> specialHandledBlocks = new HashSet<>();//just a temp cache to keep track of what blocks to not register with blanket block rule
 
 public StructurePluginVanillaHandler()
   {

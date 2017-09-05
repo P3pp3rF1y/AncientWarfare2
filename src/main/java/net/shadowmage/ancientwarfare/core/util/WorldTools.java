@@ -11,7 +11,7 @@ import java.util.List;
 
 public class WorldTools {
 
-	/**
+	/*
 	 * SERVER ONLY
 	 */
 	public static List<TileEntity> getTileEntitiesInArea(World world, int x1, int y1, int z1, int x2, int y2, int z2) {

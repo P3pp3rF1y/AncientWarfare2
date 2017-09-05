@@ -52,19 +52,19 @@ public class BlockRotationHandler {
     }
 
     public enum RotationType {
-        /**
+        /*
          * Can have 6 textures / inventories.<br>
          * Top, Bottom, Front, Rear, Left, Right<br>
          * Can only face in one of four-directions - N/S/E/W
          */
         FOUR_WAY(EnumSet.of(RelativeSide.TOP, RelativeSide.BOTTOM, RelativeSide.LEFT, RelativeSide.RIGHT, RelativeSide.FRONT, RelativeSide.REAR)),
-        /**
+        /*
          * Can have 3 textures / inventories<br>
          * Top, Bottom, Sides<br>
          * Can face in any orientation - U/D/N/S/E/W
          */
         SIX_WAY(EnumSet.of(RelativeSide.TOP, RelativeSide.BOTTOM, RelativeSide.ANY_SIDE)),
-        /**
+        /*
          * No rotation, can still have relative sides, but FRONT always == NORTH
          */
         NONE(EnumSet.of(RelativeSide.TOP, RelativeSide.BOTTOM, RelativeSide.LEFT, RelativeSide.RIGHT, RelativeSide.FRONT, RelativeSide.REAR));
@@ -237,14 +237,14 @@ public class BlockRotationHandler {
 
         private EnumSet<RelativeSide> validSides = EnumSet.of(RelativeSide.NONE);
 
-        /**
+        /*
          * Block side to Inventory Side
          * inventorySide should only contain validSides
          */
-        private HashMap<RelativeSide, RelativeSide> accessMap = new HashMap<RelativeSide, RelativeSide>();
+        private HashMap<RelativeSide, RelativeSide> accessMap = new HashMap<>();
 
-        private HashMap<RelativeSide, int[]> slotsByInventorySide = new HashMap<RelativeSide, int[]>();
-        private HashMap<RelativeSide, boolean[]> extractInsertFlags = new HashMap<RelativeSide, boolean[]>();//inventoryside x boolean[2]; [0]=extract, [1]=insert
+        private HashMap<RelativeSide, int[]> slotsByInventorySide = new HashMap<>();
+        private HashMap<RelativeSide, boolean[]> extractInsertFlags = new HashMap<>();//inventoryside x boolean[2]; [0]=extract, [1]=insert
         public final IRotatableTile te;
         public final RotationType rType;
         private ItemStack[] inventorySlots;
@@ -263,7 +263,7 @@ public class BlockRotationHandler {
             }
         }
 
-        /**
+        /*
          * Should be called to configure the default access directly after construction of the inventory
          */
         public void setAccessibleSideDefault(RelativeSide rSide, RelativeSide iSide, int[] indices) {
@@ -486,7 +486,7 @@ public class BlockRotationHandler {
         @Override
         public boolean isItemValidForSlot(int var1, ItemStack var2) {
             ItemSlotFilter filter = filtersByInventorySlot[var1];
-            return filter == null || filter.apply(var2);
+            return filter == null || filter.test(var2);
         }
 
         @Override

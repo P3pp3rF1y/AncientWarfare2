@@ -5,7 +5,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 
-/**
+/*
  * Created by Olivier on 05/02/2015.
  */
 public class ContainerTileBase<T extends TileEntity> extends ContainerBase {

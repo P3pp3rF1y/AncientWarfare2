@@ -1,12 +1,13 @@
 package net.shadowmage.ancientwarfare.core.util;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class EntityTools {
     
-    /**
+    /*
      * Teleport the player to the specified block position. Will try to place the player at once of the four positions beside
      * the block, if they can't fit anywhere beside then it will try on-top.
      * @param entityPlayer The player you want to teleport
@@ -15,27 +16,26 @@ public class EntityTools {
      * @param doRaw if true, will update the posX/posY/posZ fields instead of calling setPositionAndUpdate. Different parts of Minecraft need one or the other method for whatever reason so if one doesn't work try the other.
      * @return true is successful, otherwise false
      */
-    public static boolean teleportPlayerToBlock(EntityPlayer entityPlayer, World world, int[] targetPos, boolean doRaw) {
-        int[] tpPos = null;
-        if (EntityTools.canPlayerFit(entityPlayer, world, targetPos[0] + 1, targetPos[1], targetPos[2]))
-            tpPos = new int[]{targetPos[0] + 1, targetPos[1], targetPos[2]};
-        else if (EntityTools.canPlayerFit(entityPlayer, world, targetPos[0], targetPos[1], targetPos[2] + 1))
-            tpPos = new int[]{targetPos[0], targetPos[1], targetPos[2] + 1};
-        else if (EntityTools.canPlayerFit(entityPlayer, world, targetPos[0] - 1, targetPos[1], targetPos[2]))
-            tpPos = new int[]{targetPos[0] - 1, targetPos[1], targetPos[2]};
-        else if (EntityTools.canPlayerFit(entityPlayer, world, targetPos[0], targetPos[1], targetPos[2] - 1))
-            tpPos = new int[]{targetPos[0], targetPos[1], targetPos[2] - 1};
-        // try on top of the block too
-        else if (EntityTools.canPlayerFit(entityPlayer, world, targetPos[0], targetPos[1] + 1, targetPos[2]))
-            tpPos = new int[]{targetPos[0], targetPos[1] + 1, targetPos[2]};
-        
+    public static boolean teleportPlayerToBlock(EntityPlayer entityPlayer, World world, BlockPos targetPos, boolean doRaw) {
+        BlockPos tpPos = null;
+        for (EnumFacing facing : EnumFacing.HORIZONTALS) {
+            if (EntityTools.canPlayerFit(world, targetPos.offset(facing))) {
+                tpPos = targetPos.offset(facing);
+                break;
+            }
+        }
+
+        if (tpPos == null && EntityTools.canPlayerFit(world, targetPos.up())) {
+            tpPos = targetPos.up();
+        }
+
         if (tpPos != null) {
             if (doRaw) {
-                entityPlayer.posX = tpPos[0] + 0.5;
-                entityPlayer.posY = tpPos[1];
-                entityPlayer.posZ = tpPos[2] + 0.5;
+                entityPlayer.posX = tpPos.getX() + 0.5;
+                entityPlayer.posY = tpPos.getY();
+                entityPlayer.posZ = tpPos.getZ() + 0.5;
             } else {
-                entityPlayer.setPositionAndUpdate(tpPos[0] + 0.5, tpPos[1], tpPos[2] + 0.5);
+                entityPlayer.setPositionAndUpdate(tpPos.getX() + 0.5, tpPos.getY(), tpPos.getZ() + 0.5);
             }
             return true;
         }
@@ -43,10 +43,10 @@ public class EntityTools {
         return false;
     }
     
-    public static boolean canPlayerFit(Entity entity, World world, int posX, int posY, int posZ) {
-        if (world.getBlock(posX, posY, posZ).getMaterial().blocksMovement())
+    private static boolean canPlayerFit(World world, BlockPos pos) {
+        if (world.getBlockState(pos).getMaterial().blocksMovement())
             return false;
-        if (world.getBlock(posX, posY + 1, posZ).getMaterial().blocksMovement())
+        if (world.getBlockState(pos.up()).getMaterial().blocksMovement())
             return false;
         return true;
     }

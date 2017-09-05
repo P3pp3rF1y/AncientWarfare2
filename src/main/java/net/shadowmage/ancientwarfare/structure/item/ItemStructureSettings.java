@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -36,7 +36,7 @@ public class ItemStructureSettings {
 
     }
 
-    /**
+    /*
      * @param stack to extract the info from
      */
     public static ItemStructureSettings getSettingsFor(ItemStack stack) {

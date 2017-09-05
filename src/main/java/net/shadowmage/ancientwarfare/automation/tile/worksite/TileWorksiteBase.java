@@ -53,7 +53,7 @@ public abstract class TileWorksiteBase extends TileUpdatable implements ITickabl
         torqueCell = new TorqueCell(32, 0, AWCoreStatics.energyPerWorkUnit * 3, 1);
     }
 
-    //*************************************** COFH RF METHODS ***************************************//
+    //************************************** COFH RF METHODS ***************************************//
     @Optional.Method(modid = "redstoneflux")
     @Override
     public final int getEnergyStored(EnumFacing from) {
@@ -89,7 +89,7 @@ public abstract class TileWorksiteBase extends TileUpdatable implements ITickabl
         }
         return (int) (AWAutomationStatics.torqueToRf * addTorque(from, (double) maxReceive * AWAutomationStatics.rfToTorque));
     }
-//*************************************** UPGRADE HANDLING METHODS ***************************************//
+//************************************** UPGRADE HANDLING METHODS ***************************************//
 
     @Override
     public final EnumSet<WorksiteUpgrade> getUpgrades() {
@@ -136,7 +136,7 @@ public abstract class TileWorksiteBase extends TileUpdatable implements ITickabl
         return getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2) ? 2 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1) ? 1 : 0;
     }
 
-//*************************************** TILE UPDATE METHODS ***************************************//
+//************************************** TILE UPDATE METHODS ***************************************//
 
     protected abstract boolean processWork();
 
@@ -175,7 +175,7 @@ public abstract class TileWorksiteBase extends TileUpdatable implements ITickabl
         efficiencyBonusFactor = IWorkSite.WorksiteImplementation.getEfficiencyFactor(upgrades);
     }
 
-//*************************************** TILE INTERACTION METHODS ***************************************//
+//************************************** TILE INTERACTION METHODS ***************************************//
 
     @Override
     public final Team getTeam() {
@@ -237,7 +237,7 @@ public abstract class TileWorksiteBase extends TileUpdatable implements ITickabl
         owner = AncientWarfareCore.proxy.getFakePlayer(getWorld(), ownerName, ownerUuid);
     }
 
-//*************************************** TORQUE INTERACTION METHODS ***************************************//
+//************************************** TORQUE INTERACTION METHODS ***************************************//
 
     @Override
     public final float getClientOutputRotation(EnumFacing from, float delta) {
@@ -299,7 +299,7 @@ public abstract class TileWorksiteBase extends TileUpdatable implements ITickabl
         return true;
     }
 
-//*************************************** MISC METHODS ***************************************//
+//************************************** MISC METHODS ***************************************//
     @Override
     public boolean shouldRenderInPass(int pass) {
         return pass == 1;
@@ -327,7 +327,7 @@ public abstract class TileWorksiteBase extends TileUpdatable implements ITickabl
         markDirty();//notify neighbors of tile change
     }
 
-//*************************************** NBT AND PACKET DATA METHODS ***************************************//
+//************************************** NBT AND PACKET DATA METHODS ***************************************//
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {

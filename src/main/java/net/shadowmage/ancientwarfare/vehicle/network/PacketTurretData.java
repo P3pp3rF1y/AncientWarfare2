@@ -6,7 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
-/**
+/*
  * Turreted vehicles will use this to relay turret values from client-> server-> other_clients
  *
  * @author Shadowmage

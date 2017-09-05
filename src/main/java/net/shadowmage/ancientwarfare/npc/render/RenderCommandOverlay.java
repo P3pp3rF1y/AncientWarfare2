@@ -20,7 +20,7 @@ import java.util.List;
 
 public final class RenderCommandOverlay {
     public static final RenderCommandOverlay INSTANCE = new RenderCommandOverlay();
-    /**
+    /*
      * TODO move this off into separate class for datas, as this is a _render_ class...
      */
     private List<Entity> targetEntities;
@@ -38,11 +38,11 @@ public final class RenderCommandOverlay {
     @SubscribeEvent
     public void onRenderTick(TickEvent.RenderTickEvent evt) {
         Minecraft mc = Minecraft.getMinecraft();
-        if (mc == null || mc.thePlayer == null || mc.currentScreen != null || mc.thePlayer.getCurrentEquippedItem() == null || !(mc.thePlayer.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton)) {
+        if (mc == null || mc.player == null || mc.currentScreen != null || mc.player.getCurrentEquippedItem() == null || !(mc.player.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton)) {
             return;
         }
         if (evt.phase == TickEvent.Phase.START) {
-            target = RayTraceUtils.getPlayerTarget(mc.thePlayer, 120, 0);
+            target = RayTraceUtils.getPlayerTarget(mc.player, 120, 0);
             if (target != null) {
                 if (target.typeOfHit == MovingObjectType.BLOCK) {
                     targetString = target.blockX + "," + target.blockY + "," + target.blockZ;
@@ -50,9 +50,9 @@ public final class RenderCommandOverlay {
                     targetString = target.entityHit.getName();
                 }
             }
-            targetEntities = ItemCommandBaton.getCommandedEntities(mc.theWorld, mc.thePlayer.getCurrentEquippedItem());
+            targetEntities = ItemCommandBaton.getCommandedEntities(mc.theWorld, mc.player.getCurrentEquippedItem());
         } else if (!mc.gameSettings.showDebugInfo) {
-            List<String> entityNames = new ArrayList<String>();
+            List<String> entityNames = new ArrayList<>();
             for (Entity e : targetEntities) {
                 entityNames.add(e.getName());
             }
@@ -73,10 +73,10 @@ public final class RenderCommandOverlay {
     @SubscribeEvent
     public void onRenderLast(RenderWorldLastEvent evt) {
         Minecraft mc = Minecraft.getMinecraft();
-        if (mc == null || mc.currentScreen != null || mc.thePlayer == null) {
+        if (mc == null || mc.currentScreen != null || mc.player == null) {
             return;
         }
-        if (mc.thePlayer.getCurrentEquippedItem() == null || !(mc.thePlayer.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton)) {
+        if (mc.player.getCurrentEquippedItem() == null || !(mc.player.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton)) {
             return;
         }
         RayTraceResult pos = target;
@@ -94,7 +94,7 @@ public final class RenderCommandOverlay {
                 bb.offset(t * -dx, t * -dy, t * -dz);
             }
             if (bb != null) {
-                bb = RenderTools.adjustBBForPlayerPos(bb, mc.thePlayer, evt.partialTicks);
+                bb = RenderTools.adjustBBForPlayerPos(bb, mc.player, evt.partialTicks);
                 RenderTools.drawOutlinedBoundingBox(bb, 1.f, 1.f, 1.f);
             }
         }
@@ -109,7 +109,7 @@ public final class RenderCommandOverlay {
             double dy = e.posY - e.lastTickPosY;
             double dz = e.posZ - e.lastTickPosZ;
             bb.offset(t * -dx, t * -dy, t * -dz);
-            bb = RenderTools.adjustBBForPlayerPos(bb, mc.thePlayer, evt.partialTicks);
+            bb = RenderTools.adjustBBForPlayerPos(bb, mc.player, evt.partialTicks);
             RenderTools.drawOutlinedBoundingBox(bb, 1.f, 0.f, 0.f);
         }
     }

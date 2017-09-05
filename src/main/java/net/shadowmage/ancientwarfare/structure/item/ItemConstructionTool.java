@@ -314,22 +314,22 @@ public class ItemConstructionTool extends Item implements IItemKeyInterface, IBo
 
     public enum ConstructionType {
 
-        /**
+        /*
          * Fills current layer and downwards with chosen block
          */
         LAKE_FILL,
 
-        /**
+        /*
          * fills current layer only with chosen block
          */
         LAYER_FILL,
 
-        /**
+        /*
          * fills entire bounding box with chosen block
          */
         SOLID_FILL,
 
-        /**
+        /*
          * creates a box around chosen area with chosen block
          */
         BOX_FILL;

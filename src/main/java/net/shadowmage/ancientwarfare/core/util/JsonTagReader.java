@@ -6,7 +6,7 @@ import net.shadowmage.ancientwarfare.core.util.Json.JsonArray;
 import net.shadowmage.ancientwarfare.core.util.Json.JsonObject;
 import net.shadowmage.ancientwarfare.core.util.Json.JsonValue;
 
-/**
+/*
  * Reads NBT tags from JSON formatted strings.<br>
  * All tags will have the outer value of "JSON:{}", with all data enclosed by the set of brackets<br>
  * All names and values will be enclosed by double quotes<br>.

@@ -21,17 +21,17 @@ public class TileHandGenerator extends TileTorqueSingleCell implements IWorkSite
     UUID ownerId = null;
     private final TorqueCell inputCell;
 
-    /**
+    /*
      * client side this == 0.0 -> 100.0 (integer percent)
      */
     double clientInputEnergy;
 
-    /**
+    /*
      * client side this == 0 -> 100.0 (integer percent)
      */
     int clientInputDestEnergy;
 
-    /**
+    /*
      * used client side for rendering
      */
     double inputRotation, prevInputRotation;

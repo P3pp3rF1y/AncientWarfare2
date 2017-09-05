@@ -3,19 +3,20 @@ package net.shadowmage.ancientwarfare.core.gui.elements;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 import org.lwjgl.opengl.GL11;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CompositeItemSlots extends CompositeScrolled {
-    protected static RenderItem itemRender = new RenderItem();
-    private List<ItemSlot> itemSlots = new ArrayList<ItemSlot>();
+    private static RenderItem itemRender = Minecraft.getMinecraft().getRenderItem();
+    private List<ItemSlot> itemSlots = new ArrayList<>();
     ITooltipRenderer render;
 
     public CompositeItemSlots(GuiContainerBase gui, int topLeftX, int topLeftY, int width, int height, ITooltipRenderer render) {
@@ -67,7 +68,7 @@ public class CompositeItemSlots extends CompositeScrolled {
         RenderHelper.enableGUIStandardItemLighting();
         itemRender.zLevel = 10.0F;
         for (ItemSlot slot : itemSlots) {
-            renderItemStack(slot, mouseX, mouseY);
+            renderItemStack(slot);
         }
 
         //needs texture(fonts), color, alpha enabled
@@ -76,7 +77,7 @@ public class CompositeItemSlots extends CompositeScrolled {
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glEnable(GL11.GL_TEXTURE_2D);
         for (ItemSlot slot : itemSlots) {
-            renderOverlay(slot, mouseX, mouseY);
+            renderOverlay(slot);
         }
 
         //needs texture disabled (draw white quad @ alpha for highlight)
@@ -106,11 +107,11 @@ public class CompositeItemSlots extends CompositeScrolled {
 
     private void renderSlotHighlight(ItemSlot slot, int mouseX, int mouseY) {
         @Nonnull ItemStack stack = slot.getStack();
-        if (stack.isEmpty() || stack.getItem() == null || !slot.visible) {
+        if (stack.isEmpty() || !slot.visible) {
             return;
         }
         if (slot.highlightOnMouseOver && slot.isMouseOverElement(mouseX, mouseY)) {
-            /**
+            /*
              *  TODO -- find proper alpha for blend..it is close now, but probably not an exact match for vanilla
              *  highlighting
              */
@@ -123,7 +124,7 @@ public class CompositeItemSlots extends CompositeScrolled {
             GL11.glVertex2d(slot.renderX + slot.width, slot.renderY);
             GL11.glEnd();
             GL11.glDisable(GL11.GL_BLEND);
-            if (slot.renderTooltip && slot.getStack() != null && render != null) {
+            if (slot.renderTooltip && !slot.getStack().isEmpty() && render != null) {
                 if (slot.tooltip != null) {
                     this.render.handleElementTooltipRender(slot.tooltip, mouseX, mouseY);
                 } else {
@@ -133,9 +134,9 @@ public class CompositeItemSlots extends CompositeScrolled {
         }
     }
 
-    private void renderOverlay(ItemSlot slot, int mouseX, int mouseY) {
+    private void renderOverlay(ItemSlot slot) {
         @Nonnull ItemStack stack = slot.getStack();
-        if (stack.isEmpty() || stack.getItem() == null || !slot.visible) {
+        if (stack.isEmpty() || !slot.visible) {
             return;
         }
         Minecraft mc = Minecraft.getMinecraft();
@@ -144,22 +145,17 @@ public class CompositeItemSlots extends CompositeScrolled {
             font = mc.fontRenderer;
         }
         if (slot.renderItemQuantity && slot.getStack().getCount() > 1) {
-            itemRender.renderItemOverlayIntoGUI(font, mc.getTextureManager(), stack, slot.renderX + 1, slot.renderY + 1, "");
-            slot.renderStackSize(slot.renderX + 1, slot.renderY + 1, stack.stackSize, font);
+            itemRender.renderItemOverlayIntoGUI(font, stack, slot.renderX + 1, slot.renderY + 1, "");
+            slot.renderStackSize(slot.renderX + 1, slot.renderY + 1, stack.getCount(), font);
         }
     }
 
-    private void renderItemStack(ItemSlot slot, int mouseX, int mouseY) {
+    private void renderItemStack(ItemSlot slot) {
         @Nonnull ItemStack stack = slot.getStack();
-        if (stack.isEmpty() || stack.getItem() == null || !slot.visible) {
+        if (stack.isEmpty() || !slot.visible) {
             return;
         }
-        Minecraft mc = Minecraft.getMinecraft();
-        FontRenderer font = stack.getItem().getFontRenderer(stack);
-        if (font == null) {
-            font = mc.fontRenderer;
-        }
-        itemRender.renderItemAndEffectIntoGUI(font, mc.getTextureManager(), stack, slot.renderX + 1, slot.renderY + 1);
+        itemRender.renderItemAndEffectIntoGUI(stack, slot.renderX + 1, slot.renderY + 1);
     }
 
 }

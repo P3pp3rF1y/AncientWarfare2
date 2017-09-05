@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -27,7 +27,7 @@ import javax.imageio.ImageIO;
 
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -69,7 +69,7 @@ int selZ;
 private ModelPiece selectedPiece;
 private Primitive selectedPrimitive;
 
-/**
+/*
  * values manipulated via mouse input
  */
 int lastClickXLeft;
@@ -80,7 +80,7 @@ float yaw;
 float pitch;
 float viewDistance = 5.f;
 
-/**
+/*
  * stored/calc'd values
  */
 float viewPosX, viewPosY, viewPosZ, viewTargetX, viewTargetY, viewTargetZ;
@@ -288,14 +288,14 @@ public void drawExtraForeground(int mouseX, int mouseY, float partialTick)
 
 private void setupModelView()
   {  
-  /**
+  /*
    * load a clean projection matrix
    */
   GL11.glMatrixMode(GL11.GL_PROJECTION);
   GL11.glPushMatrix(); 
   GL11.glLoadIdentity();
   
-  /**
+  /*
    * set up the base projection transformation matrix, as well as view target and position
    * (camera setup)
    */
@@ -303,14 +303,14 @@ private void setupModelView()
   GLU.gluPerspective(60.f, aspect, 0.1f, 100.f); 
   GLU.gluLookAt(viewPosX, viewPosY, viewPosZ, viewTargetX, viewTargetY, viewTargetZ, 0, 1, 0);   
     
-  /**
+  /*
    * load a clean model-view matrix
    */
   GL11.glMatrixMode(GL11.GL_MODELVIEW);
   GL11.glPushMatrix();  
   GL11.glLoadIdentity();
   
-  /**
+  /*
    * and finally, clear the depth buffer 
    * (we want to ignore any world/etc, as we're rendering over-top of it all anyway)
    */
@@ -327,7 +327,7 @@ private void resetModelView()
 
 private void enableModelLighting()
   {
-  int bright = this.player.worldObj.getLightBrightnessForSkyBlocks((int)this.player.posX, (int)this.player.posY, (int)this.player.posZ, 0);
+  int bright = this.player.worldObj.getCombinedLight((int)this.player.posX, (int)this.player.posY, (int)this.player.posZ, 0);
 
   int var11 = bright % 65536;
   int var12 = bright / 65536;

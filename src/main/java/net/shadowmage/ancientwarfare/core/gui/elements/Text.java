@@ -10,7 +10,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
+/*
  * Text input field
  * height = 12px
  *
@@ -71,7 +71,7 @@ public class Text extends GuiElement {
         });
     }
 
-    /**
+    /*
      * Called directly after character input updates or text changes from
      * delete/backspace the new text has already been set.<br>
      * Any references to this.text will return the newtext old test is passed in
@@ -153,7 +153,7 @@ public class Text extends GuiElement {
         }
     }
 
-    /**
+    /*
      * Anonymous classes should override this to handle enter-key pressed
      * inner classes can also override this for default enter-key pressed action
      */
@@ -290,7 +290,7 @@ public class Text extends GuiElement {
 
     public static class TextValidator {
 
-        Set<Character> validChars = new HashSet<Character>();
+        Set<Character> validChars = new HashSet<>();
 
         public TextValidator() {
         }
@@ -302,9 +302,7 @@ public class Text extends GuiElement {
         }
 
         public TextValidator(Set<Character> chars) {
-            for (Character ch : chars) {
-                validChars.add(ch);
-            }
+            validChars.addAll(chars);
         }
 
         public void addValidChar(char ch) {
@@ -318,11 +316,11 @@ public class Text extends GuiElement {
         }
 
         public boolean isCharValid(char ch) {
-            return validChars.contains(Character.valueOf(ch));
+            return validChars.contains(ch);
         }
 
         public void removeValidChar(char ch) {
-            validChars.remove(Character.valueOf(ch));
+            validChars.remove(ch);
         }
 
         public void clearAllowedChars() {

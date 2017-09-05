@@ -5,23 +5,23 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.Vec3d;
+import net.minecraft.util.math.MathHelper;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 public class VehiclePart extends Entity {
 
     private VehicleBase vehicle;
-    private Vec3 offset;
-    private Vec3 location;
+    private Vec3d offset;
+    private Vec3d location;
 
     public VehiclePart(VehicleBase vehicle, float width, float height, float xOffset, float zOffset) {
         super(vehicle.worldObj);
         this.vehicle = vehicle;
         this.setSize(width, height);
-        offset = Vec3.createVectorHelper(xOffset, 0, zOffset);
-        location = Vec3.createVectorHelper(xOffset, 0, zOffset);
+        offset = Vec3d.createVectorHelper(xOffset, 0, zOffset);
+        location = Vec3d.createVectorHelper(xOffset, 0, zOffset);
         stepHeight = 1.f;
         updatePosition();
     }
@@ -31,14 +31,14 @@ public class VehiclePart extends Entity {
     }
 
     public final void updatePosition() {
-        location.xCoord = offset.xCoord;
-        location.yCoord = offset.yCoord;
-        location.zCoord = offset.zCoord;
+        location.x = offset.x;
+        location.y = offset.y;
+        location.z = offset.z;
         location.rotateAroundY(MathHelper.wrapAngleTo180_float(vehicle.rotationYaw) * Trig.TORADIANS);
-        location.xCoord += vehicle.posX;
-        location.yCoord += vehicle.posY;
-        location.zCoord += vehicle.posZ;
-        setPosition(location.xCoord, location.yCoord, location.zCoord);
+        location.x += vehicle.posX;
+        location.y += vehicle.posY;
+        location.z += vehicle.posZ;
+        setPosition(location.x, location.y, location.z);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class VehiclePart extends Entity {
         return vehicle.interactFirst(player);
     }
 
-    /**
+    /*
      * Used to in collision detection between this entity and the passed in entity for:<br>
      * getCollidingBoundingBoxes(Entity, AxisAlignedBB)<br>
      * which is called from:
@@ -72,7 +72,7 @@ public class VehiclePart extends Entity {
         return collidingEntity == vehicle ? null : collidingEntity.boundingBox;
     }
 
-    /**
+    /*
      * Used to get the collision box for this entity, used in:<br>
      * getCollidingBoundingBoxes(Entity, AxisAlignedBB)<br>
      * which is called from:
@@ -90,7 +90,7 @@ public class VehiclePart extends Entity {
         return boundingBox;
     }
 
-    /**
+    /*
      * Used to determine if this entity can be hit by arrows and ray-traces in client getMouseOverObject calls<br>
      * it appears that this is the -canBeCollidedWith()- for interactions
      */
@@ -99,7 +99,7 @@ public class VehiclePart extends Entity {
         return true;
     }
 
-    /**
+    /*
      * Used by entityLiving (or other mobile entities) to determine if it has contacted another mobile/pushable entity<br>
      * Only used by minecart, boat and entityLivingBase for pushability on collision
      */

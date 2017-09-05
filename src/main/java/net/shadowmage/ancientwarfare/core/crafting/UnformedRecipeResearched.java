@@ -1,7 +1,9 @@
 package net.shadowmage.ancientwarfare.core.crafting;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.interfaces.IResearchRecipe;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 
@@ -9,15 +11,19 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class UnformedRecipeResearched extends ShapelessOreRecipe implements IResearchRecipe{
-    private final Set<Integer> neededResearch = new HashSet<Integer>();
+    private final Set<Integer> neededResearch = new HashSet<>();
 
     public UnformedRecipeResearched(ItemStack result, Object... recipe) {
-        super(result, recipe);
+        super(new ResourceLocation(AncientWarfareCore.modID, result.getItem().getRegistryName().getResourcePath()), result, recipe);
     }
 
     @Override
     public Set<Integer> getNeededResearch() {
         return neededResearch;
+    }
+
+    private int getRecipeSize() {
+        return getIngredients().size();
     }
 
     @Override
@@ -53,10 +59,5 @@ public class UnformedRecipeResearched extends ShapelessOreRecipe implements IRes
             }
         }
         return this;
-    }
-
-    @Override
-    public Object[] getInputs() {
-        return getInput().toArray();
     }
 }

@@ -1,6 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.entity;
 
-/**
+/*
  * Created by Olivier on 09/07/2015.
  */
 public interface IKeepFood {

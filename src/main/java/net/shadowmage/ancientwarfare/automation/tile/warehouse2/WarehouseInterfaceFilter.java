@@ -7,9 +7,12 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
+import javax.annotation.Nonnull;
+
 public final class WarehouseInterfaceFilter implements Predicate<ItemStack>, INBTSerializable<NBTTagCompound> {
 
-    private ItemStack filterItem;
+    @Nonnull
+    private ItemStack filterItem = ItemStack.EMPTY;
     private int quantity;
 
     public WarehouseInterfaceFilter() {
@@ -20,7 +23,7 @@ public final class WarehouseInterfaceFilter implements Predicate<ItemStack>, INB
         if (item.isEmpty()) {
             return false;
         }
-        if (filterItem == null) {
+        if (filterItem.isEmpty()) {
             return false;
         }//null filter item, invalid filter
         if (item.getItem() != filterItem.getItem()) {

@@ -15,7 +15,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 
-public class TileOreProcessor extends TileWorksiteBase implements ISidedInventory,IInventoryChangedListener {
+public class TileOreProcessor extends TileWorksiteBase implements ISidedInventory, IInventoryChangedListener {
 
     private final InventoryBasic inventory;
 
@@ -64,7 +64,7 @@ public class TileOreProcessor extends TileWorksiteBase implements ISidedInventor
         return WorkType.CRAFTING;
     }
 
-//************************************** BRIDGE/TEMPLATE/ACCESSOR METHODS ****************************************//
+//************************************* BRIDGE/TEMPLATE/ACCESSOR METHODS ****************************************//
 
     @Override
     public int[] getSlotsForFace(EnumFacing side) {
@@ -172,7 +172,7 @@ public class TileOreProcessor extends TileWorksiteBase implements ISidedInventor
     }//NOOP
 
 
-    //************************************** STANDARD NBT / DATA PACKET METHODS ****************************************//
+    //************************************* STANDARD NBT / DATA PACKET METHODS ****************************************//
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);

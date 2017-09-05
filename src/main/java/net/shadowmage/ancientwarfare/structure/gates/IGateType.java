@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -27,23 +27,23 @@ import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 
 public interface IGateType {
 
-    /**
+    /*
      * return global ID -- used to link gate type to item
      * determines render type and model used
      */
     public int getGlobalID();
 
-    /**
+    /*
      * return the name to register for the spawning item
      */
     public String getDisplayName();
 
-    /**
+    /*
      * return the tooltip to register for the spawning item
      */
     public String getTooltip();
 
-    /**
+    /*
      * return the texture that should be used for rendering
      */
     public ResourceLocation getTexture();
@@ -54,23 +54,23 @@ public interface IGateType {
     public void registerIcons(IIconRegister reg);
 */
 
-    /**
+    /*
      * return the speed at which the gate opens/closes when activated
      */
     public float getMoveSpeed();
 
-    /**
+    /*
      * return the max health of this gate
      */
     public int getMaxHealth();
 
-    /**
+    /*
      * a callback from the entity to the gate-type to allow for
      * gate-type specific checks during updates
      */
     public void onUpdate(EntityGate ent);
 
-    /**
+    /*
      * called from setPosition to update gates bounding box
      */
     public void setCollisionBoundingBox(EntityGate gate);
@@ -85,7 +85,7 @@ public interface IGateType {
 
     public void setInitialBounds(EntityGate gate, BlockPos pos1, BlockPos pos2);
 
-    /**
+    /*
      * a callback from the spawning item for validation of a chosen
      * pair of spawning points.  This is where the gate can reject
      * a starting position/setup if the points are not placed correctly.

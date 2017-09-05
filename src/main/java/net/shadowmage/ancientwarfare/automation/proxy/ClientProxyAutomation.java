@@ -11,7 +11,6 @@ import net.shadowmage.ancientwarfare.automation.KeyHandler;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.gui.*;
 import net.shadowmage.ancientwarfare.automation.model.ModelAutoCraftingStation;
-import net.shadowmage.ancientwarfare.automation.render.*;
 import net.shadowmage.ancientwarfare.automation.tile.torque.*;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileFlywheelStorage;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileWindmillBlade;
@@ -65,7 +64,7 @@ public class ClientProxyAutomation extends ClientProxyBase {
         ClientRegistry.bindTileEntitySpecialRenderer(TileAutoCrafting.class, tctr);
         //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.worksiteAutoCrafting), tctr);
 
-        //*********************************************CONDUIT / TRANSPORT RENDERS***************************************************************//
+        //********************************************CONDUIT / TRANSPORT RENDERS***************************************************************//
 
         RenderTileTorqueTransport conduitRender = new RenderTileTorqueTransport(new ResourceLocation("ancientwarfare", "textures/model/automation/torque_conduit_light.png"), new ResourceLocation("ancientwarfare", "textures/model/automation/torque_conduit_medium.png"), new ResourceLocation("ancientwarfare", "textures/model/automation/torque_conduit_heavy.png"));
         ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueSidedCell.class, conduitRender);
@@ -80,7 +79,7 @@ public class ClientProxyAutomation extends ClientProxyBase {
         //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.torqueShaft), shaftRender);
 
 
-        //*********************************************STORAGE RENDERS***************************************************************//
+        //********************************************STORAGE RENDERS***************************************************************//
         RenderTileTorqueFlywheelController storageControlRender = new RenderTileTorqueFlywheelController();
         ClientRegistry.bindTileEntitySpecialRenderer(TileFlywheelControl.class, storageControlRender);
         //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.flywheel), storageControlRender);
@@ -89,7 +88,7 @@ public class ClientProxyAutomation extends ClientProxyBase {
         ClientRegistry.bindTileEntitySpecialRenderer(TileFlywheelStorage.class, storageRender);
         //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.flywheelStorage), storageRender);
 
-        //*********************************************GENERATOR RENDERS***************************************************************//
+        //********************************************GENERATOR RENDERS***************************************************************//
         RenderSterlingEngine sterlingRender = new RenderSterlingEngine();
         ClientRegistry.bindTileEntitySpecialRenderer(TileSterlingEngine.class, sterlingRender);
         //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.torqueGeneratorSterling), sterlingRender);
@@ -123,7 +122,7 @@ public class ClientProxyAutomation extends ClientProxyBase {
         }
 
         private static List<IConfigElement> getElementList() {
-            ArrayList<IConfigElement> list = new ArrayList<IConfigElement>();
+            ArrayList<IConfigElement> list = new ArrayList<>();
             list.add(renderWorkBounds);
             return list;
         }

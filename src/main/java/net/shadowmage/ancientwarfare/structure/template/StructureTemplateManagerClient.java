@@ -21,8 +21,8 @@ import java.util.List;
 
 public class StructureTemplateManagerClient {
 
-    private HashMap<String, ResourceLocation> clientTemplateImages = new HashMap<String, ResourceLocation>();
-    private HashMap<String, StructureTemplateClient> clientTemplates = new HashMap<String, StructureTemplateClient>();
+    private HashMap<String, ResourceLocation> clientTemplateImages = new HashMap<>();
+    private HashMap<String, StructureTemplateClient> clientTemplates = new HashMap<>();
     private StructureTemplateManagerClient() {
     }
 
@@ -63,7 +63,7 @@ public class StructureTemplateManagerClient {
     }
 
     public List<StructureTemplateClient> getSurvivalStructures() {
-        List<StructureTemplateClient> clientStructures = new ArrayList<StructureTemplateClient>();
+        List<StructureTemplateClient> clientStructures = new ArrayList<>();
         for (StructureTemplateClient t : this.clientTemplates.values()) {
             if (t.survival) {
                 clientStructures.add(t);

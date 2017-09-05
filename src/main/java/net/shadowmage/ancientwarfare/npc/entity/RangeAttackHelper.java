@@ -7,7 +7,7 @@ import net.minecraft.entity.projectile.EntityArrow;
 
 
 public final class RangeAttackHelper {
-    /**
+    /*
      * @author Funwayguy for the speedFactor (range) calculations 
      */
     public static void doRangedAttack(EntityLivingBase attacker, EntityLivingBase target, float force, float precision) {

@@ -20,9 +20,9 @@ private ResearchTracker(){};
 private static ResearchTracker INSTANCE = new ResearchTracker();
 public static ResearchTracker instance(){return INSTANCE;}
 
-private Set<Integer> clientResearch = new HashSet<Integer>();
+private Set<Integer> clientResearch = new HashSet<>();
 
-/**
+/*
  * SERVER ONLY
  * @param evt
  */
@@ -33,7 +33,7 @@ public void playerLogInEvent(PlayerEvent.PlayerLoggedInEvent evt)
   NetworkHandler.sendToPlayer((EntityPlayerMP) evt.player, init);
   }
 
-/**
+/*
  * SERVER ONLY
  * @param world
  * @param player
@@ -46,7 +46,7 @@ public boolean hasPlayerCompleted(World world, String player, int research)
   return getResearchData(world).hasPlayerCompletedResearch(player, research);
   }
 
-/**
+/*
  * SERVER ONLY
  * @param world
  * @param player
@@ -59,7 +59,7 @@ public boolean canPlayerLearn(World world, String player, int research)
   return getResearchData(world).canPlayerLearn(player, research);
   }
 
-/**
+/*
  * SERVER ONLY
  * @param world
  * @param playerName
@@ -71,7 +71,7 @@ public Set<Integer> getCompletedResearchFor(World world, String playerName)
   return getResearchData(world).getResearchFor(playerName);
   }
 
-/**
+/*
  * SERVER ONLY
  * @param world
  * @return
@@ -82,7 +82,7 @@ private ResearchData getResearchData(World world)
   return AWGameData.INSTANCE.getData(ResearchData.name, world, ResearchData.class);
   }
 
-/**
+/*
  * CLIENT ONLY
  * @return
  */
@@ -91,7 +91,7 @@ public Set<Integer> getClientResearch()
   return clientResearch;
   }
 
-/**
+/*
  * CLIENT ONLY
  * @param research
  */
@@ -102,7 +102,7 @@ public void onClientResearchReceived(Set<Integer> research)
   AWLog.logDebug("receiving client research set of: "+research);
   }
 
-/**
+/*
  * CLIENT ONLY
  * @param research
  */

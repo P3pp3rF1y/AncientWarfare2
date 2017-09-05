@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -45,7 +45,7 @@ import java.util.Random;
 
 public class WorldStructureGenerator implements IWorldGenerator {
 
-    public static final HashSet<String> defaultTargetBlocks = new HashSet<String>();
+    public static final HashSet<String> defaultTargetBlocks = new HashSet<>();
 
     static {
         defaultTargetBlocks.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.DIRT));
@@ -168,7 +168,7 @@ public class WorldStructureGenerator implements IWorldGenerator {
         int zs = bb.getZSize();
         int size = ((xs > zs ? xs : zs) / 16) + 3;
         if(map!=null) {
-            Collection<StructureEntry> bbCheckList = map.getEntriesNear(world, x, z, size, true, new ArrayList<StructureEntry>());
+            Collection<StructureEntry> bbCheckList = map.getEntriesNear(world, x, z, size, true, new ArrayList<>());
             for (StructureEntry entry : bbCheckList) {
                 if (bb.crossWith(entry.getBB())) {
                     return false;

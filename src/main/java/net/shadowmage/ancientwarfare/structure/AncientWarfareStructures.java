@@ -19,16 +19,7 @@ import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlockLoader;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.command.CommandStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
-import net.shadowmage.ancientwarfare.structure.container.ContainerDraftingStation;
-import net.shadowmage.ancientwarfare.structure.container.ContainerGateControl;
-import net.shadowmage.ancientwarfare.structure.container.ContainerSoundBlock;
-import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvanced;
-import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvancedBlock;
-import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvancedInventoryBlock;
-import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvancedInventoryItem;
-import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerPlacer;
-import net.shadowmage.ancientwarfare.structure.container.ContainerStructureScanner;
-import net.shadowmage.ancientwarfare.structure.container.ContainerStructureSelection;
+import net.shadowmage.ancientwarfare.structure.container.*;
 import net.shadowmage.ancientwarfare.structure.crafting.AWStructureCrafting;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
@@ -70,7 +61,7 @@ public class AncientWarfareStructures {
         ModuleStatus.structuresLoaded = true;
         statics = new AWStructureStatics("AncientWarfareStructures");
 
-        /**
+        /*
          * Forge/FML registry
          */
         FMLCommonHandler.instance().bus().register(this);
@@ -82,7 +73,7 @@ public class AncientWarfareStructures {
                 GameRegistry.registerWorldGenerator(WorldTownGenerator.INSTANCE, 2);
         }
         EntityRegistry.registerModEntity(new ResourceLocation() EntityGate.class, "aw_gate", 0, this, 250, 200, false);
-        /**
+        /*
          * internal registry
          */
         PacketBase.registerPacketType(NetworkHandler.PACKET_STRUCTURE, PacketStructure.class);

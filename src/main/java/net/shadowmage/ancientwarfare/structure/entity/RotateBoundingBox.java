@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2015 Olivier Sylvain (aka GotoLink)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -20,8 +20,8 @@
  */
 package net.shadowmage.ancientwarfare.structure.entity;
 
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
 
 public class RotateBoundingBox extends AxisAlignedBB{
     private final static float TO_RAD = (float) Math.PI / 180F;

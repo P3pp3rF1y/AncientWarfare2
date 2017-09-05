@@ -23,7 +23,7 @@ public class ContainerWarehouseStorage extends ContainerTileBase<TileWarehouseSt
     private boolean shouldSynch = true;
     private ItemQuantityMap cache = new ItemQuantityMap();
     public ItemQuantityMap itemMap = new ItemQuantityMap();
-    public List<WarehouseStorageFilter> filters = new ArrayList<WarehouseStorageFilter>();
+    public List<WarehouseStorageFilter> filters = new ArrayList<>();
 
     public ContainerWarehouseStorage(EntityPlayer player, BlockPos pos) {
         super(player, pos);
@@ -127,7 +127,7 @@ public class ContainerWarehouseStorage extends ContainerTileBase<TileWarehouseSt
     }
 
     private void synchItemMaps() {
-        /**
+        /*
          *
          * need to loop through this.itemMap and compare quantities to warehouse.itemMap
          *    add any changes to change-list

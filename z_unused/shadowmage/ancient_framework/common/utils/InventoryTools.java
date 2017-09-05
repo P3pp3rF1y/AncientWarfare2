@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -79,7 +79,7 @@ public static void readInventoryFromTag(IInventory inventory, NBTTagCompound tag
 
 public static List<ItemStackWrapper> getCompactInventoryFromTag(NBTTagCompound tag)
   {
-  ArrayList<ItemStackWrapper> stacks = new ArrayList<ItemStackWrapper>();
+  ArrayList<ItemStackWrapper> stacks = new ArrayList<>();
   NBTTagList list = tag.getTagList("items");  
   for(int i = 0; i < list.tagCount(); i++)
     {
@@ -102,7 +102,7 @@ public static NBTTagCompound getTagForCompactInventory(List<ItemStackWrapper> it
 
 public static List<ItemStackWrapper> getCompactedInventory(IInventory inv, Comparator<ItemStackWrapper> sorter)
   {
-  ArrayList<ItemStackWrapper> stacks = new ArrayList<ItemStackWrapper>();
+  ArrayList<ItemStackWrapper> stacks = new ArrayList<>();
   ItemStack fromInv;
   ItemStackWrapper fromList;  
   for(int i = 0; i < inv.getSizeInventory(); i++)
@@ -699,7 +699,7 @@ public static List<ItemStack> getCompactResourcesForRecipe(ShapelessRecipes reci
 
 public static List<ItemStack> getCompactedItemList(Collection<ItemStack> items)
   {
-  ArrayList<ItemStack> foundStacks = new ArrayList<ItemStack>();
+  ArrayList<ItemStack> foundStacks = new ArrayList<>();
   for(ItemStack stack : items)
     {
     if(stack==null){continue;}

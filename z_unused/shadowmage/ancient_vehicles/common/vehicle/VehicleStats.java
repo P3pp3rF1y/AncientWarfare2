@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -20,7 +20,7 @@
  */
 package shadowmage.ancient_vehicles.common.vehicle;
 
-/**
+/*
  * client & server container for current vehicle statistics
  * will have an update method to be called when vehicle inventory is changed
  * to propagate any needed data to client(s)

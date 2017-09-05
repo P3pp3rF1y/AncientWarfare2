@@ -27,7 +27,7 @@ public class NpcAIPlayerOwnedAlarmResponse extends NpcAI<NpcPlayerOwned> {
         return npc.getUpkeepPoint() != null && npc.getUpkeepDimensionId() == npc.world.provider.getDimension() && npc.isAlarmed;
     }
 
-    /**
+    /*
      * Execute a one shot task or start executing a continuous task
      */
     @Override
@@ -35,7 +35,7 @@ public class NpcAIPlayerOwnedAlarmResponse extends NpcAI<NpcPlayerOwned> {
         npc.addAITask(TASK_ALARM);
     }
     
-    /**
+    /*
      * Updates the task
      */
     @Override
@@ -53,7 +53,7 @@ public class NpcAIPlayerOwnedAlarmResponse extends NpcAI<NpcPlayerOwned> {
         }
     }
     
-    /**
+    /*
      * Resets the task
      */
     @Override

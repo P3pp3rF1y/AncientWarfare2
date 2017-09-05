@@ -1,9 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,9 +22,9 @@ import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 
 import javax.annotation.Nullable;
 
-public class BlockWarehouseStockViewer extends Block implements IRotatableBlock {
-    private static final PropertyDirection FACING = BlockDirectional.FACING;
+import static net.shadowmage.ancientwarfare.core.render.BlockRenderProperties.FACING;
 
+public class BlockWarehouseStockViewer extends Block implements IRotatableBlock {
     public BlockWarehouseStockViewer(String regName) {
         super(Material.ROCK);
         this.setUnlocalizedName(regName);

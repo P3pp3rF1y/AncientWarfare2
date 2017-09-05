@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -30,14 +30,8 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
-import net.shadowmage.ancientwarfare.structure.api.IStructurePluginLookup;
-import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
-import net.shadowmage.ancientwarfare.structure.api.StructureContentPlugin;
-import net.shadowmage.ancientwarfare.structure.api.StructurePluginRegistrationEvent;
+import net.shadowmage.ancientwarfare.structure.api.*;
 import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException.TemplateRuleParsingException;
-import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
-import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
-import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateParser;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginModDefault;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginVanillaHandler;
@@ -51,13 +45,13 @@ import java.util.List;
 
 public class StructurePluginManager implements IStructurePluginManager, IStructurePluginLookup {
 
-    private final List<StructureContentPlugin> loadedContentPlugins = new ArrayList<StructureContentPlugin>();
+    private final List<StructureContentPlugin> loadedContentPlugins = new ArrayList<>();
 
-    private final HashMap<Class<? extends Entity>, Class<? extends TemplateRuleEntity>> entityRules = new HashMap<Class<? extends Entity>, Class<? extends TemplateRuleEntity>>();
-    private final HashMap<Block, Class<? extends TemplateRuleBlock>> blockRules = new HashMap<Block, Class<? extends TemplateRuleBlock>>();
-    private final HashMap<Class<? extends TemplateRule>, String> idByRuleClass = new HashMap<Class<? extends TemplateRule>, String>();
-    private final HashMap<String, Class<? extends TemplateRule>> ruleByID = new HashMap<String, Class<? extends TemplateRule>>();
-    private final HashMap<Block, String> pluginByBlock = new HashMap<Block, String>();
+    private final HashMap<Class<? extends Entity>, Class<? extends TemplateRuleEntity>> entityRules = new HashMap<>();
+    private final HashMap<Block, Class<? extends TemplateRuleBlock>> blockRules = new HashMap<>();
+    private final HashMap<Class<? extends TemplateRule>, String> idByRuleClass = new HashMap<>();
+    private final HashMap<String, Class<? extends TemplateRule>> ruleByID = new HashMap<>();
+    private final HashMap<Block, String> pluginByBlock = new HashMap<>();
 
     public static final StructurePluginManager INSTANCE = new StructurePluginManager();
 
@@ -226,7 +220,7 @@ public class StructurePluginManager implements IStructurePluginManager, IStructu
         String name = null;
         int ruleNumber = -1;
         String line;
-        List<String> ruleDataPackage = new ArrayList<String>();
+        List<String> ruleDataPackage = new ArrayList<>();
         while (it.hasNext()) {
             TemplateParser.lineNumber++;
             line = it.next();

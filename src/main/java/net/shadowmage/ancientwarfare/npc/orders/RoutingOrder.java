@@ -403,64 +403,64 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
     }
 
     public enum RouteType {
-        /**
+        /*
          * fill target up to the specified quantity from couriers inventory
          */
         FILL_TARGET_TO("route.fill.upto"),
 
-        /**
+        /*
          * fill courier up to the specified quantity from targets inventory
          */
         FILL_COURIER_TO("route.take.upto"),
 
-        /**
+        /*
          * deposit any of the specified items from courier into target inventory
          * (no quantity limit)
          */
         DEPOSIT_ALL_OF("route.deposit.match"),
 
-        /**
+        /*
          * withdraw any of the specified items from target inventory into courier inventory
          * (no quantity limit)
          */
         WITHDRAW_ALL_OF("route.withdraw.match"),
 
-        /**
+        /*
          * deposit all items in courier inventory, except those matching filter items
          */
         DEPOSIT_ALL_EXCEPT("route.deposit.no_match"),
 
-        /**
+        /*
          * withdraw all items in target inventory except those matching filters
          */
         WITHDRAW_ALL_EXCEPT("route.withdraw.no_match"),
         
-        /**
+        /*
          * deposit specified ratio of items (ratio is 1/filterStacksize)
          */
         DEPOSIT_RATIO("route.deposit.ratio"),
         
-        /**
+        /*
          * withdraw specified ratio of items (ratio is 1/filterStacksize)
          */
         WITHDRAW_RATIO("route.withdraw.ratio"),
         
-        /**
+        /*
          * deposit exact number of items (or none at all if not possible)
          */
         DEPOSIT_EXACT("route.deposit.exact"),
         
-        /**
+        /*
          * withdraw exact number of items (or none at all if not possible)
          */
         WITHDRAW_EXACT("route.withdraw.exact"),
         
-        /**
+        /*
          * deposit a minimum of items
          */
         FILL_MINIMUM("route.fill.minimum"),
         
-        /**
+        /*
          * withdraw a minimum of items
          */
         TAKE_MINIMUM("route.take.minimum");
@@ -501,7 +501,7 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
 
     }
 
-    /**
+    /*
      * do the routing action for the courier at the given route-point.  position/distance is not checked, should check in AI before calling<br>
      * returns the number of stacks processed for determining the length the courier should 'work' at the point
      */

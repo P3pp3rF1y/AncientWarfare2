@@ -8,7 +8,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.Vec3d;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcCombat;
@@ -25,7 +25,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
     private final IEntitySelector hostileOrFriendlyCombatNpcSelector;
     private final Comparator sorter;
     double distanceFromEntity = 16;
-    private Vec3 fleeVector;
+    private Vec3d fleeVector;
     private int stayOutOfSightTimer = 0;
     private int fearLevel = 0; // fear makes NPC's wait/flee for progressively longer periods
     private boolean homeCompromised = false;
@@ -76,8 +76,8 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
             if (npc.getTownHallPosition() != null || npc.hasHome())
                 flee = true;
             else {
-                fleeVector = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.npc, MAX_FLEE_RANGE, HEIGHT_CHECK, Vec3.createVectorHelper(nearestHostile.posX, nearestHostile.posY, nearestHostile.posZ));
-                if (fleeVector == null || nearestHostile.getDistanceSq(fleeVector.xCoord, fleeVector.yCoord, fleeVector.zCoord) < nearestHostile.getDistanceSqToEntity(this.npc))
+                fleeVector = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.npc, MAX_FLEE_RANGE, HEIGHT_CHECK, Vec3d.createVectorHelper(nearestHostile.posX, nearestHostile.posY, nearestHostile.posZ));
+                if (fleeVector == null || nearestHostile.getDistanceSq(fleeVector.x, fleeVector.y, fleeVector.z) < nearestHostile.getDistanceSqToEntity(this.npc))
                     flee = false; //did not find random flee-towards target, perhaps retry next tick
                 else
                     flee = true;
@@ -121,7 +121,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
         fearLevel += MAX_STAY_AWAY;
     }
 
-    /**
+    /*
      * Returns whether an in-progress EntityAIBase should continue executing
      */
     @Override
@@ -178,12 +178,12 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
             if (fleeVector == null)
                 return;
             //check distance to flee vector
-            distSq = npc.getDistanceSq(fleeVector.xCoord, fleeVector.yCoord, fleeVector.zCoord);
+            distSq = npc.getDistanceSq(fleeVector.x, fleeVector.y, fleeVector.z);
             if (distSq > MIN_RANGE)
-                moveToPosition(fleeVector.xCoord, fleeVector.yCoord, fleeVector.zCoord, distSq);
+                moveToPosition(fleeVector.x, fleeVector.y, fleeVector.z, distSq);
             else {
                 if (npc.getDistanceSqToEntity(npc.getAttackTarget()) < PURSUE_RANGE) {//entity still chasing, find a new flee vector 
-                    fleeVector = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.npc, MAX_FLEE_RANGE, HEIGHT_CHECK, Vec3.createVectorHelper(npc.getAttackTarget().posX, npc.getAttackTarget().posY, npc.getAttackTarget().posZ));
+                    fleeVector = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.npc, MAX_FLEE_RANGE, HEIGHT_CHECK, Vec3d.createVectorHelper(npc.getAttackTarget().posX, npc.getAttackTarget().posY, npc.getAttackTarget().posZ));
                     if (fleeVector == null)
                         npc.setAttackTarget(null);//retry next tick..perhaps...
                 } else // entity too far to care, stop running

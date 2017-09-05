@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -38,7 +38,7 @@ public class TemplateRuleVanillaBlocks extends TemplateRuleBlock {
     public int meta;
     public int buildPass = 0;
 
-    /**
+    /*
      * constructor for dynamic construction.  passed world and coords so that the rule can handle its own logic internally
      */
     public TemplateRuleVanillaBlocks(World world, int x, int y, int z, Block block, int meta, int turns) {

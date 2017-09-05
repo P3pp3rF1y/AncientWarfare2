@@ -2,11 +2,7 @@ package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.passive.EntityAnimal;
-import net.minecraft.entity.passive.EntityChicken;
-import net.minecraft.entity.passive.EntityCow;
-import net.minecraft.entity.passive.EntityPig;
-import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -47,15 +43,15 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
     private int seedCount;
     private ItemStack shears = ItemStack.EMPTY;
 
-    private List<EntityPair> pigsToBreed = new ArrayList<EntityPair>();
-    private List<EntityPair> chickensToBreed = new ArrayList<EntityPair>();
-    private List<EntityPair> cowsToBreed = new ArrayList<EntityPair>();
+    private List<EntityPair> pigsToBreed = new ArrayList<>();
+    private List<EntityPair> chickensToBreed = new ArrayList<>();
+    private List<EntityPair> cowsToBreed = new ArrayList<>();
     private int cowsToMilk;
-    private List<EntityPair> sheepToBreed = new ArrayList<EntityPair>();
-    private List<Integer> sheepToShear = new ArrayList<Integer>();
-    private List<Integer> entitiesToCull = new ArrayList<Integer>();
+    private List<EntityPair> sheepToBreed = new ArrayList<>();
+    private List<Integer> sheepToShear = new ArrayList<>();
+    private List<Integer> entitiesToCull = new ArrayList<>();
 
-    private static ArrayList<ItemWrapper> ANIMAL_DROPS = new ArrayList<ItemWrapper>(); 
+    private static ArrayList<ItemWrapper> ANIMAL_DROPS = new ArrayList<>();
     
     public WorkSiteAnimalFarm() {
         this.shouldCountResources = true;
@@ -178,10 +174,10 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 
         List<EntityAnimal> entityList = getEntitiesWithinBounds(EntityAnimal.class);
 
-        List<EntityAnimal> cows = new ArrayList<EntityAnimal>();
-        List<EntityAnimal> pigs = new ArrayList<EntityAnimal>();
-        List<EntityAnimal> sheep = new ArrayList<EntityAnimal>();
-        List<EntityAnimal> chickens = new ArrayList<EntityAnimal>();
+        List<EntityAnimal> cows = new ArrayList<>();
+        List<EntityAnimal> pigs = new ArrayList<>();
+        List<EntityAnimal> sheep = new ArrayList<>();
+        List<EntityAnimal> chickens = new ArrayList<>();
 
         for (EntityAnimal animal : entityList) {
             if (animal instanceof EntityCow) {

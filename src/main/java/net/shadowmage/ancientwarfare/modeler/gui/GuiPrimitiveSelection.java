@@ -73,7 +73,7 @@ public class GuiPrimitiveSelection extends GuiContainerBase {
 
     }
 
-    /**
+    /*
      * should override to provide callback for when a new piece is created from the GUI
      */
     protected void onPrimitiveCreated(Primitive p) {

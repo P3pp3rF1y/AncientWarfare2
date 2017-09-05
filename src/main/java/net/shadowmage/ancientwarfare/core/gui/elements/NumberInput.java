@@ -122,16 +122,16 @@ public class NumberInput extends Text {
         }
         if (allowed)//is allowed character
         {
-            String newText = "";
+            StringBuilder newText = new StringBuilder();
             for (int i = 0; i <= text.length(); i++) {
                 if (i == cursorIndex) {
-                    newText = newText + ch;
+                    newText.append(ch);
                 }
                 if (i < text.length()) {
-                    newText = newText + text.charAt(i);
+                    newText.append(text.charAt(i));
                 }
             }
-            text = newText;
+            text = newText.toString();
             cursorIndex++;
             setText(text);
         }
@@ -141,7 +141,7 @@ public class NumberInput extends Text {
         this.setText(getText());
     }
 
-    /**
+    /*
      * anonymous classes should implement this for a callback for when value is updated/changed via user input (either manual, mouse,or keyboard)
      */
     public void onValueUpdated(float value) {

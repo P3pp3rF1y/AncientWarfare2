@@ -18,10 +18,10 @@ import java.util.List;
 
 public class ItemVehicleSpawner extends Item {
 
-    /**
+    /*
      * TODO this can probably be removed in favor of modeled items
      */
-    private static HashMap<String, IIcon> regNameToIcon = new HashMap<String, IIcon>();
+    private static HashMap<String, IIcon> regNameToIcon = new HashMap<>();
 
     public ItemVehicleSpawner(String regName) {
         this.setUnlocalizedName(regName);

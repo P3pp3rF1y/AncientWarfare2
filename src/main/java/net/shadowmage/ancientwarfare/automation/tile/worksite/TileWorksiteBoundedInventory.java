@@ -20,7 +20,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.List;
 
-/**
+/*
  * abstract base class for worksite based tile-entities (or at least a template to copy from)
  * <p/>
  * handles the management of worker references and work-bounds, as well as inventory bridge methods.
@@ -42,7 +42,7 @@ public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded i
         //noop, must be implemented by individual tiles, if they have an alt-control gui
     }
 
-    /**
+    /*
      * attempt to add an item stack to this worksites inventory.<br>
      * iterates through input sides in the order given,
      * so should pick the most restrictive inventory first,

@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -37,75 +37,75 @@ import com.google.common.io.ByteStreams;
 public abstract class PacketBase 
 {
 
-/**
+/*
  * world and player are populated only after receiving, by the packetHandler
  */
 public World world;
 public EntityPlayer player;
 
-/**
+/*
  * static return channel
  * @return
  */
 public abstract String getChannel();
 
-/**
+/*
  * NBTTag containing the actual data for this packet
  */
 public NBTTagCompound packetData = new NBTTagCompound();
 
-/**
+/*
  * the actual transformed packet that will be written and sent
  */
 private Packet250CustomPayload packet250;
 
-/**
+/*
  * should be treated as chunk update packet?
  */
 private boolean chunkPacket = false;
 
-/**
+/*
  * return the numerical packet type, used to create new packet instances from a packetTypeMap in PacketHandler
  * @return packetType
  */
 public abstract int getPacketType();
 
-/**
+/*
  * write packet specific data to the stream
  * @param data
  */
 public abstract void writeDataToStream(ByteArrayDataOutput data);
 
-/**
+/*
  * read packet-specific data from the stream
  * @param data
  */
 public abstract void readDataStream(ByteArrayDataInput data);
 
-/**
+/*
  * called to execute the contents of the packet, whether executed by the packet or passed
  * on to another entity/class
  */
 public abstract void execute();
 
-/**
+/*
  * create the custom250packet from the current data in this packet.
  */
 protected void constructPacket()
   {  
   ByteArrayDataOutput data = ByteStreams.newDataOutput();
 
-  /**
+  /*
    * write the packet type number to the stream, decoded in packetHandler to create a new packet
    */
   data.writeInt(this.getPacketType());
   
-  /**
+  /*
    * write default packet data NBTCompound to the stream
    */  
   NBTTools.writeTagToStream(packetData, data);    
   
-  /**
+  /*
    * write custom data to the output stream
    */
   this.writeDataToStream(data);

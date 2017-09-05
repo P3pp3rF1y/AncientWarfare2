@@ -17,7 +17,7 @@ public class GuiSpawnerPlacer extends GuiContainerBase<ContainerSpawnerPlacer> {
     private CompositeScrolled typeSelectionArea;
     private CompositeScrolled attributesArea;
 
-    private final HashMap<Label, String> labelToClass = new HashMap<Label, String>();
+    private final HashMap<Label, String> labelToClass = new HashMap<>();
 
     public GuiSpawnerPlacer(ContainerBase par1Container) {
         super(par1Container);

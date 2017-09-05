@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -24,29 +24,12 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTSizeTracker;
-import net.minecraft.nbt.NBTTagByte;
-import net.minecraft.nbt.NBTTagByteArray;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagDouble;
-import net.minecraft.nbt.NBTTagFloat;
-import net.minecraft.nbt.NBTTagInt;
-import net.minecraft.nbt.NBTTagIntArray;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagLong;
-import net.minecraft.nbt.NBTTagShort;
-import net.minecraft.nbt.NBTTagString;
+import net.minecraft.nbt.*;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class NBTTools {
 
@@ -185,7 +168,7 @@ public class NBTTools {
         return line;
     }
 
-    /**
+    /*
      * splits test at regex, returns parsed int array from csv value of remaining string
      * returns size 1 int array if no valid split is found
      */
@@ -197,7 +180,7 @@ public class NBTTools {
         return new int[0];
     }
 
-/**
+/*
  * NBT Tag types, by tagID
  * 0-END
  * 1-BYTE
@@ -213,8 +196,8 @@ public class NBTTools {
  * 11-INT-ARRAY
  */
 
-/************************************************************ NBT STRING READ ********************************************************************************/
-    /**
+/*********************************************************** NBT STRING READ ********************************************************************************/
+    /*
      * Returns a {@link NBTTagCompound} from the input list of strings.<br>
      * A suitable list of strings may be attained from {@link #getLinesFor(NBTTagCompound)}
      */
@@ -222,8 +205,8 @@ public class NBTTools {
         return parseNBTFromLines(lines);
     }
 
-/************************************************************ NBT STRING WRITE ********************************************************************************/
-    /**
+/*********************************************************** NBT STRING WRITE ********************************************************************************/
+    /*
      * deprecated in favor of {@link #getLinesFor(NBTTagCompound)}
      */
     @Deprecated
@@ -232,7 +215,7 @@ public class NBTTools {
         lines.addAll(lines1);
     }
 
-    /**
+    /*
      * returns a list of strings containing all of the information from the input compound tag.<br>
      * The list may be read back through {@link #readNBTFrom(List)}
      */
@@ -240,9 +223,9 @@ public class NBTTools {
         return getLinesForNBT(tag);
     }
 
-/************************************************************ NBT STREAM WRITE ********************************************************************************/
+/*********************************************************** NBT STREAM WRITE ********************************************************************************/
 
-    /**
+    /*
      * Writes a compressed NBTTagCompound to the OutputStream
      */
     public static void writeNBTTagCompound(NBTTagCompound tag, DataOutputStream data) throws IOException {
@@ -271,9 +254,9 @@ public class NBTTools {
     }
 
 
-/************************************************************ NBT STREAM READ ********************************************************************************/
+/*********************************************************** NBT STREAM READ ********************************************************************************/
 
-    /**
+    /*
      * Reads a compressed NBTTagCompound from the InputStream
      */
     public static NBTTagCompound readNBTTagCompound(DataInputStream data) throws IOException {
@@ -287,7 +270,7 @@ public class NBTTools {
         }
     }
 
-    /**
+    /*
      * read a tag from a datastream, using google iowrapper
      */
     public static NBTTagCompound readTagFromStream(ByteArrayDataInput data) {
@@ -307,7 +290,7 @@ public class NBTTools {
     }
 
 
-    /** ******************************************************** NBT PROXY HANDLING ******************************************************************************* */
+    /* ******************************************************** NBT PROXY HANDLING ******************************************************************************* */
 
     private static NBTTagCompound parseNBTFromLines(List<String> lines) {
         TagCompound tag = parseTagFromLines(lines);
@@ -315,7 +298,7 @@ public class NBTTools {
     }
 
     private static List<String> getLinesForNBT(NBTTagCompound nbttag) {
-        ArrayList<String> lines = new ArrayList<String>();
+        ArrayList<String> lines = new ArrayList<>();
         TagCompound tag = new TagCompound();
         tag.createFromNBT(nbttag);
         tag.getTagLines("", lines);
@@ -360,7 +343,7 @@ public class NBTTools {
 
     private static List<String> parseNextTag(List<String> lines) {
         int open = 0, close = 0;
-        ArrayList<String> linesOut = new ArrayList<String>();
+        ArrayList<String> linesOut = new ArrayList<>();
         Iterator<String> it = lines.iterator();
         String line;
         while (it.hasNext()) {
@@ -699,7 +682,7 @@ public class NBTTools {
     }
 
     private static class TagList extends TagBase {
-        List<TagBase> tags = new ArrayList<TagBase>();
+        List<TagBase> tags = new ArrayList<>();
 
         @Override
         int getType() {
@@ -758,7 +741,7 @@ public class NBTTools {
     }
 
     private static class TagCompound extends TagBase {
-        HashMap<String, TagBase> tags = new HashMap<String, TagBase>();
+        HashMap<String, TagBase> tags = new HashMap<>();
 
         @Override
         int getType() {

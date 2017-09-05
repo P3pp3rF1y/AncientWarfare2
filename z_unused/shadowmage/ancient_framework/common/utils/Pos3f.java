@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -24,8 +24,8 @@ package shadowmage.ancient_framework.common.utils;
 
 import java.text.DecimalFormat;
 
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.Vec3d;
 
 public class Pos3f
 {
@@ -59,11 +59,11 @@ public Pos3f(double x, double y, double z)
   this.z = (float)z;
   }
 
-public Pos3f(Vec3 vec)
+public Pos3f(Vec3d vec)
   {
-  this.x = (float)vec.xCoord;
-  this.y = (float)vec.yCoord;
-  this.z = (float)vec.zCoord;  
+  this.x = (float)vec.x;
+  this.y = (float)vec.y;
+  this.z = (float)vec.z;
   }
 
 public void setup(float x, float y, float z)
@@ -112,7 +112,7 @@ public int floorZ()
   return MathHelper.floor_float(this.z);
   }
 
-/**
+/*
  * returns a NEW Pos3f
  * @param add
  * @return
@@ -122,7 +122,7 @@ public Pos3f add(Pos3f add)
   return new Pos3f(this.x + add.x, this.y + add.y, this.z + add.z);
   }
 
-/**
+/*
  * returns a NEW Pos3f
  * @param add
  * @return
@@ -132,7 +132,7 @@ public Pos3f add(float x, float y, float z)
   return new Pos3f(this.x + x, this.y + y, this.z + z);
   }
 
-/**
+/*
  * alters THIS Pos3f
  * @param add
  */
@@ -144,7 +144,7 @@ public void addToThis(Pos3f add)
   }
 
 
-/**
+/*
  * normalizes a motion vector to a 0-1 range for all axis.  Normalizes from the largest vector, percentage wise, to the others.
  * 
  * @param vec
@@ -170,23 +170,23 @@ public static Pos3f normalizeVector(Pos3f vec)
   return vec;  
   }
 
-/**
+/*
  * normalizes a motion vector to a 0-1 range for all axis.  Normalizes from the largest vector, percentage wise, to the others.
  * 
  * @param vec to normalize
  * @return altered vector<same vector>
  */
-public static Vec3 normalizeVector(Vec3 vec)
+public static Vec3d normalizeVector(Vec3d vec)
   {
-  float x = (float) vec.xCoord;
-  float y = (float) vec.yCoord;
-  float z = (float) vec.zCoord;
+  float x = (float) vec.x;
+  float y = (float) vec.y;
+  float z = (float) vec.z;
   float high1 = x >= y ? x : y;
   float high2 = z >= high1 ? z : high1;
   float highest = high1 >= high2? high1 : high2;
-  vec.xCoord = x / highest;
-  vec.yCoord = y / highest;
-  vec.zCoord = z / highest;
+  vec.x = x / highest;
+  vec.y = y / highest;
+  vec.z = z / highest;
   return vec;  
   }
 

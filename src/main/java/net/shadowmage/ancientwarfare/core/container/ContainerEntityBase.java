@@ -3,7 +3,7 @@ package net.shadowmage.ancientwarfare.core.container;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 
-/**
+/*
  * Created by Olivier on 05/02/2015.
  */
 public class ContainerEntityBase<T extends Entity> extends ContainerBase {

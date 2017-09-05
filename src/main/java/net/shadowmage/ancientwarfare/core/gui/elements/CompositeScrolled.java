@@ -11,7 +11,7 @@ import net.shadowmage.ancientwarfare.core.util.RenderTools;
 public class CompositeScrolled extends Composite implements IScrollableCallback {
 
     protected Scrollbar scrollbar;
-    protected int currentTop = 0;
+    private int currentTop = 0;
 
     public CompositeScrolled(GuiContainerBase gui, int topLeftX, int topLeftY, int width, int height) {
         super(gui, topLeftX, topLeftY, width, height);

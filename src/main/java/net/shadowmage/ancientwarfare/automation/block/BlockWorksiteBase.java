@@ -63,7 +63,7 @@ public class BlockWorksiteBase extends Block implements IRotatableBlock {
         return this;
     }
 
-    /**
+    /*
      * made into a generic method so that farm blocks are easier to setup
      * returned tiles must implement IWorksite (for team reference) and IInteractableTile (for interaction callback) if they wish to receive onBlockActivated calls<br>
      * returned tiles must implement IBoundedTile if they want workbounds set from ItemBlockWorksite<br>

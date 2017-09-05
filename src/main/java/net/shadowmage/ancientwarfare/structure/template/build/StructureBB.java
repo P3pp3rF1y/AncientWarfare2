@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -35,17 +35,17 @@ public class StructureBB extends Zone{
     }
 
     public StructureBB(int x, int y, int z, int face, int xSize, int ySize, int zSize, int xOffset, int yOffset, int zOffset) {
-        /**
+        /*
          * we simply take the clicked on position
          * and walk left/forward/down by the structure offsets
          */
         BlockPos c1 = new BlockPos(x, y, z).moveLeft(face, xOffset).moveForward(face, zOffset).up(-yOffset);
-        /**
+        /*
          * the second corner starts as a copy of the first corner
          * which then walks right, backwards, and up to arrive at the actual second corner
          */
         BlockPos c2 = c1.moveRight(face, xSize - 1).moveForward(face, -(zSize - 1)).up(ySize - 1);
-        /**
+        /*
          * finally, set the min/max of this BB to the min/max of the two corners
          */
         this.min = BlockTools.getMin(c1, c2);
@@ -65,7 +65,7 @@ public class StructureBB extends Zone{
         return min.toString() + " : " + max.toString();
     }
 
-    /**
+    /*
      * can be used to contract by specifying negative amounts...
      */
     public StructureBB expand(int x, int y, int z) {
@@ -96,7 +96,7 @@ public class StructureBB extends Zone{
         return min.z + (getZSize() / 2) - 1;
     }
 
-    /**
+    /*
      * 0-- z++==forward x++==left
      * 1-- x--==forward z++==left
      * 2-- z--==forward x--==left

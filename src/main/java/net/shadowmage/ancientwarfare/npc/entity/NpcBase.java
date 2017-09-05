@@ -8,12 +8,7 @@ import net.minecraft.block.BlockBed;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityFlying;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -48,6 +43,7 @@ import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 import net.shadowmage.ancientwarfare.npc.item.ItemShield;
 import net.shadowmage.ancientwarfare.npc.skin.NpcSkinManager;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -61,14 +57,16 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     protected NpcLevelingStats levelingStats;
 
-    /**
+    /*
      * a single base texture for ALL npcs to share, used in case other textures were not set
      */
     private static final ResourceLocation baseDefaultTexture = new ResourceLocation("ancientwarfare:textures/entity/npc/npc_default.png");
 
     private ResourceLocation currentTexture = null;
     public static final int ORDER_SLOT = 5, UPKEEP_SLOT = 6, SHIELD_SLOT = 7;
+    @Nonnull
     public ItemStack ordersStack;
+    @Nonnull
     public ItemStack upkeepStack;
     
     // used for flee/distress AI
@@ -219,7 +217,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         return targetHit;
     }
 
-    /**
+    /*
      * Proper calculations for all types of armors, including shields
      */
     @Override
@@ -244,7 +242,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         return amount;
     }
 
-    /**
+    /*
      * Deprecated vanilla armor calculations
      */
     @Override
@@ -288,7 +286,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     @Override
     public void onEntityUpdate() {
-        /**
+        /*
          * this is pushOutOfBlocks ...
          * need to test how well it works for an npc (perhaps drop sand on their head?)
          */
@@ -311,7 +309,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     public void setHomeAreaAtCurrentPosition(){
-        setHomeArea(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ), getHomeRange());
+        setHomeArea(MathHelper.floor(this.posX), MathHelper.floor(this.posY), MathHelper.floor(this.posZ), getHomeRange());
     }
 
     public int getHomeRange(){
@@ -321,7 +319,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         return 5;
     }
 
-    /**
+    /*
      * Return true if this NPC should be within his home range.<br>
      * Should still allow for a combat NPC to attack targets outside his home range.
      */
@@ -329,7 +327,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         if (getAttackTarget() != null || !hasHome()) {
             return false;
         }
-        if (world.canLightningStrikeAt(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ)))
+        if (world.canLightningStrikeAt(MathHelper.floor(this.posX), MathHelper.floor(this.posY), MathHelper.floor(this.posZ)))
             setRainedOn(true);
         return shouldSleep() || isWaitingForRainToStop();
     }
@@ -360,7 +358,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         return tryCommand(player);
     }
 
-    /**
+    /*
      * should be implemented by any npc that wishes to open a GUI on interact<br>
      * must be called from interact code to actually open the GUI<br>
      * allows for subtypes/etc to vary the opened GUI without re-implementing the interact logic
@@ -369,7 +367,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_INVENTORY, getEntityId(), 0, 0);
     }
 
-    /**
+    /*
      * if this npc has an alt-control GUI, open it here.<br>
      * should called from the npc inventory gui.
      */
@@ -377,7 +375,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     }
 
-    /**
+    /*
      * used by the npc inventory gui to determine if it should display the 'alt control gui' button<br>
      * this setting must return true -on the client- if the button is to be displayed.
      */
@@ -410,9 +408,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             int d0 = (int)Math.signum(this.posX - entity.posX);
             int d1 = (int)Math.signum(this.posZ - entity.posZ);
             if(d0!=0 || d1!=0) {
-                int x = MathHelper.floor_double(this.posX) + d0;
-                int y = MathHelper.floor_double(this.boundingBox.minY) - 1;
-                int z = MathHelper.floor_double(this.posZ) + d1;
+                int x = MathHelper.floor(this.posX) + d0;
+                int y = MathHelper.floor(this.boundingBox.minY) - 1;
+                int z = MathHelper.floor(this.posZ) + d1;
                 Material material = world.getBlock(x, y, z).getMaterial();
                 if(material.isLiquid() || material == Material.CACTUS) {
                     return;
@@ -431,7 +429,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         if (source.getEntity() != null && !canBeAttackedBy(source.getEntity()))
             return false;
         if(source == DamageSource.inWall && this.ridingEntity instanceof EntityLiving) {
-            knockFromDamage(par2, world.getBlock(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY + this.getEyeHeight()), MathHelper.floor_double(this.posZ)).getMaterial());
+            knockFromDamage(par2, world.getBlock(MathHelper.floor(this.posX), MathHelper.floor(this.posY + this.getEyeHeight()), MathHelper.floor(this.posZ)).getMaterial());
             return false;
         }
         if(source == DamageSource.cactus)
@@ -444,9 +442,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     private void knockFromDamage(float val, Material material){
-        int x = MathHelper.floor_double(this.posX);
-        int y = MathHelper.floor_double(this.boundingBox.minY + 0.5);
-        int z = MathHelper.floor_double(this.posZ);
+        int x = MathHelper.floor(this.posX);
+        int y = MathHelper.floor(this.boundingBox.minY + 0.5);
+        int z = MathHelper.floor(this.posZ);
         if(world.getBlock(x - 1, y, z).getMaterial() == material){
             knockBack(null, val, x - 1 - this.posX, 0);
         }else if(world.getBlock(x, y, z - 1).getMaterial() == material){
@@ -469,9 +467,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         if(world.isRemote || getNavigator().noPath())
             return;
         PathPoint point = getNavigator().getPath().getPathPointFromIndex(getNavigator().getPath().getCurrentPathIndex());
-        if(world.getBlock(point.xCoord, point.yCoord, point.zCoord).getMaterial() == material){
+        if(world.getBlock(point.x, point.y, point.z).getMaterial() == material){
             getNavigator().clearPathEntity();
-        }else if(world.getBlock(point.xCoord, point.yCoord - 1, point.zCoord).getMaterial() == material){
+        }else if(world.getBlock(point.x, point.y - 1, point.z).getMaterial() == material){
             getNavigator().clearPathEntity();
         }
     }
@@ -565,7 +563,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         }
     }
 
-    /**
+    /*
      * return the bitfield containing all of the currently executing AI tasks<br>
      * used by player-owned npcs for rendering ai-tasks
      */
@@ -573,7 +571,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         return getDataWatcher().getWatchableObjectInt(20);
     }
 
-    /**
+    /*
      * add a task to the bitfield of currently executing tasks<br>
      * input should be a ^2, or combination of (e.g. 1+2 or 2+4)<br>
      */
@@ -586,7 +584,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         }
     }
 
-    /**
+    /*
      * remove a task from the bitfield of currently executing tasks<br>
      * input should be a ^2, or combination of (e.g. 1+2 or 2+4)<br>
      */
@@ -599,14 +597,14 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         }
     }
 
-    /**
+    /*
      * set ai tasks -- only used internally
      */
     private final void setAITasks(int tasks) {
         this.getDataWatcher().updateObject(20, Integer.valueOf(tasks));
     }
 
-    /**
+    /*
      * add an amount of experience to this npcs leveling stats<br>
      * experience is added for base level, and subtype level(if any)
      */
@@ -614,7 +612,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         getLevelingStats().addExperience(amount);
     }
 
-    /**
+    /*
      * implementations should read in any data written during {@link #writeAdditionalItemData(NBTTagCompound)}
      */
     public final void readAdditionalItemData(NBTTagCompound tag) {
@@ -631,7 +629,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         readBaseTags(tag);
     }
 
-    /**
+    /*
      * Implementations should write out any persistent entity-data needed to restore entity-state from an item-stack.<br>
      * This should include inventory, levels, orders, faction / etc
      */
@@ -653,7 +651,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         return tag;
     }
 
-    /**
+    /*
      * is the input stack a valid orders-item for this npc?<br>
      * only used by player-owned NPCs
      */
@@ -661,14 +659,14 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         return false;
     }
 
-    /**
+    /*
      * callback for when orders-stack changes.  implementations should inform any necessary AI tasks of the
      * change to order-items
      */
     public void onOrdersInventoryChanged() {
     }
 
-    /**
+    /*
      * callback for when weapon slot has been changed.<br>
      * Implementations should re-set any subtype or inform any AI that need to know when
      * weapon was changed.
@@ -676,19 +674,19 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     public void onWeaponInventoryChanged() {
     }
 
-    /**
+    /*
      * return the NPCs subtype.<br>
      * this subtype may vary at runtime.
      */
     public abstract String getNpcSubType();
 
-    /**
+    /*
      * return the NPCs type.  This type should be unique for the class of entity,
      * or at least unique pertaining to the entity registration.
      */
     public abstract String getNpcType();
 
-    /**
+    /*
      * return the full NPC type for this npc<br>
      * returns npcType if subtype is empty, else npcType.npcSubtype
      */
@@ -794,7 +792,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         return true;
     }
 
-    /**
+    /*
      * called whenever level changes, to update the damage-done stat for the entity
      */
     public final void updateDamageFromLevel() {
@@ -973,7 +971,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         setDead();
     }
 
-    /**
+    /*
      * called when NPC is being repacked into item-form.  Called prior to item being created and prior to entity being set-dead.<br>
      * Main function is for faction-mounted NPCs to disappear their mounts when repacked.
      */
@@ -1169,9 +1167,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     
     public BlockPos findBed() {
         if (!foundBed) {
-            int originX = MathHelper.floor_double(this.posX);
-            int originY = MathHelper.floor_double(this.posY);
-            int originZ = MathHelper.floor_double(this.posZ);
+            int originX = MathHelper.floor(this.posX);
+            int originY = MathHelper.floor(this.posY);
+            int originZ = MathHelper.floor(this.posZ);
             int maxSearchRange = 6;
             int minX = originX - maxSearchRange;
             int maxX = originX + maxSearchRange;
@@ -1179,7 +1177,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             int maxY = originY + maxSearchRange;
             int minZ = originZ - maxSearchRange;
             int maxZ = originZ + maxSearchRange;
-            List<BlockPos> foundBeds = new ArrayList<BlockPos>();
+            List<BlockPos> foundBeds = new ArrayList<>();
             for (int x = minX; x <= maxX; x++) {
                 for (int y = minY; y <= maxY; y++) {
                     for (int z = minZ; z <= maxZ; z++) {

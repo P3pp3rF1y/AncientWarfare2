@@ -16,7 +16,7 @@ public class NpcSkinManager {
 
     public static final NpcSkinManager INSTANCE = new NpcSkinManager();
 
-    private final HashMap<String, SkinGroup> skinGroups = new HashMap<String, SkinGroup>();
+    private final HashMap<String, SkinGroup> skinGroups = new HashMap<>();
 
     private final Random rng = new Random();
 
@@ -52,7 +52,7 @@ public class NpcSkinManager {
         String path = skinMainPath;
         File file = new File(path);
         file.mkdirs();
-        List<File> probableZipFiles = new ArrayList<File>();
+        List<File> probableZipFiles = new ArrayList<>();
         recursiveScan(new File(path), probableZipFiles);
         parseZipFiles(probableZipFiles);
     }
@@ -71,12 +71,12 @@ public class NpcSkinManager {
         }
     }
 
-    /**
+    /*
      * Load a skin pack from a zip-input stream.<br>
      * Closes the zip input stream when done.
      */
     private SkinPack loadPackFromZip(String fileName, ZipInputStream zis) {
-        HashMap<String, ResourceLocation> parsedImages = new HashMap<String, ResourceLocation>();
+        HashMap<String, ResourceLocation> parsedImages = new HashMap<>();
         ResourceLocation loc;
         SkinMeta metaFile = null;
         SkinPack pack = null;
@@ -129,7 +129,7 @@ public class NpcSkinManager {
     }
 
     private void parseZipFiles(List<File> probableZipFiles) {
-        List<SkinPack> skinPacks = new ArrayList<SkinPack>();
+        List<SkinPack> skinPacks = new ArrayList<>();
         SkinPack pack;
         ZipInputStream zis = null;
         FileInputStream fis = null;
@@ -194,7 +194,7 @@ public class NpcSkinManager {
     }
 
     private class SkinGroup {
-        final List<ResourceLocation> textures = new ArrayList<ResourceLocation>();
+        final List<ResourceLocation> textures = new ArrayList<>();
 
         public void addTexture(ResourceLocation loc) {
             this.textures.add(loc);
@@ -207,7 +207,7 @@ public class NpcSkinManager {
 
     private class SkinPack {
         final SkinMeta meta;
-        final HashMap<String, ResourceLocation> textures = new HashMap<String, ResourceLocation>();
+        final HashMap<String, ResourceLocation> textures = new HashMap<>();
 
         public SkinPack(SkinMeta meta, Map<String, ResourceLocation> textureMap) {
             this.meta = meta;
@@ -217,7 +217,7 @@ public class NpcSkinManager {
 
     private class SkinMeta {
         //map of NpcType = imageName
-        final HashMap<String, Set<String>> imageMap = new HashMap<String, Set<String>>();
+        final HashMap<String, Set<String>> imageMap = new HashMap<>();
 
         public SkinMeta(InputStream is) throws IOException {
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -228,7 +228,7 @@ public class NpcSkinManager {
                 lineBits = line.split("=");
                 if (lineBits.length > 1) {
                     if (!imageMap.containsKey(lineBits[0])) {
-                        imageMap.put(lineBits[0], new HashSet<String>());
+                        imageMap.put(lineBits[0], new HashSet<>());
                     }
                     imageMap.get(lineBits[0]).add(lineBits[1]);
                 }

@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -33,7 +33,7 @@ public enum StructureValidationType {
 
     private Class<? extends StructureValidator> validatorClass;
 
-    private List<StructureValidationProperty> properties = new ArrayList<StructureValidationProperty>();
+    private List<StructureValidationProperty> properties = new ArrayList<>();
 
     StructureValidationType(Class<? extends StructureValidator> validatorClass, StructureValidationProperty... props) {
         this.validatorClass = validatorClass;
@@ -53,8 +53,8 @@ public enum StructureValidationType {
         properties.add(new StructureValidationProperty(StructureValidator.PROP_BIOME_WHITE_LIST, false));
         properties.add(new StructureValidationProperty(StructureValidator.PROP_DIMENSION_WHITE_LIST, false));
 
-        properties.add(new StructureValidationProperty(StructureValidator.PROP_BIOME_LIST, new HashSet<String>()));
-        properties.add(new StructureValidationProperty(StructureValidator.PROP_BLOCK_LIST, new HashSet<String>()));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_BIOME_LIST, new HashSet<>()));
+        properties.add(new StructureValidationProperty(StructureValidator.PROP_BLOCK_LIST, new HashSet<>()));
         properties.add(new StructureValidationProperty(StructureValidator.PROP_DIMENSION_LIST, new int[]{}));
 
         properties.add(new StructureValidationProperty(StructureValidator.PROP_BLOCK_SWAP, false));
@@ -92,7 +92,7 @@ public enum StructureValidationType {
         }
     }
 
-    /**
+    /*
      * validation types:
      * ground:
      * validate border edge blocks for depth and leveling

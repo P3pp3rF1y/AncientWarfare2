@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -38,7 +38,7 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.gates.types.Gate;
 import net.shadowmage.ancientwarfare.structure.gates.types.GateRotatingBridge;
 
-/**
+/*
  * an class to represent ALL gate types
  *
  * @author Shadowmage
@@ -136,14 +136,14 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 
     @Override
     public int getBrightnessForRender(float par1) {
-        int i = MathHelper.floor_double(this.posX);
-        int j = MathHelper.floor_double(this.posZ);
-        int k = MathHelper.floor_double(this.posY);
+        int i = MathHelper.floor(this.posX);
+        int j = MathHelper.floor(this.posZ);
+        int k = MathHelper.floor(this.posY);
         if(pos1.y > k)
             k = pos1.y;
         if(pos2.y > k)
             k = pos2.y;
-        return this.world.getLightBrightnessForSkyBlocks(i, k, j, 0);
+        return this.world.getCombinedLight(i, k, j, 0);
     }
 
     @Override

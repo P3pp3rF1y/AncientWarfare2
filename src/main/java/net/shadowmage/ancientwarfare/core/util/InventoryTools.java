@@ -15,12 +15,9 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 public class InventoryTools {
 
@@ -45,7 +42,7 @@ public class InventoryTools {
         return toMerge <= 0;
     }
 
-    /**
+    /*
      * Checks if the input inventory can hold all of the items.<br>
      * <br>
      *
@@ -90,7 +87,7 @@ public class InventoryTools {
         }
     }
 
-    /**
+    /*
      * Attempt to merge stack into inventory via the given side, or general all-sides merge if side <0<br>
      * Resorts to default general merge if inventory is not a sided inventory.<br>
      * Double-pass merging.  First pass attempts to merge with partial stacks.  Second pass will place
@@ -143,7 +140,7 @@ public class InventoryTools {
         return stack;//partial or unsuccessful merge
     }
 
-    /**
+    /*
      * Attempts to remove filter * quantity from inventory.  Returns removed item in return stack, or null if
      * no items were removed.<br>
      * Will only remove and return up to filter.getMaxStackSize() items, regardless of how many are requested.
@@ -193,7 +190,7 @@ public class InventoryTools {
         return returnStack;
     }
 
-    /**
+    /*
      * Apply the "container" system, for crafting purposes
      *
      * @param craft the inventory where craft occurred
@@ -223,7 +220,7 @@ public class InventoryTools {
         return ItemStack.EMPTY;
     }
 
-    /**
+    /*
      * Move up to the specified quantity of filter stack from 'from' into 'to', using the designated sides (or general all sides merge if side<0 or from/to are not sided inventories)
      *
      * @param from     the inventory to withdraw items from
@@ -237,7 +234,7 @@ public class InventoryTools {
         return transferItems(from, to, filter, quantity, fromSide, toSide, false, false);
     }
 
-    /**
+    /*
      * Move up to the specified quantity of filter stack from 'from' into 'to', using the designated sides (or general all sides merge if side<0 or from/to are not sided inventories)
      *
      * @param from         the inventory to withdraw items from
@@ -300,7 +297,7 @@ public class InventoryTools {
         return moved;
     }
 
-    /**
+    /*
      * return a count of how many slots in an inventory contain a certain item stack (any size)
      */
     public static int getNumOfSlotsContaining(IInventory inv, EnumFacing side, ItemStack filter) {
@@ -322,7 +319,7 @@ public class InventoryTools {
         return count;
     }
 
-    /**
+    /*
      * return the found count of the input item stack (checks item/meta/tag)<br>
      * if inv is not a sided inventory, or input side < 0, counts from entire inventory<br>
      * otherwise only returns the item count from the input side
@@ -346,7 +343,7 @@ public class InventoryTools {
         return count;
     }
 
-    /**
+    /*
      * validates that stacks are the same item / damage / tag, ignores quantity
      */
     public static boolean doItemStacksMatch(ItemStack stack1, ItemStack stack2) {
@@ -375,7 +372,7 @@ public class InventoryTools {
         return ignoreNBT || ItemStack.areItemStackTagsEqual(stack1, stack2);
     }
 
-    /**
+    /*
      * @param useOreDictionary -- NOTE: this setting overrides damage/nbt match if set to true, and uses oredict id comparison
      */
     public static boolean doItemStacksMatch(ItemStack stack1, ItemStack stack2, boolean matchDamage, boolean matchNBT, boolean useOreDictionary) {
@@ -409,7 +406,7 @@ public class InventoryTools {
         return false;
     }
 
-    /**
+    /*
      * drops the input itemstack into the world at the input position;
      */
     public static void dropItemInWorld(World world, ItemStack item, BlockPos pos) {
@@ -447,7 +444,7 @@ public class InventoryTools {
         }
     }
 
-    /**
+    /*
      * Writes out the input inventory to the input nbt-tag.<br>
      * The written out inventory is suitable for reading back using
      * {@link InventoryTools#readInventoryFromNBT(IInventory, NBTTagCompound)}
@@ -469,7 +466,7 @@ public class InventoryTools {
         return tag;//TODO clean up all references to this to use single-line semantics
     }
 
-    /**
+    /*
      * Reads an inventory contents into the input inventory from the given nbt-tag.<br>
      * Should only be passed nbt-tags / inventories that have been saved using
      * {@link InventoryTools#writeInventoryToNBT(IInventory, NBTTagCompound)}
@@ -487,14 +484,14 @@ public class InventoryTools {
         }
     }
 
-    /**
+    /*
      * Compacts an input item-stack list.<br>
      * Any partial stacks in the input list will be merged into max-stack-size stacks.<br>
      * The output list will be filled with the results of the merge, and will contain as few stacks as possible.<br>
      * This particular method is on average 2x faster than compactStackList2, and also uses less memory.
      */
     public static void compactStackList(List<ItemStack> in, List<ItemStack> out) {
-        Map<ItemHashEntry, Integer> map = new HashMap<ItemHashEntry, Integer>();
+        Map<ItemHashEntry, Integer> map = new HashMap<>();
         ItemHashEntry wrap;
         int count;
         for (ItemStack stack : in) {
@@ -519,7 +516,7 @@ public class InventoryTools {
         }
     }
 
-    /**
+    /*
      * Compacts an input item-stack list.<br>
      * Any partial stacks in the input list will be merged into max-stack-size stacks.<br>
      * The output list will be filled with the results of the merge, and will contain as few stacks as possible.<br>
@@ -553,7 +550,7 @@ public class InventoryTools {
         }
     }
 
-    /**
+    /*
      * Compacts in input item-stack list.<br>
      * This particular method wraps an ItemQuantityMap, and has much better speed than the other two methods,
      * but does use more memory in the process.  On average 2x faster than compactStackList and 4x+ faster than
@@ -567,7 +564,7 @@ public class InventoryTools {
         return map.getItems();
     }
 
-    /**
+    /*
      * Item-stack comparator.  Configurable in constructor to sort by localized or unlocalized name, as well as
      * sort-order (regular or reverse).
      *
@@ -649,7 +646,7 @@ public class InventoryTools {
         private SortType sortType;
         private String textInput = "";
 
-        /**
+        /*
          * @param order 1 for normal, -1 for reverse
          */
         public ComparatorItemStack(SortType type, SortOrder order) {

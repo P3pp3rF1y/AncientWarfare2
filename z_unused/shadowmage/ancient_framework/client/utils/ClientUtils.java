@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -28,12 +28,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.Vec3d;
 
 public class ClientUtils
 {
 
-/**
+/*
  * 
  */
 public ClientUtils()
@@ -43,19 +43,19 @@ public ClientUtils()
 
 public static MovingObjectPosition getPlayerLookTargetClient(EntityPlayer player, float range, Entity excludedEntity)
   {  
-  /**
-   * Vec3 positionVector = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
-    Vec3 moveVector = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+  /*
+   * Vec3d positionVector = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+    Vec3d moveVector = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
     MovingObjectPosition hitPosition = this.worldObj.rayTraceBlocks_do_do(positionVector, moveVector, false, true);
     positionVector = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
     moveVector = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
    */
-  Vec3 playerPos = player.getPosition(0);
-  Vec3 lookVector = player.getLook(0);
-  Vec3 endVector = playerPos.addVector(lookVector.xCoord * range, lookVector.yCoord * range, lookVector.zCoord * range);
+  Vec3d playerPos = player.getPosition(0);
+  Vec3d lookVector = player.getLook(0);
+  Vec3d endVector = playerPos.addVector(lookVector.x * range, lookVector.y * range, lookVector.z * range);
   MovingObjectPosition blockHit = player.worldObj.clip(playerPos, endVector);
   
-  /**
+  /*
    * reseat vectors, as they get messed with in the rayTrace...
    */
   playerPos = player.getPosition(0);
@@ -69,7 +69,7 @@ public static MovingObjectPosition getPlayerLookTargetClient(EntityPlayer player
     closestFound = (float) blockHit.hitVec.distanceTo(playerPos);
     }
   Minecraft mc = Minecraft.getMinecraft();
-  List possibleHitEntities = mc.theWorld.getEntitiesWithinAABBExcludingEntity(mc.renderViewEntity, mc.renderViewEntity.boundingBox.addCoord(lookVector.xCoord * range, lookVector.yCoord * range, lookVector.zCoord * range).expand((double)var9, (double)var9, (double)var9));
+  List possibleHitEntities = mc.theWorld.getEntitiesWithinAABBExcludingEntity(mc.renderViewEntity, mc.renderViewEntity.boundingBox.expand(lookVector.x * range, lookVector.y * range, lookVector.z * range).expand((double)var9, (double)var9, (double)var9));
   Iterator<Entity> it = possibleHitEntities.iterator();
   Entity hitEntity = null;
   Entity currentExaminingEntity = null;
@@ -86,7 +86,7 @@ public static MovingObjectPosition getPlayerLookTargetClient(EntityPlayer player
       AxisAlignedBB entBB = currentExaminingEntity.boundingBox.expand((double)borderSize, (double)borderSize, (double)borderSize);
       MovingObjectPosition var17 = entBB.calculateIntercept(playerPos, endVector);
 
-      if (entBB.isVecInside(playerPos))
+      if (entBB.contains(playerPos))
         {
         if (0.0D < closestFound || closestFound == 0.0D)
           {
@@ -110,7 +110,7 @@ public static MovingObjectPosition getPlayerLookTargetClient(EntityPlayer player
     {
 //    Config.logDebug("entity hit!!");
     blockHit = new MovingObjectPosition(hitEntity);
-    blockHit.hitVec.yCoord += hitEntity.height * 0.65f;
+    blockHit.hitVec.y += hitEntity.height * 0.65f;
     }
   return blockHit;
   }

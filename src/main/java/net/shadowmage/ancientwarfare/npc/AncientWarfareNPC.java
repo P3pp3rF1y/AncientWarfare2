@@ -24,19 +24,7 @@ import net.shadowmage.ancientwarfare.npc.block.AWNPCBlockLoader;
 import net.shadowmage.ancientwarfare.npc.command.CommandDebugAI;
 import net.shadowmage.ancientwarfare.npc.command.CommandFaction;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
-import net.shadowmage.ancientwarfare.npc.container.ContainerCombatOrder;
-import net.shadowmage.ancientwarfare.npc.container.ContainerNpcBard;
-import net.shadowmage.ancientwarfare.npc.container.ContainerNpcCreativeControls;
-import net.shadowmage.ancientwarfare.npc.container.ContainerNpcFactionBard;
-import net.shadowmage.ancientwarfare.npc.container.ContainerNpcFactionTradeSetup;
-import net.shadowmage.ancientwarfare.npc.container.ContainerNpcFactionTradeView;
-import net.shadowmage.ancientwarfare.npc.container.ContainerNpcInventory;
-import net.shadowmage.ancientwarfare.npc.container.ContainerNpcPlayerOwnedTrade;
-import net.shadowmage.ancientwarfare.npc.container.ContainerRoutingOrder;
-import net.shadowmage.ancientwarfare.npc.container.ContainerTownHall;
-import net.shadowmage.ancientwarfare.npc.container.ContainerTradeOrder;
-import net.shadowmage.ancientwarfare.npc.container.ContainerUpkeepOrder;
-import net.shadowmage.ancientwarfare.npc.container.ContainerWorkOrder;
+import net.shadowmage.ancientwarfare.npc.container.*;
 import net.shadowmage.ancientwarfare.npc.crafting.AWNpcCrafting;
 import net.shadowmage.ancientwarfare.npc.entity.AWNPCEntityLoader;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
@@ -72,7 +60,7 @@ public class AncientWarfareNPC {
     public void preInit(FMLPreInitializationEvent evt) {
         ModuleStatus.npcsLoaded = true;
 
-        /**
+        /*
          * setup module-owned config file and config-access class
          */
         statics = new AWNPCStatics("AncientWarfareNpc");
@@ -81,14 +69,14 @@ public class AncientWarfareNPC {
         FMLCommonHandler.instance().bus().register(this);
         MinecraftForge.EVENT_BUS.register(net.shadowmage.ancientwarfare.npc.event.EventHandler.INSTANCE);
 
-        /**
+        /*
          * load items, blocks, and entities
          */
         AWNpcItemLoader.load();
         AWNPCBlockLoader.load();
         AWNPCEntityLoader.load();
 
-        /**
+        /*
          * register containers
          */
         NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_INVENTORY, ContainerNpcInventory.class);
@@ -111,7 +99,7 @@ public class AncientWarfareNPC {
     @EventHandler
     public void init(FMLInitializationEvent evt) {
 
-        /**
+        /*
          * construct recipes, load plugins
          */
         AWNpcCrafting.loadRecipes();
@@ -119,7 +107,7 @@ public class AncientWarfareNPC {
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent evt) {
-        /**
+        /*
          * save config for any changes that were made during loading stages
          */
         statics.postInitCallback();

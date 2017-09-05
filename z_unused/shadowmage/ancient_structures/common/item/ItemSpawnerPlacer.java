@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -37,7 +37,7 @@ import shadowmage.ancient_framework.common.utils.BlockPosition;
 public class ItemSpawnerPlacer extends AWItemClickable
 {
 
-/**
+/*
  * @param itemID
  */
 public ItemSpawnerPlacer(Configuration config, String itemName)

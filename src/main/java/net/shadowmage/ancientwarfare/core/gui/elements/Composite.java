@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-/**
+/*
  * base class for gui elements that contain other elements
  * E.G. Scrollable area, Tabbed area, Multi-button controls
  *
@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class Composite extends GuiElement {
 
-    protected List<GuiElement> elements = new ArrayList<GuiElement>();
+    protected List<GuiElement> elements = new ArrayList<>();
     private GuiContainerBase gui;
 
     public Composite(GuiContainerBase gui, int topLeftX, int topLeftY, int width, int height) {
@@ -29,7 +29,7 @@ public class Composite extends GuiElement {
         this.mouseInterface = true;
     }
 
-    /**
+    /*
      * sub-classes should override this method to add their custom default listeners. *
      */
     protected void addDefaultListeners() {
@@ -42,7 +42,7 @@ public class Composite extends GuiElement {
                     }
                 } else if ((evt.type & Listener.MOUSE_TYPES) != 0) {
                     if (isMouseOverElement(evt.mx, evt.my)) {
-                        /**
+                        /*
                          * adjust mouse event position for relative to composite
                          */
                         int x = evt.mx;
@@ -102,7 +102,7 @@ public class Composite extends GuiElement {
         GuiContainerBase.popViewport();
     }
 
-    /**
+    /*
      * sub-classes of Composite should override this method
      * to feed their current scrolled position into their elements
      * (e.g. scrollbar composite will use scrollbar pos)

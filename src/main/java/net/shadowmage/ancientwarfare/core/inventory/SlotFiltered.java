@@ -1,9 +1,10 @@
 package net.shadowmage.ancientwarfare.core.inventory;
 
-import com.google.common.base.Predicate;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+
+import java.util.function.Predicate;
 
 public class SlotFiltered extends Slot {
 
@@ -17,7 +18,7 @@ public class SlotFiltered extends Slot {
     @Override
     public final boolean isItemValid(ItemStack par1ItemStack) {
         if (filter != null) {
-            return filter.apply(par1ItemStack);
+            return filter.test(par1ItemStack);
         }
         return super.isItemValid(par1ItemStack);
     }

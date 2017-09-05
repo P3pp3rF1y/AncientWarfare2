@@ -8,7 +8,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
+/*
  * Created by Olivier on 15/05/2015.
  */
 public interface NBTSerializableUtils {
@@ -22,7 +22,7 @@ public interface NBTSerializableUtils {
 
     static <T extends INBTSerializable> List<T> read(NBTTagCompound tag, String key, Class<T> supplier){
         NBTTagList tags = tag.getTagList(key, Constants.NBT.TAG_COMPOUND);
-        ArrayList<T> list = new ArrayList<T>();
+        ArrayList<T> list = new ArrayList<>();
         for(int i = 0; i < tags.tagCount(); i++){
             try {
                 T element = supplier.newInstance();

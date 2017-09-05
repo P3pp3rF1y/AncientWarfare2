@@ -3,7 +3,7 @@ package net.shadowmage.ancientwarfare.structure.item;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
@@ -47,7 +47,7 @@ public class ItemTownBuilder extends Item implements IItemKeyInterface {
             return;
         }
         long t1 = System.nanoTime();
-        WorldTownGenerator.INSTANCE.attemptGeneration(player.world, MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posZ));
+        WorldTownGenerator.INSTANCE.attemptGeneration(player.world, MathHelper.floor(player.posX), MathHelper.floor(player.posZ));
         long t2 = System.nanoTime();
         AWLog.logDebug("Total Town gen nanos (incl. validation): " + (t2 - t1));
     }

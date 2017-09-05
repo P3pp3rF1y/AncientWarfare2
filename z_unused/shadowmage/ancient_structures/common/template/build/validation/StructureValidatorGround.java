@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -81,7 +81,7 @@ public void preGeneration(World world, int x, int y, int z, int face, StructureT
 //  int leveling = maxLeveling;
 //  int fill = maxFill;
 //  
-//  /**
+//  /*
 //   * most of this is just to try and minimize the total Y range that is examined for clear/fill
 //   */
 //  int minFillY = getMinFillY(template, bb);

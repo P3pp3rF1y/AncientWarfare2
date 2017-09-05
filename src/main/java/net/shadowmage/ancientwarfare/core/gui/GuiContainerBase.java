@@ -20,28 +20,29 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
+import javax.annotation.Nonnull;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 public abstract class GuiContainerBase<T extends ContainerBase> extends GuiContainer implements IContainerGuiCallback, ITooltipRenderer, IWidgetSelection {
 
-    protected static final String defaultBackground = "ancientwarfare:textures/gui/guiBackgroundLarge.png";
-
-    private static LinkedList<Viewport> viewportStack = new LinkedList<Viewport>();
+    private static LinkedList<Viewport> viewportStack = new LinkedList<>();
 
     private GuiElement selectedWidget = null;
     protected boolean shouldCloseOnVanillaKeys = true;
     private float partialRenderTick = 0.f;
     private boolean initDone = false;
     private boolean shouldUpdate = false;
-    private List<GuiElement> elements = new ArrayList<GuiElement>();
+    private List<GuiElement> elements = new ArrayList<>();
 
     private Tooltip elementTooltip;
     private int elementTooltipX;
     private int elementTooltipY;
 
-    private ItemStack tooltipStack;
+    @Nonnull
+    private ItemStack tooltipStack = ItemStack.EMPTY;
     private int tooltipX;
     private int tooltipY;
 
@@ -100,7 +101,7 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
     }
 
     @Override
-    public void handleMouseInput() {
+    public void handleMouseInput() throws IOException {
         super.handleMouseInput();
 
         int x = Mouse.getEventX() * this.width / this.mc.displayWidth;
@@ -117,7 +118,7 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
     }
 
     @Override
-    public void handleKeyboardInput() {
+    public void handleKeyboardInput() throws IOException {
         int key = Keyboard.getEventKey();
         boolean state = Keyboard.getEventKeyState();
         char ch = Keyboard.getEventCharacter();
@@ -133,7 +134,7 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
     }
 
     @Override
-    protected void keyTyped(char ch, int key) {
+    protected void keyTyped(char ch, int key) throws IOException {
         if (selectedWidget == null) {
             boolean isExitCommand = key == 1 || key == this.mc.gameSettings.keyBindInventory.getKeyCode();
             if (isExitCommand) {
@@ -148,11 +149,11 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
 
     protected final void closeGui() {
         if (onGuiCloseRequested()) {
-            Minecraft.getMinecraft().thePlayer.closeScreen();
+            Minecraft.getMinecraft().player.closeScreen();
         }
     }
 
-    /**
+    /*
      * over-rideable method for onGuiClosed w/ proper functionality -- (is called before the fucking container disappears)
      * derived classes can override this to handle custom onClosed functionality (e.g. call container to send data to server/
      * finalize settings)
@@ -197,8 +198,8 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
             RenderTools.renderQuarteredTexture(256, 256, 0, 0, 256, 240, width / 2 - xSize / 2, (height / 2) - (ySize / 2), xSize, ySize);
         }
         Minecraft.getMinecraft().renderEngine.bindTexture(GuiElement.widgetTexture1);
-        for (Slot slot : (List<Slot>) this.inventorySlots.inventorySlots) {
-            this.drawTexturedModalRect(slot.xDisplayPosition - 1 + guiLeft, slot.yDisplayPosition - 1 + guiTop, 152, 120, 18, 18);
+        for (Slot slot : this.inventorySlots.inventorySlots) {
+            this.drawTexturedModalRect(slot.xPos - 1 + guiLeft, slot.yPos - 1 + guiTop, 152, 120, 18, 18);
         }
     }
 
@@ -206,9 +207,9 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
     public void drawScreen(int par1, int par2, float par3) {
         this.partialRenderTick = par3;
         super.drawScreen(par1, par2, par3);
-        if (tooltipStack != null && tooltipStack.getItem() != null) {
+        if (!tooltipStack.isEmpty()) {
             super.renderToolTip(tooltipStack, tooltipX, tooltipY);
-            tooltipStack = null;
+            tooltipStack = ItemStack.EMPTY;
         }
         if (elementTooltip != null) {
             elementTooltip.renderTooltip(elementTooltipX, elementTooltipY, partialRenderTick);
@@ -229,7 +230,7 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
         GL11.glPopMatrix();
     }
 
-    /**
+    /*
      * call this method to enforce a re-initialization of gui at the start of next game tick (not render tick)<br>
      * setupElements() will then be called<br>
      * and all elements will have their position updated
@@ -239,14 +240,14 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
         this.shouldUpdate = true;
     }
 
-    /**
+    /*
      * Sub-classes should implement this method to add initial gui elements.<br>
      * Only called a single time, shortly after construction,
      * but before any rendering or other update methods are called
      */
     public abstract void initElements();
 
-    /**
+    /*
      * sub-classes should implement this method to setup/change any elements that need adjusting when the gui is initialized<br>
      * any elements that are positioned outside of the gui-window space will need their positions updated by calling element.setPosition(xPos, yPos)
      * as they reference internal position relative to the guiLeft / guiTop values from this gui (which are passed in and updated directly after setupElements() is called)<br>
@@ -254,7 +255,7 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
      */
     public abstract void setupElements();
 
-    /**
+    /*
      * sub-classes should override this method to handle any expected packet data
      */
     @Override
@@ -262,7 +263,7 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
 
     }
 
-    /**
+    /*
      * deferred to allow proper render-order, and draw the tooltip on top of everything else
      */
     @Override
@@ -292,13 +293,13 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
         }
     }
 
-    /**
+    /*
      * Action event for gui-widgets.  A single event is sent to all element / listeners for each input event (key up/down, mouse up/down/move/wheel)
      *
      * @author Shadowmage
      */
     public static class ActivationEvent {
-        /**
+        /*
          * the type of event:<br>
          * 0=Key up <br>
          * 1=Key down <br>
@@ -308,12 +309,12 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
          */
         public final int type;
 
-        /**
+        /*
          * what key was pressed?
          */
         public int key;
 
-        /**
+        /*
          * the mouse button number.
          * -1 = none
          * 0 = RMB
@@ -321,23 +322,23 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
          * 2+= ?
          */
         public int mButton;
-        /**
+        /*
          * the state of the button or key.  true for pressed, false for released
          */
         public boolean state;
-        /**
+        /*
          * the input char, for keyboard events
          */
         public char ch;
-        /**
+        /*
          * mouse x position
          */
         public int mx;
-        /**
+        /*
          * mouse y position
          */
         public int my;
-        /**
+        /*
          * mouse-wheel delta movement
          */
         public int mw;//mousewheel delta movement
@@ -360,7 +361,7 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
     }
 
 
-    /**
+    /*
      * Push a new scissors-test viewport onto the stack.<br>
      * If this viewport would extend outside of the currently-set viewport, it
      * will be truncated to fit inside of the existing viewport
@@ -393,7 +394,7 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
         h = bry - tly;
 
         Minecraft mc = Minecraft.getMinecraft();
-        ScaledResolution scaledRes = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+        ScaledResolution scaledRes = new ScaledResolution(mc);
         int guiScale = scaledRes.getScaleFactor();
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
 
@@ -402,7 +403,7 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
         viewportStack.push(new Viewport(x, y, w, h));
     }
 
-    /**
+    /*
      * pop a scissors-test viewport off of the stack
      */
     public static void popViewport() {
@@ -413,7 +414,7 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
         p = viewportStack.peek();
         if (p != null) {
             Minecraft mc = Minecraft.getMinecraft();
-            ScaledResolution scaledRes = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+            ScaledResolution scaledRes = new ScaledResolution(mc);
             int guiScale = scaledRes.getScaleFactor();
             GL11.glEnable(GL11.GL_SCISSOR_TEST);
 
@@ -423,7 +424,7 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
         }
     }
 
-    /**
+    /*
      * class used to represent a currently drawable portion of the screen.
      * Used in a stack for figuring out what composites may draw where
      *

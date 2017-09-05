@@ -11,7 +11,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
+/*
  * Created by Olivier on 12/05/2015.
  */
 public abstract class Trade {
@@ -38,11 +38,11 @@ public abstract class Trade {
         output[index] = stack;
     }
 
-    /**
+    /*
      * If items are all present in trade grid, delegate to #doTrade
      */
     public void performTrade(EntityPlayer player, IInventory storage) {
-        List<ItemStack> list = new ArrayList<ItemStack>();
+        List<ItemStack> list = new ArrayList<>();
         for (ItemStack temp : input) {
             if (temp != null) {
                 list.add(temp.copy());
@@ -57,7 +57,7 @@ public abstract class Trade {
         doTrade(player, storage);
     }
 
-    /**
+    /*
      * will remove necessary items from player inventory and add to storage
      * and remove result from storage and merge into player inventory/drop on ground<br>
      */

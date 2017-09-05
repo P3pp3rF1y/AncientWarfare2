@@ -27,6 +27,14 @@ repositories {
         name = "CoFH Maven"
         url = "http://maven.covers1624.net"
     }
+    ivy {
+        name "FTBUtilities"
+        artifactPattern "http://addons-origin.cursecdn.com/files/${ftbutilities_cf}/[module]-[revision].[ext]"
+    }
+    ivy {
+        name "FTBLib"
+        artifactPattern "http://addons-origin.cursecdn.com/files/${ftblib_cf}/[module]-[revision].[ext]"
+    }
 }
 
 minecraft{
@@ -43,6 +51,8 @@ targetCompatibility = 1.8
 
 dependencies {
     deobfCompile "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
+    deobfCompile name: 'FTBLib', version: ftblib_version, ext: 'jar'
+    deobfCompile name: 'FTBUtilities', version: ftbutilities_version, ext: 'jar'
 }
 
 task updateVersion(type:Copy){

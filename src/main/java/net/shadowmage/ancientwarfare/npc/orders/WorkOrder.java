@@ -9,7 +9,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.util.OrderingList;
@@ -128,39 +127,35 @@ public class WorkOrder extends OrderingList<WorkOrder.WorkEntry> implements INBT
             return tag;
         }
 
-        /**
+        /*
          * @return the block
          */
-        public Block getBlock() {
-            //TODO likely needs fixing the world and may need the world passed in instead
-            World world = AncientWarfareCore.proxy.getWorld(dimension);
-            if(world==null)
-                return null;
+        public Block getBlock(World world) {
             return world.getBlockState(getPosition()).getBlock();
         }
 
-        /**
+        /*
          * @return the position
          */
         public BlockPos getPosition() {
             return position;
         }
 
-        /**
+        /*
          * @param position the position to set
          */
         public void setPosition(BlockPos position) {
             this.position = position;
         }
 
-        /**
+        /*
          * @return the workLength
          */
         public int getWorkLength() {
             return workLength;
         }
 
-        /**
+        /*
          * @param workLength the workLength to set
          */
         public void setWorkLength(int workLength) {

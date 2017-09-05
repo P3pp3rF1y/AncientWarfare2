@@ -4,21 +4,9 @@ import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.block.Direction;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
-import net.shadowmage.ancientwarfare.core.gui.elements.Button;
-import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
-import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
-import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
-import net.shadowmage.ancientwarfare.core.gui.elements.Label;
-import net.shadowmage.ancientwarfare.core.gui.elements.Line;
-import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
+import net.shadowmage.ancientwarfare.core.gui.elements.*;
 import net.shadowmage.ancientwarfare.npc.container.ContainerTradeOrder;
-import net.shadowmage.ancientwarfare.npc.trade.POTradeDepositEntry;
-import net.shadowmage.ancientwarfare.npc.trade.POTradePoint;
-import net.shadowmage.ancientwarfare.npc.trade.POTradeRestockData;
-import net.shadowmage.ancientwarfare.npc.trade.POTradeRoute;
-import net.shadowmage.ancientwarfare.npc.trade.POTradeWithdrawEntry;
-import net.shadowmage.ancientwarfare.npc.trade.Trade;
-import net.shadowmage.ancientwarfare.npc.trade.TradeList;
+import net.shadowmage.ancientwarfare.npc.trade.*;
 
 import java.util.List;
 
@@ -315,7 +303,7 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
         restockArea.clearElements();
         int totalHeight = 8;
 
-        /********************************** DEPOSIT LIST **********************************************/
+        /********************************* DEPOSIT LIST **********************************************/
         restockArea.addGuiElement(new Label(120, totalHeight, "guistrings.deposit").setRenderCentered());
         totalHeight += 12;
         restockArea.addGuiElement(new Label(70, totalHeight, restock.getDepositPoint() == null ? "guistrings.none" : restock.getDepositPoint().toString()));
@@ -353,7 +341,7 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
         restockArea.addGuiElement(new Line(0, totalHeight, xSize, totalHeight, 2, 0x000000ff));
         totalHeight += 4;
 
-        /********************************** WITHDRAW LIST **********************************************/
+        /********************************* WITHDRAW LIST **********************************************/
 
         restockArea.addGuiElement(new Label(120, totalHeight, "guistrings.withdraw").setRenderCentered());
         totalHeight += 12;

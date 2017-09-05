@@ -10,8 +10,8 @@ import java.util.HashMap;
 
 public abstract class PacketBase {
 
-    private static HashMap<Integer, Class<? extends PacketBase>> packetTypes = new HashMap<Integer, Class<? extends PacketBase>>();
-    private static HashMap<Class<? extends PacketBase>, Integer> packetIDs = new HashMap<Class<? extends PacketBase>, Integer>();
+    private static HashMap<Integer, Class<? extends PacketBase>> packetTypes = new HashMap<>();
+    private static HashMap<Class<? extends PacketBase>, Integer> packetIDs = new HashMap<>();
 
     public static void registerPacketType(int typeNum, Class<? extends PacketBase> packetClz) {
         packetTypes.put(typeNum, packetClz);

@@ -1,18 +1,15 @@
 package net.shadowmage.ancientwarfare.core.proxy;
 
-import cpw.mods.fml.client.config.DummyConfigElement.DummyCategoryElement;
-import cpw.mods.fml.client.config.GuiConfig;
-import cpw.mods.fml.client.config.GuiConfigEntries;
-import cpw.mods.fml.client.config.GuiConfigEntries.CategoryEntry;
-import cpw.mods.fml.client.config.IConfigElement;
-import cpw.mods.fml.client.registry.ClientRegistry;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.item.Item;
-import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Property;
+import net.minecraftforge.fml.client.config.DummyConfigElement.DummyCategoryElement;
+import net.minecraftforge.fml.client.config.GuiConfig;
+import net.minecraftforge.fml.client.config.GuiConfigEntries;
+import net.minecraftforge.fml.client.config.GuiConfigEntries.CategoryEntry;
+import net.minecraftforge.fml.client.config.IConfigElement;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.ConfigManager;
 import net.shadowmage.ancientwarfare.core.gui.GuiBackpack;
@@ -33,7 +30,7 @@ import org.lwjgl.opengl.DisplayMode;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
+/*
  * client-proxy for AW-Core
  *
  * @author Shadowmage
@@ -52,11 +49,9 @@ public class ClientProxy extends ClientProxyBase {
 
         TileCraftingTableRender render = new TileCraftingTableRender(new ModelEngineeringStation(), "textures/model/core/tile_engineering_station.png");
         ClientRegistry.bindTileEntitySpecialRenderer(TileEngineeringStation.class, render);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWBlocks.engineeringStation), render);
 
         render = new TileCraftingTableRender(new ModelResearchStation(), "textures/model/core/tile_research_station.png");
         ClientRegistry.bindTileEntitySpecialRenderer(TileResearchStation.class, render);
-        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWBlocks.researchStation), render);
 
         ConfigManager.registerConfigCategory(new DummyCategoryElement("awconfig.core_keybinds", "awconfig.core_keybinds", KeybindCategoryEntry.class));
 
@@ -95,7 +90,7 @@ public class ClientProxy extends ClientProxyBase {
 
         private static List<IConfigElement> getKeybindElements() {
             List<Property> props = InputHandler.instance.getKeyConfig("item_use");
-            List<IConfigElement> list = new ArrayList<IConfigElement>();
+            List<IConfigElement> list = new ArrayList<>();
             for(Property property : props) {
                 list.add(new ConfigElement(property));
             }

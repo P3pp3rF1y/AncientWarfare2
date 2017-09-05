@@ -2,13 +2,13 @@ package net.shadowmage.ancientwarfare.core.util;
 
 import java.util.ArrayList;
 
-/**
+/*
  * Cover for objects in an ordered list
  * Replicates common methods from the underlying ArrayList, adding fail-safe range checks.
  * Adds moving objects up/down in the list.
  */
 public class OrderingList<T> {
-    protected final ArrayList<T> points = new ArrayList<T>();
+    protected final ArrayList<T> points = new ArrayList<>();
 
     public final void increment(int index){
         if (index >= 1 && index < points.size()) {

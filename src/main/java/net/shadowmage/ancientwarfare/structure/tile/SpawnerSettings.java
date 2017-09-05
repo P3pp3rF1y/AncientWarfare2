@@ -21,7 +21,7 @@ import java.util.*;
 
 public class SpawnerSettings {
 
-    List<EntitySpawnGroup> spawnGroups = new ArrayList<EntitySpawnGroup>();
+    List<EntitySpawnGroup> spawnGroups = new ArrayList<>();
 
     private InventoryBasic inventory = new InventoryBasic(9);
 
@@ -48,7 +48,7 @@ public class SpawnerSettings {
 
     float blockHardness = 2.f;
 
-    /**
+    /*
      * fields for a 'fake' tile-entity...set from the real tile-entity when it has its
      * world set (which is before first updateEntity() is called)
      */
@@ -74,9 +74,9 @@ public class SpawnerSettings {
 
     public void setWorld(World world, int x, int y, int z) {
         this.world = world;
-        this.xCoord = x;
-        this.yCoord = y;
-        this.zCoord = z;
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
     public void onUpdate() {
@@ -131,7 +131,7 @@ public class SpawnerSettings {
             }
         }
         if (playerRange > 0) {
-            List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos, xCoord + 1, yCoord + 1, zCoord + 1).expand(playerRange, playerRange, playerRange));
+            List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos, x + 1, y + 1, z + 1).expand(playerRange, playerRange, playerRange));
             if (nearbyPlayers.isEmpty()) {
                 return;
             }
@@ -149,7 +149,7 @@ public class SpawnerSettings {
         }
 
         if (maxNearbyMonsters > 0 && mobRange > 0) {
-            int nearbyCount = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos, xCoord + 1, yCoord + 1, zCoord + 1).expand(mobRange, mobRange, mobRange)).size();
+            int nearbyCount = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos, x + 1, y + 1, z + 1).expand(mobRange, mobRange, mobRange)).size();
             if (nearbyCount >= maxNearbyMonsters) {
                 AWLog.logDebug("skipping spawning because of too many nearby entities");
                 return;
@@ -379,7 +379,7 @@ public class SpawnerSettings {
 
     public static final class EntitySpawnGroup {
         private int groupWeight = 1;
-        List<EntitySpawnSettings> entitiesToSpawn = new ArrayList<EntitySpawnSettings>();
+        List<EntitySpawnSettings> entitiesToSpawn = new ArrayList<>();
 
         public EntitySpawnGroup() {
 
@@ -455,7 +455,7 @@ public class SpawnerSettings {
     public static final class EntitySpawnSettings {
         String entityId = "Pig";
         NBTTagCompound customTag;
-        List<WatchedData> customData = new ArrayList<WatchedData>();
+        List<WatchedData> customData = new ArrayList<>();
         int minToSpawn = 2;
         int maxToSpawn = 4;
         int remainingSpawnCount = -1;
@@ -601,7 +601,7 @@ public class SpawnerSettings {
             return toSpawn;
         }
 
-        private void spawnEntities(World world, int xCoord, int yCoord, int zCoord, int range) {
+        private void spawnEntities(World world, int x, int y, int z, int range) {
             int toSpawn = getNumToSpawn(world.rand);
 
             for (int i = 0; i < toSpawn; i++) {
@@ -611,9 +611,9 @@ public class SpawnerSettings {
                 boolean doSpawn = false;
                 int spawnTry = 0;
                 while (!doSpawn && spawnTry < range + 5) {
-                    int x = xCoord - range + world.rand.nextInt(range*2+1);
-                    int z = zCoord - range + world.rand.nextInt(range*2+1);
-                    for (int y = yCoord - range; y <= yCoord + range; y++) {
+                    int x = x - range + world.rand.nextInt(range*2+1);
+                    int z = z - range + world.rand.nextInt(range*2+1);
+                    for (int y = y - range; y <= y + range; y++) {
                         e.setLocationAndAngles(x + 0.5d, y, z + 0.5d, world.rand.nextFloat() * 360, 0);
                         if (!forced && e instanceof EntityLiving) {
                             doSpawn = ((EntityLiving) e).getCanSpawnHere();

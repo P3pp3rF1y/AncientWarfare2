@@ -13,21 +13,18 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.NBTSerializableUtils;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class TileWarehouseStockViewer extends TileControlled implements IOwnable, IInteractableTile {
 
-    private final List<WarehouseStockFilter> filters = new ArrayList<WarehouseStockFilter>();
+    private final List<WarehouseStockFilter> filters = new ArrayList<>();
     private UUID owner;
     private String ownerName = "";
     private boolean shouldUpdate = false;
 
-    private final Set<ContainerWarehouseStockViewer> viewers = new HashSet<ContainerWarehouseStockViewer>();
+    private final Set<ContainerWarehouseStockViewer> viewers = new HashSet<>();
 
     public TileWarehouseStockViewer() {
     }
@@ -58,7 +55,7 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
         BlockTools.notifyBlockUpdate(this); //to re-send description packet to client with new filters
     }
 
-    /**
+    /*
      * should be called whenever controller tile is set or warehouse inventory updated
      */
     private void recountFilters(boolean sendToClients) {
@@ -137,7 +134,7 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
         }
     }
 
-    /**
+    /*
      * should be called on SERVER whenever warehouse inventory changes
      */
     public void onWarehouseInventoryUpdated() {
@@ -207,7 +204,8 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
     }
 
     public static class WarehouseStockFilter implements INBTSerializable<NBTTagCompound> {
-        private ItemStack item;
+        @Nonnull
+        private ItemStack item = ItemStack.EMPTY;
         ItemHashEntry hashKey;
         private int quantity;
 
@@ -239,7 +237,7 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
         @Override
         public NBTTagCompound serializeNBT() {
             NBTTagCompound tag = new NBTTagCompound();
-            if (item != null) {
+            if (!item.isEmpty()) {
                 tag.setTag("item", item.writeToNBT(new NBTTagCompound()));
             }
             tag.setInteger("quantity", quantity);

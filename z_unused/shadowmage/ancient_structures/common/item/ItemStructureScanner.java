@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -48,7 +48,7 @@ public ItemStructureScanner(Configuration config, String itemName)
   AWLog.logDebug("set creative tab for structure scanner to: "+AWStructuresItemLoader.structureTab);
   }
 
-/**
+/*
  * client-side structure setting container, do not access from server-methods!!
  */
 ItemStructureSettings viewSettings = new ItemStructureSettings();
@@ -58,7 +58,7 @@ public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlaye
   if(par1ItemStack!=null)
     {
     ItemStructureSettings.getSettingsFor(par1ItemStack, viewSettings);
-    /**
+    /*
      * TODO add info to tooltip from nbt-tag
      */
     NBTTagCompound tag;
@@ -103,7 +103,7 @@ public boolean shouldPassSneakingClickToBlock(World par2World, int par4, int par
   return false;
   }
 
-/**
+/*
  * server-side structure setting container, do not access from client-methods!!
  */
 ItemStructureSettings scanSettings = new ItemStructureSettings();

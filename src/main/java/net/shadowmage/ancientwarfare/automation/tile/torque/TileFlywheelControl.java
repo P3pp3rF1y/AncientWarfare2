@@ -52,7 +52,7 @@ public abstract class TileFlywheelControl extends TileTorqueSingleCell {
         return storage.torqueLoss;
     }
 
-    /**
+    /*
      * fill output from input
      * fill output from storage
      * fill storage from input
@@ -191,7 +191,7 @@ public abstract class TileFlywheelControl extends TileTorqueSingleCell {
         return null;
     }
 
-    //*************************************** NBT / DATA PACKET ***************************************//
+    //************************************** NBT / DATA PACKET ***************************************//
 
     @Override
     protected void handleUpdateNBT(NBTTagCompound tag) {

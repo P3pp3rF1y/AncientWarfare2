@@ -4,20 +4,24 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
 
+import javax.annotation.Nonnull;
+
 public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeringStation> {
 
-    public ContainerEngineeringStation(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
+    public ContainerEngineeringStation(EntityPlayer player, BlockPos pos) {
+        super(player, pos);
 
         Slot slot = new SlotCrafting(player, tileEntity.layoutMatrix, tileEntity.result, 0, 3 * 18 + 3 * 18 + 8 + 18, 1 * 18 + 8) {
             @Override
-            public void onPickupFromSlot(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack) {
+            public ItemStack onTake(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack) {
                 tileEntity.preItemCrafted();
-                super.onPickupFromSlot(par1EntityPlayer, par2ItemStack);
+                ItemStack stack = super.onTake(par1EntityPlayer, par2ItemStack);
                 tileEntity.onItemCrafted();
+                return stack;
             }
         };
         addSlotToContainer(slot);
@@ -69,17 +73,17 @@ public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeri
             if (slotClickedIndex < craftSlotStart)//book or result slot
             {
                 if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
-                    return null;
+                    return ItemStack.EMPTY;
             } else {
                 if (slotClickedIndex < storageSlotsStart) {//craft matrix
                     if (!this.mergeItemStack(slotStack, storageSlotsStart, playerSlotStart, false))//merge into storage
-                        return null;
+                        return ItemStack.EMPTY;
                 } else if (slotClickedIndex < playerSlotStart) {//storage slots
                     if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
-                        return null;
+                        return ItemStack.EMPTY;
                 } else if (slotClickedIndex < playerSlotEnd) {//player slots, merge into storage
                     if (!this.mergeItemStack(slotStack, storageSlotsStart, playerSlotStart, false))//merge into storage
-                        return null;
+                        return ItemStack.EMPTY;
                 }
             }
             if (slotStack.getCount() == 0) {
@@ -88,9 +92,9 @@ public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeri
                 theSlot.onSlotChanged();
             }
             if (slotStack.getCount() == slotStackCopy.getCount()) {
-                return null;
+                return ItemStack.EMPTY;
             }
-            theSlot.onPickupFromSlot(par1EntityPlayer, slotStack);
+            theSlot.onTake(par1EntityPlayer, slotStack);
         }
         return slotStackCopy;
     }

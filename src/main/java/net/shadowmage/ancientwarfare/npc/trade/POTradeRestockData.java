@@ -11,10 +11,10 @@ import java.util.List;
 public class POTradeRestockData {
     private BlockPos withdrawPoint;
     private int withdrawSide;
-    private List<POTradeWithdrawEntry> withdrawList = new ArrayList<POTradeWithdrawEntry>();
+    private List<POTradeWithdrawEntry> withdrawList = new ArrayList<>();
     private BlockPos depositPoint;
     private int depositSide;
-    private List<POTradeDepositEntry> depositList = new ArrayList<POTradeDepositEntry>();
+    private List<POTradeDepositEntry> depositList = new ArrayList<>();
 
     public BlockPos getDepositPoint() {
         return depositPoint;

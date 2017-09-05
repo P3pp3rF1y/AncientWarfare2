@@ -48,7 +48,7 @@ public class ItemBlockStructureBuilder extends ItemBlock implements IBoxRenderer
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List p_150895_3_) {
         if (displayCache == null) {
-            displayCache = new ArrayList<ItemStack>();
+            displayCache = new ArrayList<>();
             List<StructureTemplateClient> templates = StructureTemplateManagerClient.instance().getSurvivalStructures();
             @Nonnull ItemStack item;
             for (StructureTemplateClient t : templates) {

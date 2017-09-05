@@ -29,7 +29,7 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
     private static final int SIZE = 16;
     private byte[] targetMap = new byte[SIZE * SIZE];
 
-    /**
+    /*
      * flag should be set to true whenever updating inventory internally (e.g. harvesting blocks) to prevent
      * unnecessary inventory rescanning.  should be set back to false after blocks are added to inventory
      */

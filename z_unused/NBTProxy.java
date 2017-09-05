@@ -23,7 +23,7 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 public class NBTProxy
 {
 
-/**
+/*
 * 0-END
 * 1-BYTE//
 * 2-SHORT//
@@ -68,7 +68,7 @@ public static void test()
   TagCompound tag = new TagCompound();
   tag.createFromNBT(testTag);
   
-  ArrayList<String> lines = new ArrayList<String>();
+  ArrayList<String> lines = new ArrayList<>();
   
   tag.getTagLines("", lines);
   
@@ -78,11 +78,11 @@ public static void test()
     AWLog.logDebug(line);
     }
 
-  List<String> testLines = new ArrayList<String>();
+  List<String> testLines = new ArrayList<>();
   testLines.addAll(lines);
   
   TagCompound tt1 = parseTagFromLines(testLines);
-  List<String> tt1Lines = new ArrayList<String>();
+  List<String> tt1Lines = new ArrayList<>();
   tt1.getTagLines("", tt1Lines);
   AWLog.logDebug("parsed proxy tag of: ");
   for(String line : tt1Lines)
@@ -106,7 +106,7 @@ public static NBTTagCompound parseNBTFromLines(List<String> lines)
 
 public static List<String> getLinesFor(NBTTagCompound nbttag)
   {
-  ArrayList<String> lines = new ArrayList<String>();
+  ArrayList<String> lines = new ArrayList<>();
   TagCompound tag = new TagCompound();
   tag.createFromNBT(nbttag);
   tag.getTagLines("", lines);
@@ -155,7 +155,7 @@ private static TagBase getTag(int type)
 private static List<String> parseNextTag(List<String> lines)
   {
   int open = 0, close = 0;
-  ArrayList<String> linesOut = new ArrayList<String>();
+  ArrayList<String> linesOut = new ArrayList<>();
   Iterator<String> it = lines.iterator();
   String line;
   while(it.hasNext())
@@ -515,7 +515,7 @@ void createFromNBT(NBTBase nbt)
 
 private static class TagList extends TagBase
 {
-List<TagBase> tags = new ArrayList<TagBase>();
+List<TagBase> tags = new ArrayList<>();
 @Override
 int getType()
   {

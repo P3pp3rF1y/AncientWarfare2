@@ -9,7 +9,7 @@ public class PacketHandlerServer {
 
     @SubscribeEvent
     public void onServerPacket(FMLNetworkEvent.ServerCustomPacketEvent evt) {
-        PacketBase.readPacket(evt.getPacket().payload()).execute(((NetHandlerPlayServer) evt.getHandler()).playerEntity);
+        PacketBase.readPacket(evt.getPacket().payload()).execute(((NetHandlerPlayServer) evt.getHandler()).player);
     }
 
     @SubscribeEvent

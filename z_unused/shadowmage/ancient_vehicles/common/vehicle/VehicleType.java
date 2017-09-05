@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -38,12 +38,12 @@ public static final HashMap<String, VehicleType> vehicleTypesByName = new HashMa
 public static final HashMap<Integer, VehicleType> vehicleTypeByID = new HashMap<Integer, VehicleType>();
 
 protected ItemStack vehicleItem;
-/**
+/*
  * basic variables / helpers
  */
 String name;//translation key/unique registered name for this vehicle type
 int vehicleId;//global type-number ID used for item-stack identification -- must be checked on client login to verify it matches server configs
-/**
+/*
  * client-side rendering information
  */
 String modelId;//used by rendering to select the proper model
@@ -56,7 +56,7 @@ Object movementType;//enum / flag for movement type for this vehicle
 boolean survival;//available in survival through crafting (forces creative=true)
 boolean creative;//available in creative in menu for ops/admins/creative play (loaded, but no recipe)
 
-/**
+/*
  * base stats for this vehicle
  */
 int maxHealth;//max health for this vehicle type
@@ -86,7 +86,7 @@ float flagY;
 float flagZ;
 boolean flagMovesWithTurret;
 
-/**
+/*
  * loaded from separate csvs
  */
 List<String> tooltips;
@@ -100,10 +100,10 @@ public VehicleType(String name, int id)
   this.vehicleId = id;
   vehicleTypesByName.put(name, this);
   vehicleTypeByID.put(id, this);
-  tooltips = new ArrayList<String>();
-  researchGoals = new HashSet<Integer>();
-  upgrades = new HashSet<String>();
-  ammos = new HashSet<String>();
+  tooltips = new ArrayList<>();
+  researchGoals = new HashSet<>();
+  upgrades = new HashSet<>();
+  ammos = new HashSet<>();
   }
 
 public static final VehicleType getVehicleType(String name)
@@ -186,7 +186,7 @@ public static VehicleType parseFromCSV(String[] csv)
   type.mass = StringTools.safeParseInt(csv[10].trim());
   type.thrust = StringTools.safeParseInt(csv[11].trim());
   type.firePower = StringTools.safeParseInt(csv[12].trim());
-  /**
+  /*
    * TODO read the rest of vehicle-type stats (need to determine what the stats stored in csv will be)
    */
   return type;

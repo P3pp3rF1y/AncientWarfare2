@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -37,7 +37,7 @@ public TemplateRuleBlock()
   
   }
 
-/**
+/*
  * should this rule be re-used in the template for the passed in block/te parameters?
  * common things to check are simple block ID / meta combinations. 
  * keep in mind you must rotate the passed in meta if you wish to compare it with the meta stored in your rule (you did normalize to north-oriented on construction, right?)

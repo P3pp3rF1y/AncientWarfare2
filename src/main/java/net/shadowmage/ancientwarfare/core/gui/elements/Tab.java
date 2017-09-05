@@ -2,13 +2,13 @@ package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.init.SoundEvents;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.interfaces.ITabCallback;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
-/**
+/*
  * tab element for use by CompositeTabbed.  Only has minimal self function
  *
  * @author Shadowmage
@@ -32,7 +32,7 @@ public class Tab extends GuiElement {
             public boolean onEvent(GuiElement widget, ActivationEvent evt) {
                 if (visible && enabled && !selected() && isMouseOverElement(evt.mx, evt.my)) {
                     setSelected(true);
-                    Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+                    Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
                     if (parent != null) {
                         parent.onTabSelected(Tab.this);
                     }

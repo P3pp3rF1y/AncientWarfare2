@@ -13,7 +13,7 @@ public class RenderTools {
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, 0.f, 240.f);
     }
 
-    /**
+    /*
      * @param textureWidth  texture width
      * @param textureHeight texture height
      * @param texStartX     pixel start U
@@ -64,7 +64,7 @@ public class RenderTools {
         GL11.glEnd();
     }
 
-    /**
+    /*
      * render a BB as a set of enlarged cuboids.
      */
     public static void drawOutlinedBoundingBox2(AxisAlignedBB bb, float r, float g, float b, float width) {
@@ -137,7 +137,7 @@ public class RenderTools {
         GL11.glEnd();
     }
 
-    /**
+    /*
      * Renders a white point in center, and RGB lines/points for X,Y,Z axis'
      */
     public static void renderOrientationPoints(float colorMult) {
@@ -192,7 +192,7 @@ public class RenderTools {
         GL11.glPopMatrix();
     }
 
-    /**
+    /*
      * draw a player-position-normalized bounding box (can only be called during worldRender)
      */
     public static void drawOutlinedBoundingBox(AxisAlignedBB bb, float r, float g, float b) {
@@ -234,7 +234,7 @@ public class RenderTools {
         GL11.glDisable(GL11.GL_BLEND);
     }
 
-    /**
+    /*
      * @param bb
      * @param player
      * @param partialTick

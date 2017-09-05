@@ -4,12 +4,15 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-/**
+import javax.annotation.Nonnull;
+
+/*
  * Created by Olivier on 23/03/2015.
  */
 public abstract class POTradeTransferEntry {
     private TransferType type = getDefaultType();
-    private ItemStack filter;
+    @Nonnull
+    private ItemStack filter = ItemStack.EMPTY;
 
     protected abstract TransferType getDefaultType();
 

@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-/**
+/*
  * Responsible for constructing the town -- leveling the area, placing the structures, constructing walls
  *
  * @author Shadowmage
@@ -35,12 +35,12 @@ public class TownGenerator {
     public final StructureBB townBounds;//walls shrunk by wallSize (configurable), town generation area
     public final TownPartQuadrant[] quadrants = new TownPartQuadrant[4];
     public final TownPartQuadrant[] externalQuadrants = new TownPartQuadrant[8];//may be null refs if no exterior area is denoted
-    public final List<StructureTemplate> uniqueTemplatesToGenerate = new ArrayList<StructureTemplate>();//depleted as used
-    public final List<StructureTemplate> mainTemplatesToGenerate = new ArrayList<StructureTemplate>();//depleted as used
-    public final List<StructureTemplate> houseTemplatesToGenerate = new ArrayList<StructureTemplate>();//weighted list
-    public final List<StructureTemplate> cosmeticTemplatesToGenerate = new ArrayList<StructureTemplate>();//weighted list
-    public final List<StructureTemplate> exteriorTemplatesToGenerate = new ArrayList<StructureTemplate>();//weighted list
-    public final List<BlockPos> structureDoors = new ArrayList<BlockPos>();//list of all positions for generated doors.  used during lamp-post generation to not generate directly in front of a door
+    public final List<StructureTemplate> uniqueTemplatesToGenerate = new ArrayList<>();//depleted as used
+    public final List<StructureTemplate> mainTemplatesToGenerate = new ArrayList<>();//depleted as used
+    public final List<StructureTemplate> houseTemplatesToGenerate = new ArrayList<>();//weighted list
+    public final List<StructureTemplate> cosmeticTemplatesToGenerate = new ArrayList<>();//weighted list
+    public final List<StructureTemplate> exteriorTemplatesToGenerate = new ArrayList<>();//weighted list
+    public final List<BlockPos> structureDoors = new ArrayList<>();//list of all positions for generated doors.  used during lamp-post generation to not generate directly in front of a door
 
     public TownGenerator(World world, TownBoundingArea area, TownTemplate template) {
         this.world = world;
@@ -63,7 +63,7 @@ public class TownGenerator {
         this.plotSize = template.getTownPlotSize();
     }
 
-    /**
+    /*
      * Call this to initialize and start the generation of the town
      */
     public void generate() {
@@ -125,7 +125,7 @@ public class TownGenerator {
         }
     }
 
-    /**
+    /*
      * add initial generation entries to list of structures to attempt to generate
      */
     private void determineStructuresToGenerate() {
@@ -176,7 +176,7 @@ public class TownGenerator {
         }
     }
 
-    /**
+    /*
      * Splits up the town into four quadrants<br>
      * quadrants into blocks<br>
      * and blocks into plots<br>
@@ -224,7 +224,7 @@ public class TownGenerator {
         }
     }
 
-    /**
+    /*
      * Splits any exterior buffer zone into 8 not-quite-quadrants, and those further down into blocks and plots
      */
     private void generateExteriorGrid() {
@@ -318,7 +318,7 @@ public class TownGenerator {
         generateAdditionalRoads();
     }
 
-    /**
+    /*
      * generates roads on the extent of a townquadrant
      */
     private void generateRoads(TownPartQuadrant tq) {
@@ -359,7 +359,7 @@ public class TownGenerator {
         }
     }
 
-    /**
+    /*
      * Generates roads on the extends of a townblock
      */
     private void generateRoads(TownPartBlock tb) {
@@ -397,7 +397,7 @@ public class TownGenerator {
         }
     }
 
-    /**
+    /*
      * generates roads running from the edges of the 'townBounds' to the edges of the 'wallBounds'
      */
     private void generateAdditionalRoads() {

@@ -2,8 +2,8 @@ package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.init.SoundEvents;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
@@ -24,7 +24,7 @@ public class Button extends GuiElement {
             @Override
             public boolean onEvent(GuiElement widget, ActivationEvent evt) {
                 if (pressed && enabled && visible && isMouseOverElement(evt.mx, evt.my)) {
-                    Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+                    Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
                     onPressed(evt.mButton);
                 }
                 pressed = false;
@@ -68,7 +68,7 @@ public class Button extends GuiElement {
         }
     }
 
-    /**
+    /*
      * sub-classes may override this as an on-pressed callback
      * method is called whenever the 'pressed' sound is played.
      * uses built-in click listener for sound to trigger method
@@ -77,7 +77,7 @@ public class Button extends GuiElement {
         
     }
     
-    /**
+    /*
      * Button-sensitive version of onPressed. 0 = LMB, 1 = RMB
      * @param mButton
      */

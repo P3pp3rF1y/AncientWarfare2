@@ -1,18 +1,26 @@
 package net.shadowmage.ancientwarfare.core.item;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,10 +32,9 @@ public class ItemResearchNotes extends Item {
         this.setCreativeTab(AWCoreBlockLoader.coreTab);
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-        NBTTagCompound tag = par1ItemStack.getTagCompound();
+    public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flagIn) {
+        NBTTagCompound tag = stack.getTagCompound();
         String researchName = "corrupt_item";
         boolean known = false;
         if (tag != null && tag.hasKey("researchName")) {
@@ -35,32 +42,35 @@ public class ItemResearchNotes extends Item {
             ResearchGoal goal = ResearchGoal.getGoal(name);
             if (goal != null) {
                 researchName = I18n.format(name);
-                known = ResearchTracker.INSTANCE.hasPlayerCompleted(par2EntityPlayer.world, par2EntityPlayer.getName(), goal.getId());
+                known = ResearchTracker.INSTANCE.hasPlayerCompleted(world, Minecraft.getMinecraft().player.getName(), goal.getId());
             } else {
                 researchName = "missing_goal_for_id_" + researchName;
             }
         }
-        par3List.add(researchName);
+        tooltip.add(researchName);
         if (known) {
-            par3List.add(I18n.format("guistrings.research.known_research"));
-            par3List.add(I18n.format("guistrings.research.click_to_add_progress"));
+            tooltip.add(I18n.format("guistrings.research.known_research"));
+            tooltip.add(I18n.format("guistrings.research.click_to_add_progress"));
         } else {
-            par3List.add(I18n.format("guistrings.research.unknown_research"));
-            par3List.add(I18n.format("guistrings.research.click_to_learn"));
+            tooltip.add(I18n.format("guistrings.research.unknown_research"));
+            tooltip.add(I18n.format("guistrings.research.click_to_learn"));
         }
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
-    public void getSubItems(Item item, CreativeTabs tab, List list) {
-        if (displayCache != null) {
-            list.addAll(displayCache);
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+        if (tab != AWCoreBlockLoader.coreTab) {
             return;
         }
-        displayCache = new ArrayList<ItemStack>();
-        List<ResearchGoal> goals = new ArrayList<ResearchGoal>();
+
+        if (displayCache != null) {
+            items.addAll(displayCache);
+            return;
+        }
+        displayCache = new ArrayList<>();
+        List<ResearchGoal> goals = new ArrayList<>();
         goals.addAll(ResearchGoal.getResearchGoals());
-        /**
+        /*
          * TODO sort list by ??
          */
         @Nonnull ItemStack stack;
@@ -68,12 +78,13 @@ public class ItemResearchNotes extends Item {
             stack = new ItemStack(this);
             stack.setTagInfo("researchName", new NBTTagString(goal.getName()));
             displayCache.add(stack);
-            list.add(stack);
+            items.add(stack);
         }
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+        ItemStack stack = player.getHeldItem(hand);
         NBTTagCompound tag = stack.getTagCompound();
         if (!world.isRemote && tag != null && tag.hasKey("researchName")) {
             String name = tag.getString("researchName");
@@ -93,7 +104,7 @@ public class ItemResearchNotes extends Item {
                 }
             }
         }
-        return stack;
+        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
 
 }

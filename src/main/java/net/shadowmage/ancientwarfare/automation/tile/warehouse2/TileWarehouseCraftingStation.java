@@ -1,11 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.IInventoryChangedListener;
-import net.minecraft.inventory.InventoryCraftResult;
-import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -48,7 +44,7 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
         bookInventory = new InventoryBasic(1, this);
     }
 
-    /**
+    /*
      * called to shadow a copy of the input matrix, to know what to refill
      */
     public void preItemCrafted() {

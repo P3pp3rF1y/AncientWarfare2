@@ -1,12 +1,12 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
 import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.Vec3d;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public class NpcAIWander extends NpcAI<NpcBase> {
 
-    private Vec3 vec3;
+    private Vec3d vec3;
     public NpcAIWander(NpcBase npc) {
         this(npc, 0.625);
     }
@@ -39,7 +39,7 @@ public class NpcAIWander extends NpcAI<NpcBase> {
     @Override
     public void startExecuting() {
         npc.addAITask(NpcAI.TASK_WANDER + NpcAI.TASK_MOVE);
-        setPath(vec3.xCoord, vec3.yCoord, vec3.zCoord);
+        setPath(vec3.x, vec3.y, vec3.z);
     }
 
     @Override

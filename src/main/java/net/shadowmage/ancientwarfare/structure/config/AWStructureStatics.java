@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -56,11 +56,11 @@ public class AWStructureStatics extends ModConfiguration {
     public static int structureImageHeight = 288;
     public static int townClosestDistance = 40;
     public static float townGenerationChance = 0.125f;
-    public static Set<String> excludedSpawnerEntities = new HashSet<String>();
-    private static HashSet<String> skippableWorldGenBlocks = new HashSet<String>();
-    private static HashSet<String> worldGenTargetBlocks = new HashSet<String>();
-    private static HashSet<String> scannerSkippedBlocks = new HashSet<String>();
-    private static HashSet<String> townValidTargetBlocks = new HashSet<String>();
+    public static Set<String> excludedSpawnerEntities = new HashSet<>();
+    private static HashSet<String> skippableWorldGenBlocks = new HashSet<>();
+    private static HashSet<String> worldGenTargetBlocks = new HashSet<>();
+    private static HashSet<String> scannerSkippedBlocks = new HashSet<>();
+    private static HashSet<String> townValidTargetBlocks = new HashSet<>();
 
     private static final String worldGenCategory = "a_world-gen_settings";
     private static final String villageGenCategory = "b_village-gen_settings";
@@ -865,7 +865,7 @@ public class AWStructureStatics extends ModConfiguration {
     }
 
     private void initializeDefaultAdditionalTargetBlocks() {
-        /**
+        /*
          * TODO add initial default values for target blocks to this list...
          */
         String[] targetBlocks = new String[]

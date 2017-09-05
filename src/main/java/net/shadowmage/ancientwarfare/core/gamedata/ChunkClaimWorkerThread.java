@@ -1,11 +1,8 @@
+//TODO fix ftb utils integration
 package net.shadowmage.ancientwarfare.core.gamedata;
 
-import java.awt.Point;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map.Entry;
-
+import com.feed_the_beast.ftbl.lib.math.ChunkDimPos;
+import com.feed_the_beast.ftbu.api_impl.FTBUtilitiesAPI_Impl;
 import ftb.utils.world.LMWorldServer;
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
@@ -17,6 +14,12 @@ import net.shadowmage.ancientwarfare.core.gamedata.ChunkClaims.TownHallEntry;
 import net.shadowmage.ancientwarfare.npc.block.BlockTownHall;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
+
+import java.awt.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map.Entry;
 
 public class ChunkClaimWorkerThread extends Thread {
 
@@ -44,8 +47,8 @@ public class ChunkClaimWorkerThread extends Thread {
                         if (world == null)
                             continue;
                         
-                        HashMap<Point, String> chunksToClaim = new HashMap<Point, String>();
-                        HashMap<Point, String> chunksToUnclaim = new HashMap<Point, String>();
+                        HashMap<ChunkDimPos, String> chunksToClaim = new HashMap<>();
+                        HashMap<ChunkDimPos, String> chunksToUnclaim = new HashMap<>();
                         
                         // iterate over ChunkClaimEntry sets
                         Iterator<Entry<Integer, ChunkClaimEntry>> chunkClaimEntrySets = thisEntry.getValue().entrySet().iterator();
@@ -61,7 +64,7 @@ public class ChunkClaimWorkerThread extends Thread {
                             boolean isFirstTownHall = true;
                             while (townHallEntryIterator.hasNext()) {
                                 townHallEntry = townHallEntryIterator.next();
-                                Block blockTownHall = world.getBlock(townHallEntry.getPosX(), townHallEntry.getPosY(), townHallEntry.getPosZ());
+                                Block blockTownHall = world.getBlockState(townHallEntry.getPos()).getBlock();
                                 boolean isRemoved = false;
                                 if (!(blockTownHall instanceof BlockTownHall)) {
                                     // TownHall has been removed 
@@ -70,7 +73,7 @@ public class ChunkClaimWorkerThread extends Thread {
                                     isRemoved = true;
                                 }
                                 
-                                if (isRemoved || ((TileTownHall)world.getTileEntity(townHallEntry.getPosX(), townHallEntry.getPosY(), townHallEntry.getPosZ())).isInactive()) {
+                                if (isRemoved || ((TileTownHall)world.getTileEntity(townHallEntry.getPos())).isInactive()) {
                                     // town hall is removed, or found but inactive - unclaim chunks if it is the first town hall for this chunk
                                     if (isFirstTownHall) {
                                         for (int chunkX = chunkClaimInfo.getChunkX() - AWNPCStatics.townChunkClaimRadius; chunkX <= chunkClaimInfo.getChunkX() + AWNPCStatics.townChunkClaimRadius; chunkX++) {
@@ -87,7 +90,7 @@ public class ChunkClaimWorkerThread extends Thread {
                             townHallEntryIterator = chunkClaimEntry.getTownHallEntries().iterator();
                             while (townHallEntryIterator.hasNext()) {
                                 townHallEntry = townHallEntryIterator.next();
-                                TileTownHall tileEntity = ((TileTownHall)world.getTileEntity(townHallEntry.getPosX(), townHallEntry.getPosY(), townHallEntry.getPosZ()));
+                                TileTownHall tileEntity = ((TileTownHall)world.getTileEntity(townHallEntry.getPos()ß));
                                 if (tileEntity.isHq || !tileEntity.isInactive()) {
                                     for (int chunkX = chunkClaimInfo.getChunkX() - AWNPCStatics.townChunkClaimRadius; chunkX <= chunkClaimInfo.getChunkX() + AWNPCStatics.townChunkClaimRadius; chunkX++) {
                                         for (int chunkZ = chunkClaimInfo.getChunkZ() - AWNPCStatics.townChunkClaimRadius; chunkZ <= chunkClaimInfo.getChunkZ() + AWNPCStatics.townChunkClaimRadius; chunkZ++) {
@@ -100,7 +103,7 @@ public class ChunkClaimWorkerThread extends Thread {
                         
                         // done walking through chunkClaimEntrySets, built our claim/unclaim maps...
                         // ... now check the claim/unclaim maps to decide what needs to be done
-                        for (Entry<Point, String> chunkToUnclaimEntry : chunksToUnclaim.entrySet()) {
+                        for (Entry<ChunkDimPos, String> chunkToUnclaimEntry : chunksToUnclaim.entrySet()) {
                             boolean shouldUnclaim = false;
                             if (chunksToClaim.containsKey(chunkToUnclaimEntry.getKey())) {
                                 // this particular chunk is being unclaimed by one townhall and another is also requesting to claim
@@ -114,11 +117,12 @@ public class ChunkClaimWorkerThread extends Thread {
                             }
                             
                             if (shouldUnclaim) {
+                                FTBUtilitiesAPI_Impl.INSTANCE.getClaimedChunks().getChunkOwner(chunkToUnclaimEntry.getKey()).
                                 LMWorldServer.inst.getPlayer(chunkToUnclaimEntry.getValue()).unclaimChunk(dimId, chunkToUnclaimEntry.getKey().x, chunkToUnclaimEntry.getKey().y);
                             }
                         }
                         
-                        for (Entry<Point, String> chunkToClaimEntry : chunksToClaim.entrySet()) {
+                        for (Entry<ChunkDimPos, String> chunkToClaimEntry : chunksToClaim.entrySet()) {
                             LMWorldServer.inst.getPlayer(chunkToClaimEntry.getValue()).claimChunk(dimId, chunkToClaimEntry.getKey().x, chunkToClaimEntry.getKey().y);
                         }
                         

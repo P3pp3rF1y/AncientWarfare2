@@ -5,7 +5,7 @@ import net.minecraft.util.EnumHand;
 
 import javax.annotation.Nullable;
 
-/**
+/*
  * Tile Entities with right-click actions (usually opening a GUI)
  *
  * @author Shadowmage

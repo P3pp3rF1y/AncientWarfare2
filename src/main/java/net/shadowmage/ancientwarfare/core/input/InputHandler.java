@@ -1,11 +1,12 @@
 package net.shadowmage.ancientwarfare.core.input;
 
-import cpw.mods.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
@@ -14,12 +15,8 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketItemInteraction;
 import org.lwjgl.input.Keyboard;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import javax.annotation.Nonnull;
+import java.util.*;
 
 public class InputHandler {
 
@@ -30,19 +27,19 @@ public class InputHandler {
     public static final String KEY_ALT_ITEM_USE_4 = "keybind.alt_item_use_5";
 
     public static final InputHandler instance = new InputHandler();
-    /**
+    /*
      * map of keys by their registry-name
      */
     private final HashMap<String, Keybind> keybindMap;
-    /**
+    /*
      * map of a -set- of keys by their key-id
      */
     private final HashMap<Integer, Set<Keybind>> bindsByKey;
     private long lastMouseInput = -1;
 
     private InputHandler() {
-        keybindMap = new HashMap<String, Keybind>();
-        bindsByKey = new HashMap<Integer, Set<Keybind>>();
+        keybindMap = new HashMap<>();
+        bindsByKey = new HashMap<>();
     }
 
     public void loadConfig() {
@@ -70,7 +67,7 @@ public class InputHandler {
     }
 
     public List<Property> getKeyConfig(String select){
-        List<Property> list = new ArrayList<Property>();
+        List<Property> list = new ArrayList<>();
         for(Keybind entry : keybindMap.values()){
             if(entry.getName().contains(select))
                 list.add(getKeybindProp(entry.getName(), entry.getKeyCode()));
@@ -94,10 +91,7 @@ public class InputHandler {
     @SubscribeEvent
     public void onKeyInput(KeyInputEvent evt) {
         Minecraft minecraft = Minecraft.getMinecraft();
-        if (minecraft == null) {
-            return;
-        }
-        EntityPlayer player = minecraft.thePlayer;
+        EntityPlayer player = minecraft.player;
         if (player == null) {
             return;
         }
@@ -128,12 +122,12 @@ public class InputHandler {
     public void registerKeybind(String name, int keyCode, InputCallback cb) {
         if (!keybindMap.containsKey(name)) {
             Property property = getKeybindProp(name, keyCode);
-            property.comment = "Default key: " + Keyboard.getKeyName(keyCode);
+            property.setComment("Default key: " + Keyboard.getKeyName(keyCode));
             int key = property.getInt();
             Keybind k = new Keybind(name, key);
             keybindMap.put(name, k);
             if (!bindsByKey.containsKey(key)) {
-                bindsByKey.put(key, new HashSet<Keybind>());
+                bindsByKey.put(key, new HashSet<>());
             }
             bindsByKey.get(key).add(k);
         } else {
@@ -160,7 +154,7 @@ public class InputHandler {
         k.key = newKey;
 
         if (!bindsByKey.containsKey(newKey)) {
-            bindsByKey.put(newKey, new HashSet<Keybind>());
+            bindsByKey.put(newKey, new HashSet<>());
         }
         bindsByKey.get(newKey).add(k);
     }
@@ -174,7 +168,7 @@ public class InputHandler {
     }
 
     public static final class Keybind {
-        List<InputCallback> inputHandlers = new ArrayList<InputCallback>();
+        List<InputCallback> inputHandlers = new ArrayList<>();
 
         private int key;
         private final String name;
@@ -245,13 +239,21 @@ public class InputHandler {
             if (minecraft.currentScreen != null) {
                 return;
             }
-            @Nonnull ItemStack stack = minecraft.thePlayer.getHeldItem();
+            if (!runAction(minecraft, EnumHand.MAIN_HAND)) {
+                runAction(minecraft, EnumHand.OFF_HAND);
+            }
+        }
+
+        private boolean runAction(Minecraft minecraft, EnumHand hand) {
+            @Nonnull ItemStack stack = minecraft.player.getHeldItem(hand);
             if (!stack.isEmpty() && stack.getItem() instanceof IItemKeyInterface) {
-                if (((IItemKeyInterface) stack.getItem()).onKeyActionClient(minecraft.thePlayer, stack, key)) {
+                if (((IItemKeyInterface) stack.getItem()).onKeyActionClient(minecraft.player, stack, key)) {
                     PacketItemInteraction pkt = new PacketItemInteraction(0, key);
                     NetworkHandler.sendToServer(pkt);
+                    return true;
                 }
             }
+            return false;
         }
 
         @Override

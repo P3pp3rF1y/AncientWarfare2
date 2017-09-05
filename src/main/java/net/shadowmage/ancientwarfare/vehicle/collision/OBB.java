@@ -1,11 +1,11 @@
 package net.shadowmage.ancientwarfare.vehicle.collision;
 
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.Vec3d;
+import net.minecraft.util.math.MathHelper;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
-/**
+/*
  * Entity Origin-local OBB for entity collision detection between other OBB and vanilla minecraft AABBs<br>
  * OBB keeps vectors in local space (relative to entity).<br>
  * Need to call updateForRotation(float) whenever rotation changes for the entity.  This will update the internal
@@ -17,74 +17,74 @@ import net.shadowmage.ancientwarfare.core.util.Trig;
  */
 public final class OBB {
 
-    /**
+    /*
      * Cached static axis variable to use for interaction with AABBs (x-axis)
      */
     private static Axis aabbAxis1 = new Axis(1, 0, 0);
 
-    /**
+    /*
      * Cached static axis variable to use for interaction with AABBs (z-axis)
      */
     private static Axis aabbAxis2 = new Axis(0, 0, 1);
 
-    /**
-     * Cached array of Vec3 to use for AABB corners
+    /*
+     * Cached array of Vec3d to use for AABB corners
      */
-    private Vec3[] aaBBCorners = new Vec3[]
+    private Vec3d[] aaBBCorners = new Vec3d[]
             {
-                    Vec3.createVectorHelper(0, 0, 0),
-                    Vec3.createVectorHelper(0, 0, 0),
-                    Vec3.createVectorHelper(0, 0, 0),
-                    Vec3.createVectorHelper(0, 0, 0)
+                    Vec3d.createVectorHelper(0, 0, 0),
+                    Vec3d.createVectorHelper(0, 0, 0),
+                    Vec3d.createVectorHelper(0, 0, 0),
+                    Vec3d.createVectorHelper(0, 0, 0)
             };
 
-    /**
+    /*
      * cached projections to use for overlap testing
      */
     private Projection p1 = new Projection(0, 0), p2 = new Projection(0, 0);
 
-    /**
+    /*
      * cached line segments for use in intersection testing
      */
     private LineSegment obbEdge1, obbEdge2, obbEdge3, obbEdge4;
     private LineSegment obbLine1, obbLine2, obbLine3, obbLine4;
 
-    /**
+    /*
      * W,L,H values for the OBB
      */
     public final float width, height, length;
 
-    /**
+    /*
      * cached halfWidth, halfLength values for the OBB
      */
     public final float halfWidth, halfLength;
 
-    /**
+    /*
      * cached values for max width/length extents, used to set an input AABB to cover the extents of this OBB
      */
     private float widthExtent, lengthExtent;
 
-    /**
+    /*
      * lower corners of an entity-origin OBB
      */
-    private Vec3[] corners = new Vec3[4];//upper corners would be the same thing, with y=height...so too boring to implement
+    private Vec3d[] corners = new Vec3d[4];//upper corners would be the same thing, with y=height...so too boring to implement
 
-    /**
+    /*
      * lower corners of world-origin OBB
      */
-    private Vec3[] cornerPos = new Vec3[4];//actual world-position corners for the BB;
+    private Vec3d[] cornerPos = new Vec3d[4];//actual world-position corners for the BB;
 
-    /**
+    /*
      * world-origin center of the OBB.  Updated when updateForPosition() is called.
      */
     private double x, y, z;
 
-    /**
+    /*
      * cached axis vectors for this OBB, updated when yaw/rotation changes
      */
     private Axis axis1, axis2;
 
-    /**
+    /*
      * last calcd yaw value.  Used to determine if new yaw calculations are needed
      */
     private float yaw = 0;
@@ -95,10 +95,10 @@ public final class OBB {
         this.length = length;
         this.halfWidth = width / 2.f;
         this.halfLength = length / 2.f;
-        corners[0] = Vec3.createVectorHelper(-halfWidth, 0, -halfLength);//front left
-        corners[1] = Vec3.createVectorHelper(halfWidth, 0, -halfLength);//front right
-        corners[2] = Vec3.createVectorHelper(halfWidth, 0, halfLength);//rear right
-        corners[3] = Vec3.createVectorHelper(-halfWidth, 0, halfLength);//rear left
+        corners[0] = Vec3d.createVectorHelper(-halfWidth, 0, -halfLength);//front left
+        corners[1] = Vec3d.createVectorHelper(halfWidth, 0, -halfLength);//front right
+        corners[2] = Vec3d.createVectorHelper(halfWidth, 0, halfLength);//rear right
+        corners[3] = Vec3d.createVectorHelper(-halfWidth, 0, halfLength);//rear left
         cornerPos[0] = copyVec(corners[0]);
         cornerPos[1] = copyVec(corners[1]);
         cornerPos[2] = copyVec(corners[2]);
@@ -117,7 +117,7 @@ public final class OBB {
         updateAxis();
     }
 
-    /**
+    /*
      * Update the world-position for this OBB.<br>
      * Must be called whenever the entities position is updated<br>
      * Internally it updates the cached world-position corner vectors to reflect the new input entity center position.
@@ -136,26 +136,26 @@ public final class OBB {
         updateForPosition(x, y, z);
     }
 
-    /**
+    /*
      * updates the input world-position corner to be the origin-corner + last known position
      */
     private void updateCornerVector(int index) {
-        cornerPos[index].xCoord = corners[index].xCoord + x;
-        cornerPos[index].yCoord = corners[index].yCoord + y;
-        cornerPos[index].zCoord = corners[index].zCoord + z;
+        cornerPos[index].x = corners[index].x + x;
+        cornerPos[index].y = corners[index].y + y;
+        cornerPos[index].z = corners[index].z + z;
     }
 
-    private static void setVector(Vec3 toSet, double x, double y, double z) {
-        toSet.xCoord = x;
-        toSet.yCoord = y;
-        toSet.zCoord = z;
+    private static void setVector(Vec3d toSet, double x, double y, double z) {
+        toSet.x = x;
+        toSet.y = y;
+        toSet.z = z;
     }
 
-    /**
+    /*
      * Vector helper function to copy a vector
      */
-    private Vec3 copyVec(Vec3 in) {
-        return Vec3.createVectorHelper(in.xCoord, in.yCoord, in.zCoord);
+    private Vec3d copyVec(Vec3d in) {
+        return Vec3d.createVectorHelper(in.x, in.y, in.z);
     }
 
     public final void setRotation(float yaw) {
@@ -178,25 +178,25 @@ public final class OBB {
         lengthExtent = Math.max(Math.abs(tz1), Math.abs(tz2));
 
         //front-left corner
-        corners[0].xCoord = tx1;
-        corners[0].zCoord = tz1;
+        corners[0].x = tx1;
+        corners[0].z = tz1;
 
         //front-right corner
-        corners[1].xCoord = tx2;
-        corners[1].zCoord = tz2;
+        corners[1].x = tx2;
+        corners[1].z = tz2;
 
         //rear-right corner
-        corners[2].xCoord = -corners[0].xCoord;
-        corners[2].zCoord = -corners[0].zCoord;
+        corners[2].x = -corners[0].x;
+        corners[2].z = -corners[0].z;
 
         //rear-left corner
-        corners[3].xCoord = -corners[1].xCoord;
-        corners[3].zCoord = -corners[1].zCoord;
+        corners[3].x = -corners[1].x;
+        corners[3].z = -corners[1].z;
         updateAxis();
         updateForPosition(x, y, z);
     }
 
-    /**
+    /*
      * Update this OBB for the input yaw rotation. Updates local-origin corners and axis only, does not update world-position corners -- call updateForPosition() for that.<br>
      * Will only update if the input yaw is different than the previous yaw
      */
@@ -209,22 +209,22 @@ public final class OBB {
     }
 
     private void updateAxis() {
-        axis1.axisX = corners[1].xCoord - corners[0].xCoord;
-        axis1.axisZ = corners[1].zCoord - corners[0].zCoord;
+        axis1.axisX = corners[1].x - corners[0].x;
+        axis1.axisZ = corners[1].z - corners[0].z;
         axis1.normalize();
-        axis2.axisX = corners[2].xCoord - corners[1].xCoord;
-        axis2.axisZ = corners[2].zCoord - corners[1].zCoord;
+        axis2.axisX = corners[2].x - corners[1].x;
+        axis2.axisZ = corners[2].z - corners[1].z;
         axis2.normalize();
     }
 
-    /**
+    /*
      * does not check y-coordinates. 2-d only (as there is no rotation for pitch, y-tests are a simple line overlap test)
      */
-    public final Vec3 getMinCollisionVector(OBB bb, Vec3 mtvOut) {
+    public final Vec3d getMinCollisionVector(OBB bb, Vec3d mtvOut) {
         return getMinCollisionVector(bb.cornerPos, bb.axis1, bb.axis2, mtvOut);
     }
 
-    public final Vec3 getMinCollisionVector(AxisAlignedBB bb, Vec3 mtvOut) {
+    public final Vec3d getMinCollisionVector(AxisAlignedBB bb, Vec3d mtvOut) {
         setVector(aaBBCorners[0], bb.minX, 0, bb.minZ);
         setVector(aaBBCorners[1], bb.maxX, 0, bb.minZ);
         setVector(aaBBCorners[2], bb.maxX, 0, bb.maxZ);
@@ -232,7 +232,7 @@ public final class OBB {
         return getMinCollisionVector(aaBBCorners, aabbAxis1, aabbAxis2, mtvOut);
     }
 
-    private Vec3 getMinCollisionVector(Vec3[] inCorners, Axis axis3, Axis axis4, Vec3 mtvOut) {
+    private Vec3d getMinCollisionVector(Vec3d[] inCorners, Axis axis3, Axis axis4, Vec3d mtvOut) {
         double minOverlap = Double.MAX_VALUE;
         double overlap = 0;
         Axis overlapAxis = null;
@@ -293,85 +293,85 @@ public final class OBB {
             overlapAxis = axis4;
         }
 
-        return Vec3.createVectorHelper(overlapAxis.axisX * minOverlap, 0, overlapAxis.axisZ * minOverlap);
+        return Vec3d.createVectorHelper(overlapAxis.axisX * minOverlap, 0, overlapAxis.axisZ * minOverlap);
     }
 
 
-    public Vec3 getCollisionVectorXMovement(AxisAlignedBB bb, double xMove) {
-        setVector(aaBBCorners[0], bb.minX, cornerPos[0].yCoord, bb.minZ);//front left
-        setVector(aaBBCorners[1], bb.maxX, cornerPos[0].yCoord, bb.minZ);//front right
-        setVector(aaBBCorners[2], bb.maxX, cornerPos[0].yCoord, bb.maxZ);//rear right
-        setVector(aaBBCorners[3], bb.minX, cornerPos[0].yCoord, bb.maxZ);//rear left
+    public Vec3d getCollisionVectorXMovement(AxisAlignedBB bb, double xMove) {
+        setVector(aaBBCorners[0], bb.minX, cornerPos[0].y, bb.minZ);//front left
+        setVector(aaBBCorners[1], bb.maxX, cornerPos[0].y, bb.minZ);//front right
+        setVector(aaBBCorners[2], bb.maxX, cornerPos[0].y, bb.maxZ);//rear right
+        setVector(aaBBCorners[3], bb.minX, cornerPos[0].y, bb.maxZ);//rear left
         setupOBBCollisionLines(xMove, 0);
-        Vec3 interceptBase = Vec3.createVectorHelper(0, 0, 0);
-        Vec3 intercept;
+        Vec3d interceptBase = Vec3d.createVectorHelper(0, 0, 0);
+        Vec3d intercept;
 
         double adjustedXMove = xMove;
 
-        /**
+        /*
          * test vectors from the corners of the OBB into the BB
          */
         LineSegment bbEdge = xMove > 0 ? new LineSegment(aaBBCorners[0], aaBBCorners[3]) : new LineSegment(aaBBCorners[1], aaBBCorners[2]);
-        if (cornerPos[0].zCoord >= bb.minZ && cornerPos[0].zCoord <= bb.maxZ) {
+        if (cornerPos[0].z >= bb.minZ && cornerPos[0].z <= bb.maxZ) {
             intercept = bbEdge.getIntersect(obbLine1, interceptBase);
             if (intercept != null) {
-                double x = intercept.xCoord - cornerPos[0].xCoord;
+                double x = intercept.x - cornerPos[0].x;
                 if (Math.abs(x) < Math.abs(adjustedXMove)) {
                     adjustedXMove = x;
                 }
             }
         }
-        if (cornerPos[1].zCoord >= bb.minZ && cornerPos[1].zCoord <= bb.maxZ) {
+        if (cornerPos[1].z >= bb.minZ && cornerPos[1].z <= bb.maxZ) {
             intercept = bbEdge.getIntersect(obbLine2, interceptBase);
             if (intercept != null) {
-                double x = intercept.xCoord - cornerPos[1].xCoord;
+                double x = intercept.x - cornerPos[1].x;
                 if (Math.abs(x) < Math.abs(adjustedXMove)) {
                     adjustedXMove = x;
                 }
             }
         }
-        if (cornerPos[2].zCoord >= bb.minZ && cornerPos[2].zCoord <= bb.maxZ) {
+        if (cornerPos[2].z >= bb.minZ && cornerPos[2].z <= bb.maxZ) {
             intercept = bbEdge.getIntersect(obbLine3, interceptBase);
             if (intercept != null) {
-                double x = intercept.xCoord - cornerPos[2].xCoord;
+                double x = intercept.x - cornerPos[2].x;
                 if (Math.abs(x) < Math.abs(adjustedXMove)) {
                     adjustedXMove = x;
                 }
             }
         }
-        if (cornerPos[3].zCoord >= bb.minZ && cornerPos[3].zCoord <= bb.maxZ) {
+        if (cornerPos[3].z >= bb.minZ && cornerPos[3].z <= bb.maxZ) {
             intercept = bbEdge.getIntersect(obbLine4, interceptBase);
             if (intercept != null) {
-                double x = intercept.xCoord - cornerPos[3].xCoord;
+                double x = intercept.x - cornerPos[3].x;
                 if (Math.abs(x) < Math.abs(adjustedXMove)) {
                     adjustedXMove = x;
                 }
             }
         }
 
-        /**
+        /*
          * need to figure out if should test left or right side of BB, by testing vector from x,y,z to bb center
          */
-        Vec3 bbVec1 = xMove > 0 ? aaBBCorners[0] : aaBBCorners[1];
-        Vec3 bbVec2 = xMove > 0 ? aaBBCorners[3] : aaBBCorners[2];
+        Vec3d bbVec1 = xMove > 0 ? aaBBCorners[0] : aaBBCorners[1];
+        Vec3d bbVec2 = xMove > 0 ? aaBBCorners[3] : aaBBCorners[2];
         LineSegment bbLine = new LineSegment(bbVec1, bbVec1.addVector(-xMove, 0, 0));
         LineSegment bbLine2 = new LineSegment(bbVec2, bbVec2.addVector(-xMove, 0, 0));
         //TODO find which obb lines I should be testing against...
 
         //test OBBEdge1
-        if (bbVec1.zCoord >= Trig.min(cornerPos[0].zCoord, cornerPos[1].zCoord) && bbVec1.zCoord <= Trig.max(cornerPos[0].zCoord, cornerPos[1].zCoord)) {
+        if (bbVec1.z >= Trig.min(cornerPos[0].z, cornerPos[1].z) && bbVec1.z <= Trig.max(cornerPos[0].z, cornerPos[1].z)) {
             intercept = obbEdge1.getIntersect(bbLine, interceptBase);
             if (intercept != null) {
-                double x = bbVec1.xCoord - intercept.xCoord;
+                double x = bbVec1.x - intercept.x;
                 if (Math.abs(x) < Math.abs(adjustedXMove)) {
                     adjustedXMove = x;
                 }
             }
         }
-        if (bbVec2.zCoord >= Trig.min(cornerPos[0].zCoord, cornerPos[1].zCoord) && bbVec2.zCoord <= Trig.max(cornerPos[0].zCoord, cornerPos[1].zCoord)) {
+        if (bbVec2.z >= Trig.min(cornerPos[0].z, cornerPos[1].z) && bbVec2.z <= Trig.max(cornerPos[0].z, cornerPos[1].z)) {
             intercept = obbEdge1.getIntersect(bbLine2, interceptBase);
             if (intercept != null) {
-                double x = bbVec2.xCoord - intercept.xCoord;
+                double x = bbVec2.x - intercept.x;
                 if (Math.abs(x) < Math.abs(adjustedXMove)) {
                     adjustedXMove = x;
                 }
@@ -379,19 +379,19 @@ public final class OBB {
         }
 
         //test OBBEdge2
-        if (bbVec1.zCoord >= Trig.min(cornerPos[1].zCoord, cornerPos[2].zCoord) && bbVec1.zCoord <= Trig.max(cornerPos[1].zCoord, cornerPos[2].zCoord)) {
+        if (bbVec1.z >= Trig.min(cornerPos[1].z, cornerPos[2].z) && bbVec1.z <= Trig.max(cornerPos[1].z, cornerPos[2].z)) {
             intercept = obbEdge2.getIntersect(bbLine, interceptBase);
             if (intercept != null) {
-                double x = bbVec1.xCoord - intercept.xCoord;
+                double x = bbVec1.x - intercept.x;
                 if (Math.abs(x) < Math.abs(adjustedXMove)) {
                     adjustedXMove = x;
                 }
             }
         }
-        if (bbVec2.zCoord >= Trig.min(cornerPos[1].zCoord, cornerPos[2].zCoord) && bbVec2.zCoord <= Trig.max(cornerPos[1].zCoord, cornerPos[2].zCoord)) {
+        if (bbVec2.z >= Trig.min(cornerPos[1].z, cornerPos[2].z) && bbVec2.z <= Trig.max(cornerPos[1].z, cornerPos[2].z)) {
             intercept = obbEdge2.getIntersect(bbLine2, interceptBase);
             if (intercept != null) {
-                double x = bbVec2.xCoord - intercept.xCoord;
+                double x = bbVec2.x - intercept.x;
                 if (Math.abs(x) < Math.abs(adjustedXMove)) {
                     adjustedXMove = x;
                 }
@@ -399,19 +399,19 @@ public final class OBB {
         }
 
         //test OBBEdge3
-        if (bbVec1.zCoord >= Trig.min(cornerPos[2].zCoord, cornerPos[3].zCoord) && bbVec1.zCoord <= Trig.max(cornerPos[2].zCoord, cornerPos[3].zCoord)) {
+        if (bbVec1.z >= Trig.min(cornerPos[2].z, cornerPos[3].z) && bbVec1.z <= Trig.max(cornerPos[2].z, cornerPos[3].z)) {
             intercept = obbEdge3.getIntersect(bbLine, interceptBase);
             if (intercept != null) {
-                double x = bbVec1.xCoord - intercept.xCoord;
+                double x = bbVec1.x - intercept.x;
                 if (Math.abs(x) < Math.abs(adjustedXMove)) {
                     adjustedXMove = x;
                 }
             }
         }
-        if (bbVec2.zCoord >= Trig.min(cornerPos[2].zCoord, cornerPos[3].zCoord) && bbVec2.zCoord <= Trig.max(cornerPos[2].zCoord, cornerPos[3].zCoord)) {
+        if (bbVec2.z >= Trig.min(cornerPos[2].z, cornerPos[3].z) && bbVec2.z <= Trig.max(cornerPos[2].z, cornerPos[3].z)) {
             intercept = obbEdge3.getIntersect(bbLine2, interceptBase);
             if (intercept != null) {
-                double x = bbVec2.xCoord - intercept.xCoord;
+                double x = bbVec2.x - intercept.x;
                 if (Math.abs(x) < Math.abs(adjustedXMove)) {
                     adjustedXMove = x;
                 }
@@ -419,19 +419,19 @@ public final class OBB {
         }
 
         //test OBBEdge3
-        if (bbVec1.zCoord >= Trig.min(cornerPos[3].zCoord, cornerPos[0].zCoord) && bbVec1.zCoord <= Trig.max(cornerPos[3].zCoord, cornerPos[0].zCoord)) {
+        if (bbVec1.z >= Trig.min(cornerPos[3].z, cornerPos[0].z) && bbVec1.z <= Trig.max(cornerPos[3].z, cornerPos[0].z)) {
             intercept = obbEdge4.getIntersect(bbLine, interceptBase);
             if (intercept != null) {
-                double x = bbVec1.xCoord - intercept.xCoord;
+                double x = bbVec1.x - intercept.x;
                 if (Math.abs(x) < Math.abs(adjustedXMove)) {
                     adjustedXMove = x;
                 }
             }
         }
-        if (bbVec2.zCoord >= Trig.min(cornerPos[3].zCoord, cornerPos[0].zCoord) && bbVec2.zCoord <= Trig.max(cornerPos[3].zCoord, cornerPos[0].zCoord)) {
+        if (bbVec2.z >= Trig.min(cornerPos[3].z, cornerPos[0].z) && bbVec2.z <= Trig.max(cornerPos[3].z, cornerPos[0].z)) {
             intercept = obbEdge4.getIntersect(bbLine2, interceptBase);
             if (intercept != null) {
-                double x = bbVec2.xCoord - intercept.xCoord;
+                double x = bbVec2.x - intercept.x;
                 if (Math.abs(x) < Math.abs(adjustedXMove)) {
                     adjustedXMove = x;
                 }
@@ -443,161 +443,161 @@ public final class OBB {
             adjustedXMove *= 0.995d;
         }//minor correction so that entity should never clip into geometry, even with rounding errors...
 
-        Vec3 closestIntercept = Vec3.createVectorHelper(adjustedXMove, 0, 0);
+        Vec3d closestIntercept = Vec3d.createVectorHelper(adjustedXMove, 0, 0);
         return closestIntercept;
     }
 
     private void setupOBBCollisionLines(double x, double z) {
-        obbLine1.end.xCoord = obbLine1.start.xCoord + x;
-        obbLine1.end.yCoord = obbLine1.start.yCoord;
-        obbLine1.end.zCoord = obbLine1.start.zCoord + z;
+        obbLine1.end.x = obbLine1.start.x + x;
+        obbLine1.end.y = obbLine1.start.y;
+        obbLine1.end.z = obbLine1.start.z + z;
 
-        obbLine2.end.xCoord = obbLine2.start.xCoord + x;
-        obbLine2.end.yCoord = obbLine2.start.yCoord;
-        obbLine2.end.zCoord = obbLine2.start.zCoord + z;
+        obbLine2.end.x = obbLine2.start.x + x;
+        obbLine2.end.y = obbLine2.start.y;
+        obbLine2.end.z = obbLine2.start.z + z;
 
-        obbLine3.end.xCoord = obbLine3.start.xCoord + x;
-        obbLine3.end.yCoord = obbLine3.start.yCoord;
-        obbLine3.end.zCoord = obbLine3.start.zCoord + z;
+        obbLine3.end.x = obbLine3.start.x + x;
+        obbLine3.end.y = obbLine3.start.y;
+        obbLine3.end.z = obbLine3.start.z + z;
 
-        obbLine4.end.xCoord = obbLine4.start.xCoord + x;
-        obbLine4.end.yCoord = obbLine4.start.yCoord;
-        obbLine4.end.zCoord = obbLine4.start.zCoord + z;
+        obbLine4.end.x = obbLine4.start.x + x;
+        obbLine4.end.y = obbLine4.start.y;
+        obbLine4.end.z = obbLine4.start.z + z;
     }
 
-    public final Vec3 getCollisionVectorZMovement(AxisAlignedBB bb, double zMove) {
-        setVector(aaBBCorners[0], bb.minX, cornerPos[0].yCoord, bb.minZ);//front left
-        setVector(aaBBCorners[1], bb.maxX, cornerPos[0].yCoord, bb.minZ);//front right
-        setVector(aaBBCorners[2], bb.maxX, cornerPos[0].yCoord, bb.maxZ);//rear right
-        setVector(aaBBCorners[3], bb.minX, cornerPos[0].yCoord, bb.maxZ);//rear left
+    public final Vec3d getCollisionVectorZMovement(AxisAlignedBB bb, double zMove) {
+        setVector(aaBBCorners[0], bb.minX, cornerPos[0].y, bb.minZ);//front left
+        setVector(aaBBCorners[1], bb.maxX, cornerPos[0].y, bb.minZ);//front right
+        setVector(aaBBCorners[2], bb.maxX, cornerPos[0].y, bb.maxZ);//rear right
+        setVector(aaBBCorners[3], bb.minX, cornerPos[0].y, bb.maxZ);//rear left
         setupOBBCollisionLines(0, zMove);
-        Vec3 interceptBase = Vec3.createVectorHelper(0, 0, 0);
-        Vec3 intercept;
+        Vec3d interceptBase = Vec3d.createVectorHelper(0, 0, 0);
+        Vec3d intercept;
 
         double adjustedZMove = zMove;
 
         //TODO find what OBB lines I should be testing against
-        /**
+        /*
          * test vectors from the corners of the OBB into the BB
          */
         LineSegment bbEdge = zMove > 0 ? new LineSegment(aaBBCorners[0], aaBBCorners[1]) : new LineSegment(aaBBCorners[3], aaBBCorners[2]);
-        if (cornerPos[0].xCoord >= bb.minX && cornerPos[0].xCoord <= bb.maxX) {
+        if (cornerPos[0].x >= bb.minX && cornerPos[0].x <= bb.maxX) {
             intercept = bbEdge.getIntersect(obbLine1, interceptBase);
             if (intercept != null) {
-                double z = intercept.zCoord - cornerPos[0].zCoord;
+                double z = intercept.z - cornerPos[0].z;
                 if (Math.abs(z) < Math.abs(adjustedZMove)) {
                     adjustedZMove = z;
                 }
             }
         }
-        if (cornerPos[1].xCoord >= bb.minX && cornerPos[1].xCoord <= bb.maxX) {
+        if (cornerPos[1].x >= bb.minX && cornerPos[1].x <= bb.maxX) {
             intercept = bbEdge.getIntersect(obbLine2, interceptBase);
             if (intercept != null) {
-                double z = intercept.zCoord - cornerPos[1].zCoord;
+                double z = intercept.z - cornerPos[1].z;
                 if (Math.abs(z) < Math.abs(adjustedZMove)) {
                     adjustedZMove = z;
                 }
             }
         }
-        if (cornerPos[2].xCoord >= bb.minX && cornerPos[2].xCoord <= bb.maxX) {
+        if (cornerPos[2].x >= bb.minX && cornerPos[2].x <= bb.maxX) {
             intercept = bbEdge.getIntersect(obbLine3, interceptBase);
             if (intercept != null) {
-                double z = intercept.zCoord - cornerPos[2].zCoord;
+                double z = intercept.z - cornerPos[2].z;
                 if (Math.abs(z) < Math.abs(adjustedZMove)) {
                     adjustedZMove = z;
                 }
             }
         }
-        if (cornerPos[3].xCoord >= bb.minX && cornerPos[3].xCoord <= bb.maxX) {
+        if (cornerPos[3].x >= bb.minX && cornerPos[3].x <= bb.maxX) {
             intercept = bbEdge.getIntersect(obbLine4, interceptBase);
             if (intercept != null) {
-                double z = intercept.zCoord - cornerPos[3].zCoord;
+                double z = intercept.z - cornerPos[3].z;
                 if (Math.abs(z) < Math.abs(adjustedZMove)) {
                     adjustedZMove = z;
                 }
             }
         }
 
-        /**
+        /*
          * need to figure out if should test left or right side of BB, by testing vector from x,y,z to bb center
          */
-        Vec3 bbVec1 = zMove > 0 ? aaBBCorners[0] : aaBBCorners[3];//minX and either min or maxZ
-        Vec3 bbVec2 = zMove > 0 ? aaBBCorners[1] : aaBBCorners[2];//maxX and either min or maxZ
+        Vec3d bbVec1 = zMove > 0 ? aaBBCorners[0] : aaBBCorners[3];//minX and either min or maxZ
+        Vec3d bbVec2 = zMove > 0 ? aaBBCorners[1] : aaBBCorners[2];//maxX and either min or maxZ
 
         LineSegment bbLine = new LineSegment(bbVec1, bbVec1.addVector(0, 0, -zMove));
         LineSegment bbLine2 = new LineSegment(bbVec2, bbVec2.addVector(0, 0, -zMove));
         //TODO find which obb lines I should be testing against...//
         //test OBBEdge1
-        if (bbVec1.xCoord >= Trig.min(cornerPos[0].xCoord, cornerPos[1].xCoord) && bbVec1.xCoord <= Trig.max(cornerPos[0].xCoord, cornerPos[1].xCoord)) {
+        if (bbVec1.x >= Trig.min(cornerPos[0].x, cornerPos[1].x) && bbVec1.x <= Trig.max(cornerPos[0].x, cornerPos[1].x)) {
             intercept = obbEdge1.getIntersect(bbLine, interceptBase);
             if (intercept != null) {
-                double z = bbVec1.zCoord - intercept.zCoord;
+                double z = bbVec1.z - intercept.z;
                 if (Math.abs(z) < Math.abs(adjustedZMove)) {
                     adjustedZMove = z;
                 }
             }
         }
-        if (bbVec2.xCoord >= Trig.min(cornerPos[0].xCoord, cornerPos[1].xCoord) && bbVec2.xCoord <= Trig.max(cornerPos[0].xCoord, cornerPos[1].xCoord)) {
+        if (bbVec2.x >= Trig.min(cornerPos[0].x, cornerPos[1].x) && bbVec2.x <= Trig.max(cornerPos[0].x, cornerPos[1].x)) {
             intercept = obbEdge1.getIntersect(bbLine2, interceptBase);
             if (intercept != null) {
-                double z = bbVec2.zCoord - intercept.zCoord;
+                double z = bbVec2.z - intercept.z;
                 if (Math.abs(z) < Math.abs(adjustedZMove)) {
                     adjustedZMove = z;
                 }
             }
         }
         //test OBBEdge2
-        if (bbVec1.xCoord >= Trig.min(cornerPos[1].xCoord, cornerPos[2].xCoord) && bbVec1.xCoord <= Trig.max(cornerPos[1].xCoord, cornerPos[2].xCoord)) {
+        if (bbVec1.x >= Trig.min(cornerPos[1].x, cornerPos[2].x) && bbVec1.x <= Trig.max(cornerPos[1].x, cornerPos[2].x)) {
             intercept = obbEdge2.getIntersect(bbLine, interceptBase);
             if (intercept != null) {
-                double z = bbVec1.zCoord - intercept.zCoord;
+                double z = bbVec1.z - intercept.z;
                 if (Math.abs(z) < Math.abs(adjustedZMove)) {
                     adjustedZMove = z;
                 }
             }
         }
-        if (bbVec2.xCoord >= Trig.min(cornerPos[1].xCoord, cornerPos[2].xCoord) && bbVec2.xCoord <= Trig.max(cornerPos[1].xCoord, cornerPos[2].xCoord)) {
+        if (bbVec2.x >= Trig.min(cornerPos[1].x, cornerPos[2].x) && bbVec2.x <= Trig.max(cornerPos[1].x, cornerPos[2].x)) {
             intercept = obbEdge2.getIntersect(bbLine2, interceptBase);
             if (intercept != null) {
-                double z = bbVec2.zCoord - intercept.zCoord;
+                double z = bbVec2.z - intercept.z;
                 if (Math.abs(z) < Math.abs(adjustedZMove)) {
                     adjustedZMove = z;
                 }
             }
         }
         //test OBBEdge3
-        if (bbVec1.xCoord >= Trig.min(cornerPos[2].xCoord, cornerPos[3].xCoord) && bbVec1.xCoord <= Trig.max(cornerPos[2].xCoord, cornerPos[3].xCoord)) {
+        if (bbVec1.x >= Trig.min(cornerPos[2].x, cornerPos[3].x) && bbVec1.x <= Trig.max(cornerPos[2].x, cornerPos[3].x)) {
             intercept = obbEdge3.getIntersect(bbLine, interceptBase);
             if (intercept != null) {
-                double z = bbVec1.zCoord - intercept.zCoord;
+                double z = bbVec1.z - intercept.z;
                 if (Math.abs(z) < Math.abs(adjustedZMove)) {
                     adjustedZMove = z;
                 }
             }
         }
-        if (bbVec2.xCoord >= Trig.min(cornerPos[2].xCoord, cornerPos[3].xCoord) && bbVec2.xCoord <= Trig.max(cornerPos[2].xCoord, cornerPos[3].xCoord)) {
+        if (bbVec2.x >= Trig.min(cornerPos[2].x, cornerPos[3].x) && bbVec2.x <= Trig.max(cornerPos[2].x, cornerPos[3].x)) {
             intercept = obbEdge3.getIntersect(bbLine2, interceptBase);
             if (intercept != null) {
-                double z = bbVec2.zCoord - intercept.zCoord;
+                double z = bbVec2.z - intercept.z;
                 if (Math.abs(z) < Math.abs(adjustedZMove)) {
                     adjustedZMove = z;
                 }
             }
         }
         //test OBBEdge4
-        if (bbVec1.xCoord >= Trig.min(cornerPos[3].xCoord, cornerPos[0].xCoord) && bbVec1.xCoord <= Trig.max(cornerPos[3].xCoord, cornerPos[0].xCoord)) {
+        if (bbVec1.x >= Trig.min(cornerPos[3].x, cornerPos[0].x) && bbVec1.x <= Trig.max(cornerPos[3].x, cornerPos[0].x)) {
             intercept = obbEdge4.getIntersect(bbLine, interceptBase);
             if (intercept != null) {
-                double z = bbVec1.zCoord - intercept.zCoord;
+                double z = bbVec1.z - intercept.z;
                 if (Math.abs(z) < Math.abs(adjustedZMove)) {
                     adjustedZMove = z;
                 }
             }
         }
-        if (bbVec2.xCoord >= Trig.min(cornerPos[3].xCoord, cornerPos[0].xCoord) && bbVec2.xCoord <= Trig.max(cornerPos[3].xCoord, cornerPos[0].xCoord)) {
+        if (bbVec2.x >= Trig.min(cornerPos[3].x, cornerPos[0].x) && bbVec2.x <= Trig.max(cornerPos[3].x, cornerPos[0].x)) {
             intercept = obbEdge4.getIntersect(bbLine2, interceptBase);
             if (intercept != null) {
-                double z = bbVec2.zCoord - intercept.zCoord;
+                double z = bbVec2.z - intercept.z;
                 if (Math.abs(z) < Math.abs(adjustedZMove)) {
                     adjustedZMove = z;
                 }
@@ -609,11 +609,11 @@ public final class OBB {
             adjustedZMove *= 0.995d;
         }//minor correction so that entity should never clip into geometry, even with rounding errors...
 
-        Vec3 closestIntercept = Vec3.createVectorHelper(0, 0, adjustedZMove);
+        Vec3d closestIntercept = Vec3d.createVectorHelper(0, 0, adjustedZMove);
         return closestIntercept;
     }
 
-    /**
+    /*
      * Return a corner of the OBB for the given index<br>
      * 0=front left<br>
      * 1=front right<br>
@@ -623,11 +623,11 @@ public final class OBB {
      * @param index valid values are 0-3
      * @return the currently calculated corner position for the given index, vec is in world coordinates
      */
-    public Vec3 getCorner(int index) {
+    public Vec3d getCorner(int index) {
         return cornerPos[index];
     }
 
-    /**
+    /*
      * Sets the input bb to encompass the extents of the OBB<br>
      *
      * @param bb the AABB to be set
@@ -663,8 +663,8 @@ public final class OBB {
             }
         }
 
-        public final double dot(Vec3 vec) {
-            return axisX * vec.xCoord + axisY * vec.yCoord + axisZ * vec.zCoord;
+        public final double dot(Vec3d vec) {
+            return axisX * vec.x + axisY * vec.y + axisZ * vec.z;
         }
 
         @Override
@@ -672,7 +672,7 @@ public final class OBB {
             return String.format("Axis: %.2f, %.2f, %.2f", axisX, axisY, axisZ);
         }
 
-        private Projection projectShape(Vec3[] corners, Projection p) {
+        private Projection projectShape(Vec3d[] corners, Projection p) {
             double d = dot(corners[0]);
             double min = d;
             double max = d;
@@ -736,26 +736,26 @@ public final class OBB {
 
     private static final class LineSegment {
 
-        public Vec3 start, end;
+        public Vec3d start, end;
 
-        public LineSegment(Vec3 start, Vec3 end) {
+        public LineSegment(Vec3d start, Vec3d end) {
             this.start = start;
             this.end = end;
         }
 
-        public Vec3 getIntersect(LineSegment otherLine, Vec3 out) {
+        public Vec3d getIntersect(LineSegment otherLine, Vec3d out) {
             if (getLineIntersection(start, end, otherLine.start, otherLine.end, out)) {
                 return out;
             }
             return null;
         }
 
-        private boolean getLineIntersection(Vec3 p0, Vec3 p1, Vec3 p2, Vec3 p3, Vec3 out) {
+        private boolean getLineIntersection(Vec3d p0, Vec3d p1, Vec3d p2, Vec3d p3, Vec3d out) {
             double s02_x, s02_y, s10_x, s10_y, s32_x, s32_y, s_numer, t_numer, denom, t;
-            s10_x = p1.xCoord - p0.xCoord;
-            s10_y = p1.zCoord - p0.zCoord;
-            s32_x = p3.xCoord - p2.xCoord;
-            s32_y = p3.zCoord - p2.zCoord;
+            s10_x = p1.x - p0.x;
+            s10_y = p1.z - p0.z;
+            s32_x = p3.x - p2.x;
+            s32_y = p3.z - p2.z;
 
             denom = s10_x * s32_y - s32_x * s10_y;
             if (denom == 0) {
@@ -763,8 +763,8 @@ public final class OBB {
             } // Collinear
             boolean denomPositive = denom > 0;
 
-            s02_x = p0.xCoord - p2.xCoord;
-            s02_y = p0.zCoord - p2.zCoord;
+            s02_x = p0.x - p2.x;
+            s02_y = p0.z - p2.z;
             s_numer = s10_x * s02_y - s10_y * s02_x;
             if ((s_numer < 0) == denomPositive) {
                 return false;
@@ -781,8 +781,8 @@ public final class OBB {
             // Collision detected
             t = t_numer / denom;
             if (out != null) {
-                out.xCoord = p0.xCoord + (t * s10_x);
-                out.zCoord = p0.zCoord + (t * s10_y);
+                out.x = p0.x + (t * s10_x);
+                out.z = p0.z + (t * s10_y);
             }
             return true;
         }

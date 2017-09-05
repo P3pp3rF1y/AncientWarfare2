@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -92,7 +92,7 @@ public Object getClientGuiElement(int ID, EntityPlayer player, World world, int 
   return null;
   }
 
-/**
+/*
  * auto-wrapper for sending an openGUI packet from client-server to open a server side GUI without
  * special scripting in every damn entity/TE, also handles sending init data after the GUI is opened
  * all synched containers must openGUI through here, or they must handle synching manually

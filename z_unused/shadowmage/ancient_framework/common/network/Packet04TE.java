@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -32,7 +32,7 @@ public class Packet04TE extends PacketBase
 int x;
 int y;
 int z;
-/**
+/*
  * 
  */
 public Packet04TE()
@@ -54,9 +54,9 @@ public int getPacketType()
 
 public void setParams(TileEntity te)
   {
-  this.x = te.xCoord;
-  this.y = te.yCoord;
-  this.z = te.zCoord;
+  this.x = te.x;
+  this.y = te.y;
+  this.z = te.z;
   }
 
 @Override

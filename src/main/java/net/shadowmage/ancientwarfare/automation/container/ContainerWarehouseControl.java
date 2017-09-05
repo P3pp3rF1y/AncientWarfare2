@@ -115,7 +115,7 @@ public class ContainerWarehouseControl extends ContainerTileBase<TileWarehouseBa
     }
 
     private void synchItemMaps() {
-        /**
+        /*
          *
          * need to loop through this.itemMap and compare quantities to tileEntity.itemMap
          *    add any changes to change-list

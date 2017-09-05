@@ -6,7 +6,7 @@ import net.shadowmage.ancientwarfare.structure.gates.types.Gate;
 
 public class AWStructureCrafting {
 
-    /**
+    /*
      * load any recipes for structure module recipes
      */
     public static void loadRecipes() {

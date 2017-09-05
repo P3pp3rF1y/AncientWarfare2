@@ -22,7 +22,7 @@ public class TownPartBlock {
         this.bb = bb;
         this.x = x;
         this.z = z;
-        plots = new ArrayList<TownPartPlot>();
+        plots = new ArrayList<>();
         this.roadBorders = roadBorders;
         distFromTownCenter = dist;
     }

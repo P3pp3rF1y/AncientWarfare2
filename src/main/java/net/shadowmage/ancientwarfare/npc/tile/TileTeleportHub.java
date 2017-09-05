@@ -21,7 +21,7 @@ public class TileTeleportHub extends TileEntity {
         COUNTER++;
         if (COUNTER == 10) {
             COUNTER = 0;
-            AxisAlignedBB blockSpaceAbove = new AxisAlignedBB(this.xCoord, this.yCoord + 1, this.zCoord, this.xCoord + 1, this.yCoord + 2, this.zCoord + 1);
+            AxisAlignedBB blockSpaceAbove = new AxisAlignedBB(this.x, this.y + 1, this.z, this.x + 1, this.y + 2, this.z + 1);
             List entitiesAbove = this.world.getEntitiesWithinAABB(EntityPlayer.class, blockSpaceAbove);
             for (Object obj : entitiesAbove) {
                 EntityPlayer entityPlayer = (EntityPlayer)obj;
@@ -53,7 +53,7 @@ public class TileTeleportHub extends TileEntity {
         }
     }
     
-    /**
+    /*
      * Be sure to call this BEFORE a teleport request 
      * @param entityPlayerName The name of the player that's teleporting here
      */

@@ -105,7 +105,7 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI<NpcPlayerOwned> {
         }
     }
 
-    /**
+    /*
      * move towards the commanded guard-entity.
      */
     private void handleGuardCommand(Command cmd) {

@@ -22,7 +22,7 @@ public class TownPartPlot {
         reseatMinMax();
     }
 
-    /**
+    /*
      * mark this plot and any merged plots as closed
      */
     public void markClosed() {
@@ -49,7 +49,7 @@ public class TownPartPlot {
         this.maxZ = z;
     }
 
-    /**
+    /*
      * Expands THIS plot to include the passed in plot.<br>
      * The passed-in plot should be discarded as it is no longer valid
      */

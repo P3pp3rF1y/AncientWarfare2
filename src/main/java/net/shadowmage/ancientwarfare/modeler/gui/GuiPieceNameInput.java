@@ -49,7 +49,7 @@ public class GuiPieceNameInput extends GuiContainerBase {
 
     }
 
-    /**
+    /*
      * anonymous classes should override for a callback mechanism for when a name is selected
      */
     protected void onNameSelected(String name) {

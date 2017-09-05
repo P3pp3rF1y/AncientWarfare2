@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -44,51 +44,51 @@ protected int renderPosY;
 protected int width;
 protected int height;
 
-/**
+/*
  * the most recently pressed button on this element, -1 for none
  */
 protected int mouseButton = -1;
 
-/**
+/*
  * the X,Y of where the mouse button was pressed or moved to
  */
 protected int mouseDownX;
 protected int mouseDownY;
 
-/**
+/*
  * the X,Y of where the mouse button was pressed or moved from (used with mouseDown to calc move delta)
  */
 protected int mouseLastX;
 protected int mouseLastY;
 
-/**
+/*
  * set by parent GUI to update render pos & mouse interaction relative to scaled screen size/etc. scrollable area uses this to offset render & mousePos relative to the scroll area
  */
 protected int guiLeft;
 protected int guiTop;
 
-/**
+/*
  * cached variable of isMouseOver(x,y). updated onMouseMoved
  */
 protected boolean isMouseOver = false;
 
-/**
+/*
  * determines interaction status, render status for some elements
  */
 public boolean enabled = true;
 
-/**
+/*
  * if should render at all, and/or accept input
  */
 public boolean hidden = false;
 
-/**
+/*
  * if should render offset using guiLeft/guiTop (not fully implemented in all elements...mostly deprecated in favor of renderPos updating)
  */
 public boolean renderWithGuiOffset = true;
 
 public boolean renderTooltip = false;
-protected List<String> tooltipString = new ArrayList<String>();
+protected List<String> tooltipString = new ArrayList<>();
 
 protected Minecraft mc;
 protected FontRenderer fr;
@@ -223,7 +223,7 @@ public void onKeyTyped(char ch, int keyNum)
     }
   }
 
-/**
+/*
  * anonymous classes may override this for a single onActivated call
  */
 public void onElementActivated()
@@ -231,7 +231,7 @@ public void onElementActivated()
   
   }
 
-/**
+/*
  * renders the four corners of a texture, from the corner inward (e.g. for size-adaptable elements)
  * @param x renderPosX
  * @param y renderPosY

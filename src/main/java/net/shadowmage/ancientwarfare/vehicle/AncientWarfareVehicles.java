@@ -46,19 +46,19 @@ public class AncientWarfareVehicles {
 
         ModuleStatus.vehiclesLoaded = true;
 
-        /**
+        /*
          * setup module-owned config file and config-access class
          */
         statics = new AWVehicleStatics("AncientWarfareVehicle");
 
-        /**
+        /*
          * load pre-init (items, blocks, entities)
          */
         proxy.registerClient();
         AWVehicleEntityLoader.load();
         AWVehicleItemLoader.load();
 
-        /**
+        /*
          * register tick-handlers
          */
         PacketBase.registerPacketType(NetworkHandler.PACKET_VEHICLE_INPUT_STATE, PacketInputState.class);
@@ -71,11 +71,11 @@ public class AncientWarfareVehicles {
     @EventHandler
     public void init(FMLInitializationEvent evt) {
 
-        /**
+        /*
          * construct recipes, load plugins
          */
         AWVehicleCrafting.loadRecipes();
-        /**
+        /*
          * save config for any changes that were made during loading stages
          */
         statics.save();

@@ -5,7 +5,7 @@ import net.shadowmage.ancientwarfare.core.item.ItemBase;
 
 public class AWItems {
 
-    /**
+    /*
      * CORE module
      */
     public static Item researchBook;
@@ -24,7 +24,7 @@ public class AWItems {
     public static ItemBase componentItem;
     public static Item steel_ingot;
 
-    /**
+    /*
      * NPC module
      */
     public static Item npcSpawner;
@@ -34,12 +34,12 @@ public class AWItems {
     public static Item routingOrder;
     public static Item tradeOrder;
 
-    /**
+    /*
      * AUTOMATION module
      */
     public static ItemBase worksiteUpgrade;
 
-    /**
+    /*
      * STRUCTURE module
      */
 }

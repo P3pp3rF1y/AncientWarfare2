@@ -1,13 +1,15 @@
 package net.shadowmage.ancientwarfare.core.entity;
 
-import cpw.mods.fml.common.registry.EntityRegistry;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 
 public class AWEntityRegistry {
 
-    /**
+    /*
      * NPC Module Registrations
      */
     public static final String NPC_WORKER = "aw_npc_worker";
@@ -123,7 +125,7 @@ public class AWEntityRegistry {
     public static final String NPC_FACTION_CUSTOM_2_BARD = "custom_2.bard";
     public static final String NPC_FACTION_CUSTOM_3_BARD = "custom_3.bard";
 
-    /**
+    /*
      * Vehicle Module Entity Registrations
      */
 
@@ -131,17 +133,17 @@ public class AWEntityRegistry {
     public static final String VEHICLE_CATAPULT = "catapult";
     public static final String MISSILE_TEST = "missile_test";
 
-    /**
+    /*
      * Structure Module Entity Registrations
      */
     //TODO add gates?? where are they registered at?
     public static final String AW_GATES = "aw_gate";
 
     public static void registerEntity(EntityDeclaration reg) {
-        EntityRegistry.registerModEntity(reg.entityClass, reg.entityName, reg.id, reg.mod(), reg.trackingRange(), reg.updateFrequency(), reg.sendsVelocityUpdates());
+        EntityRegistry.registerModEntity(new ResourceLocation(AncientWarfareCore.modID, reg.entityName), reg.entityClass, reg.entityName, reg.id, reg.mod(), reg.trackingRange(), reg.updateFrequency(), reg.sendsVelocityUpdates());
     }
 
-    /**
+    /*
      * The entityClass for this registration -must- match the class returned from createEntity, or weird desynch crap will happen as server/client may be using different classes
      * and/or the entity will not be persistent due to class mismatch
      *

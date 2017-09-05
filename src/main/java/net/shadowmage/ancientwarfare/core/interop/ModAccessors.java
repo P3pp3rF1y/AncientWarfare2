@@ -6,9 +6,9 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 public class ModAccessors {
     public static InteropFtbuInterface FTBU;
     public static boolean FTBU_LOADED = false;
-    public static InteropHarderWildlifeInterface HARDER_WILDLIFE;
+    //public static InteropHarderWildlifeInterface HARDER_WILDLIFE;
     public static boolean HARDER_WILDLIFE_LOADED = false;
-    public static InteropEnviromineInterface ENVIROMINE;
+    //public static InteropEnviromineInterface ENVIROMINE;
     public static boolean ENVIROMINE_LOADED = false;
     //public static InteropTreecapitatorInterface TREECAPITATOR; //TODO implement integration with the new treecapitator port ??
     public static boolean TREECAPITATOR_LOADED = false;
@@ -26,6 +26,7 @@ public class ModAccessors {
                 FTBU = Class.forName("net.shadowmage.ancientwarfare.core.interop.InteropFtbuDummy").asSubclass(InteropFtbuInterface.class).newInstance();
             }
             
+/*
             if (Loader.isModLoaded("HarderWildlife")) {
                 AncientWarfareCore.log.info("HarderWildlife found!");
                 HARDER_WILDLIFE = Class.forName("net.shadowmage.ancientwarfare.core.interop.InteropHarderWildlife").asSubclass(InteropHarderWildlifeInterface.class).newInstance();
@@ -34,7 +35,8 @@ public class ModAccessors {
                 AncientWarfareCore.log.info("HarderWildlife not found.");
                 HARDER_WILDLIFE = Class.forName("net.shadowmage.ancientwarfare.core.interop.InteropHarderWildlifeDummy").asSubclass(InteropHarderWildlifeInterface.class).newInstance();
             }
-            
+*/
+
 /* TODO enviromine support
             if (Loader.isModLoaded("enviromine")) {
                 AncientWarfareCore.log.info("Enviromine found!");

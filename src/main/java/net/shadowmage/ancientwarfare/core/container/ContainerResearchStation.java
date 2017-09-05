@@ -5,11 +5,13 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 import net.shadowmage.ancientwarfare.core.tile.TileResearchStation;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,10 +21,10 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
     public String researcherName;
     public int currentGoal = -1;
     public int progress = 0;
-    public List<Integer> queuedResearch = new ArrayList<Integer>();
+    public List<Integer> queuedResearch = new ArrayList<>();
 
-    public ContainerResearchStation(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
+    public ContainerResearchStation(EntityPlayer player, BlockPos pos) {
+        super(player, pos);
         researcherName = tileEntity.getCrafterName();
         useAdjacentInventory = tileEntity.useAdjacentInventory;
         if (!player.world.isRemote) {
@@ -70,13 +72,13 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
             {
                 if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             } else if (slotClickedIndex < playerSlotEnd)//player slots, merge into storage
             {
                 if (!this.mergeItemStack(slotStack, 1, playerSlotStart, false))//merge into storage
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
             if (slotStack.getCount() == 0) {
@@ -85,9 +87,9 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
                 theSlot.onSlotChanged();
             }
             if (slotStack.getCount() == slotStackCopy.getCount()) {
-                return null;
+                return ItemStack.EMPTY;
             }
-            theSlot.onPickupFromSlot(par1EntityPlayer, slotStack);
+            theSlot.onTake(par1EntityPlayer, slotStack);
         }
         return slotStackCopy;
     }
@@ -168,7 +170,7 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
         tileEntity.addTorque(null, AWCoreStatics.researchPerTick);//do research whenever the GUI is open
         NBTTagCompound tag = null;
         String name = tileEntity.getCrafterName();
-        /**
+        /*
          * synch researcher name
          */
         if (name == null && researcherName == null) {
@@ -204,7 +206,7 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
             }
         }
 
-        /**
+        /*
          * synch queued research
          */
         if (researcherName != null) {
@@ -225,7 +227,7 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
             queuedResearch.clear();
         }
 
-        /**
+        /*
          * synch use-adjacent inventory status
          */
         if (tileEntity.useAdjacentInventory != useAdjacentInventory) {
@@ -242,7 +244,7 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
 
     }
 
-    /**
+    /*
      * should be called from client-side to send update packet to server
      */
     public void toggleUseAdjacentInventory() {

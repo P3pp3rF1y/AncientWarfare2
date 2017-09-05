@@ -15,7 +15,7 @@ public class SongPlayData {
     private boolean playOnPlayerEntry = false;
     private int minDelay;
     private int maxDelay;
-    private List<SongEntry> tunes = new ArrayList<SongEntry>();
+    private List<SongEntry> tunes = new ArrayList<>();
 
     public int size() {
         return tunes.size();
@@ -175,7 +175,7 @@ public class SongPlayData {
 
         public int play(World world, int x, int y, int z){
             world.playRecord(null, x, y, z);
-            world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, name, volume * 0.03F, 1);
+            world.playSound(x + 0.5, y + 0.5, z + 0.5, name, volume * 0.03F, 1);
             return (int) (length * 20);//seconds(decimal) to ticks conversion
         }
     }

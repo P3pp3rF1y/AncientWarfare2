@@ -3,8 +3,8 @@ package net.shadowmage.ancientwarfare.npc.npc_command;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.RayTraceResult.MovingObjectType;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
@@ -33,7 +33,7 @@ public class NpcCommand {
         }
     }
 
-    /**
+    /*
      * client-side handle command. called from command baton key handler
      */
     public static void handleCommandClient(CommandType type, RayTraceResult hit) {
@@ -46,7 +46,7 @@ public class NpcCommand {
         }
     }
 
-    /**
+    /*
      * server side handle command. called from packet triggered from client key input while baton is equipped
      */
     public static void handleServerCommand(EntityPlayer player, CommandType type, boolean block, int x, int y, int z) {
@@ -130,7 +130,7 @@ public class NpcCommand {
             return tag;
         }
 
-        /**
+        /*
          * should be called by packet prior to passing command into npc processing
          */
         public void findEntity(World world) {

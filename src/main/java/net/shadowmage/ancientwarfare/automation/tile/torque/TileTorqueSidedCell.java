@@ -16,18 +16,18 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
     boolean connections[] = null;
     final SidedTorqueCell[] storage = new SidedTorqueCell[DIRECTION_LENGTH];
 
-    /**
+    /*
      * client side this == 0.0 -> 100.0
      */
     double clientEnergyState;
 
-    /**
+    /*
      * server side this == 0 -> 100 (integer percent)
      * client side this == 0 -> 100 (integer percent)
      */
     int clientDestEnergyState;
 
-    /**
+    /*
      * used client side for rendering
      */
     double rotation, prevRotation;

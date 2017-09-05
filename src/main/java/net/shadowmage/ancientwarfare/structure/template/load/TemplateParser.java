@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -53,7 +53,7 @@ public class TemplateParser {
         }
     }
 
-    /**
+    /*
      * used for debug/error output purposes, to know what line number is currently being iterated over/read through
      */
     public static int lineNumber = -1;
@@ -63,12 +63,12 @@ public class TemplateParser {
         Iterator<String> it = lines.iterator();
         String line;
 
-        List<TemplateRule> parsedRules = new ArrayList<TemplateRule>();
-        List<TemplateRuleEntity> parsedEntities = new ArrayList<TemplateRuleEntity>();
+        List<TemplateRule> parsedRules = new ArrayList<>();
+        List<TemplateRuleEntity> parsedEntities = new ArrayList<>();
         TemplateRule[] ruleArray = null;
         TemplateRuleEntity[] entityRuleArray = null;
         StructureValidator validation = null;
-        List<String> groupedLines = new ArrayList<String>();
+        List<String> groupedLines = new ArrayList<>();
 
 
         int parsedLayers = 0;
@@ -130,7 +130,7 @@ public class TemplateParser {
                     throw new TemplateParsingException("Error parsing template: " + fileName + " at line: " + (converter.lineNumber + 1) + " for line: " + lines.get(converter.lineNumber));
                 }
             }
-            /**
+            /*
              * parse out validation data
              */
             if (line.startsWith("validation:")) {
@@ -146,7 +146,7 @@ public class TemplateParser {
                 groupedLines.clear();
             }
 
-            /**
+            /*
              * parse out rule data
              */
             if (line.startsWith("rule:")) {
@@ -178,7 +178,7 @@ public class TemplateParser {
                 groupedLines.clear();
             }
 
-            /**
+            /*
              * parse out rule data
              */
             if (line.startsWith("entity:")) {
@@ -207,7 +207,7 @@ public class TemplateParser {
                 groupedLines.clear();
             }
 
-            /**
+            /*
              * parse out layer data
              */
             if (line.startsWith("layer:")) {
@@ -225,7 +225,7 @@ public class TemplateParser {
             }
         }
 
-        /**
+        /*
          * initialze data for construction of template -- put rules into array
          */
         ruleArray = new TemplateRule[highestParsedRule + 1];
@@ -258,7 +258,7 @@ public class TemplateParser {
         return template;
     }
 
-    /**
+    /*
      * should parse layer and insert direcly into templateData
      */
     private void parseLayer(List<String> templateLines, int yLayer, int xSize, int ySize, int zSize, short[] templateData) {

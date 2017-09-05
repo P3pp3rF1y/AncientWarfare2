@@ -10,7 +10,7 @@ public abstract class VehicleInputHandler {
         this.vehicle = vehicle;
     }
 
-    /**
+    /*
      * @param inputStates indices are the ordinals of VehicleInputKeys
      */
     public abstract void updateVehicleMotion(boolean[] inputStates);

@@ -1,10 +1,12 @@
+//TODO world capability
+
 package net.shadowmage.ancientwarfare.core.gamedata;
 
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraft.world.storage.MapStorage;
 
-/**
+/*
  * Helps building specific world data.
  */
 public final class AWGameData {

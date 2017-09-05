@@ -2,9 +2,11 @@ package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -13,10 +15,10 @@ import java.util.List;
 
 public class Tooltip {
 
-    private List<GuiElement> children = new ArrayList<GuiElement>();
+    private List<GuiElement> children = new ArrayList<>();
     int width, height;
 
-    /**
+    /*
      * actual size of the tooltip is width+8, height+8 (it draws some borders around the internals)
      */
     public Tooltip(int width, int height) {
@@ -95,14 +97,13 @@ public class Tooltip {
         GL11.glDisable(GL11.GL_ALPHA_TEST);
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);
         GL11.glShadeModel(GL11.GL_SMOOTH);
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawingQuads();
-        tessellator.setColorRGBA_F(f1, f2, f3, f);
-        tessellator.addVertex((double) par3, (double) par2, (double) 0);
-        tessellator.addVertex((double) par1, (double) par2, (double) 0);
-        tessellator.setColorRGBA_F(f5, f6, f7, f4);
-        tessellator.addVertex((double) par1, (double) par4, (double) 0);
-        tessellator.addVertex((double) par3, (double) par4, (double) 0);
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferBuilder = tessellator.getBuffer();
+        bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+        bufferBuilder.pos((double) par3, (double) par2, (double) 0).color(f1, f2, f3, f).endVertex();
+        bufferBuilder.pos((double) par1, (double) par2, (double) 0).color(f1, f2, f3, f).endVertex();
+        bufferBuilder.pos((double) par1, (double) par4, (double) 0).color(f5, f6, f7, f4).endVertex();
+        bufferBuilder.pos((double) par3, (double) par4, (double) 0).color(f5, f6, f7, f4).endVertex();
         tessellator.draw();
         GL11.glShadeModel(GL11.GL_FLAT);
         GL11.glDisable(GL11.GL_BLEND);
@@ -123,7 +124,7 @@ public class Tooltip {
         h = bry - tly;
 
         Minecraft mc = Minecraft.getMinecraft();
-        ScaledResolution scaledRes = new ScaledResolution(mc, mc.displayWidth, mc.displayHeight);
+        ScaledResolution scaledRes = new ScaledResolution(mc);
         int guiScale = scaledRes.getScaleFactor();
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
         GL11.glScissor(x * guiScale, mc.displayHeight - y * guiScale - h * guiScale, w * guiScale, h * guiScale);

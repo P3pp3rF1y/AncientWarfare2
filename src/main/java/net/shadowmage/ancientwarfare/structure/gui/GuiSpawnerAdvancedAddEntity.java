@@ -23,11 +23,11 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
     private EntitySpawnSettings settings;
     private final boolean showAddButton;
 
-    private final List<String> tagInput = new ArrayList<String>();
+    private final List<String> tagInput = new ArrayList<>();
     private boolean showAddTagButton = true;
 
-    private final HashMap<Button, Integer> buttonToLineMap = new HashMap<Button, Integer>();
-    private final HashMap<Text, Integer> textToLineMap = new HashMap<Text, Integer>();
+    private final HashMap<Button, Integer> buttonToLineMap = new HashMap<>();
+    private final HashMap<Text, Integer> textToLineMap = new HashMap<>();
 
     private WatchedData.Type[] dataType;
     private int[] dataKey;
@@ -110,7 +110,7 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
     }
 
     private void saveData(){
-        List<WatchedData> dataList = new ArrayList<WatchedData>();
+        List<WatchedData> dataList = new ArrayList<>();
         for(int i = 0; i < dataType.length; i++){
             try{
                 WatchedData data = new WatchedData(dataType[i], dataKey[i], dataValue[i]);

@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -120,7 +120,7 @@ public boolean validatePlacement(World world, int x, int y, int z, int face, Str
 @Override
 public void preGeneration(World world, int x, int y, int z, int face, StructureTemplate template, StructureBB bb)
   {
-//  /**
+//  /*
 //   * TODO remove debug stuff
 //   */
 //  int by = WorldStructureGenerator.getTargetY(world, x, z, false);

@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -36,7 +36,7 @@ import com.google.common.io.ByteArrayDataOutput;
 public class ByteTools
 {
 
-/**
+/*
  * return a list of byte[] of max size (packetSize)
  * @param allBytes
  * @param packetSize
@@ -65,7 +65,7 @@ public static List<byte[]> getByteChunks(byte[] allBytes, int packetSize)
   return byteChunks;
   }
 
-/**
+/*
  * return a single byte[] containing the data in chunks list, of the same
  * size as the sum of all arrays in chunk list
  * @param chunks
@@ -92,7 +92,7 @@ public static byte[] compositeByteChunks(List<byte[]> chunks, int packetSize)
   return fullFile;
   }
 
-/**
+/*
  * return a byte [] containing the data from all byte arrays
  * @param bytes
  * @return
@@ -121,7 +121,7 @@ public static byte[] compositeByteChunks(byte[][] bytes)
   return allBytes;
   }
 
-/**
+/*
  * Writes a compressed NBTTagCompound to the OutputStream
  */
 public static void writeNBTTagCompound(NBTTagCompound par0NBTTagCompound, DataOutputStream par1DataOutputStream) throws IOException
@@ -138,7 +138,7 @@ public static void writeNBTTagCompound(NBTTagCompound par0NBTTagCompound, DataOu
     }
   }
 
-/**
+/*
  * Reads a compressed NBTTagCompound from the InputStream
  */
 public static NBTTagCompound readNBTTagCompound(DataInputStream par0DataInputStream) throws IOException
@@ -157,7 +157,7 @@ public static NBTTagCompound readNBTTagCompound(DataInputStream par0DataInputStr
     }
   }
 
-/**
+/*
  * Writes a compressed NBTTagCompound to the OutputStream
  */
 public static void writeNBTTagCompound(NBTTagCompound par0NBTTagCompound, ByteArrayDataOutput data)
@@ -184,7 +184,7 @@ public static void writeNBTTagCompound(NBTTagCompound par0NBTTagCompound, ByteAr
     }
   }
 
-/**
+/*
  * Reads a compressed NBTTagCompound from the InputStream
  */
 public static NBTTagCompound readNBTTagCompound(ByteArrayDataInput data)

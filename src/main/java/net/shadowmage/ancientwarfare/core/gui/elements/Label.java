@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.StatCollector;
+import net.minecraft.client.resources.I18n;
 
 public class Label extends GuiElement {
 

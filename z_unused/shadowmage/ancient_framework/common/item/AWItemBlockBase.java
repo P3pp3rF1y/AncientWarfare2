@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -37,7 +37,7 @@ public class AWItemBlockBase extends ItemBlock
 {
 
 public Description description;
-/**
+/*
  * @param par1
  */
 public AWItemBlockBase(int par1)
@@ -46,7 +46,7 @@ public AWItemBlockBase(int par1)
   this.setHasSubtypes(true);
   }
 
-/**
+/*
  * Returns the metadata of the block which this Item (ItemBlock) can place
  */
 @Override
@@ -55,7 +55,7 @@ public int getMetadata(int par1)
   return par1;
   }
 
-/**
+/*
  * returns a list of items with the same ID, but different meta (eg: dye returns 16 items)
  */
 @SideOnly(Side.CLIENT)

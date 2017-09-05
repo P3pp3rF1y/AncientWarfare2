@@ -29,11 +29,7 @@ import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
 
@@ -45,7 +41,7 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
     private int plantableCount;
     private int bonemealCount;
     
-    private final static List<Block[]> blocksTillableAndTilled = new ArrayList<Block[]>();
+    private final static List<Block[]> blocksTillableAndTilled = new ArrayList<>();
 
     public WorkSiteCropFarm() {
 

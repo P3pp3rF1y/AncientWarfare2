@@ -1,6 +1,8 @@
 package net.shadowmage.ancientwarfare.core.gui;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.gui.elements.*;
@@ -9,7 +11,10 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
 
 public class GuiResearchBook extends GuiContainerBase {
 
@@ -74,19 +79,17 @@ public class GuiResearchBook extends GuiContainerBase {
             Set<Integer> depIds = selectedRecipe.getNeededResearch();
             boolean canShow = true;
             for (int num : depIds) {
-                if (!ResearchTracker.INSTANCE.hasPlayerCompleted(mc.theWorld, mc.thePlayer.getName(), num)) {
+                if (!ResearchTracker.INSTANCE.hasPlayerCompleted(mc.world, mc.player.getName(), num)) {
                     canShow = false;
                     break;
                 }
             }
             if(canShow){
-                ItemStack[] ingredients = new ItemStack[selectedRecipe.getRecipeSize()];
+                ItemStack[] ingredients = new ItemStack[selectedRecipe.getIngredients().size()];
                 for(int i = 0; i < ingredients.length; i++){
-                    Object object = selectedRecipe.getInputs()[i];
-                    if(object instanceof ItemStack){
-                        ingredients[i] = (ItemStack) object;
-                    }else if(object instanceof Iterable){
-                        ingredients[i] = (ItemStack) ((Iterable) object).iterator().next();
+                    Ingredient ingredient = selectedRecipe.getIngredients().get(i);
+                    if (ingredient.getMatchingStacks().length > 0) {
+                        ingredients[i] = ingredient.getMatchingStacks()[0];
                     }
                 }
                 for(int i = 0; i < selectedRecipe.getRecipeWidth(); i++){
@@ -118,9 +121,9 @@ public class GuiResearchBook extends GuiContainerBase {
     }
 
     private void addResearchModeControls() {
-        List<ResearchGoal> goals = new ArrayList<ResearchGoal>();
+        List<ResearchGoal> goals = new ArrayList<>();
         goals.addAll(ResearchGoal.getResearchGoals());
-        Collections.sort(goals, new ResearchSorter());
+        goals.sort(new ResearchSorter());
         int totalHeight = 8;
         for (ResearchGoal goal : goals) {
             area.addGuiElement(new GoalButton(8, totalHeight, goal));
@@ -134,7 +137,7 @@ public class GuiResearchBook extends GuiContainerBase {
 
         if (selectedGoal != null) {
             List<IResearchRecipe> recipes = AWCraftingManager.INSTANCE.getRecipes();
-            List<IResearchRecipe> list = new ArrayList<IResearchRecipe>();
+            List<IResearchRecipe> list = new ArrayList<>();
             for (IResearchRecipe recipe : recipes) {
                 if (recipe.getNeededResearch().contains(selectedGoal.getId())) {
                     list.add(recipe);

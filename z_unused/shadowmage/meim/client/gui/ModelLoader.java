@@ -34,7 +34,7 @@ public ModelBaseAW loadModel(File file)
     return null;
     }
   Scanner scan = new Scanner(fis);
-  ArrayList<String> lines = new ArrayList<String>();
+  ArrayList<String> lines = new ArrayList<>();
   while(scan.hasNext())
     {
     lines.add(scan.next());

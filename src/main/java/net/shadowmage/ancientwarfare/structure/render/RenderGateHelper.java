@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -36,7 +36,7 @@ import java.util.HashMap;
 
 public final class RenderGateHelper extends Render {
 
-    private HashMap<Integer, Render> gateRenders = new HashMap<Integer, Render>();
+    private HashMap<Integer, Render> gateRenders = new HashMap<>();
 
     public RenderGateHelper() {
         this.addGateRender(0, new RenderGateBasic());

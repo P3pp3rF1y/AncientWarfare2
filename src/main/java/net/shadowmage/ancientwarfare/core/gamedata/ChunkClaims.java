@@ -1,20 +1,18 @@
-package net.shadowmage.ancientwarfare.core.gamedata;
+//TODO world capability
 
-import java.awt.Point;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
+package net.shadowmage.ancientwarfare.core.gamedata;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.common.util.Constants.NBT;
+
+import java.awt.*;
+import java.util.*;
+import java.util.List;
+import java.util.Map.Entry;
 
 public class ChunkClaims extends WorldSavedData {
     public static final String ID = "AW2_ChunkClaimData";
@@ -45,7 +43,7 @@ public class ChunkClaims extends WorldSavedData {
         IS_STALE = true;
     }
     
-    /**
+    /*
      *  chunkClaimsPerDimension<Integer, LinkedHashMap<Integer, ChunkClaimEntry>>
      *      Integer [dimId]
      *      LinkedHashMap<Integer, ChunkClaimEntry>
@@ -65,7 +63,7 @@ public class ChunkClaims extends WorldSavedData {
      */
     protected Map<Integer, LinkedHashMap<Integer, ChunkClaimEntry>> chunkClaimsPerDimension = new LinkedHashMap<Integer, LinkedHashMap<Integer, ChunkClaimEntry>>();
     
-    /**
+    /*
      *  This map is used for 'reverse lookups' of ChunkClaimEntry objects from the main list of chunk claims. Purpose is for faster lookup of chunk claims when given chunk co-ordinates.
      *  chunkClaimsPerDimensionIndexMap<Integer, LinkedHashMap<Point, Integer>>
      *      Integer [dimId]
@@ -73,7 +71,7 @@ public class ChunkClaims extends WorldSavedData {
      *          Point [chunkX, chunkZ corresponding to ChunkClaimEntry]
      *          Integer [index corresponding to ChunkClaimEntry]
      */
-    protected Map<Integer, HashMap<Point, Integer>> chunkClaimsPerDimensionIndexMap = new HashMap<Integer, HashMap<Point, Integer>>();
+    protected Map<Integer, HashMap<Point, Integer>> chunkClaimsPerDimensionIndexMap = new HashMap<>();
     
     public ChunkClaims(String tagName) {
         super(tagName);
@@ -126,7 +124,7 @@ public class ChunkClaims extends WorldSavedData {
             chunkClaimEntry = new ChunkClaimEntry(reqChunkClaimInfo, new LinkedHashSet<TownHallEntry>());
             
             // also create the entry for chunkClaimIndexMap
-            HashMap<Point, Integer> chunkClaimIndexMap = new HashMap<Point, Integer>();
+            HashMap<Point, Integer> chunkClaimIndexMap = new HashMap<>();
             Point chunkClaimPos = new Point(reqChunkClaimInfo.chunkX, reqChunkClaimInfo.chunkZ);
             chunkClaimIndexMap.put(chunkClaimPos, chunkClaimEntryIndex);
             chunkClaimsPerDimensionIndexMap.put(reqChunkClaimInfo.dimensionId, chunkClaimIndexMap);
@@ -169,7 +167,7 @@ public class ChunkClaims extends WorldSavedData {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound nbtSave) {
+    public NBTTagCompound writeToNBT(NBTTagCompound nbtSave) {
         NBTTagList chunkClaimsTag = new NBTTagList();
         for (Entry<Integer, LinkedHashMap<Integer, ChunkClaimEntry>> chunkClaimEntries : chunkClaimsPerDimension.entrySet()) {
             // we don't care about the key (dimId) of our masterlist here, since it's already stored in each ChunkClaimInfo
@@ -177,7 +175,7 @@ public class ChunkClaims extends WorldSavedData {
                 ChunkClaimEntry chunkClaimEntry = chunkClaimEntryWithIndex.getValue();
                 
                 String savedChunkClaimEntryInfo = chunkClaimEntry.chunkClaimInfo.toString();
-                List<String> savedTownHallEntriesAsList = new ArrayList<String>();
+                List<String> savedTownHallEntriesAsList = new ArrayList<>();
                 for (TownHallEntry townHallEntry : chunkClaimEntry.townHallEntries) {
                     savedTownHallEntriesAsList.add(townHallEntry.toString());
                 }
@@ -191,6 +189,8 @@ public class ChunkClaims extends WorldSavedData {
             }
         }
         nbtSave.setTag("DIMENSION_CHUNK_CLAIM_ENTRIES", chunkClaimsTag);
+
+        return nbtSave;
     }
     
     public class ChunkClaimEntry {
@@ -273,69 +273,46 @@ public class ChunkClaims extends WorldSavedData {
     
     public static class TownHallEntry {
         private String ownerName;
-        private int posX;
-        private int posY;
-        private int posZ;
-        
-        public TownHallEntry(String ownerName, int posX, int posY, int posZ) {
+        private BlockPos pos;
+
+        public TownHallEntry(String ownerName, BlockPos pos) {
             this.ownerName = ownerName;
-            this.posX = posX;
-            this.posY = posY;
-            this.posZ = posZ;
+            this.pos = pos;
         }
 
         public String getOwnerName() {
             return ownerName;
         }
 
-        public int getPosX() {
-            return posX;
+        public BlockPos getPos() {
+            return pos;
         }
 
-        public int getPosY() {
-            return posY;
-        }
-
-        public int getPosZ() {
-            return posZ;
-        }
-        
         @Override
         public String toString() {
-            return ownerName + "," + posX + "," + posY + "," + posZ;
+            return ownerName + "," + pos.toString();
         }
         
         public static TownHallEntry fromString(String townHallOwnerRaw) {
             String[] split = townHallOwnerRaw.split(",");
-            return new TownHallEntry(split[0], Integer.parseInt(split[1]), Integer.parseInt(split[2]), Integer.parseInt(split[3]));
+            return new TownHallEntry(split[0], new BlockPos(Integer.parseInt(split[1]), Integer.parseInt(split[2]), Integer.parseInt(split[3])));
         }
-        
+
         @Override
-        public boolean equals(Object obj) {
-            if (obj == this)
-                return true;
-            if (obj == null || obj.getClass() != this.getClass())
-                return false;
-            TownHallEntry townHallOther = (TownHallEntry) obj;
-            if (!townHallOther.ownerName.equals(ownerName))
-                return false;
-            if (townHallOther.posX != posX)
-                return false;
-            if (townHallOther.posY != posY)
-                return false;
-            if (townHallOther.posZ != posZ)
-                return false;
-            return true;
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            TownHallEntry that = (TownHallEntry) o;
+
+            if (!ownerName.equals(that.ownerName)) return false;
+            return pos.equals(that.pos);
         }
-        
+
         @Override
         public int hashCode() {
-            final int prime = 31;
-            int result = 1;
-            result = prime * result + ((ownerName == null) ? 0 : ownerName.hashCode());
-            result = prime * result + posX;
-            result = prime * result + posY;
-            result = prime * result + posZ;
+            int result = ownerName.hashCode();
+            result = 31 * result + pos.hashCode();
             return result;
         }
     }

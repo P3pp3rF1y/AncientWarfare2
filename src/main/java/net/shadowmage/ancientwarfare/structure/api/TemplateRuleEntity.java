@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -34,7 +34,7 @@ public abstract class TemplateRuleEntity extends TemplateRule {
 
     private int x, y, z;
 
-    /**
+    /*
      * Called by reflection
      * @param world
      * @param entity
@@ -46,7 +46,7 @@ public abstract class TemplateRuleEntity extends TemplateRule {
     public TemplateRuleEntity(World world, Entity entity, int turns, int x, int y, int z) {
 
     }
-    /**
+    /*
      * Called by reflection
      */
     public TemplateRuleEntity() {

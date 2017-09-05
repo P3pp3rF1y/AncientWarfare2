@@ -22,7 +22,7 @@ public final class RenderWorkLines {
     private final List<BlockPos> positionList;
 
     private RenderWorkLines() {
-        positionList = new ArrayList<BlockPos>();
+        positionList = new ArrayList<>();
     }
 
     @SubscribeEvent
@@ -35,7 +35,7 @@ public final class RenderWorkLines {
         if (mc == null) {
             return;
         }
-        EntityPlayer player = mc.thePlayer;
+        EntityPlayer player = mc.player;
         if (player == null) {
             return;
         }

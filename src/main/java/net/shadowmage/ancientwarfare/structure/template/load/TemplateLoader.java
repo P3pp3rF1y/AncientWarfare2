@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -43,15 +43,15 @@ public class TemplateLoader {
     public static String includeDirectory = null;
     private final String defaultTemplatePackLocation = "/assets/ancientwarfare/template/default_structure_pack.zip";
 
-    private List<File> probableTownFiles = new ArrayList<File>();
-    private List<File> probableStructureFiles = new ArrayList<File>();
-    private List<File> probableZipFiles = new ArrayList<File>();
+    private List<File> probableTownFiles = new ArrayList<>();
+    private List<File> probableStructureFiles = new ArrayList<>();
+    private List<File> probableZipFiles = new ArrayList<>();
 
-    private List<TownTemplate> parsedTownTemplates = new ArrayList<TownTemplate>();
+    private List<TownTemplate> parsedTownTemplates = new ArrayList<>();
 
-    private Set<String> loadedStructureNames = new HashSet<String>();
+    private Set<String> loadedStructureNames = new HashSet<>();
 
-    private HashMap<String, BufferedImage> images = new HashMap<String, BufferedImage>();
+    private HashMap<String, BufferedImage> images = new HashMap<>();
 
     public static final TemplateLoader INSTANCE = new TemplateLoader();
 
@@ -62,7 +62,7 @@ public class TemplateLoader {
         outputDirectory = AWCoreStatics.configPathForFiles + "structures/export/";
         includeDirectory = AWCoreStatics.configPathForFiles + "structures/included/";
 
-        /**
+        /*
          * create default dirs if they don't exist...
          */
         File existTest = new File(outputDirectory);
@@ -140,7 +140,7 @@ public class TemplateLoader {
     private StructureTemplate loadTemplateFromFile(File file) {
         FileReader reader = null;
         Scanner scan = null;
-        List<String> templateLines = new ArrayList<String>();
+        List<String> templateLines = new ArrayList<>();
         try {
             reader = new FileReader(file);
             scan = new Scanner(reader);
@@ -161,7 +161,7 @@ public class TemplateLoader {
     private TownTemplate loadTownTemplateFromFile(File file) {
         FileReader reader = null;
         Scanner scan = null;
-        List<String> templateLines = new ArrayList<String>();
+        List<String> templateLines = new ArrayList<>();
         String line;
         try {
             reader = new FileReader(file);
@@ -279,7 +279,7 @@ public class TemplateLoader {
     private TownTemplate loadTownTemplateFromZip(ZipEntry entry, InputStream is) {
         InputStreamReader isr = new InputStreamReader(is);
         BufferedReader reader = new BufferedReader(isr);
-        List<String> lines = new ArrayList<String>();
+        List<String> lines = new ArrayList<>();
         String line;
         TownTemplate template = null;
         try {
@@ -300,7 +300,7 @@ public class TemplateLoader {
     private StructureTemplate loadTemplateFromZip(ZipEntry entry, InputStream is) {
         InputStreamReader isr = new InputStreamReader(is);
         BufferedReader reader = new BufferedReader(isr);
-        List<String> lines = new ArrayList<String>();
+        List<String> lines = new ArrayList<>();
         String line;
         StructureTemplate template = null;
         try {

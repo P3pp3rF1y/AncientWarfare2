@@ -11,7 +11,7 @@ public class ItemLoader
 public static CreativeTabs modelerTab = new CreativeTabs("Ancient Modeler");
 public static final Item guiOpener = new ItemGuiOpener(MEIMConfig.getItemID("guiOpener", 9001));
 
-/**
+/*
  * called from core during init phase to load item names/etc
  */
 public static void load()

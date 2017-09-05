@@ -1,10 +1,10 @@
 package net.shadowmage.ancientwarfare.core.research;
 
-import cpw.mods.fml.common.gameevent.PlayerEvent;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketResearchInit;
@@ -23,7 +23,7 @@ public final class ResearchTracker {
         clientData = new ResearchData("AWResearchData");
     }
 
-    /**
+    /*
      * SERVER ONLY
      */
     @SubscribeEvent
@@ -73,7 +73,7 @@ public final class ResearchTracker {
         }
     }
 
-    /**
+    /*
      * @param world
      * @param player
      * @param research
@@ -102,7 +102,7 @@ public final class ResearchTracker {
         return getResearchData(world).addProgress(player, goal.getTotalResearchTime() / 4);
     }
 
-    /**
+    /*
      * @param world
      * @param playerName
      * @return
@@ -129,7 +129,7 @@ public final class ResearchTracker {
         }
     }
 
-    /**
+    /*
      * @param world
      * @return
      */
@@ -140,7 +140,7 @@ public final class ResearchTracker {
         return AWGameData.INSTANCE.getData(world, ResearchData.class);
     }
 
-    /**
+    /*
      * CLIENT ONLY
      */
     public void onClientResearchReceived(NBTTagCompound researchDataTag) {

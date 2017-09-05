@@ -8,18 +8,18 @@ import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.Vec3d;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 import java.util.HashSet;
 
-/**
+/*
  * AI template class with utility methods and member access for a non-specific NPC type
  *
  * @author Shadowmage
  */
 public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
-    /**
+    /*
      * used during npc-ai task-rendering to determine how many bits to loop through
      * of the task bitfield -- needs to be increased if more task types / bits are added
      */
@@ -40,7 +40,7 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
     public static final int TASK_RAIN = 8192;
     
 
-    /**
+    /*
      * internal flag used to determine exclusion types
      */
     public static final int MOVE = 1;
@@ -50,7 +50,7 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
 
     public static final int MIN_RANGE = 9;
     
-    private static HashSet<String> HOSTILE_ENTITIES = new HashSet<String>();
+    private static HashSet<String> HOSTILE_ENTITIES = new HashSet<>();
 
     protected int moveRetryDelay;
     protected double moveSpeed = 1.d;
@@ -78,7 +78,7 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
         moveToPosition(pos.x, pos.y, pos.z, sqDist);
     }
     
-    /**
+    /*
      * Forced move without delay. Should only be used in logic that has it's own delay.
      * @param pos
      * @param sqDist
@@ -109,28 +109,28 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
     }
 
     protected final void moveLongDistance(double x, double y, double z) {
-        Vec3 vec = Vec3.createVectorHelper(x - npc.posX, y - npc.posY, z - npc.posZ);
+        Vec3d vec = Vec3d.createVectorHelper(x - npc.posX, y - npc.posY, z - npc.posZ);
 
         //normalize vector to a -1 <-> 1 value range
-        double w = Math.sqrt(vec.xCoord * vec.xCoord + vec.yCoord * vec.yCoord + vec.zCoord * vec.zCoord);
+        double w = Math.sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
         if (w != 0) {
-            vec.xCoord /= w;
-            vec.yCoord /= w;
-            vec.zCoord /= w;
+            vec.x /= w;
+            vec.y /= w;
+            vec.z /= w;
         }
 
         //then mult by PF distance to find the proper vector for our PF length
-        vec.xCoord *= maxPFDist;
-        vec.yCoord *= maxPFDist;
-        vec.zCoord *= maxPFDist;
+        vec.x *= maxPFDist;
+        vec.y *= maxPFDist;
+        vec.z *= maxPFDist;
 
         //finally re-offset by npc position to get an actual target position
-        vec.xCoord += npc.posX;
-        vec.yCoord += npc.posY;
-        vec.zCoord += npc.posZ;
+        vec.x += npc.posX;
+        vec.y += npc.posY;
+        vec.z += npc.posZ;
 
         //move npc towards the calculated partial target
-        setPath(vec.xCoord, vec.yCoord, vec.zCoord);
+        setPath(vec.x, vec.y, vec.z);
     }
 
     protected final void returnHome(){
@@ -147,25 +147,25 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
         if(pathEntity!=null){
             int index = pathEntity.getCurrentPathIndex();
             PathPoint pathpoint = pathEntity.getPathPointFromIndex(index);
-            if(npc.getBlockPathWeight(pathpoint.xCoord, pathpoint.yCoord, pathpoint.zCoord) >= 0) {
+            if(npc.getBlockPathWeight(pathpoint.x, pathpoint.y, pathpoint.z) >= 0) {
 
                 for (int i = index + 1; i < pathEntity.getCurrentPathLength() ; i++){
                     pathpoint = pathEntity.getPathPointFromIndex(i);
-                    if (npc.getBlockPathWeight(pathpoint.xCoord, pathpoint.yCoord, pathpoint.zCoord)<0){
+                    if (npc.getBlockPathWeight(pathpoint.x, pathpoint.y, pathpoint.z)<0){
                         pathEntity.setCurrentPathLength(i - 1);
                         break;
                     }
                 }
             }else{
-                Vec3 vec = RandomPositionGenerator.findRandomTargetBlockAwayFrom(npc, MIN_RANGE, MIN_RANGE, Vec3.createVectorHelper(npc.posX, npc.posY, npc.posZ));
+                Vec3d vec = RandomPositionGenerator.findRandomTargetBlockAwayFrom(npc, MIN_RANGE, MIN_RANGE, Vec3d.createVectorHelper(npc.posX, npc.posY, npc.posZ));
                 if(vec!=null)
-                    return npc.getNavigator().getPathToXYZ(vec.xCoord, vec.yCoord, vec.zCoord);
+                    return npc.getNavigator().getPathToXYZ(vec.x, vec.y, vec.z);
             }
         }
         return pathEntity;
     }
     
-    /**
+    /*
      * Returns true if the given entity targets/attacks NPC's
      */
     public static boolean isAlwaysHostileToNpcs(Entity entity) {

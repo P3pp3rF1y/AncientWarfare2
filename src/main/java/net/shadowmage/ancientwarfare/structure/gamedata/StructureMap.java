@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -70,8 +70,8 @@ public class StructureMap extends WorldSavedData {
     }
 
     private class StructureDimensionMap {
-        private HashMap<Integer, StructureWorldMap> mapsByDimension = new HashMap<Integer, StructureWorldMap>();
-        Set<String> generatedUniques = new HashSet<String>();
+        private HashMap<Integer, StructureWorldMap> mapsByDimension = new HashMap<>();
+        Set<String> generatedUniques = new HashSet<>();
 
         public Collection<StructureEntry> getEntriesNear(int dimension, int chunkX, int chunkZ, int chunkRadius, boolean expandBySize, Collection<StructureEntry> list) {
             if (mapsByDimension.containsKey(dimension)) {
@@ -134,7 +134,7 @@ public class StructureMap extends WorldSavedData {
 
     private class StructureWorldMap {
 
-        private HashMap<Integer, HashMap<Integer, StructureEntry>> worldMap = new HashMap<Integer, HashMap<Integer, StructureEntry>>();
+        private HashMap<Integer, HashMap<Integer, StructureEntry>> worldMap = new HashMap<>();
         private int largestGeneratedX;
         private int largestGeneratedZ;
 
@@ -161,7 +161,7 @@ public class StructureMap extends WorldSavedData {
 
         public void setGeneratedAt(int chunkX, int chunkZ, StructureEntry entry) {
             if (!this.worldMap.containsKey(chunkX)) {
-                this.worldMap.put(chunkX, new HashMap<Integer, StructureEntry>());
+                this.worldMap.put(chunkX, new HashMap<>());
             }
             this.worldMap.get(chunkX).put(chunkZ, entry);
             int x = entry.bb.getXSize();
@@ -186,7 +186,7 @@ public class StructureMap extends WorldSavedData {
                 entry = new StructureEntry();
                 entry.readFromNBT(entryTag);
                 if (!this.worldMap.containsKey(x)) {
-                    this.worldMap.put(x, new HashMap<Integer, StructureEntry>());
+                    this.worldMap.put(x, new HashMap<>());
                 }
                 this.worldMap.get(x).put(z, entry);
             }

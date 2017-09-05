@@ -17,15 +17,15 @@ public class VehicleBaseInputHandler {
     private VehicleBase vehicle;
     private boolean hadRider;
 
-    /**
+    /*
      * Used client side to track input states<br>
      * Used server side as an empty input array for dummy movement processing
      */
     private InputState inputState = new InputState();
 
-    List<InputSnapshot> snapshotBuffer = new ArrayList<InputSnapshot>();
+    List<InputSnapshot> snapshotBuffer = new ArrayList<>();
 
-    /**
+    /*
      * server position and rotation values and length of update interval (lerpTicks)
      */
     double destX, destY, destZ;
@@ -33,8 +33,8 @@ public class VehicleBaseInputHandler {
     int lerpTicks = -1;
 
     int commandID = 0;
-    List<PacketInputState> packetsToProcess = new ArrayList<PacketInputState>();
-    List<PacketInputReply> replyPacketsToProcess = new ArrayList<PacketInputReply>();
+    List<PacketInputState> packetsToProcess = new ArrayList<>();
+    List<PacketInputReply> replyPacketsToProcess = new ArrayList<>();
 
     public VehicleBaseInputHandler(VehicleBase vehicle) {
         this.vehicle = vehicle;
@@ -84,7 +84,7 @@ public class VehicleBaseInputHandler {
         }
     }
 
-    /**
+    /*
      * Should be called from owning entity on entity-update tick.
      */
     public void onUpdate() {
@@ -149,7 +149,7 @@ public class VehicleBaseInputHandler {
         }
     }
 
-    /**
+    /*
      * params are the original pre-input vehicle positions/rotations
      */
     private void sendInputPacket() {
@@ -219,7 +219,7 @@ public class VehicleBaseInputHandler {
         }
     }
 
-    /**
+    /*
      * motion update for client-side entities -not- ridden by that clients' player
      */
     private void lerpMotion() {
@@ -227,11 +227,11 @@ public class VehicleBaseInputHandler {
 //  vehicle.motionY = 0;
 //  vehicle.motionZ = 0;
         if (lerpTicks > 0) {
-            /**
+            /*
              * floating point value of ticks, for easier floating-point division
              */
             double t = (double) lerpTicks;
-            /**
+            /*
              * determine deltas for lerping
              */
             double dx = destX - vehicle.posX;
@@ -245,7 +245,7 @@ public class VehicleBaseInputHandler {
             }
             vehicle.setPosition(vehicle.posX + dx, vehicle.posY + dy, vehicle.posZ + dz);
 
-            /**
+            /*
              * obtain and normalize yaw
              */
             float dyaw = destYaw - vehicle.rotationYaw;
@@ -272,7 +272,7 @@ public class VehicleBaseInputHandler {
 
             lerpTicks--;
         } else if (lerpTicks == 0) {
-            /**
+            /*
              * no lerp ticks, set to server-position
              */
             vehicle.rotationYaw = destYaw;
@@ -282,25 +282,25 @@ public class VehicleBaseInputHandler {
         vehicle.moveHelper.update();
     }
 
-    /**
+    /*
      * current input state, used by movement calculation
      *
      * @author Shadowmage
      */
     public final class InputState {
-        /**
+        /*
          * the current -actual- state of the keys, set from input whenever a key is pressed and the client is riding a vehicle
          */
         boolean[] state = new boolean[VehicleInputKey.values().length];
 
-        /**
+        /*
          * the state of if a key was down for any portion of this/preciding tick<br>
          * these are the states that should be acted upon every tick for input handling and synched to the server
          */
         boolean[] pressed = new boolean[VehicleInputKey.values().length];
     }
 
-    /**
+    /*
      * snapshot of input state at any given time
      *
      * @author Shadowmage

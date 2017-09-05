@@ -6,8 +6,8 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathFinder;
 import net.minecraft.pathfinding.PathNavigate;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.Vec3d;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.ChunkCache;
 
 public class NpcNavigator extends PathNavigate {
@@ -38,7 +38,7 @@ public class NpcNavigator extends PathNavigate {
     @Override
     public PathEntity getPathToXYZ(double posX, double posY, double posZ)
     {
-        return !this.canNavigate() ? null : pathToXYZ(MathHelper.floor_double(posX), (int) posY, MathHelper.floor_double(posZ));
+        return !this.canNavigate() ? null : pathToXYZ(MathHelper.floor(posX), (int) posY, MathHelper.floor(posZ));
     }
 
     @Override
@@ -99,14 +99,14 @@ public class NpcNavigator extends PathNavigate {
 
     private ChunkCache cachePath(int h, int r){
         this.world.profiler.startSection("pathfind");
-        int i = MathHelper.floor_double(this.entity.posX);
-        int j = MathHelper.floor_double(this.entity.posY + h);
-        int k = MathHelper.floor_double(this.entity.posZ);
+        int i = MathHelper.floor(this.entity.posX);
+        int j = MathHelper.floor(this.entity.posY + h);
+        int k = MathHelper.floor(this.entity.posZ);
         int l = (int)(this.getPathSearchRange() + r);
         return new ChunkCache(this.world, i - l, j - l, k - l, i + l, j + l, k + l, 0);
     }
 
-    /**
+    /*
      * Whether pathing can be done
      */
     @Override
@@ -115,11 +115,11 @@ public class NpcNavigator extends PathNavigate {
         return super.canNavigate() || hasMount();
     }
 
-    /**
+    /*
      * Returns true when an entity could stand at a position, including solid blocks under the entire entity.
      */
     @Override
-    protected boolean isSafeToStandAt(int xOffset, int yOffset, int zOffset, int xSize, int ySize, int zSize, Vec3 origin, double vecX, double vecZ)
+    protected boolean isSafeToStandAt(int xOffset, int yOffset, int zOffset, int xSize, int ySize, int zSize, Vec3d origin, double vecX, double vecZ)
     {
         int k1 = xOffset - xSize / 2;
         int l1 = zOffset - zSize / 2;
@@ -134,8 +134,8 @@ public class NpcNavigator extends PathNavigate {
             {
                 for (int j2 = l1; j2 < l1 + zSize; ++j2)
                 {
-                    double d2 = (double)i2 + 0.5D - origin.xCoord;
-                    double d3 = (double)j2 + 0.5D - origin.zCoord;
+                    double d2 = (double)i2 + 0.5D - origin.x;
+                    double d3 = (double)j2 + 0.5D - origin.z;
 
                     if (d2 * vecX + d3 * vecZ >= 0.0D)
                     {

@@ -33,7 +33,7 @@ public class RenderTileTorqueTransport extends TileEntitySpecialRenderer impleme
     }
 
     */
-/**
+/*
      * really should be called optionalStaticInitialization()... but w/e
      *//*
 

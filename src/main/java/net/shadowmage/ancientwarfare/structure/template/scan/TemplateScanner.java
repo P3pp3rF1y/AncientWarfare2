@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -22,8 +22,8 @@ package net.shadowmage.ancientwarfare.structure.template.scan;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
@@ -39,7 +39,7 @@ import java.util.List;
 
 public final class TemplateScanner {
 
-    /**
+    /*
      * @param turns # of turns for proper orientation
      */
     @SuppressWarnings("unchecked")
@@ -60,8 +60,8 @@ public final class TemplateScanner {
         short[] templateRuleData = new short[xSize * ySize * zSize];
 
 
-        HashMap<String, List<TemplateRuleBlock>> pluginBlockRuleMap = new HashMap<String, List<TemplateRuleBlock>>();
-        List<TemplateRule> currentRulesAll = new ArrayList<TemplateRule>();
+        HashMap<String, List<TemplateRuleBlock>> pluginBlockRuleMap = new HashMap<>();
+        List<TemplateRule> currentRulesAll = new ArrayList<>();
         Block scannedBlock;
         TemplateRuleBlock scannedBlockRule = null;
         List<TemplateRuleBlock> pluginBlockRules;
@@ -84,7 +84,7 @@ public final class TemplateScanner {
                             meta = world.getBlockMetadata(scanX, scanY, scanZ);
                             pluginBlockRules = pluginBlockRuleMap.get(pluginId);
                             if (pluginBlockRules == null) {
-                                pluginBlockRules = new ArrayList<TemplateRuleBlock>();
+                                pluginBlockRules = new ArrayList<>();
                                 pluginBlockRuleMap.put(pluginId, pluginBlockRules);
                             }
                             boolean found = false;
@@ -112,13 +112,13 @@ public final class TemplateScanner {
             }//end scan z-level for
         }//end scan y-level for
 
-        List<TemplateRuleEntity> scannedEntityRules = new ArrayList<TemplateRuleEntity>();
+        List<TemplateRuleEntity> scannedEntityRules = new ArrayList<>();
         List<Entity> entitiesInAABB = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(min.x, min.y, min.z, max.x + 1, max.y + 1, max.z + 1));
         nextRuleID = 0;
         for (Entity e : entitiesInAABB) {
-            int ex = MathHelper.floor_double(e.posX);
-            int ey = MathHelper.floor_double(e.posY);
-            int ez = MathHelper.floor_double(e.posZ);
+            int ex = MathHelper.floor(e.posX);
+            int ey = MathHelper.floor(e.posY);
+            int ez = MathHelper.floor(e.posZ);
             TemplateRuleEntity scannedEntityRule = StructurePluginManager.INSTANCE.getRuleForEntity(world, e, turns, ex, ey, ez);
             if (scannedEntityRule != null) {
                 destination = BlockTools.rotateInArea(new BlockPos(ex, ey, ez).sub(min), xSize, zSize, turns);

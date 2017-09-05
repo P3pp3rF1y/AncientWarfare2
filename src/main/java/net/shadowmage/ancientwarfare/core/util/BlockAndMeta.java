@@ -1,23 +1,16 @@
 package net.shadowmage.ancientwarfare.core.util;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.ResourceLocation;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+
 import java.lang.reflect.Array;
 import java.util.HashSet;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraft.block.Block;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
-
-public class BlockAndMeta {
-    public final Block block;
-    public final int meta;
-    
-    public BlockAndMeta(Block block, int meta) {
-        this.block = block;
-        this.meta = meta;
-    }
-    
-    public static BlockAndMeta[] buildList(String listName, String[] blockListRaw) {
-        HashSet<BlockAndMeta> blockList = new HashSet<BlockAndMeta>();
+public class BlockAndMeta { //TODO rename or move the only method
+    public static IBlockState[] buildList(String listName, String[] blockListRaw) {
+        HashSet<IBlockState> stateSet = new HashSet<>();
 
         AncientWarfareCore.log.info("Building " + listName + "...");
         
@@ -33,11 +26,12 @@ public class BlockAndMeta {
                     AncientWarfareCore.log.warn(" - Invalid block (parse/format error): " + blockName);
                     continue;
                 }
-                Block block = GameRegistry.findBlock(blockId[0], blockId[1]);
-                if (block == null) {
+                ResourceLocation registryName = new ResourceLocation(blockId[0] + ":" + blockId[1]);
+                if (!Block.REGISTRY.containsKey(registryName)) {
                     AncientWarfareCore.log.warn(" - Skipping missing block: " + blockName);
                     continue;
                 }
+                Block block = Block.REGISTRY.getObject(registryName);
                 int meta = -1;
                 if (Array.getLength(blockId) == 3) {
                     try {
@@ -49,13 +43,12 @@ public class BlockAndMeta {
                         continue;
                     }
                 }
-                blockList.add(new BlockAndMeta(block, meta));
+                stateSet.add(meta != -1 ? block.getStateFromMeta(meta) : block.getDefaultState());
             }
         }
 
-        AncientWarfareCore.log.info("...added " + blockList.size() + " blocks to " + listName);
-        
-        
-        return blockList.toArray(new BlockAndMeta[blockList.size()]);
+        AncientWarfareCore.log.info("...added " + stateSet.size() + " blocks to " + listName);
+
+        return stateSet.toArray(new IBlockState[stateSet.size()]);
     }
 }

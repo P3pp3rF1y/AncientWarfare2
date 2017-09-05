@@ -5,7 +5,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
-/**
+/*
  * Created by Olivier on 22/05/2015.
  */
 public class NpcAIAttackNearest extends EntityAINearestAttackableTarget{

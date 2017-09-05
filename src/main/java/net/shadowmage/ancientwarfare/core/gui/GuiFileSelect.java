@@ -8,11 +8,11 @@ import java.io.File;
 public class GuiFileSelect extends GuiContainerBase {
 
     private final GuiContainerBase parent;
-    /**
+    /*
      * the display name of the current parent directory (used to click to go back)
      */
     private String parentPathName = "";
-    /**
+    /*
      * current path, used to update all others relative to this
      */
     private String currentPath = "";
@@ -150,7 +150,7 @@ public class GuiFileSelect extends GuiContainerBase {
         area.setAreaSize(totalHeight);
     }
 
-    /**
+    /*
      * should be overriden by implementing class to add callback mechanism
      */
     public void onFileSelected(File file) {

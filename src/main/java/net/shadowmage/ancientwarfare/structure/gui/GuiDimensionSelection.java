@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.*;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
@@ -19,7 +18,7 @@ public class GuiDimensionSelection extends GuiContainerBase {
 
     private NumberInput dimensionSelection;
 
-    private Set<Integer> dims = new HashSet<Integer>();
+    private Set<Integer> dims = new HashSet<>();
 
     public GuiDimensionSelection(GuiStructureScanner parent) {
         super(parent.getContainer());

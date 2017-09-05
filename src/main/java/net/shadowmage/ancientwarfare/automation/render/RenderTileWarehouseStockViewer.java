@@ -60,7 +60,7 @@ public class RenderTileWarehouseStockViewer extends TileEntitySpecialRenderer {
     }
 
     */
-/**
+/*
      * matrix should be setup so that 0,0 is upper-left-hand corner of the sign-board, with a
      * transformation of 1 being 1 BLOCK
      *//*

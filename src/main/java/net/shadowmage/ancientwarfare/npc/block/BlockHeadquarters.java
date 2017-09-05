@@ -28,7 +28,7 @@ public class BlockHeadquarters extends BlockTownHall {
     
     @Override
     public ArrayList<ItemStack> getDrops(World world, int posX, int posY, int posZ, int metadata, int fortune) {
-        ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
+        ArrayList<ItemStack> drops = new ArrayList<>();
         drops.add(new ItemStack(Item.getItemFromBlock(AWNPCBlockLoader.townHall)));
         return drops;
     }

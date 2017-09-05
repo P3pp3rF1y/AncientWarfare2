@@ -1,11 +1,13 @@
 package net.shadowmage.ancientwarfare.vehicle.render;
 
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.Vec3d;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 import net.shadowmage.ancientwarfare.vehicle.collision.OBB;
@@ -71,9 +73,9 @@ public class VehicleBBRender extends Render {
             GL11.glPushMatrix();
             GL11.glTranslated(x, y, z);
             VehicleTurreted veh = (VehicleTurreted) entity;
-            Vec3 turretOffset = veh.getTurretOffset();
-            Vec3 launchVelocity = veh.getLaunchVelocity();
-            TrajectoryRender.renderTrajectory(turretOffset.xCoord, turretOffset.yCoord, turretOffset.zCoord, launchVelocity.xCoord, launchVelocity.yCoord, launchVelocity.zCoord);
+            Vec3d turretOffset = veh.getTurretOffset();
+            Vec3d launchVelocity = veh.getLaunchVelocity();
+            TrajectoryRender.renderTrajectory(turretOffset.x, turretOffset.y, turretOffset.z, launchVelocity.x, launchVelocity.y, launchVelocity.z);
             GL11.glPopMatrix();
         }
     }
@@ -85,44 +87,45 @@ public class VehicleBBRender extends Render {
     }
 
     public static void renderOBB(OBB bb) {
-        Tessellator tessellator = Tessellator.instance;
-        tessellator.startDrawingQuads();
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferBuilder = tessellator.getBuffer();
+        bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
         double minY = 0;
         double maxY = bb.height;
-        Vec3 c1 = bb.getCorner(0);
-        Vec3 c2 = bb.getCorner(1);
-        Vec3 c3 = bb.getCorner(2);
-        Vec3 c4 = bb.getCorner(3);
+        Vec3d c1 = bb.getCorner(0);
+        Vec3d c2 = bb.getCorner(1);
+        Vec3d c3 = bb.getCorner(2);
+        Vec3d c4 = bb.getCorner(3);
 
-        tessellator.addVertex(c1.xCoord, maxY, c1.zCoord);
-        tessellator.addVertex(c2.xCoord, maxY, c2.zCoord);
-        tessellator.addVertex(c2.xCoord, minY, c2.zCoord);
-        tessellator.addVertex(c1.xCoord, minY, c1.zCoord);
+        bufferBuilder.pos(c1.x, maxY, c1.z).endVertex();
+        bufferBuilder.pos(c2.x, maxY, c2.z).endVertex();
+        bufferBuilder.pos(c2.x, minY, c2.z).endVertex();
+        bufferBuilder.pos(c1.x, minY, c1.z).endVertex();
 
-        tessellator.addVertex(c2.xCoord, maxY, c2.zCoord);
-        tessellator.addVertex(c3.xCoord, maxY, c3.zCoord);
-        tessellator.addVertex(c3.xCoord, minY, c3.zCoord);
-        tessellator.addVertex(c2.xCoord, minY, c2.zCoord);
+        bufferBuilder.pos(c2.x, maxY, c2.z).endVertex();
+        bufferBuilder.pos(c3.x, maxY, c3.z).endVertex();
+        bufferBuilder.pos(c3.x, minY, c3.z).endVertex();
+        bufferBuilder.pos(c2.x, minY, c2.z).endVertex();
 
-        tessellator.addVertex(c3.xCoord, maxY, c3.zCoord);
-        tessellator.addVertex(c4.xCoord, maxY, c4.zCoord);
-        tessellator.addVertex(c4.xCoord, minY, c4.zCoord);
-        tessellator.addVertex(c3.xCoord, minY, c3.zCoord);
+        bufferBuilder.pos(c3.x, maxY, c3.z).endVertex();
+        bufferBuilder.pos(c4.x, maxY, c4.z).endVertex();
+        bufferBuilder.pos(c4.x, minY, c4.z).endVertex();
+        bufferBuilder.pos(c3.x, minY, c3.z).endVertex();
 
-        tessellator.addVertex(c4.xCoord, maxY, c4.zCoord);
-        tessellator.addVertex(c1.xCoord, maxY, c1.zCoord);
-        tessellator.addVertex(c1.xCoord, minY, c1.zCoord);
-        tessellator.addVertex(c4.xCoord, minY, c4.zCoord);
+        bufferBuilder.pos(c4.x, maxY, c4.z).endVertex();
+        bufferBuilder.pos(c1.x, maxY, c1.z).endVertex();
+        bufferBuilder.pos(c1.x, minY, c1.z).endVertex();
+        bufferBuilder.pos(c4.x, minY, c4.z).endVertex();
 
-        tessellator.addVertex(c1.xCoord, minY, c1.zCoord);
-        tessellator.addVertex(c2.xCoord, minY, c2.zCoord);
-        tessellator.addVertex(c3.xCoord, minY, c3.zCoord);
-        tessellator.addVertex(c4.xCoord, minY, c4.zCoord);
+        bufferBuilder.pos(c1.x, minY, c1.z).endVertex();
+        bufferBuilder.pos(c2.x, minY, c2.z).endVertex();
+        bufferBuilder.pos(c3.x, minY, c3.z).endVertex();
+        bufferBuilder.pos(c4.x, minY, c4.z).endVertex();
 
-        tessellator.addVertex(c4.xCoord, maxY, c4.zCoord);
-        tessellator.addVertex(c3.xCoord, maxY, c3.zCoord);
-        tessellator.addVertex(c2.xCoord, maxY, c2.zCoord);
-        tessellator.addVertex(c1.xCoord, maxY, c1.zCoord);
+        bufferBuilder.pos(c4.x, maxY, c4.z).endVertex();
+        bufferBuilder.pos(c3.x, maxY, c3.z).endVertex();
+        bufferBuilder.pos(c2.x, maxY, c2.z).endVertex();
+        bufferBuilder.pos(c1.x, maxY, c1.z).endVertex();
 
         tessellator.draw();
     }

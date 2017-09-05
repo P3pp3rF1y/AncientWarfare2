@@ -48,7 +48,7 @@ public class TileMailbox extends TileOwned implements ISidedInventory, IRotatabl
         {
             MailboxData data = AWGameData.INSTANCE.getData(world, MailboxData.class);
 
-            List<DeliverableItem> items = new ArrayList<DeliverableItem>();
+            List<DeliverableItem> items = new ArrayList<>();
             data.getDeliverableItems(privateBox ? getOwnerName() : null, mailboxName, items, world, pos);
             data.addMailboxReceiver(privateBox ? getOwnerName() : null, mailboxName, this);
 

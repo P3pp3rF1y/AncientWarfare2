@@ -30,12 +30,12 @@ import javax.annotation.Nullable;
 public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTile, IInteractableTile, IRotatableTile, IEnergyReceiver, ITickable {
 
     public static final int DIRECTION_LENGTH = EnumFacing.VALUES.length;
-    /**
+    /*
      * The primary facing direction for this tile.  Default to north for uninitialized tiles (null is not a valid value)
      */
     protected EnumFacing orientation = EnumFacing.NORTH;
 
-    /**
+    /*
      * used by server to limit packet sending<br>
      * used by client for lerp-ticks for lerping between power states
      */
@@ -44,7 +44,7 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
     private TileEntity[] rfCache;//cannot reference interface directly, but can cast directly...//only used when cofh installed
     private ITorqueTile[] torqueCache;
 
-    /**
+    /*
      * helper vars to be used by tiles during updating, to cache in/out/loss values<br>
      * IMPORTANT: should NOT be relied upon for calculations, only for use for display purposes<br>
      * E.G. A tile may choose to -not- update these vars.<br>
@@ -55,7 +55,7 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
      */
     protected double torqueIn, torqueOut, torqueLoss, prevEnergy;
 
-    //*************************************** COFH RF METHODS ***************************************//
+    //************************************** COFH RF METHODS ***************************************//
     @Optional.Method(modid = "redstoneflux")
     @Override
     public final int getEnergyStored(EnumFacing from) {
@@ -86,7 +86,7 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
         return (int) (AWAutomationStatics.torqueToRf * addTorque(from, (double) maxReceive * AWAutomationStatics.rfToTorque));
     }
 
-//*************************************** NEIGHBOR CACHE UPDATING ***************************************//
+//************************************** NEIGHBOR CACHE UPDATING ***************************************//
 
     public final ITorqueTile[] getTorqueCache() {
         if (torqueCache == null) {
@@ -173,7 +173,7 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
 
     }
 
-//*************************************** generic stuff ***************************************//
+//************************************** generic stuff ***************************************//
 
     @Override
     public final void setPrimaryFacing(EnumFacing d) {
@@ -200,7 +200,7 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
         return false;
     }
 
-//*************************************** Utility Methods ***************************************//
+//************************************** Utility Methods ***************************************//
 
     protected void updateRotation() {
         throw new UnsupportedOperationException();
@@ -216,26 +216,26 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
 
     protected abstract void handleClientRotationData(EnumFacing side, int value);
 
-    /**
+    /*
      * @return the TOTAL amount stored in the entire tile (not just one side), used by on-right-click functionality
      */
     protected abstract double getTotalTorque();
 
-    /**
+    /*
      * @return the total output of torque for the tick
      */
     protected double getTorqueOut() {
         return torqueOut;
     }
 
-    /**
+    /*
      * @return the total input of torque for the tick
      */
     protected double getTorqueIn() {
         return torqueIn;
     }
 
-    /**
+    /*
      * @return the total torque lost (destroyed, gone completely) for the tick
      */
     protected double getTorqueLoss() {
@@ -300,7 +300,7 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
         return true;
     }
 
-//*************************************** NBT / DATA PACKET ***************************************//
+//************************************** NBT / DATA PACKET ***************************************//
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {

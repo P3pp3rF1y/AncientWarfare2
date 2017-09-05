@@ -3,7 +3,7 @@ package net.shadowmage.ancientwarfare.vehicle.render;
 import net.minecraft.client.renderer.entity.RenderEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.Vec3d;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelLoader;
@@ -91,9 +91,9 @@ public class RenderCatapult extends RenderEntity {
             GL11.glPushMatrix();
             GL11.glTranslated(x, y, z);
             VehicleTurreted veh = (VehicleTurreted) entity;
-            Vec3 turretOffset = veh.getTurretOffset();
-            Vec3 launchVelocity = veh.getLaunchVelocity();
-            TrajectoryRender.renderTrajectory(turretOffset.xCoord, turretOffset.yCoord, turretOffset.zCoord, launchVelocity.xCoord, launchVelocity.yCoord, launchVelocity.zCoord);
+            Vec3d turretOffset = veh.getTurretOffset();
+            Vec3d launchVelocity = veh.getLaunchVelocity();
+            TrajectoryRender.renderTrajectory(turretOffset.x, turretOffset.y, turretOffset.z, launchVelocity.x, launchVelocity.y, launchVelocity.z);
             GL11.glPopMatrix();
         }
     }

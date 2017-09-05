@@ -9,7 +9,7 @@ import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.pathfinding.PathEntity;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathPoint;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 
 public class NpcAIDoor extends EntityAIBase {
     protected final EntityLiving theEntity;
@@ -39,12 +39,12 @@ public class NpcAIDoor extends EntityAIBase {
         for (int i = 0; i < Math.min(pathentity.getCurrentPathIndex() + 2, pathentity.getCurrentPathLength()); ++i)
         {
             PathPoint pathpoint = pathentity.getPathPointFromIndex(i);
-            this.doorPosX = pathpoint.xCoord;
-            this.doorPosZ = pathpoint.zCoord;
+            this.doorPosX = pathpoint.x;
+            this.doorPosZ = pathpoint.z;
 
             if (this.theEntity.getDistanceSq(this.doorPosX, this.theEntity.posY, this.doorPosZ) <= 2.25D)
             {
-                this.doorPosY = pathpoint.yCoord;
+                this.doorPosY = pathpoint.y;
                 if(findDoor())
                     return true;
                 this.doorPosY++;
@@ -55,9 +55,9 @@ public class NpcAIDoor extends EntityAIBase {
 
         if (!this.theEntity.isCollidedHorizontally)
             return false;
-        this.doorPosX = MathHelper.floor_double(this.theEntity.posX);
-        this.doorPosY = MathHelper.floor_double(this.theEntity.posY);
-        this.doorPosZ = MathHelper.floor_double(this.theEntity.posZ);
+        this.doorPosX = MathHelper.floor(this.theEntity.posX);
+        this.doorPosY = MathHelper.floor(this.theEntity.posY);
+        this.doorPosZ = MathHelper.floor(this.theEntity.posZ);
         if(findDoor())
             return true;
         this.doorPosY++;
@@ -115,7 +115,7 @@ public class NpcAIDoor extends EntityAIBase {
             int meta = this.theEntity.world.getBlockMetadata(this.doorPosX, this.doorPosY, this.doorPosZ);
             if(isOpening){
                 if(!BlockFenceGate.isFenceGateOpen(meta)) {
-                    int j1 = (MathHelper.floor_double((double)(this.theEntity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3) % 4;
+                    int j1 = (MathHelper.floor((double)(this.theEntity.rotationYaw * 4.0F / 360.0F) + 0.5D) & 3) % 4;
                     int k1 = meta & 3;
                     if (k1 == (j1 + 2) % 4) {
                         meta = j1;

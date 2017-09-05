@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -33,7 +33,7 @@ public class AWInventoryMapped extends AWInventoryBase
 
 HashMap<Integer, ItemStack> items = new HashMap<Integer, ItemStack>();
 
-/**
+/*
  * @param size
  */
 public AWInventoryMapped(int size)
@@ -82,7 +82,7 @@ public void setInventorySlotContents(int slot, ItemStack newContents)
   }
 
 
-/**
+/*
  * return {@link NBTTagCompound} describing this inventory
  * @return
  */
@@ -108,7 +108,7 @@ public NBTTagCompound getNBTTag()
   return tag;
   }
 
-/**
+/*
  * read the inventory from an NBT tag
  * @param tag
  */

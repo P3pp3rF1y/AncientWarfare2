@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -73,7 +73,7 @@ public class StructureBuilderWorldGen extends StructureBuilder {
         return par1;
     }
 
-    /**
+    /*
      * Gets the replacement block metadata for the current biome
      */
     protected int getBiomeSpecificBlockMetadata(Block par1, int par2, BiomeGenBase biome) {

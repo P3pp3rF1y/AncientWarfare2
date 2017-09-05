@@ -6,7 +6,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
 import net.minecraft.world.World;
 
 import java.util.List;
@@ -59,7 +58,7 @@ public class ItemBardInstrument extends Item {
             }else if(meta == 2){
                 s = "note.harp";
             }
-            world.playSoundEffect(player.posX + 0.5, player.posY + 0.5, player.posZ + 0.5, s, 2.0F, 1.0F);
+            world.playSound(player.posX + 0.5, player.posY + 0.5, player.posZ + 0.5, s, 2.0F, 1.0F);
         }
         return stack;
     }

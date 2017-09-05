@@ -14,7 +14,7 @@ import java.io.InputStream;
 import java.util.HashSet;
 
 public class NpcCommonProxy extends CommonProxyBase {
-    private HashSet<GameProfile> profileCache = new HashSet<GameProfile>();
+    private HashSet<GameProfile> profileCache = new HashSet<>();
 
     public void loadSkins() {
     }

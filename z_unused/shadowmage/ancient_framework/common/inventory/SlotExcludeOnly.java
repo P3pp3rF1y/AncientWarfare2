@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -33,7 +33,7 @@ public class SlotExcludeOnly extends Slot
 
 List<ItemStack> itemFilters;
 
-/**
+/*
  * @param par1iInventory
  * @param par2
  * @param par3
@@ -48,7 +48,7 @@ public SlotExcludeOnly(IInventory par1iInventory, int par2, int par3, int par4, 
 public SlotExcludeOnly(IInventory par1iInventory, int par2, int par3, int par4, ItemStack itemFilter)
   {
   super(par1iInventory, par2, par3, par4);
-  this.itemFilters = new ArrayList<ItemStack>();
+  this.itemFilters = new ArrayList<>();
   this.itemFilters.add(itemFilter);
   }
 

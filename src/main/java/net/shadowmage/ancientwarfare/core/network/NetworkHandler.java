@@ -15,7 +15,6 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 
 import java.util.HashMap;
-import java.util.List;
 
 public final class NetworkHandler implements IGuiHandler {
 
@@ -92,8 +91,8 @@ public final class NetworkHandler implements IGuiHandler {
 
     private FMLEventChannel channel;
 
-    private HashMap<Integer, Class<? extends ContainerBase>> containerClasses = new HashMap<Integer, Class<? extends ContainerBase>>();
-    private HashMap<Integer, Class<?>> guiClasses = new HashMap<Integer, Class<?>>();
+    private HashMap<Integer, Class<? extends ContainerBase>> containerClasses = new HashMap<>();
+    private HashMap<Integer, Class<?>> guiClasses = new HashMap<>();
 
     public final void registerNetwork() {
         channel = NetworkRegistry.INSTANCE.newEventDrivenChannel(CHANNELNAME);
@@ -129,7 +128,7 @@ public final class NetworkHandler implements IGuiHandler {
         INSTANCE.channel.sendToAllAround(pkt.getFMLPacket(), new TargetPoint(world.provider.getDimension(), x, y, z, range));
     }
 
-    /**
+    /*
      * @param world (must be instanceof be WorldServer)
      * @param cx    chunkX
      * @param cz    chunkZ

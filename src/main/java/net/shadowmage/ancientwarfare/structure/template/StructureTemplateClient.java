@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -32,7 +32,7 @@ public class StructureTemplateClient {
 
     public final String name;
     public final int xSize, ySize, zSize, xOffset, yOffset, zOffset;
-    public final List<ItemStack> resourceList = new ArrayList<ItemStack>();
+    public final List<ItemStack> resourceList = new ArrayList<>();
     public boolean survival;
 
     public StructureTemplateClient(StructureTemplate template) {

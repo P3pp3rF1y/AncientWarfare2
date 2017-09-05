@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -33,7 +33,7 @@ import net.minecraft.world.World;
 public abstract class AWBlockContainer extends AWBlockBase
 {
 
-/**
+/*
  * @param par1
  * @param par2Material
  * @param baseName
@@ -63,7 +63,7 @@ public TileEntity createTileEntity(World world, int meta)
   return getNewTileEntity(world, meta);
   }
 
-/**
+/*
  * ejects contained items into the world, and notifies neighbours of an update, as appropriate
  */
 @Override
@@ -73,7 +73,7 @@ public void breakBlock(World par1World, int par2, int par3, int par4, int par5, 
   par1World.removeBlockTileEntity(par2, par3, par4);
   }
 
-/**
+/*
  * Called when the block receives a BlockEvent - see World.addBlockEvent. By default, passes it on to the tile
  * entity at this location. Args: world, x, y, z, blockID, EventID, event parameter
  */
@@ -112,7 +112,7 @@ protected ItemStack createStackedBlock(int par1)
 @Override
 public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata, int fortune)
   {
-  ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+  ArrayList<ItemStack> ret = new ArrayList<>();
   ret.add(createStackedBlock(metadata));
   return ret;
   }

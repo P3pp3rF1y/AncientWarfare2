@@ -15,11 +15,11 @@ public class GuiSpawnerAdvanced extends GuiContainerBase<ContainerSpawnerAdvance
 
     private CompositeScrolled area;
 
-    private HashMap<NumberInput, EntitySpawnGroup> groupMapByInput = new HashMap<NumberInput, EntitySpawnGroup>();
-    private HashMap<Button, EntitySpawnGroup> groupMapByButton = new HashMap<Button, EntitySpawnGroup>();
+    private HashMap<NumberInput, EntitySpawnGroup> groupMapByInput = new HashMap<>();
+    private HashMap<Button, EntitySpawnGroup> groupMapByButton = new HashMap<>();
 
-    private HashMap<NumberInput, EntitySpawnSettings> settingsMapByInput = new HashMap<NumberInput, EntitySpawnSettings>();
-    private HashMap<Button, EntitySpawnSettings> settingsMapByButton = new HashMap<Button, EntitySpawnSettings>();
+    private HashMap<NumberInput, EntitySpawnSettings> settingsMapByInput = new HashMap<>();
+    private HashMap<Button, EntitySpawnSettings> settingsMapByButton = new HashMap<>();
 
     public GuiSpawnerAdvanced(ContainerBase par1Container) {
         super(par1Container);

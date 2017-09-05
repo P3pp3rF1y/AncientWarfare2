@@ -145,7 +145,7 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
     }
 
     private void synchItemMaps() {
-        /**
+        /*
          * need to loop through this.itemMap and compare quantities to warehouse.itemMap
          *    add any changes to change-list
          * need to loop through warehouse.itemMap and find new entries

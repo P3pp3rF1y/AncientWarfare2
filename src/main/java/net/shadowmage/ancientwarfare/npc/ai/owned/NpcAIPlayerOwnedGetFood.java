@@ -29,7 +29,7 @@ public class NpcAIPlayerOwnedGetFood extends NpcAI<NpcPlayerOwned> {
         return npc.requiresUpkeep() && npc.getUpkeepPoint() != null && npc.getFoodRemaining() < npc.getUpkeepAmount() && npc.getUpkeepDimensionId() == npc.world.provider.getDimension();
     }
 
-    /**
+    /*
      * Execute a one shot task or start executing a continuous task
      */
     @Override
@@ -37,7 +37,7 @@ public class NpcAIPlayerOwnedGetFood extends NpcAI<NpcPlayerOwned> {
         npc.addAITask(TASK_UPKEEP);
     }
 
-    /**
+    /*
      * Updates the task
      */
     @Override
@@ -56,7 +56,7 @@ public class NpcAIPlayerOwnedGetFood extends NpcAI<NpcPlayerOwned> {
         }
     }
 
-    /**
+    /*
      * Resets the task
      */
     @Override

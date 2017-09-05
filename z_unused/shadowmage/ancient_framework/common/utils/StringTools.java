@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -120,7 +120,7 @@ public static String getCSVValueFor(String[] values)
   return line;
   }
 
-/**
+/*
  * splits test at regex, returns parsed int array from csv value of remaining string
  * returns size 1 int array if no valid split is found
  * @param regex
@@ -169,7 +169,7 @@ public static short[] parseShortArray(String csv)
   return array;
   }
 
-/**
+/*
  * splits test at regex, returns parsed byte array from csv value of remaining string
  * returns size 1 byte array if no valid split is found
  * @param regex
@@ -235,7 +235,7 @@ public static String[] parseStringArray(String csv)
   return splits;
   }
 
-/**
+/*
  * returns beginning of string up to len
  * @param in
  * @param len
@@ -246,7 +246,7 @@ public static String subStringBeginning(String in, int len)
   return len > in.length() ? in : in.substring(0, len);
   }
 
-/**
+/*
  * returns the value after a split at regex, or false
  * @param regex
  * @param test
@@ -262,7 +262,7 @@ public static boolean safeParseBoolean(String regex, String test)
   return false;
   }
 
-/**
+/*
  * returns the value after a split at regex, or false
  * @param regex
  * @param test
@@ -305,7 +305,7 @@ public static float safeParseFloat(String val)
     }  
   }
 
-/**
+/*
  * returns a value after a split at regex, or an empty string
  * @param regex
  * @param test
@@ -386,7 +386,7 @@ public static short safeParseShort(String num)
   return 0;
   }
 
-/**
+/*
  * returns a value after a split at regex, or zero (0)
  * @param regex
  * @param test
@@ -402,7 +402,7 @@ public static int safeParseInt(String regex, String test)
   return 0;
   }
 
-/**
+/*
  * returns a value after a split at regex, or zero (0)
  * @param regex
  * @param test
@@ -418,7 +418,7 @@ public static byte safeParseByte(String regex, String test)
   return 0;
   }
 
-/**
+/*
  * returns a value after a split at regex, or zero (0)
  * @param regex
  * @param test
@@ -447,7 +447,7 @@ public static boolean isNumber(String test)
   return true;
   }
 
-/**
+/*
  * write a list of lines to a byte[] as UTF-8 encoded chars
  * @param lines
  * @return
@@ -466,7 +466,7 @@ public static byte[] getByteArray(List<String> lines) throws UnsupportedEncoding
   return allBytes;
   }
 
-/**
+/*
  * read a list of lines from a byte[] as UTF-8 encoded chars
  * @param bytes
  * @return
@@ -474,7 +474,7 @@ public static byte[] getByteArray(List<String> lines) throws UnsupportedEncoding
 public static List<String> getLines(byte[] bytes)
   {
   ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-  List<String> lines = new ArrayList<String>();
+  List<String> lines = new ArrayList<>();
   Scanner scan = new Scanner(bais, "UTF-8");
   while(scan.hasNext())
     {    

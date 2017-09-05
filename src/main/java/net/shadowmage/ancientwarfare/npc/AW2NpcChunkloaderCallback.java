@@ -1,14 +1,14 @@
 package net.shadowmage.ancientwarfare.npc;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.shadowmage.ancientwarfare.npc.block.AWNPCBlockLoader;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AW2NpcChunkloaderCallback implements ForgeChunkManager.OrderedLoadingCallback {
 
@@ -25,7 +25,7 @@ public class AW2NpcChunkloaderCallback implements ForgeChunkManager.OrderedLoadi
 
     @Override
     public List<Ticket> ticketsLoaded(List<Ticket> tickets, World world, int maxTicketCount) {
-        List<Ticket> validTickets = new ArrayList<Ticket>();
+        List<Ticket> validTickets = new ArrayList<>();
         for(Ticket ticket: tickets) {
             int blockX = ticket.getModData().getInteger("blockX");
             int blockY = ticket.getModData().getInteger("blockY");

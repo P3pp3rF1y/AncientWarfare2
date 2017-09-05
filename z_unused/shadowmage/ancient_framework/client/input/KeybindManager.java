@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -39,7 +39,7 @@ import cpw.mods.fml.common.TickType;
 public class KeybindManager extends KeyHandler
 {
 
-/**
+/*
  * vanilla keybinds setup, used to access/control base mod keybinds for team and options menu
  * options menu has further options to change other AW settings
  */
@@ -48,7 +48,7 @@ static KeyBinding teamControl = new KeyBinding("AW-TeamControl", Keyboard.KEY_F6
 private static KeyBinding[] keys = new KeyBinding[]{options, teamControl};
 private static boolean[] keyRepeats = new boolean []{false, false};
 
-/**
+/*
  * @param keyBindings
  * @param repeatings
  */
@@ -57,8 +57,8 @@ public KeybindManager()
   super(keys, keyRepeats);
   }
 
-private static List<Keybind> keybinds = new ArrayList<Keybind>();
-private static List<IHandleInput> mouseInputHandlers = new ArrayList<IHandleInput>();
+private static List<Keybind> keybinds = new ArrayList<>();
+private static List<IHandleInput> mouseInputHandlers = new ArrayList<>();
 static int mouseX;
 static int mouseY;
 static boolean[] mouseButtonStates = new boolean[3];//left, right, middle/wheel?

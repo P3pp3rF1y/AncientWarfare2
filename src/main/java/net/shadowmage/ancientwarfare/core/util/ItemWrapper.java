@@ -18,7 +18,7 @@ public class ItemWrapper {
     }
     
     public static ArrayList<ItemWrapper> buildList(String listName, String[] input) {
-        ArrayList<ItemWrapper> outputList = new ArrayList<ItemWrapper>();
+        ArrayList<ItemWrapper> outputList = new ArrayList<>();
 
         AncientWarfareCore.log.info("Building " + listName + "...");
         

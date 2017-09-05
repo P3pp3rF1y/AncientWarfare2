@@ -19,12 +19,12 @@ import java.util.List;
 public class AWNPCEntityLoader {
     private static int nextID = 0;
 
-    /**
+    /*
      * Npc base type -> NpcDeclaration<br>
      * Used to retrieve declaration for creating entities<br>
      * NpcDeclaration also stores information pertaining to npc-sub-type basic setup
      */
-    private static HashMap<String, NpcDeclaration> npcMap = new HashMap<String, NpcDeclaration>();
+    private static HashMap<String, NpcDeclaration> npcMap = new HashMap<>();
 
     public static void load() {
         addPlayerOwnedNpcs();
@@ -70,7 +70,7 @@ public class AWNPCEntityLoader {
 
     private static void addBandits() {
         NpcFactionDeclaration reg;
-        /**
+        /*
          * BANDITS
          */
         reg = new NpcFactionDeclaration(NpcBanditArcher.class, AWEntityRegistry.NPC_FACTION_BANDIT_ARCHER);
@@ -115,7 +115,7 @@ public class AWNPCEntityLoader {
 
     private static void addDesertNatives() {
         NpcFactionDeclaration reg;
-        /**
+        /*
          * DESERT NATIVES
          */
         reg = new NpcFactionDeclaration(NpcDesertArcher.class, AWEntityRegistry.NPC_FACTION_DESERT_ARCHER);
@@ -160,7 +160,7 @@ public class AWNPCEntityLoader {
 
     private static void addJungleNatives() {
         NpcFactionDeclaration reg;
-        /**
+        /*
          * JUNGLE NATIVES
          */
         reg = new NpcFactionDeclaration(NpcNativeArcher.class, AWEntityRegistry.NPC_FACTION_NATIVE_ARCHER);
@@ -205,7 +205,7 @@ public class AWNPCEntityLoader {
 
     private static void addPirates() {
         NpcFactionDeclaration reg;
-        /**
+        /*
          * PIRATES
          */
         reg = new NpcFactionDeclaration(NpcPirateArcher.class, AWEntityRegistry.NPC_FACTION_PIRATE_ARCHER);
@@ -250,7 +250,7 @@ public class AWNPCEntityLoader {
 
     private static void addVikings() {
         NpcFactionDeclaration reg;
-        /**
+        /*
          * VIKINGS
          */
         reg = new NpcFactionDeclaration(NpcVikingArcher.class, AWEntityRegistry.NPC_FACTION_VIKING_ARCHER);
@@ -295,7 +295,7 @@ public class AWNPCEntityLoader {
 
     private static void addCustom1() {
         NpcFactionDeclaration reg;
-        /**
+        /*
          * CUSTOM_1S
          */
         reg = new NpcFactionDeclaration(NpcCustom_1Archer.class, AWEntityRegistry.NPC_FACTION_CUSTOM_1_ARCHER);
@@ -340,7 +340,7 @@ public class AWNPCEntityLoader {
 
     private static void addCustom2() {
         NpcFactionDeclaration reg;
-        /**
+        /*
          * CUSTOM_2S
          */
         reg = new NpcFactionDeclaration(NpcCustom_2Archer.class, AWEntityRegistry.NPC_FACTION_CUSTOM_2_ARCHER);
@@ -386,7 +386,7 @@ public class AWNPCEntityLoader {
     private static void addCustom3() {
 
         NpcFactionDeclaration reg;
-        /**
+        /*
          * CUSTOM_3S
          */
         reg = new NpcFactionDeclaration(NpcCustom_3Archer.class, AWEntityRegistry.NPC_FACTION_CUSTOM_3_ARCHER);
@@ -429,7 +429,7 @@ public class AWNPCEntityLoader {
         addNpcRegistration(reg, "ancientwarfare:npc/spawner_custom_3_bard");
     }
 
-    /**
+    /*
      * has to be called during post-init so that all items/etc are fully initialized
      */
     public static void loadNpcSubtypeEquipment() {
@@ -481,7 +481,7 @@ public class AWNPCEntityLoader {
         reg.spawnEquipment.put(npcSubtype, equipment);
     }
 
-    /**
+    /*
      * used by npc spawner item to get the sub-items
      */
     @SuppressWarnings({"rawtypes", "unchecked"})
@@ -500,8 +500,8 @@ public class AWNPCEntityLoader {
 
         private boolean canSpawnBaseEntity = true;
         private final String npcType;
-        private final HashMap<String, String> subTypeIcons = new HashMap<String, String>();
-        private final HashMap<String, ItemStack> spawnEquipment = new HashMap<String, ItemStack>();
+        private final HashMap<String, String> subTypeIcons = new HashMap<>();
+        private final HashMap<String, ItemStack> spawnEquipment = new HashMap<>();
 
         public NpcDeclaration(Class<? extends Entity> entityClass, String entityName, String npcType) {
             super(entityClass, entityName, nextID++);

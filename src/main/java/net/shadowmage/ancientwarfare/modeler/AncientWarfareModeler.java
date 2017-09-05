@@ -47,7 +47,7 @@ public class AncientWarfareModeler {
         log = AncientWarfareCore.log;
         config = AWCoreStatics.getConfigFor("AncientWarfareModeler");
 
-        /**
+        /*
          * internal registry
          */
         editorOpener = (ItemModelEditor) new ItemModelEditor("editor_opener").setTextureName("ancientwarfare:modeler/editor_opener");

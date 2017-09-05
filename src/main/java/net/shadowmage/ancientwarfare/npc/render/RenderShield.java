@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
@@ -55,7 +54,7 @@ public class RenderShield implements IItemRenderer {
         GL11.glTranslatef(-8.f * 0.0625f, 10.f * 0.0625f, 0);
         GL11.glRotatef(-80.f, 1, 0, 0);
         GL11.glTranslatef(0, -3.f * 0.0625f, 0);
-        Tessellator tessellator = Tessellator.instance;
+        Tessellator tessellator = Tessellator.getInstance();
         float f = iicon.getMinU();
         float f1 = iicon.getMaxU();
         float f2 = iicon.getMinV();

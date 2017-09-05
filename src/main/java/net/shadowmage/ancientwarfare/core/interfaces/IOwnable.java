@@ -1,10 +1,10 @@
 package net.shadowmage.ancientwarfare.core.interfaces;
 
-import java.util.UUID;
-
 import net.minecraft.entity.player.EntityPlayer;
 
-/**
+import java.util.UUID;
+
+/*
  * Tile entities/Entities that are owned by a player -- called by spawning/placing items to set owner
  *
  * @author Shadowmage

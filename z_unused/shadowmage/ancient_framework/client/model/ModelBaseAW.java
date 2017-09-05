@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -38,7 +38,7 @@ int textureHeight;
 
 HashMap<Integer, Primitive> primitives = new HashMap<Integer, Primitive>();
 HashMap<String, ModelPiece> pieces = new HashMap<String, ModelPiece>();
-private List<ModelPiece> basePieces = new ArrayList<ModelPiece>();
+private List<ModelPiece> basePieces = new ArrayList<>();
 int nextPrimitiveNumber = 0;
 
 public void renderModel()
@@ -143,7 +143,7 @@ public void parseFromLines(List<String> lines)
 
 public List<String> getModelLines()
   {
-  ArrayList<String> lines = new ArrayList<String>();
+  ArrayList<String> lines = new ArrayList<>();
   lines.add("textureSize="+textureWidth+","+textureHeight);
   for(ModelPiece piece : this.basePieces)
     {
@@ -152,7 +152,7 @@ public List<String> getModelLines()
   return lines;
   }
 
-/**
+/*
  * should only be called from ModelPiece
  * @param primitive
  */

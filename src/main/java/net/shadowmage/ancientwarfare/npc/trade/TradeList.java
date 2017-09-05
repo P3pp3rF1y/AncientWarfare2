@@ -8,7 +8,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.shadowmage.ancientwarfare.core.util.OrderingList;
 
-/**
+/*
  * Created by Olivier on 12/05/2015.
  */
 public class TradeList extends OrderingList<Trade> implements INBTSerializable<NBTTagCompound> {

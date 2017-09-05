@@ -47,7 +47,7 @@ public class AWAutomationBlockLoader {
 
     public static final BlockMailbox mailbox = new BlockMailbox("mailbox");
 
-    /**
+    /*
      * POWER NETWORK BLOCKS
      */
     public static final BlockFlywheel flywheel = new BlockFlywheel("flywheel_controller");

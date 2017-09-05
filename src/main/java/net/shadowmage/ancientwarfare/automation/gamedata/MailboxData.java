@@ -11,16 +11,13 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSid
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import javax.annotation.Nonnull;
+import java.util.*;
 
 public class MailboxData implements extends WorldSavedData {
 //TODO world capability
     private MailboxSet publicMailboxes = new MailboxSet("public");
-    private HashMap<String, MailboxSet> privateMailboxes = new HashMap<String, MailboxSet>();
+    private HashMap<String, MailboxSet> privateMailboxes = new HashMap<>();
 
     public MailboxData(String par1Str) {
         super(par1Str);
@@ -91,14 +88,14 @@ public class MailboxData implements extends WorldSavedData {
     }
 
     public List<String> getPublicBoxNames() {
-        ArrayList<String> names = new ArrayList<String>();
+        ArrayList<String> names = new ArrayList<>();
         MailboxSet set = publicMailboxes;
         names.addAll(set.mailboxes.keySet());
         return names;
     }
 
     public List<String> getPrivateBoxNames(String owner) {
-        ArrayList<String> names = new ArrayList<String>();
+        ArrayList<String> names = new ArrayList<>();
         if (privateMailboxes.containsKey(owner)) {
             names.addAll(privateMailboxes.get(owner).mailboxes.keySet());
         }
@@ -123,7 +120,7 @@ public class MailboxData implements extends WorldSavedData {
     private final class MailboxSet {
 
         private String owningPlayerName;
-        private HashMap<String, MailboxEntry> mailboxes = new HashMap<String, MailboxEntry>();
+        private HashMap<String, MailboxEntry> mailboxes = new HashMap<>();
 
         private MailboxSet(String name) {
             this.owningPlayerName = name;
@@ -214,8 +211,8 @@ public class MailboxData implements extends WorldSavedData {
 
     public final class MailboxEntry {
         private String mailboxName;
-        private List<DeliverableItem> incomingItems = new ArrayList<DeliverableItem>();
-        private List<TileMailbox> receivers = new ArrayList<TileMailbox>();
+        private List<DeliverableItem> incomingItems = new ArrayList<>();
+        private List<TileMailbox> receivers = new ArrayList<>();
 
         private MailboxEntry(String name) {
             this.mailboxName = name;
@@ -298,9 +295,9 @@ public class MailboxData implements extends WorldSavedData {
             @Nonnull ItemStack stack;
             for (TileMailbox box : receivers) {
                 dim = box.getWorld().provider.getDimension();
-                x = box.xCoord;
-                y = box.yCoord;
-                z = box.zCoord;
+                x = box.x;
+                y = box.y;
+                z = box.z;
                 it = this.incomingItems.iterator();
                 while (it.hasNext() && (item = it.next()) != null) {
                     if (dim != item.originDimension) {
@@ -330,6 +327,7 @@ public class MailboxData implements extends WorldSavedData {
 
     public final class DeliverableItem {
         int originDimension, x, y, z;
+        @Nonnull
         public ItemStack item;
         int deliveryTime;//system milis at which this stack is deliverable
 

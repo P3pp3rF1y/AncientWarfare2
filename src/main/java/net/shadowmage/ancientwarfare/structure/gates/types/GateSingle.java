@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2015 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -24,7 +24,7 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 
 public class GateSingle extends Gate{
-    /**
+    /*
      * @param id
      * @param textureLocation
      */

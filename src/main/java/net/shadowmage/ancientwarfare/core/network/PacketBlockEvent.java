@@ -14,7 +14,7 @@ public class PacketBlockEvent extends PacketBase {
         //TODO test if needed
     }
 
-    /**
+    /*
      * @param pos    coordinates of block in the world
      * @param block type to validate on client-side prior to reading event (id written as short)
      * @param a     data part a - (written as a unsigned byte)

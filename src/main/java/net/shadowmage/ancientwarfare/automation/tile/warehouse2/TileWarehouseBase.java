@@ -30,33 +30,33 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
     private boolean init;
     private boolean shouldRecount;
 
-    private final Set<TileWarehouseStockViewer> stockViewers = new HashSet<TileWarehouseStockViewer>();
-    private final Set<TileWarehouseInterface> interfaceTiles = new HashSet<TileWarehouseInterface>();
-    private final Set<IWarehouseStorageTile> storageTiles = new HashSet<IWarehouseStorageTile>();
+    private final Set<TileWarehouseStockViewer> stockViewers = new HashSet<>();
+    private final Set<TileWarehouseInterface> interfaceTiles = new HashSet<>();
+    private final Set<IWarehouseStorageTile> storageTiles = new HashSet<>();
 
-    /**
+    /*
      * Interfaces that need filling, AND there are items available to fill.
      * Anytime storage block inventories are updated, this list needs to be rechecked
      * to make sure items are still available
      */
-    private final Set<TileWarehouseInterface> interfacesToFill = new HashSet<TileWarehouseInterface>();
+    private final Set<TileWarehouseInterface> interfacesToFill = new HashSet<>();
 
-    /**
+    /*
      * Interfaces that have an excess of items or non-matching items will be in this set
      */
-    private final Set<TileWarehouseInterface> interfacesToEmpty = new HashSet<TileWarehouseInterface>();
+    private final Set<TileWarehouseInterface> interfacesToEmpty = new HashSet<>();
 
     protected WarehouseStorageMap storageMap = new WarehouseStorageMap();
     private ItemQuantityMap cachedItemMap = new ItemQuantityMap();
 
-    private final Set<ContainerWarehouseControl> viewers = new HashSet<ContainerWarehouseControl>();
-    private final Set<ContainerWarehouseCraftingStation> craftingViewers = new HashSet<ContainerWarehouseCraftingStation>();
+    private final Set<ContainerWarehouseControl> viewers = new HashSet<>();
+    private final Set<ContainerWarehouseCraftingStation> craftingViewers = new HashSet<>();
 
     public TileWarehouseBase() {
 
     }
 
-    /**
+    /*
      * SERVER ONLY
      *
      * @return max allowed storage by item quantity
@@ -146,7 +146,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
         int moved;
         int toMove = request.count;
         int stackMove;
-        List<IWarehouseStorageTile> potentialStorage = new ArrayList<IWarehouseStorageTile>();
+        List<IWarehouseStorageTile> potentialStorage = new ArrayList<>();
         storageMap.getDestinations(stack, potentialStorage);
         for (IWarehouseStorageTile dest : potentialStorage) {
             stackMove = toMove > stack.getCount() ? stack.getCount() : toMove;
@@ -191,7 +191,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
     }
 
     private boolean tryFillFromRequest(TileWarehouseInterface tile, InterfaceFillRequest request) {
-        List<IWarehouseStorageTile> potentialStorage = new ArrayList<IWarehouseStorageTile>();
+        List<IWarehouseStorageTile> potentialStorage = new ArrayList<>();
         storageMap.getDestinations(request.requestedItem, potentialStorage);
         int found, moved;
         @Nonnull ItemStack stack;
@@ -443,7 +443,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
             cachedItemMap.decreaseCount(layoutStack, i);
             return;
         }
-        List<IWarehouseStorageTile> dest = new ArrayList<IWarehouseStorageTile>();
+        List<IWarehouseStorageTile> dest = new ArrayList<>();
         storageMap.getDestinations(layoutStack, dest);
         int found = 0;
         for (IWarehouseStorageTile tile : dest) {
@@ -464,7 +464,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
     }
 
     public ItemStack tryAdd(ItemStack stack) {
-        List<IWarehouseStorageTile> destinations = new ArrayList<IWarehouseStorageTile>();
+        List<IWarehouseStorageTile> destinations = new ArrayList<>();
         storageMap.getDestinations(stack, destinations);
         int moved = 0;
         for (IWarehouseStorageTile tile : destinations) {
@@ -492,7 +492,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
         }
     }
 
-    /**
+    /*
      * Used by user-set-blocks tile to set all default harvest-checks to true when bounds are FIRST set
      */
     @Override

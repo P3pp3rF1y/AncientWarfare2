@@ -5,21 +5,18 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import javax.annotation.Nonnull;
+import java.util.*;
 
 public class ItemQuantityMap {
 
-    private final Map<ItemHashEntry, Integer> map = new HashMap<ItemHashEntry, Integer>();
+    private final Map<ItemHashEntry, Integer> map = new HashMap<>();
 
-    /**
+    /*
      * puts all key/value pairs from the incoming map.  Overwrites existing counts.
      */
     public void putAll(ItemQuantityMap incoming) {
@@ -28,7 +25,7 @@ public class ItemQuantityMap {
         }
     }
 
-    /**
+    /*
      * is not a PUT operation -- merges quantities (values) instead of overwriting
      */
     public void addAll(ItemQuantityMap incoming) {
@@ -41,7 +38,7 @@ public class ItemQuantityMap {
         }
     }
 
-    /**
+    /*
      * removes all key/value pairs that have corresponding keys contained in toRemove
      */
     public void removeAll(ItemQuantityMap toRemove) {
@@ -50,7 +47,7 @@ public class ItemQuantityMap {
         }
     }
 
-    /**
+    /*
      * @param entries must not be the exact key-set or concurrentModificationException will be thrown
      */
     public void removeAll(Collection<ItemHashEntry> entries) {
@@ -59,7 +56,7 @@ public class ItemQuantityMap {
         }
     }
 
-    /**
+    /*
      * decreases quantities by those contained in toRemove<br>
      * if toRemove contains a key that this. does not, it is silently ignored, and removal continues
      * at the next key
@@ -151,12 +148,12 @@ public class ItemQuantityMap {
         return out;
     }
 
-    /**
+    /*
      * Return the most compact set of item-stacks that can represent the contents of this map.<br>
      * May return multiple stacks of the same item if the quantity contained is > maxStackSize.<br>
      */
     public List<ItemStack> getItems() {
-        List<ItemStack> items = new ArrayList<ItemStack>();
+        List<ItemStack> items = new ArrayList<>();
         @Nonnull ItemStack outStack;
         int qty;
         for (ItemHashEntry wrap1 : map.keySet()) {
@@ -171,7 +168,7 @@ public class ItemQuantityMap {
         return items;
     }
 
-    /**
+    /*
      * Return a list of the most compact item-stacks as possible.<br>
      * Stack max size for a given item is ignored -- stack size may be >64 (and may actually be up to Integer.MAX_VALUE)
      *
@@ -213,7 +210,7 @@ public class ItemQuantityMap {
         return tag;
     }
 
-    /**
+    /*
      * return the total number of inventory slots this quantity map would use if placed into slotted inventory
      */
     public int getSlotUseCount() {
@@ -237,7 +234,7 @@ public class ItemQuantityMap {
         return count;
     }
 
-    /**
+    /*
      * Lightweight wrapper for an item stack as a hashable object suitable for use as keys in maps.<br>
      * Uses item, item damage, and nbt-tag for hash-code.<br>
      * Ignores quantity.<br>
@@ -249,9 +246,10 @@ public class ItemQuantityMap {
         private final Item item;
         private final int damage;
         private final NBTTagCompound itemTag;
-        private ItemStack cacheStack;
+        @Nonnull
+        private ItemStack cacheStack = ItemStack.EMPTY;
 
-        /**
+        /*
          * @param item MUST NOT BE NULL
          */
         public ItemHashEntry(ItemStack item) {
@@ -264,7 +262,8 @@ public class ItemQuantityMap {
             }
             this.damage = item.getItemDamage();
             if (item.hasTagCompound()) {
-                this.itemTag = (NBTTagCompound) item.getTagCompound().copy();
+                //noinspection ConstantConditions
+                this.itemTag = item.getTagCompound().copy();
             } else {
                 this.itemTag = null;
             }
@@ -279,10 +278,10 @@ public class ItemQuantityMap {
         }
 
         public NBTTagCompound getTag() {
-            return (NBTTagCompound) (itemTag == null ? null : itemTag.copy());
+            return itemTag == null ? null : itemTag.copy();
         }
 
-        /**
+        /*
          * internal constructor used for copying/cloning
          */
         private ItemHashEntry(Item item, int damage, NBTTagCompound tag) {
@@ -332,7 +331,7 @@ public class ItemQuantityMap {
         }
 
         public ItemStack getItemStack() {
-            if (cacheStack != null) {
+            if (!cacheStack.isEmpty()) {
                 return cacheStack;
             } else {
                 @Nonnull ItemStack stack = new ItemStack(item, 1, damage);
@@ -349,7 +348,7 @@ public class ItemQuantityMap {
         }
 
         public static NBTTagCompound writeToNBT(ItemHashEntry entry, NBTTagCompound tag) {
-            tag.setString("itemName", Item.itemRegistry.getNameForObject(entry.item));
+            tag.setString("itemName", entry.item.getRegistryName().toString());
             tag.setInteger("damage", entry.damage);
             if (entry.itemTag != null) {
                 tag.setTag("itemTag", entry.itemTag);
@@ -358,7 +357,7 @@ public class ItemQuantityMap {
         }
 
         public static ItemHashEntry readFromNBT(NBTTagCompound tag) {
-            Item item = (Item) Item.itemRegistry.getObject(tag.getString("itemName"));
+            Item item = Item.REGISTRY.getObject(new ResourceLocation(tag.getString("itemName")));
             if (item != null){
                 int dmg = tag.getInteger("damage");
                 NBTTagCompound itemTag = tag.hasKey("itemTag") ? tag.getCompoundTag("itemTag") : null;

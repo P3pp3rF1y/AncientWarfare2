@@ -4,7 +4,7 @@ package net.shadowmage.ancientwarfare.automation.render;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraft.util.EnumFacing;
@@ -75,7 +75,7 @@ public class RenderSterlingEngine extends TileEntitySpecialRenderer implements I
     private void calculatePistonPosition1(float crankAngleRadians, float radius, float length) {
         float cA = MathHelper.cos(crankAngleRadians);
         float sA = MathHelper.sin(crankAngleRadians);
-        pistonPos = radius * cA + MathHelper.sqrt_float(length * length - radius * radius * sA * sA);
+        pistonPos = radius * cA + MathHelper.sqrt(length * length - radius * radius * sA * sA);
 
         float bx = sA * radius;
         float by = cA * radius;
@@ -96,7 +96,7 @@ public class RenderSterlingEngine extends TileEntitySpecialRenderer implements I
     private void calculatePistonPosition2(float crankAngleRadians, float radius, float length) {
         float cA = MathHelper.cos(crankAngleRadians);
         float sA = MathHelper.sin(crankAngleRadians);
-        pistonPos2 = radius * cA + MathHelper.sqrt_float(length * length - radius * radius * sA * sA);
+        pistonPos2 = radius * cA + MathHelper.sqrt(length * length - radius * radius * sA * sA);
 
         float bx = sA * radius;
         float by = cA * radius;

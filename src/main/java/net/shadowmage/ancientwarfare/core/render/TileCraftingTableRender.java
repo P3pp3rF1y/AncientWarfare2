@@ -1,17 +1,16 @@
 package net.shadowmage.ancientwarfare.core.render;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.IItemRenderer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.model.crafting_table.ModelCraftingBase;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-public class TileCraftingTableRender extends TileEntitySpecialRenderer implements IItemRenderer {
+//TODO json model for both block and item form
+public class TileCraftingTableRender extends TileEntitySpecialRenderer {
 
     private final ModelCraftingBase model;
     private final ResourceLocation texture;
@@ -21,29 +20,19 @@ public class TileCraftingTableRender extends TileEntitySpecialRenderer implement
         texture = new ResourceLocation("ancientwarfare", tex);
     }
 
-    @Override
-    public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-        return true;
-    }
+//    @Override
+//    public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+//        GL11.glPushMatrix();
+//        GL11.glScalef(-1, -1, 1);
+//        GL11.glTranslatef(-0.5f, 0.0f, 0.5f);
+//        GL11.glRotatef(270, 0, 1, 0);
+//        bindTexture(texture);
+//        model.renderModel();
+//        GL11.glPopMatrix();
+//    }
 
     @Override
-    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-        return true;
-    }
-
-    @Override
-    public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        GL11.glPushMatrix();
-        GL11.glScalef(-1, -1, 1);
-        GL11.glTranslatef(-0.5f, 0.0f, 0.5f);
-        GL11.glRotatef(270, 0, 1, 0);
-        bindTexture(texture);
-        model.renderModel();
-        GL11.glPopMatrix();
-    }
-
-    @Override
-    public void renderTileEntityAt(TileEntity te, double x, double y, double z, float delta) {
+    public void render(TileEntity te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         float rotation = te instanceof IRotatableTile ? getRotation(((IRotatableTile) te).getPrimaryFacing()) : 0;
         GL11.glPushMatrix();
         GL11.glEnable(GL12.GL_RESCALE_NORMAL);

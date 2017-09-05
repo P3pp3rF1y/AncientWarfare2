@@ -3,7 +3,7 @@ package net.shadowmage.ancientwarfare.core.gui.elements;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.entity.RenderItem;
+import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
@@ -11,7 +11,9 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 import org.lwjgl.opengl.GL11;
 
-/**
+import javax.annotation.Nonnull;
+
+/*
  * basic item-slot gui element
  * renders a single item-stack and slot background
  * includes basic highlighting when mouse-is over
@@ -22,15 +24,16 @@ import org.lwjgl.opengl.GL11;
  * @author Shadowmage
  */
 public class ItemSlot extends GuiElement {
-    protected static RenderItem itemRender = new RenderItem();
-    private ItemStack item;
+    private static final RenderItem itemRender = Minecraft.getMinecraft().getRenderItem();
+    @Nonnull
+    private ItemStack item = ItemStack.EMPTY;
     protected ITooltipRenderer render;
     protected boolean highlightOnMouseOver = true;
     protected boolean renderItemQuantity = true;
     protected boolean renderSlotBackground = true;
     protected boolean renderLabel = false;
 
-    public ItemSlot(int topLeftX, int topLeftY, ItemStack item, ITooltipRenderer render) {
+    public ItemSlot(int topLeftX, int topLeftY, @Nonnull ItemStack item, ITooltipRenderer render) {
         super(topLeftX - 1, topLeftY - 1, 18, 18);
         this.item = item;
         this.render = render;
@@ -39,7 +42,7 @@ public class ItemSlot extends GuiElement {
             @Override
             public boolean onEvent(GuiElement widget, ActivationEvent evt) {
                 if (widget.isMouseOverElement(evt.mx, evt.my)) {
-                    @Nonnull ItemStack stack = Minecraft.getMinecraft().thePlayer.inventory.getItemStack();
+                    @Nonnull ItemStack stack = Minecraft.getMinecraft().player.inventory.getItemStack();
                     onSlotClicked(stack);
                 }
                 return true;
@@ -91,7 +94,7 @@ public class ItemSlot extends GuiElement {
             }
 
             GL11.glDisable(GL11.GL_DEPTH_TEST);
-            if (this.item != null && this.item.getItem() != null) {
+            if (!this.item.isEmpty()) {
                 RenderHelper.enableGUIStandardItemLighting();
                 itemRender.zLevel = 10.0F;
                 FontRenderer font = item.getItem().getFontRenderer(item);
@@ -101,11 +104,11 @@ public class ItemSlot extends GuiElement {
 
                 GL11.glEnable(GL11.GL_LIGHTING);
                 GL11.glEnable(GL11.GL_DEPTH_TEST);//fix for chests / tile-renderers improper render stuff
-                itemRender.renderItemAndEffectIntoGUI(font, mc.getTextureManager(), item, renderX + 1, renderY + 1);
+                itemRender.renderItemAndEffectIntoGUI(item, renderX + 1, renderY + 1);
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
                 if (renderItemQuantity && item.getCount() > 1) {
-                    itemRender.renderItemOverlayIntoGUI(font, mc.getTextureManager(), item, renderX + 1, renderY + 1, "");
-                    renderStackSize(renderX + 1, renderY + 1, item.stackSize, font);
+                    itemRender.renderItemOverlayIntoGUI(font, item, renderX + 1, renderY + 1, "");
+                    renderStackSize(renderX + 1, renderY + 1, item.getCount(), font);
                 }
                 GL11.glDisable(GL11.GL_LIGHTING);
                 if (renderLabel) {
@@ -118,7 +121,7 @@ public class ItemSlot extends GuiElement {
 
             if (isMouseOverElement(mouseX, mouseY)) {
                 if (highlightOnMouseOver) {
-                    /**
+                    /*
                      *  TODO -- find proper alpha for blend..it is close now, but probably not an exact match for vanilla
                      *  highlighting
                      */
@@ -140,7 +143,7 @@ public class ItemSlot extends GuiElement {
                 if (renderTooltip && this.render != null) {
                     if (this.tooltip != null) {
                         this.render.handleElementTooltipRender(tooltip, mouseX, mouseY);
-                    } else if(this.item != null){
+                    } else if(!this.item.isEmpty()){
                         this.render.handleItemStackTooltipRender(item, mouseX, mouseY);
                     }
                 }

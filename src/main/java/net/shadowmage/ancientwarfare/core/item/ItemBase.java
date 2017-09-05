@@ -1,22 +1,20 @@
 package net.shadowmage.ancientwarfare.core.item;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.HashMap;
-import java.util.List;
 
-/**
+/*
  * Handle subtypes through ItemStack damage values
  */
 public class ItemBase extends Item {
 
-    private final HashMap<Integer, String> subItems = new HashMap<Integer, String>();
-    private final HashMap<Integer, IIcon> subItemIcons = new HashMap<Integer, IIcon>();
+    private final HashMap<Integer, String> subItems = new HashMap<>();
+//    private final HashMap<Integer, IIcon> subItemIcons = new HashMap<>();
 
     public ItemBase() {
         super();
@@ -33,25 +31,24 @@ public class ItemBase extends Item {
         return super.getUnlocalizedName(par1ItemStack) + "." + par1ItemStack.getItemDamage();
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
-    public void getSubItems(Item item, CreativeTabs tab, List list) {
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
         for (Integer num : subItems.keySet()) {
-            list.add(new ItemStack(item, 1, num));
+            items.add(new ItemStack(this, 1, num));
         }
     }
 
-    @Override
-    public IIcon getIconFromDamage(int par1) {
-        return subItemIcons.get(par1);
-    }
-
-    @Override
-    public void registerIcons(IIconRegister par1IconRegister) {
-        for (Integer num : subItems.keySet()) {
-            subItemIcons.put(num, par1IconRegister.registerIcon(subItems.get(num)));
-        }
-    }
+//    @Override
+//    public IIcon getIconFromDamage(int par1) {
+//        return subItemIcons.get(par1);
+//    }
+//
+//    @Override
+//    public void registerIcons(IIconRegister par1IconRegister) {
+//        for (Integer num : subItems.keySet()) {
+//            subItemIcons.put(num, par1IconRegister.registerIcon(subItems.get(num)));
+//        }
+//    }
 
     public void addSubItem(int num, String texture) {
         if (!subItems.containsKey(num))

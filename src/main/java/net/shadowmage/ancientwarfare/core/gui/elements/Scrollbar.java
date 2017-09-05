@@ -2,7 +2,7 @@ package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.init.SoundEvents;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.interfaces.IScrollableCallback;
@@ -27,7 +27,7 @@ public class Scrollbar extends GuiElement {
 
     int topIndex;
 
-    /**
+    /*
      * callback interface for when the view port represented by this scrollbar should be updated
      * called anytime the handle position is changed or the view-size changes
      */
@@ -82,7 +82,7 @@ public class Scrollbar extends GuiElement {
                     } else {
                         handleTop += handleHeight;
                     }
-                    Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+                    Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
                     updateHandlePosition();
                 }
                 dragging = false;
@@ -107,7 +107,7 @@ public class Scrollbar extends GuiElement {
         return mouseX >= renderX + borderSize && mouseX < renderX + width - borderSize && mouseY >= renderY + borderSize + handleTop && mouseY < renderY + borderSize + handleTop + handleHeight;
     }
 
-    /**
+    /*
      * should be called from the instantiating GUI to update the viewed set Height, in pixels.
      * E.G. if you add 10 elements of 12 pixels high each with 0 padding, you would setAreaSize(120)
      * the input size may be less than the height of the element, in which case it will view the full

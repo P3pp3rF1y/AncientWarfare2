@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -101,7 +101,7 @@ public class StructureValidatorUnderground extends StructureValidator {
 
     @Override
     public void preGeneration(World world, BlockPos pos, int face, StructureTemplate template, StructureBB bb) {
-//  /**
+//  /*
 //   * TODO remove debug stuff
 //   */
 //  int by = WorldStructureGenerator.getTargetY(world, x, z, false);

@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -20,7 +20,7 @@
  */
 package net.shadowmage.ancientwarfare.structure.template;
 
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -34,13 +34,13 @@ import java.util.*;
 
 public class WorldGenStructureManager {
 
-    private HashMap<String, Set<StructureTemplate>> templatesByBiome = new HashMap<String, Set<StructureTemplate>>();
-    /**
+    private HashMap<String, Set<StructureTemplate>> templatesByBiome = new HashMap<>();
+    /*
      * cached list objects, used for temp searching, as to not allocate new lists for every chunk-generated....
      */
-    List<StructureEntry> searchCache = new ArrayList<StructureEntry>();
-    List<StructureTemplate> trimmedPotentialStructures = new ArrayList<StructureTemplate>();
-    HashMap<String, Integer> distancesFound = new HashMap<String, Integer>();
+    List<StructureEntry> searchCache = new ArrayList<>();
+    List<StructureTemplate> trimmedPotentialStructures = new ArrayList<>();
+    HashMap<String, Integer> distancesFound = new HashMap<>();
     BlockPos rearBorderPos = new BlockPos(0, 0, 0);
 
     public static final WorldGenStructureManager INSTANCE = new WorldGenStructureManager();
@@ -56,7 +56,7 @@ public class WorldGenStructureManager {
                 continue;
             }
             String name = AWStructureStatics.getBiomeName(biome);
-            templatesByBiome.put(name, new HashSet<StructureTemplate>());
+            templatesByBiome.put(name, new HashSet<>());
         }
     }
 
@@ -99,7 +99,7 @@ public class WorldGenStructureManager {
         for (StructureEntry entry : duplicateSearchEntries) {
             mx = entry.getBB().getCenterX() - x;
             mz = entry.getBB().getCenterZ() - z;
-            foundDistance = MathHelper.sqrt_float(mx * mx + mz * mz);
+            foundDistance = MathHelper.sqrt(mx * mx + mz * mz);
             chunkDistance = (int) (foundDistance / 16.f);
             if (distancesFound.containsKey(entry.getName())) {
                 int dist = distancesFound.get(entry.getName());

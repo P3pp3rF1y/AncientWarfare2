@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -37,14 +37,7 @@ import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 public abstract class StructureValidator {
 
@@ -67,7 +60,7 @@ public abstract class StructureValidator {
 
     public final StructureValidationType validationType;
 
-    private HashMap<String, StructureValidationProperty> properties = new HashMap<String, StructureValidationProperty>();
+    private HashMap<String, StructureValidationProperty> properties = new HashMap<>();
 //private boolean survival;
 
     protected StructureValidator(StructureValidationType validationType) {
@@ -77,7 +70,7 @@ public abstract class StructureValidator {
         }
     }
 
-    /**
+    /*
      * should be called from validator setup GUI when swapping between validator types,
      * to transfer any comparable settings from the old one to the new one.<br>
      * This method should be called on the NEW StructureValidator.
@@ -99,7 +92,7 @@ public abstract class StructureValidator {
     }
 
 
-    /**
+    /*
      * helper method to read data from tag -- to be overriden by
      * child-classes that have additional validation data set through gui
      */
@@ -117,7 +110,7 @@ public abstract class StructureValidator {
     }
 
     protected void setDefaultSettings(StructureTemplate template) {
-        /**
+        /*
          * TODO
          */
 //  this.validTargetBlocks.addAll(WorldStructureGenerator.defaultTargetBlocks); 
@@ -127,24 +120,24 @@ public abstract class StructureValidator {
 //  this.maxFill = size;
     }
 
-    /**
+    /*
      * should this template be included for selection for generation? should only validate block placement, most other stuff has been checked (dimension/biome/cluster value/etc)
      */
     public abstract boolean shouldIncludeForSelection(World world, int x, int y, int z, int face, StructureTemplate template);
 
-    /**
+    /*
      * if template should be included for selection, get the adjusted spawn Y level from the input block position.  this adjustedY will be used for validation and generation if template is selected and validated
      */
     public int getAdjustedSpawnY(World world, int x, int y, int z, int face, StructureTemplate template, StructureBB bb) {
         return y;
     }
 
-    /**
+    /*
      * if selected for placement, validate that placement. return false if placement is invalid
      */
     public abstract boolean validatePlacement(World world, int x, int y, int z, int face, StructureTemplate template, StructureBB bb);
 
-    /**
+    /*
      * after validation, do any necessary clearing or leveling/etc
      */
     public abstract void preGeneration(World world, BlockPos pos, int face, StructureTemplate template, StructureBB bb);
@@ -153,7 +146,7 @@ public abstract class StructureValidator {
 
     }
 
-    /**
+    /*
      * called from StructureBuilder when constructed with world-gen settings whenever a '0' rule is detected
      * in the template
      * implementations should fill the input x,y,z with whatever block is an appropriate 'fill' for that
@@ -169,14 +162,14 @@ public abstract class StructureValidator {
 
     public static final StructureValidator parseValidator(List<String> lines) {
         String type = null;
-        List<String> tagLines = new ArrayList<String>();
+        List<String> tagLines = new ArrayList<>();
         Iterator<String> it = lines.iterator();
         String line;
         boolean unique = false, worldGen = false, biome = false, dimension = false, blocks = false, survival = false, swap = false;
         int selectionWeight = 1, clusterValue = 1, duplicate = 1, maxLeveling = 0, maxFill = 0, borderSize = 0;
         int[] dimensions = null;
-        Set<String> biomes = new HashSet<String>();
-        Set<String> validTargetBlocks = new HashSet<String>();
+        Set<String> biomes = new HashSet<>();
+        Set<String> validTargetBlocks = new HashSet<>();
 
         while (it.hasNext() && (line = it.next()) != null) {
             if (startLow(line, "type=")) {
@@ -370,13 +363,13 @@ public abstract class StructureValidator {
     }
 
     public final void setTargetBlocks(Collection<String> targetBlocks) {
-        Set<String> blocks = new HashSet<String>();
+        Set<String> blocks = new HashSet<>();
         blocks.addAll(targetBlocks);
         properties.get(PROP_BLOCK_LIST).setValue(blocks);
     }
 
     public final void setBiomeList(Collection<String> biomes) {
-        Set<String> blocks = new HashSet<String>();
+        Set<String> blocks = new HashSet<>();
         blocks.addAll(biomes);
         properties.get(PROP_BIOME_LIST).setValue(blocks);
     }
@@ -401,7 +394,7 @@ public abstract class StructureValidator {
         return properties.get(PROP_BORDER_SIZE).getDataInt();
     }
 
-    //************************************************ UTILITY METHODS *************************************************//
+    //*********************************************** UTILITY METHODS *************************************************//
     protected boolean validateBorderBlocks(World world, StructureTemplate template, StructureBB bb, int minY, int maxY, boolean skipWater) {
         Set<String> validTargetBlocks = getTargetBlocks();
         int bx, bz;
@@ -429,14 +422,14 @@ public abstract class StructureValidator {
         return true;
     }
 
-    /**
+    /*
      * validates both top block height and block type for the input position and settings
      */
     protected boolean validateBlockHeightAndType(World world, int x, int z, int min, int max, boolean skipWater, Set<String> validBlocks) {
         return validateBlockType(world, x, validateBlockHeight(world, x, z, min, max, skipWater), z, validBlocks);
     }
 
-    /**
+    /*
      * validates top block height at X, Z is >=  min and <= max (inclusive)
      * returns topFoundY or -1 if not within range
      */
@@ -449,7 +442,7 @@ public abstract class StructureValidator {
         return topFilledY;
     }
 
-    /**
+    /*
      * validates the target block at x,y,z is one of the input valid blocks
      */
     protected boolean validateBlockType(World world, int x, int y, int z, Set<String> validBlocks) {
@@ -468,7 +461,7 @@ public abstract class StructureValidator {
         return true;
     }
 
-    /**
+    /*
      * return the lowest acceptable Y level for a filled block
      * for the input template and BB
      */
@@ -480,7 +473,7 @@ public abstract class StructureValidator {
         return minY;
     }
 
-    /**
+    /*
      * return the highest acceptable Y level for a filled block
      * for the input template and BB
      */

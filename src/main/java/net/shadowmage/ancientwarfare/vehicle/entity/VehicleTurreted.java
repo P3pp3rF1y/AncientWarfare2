@@ -1,6 +1,6 @@
 package net.shadowmage.ancientwarfare.vehicle.entity;
 
-import net.minecraft.util.Vec3;
+import net.minecraft.util.Vec3d;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
@@ -9,18 +9,18 @@ public class VehicleTurreted extends VehicleBase {
 
     protected int fireDelay = 0;
     protected float launchAngle, launchPower;
-    protected Vec3 turretOffsetBase = Vec3.createVectorHelper(0, 1, -1);
+    protected Vec3d turretOffsetBase = Vec3d.createVectorHelper(0, 1, -1);
 
-    /**
+    /*
      * location of turret firing point relative to vehicle -- this is the point that the missile will be spawned at.<br>
      * updated from entity on-tick (or whenever vehicle rotation or turret pitch changes)
      */
-    private Vec3 turretOffset = Vec3.createVectorHelper(0, 0, 0);
+    private Vec3d turretOffset = Vec3d.createVectorHelper(0, 0, 0);
 
-    /**
+    /*
      * updated from entity on-tick or whenever vehicle rotation or firing params change
      */
-    private Vec3 launchVelocity = Vec3.createVectorHelper(0, 0, 0);
+    private Vec3d launchVelocity = Vec3d.createVectorHelper(0, 0, 0);
 
     public VehicleTurreted(World world) {
         super(world);
@@ -45,39 +45,39 @@ public class VehicleTurreted extends VehicleBase {
         double cosPitch = Math.cos(Trig.TORADIANS * launchAngle);
         double verticalVelocityStart = sinPitch * launchPower * 0.05d;
         double horizontalVelocityStart = cosPitch * launchPower * 0.05d;
-        launchVelocity.xCoord = sinYaw * horizontalVelocityStart;
-        launchVelocity.zCoord = cosYaw * horizontalVelocityStart;
-        launchVelocity.yCoord = verticalVelocityStart;
+        launchVelocity.x = sinYaw * horizontalVelocityStart;
+        launchVelocity.z = cosYaw * horizontalVelocityStart;
+        launchVelocity.y = verticalVelocityStart;
     }
 
     protected void updateTurretOffset(double sinYaw, double cosYaw) {
-        turretOffset.xCoord = turretOffsetBase.xCoord;
-        turretOffset.yCoord = turretOffsetBase.yCoord;
-        turretOffset.zCoord = turretOffsetBase.zCoord;
+        turretOffset.x = turretOffsetBase.x;
+        turretOffset.y = turretOffsetBase.y;
+        turretOffset.z = turretOffsetBase.z;
         turretOffset.rotateAroundY(rotationYaw * Trig.TORADIANS);
     }
 
-    public Vec3 getTurretOffset() {
+    public Vec3d getTurretOffset() {
         return turretOffset;
     }
 
-    public Vec3 getLaunchVelocity() {
+    public Vec3d getLaunchVelocity() {
         return launchVelocity;
     }
 
 //@Override
-//public void onFirePressedPilot(Vec3 target)
+//public void onFirePressedPilot(Vec3d target)
 //  {  
 //  AWLog.logDebug("fire pressed. delay left: "+fireDelay);
 //  if(fireDelay<=0)
 //    {
 //    fireDelay = 40;
-//    double px = posX + turretOffset.xCoord;
-//    double py = posY + turretOffset.yCoord;
-//    double pz = posZ + turretOffset.zCoord;
-//    double dx = target.xCoord - px;
-//    double dy = target.yCoord - py;
-//    double dz = target.zCoord - pz;
+//    double px = posX + turretOffset.x;
+//    double py = posY + turretOffset.y;
+//    double pz = posZ + turretOffset.z;
+//    double dx = target.x - px;
+//    double dy = target.y - py;
+//    double dz = target.z - pz;
 //    double angleYaw = Math.atan2(dz, dx)*Trig.TODEGREES;
 //    double anglePitch = 45.d;
 //    double velocity = TrajectoryPlotter.getPowerToHit(dx, dy, dz, (float) anglePitch, 120);
@@ -92,7 +92,7 @@ public class VehicleTurreted extends VehicleBase {
 //    
 //    MissileBase missile = new MissileBase(worldObj);
 //    missile.setPosition(px, py, pz);
-//    missile.setLaunchParameters(launchVelocity.xCoord, launchVelocity.yCoord, launchVelocity.zCoord, getUniqueID());
+//    missile.setLaunchParameters(launchVelocity.x, launchVelocity.y, launchVelocity.z, getUniqueID());
 //    worldObj.spawnEntityInWorld(missile);
 //    AWLog.logDebug("spawned missile..."+missile);
 //    }  

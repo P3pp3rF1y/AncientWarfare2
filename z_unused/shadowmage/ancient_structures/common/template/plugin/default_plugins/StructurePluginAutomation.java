@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -30,7 +30,7 @@ import shadowmage.ancient_structures.common.template.rule.TemplateRuleBlock;
 public class StructurePluginAutomation extends StructureContentPlugin
 {
 
-/**
+/*
  * 
  */
 public StructurePluginAutomation()

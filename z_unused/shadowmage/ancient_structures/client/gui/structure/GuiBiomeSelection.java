@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -124,7 +124,7 @@ public void onElementActivated(IGuiElement element)
   {     
   if(element==this.doneButton)
     {
-    List<String> selectedBiomes = new ArrayList<String>();
+    List<String> selectedBiomes = new ArrayList<>();
     for(GuiCheckBoxSimple box : this.biomeBoxes.keySet())
       {
       if(box.checked)

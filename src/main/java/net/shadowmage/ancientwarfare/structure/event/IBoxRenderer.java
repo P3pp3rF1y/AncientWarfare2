@@ -5,7 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
-/**
+/*
  * Created by Olivier on 05/02/2015.
  */
 public interface IBoxRenderer {

@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -39,7 +39,7 @@ public String structureName = "";
 
 ItemStructureSettings settings = new ItemStructureSettings();
 
-/**
+/*
  * @param openingPlayer
  * @param synch
  */
@@ -86,7 +86,7 @@ public List<NBTTagCompound> getInitData()
     {
     NBTTagCompound tag = new NBTTagCompound();
     tag.setString("name", builderItem.getTagCompound().getCompoundTag("structData").getString("name"));    
-    ArrayList<NBTTagCompound> initList = new ArrayList<NBTTagCompound>();    
+    ArrayList<NBTTagCompound> initList = new ArrayList<>();
     initList.add(tag);
     return initList;
     } 

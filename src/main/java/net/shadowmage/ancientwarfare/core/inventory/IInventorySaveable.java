@@ -1,8 +1,9 @@
 package net.shadowmage.ancientwarfare.core.inventory;
 
 import net.minecraft.inventory.IInventory;
-import net.shadowmage.ancientwarfare.core.util.NBTSerializableUtils;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.INBTSerializable;
 
-public interface IInventorySaveable extends IInventory, NBTSerializableUtils {
+public interface IInventorySaveable extends IInventory, INBTSerializable<NBTTagCompound> {
 
 }

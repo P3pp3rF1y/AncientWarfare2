@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -24,7 +24,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 
 import org.lwjgl.opengl.GL11;
 
@@ -39,7 +39,7 @@ float x1, y1, z1, x2, y2, z2, x3, y3, z3;
 float u1, v1, u2, v2, u3, v3;//texture uv's...saved to file, as I have no idea how to dynamically calc a triangle uv map
 float normalX, normalY, normalZ;//normal for lighting...should be calc'd when setBounds is called
 float cx, cy;//triangle center point -- used for rotation of uv vertices around triangle center
-/**
+/*
  * @param parent
  */
 public PrimitiveTriangle(ModelPiece parent)
@@ -111,7 +111,7 @@ public void reverseVertexOrder()
 
 public void rotateTriangleUV(float degrees)
   {
-  /**
+  /*
    * grab triangle center(calc'd when UV is set) 
    * find angle and length for each corner
    * rotate by degrees, recompute new angle, set new corner point at new angle * length
@@ -236,7 +236,7 @@ private void calcCenter()
   cy = (v1+v2+v3)/3;
   }
 
-/**
+/*
  * reclac the normal for this triangle.  should be called whenever the vertex coordinates change
  */
 private void calcNormal()
@@ -260,7 +260,7 @@ private void calcNormal()
   this.setCompiled(false);
   }
 
-/**
+/*
  * recalc the UV for this triangle based on side-lengths, 
  * with u1/v1 being upper-left on the texture, 
  * u2/v2 being right, 
@@ -314,7 +314,7 @@ public void addUVMapToImage(BufferedImage image)
   if(y2<0){y2 = 0;}
   if(y3<0){y3 = 0;}
   
-  List<Point2i> points = new ArrayList<Point2i>();
+  List<Point2i> points = new ArrayList<>();
   
   
   plotLine3((int)x1, (int)y1, (int)x2, (int)y2, points);

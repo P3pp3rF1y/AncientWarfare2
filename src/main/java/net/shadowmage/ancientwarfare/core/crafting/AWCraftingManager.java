@@ -1,21 +1,28 @@
-package net.shadowmage.ancientwarfare.core.crafting;
+//TODO recipes
 
-import cpw.mods.fml.common.registry.GameData;
-import cpw.mods.fml.common.registry.GameRegistry;
+ package net.shadowmage.ancientwarfare.core.crafting;
+
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IResearchRecipe;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,10 +34,10 @@ public class AWCraftingManager {
     private final List<IResearchRecipe> recipes;
 
     private AWCraftingManager() {
-        recipes = new ArrayList<IResearchRecipe>();
+        recipes = new ArrayList<>();
     }
 
-    /**
+    /*
      * First search within research recipes, then delegates to CraftingManager.findMatchingRecipe
      */
     public ItemStack findMatchingRecipe(InventoryCrafting inventory, World world, String playerName) {
@@ -43,7 +50,7 @@ public class AWCraftingManager {
                 }
             }
         }
-        return CraftingManager.getInstance().findMatchingRecipe(inventory, world);
+        return CraftingManager.findMatchingRecipe(inventory, world).getCraftingResult(inventory);
     }
 
     private boolean canPlayerCraft(IResearchRecipe recipe, World world, String playerName) {
@@ -59,21 +66,21 @@ public class AWCraftingManager {
 
     private void addRecipe(IResearchRecipe recipe) {
         if (!AWCoreStatics.useResearchSystem) {
-            GameRegistry.addRecipe(recipe);
+            ForgeRegistries.RECIPES.register(recipe);
             return;
         }
-        
+
         Item item = recipe.getRecipeOutput().getItem();
         if (AWCoreStatics.isItemCraftable(item)) {
             if (!recipe.getNeededResearch().isEmpty() && AWCoreStatics.isItemResearched(item)) {
                 this.recipes.add(recipe);
             } else {
-                GameRegistry.addRecipe(recipe);
+                ForgeRegistries.RECIPES.register(recipe);
             }
         }
     }
 
-    /**
+    /*
      * Create Research-dependent crafts from a config file.
      * Parse configuration data from in-jar resource file.
      *
@@ -109,17 +116,17 @@ public class AWCraftingManager {
                     craft_par[i - 3] = StringTools.safeParseStack(split[i + 1].substring(1), split[i + 2], split[i + 3].substring(0, split[i + 3].length() - 1));
                     i = i + 2;
                 } else {
-                    Object crafting_item = GameData.getItemRegistry().getObject(split[i + 1]);
-                    if (crafting_item == GameData.getItemRegistry().getDefaultValue()) {//Not an item name
-                        crafting_item = GameData.getBlockRegistry().getObject(split[i + 1]);
-                        if (crafting_item == GameData.getBlockRegistry().getDefaultValue()) {//Not a block name
+                    Object crafting_item = Item.REGISTRY.getObject(new ResourceLocation(split[i + 1]));
+                    if (crafting_item == Items.AIR) {//Not an item name
+                        crafting_item = Block.REGISTRY.getObject(new ResourceLocation(split[i + 1]));
+                        if (crafting_item == Blocks.AIR) {//Not a block name
                             crafting_item = split[i + 1];//Maybe a generic "ore" name ?
                         }
                     }
                     craft_par[i - 3] = crafting_item;//The item value
                 }
             }
-            ArrayList<Object> list = new ArrayList<Object>();
+            ArrayList<Object> list = new ArrayList<>();
             for (Object object : craft_par) {
                 if (object != null) {
                     list.add(object);
@@ -148,8 +155,9 @@ public class AWCraftingManager {
 
     private void createRecipe(boolean shaped, ItemStack result, Object[] inputArray) {
         if(AWCoreStatics.isItemCraftable(result.getItem())) {
-            IRecipe recipe = shaped ? new ShapedOreRecipe(result, inputArray) : new ShapelessOreRecipe(result, inputArray);
-            GameRegistry.addRecipe(recipe);
+            ResourceLocation registryName = new ResourceLocation(AncientWarfareCore.modID, result.getItem().getRegistryName().getResourcePath());
+            IRecipe recipe = shaped ? new ShapedOreRecipe(registryName, result, inputArray) : new ShapelessOreRecipe(registryName, result, inputArray);
+            ForgeRegistries.RECIPES.register(recipe);
         }
     }
 

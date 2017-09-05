@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -28,7 +28,7 @@ public class TeamPlayerEntry
 String playerName;
 int rank;
 
-/**
+/*
  * nbt-constructor
  */
 public TeamPlayerEntry()
@@ -36,7 +36,7 @@ public TeamPlayerEntry()
 
   }
 
-/**
+/*
  * @param player
  * @param rank2
  */

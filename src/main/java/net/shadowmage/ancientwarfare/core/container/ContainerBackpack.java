@@ -3,21 +3,27 @@ package net.shadowmage.ancientwarfare.core.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBackpack;
 import net.shadowmage.ancientwarfare.core.item.ItemBackpack;
+
+import javax.annotation.Nonnull;
 
 public class ContainerBackpack extends ContainerBase {
 
     public final int backpackSlotIndex;
+    public final EnumHand hand;
     public final int guiHeight;
 
     private final InventoryBackpack inventory;
 
-    public ContainerBackpack(EntityPlayer player, int x, int y, int z) {
+    public ContainerBackpack(EntityPlayer player, BlockPos pos, EnumHand hand) {
         super(player);
 
-        @Nonnull ItemStack stack = player.getCurrentEquippedItem();
-        backpackSlotIndex = player.inventory.currentItem;
+        @Nonnull ItemStack stack = player.getHeldItem(hand);
+        backpackSlotIndex = hand == EnumHand.MAIN_HAND ? player.inventory.currentItem : -1;
+        this.hand = hand;
 
         inventory = ItemBackpack.getInventoryFor(stack);
         int xPos, yPos;
@@ -39,7 +45,7 @@ public class ContainerBackpack extends ContainerBase {
     public void onContainerClosed(EntityPlayer par1EntityPlayer) {
         super.onContainerClosed(par1EntityPlayer);
         if (!par1EntityPlayer.world.isRemote) {
-            ItemBackpack.writeBackpackToItem(inventory, par1EntityPlayer.getCurrentEquippedItem());
+            ItemBackpack.writeBackpackToItem(inventory, par1EntityPlayer.getHeldItem(hand));
         }
     }
 
@@ -84,12 +90,12 @@ public class ContainerBackpack extends ContainerBase {
             {
                 if (!this.mergeItemStack(slotStack, size, size + playerSlots, false))//merge into player inventory
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             } else {
                 if (!this.mergeItemStack(slotStack, 0, size, false))//merge into backpack
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
             if (slotStack.getCount() == 0) {
@@ -98,9 +104,9 @@ public class ContainerBackpack extends ContainerBase {
                 theSlot.onSlotChanged();
             }
             if (slotStack.getCount() == slotStackCopy.getCount()) {
-                return null;
+                return ItemStack.EMPTY;
             }
-            theSlot.onPickupFromSlot(par1EntityPlayer, slotStack);
+            theSlot.onTake(par1EntityPlayer, slotStack);
         }
         return slotStackCopy;
     }

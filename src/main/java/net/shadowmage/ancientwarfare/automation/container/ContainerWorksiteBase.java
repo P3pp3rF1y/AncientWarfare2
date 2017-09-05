@@ -39,7 +39,7 @@ public class ContainerWorksiteBase extends ContainerTileBase<TileWorksiteBounded
         return maxY;
     }
 
-    /**
+    /*
      * @return should always return null for normal implementation, not sure wtf the rest of the code is about
      */
     @Override

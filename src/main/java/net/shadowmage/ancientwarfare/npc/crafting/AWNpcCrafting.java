@@ -18,7 +18,7 @@ import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 
 public class AWNpcCrafting {
 
-    /**
+    /*
      * load any recipes for automation module recipes
      */
     public static void loadRecipes() {

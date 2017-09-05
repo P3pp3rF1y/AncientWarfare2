@@ -83,7 +83,7 @@ public class BlockTownHall extends Block {
         return te instanceof IInteractableTile && ((IInteractableTile) te).onBlockClicked(player, hand);
     }
 
-    /**
+    /*
      * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
      * their own) Args: x, y, z, neighbor Block
      */
@@ -147,7 +147,7 @@ public class BlockTownHall extends Block {
                 Chunk thisChunk = world.getChunkFromBlockCoords(posX, posZ);
                 String notificationTitle = "ftbu_aw2.notification.townhall_lost";
                 TextComponentTranslation notificationMsg = new TextComponentTranslation("ftbu_aw2.notification.townhall_destroyed.msg", player.getName());
-                List<TextComponentTranslation> notificationTooltip = new ArrayList<TextComponentTranslation>();
+                List<TextComponentTranslation> notificationTooltip = new ArrayList<>();
                 notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.chunk_name_and_position", ((TileTownHall) world.getTileEntity(posX, posY, posZ)).name, thisChunk.xPosition, thisChunk.zPosition));
                 notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.click_to_remove"));
                 ModAccessors.FTBU.notifyPlayer(EnumChatFormatting.RED, townHallOwner, notificationTitle, notificationMsg, notificationTooltip);

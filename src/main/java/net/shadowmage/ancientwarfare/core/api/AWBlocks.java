@@ -4,13 +4,13 @@ import net.minecraft.block.Block;
 
 public class AWBlocks {
 
-    /**
+    /*
      * CORE module
      */
     public static Block engineeringStation;
     public static Block researchStation;
 
-    /**
+    /*
      * STRUCTURE module
      */
     public static Block advancedSpawner;

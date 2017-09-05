@@ -9,7 +9,7 @@ import net.shadowmage.ancientwarfare.structure.item.ItemSpawnerPlacer;
 public class ContainerSpawnerPlacer extends ContainerBase {
 
     public String entityId;
-    /**
+    /*
      * all stored in tag as short
      */
     public int delay;
@@ -20,7 +20,7 @@ public class ContainerSpawnerPlacer extends ContainerBase {
     public int requiredPlayerRange;
     public int spawnRange;
 
-    /**
+    /*
      * par1NBTTagCompound.setString("EntityId", this.getEntityNameToSpawn());
      * par1NBTTagCompound.setShort("Delay", (short)this.spawnDelay);
      * par1NBTTagCompound.setShort("MinSpawnDelay", (short)this.minSpawnDelay);
@@ -56,7 +56,7 @@ public class ContainerSpawnerPlacer extends ContainerBase {
             maxNearbyEntities = tag.getShort("MaxNearbyEntities");
             requiredPlayerRange = tag.getShort("RequiredPlayerRange");
             spawnRange = tag.getShort("SpawnRange");
-            /**
+            /*
              * TODO add input fields for 'custom mob data'
              */
         }
@@ -76,7 +76,7 @@ public class ContainerSpawnerPlacer extends ContainerBase {
         }
     }
 
-    /**
+    /*
      * onGuiClose -- called from client-side to send stored data to server to imprint on item
      */
     public void sendDataToServer() {

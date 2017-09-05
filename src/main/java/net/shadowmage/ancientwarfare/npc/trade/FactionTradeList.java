@@ -14,14 +14,14 @@ public final class FactionTradeList extends TradeList {
         return new FactionTrade();
     }
 
-    /**
+    /*
      * MUST be called from owning entity once per update tick.
      */
     public void tick() {
         ticks++;
     }
 
-    /**
+    /*
      * Should be called on server PRIOR to opening the trades GUI/container.<br>
      * Will use the internal stored tick number value for updating the trades list.<br>
      */
@@ -32,7 +32,7 @@ public final class FactionTradeList extends TradeList {
         ticks = 0;
     }
 
-    /**
+    /*
      * removes any trades that have no input or output items.<br>
      * should be called before the changed list is sent from client->server from setup GUI.
      */

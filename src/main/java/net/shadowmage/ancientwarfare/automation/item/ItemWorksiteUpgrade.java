@@ -52,7 +52,7 @@ public class ItemWorksiteUpgrade extends ItemBase {
                 if (!ws.getValidUpgrades().contains(upgrade)) {
                     return new ActionResult<>(EnumActionResult.FAIL, stack);
                 }
-                HashSet<WorksiteUpgrade> wsug = new HashSet<WorksiteUpgrade>(ws.getUpgrades());
+                HashSet<WorksiteUpgrade> wsug = new HashSet<>(ws.getUpgrades());
                 if (wsug.contains(upgrade)) {
                     return new ActionResult<>(EnumActionResult.FAIL, stack);
                 }

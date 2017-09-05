@@ -18,12 +18,12 @@ public final class WorldGenTickHandler {
     private final List<StructureTicket> newStructureGenTickets, structuresToGen;
 
     private WorldGenTickHandler() {
-        newWorldGenTickets = new ArrayList<ChunkGenerationTicket>();
-        newTownGenTickets = new ArrayList<ChunkGenerationTicket>();
-        newStructureGenTickets = new ArrayList<StructureTicket>();
-        chunksToGen = new ArrayList<ChunkGenerationTicket>();
-        townChunksToGen = new ArrayList<ChunkGenerationTicket>();
-        structuresToGen = new ArrayList<StructureTicket>();
+        newWorldGenTickets = new ArrayList<>();
+        newTownGenTickets = new ArrayList<>();
+        newStructureGenTickets = new ArrayList<>();
+        chunksToGen = new ArrayList<>();
+        townChunksToGen = new ArrayList<>();
+        structuresToGen = new ArrayList<>();
     }
 
     public void addChunkForGeneration(World world, int chunkX, int chunkZ) {
@@ -109,7 +109,7 @@ public final class WorldGenTickHandler {
         }
     }
 
-    /**
+    /*
      * Base structure ticket class.  Changed to a callback mechanism to allow anonymous callback classes,
      * to inform town-gen of when first / second pass structures are finished being generated; to allow
      * the road to generate after walls, etc

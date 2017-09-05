@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -22,13 +22,13 @@ package net.shadowmage.ancientwarfare.structure.api;
 
 public interface StructureContentPlugin {
 
-    /**
+    /*
      * implementing classes should use this callback to register any
      * block handlers with the passed in manager
      */
     public void addHandledBlocks(IStructurePluginManager manager);
 
-    /**
+    /*
      * implementing classes should use this callback to register any
      * entity handlers with the passed in manager
      */

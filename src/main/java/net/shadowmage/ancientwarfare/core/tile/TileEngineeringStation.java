@@ -1,25 +1,21 @@
 package net.shadowmage.ancientwarfare.core.tile;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCraftResult;
-import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class TileEngineeringStation extends TileEntity implements IRotatableTile,IInventoryChangedListener {
+import javax.annotation.Nonnull;
+
+public class TileEngineeringStation extends TileUpdatable implements IRotatableTile, IInventoryChangedListener {
 
     EnumFacing facing = EnumFacing.NORTH;
     ItemStack[] matrixShadow;
@@ -48,16 +44,11 @@ public class TileEngineeringStation extends TileEntity implements IRotatableTile
         extraSlots = new InventoryBasic(18, this);
     }
 
-    @Override
-    public boolean canUpdate() {
-        return false;
-    }
-
     public String getCrafterName() {
         return ItemResearchBook.getResearcherName(bookInventory.getStackInSlot(0));
     }
 
-    /**
+    /*
      * called to shadow a copy of the input matrix, to know what to refill
      */
     public void preItemCrafted() {
@@ -75,10 +66,10 @@ public class TileEngineeringStation extends TileEntity implements IRotatableTile
             if (layoutStack == null) {
                 continue;
             }
-            if (layoutMatrix.getStackInSlot(i) != null) {
+            if (!layoutMatrix.getStackInSlot(i).isEmpty()) {
                 continue;
             }
-            layoutMatrix.setInventorySlotContents(i, InventoryTools.removeItems(extraSlots, -1, layoutStack, 1));
+            layoutMatrix.setInventorySlotContents(i, InventoryTools.removeItems(extraSlots,  null, layoutStack, 1));
         }
     }
 
@@ -99,15 +90,15 @@ public class TileEngineeringStation extends TileEntity implements IRotatableTile
     }
 
     @Override
-    public Packet getDescriptionPacket() {
-        NBTTagCompound tag = new NBTTagCompound();
+    protected void writeUpdateNBT(NBTTagCompound tag) {
+        super.writeUpdateNBT(tag);
         tag.setInteger("facing", facing.ordinal());
-        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, tag);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        facing = EnumFacing.VALUES[pkt.func_148857_g().getInteger("facing")];
+    protected void handleUpdateNBT(NBTTagCompound tag) {
+        super.handleUpdateNBT(tag);
+        facing = EnumFacing.VALUES[tag.getInteger("facing")];
         BlockTools.notifyBlockUpdate(this);
     }
 
@@ -122,7 +113,7 @@ public class TileEngineeringStation extends TileEntity implements IRotatableTile
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
 
         NBTTagCompound inventoryTag = new NBTTagCompound();
@@ -142,6 +133,7 @@ public class TileEngineeringStation extends TileEntity implements IRotatableTile
         tag.setTag("layoutMatrix", inventoryTag);
 
         tag.setInteger("facing", facing.ordinal());
+        return tag;
     }
 
     @Override
@@ -160,5 +152,4 @@ public class TileEngineeringStation extends TileEntity implements IRotatableTile
         InventoryTools.dropInventoryInWorld(world, extraSlots, pos);
         InventoryTools.dropInventoryInWorld(world, layoutMatrix, pos);
     }
-
 }

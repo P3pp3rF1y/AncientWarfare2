@@ -22,10 +22,10 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
     final InventoryBasic inventory = new InventoryBasic(27);
 
     private boolean init = false;
-    private final List<InterfaceFillRequest> fillRequests = new ArrayList<InterfaceFillRequest>();
-    private final List<InterfaceEmptyRequest> emptyRequests = new ArrayList<InterfaceEmptyRequest>();
-    List<WarehouseInterfaceFilter> filters = new ArrayList<WarehouseInterfaceFilter>();
-    List<ContainerWarehouseInterface> viewers = new ArrayList<ContainerWarehouseInterface>();
+    private final List<InterfaceFillRequest> fillRequests = new ArrayList<>();
+    private final List<InterfaceEmptyRequest> emptyRequests = new ArrayList<>();
+    List<WarehouseInterfaceFilter> filters = new ArrayList<>();
+    List<ContainerWarehouseInterface> viewers = new ArrayList<>();
 
     public TileWarehouseInterface() {
 

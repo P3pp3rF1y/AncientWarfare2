@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -33,8 +33,8 @@ public class ModelBaseAW {
     int textureWidth = 256;
     int textureHeight = 256;
 
-    HashMap<String, ModelPiece> pieces = new HashMap<String, ModelPiece>();
-    private List<ModelPiece> basePieces = new ArrayList<ModelPiece>();
+    HashMap<String, ModelPiece> pieces = new HashMap<>();
+    private List<ModelPiece> basePieces = new ArrayList<>();
 
     protected int iterationNum;
 
@@ -114,7 +114,7 @@ public class ModelBaseAW {
     }
 
     public List<String> getModelLines() {
-        ArrayList<String> lines = new ArrayList<String>();
+        ArrayList<String> lines = new ArrayList<>();
         lines.add("textureSize=" + textureWidth + "," + textureHeight);
         for (ModelPiece piece : this.basePieces) {
             piece.addPieceLines(lines);

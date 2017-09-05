@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2015 Olivier Sylvain (aka GotoLink)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -20,7 +20,7 @@
  */
 package net.shadowmage.ancientwarfare.structure.entity;
 
-import net.minecraft.util.Vec3;
+import net.minecraft.util.Vec3d;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
 
@@ -90,9 +90,9 @@ public class DualBoundingBox extends AxisAlignedBB{
     }
 
     @Override
-    public AxisAlignedBB addCoord(double varX, double varY, double varZ) {
+    public AxisAlignedBB expand(double varX, double varY, double varZ) {
         DualBoundingBox box = (DualBoundingBox) copy();
-        box.setBB(super.addCoord(varX, varY, varZ));
+        box.setBB(super.expand(varX, varY, varZ));
         return box;
     }
 
@@ -102,12 +102,12 @@ public class DualBoundingBox extends AxisAlignedBB{
     }
 
     @Override
-    public boolean isVecInside(Vec3 vec3) {
-        return getMin().isVecInside(vec3) || getMax().isVecInside(vec3) || getTop().isVecInside(vec3);
+    public boolean contains(Vec3d vec3) {
+        return getMin().contains(vec3) || getMax().contains(vec3) || getTop().contains(vec3);
     }
 
     @Override
-    public RayTraceResult calculateIntercept(Vec3 vec3_1, Vec3 vec3_2) {
+    public RayTraceResult calculateIntercept(Vec3d vec3_1, Vec3d vec3_2) {
         return getBoundingBox(minX, minY - yOffset, minZ, maxX, maxY, maxZ).calculateIntercept(vec3_1, vec3_2);
     }
 

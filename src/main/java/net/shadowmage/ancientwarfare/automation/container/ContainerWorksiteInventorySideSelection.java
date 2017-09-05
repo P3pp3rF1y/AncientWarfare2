@@ -12,7 +12,7 @@ import java.util.HashMap;
 
 public class ContainerWorksiteInventorySideSelection extends ContainerTileBase<TileWorksiteBoundedInventory> {
 
-    public final HashMap<RelativeSide, RelativeSide> sideMap = new HashMap<RelativeSide, RelativeSide>();
+    public final HashMap<RelativeSide, RelativeSide> sideMap = new HashMap<>();
 
     public ContainerWorksiteInventorySideSelection(EntityPlayer player, BlockPos pos) {
         super(player, pos);

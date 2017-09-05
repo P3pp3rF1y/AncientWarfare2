@@ -22,7 +22,7 @@ public class BlockFinder {
         positions = new ArrayList<>(size);
     }
 
-    /**
+    /*
      * Collect block type in a cross pattern
      * @param center the center of the cross pattern
      * @param max the arms max length of the cross pattern
@@ -63,7 +63,7 @@ public class BlockFinder {
         return Pair.of(new BlockPos(minX, minY, minZ), new BlockPos(maxX, maxY, maxZ));
     }
 
-    /**
+    /*
      * Collect blocks between corners in a box pattern
      * Fail fast if block type doesn't apply
      * @param corners Bottom North West corner and Upper South East corner
@@ -87,7 +87,7 @@ public class BlockFinder {
         return true;
     }
 
-    /**
+    /*
      * Collect all blocks that apply
      * @param corner Bottom North West corner
      * @param limit the max size parameters
@@ -106,7 +106,7 @@ public class BlockFinder {
         }
     }
 
-    /**
+    /*
      * The conditions applied on the block type
      */
     private boolean isTypeAt(int x, int y, int z){
@@ -118,7 +118,7 @@ public class BlockFinder {
         return state.getBlock() == blockType && state.getBlock().getMetaFromState(state) == metaValue;
     }
 
-    /**
+    /*
      * The collected block positions
      */
     public List<BlockPos> getPositions() {

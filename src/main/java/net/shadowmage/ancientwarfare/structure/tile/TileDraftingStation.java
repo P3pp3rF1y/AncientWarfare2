@@ -18,7 +18,7 @@ public class TileDraftingStation extends TileEntity implements IInventoryChanged
 
     private String structureName;//structure pulled from live structure list anytime a ref is needed
     private boolean isStarted;//has started compiling resources -- will need input to cancel
-    private ArrayList<ItemStack> neededResources = new ArrayList<ItemStack>();
+    private ArrayList<ItemStack> neededResources = new ArrayList<>();
     private boolean isFinished;//is finished compiling resources, awaiting output-slot availability
     private int remainingTime;//not really time, but raw item count
     private int totalTime;//total raw-item count
@@ -133,7 +133,7 @@ public class TileDraftingStation extends TileEntity implements IInventoryChanged
         markDirty();
     }
 
-    /**
+    /*
      * should be called client-side to TRY to set the
      * current template to the input name.
      * Will not change templates if production has already
@@ -197,7 +197,7 @@ public class TileDraftingStation extends TileEntity implements IInventoryChanged
         tag.setInteger("remainingTime", remainingTime);
         tag.setInteger("totalTime", totalTime);
 
-        /**
+        /*
          * TODO write out resource-list
          */
     }

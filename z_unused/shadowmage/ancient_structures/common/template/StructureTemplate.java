@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -28,21 +28,21 @@ import shadowmage.ancient_structures.common.template.rule.TemplateRuleEntity;
 public class StructureTemplate
 {
 
-/**
+/*
  * base datas
  */
 public final String name;
 public final int xSize, ySize, zSize;
 public final int xOffset, yOffset, zOffset;
 
-/**
+/*
  * stored template data
  */
 private TemplateRule[] templateRules;
 private TemplateRuleEntity[] entityRules;
 private short[] templateData;
 
-/**
+/*
  * world generation placement validation settings
  */
 private StructureValidator validator;

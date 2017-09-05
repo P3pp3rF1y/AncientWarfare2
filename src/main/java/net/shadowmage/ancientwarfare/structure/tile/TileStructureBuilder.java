@@ -156,7 +156,7 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwna
         builder.tick(getOwnerAsPlayer());
     }
 
-    /**
+    /*
      * should be called immediately after the tile-entity is set into the world
      * from the ItemBlockStructureBuilder item onBlockPlaced code
      */
@@ -193,7 +193,7 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwna
         return owner;
     }
 
-    /**
+    /*
      * should be called immediately after the tile-entity is set into the world
      * from the ItemBlockStructureBuilder item onBlockPlaced code<br>
      * the passed in builder must be valid (have a valid structure), and must not
@@ -270,7 +270,7 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwna
         }
     }
 
-    //*******************************************WORKSITE************************************************//
+    //******************************************WORKSITE************************************************//
     @Override
     public boolean hasWork() {
         return storedEnergy < maxEnergyStored;

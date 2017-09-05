@@ -67,7 +67,7 @@ public class GuiPieceSelection extends GuiContainerBase {
         int totalHeight = 3;
 
         ModelBaseAW model = parent.modelWidget.getModel();
-        List<ModelPiece> pieces = new ArrayList<ModelPiece>();
+        List<ModelPiece> pieces = new ArrayList<>();
         model.getPieces(pieces);
 
         Label label;
@@ -95,14 +95,14 @@ public class GuiPieceSelection extends GuiContainerBase {
         area.setAreaSize(totalHeight + 8);
     }
 
-    private HashMap<Label, ModelPiece> pieceMap = new HashMap<Label, ModelPiece>();
+    private HashMap<Label, ModelPiece> pieceMap = new HashMap<>();
 
     @Override
     public void setupElements() {
 
     }
 
-    /**
+    /*
      * anonymous classes should override for piece-selection functionality
      */
     protected void onPieceSelected(ModelPiece piece) {

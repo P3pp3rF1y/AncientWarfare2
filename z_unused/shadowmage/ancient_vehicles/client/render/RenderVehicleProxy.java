@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -41,7 +41,7 @@ private static HashMap<String, ResourceLocation> vehicleTextures = new HashMap<S
 
 public static void registerRenderers()
   {
-  /**
+  /*
    * load vehicle renderers and models
    * textures are registered when vehicleTypes are registered
    */
@@ -60,7 +60,7 @@ public void doRender(Entity entity, double x, double y, double z, float yaw, flo
   RenderVehicle render = vehicleRenders.get(vehicle.getVehicleType().getName());
   if(render!=null)
     {
-    /**
+    /*
      * translate to position
      * rotate for yaw
      * bind texture

@@ -54,7 +54,7 @@ public class WorldTownGenerator implements IWorldGenerator {
             return;
         }//cannot validate the area until bounds are possibly shrunk by selected template
 
-        /**
+        /*
          * add the town to the generated structure map, as a -really- large structure entry
          */
         StructureMap map = AWGameData.INSTANCE.getData(world, StructureMap.class);
@@ -62,12 +62,12 @@ public class WorldTownGenerator implements IWorldGenerator {
         StructureEntry entry = new StructureEntry(bb, template.getTownTypeName(), template.getClusterValue());
         map.setGeneratedAt(world, area.getCenterX(), area.getSurfaceY(), area.getCenterZ(), 0, entry, false);
 
-        /**
+        /*
          * add the town to generated town map, to eliminate towns generating too close to eachother
          */
         AWGameData.INSTANCE.getPerWorldData(world, TownMap.class).setGenerated(bb);
 
-        /**
+        /*
          * and finally initialize generation.  The townGenerator will do borders, walls, roads, and add any structures to the world-gen tick handler for generation.
          */
         new TownGenerator(world, area, template).generate();

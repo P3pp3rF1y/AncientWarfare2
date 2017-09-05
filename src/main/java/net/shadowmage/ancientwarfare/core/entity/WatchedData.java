@@ -1,3 +1,5 @@
+// TODO rewrite this whole thing and what depends on it with DataParameters, likely this class won't exist after
+
 package net.shadowmage.ancientwarfare.core.entity;
 
 import net.minecraft.entity.DataWatcher;
@@ -6,9 +8,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 
+import javax.annotation.Nonnull;
 import java.util.Comparator;
 
-/**
+/*
  * Created by Olivier on 06/07/2015.
  */
 public class WatchedData extends DataWatcher.WatchableObject{

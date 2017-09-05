@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -22,7 +22,7 @@ package shadowmage.ancient_framework.common.interfaces;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-/**
+/*
  * interface for objects which may be represented/packeted through an NBTTag
  * mostly used for complex data which must be relayed to clients intact
  * @author Shadowmage
@@ -31,13 +31,13 @@ import net.minecraft.nbt.NBTTagCompound;
 public interface INBTTaggable
 {
 
-/**
+/*
  * write the entire data structure for this object to the passed in tag
  * @param tag
  */
 public void writeToNBT(NBTTagCompound tag);
 
-/**
+/*
  * populate the entire data structure for this object from a tag
  * @param tag
  */

@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -31,18 +31,18 @@ public class AWAutomationStatics extends ModConfiguration {
     public static int fishFarmRescanTicks = 200;
     public static int animalFarmRescanTicks = 200;
 
-    /**
+    /*
      * Travel time per block when sending/receiving items using the mailbox system<br>
      * Distances are calculated as a floating point distance and rounded to the nearest whole<br>
      */
     public static int mailboxTimePerBlock = 20;
 
-    /**
+    /*
      * Travel time for mail using mailboxes when items are being sent/received in different dimensions
      */
     public static int mailboxTimeForDimension = 1200;
 
-    /**
+    /*
      * used to reduce network updates
      */
     public static int energyMinNetworkUpdateFrequency = 5;//default 4 updates/sec max; less if not needed

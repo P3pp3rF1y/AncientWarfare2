@@ -9,7 +9,7 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
+/*
  * Created by Olivier on 15/06/2015.
  */
 public class NpcAIRideHorse extends NpcAI<NpcBase> {
@@ -17,7 +17,7 @@ public class NpcAIRideHorse extends NpcAI<NpcBase> {
     private final AttributeModifier moveSpeedModifier;
 
     protected EntityHorse horse;
-    List<EntityAITasks.EntityAITaskEntry> horseAI = new ArrayList<EntityAITasks.EntityAITaskEntry>();
+    List<EntityAITasks.EntityAITaskEntry> horseAI = new ArrayList<>();
 
     public NpcAIRideHorse(NpcBase npc, double speedFactor) {
         super(npc);

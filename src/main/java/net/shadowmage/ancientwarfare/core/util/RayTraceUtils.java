@@ -2,7 +2,7 @@ package net.shadowmage.ancientwarfare.core.util;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.Vec3d;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
@@ -13,20 +13,20 @@ import java.util.List;
 public class RayTraceUtils {
 
     public static RayTraceResult getPlayerTarget(EntityPlayer player, float range, float border) {
-        HashSet<Entity> excluded = new HashSet<Entity>();
+        HashSet<Entity> excluded = new HashSet<>();
         excluded.add(player);
         if (player.ridingEntity != null) {
             excluded.add(player.ridingEntity);
         }
         float yOffset = player.world.isRemote ? 0.f : 1.62F;
-        Vec3 look = player.getLookVec();
-        look.xCoord *= range;
-        look.yCoord *= range;
-        look.zCoord *= range;
-        look.xCoord += player.posX;
-        look.yCoord += player.posY + yOffset;
-        look.zCoord += player.posZ;
-        return tracePath(player.world, player.posX, player.posY + yOffset, player.posZ, look.xCoord, look.yCoord, look.zCoord, border, excluded);
+        Vec3d look = player.getLookVec();
+        look.x *= range;
+        look.y *= range;
+        look.z *= range;
+        look.x += player.posX;
+        look.y += player.posY + yOffset;
+        look.z += player.posZ;
+        return tracePath(player.world, player.posX, player.posY + yOffset, player.posZ, look.x, look.y, look.z, border, excluded);
     }
 
     public static RayTraceResult tracePathWithYawPitch(World world, float x, float y, float z, float yaw, float pitch, float range, float borderSize, HashSet<Entity> excluded) {
@@ -36,7 +36,7 @@ public class RayTraceUtils {
         return tracePath(world, x, y, z, tx, ty, tz, borderSize, excluded);
     }
 
-    /**
+    /*
      * @param x          startX
      * @param y          startY
      * @param z          startZ
@@ -61,8 +61,8 @@ public class RayTraceUtils {
         float closestHit = Float.POSITIVE_INFINITY;
         float currentHit;
         RayTraceResult intercept;
-        Vec3 startVec = Vec3.createVectorHelper(x, y, z);
-        Vec3 endVec = Vec3.createVectorHelper(tx, ty, tz);
+        Vec3d startVec = Vec3d.createVectorHelper(x, y, z);
+        Vec3d endVec = Vec3d.createVectorHelper(tx, ty, tz);
         for (Entity ent : allEntities) {
             if (ent.canBeCollidedWith() && !excluded.contains(ent)) {
                 AxisAlignedBB entityBb = ent.boundingBox;
@@ -82,8 +82,8 @@ public class RayTraceUtils {
         if (closestHitEntity != null) {
             return new RayTraceResult(closestHitEntity);
         }
-        startVec = Vec3.createVectorHelper(x, y, z);
-        endVec = Vec3.createVectorHelper(tx, ty, tz);
+        startVec = Vec3d.createVectorHelper(x, y, z);
+        endVec = Vec3d.createVectorHelper(tx, ty, tz);
         return world.rayTraceBlocks(startVec, endVec);
     }
 

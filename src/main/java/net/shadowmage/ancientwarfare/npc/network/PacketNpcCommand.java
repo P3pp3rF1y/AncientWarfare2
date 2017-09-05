@@ -7,7 +7,7 @@ import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.CommandType;
 
-/**
+/*
  * client->server npc-command packet<br>
  * should simply contain the command type-id (enum.ordinal)<br>
  * as well as the target, either entity-id or block coordinates.

@@ -18,7 +18,7 @@ import java.util.HashMap;
 
 public class GuiModelEditor extends GuiContainerBase {
 
-    /**
+    /*
      * the buffered image used by the UV editor for UV-Map
      */
     static BufferedImage image;
@@ -58,10 +58,10 @@ public class GuiModelEditor extends GuiContainerBase {
 
 
     //map of elements by name of what they edit -- PRX, BRX, PX, BX, etc..
-    private HashMap<String, GuiElement> widgetMap = new HashMap<String, GuiElement>();
+    private HashMap<String, GuiElement> widgetMap = new HashMap<>();
     //map of label-element combos, to select pieces through clicking on/in the piece list area
-    private HashMap<Label, ModelPiece> pieceMap = new HashMap<Label, ModelPiece>();
-    private HashMap<Label, Primitive> primitiveMap = new HashMap<Label, Primitive>();
+    private HashMap<Label, ModelPiece> pieceMap = new HashMap<>();
+    private HashMap<Label, Primitive> primitiveMap = new HashMap<>();
 
     ModelWidget modelWidget;
 
@@ -202,7 +202,7 @@ public class GuiModelEditor extends GuiContainerBase {
         return modelWidget.getSelectedPrimitive();
     }
 
-    /**
+    /*
      * save<br>
      * load<br>
      * import<br>
@@ -312,7 +312,7 @@ public class GuiModelEditor extends GuiContainerBase {
         fileControlArea.setAreaSize(totalHeight);
     }
 
-    /**
+    /*
      * per-piece controls<br>
      * delete piece<br>
      * copy piece<br>
@@ -400,7 +400,7 @@ public class GuiModelEditor extends GuiContainerBase {
 
         ModelPiece currentPiece = getModelPiece();
 
-        /************************************* PRX *********************************/
+        /************************************ PRX *********************************/
         label = new Label(c0, totalHeight + 2, "RX");
         pieceControlArea.addGuiElement(label);
 
@@ -446,7 +446,7 @@ public class GuiModelEditor extends GuiContainerBase {
         totalHeight += 12;
 
 
-        /************************************* PRY *********************************/
+        /************************************ PRY *********************************/
         label = new Label(c0, totalHeight + 2, "RY");
         pieceControlArea.addGuiElement(label);
 
@@ -492,7 +492,7 @@ public class GuiModelEditor extends GuiContainerBase {
         totalHeight += 12;
 
 
-        /************************************* PRZ *********************************/
+        /************************************ PRZ *********************************/
         label = new Label(c0, totalHeight + 2, "RZ");
         pieceControlArea.addGuiElement(label);
 
@@ -537,7 +537,7 @@ public class GuiModelEditor extends GuiContainerBase {
 
         totalHeight += 12;
 
-        /************************************* PX *********************************/
+        /************************************ PX *********************************/
         label = new Label(c0, totalHeight + 2, "X");
         pieceControlArea.addGuiElement(label);
 
@@ -582,7 +582,7 @@ public class GuiModelEditor extends GuiContainerBase {
 
         totalHeight += 12;
 
-        /************************************* PY *********************************/
+        /************************************ PY *********************************/
         label = new Label(c0, totalHeight + 2, "Y");
         pieceControlArea.addGuiElement(label);
 
@@ -627,7 +627,7 @@ public class GuiModelEditor extends GuiContainerBase {
 
         totalHeight += 12;
 
-        /************************************* PZ *********************************/
+        /************************************ PZ *********************************/
         label = new Label(c0, totalHeight + 2, "Z");
         pieceControlArea.addGuiElement(label);
 
@@ -712,7 +712,7 @@ public class GuiModelEditor extends GuiContainerBase {
         return height + 12;
     }
 
-    /**
+    /*
      * per primitive controls<br>
      * delete primitive<br>
      * copy primitive<br>
@@ -788,7 +788,7 @@ public class GuiModelEditor extends GuiContainerBase {
         Button button;
         NumberInput input;
 
-        /************************************* OX *********************************/
+        /************************************ OX *********************************/
         label = new Label(c0, totalHeight, "OX");
         primitiveControlArea.addGuiElement(label);
 
@@ -828,7 +828,7 @@ public class GuiModelEditor extends GuiContainerBase {
         totalHeight += 12;
 
 
-        /************************************* OY *********************************/
+        /************************************ OY *********************************/
         label = new Label(c0, totalHeight, "OY");
         primitiveControlArea.addGuiElement(label);
 
@@ -868,7 +868,7 @@ public class GuiModelEditor extends GuiContainerBase {
         totalHeight += 12;
 
 
-        /************************************* OZ *********************************/
+        /************************************ OZ *********************************/
         label = new Label(c0, totalHeight, "OZ");
         primitiveControlArea.addGuiElement(label);
 
@@ -925,7 +925,7 @@ public class GuiModelEditor extends GuiContainerBase {
         NumberInput input;
 
 
-        /************************************* BRX *********************************/
+        /************************************ BRX *********************************/
         label = new Label(c0, totalHeight, "RX");
         primitiveControlArea.addGuiElement(label);
 
@@ -964,7 +964,7 @@ public class GuiModelEditor extends GuiContainerBase {
 
         totalHeight += 12;
 
-        /************************************* BRY *********************************/
+        /************************************ BRY *********************************/
         label = new Label(c0, totalHeight, "RY");
         primitiveControlArea.addGuiElement(label);
 
@@ -1003,7 +1003,7 @@ public class GuiModelEditor extends GuiContainerBase {
 
         totalHeight += 12;
 
-        /************************************* BRZ *********************************/
+        /************************************ BRZ *********************************/
         label = new Label(c0, totalHeight, "RZ");
         primitiveControlArea.addGuiElement(label);
 
@@ -1043,7 +1043,7 @@ public class GuiModelEditor extends GuiContainerBase {
         totalHeight += 12;
 
 
-        /************************************* BX *********************************/
+        /************************************ BX *********************************/
         label = new Label(c0, totalHeight, "X");
         primitiveControlArea.addGuiElement(label);
 
@@ -1083,7 +1083,7 @@ public class GuiModelEditor extends GuiContainerBase {
         totalHeight += 12;
 
 
-        /************************************* BY *********************************/
+        /************************************ BY *********************************/
         label = new Label(c0, totalHeight, "Y");
         primitiveControlArea.addGuiElement(label);
 
@@ -1123,7 +1123,7 @@ public class GuiModelEditor extends GuiContainerBase {
         totalHeight += 12;
 
 
-        /************************************* BZ *********************************/
+        /************************************ BZ *********************************/
         label = new Label(c0, totalHeight, "Z");
         primitiveControlArea.addGuiElement(label);
 
@@ -1162,7 +1162,7 @@ public class GuiModelEditor extends GuiContainerBase {
 
         totalHeight += 12;
 
-        /************************************* BW *********************************/
+        /************************************ BW *********************************/
         label = new Label(c0, totalHeight, "W");
         primitiveControlArea.addGuiElement(label);
 
@@ -1201,7 +1201,7 @@ public class GuiModelEditor extends GuiContainerBase {
 
         totalHeight += 12;
 
-        /************************************* BH *********************************/
+        /************************************ BH *********************************/
         label = new Label(c0, totalHeight, "H");
         primitiveControlArea.addGuiElement(label);
 
@@ -1241,7 +1241,7 @@ public class GuiModelEditor extends GuiContainerBase {
         totalHeight += 12;
 
 
-        /************************************* BL *********************************/
+        /************************************ BL *********************************/
         label = new Label(c0, totalHeight, "L");
         primitiveControlArea.addGuiElement(label);
 
@@ -1297,7 +1297,7 @@ public class GuiModelEditor extends GuiContainerBase {
         Button button;
         NumberInput input;
 
-        /************************************* X1 *********************************/
+        /************************************ X1 *********************************/
         label = new Label(c0, totalHeight, "X1");
         primitiveControlArea.addGuiElement(label);
 
@@ -1336,7 +1336,7 @@ public class GuiModelEditor extends GuiContainerBase {
 
         totalHeight += 12;
 
-        /************************************* Y1 *********************************/
+        /************************************ Y1 *********************************/
         label = new Label(c0, totalHeight, "Y1");
         primitiveControlArea.addGuiElement(label);
 
@@ -1376,7 +1376,7 @@ public class GuiModelEditor extends GuiContainerBase {
         totalHeight += 12;
 
 
-        /************************************* Z1 *********************************/
+        /************************************ Z1 *********************************/
         label = new Label(c0, totalHeight, "Z1");
         primitiveControlArea.addGuiElement(label);
 
@@ -1416,7 +1416,7 @@ public class GuiModelEditor extends GuiContainerBase {
         totalHeight += 12;
 
 
-        /************************************* X2 *********************************/
+        /************************************ X2 *********************************/
         label = new Label(c0, totalHeight, "X2");
         primitiveControlArea.addGuiElement(label);
 
@@ -1456,7 +1456,7 @@ public class GuiModelEditor extends GuiContainerBase {
         totalHeight += 12;
 
 
-        /************************************* Y2 *********************************/
+        /************************************ Y2 *********************************/
         label = new Label(c0, totalHeight, "Y2");
         primitiveControlArea.addGuiElement(label);
 
@@ -1496,7 +1496,7 @@ public class GuiModelEditor extends GuiContainerBase {
         totalHeight += 12;
 
 
-        /************************************* Z2 *********************************/
+        /************************************ Z2 *********************************/
         label = new Label(c0, totalHeight, "Z2");
         primitiveControlArea.addGuiElement(label);
 
@@ -1536,7 +1536,7 @@ public class GuiModelEditor extends GuiContainerBase {
         totalHeight += 12;
 
 
-        /************************************* X3 *********************************/
+        /************************************ X3 *********************************/
         label = new Label(c0, totalHeight, "X3");
         primitiveControlArea.addGuiElement(label);
 
@@ -1576,7 +1576,7 @@ public class GuiModelEditor extends GuiContainerBase {
         totalHeight += 12;
 
 
-        /************************************* Y3 *********************************/
+        /************************************ Y3 *********************************/
         label = new Label(c0, totalHeight, "Y3");
         primitiveControlArea.addGuiElement(label);
 
@@ -1616,7 +1616,7 @@ public class GuiModelEditor extends GuiContainerBase {
         totalHeight += 12;
 
 
-        /************************************* Z3 *********************************/
+        /************************************ Z3 *********************************/
         label = new Label(c0, totalHeight, "Z3");
         primitiveControlArea.addGuiElement(label);
 
@@ -1656,7 +1656,7 @@ public class GuiModelEditor extends GuiContainerBase {
         totalHeight += 12;
 
 
-        /************************************* FLIP *********************************/
+        /************************************ FLIP *********************************/
         button = new Button(c0, totalHeight, 55, 12, "FLIP") {
             @Override
             protected void onPressed() {
@@ -1685,7 +1685,7 @@ public class GuiModelEditor extends GuiContainerBase {
         Button button;
         NumberInput input;
 
-        /************************************* RX *********************************/
+        /************************************ RX *********************************/
         label = new Label(c0, totalHeight, "RX");
         primitiveControlArea.addGuiElement(label);
 
@@ -1725,7 +1725,7 @@ public class GuiModelEditor extends GuiContainerBase {
         totalHeight += 12;
 
 
-        /************************************* RY *********************************/
+        /************************************ RY *********************************/
         label = new Label(c0, totalHeight, "RY");
         primitiveControlArea.addGuiElement(label);
 
@@ -1765,7 +1765,7 @@ public class GuiModelEditor extends GuiContainerBase {
         totalHeight += 12;
 
 
-        /************************************* RZ *********************************/
+        /************************************ RZ *********************************/
         label = new Label(c0, totalHeight, "RZ");
         primitiveControlArea.addGuiElement(label);
 
@@ -1805,7 +1805,7 @@ public class GuiModelEditor extends GuiContainerBase {
         totalHeight += 12;
 
 
-        /************************************* X1 *********************************/
+        /************************************ X1 *********************************/
         label = new Label(c0, totalHeight, "X1");
         primitiveControlArea.addGuiElement(label);
 
@@ -1845,7 +1845,7 @@ public class GuiModelEditor extends GuiContainerBase {
         totalHeight += 12;
 
 
-        /************************************* Y1 *********************************/
+        /************************************ Y1 *********************************/
         label = new Label(c0, totalHeight, "Y1");
         primitiveControlArea.addGuiElement(label);
 
@@ -1885,7 +1885,7 @@ public class GuiModelEditor extends GuiContainerBase {
         totalHeight += 12;
 
 
-        /************************************* BW *********************************/
+        /************************************ BW *********************************/
         label = new Label(c0, totalHeight, "BW");
         primitiveControlArea.addGuiElement(label);
 
@@ -1925,7 +1925,7 @@ public class GuiModelEditor extends GuiContainerBase {
         totalHeight += 12;
 
 
-        /************************************* BH *********************************/
+        /************************************ BH *********************************/
         label = new Label(c0, totalHeight, "BH");
         primitiveControlArea.addGuiElement(label);
 
@@ -1964,7 +1964,7 @@ public class GuiModelEditor extends GuiContainerBase {
 
         totalHeight += 12;
 
-        /**
+        /*
          * TODO add x,y,z,w,h,flip controls
          */
         return totalHeight;
@@ -1973,7 +1973,7 @@ public class GuiModelEditor extends GuiContainerBase {
     private void addPieceList() {
         pieceMap.clear();
         primitiveMap.clear();
-        ArrayList<ModelPiece> pieces = new ArrayList<ModelPiece>();
+        ArrayList<ModelPiece> pieces = new ArrayList<>();
         model.getPieces(pieces);
 
 

@@ -14,7 +14,7 @@ public class ItemWorkOrder extends ItemOrders {
 
     @Override
     public Collection<? extends BlockPos> getPositionsForRender(ItemStack stack) {
-        Collection<BlockPos> positionList = new ArrayList<BlockPos>();
+        Collection<BlockPos> positionList = new ArrayList<>();
         WorkOrder order = WorkOrder.getWorkOrder(stack);
         if (order != null && !order.isEmpty()) {
             for (WorkOrder.WorkEntry e : order.getEntries()) {

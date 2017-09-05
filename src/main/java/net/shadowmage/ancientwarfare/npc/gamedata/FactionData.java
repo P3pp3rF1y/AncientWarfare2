@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 public class FactionData extends WorldSavedData {
 
-    private HashMap<String, FactionEntry> playerFactionEntries = new HashMap<String, FactionEntry>();
+    private HashMap<String, FactionEntry> playerFactionEntries = new HashMap<>();
 
     public FactionData(String par1Str) {
         super(par1Str);

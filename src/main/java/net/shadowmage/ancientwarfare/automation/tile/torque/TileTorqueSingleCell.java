@@ -6,7 +6,7 @@ import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 
-/**
+/*
  * base template class that includes a single torque cell and rotation synching
  *
  * @author Shadowmage
@@ -15,18 +15,18 @@ public abstract class TileTorqueSingleCell extends TileTorqueBase {
 
     TorqueCell torqueCell;
 
-    /**
+    /*
      * client side this == 0.0 -> 100, as a whole number percent of max rotation value
      */
     double clientEnergyState;
 
-    /**
+    /*
      * server side this == 0 -> 100 (integer percent)
      * client side this == 0 -> 100 (integer percent)
      */
     int clientDestEnergyState;
 
-    /**
+    /*
      * used client side for rendering
      */
     double rotation, prevRotation;

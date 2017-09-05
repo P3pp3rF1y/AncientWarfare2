@@ -1,42 +1,34 @@
 package net.shadowmage.ancientwarfare.core.gui.options;
 
-import cpw.mods.fml.client.IModGuiFactory;
-import cpw.mods.fml.client.config.GuiConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraftforge.fml.client.IModGuiFactory;
+import net.minecraftforge.fml.client.config.GuiConfig;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.ConfigManager;
 
+import java.util.Collections;
 import java.util.Set;
 
 public class OptionsGuiFactory implements IModGuiFactory {
-
-    public OptionsGuiFactory() {
-        // TODO Auto-generated constructor stub
-    }
 
     @Override
     public void initialize(Minecraft minecraftInstance) {
     }
 
     @Override
-    public Class<? extends GuiScreen> mainConfigGuiClass() {
-//  AWLog.logDebug("CALL TO RETRIEVE MAIN CONFIG GUI CLASS!!!");
-        return OptionsGui.class;
+    public boolean hasConfigGui() {
+        return true;
+    }
+
+    @Override
+    public GuiScreen createConfigGui(GuiScreen parentScreen) {
+        return new OptionsGui(parentScreen);
     }
 
     @Override
     public Set<RuntimeOptionCategoryElement> runtimeGuiCategories() {
-//  AWLog.logDebug("CALL TO RETRIEVE MAIN CONFIG RUNTIME CATEGORIES!!!");
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element) {
-//  AWLog.logDebug("CALL TO RETRIEVE HANDLER FOR CONFIG RUNTIME CATEGORIES!!!");
-        // TODO Auto-generated method stub
-        return null;
+        return Collections.emptySet();
     }
 
     public static final class OptionsGui extends GuiConfig {

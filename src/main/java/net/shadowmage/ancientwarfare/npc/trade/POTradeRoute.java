@@ -9,7 +9,7 @@ import java.util.List;
 
 public final class POTradeRoute {
 
-    private List<POTradePoint> route = new ArrayList<POTradePoint>();
+    private List<POTradePoint> route = new ArrayList<>();
 
     public int size() {
         return route.size();

@@ -2,13 +2,13 @@ package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.init.SoundEvents;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
-/**
+/*
  * Simple checkbox w/ label;<br><br>
  * <p/>
  * Inner classes can override the onToggled() method instead of adding a mouse-event listener.<br>
@@ -30,7 +30,7 @@ public class Checkbox extends GuiElement {
     private boolean checked = false;
     protected String label;
 
-    /**
+    /*
      * @param label (optional -- use null for none)
      */
     public Checkbox(int topLeftX, int topLeftY, int width, int height, String label) {
@@ -41,7 +41,7 @@ public class Checkbox extends GuiElement {
             @Override
             public boolean onEvent(GuiElement widget, ActivationEvent evt) {
                 if (pressed && visible && enabled && isMouseOverElement(evt.mx, evt.my)) {
-                    Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
+                    Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
                     checked = !checked;
                     onToggled();
                 }
@@ -76,7 +76,7 @@ public class Checkbox extends GuiElement {
         }
     }
 
-    /**
+    /*
      * Anonymous classes can override this for an easy-access toggled-listener for this element
      */
     public void onToggled() {

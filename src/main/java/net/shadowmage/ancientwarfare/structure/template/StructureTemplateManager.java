@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -32,10 +32,10 @@ import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
 public class StructureTemplateManager {
-    private HashMap<String, StructureTemplateClient> clientTemplates = new HashMap<String, StructureTemplateClient>();//server-side client-templates
-    private HashMap<String, BufferedImage> templateImages = new HashMap<String, BufferedImage>();//server-side images
-    //private HashMap<String,String> imageMD5s = new HashMap<String,String>();
-    private HashMap<String, StructureTemplate> loadedTemplates = new HashMap<String, StructureTemplate>();
+    private HashMap<String, StructureTemplateClient> clientTemplates = new HashMap<>();//server-side client-templates
+    private HashMap<String, BufferedImage> templateImages = new HashMap<>();//server-side images
+    //private HashMap<String,String> imageMD5s = new HashMap<>();
+    private HashMap<String, StructureTemplate> loadedTemplates = new HashMap<>();
 
     private StructureTemplateManager() {
     }

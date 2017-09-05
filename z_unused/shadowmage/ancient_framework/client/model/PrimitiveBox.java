@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -247,7 +247,7 @@ public void addUVMapToImage(BufferedImage image)
   int h = (int) (y2-y1)*16;
   int l = (int) (z2-z1)*16;
   int x, y;
-  /**
+  /*
    * front face
    */
   for(x = u + l; x < u + l + w; x++)

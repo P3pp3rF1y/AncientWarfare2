@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -101,7 +101,7 @@ private void updateTextureContents(BufferedImage image)
   resetBoundTexture();
   }
 
-/**
+/*
  * fills an intBuffer with pixel data from the input image
  * @param image to read from
  * @param buffer to fill
@@ -125,7 +125,7 @@ private void fillImageArray(BufferedImage image, IntBuffer buffer)
   buffer.flip();
   }
 
-/**
+/*
  * converts the input pixel from ARGB to RGBA using simple bit-shifting operations
  * @param pixel in ARGB format
  * @return pixel in RGBA format

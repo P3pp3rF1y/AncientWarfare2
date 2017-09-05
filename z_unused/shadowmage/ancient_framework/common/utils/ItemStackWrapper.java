@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -69,7 +69,7 @@ public NBTTagCompound writeToNBT(NBTTagCompound tag)
   return tag;
   }
 
-/**
+/*
  * @return the quantity
  */
 public int getQuantity()
@@ -77,7 +77,7 @@ public int getQuantity()
   return quantity;
   }
 
-/**
+/*
  * @param quantity the quantity to set
  */
 public void setQuantity(int quantity)

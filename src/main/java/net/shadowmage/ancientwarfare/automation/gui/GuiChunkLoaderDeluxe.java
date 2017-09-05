@@ -42,7 +42,7 @@ public class GuiChunkLoaderDeluxe extends GuiContainerBase<ContainerChunkLoaderD
             }
         }
 
-        /**
+        /*
          * 'center' button -- always forced
          */
         ccip = new ChunkPos(cx, cz);

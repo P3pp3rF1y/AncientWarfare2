@@ -21,7 +21,7 @@ import java.util.List;
 
 public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
 
-    List<NpcDeathEntry> deathList = new ArrayList<NpcDeathEntry>();
+    List<NpcDeathEntry> deathList = new ArrayList<>();
     public ContainerTownHall(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
         int xPos, yPos;

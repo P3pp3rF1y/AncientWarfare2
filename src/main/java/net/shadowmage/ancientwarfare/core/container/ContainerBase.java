@@ -11,6 +11,8 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketGui;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
+import javax.annotation.Nonnull;
+
 public class ContainerBase extends Container {
 
     public final EntityPlayer player;
@@ -21,14 +23,14 @@ public class ContainerBase extends Container {
         this.player = player;
     }
 
-    /**
+    /*
      * set the gui for this container for callback (refreshGui) purposes
      */
     public final void setGui(IContainerGuiCallback gui) {
         this.gui = gui;
     }
 
-    /**
+    /*
      * @param tx  the upper-left X coordinate of the 9x3 inventory block
      * @param ty  the upper-left Y coordinate of the 9x3 inventory block
      * @param gap the gap size between upper (9x3) and lower(9x1) inventory blocks, in pixels
@@ -65,7 +67,7 @@ public class ContainerBase extends Container {
         return addPlayerSlots(8, 240 - 4 - 8 - 4 * 18, 4);
     }
 
-    /**
+    /*
      * server side method to send a data-packet to the client-side GUI attached to the client-side version of this container
      */
     protected final void sendDataToGui(NBTTagCompound data) {
@@ -76,7 +78,7 @@ public class ContainerBase extends Container {
         }
     }
 
-    /**
+    /*
      * send data from client-container to server container
      */
     protected void sendDataToServer(NBTTagCompound data) {
@@ -87,7 +89,7 @@ public class ContainerBase extends Container {
         }
     }
 
-    /**
+    /*
      * send data from server container to client container
      */
     protected void sendDataToClient(NBTTagCompound data) {
@@ -98,7 +100,7 @@ public class ContainerBase extends Container {
         }
     }
 
-    /**
+    /*
      * client/server side method to receive packet data from PacketGui
      */
     public final void onPacketData(NBTTagCompound data) {
@@ -111,7 +113,7 @@ public class ContainerBase extends Container {
         }
     }
 
-    /**
+    /*
      * subclasses should override this method to send any data from server to the client-side container.
      * This method is called immediately after the container has been constructed and set as the active container.
      * The data is received client-side immediately after the GUI has been constructed, initialized, and opened.
@@ -120,7 +122,7 @@ public class ContainerBase extends Container {
 
     }
 
-    /**
+    /*
      * sub-classes should override this method to handle any packet data they are expecting to receive.
      * packets destined to the GUI or for slot-click have already been filtered out
      */
@@ -133,7 +135,7 @@ public class ContainerBase extends Container {
         return true;
     }
 
-    /**
+    /*
      * Causes the GUI to be re-setup on its next update tick
      */
     public void refreshGui() {
@@ -142,7 +144,7 @@ public class ContainerBase extends Container {
         }
     }
 
-    /**
+    /*
      * remove the inventory slots from view on the screen, effectively disabling them
      */
     @SuppressWarnings("unchecked")
@@ -154,7 +156,7 @@ public class ContainerBase extends Container {
         }
     }
 
-    /**
+    /*
      * add any removed from screen slots back into view
      */
     @SuppressWarnings("unchecked")
@@ -166,7 +168,7 @@ public class ContainerBase extends Container {
         }
     }
 
-    /**
+    /*
      * override default CRASH with default DO NOTHING
      */
     @Override
@@ -174,7 +176,7 @@ public class ContainerBase extends Container {
         return ItemStack.EMPTY;
     }
 
-    /**
+    /*
      * merges provided ItemStack with the first available one in the container/player inventory<br>
      * overriden to clean up the mess of the code that was the vanilla code.
      *

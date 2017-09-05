@@ -19,12 +19,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ItemNpcSpawner extends Item {
-    /**
+    /*
      * npc names are type.subtype :: resource-location
      */
-    private HashMap<String, String> iconNames = new HashMap<String, String>();
+    private HashMap<String, String> iconNames = new HashMap<>();
 
-    private HashMap<String, IIcon> iconMap = new HashMap<String, IIcon>();
+    private HashMap<String, IIcon> iconMap = new HashMap<>();
 
     public ItemNpcSpawner() {
         this.setCreativeTab(AWNpcItemLoader.npcTab);
@@ -72,7 +72,7 @@ public class ItemNpcSpawner extends Item {
         return stack;
     }
 
-    /**
+    /*
      * create an NPC from the input item stack if valid, else return null<br>
      * npc will have type, subtype, equipment, levels, health, food and owner set from item.
      */
@@ -95,7 +95,7 @@ public class ItemNpcSpawner extends Item {
         return npc;
     }
 
-    /**
+    /*
      * return an itemstack of npc spawner item that contains the data to spawn the input npc<br>
      * npc type, subtype, equipment, levels health, food value, and owner will be stored.
      */
@@ -137,7 +137,7 @@ public class ItemNpcSpawner extends Item {
         return "";
     }
 
-    /**
+    /*
      * Npc type 'name' is full npc-type -- type.subtype
      */
     public void addNpcType(String name, String icon) {

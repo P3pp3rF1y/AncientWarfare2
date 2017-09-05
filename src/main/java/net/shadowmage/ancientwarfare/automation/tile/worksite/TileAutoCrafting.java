@@ -1,11 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.IInventoryChangedListener;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -66,7 +62,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
         if (outputSlot.getStackInSlot(0).isEmpty()) {
             return false;
         }//no output stack, don't even bother checking
-        ArrayList<ItemStack> compactedCraft = new ArrayList<ItemStack>();
+        ArrayList<ItemStack> compactedCraft = new ArrayList<>();
         @Nonnull ItemStack stack1;
         @Nonnull ItemStack stack2;
         boolean found;
@@ -169,7 +165,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
         onLayoutMatrixChanged();
     }
 
-    /** ***********************************INVENTORY METHODS*********************************************** */
+    /* ***********************************INVENTORY METHODS*********************************************** */
     private void onLayoutMatrixChanged() {
         this.outputSlot.setInventorySlotContents(0, AWCraftingManager.INSTANCE.findMatchingRecipe(craftMatrix, world, getCrafterName()));
     }

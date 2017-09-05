@@ -32,25 +32,25 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 public class WorkSiteWarehouse extends TileWorksiteBase implements IWorkSite, IInteractableTile, IBoundedTile, IOwnable
 {
 
-/**************************WORKSITE FIELDS******************************/
+/*************************WORKSITE FIELDS******************************/
 private BlockPosition bbMin;
 private BlockPosition bbMax;
 
-/**************************WAREHOUSE FIELDS******************************/
+/*************************WAREHOUSE FIELDS******************************/
 private boolean init = false;
 private boolean warehouseInventoryUpdated = false;
-private List<IWarehouseStorageTile> storageTiles = new ArrayList<IWarehouseStorageTile>();
-private List<TileWarehouseInput> inputTiles = new ArrayList<TileWarehouseInput>();
-private List<TileWarehouseOutput> outputTiles = new ArrayList<TileWarehouseOutput>();
-private Set<TileEntity> tilesToUpdate = new HashSet<TileEntity>();
-private List<ContainerWarehouseControl> viewers = new ArrayList<ContainerWarehouseControl>();
+private List<IWarehouseStorageTile> storageTiles = new ArrayList<>();
+private List<TileWarehouseInput> inputTiles = new ArrayList<>();
+private List<TileWarehouseOutput> outputTiles = new ArrayList<>();
+private Set<TileEntity> tilesToUpdate = new HashSet<>();
+private List<ContainerWarehouseControl> viewers = new ArrayList<>();
 public InventoryBasic inventory = new InventoryBasic(9);//manual input/output inventory
 public ItemQuantityMap inventoryMap = new ItemQuantityMap();//TODO make this private, wrap whatever is needed for the container in access methods
 
-/**************************WORK QUEUES******************************/
-private List<TileWarehouseOutput> outputToCheck = new ArrayList<TileWarehouseOutput>();
-private List<TileWarehouseOutput> outputToFill = new ArrayList<TileWarehouseOutput>();
-private List<TileWarehouseInput> inputToEmpty = new ArrayList<TileWarehouseInput>();
+/*************************WORK QUEUES******************************/
+private List<TileWarehouseOutput> outputToCheck = new ArrayList<>();
+private List<TileWarehouseOutput> outputToFill = new ArrayList<>();
+private List<TileWarehouseInput> inputToEmpty = new ArrayList<>();
 
 int currentItemCount;//used slots--calced from item quantity map
 int currentMaxItemCount;//max number of slots -- calced from storage blocks
@@ -127,7 +127,7 @@ private void updateTiles()
   }
 
 
-/************************************************ MULTIBLOCK SYNCH METHODS *************************************************/
+/*********************************************** MULTIBLOCK SYNCH METHODS *************************************************/
 
 public void addInputBlock(TileWarehouseInput input)
   {
@@ -252,7 +252,7 @@ public void validate()
   init = false;
   }
 
-/**
+/*
  * should be called when tile is first loaded from disk, after world is set
  */
 protected void scanInitialBlocks()
@@ -272,7 +272,7 @@ protected void scanInitialBlocks()
           addStorageBlock((IWarehouseStorageTile) te);
           if(te instanceof IControlledTile)
             {
-            ((IControlledTile) te).setControllerPosition(new BlockPosition(xCoord, yCoord, zCoord));
+            ((IControlledTile) te).setControllerPosition(new BlockPosition(x, y, z));
             }
           }
         else if(te instanceof TileWarehouseInput)
@@ -280,7 +280,7 @@ protected void scanInitialBlocks()
           addInputBlock((TileWarehouseInput) te);
           if(te instanceof IControlledTile)
             {
-            ((IControlledTile) te).setControllerPosition(new BlockPosition(xCoord, yCoord, zCoord));
+            ((IControlledTile) te).setControllerPosition(new BlockPosition(x, y, z));
             }
           }
         }
@@ -289,7 +289,7 @@ protected void scanInitialBlocks()
   }
 
 
-/************************************************ INVENTORY TRACKING METHODS *************************************************/
+/*********************************************** INVENTORY TRACKING METHODS *************************************************/
 
 private void onWarehouseInventoryUpdated()
   {
@@ -298,7 +298,7 @@ private void onWarehouseInventoryUpdated()
 
 private void recheckOutputTiles()
   {
-  Set<TileWarehouseOutput> toUpdate = new HashSet<TileWarehouseOutput>();
+  Set<TileWarehouseOutput> toUpdate = new HashSet<>();
   toUpdate.addAll(outputToCheck);
   toUpdate.addAll(outputToFill);
   outputToCheck.clear();
@@ -411,7 +411,7 @@ public void decreaseCountOf(ItemStack item, int count)
   onWarehouseInventoryUpdated();
   }
 
-/************************************************ WORKSITE METHODS *************************************************/
+/*********************************************** WORKSITE METHODS *************************************************/
 
 @Override
 public WorkType getWorkType()
@@ -424,7 +424,7 @@ public boolean onBlockClicked(EntityPlayer player)
   {
   if(!player.worldObj.isRemote)
     {
-    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_CONTROL, xCoord, yCoord, zCoord);    
+    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_CONTROL, x, y, z);
     }
   return true;
   }
@@ -568,7 +568,7 @@ private void processOutputWork()
   }
 
 
-/************************************************ NETWORK METHODS *************************************************/
+/*********************************************** NETWORK METHODS *************************************************/
 
 public void addViewer(ContainerWarehouseControl viewer)
   {
@@ -641,7 +641,7 @@ public final Packet getDescriptionPacket()
     bbMax.writeToNBT(innerTag);
     tag.setTag("bbMax", innerTag);
     }
-  return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 3, tag);
+  return new S35PacketUpdateTileEntity(this.x, this.y, this.z, 3, tag);
   }
 
 @Override

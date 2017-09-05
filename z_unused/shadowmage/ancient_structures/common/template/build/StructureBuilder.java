@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -68,7 +68,7 @@ public StructureBuilder(World world, StructureTemplate template, int face, int x
     }
   
   bb = new StructureBB(x, y, z, face, template);  
-  /**
+  /*
    * initialize the first target destination so that the structure is ready to start building when called on to build
    */
   incrementDestination();
@@ -139,7 +139,7 @@ protected void incrementDestination()
   destination.offsetBy(bb.min);
   }
 
-/**
+/*
  * return true if could increment position
  * return false if template is finished
  * @return

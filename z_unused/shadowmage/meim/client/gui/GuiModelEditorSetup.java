@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -725,7 +725,7 @@ public void addRightLabels()
   pieceLabelMap.clear();
   if(GuiModelEditor.model!=null)
     {
-    List<ModelPiece> pieces = new ArrayList<ModelPiece>();
+    List<ModelPiece> pieces = new ArrayList<>();
     GuiModelEditor.model.getPieces(pieces);
     
     GuiString label = new GuiString(0, rightPrimitivesPanel, 80, 12, "Pieces:");

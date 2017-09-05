@@ -1,8 +1,8 @@
 package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
+/*
  * base GUI Element class
  * subclasses should add their own actionListeners during constructor
  * to handle default implementation details such as playing sound on button
@@ -22,7 +22,7 @@ import java.util.List;
  */
 public abstract class GuiElement {
 
-    private List<Listener> actionListeners = new ArrayList<Listener>();
+    private List<Listener> actionListeners = new ArrayList<>();
 
     protected boolean mouseInterface;
     protected boolean keyboardInterface;
@@ -70,7 +70,7 @@ public abstract class GuiElement {
         this.scrollInput = handleScroll;
     }
 
-    /**
+    /*
      * called to update the internal positioning of this element.
      * needs to be called anytime the parent gui layout is changed (resized / etc)
      */
@@ -84,7 +84,7 @@ public abstract class GuiElement {
         this.topLeftY = topLeftY;
     }
 
-    /**
+    /*
      * called from GUI to process mouse interface.
      * all functionality should be implemented via ActionListeners
      * even default functionality (e.g. play sound on click, toggle state, etc)
@@ -102,7 +102,7 @@ public abstract class GuiElement {
         }
     }
 
-    /**
+    /*
      * called from GUI to process keyboard interface
      * all functionality should be implemented via ActionListeners
      * including default functionality.
@@ -126,7 +126,7 @@ public abstract class GuiElement {
         }
     }
 
-    /**
+    /*
      * add a new event listener to this element
      * if the element is not set to receive those event types
      * --auto-flag the element to receive those events
@@ -149,7 +149,7 @@ public abstract class GuiElement {
 
     public abstract void render(int mouseX, int mouseY, float partialTick);//called from gui to draw this element
 
-    /**
+    /*
      * checks for tooltip-rendering for this gui-element.
      */
     public void postRender(int mouseX, int mouseY, float partialTick, long tick, ITooltipRenderer rend) {
@@ -181,16 +181,14 @@ public abstract class GuiElement {
         List<String> textLines = Arrays.asList(I18n.format(text).split("\\\\n"));
         
         // perform additional word-wrapping to maxWidthInChars, if required
-        List<String> textLinesWrapped = new ArrayList<String>();
-        for (int i = 0; i < textLines.size(); i++) {
-            if (textLines.get(i).length() > maxWidthInChars) {
+        List<String> textLinesWrapped = new ArrayList<>();
+        for (String textLine : textLines) {
+            if (textLine.length() > maxWidthInChars) {
                 // line is too long, perform additional splitting
-                List<String> lineSplit = TextUtils.split(textLines.get(i), maxWidthInChars);
-                for (String line : lineSplit) {
-                    textLinesWrapped.add(line);
-                }
+                List<String> lineSplit = TextUtils.split(textLine, maxWidthInChars);
+                textLinesWrapped.addAll(lineSplit);
             } else
-                textLinesWrapped.add(textLines.get(i));
+                textLinesWrapped.add(textLine);
         }
         
         int width = Minecraft.getMinecraft().fontRenderer.getStringWidth(textLinesWrapped.get(0));

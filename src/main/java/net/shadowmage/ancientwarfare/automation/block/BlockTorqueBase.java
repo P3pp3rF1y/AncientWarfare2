@@ -23,7 +23,7 @@ import java.util.HashMap;
 
 public abstract class BlockTorqueBase extends Block implements IRotatableBlock {
 
-    HashMap<Integer, IconRotationMap> iconMaps = new HashMap<Integer, IconRotationMap>();
+    HashMap<Integer, IconRotationMap> iconMaps = new HashMap<>();
 
     protected BlockTorqueBase(Material material) {
         super(material);
@@ -157,8 +157,7 @@ public abstract class BlockTorqueBase extends Block implements IRotatableBlock {
     }
 
     @Override
-    public int damageDropped(int meta) {
-        return meta; //TODO is there a common property that needs to be treated here / otherwise the individual child classes should handle their stuff
+    public int damageDropped(IBlockState state) {
+        return getMetaFromState(state);
     }
-
 }

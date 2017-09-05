@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public enum WorksiteUpgrade {
-    /**
+    /*
      * DO NOT EVER CHANGE ENUM ORDERING, WILL FUBAR LOAD/SAVE VALUES FOR ALL WORKSITES, AS THEY ARE RESTORED VIA ORDINAL
      */
     SIZE_MEDIUM(new int[]{}, new int[]{}),
@@ -25,8 +25,8 @@ public enum WorksiteUpgrade {
     private Set<Integer> overrides;
 
     private WorksiteUpgrade(int[] exc, int[] ovr) {
-        this.exclusive = new HashSet<Integer>(exc.length);
-        this.overrides = new HashSet<Integer>(ovr.length);
+        this.exclusive = new HashSet<>(exc.length);
+        this.overrides = new HashSet<>(ovr.length);
         for (int anExc : exc) {
             exclusive.add(anExc);
         }
@@ -35,21 +35,21 @@ public enum WorksiteUpgrade {
         }
     }
 
-    /**
+    /*
      * Should be used to return localization key for this upgrade.  Should be used in a worksite-upgrade-list GUI (or other...)
      */
     public String unlocalizedName() {
         return AWItems.worksiteUpgrade.getUnlocalizedName() + "." + ordinal();
     }
 
-    /**
+    /*
      * return true if THIS should override INPUT (input will be removed, this will be applied)
      */
     public boolean overrides(WorksiteUpgrade ug) {
         return overrides.contains(ug.ordinal());
     }
 
-    /**
+    /*
      * return true if THIS prevents the INPUT from being applied (input will not be applied, no change to upgrades)
      */
     public boolean exclusive(WorksiteUpgrade ug) {

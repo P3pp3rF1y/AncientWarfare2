@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -74,7 +74,7 @@ public class StructureBuilder implements IStructureBuilder {
             destXSize = destZSize;
             destZSize = swap;
         }
-        /**
+        /*
          * initialize the first target destination so that the structure is ready to start building when called on to build
          */
         incrementDestination();
@@ -122,7 +122,7 @@ public class StructureBuilder implements IStructureBuilder {
         }
     }
 
-    /**
+    /*
      * should be called by template-rules to handle block-placement in the world.
      * Handles village-block swapping during world-gen, and chunk-insert for blocks
      * with priority > 0
@@ -200,7 +200,7 @@ public class StructureBuilder implements IStructureBuilder {
         destination = BlockTools.rotateInArea(new BlockPos(currentX, currentY, currentZ), template.xSize, template.zSize, turns).offsetBy(bb.min);
     }
 
-    /**
+    /*
      * return true if could increment position
      * return false if template is finished
      */

@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -31,14 +31,14 @@ import java.util.List;
 
 public class StructureTemplate {
 
-    /**
+    /*
      * base datas
      */
     public final String name;
     public final int xSize, ySize, zSize;
     public final int xOffset, yOffset, zOffset;
 
-    /**
+    /*
      * stored template data
      */
     private TemplateRule[] templateRules;
@@ -46,7 +46,7 @@ public class StructureTemplate {
     private short[] templateData;
     List<ItemStack> resourceList;
 
-    /**
+    /*
      * world generation placement validation settings
      */
     private StructureValidator validator;
@@ -118,7 +118,7 @@ public class StructureTemplate {
     public List<ItemStack> getResourceList() {
         if (resourceList == null) {
             TemplateRule rule;
-            List<ItemStack> stacks = new ArrayList<ItemStack>();
+            List<ItemStack> stacks = new ArrayList<>();
             for (int x = 0; x < this.xSize; x++) {
                 for (int y = 0; y < this.ySize; y++) {
                     for (int z = 0; z < this.zSize; z++) {

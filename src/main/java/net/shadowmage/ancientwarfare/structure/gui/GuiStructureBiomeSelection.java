@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
@@ -113,7 +112,7 @@ public class GuiStructureBiomeSelection extends GuiContainerBase {
     private class BiomeCheck extends Checkbox{
 
         private final String name;
-        /**
+        /*
          * @param topLeftY height of display
          * @param label text displayed
          */

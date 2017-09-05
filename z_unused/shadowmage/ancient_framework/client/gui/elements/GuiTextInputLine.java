@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -30,17 +30,17 @@ public class GuiTextInputLine extends GuiElement
 
 String text = "";
 
-/**
+/*
  * cursor position in the text string
  */
 int cursorPos;
 
-/**
+/*
  * rendering offset of cursor
  */
 int cursorOffset;
 
-/**
+/*
  * ...currently unused
  */
 int backGroundColor;
@@ -48,14 +48,14 @@ int foreGroundColor;
 int textColor = 0xffffffff;
 int cursorColor = 0xffff0000;
 
-/**
+/*
  * is focused, can capture text
  */
 public boolean selected;
 
 int maxChars = 1;
 
-/**
+/*
  * @param elementNum
  * @param parent
  * @param o

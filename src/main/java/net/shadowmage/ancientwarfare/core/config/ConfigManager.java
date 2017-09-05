@@ -8,7 +8,7 @@ import java.util.List;
 public class ConfigManager {
 
     @SuppressWarnings("rawtypes")
-    private static List<IConfigElement> configElements = new ArrayList<IConfigElement>();
+    private static List<IConfigElement> configElements = new ArrayList<>();
 
     public static void registerConfigCategory(IConfigElement c) {
         configElements.add(c);

@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -28,7 +28,7 @@ import com.google.common.io.ByteArrayDataOutput;
 public class Packet05Team extends PacketBase
 {
 
-/**
+/*
  * 
  */
 public Packet05Team()

@@ -23,7 +23,7 @@ public class ContainerNpcPlayerOwnedTrade extends ContainerNpcBase<NpcTrader> {
         storage = ItemBackpack.getInventoryFor(entity.getHeldItem());
         if (storage != null) {
             for (int i = 0; i < storage.getSizeInventory(); i++) {
-                /**
+                /*
                  * add backpack items to slots in container so that they are synchronized to client side inventory/container
                  * --will be used to validate trades on client-side
                  */

@@ -28,7 +28,7 @@ public class TileWarehouse extends TileWarehouseBase {
         if(cursorStack.isEmpty()){
             return;
         }
-        List<IWarehouseStorageTile> destinations = new ArrayList<IWarehouseStorageTile>();
+        List<IWarehouseStorageTile> destinations = new ArrayList<>();
         storageMap.getDestinations(cursorStack, destinations);
         int stackSize = cursorStack.getCount();
         int moved;
@@ -50,7 +50,7 @@ public class TileWarehouse extends TileWarehouseBase {
     }
 
     private void tryGetItem(EntityPlayer player, ItemStack filter, boolean shiftClick) {
-        List<IWarehouseStorageTile> destinations = new ArrayList<IWarehouseStorageTile>();
+        List<IWarehouseStorageTile> destinations = new ArrayList<>();
         @Nonnull ItemStack newCursorStack = filter.copy();
         newCursorStack.setCount(0);
         storageMap.getDestinations(filter, destinations);

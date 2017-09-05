@@ -77,7 +77,7 @@ public class VehicleClientProxy extends VehicleCommonProxy {
 
         private static List<IConfigElement> getElementList() {
             List<Property> props = InputHandler.instance.getKeyConfig("vehicle");
-            List<IConfigElement> list = new ArrayList<IConfigElement>();
+            List<IConfigElement> list = new ArrayList<>();
             for(Property property : props) {
                 list.add(new ConfigElement(property));
             }

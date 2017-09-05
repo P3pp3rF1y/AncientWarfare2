@@ -1,14 +1,14 @@
 package net.shadowmage.ancientwarfare.vehicle.entity.collision;
 
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.Vec3d;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.vehicle.collision.OBB;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
 import java.util.List;
 
-/**
+/*
  * Base OBB Movement helper.<br>
  * Responsible for updating position of the vehicle.<br>
  * Has a single OBB to represent the main collision box of the vehicle<br>
@@ -90,9 +90,9 @@ public class VehicleOBBMoveHelper {
         orientedBoundingBox.updateForPositionAndRotation(vehicle.posX, vehicle.posY, vehicle.posZ, vehicle.rotationYaw + rotationDelta);
         orientedBoundingBox.setAABBToOBBExtents(vehicle.boundingBox);
 
-        Vec3 mtvTempBase = Vec3.createVectorHelper(0, 0, 0);
-        Vec3 mtvTemp = null;
-        Vec3 mtv = null;
+        Vec3d mtvTempBase = Vec3d.createVectorHelper(0, 0, 0);
+        Vec3d mtvTemp = null;
+        Vec3d mtv = null;
 
         List<AxisAlignedBB> aabbs = worldObj.getCollidingBoundingBoxes(vehicle, vehicle.boundingBox.expand(0.2d, 0, 0.2d));
 
@@ -103,13 +103,13 @@ public class VehicleOBBMoveHelper {
             mtvTemp = orientedBoundingBox.getMinCollisionVector(bb, mtvTempBase);
             if (mtvTemp != null) {
                 if (mtv == null) {
-                    mtv = Vec3.createVectorHelper(mtvTemp.xCoord, 0, mtvTemp.zCoord);
+                    mtv = Vec3d.createVectorHelper(mtvTemp.x, 0, mtvTemp.z);
                 } else {
-                    if (Math.abs(mtvTemp.xCoord) > Math.abs(mtv.xCoord)) {
-                        mtv.xCoord = mtvTemp.xCoord;
+                    if (Math.abs(mtvTemp.x) > Math.abs(mtv.x)) {
+                        mtv.x = mtvTemp.x;
                     }
-                    if (Math.abs(mtvTemp.zCoord) > Math.abs(mtv.zCoord)) {
-                        mtv.zCoord = mtvTemp.zCoord;
+                    if (Math.abs(mtvTemp.z) > Math.abs(mtv.z)) {
+                        mtv.z = mtvTemp.z;
                     }
                 }
             }
@@ -119,9 +119,9 @@ public class VehicleOBBMoveHelper {
         {
             vehicle.rotationYaw += rotationDelta;
         } else {
-            mtv.xCoord *= 1.1d;
-            mtv.zCoord *= 1.1d;
-            vehicle.setPosition(vehicle.posX + mtv.xCoord, vehicle.posY, vehicle.posZ + mtv.zCoord);
+            mtv.x *= 1.1d;
+            mtv.z *= 1.1d;
+            vehicle.setPosition(vehicle.posX + mtv.x, vehicle.posY, vehicle.posZ + mtv.z);
             orientedBoundingBox.updateForPositionAndRotation(vehicle.posX, vehicle.posY, vehicle.posZ, vehicle.rotationYaw + rotationDelta);
             orientedBoundingBox.setAABBToOBBExtents(vehicle.boundingBox);
             aabbs = worldObj.getCollidingBoundingBoxes(vehicle, vehicle.boundingBox.expand(0.2d, 0, 0.2d));
@@ -146,14 +146,14 @@ public class VehicleOBBMoveHelper {
                 orientedBoundingBox.setAABBToOBBExtents(vehicle.boundingBox);
             } else//slide was no good, revert (do not rotate at all)
             {
-                vehicle.setPosition(vehicle.posX - mtv.xCoord, vehicle.posY, vehicle.posZ - mtv.zCoord);
+                vehicle.setPosition(vehicle.posX - mtv.x, vehicle.posY, vehicle.posZ - mtv.z);
                 orientedBoundingBox.updateForPositionAndRotation(vehicle.posX, vehicle.posY, vehicle.posZ, vehicle.rotationYaw);
                 orientedBoundingBox.setAABBToOBBExtents(vehicle.boundingBox);
             }
         }
     }
 
-    /**
+    /*
      * locate the closest AABB top that the vehicle is resting on or will rest on given the input yMotion<br>
      * return adjusted y motion to rest on top of the highest colliding bounding-box.
      *
@@ -161,8 +161,8 @@ public class VehicleOBBMoveHelper {
      * @param aabbs   a list of -potentially- colliding AABBs
      */
     private double getYNegativeMove(double yMotion, List<AxisAlignedBB> aabbs) {
-        Vec3 mtvTempBase = Vec3.createVectorHelper(0, 0, 0);
-        Vec3 mtvTemp = null;
+        Vec3d mtvTempBase = Vec3d.createVectorHelper(0, 0, 0);
+        Vec3d mtvTemp = null;
         AxisAlignedBB bb = null;
         int len = aabbs.size();
         double maxFoundY = vehicle.posY + yMotion;
@@ -185,12 +185,12 @@ public class VehicleOBBMoveHelper {
         return maxFoundY - vehicle.posY;
     }
 
-    /**
+    /*
      * Locate the maximum amount this entity can move in the positive Y direction before encountering a colliding object.
      */
     private double getYPositiveMove(double yMotion, List<AxisAlignedBB> aabbs) {
-        Vec3 mtvTempBase = Vec3.createVectorHelper(0, 0, 0);
-        Vec3 mtvTemp = null;
+        Vec3d mtvTempBase = Vec3d.createVectorHelper(0, 0, 0);
+        Vec3d mtvTemp = null;
         AxisAlignedBB bb = null;
         int len = aabbs.size();
         double minFoundY = vehicle.posY + vehicle.vehicleHeight + yMotion;//the max to check
@@ -213,7 +213,7 @@ public class VehicleOBBMoveHelper {
         return minFoundY - (vehicle.posY + vehicle.vehicleHeight);
     }
 
-    /**
+    /*
      * vehicle OBB should alread be moved into the position to step upwards from before this method is called.<br>
      * (test both axes simultaneously, do not step if -any- collision would be found)<br>
      * does not move vehicle, only returns the move that -should- be made.
@@ -228,8 +228,8 @@ public class VehicleOBBMoveHelper {
         double maxRestingY = vehicle.posY;
         double minHeadHight = maxYCheck;
 
-        Vec3 mtvTempBase = Vec3.createVectorHelper(0, 0, 0);
-        Vec3 mtvTemp = null;
+        Vec3d mtvTempBase = Vec3d.createVectorHelper(0, 0, 0);
+        Vec3d mtvTemp = null;
         AxisAlignedBB bb = null;
         int len = aabbs.size();
         for (int i = 0; i < len; i++) {
@@ -260,14 +260,14 @@ public class VehicleOBBMoveHelper {
         return maxRestingY - vehicle.posY;
     }
 
-    /**
+    /*
      * Return the maximum amount (up to input) that the vehicle can move on the X axis in the input direction before collision.
      */
     private double getXmove(double xMotion, List<AxisAlignedBB> aabbs) {
         AxisAlignedBB bb;
         int len = aabbs.size();
         double xMove = xMotion;
-        Vec3 vec;
+        Vec3d vec;
         for (int i = 0; i < len; i++) {
             bb = aabbs.get(i);
             if (bb.maxY <= vehicle.boundingBox.minY || bb.minY >= vehicle.boundingBox.maxY) {
@@ -275,8 +275,8 @@ public class VehicleOBBMoveHelper {
             }//no collision at all, skip
             vec = orientedBoundingBox.getCollisionVectorXMovement(bb, xMotion);
             if (vec != null) {
-                if (Math.abs(vec.xCoord) < Math.abs(xMove)) {
-                    xMove = vec.xCoord;
+                if (Math.abs(vec.x) < Math.abs(xMove)) {
+                    xMove = vec.x;
                 }
             }
         }
@@ -286,7 +286,7 @@ public class VehicleOBBMoveHelper {
         return xMove;
     }
 
-    /**
+    /*
      * Return the maximum amount (up to input) that the vehicle can move on the Z axis in the input direction before collision.
      */
     private double getZMove(double zMotion, List<AxisAlignedBB> aabbs) {
@@ -294,7 +294,7 @@ public class VehicleOBBMoveHelper {
         int len = aabbs.size();
 
         double zMove = zMotion;
-        Vec3 vec;
+        Vec3d vec;
         for (int i = 0; i < len; i++) {
             bb = aabbs.get(i);
             if (bb.maxY <= vehicle.boundingBox.minY || bb.minY >= vehicle.boundingBox.maxY) {
@@ -302,8 +302,8 @@ public class VehicleOBBMoveHelper {
             }//no collision at all, skip
             vec = orientedBoundingBox.getCollisionVectorZMovement(bb, zMotion);
             if (vec != null) {
-                if (Math.abs(vec.zCoord) < Math.abs(zMove)) {
-                    zMove = vec.zCoord;
+                if (Math.abs(vec.z) < Math.abs(zMove)) {
+                    zMove = vec.z;
                 }
             }
         }

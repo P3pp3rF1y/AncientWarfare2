@@ -13,8 +13,8 @@ public class AWVehicleEntityLoader {
 
     private static int nextID = 0;
 
-    private static List<String> vehicleTypes = new ArrayList<String>();
-    private static HashMap<String, String> regNameToIcon = new HashMap<String, String>();
+    private static List<String> vehicleTypes = new ArrayList<>();
+    private static HashMap<String, String> regNameToIcon = new HashMap<>();
 
     public static void load() {
         EntityDeclaration reg = new VehiculeDeclaration(VehicleTurreted.class, AWEntityRegistry.VEHICLE_TEST);

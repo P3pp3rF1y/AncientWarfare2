@@ -17,19 +17,7 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.TextureImageBased;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
-import net.shadowmage.ancientwarfare.npc.gui.GuiCombatOrder;
-import net.shadowmage.ancientwarfare.npc.gui.GuiNpcBard;
-import net.shadowmage.ancientwarfare.npc.gui.GuiNpcCreativeControls;
-import net.shadowmage.ancientwarfare.npc.gui.GuiNpcFactionBard;
-import net.shadowmage.ancientwarfare.npc.gui.GuiNpcFactionTradeSetup;
-import net.shadowmage.ancientwarfare.npc.gui.GuiNpcFactionTradeView;
-import net.shadowmage.ancientwarfare.npc.gui.GuiNpcInventory;
-import net.shadowmage.ancientwarfare.npc.gui.GuiNpcPlayerOwnedTrade;
-import net.shadowmage.ancientwarfare.npc.gui.GuiRoutingOrder;
-import net.shadowmage.ancientwarfare.npc.gui.GuiTownHallInventory;
-import net.shadowmage.ancientwarfare.npc.gui.GuiTradeOrder;
-import net.shadowmage.ancientwarfare.npc.gui.GuiUpkeepOrder;
-import net.shadowmage.ancientwarfare.npc.gui.GuiWorkOrder;
+import net.shadowmage.ancientwarfare.npc.gui.*;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 import net.shadowmage.ancientwarfare.npc.render.RenderCommandOverlay;
 import net.shadowmage.ancientwarfare.npc.render.RenderNpcBase;
@@ -123,7 +111,7 @@ public class NpcClientProxy extends NpcCommonProxy {
         }
 
         private static List<IConfigElement> getElementList() {
-            ArrayList<IConfigElement> list = new ArrayList<IConfigElement>();
+            ArrayList<IConfigElement> list = new ArrayList<>();
             list.add(new ConfigElement(AWNPCStatics.renderAI));
             list.add(new ConfigElement(AWNPCStatics.renderFriendlyNames));
             list.add(new ConfigElement(AWNPCStatics.renderFriendlyHealth));

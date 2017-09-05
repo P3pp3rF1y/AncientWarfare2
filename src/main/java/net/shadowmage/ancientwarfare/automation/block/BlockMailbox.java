@@ -1,9 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,8 +20,9 @@ import net.shadowmage.ancientwarfare.core.block.IconRotationMap;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
+import static net.shadowmage.ancientwarfare.core.render.BlockRenderProperties.FACING;
+
 public class BlockMailbox extends Block implements IRotatableBlock {
-    private static final PropertyDirection FACING = BlockHorizontal.FACING;
 
     IconRotationMap iconMap = new IconRotationMap();
 

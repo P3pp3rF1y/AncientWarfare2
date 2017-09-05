@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -55,7 +55,7 @@ public class Gate implements IGateType {
 
     private static final Gate rotatingBridge = new GateRotatingBridge(12, "BridgeWood1.png");
 
-    public static final HashMap<String, Integer> gateIDByName = new HashMap<String, Integer>();
+    public static final HashMap<String, Integer> gateIDByName = new HashMap<>();
 
     static {
         gateIDByName.put("gate.verticalWooden", 0);
@@ -83,7 +83,7 @@ public class Gate implements IGateType {
     protected final ResourceLocation textureLocation;
     protected IIcon itemIcon;
 
-    /**
+    /*
      *
      */
     public Gate(int id, String textureLocation) {
@@ -314,7 +314,7 @@ public class Gate implements IGateType {
         }
     }
 
-    /**
+    /*
      * @return a fully setup gate, or null if chosen spawn position is invalid (blocks in the way)
      */
     public static EntityGate constructGate(World world, BlockPos pos1, BlockPos pos2, Gate type, byte facing) {

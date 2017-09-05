@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -28,7 +28,7 @@ public class GuiTab extends GuiElement
 
 public boolean inverted = false;
 protected String displayString = "";
-/**
+/*
  * @param elementNum
  * @param parent
  * @param w

@@ -31,7 +31,7 @@ public class HeadquartersTracker extends WorldSavedData {
         return hqTracker;
     }
     
-    private Map<String, int[]> playerHeadquarters = new HashMap<String, int[]>();
+    private Map<String, int[]> playerHeadquarters = new HashMap<>();
     private int[] teleportHubPosition = null;
     
     public HeadquartersTracker() {
@@ -42,7 +42,7 @@ public class HeadquartersTracker extends WorldSavedData {
         super(id);
     }
     
-    /**
+    /*
      * 
      * @return An int array of x/y/z co-ords of the owner's HQ position, or null if it doesn't exist 
      */
@@ -90,7 +90,7 @@ public class HeadquartersTracker extends WorldSavedData {
     public static void notifyHqNew(String ownerName, int posX, int posZ) {
         String notificationTitle = "ftbu_aw2.notification.townhall_newhq";
         TextComponentTranslation notificationMsg = new TextComponentTranslation("ftbu_aw2.notification.townhall_newhq.msg");
-        List<TextComponentTranslation> notificationTooltip = new ArrayList<TextComponentTranslation>();
+        List<TextComponentTranslation> notificationTooltip = new ArrayList<>();
         notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.chunk_position", posX, posZ));
         notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.townhall_newhq.tooltip.1"));
         notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.townhall_newhq.tooltip.2"));
@@ -102,7 +102,7 @@ public class HeadquartersTracker extends WorldSavedData {
     public static void notifyHqMissing(String ownerName) {
         String notificationTitle = "ftbu_aw2.notification.townhall_hqmissing";
         TextComponentTranslation notificationMsg = new TextComponentTranslation("ftbu_aw2.notification.townhall_hqmissing.msg");
-        List<TextComponentTranslation> notificationTooltip = new ArrayList<TextComponentTranslation>();
+        List<TextComponentTranslation> notificationTooltip = new ArrayList<>();
         notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.townhall_hqmissing.tooltip.1"));
         notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.townhall_hqmissing.tooltip.2"));
         notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.townhall_hqmissing.tooltip.3"));

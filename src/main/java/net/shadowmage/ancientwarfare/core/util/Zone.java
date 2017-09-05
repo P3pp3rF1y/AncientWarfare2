@@ -19,7 +19,7 @@ public class Zone implements INBTSerializable<NBTTagCompound> {
         max = BlockTools.getMax(p1, p2);
     }
 
-    /**
+    /*
      * does the input share any block position with this zone ?
      */
     public boolean crossWith(Zone z){

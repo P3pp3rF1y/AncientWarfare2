@@ -11,7 +11,7 @@ import java.util.HashMap;
 public final class FactionEntry {
 
     public final String playerName;
-    private HashMap<String, FactionStanding> factionStandings = new HashMap<String, FactionStanding>();
+    private HashMap<String, FactionStanding> factionStandings = new HashMap<>();
 
     public FactionEntry(NBTTagCompound tag) {
         playerName = tag.getString("playerName");

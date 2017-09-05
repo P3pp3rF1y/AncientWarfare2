@@ -6,11 +6,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
-import net.shadowmage.ancientwarfare.core.gui.elements.Button;
-import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
-import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
-import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
-import net.shadowmage.ancientwarfare.core.gui.elements.Label;
+import net.shadowmage.ancientwarfare.core.gui.elements.*;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 
@@ -22,8 +18,8 @@ public class GuiStructureBlockSelection extends GuiContainerBase {
 
     private final GuiStructureScanner parent;
 
-    private final HashMap<Checkbox, Block> boxToBlock = new HashMap<Checkbox, Block>();
-    private final HashMap<Block, Checkbox> blockToBox = new HashMap<Block, Checkbox>();
+    private final HashMap<Checkbox, Block> boxToBlock = new HashMap<>();
+    private final HashMap<Block, Checkbox> blockToBox = new HashMap<>();
 
     public GuiStructureBlockSelection(GuiStructureScanner parent) {
         super(parent.getContainer());
@@ -126,7 +122,7 @@ public class GuiStructureBlockSelection extends GuiContainerBase {
 
     private void setBlocksToValidator() {
         Block block;
-        Set<String> targetBlocks = new HashSet<String>();
+        Set<String> targetBlocks = new HashSet<>();
         for (Checkbox box : boxToBlock.keySet()) {
             block = boxToBlock.get(box);
             if (box.checked()) {
@@ -136,15 +132,15 @@ public class GuiStructureBlockSelection extends GuiContainerBase {
         parent.validator.setTargetBlocks(targetBlocks);
     }
 
-    /**
+    /*
      * add top and filler blocks to block list from biomes
      */
     private void fillFromBiomes() {
-        Set<String> selectedBiomes = new HashSet<String>();
+        Set<String> selectedBiomes = new HashSet<>();
         selectedBiomes.addAll(parent.validator.getBiomeList());
         boolean whitelist = parent.validator.isBiomeWhiteList();
 
-        Set<BiomeGenBase> biomesToSearch = new HashSet<BiomeGenBase>();
+        Set<BiomeGenBase> biomesToSearch = new HashSet<>();
 
         for (BiomeGenBase biome : BiomeGenBase.getBiomeGenArray()) {
             if (biome == null) {
@@ -155,7 +151,7 @@ public class GuiStructureBlockSelection extends GuiContainerBase {
             }
         }
 
-        Set<Block> targetBlocks = new HashSet<Block>();
+        Set<Block> targetBlocks = new HashSet<>();
         Block topBlock;
         Block fillBlock;
 
@@ -176,11 +172,11 @@ public class GuiStructureBlockSelection extends GuiContainerBase {
         }
     }
 
-    /**
+    /*
      * add default blocks to target list, such as dirt, stone, grass, sand, gravel, and vanilla ores
      */
     private void addDefaults() {
-        Set<Block> targetBlocks = new HashSet<Block>();
+        Set<Block> targetBlocks = new HashSet<>();
 
         targetBlocks.add(Blocks.SAND);
         targetBlocks.add(Blocks.GRAVEL);

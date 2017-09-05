@@ -9,7 +9,7 @@ import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.npc.ai.*;
@@ -116,7 +116,7 @@ public class NpcTrader extends NpcPlayerOwned {
 
     @Override
     public boolean shouldBeAtHome() {
-        return (!world.provider.hasNoSky && !world.isDaytime()) || world.canLightningStrikeAt(MathHelper.floor_double(this.posX), MathHelper.floor_double(this.posY), MathHelper.floor_double(this.posZ));
+        return (!world.provider.hasNoSky && !world.isDaytime()) || world.canLightningStrikeAt(MathHelper.floor(this.posX), MathHelper.floor(this.posY), MathHelper.floor(this.posZ));
     }
 
     @Override

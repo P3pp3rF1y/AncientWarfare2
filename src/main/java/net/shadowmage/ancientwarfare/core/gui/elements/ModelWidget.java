@@ -4,8 +4,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
@@ -27,7 +27,7 @@ import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
+/*
  * renders a model into its display area
  * has optional model-view input for rotation/movement/zoom
  * has optional piece selection mode, with callback
@@ -67,7 +67,7 @@ public class ModelWidget extends GuiElement {
     float pitch;
     float viewDistance = 5.f;
 
-    /**
+    /*
      * stored/calc'd values
      */
     float viewPosX, viewPosY, viewPosZ, viewTargetX, viewTargetY, viewTargetZ;
@@ -183,7 +183,7 @@ public class ModelWidget extends GuiElement {
         viewPosY = viewTargetY + viewDistance * MathHelper.sin(pitch);
     }
 
-    /**
+    /*
      * if true, will enable mouse-picking of model pieces/primitives
      */
     public void setSelectable(boolean val) {
@@ -226,7 +226,7 @@ public class ModelWidget extends GuiElement {
         GL11.glDisable(GL11.GL_LIGHTING);
     }
 
-    List<ModelPiece> parents = new ArrayList<ModelPiece>();
+    List<ModelPiece> parents = new ArrayList<>();
 
     private void calculateHighlightedPieces() {
         parents.clear();
@@ -236,8 +236,8 @@ public class ModelWidget extends GuiElement {
     }
 
     private void enableModelLighting() {
-        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
-        int bright = player.world.getLightBrightnessForSkyBlocks((int) player.posX, (int) player.posY, (int) player.posZ, 0);
+        EntityPlayer player = Minecraft.getMinecraft().player;
+        int bright = player.world.getCombinedLight(player.getPosition(), 0);
 
         int var11 = bright % 65536;
         int var12 = bright / 65536;
@@ -276,14 +276,14 @@ public class ModelWidget extends GuiElement {
     }
 
     private void setViewport() {
-        /**
+        /*
          * load a clean projection matrix
          */
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glPushMatrix();
         GL11.glLoadIdentity();
 
-        /**
+        /*
          * set up the base projection transformation matrix, as well as view target and position
          * (camera setup)
          */
@@ -292,20 +292,20 @@ public class ModelWidget extends GuiElement {
         GLU.gluPerspective(60.f, aspect, 0.1f, 100.f);
         GLU.gluLookAt(viewPosX, viewPosY, viewPosZ, viewTargetX, viewTargetY, viewTargetZ, 0, 1, 0);
 
-        /**
+        /*
          * load a clean model-view matrix
          */
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glPushMatrix();
         GL11.glLoadIdentity();
 
-        /**
+        /*
          * and finally, clear the depth buffer
          * (we want to ignore any world/etc, as we're rendering over-top of it all anyway)
          */
         GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
 
-        /**
+        /*
          * set the cropped viewport to render to
          */
         GuiContainerBase.pushViewport(renderX, renderY, width, height);
@@ -319,7 +319,7 @@ public class ModelWidget extends GuiElement {
         GuiContainerBase.popViewport();
     }
 
-    /**
+    /*
      * render for selection
      */
     private void doSelection() {
@@ -374,7 +374,7 @@ public class ModelWidget extends GuiElement {
         return model;
     }
 
-    /**
+    /*
      * add a new fully defined primitive to the model
      * <p/>
      * sets the current selected primitive to the passed in primitive
@@ -393,7 +393,7 @@ public class ModelWidget extends GuiElement {
         this.onSelection(selectedPiece, selectedPrimitive);
     }
 
-    /**
+    /*
      * adds a new model-piece to the model
      * parent = current piece, or null if no current piece
      * origin = parent origin, or 0,0,0 if no parent
@@ -409,7 +409,7 @@ public class ModelWidget extends GuiElement {
         this.onSelection(selectedPiece, selectedPrimitive);
     }
 
-    /**
+    /*
      * delete the selected piece
      */
     public void deleteSelectedPiece() {
@@ -430,7 +430,7 @@ public class ModelWidget extends GuiElement {
         this.onSelection(selectedPiece, selectedPrimitive);
     }
 
-    /**
+    /*
      * copies the currently selected piece.
      * adds it as a child of the current selected piece's parent -- as a sibling of the current piece
      * sets current selected piece to the new copied peice
@@ -464,7 +464,7 @@ public class ModelWidget extends GuiElement {
         this.onSelection(selectedPiece, selectedPrimitive);
     }
 
-    /**
+    /*
      * swaps the parent of the selectedPiece to the passed in ModelPiece<br>
      * pass null for a base piece
      */
@@ -472,7 +472,7 @@ public class ModelWidget extends GuiElement {
         this.getSelectedPiece().setParent(newParent);
     }
 
-    /**
+    /*
      * swaps the parent of the selected primitive to the passed in ModelPiece
      */
     public void swapPrimitiveParent(ModelPiece newParent) {
@@ -513,7 +513,7 @@ public class ModelWidget extends GuiElement {
     public void importPieces(File file) {
         ModelBaseAW model = loader.loadModel(file);
         if (model != null) {
-            /**
+            /*
              * TODO validate names to check for duplicates
              */
             for (ModelPiece p : model.getBasePieces()) {
@@ -522,7 +522,7 @@ public class ModelWidget extends GuiElement {
         }
     }
 
-    /**
+    /*
      * implementations should override to provide a callback for piece selection
      */
     protected void onSelection(ModelPiece piece, Primitive primitive) {

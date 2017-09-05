@@ -2,27 +2,22 @@ package net.shadowmage.ancientwarfare.core.research;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import javax.annotation.Nonnull;
+import java.util.*;
 
 public class ResearchGoal {
 
     private static boolean hasInit = false;
 
-    private static HashMap<Integer, ResearchGoal> goalsByID = new HashMap<Integer, ResearchGoal>();
-    private static HashMap<String, ResearchGoal> goalsByName = new HashMap<String, ResearchGoal>();
+    private static HashMap<Integer, ResearchGoal> goalsByID = new HashMap<>();
+    private static HashMap<String, ResearchGoal> goalsByName = new HashMap<>();
     private final Random random;
 
     private final int researchId;
@@ -33,7 +28,7 @@ public class ResearchGoal {
     private final List<OreSized> researchOres;
     private int researchTime;
 
-    /**
+    /*
      * set the first time dependencies for this goal are queried.
      * further queries for full-dependencies will return this cached set
      */
@@ -42,9 +37,9 @@ public class ResearchGoal {
     public ResearchGoal(int id, String name) {
         researchId = id;
         researchName = name;
-        dependencies = new HashSet<Integer>();
-        researchResources = new ArrayList<ItemStack>();
-        researchOres = new ArrayList<OreSized>();
+        dependencies = new HashSet<>();
+        researchResources = new ArrayList<>();
+        researchOres = new ArrayList<>();
         random = new Random(researchName.hashCode());
     }
 
@@ -95,7 +90,7 @@ public class ResearchGoal {
     }
 
     public List<ItemStack> getResources() {
-        List<ItemStack> result = new ArrayList<ItemStack>();
+        List<ItemStack> result = new ArrayList<>();
         result.addAll(researchResources);
         for(OreSized ore : researchOres){
             result.add(ore.getEquivalent(random));
@@ -103,7 +98,7 @@ public class ResearchGoal {
         return result;
     }
 
-    /**
+    /*
      * return the direct dependencies for this goal -- does not include any sub-dependencies --
      * {@see #resolveDependeciesFor(ResearchGoal)}
      */
@@ -116,7 +111,7 @@ public class ResearchGoal {
         return knownResearch.containsAll(fullDependencies);
     }
 
-    public boolean tryStart(IInventory inventory, int side) {
+    public boolean tryStart(IInventory inventory, EnumFacing side) {
         if (!AWCoreStatics.enableResearchResourceUse) {
             return true;
         }
@@ -147,7 +142,7 @@ public class ResearchGoal {
             required = ore.size;
             for(ItemStack temp : ore.getEquivalents()) {
                 remove = InventoryTools.removeItems(inventory, side, temp, required);
-                if(remove != null){
+                if(!remove.isEmpty()){
                     required -= remove.getCount();
                     if(required <= 0){
                         break;
@@ -244,13 +239,13 @@ public class ResearchGoal {
         return goalsByID.get(id);
     }
 
-    /**
+    /*
      * Return a set of ResearchGoals corresponding to the input collection of goal numbers.<br>
      * Invalid goal numbers, or duplicate input numbers, will be ignored.  The returned set will<br>
      * only contain valid research goals, with no duplicates.
      */
     public static Set<ResearchGoal> getGoalsFor(Collection<Integer> researchNums) {
-        Set<ResearchGoal> out = new HashSet<ResearchGoal>();
+        Set<ResearchGoal> out = new HashSet<>();
         for (Integer i : researchNums) {
             if (goalsByID.containsKey(i)) {
                 out.add(goalsByID.get(i));
@@ -259,7 +254,7 @@ public class ResearchGoal {
         return out;
     }
 
-    /**
+    /*
      * Return a set of research goal numbers comprising the entire dependency tree for the input
      * research goal.  This dependency set shall contain every direct dependency for the input goal, and
      * any dependencies of those goals (recursive until base).  The returned set shall only contain valid,
@@ -269,7 +264,7 @@ public class ResearchGoal {
         if (goal.resolvedDependencies != null) {
             return goal.resolvedDependencies;
         }
-        Set<Integer> foundDependencies = new HashSet<Integer>();
+        Set<Integer> foundDependencies = new HashSet<>();
         LinkedList<Integer> openList = new LinkedList<Integer>();
         openList.addAll(goal.dependencies);
         Set<Integer> gDeps;
@@ -292,13 +287,13 @@ public class ResearchGoal {
     }
 
     public static Set<Integer> getResearchableGoalsFor(Collection<Integer> knownResearch, Collection<Integer> queuedResearch, int inProgress) {
-        Set<Integer> totalKnowledge = new HashSet<Integer>();
+        Set<Integer> totalKnowledge = new HashSet<>();
         totalKnowledge.addAll(knownResearch);
         totalKnowledge.addAll(queuedResearch);
         if (inProgress >= 0) {
             totalKnowledge.add(inProgress);
         }
-        Set<Integer> researchableGoals = new HashSet<Integer>();
+        Set<Integer> researchableGoals = new HashSet<>();
         ResearchGoal goal;
         for (Integer g : goalsByID.keySet()) {
             if (totalKnowledge.contains(g)) {

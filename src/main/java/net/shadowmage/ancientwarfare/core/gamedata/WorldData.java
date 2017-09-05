@@ -1,3 +1,4 @@
+//TODO world capability
 package net.shadowmage.ancientwarfare.core.gamedata;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -7,7 +8,7 @@ public class WorldData extends WorldSavedData {
 
     NBTTagCompound dataTag = new NBTTagCompound();
 
-    /**
+    /*
      * reflection constructor for mc-vanilla code
      */
     public WorldData(String par) {

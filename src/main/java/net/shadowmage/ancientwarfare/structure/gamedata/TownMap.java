@@ -12,7 +12,7 @@ import java.util.List;
 
 public class TownMap extends WorldSavedData {
 
-    private List<StructureBB> boundingBoxes = new ArrayList<StructureBB>();
+    private List<StructureBB> boundingBoxes = new ArrayList<>();
 
     public TownMap(String name) {
         super(name);
@@ -23,7 +23,7 @@ public class TownMap extends WorldSavedData {
         markDirty();
     }
 
-    /**
+    /*
      * return the distance of the closest found town or defaultVal if no town was found closer
      */
     public float getClosestTown(int bx, int bz, float defaultVal) {

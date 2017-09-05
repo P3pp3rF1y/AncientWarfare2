@@ -4,10 +4,12 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderBiped;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -38,7 +40,7 @@ public class RenderNpcBase extends RenderBiped {
     private boolean isSleeping;
     
     //func_147906_a---drawLabel
-    List<Integer> renderTasks = new ArrayList<Integer>();
+    List<Integer> renderTasks = new ArrayList<>();
 
     public RenderNpcBase() {
         super(new ModelBiped(), 0.6f);
@@ -90,7 +92,7 @@ public class RenderNpcBase extends RenderBiped {
         
         if (isSleeping)
             y -= 1.5f;
-        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        EntityPlayer player = Minecraft.getMinecraft().player;
         if (npc.isHostileTowards(player)) {
             if (AWNPCStatics.renderHostileNames.getBoolean()) {
                 String name = getNameForRender(npc, true);
@@ -300,16 +302,16 @@ public class RenderNpcBase extends RenderBiped {
             GL11.glDisable(GL11.GL_DEPTH_TEST);
             GL11.glEnable(GL11.GL_BLEND);
             OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-            Tessellator tessellator = Tessellator.instance;
+            Tessellator tessellator = Tessellator.getInstance();
 
             GL11.glDisable(GL11.GL_TEXTURE_2D);
-            tessellator.startDrawingQuads();
+            BufferBuilder bufferBuilder = tessellator.getBuffer();
+            bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
             int j = fontrenderer.getStringWidth(string) / 2;
-            tessellator.setColorRGBA_F(0.0F, 0.0F, 0.0F, 0.25F);
-            tessellator.addVertex((double) (-j - 1), (double) (-1), 0.0D);
-            tessellator.addVertex((double) (-j - 1), (double) (8), 0.0D);
-            tessellator.addVertex((double) (j + 1), (double) (8), 0.0D);
-            tessellator.addVertex((double) (j + 1), (double) (-1), 0.0D);
+            bufferBuilder.pos((double) (-j - 1), (double) (-1), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+            bufferBuilder.pos((double) (-j - 1), (double) (8), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+            bufferBuilder.pos((double) (j + 1), (double) (8), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+            bufferBuilder.pos((double) (j + 1), (double) (-1), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
             tessellator.draw();
             GL11.glEnable(GL11.GL_TEXTURE_2D);
             fontrenderer.drawString(string, -fontrenderer.getStringWidth(string) / 2, 0, color1);

@@ -15,7 +15,7 @@ public class ItemUpkeepOrder extends ItemOrders {
 
     @Override
     public Collection<? extends BlockPos> getPositionsForRender(ItemStack stack) {
-        Collection<BlockPos> positionList = new ArrayList<BlockPos>();
+        Collection<BlockPos> positionList = new ArrayList<>();
         UpkeepOrder order = UpkeepOrder.getUpkeepOrder(stack);
         if (order != null && order.getUpkeepPosition() != null)
             positionList.add(order.getUpkeepPosition());

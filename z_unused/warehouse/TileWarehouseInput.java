@@ -54,7 +54,7 @@ public void invalidate()
       WorkSiteWarehouse warehouse = (WorkSiteWarehouse)te;
       BlockPosition min = warehouse.getWorkBoundsMin();
       BlockPosition max = warehouse.getWorkBoundsMax();
-      if(xCoord>=min.x && xCoord<=max.x && yCoord>=min.y && yCoord<=max.y && zCoord>=min.z && zCoord<=max.z)
+      if(x>=min.x && x<=max.x && y>=min.y && y<=max.y && z>=min.z && z<=max.z)
         {
         warehouse.removeInputBlock(this);
         }
@@ -70,17 +70,17 @@ public void updateEntity()
     {
     init = true;
     AWLog.logDebug("scanning for controller...");
-    for(TileEntity te : WorldTools.getTileEntitiesInArea(worldObj, xCoord-16, yCoord-4, zCoord-16, xCoord+16, yCoord+4, zCoord+16))
+    for(TileEntity te : WorldTools.getTileEntitiesInArea(worldObj, x-16, y-4, z-16, x+16, y+4, z+16))
       {
       if(te instanceof WorkSiteWarehouse)
         {
         WorkSiteWarehouse warehouse = (WorkSiteWarehouse)te;
         BlockPosition min = warehouse.getWorkBoundsMin();
         BlockPosition max = warehouse.getWorkBoundsMax();
-        if(xCoord>=min.x && xCoord<=max.x && yCoord>=min.y && yCoord<=max.y && zCoord>=min.z && zCoord<=max.z)
+        if(x>=min.x && x<=max.x && y>=min.y && y<=max.y && z>=min.z && z<=max.z)
           {
           warehouse.addInputBlock(this);
-          controllerPosition = new BlockPosition(warehouse.xCoord, warehouse.yCoord, warehouse.zCoord);
+          controllerPosition = new BlockPosition(warehouse.x, warehouse.y, warehouse.z);
           warehouse.onInputInventoryUpdated(this);
           break;
           }
@@ -196,7 +196,7 @@ public boolean onBlockClicked(EntityPlayer player)
   {
   if(!player.worldObj.isRemote)
     {
-//    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_INPUT, xCoord, yCoord, zCoord);
+//    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_INPUT, x, y, z);
     }
   return true;
   }

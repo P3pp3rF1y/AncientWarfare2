@@ -196,7 +196,7 @@ public class TownTemplateParser {
         if (bits == null || bits.length <= 0) {
             return Collections.emptyList();
         }
-        List<String> names = new ArrayList<String>();
+        List<String> names = new ArrayList<>();
         for (String bit : bits) {
             names.add(bit.toLowerCase(Locale.ENGLISH));
         }
@@ -208,7 +208,7 @@ public class TownTemplateParser {
         if (bits == null || bits.length <= 0) {
             return Collections.emptyList();
         }
-        List<Integer> dims = new ArrayList<Integer>();
+        List<Integer> dims = new ArrayList<>();
         for (String bit : bits) {
             dims.add(StringTools.safeParseInt(bit.toLowerCase(Locale.ENGLISH)));
         }

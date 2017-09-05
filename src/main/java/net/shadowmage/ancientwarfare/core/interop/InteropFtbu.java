@@ -1,16 +1,15 @@
+//TODO ftb lib / utils changes
 package net.shadowmage.ancientwarfare.core.interop;
 
-import ftb.lib.FTBLib;
-import ftb.lib.api.notification.MouseAction;
-import ftb.lib.api.notification.Notification;
-import ftb.utils.api.FriendsAPI;
-import ftb.utils.world.LMPlayerServer;
-import ftb.utils.world.LMWorldServer;
-import ftb.utils.world.claims.ClaimedChunk;
+import com.feed_the_beast.ftbl.api.IForgePlayer;
+import com.feed_the_beast.ftbl.api.NotificationId;
+import com.feed_the_beast.ftbl.lib.Notification;
+import com.feed_the_beast.ftbu.api.chunks.IClaimedChunk;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
@@ -53,20 +52,24 @@ public class InteropFtbu extends InteropFtbuDummy {
     }
     
     @Override
-    public void notifyPlayer(EnumChatFormatting titleColor, String ownerName, String title, TextComponentTranslation msg, List<TextComponentTranslation> hoverTextLines) {
+    public void notifyPlayer(TextFormatting titleColor, String ownerName, String title, TextComponentTranslation msg, List<TextComponentTranslation> hoverTextLines) {
         if (ownerName.isEmpty() || LMWorldServer.inst == null)
             return;
         
         LMPlayerServer p = LMWorldServer.inst.getPlayer(ownerName);
         
         if (p != null) {
-            IChatComponent cc = new TextComponentTranslation(title);
-            cc.getChatStyle().setColor(titleColor);
-            Notification n = new Notification("claim_change" + p.world.getMCWorld().getTotalWorldTime(), cc, 6000);
-            n.setDesc(msg);
-            
+            ITextComponent cc = new TextComponentTranslation(title);
+            cc.getStyle().setColor(titleColor);
+
+            Notification n = new Notification(new NotificationId(new ResourceLocation(AncientWarfareCore.modID, "claim_change"), p.getMCWorld().getTotalWorldTime(), cc, 6000);
+
+            n.addText(cc);
+            n.addText(msg);
+            n.setTimer(6000);
+
             MouseAction mouse = new MouseAction();
-            for(IChatComponent hoverTextLine : hoverTextLines)
+            for(ITextComponent hoverTextLine : hoverTextLines)
                 mouse.hover.add(hoverTextLine);
             n.setMouseAction(mouse);
             
@@ -79,11 +82,11 @@ public class InteropFtbu extends InteropFtbuDummy {
     }
     
     @Override
-    public LMPlayerServer getChunkClaimOwner(int dimId, int chunkX, int chunkY) {
-        ClaimedChunk claim = LMWorldServer.inst.claimedChunks.getChunk(dimId, chunkX, chunkY);
+    public IForgePlayer getChunkClaimOwner(int dimId, int chunkX, int chunkY) {
+        IClaimedChunk claim = LMWorldServer.inst.claimedChunks.getChunk(dimId, chunkX, chunkY);
         if (claim == null)
             return null;
-        return claim.getOwnerS();
+        return claim.getOwner();
     } 
 
     @Override

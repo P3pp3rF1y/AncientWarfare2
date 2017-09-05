@@ -19,13 +19,13 @@ import java.util.Iterator;
 
 public abstract class TileWorksiteBounded extends TileWorksiteBase implements IBoundedSite, IChunkLoaderTile {
 
-    /**
+    /*
      * minimum position of the work area bounding box, or a single block position if bbMax is not set
      * must not be null if this block has a work-area
      */
     private BlockPos bbMin;
 
-    /**
+    /*
      * maximum position of the work bounding box.  May be null
      */
     private BlockPos bbMax;
@@ -141,7 +141,7 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
         }
     }
 
-    /**
+    /*
      * Used by user-set-blocks tile to set all default harvest-checks to true when bounds are FIRST set
      */
     protected void onBoundsSet() {

@@ -10,8 +10,8 @@ import java.util.List;
 
 public class POTrade extends Trade {
 
-    private List<ItemStack> compactInput = new ArrayList<ItemStack>();
-    private List<ItemStack> compactOutput = new ArrayList<ItemStack>();
+    private List<ItemStack> compactInput = new ArrayList<>();
+    private List<ItemStack> compactOutput = new ArrayList<>();
 
     @Override
     public void setInputStack(int index, ItemStack stack) {
@@ -26,7 +26,7 @@ public class POTrade extends Trade {
     }
 
     private void updateCompactInput() {
-        ArrayList<ItemStack> list = new ArrayList<ItemStack>();
+        ArrayList<ItemStack> list = new ArrayList<>();
         for (ItemStack temp : input) {
             if (temp != null) {
                 list.add(temp.copy());
@@ -36,7 +36,7 @@ public class POTrade extends Trade {
     }
 
     private void updateCompactOutput() {
-        ArrayList<ItemStack> list = new ArrayList<ItemStack>();
+        ArrayList<ItemStack> list = new ArrayList<>();
         for (ItemStack temp : output) {
             if (temp != null) {
                 list.add(temp.copy());
@@ -45,7 +45,7 @@ public class POTrade extends Trade {
         compactOutput = InventoryTools.compactStackList3(list);
     }
 
-    /**
+    /*
      * Check through the input inventory and ensure it contains all materials necessary to complete this trade.<br>
      */
     public boolean isAvailable(IInventory storage) {

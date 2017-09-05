@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -23,7 +23,7 @@ package shadowmage.ancient_framework.common.interfaces;
 import net.minecraft.nbt.NBTTagCompound;
 
 
-/**
+/*
  * an interface for containers or other abstract structures that need to directly 
  * handle data from packets.  Normally used for container server-client synching
  * @author Shadowmage
@@ -35,7 +35,7 @@ public interface IHandlePacketData
 
 public void handlePacketData(NBTTagCompound tag);
 
-/**
+/*
  * used by GUIs
  * @param tag
  */

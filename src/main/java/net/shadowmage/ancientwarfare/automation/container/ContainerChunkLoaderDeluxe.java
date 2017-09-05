@@ -14,7 +14,7 @@ import java.util.Set;
 
 public class ContainerChunkLoaderDeluxe extends ContainerTileBase<TileChunkLoaderDeluxe> {
 
-    public Set<ChunkPos> ccipSet = new HashSet<ChunkPos>();
+    public Set<ChunkPos> ccipSet = new HashSet<>();
 
     public ContainerChunkLoaderDeluxe(EntityPlayer player, BlockPos pos) {
         super(player, pos);

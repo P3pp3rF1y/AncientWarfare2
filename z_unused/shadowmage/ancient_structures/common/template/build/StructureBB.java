@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -54,39 +54,39 @@ public final StructureBB setFromStructure(int x, int y, int z, int face, int xSi
     destZSize = swap;
     }
     
-  /**
+  /*
    * here we take the back-left corner in template space
    */
   BlockPosition destinationKey = new BlockPosition(0, 0, 0);
   
-  /**
+  /*
    * and we rotate that corner into local space
    */
   BlockTools.rotateInArea(destinationKey, xSize, zSize, turns);
   
-  /**
+  /*
    * we are placing destination1 to be the back-let corner of the structure. offset it by the rotated corner to get the correct corner
    */
   BlockPosition destination1 = new BlockPosition(x-destinationKey.x, y-destinationKey.y, z-destinationKey.z);
   
-  /**
+  /*
    * next, offset the back-left corner by the structures build-key offsets
    */
   destination1.moveLeft(face, xOffset);
   destination1.moveForward(face, zOffset);
   destination1.y-=yOffset;
   
-  /**
+  /*
    * copy position to make the front-right corner.
    */
   BlockPosition destination2 = new BlockPosition(destination1);
   
-  /**
+  /*
    * offset this position directly by the size of the structure to get the actual front-right corner
    */
   destination2.offset(destXSize-1, ySize-1, destZSize-1);            
   
-  /**
+  /*
    * calculate structure bounding box min/max from destination 1 and destination 2
    */
   this.min = BlockTools.getMin(destination1, destination2);
@@ -114,7 +114,7 @@ public String toString()
   return min.toString() + " : " +max.toString();
   }
 
-/**
+/*
  * does the input bb share any blocks with this bounding box?
  * @param bb
  * @return
@@ -128,7 +128,7 @@ public boolean collidesWith(StructureBB bb)
   return true;
   }
 
-/**
+/*
  * can be used to contract by specifying negative amounts...
  * @param amt
  */
@@ -162,7 +162,7 @@ public int getCenterZ()
   return min.z + (getZSize()/2);
   }
 
-/**
+/*
  * 0-- z++==forward x++==left
  * 1-- x--==forward z++==left
  * 2-- z--==forward x--==left

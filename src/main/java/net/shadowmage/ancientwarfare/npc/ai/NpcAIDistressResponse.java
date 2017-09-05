@@ -13,7 +13,7 @@ public class NpcAIDistressResponse extends NpcAI<NpcBase> {
         this.setMutexBits(MOVE + ATTACK);
     }
 
-    /**
+    /*
      * Returns whether the EntityAIBase should begin execution.
      */
     @Override
@@ -30,7 +30,7 @@ public class NpcAIDistressResponse extends NpcAI<NpcBase> {
         return false;
     }
 
-    /**
+    /*
      * Execute a one shot task or start executing a continuous task
      */
     @Override
@@ -39,7 +39,7 @@ public class NpcAIDistressResponse extends NpcAI<NpcBase> {
         this.npc.addAITask(TASK_FOLLOW + TASK_ATTACK);
     }
 
-    /**
+    /*
      * Resets the task
      */
     @Override
@@ -51,7 +51,7 @@ public class NpcAIDistressResponse extends NpcAI<NpcBase> {
             ((NpcCombat)npc).clearDistress();
     }
 
-    /**
+    /*
      * Updates the task
      */
     @Override

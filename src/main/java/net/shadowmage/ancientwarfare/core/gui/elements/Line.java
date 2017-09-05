@@ -9,7 +9,7 @@ public class Line extends GuiElement {
     int color;
     int x2, y2;
 
-    /**
+    /*
      * @param color RGBA color
      */
     public Line(int topLeftX, int topLeftY, int x2, int y2, int lineWidth, int color) {

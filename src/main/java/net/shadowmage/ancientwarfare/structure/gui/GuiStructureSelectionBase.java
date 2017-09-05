@@ -81,7 +81,7 @@ public class GuiStructureSelectionBase extends GuiContainerBase<ContainerStructu
         setSelectionName((currentSelection == null ? "guistrings.none" : currentSelection.name));
 
         Collection<StructureTemplateClient> templatesC = getTemplatesForDisplay();
-        List<StructureTemplateClient> templates = new ArrayList<StructureTemplateClient>();
+        List<StructureTemplateClient> templates = new ArrayList<>();
         templates.addAll(templatesC);
         sorter.setFilterText(filterInput.getText());
         Collections.sort(templates, sorter);

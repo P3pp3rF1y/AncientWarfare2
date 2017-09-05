@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -23,7 +23,7 @@ package net.shadowmage.ancientwarfare.structure.api;
 import cpw.mods.fml.common.eventhandler.Cancelable;
 import cpw.mods.fml.common.eventhandler.Event;
 
-/**
+/*
  * Called when StructurePluginManager tries to load plugins, for each active mod
  * To be cancelled by mod wishing to have different block/entity support in structures, other than the default
  * StructurePluginModDefault

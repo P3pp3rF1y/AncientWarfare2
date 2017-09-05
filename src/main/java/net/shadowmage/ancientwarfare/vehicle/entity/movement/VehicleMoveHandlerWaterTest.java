@@ -19,12 +19,12 @@ public class VehicleMoveHandlerWaterTest extends VehicleInputHandler {
 //  if(inputStates[VehicleInputKey.REVERSE.ordinal()]){forward-=0.25d;}
 //  if(inputStates[VehicleInputKey.LEFT.ordinal()]){rotation+=1.f;}
 //  if(inputStates[VehicleInputKey.RIGHT.ordinal()]){rotation-=1.f;}  
-//  /**
+//  /*
 //   * first move the vehicle forward along its current move vector
 //   */
-//  Vec3 forwardAxis = vehicle.getLookVec();
-//  double mx = forwardAxis.xCoord * forward;
-//  double mz = forwardAxis.zCoord * forward;
+//  Vec3d forwardAxis = vehicle.getLookVec();
+//  double mx = forwardAxis.x * forward;
+//  double mz = forwardAxis.z * forward;
 //  double my = 0.d;
 //
 //  //check in-water depth, for brevity sake, only check the block(s) under the center of the entity and the obb corners (5 points)
@@ -33,10 +33,10 @@ public class VehicleMoveHandlerWaterTest extends VehicleInputHandler {
 //  int height = MathHelper.ceiling_double_int(vehicle.vehicleHeight);//height to check, in blocks
 //  float submerged = 0;
 //  
-//  int y = MathHelper.floor_double(vehicle.posY);  
+//  int y = MathHelper.floor(vehicle.posY);
 //
-//  int x = MathHelper.floor_double(vehicle.orientedBoundingBox.getCorner(0).xCoord);
-//  int z = MathHelper.floor_double(vehicle.orientedBoundingBox.getCorner(0).zCoord);
+//  int x = MathHelper.floor(vehicle.orientedBoundingBox.getCorner(0).x);
+//  int z = MathHelper.floor(vehicle.orientedBoundingBox.getCorner(0).z);
 //  for(int by = y; by<= y+height; by++)
 //    {
 //    if(vehicle.worldObj.getBlock(x, by, z).getMaterial()==Material.WATER)
@@ -45,8 +45,8 @@ public class VehicleMoveHandlerWaterTest extends VehicleInputHandler {
 //      }
 //    }
 //  
-//  x = MathHelper.floor_double(vehicle.orientedBoundingBox.getCorner(1).xCoord);
-//  z = MathHelper.floor_double(vehicle.orientedBoundingBox.getCorner(1).zCoord);
+//  x = MathHelper.floor(vehicle.orientedBoundingBox.getCorner(1).x);
+//  z = MathHelper.floor(vehicle.orientedBoundingBox.getCorner(1).z);
 //  for(int by = y; by<= y+height; by++)
 //    {
 //    if(vehicle.worldObj.getBlock(x, by, z).getMaterial()==Material.WATER)
@@ -55,8 +55,8 @@ public class VehicleMoveHandlerWaterTest extends VehicleInputHandler {
 //      }
 //    }
 //  
-//  x = MathHelper.floor_double(vehicle.orientedBoundingBox.getCorner(2).xCoord);
-//  z = MathHelper.floor_double(vehicle.orientedBoundingBox.getCorner(2).zCoord);
+//  x = MathHelper.floor(vehicle.orientedBoundingBox.getCorner(2).x);
+//  z = MathHelper.floor(vehicle.orientedBoundingBox.getCorner(2).z);
 //  for(int by = y; by<= y+height; by++)
 //    {
 //    if(vehicle.worldObj.getBlock(x, by, z).getMaterial()==Material.WATER)
@@ -65,8 +65,8 @@ public class VehicleMoveHandlerWaterTest extends VehicleInputHandler {
 //      }
 //    }
 //  
-//  x = MathHelper.floor_double(vehicle.orientedBoundingBox.getCorner(3).xCoord);
-//  z = MathHelper.floor_double(vehicle.orientedBoundingBox.getCorner(3).zCoord);
+//  x = MathHelper.floor(vehicle.orientedBoundingBox.getCorner(3).x);
+//  z = MathHelper.floor(vehicle.orientedBoundingBox.getCorner(3).z);
 //  for(int by = y; by<= y+height; by++)
 //    {
 //    if(vehicle.worldObj.getBlock(x, by, z).getMaterial()==Material.WATER)
@@ -75,8 +75,8 @@ public class VehicleMoveHandlerWaterTest extends VehicleInputHandler {
 //      }
 //    }
 //  
-//  x = MathHelper.floor_double(vehicle.posX);
-//  z = MathHelper.floor_double(vehicle.posZ);
+//  x = MathHelper.floor(vehicle.posX);
+//  z = MathHelper.floor(vehicle.posZ);
 //  for(int by = y; by<= y+height; by++)
 //    {
 //    if(vehicle.worldObj.getBlock(x, by, z).getMaterial()==Material.WATER)
@@ -109,7 +109,7 @@ public class VehicleMoveHandlerWaterTest extends VehicleInputHandler {
 //  AWLog.logDebug("my: "+my);   
 //  
 //  vehicle.moveEntity(mx, my, mz);
-//  /**
+//  /*
 //   * then rotate the vehicle towards its new orientation
 //   */
 //  if(rotation!=0)

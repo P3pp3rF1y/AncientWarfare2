@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -23,14 +23,7 @@ package net.shadowmage.ancientwarfare.structure.template.load;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntityBrewingStand;
-import net.minecraft.tileentity.TileEntityChest;
-import net.minecraft.tileentity.TileEntityCommandBlock;
-import net.minecraft.tileentity.TileEntityDispenser;
-import net.minecraft.tileentity.TileEntityDropper;
-import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.tileentity.TileEntityHopper;
-import net.minecraft.tileentity.TileEntitySkull;
+import net.minecraft.tileentity.*;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
@@ -38,24 +31,15 @@ import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidationType;
-import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockDoors;
-import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockInventory;
-import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockLogic;
-import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockSign;
-import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleModBlocks;
-import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleVanillaBlocks;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.*;
 import net.shadowmage.ancientwarfare.structure.template.save.TemplateExporter;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 
 public class TemplateFormatConverter {
-    /**
+    /*
      * cached TE instances to use for writing out of basic NBT data into tag to use for
      * converted rule
      */
@@ -68,7 +52,7 @@ public class TemplateFormatConverter {
     private static TileEntityBrewingStand teBrewingStand = new TileEntityBrewingStand();
     private static TileEntityChest teChest = new TileEntityChest();
 
-    private static HashSet<Block> specialHandledBlocks = new HashSet<Block>();//just a temp cache to keep track of what blocks to not register with blanket block rule
+    private static HashSet<Block> specialHandledBlocks = new HashSet<>();//just a temp cache to keep track of what blocks to not register with blanket block rule
 
     static {
         specialHandledBlocks.add(Blocks.STANDING_SIGN);
@@ -91,11 +75,11 @@ public class TemplateFormatConverter {
 
     public StructureTemplate convertOldTemplate(String fileName, List<String> templateLines) {
         lineNumber = -1;
-        /**
+        /*
          * parsed-out data, to be used to construct new template
          */
-        List<TemplateRule> parsedRules = new ArrayList<TemplateRule>();
-        List<TemplateRuleEntity> parsedEntityRules = new ArrayList<TemplateRuleEntity>();
+        List<TemplateRule> parsedRules = new ArrayList<>();
+        List<TemplateRuleEntity> parsedEntityRules = new ArrayList<>();
         short[] templateData = null;
         int xSize = 0, ySize = 0, zSize = 0;
         int xOffset = 0, yOffset = 0, zOffset = 0;
@@ -105,7 +89,7 @@ public class TemplateFormatConverter {
             name = name.substring(0, name.length() - 4);
         }
         Iterator<String> it = templateLines.iterator();
-        List<String> groupedLines = new ArrayList<String>();
+        List<String> groupedLines = new ArrayList<>();
         String line, lower;
         int parsedLayers = 0;
         int readSizeParams = 0;

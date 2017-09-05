@@ -75,11 +75,12 @@ public class TileOwned extends TileEntity implements IOwnable {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         checkOwnerName();
         tag.setString(tagKey, ownerName);
         if(owner!=null)
             tag.setString("ownerId", owner.toString());
+        return tag;
     }
 }

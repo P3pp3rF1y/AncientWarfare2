@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -29,22 +29,8 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 import javax.annotation.Nullable;
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
-import java.util.Scanner;
-import java.util.Set;
+import java.io.*;
+import java.util.*;
 
 public class StringTools {
 
@@ -119,7 +105,7 @@ public class StringTools {
         return line;
     }
 
-    /**
+    /*
      * splits test at regex, returns parsed int array from csv value of remaining string
      * returns size 1 int array if no valid split is found
      */
@@ -157,7 +143,7 @@ public class StringTools {
         return array;
     }
 
-    /**
+    /*
      * splits test at regex, returns parsed byte array from csv value of remaining string
      * returns size 1 byte array if no valid split is found
      */
@@ -208,14 +194,14 @@ public class StringTools {
         return csv.split(",", -1);
     }
 
-    /**
+    /*
      * returns beginning of string up to len
      */
     public static String subStringBeginning(String in, int len) {
         return len > in.length() ? in : in.substring(0, len);
     }
 
-    /**
+    /*
      * returns the value after a split at regex, or false
      */
     public static boolean safeParseBoolean(String regex, String test) {
@@ -223,7 +209,7 @@ public class StringTools {
         return split.length > 1 && Boolean.parseBoolean(split[1].trim());
     }
 
-    /**
+    /*
      * returns the value after a split at regex, or false
      */
     public static boolean safeParseBoolean(String test) {
@@ -251,7 +237,7 @@ public class StringTools {
         }
     }
 
-    /**
+    /*
      * returns a value after a split at regex, or an empty string
      */
     public static String safeParseString(String regex, String test) {
@@ -262,7 +248,7 @@ public class StringTools {
         return "";
     }
 
-    /**
+    /*
      * @param name of the item to search in the registries
      * @return the item instance, or null if none is found
      */
@@ -279,7 +265,7 @@ public class StringTools {
         return null;
     }
 
-    /**
+    /*
      * @param name of the item to search in the registries
      * @param meta to parse for item damage
      * @param qty  to parse for item stack size
@@ -358,7 +344,7 @@ public class StringTools {
         return 0;
     }
 
-    /**
+    /*
      * returns a value after a split at regex, or zero (0)
      */
     public static int safeParseInt(String regex, String test) {
@@ -369,7 +355,7 @@ public class StringTools {
         return 0;
     }
 
-    /**
+    /*
      * returns a value after a split at regex, or zero (0)
      */
     public static byte safeParseByte(String regex, String test) {
@@ -380,7 +366,7 @@ public class StringTools {
         return 0;
     }
 
-    /**
+    /*
      * returns a value after a split at regex, or zero (0)
      */
     public static short safeParseShort(String regex, String test) {
@@ -400,7 +386,7 @@ public class StringTools {
         return true;
     }
 
-    /**
+    /*
      * write a list of lines to a byte[] as UTF-8 encoded chars
      */
     public static byte[] getByteArray(List<String> lines) throws UnsupportedEncodingException, IOException {
@@ -412,12 +398,12 @@ public class StringTools {
         return baos.toByteArray();
     }
 
-    /**
+    /*
      * read a list of lines from a byte[] as UTF-8 encoded chars
      */
     public static List<String> getLines(byte[] bytes) {
         ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-        List<String> lines = new ArrayList<String>();
+        List<String> lines = new ArrayList<>();
         Scanner scan = new Scanner(bais, "UTF-8");
         while (scan.hasNext()) {
             lines.add(scan.nextLine());
@@ -426,7 +412,7 @@ public class StringTools {
         return lines;
     }
 
-    /**
+    /*
      * Return a list of strings for the input fileName -- used to parse configuration data
      * from in-jar resource files.
      *
@@ -441,7 +427,7 @@ public class StringTools {
             } catch (FileNotFoundException e) {} // shouldn't happen
         else
             is = AncientWarfareCore.class.getResourceAsStream(path);
-        ArrayList<String> lines = new ArrayList<String>();
+        ArrayList<String> lines = new ArrayList<>();
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         String line;
         try {

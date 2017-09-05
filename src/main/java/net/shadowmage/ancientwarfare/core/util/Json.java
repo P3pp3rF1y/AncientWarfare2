@@ -9,7 +9,7 @@ import java.util.*;
 
 public class Json {
 
-    /**
+    /*
      * Return a tag-type-id string for the given NBT base tag, for use in JsonTagReader and JsonTagWriter methods
      */
     public static String getTagType(NBTBase tag) {
@@ -41,14 +41,14 @@ public class Json {
         return null;
     }
 
-    /**
+    /*
      * Return a string representing the input JsonObject.  This string should be suitable for reading back through the parseJson method (and/or most other JSON parsers)
      */
     public static String getJsonData(JsonObject json) {
         return "JSON:{" + json.getJsonString() + "}";
     }
 
-    /**
+    /*
      * Parse a single-line string representing a json formatted object prefixed with JSON: and wrapped in brackets {}<br>
      * Returns a JsonObject representing the contents of the input string
      */
@@ -74,7 +74,7 @@ public class Json {
         return null;
     }
 
-    /**
+    /*
      * Internal helper for parsing of Json raw data, basically  to allow use of instance variables from a static method.
      *
      * @author Shadowmage
@@ -154,7 +154,7 @@ public class Json {
             return readValue();
         }
 
-        /**
+        /*
          * rawChar should == '{' at the start of this call
          */
         protected JsonObject readObject() throws IOException {
@@ -195,7 +195,7 @@ public class Json {
             return object;
         }
 
-        /**
+        /*
          * raw char should == '[' at the start of this call
          */
         protected JsonArray readArray() throws IOException {
@@ -226,7 +226,7 @@ public class Json {
             return array;
         }
 
-        /**
+        /*
          * raw char should == '"' at the start of this call
          */
         protected JsonValue readValue() throws IOException {
@@ -275,7 +275,7 @@ public class Json {
 
     }
 
-    /**
+    /*
      * Abstract Json base class for all json data objects.  Should not be extended or reused outside existing uses (JsonObject, JsonArray, JsonValue)
      *
      * @author Shadowmage
@@ -284,14 +284,14 @@ public class Json {
         protected abstract String getJsonString();
     }
 
-    /**
+    /*
      * Denotes a complex Json Object with named fields.  Fields may be retrieved by type or as abstract objects.  Essentially a string-value map of names to JsonAbstract objects.
      *
      * @author Shadowmage
      */
     public static final class JsonObject extends JsonAbstract {
 
-        private HashMap<String, JsonAbstract> fields = new HashMap<String, JsonAbstract>();
+        private HashMap<String, JsonAbstract> fields = new HashMap<>();
 
         public JsonArray getArray(String name) {
             JsonAbstract a = fields.get(name);
@@ -348,7 +348,7 @@ public class Json {
         }
     }
 
-    /**
+    /*
      * Denotes an array of JsonAbstract objects, essentially an unchecked list.  Ordering should be consistent.  No remove operations are given as this is a data read/write format, not storage.<br>
      * These objects may be JsonObject, JsonArray, or JsonValue types, no consistency checking is enforced by the class
      *
@@ -356,7 +356,7 @@ public class Json {
      */
     public static final class JsonArray extends JsonAbstract {
 
-        private List<JsonAbstract> values = new ArrayList<JsonAbstract>();
+        private List<JsonAbstract> values = new ArrayList<>();
 
         public void add(JsonAbstract value) {
             values.add(value);
@@ -402,7 +402,7 @@ public class Json {
 
     }
 
-    /**
+    /*
      * Denotes a single primitive value (string, boolean, byte, short, int, long, float, double)<br>
      *
      * @author Shadowmage

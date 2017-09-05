@@ -21,7 +21,7 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
     boolean finished;
     private boolean hasDoneInit = false;
 
-    /**
+    /*
      * Current position within work bounds.
      * Incremented when work is processed.
      */
@@ -112,20 +112,20 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
         if (finished) {
             return false;
         }
-        /**
+        /*
          * while the current position is invalid, increment to a valid one. generally the incremental scan
          * should have take care of this prior to processWork being called, but just in case...
          */
         while (!canHarvest(current)) {
             if (!incrementPosition()) {
-                /**
+                /*
                  * if no valid position was found, set finished, exit
                  */
                 finished = true;
                 return false;
             }
         }
-        /**
+        /*
          * if made it this far, a valid position was found, break it and add blocks to inventory
          */
         return harvestBlock(current, RelativeSide.TOP);

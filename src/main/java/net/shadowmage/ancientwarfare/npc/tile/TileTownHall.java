@@ -32,11 +32,8 @@ import net.shadowmage.ancientwarfare.npc.container.ContainerTownHall;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import javax.annotation.Nonnull;
+import java.util.*;
 
 public class TileTownHall extends TileOwned implements IInventory, IInteractableTile {
 
@@ -58,11 +55,11 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
     private int ticketRetry = 0;
     private final int ticketRetryMax = 20 * 60 * 10; // 10 minutes (something long, player can always try again by re-placing)
 
-    private final List<NpcDeathEntry> deathNotices = new ArrayList<TileTownHall.NpcDeathEntry>();
+    private final List<NpcDeathEntry> deathNotices = new ArrayList<>();
 
     private final InventoryBasic inventory = new InventoryBasic(27);
 
-    private final List<ContainerTownHall> viewers = new ArrayList<ContainerTownHall>();
+    private final List<ContainerTownHall> viewers = new ArrayList<>();
     
     private ForgeChunkManager.Ticket ticket;
 
@@ -87,7 +84,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
                         neglectedChecksSoFar = 0;
                         String notificationTitle = "";
                         TextComponentTranslation notificationMsg = null;
-                        List<TextComponentTranslation> notificationTooltip = new ArrayList<TextComponentTranslation>();
+                        List<TextComponentTranslation> notificationTooltip = new ArrayList<>();
                         
                         if (isNeglected && isActive) {
                             // neglected flag already set, abandon the town hall
@@ -96,7 +93,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
                             notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.townhall_abandoned.tooltip.1"));
                             notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.townhall_abandoned.tooltip.2"));
                             notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.townhall_abandoned.tooltip.3"));
-                            notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.chunk_name_and_position", name, xCoord>>4 , zCoord>>4));
+                            notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.chunk_name_and_position", name, x>>4 , z>>4));
                             notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.click_to_remove"));
                             
                             isActive = false;
@@ -113,7 +110,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
                                 notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.townhall_neglected.tooltip.1.alt"));
                             notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.townhall_neglected.tooltip.2", AWNPCStatics.townActiveNpcSearchLimit));
                             notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.townhall_neglected.tooltip.3"));
-                            notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.chunk_name_and_position", name, xCoord>>4 , zCoord>>4));
+                            notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.chunk_name_and_position", name, x>>4 , z>>4));
                             notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.click_to_remove"));
                             
                             isNeglected = true;
@@ -166,16 +163,16 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
             // show a "claim secured" type message to the current owner, regardless if neglected/abandoned
             String notificationTitle = "ftbu_aw2.notification.townhall_secured";
             TextComponentTranslation notificationMsg = new TextComponentTranslation("ftbu_aw2.notification.townhall_secured.msg");
-            List<TextComponentTranslation> notificationTooltip = new ArrayList<TextComponentTranslation>();
-            notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.chunk_name_and_position", name, xCoord>>4 , zCoord>>4));
+            List<TextComponentTranslation> notificationTooltip = new ArrayList<>();
+            notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.chunk_name_and_position", name, x>>4 , z>>4));
             notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.click_to_remove"));
             ModAccessors.FTBU.notifyPlayer(EnumChatFormatting.GREEN, getOwnerName(), notificationTitle, notificationMsg, notificationTooltip);
         } else {
             // new owner. Notify both players of the capture
             String notificationTitle = "ftbu_aw2.notification.townhall_captured";
             TextComponentTranslation notificationMsg = new TextComponentTranslation("ftbu_aw2.notification.townhall_captured.msg.lost", getOwnerName());
-            List<TextComponentTranslation> notificationTooltip = new ArrayList<TextComponentTranslation>();
-            notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.chunk_name_and_position", name, xCoord>>4 , zCoord>>4));
+            List<TextComponentTranslation> notificationTooltip = new ArrayList<>();
+            notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.chunk_name_and_position", name, x>>4 , z>>4));
             notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.click_to_remove"));
             
             ModAccessors.FTBU.notifyPlayer(EnumChatFormatting.RED, oldOwner, notificationTitle, notificationMsg, notificationTooltip);
@@ -194,7 +191,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
         LMPlayerServer lmPlayerServer = LMWorldServer.inst.getPlayer(getOwnerName());
         if (lmPlayerServer != null) {
             // we can only do this if the player is actually online 
-            Chunk thisChunk = world.getChunkFromBlockCoords(this.xCoord, this.zCoord);
+            Chunk thisChunk = world.getChunkFromBlockCoords(this.x, this.z);
             for (int chunkX = thisChunk.xPosition - AWNPCStatics.townChunkClaimRadius; chunkX <= thisChunk.xPosition + AWNPCStatics.townChunkClaimRadius; chunkX++) {
                 for (int chunkZ = thisChunk.zPosition - AWNPCStatics.townChunkClaimRadius; chunkZ <= thisChunk.zPosition + AWNPCStatics.townChunkClaimRadius; chunkZ++) {
                     lmPlayerServer.claimChunk(world.provider.getDimension(), chunkX, chunkZ);
@@ -214,23 +211,23 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
             ticket = ForgeChunkManager.requestTicket(AncientWarfareNPC.instance, world, Type.NORMAL);
             if (ticket == null) {
                 // no tickets available
-                AncientWarfareCore.log.error("Town Hall at " + xCoord + "x" + yCoord + "x" + zCoord + " has requested a chunk load ticket but Forge rejected it - probably because of a Forge config limit. Will try again in " + (ticketRetryMax / 60 / 20) + " minutes.");
+                AncientWarfareCore.log.error("Town Hall at " + x + "x" + y + "x" + z + " has requested a chunk load ticket but Forge rejected it - probably because of a Forge config limit. Will try again in " + (ticketRetryMax / 60 / 20) + " minutes.");
                 return;
             }
         }
 
-        ticket.getModData().setInteger("blockX", xCoord);
-        ticket.getModData().setInteger("blockY", yCoord);
-        ticket.getModData().setInteger("blockZ", zCoord);
+        ticket.getModData().setInteger("blockX", x);
+        ticket.getModData().setInteger("blockY", y);
+        ticket.getModData().setInteger("blockZ", z);
        
-        for (int chunkX = (xCoord>>4) - AWNPCStatics.townChunkLoadRadius; chunkX <= (xCoord>>4) + AWNPCStatics.townChunkLoadRadius; chunkX++)
-            for (int chunkZ = (zCoord>>4) - AWNPCStatics.townChunkLoadRadius; chunkZ <= (zCoord>>4) + AWNPCStatics.townChunkLoadRadius; chunkZ++)
+        for (int chunkX = (x>>4) - AWNPCStatics.townChunkLoadRadius; chunkX <= (x>>4) + AWNPCStatics.townChunkLoadRadius; chunkX++)
+            for (int chunkZ = (z>>4) - AWNPCStatics.townChunkLoadRadius; chunkZ <= (z>>4) + AWNPCStatics.townChunkLoadRadius; chunkZ++)
                 ForgeChunkManager.forceChunk(ticket, new ChunkPos(chunkX, chunkZ));
     }
     
     public void unloadChunks() {
-        for (int chunkX = (xCoord>>4) - AWNPCStatics.townChunkLoadRadius; chunkX <= (xCoord>>4) + AWNPCStatics.townChunkLoadRadius; chunkX++)
-            for (int chunkZ = (zCoord>>4) - AWNPCStatics.townChunkLoadRadius; chunkZ <= (zCoord>>4) + AWNPCStatics.townChunkLoadRadius; chunkZ++)
+        for (int chunkX = (x>>4) - AWNPCStatics.townChunkLoadRadius; chunkX <= (x>>4) + AWNPCStatics.townChunkLoadRadius; chunkX++)
+            for (int chunkZ = (z>>4) - AWNPCStatics.townChunkLoadRadius; chunkZ <= (z>>4) + AWNPCStatics.townChunkLoadRadius; chunkZ++)
                 ForgeChunkManager.unforceChunk(ticket, new ChunkPos(chunkX, chunkZ));
     }
     
@@ -253,7 +250,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
     }
 
     private void broadcast() {
-        AxisAlignedBB bb = new AxisAlignedBB(xCoord - broadcastRange, yCoord - broadcastRange / 2, zCoord - broadcastRange, xCoord + broadcastRange + 1, yCoord + broadcastRange / 2 + 1, zCoord + broadcastRange + 1);
+        AxisAlignedBB bb = new AxisAlignedBB(x - broadcastRange, y - broadcastRange / 2, z - broadcastRange, x + broadcastRange + 1, y + broadcastRange / 2 + 1, z + broadcastRange + 1);
         List<NpcPlayerOwned> entities = world.getEntitiesWithinAABB(NpcPlayerOwned.class, bb);
         if (entities.size() > 0) {
             BlockPos pos = new BlockPos(pos);
@@ -265,12 +262,12 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
         }
     }
     
-    /**
+    /*
      * 
      * @return 0 if no valid entity in range. 1 if within x/z but outside y, 2 if within x/y/z
      */
     private int isNpcOrPlayerNearby(boolean keepOwner) {
-        Chunk thisChunk = this.world.getChunkFromBlockCoords(xCoord, zCoord);
+        Chunk thisChunk = this.world.getChunkFromBlockCoords(x, z);
         
         int minX = thisChunk.xPosition * 16 - AWNPCStatics.townChunkLoadRadius * 16;
         int minY = 0;
@@ -283,7 +280,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
         List<EntityLivingBase> nearbyEntities = world.getEntitiesWithinAABB(EntityLivingBase.class, bb);
         
         // only used if keepOwner is false
-        Map<OwnerInfo, Integer> ownerCounts = new HashMap<OwnerInfo, Integer>();
+        Map<OwnerInfo, Integer> ownerCounts = new HashMap<>();
         
         int retVal = 0;
         
@@ -294,20 +291,20 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
             if (nearbyEntity instanceof EntityPlayer) {
                 if (keepOwner) {
                     if (ModAccessors.FTBU.areFriends(((EntityPlayer)nearbyEntity).getName(), getOwnerName())) {
-                        if (Math.abs(yCoord - nearbyEntity.posY) < AWNPCStatics.townActiveNpcSearchHeight)
+                        if (Math.abs(y - nearbyEntity.posY) < AWNPCStatics.townActiveNpcSearchHeight)
                             return 2;
                         else
                             retVal = 1;
                     }
                 } else {
-                    if (Math.abs(yCoord - nearbyEntity.posY) < AWNPCStatics.townActiveNpcSearchHeight)
+                    if (Math.abs(y - nearbyEntity.posY) < AWNPCStatics.townActiveNpcSearchHeight)
                         ownerCounts.put(new OwnerInfo(((EntityPlayer)nearbyEntity).getName(), ((EntityPlayer)nearbyEntity).getUniqueID()), 1);
                 }
             } else if (nearbyEntity instanceof NpcPlayerOwned) {
                 if (keepOwner) {
                     if (((NpcPlayerOwned)nearbyEntity).hasCommandPermissions(getOwnerName())) {
                         if (((NpcPlayerOwned)nearbyEntity).getFoodRemaining() > 0) {
-                            if (Math.abs(yCoord - nearbyEntity.posY) < AWNPCStatics.townActiveNpcSearchHeight)
+                            if (Math.abs(y - nearbyEntity.posY) < AWNPCStatics.townActiveNpcSearchHeight)
                                 return 2;
                             else
                                 retVal = 1;
@@ -323,7 +320,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
                         }
                         if (((NpcPlayerOwned)nearbyEntity).hasCommandPermissions(owner.getKey().ownerName))
                             if (((NpcPlayerOwned)nearbyEntity).getFoodRemaining() > 0) {
-                                if (Math.abs(yCoord - nearbyEntity.posY) < AWNPCStatics.townActiveNpcSearchHeight)
+                                if (Math.abs(y - nearbyEntity.posY) < AWNPCStatics.townActiveNpcSearchHeight)
                                     // this previously-found player can command this npc, give them a point
                                     owner.setValue(owner.getValue() + 1);
                             }
@@ -487,6 +484,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
     }
 
     public static class NpcDeathEntry {
+        @Nonnull
         public ItemStack stackToSpawn;
         public String npcType;
         public String npcName;
@@ -506,7 +504,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
             this.npcName = npc.getCustomNameTag();
             this.deathCause = source.damageType;
             this.canRes = canRes;
-            this.pos = new int[]{MathHelper.floor_double(npc.posX), MathHelper.floor_double(npc.posY), MathHelper.floor_double(npc.posZ)};
+            this.pos = new int[]{MathHelper.floor(npc.posX), MathHelper.floor(npc.posY), MathHelper.floor(npc.posZ)};
         }
 
         public final void readFromNBT(NBTTagCompound tag) {

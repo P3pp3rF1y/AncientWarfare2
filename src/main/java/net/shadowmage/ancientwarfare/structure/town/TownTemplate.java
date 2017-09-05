@@ -5,21 +5,16 @@ import net.minecraft.init.Blocks;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public final class TownTemplate {
     private String townTypeName;//
 
     private boolean biomeWhiteList;//
-    private List<String> biomeList = new ArrayList<String>();//
+    private List<String> biomeList = new ArrayList<>();//
 
     private boolean dimensionWhiteList;//
-    private List<Integer> dimensionList = new ArrayList<Integer>();//
+    private List<Integer> dimensionList = new ArrayList<>();//
 
     private int minSize = 3;//size in chunks//
     private int maxSize = 9;//size in chunks//
@@ -28,7 +23,7 @@ public final class TownTemplate {
 
     private int clusterValue;//value inserted into template gen map to discourage nearby random structure spawns
 
-    /**
+    /*
      * the nominal size of a town-block, in blocks
      */
     private int townBlockSize;//
@@ -48,30 +43,30 @@ public final class TownTemplate {
 
     private float randomVillagersPerChunk;
 
-    private HashMap<Integer, TownWallEntry> wallsByID = new HashMap<Integer, TownWallEntry>();
-    private HashMap<Integer, int[]> wallPatterns = new HashMap<Integer, int[]>();
+    private HashMap<Integer, TownWallEntry> wallsByID = new HashMap<>();
+    private HashMap<Integer, int[]> wallPatterns = new HashMap<>();
 
     private int cornersTotalWeight;
-    private List<TownWallEntry> cornerWalls = new ArrayList<TownWallEntry>();
+    private List<TownWallEntry> cornerWalls = new ArrayList<>();
 
     private int gatesCenterTotalWeight;
-    private List<TownWallEntry> gateCenterWalls = new ArrayList<TownWallEntry>();
+    private List<TownWallEntry> gateCenterWalls = new ArrayList<>();
 
     private int gatesLeftTotalWeight;
-    private List<TownWallEntry> gateLeftWalls = new ArrayList<TownWallEntry>();
+    private List<TownWallEntry> gateLeftWalls = new ArrayList<>();
 
     private int gatesRightTotalWeight;
-    private List<TownWallEntry> gateRightWalls = new ArrayList<TownWallEntry>();
+    private List<TownWallEntry> gateRightWalls = new ArrayList<>();
 
     private int wallTotalWeights;
-    private List<TownWallEntry> walls = new ArrayList<TownWallEntry>();
+    private List<TownWallEntry> walls = new ArrayList<>();
 
     private TownStructureEntry lamp;//
-    private List<TownStructureEntry> uniqueStructureEntries = new ArrayList<TownStructureEntry>();
-    private List<TownStructureEntry> mainStructureEntries = new ArrayList<TownStructureEntry>();
-    private List<TownStructureEntry> houseStructureEntries = new ArrayList<TownStructureEntry>();
-    private List<TownStructureEntry> cosmeticStructureEntries = new ArrayList<TownStructureEntry>();
-    private List<TownStructureEntry> exteriorStructureEntries = new ArrayList<TownStructureEntry>();
+    private List<TownStructureEntry> uniqueStructureEntries = new ArrayList<>();
+    private List<TownStructureEntry> mainStructureEntries = new ArrayList<>();
+    private List<TownStructureEntry> houseStructureEntries = new ArrayList<>();
+    private List<TownStructureEntry> cosmeticStructureEntries = new ArrayList<>();
+    private List<TownStructureEntry> exteriorStructureEntries = new ArrayList<>();
 
     public TownTemplate() {
     }

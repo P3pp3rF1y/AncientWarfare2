@@ -1,10 +1,10 @@
 package net.shadowmage.ancientwarfare.core.gamedata;
 
-import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
-import cpw.mods.fml.common.gameevent.TickEvent.Phase;
-import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 
 public final class Timekeeper {
@@ -20,7 +20,7 @@ public final class Timekeeper {
     public Timekeeper() {}
 
     @SubscribeEvent
-    public void serverTick(WorldTickEvent event) {
+    public void serverTick(TickEvent.WorldTickEvent event) {
         if (event.phase == Phase.END) {
             // for SSP and SMP servers 
             tickTimekeeper(event.world.getWorldTime());
@@ -31,8 +31,8 @@ public final class Timekeeper {
     public void clientTick(ClientTickEvent event) {
         if (!Minecraft.getMinecraft().isSingleplayer()) {
             // for SMP clients only
-            if (Minecraft.getMinecraft().theWorld != null) {
-                tickTimekeeper(Minecraft.getMinecraft().theWorld.getWorldTime());
+            if (Minecraft.getMinecraft().world != null) {
+                tickTimekeeper(Minecraft.getMinecraft().world.getWorldTime());
             }
         }
     }
@@ -49,7 +49,7 @@ public final class Timekeeper {
     }
     
     
-    /**
+    /*
      * Get the current time of day in ticks (roughly, has an update rate
      * specified by timekeeper refreshrate config - default 100 ticks) 
      */

@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -20,7 +20,7 @@
  */
 package net.shadowmage.ancientwarfare.core.model;
 
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import org.lwjgl.opengl.GL11;
@@ -36,7 +36,7 @@ public class PrimitiveTriangle extends Primitive {
     float normalX, normalY, normalZ;//normal for lighting...should be calc'd when setBounds is called
     float cx, cy;//triangle center point -- used for rotation of uv vertices around triangle center
 
-    /**
+    /*
      * @param parent
      */
     public PrimitiveTriangle(ModelPiece parent) {
@@ -158,7 +158,7 @@ public class PrimitiveTriangle extends Primitive {
     }
 
     public void rotateTriangleUV(float degrees) {
-        /**
+        /*
          * grab triangle center(calc'd when UV is set)
          * find angle and length for each corner
          * rotate by degrees, recompute new angle, set new corner point at new angle * length
@@ -166,7 +166,7 @@ public class PrimitiveTriangle extends Primitive {
         float u1, v1, u2, v2, u3, v3;
         float dx = u1() - cx();
         float dy = v1() - cy();
-        float length = MathHelper.sqrt_float(dx * dx + dy * dy);
+        float length = MathHelper.sqrt(dx * dx + dy * dy);
         double radianAngle = Math.atan2(dx, dy);
         radianAngle += degrees * Trig.TORADIANS;
         u1 = (float) Math.sin(radianAngle) * length;
@@ -174,7 +174,7 @@ public class PrimitiveTriangle extends Primitive {
 
         dx = u2() - cx();
         dy = v2() - cy();
-        length = MathHelper.sqrt_float(dx * dx + dy * dy);
+        length = MathHelper.sqrt(dx * dx + dy * dy);
         radianAngle = Math.atan2(dx, dy);
         radianAngle += degrees * Trig.TORADIANS;
         u2 = (float) Math.sin(radianAngle) * length;
@@ -182,7 +182,7 @@ public class PrimitiveTriangle extends Primitive {
 
         dx = u3() - cx();
         dy = v3() - cy();
-        length = MathHelper.sqrt_float(dx * dx + dy * dy);
+        length = MathHelper.sqrt(dx * dx + dy * dy);
         radianAngle = Math.atan2(dx, dy);
         radianAngle += degrees * Trig.TORADIANS;
         u3 = (float) Math.sin(radianAngle) * length;
@@ -275,7 +275,7 @@ public class PrimitiveTriangle extends Primitive {
         cy = (v1 + v2 + v3) / 3;
     }
 
-    /**
+    /*
      * reclac the normal for this triangle.  should be called whenever the vertex coordinates change
      */
     private void calcNormal() {
@@ -291,13 +291,13 @@ public class PrimitiveTriangle extends Primitive {
         normalY = (vz * wx) - (vx * wz);
         normalZ = (vx * wy) - (vy * wx);
 
-        float norm = MathHelper.sqrt_float(normalX * normalX + normalY * normalY + normalZ * normalZ);
+        float norm = MathHelper.sqrt(normalX * normalX + normalY * normalY + normalZ * normalZ);
         normalX /= norm;
         normalY /= norm;
         normalZ /= norm;
     }
 
-    /**
+    /*
      * recalc the UV for this triangle based on side-lengths,
      * with u1/v1 being upper-left on the texture,
      * u2/v2 being right,
@@ -362,7 +362,7 @@ public class PrimitiveTriangle extends Primitive {
             y3 = 0;
         }
 
-        List<Point2i> points = new ArrayList<Point2i>();
+        List<Point2i> points = new ArrayList<>();
 
 
         plotLine3((int) x1, (int) y1, (int) x2, (int) y2, points);
@@ -431,7 +431,7 @@ public class PrimitiveTriangle extends Primitive {
         }
     }
 
-///**
+///*
 // * should only be called when loading from disk?
 // * @param cx
 // * @param cy

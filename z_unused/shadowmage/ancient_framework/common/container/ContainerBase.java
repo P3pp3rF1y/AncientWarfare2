@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -36,7 +36,7 @@ import shadowmage.ancient_framework.common.utils.InventoryTools;
 
 
 
-/**
+/*
  * client-server synching container
  * @author Shadowmage
  *
@@ -44,7 +44,7 @@ import shadowmage.ancient_framework.common.utils.InventoryTools;
 public abstract class ContainerBase extends Container implements IHandlePacketData
 {
 
-/**
+/*
  * the player who opened this container
  */
 public final EntityPlayer player;
@@ -165,7 +165,7 @@ public void sendDataToServer(NBTTagCompound tag)
   AWFramework.proxy.sendPacketToServer(pkt);
   }
 
-/**
+/*
  * send data from server to populate client-side container
  * @param tag
  */

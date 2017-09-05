@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -31,7 +31,7 @@ public abstract class AWItemClickable extends AWItemBase
 
 public boolean hasLeftClick = false;
 
-/**
+/*
  * @param itemID
  * @param hasSubTypes
  */

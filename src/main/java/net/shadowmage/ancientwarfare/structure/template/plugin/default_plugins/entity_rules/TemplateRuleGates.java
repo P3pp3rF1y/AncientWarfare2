@@ -1,4 +1,4 @@
-/**
+/*
  Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  This software is distributed under the terms of the GNU General Public License.
  Please see COPYING for precise license information.
@@ -42,7 +42,7 @@ public class TemplateRuleGates extends TemplateRuleEntity {
     BlockPos pos1 = new BlockPos();
     BlockPos pos2 = new BlockPos();
 
-    /**
+    /*
      * scanner-constructor.  called when scanning an entity.
      *
      * @param world  the world containing the scanned area

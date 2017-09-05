@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -43,7 +43,7 @@ public boolean handleMouseMoved(int x, int y, int num);
 public boolean handleMouseWheel(int x, int y, int wheel);
 public boolean handleKeyInput(char ch, int keyNum);
 
-/**
+/*
  * GUIs which have dynamically placed elements outside of the gui space will need to call this every screen init
  * GUIs which have all elements inside of the GUI may set this at time of construction and need not update every tick
  * @param newX

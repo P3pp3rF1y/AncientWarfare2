@@ -24,16 +24,16 @@ import java.util.List;
 public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
 
     public int guiHeight;
-    /**
+    /*
      * synched stats
      */
-    public HashMap<RelativeSide, RelativeSide> sideMap = new HashMap<RelativeSide, RelativeSide>();
+    public HashMap<RelativeSide, RelativeSide> sideMap = new HashMap<>();
     public String targetName;
     public String mailboxName;
     public boolean autoExport;
     public boolean privateBox;
-    public List<String> publicBoxNames = new ArrayList<String>();
-    public List<String> privateBoxNames = new ArrayList<String>();
+    public List<String> publicBoxNames = new ArrayList<>();
+    public List<String> privateBoxNames = new ArrayList<>();
 
     public ContainerMailbox(EntityPlayer player, BlockPos pos) {
         super(player, pos);
@@ -231,7 +231,7 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
         super.detectAndSendChanges();
         synchAccessMap();
         NBTTagCompound tag = null;
-        /**
+        /*
          * DETECT CHANGES TO NAME AND TARGET AND SEND TO CLIENT
          */
         String name = tileEntity.getMailboxName();
@@ -258,7 +258,7 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
                 tag.setString("targetName", targetName);
             }
         }
-        /**
+        /*
          * detect changes to auto export and private box setting
          */
         if (autoExport != tileEntity.isAutoExport()) {
@@ -275,7 +275,7 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
             privateBox = tileEntity.isPrivateBox();
             tag.setBoolean("privateBox", privateBox);
         }
-        /**
+        /*
          * detect changes to public or private names list
          */
         MailboxData data = AWGameData.INSTANCE.getData(player.world, MailboxData.class);
@@ -303,7 +303,7 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
             }
             tag.setTag("privateBoxNames", nameList);
         }
-        /**
+        /*
          * if tag is not null (something has changed), send it to client
          */
         if (tag != null) {
@@ -311,7 +311,7 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
         }
     }
 
-    /**
+    /*
      * client-side input method
      */
     public void handleNameAdd(String name) {
@@ -320,7 +320,7 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
         sendDataToServer(tag);
     }
 
-    /**
+    /*
      * client-side input method
      */
     public void handleNameDelete(String name) {
@@ -329,7 +329,7 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
         sendDataToServer(tag);
     }
 
-    /**
+    /*
      * client-side input method
      */
     public void handleNameSelection(String name) {
@@ -343,7 +343,7 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
         sendDataToServer(tag);
     }
 
-    /**
+    /*
      * client-side input method
      */
     public void handleTargetSelection(String name) {
@@ -357,7 +357,7 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
         sendDataToServer(tag);
     }
 
-    /**
+    /*
      * client-side input method
      */
     public void handlePrivateBoxToggle(boolean newVal) {
@@ -388,7 +388,7 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
                 theSlot.onSlotChanged();
             }
             if (slotStack.getCount() == slotStackCopy.getCount()) {
-                return null;
+                return ItemStack.EMPTY;
             }
             theSlot.onTake(par1EntityPlayer, slotStack);
         }

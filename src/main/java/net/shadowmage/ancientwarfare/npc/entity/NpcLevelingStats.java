@@ -11,7 +11,7 @@ import java.util.HashMap;
 
 public class NpcLevelingStats {
 
-    private final HashMap<String, ExperienceEntry> experienceMap = new HashMap<String, ExperienceEntry>();
+    private final HashMap<String, ExperienceEntry> experienceMap = new HashMap<>();
     private int xp;//'generic' xp, always incremented for all xp-types
     private int level;
     private final NpcBase npc;

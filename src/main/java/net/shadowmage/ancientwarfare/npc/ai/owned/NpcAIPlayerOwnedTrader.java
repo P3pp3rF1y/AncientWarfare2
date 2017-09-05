@@ -10,7 +10,7 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.orders.TradeOrder;
 
-/**
+/*
  * replaces upkeep ai for player owned trader when an orders item is equipped.<br>
  * manages moving the trader through a trade route, stopping for specified time at each point;<br>
  * manages moving towards and withdrawing upkeep at specified point in trade route (or auto if no trade order present);<br>
@@ -20,32 +20,32 @@ import net.shadowmage.ancientwarfare.npc.orders.TradeOrder;
  */
 public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
 
-    /**
+    /*
      * state flags, to track what state the AI is currently in
      */
     private boolean shelter, upkeep, restock, deposit, waiting, at_shelter, at_upkeep, at_deposit, at_withdraw, at_waypoint;
 
-    /**
+    /*
      * used to track how long to wait when in 'waiting' state
      */
     private int delayCounter;
 
-    /**
+    /*
      * used to track waypoint index, to retrieve next waypoint and to retrieve upkeep status for current waypoint
      */
     private int waypointIndex;
 
-    /**
+    /*
      * the currently selected waypoint to move towards, should never be null if valid orders item is present
      */
     private BlockPos waypoint;
 
-    /**
+    /*
      * currently selected shelter position, used by shelter code, should be null when not in use
      */
     private BlockPos shelterPoint;
 
-    /**
+    /*
      * convenience access fields;
      * trade orders is set/updated when orders item is changed or when entity is loaded from NBT
      */

@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -78,7 +78,7 @@ public void parseRuleData(NBTTagCompound tag)
 @Override
 public void addResources(List<ItemStack> resources)
   {
-  /**
+  /*
    * TODO
    */
   }

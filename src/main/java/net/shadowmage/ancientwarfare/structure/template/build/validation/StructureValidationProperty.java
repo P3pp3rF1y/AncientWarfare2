@@ -152,7 +152,7 @@ public class StructureValidationProperty {
         if(dataType == DATA_TYPE_STRING_SET) {
             return (Set<String>) data;
         }
-        return new HashSet<String>();
+        return new HashSet<>();
     }
 
     public void readFromNBT(NBTTagCompound tag) {
@@ -182,7 +182,7 @@ public class StructureValidationProperty {
             }
             break;
             case DATA_TYPE_STRING_SET: {
-                Set<String> data = new HashSet<String>();
+                Set<String> data = new HashSet<>();
                 NBTTagList names = tag.getTagList(regName, Constants.NBT.TAG_STRING);
                 for (int i = 0; i < names.tagCount(); i++) {
                     data.add(names.getStringTagAt(i));
@@ -235,7 +235,7 @@ public class StructureValidationProperty {
         Object copy = data;
         if(copy != null){
             if(dataType == DATA_TYPE_STRING_SET) {
-                copy = new HashSet<String>(getDataStringSet());
+                copy = new HashSet<>(getDataStringSet());
             }else if(dataType == DATA_TYPE_INT_ARRAY){
                 int[] temp = getDataIntArray();
                 copy = new int[temp.length];

@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.StatCollector;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.elements.*;
@@ -21,8 +20,8 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
     private CompositeScrolled area;
     private Label typeLabel;
 
-    private final Set<Button> typeButtons = new HashSet<Button>();
-    private final HashMap<Button, StructureValidationType> buttonToValidationType = new HashMap<Button, StructureValidationType>();
+    private final Set<Button> typeButtons = new HashSet<>();
+    private final HashMap<Button, StructureValidationType> buttonToValidationType = new HashMap<>();
 
     public GuiStructureValidationSettings(GuiStructureScanner parent) {
         super(parent.getContainer());
@@ -108,7 +107,7 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
         this.refreshGui();
     }
 
-//private HashMap<GuiElement, String> elementToPropertyName = new HashMap<GuiElement, String>();
+//private HashMap<GuiElement, String> elementToPropertyName = new HashMap<>();
 
     @Override
     public void setupElements() {
