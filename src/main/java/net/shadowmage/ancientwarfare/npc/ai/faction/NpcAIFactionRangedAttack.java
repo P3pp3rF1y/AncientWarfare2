@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.ai.faction;
 
 import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.util.ChunkCoordinates;
 import net.shadowmage.ancientwarfare.npc.ai.AIHelper;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttack;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
@@ -31,8 +30,7 @@ public class NpcAIFactionRangedAttack extends NpcAIAttack<NpcBase> {
         double homeDist = npc.getDistanceSqFromHome();
         if (homeDist > MIN_RANGE && dist < 8 * 8) {
             npc.addAITask(TASK_MOVE);
-            ChunkCoordinates home = npc.getHomePosition();
-            this.moveToPosition(home.posX, home.posY, home.posZ, homeDist);
+            this.moveToPosition(npc.getHomePosition(), homeDist);
         } else {
             npc.removeAITask(TASK_MOVE);
             npc.getNavigator().clearPathEntity();

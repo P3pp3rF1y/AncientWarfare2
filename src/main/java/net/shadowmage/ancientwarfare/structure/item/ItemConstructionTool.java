@@ -26,7 +26,7 @@ public class ItemConstructionTool extends Item implements IItemKeyInterface, IBo
         this.setCreativeTab(AWStructuresItemLoader.structureTab);
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean wtf) {

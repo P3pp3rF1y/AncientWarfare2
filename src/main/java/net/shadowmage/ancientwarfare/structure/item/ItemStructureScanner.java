@@ -32,7 +32,7 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IBo
         this.setTextureName("ancientwarfare:structure/" + localizationKey);
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+
     @Override
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
         if (!par1ItemStack.isEmpty()) {

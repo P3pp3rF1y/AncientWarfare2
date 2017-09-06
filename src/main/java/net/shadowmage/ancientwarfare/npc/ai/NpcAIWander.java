@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
 import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.util.Vec3d;
+import net.minecraft.util.math.Vec3d;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public class NpcAIWander extends NpcAI<NpcBase> {
@@ -29,7 +29,7 @@ public class NpcAIWander extends NpcAI<NpcBase> {
     }
 
     @Override
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
         if (!npc.getIsAIEnabled() || npc.shouldBeAtHome()) {
             return false;
         }

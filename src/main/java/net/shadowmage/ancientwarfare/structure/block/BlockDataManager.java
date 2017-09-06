@@ -43,7 +43,7 @@ public class BlockDataManager {
     /*
      * must be called during pre-init to load block info for templates to use
      */
-    @SuppressWarnings("rawtypes")
+
     public void load() {
         loadBlockNamesAndIDs(StringTools.getResourceLines(AWCoreStatics.resourcePath + "block_name_id.csv"));
         loadBlockRotations(StringTools.getResourceLines(AWCoreStatics.resourcePath + "block_rotations.csv"));

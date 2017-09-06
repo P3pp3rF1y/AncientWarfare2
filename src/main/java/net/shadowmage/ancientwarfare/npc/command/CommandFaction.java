@@ -87,7 +87,7 @@ public class CommandFaction extends CommandBase {
         return false;
     }
 
-    @SuppressWarnings("rawtypes")
+
     @Override
     public List addTabCompletionOptions(ICommandSender var1, String[] var2) {
         if (var2.length == 1)//the command

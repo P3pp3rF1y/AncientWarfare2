@@ -27,7 +27,7 @@ import java.util.LinkedList;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import shadowmage.ancient_framework.common.config.AWLog;
@@ -83,7 +83,7 @@ private Random rng = new Random();
 @Override
 public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider)
   {
-  ChunkCoordinates cc = world.getSpawnPoint();
+  ChunkPos cc = world.getSpawnPoint();
   float distSq = cc.getDistanceSquared(chunkX*16, 70, chunkZ*16);
   if(distSq < (AWStructureStatics.spawnProtectionRange*16)*(AWStructureStatics.spawnProtectionRange*16))
     {

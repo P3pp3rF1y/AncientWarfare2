@@ -1,6 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.ChunkPos;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
@@ -27,7 +27,7 @@ public class NpcAIMoveHome extends NpcAI<NpcBase> {
         if (!npc.getIsAIEnabled() || !npc.hasHome()) {
             return false;
         }
-        ChunkCoordinates cc = npc.getHomePosition();
+        ChunkPos cc = npc.getHomePosition();
         float distSq = (float) npc.getDistanceSq(cc.posX + 0.5d, cc.posY, cc.posZ + 0.5d);
         return npc.shouldBeAtHome() || exceedsRange(distSq);
     }
@@ -69,7 +69,7 @@ public class NpcAIMoveHome extends NpcAI<NpcBase> {
                 return;
             }
         }
-        ChunkCoordinates cc = npc.getHomePosition();
+        ChunkPos cc = npc.getHomePosition();
         double dist = npc.getDistanceSq(cc.posX + 0.5d, cc.posY, cc.posZ + 0.5d);
         double leash = getLeashRange() * getLeashRange();
         if ((dist > leash) && (!goneHome) && (!npc.getSleeping())) {

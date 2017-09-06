@@ -1,6 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.template.build;
 
-@SuppressWarnings("serial")
+
 public class StructureBuildingException extends Exception {
 
     protected StructureBuildingException() {

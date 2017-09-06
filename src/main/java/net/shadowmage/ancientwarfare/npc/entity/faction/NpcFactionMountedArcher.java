@@ -10,9 +10,13 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.ChunkPos;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.npc.ai.*;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackNearest;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIDoor;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIHurt;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionArcherStayAtHome;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRangedAttack;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRideHorse;
@@ -31,7 +35,7 @@ public abstract class NpcFactionMountedArcher extends NpcFactionMounted implemen
                     return false;
                 }
                 if (hasHome()) {
-                    ChunkCoordinates home = getHomePosition();
+                    ChunkPos home = getHomePosition();
                     double dist = entity.getDistanceSq(home.posX + 0.5d, home.posY, home.posZ + 0.5d);
                     if (dist > 30 * 30) {
                         return false;

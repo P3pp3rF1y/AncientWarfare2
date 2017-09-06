@@ -17,7 +17,12 @@ import net.shadowmage.ancientwarfare.core.entity.WatchedData;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 public class SpawnerSettings {
 
@@ -120,7 +125,7 @@ public class SpawnerSettings {
         }
     }
 
-    @SuppressWarnings("unchecked")
+
     private void spawnEntities() {
         if (lightSensitive) {
             int light = world.getBlockLightValue(pos);

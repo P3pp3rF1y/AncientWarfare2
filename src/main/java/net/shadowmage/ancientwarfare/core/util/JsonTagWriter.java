@@ -1,13 +1,22 @@
 package net.shadowmage.ancientwarfare.core.util;
 
-import net.minecraft.nbt.*;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagByte;
+import net.minecraft.nbt.NBTTagByteArray;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagDouble;
+import net.minecraft.nbt.NBTTagFloat;
+import net.minecraft.nbt.NBTTagInt;
+import net.minecraft.nbt.NBTTagIntArray;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagLong;
+import net.minecraft.nbt.NBTTagShort;
+import net.minecraft.nbt.NBTTagString;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.Json.JsonAbstract;
 import net.shadowmage.ancientwarfare.core.util.Json.JsonArray;
 import net.shadowmage.ancientwarfare.core.util.Json.JsonObject;
 import net.shadowmage.ancientwarfare.core.util.Json.JsonValue;
-
-import java.util.Set;
 
 public class JsonTagWriter {
 
@@ -21,7 +30,7 @@ public class JsonTagWriter {
     private static JsonArray getJsonValueForListTag(NBTTagList tag) {
         JsonArray base = new JsonArray();
         JsonAbstract valueJson;
-        tag = (NBTTagList) tag.copy();
+        tag = tag.copy();
         while (tag.tagCount() > 0) {
             valueJson = getJsonFor(tag.removeTag(0));
             if (valueJson != null) {
@@ -31,11 +40,11 @@ public class JsonTagWriter {
         return base;
     }
 
-    @SuppressWarnings("unchecked")
+
     private static JsonObject getJsonValueForCompoundTag(NBTTagCompound tag) {
         JsonObject base = new JsonObject();
         JsonAbstract valueJson;
-        for (String key : ((Set<String>) tag.func_150296_c())) {
+        for (String key : tag.getKeySet()) {
             valueJson = getJsonFor(tag.getTag(key));
             if (valueJson != null) {
                 base.writeAbstract(key, valueJson);
@@ -46,7 +55,7 @@ public class JsonTagWriter {
 
     private static JsonArray getJsonValueForByteArray(NBTTagByteArray tag) {
         JsonArray array = new JsonArray();
-        byte[] bytes = tag.func_150292_c();
+        byte[] bytes = tag.getByteArray();
         for (byte b : bytes) {
             array.add(new JsonValue(String.valueOf(b)));
         }
@@ -55,7 +64,7 @@ public class JsonTagWriter {
 
     private static JsonArray getJsonValueForIntArray(NBTTagIntArray tag) {
         JsonArray array = new JsonArray();
-        int[] ints = tag.func_150302_c();
+        int[] ints = tag.getIntArray();
         for (int b : ints) {
             array.add(new JsonValue(String.valueOf(b)));
         }
@@ -74,32 +83,32 @@ public class JsonTagWriter {
         switch (id) {
             case 1://byte
             {
-                value = new JsonValue(String.valueOf(((NBTTagByte) tag).func_150290_f()));
+                value = new JsonValue(String.valueOf(((NBTTagByte) tag).getByte()));
                 break;
             }
             case 2://short
             {
-                value = new JsonValue(String.valueOf(((NBTTagShort) tag).func_150289_e()));
+                value = new JsonValue(String.valueOf(((NBTTagShort) tag).getShort()));
                 break;
             }
             case 3://int
             {
-                value = new JsonValue(String.valueOf(((NBTTagInt) tag).func_150287_d()));
+                value = new JsonValue(String.valueOf(((NBTTagInt) tag).getInt()));
                 break;
             }
             case 4://long
             {
-                value = new JsonValue(String.valueOf(((NBTTagLong) tag).func_150291_c()));
+                value = new JsonValue(String.valueOf(((NBTTagLong) tag).getLong()));
                 break;
             }
             case 5://float
             {
-                value = new JsonValue(String.valueOf(((NBTTagFloat) tag).func_150288_h()));
+                value = new JsonValue(String.valueOf(((NBTTagFloat) tag).getFloat()));
                 break;
             }
             case 6://double
             {
-                value = new JsonValue(String.valueOf(((NBTTagDouble) tag).func_150286_g()));
+                value = new JsonValue(String.valueOf(((NBTTagDouble) tag).getDouble()));
                 break;
             }
             case 7://byte array
@@ -109,7 +118,7 @@ public class JsonTagWriter {
             }
             case 8://string
             {
-                value = new JsonValue(((NBTTagString) tag).func_150285_a_());
+                value = new JsonValue(((NBTTagString) tag).getString());
                 break;
             }
             case 9://list

@@ -63,8 +63,8 @@ public class VehicleClientProxy extends VehicleCommonProxy {
 
         private void onKeyAction(boolean state) {
             EntityPlayer player = AncientWarfareCore.proxy.getClientPlayer();
-            if (player.ridingEntity instanceof VehicleBase) {
-                ((VehicleBase) player.ridingEntity).inputHandler.onKeyChanged(key, state);
+            if (player.getRidingEntity() instanceof VehicleBase) {
+                ((VehicleBase) player.getRidingEntity()).inputHandler.onKeyChanged(key, state);
             }
         }
     }

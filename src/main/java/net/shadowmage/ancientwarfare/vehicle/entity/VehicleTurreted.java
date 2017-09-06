@@ -1,6 +1,6 @@
 package net.shadowmage.ancientwarfare.vehicle.entity;
 
-import net.minecraft.util.Vec3d;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
@@ -9,18 +9,18 @@ public class VehicleTurreted extends VehicleBase {
 
     protected int fireDelay = 0;
     protected float launchAngle, launchPower;
-    protected Vec3d turretOffsetBase = Vec3d.createVectorHelper(0, 1, -1);
+    protected Vec3d turretOffsetBase = new Vec3d(0, 1, -1);
 
     /*
      * location of turret firing point relative to vehicle -- this is the point that the missile will be spawned at.<br>
      * updated from entity on-tick (or whenever vehicle rotation or turret pitch changes)
      */
-    private Vec3d turretOffset = Vec3d.createVectorHelper(0, 0, 0);
+    private Vec3d turretOffset = new Vec3d(0, 0, 0);
 
     /*
      * updated from entity on-tick or whenever vehicle rotation or firing params change
      */
-    private Vec3d launchVelocity = Vec3d.createVectorHelper(0, 0, 0);
+    private Vec3d launchVelocity = new Vec3d(0, 0, 0);
 
     public VehicleTurreted(World world) {
         super(world);

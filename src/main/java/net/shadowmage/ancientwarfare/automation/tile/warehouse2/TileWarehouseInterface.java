@@ -200,7 +200,7 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
                 emptyRequests.add(new InterfaceEmptyRequest(i, stack.getCount()));
             } else//matches, remove extras
             {
-                int count = InventoryTools.getCountOf(inventory, -1, stack);
+                int count = InventoryTools.getCountOf(inventory, null, stack);
                 int max = getFilterQuantity(stack);
                 if (count > max) {
                     emptyRequests.add(new InterfaceEmptyRequest(i, count - max));
@@ -213,7 +213,7 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
             if (filter.getFilterItem().isEmpty()) {
                 continue;
             }
-            count = InventoryTools.getCountOf(inventory, -1, filter.getFilterItem());
+            count = InventoryTools.getCountOf(inventory, null, filter.getFilterItem());
             if (count < filter.getFilterQuantity()) {
                 fillRequests.add(new InterfaceFillRequest(filter.getFilterItem().copy(), filter.getFilterQuantity() - count));
             }

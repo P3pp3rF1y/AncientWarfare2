@@ -134,7 +134,7 @@ public final class NetworkHandler implements IGuiHandler {
      * @param cz    chunkZ
      * @param pkt   the packet
      */
-    @SuppressWarnings("unchecked")
+
     public static void sendToAllTrackingChunk(World world, int cx, int cz, PacketBase pkt) {
         WorldServer server = (WorldServer) world;
         for (EntityPlayer p : server.playerEntities) {

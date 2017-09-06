@@ -11,13 +11,24 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.ConfigElement;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.shadowmage.ancientwarfare.core.config.ConfigManager;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.TextureImageBased;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
-import net.shadowmage.ancientwarfare.npc.gui.*;
+import net.shadowmage.ancientwarfare.npc.gui.GuiCombatOrder;
+import net.shadowmage.ancientwarfare.npc.gui.GuiNpcBard;
+import net.shadowmage.ancientwarfare.npc.gui.GuiNpcCreativeControls;
+import net.shadowmage.ancientwarfare.npc.gui.GuiNpcFactionBard;
+import net.shadowmage.ancientwarfare.npc.gui.GuiNpcFactionTradeSetup;
+import net.shadowmage.ancientwarfare.npc.gui.GuiNpcFactionTradeView;
+import net.shadowmage.ancientwarfare.npc.gui.GuiNpcInventory;
+import net.shadowmage.ancientwarfare.npc.gui.GuiNpcPlayerOwnedTrade;
+import net.shadowmage.ancientwarfare.npc.gui.GuiRoutingOrder;
+import net.shadowmage.ancientwarfare.npc.gui.GuiTownHallInventory;
+import net.shadowmage.ancientwarfare.npc.gui.GuiTradeOrder;
+import net.shadowmage.ancientwarfare.npc.gui.GuiUpkeepOrder;
+import net.shadowmage.ancientwarfare.npc.gui.GuiWorkOrder;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 import net.shadowmage.ancientwarfare.npc.render.RenderCommandOverlay;
 import net.shadowmage.ancientwarfare.npc.render.RenderNpcBase;
@@ -54,7 +65,7 @@ public class NpcClientProxy extends NpcCommonProxy {
         RenderingRegistry.registerEntityRenderingHandler(NpcBase.class, new RenderNpcBase());
 
         MinecraftForge.EVENT_BUS.register(RenderWorkLines.INSTANCE);//register render for orders items routes/block highlights
-        FMLCommonHandler.instance().bus().register(RenderCommandOverlay.INSTANCE);//register overlay renderer
+        MinecraftForge.EVENT_BUS.register(RenderCommandOverlay.INSTANCE);//register overlay renderer
         MinecraftForge.EVENT_BUS.register(RenderCommandOverlay.INSTANCE);//register block/entity highlight renderer
 
         RenderShield shieldRender = new RenderShield();
@@ -102,10 +113,10 @@ public class NpcClientProxy extends NpcCommonProxy {
         return null;
     }
 
-    @SuppressWarnings("rawtypes")
+
     public static final class NpcCategory extends DummyCategoryElement {
 
-        @SuppressWarnings("unchecked")
+
         public NpcCategory(String arg0) {
             super(arg0, arg0, getElementList());
         }

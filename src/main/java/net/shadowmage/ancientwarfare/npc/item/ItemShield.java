@@ -26,7 +26,7 @@ public class ItemShield extends Item {
         return armorValue;
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+
     @Override
     public Multimap getAttributeModifiers(ItemStack stack) {
         Multimap map = super.getAttributeModifiers(stack);

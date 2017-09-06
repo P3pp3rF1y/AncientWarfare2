@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.ai.owned;
 
 import net.minecraft.entity.IRangedAttackMob;
-import net.shadowmage.ancientwarfare.npc.ai.AIHelper;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttack;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -27,11 +26,12 @@ public class NpcAIPlayerOwnedAttackRanged extends NpcAIAttack<NpcBase> {
         npc.removeAITask(TASK_MOVE);
         this.npc.getNavigator().clearPathEntity();
         if (this.getAttackDelay() <= 0) {
-            int val = AIHelper.doQuiverBowThing(npc, getTarget());
-            if(val>0){
-                this.setAttackDelay(val);
-                return;
-            }
+//  TODO readd quiverbow integration or just remove
+//            int val = AIHelper.doQuiverBowThing(npc, getTarget());
+//            if(val>0){
+//                this.setAttackDelay(val);
+//                return;
+//            }
             float pwr = (float) (attackDistance / dist);
             pwr = pwr < 0.1f ? 0.1f : pwr > 1.f ? 1.f : pwr;
             this.rangedAttacker.attackEntityWithRangedAttack(getTarget(), pwr);

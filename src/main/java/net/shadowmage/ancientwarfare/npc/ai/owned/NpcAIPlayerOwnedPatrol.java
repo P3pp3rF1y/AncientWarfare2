@@ -40,11 +40,11 @@ public class NpcAIPlayerOwnedPatrol extends NpcAI<NpcBase> {
                 patrolIndex = 0;
             }
         }
-        return continueExecuting();
+        return shouldContinueExecuting();
     }
 
     @Override
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
         if (!npc.getIsAIEnabled() || npc.getAttackTarget() != null) {
             return false;
         }

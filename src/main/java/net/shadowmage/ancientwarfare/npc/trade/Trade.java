@@ -50,7 +50,7 @@ public abstract class Trade {
         }
         list = InventoryTools.compactStackList3(list);
         for (ItemStack stack : list) {
-            if (InventoryTools.getCountOf(player.inventory, -1, stack) < stack.getCount()) {
+            if (InventoryTools.getCountOf(player.inventory, null, stack) < stack.getCount()) {
                 return;
             }
         }

@@ -22,7 +22,7 @@ public class NpcAIPlayerOwnedGetFood extends NpcAI<NpcPlayerOwned> {
     }
 
     @Override
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
         if (!npc.getIsAIEnabled()) {
             return false;
         }
@@ -66,7 +66,7 @@ public class NpcAIPlayerOwnedGetFood extends NpcAI<NpcPlayerOwned> {
     }
 
     protected void tryUpkeep(BlockPos pos) {
-        TileEntity te = npc.world.getTileEntity(pos.x, pos.y, pos.z);
+        TileEntity te = npc.world.getTileEntity(pos);
         if (te instanceof IInventory) {
             npc.withdrawFood((IInventory) te, npc.getUpkeepBlockSide());
         }

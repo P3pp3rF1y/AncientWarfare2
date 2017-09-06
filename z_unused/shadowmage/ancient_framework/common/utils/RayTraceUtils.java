@@ -27,7 +27,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3d;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class RayTraceUtils
@@ -45,9 +45,9 @@ public static MovingObjectPosition getPlayerTarget(EntityPlayer player, float ra
   {
   HashSet<Entity> excluded = new HashSet<>();
   excluded.add(player);
-  if(player.ridingEntity!=null)
+  if(player.getRidingEntity()!=null)
     {
-    excluded.add(player.ridingEntity);
+    excluded.add(player.getRidingEntity());
     }
   return tracePathWithYawPitch(player.worldObj, (float)player.posX, (float)player.posY + (player.worldObj.isRemote ? 0.f : 1.62f), (float)player.posZ, player.rotationYaw, player.rotationPitch, range, border, excluded);  
   }
@@ -95,7 +95,7 @@ public static MovingObjectPosition tracePath(World world, float x, float y, floa
     if(ent.canBeCollidedWith() && !excluded.contains(ent))
       {
       float entBorder =  ent.getCollisionBorderSize();
-      entityBb = ent.boundingBox;
+      entityBb = ent.getEntityBoundingBox();
       if(entityBb!=null)
         {
         entityBb = entityBb.expand(entBorder, entBorder, entBorder);

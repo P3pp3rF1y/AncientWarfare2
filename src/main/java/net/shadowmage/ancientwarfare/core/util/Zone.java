@@ -8,11 +8,6 @@ public class Zone implements INBTSerializable<NBTTagCompound> {
 
     public BlockPos min, max;
 
-    public Zone() {
-        min = new BlockPos();
-        max = new BlockPos();
-    }
-
     public Zone(BlockPos p1, BlockPos p2)
     {
         min = BlockTools.getMin(p1, p2);
@@ -23,7 +18,7 @@ public class Zone implements INBTSerializable<NBTTagCompound> {
      * does the input share any block position with this zone ?
      */
     public boolean crossWith(Zone z){
-        if (max.x < z.min.x || max.y < z.min.y || max.z < z.min.z || min.x > z.max.x || min.y > z.max.y || min.z > z.max.z) {
+        if (max.getX() < z.min.getX() || max.getY() < z.min.getY() || max.getZ() < z.min.getZ() || min.getX() > z.max.getX() || min.getY() > z.max.getY() || min.getZ() > z.max.getZ()) {
             return false;
         }
         return true;
@@ -31,7 +26,7 @@ public class Zone implements INBTSerializable<NBTTagCompound> {
 
     public boolean isPositionIn(int x, int y, int z)
     {
-        if(x<min.x || y<min.y || z<min.z || x>max.x || z>max.z || y>max.y)
+        if(x<min.getX() || y<min.getY() || z<min.getZ() || x>max.getX() || z>max.getZ() || y>max.getY())
         {
             return false;
         }
@@ -39,7 +34,7 @@ public class Zone implements INBTSerializable<NBTTagCompound> {
     }
 
     public boolean isPositionIn(BlockPos pos) {
-        return isPositionIn(pos.x, pos.y, pos.z);
+        return isPositionIn(pos.getX(), pos.getY(), pos.getZ());
     }
 
     public boolean equals(BlockPos min, BlockPos max) {

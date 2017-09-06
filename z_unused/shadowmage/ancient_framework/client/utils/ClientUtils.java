@@ -28,7 +28,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3d;
+import net.minecraft.util.math.Vec3d;
 
 public class ClientUtils
 {
@@ -69,7 +69,7 @@ public static MovingObjectPosition getPlayerLookTargetClient(EntityPlayer player
     closestFound = (float) blockHit.hitVec.distanceTo(playerPos);
     }
   Minecraft mc = Minecraft.getMinecraft();
-  List possibleHitEntities = mc.theWorld.getEntitiesWithinAABBExcludingEntity(mc.renderViewEntity, mc.renderViewEntity.boundingBox.expand(lookVector.x * range, lookVector.y * range, lookVector.z * range).expand((double)var9, (double)var9, (double)var9));
+  List possibleHitEntities = mc.theWorld.getEntitiesWithinAABBExcludingEntity(mc.renderViewEntity, mc.renderViewEntity.getEntityBoundingBox().expand(lookVector.x * range, lookVector.y * range, lookVector.z * range).expand((double)var9, (double)var9, (double)var9));
   Iterator<Entity> it = possibleHitEntities.iterator();
   Entity hitEntity = null;
   Entity currentExaminingEntity = null;
@@ -83,7 +83,7 @@ public static MovingObjectPosition getPlayerLookTargetClient(EntityPlayer player
     if(currentExaminingEntity.canBeCollidedWith())
       {
       float borderSize = currentExaminingEntity.getCollisionBorderSize();
-      AxisAlignedBB entBB = currentExaminingEntity.boundingBox.expand((double)borderSize, (double)borderSize, (double)borderSize);
+      AxisAlignedBB entBB = currentExaminingEntity.getEntityBoundingBox().expand((double)borderSize, (double)borderSize, (double)borderSize);
       MovingObjectPosition var17 = entBB.calculateIntercept(playerPos, endVector);
 
       if (entBB.contains(playerPos))

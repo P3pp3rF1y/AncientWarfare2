@@ -4,9 +4,14 @@ import net.minecraft.item.ItemRecord;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -116,12 +121,12 @@ public class SongPlayData {
     }
 
     public static final class SongEntry {
-        String name;
+        @Nullable SoundEvent sound;
         float length;//length in seconds, used to determine when count down for next tune should start
         int volume;// percentage, as integer 0 = 0%, 100=100%, 150=150%
 
         public SongEntry() {
-            name = "";
+            sound = null;
             length = 5;
             volume = 100;
         }
@@ -130,13 +135,10 @@ public class SongPlayData {
             this.length = length;
         }
 
-        public void setName(String name) {
-            if(name == null){
-                this.name = "";
-            }else{
-                this.name = name;
-                ResourceLocation resource = new ResourceLocation(name);
-                boolean isRecord = resource.getResourcePath().startsWith("records.") || ItemRecord.getRecord("records."+resource.getResourcePath()) != null;
+        public void setSound(@Nullable SoundEvent sound) {
+            this.sound = sound;
+            if (sound != null) {
+                boolean isRecord = sound.getSoundName().getResourcePath().startsWith("records.") || ItemRecord.getBySound(sound) != null;
                 if(isRecord && length()<120)
                     setLength(120);
             }
@@ -151,7 +153,11 @@ public class SongPlayData {
         }
 
         public String name() {
-            return name;
+            return sound.getSoundName().toString();
+        }
+
+        public SoundEvent getSound() {
+            return sound;
         }
 
         public float length() {
@@ -159,23 +165,25 @@ public class SongPlayData {
         }
 
         public void readFromNBT(NBTTagCompound tag) {
-            name = tag.getString("name");
+            if (tag.hasKey("name")) {
+                sound = ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(tag.getString("name")));
+            }
             length = tag.getFloat("length");
             volume = tag.getInteger("volume");
         }
 
         public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-            if (name != null && !name.isEmpty()) {
-                tag.setString("name", name);
+            if (sound != null) {
+                tag.setString("name", sound.getRegistryName().toString());
             }
             tag.setFloat("length", length);
             tag.setInteger("volume", volume);
             return tag;
         }
 
-        public int play(World world, int x, int y, int z){
-            world.playRecord(null, x, y, z);
-            world.playSound(x + 0.5, y + 0.5, z + 0.5, name, volume * 0.03F, 1);
+        public int play(World world, BlockPos pos){
+            world.playRecord(pos, sound);
+            world.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, sound, SoundCategory.BLOCKS, volume * 0.03F, 1);
             return (int) (length * 20);//seconds(decimal) to ticks conversion
         }
     }

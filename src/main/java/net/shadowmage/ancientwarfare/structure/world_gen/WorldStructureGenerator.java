@@ -23,7 +23,7 @@ package net.shadowmage.ancientwarfare.structure.world_gen;
 import cpw.mods.fml.common.IWorldGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.ChunkPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -69,7 +69,7 @@ public class WorldStructureGenerator implements IWorldGenerator {
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
-        ChunkCoordinates cc = world.getSpawnPoint();
+        ChunkPos cc = world.getSpawnPoint();
         float distSq = cc.getDistanceSquared(chunkX * 16, cc.posY, chunkZ * 16);
         if (AWStructureStatics.withinProtectionRange(distSq)) {
             return;

@@ -8,7 +8,12 @@ import net.minecraft.block.BlockBed;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityFlying;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -275,8 +280,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             return -10;
         else if(below.getMaterial().isLiquid())//Don't try swimming too much
             return 0;
-        /*if(this.ridingEntity instanceof EntityCreature)
-            return ((EntityCreature)this.ridingEntity).getBlockPathWeight(varX, varY - 1, varZ);*/
+        /*if(this.getRidingEntity() instanceof EntityCreature)
+            return ((EntityCreature)this.getRidingEntity()).getBlockPathWeight(varX, varY - 1, varZ);*/
         float level = world.getLightBrightness(varX, varY, varZ);//Prefer lit areas
         if(level < 0)
             return 0;
@@ -291,7 +296,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
          * need to test how well it works for an npc (perhaps drop sand on their head?)
          */
         if (!world.isRemote) {
-            this.func_145771_j(this.posX, (this.boundingBox.minY + this.boundingBox.maxY) / 2.0D, this.posZ);
+            this.func_145771_j(this.posX, (this.getEntityBoundingBox().minY + this.getEntityBoundingBox().maxY) / 2.0D, this.posZ);
         }
         super.onEntityUpdate();
     }
@@ -300,7 +305,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         if (!hasHome()) {
             return 0;
         }
-        ChunkCoordinates home = getHomePosition();
+        ChunkPos home = getHomePosition();
         return getDistanceSq(home.posX + 0.5d, home.posY, home.posZ + 0.5d);
     }
 
@@ -409,7 +414,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             int d1 = (int)Math.signum(this.posZ - entity.posZ);
             if(d0!=0 || d1!=0) {
                 int x = MathHelper.floor(this.posX) + d0;
-                int y = MathHelper.floor(this.boundingBox.minY) - 1;
+                int y = MathHelper.floor(this.getEntityBoundingBox().minY) - 1;
                 int z = MathHelper.floor(this.posZ) + d1;
                 Material material = world.getBlock(x, y, z).getMaterial();
                 if(material.isLiquid() || material == Material.CACTUS) {
@@ -428,7 +433,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             return false;
         if (source.getEntity() != null && !canBeAttackedBy(source.getEntity()))
             return false;
-        if(source == DamageSource.inWall && this.ridingEntity instanceof EntityLiving) {
+        if(source == DamageSource.inWall && this.getRidingEntity() instanceof EntityLiving) {
             knockFromDamage(par2, world.getBlock(MathHelper.floor(this.posX), MathHelper.floor(this.posY + this.getEyeHeight()), MathHelper.floor(this.posZ)).getMaterial());
             return false;
         }
@@ -443,7 +448,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     private void knockFromDamage(float val, Material material){
         int x = MathHelper.floor(this.posX);
-        int y = MathHelper.floor(this.boundingBox.minY + 0.5);
+        int y = MathHelper.floor(this.getEntityBoundingBox().minY + 0.5);
         int z = MathHelper.floor(this.posZ);
         if(world.getBlock(x - 1, y, z).getMaterial() == material){
             knockBack(null, val, x - 1 - this.posX, 0);
@@ -1058,7 +1063,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             else
                 setHomeAreaAtCurrentPosition();
         }
-        ChunkCoordinates cc = getHomePosition();
+        ChunkPos cc = getHomePosition();
         int[] ccia = new int[]{cc.posX, cc.posY, cc.posZ, getHomeRange()};
         tag.setIntArray("home", ccia);
         tag.setString("owner", ownerName);
@@ -1328,7 +1333,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
                     break;
             }
             
-            this.boundingBox.setBounds(minX, posY - (double)this.yOffset + (double)this.ySize, minZ, maxX, posY - (double)this.yOffset + (double)this.ySize + (double) height - 1.5f, maxZ);
+            this.getEntityBoundingBox().setBounds(minX, posY - (double)this.yOffset + (double)this.ySize, minZ, maxX, posY - (double)this.yOffset + (double)this.ySize + (double) height - 1.5f, maxZ);
             return;
         }
         

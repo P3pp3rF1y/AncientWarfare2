@@ -651,7 +651,7 @@ void parseFromLines(List<String> lines)
 void createFromNBT(NBTBase nbt)
   {
   NBTTagCompound tag = (NBTTagCompound) nbt;
-  @SuppressWarnings("unchecked")
+
   Set<String> keys = tag.func_150296_c();
   NBTBase baseTag;
   for(String key : keys)

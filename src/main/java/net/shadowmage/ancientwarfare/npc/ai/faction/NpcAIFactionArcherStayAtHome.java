@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.ai.faction;
 
-import net.minecraft.util.ChunkCoordinates;
+
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
@@ -20,14 +21,14 @@ public class NpcAIFactionArcherStayAtHome extends NpcAI<NpcBase> {
 
     @Override
     public void startExecuting() {
-        ChunkCoordinates cc = npc.getHomePosition();
+        BlockPos cc = npc.getHomePosition();
         if (cc != null) {
-            target = new BlockPos(cc.posX, cc.posY, cc.posZ);
+            target = cc;
         }
     }
 
     @Override
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
         return target != null && shouldExecute();
     }
 

@@ -129,7 +129,7 @@ public class CommandStructure extends CommandBase {
         return 2;
     }
 
-    @SuppressWarnings("rawtypes")
+
     @Override
     public List addTabCompletionOptions(ICommandSender var1, String[] var2) {
         if (var2.length == 1) {

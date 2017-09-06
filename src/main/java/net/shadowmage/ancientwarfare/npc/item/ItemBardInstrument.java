@@ -21,7 +21,7 @@ public class ItemBardInstrument extends Item {
         setHasSubtypes(true);
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List stackList) {
         for (int i = 0; i < instrumentNames.length; i++) {

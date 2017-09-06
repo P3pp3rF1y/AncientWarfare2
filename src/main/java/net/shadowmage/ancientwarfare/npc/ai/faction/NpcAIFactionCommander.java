@@ -13,7 +13,7 @@ public class NpcAIFactionCommander extends NpcAIPlayerOwnedCommander {
     public NpcAIFactionCommander(NpcFaction npc) {
         super(npc);
         if(npc.getNpcType().toLowerCase(Locale.ENGLISH).endsWith(".elite"))
-            effect = new PotionEffect(effect.getPotionID(), effect.getDuration(), 1);
+            effect = new PotionEffect(effect.getPotion(), effect.getDuration(), 1);
     }
 
     @Override

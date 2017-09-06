@@ -7,8 +7,8 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.Vec3d;
+import net.minecraft.util.ChunkPos;
+import net.minecraft.util.math.Vec3d;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcCombat;
@@ -76,7 +76,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
             if (npc.getTownHallPosition() != null || npc.hasHome())
                 flee = true;
             else {
-                fleeVector = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.npc, MAX_FLEE_RANGE, HEIGHT_CHECK, Vec3d.createVectorHelper(nearestHostile.posX, nearestHostile.posY, nearestHostile.posZ));
+                fleeVector = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.npc, MAX_FLEE_RANGE, HEIGHT_CHECK, new Vec3d(nearestHostile.posX, nearestHostile.posY, nearestHostile.posZ));
                 if (fleeVector == null || nearestHostile.getDistanceSq(fleeVector.x, fleeVector.y, fleeVector.z) < nearestHostile.getDistanceSqToEntity(this.npc))
                     flee = false; //did not find random flee-towards target, perhaps retry next tick
                 else
@@ -92,11 +92,11 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
         return flee;
     }
     
-    @SuppressWarnings("unchecked")
+
     private void findNearbyRelevantEntities() {
         npc.nearbyHostiles.clear();
         nearbySoldiers.clear();
-        List nearbyHostilesOrFriendlySoldiers = this.npc.world.selectEntitiesWithinAABB(EntityLiving.class, this.npc.boundingBox.expand(this.distanceFromEntity, 3.0D, this.distanceFromEntity), this.hostileOrFriendlyCombatNpcSelector);
+        List nearbyHostilesOrFriendlySoldiers = this.npc.world.selectEntitiesWithinAABB(EntityLiving.class, this.npc.getEntityBoundingBox().expand(this.distanceFromEntity, 3.0D, this.distanceFromEntity), this.hostileOrFriendlyCombatNpcSelector);
         if (nearbyHostilesOrFriendlySoldiers.isEmpty())
             return;
         
@@ -125,7 +125,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
      * Returns whether an in-progress EntityAIBase should continue executing
      */
     @Override
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
         boolean shouldPanic = true;
         if (npc.getIsAIEnabled() && (npc.getAttackTarget() == null || npc.getAttackTarget().isDead))
             fearLevel = MAX_STAY_AWAY; // cap the fear level in the event of hostile's death
@@ -157,7 +157,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
         
         if (npc.hasHome()) {
             distSq = npc.getDistanceSqFromHome();
-            ChunkCoordinates cc = npc.getHomePosition();
+            ChunkPos cc = npc.getHomePosition();
             pos = new BlockPos(cc.posX, cc.posY, cc.posZ);
             if (distSq < MIN_RANGE) {
                 // NPC is home, check for visible hostiles
@@ -183,7 +183,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
                 moveToPosition(fleeVector.x, fleeVector.y, fleeVector.z, distSq);
             else {
                 if (npc.getDistanceSqToEntity(npc.getAttackTarget()) < PURSUE_RANGE) {//entity still chasing, find a new flee vector 
-                    fleeVector = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.npc, MAX_FLEE_RANGE, HEIGHT_CHECK, Vec3d.createVectorHelper(npc.getAttackTarget().posX, npc.getAttackTarget().posY, npc.getAttackTarget().posZ));
+                    fleeVector = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.npc, MAX_FLEE_RANGE, HEIGHT_CHECK, new Vec3d(npc.getAttackTarget().posX, npc.getAttackTarget().posY, npc.getAttackTarget().posZ));
                     if (fleeVector == null)
                         npc.setAttackTarget(null);//retry next tick..perhaps...
                 } else // entity too far to care, stop running
@@ -216,7 +216,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
             soldier.respondToDistress(npc);
         }
         /*
-        List nearbyFriendlyCombatNpcs = this.npc.world.selectEntitiesWithinAABB(EntityLiving.class, this.npc.boundingBox.expand(this.distanceFromEntity, 3.0D, this.distanceFromEntity), friendlyCombatNpcSelector);
+        List nearbyFriendlyCombatNpcs = this.npc.world.selectEntitiesWithinAABB(EntityLiving.class, this.npc.getEntityBoundingBox().expand(this.distanceFromEntity, 3.0D, this.distanceFromEntity), friendlyCombatNpcSelector);
         if (nearbyFriendlyCombatNpcs.isEmpty())
             return;
         for (Object defender : nearbyFriendlyCombatNpcs) {

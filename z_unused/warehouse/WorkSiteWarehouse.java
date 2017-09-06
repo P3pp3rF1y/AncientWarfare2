@@ -378,7 +378,7 @@ private void updateOutputTile(TileWarehouseOutput tile)
   for(WarehouseInterfaceFilter filter : filters)
     {
     if(filter.getFilterItem()==null){continue;}
-    count = InventoryTools.getCountOf(tile, -1, filter.getFilterItem()); 
+    count = InventoryTools.getCountOf(tile, null, filter.getFilterItem());
     if(count<filter.getFilterQuantity())
       {
       count = inventoryMap.getCount(filter.getFilterItem());
@@ -530,7 +530,7 @@ private void processOutputWork()
       {
       if(filter.getFilterItem()==null){continue;}
       filterQuantity = filter.getFilterQuantity();
-      foundQuantity = InventoryTools.getCountOf(tile, -1, filter.getFilterItem());
+      foundQuantity = InventoryTools.getCountOf(tile, null, filter.getFilterItem());
       if(foundQuantity<filterQuantity)
         {
         transferQuantity = inventoryMap.getCount(filter.getFilterItem());

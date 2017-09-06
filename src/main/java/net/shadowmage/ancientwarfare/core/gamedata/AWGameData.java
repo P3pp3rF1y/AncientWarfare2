@@ -21,7 +21,7 @@ public final class AWGameData {
         return initData(world.perWorldStorage, clz);
     }
 
-    @SuppressWarnings("unchecked")
+
     private <T extends WorldSavedData> T initData(MapStorage storage, Class<T> clz){
         String name = "AW"+clz.getSimpleName();
         T data = (T) storage.loadData(clz, name);

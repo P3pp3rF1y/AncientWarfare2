@@ -61,7 +61,7 @@ public class NpcAIPlayerOwnedWorkRandom extends NpcAI<NpcWorker> {
         if (ticksAtSite >= AWNPCStatics.npcWorkTicks) {
             ticksAtSite = 0;
             BlockPos pos = npc.autoWorkTarget;
-            TileEntity te = npc.world.getTileEntity(pos.x, pos.y, pos.z);
+            TileEntity te = npc.world.getTileEntity(pos);
             if (te instanceof IWorkSite) {
                 IWorkSite site = (IWorkSite) te;
                 if (npc.canWorkAt(site.getWorkType()) && site.hasWork()) {

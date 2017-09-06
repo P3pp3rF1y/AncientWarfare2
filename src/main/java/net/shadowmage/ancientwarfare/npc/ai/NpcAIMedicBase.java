@@ -43,7 +43,7 @@ public class NpcAIMedicBase extends NpcAI<NpcBase> {
         };
     }
 
-    @SuppressWarnings("unchecked")
+
     @Override
     public boolean shouldExecute() {
         if (!npc.getIsAIEnabled()) {
@@ -56,8 +56,8 @@ public class NpcAIMedicBase extends NpcAI<NpcBase> {
             return false;
         }
         injuredRecheckDelay = injuredRecheckDelayMax;
-        double dist = npc.getEntityAttribute(SharedMonsterAttributes.followRange).getAttributeValue();
-        AxisAlignedBB bb = npc.boundingBox.expand(dist, dist / 2, dist);
+        double dist = npc.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue();
+        AxisAlignedBB bb = npc.getEntityBoundingBox().expand(dist, dist / 2, dist);
         List<EntityLivingBase> potentialTargets = npc.world.selectEntitiesWithinAABB(EntityLivingBase.class, bb, selector);
         if (potentialTargets.isEmpty()) {
             return false;
@@ -87,7 +87,7 @@ public class NpcAIMedicBase extends NpcAI<NpcBase> {
     }
 
     @Override
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
         return npc.getIsAIEnabled() && isProperSubtype() && validateTarget();
     }
 

@@ -91,7 +91,7 @@ public class TEGateProxy extends TileEntity {
         }
         else if (this.owner == null) {
             this.noParentTicks++;
-            @SuppressWarnings("unchecked")
+
             List<Entity> entities = this.world.loadedEntityList;
             for (Entity ent : entities) {
                 if (ent instanceof EntityGate && ent.getPersistentID() != null && ent.getPersistentID().equals(entityID)) {

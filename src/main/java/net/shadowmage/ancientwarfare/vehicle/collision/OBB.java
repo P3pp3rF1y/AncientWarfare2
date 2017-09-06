@@ -1,8 +1,8 @@
 package net.shadowmage.ancientwarfare.vehicle.collision;
 
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Vec3d;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 /*
@@ -32,10 +32,10 @@ public final class OBB {
      */
     private Vec3d[] aaBBCorners = new Vec3d[]
             {
-                    Vec3d.createVectorHelper(0, 0, 0),
-                    Vec3d.createVectorHelper(0, 0, 0),
-                    Vec3d.createVectorHelper(0, 0, 0),
-                    Vec3d.createVectorHelper(0, 0, 0)
+                    new Vec3d(0, 0, 0),
+                    new Vec3d(0, 0, 0),
+                    new Vec3d(0, 0, 0),
+                    new Vec3d(0, 0, 0)
             };
 
     /*
@@ -95,10 +95,10 @@ public final class OBB {
         this.length = length;
         this.halfWidth = width / 2.f;
         this.halfLength = length / 2.f;
-        corners[0] = Vec3d.createVectorHelper(-halfWidth, 0, -halfLength);//front left
-        corners[1] = Vec3d.createVectorHelper(halfWidth, 0, -halfLength);//front right
-        corners[2] = Vec3d.createVectorHelper(halfWidth, 0, halfLength);//rear right
-        corners[3] = Vec3d.createVectorHelper(-halfWidth, 0, halfLength);//rear left
+        corners[0] = new Vec3d(-halfWidth, 0, -halfLength);//front left
+        corners[1] = new Vec3d(halfWidth, 0, -halfLength);//front right
+        corners[2] = new Vec3d(halfWidth, 0, halfLength);//rear right
+        corners[3] = new Vec3d(-halfWidth, 0, halfLength);//rear left
         cornerPos[0] = copyVec(corners[0]);
         cornerPos[1] = copyVec(corners[1]);
         cornerPos[2] = copyVec(corners[2]);
@@ -155,7 +155,7 @@ public final class OBB {
      * Vector helper function to copy a vector
      */
     private Vec3d copyVec(Vec3d in) {
-        return Vec3d.createVectorHelper(in.x, in.y, in.z);
+        return new Vec3d(in.x, in.y, in.z);
     }
 
     public final void setRotation(float yaw) {
@@ -293,7 +293,7 @@ public final class OBB {
             overlapAxis = axis4;
         }
 
-        return Vec3d.createVectorHelper(overlapAxis.axisX * minOverlap, 0, overlapAxis.axisZ * minOverlap);
+        return new Vec3d(overlapAxis.axisX * minOverlap, 0, overlapAxis.axisZ * minOverlap);
     }
 
 
@@ -303,7 +303,7 @@ public final class OBB {
         setVector(aaBBCorners[2], bb.maxX, cornerPos[0].y, bb.maxZ);//rear right
         setVector(aaBBCorners[3], bb.minX, cornerPos[0].y, bb.maxZ);//rear left
         setupOBBCollisionLines(xMove, 0);
-        Vec3d interceptBase = Vec3d.createVectorHelper(0, 0, 0);
+        Vec3d interceptBase = new Vec3d(0, 0, 0);
         Vec3d intercept;
 
         double adjustedXMove = xMove;
@@ -443,7 +443,7 @@ public final class OBB {
             adjustedXMove *= 0.995d;
         }//minor correction so that entity should never clip into geometry, even with rounding errors...
 
-        Vec3d closestIntercept = Vec3d.createVectorHelper(adjustedXMove, 0, 0);
+        Vec3d closestIntercept = new Vec3d(adjustedXMove, 0, 0);
         return closestIntercept;
     }
 
@@ -471,7 +471,7 @@ public final class OBB {
         setVector(aaBBCorners[2], bb.maxX, cornerPos[0].y, bb.maxZ);//rear right
         setVector(aaBBCorners[3], bb.minX, cornerPos[0].y, bb.maxZ);//rear left
         setupOBBCollisionLines(0, zMove);
-        Vec3d interceptBase = Vec3d.createVectorHelper(0, 0, 0);
+        Vec3d interceptBase = new Vec3d(0, 0, 0);
         Vec3d intercept;
 
         double adjustedZMove = zMove;
@@ -609,7 +609,7 @@ public final class OBB {
             adjustedZMove *= 0.995d;
         }//minor correction so that entity should never clip into geometry, even with rounding errors...
 
-        Vec3d closestIntercept = Vec3d.createVectorHelper(0, 0, adjustedZMove);
+        Vec3d closestIntercept = new Vec3d(0, 0, adjustedZMove);
         return closestIntercept;
     }
 

@@ -9,8 +9,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Vec3d;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.vehicle.entity.collision.VehicleOBBMoveHelper;
@@ -193,7 +193,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData {
 
     @Override
     public boolean interactFirst(EntityPlayer player) {
-        if (!worldObj.isRemote && this.riddenByEntity == null && player.ridingEntity == null) {
+        if (!worldObj.isRemote && this.riddenByEntity == null && player.getRidingEntity() == null) {
             player.mountEntity(this);
         }
         return true;//return true for isHandled
@@ -204,7 +204,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData {
      */
     @Override
     public Vec3d getLookVec() {
-        Vec3d vec = Vec3d.createVectorHelper(0, 0, -1);
+        Vec3d vec = new Vec3d(0, 0, -1);
         vec.rotateAroundY(MathHelper.wrapAngleTo180_float(rotationYaw) * Trig.TORADIANS);
         return vec;
     }

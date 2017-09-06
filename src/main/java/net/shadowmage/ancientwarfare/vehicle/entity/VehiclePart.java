@@ -5,8 +5,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.Vec3d;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
@@ -20,8 +20,8 @@ public class VehiclePart extends Entity {
         super(vehicle.worldObj);
         this.vehicle = vehicle;
         this.setSize(width, height);
-        offset = Vec3d.createVectorHelper(xOffset, 0, zOffset);
-        location = Vec3d.createVectorHelper(xOffset, 0, zOffset);
+        offset = new Vec3d(xOffset, 0, zOffset);
+        location = new Vec3d(xOffset, 0, zOffset);
         stepHeight = 1.f;
         updatePosition();
     }
@@ -67,9 +67,9 @@ public class VehiclePart extends Entity {
             if (p.vehicle == vehicle) {
                 return null;
             }
-            return p.boundingBox;
+            return p.getEntityBoundingBox();
         }
-        return collidingEntity == vehicle ? null : collidingEntity.boundingBox;
+        return collidingEntity == vehicle ? null : collidingEntity.getEntityBoundingBox();
     }
 
     /*

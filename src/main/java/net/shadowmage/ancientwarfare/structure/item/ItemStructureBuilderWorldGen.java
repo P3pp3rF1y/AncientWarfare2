@@ -25,7 +25,7 @@ public class ItemStructureBuilderWorldGen extends Item implements IItemKeyInterf
         this.setTextureName("ancientwarfare:structure/structure_builder");
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
         String structure = "guistrings.structure.no_selection";

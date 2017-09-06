@@ -30,7 +30,7 @@ public final class POTradeDepositEntry extends POTradeTransferEntry {
         ALL_OF {
             @Override
             public void doTransfer(IInventory storage, IInventory move, int side, ItemStack filter) {
-                int count = InventoryTools.getCountOf(storage, -1, filter);
+                int count = InventoryTools.getCountOf(storage, null, filter);
                 if (count > 0) {
                     InventoryTools.transferItems(storage, move, filter, count, -1, side);
                 }
@@ -49,7 +49,7 @@ public final class POTradeDepositEntry extends POTradeTransferEntry {
         DEPOSIT_EXCESS {
             @Override
             public void doTransfer(IInventory storage, IInventory move, int side, ItemStack filter) {
-                int count = InventoryTools.getCountOf(storage, -1, filter);
+                int count = InventoryTools.getCountOf(storage, null, filter);
                 if (count > filter.getCount()) {
                     InventoryTools.transferItems(storage, move, filter, count - filter.stackSize, -1, side);
                 }

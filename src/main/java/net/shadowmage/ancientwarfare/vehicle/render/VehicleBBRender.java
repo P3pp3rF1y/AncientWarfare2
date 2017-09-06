@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Vec3d;
+import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 import net.shadowmage.ancientwarfare.vehicle.collision.OBB;
@@ -51,14 +51,14 @@ public class VehicleBBRender extends Render {
             x1 = part.posX - entity.posX;
             y1 = part.posY - entity.posY;
             z1 = part.posZ - entity.posZ;
-            renderAABB.setBB(part.boundingBox);
+            renderAABB.setBB(part.getEntityBoundingBox());
             renderAABB.offset(x1, y1, z1);
             renderAABB.offset(-part.posX, -part.posY, -part.posZ);
             RenderTools.drawOutlinedBoundingBox2(renderAABB, 1, 0, 0, 0.0625f);
         }
 
         GL11.glColor4f(.75f, .75f, .75f, 0.75f);
-        renderAABB.setBB(entity.boundingBox);
+        renderAABB.setBB(entity.getEntityBoundingBox());
         renderAABB.offset(-entity.posX, -entity.posY, -entity.posZ);
         RenderTools.drawOutlinedBoundingBox2(renderAABB, 1, 1, 1, 0.0625f);
 

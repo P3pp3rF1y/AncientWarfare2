@@ -331,7 +331,7 @@ public class RenderNpcBase extends RenderBiped {
     }
 
     private void renderIcon(String tex, int width, int height, int x, int y) {
-        Tessellator tess = Tessellator.instance;
+        Tessellator tess = Tessellator.getInstance();
         AWTextureManager.instance().bindLocationTexture(tex);
         int halfW = width / 2;
         int halfH = height / 2;

@@ -11,13 +11,13 @@ public class NpcAIPlayerOwnedRideHorse extends NpcAIRideHorse {
     }
 
     @Override
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
         return horse != null;
     }
 
     @Override
     public void updateTask() {
-        if (horse != npc.ridingEntity && horse != null) {
+        if (horse != npc.getRidingEntity() && horse != null) {
             onDismountHorse();
             horse = null;
         }

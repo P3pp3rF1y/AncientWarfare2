@@ -43,7 +43,7 @@ public class ItemSpawnerPlacer extends Item {
         this.setTextureName("ancientwarfare:structure/" + itemName);
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
         list.add(I18n.format("guistrings.selected_mob") + ":");

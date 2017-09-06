@@ -275,7 +275,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
         if (backpack != null && backpack.getItem() instanceof ItemBackpack) {
             InventoryBackpack inv = ItemBackpack.getInventoryFor(backpack);
             BlockPos pos = orders.getRestockData().getDepositPoint();
-            TileEntity te = npc.world.getTileEntity(pos.x, pos.y, pos.z);
+            TileEntity te = npc.world.getTileEntity(pos);
             if (te instanceof IInventory) {
                 IInventory dep = (IInventory) te;
                 orders.getRestockData().doDeposit(inv, dep, orders.getRestockData().getDepositSide());
@@ -289,7 +289,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
         if (backpack != null && backpack.getItem() instanceof ItemBackpack) {
             InventoryBackpack inv = ItemBackpack.getInventoryFor(backpack);
             BlockPos pos = orders.getRestockData().getWithdrawPoint();
-            TileEntity te = npc.world.getTileEntity(pos.x, pos.y, pos.z);
+            TileEntity te = npc.world.getTileEntity(pos);
             if (te instanceof IInventory) {
                 orders.getRestockData().doWithdraw(inv, (IInventory) te, orders.getRestockData().getWithdrawSide());
                 ItemBackpack.writeBackpackToItem(inv, backpack);

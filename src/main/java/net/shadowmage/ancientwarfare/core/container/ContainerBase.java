@@ -147,7 +147,7 @@ public class ContainerBase extends Container {
     /*
      * remove the inventory slots from view on the screen, effectively disabling them
      */
-    @SuppressWarnings("unchecked")
+
     public void removeSlots() {
         for (Slot s : this.inventorySlots) {
             if (s.yPos >= 0) {
@@ -159,7 +159,7 @@ public class ContainerBase extends Container {
     /*
      * add any removed from screen slots back into view
      */
-    @SuppressWarnings("unchecked")
+
     public void addSlots() {
         for (Slot s : this.inventorySlots) {
             if (s.yPos < 0) {

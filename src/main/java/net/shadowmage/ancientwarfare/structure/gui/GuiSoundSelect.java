@@ -100,7 +100,7 @@ public class GuiSoundSelect extends GuiContainerBase{
             button = new Button(8, totalHeight, 256 - 8 - 16, 12, name) {
                 @Override
                 protected void onPressed() {
-                    songEntry.setName(name);
+                    songEntry.setSound(name);
                     selectionLabel.setText(name);
                     refreshGui();
                 }

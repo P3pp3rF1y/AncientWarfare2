@@ -1,6 +1,6 @@
 package net.shadowmage.ancientwarfare.vehicle.entity.movement;
 
-import net.minecraft.util.Vec3d;
+import net.minecraft.util.math.Vec3d;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;

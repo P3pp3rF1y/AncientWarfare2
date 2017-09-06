@@ -1,8 +1,8 @@
 package net.shadowmage.ancientwarfare.automation;
 
 import net.minecraftforge.common.ForgeChunkManager;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -122,8 +122,8 @@ public class AncientWarfareAutomation {
         /*
          * register tick-handlers
          */
-        FMLCommonHandler.instance().bus().register(MailboxTicker.INSTANCE);
-        FMLCommonHandler.instance().bus().register(this);
+        MinecraftForge.EVENT_BUS.register(MailboxTicker.INSTANCE);
+        MinecraftForge.EVENT_BUS.register(this);
 
         ForgeChunkManager.setForcedChunkLoadingCallback(this, AWChunkLoader.INSTANCE);
     }

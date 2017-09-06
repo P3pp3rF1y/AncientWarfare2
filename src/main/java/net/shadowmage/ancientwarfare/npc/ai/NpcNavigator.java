@@ -3,11 +3,11 @@ package net.shadowmage.ancientwarfare.npc.ai;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
-import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathFinder;
 import net.minecraft.pathfinding.PathNavigate;
-import net.minecraft.util.Vec3d;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.ChunkCache;
 
 public class NpcNavigator extends PathNavigate {
@@ -36,22 +36,22 @@ public class NpcNavigator extends PathNavigate {
     }
 
     @Override
-    public PathEntity getPathToXYZ(double posX, double posY, double posZ)
+    public Path getPathToXYZ(double posX, double posY, double posZ)
     {
         return !this.canNavigate() ? null : pathToXYZ(MathHelper.floor(posX), (int) posY, MathHelper.floor(posZ));
     }
 
     @Override
-    public PathEntity getPathToEntityLiving(Entity target)
+    public Path getPathToEntityLiving(Entity target)
     {
         return !this.canNavigate() ? null : pathToEntity(target);
     }
 
     @Override
-    public boolean setPath(PathEntity path, double speed){
+    public boolean setPath(Path path, double speed){
         if(hasMount()){
             //System.out.println("Changing path from "+ Thread.currentThread().getStackTrace()[3]);
-            ((EntityLiving)entity.ridingEntity).getNavigator().setPath(path, speed);
+            ((EntityLiving)entity.getRidingEntity()).getNavigator().setPath(path, speed);
         }
         return super.setPath(path, speed);
     }
@@ -59,7 +59,7 @@ public class NpcNavigator extends PathNavigate {
     @Override
     public void clearPathEntity(){
         if(hasMount()) {
-            ((EntityLiving)entity.ridingEntity).getNavigator().clearPathEntity();
+            ((EntityLiving)entity.getRidingEntity()).getNavigator().clearPathEntity();
             //System.out.println("Clearing path from " + Thread.currentThread().getStackTrace()[2]);
         }
         super.clearPathEntity();
@@ -69,30 +69,30 @@ public class NpcNavigator extends PathNavigate {
     public void onUpdateNavigation(){
         super.onUpdateNavigation();
         if(!noPath() && hasMount()) {
-            ((EntityLiving) entity.ridingEntity).getNavigator().onUpdateNavigation();
+            ((EntityLiving) entity.getRidingEntity()).getNavigator().onUpdateNavigation();
         }
     }
 
     private boolean hasMount(){
-        return entity.ridingEntity instanceof EntityLiving;
+        return entity.getRidingEntity() instanceof EntityLiving;
     }
 
     private Entity mountOrEntity(){
-        return hasMount() ? entity.ridingEntity : entity;
+        return hasMount() ? entity.getRidingEntity() : entity;
     }
 
-    private PathEntity pathToEntity(Entity target)
+    private Path pathToEntity(Entity target)
     {
         ChunkCache chunkcache = cachePath(1, 16);
-        PathEntity pathentity = (new PathFinder(chunkcache, doors, getCanBreakDoors(), getAvoidsWater(), swim)).createEntityPathTo(mountOrEntity(), target, this.getPathSearchRange());
+        Path pathentity = (new PathFinder(chunkcache, doors, getCanBreakDoors(), getAvoidsWater(), swim)).createEntityPathTo(mountOrEntity(), target, this.getPathSearchRange());
         this.world.profiler.endSection();
         return pathentity;
     }
 
-    private PathEntity pathToXYZ(int x, int y, int z)
+    private Path pathToXYZ(int x, int y, int z)
     {
         ChunkCache chunkcache = cachePath(0, 8);
-        PathEntity pathentity = (new PathFinder(chunkcache, doors, getCanBreakDoors(), getAvoidsWater(), swim)).createEntityPathTo(mountOrEntity(), x, y, z, this.getPathSearchRange());
+        Path pathentity = (new PathFinder(chunkcache, doors, getCanBreakDoors(), getAvoidsWater(), swim)).createEntityPathTo(mountOrEntity(), x, y, z, this.getPathSearchRange());
         this.world.profiler.endSection();
         return pathentity;
     }
@@ -165,8 +165,8 @@ public class NpcNavigator extends PathNavigate {
             result = "No Path " + (getPath()!=null ? getPath().getCurrentPathLength() : "");
         else
             result = "Path to " + getPath().getPathPointFromIndex(getPath().getCurrentPathIndex()).toString();
-        if(hasMount() && !((EntityLiving)entity.ridingEntity).getNavigator().noPath()){
-            PathEntity path = ((EntityLiving) entity.ridingEntity).getNavigator().getPath();
+        if(hasMount() && !((EntityLiving)entity.getRidingEntity()).getNavigator().noPath()){
+            Path path = ((EntityLiving) entity.getRidingEntity()).getNavigator().getPath();
             result += "AND Mount path to " + path.getPathPointFromIndex(path.getCurrentPathIndex()).toString();
         }
         return result;

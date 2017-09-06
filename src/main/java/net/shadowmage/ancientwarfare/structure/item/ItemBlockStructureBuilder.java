@@ -32,7 +32,7 @@ public class ItemBlockStructureBuilder extends ItemBlock implements IBoxRenderer
         super(p_i45328_1_);
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
@@ -43,7 +43,7 @@ public class ItemBlockStructureBuilder extends ItemBlock implements IBoxRenderer
         par3List.add(I18n.format("guistrings.structure.structure_name") + ": " + name);
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List p_150895_3_) {

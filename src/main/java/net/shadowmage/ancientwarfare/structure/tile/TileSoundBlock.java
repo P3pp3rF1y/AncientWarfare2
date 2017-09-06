@@ -46,7 +46,7 @@ public class TileSoundBlock extends TileEntity implements ISinger{
                     if (playerCheckDelay-- <= 0) {
                         playerCheckDelay = 20;
                         AxisAlignedBB aabb = new AxisAlignedBB(pos, x + 1, y + 1, z + 1).expand(playerRange, playerRange, playerRange);
-                        @SuppressWarnings("unchecked")
+
                         List<EntityPlayer> list = world.getEntitiesWithinAABB(EntityPlayer.class, aabb);
                         if (list != null && !list.isEmpty()) {
                             startSong();

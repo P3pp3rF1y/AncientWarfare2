@@ -31,7 +31,7 @@ public class ItemNpcSpawner extends Item {
         this.setTextureName("ancientwarfare:npc/spawner_miner");
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+
     @Override
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
         list.add(I18n.format("guistrings.npc.spawner.right_click_to_place"));
@@ -109,7 +109,7 @@ public class ItemNpcSpawner extends Item {
         return stack;
     }
 
-    @SuppressWarnings("rawtypes")
+
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs tab, List list) {

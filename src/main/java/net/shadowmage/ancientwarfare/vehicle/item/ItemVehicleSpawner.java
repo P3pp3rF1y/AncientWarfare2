@@ -29,7 +29,7 @@ public class ItemVehicleSpawner extends Item {
         setCreativeTab(AWVehicleItemLoader.vehicleTab);
     }
 
-    @SuppressWarnings({"rawtypes"})
+
     @Override
     @SideOnly(Side.CLIENT)
     public void addInformation(ItemStack stack, EntityPlayer player, List tooltipList, boolean displayDetailedInformation) {
@@ -37,7 +37,7 @@ public class ItemVehicleSpawner extends Item {
         super.addInformation(stack, player, tooltipList, displayDetailedInformation);
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(Item item, CreativeTabs tab, List list) {

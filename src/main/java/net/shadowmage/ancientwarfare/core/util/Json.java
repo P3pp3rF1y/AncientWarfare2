@@ -5,7 +5,11 @@ import net.minecraft.nbt.NBTBase;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 public class Json {
 
@@ -266,7 +270,7 @@ public class Json {
             return new JsonParsingException(message + "\n" + "At char index: " + charIndex + " char: " + currentChar);
         }
 
-        @SuppressWarnings("serial")
+
         public static class JsonParsingException extends RuntimeException {
             public JsonParsingException(String message) {
                 super(message);

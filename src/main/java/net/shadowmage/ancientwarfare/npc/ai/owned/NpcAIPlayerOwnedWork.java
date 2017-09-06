@@ -35,11 +35,11 @@ public class NpcAIPlayerOwnedWork extends NpcAI<NpcBase> {
                 workIndex = 0;
             }
         }
-        return continueExecuting();
+        return shouldContinueExecuting();
     }
 
     @Override
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
         if (!npc.getIsAIEnabled()) {
             return false;
         }
@@ -79,7 +79,7 @@ public class NpcAIPlayerOwnedWork extends NpcAI<NpcBase> {
         ticksAtSite++;
         if(ticksAtSite == 1){
             BlockPos pos = entry.getPosition();
-            TileEntity te = npc.world.getTileEntity(pos.x, pos.y, pos.z);
+            TileEntity te = npc.world.getTileEntity(pos);
             if (!(te instanceof IWorkSite) || !((IWorker) npc).canWorkAt(((IWorkSite)te).getWorkType()) || !((IWorkSite) te).hasWork()) {
                 setMoveToNextSite();
                 return;
@@ -91,7 +91,7 @@ public class NpcAIPlayerOwnedWork extends NpcAI<NpcBase> {
         if (ticksAtSite >= AWNPCStatics.npcWorkTicks) {
             ticksAtSite = 0;
             BlockPos pos = entry.getPosition();
-            TileEntity te = npc.world.getTileEntity(pos.x, pos.y, pos.z);
+            TileEntity te = npc.world.getTileEntity(pos);
             if (te instanceof IWorkSite) {
                 IWorkSite site = (IWorkSite) te;
                 if (((IWorker) npc).canWorkAt(site.getWorkType())) {

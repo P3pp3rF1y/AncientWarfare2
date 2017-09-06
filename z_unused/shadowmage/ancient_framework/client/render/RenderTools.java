@@ -51,30 +51,30 @@ public static void drawOutlinedBoundingBox(AxisAlignedBB bb, float r, float g, f
   GL11.glLineWidth(8.0F);
   GL11.glDisable(GL11.GL_TEXTURE_2D);
   GL11.glDepthMask(false);
-  Tessellator tess = Tessellator.instance;
+  Tessellator tess = Tessellator.getInstance();
   tess.startDrawing(3);
-  tess.addVertex(bb.minX, bb.minY, bb.minZ);
-  tess.addVertex(bb.maxX, bb.minY, bb.minZ);
-  tess.addVertex(bb.maxX, bb.minY, bb.maxZ);
-  tess.addVertex(bb.minX, bb.minY, bb.maxZ);
-  tess.addVertex(bb.minX, bb.minY, bb.minZ);
+  bufferBuilder.pos(bb.minX, bb.minY, bb.minZ).endVertex();
+  bufferBuilder.pos(bb.maxX, bb.minY, bb.minZ).endVertex();
+  bufferBuilder.pos(bb.maxX, bb.minY, bb.maxZ).endVertex();
+  bufferBuilder.pos(bb.minX, bb.minY, bb.maxZ).endVertex();
+  bufferBuilder.pos(bb.minX, bb.minY, bb.minZ).endVertex();
   tess.draw();
   tess.startDrawing(3);
-  tess.addVertex(bb.minX, bb.maxY, bb.minZ);
-  tess.addVertex(bb.maxX, bb.maxY, bb.minZ);
-  tess.addVertex(bb.maxX, bb.maxY, bb.maxZ);
-  tess.addVertex(bb.minX, bb.maxY, bb.maxZ);
-  tess.addVertex(bb.minX, bb.maxY, bb.minZ);
+  bufferBuilder.pos(bb.minX, bb.maxY, bb.minZ).endVertex();
+  bufferBuilder.pos(bb.maxX, bb.maxY, bb.minZ).endVertex();
+  bufferBuilder.pos(bb.maxX, bb.maxY, bb.maxZ).endVertex();
+  bufferBuilder.pos(bb.minX, bb.maxY, bb.maxZ).endVertex();
+  bufferBuilder.pos(bb.minX, bb.maxY, bb.minZ).endVertex();
   tess.draw();
   tess.startDrawing(1);
-  tess.addVertex(bb.minX, bb.minY, bb.minZ);
-  tess.addVertex(bb.minX, bb.maxY, bb.minZ);
-  tess.addVertex(bb.maxX, bb.minY, bb.minZ);
-  tess.addVertex(bb.maxX, bb.maxY, bb.minZ);
-  tess.addVertex(bb.maxX, bb.minY, bb.maxZ);
-  tess.addVertex(bb.maxX, bb.maxY, bb.maxZ);
-  tess.addVertex(bb.minX, bb.minY, bb.maxZ);
-  tess.addVertex(bb.minX, bb.maxY, bb.maxZ);
+  bufferBuilder.pos(bb.minX, bb.minY, bb.minZ).endVertex();
+  bufferBuilder.pos(bb.minX, bb.maxY, bb.minZ).endVertex();
+  bufferBuilder.pos(bb.maxX, bb.minY, bb.minZ).endVertex();
+  bufferBuilder.pos(bb.maxX, bb.maxY, bb.minZ).endVertex();
+  bufferBuilder.pos(bb.maxX, bb.minY, bb.maxZ).endVertex();
+  bufferBuilder.pos(bb.maxX, bb.maxY, bb.maxZ).endVertex();
+  bufferBuilder.pos(bb.minX, bb.minY, bb.maxZ).endVertex();
+  bufferBuilder.pos(bb.minX, bb.maxY, bb.maxZ).endVertex();
   tess.draw();
   GL11.glDepthMask(true);
   GL11.glEnable(GL11.GL_TEXTURE_2D);
@@ -104,7 +104,7 @@ public static AxisAlignedBB adjustBBForPlayerPos(AxisAlignedBB bb, EntityPlayer 
  */
 public static void renderIcon(String tex, int width, int height, int x, int y)
   {
-  Tessellator tess = Tessellator.instance;
+  Tessellator tess = Tessellator.getInstance();
   AWTextureManager.bindTexture(tex);
   int halfW = width/2;
   int halfH = height/2;

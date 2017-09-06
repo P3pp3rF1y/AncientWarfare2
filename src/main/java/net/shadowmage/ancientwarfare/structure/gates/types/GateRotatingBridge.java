@@ -50,24 +50,24 @@ public class GateRotatingBridge extends Gate {
         BlockPos min = BlockTools.getMin(gate.pos1, gate.pos2);
         BlockPos max = BlockTools.getMax(gate.pos1, gate.pos2);
         if(gate.edgePosition == 0){
-            gate.boundingBox.setBounds(min.x, min.y, min.z, max.x + 1, max.y + 1, max.z + 1);
+            gate.getEntityBoundingBox().setBounds(min.x, min.y, min.z, max.x + 1, max.y + 1, max.z + 1);
         } else if (gate.edgePosition < gate.edgeMax) {
-            if(!(gate.boundingBox instanceof RotateBoundingBox)) {
+            if(!(gate.getEntityBoundingBox() instanceof RotateBoundingBox)) {
                 try {
                     ObfuscationReflectionHelper.setPrivateValue(Entity.class, gate, new RotateBoundingBox(gate.gateOrientation, min, max.offset(1, 1, 1)), "boundingBox", "field_70121_D");
                 } catch (Exception ignored) {
                     ignored.printStackTrace();
                 }
             }
-            if(gate.boundingBox instanceof RotateBoundingBox){
-                ((RotateBoundingBox) gate.boundingBox).rotate(gate.getOpeningStatus() * getMoveSpeed());
+            if(gate.getEntityBoundingBox() instanceof RotateBoundingBox){
+                ((RotateBoundingBox) gate.getEntityBoundingBox()).rotate(gate.getOpeningStatus() * getMoveSpeed());
             }
         } else {
             int heightAdj = max.y - min.y;
             BlockPos pos3 = max.up(-heightAdj).moveForward(gate.gateOrientation, heightAdj);
             max = BlockTools.getMax(min, pos3).offset(1, 1, 1);
             min = BlockTools.getMin(min, pos3);
-            gate.boundingBox.setBounds(min.x, min.y, min.z, max.x, max.y, max.z);
+            gate.getEntityBoundingBox().setBounds(min.x, min.y, min.z, max.x, max.y, max.z);
         }
     }
 

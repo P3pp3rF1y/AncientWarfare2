@@ -17,7 +17,11 @@ import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntr
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class InventoryTools {
 
@@ -324,7 +328,7 @@ public class InventoryTools {
      * if inv is not a sided inventory, or input side < 0, counts from entire inventory<br>
      * otherwise only returns the item count from the input side
      */
-    public static int getCountOf(IInventory inv, EnumFacing side, ItemStack filter) {
+    public static int getCountOf(IInventory inv, @Nullable EnumFacing side, ItemStack filter) {
         if (inv.getSizeInventory() <= 0) {
             return 0;
         }

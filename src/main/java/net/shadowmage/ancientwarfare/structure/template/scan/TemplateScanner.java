@@ -42,7 +42,7 @@ public final class TemplateScanner {
     /*
      * @param turns # of turns for proper orientation
      */
-    @SuppressWarnings("unchecked")
+
     public static StructureTemplate scan(World world, BlockPos min, BlockPos max, BlockPos key, int turns, String name) {
         int xSize = max.x - min.x + 1;
         int ySize = max.y - min.y + 1;

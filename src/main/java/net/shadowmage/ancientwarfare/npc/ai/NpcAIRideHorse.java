@@ -17,7 +17,7 @@ public class NpcAIRideHorse extends NpcAI<NpcBase> {
     private final AttributeModifier moveSpeedModifier;
 
     protected EntityHorse horse;
-    List<EntityAITasks.EntityAITaskEntry> horseAI = new ArrayList<>();
+    private List<EntityAITasks.EntityAITaskEntry> horseAI = new ArrayList<>();
 
     public NpcAIRideHorse(NpcBase npc, double speedFactor) {
         super(npc);
@@ -30,8 +30,8 @@ public class NpcAIRideHorse extends NpcAI<NpcBase> {
     @Override
     public boolean shouldExecute() {
         if (horse == null) {
-            if (npc.ridingEntity instanceof EntityHorse) {
-                horse = (EntityHorse) npc.ridingEntity;
+            if (npc.getRidingEntity() instanceof EntityHorse) {
+                horse = (EntityHorse) npc.getRidingEntity();
                 onMountHorse();
                 return true;
             }
@@ -62,16 +62,16 @@ public class NpcAIRideHorse extends NpcAI<NpcBase> {
 
     private void applyModifiers() {
         removeModifiers();
-        horse.getEntityAttribute(SharedMonsterAttributes.movementSpeed).applyModifier(moveSpeedModifier);
-        horse.getEntityAttribute(SharedMonsterAttributes.followRange).applyModifier(followRangeModifier);
+        horse.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(moveSpeedModifier);
+        horse.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(followRangeModifier);
     }
 
     private void removeModifiers() {
-        horse.getEntityAttribute(SharedMonsterAttributes.movementSpeed).removeModifier(moveSpeedModifier);
-        horse.getEntityAttribute(SharedMonsterAttributes.followRange).removeModifier(followRangeModifier);
+        horse.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(moveSpeedModifier);
+        horse.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).removeModifier(followRangeModifier);
     }
 
-    @SuppressWarnings("unchecked")
+
     private void removeHorseAI() {
         horseAI.clear();
         horseAI.addAll(horse.tasks.taskEntries);
@@ -80,7 +80,7 @@ public class NpcAIRideHorse extends NpcAI<NpcBase> {
         }
     }
 
-    @SuppressWarnings("unchecked")
+
     private void addHorseAI() {
         if (horse.tasks.taskEntries.isEmpty()) {
             horse.tasks.taskEntries.addAll(horseAI);

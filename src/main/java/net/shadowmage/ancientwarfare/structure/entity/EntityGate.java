@@ -371,7 +371,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 //Interaction, collision handling
     @Override
     public AxisAlignedBB getBoundingBox(){
-        return this.boundingBox;
+        return this.getEntityBoundingBox();
     }
 
     @Override
@@ -403,7 +403,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
     }
 
     private boolean isInside(Entity entity){
-        return gateType instanceof GateRotatingBridge && boundingBox.intersectsWith(entity.boundingBox);
+        return gateType instanceof GateRotatingBridge && boundingBox.intersectsWith(entity.getEntityBoundingBox());
     }
 
     @Override

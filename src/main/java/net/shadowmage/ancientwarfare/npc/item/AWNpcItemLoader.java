@@ -1,12 +1,12 @@
 package net.shadowmage.ancientwarfare.npc.item;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.item.AWCoreItemLoader;
 import net.shadowmage.ancientwarfare.core.item.ItemComponent;
@@ -24,7 +24,7 @@ public class AWNpcItemLoader {
             return AWItems.npcSpawner;
         }
 
-        @SuppressWarnings({"rawtypes", "unchecked"})
+
         @Override
         public void displayAllReleventItems(List par1List) {
             super.displayAllReleventItems(par1List);

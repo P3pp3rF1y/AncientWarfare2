@@ -20,7 +20,11 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
 
 public enum StructureValidationType {
     GROUND(StructureValidatorGround.class),
@@ -123,10 +127,10 @@ public enum StructureValidationType {
     public static class ValidationProperty {
         public String displayName;
         public String propertyName;
-        @SuppressWarnings("rawtypes")
+
         public Class clz;//property class -- boolean or int for most
 
-        @SuppressWarnings("rawtypes")
+
         public ValidationProperty(String reg, String display, Class clz) {
             this.propertyName = reg;
             this.displayName = display;

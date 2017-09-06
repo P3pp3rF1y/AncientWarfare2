@@ -484,7 +484,7 @@ public class AWNPCEntityLoader {
     /*
      * used by npc spawner item to get the sub-items
      */
-    @SuppressWarnings({"rawtypes", "unchecked"})
+
     public static void getSpawnerSubItems(List list) {
         for (NpcDeclaration dec : npcMap.values()) {
             if (dec.canSpawnBaseEntity) {

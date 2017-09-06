@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
@@ -88,7 +89,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
     public TileTownHall getTownHall() {
         BlockPos pos = getTownHallPosition();
         if (pos != null) {
-            TileEntity te = world.getTileEntity(pos.x, pos.y, pos.z);
+            TileEntity te = world.getTileEntity(pos);
             if (te instanceof TileTownHall) {
                 return (TileTownHall) te;
             }
@@ -126,7 +127,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
         if (!world.blockExists(pos.x, pos.y, pos.z)) {
             return true;
         }//cannot validate, unloaded...assume good
-        TileEntity te = world.getTileEntity(pos.x, pos.y, pos.z);
+        TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileTownHall) {
             if (hasCommandPermissions(((TileTownHall) te).getOwnerName()))
                 return true;

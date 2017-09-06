@@ -9,7 +9,6 @@ import net.minecraftforge.fml.client.config.GuiConfigEntries;
 import net.minecraftforge.fml.client.config.GuiConfigEntries.CategoryEntry;
 import net.minecraftforge.fml.client.config.IConfigElement;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.ConfigManager;
 import net.shadowmage.ancientwarfare.core.gui.GuiBackpack;
@@ -37,10 +36,10 @@ import java.util.List;
  */
 public class ClientProxy extends ClientProxyBase {
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
+
     @Override
     public void registerClient() {
-        FMLCommonHandler.instance().bus().register(InputHandler.instance);
+        MinecraftForge.EVENT_BUS.register(InputHandler.instance);
         NetworkHandler.registerGui(NetworkHandler.GUI_CRAFTING, GuiEngineeringStation.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_RESEARCH_STATION, GuiResearchStation.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_BACKPACK, GuiBackpack.class);
@@ -75,7 +74,7 @@ public class ClientProxy extends ClientProxyBase {
 
     public static final class KeybindCategoryEntry extends CategoryEntry {
 
-        @SuppressWarnings("rawtypes")
+
         public KeybindCategoryEntry(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement configElement) {
             super(owningScreen, owningEntryList, configElement);
         }

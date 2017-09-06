@@ -627,9 +627,9 @@ public class AWNPCStatics extends ModConfiguration {
         Attribute type = attributes.get(npc.getNpcType());
         if (type != null) {
             npc.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(type.baseHealth());
-            npc.getEntityAttribute(SharedMonsterAttributes.movementSpeed).setBaseValue(type.baseSpeed());
+            npc.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(type.baseSpeed());
             npc.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(type.baseAttack());
-            npc.getEntityAttribute(SharedMonsterAttributes.followRange).setBaseValue(type.baseRange());
+            npc.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(type.baseRange());
             npc.setExperienceDrop(type.expDrop());
         }
     }

@@ -2,9 +2,9 @@ package net.shadowmage.ancientwarfare.core.util;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.Vec3d;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import java.util.HashSet;
@@ -15,17 +15,13 @@ public class RayTraceUtils {
     public static RayTraceResult getPlayerTarget(EntityPlayer player, float range, float border) {
         HashSet<Entity> excluded = new HashSet<>();
         excluded.add(player);
-        if (player.ridingEntity != null) {
-            excluded.add(player.ridingEntity);
+        if (player.getRidingEntity() != null) {
+            excluded.add(player.getRidingEntity());
         }
         float yOffset = player.world.isRemote ? 0.f : 1.62F;
         Vec3d look = player.getLookVec();
-        look.x *= range;
-        look.y *= range;
-        look.z *= range;
-        look.x += player.posX;
-        look.y += player.posY + yOffset;
-        look.z += player.posZ;
+        look = look.scale(range);
+        look = look.addVector(player.posX, player.posY + yOffset, player.posZ);
         return tracePath(player.world, player.posX, player.posY + yOffset, player.posZ, look.x, look.y, look.z, border, excluded);
     }
 
@@ -47,7 +43,7 @@ public class RayTraceUtils {
      * @param excluded   any excluded entities (the player, etc)
      * @return a RayTraceResult of either the block hit (no entity hit), the entity hit (hit an entity), or null for nothing hit
      */
-    @SuppressWarnings("unchecked")
+
     public static RayTraceResult tracePath(World world, double x, double y, double z, double tx, double ty, double tz, float borderSize, HashSet<Entity> excluded) {
         double minX = x < tx ? x : tx;
         double minY = y < ty ? y : ty;
@@ -61,11 +57,11 @@ public class RayTraceUtils {
         float closestHit = Float.POSITIVE_INFINITY;
         float currentHit;
         RayTraceResult intercept;
-        Vec3d startVec = Vec3d.createVectorHelper(x, y, z);
-        Vec3d endVec = Vec3d.createVectorHelper(tx, ty, tz);
+        Vec3d startVec = new Vec3d(x, y, z);
+        Vec3d endVec = new Vec3d(tx, ty, tz);
         for (Entity ent : allEntities) {
             if (ent.canBeCollidedWith() && !excluded.contains(ent)) {
-                AxisAlignedBB entityBb = ent.boundingBox;
+                AxisAlignedBB entityBb = ent.getEntityBoundingBox();
                 if (entityBb != null) {
                     float entBorder = ent.getCollisionBorderSize();
                     intercept = entityBb.expand(entBorder, entBorder, entBorder).calculateIntercept(startVec, endVec);
@@ -82,8 +78,8 @@ public class RayTraceUtils {
         if (closestHitEntity != null) {
             return new RayTraceResult(closestHitEntity);
         }
-        startVec = Vec3d.createVectorHelper(x, y, z);
-        endVec = Vec3d.createVectorHelper(tx, ty, tz);
+        startVec = new Vec3d(x, y, z);
+        endVec = new Vec3d(tx, ty, tz);
         return world.rayTraceBlocks(startVec, endVec);
     }
 

@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.structure;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -19,7 +18,16 @@ import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlockLoader;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.command.CommandStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
-import net.shadowmage.ancientwarfare.structure.container.*;
+import net.shadowmage.ancientwarfare.structure.container.ContainerDraftingStation;
+import net.shadowmage.ancientwarfare.structure.container.ContainerGateControl;
+import net.shadowmage.ancientwarfare.structure.container.ContainerSoundBlock;
+import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvanced;
+import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvancedBlock;
+import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvancedInventoryBlock;
+import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvancedInventoryItem;
+import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerPlacer;
+import net.shadowmage.ancientwarfare.structure.container.ContainerStructureScanner;
+import net.shadowmage.ancientwarfare.structure.container.ContainerStructureSelection;
 import net.shadowmage.ancientwarfare.structure.crafting.AWStructureCrafting;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
@@ -64,9 +72,9 @@ public class AncientWarfareStructures {
         /*
          * Forge/FML registry
          */
-        FMLCommonHandler.instance().bus().register(this);
+        MinecraftForge.EVENT_BUS.register(this);
         if (AWStructureStatics.enableWorldGen) {
-            FMLCommonHandler.instance().bus().register(WorldGenTickHandler.INSTANCE);
+            MinecraftForge.EVENT_BUS.register(WorldGenTickHandler.INSTANCE);
             if (AWStructureStatics.enableStructureGeneration)
                 GameRegistry.registerWorldGenerator(WorldStructureGenerator.INSTANCE, 1);
             if (AWStructureStatics.enableTownGeneration)

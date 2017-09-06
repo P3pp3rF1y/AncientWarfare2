@@ -218,7 +218,7 @@ public class Gate implements IGateType {
         }
         BlockPos min = BlockTools.getMin(gate.pos1, gate.pos2);
         BlockPos max = BlockTools.getMax(gate.pos1, gate.pos2);
-        if(!(gate.boundingBox instanceof DualBoundingBox)) {
+        if(!(gate.getEntityBoundingBox() instanceof DualBoundingBox)) {
             try {
                 ObfuscationReflectionHelper.setPrivateValue(Entity.class, gate, new DualBoundingBox(min, max), "boundingBox", "field_70121_D");
             } catch (Exception ignored) {
@@ -226,9 +226,9 @@ public class Gate implements IGateType {
             }
         }
         if (gate.edgePosition > 0) {
-            gate.boundingBox.setBounds(min.x, max.y + 0.5d, min.z, max.x + 1, max.y + 1, max.z + 1);
+            gate.getEntityBoundingBox().setBounds(min.x, max.y + 0.5d, min.z, max.x + 1, max.y + 1, max.z + 1);
         } else {
-            gate.boundingBox.setBounds(min.x, min.y, min.z, max.x + 1, max.y + 1, max.z + 1);
+            gate.getEntityBoundingBox().setBounds(min.x, min.y, min.z, max.x + 1, max.y + 1, max.z + 1);
         }
     }
 

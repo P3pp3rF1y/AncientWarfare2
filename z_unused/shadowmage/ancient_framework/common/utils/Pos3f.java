@@ -25,7 +25,7 @@ package shadowmage.ancient_framework.common.utils;
 import java.text.DecimalFormat;
 
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.Vec3d;
+import net.minecraft.util.math.Vec3d;
 
 public class Pos3f
 {

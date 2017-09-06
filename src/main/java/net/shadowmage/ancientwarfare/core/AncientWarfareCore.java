@@ -3,12 +3,15 @@ package net.shadowmage.ancientwarfare.core;
 import com.mojang.authlib.GameProfile;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.*;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.command.CommandResearch;
@@ -74,9 +77,10 @@ public class AncientWarfareCore {
          * register server-side network handler and anything that needs loaded on the event busses
          */
         NetworkHandler.INSTANCE.registerNetwork();//register network handler, server side
-        FMLCommonHandler.instance().bus().register(ResearchTracker.INSTANCE);
-        FMLCommonHandler.instance().bus().register(new Timekeeper());
-        FMLCommonHandler.instance().bus().register(this);
+
+        MinecraftForge.EVENT_BUS.register(ResearchTracker.INSTANCE);
+        MinecraftForge.EVENT_BUS.register(new Timekeeper());
+        MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(this);
 
 

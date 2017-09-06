@@ -5,10 +5,10 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathPoint;
-import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.Vec3d;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 import java.util.HashSet;
@@ -61,13 +61,13 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
 
     public NpcAI(T npc) {
         this.npc = npc;
-        maxPFDist = npc.getEntityAttribute(SharedMonsterAttributes.followRange).getBaseValue() * 0.90d;
+        maxPFDist = npc.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getBaseValue() * 0.90d;
 
         maxPFDistSq = maxPFDist * maxPFDist;
     }
 
     protected final void moveToEntity(Entity target, double sqDist) {
-        moveToPosition(target.posX, target.boundingBox.minY, target.posZ, sqDist);
+        moveToPosition(target.posX, target.getEntityBoundingBox().minY, target.posZ, sqDist);
     }
 
     protected final void moveToPosition(int x, int y, int z, double sqDist) {
@@ -75,7 +75,7 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
     }
 
     protected final void moveToPosition(BlockPos pos, double sqDist) {
-        moveToPosition(pos.x, pos.y, pos.z, sqDist);
+        moveToPosition(pos.getX(), pos.getY(), pos.getZ(), sqDist);
     }
     
     /*
@@ -109,60 +109,58 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
     }
 
     protected final void moveLongDistance(double x, double y, double z) {
-        Vec3d vec = Vec3d.createVectorHelper(x - npc.posX, y - npc.posY, z - npc.posZ);
+        Vec3d vec = new Vec3d(x - npc.posX, y - npc.posY, z - npc.posZ);
 
         //normalize vector to a -1 <-> 1 value range
         double w = Math.sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
         if (w != 0) {
-            vec.x /= w;
-            vec.y /= w;
-            vec.z /= w;
+            vec = vec.scale(1d / w);
         }
 
         //then mult by PF distance to find the proper vector for our PF length
-        vec.x *= maxPFDist;
-        vec.y *= maxPFDist;
-        vec.z *= maxPFDist;
+        vec = vec.scale(maxPFDist);
 
         //finally re-offset by npc position to get an actual target position
-        vec.x += npc.posX;
-        vec.y += npc.posY;
-        vec.z += npc.posZ;
+        vec = vec.addVector(npc.posX, npc.posY, npc.posZ);
 
         //move npc towards the calculated partial target
         setPath(vec.x, vec.y, vec.z);
     }
 
     protected final void returnHome(){
-        ChunkCoordinates cc = npc.getHomePosition();
-        setPath(cc.posX, cc.posY, cc.posZ);
+        setPath(npc.getHomePosition());
     }
 
     protected final void setPath(double x, double y, double z){
-        PathEntity pathEntity = trimPath(npc.getNavigator().getPathToXYZ(x, y, z));
-        npc.getNavigator().setPath(pathEntity, moveSpeed);
+        Path path = trimPath(npc.getNavigator().getPathToXYZ(x, y, z));
+        npc.getNavigator().setPath(path, moveSpeed);
     }
 
-    protected PathEntity trimPath(PathEntity pathEntity){
-        if(pathEntity!=null){
-            int index = pathEntity.getCurrentPathIndex();
-            PathPoint pathpoint = pathEntity.getPathPointFromIndex(index);
+    protected final void setPath(BlockPos pos){
+        Path path = trimPath(npc.getNavigator().getPathToPos(pos));
+        npc.getNavigator().setPath(path, moveSpeed);
+    }
+
+    protected Path trimPath(Path path){
+        if(path!=null){
+            int index = path.getCurrentPathIndex();
+            PathPoint pathpoint = path.getPathPointFromIndex(index);
             if(npc.getBlockPathWeight(pathpoint.x, pathpoint.y, pathpoint.z) >= 0) {
 
-                for (int i = index + 1; i < pathEntity.getCurrentPathLength() ; i++){
-                    pathpoint = pathEntity.getPathPointFromIndex(i);
+                for (int i = index + 1; i < path.getCurrentPathLength() ; i++){
+                    pathpoint = path.getPathPointFromIndex(i);
                     if (npc.getBlockPathWeight(pathpoint.x, pathpoint.y, pathpoint.z)<0){
-                        pathEntity.setCurrentPathLength(i - 1);
+                        path.setCurrentPathLength(i - 1);
                         break;
                     }
                 }
             }else{
-                Vec3d vec = RandomPositionGenerator.findRandomTargetBlockAwayFrom(npc, MIN_RANGE, MIN_RANGE, Vec3d.createVectorHelper(npc.posX, npc.posY, npc.posZ));
+                Vec3d vec = RandomPositionGenerator.findRandomTargetBlockAwayFrom(npc, MIN_RANGE, MIN_RANGE, new Vec3d(npc.posX, npc.posY, npc.posZ));
                 if(vec!=null)
                     return npc.getNavigator().getPathToXYZ(vec.x, vec.y, vec.z);
             }
         }
-        return pathEntity;
+        return path;
     }
     
     /*

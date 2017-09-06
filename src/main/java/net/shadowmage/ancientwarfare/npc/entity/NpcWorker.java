@@ -12,6 +12,7 @@ import net.minecraft.item.ItemHoe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
@@ -19,8 +20,19 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite.WorkType;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.item.ItemHammer;
 import net.shadowmage.ancientwarfare.core.item.ItemQuill;
-import net.shadowmage.ancientwarfare.npc.ai.*;
-import net.shadowmage.ancientwarfare.npc.ai.owned.*;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIDoor;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIFleeHostiles;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedAlarmResponse;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedFindWorksite;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedFollowCommand;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedGetFood;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedIdleWhenHungry;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedRideHorse;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedWork;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedWorkRandom;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.item.ItemWorkOrder;
 import net.shadowmage.ancientwarfare.npc.orders.WorkOrder;
@@ -91,9 +103,9 @@ public class NpcWorker extends NpcPlayerOwned implements IWorker {
         if (canWorkAt(type)) {
             float effectiveness = 1.f + this.getLevelingStats().getLevel() * 0.05F;
 
-            Item item = getHeldItem().getItem();
+            Item item = getHeldItemMainhand().getItem();
             if (item instanceof ItemTool) {
-                effectiveness += ((ItemTool) item).func_150913_i().getEfficiencyOnProperMaterial() * 0.05f;
+                effectiveness += ((ItemTool) item).toolMaterial.getEfficiencyOnProperMaterial() * 0.05f;
             } else if (item instanceof ItemHoe) {
                 ToolMaterial mat = ToolMaterial.VALUEOf(((ItemHoe) item).getToolMaterialName());
                 effectiveness += mat.getEfficiencyOnProperMaterial() * 0.05f;

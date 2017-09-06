@@ -1,3 +1,4 @@
+//TODO JEI integration
 package net.shadowmage.ancientwarfare.nei_plugin;
 
 import net.minecraftforge.fml.common.Loader;

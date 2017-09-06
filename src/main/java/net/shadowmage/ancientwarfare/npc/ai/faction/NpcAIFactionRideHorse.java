@@ -15,14 +15,14 @@ public class NpcAIFactionRideHorse extends NpcAIRideHorse {
 
     @Override
     public boolean shouldExecute() {
-        return !wasHorseKilled && (npc.ridingEntity == null || horse != npc.ridingEntity);
+        return !wasHorseKilled && (npc.getRidingEntity() == null || horse != npc.getRidingEntity());
     }
 
     @Override
     public void startExecuting() {
         if (horse == null && !wasHorseKilled) {
-            if (npc.ridingEntity instanceof EntityHorse) {
-                horse = (EntityHorse) npc.ridingEntity;
+            if (npc.getRidingEntity() instanceof EntityHorse) {
+                horse = (EntityHorse) npc.getRidingEntity();
             } else {
                 spawnHorse();
             }
@@ -35,15 +35,12 @@ public class NpcAIFactionRideHorse extends NpcAIRideHorse {
     private void spawnHorse() {
         EntityHorse horse = new EntityHorse(npc.world);
         horse.setLocationAndAngles(npc.posX, npc.posY, npc.posZ, npc.rotationYaw, npc.rotationPitch);
-        do {
-            horse.setHorseType(0);
-            horse.setGrowingAge(0);
-            horse.onSpawnWithEgg(null);
-        }while (horse.getHorseType()!=0 || horse.isChild());
+        horse.setGrowingAge(0); //TODO there used to be loop here to make sure horse is grown - test that child horses don't get spawned
+        horse.onInitialSpawn(npc.world.getDifficultyForLocation(npc.getPosition()), null);
         horse.setHorseTamed(true);
         this.horse = horse;
-        npc.world.spawnEntityInWorld(horse);
-        npc.mountEntity(horse);
+        npc.world.spawnEntity(horse);
+        horse.getPassengers().add(npc);
         onMountHorse();
     }
 

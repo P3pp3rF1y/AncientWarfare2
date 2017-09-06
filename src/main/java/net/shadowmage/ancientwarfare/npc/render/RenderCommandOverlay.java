@@ -84,8 +84,8 @@ public final class RenderCommandOverlay {
             AxisAlignedBB bb = null;
             if (pos.typeOfHit == MovingObjectType.BLOCK) {
                 bb = new AxisAlignedBB(pos.blockX, pos.blockY, pos.blockZ, pos.blockX + 1.d, pos.blockY + 1.d, pos.blockZ + 1.d).expand(0.1d, 0.1d, 0.1d);
-            } else if (pos.typeOfHit == MovingObjectType.ENTITY && pos.entityHit.boundingBox != null && pos.entityHit instanceof EntityLivingBase) {
-                bb = pos.entityHit.boundingBox.copy();
+            } else if (pos.typeOfHit == MovingObjectType.ENTITY && pos.entityHit.getEntityBoundingBox() != null && pos.entityHit instanceof EntityLivingBase) {
+                bb = pos.entityHit.getEntityBoundingBox().copy();
                 Entity e = pos.entityHit;
                 float t = 1.f - evt.partialTicks;
                 double dx = e.posX - e.lastTickPosX;
@@ -100,10 +100,10 @@ public final class RenderCommandOverlay {
         }
         AxisAlignedBB bb = null;
         for (Entity e : targetEntities) {
-            if (e.boundingBox == null) {
+            if (e.getEntityBoundingBox() == null) {
                 continue;
             }
-            bb = e.boundingBox.copy();//TODO all this bb-rendering could potentially be moved to the entity itself
+            bb = e.getEntityBoundingBox().copy();//TODO all this bb-rendering could potentially be moved to the entity itself
             float t = 1.f - evt.partialTicks;
             double dx = e.posX - e.lastTickPosX;
             double dy = e.posY - e.lastTickPosY;

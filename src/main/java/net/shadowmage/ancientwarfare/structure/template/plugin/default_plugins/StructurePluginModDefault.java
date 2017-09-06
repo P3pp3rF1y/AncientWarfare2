@@ -43,7 +43,7 @@ public class StructurePluginModDefault implements StructureContentPlugin {
         this.mod = id;
     }
 
-    @SuppressWarnings("unchecked")
+
     @Override
     public void addHandledBlocks(IStructurePluginManager manager) {
         for (Block aBlock : (Iterable<Block>) GameData.getBlockRegistry()) {
@@ -57,7 +57,7 @@ public class StructurePluginModDefault implements StructureContentPlugin {
         }
     }
 
-    @SuppressWarnings("unchecked")
+
     @Override
     public void addHandledEntities(IStructurePluginManager manager) {
         for (Object key : EntityList.stringToClassMapping.keySet()) {

@@ -7,14 +7,14 @@ import java.util.List;
 
 public class ConfigManager {
 
-    @SuppressWarnings("rawtypes")
+
     private static List<IConfigElement> configElements = new ArrayList<>();
 
     public static void registerConfigCategory(IConfigElement c) {
         configElements.add(c);
     }
 
-    @SuppressWarnings("rawtypes")
+
     public static List<IConfigElement> getConfigElements() {
         return configElements;
     }

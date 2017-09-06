@@ -6,7 +6,7 @@ import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.pathfinding.PathEntity;
+import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathNavigate;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.util.math.MathHelper;
@@ -35,7 +35,7 @@ public class NpcAIDoor extends EntityAIBase {
         PathNavigate pathnavigate = this.theEntity.getNavigator();
         if (!pathnavigate.getCanBreakDoors() || pathnavigate.noPath())
             return false;
-        PathEntity pathentity = pathnavigate.getPath();
+        Path pathentity = pathnavigate.getPath();
         for (int i = 0; i < Math.min(pathentity.getCurrentPathIndex() + 2, pathentity.getCurrentPathLength()); ++i)
         {
             PathPoint pathpoint = pathentity.getPathPointFromIndex(i);
@@ -65,7 +65,7 @@ public class NpcAIDoor extends EntityAIBase {
     }
 
     @Override
-    public final boolean continueExecuting() {
+    public final boolean shouldContinueExecuting() {
         return close && timer > 0;
     }
 

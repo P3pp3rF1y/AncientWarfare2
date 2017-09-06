@@ -1,17 +1,16 @@
 package net.shadowmage.ancientwarfare.npc;
 
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
@@ -24,7 +23,19 @@ import net.shadowmage.ancientwarfare.npc.block.AWNPCBlockLoader;
 import net.shadowmage.ancientwarfare.npc.command.CommandDebugAI;
 import net.shadowmage.ancientwarfare.npc.command.CommandFaction;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
-import net.shadowmage.ancientwarfare.npc.container.*;
+import net.shadowmage.ancientwarfare.npc.container.ContainerCombatOrder;
+import net.shadowmage.ancientwarfare.npc.container.ContainerNpcBard;
+import net.shadowmage.ancientwarfare.npc.container.ContainerNpcCreativeControls;
+import net.shadowmage.ancientwarfare.npc.container.ContainerNpcFactionBard;
+import net.shadowmage.ancientwarfare.npc.container.ContainerNpcFactionTradeSetup;
+import net.shadowmage.ancientwarfare.npc.container.ContainerNpcFactionTradeView;
+import net.shadowmage.ancientwarfare.npc.container.ContainerNpcInventory;
+import net.shadowmage.ancientwarfare.npc.container.ContainerNpcPlayerOwnedTrade;
+import net.shadowmage.ancientwarfare.npc.container.ContainerRoutingOrder;
+import net.shadowmage.ancientwarfare.npc.container.ContainerTownHall;
+import net.shadowmage.ancientwarfare.npc.container.ContainerTradeOrder;
+import net.shadowmage.ancientwarfare.npc.container.ContainerUpkeepOrder;
+import net.shadowmage.ancientwarfare.npc.container.ContainerWorkOrder;
 import net.shadowmage.ancientwarfare.npc.crafting.AWNpcCrafting;
 import net.shadowmage.ancientwarfare.npc.entity.AWNPCEntityLoader;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
@@ -65,8 +76,8 @@ public class AncientWarfareNPC {
          */
         statics = new AWNPCStatics("AncientWarfareNpc");
         proxy.registerClient();//must be loaded after configs
-        FMLCommonHandler.instance().bus().register(FactionTracker.INSTANCE);
-        FMLCommonHandler.instance().bus().register(this);
+        MinecraftForge.EVENT_BUS.register(FactionTracker.INSTANCE);
+        MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(net.shadowmage.ancientwarfare.npc.event.EventHandler.INSTANCE);
 
         /*

@@ -147,7 +147,7 @@ public class StructureValidationProperty {
         return false;
     }
 
-    @SuppressWarnings("unchecked")
+
     public Set<String> getDataStringSet() {
         if(dataType == DATA_TYPE_STRING_SET) {
             return (Set<String>) data;

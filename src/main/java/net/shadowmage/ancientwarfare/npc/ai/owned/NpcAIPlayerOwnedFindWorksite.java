@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.ai.owned;
 
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
@@ -28,7 +29,7 @@ public class NpcAIPlayerOwnedFindWorksite extends NpcAI<NpcWorker> {
     }
 
     @Override
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
         return false;
     }
 
@@ -38,7 +39,7 @@ public class NpcAIPlayerOwnedFindWorksite extends NpcAI<NpcWorker> {
         if (npc.autoWorkTarget != null)//validate existing position
         {
             BlockPos pos = npc.autoWorkTarget;
-            TileEntity te = npc.world.getTileEntity(pos.x, pos.y, pos.z);
+            TileEntity te = npc.world.getTileEntity(pos);
             if (te instanceof IWorkSite) {
                 IWorkSite site = (IWorkSite) te;
                 if (!npc.canWorkAt(site.getWorkType()))

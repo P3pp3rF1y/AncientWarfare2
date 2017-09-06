@@ -4,22 +4,25 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcCourier;
 import net.shadowmage.ancientwarfare.npc.orders.RoutingOrder;
 
+import javax.annotation.Nonnull;
+
 public class NpcAIPlayerOwnedCourier extends NpcAI<NpcCourier> {
 
-    boolean init;
-
-    int routeIndex;
-    int ticksToWork;
-    int ticksAtSite;
-
-    RoutingOrder order;
-    @Nonnull ItemStack routeStack;
+    private boolean init;
+    private int routeIndex;
+    private int ticksToWork;
+    private int ticksAtSite;
+    private RoutingOrder order;
+    @Nonnull
+    private ItemStack routeStack;
 
     public NpcAIPlayerOwnedCourier(NpcCourier npc) {
         super(npc);
@@ -36,11 +39,11 @@ public class NpcAIPlayerOwnedCourier extends NpcAI<NpcCourier> {
                 routeIndex = 0;
             }
         }
-        return continueExecuting();
+        return shouldContinueExecuting();
     }
 
     @Override
-    public boolean continueExecuting() {
+    public boolean shouldContinueExecuting() {
         if (!npc.getIsAIEnabled() || npc.shouldBeAtHome()) {
             return false;
         }
@@ -55,7 +58,7 @@ public class NpcAIPlayerOwnedCourier extends NpcAI<NpcCourier> {
     @Override
     public void updateTask() {
         BlockPos pos = order.get(routeIndex).getTarget();
-        double dist = npc.getDistanceSq(pos.x, pos.y, pos.z);
+        double dist = npc.getDistanceSq(pos);
         if (dist > AWNPCStatics.npcActionRange * AWNPCStatics.npcActionRange) {
             npc.addAITask(TASK_MOVE);
             ticksAtSite = 0;
@@ -84,7 +87,7 @@ public class NpcAIPlayerOwnedCourier extends NpcAI<NpcCourier> {
         } else {
             ticksAtSite++;
             if (npc.ticksExisted % 10 == 0) {
-                npc.swingItem();
+                npc.swingArm(EnumHand.MAIN_HAND);
             }
             if (ticksAtSite > ticksToWork) {
                 setMoveToNextSite();
@@ -111,8 +114,7 @@ public class NpcAIPlayerOwnedCourier extends NpcAI<NpcCourier> {
     }
 
     private IInventory getTargetInventory() {
-        BlockPos pos = order.get(routeIndex).getTarget();
-        TileEntity te = npc.world.getTileEntity(pos.x, pos.y, pos.z);
+        TileEntity te = npc.world.getTileEntity(order.get(routeIndex).getTarget());
         if (te instanceof IInventory) {
             if(te instanceof IOwnable){
                 String name = ((IOwnable) te).getOwnerName();

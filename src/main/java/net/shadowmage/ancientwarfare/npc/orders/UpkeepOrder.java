@@ -65,7 +65,7 @@ public class UpkeepOrder implements INBTSerializable<NBTTagCompound> {
     }
 
     public boolean addUpkeepPosition(World world, BlockPos pos) {
-        if(pos != null && world.getTileEntity(pos.x, pos.y, pos.z) instanceof IInventory) {
+        if(pos != null && world.getTileEntity(pos) instanceof IInventory) {
             if (!AWNPCStatics.npcAllowUpkeepAnyInventory && (!(world.getBlock(pos.x, pos.y, pos.z) instanceof BlockTownHall)))
                 return false;
             upkeepPosition = pos;

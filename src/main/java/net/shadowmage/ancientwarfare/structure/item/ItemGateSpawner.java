@@ -56,7 +56,7 @@ public class ItemGateSpawner extends Item implements IItemKeyInterface, IBoxRend
         Gate.registerIconsForGates(par1IconRegister);
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+
     @Override
     public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
         NBTTagCompound tag;
@@ -74,7 +74,7 @@ public class ItemGateSpawner extends Item implements IItemKeyInterface, IBoxRend
         list.add(I18n.format("guistrings.gate.clear_item"));
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+
     @Override
     public void getSubItems(Item item, CreativeTabs tab, List list) {
         Gate g;
@@ -145,7 +145,7 @@ public class ItemGateSpawner extends Item implements IItemKeyInterface, IBoxRend
         return stack;
     }
 
-    @SuppressWarnings("unchecked")
+
     protected boolean canSpawnGate(World world, BlockPos pos1, BlockPos pos2) {
         BlockPos min = BlockTools.getMin(pos1, pos2);
         BlockPos max = BlockTools.getMax(pos1, pos2);

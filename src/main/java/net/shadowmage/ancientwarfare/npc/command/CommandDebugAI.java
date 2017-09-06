@@ -30,7 +30,7 @@ public class CommandDebugAI extends CommandBase {
         return "command.aw.npcdebug.usage";
     }
 
-    @SuppressWarnings("rawtypes")
+
     @Override
     public List getCommandAliases() {
         return null;
@@ -52,7 +52,7 @@ public class CommandDebugAI extends CommandBase {
         return par1ICommandSender.canCommandSenderUseCommand(this.permissionLevel, this.getCommandName());
     }
 
-    @SuppressWarnings("rawtypes")
+
     @Override
     public List addTabCompletionOptions(ICommandSender var1, String[] var2) {
         return null;

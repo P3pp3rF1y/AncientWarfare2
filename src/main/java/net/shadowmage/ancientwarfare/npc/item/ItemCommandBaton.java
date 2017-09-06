@@ -24,7 +24,12 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.CommandType;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 public class ItemCommandBaton extends Item implements IItemKeyInterface {
 
@@ -42,7 +47,7 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
         this.setMaxDamage(material.getMaxUses());
     }
 
-    @SuppressWarnings({"unchecked"})
+
     @Override
     public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
         String keyText, text;
@@ -103,7 +108,7 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
         return true;
     }
 
-    @SuppressWarnings({"unchecked"})
+
     @Override
     public Multimap getAttributeModifiers(ItemStack stack) {
         Multimap multimap = super.getAttributeModifiers(stack);

@@ -16,7 +16,7 @@ public abstract class NpcAIAttack<T extends NpcBase> extends NpcAI<T>{
     }
 
     @Override
-    public final boolean continueExecuting() {
+    public final boolean shouldContinueExecuting() {
         return npc.getIsAIEnabled() && target != null && target.isEntityAlive() && target.equals(npc.getAttackTarget());
     }
 
@@ -40,7 +40,7 @@ public abstract class NpcAIAttack<T extends NpcBase> extends NpcAI<T>{
     @Override
     public final void updateTask() {
         npc.getLookHelper().setLookPositionWithEntity(target, 30.f, 30.f);
-        double distanceToEntity = this.npc.getDistanceSq(target.posX, target.boundingBox.minY, target.posZ);
+        double distanceToEntity = this.npc.getDistanceSq(target.posX, target.getEntityBoundingBox().minY, target.posZ);
         if(shouldCloseOnTarget(distanceToEntity)){
             npc.addAITask(TASK_MOVE);
             moveToEntity(target, distanceToEntity);
