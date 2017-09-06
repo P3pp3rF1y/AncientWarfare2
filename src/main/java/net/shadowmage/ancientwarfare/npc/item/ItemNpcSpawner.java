@@ -64,7 +64,7 @@ public class ItemNpcSpawner extends Item {
             npc.setOwner(player);
             npc.setPosition(hit.x + 0.5d, hit.y, hit.z + 0.5d);
             npc.setHomeAreaAtCurrentPosition();
-            player.world.spawnEntityInWorld(npc);
+            player.world.spawnEntity(npc);
             if (!player.capabilities.isCreativeMode) {
                 stack.shrink(1);
             }

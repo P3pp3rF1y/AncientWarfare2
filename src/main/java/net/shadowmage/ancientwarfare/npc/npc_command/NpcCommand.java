@@ -2,12 +2,12 @@ package net.shadowmage.ancientwarfare.npc.npc_command;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.RayTraceResult.MovingObjectType;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.network.PacketNpcCommand;
@@ -37,11 +37,11 @@ public class NpcCommand {
      * client-side handle command. called from command baton key handler
      */
     public static void handleCommandClient(CommandType type, RayTraceResult hit) {
-        if (hit != null && hit.typeOfHit != MovingObjectType.MISS) {
-            if (hit.typeOfHit == MovingObjectType.ENTITY && hit.entityHit != null) {
+        if (hit != null && hit.typeOfHit != RayTraceResult.Type.MISS) {
+            if (hit.typeOfHit == RayTraceResult.Type.ENTITY && hit.entityHit != null) {
                 NetworkHandler.sendToServer(new PacketNpcCommand(type, hit.entityHit));
-            } else if (hit.typeOfHit == MovingObjectType.BLOCK) {
-                NetworkHandler.sendToServer(new PacketNpcCommand(type, hit.blockX, hit.blockY, hit.blockZ));
+            } else if (hit.typeOfHit == RayTraceResult.Type.BLOCK) {
+                NetworkHandler.sendToServer(new PacketNpcCommand(type, hit.getBlockPos()));
             }
         }
     }
@@ -49,14 +49,14 @@ public class NpcCommand {
     /*
      * server side handle command. called from packet triggered from client key input while baton is equipped
      */
-    public static void handleServerCommand(EntityPlayer player, CommandType type, boolean block, int x, int y, int z) {
-        Command cmd = null;
+    public static void handleServerCommand(EntityPlayer player, CommandType type, boolean block, BlockPos pos, int entityID) {
+        Command cmd;
         if (block) {
-            cmd = new Command(type, x, y, z);
+            cmd = new Command(type, pos);
         } else {
-            cmd = new Command(type, x);
+            cmd = new Command(type, entityID);
         }
-        List<Entity> targets = ItemCommandBaton.getCommandedEntities(player.world, player.getCurrentEquippedItem());
+        List<Entity> targets = ItemCommandBaton.getCommandedEntities(player.world, getCommandBatonFromEitherHand(player));
         for (Entity e : targets) {
             if (e instanceof NpcPlayerOwned) {
                 ((NpcPlayerOwned) e).handlePlayerCommand(cmd);
@@ -64,12 +64,20 @@ public class NpcCommand {
         }
     }
 
+    private static ItemStack getCommandBatonFromEitherHand(EntityPlayer player) {
+        if (player.getHeldItemMainhand().getItem() instanceof ItemCommandBaton) {
+            return player.getHeldItemMainhand();
+        }
+        return player.getHeldItemOffhand();
+    }
+
     public static final class Command {
         public CommandType type;
-        public int x, y, z;
+        public BlockPos pos;
         public boolean blockTarget;
 
-        UUID entityID;
+        UUID entityUUID;
+        int entityID;
         Entity entity;
 
         public Command() {
@@ -79,29 +87,25 @@ public class NpcCommand {
             readFromNBT(tag);
         }
 
-        public Command(CommandType type, int x, int y, int z) {
+        public Command(CommandType type, BlockPos pos) {
             this.type = type;
-            this.x = x;
-            this.y = y;
-            this.z = z;
+            this.pos = pos;
             this.blockTarget = true;
         }
 
         public Command(CommandType type, int entityID) {
             this.type = type;
-            this.x = entityID;
-            this.y = this.z = 0;
+            this.entityID = entityID;
             this.blockTarget = false;
         }
 
         public Command copy() {
             Command cmd = new Command();
             cmd.type = this.type;
-            cmd.x = this.x;
-            cmd.y = this.y;
-            cmd.z = this.z;
+            cmd.pos = this.pos;
             cmd.entity = this.entity;
             cmd.entityID = this.entityID;
+            cmd.entityUUID = this.entityUUID;
             cmd.blockTarget = this.blockTarget;
             return cmd;
         }
@@ -109,24 +113,22 @@ public class NpcCommand {
         public final void readFromNBT(NBTTagCompound tag) {
             type = CommandType.values()[tag.getInteger("type")];
             blockTarget = tag.getBoolean("block");
-            x = tag.getInteger("x");
-            y = tag.getInteger("y");
-            z = tag.getInteger("z");
+            pos = BlockPos.fromLong(tag.getLong("pos"));
             if (tag.hasKey("idmsb") && tag.hasKey("idlsb")) {
-                entityID = new UUID(tag.getLong("idmsb"), tag.getLong("idlsb"));
+                entityUUID = new UUID(tag.getLong("idmsb"), tag.getLong("idlsb"));
             }
+            entityID = tag.getInteger("entityid");
         }
 
         public final NBTTagCompound writeToNBT(NBTTagCompound tag) {
             tag.setInteger("type", type.ordinal());
             tag.setBoolean("block", blockTarget);
-            tag.setInteger("x", x);
-            tag.setInteger("y", y);
-            tag.setInteger("z", z);
-            if (entityID != null) {
-                tag.setLong("idmsb", entityID.getMostSignificantBits());
-                tag.setLong("idlsb", entityID.getLeastSignificantBits());
+            tag.setLong("pos", pos.toLong());
+            if (entityUUID != null) {
+                tag.setLong("idmsb", entityUUID.getMostSignificantBits());
+                tag.setLong("idlsb", entityUUID.getLeastSignificantBits());
             }
+            tag.setInteger("entityid", entityID);
             return tag;
         }
 
@@ -140,13 +142,13 @@ public class NpcCommand {
             if (entity != null) {
                 return;
             }
-            if (entityID == null) {
-                entity = world.getEntityByID(x);
+            if (entityUUID == null) {
+                entity = world.getEntityByID(entityID);
                 if (entity != null) {
-                    entityID = entity.getPersistentID();
+                    entityUUID = entity.getPersistentID();
                 }
             } else {
-                entity = WorldTools.getEntityByUUID(world, entityID);
+                entity = world.getPlayerEntityByUUID(entityUUID);
             }
         }
 

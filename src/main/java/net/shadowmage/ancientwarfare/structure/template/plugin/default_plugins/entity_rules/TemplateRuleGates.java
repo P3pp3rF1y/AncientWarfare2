@@ -85,7 +85,7 @@ public class TemplateRuleGates extends TemplateRuleEntity {
         if (gate == null) {
             throw new StructureBuildingException.EntityPlacementException("Could not create gate for type: " + gateType);
         }
-        world.spawnEntityInWorld(gate);
+        world.spawnEntity(gate);
     }
 
     @Override

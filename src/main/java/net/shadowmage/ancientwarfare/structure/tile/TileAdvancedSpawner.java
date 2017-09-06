@@ -86,7 +86,7 @@ public class TileAdvancedSpawner extends TileEntity {
         while (xp > 0) {
             int j = EntityXPOrb.getXPSplit(xp);
             xp -= j;
-            this.world.spawnEntityInWorld(new EntityXPOrb(this.world, this.x + 0.5d, this.y, this.z + 0.5d, j));
+            this.world.spawnEntity(new EntityXPOrb(this.world, this.x + 0.5d, this.y, this.z + 0.5d, j));
         }
         InventoryBasic inv = settings.getInventory();
         @Nonnull ItemStack item;

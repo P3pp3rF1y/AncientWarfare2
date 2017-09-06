@@ -17,12 +17,7 @@ import net.shadowmage.ancientwarfare.core.entity.WatchedData;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public class SpawnerSettings {
 
@@ -658,7 +653,7 @@ public class SpawnerSettings {
             if(!customData.isEmpty()){
                 applyCustomData(e.getDataWatcher());
             }
-            world.spawnEntityInWorld(e);
+            world.spawnEntity(e);
         }
 
         private void applyCustomData(DataWatcher watcher){

@@ -5,7 +5,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.RayTraceResult.MovingObjectType;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
@@ -44,9 +43,9 @@ public final class RenderCommandOverlay {
         if (evt.phase == TickEvent.Phase.START) {
             target = RayTraceUtils.getPlayerTarget(mc.player, 120, 0);
             if (target != null) {
-                if (target.typeOfHit == MovingObjectType.BLOCK) {
+                if (target.typeOfHit == RayTraceResult.Type.BLOCK) {
                     targetString = target.blockX + "," + target.blockY + "," + target.blockZ;
-                } else if (target.typeOfHit == MovingObjectType.ENTITY) {
+                } else if (target.typeOfHit == RayTraceResult.Type.ENTITY) {
                     targetString = target.entityHit.getName();
                 }
             }
@@ -82,9 +81,9 @@ public final class RenderCommandOverlay {
         RayTraceResult pos = target;
         if (pos != null) {
             AxisAlignedBB bb = null;
-            if (pos.typeOfHit == MovingObjectType.BLOCK) {
+            if (pos.typeOfHit == RayTraceResult.Type.BLOCK) {
                 bb = new AxisAlignedBB(pos.blockX, pos.blockY, pos.blockZ, pos.blockX + 1.d, pos.blockY + 1.d, pos.blockZ + 1.d).expand(0.1d, 0.1d, 0.1d);
-            } else if (pos.typeOfHit == MovingObjectType.ENTITY && pos.entityHit.getEntityBoundingBox() != null && pos.entityHit instanceof EntityLivingBase) {
+            } else if (pos.typeOfHit == RayTraceResult.Type.ENTITY && pos.entityHit.getEntityBoundingBox() != null && pos.entityHit instanceof EntityLivingBase) {
                 bb = pos.entityHit.getEntityBoundingBox().copy();
                 Entity e = pos.entityHit;
                 float t = 1.f - evt.partialTicks;

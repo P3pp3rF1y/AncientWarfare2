@@ -2,6 +2,8 @@ package net.shadowmage.ancientwarfare.npc.ai.owned;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
@@ -24,7 +26,7 @@ public class NpcAIPlayerOwnedWorkRandom extends NpcAI<NpcWorker> {
         if (npc.getFoodRemaining() <= 0 || npc.shouldBeAtHome()) {
             return false;
         }
-        return npc.ordersStack == null && npc.autoWorkTarget != null;
+        return npc.ordersStack.isEmpty() && npc.autoWorkTarget != null;
     }
 
     @Override
@@ -36,7 +38,7 @@ public class NpcAIPlayerOwnedWorkRandom extends NpcAI<NpcWorker> {
     @Override
     public void updateTask() {
         BlockPos pos = npc.autoWorkTarget;
-        double dist = npc.getDistanceSq(pos.x, pos.y, pos.z);
+        double dist = npc.getDistanceSq(pos);
         if (dist > npc.getWorkRangeSq()) {
             npc.addAITask(TASK_MOVE);
             ticksAtSite = 0;
@@ -56,7 +58,7 @@ public class NpcAIPlayerOwnedWorkRandom extends NpcAI<NpcWorker> {
     private void workAtSite() {
         ticksAtSite++;
         if (npc.ticksExisted % 10 == 0) {
-            npc.swingItem();
+            npc.swingArm(EnumHand.MAIN_HAND);
         }
         if (ticksAtSite >= AWNPCStatics.npcWorkTicks) {
             ticksAtSite = 0;

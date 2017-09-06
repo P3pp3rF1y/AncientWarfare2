@@ -2,22 +2,26 @@ package net.shadowmage.ancientwarfare.npc.ai.owned;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.orders.CombatOrder;
 
+import javax.annotation.Nonnull;
+
 public class NpcAIPlayerOwnedPatrol extends NpcAI<NpcBase> {
 
     double moveSpeed = 1.d;
-    boolean init = false;
-    int patrolIndex;
-    boolean atPoint;
-    int ticksAtPoint;
+    private boolean init = false;
+    private int patrolIndex;
+    private boolean atPoint;
+    private int ticksAtPoint;
 
-    int maxTicksAtPoint = 50;//default 2.5 second idle at each point
+    private int maxTicksAtPoint = 50;//default 2.5 second idle at each point
 
     public CombatOrder orders;
-    @Nonnull ItemStack ordersStack;
+    @Nonnull
+    private ItemStack ordersStack;
 
     public NpcAIPlayerOwnedPatrol(NpcBase npc) {
         super(npc);
@@ -48,7 +52,7 @@ public class NpcAIPlayerOwnedPatrol extends NpcAI<NpcBase> {
         if (!npc.getIsAIEnabled() || npc.getAttackTarget() != null) {
             return false;
         }
-        return orders != null && ordersStack != null && orders.getPatrolDimension() == npc.world.provider.getDimension() && !orders.isEmpty();
+        return orders != null && !ordersStack.isEmpty() && orders.getPatrolDimension() == npc.world.provider.getDimension() && !orders.isEmpty();
     }
 
     @Override
@@ -66,7 +70,7 @@ public class NpcAIPlayerOwnedPatrol extends NpcAI<NpcBase> {
             }
         } else {
             BlockPos pos = orders.get(patrolIndex);
-            double dist = npc.getDistanceSq(pos.x + 0.5d, pos.y, pos.z + 0.5d);
+            double dist = npc.getDistanceSq(pos.getX() + 0.5d, pos.getY(), pos.getZ() + 0.5d);
             if (dist > 2.d * 2.d) {
                 moveToPosition(pos, dist);
             } else {

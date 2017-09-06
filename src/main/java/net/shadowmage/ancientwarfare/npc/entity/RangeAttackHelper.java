@@ -34,6 +34,6 @@ public final class RangeAttackHelper {
         }
 
         attacker.playSound("random.bow", 1.0F, 1.0F / (attacker.getRNG().nextFloat() * 0.4F + 0.8F));
-        attacker.world.spawnEntityInWorld(entityarrow);
+        attacker.world.spawnEntity(entityarrow);
     }
 }

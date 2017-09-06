@@ -73,7 +73,7 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
     @Override
     public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) throws EntityPlacementException {
         Entity e = createEntity(world, turns, x, y, z, builder);
-        world.spawnEntityInWorld(e);
+        world.spawnEntity(e);
     }
 
     protected Entity createEntity(World world, int turns, int x, int y, int z, IStructureBuilder builder) throws EntityPlacementException {

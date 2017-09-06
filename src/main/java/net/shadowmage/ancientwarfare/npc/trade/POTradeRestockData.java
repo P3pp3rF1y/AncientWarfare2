@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.npc.trade;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 
 import java.util.ArrayList;
@@ -88,11 +89,11 @@ public class POTradeRestockData {
 
     public void readFromNBT(NBTTagCompound tag) {
         if (tag.hasKey("withdrawPoint")) {
-            withdrawPoint = new BlockPos(tag.getCompoundTag("withdrawPoint"));
+            withdrawPoint = BlockPos.fromLong(tag.getLong("withdrawPoint"));
             withdrawSide = tag.getInteger("withdrawSide");
         }
         if (tag.hasKey("depositPoint")) {
-            depositPoint = new BlockPos(tag.getCompoundTag("depositPoint"));
+            depositPoint = BlockPos.fromLong(tag.getLong("depositPoint"));
             depositSide = tag.getInteger("depositSide");
         }
 
@@ -115,11 +116,11 @@ public class POTradeRestockData {
 
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         if (withdrawPoint != null) {
-            tag.setTag("withdrawPoint", withdrawPoint.writeToNBT(new NBTTagCompound()));
+            tag.setLong("withdrawPoint", withdrawPoint.toLong());
             tag.setInteger("withdrawSide", withdrawSide);
         }
         if (depositPoint != null) {
-            tag.setTag("depositPoint", depositPoint.writeToNBT(new NBTTagCompound()));
+            tag.setLong("depositPoint", depositPoint.toLong());
             tag.setInteger("depositSide", depositSide);
         }
 

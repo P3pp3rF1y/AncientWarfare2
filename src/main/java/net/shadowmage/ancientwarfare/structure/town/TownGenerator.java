@@ -119,7 +119,7 @@ public class TownGenerator {
             int z = minZ + rng.nextInt(16);
             if (world.isAirBlock(x, y, z) && world.isAirBlock(x, y + 1, z) && world.isSideSolid(x, y - 1, z, EnumFacing.UP)) {
                 villager.setPosition(x + 0.5d, y, z + 0.5d);
-                world.spawnEntityInWorld(villager);
+                world.spawnEntity(villager);
                 return;
             }
         }

@@ -2,18 +2,25 @@ package net.shadowmage.ancientwarfare.npc.item;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.RayTraceResult.MovingObjectType;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.Constants;
@@ -24,12 +31,8 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.CommandType;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import javax.annotation.Nullable;
+import java.util.*;
 
 public class ItemCommandBaton extends Item implements IItemKeyInterface {
 
@@ -40,39 +43,38 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
     public ItemCommandBaton(String name, ToolMaterial material) {
         this.setUnlocalizedName(name);
         this.setCreativeTab(AWNpcItemLoader.npcTab);
-        this.setTextureName("ancientwarfare:npc/" + name);
+        //this.setTextureName("ancientwarfare:npc/" + name);
         this.attackDamage = 4 + material.getDamageVsEntity();
         this.material = material;
         this.setMaxStackSize(1);
         this.setMaxDamage(material.getMaxUses());
     }
 
-
     @Override
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
         String keyText, text;
         text = "RMB" + " = " + I18n.format("guistrings.npc.baton.add_remove");
-        list.add(text);
+        tooltip.add(text);
 
         keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
         text = keyText + " = " + I18n.format("guistrings.npc.baton.clear");
-        list.add(text);
+        tooltip.add(text);
 
         keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_1);
         text = keyText + " = " + I18n.format("guistrings.npc.baton.attack");
-        list.add(text);
+        tooltip.add(text);
 
         keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_2);
         text = keyText + " = " + I18n.format("guistrings.npc.baton.move");
-        list.add(text);
+        tooltip.add(text);
 
         keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_3);
         text = keyText + " = " + I18n.format("guistrings.npc.baton.home");
-        list.add(text);
+        tooltip.add(text);
 
         keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_4);
         text = keyText + " = " + I18n.format("guistrings.npc.baton.upkeep");
-        list.add(text);
+        tooltip.add(text);
     }
 
     /*
@@ -101,18 +103,17 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
     }
 
     @Override
-    public boolean onBlockDestroyed(ItemStack stack, World world, Block block, int x, int y, int z, EntityLivingBase wielder) {
-        if (block.getBlockHardness(world, x, y, z) != 0) {
-            stack.damageItem(2, wielder);
+    public boolean onBlockDestroyed(ItemStack stack, World world, IBlockState state, BlockPos pos, EntityLivingBase entityLiving) {
+        if (state.getBlockHardness(world, pos) != 0) {
+            stack.damageItem(2, entityLiving);
         }
         return true;
     }
 
-
     @Override
-    public Multimap getAttributeModifiers(ItemStack stack) {
-        Multimap multimap = super.getAttributeModifiers(stack);
-        multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", this.attackDamage, 0));
+    public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
+        Multimap multimap = super.getAttributeModifiers(slot, stack);
+        multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", this.attackDamage, 0));
         return multimap;
     }
 
@@ -122,22 +123,23 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+        ItemStack stack = player.getHeldItem(hand);
         if(world.isRemote){
-            return stack;
+            return new ActionResult<>(EnumActionResult.SUCCESS, stack);
         }
         if (player.isSneaking()) {
             //TODO openGUI
         } else {
             RayTraceResult pos = RayTraceUtils.getPlayerTarget(player, range, 0);
-            if (pos != null && pos.typeOfHit == MovingObjectType.ENTITY && pos.entityHit instanceof NpcBase) {
+            if (pos != null && pos.typeOfHit == Type.ENTITY && pos.entityHit instanceof NpcBase) {
                 NpcBase npc = (NpcBase) pos.entityHit;
                 if (npc.hasCommandPermissions(player.getName())) {
                     onNpcClicked(player, npc, stack);
                 }
             }
         }
-        return stack;
+        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
 
     @Override
@@ -157,7 +159,7 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
             {
                 RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, range, 0);
                 if (hit != null) {
-                    CommandType c = hit.typeOfHit == MovingObjectType.ENTITY ? CommandType.ATTACK : CommandType.ATTACK_AREA;
+                    CommandType c = hit.typeOfHit == Type.ENTITY ? CommandType.ATTACK : CommandType.ATTACK_AREA;
                     NpcCommand.handleCommandClient(c, hit);
                 }
             }
@@ -166,14 +168,14 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
             {
                 RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, range, 0);
                 if (hit != null) {
-                    CommandType c = hit.typeOfHit == MovingObjectType.ENTITY ? CommandType.GUARD : CommandType.MOVE;
+                    CommandType c = hit.typeOfHit == Type.ENTITY ? CommandType.GUARD : CommandType.MOVE;
                     NpcCommand.handleCommandClient(c, hit);
                 }
             }
             break;
             case KEY_3: {
                 RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, range, 0);
-                if (hit != null && hit.typeOfHit == MovingObjectType.BLOCK) {
+                if (hit != null && hit.typeOfHit == Type.BLOCK) {
                     CommandType c = player.isSneaking() ? CommandType.CLEAR_HOME : CommandType.SET_HOME;
                     NpcCommand.handleCommandClient(c, hit);
                 }
@@ -181,7 +183,7 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
             break;
             case KEY_4: {
                 RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, range, 0);
-                if (hit != null && hit.typeOfHit == MovingObjectType.BLOCK) {
+                if (hit != null && hit.typeOfHit == Type.BLOCK) {
                     CommandType c = player.isSneaking() ? CommandType.CLEAR_UPKEEP : CommandType.SET_UPKEEP;
                     NpcCommand.handleCommandClient(c, hit);
                 }

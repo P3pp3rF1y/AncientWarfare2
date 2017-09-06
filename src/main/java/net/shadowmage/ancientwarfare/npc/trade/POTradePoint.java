@@ -1,9 +1,10 @@
 package net.shadowmage.ancientwarfare.npc.trade;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 
 public final class POTradePoint {
-    protected BlockPos position = new BlockPos();
+    protected BlockPos position;
     protected int delay;
     protected boolean shouldUpkeep;//if the npc should refill upkeep at this stop
 
@@ -28,13 +29,13 @@ public final class POTradePoint {
     }
 
     public void readFromNBT(NBTTagCompound tag) {
-        position = new BlockPos(tag.getCompoundTag("pos"));
+        position = BlockPos.fromLong(tag.getLong("pos"));
         delay = tag.getInteger("delay");
         shouldUpkeep = tag.getBoolean("upkeep");
     }
 
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        tag.setTag("pos", position.writeToNBT(new NBTTagCompound()));
+        tag.setLong("pos", position.toLong());
         tag.setInteger("delay", delay);
         tag.setBoolean("upkeep", shouldUpkeep);
         return tag;

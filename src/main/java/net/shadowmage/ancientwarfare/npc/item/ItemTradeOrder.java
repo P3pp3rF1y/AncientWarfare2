@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.npc.item;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.RayTraceResult.MovingObjectType;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -42,7 +41,7 @@ public class ItemTradeOrder extends ItemOrders {
     @Override
     public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
         RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, 5, 0);
-        if (hit == null || hit.typeOfHit != MovingObjectType.BLOCK) {
+        if (hit == null || hit.typeOfHit != RayTraceResult.Type.BLOCK) {
             return;
         }
         TradeOrder order = TradeOrder.getTradeOrder(stack);

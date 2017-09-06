@@ -40,7 +40,7 @@ public class NpcAIFactionRideHorse extends NpcAIRideHorse {
         horse.setHorseTamed(true);
         this.horse = horse;
         npc.world.spawnEntity(horse);
-        horse.getPassengers().add(npc);
+        npc.startRiding(horse);
         onMountHorse();
     }
 

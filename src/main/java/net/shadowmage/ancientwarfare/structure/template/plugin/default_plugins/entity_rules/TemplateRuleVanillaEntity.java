@@ -70,7 +70,7 @@ public class TemplateRuleVanillaEntity extends TemplateRuleEntity {
         float yaw = (rotation + 90.f * turns) % 360.f;
         e.setPosition(x + x1, y, z + z1);
         e.rotationYaw = yaw;
-        world.spawnEntityInWorld(e);
+        world.spawnEntity(e);
     }
 
     @Override

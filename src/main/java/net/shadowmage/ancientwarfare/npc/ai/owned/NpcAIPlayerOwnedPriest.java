@@ -1,5 +1,8 @@
 package net.shadowmage.ancientwarfare.npc.ai.owned;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -12,9 +15,9 @@ import java.util.List;
 public class NpcAIPlayerOwnedPriest extends NpcAI<NpcPlayerOwned> {
 
     private static final int UPDATE_FREQ = 200, RESURRECTION_TIME = 100;
-    int lastCheckTicks = -1;
-    NpcDeathEntry entryToRes;
-    int resurrectionDelay = 0;
+    private int lastCheckTicks = -1;
+    private NpcDeathEntry entryToRes;
+    private int resurrectionDelay = 0;
 
     public NpcAIPlayerOwnedPriest(NpcPlayerOwned npc) {
         super(npc);
@@ -55,13 +58,13 @@ public class NpcAIPlayerOwnedPriest extends NpcAI<NpcPlayerOwned> {
             return;
         }
         BlockPos pos = npc.getTownHallPosition();
-        double dist = npc.getDistanceSq(pos.x + 0.5d, pos.y, pos.z + 0.5d);
+        double dist = npc.getDistanceSq(pos.getX() + 0.5d, pos.getY(), pos.getZ() + 0.5d);
         if (dist > AWNPCStatics.npcActionRange * AWNPCStatics.npcActionRange) {
             moveToPosition(pos, dist);
             resurrectionDelay = 0;
         } else {
             resurrectionDelay++;
-            npc.swingItem();
+            npc.swingArm(EnumHand.MAIN_HAND);
             if (resurrectionDelay > RESURRECTION_TIME) {
                 resurrectionDelay = 0;
                 resurrectTarget();
@@ -74,19 +77,19 @@ public class NpcAIPlayerOwnedPriest extends NpcAI<NpcPlayerOwned> {
         entryToRes.beingResurrected = false;
         if (resdNpc != null) {
             if (!AWNPCStatics.persistOrdersOnDeath) {
-                resdNpc.ordersStack = null;
-                resdNpc.upkeepStack = null;
+                resdNpc.ordersStack = ItemStack.EMPTY;
+                resdNpc.upkeepStack = ItemStack.EMPTY;
             }
             for (int i = 0; i < 5; i++) {
-                resdNpc.setCurrentItemOrArmor(i, null);
+                resdNpc.setCurrentItemOrArmor(i, ItemStack.EMPTY);
             }
-            resdNpc.setShieldStack(null);
+            resdNpc.setShieldStack(ItemStack.EMPTY);
             resdNpc.setOwner(npc.getOwnerName(), npc.getOwnerUuid());
             resdNpc.setHealth(resdNpc.getMaxHealth() / 2);
             resdNpc.setPositionAndRotation(npc.posX, npc.posY, npc.posZ, npc.rotationYaw, npc.rotationPitch);
             resdNpc.knockBack(npc, 0, 2 * npc.getRNG().nextDouble() - 1, 2 * npc.getRNG().nextDouble() - 1);
             resdNpc.motionY = 0;
-            entryToRes.resurrected = npc.world.spawnEntityInWorld(resdNpc);
+            entryToRes.resurrected = npc.world.spawnEntity(resdNpc);
         }
         npc.getTownHall().informViewers();
         entryToRes = null;

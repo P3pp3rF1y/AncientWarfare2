@@ -4,11 +4,14 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBackpack;
 import net.shadowmage.ancientwarfare.core.item.ItemBackpack;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.orders.TradeOrder;
+
+import javax.annotation.Nonnull;
 
 /*
  * replaces upkeep ai for player owned trader when an orders item is equipped.<br>
@@ -23,7 +26,16 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
     /*
      * state flags, to track what state the AI is currently in
      */
-    private boolean shelter, upkeep, restock, deposit, waiting, at_shelter, at_upkeep, at_deposit, at_withdraw, at_waypoint;
+    private boolean shelter;
+    private boolean upkeep;
+    private boolean restock;
+    private boolean deposit;
+    private boolean waiting;
+    private boolean at_shelter;
+    private boolean at_upkeep;
+    private boolean at_deposit;
+    private boolean at_withdraw;
+    private boolean at_waypoint;
 
     /*
      * used to track how long to wait when in 'waiting' state
@@ -172,7 +184,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
 
     protected boolean tryWithdrawUpkeep() {
         BlockPos p = npc.getUpkeepPoint();
-        TileEntity te = npc.world.getTileEntity(p.x, p.y, p.z);
+        TileEntity te = npc.world.getTileEntity(p);
         if (te instanceof IInventory) {
             return npc.withdrawFood((IInventory) te, npc.getUpkeepBlockSide());
         }
@@ -271,8 +283,8 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
     }
 
     private void doDeposit() {
-        @Nonnull ItemStack backpack = npc.getHeldItem();
-        if (backpack != null && backpack.getItem() instanceof ItemBackpack) {
+        @Nonnull ItemStack backpack = npc.getHeldItemMainhand();
+        if (!backpack.isEmpty() && backpack.getItem() instanceof ItemBackpack) {
             InventoryBackpack inv = ItemBackpack.getInventoryFor(backpack);
             BlockPos pos = orders.getRestockData().getDepositPoint();
             TileEntity te = npc.world.getTileEntity(pos);
@@ -285,8 +297,8 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
     }
 
     private void doWithdraw() {
-        @Nonnull ItemStack backpack = npc.getHeldItem();
-        if (backpack != null && backpack.getItem() instanceof ItemBackpack) {
+        @Nonnull ItemStack backpack = npc.getHeldItemMainhand();
+        if (!backpack.isEmpty() && backpack.getItem() instanceof ItemBackpack) {
             InventoryBackpack inv = ItemBackpack.getInventoryFor(backpack);
             BlockPos pos = orders.getRestockData().getWithdrawPoint();
             TileEntity te = npc.world.getTileEntity(pos);

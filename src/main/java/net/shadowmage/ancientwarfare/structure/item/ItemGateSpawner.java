@@ -131,7 +131,7 @@ public class ItemGateSpawner extends Item implements IItemKeyInterface, IBoxRend
             EntityGate entity = Gate.constructGate(world, pos1, pos2, Gate.getGateByID(stack.getItemDamage()), facing);
             if (entity != null) {
                 entity.setOwnerName(player.getName());
-                world.spawnEntityInWorld(entity);
+                world.spawnEntity(entity);
                 if (!player.capabilities.isCreativeMode) {
                     stack.shrink(1);
                 }

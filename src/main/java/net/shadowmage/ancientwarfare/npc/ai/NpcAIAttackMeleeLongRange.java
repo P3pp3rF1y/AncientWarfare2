@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
+import net.minecraft.util.EnumHand;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
@@ -22,7 +23,7 @@ public class NpcAIAttackMeleeLongRange extends NpcAIAttack<NpcBase> {
     protected void doAttack(double distanceToEntity) {
         npc.removeAITask(TASK_MOVE);
         if (getAttackDelay() <= 0) {
-            npc.swingItem();
+            npc.swingArm(EnumHand.MAIN_HAND);
             npc.attackEntityAsMob(getTarget());
             this.setAttackDelay(MAX_DELAY);//TODO set attack delay from npc-attributes?
             npc.addExperience(AWNPCStatics.npcXpFromAttack);

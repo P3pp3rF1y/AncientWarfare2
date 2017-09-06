@@ -27,7 +27,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.RayTraceResult.MovingObjectType;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
@@ -70,7 +69,7 @@ public class ItemSpawnerPlacer extends Item {
         RayTraceResult mophit = getRayTraceResultFromPlayer(player.world, player, false);
         if (player.capabilities.isCreativeMode && player.isSneaking()) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SPAWNER, 0, 0, 0);
-        } else if (mophit != null && mophit.typeOfHit == MovingObjectType.BLOCK) {
+        } else if (mophit != null && mophit.typeOfHit == RayTraceResult.Type.BLOCK) {
             if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnerData")) {
                 BlockPos hit = new BlockPos(mophit);
                 if (player.world.setBlock(hit.x, hit.y, hit.z, Blocks.MOB_SPAWNER)) {

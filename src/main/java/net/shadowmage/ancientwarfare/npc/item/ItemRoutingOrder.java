@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.npc.item;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.RayTraceResult.MovingObjectType;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -39,7 +38,7 @@ public class ItemRoutingOrder extends ItemOrders {
         RoutingOrder order = RoutingOrder.getRoutingOrder(stack);
         if (order != null) {
             RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, 5, 0);
-            if (hit != null && hit.typeOfHit == MovingObjectType.BLOCK) {
+            if (hit != null && hit.typeOfHit == RayTraceResult.Type.BLOCK) {
                 order.addRoutePoint(hit.sideHit, hit.blockX, hit.blockY, hit.blockZ);
                 order.write(stack);
                 addMessage(player);

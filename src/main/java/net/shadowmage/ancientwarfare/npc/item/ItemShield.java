@@ -30,7 +30,7 @@ public class ItemShield extends Item {
     @Override
     public Multimap getAttributeModifiers(ItemStack stack) {
         Multimap map = super.getAttributeModifiers(stack);
-        map.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(shieldID, "Shield modifier", 0.5, 2));
+        map.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(shieldID, "Shield modifier", 0.5, 2));
         return map;
     }
 

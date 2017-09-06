@@ -108,7 +108,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
         gateType.onGateStartClose(this);//
         @Nonnull ItemStack item = Gate.getItemToConstruct(this.gateType.getGlobalID());
         EntityItem entity = new EntityItem(world, posX, posY + 0.5d, posZ, item);
-        this.world.spawnEntityInWorld(entity);
+        this.world.spawnEntity(entity);
         this.setDead();
     }
 

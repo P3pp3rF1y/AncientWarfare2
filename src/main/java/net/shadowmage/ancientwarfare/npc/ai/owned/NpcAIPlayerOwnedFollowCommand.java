@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.npc.ai.owned;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.Command;
@@ -9,7 +10,7 @@ import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.CommandType;
 
 public class NpcAIPlayerOwnedFollowCommand extends NpcAI<NpcPlayerOwned> {
 
-    BlockPos moveTargetPos = null;
+    private BlockPos moveTargetPos = null;
 
     public NpcAIPlayerOwnedFollowCommand(NpcPlayerOwned npc) {
         super(npc);
@@ -62,11 +63,11 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI<NpcPlayerOwned> {
                 break;
             }
             case SET_HOME: {
-                npc.setHomeArea(cmd.x, cmd.y, cmd.z, npc.getHomeRange());
+                npc.setHomePosAndDistance(cmd.pos, npc.getHomeRange());
                 break;
             }
             case SET_UPKEEP: {
-                npc.setUpkeepAutoPosition(new BlockPos(cmd.x, cmd.y, cmd.z));
+                npc.setUpkeepAutoPosition(cmd.pos);
                 break;
             }
             case CLEAR_COMMAND:
@@ -94,8 +95,8 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI<NpcPlayerOwned> {
     }
 
     private void handleMoveCommand(Command cmd) {
-        if (moveTargetPos == null || moveTargetPos.x != cmd.x || moveTargetPos.y != cmd.y || moveTargetPos.z != cmd.z) {
-            moveTargetPos = new BlockPos(cmd.x, cmd.y, cmd.z);
+        if (moveTargetPos == null || moveTargetPos != cmd.pos) {
+            moveTargetPos = cmd.pos;
         }
         double sqDist = npc.getDistanceSq(moveTargetPos);
         if (sqDist > MIN_RANGE) {
@@ -119,8 +120,8 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI<NpcPlayerOwned> {
             moveToEntity(e, sqDist);//move to entity...
         } else {
             npc.getNavigator().clearPathEntity();//clear path to stop moving
-            if (e instanceof EntityHorse && e.riddenByEntity == null) {
-                npc.mountEntity(e);
+            if (e instanceof EntityHorse && e.getPassengers().isEmpty()) {
+                npc.startRiding(e);
                 e.prevRotationYaw = e.rotationYaw = npc.rotationYaw % 360F;
                 npc.setPlayerCommand(null);//clear command if horse was mounted successfully..
             }
@@ -130,8 +131,8 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI<NpcPlayerOwned> {
 
     private void handleAttackMoveCommand(Command cmd) {
         //move along path while looking for attack targets... -- if a target is found, the next 'shouldContinue' will break out of the AI task and allow the NPC to commence attack operations
-        if (moveTargetPos == null || moveTargetPos.x != cmd.x || moveTargetPos.y != cmd.y || moveTargetPos.z != cmd.z) {
-            moveTargetPos = new BlockPos(cmd.x, cmd.y, cmd.z);
+        if (moveTargetPos == null || moveTargetPos != cmd.pos) {
+            moveTargetPos = cmd.pos;
         }
         double sqDist = npc.getDistanceSq(moveTargetPos);
         if (sqDist > MIN_RANGE) {

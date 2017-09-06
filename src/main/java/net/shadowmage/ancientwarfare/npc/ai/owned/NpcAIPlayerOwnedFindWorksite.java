@@ -12,9 +12,9 @@ import java.util.List;
 
 public class NpcAIPlayerOwnedFindWorksite extends NpcAI<NpcWorker> {
 
-    int lastExecuted = -1;//set to -1 default to trigger should execute lookup on first run
-    int checkFrequency = 200;//how often to recheck if orders and work target are both null
-    int range = 40;
+    private int lastExecuted = -1;//set to -1 default to trigger should execute lookup on first run
+    private int checkFrequency = 200;//how often to recheck if orders and work target are both null
+    private int range = 40;
 
     public NpcAIPlayerOwnedFindWorksite(NpcWorker npc) {
         super(npc);
@@ -72,7 +72,7 @@ public class NpcAIPlayerOwnedFindWorksite extends NpcAI<NpcWorker> {
                 if (!npc.hasCommandPermissions(site.getOwnerName()))
                     continue;
                 if (npc.canWorkAt(site.getWorkType()) && site.hasWork()) {
-                    dist = npc.getDistanceSq(te.x + 0.5d, te.y, te.z + 0.5d);
+                    dist = npc.getDistanceSq(te.getPos().getX() + 0.5d, te.getPos().getY(), te.getPos().getZ() + 0.5d);
                     if (closestDist == -1 || dist < closestDist) {
                         closestDist = dist;
                         closestSite = te;
@@ -81,7 +81,7 @@ public class NpcAIPlayerOwnedFindWorksite extends NpcAI<NpcWorker> {
             }
         }
         if (closestSite != null) {
-            npc.autoWorkTarget = new BlockPos(closestSite.x, closestSite.y, closestSite.z);
+            npc.autoWorkTarget = closestSite.getPos();
         }
     }
 

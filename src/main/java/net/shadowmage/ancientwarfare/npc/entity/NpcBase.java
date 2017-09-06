@@ -8,12 +8,7 @@ import net.minecraft.block.BlockBed;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityFlying;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -114,7 +109,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     @Override
     protected void applyEntityAttributes() {
         super.applyEntityAttributes();
-        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.attackDamage);
+        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
         AncientWarfareNPC.statics.applyAttributes(this);
     }
 
@@ -192,7 +187,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
                 shield = getShieldStack().copy();
                 getAttributeMap().applyAttributeModifiers(shield.getAttributeModifiers());
             }
-            damage = (float) this.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue();
+            damage = (float) this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
         }
         int knockback = 0;
         if (target instanceof EntityLivingBase) {
@@ -314,7 +309,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     public void setHomeAreaAtCurrentPosition(){
-        setHomeArea(MathHelper.floor(this.posX), MathHelper.floor(this.posY), MathHelper.floor(this.posZ), getHomeRange());
+        setHomePosAndDistance(MathHelper.floor(this.posX), MathHelper.floor(this.posY), MathHelper.floor(this.posZ), getHomeRange());
     }
 
     public int getHomeRange(){
@@ -801,7 +796,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
      * called whenever level changes, to update the damage-done stat for the entity
      */
     public final void updateDamageFromLevel() {
-        this.getEntityAttribute(SharedMonsterAttributes.attackDamage).setBaseValue(AncientWarfareNPC.statics.getAttack(this));
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(AncientWarfareNPC.statics.getAttack(this));
     }
 
     public int getFoodRemaining() {
@@ -992,7 +987,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         super.readEntityFromNBT(tag);
         if (tag.hasKey("home")) {
             int[] ccia = tag.getIntArray("home");
-            setHomeArea(ccia[0], ccia[1], ccia[2], ccia[3]);
+            setHomePosAndDistance(ccia[0], ccia[1], ccia[2], ccia[3]);
         }
         if (tag.hasKey("bedDirection"))
             setBedDirection(tag.getInteger("bedDirection"));
@@ -1059,7 +1054,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         if (!hasHome()) {
             BlockPos position = getTownHallPosition();
             if(position != null)
-                setHomeArea(position.x, position.y, position.z, getHomeRange());
+                setHomePosAndDistance(position.x, position.y, position.z, getHomeRange());
             else
                 setHomeAreaAtCurrentPosition();
         }

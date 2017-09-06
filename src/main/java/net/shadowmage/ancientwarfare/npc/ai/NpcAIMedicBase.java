@@ -113,7 +113,7 @@ public class NpcAIMedicBase extends NpcAI<NpcBase> {
             healDelay--;
             if (healDelay < 0) {
                 healDelay = healDelayMax;
-                float amountToHeal = ((float) npc.getEntityAttribute(SharedMonsterAttributes.attackDamage).getAttributeValue()) / 2.f;
+                float amountToHeal = ((float) npc.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue()) / 2.f;
                 npc.swingItem();
                 targetToHeal.heal(amountToHeal);
             }

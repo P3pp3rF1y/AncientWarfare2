@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.npc.ai.owned;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
@@ -13,10 +14,10 @@ import net.shadowmage.ancientwarfare.npc.orders.WorkOrder.WorkEntry;
 
 public class NpcAIPlayerOwnedWork extends NpcAI<NpcBase> {
 
-    public int ticksAtSite = 0;
+    public int ticksAtSite;
     public int workIndex;
     public WorkOrder order;
-    boolean init = false;
+    private boolean init = false;
 
     public NpcAIPlayerOwnedWork(NpcBase npc) {
         super(npc);
@@ -24,6 +25,7 @@ public class NpcAIPlayerOwnedWork extends NpcAI<NpcBase> {
             throw new IllegalArgumentException("cannot instantiate work ai task on non-worker npc");
         }
         this.setMutexBits(MOVE + ATTACK);
+        ticksAtSite = 0;
     }
 
     @Override
@@ -53,7 +55,7 @@ public class NpcAIPlayerOwnedWork extends NpcAI<NpcBase> {
     public void updateTask() {
         WorkEntry entry = order.get(workIndex);
         BlockPos pos = entry.getPosition();
-        double dist = npc.getDistanceSq(pos.x, pos.y, pos.z);
+        double dist = npc.getDistanceSq(pos);
 //  AWLog.logDebug("distance to site: "+dist);
         if (dist > ((IWorker)npc).getWorkRangeSq()) {
 //    AWLog.logDebug("moving to worksite..."+pos);
@@ -86,7 +88,7 @@ public class NpcAIPlayerOwnedWork extends NpcAI<NpcBase> {
             }
         }
         if (npc.ticksExisted % 10 == 0) {
-            npc.swingItem();
+            npc.swingArm(EnumHand.MAIN_HAND);
         }
         if (ticksAtSite >= AWNPCStatics.npcWorkTicks) {
             ticksAtSite = 0;

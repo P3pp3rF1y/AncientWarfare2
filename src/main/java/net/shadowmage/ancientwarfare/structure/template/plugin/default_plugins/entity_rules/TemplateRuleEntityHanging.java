@@ -61,7 +61,7 @@ public class TemplateRuleEntityHanging extends TemplateRuleVanillaEntity {
         tag.setInteger("TileY", hangTarget.y);
         tag.setInteger("TileZ", hangTarget.z);
         e.readFromNBT(tag);
-        world.spawnEntityInWorld(e);
+        world.spawnEntity(e);
     }
 
     @Override
