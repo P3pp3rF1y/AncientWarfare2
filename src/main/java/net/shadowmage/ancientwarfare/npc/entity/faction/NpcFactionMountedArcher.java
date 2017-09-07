@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.entity.faction;
 
-import net.minecraft.command.IEntitySelector;
-import net.minecraft.entity.Entity;
+import com.google.common.base.Predicate;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
@@ -10,40 +9,39 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.ChunkPos;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackNearest;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIDoor;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIHurt;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
+import net.shadowmage.ancientwarfare.npc.ai.*;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionArcherStayAtHome;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRangedAttack;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRideHorse;
+import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.RangeAttackHelper;
 
 public abstract class NpcFactionMountedArcher extends NpcFactionMounted implements IRangedAttackMob {
 
+    private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.createKey(NpcFactionMountedArcher.class, DataSerializers.BOOLEAN);
+
     public NpcFactionMountedArcher(World par1World) {
         super(par1World);
 //  this.setCurrentItemOrArmor(0, new ItemStack(Items.BOW));
-        IEntitySelector selector = new IEntitySelector() {
-            @Override
-            public boolean isEntityApplicable(Entity entity) {
+        Predicate<NpcBase> selector = entity -> {
 //      if(!canEntityBeSeen(entity)){return false;}
-                if (!isHostileTowards(entity)) {
-                    return false;
-                }
-                if (hasHome()) {
-                    ChunkPos home = getHomePosition();
-                    double dist = entity.getDistanceSq(home.posX + 0.5d, home.posY, home.posZ + 0.5d);
-                    if (dist > 30 * 30) {
-                        return false;
-                    }
-                }
-                return true;
-            }
-        };
+			if (!isHostileTowards(entity)) {
+				return false;
+			}
+			if (hasHome()) {
+				BlockPos home = getHomePosition();
+				double dist = entity.getDistanceSq(home.getX() + 0.5d, home.getY(), home.getZ() + 0.5d);
+				if (dist > 30 * 30) {
+					return false;
+				}
+			}
+			return true;
+		};
 
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
@@ -68,4 +66,9 @@ public abstract class NpcFactionMountedArcher extends NpcFactionMounted implemen
         RangeAttackHelper.doRangedAttack(this, target, force, 1.0f);
     }
 
+    @Override
+    public void setSwingingArms(boolean swingingArms)
+    {
+        this.dataManager.set(SWINGING_ARMS, swingingArms);
+    } //TODO add use of this data in rendering
 }

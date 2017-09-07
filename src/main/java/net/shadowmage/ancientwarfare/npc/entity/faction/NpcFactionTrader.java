@@ -8,6 +8,7 @@ import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIDoor;
@@ -57,8 +58,8 @@ public abstract class NpcFactionTrader extends NpcFaction {
     }
 
     @Override
-    protected boolean interact(EntityPlayer player) {
-        boolean baton = player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton;
+    protected boolean processInteract(EntityPlayer player, EnumHand hand) {
+        boolean baton = !player.getHeldItem(hand).isEmpty() && player.getHeldItem(hand).getItem() instanceof ItemCommandBaton;
         if (!baton && isEntityAlive()) {
             if (!player.world.isRemote && trader == null) {
                 startTrade(player);

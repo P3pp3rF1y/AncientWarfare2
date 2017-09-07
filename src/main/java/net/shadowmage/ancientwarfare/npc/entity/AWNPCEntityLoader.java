@@ -12,6 +12,7 @@ import net.shadowmage.ancientwarfare.npc.entity.faction.*;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.List;
 

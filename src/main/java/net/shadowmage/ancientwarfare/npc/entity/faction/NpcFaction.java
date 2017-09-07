@@ -1,6 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.entity.faction;
 
-import net.minecraft.command.IEntitySelector;
+import com.google.common.base.Predicate;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,16 +15,12 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public abstract class NpcFaction extends NpcBase {
 
-    protected final IEntitySelector selector = new IEntitySelector() {
-        @Override
-        public boolean isEntityApplicable(Entity entity) {
-            return isHostileTowards(entity);
-        }
-    };
+    protected final Predicate<NpcBase> selector = entity -> isHostileTowards(entity);
 
     public NpcFaction(World par1World) {
         super(par1World);
@@ -42,7 +38,7 @@ public abstract class NpcFaction extends NpcBase {
     public final int getMaxSafePointTries() {
         int i = super.getMaxSafePointTries();
         if(i > 4)
-            i += world.difficultySetting.getDifficultyId() * getMaxHealth() / 5;
+            i += world.getDifficulty().getDifficultyId() * getMaxHealth() / 5;
         if(i >= getHealth())
             return (int)getHealth();
         return i;
@@ -113,11 +109,11 @@ public abstract class NpcFaction extends NpcBase {
     @Override
     public void onDeath(DamageSource damageSource) {
         super.onDeath(damageSource);
-        if (damageSource.getEntity() instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) damageSource.getEntity();
+        if (damageSource.getTrueSource() instanceof EntityPlayer) {
+            EntityPlayer player = (EntityPlayer) damageSource.getTrueSource();
             FactionTracker.INSTANCE.adjustStandingFor(world, player.getName(), getFaction(), -AWNPCStatics.factionLossOnDeath);
-        } else if (damageSource.getEntity() instanceof NpcPlayerOwned) {
-            String playerName = ((NpcBase) damageSource.getEntity()).getOwnerName();
+        } else if (damageSource.getTrueSource() instanceof NpcPlayerOwned) {
+            String playerName = ((NpcBase) damageSource.getTrueSource()).getOwnerName();
             if (playerName != null) {
                 FactionTracker.INSTANCE.adjustStandingFor(world, playerName, getFaction(), -AWNPCStatics.factionLossOnDeath);
             }

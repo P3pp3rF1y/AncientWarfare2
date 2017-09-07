@@ -1,19 +1,12 @@
 package net.shadowmage.ancientwarfare.npc.entity;
 
-import cpw.mods.fml.common.network.ByteBufUtils;
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityFlying;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -24,12 +17,14 @@ import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
@@ -94,8 +89,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     public NpcBase(World par1World) {
         super(par1World);
         levelingStats = new NpcLevelingStats(this);
-        this.equipmentDropChances = new float[]{1.f, 1.f, 1.f, 1.f, 1.f};
-        this.func_110163_bv();//set persistence required=true
+        this.inventoryArmorDropChances = new float[]{1.f, 1.f, 1.f, 1.f};
+        this.inventoryHandsDropChances = new float[]{1.f, 1.f};
         this.navigator = new NpcNavigator(this);
         AncientWarfareNPC.statics.applyPathConfig(this);
     }
@@ -359,7 +354,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     @Override
-    protected boolean interact(EntityPlayer player) {
+    protected boolean processInteract(EntityPlayer player, EnumHand hand) {
         return tryCommand(player);
     }
 

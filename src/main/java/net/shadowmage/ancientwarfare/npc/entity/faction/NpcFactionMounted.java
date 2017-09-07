@@ -42,9 +42,9 @@ public abstract class NpcFactionMounted extends NpcFaction {
 
     @Override
     protected void onRepack() {
-        if (ridingEntity instanceof EntityHorse) {
-            ridingEntity.setDead();
-            mountEntity(null);
+        if (getRidingEntity() instanceof EntityHorse) {
+            getRidingEntity().setDead();
+            dismountRidingEntity();
         }
     }
 

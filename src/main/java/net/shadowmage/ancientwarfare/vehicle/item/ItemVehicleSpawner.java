@@ -86,7 +86,7 @@ public class ItemVehicleSpawner extends Item {
         Entity e = AWEntityRegistry.createEntity(type, player.worldObj);
         if (e != null) {
             e.setPosition(player.posX, player.posY, player.posZ);//TODO set position from player clicked-on target
-            player.worldObj.spawnEntityInWorld(e);
+            player.worldObj.spawnEntity(e);
         }
         */
         return stack;

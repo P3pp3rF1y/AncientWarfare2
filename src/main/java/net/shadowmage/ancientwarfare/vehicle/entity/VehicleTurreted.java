@@ -93,7 +93,7 @@ public class VehicleTurreted extends VehicleBase {
 //    MissileBase missile = new MissileBase(worldObj);
 //    missile.setPosition(px, py, pz);
 //    missile.setLaunchParameters(launchVelocity.x, launchVelocity.y, launchVelocity.z, getUniqueID());
-//    worldObj.spawnEntityInWorld(missile);
+//    worldObj.spawnEntity(missile);
 //    AWLog.logDebug("spawned missile..."+missile);
 //    }  
 //  }
