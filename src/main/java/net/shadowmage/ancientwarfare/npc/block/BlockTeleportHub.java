@@ -1,14 +1,12 @@
 package net.shadowmage.ancientwarfare.npc.block;
 
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.gamedata.HeadquartersTracker;
 import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
@@ -16,14 +14,13 @@ import net.shadowmage.ancientwarfare.npc.tile.TileTeleportHub;
 
 public class BlockTeleportHub extends Block {
 
-    public IIcon[] icons = new IIcon[6];
-    
     public BlockTeleportHub() {
         super(Material.ROCK);
         this.setCreativeTab(AWNpcItemLoader.npcTab);
         setHardness(2.f);
     }
 
+/*
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister register) {
@@ -40,6 +37,7 @@ public class BlockTeleportHub extends Block {
     public IIcon getIcon(int side, int meta) {
         return icons[side];
     }
+*/
 
     @Override
     public boolean hasTileEntity(IBlockState state) {
@@ -50,9 +48,9 @@ public class BlockTeleportHub extends Block {
     public TileEntity createTileEntity(World world, IBlockState state) {
         return new TileTeleportHub();
     }
-    
+
     @Override
-    public void onBlockPlacedBy(World world, int posX, int posY, int posZ, EntityLivingBase placer, ItemStack is) {
-        HeadquartersTracker.get(world).setTeleportHubPosition(posX, posY, posZ);
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+        HeadquartersTracker.get(world).setTeleportHubPosition(pos);
     }
 }

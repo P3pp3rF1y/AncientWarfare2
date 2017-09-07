@@ -8,7 +8,12 @@ import net.minecraft.block.BlockBed;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityFlying;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -128,7 +133,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     public void setMaxHealthOverride(int maxHealthOverride) {
         this.maxHealthOverride = maxHealthOverride;
         if (maxHealthOverride > 0) {
-            this.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(maxHealthOverride);
+            this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(maxHealthOverride);
             if (getHealth() < getMaxHealth()) {
                 setHealth(getMaxHealth());
             }
@@ -1022,7 +1027,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             getLevelingStats().readFromNBT(tag.getCompoundTag("levelingStats"));
         }
         if (tag.hasKey("maxHealth")) {
-            getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(tag.getFloat("maxHealth"));
+            getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(tag.getFloat("maxHealth"));
         }
         if (tag.hasKey("health")) {
             setHealth(tag.getFloat("health"));

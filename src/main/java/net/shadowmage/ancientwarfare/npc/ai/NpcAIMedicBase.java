@@ -1,19 +1,17 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
 import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import net.minecraft.command.IEntitySelector;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget.Sorter;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class NpcAIMedicBase extends NpcAI<NpcBase> {
 
@@ -25,21 +23,15 @@ public class NpcAIMedicBase extends NpcAI<NpcBase> {
     private EntityLivingBase targetToHeal = null;
 
     private final EntityAINearestAttackableTarget.Sorter sorter;
-    private IEntitySelector selector;
+    private Predicate<EntityLivingBase> selector;
 
     public NpcAIMedicBase(NpcBase npc) {
         super(npc);
         sorter = new Sorter(npc);
-        selector = new IEntitySelector() {
-            @Override
-            public boolean isEntityApplicable(Entity selectedEntity) {
-                if (selectedEntity instanceof EntityLivingBase) {
-                    EntityLivingBase e = (EntityLivingBase) selectedEntity;
-                    if (e.isEntityAlive() && e.getHealth() < e.getMaxHealth() && !NpcAIMedicBase.this.npc.isHostileTowards(e))
-                        return true;
-                }
-                return false;
-            }
+        selector = entity -> {
+                if (entity.isEntityAlive() && entity.getHealth() < entity.getMaxHealth() && !NpcAIMedicBase.this.npc.isHostileTowards(entity))
+                    return true;
+            return false;
         };
     }
 
@@ -58,17 +50,12 @@ public class NpcAIMedicBase extends NpcAI<NpcBase> {
         injuredRecheckDelay = injuredRecheckDelayMax;
         double dist = npc.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getAttributeValue();
         AxisAlignedBB bb = npc.getEntityBoundingBox().expand(dist, dist / 2, dist);
-        List<EntityLivingBase> potentialTargets = npc.world.selectEntitiesWithinAABB(EntityLivingBase.class, bb, selector);
+        List<EntityLivingBase> potentialTargets = npc.world.getEntitiesWithinAABB(EntityLivingBase.class, bb, selector);
         if (potentialTargets.isEmpty()) {
             return false;
         }
-        Collections.sort(potentialTargets, sorter);
-        Iterable<EntityLivingBase> sub = Iterables.filter(potentialTargets, new Predicate<EntityLivingBase>() {
-            @Override
-            public boolean apply(EntityLivingBase input) {
-                return input instanceof NpcBase || input instanceof EntityPlayer;
-            }
-        });
+        potentialTargets.sort(sorter);
+        Iterable<EntityLivingBase> sub = potentialTargets.stream().filter(input -> input instanceof NpcBase || input instanceof EntityPlayer).collect(Collectors.toList());
         for(EntityLivingBase base : sub) {
             this.targetToHeal = base;
             if (validateTarget())
@@ -114,7 +101,7 @@ public class NpcAIMedicBase extends NpcAI<NpcBase> {
             if (healDelay < 0) {
                 healDelay = healDelayMax;
                 float amountToHeal = ((float) npc.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue()) / 2.f;
-                npc.swingItem();
+                npc.swingArm(EnumHand.MAIN_HAND);
                 targetToHeal.heal(amountToHeal);
             }
         }

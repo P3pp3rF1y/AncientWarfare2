@@ -3,8 +3,9 @@ package net.shadowmage.ancientwarfare.npc.gamedata;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldSavedData;
 import net.minecraftforge.common.util.Constants.NBT;
@@ -31,8 +32,8 @@ public class HeadquartersTracker extends WorldSavedData {
         return hqTracker;
     }
     
-    private Map<String, int[]> playerHeadquarters = new HashMap<>();
-    private int[] teleportHubPosition = null;
+    private Map<String, BlockPos> playerHeadquarters = new HashMap<>();
+    private BlockPos teleportHubPosition = null;
     
     public HeadquartersTracker() {
         super(ID);
@@ -46,29 +47,29 @@ public class HeadquartersTracker extends WorldSavedData {
      * 
      * @return An int array of x/y/z co-ords of the owner's HQ position, or null if it doesn't exist 
      */
-    public int[] getHqPos(String ownerName, World world) {
-        int[] hqPos = playerHeadquarters.get(ownerName);
-        if (hqPos == null || hqPos.length != 3 || !isBlockHq(ownerName, world, hqPos[0], hqPos[1], hqPos[2]))
+    public BlockPos getHqPos(String ownerName, World world) {
+        BlockPos hqPos = playerHeadquarters.get(ownerName);
+        if (hqPos == null || !isBlockHq(ownerName, world, hqPos))
             return null;
         else
             return hqPos;
     }
     
     public synchronized boolean validateCurrentHq(String ownerName, World world) {
-        int[] hqPos = getHqPos(ownerName, world);
+        BlockPos hqPos = getHqPos(ownerName, world);
         if (hqPos == null) {
             // HQ position was assigned but no longer valid
-            playerHeadquarters.put(ownerName, new int[] {});
+            playerHeadquarters.put(ownerName, null);
             markDirty();
             return false;
         } else
             return true;
     }
     
-    public synchronized boolean isBlockHq(String ownerName, World world, int posX, int posY, int posZ) {
-        Block block = world.getBlock(posX, posY, posZ);
+    public synchronized boolean isBlockHq(String ownerName, World world, BlockPos pos) {
+        Block block = world.getBlockState(pos).getBlock();
         if (block instanceof BlockHeadquarters) {
-            String townHallOwnerName = ((TileTownHall)world.getTileEntity(posX, posY, posZ)).getOwnerName();
+            String townHallOwnerName = ((TileTownHall)world.getTileEntity(pos)).getOwnerName();
             if (townHallOwnerName != null && !townHallOwnerName.isEmpty()) {
                 // only confirm the owner if the block actually has the owner set (not the case when first placed)
                 if (!townHallOwnerName.equals(ownerName)) {
@@ -80,23 +81,23 @@ public class HeadquartersTracker extends WorldSavedData {
         return false;
     }
     
-    public synchronized void setNewHq(String ownerName, World world, int posX, int posY, int posZ) {
-        if (isBlockHq(ownerName, world, posX, posY, posZ)) {
-            playerHeadquarters.put(ownerName, new int[] {posX, posY, posZ});
+    public synchronized void setNewHq(String ownerName, World world, BlockPos pos) {
+        if (isBlockHq(ownerName, world, pos)) {
+            playerHeadquarters.put(ownerName, pos);
             markDirty();
         }
     }
     
-    public static void notifyHqNew(String ownerName, int posX, int posZ) {
+    public static void notifyHqNew(String ownerName, BlockPos pos) {
         String notificationTitle = "ftbu_aw2.notification.townhall_newhq";
         TextComponentTranslation notificationMsg = new TextComponentTranslation("ftbu_aw2.notification.townhall_newhq.msg");
         List<TextComponentTranslation> notificationTooltip = new ArrayList<>();
-        notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.chunk_position", posX, posZ));
+        notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.chunk_position", pos.getX(), pos.getZ()));
         notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.townhall_newhq.tooltip.1"));
         notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.townhall_newhq.tooltip.2"));
         notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.townhall_newhq.tooltip.3"));
         notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.click_to_remove"));
-        ModAccessors.FTBU.notifyPlayer(EnumChatFormatting.BLUE, ownerName, notificationTitle, notificationMsg, notificationTooltip);
+        ModAccessors.FTBU.notifyPlayer(TextFormatting.BLUE, ownerName, notificationTitle, notificationMsg, notificationTooltip);
     }
     
     public static void notifyHqMissing(String ownerName) {
@@ -106,21 +107,22 @@ public class HeadquartersTracker extends WorldSavedData {
         notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.townhall_hqmissing.tooltip.1"));
         notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.townhall_hqmissing.tooltip.2"));
         notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.townhall_hqmissing.tooltip.3"));
-        ModAccessors.FTBU.notifyPlayer(EnumChatFormatting.GOLD, ownerName, notificationTitle, notificationMsg, notificationTooltip);
+        ModAccessors.FTBU.notifyPlayer(TextFormatting.GOLD, ownerName, notificationTitle, notificationMsg, notificationTooltip);
     }
     
-    public int[] getTeleportHubPosition(World world) {
+    public BlockPos getTeleportHubPosition(World world) {
         if (teleportHubPosition != null) {
-            if (!(world.getBlock(teleportHubPosition[0], teleportHubPosition[1], teleportHubPosition[2]) instanceof BlockTeleportHub))
+            if (!(world.getBlockState(teleportHubPosition).getBlock() instanceof BlockTeleportHub))
                 teleportHubPosition = null;
         }
         return teleportHubPosition;
     }
     
-    public void setTeleportHubPosition(int posX, int posY, int posZ) {
-        teleportHubPosition = new int[]{posX, posY, posZ};
+    public void setTeleportHubPosition(BlockPos pos) {
+        teleportHubPosition = pos;
         markDirty();
     }
+
 
     @Override
     public void readFromNBT(NBTTagCompound compound) {

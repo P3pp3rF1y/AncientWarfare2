@@ -2,7 +2,7 @@ package net.shadowmage.ancientwarfare.npc.gui;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.TextFormatting;
 import net.shadowmage.ancientwarfare.core.block.Direction;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
@@ -79,7 +79,7 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
             };
             area.addGuiElement(button);
             
-            labelString = point.getIgnoreDamage() ? EnumChatFormatting.RED.toString() + EnumChatFormatting.STRIKETHROUGH.toString() : "";
+            labelString = point.getIgnoreDamage() ? TextFormatting.RED.toString() + TextFormatting.STRIKETHROUGH.toString() : "";
             labelString += I18n.format("guistrings.dmg");
             button = new IndexedButton(8 + 55 + 2 + 79 + 2, totalHeight + 10, 38, 12, labelString, index) {
                 @Override
@@ -92,7 +92,7 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
             button.addTooltip(I18n.format("guistrings.dmg.tooltipprefix." + (point.getIgnoreDamage() ? "disabled" : "enabled")) + I18n.format("guistrings.dmg.tooltip"), 28);
             area.addGuiElement(button);
 
-            labelString = point.getIgnoreTag() ? EnumChatFormatting.RED.toString() + EnumChatFormatting.STRIKETHROUGH.toString() : "";
+            labelString = point.getIgnoreTag() ? TextFormatting.RED.toString() + TextFormatting.STRIKETHROUGH.toString() : "";
             labelString += I18n.format("guistrings.tag");
             button = new IndexedButton(8 + 55 + 2 + 79 + 2 + 38 + 2, totalHeight + 10, 38, 12, labelString, index) {
                 @Override

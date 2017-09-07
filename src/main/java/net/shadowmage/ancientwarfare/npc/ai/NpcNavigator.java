@@ -5,15 +5,16 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.pathfinding.Path;
 import net.minecraft.pathfinding.PathFinder;
-import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.pathfinding.PathNavigateGround;
+import net.minecraft.pathfinding.WalkNodeProcessor;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.ChunkCache;
 
-public class NpcNavigator extends PathNavigate {
+public class NpcNavigator extends PathNavigateGround {
     private final EntityLiving entity;
-    private boolean swim;
-    private boolean doors = true;
+    private final WalkNodeProcessor nodeProcessor = new WalkNodeProcessor();
     public NpcNavigator(EntityLiving living) {
         super(living, living.world);
         this.entity = living;
@@ -22,24 +23,25 @@ public class NpcNavigator extends PathNavigate {
     @Override
     public void setCanSwim(boolean value) {
         super.setCanSwim(value);
-        this.swim = value;
+        nodeProcessor.setCanSwim(value);
     }
 
     @Override
     public void setEnterDoors(boolean value) {
         super.setEnterDoors(value);
-        this.doors = value;
+        nodeProcessor.setCanEnterDoors(value);
     }
 
     public void onWorldChange(){
         this.world = entity.world;
     }
 
-    @Override
-    public Path getPathToXYZ(double posX, double posY, double posZ)
-    {
-        return !this.canNavigate() ? null : pathToXYZ(MathHelper.floor(posX), (int) posY, MathHelper.floor(posZ));
-    }
+// TODO does this pathing work without overriding this final method?
+//    @Override
+//    public Path getPathToXYZ(double posX, double posY, double posZ)
+//    {
+//        return !this.canNavigate() ? null : pathToXYZ(MathHelper.floor(posX), (int) posY, MathHelper.floor(posZ));
+//    }
 
     @Override
     public Path getPathToEntityLiving(Entity target)
@@ -77,22 +79,22 @@ public class NpcNavigator extends PathNavigate {
         return entity.getRidingEntity() instanceof EntityLiving;
     }
 
-    private Entity mountOrEntity(){
-        return hasMount() ? entity.getRidingEntity() : entity;
+    private EntityLiving mountOrEntity(){
+        return hasMount() ? (EntityLiving) entity.getRidingEntity() : entity;
     }
 
     private Path pathToEntity(Entity target)
     {
         ChunkCache chunkcache = cachePath(1, 16);
-        Path pathentity = (new PathFinder(chunkcache, doors, getCanBreakDoors(), getAvoidsWater(), swim)).createEntityPathTo(mountOrEntity(), target, this.getPathSearchRange());
+        Path pathentity = (new PathFinder(nodeProcessor).findPath(chunkcache, mountOrEntity(), target, this.getPathSearchRange()));
         this.world.profiler.endSection();
         return pathentity;
     }
 
-    private Path pathToXYZ(int x, int y, int z)
+    private Path pathToXYZ(BlockPos pos)
     {
         ChunkCache chunkcache = cachePath(0, 8);
-        Path pathentity = (new PathFinder(chunkcache, doors, getCanBreakDoors(), getAvoidsWater(), swim)).createEntityPathTo(mountOrEntity(), x, y, z, this.getPathSearchRange());
+        Path pathentity = (new PathFinder(nodeProcessor).findPath(chunkcache, mountOrEntity(), pos, this.getPathSearchRange()));
         this.world.profiler.endSection();
         return pathentity;
     }
@@ -103,7 +105,7 @@ public class NpcNavigator extends PathNavigate {
         int j = MathHelper.floor(this.entity.posY + h);
         int k = MathHelper.floor(this.entity.posZ);
         int l = (int)(this.getPathSearchRange() + r);
-        return new ChunkCache(this.world, i - l, j - l, k - l, i + l, j + l, k + l, 0);
+        return new ChunkCache(this.world, new BlockPos(i - l, j - l, k - l), new BlockPos(i + l, j + l, k + l), 0);
     }
 
     /*
@@ -139,7 +141,7 @@ public class NpcNavigator extends PathNavigate {
 
                     if (d2 * vecX + d3 * vecZ >= 0.0D)
                     {
-                        Material material = this.world.getBlock(i2, yOffset - 1, j2).getMaterial();
+                        Material material = this.world.getBlockState(new BlockPos(i2, yOffset - 1, j2)).getMaterial();
 
                         if (material == Material.AIR || material == Material.LAVA || material == Material.FIRE || material == Material.CACTUS)
                         {

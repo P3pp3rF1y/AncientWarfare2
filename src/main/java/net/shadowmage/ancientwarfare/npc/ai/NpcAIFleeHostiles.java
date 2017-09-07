@@ -1,13 +1,13 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
-import net.minecraft.command.IEntitySelector;
+import com.google.common.base.Predicate;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.RandomPositionGenerator;
-import net.minecraft.util.ChunkPos;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -22,7 +22,7 @@ import java.util.List;
 public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 
     private static int MAX_STAY_AWAY = 50, MAX_FLEE_RANGE = 16, HEIGHT_CHECK = 7, PURSUE_RANGE = 16 * 16;
-    private final IEntitySelector hostileOrFriendlyCombatNpcSelector;
+    private final Predicate<EntityLiving> hostileOrFriendlyCombatNpcSelector;
     private final Comparator sorter;
     double distanceFromEntity = 16;
     private Vec3d fleeVector;
@@ -36,20 +36,17 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 
     public NpcAIFleeHostiles(final NpcPlayerOwned npc) {
         super(npc);
-        hostileOrFriendlyCombatNpcSelector = new IEntitySelector() {
-            @Override
-            public boolean isEntityApplicable(Entity selectedEntity) {
-                if(selectedEntity.isEntityAlive()) {
-                    if (selectedEntity instanceof NpcBase) {
-                        if (((NpcBase)selectedEntity).getNpcSubType().equals("soldier"))
-                            if (((NpcBase)selectedEntity).hasCommandPermissions(npc.getOwnerName()))
-                                    return true; // is a friendly soldier
-                        return ((NpcBase) selectedEntity).isHostileTowards(NpcAIFleeHostiles.this.npc);
-                    } else
-                        return NpcAI.isAlwaysHostileToNpcs(selectedEntity);
-                }
-                return false;
+        hostileOrFriendlyCombatNpcSelector = selectedEntity -> {
+            if(selectedEntity.isEntityAlive()) {
+                if (selectedEntity instanceof NpcBase) {
+                    if (((NpcBase)selectedEntity).getNpcSubType().equals("soldier"))
+                        if (((NpcBase)selectedEntity).hasCommandPermissions(npc.getOwnerName()))
+                            return true; // is a friendly soldier
+                    return ((NpcBase) selectedEntity).isHostileTowards(NpcAIFleeHostiles.this.npc);
+                } else
+                    return NpcAI.isAlwaysHostileToNpcs(selectedEntity);
             }
+            return false;
         };
         
         sorter = new EntityAINearestAttackableTarget.Sorter(npc);
@@ -96,7 +93,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
     private void findNearbyRelevantEntities() {
         npc.nearbyHostiles.clear();
         nearbySoldiers.clear();
-        List nearbyHostilesOrFriendlySoldiers = this.npc.world.selectEntitiesWithinAABB(EntityLiving.class, this.npc.getEntityBoundingBox().expand(this.distanceFromEntity, 3.0D, this.distanceFromEntity), this.hostileOrFriendlyCombatNpcSelector);
+        List nearbyHostilesOrFriendlySoldiers = this.npc.world.getEntitiesWithinAABB(EntityLiving.class, this.npc.getEntityBoundingBox().expand(this.distanceFromEntity, 3.0D, this.distanceFromEntity), this.hostileOrFriendlyCombatNpcSelector);
         if (nearbyHostilesOrFriendlySoldiers.isEmpty())
             return;
         
@@ -157,8 +154,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
         
         if (npc.hasHome()) {
             distSq = npc.getDistanceSqFromHome();
-            ChunkPos cc = npc.getHomePosition();
-            pos = new BlockPos(cc.posX, cc.posY, cc.posZ);
+            pos = npc.getHomePosition();
             if (distSq < MIN_RANGE) {
                 // NPC is home, check for visible hostiles
                 if (!npc.nearbyHostiles.isEmpty()) {

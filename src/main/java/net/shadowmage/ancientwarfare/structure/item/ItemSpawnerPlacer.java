@@ -26,9 +26,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
@@ -57,8 +57,8 @@ public class ItemSpawnerPlacer extends Item {
         } else {
             list.add(I18n.format("guistrings.no_selection"));
         }
-        list.add(EnumChatFormatting.RED + I18n.format("guistrings.spawner.warning_1"));
-        list.add(EnumChatFormatting.RED + I18n.format("guistrings.spawner.warning_2"));
+        list.add(TextFormatting.RED + I18n.format("guistrings.spawner.warning_1"));
+        list.add(TextFormatting.RED + I18n.format("guistrings.spawner.warning_2"));
     }
 
     @Override

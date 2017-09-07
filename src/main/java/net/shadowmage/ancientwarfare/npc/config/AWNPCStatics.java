@@ -21,15 +21,16 @@
 package net.shadowmage.ancientwarfare.npc.config;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.pathfinding.PathNavigate;
+import net.minecraft.pathfinding.PathNavigateGround;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 import net.shadowmage.ancientwarfare.core.util.BlockAndMeta;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -359,7 +360,7 @@ public class AWNPCStatics extends ModConfiguration {
             FileWriter wr = null;
             try {
                 wr = new FileWriter(file);
-                for (Object obj : EntityList.stringToClassMapping.keySet()) {
+                for (Object obj : ForgeRegistries.ENTITIES.getKeys()) {
                     wr.write(String.valueOf(obj) + "\n");
                 }
             } catch (IOException e) {
@@ -556,11 +557,11 @@ public class AWNPCStatics extends ModConfiguration {
         if (stack.isEmpty() || stack.getItem() == null) {
             return 0;
         }
-        String name = Item.itemRegistry.getNameForObject(stack.getItem());
+        String name = stack.getItem().getRegistryName().toString();
         if (foodValues.containsKey(name)) {
             return foodValues.get(name);
         }else if(stack.getItem() instanceof ItemFood){
-            return ((ItemFood) stack.getItem()).func_150905_g(stack) * foodMultiplier;
+            return ((ItemFood) stack.getItem()).getHealAmount(stack) * foodMultiplier;
         }
         return 0;
     }
@@ -620,13 +621,13 @@ public class AWNPCStatics extends ModConfiguration {
     }
 
     private Path getDefaultPath(String key){
-        return new Path(pathConfig.get("01_npc_path_avoidWater", key, false).getBoolean(), pathConfig.get("02_npc_path_breakDoors", key, true).getBoolean());
+        return new Path(pathConfig.get("01_npc_path_canSwim", key, true).getBoolean(), pathConfig.get("02_npc_path_breakDoors", key, true).getBoolean());
     }
 
     public void applyAttributes(NpcBase npc) {
         Attribute type = attributes.get(npc.getNpcType());
         if (type != null) {
-            npc.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(type.baseHealth());
+            npc.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(type.baseHealth());
             npc.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(type.baseSpeed());
             npc.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(type.baseAttack());
             npc.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(type.baseRange());
@@ -637,7 +638,7 @@ public class AWNPCStatics extends ModConfiguration {
     public void applyPathConfig(NpcBase npc) {
         Path path = pathValues.get(npc.getNpcType());
         if (path != null) {
-            path.applyTo(npc.getNavigator());
+            path.applyTo((PathNavigateGround) npc.getNavigator());
         }
     }
 
@@ -721,7 +722,7 @@ public class AWNPCStatics extends ModConfiguration {
             itemName = eqmp.get(type)[slot];
         }
         if (itemName != null && !itemName.isEmpty() && !itemName.equals("null")) {
-            Item item = (Item) Item.itemRegistry.getObject(itemName);
+            Item item = Item.REGISTRY.getObject(new ResourceLocation(itemName));
             if (item != null) {
                 return new ItemStack(item);
             }
@@ -740,7 +741,7 @@ public class AWNPCStatics extends ModConfiguration {
         factionConfig.save();
     }
     
-    public static BlockAndMeta[] getPathfinderAvoidCustomBlocks() {
+    public static IBlockState[] getPathfinderAvoidCustomBlocks() {
         if (!PATHFINDER_AVOID_CUSTOM_BUILT) {
             PATHFINDER_AVOID_CUSTOM = BlockAndMeta.buildList("Pathfinder custom avoidances", PATHFINDER_AVOID_CUSTOM_RAW);
             PATHFINDER_AVOID_CUSTOM_BUILT = true;
@@ -751,15 +752,15 @@ public class AWNPCStatics extends ModConfiguration {
     }
 
     private static class Path {
-        private final boolean avoidWater, breakDoor;
+        private final boolean canSwim, breakDoor;
 
-        private Path(boolean water, boolean door) {
-            avoidWater = water;
+        private Path(boolean swim, boolean door) {
+            canSwim = swim;
             breakDoor = door;
         }
 
-        public void applyTo(PathNavigate navigate) {
-            navigate.setAvoidsWater(avoidWater);
+        public void applyTo(PathNavigateGround navigate) {
+            navigate.setCanSwim(canSwim);
             navigate.setBreakDoors(breakDoor);
         }
     }

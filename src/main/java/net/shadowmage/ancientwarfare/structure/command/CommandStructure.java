@@ -22,24 +22,24 @@ import java.util.Locale;
 public class CommandStructure extends CommandBase {
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "awstructure";
     }
 
     @Override
-    public String getCommandUsage(ICommandSender var1) {
+    public String getUsage(ICommandSender var1) {
         return "command.aw.structure.usage";
     }
 
     @Override
     public void processCommand(ICommandSender var1, String[] var2) {
         if (var2.length == 0) {
-            throw new WrongUsageException(getCommandUsage(var1));
+            throw new WrongUsageException(getUsage(var1));
         }
         String cmd = var2[0];
         if (cmd.toLowerCase(Locale.ENGLISH).equals("delete")) {
             if (var2.length < 2) {
-                throw new WrongUsageException(getCommandUsage(var1));
+                throw new WrongUsageException(getUsage(var1));
             }
             String name = var2[1];
             boolean flag = StructureTemplateManager.INSTANCE.removeTemplate(name);
@@ -64,7 +64,7 @@ public class CommandStructure extends CommandBase {
             }
         } else if (cmd.toLowerCase(Locale.ENGLISH).equals("build")) {
             if (var2.length < 5) {
-                throw new WrongUsageException(getCommandUsage(var1));
+                throw new WrongUsageException(getUsage(var1));
             }
 
             int x = CommandBase.parseInt(var1, var2[2]);

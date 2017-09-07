@@ -17,7 +17,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.text.TextFormatting;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -798,12 +798,12 @@ protected void drawItemStackTooltip(ItemStack par1ItemStack, int par2, int par3,
       }
     else
       {
-      list.set(k, EnumChatFormatting.GRAY + (String)list.get(k));
+      list.set(k, TextFormatting.GRAY + (String)list.get(k));
       }
     }
   if(fake)
     {
-    list.add(EnumChatFormatting.RED + "Fake Slot");
+    list.add(TextFormatting.RED + "Fake Slot");
     }
   
   func_102021_a(list, par2, par3);
@@ -822,7 +822,7 @@ protected void drawItemStackTooltip(ItemStack par1ItemStack, int par2, int par3)
       }
     else
       {
-      list.set(k, EnumChatFormatting.GRAY + (String)list.get(k));
+      list.set(k, TextFormatting.GRAY + (String)list.get(k));
       }
     }
   func_102021_a(list, par2, par3);

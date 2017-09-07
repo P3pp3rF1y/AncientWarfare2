@@ -1,14 +1,17 @@
 package net.shadowmage.ancientwarfare.npc.command;
 
 import net.minecraft.command.CommandBase;
+import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Locale;
 
@@ -20,19 +23,19 @@ public class CommandFaction extends CommandBase {
     }
 
     @Override
-    public String getCommandName() {
+    public String getName() {
         return "awfaction";
     }
 
     @Override
-    public String getCommandUsage(ICommandSender var1) {
+    public String getUsage(ICommandSender var1) {
         return "command.aw.faction.usage";
     }
 
     @Override
-    public void processCommand(ICommandSender var1, String[] var2) {
+    public void execute(MinecraftServer server, ICommandSender var1, String[] var2) throws CommandException {
         if (var2.length < 2) {
-            throw new WrongUsageException(getCommandUsage(var1));
+            throw new WrongUsageException(getUsage(var1));
         }
         String cmd = var2[0];
         String playerName = var2[1];
@@ -87,21 +90,20 @@ public class CommandFaction extends CommandBase {
         return false;
     }
 
-
     @Override
-    public List addTabCompletionOptions(ICommandSender var1, String[] var2) {
-        if (var2.length == 1)//the command
+    public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
+        if (args.length == 1)//the command
         {
-            return CommandBase.getListOfStringsMatchingLastWord(var2, "set", "setall", "get");
-        } else if (var2.length == 2)//would be a player name
+            return CommandBase.getListOfStringsMatchingLastWord(args, "set", "setall", "get");
+        } else if (args.length == 2)//would be a player name
         {
-            return CommandBase.getListOfStringsMatchingLastWord(var2, MinecraftServer.getServer().getAllUsernames());
-        } else if (var2.length == 3)//would be a faction name for the set command
+            return CommandBase.getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames());
+        } else if (args.length == 3)//would be a faction name for the set command
         {
-            if (var2[0].toLowerCase(Locale.ENGLISH).equals("set")) {
-                return CommandBase.getListOfStringsMatchingLastWord(var2, AWNPCStatics.factionNames);
+            if (args[0].toLowerCase(Locale.ENGLISH).equals("set")) {
+                return CommandBase.getListOfStringsMatchingLastWord(args, AWNPCStatics.factionNames);
             }
-        } else if (var2.length == 4)//would be a number for the set command value
+        } else if (args.length == 4)//would be a number for the set command value
         {
 
         }

@@ -1,6 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
-import net.minecraft.util.ChunkPos;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
@@ -27,8 +27,8 @@ public class NpcAIMoveHome extends NpcAI<NpcBase> {
         if (!npc.getIsAIEnabled() || !npc.hasHome()) {
             return false;
         }
-        ChunkPos cc = npc.getHomePosition();
-        float distSq = (float) npc.getDistanceSq(cc.posX + 0.5d, cc.posY, cc.posZ + 0.5d);
+        BlockPos cc = npc.getHomePosition();
+        float distSq = (float) npc.getDistanceSq(cc.getX() + 0.5d, cc.getY(), cc.getZ() + 0.5d);
         return npc.shouldBeAtHome() || exceedsRange(distSq);
     }
 
@@ -69,12 +69,12 @@ public class NpcAIMoveHome extends NpcAI<NpcBase> {
                 return;
             }
         }
-        ChunkPos cc = npc.getHomePosition();
-        double dist = npc.getDistanceSq(cc.posX + 0.5d, cc.posY, cc.posZ + 0.5d);
+        BlockPos cc = npc.getHomePosition();
+        double dist = npc.getDistanceSq(cc.getX() + 0.5d, cc.getY(), cc.getZ() + 0.5d);
         double leash = getLeashRange() * getLeashRange();
         if ((dist > leash) && (!goneHome) && (!npc.getSleeping())) {
             npc.addAITask(TASK_MOVE);
-            moveToPosition(cc.posX, cc.posY, cc.posZ, dist);
+            moveToPosition(cc, dist);
         } else {
             // NPC is home
             npc.removeAITask(TASK_MOVE);
@@ -85,7 +85,7 @@ public class NpcAIMoveHome extends NpcAI<NpcBase> {
                 if ((ticker >= TICKER_MAX) && (npc.shouldSleep())) {
                     BlockPos pos = npc.findBed();
                     if (pos != null) {
-                        dist = npc.getDistanceSq(pos.x, pos.y, pos.z);
+                        dist = npc.getDistanceSq(pos);
                         if (dist > AWNPCStatics.npcActionRange * AWNPCStatics.npcActionRange) {
                             moveToPosition(pos, dist, true);
                         } else {

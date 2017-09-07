@@ -4,8 +4,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumHand;
 import net.shadowmage.ancientwarfare.core.interfaces.IContainerGuiCallback;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketGui;
@@ -228,4 +230,10 @@ public class ContainerBase extends Container {
         return incomingStack.getCount() == 0;
     }
 
+    protected EnumHand getHandHoldingItem(EntityPlayer player, Item item) {
+        if (player.getHeldItemMainhand().getItem() == item) {
+            return EnumHand.MAIN_HAND;
+        }
+        return EnumHand.OFF_HAND; //assume that gui only ever gets open if the player has the item in either hand
+    }
 }

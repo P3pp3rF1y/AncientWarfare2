@@ -6,9 +6,11 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.npc.gamedata.HeadquartersTracker;
@@ -16,6 +18,7 @@ import net.shadowmage.ancientwarfare.npc.tile.TileTeleportHub;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall.NpcDeathEntry;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,19 +44,19 @@ public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
     public void handlePacketData(NBTTagCompound tag) {
         if (tag.hasKey("playerName")) {
             if (!tileEntity.getWorld().isRemote) {
-                int[] tpHubPos = HeadquartersTracker.get(tileEntity.getWorld()).getTeleportHubPosition(tileEntity.getWorld());
+                BlockPos tpHubPos = HeadquartersTracker.get(tileEntity.getWorld()).getTeleportHubPosition(tileEntity.getWorld());
                 if (tpHubPos != null) {
-                    TileEntity te = tileEntity.getWorld().getTileEntity(tpHubPos[0], tpHubPos[1], tpHubPos[2]);
+                    TileEntity te = tileEntity.getWorld().getTileEntity(tpHubPos);
                     if (te instanceof TileTeleportHub) {
                         String playerName = tag.getString("playerName");
-                        List<EntityPlayerMP> playerList = MinecraftServer.getServer().getConfigurationManager().playerEntityList;
+                        List<EntityPlayerMP> playerList = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers();
                         for (EntityPlayerMP entityPlayer : playerList) {
                             if (entityPlayer.getName().equals(playerName)) {
                                 final float randomPitch = (float) (Math.random() * (1.1f - 0.9f) + 0.9f);
-                                tileEntity.getWorld().playSoundAtEntity(entityPlayer, "ancientwarfare:teleport.out", 0.6F, randomPitch);
+                                entityPlayer.world.playSound(null, entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, "ancientwarfare:teleport.out", SoundCategory.BLOCKS, 0.6F, randomPitch);
                                 ((TileTeleportHub) te).addArrival(playerName);
                                 EntityTools.teleportPlayerToBlock(entityPlayer, entityPlayer.world, tpHubPos, false);
-                                entityPlayer.world.playSoundAtEntity(entityPlayer, "ancientwarfare:teleport.in", 0.6F, randomPitch);
+                                entityPlayer.world.playSound(null, entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, "ancientwarfare:teleport.in", SoundCategory.BLOCKS, 0.6F, randomPitch);
                             }
                         }
                     }
@@ -79,7 +82,7 @@ public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
         }
         
         if (tag.hasKey("tpHubPos")) {
-            tileEntity.tpHubPos = tag.getIntArray("tpHubPos");
+            tileEntity.tpHubPos = BlockPos.fromLong(tag.getLong("tpHubPos"));
         }
         
         if (tag.hasKey("range")) {
@@ -144,9 +147,9 @@ public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
     private void sendHqDataToClient() {
         NBTTagCompound tag = new NBTTagCompound();
         tag.setBoolean("isHq", tileEntity.isHq);
-        int[] tpHubPos = HeadquartersTracker.get(tileEntity.getWorld()).getTeleportHubPosition(tileEntity.getWorld());
+        BlockPos tpHubPos = HeadquartersTracker.get(tileEntity.getWorld()).getTeleportHubPosition(tileEntity.getWorld());
         if (tpHubPos != null)
-            tag.setIntArray("tpHubPos", tpHubPos);
+            tag.setLong("tpHubPos", tpHubPos.toLong());
         sendDataToClient(tag);
     }
 
@@ -195,7 +198,7 @@ public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
             if (slotStack.getCount() == slotStackCopy.getCount()) {
                 return null;
             }
-            theSlot.onPickupFromSlot(par1EntityPlayer, slotStack);
+            theSlot.onTake(par1EntityPlayer, slotStack);
         }
         return slotStackCopy;
     }

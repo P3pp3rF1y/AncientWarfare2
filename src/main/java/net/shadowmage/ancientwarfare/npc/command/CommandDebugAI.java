@@ -1,43 +1,31 @@
 package net.shadowmage.ancientwarfare.npc.command;
 
 import net.minecraft.command.CommandBase;
-import net.minecraft.command.ICommand;
+import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.gamedata.WorldData;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
-
-import java.util.List;
 
 public class CommandDebugAI extends CommandBase {
 
     private int permissionLevel = 2;
 
     @Override
-    public int compareTo(Object par1Obj) {
-        return super.compareTo((ICommand) par1Obj);
-    }
-
-    @Override
-    public String getCommandName() {
+    public String getName() {
         return "awnpcdebug";
     }
 
     @Override
-    public String getCommandUsage(ICommandSender var1) {
+    public String getUsage(ICommandSender var1) {
         return "command.aw.npcdebug.usage";
     }
 
-
     @Override
-    public List getCommandAliases() {
-        return null;
-    }
-
-    @Override
-    public void processCommand(ICommandSender var1, String[] var2) {
+    public void execute(MinecraftServer server, ICommandSender var1, String[] var2) throws CommandException {
         AWNPCStatics.npcAIDebugMode = !AWNPCStatics.npcAIDebugMode;
         WorldData d = AWGameData.INSTANCE.getPerWorldData(var1.getEntityWorld(), WorldData.class);
         if (d == null) {
@@ -48,14 +36,8 @@ public class CommandDebugAI extends CommandBase {
     }
 
     @Override
-    public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender) {
-        return par1ICommandSender.canCommandSenderUseCommand(this.permissionLevel, this.getCommandName());
-    }
-
-
-    @Override
-    public List addTabCompletionOptions(ICommandSender var1, String[] var2) {
-        return null;
+    public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
+        return sender.canUseCommand(this.permissionLevel, this.getName());
     }
 
     @Override

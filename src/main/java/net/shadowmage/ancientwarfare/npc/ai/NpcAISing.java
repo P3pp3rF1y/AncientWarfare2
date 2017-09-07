@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.shadowmage.ancientwarfare.core.interfaces.ISinger;
 import net.shadowmage.ancientwarfare.core.util.SongPlayData;
@@ -79,7 +80,7 @@ public class NpcAISing extends NpcAI<NpcBase> {
         SongPlayData.SongEntry entry = data.get(tuneIndex);
         maxPlayTime = (int) (entry.length() * 20.f);//convert minutes into ticks
         float volume = (float) entry.volume() * 0.03f;
-        npc.world.playSoundAtEntity(npc, entry.getSound(), volume, 1.f);
+        npc.world.playSound(null, npc.posX, npc.posY, npc.posZ, entry.getSound(), SoundCategory.NEUTRAL,  volume, 1.f);
         playing = true;
         playTime = 0;
     }

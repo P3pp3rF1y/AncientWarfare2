@@ -3,6 +3,8 @@ package net.shadowmage.ancientwarfare.npc.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumHand;
+import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBackpack;
 import net.shadowmage.ancientwarfare.core.item.ItemBackpack;
 import net.shadowmage.ancientwarfare.npc.entity.NpcTrader;
@@ -10,6 +12,7 @@ import net.shadowmage.ancientwarfare.npc.trade.TradeList;
 
 public class ContainerNpcPlayerOwnedTrade extends ContainerNpcBase<NpcTrader> {
 
+    private EnumHand hand;
     public TradeList tradeList;
     public final InventoryBackpack storage;
 
@@ -19,8 +22,8 @@ public class ContainerNpcPlayerOwnedTrade extends ContainerNpcBase<NpcTrader> {
         this.entity.startTrade(player);
 
         addPlayerSlots();
-
-        storage = ItemBackpack.getInventoryFor(entity.getHeldItem());
+        this.hand = getHandHoldingItem(player, AWItems.backpack);
+        storage = ItemBackpack.getInventoryFor(entity.getHeldItem(hand));
         if (storage != null) {
             for (int i = 0; i < storage.getSizeInventory(); i++) {
                 /*
@@ -35,11 +38,8 @@ public class ContainerNpcPlayerOwnedTrade extends ContainerNpcBase<NpcTrader> {
     @Override
     public void sendInitData() {
         if (tradeList != null) {
-            NBTTagCompound tag = new NBTTagCompound();
-            tradeList.writeToNBT(tag);
-
             NBTTagCompound packetTag = new NBTTagCompound();
-            packetTag.setTag("tradeData", tag);
+            packetTag.setTag("tradeData", tradeList.serializeNBT());
             sendDataToClient(packetTag);
         }
     }
@@ -48,7 +48,7 @@ public class ContainerNpcPlayerOwnedTrade extends ContainerNpcBase<NpcTrader> {
     public void handlePacketData(NBTTagCompound tag) {
         if (tag.hasKey("tradeData")) {
             tradeList = new TradeList();
-            tradeList.readFromNBT(tag.getCompoundTag("tradeData"));
+            tradeList.deserializeNBT(tag.getCompoundTag("tradeData"));
         }
         else if (tag.hasKey("doTrade")) {
             tradeList.performTrade(player, storage, tag.getInteger("doTrade"));
@@ -60,7 +60,7 @@ public class ContainerNpcPlayerOwnedTrade extends ContainerNpcBase<NpcTrader> {
     public void onContainerClosed(EntityPlayer player) {
         this.entity.closeTrade();
         if (storage != null) {
-            ItemBackpack.writeBackpackToItem(storage, this.entity.getHeldItem());
+            ItemBackpack.writeBackpackToItem(storage, this.entity.getHeldItem(hand));
         }
         super.onContainerClosed(player);
     }

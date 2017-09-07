@@ -3,17 +3,23 @@ package net.shadowmage.ancientwarfare.npc.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumHand;
+import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.npc.orders.WorkOrder;
 
+import javax.annotation.Nonnull;
+
 public class ContainerWorkOrder extends ContainerBase {
 
+    private EnumHand hand;
     public final WorkOrder wo;
     private boolean hasChanged;
 
     public ContainerWorkOrder(EntityPlayer player, int x, int y, int z) {
         super(player);
-        @Nonnull ItemStack stack = player.getCurrentEquippedItem();
+        hand = getHandHoldingItem(player, AWItems.workOrder);
+        @Nonnull ItemStack stack = player.getHeldItem(hand);
         if (stack.isEmpty() || stack.getItem() == null) {
             throw new IllegalArgumentException("Cannot open Work Order GUI for null stack/item.");
         }
@@ -26,7 +32,7 @@ public class ContainerWorkOrder extends ContainerBase {
     @Override
     public void handlePacketData(NBTTagCompound tag) {
         if (tag.hasKey("wo")) {
-            wo.readFromNBT(tag.getCompoundTag("wo"));
+            wo.deserializeNBT(tag.getCompoundTag("wo"));
             hasChanged = true;
         }
     }
@@ -35,13 +41,13 @@ public class ContainerWorkOrder extends ContainerBase {
     public void onContainerClosed(EntityPlayer par1EntityPlayer) {
         super.onContainerClosed(par1EntityPlayer);
         if (hasChanged && !player.world.isRemote) {
-            wo.write(player.getCurrentEquippedItem());
+            wo.write(player.getHeldItem(hand));
         }
     }
 
     public void onClose() {
         NBTTagCompound outer = new NBTTagCompound();
-        outer.setTag("wo", wo.writeToNBT(new NBTTagCompound()));
+        outer.setTag("wo", wo.serializeNBT());
         sendDataToServer(outer);
     }
 }

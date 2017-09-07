@@ -11,10 +11,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Type;
@@ -33,7 +34,11 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class TileTownHall extends TileOwned implements IInventory, IInteractableTile {
 
@@ -48,7 +53,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
     private int neglectedChecksSoFar = 0;
     
     public boolean isHq = false;
-    public int[] tpHubPos; // used in HQ GUI container
+    public BlockPos tpHubPos; // used in HQ GUI container
     
     private String oldOwner = null;
     
@@ -119,7 +124,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
                             return;
                         }
                         // notify player of the neglect/abandonment
-                        ModAccessors.FTBU.notifyPlayer(EnumChatFormatting.RED, getOwnerName(), notificationTitle, notificationMsg, notificationTooltip);
+                        ModAccessors.FTBU.notifyPlayer(TextFormatting.RED, getOwnerName(), notificationTitle, notificationMsg, notificationTooltip);
                     } else {
                         // neglected check has increased, but not advanced a stage yet...
                     }
@@ -166,7 +171,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
             List<TextComponentTranslation> notificationTooltip = new ArrayList<>();
             notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.chunk_name_and_position", name, x>>4 , z>>4));
             notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.click_to_remove"));
-            ModAccessors.FTBU.notifyPlayer(EnumChatFormatting.GREEN, getOwnerName(), notificationTitle, notificationMsg, notificationTooltip);
+            ModAccessors.FTBU.notifyPlayer(TextFormatting.GREEN, getOwnerName(), notificationTitle, notificationMsg, notificationTooltip);
         } else {
             // new owner. Notify both players of the capture
             String notificationTitle = "ftbu_aw2.notification.townhall_captured";
@@ -175,10 +180,10 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
             notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.chunk_name_and_position", name, x>>4 , z>>4));
             notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.click_to_remove"));
             
-            ModAccessors.FTBU.notifyPlayer(EnumChatFormatting.RED, oldOwner, notificationTitle, notificationMsg, notificationTooltip);
+            ModAccessors.FTBU.notifyPlayer(TextFormatting.RED, oldOwner, notificationTitle, notificationMsg, notificationTooltip);
             
             notificationMsg = new TextComponentTranslation("ftbu_aw2.notification.townhall_captured.msg.gained", oldOwner);
-            ModAccessors.FTBU.notifyPlayer(EnumChatFormatting.GREEN, getOwnerName(), notificationTitle, notificationMsg, notificationTooltip);
+            ModAccessors.FTBU.notifyPlayer(TextFormatting.GREEN, getOwnerName(), notificationTitle, notificationMsg, notificationTooltip);
             
             
             LMPlayerServer lmPlayerServer = LMWorldServer.inst.getPlayer(getOwnerName());

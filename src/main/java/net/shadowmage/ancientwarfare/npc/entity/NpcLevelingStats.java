@@ -71,7 +71,7 @@ public class NpcLevelingStats {
         if (newLevel <= AWNPCStatics.maxNpcLevel){
             if(npc.getMaxHealthOverride() <= 0) {
                 double health = AncientWarfareNPC.statics.getMaxHealthFor(npc.getNpcType()) + newLevel;
-                npc.getEntityAttribute(SharedMonsterAttributes.maxHealth).setBaseValue(health);
+                npc.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(health);
             }
             npc.updateDamageFromLevel();
         }

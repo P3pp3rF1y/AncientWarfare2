@@ -19,8 +19,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.scoreboard.ScorePlayerTeam;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.shadowmage.ancientwarfare.core.util.AWTextureManager;
@@ -116,7 +116,7 @@ public class RenderNpcBase extends RenderBiped {
                         name = npcTeam.getColorPrefix() + name + npcTeam.getColorSuffix();
                     }
                 } else if (!canBeCommandedBy) {
-                    name = EnumChatFormatting.DARK_GRAY.toString() + name;
+                    name = TextFormatting.DARK_GRAY.toString() + name;
                 }
                 renderColoredLabel(npc, name, x, y, z, 64, 0x20ffffff, 0xffffffff);
             }

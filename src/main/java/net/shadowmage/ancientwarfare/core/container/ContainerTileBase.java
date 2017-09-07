@@ -11,9 +11,9 @@ import net.minecraft.util.math.BlockPos;
 public class ContainerTileBase<T extends TileEntity> extends ContainerBase {
     public final T tileEntity;
 
-    public ContainerTileBase(EntityPlayer player, BlockPos pos) {
+    public ContainerTileBase(EntityPlayer player, int x, int y, int z) {
         super(player);
-        tileEntity = (T) player.world.getTileEntity(pos);
+        tileEntity = (T) player.world.getTileEntity(new BlockPos(x, y, z));
         if (tileEntity == null) {
             throw new IllegalArgumentException("Tile is null");
         }

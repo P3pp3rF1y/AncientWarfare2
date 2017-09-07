@@ -75,7 +75,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
 
     public void setTownHallPosition(BlockPos pos) {
         if (pos != null) {
-            this.townHallPosition = pos.copy();
+            this.townHallPosition = pos;
         } else {
             this.townHallPosition = null;
         }

@@ -1,20 +1,22 @@
 package net.shadowmage.ancientwarfare.npc.block;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 
-import java.util.ArrayList;
-
 public class BlockHeadquarters extends BlockTownHall {
 
+/*
     @Override
     @SideOnly(Side.CLIENT)
     public void registerBlockIcons(IIconRegister register) {
@@ -25,12 +27,11 @@ public class BlockHeadquarters extends BlockTownHall {
         icons[4] = register.registerIcon("ancientwarfare:npc/town_hall_side_hq");
         icons[5] = register.registerIcon("ancientwarfare:npc/town_hall_side_hq");
     }
-    
+*/
+
     @Override
-    public ArrayList<ItemStack> getDrops(World world, int posX, int posY, int posZ, int metadata, int fortune) {
-        ArrayList<ItemStack> drops = new ArrayList<>();
+    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
         drops.add(new ItemStack(Item.getItemFromBlock(AWNPCBlockLoader.townHall)));
-        return drops;
     }
     
     @Override
@@ -42,11 +43,12 @@ public class BlockHeadquarters extends BlockTownHall {
                 // different player to the owner has used the town hall
                 if (!ModAccessors.FTBU.areFriends(player.getName(), currentOwnerName)) {
                     // new player is NOT a friend, change this HQ back to a town hall block
-                    world.setBlock(x, y, z, AWNPCBlockLoader.townHall, 0, 3);
-                    return world.getBlock(x, y, z).onBlockActivated(world, x, y, z, player, sideHit, hitX, hitY, hitZ);
+                    world.setBlockState(pos, AWNPCBlockLoader.townHall.getDefaultState(), 3);
+                    IBlockState newState = world.getBlockState(pos);
+                    return newState.getBlock().onBlockActivated(world, pos, newState, player, hand, facing, hitX, hitY, hitZ);
                 }
             }
         }
-        return super.onBlockActivated(world, x, y, z, player, sideHit, hitX, hitY, hitZ);
+        return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ);
     }
 }

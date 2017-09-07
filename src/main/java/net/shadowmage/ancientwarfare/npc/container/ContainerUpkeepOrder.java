@@ -3,18 +3,24 @@ package net.shadowmage.ancientwarfare.npc.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumHand;
+import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.npc.orders.UpkeepOrder;
 
+import javax.annotation.Nonnull;
+
 public class ContainerUpkeepOrder extends ContainerBase {
 
+    private EnumHand hand;
     public final UpkeepOrder upkeepOrder;
     private boolean hasChanged;
 
     public ContainerUpkeepOrder(EntityPlayer player, int x, int y, int z) {
         super(player);
-        @Nonnull ItemStack stack = player.getCurrentEquippedItem();
-        if (stack.isEmpty() || stack.getItem() == null) {
+        this.hand = getHandHoldingItem(player, AWItems.upkeepOrder);
+        @Nonnull ItemStack stack = player.getHeldItem(hand);
+        if (stack.isEmpty()) {
             throw new IllegalArgumentException("Cannot open Work Order GUI for null stack/item.");
         }
         upkeepOrder = UpkeepOrder.getUpkeepOrder(stack);
@@ -28,7 +34,7 @@ public class ContainerUpkeepOrder extends ContainerBase {
     @Override
     public void handlePacketData(NBTTagCompound tag) {
         if (tag.hasKey("upkeepOrder")) {
-            upkeepOrder.readFromNBT(tag.getCompoundTag("upkeepOrder"));
+            upkeepOrder.deserializeNBT(tag.getCompoundTag("upkeepOrder"));
             hasChanged = true;
         }
     }
@@ -37,13 +43,13 @@ public class ContainerUpkeepOrder extends ContainerBase {
     public void onContainerClosed(EntityPlayer par1EntityPlayer) {
         super.onContainerClosed(par1EntityPlayer);
         if (hasChanged && !player.world.isRemote) {
-            upkeepOrder.write(player.getCurrentEquippedItem());
+            upkeepOrder.write(player.getHeldItem(hand));
         }
     }
 
     public void onClose() {
         NBTTagCompound outer = new NBTTagCompound();
-        outer.setTag("upkeepOrder", upkeepOrder.writeToNBT(new NBTTagCompound()));
+        outer.setTag("upkeepOrder", upkeepOrder.serializeNBT());
         sendDataToServer(outer);
     }
 }
