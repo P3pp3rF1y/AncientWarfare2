@@ -6,6 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.npc.orders.RoutingOrder;
 
 import javax.annotation.Nonnull;
@@ -18,7 +19,7 @@ public class ContainerRoutingOrder extends ContainerBase {
 
     public ContainerRoutingOrder(EntityPlayer player, int x, int y, int z) {
         super(player);
-        this.hand = getHandHoldingItem(player, AWItems.routingOrder);
+        this.hand = EntityTools.getHandHoldingItem(player, AWItems.routingOrder);
         @Nonnull ItemStack stack = player.getHeldItem(hand);
         if (stack.isEmpty() || stack.getItem() == null) {
             throw new IllegalArgumentException("Cannot open Routing Order GUI for null stack/item.");

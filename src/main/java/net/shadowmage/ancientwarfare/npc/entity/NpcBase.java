@@ -1,29 +1,42 @@
 package net.shadowmage.ancientwarfare.npc.entity;
 
 import io.netty.buffer.ByteBuf;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityFlying;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTUtil;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -34,6 +47,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketEntity;
+import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.ai.NpcNavigator;
@@ -51,6 +65,10 @@ import java.util.UUID;
 
 public abstract class NpcBase extends EntityCreature implements IEntityAdditionalSpawnData, IOwnable, IEntityPacketHandler {
 
+    private static final DataParameter<Integer> AI_TASKS = EntityDataManager.createKey(NpcBase.class, DataSerializers.VARINT);
+    private static final DataParameter<BlockPos> BED_POS = EntityDataManager.createKey(NpcBase.class, DataSerializers.BLOCK_POS);
+    private static final DataParameter<Boolean> IS_SLEEPING = EntityDataManager.createKey(NpcBase.class, DataSerializers.BOOLEAN);
+
     private String ownerName = "";//the owner of this NPC, used for checking teams
     private UUID ownerId;
     protected String followingPlayerName;//set/cleared onInteract from player if player.team==this.team
@@ -63,7 +81,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     private static final ResourceLocation baseDefaultTexture = new ResourceLocation("ancientwarfare:textures/entity/npc/npc_default.png");
 
     private ResourceLocation currentTexture = null;
-    public static final int ORDER_SLOT = 5, UPKEEP_SLOT = 6, SHIELD_SLOT = 7;
+    public static final int ORDER_SLOT = 6, UPKEEP_SLOT = 7;
     @Nonnull
     public ItemStack ordersStack;
     @Nonnull
@@ -98,12 +116,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     @Override
     protected void entityInit() {
         super.entityInit();
-        this.getDataWatcher().addObject(20, Integer.valueOf(0));//ai tasks
-        this.getDataWatcher().addObjectByDataType(21, 5);//5 for ItemStack
-        this.getDataWatcher().addObject(12, Integer.valueOf(0)); // ownedBed posX
-        this.getDataWatcher().addObject(13, Integer.valueOf(0)); // ownedBed posY
-        this.getDataWatcher().addObject(14, Integer.valueOf(0)); // ownedBed posZ
-        this.getDataWatcher().addObject(15, Byte.valueOf((byte) 0)); // isSleeping flag
+        dataManager.register(AI_TASKS, 0);
+        dataManager.register(BED_POS, BlockPos.ORIGIN);
+        dataManager.register(IS_SLEEPING, false);
     }
 
     @Override
@@ -114,11 +129,11 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     public ItemStack getShieldStack() {
-        return this.getDataWatcher().getWatchableObjectItemStack(21);
+        return getHeldItem(EnumHand.OFF_HAND);
     }
 
     public void setShieldStack(ItemStack stack) {
-        this.getDataWatcher().updateObject(21, stack);
+        setHeldItem(EnumHand.OFF_HAND, stack);
     }
 
     public int getMaxHealthOverride() {
@@ -185,14 +200,14 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         if (damage < 0) {
             if (getShieldStack() != null) {
                 shield = getShieldStack().copy();
-                getAttributeMap().applyAttributeModifiers(shield.getAttributeModifiers());
+                getAttributeMap().applyAttributeModifiers(shield.getAttributeModifiers(EntityEquipmentSlot.OFFHAND));
             }
             damage = (float) this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue();
         }
         int knockback = 0;
         if (target instanceof EntityLivingBase) {
-            damage += EnchantmentHelper.getEnchantmentModifierLiving(this, (EntityLivingBase) target);
-            knockback += EnchantmentHelper.getKnockbackModifier(this, (EntityLivingBase) target);
+            damage += EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(), ((EntityLivingBase)target).getCreatureAttribute());
+            knockback += EnchantmentHelper.getKnockbackModifier(this);
         }
         boolean targetHit = target.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
         if (targetHit) {
@@ -207,12 +222,12 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
                 target.setFire(fireDamage * 4);
             }
             if (target instanceof EntityLivingBase) {
-                EnchantmentHelper.func_151384_a((EntityLivingBase) target, this);
+                EnchantmentHelper.applyThornEnchantments((EntityLivingBase) target, this);
             }
-            EnchantmentHelper.func_151385_b(this, target);
+            EnchantmentHelper.applyArthropodEnchantments(this, target);
         }
         if (shield != null) {
-            getAttributeMap().removeAttributeModifiers(shield.getAttributeModifiers());
+            getAttributeMap().removeAttributeModifiers(shield.getAttributeModifiers(EntityEquipmentSlot.OFFHAND));
         }
         return targetHit;
     }
@@ -227,7 +242,11 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             if (getArmorValueOverride() >= 0) {
                 return super.applyArmorCalculations(source, amount);
             }else{
-                float value = ISpecialArmor.ArmorProperties.ApplyArmor(this, getLastActiveItems(), source, amount);
+                NonNullList<ItemStack> armor = NonNullList.create();
+                for (ItemStack armorPiece : getArmorInventoryList()) {
+                    armor.add(armorPiece);
+                }
+                float value = ISpecialArmor.ArmorProperties.applyArmor(this, armor, source, amount);
                 if (value > 0.0F && getShieldStack() != null && getShieldStack().getItem() instanceof ItemShield) {
                     float absorb = value * ((ItemShield) getShieldStack().getItem()).getArmorBonusValue() / 25F;
                     int dmg = Math.max((int)absorb, 1);
@@ -260,38 +279,37 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     @Override
     public final double getYOffset() {
-        return (double) (this.yOffset - 0.5F);//fixes mounted offset for horses, probably minecarts
+        return - 0.5D;//fixes mounted offset for horses, probably minecarts
     }
 
     @Override
-    public int getMaxSafePointTries() {
+    public int getMaxFallHeight() {
         return this.getAttackTarget() == null ? 4 : 4 + (int)(this.getHealth()/3);
     }
 
     @Override
-    public float getBlockPathWeight(int varX, int varY, int varZ){
-        Block below = world.getBlock(varX, varY - 1, varZ);
-        if(below.getMaterial() == Material.LAVA || below.getMaterial() == Material.CACTUS)//Avoid cacti and lava when wandering
+    public float getBlockPathWeight(BlockPos pos){
+        IBlockState stateBelow = world.getBlockState(pos.down());
+        if(stateBelow.getMaterial() == Material.LAVA || stateBelow.getMaterial() == Material.CACTUS)//Avoid cacti and lava when wandering
             return -10;
-        else if(below.getMaterial().isLiquid())//Don't try swimming too much
+        else if(stateBelow.getMaterial().isLiquid())//Don't try swimming too much
             return 0;
         /*if(this.getRidingEntity() instanceof EntityCreature)
             return ((EntityCreature)this.getRidingEntity()).getBlockPathWeight(varX, varY - 1, varZ);*/
-        float level = world.getLightBrightness(varX, varY, varZ);//Prefer lit areas
+        float level = world.getLightBrightness(pos);//Prefer lit areas
         if(level < 0)
             return 0;
         else
-            return level + (below.isSideSolid(world, varX, varY - 1, varZ, EnumFacing.UP) ? 1 : 0);
+            return level + (stateBelow.isSideSolid(world, pos.down(), EnumFacing.UP) ? 1 : 0);
     }
 
     @Override
     public void onEntityUpdate() {
         /*
-         * this is pushOutOfBlocks ...
          * need to test how well it works for an npc (perhaps drop sand on their head?)
          */
         if (!world.isRemote) {
-            this.func_145771_j(this.posX, (this.getEntityBoundingBox().minY + this.getEntityBoundingBox().maxY) / 2.0D, this.posZ);
+            this.pushOutOfBlocks(this.posX, (this.getEntityBoundingBox().minY + this.getEntityBoundingBox().maxY) / 2.0D, this.posZ);
         }
         super.onEntityUpdate();
     }
@@ -300,8 +318,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         if (!hasHome()) {
             return 0;
         }
-        ChunkPos home = getHomePosition();
-        return getDistanceSq(home.posX + 0.5d, home.posY, home.posZ + 0.5d);
+        BlockPos home = getHomePosition();
+        return getDistanceSq(home.getX() + 0.5d, home.getY(), home.getZ() + 0.5d);
     }
 
     public BlockPos getTownHallPosition() {
@@ -309,12 +327,12 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     public void setHomeAreaAtCurrentPosition(){
-        setHomePosAndDistance(MathHelper.floor(this.posX), MathHelper.floor(this.posY), MathHelper.floor(this.posZ), getHomeRange());
+        setHomePosAndDistance(new BlockPos(MathHelper.floor(this.posX), MathHelper.floor(this.posY), MathHelper.floor(this.posZ)), getHomeRange());
     }
 
     public int getHomeRange(){
         if(hasHome()){
-            return MathHelper.floor_float(func_110174_bM());
+            return MathHelper.floor(getMaximumHomeDistance());
         }
         return 5;
     }
@@ -327,7 +345,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         if (getAttackTarget() != null || !hasHome()) {
             return false;
         }
-        if (world.canLightningStrikeAt(MathHelper.floor(this.posX), MathHelper.floor(this.posY), MathHelper.floor(this.posZ)))
+        if (world.isRainingAt(new BlockPos(MathHelper.floor(this.posX), MathHelper.floor(this.posY), MathHelper.floor(this.posZ))))
             setRainedOn(true);
         return shouldSleep() || isWaitingForRainToStop();
     }
@@ -384,7 +402,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     protected boolean tryCommand(EntityPlayer player) {
-        boolean baton = player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton;
+        boolean baton = !EntityTools.getItemFromEitherHand(player, ItemCommandBaton.class).isEmpty();
         if (!baton) {
             if(!world.isRemote) {
                 if (player.isSneaking()) {
@@ -408,10 +426,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             int d0 = (int)Math.signum(this.posX - entity.posX);
             int d1 = (int)Math.signum(this.posZ - entity.posZ);
             if(d0!=0 || d1!=0) {
-                int x = MathHelper.floor(this.posX) + d0;
-                int y = MathHelper.floor(this.getEntityBoundingBox().minY) - 1;
-                int z = MathHelper.floor(this.posZ) + d1;
-                Material material = world.getBlock(x, y, z).getMaterial();
+                Material material = world.getBlockState(new BlockPos(this.posX + d0, this.getEntityBoundingBox().minY - 1, this.posZ + d1)).getMaterial();
                 if(material.isLiquid() || material == Material.CACTUS) {
                     return;
                 }
@@ -426,50 +441,48 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     public final boolean attackEntityFrom(DamageSource source, float par2) {
         if (getSleeping()) // prevent suffocation damage (allows bunk beds and such)
             return false;
-        if (source.getEntity() != null && !canBeAttackedBy(source.getEntity()))
+        if (source.getTrueSource() != null && !canBeAttackedBy(source.getTrueSource()))
             return false;
-        if(source == DamageSource.inWall && this.getRidingEntity() instanceof EntityLiving) {
-            knockFromDamage(par2, world.getBlock(MathHelper.floor(this.posX), MathHelper.floor(this.posY + this.getEyeHeight()), MathHelper.floor(this.posZ)).getMaterial());
+        if(source == DamageSource.IN_WALL && this.getRidingEntity() instanceof EntityLiving) {
+            knockFromDamage(par2, world.getBlockState(new BlockPos(this.posX, this.posY + this.getEyeHeight(), this.posZ)).getMaterial());
             return false;
         }
-        if(source == DamageSource.cactus)
+        if(source == DamageSource.CACTUS)
             knockFromDamage(par2, Material.CACTUS);
-        else if(source == DamageSource.lava)
+        else if(source == DamageSource.LAVA)
             knockFromDamage(par2, Material.LAVA);
-        else if(source == DamageSource.drown)
+        else if(source == DamageSource.DROWN)
             jump();
         return super.attackEntityFrom(source, par2);
     }
 
     private void knockFromDamage(float val, Material material){
-        int x = MathHelper.floor(this.posX);
-        int y = MathHelper.floor(this.getEntityBoundingBox().minY + 0.5);
-        int z = MathHelper.floor(this.posZ);
-        if(world.getBlock(x - 1, y, z).getMaterial() == material){
-            knockBack(null, val, x - 1 - this.posX, 0);
-        }else if(world.getBlock(x, y, z - 1).getMaterial() == material){
-            knockBack(null, val, 0, z - 1 - this.posZ);
-        }else if(world.getBlock(x + 1, y, z).getMaterial() == material){
-            knockBack(null, val, x + 1 - this.posX, 0);
-        }else if(world.getBlock(x, y, z + 1).getMaterial() == material){
-            knockBack(null, val, 0, z + 1 - this.posZ);
-        }else if(world.getBlock(x - 1, y, z - 1).getMaterial() == material){
-            knockBack(null, val, x - 1 - this.posX, z - 1 - this.posZ);
-        }else if(world.getBlock(x + 1, y, z - 1).getMaterial() == material){
-            knockBack(null, val, x + 1 - this.posX, z - 1 - this.posZ);
-        }else if(world.getBlock(x - 1, y, z + 1).getMaterial() == material){
-            knockBack(null, val, x - 1 - this.posX, z + 1 - this.posZ);
-        }else if(world.getBlock(x + 1, y, z + 1).getMaterial() == material){
-            knockBack(null, val, x + 1 - this.posX, z + 1 - this.posZ);
-        }else if(world.getBlock(x, y - 1, z).getMaterial() == material){
+        BlockPos pos = new BlockPos(this.posX, this.getEntityBoundingBox().minY + 0.5, this.posZ);
+        if(world.getBlockState(pos.west()).getMaterial() == material){
+            knockBack(null, val, pos.getX() - 1 - this.posX, 0);
+        }else if(world.getBlockState(pos.north()).getMaterial() == material){
+            knockBack(null, val, 0, pos.getZ() - 1 - this.posZ);
+        }else if(world.getBlockState(pos.east()).getMaterial() == material){
+            knockBack(null, val, pos.getX() + 1 - this.posX, 0);
+        }else if(world.getBlockState(pos.south()).getMaterial() == material){
+            knockBack(null, val, 0, pos.getZ() + 1 - this.posZ);
+        }else if(world.getBlockState(pos.add(-1, 0, -1)).getMaterial() == material){
+            knockBack(null, val, pos.getX() - 1 - this.posX, pos.getZ() - 1 - this.posZ);
+        }else if(world.getBlockState(pos.add(1, 0,-1)).getMaterial() == material){
+            knockBack(null, val, pos.getX() + 1 - this.posX, pos.getZ() - 1 - this.posZ);
+        }else if(world.getBlockState(pos.add(-1, 0,1)).getMaterial() == material){
+            knockBack(null, val, pos.getX() - 1 - this.posX, pos.getZ() + 1 - this.posZ);
+        }else if(world.getBlockState(pos.add(1, 0, 1)).getMaterial() == material){
+            knockBack(null, val, pos.getX() + 1 - this.posX, pos.getZ() + 1 - this.posZ);
+        }else if(world.getBlockState(pos.down()).getMaterial() == material){
             knockBack(null, val, 2 * getRNG().nextFloat() - 1, 2 * getRNG().nextFloat() - 1);
         }
         if(world.isRemote || getNavigator().noPath())
             return;
         PathPoint point = getNavigator().getPath().getPathPointFromIndex(getNavigator().getPath().getCurrentPathIndex());
-        if(world.getBlock(point.x, point.y, point.z).getMaterial() == material){
+        if(world.getBlockState(new BlockPos(point.x, point.y, point.z)).getMaterial() == material){
             getNavigator().clearPathEntity();
-        }else if(world.getBlock(point.x, point.y - 1, point.z).getMaterial() == material){
+        }else if(world.getBlockState(new BlockPos(point.x, point.y - 1, point.z)).getMaterial() == material){
             getNavigator().clearPathEntity();
         }
     }
@@ -498,57 +511,58 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     @Override
     protected final void dropEquipment(boolean par1, int par2) {
         if (!world.isRemote) {
-            @Nonnull ItemStack stack;
-            for (int i = 0; i < equipmentDropChances.length; i++) {
-                stack = getEquipmentInSlot(i);
-                if (!stack.isEmpty()) {
-                    entityDropItem(stack, 0.f);
+            for ( EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
+                ItemStack itemstack = this.getItemStackFromSlot(slot);
+                if (!itemstack.isEmpty()) {
+                    this.entityDropItem(itemstack, 0.0F);
                 }
-                setCurrentItemOrArmor(i, null);
+                setItemStackToSlot(slot, ItemStack.EMPTY);
             }
             if (!AWNPCStatics.persistOrdersOnDeath) {
-                if (ordersStack != null) {
+                if (!ordersStack.isEmpty()) {
                     entityDropItem(ordersStack, 0.f);
                 }
-                if (upkeepStack != null) {
+                if (!upkeepStack.isEmpty()) {
                     entityDropItem(upkeepStack, 0.f);
                 }
-                ordersStack = null;
-                upkeepStack = null;
+                ordersStack = ItemStack.EMPTY;
+                upkeepStack = ItemStack.EMPTY;
             }
-            if (getShieldStack() != null) {
-                entityDropItem(getShieldStack(), 0.f);
-            }
-            setShieldStack(null);
         }
     }
 
     @Override
-    public final ItemStack getEquipmentInSlot(int slot) {
-        if (slot == ORDER_SLOT)
+    public ItemStack getItemStackFromSlot(EntityEquipmentSlot slotIn) {
+        return super.getItemStackFromSlot(slotIn);
+    }
+
+    public final ItemStack getItemStackFromSlot(int slot) {
+        if (slot == ORDER_SLOT) {
             return ordersStack;
-        else if (slot == UPKEEP_SLOT)
+        } else if (slot == UPKEEP_SLOT) {
             return upkeepStack;
-        else if (slot == SHIELD_SLOT)
-            return getShieldStack();
-        else
-            return super.getEquipmentInSlot(slot);
+        } else if (slot >= 0 && slot < EntityEquipmentSlot.values().length) {
+            return super.getItemStackFromSlot(EntityEquipmentSlot.values()[slot]);
+        }
+        return ItemStack.EMPTY;
     }
 
     @Override
-    public final void setCurrentItemOrArmor(int slot, ItemStack stack) {
-        if (slot == SHIELD_SLOT) {
-            setShieldStack(stack);
+    public void setItemStackToSlot(EntityEquipmentSlot slot, ItemStack stack) {
+        super.setItemStackToSlot(slot, stack);
+        if (slot == EntityEquipmentSlot.MAINHAND) {
+            onWeaponInventoryChanged();
+        }
+    }
+
+    public final void setItemStackToSlot(int slot, ItemStack stack) {
+        if (slot >= 0 && slot < EntityEquipmentSlot.values().length) {
+            setItemStackToSlot(EntityEquipmentSlot.values()[slot], stack);
         } else if (slot == UPKEEP_SLOT) {
             upkeepStack = stack;
         } else if (slot == ORDER_SLOT) {
             ordersStack = stack;
             onOrdersInventoryChanged();
-        } else {
-            super.setCurrentItemOrArmor(slot, stack);
-            if (slot == 0) {
-                onWeaponInventoryChanged();
-            }
         }
     }
 
@@ -568,7 +582,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
      * used by player-owned npcs for rendering ai-tasks
      */
     public final int getAITasks() {
-        return getDataWatcher().getWatchableObjectInt(20);
+        return dataManager.get(AI_TASKS);
     }
 
     /*
@@ -600,8 +614,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     /*
      * set ai tasks -- only used internally
      */
-    private final void setAITasks(int tasks) {
-        this.getDataWatcher().updateObject(20, Integer.valueOf(tasks));
+    private void setAITasks(int tasks) {
+        dataManager.set(AI_TASKS, tasks);
     }
 
     /*
@@ -623,7 +637,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             equipmentTag = equipmentList.getCompoundTagAt(i);
             stack = new ItemStack(equipmentTag);
             if (equipmentTag.hasKey("slotNum")) {
-                setCurrentItemOrArmor(equipmentTag.getInteger("slotNum"), stack);
+                setItemStackToSlot(equipmentTag.getInteger("slotNum"), stack);
             }
         }
         readBaseTags(tag);
@@ -637,13 +651,13 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         NBTTagList equipmentList = new NBTTagList();
         @Nonnull ItemStack stack;
         NBTTagCompound equipmentTag;
-        for (int i = 0; i < equipmentDropChances.length; i++) {
-            stack = getEquipmentInSlot(i);
+        for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
+            stack = getItemStackFromSlot(slot);
             if (stack.isEmpty()) {
                 continue;
             }
             equipmentTag = stack.writeToNBT(new NBTTagCompound());
-            equipmentTag.setInteger("slotNum", i);
+            equipmentTag.setInteger("slotNum", slot.ordinal());
             equipmentList.appendTag(equipmentTag);
         }
         tag.setTag("equipment", equipmentList);
@@ -706,9 +720,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     @Override
-    public String getCommandSenderName() {
+    public String getName() {
         String name = I18n.format("entity.AncientWarfareNpc." + getNpcFullType() + ".name");
-        if (hasCustomNameTag()) {
+        if (hasCustomName()) {
             name = name + " : " + getCustomNameTag();
         }
         return name;
@@ -769,9 +783,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             setHealth(getHealth() + 1);
         }
         super.onUpdate();
-        if(getHeldItem()!=null){
+        if(getHeldItemMainhand()!=null){
             try{//Inserting Item#onUpdate, to let it do whatever it needs to do. Used by QuiverBow for burst fire
-                getHeldItem().updateAnimation(world, this, 0, true);
+                getHeldItemMainhand().updateAnimation(world, this, 0, true);
             }catch (Exception ignored){}
         }
         world.profiler.endSection();
@@ -785,11 +799,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     @Override
     protected final boolean canDespawn() {
         return false;
-    }
-
-    @Override
-    protected final boolean isAIEnabled() {
-        return true;
     }
 
     /*
@@ -918,11 +927,11 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         Team targetTeam;
         String targetOwnerOrName;
         if (entityTarget instanceof NpcPlayerOwned) {
-            targetTeam = ((NpcPlayerOwned) entityTarget).getTeam();
+            targetTeam = entityTarget.getTeam();
             targetOwnerOrName = ((NpcPlayerOwned) entityTarget).getOwnerName();
         } else if (entityTarget instanceof EntityPlayer) {
-            targetTeam = ((EntityPlayer) entityTarget).getTeam();
-            targetOwnerOrName = ((EntityPlayer) entityTarget).getName();
+            targetTeam = entityTarget.getTeam();
+            targetOwnerOrName = entityTarget.getName();
         } else
             return false;
         
@@ -953,7 +962,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     @Override
-    public boolean allowLeashing() {
+    public boolean canBeLeashedTo(EntityPlayer player) {
         return false;
     }
 
@@ -963,7 +972,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             return;
         if (!player.world.isRemote && isEntityAlive()) {
             onRepack();
-            @Nonnull ItemStack item = InventoryTools.mergeItemStack(player.inventory, this.getItemToSpawn(), -1);
+            @Nonnull ItemStack item = InventoryTools.mergeItemStack(player.inventory, this.getItemToSpawn(), (EnumFacing) null);
             if (item != null) {
                 InventoryTools.dropItemInWorld(player.world, item, player.posX, player.posY, player.posZ);
             }
@@ -981,25 +990,22 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     @Override
     public void readEntityFromNBT(NBTTagCompound tag) {
-        for (int i = 0; i < equipmentDropChances.length; i++) {
-            setCurrentItemOrArmor(i, null);
+        for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
+            setItemStackToSlot(slot, ItemStack.EMPTY);
         }
         super.readEntityFromNBT(tag);
         if (tag.hasKey("home")) {
-            int[] ccia = tag.getIntArray("home");
-            setHomePosAndDistance(ccia[0], ccia[1], ccia[2], ccia[3]);
+            setHomePosAndDistance(BlockPos.fromLong(tag.getLong("home")), tag.getInteger("homeRange"));
         }
         if (tag.hasKey("bedDirection"))
-            setBedDirection(tag.getInteger("bedDirection"));
+            setBedDirection(EnumFacing.VALUES[tag.getByte("bedDirection")]);
         if (tag.hasKey("isSleeping"))
             setSleeping(tag.getBoolean("isSleeping"));
         if (tag.hasKey("cachedBedPos")) {
-            int[] cachedBedPos = tag.getIntArray("cachedBedPos");
-            this.cachedBedPos = new BlockPos(cachedBedPos[0], cachedBedPos[1], cachedBedPos[2]);
+            this.cachedBedPos = BlockPos.fromLong(tag.getLong("cachedBedPos"));
         }
         if (tag.hasKey("bedPos")) {
-            int[] bedPos = tag.getIntArray("bedPos");
-            this.setBedPosition(new BlockPos(bedPos[0], bedPos[1], bedPos[2]));
+            this.setBedPosition(BlockPos.fromLong(tag.getLong("bedPos")));
         }
         if (tag.hasKey("foundBed"))
             this.foundBed = tag.getBoolean("foundBed");
@@ -1010,13 +1016,10 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     private void readBaseTags(NBTTagCompound tag){
         if (tag.hasKey("ordersStack")) {
-            setCurrentItemOrArmor(ORDER_SLOT, new ItemStack(tag.getCompoundTag("ordersStack")));
+            setItemStackToSlot(ORDER_SLOT, new ItemStack(tag.getCompoundTag("ordersStack")));
         }
         if (tag.hasKey("upkeepStack")) {
-            setCurrentItemOrArmor(UPKEEP_SLOT, new ItemStack(tag.getCompoundTag("upkeepStack")));
-        }
-        if (tag.hasKey("shieldStack")) {
-            setShieldStack(new ItemStack(tag.getCompoundTag("shieldStack")));
+            setItemStackToSlot(UPKEEP_SLOT, new ItemStack(tag.getCompoundTag("upkeepStack")));
         }
         if (tag.hasKey("levelingStats")) {
             getLevelingStats().readFromNBT(tag.getCompoundTag("levelingStats"));
@@ -1054,43 +1057,39 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         if (!hasHome()) {
             BlockPos position = getTownHallPosition();
             if(position != null)
-                setHomePosAndDistance(position.x, position.y, position.z, getHomeRange());
+                setHomePosAndDistance(position, getHomeRange());
             else
                 setHomeAreaAtCurrentPosition();
         }
-        ChunkPos cc = getHomePosition();
-        int[] ccia = new int[]{cc.posX, cc.posY, cc.posZ, getHomeRange()};
-        tag.setIntArray("home", ccia);
+        tag.setLong("home", getHomePosition().toLong());
+        tag.setInteger("homeRange", getHomeRange());
         tag.setString("owner", ownerName);
         tag.setInteger("attackDamageOverride", attackDamage);
         tag.setInteger("armorValueOverride", armorValue);
         tag.setString("customTex", customTexRef);
         tag.setBoolean("aiEnabled", aiEnabled);
-        tag.setInteger("bedDirection", bedDirection);
+        tag.setByte("bedDirection", (byte) bedDirection.ordinal());
         tag.setBoolean("isSleeping", this.getSleeping());
         BlockPos bedPos = this.getBedPosition();
-        tag.setIntArray("bedPos", new int[]{bedPos.x, bedPos.y, bedPos.z});
+        tag.setLong("bedPos", bedPos.toLong());
         if (cachedBedPos != null)
-            tag.setIntArray("cachedBedPos", new int[]{cachedBedPos.x, cachedBedPos.y, cachedBedPos.z});
+            tag.setLong("cachedBedPos", cachedBedPos.toLong());
         tag.setBoolean("foundBed", foundBed);
         writeBaseTags(tag);
     }
 
     private void writeBaseTags(NBTTagCompound tag){
-        if (ordersStack != null) {
+        if (!ordersStack.isEmpty()) {
             tag.setTag("ordersStack", ordersStack.writeToNBT(new NBTTagCompound()));
         }
-        if (upkeepStack != null) {
+        if (!upkeepStack.isEmpty()) {
             tag.setTag("upkeepStack", upkeepStack.writeToNBT(new NBTTagCompound()));
-        }
-        if (getShieldStack() != null) {
-            tag.setTag("shieldStack", getShieldStack(.writeToNBT(new NBTTagCompound())));
         }
         tag.setTag("levelingStats", getLevelingStats().writeToNBT(new NBTTagCompound()));
         tag.setFloat("maxHealth", getMaxHealth());
         tag.setFloat("health", getHealth());
         tag.setInteger("food", getFoodRemaining());
-        if (hasCustomNameTag()) {
+        if (hasCustomName()) {
             tag.setString("name", getCustomNameTag());
         }
         checkOwnerName();
@@ -1126,7 +1125,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             NBTTagCompound tah = tag.getCompoundTag("profileTex");
             if(world.isRemote) {
                 try {
-                    AncientWarfareNPC.proxy.cacheProfile(NBTUtil.func_152459_a(tah));
+                    AncientWarfareNPC.proxy.cacheProfile(NBTUtil.readGameProfileFromNBT(tah));
                 }catch (Throwable ignored){}
             }
             updateTexture();
@@ -1149,7 +1148,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
                 return;
             }
         }
-        if (player.getHeldItem() != null)//first try to put under currently selected slot, if it is occupied, find first unoccupied slot
+        if (!player.getHeldItemMainhand().isEmpty())//first try to put under currently selected slot, if it is occupied, find first unoccupied slot
         {
             for (int i = 0; i < InventoryPlayer.getHotbarSize(); i++) {
                 if (player.inventory.getStackInSlot(i) == null) {
@@ -1162,7 +1161,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     public double getDistanceSq(BlockPos pos) {
-        return getDistanceSq(pos.x + 0.5d, pos.y, pos.z + 0.5d);
+        return getDistanceSq(pos.getX() + 0.5d, pos.getY(), pos.getZ() + 0.5d);
     }
     
     public BlockPos findBed() {
@@ -1195,8 +1194,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         
             int closetBedIndex = -1;
             for (int i = 0; i < foundBeds.size(); i++) {
-                float bedDistance = foundBeds.get(i).getCenterDistanceFrom(originX, originY, originZ);
-                if ((closetBedIndex == -1) || (bedDistance < foundBeds.get(closetBedIndex).getCenterDistanceFrom(originX, originY, originZ)))
+                double bedDistance = foundBeds.get(i).distanceSqToCenter(originX, originY, originZ);
+                if ((closetBedIndex == -1) || (bedDistance < foundBeds.get(closetBedIndex).distanceSqToCenter(originX, originY, originZ)))
                     closetBedIndex = i;
             }
             if (closetBedIndex == -1) {
@@ -1243,62 +1242,45 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         
         BlockPos bedPos = getBedPosition();
         // set vacant
-        BlockBed.func_149979_a(this.world, bedPos.x, bedPos.y, bedPos.z, false);
-        
-        
+        world.setBlockState(bedPos, world.getBlockState(bedPos).withProperty(BlockBed.OCCUPIED, false), 4);
+
         // Try placing the NPC to an empty spot next to the bed. We don't want them standing on top of the bed, chance for suffocation
-        switch (getBedDirection()) {
-            case 1:
-                if (tryMovingToBedside(bedPos.x + 0.5, bedPos.y, bedPos.z - 0.5)) return;
-                if (tryMovingToBedside(bedPos.x + 0.5, bedPos.y, bedPos.z + 1.5)) return;
-                if (tryMovingToBedside(bedPos.x + 1.5, bedPos.y, bedPos.z - 0.5)) return;
-                if (tryMovingToBedside(bedPos.x + 1.5, bedPos.y, bedPos.z + 1.5)) return;
-                break;
-            case 3:
-                if (tryMovingToBedside(bedPos.x + 0.5, bedPos.y, bedPos.z - 0.5)) return;
-                if (tryMovingToBedside(bedPos.x + 0.5, bedPos.y, bedPos.z + 1.5)) return;
-                if (tryMovingToBedside(bedPos.x - 0.5, bedPos.y, bedPos.z - 0.5)) return;
-                if (tryMovingToBedside(bedPos.x - 0.5, bedPos.y, bedPos.z + 1.5)) return;
-                break;
-            case 0:
-                if (tryMovingToBedside(bedPos.x - 0.5, bedPos.y, bedPos.z + 0.5)) return;
-                if (tryMovingToBedside(bedPos.x + 1.5, bedPos.y, bedPos.z + 0.5)) return;
-                if (tryMovingToBedside(bedPos.x - 0.5, bedPos.y, bedPos.z - 0.5)) return;
-                if (tryMovingToBedside(bedPos.x + 1.5, bedPos.y, bedPos.z - 0.5)) return;
-                break;
-            case 2:
-                if (tryMovingToBedside(bedPos.x - 0.5, bedPos.y, bedPos.z + 0.5)) return;
-                if (tryMovingToBedside(bedPos.x + 1.5, bedPos.y, bedPos.z + 0.5)) return;
-                if (tryMovingToBedside(bedPos.x - 0.5, bedPos.y, bedPos.z + 1.5)) return;
-                if (tryMovingToBedside(bedPos.x + 1.5, bedPos.y, bedPos.z + 1.5)) return;
-                break;
-        }
-        setSleeping(false);
+        EnumFacing bedDirection = getBedDirection();
+
+        //try sides first
+        if (tryMovingToBedside(bedPos.offset(bedDirection.rotateY()))) return;
+        if (tryMovingToBedside(bedPos.offset(bedDirection.rotateYCCW()))) return;
+
+        //then the 3 blocks right next to the bed's bottom part
+        BlockPos offsetPos = bedPos.offset(bedDirection.getOpposite());
+        if (tryMovingToBedside(offsetPos)) return;
+        if (tryMovingToBedside(offsetPos.offset(bedDirection.rotateY()))) return;
+        if (tryMovingToBedside(offsetPos.offset(bedDirection.rotateYCCW()))) return;
+
+        setSleeping(false); //TODO why are there 3 setSleeping(false) here?
     }
     
-    private boolean tryMovingToBedside(double x, double y, double z) {
+    private boolean tryMovingToBedside(BlockPos posToMove) {
         //System.out.println(x + "x" + y + "x" + z);
-        if (world.getBlock((int)Math.floor(x), (int)Math.floor(y), (int)Math.floor(z)).getMaterial().blocksMovement())
+        if (world.getBlockState(posToMove).getMaterial().blocksMovement())
             return false;
-        if (world.getBlock((int)Math.floor(x), (int)Math.floor(y + 1.0), (int)Math.floor(z)).getMaterial().blocksMovement())
+        if (world.getBlockState(posToMove.up()).getMaterial().blocksMovement())
             return false;
-        if (!world.getBlock((int)Math.floor(x), (int)Math.floor(y - 1.0), (int)Math.floor(z)).getMaterial().blocksMovement())
+        if (!world.getBlockState(posToMove.down()).getMaterial().blocksMovement())
             return false;
         this.aiEnabled = false;
-        this.setPosition(x, y, z);
+        this.setPosition(posToMove.getX() + 0.5, posToMove.getY() + 0.5, posToMove.getZ() + 0.5);
         this.aiEnabled = true;
         setSleeping(false);
         return true;
     }
     
-    public final BlockPos getBedPosition() {
-        return new BlockPos(getDataWatcher().getWatchableObjectInt(12), getDataWatcher().getWatchableObjectInt(13), getDataWatcher().getWatchableObjectInt(14));
+    private BlockPos getBedPosition() {
+        return dataManager.get(BED_POS);
     }
     
-    private final void setBedPosition(BlockPos pos) {
-        this.getDataWatcher().updateObject(12, Integer.valueOf(pos.x));
-        this.getDataWatcher().updateObject(13, Integer.valueOf(pos.y));
-        this.getDataWatcher().updateObject(14, Integer.valueOf(pos.z));
+    private void setBedPosition(BlockPos pos) {
+        dataManager.set(BED_POS, pos);
     }
     
     @Override
@@ -1316,19 +1298,19 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             double maxZ = posZ + (double) width;
             
             switch (this.getBedDirection()) {
-                case 0:
-                case 2:
+                case SOUTH:
+                case NORTH:
                     minZ -= 0.6f;
                     maxZ += 0.6f;
                     break;
-                case 1:
-                case 3:
+                case WEST:
+                case EAST:
                     minX -= 0.6f;
                     maxX += 0.6f;
                     break;
             }
             
-            this.getEntityBoundingBox().setBounds(minX, posY - (double)this.yOffset + (double)this.ySize, minZ, maxX, posY - (double)this.yOffset + (double)this.ySize + (double) height - 1.5f, maxZ);
+            this.setEntityBoundingBox(new AxisAlignedBB(minX, posY - this.getYOffset(), minZ, maxX, posY - this.getYOffset() + (double) height - 1.5f, maxZ));
             return;
         }
         
@@ -1342,31 +1324,28 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     //}
     
     public void setPositionToBed() {
-        int posX = cachedBedPos.x;
-        int posZ = cachedBedPos.z;
-        
         float xOffset = 0.5F;
         float zOffset = 0.5F;
         
         switch (this.getBedDirection()) {
-            case 0:
+            case SOUTH:
                 zOffset -= 0.5f;
                 break;
-            case 1:
+            case WEST:
                 xOffset += 0.5f;
                 break;
-            case 2:
+            case NORTH:
                 zOffset += 0.5f;
                 break;
-            case 3:
+            case EAST:
                 xOffset -= 0.5f;
                 break;
         }
-        setPosition(cachedBedPos.x + xOffset, cachedBedPos.y + 0.6, cachedBedPos.z + zOffset);
+        setPosition(cachedBedPos.getX() + xOffset, cachedBedPos.getY() + 0.6, cachedBedPos.getZ() + zOffset);
     }
     
     public boolean isBedCacheValid() {
-        return (world.getBlock(cachedBedPos.x, cachedBedPos.y, cachedBedPos.z) instanceof BlockBed);
+        return (world.getBlockState(cachedBedPos).getBlock() instanceof BlockBed);
     }
     
     @Override
@@ -1387,20 +1366,18 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
     
     public void setSleeping(boolean isSleeping) {
-        this.getDataWatcher().updateObject(15, Byte.valueOf((byte) (isSleeping ? 1 : 0)));
+        dataManager.set(IS_SLEEPING, isSleeping);
     }
     
     public boolean getSleeping() {
-        if (getDataWatcher() == null)
-            return false;
-        return getDataWatcher().getWatchableObjectByte(15) == 1 ? true : false;
+        return dataManager.get(IS_SLEEPING);
     }
     
     public void setBedDirection(EnumFacing direction) {
         bedDirection = direction;
     }
     
-    public int getBedDirection() {
+    public EnumFacing getBedDirection() {
         return bedDirection;
     }
     
@@ -1410,21 +1387,26 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     
     // Only used by the renderer
     @SideOnly(Side.CLIENT)
-    public float getBedOrientationInDegrees(int x, int y, int z) {
-        Block bed = world.getBlock(x, y, z);
-        if (bed != null && bed instanceof BlockBed) {
-            setBedDirection(bed.getBedDirection(world, x, y, z));
-            switch (bedDirection) {
-                case 0:
+    public float getBedOrientationInDegrees() {
+        BlockPos bedLocation = getBedPosition();
+        IBlockState state = bedLocation == null ? null : this.world.getBlockState(bedLocation);
+        if (state != null && state.getBlock().isBed(state, world, bedLocation, this))
+        {
+            EnumFacing enumfacing = state.getBlock().getBedDirection(state, world, bedLocation);
+
+            switch (enumfacing)
+            {
+                case SOUTH:
                     return 90.0F;
-                case 1:
+                case WEST:
                     return 0.0F;
-                case 2:
+                case NORTH:
                     return 270.0F;
-                case 3:
+                case EAST:
                     return 180.0F;
             }
         }
-        return -1;
+
+        return 0.0F;
     }
 }

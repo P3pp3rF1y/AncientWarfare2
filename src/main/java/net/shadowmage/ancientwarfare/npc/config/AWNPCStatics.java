@@ -679,40 +679,40 @@ public class AWNPCStatics extends ModConfiguration {
             item = equipmentConfig.get(npcDefaultWeapons, key, item).getString();
             array[0] = item;
 
-            item = array[4];
+            item = array[5];
             item = item == null ? "null" : item;
             item = equipmentConfig.get(npcArmorHead, key, item).getString();
+            array[5] = item;
+
+            item = array[4];
+            item = item == null ? "null" : item;
+            item = equipmentConfig.get(npcArmorChest, key, item).getString();
             array[4] = item;
 
             item = array[3];
             item = item == null ? "null" : item;
-            item = equipmentConfig.get(npcArmorChest, key, item).getString();
+            item = equipmentConfig.get(npcArmorLegs, key, item).getString();
             array[3] = item;
 
             item = array[2];
             item = item == null ? "null" : item;
-            item = equipmentConfig.get(npcArmorLegs, key, item).getString();
-            array[2] = item;
-
-            item = array[1];
-            item = item == null ? "null" : item;
             item = equipmentConfig.get(npcArmorBoots, key, item).getString();
-            array[1] = item;
-
-            item = array[5];
-            item = item == null ? "null" : item;
-            item = equipmentConfig.get(npcWorkItem, key, item).getString();
-            array[5] = item;
+            array[2] = item;
 
             item = array[6];
             item = item == null ? "null" : item;
-            item = equipmentConfig.get(npcUpkeepItem, key, item).getString();
+            item = equipmentConfig.get(npcWorkItem, key, item).getString();
             array[6] = item;
 
             item = array[7];
             item = item == null ? "null" : item;
-            item = equipmentConfig.get(npcOffhandItems, key, item).getString();
+            item = equipmentConfig.get(npcUpkeepItem, key, item).getString();
             array[7] = item;
+
+            item = array[1];
+            item = item == null ? "null" : item;
+            item = equipmentConfig.get(npcOffhandItems, key, item).getString();
+            array[1] = item;
         }
     }
 

@@ -7,6 +7,7 @@ import net.minecraft.util.EnumHand;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBackpack;
 import net.shadowmage.ancientwarfare.core.item.ItemBackpack;
+import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.npc.entity.NpcTrader;
 import net.shadowmage.ancientwarfare.npc.trade.TradeList;
 
@@ -22,7 +23,7 @@ public class ContainerNpcPlayerOwnedTrade extends ContainerNpcBase<NpcTrader> {
         this.entity.startTrade(player);
 
         addPlayerSlots();
-        this.hand = getHandHoldingItem(player, AWItems.backpack);
+        this.hand = EntityTools.getHandHoldingItem(player, AWItems.backpack);
         storage = ItemBackpack.getInventoryFor(entity.getHeldItem(hand));
         if (storage != null) {
             for (int i = 0; i < storage.getSizeInventory(); i++) {

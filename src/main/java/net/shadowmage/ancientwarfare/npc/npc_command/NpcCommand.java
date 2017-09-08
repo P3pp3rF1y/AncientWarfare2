@@ -2,12 +2,12 @@ package net.shadowmage.ancientwarfare.npc.npc_command;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.network.PacketNpcCommand;
@@ -56,19 +56,12 @@ public class NpcCommand {
         } else {
             cmd = new Command(type, entityID);
         }
-        List<Entity> targets = ItemCommandBaton.getCommandedEntities(player.world, getCommandBatonFromEitherHand(player));
+        List<Entity> targets = ItemCommandBaton.getCommandedEntities(player.world, EntityTools.getItemFromEitherHand(player, ItemCommandBaton.class));
         for (Entity e : targets) {
             if (e instanceof NpcPlayerOwned) {
                 ((NpcPlayerOwned) e).handlePlayerCommand(cmd);
             }
         }
-    }
-
-    private static ItemStack getCommandBatonFromEitherHand(EntityPlayer player) {
-        if (player.getHeldItemMainhand().getItem() instanceof ItemCommandBaton) {
-            return player.getHeldItemMainhand();
-        }
-        return player.getHeldItemOffhand();
     }
 
     public static final class Command {

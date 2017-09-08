@@ -29,14 +29,14 @@ public abstract class NpcFaction extends NpcBase {
         for (int i = 0; i < 8; i++) {
             eqs = AncientWarfareNPC.statics.getStartingEquipmentForSlot(type, i);
             if (eqs != null) {
-                setCurrentItemOrArmor(i, eqs);
+                setItemStackToSlot(i, eqs);
             }
         }
     }
 
     @Override
-    public final int getMaxSafePointTries() {
-        int i = super.getMaxSafePointTries();
+    public int getMaxFallHeight() {
+        int i = super.getMaxFallHeight();
         if(i > 4)
             i += world.getDifficulty().getDifficultyId() * getMaxHealth() / 5;
         if(i >= getHealth())

@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.npc.item;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -15,6 +16,7 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.npc.entity.AWNPCEntityLoader;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
+import javax.annotation.Nonnull;
 import java.util.HashMap;
 import java.util.List;
 
@@ -87,8 +89,8 @@ public class ItemNpcSpawner extends Item {
             return null;
         }
         if (stack.hasTagCompound() && stack.getTagCompound().hasKey("npcStoredData")) {
-            for (int i = 0; i < 5; i++) {
-                npc.setCurrentItemOrArmor(i, null);
+            for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
+                npc.setItemStackToSlot(slot, ItemStack.EMPTY);
             }
             npc.readAdditionalItemData(stack.getTagCompound().getCompoundTag("npcStoredData"));
         }

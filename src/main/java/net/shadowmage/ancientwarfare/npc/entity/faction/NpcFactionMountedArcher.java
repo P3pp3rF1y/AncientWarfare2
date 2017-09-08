@@ -14,7 +14,11 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.npc.ai.*;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackNearest;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIDoor;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIHurt;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionArcherStayAtHome;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRangedAttack;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRideHorse;
@@ -27,7 +31,7 @@ public abstract class NpcFactionMountedArcher extends NpcFactionMounted implemen
 
     public NpcFactionMountedArcher(World par1World) {
         super(par1World);
-//  this.setCurrentItemOrArmor(0, new ItemStack(Items.BOW));
+//  this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
         Predicate<NpcBase> selector = entity -> {
 //      if(!canEntityBeSeen(entity)){return false;}
 			if (!isHostileTowards(entity)) {

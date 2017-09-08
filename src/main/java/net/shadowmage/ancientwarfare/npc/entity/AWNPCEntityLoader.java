@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.npc.entity;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
@@ -527,7 +528,7 @@ public class AWNPCEntityLoader {
             if (!subType.isEmpty()) {
                 @Nonnull ItemStack stack = spawnEquipment.get(subType);
                 if (!stack.isEmpty()) {
-                    npc.setCurrentItemOrArmor(0, stack.copy());
+                    npc.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, stack.copy());
                 }
             }
             return npc;

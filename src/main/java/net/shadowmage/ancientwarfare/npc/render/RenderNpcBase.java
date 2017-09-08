@@ -51,8 +51,7 @@ public class RenderNpcBase extends RenderBiped {
         NpcBase npc = (NpcBase) entity;
         isSleeping = npc.getSleeping();
         if (isSleeping) {
-            BlockPos bedPos = npc.getBedPosition();
-            float bedDirection = npc.getBedOrientationInDegrees(bedPos.x, bedPos.y, bedPos.z);
+            float bedDirection = npc.getBedOrientationInDegrees();
             if (bedDirection != -1) {
                 GL11.glRotatef(bedDirection, 0.0F, 1.0F, 0.0F);
                 GL11.glRotatef(this.getDeathMaxRotation(entity), 0.0F, 0.0F, 1.0F);

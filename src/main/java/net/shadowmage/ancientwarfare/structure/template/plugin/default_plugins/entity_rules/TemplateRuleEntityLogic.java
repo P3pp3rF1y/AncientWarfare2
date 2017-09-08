@@ -23,6 +23,7 @@ package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -54,7 +55,7 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
             equipment = new ItemStack[5];
             EntityLiving living = (EntityLiving) entity;
             for (int i = 0; i < 5; i++) {
-                equipment[i] = living.getEquipmentInSlot(i) == null ? null : living.getEquipmentInSlot(i).copy();
+                equipment[i] = living.getItemStackFromSlot(i) == null ? null : living.getItemStackFromSlot(i).copy();
             }
         }
         if (entity instanceof IInventory)//handles minecart-chests
@@ -90,14 +91,14 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
         e.readFromNBT(tag);
         if (equipment != null && e instanceof EntityLiving) {
             EntityLiving living = (EntityLiving) e;
-            for (int i = 0; i < 5; i++) {
-                living.setCurrentItemOrArmor(i, equipment[i] == null ? null : equipment[i].copy());
+            for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
+                living.setItemStackToSlot(slot, equipment[slot.ordinal()].isEmpty() ? ItemStack.EMPTY : equipment[slot.ordinal()].copy());
             }
         }
         if (inventory != null && e instanceof IInventory) {
             IInventory eInv = (IInventory) e;
             for (int i = 0; i < inventory.length && i < eInv.getSizeInventory(); i++) {
-                eInv.setInventorySlotContents(i, inventory[i] == null ? null : inventory[i].copy());
+                eInv.setInventorySlotContents(i, inventory[i].isEmpty() ? ItemStack.EMPTY : inventory[i].copy());
             }
         }
         e.rotationYaw = (rotation + 90.f * turns) % 360.f;

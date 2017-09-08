@@ -128,7 +128,7 @@ public class NpcWorker extends NpcPlayerOwned implements IWorker {
             if (getAttackTarget() != null || !hasHome() || world.provider.hasNoSky) {
                 return false;
             }
-            return world.isDaytime() || world.canLightningStrikeAt(MathHelper.floor(this.posX), MathHelper.floor(this.posY), MathHelper.floor(this.posZ));
+            return world.isDaytime() || world.isRainingAt(MathHelper.floor(this.posX), MathHelper.floor(this.posY), MathHelper.floor(this.posZ));
         }
     }
 

@@ -6,6 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.npc.orders.WorkOrder;
 
 import javax.annotation.Nonnull;
@@ -18,7 +19,7 @@ public class ContainerWorkOrder extends ContainerBase {
 
     public ContainerWorkOrder(EntityPlayer player, int x, int y, int z) {
         super(player);
-        hand = getHandHoldingItem(player, AWItems.workOrder);
+        hand = EntityTools.getHandHoldingItem(player, AWItems.workOrder);
         @Nonnull ItemStack stack = player.getHeldItem(hand);
         if (stack.isEmpty() || stack.getItem() == null) {
             throw new IllegalArgumentException("Cannot open Work Order GUI for null stack/item.");

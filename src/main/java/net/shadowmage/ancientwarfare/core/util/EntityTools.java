@@ -1,9 +1,14 @@
 package net.shadowmage.ancientwarfare.core.util;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
 
 public class EntityTools {
     
@@ -49,5 +54,24 @@ public class EntityTools {
         if (world.getBlockState(pos.up()).getMaterial().blocksMovement())
             return false;
         return true;
+    }
+
+    @Nullable
+    public static EnumHand getHandHoldingItem(EntityPlayer player, Item item) {
+        if (player.getHeldItemMainhand().getItem() == item) {
+            return EnumHand.MAIN_HAND;
+        } else if (player.getHeldItemOffhand().getItem() == item) {
+            return EnumHand.OFF_HAND;
+        }
+        return null;
+    }
+
+    public static ItemStack getItemFromEitherHand(EntityPlayer player, Class itemClass) {
+        if (itemClass.isInstance(player.getHeldItemMainhand().getItem())) {
+            return player.getHeldItemMainhand();
+        } else if (itemClass.isInstance(player.getHeldItemOffhand().getItem())) {
+            return player.getHeldItemOffhand();
+        }
+        return ItemStack.EMPTY;
     }
 }

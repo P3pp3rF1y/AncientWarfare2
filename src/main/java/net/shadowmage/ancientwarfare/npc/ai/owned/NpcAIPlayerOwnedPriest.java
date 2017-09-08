@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.ai.owned;
 
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -80,8 +81,8 @@ public class NpcAIPlayerOwnedPriest extends NpcAI<NpcPlayerOwned> {
                 resdNpc.ordersStack = ItemStack.EMPTY;
                 resdNpc.upkeepStack = ItemStack.EMPTY;
             }
-            for (int i = 0; i < 5; i++) {
-                resdNpc.setCurrentItemOrArmor(i, ItemStack.EMPTY);
+            for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
+                resdNpc.setItemStackToSlot(slot, ItemStack.EMPTY);
             }
             resdNpc.setShieldStack(ItemStack.EMPTY);
             resdNpc.setOwner(npc.getOwnerName(), npc.getOwnerUuid());

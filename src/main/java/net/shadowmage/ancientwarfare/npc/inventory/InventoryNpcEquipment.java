@@ -3,19 +3,22 @@ package net.shadowmage.ancientwarfare.npc.inventory;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.item.ItemUpkeepOrder;
 
 public class InventoryNpcEquipment implements IInventory {
 
     private final NpcBase npc;
-    private final ItemStack[] inventory;
+    private final NonNullList<ItemStack> inventory;
 
     public InventoryNpcEquipment(NpcBase npc) {
         this.npc = npc;
-        inventory = new ItemStack[getSizeInventory()];
-        for (int i = 0; i < inventory.length; i++) {
-            inventory[i] = npc.getEquipmentInSlot(i) == null ? null : npc.getEquipmentInSlot(i).copy();
+        inventory = NonNullList.withSize(getSizeInventory(), ItemStack.EMPTY);
+        for (int i = 0; i < inventory.size(); i++) {
+            if (!npc.getItemStackFromSlot(i).isEmpty()) {
+                inventory.set(i, npc.getItemStackFromSlot(i).copy());
+            }
         }
     }
 
@@ -27,9 +30,9 @@ public class InventoryNpcEquipment implements IInventory {
     @Override
     public ItemStack getStackInSlot(int slot) {
         if (npc.world.isRemote) {
-            return inventory[slot];
+            return inventory.get(slot);
         } else {
-            return npc.getEquipmentInSlot(slot);
+            return npc.getItemStackFromSlot(slot);
         }
     }
 
@@ -38,7 +41,7 @@ public class InventoryNpcEquipment implements IInventory {
         if (npc.world.isRemote) {
             inventory[slot] = stack;
         } else {
-            npc.setCurrentItemOrArmor(slot, stack);
+            npc.setItemStackToSlot(slot, stack);
         }
     }
 
