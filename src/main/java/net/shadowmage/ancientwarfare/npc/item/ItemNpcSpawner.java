@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.item;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -8,35 +9,31 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.npc.entity.AWNPCEntityLoader;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 import javax.annotation.Nonnull;
-import java.util.HashMap;
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemNpcSpawner extends Item {
-    /*
-     * npc names are type.subtype :: resource-location
-     */
-    private HashMap<String, String> iconNames = new HashMap<>();
-
-    private HashMap<String, IIcon> iconMap = new HashMap<>();
 
     public ItemNpcSpawner() {
         this.setCreativeTab(AWNpcItemLoader.npcTab);
-        this.setTextureName("ancientwarfare:npc/spawner_miner");
+        //this.setTextureName("ancientwarfare:npc/spawner_miner");
     }
 
-
     @Override
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
-        list.add(I18n.format("guistrings.npc.spawner.right_click_to_place"));
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        tooltip.add(I18n.format("guistrings.npc.spawner.right_click_to_place"));
     }
 
     @Override
@@ -53,25 +50,26 @@ public class ItemNpcSpawner extends Item {
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+        ItemStack stack = player.getHeldItem(hand);
         if(world.isRemote){
-            return stack;
+            return new ActionResult<>(EnumActionResult.SUCCESS, stack);
         }
         BlockPos hit = BlockTools.getBlockClickedOn(player, player.world, true);
         if (hit == null) {
-            return stack;
+            return new ActionResult<>(EnumActionResult.PASS, stack);
         }
         NpcBase npc = createNpcFromItem(player.world, stack);
         if (npc != null) {
             npc.setOwner(player);
-            npc.setPosition(hit.x + 0.5d, hit.y, hit.z + 0.5d);
+            npc.setPosition(hit.getX() + 0.5d, hit.getY(), hit.getZ() + 0.5d);
             npc.setHomeAreaAtCurrentPosition();
             player.world.spawnEntity(npc);
             if (!player.capabilities.isCreativeMode) {
                 stack.shrink(1);
             }
         }
-        return stack;
+        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
 
     /*
@@ -111,11 +109,12 @@ public class ItemNpcSpawner extends Item {
         return stack;
     }
 
-
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems(Item item, CreativeTabs tab, List list) {
-        AWNPCEntityLoader.getSpawnerSubItems(list);
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+        if (tab != AWNpcItemLoader.npcTab) {
+            return;
+        }
+        AWNPCEntityLoader.getSpawnerSubItems(items);
     }
 
     public static ItemStack getStackForNpcType(String type, String npcSubtype) {
@@ -139,13 +138,18 @@ public class ItemNpcSpawner extends Item {
         return "";
     }
 
-    /*
+/*
+    */
+/*
      * Npc type 'name' is full npc-type -- type.subtype
-     */
+     *//*
+
     public void addNpcType(String name, String icon) {
         iconNames.put(name, icon);
     }
+*/
 
+/*
     @Override
     public void registerIcons(IIconRegister par1IconRegister) {
         super.registerIcons(par1IconRegister);
@@ -170,5 +174,6 @@ public class ItemNpcSpawner extends Item {
         }
         return super.getIconIndex(stack);
     }
+*/
 
 }

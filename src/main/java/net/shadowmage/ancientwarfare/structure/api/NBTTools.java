@@ -22,61 +22,14 @@ package net.shadowmage.ancientwarfare.structure.api;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTSizeTracker;
-import net.minecraft.nbt.NBTTagByte;
-import net.minecraft.nbt.NBTTagByteArray;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagDouble;
-import net.minecraft.nbt.NBTTagFloat;
-import net.minecraft.nbt.NBTTagInt;
-import net.minecraft.nbt.NBTTagIntArray;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTTagLong;
-import net.minecraft.nbt.NBTTagShort;
-import net.minecraft.nbt.NBTTagString;
+import net.minecraft.nbt.*;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public class NBTTools {
-
-    public static NBTTagCompound writeItemStack(ItemStack stack, NBTTagCompound tag) {
-        tag.setString("item", Item.itemRegistry.getNameForObject(stack.getItem()));
-        tag.setInteger("damage", stack.getItemDamage());
-        tag.setInteger("quantity", stack.getCount());
-        if (stack.stackTagCompound != null) {
-            tag.setTag("stackTag", stack.stackTagCompound.copy());
-        }
-        return tag;
-    }
-
-    public static ItemStack readItemStack(NBTTagCompound tag) {
-        if (tag.hasKey("item") && tag.hasKey("damage") && tag.hasKey("quantity")) {
-            Item item = (Item) Item.itemRegistry.getObject(tag.getString("item"));
-            int damage = tag.getInteger("damage");
-            int quantity = tag.getInteger("quantity");
-            NBTTagCompound stackTag = null;
-            if (tag.hasKey("stackTag")) {
-                stackTag = tag.getCompoundTag("stackTag");
-            }
-            if (item != null) {
-                @Nonnull ItemStack stack = new ItemStack(item, quantity, damage);
-                stack.stackTagCompound = stackTag;
-                return stack;
-            }
-        }
-        return null;
-    }
 
     public static int safeParseInt(String num) {
         try {

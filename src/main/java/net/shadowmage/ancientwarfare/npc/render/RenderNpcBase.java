@@ -35,7 +35,7 @@ import java.util.List;
 import static net.minecraftforge.client.IItemRenderer.ItemRenderType.EQUIPPED;
 import static net.minecraftforge.client.IItemRenderer.ItemRendererHelper.BLOCK_3D;
 
-public class RenderNpcBase extends RenderBiped {
+public class RenderNpcBase extends RenderBiped<NpcBase> {
     
     private boolean isSleeping;
     

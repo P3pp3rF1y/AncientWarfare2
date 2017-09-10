@@ -2,7 +2,7 @@
 package net.shadowmage.ancientwarfare.core.gamedata;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.storage.WorldSavedData;
 
 public class WorldData extends WorldSavedData {
 
@@ -30,8 +30,9 @@ public class WorldData extends WorldSavedData {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         tag.setTag("AWWorldData", this.dataTag);
+        return tag;
     }
 
 

@@ -51,7 +51,7 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
         @Nonnull ItemStack stack;
         for (int i = 0; i < layoutMatrix.getSizeInventory(); i++) {
             stack = layoutMatrix.getStackInSlot(i);
-            matrixShadow[i] = stack.isEmpty() ? null : stack.copy();
+            matrixShadow[i] = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
         }
     }
 

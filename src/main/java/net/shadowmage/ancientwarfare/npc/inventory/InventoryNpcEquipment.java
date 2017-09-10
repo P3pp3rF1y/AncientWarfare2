@@ -1,11 +1,15 @@
 package net.shadowmage.ancientwarfare.npc.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.ITextComponent;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.item.ItemUpkeepOrder;
+
+import javax.annotation.Nonnull;
 
 public class InventoryNpcEquipment implements IInventory {
 
@@ -24,7 +28,12 @@ public class InventoryNpcEquipment implements IInventory {
 
     @Override
     public int getSizeInventory() {
-        return NpcBase.SHIELD_SLOT + 1;
+        return 8;
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return inventory.isEmpty();
     }
 
     @Override
@@ -39,7 +48,7 @@ public class InventoryNpcEquipment implements IInventory {
     @Override
     public void setInventorySlotContents(int slot, ItemStack stack) {
         if (npc.world.isRemote) {
-            inventory[slot] = stack;
+            inventory.set(slot, stack);
         } else {
             npc.setItemStackToSlot(slot, stack);
         }
@@ -48,7 +57,7 @@ public class InventoryNpcEquipment implements IInventory {
     @Override
     public ItemStack decrStackSize(int slot, int amount) {
         @Nonnull ItemStack item = getStackInSlot(slot);
-        if (item != null) {
+        if (!item.isEmpty()) {
             if (amount > item.getCount()) {
                 amount = item.getCount();
             }
@@ -60,7 +69,7 @@ public class InventoryNpcEquipment implements IInventory {
             }
             return copy;
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override
@@ -78,6 +87,11 @@ public class InventoryNpcEquipment implements IInventory {
     @Override
     public boolean hasCustomName() {
         return false;
+    }
+
+    @Override
+    public ITextComponent getDisplayName() {
+        return null;
     }
 
     @Override
@@ -107,16 +121,36 @@ public class InventoryNpcEquipment implements IInventory {
 
     @Override
     public boolean isItemValidForSlot(int var1, ItemStack var2) {
-        if (var2 == null || var2.getItem() == null || var1 < 0) {
+        if (var2 == null || var2.isEmpty() || var1 < 0) {
             return false;
         }
         if(var1 == NpcBase.UPKEEP_SLOT)
             return var2.getItem() instanceof ItemUpkeepOrder;
         else if(var1 == NpcBase.ORDER_SLOT)
             return npc.isValidOrdersStack(var2);
-        else if(var1 != 0 && var1 < NpcBase.ORDER_SLOT)//armors
-            return var2.getItem().isValidArmor(var2, NpcBase.ORDER_SLOT - 1 - var1, npc);
+        else if(var1 > 1 && var1 < NpcBase.ORDER_SLOT)//armors
+            return var2.getItem().isValidArmor(var2, EntityEquipmentSlot.values()[NpcBase.ORDER_SLOT - 1 - var1], npc);
         return true;//weapon/tool, shield slot   TODO add slot validation ?
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+        inventory.clear();
     }
 
 }

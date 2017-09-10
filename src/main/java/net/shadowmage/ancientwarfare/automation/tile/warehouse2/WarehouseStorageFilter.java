@@ -31,7 +31,7 @@ public class WarehouseStorageFilter implements INBTSerializable<NBTTagCompound> 
     @Override
     public NBTTagCompound serializeNBT() {
         NBTTagCompound tag = new NBTTagCompound();
-        if (item != null) {
+        if (!item.isEmpty()) {
             tag.setTag("item", item.writeToNBT(new NBTTagCompound()));
         }
         return tag;

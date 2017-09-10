@@ -51,7 +51,7 @@ public final class POTradeDepositEntry extends POTradeTransferEntry {
             public void doTransfer(IInventory storage, IInventory move, int side, ItemStack filter) {
                 int count = InventoryTools.getCountOf(storage, null, filter);
                 if (count > filter.getCount()) {
-                    InventoryTools.transferItems(storage, move, filter, count - filter.stackSize, -1, side);
+                    InventoryTools.transferItems(storage, move, filter, count - filter.getCount(), -1, side);
                 }
             }
         }

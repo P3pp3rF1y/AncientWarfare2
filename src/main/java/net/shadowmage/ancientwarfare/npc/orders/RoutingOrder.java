@@ -4,6 +4,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -11,6 +12,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.OrderingList;
 import net.shadowmage.ancientwarfare.npc.item.ItemRoutingOrder;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implements INBTSerializable<NBTTagCompound> {
@@ -20,8 +22,8 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
     public RoutingOrder() {
     }
 
-    public void addRoutePoint(int side, int x, int y, int z) {
-        add(new RoutePoint(side, x, y, z));
+    public void addRoutePoint(EnumFacing side, BlockPos pos) {
+        add(new RoutePoint(side, pos));
     }
 
     private boolean check(int index){
@@ -56,7 +58,7 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
         if (!stack.isEmpty() && stack.getItem() instanceof ItemRoutingOrder) {
             RoutingOrder order = new RoutingOrder();
             if (stack.hasTagCompound() && stack.getTagCompound().hasKey("orders")) {
-                order.readFromNBT(stack.getTagCompound().getCompoundTag("orders"));
+                order.deserializeNBT(stack.getTagCompound().getCompoundTag("orders"));
             }
             return order;
         }
@@ -65,7 +67,7 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
 
     public void write(ItemStack stack) {
         if (!stack.isEmpty() && stack.getItem() instanceof ItemRoutingOrder) {
-            stack.setTagInfo("orders", writeToNBT(new NBTTagCompound()));
+            stack.setTagInfo("orders", serializeNBT());
         }
     }
 
@@ -89,32 +91,24 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
         }
     }
 
-    @Override
-    public void readFromNBT(NBTTagCompound tag) {
-    }
-
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-    }
-
     public static class RoutePoint {
         boolean ignoreDamage, ignoreTag;
         RouteType routeType = RouteType.FILL_TARGET_TO;
-        BlockPos target = new BlockPos();
-        int blockSide = 0;
+        BlockPos target = BlockPos.ORIGIN;
+        EnumFacing blockSide = EnumFacing.DOWN;
         ItemStack[] filters = new ItemStack[12];
 
         private RoutePoint(NBTTagCompound tag) {
             readFromNBT(tag);
         }
 
-        public RoutePoint(int side, int x, int y, int z) {
-            this.target = new BlockPos(x, y, z);
+        public RoutePoint(EnumFacing side, BlockPos target) {
+            this.target = target;
             this.blockSide = side;
         }
 
         private void changeBlockSide() {
-            blockSide = blockSide == 5 ? 0 : blockSide + 1;
+            blockSide = EnumFacing.VALUES[(blockSide.ordinal() + 1) % EnumFacing.VALUES.length];
         }
 
         private void changeRouteType(boolean isRmb) {
@@ -125,7 +119,7 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
             filters[index] = stack;
         }
 
-        public int getBlockSide() {
+        public EnumFacing getBlockSide() {
             return blockSide;
         }
 
@@ -162,11 +156,11 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
         }
 
         private int depositAllItems(IInventory from, IInventory to, boolean reversed) {
-            int fromSide = -1;
-            int toSide = getBlockSide();
+            EnumFacing fromSide = null;
+            EnumFacing toSide = getBlockSide();
             if (reversed) {
                 fromSide = getBlockSide();
-                toSide = -1;
+                toSide = null;
             }
             int moved = 0;
             @Nonnull ItemStack stack;
@@ -204,11 +198,11 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
         }
 
         private int depositAllItemsExcept(IInventory from, IInventory to, boolean reversed) {
-            int fromSide = -1;
-            int toSide = getBlockSide();
+            EnumFacing fromSide = null;
+            EnumFacing toSide = getBlockSide();
             if (reversed) {
                 fromSide = getBlockSide();
-                toSide = -1;
+                toSide = null;
             }
             int moved = 0;
             @Nonnull ItemStack stack;
@@ -246,11 +240,11 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
         }
 
         private int fillTo(IInventory from, IInventory to, boolean reversed) {
-            int fromSide = -1;
-            int toSide = getBlockSide();
+            EnumFacing fromSide = null;
+            EnumFacing toSide = getBlockSide();
             if (reversed) {
                 fromSide = getBlockSide();
-                toSide = -1;
+                toSide = null;
             }
             int moved = 0;
             int toMove = 0;
@@ -273,11 +267,11 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
         }
         
         private int depositRatio(IInventory from, IInventory to, boolean reversed) {
-            int fromSide = -1;
-            int toSide = getBlockSide();
+            EnumFacing fromSide = null;
+            EnumFacing toSide = getBlockSide();
             if (reversed) {
                 fromSide = getBlockSide();
-                toSide = -1;
+                toSide = null;
             }
             int movedTotal = 0;
             int toMove = 0;
@@ -295,11 +289,11 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
         }
         
         private int depositExact(IInventory from, IInventory to, boolean reversed) {
-            int fromSide = -1;
-            int toSide = getBlockSide();
+            EnumFacing fromSide = null;
+            EnumFacing toSide = getBlockSide();
             if (reversed) {
                 fromSide = getBlockSide();
-                toSide = -1;
+                toSide = null;
             }
             int movedTotal = 0;
             int toMove = 0;
@@ -323,11 +317,11 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
         }
         
         private int fillAtLeast(IInventory from, IInventory to, boolean reversed) {
-            int fromSide = -1;
-            int toSide = getBlockSide();
+            EnumFacing fromSide = null;
+            EnumFacing toSide = getBlockSide();
             if (reversed) {
                 fromSide = getBlockSide();
-                toSide = -1;
+                toSide = null;
             }
             int movedTotal = 0;
             int toMove = 0;
@@ -362,8 +356,8 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
 
         private final void readFromNBT(NBTTagCompound tag) {
             routeType = RouteType.values()[tag.getInteger("type")];
-            target = new BlockPos(tag.getCompoundTag("position"));
-            blockSide = tag.getInteger("blockSide");
+            target = BlockPos.fromLong(tag.getLong("position"));
+            blockSide = EnumFacing.VALUES[tag.getByte("blockSide")];
             ignoreDamage = tag.getBoolean("ignoreDamage");
             ignoreTag = tag.getBoolean("ignoreTag");
             NBTTagList filterList = tag.getTagList("filterList", Constants.NBT.TAG_COMPOUND);
@@ -383,8 +377,8 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
 
         private final NBTTagCompound writeToNBT(NBTTagCompound tag) {
             tag.setInteger("type", routeType.ordinal());
-            tag.setTag("position", target.writeToNBT(new NBTTagCompound()));
-            tag.setInteger("blockSide", blockSide);
+            tag.setLong("position", target.toLong());
+            tag.setByte("blockSide", (byte) blockSide.ordinal());
             tag.setBoolean("ignoreDamage", ignoreDamage);
             tag.setBoolean("ignoreTag", ignoreTag);
             NBTTagList filterList = new NBTTagList();

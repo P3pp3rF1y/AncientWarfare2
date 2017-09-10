@@ -33,8 +33,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
-import net.shadowmage.ancientwarfare.structure.api.NBTTools;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuildingException.EntityPlacementException;
+
+import javax.annotation.Nonnull;
 
 public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
 
@@ -121,7 +122,7 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
                 if (stack.isEmpty()) {
                     continue;
                 }
-                itemTag = NBTTools.writeItemStack(stack, new NBTTagCompound());
+                itemTag = stack.writeToNBT(new NBTTagCompound());
                 itemTag.setInteger("slot", i);
                 list.appendTag(itemTag);
             }
@@ -139,7 +140,7 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
                 if (stack.isEmpty()) {
                     continue;
                 }
-                itemTag = NBTTools.writeItemStack(stack, new NBTTagCompound());
+                itemTag = stack.writeToNBT(new NBTTagCompound());
                 itemTag.setInteger("slot", i);
                 list.appendTag(itemTag);
             }
@@ -162,7 +163,7 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
             @Nonnull ItemStack stack;
             for (int i = 0; i < list.tagCount(); i++) {
                 itemTag = list.getCompoundTagAt(i);
-                stack = NBTTools.readItemStack(itemTag);
+                stack = new ItemStack(itemTag);
                 if (!stack.isEmpty()) {
                     slot = itemTag.getInteger("slot");
                     inventory[slot] = stack;
@@ -179,7 +180,7 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
             @Nonnull ItemStack stack;
             for (int i = 0; i < list.tagCount(); i++) {
                 itemTag = list.getCompoundTagAt(i);
-                stack = NBTTools.readItemStack(itemTag);
+                stack = new ItemStack(itemTag);
                 if (!stack.isEmpty()) {
                     slot = itemTag.getInteger("slot");
                     equipment[slot] = stack;

@@ -1,16 +1,15 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
-import net.shadowmage.ancientwarfare.core.gui.elements.Button;
-import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
-import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
-import net.shadowmage.ancientwarfare.core.gui.elements.Label;
-import net.shadowmage.ancientwarfare.core.gui.elements.Line;
+import net.shadowmage.ancientwarfare.core.gui.elements.*;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcFactionTradeView;
 import net.shadowmage.ancientwarfare.npc.trade.FactionTrade;
+
+import javax.annotation.Nonnull;
 
 public class GuiNpcFactionTradeView extends GuiContainerBase<ContainerNpcFactionTradeView> {
 
@@ -111,7 +110,7 @@ public class GuiNpcFactionTradeView extends GuiContainerBase<ContainerNpcFaction
 
     private void addTradeInputSlot(final FactionTrade trade, int x, int y, final int slotNum) {
         @Nonnull ItemStack stack = trade.getInputStack(slotNum);
-        stack = stack.isEmpty() ? null : stack.copy();
+        stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
         final ItemSlot slot = new ItemSlot(x, y, stack, this);
         if (stack.isEmpty()) {
             slot.addTooltip("guistrings.npc.trade_input_slot");
@@ -121,7 +120,7 @@ public class GuiNpcFactionTradeView extends GuiContainerBase<ContainerNpcFaction
 
     private void addTradeOutputSlot(final FactionTrade trade, int x, int y, final int slotNum) {
         @Nonnull ItemStack stack = trade.getOutputStack(slotNum);
-        stack = stack.isEmpty() ? null : stack.copy();
+        stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
         final ItemSlot slot = new ItemSlot(x, y, stack, this);
         if (stack.isEmpty()) {
             slot.addTooltip("guistrings.npc.trade_output_slot");

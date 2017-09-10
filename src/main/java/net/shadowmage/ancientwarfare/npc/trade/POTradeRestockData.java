@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.npc.trade;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 
@@ -11,10 +12,10 @@ import java.util.List;
 
 public class POTradeRestockData {
     private BlockPos withdrawPoint;
-    private int withdrawSide;
+    private EnumFacing withdrawSide;
     private List<POTradeWithdrawEntry> withdrawList = new ArrayList<>();
     private BlockPos depositPoint;
-    private int depositSide;
+    private EnumFacing depositSide;
     private List<POTradeDepositEntry> depositList = new ArrayList<>();
 
     public BlockPos getDepositPoint() {
@@ -25,11 +26,11 @@ public class POTradeRestockData {
         return withdrawPoint;
     }
 
-    public int getDepositSide() {
+    public EnumFacing getDepositSide() {
         return depositSide;
     }
 
-    public int getWithdrawSide() {
+    public EnumFacing getWithdrawSide() {
         return withdrawSide;
     }
 
@@ -65,12 +66,12 @@ public class POTradeRestockData {
         withdrawList.remove(index);
     }
 
-    public void setDepositPoint(BlockPos pos, int side) {
+    public void setDepositPoint(BlockPos pos, EnumFacing side) {
         depositPoint = pos;
         depositSide = side;
     }
 
-    public void setWithdrawPoint(BlockPos pos, int side) {
+    public void setWithdrawPoint(BlockPos pos, EnumFacing side) {
         withdrawPoint = pos;
         withdrawSide = side;
     }
@@ -90,11 +91,11 @@ public class POTradeRestockData {
     public void readFromNBT(NBTTagCompound tag) {
         if (tag.hasKey("withdrawPoint")) {
             withdrawPoint = BlockPos.fromLong(tag.getLong("withdrawPoint"));
-            withdrawSide = tag.getInteger("withdrawSide");
+            withdrawSide = EnumFacing.VALUES[tag.getByte("withdrawSide")];
         }
         if (tag.hasKey("depositPoint")) {
             depositPoint = BlockPos.fromLong(tag.getLong("depositPoint"));
-            depositSide = tag.getInteger("depositSide");
+            depositSide = EnumFacing.VALUES[tag.getByte("depositSide")];
         }
 
         NBTTagList deposit = tag.getTagList("depositList", Constants.NBT.TAG_COMPOUND);
@@ -117,11 +118,11 @@ public class POTradeRestockData {
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         if (withdrawPoint != null) {
             tag.setLong("withdrawPoint", withdrawPoint.toLong());
-            tag.setInteger("withdrawSide", withdrawSide);
+            tag.setByte("withdrawSide", (byte) withdrawSide.ordinal());
         }
         if (depositPoint != null) {
             tag.setLong("depositPoint", depositPoint.toLong());
-            tag.setInteger("depositSide", depositSide);
+            tag.setByte("depositSide", (byte) depositSide.ordinal());
         }
 
         NBTTagList depositTagList = new NBTTagList();

@@ -2,7 +2,8 @@ package net.shadowmage.ancientwarfare.structure.gamedata;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.world.WorldSavedData;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
@@ -45,7 +46,7 @@ public class TownMap extends WorldSavedData {
             cx *= 16;
             cz *= 16;
             for (StructureBB bb : boundingBoxes) {
-                if (bb.isPositionIn(cx, bb.min.y, cz)) {
+                if (bb.isPositionIn(cx, bb.min.getY(), cz)) {
                     return true;
                 }
             }
@@ -68,19 +69,20 @@ public class TownMap extends WorldSavedData {
         NBTTagList list = tag.getTagList("boundingBoxes", Constants.NBT.TAG_COMPOUND);
         boundingBoxes.clear();
         for (int i = 0; i < list.tagCount(); i++) {
-            bb = new StructureBB(new BlockPos(), new BlockPos());
-            bb.readFromNBT(list.getCompoundTagAt(i));
+            bb = new StructureBB(BlockPos.ORIGIN, BlockPos.ORIGIN);
+            bb.deserializeNBT(list.getCompoundTagAt(i));
             boundingBoxes.add(bb);
         }
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         NBTTagList list = new NBTTagList();
         for (StructureBB bb : boundingBoxes) {
-            list.appendTag(bb.writeToNBT(new NBTTagCompound()));
+            list.appendTag(bb.serializeNBT());
         }
         tag.setTag("boundingBoxes", list);
+        return tag;
     }
 
 }

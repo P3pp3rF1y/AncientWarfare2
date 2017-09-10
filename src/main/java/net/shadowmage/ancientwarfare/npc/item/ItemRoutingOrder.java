@@ -2,6 +2,10 @@ package net.shadowmage.ancientwarfare.npc.item;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -9,13 +13,13 @@ import net.shadowmage.ancientwarfare.core.util.RayTraceUtils;
 import net.shadowmage.ancientwarfare.npc.orders.RoutingOrder;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 public class ItemRoutingOrder extends ItemOrders {
 
     @Override
-    public Collection<? extends BlockPos> getPositionsForRender(ItemStack stack) {
-        Collection<BlockPos> positionList = new ArrayList<>();
+    public List<BlockPos> getPositionsForRender(ItemStack stack) {
+        List<BlockPos> positionList = new ArrayList<>();
         RoutingOrder order = RoutingOrder.getRoutingOrder(stack);
         if (order != null && !order.isEmpty()) {
             for (RoutingOrder.RoutePoint e : order.getEntries()) {
@@ -26,11 +30,11 @@ public class ItemRoutingOrder extends ItemOrders {
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
         if(!world.isRemote)
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_ROUTING_ORDER, 0, 0, 0);
-        return stack;
+        return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
     }
 
     @Override
@@ -39,7 +43,7 @@ public class ItemRoutingOrder extends ItemOrders {
         if (order != null) {
             RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, 5, 0);
             if (hit != null && hit.typeOfHit == RayTraceResult.Type.BLOCK) {
-                order.addRoutePoint(hit.sideHit, hit.blockX, hit.blockY, hit.blockZ);
+                order.addRoutePoint(hit.sideHit, hit.getBlockPos());
                 order.write(stack);
                 addMessage(player);
             }

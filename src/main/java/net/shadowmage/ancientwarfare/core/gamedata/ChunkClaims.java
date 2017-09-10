@@ -6,7 +6,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants.NBT;
 
 import java.awt.*;
@@ -23,10 +23,10 @@ public class ChunkClaims extends WorldSavedData {
     public static ChunkClaims get(World world) {
         if (IS_STALE) {
             // mapStorage == one set of data for all worlds
-            INSTANCE = (ChunkClaims) world.mapStorage.loadData(ChunkClaims.class, ID);
+            INSTANCE = (ChunkClaims) world.getMapStorage().getOrLoadData(ChunkClaims.class, ID);
             if (INSTANCE == null) {
                 INSTANCE = new ChunkClaims();
-                world.setItemData(ID, INSTANCE);
+                world.setData(ID, INSTANCE);
             }
             IS_STALE = false;
         }

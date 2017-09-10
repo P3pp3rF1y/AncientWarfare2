@@ -6,12 +6,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityCreature;
-import net.minecraft.entity.EntityFlying;
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -24,11 +19,7 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.scoreboard.Team;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -159,7 +150,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
                 PacketEntity pkt = new PacketEntity(this);
                 if(customTexRef.startsWith("Player:")){
                     String name = customTexRef.split(":", 2)[1];
-                    NBTTagCompound tagCompound = AncientWarfareNPC.proxy.cacheProfile(name);
+                    NBTTagCompound tagCompound = AncientWarfareNPC.proxy.cacheProfile(world, name);
                     if(tagCompound != null)
                         pkt.packetData.setTag("profileTex", tagCompound);
                 }
@@ -198,7 +189,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         float damage = (float) this.getAttackDamageOverride();
         @Nonnull ItemStack shield = ItemStack.EMPTY;
         if (damage < 0) {
-            if (getShieldStack() != null) {
+            if (!getShieldStack().isEmpty()) {
                 shield = getShieldStack().copy();
                 getAttributeMap().applyAttributeModifiers(shield.getAttributeModifiers(EntityEquipmentSlot.OFFHAND));
             }
@@ -226,7 +217,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             }
             EnchantmentHelper.applyArthropodEnchantments(this, target);
         }
-        if (shield != null) {
+        if (!shield.isEmpty()) {
             getAttributeMap().removeAttributeModifiers(shield.getAttributeModifiers(EntityEquipmentSlot.OFFHAND));
         }
         return targetHit;
@@ -247,7 +238,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
                     armor.add(armorPiece);
                 }
                 float value = ISpecialArmor.ArmorProperties.applyArmor(this, armor, source, amount);
-                if (value > 0.0F && getShieldStack() != null && getShieldStack().getItem() instanceof ItemShield) {
+                if (value > 0.0F && getShieldStack().getItem() instanceof ItemShield) {
                     float absorb = value * ((ItemShield) getShieldStack().getItem()).getArmorBonusValue() / 25F;
                     int dmg = Math.max((int)absorb, 1);
                     getShieldStack().damageItem(dmg, this);
@@ -270,7 +261,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             return getArmorValueOverride();
         }
         int value = super.getTotalArmorValue();
-        if (getShieldStack() != null && getShieldStack().getItem() instanceof ItemShield) {
+        if (getShieldStack().getItem() instanceof ItemShield) {
             ItemShield shield = (ItemShield) getShieldStack().getItem();
             value += shield.getArmorBonusValue();
         }
@@ -973,7 +964,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         if (!player.world.isRemote && isEntityAlive()) {
             onRepack();
             @Nonnull ItemStack item = InventoryTools.mergeItemStack(player.inventory, this.getItemToSpawn(), (EnumFacing) null);
-            if (item != null) {
+            if (!item.isEmpty()) {
                 InventoryTools.dropItemInWorld(player.world, item, player.posX, player.posY, player.posZ);
             }
         }
@@ -1151,7 +1142,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         if (!player.getHeldItemMainhand().isEmpty())//first try to put under currently selected slot, if it is occupied, find first unoccupied slot
         {
             for (int i = 0; i < InventoryPlayer.getHotbarSize(); i++) {
-                if (player.inventory.getStackInSlot(i) == null) {
+                if (player.inventory.getStackInSlot(i).isEmpty()) {
                     player.inventory.setInventorySlotContents(i, item);
                     return;
                 }

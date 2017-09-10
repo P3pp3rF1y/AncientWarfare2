@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;

@@ -15,6 +15,7 @@ public class ContainerUpkeepOrder extends ContainerBase {
 
     private EnumHand hand;
     public final UpkeepOrder upkeepOrder;
+    public final ItemStack upkeepBlock;
     private boolean hasChanged;
 
     public ContainerUpkeepOrder(EntityPlayer player, int x, int y, int z) {
@@ -27,6 +28,11 @@ public class ContainerUpkeepOrder extends ContainerBase {
         upkeepOrder = UpkeepOrder.getUpkeepOrder(stack);
         if (upkeepOrder == null) {
             throw new IllegalArgumentException("Upkeep orders was null for some reason");
+        }
+        if (upkeepOrder.getUpkeepPosition() != null) {
+            upkeepBlock = new ItemStack(player.world.getBlockState(upkeepOrder.getUpkeepPosition()).getBlock());
+        } else {
+            upkeepBlock = ItemStack.EMPTY;
         }
         addPlayerSlots();
         removeSlots();

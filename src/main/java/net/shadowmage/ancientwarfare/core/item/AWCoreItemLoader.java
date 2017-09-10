@@ -32,7 +32,7 @@ public class AWCoreItemLoader {
         GameRegistry.registerItem(AWItems.automationHammerIron, "iron_hammer");
         AWItems.automationHammerGold = new ItemHammer("gold_hammer", ToolMaterial.GOLD);
         GameRegistry.registerItem(AWItems.automationHammerGold, "gold_hammer");
-        AWItems.automationHammerDiamond = new ItemHammer("diamond_hammer", ToolMaterial.EMERALD);
+        AWItems.automationHammerDiamond = new ItemHammer("diamond_hammer", ToolMaterial.DIAMOND);
         GameRegistry.registerItem(AWItems.automationHammerDiamond, "diamond_hammer");
 
         AWItems.quillWood = new ItemQuill("wooden_quill", ToolMaterial.WOOD);
@@ -43,7 +43,7 @@ public class AWCoreItemLoader {
         GameRegistry.registerItem(AWItems.quillIron, "iron_quill");
         AWItems.quillGold = new ItemQuill("gold_quill", ToolMaterial.GOLD);
         GameRegistry.registerItem(AWItems.quillGold, "gold_quill");
-        AWItems.quillDiamond = new ItemQuill("diamond_quill", ToolMaterial.EMERALD);
+        AWItems.quillDiamond = new ItemQuill("diamond_quill", ToolMaterial.DIAMOND);
         GameRegistry.registerItem(AWItems.quillDiamond, "diamond_quill");
 
         AWItems.componentItem = (ItemBase) register(new ItemComponent(), "component");
@@ -66,7 +66,7 @@ public class AWCoreItemLoader {
     public String getName(ToolMaterial material) {
         if (material == ToolMaterial.WOOD)
             return "wooden";
-        else if (material == ToolMaterial.EMERALD)
+        else if (material == ToolMaterial.DIAMOND)
             return "diamond";
         return material.toString().toLowerCase(Locale.ENGLISH);
     }

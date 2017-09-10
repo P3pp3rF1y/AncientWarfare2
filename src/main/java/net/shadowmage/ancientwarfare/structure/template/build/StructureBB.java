@@ -20,6 +20,7 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.build;
 
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.Zone;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;

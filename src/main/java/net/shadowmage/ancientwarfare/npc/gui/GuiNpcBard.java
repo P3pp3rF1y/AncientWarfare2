@@ -1,14 +1,10 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
-import net.shadowmage.ancientwarfare.core.gui.elements.Button;
-import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
-import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
-import net.shadowmage.ancientwarfare.core.gui.elements.Label;
-import net.shadowmage.ancientwarfare.core.gui.elements.Line;
-import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
-import net.shadowmage.ancientwarfare.core.gui.elements.Text;
+import net.shadowmage.ancientwarfare.core.gui.elements.*;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.SongPlayData;
 import net.shadowmage.ancientwarfare.core.util.SongPlayData.SongEntry;
@@ -109,7 +105,7 @@ public class GuiNpcBard extends GuiContainerBase<ContainerNpcBard> {
             @Override
             public void onTextUpdated(String oldText, String newText) {
                 super.onTextUpdated(oldText, newText);
-                entry.setSound(newText);
+                entry.setSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(newText))); //TODO test that this correctly gets the sound event
             }
         };
         area.addGuiElement(input);

@@ -78,7 +78,7 @@ public class ItemStructureBuilder extends Item implements IItemKeyInterface, IBo
         if (buildSettings.hasName()) {
             StructureTemplate template = StructureTemplateManager.INSTANCE.getTemplate(buildSettings.name);
             if (template == null) {
-                player.addChatComponentMessage(new TextComponentTranslation("guistrings.template.not_found"));
+                player.sendMessage(new TextComponentTranslation("guistrings.template.not_found"));
                 return;
             }
             BlockPos bpHit = BlockTools.getBlockClickedOn(player, player.world, true);
@@ -96,12 +96,12 @@ public class ItemStructureBuilder extends Item implements IItemKeyInterface, IBo
                 }
             }
         } else {
-            player.addChatComponentMessage(new TextComponentTranslation("guistrings.structure.no_selection"));
+            player.sendMessage(new TextComponentTranslation("guistrings.structure.no_selection"));
         }
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
         if (!player.world.isRemote && !player.isSneaking() && player.capabilities.isCreativeMode) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_BUILDER, 0, 0, 0);
         }

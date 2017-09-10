@@ -1,16 +1,14 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextFormatting;
 import net.shadowmage.ancientwarfare.core.block.Direction;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
-import net.shadowmage.ancientwarfare.core.gui.elements.Button;
-import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
-import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
-import net.shadowmage.ancientwarfare.core.gui.elements.Label;
-import net.shadowmage.ancientwarfare.core.gui.elements.Line;
+import net.shadowmage.ancientwarfare.core.gui.elements.*;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.npc.container.ContainerRoutingOrder;
@@ -50,7 +48,7 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
         String labelString;
         for (RoutePoint point : entries) {
             pos = point.getTarget();
-            block = player.world.getBlock(pos.x, pos.y, pos.z);
+            block = player.world.getBlockState(pos).getBlock();
             label = new Label(8, totalHeight, block == null ? "" : block.getLocalizedName());
             area.addGuiElement(label);
 
@@ -158,7 +156,7 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
 
     private void onFilterSlotClicked(ItemSlot slot, RoutePoint point, int index, ItemStack stack) {
         //TODO move this functionality in as default for item-slots, or toggleable to enable?
-        if (slot.getStack() != null && isShiftKeyDown()) {
+        if (!slot.getStack().isEmpty() && isShiftKeyDown()) {
             if (Mouse.getEventButton() == 0)//left
             {
                 slot.getStack().grow(32);
@@ -166,12 +164,12 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
             } else if (Mouse.getEventButton() == 1)//right
             {
                 slot.getStack().shrink(32);
-                if (slot.getStack().stackSize < 1) {
+                if (slot.getStack().getCount() < 1) {
                     slot.getStack().setCount(1);
                 }
                 point.setFilter(index, slot.getStack());
             }
-        } else if (slot.getStack() != null && isCtrlKeyDown()) {
+        } else if (!slot.getStack().isEmpty() && isCtrlKeyDown()) {
             if (Mouse.getEventButton() == 0)//left
             {
                 slot.getStack().grow(1);
@@ -179,15 +177,15 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
             } else if (Mouse.getEventButton() == 1)//right
             {
                 slot.getStack().shrink(1);
-                if (slot.getStack().stackSize < 1) {
+                if (slot.getStack().getCount() < 1) {
                     slot.getStack().setCount(1);
                 }
                 point.setFilter(index, slot.getStack());
             }
         } else {
             if (stack.isEmpty()) {
-                point.setFilter(index, null);
-                slot.setItem(null);
+                point.setFilter(index, ItemStack.EMPTY);
+                slot.setItem(ItemStack.EMPTY);
             } else {
                 if (InventoryTools.doItemStacksMatch(stack, slot.getStack())) {
                     if (Mouse.getEventButton() == 0)//left
@@ -197,7 +195,7 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
                     } else if (Mouse.getEventButton() == 1)//right
                     {
                         slot.getStack().shrink(stack.getCount());
-                        if (slot.getStack().stackSize < 1) {
+                        if (slot.getStack().getCount() < 1) {
                             slot.getStack().setCount(1);
                         }
                         point.setFilter(index, slot.getStack());

@@ -53,7 +53,7 @@ public class ItemTownBuilder extends Item implements IItemKeyInterface {
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
         return stack;
     }//TODO open town-type selection GUI
 

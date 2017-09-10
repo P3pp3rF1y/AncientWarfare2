@@ -2,6 +2,10 @@ package net.shadowmage.ancientwarfare.npc.item;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -9,13 +13,13 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.npc.orders.UpkeepOrder;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 public class ItemUpkeepOrder extends ItemOrders {
 
     @Override
-    public Collection<? extends BlockPos> getPositionsForRender(ItemStack stack) {
-        Collection<BlockPos> positionList = new ArrayList<>();
+    public List<BlockPos> getPositionsForRender(ItemStack stack) {
+        List<BlockPos> positionList = new ArrayList<>();
         UpkeepOrder order = UpkeepOrder.getUpkeepOrder(stack);
         if (order != null && order.getUpkeepPosition() != null)
             positionList.add(order.getUpkeepPosition());
@@ -23,10 +27,10 @@ public class ItemUpkeepOrder extends ItemOrders {
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player){
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand){
         if(!world.isRemote)
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_UPKEEP_ORDER, 0, 0, 0);
-        return stack;
+        return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
     }
 
     @Override
@@ -36,7 +40,7 @@ public class ItemUpkeepOrder extends ItemOrders {
             BlockPos hit = BlockTools.getBlockClickedOn(player, player.world, false);
             if (upkeepOrder.addUpkeepPosition(player.world, hit)) {
                 upkeepOrder.write(stack);
-                player.addChatComponentMessage(new TextComponentTranslation("guistrings.npc.upkeep_point_set"));
+                player.sendMessage(new TextComponentTranslation("guistrings.npc.upkeep_point_set"));
             } else 
                 NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_UPKEEP_ORDER, 0, 0, 0);
         }

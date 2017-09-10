@@ -62,7 +62,7 @@ public class ItemSpawnerPlacer extends Item {
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
         if (player == null || player.world == null || player.world.isRemote || stack.isEmpty()) {
             return stack;
         }
@@ -85,10 +85,10 @@ public class ItemSpawnerPlacer extends Item {
                     }
                 }
             } else {
-                player.addChatComponentMessage(new TextComponentTranslation("guistrings.spawner.nodata"));
+                player.sendMessage(new TextComponentTranslation("guistrings.spawner.nodata"));
             }
         } else {
-            player.addChatComponentMessage(new TextComponentTranslation("guistrings.spawner.noblock"));
+            player.sendMessage(new TextComponentTranslation("guistrings.spawner.noblock"));
         }
         return stack;
     }

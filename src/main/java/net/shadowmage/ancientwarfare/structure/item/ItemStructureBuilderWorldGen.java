@@ -55,23 +55,23 @@ public class ItemStructureBuilderWorldGen extends Item implements IItemKeyInterf
         if (buildSettings.hasName()) {
             StructureTemplate template = StructureTemplateManager.INSTANCE.getTemplate(buildSettings.name);
             if (template == null) {
-                player.addChatComponentMessage(new TextComponentTranslation("guistrings.template.not_found"));
+                player.sendMessage(new TextComponentTranslation("guistrings.template.not_found"));
                 return;
             }
             BlockPos bpHit = BlockTools.getBlockClickedOn(player, player.world, true);
             if(bpHit == null){
-                player.addChatComponentMessage(new TextComponentTranslation("block.not_found"));
+                player.sendMessage(new TextComponentTranslation("block.not_found"));
                 return;
             }
             StructureMap map = AWGameData.INSTANCE.getData(player.world, StructureMap.class);
             WorldStructureGenerator.INSTANCE.attemptStructureGenerationAt(player.world, bpHit.x, bpHit.y, bpHit.z, BlockTools.getPlayerFacingFromYaw(player.rotationYaw), template, map);
         } else {
-            player.addChatComponentMessage(new TextComponentTranslation("guistrings.structure.no_selection"));
+            player.sendMessage(new TextComponentTranslation("guistrings.structure.no_selection"));
         }
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
         if (!player.world.isRemote && !player.isSneaking()) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_BUILDER, 0, 0, 0);
         }

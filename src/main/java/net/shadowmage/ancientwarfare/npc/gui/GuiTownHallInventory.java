@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -43,8 +44,8 @@ public class GuiTownHallInventory extends GuiContainerBase<ContainerTownHall> {
         if (getContainer().tileEntity.isHq) {
             removeGuiElement(name);
             // draw teleport button, if hub exists
-            int[] tpHubPos = getContainer().tileEntity.tpHubPos;
-            if (tpHubPos != null && mc.theWorld.getBlock(tpHubPos[0], tpHubPos[1], tpHubPos[2]) instanceof BlockTeleportHub) {
+            BlockPos tpHubPos = getContainer().tileEntity.tpHubPos;
+            if (tpHubPos != null && mc.world.getBlockState(tpHubPos).getBlock() instanceof BlockTeleportHub) {
                 Button button = new Button(50, 8, 54, 12, "Visit Hub") {
                     @Override
                     protected void onPressed() {
@@ -67,7 +68,7 @@ public class GuiTownHallInventory extends GuiContainerBase<ContainerTownHall> {
     protected boolean onGuiCloseRequested() {
         if (getContainer().tileEntity.getRange() != input.getIntegerValue())
             getContainer().setRange(input.getIntegerValue());
-        if (getContainer().tileEntity.name != name.getText())
+        if (!getContainer().tileEntity.name.equals(name.getText()))
             getContainer().setName(name.getText());
         
         return super.onGuiCloseRequested();

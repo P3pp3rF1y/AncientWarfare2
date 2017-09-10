@@ -149,6 +149,13 @@ public class NpcSkinManager {
                 }
             } catch (FileNotFoundException e1) {
                 e1.printStackTrace();
+            } finally {
+                try {
+                    fis.close();
+                }
+                catch(IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
         unpackSkinPacks(skinPacks);

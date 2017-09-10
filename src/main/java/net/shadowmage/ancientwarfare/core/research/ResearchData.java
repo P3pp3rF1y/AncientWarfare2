@@ -3,7 +3,7 @@ package net.shadowmage.ancientwarfare.core.research;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
 
 import java.util.*;
@@ -42,7 +42,7 @@ public class ResearchData extends WorldSavedData {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         NBTTagList entryList = new NBTTagList();
         ResearchEntry entry;
 
@@ -55,6 +55,7 @@ public class ResearchData extends WorldSavedData {
             entryList.appendTag(entryTag);
         }
         tag.setTag("entryList", entryList);
+        return tag;
     }
 
     public void removeResearchFrom(String playerName, int research) {

@@ -7,7 +7,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants.NBT;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.npc.block.BlockHeadquarters;
@@ -24,10 +24,10 @@ public class HeadquartersTracker extends WorldSavedData {
     public static final String ID = "AW2_HeadquartersTracker";
     
     public static HeadquartersTracker get(World world) {
-        HeadquartersTracker hqTracker = (HeadquartersTracker) world.perWorldStorage.loadData(HeadquartersTracker.class, ID);
+        HeadquartersTracker hqTracker = (HeadquartersTracker) world.getPerWorldStorage().getOrLoadData(HeadquartersTracker.class, ID);
         if (hqTracker == null) {
             hqTracker = new HeadquartersTracker();
-            world.perWorldStorage.setData(ID, hqTracker);
+            world.getPerWorldStorage().setData(ID, hqTracker);
         }
         return hqTracker;
     }
@@ -131,27 +131,26 @@ public class HeadquartersTracker extends WorldSavedData {
         for (int i = 0; i < playerHeadquartersNbt.tagCount(); i++) {
             NBTTagCompound playerHeadquartersEntry = playerHeadquartersNbt.getCompoundTagAt(i);
             String ownerName = playerHeadquartersEntry.getString("ownerName");
-            int[] hqPos = playerHeadquartersEntry.getIntArray("hqPos");
-            playerHeadquarters.put(ownerName, hqPos);
+            playerHeadquarters.put(ownerName, BlockPos.fromLong(playerHeadquartersEntry.getLong("hqPos")));
         }
         if (compound.hasKey("teleportHubPosition")) {
-            int[] tpHub = compound.getIntArray("teleportHubPosition");
-            setTeleportHubPosition(tpHub[0], tpHub[1], tpHub[2]);
+            setTeleportHubPosition(BlockPos.fromLong(compound.getLong("teleportHubPosition")));
         }
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound compound) {
+    public NBTTagCompound writeToNBT(NBTTagCompound compound) {
         NBTTagList playerHeadquartersTag = new NBTTagList();
-        for(Entry<String, int[]> entry : playerHeadquarters.entrySet()) {
+        for(Entry<String, BlockPos> entry : playerHeadquarters.entrySet()) {
             NBTTagCompound playerHeadquartersEntry = new NBTTagCompound();
             playerHeadquartersEntry.setString("ownerName", entry.getKey());
-            if (entry.getValue().length > 0)
-                playerHeadquartersEntry.setIntArray("hqPos", entry.getValue());
+            if (entry.getValue() != null && entry.getValue() != BlockPos.ORIGIN)
+                playerHeadquartersEntry.setLong("hqPos", entry.getValue().toLong());
             playerHeadquartersTag.appendTag(playerHeadquartersEntry);
         }
         compound.setTag("playerHeadquarters", playerHeadquartersTag);
-        if (teleportHubPosition != null && teleportHubPosition.length == 3)
-            compound.setIntArray("teleportHubPosition", teleportHubPosition);
+        if (teleportHubPosition != null && teleportHubPosition != BlockPos.ORIGIN)
+            compound.setLong("teleportHubPosition", teleportHubPosition.toLong());
+        return compound;
     }
 }

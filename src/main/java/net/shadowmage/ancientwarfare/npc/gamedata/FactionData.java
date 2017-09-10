@@ -3,7 +3,7 @@ package net.shadowmage.ancientwarfare.npc.gamedata;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.npc.faction.FactionEntry;
 
@@ -61,12 +61,14 @@ public class FactionData extends WorldSavedData {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         NBTTagList entryList = new NBTTagList();
         for (FactionEntry entry : this.playerFactionEntries.values()) {
             entryList.appendTag(entry.writeToNBT(new NBTTagCompound()));
         }
         tag.setTag("entryList", entryList);
+
+        return tag;
     }
 
 }

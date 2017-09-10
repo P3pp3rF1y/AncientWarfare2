@@ -1,46 +1,31 @@
 package net.shadowmage.ancientwarfare.npc.entity;
 
-import net.minecraft.command.IEntitySelector;
-import net.minecraft.entity.Entity;
+import com.google.common.base.Predicate;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.entity.ai.EntityAIRestrictOpenDoor;
-import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
-import net.minecraft.entity.ai.EntityAIWatchClosest2;
+import net.minecraft.entity.ai.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.Loader;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackMeleeLongRange;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackNearest;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIDistressResponse;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIDoor;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIHurt;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIMedicBase;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
-import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedAlarmResponse;
-import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedAttackRanged;
-import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedCommander;
-import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedFollowCommand;
-import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedGetFood;
-import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedIdleWhenHungry;
-import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedPatrol;
-import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedRideHorse;
+import net.shadowmage.ancientwarfare.npc.ai.*;
+import net.shadowmage.ancientwarfare.npc.ai.owned.*;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.item.ItemCombatOrder;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 
+import javax.annotation.Nonnull;
 import java.util.Collection;
 
 public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
+
+    private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.createKey(NpcCombat.class, DataSerializers.BOOLEAN);
 
     private EntityAIBase collideAI;
     private EntityAIBase arrowAI;
@@ -53,12 +38,7 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
         collideAI = new NpcAIAttackMeleeLongRange(this);
         arrowAI = new NpcAIPlayerOwnedAttackRanged(this);
 
-        IEntitySelector selector = new IEntitySelector() {
-            @Override
-            public boolean isEntityApplicable(Entity entity) {
-                return isHostileTowards(entity);
-            }
-        };
+        Predicate<NpcBase> selector = this::isHostileTowards;
 
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
@@ -108,8 +88,8 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
         if (!world.isRemote) {
             this.tasks.removeTask(arrowAI);
             this.tasks.removeTask(collideAI);
-            @Nonnull ItemStack stack = getHeldItem();
-            if (stack!=null && isBow(stack.getItem())) {
+            @Nonnull ItemStack stack = getHeldItemMainhand();
+            if (isBow(stack.getItem())) {
                 this.tasks.addTask(7, arrowAI);
             } else {
                 this.tasks.addTask(7, collideAI);
@@ -119,16 +99,17 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
 
     @Override
     public boolean canAttackClass(Class claz) {
-        return (getHeldItem() != null && isBow(getHeldItem().getItem())) || super.canAttackClass(claz);
+        return (isBow(getHeldItemMainhand().getItem())) || super.canAttackClass(claz);
     }
 
     private boolean isBow(Item item){
         // Inserting QuiverBow recognition here (for b78)
-        if (Loader.isModLoaded("quiverchevsky")) {
-            if (item instanceof com.domochevsky.quiverbow.weapons._WeaponBase) {
-                return true;
-            }
-        }
+        // TODO quiverbow integration??
+//        if (Loader.isModLoaded("quiverchevsky")) {
+//            if (item instanceof com.domochevsky.quiverbow.weapons._WeaponBase) {
+//                return true;
+//            }
+//        }
         return item instanceof ItemBow;
     }
 
@@ -138,8 +119,8 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
     }
 
     protected String getSubtypeFromEquipment() {
-        @Nonnull ItemStack stack = getHeldItem();
-        if (!stack.isEmpty() && stack.getItem() != null) {
+        @Nonnull ItemStack stack = getHeldItemMainhand();
+        if (!stack.isEmpty()) {
             Item item = stack.getItem();
             Collection<String> tools = item.getToolClasses(stack);
             if(tools.contains("axe")) {
@@ -150,7 +131,7 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
                 return "archer";
             } else if (item instanceof ItemCommandBaton) {
                 return "commander";
-            } else if (item.isItemTool(stack)) {
+            } else if (item.isEnchantable(stack)) {
                 return "soldier";
             }
         }
@@ -183,6 +164,11 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
         float precision = 10.0f - ( (float) this.getLevelingStats().getBaseLevel() / (float) AWNPCStatics.maxNpcLevel * 10.0f );
         RangeAttackHelper.doRangedAttack(this, target, force, precision);
     }
+
+    @Override
+    public void setSwingingArms(boolean swingingArms) {
+        this.dataManager.set(SWINGING_ARMS, swingingArms);
+    } //TODO add use of this data in rendering
 
     public void respondToDistress(NpcBase source) {
         // TODO: Target prioritizing or something...?

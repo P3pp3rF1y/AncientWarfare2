@@ -9,20 +9,11 @@ import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIDoor;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIFleeHostiles;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
-import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedAlarmResponse;
-import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedFollowCommand;
-import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedGetFood;
-import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedIdleWhenHungry;
-import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedRideHorse;
-import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedTrader;
+import net.shadowmage.ancientwarfare.npc.ai.*;
+import net.shadowmage.ancientwarfare.npc.ai.owned.*;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.item.ItemTradeOrder;
 import net.shadowmage.ancientwarfare.npc.orders.TradeOrder;
@@ -81,8 +72,8 @@ public class NpcTrader extends NpcPlayerOwned {
     }
 
     @Override
-    protected boolean interact(EntityPlayer player) {
-        boolean baton = player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() instanceof ItemCommandBaton;
+    protected boolean processInteract(EntityPlayer player, EnumHand hand) {
+        boolean baton = !player.getHeldItem(hand).isEmpty() && player.getHeldItem(hand).getItem() instanceof ItemCommandBaton;
         if (baton) {
             return false;
         }
@@ -125,7 +116,7 @@ public class NpcTrader extends NpcPlayerOwned {
 
     @Override
     public boolean shouldBeAtHome() {
-        return (!world.provider.hasNoSky && !world.isDaytime()) || world.isRainingAt(MathHelper.floor(this.posX), MathHelper.floor(this.posY), MathHelper.floor(this.posZ));
+        return (world.provider.hasSkyLight() && !world.isDaytime()) || world.isRainingAt(getPosition());
     }
 
     @Override

@@ -1,6 +1,8 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.block.Direction;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
@@ -8,6 +10,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.*;
 import net.shadowmage.ancientwarfare.npc.container.ContainerTradeOrder;
 import net.shadowmage.ancientwarfare.npc.trade.*;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
@@ -187,11 +190,11 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
 
     private void addTradeInputSlot(final Trade trade, int x, int y, final int slotNum) {
         @Nonnull ItemStack stack = trade.getInputStack(slotNum);
-        stack = stack.isEmpty() ? null : stack.copy();
+        stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
         final ItemSlot slot = new ItemSlot(x, y, stack, this) {
             @Override
             public void onSlotClicked(ItemStack stack) {
-                stack = stack.isEmpty() ? null : stack.copy();
+                stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
                 setItem(stack);
                 trade.setInputStack(slotNum, stack);
             }
@@ -204,11 +207,11 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
 
     private void addTradeOutputSlot(final Trade trade, int x, int y, final int slotNum) {
         @Nonnull ItemStack stack = trade.getOutputStack(slotNum);
-        stack = stack.isEmpty() ? null : stack.copy();
+        stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
         final ItemSlot slot = new ItemSlot(x, y, stack, this) {
             @Override
             public void onSlotClicked(ItemStack stack) {
-                stack = stack.isEmpty() ? null : stack.copy();
+                stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
                 setItem(stack);
                 trade.setOutputStack(slotNum, stack);
             }
@@ -233,8 +236,8 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
         BlockPos pos = point.getPosition();
         Label blockName = new Label(8, startHeight, "Unknown Block");
         Label posLabel = new Label(8, startHeight + 12, pos.toString());
-        if (player.world.blockExists(pos.x, pos.y, pos.z)) {
-            blockName.setText(player.world.getBlock(pos.x, pos.y, pos.z).getUnlocalizedName());
+        if (player.world.isBlockLoaded(pos)) {
+            blockName.setText(player.world.getBlockState(pos).getBlock().getUnlocalizedName());
         }
         routeArea.addGuiElement(blockName);
         routeArea.addGuiElement(posLabel);
@@ -313,10 +316,7 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
         restockArea.addGuiElement(new Button(70, totalHeight, 55, 12, Direction.getDirectionFor(restock.getDepositSide()).getTranslationKey()) {
             @Override
             protected void onPressed() {
-                int dir = restock.getDepositSide() + 1;
-                if (dir >= 6) {
-                    dir = 0;
-                }
+                EnumFacing dir = EnumFacing.VALUES[(restock.getDepositSide().ordinal() + 1) % EnumFacing.VALUES.length];
                 setText(Direction.getDirectionFor(restock.getDepositSide()).getTranslationKey());
                 restock.setDepositPoint(restock.getDepositPoint(), dir);
             }
@@ -352,10 +352,7 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
         restockArea.addGuiElement(new Button(70, totalHeight, 55, 12, Direction.getDirectionFor(restock.getWithdrawSide()).getTranslationKey()) {
             @Override
             protected void onPressed() {
-                int dir = restock.getWithdrawSide() + 1;
-                if (dir >= 6) {
-                    dir = 0;
-                }
+                EnumFacing dir = EnumFacing.VALUES[(restock.getWithdrawSide().ordinal() + 1) % EnumFacing.VALUES.length];
                 setText(Direction.getDirectionFor(restock.getWithdrawSide()).getTranslationKey());
                 restock.setWithdrawPoint(restock.getWithdrawPoint(), dir);
             }
@@ -384,7 +381,7 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
         ItemSlot slot = new ItemSlot(8, startHeight, entry.getFilter(), this) {
             @Override
             public void onSlotClicked(ItemStack stack) {
-                stack = stack.isEmpty() ? null : stack.copy();
+                stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
                 entry.setFilter(stack);
                 setItem(stack);
             }
@@ -419,7 +416,7 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
         ItemSlot slot = new ItemSlot(8, startHeight, entry.getFilter(), this) {
             @Override
             public void onSlotClicked(ItemStack stack) {
-                stack = stack.isEmpty() ? null : stack.copy();
+                stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
                 entry.setFilter(stack);
                 setItem(stack);
             }

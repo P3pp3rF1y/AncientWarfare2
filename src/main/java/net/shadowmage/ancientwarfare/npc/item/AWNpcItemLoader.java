@@ -5,15 +5,14 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.item.AWCoreItemLoader;
 import net.shadowmage.ancientwarfare.core.item.ItemComponent;
 
-import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 public class AWNpcItemLoader {
 
@@ -24,11 +23,10 @@ public class AWNpcItemLoader {
             return AWItems.npcSpawner;
         }
 
-
         @Override
-        public void displayAllReleventItems(List par1List) {
-            super.displayAllReleventItems(par1List);
-            Collections.sort(par1List, sorter);
+        public void displayAllRelevantItems(NonNullList<ItemStack> items) {
+            super.displayAllRelevantItems(items);
+            items.sort(sorter);
         }
     };
     private static final String PREFIX = "ancientwarfare:npc/";
@@ -38,7 +36,7 @@ public class AWNpcItemLoader {
     public static final ItemShield stoneShield = new ItemShield("stone_shield", ToolMaterial.STONE);
     public static final ItemShield ironShield = new ItemShield("iron_shield", ToolMaterial.IRON);
     public static final ItemShield goldShield = new ItemShield("gold_shield", ToolMaterial.GOLD);
-    public static final ItemShield diamondShield = new ItemShield("diamond_shield", ToolMaterial.EMERALD);
+    public static final ItemShield diamondShield = new ItemShield("diamond_shield", ToolMaterial.DIAMOND);
 
     public static void load() {
         AWItems.npcSpawner = AWCoreItemLoader.INSTANCE.register(new ItemNpcSpawner(), "npc_spawner");
@@ -51,7 +49,7 @@ public class AWNpcItemLoader {
         GameRegistry.registerItem(new ItemCommandBaton("stone_command_baton", ToolMaterial.STONE), "stone_command_baton");
         GameRegistry.registerItem(commandBatonIron, "iron_command_baton");
         GameRegistry.registerItem(new ItemCommandBaton("gold_command_baton", ToolMaterial.GOLD), "gold_command_baton");
-        GameRegistry.registerItem(new ItemCommandBaton("diamond_command_baton", ToolMaterial.EMERALD), "diamond_command_baton");
+        GameRegistry.registerItem(new ItemCommandBaton("diamond_command_baton", ToolMaterial.DIAMOND), "diamond_command_baton");
         GameRegistry.registerItem(bardInstrument, "bard_instrument");
 
         GameRegistry.registerItem(woodenShield, "wooden_shield");

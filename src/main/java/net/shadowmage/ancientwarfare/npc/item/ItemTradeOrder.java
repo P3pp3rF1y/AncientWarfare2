@@ -2,6 +2,10 @@ package net.shadowmage.ancientwarfare.npc.item;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -9,13 +13,13 @@ import net.shadowmage.ancientwarfare.core.util.RayTraceUtils;
 import net.shadowmage.ancientwarfare.npc.orders.TradeOrder;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 public class ItemTradeOrder extends ItemOrders {
 
     @Override
-    public Collection<? extends BlockPos> getPositionsForRender(ItemStack stack) {
-        Collection<BlockPos> positionList = new ArrayList<>();
+    public List<BlockPos> getPositionsForRender(ItemStack stack) {
+        List<BlockPos> positionList = new ArrayList<>();
         TradeOrder order = TradeOrder.getTradeOrder(stack);
         if (order != null && order.getRoute().size() > 0) {
             for (int i = 0; i < order.getRoute().size(); i++) {
@@ -31,11 +35,11 @@ public class ItemTradeOrder extends ItemOrders {
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
         if(!world.isRemote)
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_TRADE_ORDER, 0, 0, 0);
-        return stack;
+        return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
     }
 
     @Override
@@ -45,15 +49,14 @@ public class ItemTradeOrder extends ItemOrders {
             return;
         }
         TradeOrder order = TradeOrder.getTradeOrder(stack);
-        BlockPos pos = new BlockPos(hit.blockX, hit.blockY, hit.blockZ);
         if (key == ItemKey.KEY_0) {
-            order.getRoute().addRoutePoint(pos);
+            order.getRoute().addRoutePoint(hit.getBlockPos());
             order.write(stack);
         } else if (key == ItemKey.KEY_1) {
-            order.getRestockData().setDepositPoint(pos, hit.sideHit);
+            order.getRestockData().setDepositPoint(hit.getBlockPos(), hit.sideHit);
             order.write(stack);
         } else if (key == ItemKey.KEY_2) {
-            order.getRestockData().setWithdrawPoint(pos, hit.sideHit);
+            order.getRestockData().setWithdrawPoint(hit.getBlockPos(), hit.sideHit);
             order.write(stack);
         }
     }

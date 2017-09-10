@@ -1,13 +1,13 @@
 package net.shadowmage.ancientwarfare.npc.proxy;
 
-import com.google.common.base.Predicate;
+import com.google.common.base.Supplier;
 import com.google.common.collect.Iterables;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.WorldServer;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
 
 import java.io.InputStream;
@@ -24,26 +24,21 @@ public class NpcCommonProxy extends CommonProxyBase {
     }
 
     public GameProfile getProfile(final String name) {
-        return Iterables.getFirst(Iterables.filter(profileCache, new Predicate<GameProfile>() {
-            @Override
-            public boolean apply(GameProfile input) {
-                return input.getName().equals(name);
-            }
-        }), null);
+        return profileCache.stream().filter(input -> input.getName().equals(name)).findFirst().orElseGet((Supplier<GameProfile>) () -> null);
     }
 
     public void cacheProfile(GameProfile gameprofile) {
         profileCache.add(gameprofile);
     }
 
-    public NBTTagCompound cacheProfile(final String name) {
+    public NBTTagCompound cacheProfile(WorldServer worldServer, final String name) {
         GameProfile gameprofile = getProfile(name);
         if (gameprofile == null) {
-            gameprofile = MinecraftServer.getServer().func_152358_ax().func_152655_a(name);
+            gameprofile = worldServer.getMinecraftServer().getPlayerProfileCache().getGameProfileForUsername(name);
             if (gameprofile != null) {
                 Property property = Iterables.getFirst(gameprofile.getProperties().get("textures"), null);
                 if (property == null) {
-                    gameprofile = MinecraftServer.getServer().func_147130_as().fillProfileProperties(gameprofile, true);
+                    gameprofile = worldServer.getMinecraftServer().getMinecraftSessionService().fillProfileProperties(gameprofile, true);
                 }
                 cacheProfile(gameprofile);
             }
@@ -51,7 +46,7 @@ public class NpcCommonProxy extends CommonProxyBase {
         if(gameprofile!=null) {
             NBTTagCompound tagCompound = new NBTTagCompound();
             try {
-                NBTUtil.func_152460_a(tagCompound, gameprofile);
+                NBTUtil.writeGameProfile(tagCompound, gameprofile);
             }catch (Throwable handled){
                 return null;
             }

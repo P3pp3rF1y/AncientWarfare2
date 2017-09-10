@@ -67,8 +67,7 @@ public abstract class NpcFactionArcher extends NpcFaction implements IRangedAtta
     }
 
     @Override
-    public void setSwingingArms(boolean swingingArms)
-    {
+    public void setSwingingArms(boolean swingingArms) {
         this.dataManager.set(SWINGING_ARMS, swingingArms);
     } //TODO add use of this data in rendering
 }

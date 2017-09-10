@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -31,8 +32,7 @@ public class GuiUpkeepOrder extends GuiContainerBase<ContainerUpkeepOrder> {
         Label label;
 
         if (pos != null) {
-            @Nonnull ItemStack blockStack = new ItemStack(getContainer().upkeepOrder.getBlock());
-            slot = new ItemSlot(8, 10, blockStack, this);
+            slot = new ItemSlot(8, 10, getContainer().upkeepBlock, this);
             addGuiElement(slot);
 
             label = new Label(8 + 18 + 4, 8, pos.toString());
@@ -78,22 +78,8 @@ public class GuiUpkeepOrder extends GuiContainerBase<ContainerUpkeepOrder> {
         }
     }
 
-    private String getSideName(int side) {
-        switch (side) {
-            case 0:
-                return "guistrings.inventory.direction.down";
-            case 1:
-                return "guistrings.inventory.direction.up";
-            case 2:
-                return "guistrings.inventory.direction.north";
-            case 3:
-                return "guistrings.inventory.direction.south";
-            case 4:
-                return "guistrings.inventory.direction.west";
-            case 5:
-                return "guistrings.inventory.direction.east";
-        }
-        return "";
+    private String getSideName(EnumFacing side) {
+        return side == null ? "" : "guistrings.inventory.direction." + side.getName();
     }
 
     @Override

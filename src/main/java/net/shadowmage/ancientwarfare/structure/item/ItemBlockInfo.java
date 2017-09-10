@@ -20,7 +20,7 @@ public class ItemBlockInfo extends Item {
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
         if(!world.isRemote) {
             BlockPos pos = BlockTools.getBlockClickedOn(player, player.world, false);
             if (pos != null) {

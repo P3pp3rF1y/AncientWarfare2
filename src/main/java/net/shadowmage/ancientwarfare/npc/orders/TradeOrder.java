@@ -49,7 +49,7 @@ public class TradeOrder implements INBTSerializable<NBTTagCompound> {
     @Override
     public NBTTagCompound serializeNBT() {
         NBTTagCompound tag = new NBTTagCompound();
-        tag.setTag("tradeList", tradeList.writeToNBT(new NBTTagCompound()));
+        tag.setTag("tradeList", tradeList.serializeNBT());
         tag.setTag("tradeRoute", tradeRoute.writeToNBT(new NBTTagCompound()));
         tag.setTag("restockEntry", restockEntry.writeToNBT(new NBTTagCompound()));
         return tag;
@@ -60,7 +60,7 @@ public class TradeOrder implements INBTSerializable<NBTTagCompound> {
         tradeList = new TradeList();
         tradeRoute = new POTradeRoute();
         restockEntry = new POTradeRestockData();
-        tradeList.readFromNBT(tag.getCompoundTag("tradeList"));
+        tradeList.deserializeNBT(tag.getCompoundTag("tradeList"));
         tradeRoute.readFromNBT(tag.getCompoundTag("tradeRoute"));
         restockEntry.readFromNBT(tag.getCompoundTag("restockEntry"));
     }

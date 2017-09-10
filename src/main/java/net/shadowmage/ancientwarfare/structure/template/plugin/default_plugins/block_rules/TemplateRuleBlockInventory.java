@@ -34,9 +34,9 @@ import net.minecraftforge.common.ChestGenHooks;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
-import net.shadowmage.ancientwarfare.structure.api.NBTTools;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
+import javax.annotation.Nonnull;
 import java.util.Random;
 
 import static net.minecraftforge.common.ChestGenHooks.DUNGEON_CHEST;
@@ -71,7 +71,7 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
             for (int i = 0; i < inventory.getSizeInventory(); i++) {
                 stack = inventory.getStackInSlot(i);
                 inventory.setInventorySlotContents(i, ItemStack.EMPTY);
-                inventoryStacks[i] = stack.isEmpty() ? null : stack.copy();
+                inventoryStacks[i] = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
             }
             te.writeToNBT(tag);
             for (int i = 0; i < inventory.getSizeInventory(); i++) {
@@ -109,7 +109,7 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
             @Nonnull ItemStack stack;
             for (int i = 0; i < inventory.getSizeInventory(); i++) {
                 stack = i < inventoryStacks.length ? inventoryStacks[i] : null;
-                inventory.setInventorySlotContents(i, stack.isEmpty() ? null : stack.copy());
+                inventory.setInventorySlotContents(i, stack.isEmpty() ? ItemStack.EMPTY : stack.copy());
             }
         }
         BlockTools.notifyBlockUpdate(world, pos);
@@ -142,7 +142,7 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
             if (stack.isEmpty()) {
                 continue;
             }
-            itemTag = NBTTools.writeItemStack(stack, new NBTTagCompound());
+            itemTag = stack.writeToNBT(new NBTTagCompound());
             itemTag.setInteger("slot", i);
             list.appendTag(itemTag);
         }
@@ -163,7 +163,7 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
             @Nonnull ItemStack stack;
             for (int i = 0; i < list.tagCount(); i++) {
                 itemTag = list.getCompoundTagAt(i);
-                stack = NBTTools.readItemStack(itemTag);
+                stack = new ItemStack(itemTag);
                 if (!stack.isEmpty()) {
                     slot = itemTag.getInteger("slot");
                     inventoryStacks[slot] = stack;

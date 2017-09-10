@@ -65,7 +65,7 @@ public class ItemConstructionTool extends Item implements IItemKeyInterface, IBo
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
         if(world.isRemote){
             return stack;
