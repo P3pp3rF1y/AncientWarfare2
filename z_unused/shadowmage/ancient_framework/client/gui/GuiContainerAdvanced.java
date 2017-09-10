@@ -517,7 +517,7 @@ public void renderItemStack(ItemStack stack, int x, int y, int mouseX, int mouse
     }
   if(renderOverlay)
     {
-    String stackSize = stack.stackSize > 999 ? ">1k" : String.valueOf(stack.stackSize);
+    String stackSize = stack.getCount() > 999 ? ">1k" : String.valueOf(stack.getCount());
     itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, stack, x, y, stackSize);
     }
   itemRenderer.zLevel = 0.0F;

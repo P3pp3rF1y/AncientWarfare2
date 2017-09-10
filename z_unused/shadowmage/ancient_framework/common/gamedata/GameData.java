@@ -21,7 +21,7 @@
 package shadowmage.ancient_framework.common.gamedata;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.storage.WorldSavedData;
 
 public abstract class GameData extends WorldSavedData
 {

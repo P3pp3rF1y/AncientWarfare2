@@ -37,7 +37,7 @@ public ItemStackWrapper(ItemStack stack, int qty)
 
 public ItemStackWrapper(ItemStack stack)
   {
-  this(stack, stack.stackSize);
+  this(stack, stack.getCount());
   }
 
 public ItemStackWrapper(NBTTagCompound tag)
@@ -58,7 +58,7 @@ public boolean matches(ItemStackWrapper wrap)
 
 public ItemStack getFilter()
   {
-  filter.stackSize = this.getQuantity();
+  filter.setCount(this.getQuantity())
   return filter;
   }
 
@@ -83,7 +83,7 @@ public int getQuantity()
 public void setQuantity(int quantity)
   {
     this.quantity = quantity;
-    this.filter.stackSize = quantity;
+    this.filter.setCount(quantity)
   }
 
 }

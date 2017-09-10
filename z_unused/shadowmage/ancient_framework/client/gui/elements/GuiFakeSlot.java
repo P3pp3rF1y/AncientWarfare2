@@ -68,16 +68,16 @@ public boolean handleMousePressed(int x, int y, int num)
           {
           if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT))
             {
-            fakeStack.stackSize++;
+            fakeStack.grow(1);
             }
           else
             {
-            fakeStack.stackSize+=p.stackSize;
+            fakeStack.grow(p.getCount());
             }
           }
         else
           {
-          fakeStack.stackSize--;
+          fakeStack.shrink(1);
           }
         }
       else if(fakeStack!=null)
@@ -97,11 +97,11 @@ public boolean handleMousePressed(int x, int y, int num)
           {
           if(num==0)
             {
-            fakeStack.stackSize++;
+            fakeStack.grow(1);
             }
           else
             {
-            fakeStack.stackSize--;
+            fakeStack.shrink(1);
             }
           }
         }

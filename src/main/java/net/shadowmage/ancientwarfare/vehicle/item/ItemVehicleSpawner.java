@@ -69,7 +69,7 @@ public class ItemVehicleSpawner extends Item {
     }
 
     @Override
-    public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
         // TODO lookup entity spawn type, spawn entity in world
         if(world.isRemote){
             return stack;

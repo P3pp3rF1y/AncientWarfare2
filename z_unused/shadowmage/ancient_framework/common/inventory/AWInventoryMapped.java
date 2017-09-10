@@ -72,9 +72,9 @@ public void setInventorySlotContents(int slot, ItemStack newContents)
       }
     else
       {
-      if(newContents.stackSize > this.getInventoryStackLimit())
+      if(newContents.getCount() > this.getInventoryStackLimit())
         {
-        newContents.stackSize = this.getInventoryStackLimit();
+        newContents.setCount(this.getInventoryStackLimit())
         }
       this.items.put(slot, newContents);
       }

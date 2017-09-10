@@ -343,12 +343,12 @@ public void requestItem(ItemStack filter)
     }
   if(quantity<=0){return;}
   ItemStack toMerge = filter.copy();
-  toMerge.stackSize = quantity;
+  toMerge.setCount(quantity)
   inventoryMap.decreaseCount(filter, quantity);
   toMerge = InventoryTools.mergeItemStack(inventory, toMerge, -1);
   if(toMerge!=null)
     {
-    inventoryMap.addCount(toMerge, toMerge.stackSize);
+    inventoryMap.addCount(toMerge, toMerge.getCount());
     }
   updateViewers();
   onWarehouseInventoryUpdated();
@@ -491,15 +491,15 @@ private void processInputWork()
       if(stack!=null)
         {
         transferQuantity = currentMaxItemCount-currentItemCount;
-        if(transferQuantity>stack.stackSize)
+        if(transferQuantity>stack.getCount())
           {
-          transferQuantity=stack.stackSize;
+          transferQuantity=stack.getCount();
           }
         inventoryMap.addCount(stack, transferQuantity);
         onWarehouseInventoryUpdated();
-        stack.stackSize-=transferQuantity;
+        stack.shrink(transferQuantity);
         currentItemCount+=transferQuantity;
-        if(stack.stackSize<=0)
+        if(stack.getCount() <=0)
           {
           tile.setInventorySlotContents(i, null);
           }
@@ -547,14 +547,14 @@ private void processOutputWork()
             {
             passXfer = toMerge.getMaxStackSize();
             }
-          toMerge.stackSize = passXfer;
+          toMerge.setCount(passXfer)
           transferQuantity -= passXfer;
           inventoryMap.decreaseCount(toMerge, passXfer);
           onWarehouseInventoryUpdated();
           toMerge = InventoryTools.mergeItemStack(tile, toMerge, -1);
           if(toMerge!=null)//could only partially merge--perhaps output is full?
             {
-            inventoryMap.addCount(toMerge, toMerge.stackSize);
+            inventoryMap.addCount(toMerge, toMerge.getCount());
             break;
             }
           }

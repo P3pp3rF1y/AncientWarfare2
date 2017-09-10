@@ -69,8 +69,8 @@ public boolean onUsedFinal(World world, EntityPlayer player, ItemStack stack, Bl
       }
     if(!player.capabilities.isCreativeMode)
       {
-      stack.stackSize--;
-      if(stack.stackSize<=0)
+      stack.shrink(1);
+      if(stack.getCount() <=0)
         {
         player.inventory.mainInventory[player.inventory.currentItem]=null;
         }

@@ -130,15 +130,15 @@ public void dropItems(World world, int x, int y, int z, int par5, int par6, IInv
         float yOff = this.RNG.nextFloat() * 0.8F + 0.1F;
         float zOff = this.RNG.nextFloat() * 0.8F + 0.1F;
 
-        while (currentStack.stackSize > 0)
+        while (currentStack.getCount() > 0)
           {
           int randomDropQty = this.RNG.nextInt(21) + 10;
 
-          if (randomDropQty > currentStack.stackSize)
+          if (randomDropQty > currentStack.getCount())
             {
-            randomDropQty = currentStack.stackSize;
+            randomDropQty = currentStack.getCount();
             }
-          currentStack.stackSize -= randomDropQty;
+          currentStack.shrink(randomDropQty);
           EntityItem var14 = new EntityItem(world, (double)((float)x + xOff), (double)((float)y + yOff), (double)((float)z + zOff), new ItemStack(currentStack.itemID, randomDropQty, currentStack.getItemDamage()));
 
           if (currentStack.hasTagCompound())

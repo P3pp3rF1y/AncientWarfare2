@@ -128,7 +128,7 @@ public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClic
 //        return null;
 //        }
 //      }
-    if (slotStack.stackSize == 0)
+    if (slotStack.getCount() == 0)
       {
       theSlot.putStack((ItemStack)null);
       }
@@ -136,7 +136,7 @@ public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClic
       {
       theSlot.onSlotChanged();
       }
-    if (slotStack.stackSize == slotStackCopy.stackSize)
+    if (slotStack.getCount() == slotStackCopy.getCount())
       {
       return null;
       }
@@ -200,7 +200,7 @@ protected boolean mergeItemStack(ItemStack inputStack, int startSlot, int stopSl
   if (inputStack.isStackable())
     {
     int numToMerge;
-    for(int i =startSlot; i < stopSlot && inputStack.stackSize > 0 ; i++)
+    for(int i =startSlot; i < stopSlot && inputStack.getCount() > 0 ; i++)
       {
       slot = (Slot)this.inventorySlots.get(i);
       if(slot==null || !slot.isItemValid(inputStack))
@@ -210,13 +210,13 @@ protected boolean mergeItemStack(ItemStack inputStack, int startSlot, int stopSl
       stackFromSlot = slot.getStack();
       if(InventoryTools.doItemsMatch(inputStack, stackFromSlot))
         {
-        numToMerge = slot.getSlotStackLimit() - stackFromSlot.stackSize;
-        numToMerge = numToMerge > inputStack.stackSize ? inputStack.stackSize : numToMerge;
-        numToMerge = numToMerge + stackFromSlot.stackSize > stackFromSlot.getMaxStackSize() ? stackFromSlot.getMaxStackSize() - stackFromSlot.stackSize : numToMerge; 
+        numToMerge = slot.getSlotStackLimit() - stackFromSlot.getCount();
+        numToMerge = numToMerge > inputStack.getCount() ? inputStack.getCount() : numToMerge;
+        numToMerge = numToMerge + stackFromSlot.getCount() > stackFromSlot.getMaxStackSize() ? stackFromSlot.getMaxStackSize() - stackFromSlot.getCount() : numToMerge;
         if(numToMerge>0)
           {
-          inputStack.stackSize -= numToMerge;
-          stackFromSlot.stackSize += numToMerge;
+          inputStack.shrink(numToMerge);
+          stackFromSlot.grow(numToMerge);
           slot.onSlotChanged();
           returnFlag = true;          
           }
@@ -224,7 +224,7 @@ protected boolean mergeItemStack(ItemStack inputStack, int startSlot, int stopSl
       }
     }
 
-  for(int i = startSlot; i < stopSlot && inputStack.stackSize > 0 ; i++)
+  for(int i = startSlot; i < stopSlot && inputStack.getCount() > 0 ; i++)
     {
     slot = (Slot)this.inventorySlots.get(i);
     if(slot==null || !slot.isItemValid(inputStack))
@@ -235,21 +235,21 @@ protected boolean mergeItemStack(ItemStack inputStack, int startSlot, int stopSl
     if(stackFromSlot==null)
       {
       stackFromSlot = inputStack.copy();
-      if(inputStack.stackSize <= slot.getSlotStackLimit())
+      if(inputStack.getCount() <= slot.getSlotStackLimit())
         {
-        stackFromSlot.stackSize = inputStack.stackSize;
-        inputStack.stackSize = 0;
+        stackFromSlot.setCount(inputStack.getCount())
+        inputStack.setCount(0)
         slot.putStack(stackFromSlot);
         }
       else
         {
-        inputStack.stackSize -= slot.getSlotStackLimit();
-        stackFromSlot.stackSize = slot.getSlotStackLimit();
+        inputStack.shrink(slot.getSlotStackLimit());
+        stackFromSlot.setCount(slot.getSlotStackLimit())
         slot.putStack(stackFromSlot);
         }
       slot.onSlotChanged();
       returnFlag = true;
-      if(inputStack.stackSize<=0)
+      if(inputStack.getCount() <=0)
         {
         break;
         }

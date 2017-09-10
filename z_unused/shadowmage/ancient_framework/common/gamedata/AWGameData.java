@@ -24,7 +24,7 @@ import java.util.HashMap;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.storage.WorldSavedData;
 import shadowmage.ancient_framework.common.config.AWLog;
 
 public class AWGameData

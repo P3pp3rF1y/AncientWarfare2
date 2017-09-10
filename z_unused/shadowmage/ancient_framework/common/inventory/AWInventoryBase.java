@@ -74,17 +74,17 @@ public int decreaseCountOf(int id, int dmg, int qty)
     ItemStack stack = this.getStackInSlot(i);
     if(stack!=null && stack.itemID==id && stack.getItemDamage()==dmg)
       {
-      if(stack.stackSize>=qty)
+      if(stack.getCount()>=qty)
         {
-        stack.stackSize-=qty;
+        stack.shrink(qty);
         qty = 0;
         }
       else
         {
-        qty-=stack.stackSize;
-        stack.stackSize = 0;
+        qty-=stack.getCount();
+        stack.setCount(0)
         }
-      if(stack.stackSize==0)
+      if(stack.getCount()==0)
         {
         this.setInventorySlotContents(i, null);
         }
@@ -109,7 +109,7 @@ public ItemStack decrStackSize(int slotNum, int decreaseBy)
   ItemStack stack = this.getStackInSlot(slotNum);
   if (stack != null)
     {
-    if (stack.stackSize <= decreaseBy)
+    if (stack.getCount() <= decreaseBy)
       {      
       this.setInventorySlotContents(slotNum, null);
       return stack;
@@ -117,7 +117,7 @@ public ItemStack decrStackSize(int slotNum, int decreaseBy)
     else
       {
       stack = this.getStackInSlot(slotNum).splitStack(decreaseBy);
-      if (this.getStackInSlot(slotNum).stackSize == 0)
+      if (this.getStackInSlot(slotNum).getCount() == 0)
         {
         this.setInventorySlotContents(slotNum, null);
         }

@@ -55,9 +55,9 @@ public ItemStack getStackInSlot(int var1)
 public void setInventorySlotContents(int stackIndex, ItemStack newContents)
   {
   this.inventorySlots[stackIndex] = newContents;
-  if (newContents != null && newContents.stackSize > this.getInventoryStackLimit())
+  if (newContents != null && newContents.getCount() > this.getInventoryStackLimit())
     {
-    newContents.stackSize = this.getInventoryStackLimit();
+    newContents.setCount(this.getInventoryStackLimit())
     }
   }
 
