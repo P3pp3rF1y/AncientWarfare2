@@ -1,11 +1,11 @@
 package net.shadowmage.ancientwarfare.vehicle.entity;
 
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 import java.util.UUID;

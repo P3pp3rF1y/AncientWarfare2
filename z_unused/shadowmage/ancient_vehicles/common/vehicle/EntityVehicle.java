@@ -28,7 +28,7 @@ import net.minecraft.world.World;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 
 public class EntityVehicle extends Entity implements IEntityAdditionalSpawnData, IEntityPacketHandler
 {
