@@ -20,35 +20,26 @@
  */
 package net.shadowmage.ancientwarfare.structure.gui;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterators;
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SoundHandler;
-import net.minecraft.util.RegistrySimple;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.core.util.SongPlayData;
 
-import java.lang.reflect.Field;
 import java.util.Iterator;
 
 public class GuiSoundSelect extends GuiContainerBase{
     private final GuiContainerBase parent;
     private final SongPlayData.SongEntry songEntry;
-    private Field sndRegistry;
     private CompositeScrolled area;
     private Text selectionLabel;
     protected GuiSoundSelect(GuiContainerBase parent, SongPlayData.SongEntry entry) {
         super(parent.getContainer());
         this.parent = parent;
         this.songEntry = entry;
-        try {
-            sndRegistry = ReflectionHelper.findField(SoundHandler.class, "sndRegistry", "field_147697_e");//TODO check reflection status
-        }catch (Exception ignored){
-        }
     }
 
     @Override
@@ -80,15 +71,9 @@ public class GuiSoundSelect extends GuiContainerBase{
     @Override
     public void setupElements() {
         area.clearElements();
-        Iterator itr;
+        Iterator<ResourceLocation> itr;
         try {
-            itr = Iterators.filter(((RegistrySimple) sndRegistry.get(Minecraft.getMinecraft().getSoundHandler())).getKeys().iterator(), new Predicate(){
-
-                @Override
-                public boolean apply(Object input) {
-                    return input.toString().contains(selectionLabel.getText());
-                }
-            });
+            itr = ForgeRegistries.SOUND_EVENTS.getKeys().stream().filter(input -> input.toString().contains(selectionLabel.getText())).iterator();
         }catch (Exception e){
             return;
         }
@@ -96,11 +81,12 @@ public class GuiSoundSelect extends GuiContainerBase{
         int totalHeight = 8;
         Button button;
         while (itr.hasNext()) {
-            final String name = itr.next().toString();
+            final ResourceLocation regisryName = itr.next();
+            final String name = regisryName.toString();
             button = new Button(8, totalHeight, 256 - 8 - 16, 12, name) {
                 @Override
                 protected void onPressed() {
-                    songEntry.setSound(name);
+                    songEntry.setSound(ForgeRegistries.SOUND_EVENTS.getValue(regisryName));
                     selectionLabel.setText(name);
                     refreshGui();
                 }

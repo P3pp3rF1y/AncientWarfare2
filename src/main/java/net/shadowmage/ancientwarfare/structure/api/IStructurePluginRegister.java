@@ -22,6 +22,6 @@ package net.shadowmage.ancientwarfare.structure.api;
 
 public interface IStructurePluginRegister {
 
-    public void registerPlugin(StructureContentPlugin plugin);
+    void registerPlugin(StructureContentPlugin plugin);
 
 }

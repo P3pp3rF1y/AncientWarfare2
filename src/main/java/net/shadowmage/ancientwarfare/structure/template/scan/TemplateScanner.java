@@ -21,8 +21,10 @@
 package net.shadowmage.ancientwarfare.structure.template.scan;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -44,9 +46,9 @@ public final class TemplateScanner {
      */
 
     public static StructureTemplate scan(World world, BlockPos min, BlockPos max, BlockPos key, int turns, String name) {
-        int xSize = max.x - min.x + 1;
-        int ySize = max.y - min.y + 1;
-        int zSize = max.z - min.z + 1;
+        int xSize = max.getX() - min.getX() + 1;
+        int ySize = max.getY() - min.getY() + 1;
+        int zSize = max.getZ() - min.getZ() + 1;
 
         int xOutSize = xSize, zOutSize = zSize;
         int swap;
@@ -55,7 +57,7 @@ public final class TemplateScanner {
             xOutSize = zOutSize;
             zOutSize = swap;
         }
-        key = BlockTools.rotateInArea(key.sub(min), xSize, zSize, turns);
+        key = BlockTools.rotateInArea(key.subtract(min), xSize, zSize, turns);
 
         short[] templateRuleData = new short[xSize * ySize * zSize];
 
@@ -69,19 +71,21 @@ public final class TemplateScanner {
         int index;
         int meta;
         int scanX, scanZ, scanY;
-        BlockPos destination = new BlockPos();
         int nextRuleID = 1;
-        for (scanY = min.y; scanY <= max.y; scanY++) {
-            for (scanZ = min.z; scanZ <= max.z; scanZ++) {
-                for (scanX = min.x; scanX <= max.x; scanX++) {
-                    destination = BlockTools.rotateInArea(new BlockPos(scanX, scanY, scanZ).sub(min), xSize, zSize, turns);
+        BlockPos destination;
+        for (scanY = min.getY(); scanY <= max.getY(); scanY++) {
+            for (scanZ = min.getZ(); scanZ <= max.getZ(); scanZ++) {
+                for (scanX = min.getX(); scanX <= max.getX(); scanX++) {
+                    destination = BlockTools.rotateInArea(new BlockPos(scanX, scanY, scanZ).subtract(min), xSize, zSize, turns);
 
-                    scannedBlock = world.getBlock(scanX, scanY, scanZ);
+                    BlockPos scannedPos = new BlockPos(scanX, scanY, scanZ);
+                    IBlockState scannedState = world.getBlockState(scannedPos);
+                    scannedBlock = scannedState.getBlock();
 
-                    if (scannedBlock != null && !AWStructureStatics.shouldSkipScan(scannedBlock) && !scannedBlock.isAir(world, scanX, scanY, scanZ)) {
+                    if (scannedBlock != null && !AWStructureStatics.shouldSkipScan(scannedBlock) && !world.isAirBlock(scannedPos)) {
                         pluginId = StructurePluginManager.INSTANCE.getPluginNameFor(scannedBlock);
                         if (pluginId != null) {
-                            meta = world.getBlockMetadata(scanX, scanY, scanZ);
+                            meta = scannedBlock.getMetaFromState(scannedState);
                             pluginBlockRules = pluginBlockRuleMap.get(pluginId);
                             if (pluginBlockRules == null) {
                                 pluginBlockRules = new ArrayList<>();
@@ -104,7 +108,7 @@ public final class TemplateScanner {
                                     currentRulesAll.add(scannedBlockRule);
                                 }
                             }
-                            index = StructureTemplate.getIndex(destination.x, destination.y, destination.z, xOutSize, ySize, zOutSize);
+                            index = StructureTemplate.getIndex(destination.getX(), destination.getY(), destination.getZ(), xOutSize, ySize, zOutSize);
                             templateRuleData[index] = (short) scannedBlockRule.ruleNumber;
                         }
                     }
@@ -113,7 +117,7 @@ public final class TemplateScanner {
         }//end scan y-level for
 
         List<TemplateRuleEntity> scannedEntityRules = new ArrayList<>();
-        List<Entity> entitiesInAABB = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(min.x, min.y, min.z, max.x + 1, max.y + 1, max.z + 1));
+        List<Entity> entitiesInAABB = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(min.getX(), min.getY(), min.getZ(), max.getX() + 1, max.getY() + 1, max.getZ() + 1));
         nextRuleID = 0;
         for (Entity e : entitiesInAABB) {
             int ex = MathHelper.floor(e.posX);
@@ -121,7 +125,7 @@ public final class TemplateScanner {
             int ez = MathHelper.floor(e.posZ);
             TemplateRuleEntity scannedEntityRule = StructurePluginManager.INSTANCE.getRuleForEntity(world, e, turns, ex, ey, ez);
             if (scannedEntityRule != null) {
-                destination = BlockTools.rotateInArea(new BlockPos(ex, ey, ez).sub(min), xSize, zSize, turns);
+                destination = BlockTools.rotateInArea(new BlockPos(ex, ey, ez).subtract(min), xSize, zSize, turns);
                 scannedEntityRule.ruleNumber = nextRuleID;
                 scannedEntityRule.setPosition(destination);
                 scannedEntityRules.add(scannedEntityRule);
@@ -140,7 +144,7 @@ public final class TemplateScanner {
             entityRules[i] = scannedEntityRules.get(i);
         }
 
-        StructureTemplate template = new StructureTemplate(name, xOutSize, ySize, zOutSize, key.x, key.y, key.z);
+        StructureTemplate template = new StructureTemplate(name, xOutSize, ySize, zOutSize, key.getX(), key.getY(), key.getZ());
         template.setTemplateData(templateRuleData);
         template.setRuleArray(templateRules);
         template.setEntityRules(entityRules);

@@ -5,9 +5,11 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,20 +68,20 @@ public abstract class Trade {
             if (inputStack == null) {
                 continue;
             }
-            @Nonnull ItemStack result = InventoryTools.removeItems(player.inventory, -1, inputStack, inputStack.getCount());//remove from trade grid
-            if(result!=null && storage!=null)
-                InventoryTools.mergeItemStack(storage, result, -1);//merge into storage
+            @Nonnull ItemStack result = InventoryTools.removeItems(player.inventory, null, inputStack, inputStack.getCount());//remove from trade grid
+            if(!result.isEmpty() && storage!=null)
+                InventoryTools.mergeItemStack(storage, result, (EnumFacing) null);//merge into storage
         }
         for (ItemStack outputStack : output) {
             if (outputStack == null) {
                 continue;
             }
             if(storage!=null)
-                outputStack = InventoryTools.removeItems(storage, -1, outputStack, outputStack.getCount());//remove from storage
+                outputStack = InventoryTools.removeItems(storage, null, outputStack, outputStack.getCount());//remove from storage
             else
                 outputStack = outputStack.copy();
-            outputStack = InventoryTools.mergeItemStack(player.inventory, outputStack, -1);//merge into player inventory, drop any unused portion on next line
-            if (outputStack != null && !player.world.isRemote) {//only drop into world if on server!
+            outputStack = InventoryTools.mergeItemStack(player.inventory, outputStack, (EnumFacing) null);//merge into player inventory, drop any unused portion on next line
+            if (!outputStack.isEmpty() && !player.world.isRemote) {//only drop into world if on server!
                 InventoryTools.dropItemInWorld(player.world, outputStack, player.posX, player.posY, player.posZ);
             }
         }

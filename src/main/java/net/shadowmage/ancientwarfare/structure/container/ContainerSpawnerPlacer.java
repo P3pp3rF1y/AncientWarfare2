@@ -4,7 +4,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.structure.item.ItemSpawnerPlacer;
+
+import javax.annotation.Nonnull;
 
 public class ContainerSpawnerPlacer extends ContainerBase {
 
@@ -33,7 +36,7 @@ public class ContainerSpawnerPlacer extends ContainerBase {
 
     public ContainerSpawnerPlacer(EntityPlayer player, int x, int y, int z) {
         super(player);
-        @Nonnull ItemStack stack = player.getHeldItem();
+        @Nonnull ItemStack stack = EntityTools.getItemFromEitherHand(player, ItemSpawnerPlacer.class);
         if (isInValid(stack)) {
             throw new IllegalArgumentException("Incorrect held item");
         }
@@ -67,7 +70,7 @@ public class ContainerSpawnerPlacer extends ContainerBase {
     @Override
     public void handlePacketData(NBTTagCompound tag) {
         if (tag.hasKey("spawnerData")) {
-            @Nonnull ItemStack stack = player.getHeldItem();
+            @Nonnull ItemStack stack = EntityTools.getItemFromEitherHand(player, ItemSpawnerPlacer.class);
             if (isInValid(stack)) {
                 return;
             }
@@ -97,6 +100,6 @@ public class ContainerSpawnerPlacer extends ContainerBase {
     }
 
     private boolean isInValid(ItemStack stack) {
-        return stack.isEmpty() || stack.getItem() == null || !(stack.getItem() instanceof ItemSpawnerPlacer);
+        return stack.isEmpty() || !(stack.getItem() instanceof ItemSpawnerPlacer);
     }
 }

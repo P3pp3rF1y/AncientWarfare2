@@ -5,18 +5,20 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.inventory.SlotFiltered;
 import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ContainerDraftingStation extends ContainerStructureSelectionBase {
 
     public boolean isStarted = false;
-    public boolean isFinished = false;
+    private boolean isFinished = false;
     private int remainingTime;
     private int totalTime;
     public final List<ItemStack> neededResources = new ArrayList<>();
@@ -25,7 +27,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
 
     public ContainerDraftingStation(EntityPlayer player, int x, int y, int z) {
         super(player);
-        tile = (TileDraftingStation) player.world.getTileEntity(x, y, z);
+        tile = (TileDraftingStation) player.world.getTileEntity(new BlockPos(x, y, z));
         if (tile == null) {
             throw new IllegalArgumentException("No drafting station");
         }
@@ -57,7 +59,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
 
     @Override
     public boolean canInteractWith(EntityPlayer var1){
-        return tile.getDistanceFrom(var1.posX, var1.posY, var1.posZ) <= 64D;
+        return tile.getDistanceSq(var1.posX, var1.posY, var1.posZ) <= 64D;
     }
 
     @Override
@@ -74,13 +76,13 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
             {
                 if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             } else if (slotClickedIndex < playerSlotEnd)//player slots, merge into storage
             {
                 if (!this.mergeItemStack(slotStack, 0, playerSlotStart, false))//merge into storage
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
             if (slotStack.getCount() == 0) {
@@ -89,9 +91,9 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
                 theSlot.onSlotChanged();
             }
             if (slotStack.getCount() == slotStackCopy.getCount()) {
-                return null;
+                return ItemStack.EMPTY;
             }
-            theSlot.onPickupFromSlot(par1EntityPlayer, slotStack);
+            theSlot.onTake(par1EntityPlayer, slotStack);
         }
         return slotStackCopy;
     }

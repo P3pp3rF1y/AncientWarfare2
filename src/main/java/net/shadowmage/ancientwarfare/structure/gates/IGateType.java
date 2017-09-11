@@ -31,22 +31,22 @@ public interface IGateType {
      * return global ID -- used to link gate type to item
      * determines render type and model used
      */
-    public int getGlobalID();
+    int getGlobalID();
 
     /*
      * return the name to register for the spawning item
      */
-    public String getDisplayName();
+    String getDisplayName();
 
     /*
      * return the tooltip to register for the spawning item
      */
-    public String getTooltip();
+    String getTooltip();
 
     /*
      * return the texture that should be used for rendering
      */
-    public ResourceLocation getTexture();
+    ResourceLocation getTexture();
 
 /* TODO readd in rendering
     public IIcon getIconTexture();
@@ -57,49 +57,49 @@ public interface IGateType {
     /*
      * return the speed at which the gate opens/closes when activated
      */
-    public float getMoveSpeed();
+    float getMoveSpeed();
 
     /*
      * return the max health of this gate
      */
-    public int getMaxHealth();
+    int getMaxHealth();
 
     /*
      * a callback from the entity to the gate-type to allow for
      * gate-type specific checks during updates
      */
-    public void onUpdate(EntityGate ent);
+    void onUpdate(EntityGate ent);
 
     /*
      * called from setPosition to update gates bounding box
      */
-    public void setCollisionBoundingBox(EntityGate gate);
+    void setCollisionBoundingBox(EntityGate gate);
 
-    public void onGateStartOpen(EntityGate gate);
+    void onGateStartOpen(EntityGate gate);
 
-    public void onGateFinishOpen(EntityGate gate);
+    void onGateFinishOpen(EntityGate gate);
 
-    public void onGateStartClose(EntityGate gate);
+    void onGateStartClose(EntityGate gate);
 
-    public void onGateFinishClose(EntityGate gate);
+    void onGateFinishClose(EntityGate gate);
 
-    public void setInitialBounds(EntityGate gate, BlockPos pos1, BlockPos pos2);
+    void setInitialBounds(EntityGate gate, BlockPos pos1, BlockPos pos2);
 
     /*
      * a callback from the spawning item for validation of a chosen
      * pair of spawning points.  This is where the gate can reject
      * a starting position/setup if the points are not placed correctly.
      */
-    public boolean arePointsValidPair(BlockPos pos1, BlockPos pos2);
+    boolean arePointsValidPair(BlockPos pos1, BlockPos pos2);
 
-    public boolean canActivate(EntityGate gate, boolean open);
+    boolean canActivate(EntityGate gate, boolean open);
 
-    public boolean canSoldierActivate();
+    boolean canSoldierActivate();
 
-    public int getModelType();
+    int getModelType();
 
-    public ItemStack getConstructingItem();
+    ItemStack getConstructingItem();
 
-    public ItemStack getDisplayStack();
+    ItemStack getDisplayStack();
 
 }

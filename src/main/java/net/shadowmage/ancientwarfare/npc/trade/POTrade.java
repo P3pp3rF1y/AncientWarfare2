@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.npc.trade;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.ArrayList;
@@ -54,7 +55,7 @@ public class POTrade extends Trade {
                 return false;
             }
         }
-        return InventoryTools.canInventoryHold(storage, -1, compactInput);
+        return InventoryTools.canInventoryHold(storage, (EnumFacing) null, compactInput);
     }
 
     @Override

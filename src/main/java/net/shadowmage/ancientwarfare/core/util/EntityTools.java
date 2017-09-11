@@ -66,11 +66,13 @@ public class EntityTools {
         return null;
     }
 
-    public static ItemStack getItemFromEitherHand(EntityPlayer player, Class itemClass) {
-        if (itemClass.isInstance(player.getHeldItemMainhand().getItem())) {
-            return player.getHeldItemMainhand();
-        } else if (itemClass.isInstance(player.getHeldItemOffhand().getItem())) {
-            return player.getHeldItemOffhand();
+    public static ItemStack getItemFromEitherHand(EntityPlayer player, Class... itemClasses) {
+        for(Class itemClass : itemClasses) {
+            if (itemClass.isInstance(player.getHeldItemMainhand().getItem())) {
+                return player.getHeldItemMainhand();
+            } else if (itemClass.isInstance(player.getHeldItemOffhand().getItem())) {
+                return player.getHeldItemOffhand();
+            }
         }
         return ItemStack.EMPTY;
     }

@@ -22,6 +22,7 @@ package net.shadowmage.ancientwarfare.structure.item;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 
 public class ItemStructureSettings {
 

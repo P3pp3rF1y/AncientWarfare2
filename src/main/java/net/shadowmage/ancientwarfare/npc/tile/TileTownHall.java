@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.npc.tile;
 
-import codechicken.lib.math.MathHelper;
 import ftb.utils.world.LMPlayerServer;
 import ftb.utils.world.LMWorldServer;
 import net.minecraft.entity.Entity;
@@ -11,9 +10,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.chunk.Chunk;
@@ -40,7 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class TileTownHall extends TileOwned implements IInventory, IInteractableTile {
+public class TileTownHall extends TileOwned implements IInventory, IInteractableTile, ITickable {
 
     public boolean alarmActive = false;
     
@@ -73,7 +75,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
     }
 
     @Override
-    public void updateEntity() {
+    public void update() {
         if (world == null || world.isRemote)
             return;
         
@@ -98,7 +100,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
                             notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.townhall_abandoned.tooltip.1"));
                             notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.townhall_abandoned.tooltip.2"));
                             notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.townhall_abandoned.tooltip.3"));
-                            notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.chunk_name_and_position", name, x>>4 , z>>4));
+                            notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.chunk_name_and_position", name, pos.getX()>>4 , pos.getZ()>>4));
                             notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.click_to_remove"));
                             
                             isActive = false;
@@ -115,7 +117,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
                                 notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.townhall_neglected.tooltip.1.alt"));
                             notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.townhall_neglected.tooltip.2", AWNPCStatics.townActiveNpcSearchLimit));
                             notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.townhall_neglected.tooltip.3"));
-                            notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.chunk_name_and_position", name, x>>4 , z>>4));
+                            notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.chunk_name_and_position", name, pos.getX()>>4 , pos.getZ()>>4));
                             notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.click_to_remove"));
                             
                             isNeglected = true;
@@ -169,7 +171,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
             String notificationTitle = "ftbu_aw2.notification.townhall_secured";
             TextComponentTranslation notificationMsg = new TextComponentTranslation("ftbu_aw2.notification.townhall_secured.msg");
             List<TextComponentTranslation> notificationTooltip = new ArrayList<>();
-            notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.chunk_name_and_position", name, x>>4 , z>>4));
+            notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.chunk_name_and_position", name, pos.getX()>>4 , pos.getZ()>>4));
             notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.click_to_remove"));
             ModAccessors.FTBU.notifyPlayer(TextFormatting.GREEN, getOwnerName(), notificationTitle, notificationMsg, notificationTooltip);
         } else {
@@ -177,7 +179,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
             String notificationTitle = "ftbu_aw2.notification.townhall_captured";
             TextComponentTranslation notificationMsg = new TextComponentTranslation("ftbu_aw2.notification.townhall_captured.msg.lost", getOwnerName());
             List<TextComponentTranslation> notificationTooltip = new ArrayList<>();
-            notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.chunk_name_and_position", name, x>>4 , z>>4));
+            notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.chunk_name_and_position", name, pos.getX()>>4 , pos.getZ()>>4));
             notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.click_to_remove"));
             
             ModAccessors.FTBU.notifyPlayer(TextFormatting.RED, oldOwner, notificationTitle, notificationMsg, notificationTooltip);
@@ -196,9 +198,9 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
         LMPlayerServer lmPlayerServer = LMWorldServer.inst.getPlayer(getOwnerName());
         if (lmPlayerServer != null) {
             // we can only do this if the player is actually online 
-            Chunk thisChunk = world.getChunkFromBlockCoords(this.x, this.z);
-            for (int chunkX = thisChunk.xPosition - AWNPCStatics.townChunkClaimRadius; chunkX <= thisChunk.xPosition + AWNPCStatics.townChunkClaimRadius; chunkX++) {
-                for (int chunkZ = thisChunk.zPosition - AWNPCStatics.townChunkClaimRadius; chunkZ <= thisChunk.zPosition + AWNPCStatics.townChunkClaimRadius; chunkZ++) {
+            Chunk thisChunk = world.getChunkFromBlockCoords(pos);
+            for (int chunkX = thisChunk.x - AWNPCStatics.townChunkClaimRadius; chunkX <= thisChunk.x + AWNPCStatics.townChunkClaimRadius; chunkX++) {
+                for (int chunkZ = thisChunk.z - AWNPCStatics.townChunkClaimRadius; chunkZ <= thisChunk.z + AWNPCStatics.townChunkClaimRadius; chunkZ++) {
                     lmPlayerServer.claimChunk(world.provider.getDimension(), chunkX, chunkZ);
                 }
             }
@@ -216,23 +218,21 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
             ticket = ForgeChunkManager.requestTicket(AncientWarfareNPC.instance, world, Type.NORMAL);
             if (ticket == null) {
                 // no tickets available
-                AncientWarfareCore.log.error("Town Hall at " + x + "x" + y + "x" + z + " has requested a chunk load ticket but Forge rejected it - probably because of a Forge config limit. Will try again in " + (ticketRetryMax / 60 / 20) + " minutes.");
+                AncientWarfareCore.log.error("Town Hall at " + pos.getX() + "x" + pos.getY() + "x" + pos.getZ() + " has requested a chunk load ticket but Forge rejected it - probably because of a Forge config limit. Will try again in " + (ticketRetryMax / 60 / 20) + " minutes.");
                 return;
             }
         }
 
-        ticket.getModData().setInteger("blockX", x);
-        ticket.getModData().setInteger("blockY", y);
-        ticket.getModData().setInteger("blockZ", z);
-       
-        for (int chunkX = (x>>4) - AWNPCStatics.townChunkLoadRadius; chunkX <= (x>>4) + AWNPCStatics.townChunkLoadRadius; chunkX++)
-            for (int chunkZ = (z>>4) - AWNPCStatics.townChunkLoadRadius; chunkZ <= (z>>4) + AWNPCStatics.townChunkLoadRadius; chunkZ++)
+        ticket.getModData().setLong("pos", pos.toLong());
+
+        for (int chunkX = (pos.getX()>>4) - AWNPCStatics.townChunkLoadRadius; chunkX <= (pos.getX()>>4) + AWNPCStatics.townChunkLoadRadius; chunkX++)
+            for (int chunkZ = (pos.getZ()>>4) - AWNPCStatics.townChunkLoadRadius; chunkZ <= (pos.getZ()>>4) + AWNPCStatics.townChunkLoadRadius; chunkZ++)
                 ForgeChunkManager.forceChunk(ticket, new ChunkPos(chunkX, chunkZ));
     }
     
     public void unloadChunks() {
-        for (int chunkX = (x>>4) - AWNPCStatics.townChunkLoadRadius; chunkX <= (x>>4) + AWNPCStatics.townChunkLoadRadius; chunkX++)
-            for (int chunkZ = (z>>4) - AWNPCStatics.townChunkLoadRadius; chunkZ <= (z>>4) + AWNPCStatics.townChunkLoadRadius; chunkZ++)
+        for (int chunkX = (pos.getX()>>4) - AWNPCStatics.townChunkLoadRadius; chunkX <= (pos.getX()>>4) + AWNPCStatics.townChunkLoadRadius; chunkX++)
+            for (int chunkZ = (pos.getZ()>>4) - AWNPCStatics.townChunkLoadRadius; chunkZ <= (pos.getZ()>>4) + AWNPCStatics.townChunkLoadRadius; chunkZ++)
                 ForgeChunkManager.unforceChunk(ticket, new ChunkPos(chunkX, chunkZ));
     }
     
@@ -255,10 +255,9 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
     }
 
     private void broadcast() {
-        AxisAlignedBB bb = new AxisAlignedBB(x - broadcastRange, y - broadcastRange / 2, z - broadcastRange, x + broadcastRange + 1, y + broadcastRange / 2 + 1, z + broadcastRange + 1);
+        AxisAlignedBB bb = new AxisAlignedBB(pos.getX() - broadcastRange, pos.getY() - broadcastRange / 2, pos.getZ() - broadcastRange, pos.getX() + broadcastRange + 1, pos.getY() + broadcastRange / 2 + 1, pos.getZ() + broadcastRange + 1);
         List<NpcPlayerOwned> entities = world.getEntitiesWithinAABB(NpcPlayerOwned.class, bb);
         if (entities.size() > 0) {
-            BlockPos pos = new BlockPos(pos);
             for (Entity entity : entities) {
                 if (((NpcPlayerOwned)entity).hasCommandPermissions(getOwnerName())) {
                     ((NpcPlayerOwned)entity).handleTownHallBroadcast(this, pos);
@@ -272,14 +271,14 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
      * @return 0 if no valid entity in range. 1 if within x/z but outside y, 2 if within x/y/z
      */
     private int isNpcOrPlayerNearby(boolean keepOwner) {
-        Chunk thisChunk = this.world.getChunkFromBlockCoords(x, z);
+        Chunk thisChunk = this.world.getChunkFromBlockCoords(pos);
         
-        int minX = thisChunk.xPosition * 16 - AWNPCStatics.townChunkLoadRadius * 16;
+        int minX = thisChunk.getPos().getXStart() - AWNPCStatics.townChunkLoadRadius * 16;
         int minY = 0;
-        int minZ = thisChunk.zPosition * 16 - AWNPCStatics.townChunkLoadRadius * 16;
-        int maxX = thisChunk.xPosition * 16 + (AWNPCStatics.townChunkLoadRadius + 1) * 16;
+        int minZ = thisChunk.getPos().getZStart() - AWNPCStatics.townChunkLoadRadius * 16;
+        int maxX = thisChunk.getPos().getXStart() + (AWNPCStatics.townChunkLoadRadius + 1) * 16;
         int maxY = this.world.getActualHeight();
-        int maxZ = thisChunk.zPosition * 16 + (AWNPCStatics.townChunkLoadRadius + 1) * 16;
+        int maxZ = thisChunk.getPos().getZStart() + (AWNPCStatics.townChunkLoadRadius + 1) * 16;
         
         AxisAlignedBB bb = new AxisAlignedBB(minX, minY, minZ, maxX, maxY, maxZ);
         List<EntityLivingBase> nearbyEntities = world.getEntitiesWithinAABB(EntityLivingBase.class, bb);
@@ -296,20 +295,20 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
             if (nearbyEntity instanceof EntityPlayer) {
                 if (keepOwner) {
                     if (ModAccessors.FTBU.areFriends(((EntityPlayer)nearbyEntity).getName(), getOwnerName())) {
-                        if (Math.abs(y - nearbyEntity.posY) < AWNPCStatics.townActiveNpcSearchHeight)
+                        if (Math.abs(pos.getY() - nearbyEntity.posY) < AWNPCStatics.townActiveNpcSearchHeight)
                             return 2;
                         else
                             retVal = 1;
                     }
                 } else {
-                    if (Math.abs(y - nearbyEntity.posY) < AWNPCStatics.townActiveNpcSearchHeight)
+                    if (Math.abs(pos.getY() - nearbyEntity.posY) < AWNPCStatics.townActiveNpcSearchHeight)
                         ownerCounts.put(new OwnerInfo(((EntityPlayer)nearbyEntity).getName(), ((EntityPlayer)nearbyEntity).getUniqueID()), 1);
                 }
             } else if (nearbyEntity instanceof NpcPlayerOwned) {
                 if (keepOwner) {
                     if (((NpcPlayerOwned)nearbyEntity).hasCommandPermissions(getOwnerName())) {
                         if (((NpcPlayerOwned)nearbyEntity).getFoodRemaining() > 0) {
-                            if (Math.abs(y - nearbyEntity.posY) < AWNPCStatics.townActiveNpcSearchHeight)
+                            if (Math.abs(pos.getY() - nearbyEntity.posY) < AWNPCStatics.townActiveNpcSearchHeight)
                                 return 2;
                             else
                                 retVal = 1;
@@ -325,7 +324,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
                         }
                         if (((NpcPlayerOwned)nearbyEntity).hasCommandPermissions(owner.getKey().ownerName))
                             if (((NpcPlayerOwned)nearbyEntity).getFoodRemaining() > 0) {
-                                if (Math.abs(y - nearbyEntity.posY) < AWNPCStatics.townActiveNpcSearchHeight)
+                                if (Math.abs(pos.getY() - nearbyEntity.posY) < AWNPCStatics.townActiveNpcSearchHeight)
                                     // this previously-found player can command this npc, give them a point
                                     owner.setValue(owner.getValue() + 1);
                             }
@@ -384,7 +383,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        inventory.readFromNBT(tag.getCompoundTag("inventory"));
+        inventory.deserializeNBT(tag.getCompoundTag("inventory"));
         NBTTagList entryList = tag.getTagList("deathNotices", Constants.NBT.TAG_COMPOUND);
         NpcDeathEntry entry;
         for (int i = 0; i < entryList.tagCount(); i++) {
@@ -408,9 +407,9 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        tag.setTag("inventory", inventory.writeToNBT(new NBTTagCompound()));
+        tag.setTag("inventory", inventory.serializeNBT());
         NBTTagList entryList = new NBTTagList();
         for (NpcDeathEntry entry : deathNotices) {
             entryList.appendTag(entry.writeToNBT(new NBTTagCompound()));
@@ -424,11 +423,17 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
         if (oldOwner != null)
             tag.setString("oldOwner", oldOwner);
         tag.setBoolean("isHq", isHq);
+        return tag;
     }
 
     @Override
     public int getSizeInventory() {
         return inventory.getSizeInventory();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return inventory.isEmpty();
     }
 
     @Override
@@ -439,7 +444,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
     @Override
     public ItemStack decrStackSize(int var1, int var2) {
         @Nonnull ItemStack stack = inventory.decrStackSize(var1, var2);
-        if(stack!=null)
+        if(!stack.isEmpty())
             markDirty();
         return stack;
     }
@@ -486,6 +491,26 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
     @Override
     public boolean isItemValidForSlot(int var1, ItemStack var2) {
         return inventory.isItemValidForSlot(var1, var2);
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+        inventory.clear();
     }
 
     public static class NpcDeathEntry {
@@ -535,6 +560,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
     }
 
     @Override
+    @SuppressWarnings("squid:S3516")
     public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
         if (!player.world.isRemote) {
             if (!player.getName().equals(getOwnerName())) {
@@ -544,8 +570,8 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
                     this.isHq = false;
                     if (this.isActive) {
                         // drop the town hall
-                        BlockTownHall block = (BlockTownHall) world.getBlock(pos);
-                        block.dropBlock(world, pos, block);
+                        BlockTownHall block = (BlockTownHall) world.getBlockState(pos).getBlock();
+                        block.dropBlock(world, pos);
                         return true;
                     } else {
                         // capture the town hall

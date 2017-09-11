@@ -76,13 +76,13 @@ public class POTradeRestockData {
         withdrawSide = side;
     }
 
-    public void doDeposit(IInventory storage, IInventory deposit, int side) {
+    public void doDeposit(IInventory storage, IInventory deposit, EnumFacing side) {
         for (POTradeDepositEntry aDeposit : depositList) {
             aDeposit.process(storage, deposit, side);
         }
     }
 
-    public void doWithdraw(IInventory storage, IInventory withdraw, int side) {
+    public void doWithdraw(IInventory storage, IInventory withdraw, EnumFacing side) {
         for (POTradeWithdrawEntry aWithdraw : withdrawList) {
             aWithdraw.process(storage, withdraw, side);
         }

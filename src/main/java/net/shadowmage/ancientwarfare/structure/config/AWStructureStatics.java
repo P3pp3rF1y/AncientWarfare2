@@ -22,7 +22,7 @@ package net.shadowmage.ancientwarfare.structure.config;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
@@ -918,13 +918,13 @@ public class AWStructureStatics extends ModConfiguration {
         return worldGenTargetBlocks;
     }
 
-    public static String getBiomeName(BiomeGenBase biome) {
-        return (biome == null || biome.biomeName == null) ? "null" : biome.biomeName.toLowerCase(Locale.ENGLISH);
+    public static String getBiomeName(Biome biome) {
+        return (biome == null || biome.getBiomeName() == null) ? "null" : biome.getBiomeName().toLowerCase(Locale.ENGLISH);
     }
 
     public static boolean shouldSkipScan(Block block) {
-        return scannerSkippedBlocks.contains(Block.blockRegistry.getNameForObject(block));
-    }
+        return scannerSkippedBlocks.contains(Block.REGISTRY.getNameForObject(block).toString());
+    } //TODO are there blocks that would have registry name set to null (C&B perhaps)?
 
     public static boolean withinProtectionRange(float dist) {
         return dist < spawnProtectionRange * spawnProtectionRange * 16 * 16;
@@ -945,7 +945,7 @@ public class AWStructureStatics extends ModConfiguration {
         FileWriter fw = null;
         try {
             fw = new FileWriter(file);
-            for (Object key : Block.blockRegistry.getKeys()) {
+            for (Object key : Block.REGISTRY.getKeys()) {
                 fw.write(String.valueOf(key) + "\n");
             }
         } catch (IOException e) {

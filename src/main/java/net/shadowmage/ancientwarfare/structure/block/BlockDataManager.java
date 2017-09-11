@@ -1,10 +1,10 @@
 package net.shadowmage.ancientwarfare.structure.block;
 
-import cpw.mods.fml.common.registry.GameData;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
@@ -50,8 +50,7 @@ public class BlockDataManager {
         loadBlockPriorities(StringTools.getResourceLines(AWCoreStatics.resourcePath + "block_priorities.csv"));
         loadBlockItems(StringTools.getResourceLines(AWCoreStatics.resourcePath + "block_items.csv"));
 
-        Iterable<Block> blocks = GameData.getBlockRegistry().typeSafeIterable();
-        for (Block block : blocks) {
+        for (Block block : Block.REGISTRY) {
             if (block == null) {
                 return;
             }
@@ -63,7 +62,7 @@ public class BlockDataManager {
     /*
      * loads OLD (1.6) block names from file -- used to enable loading of older templates
      */
-    private void loadBlockNamesAndIDs(List<String> lines) {
+    private void loadBlockNamesAndIDs(List<String> lines) { //TODO remove?
         String[] bits;
 
         Block block;
@@ -155,7 +154,7 @@ public class BlockDataManager {
                 }
                 //leave null;
             } else {
-                item = (Item) Item.itemRegistry.getObject(itemName);
+                item = Item.REGISTRY.getObject(new ResourceLocation(itemName));
                 if (item != null) {
                     info.metaStacks[blockMeta] = new ItemStack(item, itemQuantity, itemDamage);
                 } else {
@@ -223,7 +222,7 @@ public class BlockDataManager {
      * get the 1.7 name for the input Block
      */
     public String getNameForBlock(Block block) {
-        String name = Block.blockRegistry.getNameForObject(block);
+        String name = block.getRegistryName() == null ? null : block.getRegistryName().toString();
         if (name == null) {
             name = blockToName.get(block);
             if (name == null) {

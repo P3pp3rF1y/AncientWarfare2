@@ -20,14 +20,27 @@
  */
 package net.shadowmage.ancientwarfare.structure.api;
 
-import com.google.common.io.ByteArrayDataInput;
-import com.google.common.io.ByteArrayDataOutput;
-import net.minecraft.nbt.*;
+import net.minecraft.nbt.CompressedStreamTools;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagByte;
+import net.minecraft.nbt.NBTTagByteArray;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagDouble;
+import net.minecraft.nbt.NBTTagFloat;
+import net.minecraft.nbt.NBTTagInt;
+import net.minecraft.nbt.NBTTagIntArray;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagLong;
+import net.minecraft.nbt.NBTTagShort;
+import net.minecraft.nbt.NBTTagString;
 
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 public class NBTTools {
 
@@ -193,38 +206,7 @@ public class NBTTools {
         return getLinesForNBT(tag);
     }
 
-/*********************************************************** NBT STREAM WRITE ********************************************************************************/
-
-    /*
-     * Writes a compressed NBTTagCompound to the OutputStream
-     */
-    public static void writeNBTTagCompound(NBTTagCompound tag, DataOutputStream data) throws IOException {
-        if (tag == null) {
-            data.writeShort(-1);
-        } else {
-            byte[] var2 = CompressedStreamTools.compress(tag);
-            data.writeShort((short) var2.length);
-            data.write(var2);
-        }
-    }
-
-    public static void writeTagToStream(NBTTagCompound tag, ByteArrayDataOutput data) {
-        if (tag == null) {
-            data.writeShort(-1);
-        } else {
-            byte[] var2;
-            try {
-                var2 = CompressedStreamTools.compress(tag);
-                data.writeShort((short) var2.length);
-                data.write(var2);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-
-/*********************************************************** NBT STREAM READ ********************************************************************************/
+    /*********************************************************** NBT STREAM READ ********************************************************************************/
 
     /*
      * Reads a compressed NBTTagCompound from the InputStream
@@ -238,25 +220,6 @@ public class NBTTools {
             data.readFully(var2);
             return CompressedStreamTools.readCompressed(data);
         }
-    }
-
-    /*
-     * read a tag from a datastream, using google iowrapper
-     */
-    public static NBTTagCompound readTagFromStream(ByteArrayDataInput data) {
-        short var1 = data.readShort();
-        if (var1 < 0) {
-            return null;
-        } else {
-            byte[] var2 = new byte[var1];
-            data.readFully(var2);
-            try {
-                return CompressedStreamTools.func_152457_a(var2, NBTSizeTracker.field_152451_a);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return new NBTTagCompound();
     }
 
 
@@ -375,7 +338,7 @@ public class NBTTools {
 
         @Override
         void createFromNBT(NBTBase nbt) {
-            this.data = ((NBTTagInt) nbt).func_150287_d();
+            this.data = ((NBTTagInt) nbt).getInt();
         }
     }
 
@@ -409,7 +372,7 @@ public class NBTTools {
 
         @Override
         void createFromNBT(NBTBase nbt) {
-            this.data = ((NBTTagDouble) nbt).func_150286_g();
+            this.data = ((NBTTagDouble) nbt).getDouble();
         }
     }
 
@@ -443,7 +406,7 @@ public class NBTTools {
 
         @Override
         void createFromNBT(NBTBase nbt) {
-            this.data = ((NBTTagFloat) nbt).func_150288_h();
+            this.data = ((NBTTagFloat) nbt).getFloat();
         }
     }
 
@@ -477,7 +440,7 @@ public class NBTTools {
 
         @Override
         void createFromNBT(NBTBase nbt) {
-            this.data = ((NBTTagByte) nbt).func_150290_f();
+            this.data = ((NBTTagByte) nbt).getByte();
         }
     }
 
@@ -511,7 +474,7 @@ public class NBTTools {
 
         @Override
         void createFromNBT(NBTBase nbt) {
-            this.data = ((NBTTagShort) nbt).func_150289_e();
+            this.data = ((NBTTagShort) nbt).getShort();
         }
     }
 
@@ -545,7 +508,7 @@ public class NBTTools {
 
         @Override
         void createFromNBT(NBTBase nbt) {
-            this.data = ((NBTTagString) nbt).func_150285_a_();
+            this.data = ((NBTTagString) nbt).getString();
         }
     }
 
@@ -579,7 +542,7 @@ public class NBTTools {
 
         @Override
         void createFromNBT(NBTBase nbt) {
-            this.data = ((NBTTagByteArray) nbt).func_150292_c();
+            this.data = ((NBTTagByteArray) nbt).getByteArray();
         }
     }
 
@@ -613,7 +576,7 @@ public class NBTTools {
 
         @Override
         void createFromNBT(NBTBase nbt) {
-            this.data = ((NBTTagLong) nbt).func_150291_c();
+            this.data = ((NBTTagLong) nbt).getLong();
         }
     }
 
@@ -647,7 +610,7 @@ public class NBTTools {
 
         @Override
         void createFromNBT(NBTBase nbt) {
-            this.data = ((NBTTagIntArray) nbt).func_150302_c();
+            this.data = ((NBTTagIntArray) nbt).getIntArray();
         }
     }
 
@@ -761,7 +724,7 @@ public class NBTTools {
         void createFromNBT(NBTBase nbt) {
             NBTTagCompound tag = (NBTTagCompound) nbt;
 
-            Set<String> keys = tag.func_150296_c();
+            Set<String> keys = tag.getKeySet();
             NBTBase baseTag;
             for (String key : keys) {
                 baseTag = tag.getTag(key);

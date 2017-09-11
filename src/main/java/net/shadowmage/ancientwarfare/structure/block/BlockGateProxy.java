@@ -22,9 +22,14 @@ package net.shadowmage.ancientwarfare.structure.block;
 
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -32,14 +37,14 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 
-import java.util.ArrayList;
+import javax.annotation.Nullable;
 import java.util.Random;
 
 public final class BlockGateProxy extends BlockContainer {
 
     public BlockGateProxy() {
         super(Material.ROCK);
-        this.setBlockTextureName("ancientwarfare:structure/gate_proxy");
+        //this.setBlockTextureName("ancientwarfare:structure/gate_proxy");
         this.setCreativeTab(null);
         this.setResistance(2000.f);
         this.setHardness(5.f);
@@ -56,17 +61,12 @@ public final class BlockGateProxy extends BlockContainer {
     }
 
     @Override
-    public void dropBlockAsItemWithChance(World world, int x, int y, int z, int meta, float chance, int fortune){
-
+    public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+        //nothing gets dropped
     }
 
     @Override
-    public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-        return new ArrayList<>();
-    }
-
-    @Override
-    public boolean renderAsNormalBlock() {
+    public boolean isFullCube(IBlockState state) {
         return false;
     }
 
@@ -77,14 +77,14 @@ public final class BlockGateProxy extends BlockContainer {
     }
 
     @Override
-    public boolean isBlockSolid(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5) {
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
         return false;
     }
 
     @Override
     public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos){
         return true;
-    }
+    } //TODO really normal cube after all the other stuff? test why this is the case
 
     @Override
     public boolean isOpaqueCube(IBlockState state) {
@@ -92,12 +92,12 @@ public final class BlockGateProxy extends BlockContainer {
     }
 
     @Override
-    public ItemStack getPickBlock(RayTraceResult target, World world, int x, int y, int z) {
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
         TileEntity proxy = world.getTileEntity(pos);
         if(proxy instanceof TEGateProxy){
             return ((TEGateProxy) proxy).onBlockPicked(target);
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override
@@ -106,53 +106,53 @@ public final class BlockGateProxy extends BlockContainer {
     }
 
     @Override
-    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int face, float vecX, float vecY, float vecZ) {
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         TileEntity proxy = world.getTileEntity(pos);
-        return proxy instanceof TEGateProxy && ((TEGateProxy) proxy).onBlockClicked(player);
+        return proxy instanceof TEGateProxy && ((TEGateProxy) proxy).onBlockClicked(player, hand);
     }
 
     @Override
-    public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean willHarvest) {
+    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
         TileEntity proxy = world.getTileEntity(pos);
         if(proxy instanceof TEGateProxy){
             ((TEGateProxy) proxy).onBlockAttacked(player);
         }else if(player != null && player.capabilities.isCreativeMode){
-            return super.removedByPlayer(world, player, x, y, z, false);
+            return super.removedByPlayer(state, world, pos, player, false);
         }
         return false;
     }
 
     @Override
-    public void harvestBlock(World world, EntityPlayer player, int x, int y, int z, int meta) {
+    public void harvestBlock(World worldIn, EntityPlayer player, BlockPos pos, IBlockState state, @Nullable TileEntity te, ItemStack stack) {
         player.addExhaustion(0.025F);
     }
 
     @Override
-    public void dropXpOnBlockBreak(World world, int x, int y, int z, int amount) {
-
+    public void dropXpOnBlockBreak(World worldIn, BlockPos pos, int amount) {
+        //no xp drop
     }
 
     @Override
-    public boolean canHarvestBlock(EntityPlayer player, int meta) {
+    public boolean canHarvestBlock(IBlockAccess world, BlockPos pos, EntityPlayer player) {
         return false;
     }
 
     //Actually "can go through", for mob pathing
     @Override
-    public boolean getBlocksMovement(IBlockAccess world, int x, int y, int z){
+    public boolean isPassable(IBlockAccess world, BlockPos pos) {
         TileEntity proxy = world.getTileEntity(pos);
         if(proxy instanceof TEGateProxy && ((TEGateProxy)proxy).isGateClosed()){
             return false;
         }
         //Gate is probably open, Search identical neighbour
-        if(world.getBlock(x - 1, y, z) == this) {
-            return world.getBlock(x + 1, y, z) == this;
-        }else if(world.getBlock(x, y, z - 1) == this) {
-            return world.getBlock(x, y, z + 1) == this;
-        }else if(world.getBlock(x + 1 , y, z) == this) {
-            return world.getBlock(x - 1, y, z) == this;
-        }else if(world.getBlock(x, y, z + 1) == this){
-            return world.getBlock(x, y, z - 1) == this;
+        if(world.getBlockState(pos.offset(EnumFacing.WEST)).getBlock() == this) { //TODO only the first half of these should be needed
+            return world.getBlockState(pos.offset(EnumFacing.EAST)).getBlock() == this;
+        }else if(world.getBlockState(pos.offset(EnumFacing.NORTH)).getBlock() == this) {
+            return world.getBlockState(pos.offset(EnumFacing.SOUTH)).getBlock() == this;
+        }else if(world.getBlockState(pos.offset(EnumFacing.EAST)).getBlock() == this) {
+            return world.getBlockState(pos.offset(EnumFacing.WEST)).getBlock() == this;
+        }else if(world.getBlockState(pos.offset(EnumFacing.SOUTH)).getBlock() == this){
+            return world.getBlockState(pos.offset(EnumFacing.NORTH)).getBlock() == this;
         }
         return true;
     }

@@ -22,7 +22,6 @@ package net.shadowmage.ancientwarfare.structure.api;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.Json;
@@ -99,10 +98,7 @@ public abstract class TemplateRule {
         {
             if (line.toLowerCase(Locale.ENGLISH).startsWith("jsontag=")) {
                 try {
-                    NBTBase tag = JsonToNBT.func_150315_a(line.split("=", -1)[1]);
-                    if (tag instanceof NBTTagCompound) {
-                        return (NBTTagCompound) tag;
-                    }
+                    return JsonToNBT.getTagFromJson(line.split("=", -1)[1]);
                 } catch (Exception e) {
                     e.printStackTrace();
                     throw new TemplateRuleParsingException("Caught exception while parsing json-nbt tag: " + line, e);

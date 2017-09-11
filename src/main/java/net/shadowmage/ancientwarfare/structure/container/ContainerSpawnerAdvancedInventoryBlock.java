@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketGui;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -17,7 +18,7 @@ public class ContainerSpawnerAdvancedInventoryBlock extends ContainerSpawnerAdva
     public ContainerSpawnerAdvancedInventoryBlock(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
 
-        TileEntity te = player.world.getTileEntity(x, y, z);
+        TileEntity te = player.world.getTileEntity(new BlockPos(x, y, z));
         if (!player.world.isRemote && te instanceof TileAdvancedSpawner) {
             spawner = (TileAdvancedSpawner) te;
             settings = spawner.getSettings();
@@ -31,7 +32,7 @@ public class ContainerSpawnerAdvancedInventoryBlock extends ContainerSpawnerAdva
 
     @Override
     public boolean canInteractWith(EntityPlayer var1){
-        return spawner.getDistanceFrom(var1.posX, var1.posY, var1.posZ) <= 64D;
+        return spawner.getDistanceSq(var1.posX, var1.posY, var1.posZ) <= 64D;
     }
 
     @Override

@@ -20,8 +20,8 @@
  */
 package net.shadowmage.ancientwarfare.structure.api;
 
-import cpw.mods.fml.common.eventhandler.Cancelable;
-import cpw.mods.fml.common.eventhandler.Event;
+import net.minecraftforge.fml.common.eventhandler.Cancelable;
+import net.minecraftforge.fml.common.eventhandler.Event;
 
 /*
  * Called when StructurePluginManager tries to load plugins, for each active mod

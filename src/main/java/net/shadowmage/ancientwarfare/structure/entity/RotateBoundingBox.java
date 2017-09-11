@@ -20,29 +20,31 @@
  */
 package net.shadowmage.ancientwarfare.structure.entity;
 
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
 public class RotateBoundingBox extends AxisAlignedBB{
     private final static float TO_RAD = (float) Math.PI / 180F;
-    private final int facing;
+    private final EnumFacing facing;
     //From vertical axis
     private float angle;
-    public RotateBoundingBox(int face, BlockPos min, BlockPos max) {
-        this(face, min.x, min.y, min.z, max.x, max.y, max.z);
+    public RotateBoundingBox(EnumFacing face, BlockPos min, BlockPos max) {
+        this(face, min.getX(), min.getY(), min.getZ(), max.getX(), max.getY(), max.getZ());
     }
 
-    private RotateBoundingBox(int face, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
+    private RotateBoundingBox(EnumFacing face, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
         super(minX, minY, minZ, maxX, maxY, maxZ);
         this.facing = face;
     }
 
     @Override
-    public boolean intersectsWith(AxisAlignedBB mask) {
+    public boolean intersects(AxisAlignedBB mask) {
         if(mask.maxY > minY) {
             double height = MathHelper.cos(angle * TO_RAD) * (maxY - minY);
             if(mask.minY < height + minY) {
-                if(facing%2==0){//z
+                if(facing.getAxis() == EnumFacing.Axis.Z){//z
                     if(!(mask.minX < maxX && mask.maxX > minX))
                         return false;
                 }else{//x
@@ -50,7 +52,7 @@ public class RotateBoundingBox extends AxisAlignedBB{
                         return false;
                 }
                 double length = MathHelper.sin(angle * TO_RAD) * (maxY - minY + 1);
-                switch (facing) {
+                switch (facing.getHorizontalIndex()) {
                     case 0://z++
                         return mask.minZ < length + minZ && mask.maxZ > minZ;
                     case 1://x--
@@ -63,13 +65,6 @@ public class RotateBoundingBox extends AxisAlignedBB{
             }
         }
         return false;
-    }
-
-    @Override
-    public AxisAlignedBB copy() {
-        RotateBoundingBox box = new RotateBoundingBox(facing, minX, minY, minZ, maxX, maxY, maxZ);
-        box.angle = this.angle;
-        return box;
     }
 
     public void rotate(float increment){

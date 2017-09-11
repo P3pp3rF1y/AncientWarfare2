@@ -20,19 +20,18 @@
  */
 package net.shadowmage.ancientwarfare.structure.gates.types;
 
-import cpw.mods.fml.common.ObfuscationReflectionHelper;
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
-import net.shadowmage.ancientwarfare.structure.entity.DualBoundingBox;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.gates.IGateType;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
@@ -81,7 +80,6 @@ public class Gate implements IGateType {
     protected final ItemStack displayStack;
 
     protected final ResourceLocation textureLocation;
-    protected IIcon itemIcon;
 
     /*
      *
@@ -111,15 +109,15 @@ public class Gate implements IGateType {
         return this;
     }
 
-    @Override
-    public void registerIcons(IIconRegister reg) {
-        itemIcon = reg.registerIcon("ancientwarfare:structure/gates/" + iconTexture);
-    }
-
-    @Override
-    public IIcon getIconTexture() {
-        return itemIcon;
-    }
+//    @Override
+//    public void registerIcons(IIconRegister reg) {
+//        itemIcon = reg.registerIcon("ancientwarfare:structure/gates/" + iconTexture);
+//    }
+//
+//    @Override
+//    public IIcon getIconTexture() {
+//        return itemIcon;
+//    }
 
     @Override
     public int getGlobalID() {
@@ -218,37 +216,37 @@ public class Gate implements IGateType {
         }
         BlockPos min = BlockTools.getMin(gate.pos1, gate.pos2);
         BlockPos max = BlockTools.getMax(gate.pos1, gate.pos2);
-        if(!(gate.getEntityBoundingBox() instanceof DualBoundingBox)) {
-            try {
-                ObfuscationReflectionHelper.setPrivateValue(Entity.class, gate, new DualBoundingBox(min, max), "boundingBox", "field_70121_D");
-            } catch (Exception ignored) {
-
-            }
-        }
+//        if(!(gate.getEntityBoundingBox() instanceof DualBoundingBox)) {
+//            try {
+//                ObfuscationReflectionHelper.setPrivateValue(Entity.class, gate, new DualBoundingBox(min, max), "boundingBox", "field_70121_D");
+//            } catch (Exception ignored) {
+//
+//            }
+//        }
         if (gate.edgePosition > 0) {
-            gate.getEntityBoundingBox().setBounds(min.x, max.y + 0.5d, min.z, max.x + 1, max.y + 1, max.z + 1);
+            gate.setEntityBoundingBox(new AxisAlignedBB(min.getX(), max.getY() + 0.5d, min.getZ(), max.getX() + 1, max.getY() + 1, max.getZ() + 1));
         } else {
-            gate.getEntityBoundingBox().setBounds(min.x, min.y, min.z, max.x + 1, max.y + 1, max.z + 1);
+            gate.setEntityBoundingBox(new AxisAlignedBB(min.getX(), min.getY(), min.getZ(), max.getX() + 1, max.getY() + 1, max.getZ() + 1));
         }
     }
 
     @Override
     public boolean arePointsValidPair(BlockPos pos1, BlockPos pos2) {
-        return pos1.x == pos2.x || pos1.z == pos2.z;
+        return pos1.getX() == pos2.getX() || pos1.getZ() == pos2.getZ();
     }
 
     @Override
     public void setInitialBounds(EntityGate gate, BlockPos pos1, BlockPos pos2) {
         BlockPos min = BlockTools.getMin(pos1, pos2);
         BlockPos max = BlockTools.getMax(pos1, pos2);
-        boolean wideOnXAxis = min.x != max.x;
-        float width = wideOnXAxis ? max.x - min.x + 1 : max.z - min.z + 1;
+        boolean wideOnXAxis = min.getX() != max.getX();
+        float width = wideOnXAxis ? max.getX() - min.getX() + 1 : max.getZ() - min.getZ() + 1;
         float xOffset = wideOnXAxis ? width * 0.5f : 0.5f;
         float zOffset = wideOnXAxis ? 0.5f : width * 0.5f;
         gate.pos1 = min;
         gate.pos2 = max;
-        gate.edgeMax = max.y - min.y + 1;
-        gate.setPosition(min.x + xOffset, min.y, min.z + zOffset);
+        gate.edgeMax = max.getY() - min.getY() + 1;
+        gate.setPosition(min.getX() + xOffset, min.getY(), min.getZ() + zOffset);
     }
 
     @Override
@@ -283,12 +281,12 @@ public class Gate implements IGateType {
 
     public final void removeBetween(World world, BlockPos min, BlockPos max){
         Block id;
-        for (int x = min.x; x <= max.x; x++) {
-            for (int y = min.y; y <= max.y; y++) {
-                for (int z = min.z; z <= max.z; z++) {
-                    id = world.getBlock(x, y, z);
+        for (int x = min.getX(); x <= max.getX(); x++) {
+            for (int y = min.getY(); y <= max.getY(); y++) {
+                for (int z = min.getZ(); z <= max.getZ(); z++) {
+                    id = world.getBlockState(new BlockPos(x, y, z)).getBlock();
                     if (id == AWBlocks.gateProxy) {
-                        world.setBlockToAir(x, y, z);
+                        world.setBlockToAir(new BlockPos(x, y, z));
                     }
                 }
             }
@@ -296,15 +294,17 @@ public class Gate implements IGateType {
     }
 
     public final void placeBetween(EntityGate gate, BlockPos min, BlockPos max){
-        for (int x = min.x; x <= max.x; x++) {
-            for (int y = min.y; y <= max.y; y++) {
-                for (int z = min.z; z <= max.z; z++) {
-                    Block block = gate.world.getBlock(x, y, z);
-                    if (!block.isAir(gate.world, x, y, z)) {
-                        block.dropBlockAsItem(gate.world, x, y, z, gate.world.getBlockMetadata(x, y, z), 0);
+        for (int x = min.getX(); x <= max.getX(); x++) {
+            for (int y = min.getY(); y <= max.getY(); y++) {
+                for (int z = min.getZ(); z <= max.getZ(); z++) {
+                    BlockPos pos = new BlockPos(x, y, z);
+                    IBlockState state = gate.world.getBlockState(pos);
+                    Block block = state.getBlock();
+                    if (!gate.world.isAirBlock(pos)) {
+                        block.dropBlockAsItem(gate.world, pos, state, 0);
                     }
-                    if (gate.world.setBlock(x, y, z, AWBlocks.gateProxy)) {
-                        TileEntity te = gate.world.getTileEntity(x, y, z);
+                    if (gate.world.setBlockState(pos, AWBlocks.gateProxy.getDefaultState())) {
+                        TileEntity te = gate.world.getTileEntity(pos);
                         if (te instanceof TEGateProxy) {
                             ((TEGateProxy) te).setOwner(gate);
                         }
@@ -317,29 +317,28 @@ public class Gate implements IGateType {
     /*
      * @return a fully setup gate, or null if chosen spawn position is invalid (blocks in the way)
      */
-    public static EntityGate constructGate(World world, BlockPos pos1, BlockPos pos2, Gate type, byte facing) {
+    public static EntityGate constructGate(World world, BlockPos pos1, BlockPos pos2, Gate type, EnumFacing facing) {
         BlockPos min = BlockTools.getMin(pos1, pos2);
         BlockPos max = BlockTools.getMax(pos1, pos2);
-        for (int x = min.x; x <= max.x; x++) {
-            for (int y = min.y; y <= max.y; y++) {
-                for (int z = min.z; z <= max.z; z++) {
-                    if (!world.isAirBlock(x, y, z)) {
-                        AWLog.logDebug("could not create gate for non-air block at: " + x + "," + y + "," + z + " block: " + world.getBlock(x, y, z));
+        for (int x = min.getX(); x <= max.getX(); x++) {
+            for (int y = min.getY(); y <= max.getY(); y++) {
+                for (int z = min.getZ(); z <= max.getZ(); z++) {
+                    BlockPos pos = new BlockPos(x, y, z);
+                    if (!world.isAirBlock(pos)) {
+                        AWLog.logDebug("could not create gate for non-air block at: " + x + "," + y + "," + z + " block: " + world.getBlockState(pos).getBlock());
                         return null;
                     }
                 }
             }
         }
 
-        if (pos1.x == pos2.x) {
-            if (facing == 0 || facing == 2) {
-                facing++;
-                facing %= 4;
+        if (pos1.getX() == pos2.getX()) {
+            if (facing == EnumFacing.SOUTH || facing == EnumFacing.NORTH) {
+                facing = facing.rotateY();
             }
-        } else if (pos1.z == pos2.z) {
-            if (facing == 1 || facing == 3) {
-                facing++;
-                facing %= 4;
+        } else if (pos1.getZ() == pos2.getZ()) {
+            if (facing == EnumFacing.EAST || facing == EnumFacing.WEST) {
+                facing = facing.rotateY();
             }
         }
 
@@ -359,13 +358,12 @@ public class Gate implements IGateType {
         return getGateByName(typeName).getConstructingItem();
     }
 
-    public static void registerIconsForGates(IIconRegister reg) {
-        for (IGateType t : gateTypes) {
-            if (t == null) {
-                continue;
-            }
-            t.registerIcons(reg);
-        }
-    }
-
+//    public static void registerIconsForGates(IIconRegister reg) {
+//        for (IGateType t : gateTypes) {
+//            if (t == null) {
+//                continue;
+//            }
+//            t.registerIcons(reg);
+//        }
+//    }
 }

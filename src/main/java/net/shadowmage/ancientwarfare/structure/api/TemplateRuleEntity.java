@@ -22,6 +22,7 @@ package net.shadowmage.ancientwarfare.structure.api;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException.TemplateRuleParsingException;
 
@@ -32,7 +33,7 @@ import java.util.Locale;
 
 public abstract class TemplateRuleEntity extends TemplateRule {
 
-    private int x, y, z;
+    private BlockPos pos;
 
     /*
      * Called by reflection
@@ -54,7 +55,7 @@ public abstract class TemplateRuleEntity extends TemplateRule {
     }
 
     public final void writeRule(BufferedWriter out) throws IOException {
-        out.write("position=" + NBTTools.getCSVStringForArray(new int[]{x, y, z}));
+        out.write("position=" + pos.toLong());
         out.newLine();
         super.writeRule(out);
     }
@@ -63,10 +64,7 @@ public abstract class TemplateRuleEntity extends TemplateRule {
         this.ruleNumber = ruleNumber;
         for (String line : lines) {
             if (line.toLowerCase(Locale.ENGLISH).startsWith("position=")) {
-                int[] pos = NBTTools.safeParseIntArray("=", line);
-                x = pos[0];
-                y = pos[1];
-                z = pos[2];
+                pos = BlockPos.fromLong(NBTTools.safeParseLong(line));
                 break;
             }
         }
@@ -75,13 +73,11 @@ public abstract class TemplateRuleEntity extends TemplateRule {
     }
 
     public final void setPosition(BlockPos pos){
-        this.x = pos.x;
-        this.y = pos.y;
-        this.z = pos.z;
+        this.pos = pos;
     }
 
     public final BlockPos getPosition(){
-        return new BlockPos(x, y, z);
+        return pos;
     }
 
 }

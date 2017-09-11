@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.npc.trade;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 
 import javax.annotation.Nonnull;
 
@@ -36,8 +37,8 @@ public abstract class POTradeTransferEntry {
         return type;
     }
 
-    public final void process(IInventory storage, IInventory move, int side) {
-        if (filter != null)
+    public final void process(IInventory storage, IInventory move, EnumFacing side) {
+        if (!filter.isEmpty())
             type.doTransfer(storage, move, side, filter);
     }
 
@@ -50,17 +51,17 @@ public abstract class POTradeTransferEntry {
 
 
     public final NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        if (filter != null) {
+        if (!filter.isEmpty()) {
             tag.setTag("item", filter.writeToNBT(new NBTTagCompound()));
         }
         tag.setInteger("type", type.ordinal());
         return tag;
     }
 
-    public static interface TransferType {
+    public interface TransferType {
 
-        public void doTransfer(IInventory storage, IInventory move, int side, ItemStack filter);
+        void doTransfer(IInventory storage, IInventory move, EnumFacing side, ItemStack filter);
 
-        public int ordinal();
+        int ordinal();
     }
 }

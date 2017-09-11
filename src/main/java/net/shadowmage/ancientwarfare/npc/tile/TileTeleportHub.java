@@ -2,7 +2,9 @@ package net.shadowmage.ancientwarfare.npc.tile;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.npc.gamedata.HeadquartersTracker;
 
@@ -27,12 +29,12 @@ public class TileTeleportHub extends TileEntity {
                 EntityPlayer entityPlayer = (EntityPlayer)obj;
                 if (arrivals.contains(entityPlayer.getName()))
                     continue; // a player that's only just arrived and not yet alighted 
-                int[] hqPos = HeadquartersTracker.get(entityPlayer.world).getHqPos(entityPlayer.getName(), entityPlayer.world);
+                BlockPos hqPos = HeadquartersTracker.get(entityPlayer.world).getHqPos(entityPlayer.getName(), entityPlayer.world);
                 if (hqPos != null) {
                     final float randomPitch = (float) (Math.random() * (1.1f - 0.9f) + 0.9f);
-                    this.world.playSoundAtEntity(entityPlayer, "ancientwarfare:teleport.out", 0.6F, randomPitch);
+                    this.world.playSound(null, entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, "ancientwarfare:teleport.out", SoundCategory.BLOCKS, 0.6F, randomPitch);
                     EntityTools.teleportPlayerToBlock(entityPlayer, entityPlayer.world, hqPos, false);
-                    entityPlayer.world.playSoundAtEntity(entityPlayer, "ancientwarfare:teleport.in", 0.6F, randomPitch);
+                    entityPlayer.world.playSound(null, entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, "ancientwarfare:teleport.in", SoundCategory.BLOCKS, 0.6F, randomPitch);
                 }
             }
             

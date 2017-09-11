@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.npc;
 
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
@@ -12,6 +11,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
@@ -130,7 +130,7 @@ public class AncientWarfareNPC {
 
     @SubscribeEvent
     public void onConfigChanged(OnConfigChangedEvent evt) {
-        if (AncientWarfareCore.modID.equals(evt.modID)) {
+        if (AncientWarfareCore.modID.equals(evt.getModID())) {
             statics.save();
         }
     }
@@ -143,8 +143,8 @@ public class AncientWarfareNPC {
 
     @SubscribeEvent
     public void worldLoaded(WorldEvent.Load evt) {
-        if (!evt.world.isRemote) {
-            WorldData d = AWGameData.INSTANCE.getPerWorldData(evt.world, WorldData.class);
+        if (!evt.getWorld().isRemote) {
+            WorldData d = AWGameData.INSTANCE.getPerWorldData(evt.getWorld(), WorldData.class);
             if (d != null) {
                 AWNPCStatics.npcAIDebugMode = d.get("NpcAIDebugMode");
             }

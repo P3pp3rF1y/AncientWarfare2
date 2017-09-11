@@ -4,8 +4,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureScanner;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureSettings;
+
+import javax.annotation.Nonnull;
 
 public class ContainerStructureScanner extends ContainerBase {
 
@@ -13,7 +16,7 @@ public class ContainerStructureScanner extends ContainerBase {
 
     public ContainerStructureScanner(EntityPlayer player, int x, int y, int z) {
         super(player);
-        @Nonnull ItemStack builderItem = player.getHeldItem();
+        @Nonnull ItemStack builderItem = EntityTools.getItemFromEitherHand(player, ItemStructureScanner.class);
         if (isInvalid(builderItem)) {
             throw new IllegalArgumentException("No scanner in hand");
         }
@@ -37,12 +40,12 @@ public class ContainerStructureScanner extends ContainerBase {
     }
 
     @Override
-    public void onContainerClosed(EntityPlayer par1EntityPlayer) {
-        super.onContainerClosed(par1EntityPlayer);
-        if (par1EntityPlayer.world.isRemote) {
+    public void onContainerClosed(EntityPlayer player) {
+        super.onContainerClosed(player);
+        if (player.world.isRemote) {
             return;
         }
-        @Nonnull ItemStack builderItem = par1EntityPlayer.getHeldItem();
+        @Nonnull ItemStack builderItem = EntityTools.getItemFromEitherHand(player, ItemStructureScanner.class);
         if (isInvalid(builderItem)) {
             return;
         }

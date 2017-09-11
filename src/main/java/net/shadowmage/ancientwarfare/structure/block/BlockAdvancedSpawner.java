@@ -2,13 +2,16 @@ package net.shadowmage.ancientwarfare.structure.block;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -18,36 +21,31 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class BlockAdvancedSpawner extends Block {
 
-    IIcon transparentIcon;
-
     public BlockAdvancedSpawner() {
         super(Material.ROCK);
         this.setCreativeTab(AWStructuresItemLoader.structureTab);
-        this.setBlockTextureName("ancientwarfare:structure/advanced_spawner");
+        //this.setBlockTextureName("ancientwarfare:structure/advanced_spawner");
         setHardness(2.f);
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
-        TileEntity te = world.getTileEntity(pos);
-        if (te instanceof TileAdvancedSpawner) {
-            TileAdvancedSpawner spawner = (TileAdvancedSpawner) te;
-            if (spawner.getSettings().isTransparent()) {
-                return transparentIcon;
-            }
-        }
-        return super.getIcon(world, x, y, z, side);
-    }
-
-    @Override
-    public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
-        return 0;
-    }
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
+//        TileEntity te = world.getTileEntity(pos);
+//        if (te instanceof TileAdvancedSpawner) {
+//            TileAdvancedSpawner spawner = (TileAdvancedSpawner) te;
+//            if (spawner.getSettings().isTransparent()) {
+//                return transparentIcon;
+//            }
+//        }
+//        return super.getIcon(world, x, y, z, side);
+//    }
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -61,18 +59,20 @@ public class BlockAdvancedSpawner extends Block {
     }
 
     @Override
-    public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB maskBB, List list, Entity entity){
-        if(world.loadedEntityList.contains(entity)){
-            super.addCollisionBoxesToList(world, x, y, z, maskBB, list, entity);
+    @Deprecated
+    public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes,
+            @Nullable Entity entity, boolean p_185477_7_) {
+        if(world.loadedEntityList.contains(entity)) {
+            super.addCollisionBoxToList(state, world, pos, entityBox, collidingBoxes, entity, p_185477_7_);
         }
     }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister p_149651_1_) {
-        super.registerBlockIcons(p_149651_1_);
-        transparentIcon = p_149651_1_.registerIcon("ancientwarfare:structure/advanced_spawner2");
-    }
+//    @Override
+//    @SideOnly(Side.CLIENT)
+//    public void registerBlockIcons(IIconRegister p_149651_1_) {
+//        super.registerBlockIcons(p_149651_1_);
+//        transparentIcon = p_149651_1_.registerIcon("ancientwarfare:structure/advanced_spawner2");
+//    }
 
     @Override
     public boolean hasTileEntity(IBlockState state) {
@@ -90,21 +90,21 @@ public class BlockAdvancedSpawner extends Block {
         if (te instanceof TileAdvancedSpawner) {
             ((TileAdvancedSpawner) te).onBlockBroken();
         }
-        super.breakBlock(world, x, y, z, block, meta);
+        super.breakBlock(world, pos, state);
     }
 
     @Override
-    public float getBlockHardness(World world, int x, int y, int z) {
+    public float getBlockHardness(IBlockState state, World world, BlockPos pos) {
         TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileAdvancedSpawner) {
             TileAdvancedSpawner spawner = (TileAdvancedSpawner) te;
             return spawner.getBlockHardness();
         }
-        return super.getBlockHardness(world, x, y, z);
+        return super.getBlockHardness(state, world, pos);
     }
 
     @Override
-    public ItemStack getPickBlock(RayTraceResult target, World world, int x, int y, int z, EntityPlayer entityPlayer) {
+    public ItemStack getPickBlock(IBlockState state, RayTraceResult target, World world, BlockPos pos, EntityPlayer player) {
         TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileAdvancedSpawner) {
             @Nonnull ItemStack item = new ItemStack(this);
@@ -113,7 +113,7 @@ public class BlockAdvancedSpawner extends Block {
             item.setTagInfo("spawnerSettings", settings);
             return item;
         }
-        return super.getPickBlock(target, world, x, y, z, entityPlayer);
+        return super.getPickBlock(state, target, world, pos, player);
     }
 
     @Override
@@ -121,14 +121,14 @@ public class BlockAdvancedSpawner extends Block {
         if (player.capabilities.isCreativeMode) {
             if (!world.isRemote) {
                 if (player.isSneaking()) {
-                    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SPAWNER_ADVANCED_BLOCK_INVENTORY, x, y, z);
+                    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SPAWNER_ADVANCED_BLOCK_INVENTORY, pos);
                 } else {
-                    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SPAWNER_ADVANCED_BLOCK, x, y, z);
+                    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SPAWNER_ADVANCED_BLOCK, pos);
                 }
             }
             return true;
         }
-        return super.onBlockActivated(world, x, y, z, player, sideHit, hitX, hitY, hitZ);
+        return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ);
     }
 
 }

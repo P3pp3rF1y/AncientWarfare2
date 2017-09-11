@@ -14,6 +14,8 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketGui;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 
+import javax.annotation.Nonnull;
+
 public class ContainerSpawnerAdvancedInventoryBase extends ContainerBase {
 
     SpawnerSettings settings;
@@ -30,10 +32,10 @@ public class ContainerSpawnerAdvancedInventoryBase extends ContainerBase {
 
         ItemSlotFilter filter = new ItemSlotFilter() {
             @Override
-            public boolean apply(ItemStack stack) {
+            public boolean test(ItemStack stack) {
                 if (!stack.isEmpty() && stack.getItem() instanceof ItemBlock) {
                     ItemBlock block = (ItemBlock) stack.getItem();
-                    if (block.field_150939_a == AWBlocks.advancedSpawner) {
+                    if (block.getBlock() == AWBlocks.advancedSpawner) {
                         return false;
                     }
                 }
@@ -61,7 +63,7 @@ public class ContainerSpawnerAdvancedInventoryBase extends ContainerBase {
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
+    public ItemStack transferStackInSlot(EntityPlayer player, int slotClickedIndex) {
         @Nonnull ItemStack slotStackCopy = ItemStack.EMPTY;
         Slot theSlot = this.getSlot(slotClickedIndex);
         if (theSlot != null && theSlot.getHasStack()) {
@@ -73,13 +75,13 @@ public class ContainerSpawnerAdvancedInventoryBase extends ContainerBase {
             {
                 if (!this.mergeItemStack(slotStack, playerSlotEnd, storageSlots, false))//merge into storage inventory
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             } else if (slotClickedIndex < storageSlots)//storage slots, merge to player inventory
             {
                 if (!this.mergeItemStack(slotStack, 0, playerSlotEnd, true))//merge into player inventory
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
             if (slotStack.getCount() == 0) {
@@ -88,9 +90,9 @@ public class ContainerSpawnerAdvancedInventoryBase extends ContainerBase {
                 theSlot.onSlotChanged();
             }
             if (slotStack.getCount() == slotStackCopy.getCount()) {
-                return null;
+                return ItemStack.EMPTY;
             }
-            theSlot.onPickupFromSlot(par1EntityPlayer, slotStack);
+            theSlot.onTake(player, slotStack);
         }
         return slotStackCopy;
     }

@@ -7,7 +7,7 @@ import java.util.Iterator;
 
 public final class FactionTradeList extends TradeList {
 
-    int ticks = 0;
+    private int ticks = 0;
 
     @Override
     protected Trade getNewTrade() {
@@ -51,14 +51,15 @@ public final class FactionTradeList extends TradeList {
     }
 
     @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound serializeNBT() {
+        NBTTagCompound tag = super.serializeNBT();
         tag.setInteger("ticks", ticks);
-        return super.writeToNBT(tag);
+        return tag;
     }
 
     @Override
-    public void readFromNBT(NBTTagCompound tag) {
+    public void deserializeNBT(NBTTagCompound tag) {
         ticks = tag.getInteger("ticks");
-        super.readFromNBT(tag);
+        super.deserializeNBT(tag);
     }
 }

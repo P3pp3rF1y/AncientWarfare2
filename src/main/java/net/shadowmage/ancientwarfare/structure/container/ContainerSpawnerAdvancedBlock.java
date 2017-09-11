@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
@@ -14,7 +15,7 @@ public class ContainerSpawnerAdvancedBlock extends ContainerSpawnerAdvancedBase 
 
     public ContainerSpawnerAdvancedBlock(EntityPlayer player, int x, int y, int z) {
         super(player);
-        TileEntity te = player.world.getTileEntity(x, y, z);
+        TileEntity te = player.world.getTileEntity(new BlockPos(x, y, z));
         if (te instanceof TileAdvancedSpawner) {
             spawner = (TileAdvancedSpawner) te;
             settings = spawner.getSettings();
