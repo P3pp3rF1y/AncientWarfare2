@@ -1,10 +1,16 @@
 package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.world.biome.Biome;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
-import net.shadowmage.ancientwarfare.core.gui.elements.*;
+import net.shadowmage.ancientwarfare.core.gui.elements.Button;
+import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
+import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
+import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
+import net.shadowmage.ancientwarfare.core.gui.elements.Label;
+import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 
 import java.util.Set;
@@ -85,7 +91,7 @@ public class GuiStructureBiomeSelection extends GuiContainerBase {
         area.clearElements();
         String name;
         Checkbox box;
-        for (BiomeGenBase biome : BiomeGenBase.getBiomeGenArray()) {
+        for (Biome biome : Biome.REGISTRY) {
             if (biome == null) {
                 continue;
             }

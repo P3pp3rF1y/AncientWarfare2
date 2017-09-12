@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.entity.EntityList;
+import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
@@ -62,7 +63,7 @@ public class GuiSpawnerPlacer extends GuiContainerBase<ContainerSpawnerPlacer> {
         labelToClass.clear();
 
         int totalHeight = 3;
-        Set<String> mp = EntityList.stringToClassMapping.keySet();
+        Set<ResourceLocation> mp = EntityList.ENTITY_EGGS.keySet();
 
         Listener listener = new Listener(Listener.MOUSE_UP) {
             @Override
@@ -76,7 +77,9 @@ public class GuiSpawnerPlacer extends GuiContainerBase<ContainerSpawnerPlacer> {
         };
 
         Label label;
-        for (String name : mp) {
+        for (ResourceLocation registryName : mp) {
+            String name = registryName.toString();
+
             if (AWStructureStatics.excludedSpawnerEntities.contains(name)) {
                 continue;//skip excluded entities
             }

@@ -7,6 +7,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -17,7 +18,12 @@ import net.shadowmage.ancientwarfare.core.entity.WatchedData;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 public class SpawnerSettings {
 
@@ -455,7 +461,7 @@ public class SpawnerSettings {
     public static final class EntitySpawnSettings {
         String entityId = "Pig";
         NBTTagCompound customTag;
-        List<WatchedData> customData = new ArrayList<>();
+        List<DataParameter> customData = new ArrayList<>();
         int minToSpawn = 2;
         int maxToSpawn = 4;
         int remainingSpawnCount = -1;
@@ -479,7 +485,7 @@ public class SpawnerSettings {
             tag.setInteger("maxToSpawn", maxToSpawn);
             tag.setInteger("remainingSpawnCount", remainingSpawnCount);
             NBTTagList list = new NBTTagList();
-            for(WatchedData custom : customData){
+            for(DataParameter custom : customData){
                 list.appendTag(custom.toTag());
             }
             tag.setTag("customData", list);
@@ -519,9 +525,9 @@ public class SpawnerSettings {
             this.customTag = tag;
         }
 
-        public final void addCustomData(WatchedData data){
-            if(data!=null && data.isValid()){
-                Iterator<WatchedData> itr = customData.iterator();
+        public final void addCustomData(DataParameter data){
+            if(data!=null){
+                Iterator<DataParameter> itr = customData.iterator();
                 while(itr.hasNext()){
                     if(data.collideWith(itr.next())){
                         itr.remove();
@@ -532,7 +538,7 @@ public class SpawnerSettings {
             Collections.sort(customData, WatchedData.IndexSorter.INSTANCE);
         }
 
-        public final List<WatchedData> getCustomData(){
+        public final List<DataParameter> getCustomData(){
             return customData;
         }
 

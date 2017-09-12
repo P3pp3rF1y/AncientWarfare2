@@ -2,10 +2,11 @@ package net.shadowmage.ancientwarfare.structure.gui;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
-import cpw.mods.fml.common.ModContainer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.EntityList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.ModContainer;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
@@ -75,13 +76,13 @@ public class GuiSpawnerAdvancedEntitySelection extends GuiContainerBase {
     public void setupElements() {
         area.clearElements();
 
-        Iterator itr = Iterators.filter(EntityList.stringToClassMapping.keySet().iterator(), new Predicate<String>() {
+        Iterator itr = Iterators.filter(EntityList.ENTITY_EGGS.keySet().iterator(), new Predicate<ResourceLocation>() {
             @Override
-            public boolean apply(String txt) {
-                if(txt == null || txt.isEmpty() || AWStructureStatics.excludedSpawnerEntities.contains(txt)){//skip excluded entities
+            public boolean apply(ResourceLocation registryName) {
+                if(registryName == null || AWStructureStatics.excludedSpawnerEntities.contains(registryName.toString())){//skip excluded entities
                     return false;
                 }
-                return (search.getText().isEmpty() || txt.contains(search.getText()));
+                return (search.getText().isEmpty() || registryName.toString().contains(search.getText()));
             }
         });
         int totalHeight = 8;

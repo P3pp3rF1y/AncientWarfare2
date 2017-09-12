@@ -99,17 +99,17 @@ public Pos3f copy()
 
 public int floorX()
   {
-  return MathHelper.floor_float(this.x);
+  return MathHelper.floor(this.x);
   }
 
 public int floorY()
   {
-  return MathHelper.floor_float(this.y);  
+  return MathHelper.floor(this.y);
   }
 
 public int floorZ()
   {
-  return MathHelper.floor_float(this.z);
+  return MathHelper.floor(this.z);
   }
 
 /*

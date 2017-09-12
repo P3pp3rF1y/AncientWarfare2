@@ -4,9 +4,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
 import net.shadowmage.ancientwarfare.core.entity.WatchedData;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
-import net.shadowmage.ancientwarfare.core.gui.elements.*;
+import net.shadowmage.ancientwarfare.core.gui.elements.Button;
+import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
+import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
+import net.shadowmage.ancientwarfare.core.gui.elements.Label;
+import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
+import net.shadowmage.ancientwarfare.core.gui.elements.Text;
+import net.shadowmage.ancientwarfare.core.gui.elements.Tooltip;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings.EntitySpawnGroup;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings.EntitySpawnSettings;
 
@@ -47,7 +54,7 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
     }
 
     private void loadData(){
-        List<WatchedData> data = this.settings.getCustomData();
+        List<DataParameter> data = this.settings.getCustomData();
         int size = data.size();
         dataType = new WatchedData.Type[size];
         dataKey = new int[size];

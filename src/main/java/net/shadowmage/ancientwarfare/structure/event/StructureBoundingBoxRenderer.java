@@ -24,8 +24,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumHand;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+
+import javax.annotation.Nonnull;
 
 public class StructureBoundingBoxRenderer {
 
@@ -44,13 +47,15 @@ public class StructureBoundingBoxRenderer {
         if (player == null) {
             return;
         }
-        @Nonnull ItemStack stack = player.getCurrentEquippedItem();
-        Item item;
-        if (stack.isEmpty() || (item = stack.getItem()) == null) {
-            return;
-        }
-        if (item instanceof IBoxRenderer) {
-            ((IBoxRenderer) item).renderBox(player, stack, evt.partialTicks);
+        for (EnumHand hand : EnumHand.values()) {
+            @Nonnull ItemStack stack = player.getHeldItem(hand);
+            Item item;
+            if (stack.isEmpty() || (item = stack.getItem()) == null) {
+                return;
+            }
+            if (item instanceof IBoxRenderer) {
+                ((IBoxRenderer) item).renderBox(player, stack, evt.getPartialTicks());
+            }
         }
     }
 }

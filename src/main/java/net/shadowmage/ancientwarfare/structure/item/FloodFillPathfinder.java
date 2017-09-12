@@ -60,25 +60,27 @@ public class FloodFillPathfinder {
     }
 
     private boolean isWithinDist(BlockPos pos) {
-        return pos.x >= x - maxDist && pos.x <= x + maxDist && pos.y >= y - maxDist && pos.y <= y + maxDist && pos.z >= z - maxDist && pos.z <= z + maxDist;
+        return pos.getX() >= startingPos.getX() - maxDist && pos.getX() <= startingPos.getX() + maxDist
+                && pos.getY() >= startingPos.getY() - maxDist && pos.getY() <= startingPos.getY() + maxDist
+                && pos.getZ() >= startingPos.getZ() - maxDist && pos.getZ() <= startingPos.getZ() + maxDist;
     }
 
     private void addNeighbors(BlockPos pos) {
-        neighborCache.add(new BlockPos(pos.x - 1, pos.y, pos.z));
-        neighborCache.add(new BlockPos(pos.x + 1, pos.y, pos.z));
-        neighborCache.add(new BlockPos(pos.x, pos.y, pos.z - 1));
-        neighborCache.add(new BlockPos(pos.x, pos.y, pos.z + 1));
+        neighborCache.add(new BlockPos(pos.getX() - 1, pos.getY(), pos.getZ()));
+        neighborCache.add(new BlockPos(pos.getX() + 1, pos.getY(), pos.getZ()));
+        neighborCache.add(new BlockPos(pos.getX(), pos.getY(), pos.getZ() - 1));
+        neighborCache.add(new BlockPos(pos.getX(), pos.getY(), pos.getZ() + 1));
         if (searchUpwards) {
-            neighborCache.add(new BlockPos(pos.x - 1, pos.y + 1, pos.z));
-            neighborCache.add(new BlockPos(pos.x + 1, pos.y + 1, pos.z));
-            neighborCache.add(new BlockPos(pos.x, pos.y + 1, pos.z - 1));
-            neighborCache.add(new BlockPos(pos.x, pos.y + 1, pos.z + 1));
+            neighborCache.add(new BlockPos(pos.getX() - 1, pos.getY() + 1, pos.getZ()));
+            neighborCache.add(new BlockPos(pos.getX() + 1, pos.getY() + 1, pos.getZ()));
+            neighborCache.add(new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ() - 1));
+            neighborCache.add(new BlockPos(pos.getX(), pos.getY() + 1, pos.getZ() + 1));
         }
         if (searchDownwards) {
-            neighborCache.add(new BlockPos(pos.x - 1, pos.y - 1, pos.z));
-            neighborCache.add(new BlockPos(pos.x + 1, pos.y - 1, pos.z));
-            neighborCache.add(new BlockPos(pos.x, pos.y - 1, pos.z - 1));
-            neighborCache.add(new BlockPos(pos.x, pos.y - 1, pos.z + 1));
+            neighborCache.add(new BlockPos(pos.getX() - 1, pos.getY() - 1, pos.getZ()));
+            neighborCache.add(new BlockPos(pos.getX() + 1, pos.getY() - 1, pos.getZ()));
+            neighborCache.add(new BlockPos(pos.getX(), pos.getY() - 1, pos.getZ() - 1));
+            neighborCache.add(new BlockPos(pos.getX(), pos.getY() - 1, pos.getZ() + 1));
         }
     }
 

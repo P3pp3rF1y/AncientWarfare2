@@ -2,11 +2,16 @@ package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
-import net.shadowmage.ancientwarfare.core.gui.elements.*;
+import net.shadowmage.ancientwarfare.core.gui.elements.Button;
+import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
+import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
+import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
+import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 
@@ -140,13 +145,13 @@ public class GuiStructureBlockSelection extends GuiContainerBase {
         selectedBiomes.addAll(parent.validator.getBiomeList());
         boolean whitelist = parent.validator.isBiomeWhiteList();
 
-        Set<BiomeGenBase> biomesToSearch = new HashSet<>();
+        Set<Biome> biomesToSearch = new HashSet<>();
 
-        for (BiomeGenBase biome : BiomeGenBase.getBiomeGenArray()) {
+        for (Biome biome : Biome.REGISTRY) {
             if (biome == null) {
                 continue;
             }
-            if (whitelist && selectedBiomes.contains(biome.biomeName) || !whitelist && !selectedBiomes.contains(biome.biomeName)) {
+            if (whitelist && selectedBiomes.contains(biome.getBiomeName()) || !whitelist && !selectedBiomes.contains(biome.getBiomeName())) {
                 biomesToSearch.add(biome);
             }
         }
@@ -155,9 +160,9 @@ public class GuiStructureBlockSelection extends GuiContainerBase {
         Block topBlock;
         Block fillBlock;
 
-        for (BiomeGenBase biome : biomesToSearch) {
-            topBlock = biome.topBlock;
-            fillBlock = biome.fillerBlock;
+        for (Biome biome : biomesToSearch) {
+            topBlock = biome.topBlock.getBlock();
+            fillBlock = biome.fillerBlock.getBlock();
             if (topBlock != null) {
                 targetBlocks.add(topBlock);
             }
