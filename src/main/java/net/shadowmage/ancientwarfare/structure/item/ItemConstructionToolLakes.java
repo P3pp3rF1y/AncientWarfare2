@@ -1,6 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.item;
 
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -31,21 +31,21 @@ public class ItemConstructionToolLakes extends Item {
         }
         BlockPos pos = BlockTools.getBlockClickedOn(player, world, true);
         if (pos == null) {
-            return stack;
+            return new ActionResult<>(EnumActionResult.PASS, stack);
         }
-        Block block = player.world.getBlock(pos.x, pos.y, pos.z);
-        if (!block.isAir(player.world, pos.x, pos.y, pos.z)) {
-            return stack;
+        if (!world.isAirBlock(pos)) {
+            return new ActionResult<>(EnumActionResult.PASS, stack);
         }
-        FloodFillPathfinder pf = new FloodFillPathfinder(player.world, pos.x, pos.y, pos.z, block, 0, false, true);
+        IBlockState state = world.getBlockState(pos);
+        FloodFillPathfinder pf = new FloodFillPathfinder(player.world, pos, state.getBlock(), state, false, true);
         Set<BlockPos> blocks = pf.doFloodFill();
         for (BlockPos p : blocks) {
-            player.world.setBlock(p.x, p.y, p.z, Blocks.FLOWING_WATER);
+            player.world.setBlockState(p, Blocks.FLOWING_WATER.getDefaultState());
         }
         if (!player.capabilities.isCreativeMode) {
             stack.shrink(1);
         }
-        return stack;
+        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
 
 }
