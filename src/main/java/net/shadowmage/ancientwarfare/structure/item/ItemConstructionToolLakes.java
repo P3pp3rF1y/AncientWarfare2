@@ -5,6 +5,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
@@ -15,13 +19,15 @@ public class ItemConstructionToolLakes extends Item {
     public ItemConstructionToolLakes(String itemName) {
         this.setUnlocalizedName(itemName);
         this.setCreativeTab(AWStructuresItemLoader.structureTab);
-        this.setTextureName("ancientwarfare:structure/" + "construction_tool");
+        //this.setTextureName("ancientwarfare:structure/" + "construction_tool");
     }
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+        ItemStack stack = player.getHeldItem(hand);
+
         if(world.isRemote){
-            return stack;
+            return new ActionResult<>(EnumActionResult.SUCCESS, stack);
         }
         BlockPos pos = BlockTools.getBlockClickedOn(player, world, true);
         if (pos == null) {

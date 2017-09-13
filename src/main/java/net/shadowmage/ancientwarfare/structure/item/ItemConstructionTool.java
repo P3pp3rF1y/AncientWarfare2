@@ -2,19 +2,23 @@ package net.shadowmage.ancientwarfare.structure.item;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.event.IBoxRenderer;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Set;
 
@@ -22,57 +26,56 @@ public class ItemConstructionTool extends Item implements IItemKeyInterface, IBo
 
     public ItemConstructionTool(String regName) {
         this.setUnlocalizedName(regName);
-        this.setTextureName("ancientwarfare:structure/" + regName);
+        //this.setTextureName("ancientwarfare:structure/" + regName);
         this.setCreativeTab(AWStructuresItemLoader.structureTab);
     }
 
-
     @Override
-    @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean wtf) {
+    public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flagIn) {
         ConstructionSettings settings = getSettings(stack);
         if (settings == null) {
             return;
         }
         String text = I18n.format("guistrings.construction.mode") + ": " + settings.type;
-        list.add(text);
-        text = I18n.format("guistrings.construction.fill_block") + ": " + Block.blockRegistry.getNameForObject(settings.block);
-        list.add(text);
+        tooltip.add(text);
+        text = I18n.format("guistrings.construction.fill_block") + ": " + Block.REGISTRY.getNameForObject(settings.block);
+        tooltip.add(text);
 
         String keyText;
         text = "RMB" + " = " + I18n.format("guistrings.construction.do_action");
-        list.add(text);
+        tooltip.add(text);
 
         keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
         text = keyText + " = " + I18n.format("guistrings.construction.toggle_mode");
-        list.add(text);
+        tooltip.add(text);
 
         keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_1);
         text = keyText + " = " + I18n.format("guistrings.construction.set_fill_block");
-        list.add(text);
+        tooltip.add(text);
 
         keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_2);
         text = keyText + " = " + I18n.format("guistrings.construction.set_pos_1");
-        list.add(text);
+        tooltip.add(text);
 
         keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_3);
         text = keyText + " = " + I18n.format("guistrings.construction.set_pos_2");
-        list.add(text);
+        tooltip.add(text);
 
         keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_4);
         text = keyText + " = " + I18n.format("guistrings.construction.clear_positions");
-        list.add(text);
+        tooltip.add(text);
     }
 
     @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
-    {
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+        ItemStack stack = player.getHeldItem(hand);
+
         if(world.isRemote){
-            return stack;
+            return new ActionResult<>(EnumActionResult.SUCCESS, stack);
         }
         ConstructionSettings settings = getSettings(stack);
         if(settings==null){
-            return stack;
+            return new ActionResult<>(EnumActionResult.PASS, stack);
         }
         switch (settings.type) {
             case SOLID_FILL: {
@@ -92,17 +95,17 @@ public class ItemConstructionTool extends Item implements IItemKeyInterface, IBo
             }
             break;
         }
-        return stack;
+        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
-
+//TODO change all settings.block, settings.meta to use blockstate if possible
     private void handleSolidFill(EntityPlayer player, ConstructionSettings settings) {
         if (settings.pos1 != null && settings.pos2 != null && settings.block != null) {
             BlockPos min = BlockTools.getMin(settings.pos1, settings.pos2);
             BlockPos max = BlockTools.getMax(settings.pos1, settings.pos2);
-            for (int x = min.x; x <= max.x; x++) {
-                for (int z = min.z; z <= max.z; z++) {
-                    for (int y = min.y; y <= max.y; y++) {
-                        player.world.setBlock(x, y, z, settings.block, settings.meta, 3);
+            for (int x = min.getX(); x <= max.getX(); x++) {
+                for (int z = min.getZ(); z <= max.getZ(); z++) {
+                    for (int y = min.getY(); y <= max.getY(); y++) {
+                        player.world.setBlockState(new BlockPos(x, y, z), settings.block.getStateFromMeta(settings.meta), 3);
                     }
                 }
             }
@@ -114,22 +117,22 @@ public class ItemConstructionTool extends Item implements IItemKeyInterface, IBo
             BlockPos min = BlockTools.getMin(settings.pos1, settings.pos2);
             BlockPos max = BlockTools.getMax(settings.pos1, settings.pos2);
 
-            for (int x = min.x; x <= max.x; x++) {
-                for (int z = min.z; z <= max.z; z++) {
-                    player.world.setBlock(x, max.y, z, settings.block, settings.meta, 3);
-                    player.world.setBlock(x, min.y, z, settings.block, settings.meta, 3);
+            for (int x = min.getX(); x <= max.getX(); x++) {
+                for (int z = min.getZ(); z <= max.getZ(); z++) {
+                    player.world.setBlockState(new BlockPos(x, max.getY(), z), settings.block.getStateFromMeta(settings.meta), 3);
+                    player.world.setBlockState(new BlockPos(x, min.getY(), z), settings.block.getStateFromMeta(settings.meta), 3);
                 }
             }
-            for (int x = min.x; x <= max.x; x++) {
-                for (int y = min.y; y <= max.y; y++) {
-                    player.world.setBlock(x, y, min.z, settings.block, settings.meta, 3);
-                    player.world.setBlock(x, y, max.z, settings.block, settings.meta, 3);
+            for (int x = min.getX(); x <= max.getX(); x++) {
+                for (int y = min.getY(); y <= max.getY(); y++) {
+                    player.world.setBlockState(new BlockPos(x, y, min.getZ()), settings.block.getStateFromMeta(settings.meta), 3);
+                    player.world.setBlockState(new BlockPos(x, y, max.getZ()), settings.block.getStateFromMeta(settings.meta), 3);
                 }
             }
-            for (int z = min.z; z <= max.z; z++) {
-                for (int y = min.y; y <= max.y; y++) {
-                    player.world.setBlock(min.x, y, z, settings.block, settings.meta, 3);
-                    player.world.setBlock(max.x, y, z, settings.block, settings.meta, 3);
+            for (int z = min.getZ(); z <= max.getZ(); z++) {
+                for (int y = min.getY(); y <= max.getY(); y++) {
+                    player.world.setBlockState(new BlockPos(min.getX(), y, z), settings.block.getStateFromMeta(settings.meta), 3);
+                    player.world.setBlockState(new BlockPos(max.getX(), y, z), settings.block.getStateFromMeta(settings.meta), 3);
                 }
             }
         }
@@ -143,7 +146,7 @@ public class ItemConstructionTool extends Item implements IItemKeyInterface, IBo
                 Block block = state.getBlock();
                 Set<BlockPos> toFill = new FloodFillPathfinder(player.world, pos, block, state, false, true).doFloodFill();
                 for (BlockPos p1 : toFill) {
-                    player.world.setBlock(p1.x, p1.y, p1.z, settings.block, settings.meta, 3);
+                    player.world.setBlockState(new BlockPos(p1.getX(), p1.getY(), p1.getZ()), settings.block.getStateFromMeta(settings.meta), 3);
                 }
             }
         }
@@ -157,7 +160,7 @@ public class ItemConstructionTool extends Item implements IItemKeyInterface, IBo
                 Block block = state.getBlock();
                 Set<BlockPos> toFill = new FloodFillPathfinder(player.world, pos, block, state, false, false).doFloodFill();
                 for (BlockPos p1 : toFill) {
-                    player.world.setBlockState(p1, settings.block, settings.meta, 3);
+                    player.world.setBlockState(p1, settings.block.getStateFromMeta(settings.meta), 3);
                 }
             }
         }
@@ -263,10 +266,10 @@ public class ItemConstructionTool extends Item implements IItemKeyInterface, IBo
 
         protected void readFromNBT(NBTTagCompound tag) {
             if (tag.hasKey("pos1")) {
-                pos1 = new BlockPos(tag.getCompoundTag("pos1"));
+                pos1 = BlockPos.fromLong(tag.getLong("pos1"));
             }
             if (tag.hasKey("pos2")) {
-                pos2 = new BlockPos(tag.getCompoundTag("pos2"));
+                pos2 = BlockPos.fromLong(tag.getLong("pos2"));
             }
             if (tag.hasKey("block")) {
                 block = Block.getBlockFromName(tag.getString("block"));
@@ -281,14 +284,14 @@ public class ItemConstructionTool extends Item implements IItemKeyInterface, IBo
 
         protected NBTTagCompound writeToNBT(NBTTagCompound tag) {
             if (block != null) {
-                tag.setString("block", Block.blockRegistry.getNameForObject(block));
+                tag.setString("block", Block.REGISTRY.getNameForObject(block).toString());
             }
             tag.setInteger("meta", meta);
             if (pos1 != null) {
-                tag.setTag("pos1", pos1.writeToNBT(new NBTTagCompound()));
+                tag.setLong("pos1", pos1.toLong());
             }
             if (pos2 != null) {
-                tag.setTag("pos2", pos2.writeToNBT(new NBTTagCompound()));
+                tag.setLong("pos2", pos2.toLong());
             }
             tag.setInteger("type", type.ordinal());
             return tag;

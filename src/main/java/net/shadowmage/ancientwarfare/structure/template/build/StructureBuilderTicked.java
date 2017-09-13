@@ -22,6 +22,8 @@ package net.shadowmage.ancientwarfare.structure.template.build;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
@@ -34,8 +36,8 @@ public class StructureBuilderTicked extends StructureBuilder {
     private boolean hasClearedArea;
     private int clearX, clearY, clearZ;
 
-    public StructureBuilderTicked(World world, StructureTemplate template, int face, int x, int y, int z) {
-        super(world, template, face, x, y, z);
+    public StructureBuilderTicked(World world, StructureTemplate template, EnumFacing face, BlockPos pos) {
+        super(world, template, face, pos);
         clearX = bb.min.x;
         clearY = bb.min.y;
         clearZ = bb.min.z;

@@ -23,6 +23,7 @@ package net.shadowmage.ancientwarfare.structure.template.build;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
@@ -38,7 +39,7 @@ public class StructureBuilder implements IStructureBuilder {
     protected StructureTemplate template;
     protected World world;
     protected BlockPos buildOrigin;
-    protected int buildFace;
+    protected EnumFacing buildFace;
     protected int turns;
     protected int maxPriority = 4;
     protected int currentPriority;//current build priority...may not be needed anymore?
@@ -50,11 +51,11 @@ public class StructureBuilder implements IStructureBuilder {
 
     private boolean isFinished = false;
 
-    public StructureBuilder(World world, StructureTemplate template, int face, int x, int y, int z) {
-        this(world, template, face, new BlockPos(x, y, z), new StructureBB(x, y, z, face, template));
+    public StructureBuilder(World world, StructureTemplate template, EnumFacing face, BlockPos pos) {
+        this(world, template, face, pos, new StructureBB(x, y, z, face, template));
     }
 
-    public StructureBuilder(World world, StructureTemplate template, int face, BlockPos buildKey, StructureBB bb) {
+    public StructureBuilder(World world, StructureTemplate template, EnumFacing face, BlockPos buildKey, StructureBB bb) {
         this.world = world;
         this.template = template;
         this.buildFace = face;

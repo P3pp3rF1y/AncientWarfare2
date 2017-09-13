@@ -1,13 +1,18 @@
 package net.shadowmage.ancientwarfare.structure.item;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -21,6 +26,8 @@ import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilderTicked;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,25 +35,27 @@ public class ItemBlockStructureBuilder extends ItemBlock implements IBoxRenderer
 
     List<ItemStack> displayCache = null;
 
-    public ItemBlockStructureBuilder(Block p_i45328_1_) {
-        super(p_i45328_1_);
+    public ItemBlockStructureBuilder(Block block) {
+        super(block);
     }
 
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+    public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flagIn) {
         String name = "corrupt_item";
-        if (par1ItemStack.hasTagCompound() && par1ItemStack.getTagCompound().hasKey("structureName")) {
-            name = par1ItemStack.getTagCompound().getString("structureName");
+        if (stack.hasTagCompound() && stack.getTagCompound().hasKey("structureName")) {
+            name = stack.getTagCompound().getString("structureName");
         }
-        par3List.add(I18n.format("guistrings.structure.structure_name") + ": " + name);
+        tooltip.add(I18n.format("guistrings.structure.structure_name") + ": " + name);
     }
 
-
     @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems(Item p_150895_1_, CreativeTabs p_150895_2_, List p_150895_3_) {
+    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+        if (tab != AWStructuresItemLoader.structureTab) {
+            return;
+        }
+
         if (displayCache == null) {
             displayCache = new ArrayList<>();
             List<StructureTemplateClient> templates = StructureTemplateManagerClient.instance().getSurvivalStructures();
@@ -57,17 +66,17 @@ public class ItemBlockStructureBuilder extends ItemBlock implements IBoxRenderer
                 displayCache.add(item);
             }
         }
-        p_150895_3_.addAll(displayCache);
+        items.addAll(displayCache);
 //  super.getSubItems(p_150895_1_, p_150895_2_, p_150895_3_);
     }
 
     @Override
-    public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
+    public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
         if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey("structureName")) {
 //    stack.setTagInfo("structureName", new NBTTagString("no_selection")); 
             return false;
         }
-        boolean val = super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
+        boolean val = super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, newState);
         if (!world.isRemote && val) {
             TileEntity te = world.getTileEntity(pos);
             if (te instanceof TileStructureBuilder) {
@@ -76,9 +85,9 @@ public class ItemBlockStructureBuilder extends ItemBlock implements IBoxRenderer
                 String name = stack.getTagCompound().getString("structureName");
                 StructureTemplate t = StructureTemplateManager.INSTANCE.getTemplate(name);
                 if (t != null) {
-                    int face = BlockTools.getPlayerFacingFromYaw(player.rotationYaw);
-                    BlockPos p = new BlockPos(x, y, z).moveForward(face, t.zSize - 1 - t.zOffset + 1);
-                    tb.setBuilder(new StructureBuilderTicked(world, t, face, p.x, p.y, p.z));
+                    EnumFacing face = player.getHorizontalFacing();
+                    BlockPos p = pos.offset(face, t.zSize - 1 - t.zOffset + 1);
+                    tb.setBuilder(new StructureBuilderTicked(world, t, face, p));
                 }
             }
         }
@@ -100,9 +109,9 @@ public class ItemBlockStructureBuilder extends ItemBlock implements IBoxRenderer
             return;
         }
         Util.renderBoundingBox(player, hit, hit, delta);
-        int face = BlockTools.getPlayerFacingFromYaw(player.rotationYaw);
-        BlockPos p2 = hit.moveForward(face, t.zSize - 1 - t.zOffset + 1);
-        StructureBB bb = new StructureBB(p2.x, p2.y, p2.z, face, t.xSize, t.ySize, t.zSize, t.xOffset, t.yOffset, t.zOffset);
+        EnumFacing face = player.getHorizontalFacing();
+        BlockPos p2 = hit.offset(face, t.zSize - 1 - t.zOffset + 1);
+        StructureBB bb = new StructureBB(p2, face, t.xSize, t.ySize, t.zSize, t.xOffset, t.yOffset, t.zOffset);
         Util.renderBoundingBox(player, bb.min, bb.max, delta);
     }
 }

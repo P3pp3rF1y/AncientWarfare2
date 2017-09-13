@@ -14,6 +14,10 @@ public class Zone implements INBTSerializable<NBTTagCompound> {
         max = BlockTools.getMax(p1, p2);
     }
 
+    public Zone() {
+
+    }
+
     /*
      * does the input share any block position with this zone ?
      */

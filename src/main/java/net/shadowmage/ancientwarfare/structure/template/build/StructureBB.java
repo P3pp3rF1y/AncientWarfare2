@@ -20,6 +20,7 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.build;
 
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.Zone;
@@ -31,16 +32,16 @@ public class StructureBB extends Zone{
         super(new BlockPos(minX, minY, minZ), new BlockPos(maxX, maxY, maxZ));
     }
 
-    public StructureBB(int x, int y, int z, int face, StructureTemplate template) {
-        this(x, y, z, face, template.xSize, template.ySize, template.zSize, template.xOffset, template.yOffset, template.zOffset);
+    public StructureBB(BlockPos pos, EnumFacing face, StructureTemplate template) {
+        this(pos, face, template.xSize, template.ySize, template.zSize, template.xOffset, template.yOffset, template.zOffset);
     }
 
-    public StructureBB(int x, int y, int z, int face, int xSize, int ySize, int zSize, int xOffset, int yOffset, int zOffset) {
+    public StructureBB(BlockPos pos, EnumFacing face, int xSize, int ySize, int zSize, int xOffset, int yOffset, int zOffset) {
         /*
          * we simply take the clicked on position
          * and walk left/forward/down by the structure offsets
          */
-        BlockPos c1 = new BlockPos(x, y, z).moveLeft(face, xOffset).moveForward(face, zOffset).up(-yOffset);
+        BlockPos c1 = pos.moveLeft(face, xOffset).moveForward(face, zOffset).up(-yOffset);
         /*
          * the second corner starts as a copy of the first corner
          * which then walks right, backwards, and up to arrive at the actual second corner

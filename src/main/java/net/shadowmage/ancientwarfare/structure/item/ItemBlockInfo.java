@@ -5,6 +5,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -16,7 +19,7 @@ public class ItemBlockInfo extends Item {
     public ItemBlockInfo(String regName) {
         this.setUnlocalizedName(regName);
         this.setCreativeTab(AWStructuresItemLoader.structureTab);
-        this.setTextureName("ancientwarfare:structure/block_info");
+        //this.setTextureName("ancientwarfare:structure/block_info");
     }
 
     @Override
@@ -32,6 +35,6 @@ public class ItemBlockInfo extends Item {
                 }
             }
         }
-        return stack;
+        return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
     }
 }
