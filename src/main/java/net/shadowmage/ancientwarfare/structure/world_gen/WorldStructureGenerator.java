@@ -20,14 +20,14 @@
  */
 package net.shadowmage.ancientwarfare.structure.world_gen;
 
-import cpw.mods.fml.common.IWorldGenerator;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.ChunkPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
+import net.minecraft.world.gen.IChunkGenerator;
+import net.minecraftforge.fml.common.IWorldGenerator;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
@@ -69,9 +69,9 @@ public class WorldStructureGenerator implements IWorldGenerator {
     }
 
     @Override
-    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {
-        ChunkPos cc = world.getSpawnPoint();
-        float distSq = cc.getDistanceSquared(chunkX * 16, cc.posY, chunkZ * 16);
+    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
+        BlockPos cc = world.getSpawnPoint();
+        double distSq = cc.distanceSq(chunkX * 16, cc.getY(), chunkZ * 16);
         if (AWStructureStatics.withinProtectionRange(distSq)) {
             return;
         }

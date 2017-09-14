@@ -93,7 +93,7 @@ public final class TemplateScanner {
                             }
                             boolean found = false;
                             for (TemplateRuleBlock rule : pluginBlockRules) {
-                                if (rule.shouldReuseRule(world, scannedBlock, meta, turns, scanX, scanY, scanZ)) {
+                                if (rule.shouldReuseRule(world, scannedBlock, meta, turns, scannedPos)) {
                                     scannedBlockRule = rule;
                                     found = true;
                                     break;

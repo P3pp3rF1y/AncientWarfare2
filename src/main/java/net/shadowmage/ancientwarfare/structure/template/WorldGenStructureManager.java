@@ -20,9 +20,11 @@
  */
 package net.shadowmage.ancientwarfare.structure.template;
 
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
@@ -30,7 +32,14 @@ import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
 import net.shadowmage.ancientwarfare.structure.world_gen.StructureEntry;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
+import java.util.Random;
+import java.util.Set;
 
 public class WorldGenStructureManager {
 
@@ -41,7 +50,7 @@ public class WorldGenStructureManager {
     List<StructureEntry> searchCache = new ArrayList<>();
     List<StructureTemplate> trimmedPotentialStructures = new ArrayList<>();
     HashMap<String, Integer> distancesFound = new HashMap<>();
-    BlockPos rearBorderPos = new BlockPos(0, 0, 0);
+    BlockPos rearBorderPos = BlockPos.ORIGIN;
 
     public static final WorldGenStructureManager INSTANCE = new WorldGenStructureManager();
 
@@ -49,9 +58,7 @@ public class WorldGenStructureManager {
     }
 
     public void loadBiomeList() {
-        BiomeGenBase biome;
-        for (int i = 0; i < BiomeGenBase.getBiomeGenArray().length; i++) {
-            biome = BiomeGenBase.getBiomeGenArray()[i];
+        for (Biome biome : Biome.REGISTRY) {
             if (biome == null) {
                 continue;
             }
@@ -82,7 +89,7 @@ public class WorldGenStructureManager {
         }
     }
 
-    public StructureTemplate selectTemplateForGeneration(World world, Random rng, int x, int y, int z, int face) {
+    public StructureTemplate selectTemplateForGeneration(World world, Random rng, int x, int y, int z, EnumFacing face) {
         searchCache.clear();
         trimmedPotentialStructures.clear();
         distancesFound.clear();
@@ -93,7 +100,7 @@ public class WorldGenStructureManager {
         int foundValue = 0, chunkDistance;
         float foundDistance, mx, mz;
 
-        BiomeGenBase biome = world.getBiomeGenForCoords(x, z);
+        Biome biome = world.getBiome(new BlockPos(x, 1, z));
         String biomeName = AWStructureStatics.getBiomeName(biome);
         Collection<StructureEntry> duplicateSearchEntries = map.getEntriesNear(world, x, z, AWStructureStatics.duplicateStructureSearchRange, false, searchCache);
         for (StructureEntry entry : duplicateSearchEntries) {

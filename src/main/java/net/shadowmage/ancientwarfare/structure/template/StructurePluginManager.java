@@ -20,18 +20,26 @@
  */
 package net.shadowmage.ancientwarfare.structure.template;
 
-import cpw.mods.fml.common.ModContainer;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.ModContainer;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
-import net.shadowmage.ancientwarfare.structure.api.*;
+import net.shadowmage.ancientwarfare.structure.api.IStructurePluginLookup;
+import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
+import net.shadowmage.ancientwarfare.structure.api.StructureContentPlugin;
+import net.shadowmage.ancientwarfare.structure.api.StructurePluginRegistrationEvent;
 import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException.TemplateRuleParsingException;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
+import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateParser;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginModDefault;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginVanillaHandler;
@@ -44,6 +52,7 @@ import java.util.Iterator;
 import java.util.List;
 
 public class StructurePluginManager implements IStructurePluginManager, IStructurePluginLookup {
+    //TODO is there really a need for so much reflection or it can be rewritten using something like factory methods?
 
     private final List<StructureContentPlugin> loadedContentPlugins = new ArrayList<>();
 
@@ -150,12 +159,13 @@ public class StructurePluginManager implements IStructurePluginManager, IStructu
         return this.ruleByID.get(name);
     }
 
-    public TemplateRuleBlock getRuleForBlock(World world, Block block, int turns, int x, int y, int z) {
+    public TemplateRuleBlock getRuleForBlock(World world, Block block, int turns, BlockPos pos) {
         Class<? extends TemplateRuleBlock> clz = blockRules.get(block);
         if (clz != null) {
-            int meta = world.getBlockMetadata(x, y, z);
+            IBlockState state = world.getBlockState(pos);
+            int meta = state.getBlock().getMetaFromState(state);
             try {
-                return clz.getConstructor(World.class, int.class, int.class, int.class, Block.class, int.class, int.class).newInstance(world, x, y, z, block, meta, turns);
+                return clz.getConstructor(World.class, BlockPos.class, Block.class, int.class, int.class).newInstance(world, pos, block, meta, turns);
             } catch (Exception e) {
                 e.printStackTrace();
             }

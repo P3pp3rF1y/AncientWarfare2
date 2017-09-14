@@ -926,7 +926,7 @@ public class AWStructureStatics extends ModConfiguration {
         return scannerSkippedBlocks.contains(Block.REGISTRY.getNameForObject(block).toString());
     } //TODO are there blocks that would have registry name set to null (C&B perhaps)?
 
-    public static boolean withinProtectionRange(float dist) {
+    public static boolean withinProtectionRange(double dist) {
         return dist < spawnProtectionRange * spawnProtectionRange * 16 * 16;
     }
 

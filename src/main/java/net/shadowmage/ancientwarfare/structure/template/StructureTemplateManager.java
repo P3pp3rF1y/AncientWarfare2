@@ -24,6 +24,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.fml.server.FMLServerHandler;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureRemove;
@@ -53,8 +54,8 @@ public class StructureTemplateManager {
         StructureTemplateClient cl = new StructureTemplateClient(template);
         clientTemplates.put(template.name, cl);
 
-        MinecraftServer server = MinecraftServer.getServer();
-        if (server != null && server.isServerRunning() && server.getConfigurationManager() != null) {
+        MinecraftServer server = FMLServerHandler.instance().getServer();
+        if (server != null && server.isServerRunning() && server.getPlayerList() != null) {
             NBTTagCompound tag = new NBTTagCompound();
             cl.writeToNBT(tag);
             PacketStructure pkt = new PacketStructure();
