@@ -23,6 +23,7 @@ package net.shadowmage.ancientwarfare.structure.api;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.Json;
 import net.shadowmage.ancientwarfare.core.util.JsonTagReader;
@@ -59,7 +60,7 @@ public abstract class TemplateRule {
     /*
      * input params are the target position for placement of this rule and destination orientation
      */
-    public abstract void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) throws StructureBuildingException;
+    public abstract void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) throws StructureBuildingException;
 
     public abstract void parseRuleData(NBTTagCompound tag);
 
@@ -67,7 +68,7 @@ public abstract class TemplateRule {
 
     public abstract void addResources(List<ItemStack> resources);
 
-    public abstract boolean shouldPlaceOnBuildPass(World world, int turns, int x, int y, int z, int buildPass);
+    public abstract boolean shouldPlaceOnBuildPass(World world, int turns, BlockPos pos, int buildPass);
 
     public void writeRule(BufferedWriter out) throws IOException {
         NBTTagCompound tag = new NBTTagCompound();

@@ -20,6 +20,8 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
@@ -69,7 +71,7 @@ public class StructureValidatorUnderground extends StructureValidator {
     }
 
     @Override
-    public boolean shouldIncludeForSelection(World world, int x, int y, int z, int face, StructureTemplate template) {
+    public boolean shouldIncludeForSelection(World world, int x, int y, int z, EnumFacing face, StructureTemplate template) {
         y = WorldStructureGenerator.getTargetY(world, x, z, true);
         int tHeight = (template.ySize - template.yOffset);
         int low = minGenerationDepth + tHeight + minOverfill;
@@ -77,7 +79,7 @@ public class StructureValidatorUnderground extends StructureValidator {
     }
 
     @Override
-    public int getAdjustedSpawnY(World world, int x, int y, int z, int face, StructureTemplate template, StructureBB bb) {
+    public int getAdjustedSpawnY(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
         y = WorldStructureGenerator.getTargetY(world, x, z, true);
         int range = maxGenerationDepth - minGenerationDepth + 1;
         int tHeight = (template.ySize - template.yOffset);
@@ -85,11 +87,11 @@ public class StructureValidatorUnderground extends StructureValidator {
     }
 
     @Override
-    public boolean validatePlacement(World world, int x, int y, int z, int face, StructureTemplate template, StructureBB bb) {
-        int minY = bb.min.y + template.yOffset + minOverfill;
+    public boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
+        int minY = bb.min.getY() + template.yOffset + minOverfill;
         int topBlockY;
-        for (int bx = bb.min.x; bx <= bb.max.x; bx++) {
-            for (int bz = bb.min.z; bz <= bb.max.z; bz++) {
+        for (int bx = bb.min.getX(); bx <= bb.max.getX(); bx++) {
+            for (int bz = bb.min.getZ(); bz <= bb.max.getZ(); bz++) {
                 topBlockY = WorldStructureGenerator.getTargetY(world, bx, bz, true);
                 if (topBlockY <= minY) {
                     return false;
@@ -100,7 +102,7 @@ public class StructureValidatorUnderground extends StructureValidator {
     }
 
     @Override
-    public void preGeneration(World world, BlockPos pos, int face, StructureTemplate template, StructureBB bb) {
+    public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb) {
 //  /*
 //   * TODO remove debug stuff
 //   */

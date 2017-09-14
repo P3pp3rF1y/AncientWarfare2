@@ -24,6 +24,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityHanging;
 import net.minecraft.entity.EntityList;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagDouble;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuildingException.EntityPlacementException;
@@ -31,15 +35,15 @@ import net.shadowmage.ancientwarfare.structure.template.build.StructureBuildingE
 public class TemplateRuleEntityHanging extends TemplateRuleVanillaEntity {
 
     public NBTTagCompound tag = new NBTTagCompound();
-    public int direction;
+    public EnumFacing direction;
 
-    BlockPos hangTarget = new BlockPos();//cached location for use during placement
+    BlockPos hangTarget = BlockPos.ORIGIN;//cached location for use during placement
 
     public TemplateRuleEntityHanging(World world, Entity entity, int turns, int x, int y, int z) {
         super(world, entity, turns, x, y, z);
         EntityHanging hanging = (EntityHanging) entity;
         entity.writeToNBT(tag);
-        this.direction = (hanging.hangingDirection + turns) % 4;
+        this.direction = EnumFacing.VALUES[(hanging.facingDirection.ordinal() + turns) % 4];
         tag.removeTag("UUIDMost");
         tag.removeTag("UUIDLeast");
     }
@@ -49,17 +53,20 @@ public class TemplateRuleEntityHanging extends TemplateRuleVanillaEntity {
     }
 
     @Override
-    public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) throws EntityPlacementException {
-        Entity e = EntityList.createEntityByName(mobID, world);
+    public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) throws EntityPlacementException {
+        Entity e = EntityList.createEntityByIDFromName(registryName, world);
         if (e == null) {
-            throw new EntityPlacementException("Could not create entity for type: " + mobID);
+            throw new EntityPlacementException("Could not create entity for type: " + registryName.toString());
         }
-        int direction = (this.direction + turns) % 4;
-        hangTarget = new BlockPos(x, y, z, (direction + 2) % 4);
-        tag.setByte("Direction", (byte) direction);
-        tag.setInteger("TileX", hangTarget.x);
-        tag.setInteger("TileY", hangTarget.y);
-        tag.setInteger("TileZ", hangTarget.z);
+        EnumFacing direction = EnumFacing.VALUES[(this.direction.ordinal() + turns) % 4];
+        hangTarget = pos.offset(direction.rotateYCCW());
+        //tag.setByte("Direction", (byte) direction.ordinal()); TODO needs a fix to set Rotation tags yaw and pitch
+        //TODO again can we just update part of entities NBT instead of having to construct full?
+        NBTTagList posList = new NBTTagList();
+        posList.appendTag(new NBTTagDouble(hangTarget.getX()));
+        posList.appendTag(new NBTTagDouble(hangTarget.getY()));
+        posList.appendTag(new NBTTagDouble(hangTarget.getZ()));
+        tag.setTag("Pos", posList);
         e.readFromNBT(tag);
         world.spawnEntity(e);
     }
@@ -67,7 +74,7 @@ public class TemplateRuleEntityHanging extends TemplateRuleVanillaEntity {
     @Override
     public void writeRuleData(NBTTagCompound tag) {
         super.writeRuleData(tag);
-        tag.setInteger("direction", direction);
+        tag.setByte("direction", (byte) direction.ordinal());
         tag.setTag("entityData", this.tag);
     }
 
@@ -75,7 +82,7 @@ public class TemplateRuleEntityHanging extends TemplateRuleVanillaEntity {
     public void parseRuleData(NBTTagCompound tag) {
         super.parseRuleData(tag);
         this.tag = tag.getCompoundTag("entityData");
-        this.direction = tag.getInteger("direction");
+        this.direction = EnumFacing.VALUES[tag.getByte("direction")];
     }
 
 }

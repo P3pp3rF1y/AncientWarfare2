@@ -20,47 +20,49 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.build;
 
-import cpw.mods.fml.common.eventhandler.Event.Result;
 import net.minecraft.block.Block;
+import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.BiomeEvent;
 import net.minecraftforge.event.terraingen.BiomeEvent.GetVillageBlockID;
-import net.minecraftforge.event.terraingen.BiomeEvent.GetVillageBlockMeta;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 
 public class StructureBuilderWorldGen extends StructureBuilder {
 
-    public StructureBuilderWorldGen(World world, StructureTemplate template, int face, int x, int y, int z) {
-        super(world, template, face, x, y, z);
+    public StructureBuilderWorldGen(World world, StructureTemplate template, EnumFacing face, BlockPos pos) {
+        super(world, template, face, pos);
     }
 
     @Override
-    public void placeBlock(int x, int y, int z, Block block, int meta, int priority) {
+    public void placeBlock(BlockPos pos, Block block, int meta, int priority) {
         if (template.getValidationSettings().isBlockSwap()) {
-            BiomeGenBase biome = world.getBiomeGenForCoords(x, z);
-            BiomeEvent.GetVillageBlockID evt1 = new GetVillageBlockID(biome, block, meta);
+            Biome biome = world.getBiome(pos);
+            BiomeEvent.GetVillageBlockID evt1 = new GetVillageBlockID(biome, block.getStateFromMeta(meta));
             MinecraftForge.EVENT_BUS.post(evt1);
-            if (evt1.getResult() == Result.DENY && evt1.replacement != block) {
-                block = evt1.replacement;
+            if (evt1.getResult() == Result.DENY && evt1.getReplacement().getBlock() != block) {
+                block = evt1.getReplacement().getBlock();
             } else {
                 block = getBiomeSpecificBlock(block, meta, biome);
             }
-            BiomeEvent.GetVillageBlockMeta evt2 = new GetVillageBlockMeta(biome, block, meta);
+            BiomeEvent.GetVillageBlockID evt2 = new GetVillageBlockID(biome, block.getStateFromMeta(meta));
             MinecraftForge.EVENT_BUS.post(evt2);
             if (evt2.getResult() == Result.DENY) {
-                meta = evt2.replacement;
+                meta = evt2.getReplacement().getBlock().getMetaFromState(evt2.getReplacement());
             } else {
                 meta = getBiomeSpecificBlockMetadata(block, meta, biome);
             }
         }
-        super.placeBlock(x, y, z, block, meta, priority);
+        super.placeBlock(pos, block, meta, priority);
     }
 
-    protected Block getBiomeSpecificBlock(Block par1, int par2, BiomeGenBase biome) {
-        if (biome == BiomeGenBase.desert || biome == BiomeGenBase.desertHills || biome.topBlock == Blocks.SAND) {
+    protected Block getBiomeSpecificBlock(Block par1, int par2, Biome biome) {
+        if (biome == Biomes.DESERT || biome == Biomes.DESERT_HILLS || biome.topBlock == Blocks.SAND) {
             if (par1 == Blocks.LOG || par1 == Blocks.COBBLESTONE || par1 == Blocks.PLANKS || par1 == Blocks.GRAVEL) {
                 return Blocks.SANDSTONE;
             }
@@ -76,8 +78,8 @@ public class StructureBuilderWorldGen extends StructureBuilder {
     /*
      * Gets the replacement block metadata for the current biome
      */
-    protected int getBiomeSpecificBlockMetadata(Block par1, int par2, BiomeGenBase biome) {
-        if (biome == BiomeGenBase.desert || biome == BiomeGenBase.desertHills || biome.topBlock == Blocks.SAND) {
+    protected int getBiomeSpecificBlockMetadata(Block par1, int par2, Biome biome) {
+        if (biome == Biomes.DESERT || biome == Biomes.DESERT_HILLS || biome.topBlock == Blocks.SAND) {
             if (par1 == Blocks.LOG || par1 == Blocks.COBBLESTONE) {
                 return 0;
             }

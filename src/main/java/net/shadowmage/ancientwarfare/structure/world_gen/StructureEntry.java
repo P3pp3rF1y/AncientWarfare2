@@ -43,7 +43,7 @@ public class StructureEntry {
     }
 
     public StructureEntry() {
-        bb = new StructureBB(new BlockPos(), new BlockPos());
+        bb = new StructureBB(BlockPos.ORIGIN, BlockPos.ORIGIN);
     }//NBT constructor
 
     public void writeToNBT(NBTTagCompound tag) {

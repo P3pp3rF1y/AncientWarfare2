@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
@@ -16,8 +17,8 @@ public class TemplateRuleEntityNpc extends TemplateRuleEntityLogic {
     }
 
     @Override
-    protected Entity createEntity(World world, int turns, int x, int y, int z, IStructureBuilder builder) throws EntityPlacementException {
-        Entity e = super.createEntity(world, turns, x, y, z, builder);
+    protected Entity createEntity(World world, int turns, BlockPos pos, IStructureBuilder builder) throws EntityPlacementException {
+        Entity e = super.createEntity(world, turns, pos, builder);
         if (e instanceof NpcBase) {
             NpcBase c = (NpcBase) e;
             c.setHomeAreaAtCurrentPosition();

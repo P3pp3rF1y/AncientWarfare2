@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules;
 
 import net.minecraft.block.Block;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
@@ -9,8 +10,8 @@ public class TemplateRuleVanillaSkull extends TemplateRuleBlockLogic {
 
     int rotation;
 
-    public TemplateRuleVanillaSkull(World world, int x, int y, int z, Block block, int meta, int turns) {
-        super(world, x, y, z, block, meta, turns);
+    public TemplateRuleVanillaSkull(World world, BlockPos pos, Block block, int meta, int turns) {
+        super(world, pos, block, meta, turns);
         int t = tag.getInteger("Rot");
         AWLog.logDebug("base rot: " + t);
         t += 4 * turns;
@@ -23,10 +24,10 @@ public class TemplateRuleVanillaSkull extends TemplateRuleBlockLogic {
     }
 
     @Override
-    public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) {
+    public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
         tag.setInteger("Rot", (rotation + 4 * turns) % 16);
         AWLog.logDebug("pre-place rot: " + tag.getInteger("Rot"));
-        super.handlePlacement(world, turns, x, y, z, builder);
+        super.handlePlacement(world, turns, pos, builder);
     }
 
 }

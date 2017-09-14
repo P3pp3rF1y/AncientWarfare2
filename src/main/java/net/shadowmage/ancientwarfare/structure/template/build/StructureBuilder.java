@@ -21,13 +21,9 @@
 package net.shadowmage.ancientwarfare.structure.template.build;
 
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.storage.ExtendedBlockStorage;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
@@ -52,7 +48,7 @@ public class StructureBuilder implements IStructureBuilder {
     private boolean isFinished = false;
 
     public StructureBuilder(World world, StructureTemplate template, EnumFacing face, BlockPos pos) {
-        this(world, template, face, pos, new StructureBB(x, y, z, face, template));
+        this(world, template, face, pos, new StructureBB(pos, face, template));
     }
 
     public StructureBuilder(World world, StructureTemplate template, EnumFacing face, BlockPos buildKey, StructureBB bb) {
@@ -61,14 +57,14 @@ public class StructureBuilder implements IStructureBuilder {
         this.buildFace = face;
         this.bb = bb;
         buildOrigin = buildKey;
-        destination = new BlockPos();
+        destination = BlockPos.ORIGIN;
         currentX = currentY = currentZ = 0;
         destXSize = template.xSize;
         destYSize = template.ySize;
         destZSize = template.zSize;
         currentPriority = 0;
 
-        turns = ((face + 2) % 4);
+        turns = ((face.getHorizontalIndex() + 2) % 4);
         int swap;
         for (int i = 0; i < turns; i++) {
             swap = destXSize;
@@ -90,8 +86,8 @@ public class StructureBuilder implements IStructureBuilder {
     }
 
     protected StructureBuilder() {
-        destination = new BlockPos();
-        buildOrigin = new BlockPos();
+        destination = BlockPos.ORIGIN;
+        buildOrigin = BlockPos.ORIGIN;
     }
 
     public void instantConstruction() {
@@ -114,9 +110,9 @@ public class StructureBuilder implements IStructureBuilder {
             if (rule == null) {
                 continue;
             }
-            destination = BlockTools.rotateInArea(rule.getPosition(), template.xSize, template.zSize, turns).offsetBy(bb.min);
+            destination = BlockTools.rotateInArea(rule.getPosition(), template.xSize, template.zSize, turns).add(bb.min);
             try {
-                rule.handlePlacement(world, turns, destination.x, destination.y, destination.z, this);
+                rule.handlePlacement(world, turns, destination, this);
             } catch (StructureBuildingException e) {
                 e.printStackTrace();
             }
@@ -130,31 +126,33 @@ public class StructureBuilder implements IStructureBuilder {
      */
     @Override
     public void placeBlock(BlockPos pos, Block block, int meta, int priority) {
-        if (y <= 0 || y >= world.getHeight()) {
+        if (pos.getY() <= 0 || pos.getY() >= world.getHeight()) {
             return;
         }
-        Chunk chunk = world.getChunkFromBlockCoords(x, z);
-        ExtendedBlockStorage stc = chunk.getBlockStorageArray()[y >> 4];
-        if (stc == null)//A block in a void subchunk
-        {
-            if(block != Blocks.AIR)//Not changing anything
-                world.setBlock(x, y, z, block, meta, 2);//using flag=2 -- no block update, but still send to clients (should help with issues of things popping off)
-        } else {//unsurprisingly, direct chunk access is 2X faster than going through the world =\
-            int cx = x & 15; //bitwise-and to scrub all bits above 15
-            int cz = z & 15; //bitwise-and to scrub all bits above 15
-            chunk.removeTileEntity(cx, y, cz);
-            stc.func_150818_a(cx, y & 15, cz, block);
-            stc.setExtBlockMetadata(cx, y & 15, cz, meta);
-            if (block.hasTileEntity(meta)) {
-                TileEntity te = block.createTileEntity(world, meta);
-                if(te != null) {
-                    chunk.func_150812_a(cx, y, cz, te);//set TE in chunk data
-                    world.addTileEntity(te);//add TE to world added/loaded TE list
-                }
-            }
-            BlockTools.notifyBlockUpdate(world, pos);
-            //TODO clean this up to send own list of block-changes, not rely upon vanilla to send changes. (as the client-side of this lags to all hell)
-        }
+        world.setBlockState(pos, block.getStateFromMeta(meta));
+        //TODO this used to be more complicated for perf reasons - look into whether needs to be recreated
+//        Chunk chunk = world.getChunkFromBlockCoords(x, z);
+//        ExtendedBlockStorage stc = chunk.getBlockStorageArray()[y >> 4];
+//        if (stc == null)//A block in a void subchunk
+//        {
+//            if(block != Blocks.AIR)//Not changing anything
+//                world.setBlockState(pos, block.getStateFromMeta(meta), 2);//using flag=2 -- no block update, but still send to clients (should help with issues of things popping off)
+//        } else {//unsurprisingly, direct chunk access is 2X faster than going through the world =\
+//            int cx = x & 15; //bitwise-and to scrub all bits above 15
+//            int cz = z & 15; //bitwise-and to scrub all bits above 15
+//            chunk.removeTileEntity(cx, y, cz);
+//            stc.func_150818_a(cx, y & 15, cz, block);
+//            stc.setExtBlockMetadata(cx, y & 15, cz, meta);
+//            if (block.hasTileEntity(block.getStateFromMeta(meta))) {
+//                TileEntity te = block.createTileEntity(world, meta);
+//                if(te != null) {
+//                    chunk.func_150812_a(cx, y, cz, te);//set TE in chunk data
+//                    world.addTileEntity(te);//add TE to world added/loaded TE list
+//                }
+//            }
+//            BlockTools.notifyBlockUpdate(world, pos);
+//            //TODO clean this up to send own list of block-changes, not rely upon vanilla to send changes. (as the client-side of this lags to all hell)
+//        }
     }
 
     protected void placeCurrentPosition(TemplateRule rule) {
@@ -163,7 +161,7 @@ public class StructureBuilder implements IStructureBuilder {
                 placeAir();
             }
         }
-        else if (rule.shouldPlaceOnBuildPass(world, turns, destination.x, destination.y, destination.z, currentPriority)) {
+        else if (rule.shouldPlaceOnBuildPass(world, turns, destination, currentPriority)) {
             this.placeRule(rule);
         }
     }
@@ -182,23 +180,23 @@ public class StructureBuilder implements IStructureBuilder {
 
     protected void placeAir() {
         if (!template.getValidationSettings().isPreserveBlocks()) {
-            template.getValidationSettings().handleClearAction(world, destination.x, destination.y, destination.z, template, bb);
+            template.getValidationSettings().handleClearAction(world, destination, template, bb);
         }
     }
 
     protected void placeRule(TemplateRule rule) {
-        if (destination.y <= 0) {
+        if (destination.getY() <= 0) {
             return;
         }
         try {
-            rule.handlePlacement(world, turns, destination.x, destination.y, destination.z, this);
+            rule.handlePlacement(world, turns, destination, this);
         } catch (StructureBuildingException e) {
             e.printStackTrace();
         }
     }
 
     protected void incrementDestination() {
-        destination = BlockTools.rotateInArea(new BlockPos(currentX, currentY, currentZ), template.xSize, template.zSize, turns).offsetBy(bb.min);
+        destination = BlockTools.rotateInArea(new BlockPos(currentX, currentY, currentZ), template.xSize, template.zSize, turns).add(bb.min);
     }
 
     /*

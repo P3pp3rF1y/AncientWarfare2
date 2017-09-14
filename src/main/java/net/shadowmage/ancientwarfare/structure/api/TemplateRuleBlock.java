@@ -21,6 +21,7 @@
 package net.shadowmage.ancientwarfare.structure.api;
 
 import net.minecraft.block.Block;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.structure.api.TemplateParsingException.TemplateRuleParsingException;
 
@@ -38,7 +39,7 @@ public abstract class TemplateRuleBlock extends TemplateRule {
      * @param meta
      * @param turns
      */
-    public TemplateRuleBlock(World world, int x, int y, int z, Block block, int meta, int turns) {
+    public TemplateRuleBlock(World world, BlockPos pos, Block block, int meta, int turns) {
 
     }
     /*
@@ -58,7 +59,7 @@ public abstract class TemplateRuleBlock extends TemplateRule {
      * @param turns -- 90' clockwise turns needed for proper orientation from normalized template orientation
      * @return true if this rule can handle the input block
      */
-    public abstract boolean shouldReuseRule(World world, Block block, int meta, int turns, int x, int y, int z);
+    public abstract boolean shouldReuseRule(World world, Block block, int meta, int turns, BlockPos pos);
 
     @Override
     public final void parseRule(int ruleNumber, List<String> lines) throws TemplateRuleParsingException {

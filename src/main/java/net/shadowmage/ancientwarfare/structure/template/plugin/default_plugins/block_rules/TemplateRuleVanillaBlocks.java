@@ -24,11 +24,13 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class TemplateRuleVanillaBlocks extends TemplateRuleBlock {
@@ -41,8 +43,8 @@ public class TemplateRuleVanillaBlocks extends TemplateRuleBlock {
     /*
      * constructor for dynamic construction.  passed world and coords so that the rule can handle its own logic internally
      */
-    public TemplateRuleVanillaBlocks(World world, int x, int y, int z, Block block, int meta, int turns) {
-        super(world, x, y, z, block, meta, turns);
+    public TemplateRuleVanillaBlocks(World world, BlockPos pos, Block block, int meta, int turns) {
+        super(world, pos, block, meta, turns);
         this.blockName = BlockDataManager.INSTANCE.getNameForBlock(block);
         this.block = block;
         this.meta = BlockDataManager.INSTANCE.getRotatedMeta(block, meta, turns);
@@ -54,13 +56,13 @@ public class TemplateRuleVanillaBlocks extends TemplateRuleBlock {
     }
 
     @Override
-    public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) {
+    public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
         int localMeta = BlockDataManager.INSTANCE.getRotatedMeta(block, this.meta, turns);
-        builder.placeBlock(x, y, z, block, localMeta, buildPass);
+        builder.placeBlock(pos, block, localMeta, buildPass);
     }
 
     @Override
-    public boolean shouldReuseRule(World world, Block block, int meta, int turns, int x, int y, int z) {
+    public boolean shouldReuseRule(World world, Block block, int meta, int turns, BlockPos pos) {
         return block != null && block == this.block && BlockDataManager.INSTANCE.getRotatedMeta(block, meta, turns) == this.meta;
     }
 
@@ -80,7 +82,7 @@ public class TemplateRuleVanillaBlocks extends TemplateRuleBlock {
     }
 
     @Override
-    public boolean shouldPlaceOnBuildPass(World world, int turns, int x, int y, int z, int buildPass) {
+    public boolean shouldPlaceOnBuildPass(World world, int turns, BlockPos pos, int buildPass) {
         return buildPass == this.buildPass;
     }
 

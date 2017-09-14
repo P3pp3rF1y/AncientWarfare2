@@ -20,7 +20,6 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins;
 
-import cpw.mods.fml.common.registry.GameData;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityHanging;
@@ -28,6 +27,7 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.api.StructureContentPlugin;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockLogic;
@@ -46,9 +46,9 @@ public class StructurePluginModDefault implements StructureContentPlugin {
 
     @Override
     public void addHandledBlocks(IStructurePluginManager manager) {
-        for (Block aBlock : (Iterable<Block>) GameData.getBlockRegistry()) {
-            if(aBlock!=null && GameData.getBlockRegistry().getNameForObject(aBlock).startsWith(mod)) {
-                if (aBlock.hasTileEntity(0)) {
+        for (Block aBlock : Block.REGISTRY) {
+            if(aBlock!=null && aBlock.getRegistryName().getResourceDomain().equals(mod)) {
+                if (aBlock.hasTileEntity()) {
                     manager.registerBlockHandler("modContainerDefault", aBlock, TemplateRuleBlockLogic.class);
                 } else {
                     manager.registerBlockHandler("modBlockDefault", aBlock, TemplateRuleModBlocks.class);
@@ -60,9 +60,9 @@ public class StructurePluginModDefault implements StructureContentPlugin {
 
     @Override
     public void addHandledEntities(IStructurePluginManager manager) {
-        for (Object key : EntityList.stringToClassMapping.keySet()) {
+        for (ResourceLocation key : EntityList.ENTITY_EGGS.keySet()) {
             if(key.toString().startsWith(mod)) {
-                Class<? extends Entity> clazz = (Class<? extends Entity>) EntityList.stringToClassMapping.get(key);
+                Class<? extends Entity> clazz = EntityList.getClass(key);
                 if (EntityHanging.class.isAssignableFrom(clazz)) {
                     manager.registerEntityHandler("modHangingDefault", clazz, TemplateRuleEntityHanging.class);
                 } else if (EntityAnimal.class.isAssignableFrom(clazz)) {

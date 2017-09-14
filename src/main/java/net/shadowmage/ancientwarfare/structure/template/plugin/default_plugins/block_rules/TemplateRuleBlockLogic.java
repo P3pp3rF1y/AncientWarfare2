@@ -23,6 +23,7 @@ package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
@@ -31,8 +32,8 @@ public class TemplateRuleBlockLogic extends TemplateRuleVanillaBlocks {
 
     public NBTTagCompound tag = new NBTTagCompound();
 
-    public TemplateRuleBlockLogic(World world, int x, int y, int z, Block block, int meta, int turns) {
-        super(world, x, y, z, block, meta, turns);
+    public TemplateRuleBlockLogic(World world, BlockPos pos, Block block, int meta, int turns) {
+        super(world, pos, block, meta, turns);
         TileEntity te = world.getTileEntity(pos);
         if(te!=null) {
             te.writeToNBT(tag);
@@ -46,21 +47,23 @@ public class TemplateRuleBlockLogic extends TemplateRuleVanillaBlocks {
     }
 
     @Override
-    public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) {
-        super.handlePlacement(world, turns, x, y, z, builder);
+    public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
+        super.handlePlacement(world, turns, pos, builder);
         int localMeta = BlockDataManager.INSTANCE.getRotatedMeta(block, this.meta, turns);
-        world.setBlockMetadataWithNotify(x, y, z, localMeta, 3);
+        world.setBlockState(pos, block.getStateFromMeta(localMeta), 3);
         TileEntity te = world.getTileEntity(pos);
         if (te != null) {
-            tag.setInteger("x", x);
-            tag.setInteger("y", y);
-            tag.setInteger("z", z);
+            //TODO look into changing this so that the whole TE doesn't need reloading from custom NBT
+            tag.setString("id", block.getRegistryName().toString());
+            tag.setInteger("x", pos.getX());
+            tag.setInteger("y", pos.getY());
+            tag.setInteger("z", pos.getZ());
             te.readFromNBT(tag);
         }
     }
 
     @Override
-    public boolean shouldReuseRule(World world, Block block, int meta, int turns, int x, int y, int z) {
+    public boolean shouldReuseRule(World world, Block block, int meta, int turns, BlockPos pos) {
         return false;
     }
 

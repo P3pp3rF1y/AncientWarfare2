@@ -235,7 +235,7 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwna
         super.onDataPacket(net, pkt);
         NBTTagCompound tag = pkt.func_148857_g();
         if (tag.hasKey("bbMin") && tag.hasKey("bbMax")) {
-            clientBB = new StructureBB(new BlockPos(tag.getCompoundTag("bbMin")), new BlockPos(tag.getCompoundTag("bbMax")));
+            clientBB = new StructureBB(BlockPos.fromLong(tag.getLong("bbMin")), BlockPos.fromLong(tag.getLong("bbMax")));
         }
     }
 

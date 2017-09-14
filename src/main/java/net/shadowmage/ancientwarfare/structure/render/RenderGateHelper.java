@@ -38,13 +38,13 @@ public final class RenderGateHelper extends Render<EntityGate> {
 
     public RenderGateHelper(RenderManager renderManager) {
         super(renderManager);
-        this.addGateRender(0, new RenderGateBasic());
-        this.addGateRender(1, new RenderGateBasic());
-        this.addGateRender(4, new RenderGateSingle());
-        this.addGateRender(5, new RenderGateSingle());
-        this.addGateRender(8, new RenderGateDouble());
-        this.addGateRender(9, new RenderGateDouble());
-        this.addGateRender(12, new RenderGateRotatingBridge());
+        this.addGateRender(0, new RenderGateBasic(renderManager));
+        this.addGateRender(1, new RenderGateBasic(renderManager));
+        this.addGateRender(4, new RenderGateSingle(renderManager));
+        this.addGateRender(5, new RenderGateSingle(renderManager));
+        this.addGateRender(8, new RenderGateDouble(renderManager));
+        this.addGateRender(9, new RenderGateDouble(renderManager));
+        this.addGateRender(12, new RenderGateRotatingBridge(renderManager));
     }
 
     protected void addGateRender(int type, Render rend) {

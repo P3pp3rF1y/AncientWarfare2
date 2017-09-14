@@ -20,6 +20,8 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
@@ -68,25 +70,25 @@ public class StructureValidatorSky extends StructureValidator {
     }
 
     @Override
-    public boolean shouldIncludeForSelection(World world, int x, int y, int z, int face, StructureTemplate template) {
+    public boolean shouldIncludeForSelection(World world, int x, int y, int z, EnumFacing face, StructureTemplate template) {
         int remainingHeight = world.getActualHeight() - minFlyingHeight - (template.ySize - template.yOffset);
         return y < remainingHeight;
     }
 
     @Override
-    public int getAdjustedSpawnY(World world, int x, int y, int z, int face, StructureTemplate template, StructureBB bb) {
+    public int getAdjustedSpawnY(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
         int range = maxGenerationHeight - minGenerationHeight + 1;
         return y + minFlyingHeight + world.rand.nextInt(range);
     }
 
     @Override
-    public boolean validatePlacement(World world, int x, int y, int z, int face, StructureTemplate template, StructureBB bb) {
+    public boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
         int maxY = minGenerationHeight - minFlyingHeight;
         return validateBorderBlocks(world, template, bb, 0, maxY, false);
     }
 
     @Override
-    public void preGeneration(World world, BlockPos pos, int face, StructureTemplate template, StructureBB bb) {
+    public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb) {
 
     }
 }

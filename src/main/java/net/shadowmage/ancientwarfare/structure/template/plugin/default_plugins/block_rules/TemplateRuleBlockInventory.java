@@ -27,10 +27,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.WeightedRandomChestContent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ChestGenHooks;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
@@ -39,16 +40,14 @@ import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import javax.annotation.Nonnull;
 import java.util.Random;
 
-import static net.minecraftforge.common.ChestGenHooks.DUNGEON_CHEST;
-
 public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
 
     public int randomLootLevel = 0;
     public NBTTagCompound tag = new NBTTagCompound();
     ItemStack[] inventoryStacks;
 
-    public TemplateRuleBlockInventory(World world, int x, int y, int z, Block block, int meta, int turns) {
-        super(world, x, y, z, block, meta, turns);
+    public TemplateRuleBlockInventory(World world, BlockPos pos, Block block, int meta, int turns) {
+        super(world, pos, block, meta, turns);
         TileEntity te = world.getTileEntity(pos);
         if (te instanceof IInventory) {
             IInventory inventory = (IInventory) te;
@@ -88,41 +87,44 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
 
     @Override
     public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
-        super.handlePlacement(world, turns, x, y, z, builder);
+        super.handlePlacement(world, turns, pos, builder);
         int localMeta = BlockDataManager.INSTANCE.getRotatedMeta(block, this.meta, turns);
-        world.setBlockMetadataWithNotify(x, y, z, localMeta, 3);
+        world.setBlockState(pos, block.getStateFromMeta(meta), 3);
         TileEntity te = world.getTileEntity(pos);
         if (!(te instanceof IInventory)) {
             return;
         }
         IInventory inventory = (IInventory) te;
-        tag.setInteger("x", x);
-        tag.setInteger("y", y);
-        tag.setInteger("z", z);
+        //TODO look into changing this so that the whole TE doesn't need reloading from custom NBT
+        tag.setString("id", block.getRegistryName().toString());
+        tag.setInteger("x", pos.getX());
+        tag.setInteger("y", pos.getY());
+        tag.setInteger("z", pos.getZ());
         te.readFromNBT(tag);
         if (randomLootLevel > 0) {
             for (int i = 0; i < inventory.getSizeInventory(); i++) {
                 inventory.setInventorySlotContents(i, ItemStack.EMPTY);
             }//clear the inventory in prep for random loot stuff
-            generateLootFor(inventory, world.rand);
+            generateLootFor(world, inventory, world.rand);
         } else if (inventoryStacks != null) {
             @Nonnull ItemStack stack;
             for (int i = 0; i < inventory.getSizeInventory(); i++) {
-                stack = i < inventoryStacks.length ? inventoryStacks[i] : null;
+                stack = i < inventoryStacks.length ? inventoryStacks[i] : ItemStack.EMPTY;
                 inventory.setInventorySlotContents(i, stack.isEmpty() ? ItemStack.EMPTY : stack.copy());
             }
         }
         BlockTools.notifyBlockUpdate(world, pos);
     }
 
-    public void generateLootFor(IInventory inventory, Random rng) {
+    public void generateLootFor(World world, IInventory inventory, Random rng) {
+        LootContext.Builder builder = new LootContext.Builder((WorldServer) world);
         for (int i = 0; i < randomLootLevel; i++) {
-            WeightedRandomChestContent.generateChestContents(rng, ChestGenHooks.getItems(DUNGEON_CHEST, rng), inventory, ChestGenHooks.getCount(DUNGEON_CHEST, rng));
+            world.getLootTableManager().getLootTableFromLocation(LootTableList.CHESTS_SIMPLE_DUNGEON).fillInventory(inventory, rng, builder.build());
         }
     }
 
     @Override
-    public boolean shouldReuseRule(World world, Block block, int meta, int turns, int x, int y, int z) {
+    public boolean shouldReuseRule(World world, Block block, int meta, int turns, BlockPos pos) {
         return false;
     }
 

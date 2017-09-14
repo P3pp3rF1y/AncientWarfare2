@@ -25,6 +25,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
@@ -32,12 +33,12 @@ import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
 public class TemplateRuleBlockSign extends TemplateRuleVanillaBlocks {
 
-    public String signContents[];
+    public ITextComponent signContents[];
 
-    public TemplateRuleBlockSign(World world, int x, int y, int z, Block block, int meta, int turns) {
-        super(world, x, y, z, block, meta, turns);
+    public TemplateRuleBlockSign(World world, BlockPos pos, Block block, int meta, int turns) {
+        super(world, pos, block, meta, turns);
         TileEntitySign te = (TileEntitySign) world.getTileEntity(pos);
-        signContents = new String[te.signText.length];
+        signContents = new ITextComponent[te.signText.length];
         for (int i = 0; i < signContents.length; i++) {
             signContents[i] = te.signText[i];
         }
@@ -59,7 +60,7 @@ public class TemplateRuleBlockSign extends TemplateRuleVanillaBlocks {
         } else {
             meta = BlockDataManager.INSTANCE.getRotatedMeta(block, this.meta, turns);
         }
-        if (world.setBlock(x, y, z, block, meta, 2)) {
+        if (world.setBlockState(pos, block.getStateFromMeta(meta), 2)) {
             TileEntitySign te = (TileEntitySign) world.getTileEntity(pos);
             if (te != null) {
                 for (int i = 0; i < this.signContents.length; i++) {
@@ -71,7 +72,7 @@ public class TemplateRuleBlockSign extends TemplateRuleVanillaBlocks {
     }
 
     @Override
-    public boolean shouldReuseRule(World world, Block block, int meta, int turns, int x, int y, int z) {
+    public boolean shouldReuseRule(World world, Block block, int meta, int turns, BlockPos pos) {
         return false;
     }
 
@@ -79,16 +80,17 @@ public class TemplateRuleBlockSign extends TemplateRuleVanillaBlocks {
     public void writeRuleData(NBTTagCompound tag) {
         super.writeRuleData(tag);
         for (int i = 0; i < 4; i++) {
-            tag.setString("signContents" + i, signContents[i]);
+            tag.setString("signContents" + i, ITextComponent.Serializer.componentToJson(signContents[i]));
         }
     }
 
     @Override
     public void parseRuleData(NBTTagCompound tag) {
         super.parseRuleData(tag);
-        this.signContents = new String[4];
+        this.signContents = new ITextComponent[4];
         for (int i = 0; i < 4; i++) {
-            this.signContents[i] = tag.getString("signContents" + i);
+            //TODO make sure that deserializing here works correctly. For some reason TileEntitySign does this through command instance
+            this.signContents[i] = ITextComponent.Serializer.jsonToComponent(tag.getString("signContents" + i));
         }
     }
 

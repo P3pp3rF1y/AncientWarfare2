@@ -20,14 +20,16 @@
  */
 package net.shadowmage.ancientwarfare.structure.render.gate;
 
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import org.lwjgl.opengl.GL11;
 
 public final class RenderGateDouble extends RenderGateBasic {
 
-    public RenderGateDouble() {
-
+    public RenderGateDouble(RenderManager renderManager) {
+        super(renderManager);
     }
 
     @Override

@@ -20,19 +20,38 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins;
 
-import cpw.mods.fml.common.registry.GameData;
 import net.minecraft.block.Block;
 import net.minecraft.entity.boss.EntityWither;
-import net.minecraft.entity.item.*;
+import net.minecraft.entity.item.EntityBoat;
+import net.minecraft.entity.item.EntityItemFrame;
+import net.minecraft.entity.item.EntityMinecartChest;
+import net.minecraft.entity.item.EntityMinecartEmpty;
+import net.minecraft.entity.item.EntityMinecartFurnace;
+import net.minecraft.entity.item.EntityMinecartHopper;
+import net.minecraft.entity.item.EntityMinecartTNT;
+import net.minecraft.entity.item.EntityPainting;
 import net.minecraft.entity.monster.EntityIronGolem;
 import net.minecraft.entity.monster.EntitySnowman;
-import net.minecraft.entity.passive.*;
+import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.passive.EntityOcelot;
+import net.minecraft.entity.passive.EntityPig;
+import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.init.Blocks;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.api.StructureContentPlugin;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
-import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.*;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockDoors;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockInventory;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockLogic;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockSign;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleFlowerPot;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleVanillaBlocks;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleVanillaSkull;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules.TemplateRuleEntityHanging;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules.TemplateRuleEntityLogic;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules.TemplateRuleGates;
@@ -50,7 +69,12 @@ public class StructurePluginVanillaHandler implements StructureContentPlugin {
     public void addHandledBlocks(IStructurePluginManager manager) {
         HashSet<Block> specialHandledBlocks = new HashSet<>();
         specialHandledBlocks.add(Blocks.IRON_DOOR);
-        specialHandledBlocks.add(Blocks.WOODEN_DOOR);
+        specialHandledBlocks.add(Blocks.SPRUCE_DOOR);
+        specialHandledBlocks.add(Blocks.OAK_DOOR);
+        specialHandledBlocks.add(Blocks.JUNGLE_DOOR);
+        specialHandledBlocks.add(Blocks.BIRCH_DOOR);
+        specialHandledBlocks.add(Blocks.ACACIA_DOOR);
+        specialHandledBlocks.add(Blocks.DARK_OAK_DOOR);
         specialHandledBlocks.add(Blocks.STANDING_SIGN);
         specialHandledBlocks.add(Blocks.WALL_SIGN);
         specialHandledBlocks.add(Blocks.MOB_SPAWNER);
@@ -68,15 +92,20 @@ public class StructurePluginVanillaHandler implements StructureContentPlugin {
         specialHandledBlocks.add(Blocks.FLOWER_POT);
         specialHandledBlocks.add(Blocks.SKULL);
 
-        for (Block block : (Iterable<Block>) GameData.getBlockRegistry()) {
-            if (block != null && GameData.getBlockRegistry().getNameForObject(block).startsWith("minecraft:") && !specialHandledBlocks.contains(block)) {
+        for (Block block : Block.REGISTRY) {
+            if (block != null && block.getRegistryName().getResourceDomain().equals("minecraft") && !specialHandledBlocks.contains(block)) {
                 manager.registerBlockHandler("vanillaBlocks", block, TemplateRuleVanillaBlocks.class);
             }
         }
         specialHandledBlocks.clear();
 
         manager.registerBlockHandler("vanillaDoors", Blocks.IRON_DOOR, TemplateRuleBlockDoors.class);
-        manager.registerBlockHandler("vanillaDoors", Blocks.WOODEN_DOOR, TemplateRuleBlockDoors.class);
+        manager.registerBlockHandler("vanillaDoors", Blocks.SPRUCE_DOOR, TemplateRuleBlockDoors.class);
+        manager.registerBlockHandler("vanillaDoors", Blocks.OAK_DOOR, TemplateRuleBlockDoors.class);
+        manager.registerBlockHandler("vanillaDoors", Blocks.JUNGLE_DOOR, TemplateRuleBlockDoors.class);
+        manager.registerBlockHandler("vanillaDoors", Blocks.BIRCH_DOOR, TemplateRuleBlockDoors.class);
+        manager.registerBlockHandler("vanillaDoors", Blocks.ACACIA_DOOR, TemplateRuleBlockDoors.class);
+        manager.registerBlockHandler("vanillaDoors", Blocks.DARK_OAK_DOOR, TemplateRuleBlockDoors.class);
         manager.registerBlockHandler("vanillaSign", Blocks.WALL_SIGN, TemplateRuleBlockSign.class);
         manager.registerBlockHandler("vanillaSign", Blocks.STANDING_SIGN, TemplateRuleBlockSign.class);
         manager.registerBlockHandler("vanillaLogic", Blocks.MOB_SPAWNER, TemplateRuleBlockLogic.class);

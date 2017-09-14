@@ -34,13 +34,11 @@ public class StructureBuilderTicked extends StructureBuilder {
 
     public boolean invalid = false;
     private boolean hasClearedArea;
-    private int clearX, clearY, clearZ;
+    private BlockPos clearPos;
 
     public StructureBuilderTicked(World world, StructureTemplate template, EnumFacing face, BlockPos pos) {
         super(world, template, face, pos);
-        clearX = bb.min.x;
-        clearY = bb.min.y;
-        clearZ = bb.min.z;
+        clearPos = bb.min;
     }
 
     public StructureBuilderTicked()//nbt-constructor
@@ -62,7 +60,7 @@ public class StructureBuilderTicked extends StructureBuilder {
         } else if (!this.isFinished()) {
             while (!this.isFinished()) {
                 TemplateRule rule = template.getRuleAt(currentX, currentY, currentZ);
-                if (rule == null || !rule.shouldPlaceOnBuildPass(world, turns, destination.x, destination.y, destination.z, currentPriority)) {
+                if (rule == null || !rule.shouldPlaceOnBuildPass(world, turns, destination, currentPriority)) {
                     increment();//skip that position, was either air/null rule, or could not be placed on current pass, auto-increment to next
                 } else//place it...
                 {
@@ -75,17 +73,18 @@ public class StructureBuilderTicked extends StructureBuilder {
     }
 
     protected boolean breakClearTargetBlock(EntityPlayer player) {
-        return BlockTools.breakBlockAndDrop(world, player, clearX, clearY, clearZ);
+        return BlockTools.breakBlockAndDrop(world, player, clearPos);
     }
 
     protected boolean incrementClear() {
-        clearX++;
-        if (clearX > bb.max.x) {
-            clearX = bb.min.x;
-            clearZ++;
-            if (clearZ > bb.max.z) {
-                clearY++;
-                if (clearY > bb.max.y) {
+        clearPos = clearPos.east();
+        if (clearPos.getX() > bb.max.getX()) {
+            clearPos = new BlockPos(bb.min.getX(), clearPos.getY(), clearPos.getZ());
+            clearPos = clearPos.south();
+            if (clearPos.getZ() > bb.max.getZ()) {
+                //TODO no reset of Z coordinate??
+                clearPos.up();
+                if (clearPos.getY() > bb.max.getY()) {
                     return false;
                 }
             }
@@ -111,17 +110,15 @@ public class StructureBuilderTicked extends StructureBuilder {
             this.currentX = tag.getInteger("x");
             this.currentY = tag.getInteger("y");
             this.currentZ = tag.getInteger("z");
-            this.clearX = tag.getInteger("cx");
-            this.clearY = tag.getInteger("cy");
-            this.clearZ = tag.getInteger("cz");
+            this.clearPos = BlockPos.fromLong(tag.getLong("clearPos"));
             this.hasClearedArea = tag.getBoolean("cleared");
             this.turns = tag.getInteger("turns");
-            this.buildFace = tag.getInteger("buildFace");
+            this.buildFace = EnumFacing.VALUES[tag.getByte("buildFace")];
             this.maxPriority = tag.getInteger("maxPriority");
             this.currentPriority = tag.getInteger("currentPriority");
 
-            this.bb = new StructureBB(new BlockPos(tag.getCompoundTag("bbMin")), new BlockPos(tag.getCompoundTag("bbMax")));
-            this.buildOrigin = new BlockPos(tag.getCompoundTag("buildOrigin"));
+            this.bb = new StructureBB(BlockPos.fromLong(tag.getLong("bbMin")), BlockPos.fromLong(tag.getLong("bbMax")));
+            this.buildOrigin = BlockPos.fromLong(tag.getLong("buildOrigin"));
             this.incrementDestination();
         } else {
             invalid = true;
@@ -130,21 +127,19 @@ public class StructureBuilderTicked extends StructureBuilder {
 
     public void writeToNBT(NBTTagCompound tag) {
         tag.setString("name", template.name);
-        tag.setInteger("face", buildFace);
+        tag.setByte("face", (byte) buildFace.ordinal());
         tag.setInteger("turns", turns);
         tag.setInteger("maxPriority", maxPriority);
         tag.setInteger("currentPriority", currentPriority);
         tag.setInteger("x", currentX);
         tag.setInteger("y", currentY);
         tag.setInteger("z", currentZ);
-        tag.setInteger("cx", clearX);
-        tag.setInteger("cy", clearY);
-        tag.setInteger("cz", clearZ);
+        tag.setLong("clearPos", clearPos.toLong());
         tag.setBoolean("cleared", hasClearedArea);
 
-        tag.setTag("buildOrigin", buildOrigin.writeToNBT(new NBTTagCompound()));
-        tag.setTag("bbMin", bb.min.writeToNBT(new NBTTagCompound()));
-        tag.setTag("bbMax", bb.max.writeToNBT(new NBTTagCompound()));
+        tag.setLong("buildOrigin", buildOrigin.toLong());
+        tag.setLong("bbMin", bb.min.toLong());
+        tag.setLong("bbMax", bb.max.toLong());
     }
 
     /*

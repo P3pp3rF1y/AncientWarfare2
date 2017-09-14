@@ -24,6 +24,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
@@ -34,13 +36,13 @@ import java.util.List;
 
 public class TemplateRuleVanillaEntity extends TemplateRuleEntity {
 
-    public String mobID;
+    public ResourceLocation registryName;
     public float xOffset;
     public float zOffset;
     public float rotation;
 
     public TemplateRuleVanillaEntity(World world, Entity entity, int turns, int x, int y, int z) {
-        this.mobID = EntityList.getEntityString(entity);
+        this.registryName = EntityList.getKey(entity);
         rotation = (entity.rotationYaw + 90.f * turns) % 360.f;
         float x1, z1;
         x1 = (float) (entity.posX % 1.d);
@@ -60,22 +62,22 @@ public class TemplateRuleVanillaEntity extends TemplateRuleEntity {
     }
 
     @Override
-    public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) throws EntityPlacementException {
-        Entity e = EntityList.createEntityByName(mobID, world);
+    public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) throws EntityPlacementException {
+        Entity e = EntityList.createEntityByIDFromName(registryName, world);
         if (e == null) {
-            throw new EntityPlacementException("Could not create entity for type: " + mobID);
+            throw new EntityPlacementException("Could not create entity for type: " + registryName.toString());
         }
         float x1 = BlockTools.rotateFloatX(xOffset, zOffset, turns);
         float z1 = BlockTools.rotateFloatZ(xOffset, zOffset, turns);
         float yaw = (rotation + 90.f * turns) % 360.f;
-        e.setPosition(x + x1, y, z + z1);
+        e.setPosition(pos.getX() + x1, pos.getY(), pos.getZ() + z1);
         e.rotationYaw = yaw;
         world.spawnEntity(e);
     }
 
     @Override
     public void writeRuleData(NBTTagCompound tag) {
-        tag.setString("mobID", mobID);
+        tag.setString("mobID", registryName.toString());
         tag.setFloat("xOffset", xOffset);
         tag.setFloat("zOffset", zOffset);
         tag.setFloat("rotation", rotation);
@@ -83,14 +85,14 @@ public class TemplateRuleVanillaEntity extends TemplateRuleEntity {
 
     @Override
     public void parseRuleData(NBTTagCompound tag) {
-        mobID = tag.getString("mobID");
+        registryName = new ResourceLocation(tag.getString("mobID"));
         xOffset = tag.getFloat("xOffset");
         zOffset = tag.getFloat("zOffset");
         rotation = tag.getFloat("rotation");
     }
 
     @Override
-    public boolean shouldPlaceOnBuildPass(World world, int turns, int x, int y, int z, int buildPass) {
+    public boolean shouldPlaceOnBuildPass(World world, int turns, BlockPos pos, int buildPass) {
         return buildPass == 3;
     }
 

@@ -27,7 +27,11 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.*;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
@@ -89,6 +93,7 @@ public class BlockTools {
      * will return null if nothing is in range
      */
     public static BlockPos getBlockClickedOn(EntityPlayer player, World world, boolean offset) {
+        //TODO can this be replaced with regular rayTrace?
         float scaleFactor = 1.0F;
         float rotPitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * scaleFactor;
         float rotYaw = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw) * scaleFactor;
@@ -168,25 +173,6 @@ public class BlockTools {
      */
     public static BlockPos getMax(BlockPos pos1, BlockPos pos2) {
         return new BlockPos(Math.max(pos1.getX(), pos2.getX()), Math.max(pos1.getY(), pos2.getY()), Math.max(pos1.getZ(), pos2.getZ()));
-    }
-
-    /*
-     * return an MC directional facing int for a players rotationYaw
-     *
-     * @return (0-3) for south, west, north, east respectively
-     */
-    public static int getPlayerFacingFromYaw(float rotation) {
-        double yaw = (double) rotation;
-        while (yaw < 0.d) {
-            yaw += 360.d;
-        }
-        while (yaw >= 360.d) {
-            yaw -= 360.d;
-        }
-        double adjYaw = yaw + 45;
-        adjYaw *= 4;//multiply by four
-        adjYaw /= 360.d;
-        return (MathHelper.floor(adjYaw)) % 4;
     }
 
     /*

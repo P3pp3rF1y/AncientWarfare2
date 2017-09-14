@@ -21,9 +21,17 @@
 package net.shadowmage.ancientwarfare.structure.template.load;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockDoor;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.*;
+import net.minecraft.tileentity.TileEntityBrewingStand;
+import net.minecraft.tileentity.TileEntityChest;
+import net.minecraft.tileentity.TileEntityCommandBlock;
+import net.minecraft.tileentity.TileEntityDispenser;
+import net.minecraft.tileentity.TileEntityDropper;
+import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.tileentity.TileEntityHopper;
+import net.minecraft.tileentity.TileEntitySkull;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
@@ -31,11 +39,20 @@ import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidationType;
-import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.*;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockDoors;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockInventory;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockLogic;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockSign;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleModBlocks;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleVanillaBlocks;
 import net.shadowmage.ancientwarfare.structure.template.save.TemplateExporter;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
 
 
 public class TemplateFormatConverter {
@@ -58,7 +75,12 @@ public class TemplateFormatConverter {
         specialHandledBlocks.add(Blocks.STANDING_SIGN);
         specialHandledBlocks.add(Blocks.WALL_SIGN);
         specialHandledBlocks.add(Blocks.IRON_DOOR);
-        specialHandledBlocks.add(Blocks.WOODEN_DOOR);
+        specialHandledBlocks.add(Blocks.DARK_OAK_DOOR);
+        specialHandledBlocks.add(Blocks.ACACIA_DOOR);
+        specialHandledBlocks.add(Blocks.BIRCH_DOOR);
+        specialHandledBlocks.add(Blocks.JUNGLE_DOOR);
+        specialHandledBlocks.add(Blocks.OAK_DOOR);
+        specialHandledBlocks.add(Blocks.SPRUCE_DOOR);
         specialHandledBlocks.add(Blocks.COMMAND_BLOCK);
         specialHandledBlocks.add(Blocks.MOB_SPAWNER);//noop
         specialHandledBlocks.add(Blocks.FURNACE);
@@ -237,7 +259,7 @@ public class TemplateFormatConverter {
 
     private TemplateRule parseSpecialBlockRule(Block block, int number, int buildPass, int meta, List<String> lines) {
         TemplateRuleVanillaBlocks rule = null;
-        if (block == Blocks.WOODEN_DOOR || block == Blocks.IRON_DOOR) {
+        if (block instanceof BlockDoor) {
             rule = new TemplateRuleBlockDoors();
             rule.ruleNumber = number;
             rule.blockName = BlockDataManager.INSTANCE.getNameForBlock(block);

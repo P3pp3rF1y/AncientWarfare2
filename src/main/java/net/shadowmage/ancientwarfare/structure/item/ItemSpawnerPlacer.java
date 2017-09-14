@@ -20,18 +20,24 @@
  */
 package net.shadowmage.ancientwarfare.structure.item;
 
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemSpawnerPlacer extends Item {
@@ -39,45 +45,49 @@ public class ItemSpawnerPlacer extends Item {
     public ItemSpawnerPlacer(String itemName) {
         this.setUnlocalizedName(itemName);
         this.setCreativeTab(AWStructuresItemLoader.structureTab);
-        this.setTextureName("ancientwarfare:structure/" + itemName);
+        //this.setTextureName("ancientwarfare:structure/" + itemName);
     }
 
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
-        list.add(I18n.format("guistrings.selected_mob") + ":");
+    public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
+        tooltip.add(I18n.format("guistrings.selected_mob") + ":");
         if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnerData")) {
             NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData");
             String mobID = tag.getString("EntityId");
             if (mobID.isEmpty()) {
-                list.add(I18n.format("guistrings.no_selection"));
+                tooltip.add(I18n.format("guistrings.no_selection"));
             } else {
-                list.add(I18n.format("entity." + mobID + ".name"));
+                tooltip.add(I18n.format("entity." + mobID + ".name"));
             }
         } else {
-            list.add(I18n.format("guistrings.no_selection"));
+            tooltip.add(I18n.format("guistrings.no_selection"));
         }
-        list.add(TextFormatting.RED + I18n.format("guistrings.spawner.warning_1"));
-        list.add(TextFormatting.RED + I18n.format("guistrings.spawner.warning_2"));
+        tooltip.add(TextFormatting.RED + I18n.format("guistrings.spawner.warning_1"));
+        tooltip.add(TextFormatting.RED + I18n.format("guistrings.spawner.warning_2"));
     }
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-        if (player == null || player.world == null || player.world.isRemote || stack.isEmpty()) {
-            return stack;
+        ItemStack stack = player.getHeldItem(hand);
+        if (player.world.isRemote) {
+            return new ActionResult<>(EnumActionResult.SUCCESS, stack);
         }
-        RayTraceResult mophit = getRayTraceResultFromPlayer(player.world, player, false);
+        if (stack.isEmpty()) {
+            return new ActionResult<>(EnumActionResult.PASS, stack);
+        }
+        RayTraceResult traceResult = rayTrace(player.world, player, false);
         if (player.capabilities.isCreativeMode && player.isSneaking()) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SPAWNER, 0, 0, 0);
-        } else if (mophit != null && mophit.typeOfHit == RayTraceResult.Type.BLOCK) {
+        } else if (traceResult != null && traceResult.typeOfHit == RayTraceResult.Type.BLOCK) {
             if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnerData")) {
-                BlockPos hit = new BlockPos(mophit);
-                if (player.world.setBlock(hit.x, hit.y, hit.z, Blocks.MOB_SPAWNER)) {
-                    NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData");
-                    tag.setInteger("x", hit.x);
-                    tag.setInteger("y", hit.y);
-                    tag.setInteger("z", hit.z);
-                    TileEntity te = player.world.getTileEntity(hit.x, hit.y, hit.z);
+                if (player.world.setBlockState(traceResult.getBlockPos(), Blocks.MOB_SPAWNER.getDefaultState())) {
+                    NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData"); //TODO may make more sense to just update spawner specific tags instead of everything
+                    tag.setString("id", Blocks.MOB_SPAWNER.getRegistryName().toString());
+                    tag.setInteger("x", traceResult.getBlockPos().getX());
+                    tag.setInteger("y", traceResult.getBlockPos().getY());
+                    tag.setInteger("z", traceResult.getBlockPos().getZ());
+                    TileEntity te = player.world.getTileEntity(traceResult.getBlockPos());
                     te.readFromNBT(tag);
 
                     if (!player.capabilities.isCreativeMode) {
@@ -90,7 +100,7 @@ public class ItemSpawnerPlacer extends Item {
         } else {
             player.sendMessage(new TextComponentTranslation("guistrings.spawner.noblock"));
         }
-        return stack;
+        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
 
 }

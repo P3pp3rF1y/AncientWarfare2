@@ -21,9 +21,10 @@
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
@@ -38,9 +39,9 @@ import java.util.List;
 public class TemplateRuleGates extends TemplateRuleEntity {
 
     String gateType;
-    int orientation;
-    BlockPos pos1 = new BlockPos();
-    BlockPos pos2 = new BlockPos();
+    EnumFacing orientation;
+    BlockPos pos1 = BlockPos.ORIGIN;
+    BlockPos pos2 = BlockPos.ORIGIN;
 
     /*
      * scanner-constructor.  called when scanning an entity.
@@ -56,9 +57,9 @@ public class TemplateRuleGates extends TemplateRuleEntity {
         super(world, entity, turns, x, y, z);
         EntityGate gate = (EntityGate) entity;
 
-        this.pos1 = BlockTools.rotateAroundOrigin(gate.pos1.offset(-x, -y, -z), turns);
-        this.pos2 = BlockTools.rotateAroundOrigin(gate.pos2.offset(-x, -y, -z), turns);
-        this.orientation = (gate.gateOrientation + turns) % 4;
+        this.pos1 = BlockTools.rotateAroundOrigin(gate.pos1.add(-x, -y, -z), turns);
+        this.pos2 = BlockTools.rotateAroundOrigin(gate.pos2.add(-x, -y, -z), turns);
+        this.orientation = EnumFacing.VALUES[(gate.gateOrientation.ordinal() + turns) % 4];
         this.gateType = Gate.getGateNameFor(gate);
     }
 
@@ -67,21 +68,21 @@ public class TemplateRuleGates extends TemplateRuleEntity {
     }
 
     @Override
-    public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) throws EntityPlacementException {
-        BlockPos p1 = BlockTools.rotateAroundOrigin(pos1, turns).offset(x, y, z);
-        BlockPos p2 = BlockTools.rotateAroundOrigin(pos2, turns).offset(x, y, z);
+    public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) throws EntityPlacementException {
+        BlockPos p1 = BlockTools.rotateAroundOrigin(pos1, turns).add(pos);
+        BlockPos p2 = BlockTools.rotateAroundOrigin(pos2, turns).add(pos);
 
         BlockPos min = BlockTools.getMin(p1, p2);
         BlockPos max = BlockTools.getMax(p1, p2);
-        for (int x1 = min.x; x1 <= max.x; x1++) {
-            for (int y1 = min.y; y1 <= max.y; y1++) {
-                for (int z1 = min.z; z1 <= max.z; z1++) {
-                    world.setBlock(x1, y1, z1, Blocks.AIR);
+        for (int x1 = min.getX(); x1 <= max.getX(); x1++) {
+            for (int y1 = min.getY(); y1 <= max.getY(); y1++) {
+                for (int z1 = min.getZ(); z1 <= max.getZ(); z1++) {
+                    world.setBlockToAir(new BlockPos(x1, y1, z1));
                 }
             }
         }
 
-        EntityGate gate = Gate.constructGate(world, p1, p2, Gate.getGateByName(gateType), (byte) ((orientation + turns) % 4));
+        EntityGate gate = Gate.constructGate(world, p1, p2, Gate.getGateByName(gateType), EnumFacing.VALUES[((orientation.ordinal() + turns) % 4)]);
         if (gate == null) {
             throw new StructureBuildingException.EntityPlacementException("Could not create gate for type: " + gateType);
         }
@@ -91,17 +92,17 @@ public class TemplateRuleGates extends TemplateRuleEntity {
     @Override
     public void parseRuleData(NBTTagCompound tag) {
         gateType = tag.getString("gateType");
-        orientation = tag.getByte("orientation");
-        pos1 = new BlockPos(tag.getCompoundTag("pos1"));
-        pos2 = new BlockPos(tag.getCompoundTag("pos2"));
+        orientation = EnumFacing.VALUES[tag.getByte("orientation")];
+        pos1 = BlockPos.fromLong(tag.getLong("pos1"));
+        pos2 = BlockPos.fromLong(tag.getLong("pos2"));
     }
 
     @Override
     public void writeRuleData(NBTTagCompound tag) {
         tag.setString("gateType", gateType);
-        tag.setByte("orientation", (byte) orientation);
-        tag.setTag("pos1", pos1.writeToNBT(new NBTTagCompound()));
-        tag.setTag("pos2", pos2.writeToNBT(new NBTTagCompound()));
+        tag.setByte("orientation", (byte) orientation.ordinal());
+        tag.setLong("pos1", pos1.toLong());
+        tag.setLong("pos2", pos2.toLong());
     }
 
     @Override
@@ -110,7 +111,7 @@ public class TemplateRuleGates extends TemplateRuleEntity {
     }
 
     @Override
-    public boolean shouldPlaceOnBuildPass(World world, int turns, int x, int y, int z, int buildPass) {
+    public boolean shouldPlaceOnBuildPass(World world, int turns, BlockPos pos, int buildPass) {
         return buildPass == 3;
     }
 

@@ -1,10 +1,14 @@
 package net.shadowmage.ancientwarfare.structure.item;
 
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
@@ -21,6 +25,7 @@ import net.shadowmage.ancientwarfare.structure.template.load.TemplateLoader;
 import net.shadowmage.ancientwarfare.structure.template.save.TemplateExporter;
 import net.shadowmage.ancientwarfare.structure.template.scan.TemplateScanner;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.List;
 
@@ -30,35 +35,35 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IBo
         this.setUnlocalizedName(localizationKey);
         this.setCreativeTab(AWStructuresItemLoader.structureTab);
         this.setMaxStackSize(1);
-        this.setTextureName("ancientwarfare:structure/" + localizationKey);
+        //this.setTextureName("ancientwarfare:structure/" + localizationKey);
     }
 
-
     @Override
-    public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List list, boolean par4) {
-        if (!par1ItemStack.isEmpty()) {
-            ItemStructureSettings viewSettings = ItemStructureSettings.getSettingsFor(par1ItemStack);
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        if (!stack.isEmpty()) {
+            ItemStructureSettings viewSettings = ItemStructureSettings.getSettingsFor(stack);
             String key = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
             if (!viewSettings.hasPos1()) {
-                list.add(I18n.format("guistrings.structure.scanner.select_first_pos", key));
-                list.add("(1/4)");
+                tooltip.add(I18n.format("guistrings.structure.scanner.select_first_pos", key));
+                tooltip.add("(1/4)");
             } else if (!viewSettings.hasPos2()) {
-                list.add(I18n.format("guistrings.structure.scanner.select_second_pos", key));
-                list.add("(2/4)");
+                tooltip.add(I18n.format("guistrings.structure.scanner.select_second_pos", key));
+                tooltip.add("(2/4)");
             } else if (!viewSettings.hasBuildKey()) {
-                list.add(I18n.format("guistrings.structure.scanner.select_offset", key));
-                list.add("(3/4)");
+                tooltip.add(I18n.format("guistrings.structure.scanner.select_offset", key));
+                tooltip.add("(3/4)");
             } else {
-                list.add(key + " : " + I18n.format("guistrings.structure.scanner.click_to_process"));
-                list.add("(4/4)");
+                tooltip.add(key + " : " + I18n.format("guistrings.structure.scanner.click_to_process"));
+                tooltip.add("(4/4)");
             }
         }
     }
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+        ItemStack stack = player.getHeldItem(hand);
         if(world.isRemote){
-            return stack;
+            return new ActionResult<>(EnumActionResult.SUCCESS, stack);
         }
         ItemStructureSettings scanSettings = ItemStructureSettings.getSettingsFor(stack);
         if (player.isSneaking()) {
@@ -66,14 +71,14 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IBo
             ItemStructureSettings.setSettingsFor(stack, scanSettings);
         } else if (scanSettings.hasPos1() && scanSettings.hasPos2() && scanSettings.hasBuildKey()) {
             BlockPos key = scanSettings.key;
-            if (player.getDistance(key.x + 0.5d, key.y, key.z + 0.5d) > 10) {
+            if (player.getDistance(key.getX() + 0.5d, key.getY(), key.getZ() + 0.5d) > 10) {
                 player.sendMessage(new TextComponentTranslation("guistrings.structure.scanner.too_far"));
-                return stack;
+                return new ActionResult<>(EnumActionResult.FAIL, stack);
             }
             player.sendMessage(new TextComponentTranslation("guistrings.structure.scanner.exporting"));
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SCANNER, 0, 0, 0);
         }
-        return stack;
+        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
 
     public static boolean scanStructure(World world, BlockPos pos1, BlockPos pos2, BlockPos key, int face, String name, boolean include, NBTTagCompound tag) {
@@ -103,22 +108,19 @@ public class ItemStructureScanner extends Item implements IItemKeyInterface, IBo
 
     @Override
     public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
-        if (!MinecraftServer.getServer().getConfigurationManager().func_152607_e(player.getGameProfile())) {
-            return;
-        }
         BlockPos hit = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
         if (hit == null) {
             return;
         }
         ItemStructureSettings scanSettings = ItemStructureSettings.getSettingsFor(stack);
         if (!scanSettings.hasPos1()) {
-            scanSettings.setPos1(hit.x, hit.y, hit.z);
+            scanSettings.setPos1(hit);
             player.sendMessage(new TextComponentTranslation("guistrings.structure.scanner.set_first_pos"));
         } else if (!scanSettings.hasPos2()) {
-            scanSettings.setPos2(hit.x, hit.y, hit.z);
+            scanSettings.setPos2(hit);
             player.sendMessage(new TextComponentTranslation("guistrings.structure.scanner.set_second_pos"));
         } else if (!scanSettings.hasBuildKey()) {
-            scanSettings.setBuildKey(hit.x, hit.y, hit.z, BlockTools.getPlayerFacingFromYaw(player.rotationYaw));
+            scanSettings.setBuildKey(hit, player.getHorizontalFacing());
             player.sendMessage(new TextComponentTranslation("guistrings.structure.scanner.set_offset_pos"));
         } else {
             player.sendMessage(new TextComponentTranslation("guistrings.structure.scanner.click_to_process"));

@@ -21,8 +21,10 @@
 package net.shadowmage.ancientwarfare.structure.render.gate;
 
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.model.ModelGateBasic;
 import org.lwjgl.opengl.GL11;
@@ -31,8 +33,8 @@ public class RenderGateBasic extends Render {
 
     protected final ModelGateBasic model = new ModelGateBasic();
 
-    public RenderGateBasic() {
-
+    public RenderGateBasic(RenderManager renderManager) {
+        super(renderManager);
     }
 
     @Override
@@ -42,9 +44,9 @@ public class RenderGateBasic extends Render {
         BlockPos min = getMin(g);
         BlockPos max = getMax(g);
 
-        boolean wideOnXAxis = min.x != max.x;
+        boolean wideOnXAxis = min.getX() != max.getX();
         float width;
-        float height = max.y - min.y + 1;
+        float height = max.getY() - min.getY() + 1;
         float xOffset = 0f;
         float zOffset = 0;
         float tx = 0;
@@ -52,13 +54,13 @@ public class RenderGateBasic extends Render {
         float tz = 0;
         float axisRotation = 0;
         if(wideOnXAxis){
-            width = max.x - min.x + 1;
+            width = max.getX() - min.getX() + 1;
             xOffset = width * 0.5f - 0.5f;
             tx = 1;
             axisRotation = 90;
         }else{
             tz = 1;
-            width = max.z - min.z + 1;
+            width = max.getZ() - min.getZ() + 1;
             zOffset = -width * 0.5f + 0.5f;
         }
         GL11.glTranslatef(-xOffset, 0, zOffset);

@@ -3,7 +3,12 @@ package net.shadowmage.ancientwarfare.structure.item;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
@@ -15,12 +20,12 @@ public class ItemTownBuilder extends Item implements IItemKeyInterface {
         this.setUnlocalizedName(itemName);
         this.setCreativeTab(AWStructuresItemLoader.structureTab);
         this.setMaxStackSize(1);
-        this.setTextureName("ancientwarfare:structure/structure_builder");//TODO make texture...
+        //this.setTextureName("ancientwarfare:structure/structure_builder");//TODO make texture...
     }
 
 //@SuppressWarnings({ "unchecked", "rawtypes" })
 //@Override
-//public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
+//public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag)
 //  {
 //  String structure = "guistrings.no_selection";
 //  ItemStructureSettings.getSettingsFor(stack, viewSettings);
@@ -32,7 +37,7 @@ public class ItemTownBuilder extends Item implements IItemKeyInterface {
 //  }
 
     @Override
-    public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player) {
+    public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player) {
         return false;
     }
 
@@ -54,7 +59,7 @@ public class ItemTownBuilder extends Item implements IItemKeyInterface {
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-        return stack;
+        return new ActionResult<>(EnumActionResult.PASS, player.getHeldItem(hand));
     }//TODO open town-type selection GUI
 
 }

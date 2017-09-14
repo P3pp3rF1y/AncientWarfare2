@@ -22,10 +22,13 @@ package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
@@ -37,7 +40,14 @@ import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator
 
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 public abstract class StructureValidator {
 
@@ -123,24 +133,24 @@ public abstract class StructureValidator {
     /*
      * should this template be included for selection for generation? should only validate block placement, most other stuff has been checked (dimension/biome/cluster value/etc)
      */
-    public abstract boolean shouldIncludeForSelection(World world, int x, int y, int z, int face, StructureTemplate template);
+    public abstract boolean shouldIncludeForSelection(World world, int x, int y, int z, EnumFacing face, StructureTemplate template);
 
     /*
      * if template should be included for selection, get the adjusted spawn Y level from the input block position.  this adjustedY will be used for validation and generation if template is selected and validated
      */
-    public int getAdjustedSpawnY(World world, int x, int y, int z, int face, StructureTemplate template, StructureBB bb) {
+    public int getAdjustedSpawnY(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
         return y;
     }
 
     /*
      * if selected for placement, validate that placement. return false if placement is invalid
      */
-    public abstract boolean validatePlacement(World world, int x, int y, int z, int face, StructureTemplate template, StructureBB bb);
+    public abstract boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb);
 
     /*
      * after validation, do any necessary clearing or leveling/etc
      */
-    public abstract void preGeneration(World world, BlockPos pos, int face, StructureTemplate template, StructureBB bb);
+    public abstract void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb);
 
     public void postGeneration(World world, BlockPos origin, StructureBB bb){
 
@@ -152,15 +162,15 @@ public abstract class StructureValidator {
      * implementations should fill the input x,y,z with whatever block is an appropriate 'fill' for that
      * validation type -- e.g. air or water
      */
-    public void handleClearAction(World world, int x, int y, int z, StructureTemplate template, StructureBB bb){
-        world.setBlock(x, y, z, Blocks.AIR);
+    public void handleClearAction(World world, BlockPos pos, StructureTemplate template, StructureBB bb){
+        world.setBlockToAir(pos);
     }
 
     public static boolean startLow(String text, String test){
         return text.toLowerCase(Locale.ENGLISH).startsWith(test);
     }
 
-    public static final StructureValidator parseValidator(List<String> lines) {
+    public static StructureValidator parseValidator(List<String> lines) {
         String type = null;
         List<String> tagLines = new ArrayList<>();
         Iterator<String> it = lines.iterator();
@@ -245,7 +255,7 @@ public abstract class StructureValidator {
         return validator;
     }
 
-    public static final void writeValidator(BufferedWriter out, StructureValidator validator) throws IOException {
+    public static void writeValidator(BufferedWriter out, StructureValidator validator) throws IOException {
         out.write("type=" + validator.validationType.getName());
         out.newLine();
         out.write("survival=" + validator.isSurvival());
@@ -399,22 +409,22 @@ public abstract class StructureValidator {
         Set<String> validTargetBlocks = getTargetBlocks();
         int bx, bz;
         int borderSize = getBorderSize();
-        for (bx = bb.min.x - borderSize; bx <= bb.max.x + borderSize; bx++) {
-            bz = bb.min.z - borderSize;
+        for (bx = bb.min.getX() - borderSize; bx <= bb.max.getX() + borderSize; bx++) {
+            bz = bb.min.getZ() - borderSize;
             if (!validateBlockHeightAndType(world, bx, bz, minY, maxY, skipWater, validTargetBlocks)) {
                 return false;
             }
-            bz = bb.max.z + borderSize;
+            bz = bb.max.getZ() + borderSize;
             if (!validateBlockHeightAndType(world, bx, bz, minY, maxY, skipWater, validTargetBlocks)) {
                 return false;
             }
         }
-        for (bz = bb.min.z - borderSize + 1; bz <= bb.max.z + borderSize - 1; bz++) {
-            bx = bb.min.x - borderSize;
+        for (bz = bb.min.getZ() - borderSize + 1; bz <= bb.max.getZ() + borderSize - 1; bz++) {
+            bx = bb.min.getX() - borderSize;
             if (!validateBlockHeightAndType(world, bx, bz, minY, maxY, skipWater, validTargetBlocks)) {
                 return false;
             }
-            bx = bb.max.x + borderSize;
+            bx = bb.max.getX() + borderSize;
             if (!validateBlockHeightAndType(world, bx, bz, minY, maxY, skipWater, validTargetBlocks)) {
                 return false;
             }
@@ -449,7 +459,7 @@ public abstract class StructureValidator {
         if (y < 0 || y >= world.getHeight()) {
             return false;
         }
-        Block block = world.getBlock(x, y, z);
+        Block block = world.getBlockState(new BlockPos(x, y, z)).getBlock();
         if (block == null) {
             AWLog.logDebug("rejected for non-matching block: air" + " at: " + x + "," + y + "," + z);
             return false;
@@ -466,7 +476,7 @@ public abstract class StructureValidator {
      * for the input template and BB
      */
     protected int getMinY(StructureTemplate template, StructureBB bb) {
-        int minY = bb.min.y - getMaxFill() - 1;
+        int minY = bb.min.getY() - getMaxFill() - 1;
         if (getBorderSize() > 0) {
             minY += template.yOffset;
         }
@@ -478,7 +488,7 @@ public abstract class StructureValidator {
      * for the input template and BB
      */
     protected int getMaxY(StructureTemplate template, StructureBB bb) {
-        return bb.min.y + template.yOffset + getMaxLeveling();
+        return bb.min.getY() + template.yOffset + getMaxLeveling();
     }
 
     protected int getMinFillY(StructureTemplate template, StructureBB bb) {
@@ -490,11 +500,11 @@ public abstract class StructureValidator {
     }
 
     protected int getMinLevelingY(StructureTemplate template, StructureBB bb) {
-        return bb.min.y + template.yOffset;
+        return bb.min.getY() + template.yOffset;
     }
 
     protected int getMaxLevelingY(StructureTemplate template, StructureBB bb) {
-        return bb.min.y + template.yOffset + getMaxLeveling();
+        return bb.min.getY() + template.yOffset + getMaxLeveling();
     }
 
     protected void borderLeveling(World world, int x, int z, StructureTemplate template, StructureBB bb) {
@@ -502,19 +512,21 @@ public abstract class StructureValidator {
             return;
         }
         int topFilledY = WorldStructureGenerator.getTargetY(world, x, z, true);
-        int step = WorldStructureGenerator.getStepNumber(x, z, bb.min.x, bb.max.x, bb.min.z, bb.max.z);
-        for (int y = bb.min.y + template.yOffset + step; y <= topFilledY; y++) {
-            handleClearAction(world, x, y, z, template, bb);
+        int step = WorldStructureGenerator.getStepNumber(x, z, bb.min.getX(), bb.max.getX(), bb.min.getZ(), bb.max.getZ());
+        for (int y = bb.min.getY() + template.yOffset + step; y <= topFilledY; y++) {
+            handleClearAction(world, new BlockPos(x, y, z), template, bb);
         }
-        BiomeGenBase biome = world.getBiomeGenForCoords(x, z);
-        Block fillBlock = Blocks.GRASS;
+        Biome biome = world.getBiome(new BlockPos(x, 1,  z));
+        IBlockState fillBlock = Blocks.GRASS.getDefaultState();
         if (biome != null && biome.topBlock != null) {
             fillBlock = biome.topBlock;
         }
-        int y = bb.min.y + template.yOffset + step - 1;
-        Block block = world.getBlock(x, y, z);
-        if (block != null && block != Blocks.AIR && block.getMaterial() != Material.WATER && !AWStructureStatics.skippableBlocksContains(block)) {
-            world.setBlock(x, y, z, fillBlock);
+        int y = bb.min.getY() + template.yOffset + step - 1;
+        BlockPos pos = new BlockPos(x, y, z);
+        IBlockState state = world.getBlockState(pos);
+        Block block = state.getBlock();
+        if (block != null && block != Blocks.AIR && state.getMaterial() != Material.WATER && !AWStructureStatics.skippableBlocksContains(block)) {
+            world.setBlockState(pos, fillBlock);
         }
     }
 
@@ -523,31 +535,32 @@ public abstract class StructureValidator {
             return;
         }
         int maxFillY = getMaxFillY(template, bb);
-        int step = WorldStructureGenerator.getStepNumber(x, z, bb.min.x, bb.max.x, bb.min.z, bb.max.z);
+        int step = WorldStructureGenerator.getStepNumber(x, z, bb.min.getX(), bb.max.getX(), bb.min.getZ(), bb.max.getZ());
         maxFillY -= step;
         Block block;
-        BiomeGenBase biome = world.getBiomeGenForCoords(x, z);
-        Block fillBlockID = Blocks.GRASS;
+        Biome biome = world.getBiome(new BlockPos(x, 1, z));
+        IBlockState fillBlock = Blocks.GRASS.getDefaultState();
         if (biome != null && biome.topBlock != null) {
-            fillBlockID = biome.topBlock;
+            fillBlock = biome.topBlock;
         }
         for (int y = maxFillY; y > 1; y--) {
-            block = world.getBlock(x, y, z);
+            BlockPos pos = new BlockPos(x, y, z);
+            block = world.getBlockState(pos).getBlock();
             if (AWStructureStatics.skippableBlocksContains(block) || block == Blocks.WATER || block == Blocks.FLOWING_WATER) {
-                world.setBlock(x, y, z, fillBlockID);
+                world.setBlockState(pos, fillBlock);
             }
         }
     }
 
     protected void underFill(World world, int x, int z, StructureTemplate template, StructureBB bb) {
         int topFilledY = WorldStructureGenerator.getTargetY(world, x, z, true);
-        BiomeGenBase biome = world.getBiomeGenForCoords(x, z);
-        Block fillBlockID = Blocks.GRASS;
+        Biome biome = world.getBiome(new BlockPos(x, 1, z));
+        IBlockState fillBlockID = Blocks.GRASS.getDefaultState();
         if (biome != null && biome.topBlock != null) {
             fillBlockID = biome.topBlock;
         }
-        for (int y = topFilledY; y <= bb.min.y - 1; y++) {
-            world.setBlock(x, y, z, fillBlockID);
+        for (int y = topFilledY; y <= bb.min.getY() - 1; y++) {
+            world.setBlockState(new BlockPos(x, y, z), fillBlockID);
         }
     }
 
@@ -556,8 +569,8 @@ public abstract class StructureValidator {
             return;
         }
         int bx, bz;
-        for (bx = bb.min.x; bx <= bb.max.x; bx++) {
-            for (bz = bb.min.z; bz <= bb.max.z; bz++) {
+        for (bx = bb.min.getX(); bx <= bb.max.getX(); bx++) {
+            for (bz = bb.min.getZ(); bz <= bb.max.getZ(); bz++) {
                 underFill(world, bx, bz, template, bb);
             }
         }
@@ -569,22 +582,22 @@ public abstract class StructureValidator {
             return;
         }
         int bx, bz;
-        for (bx = bb.min.x - borderSize; bx <= bb.max.x + borderSize; bx++) {
-            for (bz = bb.max.z + borderSize; bz > bb.max.z; bz--) {
+        for (bx = bb.min.getX() - borderSize; bx <= bb.max.getX() + borderSize; bx++) {
+            for (bz = bb.max.getZ() + borderSize; bz > bb.max.getZ(); bz--) {
                 borderLeveling(world, bx, bz, template, bb);
                 borderFill(world, bx, bz, template, bb);
             }
-            for (bz = bb.min.z - borderSize; bz < bb.min.z; bz++) {
+            for (bz = bb.min.getZ() - borderSize; bz < bb.min.getZ(); bz++) {
                 borderLeveling(world, bx, bz, template, bb);
                 borderFill(world, bx, bz, template, bb);
             }
         }
-        for (bz = bb.min.z; bz <= bb.max.z; bz++) {
-            for (bx = bb.min.x - borderSize; bx < bb.min.x; bx++) {
+        for (bz = bb.min.getZ(); bz <= bb.max.getZ(); bz++) {
+            for (bx = bb.min.getX() - borderSize; bx < bb.min.getX(); bx++) {
                 borderLeveling(world, bx, bz, template, bb);
                 borderFill(world, bx, bz, template, bb);
             }
-            for (bx = bb.max.x + borderSize; bx > bb.max.x; bx--) {
+            for (bx = bb.max.getX() + borderSize; bx > bb.max.getX(); bx--) {
                 borderLeveling(world, bx, bz, template, bb);
                 borderFill(world, bx, bz, template, bb);
             }

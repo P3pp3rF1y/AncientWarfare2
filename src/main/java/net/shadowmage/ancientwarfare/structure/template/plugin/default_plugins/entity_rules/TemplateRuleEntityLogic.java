@@ -29,6 +29,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagDouble;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -53,10 +54,10 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
         if (entity instanceof EntityLiving)//handles villagers / potentially other living npcs with inventories
         {
             tag.removeTag("Equipment");
-            equipment = new ItemStack[5];
+            equipment = new ItemStack[EntityEquipmentSlot.values().length];
             EntityLiving living = (EntityLiving) entity;
-            for (int i = 0; i < 5; i++) {
-                equipment[i] = living.getItemStackFromSlot(i) == null ? null : living.getItemStackFromSlot(i).copy();
+            for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
+                equipment[slot.ordinal()] = living.getItemStackFromSlot(slot).isEmpty() ? ItemStack.EMPTY : living.getItemStackFromSlot(slot).copy();
             }
         }
         if (entity instanceof IInventory)//handles minecart-chests
@@ -65,7 +66,7 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
             IInventory eInv = (IInventory) entity;
             this.inventory = new ItemStack[eInv.getSizeInventory()];
             for (int i = 0; i < eInv.getSizeInventory(); i++) {
-                this.inventory[i] = eInv.getStackInSlot(i) == null ? null : eInv.getStackInSlot(i).copy();
+                this.inventory[i] = eInv.getStackInSlot(i).isEmpty() ? ItemStack.EMPTY : eInv.getStackInSlot(i).copy();
             }
         }
         tag.removeTag("UUIDMost");
@@ -73,21 +74,21 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
     }
 
     @Override
-    public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) throws EntityPlacementException {
-        Entity e = createEntity(world, turns, x, y, z, builder);
+    public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) throws EntityPlacementException {
+        Entity e = createEntity(world, turns, pos, builder);
         world.spawnEntity(e);
     }
 
-    protected Entity createEntity(World world, int turns, int x, int y, int z, IStructureBuilder builder) throws EntityPlacementException {
-        Entity e = EntityList.createEntityByName(mobID, world);
+    protected Entity createEntity(World world, int turns, BlockPos pos, IStructureBuilder builder) throws EntityPlacementException {
+        Entity e = EntityList.createEntityByIDFromName(registryName, world);
         if (e == null) {
-            throw new EntityPlacementException("Could not create entity for name: " + mobID + " Entity skipped during structure creation.\n" +
+            throw new EntityPlacementException("Could not create entity for name: " + registryName.toString() + " Entity skipped during structure creation.\n" +
                     "Entity data: " + tag);
         }
         NBTTagList list = new NBTTagList();
-        list.appendTag(new NBTTagDouble(x + BlockTools.rotateFloatX(xOffset, zOffset, turns)));
-        list.appendTag(new NBTTagDouble(y));
-        list.appendTag(new NBTTagDouble(z + BlockTools.rotateFloatZ(xOffset, zOffset, turns)));
+        list.appendTag(new NBTTagDouble(pos.getX() + BlockTools.rotateFloatX(xOffset, zOffset, turns)));
+        list.appendTag(new NBTTagDouble(pos.getY()));
+        list.appendTag(new NBTTagDouble(pos.getZ() + BlockTools.rotateFloatZ(xOffset, zOffset, turns)));
         tag.setTag("Pos", list);
         e.readFromNBT(tag);
         if (equipment != null && e instanceof EntityLiving) {

@@ -22,6 +22,8 @@ package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
@@ -70,36 +72,34 @@ public class StructureValidatorIsland extends StructureValidator {
     }
 
     @Override
-    public boolean shouldIncludeForSelection(World world, int x, int y, int z, int face, StructureTemplate template) {
+    public boolean shouldIncludeForSelection(World world, int x, int y, int z, EnumFacing face, StructureTemplate template) {
         int water = 0;
         int startY = y - 1;
         y = WorldStructureGenerator.getTargetY(world, x, z, true) + 1;
         water = startY - y + 1;
-        if (water < minWaterDepth || water > maxWaterDepth) {
-            return false;
-        }
-        return true;
+        return !(water < minWaterDepth || water > maxWaterDepth);
     }
 
     @Override
-    public boolean validatePlacement(World world, int x, int y, int z, int face, StructureTemplate template, StructureBB bb) {
+    public boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
         int minY = y - maxWaterDepth;
         int maxY = y - minWaterDepth;
         return validateBorderBlocks(world, template, bb, minY, maxY, true);
     }
 
     @Override
-    public void preGeneration(World world, BlockPos pos, int face, StructureTemplate template, StructureBB bb) {
+    public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb) {
         Block block;
         Set<String> validTargetBlocks = getTargetBlocks();
-        for (int bx = bb.min.x; bx <= bb.max.x; bx++) {
-            for (int bz = bb.min.z; bz <= bb.max.z; bz++) {
-                for (int by = bb.min.y - 1; by > 0; by--) {
-                    block = world.getBlock(bx, by, bz);
+        for (int bx = bb.min.getX(); bx <= bb.max.getX(); bx++) {
+            for (int bz = bb.min.getZ(); bz <= bb.max.getZ(); bz++) {
+                for (int by = bb.min.getY() - 1; by > 0; by--) {
+                    BlockPos currentPos = new BlockPos(bx, by, bz);
+                    block = world.getBlockState(currentPos).getBlock();
                     if (block != null && validTargetBlocks.contains(BlockDataManager.INSTANCE.getNameForBlock(block))) {
                         break;
                     } else {
-                        world.setBlock(bx, by, bz, Blocks.DIRT);
+                        world.setBlockState(currentPos, Blocks.DIRT.getDefaultState());
                     }
                 }
             }
@@ -107,12 +107,12 @@ public class StructureValidatorIsland extends StructureValidator {
     }
 
     @Override
-    public void handleClearAction(World world, int x, int y, int z, StructureTemplate template, StructureBB bb) {
-        int maxWaterY = bb.min.y + template.yOffset - 1;
-        if (y <= maxWaterY) {
-            world.setBlock(x, y, z, Blocks.WATER);
+    public void handleClearAction(World world, BlockPos pos, StructureTemplate template, StructureBB bb) {
+        int maxWaterY = bb.min.getY() + template.yOffset - 1;
+        if (pos.getY() <= maxWaterY) {
+            world.setBlockState(pos, Blocks.WATER.getDefaultState());
         } else {
-            super.handleClearAction(world, x, y, z, template, bb);
+            super.handleClearAction(world, pos, template, bb);
         }
     }
 

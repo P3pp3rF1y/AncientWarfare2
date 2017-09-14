@@ -21,8 +21,11 @@
 package net.shadowmage.ancientwarfare.structure.render.gate;
 
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.model.ModelGateBridge;
 import org.lwjgl.opengl.GL11;
@@ -31,8 +34,8 @@ public final class RenderGateRotatingBridge extends Render {
 
     private final ModelGateBridge model = new ModelGateBridge();
 
-    public RenderGateRotatingBridge() {
-
+    public RenderGateRotatingBridge(RenderManager renderManager) {
+        super(renderManager);
     }
 
     @Override
@@ -42,11 +45,11 @@ public final class RenderGateRotatingBridge extends Render {
         BlockPos min = g.pos1;
         BlockPos max = g.pos2;
 
-        boolean wideOnXAxis = min.x != max.x;
+        boolean wideOnXAxis = min.getX() != max.getX();
 
         float rx = wideOnXAxis ? g.edgePosition + g.openingSpeed * (1 - f1) : 0;
         float rz = wideOnXAxis ? 0 : g.edgePosition + g.openingSpeed * (1 - f1);
-        boolean invert = g.gateOrientation == 0 || g.gateOrientation == 3;
+        boolean invert = g.gateOrientation == EnumFacing.SOUTH || g.gateOrientation == EnumFacing.EAST;
         if (invert) {
             rx *= -1;
             rz *= -1;
@@ -55,8 +58,8 @@ public final class RenderGateRotatingBridge extends Render {
         GL11.glTranslatef(0, -0.5f, 0);
         GL11.glRotatef(rx, 1, 0, 0);
         GL11.glRotatef(rz, 0, 0, 1);
-        float width = wideOnXAxis ? max.x - min.x + 1 : max.z - min.z + 1;
-        float height = max.y - min.y + 1;
+        float width = wideOnXAxis ? max.getX() - min.getX() + 1 : max.getZ() - min.getZ() + 1;
+        float height = max.getY() - min.getY() + 1;
         float xOffset = wideOnXAxis ? width * 0.5f - 0.5f : 0f;
         float zOffset = wideOnXAxis ? 0f : -width * 0.5f + 0.5f;
 

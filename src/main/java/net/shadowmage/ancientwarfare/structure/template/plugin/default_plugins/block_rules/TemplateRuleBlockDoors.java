@@ -21,8 +21,10 @@
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
@@ -34,10 +36,11 @@ public class TemplateRuleBlockDoors extends TemplateRuleVanillaBlocks {
     byte sideFlag = 0;
     boolean isTop = false;
 
-    public TemplateRuleBlockDoors(World world, int x, int y, int z, Block block, int meta, int turns) {
-        super(world, x, y, z, block, meta, turns);
-        if (world.getBlock(x, y + 1, z) == block) {
-            sideFlag = (byte) world.getBlockMetadata(x, y + 1, z);
+    public TemplateRuleBlockDoors(World world, BlockPos pos, Block block, int meta, int turns) {
+        super(world, pos, block, meta, turns);
+        if (world.getBlockState(pos.up()) == block) {
+            IBlockState state = world.getBlockState(pos.up());
+            sideFlag = (byte) state.getBlock().getMetaFromState(state);
         }
     }
 
@@ -45,13 +48,13 @@ public class TemplateRuleBlockDoors extends TemplateRuleVanillaBlocks {
     }
 
     @Override
-    public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) {
+    public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
         Block block = BlockDataManager.INSTANCE.getBlockForName(blockName);
         int localMeta = BlockDataManager.INSTANCE.getRotatedMeta(block, this.meta, turns);
-        if (world.getBlock(x, y - 1, z) != block)//this is the bottom door block, call placeDoor from our block...
+        if (world.getBlockState(pos.down()).getBlock() != block)//this is the bottom door block, call placeDoor from our block...
         {
-            world.setBlock(x, y, z, block, localMeta, 2);
-            world.setBlock(x, y + 1, z, block, sideFlag == 0 ? 8 : sideFlag, 2);
+            world.setBlockState(pos, block.getStateFromMeta(localMeta), 2);
+            world.setBlockState(pos.up(), block.getStateFromMeta(sideFlag == 0 ? 8 : sideFlag), 2);
         }
     }
 
@@ -72,9 +75,10 @@ public class TemplateRuleBlockDoors extends TemplateRuleVanillaBlocks {
     }
 
     @Override
-    public boolean shouldReuseRule(World world, Block block, int meta, int turns, int x, int y, int z) {
-        Block block1 = world.getBlock(x, y + 1, z);
-        return block1 != null && blockName.equals(BlockDataManager.INSTANCE.getNameForBlock(block1)) && world.getBlockMetadata(x, y + 1, z) == sideFlag;
+    public boolean shouldReuseRule(World world, Block block, int meta, int turns, BlockPos pos) {
+        IBlockState state = world.getBlockState(pos.up());
+        Block block1 = state.getBlock();
+        return block1 != null && blockName.equals(BlockDataManager.INSTANCE.getNameForBlock(block1)) && block1.getMetaFromState(state) == sideFlag;
     }
 
     @Override

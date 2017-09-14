@@ -25,19 +25,19 @@ public class TemplateRuleRotable extends TemplateRuleBlock {
     BlockPos p1, p2;
     NBTTagCompound tag;
 
-    public TemplateRuleRotable(World world, int x, int y, int z, Block block, int meta, int turns) {
-        super(world, x, y, z, block, meta, turns);
+    public TemplateRuleRotable(World world, BlockPos pos, Block block, int meta, int turns) {
+        super(world, pos, block, meta, turns);
         this.blockName = BlockDataManager.INSTANCE.getNameForBlock(block);
         this.meta = meta;
         TileEntity worksite = world.getTileEntity(pos);
         EnumFacing o = ((BlockRotationHandler.IRotatableTile) worksite).getPrimaryFacing();
         for (int i = 0; i < turns; i++) {
-            o = o.getRotation(EnumFacing.UP);
+            o = o.rotateY();
         }
         this.orientation = o.ordinal();
         if (worksite instanceof IBoundedSite && ((IBoundedSite) worksite).hasWorkBounds()) {
-            p1 = BlockTools.rotateAroundOrigin(((IBoundedSite) worksite).getWorkBoundsMin().offset(-x, -y, -z), turns);
-            p2 = BlockTools.rotateAroundOrigin(((IBoundedSite) worksite).getWorkBoundsMax().offset(-x, -y, -z), turns);
+            p1 = BlockTools.rotateAroundOrigin(((IBoundedSite) worksite).getWorkBoundsMin().add(-pos.getX(), -pos.getY(), -pos.getZ()), turns);
+            p2 = BlockTools.rotateAroundOrigin(((IBoundedSite) worksite).getWorkBoundsMax().add(-pos.getX(), -pos.getY(), -pos.getZ()), turns);
         }
         tag = new NBTTagCompound();
         worksite.writeToNBT(tag);
@@ -47,29 +47,31 @@ public class TemplateRuleRotable extends TemplateRuleBlock {
     }
 
     @Override
-    public boolean shouldReuseRule(World world, Block block, int meta, int turns, int x, int y, int z) {
+    public boolean shouldReuseRule(World world, Block block, int meta, int turns, BlockPos pos) {
         return false;
     }
 
     @Override
     public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
         Block block = BlockDataManager.INSTANCE.getBlockForName(blockName);
-        if(world.setBlock(x, y, z, block, meta, 2)) {
+        if(world.setBlockState(pos, block.getStateFromMeta(meta), 2)) {
             TileEntity worksite = world.getTileEntity(pos);
             if(worksite != null) {
-                tag.setInteger("x", x);
-                tag.setInteger("y", y);
-                tag.setInteger("z", z);
+                //TODO look into changing this so that the whole TE doesn't need reloading from custom NBT
+                tag.setString("id", block.getRegistryName().toString());
+                tag.setInteger("x", pos.getX());
+                tag.setInteger("y", pos.getY());
+                tag.setInteger("z", pos.getZ());
                 worksite.readFromNBT(tag);
                 EnumFacing o = EnumFacing.VALUES[orientation];
                 for (int i = 0; i < turns; i++) {
-                    o = o.getRotation(EnumFacing.UP);
+                    o = o.rotateY();
                 }
                 ((BlockRotationHandler.IRotatableTile) worksite).setPrimaryFacing(o);
                 if (worksite instanceof IBoundedSite && p1 != null && p2 != null) {
                     BlockPos pos1, pos2;
-                    pos1 = BlockTools.rotateAroundOrigin(p1, turns).offset(x, y, z);
-                    pos2 = BlockTools.rotateAroundOrigin(p2, turns).offset(x, y, z);
+                    pos1 = BlockTools.rotateAroundOrigin(p1, turns).add(pos);
+                    pos2 = BlockTools.rotateAroundOrigin(p2, turns).add(pos);
                     ((IBoundedSite) worksite).setBounds(pos1, pos2);
                 }
                 BlockTools.notifyBlockUpdate(world, pos);
@@ -86,10 +88,10 @@ public class TemplateRuleRotable extends TemplateRuleBlock {
             this.tag = tag.getCompoundTag("teData");
         }
         if (tag.hasKey("pos1")) {
-            this.p1 = new BlockPos(tag.getCompoundTag("pos1"));
+            this.p1 = BlockPos.fromLong(tag.getLong("pos1"));
         }
         if (tag.hasKey("pos2")) {
-            this.p2 = new BlockPos(tag.getCompoundTag("pos2"));
+            this.p2 = BlockPos.fromLong(tag.getLong("pos2"));
         }
     }
 
@@ -99,10 +101,10 @@ public class TemplateRuleRotable extends TemplateRuleBlock {
         tag.setInteger("meta", meta);
         tag.setInteger("orientation", orientation);
         if (p1 != null) {
-            tag.setTag("pos1", p1.writeToNBT(new NBTTagCompound()));
+            tag.setLong("pos1", p1.toLong());
         }
         if (p2 != null) {
-            tag.setTag("pos2", p2.writeToNBT(new NBTTagCompound()));
+            tag.setLong("pos2", p2.toLong());
         }
         if (this.tag != null) {
             tag.setTag("teData", this.tag);
@@ -115,7 +117,7 @@ public class TemplateRuleRotable extends TemplateRuleBlock {
     }
 
     @Override
-    public boolean shouldPlaceOnBuildPass(World world, int turns, int x, int y, int z, int buildPass) {
+    public boolean shouldPlaceOnBuildPass(World world, int turns, BlockPos pos, int buildPass) {
         return buildPass == 0;
     }
 

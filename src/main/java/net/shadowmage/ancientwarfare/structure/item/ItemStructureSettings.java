@@ -22,6 +22,7 @@ package net.shadowmage.ancientwarfare.structure.item;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 
 public class ItemStructureSettings {
@@ -30,7 +31,7 @@ public class ItemStructureSettings {
     BlockPos pos1;
     BlockPos pos2;
     BlockPos key;
-    int buildFace;
+    EnumFacing buildFace;
     String name;
 
     private ItemStructureSettings() {
@@ -52,17 +53,17 @@ public class ItemStructureSettings {
             settings.setKeys[i] = false;
         }
         if (tag.hasKey("pos1")) {
-            settings.pos1 = new BlockPos(tag.getCompoundTag("pos1"));
+            settings.pos1 = BlockPos.fromLong(tag.getLong("pos1"));
             settings.setKeys[0] = true;
         }
         if (tag.hasKey("pos2")) {
-            settings.pos2 = new BlockPos(tag.getCompoundTag("pos2"));
+            settings.pos2 = BlockPos.fromLong(tag.getLong("pos2"));
             settings.setKeys[1] = true;
         }
         if (tag.hasKey("buildKey")) {
-            settings.key = new BlockPos(tag.getCompoundTag("buildKey"));
+            settings.key = BlockPos.fromLong(tag.getLong("buildKey"));
             settings.setKeys[2] = true;
-            settings.buildFace = tag.getCompoundTag("buildKey").getInteger("face");
+            settings.buildFace = EnumFacing.VALUES[tag.getCompoundTag("buildKey").getByte("face")];
         }
         if (tag.hasKey("name")) {
             settings.name = tag.getString("name");
@@ -74,15 +75,15 @@ public class ItemStructureSettings {
     public static void setSettingsFor(ItemStack item, ItemStructureSettings settings) {
         NBTTagCompound tag = new NBTTagCompound();
         if (settings.setKeys[0]) {
-            tag.setTag("pos1", settings.pos1.writeToNBT(new NBTTagCompound()));
+            tag.setLong("pos1", settings.pos1.toLong());
         }
         if (settings.setKeys[1]) {
-            tag.setTag("pos2", settings.pos2.writeToNBT(new NBTTagCompound()));
+            tag.setLong("pos2", settings.pos2.toLong());
         }
         if (settings.setKeys[2]) {
             NBTTagCompound tag1 = new NBTTagCompound();
-            tag1.setInteger("face", settings.buildFace);
-            tag.setTag("buildKey", settings.key.writeToNBT(tag1));
+            tag1.setByte("face", (byte) settings.buildFace.ordinal());
+            tag.setLong("buildKey", settings.key.toLong());
         }
         if (settings.setKeys[3]) {
             tag.setString("name", settings.name);
@@ -90,18 +91,18 @@ public class ItemStructureSettings {
         item.setTagInfo("structData", tag);
     }
 
-    public void setPos1(int x, int y, int z) {
-        pos1 = new BlockPos(x, y, z);
+    public void setPos1(BlockPos pos) {
+        pos1 = pos;
         setKeys[0] = true;
     }
 
-    public void setPos2(int x, int y, int z) {
-        pos2 = new BlockPos(x, y, z);
+    public void setPos2(BlockPos pos) {
+        pos2 = pos;
         setKeys[1] = true;
     }
 
-    public void setBuildKey(int x, int y, int z, int face) {
-        key = new BlockPos(x, y, z);
+    public void setBuildKey(BlockPos pos, EnumFacing face) {
+        key = pos;
         buildFace = face;
         setKeys[2] = true;
     }
@@ -139,7 +140,7 @@ public class ItemStructureSettings {
         return key;
     }
 
-    public int face() {
+    public EnumFacing face() {
         return buildFace;
     }
 

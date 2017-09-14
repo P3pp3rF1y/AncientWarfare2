@@ -20,8 +20,8 @@ public class TemplateRuleTorqueMultiblock extends TemplateRuleBlock {
     String blockName;
     NBTTagCompound tag;
 
-    public TemplateRuleTorqueMultiblock(World world, int x, int y, int z, Block block, int meta, int turns) {
-        super(world, x, y, z, block, meta, turns);
+    public TemplateRuleTorqueMultiblock(World world, BlockPos pos, Block block, int meta, int turns) {
+        super(world, pos, block, meta, turns);
         this.blockName = BlockDataManager.INSTANCE.getNameForBlock(block);
         this.meta = meta;
         this.tag = new NBTTagCompound();
@@ -33,23 +33,25 @@ public class TemplateRuleTorqueMultiblock extends TemplateRuleBlock {
     }
 
     @Override
-    public boolean shouldReuseRule(World world, Block block, int meta, int turns, int x, int y, int z) {
+    public boolean shouldReuseRule(World world, Block block, int meta, int turns, BlockPos pos) {
         return false;
     }
 
     @Override
     public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
         Block block = BlockDataManager.INSTANCE.getBlockForName(blockName);
-        if(world.setBlock(x, y, z, block, meta, 3)) {
+        if(world.setBlockState(pos, block.getStateFromMeta(meta), 3)) {
             TileEntity tile = world.getTileEntity(pos);
             if(tile != null) {
-                tag.setInteger("x", x);
-                tag.setInteger("y", y);
-                tag.setInteger("z", z);
+                //TODO look into changing this so that the whole TE doesn't need reloading from custom NBT
+                tag.setString("id", block.getRegistryName().toString());
+                tag.setInteger("x", pos.getX());
+                tag.setInteger("y", pos.getY());
+                tag.setInteger("z", pos.getZ());
                 tile.readFromNBT(tag);
             }
             BlockTools.notifyBlockUpdate(world, pos);
-            block.onPostBlockPlaced(world, x, y, z, meta);
+            block.onBlockPlacedBy(world, pos, block.getStateFromMeta(meta), null, null);
         }
     }
 
@@ -73,7 +75,7 @@ public class TemplateRuleTorqueMultiblock extends TemplateRuleBlock {
     }
 
     @Override
-    public boolean shouldPlaceOnBuildPass(World world, int turns, int x, int y, int z, int buildPass) {
+    public boolean shouldPlaceOnBuildPass(World world, int turns, BlockPos pos, int buildPass) {
         return buildPass == 0;
     }
 }

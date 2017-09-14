@@ -20,10 +20,17 @@
  */
 package net.shadowmage.ancientwarfare.structure.item;
 
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -36,6 +43,7 @@ import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 
@@ -45,22 +53,22 @@ public class ItemStructureBuilder extends Item implements IItemKeyInterface, IBo
         this.setUnlocalizedName(itemName);
         this.setCreativeTab(AWStructuresItemLoader.structureTab);
         this.setMaxStackSize(1);
-        this.setTextureName("ancientwarfare:structure/" + itemName);
+        //this.setTextureName("ancientwarfare:structure/" + itemName);
     }
 
 
     @Override
-    public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4) {
+    public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
         String structure = "guistrings.structure.no_selection";
         ItemStructureSettings viewSettings = ItemStructureSettings.getSettingsFor(stack);
         if (viewSettings.hasName()) {
             structure = viewSettings.name;
         }
-        list.add(I18n.format("guistrings.current_structure") + " " + I18n.format(structure));
+        tooltip.add(I18n.format("guistrings.current_structure") + " " + I18n.format(structure));
     }
 
     @Override
-    public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player) {
+    public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player) {
         return false;
     }
 
@@ -85,7 +93,7 @@ public class ItemStructureBuilder extends Item implements IItemKeyInterface, IBo
             if (bpHit == null) {
                 return;
             }//no hit position, clicked on air
-            StructureBuilder builder = new StructureBuilder(player.world, template, BlockTools.getPlayerFacingFromYaw(player.rotationYaw), bpHit.x, bpHit.y, bpHit.z);
+            StructureBuilder builder = new StructureBuilder(player.world, template, player.getHorizontalFacing(), bpHit);
             builder.instantConstruction();
             if (!player.capabilities.isCreativeMode) {
                 int slot = player.inventory.currentItem;
@@ -105,7 +113,7 @@ public class ItemStructureBuilder extends Item implements IItemKeyInterface, IBo
         if (!player.world.isRemote && !player.isSneaking() && player.capabilities.isCreativeMode) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_BUILDER, 0, 0, 0);
         }
-        return stack;
+        return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
     }
 
     @Override
@@ -120,11 +128,10 @@ public class ItemStructureBuilder extends Item implements IItemKeyInterface, IBo
             return;
         }
         BlockPos hit = BlockTools.getBlockClickedOn(player, player.world, true);
-        int face = BlockTools.getPlayerFacingFromYaw(player.rotationYaw);
         if (hit == null) {
             return;
         }
-        StructureBB bb = new StructureBB(hit.x, hit.y, hit.z, face, structure.xSize, structure.ySize, structure.zSize, structure.xOffset, structure.yOffset, structure.zOffset);
+        StructureBB bb = new StructureBB(hit, player.getHorizontalFacing(), structure.xSize, structure.ySize, structure.zSize, structure.xOffset, structure.yOffset, structure.zOffset);
         Util.renderBoundingBox(player, bb.min, bb.max, delta);
     }
 }

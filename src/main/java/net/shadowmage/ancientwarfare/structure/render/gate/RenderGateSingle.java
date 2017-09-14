@@ -20,13 +20,15 @@
  */
 package net.shadowmage.ancientwarfare.structure.render.gate;
 
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import org.lwjgl.opengl.GL11;
 
 public final class RenderGateSingle extends RenderGateBasic {
-    public RenderGateSingle() {
-
+    public RenderGateSingle(RenderManager renderManager) {
+        super(renderManager);
     }
 
     @Override
@@ -41,7 +43,7 @@ public final class RenderGateSingle extends RenderGateBasic {
 
     @Override
     protected void postRender(EntityGate gate, int x, float width, int y, float height, boolean wideOnXAxis, float axisRotation, float frame) {
-        boolean opensReverse = gate.pos1.x > gate.pos2.x || gate.pos1.z > gate.pos2.z;
+        boolean opensReverse = gate.pos1.getX() > gate.pos2.getX() || gate.pos1.getZ() > gate.pos2.getZ();
         float wallTx = wideOnXAxis ? gate.edgePosition + gate.openingSpeed * (1 - frame) : 0;
         float wallTz = wideOnXAxis ? 0 : gate.edgePosition + gate.openingSpeed * (1 - frame);
         boolean render = false;

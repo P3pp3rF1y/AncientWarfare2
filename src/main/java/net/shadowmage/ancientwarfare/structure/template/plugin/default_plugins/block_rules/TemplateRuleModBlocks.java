@@ -23,6 +23,7 @@ package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
@@ -35,8 +36,8 @@ public class TemplateRuleModBlocks extends TemplateRuleBlock {
     public String blockName;
     public int meta;
 
-    public TemplateRuleModBlocks(World world, int x, int y, int z, Block block, int meta, int turns) {
-        super(world, x, y, z, block, meta, turns);
+    public TemplateRuleModBlocks(World world, BlockPos pos, Block block, int meta, int turns) {
+        super(world, pos, block, meta, turns);
         this.blockName = BlockDataManager.INSTANCE.getNameForBlock(block);
         this.meta = meta;
     }
@@ -46,14 +47,14 @@ public class TemplateRuleModBlocks extends TemplateRuleBlock {
     }
 
     @Override
-    public boolean shouldReuseRule(World world, Block block, int meta, int turns, int x, int y, int z) {
+    public boolean shouldReuseRule(World world, Block block, int meta, int turns, BlockPos pos) {
         return BlockDataManager.INSTANCE.getNameForBlock(block).equals(blockName) && meta == this.meta;
     }
 
     @Override
-    public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder) {
+    public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
         Block block = BlockDataManager.INSTANCE.getBlockForName(blockName);
-        world.setBlock(x, y, z, block, meta, 3);
+        world.setBlockState(pos, block.getStateFromMeta(meta), 3);
     }
 
     @Override
@@ -76,7 +77,7 @@ public class TemplateRuleModBlocks extends TemplateRuleBlock {
     }
 
     @Override
-    public boolean shouldPlaceOnBuildPass(World world, int turns, int x, int y, int z, int buildPass) {
+    public boolean shouldPlaceOnBuildPass(World world, int turns, BlockPos pos, int buildPass) {
         return buildPass == 0;
     }
 
