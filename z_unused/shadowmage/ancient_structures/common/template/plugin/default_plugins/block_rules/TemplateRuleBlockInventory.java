@@ -35,9 +35,9 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks
 public int randomLootLevel = 0;
 public NBTTagCompound tag = new NBTTagCompound();
 
-public TemplateRuleBlockInventory(World world, int x, int y, int z, Block block, int meta, int turns)
+public TemplateRuleBlockInventory(World world, BlockPos pos, Block block, int meta, int turns)
   {
-  super(world, x, y, z, block, meta, turns);
+  super(world, pos, block, meta, turns);
   TileEntity te = world.getBlockTileEntity(x, y, z);
   if(te instanceof IInventory)
     {

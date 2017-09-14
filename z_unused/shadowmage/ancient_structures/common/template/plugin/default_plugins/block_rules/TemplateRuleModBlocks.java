@@ -36,9 +36,9 @@ public class TemplateRuleModBlocks extends TemplateRuleBlock
 public String blockName;
 public int meta;
 
-public TemplateRuleModBlocks(World world, int x, int y, int z, Block block, int meta, int turns)
+public TemplateRuleModBlocks(World world, BlockPos pos, Block block, int meta, int turns)
   {
-  super(world, x, y, z, block, meta, turns);
+  super(world, pos, block, meta, turns);
   this.blockName = BlockDataManager.getBlockName(block);
   this.meta = meta;
   }
@@ -84,7 +84,7 @@ public void addResources(List<ItemStack> resources)
   }
 
 @Override
-public boolean shouldPlaceOnBuildPass(World world, int turns, int x, int y, int z, int buildPass)
+public boolean shouldPlaceOnBuildPass(World world, int turns, BlockPos pos, int buildPass)
   {
   return buildPass==0;
   }

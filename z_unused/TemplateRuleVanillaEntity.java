@@ -91,7 +91,7 @@ public void parseRuleData(NBTTagCompound tag)
   }
 
 @Override
-public boolean shouldPlaceOnBuildPass(World world, int turns, int x, int y, int z, int buildPass)
+public boolean shouldPlaceOnBuildPass(World world, int turns, BlockPos pos, int buildPass)
   {
   return buildPass==3;
   }

@@ -87,7 +87,7 @@ public boolean onUsedFinalLeft(World world, EntityPlayer player, ItemStack stack
   }
 
 @Override
-public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
+public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag)
   {
   if(stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnData"))
     {

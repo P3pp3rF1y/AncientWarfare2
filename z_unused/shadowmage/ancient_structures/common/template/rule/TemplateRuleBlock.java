@@ -27,7 +27,7 @@ import net.minecraft.world.World;
 public abstract class TemplateRuleBlock extends TemplateRule
 {
 
-public TemplateRuleBlock(World world, int x, int y, int z, Block block, int meta, int turns)
+public TemplateRuleBlock(World world, BlockPos pos, Block block, int meta, int turns)
   {
   
   }

@@ -33,9 +33,9 @@ public class TemplateRuleBlockSign extends TemplateRuleVanillaBlocks
 public String signContents[];
 public boolean wall = true;
 
-public TemplateRuleBlockSign(World world, int x, int y, int z, Block block, int meta, int turns)
+public TemplateRuleBlockSign(World world, BlockPos pos, Block block, int meta, int turns)
   {
-  super(world, x, y, z, block, meta, turns);
+  super(world, pos, block, meta, turns);
   TileEntitySign te = (TileEntitySign) world.getBlockTileEntity(x, y, z);
   signContents = new String[te.signText.length];
   for(int i = 0; i < signContents.length; i++)

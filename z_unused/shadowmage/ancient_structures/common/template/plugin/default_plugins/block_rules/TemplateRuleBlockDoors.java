@@ -27,9 +27,9 @@ import shadowmage.ancient_structures.common.manager.BlockDataManager;
 public class TemplateRuleBlockDoors extends TemplateRuleVanillaBlocks
 {
 
-public TemplateRuleBlockDoors(World world, int x, int y, int z, Block block, int meta, int turns)
+public TemplateRuleBlockDoors(World world, BlockPos pos, Block block, int meta, int turns)
   {
-  super(world, x, y, z, block, meta, turns);
+  super(world, pos, block, meta, turns);
   }
 
 public TemplateRuleBlockDoors()
