@@ -1,11 +1,11 @@
 package net.shadowmage.ancientwarfare.vehicle.proxy;
 
-import cpw.mods.fml.client.config.DummyConfigElement.DummyCategoryElement;
-import cpw.mods.fml.client.config.IConfigElement;
-import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Property;
+import net.minecraftforge.fml.client.config.DummyConfigElement.DummyCategoryElement;
+import net.minecraftforge.fml.client.config.IConfigElement;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.ConfigManager;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;

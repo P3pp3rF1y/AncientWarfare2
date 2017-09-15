@@ -15,8 +15,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -32,6 +34,7 @@ public class ItemQuill extends Item {
     public ItemQuill(String regName, ToolMaterial material) {
         this.material = material;
         this.setUnlocalizedName(regName);
+        this.setRegistryName(new ResourceLocation(AncientWarfareCore.modID, regName));
         //this.setTextureName("ancientwarfare:core/" + regName);
         this.attackDamage = 1.f + material.getDamageVsEntity();
         this.maxStackSize = 1;

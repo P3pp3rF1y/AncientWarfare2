@@ -9,8 +9,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 
 public class ItemBardInstrument extends Item {
 
@@ -18,6 +20,7 @@ public class ItemBardInstrument extends Item {
 
     public ItemBardInstrument(String regName) {
         setUnlocalizedName(regName);
+        setRegistryName(new ResourceLocation(AncientWarfareNPC.modID, regName));
         setCreativeTab(AWNpcItemLoader.npcTab);
         setHasSubtypes(true);
     }

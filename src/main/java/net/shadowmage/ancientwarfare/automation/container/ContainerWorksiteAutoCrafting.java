@@ -6,7 +6,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileAutoCrafting;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
@@ -15,8 +14,8 @@ import javax.annotation.Nonnull;
 
 public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCrafting> {
 
-    public ContainerWorksiteAutoCrafting(EntityPlayer player, BlockPos pos) {
-        super(player, pos);
+    public ContainerWorksiteAutoCrafting(EntityPlayer player, int x, int y, int z) {
+        super(player, x, y, z);
         InventoryCrafting inventory = tileEntity.craftMatrix;
 
         //slot 0 = outputSlot

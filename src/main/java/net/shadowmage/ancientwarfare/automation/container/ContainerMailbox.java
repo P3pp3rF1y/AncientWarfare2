@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.gamedata.MailboxData;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
@@ -35,8 +34,8 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
     public List<String> publicBoxNames = new ArrayList<>();
     public List<String> privateBoxNames = new ArrayList<>();
 
-    public ContainerMailbox(EntityPlayer player, BlockPos pos) {
-        super(player, pos);
+    public ContainerMailbox(EntityPlayer player, int x, int y, int z) {
+        super(player, x, y, z);
         InventorySided inventory = tileEntity.inventory;
 
         for (RelativeSide rSide : inventory.rType.getValidSides()) {

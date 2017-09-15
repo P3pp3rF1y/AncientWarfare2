@@ -4,9 +4,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
+import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBackpack;
 import net.shadowmage.ancientwarfare.core.item.ItemBackpack;
+import net.shadowmage.ancientwarfare.core.util.EntityTools;
 
 import javax.annotation.Nonnull;
 
@@ -18,12 +19,12 @@ public class ContainerBackpack extends ContainerBase {
 
     private final InventoryBackpack inventory;
 
-    public ContainerBackpack(EntityPlayer player, BlockPos pos, EnumHand hand) {
+    public ContainerBackpack(EntityPlayer player, int x, int y, int z) {
         super(player);
 
+        this.hand = EntityTools.getHandHoldingItem(player, AWItems.backpack);
         @Nonnull ItemStack stack = player.getHeldItem(hand);
         backpackSlotIndex = hand == EnumHand.MAIN_HAND ? player.inventory.currentItem : -1;
-        this.hand = hand;
 
         inventory = ItemBackpack.getInventoryFor(stack);
         int xPos, yPos;

@@ -5,7 +5,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseStorageFilter;
@@ -25,8 +24,8 @@ public class ContainerWarehouseStorage extends ContainerTileBase<TileWarehouseSt
     public ItemQuantityMap itemMap = new ItemQuantityMap();
     public List<WarehouseStorageFilter> filters = new ArrayList<>();
 
-    public ContainerWarehouseStorage(EntityPlayer player, BlockPos pos) {
-        super(player, pos);
+    public ContainerWarehouseStorage(EntityPlayer player, int x, int y, int z) {
+        super(player, x, y, z);
         tileEntity.addViewer(this);
 
         filters.addAll(tileEntity.getFilters());

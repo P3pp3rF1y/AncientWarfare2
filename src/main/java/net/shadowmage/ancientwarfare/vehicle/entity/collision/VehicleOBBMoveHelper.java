@@ -1,6 +1,6 @@
 package net.shadowmage.ancientwarfare.vehicle.entity.collision;
 
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.vehicle.collision.OBB;
@@ -24,7 +24,7 @@ public class VehicleOBBMoveHelper {
         this.vehicle = vehicle;
         orientedBoundingBox = new OBB(vehicle.vehicleWidth, vehicle.vehicleHeight, vehicle.vehicleLength);
         orientedBoundingBox.setRotation(-0);
-        orientedBoundingBox.setAABBToOBBExtents(vehicle.getEntityBoundingBox());
+        orientedBoundingBox.setAABBToOBBExtents(vehicle);
     }
 
     public void update() {
@@ -34,7 +34,7 @@ public class VehicleOBBMoveHelper {
 
     public void moveVehicle(double x, double y, double z) {
         AxisAlignedBB boundingBox = vehicle.getEntityBoundingBox();
-        World worldObj = vehicle.worldObj;
+        World world = vehicle.world;
         float rotationYaw = vehicle.rotationYaw;
         float stepHeight = vehicle.stepHeight;
         if (Math.abs(x) < 0.001d) {
@@ -44,8 +44,8 @@ public class VehicleOBBMoveHelper {
             z = 0.d;
         }
         orientedBoundingBox.updateForPositionAndRotation(vehicle.posX, vehicle.posY, vehicle.posZ, rotationYaw);
-        orientedBoundingBox.setAABBToOBBExtents(boundingBox);
-        List<AxisAlignedBB> aabbs = worldObj.getCollidingBoundingBoxes(vehicle, boundingBox.expand(Math.abs(x) + 0.2d, Math.abs(y) + stepHeight + 0.2d, Math.abs(z) + 0.2d));
+        orientedBoundingBox.setAABBToOBBExtents(vehicle);
+        List<AxisAlignedBB> aabbs = world.getCollisionBoxes(vehicle, boundingBox.expand(Math.abs(x) + 0.2d, Math.abs(y) + stepHeight + 0.2d, Math.abs(z) + 0.2d));
         //first do Y movement test, use basic OBB vs bbs test, move downard if not collided
         double xMove, yMove, zMove;
 
@@ -53,19 +53,19 @@ public class VehicleOBBMoveHelper {
         if (yMove != 0) {
             vehicle.setPosition(vehicle.posX, vehicle.posY + yMove, vehicle.posZ);
             orientedBoundingBox.updateForPositionAndRotation(vehicle.posX, vehicle.posY, vehicle.posZ, rotationYaw);
-            orientedBoundingBox.setAABBToOBBExtents(boundingBox);
+            orientedBoundingBox.setAABBToOBBExtents(vehicle);
         }
         xMove = getXmove(x, aabbs);
         if (xMove != 0) {
             vehicle.setPosition(vehicle.posX + xMove, vehicle.posY, vehicle.posZ);
             orientedBoundingBox.updateForPositionAndRotation(vehicle.posX, vehicle.posY, vehicle.posZ, rotationYaw);
-            orientedBoundingBox.setAABBToOBBExtents(boundingBox);
+            orientedBoundingBox.setAABBToOBBExtents(vehicle);
         }
         zMove = getZMove(z, aabbs);
         if (zMove != 0) {
             vehicle.setPosition(vehicle.posX, vehicle.posY, vehicle.posZ + zMove);
             orientedBoundingBox.updateForPositionAndRotation(vehicle.posX, vehicle.posY, vehicle.posZ, rotationYaw);
-            orientedBoundingBox.setAABBToOBBExtents(boundingBox);
+            orientedBoundingBox.setAABBToOBBExtents(vehicle);
         }
 
         if (stepHeight > 0 && yMove <= 0 && (x != xMove || z != zMove))//attempt to step upwards by step-height
@@ -74,27 +74,27 @@ public class VehicleOBBMoveHelper {
             double mx = x - xMove;
             double mz = z - zMove;
             orientedBoundingBox.updateForPositionAndRotation(vehicle.posX + mx, vehicle.posY, vehicle.posZ + mz, rotationYaw);
-            orientedBoundingBox.setAABBToOBBExtents(boundingBox);
+            orientedBoundingBox.setAABBToOBBExtents(vehicle);
             double my = getYStepHeight(aabbs);
             if (my > 0) {
                 vehicle.setPosition(vehicle.posX + mx, vehicle.posY + my, vehicle.posZ + mz);
             }
             orientedBoundingBox.updateForPositionAndRotation(vehicle.posX, vehicle.posY, vehicle.posZ, rotationYaw);
-            orientedBoundingBox.setAABBToOBBExtents(boundingBox);
+            orientedBoundingBox.setAABBToOBBExtents(vehicle);
         }
     }
 
 
     public void rotateVehicle(float rotationDelta) {
-        World worldObj = vehicle.worldObj;
+        World world = vehicle.world;
         orientedBoundingBox.updateForPositionAndRotation(vehicle.posX, vehicle.posY, vehicle.posZ, vehicle.rotationYaw + rotationDelta);
-        orientedBoundingBox.setAABBToOBBExtents(vehicle.getEntityBoundingBox());
+        orientedBoundingBox.setAABBToOBBExtents(vehicle);
 
         Vec3d mtvTempBase = new Vec3d(0, 0, 0);
         Vec3d mtvTemp = null;
         Vec3d mtv = null;
 
-        List<AxisAlignedBB> aabbs = worldObj.getCollidingBoundingBoxes(vehicle, vehicle.getEntityBoundingBox().expand(0.2d, 0, 0.2d));
+        List<AxisAlignedBB> aabbs = world.getCollisionBoxes(vehicle, vehicle.getEntityBoundingBox().expand(0.2d, 0, 0.2d));
 
         AxisAlignedBB bb = null;
         int len = aabbs.size();
@@ -106,10 +106,10 @@ public class VehicleOBBMoveHelper {
                     mtv = new Vec3d(mtvTemp.x, 0, mtvTemp.z);
                 } else {
                     if (Math.abs(mtvTemp.x) > Math.abs(mtv.x)) {
-                        mtv.x = mtvTemp.x;
+                        mtv = new Vec3d(mtvTemp.x, mtv.y, mtv.z);
                     }
                     if (Math.abs(mtvTemp.z) > Math.abs(mtv.z)) {
-                        mtv.z = mtvTemp.z;
+                        mtv = new Vec3d(mtv.x, mtv.y, mtvTemp.z);
                     }
                 }
             }
@@ -119,12 +119,11 @@ public class VehicleOBBMoveHelper {
         {
             vehicle.rotationYaw += rotationDelta;
         } else {
-            mtv.x *= 1.1d;
-            mtv.z *= 1.1d;
+            mtv = new Vec3d(mtv.x * 1.1d, mtv.y, mtv.z * 1.1d);
             vehicle.setPosition(vehicle.posX + mtv.x, vehicle.posY, vehicle.posZ + mtv.z);
             orientedBoundingBox.updateForPositionAndRotation(vehicle.posX, vehicle.posY, vehicle.posZ, vehicle.rotationYaw + rotationDelta);
-            orientedBoundingBox.setAABBToOBBExtents(vehicle.getEntityBoundingBox());
-            aabbs = worldObj.getCollidingBoundingBoxes(vehicle, vehicle.getEntityBoundingBox().expand(0.2d, 0, 0.2d));
+            orientedBoundingBox.setAABBToOBBExtents(vehicle);
+            aabbs = world.getCollisionBoxes(vehicle, vehicle.getEntityBoundingBox().expand(0.2d, 0, 0.2d));
             bb = null;
             len = aabbs.size();
             mtvTemp = null;
@@ -134,7 +133,7 @@ public class VehicleOBBMoveHelper {
                 if (mtvTemp != null) {
                     orientedBoundingBox.updateForRotation(vehicle.rotationYaw);
                     orientedBoundingBox.updateForPosition(vehicle.posX, vehicle.posY, vehicle.posZ);
-                    orientedBoundingBox.setAABBToOBBExtents(vehicle.getEntityBoundingBox());
+                    orientedBoundingBox.setAABBToOBBExtents(vehicle);
                     break;
                 }
             }
@@ -143,12 +142,12 @@ public class VehicleOBBMoveHelper {
                 vehicle.rotationYaw += rotationDelta;
                 vehicle.setPosition(vehicle.posX, vehicle.posY, vehicle.posZ);
                 orientedBoundingBox.updateForPositionAndRotation(vehicle.posX, vehicle.posY, vehicle.posZ, vehicle.rotationYaw);
-                orientedBoundingBox.setAABBToOBBExtents(vehicle.getEntityBoundingBox());
+                orientedBoundingBox.setAABBToOBBExtents(vehicle);
             } else//slide was no good, revert (do not rotate at all)
             {
                 vehicle.setPosition(vehicle.posX - mtv.x, vehicle.posY, vehicle.posZ - mtv.z);
                 orientedBoundingBox.updateForPositionAndRotation(vehicle.posX, vehicle.posY, vehicle.posZ, vehicle.rotationYaw);
-                orientedBoundingBox.setAABBToOBBExtents(vehicle.getEntityBoundingBox());
+                orientedBoundingBox.setAABBToOBBExtents(vehicle);
             }
         }
     }

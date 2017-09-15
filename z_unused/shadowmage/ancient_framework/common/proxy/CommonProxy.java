@@ -55,7 +55,7 @@ public void sendPacketToServer(PacketBase pkt)
 public final void sendPacketToAllClientsTracking(Entity ent, PacketBase packet)
   {
   PacketBase[] packets = getPackets(packet);
-  WorldServer world = (WorldServer)ent.worldObj;
+  WorldServer world = (WorldServer)ent.world;
   for(PacketBase pkt : packets)
     {
     world.getEntityTracker().sendPacketToAllPlayersTrackingEntity(ent, pkt.get250Packet());

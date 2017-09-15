@@ -7,7 +7,6 @@ import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseBase;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseCraftingStation;
@@ -25,8 +24,8 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
     private final ItemQuantityMap cache = new ItemQuantityMap();
     private boolean shouldUpdate = true;
 
-    public ContainerWarehouseCraftingStation(final EntityPlayer player, BlockPos pos) {
-        super(player, pos);
+    public ContainerWarehouseCraftingStation(final EntityPlayer player, int x, int y, int z) {
+        super(player, x, y, z);
         InventoryCrafting inventory = tileEntity.layoutMatrix;
 
         Slot slot = new SlotCrafting(player, inventory, tileEntity.result, 0, 3 * 18 + 3 * 18 + 8 + 18, 1 * 18 + 8) {

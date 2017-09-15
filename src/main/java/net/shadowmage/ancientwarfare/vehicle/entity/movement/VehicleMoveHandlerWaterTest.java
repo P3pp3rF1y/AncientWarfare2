@@ -39,9 +39,9 @@ public class VehicleMoveHandlerWaterTest extends VehicleInputHandler {
 //  int z = MathHelper.floor(vehicle.orientedBoundingBox.getCorner(0).z);
 //  for(int by = y; by<= y+height; by++)
 //    {
-//    if(vehicle.worldObj.getBlock(x, by, z).getMaterial()==Material.WATER)
+//    if(vehicle.world.getBlock(x, by, z).getMaterial()==Material.WATER)
 //      {
-//      submerged += (float)(16 - vehicle.worldObj.getBlockMetadata(x, by, z)) * 0.0625f;
+//      submerged += (float)(16 - vehicle.world.getBlockMetadata(x, by, z)) * 0.0625f;
 //      }
 //    }
 //  
@@ -49,9 +49,9 @@ public class VehicleMoveHandlerWaterTest extends VehicleInputHandler {
 //  z = MathHelper.floor(vehicle.orientedBoundingBox.getCorner(1).z);
 //  for(int by = y; by<= y+height; by++)
 //    {
-//    if(vehicle.worldObj.getBlock(x, by, z).getMaterial()==Material.WATER)
+//    if(vehicle.world.getBlock(x, by, z).getMaterial()==Material.WATER)
 //      {
-//      submerged += (float)(16 - vehicle.worldObj.getBlockMetadata(x, by, z)) * 0.0625f;
+//      submerged += (float)(16 - vehicle.world.getBlockMetadata(x, by, z)) * 0.0625f;
 //      }
 //    }
 //  
@@ -59,9 +59,9 @@ public class VehicleMoveHandlerWaterTest extends VehicleInputHandler {
 //  z = MathHelper.floor(vehicle.orientedBoundingBox.getCorner(2).z);
 //  for(int by = y; by<= y+height; by++)
 //    {
-//    if(vehicle.worldObj.getBlock(x, by, z).getMaterial()==Material.WATER)
+//    if(vehicle.world.getBlock(x, by, z).getMaterial()==Material.WATER)
 //      {
-//      submerged += (float)(16 - vehicle.worldObj.getBlockMetadata(x, by, z)) * 0.0625f;
+//      submerged += (float)(16 - vehicle.world.getBlockMetadata(x, by, z)) * 0.0625f;
 //      }
 //    }
 //  
@@ -69,9 +69,9 @@ public class VehicleMoveHandlerWaterTest extends VehicleInputHandler {
 //  z = MathHelper.floor(vehicle.orientedBoundingBox.getCorner(3).z);
 //  for(int by = y; by<= y+height; by++)
 //    {
-//    if(vehicle.worldObj.getBlock(x, by, z).getMaterial()==Material.WATER)
+//    if(vehicle.world.getBlock(x, by, z).getMaterial()==Material.WATER)
 //      {
-//      submerged += (float)(16 - vehicle.worldObj.getBlockMetadata(x, by, z)) * 0.0625f;
+//      submerged += (float)(16 - vehicle.world.getBlockMetadata(x, by, z)) * 0.0625f;
 //      }
 //    }
 //  
@@ -79,9 +79,9 @@ public class VehicleMoveHandlerWaterTest extends VehicleInputHandler {
 //  z = MathHelper.floor(vehicle.posZ);
 //  for(int by = y; by<= y+height; by++)
 //    {
-//    if(vehicle.worldObj.getBlock(x, by, z).getMaterial()==Material.WATER)
+//    if(vehicle.world.getBlock(x, by, z).getMaterial()==Material.WATER)
 //      {
-//      submerged += (float)(16 - vehicle.worldObj.getBlockMetadata(x, by, z)) * 0.0625f;
+//      submerged += (float)(16 - vehicle.world.getBlockMetadata(x, by, z)) * 0.0625f;
 //      }
 //    }
 //  

@@ -63,9 +63,9 @@ public void onWarehouseInventoryUpdated(WorkSiteWarehouse warehouse)
 
 private WorkSiteWarehouse getWarehouse()
   {
-  if(controllerPosition!=null && worldObj.blockExists(controllerPosition.x, controllerPosition.y, controllerPosition.z))
+  if(controllerPosition!=null && world.blockExists(controllerPosition.x, controllerPosition.y, controllerPosition.z))
     {
-    TileEntity te = worldObj.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
+    TileEntity te = world.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
     if(te instanceof WorkSiteWarehouse)
       {
       return (WorkSiteWarehouse) te;
@@ -86,7 +86,7 @@ private void updateFilterCounts(boolean addBlockEvents)
 //      filter.setFilterQuantity(0);
 //      if(addBlockEvents)
 //        {
-//        worldObj.addBlockEvent(x, y, z, getBlockType(), i, 0);
+//        world.addBlockEvent(x, y, z, getBlockType(), i, 0);
 //        }
 //      }
 //    return;
@@ -102,7 +102,7 @@ private void updateFilterCounts(boolean addBlockEvents)
 //      filter.setFilterQuantity(qty);
 //      if(addBlockEvents)
 //        {
-//        worldObj.addBlockEvent(x, y, z, getBlockType(), i, qty);
+//        world.addBlockEvent(x, y, z, getBlockType(), i, qty);
 //        }
 //      }
 //    }
@@ -132,9 +132,9 @@ public void invalidate()
   {  
   super.invalidate();
   this.init = false;
-  if(controllerPosition!=null && worldObj.blockExists(controllerPosition.x, controllerPosition.y, controllerPosition.z))
+  if(controllerPosition!=null && world.blockExists(controllerPosition.x, controllerPosition.y, controllerPosition.z))
     {
-    TileEntity te = worldObj.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
+    TileEntity te = world.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
     if(te instanceof WorkSiteWarehouse)
       {
       WorkSiteWarehouse warehouse = (WorkSiteWarehouse)te;
@@ -158,13 +158,13 @@ public void setControllerPosition(BlockPosition position)
   }
 
 @Override
-public void updateEntity()
+public void update()
   {
   if(!init)
     {
     init = true;
     AWLog.logDebug("scanning for controller...");
-    for(TileEntity te : (List<TileEntity>)WorldTools.getTileEntitiesInArea(worldObj, x-16, y-4, z-16, x+16, y+4, z+16))
+    for(TileEntity te : (List<TileEntity>)WorldTools.getTileEntitiesInArea(world, x-16, y-4, z-16, x+16, y+4, z+16))
       {
       if(te instanceof WorkSiteWarehouse)
         {
@@ -188,9 +188,9 @@ public void setFilters(List<WarehouseStorageFilter> filters)
   this.filters.clear();
   this.filters.addAll(filters);
   updateFilterCounts(false);
-  if(!worldObj.isRemote)
+  if(!world.isRemote)
     {
-    worldObj.markBlockForUpdate(x, y, z);
+    world.markBlockForUpdate(x, y, z);
     }
   }
 
@@ -254,7 +254,7 @@ public void writeToNBT(NBTTagCompound tag)
 @Override
 public boolean onBlockClicked(EntityPlayer player)
   {
-  if(!player.worldObj.isRemote)
+  if(!player.world.isRemote)
     {
     NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_STORAGE, x, y, z);
     }
@@ -264,11 +264,11 @@ public boolean onBlockClicked(EntityPlayer player)
 //@Override
 //public boolean receiveClientEvent(int a, int b)
 //  {
-//  if(!worldObj.isRemote)
+//  if(!world.isRemote)
 //    {
 //    return true;
 //    }
-//  AWLog.logDebug("receiving client event: "+a+"::"+b+" client: "+worldObj.isRemote);
+//  AWLog.logDebug("receiving client event: "+a+"::"+b+" client: "+world.isRemote);
 //  if(a>=0 && a<filters.size())
 //    {
 //    WarehouseItemFilter filter = filters.get(a);

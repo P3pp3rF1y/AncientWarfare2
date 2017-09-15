@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.automation.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseInterfaceFilter;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
@@ -16,8 +15,8 @@ public class ContainerWarehouseInterface extends ContainerTileBase<TileWarehouse
 
     public List<WarehouseInterfaceFilter> filters = new ArrayList<>();
 
-    public ContainerWarehouseInterface(EntityPlayer player, BlockPos pos) {
-        super(player, pos);
+    public ContainerWarehouseInterface(EntityPlayer player, int x, int y, int z) {
+        super(player, x, y, z);
         for (int i = 0; i < 9; i++) {
             addSlotToContainer(new Slot(tileEntity, i, (i % 3) * 18 + 8 + 3 * 18, (i / 3) * 18 + 8 + 80 + 8));
         }

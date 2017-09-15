@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.automation.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBoundedInventory;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
@@ -14,8 +13,8 @@ public class ContainerWorksiteInventorySideSelection extends ContainerTileBase<T
 
     public final HashMap<RelativeSide, RelativeSide> sideMap = new HashMap<>();
 
-    public ContainerWorksiteInventorySideSelection(EntityPlayer player, BlockPos pos) {
-        super(player, pos);
+    public ContainerWorksiteInventorySideSelection(EntityPlayer player, int x, int y, int z) {
+        super(player, x, y, z);
         InventorySided inventory = tileEntity.inventory;
 
         for (RelativeSide rSide : inventory.rType.getValidSides()) {

@@ -6,9 +6,10 @@ import net.minecraft.item.ItemStack;
 
 public class ItemBlockWarehouseStorage extends ItemBlock {
 
-    public ItemBlockWarehouseStorage(Block p_i45328_1_) {
-        super(p_i45328_1_);
+    public ItemBlockWarehouseStorage(Block block) {
+        super(block);
         this.setHasSubtypes(true);
+        this.setRegistryName(block.getRegistryName());
     }
 
     @Override

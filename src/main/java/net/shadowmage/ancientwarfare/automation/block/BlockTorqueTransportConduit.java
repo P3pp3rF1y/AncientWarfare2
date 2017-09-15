@@ -10,12 +10,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileConduitHeavy;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileConduitLight;
@@ -30,6 +32,7 @@ public class BlockTorqueTransportConduit extends BlockTorqueBase {
         super(Material.ROCK);
         this.setCreativeTab(AWAutomationItemLoader.automationTab);
         this.setUnlocalizedName(regName);
+        this.setRegistryName(new ResourceLocation(AncientWarfareAutomation.modID, regName));
         this.setLightOpacity(1);
     }
 

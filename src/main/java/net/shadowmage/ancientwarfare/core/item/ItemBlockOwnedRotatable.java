@@ -20,12 +20,13 @@ public class ItemBlockOwnedRotatable extends ItemBlock {
 
     IRotatableBlock rotatable;
 
-    public ItemBlockOwnedRotatable(Block p_i45328_1_) {
-        super(p_i45328_1_);
-        if (!(p_i45328_1_ instanceof IRotatableBlock)) {
+    public ItemBlockOwnedRotatable(Block block) {
+        super(block);
+        if (!(block instanceof IRotatableBlock)) {
             throw new IllegalArgumentException("Must be a rotatable block!!");
         }
-        rotatable = (IRotatableBlock) p_i45328_1_;
+        rotatable = (IRotatableBlock) block;
+        setRegistryName(block.getRegistryName());
     }
 
     @Override

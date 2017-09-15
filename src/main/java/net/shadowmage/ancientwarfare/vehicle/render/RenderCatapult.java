@@ -1,8 +1,9 @@
 package net.shadowmage.ancientwarfare.vehicle.render;
 
 import net.minecraft.client.renderer.entity.RenderEntity;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
@@ -17,12 +18,13 @@ public class RenderCatapult extends RenderEntity {
 
     ModelBaseAW model;
 
-    AxisAlignedBB renderOBB = AxisAlignedBB.getBoundingBox(0, 0, 0, 0, 0, 0);
-    AxisAlignedBB renderAABB = AxisAlignedBB.getBoundingBox(0, 0, 0, 0, 0, 0);
+    AxisAlignedBB renderOBB = new AxisAlignedBB(0, 0, 0, 0, 0, 0);
+    AxisAlignedBB renderAABB = new AxisAlignedBB(0, 0, 0, 0, 0, 0);
 
-    AxisAlignedBB testCollisionBB = AxisAlignedBB.getBoundingBox(1, 0, 1, 2, 1, 2);
+    AxisAlignedBB testCollisionBB = new AxisAlignedBB(1, 0, 1, 2, 1, 2);
 
-    public RenderCatapult() {
+    public RenderCatapult(RenderManager renderManager) {
+        super(renderManager);
         ModelLoader loader = new ModelLoader();
         model = loader.loadModel(getClass().getResourceAsStream("/assets/ancientwarfare/models/vehicle/catapult.m2f"));
     }
@@ -69,19 +71,17 @@ public class RenderCatapult extends RenderEntity {
             x1 = part.posX - entity.posX;
             y1 = part.posY - entity.posY;
             z1 = part.posZ - entity.posZ;
-            renderAABB.setBB(part.getEntityBoundingBox());
-            renderAABB.offset(x1, y1, z1);
-            renderAABB.offset(-part.posX, -part.posY, -part.posZ);
+            renderAABB = part.getEntityBoundingBox().offset(x1, y1, z1);
+            renderAABB = renderAABB.offset(-part.posX, -part.posY, -part.posZ);
             RenderTools.drawOutlinedBoundingBox2(renderAABB, 1, 0, 0, 0.0625f);
         }
 
         GL11.glColor4f(.75f, .75f, .75f, 0.75f);
-        renderAABB.setBB(entity.getEntityBoundingBox());
-        renderAABB.offset(-entity.posX, -entity.posY, -entity.posZ);
+        renderAABB = entity.getEntityBoundingBox().offset(-entity.posX, -entity.posY, -entity.posZ);
         RenderTools.drawOutlinedBoundingBox2(renderAABB, 1, 1, 1, 0.0625f);
 
         GL11.glRotated(vehicle.rotationYaw, 0, 1, 0);
-        renderAABB.setBounds(-vehicle.vehicleWidth / 2.f, 0, -vehicle.vehicleLength / 2.f, vehicle.vehicleWidth / 2.f, vehicle.vehicleHeight, vehicle.vehicleLength / 2.f);
+        renderAABB = new AxisAlignedBB(-vehicle.vehicleWidth / 2.f, 0, -vehicle.vehicleLength / 2.f, vehicle.vehicleWidth / 2.f, vehicle.vehicleHeight, vehicle.vehicleLength / 2.f);
         RenderTools.drawOutlinedBoundingBox2(renderAABB, 0, 1, 0, 0.0625f);
 
         GL11.glEnable(GL11.GL_TEXTURE_2D);

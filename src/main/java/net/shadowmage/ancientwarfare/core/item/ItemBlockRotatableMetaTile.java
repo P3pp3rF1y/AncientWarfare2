@@ -25,6 +25,7 @@ public class ItemBlockRotatableMetaTile extends ItemBlock {
             throw new IllegalArgumentException("Must be a rotatable block!!");
         }
         rotatable = (IRotatableBlock) block;
+        setRegistryName(block.getRegistryName());
     }
 
     @Override

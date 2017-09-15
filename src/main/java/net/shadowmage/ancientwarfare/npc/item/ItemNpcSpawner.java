@@ -13,8 +13,10 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.npc.entity.AWNPCEntityLoader;
@@ -29,6 +31,8 @@ public class ItemNpcSpawner extends Item {
     public ItemNpcSpawner() {
         this.setCreativeTab(AWNpcItemLoader.npcTab);
         //this.setTextureName("ancientwarfare:npc/spawner_miner");
+        this.setUnlocalizedName("npc_spawner");
+        this.setRegistryName(new ResourceLocation(AncientWarfareCore.modID, "npc_spawner"));
     }
 
     @Override

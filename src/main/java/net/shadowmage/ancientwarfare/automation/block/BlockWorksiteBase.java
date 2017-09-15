@@ -8,15 +8,15 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
-import net.shadowmage.ancientwarfare.core.block.IconRotationMap;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
@@ -27,7 +27,7 @@ import java.lang.reflect.Constructor;
 
 public class BlockWorksiteBase extends Block implements IRotatableBlock {
 
-    IconRotationMap iconMap = new IconRotationMap();
+    //IconRotationMap iconMap = new IconRotationMap();
     public int maxWorkSize = 16;
     public int maxWorkSizeVertical = 1;
     private Constructor<? extends TileEntity> tile;
@@ -35,14 +35,15 @@ public class BlockWorksiteBase extends Block implements IRotatableBlock {
     public BlockWorksiteBase(String regName) {
         super(Material.WOOD);
         this.setCreativeTab(AWAutomationItemLoader.automationTab);
+        this.setRegistryName(new ResourceLocation(AncientWarfareAutomation.modID, regName));
         this.setUnlocalizedName(regName);
         setHardness(2.f);
     }
 
-    public BlockWorksiteBase setIcon(RelativeSide relativeSide, String texName) {
-        this.iconMap.setIcon(this, relativeSide, texName);
-        return this;
-    }
+//    public BlockWorksiteBase setIcon(RelativeSide relativeSide, String texName) {
+//        this.iconMap.setIcon(this, relativeSide, texName);
+//        return this;
+//    }
 
     public BlockWorksiteBase setWorkSize(int size) {
         this.maxWorkSize = size;
@@ -56,7 +57,7 @@ public class BlockWorksiteBase extends Block implements IRotatableBlock {
 
     public BlockWorksiteBase setTileEntity(Class<? extends TileEntity> clzz) {
         try {
-            //TODO replace with interface and ::new
+            //TODO replace with factory method and ::new
             tile = clzz.getConstructor();
         } catch (Exception e) {
         }

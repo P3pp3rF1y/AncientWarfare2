@@ -46,7 +46,7 @@ ItemStructureSettings settings = new ItemStructureSettings();
 public ContainerCSB(EntityPlayer openingPlayer, int x, int y, int z) 
   {
   super(openingPlayer, x, y, z);
-  if(player.worldObj.isRemote)
+  if(player.world.isRemote)
     {
     return;
     }
@@ -97,7 +97,7 @@ public List<NBTTagCompound> getInitData()
 public void onContainerClosed(EntityPlayer par1EntityPlayer)
   {
   super.onContainerClosed(par1EntityPlayer);
-  if(par1EntityPlayer.worldObj.isRemote)
+  if(par1EntityPlayer.world.isRemote)
     {
     return;
     }

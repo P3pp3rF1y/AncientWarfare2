@@ -4,7 +4,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
 
@@ -12,8 +11,8 @@ import javax.annotation.Nonnull;
 
 public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeringStation> {
 
-    public ContainerEngineeringStation(EntityPlayer player, BlockPos pos) {
-        super(player, pos);
+    public ContainerEngineeringStation(EntityPlayer player, int x, int y, int z) {
+        super(player, x, y, z);
 
         Slot slot = new SlotCrafting(player, tileEntity.layoutMatrix, tileEntity.result, 0, 3 * 18 + 3 * 18 + 8 + 18, 1 * 18 + 8) {
             @Override

@@ -71,7 +71,7 @@ public List<NBTTagCompound> getInitData()
 public void onContainerClosed(EntityPlayer par1EntityPlayer)
   {
   super.onContainerClosed(par1EntityPlayer);
-  if(par1EntityPlayer.worldObj.isRemote)
+  if(par1EntityPlayer.world.isRemote)
     {
     return;
     }

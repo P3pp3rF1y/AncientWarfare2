@@ -153,7 +153,7 @@ public boolean canInteractWith(EntityPlayer var1)
 
 public void sendDataToServer(NBTTagCompound tag)
   {
-  if(!player.worldObj.isRemote)
+  if(!player.world.isRemote)
     {
     AWFramework.instance.logError("Attempt to send data to server FROM server");
     Exception e = new IllegalAccessException();
@@ -171,7 +171,7 @@ public void sendDataToServer(NBTTagCompound tag)
  */
 public void sendDataToPlayer(NBTTagCompound tag)
   {
-  if(player.worldObj.isRemote)
+  if(player.world.isRemote)
     {
     AWFramework.instance.logError("Attempt to send data to client FROM client");
     Exception e = new IllegalAccessException();

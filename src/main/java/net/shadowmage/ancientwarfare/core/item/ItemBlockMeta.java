@@ -9,6 +9,7 @@ public class ItemBlockMeta extends ItemBlock {
     public ItemBlockMeta(Block block) {
         super(block);
         this.setHasSubtypes(true);
+        this.setRegistryName(block.getRegistryName());
     }
 
     @Override

@@ -49,7 +49,7 @@ ItemStructureSettings settings = new ItemStructureSettings();
 public ContainerStructureScanner(EntityPlayer openingPlayer, int x, int y, int z)
   {
   super(openingPlayer, x, y, z );
-  if(player.worldObj.isRemote)
+  if(player.world.isRemote)
     {
     return;
     }
@@ -68,7 +68,7 @@ public void handlePacketData(NBTTagCompound tag)
     {
     boolean include = tag.getBoolean("export");
     String name = tag.getString("name");
-    scanStructure(player.worldObj, settings.pos1(), settings.pos2(), settings.buildKey(), settings.face(), name, include, tag);
+    scanStructure(player.world, settings.pos1(), settings.pos2(), settings.buildKey(), settings.face(), name, include, tag);
     settings.clearSettings();    
     }
   if(tag.hasKey("reset"))
@@ -102,7 +102,7 @@ public boolean scanStructure(World world, BlockPosition pos1, BlockPosition pos2
 public void onContainerClosed(EntityPlayer par1EntityPlayer)
   {
   super.onContainerClosed(par1EntityPlayer);
-  if(par1EntityPlayer.worldObj.isRemote)
+  if(par1EntityPlayer.world.isRemote)
     {
     return;
     }

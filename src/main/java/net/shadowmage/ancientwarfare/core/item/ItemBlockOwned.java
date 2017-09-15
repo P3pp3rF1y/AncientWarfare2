@@ -13,8 +13,8 @@ import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 
 public class ItemBlockOwned extends ItemBlock {
 
-    public ItemBlockOwned(Block p_i45328_1_) {
-        super(p_i45328_1_);
+    public ItemBlockOwned(Block block) {
+        super(block);
     }
 
     @Override

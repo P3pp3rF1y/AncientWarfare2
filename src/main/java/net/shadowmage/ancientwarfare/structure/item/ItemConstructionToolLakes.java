@@ -8,16 +8,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 
 import java.util.Set;
 
 public class ItemConstructionToolLakes extends Item {
 
-    public ItemConstructionToolLakes(String itemName) {
-        this.setUnlocalizedName(itemName);
+    public ItemConstructionToolLakes(String name) {
+        this.setUnlocalizedName(name);
+        this.setRegistryName(new ResourceLocation(AncientWarfareStructures.modID, name));
         this.setCreativeTab(AWStructuresItemLoader.structureTab);
         //this.setTextureName("ancientwarfare:structure/" + "construction_tool");
     }

@@ -18,8 +18,9 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
 public class ItemBlockWorksiteStatic extends ItemBlock {
 
-    public ItemBlockWorksiteStatic(Block p_i45328_1_) {
-        super(p_i45328_1_);
+    public ItemBlockWorksiteStatic(Block block) {
+        super(block);
+        setRegistryName(block.getRegistryName());
     }
 
     @Override

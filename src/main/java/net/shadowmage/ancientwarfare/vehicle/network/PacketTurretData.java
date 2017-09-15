@@ -37,7 +37,7 @@ public class PacketTurretData extends PacketBase {
 
     @Override
     protected void execute(EntityPlayer player) {
-        Entity e = player.worldObj.getEntityByID(entityId);
+        Entity e = player.world.getEntityByID(entityId);
         if (e instanceof VehicleBase) {
             ((VehicleBase) e).moveHandler.onTurretDataReceived(value);
         }

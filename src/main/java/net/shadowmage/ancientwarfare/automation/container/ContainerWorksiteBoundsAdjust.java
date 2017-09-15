@@ -12,8 +12,8 @@ public class ContainerWorksiteBoundsAdjust extends ContainerTileBase {
 
     public BlockPos min, max;
 
-    public ContainerWorksiteBoundsAdjust(EntityPlayer player, BlockPos pos) {
-        super(player, pos);
+    public ContainerWorksiteBoundsAdjust(EntityPlayer player, int x, int y, int z) {
+        super(player, x, y, z);
         if(tileEntity instanceof IBoundedSite) {
             min = getWorksite().getWorkBoundsMin();
             max = getWorksite().getWorkBoundsMax();

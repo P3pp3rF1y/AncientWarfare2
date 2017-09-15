@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.core.item;
 
+import net.minecraft.util.ResourceLocation;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 
 public class ItemComponent extends ItemBase {
@@ -19,5 +21,7 @@ public class ItemComponent extends ItemBase {
 
     public ItemComponent() {
         this.setCreativeTab(AWCoreBlockLoader.coreTab);
+        this.setUnlocalizedName("component");
+        this.setRegistryName(new ResourceLocation(AncientWarfareCore.modID, "component"));
     }
 }

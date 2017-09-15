@@ -33,6 +33,10 @@ public class ItemBase extends Item {
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+        if (tab != this.getCreativeTab()) {
+            return;
+        }
+
         for (Integer num : subItems.keySet()) {
             items.add(new ItemStack(this, 1, num));
         }

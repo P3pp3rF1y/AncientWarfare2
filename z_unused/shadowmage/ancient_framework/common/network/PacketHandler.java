@@ -102,7 +102,7 @@ public void onPacketData(INetworkManager manager, Packet250CustomPayload packet,
     }
   realPacket.packetData = tag;
   realPacket.player = (EntityPlayer)player;  
-  realPacket.world = realPacket.player.worldObj;    
+  realPacket.world = realPacket.player.world;
   realPacket.readDataStream(data);
   realPacket.execute();
   }
@@ -128,7 +128,7 @@ private static HashMap<String, MPPacketList> clientMultiPartPacketHandlers = new
 public static void handleMultiPartPacketReceipt(Packet00MultiPart pkt, EntityPlayer player)
   {
   HashMap<String, MPPacketList> ph;
-  if(player.worldObj.isRemote)
+  if(player.world.isRemote)
     {
     ph = clientMultiPartPacketHandlers;
     }
@@ -197,7 +197,7 @@ public void handleMPPacket(Packet00MultiPart pkt)
       NBTTagCompound tag =  NBTTools.readTagFromStream(data);      
       realPacket.packetData = tag;
       realPacket.player = (EntityPlayer)pkt.player;  
-      realPacket.world = pkt.player.worldObj;    
+      realPacket.world = pkt.player.world;
       realPacket.readDataStream(data);
       realPacket.execute();
       } 

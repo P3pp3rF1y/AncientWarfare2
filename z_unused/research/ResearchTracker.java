@@ -29,7 +29,7 @@ private Set<Integer> clientResearch = new HashSet<>();
 @SubscribeEvent
 public void playerLogInEvent(PlayerEvent.PlayerLoggedInEvent evt)
   {
-  PacketResearchInit init = new PacketResearchInit(getCompletedResearchFor(evt.player.worldObj, evt.player.getCommandSenderName()));
+  PacketResearchInit init = new PacketResearchInit(getCompletedResearchFor(evt.player.world, evt.player.getCommandSenderName()));
   NetworkHandler.sendToPlayer((EntityPlayerMP) evt.player, init);
   }
 

@@ -15,12 +15,18 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
@@ -37,6 +43,7 @@ public class ItemHammer extends Item implements IItemKeyInterface {
 
     public ItemHammer(String regName, ToolMaterial material) {
         this.setUnlocalizedName(regName);
+        this.setRegistryName(new ResourceLocation(AncientWarfareCore.modID, regName));
         this.setCreativeTab(AWCoreBlockLoader.coreTab);
         //this.setTextureName("ancientwarfare:core/" + regName);
         this.attackDamage = 4.f + material.getDamageVsEntity();

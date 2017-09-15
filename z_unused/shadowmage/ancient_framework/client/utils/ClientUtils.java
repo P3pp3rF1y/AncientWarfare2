@@ -44,16 +44,16 @@ public ClientUtils()
 public static MovingObjectPosition getPlayerLookTargetClient(EntityPlayer player, float range, Entity excludedEntity)
   {  
   /*
-   * Vec3d positionVector = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
-    Vec3d moveVector = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-    MovingObjectPosition hitPosition = this.worldObj.rayTraceBlocks_do_do(positionVector, moveVector, false, true);
-    positionVector = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
-    moveVector = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+   * Vec3d positionVector = this.world.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+    Vec3d moveVector = this.world.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+    MovingObjectPosition hitPosition = this.world.rayTraceBlocks_do_do(positionVector, moveVector, false, true);
+    positionVector = this.world.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+    moveVector = this.world.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
    */
   Vec3d playerPos = player.getPosition(0);
   Vec3d lookVector = player.getLook(0);
   Vec3d endVector = playerPos.addVector(lookVector.x * range, lookVector.y * range, lookVector.z * range);
-  MovingObjectPosition blockHit = player.worldObj.clip(playerPos, endVector);
+  MovingObjectPosition blockHit = player.world.clip(playerPos, endVector);
   
   /*
    * reseat vectors, as they get messed with in the rayTrace...

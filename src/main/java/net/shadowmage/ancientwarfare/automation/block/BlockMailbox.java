@@ -9,14 +9,14 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
-import net.shadowmage.ancientwarfare.core.block.IconRotationMap;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
@@ -24,20 +24,21 @@ import static net.shadowmage.ancientwarfare.core.render.BlockRenderProperties.FA
 
 public class BlockMailbox extends Block implements IRotatableBlock {
 
-    IconRotationMap iconMap = new IconRotationMap();
+//    IconRotationMap iconMap = new IconRotationMap();
 
     public BlockMailbox(String regName) {
         super(Material.ROCK);
         this.setUnlocalizedName(regName);
+        this.setRegistryName(new ResourceLocation(AncientWarfareAutomation.modID, regName));
         this.setCreativeTab(AWAutomationItemLoader.automationTab);
         setHardness(2.f);
-        String icon = "ancientwarfare:automation/"+regName;
-        setIcon(RelativeSide.TOP, icon);
-        setIcon(RelativeSide.FRONT, icon);
-        setIcon(RelativeSide.REAR, icon);
-        setIcon(RelativeSide.BOTTOM, icon);
-        setIcon(RelativeSide.LEFT, icon);
-        setIcon(RelativeSide.RIGHT, icon);
+//        String icon = "ancientwarfare:automation/"+regName;
+//        setIcon(RelativeSide.TOP, icon);
+//        setIcon(RelativeSide.FRONT, icon);
+//        setIcon(RelativeSide.REAR, icon);
+//        setIcon(RelativeSide.BOTTOM, icon);
+//        setIcon(RelativeSide.LEFT, icon);
+//        setIcon(RelativeSide.RIGHT, icon);
     }
 
     @Override
@@ -65,10 +66,10 @@ public class BlockMailbox extends Block implements IRotatableBlock {
         return new TileMailbox();
     }
 
-    public BlockMailbox setIcon(RelativeSide relativeSide, String texName) {
-        this.iconMap.setIcon(this, relativeSide, texName+"_"+relativeSide);
-        return this;
-    }
+//    public BlockMailbox setIcon(RelativeSide relativeSide, String texName) {
+//        this.iconMap.setIcon(this, relativeSide, texName+"_"+relativeSide);
+//        return this;
+//    }
 
 /*
     @Override

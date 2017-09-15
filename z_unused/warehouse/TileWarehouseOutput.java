@@ -52,9 +52,9 @@ public void invalidate()
   {  
   super.invalidate();
   this.init = false;
-  if(controllerPosition!=null && worldObj.blockExists(controllerPosition.x, controllerPosition.y, controllerPosition.z))
+  if(controllerPosition!=null && world.blockExists(controllerPosition.x, controllerPosition.y, controllerPosition.z))
     {
-    TileEntity te = worldObj.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
+    TileEntity te = world.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
     if(te instanceof WorkSiteWarehouse)
       {
       WorkSiteWarehouse warehouse = (WorkSiteWarehouse)te;
@@ -82,7 +82,7 @@ public void markDirty()
   super.markDirty();
   if(this.controllerPosition!=null)
     {
-    TileEntity te = worldObj.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
+    TileEntity te = world.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
     if(te instanceof WorkSiteWarehouse)
       {
       ((WorkSiteWarehouse) te).onOutputInventoryUpdated(this);
@@ -91,12 +91,12 @@ public void markDirty()
   }
 
 @Override
-public void updateEntity()
+public void update()
   {
   if(!init)
     {
     init = true;
-    for(TileEntity te : (List<TileEntity>)WorldTools.getTileEntitiesInArea(worldObj, x-16, y-4, z-16, x+16, y+4, z+16))
+    for(TileEntity te : (List<TileEntity>)WorldTools.getTileEntitiesInArea(world, x-16, y-4, z-16, x+16, y+4, z+16))
       {
       if(te instanceof WorkSiteWarehouse)
         {
@@ -169,12 +169,12 @@ public void setFilters(List<WarehouseInterfaceFilter> filters)
   {
   this.filters.clear();
   this.filters.addAll(filters);
-  if(!this.worldObj.isRemote)
+  if(!this.world.isRemote)
     {
-    this.worldObj.markBlockForUpdate(x, y, z);
-    if(controllerPosition!=null && worldObj.blockExists(controllerPosition.x, controllerPosition.y, controllerPosition.z))
+    this.world.markBlockForUpdate(x, y, z);
+    if(controllerPosition!=null && world.blockExists(controllerPosition.x, controllerPosition.y, controllerPosition.z))
       {
-      TileEntity te = worldObj.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
+      TileEntity te = world.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
       if(te instanceof WorkSiteWarehouse)
         {
         WorkSiteWarehouse warehouse = (WorkSiteWarehouse)te;
@@ -266,7 +266,7 @@ public boolean isItemValidForSlot(int var1, ItemStack var2)
 @Override
 public boolean onBlockClicked(EntityPlayer player)
   {
-  if(!player.worldObj.isRemote)
+  if(!player.world.isRemote)
     {
     NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_OUTPUT, x, y, z);
     }

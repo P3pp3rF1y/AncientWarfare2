@@ -8,8 +8,10 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
@@ -24,6 +26,7 @@ public class BlockWarehouseInterface extends Block {
     public BlockWarehouseInterface(String regName) {
         super(Material.ROCK);
         this.setUnlocalizedName(regName);
+        this.setRegistryName(new ResourceLocation(AncientWarfareAutomation.modID, regName));
         setCreativeTab(AWAutomationItemLoader.automationTab);
         setHardness(2.f);
     }

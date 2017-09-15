@@ -43,8 +43,8 @@ TeamData clientTeamData;
 @Override
 public void onPlayerLogin(EntityPlayer player)
   {
-  if(player.worldObj.isRemote){return;}
-  TeamData data = AWGameData.get(player.worldObj, "AWTeamData", TeamData.class);
+  if(player.world.isRemote){return;}
+  TeamData data = AWGameData.get(player.world, "AWTeamData", TeamData.class);
   if(data==null){return;}
   data.handlePlayerLogin(player.getEntityName());  
   this.sendTeamData(data);

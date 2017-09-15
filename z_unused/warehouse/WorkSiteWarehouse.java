@@ -79,16 +79,16 @@ public void addEnergyFromWorker(IWorker worker)
   }
 
 @Override
-public void updateEntity()
+public void update()
   {
-  worldObj.theProfiler.startSection("AWWorksite");
-  worldObj.theProfiler.startSection("Warehouse");
+  world.profiler.startSection("AWWorksite");
+  world.profiler.startSection("Warehouse");
   if(!init)
     {
     init = true;
     scanInitialBlocks();  
     }
-  if(!worldObj.isRemote)
+  if(!world.isRemote)
     {
     if(warehouseInventoryUpdated)
       {
@@ -106,8 +106,8 @@ public void updateEntity()
       storedEnergy-=AWCoreStatics.energyPerWorkUnit;
       }
     }  
-  worldObj.theProfiler.endSection();
-  worldObj.theProfiler.endSection();
+  world.profiler.endSection();
+  world.profiler.endSection();
   }
 
 private void updateTiles()
@@ -264,8 +264,8 @@ protected void scanInitialBlocks()
       {
       for(int y = bbMin.y; y<=bbMax.y; y++)
         {
-        if(!worldObj.blockExists(x, y, z)){continue;}
-        te = worldObj.getTileEntity(x, y, z);
+        if(!world.blockExists(x, y, z)){continue;}
+        te = world.getTileEntity(x, y, z);
         if(te==null){continue;}
         else if(te instanceof IWarehouseStorageTile)
           {
@@ -422,7 +422,7 @@ public WorkType getWorkType()
 @Override
 public boolean onBlockClicked(EntityPlayer player)
   {
-  if(!player.worldObj.isRemote)
+  if(!player.world.isRemote)
     {
     NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_CONTROL, x, y, z);
     }
@@ -591,7 +591,7 @@ public void updateViewers()
   for(ContainerWarehouseControl container : this.viewers)
     {
     container.refreshGui();
-    if(!worldObj.isRemote)
+    if(!world.isRemote)
       {
       container.onWarehouseInventoryUpdated();
       }

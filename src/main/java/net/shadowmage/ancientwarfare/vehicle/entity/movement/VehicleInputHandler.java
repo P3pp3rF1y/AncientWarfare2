@@ -24,7 +24,7 @@ public abstract class VehicleInputHandler {
     }
 
     public void onTurretDataReceived(int data) {
-        if (vehicle.worldObj.isRemote) {
+        if (vehicle.world.isRemote) {
             handleTurretUpdateClient(data);
         } else {
             handleTurretUpdateServer(data);

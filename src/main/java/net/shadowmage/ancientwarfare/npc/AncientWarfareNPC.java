@@ -83,7 +83,6 @@ public class AncientWarfareNPC {
         /*
          * load items, blocks, and entities
          */
-        AWNpcItemLoader.load();
         AWNPCBlockLoader.load();
         AWNPCEntityLoader.load();
 
@@ -109,6 +108,7 @@ public class AncientWarfareNPC {
 
     @EventHandler
     public void init(FMLInitializationEvent evt) {
+        AWNpcItemLoader.load();
 
         /*
          * construct recipes, load plugins

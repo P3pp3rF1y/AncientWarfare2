@@ -133,6 +133,7 @@ public class AncientWarfareAutomation {
         /*
          * construct recipes, load plugins
          */
+        AWAutomationItemLoader.load();
         AWAutomationCrafting.loadRecipes();
         statics.save();
     }

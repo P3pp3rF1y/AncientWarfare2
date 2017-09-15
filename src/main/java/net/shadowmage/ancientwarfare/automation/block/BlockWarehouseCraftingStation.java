@@ -7,29 +7,31 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseCraftingStation;
-import net.shadowmage.ancientwarfare.core.block.BlockIconMap;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class BlockWarehouseCraftingStation extends Block {
 
-    private BlockIconMap iconMap = new BlockIconMap();
+//    private BlockIconMap iconMap = new BlockIconMap();
 
     public BlockWarehouseCraftingStation(String regName) {
         super(Material.ROCK);
         this.setUnlocalizedName(regName);
+        this.setRegistryName(new ResourceLocation(AncientWarfareAutomation.modID, regName));
         setCreativeTab(AWAutomationItemLoader.automationTab);
         setHardness(2.f);
     }
 
-    public BlockWarehouseCraftingStation setIcon(int meta, int side, String texName) {
-        this.iconMap.setIconTexture(side, meta, texName);
-        return this;
-    }
+//    public BlockWarehouseCraftingStation setIcon(int meta, int side, String texName) {
+//        this.iconMap.setIconTexture(side, meta, texName);
+//        return this;
+//    }
 
 /*
     @Override

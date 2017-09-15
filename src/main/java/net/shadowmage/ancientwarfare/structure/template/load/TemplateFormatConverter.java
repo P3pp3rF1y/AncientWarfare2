@@ -32,6 +32,8 @@ import net.minecraft.tileentity.TileEntityDropper;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.tileentity.TileEntitySkull;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
@@ -272,7 +274,7 @@ public class TemplateFormatConverter {
             rule.blockName = BlockDataManager.INSTANCE.getNameForBlock(block);
             rule.meta = meta;
             rule.buildPass = buildPass;
-            ((TemplateRuleBlockSign) rule).signContents = new String[]{"", "", "", ""};
+            ((TemplateRuleBlockSign) rule).signContents = new ITextComponent[]{new TextComponentString(""), new TextComponentString(""), new TextComponentString(""), new TextComponentString("")};
         }//vanilla sign rule
         else if (block == Blocks.COMMAND_BLOCK) {
             NBTTagCompound tag = new NBTTagCompound();

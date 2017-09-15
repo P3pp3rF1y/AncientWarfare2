@@ -77,7 +77,7 @@ public final class PacketInputState extends PacketBase {
 
     @Override
     protected void execute(EntityPlayer player) {
-        Entity e = player.worldObj.getEntityByID(entityID);
+        Entity e = player.world.getEntityByID(entityID);
         if (e instanceof VehicleBase) {
             ((VehicleBase) e).inputHandler.handleInputPacket(this);
         }

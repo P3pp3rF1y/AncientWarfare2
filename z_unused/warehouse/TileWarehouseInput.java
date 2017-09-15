@@ -12,7 +12,7 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
-public class TileWarehouseInput extends TileEntity implements IInventory, IInteractableTile, IControlledTile
+public class TileWarehouseInput extends TileEntity implements IInventory, IInteractableTile, IControlledTile, ITickable
 {
 
 private InventoryBasic inventory;
@@ -46,9 +46,9 @@ public void invalidate()
   {  
   super.invalidate();
   init = false;
-  if(controllerPosition!=null && worldObj.blockExists(controllerPosition.x, controllerPosition.y, controllerPosition.z))
+  if(controllerPosition!=null && world.blockExists(controllerPosition.x, controllerPosition.y, controllerPosition.z))
     {
-    TileEntity te = worldObj.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
+    TileEntity te = world.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
     if(te instanceof WorkSiteWarehouse)
       {
       WorkSiteWarehouse warehouse = (WorkSiteWarehouse)te;
@@ -64,13 +64,13 @@ public void invalidate()
   }
 
 @Override
-public void updateEntity()
+public void update()
   {  
   if(!init)
     {
     init = true;
     AWLog.logDebug("scanning for controller...");
-    for(TileEntity te : WorldTools.getTileEntitiesInArea(worldObj, x-16, y-4, z-16, x+16, y+4, z+16))
+    for(TileEntity te : WorldTools.getTileEntitiesInArea(world, x-16, y-4, z-16, x+16, y+4, z+16))
       {
       if(te instanceof WorkSiteWarehouse)
         {
@@ -95,7 +95,7 @@ public void markDirty()
   super.markDirty();
   if(this.controllerPosition!=null)
     {
-    TileEntity te = worldObj.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
+    TileEntity te = world.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
     if(te instanceof WorkSiteWarehouse)
       {
       ((WorkSiteWarehouse) te).onInputInventoryUpdated(this);
@@ -194,7 +194,7 @@ public boolean isItemValidForSlot(int var1, ItemStack var2)
 @Override
 public boolean onBlockClicked(EntityPlayer player)
   {
-  if(!player.worldObj.isRemote)
+  if(!player.world.isRemote)
     {
 //    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_INPUT, x, y, z);
     }

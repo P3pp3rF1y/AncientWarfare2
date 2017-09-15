@@ -1,7 +1,5 @@
 package net.shadowmage.ancientwarfare.npc.tile;
 
-import ftb.utils.world.LMPlayerServer;
-import ftb.utils.world.LMWorldServer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -187,24 +185,26 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
             notificationMsg = new TextComponentTranslation("ftbu_aw2.notification.townhall_captured.msg.gained", oldOwner);
             ModAccessors.FTBU.notifyPlayer(TextFormatting.GREEN, getOwnerName(), notificationTitle, notificationMsg, notificationTooltip);
             
-            
-            LMPlayerServer lmPlayerServer = LMWorldServer.inst.getPlayer(getOwnerName());
-            if (lmPlayerServer != null) {
-                
-            }
+
+            //TODO is this supposed to do anything??
+//            LMPlayerServer lmPlayerServer = LMWorldServer.inst.getPlayer(getOwnerName());
+//            if (lmPlayerServer != null) {
+//
+//            }
         }
         
         // manually claim the chunks immediately, don't wait for the worker thread
-        LMPlayerServer lmPlayerServer = LMWorldServer.inst.getPlayer(getOwnerName());
-        if (lmPlayerServer != null) {
-            // we can only do this if the player is actually online 
-            Chunk thisChunk = world.getChunkFromBlockCoords(pos);
-            for (int chunkX = thisChunk.x - AWNPCStatics.townChunkClaimRadius; chunkX <= thisChunk.x + AWNPCStatics.townChunkClaimRadius; chunkX++) {
-                for (int chunkZ = thisChunk.z - AWNPCStatics.townChunkClaimRadius; chunkZ <= thisChunk.z + AWNPCStatics.townChunkClaimRadius; chunkZ++) {
-                    lmPlayerServer.claimChunk(world.provider.getDimension(), chunkX, chunkZ);
-                }
-            }
-        }
+//TODO fix ftb utils integration
+//        LMPlayerServer lmPlayerServer = LMWorldServer.inst.getPlayer(getOwnerName());
+//        if (lmPlayerServer != null) {
+//            // we can only do this if the player is actually online
+//            Chunk thisChunk = world.getChunkFromBlockCoords(pos);
+//            for (int chunkX = thisChunk.x - AWNPCStatics.townChunkClaimRadius; chunkX <= thisChunk.x + AWNPCStatics.townChunkClaimRadius; chunkX++) {
+//                for (int chunkZ = thisChunk.z - AWNPCStatics.townChunkClaimRadius; chunkZ <= thisChunk.z + AWNPCStatics.townChunkClaimRadius; chunkZ++) {
+//                    lmPlayerServer.claimChunk(world.provider.getDimension(), chunkX, chunkZ);
+//                }
+//            }
+//        }
             
         oldOwner = null;
     }

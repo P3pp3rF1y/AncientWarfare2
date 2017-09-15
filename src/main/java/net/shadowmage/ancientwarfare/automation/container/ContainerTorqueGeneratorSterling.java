@@ -5,7 +5,6 @@ import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileSterlingEngine;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 
@@ -18,8 +17,8 @@ public class ContainerTorqueGeneratorSterling extends ContainerTileBase<TileSter
     public int burnTime;
     public int burnTimeBase;
 
-    public ContainerTorqueGeneratorSterling(EntityPlayer player, BlockPos pos) {
-        super(player, pos);
+    public ContainerTorqueGeneratorSterling(EntityPlayer player, int x, int y, int z) {
+        super(player, x, y, z);
         addSlotToContainer(new Slot(tileEntity, 0, 8 + 4 * 18, 8 + 12) {
             @Override
             public boolean isItemValid(ItemStack par1ItemStack) {

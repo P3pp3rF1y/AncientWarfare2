@@ -49,7 +49,7 @@ public static MovingObjectPosition getPlayerTarget(EntityPlayer player, float ra
     {
     excluded.add(player.getRidingEntity());
     }
-  return tracePathWithYawPitch(player.worldObj, (float)player.posX, (float)player.posY + (player.worldObj.isRemote ? 0.f : 1.62f), (float)player.posZ, player.rotationYaw, player.rotationPitch, range, border, excluded);  
+  return tracePathWithYawPitch(player.world, (float)player.posX, (float)player.posY + (player.world.isRemote ? 0.f : 1.62f), (float)player.posZ, player.rotationYaw, player.rotationPitch, range, border, excluded);
   }
 
 /*

@@ -76,7 +76,7 @@ public List<NBTTagCompound> getInitData()
 public void detectAndSendChanges()
   {
   super.detectAndSendChanges();
-  if(player.worldObj.isRemote){return;}
+  if(player.world.isRemote){return;}
   NBTTagCompound tag = new NBTTagCompound();
   tag.setLong("tick", ServerPerformanceMonitor.tickTime);
   tag.setLong("tps", ServerPerformanceMonitor.tickPerSecond);

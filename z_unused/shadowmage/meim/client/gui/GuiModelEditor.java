@@ -327,7 +327,7 @@ private void resetModelView()
 
 private void enableModelLighting()
   {
-  int bright = this.player.worldObj.getCombinedLight((int)this.player.posX, (int)this.player.posY, (int)this.player.posZ, 0);
+  int bright = this.player.world.getCombinedLight((int)this.player.posX, (int)this.player.posY, (int)this.player.posZ, 0);
 
   int var11 = bright % 65536;
   int var12 = bright / 65536;

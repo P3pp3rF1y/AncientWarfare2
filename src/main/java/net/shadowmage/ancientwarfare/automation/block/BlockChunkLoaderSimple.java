@@ -9,36 +9,38 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.TileChunkLoaderSimple;
-import net.shadowmage.ancientwarfare.core.block.BlockIconMap;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 
 public class BlockChunkLoaderSimple extends Block {
 
-    BlockIconMap iconMap = new BlockIconMap();
+    //BlockIconMap iconMap = new BlockIconMap();
 
     protected BlockChunkLoaderSimple(String regName) {
         super(Material.ROCK);
         this.setUnlocalizedName(regName);
+        this.setRegistryName(new ResourceLocation(AncientWarfareAutomation.modID, regName));
         this.setCreativeTab(AWAutomationItemLoader.automationTab);
         setHardness(2.f);
-        String icon = "ancientwarfare:automation/" + regName + "_bottom";
-        setIcon(0, 0, icon);
-        setIcon(0, 1, icon);
-        icon = "ancientwarfare:automation/" + regName + "_side";
-        setIcon(0, 2, icon);
-        setIcon(0, 3, icon);
-        setIcon(0, 4, icon);
-        setIcon(0, 5, icon);
+//        String icon = "ancientwarfare:automation/" + regName + "_bottom";
+//        setIcon(0, 0, icon);
+//        setIcon(0, 1, icon);
+//        icon = "ancientwarfare:automation/" + regName + "_side";
+//        setIcon(0, 2, icon);
+//        setIcon(0, 3, icon);
+//        setIcon(0, 4, icon);
+//        setIcon(0, 5, icon);
     }
 
-    public BlockChunkLoaderSimple setIcon(int meta, int side, String texName) {
-        this.iconMap.setIconTexture(side, meta, texName);
-        return this;
-    }
+//    public BlockChunkLoaderSimple setIcon(int meta, int side, String texName) {
+//        this.iconMap.setIconTexture(side, meta, texName);
+//        return this;
+//    }
 
 /*
     @Override

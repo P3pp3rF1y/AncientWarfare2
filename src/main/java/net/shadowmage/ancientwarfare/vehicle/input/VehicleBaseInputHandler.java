@@ -88,13 +88,13 @@ public class VehicleBaseInputHandler {
      * Should be called from owning entity on entity-update tick.
      */
     public void onUpdate() {
-        vehicle.worldObj.theProfiler.startSection("awVehicleMove");
-        if (vehicle.worldObj.isRemote) {
+        vehicle.world.profiler.startSection("awVehicleMove");
+        if (vehicle.world.isRemote) {
             clientUpdate();
         } else {
             serverUpdate();
         }
-        vehicle.worldObj.theProfiler.endSection();
+        vehicle.world.profiler.endSection();
     }
 
     private void serverUpdate() {
@@ -117,19 +117,19 @@ public class VehicleBaseInputHandler {
                             PacketInputReply reply = new PacketInputReply();
                             reply.setID(vehicle, state.commandID);
                             reply.setPosition(vehicle.posX, vehicle.posY, vehicle.posZ, vehicle.rotationYaw, vehicle.rotationPitch);
-                            NetworkHandler.sendToPlayer((EntityPlayerMP) vehicle.riddenByEntity, reply);
+                            NetworkHandler.sendToPlayer((EntityPlayerMP) vehicle.getControllingPassenger(), reply);
                         }
                     }
                 }
             }
-        } else if (!(vehicle.riddenByEntity instanceof EntityPlayer))//has no packets && rider is not a player providing input packets from client
+        } else if (!(vehicle.getControllingPassenger() instanceof EntityPlayer))//has no packets && rider is not a player providing input packets from client
         {
             vehicle.moveHandler.updateVehicleMotion(inputState.pressed);//inputState should be a freshly initialized array (filled with false) on server
         }
     }
 
     private void clientUpdate() {
-        if (vehicle.riddenByEntity != null) {
+        if (vehicle.isBeingRidden()) {
             if (!hadRider) {
                 clearInputState();
             }
@@ -139,7 +139,7 @@ public class VehicleBaseInputHandler {
             clearInputState();
         }
 
-        if (vehicle.riddenByEntity == AncientWarfareCore.proxy.getClientPlayer()) {
+        if (vehicle.getControllingPassenger() == AncientWarfareCore.proxy.getClientPlayer()) {
             processReplyPackets();
             collectInput();
             updateMotionClient();

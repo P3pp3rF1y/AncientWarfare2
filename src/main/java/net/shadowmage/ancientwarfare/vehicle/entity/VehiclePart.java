@@ -3,8 +3,9 @@ package net.shadowmage.ancientwarfare.vehicle.entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -17,7 +18,7 @@ public class VehiclePart extends Entity {
     private Vec3d location;
 
     public VehiclePart(VehicleBase vehicle, float width, float height, float xOffset, float zOffset) {
-        super(vehicle.worldObj);
+        super(vehicle.world);
         this.vehicle = vehicle;
         this.setSize(width, height);
         offset = new Vec3d(xOffset, 0, zOffset);
@@ -31,20 +32,16 @@ public class VehiclePart extends Entity {
     }
 
     public final void updatePosition() {
-        location.x = offset.x;
-        location.y = offset.y;
-        location.z = offset.z;
-        location.rotateAroundY(MathHelper.wrapAngleTo180_float(vehicle.rotationYaw) * Trig.TORADIANS);
-        location.x += vehicle.posX;
-        location.y += vehicle.posY;
-        location.z += vehicle.posZ;
+        location = new Vec3d(offset.x, offset.y, offset.z);
+        location.rotateYaw(MathHelper.wrapDegrees(vehicle.rotationYaw) * Trig.TORADIANS);
+        location.addVector(vehicle.posX, vehicle.posY, vehicle.posZ);
         setPosition(location.x, location.y, location.z);
     }
 
     @Override
-    public boolean interactFirst(EntityPlayer player) {
+    public boolean processInitialInteract(EntityPlayer player, EnumHand hand) {
         AWLog.logDebug("interact with part!!");
-        return vehicle.interactFirst(player);
+        return vehicle.processInitialInteract(player, hand);
     }
 
     /*
@@ -70,24 +67,6 @@ public class VehiclePart extends Entity {
             return p.getEntityBoundingBox();
         }
         return collidingEntity == vehicle ? null : collidingEntity.getEntityBoundingBox();
-    }
-
-    /*
-     * Used to get the collision box for this entity, used in:<br>
-     * getCollidingBoundingBoxes(Entity, AxisAlignedBB)<br>
-     * which is called from:
-     * <li>moveEntity
-     * <li>check for valid spawn
-     * <li>canSpawnHere
-     * <li>zombie attack and aid summon
-     * <li>boat on-right-click
-     * <li>client side position synch packets<br><br>
-     * Return null to have no collisions with -this- entity (collisions with parts still function properly)<br>
-     * Return boundingBox to enable collisions with -this- entity
-     */
-    @Override
-    public AxisAlignedBB getBoundingBox() {
-        return boundingBox;
     }
 
     /*

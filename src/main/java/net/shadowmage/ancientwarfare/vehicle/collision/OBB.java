@@ -1,9 +1,12 @@
 package net.shadowmage.ancientwarfare.vehicle.collision;
 
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.entity.Entity;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.shadowmage.ancientwarfare.core.util.Trig;
+
+import javax.vecmath.Vector3d;
 
 /*
  * Entity Origin-local OBB for entity collision detection between other OBB and vanilla minecraft AABBs<br>
@@ -30,12 +33,12 @@ public final class OBB {
     /*
      * Cached array of Vec3d to use for AABB corners
      */
-    private Vec3d[] aaBBCorners = new Vec3d[]
+    private Vector3d[] aaBBCorners = new Vector3d[]
             {
-                    new Vec3d(0, 0, 0),
-                    new Vec3d(0, 0, 0),
-                    new Vec3d(0, 0, 0),
-                    new Vec3d(0, 0, 0)
+                    new Vector3d(0, 0, 0),
+                    new Vector3d(0, 0, 0),
+                    new Vector3d(0, 0, 0),
+                    new Vector3d(0, 0, 0)
             };
 
     /*
@@ -67,12 +70,12 @@ public final class OBB {
     /*
      * lower corners of an entity-origin OBB
      */
-    private Vec3d[] corners = new Vec3d[4];//upper corners would be the same thing, with y=height...so too boring to implement
+    private Vector3d[] corners = new Vector3d[4];//upper corners would be the same thing, with y=height...so too boring to implement
 
     /*
      * lower corners of world-origin OBB
      */
-    private Vec3d[] cornerPos = new Vec3d[4];//actual world-position corners for the BB;
+    private Vector3d[] cornerPos = new Vector3d[4];//actual world-position corners for the BB;
 
     /*
      * world-origin center of the OBB.  Updated when updateForPosition() is called.
@@ -95,10 +98,10 @@ public final class OBB {
         this.length = length;
         this.halfWidth = width / 2.f;
         this.halfLength = length / 2.f;
-        corners[0] = new Vec3d(-halfWidth, 0, -halfLength);//front left
-        corners[1] = new Vec3d(halfWidth, 0, -halfLength);//front right
-        corners[2] = new Vec3d(halfWidth, 0, halfLength);//rear right
-        corners[3] = new Vec3d(-halfWidth, 0, halfLength);//rear left
+        corners[0] = new Vector3d(-halfWidth, 0, -halfLength);//front left
+        corners[1] = new Vector3d(halfWidth, 0, -halfLength);//front right
+        corners[2] = new Vector3d(halfWidth, 0, halfLength);//rear right
+        corners[3] = new Vector3d(-halfWidth, 0, halfLength);//rear left
         cornerPos[0] = copyVec(corners[0]);
         cornerPos[1] = copyVec(corners[1]);
         cornerPos[2] = copyVec(corners[2]);
@@ -140,22 +143,14 @@ public final class OBB {
      * updates the input world-position corner to be the origin-corner + last known position
      */
     private void updateCornerVector(int index) {
-        cornerPos[index].x = corners[index].x + x;
-        cornerPos[index].y = corners[index].y + y;
-        cornerPos[index].z = corners[index].z + z;
-    }
-
-    private static void setVector(Vec3d toSet, double x, double y, double z) {
-        toSet.x = x;
-        toSet.y = y;
-        toSet.z = z;
+        cornerPos[index] = new Vector3d(corners[index].x + x, corners[index].y + y, corners[index].z + z);
     }
 
     /*
      * Vector helper function to copy a vector
      */
-    private Vec3d copyVec(Vec3d in) {
-        return new Vec3d(in.x, in.y, in.z);
+    private Vector3d copyVec(Vector3d in) {
+        return new Vector3d(in.x, in.y, in.z);
     }
 
     public final void setRotation(float yaw) {
@@ -225,14 +220,14 @@ public final class OBB {
     }
 
     public final Vec3d getMinCollisionVector(AxisAlignedBB bb, Vec3d mtvOut) {
-        setVector(aaBBCorners[0], bb.minX, 0, bb.minZ);
-        setVector(aaBBCorners[1], bb.maxX, 0, bb.minZ);
-        setVector(aaBBCorners[2], bb.maxX, 0, bb.maxZ);
-        setVector(aaBBCorners[3], bb.minX, 0, bb.maxZ);
+        aaBBCorners[0] = new Vector3d(bb.minX, 0, bb.minZ);
+        aaBBCorners[1] = new Vector3d(bb.maxX, 0, bb.minZ);
+        aaBBCorners[2] = new Vector3d(bb.maxX, 0, bb.maxZ);
+        aaBBCorners[3] = new Vector3d(bb.minX, 0, bb.maxZ);
         return getMinCollisionVector(aaBBCorners, aabbAxis1, aabbAxis2, mtvOut);
     }
 
-    private Vec3d getMinCollisionVector(Vec3d[] inCorners, Axis axis3, Axis axis4, Vec3d mtvOut) {
+    private Vec3d getMinCollisionVector(Vector3d[] inCorners, Axis axis3, Axis axis4, Vec3d mtvOut) {
         double minOverlap = Double.MAX_VALUE;
         double overlap = 0;
         Axis overlapAxis = null;
@@ -298,13 +293,13 @@ public final class OBB {
 
 
     public Vec3d getCollisionVectorXMovement(AxisAlignedBB bb, double xMove) {
-        setVector(aaBBCorners[0], bb.minX, cornerPos[0].y, bb.minZ);//front left
-        setVector(aaBBCorners[1], bb.maxX, cornerPos[0].y, bb.minZ);//front right
-        setVector(aaBBCorners[2], bb.maxX, cornerPos[0].y, bb.maxZ);//rear right
-        setVector(aaBBCorners[3], bb.minX, cornerPos[0].y, bb.maxZ);//rear left
+        aaBBCorners[0] = new Vector3d(bb.minX, cornerPos[0].y, bb.minZ);//front left
+        aaBBCorners[1] = new Vector3d(bb.maxX, cornerPos[0].y, bb.minZ);//front right
+        aaBBCorners[2] = new Vector3d(bb.maxX, cornerPos[0].y, bb.maxZ);//rear right
+        aaBBCorners[3] = new Vector3d(bb.minX, cornerPos[0].y, bb.maxZ);//rear left
         setupOBBCollisionLines(xMove, 0);
-        Vec3d interceptBase = new Vec3d(0, 0, 0);
-        Vec3d intercept;
+        Vector3d interceptBase = new Vector3d(0, 0, 0);
+        Vector3d intercept;
 
         double adjustedXMove = xMove;
 
@@ -352,10 +347,14 @@ public final class OBB {
         /*
          * need to figure out if should test left or right side of BB, by testing vector from x,y,z to bb center
          */
-        Vec3d bbVec1 = xMove > 0 ? aaBBCorners[0] : aaBBCorners[1];
-        Vec3d bbVec2 = xMove > 0 ? aaBBCorners[3] : aaBBCorners[2];
-        LineSegment bbLine = new LineSegment(bbVec1, bbVec1.addVector(-xMove, 0, 0));
-        LineSegment bbLine2 = new LineSegment(bbVec2, bbVec2.addVector(-xMove, 0, 0));
+        Vector3d bbVec1 = xMove > 0 ? aaBBCorners[0] : aaBBCorners[1];
+        Vector3d bbVec2 = xMove > 0 ? aaBBCorners[3] : aaBBCorners[2];
+        Vector3d lineEnd = new Vector3d(bbVec1);
+        lineEnd.setX(lineEnd.getX() - xMove);
+        Vector3d line2End = new Vector3d(bbVec2);
+        line2End.setX(line2End.getX() - xMove);
+        LineSegment bbLine = new LineSegment(bbVec1, lineEnd);
+        LineSegment bbLine2 = new LineSegment(bbVec2, line2End);
         //TODO find which obb lines I should be testing against...
 
         //test OBBEdge1
@@ -466,13 +465,13 @@ public final class OBB {
     }
 
     public final Vec3d getCollisionVectorZMovement(AxisAlignedBB bb, double zMove) {
-        setVector(aaBBCorners[0], bb.minX, cornerPos[0].y, bb.minZ);//front left
-        setVector(aaBBCorners[1], bb.maxX, cornerPos[0].y, bb.minZ);//front right
-        setVector(aaBBCorners[2], bb.maxX, cornerPos[0].y, bb.maxZ);//rear right
-        setVector(aaBBCorners[3], bb.minX, cornerPos[0].y, bb.maxZ);//rear left
+        aaBBCorners[0] = new Vector3d(bb.minX, cornerPos[0].y, bb.minZ);//front left
+        aaBBCorners[1] = new Vector3d(bb.maxX, cornerPos[0].y, bb.minZ);//front right
+        aaBBCorners[2] = new Vector3d(bb.maxX, cornerPos[0].y, bb.maxZ);//rear right
+        aaBBCorners[3] = new Vector3d(bb.minX, cornerPos[0].y, bb.maxZ);//rear left
         setupOBBCollisionLines(0, zMove);
-        Vec3d interceptBase = new Vec3d(0, 0, 0);
-        Vec3d intercept;
+        Vector3d interceptBase = new Vector3d(0, 0, 0);
+        Vector3d intercept;
 
         double adjustedZMove = zMove;
 
@@ -521,11 +520,16 @@ public final class OBB {
         /*
          * need to figure out if should test left or right side of BB, by testing vector from x,y,z to bb center
          */
-        Vec3d bbVec1 = zMove > 0 ? aaBBCorners[0] : aaBBCorners[3];//minX and either min or maxZ
-        Vec3d bbVec2 = zMove > 0 ? aaBBCorners[1] : aaBBCorners[2];//maxX and either min or maxZ
+        Vector3d bbVec1 = zMove > 0 ? aaBBCorners[0] : aaBBCorners[3];//minX and either min or maxZ
+        Vector3d bbVec2 = zMove > 0 ? aaBBCorners[1] : aaBBCorners[2];//maxX and either min or maxZ
 
-        LineSegment bbLine = new LineSegment(bbVec1, bbVec1.addVector(0, 0, -zMove));
-        LineSegment bbLine2 = new LineSegment(bbVec2, bbVec2.addVector(0, 0, -zMove));
+
+        Vector3d lineEnd = new Vector3d(bbVec1);
+        lineEnd.setZ(lineEnd.getZ() - zMove);
+        Vector3d line2End = new Vector3d(bbVec2);
+        line2End.setZ(line2End.getZ() - zMove);
+        LineSegment bbLine = new LineSegment(bbVec1, lineEnd);
+        LineSegment bbLine2 = new LineSegment(bbVec2, line2End);
         //TODO find which obb lines I should be testing against...//
         //test OBBEdge1
         if (bbVec1.x >= Trig.min(cornerPos[0].x, cornerPos[1].x) && bbVec1.x <= Trig.max(cornerPos[0].x, cornerPos[1].x)) {
@@ -624,7 +628,7 @@ public final class OBB {
      * @return the currently calculated corner position for the given index, vec is in world coordinates
      */
     public Vec3d getCorner(int index) {
-        return cornerPos[index];
+        return new Vec3d(cornerPos[index].x, cornerPos[index].y, cornerPos[index].z);
     }
 
     /*
@@ -632,9 +636,10 @@ public final class OBB {
      *
      * @param bb the AABB to be set
      */
-    public final void setAABBToOBBExtents(AxisAlignedBB bb) {
-        bb.setBounds(-widthExtent, 0, -lengthExtent, widthExtent, height, lengthExtent);
+    public final void setAABBToOBBExtents(Entity entity) {
+        AxisAlignedBB bb = new AxisAlignedBB(-widthExtent, 0, -lengthExtent, widthExtent, height, lengthExtent);
         bb.offset(x, y, z);
+        entity.setEntityBoundingBox(bb);
     }
 
     @Override
@@ -663,7 +668,7 @@ public final class OBB {
             }
         }
 
-        public final double dot(Vec3d vec) {
+        public final double dot(Vector3d vec) {
             return axisX * vec.x + axisY * vec.y + axisZ * vec.z;
         }
 
@@ -672,7 +677,7 @@ public final class OBB {
             return String.format("Axis: %.2f, %.2f, %.2f", axisX, axisY, axisZ);
         }
 
-        private Projection projectShape(Vec3d[] corners, Projection p) {
+        private Projection projectShape(Vector3d[] corners, Projection p) {
             double d = dot(corners[0]);
             double min = d;
             double max = d;
@@ -736,21 +741,21 @@ public final class OBB {
 
     private static final class LineSegment {
 
-        public Vec3d start, end;
+        public Vector3d start, end;
 
-        public LineSegment(Vec3d start, Vec3d end) {
+        public LineSegment(Vector3d start, Vector3d end) {
             this.start = start;
             this.end = end;
         }
 
-        public Vec3d getIntersect(LineSegment otherLine, Vec3d out) {
+        public Vector3d getIntersect(LineSegment otherLine, Vector3d out) {
             if (getLineIntersection(start, end, otherLine.start, otherLine.end, out)) {
                 return out;
             }
             return null;
         }
 
-        private boolean getLineIntersection(Vec3d p0, Vec3d p1, Vec3d p2, Vec3d p3, Vec3d out) {
+        private boolean getLineIntersection(Vector3d p0, Vector3d p1, Vector3d p2, Vector3d p3, Vector3d out) {
             double s02_x, s02_y, s10_x, s10_y, s32_x, s32_y, s_numer, t_numer, denom, t;
             s10_x = p1.x - p0.x;
             s10_y = p1.z - p0.z;

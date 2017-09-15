@@ -15,7 +15,7 @@ public class TrajectoryPlotter {
      * @return power needed to hit target, or 0 if beyond maxPower value
      */
     public static final double getPowerToHit(double dx, double dy, double dz, float angle, float maxPower) {
-        double len = MathHelper.sqrt_double(dx * dx + dz * dz);
+        double len = MathHelper.sqrt(dx * dx + dz * dz);
         double pow = getLaunchPowerToHit(len, dy, angle, 10);
         if (pow <= maxPower) {
             return pow;
@@ -24,7 +24,7 @@ public class TrajectoryPlotter {
     }
 
     public static final double getAngleToHit(double dx, double dy, double dz, float minAngle, float maxAngle, float velocity) {
-        double len = MathHelper.sqrt_double(dx * dx + dz * dz);
+        double len = MathHelper.sqrt(dx * dx + dz * dz);
         double[] angles = getLaunchAngleToHit(len, dy, velocity);
         if (angles[0] >= minAngle && angles[0] <= maxAngle) {
             return angles[0];

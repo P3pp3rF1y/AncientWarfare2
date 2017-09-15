@@ -1,26 +1,32 @@
 package net.shadowmage.ancientwarfare.npc.item;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.IForgeRegistry;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
-import net.shadowmage.ancientwarfare.core.item.AWCoreItemLoader;
 import net.shadowmage.ancientwarfare.core.item.ItemComponent;
+import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 
 import java.util.Comparator;
 
+@Mod.EventBusSubscriber(modid = AncientWarfareNPC.modID)
+@ObjectHolder(AncientWarfareNPC.modID)
 public class AWNpcItemLoader {
 
     public static final CreativeTabs npcTab = new CreativeTabs("tabs.npc") {
         @Override
         @SideOnly(Side.CLIENT)
-        public Item getTabIconItem() {
-            return AWItems.npcSpawner;
+        public ItemStack getTabIconItem() {
+            return new ItemStack(AWItems.npcSpawner);
         }
 
         @Override
@@ -30,36 +36,51 @@ public class AWNpcItemLoader {
         }
     };
     private static final String PREFIX = "ancientwarfare:npc/";
-    public static final ItemCommandBaton commandBatonIron = new ItemCommandBaton("iron_command_baton", ToolMaterial.IRON);
-    public static final ItemBardInstrument bardInstrument = new ItemBardInstrument("bard_instrument");
-    public static final ItemShield woodenShield = new ItemShield("wooden_shield", ToolMaterial.WOOD);
-    public static final ItemShield stoneShield = new ItemShield("stone_shield", ToolMaterial.STONE);
-    public static final ItemShield ironShield = new ItemShield("iron_shield", ToolMaterial.IRON);
-    public static final ItemShield goldShield = new ItemShield("gold_shield", ToolMaterial.GOLD);
-    public static final ItemShield diamondShield = new ItemShield("diamond_shield", ToolMaterial.DIAMOND);
+    @ObjectHolder("iron_command_baton")
+    public static ItemCommandBaton commandBatonIron;
+    @ObjectHolder("bard_instrument")
+    public static ItemBardInstrument bardInstrument;
+    @ObjectHolder("wooden_shield")
+    public static ItemShield woodenShield;
+    @ObjectHolder("stone_shield")
+    public static ItemShield stoneShield;
+    @ObjectHolder("iron_shield")
+    public static ItemShield ironShield;
+    @ObjectHolder("gold_shield")
+    public static ItemShield goldShield;
+    @ObjectHolder("diamond_shield")
+    public static ItemShield diamondShield;
 
     public static void load() {
-        AWItems.npcSpawner = AWCoreItemLoader.INSTANCE.register(new ItemNpcSpawner(), "npc_spawner");
-        AWItems.workOrder = AWCoreItemLoader.INSTANCE.register(new ItemWorkOrder(), "work_order", PREFIX);
-        AWItems.upkeepOrder = AWCoreItemLoader.INSTANCE.register(new ItemUpkeepOrder(), "upkeep_order", PREFIX);
-        AWItems.combatOrder = AWCoreItemLoader.INSTANCE.register(new ItemCombatOrder(), "combat_order", PREFIX);
-        AWItems.routingOrder = AWCoreItemLoader.INSTANCE.register(new ItemRoutingOrder(), "routing_order", PREFIX);
-        AWItems.tradeOrder = AWCoreItemLoader.INSTANCE.register(new ItemTradeOrder(), "trade_order", PREFIX);
-        GameRegistry.registerItem(new ItemCommandBaton("wooden_command_baton", ToolMaterial.WOOD), "wooden_command_baton");
-        GameRegistry.registerItem(new ItemCommandBaton("stone_command_baton", ToolMaterial.STONE), "stone_command_baton");
-        GameRegistry.registerItem(commandBatonIron, "iron_command_baton");
-        GameRegistry.registerItem(new ItemCommandBaton("gold_command_baton", ToolMaterial.GOLD), "gold_command_baton");
-        GameRegistry.registerItem(new ItemCommandBaton("diamond_command_baton", ToolMaterial.DIAMOND), "diamond_command_baton");
-        GameRegistry.registerItem(bardInstrument, "bard_instrument");
-
-        GameRegistry.registerItem(woodenShield, "wooden_shield");
-        GameRegistry.registerItem(stoneShield, "stone_shield");
-        GameRegistry.registerItem(ironShield, "iron_shield");
-        GameRegistry.registerItem(goldShield, "gold_shield");
-        GameRegistry.registerItem(diamondShield, "diamond_shield");
-
         AWItems.componentItem.addSubItem(ItemComponent.NPC_FOOD_BUNDLE, PREFIX + "food_bundle", "foodBundle");
     }
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<Item> event) {
+        IForgeRegistry<Item> registry = event.getRegistry();
+        registry.register(new ItemCommandBaton("wooden_command_baton", ToolMaterial.WOOD));
+        registry.register(new ItemCommandBaton("stone_command_baton", ToolMaterial.STONE));
+        registry.register(new ItemCommandBaton("iron_command_baton", ToolMaterial.IRON));
+        registry.register(new ItemCommandBaton("gold_command_baton", ToolMaterial.GOLD));
+        registry.register(new ItemCommandBaton("diamond_command_baton", ToolMaterial.DIAMOND));
+
+        registry.register(new ItemBardInstrument("bard_instrument"));
+
+        registry.register(new ItemShield("wooden_shield", ToolMaterial.WOOD));
+        registry.register(new ItemShield("stone_shield", ToolMaterial.WOOD));
+        registry.register(new ItemShield("iron_shield", ToolMaterial.WOOD));
+        registry.register(new ItemShield("gold_shield", ToolMaterial.WOOD));
+        registry.register(new ItemShield("diamond_shield", ToolMaterial.WOOD));
+
+
+        registry.register(new ItemNpcSpawner());
+        registry.register(new ItemWorkOrder());
+        registry.register(new ItemUpkeepOrder());
+        registry.register(new ItemCombatOrder());
+        registry.register(new ItemRoutingOrder());
+        registry.register(new ItemTradeOrder());
+    }
+
 
     private static final Comparator<ItemStack> sorter = new Comparator<ItemStack>() {
 
@@ -105,5 +126,4 @@ public class AWNpcItemLoader {
             }
         }
     };
-
 }

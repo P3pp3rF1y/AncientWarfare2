@@ -5,6 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
@@ -12,9 +13,13 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
-public class MailboxData implements extends WorldSavedData {
+public class MailboxData extends WorldSavedData {
 //TODO world capability
     private MailboxSet publicMailboxes = new MailboxSet("public");
     private HashMap<String, MailboxSet> privateMailboxes = new HashMap<>();
@@ -39,7 +44,7 @@ public class MailboxData implements extends WorldSavedData {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         tag.setTag("publicBoxes", publicMailboxes.writeToNBT(new NBTTagCompound()));
 
         NBTTagList privateBoxList = new NBTTagList();
@@ -47,6 +52,7 @@ public class MailboxData implements extends WorldSavedData {
             privateBoxList.appendTag(set.writeToNBT(new NBTTagCompound()));
         }
         tag.setTag("privateBoxes", privateBoxList);
+        return tag;
     }
 
     public void onTick(int length) {
@@ -72,7 +78,7 @@ public class MailboxData implements extends WorldSavedData {
         MailboxSet set = owner == null ? publicMailboxes : getOrCreatePrivateMailbox(owner);
         MailboxEntry entry = set.getOrCreateMailbox(name);
 //  AWLog.logDebug("adding deliverable item to: "+set.owningPlayerName +" :: "+entry+ " of: "+item);
-        entry.addDeliverableItem(item, dim, x, y, z);
+        entry.addDeliverableItem(item, dim, pos);
         markDirty();
     }
 
@@ -249,8 +255,8 @@ public class MailboxData implements extends WorldSavedData {
             return items;
         }
 
-        private void addDeliverableItem(ItemStack item, int dimension, int x, int y, int z) {
-            DeliverableItem item1 = new DeliverableItem(item, dimension, x, y, z);
+        private void addDeliverableItem(ItemStack item, int dimension, BlockPos pos) {
+            DeliverableItem item1 = new DeliverableItem(item, dimension, pos.getX(), pos.getY(), pos.getZ());
             incomingItems.add(item1);
             markDirty();
         }
@@ -295,9 +301,9 @@ public class MailboxData implements extends WorldSavedData {
             @Nonnull ItemStack stack;
             for (TileMailbox box : receivers) {
                 dim = box.getWorld().provider.getDimension();
-                x = box.x;
-                y = box.y;
-                z = box.z;
+                x = box.getPos().getX();
+                y = box.getPos().getY();
+                z = box.getPos().getZ();
                 it = this.incomingItems.iterator();
                 while (it.hasNext() && (item = it.next()) != null) {
                     if (dim != item.originDimension) {

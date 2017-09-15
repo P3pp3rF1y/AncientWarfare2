@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
@@ -16,6 +17,7 @@ import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
@@ -26,8 +28,9 @@ import java.util.List;
 
 public class ItemStructureBuilderWorldGen extends Item implements IItemKeyInterface {
 
-    public ItemStructureBuilderWorldGen(String itemName) {
-        this.setUnlocalizedName(itemName);
+    public ItemStructureBuilderWorldGen(String name) {
+        this.setUnlocalizedName(name);
+        this.setRegistryName(new ResourceLocation(AncientWarfareStructures.modID, name));
         this.setCreativeTab(AWStructuresItemLoader.structureTab);
         this.setMaxStackSize(1);
         //this.setTextureName("ancientwarfare:structure/structure_builder");

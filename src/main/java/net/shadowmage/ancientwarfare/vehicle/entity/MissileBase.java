@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.vehicle.entity;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
@@ -51,7 +52,7 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
         posZ += moveZ;
         setPosition(posX, posY, posZ);
         moveY -= Trig.gravityTick;
-        if (!worldObj.isRemote && !worldObj.isAirBlock(MathHelper.floor(posX), MathHelper.floor(posY), MathHelper.floor(posZ))) {
+        if (!world.isRemote && !world.isAirBlock(new BlockPos(MathHelper.floor(posX), MathHelper.floor(posY), MathHelper.floor(posZ)))) {
             setDead();
         }
     }

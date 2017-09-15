@@ -86,7 +86,7 @@ private void renderScannerBoundingBox(EntityPlayer player, ItemStack stack, floa
     }
   else
     {
-    pos1 = BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());
+    pos1 = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
     }
   if(settings.hasPos2())
     {
@@ -94,7 +94,7 @@ private void renderScannerBoundingBox(EntityPlayer player, ItemStack stack, floa
     }
   else
     {
-    pos2 = BlockTools.getBlockClickedOn(player, player.worldObj, player.isSneaking());
+    pos2 = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
     }
   if(pos1!=null && pos2!=null)
     {
@@ -112,7 +112,7 @@ private void renderBuildBoundingBox(EntityPlayer player, ItemStack stack, float 
   String name = settings.name();
   StructureTemplateClient structure = StructureTemplateManager.instance().getClientTemplate(name);
   if(structure==null){return;}
-  BlockPosition hit = BlockTools.getBlockClickedOn(player, player.worldObj, true);
+  BlockPosition hit = BlockTools.getBlockClickedOn(player, player.world, true);
   int face = BlockTools.getPlayerFacingFromYaw(player.rotationYaw);
   if(hit==null){return;}
   bb.setFromStructure(hit.x, hit.y, hit.z, face, structure.xSize, structure.ySize, structure.zSize, structure.xOffset, structure.yOffset, structure.zOffset);

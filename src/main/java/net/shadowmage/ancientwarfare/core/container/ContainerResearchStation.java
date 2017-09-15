@@ -5,7 +5,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
@@ -23,8 +22,8 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
     public int progress = 0;
     public List<Integer> queuedResearch = new ArrayList<>();
 
-    public ContainerResearchStation(EntityPlayer player, BlockPos pos) {
-        super(player, pos);
+    public ContainerResearchStation(EntityPlayer player, int x, int y, int z) {
+        super(player, x, y, z);
         researcherName = tileEntity.getCrafterName();
         useAdjacentInventory = tileEntity.useAdjacentInventory;
         if (!player.world.isRemote) {

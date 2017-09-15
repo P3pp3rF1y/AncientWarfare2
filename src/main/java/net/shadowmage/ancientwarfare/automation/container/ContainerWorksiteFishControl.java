@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.automation.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteFishFarm;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 
@@ -11,8 +10,8 @@ public class ContainerWorksiteFishControl extends ContainerTileBase<WorkSiteFish
     public boolean harvestFish;
     public boolean harvestInk;
 
-    public ContainerWorksiteFishControl(EntityPlayer player, BlockPos pos) {
-        super(player, pos);
+    public ContainerWorksiteFishControl(EntityPlayer player, int x, int y, int z) {
+        super(player, x, y, z);
         this.harvestFish = tileEntity.harvestFish();
         this.harvestInk = tileEntity.harvestInk();
     }

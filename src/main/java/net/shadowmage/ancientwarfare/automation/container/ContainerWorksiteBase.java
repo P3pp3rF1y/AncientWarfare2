@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.automation.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBoundedInventory;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
@@ -16,8 +15,8 @@ public class ContainerWorksiteBase extends ContainerTileBase<TileWorksiteBounded
     public final InventorySided inventory;
     public int guiHeight, topLabel, frontLabel, bottomLabel, rearLabel, leftLabel, rightLabel, playerLabel;
 
-    public ContainerWorksiteBase(EntityPlayer player, BlockPos pos) {
-        super(player, pos);
+    public ContainerWorksiteBase(EntityPlayer player, int x, int y, int z) {
+        super(player, x, y, z);
         inventory = tileEntity.inventory;
     }
 

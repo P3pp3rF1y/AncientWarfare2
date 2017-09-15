@@ -11,7 +11,9 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBackpack;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -26,6 +28,8 @@ public class ItemBackpack extends Item {
         this.setCreativeTab(AWCoreBlockLoader.coreTab);
         this.setMaxStackSize(1);
         this.setHasSubtypes(true);
+        this.setUnlocalizedName("backpack");
+        this.setRegistryName(new ResourceLocation(AncientWarfareCore.modID, "backpack"));
     }
 
     @Override

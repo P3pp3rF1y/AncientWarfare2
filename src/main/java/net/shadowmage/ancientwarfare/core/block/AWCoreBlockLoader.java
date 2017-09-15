@@ -1,13 +1,13 @@
 package net.shadowmage.ancientwarfare.core.block;
 
 import cpw.mods.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockRotatableMetaTile;
@@ -24,8 +24,8 @@ public class AWCoreBlockLoader {
     public static final CreativeTabs coreTab = new CreativeTabs("tabs.awcore") {
         @Override
         @SideOnly(Side.CLIENT)
-        public Item getTabIconItem() {
-            return AWItems.researchBook;
+        public ItemStack getTabIconItem() {
+            return new ItemStack(AWItems.researchBook);
         }
     };
 

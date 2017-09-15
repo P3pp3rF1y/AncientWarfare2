@@ -71,7 +71,6 @@ public class AncientWarfareCore {
          * register blocks, items, tile entities, and entities
          */
         AWCoreBlockLoader.INSTANCE.load();
-        AWCoreItemLoader.INSTANCE.load();
 
         /*
          * register server-side network handler and anything that needs loaded on the event busses
@@ -96,6 +95,8 @@ public class AncientWarfareCore {
 
     @EventHandler
     public void init(FMLInitializationEvent evt) {
+        AWCoreItemLoader.INSTANCE.load();
+
         /*
          * initialize any other core module information
          */

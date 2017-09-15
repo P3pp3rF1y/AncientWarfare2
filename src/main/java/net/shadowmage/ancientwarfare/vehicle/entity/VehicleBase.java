@@ -1,17 +1,19 @@
 package net.shadowmage.ancientwarfare.vehicle.entity;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.vehicle.entity.collision.VehicleOBBMoveHelper;
 import net.shadowmage.ancientwarfare.vehicle.entity.movement.VehicleInputHandler;
@@ -57,12 +59,12 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData {
 
     @Override
     public void onUpdate() {
-        worldObj.theProfiler.startSection("AWVehicleTick");
+        world.profiler.startSection("AWVehicleTick");
         super.onUpdate();
         inputHandler.onUpdate();
         moveHelper.update();
         updatePartPositions();
-        worldObj.theProfiler.endSection();
+        world.profiler.endSection();
     }
 
 //************************************ MOVEMENT HANDLING *************************************//
@@ -71,21 +73,21 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData {
 // 
 
     /*
-     * Overriden to remove applying fall distance to rider
-     *
-     * @param distance (unused)
-     */
+         * Overriden to remove applying fall distance to rider
+         *
+         * @param distance (unused)
+         */
     @Override
-    protected void fall(float distance) {
+    public void fall(float distance, float damageMultiplier) {
     }
 
     /*
-     * Overriden to use OBB for movement collision checks.<br>
-     * Currently does not replicate vanilla functionality for contact with fire blocks, web move speed reduction, walk-on-block checks, or distance traveled
-     */
+         * Overriden to use OBB for movement collision checks.<br>
+         * Currently does not replicate vanilla functionality for contact with fire blocks, web move speed reduction, walk-on-block checks, or distance traveled
+         */
     @Override
-    public void moveEntity(double inputXMotion, double inputYMotion, double inputZMotion) {
-        moveHelper.moveVehicle(inputXMotion, inputYMotion, inputZMotion);
+    public void move(MoverType type, double x, double y, double z) {
+        moveHelper.moveVehicle(x, y, z);
     }
 
 //************************************ COLLISION HANDLING *************************************//
@@ -126,12 +128,12 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData {
     }
 
     /*
-     * Return null so that collisions happen with children pieces
-     *
-     * @return null for vehicle implementation
-     */
+         * Return null so that collisions happen with children pieces
+         *
+         * @return null for vehicle implementation
+         */
     @Override
-    public AxisAlignedBB getBoundingBox() {
+    public AxisAlignedBB getEntityBoundingBox() {
         return null;
     }
 
@@ -147,8 +149,8 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public void setPositionAndRotation2(double x, double y, double z, float yaw, float pitch, int ticks) {
-        inputHandler.handleVanillaSynch(x, y, z, yaw, pitch, ticks);
+    public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
+        inputHandler.handleVanillaSynch(x, y, z, yaw, pitch, posRotationIncrements);
     }
 
 //************************************ MULTIPART ENTITY HANDLING CODE *************************************//
@@ -192,9 +194,9 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData {
     }
 
     @Override
-    public boolean interactFirst(EntityPlayer player) {
-        if (!worldObj.isRemote && this.riddenByEntity == null && player.getRidingEntity() == null) {
-            player.mountEntity(this);
+    public boolean processInitialInteract(EntityPlayer player, EnumHand hand) {
+        if (!world.isRemote && !this.isBeingRidden() && player.getRidingEntity() == null) {
+            player.startRiding(this);
         }
         return true;//return true for isHandled
     }
@@ -205,7 +207,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData {
     @Override
     public Vec3d getLookVec() {
         Vec3d vec = new Vec3d(0, 0, -1);
-        vec.rotateAroundY(MathHelper.wrapAngleTo180_float(rotationYaw) * Trig.TORADIANS);
+        vec.rotateYaw(MathHelper.wrapDegrees(rotationYaw) * Trig.TORADIANS);
         return vec;
     }
 

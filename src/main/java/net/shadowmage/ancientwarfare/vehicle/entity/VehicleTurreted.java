@@ -45,16 +45,12 @@ public class VehicleTurreted extends VehicleBase {
         double cosPitch = Math.cos(Trig.TORADIANS * launchAngle);
         double verticalVelocityStart = sinPitch * launchPower * 0.05d;
         double horizontalVelocityStart = cosPitch * launchPower * 0.05d;
-        launchVelocity.x = sinYaw * horizontalVelocityStart;
-        launchVelocity.z = cosYaw * horizontalVelocityStart;
-        launchVelocity.y = verticalVelocityStart;
+        launchVelocity = new Vec3d(sinYaw * horizontalVelocityStart, verticalVelocityStart, cosYaw * horizontalVelocityStart);
     }
 
     protected void updateTurretOffset(double sinYaw, double cosYaw) {
-        turretOffset.x = turretOffsetBase.x;
-        turretOffset.y = turretOffsetBase.y;
-        turretOffset.z = turretOffsetBase.z;
-        turretOffset.rotateAroundY(rotationYaw * Trig.TORADIANS);
+        turretOffset = new Vec3d(turretOffsetBase.x, turretOffsetBase.y, turretOffsetBase.z);
+        turretOffset.rotateYaw(rotationYaw * Trig.TORADIANS);
     }
 
     public Vec3d getTurretOffset() {
@@ -90,10 +86,10 @@ public class VehicleTurreted extends VehicleBase {
 //    this.launchPower = (float)velocity;
 //    updateLaunchVelocity(sinYaw, cosYaw);
 //    
-//    MissileBase missile = new MissileBase(worldObj);
+//    MissileBase missile = new MissileBase(world);
 //    missile.setPosition(px, py, pz);
 //    missile.setLaunchParameters(launchVelocity.x, launchVelocity.y, launchVelocity.z, getUniqueID());
-//    worldObj.spawnEntity(missile);
+//    world.spawnEntity(missile);
 //    AWLog.logDebug("spawned missile..."+missile);
 //    }  
 //  }

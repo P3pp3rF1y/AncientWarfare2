@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.automation.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.TileChunkLoaderDeluxe;
@@ -16,8 +15,8 @@ public class ContainerChunkLoaderDeluxe extends ContainerTileBase<TileChunkLoade
 
     public Set<ChunkPos> ccipSet = new HashSet<>();
 
-    public ContainerChunkLoaderDeluxe(EntityPlayer player, BlockPos pos) {
-        super(player, pos);
+    public ContainerChunkLoaderDeluxe(EntityPlayer player, int x, int y, int z) {
+        super(player, x, y, z);
         if (!player.world.isRemote) {
             ccipSet = tileEntity.getForcedChunks();
             tileEntity.addViewer(this);

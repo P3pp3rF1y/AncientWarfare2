@@ -9,8 +9,10 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -23,6 +25,8 @@ public class ItemResearchBook extends Item {
     public ItemResearchBook() {
         this.setCreativeTab(AWCoreBlockLoader.coreTab);
         this.setMaxStackSize(1);
+        this.setUnlocalizedName("research_book");
+        this.setRegistryName(new ResourceLocation(AncientWarfareCore.modID, "research_book"));
     }
 
     @Override
