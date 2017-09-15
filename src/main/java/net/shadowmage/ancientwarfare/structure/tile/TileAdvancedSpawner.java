@@ -3,16 +3,16 @@ package net.shadowmage.ancientwarfare.structure.tile;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
+import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class TileAdvancedSpawner extends TileEntity {
+import javax.annotation.Nonnull;
+
+public class TileAdvancedSpawner extends TileUpdatable implements ITickable {
 
     private SpawnerSettings settings = new SpawnerSettings();
 
@@ -27,7 +27,7 @@ public class TileAdvancedSpawner extends TileEntity {
     }
 
     @Override
-    public void updateEntity() {
+    public void update() {
         if (!hasWorld() || world.isRemote) {
             return;
         }
@@ -38,11 +38,12 @@ public class TileAdvancedSpawner extends TileEntity {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         NBTTagCompound ntag = new NBTTagCompound();
         settings.writeToNBT(ntag);
         tag.setTag("spawnerSettings", ntag);
+        return tag;
     }
 
     @Override
@@ -52,15 +53,15 @@ public class TileAdvancedSpawner extends TileEntity {
     }
 
     @Override
-    public Packet getDescriptionPacket() {
-        NBTTagCompound tag = new NBTTagCompound();
+    protected void writeUpdateNBT(NBTTagCompound tag) {
+        super.writeUpdateNBT(tag);
         settings.writeToNBT(tag);
-        return new S35PacketUpdateTileEntity(pos, 0, tag);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        settings.readFromNBT(pkt.func_148857_g());
+    protected void handleUpdateNBT(NBTTagCompound tag) {
+        super.handleUpdateNBT(tag);
+        settings.readFromNBT(tag);
         world.markBlockRangeForRenderUpdate(pos, pos);
         BlockTools.notifyBlockUpdate(this);
     }
@@ -86,7 +87,7 @@ public class TileAdvancedSpawner extends TileEntity {
         while (xp > 0) {
             int j = EntityXPOrb.getXPSplit(xp);
             xp -= j;
-            this.world.spawnEntity(new EntityXPOrb(this.world, this.x + 0.5d, this.y, this.z + 0.5d, j));
+            this.world.spawnEntity(new EntityXPOrb(this.world, this.pos.getX() + 0.5d, this.pos.getY(), this.pos.getZ() + 0.5d, j));
         }
         InventoryBasic inv = settings.getInventory();
         @Nonnull ItemStack item;

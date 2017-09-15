@@ -4,10 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
 import net.minecraft.scoreboard.Team;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -23,14 +20,16 @@ import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilderTicked;
 
+import javax.annotation.Nonnull;
 import java.util.EnumSet;
 import java.util.UUID;
 
-public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwnable, ITickable {
+public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IOwnable, ITickable {
 
     protected UUID owningPlayer;
     private EntityPlayer owner;
@@ -56,8 +55,8 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwna
     public AxisAlignedBB getRenderBoundingBox() {
         AxisAlignedBB bb = super.getRenderBoundingBox();
         if (clientBB != null) {
-            bb.expand(clientBB.min.x - pos.getX(), clientBB.min.y - pos.getY(), clientBB.min.z - pos.getZ());
-            bb.expand(clientBB.max.x - pos.getX(), clientBB.max.y - pos.getY(), clientBB.max.z - pos.getZ());
+            bb.expand(clientBB.min.getX() - pos.getX(), clientBB.min.getY() - pos.getY(), clientBB.min.getZ() - pos.getZ());
+            bb.expand(clientBB.max.getX() - pos.getX(), clientBB.max.getY() - pos.getY(), clientBB.max.getZ() - pos.getZ());
         }
         return bb;
     }
@@ -220,20 +219,18 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwna
     }
 
     @Override
-    public Packet getDescriptionPacket() {
-        NBTTagCompound tag = new NBTTagCompound();
+    protected void writeUpdateNBT(NBTTagCompound tag) {
+        super.writeUpdateNBT(tag);
         StructureBB bb = builder.getBoundingBox();
         if (bb != null) {
-            tag.setTag("bbMin", bb.min.writeToNBT(new NBTTagCompound()));
-            tag.setTag("bbMax", bb.max.writeToNBT(new NBTTagCompound()));
+            tag.setLong("bbMin", bb.min.toLong());
+            tag.setLong("bbMax", bb.max.toLong());
         }
-        return new S35PacketUpdateTileEntity(pos, 0, tag);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-        super.onDataPacket(net, pkt);
-        NBTTagCompound tag = pkt.func_148857_g();
+    protected void handleUpdateNBT(NBTTagCompound tag) {
+        super.handleUpdateNBT(tag);
         if (tag.hasKey("bbMin") && tag.hasKey("bbMax")) {
             clientBB = new StructureBB(BlockPos.fromLong(tag.getLong("bbMin")), BlockPos.fromLong(tag.getLong("bbMax")));
         }
@@ -256,7 +253,7 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwna
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         if (builder != null) {
             NBTTagCompound builderTag = new NBTTagCompound();
@@ -268,6 +265,7 @@ public class TileStructureBuilder extends TileEntity implements IWorkSite, IOwna
         if(owningPlayer!=null){
             tag.setString("ownerId", owningPlayer.toString());
         }
+        return tag;
     }
 
     //******************************************WORKSITE************************************************//

@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
@@ -15,60 +17,60 @@ public class TownGeneratorWalls {
         if (template.getWallStyle() <= 0) {
             return;
         }//no walls
-        int minX = gen.wallsBounds.min.x;
-        int minZ = gen.wallsBounds.min.z;
-        int maxX = gen.wallsBounds.max.x;
-        int maxZ = gen.wallsBounds.max.z;
-        int minY = gen.wallsBounds.min.y;
+        int minX = gen.wallsBounds.min.getX();
+        int minZ = gen.wallsBounds.min.getZ();
+        int maxX = gen.wallsBounds.max.getX();
+        int maxZ = gen.wallsBounds.max.getZ();
+        int minY = gen.wallsBounds.min.getY();
 
         //construct NW corner
-        constructTemplate(world, getCornerSection(rng, template), Direction.SOUTH.ordinal(), minX, minY, minZ);
+        constructTemplate(world, getCornerSection(rng, template), EnumFacing.SOUTH, new BlockPos(minX, minY, minZ));
 
         //construct NE corner
-        constructTemplate(world, getCornerSection(rng, template), Direction.WEST.ordinal(), maxX, minY, minZ);
+        constructTemplate(world, getCornerSection(rng, template), EnumFacing.WEST, new BlockPos(maxX, minY, minZ));
 
         //construct SE corner
-        constructTemplate(world, getCornerSection(rng, template), Direction.NORTH.ordinal(), maxX, minY, maxZ);
+        constructTemplate(world, getCornerSection(rng, template), EnumFacing.NORTH, new BlockPos(maxX, minY, maxZ));
 
         //construct SW corner
-        constructTemplate(world, getCornerSection(rng, template), Direction.EAST.ordinal(), minX, minY, maxZ);
+        constructTemplate(world, getCornerSection(rng, template), EnumFacing.EAST, new BlockPos(minX, minY, maxZ));
 
         if (template.getWallStyle() > 1)//has wall sections
         {
             int chunkWidth = (maxX - minX + 1) / 16;
             int chunkLength = (maxZ - minZ + 1) / 16;
             int x, z;
-            int facingDirection;
+            EnumFacing facingDirection;
             //construct N wall
-            facingDirection = Direction.SOUTH.ordinal();
+            facingDirection = EnumFacing.SOUTH;
             for (int i = 1; i < chunkWidth - 1; i++) {
                 x = minX + 16 * i;
                 z = minZ;
-                constructTemplate(world, getWallSection(rng, template, i, chunkWidth), facingDirection, x, minY, z);
+                constructTemplate(world, getWallSection(rng, template, i, chunkWidth), facingDirection, new BlockPos(x, minY, z));
             }
 
             //construct E wall
-            facingDirection = Direction.WEST.ordinal();
+            facingDirection = EnumFacing.WEST;
             for (int i = 1; i < chunkLength - 1; i++) {
                 x = maxX;
                 z = minZ + 16 * i;
-                constructTemplate(world, getWallSection(rng, template, i, chunkLength), facingDirection, x, minY, z);
+                constructTemplate(world, getWallSection(rng, template, i, chunkLength), facingDirection, new BlockPos(x, minY, z));
             }
 
             //construct S wall
-            facingDirection = Direction.NORTH.ordinal();
+            facingDirection = EnumFacing.NORTH;
             for (int i = 1; i < chunkWidth - 1; i++) {
                 x = maxX - 16 * i;
                 z = maxZ;
-                constructTemplate(world, getWallSection(rng, template, i, chunkWidth), facingDirection, x, minY, z);
+                constructTemplate(world, getWallSection(rng, template, i, chunkWidth), facingDirection, new BlockPos(x, minY, z));
             }
 
             //construct W wall
-            facingDirection = Direction.EAST.ordinal();
+            facingDirection = EnumFacing.EAST;
             for (int i = 1; i < chunkLength - 1; i++) {
                 x = minX;
                 z = maxZ - 16 * i;
-                constructTemplate(world, getWallSection(rng, template, i, chunkLength), facingDirection, x, minY, z);
+                constructTemplate(world, getWallSection(rng, template, i, chunkLength), facingDirection, new BlockPos(x, minY, z));
             }
         }
     }
@@ -117,11 +119,11 @@ public class TownGeneratorWalls {
         return StructureTemplateManager.INSTANCE.getTemplate(template.getRandomWeightedCorner(rng));
     }
 
-    private static void constructTemplate(World world, StructureTemplate template, int face, int x, int y, int z) {
+    private static void constructTemplate(World world, StructureTemplate template, EnumFacing face, BlockPos pos) {
         if (template == null) {
             return;
         }
-        WorldGenTickHandler.INSTANCE.addStructureForGeneration(new StructureBuilder(world, template, face, x, y, z));
+        WorldGenTickHandler.INSTANCE.addStructureForGeneration(new StructureBuilder(world, template, face, pos));
     }
 
 }

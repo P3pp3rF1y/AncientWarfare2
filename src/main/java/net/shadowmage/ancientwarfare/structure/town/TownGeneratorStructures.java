@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
@@ -186,46 +188,46 @@ public class TownGeneratorStructures {
         }//ensures two lamps are not adjacent near the corner of the road
 
         if (xDir == Direction.WEST) {
-            xStart = block.bb.max.x;
+            xStart = block.bb.max.getX();
             xMove = -size;
         } else {
-            xStart = block.bb.min.x;
+            xStart = block.bb.min.getX();
             xMove = size;
         }
 
         if (zDir == Direction.NORTH) {
-            zStart = block.bb.max.z;
+            zStart = block.bb.max.getZ();
             zMove = -size;
         } else {
-            zStart = block.bb.min.z;
+            zStart = block.bb.min.getZ();
             zMove = size;
         }
 
         if (block.hasRoadBorder(Direction.NORTH)) {
             for (int xBit = 0; xBit <= xBits; xBit++) {
                 x = xBit * xMove + xStart;
-                generateLamp(world, lamp, doors, x, block.bb.min.y, block.bb.min.z, Direction.EAST);
+                generateLamp(world, lamp, doors, x, block.bb.min.getY(), block.bb.min.getZ(), Direction.EAST);
             }
         }
 
         if (block.hasRoadBorder(Direction.SOUTH)) {
             for (int xBit = 0; xBit <= xBits; xBit++) {
                 x = xBit * xMove + xStart;
-                generateLamp(world, lamp, doors, x, block.bb.min.y, block.bb.max.z, Direction.EAST);
+                generateLamp(world, lamp, doors, x, block.bb.min.getY(), block.bb.max.getZ(), Direction.EAST);
             }
         }
 
         if (block.hasRoadBorder(Direction.WEST)) {
             for (int zBit = 0; zBit <= zBits; zBit++) {
                 z = zBit * zMove + zStart;
-                generateLamp(world, lamp, doors, block.bb.min.x, block.bb.min.y, z, Direction.EAST);
+                generateLamp(world, lamp, doors, block.bb.min.getX(), block.bb.min.getY(), z, Direction.EAST);
             }
         }
 
         if (block.hasRoadBorder(Direction.EAST)) {
             for (int zBit = 0; zBit <= zBits; zBit++) {
                 z = zBit * zMove + zStart;
-                generateLamp(world, lamp, doors, block.bb.max.x, block.bb.min.y, z, Direction.EAST);
+                generateLamp(world, lamp, doors, block.bb.max.getX(), block.bb.min.getY(), z, Direction.EAST);
             }
         }
     }
@@ -244,7 +246,7 @@ public class TownGeneratorStructures {
         for (int x1 = minX; x1 <= maxX; x1++) {
             for (int z1 = minZ; z1 <= maxZ; z1++) {
                 for (int y1 = minY; y1 <= maxY; y1++) {
-                    if (!world.isAirBlock(x1, y1, z1)) {
+                    if (!world.isAirBlock(new BlockPos(x1, y1, z1))) {
                         return;
                     }//skip construction if it would overwrite any non-valid block (should ALL be air)
                 }
@@ -254,16 +256,16 @@ public class TownGeneratorStructures {
         z -= (t.zSize / 2);
         x += t.xOffset;
         z += t.zOffset;
-        WorldGenTickHandler.INSTANCE.addStructureForGeneration(new StructureBuilder(world, t, 0, x, y, z));
+        WorldGenTickHandler.INSTANCE.addStructureForGeneration(new StructureBuilder(world, t, EnumFacing.SOUTH, new BlockPos(x, y, z)));
     }
 
     private static boolean checkForNeighboringDoor(List<BlockPos> doors, int x, int z, Direction dir) {
         int x1 = x + dir.xDirection;
         int z1 = z + dir.zDirection;
         for (BlockPos p : doors) {
-            if (p.x == x && p.z == z) {
+            if (p.getX() == x && p.getZ() == z) {
                 return true;
-            } else if (p.x == x1 && p.z == z1) {
+            } else if (p.getX() == x1 && p.getZ() == z1) {
                 return true;
             }
         }
@@ -279,21 +281,17 @@ public class TownGeneratorStructures {
      */
     private static boolean generateStructureForPlot(TownGenerator gen, TownPartPlot plot, StructureTemplate template, boolean centerLength) {
         int expansion = gen.template.getTownBuildingWidthExpansion();
-        int face = gen.rng.nextInt(4);//select random face
-        for (int i = 0, f = face; i < 4; i++, f++)//and then iterate until a valid face is found
-        {
-            if (f > 3) {
-                f = 0;
-            }
-            if (plot.roadBorders[f]) {
-                face = f;
+        EnumFacing face = EnumFacing.HORIZONTALS[gen.rng.nextInt(4)];//select random face
+        for (int i=0; i<4; i++) {//and then iterate until a valid face is found
+            face = face.rotateY();
+            if (plot.roadBorders[face.ordinal()]) {
                 break;
             }
         }
-        face = (face + 2) % 4;//reverse face from road edge...
-        int width = face == 0 || face == 2 ? template.xSize : template.zSize;
-        int length = face == 0 || face == 2 ? template.zSize : template.xSize;
-        if (face == 0 || face == 2) {
+        face = face.getOpposite();//reverse face from road edge...
+        int width = face.getAxis() == EnumFacing.Axis.Z ? template.xSize : template.zSize;
+        int length = face.getAxis() == EnumFacing.Axis.Z ? template.zSize : template.xSize;
+        if (face == EnumFacing.SOUTH || face == EnumFacing.NORTH) {
             width += expansion;
         }//temporarily expand the size of the bb by the town-template building expansion size, ensures there is room around buildings
         else {
@@ -305,7 +303,7 @@ public class TownGeneratorStructures {
             }
         }
         plot.markClosed();
-        if (face == 0 || face == 2) {
+        if (face == EnumFacing.SOUTH || face == EnumFacing.NORTH) {
             width -= expansion;
         } else {
             length -= expansion;
@@ -323,7 +321,7 @@ public class TownGeneratorStructures {
      * @param length   rotated structure z-dimension
      * @param center   should the structure be centered in plot, or placed along road-edge?
      */
-    private static void generateStructure(TownGenerator gen, TownPartPlot plot, StructureTemplate template, int face, int width, int length, boolean center) {
+    private static void generateStructure(TownGenerator gen, TownPartPlot plot, StructureTemplate template, EnumFacing face, int width, int length, boolean center) {
         int plotWidth = plot.getWidth();
         int plotLength = plot.getLength();
         int extraWidth = plotWidth - width;//unused width portion of the plot
@@ -336,18 +334,18 @@ public class TownGeneratorStructures {
             wAdj = extraWidth / 2;
             lAdj = extraLength / 2;
         } else {
-            wAdj = (face == 0 || face == 2) ? extraWidth / 2 : face == 1 ? extraWidth : 0;
-            lAdj = (face == 1 || face == 3) ? extraLength / 2 : face == 2 ? extraLength : 0;
+            wAdj = face.getAxis() == EnumFacing.Axis.Z ? extraWidth / 2 : face == EnumFacing.WEST ? extraWidth : 0;
+            lAdj = face.getAxis() == EnumFacing.Axis.X ? extraLength / 2 : face == EnumFacing.NORTH ? extraLength : 0;
         }
 
         //find corners of the bb for the structure
-        BlockPos min = new BlockPos(plot.bb.min.x + wAdj, gen.townBounds.min.y, plot.bb.min.z + lAdj);
-        BlockPos max = new BlockPos(min.x + (width - 1), min.y + template.ySize, min.z + (length - 1));
+        BlockPos min = new BlockPos(plot.bb.min.getX() + wAdj, gen.townBounds.min.getY(), plot.bb.min.getZ() + lAdj);
+        BlockPos max = new BlockPos(min.getX() + (width - 1), min.getY() + template.ySize, min.getZ() + (length - 1));
         StructureBB bb = new StructureBB(min, max);
 
-        BlockPos buildKey = bb.getRLCorner(face, BlockPos.ORIGIN).moveRight(face, template.xOffset).moveBack(face, template.zOffset).up(gen.townBounds.min.y - template.yOffset);
+        BlockPos buildKey = bb.getRLCorner(face, BlockPos.ORIGIN).offset(face.rotateY(), template.xOffset).offset(face.getOpposite(), template.zOffset).up(gen.townBounds.min.getY() - template.yOffset);
         bb.add(0, -template.yOffset, 0);
-        gen.structureDoors.add(buildKey.copy());
+        gen.structureDoors.add(buildKey);
         WorldGenTickHandler.INSTANCE.addStructureForGeneration(new StructureBuilder(gen.world, template, face, buildKey, bb));
 //  AWLog.logDebug("added structure to tick handler for generation: "+template.name +" at: "+buildKey+" town bounds: "+gen.townBounds);
     }

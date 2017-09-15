@@ -8,18 +8,17 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.entity.WatchedData;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -78,11 +77,9 @@ public class SpawnerSettings {
         return settings;
     }
 
-    public void setWorld(World world, int x, int y, int z) {
+    public void setWorld(World world, BlockPos pos) {
         this.world = world;
-        this.x = x;
-        this.y = y;
-        this.z = z;
+        this.pos = pos;
     }
 
     public void onUpdate() {
@@ -129,7 +126,7 @@ public class SpawnerSettings {
 
     private void spawnEntities() {
         if (lightSensitive) {
-            int light = world.getBlockLightValue(pos);
+            int light = world.getBlockState(pos).getLightValue(world, pos);
 
             //TODO check this light calculation stuff...
             if (light >= 8) {
@@ -137,7 +134,7 @@ public class SpawnerSettings {
             }
         }
         if (playerRange > 0) {
-            List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos, x + 1, y + 1, z + 1).expand(playerRange, playerRange, playerRange));
+            List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos, pos.add(1, 1, 1)).grow(playerRange, playerRange, playerRange));
             if (nearbyPlayers.isEmpty()) {
                 return;
             }
@@ -155,7 +152,7 @@ public class SpawnerSettings {
         }
 
         if (maxNearbyMonsters > 0 && mobRange > 0) {
-            int nearbyCount = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos, x + 1, y + 1, z + 1).expand(mobRange, mobRange, mobRange)).size();
+            int nearbyCount = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos, pos.add(1, 1, 1)).grow(mobRange, mobRange, mobRange)).size();
             if (nearbyCount >= maxNearbyMonsters) {
                 AWLog.logDebug("skipping spawning because of too many nearby entities");
                 return;
@@ -217,8 +214,7 @@ public class SpawnerSettings {
         tag.setTag("spawnGroups", groupList);
 
         NBTTagCompound invTag = new NBTTagCompound();
-        inventory.writeToNBT(invTag);
-        tag.setTag("inventory", invTag);
+        tag.setTag("inventory", inventory.serializeNBT());
     }
 
     public void readFromNBT(NBTTagCompound tag) {
@@ -247,7 +243,7 @@ public class SpawnerSettings {
             spawnGroups.add(group);
         }
         if (tag.hasKey("inventory")) {
-            inventory.readFromNBT(tag.getCompoundTag("inventory"));
+            inventory.deserializeNBT(tag.getCompoundTag("inventory"));
         }
     }
 
@@ -402,12 +398,12 @@ public class SpawnerSettings {
             entitiesToSpawn.add(setting);
         }
 
-        public void spawnEntities(World world, int x, int y, int z, int grpIndex, int range) {
+        public void spawnEntities(World world, BlockPos spawnPos, int grpIndex, int range) {
             EntitySpawnSettings settings;
             Iterator<EntitySpawnSettings> it = entitiesToSpawn.iterator();
             int index = 0;
             while (it.hasNext() && (settings = it.next()) != null) {
-                settings.spawnEntities(world, x, y, z, range);
+                settings.spawnEntities(world, spawnPos, range);
                 if (settings.shouldRemove()) {
                     it.remove();
                 }
@@ -416,7 +412,7 @@ public class SpawnerSettings {
                 int b2 = settings.remainingSpawnCount;
                 int a = (a1 << 16) | (grpIndex & 0x0000ffff);
                 int b = (index << 16) | (b2 & 0x0000ffff);
-                world.addBlockEvent(x, y, z, AWBlocks.advancedSpawner, a, b);
+                world.addBlockEvent(spawnPos, AWBlocks.advancedSpawner, a, b);
                 index++;
             }
         }
@@ -459,7 +455,7 @@ public class SpawnerSettings {
     }
 
     public static final class EntitySpawnSettings {
-        String entityId = "Pig";
+        ResourceLocation entityId = new ResourceLocation("pig");
         NBTTagCompound customTag;
         List<DataParameter> customData = new ArrayList<>();
         int minToSpawn = 2;
@@ -471,12 +467,12 @@ public class SpawnerSettings {
 
         }
 
-        public EntitySpawnSettings(String entityId) {
+        public EntitySpawnSettings(ResourceLocation entityId) {
             setEntityToSpawn(entityId);
         }
 
         public final void writeToNBT(NBTTagCompound tag) {
-            tag.setString("entityId", entityId);
+            tag.setString("entityId", entityId.toString());
             if (customTag != null) {
                 tag.setTag("customTag", customTag);
             }
@@ -485,14 +481,15 @@ public class SpawnerSettings {
             tag.setInteger("maxToSpawn", maxToSpawn);
             tag.setInteger("remainingSpawnCount", remainingSpawnCount);
             NBTTagList list = new NBTTagList();
-            for(DataParameter custom : customData){
-                list.appendTag(custom.toTag());
-            }
+// TODO Replace watchable data logic with DataParameters
+            //            for(DataParameter custom : customData){
+//                list.appendTag(custom.toTag());
+//            }
             tag.setTag("customData", list);
         }
 
         public final void readFromNBT(NBTTagCompound tag) {
-            setEntityToSpawn(tag.getString("entityId"));
+            setEntityToSpawn(new ResourceLocation(tag.getString("entityId")));
             if (tag.hasKey("customTag")) {
                 customTag = tag.getCompoundTag("customTag");
             }
@@ -501,23 +498,24 @@ public class SpawnerSettings {
             maxToSpawn = tag.getInteger("maxToSpawn");
             remainingSpawnCount = tag.getInteger("remainingSpawnCount");
             customData.clear();
-            if(tag.hasKey("customData")) {
-                NBTTagList list = tag.getTagList("customData", Constants.NBT.TAG_COMPOUND);
-                for(int i = 0; i < list.tagCount(); i++){
-                    addCustomData(WatchedData.fromTag(list.getCompoundTagAt(i)));
-                }
-            }
+// TODO Replace watchable data logic with DataParameters
+//            if(tag.hasKey("customData")) {
+//                NBTTagList list = tag.getTagList("customData", Constants.NBT.TAG_COMPOUND);
+//                for(int i = 0; i < list.tagCount(); i++){
+//                    addCustomData(WatchedData.fromTag(list.getCompoundTagAt(i)));
+//                }
+//            }
         }
 
-        public final void setEntityToSpawn(String entityId) {
+        public final void setEntityToSpawn(ResourceLocation entityId) {
             this.entityId = entityId;
-            if (!EntityList.stringToClassMapping.containsKey(this.entityId)) {
+            if (!EntityList.ENTITY_EGGS.containsKey(this.entityId)) {
                 AWLog.logError(entityId + " is not a valid entityId.  Spawner default to Zombie.");
-                this.entityId = "Zombie";
+                this.entityId = new ResourceLocation("zombie");
             }
             if (AWStructureStatics.excludedSpawnerEntities.contains(this.entityId)) {
                 AWLog.logError(entityId + " has been set as an invalid entity for spawners!  Spawner default to Zombie.");
-                this.entityId = "Zombie";
+                this.entityId = new ResourceLocation("zombie");
             }
         }
 
@@ -526,16 +524,17 @@ public class SpawnerSettings {
         }
 
         public final void addCustomData(DataParameter data){
-            if(data!=null){
-                Iterator<DataParameter> itr = customData.iterator();
-                while(itr.hasNext()){
-                    if(data.collideWith(itr.next())){
-                        itr.remove();
-                    }
-                }
-                customData.add(data);
-            }
-            Collections.sort(customData, WatchedData.IndexSorter.INSTANCE);
+// TODO Replace watchable data logic with DataParameters
+//            if(data!=null){
+//                Iterator<DataParameter> itr = customData.iterator();
+//                while(itr.hasNext()){
+//                    if(data.collideWith(itr.next())){
+//                        itr.remove();
+//                    }
+//                }
+//                customData.add(data);
+//            }
+//            Collections.sort(customData, WatchedData.IndexSorter.INSTANCE);
         }
 
         public final List<DataParameter> getCustomData(){
@@ -565,7 +564,7 @@ public class SpawnerSettings {
             return remainingSpawnCount == 0;
         }
 
-        public final String getEntityId() {
+        public final ResourceLocation getEntityId() {
             return entityId;
         }
 
@@ -607,19 +606,19 @@ public class SpawnerSettings {
             return toSpawn;
         }
 
-        private void spawnEntities(World world, int x, int y, int z, int range) {
+        private void spawnEntities(World world, BlockPos spawnPos, int range) {
             int toSpawn = getNumToSpawn(world.rand);
 
             for (int i = 0; i < toSpawn; i++) {
-                Entity e = EntityList.createEntityByName(entityId, world);
+                Entity e = EntityList.createEntityByIDFromName(entityId, world);
                 if (e == null)
                     return;
                 boolean doSpawn = false;
                 int spawnTry = 0;
                 while (!doSpawn && spawnTry < range + 5) {
-                    int x = x - range + world.rand.nextInt(range*2+1);
-                    int z = z - range + world.rand.nextInt(range*2+1);
-                    for (int y = y - range; y <= y + range; y++) {
+                    int x = spawnPos.getX() - range + world.rand.nextInt(range*2+1);
+                    int z = spawnPos.getZ() - range + world.rand.nextInt(range*2+1);
+                    for (int y = spawnPos.getY() - range; y <= y + range; y++) {
                         e.setLocationAndAngles(x + 0.5d, y, z + 0.5d, world.rand.nextFloat() * 360, 0);
                         if (!forced && e instanceof EntityLiving) {
                             doSpawn = ((EntityLiving) e).getCanSpawnHere();
@@ -644,42 +643,43 @@ public class SpawnerSettings {
         //TODO  sendSoundPacket(world, pos);
         private void spawnEntityAt(Entity e, World world) {
             if(e instanceof EntityLiving){
-                ((EntityLiving) e).onSpawnWithEgg(null);
+                ((EntityLiving) e).onInitialSpawn(world.getDifficultyForLocation(e.getPosition()), null);
                 ((EntityLiving) e).spawnExplosionParticle();
             }
             if (customTag != null) {
                 NBTTagCompound temp = new NBTTagCompound();
                 e.writeToNBT(temp);
-                Set<String> keys = customTag.func_150296_c();
+                Set<String> keys = customTag.getKeySet();
                 for(String key : keys){
                     temp.setTag(key, customTag.getTag(key));
                 }
                 e.readFromNBT(temp);
             }
-            if(!customData.isEmpty()){
-                applyCustomData(e.getDataWatcher());
-            }
+// TODO Replace watchable data logic with DataParameters
+//            if(!customData.isEmpty()){
+//                applyCustomData(e.getDataWatcher());
+//            }
             world.spawnEntity(e);
         }
 
-        private void applyCustomData(DataWatcher watcher){
-            List<DataWatcher.WatchableObject> data = watcher.getAllWatched();
-            if(data!=null){
-                for (WatchedData custom : customData) {
-                    for (DataWatcher.WatchableObject vanilla : data) {
-                        if (custom.canReplace(vanilla)) {
-                            watcher.updateObject(vanilla.getDataValueId(), custom.getObject());
-                            break;
-                        }
-                    }
-                }
-            }else{
-                for(WatchedData d : customData){
-                    d.add(watcher);
-                }
-            }
-        }
+        // TODO Replace watchable data logic with DataParameters
 
+//        private void applyCustomData(DataWatcher watcher){
+//            List<DataWatcher.WatchableObject> data = watcher.getAllWatched();
+//            if(data!=null){
+//                for (WatchedData custom : customData) {
+//                    for (DataWatcher.WatchableObject vanilla : data) {
+//                        if (custom.canReplace(vanilla)) {
+//                            watcher.updateObject(vanilla.getDataValueId(), custom.getObject());
+//                            break;
+//                        }
+//                    }
+//                }
+//            }else{
+//                for(WatchedData d : customData){
+//                    d.add(watcher);
+//                }
+//            }
+//        }
     }
-
 }

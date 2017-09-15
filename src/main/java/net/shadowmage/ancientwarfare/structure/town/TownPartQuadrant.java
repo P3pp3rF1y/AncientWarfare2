@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 
@@ -32,13 +33,13 @@ public class TownPartQuadrant {
     }
 
     public void subdivide(int blockSize, int plotSize, boolean gridRoads) {
-        int totalWidth = (bb.max.x - bb.min.x);
-        int totalLength = (bb.max.z - bb.min.z);
+        int totalWidth = (bb.max.getX() - bb.min.getX());
+        int totalLength = (bb.max.getZ() - bb.min.getZ());
         int widthToUse = totalWidth;
         int lengthToUse = totalLength;
 
-        int y1 = gen.maximalBounds.min.y;
-        int y2 = gen.maximalBounds.max.y;
+        int y1 = gen.maximalBounds.min.getY();
+        int y2 = gen.maximalBounds.max.getY();
 
         widthToUse--;//the forced road edge for first block
         lengthToUse--;//the forced road edge for first block
@@ -64,14 +65,14 @@ public class TownPartQuadrant {
         boolean[] borders;
 
         widthToUse = totalWidth;
-        xStart = xDir.xDirection < 0 ? bb.max.x - 1 : bb.min.x + 1;
+        xStart = xDir.xDirection < 0 ? bb.max.getX() - 1 : bb.min.getX() + 1;
         for (int x = 0; x < xDivs; x++) {
             xSize = widthToUse > blockSize ? blockSize : widthToUse;
             xEnd = xStart + xDir.xDirection * (xSize - 1);
             xIndex = xDir == Direction.WEST ? (xDivs - 1) - x : x;
 
-            zStart = zDir.zDirection < 0 ? bb.max.z - 1 : bb.min.z + 1;
-            lengthToUse = (bb.max.z - bb.min.z);
+            zStart = zDir.zDirection < 0 ? bb.max.getZ() - 1 : bb.min.getZ() + 1;
+            lengthToUse = (bb.max.getZ() - bb.min.getZ());
             for (int z = 0; z < zDivs; z++) {
                 zSize = lengthToUse > blockSize ? blockSize : lengthToUse;
                 zEnd = zStart + zDir.zDirection * (zSize - 1);

@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 
 import java.util.ArrayList;
@@ -36,10 +37,10 @@ public class TownPartBlock {
     }
 
     public void subdivide(int plotSize) {
-        int y1 = quadrant.gen.maximalBounds.min.y;
-        int y2 = quadrant.gen.maximalBounds.max.y;
-        int xWidth = (bb.max.x - bb.min.x) + 1;
-        int zLength = (bb.max.z - bb.min.z) + 1;
+        int y1 = quadrant.gen.maximalBounds.min.getY();
+        int y2 = quadrant.gen.maximalBounds.max.getY();
+        int xWidth = (bb.max.getX() - bb.min.getX()) + 1;
+        int zLength = (bb.max.getZ() - bb.min.getZ()) + 1;
         int xDivs, zDivs;
         xDivs = xWidth / plotSize;
         if (xWidth % plotSize != 0) {
@@ -61,14 +62,14 @@ public class TownPartBlock {
 
         TownPartPlot plot;
 
-        xStart = quadrant.getXDir() == Direction.WEST ? bb.max.x : bb.min.x;
+        xStart = quadrant.getXDir() == Direction.WEST ? bb.max.getX() : bb.min.getX();
         widthToUse = xWidth;
         for (int x = 0; x < xDivs; x++) {
             xSize = widthToUse > plotSize ? plotSize : widthToUse;
             xEnd = xStart + (xSize - 1) * quadrant.getXDir().xDirection;
             xIndex = quadrant.getXDir() == Direction.WEST ? (xDivs - 1) - x : x;
 
-            zStart = quadrant.getZDir() == Direction.NORTH ? bb.max.z : bb.min.z;
+            zStart = quadrant.getZDir() == Direction.NORTH ? bb.max.getZ() : bb.min.getZ();
             lengthToUse = zLength;
             for (int z = 0; z < zDivs; z++) {
                 zSize = lengthToUse > plotSize ? plotSize : lengthToUse;

@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.JsonToNBT;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.shadowmage.ancientwarfare.core.entity.WatchedData;
@@ -18,7 +17,6 @@ import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings.EntitySpawnG
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings.EntitySpawnSettings;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -60,12 +58,13 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
         dataKey = new int[size];
         dataValue = new String[size];
         int i = 0;
-        for(WatchedData d : data){
-            dataType[i] = d.getType();
-            dataKey[i] = d.getDataValueId();
-            dataValue[i] = dataType[i].toString(d.getObject());
-            i++;
-        }
+// TODO Replace watchable data logic with DataParameters
+//        for(WatchedData d : data){
+//            dataType[i] = d.getType();
+//            dataKey[i] = d.getDataValueId();
+//            dataValue[i] = dataType[i].toString(d.getObject());
+//            i++;
+//        }
         NBTTagCompound tag = this.settings.getCustomTag();
         if(tag!=null){
             String[] splits = tag.toString().split("}");
@@ -128,11 +127,12 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
 
             }
         }
-        Collections.sort(dataList, WatchedData.IndexSorter.INSTANCE);
-        settings.getCustomData().clear();
-        for(WatchedData data: dataList){
-            settings.addCustomData(data);
-        }
+// TODO Replace watchable data logic with DataParameters
+//        Collections.sort(dataList, WatchedData.IndexSorter.INSTANCE);
+//        settings.getCustomData().clear();
+//        for(WatchedData data: dataList){
+//            settings.addCustomData(data);
+//        }
     }
 
     private void saveTag(){
@@ -143,9 +143,9 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
             }
             String tag = tagBuffer.toString();
             try {
-                NBTBase base = JsonToNBT.func_150315_a(tag);
-                if(base instanceof NBTTagCompound && !((NBTTagCompound) base).hasNoTags()){
-                    settings.setCustomSpawnTag((NBTTagCompound) base);
+                NBTTagCompound base = JsonToNBT.getTagFromJson(tag);
+                if(base != null && !base.hasNoTags()){
+                    settings.setCustomSpawnTag(base);
                 }
             }catch (Throwable t){
                 t.printStackTrace();

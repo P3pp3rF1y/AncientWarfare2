@@ -27,13 +27,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.RayTraceResult;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 
 import java.util.List;
 import java.util.UUID;
 
-public class TEGateProxy extends TileEntity {
+public class TEGateProxy extends TileEntity implements ITickable{
 
     private EntityGate owner = null;
     private UUID entityID = null;
@@ -56,21 +57,22 @@ public class TEGateProxy extends TileEntity {
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         if (this.entityID != null) {
             tag.setLong("msb", entityID.getMostSignificantBits());
             tag.setLong("lsb", entityID.getLeastSignificantBits());
         }
+        return tag;
     }
 
     public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
-        return this.owner == null || this.owner.interactFirst(player);
+        return this.owner == null || this.owner.processInitialInteract(player, hand);
     }
 
     public void onBlockAttacked(EntityPlayer player) {
         if(this.owner != null){
-            DamageSource source = player!=null ? DamageSource.causePlayerDamage(player) : DamageSource.generic;
+            DamageSource source = player!=null ? DamageSource.causePlayerDamage(player) : DamageSource.GENERIC;
             this.owner.attackEntityFrom(source, 1);
         }
     }
@@ -83,7 +85,7 @@ public class TEGateProxy extends TileEntity {
     }
 
     @Override
-    public void updateEntity() {
+    public void update() {
         if (!hasWorld() || this.world.isRemote) {
             return;
         }

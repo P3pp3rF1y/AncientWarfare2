@@ -2,12 +2,18 @@ package net.shadowmage.ancientwarfare.structure;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
@@ -80,7 +86,7 @@ public class AncientWarfareStructures {
             if (AWStructureStatics.enableTownGeneration)
                 GameRegistry.registerWorldGenerator(WorldTownGenerator.INSTANCE, 2);
         }
-        EntityRegistry.registerModEntity(new ResourceLocation() EntityGate.class, "aw_gate", 0, this, 250, 200, false);
+        EntityRegistry.registerModEntity(new ResourceLocation(AncientWarfareStructures.modID, "aw_gate"), EntityGate.class, "aw_gate", 0, this, 250, 200, false);
         /*
          * internal registry
          */

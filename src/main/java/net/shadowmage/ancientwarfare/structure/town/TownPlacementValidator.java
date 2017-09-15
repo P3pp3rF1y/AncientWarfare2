@@ -1,6 +1,8 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -44,7 +46,7 @@ public class TownPlacementValidator {
         int cx = x >> 4;
         int cz = z >> 4;
 
-        int height = getTopFilledHeight(world.getChunkFromChunkCoords(cx, cz), x & 15, z & 15);
+        int height = getTopFilledHeight(world.getChunkFromChunkCoords(cx, cz), x, z);
         if (height <= 0) {
             return null;
         }
@@ -185,8 +187,8 @@ public class TownPlacementValidator {
         Chunk chunk = world.getChunkFromChunkCoords(cx, cz);
         int val;
         int total = 0;
-        for (int x = 0; x < 16; x++) {
-            for (int z = 0; z < 16; z++) {
+        for (int x = (cx << 4); x < ((cx << 4) + 16); x++) {
+            for (int z = (cz << 4); z < ((cz << 4) + 16); z++) {
                 val = getTopFilledHeight(chunk, x, z);
                 if (val < 0) {
                     return false;
@@ -204,22 +206,23 @@ public class TownPlacementValidator {
      *
      * @return top solid block height, or -1 for invalid top block or no top block found (void, bedrock...)
      */
-    private static int getTopFilledHeight(Chunk chunk, int xInChunk, int zInChunk) {
+    private static int getTopFilledHeight(Chunk chunk, int x, int z) {
         int maxY = chunk.getTopFilledSegment() + 15;
         Block block;
         for (int y = maxY; y > 0; y--) {
-            block = chunk.getBlock(xInChunk, y, zInChunk);
+            IBlockState state = chunk.getBlockState(new BlockPos(x, y, z));
+            block = state.getBlock();
             if (AWStructureStatics.skippableBlocksContains(block)) {
                 continue;
             }
-            if (block.getMaterial().isLiquid()) {
+            if (state.getMaterial().isLiquid()) {
                 if (y >= 56) {
                     continue;
                 }// >=56 is fillable through underfill/border settings.  below that is too deep for a proper gradient on the border.
                 return -1;//return invalid Y if liquid block is too low
             }
             if (!AWStructureStatics.isValidTownTargetBlock(block)) {
-                AWLog.logDebug("rejecting town chunk for non-target block: " + block + " :: " + chunk.xPosition + ":" + chunk.zPosition);
+                AWLog.logDebug("rejecting town chunk for non-target block: " + block + " :: " + chunk.x + ":" + chunk.z);
                 return -1;
             }
             return y;//if not skippable and is valid target block, return that y-level

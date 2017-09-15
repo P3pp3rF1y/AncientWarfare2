@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.npc.tile;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -12,12 +13,12 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 
-public class TileTeleportHub extends TileEntity {
+public class TileTeleportHub extends TileEntity implements ITickable {
     private int COUNTER = 0;
     private HashSet<String> arrivals = new HashSet(); // used to cache the new arrivals so they're not instantly teleported away again
     
     @Override
-    public void updateEntity() {
+    public void update() {
         if (this.world.isRemote)
             return;
         COUNTER++;

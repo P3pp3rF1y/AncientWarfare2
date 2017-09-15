@@ -21,6 +21,8 @@
 package net.shadowmage.ancientwarfare.structure.world_gen;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 
@@ -30,9 +32,9 @@ public class StructureEntry {
     private int value;
     public final StructureBB bb;
 
-    public StructureEntry(int x, int y, int z, int face, StructureTemplate template) {
+    public StructureEntry(int x, int y, int z, EnumFacing face, StructureTemplate template) {
         name = template.name;
-        bb = new StructureBB(x, y, z, face, template.xSize, template.ySize, template.zSize, template.xOffset, template.yOffset, template.zOffset);
+        bb = new StructureBB(new BlockPos(x, y, z), face, template.xSize, template.ySize, template.zSize, template.xOffset, template.yOffset, template.zOffset);
         value = template.getValidationSettings().getClusterValue();
     }
 
@@ -49,7 +51,7 @@ public class StructureEntry {
     public void writeToNBT(NBTTagCompound tag) {
         tag.setString("name", name);
         tag.setInteger("value", value);
-        tag.setIntArray("bb", new int[]{bb.min.x, bb.min.y, bb.min.z, bb.max.x, bb.max.y, bb.max.z});
+        tag.setIntArray("bb", new int[]{bb.min.getX(), bb.min.getY(), bb.min.getZ(), bb.max.getX(), bb.max.getY(), bb.max.getZ()});
     }
 
     public void readFromNBT(NBTTagCompound tag) {

@@ -1,20 +1,23 @@
 package net.shadowmage.ancientwarfare.structure.tile;
 
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.IInventoryChangedListener;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileDraftingStation extends TileEntity implements IInventoryChangedListener {
+public class TileDraftingStation extends TileEntity implements IInventoryChangedListener, ITickable {
 
     private String structureName;//structure pulled from live structure list anytime a ref is needed
     private boolean isStarted;//has started compiling resources -- will need input to cancel
@@ -31,7 +34,7 @@ public class TileDraftingStation extends TileEntity implements IInventoryChanged
     }
 
     @Override
-    public void updateEntity() {
+    public void update() {
         if (!hasWorld() || world.isRemote) {
             return;
         }
@@ -169,8 +172,8 @@ public class TileDraftingStation extends TileEntity implements IInventoryChanged
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        inputSlots.readFromNBT(tag.getCompoundTag("inputInventory"));
-        outputSlot.readFromNBT(tag.getCompoundTag("outputInventory"));
+        inputSlots.deserializeNBT(tag.getCompoundTag("inputInventory"));
+        outputSlot.deserializeNBT(tag.getCompoundTag("outputInventory"));
         if (tag.hasKey("structureName")) {
             structureName = tag.getString("structureName");
         } else {
@@ -183,11 +186,11 @@ public class TileDraftingStation extends TileEntity implements IInventoryChanged
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        tag.setTag("inputInventory", inputSlots.writeToNBT(new NBTTagCompound()));
+        tag.setTag("inputInventory", inputSlots.serializeNBT());
 
-        tag.setTag("outputInventory", outputSlot.writeToNBT(new NBTTagCompound()));
+        tag.setTag("outputInventory", outputSlot.serializeNBT());
 
         if (structureName != null) {
             tag.setString("structureName", structureName);
@@ -200,6 +203,7 @@ public class TileDraftingStation extends TileEntity implements IInventoryChanged
         /*
          * TODO write out resource-list
          */
+        return tag;
     }
 
     @Override

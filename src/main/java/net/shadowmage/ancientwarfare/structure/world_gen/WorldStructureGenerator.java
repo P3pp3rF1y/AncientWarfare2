@@ -21,6 +21,8 @@
 package net.shadowmage.ancientwarfare.structure.world_gen;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.BlockFaceShape;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -93,7 +95,7 @@ public class WorldStructureGenerator implements IWorldGenerator {
             return;
         }
         
-        int face = rng.nextInt(4);
+        EnumFacing face = EnumFacing.HORIZONTALS[rng.nextInt(4)];
         world.profiler.startSection("AWTemplateSelection");
         StructureTemplate template = WorldGenStructureManager.INSTANCE.selectTemplateForGeneration(world, rng, x, y, z, face);
         world.profiler.endSection();
@@ -106,7 +108,7 @@ public class WorldStructureGenerator implements IWorldGenerator {
             return;
         }
         world.profiler.startSection("AWTemplateGeneration");
-        if (attemptStructureGenerationAt(world, x, y, z, face, template, map)) {
+        if (attemptStructureGenerationAt(world, new BlockPos(x, y, z), face, template, map)) {
             AWLog.log(String.format("Generated structure: %s at %s, %s, %s, time: %sms", template.name, x, y, z, (System.currentTimeMillis() - t1)));
         }
         world.profiler.endSection();
@@ -115,7 +117,7 @@ public class WorldStructureGenerator implements IWorldGenerator {
     public static int getTargetY(World world, int x, int z, boolean skipWater) {
         Block block;
         for (int y = world.getActualHeight(); y > 0; y--) {
-            block = world.getBlock(x, y, z);
+            block = world.getBlockState(new BlockPos(x, y, z)).getBlock();
             if (AWStructureStatics.skippableBlocksContains(block)) {
                 continue;
             }
@@ -128,15 +130,17 @@ public class WorldStructureGenerator implements IWorldGenerator {
     }
 
     public static void sprinkleSnow(World world, StructureBB bb, int border) {
-        BlockPos p1 = bb.min.offset(- border, 0, -border);
-        BlockPos p2 = bb.max.offset(border, 0, border);
-        for (int x = p1.x; x <= p2.x; x++) {
-            for (int z = p1.z; z <= p2.z; z++) {
-                int y = world.getPrecipitationHeight(x, z) - 1;
-                if(p2.y >= y && y > 0 && world.canSnowAtBody(x, y + 1, z, true)) {
-                    Block block = world.getBlock(x, y, z);
-                    if (block != Blocks.AIR && block.isSideSolid(world, x, y, z, EnumFacing.UP)) {
-                        world.setBlock(x, y + 1, z, Blocks.SNOW_LAYER);
+        BlockPos p1 = bb.min.add(- border, 0, -border);
+        BlockPos p2 = bb.max.add(border, 0, border);
+        for (int x = p1.getX(); x <= p2.getX(); x++) {
+            for (int z = p1.getZ(); z <= p2.getZ(); z++) {
+                int y = world.getPrecipitationHeight(new BlockPos(x, 1, z)).getY() - 1;
+                BlockPos pos = new BlockPos(x, y, z);
+                if(p2.getY() >= y && y > 0 && world.canSnowAtBody(pos.up(), true)) {
+                    IBlockState state = world.getBlockState(pos);
+                    Block block = state.getBlock();
+                    if (block != Blocks.AIR && state.getBlockFaceShape(world, pos, EnumFacing.UP) == BlockFaceShape.SOLID) {
+                        world.setBlockState(pos.up(), Blocks.SNOW_LAYER.getDefaultState());
                     }
                 }
             }
@@ -160,16 +164,17 @@ public class WorldStructureGenerator implements IWorldGenerator {
 
     public final boolean attemptStructureGenerationAt(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureMap map) {
         long t1 = System.currentTimeMillis();
-        int prevY = y;
-        StructureBB bb = new StructureBB(x, y, z, face, template.xSize, template.ySize, template.zSize, template.xOffset, template.yOffset, template.zOffset);
-        y = template.getValidationSettings().getAdjustedSpawnY(world, x, y, z, face, template, bb);
+        int prevY = pos.getY();
+        StructureBB bb = new StructureBB(pos, face, template.xSize, template.ySize, template.zSize, template.xOffset, template.yOffset, template.zOffset);
+        int y = template.getValidationSettings().getAdjustedSpawnY(world,pos.getX(), pos.getY(), pos.getZ(), face, template, bb);
+        pos = new BlockPos(pos.getX(), y, pos.getZ());
         bb.min = bb.min.up(y - prevY);
         bb.max = bb.max.up(y - prevY);
         int xs = bb.getXSize();
         int zs = bb.getZSize();
         int size = ((xs > zs ? xs : zs) / 16) + 3;
         if(map!=null) {
-            Collection<StructureEntry> bbCheckList = map.getEntriesNear(world, x, z, size, true, new ArrayList<>());
+            Collection<StructureEntry> bbCheckList = map.getEntriesNear(world, pos.getX(), pos.getZ(), size, true, new ArrayList<>());
             for (StructureEntry entry : bbCheckList) {
                 if (bb.crossWith(entry.getBB())) {
                     return false;
@@ -182,19 +187,19 @@ public class WorldStructureGenerator implements IWorldGenerator {
             AWLog.logDebug("Skipping structure generation: " + template.name + " at: " + bb + " for intersection with existing town");
             return false;
         }
-        if (template.getValidationSettings().validatePlacement(world, x, y, z, face, template, bb)) {
+        if (template.getValidationSettings().validatePlacement(world, pos.getX(), pos.getY(), pos.getZ(), face, template, bb)) {
             AWLog.logDebug("Validation took: " + (System.currentTimeMillis() - t1 + " ms"));
-            generateStructureAt(world, x, y, z, face, template, map);
+            generateStructureAt(world, pos, face, template, map);
             return true;
         }
         return false;
     }
 
-    private void generateStructureAt(World world, int x, int y, int z, int face, StructureTemplate template, StructureMap map) {
+    private void generateStructureAt(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureMap map) {
         if(map!=null) {
-            map.setGeneratedAt(world, x, y, z, face, new StructureEntry(x, y, z, face, template), template.getValidationSettings().isUnique());
+            map.setGeneratedAt(world, pos.getX(), pos.getY(), pos.getZ(), face, new StructureEntry(pos.getX(), pos.getY(), pos.getZ(), face, template), template.getValidationSettings().isUnique());
         }
-        WorldGenTickHandler.INSTANCE.addStructureForGeneration(new StructureBuilderWorldGen(world, template, face, x, y, z));
+        WorldGenTickHandler.INSTANCE.addStructureForGeneration(new StructureBuilderWorldGen(world, template, face, pos));
     }
 
 }

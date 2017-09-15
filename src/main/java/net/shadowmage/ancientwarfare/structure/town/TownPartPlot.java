@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 
 public class TownPartPlot {
@@ -54,24 +55,24 @@ public class TownPartPlot {
      * The passed-in plot should be discarded as it is no longer valid
      */
     public void merge(TownPartPlot other) {
-        int x = bb.min.x;
-        int z = bb.min.z;
-        if (other.bb.min.x < bb.min.x) {
-            x = other.bb.min.x;
+        int x = bb.min.getX();
+        int z = bb.min.getZ();
+        if (other.bb.min.getX() < bb.min.getX()) {
+            x = other.bb.min.getX();
         }
-        if (other.bb.min.z < bb.min.z) {
-            z = other.bb.min.z;
+        if (other.bb.min.getZ() < bb.min.getZ()) {
+            z = other.bb.min.getZ();
         }
-        bb.min = new BlockPos(x, bb.min.y, z);
-        x = bb.max.x;
-        z = bb.max.z;
-        if (other.bb.max.x > bb.max.x) {
-            x = other.bb.max.x;
+        bb.min = new BlockPos(x, bb.min.getY(), z);
+        x = bb.max.getX();
+        z = bb.max.getZ();
+        if (other.bb.max.getX() > bb.max.getX()) {
+            x = other.bb.max.getX();
         }
-        if (other.bb.max.z > bb.max.z) {
-            z = other.bb.max.z;
+        if (other.bb.max.getZ() > bb.max.getZ()) {
+            z = other.bb.max.getZ();
         }
-        bb.max = new BlockPos(x, bb.max.y, z);
+        bb.max = new BlockPos(x, bb.max.getY(), z);
         for (int i = 0; i < 4; i++) {
             if (other.roadBorders[i]) {
                 this.roadBorders[i] = true;
@@ -80,11 +81,11 @@ public class TownPartPlot {
     }
 
     public int getWidth() {
-        return (bb.max.x - bb.min.x) + 1;
+        return (bb.max.getX() - bb.min.getX()) + 1;
     }
 
     public int getLength() {
-        return (bb.max.z - bb.min.z) + 1;
+        return (bb.max.getZ() - bb.min.getZ()) + 1;
     }
 
     public boolean expand(int xSize, int zSize) {
@@ -123,7 +124,7 @@ public class TownPartPlot {
         }
         minZ--;
         TownPartPlot p = block.getPlot(x, minZ);
-        this.bb.min = new BlockPos(this.bb.min.x, this.bb.min.y, p.bb.min.z);
+        this.bb.min = new BlockPos(this.bb.min.getX(), this.bb.min.getY(), p.bb.min.getZ());
         return true;
     }
 
@@ -138,7 +139,7 @@ public class TownPartPlot {
         }
         maxZ++;
         TownPartPlot p = block.getPlot(x, maxZ);
-        this.bb.max = new BlockPos(this.bb.max.x, this.bb.max.y, p.bb.max.z);
+        this.bb.max = new BlockPos(this.bb.max.getX(), this.bb.max.getY(), p.bb.max.getZ());
         return true;
     }
 
@@ -153,7 +154,7 @@ public class TownPartPlot {
         }
         minX--;
         TownPartPlot p = block.getPlot(minX, z);
-        this.bb.min = new BlockPos(p.bb.min.x, this.bb.min.y, this.bb.min.z);
+        this.bb.min = new BlockPos(p.bb.min.getX(), this.bb.min.getY(), this.bb.min.getZ());
         return true;
     }
 
@@ -168,7 +169,7 @@ public class TownPartPlot {
         }
         maxX++;
         TownPartPlot p = block.getPlot(maxX, z);
-        this.bb.max = new BlockPos(p.bb.max.x, this.bb.max.y, this.bb.max.z);
+        this.bb.max = new BlockPos(p.bb.max.getX(), this.bb.max.getY(), this.bb.max.getZ());
         return true;
     }
 

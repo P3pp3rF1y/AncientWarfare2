@@ -23,12 +23,17 @@ package net.shadowmage.ancientwarfare.structure.gamedata;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.structure.world_gen.StructureEntry;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class StructureMap extends WorldSavedData {
 
@@ -59,7 +64,7 @@ public class StructureMap extends WorldSavedData {
         return map.getEntriesNear(world.provider.getDimension(), cx, cz, chunkRadius, expandBySize, list);
     }
 
-    public void setGeneratedAt(World world, int worldX, int worldY, int worldZ, int face, StructureEntry entry, boolean unique) {
+    public void setGeneratedAt(World world, int worldX, int worldY, int worldZ, EnumFacing face, StructureEntry entry, boolean unique) {
         int cx = worldX >> 4;
         int cz = worldZ >> 4;
         map.setGeneratedAt(world.provider.getDimension(), cx, cz, entry, unique);

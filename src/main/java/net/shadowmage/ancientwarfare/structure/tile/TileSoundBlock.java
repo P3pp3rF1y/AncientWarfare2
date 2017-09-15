@@ -4,18 +4,16 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.shadowmage.ancientwarfare.core.interfaces.ISinger;
+import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.SongPlayData;
 
 import java.util.List;
 
-public class TileSoundBlock extends TileEntity implements ISinger{
+public class TileSoundBlock extends TileUpdatable implements ISinger, ITickable{
 
     private boolean playing = false;//if currently playing a tune.
     private boolean redstoneInteraction = false;
@@ -32,7 +30,7 @@ public class TileSoundBlock extends TileEntity implements ISinger{
     }
 
     @Override
-    public void updateEntity() {
+    public void update() {
         if (world.isRemote) {
             return;
         }
@@ -45,7 +43,7 @@ public class TileSoundBlock extends TileEntity implements ISinger{
                 if (tuneData.getPlayOnPlayerEntry()) {
                     if (playerCheckDelay-- <= 0) {
                         playerCheckDelay = 20;
-                        AxisAlignedBB aabb = new AxisAlignedBB(pos, x + 1, y + 1, z + 1).expand(playerRange, playerRange, playerRange);
+                        AxisAlignedBB aabb = new AxisAlignedBB(pos, pos.add(1, 1, 1)).expand(playerRange, playerRange, playerRange);
 
                         List<EntityPlayer> list = world.getEntitiesWithinAABB(EntityPlayer.class, aabb);
                         if (list != null && !list.isEmpty()) {
@@ -93,15 +91,15 @@ public class TileSoundBlock extends TileEntity implements ISinger{
     }
 
     @Override
-    public Packet getDescriptionPacket(){
-        return new S35PacketUpdateTileEntity(pos, 0, cacheToNBT(new NBTTagCompound()));
+    protected void writeUpdateNBT(NBTTagCompound tag) {
+        super.writeUpdateNBT(tag);
+        cacheToNBT(tag);
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt){
-        if(world.isRemote && pkt.func_148853_f() == 0){
-            cacheFromNBT(pkt.func_148857_g());
-        }
+    protected void handleUpdateNBT(NBTTagCompound tag) {
+        super.handleUpdateNBT(tag);
+        cacheFromNBT(tag);
     }
 
     private void cacheFromNBT(NBTTagCompound tag){
@@ -111,11 +109,10 @@ public class TileSoundBlock extends TileEntity implements ISinger{
         }
     }
 
-    private NBTTagCompound cacheToNBT(NBTTagCompound tag){
+    private void cacheToNBT(NBTTagCompound tag){
         if(blockCache!=null){
-            tag.setString("block", Block.blockRegistry.getNameForObject(blockCache));
+            tag.setString("block", blockCache.getRegistryName().toString());
         }
-        return tag;
     }
 
     @Override
@@ -129,13 +126,15 @@ public class TileSoundBlock extends TileEntity implements ISinger{
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setTag("tuneData", tuneData.writeToNBT(new NBTTagCompound()));
         tag.setBoolean("redstone", redstoneInteraction);
         tag.setInteger("tuneIndex", tuneIndex);
         tag.setInteger("range", playerRange);
         cacheToNBT(tag);
+
+        return tag;
     }
 
     public SongPlayData getSongs() {
@@ -165,7 +164,7 @@ public class TileSoundBlock extends TileEntity implements ISinger{
     public void setBlockCache(ItemStack itemStack){
         blockCache = Block.getBlockFromItem(itemStack.getItem());
         BlockTools.notifyBlockUpdate(this);
-        world.notifyBlockChange(pos, this.blockType);
+        world.notifyNeighborsRespectDebug(pos, this.blockType, true);
         markDirty();
     }
 }
