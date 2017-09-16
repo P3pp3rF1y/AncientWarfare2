@@ -70,7 +70,7 @@ public class AWItems {
      */
     @ObjectHolder("ancientwarfarestructure:gate_spawner")
     public static ItemGateSpawner gateSpawner;
-    @ObjectHolder("ancientwarfarestructure:gate_spawner")
+    @ObjectHolder("ancientwarfarestructure:structure_scanner")
     public static ItemStructureScanner structureScanner;
 
 }

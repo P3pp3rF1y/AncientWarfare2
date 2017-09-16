@@ -48,7 +48,7 @@ import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
                 name = "Ancient Warfare Automation",
                 modid = AncientWarfareAutomation.modID,
                 version = "@VERSION@",
-                dependencies = "required-after:ancientwarfare;after:cofhcore;after:buildcraftcore"
+                dependencies = "required-after:ancientwarfare;after:redstoneflux;after:buildcraftcore"
         )
 public class AncientWarfareAutomation {
     public static final String modID = "ancientwarfareautomation";
@@ -72,9 +72,9 @@ public class AncientWarfareAutomation {
             ModuleStatus.buildCraftLoaded = true;
             AWLog.log("Detecting BuildCraft Core is loaded, enabling BC Compatibility");
         }
-        if (Loader.isModLoaded("cofhcore")) {
+        if (Loader.isModLoaded("redstoneflux")) {
             ModuleStatus.redstoneFluxEnabled = true;
-            AWLog.log("Detecting CoFHCore is loaded, enabling RF Compatibility");
+            AWLog.log("Detecting Redstone Flux is loaded, enabling RF Compatibility");
         }
         RFProxy.loadInstance();
 

@@ -51,8 +51,8 @@ targetCompatibility = 1.8
 
 dependencies {
     deobfCompile "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
-    deobfCompile name: 'FTBLib', version: ftblib_version, ext: 'jar'
-    deobfCompile name: 'FTBUtilities', version: ftbutilities_version, ext: 'jar'
+    //deobfCompile name: 'FTBLib', version: ftblib_version, ext: 'jar'
+    //deobfCompile name: 'FTBUtilities', version: ftbutilities_version, ext: 'jar'
 }
 
 task updateVersion(type:Copy){

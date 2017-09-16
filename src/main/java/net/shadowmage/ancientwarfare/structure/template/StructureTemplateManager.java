@@ -24,6 +24,8 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.server.FMLServerHandler;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
@@ -54,7 +56,7 @@ public class StructureTemplateManager {
         StructureTemplateClient cl = new StructureTemplateClient(template);
         clientTemplates.put(template.name, cl);
 
-        MinecraftServer server = FMLServerHandler.instance().getServer();
+        MinecraftServer server = FMLCommonHandler.instance().getSide() == Side.SERVER ? FMLServerHandler.instance().getServer() : null;
         if (server != null && server.isServerRunning() && server.getPlayerList() != null) {
             NBTTagCompound tag = new NBTTagCompound();
             cl.writeToNBT(tag);
@@ -73,7 +75,7 @@ public class StructureTemplateManager {
         }
         PacketStructure pkt = new PacketStructure();
         pkt.packetData.setTag("structureList", list);
-        NetworkHandler.sendToPlayer(player, pkt);
+        //NetworkHandler.sendToPlayer(player, pkt); TODO fix packet structure send on login - currently sent too soon, before there's open gl context
 
 //  PacketStructureImageList pkt2 = new PacketStructureImageList(this.imageMD5s);
 //  NetworkHandler.sendToPlayer(player, pkt2);
