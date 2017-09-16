@@ -5,7 +5,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
-import net.shadowmage.ancientwarfare.npc.block.AWNPCBlockLoader;
+import net.shadowmage.ancientwarfare.npc.block.AWNPCBlocks;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class AW2NpcChunkloaderCallback implements ForgeChunkManager.OrderedLoadi
         for(Ticket ticket: tickets) {
             BlockPos pos = BlockPos.fromLong(ticket.getModData().getLong("pos"));
             Block block = world.getBlockState(pos).getBlock();
-            if(block == AWNPCBlockLoader.townHall)
+            if(block == AWNPCBlocks.townHall)
                 validTickets.add(ticket);
         }
         return validTickets;

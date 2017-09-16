@@ -20,7 +20,6 @@ import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
-import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlockLoader;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.command.CommandStructure;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
@@ -36,7 +35,6 @@ import net.shadowmage.ancientwarfare.structure.container.ContainerStructureScann
 import net.shadowmage.ancientwarfare.structure.container.ContainerStructureSelection;
 import net.shadowmage.ancientwarfare.structure.crafting.AWStructureCrafting;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
-import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureRemove;
 import net.shadowmage.ancientwarfare.structure.template.StructurePluginManager;
@@ -52,7 +50,7 @@ import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator
                 name = "Ancient Warfare Structures",
                 modid = AncientWarfareStructures.modID,
                 version = "@VERSION@",
-                dependencies = "required-after:AncientWarfare"
+                dependencies = "required-after:ancientwarfare"
         )
 
 public class AncientWarfareStructures {
@@ -102,8 +100,6 @@ public class AncientWarfareStructures {
         NetworkHandler.registerContainer(NetworkHandler.GUI_GATE_CONTROL, ContainerGateControl.class);
         NetworkHandler.registerContainer(NetworkHandler.GUI_DRAFTING_STATION, ContainerDraftingStation.class);
         NetworkHandler.registerContainer(NetworkHandler.GUI_SOUND_BLOCK, ContainerSoundBlock.class);
-        AWStructuresItemLoader.load();
-        AWStructuresBlockLoader.load();
         proxy.registerClient();
         String path = evt.getModConfigurationDirectory().getAbsolutePath();
         TemplateLoader.INSTANCE.initializeAndExportDefaults(path);

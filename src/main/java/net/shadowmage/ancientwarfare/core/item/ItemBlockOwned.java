@@ -15,6 +15,7 @@ public class ItemBlockOwned extends ItemBlock {
 
     public ItemBlockOwned(Block block) {
         super(block);
+        this.setRegistryName(block.getRegistryName());
     }
 
     @Override

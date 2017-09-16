@@ -7,9 +7,11 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
@@ -21,13 +23,13 @@ public class ItemBardInstrument extends Item {
     public ItemBardInstrument(String regName) {
         setUnlocalizedName(regName);
         setRegistryName(new ResourceLocation(AncientWarfareNPC.modID, regName));
-        setCreativeTab(AWNpcItemLoader.npcTab);
+        setCreativeTab(AWNPCItemLoader.npcTab);
         setHasSubtypes(true);
     }
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if (tab != AWNpcItemLoader.npcTab) {
+        if (tab != AWNPCItemLoader.npcTab) {
             return;
         }
 
@@ -61,17 +63,17 @@ public class ItemBardInstrument extends Item {
         if (!world.isRemote) {
             int meta = stack.getItemDamage();
             SoundEvent s;
-            s = "note.bd";
+            s = SoundEvents.BLOCK_NOTE_BASEDRUM;
             if(meta == 0){
-                s = "note.bassattack";
+                s = SoundEvents.BLOCK_NOTE_BASS;
             }else if(meta == 1){
                 s = SoundEvents.ENTITY_ZOMBIE_VILLAGER_CURE;
             }else if(meta == 2){
-                s = "note.harp";
+                s = SoundEvents.BLOCK_NOTE_HARP;
             }
-            world.playSound(null, player.posX + 0.5, player.posY + 0.5, player.posZ + 0.5, s, 2.0F, 1.0F);
+            world.playSound(null, player.posX + 0.5, player.posY + 0.5, player.posZ + 0.5, s, SoundCategory.PLAYERS, 2.0F, 1.0F);
         }
-        return stack;
+        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
 
     @Override

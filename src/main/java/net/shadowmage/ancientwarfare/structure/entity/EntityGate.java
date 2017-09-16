@@ -38,7 +38,6 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.shadowmage.ancientwarfare.core.interfaces.IEntityPacketHandler;
-import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketEntity;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -220,8 +219,9 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
             canInteract = true; // owned gates
         if (player.getTeam()!=null && player.getTeam().isSameTeam(this.getTeam()))
             canInteract = true; // same team gates
-        if (ModAccessors.FTBU.areFriends(player.getName(), this.ownerName))
-            canInteract = true; // friend gates
+        //TODO ftbutils integration
+//        if (ModAccessors.FTBU.areFriends(player.getName(), this.ownerName))
+//            canInteract = true; // friend gates
         if(canInteract){
             if (player.isSneaking()) {
                 NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_GATE_CONTROL, getEntityId(), 0, 0);

@@ -20,7 +20,7 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins;
 
-import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
+import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlocks;
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.api.StructureContentPlugin;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleAutomationLogic;
@@ -36,35 +36,35 @@ public class StructurePluginAutomation implements StructureContentPlugin {
 
     @Override
     public void addHandledBlocks(IStructurePluginManager manager) {
-        manager.registerBlockHandler("awWorksite", AWAutomationBlockLoader.worksiteCropFarm, TemplateRuleRotable.class);
-        manager.registerBlockHandler("awWorksite", AWAutomationBlockLoader.worksiteAnimalFarm, TemplateRuleRotable.class);
-        manager.registerBlockHandler("awWorksite", AWAutomationBlockLoader.worksiteFishFarm, TemplateRuleRotable.class);
-        manager.registerBlockHandler("awWorksite", AWAutomationBlockLoader.worksiteForestry, TemplateRuleRotable.class);
-        manager.registerBlockHandler("awWorksite", AWAutomationBlockLoader.worksiteMushroomFarm, TemplateRuleRotable.class);
-        manager.registerBlockHandler("awWorksite", AWAutomationBlockLoader.worksiteReedFarm, TemplateRuleRotable.class);
-        manager.registerBlockHandler("awWorksite", AWAutomationBlockLoader.worksiteQuarry, TemplateRuleRotable.class);
-        manager.registerBlockHandler("awWorksite", AWAutomationBlockLoader.worksiteWarehouse, TemplateRuleRotable.class);
+        manager.registerBlockHandler("awWorksite", AWAutomationBlocks.worksiteCropFarm, TemplateRuleRotable.class);
+        manager.registerBlockHandler("awWorksite", AWAutomationBlocks.worksiteAnimalFarm, TemplateRuleRotable.class);
+        manager.registerBlockHandler("awWorksite", AWAutomationBlocks.worksiteFishFarm, TemplateRuleRotable.class);
+        manager.registerBlockHandler("awWorksite", AWAutomationBlocks.worksiteForestry, TemplateRuleRotable.class);
+        manager.registerBlockHandler("awWorksite", AWAutomationBlocks.worksiteMushroomFarm, TemplateRuleRotable.class);
+        manager.registerBlockHandler("awWorksite", AWAutomationBlocks.worksiteReedFarm, TemplateRuleRotable.class);
+        manager.registerBlockHandler("awWorksite", AWAutomationBlocks.worksiteQuarry, TemplateRuleRotable.class);
+        manager.registerBlockHandler("awWorksite", AWAutomationBlocks.worksiteWarehouse, TemplateRuleRotable.class);
 
-        manager.registerBlockHandler("awTorqueTile", AWAutomationBlockLoader.torqueShaft, TemplateRuleRotable.class);
-        manager.registerBlockHandler("awTorqueTile", AWAutomationBlockLoader.torqueConduit, TemplateRuleRotable.class);
-        manager.registerBlockHandler("awTorqueTile", AWAutomationBlockLoader.torqueDistributor, TemplateRuleRotable.class);
-        manager.registerBlockHandler("awTorqueTile", AWAutomationBlockLoader.flywheel, TemplateRuleRotable.class);
-        manager.registerBlockHandler("awTorqueTile", AWAutomationBlockLoader.torqueGeneratorSterling, TemplateRuleRotable.class);
-        manager.registerBlockHandler("awTorqueTile", AWAutomationBlockLoader.torqueGeneratorWaterwheel, TemplateRuleRotable.class);
-        manager.registerBlockHandler("awTorqueTile", AWAutomationBlockLoader.handCrankedEngine, TemplateRuleRotable.class);
-        manager.registerBlockHandler("awTorqueTile", AWAutomationBlockLoader.windmillControl, TemplateRuleRotable.class);
+        manager.registerBlockHandler("awTorqueTile", AWAutomationBlocks.torqueShaft, TemplateRuleRotable.class);
+        manager.registerBlockHandler("awTorqueTile", AWAutomationBlocks.torqueConduit, TemplateRuleRotable.class);
+        manager.registerBlockHandler("awTorqueTile", AWAutomationBlocks.torqueDistributor, TemplateRuleRotable.class);
+        manager.registerBlockHandler("awTorqueTile", AWAutomationBlocks.flywheel, TemplateRuleRotable.class);
+        manager.registerBlockHandler("awTorqueTile", AWAutomationBlocks.torqueGeneratorSterling, TemplateRuleRotable.class);
+        manager.registerBlockHandler("awTorqueTile", AWAutomationBlocks.torqueGeneratorWaterwheel, TemplateRuleRotable.class);
+        manager.registerBlockHandler("awTorqueTile", AWAutomationBlocks.handCrankedEngine, TemplateRuleRotable.class);
+        manager.registerBlockHandler("awTorqueTile", AWAutomationBlocks.windmillControl, TemplateRuleRotable.class);
 
-        manager.registerBlockHandler("awTorqueMulti", AWAutomationBlockLoader.flywheelStorage, TemplateRuleTorqueMultiblock.class);
-        manager.registerBlockHandler("awTorqueMulti", AWAutomationBlockLoader.windmillBlade, TemplateRuleTorqueMultiblock.class);
+        manager.registerBlockHandler("awTorqueMulti", AWAutomationBlocks.flywheelStorage, TemplateRuleTorqueMultiblock.class);
+        manager.registerBlockHandler("awTorqueMulti", AWAutomationBlocks.windmillBlade, TemplateRuleTorqueMultiblock.class);
 
-        manager.registerBlockHandler("awAutomationLogic", AWAutomationBlockLoader.warehouseCrafting, TemplateRuleAutomationLogic.class);
-        manager.registerBlockHandler("awAutomationLogic", AWAutomationBlockLoader.warehouseInterface, TemplateRuleAutomationLogic.class);
-        manager.registerBlockHandler("awAutomationLogic", AWAutomationBlockLoader.warehouseStockViewer, TemplateRuleAutomationLogic.class);
-        manager.registerBlockHandler("awAutomationLogic", AWAutomationBlockLoader.warehouseStorageBlock, TemplateRuleAutomationLogic.class);
-        manager.registerBlockHandler("awAutomationLogic", AWAutomationBlockLoader.chunkLoaderSimple, TemplateRuleAutomationLogic.class);
-        manager.registerBlockHandler("awAutomationLogic", AWAutomationBlockLoader.chunkLoaderDeluxe, TemplateRuleAutomationLogic.class);
-        manager.registerBlockHandler("awAutomationLogic", AWAutomationBlockLoader.mailbox, TemplateRuleAutomationLogic.class);
-        manager.registerBlockHandler("awAutomationLogic", AWAutomationBlockLoader.worksiteAutoCrafting, TemplateRuleAutomationLogic.class);
+        manager.registerBlockHandler("awAutomationLogic", AWAutomationBlocks.warehouseCrafting, TemplateRuleAutomationLogic.class);
+        manager.registerBlockHandler("awAutomationLogic", AWAutomationBlocks.warehouseInterface, TemplateRuleAutomationLogic.class);
+        manager.registerBlockHandler("awAutomationLogic", AWAutomationBlocks.warehouseStockViewer, TemplateRuleAutomationLogic.class);
+        manager.registerBlockHandler("awAutomationLogic", AWAutomationBlocks.warehouseStorageBlock, TemplateRuleAutomationLogic.class);
+        manager.registerBlockHandler("awAutomationLogic", AWAutomationBlocks.chunkLoaderSimple, TemplateRuleAutomationLogic.class);
+        manager.registerBlockHandler("awAutomationLogic", AWAutomationBlocks.chunkLoaderDeluxe, TemplateRuleAutomationLogic.class);
+        manager.registerBlockHandler("awAutomationLogic", AWAutomationBlocks.mailbox, TemplateRuleAutomationLogic.class);
+        manager.registerBlockHandler("awAutomationLogic", AWAutomationBlocks.worksiteAutoCrafting, TemplateRuleAutomationLogic.class);
     }
 
     @Override

@@ -247,12 +247,12 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
     }
 
     @Override
-    public int getUpkeepBlockSide() {
+    public EnumFacing getUpkeepBlockSide() {
         UpkeepOrder order = UpkeepOrder.getUpkeepOrder(upkeepStack);
         if (order != null) {
             return order.getUpkeepBlockSide();
         }
-        return 0;
+        return EnumFacing.DOWN;
     }
 
     @Override

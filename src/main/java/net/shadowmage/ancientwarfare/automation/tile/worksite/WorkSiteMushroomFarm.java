@@ -19,6 +19,7 @@ import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -47,7 +48,7 @@ public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
 
         ItemSlotFilter filter = new ItemSlotFilter() {
             @Override
-            public boolean apply(@Nullable ItemStack stack) {
+            public boolean test(@Nullable ItemStack stack) {
                 if (stack == null || stack.getItem() == Items.NETHER_WART) {
                     return true;
                 } else {

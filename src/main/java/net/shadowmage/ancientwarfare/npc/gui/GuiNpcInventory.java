@@ -14,7 +14,7 @@ import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcInventory;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcCombat;
-import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
+import net.shadowmage.ancientwarfare.npc.item.AWNPCItems;
 
 public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
 
@@ -120,7 +120,7 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
         slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false).addTooltip(isCombatNpc ? "guistrings.npc.weapon_slot" : "guistrings.npc.tool_slot");
         addGuiElement(slot);
 
-        slot = new ItemSlot(26, 8 + 18 * 1, new ItemStack(AWNpcItemLoader.woodenShield), this);
+        slot = new ItemSlot(26, 8 + 18 * 1, new ItemStack(AWNPCItems.woodenShield), this);
         slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false).addTooltip(isCombatNpc ? "guistrings.npc.shield_slot" : "guistrings.npc.offhand_slot");
         addGuiElement(slot);
 

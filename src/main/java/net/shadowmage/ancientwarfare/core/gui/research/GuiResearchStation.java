@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.gui.research;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.block.Direction;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
@@ -18,6 +19,7 @@ import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import org.lwjgl.input.Mouse;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class GuiResearchStation extends GuiContainerBase<ContainerResearchStation> {
@@ -97,7 +99,7 @@ public class GuiResearchStation extends GuiContainerBase<ContainerResearchStatio
         useAdjacentInventory.setTooltip(tip);
         addGuiElement(useAdjacentInventory);
 
-        invDir = new Button(80, 8 + 3 * 18 + 6, 40, 16, Direction.getDirectionFor(getContainer().tileEntity.inventoryDirection.ordinal()).getTranslationKey()) {
+        invDir = new Button(80, 8 + 3 * 18 + 6, 40, 16, Direction.getDirectionFor(getContainer().tileEntity.inventoryDirection).getTranslationKey()) {
             @Override
             protected void onPressed() {
                 getContainer().onDirPressed();
@@ -108,7 +110,7 @@ public class GuiResearchStation extends GuiContainerBase<ContainerResearchStatio
         tip.addTooltipElement(new Label(0, 0, "guistrings.research.invDir"));
         invDir.setTooltip(tip);
         addGuiElement(invDir);
-        invSide = new Button(120, 8 + 3 * 18 + 6, 40, 16, Direction.getDirectionFor(getContainer().tileEntity.inventorySide.ordinal()).getTranslationKey()) {
+        invSide = new Button(120, 8 + 3 * 18 + 6, 40, 16, Direction.getDirectionFor(getContainer().tileEntity.inventorySide).getTranslationKey()) {
             @Override
             protected void onPressed() {
                 getContainer().onSidePressed();
@@ -176,8 +178,8 @@ public class GuiResearchStation extends GuiContainerBase<ContainerResearchStatio
         researchGoalLabel.setText(name);
 
         useAdjacentInventory.setChecked(getContainer().useAdjacentInventory);
-        invDir.setText(Direction.getDirectionFor(getContainer().tileEntity.inventoryDirection.ordinal()).getTranslationKey());
-        invSide.setText(Direction.getDirectionFor(getContainer().tileEntity.inventorySide.ordinal()).getTranslationKey());
+        invDir.setText(Direction.getDirectionFor(getContainer().tileEntity.inventoryDirection).getTranslationKey());
+        invSide.setText(Direction.getDirectionFor(getContainer().tileEntity.inventorySide).getTranslationKey());
     }
 
     private void cleanLayout(){

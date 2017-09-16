@@ -1,38 +1,68 @@
 package net.shadowmage.ancientwarfare.structure.block;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
-import net.shadowmage.ancientwarfare.core.api.AWBlocks;
-import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockAdvancedSpawner;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockStructureBuilder;
-import net.shadowmage.ancientwarfare.structure.tile.*;
+import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
+import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
+import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
+import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
+import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 
+@Mod.EventBusSubscriber(modid = AncientWarfareNPC.modID)
 public class AWStructuresBlockLoader {
 
-    public static void load() {
-        AWBlocks.advancedSpawner = AWCoreBlockLoader.INSTANCE.register(new BlockAdvancedSpawner(), "advanced_spawner", ItemBlockAdvancedSpawner.class, TileAdvancedSpawner.class);
+    @SubscribeEvent
+    public static void registerItemBlocks(RegistryEvent.Register<Item> event) {
+        IForgeRegistry<Item> registry = event.getRegistry();
 
-        AWBlocks.gateProxy = AWCoreBlockLoader.INSTANCE.register(new BlockGateProxy(), "gate_proxy", ItemBlock.class, TEGateProxy.class);
+        registry.register(new ItemBlockAdvancedSpawner(AWStructuresBlocks.advancedSpawner));
+        registry.register(new ItemBlock(AWStructuresBlocks.gateProxy).setRegistryName(AWStructuresBlocks.gateProxy.getRegistryName()));
+        registry.register(new ItemBlock(AWStructuresBlocks.draftingStation).setRegistryName(AWStructuresBlocks.draftingStation.getRegistryName()));
+        registry.register(new ItemBlockStructureBuilder(AWStructuresBlocks.builderBlock));
+        registry.register(new ItemBlock(AWStructuresBlocks.soundBlock).setRegistryName(AWStructuresBlocks.soundBlock.getRegistryName()));
+    }
 
-        BlockDraftingStation draftingStation = new BlockDraftingStation();
-        AWBlocks.draftingStation = AWCoreBlockLoader.INSTANCE.register(draftingStation, "drafting_station", ItemBlock.class, TileDraftingStation.class);
-        draftingStation.setIcon(0, "ancientwarfare:structure/drafting_station_bottom");
-        draftingStation.setIcon(1, "ancientwarfare:structure/drafting_station_top");
-        draftingStation.setIcon(2, "ancientwarfare:structure/drafting_station_front");
-        draftingStation.setIcon(3, "ancientwarfare:structure/drafting_station_front");
-        draftingStation.setIcon(4, "ancientwarfare:structure/drafting_station_side");
-        draftingStation.setIcon(5, "ancientwarfare:structure/drafting_station_side");
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<Block> event) {
+        IForgeRegistry<Block> registry = event.getRegistry();
 
-        BlockStructureBuilder builder = new BlockStructureBuilder();
-        AWBlocks.builderBlock = AWCoreBlockLoader.INSTANCE.register(builder, "structure_builder_ticked", ItemBlockStructureBuilder.class, TileStructureBuilder.class);
-        builder.setIcon(0, "ancientwarfare:structure/builder_bottom");
-        builder.setIcon(1, "ancientwarfare:structure/builder_top");
-        builder.setIcon(2, "ancientwarfare:structure/builder_side");
-        builder.setIcon(3, "ancientwarfare:structure/builder_side");
-        builder.setIcon(4, "ancientwarfare:structure/builder_side");
-        builder.setIcon(5, "ancientwarfare:structure/builder_side");
+        registry.register(new BlockAdvancedSpawner());
+        GameRegistry.registerTileEntity(TileAdvancedSpawner.class, "advanced_spawner_tile");
 
-        AWBlocks.soundBlock = AWCoreBlockLoader.INSTANCE.register(new BlockSoundBlock(), "sound_block", ItemBlock.class, TileSoundBlock.class);
+        registry.register(new BlockGateProxy());
+        GameRegistry.registerTileEntity(TEGateProxy.class, "gate_proxy_tile");
+
+        registry.register(new BlockDraftingStation());
+        GameRegistry.registerTileEntity(TileDraftingStation.class, "drafting_station_tile");
+
+        registry.register(new BlockStructureBuilder());
+        GameRegistry.registerTileEntity(TileStructureBuilder.class, "structure_builder_ticked_tile");
+
+        registry.register(new BlockSoundBlock());
+        GameRegistry.registerTileEntity(TileSoundBlock.class, "sound_block_tile");
+
+        //        builder.setIcon(0, "ancientwarfare:structure/builder_bottom");
+        //        builder.setIcon(1, "ancientwarfare:structure/builder_top");
+        //        builder.setIcon(2, "ancientwarfare:structure/builder_side");
+        //        builder.setIcon(3, "ancientwarfare:structure/builder_side");
+        //        builder.setIcon(4, "ancientwarfare:structure/builder_side");
+        //        builder.setIcon(5, "ancientwarfare:structure/builder_side");
+        //        draftingStation.setIcon(0, "ancientwarfare:structure/drafting_station_bottom");
+        //        draftingStation.setIcon(1, "ancientwarfare:structure/drafting_station_top");
+        //        draftingStation.setIcon(2, "ancientwarfare:structure/drafting_station_front");
+        //        draftingStation.setIcon(3, "ancientwarfare:structure/drafting_station_front");
+        //        draftingStation.setIcon(4, "ancientwarfare:structure/drafting_station_side");
+        //        draftingStation.setIcon(5, "ancientwarfare:structure/drafting_station_side");
+
     }
 
 }

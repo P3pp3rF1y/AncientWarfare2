@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -33,9 +34,11 @@ public class ItemModelEditor extends Item {
         tooltip.add(I18n.format("guistrings.modeler.right_click_to_open"));
     }
 
-    public ItemModelEditor(String localizationKey) {
-        this.setUnlocalizedName(localizationKey);
-        this.setCreativeTab(editorTab);
+    public ItemModelEditor(String regName) {
+        setUnlocalizedName(regName);
+        setRegistryName(new ResourceLocation(AncientWarfareModeler.modID, regName));
+        setCreativeTab(editorTab);
+        //.setTextureName("ancientwarfare:modeler/editor_opener");
     }
 
     @Override

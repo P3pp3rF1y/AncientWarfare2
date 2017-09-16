@@ -35,7 +35,7 @@ public class ContainerRoutingOrder extends ContainerBase {
     @Override
     public void handlePacketData(NBTTagCompound tag) {
         if (tag.hasKey("routingOrder")) {
-            routingOrder.readFromNBT(tag.getCompoundTag("routingOrder"));
+            routingOrder.deserializeNBT(tag.getCompoundTag("routingOrder"));
             hasChanged = true;
         }
     }
@@ -50,7 +50,7 @@ public class ContainerRoutingOrder extends ContainerBase {
 
     public void onClose() {
         NBTTagCompound outer = new NBTTagCompound();
-        outer.setTag("routingOrder", routingOrder.writeToNBT(new NBTTagCompound()));
+        outer.setTag("routingOrder", routingOrder.serializeNBT());
         sendDataToServer(outer);
     }
 }

@@ -10,7 +10,7 @@ import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry;
 import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry.EntityDeclaration;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.entity.faction.*;
-import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
+import net.shadowmage.ancientwarfare.npc.item.AWNPCItems;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 
 import javax.annotation.Nonnull;
@@ -441,7 +441,7 @@ public class AWNPCEntityLoader {
         addNpcSubtypeEquipment("worker", "researcher", new ItemStack(AWItems.quillIron));
         addNpcSubtypeEquipment("worker", "craftsman", new ItemStack(AWItems.automationHammerIron));
 
-        addNpcSubtypeEquipment("combat", "commander", new ItemStack(AWNpcItemLoader.commandBatonIron));
+        addNpcSubtypeEquipment("combat", "commander", new ItemStack(AWNPCItems.commandBatonIron));
         addNpcSubtypeEquipment("combat", "soldier", new ItemStack(Items.IRON_SWORD));
         addNpcSubtypeEquipment("combat", "archer", new ItemStack(Items.BOW));
         addNpcSubtypeEquipment("combat", "engineer", new ItemStack(AWItems.automationHammerIron));
@@ -451,7 +451,7 @@ public class AWNPCEntityLoader {
     private static void addNpcRegistration(NpcDeclaration reg, String icon) {
         AWEntityRegistry.registerEntity(reg);
         if (reg.canSpawnBaseEntity) {
-            ((ItemNpcSpawner) AWItems.npcSpawner).addNpcType(reg.getType(), icon);
+            //((ItemNpcSpawner) AWItems.npcSpawner).addNpcType(reg.getType(), icon); TODO icons
         }
         npcMap.put(reg.getType(), reg);
     }
@@ -469,7 +469,7 @@ public class AWNPCEntityLoader {
             throw new IllegalArgumentException("npc type must first be mapped");
         }
         npcMap.get(npcType).addSubtype(npcSubtype, icon);
-        ((ItemNpcSpawner) AWItems.npcSpawner).addNpcType(npcType + "." + npcSubtype, icon);
+        //((ItemNpcSpawner) AWItems.npcSpawner).addNpcType(npcType + "." + npcSubtype, icon); TODO icons
     }
 
     private static void addNpcSubtypeEquipment(String npcType, String npcSubtype, ItemStack equipment) {

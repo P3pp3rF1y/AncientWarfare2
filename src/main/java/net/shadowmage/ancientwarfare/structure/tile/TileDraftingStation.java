@@ -7,9 +7,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
-import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 
@@ -95,7 +95,7 @@ public class TileDraftingStation extends TileEntity implements IInventoryChanged
 
     private boolean tryFinish() {
         if (outputSlot.getStackInSlot(0) == null) {
-            @Nonnull ItemStack item = new ItemStack(AWBlocks.builderBlock);
+            @Nonnull ItemStack item = new ItemStack(AWStructuresBlocks.builderBlock);
             item.setTagInfo("structureName", new NBTTagString(structureName));
             outputSlot.setInventorySlotContents(0, item);
             return true;

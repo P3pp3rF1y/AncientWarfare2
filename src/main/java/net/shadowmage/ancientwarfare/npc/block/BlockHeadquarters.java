@@ -11,10 +11,13 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 
 public class BlockHeadquarters extends BlockTownHall {
+
+    public BlockHeadquarters() {
+        super("headquarters");
+    }
 
 /*
     @Override
@@ -31,7 +34,7 @@ public class BlockHeadquarters extends BlockTownHall {
 
     @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
-        drops.add(new ItemStack(Item.getItemFromBlock(AWNPCBlockLoader.townHall)));
+        drops.add(new ItemStack(Item.getItemFromBlock(AWNPCBlocks.townHall)));
     }
     
     @Override
@@ -41,12 +44,13 @@ public class BlockHeadquarters extends BlockTownHall {
             String currentOwnerName = ((TileTownHall) te).getOwnerName();
             if (!player.getName().equals(currentOwnerName)) {
                 // different player to the owner has used the town hall
-                if (!ModAccessors.FTBU.areFriends(player.getName(), currentOwnerName)) {
-                    // new player is NOT a friend, change this HQ back to a town hall block
-                    world.setBlockState(pos, AWNPCBlockLoader.townHall.getDefaultState(), 3);
+                //TODO ftbutils integration
+//                if (!ModAccessors.FTBU.areFriends(player.getName(), currentOwnerName)) {
+//                    // new player is NOT a friend, change this HQ back to a town hall block
+                    world.setBlockState(pos, AWNPCBlocks.townHall.getDefaultState(), 3);
                     IBlockState newState = world.getBlockState(pos);
                     return newState.getBlock().onBlockActivated(world, pos, newState, player, hand, facing, hitX, hitY, hitZ);
-                }
+//                }
             }
         }
         return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ);

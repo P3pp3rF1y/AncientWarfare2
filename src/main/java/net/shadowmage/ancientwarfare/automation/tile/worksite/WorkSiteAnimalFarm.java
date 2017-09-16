@@ -2,7 +2,11 @@ package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.passive.*;
+import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntityPig;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -22,6 +26,7 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.ItemWrapper;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +77,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         this.inventory.setAccessibleSideDefault(RelativeSide.BOTTOM, RelativeSide.BOTTOM, bottomIndices);//buckets/shears
         ItemSlotFilter filter = new ItemSlotFilter() {
             @Override
-            public boolean apply(@Nullable ItemStack stack) {
+            public boolean test(@Nullable ItemStack stack) {
                 return stack.isEmpty() || isFood(stack.getItem());
             }
         };
@@ -80,7 +85,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 
         filter = new ItemSlotFilter() {
             @Override
-            public boolean apply(@Nullable ItemStack stack) {
+            public boolean test(@Nullable ItemStack stack) {
                 return stack.isEmpty() || isTool(stack.getItem());
             }
         };
@@ -257,15 +262,16 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         scanForAnimals(animals, cowsToBreed, maxCowCount);
         for (EntityAnimal animal : animals) {
             if (animal.getGrowingAge() >= 0) {
+                //TODO harder wild life integration
                 // try to get HarderWildlife extended entity properties
-                if (ModAccessors.HARDER_WILDLIFE.getMilkable(animal)) {
-                    ModAccessors.HARDER_WILDLIFE.doMilking(animal);
-                    cowsToMilk++;
-                    if (cowsToMilk > maxCowCount) {
-                        cowsToMilk = maxCowCount;
-                        break;
-                    }
-                }
+//                if (ModAccessors.HARDER_WILDLIFE.getMilkable(animal)) {
+//                    ModAccessors.HARDER_WILDLIFE.doMilking(animal);
+//                    cowsToMilk++;
+//                    if (cowsToMilk > maxCowCount) {
+//                        cowsToMilk = maxCowCount;
+//                        break;
+//                    }
+//                }
             }
         }
     }

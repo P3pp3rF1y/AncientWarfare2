@@ -10,16 +10,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.gamedata.HeadquartersTracker;
-import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
+import net.shadowmage.ancientwarfare.npc.item.AWNPCItemLoader;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 
 import java.util.ArrayList;
@@ -28,9 +29,15 @@ import java.util.List;
 public class BlockTownHall extends Block {
 
     public BlockTownHall() {
+        this("town_hall");
+    }
+
+    protected BlockTownHall(String regName) {
         super(Material.ROCK);
-        this.setCreativeTab(AWNpcItemLoader.npcTab);
+        this.setCreativeTab(AWNPCItemLoader.npcTab);
         setHardness(2.f);
+        this.setUnlocalizedName(regName);
+        this.setRegistryName(new ResourceLocation(AncientWarfareNPC.modID, regName));
     }
 
     @Override
@@ -107,7 +114,7 @@ public class BlockTownHall extends Block {
             //ModAccessors.FTBU.addClaim(world, placer, pos);
             if (placer instanceof EntityPlayer && ModAccessors.FTBU_LOADED) {
                 if (!HeadquartersTracker.get(world).validateCurrentHq(placer.getName(), world)) {
-                    world.setBlockState(pos, AWNPCBlockLoader.headquarters.getDefaultState(), 3);
+                    world.setBlockState(pos, AWNPCBlocks.headquarters.getDefaultState(), 3);
                     ((TileTownHall) world.getTileEntity(pos)).isHq = true;
                     HeadquartersTracker.get(world).setNewHq(placer.getName(), world, pos);
                     HeadquartersTracker.notifyHqNew(placer.getName(), pos);
@@ -149,7 +156,8 @@ public class BlockTownHall extends Block {
                 List<TextComponentTranslation> notificationTooltip = new ArrayList<>();
                 notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.chunk_name_and_position", ((TileTownHall) world.getTileEntity(pos)).name, thisChunk.getPos().x, thisChunk.getPos().z));
                 notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.click_to_remove"));
-                ModAccessors.FTBU.notifyPlayer(TextFormatting.RED, townHallOwner, notificationTitle, notificationMsg, notificationTooltip);
+                //TODO ftbutils integration
+                //ModAccessors.FTBU.notifyPlayer(TextFormatting.RED, townHallOwner, notificationTitle, notificationMsg, notificationTooltip);
                 ((TileTownHall) world.getTileEntity(pos)).unloadChunks();
             }
         }

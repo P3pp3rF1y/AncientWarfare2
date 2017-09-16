@@ -44,6 +44,7 @@ import net.minecraft.init.Blocks;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.api.StructureContentPlugin;
+import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockDoors;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockInventory;
@@ -123,12 +124,12 @@ public class StructurePluginVanillaHandler implements StructureContentPlugin {
         manager.registerBlockHandler("vanillaFlowerPot", Blocks.FLOWER_POT, TemplateRuleFlowerPot.class);
         manager.registerBlockHandler("vanillaSkull", Blocks.SKULL, TemplateRuleVanillaSkull.class);
 
-        manager.registerBlockHandler("awAdvancedSpawner", AWBlocks.advancedSpawner, TemplateRuleBlockLogic.class);
+        manager.registerBlockHandler("awAdvancedSpawner", AWStructuresBlocks.advancedSpawner, TemplateRuleBlockLogic.class);
         manager.registerBlockHandler("awCoreLogic", AWBlocks.engineeringStation, TemplateRuleBlockLogic.class);
         manager.registerBlockHandler("awCoreLogic", AWBlocks.researchStation, TemplateRuleBlockLogic.class);
-        manager.registerBlockHandler("awStructureLogic", AWBlocks.draftingStation, TemplateRuleBlockLogic.class);
-        manager.registerBlockHandler("awStructureLogic", AWBlocks.builderBlock, TemplateRuleBlockLogic.class);
-        manager.registerBlockHandler("awStructureLogic", AWBlocks.soundBlock, TemplateRuleBlockLogic.class);
+        manager.registerBlockHandler("awStructureLogic", AWStructuresBlocks.draftingStation, TemplateRuleBlockLogic.class);
+        manager.registerBlockHandler("awStructureLogic", AWStructuresBlocks.builderBlock, TemplateRuleBlockLogic.class);
+        manager.registerBlockHandler("awStructureLogic", AWStructuresBlocks.soundBlock, TemplateRuleBlockLogic.class);
     }
 
     @Override

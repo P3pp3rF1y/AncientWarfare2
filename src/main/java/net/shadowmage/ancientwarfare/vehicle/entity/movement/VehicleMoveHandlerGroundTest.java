@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.vehicle.entity.movement;
 
+import net.minecraft.entity.MoverType;
 import net.minecraft.util.math.Vec3d;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.input.VehicleInputKey;
@@ -32,7 +33,7 @@ public class VehicleMoveHandlerGroundTest extends VehicleInputHandler {
         Vec3d forwardAxis = vehicle.getLookVec();
         double mx = forwardAxis.x * forward;
         double mz = forwardAxis.z * forward;
-        vehicle.moveEntity(mx, -0.25d, mz);
+        vehicle.move(MoverType.SELF, mx, -0.25d, mz);
         /*
          * then rotate the vehicle towards its new orientation
          */

@@ -37,6 +37,7 @@ public class ItemBlockStructureBuilder extends ItemBlock implements IBoxRenderer
 
     public ItemBlockStructureBuilder(Block block) {
         super(block);
+        setRegistryName(block.getRegistryName());
     }
 
 

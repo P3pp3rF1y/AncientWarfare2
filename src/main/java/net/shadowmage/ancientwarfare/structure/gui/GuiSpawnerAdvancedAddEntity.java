@@ -4,7 +4,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
-import net.shadowmage.ancientwarfare.core.entity.WatchedData;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
@@ -34,7 +33,7 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
     private final HashMap<Button, Integer> buttonToLineMap = new HashMap<>();
     private final HashMap<Text, Integer> textToLineMap = new HashMap<>();
 
-    private WatchedData.Type[] dataType;
+    //private WatchedData.Type[] dataType;
     private int[] dataKey;
     private String[] dataValue;
 
@@ -54,7 +53,7 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
     private void loadData(){
         List<DataParameter> data = this.settings.getCustomData();
         int size = data.size();
-        dataType = new WatchedData.Type[size];
+        //dataType = new WatchedData.Type[size];
         dataKey = new int[size];
         dataValue = new String[size];
         int i = 0;
@@ -116,18 +115,18 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
     }
 
     private void saveData(){
-        List<WatchedData> dataList = new ArrayList<>();
-        for(int i = 0; i < dataType.length; i++){
-            try{
-                WatchedData data = new WatchedData(dataType[i], dataKey[i], dataValue[i]);
-                if(data.isValid() && !dataList.contains(data)){
-                    dataList.add(data);
-                }
-            }catch (Throwable ignored){
-
-            }
-        }
-// TODO Replace watchable data logic with DataParameters
+        // TODO Replace watchable data logic with DataParameters
+//        List<WatchedData> dataList = new ArrayList<>();
+//        for(int i = 0; i < dataType.length; i++){
+//            try{
+//                WatchedData data = new WatchedData(dataType[i], dataKey[i], dataValue[i]);
+//                if(data.isValid() && !dataList.contains(data)){
+//                    dataList.add(data);
+//                }
+//            }catch (Throwable ignored){
+//
+//            }
+//        }
 //        Collections.sort(dataList, WatchedData.IndexSorter.INSTANCE);
 //        settings.getCustomData().clear();
 //        for(WatchedData data: dataList){
@@ -295,73 +294,73 @@ public class GuiSpawnerAdvancedAddEntity extends GuiContainerBase {
         label = new Label(8, totalHeight, "guistrings.spawner.custom_data");
         area.addGuiElement(label);
         totalHeight += 12;
-        if(dataType.length<32) {
-            button = new Button(8, totalHeight, 120, 12, "guistrings.spawner.add_custom_data") {
-                @Override
-                protected void onPressed() {
-                    WatchedData.Type[] t = new WatchedData.Type[dataType.length+1];
-                    int[] k = new int[t.length];
-                    String[] v = new String[t.length];
-                    System.arraycopy(dataType, 0, t, 0, dataType.length);
-                    System.arraycopy(dataKey, 0, k, 0, dataType.length);
-                    System.arraycopy(dataValue, 0, v, 0, dataType.length);
-                    t[t.length-1] = WatchedData.Type.BYTE;
-                    k[k.length-1] = 19;
-                    v[v.length-1] = "0";
-                    dataType = t;
-                    dataKey = k;
-                    dataValue = v;
-                    refreshGui();
-                }
-            };
-            tip = new Tooltip(50, 20);
-            tip.addTooltipElement(new Label(0, 0, "guistrings.spawner.custom_data_tip0"));
-            button.setTooltip(tip);
-            area.addGuiElement(button);
-            totalHeight += 12;
-        }
-        for(int i = 0; i < dataType.length; i++) {
-            final int j = i;
-            text = new Text(8, totalHeight, 140, dataValue[j], this) {
-                @Override
-                public void onTextUpdated(String oldText, String newText) {
-                    dataValue[j] = newText;
-                }
-            };
-            tip = new Tooltip(50, 20);
-            tip.addTooltipElement(new Label(0, 0, "guistrings.spawner.custom_data_tip1"));
-            text.setTooltip(tip);
-            area.addGuiElement(text);
-
-            input = new NumberInput(150, totalHeight, 15, dataKey[j], this) {
-                @Override
-                public void onValueUpdated(float value) {
-                    if(value > 31){
-                        value = 31;
-                    }
-                    dataKey[j] = (int) value;
-                }
-            };
-            input.setIntegerValue();
-            tip = new Tooltip(50, 20);
-            tip.addTooltipElement(new Label(0, 0, "guistrings.spawner.custom_data_tip2"));
-            input.setTooltip(tip);
-            area.addGuiElement(input);
-
-            button = new Button(170, totalHeight, 50, 12, dataType[j].name()) {
-                @Override
-                protected void onPressed() {
-                    dataType[j] = dataType[j].next();
-                    setText(dataType[j].name());
-                }
-            };
-            tip = new Tooltip(50, 20);
-            tip.addTooltipElement(new Label(0, 0, "guistrings.spawner.custom_data_tip3"));
-            button.setTooltip(tip);
-            area.addGuiElement(button);
-
-            totalHeight += 12;
-        }
+//        if(dataType.length<32) {
+//            button = new Button(8, totalHeight, 120, 12, "guistrings.spawner.add_custom_data") {
+//                @Override
+//                protected void onPressed() {
+//                    WatchedData.Type[] t = new WatchedData.Type[dataType.length+1];
+//                    int[] k = new int[t.length];
+//                    String[] v = new String[t.length];
+//                    System.arraycopy(dataType, 0, t, 0, dataType.length);
+//                    System.arraycopy(dataKey, 0, k, 0, dataType.length);
+//                    System.arraycopy(dataValue, 0, v, 0, dataType.length);
+//                    t[t.length-1] = WatchedData.Type.BYTE;
+//                    k[k.length-1] = 19;
+//                    v[v.length-1] = "0";
+//                    dataType = t;
+//                    dataKey = k;
+//                    dataValue = v;
+//                    refreshGui();
+//                }
+//            };
+//            tip = new Tooltip(50, 20);
+//            tip.addTooltipElement(new Label(0, 0, "guistrings.spawner.custom_data_tip0"));
+//            button.setTooltip(tip);
+//            area.addGuiElement(button);
+//            totalHeight += 12;
+//        }
+//        for(int i = 0; i < dataType.length; i++) {
+//            final int j = i;
+//            text = new Text(8, totalHeight, 140, dataValue[j], this) {
+//                @Override
+//                public void onTextUpdated(String oldText, String newText) {
+//                    dataValue[j] = newText;
+//                }
+//            };
+//            tip = new Tooltip(50, 20);
+//            tip.addTooltipElement(new Label(0, 0, "guistrings.spawner.custom_data_tip1"));
+//            text.setTooltip(tip);
+//            area.addGuiElement(text);
+//
+//            input = new NumberInput(150, totalHeight, 15, dataKey[j], this) {
+//                @Override
+//                public void onValueUpdated(float value) {
+//                    if(value > 31){
+//                        value = 31;
+//                    }
+//                    dataKey[j] = (int) value;
+//                }
+//            };
+//            input.setIntegerValue();
+//            tip = new Tooltip(50, 20);
+//            tip.addTooltipElement(new Label(0, 0, "guistrings.spawner.custom_data_tip2"));
+//            input.setTooltip(tip);
+//            area.addGuiElement(input);
+//
+//            button = new Button(170, totalHeight, 50, 12, dataType[j].name()) {
+//                @Override
+//                protected void onPressed() {
+//                    dataType[j] = dataType[j].next();
+//                    setText(dataType[j].name());
+//                }
+//            };
+//            tip = new Tooltip(50, 20);
+//            tip.addTooltipElement(new Label(0, 0, "guistrings.spawner.custom_data_tip3"));
+//            button.setTooltip(tip);
+//            area.addGuiElement(button);
+//
+//            totalHeight += 12;
+//        }
         area.setAreaSize(totalHeight);
     }
 

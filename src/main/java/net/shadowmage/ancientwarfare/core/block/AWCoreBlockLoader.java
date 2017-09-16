@@ -1,19 +1,24 @@
 package net.shadowmage.ancientwarfare.core.block;
 
-import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockRotatableMetaTile;
 import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
 import net.shadowmage.ancientwarfare.core.tile.TileResearchStation;
 
+@Mod.EventBusSubscriber(modid = AncientWarfareCore.modID)
 public class AWCoreBlockLoader {
 
     public static final AWCoreBlockLoader INSTANCE = new AWCoreBlockLoader();
@@ -29,23 +34,21 @@ public class AWCoreBlockLoader {
         }
     };
 
-    public void load() {
-        AWBlocks.engineeringStation = register(new BlockEngineeringStation(), "engineering_station", ItemBlockRotatableMetaTile.class, TileEngineeringStation.class);
+    @SubscribeEvent
+    public static void registerItemBlocks(RegistryEvent.Register<Item> event) {
+        IForgeRegistry<Item> registry = event.getRegistry();
 
-        AWBlocks.researchStation = register(new BlockResearchStation(), "research_station", ItemBlockRotatableMetaTile.class, TileResearchStation.class);
+        registry.register(new ItemBlockRotatableMetaTile(AWBlocks.engineeringStation));
+        registry.register(new ItemBlockRotatableMetaTile(AWBlocks.researchStation));
     }
 
-    public Block register(Block block, String name) {
-        return GameRegistry.registerBlock(block, name);
-    }
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<Block> event) {
+        IForgeRegistry<Block> registry = event.getRegistry();
 
-    public Block register(Block block, String name, Class<? extends ItemBlock> clazz) {
-        return GameRegistry.registerBlock(block, clazz, name);
-    }
-
-    public Block register(Block block, String name, Class<? extends ItemBlock> blockItem, Class<? extends TileEntity> blockTile) {
-        block.setBlockName(name);
-        GameRegistry.registerTileEntity(blockTile, name + "_tile");
-        return GameRegistry.registerBlock(block, blockItem, name);
+        registry.register(new BlockEngineeringStation());
+        GameRegistry.registerTileEntity(TileEngineeringStation.class, "engineering_station_tile");
+        registry.register(new BlockResearchStation());
+        GameRegistry.registerTileEntity(TileResearchStation.class, "research_station_tile");
     }
 }

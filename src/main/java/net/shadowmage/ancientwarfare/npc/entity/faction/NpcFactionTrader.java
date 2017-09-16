@@ -83,12 +83,12 @@ public abstract class NpcFactionTrader extends NpcFaction {
     @Override
     public void readEntityFromNBT(NBTTagCompound tag) {
         super.readEntityFromNBT(tag);
-        tradeList.readFromNBT(tag.getCompoundTag("tradeList"));
+        tradeList.deserializeNBT(tag.getCompoundTag("tradeList"));
     }
 
     @Override
     public void writeEntityToNBT(NBTTagCompound tag) {
         super.writeEntityToNBT(tag);
-        tag.setTag("tradeList", tradeList.writeToNBT(new NBTTagCompound()));
+        tag.setTag("tradeList", tradeList.serializeNBT());
     }
 }

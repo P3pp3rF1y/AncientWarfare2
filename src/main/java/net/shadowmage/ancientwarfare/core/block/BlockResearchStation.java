@@ -8,11 +8,13 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
@@ -28,6 +30,9 @@ public class BlockResearchStation extends Block implements IRotatableBlock {
     public BlockResearchStation() {
         super(Material.ROCK);
         this.setCreativeTab(AWCoreBlockLoader.coreTab);
+        this.setUnlocalizedName("research_station");
+        this.setRegistryName(new ResourceLocation(AncientWarfareCore.modID, "research_station"));
+
 /*
         iconMap.setIconTexture(0, 0, "ancientwarfare:core/research_station_bottom");
         iconMap.setIconTexture(1, 0, "ancientwarfare:core/research_station_top");

@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.vehicle.entity.movement;
 
+import net.minecraft.entity.MoverType;
 import net.minecraft.util.math.Vec3d;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.Trig;
@@ -48,7 +49,7 @@ public class VehicleInputHandlerCatapult extends VehicleInputHandler {
         }
         double my = vehicle.motionY;
 
-        vehicle.moveEntity(mx, my, mz);
+        vehicle.move(MoverType.SELF, mx, my, mz);
         /*
          * then rotate the vehicle towards its new orientation
          */

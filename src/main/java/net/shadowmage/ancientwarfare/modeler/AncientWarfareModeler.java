@@ -1,13 +1,16 @@
 package net.shadowmage.ancientwarfare.modeler;
 
+import net.minecraft.item.Item;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.registries.IForgeRegistry;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
@@ -18,15 +21,17 @@ import net.shadowmage.ancientwarfare.modeler.proxy.CommonProxyModeler;
 @Mod
         (
                 name = "Ancient Warfare Model Editor",
-                modid = "AncientWarfareModeler",
+                modid = AncientWarfareModeler.modID,
                 version = "@VERSION@",
-                dependencies = "required-after:AncientWarfare"
+                dependencies = "required-after:ancientwarfare"
         )
-
+@Mod.EventBusSubscriber(modid = AncientWarfareModeler.modID)
 public class AncientWarfareModeler {
 
     @Instance(value = "AncientWarfareModeler")
     public static AncientWarfareModeler instance;
+
+    public static final String modID = "ancientwarfaremodeler";
 
     @SidedProxy
             (
@@ -39,8 +44,6 @@ public class AncientWarfareModeler {
 
     public static org.apache.logging.log4j.Logger log;
 
-    public static ItemModelEditor editorOpener;
-
     @EventHandler
     public void preInit(FMLPreInitializationEvent evt) {
         ModuleStatus.modelerLoaded = true;
@@ -50,11 +53,17 @@ public class AncientWarfareModeler {
         /*
          * internal registry
          */
-        editorOpener = (ItemModelEditor) new ItemModelEditor("editor_opener").setTextureName("ancientwarfare:modeler/editor_opener");
-        GameRegistry.registerItem(editorOpener, "editor_opener");
         if (config.hasChanged())
             config.save();
     }
+
+    @SubscribeEvent
+    public static void registerItems(RegistryEvent.Register<Item> event) {
+        IForgeRegistry<Item> registry = event.getRegistry();
+
+        registry.register(new ItemModelEditor("editor_opener"));
+    }
+
 
     @EventHandler
     public void postInit(FMLPostInitializationEvent evt) {

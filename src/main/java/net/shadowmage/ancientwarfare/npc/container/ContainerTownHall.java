@@ -11,6 +11,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.shadowmage.ancientwarfare.core.api.AWSounds;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.npc.gamedata.HeadquartersTracker;
@@ -53,10 +54,10 @@ public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
                         for (EntityPlayerMP entityPlayer : playerList) {
                             if (entityPlayer.getName().equals(playerName)) {
                                 final float randomPitch = (float) (Math.random() * (1.1f - 0.9f) + 0.9f);
-                                entityPlayer.world.playSound(null, entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, "ancientwarfare:teleport.out", SoundCategory.BLOCKS, 0.6F, randomPitch);
+                                entityPlayer.world.playSound(null, entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, AWSounds.TOWN_HALL_TELEPORT_OUT, SoundCategory.BLOCKS, 0.6F, randomPitch);
                                 ((TileTeleportHub) te).addArrival(playerName);
                                 EntityTools.teleportPlayerToBlock(entityPlayer, entityPlayer.world, tpHubPos, false);
-                                entityPlayer.world.playSound(null, entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, "ancientwarfare:teleport.in", SoundCategory.BLOCKS, 0.6F, randomPitch);
+                                entityPlayer.world.playSound(null, entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, AWSounds.TOWN_HALL_TELEPORT_IN, SoundCategory.BLOCKS, 0.6F, randomPitch);
                             }
                         }
                     }

@@ -8,6 +8,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
@@ -76,19 +77,17 @@ public class CommandStructure extends CommandBase {
             int x = CommandBase.parseInt(var2[2]);
             int y = CommandBase.parseInt(var2[3]);
             int z = CommandBase.parseInt(var2[4]);
-            int face = 0;
+            EnumFacing face = EnumFacing.SOUTH;
             if(var2.length>5) {
                 String dl = var2[5].toLowerCase(Locale.ENGLISH);
                 if (dl.equals("north")) {
-                    face = 2;
+                    face = EnumFacing.NORTH;
                 } else if (dl.equals("east")) {
-                    face = 3;
+                    face = EnumFacing.EAST;
                 } else if (dl.equals("south")) {
-                    face = 0;
+                    face = EnumFacing.SOUTH;
                 } else if (dl.equals("west")) {
-                    face = 1;
-                } else {
-                    face = CommandBase.parseInt(var2[5]);
+                    face = EnumFacing.WEST;
                 }
             }
             StructureTemplate template = StructureTemplateManager.INSTANCE.getTemplate(var2[1]);
@@ -96,7 +95,7 @@ public class CommandStructure extends CommandBase {
             if (template == null) {
                 txt = new TextComponentTranslation("command.aw.structure.not_found", var2[1]);
             } else {
-                StructureBuilder builder = new StructureBuilder(sender.getEntityWorld(), template, face, x, y, z);
+                StructureBuilder builder = new StructureBuilder(sender.getEntityWorld(), template, face, new BlockPos(x, y, z));
                 builder.instantConstruction();
                 txt = new TextComponentTranslation("command.aw.structure.built", var2[1], x, y, z);
             }
@@ -109,7 +108,7 @@ public class CommandStructure extends CommandBase {
                     if(settings.hasPos1() && settings.hasPos2() && settings.hasBuildKey() && (settings.hasName() || var2.length>1)){
                         String name = settings.hasName() ? settings.name() : var2[1];
                         NBTTagCompound tagCompound = new NBTTagCompound();
-                        if(ItemStructureScanner.scanStructure(sender.getEntityWorld(), settings.pos1(), settings.pos2(), settings.buildKey(), settings.face(), name, true, tagCompound)) {
+                        if(ItemStructureScanner.scanStructure(sender.getEntityWorld(), settings.pos1(), settings.pos2(), settings.buildKey(), settings.face().ordinal(), name, true, tagCompound)) {
                             sender.sendMessage(new TextComponentTranslation("command.aw.structure.exported", var2[1]));
                         }
                     }else{

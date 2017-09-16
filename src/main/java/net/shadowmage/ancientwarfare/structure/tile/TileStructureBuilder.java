@@ -14,7 +14,6 @@ import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
-import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
@@ -22,6 +21,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
+import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilderTicked;
 
@@ -205,7 +205,7 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
     public void onBlockBroken() {
         if (!world.isRemote && !isStarted && builder != null && builder.getTemplate() != null) {
             isStarted = true;//to prevent further drops
-            @Nonnull ItemStack item = new ItemStack(AWBlocks.builderBlock);
+            @Nonnull ItemStack item = new ItemStack(AWStructuresBlocks.builderBlock);
             item.setTagInfo("structureName", new NBTTagString(builder.getTemplate().name));
         }
     }

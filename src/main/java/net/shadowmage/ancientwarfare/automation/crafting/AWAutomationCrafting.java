@@ -4,10 +4,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
+import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlocks;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
+
+import javax.annotation.Nonnull;
 
 public class AWAutomationCrafting {
 
@@ -104,14 +106,14 @@ public class AWAutomationCrafting {
                 "ici",
                 " i ",
                 'i', "ingotIron",
-                'c', AWAutomationBlockLoader.chunkLoaderSimple);
+                'c', AWAutomationBlocks.chunkLoaderSimple);
 
         AWCraftingManager.INSTANCE.createRecipe(upgradeQuarryChunkloader, "machinery",
                 " i ",
                 "ici",
                 " i ",
                 'i', "ingotIron",
-                'c', AWAutomationBlockLoader.chunkLoaderDeluxe);
+                'c', AWAutomationBlocks.chunkLoaderDeluxe);
 
     }
 

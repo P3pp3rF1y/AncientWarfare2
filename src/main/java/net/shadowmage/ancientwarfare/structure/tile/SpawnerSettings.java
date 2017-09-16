@@ -13,9 +13,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
+import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 
 import java.util.ArrayList;
@@ -412,7 +412,7 @@ public class SpawnerSettings {
                 int b2 = settings.remainingSpawnCount;
                 int a = (a1 << 16) | (grpIndex & 0x0000ffff);
                 int b = (index << 16) | (b2 & 0x0000ffff);
-                world.addBlockEvent(spawnPos, AWBlocks.advancedSpawner, a, b);
+                world.addBlockEvent(spawnPos, AWStructuresBlocks.advancedSpawner, a, b);
                 index++;
             }
         }

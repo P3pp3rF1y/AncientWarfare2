@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.proxy;
 
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.config.DummyConfigElement.DummyCategoryElement;

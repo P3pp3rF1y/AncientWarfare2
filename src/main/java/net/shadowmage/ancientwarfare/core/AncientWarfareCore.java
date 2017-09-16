@@ -13,7 +13,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.command.CommandResearch;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.container.ContainerBackpack;
@@ -68,11 +67,6 @@ public class AncientWarfareCore {
         statics = new AWCoreStatics("AncientWarfare");
 
         /*
-         * register blocks, items, tile entities, and entities
-         */
-        AWCoreBlockLoader.INSTANCE.load();
-
-        /*
          * register server-side network handler and anything that needs loaded on the event busses
          */
         NetworkHandler.INSTANCE.registerNetwork();//register network handler, server side
@@ -119,12 +113,14 @@ public class AncientWarfareCore {
     @EventHandler
     public void serverStartingEvent(FMLServerStartingEvent evt) {
         evt.registerServerCommand(new CommandResearch());
-        ModAccessors.FTBU.startWorkerThread();
+        //TODO ftbutils integration
+        //ModAccessors.FTBU.startWorkerThread();
     }
     
     @EventHandler
     public void serverStoppingEvent(FMLServerStoppingEvent evt) {
-        ModAccessors.FTBU.stopWorkerThread();
+        //TODO ftbutils integration
+        //ModAccessors.FTBU.stopWorkerThread();
     }
 
     @SubscribeEvent

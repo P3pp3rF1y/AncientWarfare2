@@ -25,8 +25,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
-import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.entity.RotateBoundingBox;
 
@@ -93,7 +93,7 @@ public class GateRotatingBridge extends Gate {
                 for (int z = min.getZ(); z <= max.getZ(); z++) {
                     BlockPos posToCheck = new BlockPos(x, min.getY(), z);
                     id = gate.world.getBlockState(posToCheck).getBlock();
-                    if (!gate.world.isAirBlock(posToCheck) && id != AWBlocks.gateProxy) {
+                    if (!gate.world.isAirBlock(posToCheck) && id != AWStructuresBlocks.gateProxy) {
                         return false;
                     }
 
@@ -183,7 +183,7 @@ public class GateRotatingBridge extends Gate {
                         continue;
                     }
                     id = gate.world.getBlockState(new BlockPos(x, y, z)).getBlock();
-                    if (id == AWBlocks.gateProxy) {
+                    if (id == AWStructuresBlocks.gateProxy) {
                         gate.world.setBlockToAir(new BlockPos(x, y, z));
                     }
                 }

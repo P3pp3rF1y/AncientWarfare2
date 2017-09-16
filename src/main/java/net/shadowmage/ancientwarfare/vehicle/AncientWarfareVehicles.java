@@ -23,7 +23,7 @@ import net.shadowmage.ancientwarfare.vehicle.proxy.VehicleCommonProxy;
                 name = "Ancient Warfare Vehicles",
                 modid = AncientWarfareVehicles.modID,
                 version = "@VERSION@",
-                dependencies = "required-after:AncientWarfare"
+                dependencies = "required-after:ancientwarfare"
         )
 
 public class AncientWarfareVehicles {

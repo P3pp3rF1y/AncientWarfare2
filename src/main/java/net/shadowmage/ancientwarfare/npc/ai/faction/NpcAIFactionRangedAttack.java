@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.ai.faction;
 
 import net.minecraft.entity.IRangedAttackMob;
-import net.shadowmage.ancientwarfare.npc.ai.AIHelper;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttack;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -36,7 +35,7 @@ public class NpcAIFactionRangedAttack extends NpcAIAttack<NpcBase> {
             npc.getNavigator().clearPathEntity();
         }
         if (this.getAttackDelay() <= 0) {
-            int val = AIHelper.doQuiverBowThing(npc, getTarget());
+            int val = 0;//AIHelper.doQuiverBowThing(npc, getTarget()); TODO quiver bow alternative integration?
             if(val>0){
                 this.setAttackDelay(val);
                 return;

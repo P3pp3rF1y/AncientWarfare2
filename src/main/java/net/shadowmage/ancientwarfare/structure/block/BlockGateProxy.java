@@ -29,12 +29,14 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 
 import javax.annotation.Nullable;
@@ -45,9 +47,11 @@ public final class BlockGateProxy extends BlockContainer {
     public BlockGateProxy() {
         super(Material.ROCK);
         //this.setBlockTextureName("ancientwarfare:structure/gate_proxy");
-        this.setCreativeTab(null);
-        this.setResistance(2000.f);
-        this.setHardness(5.f);
+        setCreativeTab(null);
+        setUnlocalizedName("gate_proxy");
+        setRegistryName(new ResourceLocation(AncientWarfareStructures.modID, "gate_proxy"));
+        setResistance(2000.f);
+        setHardness(5.f);
     }
 
     @Override

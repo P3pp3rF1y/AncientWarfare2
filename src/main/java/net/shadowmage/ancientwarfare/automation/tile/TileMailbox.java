@@ -13,6 +13,7 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySi
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
+import net.shadowmage.ancientwarfare.core.render.BlockRenderProperties;
 import net.shadowmage.ancientwarfare.core.tile.TileOwned;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
@@ -49,7 +50,7 @@ public class TileMailbox extends TileOwned implements ISidedInventory, IRotatabl
             MailboxData data = AWGameData.INSTANCE.getData(world, MailboxData.class);
 
             List<DeliverableItem> items = new ArrayList<>();
-            data.getDeliverableItems(privateBox ? getOwnerName() : null, mailboxName, items, world, pos);
+            data.getDeliverableItems(privateBox ? getOwnerName() : null, mailboxName, items, world, pos.getX(), pos.getY(), pos.getZ());
             data.addMailboxReceiver(privateBox ? getOwnerName() : null, mailboxName, this);
 
             if (destinationName != null)//try to send mail
@@ -130,12 +131,12 @@ public class TileMailbox extends TileOwned implements ISidedInventory, IRotatabl
             mailboxName = tag.getString("mailboxName");
         }
         if (tag.hasKey("inventory")) {
-            inventory.readFromNBT(tag.getCompoundTag("inventory"));
+            inventory.deserializeNBT(tag.getCompoundTag("inventory"));
         }
     }
 
     @Override
-    public void writeToNBT(NBTTagCompound tag) {
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         if (destinationName != null) {
             tag.setString("targetName", destinationName);
@@ -143,27 +144,18 @@ public class TileMailbox extends TileOwned implements ISidedInventory, IRotatabl
         if (mailboxName != null) {
             tag.setString("mailboxName", mailboxName);
         }
-        tag.setTag("inventory", inventory.writeToNBT(new NBTTagCompound()));
-    }
-
-    @Override
-    public int[] getAccessibleSlotsFromSide(int p_94128_1_) {
-        return inventory.getAccessibleSlotsFromSide(p_94128_1_);
-    }
-
-    @Override
-    public boolean canInsertItem(int slot, ItemStack stack, int side) {
-        return inventory.canInsertItem(slot, stack, side);
-    }
-
-    @Override
-    public boolean canExtractItem(int slot, ItemStack stack, int side) {
-        return inventory.canExtractItem(slot, stack, side);
+        tag.setTag("inventory", inventory.serializeNBT());
+        return tag;
     }
 
     @Override
     public int getSizeInventory() {
         return inventory.getSizeInventory();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return false;
     }
 
     @Override
@@ -220,13 +212,47 @@ public class TileMailbox extends TileOwned implements ISidedInventory, IRotatabl
     }
 
     @Override
+    public int getField(int id) {
+        return inventory.getField(id);
+    }
+
+    @Override
+    public void setField(int id, int value) {
+        inventory.setField(id, value);
+    }
+
+    @Override
+    public int getFieldCount() {
+        return inventory.getFieldCount();
+    }
+
+    @Override
+    public void clear() {
+        inventory.clear();
+    }
+
+    @Override
     public EnumFacing getPrimaryFacing() {
         return EnumFacing.VALUES[getBlockMetadata()];
     }
 
     @Override
     public void setPrimaryFacing(EnumFacing face) {
-        world.setBlockMetadataWithNotify(pos, face.ordinal(), 0);
+        world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockRenderProperties.FACING, face), 0);
     }
 
+    @Override
+    public int[] getSlotsForFace(EnumFacing side) {
+        return inventory.getSlotsForFace(side);
+    }
+
+    @Override
+    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
+        return inventory.canInsertItem(index, itemStackIn, direction);
+    }
+
+    @Override
+    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
+        return inventory.canExtractItem(index, stack, direction);
+    }
 }

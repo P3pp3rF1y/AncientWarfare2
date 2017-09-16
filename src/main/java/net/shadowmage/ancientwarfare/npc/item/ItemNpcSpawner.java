@@ -29,7 +29,7 @@ import java.util.List;
 public class ItemNpcSpawner extends Item {
 
     public ItemNpcSpawner() {
-        this.setCreativeTab(AWNpcItemLoader.npcTab);
+        this.setCreativeTab(AWNPCItemLoader.npcTab);
         //this.setTextureName("ancientwarfare:npc/spawner_miner");
         this.setUnlocalizedName("npc_spawner");
         this.setRegistryName(new ResourceLocation(AncientWarfareCore.modID, "npc_spawner"));
@@ -115,7 +115,7 @@ public class ItemNpcSpawner extends Item {
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if (tab != AWNpcItemLoader.npcTab) {
+        if (tab != AWNPCItemLoader.npcTab) {
             return;
         }
         AWNPCEntityLoader.getSpawnerSubItems(items);

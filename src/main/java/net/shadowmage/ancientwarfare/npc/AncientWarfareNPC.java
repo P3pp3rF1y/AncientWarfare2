@@ -19,7 +19,6 @@ import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.gamedata.WorldData;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
-import net.shadowmage.ancientwarfare.npc.block.AWNPCBlockLoader;
 import net.shadowmage.ancientwarfare.npc.command.CommandDebugAI;
 import net.shadowmage.ancientwarfare.npc.command.CommandFaction;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
@@ -39,7 +38,7 @@ import net.shadowmage.ancientwarfare.npc.container.ContainerWorkOrder;
 import net.shadowmage.ancientwarfare.npc.crafting.AWNpcCrafting;
 import net.shadowmage.ancientwarfare.npc.entity.AWNPCEntityLoader;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
-import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
+import net.shadowmage.ancientwarfare.npc.item.AWNPCItemLoader;
 import net.shadowmage.ancientwarfare.npc.network.PacketFactionUpdate;
 import net.shadowmage.ancientwarfare.npc.network.PacketNpcCommand;
 import net.shadowmage.ancientwarfare.npc.proxy.NpcCommonProxy;
@@ -49,7 +48,7 @@ import net.shadowmage.ancientwarfare.npc.proxy.NpcCommonProxy;
                 name = "Ancient Warfare NPCs",
                 modid = AncientWarfareNPC.modID,
                 version = "@VERSION@",
-                dependencies = "required-after:AncientWarfare"
+                dependencies = "required-after:ancientwarfare"
         )
 
 public class AncientWarfareNPC {
@@ -83,7 +82,6 @@ public class AncientWarfareNPC {
         /*
          * load items, blocks, and entities
          */
-        AWNPCBlockLoader.load();
         AWNPCEntityLoader.load();
 
         /*
@@ -108,7 +106,7 @@ public class AncientWarfareNPC {
 
     @EventHandler
     public void init(FMLInitializationEvent evt) {
-        AWNpcItemLoader.load();
+        AWNPCItemLoader.load();
 
         /*
          * construct recipes, load plugins

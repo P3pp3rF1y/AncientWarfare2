@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.entity;
 
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 
 /*
@@ -9,7 +10,7 @@ public interface IKeepFood {
 
     int getUpkeepAmount();
 
-    int getUpkeepBlockSide();
+    EnumFacing getUpkeepBlockSide();
 
     int getUpkeepDimensionId();
 

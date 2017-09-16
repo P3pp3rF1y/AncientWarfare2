@@ -17,7 +17,7 @@ import java.util.List;
 public abstract class ItemOrders extends Item implements IItemKeyInterface {
 
     public ItemOrders() {
-        this.setCreativeTab(AWNpcItemLoader.npcTab);
+        this.setCreativeTab(AWNPCItemLoader.npcTab);
     }
 
     @Override

@@ -7,30 +7,33 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.shadowmage.ancientwarfare.core.block.BlockIconMap;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
 
 public class BlockDraftingStation extends Block {
 
-    private BlockIconMap iconMap = new BlockIconMap();
+    //private BlockIconMap iconMap = new BlockIconMap();
 
     public BlockDraftingStation() {
         super(Material.ROCK);
-        this.setCreativeTab(AWStructuresItemLoader.structureTab);
+        setCreativeTab(AWStructuresItemLoader.structureTab);
+        setUnlocalizedName("drafting_station");
+        setRegistryName(new ResourceLocation(AncientWarfareStructures.modID, "drafting_station"));
         setHardness(2.f);
     }
 
-    public BlockDraftingStation setIcon(int side, String texName) {
-        this.iconMap.setIconTexture(side, 0, texName);
-        return this;
-    }
+//    public BlockDraftingStation setIcon(int side, String texName) {
+//        this.iconMap.setIconTexture(side, 0, texName);
+//        return this;
+//    }
 
     @Override
     @SideOnly(Side.CLIENT)

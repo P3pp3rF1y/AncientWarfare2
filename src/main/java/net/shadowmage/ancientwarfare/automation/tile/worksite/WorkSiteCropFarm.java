@@ -29,7 +29,12 @@ import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-import java.util.*;
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
 
@@ -90,7 +95,7 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
 
         ItemSlotFilter filter = new ItemSlotFilter() {
             @Override
-            public boolean apply(ItemStack stack) {
+            public boolean test(ItemStack stack) {
                 return stack.isEmpty() || isPlantable(stack);
             }
         };
@@ -98,7 +103,7 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
 
         filter = new ItemSlotFilter() {
             @Override
-            public boolean apply(ItemStack stack) {
+            public boolean test(ItemStack stack) {
                 return stack.isEmpty() || isBonemeal(stack);
             }
         };

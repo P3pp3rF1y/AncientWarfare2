@@ -6,18 +6,22 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.gamedata.HeadquartersTracker;
-import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
+import net.shadowmage.ancientwarfare.npc.item.AWNPCItemLoader;
 import net.shadowmage.ancientwarfare.npc.tile.TileTeleportHub;
 
 public class BlockTeleportHub extends Block {
 
     public BlockTeleportHub() {
         super(Material.ROCK);
-        this.setCreativeTab(AWNpcItemLoader.npcTab);
+        setCreativeTab(AWNPCItemLoader.npcTab);
         setHardness(2.f);
+        setUnlocalizedName("teleport_hub");
+        setRegistryName(new ResourceLocation(AncientWarfareNPC.modID, "teleport_hub"));
     }
 
 /*

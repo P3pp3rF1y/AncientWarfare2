@@ -6,7 +6,12 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityCreature;
+import net.minecraft.entity.EntityFlying;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -19,12 +24,17 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.scoreboard.Team;
-import net.minecraft.util.*;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.ISpecialArmor;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
@@ -35,7 +45,6 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.gamedata.Timekeeper;
 import net.shadowmage.ancientwarfare.core.interfaces.IEntityPacketHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
-import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketEntity;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
@@ -150,7 +159,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
                 PacketEntity pkt = new PacketEntity(this);
                 if(customTexRef.startsWith("Player:")){
                     String name = customTexRef.split(":", 2)[1];
-                    NBTTagCompound tagCompound = AncientWarfareNPC.proxy.cacheProfile(world, name);
+                    NBTTagCompound tagCompound = AncientWarfareNPC.proxy.cacheProfile((WorldServer) world, name);
                     if(tagCompound != null)
                         pkt.packetData.setTag("profileTex", tagCompound);
                 }
@@ -891,8 +900,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             if (npcTeam.isSameTeam(world.getScoreboard().getPlayersTeam(playerName)))
                 return true;
         // check if friends in FTBUtils
-        if (ModAccessors.FTBU.areFriends(getOwnerName(), playerName))
-            return true;
+        //TODO ftbutils integration
+//        if (ModAccessors.FTBU.areFriends(getOwnerName(), playerName))
+//            return true;
         return false;
     }
     
@@ -915,24 +925,27 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     public abstract boolean canBeAttackedBy(Entity e);
     
     public boolean isEntitySameTeamOrFriends(Entity entityTarget) {
-        Team targetTeam;
-        String targetOwnerOrName;
-        if (entityTarget instanceof NpcPlayerOwned) {
-            targetTeam = entityTarget.getTeam();
-            targetOwnerOrName = ((NpcPlayerOwned) entityTarget).getOwnerName();
-        } else if (entityTarget instanceof EntityPlayer) {
-            targetTeam = entityTarget.getTeam();
-            targetOwnerOrName = entityTarget.getName();
-        } else
-            return false;
-        
-        if (targetTeam != null)
-            if (targetTeam.isSameTeam(getTeam()))
-                return true;
-        if (entityTarget.world.isRemote) {
-            return ModAccessors.FTBU.isFriendOfClient(entityTarget.getUniqueID());
-        }
-        return ModAccessors.FTBU.areFriends(targetOwnerOrName, getOwnerName());
+        return true;
+
+        //TODO ftbutils integration
+        //        Team targetTeam;
+//        String targetOwnerOrName;
+//        if (entityTarget instanceof NpcPlayerOwned) {
+//            targetTeam = entityTarget.getTeam();
+//            targetOwnerOrName = ((NpcPlayerOwned) entityTarget).getOwnerName();
+//        } else if (entityTarget instanceof EntityPlayer) {
+//            targetTeam = entityTarget.getTeam();
+//            targetOwnerOrName = entityTarget.getName();
+//        } else
+//            return false;
+//
+//        if (targetTeam != null)
+//            if (targetTeam.isSameTeam(getTeam()))
+//                return true;
+//        if (entityTarget.world.isRemote) {
+//            return ModAccessors.FTBU.isFriendOfClient(entityTarget.getUniqueID());
+//        }
+//        return ModAccessors.FTBU.areFriends(targetOwnerOrName, getOwnerName());
     }
 
     public final EntityLivingBase getFollowingEntity() {

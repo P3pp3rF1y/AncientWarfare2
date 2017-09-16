@@ -11,7 +11,6 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader;
 import net.shadowmage.ancientwarfare.automation.chunkloader.AWChunkLoader;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.container.ContainerChunkLoaderDeluxe;
@@ -49,7 +48,7 @@ import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
                 name = "Ancient Warfare Automation",
                 modid = AncientWarfareAutomation.modID,
                 version = "@VERSION@",
-                dependencies = "required-after:AncientWarfare;after:CoFHCore;after:BuildCraft|Core"
+                dependencies = "required-after:ancientwarfare;after:cofhcore;after:buildcraftcore"
         )
 public class AncientWarfareAutomation {
     public static final String modID = "ancientwarfareautomation";
@@ -69,11 +68,11 @@ public class AncientWarfareAutomation {
     @EventHandler
     public void preInit(FMLPreInitializationEvent evt) {
         ModuleStatus.automationLoaded = true;
-        if (Loader.isModLoaded("BuildCraft|Core")) {
+        if (Loader.isModLoaded("buildcraftcore")) {
             ModuleStatus.buildCraftLoaded = true;
-            AWLog.log("Detecting BuildCraft|Core is loaded, enabling BC Compatibility");
+            AWLog.log("Detecting BuildCraft Core is loaded, enabling BC Compatibility");
         }
-        if (Loader.isModLoaded("CoFHCore")) {
+        if (Loader.isModLoaded("cofhcore")) {
             ModuleStatus.redstoneFluxEnabled = true;
             AWLog.log("Detecting CoFHCore is loaded, enabling RF Compatibility");
         }
@@ -83,12 +82,6 @@ public class AncientWarfareAutomation {
          * setup module-owned config file and config-access class
          */
         statics = new AWAutomationStatics("AncientWarfareAutomation");
-
-        /*
-         * load items and blocks
-         */
-        AWAutomationBlockLoader.load();
-        AWAutomationItemLoader.load();
 
         /*
          * must be loaded after items/blocks, as it needs them registered
@@ -133,7 +126,7 @@ public class AncientWarfareAutomation {
         /*
          * construct recipes, load plugins
          */
-        AWAutomationItemLoader.load();
+        AWAutomationItemLoader.addComponentSubItems();
         AWAutomationCrafting.loadRecipes();
         statics.save();
     }

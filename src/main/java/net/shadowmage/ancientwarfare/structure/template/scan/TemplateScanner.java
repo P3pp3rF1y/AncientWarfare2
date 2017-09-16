@@ -100,7 +100,7 @@ public final class TemplateScanner {
                                 }
                             }
                             if (!found) {
-                                scannedBlockRule = StructurePluginManager.INSTANCE.getRuleForBlock(world, scannedBlock, turns, scanX, scanY, scanZ);
+                                scannedBlockRule = StructurePluginManager.INSTANCE.getRuleForBlock(world, scannedBlock, turns, scannedPos);
                                 if(scannedBlockRule!=null) {
                                     scannedBlockRule.ruleNumber = nextRuleID;
                                     nextRuleID++;

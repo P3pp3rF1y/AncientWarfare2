@@ -31,6 +31,7 @@ public class ItemBlockAdvancedSpawner extends ItemBlock implements IItemKeyInter
 
     public ItemBlockAdvancedSpawner(Block block) {
         super(block);
+        setRegistryName(block.getRegistryName());
     }
 
     @Override

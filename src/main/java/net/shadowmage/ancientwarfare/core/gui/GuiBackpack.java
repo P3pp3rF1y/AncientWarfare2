@@ -3,6 +3,8 @@ package net.shadowmage.ancientwarfare.core.gui;
 import net.shadowmage.ancientwarfare.core.container.ContainerBackpack;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 
+import java.io.IOException;
+
 public class GuiBackpack extends GuiContainerBase<ContainerBackpack> {
 
     public GuiBackpack(ContainerBase container) {
@@ -19,7 +21,7 @@ public class GuiBackpack extends GuiContainerBase<ContainerBackpack> {
     }
 
     @Override
-    public void handleKeyboardInput() {
+    public void handleKeyboardInput()  throws IOException {
         // TODO Auto-generated method stub
         super.handleKeyboardInput();
     }

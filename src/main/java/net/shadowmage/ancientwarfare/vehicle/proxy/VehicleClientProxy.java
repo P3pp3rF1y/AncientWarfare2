@@ -27,9 +27,9 @@ public class VehicleClientProxy extends VehicleCommonProxy {
 
     @Override
     public void registerClient() {
-        RenderingRegistry.registerEntityRenderingHandler(VehicleBase.class, new VehicleBBRender());
-        RenderingRegistry.registerEntityRenderingHandler(MissileBase.class, new RenderMissile());
-        RenderingRegistry.registerEntityRenderingHandler(VehicleCatapult.class, new RenderCatapult());
+        RenderingRegistry.registerEntityRenderingHandler(VehicleBase.class, VehicleBBRender::new);
+        RenderingRegistry.registerEntityRenderingHandler(MissileBase.class, RenderMissile::new);
+        RenderingRegistry.registerEntityRenderingHandler(VehicleCatapult.class, RenderCatapult::new);
         registerClientOptions();
     }
 

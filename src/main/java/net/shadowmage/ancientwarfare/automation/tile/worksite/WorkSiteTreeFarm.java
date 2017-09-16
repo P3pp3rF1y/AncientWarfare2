@@ -61,14 +61,14 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
         this.inventory.setAccessibleSideDefault(RelativeSide.BOTTOM, RelativeSide.BOTTOM, bottomIndices);//bonemeal and shears
         ItemSlotFilter filter = new ItemSlotFilter() {
             @Override
-            public boolean apply(@Nullable ItemStack stack) {
+            public boolean test(@Nullable ItemStack stack) {
                 return stack == null || isSapling(stack);
             }
         };
         this.inventory.setFilterForSlots(filter, frontIndices);
         filter = new ItemSlotFilter() {
             @Override
-            public boolean apply(@Nullable ItemStack stack) {
+            public boolean test(@Nullable ItemStack stack) {
                 return stack == null || isBonemeal(stack) || stack.getItem() instanceof ItemShears;
             }
         };

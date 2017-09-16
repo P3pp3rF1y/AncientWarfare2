@@ -15,14 +15,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.ForgeChunkManager.Type;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
-import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.tile.TileOwned;
@@ -124,7 +122,8 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
                             return;
                         }
                         // notify player of the neglect/abandonment
-                        ModAccessors.FTBU.notifyPlayer(TextFormatting.RED, getOwnerName(), notificationTitle, notificationMsg, notificationTooltip);
+                        //TODO ftbutils integration
+//                        ModAccessors.FTBU.notifyPlayer(TextFormatting.RED, getOwnerName(), notificationTitle, notificationMsg, notificationTooltip);
                     } else {
                         // neglected check has increased, but not advanced a stage yet...
                     }
@@ -171,7 +170,8 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
             List<TextComponentTranslation> notificationTooltip = new ArrayList<>();
             notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.chunk_name_and_position", name, pos.getX()>>4 , pos.getZ()>>4));
             notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.click_to_remove"));
-            ModAccessors.FTBU.notifyPlayer(TextFormatting.GREEN, getOwnerName(), notificationTitle, notificationMsg, notificationTooltip);
+            //TODO ftbutils integration
+//            ModAccessors.FTBU.notifyPlayer(TextFormatting.GREEN, getOwnerName(), notificationTitle, notificationMsg, notificationTooltip);
         } else {
             // new owner. Notify both players of the capture
             String notificationTitle = "ftbu_aw2.notification.townhall_captured";
@@ -179,11 +179,12 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
             List<TextComponentTranslation> notificationTooltip = new ArrayList<>();
             notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.chunk_name_and_position", name, pos.getX()>>4 , pos.getZ()>>4));
             notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.click_to_remove"));
-            
-            ModAccessors.FTBU.notifyPlayer(TextFormatting.RED, oldOwner, notificationTitle, notificationMsg, notificationTooltip);
+
+            //TODO ftbutils integration
+//            ModAccessors.FTBU.notifyPlayer(TextFormatting.RED, oldOwner, notificationTitle, notificationMsg, notificationTooltip);
             
             notificationMsg = new TextComponentTranslation("ftbu_aw2.notification.townhall_captured.msg.gained", oldOwner);
-            ModAccessors.FTBU.notifyPlayer(TextFormatting.GREEN, getOwnerName(), notificationTitle, notificationMsg, notificationTooltip);
+//            ModAccessors.FTBU.notifyPlayer(TextFormatting.GREEN, getOwnerName(), notificationTitle, notificationMsg, notificationTooltip);
             
 
             //TODO is this supposed to do anything??
@@ -294,12 +295,13 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
         for (EntityLivingBase nearbyEntity : nearbyEntities) {
             if (nearbyEntity instanceof EntityPlayer) {
                 if (keepOwner) {
-                    if (ModAccessors.FTBU.areFriends(((EntityPlayer)nearbyEntity).getName(), getOwnerName())) {
-                        if (Math.abs(pos.getY() - nearbyEntity.posY) < AWNPCStatics.townActiveNpcSearchHeight)
-                            return 2;
-                        else
-                            retVal = 1;
-                    }
+                    //TODO ftbutils integration
+//                    if (ModAccessors.FTBU.areFriends(((EntityPlayer)nearbyEntity).getName(), getOwnerName())) {
+//                        if (Math.abs(pos.getY() - nearbyEntity.posY) < AWNPCStatics.townActiveNpcSearchHeight)
+//                            return 2;
+//                        else
+//                            retVal = 1;
+//                    }
                 } else {
                     if (Math.abs(pos.getY() - nearbyEntity.posY) < AWNPCStatics.townActiveNpcSearchHeight)
                         ownerCounts.put(new OwnerInfo(((EntityPlayer)nearbyEntity).getName(), ((EntityPlayer)nearbyEntity).getUniqueID()), 1);
@@ -565,8 +567,9 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
         if (!player.world.isRemote) {
             if (!player.getName().equals(getOwnerName())) {
                 // different player to the owner has used the town hall
-                if (!ModAccessors.FTBU.areFriends(player.getName(), getOwnerName())) {
-                    // players are NOT friends
+                //TODO ftbutils integration
+//                if (!ModAccessors.FTBU.areFriends(player.getName(), getOwnerName())) {
+//                    // players are NOT friends
                     this.isHq = false;
                     if (this.isActive) {
                         // drop the town hall
@@ -578,7 +581,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
                         oldOwner = getOwnerName();
                         setOwner(player);
                     }
-                }
+//                }
             }
             
             forceUpdate();

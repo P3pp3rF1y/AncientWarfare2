@@ -14,16 +14,13 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueBase;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
-import net.shadowmage.ancientwarfare.core.block.IconRotationMap;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-import java.util.HashMap;
-
 public abstract class BlockTorqueBase extends Block implements IRotatableBlock {
 
-    HashMap<Integer, IconRotationMap> iconMaps = new HashMap<>();
+    //HashMap<Integer, IconRotationMap> iconMaps = new HashMap<>();
 
     protected BlockTorqueBase(Material material) {
         super(material);

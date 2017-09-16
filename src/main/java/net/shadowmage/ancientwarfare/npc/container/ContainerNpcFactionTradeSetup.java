@@ -21,18 +21,15 @@ public class ContainerNpcFactionTradeSetup extends ContainerNpcBase<NpcFactionTr
     @Override
     public void sendInitData() {
         tradeList.updateTradesForView();
-        NBTTagCompound tag = new NBTTagCompound();
-        tradeList.writeToNBT(tag);
-
         NBTTagCompound packetTag = new NBTTagCompound();
-        packetTag.setTag("tradeData", tag);
+        packetTag.setTag("tradeData", tradeList.serializeNBT());
         sendDataToClient(packetTag);
     }
 
     @Override
     public void handlePacketData(NBTTagCompound tag) {
         if (tag.hasKey("tradeData")) {
-            tradeList.readFromNBT(tag.getCompoundTag("tradeData"));
+            tradeList.deserializeNBT(tag.getCompoundTag("tradeData"));
         }
         refreshGui();
     }
@@ -46,10 +43,8 @@ public class ContainerNpcFactionTradeSetup extends ContainerNpcBase<NpcFactionTr
     public void onGuiClosed() {
         if (player.world.isRemote && tradesChanged) {
             tradeList.removeEmptyTrades();
-            NBTTagCompound tag = new NBTTagCompound();
-            tradeList.writeToNBT(tag);
             NBTTagCompound packetTag = new NBTTagCompound();
-            packetTag.setTag("tradeData", tag);
+            packetTag.setTag("tradeData", tradeList.serializeNBT());
             sendDataToServer(packetTag);
         }
     }

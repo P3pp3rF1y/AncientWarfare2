@@ -14,6 +14,7 @@ public class ItemBlockTeleportHub extends ItemBlock {
 
     public ItemBlockTeleportHub(Block block) {
         super(block);
+        setRegistryName(block.getRegistryName());
     }
 
     @Override

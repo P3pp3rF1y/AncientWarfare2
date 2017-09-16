@@ -63,11 +63,11 @@ public class NpcClientProxy extends NpcCommonProxy {
 
         //RenderShield shieldRender = new RenderShield();
 /*
-        MinecraftForgeClient.registerItemRenderer(AWNpcItemLoader.woodenShield, shieldRender);
-        MinecraftForgeClient.registerItemRenderer(AWNpcItemLoader.stoneShield, shieldRender);
-        MinecraftForgeClient.registerItemRenderer(AWNpcItemLoader.ironShield, shieldRender);
-        MinecraftForgeClient.registerItemRenderer(AWNpcItemLoader.goldShield, shieldRender);
-        MinecraftForgeClient.registerItemRenderer(AWNpcItemLoader.diamondShield, shieldRender);
+        MinecraftForgeClient.registerItemRenderer(AWNPCItemLoader.woodenShield, shieldRender);
+        MinecraftForgeClient.registerItemRenderer(AWNPCItemLoader.stoneShield, shieldRender);
+        MinecraftForgeClient.registerItemRenderer(AWNPCItemLoader.ironShield, shieldRender);
+        MinecraftForgeClient.registerItemRenderer(AWNPCItemLoader.goldShield, shieldRender);
+        MinecraftForgeClient.registerItemRenderer(AWNPCItemLoader.diamondShield, shieldRender);
 */
 
         registerClientOptions();

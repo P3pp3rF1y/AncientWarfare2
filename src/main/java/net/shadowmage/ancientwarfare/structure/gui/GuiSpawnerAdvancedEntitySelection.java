@@ -92,7 +92,7 @@ public class GuiSpawnerAdvancedEntitySelection extends GuiContainerBase {
             button = new Button(8, totalHeight, 256 - 8 - 16, 12, "entity." + name + ".name") {
                 @Override
                 protected void onPressed() {
-                    settings.setEntityToSpawn(name);
+                    settings.setEntityToSpawn(new ResourceLocation(name));
                     selectionLabel.setText(settings.getEntityName());
                     refreshGui();
                 }

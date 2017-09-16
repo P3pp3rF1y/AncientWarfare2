@@ -75,7 +75,7 @@ public class AWNpcCrafting {
 //                "gb",
 //                'f', "foodBundle",
 //                'g', "ingotGold",
-//                'b', new ItemStack(AWNpcItemLoader.bardInstrument, 1, 0));
+//                'b', new ItemStack(AWNPCItemLoader.bardInstrument, 1, 0));
     }
 
 

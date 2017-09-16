@@ -10,6 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -18,6 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 
@@ -29,7 +31,9 @@ public class BlockAdvancedSpawner extends Block {
 
     public BlockAdvancedSpawner() {
         super(Material.ROCK);
-        this.setCreativeTab(AWStructuresItemLoader.structureTab);
+        setCreativeTab(AWStructuresItemLoader.structureTab);
+        setUnlocalizedName("advanced_spawner");
+        setRegistryName(new ResourceLocation(AncientWarfareStructures.modID, "advanced_spawner"));
         //this.setBlockTextureName("ancientwarfare:structure/advanced_spawner");
         setHardness(2.f);
     }

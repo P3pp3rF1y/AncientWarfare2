@@ -7,7 +7,6 @@ import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
 import net.shadowmage.ancientwarfare.automation.item.ItemBlockTorqueTile;
@@ -53,114 +52,42 @@ import net.shadowmage.ancientwarfare.core.item.ItemBlockMeta;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockOwnedRotatable;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockRotatableMetaTile;
 
-@ObjectHolder(AncientWarfareAutomation.modID)
 @Mod.EventBusSubscriber(modid = AncientWarfareAutomation.modID)
 public class AWAutomationBlockLoader {
-
-    @ObjectHolder("civic_quarry")
-    public static BlockWorksiteBase worksiteQuarry;
-
-    @ObjectHolder("civic_forestry")
-    public static BlockWorksiteBase worksiteForestry;
-
-    @ObjectHolder("civic_crop_farm")
-    public static BlockWorksiteBase worksiteCropFarm;
-
-    @ObjectHolder("civic_mushroom_farm")
-    public static BlockWorksiteBase worksiteMushroomFarm;
-
-    @ObjectHolder("civic_animal_farm")
-    public static BlockWorksiteBase worksiteAnimalFarm;
-
-    @ObjectHolder("civic_fish_farm")
-    public static BlockWorksiteBase worksiteFishFarm;
-
-    @ObjectHolder("civic_reed_farm")
-    public static BlockWorksiteBase worksiteReedFarm;
-
-    @ObjectHolder("civic_auto_crafting")
-    public static BlockAutoCrafting worksiteAutoCrafting;
-
-    @ObjectHolder("civic_warehouse")
-    public static BlockWorksiteBase worksiteWarehouse;
-
-    @ObjectHolder("warehouse_storage")
-    public static BlockWarehouseStorage warehouseStorageBlock;
-
-    @ObjectHolder("warehouse_interface")
-    public static BlockWarehouseInterface warehouseInterface;
-
-    @ObjectHolder("warehouse_crafting_station")
-    public static BlockWarehouseCraftingStation warehouseCrafting;
-
-    @ObjectHolder("warehouse_stock_viewer")
-    public static BlockWarehouseStockViewer warehouseStockViewer;
-
-    @ObjectHolder("mailbox")
-    public static BlockMailbox mailbox;
-
-    /*
-     * POWER NETWORK BLOCKS
-     */
-    @ObjectHolder("flywheel_controller")
-    public static BlockFlywheel flywheel;
-    @ObjectHolder("flywheel_storage")
-    public static BlockFlywheelStorage flywheelStorage;
-    @ObjectHolder("torque_conduit")
-    public static BlockTorqueTransportConduit torqueConduit;
-    @ObjectHolder("torque_shaft")
-    public static BlockTorqueTransportShaft torqueShaft;
-    @ObjectHolder("torque_distributor")
-    public static BlockTorqueDistributor torqueDistributor;
-    @ObjectHolder("hand_cranked_engine")
-    public static BlockHandCrankedEngine handCrankedEngine;
-    @ObjectHolder("torque_generator_sterling")
-    public static BlockTorqueGenerator torqueGeneratorSterling;
-    @ObjectHolder("torque_generator_waterwheel")
-    public static BlockTorqueGenerator torqueGeneratorWaterwheel;
-    @ObjectHolder("windmill_blade")
-    public static BlockWindmillBlade windmillBlade;
-    @ObjectHolder("windmill_control")
-    public static BlockWindmillControll windmillControl;
-
-    @ObjectHolder("chunk_loader_simple")
-    public static BlockChunkLoaderSimple chunkLoaderSimple;
-    @ObjectHolder("chunk_loader_deluxe")
-    public static BlockChunkLoaderDeluxe chunkLoaderDeluxe;
 
     @SuppressWarnings("ConstantConditions")
     @SubscribeEvent
     public static void registerItemBlocks(RegistryEvent.Register<Item> event) {
         IForgeRegistry<Item> registry = event.getRegistry();
 
-        registry.register(new ItemBlockWorksiteStatic(worksiteQuarry));
-        registry.register(new ItemBlockWorksiteStatic(worksiteForestry));
-        registry.register(new ItemBlockWorksiteStatic(worksiteCropFarm));
-        registry.register(new ItemBlockWorksiteStatic(worksiteMushroomFarm));
-        registry.register(new ItemBlockWorksiteStatic(worksiteAnimalFarm));
-        registry.register(new ItemBlockWorksiteStatic(worksiteFishFarm));
-        registry.register(new ItemBlockWorksiteStatic(worksiteReedFarm));
-        registry.register(new ItemBlockWorksiteStatic(worksiteWarehouse));
-        registry.register(new ItemBlockWarehouseStorage(warehouseStorageBlock));
-        registry.register(new ItemBlock(warehouseInterface).setRegistryName(warehouseInterface.getRegistryName()));
-        registry.register(new ItemBlock(warehouseCrafting).setRegistryName(warehouseCrafting.getRegistryName()));
-        registry.register(new ItemBlockOwnedRotatable(warehouseStockViewer));
-        registry.register(new ItemBlockRotatableMetaTile(worksiteAutoCrafting));
-        registry.register(new ItemBlockOwnedRotatable(mailbox));
+        registry.register(new ItemBlockWorksiteStatic(AWAutomationBlocks.worksiteQuarry));
+        registry.register(new ItemBlockWorksiteStatic(AWAutomationBlocks.worksiteForestry));
+        registry.register(new ItemBlockWorksiteStatic(AWAutomationBlocks.worksiteCropFarm));
+        registry.register(new ItemBlockWorksiteStatic(AWAutomationBlocks.worksiteMushroomFarm));
+        registry.register(new ItemBlockWorksiteStatic(AWAutomationBlocks.worksiteAnimalFarm));
+        registry.register(new ItemBlockWorksiteStatic(AWAutomationBlocks.worksiteFishFarm));
+        registry.register(new ItemBlockWorksiteStatic(AWAutomationBlocks.worksiteReedFarm));
+        registry.register(new ItemBlockWorksiteStatic(AWAutomationBlocks.worksiteWarehouse));
+        registry.register(new ItemBlockWarehouseStorage(AWAutomationBlocks.warehouseStorageBlock));
+        registry.register(new ItemBlock(AWAutomationBlocks.warehouseInterface).setRegistryName(AWAutomationBlocks.warehouseInterface.getRegistryName()));
+        registry.register(new ItemBlock(AWAutomationBlocks.warehouseCrafting).setRegistryName(AWAutomationBlocks.warehouseCrafting.getRegistryName()));
+        registry.register(new ItemBlockOwnedRotatable(AWAutomationBlocks.warehouseStockViewer));
+        registry.register(new ItemBlockRotatableMetaTile(AWAutomationBlocks.worksiteAutoCrafting));
+        registry.register(new ItemBlockOwnedRotatable(AWAutomationBlocks.mailbox));
 
-        registry.register(new ItemBlockTorqueTile(flywheel));
-        registry.register(new ItemBlockMeta(flywheelStorage));
-        registry.register(new ItemBlockTorqueTile(torqueConduit));
-        registry.register(new ItemBlockTorqueTile(torqueShaft));
-        registry.register(new ItemBlockTorqueTile(torqueDistributor));
-        registry.register(new ItemBlockTorqueTile(torqueGeneratorSterling));
-        registry.register(new ItemBlockTorqueTile(torqueGeneratorWaterwheel));
-        registry.register(new ItemBlockTorqueTile(handCrankedEngine));
-        registry.register(new ItemBlock(windmillBlade).setRegistryName(windmillBlade.getRegistryName()));
-        registry.register(new ItemBlockTorqueTile(windmillControl));
+        registry.register(new ItemBlockTorqueTile(AWAutomationBlocks.flywheel));
+        registry.register(new ItemBlockMeta(AWAutomationBlocks.flywheelStorage));
+        registry.register(new ItemBlockTorqueTile(AWAutomationBlocks.torqueConduit));
+        registry.register(new ItemBlockTorqueTile(AWAutomationBlocks.torqueShaft));
+        registry.register(new ItemBlockTorqueTile(AWAutomationBlocks.torqueDistributor));
+        registry.register(new ItemBlockTorqueTile(AWAutomationBlocks.torqueGeneratorSterling));
+        registry.register(new ItemBlockTorqueTile(AWAutomationBlocks.torqueGeneratorWaterwheel));
+        registry.register(new ItemBlockTorqueTile(AWAutomationBlocks.handCrankedEngine));
+        registry.register(new ItemBlock(AWAutomationBlocks.windmillBlade).setRegistryName(AWAutomationBlocks.windmillBlade.getRegistryName()));
+        registry.register(new ItemBlockTorqueTile(AWAutomationBlocks.windmillControl));
 
-        registry.register(new ItemBlock(chunkLoaderSimple).setRegistryName(chunkLoaderSimple.getRegistryName()));
-        registry.register(new ItemBlock(chunkLoaderDeluxe).setRegistryName(chunkLoaderDeluxe.getRegistryName()));
+        registry.register(new ItemBlock(AWAutomationBlocks.chunkLoaderSimple).setRegistryName(AWAutomationBlocks.chunkLoaderSimple.getRegistryName()));
+        registry.register(new ItemBlock(AWAutomationBlocks.chunkLoaderDeluxe).setRegistryName(AWAutomationBlocks.chunkLoaderDeluxe.getRegistryName()));
     }
 
     @SubscribeEvent

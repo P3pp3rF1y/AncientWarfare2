@@ -13,6 +13,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
+import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlocks;
 import net.shadowmage.ancientwarfare.automation.block.BlockAutoCrafting;
 import net.shadowmage.ancientwarfare.automation.block.BlockChunkLoaderSimple;
 import net.shadowmage.ancientwarfare.automation.block.BlockFlywheel;
@@ -27,8 +28,6 @@ import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 
 import java.util.Collections;
 import java.util.Comparator;
-
-import static net.shadowmage.ancientwarfare.automation.block.AWAutomationBlockLoader.*;
 
 @Mod.EventBusSubscriber(modid = AncientWarfareAutomation.modID)
 public class AWAutomationItemLoader {
@@ -67,7 +66,7 @@ public class AWAutomationItemLoader {
         registry.register(AWItems.worksiteUpgrade);
     }
 
-    public static void load() {
+    public static void addComponentSubItems() {
         AWItems.componentItem.addSubItem(ItemComponent.WOODEN_GEAR_SET, "ancientwarfare:automation/wooden_gear", "gearWood");
         AWItems.componentItem.addSubItem(ItemComponent.IRON_GEAR_SET, "ancientwarfare:automation/iron_gear", "gearIron");
         AWItems.componentItem.addSubItem(ItemComponent.STEEL_GEAR_SET, "ancientwarfare:automation/steel_gear", "gearSteel");
@@ -105,9 +104,9 @@ public class AWAutomationItemLoader {
                     return 7;
                 } else if (block instanceof BlockMailbox) {
                     return 6;
-                } else if (block == warehouseInterface || block == warehouseCrafting) {
+                } else if (block == AWAutomationBlocks.warehouseInterface || block == AWAutomationBlocks.warehouseCrafting) {
                     return 5;
-                } else if (block == worksiteWarehouse) {
+                } else if (block == AWAutomationBlocks.worksiteWarehouse) {
                     return 4;
                 } else if (block instanceof BlockAutoCrafting) {
                     return 3;

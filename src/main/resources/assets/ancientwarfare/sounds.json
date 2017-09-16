@@ -6,14 +6,14 @@
     "bard.tune5": {"category": "neutral", "sounds": [{"name": "npc/bard/teller-130-1", "stream": false}]},
     "bard.tune6": {"category": "neutral", "sounds": [{"name": "npc/bard/teller-130-2", "stream": false}]},
 
-    "teleport.in": {
+    "teleport_in": {
         "category": "neutral",
         "sounds": [{
             "name": "events/teleport_in",
             "stream": false
         }]
     },
-    "teleport.out": {
+    "teleport_out": {
         "category": "neutral",
         "sounds": [{
             "name": "events/teleport_out",

@@ -24,7 +24,7 @@ public class ItemBlockTorqueTile extends ItemBlock {
         }
         rotatable = (IRotatableBlock) block;
         this.setHasSubtypes(true);
-        this.setRegistryName(block.getRegistryName())
+        this.setRegistryName(block.getRegistryName());
     }
 
     @Override

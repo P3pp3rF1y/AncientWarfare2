@@ -13,6 +13,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -108,7 +109,7 @@ public class MailboxData extends WorldSavedData {
         return names;
     }
 
-    public List<DeliverableItem> getDeliverableItems(String owner, String name, List<DeliverableItem> items, World world, int x, int y, int z) {
+    public List<DeliverableItem> getDeliverableItems(@Nullable String owner, String name, List<DeliverableItem> items, World world, int x, int y, int z) {
         MailboxSet set = owner == null ? publicMailboxes : getOrCreatePrivateMailbox(owner);
         return set.getDeliverableItems(name, items, world, x, y, z);
     }

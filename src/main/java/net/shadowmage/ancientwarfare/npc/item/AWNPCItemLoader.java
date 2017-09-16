@@ -8,7 +8,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
@@ -19,8 +18,7 @@ import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import java.util.Comparator;
 
 @Mod.EventBusSubscriber(modid = AncientWarfareNPC.modID)
-@ObjectHolder(AncientWarfareNPC.modID)
-public class AWNpcItemLoader {
+public class AWNPCItemLoader {
 
     public static final CreativeTabs npcTab = new CreativeTabs("tabs.npc") {
         @Override
@@ -36,20 +34,6 @@ public class AWNpcItemLoader {
         }
     };
     private static final String PREFIX = "ancientwarfare:npc/";
-    @ObjectHolder("iron_command_baton")
-    public static ItemCommandBaton commandBatonIron;
-    @ObjectHolder("bard_instrument")
-    public static ItemBardInstrument bardInstrument;
-    @ObjectHolder("wooden_shield")
-    public static ItemShield woodenShield;
-    @ObjectHolder("stone_shield")
-    public static ItemShield stoneShield;
-    @ObjectHolder("iron_shield")
-    public static ItemShield ironShield;
-    @ObjectHolder("gold_shield")
-    public static ItemShield goldShield;
-    @ObjectHolder("diamond_shield")
-    public static ItemShield diamondShield;
 
     public static void load() {
         AWItems.componentItem.addSubItem(ItemComponent.NPC_FOOD_BUNDLE, PREFIX + "food_bundle", "foodBundle");
@@ -115,7 +99,7 @@ public class AWNpcItemLoader {
         private int getItemPriority(Item item) {
             if (item instanceof ItemNpcSpawner) {
                 return 4;
-            } else if (item == bardInstrument) {
+            } else if (item == AWNPCItems.bardInstrument) {
                 return 3;
             } else if (item instanceof ItemCommandBaton) {
                 return 2;

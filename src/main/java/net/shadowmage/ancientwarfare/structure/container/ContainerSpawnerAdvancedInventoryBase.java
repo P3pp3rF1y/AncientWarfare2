@@ -5,13 +5,13 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.inventory.SlotFiltered;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketGui;
+import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 
 import javax.annotation.Nonnull;
@@ -35,7 +35,7 @@ public class ContainerSpawnerAdvancedInventoryBase extends ContainerBase {
             public boolean test(ItemStack stack) {
                 if (!stack.isEmpty() && stack.getItem() instanceof ItemBlock) {
                     ItemBlock block = (ItemBlock) stack.getItem();
-                    if (block.getBlock() == AWBlocks.advancedSpawner) {
+                    if (block.getBlock() == AWStructuresBlocks.advancedSpawner) {
                         return false;
                     }
                 }

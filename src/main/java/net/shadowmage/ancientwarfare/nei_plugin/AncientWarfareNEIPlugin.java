@@ -12,7 +12,7 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
                 name = "Ancient Warfare NEI Plugin",
                 modid = "AncientWarfareNEIPlugin",
                 version = "@VERSION@",
-                dependencies = "required-after:AncientWarfare;after:NotEnoughItems"
+                dependencies = "required-after:ancientwarfare;after:notenoughitems"
         )
 public class AncientWarfareNEIPlugin {
 

@@ -6,6 +6,7 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.shadowmage.ancientwarfare.core.api.AWSounds;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.npc.gamedata.HeadquartersTracker;
 
@@ -24,7 +25,7 @@ public class TileTeleportHub extends TileEntity implements ITickable {
         COUNTER++;
         if (COUNTER == 10) {
             COUNTER = 0;
-            AxisAlignedBB blockSpaceAbove = new AxisAlignedBB(this.x, this.y + 1, this.z, this.x + 1, this.y + 2, this.z + 1);
+            AxisAlignedBB blockSpaceAbove = new AxisAlignedBB(this.pos.up(), this.pos.add(1, 2, 1));
             List entitiesAbove = this.world.getEntitiesWithinAABB(EntityPlayer.class, blockSpaceAbove);
             for (Object obj : entitiesAbove) {
                 EntityPlayer entityPlayer = (EntityPlayer)obj;
@@ -33,9 +34,9 @@ public class TileTeleportHub extends TileEntity implements ITickable {
                 BlockPos hqPos = HeadquartersTracker.get(entityPlayer.world).getHqPos(entityPlayer.getName(), entityPlayer.world);
                 if (hqPos != null) {
                     final float randomPitch = (float) (Math.random() * (1.1f - 0.9f) + 0.9f);
-                    this.world.playSound(null, entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, "ancientwarfare:teleport.out", SoundCategory.BLOCKS, 0.6F, randomPitch);
+                    this.world.playSound(null, entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, AWSounds.TOWN_HALL_TELEPORT_OUT, SoundCategory.BLOCKS, 0.6F, randomPitch);
                     EntityTools.teleportPlayerToBlock(entityPlayer, entityPlayer.world, hqPos, false);
-                    entityPlayer.world.playSound(null, entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, "ancientwarfare:teleport.in", SoundCategory.BLOCKS, 0.6F, randomPitch);
+                    entityPlayer.world.playSound(null, entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, AWSounds.TOWN_HALL_TELEPORT_IN, SoundCategory.BLOCKS, 0.6F, randomPitch);
                 }
             }
             

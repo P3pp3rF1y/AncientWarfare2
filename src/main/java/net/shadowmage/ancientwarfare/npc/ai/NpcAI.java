@@ -145,11 +145,11 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
         if(path!=null){
             int index = path.getCurrentPathIndex();
             PathPoint pathpoint = path.getPathPointFromIndex(index);
-            if(npc.getBlockPathWeight(pathpoint.x, pathpoint.y, pathpoint.z) >= 0) {
+            if(npc.getBlockPathWeight(new BlockPos(pathpoint.x, pathpoint.y, pathpoint.z)) >= 0) {
 
                 for (int i = index + 1; i < path.getCurrentPathLength() ; i++){
                     pathpoint = path.getPathPointFromIndex(i);
-                    if (npc.getBlockPathWeight(pathpoint.x, pathpoint.y, pathpoint.z)<0){
+                    if (npc.getBlockPathWeight(new BlockPos(pathpoint.x, pathpoint.y, pathpoint.z))<0){
                         path.setCurrentPathLength(i - 1);
                         break;
                     }

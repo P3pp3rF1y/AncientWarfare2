@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -61,7 +62,7 @@ public class WorldTownGenerator implements IWorldGenerator {
         StructureMap map = AWGameData.INSTANCE.getData(world, StructureMap.class);
         StructureBB bb = new StructureBB(new BlockPos(area.getBlockMinX(), area.getMinY(), area.getBlockMinZ()), new BlockPos(area.getBlockMaxX(), area.getMaxY(), area.getBlockMaxZ()));
         StructureEntry entry = new StructureEntry(bb, template.getTownTypeName(), template.getClusterValue());
-        map.setGeneratedAt(world, area.getCenterX(), area.getSurfaceY(), area.getCenterZ(), 0, entry, false);
+        map.setGeneratedAt(world, area.getCenterX(), area.getSurfaceY(), area.getCenterZ(), EnumFacing.DOWN, entry, false);
 
         /*
          * add the town to generated town map, to eliminate towns generating too close to eachother

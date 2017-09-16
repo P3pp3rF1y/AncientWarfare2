@@ -50,7 +50,7 @@ public class ItemCommandBaton extends Item implements IItemKeyInterface {
     public ItemCommandBaton(String name, ToolMaterial material) {
         this.setUnlocalizedName(name);
         this.setRegistryName(new ResourceLocation(AncientWarfareNPC.modID, name));
-        this.setCreativeTab(AWNpcItemLoader.npcTab);
+        this.setCreativeTab(AWNPCItemLoader.npcTab);
         //this.setTextureName("ancientwarfare:npc/" + name);
         this.attackDamage = 4 + material.getDamageVsEntity();
         this.material = material;

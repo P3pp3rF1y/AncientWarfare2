@@ -5,11 +5,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants.NBT;
-import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.npc.block.BlockHeadquarters;
 import net.shadowmage.ancientwarfare.npc.block.BlockTeleportHub;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
@@ -97,7 +95,8 @@ public class HeadquartersTracker extends WorldSavedData {
         notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.townhall_newhq.tooltip.2"));
         notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.townhall_newhq.tooltip.3"));
         notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.click_to_remove"));
-        ModAccessors.FTBU.notifyPlayer(TextFormatting.BLUE, ownerName, notificationTitle, notificationMsg, notificationTooltip);
+        //TODO ftbutils integration
+        //ModAccessors.FTBU.notifyPlayer(TextFormatting.BLUE, ownerName, notificationTitle, notificationMsg, notificationTooltip);
     }
     
     public static void notifyHqMissing(String ownerName) {
@@ -107,7 +106,8 @@ public class HeadquartersTracker extends WorldSavedData {
         notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.townhall_hqmissing.tooltip.1"));
         notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.townhall_hqmissing.tooltip.2"));
         notificationTooltip.add(new TextComponentTranslation("ftbu_aw2.notification.townhall_hqmissing.tooltip.3"));
-        ModAccessors.FTBU.notifyPlayer(TextFormatting.GOLD, ownerName, notificationTitle, notificationMsg, notificationTooltip);
+        //TODO ftbutils integration
+        //ModAccessors.FTBU.notifyPlayer(TextFormatting.GOLD, ownerName, notificationTitle, notificationMsg, notificationTooltip);
     }
     
     public BlockPos getTeleportHubPosition(World world) {

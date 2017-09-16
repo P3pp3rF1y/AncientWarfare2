@@ -7,6 +7,8 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 
 import java.util.UUID;
 
@@ -16,7 +18,8 @@ public class ItemShield extends Item {
 
     public ItemShield(String name, ToolMaterial material) {
         setUnlocalizedName(name);
-        setCreativeTab(AWNpcItemLoader.npcTab);
+        setRegistryName(new ResourceLocation(AncientWarfareNPC.modID, name));
+        setCreativeTab(AWNPCItemLoader.npcTab);
         this.setFull3D();
         //this.setTextureName("ancientwarfare:npc/" + name);
         this.armorValue = material.getHarvestLevel() * 2 + 1;

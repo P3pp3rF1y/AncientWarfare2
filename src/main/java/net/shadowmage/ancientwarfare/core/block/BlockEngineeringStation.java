@@ -6,11 +6,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
@@ -20,6 +22,8 @@ public class BlockEngineeringStation extends BlockRotatableTile {
     protected BlockEngineeringStation() {
         super(Material.ROCK);
         this.setCreativeTab(AWCoreBlockLoader.coreTab);
+        this.setUnlocalizedName("engineering_station");
+        this.setRegistryName(new ResourceLocation(AncientWarfareCore.modID, "engineering_station"));
 /*
         setIcon(RelativeSide.ANY_SIDE, "ancientwarfare:core/engineering_station_bottom");
         setIcon(RelativeSide.BOTTOM, "ancientwarfare:core/engineering_station_bottom");
