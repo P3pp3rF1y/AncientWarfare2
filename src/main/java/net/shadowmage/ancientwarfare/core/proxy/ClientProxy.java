@@ -14,14 +14,11 @@ import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.ConfigManager;
 import net.shadowmage.ancientwarfare.core.gui.GuiBackpack;
 import net.shadowmage.ancientwarfare.core.gui.GuiResearchBook;
-import net.shadowmage.ancientwarfare.core.gui.crafting.GuiEngineeringStation;
 import net.shadowmage.ancientwarfare.core.gui.research.GuiResearchStation;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
-import net.shadowmage.ancientwarfare.core.model.crafting_table.ModelEngineeringStation;
 import net.shadowmage.ancientwarfare.core.model.crafting_table.ModelResearchStation;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.render.TileCraftingTableRender;
-import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
 import net.shadowmage.ancientwarfare.core.tile.TileResearchStation;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
@@ -41,16 +38,12 @@ public class ClientProxy extends ClientProxyBase {
     @Override
     public void registerClient() {
         MinecraftForge.EVENT_BUS.register(InputHandler.instance);
-        NetworkHandler.registerGui(NetworkHandler.GUI_CRAFTING, GuiEngineeringStation.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_RESEARCH_STATION, GuiResearchStation.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_BACKPACK, GuiBackpack.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_RESEARCH_BOOK, GuiResearchBook.class);
         InputHandler.instance.loadConfig();
 
-        TileCraftingTableRender render = new TileCraftingTableRender(new ModelEngineeringStation(), "textures/model/core/tile_engineering_station.png");
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEngineeringStation.class, render);
-
-        render = new TileCraftingTableRender(new ModelResearchStation(), "textures/model/core/tile_research_station.png");
+        TileCraftingTableRender render = new TileCraftingTableRender(new ModelResearchStation(), "textures/model/core/tile_research_station.png");
         ClientRegistry.bindTileEntitySpecialRenderer(TileResearchStation.class, render);
 
         ConfigManager.registerConfigCategory(new DummyCategoryElement("awconfig.core_keybinds", "awconfig.core_keybinds", KeybindCategoryEntry.class));

@@ -42,6 +42,8 @@ public class ClientProxyAutomation extends ClientProxyBase {
 
     @Override
     public void registerClient() {
+        super.registerClient();
+
         registerClientOptions();
         MinecraftForge.EVENT_BUS.register(new KeyHandler(Minecraft.getMinecraft()));
 

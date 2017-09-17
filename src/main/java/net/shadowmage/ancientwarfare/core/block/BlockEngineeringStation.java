@@ -10,14 +10,19 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
+import net.shadowmage.ancientwarfare.core.gui.crafting.GuiEngineeringStation;
+import net.shadowmage.ancientwarfare.core.model.crafting_table.ModelEngineeringStation;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
+import net.shadowmage.ancientwarfare.core.render.TileCraftingTableRender;
 import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
 
-public class BlockEngineeringStation extends BlockRotatableTile {
+public class BlockEngineeringStation extends BlockRotatableTile implements IClientRegistrar {
 
     protected BlockEngineeringStation() {
         super(Material.ROCK);
@@ -89,4 +94,11 @@ public class BlockEngineeringStation extends BlockRotatableTile {
         return false;
     }
 
+    @Override
+    public void registerClient() {
+        NetworkHandler.registerGui(NetworkHandler.GUI_CRAFTING, GuiEngineeringStation.class);
+
+        TileCraftingTableRender render = new TileCraftingTableRender(new ModelEngineeringStation(), "textures/model/core/tile_engineering_station.png");
+        ClientRegistry.bindTileEntitySpecialRenderer(TileEngineeringStation.class, render);
+    }
 }

@@ -26,6 +26,8 @@ public class ClientProxyStructures extends ClientProxyBase {
 
     @Override
     public void registerClient() {
+        super.registerClient();
+
         NetworkHandler.registerGui(NetworkHandler.GUI_SCANNER, GuiStructureScanner.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_BUILDER, GuiStructureSelection.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_SPAWNER, GuiSpawnerPlacer.class);
