@@ -3,18 +3,17 @@ package net.shadowmage.ancientwarfare.npc.item;
 import net.minecraft.block.Block;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.item.ItemBlockAWBase;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemBlockTeleportHub extends ItemBlock {
+public class ItemBlockTeleportHub extends ItemBlockAWBase {
 
     public ItemBlockTeleportHub(Block block) {
         super(block);
-        setRegistryName(block.getRegistryName());
     }
 
     @Override

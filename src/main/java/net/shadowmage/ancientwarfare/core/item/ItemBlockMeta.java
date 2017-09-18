@@ -1,15 +1,13 @@
 package net.shadowmage.ancientwarfare.core.item;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class ItemBlockMeta extends ItemBlock {
+public class ItemBlockMeta extends ItemBlockAWBase {
 
     public ItemBlockMeta(Block block) {
         super(block);
         this.setHasSubtypes(true);
-        this.setRegistryName(block.getRegistryName());
     }
 
     @Override

@@ -11,14 +11,12 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
@@ -26,8 +24,6 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
-import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
@@ -35,22 +31,20 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemHammer extends Item implements IItemKeyInterface {
+public class ItemHammer extends ItemAWCoreBase implements IItemKeyInterface {
 
     double attackDamage = 5.d;
 
     private ToolMaterial material;
 
     public ItemHammer(String regName, ToolMaterial material) {
-        this.setUnlocalizedName(regName);
-        this.setRegistryName(new ResourceLocation(AncientWarfareCore.modID, regName));
-        this.setCreativeTab(AWCoreBlockLoader.coreTab);
+        super(regName);
         //this.setTextureName("ancientwarfare:core/" + regName);
-        this.attackDamage = 4.f + material.getDamageVsEntity();
-        this.material = material;
-        this.maxStackSize = 1;
-        this.setMaxDamage(material.getMaxUses());
-        this.setHarvestLevel("hammer", material.getHarvestLevel());
+        attackDamage = 4.f + material.getDamageVsEntity();
+        material = material;
+        maxStackSize = 1;
+        setMaxDamage(material.getMaxUses());
+        setHarvestLevel("hammer", material.getHarvestLevel());
     }
 
     public ToolMaterial getMaterial() {

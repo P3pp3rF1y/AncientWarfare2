@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.npc.item;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -14,10 +13,10 @@ import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public abstract class ItemOrders extends Item implements IItemKeyInterface {
+public abstract class ItemOrders extends ItemAWNPCBase implements IItemKeyInterface {
 
-    public ItemOrders() {
-        this.setCreativeTab(AWNPCItemLoader.npcTab);
+    public ItemOrders(String regName) {
+        super(regName);
     }
 
     @Override

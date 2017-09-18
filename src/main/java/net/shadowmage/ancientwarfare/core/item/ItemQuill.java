@@ -9,38 +9,32 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
-import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemQuill extends Item {
+public class ItemQuill extends ItemAWCoreBase {
 
     double attackDamage = 5.d;
     ToolMaterial material;
 
     public ItemQuill(String regName, ToolMaterial material) {
+        super(regName);
         this.material = material;
-        this.setUnlocalizedName(regName);
-        this.setRegistryName(new ResourceLocation(AncientWarfareCore.modID, regName));
         //this.setTextureName("ancientwarfare:core/" + regName);
-        this.attackDamage = 1.f + material.getDamageVsEntity();
-        this.maxStackSize = 1;
-        this.setMaxDamage(material.getMaxUses());
-        this.setCreativeTab(AWCoreBlockLoader.coreTab);
-        this.setHarvestLevel("quill", material.getHarvestLevel());
+        attackDamage = 1.f + material.getDamageVsEntity();
+        maxStackSize = 1;
+        setMaxDamage(material.getMaxUses());
+        setHarvestLevel("quill", material.getHarvestLevel());
     }
 
     @Override

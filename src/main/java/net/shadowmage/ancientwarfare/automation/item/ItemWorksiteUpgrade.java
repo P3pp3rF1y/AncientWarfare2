@@ -6,13 +6,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
-import net.shadowmage.ancientwarfare.core.item.ItemBase;
+import net.shadowmage.ancientwarfare.core.item.ItemMulti;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
@@ -20,11 +19,10 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import javax.annotation.Nonnull;
 import java.util.HashSet;
 
-public class ItemWorksiteUpgrade extends ItemBase {
+public class ItemWorksiteUpgrade extends ItemMulti {
 
     public ItemWorksiteUpgrade() {
-        this.setUnlocalizedName("worksite_upgrade");
-        this.setRegistryName(new ResourceLocation(AncientWarfareAutomation.modID, "worksite_upgrade"));
+        super(AncientWarfareAutomation.modID, "worksite_upgrade");
         this.setCreativeTab(AWAutomationItemLoader.automationTab);
     }
 

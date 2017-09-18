@@ -4,16 +4,13 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBackpack;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -22,14 +19,12 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemBackpack extends Item {
+public class ItemBackpack extends ItemAWCoreBase {
 
     public ItemBackpack() {
-        this.setCreativeTab(AWCoreBlockLoader.coreTab);
-        this.setMaxStackSize(1);
-        this.setHasSubtypes(true);
-        this.setUnlocalizedName("backpack");
-        this.setRegistryName(new ResourceLocation(AncientWarfareCore.modID, "backpack"));
+        super("backpack");
+        setMaxStackSize(1);
+        setHasSubtypes(true);
     }
 
     @Override

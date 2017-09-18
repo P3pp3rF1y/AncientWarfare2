@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.automation.item;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -14,13 +13,13 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableB
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
+import net.shadowmage.ancientwarfare.core.item.ItemBlockAWBase;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
-public class ItemBlockWorksiteStatic extends ItemBlock {
+public class ItemBlockWorksiteStatic extends ItemBlockAWBase {
 
     public ItemBlockWorksiteStatic(Block block) {
         super(block);
-        setRegistryName(block.getRegistryName());
     }
 
     @Override
@@ -49,10 +48,4 @@ public class ItemBlockWorksiteStatic extends ItemBlock {
         }
         return val;
     }
-
-    @Override
-    public int getDamage(ItemStack stack) {
-        return 3;
-    }
-
 }

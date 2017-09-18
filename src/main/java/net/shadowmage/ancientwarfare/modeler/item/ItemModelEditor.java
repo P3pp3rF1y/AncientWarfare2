@@ -5,21 +5,20 @@ import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.shadowmage.ancientwarfare.core.item.ItemAWBase;
 import net.shadowmage.ancientwarfare.modeler.AncientWarfareModeler;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemModelEditor extends Item {
+public class ItemModelEditor extends ItemAWBase {
 
     public static final CreativeTabs editorTab = new CreativeTabs("tabs.editor") {
         @Override
@@ -35,8 +34,7 @@ public class ItemModelEditor extends Item {
     }
 
     public ItemModelEditor(String regName) {
-        setUnlocalizedName(regName);
-        setRegistryName(new ResourceLocation(AncientWarfareModeler.modID, regName));
+        super(AncientWarfareModeler.modID, regName);
         setCreativeTab(editorTab);
         //.setTextureName("ancientwarfare:modeler/editor_opener");
     }

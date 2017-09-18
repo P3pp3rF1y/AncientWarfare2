@@ -5,21 +5,16 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
-import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 
 import java.util.UUID;
 
-public class ItemShield extends Item {
+public class ItemShield extends ItemAWNPCBase {
     public static final UUID shieldID = UUID.fromString("CB3F55D3-564C-4F38-A497-9C13A33DB5CF");
     private final int armorValue;
 
     public ItemShield(String name, ToolMaterial material) {
-        setUnlocalizedName(name);
-        setRegistryName(new ResourceLocation(AncientWarfareNPC.modID, name));
-        setCreativeTab(AWNPCItemLoader.npcTab);
+        super(name);
         this.setFull3D();
         //this.setTextureName("ancientwarfare:npc/" + name);
         this.armorValue = material.getHarvestLevel() * 2 + 1;

@@ -5,10 +5,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.npc.orders.WorkOrder;
@@ -18,8 +16,7 @@ import java.util.List;
 
 public class ItemWorkOrder extends ItemOrders {
     public ItemWorkOrder() {
-        this.setUnlocalizedName("work_order");
-        this.setRegistryName(new ResourceLocation(AncientWarfareCore.modID, "work_order"));
+        super("work_order");
     }
     @Override
     public List<BlockPos> getPositionsForRender(ItemStack stack) {

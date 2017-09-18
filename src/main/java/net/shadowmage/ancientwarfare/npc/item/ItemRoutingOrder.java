@@ -5,11 +5,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.RayTraceUtils;
 import net.shadowmage.ancientwarfare.npc.orders.RoutingOrder;
@@ -20,8 +18,7 @@ import java.util.List;
 public class ItemRoutingOrder extends ItemOrders {
 
     public ItemRoutingOrder() {
-        this.setUnlocalizedName("routing_order");
-        this.setRegistryName(new ResourceLocation(AncientWarfareCore.modID, "routing_order"));
+        super("routing_order");
     }
 
     @Override

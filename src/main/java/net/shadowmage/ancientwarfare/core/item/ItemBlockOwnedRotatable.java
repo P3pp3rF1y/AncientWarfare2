@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.core.item;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -11,22 +10,17 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 
 import static net.shadowmage.ancientwarfare.core.render.BlockRenderProperties.FACING;
 
-public class ItemBlockOwnedRotatable extends ItemBlock {
+public class ItemBlockOwnedRotatable extends ItemBlockAWBase {
 
     IRotatableBlock rotatable;
 
-    public ItemBlockOwnedRotatable(Block block) {
+    public <T extends Block & IRotatableBlock> ItemBlockOwnedRotatable(T block) {
         super(block);
-        if (!(block instanceof IRotatableBlock)) {
-            throw new IllegalArgumentException("Must be a rotatable block!!");
-        }
-        rotatable = (IRotatableBlock) block;
-        setRegistryName(block.getRegistryName());
+        rotatable = block;
     }
 
     @Override
@@ -42,14 +36,4 @@ public class ItemBlockOwnedRotatable extends ItemBlock {
         }
         return val;
     }
-
-    @Override
-    public int getDamage(ItemStack stack) {
-        RotationType t = rotatable.getRotationType();
-        if (t == RotationType.SIX_WAY) {
-            return 0;
-        }
-        return 3;
-    }
-
 }

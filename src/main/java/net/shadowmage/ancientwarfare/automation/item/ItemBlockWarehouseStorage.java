@@ -1,15 +1,14 @@
 package net.shadowmage.ancientwarfare.automation.item;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.shadowmage.ancientwarfare.core.item.ItemBlockAWBase;
 
-public class ItemBlockWarehouseStorage extends ItemBlock {
+public class ItemBlockWarehouseStorage extends ItemBlockAWBase {
 
     public ItemBlockWarehouseStorage(Block block) {
         super(block);
         this.setHasSubtypes(true);
-        this.setRegistryName(block.getRegistryName());
     }
 
     @Override

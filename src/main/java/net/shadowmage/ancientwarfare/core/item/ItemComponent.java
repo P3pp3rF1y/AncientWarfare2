@@ -1,10 +1,9 @@
 package net.shadowmage.ancientwarfare.core.item;
 
-import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 
-public class ItemComponent extends ItemBase {
+public class ItemComponent extends ItemMulti {
 
     /*
      * automation module
@@ -20,8 +19,7 @@ public class ItemComponent extends ItemBase {
     public static int NPC_FOOD_BUNDLE = 100;
 
     public ItemComponent() {
+        super(AncientWarfareCore.modID, "component");
         this.setCreativeTab(AWCoreBlockLoader.coreTab);
-        this.setUnlocalizedName("component");
-        this.setRegistryName(new ResourceLocation(AncientWarfareCore.modID, "component"));
     }
 }

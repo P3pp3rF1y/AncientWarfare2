@@ -3,7 +3,7 @@ package net.shadowmage.ancientwarfare.core.api;
 import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
-import net.shadowmage.ancientwarfare.core.item.ItemBase;
+import net.shadowmage.ancientwarfare.core.item.ItemMulti;
 import net.shadowmage.ancientwarfare.structure.item.ItemGateSpawner;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureScanner;
 
@@ -40,7 +40,7 @@ public class AWItems {
     @ObjectHolder("diamond_quill")
     public static Item quillDiamond;
     @ObjectHolder("component")
-    public static ItemBase componentItem;
+    public static ItemMulti componentItem;
     @ObjectHolder("steel_ingot")
     public static Item steel_ingot;
 
@@ -63,7 +63,7 @@ public class AWItems {
     /*
      * AUTOMATION module
      */
-    public static ItemBase worksiteUpgrade;
+    public static ItemMulti worksiteUpgrade;
 
     /*
      * STRUCTURE module

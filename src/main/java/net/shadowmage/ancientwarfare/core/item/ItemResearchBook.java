@@ -3,30 +3,24 @@ package net.shadowmage.ancientwarfare.core.item;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
-import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemResearchBook extends Item {
+public class ItemResearchBook extends ItemAWCoreBase {
 
     public ItemResearchBook() {
-        this.setCreativeTab(AWCoreBlockLoader.coreTab);
+        super("research_book");
         this.setMaxStackSize(1);
-        this.setUnlocalizedName("research_book");
-        this.setRegistryName(new ResourceLocation(AncientWarfareCore.modID, "research_book"));
     }
 
     @Override

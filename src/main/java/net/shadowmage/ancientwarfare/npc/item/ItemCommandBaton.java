@@ -11,14 +11,12 @@ import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
@@ -28,7 +26,6 @@ import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.util.RayTraceUtils;
-import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.CommandType;
@@ -41,16 +38,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-public class ItemCommandBaton extends Item implements IItemKeyInterface {
+public class ItemCommandBaton extends ItemAWNPCBase implements IItemKeyInterface {
 
     private final double attackDamage;
     int range = 120;//TODO set range from config;
     private final ToolMaterial material;
 
     public ItemCommandBaton(String name, ToolMaterial material) {
-        this.setUnlocalizedName(name);
-        this.setRegistryName(new ResourceLocation(AncientWarfareNPC.modID, name));
-        this.setCreativeTab(AWNPCItemLoader.npcTab);
+        super(name);
         //this.setTextureName("ancientwarfare:npc/" + name);
         this.attackDamage = 4 + material.getDamageVsEntity();
         this.material = material;
