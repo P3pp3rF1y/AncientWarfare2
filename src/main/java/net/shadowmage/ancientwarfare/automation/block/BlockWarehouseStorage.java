@@ -19,7 +19,7 @@ import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseSto
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorageMedium;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 
-public class BlockWarehouseStorage extends BlockAWAutomationBase {
+public class BlockWarehouseStorage extends BlockBaseAutomation {
     static final PropertyEnum<Size> SIZE = PropertyEnum.create("size", Size.class);
 
 /*

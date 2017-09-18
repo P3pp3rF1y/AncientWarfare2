@@ -20,7 +20,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.lang.reflect.Constructor;
 
-public class BlockWorksiteBase extends BlockAWAutomationBase implements IRotatableBlock {
+public class BlockWorksiteBase extends BlockBaseAutomation implements IRotatableBlock {
 
     //IconRotationMap iconMap = new IconRotationMap();
     public int maxWorkSize = 16;

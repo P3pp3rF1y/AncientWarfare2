@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemResearchNotes extends ItemAWCoreBase {
+public class ItemResearchNotes extends ItemBaseCore {
 
     private List<ItemStack> displayCache = null;
 

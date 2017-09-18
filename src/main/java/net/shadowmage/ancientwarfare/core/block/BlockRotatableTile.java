@@ -3,7 +3,7 @@ package net.shadowmage.ancientwarfare.core.block;
 import net.minecraft.block.material.Material;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 
-public abstract class BlockRotatableTile extends BlockAWCoreBase implements IRotatableBlock {
+public abstract class BlockRotatableTile extends BlockBaseCore implements IRotatableBlock {
 
 /*
     private final IconRotationMap iconMap = new IconRotationMap();

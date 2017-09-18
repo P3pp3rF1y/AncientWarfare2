@@ -10,7 +10,7 @@ import java.util.HashMap;
 /*
  * Handle subtypes through ItemStack damage values
  */
-public class ItemMulti extends ItemAWBase {
+public class ItemMulti extends ItemBase {
 
     private final HashMap<Integer, String> subItems = new HashMap<>();
 //    private final HashMap<Integer, IIcon> subItemIcons = new HashMap<>();

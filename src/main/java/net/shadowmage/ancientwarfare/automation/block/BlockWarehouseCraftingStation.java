@@ -12,7 +12,7 @@ import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseCra
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class BlockWarehouseCraftingStation extends BlockAWAutomationBase {
+public class BlockWarehouseCraftingStation extends BlockBaseAutomation {
 
 //    private BlockIconMap iconMap = new BlockIconMap();
 

@@ -11,7 +11,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileWindmillBlade;
 
-public class BlockWindmillBlade extends BlockAWAutomationBase {
+public class BlockWindmillBlade extends BlockBaseAutomation {
 
     public BlockWindmillBlade(String regName) {
         super(Material.WOOD, regName);

@@ -15,7 +15,7 @@ import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
 
 import javax.annotation.Nonnull;
 
-public class BlockSoundBlock extends BlockAWStructureBase {
+public class BlockSoundBlock extends BlockBaseStructure {
 
     public BlockSoundBlock() {
         super(Material.ROCK, "sound_block");

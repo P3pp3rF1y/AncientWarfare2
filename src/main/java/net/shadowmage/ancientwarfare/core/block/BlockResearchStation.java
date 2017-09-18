@@ -18,7 +18,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.tile.TileResearchStation;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class BlockResearchStation extends BlockAWCoreBase implements IRotatableBlock {
+public class BlockResearchStation extends BlockBaseCore implements IRotatableBlock {
 
 /*
     BlockIconMap iconMap = new BlockIconMap();

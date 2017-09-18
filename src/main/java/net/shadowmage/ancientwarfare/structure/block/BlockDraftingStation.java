@@ -14,7 +14,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
 
-public class BlockDraftingStation extends BlockAWStructureBase {
+public class BlockDraftingStation extends BlockBaseStructure {
 
     //private BlockIconMap iconMap = new BlockIconMap();
 

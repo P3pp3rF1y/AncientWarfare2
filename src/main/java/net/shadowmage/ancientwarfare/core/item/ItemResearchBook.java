@@ -16,7 +16,7 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemResearchBook extends ItemAWCoreBase {
+public class ItemResearchBook extends ItemBaseCore {
 
     public ItemResearchBook() {
         super("research_book");

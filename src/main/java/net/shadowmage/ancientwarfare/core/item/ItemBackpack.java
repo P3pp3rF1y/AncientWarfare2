@@ -19,7 +19,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemBackpack extends ItemAWCoreBase {
+public class ItemBackpack extends ItemBaseCore {
 
     public ItemBackpack() {
         super("backpack");

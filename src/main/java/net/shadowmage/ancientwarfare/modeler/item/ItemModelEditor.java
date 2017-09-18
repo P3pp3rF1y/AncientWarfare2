@@ -12,13 +12,13 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.shadowmage.ancientwarfare.core.item.ItemAWBase;
+import net.shadowmage.ancientwarfare.core.item.ItemBase;
 import net.shadowmage.ancientwarfare.modeler.AncientWarfareModeler;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemModelEditor extends ItemAWBase {
+public class ItemModelEditor extends ItemBase {
 
     public static final CreativeTabs editorTab = new CreativeTabs("tabs.editor") {
         @Override

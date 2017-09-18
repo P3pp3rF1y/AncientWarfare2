@@ -18,7 +18,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public abstract class BlockTorqueBase extends BlockAWAutomationBase implements IRotatableBlock {
+public abstract class BlockTorqueBase extends BlockBaseAutomation implements IRotatableBlock {
 
     //HashMap<Integer, IconRotationMap> iconMaps = new HashMap<>();
 

@@ -22,7 +22,7 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemQuill extends ItemAWCoreBase {
+public class ItemQuill extends ItemBaseCore {
 
     double attackDamage = 5.d;
     ToolMaterial material;

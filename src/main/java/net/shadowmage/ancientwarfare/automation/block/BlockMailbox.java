@@ -18,7 +18,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import static net.shadowmage.ancientwarfare.core.render.BlockRenderProperties.FACING;
 
-public class BlockMailbox extends BlockAWAutomationBase implements IRotatableBlock {
+public class BlockMailbox extends BlockBaseAutomation implements IRotatableBlock {
 
 //    IconRotationMap iconMap = new IconRotationMap();
 

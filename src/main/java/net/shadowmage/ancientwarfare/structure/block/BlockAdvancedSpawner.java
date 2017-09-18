@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockAdvancedSpawner extends BlockAWStructureBase {
+public class BlockAdvancedSpawner extends BlockBaseStructure {
 
     public BlockAdvancedSpawner() {
         super(Material.ROCK, "advanced_spawner");

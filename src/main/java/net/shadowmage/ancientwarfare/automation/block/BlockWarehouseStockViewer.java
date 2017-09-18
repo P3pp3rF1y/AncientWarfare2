@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
 
 import static net.shadowmage.ancientwarfare.core.render.BlockRenderProperties.FACING;
 
-public class BlockWarehouseStockViewer extends BlockAWAutomationBase implements IRotatableBlock {
+public class BlockWarehouseStockViewer extends BlockBaseAutomation implements IRotatableBlock {
     public BlockWarehouseStockViewer(String regName) {
         super(Material.ROCK, regName);
         setHardness(2.f);

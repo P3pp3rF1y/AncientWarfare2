@@ -10,7 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 
-public class BlockStructureBuilder extends BlockAWStructureBase {
+public class BlockStructureBuilder extends BlockBaseStructure {
 
     //private BlockIconMap iconMap = new BlockIconMap();
 

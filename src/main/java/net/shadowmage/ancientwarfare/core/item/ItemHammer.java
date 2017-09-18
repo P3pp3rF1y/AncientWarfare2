@@ -31,7 +31,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemHammer extends ItemAWCoreBase implements IItemKeyInterface {
+public class ItemHammer extends ItemBaseCore implements IItemKeyInterface {
 
     double attackDamage = 5.d;
 

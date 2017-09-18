@@ -16,7 +16,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileFlywheelStorage;
 
-public class BlockFlywheelStorage extends BlockAWAutomationBase {
+public class BlockFlywheelStorage extends BlockBaseAutomation {
 
     public BlockFlywheelStorage(String regName) {
         super(Material.ROCK, regName);

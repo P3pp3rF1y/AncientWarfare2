@@ -13,7 +13,7 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.tile.TileChunkLoaderSimple;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 
-public class BlockChunkLoaderSimple extends BlockAWAutomationBase {
+public class BlockChunkLoaderSimple extends BlockBaseAutomation {
 
     //BlockIconMap iconMap = new BlockIconMap();
 
