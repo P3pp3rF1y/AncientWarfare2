@@ -13,7 +13,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public abstract class ItemOrders extends ItemAWNPCBase implements IItemKeyInterface {
+public abstract class ItemOrders extends ItemBaseNPC implements IItemKeyInterface {
 
     public ItemOrders(String regName) {
         super(regName);

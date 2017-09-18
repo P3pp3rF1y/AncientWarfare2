@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemNpcSpawner extends ItemAWNPCBase {
+public class ItemNpcSpawner extends ItemBaseNPC {
 
     public ItemNpcSpawner() {
         super("npc_spawner");

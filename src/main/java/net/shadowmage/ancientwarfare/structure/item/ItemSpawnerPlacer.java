@@ -39,7 +39,7 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemSpawnerPlacer extends ItemAWStructureBase {
+public class ItemSpawnerPlacer extends ItemBaseStructure {
 
     public ItemSpawnerPlacer(String name) {
         super(name);

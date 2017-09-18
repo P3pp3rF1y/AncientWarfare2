@@ -44,7 +44,7 @@ import net.shadowmage.ancientwarfare.structure.gates.types.Gate;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemGateSpawner extends ItemAWStructureBase implements IItemKeyInterface, IBoxRenderer {
+public class ItemGateSpawner extends ItemBaseStructure implements IItemKeyInterface, IBoxRenderer {
 
     public ItemGateSpawner(String name) {
         super(name);

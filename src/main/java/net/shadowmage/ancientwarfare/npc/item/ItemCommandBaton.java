@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-public class ItemCommandBaton extends ItemAWNPCBase implements IItemKeyInterface {
+public class ItemCommandBaton extends ItemBaseNPC implements IItemKeyInterface {
 
     private final double attackDamage;
     int range = 120;//TODO set range from config;

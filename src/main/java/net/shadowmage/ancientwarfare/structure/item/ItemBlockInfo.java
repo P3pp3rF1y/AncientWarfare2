@@ -13,7 +13,7 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
-public class ItemBlockInfo extends ItemAWStructureBase {
+public class ItemBlockInfo extends ItemBaseStructure {
 
     public ItemBlockInfo(String name) {
         super(name);

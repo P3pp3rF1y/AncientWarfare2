@@ -13,7 +13,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
 
-public class ItemBardInstrument extends ItemAWNPCBase {
+public class ItemBardInstrument extends ItemBaseNPC {
 
     private final String[] instrumentNames = new String[]{"lute", "flute", "harp", "drum"};
 

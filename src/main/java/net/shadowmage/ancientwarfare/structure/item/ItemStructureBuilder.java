@@ -46,7 +46,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 
-public class ItemStructureBuilder extends ItemAWStructureBase implements IItemKeyInterface, IBoxRenderer {
+public class ItemStructureBuilder extends ItemBaseStructure implements IItemKeyInterface, IBoxRenderer {
 
     public ItemStructureBuilder(String name) {
         super(name);

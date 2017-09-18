@@ -13,7 +13,7 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.structure.town.WorldTownGenerator;
 
-public class ItemTownBuilder extends ItemAWStructureBase implements IItemKeyInterface {
+public class ItemTownBuilder extends ItemBaseStructure implements IItemKeyInterface {
 
     public ItemTownBuilder(String name) {
         super(name);

@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.vehicle.item;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ActionResult;
@@ -14,13 +13,15 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.item.ItemBase;
+import net.shadowmage.ancientwarfare.vehicle.AncientWarfareVehicles;
 import net.shadowmage.ancientwarfare.vehicle.entity.AWVehicleEntityLoader;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemVehicleSpawner extends Item {
+public class ItemVehicleSpawner extends ItemBase {
 
     /*
      * TODO this can probably be removed in favor of modeled items
@@ -28,8 +29,8 @@ public class ItemVehicleSpawner extends Item {
     //private static HashMap<String, IIcon> regNameToIcon = new HashMap<>();
 
     public ItemVehicleSpawner(String regName) {
-        this.setUnlocalizedName(regName);
-        this.setHasSubtypes(true);
+        super(AncientWarfareVehicles.modID, regName);
+        setHasSubtypes(true);
         setCreativeTab(AWVehicleItemLoader.vehicleTab);
     }
 

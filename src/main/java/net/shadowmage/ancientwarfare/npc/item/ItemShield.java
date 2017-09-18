@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.UUID;
 
-public class ItemShield extends ItemAWNPCBase {
+public class ItemShield extends ItemBaseNPC {
     public static final UUID shieldID = UUID.fromString("CB3F55D3-564C-4F38-A497-9C13A33DB5CF");
     private final int armorValue;
 

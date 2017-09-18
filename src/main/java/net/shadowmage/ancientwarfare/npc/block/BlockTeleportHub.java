@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.gamedata.HeadquartersTracker;
 import net.shadowmage.ancientwarfare.npc.tile.TileTeleportHub;
 
-public class BlockTeleportHub extends BlockAWNPCBase {
+public class BlockTeleportHub extends BlockBaseNPC {
 
     public BlockTeleportHub() {
         super(Material.ROCK, "teleport_hub");

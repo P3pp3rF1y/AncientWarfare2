@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Set;
 
-public class ItemConstructionTool extends ItemAWStructureBase implements IItemKeyInterface, IBoxRenderer {
+public class ItemConstructionTool extends ItemBaseStructure implements IItemKeyInterface, IBoxRenderer {
 
     public ItemConstructionTool(String name) {
         super(name);

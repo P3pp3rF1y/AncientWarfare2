@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 import java.io.File;
 import java.util.List;
 
-public class ItemStructureScanner extends ItemAWStructureBase implements IItemKeyInterface, IBoxRenderer {
+public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyInterface, IBoxRenderer {
 
     public ItemStructureScanner(String name) {
         super(name);

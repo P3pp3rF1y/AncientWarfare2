@@ -13,7 +13,7 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
 import java.util.Set;
 
-public class ItemConstructionToolLakes extends ItemAWStructureBase {
+public class ItemConstructionToolLakes extends ItemBaseStructure {
 
     public ItemConstructionToolLakes(String name) {
         super(name);

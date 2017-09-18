@@ -23,7 +23,7 @@ import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemStructureBuilderWorldGen extends ItemAWStructureBase implements IItemKeyInterface {
+public class ItemStructureBuilderWorldGen extends ItemBaseStructure implements IItemKeyInterface {
 
     public ItemStructureBuilderWorldGen(String name) {
         super(name);

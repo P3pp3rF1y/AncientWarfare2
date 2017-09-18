@@ -23,7 +23,7 @@ import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlockTownHall extends BlockAWNPCBase {
+public class BlockTownHall extends BlockBaseNPC {
 
     public BlockTownHall() {
         this("town_hall");
