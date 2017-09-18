@@ -5,12 +5,12 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.item.ItemBlockAWBase;
+import net.shadowmage.ancientwarfare.core.item.ItemBlockBase;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemBlockTeleportHub extends ItemBlockAWBase {
+public class ItemBlockTeleportHub extends ItemBlockBase {
 
     public ItemBlockTeleportHub(Block block) {
         super(block);

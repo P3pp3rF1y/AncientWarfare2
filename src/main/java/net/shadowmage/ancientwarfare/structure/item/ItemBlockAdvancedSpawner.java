@@ -16,7 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
-import net.shadowmage.ancientwarfare.core.item.ItemBlockAWBase;
+import net.shadowmage.ancientwarfare.core.item.ItemBlockBase;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings.EntitySpawnGroup;
@@ -27,7 +27,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemBlockAdvancedSpawner extends ItemBlockAWBase implements IItemKeyInterface {
+public class ItemBlockAdvancedSpawner extends ItemBlockBase implements IItemKeyInterface {
 
     public ItemBlockAdvancedSpawner(Block block) {
         super(block);

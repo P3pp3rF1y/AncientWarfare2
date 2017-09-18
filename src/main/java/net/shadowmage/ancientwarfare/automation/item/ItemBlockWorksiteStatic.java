@@ -13,10 +13,10 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableB
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
-import net.shadowmage.ancientwarfare.core.item.ItemBlockAWBase;
+import net.shadowmage.ancientwarfare.core.item.ItemBlockBase;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
-public class ItemBlockWorksiteStatic extends ItemBlockAWBase {
+public class ItemBlockWorksiteStatic extends ItemBlockBase {
 
     public ItemBlockWorksiteStatic(Block block) {
         super(block);

@@ -10,7 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 
-public class ItemBlockOwned extends ItemBlockAWBase {
+public class ItemBlockOwned extends ItemBlockBase {
 
     public ItemBlockOwned(Block block) {
         super(block);

@@ -14,7 +14,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 
 import static net.shadowmage.ancientwarfare.core.render.BlockRenderProperties.FACING;
 
-public class ItemBlockOwnedRotatable extends ItemBlockAWBase {
+public class ItemBlockOwnedRotatable extends ItemBlockBase {
 
     IRotatableBlock rotatable;
 

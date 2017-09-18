@@ -14,7 +14,7 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableT
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
-public class ItemBlockRotatableMetaTile extends ItemBlockAWBase {
+public class ItemBlockRotatableMetaTile extends ItemBlockBase {
 
     private IRotatableBlock rotatable;
 

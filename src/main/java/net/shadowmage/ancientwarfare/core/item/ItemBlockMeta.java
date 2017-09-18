@@ -3,7 +3,7 @@ package net.shadowmage.ancientwarfare.core.item;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 
-public class ItemBlockMeta extends ItemBlockAWBase {
+public class ItemBlockMeta extends ItemBlockBase {
 
     public ItemBlockMeta(Block block) {
         super(block);
