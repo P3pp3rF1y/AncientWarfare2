@@ -6,7 +6,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -17,6 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
+import net.shadowmage.ancientwarfare.core.item.ItemBlockAWBase;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings.EntitySpawnGroup;
@@ -27,11 +27,10 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemBlockAdvancedSpawner extends ItemBlock implements IItemKeyInterface {
+public class ItemBlockAdvancedSpawner extends ItemBlockAWBase implements IItemKeyInterface {
 
     public ItemBlockAdvancedSpawner(Block block) {
         super(block);
-        setRegistryName(block.getRegistryName());
     }
 
     @Override

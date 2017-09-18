@@ -6,7 +6,6 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
@@ -16,6 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.shadowmage.ancientwarfare.core.item.ItemBlockAWBase;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.event.IBoxRenderer;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
@@ -31,13 +31,12 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemBlockStructureBuilder extends ItemBlock implements IBoxRenderer {
+public class ItemBlockStructureBuilder extends ItemBlockAWBase implements IBoxRenderer {
 
     List<ItemStack> displayCache = null;
 
     public ItemBlockStructureBuilder(Block block) {
         super(block);
-        setRegistryName(block.getRegistryName());
     }
 
 

@@ -1,28 +1,23 @@
 package net.shadowmage.ancientwarfare.structure.item;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.town.WorldTownGenerator;
 
-public class ItemTownBuilder extends Item implements IItemKeyInterface {
+public class ItemTownBuilder extends ItemAWStructureBase implements IItemKeyInterface {
 
     public ItemTownBuilder(String name) {
-        this.setUnlocalizedName(name);
-        this.setRegistryName(new ResourceLocation(AncientWarfareStructures.modID, name));
-        this.setCreativeTab(AWStructuresItemLoader.structureTab);
-        this.setMaxStackSize(1);
+        super(name);
+        setMaxStackSize(1);
         //this.setTextureName("ancientwarfare:structure/structure_builder");//TODO make texture...
     }
 

@@ -24,14 +24,12 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -39,7 +37,6 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.event.IBoxRenderer;
 import net.shadowmage.ancientwarfare.structure.gates.types.Gate;
@@ -47,13 +44,11 @@ import net.shadowmage.ancientwarfare.structure.gates.types.Gate;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ItemGateSpawner extends Item implements IItemKeyInterface, IBoxRenderer {
+public class ItemGateSpawner extends ItemAWStructureBase implements IItemKeyInterface, IBoxRenderer {
 
     public ItemGateSpawner(String name) {
-        this.setUnlocalizedName(name);
-        this.setRegistryName(new ResourceLocation(AncientWarfareStructures.modID, name));
-        this.setCreativeTab(AWStructuresItemLoader.structureTab);
-        this.setMaxStackSize(1);
+        super(name);
+        setMaxStackSize(1);
     }
 
 //    @Override

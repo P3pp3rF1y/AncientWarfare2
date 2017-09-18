@@ -5,32 +5,27 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.event.IBoxRenderer;
 
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Set;
 
-public class ItemConstructionTool extends Item implements IItemKeyInterface, IBoxRenderer {
+public class ItemConstructionTool extends ItemAWStructureBase implements IItemKeyInterface, IBoxRenderer {
 
     public ItemConstructionTool(String name) {
-        this.setUnlocalizedName(name);
-        this.setRegistryName(new ResourceLocation(AncientWarfareStructures.modID, name));
+        super(name);
         //this.setTextureName("ancientwarfare:structure/" + name);
-        this.setCreativeTab(AWStructuresItemLoader.structureTab);
     }
 
     @Override
