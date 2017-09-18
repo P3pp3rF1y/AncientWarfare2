@@ -1,28 +1,21 @@
 package net.shadowmage.ancientwarfare.structure.block;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
-import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 
-public class BlockStructureBuilder extends Block {
+public class BlockStructureBuilder extends BlockAWStructureBase {
 
     //private BlockIconMap iconMap = new BlockIconMap();
 
     public BlockStructureBuilder() {
-        super(Material.ROCK);
-        setCreativeTab(AWStructuresItemLoader.structureTab);
-        setUnlocalizedName("structure_builder_ticked");
-        setRegistryName(new ResourceLocation(AncientWarfareStructures.modID, "structure_builder_ticked"));
+        super(Material.ROCK, "structure_builder_ticked");
         setHardness(2.f);
     }
 

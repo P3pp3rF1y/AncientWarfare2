@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -13,17 +12,14 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
-import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorageLarge;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorageMedium;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 
-public class BlockWarehouseStorage extends Block {
+public class BlockWarehouseStorage extends BlockAWAutomationBase {
     static final PropertyEnum<Size> SIZE = PropertyEnum.create("size", Size.class);
 
 /*
@@ -31,10 +27,7 @@ public class BlockWarehouseStorage extends Block {
 */
 
     public BlockWarehouseStorage(String regName) {
-        super(Material.ROCK);
-        this.setUnlocalizedName(regName);
-        this.setRegistryName(new ResourceLocation(AncientWarfareAutomation.modID, regName));
-        this.setCreativeTab(AWAutomationItemLoader.automationTab);
+        super(Material.ROCK, regName);
         setHardness(2.f);
     }
 

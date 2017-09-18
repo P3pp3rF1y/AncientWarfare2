@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -8,15 +7,12 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
-import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
@@ -26,12 +22,9 @@ import javax.annotation.Nullable;
 
 import static net.shadowmage.ancientwarfare.core.render.BlockRenderProperties.FACING;
 
-public class BlockWarehouseStockViewer extends Block implements IRotatableBlock {
+public class BlockWarehouseStockViewer extends BlockAWAutomationBase implements IRotatableBlock {
     public BlockWarehouseStockViewer(String regName) {
-        super(Material.ROCK);
-        this.setUnlocalizedName(regName);
-        this.setRegistryName(new ResourceLocation(AncientWarfareAutomation.modID, regName));
-        this.setCreativeTab(AWAutomationItemLoader.automationTab);
+        super(Material.ROCK, regName);
         setHardness(2.f);
     }
 

@@ -18,12 +18,12 @@ import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public abstract class BlockTorqueBase extends Block implements IRotatableBlock {
+public abstract class BlockTorqueBase extends BlockAWAutomationBase implements IRotatableBlock {
 
     //HashMap<Integer, IconRotationMap> iconMaps = new HashMap<>();
 
-    protected BlockTorqueBase(Material material) {
-        super(material);
+    protected BlockTorqueBase(Material material, String regName) {
+        super(material, regName);
         setHardness(2.f);
     }
 

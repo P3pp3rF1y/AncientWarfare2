@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.core.block;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,31 +7,25 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.tile.TileResearchStation;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class BlockResearchStation extends Block implements IRotatableBlock {
+public class BlockResearchStation extends BlockAWCoreBase implements IRotatableBlock {
 
 /*
     BlockIconMap iconMap = new BlockIconMap();
 */
 
     public BlockResearchStation() {
-        super(Material.ROCK);
-        this.setCreativeTab(AWCoreBlockLoader.coreTab);
-        this.setUnlocalizedName("research_station");
-        this.setRegistryName(new ResourceLocation(AncientWarfareCore.modID, "research_station"));
-
+        super(Material.ROCK, "research_station");
 /*
         iconMap.setIconTexture(0, 0, "ancientwarfare:core/research_station_bottom");
         iconMap.setIconTexture(1, 0, "ancientwarfare:core/research_station_top");

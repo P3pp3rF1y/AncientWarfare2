@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.structure.block;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,23 +8,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
-import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
 
 import javax.annotation.Nonnull;
 
-public class BlockSoundBlock extends Block {
+public class BlockSoundBlock extends BlockAWStructureBase {
 
     public BlockSoundBlock() {
-        super(Material.ROCK);
-        setCreativeTab(AWStructuresItemLoader.structureTab);
-        setUnlocalizedName("sound_block");
-        setRegistryName(new ResourceLocation(AncientWarfareStructures.modID, "sound_block"));
+        super(Material.ROCK, "sound_block");
     }
 
 //    @Override

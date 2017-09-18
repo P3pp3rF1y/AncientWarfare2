@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -8,26 +7,20 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
-import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class BlockWarehouseInterface extends Block {
+public class BlockWarehouseInterface extends BlockAWAutomationBase {
 
 /*
     private BlockIconMap iconMap = new BlockIconMap();
 */
 
     public BlockWarehouseInterface(String regName) {
-        super(Material.ROCK);
-        this.setUnlocalizedName(regName);
-        this.setRegistryName(new ResourceLocation(AncientWarfareAutomation.modID, regName));
-        setCreativeTab(AWAutomationItemLoader.automationTab);
+        super(Material.ROCK, regName);
         setHardness(2.f);
     }
 

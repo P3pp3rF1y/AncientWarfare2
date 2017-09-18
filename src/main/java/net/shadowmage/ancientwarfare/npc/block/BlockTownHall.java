@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
@@ -18,26 +17,21 @@ import net.minecraft.world.chunk.Chunk;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
-import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.gamedata.HeadquartersTracker;
-import net.shadowmage.ancientwarfare.npc.item.AWNPCItemLoader;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BlockTownHall extends Block {
+public class BlockTownHall extends BlockAWNPCBase {
 
     public BlockTownHall() {
         this("town_hall");
     }
 
     protected BlockTownHall(String regName) {
-        super(Material.ROCK);
-        this.setCreativeTab(AWNPCItemLoader.npcTab);
+        super(Material.ROCK, regName);
         setHardness(2.f);
-        this.setUnlocalizedName(regName);
-        this.setRegistryName(new ResourceLocation(AncientWarfareNPC.modID, regName));
     }
 
     @Override

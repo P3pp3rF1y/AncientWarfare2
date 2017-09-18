@@ -1,17 +1,16 @@
 package net.shadowmage.ancientwarfare.core.block;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 
-public abstract class BlockRotatableTile extends Block implements IRotatableBlock {
+public abstract class BlockRotatableTile extends BlockAWCoreBase implements IRotatableBlock {
 
 /*
     private final IconRotationMap iconMap = new IconRotationMap();
 */
 
-    protected BlockRotatableTile(Material material) {
-        super(material);
+    protected BlockRotatableTile(Material material, String regName) {
+        super(material, regName);
     }
 
 /*
