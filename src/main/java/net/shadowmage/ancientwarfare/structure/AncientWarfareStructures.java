@@ -100,13 +100,16 @@ public class AncientWarfareStructures {
         NetworkHandler.registerContainer(NetworkHandler.GUI_GATE_CONTROL, ContainerGateControl.class);
         NetworkHandler.registerContainer(NetworkHandler.GUI_DRAFTING_STATION, ContainerDraftingStation.class);
         NetworkHandler.registerContainer(NetworkHandler.GUI_SOUND_BLOCK, ContainerSoundBlock.class);
-        proxy.registerClient();
+        proxy.preInit();
+
         String path = evt.getModConfigurationDirectory().getAbsolutePath();
         TemplateLoader.INSTANCE.initializeAndExportDefaults(path);
     }
 
     @EventHandler
     public void init(FMLInitializationEvent evt) {
+        proxy.init();
+
         BlockDataManager.INSTANCE.load();
         AWStructureCrafting.loadRecipes();
     }

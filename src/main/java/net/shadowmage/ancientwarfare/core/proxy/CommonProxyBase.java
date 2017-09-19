@@ -10,11 +10,19 @@ import java.util.UUID;
 
 public class CommonProxyBase {
 
-    public void registerClient() {
+    public void addClientRegistrar(IClientRegistrar registrar) {
         //NOOP for commonProxy
     }
 
-    public EntityPlayer getClientPlayer() {
+    public void preInit() {
+
+    }
+
+    public void init() {
+
+    }
+
+    public EntityPlayer getClientPlayer() { //TODO replace with simple Minecraft.getMinecraft().player?
         //NOOP for commonProxy
         return null;
     }

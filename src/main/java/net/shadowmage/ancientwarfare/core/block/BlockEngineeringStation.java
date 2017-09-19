@@ -1,22 +1,31 @@
 package net.shadowmage.ancientwarfare.core.block;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.ChunkCache;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.gui.crafting.GuiEngineeringStation;
 import net.shadowmage.ancientwarfare.core.model.crafting_table.ModelEngineeringStation;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
+import net.shadowmage.ancientwarfare.core.render.BlockRenderProperties;
 import net.shadowmage.ancientwarfare.core.render.TileCraftingTableRender;
 import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
 
@@ -34,6 +43,35 @@ public class BlockEngineeringStation extends BlockRotatableTile implements IClie
         setIcon(RelativeSide.RIGHT, "ancientwarfare:core/engineering_station_side");
 */
         setHardness(2.f);
+
+        AncientWarfareCore.proxy.addClientRegistrar(this);
+    }
+
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, BlockRenderProperties.FACING);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return 0;
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+        EnumFacing facing = EnumFacing.NORTH;
+        TileEntity tileentity = worldIn instanceof ChunkCache ? ((ChunkCache)worldIn).getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK) : worldIn.getTileEntity(pos);
+
+        if (tileentity instanceof TileEngineeringStation) {
+            facing = ((TileEngineeringStation) tileentity).getPrimaryFacing();
+        }
+
+        return state.withProperty(BlockRenderProperties.FACING, facing);
     }
 
     @Override
@@ -74,12 +112,6 @@ public class BlockEngineeringStation extends BlockRotatableTile implements IClie
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess world, BlockPos pos, EnumFacing side) {
-        return false;
-    }
-
-    @Override
     public boolean isOpaqueCube(IBlockState state) {
         return false;
     }
@@ -90,10 +122,13 @@ public class BlockEngineeringStation extends BlockRotatableTile implements IClie
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerClient() {
         NetworkHandler.registerGui(NetworkHandler.GUI_CRAFTING, GuiEngineeringStation.class);
 
         TileCraftingTableRender render = new TileCraftingTableRender(new ModelEngineeringStation(), "textures/model/core/tile_engineering_station.png");
         ClientRegistry.bindTileEntitySpecialRenderer(TileEngineeringStation.class, render);
+
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "facing=north"));
     }
 }

@@ -9,7 +9,7 @@ public class ModelDraftingStation extends ModelCraftingBase{
         ModelRenderer paperLarge = new ModelRenderer(this, "paperLarge");
         paperLarge.setTextureOffset(65, 0);
         paperLarge.setRotationPoint(0, -12.01f, 0);
-        setPieceRotation(paperLarge, 0, 0.087266594f, 0);
+        setRotation(paperLarge, 0, 0.087266594f, 0);
         paperLarge.addBox(-6, 0, -6, 12, 0, 12);
         ModelRenderer b1 = new ModelRenderer(this, "b1");
         b1.setTextureOffset(36, 18);
@@ -173,6 +173,6 @@ public class ModelDraftingStation extends ModelCraftingBase{
     }
 
     private void setPieceRotation(ModelRenderer piece){
-        setPieceRotation(piece, 1.0402973E-9f, 1.0402973E-9f, 0);
+        setRotation(piece, 1.0402973E-9f, 1.0402973E-9f, 0);
     }
 }

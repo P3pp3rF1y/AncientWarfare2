@@ -49,7 +49,7 @@ public class ModelAutoCraftingStation extends ModelCraftingBase {
         ModelRenderer sawBlade2 = new ModelRenderer(this, "sawBlade2");
         sawBlade2.setTextureOffset(21, 34);
         sawBlade2.setRotationPoint(1, 0.01f, 9);
-        setPieceRotation(sawBlade2, 0, 0.10471966f, 0);
+        setRotation(sawBlade2, 0, 0.10471966f, 0);
         sawBlade2.addBox(-2, 0, -10, 2, 1, 10);
         float toothAngle = 0.7853982f;
         ModelRenderer sawTooth1 = new ModelRenderer(this, "sawTooth1");

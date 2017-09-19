@@ -40,7 +40,9 @@ import java.util.Map;
 public class NpcClientProxy extends NpcCommonProxy {
 
     @Override
-    public void registerClient() {
+    public void preInit() {
+        super.preInit();
+
         NetworkHandler.registerGui(NetworkHandler.GUI_NPC_INVENTORY, GuiNpcInventory.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_NPC_FACTION_TRADE_SETUP, GuiNpcFactionTradeSetup.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_NPC_FACTION_TRADE_VIEW, GuiNpcFactionTradeView.class);

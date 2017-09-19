@@ -12,12 +12,15 @@ public class ClientProxyBase extends CommonProxyBase {
 
     private Set<IClientRegistrar> clientRegistrars = Sets.newHashSet();
 
-    public void addClientRegistrant(IClientRegistrar registrar) {
+    @Override
+    public void addClientRegistrar(IClientRegistrar registrar) {
         clientRegistrars.add(registrar);
     }
 
     @Override
-    public void registerClient() {
+    public void init() {
+        super.init();
+
         for(IClientRegistrar registrar : clientRegistrars) {
             registrar.registerClient();
         }

@@ -1,12 +1,12 @@
 package net.shadowmage.ancientwarfare.vehicle.proxy;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.config.DummyConfigElement.DummyCategoryElement;
 import net.minecraftforge.fml.client.config.IConfigElement;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.ConfigManager;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.input.InputHandler.InputCallback;
@@ -26,7 +26,9 @@ import java.util.List;
 public class VehicleClientProxy extends VehicleCommonProxy {
 
     @Override
-    public void registerClient() {
+    public void preInit() {
+        super.preInit();
+
         RenderingRegistry.registerEntityRenderingHandler(VehicleBase.class, VehicleBBRender::new);
         RenderingRegistry.registerEntityRenderingHandler(MissileBase.class, RenderMissile::new);
         RenderingRegistry.registerEntityRenderingHandler(VehicleCatapult.class, RenderCatapult::new);
@@ -62,7 +64,7 @@ public class VehicleClientProxy extends VehicleCommonProxy {
         }
 
         private void onKeyAction(boolean state) {
-            EntityPlayer player = AncientWarfareCore.proxy.getClientPlayer();
+            EntityPlayer player = Minecraft.getMinecraft().player;
             if (player.getRidingEntity() instanceof VehicleBase) {
                 ((VehicleBase) player.getRidingEntity()).inputHandler.onKeyChanged(key, state);
             }

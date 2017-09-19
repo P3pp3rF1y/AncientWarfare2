@@ -86,7 +86,7 @@ public class AncientWarfareAutomation {
         /*
          * must be loaded after items/blocks, as it needs them registered
          */
-        proxy.registerClient();
+        proxy.preInit();
 
         /*
          * register containers
@@ -126,6 +126,8 @@ public class AncientWarfareAutomation {
         /*
          * construct recipes, load plugins
          */
+        proxy.init();
+
         AWAutomationItemLoader.addComponentSubItems();
         AWAutomationCrafting.loadRecipes();
         statics.save();

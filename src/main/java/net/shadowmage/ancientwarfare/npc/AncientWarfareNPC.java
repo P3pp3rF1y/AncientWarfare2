@@ -74,7 +74,7 @@ public class AncientWarfareNPC {
          * setup module-owned config file and config-access class
          */
         statics = new AWNPCStatics("AncientWarfareNpc");
-        proxy.registerClient();//must be loaded after configs
+        proxy.preInit();//must be loaded after configs
         MinecraftForge.EVENT_BUS.register(FactionTracker.INSTANCE);
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(net.shadowmage.ancientwarfare.npc.event.EventHandler.INSTANCE);
@@ -106,6 +106,8 @@ public class AncientWarfareNPC {
 
     @EventHandler
     public void init(FMLInitializationEvent evt) {
+        proxy.init();
+
         AWNPCItemLoader.load();
 
         /*

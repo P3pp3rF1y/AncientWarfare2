@@ -54,7 +54,7 @@ public class AncientWarfareVehicles {
         /*
          * load pre-init (items, blocks, entities)
          */
-        proxy.registerClient();
+        proxy.preInit();
         AWVehicleEntityLoader.load();
         AWVehicleItemLoader.load();
 
@@ -70,6 +70,7 @@ public class AncientWarfareVehicles {
 
     @EventHandler
     public void init(FMLInitializationEvent evt) {
+        proxy.init();
 
         /*
          * construct recipes, load plugins

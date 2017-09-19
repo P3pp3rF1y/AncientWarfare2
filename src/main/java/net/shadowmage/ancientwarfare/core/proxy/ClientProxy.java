@@ -34,9 +34,10 @@ import java.util.List;
  */
 public class ClientProxy extends ClientProxyBase {
 
-
     @Override
-    public void registerClient() {
+    public void preInit() {
+        super.preInit();
+
         MinecraftForge.EVENT_BUS.register(InputHandler.instance);
         NetworkHandler.registerGui(NetworkHandler.GUI_RESEARCH_STATION, GuiResearchStation.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_BACKPACK, GuiBackpack.class);

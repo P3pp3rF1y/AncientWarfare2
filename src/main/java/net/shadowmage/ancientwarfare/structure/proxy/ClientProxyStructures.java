@@ -25,8 +25,8 @@ import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 public class ClientProxyStructures extends ClientProxyBase {
 
     @Override
-    public void registerClient() {
-        super.registerClient();
+    public void preInit() {
+        super.preInit();
 
         NetworkHandler.registerGui(NetworkHandler.GUI_SCANNER, GuiStructureScanner.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_BUILDER, GuiStructureSelection.class);

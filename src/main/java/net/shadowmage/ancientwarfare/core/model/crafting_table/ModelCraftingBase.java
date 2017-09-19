@@ -54,12 +54,6 @@ public class ModelCraftingBase extends ModelBase {
         renderModel();
     }
 
-    public final void setPieceRotation(ModelRenderer model, float x, float y, float z) {
-        model.rotateAngleX = x;
-        model.rotateAngleY = y;
-        model.rotateAngleZ = z;
-    }
-
     public final void addPiece(ModelRenderer model){
         tableTop.addChild(model);
     }
@@ -68,35 +62,38 @@ public class ModelCraftingBase extends ModelBase {
         ModelRenderer hammerHead1 = new ModelRenderer(this, "hammerHead1");
         hammerHead1.setTextureOffset(36, 18);
         hammerHead1.setRotationPoint(-5, -14.25f, 5);
-        setPieceRotation(hammerHead1, 0.09599306f, 0.3665189f, 0.069813065f);
+        setRotation(hammerHead1, 0.09599306f, 0.3665189f, 0.069813065f);
         hammerHead1.addBox(0, -2, 0, 2, 2, 1);
         ModelRenderer hammerClaw1 = new ModelRenderer(this, "hammerClaw1");
         hammerClaw1.setTextureOffset(36, 22);
         hammerClaw1.setRotationPoint(0.125f, -2.25f, 0);
-        setPieceRotation(hammerClaw1, 3.120892E-9f, -0.26179937f, 0);
+        setRotation(hammerClaw1, 3.120892E-9f, -0.26179937f, 0);
         hammerClaw1.addBox(-2, 0, 0, 2, 1, 1);
         hammerHead1.addChild(hammerClaw1);
         ModelRenderer hammerClaw2 = new ModelRenderer(this, "hammerClaw2");
         hammerClaw2.setTextureOffset(36, 25);
         hammerClaw2.setRotationPoint(0.125f, -0.75f, 0);
-        setPieceRotation(hammerClaw2, 3.120892E-9f, -0.26179937f, 0);
+        setRotation(hammerClaw2, 3.120892E-9f, -0.26179937f, 0);
         hammerClaw2.addBox(-2, 0, 0, 2, 1, 1);
         hammerHead1.addChild(hammerClaw2);
         ModelRenderer hammerHead2 = new ModelRenderer(this, "hammerHead2");
         hammerHead2.setTextureOffset(36, 28);
-        hammerHead2.setRotationPoint(2, -1.5f, 0);
         hammerHead2.addBox(0, 0, 0, 1, 1, 1);
         ModelRenderer hammerHead3 = new ModelRenderer(this, "hammerHead3");
         hammerHead3.setTextureOffset(36, 31);
-        hammerHead3.setRotationPoint(0.5f, -0.5f, -0.5f);
         hammerHead3.addBox(0, 0, 0, 1, 2, 2);
         hammerHead2.addChild(hammerHead3);
         hammerHead1.addChild(hammerHead2);
         ModelRenderer hammerHandle = new ModelRenderer(this, "hammerHandle");
         hammerHandle.setTextureOffset(43, 18);
-        hammerHandle.setRotationPoint(0.5f, -1.5f, -1);
         hammerHandle.addBox(0, 0, -7.5f, 1, 1, 10);
         hammerHead1.addChild(hammerHandle);
         addPiece(hammerHead1);
+    }
+
+    public final void setRotation(ModelRenderer model, float x, float y, float z) {
+        model.rotateAngleX = x;
+        model.rotateAngleY = y;
+        model.rotateAngleZ = z;
     }
 }

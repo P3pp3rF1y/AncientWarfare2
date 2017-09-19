@@ -4,7 +4,7 @@ import net.minecraft.block.material.Material;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 
 public abstract class BlockRotatableTile extends BlockBaseCore implements IRotatableBlock {
-
+//TODO remove?
 /*
     private final IconRotationMap iconMap = new IconRotationMap();
 */

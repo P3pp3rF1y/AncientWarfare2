@@ -80,15 +80,19 @@ public class AncientWarfareCore {
         /*
          * register GUIs, containers, client-side network handler, renderers
          */
-        proxy.registerClient();
         NetworkHandler.registerContainer(NetworkHandler.GUI_CRAFTING, ContainerEngineeringStation.class);
         NetworkHandler.registerContainer(NetworkHandler.GUI_RESEARCH_STATION, ContainerResearchStation.class);
         NetworkHandler.registerContainer(NetworkHandler.GUI_BACKPACK, ContainerBackpack.class);
         NetworkHandler.registerContainer(NetworkHandler.GUI_RESEARCH_BOOK, ContainerResearchBook.class);
+
+        proxy.preInit();
     }
 
     @EventHandler
     public void init(FMLInitializationEvent evt) {
+
+        proxy.init();
+
         AWCoreItemLoader.INSTANCE.load();
 
         /*

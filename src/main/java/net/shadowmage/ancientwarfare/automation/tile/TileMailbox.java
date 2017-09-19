@@ -233,7 +233,7 @@ public class TileMailbox extends TileOwned implements ISidedInventory, IRotatabl
 
     @Override
     public EnumFacing getPrimaryFacing() {
-        return EnumFacing.VALUES[getBlockMetadata()];
+        return world.getBlockState(pos).getValue(BlockRenderProperties.FACING);
     }
 
     @Override
