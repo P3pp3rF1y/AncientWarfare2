@@ -3,6 +3,8 @@ package net.shadowmage.ancientwarfare.core.proxy;
 import com.google.common.collect.Sets;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.client.model.obj.OBJLoader;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.input.InputHandler.Keybind;
 
@@ -20,6 +22,8 @@ public class ClientProxyBase extends CommonProxyBase {
     @Override
     public void init() {
         super.init();
+
+        OBJLoader.INSTANCE.addDomain(AncientWarfareCore.modID);
 
         for(IClientRegistrar registrar : clientRegistrars) {
             registrar.registerClient();

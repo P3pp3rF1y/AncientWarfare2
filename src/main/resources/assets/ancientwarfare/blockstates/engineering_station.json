@@ -1,16 +1,7 @@
 {
   "forge_marker": 1,
   "defaults": {
-    "model": "cube",
-    "textures": {
-      "particle": "ancientwarfare:blocks/core/engineering_station_front",
-      "down": "ancientwarfare:blocks/core/engineering_station_bottom",
-      "up": "ancientwarfare:blocks/core/engineering_station_top",
-      "north": "ancientwarfare:blocks/core/engineering_station_front",
-      "east": "ancientwarfare:blocks/core/engineering_station_side",
-      "south": "ancientwarfare:blocks/core/engineering_station_front",
-      "west": "ancientwarfare:blocks/core/engineering_station_side"
-    }
+    "model": "ancientwarfare:engineering_station.obj"
   },
   "variants": {
     "facing": {
