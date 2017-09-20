@@ -18,6 +18,7 @@ import net.shadowmage.ancientwarfare.core.gui.research.GuiResearchStation;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.model.crafting_table.ModelResearchStation;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.render.TextureLoader;
 import net.shadowmage.ancientwarfare.core.render.TileCraftingTableRender;
 import net.shadowmage.ancientwarfare.core.tile.TileResearchStation;
 import org.lwjgl.LWJGLException;
@@ -39,6 +40,7 @@ public class ClientProxy extends ClientProxyBase {
         super.preInit();
 
         MinecraftForge.EVENT_BUS.register(InputHandler.instance);
+        MinecraftForge.EVENT_BUS.register(new TextureLoader());
         NetworkHandler.registerGui(NetworkHandler.GUI_RESEARCH_STATION, GuiResearchStation.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_BACKPACK, GuiBackpack.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_RESEARCH_BOOK, GuiResearchBook.class);

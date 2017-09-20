@@ -1,13 +1,19 @@
 package net.shadowmage.ancientwarfare.core.block;
 
+import codechicken.lib.model.ModelRegistryHelper;
+import codechicken.lib.model.bakery.CCBakeryModel;
+import codechicken.lib.model.bakery.IBakeryProvider;
+import codechicken.lib.model.bakery.generation.IBakery;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -16,20 +22,18 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.gui.crafting.GuiEngineeringStation;
-import net.shadowmage.ancientwarfare.core.model.crafting_table.ModelEngineeringStation;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
 import net.shadowmage.ancientwarfare.core.render.BlockRenderProperties;
-import net.shadowmage.ancientwarfare.core.render.TileCraftingTableRender;
+import net.shadowmage.ancientwarfare.core.render.EngineeringStationRenderer;
 import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
 
-public class BlockEngineeringStation extends BlockRotatableTile implements IClientRegistrar {
+public class BlockEngineeringStation extends BlockRotatableTile implements IClientRegistrar, IBakeryProvider {
 
     protected BlockEngineeringStation() {
         super(Material.ROCK, "engineering_station");
@@ -48,8 +52,8 @@ public class BlockEngineeringStation extends BlockRotatableTile implements IClie
     }
 
     @Override
-    public EnumBlockRenderType getRenderType(IBlockState state) {
-        return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.CUTOUT;
     }
 
     @Override
@@ -126,9 +130,26 @@ public class BlockEngineeringStation extends BlockRotatableTile implements IClie
     public void registerClient() {
         NetworkHandler.registerGui(NetworkHandler.GUI_CRAFTING, GuiEngineeringStation.class);
 
-        TileCraftingTableRender render = new TileCraftingTableRender(new ModelEngineeringStation(), "textures/model/core/tile_engineering_station.png");
-        ClientRegistry.bindTileEntitySpecialRenderer(TileEngineeringStation.class, render);
+        ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
+            @Override protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+                return EngineeringStationRenderer.MODEL_LOCATION;
+            }
+        });
+
+        ModelRegistryHelper.register(EngineeringStationRenderer.MODEL_LOCATION, new CCBakeryModel(AncientWarfareCore.modID + ":model/core/tile_engineering_station") {
+            @Override
+            public TextureAtlasSprite getParticleTexture() {
+                return EngineeringStationRenderer.sprite;
+            }
+        });
 
         ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "facing=north"));
+
+        //TODO register blockkeygenerator?
+    }
+
+    @Override
+    public IBakery getBakery() {
+        return EngineeringStationRenderer.INSTANCE;
     }
 }
