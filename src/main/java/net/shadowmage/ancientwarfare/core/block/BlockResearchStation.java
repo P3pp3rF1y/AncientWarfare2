@@ -1,57 +1,70 @@
 package net.shadowmage.ancientwarfare.core.block;
 
+import codechicken.lib.model.ModelRegistryHelper;
+import codechicken.lib.model.bakery.CCBakeryModel;
+import codechicken.lib.model.bakery.IBakeryProvider;
+import codechicken.lib.model.bakery.ModelBakery;
+import codechicken.lib.model.bakery.generation.IBakery;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
+import net.shadowmage.ancientwarfare.core.gui.research.GuiResearchStation;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
+import net.shadowmage.ancientwarfare.core.render.BlockRenderProperties;
+import net.shadowmage.ancientwarfare.core.render.ResearchStationRenderer;
 import net.shadowmage.ancientwarfare.core.tile.TileResearchStation;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class BlockResearchStation extends BlockBaseCore implements IRotatableBlock {
-
-/*
-    BlockIconMap iconMap = new BlockIconMap();
-*/
+public class BlockResearchStation extends BlockBaseCore implements IRotatableBlock, IBakeryProvider, IClientRegistrar {
 
     public BlockResearchStation() {
         super(Material.ROCK, "research_station");
-/*
-        iconMap.setIconTexture(0, 0, "ancientwarfare:core/research_station_bottom");
-        iconMap.setIconTexture(1, 0, "ancientwarfare:core/research_station_top");
-        iconMap.setIconTexture(2, 0, "ancientwarfare:core/research_station_front");
-        iconMap.setIconTexture(3, 0, "ancientwarfare:core/research_station_front");
-        iconMap.setIconTexture(4, 0, "ancientwarfare:core/research_station_side");
-        iconMap.setIconTexture(5, 0, "ancientwarfare:core/research_station_side");
-*/
         setHardness(2.f);
-    }
 
-/*
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int p_149691_1_, int p_149691_2_) {
-        return iconMap.getIconFor(p_149691_1_, p_149691_2_);
+        AncientWarfareCore.proxy.addClientRegistrar(this);
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister p_149651_1_) {
-        iconMap.registerIcons(p_149651_1_);
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer.Builder(this).add(BlockRenderProperties.UNLISTED_FACING).build();
     }
-*/
 
     @Override
-    public EnumBlockRenderType getRenderType(IBlockState state) {
-        return EnumBlockRenderType.ENTITYBLOCK_ANIMATED;
+    public int getMetaFromState(IBlockState state) {
+        return 0;
+    }
+
+    @Override
+    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        EnumFacing facing = EnumFacing.NORTH;
+        TileEntity tileentity = world.getTileEntity(pos);
+
+        if (tileentity instanceof TileResearchStation) {
+            facing = ((TileResearchStation) tileentity).getPrimaryFacing();
+        }
+
+        return ((IExtendedBlockState) super.getExtendedState(state, world, pos)).withProperty(BlockRenderProperties.UNLISTED_FACING, facing);
     }
 
     @Override
@@ -99,11 +112,31 @@ public class BlockResearchStation extends BlockBaseCore implements IRotatableBlo
         return true;
     }
 
-/*
     @Override
-    public Block setIcon(RelativeSide side, String texName) {
-        return this;
-    }
-*/
+    @SideOnly(Side.CLIENT)
+    public void registerClient() {
+        NetworkHandler.registerGui(NetworkHandler.GUI_RESEARCH_STATION, GuiResearchStation.class);
 
+        ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
+            @Override protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+                return ResearchStationRenderer.MODEL_LOCATION;
+            }
+        });
+
+        ModelRegistryHelper.register(ResearchStationRenderer.MODEL_LOCATION, new CCBakeryModel(AncientWarfareCore.modID + ":model/core/tile_research_station") {
+            @Override
+            public TextureAtlasSprite getParticleTexture() {
+                return ResearchStationRenderer.sprite;
+            }
+        });
+
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "normal"));
+
+        ModelBakery.registerBlockKeyGenerator(this, state -> state.getBlock().getRegistryName().toString() + "," + state.getValue(BlockRenderProperties.UNLISTED_FACING).toString());
+    }
+
+    @Override
+    public IBakery getBakery() {
+        return ResearchStationRenderer.INSTANCE;
+    }
 }

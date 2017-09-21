@@ -26,21 +26,21 @@ import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 
-public class EngineeringStationRenderer implements ISimpleBlockBakery {
+public class ResearchStationRenderer implements ISimpleBlockBakery {
 
-	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":engineering_station", "normal");
-	public static final EngineeringStationRenderer INSTANCE = new EngineeringStationRenderer();
+	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":research_station", "normal");
+	public static final ResearchStationRenderer INSTANCE = new ResearchStationRenderer();
 
 	private static CCModel model;
 	public static TextureAtlasSprite sprite;
 	private static IconTransformation iconTransform;
 
 	static {
-		model = OBJParser.parseModels(new ResourceLocation(AncientWarfareCore.modID, "models/block/engineering_station.obj"), 7, new RedundantTransformation())
+		model = OBJParser.parseModels(new ResourceLocation(AncientWarfareCore.modID, "models/block/research_station.obj"), 7, new RedundantTransformation())
 				.entrySet().iterator().next().getValue().backfacedCopy().computeNormals();
 	}
 
-	private EngineeringStationRenderer() {}
+	private ResearchStationRenderer() {}
 
 	public static void setSprite(TextureAtlasSprite textureAtlasSprite) {
 		sprite = textureAtlasSprite;

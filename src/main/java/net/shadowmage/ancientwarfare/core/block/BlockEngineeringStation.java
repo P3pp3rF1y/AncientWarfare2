@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.core.block;
 import codechicken.lib.model.ModelRegistryHelper;
 import codechicken.lib.model.bakery.CCBakeryModel;
 import codechicken.lib.model.bakery.IBakeryProvider;
+import codechicken.lib.model.bakery.ModelBakery;
 import codechicken.lib.model.bakery.generation.IBakery;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -13,15 +14,13 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.ChunkCache;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
@@ -37,28 +36,14 @@ public class BlockEngineeringStation extends BlockRotatableTile implements IClie
 
     protected BlockEngineeringStation() {
         super(Material.ROCK, "engineering_station");
-/*
-        setIcon(RelativeSide.ANY_SIDE, "ancientwarfare:core/engineering_station_bottom");
-        setIcon(RelativeSide.BOTTOM, "ancientwarfare:core/engineering_station_bottom");
-        setIcon(RelativeSide.TOP, "ancientwarfare:core/engineering_station_top");
-        setIcon(RelativeSide.FRONT, "ancientwarfare:core/engineering_station_front");
-        setIcon(RelativeSide.REAR, "ancientwarfare:core/engineering_station_front");
-        setIcon(RelativeSide.LEFT, "ancientwarfare:core/engineering_station_side");
-        setIcon(RelativeSide.RIGHT, "ancientwarfare:core/engineering_station_side");
-*/
         setHardness(2.f);
 
         AncientWarfareCore.proxy.addClientRegistrar(this);
     }
 
     @Override
-    public BlockRenderLayer getBlockLayer() {
-        return BlockRenderLayer.CUTOUT;
-    }
-
-    @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, BlockRenderProperties.FACING);
+        return new BlockStateContainer.Builder(this).add(BlockRenderProperties.UNLISTED_FACING).build();
     }
 
     @Override
@@ -67,15 +52,15 @@ public class BlockEngineeringStation extends BlockRotatableTile implements IClie
     }
 
     @Override
-    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
         EnumFacing facing = EnumFacing.NORTH;
-        TileEntity tileentity = worldIn instanceof ChunkCache ? ((ChunkCache)worldIn).getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK) : worldIn.getTileEntity(pos);
+        TileEntity tileentity = world.getTileEntity(pos);
 
         if (tileentity instanceof TileEngineeringStation) {
             facing = ((TileEngineeringStation) tileentity).getPrimaryFacing();
         }
 
-        return state.withProperty(BlockRenderProperties.FACING, facing);
+        return ((IExtendedBlockState) super.getExtendedState(state, world, pos)).withProperty(BlockRenderProperties.UNLISTED_FACING, facing);
     }
 
     @Override
@@ -143,9 +128,9 @@ public class BlockEngineeringStation extends BlockRotatableTile implements IClie
             }
         });
 
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "facing=north"));
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "normal"));
 
-        //TODO register blockkeygenerator?
+        ModelBakery.registerBlockKeyGenerator(this, state -> state.getBlock().getRegistryName().toString() + "," + state.getValue(BlockRenderProperties.UNLISTED_FACING).toString());
     }
 
     @Override

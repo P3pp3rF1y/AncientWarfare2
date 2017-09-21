@@ -10,5 +10,6 @@ public class TextureLoader {
 	@SubscribeEvent
 	public void onPreTextureStitch(TextureStitchEvent.Pre evt) {
 		EngineeringStationRenderer.setSprite(evt.getMap().registerSprite(new ResourceLocation(AncientWarfareCore.modID + ":model/core/tile_engineering_station")));
+		ResearchStationRenderer.setSprite(evt.getMap().registerSprite(new ResourceLocation(AncientWarfareCore.modID + ":model/core/tile_research_station")));
 	}
 }

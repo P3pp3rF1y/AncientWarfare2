@@ -35,7 +35,8 @@ import java.util.UUID;
                 name = "Ancient Warfare Core",
                 modid = AncientWarfareCore.modID,
                 version = "@VERSION@",
-                guiFactory = "net.shadowmage.ancientwarfare.core.gui.options.OptionsGuiFactory"
+                guiFactory = "net.shadowmage.ancientwarfare.core.gui.options.OptionsGuiFactory",
+                dependencies = "required-after:codechickenlib"
         )
 public class AncientWarfareCore {
 

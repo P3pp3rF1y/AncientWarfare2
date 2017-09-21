@@ -9,18 +9,13 @@ import net.minecraftforge.fml.client.config.GuiConfig;
 import net.minecraftforge.fml.client.config.GuiConfigEntries;
 import net.minecraftforge.fml.client.config.GuiConfigEntries.CategoryEntry;
 import net.minecraftforge.fml.client.config.IConfigElement;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.ConfigManager;
 import net.shadowmage.ancientwarfare.core.gui.GuiBackpack;
 import net.shadowmage.ancientwarfare.core.gui.GuiResearchBook;
-import net.shadowmage.ancientwarfare.core.gui.research.GuiResearchStation;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
-import net.shadowmage.ancientwarfare.core.model.crafting_table.ModelResearchStation;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.render.TextureLoader;
-import net.shadowmage.ancientwarfare.core.render.TileCraftingTableRender;
-import net.shadowmage.ancientwarfare.core.tile.TileResearchStation;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -41,13 +36,9 @@ public class ClientProxy extends ClientProxyBase {
 
         MinecraftForge.EVENT_BUS.register(InputHandler.instance);
         MinecraftForge.EVENT_BUS.register(new TextureLoader());
-        NetworkHandler.registerGui(NetworkHandler.GUI_RESEARCH_STATION, GuiResearchStation.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_BACKPACK, GuiBackpack.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_RESEARCH_BOOK, GuiResearchBook.class);
         InputHandler.instance.loadConfig();
-
-        TileCraftingTableRender render = new TileCraftingTableRender(new ModelResearchStation(), "textures/model/core/tile_research_station.png");
-        ClientRegistry.bindTileEntitySpecialRenderer(TileResearchStation.class, render);
 
         ConfigManager.registerConfigCategory(new DummyCategoryElement("awconfig.core_keybinds", "awconfig.core_keybinds", KeybindCategoryEntry.class));
 
