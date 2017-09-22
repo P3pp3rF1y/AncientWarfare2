@@ -111,6 +111,11 @@ public class BlockEngineeringStation extends BlockRotatableTile implements IClie
     }
 
     @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
     @SideOnly(Side.CLIENT)
     public void registerClient() {
         NetworkHandler.registerGui(NetworkHandler.GUI_CRAFTING, GuiEngineeringStation.class);

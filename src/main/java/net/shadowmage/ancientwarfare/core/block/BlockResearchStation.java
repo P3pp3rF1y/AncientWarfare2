@@ -103,6 +103,11 @@ public class BlockResearchStation extends BlockBaseCore implements IRotatableBlo
     }
 
     @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
     public RotationType getRotationType() {
         return RotationType.FOUR_WAY;
     }
