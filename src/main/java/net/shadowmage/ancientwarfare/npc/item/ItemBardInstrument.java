@@ -12,6 +12,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
 public class ItemBardInstrument extends ItemBaseNPC {
 
@@ -38,20 +39,6 @@ public class ItemBardInstrument extends ItemBaseNPC {
         return super.getUnlocalizedName(par1ItemStack) + "." + instrumentNames[par1ItemStack.getItemDamage()];
     }
 
-/*
-    @Override
-    public void registerIcons(IIconRegister par1IconRegister) {
-        for (int i = 0; i < instrumentNames.length; i++) {
-            icons[i] = par1IconRegister.registerIcon("ancientwarfare:npc/instrument_" + instrumentNames[i]);
-        }
-    }
-
-    @Override
-    public IIcon getIconFromDamage(int par1) {
-        return icons[par1];
-    }
-*/
-
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
         ItemStack stack = player.getHeldItem(hand);
@@ -74,5 +61,10 @@ public class ItemBardInstrument extends ItemBaseNPC {
     @Override
     public boolean onEntitySwing(EntityLivingBase living, ItemStack stack) {
         return true;
+    }
+
+    @Override
+    public void registerClient() {
+        ModelLoaderHelper.registerItem(this, "npc", false, meta -> "variant=" + instrumentNames[meta], false);
     }
 }

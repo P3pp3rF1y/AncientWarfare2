@@ -1,16 +1,20 @@
 package net.shadowmage.ancientwarfare.npc.proxy;
 
+import com.google.common.collect.Sets;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.SkinManager;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.fml.client.config.DummyConfigElement.DummyCategoryElement;
 import net.minecraftforge.fml.client.config.IConfigElement;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.shadowmage.ancientwarfare.core.config.ConfigManager;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
 import net.shadowmage.ancientwarfare.core.util.TextureImageBased;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.gui.GuiCombatOrder;
@@ -36,8 +40,27 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class NpcClientProxy extends NpcCommonProxy {
+
+    private Set<IClientRegistrar> clientRegistrars = Sets.newHashSet();
+
+    public NpcClientProxy() {
+        MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    @SubscribeEvent
+    public void registerModels(ModelRegistryEvent event) {
+        for(IClientRegistrar registrar : clientRegistrars) {
+            registrar.registerClient();
+        }
+    }
+
+    @Override
+    public void addClientRegistrar(IClientRegistrar registrar) {
+        clientRegistrars.add(registrar);
+    }
 
     @Override
     public void preInit() {

@@ -26,7 +26,7 @@ public class ClientProxyBase extends CommonProxyBase {
         }
     }
 
-        @Override
+    @Override
     public void addClientRegistrar(IClientRegistrar registrar) {
         clientRegistrars.add(registrar);
     }

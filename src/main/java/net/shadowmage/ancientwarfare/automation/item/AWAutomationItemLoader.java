@@ -50,30 +50,30 @@ public class AWAutomationItemLoader {
     public static void register(RegistryEvent.Register<Item> event) {
         IForgeRegistry<Item> registry = event.getRegistry();
 
-        AWItems.worksiteUpgrade = new ItemWorksiteUpgrade();
-        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.SIZE_MEDIUM.ordinal(), "ancientwarfare:automation/upgrade_bounds_medium");
-        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.SIZE_LARGE.ordinal(), "ancientwarfare:automation/upgrade_bounds_large");
-        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.QUARRY_MEDIUM.ordinal(), "ancientwarfare:automation/upgrade_quarry_medium");
-        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.QUARRY_LARGE.ordinal(), "ancientwarfare:automation/upgrade_quarry_large");
-        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.ENCHANTED_TOOLS_1.ordinal(), "ancientwarfare:automation/upgrade_enchanted_tools_1");
-        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.ENCHANTED_TOOLS_2.ordinal(), "ancientwarfare:automation/upgrade_enchanted_tools_2");
-        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.TOOL_QUALITY_1.ordinal(), "ancientwarfare:automation/upgrade_quality_tools_1");
-        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.TOOL_QUALITY_2.ordinal(), "ancientwarfare:automation/upgrade_quality_tools_2");
-        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.TOOL_QUALITY_3.ordinal(), "ancientwarfare:automation/upgrade_quality_tools_3");
-        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.BASIC_CHUNK_LOADER.ordinal(), "ancientwarfare:automation/upgrade_chunkloader_basic");
-        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.QUARRY_CHUNK_LOADER.ordinal(), "ancientwarfare:automation/upgrade_chunkloader_quarry");
+        AWItems.worksiteUpgrade = new ItemWorksiteUpgrade().listenToProxy(AncientWarfareAutomation.proxy);
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.SIZE_MEDIUM.ordinal(), "automation/worksite_upgrade#variant=bounds_medium");
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.SIZE_LARGE.ordinal(), "automation/worksite_upgrade#variant=bounds_large");
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.QUARRY_MEDIUM.ordinal(), "automation/worksite_upgrade#variant=quarry_medium");
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.QUARRY_LARGE.ordinal(), "automation/worksite_upgrade#variant=quarry_large");
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.ENCHANTED_TOOLS_1.ordinal(), "automation/worksite_upgrade#variant=enchanted_tools_1");
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.ENCHANTED_TOOLS_2.ordinal(), "automation/worksite_upgrade#variant=enchanted_tools_2");
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.TOOL_QUALITY_1.ordinal(), "automation/worksite_upgrade#variant=quality_tools_1");
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.TOOL_QUALITY_2.ordinal(), "automation/worksite_upgrade#variant=quality_tools_2");
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.TOOL_QUALITY_3.ordinal(), "automation/worksite_upgrade#variant=quality_tools_3");
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.BASIC_CHUNK_LOADER.ordinal(), "automation/worksite_upgrade#variant=chunkloader_basic");
+        AWItems.worksiteUpgrade.addSubItem(WorksiteUpgrade.QUARRY_CHUNK_LOADER.ordinal(), "automation/worksite_upgrade#variant=chunkloader_quarry");
 
         registry.register(AWItems.worksiteUpgrade);
 
-        AWItems.componentItem.addSubItem(ItemComponent.WOODEN_GEAR_SET, "ancientwarfare:automation/wooden_gear", "gearWood");
-        AWItems.componentItem.addSubItem(ItemComponent.IRON_GEAR_SET, "ancientwarfare:automation/iron_gear", "gearIron");
-        AWItems.componentItem.addSubItem(ItemComponent.STEEL_GEAR_SET, "ancientwarfare:automation/steel_gear", "gearSteel");
-        AWItems.componentItem.addSubItem(ItemComponent.WOODEN_BEARINGS, "ancientwarfare:automation/wooden_bearings", "bearingWood");
-        AWItems.componentItem.addSubItem(ItemComponent.IRON_BEARINGS, "ancientwarfare:automation/iron_bearings", "bearingIron");
-        AWItems.componentItem.addSubItem(ItemComponent.STEEL_BEARINGS, "ancientwarfare:automation/steel_bearings", "bearingSteel");
-        AWItems.componentItem.addSubItem(ItemComponent.WOODEN_TORQUE_SHAFT, "ancientwarfare:automation/wooden_shaft", "shaftWood");
-        AWItems.componentItem.addSubItem(ItemComponent.IRON_TORQUE_SHAFT, "ancientwarfare:automation/iron_shaft", "shaftIron");
-        AWItems.componentItem.addSubItem(ItemComponent.STEEL_TORQUE_SHAFT, "ancientwarfare:automation/steel_shaft", "shaftSteel");
+        AWItems.componentItem.addSubItem(ItemComponent.WOODEN_GEAR_SET, "automation/component#variant=wooden_gear", "gearWood");
+        AWItems.componentItem.addSubItem(ItemComponent.IRON_GEAR_SET, "automation/component#variant=iron_gear", "gearIron");
+        AWItems.componentItem.addSubItem(ItemComponent.STEEL_GEAR_SET, "automation/component#variant=steel_gear", "gearSteel");
+        AWItems.componentItem.addSubItem(ItemComponent.WOODEN_BEARINGS, "automation/component#variant=wooden_bearings", "bearingWood");
+        AWItems.componentItem.addSubItem(ItemComponent.IRON_BEARINGS, "automation/component#variant=iron_bearings", "bearingIron");
+        AWItems.componentItem.addSubItem(ItemComponent.STEEL_BEARINGS, "automation/component#variant=steel_bearings", "bearingSteel");
+        AWItems.componentItem.addSubItem(ItemComponent.WOODEN_TORQUE_SHAFT, "automation/component#variant=wooden_shaft", "shaftWood");
+        AWItems.componentItem.addSubItem(ItemComponent.IRON_TORQUE_SHAFT, "automation/component#variant=iron_shaft", "shaftIron");
+        AWItems.componentItem.addSubItem(ItemComponent.STEEL_TORQUE_SHAFT, "automation/component#variant=steel_shaft", "shaftSteel");
     }
 
     private static final Comparator sorter = new Comparator<ItemStack>() {

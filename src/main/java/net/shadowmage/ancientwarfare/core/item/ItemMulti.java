@@ -17,7 +17,6 @@ import java.util.Map;
 public class ItemMulti extends ItemBase implements IClientRegistrar {
 
     private final HashMap<Integer, String> subItems = new HashMap<>();
-//    private final HashMap<Integer, IIcon> subItemIcons = new HashMap<>();
 
     public ItemMulti(String modID, String regName) {
         super(modID, regName);
@@ -45,18 +44,6 @@ public class ItemMulti extends ItemBase implements IClientRegistrar {
         }
     }
 
-//    @Override
-//    public IIcon getIconFromDamage(int par1) {
-//        return subItemIcons.get(par1);
-//    }
-//
-//    @Override
-//    public void registerIcons(IIconRegister par1IconRegister) {
-//        for (Integer num : subItems.keySet()) {
-//            subItemIcons.put(num, par1IconRegister.registerIcon(subItems.get(num)));
-//        }
-//    }
-
     public void addSubItem(int num, String modelName) {
         if (!subItems.containsKey(num))
             subItems.put(num, modelName);
@@ -80,7 +67,7 @@ public class ItemMulti extends ItemBase implements IClientRegistrar {
     @Override
     public void registerClient() {
         for (Map.Entry<Integer, String> entry : subItems.entrySet()) {
-            ModelLoaderHelper.registerItem(this, entry.getKey(), entry.getValue(), "inventory");
+            ModelLoaderHelper.registerItem(this, entry.getKey(), entry.getValue());
         }
     }
 }
