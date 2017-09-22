@@ -1,5 +1,8 @@
 package net.shadowmage.ancientwarfare.npc.item;
 
+import com.google.common.collect.Maps;
+import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -14,6 +17,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.npc.entity.AWNPCEntityLoader;
@@ -22,12 +27,14 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Map;
 
 public class ItemNpcSpawner extends ItemBaseNPC {
 
+    private Map<String, String> modelVariants = Maps.newHashMap();
+
     public ItemNpcSpawner() {
         super("npc_spawner");
-        //this.setTextureName("ancientwarfare:npc/spawner_miner");
     }
 
     @Override
@@ -137,42 +144,18 @@ public class ItemNpcSpawner extends ItemBaseNPC {
         return "";
     }
 
-/*
-    */
-/*
-     * Npc type 'name' is full npc-type -- type.subtype
-     *//*
-
-    public void addNpcType(String name, String icon) {
-        iconNames.put(name, icon);
-    }
-*/
-
-/*
-    @Override
-    public void registerIcons(IIconRegister par1IconRegister) {
-        super.registerIcons(par1IconRegister);
-        IIcon icon;
-        for (String name : iconNames.keySet()) {
-            icon = par1IconRegister.registerIcon(iconNames.get(name));
-            iconMap.put(name, icon);
-        }
+    // Npc type 'name' is full npc-type -- type.subtype
+    public void addNpcType(String name, String modelVariant) {
+        modelVariants.put(name, modelVariant);
     }
 
     @Override
-    public IIcon getIconIndex(ItemStack stack) {
-        String type = getNpcType(stack);
-        String sub = getNpcSubtype(stack);
-        if (type != null) {
-            if (!sub.isEmpty()) {
-                type = type + "." + sub;
+    public void registerClient() {
+        ModelLoader.setCustomMeshDefinition(this, new ItemMeshDefinition() {
+            @Override
+            public ModelResourceLocation getModelLocation(ItemStack stack) {
+                return new ModelResourceLocation(AncientWarfareCore.modID + "npc/npc_spawner", "variant=" + modelVariants.get(getNpcType(stack) + "." + getNpcSubtype(stack)));
             }
-            if (iconMap.containsKey(type)) {
-                return iconMap.get(type);
-            }
-        }
-        return super.getIconIndex(stack);
+        });
     }
-*/
-
 }
