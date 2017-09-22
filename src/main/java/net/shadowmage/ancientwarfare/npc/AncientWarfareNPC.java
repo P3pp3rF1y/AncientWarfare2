@@ -38,7 +38,6 @@ import net.shadowmage.ancientwarfare.npc.container.ContainerWorkOrder;
 import net.shadowmage.ancientwarfare.npc.crafting.AWNpcCrafting;
 import net.shadowmage.ancientwarfare.npc.entity.AWNPCEntityLoader;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
-import net.shadowmage.ancientwarfare.npc.item.AWNPCItemLoader;
 import net.shadowmage.ancientwarfare.npc.network.PacketFactionUpdate;
 import net.shadowmage.ancientwarfare.npc.network.PacketNpcCommand;
 import net.shadowmage.ancientwarfare.npc.proxy.NpcCommonProxy;
@@ -107,8 +106,6 @@ public class AncientWarfareNPC {
     @EventHandler
     public void init(FMLInitializationEvent evt) {
         proxy.init();
-
-        AWNPCItemLoader.load();
 
         /*
          * construct recipes, load plugins

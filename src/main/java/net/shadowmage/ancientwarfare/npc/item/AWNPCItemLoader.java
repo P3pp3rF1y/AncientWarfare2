@@ -35,10 +35,6 @@ public class AWNPCItemLoader {
     };
     private static final String PREFIX = "ancientwarfare:npc/";
 
-    public static void load() {
-        AWItems.componentItem.addSubItem(ItemComponent.NPC_FOOD_BUNDLE, PREFIX + "food_bundle", "foodBundle");
-    }
-
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Item> event) {
         IForgeRegistry<Item> registry = event.getRegistry();
@@ -63,6 +59,8 @@ public class AWNPCItemLoader {
         registry.register(new ItemCombatOrder());
         registry.register(new ItemRoutingOrder());
         registry.register(new ItemTradeOrder());
+
+        AWItems.componentItem.addSubItem(ItemComponent.NPC_FOOD_BUNDLE, PREFIX + "food_bundle", "foodBundle");
     }
 
 

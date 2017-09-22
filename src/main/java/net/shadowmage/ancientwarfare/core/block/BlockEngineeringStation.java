@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -31,6 +30,7 @@ import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
 import net.shadowmage.ancientwarfare.core.render.BlockRenderProperties;
 import net.shadowmage.ancientwarfare.core.render.EngineeringStationRenderer;
 import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
+import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
 public class BlockEngineeringStation extends BlockRotatableTile implements IClientRegistrar, IBakeryProvider {
 
@@ -133,7 +133,7 @@ public class BlockEngineeringStation extends BlockRotatableTile implements IClie
             }
         });
 
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(getRegistryName(), "normal"));
+        ModelLoaderHelper.registerItem(this, "", "normal");
 
         ModelBakery.registerBlockKeyGenerator(this, state -> state.getBlock().getRegistryName().toString() + "," + state.getValue(BlockRenderProperties.UNLISTED_FACING).toString());
     }

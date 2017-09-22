@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.core.item;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -10,7 +9,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
-import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 
 import java.util.Locale;
 
@@ -49,12 +47,10 @@ public class AWCoreItemLoader {
         registry.register(new ItemQuill("gold_quill", ToolMaterial.GOLD));
         registry.register(new ItemQuill("diamond_quill", ToolMaterial.DIAMOND));
 
-        registry.register(new ItemComponent());
+        AWItems.componentItem = new ItemComponent().listenToProxy(AncientWarfareCore.proxy);
+        registry.register(AWItems.componentItem);
 
-        registry.register(new Item()
-                .setCreativeTab(AWCoreBlockLoader.coreTab)
-                .setUnlocalizedName("steel_ingot")
-                .setRegistryName(new ResourceLocation(AncientWarfareCore.modID, "steel_ingot")));
+        registry.register(new ItemBaseCore("steel_ingot") {});
     }
 
 //    public Item register(Item item, String name, String textPrefix) {

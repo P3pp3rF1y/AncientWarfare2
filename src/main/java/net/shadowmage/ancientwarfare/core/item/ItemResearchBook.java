@@ -11,6 +11,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
+import net.shadowmage.ancientwarfare.core.gui.GuiResearchBook;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
 import javax.annotation.Nullable;
@@ -56,5 +57,12 @@ public class ItemResearchBook extends ItemBaseCore {
             }
         }
         return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+    }
+
+    @Override
+    public void registerClient() {
+        super.registerClient();
+
+        NetworkHandler.registerGui(NetworkHandler.GUI_RESEARCH_BOOK, GuiResearchBook.class);
     }
 }

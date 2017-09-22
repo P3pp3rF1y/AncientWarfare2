@@ -12,9 +12,11 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
+import net.shadowmage.ancientwarfare.core.gui.GuiBackpack;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBackpack;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -74,4 +76,10 @@ public class ItemBackpack extends ItemBaseCore {
         }
     }
 
+    @Override
+    public void registerClient() {
+        ModelLoaderHelper.registerItem(this, "core", true);
+
+        NetworkHandler.registerGui(NetworkHandler.GUI_BACKPACK, GuiBackpack.class);
+    }
 }

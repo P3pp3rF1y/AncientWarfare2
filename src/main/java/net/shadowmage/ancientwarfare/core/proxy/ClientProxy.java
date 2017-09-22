@@ -11,10 +11,7 @@ import net.minecraftforge.fml.client.config.GuiConfigEntries.CategoryEntry;
 import net.minecraftforge.fml.client.config.IConfigElement;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.ConfigManager;
-import net.shadowmage.ancientwarfare.core.gui.GuiBackpack;
-import net.shadowmage.ancientwarfare.core.gui.GuiResearchBook;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
-import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.render.TextureLoader;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
@@ -36,8 +33,6 @@ public class ClientProxy extends ClientProxyBase {
 
         MinecraftForge.EVENT_BUS.register(InputHandler.instance);
         MinecraftForge.EVENT_BUS.register(new TextureLoader());
-        NetworkHandler.registerGui(NetworkHandler.GUI_BACKPACK, GuiBackpack.class);
-        NetworkHandler.registerGui(NetworkHandler.GUI_RESEARCH_BOOK, GuiResearchBook.class);
         InputHandler.instance.loadConfig();
 
         ConfigManager.registerConfigCategory(new DummyCategoryElement("awconfig.core_keybinds", "awconfig.core_keybinds", KeybindCategoryEntry.class));

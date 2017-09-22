@@ -36,7 +36,7 @@ public class ResearchStationRenderer implements ISimpleBlockBakery {
 	private static IconTransformation iconTransform;
 
 	static {
-		model = OBJParser.parseModels(new ResourceLocation(AncientWarfareCore.modID, "models/block/research_station.obj"), 7, new RedundantTransformation())
+		model = OBJParser.parseModels(new ResourceLocation(AncientWarfareCore.modID, "models/block/core/research_station.obj"), 7, new RedundantTransformation())
 				.entrySet().iterator().next().getValue().backfacedCopy().computeNormals();
 	}
 
