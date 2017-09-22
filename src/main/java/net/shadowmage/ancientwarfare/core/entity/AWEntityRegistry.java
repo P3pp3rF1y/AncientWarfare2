@@ -4,8 +4,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 
 public class AWEntityRegistry {
 
@@ -140,7 +140,7 @@ public class AWEntityRegistry {
     public static final String AW_GATES = "aw_gate";
 
     public static void registerEntity(EntityDeclaration reg) {
-        EntityRegistry.registerModEntity(new ResourceLocation(AncientWarfareCore.modID, reg.entityName), reg.entityClass, reg.entityName, reg.id, reg.mod(), reg.trackingRange(), reg.updateFrequency(), reg.sendsVelocityUpdates());
+        EntityRegistry.registerModEntity(new ResourceLocation(AncientWarfareNPC.modID, reg.entityName), reg.entityClass, reg.entityName, reg.id, reg.mod(), reg.trackingRange(), reg.updateFrequency(), reg.sendsVelocityUpdates());
     }
 
     /*
