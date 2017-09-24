@@ -26,7 +26,7 @@ BlockPosition controllerPosition = null;
 private boolean init;
 private InventoryBasic inventory;
 
-private List<WarehouseInterfaceFilter> filters = new ArrayList<WarehouseInterfaceFilter>();
+private List<WarehouseInterfaceFilter> filters = new ArrayList<>();
 
 public TileWarehouseOutput()
   {
@@ -52,15 +52,15 @@ public void invalidate()
   {  
   super.invalidate();
   this.init = false;
-  if(controllerPosition!=null && worldObj.blockExists(controllerPosition.x, controllerPosition.y, controllerPosition.z))
+  if(controllerPosition!=null && world.blockExists(controllerPosition.x, controllerPosition.y, controllerPosition.z))
     {
-    TileEntity te = worldObj.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
+    TileEntity te = world.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
     if(te instanceof WorkSiteWarehouse)
       {
       WorkSiteWarehouse warehouse = (WorkSiteWarehouse)te;
       BlockPosition min = warehouse.getWorkBoundsMin();
       BlockPosition max = warehouse.getWorkBoundsMax();
-      if(xCoord>=min.x && xCoord<=max.x && yCoord>=min.y && yCoord<=max.y && zCoord>=min.z && zCoord<=max.z)
+      if(x>=min.x && x<=max.x && y>=min.y && y<=max.y && z>=min.z && z<=max.z)
         {
         warehouse.removeOutputBlock(this);
         }
@@ -82,7 +82,7 @@ public void markDirty()
   super.markDirty();
   if(this.controllerPosition!=null)
     {
-    TileEntity te = worldObj.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
+    TileEntity te = world.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
     if(te instanceof WorkSiteWarehouse)
       {
       ((WorkSiteWarehouse) te).onOutputInventoryUpdated(this);
@@ -91,22 +91,22 @@ public void markDirty()
   }
 
 @Override
-public void updateEntity()
+public void update()
   {
   if(!init)
     {
     init = true;
-    for(TileEntity te : (List<TileEntity>)WorldTools.getTileEntitiesInArea(worldObj, xCoord-16, yCoord-4, zCoord-16, xCoord+16, yCoord+4, zCoord+16))
+    for(TileEntity te : (List<TileEntity>)WorldTools.getTileEntitiesInArea(world, x-16, y-4, z-16, x+16, y+4, z+16))
       {
       if(te instanceof WorkSiteWarehouse)
         {
         WorkSiteWarehouse warehouse = (WorkSiteWarehouse)te;
         BlockPosition min = warehouse.getWorkBoundsMin();
         BlockPosition max = warehouse.getWorkBoundsMax();
-        if(xCoord>=min.x && xCoord<=max.x && yCoord>=min.y && yCoord<=max.y && zCoord>=min.z && zCoord<=max.z)
+        if(x>=min.x && x<=max.x && y>=min.y && y<=max.y && z>=min.z && z<=max.z)
           {
           warehouse.addOutputBlock(this);
-          controllerPosition = new BlockPosition(warehouse.xCoord, warehouse.yCoord, warehouse.zCoord);
+          controllerPosition = new BlockPosition(warehouse.x, warehouse.y, warehouse.z);
           break;
           }
         }
@@ -119,7 +119,7 @@ public Packet getDescriptionPacket()
   {
   NBTTagCompound tag = new NBTTagCompound();
   tag.setTag("filterList", WarehouseInterfaceFilter.writeFilterList(filters));
-  S35PacketUpdateTileEntity pkt = new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);
+  S35PacketUpdateTileEntity pkt = new S35PacketUpdateTileEntity(x, y, z, 0, tag);
   return pkt;
   }
 
@@ -169,12 +169,12 @@ public void setFilters(List<WarehouseInterfaceFilter> filters)
   {
   this.filters.clear();
   this.filters.addAll(filters);
-  if(!this.worldObj.isRemote)
+  if(!this.world.isRemote)
     {
-    this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-    if(controllerPosition!=null && worldObj.blockExists(controllerPosition.x, controllerPosition.y, controllerPosition.z))
+    this.world.markBlockForUpdate(x, y, z);
+    if(controllerPosition!=null && world.blockExists(controllerPosition.x, controllerPosition.y, controllerPosition.z))
       {
-      TileEntity te = worldObj.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
+      TileEntity te = world.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
       if(te instanceof WorkSiteWarehouse)
         {
         WorkSiteWarehouse warehouse = (WorkSiteWarehouse)te;
@@ -266,9 +266,9 @@ public boolean isItemValidForSlot(int var1, ItemStack var2)
 @Override
 public boolean onBlockClicked(EntityPlayer player)
   {
-  if(!player.worldObj.isRemote)
+  if(!player.world.isRemote)
     {
-    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_OUTPUT, xCoord, yCoord, zCoord);
+    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_OUTPUT, x, y, z);
     }
   return true;
   }

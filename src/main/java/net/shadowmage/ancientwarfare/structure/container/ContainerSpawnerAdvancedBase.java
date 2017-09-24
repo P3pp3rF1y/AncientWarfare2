@@ -7,24 +7,25 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketGui;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 
-public abstract class ContainerSpawnerAdvancedBase extends ContainerBase
-{
+public abstract class ContainerSpawnerAdvancedBase extends ContainerBase {
 
-public SpawnerSettings settings;
+    public SpawnerSettings settings;
 
-public ContainerSpawnerAdvancedBase(EntityPlayer player, int x, int y, int z)
-  {
-  super(player, x, y, z);
-  }
+    public ContainerSpawnerAdvancedBase(EntityPlayer player) {
+        super(player);
+    }
 
-public void sendSettingsToServer()
-  {
-  NBTTagCompound tag = new NBTTagCompound();
-  settings.writeToNBT(tag);
-  
-  PacketGui pkt = new PacketGui();
-  pkt.packetData.setTag("spawnerSettings", tag);
-  NetworkHandler.sendToServer(pkt);
-  }
+    public void sendSettingsToServer() {
+        NetworkHandler.sendToServer(getSettingPacket());
+    }
+
+    public PacketGui getSettingPacket(){
+        NBTTagCompound tag = new NBTTagCompound();
+        settings.writeToNBT(tag);
+
+        PacketGui pkt = new PacketGui();
+        pkt.setTag("spawnerSettings", tag);
+        return pkt;
+    }
 
 }

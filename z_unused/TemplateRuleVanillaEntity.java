@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -91,7 +91,7 @@ public void parseRuleData(NBTTagCompound tag)
   }
 
 @Override
-public boolean shouldPlaceOnBuildPass(World world, int turns, int x, int y, int z, int buildPass)
+public boolean shouldPlaceOnBuildPass(World world, int turns, BlockPos pos, int buildPass)
   {
   return buildPass==3;
   }

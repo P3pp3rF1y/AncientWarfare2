@@ -21,27 +21,27 @@ public class GuiFileSelect extends GuiContainerAdvanced
 GuiContainerAdvanced parent;
 IFileSelectCallback fileCall;
 
-/**
+/*
  * cached displayable list of directory names in the current directory (displayed before files)
  */
-List<String> currentFiles = new ArrayList<String>();
+List<String> currentFiles = new ArrayList<>();
 
-/**
+/*
  * the display name of the current parent directory (used to click to go back)
  */
 String parentPathName = "";
 
-/**
+/*
  * the origin pathname when the gui was opened
  */
 String basePath = "";
 
-/**
+/*
  * current path, used to update all others relative to this
  */
 String currentPath = "";
 
-/**
+/*
  * entry string, used for manaul selection of a file (saving a file, etc)
  */
 String manalSelection = "";

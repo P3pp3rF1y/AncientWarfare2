@@ -1,35 +1,31 @@
 package net.shadowmage.ancientwarfare.core.item;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 
-public class ItemBlockOwned extends ItemBlock
-{
+public class ItemBlockOwned extends ItemBlockBase {
 
-public ItemBlockOwned(Block p_i45328_1_)
-  {
-  super(p_i45328_1_);
-  }
+    public ItemBlockOwned(Block block) {
+        super(block);
+    }
 
-@Override
-public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata)
-  {
-  boolean val = super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata);
-  if(val)
-    {
-    String name = player.getCommandSenderName();
-    TileEntity te = player.worldObj.getTileEntity(x, y, z);
-    if(te instanceof IOwnable)
-      {
-      ((IOwnable)te).setOwnerName(name);
-      }
-    }  
-  return val;
-  }
+    @Override
+    public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
+        boolean val = super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, newState);
+        if (val) {
+            TileEntity te = player.world.getTileEntity(pos);
+            if (te instanceof IOwnable) {
+                ((IOwnable) te).setOwner(player);
+            }
+        }
+        return val;
+    }
 
 }

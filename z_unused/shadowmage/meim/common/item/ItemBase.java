@@ -12,7 +12,7 @@ import shadowmage.ancient_framework.common.utils.BlockPosition;
 public abstract class ItemBase extends Item
 {
 
-protected List<ItemStack> subTypes = new ArrayList<ItemStack>();
+protected List<ItemStack> subTypes = new ArrayList<>();
 
 public ItemBase(int itemID)
   {

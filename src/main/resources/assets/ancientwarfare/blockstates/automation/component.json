@@ -1,0 +1,56 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "builtin/generated",
+        "transform": "forge:default-item"
+    },
+    "variants": {
+        "variant": {
+            "wooden_gear": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/automation/wooden_gear"
+                }
+            },
+            "iron_gear": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/automation/iron_gear"
+                }
+            },
+            "steel_gear": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/automation/steel_gear"
+                }
+            },
+            "wooden_bearings": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/automation/wooden_bearings"
+                }
+            },
+            "iron_bearings": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/automation/iron_bearings"
+                }
+            },
+            "steel_bearings": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/automation/steel_bearings"
+                }
+            },
+            "wooden_shaft": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/automation/wooden_shaft"
+                }
+            },
+            "iron_shaft": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/automation/iron_shaft"
+                }
+            },
+            "steel_shaft": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/automation/steel_shaft"
+                }
+            }
+        }
+    }
+}

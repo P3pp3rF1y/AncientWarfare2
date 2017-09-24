@@ -1,47 +1,39 @@
+//TODO world capability
 package net.shadowmage.ancientwarfare.core.gamedata;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.storage.WorldSavedData;
 
-public class WorldData extends WorldSavedData
-{
-public static final String name = "AWWorldData";
+public class WorldData extends WorldSavedData {
 
-NBTTagCompound dataTag = new NBTTagCompound();
+    NBTTagCompound dataTag = new NBTTagCompound();
 
-/**
- * reflection constructor for mc-vanilla code
- * @param p_i2141_1_
- */
-public WorldData(String p_i2141_1_)
-  {
-  super(name);
-  }
+    /*
+     * reflection constructor for mc-vanilla code
+     */
+    public WorldData(String par) {
+        super(par);
+    }
 
-public WorldData()
-  {
-  this(name);
-  }
+    public final boolean get(String key) {
+        return dataTag.getBoolean(key);
+    }
 
-public final boolean get(String key){return dataTag.getBoolean(key);}
+    public final void set(String name, boolean val) {
+        dataTag.setBoolean(name, val);
+        markDirty();
+    }
 
-public final void set(String name, boolean val)
-  {
-  dataTag.setBoolean(name, val);
-  markDirty();
-  }
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+        this.dataTag = tag.getCompoundTag("AWWorldData");
+    }
 
-@Override
-public void readFromNBT(NBTTagCompound tag)
-  {
-  this.dataTag = tag.getCompoundTag("AWWorldData");
-  }
-
-@Override
-public void writeToNBT(NBTTagCompound tag)
-  {
-  tag.setTag("AWWorldData", this.dataTag);
-  }
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+        tag.setTag("AWWorldData", this.dataTag);
+        return tag;
+    }
 
 
 }

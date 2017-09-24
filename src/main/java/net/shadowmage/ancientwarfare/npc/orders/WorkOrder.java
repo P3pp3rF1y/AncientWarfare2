@@ -1,219 +1,198 @@
 package net.shadowmage.ancientwarfare.npc.orders;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
+import net.minecraftforge.common.util.INBTSerializable;
+import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
+import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.core.util.OrderingList;
+import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.npc.item.ItemWorkOrder;
 
-public class WorkOrder extends NpcOrders
-{
+import java.util.List;
 
-private WorkPriorityType priorityType = WorkPriorityType.ROUTE;
+public class WorkOrder extends OrderingList<WorkOrder.WorkEntry> implements INBTSerializable<NBTTagCompound> {
+    public static final int MAX_SIZE = 8;
+    private WorkPriorityType priorityType = WorkPriorityType.ROUTE;
+    private boolean nightShift;
 
-private List<WorkEntry> entries = new ArrayList<WorkEntry>();
-
-@Override
-public void readFromNBT(NBTTagCompound tag)
-  {
-  entries.clear();
-  NBTTagList entryList = tag.getTagList("entryList", Constants.NBT.TAG_COMPOUND);
-  WorkEntry entry;
-  for(int i = 0; i< entryList.tagCount(); i++)
-    {
-    entry = new WorkEntry();
-    entry.readFromNBT(entryList.getCompoundTagAt(i));
-    entries.add(entry);
+    public boolean isNightShift(){
+        return nightShift;
     }
-  priorityType = WorkPriorityType.values()[tag.getInteger("priorityType")];
-  }
 
-@Override
-public NBTTagCompound writeToNBT(NBTTagCompound tag)
-  {
-  NBTTagList entryList = new NBTTagList();
-  for(WorkEntry entry : entries)
-    {
-    entryList.appendTag(entry.writeToNBT(new NBTTagCompound()));
+    public void toggleShift(){
+        nightShift = !nightShift;
     }
-  tag.setTag("entryList", entryList);
-  tag.setInteger("priorityType", priorityType.ordinal());
-  return tag;
-  }
 
-public WorkPriorityType getPriorityType()
-  {
-  return priorityType;
-  }
-
-public List<WorkEntry> getEntries()
-  {
-  return entries;
-  }
-
-public boolean addWorkPosition(World world, BlockPosition position, int length)
-  {
-  if(entries.size()<8)
-    {
-    entries.add(new WorkEntry(world, position, world.provider.dimensionId, length));
-    return true;
+    public WorkPriorityType getPriorityType() {
+        return priorityType;
     }
-  return false;//return true if successfully added
-  }
 
-public void removePosition(int index)
-  {
-  if(index>=0 && index<entries.size())
-    {
-    entries.remove(index);    
+    public List<WorkEntry> getEntries() {
+        return points;
     }
-  }
 
-public void incrementPosition(int index)
-  {
-  if(index>=1 && index<entries.size())
-    {
-    WorkEntry entry = entries.remove(index);
-    entries.add(index-1, entry);
+    //return true if successfully added
+    public boolean addWorkPosition(World world, BlockPos position) {
+        if (position != null && size() < MAX_SIZE) {
+            add(new WorkEntry(position, world.provider.getDimension(), 0));
+            return true;
+        }
+        return false;
     }
-  }
 
-public void decrementPosition(int index)
-  {
-  if(index>=0 && index<entries.size()-1)
-    {
-    WorkEntry entry = entries.remove(index);
-    entries.add(index+1, entry);
+    @Override
+    public String toString() {
+        return "Work Orders size: " + size() + " of type: " + priorityType;
     }
-  }
 
-@Override
-public String toString()
-  {
-  return "Work Orders size: "+entries.size()+" of type: "+priorityType;
-  }
-
-public static WorkOrder getWorkOrder(ItemStack stack)
-  {
-  if(stack!=null && stack.getItem()==AWNpcItemLoader.workOrder)
-    {
-    WorkOrder order = new WorkOrder();
-    if(stack.hasTagCompound() && stack.getTagCompound().hasKey("orders"))
-      {
-      order.readFromNBT(stack.getTagCompound().getCompoundTag("orders"));
-      }
-    return order;
+    public static WorkOrder getWorkOrder(ItemStack stack) {
+        if (!stack.isEmpty() && stack.getItem() instanceof ItemWorkOrder) {
+            WorkOrder order = new WorkOrder();
+            if (stack.hasTagCompound() && stack.getTagCompound().hasKey("orders")) {
+                order.deserializeNBT(stack.getTagCompound().getCompoundTag("orders"));
+            }
+            return order;
+        }
+        return null;
     }
-  return null;
-  }
 
-public static void writeWorkOrder(ItemStack stack, WorkOrder order)
-  {
-  if(stack!=null && stack.getItem()==AWNpcItemLoader.workOrder)
-    {
-    stack.setTagInfo("orders", order.writeToNBT(new NBTTagCompound()));
+    public void write(ItemStack stack) {
+        if (!stack.isEmpty() && stack.getItem() instanceof ItemWorkOrder) {
+            stack.setTagInfo("orders", serializeNBT());
+        }
     }
-  }
 
-public static final class WorkEntry
-{
+    public void togglePriority() {
+        WorkPriorityType[] type = WorkPriorityType.values();
+        priorityType = type[(priorityType.ordinal() + 1) % type.length];
+    }
 
-private Block block;
-int blockMeta;
-private BlockPosition position = new BlockPosition();
-int dimension;
-private int workLength;
+    @Override
+    public NBTTagCompound serializeNBT() {
+        NBTTagCompound tag = new NBTTagCompound();
+        NBTTagList entryList = new NBTTagList();
+        for (WorkEntry entry : points) {
+            entryList.appendTag(entry.writeToNBT(new NBTTagCompound()));
+        }
+        tag.setTag("entryList", entryList);
+        tag.setInteger("priorityType", priorityType.ordinal());
+        tag.setBoolean("nightShift", nightShift);
+        return tag;
+    }
 
-private WorkEntry(){}//nbt constructor
+    @Override
+    public void deserializeNBT(NBTTagCompound tag) {
+        clear();
+        NBTTagList entryList = tag.getTagList("entryList", Constants.NBT.TAG_COMPOUND);
+        for (int i = 0; i < entryList.tagCount(); i++) {
+            add(new WorkEntry(entryList.getCompoundTagAt(i)));
+        }
+        priorityType = WorkPriorityType.values()[tag.getInteger("priorityType")];
+        nightShift = tag.getBoolean("nightShift");
+    }
 
-public WorkEntry(World world, BlockPosition position, int dimension, int workLength)
-  {
-  this.setBlock(world.getBlock(position.x, position.y, position.z));
-  this.blockMeta = world.getBlockMetadata(position.x, position.y, position.z);
-  this.setPosition(position);
-  this.dimension = dimension;
-  this.setWorkLength(workLength);
-  }
+    public static final class WorkEntry {
 
-public void readFromNBT(NBTTagCompound tag)
-  {
-  setPosition(new BlockPosition(tag.getCompoundTag("pos")));
-  dimension = tag.getInteger("dim");
-  setWorkLength(tag.getInteger("length"));
-  setBlock(Block.getBlockFromName(tag.getString("block")));
-  blockMeta = tag.getInteger("blockMeta");
-  }
+        private BlockPos position;
+        int dimension;
+        private int workLength;
 
-public NBTTagCompound writeToNBT(NBTTagCompound tag)
-  {
-  tag.setTag("pos", getPosition().writeToNBT(new NBTTagCompound()));
-  tag.setInteger("dim", dimension);
-  tag.setInteger("length", getWorkLength());
-  tag.setString("block", Block.blockRegistry.getNameForObject(getBlock()));
-  tag.setInteger("blockMeta", blockMeta);
-  return tag;
-  }
+        private WorkEntry(NBTTagCompound tag) {
+            readFromNBT(tag);
+        }//nbt constructor
 
-/**
- * @return the block
- */
-public Block getBlock()
-  {
-  return block;
-  }
+        public WorkEntry(BlockPos position, int dimension, int workLength) {
+            this.setPosition(position);
+            this.dimension = dimension;
+            this.setWorkLength(workLength);
+        }
 
-/**
- * @param block the block to set
- */
-public void setBlock(Block block)
-  {
-  this.block = block;
-  }
+        public void readFromNBT(NBTTagCompound tag) {
+            setPosition(BlockPos.fromLong(tag.getLong("pos")));
+            dimension = tag.getInteger("dim");
+            setWorkLength(tag.getInteger("length"));
+        }
 
-/**
- * @return the position
- */
-public BlockPosition getPosition()
-  {
-  return position;
-  }
+        public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+            tag.setLong("pos", getPosition().toLong());
+            tag.setInteger("dim", dimension);
+            tag.setInteger("length", getWorkLength());
+            return tag;
+        }
 
-/**
- * @param position the position to set
- */
-public void setPosition(BlockPosition position)
-  {
-  this.position = position;
-  }
+        /*
+         * @return the block
+         */
+        public Block getBlock(World world) {
+            return world.getBlockState(getPosition()).getBlock();
+        }
 
-/**
- * @return the workLength
- */
-public int getWorkLength()
-  {
-  return workLength;
-  }
+        /*
+         * @return the position
+         */
+        public BlockPos getPosition() {
+            return position;
+        }
 
-/**
- * @param workLength the workLength to set
- */
-public void setWorkLength(int workLength)
-  {
-  this.workLength = workLength;
-  }
-}
+        /*
+         * @param position the position to set
+         */
+        public void setPosition(BlockPos position) {
+            this.position = position;
+        }
 
-public static enum WorkPriorityType
-{
-PRIORITY_LIST,
-ROUTE,
-TIMED
-}
+        /*
+         * @return the workLength
+         */
+        public int getWorkLength() {
+            return workLength;
+        }
+
+        /*
+         * @param workLength the workLength to set
+         */
+        public void setWorkLength(int workLength) {
+            this.workLength = workLength;
+        }
+    }
+
+    public enum WorkPriorityType {
+        SITE_NEED{
+            @Override
+            public int getNextWorkIndex(int current, List<WorkEntry> orders, NpcBase npc){
+                for (int i = 0; i < orders.size(); i++) {
+                    BlockPos pos = orders.get(i).getPosition();
+                    TileEntity te = npc.world.getTileEntity(pos);
+                    if (te instanceof IWorkSite) {
+                        IWorkSite site = (IWorkSite) te;
+                        if (((IWorker)npc).canWorkAt(site.getWorkType()) && site.hasWork()) {
+                            return i;
+                        }
+                    }
+                }
+                return 0;
+            }
+        },
+        ROUTE,
+        TIMED;
+
+        public int getNextWorkIndex(int current, List<WorkEntry> orders, NpcBase npcBase){
+            if(current+1>=orders.size()){
+                return 0;
+            }
+            return current+1;
+        }
+
+        public boolean isTimed(){
+            return this == TIMED;
+        }
+    }
 
 }

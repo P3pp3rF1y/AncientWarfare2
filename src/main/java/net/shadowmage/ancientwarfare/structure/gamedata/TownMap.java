@@ -1,113 +1,88 @@
 package net.shadowmage.ancientwarfare.structure.gamedata;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.world.World;
-import net.minecraft.world.WorldSavedData;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 
-public class TownMap extends WorldSavedData
-{
+import java.util.ArrayList;
+import java.util.List;
 
-public static final String NAME = "AWTownMap";
+public class TownMap extends WorldSavedData {
 
-private List<StructureBB> boundingBoxes = new ArrayList<StructureBB>();
+    private List<StructureBB> boundingBoxes = new ArrayList<>();
 
-public TownMap(String name)
-  {
-  super(name);
-  }
-
-public TownMap()
-  {
-  this(NAME);
-  }
-
-public void setGenerated(World world, StructureBB bb)
-  {
-  boundingBoxes.add(bb);
-  markDirty();
-  }
-
-/**
- * return the distance of the closest found town or defaultVal if no town was found closer
- * @param world
- * @param bx
- * @param bz
- * @param defaultVal
- * @return
- */
-public float getClosestTown(World world, int bx, int bz, float defaultVal)
-  {
-  float distance = defaultVal;
-  float d;  
-  List<StructureBB> bbs = boundingBoxes;
-  if(bbs!=null && !bbs.isEmpty())
-    {
-    for(StructureBB bb : bbs)
-      {
-      d = Trig.getDistance(bx, 0, bz, bb.getCenterX(), 0, bb.getCenterZ());
-      if(d<distance){distance = d;}
-      }
+    public TownMap(String name) {
+        super(name);
     }
-  return distance;
-  }
 
-public boolean isChunkInUse(World world, int cx, int cz)
-  {
-  List<StructureBB> bbs = boundingBoxes;
-  if(bbs!=null && !bbs.isEmpty())
-    {
-    cx *= 16;
-    cz *= 16;
-    for(StructureBB bb : bbs)
-      {
-      if(bb.isPositionInBoundingBox(cx, bb.min.y, cz)){return true;}
-      }
+    public void setGenerated(StructureBB bb) {
+        boundingBoxes.add(bb);
+        markDirty();
     }
-  return false;
-  }
 
-public boolean intersectsWithTown(World world, StructureBB bb)
-  {
-  for(StructureBB tbb : boundingBoxes)
-    {
-    if(tbb.collidesWith(bb))
-      {
-      return true;
-      }
+    /*
+     * return the distance of the closest found town or defaultVal if no town was found closer
+     */
+    public float getClosestTown(int bx, int bz, float defaultVal) {
+        float distance = defaultVal;
+        float d;
+        if (boundingBoxes!=null) {
+            for (StructureBB bb : boundingBoxes) {
+                d = Trig.getDistance(bx, 0, bz, bb.getCenterX(), 0, bb.getCenterZ());
+                if (d < distance) {
+                    distance = d;
+                }
+            }
+        }
+        return distance;
     }
-  return false;
-  }
 
-@Override
-public void readFromNBT(NBTTagCompound tag)
-  {
-  StructureBB bb;
-  NBTTagList list = tag.getTagList("boundingBoxes", Constants.NBT.TAG_COMPOUND);
-  for(int i = 0; i< list.tagCount(); i++)
-    {
-    bb = new StructureBB(new BlockPosition(), new BlockPosition());
-    bb.readFromNBT(list.getCompoundTagAt(i));
-    boundingBoxes.add(bb);
+    public boolean isChunkInUse(int cx, int cz) {
+        if (!boundingBoxes.isEmpty()) {
+            cx *= 16;
+            cz *= 16;
+            for (StructureBB bb : boundingBoxes) {
+                if (bb.isPositionIn(cx, bb.min.getY(), cz)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
-  }
 
-@Override
-public void writeToNBT(NBTTagCompound tag)
-  {
-  NBTTagList list = new NBTTagList();
-  for(StructureBB bb : boundingBoxes)
-    {
-    list.appendTag(bb.writeToNBT(new NBTTagCompound()));
+    public boolean intersectsWithTown(StructureBB bb) {
+        for (StructureBB tbb : boundingBoxes) {
+            if (tbb.crossWith(bb)) {
+                return true;
+            }
+        }
+        return false;
     }
-  tag.setTag("boundingBoxes", list);
-  }
+
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+        StructureBB bb;
+        NBTTagList list = tag.getTagList("boundingBoxes", Constants.NBT.TAG_COMPOUND);
+        boundingBoxes.clear();
+        for (int i = 0; i < list.tagCount(); i++) {
+            bb = new StructureBB(BlockPos.ORIGIN, BlockPos.ORIGIN);
+            bb.deserializeNBT(list.getCompoundTagAt(i));
+            boundingBoxes.add(bb);
+        }
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+        NBTTagList list = new NBTTagList();
+        for (StructureBB bb : boundingBoxes) {
+            list.appendTag(bb.serializeNBT());
+        }
+        tag.setTag("boundingBoxes", list);
+        return tag;
+    }
 
 }

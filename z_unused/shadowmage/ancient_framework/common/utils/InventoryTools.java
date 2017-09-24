@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -79,7 +79,7 @@ public static void readInventoryFromTag(IInventory inventory, NBTTagCompound tag
 
 public static List<ItemStackWrapper> getCompactInventoryFromTag(NBTTagCompound tag)
   {
-  ArrayList<ItemStackWrapper> stacks = new ArrayList<ItemStackWrapper>();
+  ArrayList<ItemStackWrapper> stacks = new ArrayList<>();
   NBTTagList list = tag.getTagList("items");  
   for(int i = 0; i < list.tagCount(); i++)
     {
@@ -102,7 +102,7 @@ public static NBTTagCompound getTagForCompactInventory(List<ItemStackWrapper> it
 
 public static List<ItemStackWrapper> getCompactedInventory(IInventory inv, Comparator<ItemStackWrapper> sorter)
   {
-  ArrayList<ItemStackWrapper> stacks = new ArrayList<ItemStackWrapper>();
+  ArrayList<ItemStackWrapper> stacks = new ArrayList<>();
   ItemStack fromInv;
   ItemStackWrapper fromList;  
   for(int i = 0; i < inv.getSizeInventory(); i++)
@@ -117,7 +117,7 @@ public static List<ItemStackWrapper> getCompactedInventory(IInventory inv, Compa
       if(fromList.equals(fromInv))
         {
         found = true;
-        fromList.getFilter().stackSize+=fromInv.stackSize;
+        fromList.getFilter().grow(fromInv.getCount());
         //found item, increment counts
         break;
         }
@@ -159,7 +159,7 @@ public static NBTTagCompound writeItemStackToTag(ItemStack stack, NBTTagCompound
   {
   tag.setShort("id", (short) stack.itemID);
   tag.setShort("Damage", (short) stack.getItemDamage());
-  tag.setInteger("ICount", stack.stackSize);
+  tag.setInteger("ICount", stack.getCount());
   if(stack.hasTagCompound())
     {
     tag.setCompoundTag("tag", stack.getTagCompound());
@@ -189,7 +189,7 @@ public static int getFoodValue(IInventory inv, int firstSlot, int lastSlot)
     if(fromSlot==null){continue;}
     if(fromSlot.getItem() instanceof ItemFood && fromSlot.itemID != Item.rottenFlesh.itemID)
       {
-      foodValue += ((ItemFood)fromSlot.getItem()).getHealAmount() * fromSlot.stackSize;
+      foodValue += ((ItemFood)fromSlot.getItem()).getHealAmount() * fromSlot.getCount();
       }
     }
   return foodValue;
@@ -208,11 +208,11 @@ public static void tryRemoveFoodValue(IInventory inv, int firstSlot, int lastSlo
       {
       perItem = ((ItemFood)fromSlot.getItem()).getHealAmount();
       if(perItem<=0){continue;}
-      stackValue = perItem * fromSlot.stackSize;
+      stackValue = perItem * fromSlot.getCount();
       if(stackValue > foodValue)
         {
         int remaining = stackValue - foodValue;
-        fromSlot.stackSize = remaining/perItem;
+        fromSlot.setCount(remaining/perItem)
         foodValue = 0;
         }
       else
@@ -220,7 +220,7 @@ public static void tryRemoveFoodValue(IInventory inv, int firstSlot, int lastSlo
         foodValue-=stackValue;
         inv.setInventorySlotContents(i, null);
         }
-      if(fromSlot.stackSize==0)
+      if(fromSlot.getCount()==0)
         {
         inv.setInventorySlotContents(i, null);
         }
@@ -246,7 +246,7 @@ public static int getCountOf(IInventory inv, ItemStack filter, int[] slotIndices
     if(fromSlot==null){continue;}
     if(doItemsMatch(fromSlot, filter))
       {
-      qtyFound += fromSlot.stackSize;
+      qtyFound += fromSlot.getCount();
       }
     }
   return qtyFound;
@@ -268,7 +268,7 @@ public static int getCountOf(IInventory inv, ItemStack filter, int firstSlot, in
     if(fromSlot==null){continue;}
     if(doItemsMatch(fromSlot, filter))
       {
-      qtyFound += fromSlot.stackSize;
+      qtyFound += fromSlot.getCount();
       }
     }
   return qtyFound;
@@ -290,10 +290,10 @@ public static int tryRemoveItems(IInventory inv, ItemStack filter, int qty, int 
     if(fromSlot==null){continue;}
     if(fromSlot.itemID==filter.itemID && fromSlot.getItemDamage()==filter.getItemDamage() && ItemStack.areItemStackTagsEqual(fromSlot, filter))
       {
-      int howMany = fromSlot.stackSize > qty? qty : fromSlot.stackSize;
+      int howMany = fromSlot.getCount() > qty? qty : fromSlot.getCount();
       qtyLeft -= howMany;
-      fromSlot.stackSize-= howMany;
-      if(fromSlot.stackSize<=0)
+      fromSlot.shrink( howMany);
+      if(fromSlot.getCount() <=0)
         {
         inv.setInventorySlotContents(i, null);
         }
@@ -322,10 +322,10 @@ public static int tryRemoveItems(IInventory inv, ItemStack filter, int qty, int 
     if(fromSlot==null){continue;}
     if(fromSlot.itemID==filter.itemID && fromSlot.getItemDamage()==filter.getItemDamage() && ItemStack.areItemStackTagsEqual(fromSlot, filter))
       {
-      int howMany = fromSlot.stackSize > qty? qty : fromSlot.stackSize;
+      int howMany = fromSlot.getCount() > qty? qty : fromSlot.getCount();
       qtyLeft -= howMany;
-      fromSlot.stackSize-= howMany;
-      if(fromSlot.stackSize<=0)
+      fromSlot.shrink( howMany);
+      if(fromSlot.getCount() <=0)
         {
         inv.setInventorySlotContents(slot, null);
         }
@@ -356,24 +356,24 @@ public static ItemStack getItems(IInventory inv, ItemStack filter, int max, int 
         if(toReturn==null)
           {
           toReturn = ItemStack.copyItemStack(fromSlot);
-          toReturn.stackSize = 0;
+          toReturn.setCount(0)
           }
-        int howMany = max - toReturn.stackSize;
-        howMany = toReturn.stackSize + howMany > toReturn.getMaxStackSize() ? toReturn.getMaxStackSize()-toReturn.stackSize : howMany;
-        howMany = howMany > fromSlot.stackSize? fromSlot.stackSize : howMany;
+        int howMany = max - toReturn.getCount();
+        howMany = toReturn.getCount() + howMany > toReturn.getMaxStackSize() ? toReturn.getMaxStackSize()-toReturn.getCount() : howMany;
+        howMany = howMany > fromSlot.getCount()? fromSlot.getCount() : howMany;
         if(howMany==0)
           {
           continue;
           }
-        fromSlot.stackSize-=howMany;
-        toReturn.stackSize+=howMany;
-        if(fromSlot.stackSize==0)
+        fromSlot.shrink(howMany);
+        toReturn.grow(howMany);
+        if(fromSlot.getCount()==0)
           {
           inv.setInventorySlotContents(i, null);
           }
         }
       }
-    if(toReturn!=null && (toReturn.stackSize>=max || toReturn.stackSize>=toReturn.getMaxStackSize()))//found 'enough', return
+    if(toReturn!=null && (toReturn.getCount()>=max || toReturn.getCount()>=toReturn.getMaxStackSize()))//found 'enough', return
       {
       break;
       }
@@ -460,12 +460,12 @@ public static ItemStack tryMergeStack(IInventory inv, ItemStack toMerge, int[] s
       }
     else if(fromSlot.itemID==toMerge.itemID && fromSlot.getItemDamage()==toMerge.getItemDamage() && ItemStack.areItemStackTagsEqual(fromSlot, toMerge))
       {
-      int decrAmt = fromSlot.getMaxStackSize() - fromSlot.stackSize;
-      decrAmt = decrAmt > toMerge.stackSize ? toMerge.stackSize : decrAmt;
-      toMerge.stackSize -= decrAmt;
-      fromSlot.stackSize +=decrAmt;
+      int decrAmt = fromSlot.getMaxStackSize() - fromSlot.getCount();
+      decrAmt = decrAmt > toMerge.getCount() ? toMerge.getCount() : decrAmt;
+      toMerge.shrink(decrAmt);
+      fromSlot.grow(decrAmt);
       }
-    if(toMerge.stackSize<=0)
+    if(toMerge.getCount() <=0)
       {  
       return null;
       }
@@ -481,7 +481,7 @@ public static ItemStack tryMergeStack(IInventory inv, ItemStack toMerge, int[] s
       return null;
       }
     }
-  if(toMerge!=null && toMerge.stackSize<=0)
+  if(toMerge!=null && toMerge.getCount() <=0)
     {  
     return null;
     }
@@ -507,7 +507,7 @@ public static boolean canHoldItem(IInventory inv, ItemStack filter, int qty, int
       {
       if(fromSlot.itemID==filter.itemID && fromSlot.getItemDamage()==filter.getItemDamage() && ItemStack.areItemStackTagsEqual(fromSlot, filter))
         {
-        qtyLeft -= fromSlot.getMaxStackSize()-fromSlot.stackSize;
+        qtyLeft -= fromSlot.getMaxStackSize()-fromSlot.getCount();
         }
       }
     if(qtyLeft<=0)
@@ -537,7 +537,7 @@ public static boolean canHoldItem(IInventory inv, ItemStack filter, int qty, int
       {
       if(fromSlot.itemID==filter.itemID && fromSlot.getItemDamage()==filter.getItemDamage() && ItemStack.areItemStackTagsEqual(fromSlot, filter))
         {
-        qtyLeft -= fromSlot.getMaxStackSize()-fromSlot.stackSize;
+        qtyLeft -= fromSlot.getMaxStackSize()-fromSlot.getCount();
         }
       }
     if(qtyLeft<=0)
@@ -567,7 +567,7 @@ public static boolean containsAtLeast(IInventory inv, ItemStack filter, int qty,
       }
     if(fromSlot.itemID==filter.itemID && fromSlot.getItemDamage()==filter.getItemDamage() && ItemStack.areItemStackTagsEqual(filter, fromSlot))
       {
-      foundQty += fromSlot.stackSize;
+      foundQty += fromSlot.getCount();
       if(foundQty>=qty)
         {
         return true;
@@ -596,7 +596,7 @@ public static boolean containsAtLeast(IInventory inv, ItemStack filter, int qty,
       }
     if(fromSlot.itemID==filter.itemID && fromSlot.getItemDamage()==filter.getItemDamage() && ItemStack.areItemStackTagsEqual(filter, fromSlot))
       {
-      foundQty += fromSlot.stackSize;
+      foundQty += fromSlot.getCount();
       if(foundQty>=qty)
         {
         return true;
@@ -630,7 +630,7 @@ public static int canHoldMore(IInventory inv, ItemStack filter, int firstSlot, i
         {
         if(fromSlot.itemID==filter.itemID && fromSlot.getItemDamage()==filter.getItemDamage() && ItemStack.areItemStackTagsEqual(filter, fromSlot))
           {
-          availCount += filter.getMaxStackSize() - fromSlot.stackSize;
+          availCount += filter.getMaxStackSize() - fromSlot.getCount();
           }
         }
       }
@@ -699,7 +699,7 @@ public static List<ItemStack> getCompactResourcesForRecipe(ShapelessRecipes reci
 
 public static List<ItemStack> getCompactedItemList(Collection<ItemStack> items)
   {
-  ArrayList<ItemStack> foundStacks = new ArrayList<ItemStack>();
+  ArrayList<ItemStack> foundStacks = new ArrayList<>();
   for(ItemStack stack : items)
     {
     if(stack==null){continue;}
@@ -708,7 +708,7 @@ public static List<ItemStack> getCompactedItemList(Collection<ItemStack> items)
       {
       if(stack.itemID==test.itemID && stack.getItemDamage()==test.getItemDamage() && ItemStack.areItemStackTagsEqual(stack, test))
         {        
-        test.stackSize += stack.stackSize;
+        test.grow(stack.getCount());
         found = true;
         break;
         }

@@ -1,0 +1,101 @@
+#research_name, item_name, item_damage, item_count, crafting_row ...(any number, width limited at 3 chars max), (crafting_char, crafting_item_name)... as often as needed to define all characters
+#lines beginning with # denote comments, this file define crafts that use the research system,,,,,,
+#Crafting items can be alternatively defined with: (craft_item_name, craft_item_damage, craft_item_count) or by forge dictionary name,,,,,
+##CORE
+,AncientWarfare:research_book,0,1,ill,ppp,ill,i,ingotIron,l,leather,p,paper
+,AncientWarfare:engineering_station,0,1,iwi,iti,ici,i,ingotIron,w,plankWood,t,crafting_table,c,chest
+,AncientWarfare:research_station,0,1,iwi,gtg,ici,i,ingotIron,w,plankWood,t,crafting_table,c,chest,g,ingotGold
+engineering,AncientWarfare:wooden_hammer,0,1,_s_,msm,_s_,m,plankWood,s,stickWood
+engineering,AncientWarfare:stone_hammer,0,1,_s_,msm,_s_,m,stone,s,stickWood
+engineering,AncientWarfare:iron_hammer,0,1,_s_,msm,_s_,m,ingotIron,s,stickWood
+engineering,AncientWarfare:gold_hammer,0,1,_s_,msm,_s_,m,ingotGold,s,stickWood
+engineering,AncientWarfare:diamond_hammer,0,1,_s_,msm,_s_,m,gemDiamond,s,stickWood
+engineering,AncientWarfare:wooden_quill,0,1,__f,_s_,m__,m,plankWood,s,stickWood,f,feather
+engineering,AncientWarfare:stone_quill,0,1,__f,_s_,m__,m,stone,s,stickWood,f,feather
+engineering,AncientWarfare:iron_quill,0,1,__f,_s_,m__,m,ingotIron,s,stickWood,f,feather
+engineering,AncientWarfare:gold_quill,0,1,__f,_s_,m__,m,ingotGold,s,stickWood,f,feather
+engineering,AncientWarfare:diamond_quill,0,1,__f,_s_,m__,m,gemDiamond,s,stickWood,f,feather
+refining,AncientWarfare:steel_ingot,0,1,c,i,c,coal,i,ingotIron
+#Backpacks by increasing size:
+trade,AncientWarfare:backpack,0,1,lwl,www,lwl,l,leather,w,wool
+trade,AncientWarfare:backpack,1,1,lwl,wcw,lwl,l,leather,w,wool,c,chest
+trade,AncientWarfare:backpack,2,1,lcl,wcw,lwl,l,leather,w,wool,c,chest
+trade,AncientWarfare:backpack,3,1,lcl,wcw,lcl,l,leather,w,wool,c,chest
+
+##AUTOMATION
+,gearWood,0,1,s_s,_p_,s_s,s,stickWood,p,plankWood
+,gearIron,0,1,i_i,_i_,i_i,i,ingotIron
+,gearSteel,0,1,i_i,_i_,i_i,i,ingotSteel
+,bearingWood,0,1,s_s,___,s_s,s,stickWood
+,bearingIron,0,1,_i_,i_i,_i_,i,ingotIron
+,bearingSteel,0,1,_i_,i_i,_i_,i,ingotSteel
+,shaftWood,0,1,_p_,_p_,_p_,p,plankWood
+,shaftIron,0,1,_p_,_p_,_p_,p,ingotIron
+,shaftSteel,0,1,_p_,_p_,_p_,p,ingotSteel
+trade,AncientWarfareAutomation:civic_warehouse,0,1,_p_,_c_,_c_,_,plankWood,p,paper,c,chest
+trade,AncientWarfareAutomation:warehouse_interface,0,1,_p_,_c_,___,_,plankWood,p,paper,c,chest
+trade,AncientWarfareAutomation:warehouse_crafting_station,0,1,_p_,_w_,_i_,_,plankWood,p,paper,w,crafting_table,i,ingotIron
+#Warehouse storage by increasing size:
+trade,AncientWarfareAutomation:warehouse_storage,0,1,p_p,_c_,p_p,p,plankWood,c,chest
+trade,AncientWarfareAutomation:warehouse_storage,1,1,pip,_c_,pip,p,plankWood,c,chest,i,ingotIron
+trade,AncientWarfareAutomation:warehouse_storage,2,1,pip,ici,pip,p,plankWood,c,chest,i,ingotIron
+trade,AncientWarfareAutomation:warehouse_stock_viewer,0,1,p,s,s,sign,p,paper
+navigation,AncientWarfareAutomation:mailbox,0,1,ici,i_i,ici,i,ingotIron,c,chest
+mathematics,AncientWarfareAutomation:chunk_loader_simple,0,1,bbb,beb,bbb,b,stonebrick,e,ender_pearl
+machinery,AncientWarfareAutomation:chunk_loader_deluxe,0,1,bbb,beb,bbb,b,obsidian,e,ender_pearl
+#torque flywheel small, medium, large
+theory_of_gravity,AncientWarfareAutomation:flywheel_storage,0,1,gpg,ppp,gpg,p,plankWood,g,glass_pane
+theory_of_gravity,AncientWarfareAutomation:flywheel_storage,1,1,gpg,ppp,ggg,p,ingotIron,g,glass_pane
+mass_production,AncientWarfareAutomation:flywheel_storage,2,1,gpg,ppp,ggg,p,ingotSteel,g,glass_pane
+the_wheel,AncientWarfareAutomation:windmill_blade,0,1,scs,csc,scs,c,wool,s,stickWood
+#Wooden gear based (AncientWarfare:component,0,1)
+mass_production,AncientWarfareAutomation:civic_auto_crafting,0,1,_c_,gwg,_i_,_,plankWood,c,chest,w,crafting_table,i,ingotIron,g,gearWood
+agriculture,AncientWarfareAutomation:civic_crop_farm,0,1,___,gwg,_c_,_,plankWood,w,iron_hoe,c,chest,g,gearWood
+farming,AncientWarfareAutomation:civic_reed_farm,0,1,___,gwg,_c_,_,plankWood,w,iron_shovel,c,chest,g,gearWood
+farming,AncientWarfareAutomation:civic_mushroom_farm,0,1,___,gwg,_c_,_,plankWood,w,wooden_shovel,c,chest,g,gearWood
+animal_husbandry,AncientWarfareAutomation:civic_animal_farm,0,1,___,gwg,_c_,_,plankWood,w,iron_sword,c,chest,g,gearWood
+engineering,AncientWarfareAutomation:civic_quarry,0,1,___,gwg,_c_,_,plankWood,w,iron_pickaxe,c,chest,g,gearWood
+farming,AncientWarfareAutomation:civic_forestry,0,1,___,gwg,_c_,_,plankWood,w,iron_axe,c,chest,g,gearWood
+fishing,AncientWarfareAutomation:civic_fish_farm,0,1,___,gwg,_c_,_,plankWood,w,fishing_rod,c,chest,g,gearWood
+the_wheel,AncientWarfareAutomation:torque_conduit,0,1,_s_,sgs,_s_,s,shaftWood,g,gearWood
+the_wheel,AncientWarfareAutomation:torque_distributor,0,1,_s_,ggg,_s_,s,shaftWood,g,gearWood
+the_wheel,AncientWarfareAutomation:torque_shaft,0,1,s,s,g,s,shaftWood,g,gearWood
+theory_of_gravity,AncientWarfareAutomation:flywheel,0,1,pgp,ppp,pgp,p,plankWood,g,gearWood
+#Windmill control
+the_wheel,AncientWarfareAutomation:windmill_control,0,1,ppp,gpg,ppp,p,plankWood,g,gearWood
+#Iron gear based (AncientWarfare:component,1,1)
+theory_of_gravity,AncientWarfareAutomation:flywheel,1,1,igi,iii,igi,i,ingotIron,g,gearIron
+the_wheel,AncientWarfareAutomation:hand_cranked_engine,0,1,igi,gig,iii,i,ingotIron,g,gearIron
+machinery,AncientWarfareAutomation:torque_generator_sterling,0,1,iii,ggg,igi,i,ingotIron,g,gearIron
+theory_of_gravity,AncientWarfareAutomation:torque_generator_waterwheel,0,1,igi,gwg,iwi,i,plankWood,g,gearIron,w,gearWood
+the_wheel,AncientWarfareAutomation:torque_conduit,1,1,_s_,sgs,_s_,s,shaftIron,g,gearIron
+the_wheel,AncientWarfareAutomation:torque_distributor,1,1,_s_,ggg,_s_,s,shaftIron,g,gearIron
+the_wheel,AncientWarfareAutomation:torque_shaft,1,1,s,s,g,s,shaftIron,g,gearIron
+#Steel gear based (AncientWarfare:component,2,1)
+mass_production,AncientWarfareAutomation:flywheel,2,1,igi,iii,igi,i,ingotSteel,g,gearSteel
+mass_production,AncientWarfareAutomation:torque_conduit,2,1,_s_,sgs,_s_,s,shaftSteel,g,gearSteel
+mass_production,AncientWarfareAutomation:torque_distributor,2,1,_s_,ggg,_s_,s,shaftSteel,g,gearSteel
+mass_production,AncientWarfareAutomation:torque_shaft,2,1,s,s,g,s,shaftSteel,g,gearSteel
+
+##NPC
+command,AncientWarfareNpc:wooden_command_baton,0,1,__m,_i_,s__,m,plankWood,s,stickWood,i,ingotIron
+command,AncientWarfareNpc:stone_command_baton,0,1,__m,_i_,s__,m,stone,s,stickWood,i,ingotIron
+command,AncientWarfareNpc:iron_command_baton,0,1,__i,_i_,s__,s,stickWood,i,ingotIron
+command,AncientWarfareNpc:gold_command_baton,0,1,__m,_i_,s__,m,ingotGold,s,stickWood,i,ingotIron
+command,AncientWarfareNpc:diamond_command_baton,0,1,__m,_i_,s__,m,gemDiamond,s,stickWood,i,ingotIron
+leadership,foodBundle,0,1,ap,bf,wc,a,apple,b,bread,c,cooked_chicken,f,cooked_beef,p,cooked_porkchop,w,potion
+#Orders use dictionary names for dyes
+leadership,AncientWarfareNpc:upkeep_order,0,1,d,p,w,d,dyeBlack,w,plankWood,p,paper
+leadership,AncientWarfareNpc:work_order,0,1,d,p,w,d,dyeGray,w,plankWood,p,paper
+trade,AncientWarfareNpc:routing_order,0,1,d,p,w,d,dyeLightGray,w,plankWood,p,paper
+leadership,AncientWarfareNpc:combat_order,0,1,d,p,w,d,dyeRed,w,plankWood,p,paper
+trade,AncientWarfareNpc:trade_order,0,1,d,p,w,d,dyeGreen,w,plankWood,p,paper
+#lute, flute, harp, drum
+leadership,AncientWarfareNpc:bard_instrument,0,1,__s,pi_,pp_,s,stickWood,p,plankWood,i,ingotIron
+leadership,AncientWarfareNpc:bard_instrument,1,1,__s,_s_,i__,s,stickWood,i,ingotIron
+leadership,AncientWarfareNpc:bard_instrument,2,1,ss_,SSs,ss_,s,stickWood,S,string
+leadership,AncientWarfareNpc:bard_instrument,3,1,plp,_p_,p,plankWood,l,leather
+leadership,AncientWarfareNpc:town_hall,0,1,sgs,_c_,s_s,_,logWood,c,chest,s,stonebrick
+
+##STRUCTURE
+construction,AncientWarfareStructure:drafting_station,0,1,_p_,_w_,_s_,_,plankWood,p,paper,w,crafting_table,s,stone

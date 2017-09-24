@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -55,9 +55,9 @@ public ItemStack getStackInSlot(int var1)
 public void setInventorySlotContents(int stackIndex, ItemStack newContents)
   {
   this.inventorySlots[stackIndex] = newContents;
-  if (newContents != null && newContents.stackSize > this.getInventoryStackLimit())
+  if (newContents != null && newContents.getCount() > this.getInventoryStackLimit())
     {
-    newContents.stackSize = this.getInventoryStackLimit();
+    newContents.setCount(this.getInventoryStackLimit())
     }
   }
 

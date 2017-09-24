@@ -1,0 +1,66 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "builtin/generated",
+        "transform": "forge:default-item"
+    },
+    "variants": {
+        "variant": {
+            "bounds_medium": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/automation/upgrade_bounds_medium"
+                }
+            },
+            "bounds_large": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/automation/upgrade_bounds_large"
+                }
+            },
+            "quarry_medium": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/automation/upgrade_quarry_medium"
+                }
+            },
+            "quarry_large": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/automation/upgrade_quarry_large"
+                }
+            },
+            "enchanted_tools_1": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/automation/upgrade_enchanted_tools_1"
+                }
+            },
+            "enchanted_tools_2": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/automation/upgrade_enchanted_tools_2"
+                }
+            },
+            "quality_tools_1": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/automation/upgrade_quality_tools_1"
+                }
+            },
+            "quality_tools_2": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/automation/upgrade_quality_tools_2"
+                }
+            },
+            "quality_tools_3": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/automation/upgrade_quality_tools_3"
+                }
+            },
+            "chunkloader_basic": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/automation/upgrade_chunkloader_basic"
+                }
+            },
+            "chunkloader_quarry": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/automation/upgrade_chunkloader_quarry"
+                }
+            }
+        }
+    }
+}

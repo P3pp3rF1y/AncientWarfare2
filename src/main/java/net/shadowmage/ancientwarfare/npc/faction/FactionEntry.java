@@ -1,98 +1,87 @@
 package net.shadowmage.ancientwarfare.npc.faction;
 
-import java.util.HashMap;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 
-public final class FactionEntry
-{
+import java.util.HashMap;
 
-public final String playerName;
-private HashMap<String, FactionStanding> factionStandings = new HashMap<String, FactionStanding>();
+public final class FactionEntry {
 
-public FactionEntry(NBTTagCompound tag)
-  {
-  playerName = tag.getString("playerName");
-  for(String name : AWNPCStatics.factionNames)
-    {
-    factionStandings.put(name, new FactionStanding(AncientWarfareNPC.statics.getDefaultFaction(name)));
+    public final String playerName;
+    private HashMap<String, FactionStanding> factionStandings = new HashMap<>();
+
+    public FactionEntry(NBTTagCompound tag) {
+        playerName = tag.getString("playerName");
+        for (String name : AWNPCStatics.factionNames) {
+            factionStandings.put(name, new FactionStanding(AncientWarfareNPC.statics.getDefaultFaction(name)));
+        }
+        readFromNBT(tag);
     }
-  readFromNBT(tag);
-  }
 
-public FactionEntry(String playerName)
-  {
-  this.playerName = playerName;
-  for(String name : AWNPCStatics.factionNames)
-    {
-    factionStandings.put(name, new FactionStanding(AncientWarfareNPC.statics.getDefaultFaction(name)));
+    public FactionEntry(String playerName) {
+        this.playerName = playerName;
+        for (String name : AWNPCStatics.factionNames) {
+            factionStandings.put(name, new FactionStanding(AncientWarfareNPC.statics.getDefaultFaction(name)));
+        }
     }
-  }
 
-public int getStandingFor(String factionName)
-  {
-  if(factionStandings.containsKey(factionName))
-    {
-    return factionStandings.get(factionName).standing;
+    public int getStandingFor(String factionName) {
+        if (factionStandings.containsKey(factionName)) {
+            return factionStandings.get(factionName).standing;
+        }
+        return 0;
     }
-  return 0;
-  }
 
-public void setStandingFor(String factionName, int standing)
-  {
-  if(!factionStandings.containsKey(factionName)){factionStandings.put(factionName, new FactionStanding(standing));}
-  factionStandings.get(factionName).standing = standing;
-  }
-
-public void adjustStandingFor(String factionName, int adjustment)
-  {
-  if(factionStandings.containsKey(factionName))
-    {
-    FactionStanding standing = factionStandings.get(factionName);
-    standing.standing+=adjustment;    
+    public void setStandingFor(String factionName, int standing) {
+        if (!factionStandings.containsKey(factionName)) {
+            factionStandings.put(factionName, new FactionStanding(standing));
+        }
+        factionStandings.get(factionName).standing = standing;
     }
-  }
 
-public final void readFromNBT(NBTTagCompound tag)
-  {
-  NBTTagList entryList = tag.getTagList("entryList", Constants.NBT.TAG_COMPOUND);
-  NBTTagCompound entryTag;
-  String name;
-  for(int i = 0; i < entryList.tagCount(); i++)
-    {
-    entryTag = entryList.getCompoundTagAt(i);
-    name = entryTag.getString("name");
-    if(!factionStandings.containsKey(name))
-      {
-      factionStandings.put(name, new FactionStanding(AncientWarfareNPC.statics.getDefaultFaction(name)));
-      }
-    factionStandings.get(name).standing = tag.getInteger("standing");
+    public void adjustStandingFor(String factionName, int adjustment) {
+        if (factionStandings.containsKey(factionName)) {
+            FactionStanding standing = factionStandings.get(factionName);
+            standing.standing += adjustment;
+        }
     }
-  }
 
-public final NBTTagCompound writeToNBT(NBTTagCompound tag)
-  {
-  tag.setString("playerName", playerName);
-  NBTTagList entryList = new NBTTagList();
-  NBTTagCompound entryTag;
-  for(String name : this.factionStandings.keySet())
-    {
-    entryTag = new NBTTagCompound();
-    entryTag.setString("name", name);
-    entryTag.setInteger("standing", this.factionStandings.get(name).standing);
+    public final void readFromNBT(NBTTagCompound tag) {
+        NBTTagList entryList = tag.getTagList("entryList", Constants.NBT.TAG_COMPOUND);
+        NBTTagCompound entryTag;
+        String name;
+        for (int i = 0; i < entryList.tagCount(); i++) {
+            entryTag = entryList.getCompoundTagAt(i);
+            name = entryTag.getString("name");
+            if (!factionStandings.containsKey(name)) {
+                factionStandings.put(name, new FactionStanding(AncientWarfareNPC.statics.getDefaultFaction(name)));
+            }
+            factionStandings.get(name).standing = entryTag.getInteger("standing");
+        }
     }
-  tag.setTag("entryList", entryList);
-  return tag;
-  }
 
-private static class FactionStanding
-{
-int standing;
-private FactionStanding(int standing){this.standing = standing;}
-}
+    public final NBTTagCompound writeToNBT(NBTTagCompound tag) {
+        tag.setString("playerName", playerName);
+        NBTTagList entryList = new NBTTagList();
+        NBTTagCompound entryTag;
+        for (String name : this.factionStandings.keySet()) {
+            entryTag = new NBTTagCompound();
+            entryTag.setString("name", name);
+            entryTag.setInteger("standing", this.factionStandings.get(name).standing);
+        }
+        tag.setTag("entryList", entryList);
+        return tag;
+    }
+
+    private static class FactionStanding {
+        int standing;
+
+        private FactionStanding(int standing) {
+            this.standing = standing;
+        }
+    }
 
 }

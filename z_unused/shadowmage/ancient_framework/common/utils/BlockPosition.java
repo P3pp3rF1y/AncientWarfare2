@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -24,7 +24,7 @@ package shadowmage.ancient_framework.common.utils;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 
 public class BlockPosition
 {
@@ -47,9 +47,9 @@ public BlockPosition(int x, int y, int z)
 
 public BlockPosition(double x, double y, double z)
   {
-  this.x = MathHelper.floor_double(x);
-  this.y = MathHelper.floor_double(y);
-  this.z = MathHelper.floor_double(z);
+  this.x = MathHelper.floor(x);
+  this.y = MathHelper.floor(y);
+  this.z = MathHelper.floor(z);
   }
 
 public BlockPosition(NBTTagCompound tag)
@@ -82,12 +82,12 @@ public final BlockPosition read(NBTTagCompound tag)
 
 public void updateFromEntityPosition(Entity ent)
   {
-  this.x = MathHelper.floor_double(ent.posX);
-  this.y = MathHelper.floor_double(ent.posY);
-  this.z = MathHelper.floor_double(ent.posZ);
+  this.x = MathHelper.floor(ent.posX);
+  this.y = MathHelper.floor(ent.posY);
+  this.z = MathHelper.floor(ent.posZ);
   }
 
-/**
+/*
  * return the distance of the CENTER of this block from the input position
  * @param x
  * @param y
@@ -107,7 +107,7 @@ public NBTTagCompound writeToNBT(NBTTagCompound tag)
   return tag;
   }
 
-/**
+/*
  * offsets THIS blockPosition by the passed in offset
  * @param offsetVector
  * @return
@@ -127,7 +127,7 @@ public void offset(int x, int y, int z)
   this.z += z;
   }
 
-/**
+/*
  * returns the DIFFERENCE between THIS and BASE
  * or the distance and directions needed to travel to
  * get from THIS block to BASE
@@ -146,7 +146,7 @@ public BlockPosition getOffsetFrom(BlockPosition base)
   return diff;
   }
 
-/**
+/*
  * moves the blocks position right by the input amount, relative to the input direction
  * @param facing
  * @param amt
@@ -156,7 +156,7 @@ public void moveRight(int facing, int amt)
   this.offsetForHorizontalDirection(BlockPosition.turnRight(facing), amt);
   }
 
-/**
+/*
  * moves the blocks position backwards the input amount, relative to the input direction
  * @param facing
  * @param amt
@@ -166,7 +166,7 @@ public void moveBack(int facing, int amt)
   this.offsetForHorizontalDirection(BlockPosition.turnAround(facing), amt);
   }
 
-/**
+/*
  * moves the blocks position left the input amount, relative to the input direction
  * @param facing
  * @param amt
@@ -176,7 +176,7 @@ public void moveLeft(int facing, int amt)
   this.offsetForHorizontalDirection(BlockPosition.turnLeft(facing), amt);
   }
 
-/**
+/*
  * moves the blocks position forwards the input amount, relative to the input direction
  * @param facing
  * @param amt
@@ -187,7 +187,7 @@ public void moveForward(int facing, int amt)
   }
 
 
-/**
+/*
  * returns a direction right of the input
  * @param dir
  * @return
@@ -197,7 +197,7 @@ public static int turnRight(int dir)
   return (dir +1) %4;
   }
 
-/**
+/*
  * returns a direction to the left of the input
  * @param dir
  * @return
@@ -207,7 +207,7 @@ public static int turnLeft(int dir)
   return (dir+3)%4;
   }
 
-/**
+/*
  * returns a direction opposite of the input on the horizontal axis
  * @param dir
  * @return

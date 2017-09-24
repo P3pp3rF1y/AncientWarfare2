@@ -1,272 +1,277 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.Constants;
+import net.minecraft.util.EnumHand;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseInterface;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
-import net.shadowmage.ancientwarfare.core.util.WorldTools;
+import net.shadowmage.ancientwarfare.core.util.NBTSerializableUtils;
 
-public class TileWarehouseInterface extends TileControlled implements IInventory, IInteractableTile
-{
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
-InventoryBasic inventory = new InventoryBasic(27);
-  
-boolean init = false;
-List<InterfaceFillRequest> fillRequests = new ArrayList<InterfaceFillRequest>();
-List<InterfaceEmptyRequest> emptyRequests = new ArrayList<InterfaceEmptyRequest>();  
-List<WarehouseInterfaceFilter> filters = new ArrayList<WarehouseInterfaceFilter>();
-HashSet<ContainerWarehouseInterface> viewers = new HashSet<ContainerWarehouseInterface>();
+public class TileWarehouseInterface extends TileControlled implements IInventory, IInteractableTile {
 
-public TileWarehouseInterface()
-  {
-  
-  }
+    final InventoryBasic inventory = new InventoryBasic(27);
 
-public void addViewer(ContainerWarehouseInterface viewer)
-  {
-  if(worldObj.isRemote){return;}
-  viewers.add(viewer);
-  }
+    private boolean init = false;
+    private final List<InterfaceFillRequest> fillRequests = new ArrayList<>();
+    private final List<InterfaceEmptyRequest> emptyRequests = new ArrayList<>();
+    List<WarehouseInterfaceFilter> filters = new ArrayList<>();
+    List<ContainerWarehouseInterface> viewers = new ArrayList<>();
 
-public void removeViewer(ContainerWarehouseInterface viewer)
-  {
-  viewers.remove(viewer);
-  }
+    public TileWarehouseInterface() {
 
-public void updateViewers()
-  {
-  for(ContainerWarehouseInterface v : viewers)
-    {
-    v.onInterfaceFiltersChanged();
     }
-  }
 
-public List<WarehouseInterfaceFilter> getFilters(){return filters;}
-
-public void setFilters(List<WarehouseInterfaceFilter> filters)
-  {
-  this.filters.clear();
-  this.filters.addAll(filters);
-  recalcRequests();
-  updateViewers();
-  }
-
-@Override
-protected void updateTile()
-  {
-  if(worldObj.isRemote){return;}
-  if(!init)
-    {
-    init = true;
-    recalcRequests();
-    }
-  }
-
-@Override
-protected void searchForController()
-  {
-  BlockPosition pos = new BlockPosition(xCoord, yCoord, zCoord);
-  BlockPosition min = pos.copy();
-  BlockPosition max = min.copy();
-  min.offset(-16, -4, -16);
-  max.offset(16, 4, 16);
-  for(TileEntity te : WorldTools.getTileEntitiesInArea(worldObj, min.x, min.y, min.z, max.x, max.y, max.z))
-    {
-    if(te instanceof TileWarehouseBase)
-      {
-      TileWarehouseBase twb = (TileWarehouseBase)te;
-      if(BlockTools.isPositionWithinBounds(pos, twb.getWorkBoundsMin(), twb.getWorkBoundsMax()))
-        {
-        twb.addInterfaceTile(this);
-        break;
+    public void addViewer(ContainerWarehouseInterface viewer) {
+        if (!hasWorld() || world.isRemote) {
+            return;
         }
-      }
+        viewers.add(viewer);
     }
-  }
 
-@Override
-protected boolean isValidController(IControllerTile tile)
-  {
-  return tile instanceof TileWarehouseBase;//TODO validate bounding area
-  }
-
-@Override
-public int getSizeInventory(){return inventory.getSizeInventory();}
-
-@Override
-public ItemStack getStackInSlot(int var1){return inventory.getStackInSlot(var1);}
-
-@Override
-public ItemStack decrStackSize(int var1, int var2)
-  {
-  ItemStack stack =  inventory.decrStackSize(var1, var2);
-  markDirty();
-  return stack;
-  }
-
-@Override
-public ItemStack getStackInSlotOnClosing(int var1)
-  {
-  ItemStack stack =  inventory.getStackInSlotOnClosing(var1);
-  recalcRequests();
-  return stack;
-  }
-
-@Override
-public void setInventorySlotContents(int var1, ItemStack var2)
-  {
-  inventory.setInventorySlotContents(var1, var2);
-  recalcRequests();
-  }
-
-@Override
-public String getInventoryName(){return inventory.getInventoryName();}
-
-@Override
-public boolean hasCustomInventoryName(){return false;}
-
-@Override
-public int getInventoryStackLimit(){return inventory.getInventoryStackLimit();}
-
-@Override
-public boolean isUseableByPlayer(EntityPlayer var1){return inventory.isUseableByPlayer(var1);}
-
-@Override
-public void openInventory(){}//noop
-
-@Override
-public void closeInventory(){}//noop
-
-@Override
-public boolean isItemValidForSlot(int var1, ItemStack var2)
-  {
-  return inventory.isItemValidForSlot(var1, var2);
-  }
-
-@Override
-public boolean onBlockClicked(EntityPlayer player)
-  {
-  if(!player.worldObj.isRemote)
-    {
-    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_OUTPUT, xCoord, yCoord, zCoord);    
+    public void removeViewer(ContainerWarehouseInterface viewer) {
+        viewers.remove(viewer);
     }
-  return false;
-  }
 
-@Override
-public void readFromNBT(NBTTagCompound tag)
-  {
-  super.readFromNBT(tag);
-  inventory.readFromNBT(tag.getCompoundTag("inventory"));
-  filters = WarehouseInterfaceFilter.readFilterList(tag.getTagList("filterList", Constants.NBT.TAG_COMPOUND), new ArrayList<WarehouseInterfaceFilter>());
-  }
-
-@Override
-public void writeToNBT(NBTTagCompound tag)
-  {
-  super.writeToNBT(tag);
-  tag.setTag("inventory", inventory.writeToNBT(new NBTTagCompound()));
-  tag.setTag("filterList", WarehouseInterfaceFilter.writeFilterList(getFilters()));
-  }
-
-public void recalcRequests()
-  {  
-  if(worldObj.isRemote){return;}
-  fillRequests.clear();
-  emptyRequests.clear();  
-  ItemStack stack;
-  for(int i = 0; i< inventory.getSizeInventory(); i++)
-    {
-    stack = inventory.getStackInSlot(i);
-    if(stack==null){continue;}
-    if(!matchesFilter(stack))
-      {
-      emptyRequests.add(new InterfaceEmptyRequest(i, stack.stackSize));
-      }
-    else//matches, remove extras
-      {
-      int count = InventoryTools.getCountOf(inventory, -1, stack);
-      int max = getFilterQuantity(stack);
-      if(count > max)
-        {
-        emptyRequests.add(new InterfaceEmptyRequest(i, count-max));
+    public void updateViewers() {
+        for (ContainerWarehouseInterface v : viewers) {
+            v.onInterfaceFiltersChanged();
         }
-      }
     }
-  
-  int count;
-  for(WarehouseInterfaceFilter filter : filters)
-    {
-    if(filter.getFilterItem()==null){continue;}
-    count = InventoryTools.getCountOf(inventory, -1, filter.getFilterItem());
-    if(count < filter.getFilterQuantity())
-      {
-      fillRequests.add(new InterfaceFillRequest(filter.getFilterItem().copy(), filter.getFilterQuantity()-count));
-      }
+
+    public List<WarehouseInterfaceFilter> getFilters() {
+        return filters;
     }
-  TileWarehouseBase twb = (TileWarehouseBase)getController();
-  if(twb!=null)
-    {
-    twb.onIterfaceInventoryChanged(this);
+
+    public void setFilters(List<WarehouseInterfaceFilter> filters) {
+        this.filters.clear();
+        this.filters.addAll(filters);
+        recalcRequests();
+        updateViewers();
+        markDirty();
     }
-  }
 
-protected boolean matchesFilter(ItemStack stack)
-  {
-  if(filters.isEmpty()){return false;}
-  for(WarehouseInterfaceFilter filter : filters)
-    {
-    if(filter.isItemValid(stack)){return true;}
+    @Override
+    protected void updateTile() {
+        if (world.isRemote) {
+            return;
+        }
+        if (!init) {
+            init = true;
+            recalcRequests();
+        }
     }
-  return false;
-  }
 
-protected int getFilterQuantity(ItemStack stack)
-  {
-  int qty = 0;
-  for(WarehouseInterfaceFilter filter : filters)
-    {
-    if(filter.isItemValid(stack)){qty+=filter.getFilterQuantity();}
+    @Override
+    public int getSizeInventory() {
+        return inventory.getSizeInventory();
     }
-  return qty;
-  }
 
-public List<InterfaceFillRequest> getFillRequests(){return fillRequests;}
-public List<InterfaceEmptyRequest> getEmptyRequests(){return emptyRequests;}
+    @Override
+    public boolean isEmpty() {
+        return inventory.isEmpty();
+    }
 
-public static class InterfaceFillRequest
-{
-ItemStack requestedItem;
-int requestAmount;
-public InterfaceFillRequest(ItemStack item, int amount)
-  {
-  requestedItem=item;
-  requestAmount = amount;
-  }
-}
+    @Override
+    public ItemStack getStackInSlot(int var1) {
+        return inventory.getStackInSlot(var1);
+    }
 
-public static class InterfaceEmptyRequest
-{
-int slotNum;
-int count;
-public InterfaceEmptyRequest(int slot, int count)
-  {
-  slotNum=slot;
-  this.count=count;
-  }
-}
+    @Override
+    public ItemStack decrStackSize(int var1, int var2) {
+        @Nonnull ItemStack stack = inventory.decrStackSize(var1, var2);
+        if(!stack.isEmpty())
+            markDirty();
+        return stack;
+    }
+
+    @Override
+    public ItemStack removeStackFromSlot(int var1) {
+        @Nonnull ItemStack stack = inventory.removeStackFromSlot(var1);
+        recalcRequests();
+        return stack;
+    }
+
+    @Override
+    public void setInventorySlotContents(int var1, ItemStack var2) {
+        inventory.setInventorySlotContents(var1, var2);
+        recalcRequests();
+        markDirty();
+    }
+
+    @Override
+    public String getName() {
+        return inventory.getName();
+    }
+
+    @Override
+    public boolean hasCustomName() {
+        return false;
+    }
+
+    @Override
+    public int getInventoryStackLimit() {
+        return inventory.getInventoryStackLimit();
+    }
+
+    @Override
+    public boolean isUsableByPlayer(EntityPlayer var1) {
+        return inventory.isUsableByPlayer(var1);
+    }
+
+    @Override
+    public void openInventory(EntityPlayer player) {
+    }//noop
+
+    @Override
+    public void closeInventory(EntityPlayer player) {
+    }//noop
+
+    @Override
+    public boolean isItemValidForSlot(int var1, ItemStack var2) {
+        return inventory.isItemValidForSlot(var1, var2);
+    }
+
+    @Override
+    public int getField(int id) {
+        return inventory.getField(id);
+    }
+
+    @Override
+    public void setField(int id, int value) {
+        inventory.setField(id, value);
+    }
+
+    @Override
+    public int getFieldCount() {
+        return inventory.getFieldCount();
+    }
+
+    @Override
+    public void clear() {
+        inventory.clear();
+    }
+
+    @Override
+    public boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
+        if (!player.world.isRemote) {
+            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_OUTPUT, pos);
+        }
+        return true;
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+        inventory.deserializeNBT(tag.getCompoundTag("inventory"));
+        filters = NBTSerializableUtils.read(tag, "filterList", WarehouseInterfaceFilter.class);
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
+        tag.setTag("inventory", inventory.serializeNBT());
+        NBTSerializableUtils.write(tag, "filterList", getFilters());
+        return tag;
+    }
+
+    public void recalcRequests() {
+        if (world.isRemote) {
+            return;
+        }
+        fillRequests.clear();
+        emptyRequests.clear();
+        @Nonnull ItemStack stack;
+        for (int i = 0; i < inventory.getSizeInventory(); i++) {
+            stack = inventory.getStackInSlot(i);
+            if (stack.isEmpty()) {
+                continue;
+            }
+            if (!matchesFilter(stack)) {
+                emptyRequests.add(new InterfaceEmptyRequest(i, stack.getCount()));
+            } else//matches, remove extras
+            {
+                int count = InventoryTools.getCountOf(inventory, null, stack);
+                int max = getFilterQuantity(stack);
+                if (count > max) {
+                    emptyRequests.add(new InterfaceEmptyRequest(i, count - max));
+                }
+            }
+        }
+
+        int count;
+        for (WarehouseInterfaceFilter filter : filters) {
+            if (filter.getFilterItem().isEmpty()) {
+                continue;
+            }
+            count = InventoryTools.getCountOf(inventory, null, filter.getFilterItem());
+            if (count < filter.getFilterQuantity()) {
+                fillRequests.add(new InterfaceFillRequest(filter.getFilterItem().copy(), filter.getFilterQuantity() - count));
+            }
+        }
+        TileWarehouseBase twb = (TileWarehouseBase) getController();
+        if (twb != null) {
+            twb.onIterfaceInventoryChanged(this);
+        }
+    }
+
+    protected boolean matchesFilter(ItemStack stack) {
+        if (filters.isEmpty()) {
+            return false;
+        }
+        for (WarehouseInterfaceFilter filter : filters) {
+            if (filter.apply(stack)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected int getFilterQuantity(ItemStack stack) {
+        int qty = 0;
+        for (WarehouseInterfaceFilter filter : filters) {
+            if (filter.apply(stack)) {
+                qty += filter.getFilterQuantity();
+            }
+        }
+        return qty;
+    }
+
+    public List<InterfaceFillRequest> getFillRequests() {
+        return fillRequests;
+    }
+
+    public List<InterfaceEmptyRequest> getEmptyRequests() {
+        return emptyRequests;
+    }
+
+    public static class InterfaceFillRequest {
+        final ItemStack requestedItem;
+        final int requestAmount;
+
+        public InterfaceFillRequest(ItemStack item, int amount) {
+            requestedItem = item;
+            requestAmount = amount;
+        }
+    }
+
+    public static class InterfaceEmptyRequest {
+        final int slotNum;
+        final int count;
+
+        public InterfaceEmptyRequest(int slot, int count) {
+            slotNum = slot;
+            this.count = count;
+        }
+    }
 
 }

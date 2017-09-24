@@ -25,10 +25,10 @@ public abstract class TileWarehouseStorageBase extends TileEntity implements IIn
 BlockPosition controllerPosition = null;
 private boolean init;
 int storageAdditionSize;
-List<WarehouseStorageFilter> filters = new ArrayList<WarehouseStorageFilter>();
-List<ContainerWarehouseStorage> viewers = new ArrayList<ContainerWarehouseStorage>();
+List<WarehouseStorageFilter> filters = new ArrayList<>();
+List<ContainerWarehouseStorage> viewers = new ArrayList<>();
 
-/**
+/*
  * implementing sub-classes must create their inventory in their constructor, or things will NPE
  * on load/save
  */
@@ -63,9 +63,9 @@ public void onWarehouseInventoryUpdated(WorkSiteWarehouse warehouse)
 
 private WorkSiteWarehouse getWarehouse()
   {
-  if(controllerPosition!=null && worldObj.blockExists(controllerPosition.x, controllerPosition.y, controllerPosition.z))
+  if(controllerPosition!=null && world.blockExists(controllerPosition.x, controllerPosition.y, controllerPosition.z))
     {
-    TileEntity te = worldObj.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
+    TileEntity te = world.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
     if(te instanceof WorkSiteWarehouse)
       {
       return (WorkSiteWarehouse) te;
@@ -86,7 +86,7 @@ private void updateFilterCounts(boolean addBlockEvents)
 //      filter.setFilterQuantity(0);
 //      if(addBlockEvents)
 //        {
-//        worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), i, 0);        
+//        world.addBlockEvent(x, y, z, getBlockType(), i, 0);
 //        }
 //      }
 //    return;
@@ -102,7 +102,7 @@ private void updateFilterCounts(boolean addBlockEvents)
 //      filter.setFilterQuantity(qty);
 //      if(addBlockEvents)
 //        {
-//        worldObj.addBlockEvent(xCoord, yCoord, zCoord, getBlockType(), i, qty);
+//        world.addBlockEvent(x, y, z, getBlockType(), i, qty);
 //        }
 //      }
 //    }
@@ -111,7 +111,7 @@ private void updateFilterCounts(boolean addBlockEvents)
 @Override
 public String toString()
   {
-  return "Storage tile location: "+xCoord+","+yCoord+","+zCoord;
+  return "Storage tile location: "+x+","+y+","+z;
   }
 
 @Override
@@ -132,15 +132,15 @@ public void invalidate()
   {  
   super.invalidate();
   this.init = false;
-  if(controllerPosition!=null && worldObj.blockExists(controllerPosition.x, controllerPosition.y, controllerPosition.z))
+  if(controllerPosition!=null && world.blockExists(controllerPosition.x, controllerPosition.y, controllerPosition.z))
     {
-    TileEntity te = worldObj.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
+    TileEntity te = world.getTileEntity(controllerPosition.x, controllerPosition.y, controllerPosition.z);
     if(te instanceof WorkSiteWarehouse)
       {
       WorkSiteWarehouse warehouse = (WorkSiteWarehouse)te;
       BlockPosition min = warehouse.getWorkBoundsMin();
       BlockPosition max = warehouse.getWorkBoundsMax();
-      if(xCoord>=min.x && xCoord<=max.x && yCoord>=min.y && yCoord<=max.y && zCoord>=min.z && zCoord<=max.z)
+      if(x>=min.x && x<=max.x && y>=min.y && y<=max.y && z>=min.z && z<=max.z)
         {
         warehouse.removeStorageBlock(this);
         }
@@ -158,23 +158,23 @@ public void setControllerPosition(BlockPosition position)
   }
 
 @Override
-public void updateEntity()
+public void update()
   {
   if(!init)
     {
     init = true;
     AWLog.logDebug("scanning for controller...");
-    for(TileEntity te : (List<TileEntity>)WorldTools.getTileEntitiesInArea(worldObj, xCoord-16, yCoord-4, zCoord-16, xCoord+16, yCoord+4, zCoord+16))
+    for(TileEntity te : (List<TileEntity>)WorldTools.getTileEntitiesInArea(world, x-16, y-4, z-16, x+16, y+4, z+16))
       {
       if(te instanceof WorkSiteWarehouse)
         {
         WorkSiteWarehouse warehouse = (WorkSiteWarehouse)te;
         BlockPosition min = warehouse.getWorkBoundsMin();
         BlockPosition max = warehouse.getWorkBoundsMax();
-        if(xCoord>=min.x && xCoord<=max.x && yCoord>=min.y && yCoord<=max.y && zCoord>=min.z && zCoord<=max.z)
+        if(x>=min.x && x<=max.x && y>=min.y && y<=max.y && z>=min.z && z<=max.z)
           {
           warehouse.addStorageBlock(this);
-          controllerPosition = new BlockPosition(warehouse.xCoord, warehouse.yCoord, warehouse.zCoord);
+          controllerPosition = new BlockPosition(warehouse.x, warehouse.y, warehouse.z);
           break;
           }
         }
@@ -188,9 +188,9 @@ public void setFilters(List<WarehouseStorageFilter> filters)
   this.filters.clear();
   this.filters.addAll(filters);
   updateFilterCounts(false);
-  if(!worldObj.isRemote)
+  if(!world.isRemote)
     {
-    worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+    world.markBlockForUpdate(x, y, z);
     }
   }
 
@@ -200,7 +200,7 @@ public List<WarehouseStorageFilter> getFilters()
   return filters;
   }
 
-/*****************************************NETWORK HANDLING METHODS*******************************************/
+/****************************************NETWORK HANDLING METHODS*******************************************/
 @Override
 public void readFromNBT(NBTTagCompound tag)
   {
@@ -247,16 +247,16 @@ public void writeToNBT(NBTTagCompound tag)
 //    {
 //    tag.setTag("filterList", WarehouseItemFilter.writeFilterList(filters));    
 //    }
-//  S35PacketUpdateTileEntity pkt = new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);
+//  S35PacketUpdateTileEntity pkt = new S35PacketUpdateTileEntity(x, y, z, 0, tag);
 //  return pkt;
 //  }
 
 @Override
 public boolean onBlockClicked(EntityPlayer player)
   {
-  if(!player.worldObj.isRemote)
+  if(!player.world.isRemote)
     {
-    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_STORAGE, xCoord, yCoord, zCoord);
+    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_STORAGE, x, y, z);
     }
   return true;
   }
@@ -264,11 +264,11 @@ public boolean onBlockClicked(EntityPlayer player)
 //@Override
 //public boolean receiveClientEvent(int a, int b)
 //  {
-//  if(!worldObj.isRemote)
+//  if(!world.isRemote)
 //    {
 //    return true;
 //    }
-//  AWLog.logDebug("receiving client event: "+a+"::"+b+" client: "+worldObj.isRemote);
+//  AWLog.logDebug("receiving client event: "+a+"::"+b+" client: "+world.isRemote);
 //  if(a>=0 && a<filters.size())
 //    {
 //    WarehouseItemFilter filter = filters.get(a);

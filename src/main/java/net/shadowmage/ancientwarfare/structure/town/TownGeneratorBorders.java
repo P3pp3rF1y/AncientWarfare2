@@ -2,131 +2,120 @@ package net.shadowmage.ancientwarfare.structure.town;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
+import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator;
 
-public class TownGeneratorBorders
-{
+public class TownGeneratorBorders {
 
-public static void generateBorders(World world, TownGenerator gen)  
-  {
-  int minX, maxX, minZ, maxZ;  
-  int step;
-  int fillBase = gen.maximalBounds.min.y - 1;
-  int levelBase = fillBase;
-  
-  int eminx = gen.exteriorBounds.min.x;
-  int eminz = gen.exteriorBounds.min.z;
-  int emaxx = gen.exteriorBounds.max.x;
-  int emaxz = gen.exteriorBounds.max.z;
-  
-  minX = gen.maximalBounds.min.x;
-  maxX = gen.wallsBounds.min.x - 1;
-  for(int px = minX; px <= maxX; px++)
-    {    
-    for(int pz = gen.maximalBounds.min.z; pz <= gen.maximalBounds.max.z; pz++)
-      {
-      step = WorldStructureGenerator.getStepNumber(px, pz, eminx, emaxx, eminz, emaxz);
-      handleBorderBlock(world, px, pz, fillBase-step, levelBase+step, getFillBlock(world, px, pz, false, Blocks.dirt), getFillBlock(world, px, pz, true, Blocks.grass), true);
-      }
-    }  
-  
-  minX = gen.wallsBounds.max.x + 1;
-  maxX = gen.maximalBounds.max.x;  
-  for(int px = minX; px <= maxX; px++)
-    {    
-    for(int pz = gen.maximalBounds.min.z; pz <= gen.maximalBounds.max.z; pz++)
-      {
-      step = WorldStructureGenerator.getStepNumber(px, pz, eminx, emaxx, eminz, emaxz);
-      handleBorderBlock(world, px, pz, fillBase-step, levelBase+step, getFillBlock(world, px, pz, false, Blocks.dirt), getFillBlock(world, px, pz, true, Blocks.grass), true);
-      }
-    } 
-  
-  minZ = gen.maximalBounds.min.z;
-  maxZ = gen.wallsBounds.min.z - 1;
-  for(int pz = minZ; pz <= maxZ; pz++)
-    {
-    for(int px = gen.maximalBounds.min.x; px <= gen.maximalBounds.max.x; px++)
-      {
-      step = WorldStructureGenerator.getStepNumber(px, pz, eminx, emaxx, eminz, emaxz);
-      handleBorderBlock(world, px, pz, fillBase-step, levelBase+step, getFillBlock(world, px, pz, false, Blocks.dirt), getFillBlock(world, px, pz, true, Blocks.grass), true);
-      }
-    }
-  
-  minZ = gen.wallsBounds.max.z + 1;
-  maxZ = gen.maximalBounds.max.z;
-  for(int pz = minZ; pz <= maxZ; pz++)
-    {
-    for(int px = gen.maximalBounds.min.x; px <= gen.maximalBounds.max.x; px++)
-      {
-      step = WorldStructureGenerator.getStepNumber(px, pz, eminx, emaxx, eminz, emaxz);
-      handleBorderBlock(world, px, pz, fillBase-step, levelBase+step, getFillBlock(world, px, pz, false, Blocks.dirt), getFillBlock(world, px, pz, true, Blocks.grass), true);
-      }
-    }  
-  }
+    public static void generateBorders(World world, StructureBB exterior, StructureBB walls, StructureBB max) {
+        int minX, maxX, minZ, maxZ;
+        int step;
+        int fillBase = max.min.getY() - 1;
+        int levelBase = fillBase;
 
-public static void levelTownArea(World world, TownGenerator gen)
-  {
-  int minX = gen.wallsBounds.min.x;
-  int minZ = gen.wallsBounds.min.z;
-  int maxX = gen.wallsBounds.max.x;
-  int maxZ = gen.wallsBounds.max.z; 
-  int desiredTopBlockHeight = gen.wallsBounds.min.y-1;
-  for(int x = minX; x<=maxX; x++)
-    {
-    for(int z = minZ; z<=maxZ; z++)
-      {
-      handleBorderBlock(world, x, z, desiredTopBlockHeight, desiredTopBlockHeight, getFillBlock(world, x, z, false, Blocks.grass), getFillBlock(world, x, z, true, Blocks.grass), false);
-      world.setBlock(x, desiredTopBlockHeight-5, z, Blocks.cobblestone);
-      }
-    }
-  }
+        int eminx = exterior.min.getX();
+        int eminz = exterior.min.getZ();
+        int emaxx = exterior.max.getX();
+        int emaxz = exterior.max.getZ();
 
-private static void handleBorderBlock(World world, int x, int z, int fillLevel, int cutLevel, Block fillBlock, Block topBlock, boolean skippables)
-  {  
-  int y = getTopFilledHeight(world.getChunkFromBlockCoords(x, z), x&15, z&15, skippables);
-  if(y >= cutLevel)
-    {
-    for(int py = world.provider.getActualHeight(); py > cutLevel; py--){world.setBlockToAir(x, py, z);}
-    world.setBlock(x, cutLevel, z, topBlock);
-    }
-  if(y <= fillLevel)
-    {
-    for(int py = y+1; py < fillLevel; py++)
-      {
-      world.setBlock(x, py, z, fillBlock);
-      }
-    world.setBlock(x, fillLevel, z, topBlock);
-    }
-  }
+        minX = max.min.getX();
+        maxX = walls.min.getX() - 1;
+        for (int px = minX; px <= maxX; px++) {
+            for (int pz = max.min.getZ(); pz <= max.max.getZ(); pz++) {
+                step = WorldStructureGenerator.getStepNumber(px, pz, eminx, emaxx, eminz, emaxz);
+                handleBorderBlock(world, px, pz, fillBase - step, levelBase + step, getFillBlock(world, px, pz, false, Blocks.DIRT.getDefaultState()), getFillBlock(world, px, pz, true, Blocks.GRASS.getDefaultState()), true);
+            }
+        }
 
-private static int getTopFilledHeight(Chunk chunk, int xInChunk, int zInChunk, boolean skippables)
-  {
-  int maxY = chunk.getTopFilledSegment() + 16;
-  Block block;
-  for(int y = maxY; y > 0; y--)
-    {
-    block = chunk.getBlock(xInChunk, y, zInChunk);
-    if(block==null || block==Blocks.air || (skippables && AWStructureStatics.skippableBlocksContains(block)) || block.getMaterial()==Material.water){continue;}
-    return y;
-    }
-  return -1;
-  }
+        minX = walls.max.getX() + 1;
+        maxX = max.max.getX();
+        for (int px = minX; px <= maxX; px++) {
+            for (int pz = max.min.getZ(); pz <= max.max.getZ(); pz++) {
+                step = WorldStructureGenerator.getStepNumber(px, pz, eminx, emaxx, eminz, emaxz);
+                handleBorderBlock(world, px, pz, fillBase - step, levelBase + step, getFillBlock(world, px, pz, false, Blocks.DIRT.getDefaultState()), getFillBlock(world, px, pz, true, Blocks.GRASS.getDefaultState()), true);
+            }
+        }
 
-private static Block getFillBlock(World world, int x, int z, boolean surface, Block defaultBlock)
-  {
-  Block block = defaultBlock;
-  BiomeGenBase biome = world.getBiomeGenForCoordsBody(x, z);
-  if(biome!=null && biome.topBlock!=null)
-    {
-    if(surface && biome.topBlock!=null){block = biome.topBlock;}
-    else if(!surface && biome.fillerBlock!=null){block = biome.fillerBlock;}
+        minZ = max.min.getZ();
+        maxZ = walls.min.getZ() - 1;
+        for (int pz = minZ; pz <= maxZ; pz++) {
+            for (int px = max.min.getX(); px <= max.max.getX(); px++) {
+                step = WorldStructureGenerator.getStepNumber(px, pz, eminx, emaxx, eminz, emaxz);
+                handleBorderBlock(world, px, pz, fillBase - step, levelBase + step, getFillBlock(world, px, pz, false, Blocks.DIRT.getDefaultState()), getFillBlock(world, px, pz, true, Blocks.GRASS.getDefaultState()), true);
+            }
+        }
+
+        minZ = walls.max.getZ() + 1;
+        maxZ = max.max.getZ();
+        for (int pz = minZ; pz <= maxZ; pz++) {
+            for (int px = max.min.getX(); px <= max.max.getX(); px++) {
+                step = WorldStructureGenerator.getStepNumber(px, pz, eminx, emaxx, eminz, emaxz);
+                handleBorderBlock(world, px, pz, fillBase - step, levelBase + step, getFillBlock(world, px, pz, false, Blocks.DIRT.getDefaultState()), getFillBlock(world, px, pz, true, Blocks.GRASS.getDefaultState()), true);
+            }
+        }
     }
-  return block;
-  }
+
+    public static void levelTownArea(World world, StructureBB walls) {
+        int minX = walls.min.getX();
+        int minZ = walls.min.getZ();
+        int maxX = walls.max.getX();
+        int maxZ = walls.max.getZ();
+        int desiredTopBlockHeight = walls.min.getY() - 1;
+        for (int x = minX; x <= maxX; x++) {
+            for (int z = minZ; z <= maxZ; z++) {
+                handleBorderBlock(world, x, z, desiredTopBlockHeight, desiredTopBlockHeight, getFillBlock(world, x, z, false, Blocks.GRASS.getDefaultState()), getFillBlock(world, x, z, true, Blocks.GRASS.getDefaultState()), false);
+                world.setBlockState(new BlockPos(x, desiredTopBlockHeight - 5, z), Blocks.COBBLESTONE.getDefaultState());
+            }
+        }
+    }
+
+    private static void handleBorderBlock(World world, int x, int z, int fillLevel, int cutLevel, IBlockState fillBlock, IBlockState topBlock, boolean skippables) {
+        int y = getTopFilledHeight(world.getChunkFromBlockCoords(new BlockPos(x, 1, z)), x, z, skippables);
+        if (y >= cutLevel) {
+            for (int py = world.getActualHeight(); py > cutLevel; py--) {
+                world.setBlockToAir(new BlockPos(x, py, z));
+            }
+            world.setBlockState(new BlockPos(x, cutLevel, z), topBlock);
+        }
+        if (y <= fillLevel) {
+            for (int py = y + 1; py < fillLevel; py++) {
+                world.setBlockState(new BlockPos(x, py, z), fillBlock);
+            }
+            world.setBlockState(new BlockPos(x, fillLevel, z), topBlock);
+        }
+    }
+
+    private static int getTopFilledHeight(Chunk chunk, int x, int z, boolean skippables) {
+        int maxY = chunk.getTopFilledSegment() + 16;
+        Block block;
+        for (int y = maxY; y > 0; y--) {
+            IBlockState state = chunk.getBlockState(new BlockPos(x, y, z));
+            block = state.getBlock();
+            if (block == null || block == Blocks.AIR || (skippables && AWStructureStatics.skippableBlocksContains(block)) || state.getMaterial() == Material.WATER) {
+                continue;
+            }
+            return y;
+        }
+        return -1;
+    }
+
+    private static IBlockState getFillBlock(World world, int x, int z, boolean surface, IBlockState defaultBlock) {
+        Biome biome = world.getBiome(new BlockPos(x, 1, z));
+        if (biome != null) {
+            if (surface && biome.topBlock != null) {
+                return biome.topBlock;
+            } else if (!surface && biome.fillerBlock != null) {
+                return biome.fillerBlock;
+            }
+        }
+        return defaultBlock;
+    }
 
 }

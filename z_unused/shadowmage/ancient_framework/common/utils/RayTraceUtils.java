@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -27,7 +27,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class RayTraceUtils
@@ -43,16 +43,16 @@ public static MovingObjectPosition tracePathWithYawPitch(World world, float x, f
 
 public static MovingObjectPosition getPlayerTarget(EntityPlayer player, float range, float border)
   {
-  HashSet<Entity> excluded = new HashSet<Entity>();
+  HashSet<Entity> excluded = new HashSet<>();
   excluded.add(player);
-  if(player.ridingEntity!=null)
+  if(player.getRidingEntity()!=null)
     {
-    excluded.add(player.ridingEntity);
+    excluded.add(player.getRidingEntity());
     }
-  return tracePathWithYawPitch(player.worldObj, (float)player.posX, (float)player.posY + (player.worldObj.isRemote ? 0.f : 1.62f), (float)player.posZ, player.rotationYaw, player.rotationPitch, range, border, excluded);  
+  return tracePathWithYawPitch(player.world, (float)player.posX, (float)player.posY + (player.world.isRemote ? 0.f : 1.62f), (float)player.posZ, player.rotationYaw, player.rotationPitch, range, border, excluded);
   }
 
-/**
+/*
  * 
  * @param world
  * @param x startX
@@ -67,8 +67,8 @@ public static MovingObjectPosition getPlayerTarget(EntityPlayer player, float ra
  */
 public static MovingObjectPosition tracePath(World world, float x, float y, float z, float tx, float ty, float tz, float borderSize, HashSet<Entity> excluded)
   {
-  Vec3 startVec = Vec3.fakePool.getVecFromPool(x, y, z);
-  Vec3 endVec = Vec3.fakePool.getVecFromPool(tx, ty, tz);
+  Vec3d startVec = Vec3d.fakePool.getVecFromPool(x, y, z);
+  Vec3d endVec = Vec3d.fakePool.getVecFromPool(tx, ty, tz);
   float minX = x < tx ? x : tx;
   float minY = y < ty ? y : ty;
   float minZ = z < tz ? z : tz;
@@ -78,8 +78,8 @@ public static MovingObjectPosition tracePath(World world, float x, float y, floa
   AxisAlignedBB bb = AxisAlignedBB.getAABBPool().getAABB(minX, minY, minZ, maxX, maxY, maxZ).expand(borderSize, borderSize, borderSize);
   List<Entity> allEntities = world.getEntitiesWithinAABBExcludingEntity(null, bb);  
   MovingObjectPosition blockHit = world.clip(startVec, endVec);
-  startVec = Vec3.fakePool.getVecFromPool(x, y, z);
-  endVec = Vec3.fakePool.getVecFromPool(tx, ty, tz);
+  startVec = Vec3d.fakePool.getVecFromPool(x, y, z);
+  endVec = Vec3d.fakePool.getVecFromPool(tx, ty, tz);
   float maxDistance = (float) endVec.distanceTo(startVec);
   if(blockHit!=null)
     {
@@ -95,7 +95,7 @@ public static MovingObjectPosition tracePath(World world, float x, float y, floa
     if(ent.canBeCollidedWith() && !excluded.contains(ent))
       {
       float entBorder =  ent.getCollisionBorderSize();
-      entityBb = ent.boundingBox;
+      entityBb = ent.getEntityBoundingBox();
       if(entityBb!=null)
         {
         entityBb = entityBb.expand(entBorder, entBorder, entBorder);

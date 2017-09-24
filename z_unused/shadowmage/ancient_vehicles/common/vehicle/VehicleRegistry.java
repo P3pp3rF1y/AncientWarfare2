@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -48,7 +48,7 @@ public static void loadVehicles()
 
 private static void registerVehicleHelperTypes()
   {
-  /**
+  /*
    * TODO register vehicle helpers -- firing and move
    * TODO figure out move-types
    */
@@ -68,7 +68,7 @@ public static void registerVehicleItemData(AWItemBase item)
     if(t.isSuvivalEnabled())
       {
       //register recipes and research
-      /**
+      /*
        * TODO research and crafting systems
        */  
       }
@@ -87,7 +87,7 @@ public static Object getMoveType(String name)
 
 private static List<VehicleType> loadFromDefinitions(String definitions, String tooltips, String research, String upgrades, String ammos)
   {
-  List<VehicleType> types = new ArrayList<VehicleType>();
+  List<VehicleType> types = new ArrayList<>();
   try
     {
     
@@ -149,7 +149,7 @@ private static List<VehicleType> loadFromDefinitions(String definitions, String 
 
 private static List<String> getLinesFrom(String resourcePath) throws IOException
   {
-  List<String> lines = new ArrayList<String>();
+  List<String> lines = new ArrayList<>();
   InputStream is = AWVehicles.instance.getClass().getResourceAsStream(resourcePath);
   BufferedReader reader = new BufferedReader(new InputStreamReader(is));
   String line;

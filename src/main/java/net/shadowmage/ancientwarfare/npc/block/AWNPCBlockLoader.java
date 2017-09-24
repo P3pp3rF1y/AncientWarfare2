@@ -1,25 +1,39 @@
 package net.shadowmage.ancientwarfare.npc.block;
 
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
-import net.shadowmage.ancientwarfare.core.item.ItemBlockOwnedRotatable;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.shadowmage.ancientwarfare.core.item.ItemBlockOwned;
+import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
+import net.shadowmage.ancientwarfare.npc.item.ItemBlockTeleportHub;
+import net.shadowmage.ancientwarfare.npc.tile.TileTeleportHub;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
-import cpw.mods.fml.common.registry.GameRegistry;
 
-public class AWNPCBlockLoader
-{
+@Mod.EventBusSubscriber(modid = AncientWarfareNPC.modID)
+public class AWNPCBlockLoader {
 
-public static final BlockTownHall townHall = new BlockTownHall("town_hall");
+    @SubscribeEvent
+    public static void registerItemBlocks(RegistryEvent.Register<Item> event) {
+        IForgeRegistry<Item> registry = event.getRegistry();
 
-public static void load()
-  {
-  GameRegistry.registerBlock(townHall, ItemBlockOwnedRotatable.class, "town_hall");
-  GameRegistry.registerTileEntity(TileTownHall.class, "town_hall_tile");
-  townHall.iconMap.setIcon(townHall, RelativeSide.TOP, "ancientwarfare:npc/town_hall_top");
-  townHall.iconMap.setIcon(townHall, RelativeSide.BOTTOM, "ancientwarfare:npc/town_hall_bottom");
-  townHall.iconMap.setIcon(townHall, RelativeSide.LEFT, "ancientwarfare:npc/town_hall_side");
-  townHall.iconMap.setIcon(townHall, RelativeSide.RIGHT, "ancientwarfare:npc/town_hall_side");
-  townHall.iconMap.setIcon(townHall, RelativeSide.FRONT, "ancientwarfare:npc/town_hall_side");
-  townHall.iconMap.setIcon(townHall, RelativeSide.REAR, "ancientwarfare:npc/town_hall_side");
-  }
+        registry.register(new ItemBlockOwned(AWNPCBlocks.townHall));
+        registry.register(new ItemBlockOwned(AWNPCBlocks.headquarters));
+        registry.register(new ItemBlockTeleportHub(AWNPCBlocks.teleportHub));
+    }
 
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<Block> event) {
+        IForgeRegistry<Block> registry = event.getRegistry();
+
+        registry.register(new BlockTownHall());
+        registry.register(new BlockHeadquarters());
+        GameRegistry.registerTileEntity(TileTownHall.class, "town_hall_tile");
+
+        registry.register(new BlockTeleportHub());
+        GameRegistry.registerTileEntity(TileTeleportHub.class, "teleport_hub_tile");
+    }
 }

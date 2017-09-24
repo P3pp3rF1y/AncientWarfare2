@@ -1,94 +1,145 @@
 package net.shadowmage.ancientwarfare.core.block;
 
-import net.minecraft.block.Block;
+import codechicken.lib.model.ModelRegistryHelper;
+import codechicken.lib.model.bakery.CCBakeryModel;
+import codechicken.lib.model.bakery.IBakeryProvider;
+import codechicken.lib.model.bakery.ModelBakery;
+import codechicken.lib.model.bakery.generation.IBakery;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
+import net.shadowmage.ancientwarfare.core.gui.crafting.GuiEngineeringStation;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
+import net.shadowmage.ancientwarfare.core.render.BlockRenderProperties;
+import net.shadowmage.ancientwarfare.core.render.EngineeringStationRenderer;
 import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
-public class BlockEngineeringStation extends BlockRotatableTile
-{
+public class BlockEngineeringStation extends BlockRotatableTile implements IClientRegistrar, IBakeryProvider {
 
-protected BlockEngineeringStation(String regName)
-  {
-  super(Material.rock);
-  this.setBlockName(regName);
-  this.setCreativeTab(AWCoreBlockLoader.coreTab);
-  iconMap.setIcon(this, RelativeSide.BOTTOM, "ancientwarfare:core/engineering_station_bottom");
-  iconMap.setIcon(this, RelativeSide.TOP, "ancientwarfare:core/engineering_station_bottom");
-  iconMap.setIcon(this, RelativeSide.FRONT, "ancientwarfare:core/engineering_station_bottom");
-  iconMap.setIcon(this, RelativeSide.REAR, "ancientwarfare:core/engineering_station_bottom");
-  iconMap.setIcon(this, RelativeSide.LEFT, "ancientwarfare:core/engineering_station_bottom");
-  iconMap.setIcon(this, RelativeSide.RIGHT, "ancientwarfare:core/engineering_station_bottom");
-  setHardness(2.f);
-  }
+    protected BlockEngineeringStation() {
+        super(Material.ROCK, "engineering_station");
+        setHardness(2.f);
 
-@Override
-public boolean hasTileEntity(int metadata)
-  {
-  return true;
-  }
-
-@Override
-public TileEntity createTileEntity(World world, int metadata)
-  {
-  return new TileEngineeringStation();
-  }
-
-@Override
-public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int p_149727_6_, float p_149727_7_, float p_149727_8_, float p_149727_9_)
-  {
-  if(!world.isRemote)
-    {
-    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_CRAFTING, x, y, z);    
+        AncientWarfareCore.proxy.addClientRegistrar(this);
     }
-  return true;
-  }
 
-@Override
-public void breakBlock(World world, int x, int y, int z, Block block, int meta)
-  {
-  TileEngineeringStation tile = (TileEngineeringStation) world.getTileEntity(x, y, z);
-  if(tile!=null)
-    {
-    InventoryTools.dropInventoryInWorld(world, tile.bookInventory, x, y, z);
-    InventoryTools.dropInventoryInWorld(world, tile.extraSlots, x, y, z);
-    InventoryTools.dropInventoryInWorld(world, tile.layoutMatrix, x, y, z);
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer.Builder(this).add(BlockRenderProperties.UNLISTED_FACING).build();
     }
-  super.breakBlock(world, x, y, z, block, meta);
-  }
 
-@Override
-public RotationType getRotationType()
-  {
-  return RotationType.FOUR_WAY;
-  }
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return 0;
+    }
 
-@Override
-public boolean invertFacing()
-  {
-  return true;
-  }
+    @Override
+    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        EnumFacing facing = EnumFacing.NORTH;
+        TileEntity tileentity = world.getTileEntity(pos);
 
-@Override
-public Block setIcon(RelativeSide side, String texName)
-  {
-  iconMap.setIcon(this, side, texName);
-  return this;
-  }
+        if (tileentity instanceof TileEngineeringStation) {
+            facing = ((TileEngineeringStation) tileentity).getPrimaryFacing();
+        }
 
-@Override
-public boolean shouldSideBeRendered(net.minecraft.world.IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {return false;}
+        return ((IExtendedBlockState) super.getExtendedState(state, world, pos)).withProperty(BlockRenderProperties.UNLISTED_FACING, facing);
+    }
 
-@Override
-public boolean isOpaqueCube() {return false;}
+    @Override
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
+    }
 
-@Override
-public boolean isNormalCube() {return false;}
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
+        return new TileEngineeringStation();
+    }
 
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        if (!world.isRemote) {
+            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_CRAFTING, pos);
+        }
+        return true;
+    }
+
+    @Override
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+        TileEngineeringStation tile = (TileEngineeringStation) world.getTileEntity(pos);
+        if (tile != null) {
+            tile.onBlockBreak();
+        }
+        super.breakBlock(world, pos, state);
+    }
+
+    @Override
+    public RotationType getRotationType() {
+        return RotationType.FOUR_WAY;
+    }
+
+    @Override
+    public boolean invertFacing() {
+        return true;
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isNormalCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerClient() {
+        NetworkHandler.registerGui(NetworkHandler.GUI_CRAFTING, GuiEngineeringStation.class);
+
+        ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
+            @Override protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+                return EngineeringStationRenderer.MODEL_LOCATION;
+            }
+        });
+
+        ModelRegistryHelper.register(EngineeringStationRenderer.MODEL_LOCATION, new CCBakeryModel(AncientWarfareCore.modID + ":model/core/tile_engineering_station") {
+            @Override
+            public TextureAtlasSprite getParticleTexture() {
+                return EngineeringStationRenderer.sprite;
+            }
+        });
+
+        ModelLoaderHelper.registerItem(this, "", "normal");
+
+        ModelBakery.registerBlockKeyGenerator(this, state -> state.getBlock().getRegistryName().toString() + "," + state.getValue(BlockRenderProperties.UNLISTED_FACING).toString());
+    }
+
+    @Override
+    public IBakery getBakery() {
+        return EngineeringStationRenderer.INSTANCE;
+    }
 }

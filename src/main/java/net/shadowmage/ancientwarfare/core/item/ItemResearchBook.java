@@ -1,102 +1,68 @@
 package net.shadowmage.ancientwarfare.core.item;
 
-import java.util.List;
-
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagString;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
-import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
+import net.shadowmage.ancientwarfare.core.gui.GuiResearchBook;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemResearchBook extends Item implements IItemClickable
-{
+import javax.annotation.Nullable;
+import java.util.List;
 
-public ItemResearchBook(String localizationKey)
-  {
-  this.setUnlocalizedName(localizationKey);
-  this.setCreativeTab(AWCoreBlockLoader.coreTab);
-  this.setMaxStackSize(1);
-  this.setTextureName("ancientwarfare:core/research_book");
-  }
+public class ItemResearchBook extends ItemBaseCore {
 
-@Override
-public boolean cancelRightClick(EntityPlayer player, ItemStack stack)
-  {
-  return true;
-  }
-
-@Override
-public boolean cancelLeftClick(EntityPlayer player, ItemStack stack)
-  {
-  return false;
-  }
-
-@SuppressWarnings({ "unchecked", "rawtypes" })
-@Override
-@SideOnly(Side.CLIENT)
-public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
-  {
-  super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
-  String name = getResearcherName(par1ItemStack);
-  if(name==null)
-    {
-    par3List.add(StatCollector.translateToLocal("guistrings.research.researcher_name")+": "+StatCollector.translateToLocal("guistrings.research.no_researcher"));
-    par3List.add(StatCollector.translateToLocal("guistrings.research.right_click_to_bind"));
+    public ItemResearchBook() {
+        super("research_book");
+        this.setMaxStackSize(1);
     }
-  else
-    {
-    par3List.add(StatCollector.translateToLocal("guistrings.research.researcher_name")+": "+name);
-    par3List.add(StatCollector.translateToLocal("guistrings.research.right_click_to_view"));
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
+        super.addInformation(stack, world, tooltip, flag);
+        String name = getResearcherName(stack);
+        if (name == null) {
+            tooltip.add(I18n.format("guistrings.research.researcher_name") + ": " + I18n.format("guistrings.research.no_researcher"));
+            tooltip.add(I18n.format("guistrings.research.right_click_to_bind"));
+        } else {
+            tooltip.add(I18n.format("guistrings.research.researcher_name") + ": " + name);
+            tooltip.add(I18n.format("guistrings.research.right_click_to_view"));
+        }
     }
-  }
 
-public static final String getResearcherName(ItemStack stack)
-  {
-  if(stack!=null && stack.getItem()==AWItems.researchBook && stack.hasTagCompound() && stack.getTagCompound().hasKey("researcherName"))
-    {
-    return stack.getTagCompound().getString("researcherName");
+    @Nullable
+    public static String getResearcherName(ItemStack stack) {
+        if (!stack.isEmpty() && stack.getItem() == AWItems.researchBook && stack.hasTagCompound() && stack.getTagCompound().hasKey("researcherName")) {
+            return stack.getTagCompound().getString("researcherName");
+        }
+        return null;
     }
-  return null;
-  }
 
-@Override
-public boolean onLeftClickClient(EntityPlayer player, ItemStack stack)
-  {
-  return false;
-  }
-
-@Override
-public void onLeftClick(EntityPlayer player, ItemStack stack)
-  {
-  
-  }
-
-@Override
-public boolean onRightClickClient(EntityPlayer player, ItemStack stack)
-  {
-  return true;
-  }
-
-@Override
-public void onRightClick(EntityPlayer player, ItemStack stack)
-  {  
-  if(!stack.hasTagCompound() || !stack.getTagCompound().hasKey("researcherName"))
-    {
-    //TODO add chat message stating book is bound
-    stack.setTagInfo("researcherName", new NBTTagString(player.getCommandSenderName()));
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+        ItemStack stack = player.getHeldItem(hand);
+        if(!world.isRemote) {
+            if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey("researcherName")) {
+                stack.setTagInfo("researcherName", new NBTTagString(player.getName()));
+                player.sendMessage(new TextComponentTranslation("guistrings.research.book_bound"));
+            } else {
+                NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_RESEARCH_BOOK, 0, 0, 0);
+            }
+        }
+        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
-  else
-    {
-    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_RESEARCH_BOOK, 0, 0, 0);
+
+    @Override
+    public void registerClient() {
+        super.registerClient();
+
+        NetworkHandler.registerGui(NetworkHandler.GUI_RESEARCH_BOOK, GuiResearchBook.class);
     }
-  }
-
-
-
 }

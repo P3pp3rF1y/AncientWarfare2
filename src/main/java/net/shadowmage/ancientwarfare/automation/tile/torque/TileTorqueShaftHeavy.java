@@ -1,16 +1,17 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque;
 
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 
+public final class TileTorqueShaftHeavy extends TileTorqueShaft {
 
-public class TileTorqueShaftHeavy extends TileTorqueShaft
-{
+    @Override
+    protected double getEfficiency() {
+        return AWAutomationStatics.high_efficiency_factor;
+    }
 
-public TileTorqueShaftHeavy()
-  {
-  double max = AWAutomationStatics.high_transfer_max;
-  torqueCell = new TorqueCell(max, max, max, AWAutomationStatics.high_efficiency_factor);
-  }
+    @Override
+    protected double getMaxTransfer() {
+        return AWAutomationStatics.high_transfer_max;
+    }
 
 }

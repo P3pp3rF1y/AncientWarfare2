@@ -1,57 +1,40 @@
 package net.shadowmage.ancientwarfare.core.util;
 
-import java.util.Collections;
-import java.util.List;
-
-import net.minecraft.entity.Entity;
+import com.google.common.collect.Lists;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraft.world.chunk.Chunk;
 
-public class WorldTools
-{
+import java.util.Collections;
+import java.util.List;
 
-/**
- * SERVER ONLY
- * @param world
- * @param x1
- * @param y1
- * @param z1
- * @param x2
- * @param y2
- * @param z2
- * @return
- */
-@SuppressWarnings("unchecked")
-public static List<TileEntity> getTileEntitiesInArea(World world, int x1, int y1, int z1, int x2, int y2, int z2)
-  {  
-  if(world instanceof WorldServer)
-    {
-    return (List<TileEntity>) ((WorldServer)world).func_147486_a(x1, y1, z1, x2, y2, z2);
-    }
-  return Collections.emptyList();
-  }
+public class WorldTools {
 
-/**
- * PROBABLY SLOW AS HELL<br>
- * ONLY WORKS SERVER SIDE UNLESS ENTITY-UNIQUE ID HAS BEEN SYNCHED BY MODDER
- * @param world
- * @param msb
- * @param lsb
- * @return
- */
-@SuppressWarnings("unchecked")
-public static Entity getEntityByUUID(World world, long msb, long lsb)
-  {
-  world.getEntityByID(0);
-  for(Entity e : (List<Entity>)world.loadedEntityList)
-    {
-    if(e.getPersistentID().getMostSignificantBits()==msb && e.getPersistentID().getLeastSignificantBits()==lsb)
-      {
-      return e;
-      }
-    }
-  return null;
-  }
+	/*
+	 * SERVER ONLY
+	 */
+	public static List<TileEntity> getTileEntitiesInArea(World world, int x1, int y1, int z1, int x2, int y2, int z2) {
+		if(world instanceof WorldServer) {
 
+			List<TileEntity> tileEntities = Lists.newArrayList();
+			for(int x = (x1 >> 4); x <= (x2 >> 4); x++) {
+				for(int z = (z1 >> 4); z <= (z2 >> 4); z++) {
+					Chunk chunk = world.getChunkFromChunkCoords(x, z);
+					if(chunk != null) {
+						for(Object obj : chunk.getTileEntityMap().values()) {
+							TileEntity entity = (TileEntity) obj;
+							if(!entity.isInvalid()) {
+								if(entity.getPos().getX() >= x1 && entity.getPos().getY() >= y1 && entity.getPos().getZ() >= z1 && entity.getPos().getX() <= x2 && entity.getPos().getY() <= y2 && entity.getPos().getZ() <= z2) {
+									tileEntities.add(entity);
+								}
+							}
+						}
+					}
+				}
+			}
+			return tileEntities;
+		}
+		return Collections.emptyList();
+	}
 }

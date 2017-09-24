@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -32,7 +32,7 @@ import shadowmage.ancient_structures.common.item.AWStructuresItemLoader;
 public class ContainerSpawnerPlacer extends ContainerBase
 {
 public String mobID = "Pig";
-/**
+/*
  * @param openingPlayer
  * @param synch
  */
@@ -71,7 +71,7 @@ public List<NBTTagCompound> getInitData()
 public void onContainerClosed(EntityPlayer par1EntityPlayer)
   {
   super.onContainerClosed(par1EntityPlayer);
-  if(par1EntityPlayer.worldObj.isRemote)
+  if(par1EntityPlayer.world.isRemote)
     {
     return;
     }

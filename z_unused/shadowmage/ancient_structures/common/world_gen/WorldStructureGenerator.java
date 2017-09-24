@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -27,7 +27,7 @@ import java.util.LinkedList;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.util.ChunkCoordinates;
+import net.minecraft.util.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import shadowmage.ancient_framework.common.config.AWLog;
@@ -47,9 +47,9 @@ public class WorldStructureGenerator implements IWorldGenerator
 private static WorldStructureGenerator instance = new WorldStructureGenerator();
 private WorldStructureGenerator(){}
 public static WorldStructureGenerator instance(){return instance;}
-public static HashSet<String> skippableWorldGenBlocks = new HashSet<String>();
+public static HashSet<String> skippableWorldGenBlocks = new HashSet<>();
 
-public static HashSet<String> defaultTargetBlocks = new HashSet<String>();
+public static HashSet<String> defaultTargetBlocks = new HashSet<>();
 
 static
 {
@@ -83,7 +83,7 @@ private Random rng = new Random();
 @Override
 public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider)
   {
-  ChunkCoordinates cc = world.getSpawnPoint();
+  ChunkPos cc = world.getSpawnPoint();
   float distSq = cc.getDistanceSquared(chunkX*16, 70, chunkZ*16);
   if(distSq < (AWStructureStatics.spawnProtectionRange*16)*(AWStructureStatics.spawnProtectionRange*16))
     {
@@ -190,7 +190,7 @@ public boolean attemptStructureGenerationAt(World world, int x, int y, int z, in
   int xs = bb.getXSize();
   int zs = bb.getZSize();
   int size = ((xs > zs ? xs : zs)/16)+3;
-  Collection<StructureEntry> bbCheckList = map.getEntriesNear(world, x, z, size, true, new ArrayList<StructureEntry>());  
+  Collection<StructureEntry> bbCheckList = map.getEntriesNear(world, x, z, size, true, new ArrayList<>());
   for(StructureEntry entry : bbCheckList)
     {
     if(bb.collidesWith(entry.getBB()))

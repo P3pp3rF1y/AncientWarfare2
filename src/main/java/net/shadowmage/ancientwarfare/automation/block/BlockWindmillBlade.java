@@ -1,95 +1,92 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
-import java.util.List;
-
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileWindmillBlade;
 
-public class BlockWindmillBlade extends Block
-{
+public class BlockWindmillBlade extends BlockBaseAutomation {
 
-public BlockWindmillBlade(String regName)
-  {
-  super(Material.rock);
-  this.setBlockName(regName);
-  this.setCreativeTab(AWAutomationItemLoader.automationTab);
-  }
+    public BlockWindmillBlade(String regName) {
+        super(Material.WOOD, regName);
+    }
 
-@Override
-public boolean onBlockEventReceived(World world, int x, int y, int z, int a, int b)
-  {
-  TileEntity tileentity = world.getTileEntity(x, y, z);
-  return tileentity != null ? tileentity.receiveClientEvent(a, b) : false;
-  }
+    @Override
+    public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param) {
+        TileEntity tileentity = world.getTileEntity(pos);
+        return tileentity != null && tileentity.receiveClientEvent(id, param);
+    }
 
-@Override
-public boolean shouldSideBeRendered(net.minecraft.world.IBlockAccess access, int x, int y, int z, int side) {return false;}
+    @Override
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+        return false;
+    }
 
-@Override
-public boolean isOpaqueCube(){return false;}
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
 
-@Override
-public boolean isNormalCube(){return false;}
+    @Override
+    public boolean isNormalCube(IBlockState state) {
+        return false;
+    }
 
-@Override
-public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side){return false;}
+    @Override
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+        return false;
+    }
 
-@Override
-public IIcon getIcon(int side, int meta)
-  {
-  return Blocks.glass.getIcon(side, 0);
-  }
+/*
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int side, int meta) {
+        return Blocks.GLASS.getIcon(side, 0);
+    }
 
-@Override
-public void registerBlockIcons(IIconRegister register)
-  {
-  }
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister register) {
+    }
+*/
 
-@Override
-public void onPostBlockPlaced(World world, int x, int y, int z, int meta)
-  {
-  super.onPostBlockPlaced(world, x, y, z, meta);
-  TileWindmillBlade te = (TileWindmillBlade) world.getTileEntity(x, y, z);
-  te.blockPlaced();
-  }
+    @Override
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+        super.onBlockPlacedBy(world, pos, state, placer, stack);
+        TileWindmillBlade te = (TileWindmillBlade) world.getTileEntity(pos);
+        te.blockPlaced();
+    }
 
-@Override
-public void breakBlock(World world, int x, int y, int z, Block p_149749_5_, int p_149749_6_)
-  {
-  TileWindmillBlade te = (TileWindmillBlade) world.getTileEntity(x, y, z);
-  super.breakBlock(world, x, y, z, p_149749_5_, p_149749_6_);
-  te.blockBroken();//have to call post block-break so that the tile properly sees the block/tile as gone
-  }
+    @Override
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+        TileWindmillBlade te = (TileWindmillBlade) world.getTileEntity(pos);
+        super.breakBlock(world, pos, state);
+        te.blockBroken();//have to call post block-break so that the tile properly sees the block/tile as gone //TODO invalidate?
+    }
 
-@Override
-public TileEntity createTileEntity(World world, int metadata)
-  {  
-  return new TileWindmillBlade();
-  }
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
+        return new TileWindmillBlade();
+    }
 
-@Override
-public boolean hasTileEntity(int metadata)
-  {
-  return true;
-  }
+    @Override
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
+    }
 
-@SuppressWarnings({ "unchecked", "rawtypes" })
-@Override
-public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List list)
-  {
-  list.add(new ItemStack(Item.getItemFromBlock(this),1,0));
-  }
+    @Override
+    public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
+        return 60;
+    }
 
+    @Override
+    public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
+        return 20;
+    }
 }

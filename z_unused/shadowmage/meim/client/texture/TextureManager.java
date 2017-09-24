@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -27,7 +27,7 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-/**
+/*
  * single-texture texture manager, for use by MEIM for texture-map output textures
  *
  */
@@ -97,7 +97,7 @@ public static void updateTextureContents(BufferedImage image)
   resetBoundTexture();
   }
 
-/**
+/*
  * upload the imageData to openGL using the currently bound texture number
  * @param imagedata in RGBA format
  * @param width
@@ -108,7 +108,7 @@ private static void uploadTextureRGBAInts(IntBuffer imagedata, int width, int he
   GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, width, height, 0, GL11.GL_RGBA, GL12.GL_UNSIGNED_INT_8_8_8_8, imagedata); 
   }
 
-/**
+/*
  * fills an intBuffer with pixel data from the input image
  * @param image to read from
  * @param buffer to fill
@@ -131,7 +131,7 @@ private static void fillImageArray(BufferedImage image, IntBuffer buffer)
   buffer.flip();
   }
 
-/**
+/*
  * converts the input pixel from ARGB to RGBA using simple bit-shifting operations
  * @param pixel in ARGB format
  * @return pixel in RGBA format

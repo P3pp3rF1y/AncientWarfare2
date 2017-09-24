@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -38,7 +38,7 @@ public abstract class AWInventoryBase implements IInventory
 
 int storageSize = 0;
 
-List<IInventoryCallback> callbacks = new ArrayList<IInventoryCallback>();
+List<IInventoryCallback> callbacks = new ArrayList<>();
 
 public AWInventoryBase(int size)
   {
@@ -57,7 +57,7 @@ public AWInventoryBase setCallback(IInventoryCallback call)
   return this;
   }
 
-/**
+/*
  * return qty left that could not be removed from inventory
  * does not call onInventoryChanged...only used by vehicle ammo helper
  * to decrease ammo counts (only known by itemID/damage) should deprecate
@@ -74,17 +74,17 @@ public int decreaseCountOf(int id, int dmg, int qty)
     ItemStack stack = this.getStackInSlot(i);
     if(stack!=null && stack.itemID==id && stack.getItemDamage()==dmg)
       {
-      if(stack.stackSize>=qty)
+      if(stack.getCount()>=qty)
         {
-        stack.stackSize-=qty;
+        stack.shrink(qty);
         qty = 0;
         }
       else
         {
-        qty-=stack.stackSize;
-        stack.stackSize = 0;
+        qty-=stack.getCount();
+        stack.setCount(0)
         }
-      if(stack.stackSize==0)
+      if(stack.getCount()==0)
         {
         this.setInventorySlotContents(i, null);
         }
@@ -109,7 +109,7 @@ public ItemStack decrStackSize(int slotNum, int decreaseBy)
   ItemStack stack = this.getStackInSlot(slotNum);
   if (stack != null)
     {
-    if (stack.stackSize <= decreaseBy)
+    if (stack.getCount() <= decreaseBy)
       {      
       this.setInventorySlotContents(slotNum, null);
       return stack;
@@ -117,7 +117,7 @@ public ItemStack decrStackSize(int slotNum, int decreaseBy)
     else
       {
       stack = this.getStackInSlot(slotNum).splitStack(decreaseBy);
-      if (this.getStackInSlot(slotNum).stackSize == 0)
+      if (this.getStackInSlot(slotNum).getCount() == 0)
         {
         this.setInventorySlotContents(slotNum, null);
         }
@@ -171,7 +171,7 @@ public boolean canHoldItem(ItemStack filter, int qty, int [] slots)
   return InventoryTools.canHoldItem(this, filter, qty, slots);
   }
 
-/**
+/*
  * returns the remainder of the items not merged, or null if completely successful 
  * @param toMerge
  * @return
@@ -209,7 +209,7 @@ public int canHoldMore(ItemStack item)
   return InventoryTools.canHoldMore(this, item, 0, this.getSizeInventory()-1);
   }
 
-/**
+/*
  * percentage full by slot count
  * @return
  */
@@ -263,7 +263,7 @@ public void closeChest()
   
   }
 
-/**
+/*
  * return {@link NBTTagCompound} describing this inventory
  * @return
  */
@@ -285,7 +285,7 @@ public NBTTagCompound getNBTTag()
   return tag;
   }
 
-/**
+/*
  * read the inventory from an NBT tag
  * @param tag
  */

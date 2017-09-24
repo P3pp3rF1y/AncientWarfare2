@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -42,8 +42,8 @@ public static String includeDirectory = null;
 public static String convertDirectory = null;
 public static String configBaseDirectory = null;
 
-private List<String> defaultExportStructures = new ArrayList<String>();
-private List<File> probableStructureFiles = new ArrayList<File>();
+private List<String> defaultExportStructures = new ArrayList<>();
+private List<File> probableStructureFiles = new ArrayList<>();
 
 private TemplateLoader(){}
 private static TemplateLoader instance = new TemplateLoader(){};
@@ -80,7 +80,7 @@ public void initializeAndExportDefaults(String path)
   convertDirectory = path+"/AWConfig/structures/convert/";
   configBaseDirectory = path+"/AWConfig/"; 
 
-  /**
+  /*
    * create default dirs if they don't exist...
    */
   File existTest = new File(outputDirectory);

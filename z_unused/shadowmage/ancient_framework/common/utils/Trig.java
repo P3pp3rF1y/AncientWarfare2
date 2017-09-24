@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -22,9 +22,9 @@
  */
 package shadowmage.ancient_framework.common.utils;
 
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 
-/**
+/*
  * because I hate it so much...why not make the 
  * computer do it all for me?
  * @author Shadowmage
@@ -125,7 +125,7 @@ public static double getAbsDiff(double a, double b)
   return a-b;
   }
 
-/**
+/*
  * tests if _test_ is >=min && <=max
  * @param test
  * @param min
@@ -139,7 +139,7 @@ public static boolean isBetween(int test, int a, int b)
   return test >= min && test <=max;
   }
 
-/**
+/*
  * is the angle between min and max (inclusive e.g. test <= max && test>=min) 
  * @param test
  * @param min
@@ -163,7 +163,7 @@ public static boolean isAngleBetween(float test, float min, float max)
   return false;
   }
 
-/**
+/*
  * returns the sqrt velocity of the input vectors (asuming base zero)
  * @param x
  * @param y
@@ -185,7 +185,7 @@ public static float getDistance(double x, double y, double z, double x1, double 
   return Math.abs(getVelocity(x1-x, y1-y, z1-z));
   }
 
-/**
+/*
  * get velocity of a 2d vector
  * @param x
  * @param z
@@ -196,7 +196,7 @@ public static float getVelocity(double x, double z)
   return MathHelper.sqrt_float((float)(x*x + z*z));
   }
 
-/**
+/*
  * returns a normalized vector from yaw and pitch
  */
 public static Pos3f calcAngles(float yaw, float pitch)
@@ -230,7 +230,7 @@ public static float getYawTowards(double x, double z, double tx, double tz)
   return yaw;
   }
 
-/**
+/*
  * get relative yaw change direction towards target from input yaw
  * @param entityFrom
  * @param x
@@ -292,7 +292,7 @@ public static byte getTurnDirection(float yaw, float dest)
   return (byte) (diff < 0 ? -1 : 1);
   }
 
-/**
+/*
  * @param x1
  * @param x2
  * @param x3

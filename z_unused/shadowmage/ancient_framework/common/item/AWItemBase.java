@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -92,7 +92,7 @@ public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
   }
 
 @Override
-public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
+public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag)
   {
   if(tooltips.containsKey(stack.getItemDamage()))
     {

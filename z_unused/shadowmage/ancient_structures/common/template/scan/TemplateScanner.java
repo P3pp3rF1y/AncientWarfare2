@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -28,7 +28,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import shadowmage.ancient_framework.common.utils.BlockPosition;
 import shadowmage.ancient_framework.common.utils.BlockTools;
@@ -48,7 +48,7 @@ public TemplateScanner()
   
   }
 
-/**
+/*
  * 
  * @param world
  * @param min
@@ -82,7 +82,7 @@ public StructureTemplate scan(World world, BlockPosition min, BlockPosition max,
   short[] templateRuleData = new short[xSize*ySize*zSize];
   BlockTools.rotateInArea(key, xSize, zSize, turns);      
   HashMap<String, List<TemplateRuleBlock>> pluginBlockRuleMap = new HashMap<String, List<TemplateRuleBlock>>();  
-  List<TemplateRule> currentRulesAll = new ArrayList<TemplateRule>();
+  List<TemplateRule> currentRulesAll = new ArrayList<>();
   Block scannedBlock;
   TemplateRuleBlock scannedBlockRule = null;    
   List<TemplateRuleBlock> pluginBlockRules;  
@@ -114,7 +114,7 @@ public StructureTemplate scan(World world, BlockPosition min, BlockPosition max,
             pluginBlockRules = pluginBlockRuleMap.get(pluginId);
             if(pluginBlockRules==null)
               {
-              pluginBlockRules = new ArrayList<TemplateRuleBlock>();
+              pluginBlockRules = new ArrayList<>();
               pluginBlockRuleMap.put(pluginId, pluginBlockRules);
               }
             boolean found = false;
@@ -148,16 +148,16 @@ public StructureTemplate scan(World world, BlockPosition min, BlockPosition max,
   
 
   TemplateRuleEntity scannedEntityRule;
-  List<TemplateRuleEntity> scannedEntityRules = new ArrayList<TemplateRuleEntity>();
+  List<TemplateRuleEntity> scannedEntityRules = new ArrayList<>();
   int ex, ey, ez; 
   List<Entity> entitiesInAABB = world.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getAABBPool().getAABB(min.x, min.y, min.z, max.x+1, max.y+1, max.z+1));          
   String entityPluginId = null; 
   nextRuleID = 0;
   for(Entity e : entitiesInAABB)
     {
-    ex = MathHelper.floor_double(e.posX);
-    ey = MathHelper.floor_double(e.posY);
-    ez = MathHelper.floor_double(e.posZ);
+    ex = MathHelper.floor(e.posX);
+    ey = MathHelper.floor(e.posY);
+    ez = MathHelper.floor(e.posZ);
     entityPluginId = AWStructures.instance.pluginManager.getPluginNameForEntity(e.getClass());
     if(entityPluginId==null){continue;}
     scannedEntityRule = AWStructures.instance.pluginManager.getRuleForEntity(world, e, turns, ex, ey, ez);

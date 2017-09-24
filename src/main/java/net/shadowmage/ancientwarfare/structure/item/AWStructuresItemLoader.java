@@ -2,45 +2,39 @@ package net.shadowmage.ancientwarfare.structure.item;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.shadowmage.ancientwarfare.core.api.AWItems;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 
-public class AWStructuresItemLoader
-{
+@Mod.EventBusSubscriber(modid = AncientWarfareStructures.modID)
+public class AWStructuresItemLoader {
 
-public static final CreativeTabs structureTab = new CreativeTabs("tabs.structures")
-  {    
-  @Override
-  @SideOnly(Side.CLIENT)
-  public Item getTabIconItem()
-    {
-    return scanner;
+    public static final CreativeTabs structureTab = new CreativeTabs("tabs.structures") {
+        @Override
+        @SideOnly(Side.CLIENT)
+        public ItemStack getTabIconItem() {
+            return new ItemStack(AWItems.structureScanner);
+        }
+    };
+
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<Item> event) {
+        IForgeRegistry<Item> registry = event.getRegistry();
+        registry.register(new ItemStructureScanner("structure_scanner"));
+        registry.register(new ItemStructureBuilder("structure_builder"));
+        registry.register(new ItemStructureBuilderWorldGen("structure_builder_world_gen"));
+        registry.register(new ItemTownBuilder("town_builder"));
+        registry.register(new ItemSpawnerPlacer("spawner_placer"));
+        registry.register(new ItemGateSpawner("gate_spawner"));
+        registry.register(new ItemConstructionTool("construction_tool"));
+        registry.register(new ItemConstructionToolLakes("construction_tool_lakes"));
+        registry.register(new ItemBlockInfo("block_info_clicker"));
     }
-  };
-
-public static final ItemStructureScanner scanner = new ItemStructureScanner("structure_scanner");
-public static final ItemStructureBuilder builder = new ItemStructureBuilder("structure_builder");
-public static final ItemStructureBuilderWorldGen builderWorldGen = new ItemStructureBuilderWorldGen("structure_builder_world_gen");
-public static final ItemTownBuilder townBuilder = new ItemTownBuilder("town_builder");
-public static final ItemSpawnerPlacer spawner = new ItemSpawnerPlacer("spawner_placer");
-public static final ItemGateSpawner gateSpawner = new ItemGateSpawner("gate_spawner");
-public static final ItemBlockInfo blockInfo = new ItemBlockInfo("block_info_clicker");
-
-public static final ItemConstructionTool constructionTool = new ItemConstructionTool("construction_tool");
-public static final ItemConstructionToolLakes constructionToolLakes = new ItemConstructionToolLakes("construction_tool_lakes");
-
-public static void load()
-  {  
-  GameRegistry.registerItem(scanner, "structure_scanner");
-  GameRegistry.registerItem(builder, "structure_builder");
-  GameRegistry.registerItem(builderWorldGen, "structure_builder_world_gen");
-  GameRegistry.registerItem(townBuilder, "town_builder");
-  GameRegistry.registerItem(spawner, "spawner_placer");    
-  GameRegistry.registerItem(gateSpawner, "gate_spawner");
-  GameRegistry.registerItem(constructionTool, "construction_tool");
-  GameRegistry.registerItem(constructionToolLakes, "construction_tool_lakes");
-  GameRegistry.registerItem(blockInfo, "block_info_clicker");  
-  }
-
 }

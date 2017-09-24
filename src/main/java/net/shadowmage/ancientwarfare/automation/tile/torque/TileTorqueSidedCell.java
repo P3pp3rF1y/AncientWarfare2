@@ -2,309 +2,275 @@ package net.shadowmage.ancientwarfare.automation.tile.torque;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.SidedTorqueCell;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 
-public abstract class TileTorqueSidedCell extends TileTorqueBase
-{
+public abstract class TileTorqueSidedCell extends TileTorqueBase {
 
-boolean connections[] = null;
-SidedTorqueCell[] storage = new SidedTorqueCell[6];
+    boolean connections[] = null;
+    final SidedTorqueCell[] storage = new SidedTorqueCell[DIRECTION_LENGTH];
 
-/**
- * client side this == 0.0 -> 100.0
- */
-double clientEnergyState;
+    /*
+     * client side this == 0.0 -> 100.0
+     */
+    double clientEnergyState;
 
-/**
- * server side this == 0 -> 100 (integer percent)
- * client side this == 0 -> 100 (integer percent)
- */
-int clientDestEnergyState;
+    /*
+     * server side this == 0 -> 100 (integer percent)
+     * client side this == 0 -> 100 (integer percent)
+     */
+    int clientDestEnergyState;
 
-/**
- * used client side for rendering
- */
-double rotation, prevRotation;
+    /*
+     * used client side for rendering
+     */
+    double rotation, prevRotation;
 
-public TileTorqueSidedCell()
-  {
-  
-  }
-
-@Override
-public void updateEntity()
-  {
-  super.updateEntity();
-  if(!worldObj.isRemote)
-    { 
-    serverNetworkUpdate();
-    torqueIn = getTotalTorque() - prevEnergy;
-    balanceStorage();
-    torqueLoss = applyPowerLoss();
-    torqueOut = transferPower();
-    prevEnergy = getTotalTorque();
+    public TileTorqueSidedCell() {
+        double max = getMaxTransfer();
+        double eff = getEfficiency();
+        for (int i = 0; i < storage.length; i++) {
+            storage[i] = new SidedTorqueCell(max, max, max, eff, EnumFacing.values()[i], this);
+        }
     }
-  else
-    {
-    clientNetworkUpdate();
-    updateRotation();
+
+    protected abstract double getEfficiency();
+
+    protected abstract double getMaxTransfer();
+
+    @Override
+    public void update() {
+        if (!world.isRemote) {
+            serverNetworkUpdate();
+            torqueIn = getTotalTorque() - prevEnergy;
+            balanceStorage();
+            torqueLoss = applyPowerLoss();
+            torqueOut = transferPower();
+            prevEnergy = getTotalTorque();
+        } else {
+            clientNetworkUpdate();
+            updateRotation();
+        }
     }
-  }
 
-protected double applyPowerLoss()
-  {
-  double loss = 0;
-  for(int i = 0; i < 6; i++)
-    {
-    loss += applyPowerDrain(storage[i]);
+    protected double applyPowerLoss() {
+        double loss = 0;
+        for (SidedTorqueCell aStorage : storage) {
+            loss += applyPowerDrain(aStorage);
+        }
+        return loss;
     }
-  return loss;
-  }
 
-protected double transferPower()
-  {
-  return transferPowerTo(getPrimaryFacing());
-  }
-
-protected void balanceStorage()
-  {
-  int face = getPrimaryFacing().ordinal();
-  TorqueCell out = storage[face];  
-  double total = 0;  
-  TorqueCell in;  
-  for(int i = 0; i < 6; i++)
-    {
-    if(i==face){continue;}
-    total += storage[i].getEnergy();
-    }  
-  if(total>0)
-    {
-    double transfer = Math.min(total, out.getMaxEnergy() - out.getEnergy());  
-    double percent = transfer / total;
-    transfer = 0;
-    double fromEach;
-    for(int i = 0; i < 6; i++)
-      {
-      if(i==face){continue;}
-      in = storage[i];
-      fromEach = in.getEnergy() * percent;
-      transfer+=fromEach;
-      in.setEnergy(in.getEnergy() - fromEach);
-      }
-    out.setEnergy(out.getEnergy() + transfer);
-    }    
-  }
-
-@Override
-protected void serverNetworkSynch()
-  {
-  int percent = (int)(storage[getPrimaryFacing().ordinal()].getPercentFull()*100.d);
-  int percent2 = (int)((torqueOut / storage[getPrimaryFacing().ordinal()].getMaxOutput())*100.d);
-  percent = Math.max(percent, percent2);
-  if(percent != clientDestEnergyState)
-    {
-    clientDestEnergyState = percent;
-    sendSideRotation(getPrimaryFacing(), percent);    
+    protected double transferPower() {
+        return transferPowerTo(getPrimaryFacing());
     }
-  }
 
-@Override
-protected void updateRotation()
-  {
-  prevRotation = rotation;
-  if(clientEnergyState > 0)
-    {
-    double r = AWAutomationStatics.low_rpt * clientEnergyState * 0.01d;
-    rotation += r;
+    protected void balanceStorage() {
+        int face = getPrimaryFacing().ordinal();
+        TorqueCell out = storage[face];
+        double total = 0;
+        TorqueCell in;
+        for (int i = 0; i < storage.length; i++) {
+            if (i == face) {
+                continue;
+            }
+            total += storage[i].getEnergy();
+        }
+        if (total > 0) {
+            double transfer = Math.min(total, out.getMaxEnergy() - out.getEnergy());
+            double percent = transfer / total;
+            transfer = 0;
+            double fromEach;
+            for (int i = 0; i < storage.length; i++) {
+                if (i == face) {
+                    continue;
+                }
+                in = storage[i];
+                fromEach = in.getEnergy() * percent;
+                transfer += fromEach;
+                in.setEnergy(in.getEnergy() - fromEach);
+            }
+            out.setEnergy(out.getEnergy() + transfer);
+        }
     }
-  }
 
-@Override
-protected void clientNetworkUpdate()
-  {
-  if(clientEnergyState != clientDestEnergyState)
-    {
-    if(networkUpdateTicks>0)
-      {
-      clientEnergyState += (clientDestEnergyState - clientEnergyState) / ((double)networkUpdateTicks);
-      networkUpdateTicks--;
-      }
-    else
-      {
-      clientEnergyState = clientDestEnergyState;
-      }
+    @Override
+    protected void serverNetworkSynch() {
+        int percent = (int) (storage[getPrimaryFacing().ordinal()].getPercentFull() * 100.d);
+        int percent2 = (int) ((torqueOut / storage[getPrimaryFacing().ordinal()].getMaxOutput()) * 100.d);
+        percent = Math.max(percent, percent2);
+        if (percent != clientDestEnergyState) {
+            clientDestEnergyState = percent;
+            sendSideRotation(getPrimaryFacing(), percent);
+        }
     }
-  }
 
-@Override
-protected void handleClientRotationData(ForgeDirection side, int value)
-  {
-  clientDestEnergyState = value;
-  this.networkUpdateTicks = AWAutomationStatics.energyMinNetworkUpdateFrequency;
-  }
-
-@Override
-public boolean canInputTorque(ForgeDirection from)
-  {
-  return from!=orientation;
-  }
-
-@Override
-public boolean canOutputTorque(ForgeDirection towards)
-  {
-  return towards==orientation;
-  }
-
-public boolean[] getConnections()
-  {
-  if(connections==null){buildConnections();}
-  return connections;
-  }
-
-@Override
-public void onNeighborTileChanged()
-  {
-  super.onNeighborTileChanged();
-  connections=null;
-  }
-
-protected void buildConnections()
-  {
-  boolean[] connections = new boolean[6];
-  ITorqueTile[] cache = getTorqueCache();
-  ForgeDirection dir;
-  for(int i = 0; i < 6; i++)
-    {
-    dir = ForgeDirection.values()[i];
-    if(cache[i]!=null)
-      {
-      connections[i]=(cache[i].canInputTorque(dir.getOpposite()) && canOutputTorque(dir)) || (cache[i].canOutputTorque(dir.getOpposite()) && canInputTorque(dir));
-      }
+    @Override
+    protected void updateRotation() {
+        prevRotation = rotation;
+        if (clientEnergyState > 0) {
+            double r = AWAutomationStatics.low_rpt * clientEnergyState * 0.01d;
+            rotation += r;
+        }
     }
-  if(ModuleStatus.redstoneFluxEnabled)
-    {
-    TileEntity[] tes = getRFCache();
-    for(int i = 0; i < 6; i++)
-      {
-      if(cache[i]!=null){continue;}//already examined that side..
-      if(tes[i]!=null){connections[i]=true;}
-      }
+
+    @Override
+    protected void clientNetworkUpdate() {
+        if (clientEnergyState != clientDestEnergyState) {
+            if (networkUpdateTicks > 0) {
+                clientEnergyState += (clientDestEnergyState - clientEnergyState) / ((double) networkUpdateTicks);
+                networkUpdateTicks--;
+            } else {
+                clientEnergyState = clientDestEnergyState;
+            }
+        }
     }
-  this.connections = connections;
-  }
 
-@Override
-public double getMaxTorque(ForgeDirection from)
-  {
-  return storage[from.ordinal()].getMaxEnergy();
-  }
-
-@Override
-public double getTorqueStored(ForgeDirection from)
-  {
-  return storage[from.ordinal()].getEnergy();
-  }
-
-@Override
-public double addTorque(ForgeDirection from, double energy)
-  {
-  return storage[from.ordinal()].addEnergy(energy);
-  }
-
-@Override
-public double drainTorque(ForgeDirection from, double energy)
-  {
-  return storage[from.ordinal()].drainEnergy(energy);
-  }
-
-@Override
-public double getMaxTorqueOutput(ForgeDirection from)
-  {
-  return storage[from.ordinal()].getMaxTickOutput();
-  }
-
-@Override
-public double getMaxTorqueInput(ForgeDirection from)
-  {
-  return storage[from.ordinal()].getMaxTickInput();
-  }
-
-@Override
-public boolean useOutputRotation(ForgeDirection from)
-  {
-  return true;
-  }
-
-@Override
-public float getClientOutputRotation(ForgeDirection from, float delta)
-  {
-  return getRotation(rotation, prevRotation, delta);
-  }
-
-@Override
-public NBTTagCompound getDescriptionTag()
-  {
-  NBTTagCompound tag = super.getDescriptionTag();
-  tag.setInteger("clientEnergy", (int)clientDestEnergyState);
-  return tag;
-  }
-
-@Override
-public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
-  {  
-  super.onDataPacket(net, pkt);
-  NBTTagCompound tag = pkt.func_148857_g();
-  clientDestEnergyState = tag.getInteger("clientEnergy");
-  }
-
-@Override
-public void readFromNBT(NBTTagCompound tag)
-  {  
-  super.readFromNBT(tag);
-  NBTTagList list = tag.getTagList("energyList", Constants.NBT.TAG_COMPOUND);
-  for(int i = 0; i < 6; i++)
-    {
-    storage[i].readFromNBT(list.getCompoundTagAt(i));
+    @Override
+    protected void handleClientRotationData(EnumFacing side, int value) {
+        clientDestEnergyState = value;
+        this.networkUpdateTicks = AWAutomationStatics.energyMinNetworkUpdateFrequency;
     }
-  clientDestEnergyState = tag.getInteger("clientEnergy");
-  }
 
-@Override
-public void writeToNBT(NBTTagCompound tag)
-  {
-  super.writeToNBT(tag);
-  NBTTagList list = new NBTTagList();
-  for(int i = 0; i < 6; i++)
-    {
-    list.appendTag(storage[i].writeToNBT(new NBTTagCompound()));
+    @Override
+    public boolean canInputTorque(EnumFacing from) {
+        return from != orientation;
     }
-  tag.setTag("energyList", list);
-  tag.setInteger("clientEnergy", clientDestEnergyState);
-  }
 
-@Override
-protected double getTotalTorque()
-  {
-  double d = 0;
-  ForgeDirection dir;
-  for(int i = 0; i < 6; i++)
-    {
-    dir = ForgeDirection.values()[i];
-    if(canInputTorque(dir) || canOutputTorque(dir))
-      {
-      d+=storage[i].getEnergy();
-      }
+    @Override
+    public boolean canOutputTorque(EnumFacing towards) {
+        return towards == orientation;
     }
-  return d;
-  }
+
+    public boolean[] getConnections() {
+        if (connections == null) {
+            buildConnections();
+        }
+        return connections;
+    }
+
+    @Override
+    public void onNeighborTileChanged() {
+        super.onNeighborTileChanged();
+        connections = null;
+    }
+
+    protected void buildConnections() {
+        boolean[] connections = new boolean[DIRECTION_LENGTH];
+        ITorqueTile[] cache = getTorqueCache();
+        EnumFacing dir;
+        for (int i = 0; i < cache.length; i++) {
+            dir = EnumFacing.values()[i];
+            if (cache[i] != null) {
+                connections[i] = (cache[i].canInputTorque(dir.getOpposite()) && canOutputTorque(dir)) || (cache[i].canOutputTorque(dir.getOpposite()) && canInputTorque(dir));
+            }
+        }
+        if (ModuleStatus.redstoneFluxEnabled) {
+            TileEntity[] tes = getRFCache();
+            for (int i = 0; i < tes.length; i++) {
+                if (cache[i] != null) {
+                    continue;
+                }//already examined that side..
+                if (tes[i] != null) {
+                    connections[i] = true;
+                }
+            }
+        }
+        this.connections = connections;
+    }
+
+    @Override
+    public double getMaxTorque(EnumFacing from) {
+        return storage[from.ordinal()].getMaxEnergy();
+    }
+
+    @Override
+    public double getTorqueStored(EnumFacing from) {
+        return storage[from.ordinal()].getEnergy();
+    }
+
+    @Override
+    public double addTorque(EnumFacing from, double energy) {
+        return storage[from.ordinal()].addEnergy(energy);
+    }
+
+    @Override
+    public double drainTorque(EnumFacing from, double energy) {
+        return storage[from.ordinal()].drainEnergy(energy);
+    }
+
+    @Override
+    public double getMaxTorqueOutput(EnumFacing from) {
+        return storage[from.ordinal()].getMaxTickOutput();
+    }
+
+    @Override
+    public double getMaxTorqueInput(EnumFacing from) {
+        return storage[from.ordinal()].getMaxTickInput();
+    }
+
+    @Override
+    public boolean useOutputRotation(EnumFacing from) {
+        return true;
+    }
+
+    @Override
+    public float getClientOutputRotation(EnumFacing from, float delta) {
+        return getRotation(rotation, prevRotation, delta);
+    }
+
+    @Override
+    protected void writeUpdateNBT(NBTTagCompound tag) {
+        super.writeUpdateNBT(tag);
+        tag.setInteger("clientEnergy", clientDestEnergyState);
+    }
+
+    @Override
+    protected void handleUpdateNBT(NBTTagCompound tag) {
+        super.handleUpdateNBT(tag);
+        clientDestEnergyState = tag.getInteger("clientEnergy");
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+        NBTTagList list = tag.getTagList("energyList", Constants.NBT.TAG_COMPOUND);
+        for (int i = 0; i < storage.length; i++) {
+            storage[i].readFromNBT(list.getCompoundTagAt(i));
+        }
+        clientDestEnergyState = tag.getInteger("clientEnergy");
+    }
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
+        NBTTagList list = new NBTTagList();
+        for (SidedTorqueCell aStorage : storage) {
+            list.appendTag(aStorage.writeToNBT(new NBTTagCompound()));
+        }
+        tag.setTag("energyList", list);
+        tag.setInteger("clientEnergy", clientDestEnergyState);
+
+        return tag;
+    }
+
+    @Override
+    protected double getTotalTorque() {
+        double d = 0;
+        EnumFacing dir;
+        for (int i = 0; i < storage.length; i++) {
+            dir = EnumFacing.values()[i];
+            if (canInputTorque(dir) || canOutputTorque(dir)) {
+                d += storage[i].getEnergy();
+            }
+        }
+        return d;
+    }
 
 }

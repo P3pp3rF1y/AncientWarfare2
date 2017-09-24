@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 
 import net.minecraftforge.common.Configuration;
 
-/**
+/*
  * static-data configuration class.
  * Each mod will need to construct its own subclass of this, adding static fields for necessary config items
  * @author Shadowmage

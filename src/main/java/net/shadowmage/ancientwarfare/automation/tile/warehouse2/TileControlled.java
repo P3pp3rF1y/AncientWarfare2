@@ -2,106 +2,118 @@ package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
+import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
-public abstract class TileControlled extends TileEntity implements IControlledTile
-{
+import javax.annotation.Nullable;
 
-private boolean init;
-private IControllerTile controller;
-private BlockPosition controllerPosition;
+public abstract class TileControlled extends TileUpdatable implements IControlledTile, ITickable {
 
-@Override
-public final boolean canUpdate()
-  {
-  return true;
-  }
+    private boolean init;
+    private IControllerTile controller;
+    private BlockPos controllerPosition;
 
-@Override
-public final void updateEntity()
-  {
-  if(!init)    
-    {
-    init = true;
-    if(!loadController())
-      {
-      searchForController();
-      }
+    @Override
+    public final void update() {
+        if (!init) {
+            init = true;
+            if (!loadController()) {
+                searchForController();
+            }
+        }
+        updateTile();
     }
-  updateTile();
-  }
 
-private boolean loadController()
-  {
-  BlockPosition pos = controllerPosition;
-  controllerPosition=null;
-  if(pos!=null && controller!=null)
-    {
-    TileEntity te = worldObj.getTileEntity(pos.x, pos.y, pos.z);
-    if(te instanceof IControllerTile && isValidController((IControllerTile) te))
-      {
-      IControllerTile controller = (IControllerTile)te;
-      controller.addControlledTile(this);
-      }
-    }      
-  return controller!=null;
-  }
+    private boolean loadController() {
+        BlockPos pos = controllerPosition;
+        controllerPosition = null;
+        if (pos != null && controller == null) {
+            TileEntity te = world.getTileEntity(pos);
+            if (te instanceof IControllerTile && isValidController((IControllerTile) te)) {
+                ((IControllerTile) te).addControlledTile(this);
+            }
+        }
+        return controller != null;
+    }
 
-protected abstract void updateTile();
+    protected abstract void updateTile();
 
-protected abstract void searchForController();
+    protected void searchForController() {
+        BlockPos min = pos.add(-16, -4, -16);
+        BlockPos max = pos.add(16, 4, 16);
+        for (TileEntity te : WorldTools.getTileEntitiesInArea(world, min.getX(), min.getY(), min.getZ(), max.getX(), max.getY(), max.getZ())) {
+            if (te instanceof IControllerTile) {
+                if (isValidController((IControllerTile)te)) {
+                    ((IControllerTile)te).addControlledTile(this);
+                    break;
+                }
+            }
+        }
+    }
 
-protected abstract boolean isValidController(IControllerTile tile);
+    protected boolean isValidController(IControllerTile tile) {
+        return tile instanceof TileWarehouseBase && BlockTools.isPositionWithinBounds(getPos(), ((TileWarehouseBase) tile).getWorkBoundsMin(), ((TileWarehouseBase) tile).getWorkBoundsMax());
+    }
 
-@Override
-public final void invalidate()
-  {
-  if(controller!=null){controller.removeControlledTile(this);}
-  controller = null;
-  init = false;
-  super.invalidate();
-  }
+    @Override
+    public final void invalidate() {
+        if (controller != null) {
+            controller.removeControlledTile(this);
+        }
+        controller = null;
+        init = false;
+        super.invalidate();
+    }
 
-@Override
-public final void validate()
-  {
-  if(controller!=null){controller.removeControlledTile(this);}
-  controller = null;
-  init = false;
-  super.validate();
-  }
+    @Override
+    public final void validate() {
+        super.validate();
+        if (controller != null) {
+            controller.addControlledTile(this);
+        }
+    }
 
-@Override
-public final void setController(IControllerTile tile)
-  {
-  this.controller = tile;
-  this.controllerPosition = tile==null ? null : tile.getPosition();
-  }
+    @Override
+    public final void setController(IControllerTile tile) {
+        this.controller = tile;
+        this.controllerPosition = tile == null ? null : tile.getPos();
+    }
 
-@Override
-public final IControllerTile getController()
-  {
-  return controller;
-  }
+    @Nullable
+    @Override
+    public final IControllerTile getController() {
+        return controller;
+    }
 
-@Override
-public final BlockPosition getPosition()
-  {
-  return new BlockPosition(xCoord, yCoord, zCoord);
-  }
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+        if (tag.hasKey("controllerPosition")) {
+            controllerPosition = BlockPos.fromLong(tag.getLong("controllerPosition"));
+        }
+    }
 
-@Override
-public void readFromNBT(NBTTagCompound tag)
-  {
-  super.readFromNBT(tag);
-  if(tag.hasKey("controllerPosition")){controllerPosition = new BlockPosition(tag.getCompoundTag("controllerPosition"));}
-  }
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
+        if (controllerPosition != null) {
+            tag.setLong("controllerPosition", controllerPosition.toLong());
+        }
+        return tag;
+    }
 
-@Override
-public void writeToNBT(NBTTagCompound tag)
-  {
-  super.writeToNBT(tag);
-  if(controllerPosition!=null){tag.setTag("controllerPosition", controllerPosition.writeToNBT(new NBTTagCompound()));}
-  }
+    @Override
+    public final boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        return obj instanceof TileControlled && this.world == ((TileControlled) obj).getWorld() && this.getPos().equals(((TileControlled) obj).getPos());
+    }
 
+    @Override
+    public final int hashCode() {
+        return this.getPos().hashCode();
+    }
 }

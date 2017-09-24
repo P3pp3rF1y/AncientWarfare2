@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -30,9 +30,9 @@ public class TemplateRuleBlockLogic extends TemplateRuleVanillaBlocks
 
 public NBTTagCompound tag = new NBTTagCompound();
 
-public TemplateRuleBlockLogic(World world, int x, int y, int z, Block block, int meta, int turns)
+public TemplateRuleBlockLogic(World world, BlockPos pos, Block block, int meta, int turns)
   {
-  super(world, x, y, z, block, meta, turns);
+  super(world, pos, block, meta, turns);
   TileEntity te = world.getBlockTileEntity(x, y, z);
   te.writeToNBT(tag);  
   }

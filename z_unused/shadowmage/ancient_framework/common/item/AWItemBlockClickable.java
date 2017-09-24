@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -28,7 +28,7 @@ import shadowmage.ancient_framework.common.utils.BlockPosition;
 public abstract class AWItemBlockClickable extends AWItemBlockBase
 {
 protected boolean hasLeftClick;
-/**
+/*
  * @param par1
  */
 public AWItemBlockClickable(int par1)

@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -35,7 +35,7 @@ private static LanguageLoader INSTANCE = new LanguageLoader();
 private LanguageLoader(){}
 public static LanguageLoader instance(){return INSTANCE;}
 
-ArrayList<String> defaultLanguages = new ArrayList<String>();
+ArrayList<String> defaultLanguages = new ArrayList<>();
 Properties defaultLanguage;
 
 
@@ -115,7 +115,7 @@ protected void addLanguage(String s)
   this.defaultLanguages.add(s);
   }
 
-/**
+/*
  * will NPE/crash if no english translation found (intended behavior)
  */
 protected void loadEnglishFile()

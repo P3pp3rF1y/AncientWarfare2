@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -67,13 +67,13 @@ HashMap<GuiNumberInputLine, String> numberInputNameMap = new HashMap<GuiNumberIn
 HashMap<String, Boolean> lastKnownBooleanValues = new HashMap<String, Boolean>();
 HashMap<String, Integer> lastKnownIntegerValues = new HashMap<String, Integer>();
 
-List<String> biomeSelections = new ArrayList<String>();
-List<String> blockSelections = new ArrayList<String>();
+List<String> biomeSelections = new ArrayList<>();
+List<String> blockSelections = new ArrayList<>();
 
 StructureValidationType currentValidationType = StructureValidationType.GROUND;
 
 protected ContainerStructureScanner container;
-/**
+/*
  * @param container
  */
 public GuiStructureScanner(ContainerBase container)
@@ -418,7 +418,7 @@ protected String validateString(String input)
 
 protected boolean isValidChar(char ch)
   {
-  /**
+  /*
    *  public static final char[] allowedCharactersArray = new char[] {'/', '\n', '\r', '\t', '\u0000', '\f', '`', '?', '*', '\\', '<', '>', '|', '\"', ':'};
    */
   switch(ch)

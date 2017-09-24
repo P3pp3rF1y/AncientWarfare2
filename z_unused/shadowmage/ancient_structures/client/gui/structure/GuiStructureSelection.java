@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -37,7 +37,7 @@ import shadowmage.ancient_structures.common.manager.StructureTemplateManager;
 import shadowmage.ancient_structures.common.template.StructureTemplateClient;
 import shadowmage.ancient_structures.common.utils.ComparatorStructureTemplateClient;
 
-/**
+/*
  * creative structure builder
  * @author Shadowmage
  *
@@ -48,10 +48,10 @@ public class GuiStructureSelection extends GuiContainerAdvanced
 private ContainerCSB container;
 String currentStructure = "";
 
-ArrayList<StructureTemplateClient> clientStructures = new ArrayList<StructureTemplateClient>();
+ArrayList<StructureTemplateClient> clientStructures = new ArrayList<>();
 ComparatorStructureTemplateClient sorter = new ComparatorStructureTemplateClient();
 
-/**
+/*
  * @param par1Container
  */
 public GuiStructureSelection(ContainerBase container)

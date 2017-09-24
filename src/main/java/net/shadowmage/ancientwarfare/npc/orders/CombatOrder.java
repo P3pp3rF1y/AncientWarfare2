@@ -1,115 +1,77 @@
 package net.shadowmage.ancientwarfare.npc.orders;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagLong;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
+import net.minecraftforge.common.util.INBTSerializable;
+import net.shadowmage.ancientwarfare.core.util.OrderingList;
+import net.shadowmage.ancientwarfare.npc.item.ItemCombatOrder;
 
-public class CombatOrder extends NpcOrders
-{
+public class CombatOrder extends OrderingList<BlockPos> implements INBTSerializable<NBTTagCompound> {
 
-int patrolDimensionId = 0;
+    int patrolDimensionId = 0;
 
-List<BlockPosition> patrolPoints = new ArrayList<BlockPosition>();
+    public CombatOrder() {
 
-public CombatOrder()
-  {
-  
-  }
-
-public void addPatrolPoint(World world, BlockPosition point)
-  {
-  if(world.provider.dimensionId!=patrolDimensionId){patrolPoints.clear();}
-  patrolDimensionId = world.provider.dimensionId;
-  patrolPoints.add(point);
-  }
-
-public void incrementPointPosition(int index)
-  {
-  if(index>=1 && index<patrolPoints.size())
-    {
-    BlockPosition entry = patrolPoints.remove(index);
-    patrolPoints.add(index-1, entry);
     }
-  }
 
-public void decrementPointPosition(int index)
-  {
-  if(index>=0 && index<patrolPoints.size()-1)
-    {
-    BlockPosition entry = patrolPoints.remove(index);
-    patrolPoints.add(index+1, entry);
+    public void addPatrolPoint(World world, BlockPos point) {
+        if (world.provider.getDimension() != patrolDimensionId) {
+            clear();
+            patrolDimensionId = world.provider.getDimension();
+        }
+        add(point);
     }
-  }
 
-public BlockPosition getPatrolPoint(int index){return patrolPoints.get(index);}
-
-public void removePatrolPoint(int index){patrolPoints.remove(index);}
-
-public void clearPatrol(){patrolPoints.clear();}
-
-public int getPatrolSize(){return patrolPoints.size();}
-
-public int getPatrolDimension(){return patrolDimensionId;}
-
-@Override
-public void readFromNBT(NBTTagCompound tag)
-  {
-  patrolPoints.clear();
-  patrolDimensionId = tag.getInteger("dim");
-  if(tag.hasKey("pointList"))
-    {
-    NBTTagList list = tag.getTagList("pointList", Constants.NBT.TAG_COMPOUND);
-    for(int i = 0; i < list.tagCount(); i++)
-      {
-      patrolPoints.add(new BlockPosition(list.getCompoundTagAt(i)));
-      }
+    public int getPatrolDimension() {
+        return patrolDimensionId;
     }
-  }
 
-@Override
-public NBTTagCompound writeToNBT(NBTTagCompound tag)
-  {
-  tag.setInteger("dim", patrolDimensionId);
-  if(!patrolPoints.isEmpty())
-    {
-    NBTTagList list = new NBTTagList();    
-    for(BlockPosition point : patrolPoints)
-      {
-      list.appendTag(point.writeToNBT(new NBTTagCompound()));
-      }
-    tag.setTag("pointList", list);
+    public static CombatOrder getCombatOrder(ItemStack stack) {
+        if (!stack.isEmpty() && stack.getItem() instanceof ItemCombatOrder) {
+            CombatOrder order = new CombatOrder();
+            if (stack.hasTagCompound() && stack.getTagCompound().hasKey("orders")) {
+                order.deserializeNBT(stack.getTagCompound().getCompoundTag("orders"));
+            }
+            return order;
+        }
+        return null;
     }
-  return tag;
-  }
 
-public static CombatOrder getCombatOrder(ItemStack stack)
-  {
-  if(stack!=null && stack.getItem()==AWNpcItemLoader.combatOrder)
-    {
-    CombatOrder order = new CombatOrder();
-    if(stack.hasTagCompound() && stack.getTagCompound().hasKey("orders"))
-      {
-      order.readFromNBT(stack.getTagCompound().getCompoundTag("orders"));
-      }
-    return order;
+    public void write(ItemStack stack) {
+        if (!stack.isEmpty() && stack.getItem() instanceof ItemCombatOrder) {
+            stack.setTagInfo("orders", serializeNBT());
+        }
     }
-  return null;
-  }
 
-public static void writeCombatOrder(ItemStack stack, CombatOrder order)
-  {
-  if(stack!=null && stack.getItem()==AWNpcItemLoader.combatOrder)
-    {
-    stack.setTagInfo("orders", order.writeToNBT(new NBTTagCompound()));
+    @Override
+    public NBTTagCompound serializeNBT() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("dim", patrolDimensionId);
+        if (!isEmpty()) {
+            NBTTagList list = new NBTTagList();
+            for (BlockPos point : points) {
+                list.appendTag(new NBTTagLong(point.toLong()));
+            }
+            tag.setTag("pointList", list);
+        }
+        return tag;
     }
-  }
 
 
+    @Override
+    public void deserializeNBT(NBTTagCompound tag) {
+        clear();
+        patrolDimensionId = tag.getInteger("dim");
+        if (tag.hasKey("pointList")) {
+            NBTTagList list = tag.getTagList("pointList", Constants.NBT.TAG_LONG);
+            for (int i = 0; i < list.tagCount(); i++) {
+                add(BlockPos.fromLong(((NBTTagLong)list.get(i)).getLong())); //TODO make sure that getting long from list here works correctly
+            }
+        }
+    }
 }

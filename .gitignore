@@ -1,9 +1,15 @@
-/build
-/bin
-/runtime
-/logs
-/.gradle
-/eclipse
-/.settings
-/.classpath
-/.metadata
+/* ignore everything that's not specifically excluded below
+
+!gradle
+!project_resources
+!releases
+!src
+!z_unused
+
+!.gitignore
+!build.gradle
+!gradle.properties
+!gradlew
+!gradlew.bat
+!LICENSE.txt
+!README.md

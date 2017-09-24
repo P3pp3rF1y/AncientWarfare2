@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -31,7 +31,7 @@ public abstract void renderVehicle(EntityVehicle vehicle, float partialTick);
 
 public void renderVehicleFlag(EntityVehicle vehicle, float partialTick)
   {
-  /**
+  /*
    * TODO create a base / shared flag model + texture
    * get team name from vehicle for flag color
    * get flag coords from vehicleType/definition

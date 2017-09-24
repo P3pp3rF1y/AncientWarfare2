@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public Licence.
    Please see COPYING for precise license information.
@@ -29,12 +29,12 @@ import net.minecraftforge.common.Configuration;
 
 public class MEIMConfig 
 {
-//*******************************************************FIELDS**********************************************//
+//******************************************************FIELDS**********************************************//
 
 public static final String VERSION = "1.0.001-beta-MC164";
 
 
-/**
+/*
  * should debug features be enabled? (debug keybinds, debug overlay rendering, load and enable debug items)
  */
 public static final boolean DEBUG = false;
@@ -44,7 +44,7 @@ private static Logger logger;
 
 private static String configDir;
 
-//***************************************************SINGLETON************************************************//
+//**************************************************SINGLETON************************************************//
 private MEIMConfig(){};
 private static MEIMConfig INSTANCE;
 public static MEIMConfig instance()
@@ -56,7 +56,7 @@ public static MEIMConfig instance()
  return INSTANCE;
  }
 
-//**************************************************LOGGER*****************************************************//
+//*************************************************LOGGER*****************************************************//
 
 public static void log(String info)
   {
@@ -88,7 +88,7 @@ public static void setLogger(Logger log)
   logger = log;
   }
 
-//**************************************************CONFIG*****************************************************//
+//*************************************************CONFIG*****************************************************//
 
 public static void loadConfig(File inputFile)
   {  

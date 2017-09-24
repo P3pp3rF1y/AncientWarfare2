@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -37,7 +37,7 @@ public ItemStackWrapper(ItemStack stack, int qty)
 
 public ItemStackWrapper(ItemStack stack)
   {
-  this(stack, stack.stackSize);
+  this(stack, stack.getCount());
   }
 
 public ItemStackWrapper(NBTTagCompound tag)
@@ -58,7 +58,7 @@ public boolean matches(ItemStackWrapper wrap)
 
 public ItemStack getFilter()
   {
-  filter.stackSize = this.getQuantity();
+  filter.setCount(this.getQuantity())
   return filter;
   }
 
@@ -69,7 +69,7 @@ public NBTTagCompound writeToNBT(NBTTagCompound tag)
   return tag;
   }
 
-/**
+/*
  * @return the quantity
  */
 public int getQuantity()
@@ -77,13 +77,13 @@ public int getQuantity()
   return quantity;
   }
 
-/**
+/*
  * @param quantity the quantity to set
  */
 public void setQuantity(int quantity)
   {
     this.quantity = quantity;
-    this.filter.stackSize = quantity;
+    this.filter.setCount(quantity)
   }
 
 }

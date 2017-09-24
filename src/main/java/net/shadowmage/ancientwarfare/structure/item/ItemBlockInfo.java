@@ -1,70 +1,38 @@
 package net.shadowmage.ancientwarfare.structure.item;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
-public class ItemBlockInfo extends Item implements IItemClickable
-{
+public class ItemBlockInfo extends ItemBaseStructure {
 
-public ItemBlockInfo(String regName)
-  {
-  this.setUnlocalizedName(regName);
-  this.setCreativeTab(AWStructuresItemLoader.structureTab);
-  this.setTextureName("ancientwarfare:structure/block_info");
-  }
+    public ItemBlockInfo(String name) {
+        super(name);
+        //this.setTextureName("ancientwarfare:structure/block_info");
+    }
 
-@Override
-public boolean onRightClickClient(EntityPlayer player, ItemStack stack)
-  {
-  return true;
-  }
-
-@Override
-public boolean cancelRightClick(EntityPlayer player, ItemStack stack)
-  {
-  return true;
-  }
-
-@Override
-public void onRightClick(EntityPlayer player, ItemStack stack)
-  {
-  BlockPosition pos = BlockTools.getBlockClickedOn(player, player.worldObj, false);
-  if(pos!=null)
-    {
-    Block block = player.worldObj.getBlock(pos.x, pos.y, pos.z);
-    int meta = player.worldObj.getBlockMetadata(pos.x, pos.y, pos.z);
-    AWLog.logDebug("block: "+BlockDataManager.instance().getNameForBlock(block)+" meta: "+meta);
-    }  
-  }
-
-@Override
-public boolean onLeftClickClient(EntityPlayer player, ItemStack stack)
-  {
-  // TODO Auto-generated method stub
-  return false;
-  }
-
-@Override
-public boolean cancelLeftClick(EntityPlayer player, ItemStack stack)
-  {
-  // TODO Auto-generated method stub
-  return false;
-  }
-
-@Override
-public void onLeftClick(EntityPlayer player, ItemStack stack)
-  {
-  // TODO Auto-generated method stub
-  
-  }
-
-
-
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+        if(!world.isRemote) {
+            BlockPos pos = BlockTools.getBlockClickedOn(player, player.world, false);
+            if (pos != null) {
+                IBlockState state = world.getBlockState(pos);
+                Block block = state.getBlock();
+                AWLog.logDebug("block: " + BlockDataManager.INSTANCE.getNameForBlock(block) + ", meta: " + block.getMetaFromState(state)); //TODO print property values?
+                if(block.hasTileEntity(state)){
+                    AWLog.logDebug("tile: " + world.getTileEntity(pos).getClass());
+                }
+            }
+        }
+        return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+    }
 }

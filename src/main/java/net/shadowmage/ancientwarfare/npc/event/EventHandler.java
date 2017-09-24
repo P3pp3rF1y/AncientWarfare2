@@ -2,54 +2,142 @@ package net.shadowmage.ancientwarfare.npc.event;
 
 import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityList;
-import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.entity.ai.EntityAIAttackOnCollide;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
-import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
+import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.shadowmage.ancientwarfare.npc.gamedata.HeadquartersTracker;
 
-public class EventHandler
-{
-private EventHandler(){}
-public static final EventHandler INSTANCE = new EventHandler();
+import java.util.Iterator;
 
-@SubscribeEvent
-public void entitySpawnEvent(EntityJoinWorldEvent evt)
-  {
-  if(evt.entity instanceof NpcBase){return;}
-  String s = EntityList.getEntityString(evt.entity);
-  if(AncientWarfareNPC.statics.shouldEntityTargetNpcs(s))
-    {    
-    if(evt.entity instanceof EntityCreature)
-      {
-      EntityCreature e = (EntityCreature)evt.entity;
-      if(evt.entity instanceof EntitySkeleton)
-        {
-        EntitySkeleton skel = (EntitySkeleton)evt.entity;
-        if(skel.getSkeletonType()==0)//normal
-          {
-          e.targetTasks.addTask(2, new EntityAINearestAttackableTarget(e, NpcBase.class, 0, false));          
-          }
-        else//wither
-          {
-          e.tasks.addTask(3, new EntityAIAttackOnCollide(e, NpcBase.class, 1.d, false));      
-          e.targetTasks.addTask(2, new EntityAINearestAttackableTarget(e, NpcBase.class, 0, false));          
-          }
+public class EventHandler {
+    private EventHandler() {}
+    
+    public static final EventHandler INSTANCE = new EventHandler();
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void onEntityJoinWorld(EntityJoinWorldEvent event) {
+        
+        if (event.getEntity() instanceof EntityPlayer && !event.getWorld().isRemote) {
+            if (ModAccessors.FTBU_LOADED && !HeadquartersTracker.get(event.getWorld()).validateCurrentHq(event.getEntity().getName(), event.getWorld())) {
+                final String playerName = event.getEntity().getName();
+                Thread thread = new Thread(){
+                    public void run(){
+                        try {
+                            Thread.sleep(10000);
+                        } catch (InterruptedException e) {}
+                        HeadquartersTracker.notifyHqMissing(playerName);
+                    }
+                };
+                thread.start();
+            }
         }
-      else if(evt.entity instanceof IRangedAttackMob)
-        {
-        e.targetTasks.addTask(2, new EntityAINearestAttackableTarget(e, NpcBase.class, 0, false));
+        
+        
+        if (event.getEntity() instanceof NpcBase)
+            return;
+        if (!(event.getEntity() instanceof EntityCreature))
+            return;
+        if (!AncientWarfareNPC.statics.shouldEntityTargetNpcs(EntityList.getEntityString(event.getEntity())))
+            return;
+        if (AncientWarfareNPC.statics.autoTargetting) {
+            // Use new "auto injection"
+            EntityCreature entity = (EntityCreature) event.getEntity();
+            
+            // all mobs that can attack somebody should have targetTasks
+            if (entity.targetTasks.taskEntries.size() > 0) {
+                int targetTaskPriority = -1;
+                Iterator taskEntriesIterator = entity.targetTasks.taskEntries.iterator();
+                // Again search for a task to use for the same priority as our attack NPC task, but
+                // look for "EntityAINearestAttackableTarget" instead which is for ranged units
+                while (taskEntriesIterator.hasNext()) {
+                    EntityAITaskEntry taskEntry = (EntityAITaskEntry) taskEntriesIterator.next();
+                    if (taskEntry.action instanceof EntityAINearestAttackableTarget) {
+                        if (((EntityAINearestAttackableTarget)taskEntry.action).targetClass == EntityPlayer.class) {
+                            // TODO: Task-based exclusions?
+                            targetTaskPriority = taskEntry.priority;
+                        }
+                    }
+                }
+                if (targetTaskPriority != -1) {
+                    entity.targetTasks.addTask(targetTaskPriority, new EntityAINearestAttackableTarget(entity, NpcBase.class, 0, AncientWarfareNPC.statics.autoTargettingConfigLos, false, null));
+                    // add this entity to the internal list of hostile mobs, so NPC's know to fight it
+                    NpcAI.addHostileEntity(entity);
+                    //System.out.println("Injected EntityAINearestAttackableTarget on " + EntityList.getEntityString(entity) + " @" + targetTaskPriority);
+                }
+            }
+        } else {
+            // Legacy whitelist/manual method
+            EntityCreature e = (EntityCreature) event.getEntity();
+            e.targetTasks.addTask(2, new EntityAINearestAttackableTarget(e, NpcBase.class, 0, false, false, null));
         }
-      else
-        {        
-        e.tasks.addTask(3, new EntityAIAttackOnCollide(e, NpcBase.class, 1.d, false));      
-        e.targetTasks.addTask(2, new EntityAINearestAttackableTarget(e, NpcBase.class, 0, false));           
-        }
-      }
     }
-  }
 
+/* TODO any pathfinding fixes necessary in forge?
+    @SubscribeEvent
+    public void pathfinderCheckCanPathBlock(PathfinderCheckCanPathBlock event) {
+        if (event.entity instanceof NpcBase) {
+            if (event.block instanceof BlockDoor) {
+                event.setResult(Result.ALLOW);
+            }
+        }
+    }
+    
+    @SubscribeEvent
+    public void pathfinderAvoidAdditionals(PathfinderAvoidAdditionalEvent event) {
+        //System.out.println("Firing!");
+        if (AWNPCStatics.pathfinderAvoidChests || AWNPCStatics.pathfinderAvoidFences || AWNPCStatics.getPathfinderAvoidCustomBlocks() != null) {
+            World world = event.entity.world;
+            BlockPos pos = event.getPos();
+            IBlockState state = world.getBlockState(pos);
+            Block block = state.getBlock();
+            if (AWNPCStatics.pathfinderAvoidChests) {
+                if (block.getRenderType() == 22 || block instanceof BlockChest) {
+                    event.setResult(Result.DENY);
+                    return;
+                }
+            }
+            if (AWNPCStatics.pathfinderAvoidFences) {
+                if (block.getRenderType() == 11 || block instanceof BlockFence || block instanceof BlockWall) {
+                    event.setResult(Result.DENY);
+                    return;
+                }
+            }
+            if (AWNPCStatics.getPathfinderAvoidCustomBlocks() != null) {
+                for ( BlockAndMeta blockAndMeta : AWNPCStatics.getPathfinderAvoidCustomBlocks() ) {
+                    if ( Block.isEqualTo(blockAndMeta.block, block) ) {
+                        if ( blockAndMeta.meta == -1 || blockAndMeta.meta == block.getMetaFromState(state) ) { //TODO can this avoid using meta?
+                            event.setResult(Result.DENY);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+    }
+*/
+
+    @SubscribeEvent
+    public void onPlayerRespawn(PlayerEvent.Clone event) {
+        if (event.getEntityPlayer().world.isRemote)
+            return;
+        if (event.isWasDeath()) {
+            if (event.getEntityPlayer().getBedLocation(event.getEntityPlayer().dimension) == null) {
+                // player has no bed in the respawned dimension
+                BlockPos hqPos = HeadquartersTracker.get(event.getEntityPlayer().world).getHqPos(event.getEntityPlayer().getName(), event.getEntityPlayer().world);
+                if (hqPos != null) {
+                    EntityTools.teleportPlayerToBlock(event.getEntityPlayer(), event.getEntityPlayer().world, hqPos, true);
+                }
+            }
+        }
+    }
 }

@@ -2,66 +2,66 @@ package net.shadowmage.ancientwarfare.npc.orders;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.npc.item.AWNpcItemLoader;
-import net.shadowmage.ancientwarfare.npc.trade.POTradeList;
+import net.minecraftforge.common.util.INBTSerializable;
+import net.shadowmage.ancientwarfare.npc.item.ItemTradeOrder;
 import net.shadowmage.ancientwarfare.npc.trade.POTradeRestockData;
 import net.shadowmage.ancientwarfare.npc.trade.POTradeRoute;
+import net.shadowmage.ancientwarfare.npc.trade.TradeList;
 
-public class TradeOrder extends NpcOrders
-{
+public class TradeOrder implements INBTSerializable<NBTTagCompound> {
 
-private POTradeRoute tradeRoute = new POTradeRoute(); 
-private POTradeRestockData restockEntry = new POTradeRestockData();
-private POTradeList tradeList = new POTradeList();
+    private POTradeRoute tradeRoute = new POTradeRoute();
+    private POTradeRestockData restockEntry = new POTradeRestockData();
+    private TradeList tradeList = new TradeList();
 
-public TradeOrder(){}
-
-public static TradeOrder getTradeOrder(ItemStack stack)
-  {
-  if(stack!=null && stack.getItem()==AWNpcItemLoader.tradeOrder)
-    {
-    TradeOrder order = new TradeOrder();
-    if(stack.hasTagCompound() && stack.getTagCompound().hasKey("orders"))
-      {
-      order.readFromNBT(stack.getTagCompound().getCompoundTag("orders"));
-      }
-    return order;
+    public TradeOrder() {
     }
-  return null;
-  }
 
-public static void writeTradeOrder(ItemStack stack, TradeOrder order)
-  {
-  if(stack!=null && stack.getItem()==AWNpcItemLoader.tradeOrder)
-    {
-    stack.setTagInfo("orders", order.writeToNBT(new NBTTagCompound()));
+    public static TradeOrder getTradeOrder(ItemStack stack) {
+        if (!stack.isEmpty() && stack.getItem() instanceof ItemTradeOrder) {
+            TradeOrder order = new TradeOrder();
+            if (stack.hasTagCompound() && stack.getTagCompound().hasKey("orders")) {
+                order.deserializeNBT(stack.getTagCompound().getCompoundTag("orders"));
+            }
+            return order;
+        }
+        return null;
     }
-  }
 
-public POTradeList getTradeList(){return tradeList;}
+    public void write(ItemStack stack) {
+        if (!stack.isEmpty() && stack.getItem() instanceof ItemTradeOrder) {
+            stack.setTagInfo("orders", serializeNBT());
+        }
+    }
 
-public POTradeRoute getRoute(){return tradeRoute;}
+    public TradeList getTradeList() {
+        return tradeList;
+    }
 
-public POTradeRestockData getRestockData(){return restockEntry;}
+    public POTradeRoute getRoute() {
+        return tradeRoute;
+    }
 
-@Override
-public void readFromNBT(NBTTagCompound tag)
-  {
-  tradeList = new POTradeList();
-  tradeRoute = new POTradeRoute();
-  restockEntry = new POTradeRestockData();
-  tradeList.readFromNBT(tag.getCompoundTag("tradeList"));
-  tradeRoute.readFromNBT(tag.getCompoundTag("tradeRoute"));
-  restockEntry.readFromNBT(tag.getCompoundTag("restockEntry"));
-  }
+    public POTradeRestockData getRestockData() {
+        return restockEntry;
+    }
 
-@Override
-public NBTTagCompound writeToNBT(NBTTagCompound tag)
-  {
-  tag.setTag("tradeList", tradeList.writeToNBT(new NBTTagCompound()));
-  tag.setTag("tradeRoute", tradeRoute.writeToNBT(new NBTTagCompound()));
-  tag.setTag("restockEntry", restockEntry.writeToNBT(new NBTTagCompound()));
-  return tag;
-  }
+    @Override
+    public NBTTagCompound serializeNBT() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setTag("tradeList", tradeList.serializeNBT());
+        tag.setTag("tradeRoute", tradeRoute.writeToNBT(new NBTTagCompound()));
+        tag.setTag("restockEntry", restockEntry.writeToNBT(new NBTTagCompound()));
+        return tag;
+    }
 
+    @Override
+    public void deserializeNBT(NBTTagCompound tag) {
+        tradeList = new TradeList();
+        tradeRoute = new POTradeRoute();
+        restockEntry = new POTradeRestockData();
+        tradeList.deserializeNBT(tag.getCompoundTag("tradeList"));
+        tradeRoute.readFromNBT(tag.getCompoundTag("tradeRoute"));
+        restockEntry.readFromNBT(tag.getCompoundTag("restockEntry"));
+    }
 }

@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -27,7 +27,7 @@ import shadowmage.ancient_framework.common.gamedata.AWGameData;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 
-/**
+/*
  * client-server mod meta-data comms packet
  * used to send server-> client onLogin data
  * used to send server-> client team/playerEntry update data

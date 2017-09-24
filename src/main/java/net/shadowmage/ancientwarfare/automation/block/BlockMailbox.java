@@ -1,115 +1,122 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
-import net.shadowmage.ancientwarfare.core.block.IconRotationMap;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockMailbox extends Block implements IRotatableBlock
-{
+import static net.shadowmage.ancientwarfare.core.render.BlockRenderProperties.FACING;
 
-IconRotationMap iconMap = new IconRotationMap();
+public class BlockMailbox extends BlockBaseAutomation implements IRotatableBlock {
 
-public BlockMailbox(String regName)
-  {
-  super(Material.rock);
-  this.setBlockName(regName);
-  this.setCreativeTab(AWAutomationItemLoader.automationTab);
-  setHardness(2.f);
-  }
+//    IconRotationMap iconMap = new IconRotationMap();
 
-@Override
-public boolean hasTileEntity(int metadata)
-  {
-  return true;
-  }
-
-@Override
-public TileEntity createTileEntity(World world, int metadata)
-  {
-  return new TileMailbox();
-  }
-
-public BlockMailbox setIcon(RelativeSide relativeSide, String texName)
-  {
-  this.iconMap.setIcon(this, relativeSide, texName);
-  return this;
-  }
-
-@Override
-@SideOnly(Side.CLIENT)
-public void registerBlockIcons(IIconRegister p_149651_1_)
-  {
-  iconMap.registerIcons(p_149651_1_);
-  }
-
-@Override
-@SideOnly(Side.CLIENT)
-public IIcon getIcon(int side, int meta)
-  {
-  return iconMap.getIcon(this, meta, side);
-  }
-
-@Override
-public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ)
-  {
-  if(!world.isRemote)
-    {
-    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_MAILBOX_INVENTORY, x, y, z);
+    public BlockMailbox(String regName) {
+        super(Material.ROCK, regName);
+        setHardness(2.f);
+//        String icon = "ancientwarfare:automation/"+regName;
+//        setIcon(RelativeSide.TOP, icon);
+//        setIcon(RelativeSide.FRONT, icon);
+//        setIcon(RelativeSide.REAR, icon);
+//        setIcon(RelativeSide.BOTTOM, icon);
+//        setIcon(RelativeSide.LEFT, icon);
+//        setIcon(RelativeSide.RIGHT, icon);
     }
-  return true;
-  }
 
-@Override
-public boolean rotateBlock(World worldObj, int x, int y, int z, ForgeDirection axis)
-  {
-  int meta = worldObj.getBlockMetadata(x, y, z);
-  int rMeta = BlockRotationHandler.getRotatedMeta(this, meta, axis);
-  if(rMeta!=meta)
-    {
-    worldObj.setBlockMetadataWithNotify(x, y, z, rMeta, 3);
-    return true;
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, FACING);
     }
-  return false;
-  }
 
-@Override
-public RotationType getRotationType()
-  {
-  return RotationType.FOUR_WAY;
-  }
-
-@Override
-public boolean invertFacing()
-  {
-  return true;
-  }
-
-@Override
-public void breakBlock(World world, int x, int y, int z, Block block, int meta)
-  {
-  TileEntity te = world.getTileEntity(x, y, z);
-  if(te instanceof IInventory)
-    {
-    InventoryTools.dropInventoryInWorld(world, (IInventory) te, x, y, z);
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return getDefaultState().withProperty(FACING, EnumFacing.VALUES[meta]);
     }
-  super.breakBlock(world, x, y, z, block, meta);
-  }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(FACING).ordinal();
+    }
+
+    @Override
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
+    }
+
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
+        return new TileMailbox();
+    }
+
+//    public BlockMailbox setIcon(RelativeSide relativeSide, String texName) {
+//        this.iconMap.setIcon(this, relativeSide, texName+"_"+relativeSide);
+//        return this;
+//    }
+
+/*
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister p_149651_1_) {
+        iconMap.registerIcons(p_149651_1_);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int side, int meta) {
+        return iconMap.getIcon(this, meta, side);
+    }
+
+*/
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        if (!world.isRemote) {
+            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_MAILBOX_INVENTORY, pos.getX(), pos.getY(), pos.getZ());
+        }
+        return true;
+    }
+
+    @Override
+    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis) {
+        if(world.isRemote)
+            return false;
+        IBlockState state = world.getBlockState(pos);
+        EnumFacing facing = state.getValue(FACING);
+        EnumFacing rotatedFacing = facing.rotateAround(axis.getAxis());
+        if (facing != rotatedFacing) {
+            world.setBlockState(pos, state.withProperty(FACING, rotatedFacing));
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public RotationType getRotationType() {
+        return RotationType.FOUR_WAY;
+    }
+
+    @Override
+    public boolean invertFacing() {
+        return true;
+    }
+
+    @Override
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+        TileEntity te = world.getTileEntity(pos);
+        if (te instanceof IInventory) {
+            InventoryTools.dropInventoryInWorld(world, (IInventory) te, pos);
+        }
+        super.breakBlock(world, pos, state);
+    }
 
 }

@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -37,12 +37,12 @@ String leaderName;
 int teamColor;//RGBA hex color, e.g. 0xff00ffff==purple
 boolean autoAcceptApplications = false;
 HashMap<String, TeamPlayerEntry> playerEntries = new HashMap<String, TeamPlayerEntry>();
-Set<String> warringTeams = new HashSet<String>();
-Set<String> alliedTeams = new HashSet<String>();
+Set<String> warringTeams = new HashSet<>();
+Set<String> alliedTeams = new HashSet<>();
 
-Set<String> pendingApplicants = new HashSet<String>();
+Set<String> pendingApplicants = new HashSet<>();
 
-/**
+/*
  * nbt-constructor...should immediately read from NBT after construction to ensure things are setup properly
  */
 public TeamEntry()

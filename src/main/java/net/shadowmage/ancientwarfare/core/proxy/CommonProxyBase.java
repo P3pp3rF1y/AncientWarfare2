@@ -1,38 +1,54 @@
 package net.shadowmage.ancientwarfare.core.proxy;
 
+import com.mojang.authlib.GameProfile;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 
-import com.mojang.authlib.GameProfile;
+import java.util.UUID;
 
-public class CommonProxyBase
-{
+public class CommonProxyBase {
 
-public void registerClient()
-  {
-  //NOOP for commonProxy
-  }
+    public void addClientRegistrar(IClientRegistrar registrar) {
+        //NOOP for commonProxy
+    }
 
-public EntityPlayer getClientPlayer()
-  {
-  //NOOP for commonProxy
-  return null;
-  }
+    public void preInit() {
 
-public EntityPlayer getFakePlayer(WorldServer world)
-  {
-  return getFakePlayer(world, "AncientWarfare");
-  }
+    }
 
-public EntityPlayer getFakePlayer(WorldServer world, String name)
-  {
-  return FakePlayerFactory.get(world, new GameProfile(null, name));
-  }
+    public void init() {
 
-public void onConfigChanged()
-  {
-  
-  }
+    }
 
+    public EntityPlayer getClientPlayer() { //TODO replace with simple Minecraft.getMinecraft().player?
+        //NOOP for commonProxy
+        return null;
+    }
+
+    public EntityPlayer getFakePlayer(World world, String name, UUID id) {
+        EntityPlayer player;
+        if(id!=null) {
+            player = world.getPlayerEntityByUUID(id);
+            if(player!=null)
+                return player;
+        }
+        if(name!=null) {
+            player = world.getPlayerEntityByName(name);
+            if(player!=null){
+                return player;
+            }
+            return FakePlayerFactory.get((WorldServer) world, new GameProfile(id, name));
+        }
+        return FakePlayerFactory.get((WorldServer) world, new GameProfile(id, "AncientWarfare"));
+    }
+
+    public boolean isKeyPressed(String keyName) {
+        return false;
+    }
+
+    public void onConfigChanged() {
+
+    }
 }

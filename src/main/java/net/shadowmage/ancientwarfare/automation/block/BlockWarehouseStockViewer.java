@@ -1,180 +1,149 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
-import java.util.List;
-
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.Entity;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockWarehouseStockViewer extends Block implements IRotatableBlock
-{
+import javax.annotation.Nullable;
 
-public BlockWarehouseStockViewer(String regName)
-  {
-  super(Material.rock);
-  this.setBlockName(regName);
-  this.setCreativeTab(AWAutomationItemLoader.automationTab);
-  setHardness(2.f);
-  }
+import static net.shadowmage.ancientwarfare.core.render.BlockRenderProperties.FACING;
 
-@Override
-@SideOnly(Side.CLIENT)
-public void registerBlockIcons(IIconRegister p_149651_1_)
-  {
-  
-  }
-
-@Override
-public RotationType getRotationType()
-  {
-  return RotationType.FOUR_WAY;
-  }
-
-@Override
-@SideOnly(Side.CLIENT)
-public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_)
-  {
-  return true;
-  }
-
-@Override
-public boolean isBlockSolid(IBlockAccess par1IBlockAccess, int par2, int par3, int par4, int par5)
-  {
-  return false;
-  }
-
-@Override
-public boolean isOpaqueCube()
-  {
-  return false;
-  }
-
-@Override
-public boolean renderAsNormalBlock()
-  {
-  return false;
-  }
-
-@Override
-public boolean invertFacing()
-  {
-  return true;
-  }
-
-@SuppressWarnings("rawtypes")
-@Override
-public void addCollisionBoxesToList(World p_149743_1_, int p_149743_2_, int p_149743_3_, int p_149743_4_, AxisAlignedBB p_149743_5_, List p_149743_6_, Entity p_149743_7_)
-  {
-  //noop for no collisions
-  }
-
-@Override
-public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z)
-  {
-  int meta = world.getBlockMetadata(x, y, z);
-  ForgeDirection d = ForgeDirection.getOrientation(meta).getOpposite();
-  float wmin = 0.125f;
-  float wmax = 0.875f;
-  float hmin = 0.375f;
-  float hmax = 0.875f;
-  switch(d)
-  {
-  case EAST:
-    {
-    setBlockBounds(wmax, hmin, 0, 1.f, hmax, 1);
+public class BlockWarehouseStockViewer extends BlockBaseAutomation implements IRotatableBlock {
+    public BlockWarehouseStockViewer(String regName) {
+        super(Material.ROCK, regName);
+        setHardness(2.f);
     }
-    break;
-  case WEST:
-    {
-    setBlockBounds(0, hmin, 0, wmin, hmax, 1);
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, FACING);
     }
-    break;
-  case NORTH:
-    {
-    setBlockBounds(0, hmin, 0, 1, hmax, wmin);
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return getDefaultState().withProperty(FACING, EnumFacing.VALUES[meta]);
     }
-    break;
-  case SOUTH:
-    {
-    setBlockBounds(0, hmin, wmax, 1, hmax, 1);
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(FACING).ordinal();
     }
-    break;
-  default:
-    {
-    setBlockBounds(0, 0, 0, 1, 1, 1);
+
+
+    /*
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister p_149651_1_) {
+
     }
-    break;
-  }
-  }
+*/
 
-@Override
-public void setBlockBoundsForItemRender()
-  {
-  float wmax = 0.875f;
-  float hmin = 0.375f;
-  float hmax = 0.875f;
-  setBlockBounds(wmax, hmin, 0.f, 1.f, hmax, 1.f);
-  }
-
-@Override
-public BlockWarehouseStockViewer setIcon(RelativeSide side, String texName)
-  {  
-  return this;
-  }
-
-@Override
-@SideOnly(Side.CLIENT)
-public IIcon getIcon(int side, int meta)
-  {
-  return Blocks.planks.getIcon(0, 0);
-  }
-
-@Override
-public boolean hasTileEntity(int metadata)
-  {
-  return true;
-  }
-
-@Override
-public TileEntity createTileEntity(World world, int metadata)
-  {
-  return new TileWarehouseStockViewer();
-  }
-
-@Override
-public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int sideHit, float hitX, float hitY, float hitZ)
-  {  
-  TileEntity te = world.getTileEntity(x, y, z);
-  if(te instanceof IInteractableTile)
-    {
-    ((IInteractableTile) te).onBlockClicked(player);
+    @Override
+    public RotationType getRotationType() {
+        return RotationType.FOUR_WAY;
     }
-  return true;  
-  }
 
-@Override
-public boolean onBlockEventReceived(World world, int x, int y, int z, int a, int b)
-  {
-  super.onBlockEventReceived(world, x, y, z, a, b);
-  TileEntity tileentity = world.getTileEntity(x, y, z);
-  return tileentity != null ? tileentity.receiveClientEvent(a, b) : false;
-  }
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess world, BlockPos pos, EnumFacing side) {
+        return true;
+    }
 
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isNormalCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean invertFacing() {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public AxisAlignedBB getCollisionBoundingBox(IBlockState blockState, IBlockAccess worldIn, BlockPos pos) {
+        return NULL_AABB;
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        //TODO static AABBs
+
+        float wmin = 0.125f;
+        float wmax = 0.875f;
+        float hmin = 0.375f;
+        float hmax = 0.875f;
+        switch (state.getValue(FACING)) {
+            case EAST: {
+                return new AxisAlignedBB(wmax, hmin, 0, 1.f, hmax, 1);
+            }
+            case WEST: {
+                return new AxisAlignedBB(0, hmin, 0, wmin, hmax, 1);
+            }
+            case NORTH: {
+                return new AxisAlignedBB(0, hmin, 0, 1, hmax, wmin);
+            }
+            case SOUTH: {
+                return new AxisAlignedBB(0, hmin, wmax, 1, hmax, 1);
+            }
+            default: {
+                return new AxisAlignedBB(0, 0, 0, 1, 1, 1);
+            }
+        }
+    }
+
+    /*
+    @Override
+    public BlockWarehouseStockViewer setIcon(RelativeSide side, String texName) {
+        return this;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int side, int meta) {
+        return Blocks.PLANKS.getIcon(0, 0);
+    }
+*/
+
+    @Override
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
+    }
+
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
+        return new TileWarehouseStockViewer();
+    }
+
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        TileEntity te = world.getTileEntity(pos);
+        return te instanceof IInteractableTile && ((IInteractableTile) te).onBlockClicked(player, hand);
+    }
+
+    @Override
+    public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param) {
+        super.eventReceived(state, world, pos, id, param);
+        TileEntity tileentity = world.getTileEntity(pos);
+        return tileentity != null && tileentity.receiveClientEvent(id, param);
+    }
 }

@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -27,7 +27,7 @@ import net.minecraft.item.ItemStack;
 public class SlotPullOnly extends Slot
 {
 
-/**
+/*
  * @param par1iInventory
  * @param par2
  * @param par3

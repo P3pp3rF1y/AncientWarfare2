@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -41,7 +41,7 @@ public class StructurePluginManager
 {
 
 
-private List<StructureContentPlugin> loadedContentPlugins = new ArrayList<StructureContentPlugin>();
+private List<StructureContentPlugin> loadedContentPlugins = new ArrayList<>();
 
 private HashMap<Class<?extends Entity>, Class<? extends TemplateRule>> entityRules = new HashMap<Class<?extends Entity>, Class<? extends TemplateRule>>();
 private HashMap<Block, Class<?extends TemplateRule>> blockRules = new HashMap<Block, Class<?extends TemplateRule>>();

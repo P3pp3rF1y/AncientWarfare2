@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -36,7 +36,7 @@ public TeamEntry currentTeamEntry;
 public ContainerTeamControl(EntityPlayer player, int x, int y, int z)
   {
   super(player, x, y, z);
-  this.currentTeamEntry = TeamTracker.instance().getTeamFor(player.worldObj, player.getEntityName());
+  this.currentTeamEntry = TeamTracker.instance().getTeamFor(player.world, player.getEntityName());
   }
 
 @Override
@@ -47,7 +47,7 @@ public void handlePacketData(NBTTagCompound tag)
     String name = tag.getString("teamName");
     String player = tag.getString("leaderName");
     int color = tag.getInteger("color");
-    if(!TeamTracker.instance().createNewTeam(this.player.worldObj, name, player, color))
+    if(!TeamTracker.instance().createNewTeam(this.player.world, name, player, color))
       {
       NBTTagCompound msg = new NBTTagCompound();
       msg.setBoolean("createFail", true);
@@ -77,7 +77,7 @@ public List<NBTTagCompound> getInitData()
 @Override
 public void refreshGui()
   {
-  this.currentTeamEntry = TeamTracker.instance().getTeamFor(player.worldObj, player.getEntityName());
+  this.currentTeamEntry = TeamTracker.instance().getTeamFor(player.world, player.getEntityName());
   super.refreshGui();
   }
 

@@ -5,110 +5,96 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.inventory.SlotFiltered;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketGui;
+import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 
-public class ContainerSpawnerAdvancedInventoryBase extends ContainerBase
-{
+import javax.annotation.Nonnull;
 
-SpawnerSettings settings;
-InventoryBasic inventory;
+public class ContainerSpawnerAdvancedInventoryBase extends ContainerBase {
 
-public ContainerSpawnerAdvancedInventoryBase(EntityPlayer player, int x, int y, int z)
-  {
-  super(player, x, y, z);  
-  }
+    SpawnerSettings settings;
+    InventoryBasic inventory;
 
-protected void addSettingsInventorySlots()
-  {
-  int xPos;
-  int yPos;
-  int slotNum;
-  
-  ItemSlotFilter filter = new ItemSlotFilter()
-    {
+    public ContainerSpawnerAdvancedInventoryBase(EntityPlayer player, int x, int y, int z) {
+        super(player);
+    }
+
+    protected void addSettingsInventorySlots() {
+        int xPos;
+        int yPos;
+        int slotNum;
+
+        ItemSlotFilter filter = new ItemSlotFilter() {
+            @Override
+            public boolean test(ItemStack stack) {
+                if (!stack.isEmpty() && stack.getItem() instanceof ItemBlock) {
+                    ItemBlock block = (ItemBlock) stack.getItem();
+                    if (block.getBlock() == AWStructuresBlocks.advancedSpawner) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        };
+
+        for (int y = 0; y < 3; y++) {
+            yPos = y * 18 + 8;
+            for (int x = 0; x < 3; x++) {
+                xPos = x * 18 + 8;//TODO find offset
+                slotNum = y * 3 + x;
+                addSlotToContainer(new SlotFiltered(inventory, slotNum, xPos, yPos, filter));
+            }
+        }
+    }
+
+    public void sendSettingsToServer() {
+        NBTTagCompound tag = new NBTTagCompound();
+        settings.writeToNBT(tag);
+
+        PacketGui pkt = new PacketGui();
+        pkt.setTag("spawnerSettings", tag);
+        NetworkHandler.sendToServer(pkt);
+    }
+
     @Override
-    public boolean isItemValid(ItemStack stack)
-      {      
-      if(stack!=null && stack.getItem() instanceof ItemBlock)
-        {
-        ItemBlock block = (ItemBlock)stack.getItem();
-        if(block.field_150939_a==AWBlocks.advancedSpawner)
-          {
-          return false;
-          }
+    public ItemStack transferStackInSlot(EntityPlayer player, int slotClickedIndex) {
+        @Nonnull ItemStack slotStackCopy = ItemStack.EMPTY;
+        Slot theSlot = this.getSlot(slotClickedIndex);
+        if (theSlot != null && theSlot.getHasStack()) {
+            @Nonnull ItemStack slotStack = theSlot.getStack();
+            slotStackCopy = slotStack.copy();
+            int playerSlotEnd = playerSlots;
+            int storageSlots = playerSlotEnd + 9;
+            if (slotClickedIndex < playerSlotEnd)//player slots...
+            {
+                if (!this.mergeItemStack(slotStack, playerSlotEnd, storageSlots, false))//merge into storage inventory
+                {
+                    return ItemStack.EMPTY;
+                }
+            } else if (slotClickedIndex < storageSlots)//storage slots, merge to player inventory
+            {
+                if (!this.mergeItemStack(slotStack, 0, playerSlotEnd, true))//merge into player inventory
+                {
+                    return ItemStack.EMPTY;
+                }
+            }
+            if (slotStack.getCount() == 0) {
+                theSlot.putStack(ItemStack.EMPTY);
+            } else {
+                theSlot.onSlotChanged();
+            }
+            if (slotStack.getCount() == slotStackCopy.getCount()) {
+                return ItemStack.EMPTY;
+            }
+            theSlot.onTake(player, slotStack);
         }
-      return true;
-      }
-    };
-    
-  for(int y = 0; y<3; y++)
-    {
-    yPos = y*18 + 8;
-    for(int x = 0; x<3; x++)
-      {
-      xPos = x*18 + 8;//TODO find offset
-      slotNum = y*3 + x;
-      addSlotToContainer(new SlotFiltered(inventory, slotNum, xPos, yPos, filter));
-      }
+        return slotStackCopy;
     }
-  }
-
-public void sendSettingsToServer()
-  {
-  NBTTagCompound tag = new NBTTagCompound();
-  settings.writeToNBT(tag);
-  
-  PacketGui pkt = new PacketGui();
-  pkt.packetData.setTag("spawnerSettings", tag);
-  NetworkHandler.sendToServer(pkt);
-  }
-
-@Override
-public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex)
-  {
-  ItemStack slotStackCopy = null;
-  Slot theSlot = (Slot)this.inventorySlots.get(slotClickedIndex);
-  if (theSlot != null && theSlot.getHasStack())
-    {
-    ItemStack slotStack = theSlot.getStack();
-    slotStackCopy = slotStack.copy();
-    int storageSlots = 9;  
-    if (slotClickedIndex < 36)//player slots...
-      {      
-      if (!this.mergeItemStack(slotStack, 36, 36+storageSlots, false))//merge into storage inventory
-        {
-        return null;
-        }
-      }
-    else if(slotClickedIndex >=36 &&slotClickedIndex < 36+storageSlots)//storage slots, merge to player inventory
-      {
-      if (!this.mergeItemStack(slotStack, 0, 36, true))//merge into player inventory
-        {
-        return null;
-        }
-      }
-    if (slotStack.stackSize == 0)
-      {
-      theSlot.putStack((ItemStack)null);
-      }
-    else
-      {
-      theSlot.onSlotChanged();
-      }
-    if (slotStack.stackSize == slotStackCopy.stackSize)
-      {
-      return null;
-      }
-    theSlot.onPickupFromSlot(par1EntityPlayer, slotStack);
-    }
-  return slotStackCopy;
-  }
 
 }

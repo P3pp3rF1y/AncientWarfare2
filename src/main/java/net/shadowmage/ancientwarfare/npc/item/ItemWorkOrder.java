@@ -2,49 +2,55 @@ package net.shadowmage.ancientwarfare.npc.item;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.npc.orders.WorkOrder;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class ItemWorkOrder extends ItemOrders
-{
-
-public ItemWorkOrder(String name)
-  {
-  super(name);
-  this.setTextureName("ancientwarfare:npc/work_order");
-  }
-
-@Override
-public void onRightClick(EntityPlayer player, ItemStack stack)
-  {
-  NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_WORK_ORDER, 0, 0, 0);
-  }
-
-@Override
-public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
-  {
-  WorkOrder wo = WorkOrder.getWorkOrder(stack);
-  if(wo!=null)
-    {
-    BlockPosition hit = BlockTools.getBlockClickedOn(player, player.worldObj, false);
-    if(hit!=null && player.worldObj.getTileEntity(hit.x, hit.y, hit.z) instanceof IWorkSite)
-      {
-      if(wo.addWorkPosition(player.worldObj, hit, 0))
-        {
-        WorkOrder.writeWorkOrder(stack, wo);
-        player.openContainer.detectAndSendChanges();
-        //TODO add chat output message regarding adding a worksite to the work-orders
-        //TODO possibly open the gui after setting the work-point?
-//        player.setCurrentItemOrArmor(0, stack);//TODO probably un-necessary        
-        }
-      }
+public class ItemWorkOrder extends ItemOrders {
+    public ItemWorkOrder() {
+        super("work_order");
     }
-  }
+    @Override
+    public List<BlockPos> getPositionsForRender(ItemStack stack) {
+        List<BlockPos> positionList = new ArrayList<>();
+        WorkOrder order = WorkOrder.getWorkOrder(stack);
+        if (order != null && !order.isEmpty()) {
+            for (WorkOrder.WorkEntry e : order.getEntries()) {
+                positionList.add(e.getPosition());
+            }
+        }
+        return positionList;
+    }
 
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
+    {
+        if(!world.isRemote)
+            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_WORK_ORDER, 0, 0, 0);
+        return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+    }
+
+    @Override
+    public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
+        WorkOrder wo = WorkOrder.getWorkOrder(stack);
+        if (wo != null) {
+            BlockPos hit = BlockTools.getBlockClickedOn(player, player.world, false);
+            if (wo.addWorkPosition(player.world, hit)) {
+                wo.write(stack);
+                addMessage(player);
+            }else{
+                NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_WORK_ORDER, 0, 0, 0);
+            }
+        }
+    }
 
 
 }

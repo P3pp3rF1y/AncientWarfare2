@@ -1,83 +1,81 @@
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules;
 
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
-public class TemplateRuleTorqueMultiblock extends TemplateRuleBlock
-{
+import java.util.List;
 
-int meta;
-String blockName;
-NBTTagCompound tag;
+public class TemplateRuleTorqueMultiblock extends TemplateRuleBlock {
 
-public TemplateRuleTorqueMultiblock(World world, int x, int y, int z, Block block, int meta, int turns)
-  {
-  super(world, x, y, z, block, meta, turns);  
-  this.blockName = BlockDataManager.instance().getNameForBlock(block);
-  this.meta = meta;
-  this.tag = new NBTTagCompound();
-  TileEntity tile = world.getTileEntity(x, y, z);
-  tile.writeToNBT(tag);
-  }
+    int meta;
+    String blockName;
+    NBTTagCompound tag;
 
-public TemplateRuleTorqueMultiblock()
-  {
-  }
+    public TemplateRuleTorqueMultiblock(World world, BlockPos pos, Block block, int meta, int turns) {
+        super(world, pos, block, meta, turns);
+        this.blockName = BlockDataManager.INSTANCE.getNameForBlock(block);
+        this.meta = meta;
+        this.tag = new NBTTagCompound();
+        TileEntity tile = world.getTileEntity(pos);
+        tile.writeToNBT(tag);
+    }
 
-@Override
-public boolean shouldReuseRule(World world, Block block, int meta, int turns, TileEntity te, int x, int y, int z)
-  {
-  return false;
-  }
+    public TemplateRuleTorqueMultiblock() {
+    }
 
-@Override
-public void handlePlacement(World world, int turns, int x, int y, int z, IStructureBuilder builder)
-  {
-  Block block = BlockDataManager.instance().getBlockForName(blockName);
-  world.setBlock(x, y, z, block, meta, 2);
-  TileEntity tile = world.getTileEntity(x, y, z);
-  tag.setInteger("x", x);
-  tag.setInteger("y", y);
-  tag.setInteger("z", z);
-  tile.readFromNBT(tag);  
-  world.markBlockForUpdate(x, y, z);
-  block.onPostBlockPlaced(world, x, y, z, meta);
-  }
+    @Override
+    public boolean shouldReuseRule(World world, Block block, int meta, int turns, BlockPos pos) {
+        return false;
+    }
 
-@Override
-public void parseRuleData(NBTTagCompound tag)
-  {
-  blockName = tag.getString("blockId");
-  meta = tag.getInteger("meta");
-  this.tag = tag.getCompoundTag("teData");
-  }
+    @Override
+    public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
+        Block block = BlockDataManager.INSTANCE.getBlockForName(blockName);
+        if(world.setBlockState(pos, block.getStateFromMeta(meta), 3)) {
+            TileEntity tile = world.getTileEntity(pos);
+            if(tile != null) {
+                //TODO look into changing this so that the whole TE doesn't need reloading from custom NBT
+                tag.setString("id", block.getRegistryName().toString());
+                tag.setInteger("x", pos.getX());
+                tag.setInteger("y", pos.getY());
+                tag.setInteger("z", pos.getZ());
+                tile.readFromNBT(tag);
+            }
+            BlockTools.notifyBlockUpdate(world, pos);
+            block.onBlockPlacedBy(world, pos, block.getStateFromMeta(meta), null, null);
+        }
+    }
 
-@Override
-public void writeRuleData(NBTTagCompound tag)
-  {
-  tag.setString("blockId", blockName);
-  tag.setInteger("meta", meta);
-  tag.setTag("teData", this.tag);
-  }
+    @Override
+    public void parseRuleData(NBTTagCompound tag) {
+        blockName = tag.getString("blockId");
+        meta = tag.getInteger("meta");
+        this.tag = tag.getCompoundTag("teData");
+    }
 
-@Override
-public void addResources(List<ItemStack> resources)
-  {
-  resources.add(new ItemStack(Item.getItemFromBlock(BlockDataManager.instance().getBlockForName(blockName)), 1, meta));
-  }
+    @Override
+    public void writeRuleData(NBTTagCompound tag) {
+        tag.setString("blockId", blockName);
+        tag.setInteger("meta", meta);
+        tag.setTag("teData", this.tag);
+    }
 
-@Override
-public boolean shouldPlaceOnBuildPass(World world, int turns, int x, int y, int z, int buildPass)
-  {
-  return buildPass==0;
-  }
+    @Override
+    public void addResources(List<ItemStack> resources) {
+        resources.add(new ItemStack(Item.getItemFromBlock(BlockDataManager.INSTANCE.getBlockForName(blockName)), 1, meta));
+    }
+
+    @Override
+    public boolean shouldPlaceOnBuildPass(World world, int turns, BlockPos pos, int buildPass) {
+        return buildPass == 0;
+    }
 }

@@ -4,31 +4,27 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-public class SlotFiltered extends Slot
-{
+import java.util.function.Predicate;
 
-ItemSlotFilter filter;
+public class SlotFiltered extends Slot {
 
-public SlotFiltered(IInventory par1iInventory, int slotIndex, int xPos, int yPos, ItemSlotFilter filter)
-  {
-  super(par1iInventory, slotIndex, xPos, yPos);
-  this.filter = filter;
-  }
+    private final Predicate<ItemStack> filter;
 
-@Override
-public boolean isItemValid(ItemStack par1ItemStack)
-  {
-  if(filter!=null)
-    {
-    return filter.isItemValid(par1ItemStack);
+    public SlotFiltered(IInventory par1iInventory, int slotIndex, int xPos, int yPos, Predicate<ItemStack> filter) {
+        super(par1iInventory, slotIndex, xPos, yPos);
+        this.filter = filter;
     }
-  return super.isItemValid(par1ItemStack);
-  }
 
-@Override
-public String toString()
-  {
-  return "Filtered slot: "+filter;
-  }
+    @Override
+    public final boolean isItemValid(ItemStack par1ItemStack) {
+        if (filter != null) {
+            return filter.test(par1ItemStack);
+        }
+        return super.isItemValid(par1ItemStack);
+    }
 
+    @Override
+    public String toString() {
+        return "Filtered slot: " + filter;
+    }
 }

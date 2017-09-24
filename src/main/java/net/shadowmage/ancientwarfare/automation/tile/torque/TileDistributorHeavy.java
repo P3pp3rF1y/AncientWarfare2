@@ -1,19 +1,16 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque;
 
-import net.minecraftforge.common.util.ForgeDirection;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.SidedTorqueCell;
 
+public final class TileDistributorHeavy extends TileDistributor {
 
-public class TileDistributorHeavy extends TileDistributor
-{
-public TileDistributorHeavy()
-  {
-  double max = AWAutomationStatics.high_transfer_max;
-  double eff = AWAutomationStatics.high_efficiency_factor;
-  for(int i = 0; i <6; i++)
-    {
-    storage[i] = new SidedTorqueCell(max, max, max, eff, ForgeDirection.values()[i], this);//TODO set from config
+    @Override
+    protected double getEfficiency() {
+        return AWAutomationStatics.high_efficiency_factor;
     }
-  }
+
+    @Override
+    protected double getMaxTransfer() {
+        return AWAutomationStatics.high_transfer_max;
+    }
 }

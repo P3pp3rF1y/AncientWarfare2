@@ -1,182 +1,188 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
-import java.util.EnumSet;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.IInventoryChangedListener;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class TileOreProcessor extends TileWorksiteBase implements IInventory, ISidedInventory
-{
+import javax.annotation.Nullable;
+import java.util.EnumSet;
 
-private InventoryBasic inventory;
+public class TileOreProcessor extends TileWorksiteBase implements ISidedInventory, IInventoryChangedListener {
 
-public TileOreProcessor()
-  {
-  inventory = new InventoryBasic(2)
-    {
+    private final InventoryBasic inventory;
+
+    public TileOreProcessor() {
+        inventory = new InventoryBasic(2, this);
+    }
+
     @Override
-    public void setInventorySlotContents(int var1, ItemStack var2)
-      {
-      if(worldObj!=null && !worldObj.isRemote)
-        {
-        onInventoryUpdated();
+    public void onInventoryChanged(IInventory internal) {
+        markDirty();
+    }
+
+    @Override
+    public boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
+        // TODO implement GUI
+        return true;
+    }
+
+    @Override
+    public void onBlockBroken() {
+        super.onBlockBroken();
+        if (!world.isRemote) {
+            InventoryTools.dropInventoryInWorld(world, inventory, pos);
         }
-      super.setInventorySlotContents(var1, var2);
-      }
-    };//TODO override methods for callback for when items changed
-  }
+    }
 
-public void onInventoryUpdated()
-  {
-  
-  }
+    @Override
+    protected boolean processWork() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-@Override
-public boolean onBlockClicked(EntityPlayer player)
-  {
-  // TODO implement GUI
-  return true;
-  }
+    @Override
+    protected boolean hasWorksiteWork() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 
-@Override
-public int[] getAccessibleSlotsFromSide(int side)
-  {
-  // TODO implement re-mappable relative block sides
-  return null;
-  }
+    @Override
+    protected void updateWorksite() {
+        // TODO Auto-generated method stub
+    }
 
-@Override
-public boolean isItemValidForSlot(int slot, ItemStack stack)
-  {
-  //TODO set from recipe list
-  return true;
-  }
+    @Override
+    public WorkType getWorkType() {
+        return WorkType.CRAFTING;
+    }
 
-@Override
-public boolean canInsertItem(int slot, ItemStack stack, int side){return slot==0 && isItemValidForSlot(slot, stack);}
+//************************************* BRIDGE/TEMPLATE/ACCESSOR METHODS ****************************************//
 
-@Override
-public boolean canExtractItem(int slot, ItemStack stack, int side){return true;}
+    @Override
+    public int[] getSlotsForFace(EnumFacing side) {
+        // TODO implement re-mappable relative block sides
+        return null;
+    }
 
-@Override
-public void onBlockBroken()
-  {
-  super.onBlockBroken();
-  if(!worldObj.isRemote){InventoryTools.dropInventoryInWorld(worldObj, inventory, xCoord, yCoord, zCoord);}
-  }
+    @Override
+    public boolean canInsertItem(int slot, ItemStack stack, EnumFacing side) {
+        return slot == 0 && isItemValidForSlot(slot, stack);
+    }
 
-@Override
-protected boolean processWork()
-  {
-  // TODO Auto-generated method stub
-  return false;
-  }
+    @Override
+    public boolean canExtractItem(int slot, ItemStack stack, EnumFacing side) {
+        return true;
+    }
 
-@Override
-protected boolean hasWorksiteWork()
-  {
-  // TODO Auto-generated method stub
-  return false;
-  }
+    @Override
+    public boolean isItemValidForSlot(int slot, ItemStack stack) {
+        //TODO set from recipe list
+        return true;
+    }
 
-@Override
-protected void updateWorksite()
-  {
-  // TODO Auto-generated method stub  
-  }
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
 
-@Override
-public WorkType getWorkType(){return WorkType.CRAFTING;}
+    @Override
+    public void setField(int id, int value) {
 
-//************************************** BRIDGE/TEMPLATE/ACCESSOR METHODS ****************************************//
+    }
 
-@Override
-public int getSizeInventory(){return inventory.getSizeInventory();}
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
 
-@Override
-public ItemStack getStackInSlot(int slot){return inventory.getStackInSlot(slot);}
+    @Override
+    public void clear() {
+        inventory.clear();
+    }
 
-@Override
-public ItemStack decrStackSize(int slot, int amt){return inventory.decrStackSize(slot, amt);}
+    @Override
+    public int getSizeInventory() {
+        return inventory.getSizeInventory();
+    }
 
-@Override
-public ItemStack getStackInSlotOnClosing(int slot){return inventory.getStackInSlotOnClosing(slot);}
+    @Override
+    public boolean isEmpty() {
+        return inventory.isEmpty();
+    }
 
-@Override
-public void setInventorySlotContents(int slot, ItemStack stack){inventory.setInventorySlotContents(slot, stack);}
+    @Override
+    public ItemStack getStackInSlot(int slot) {
+        return inventory.getStackInSlot(slot);
+    }
 
-@Override
-public String getInventoryName(){return inventory.getInventoryName();}
+    @Override
+    public ItemStack decrStackSize(int slot, int amt) {
+        return inventory.decrStackSize(slot, amt);
+    }
 
-@Override
-public boolean hasCustomInventoryName(){return inventory.hasCustomInventoryName();}
+    @Override
+    public ItemStack removeStackFromSlot(int slot) {
+        return inventory.removeStackFromSlot(slot);
+    }
 
-@Override
-public int getInventoryStackLimit(){return inventory.getInventoryStackLimit();}
+    @Override
+    public void setInventorySlotContents(int slot, ItemStack stack) {
+        inventory.setInventorySlotContents(slot, stack);
+    }
 
-@Override
-public boolean isUseableByPlayer(EntityPlayer player){return inventory.isUseableByPlayer(player);}
+    @Override
+    public String getName() {
+        return inventory.getName();
+    }
 
-@Override
-public void openInventory(){}//NOOP
+    @Override
+    public boolean hasCustomName() {
+        return inventory.hasCustomName();
+    }
 
-@Override
-public void closeInventory(){}//NOOP
+    @Override
+    public int getInventoryStackLimit() {
+        return inventory.getInventoryStackLimit();
+    }
 
-@Override
-public BlockPosition getWorkBoundsMin(){return null;}//NOOP
+    @Override
+    public boolean isUsableByPlayer(EntityPlayer player) {
+        return inventory.isUsableByPlayer(player);
+    }
 
-@Override
-public BlockPosition getWorkBoundsMax(){return null;}//NOOP
+    @Override
+    public void openInventory(EntityPlayer player) {
+    }//NOOP
 
-@Override
-public boolean userAdjustableBlocks(){return false;}//NOOP
+    @Override
+    public void closeInventory(EntityPlayer player) {
+    }//NOOP
 
-@Override
-public boolean hasWorkBounds(){return false;}//NOOP
-
-@Override
-public int getBoundsMaxWidth(){return 0;}//NOOP
-
-@Override
-public int getBoundsMaxHeight(){return 0;}//NOOP
-
-@Override
-public void setBounds(BlockPosition p1, BlockPosition p2){}//NOOP
-
-@Override
-public void setWorkBoundsMax(BlockPosition max){}//NOOP
-
-@Override
-public void setWorkBoundsMin(BlockPosition min){}//NOOP
-
-@Override
-public void onBoundsAdjusted(){}//NOOP
-
-@Override
-public EnumSet<WorksiteUpgrade> getValidUpgrades(){return EnumSet.noneOf(WorksiteUpgrade.class);}//NOOP
+    @Override
+    public EnumSet<WorksiteUpgrade> getValidUpgrades() {
+        return EnumSet.noneOf(WorksiteUpgrade.class);
+    }//NOOP
 
 
-//************************************** STANDARD NBT / DATA PACKET METHODS ****************************************//
-@Override
-public void readFromNBT(NBTTagCompound tag)
-  {
-  super.readFromNBT(tag);
-  inventory.readFromNBT(tag.getCompoundTag("inventory"));
-  }
+    //************************************* STANDARD NBT / DATA PACKET METHODS ****************************************//
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+        inventory.deserializeNBT(tag.getCompoundTag("inventory"));
+    }
 
-@Override
-public void writeToNBT(NBTTagCompound tag)
-  {
-  super.writeToNBT(tag);
-  tag.setTag("inventory", inventory.writeToNBT(new NBTTagCompound()));
-  }
-
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
+        tag.setTag("inventory", inventory.serializeNBT());
+        return tag;
+    }
 }

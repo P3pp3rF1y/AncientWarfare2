@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -37,7 +37,7 @@ float maxVal = Float.POSITIVE_INFINITY;
 
 boolean integerValue = false;
 
-/**
+/*
  * @param elementNum
  * @param parent
  * @param x

@@ -3,44 +3,54 @@ package net.shadowmage.ancientwarfare.npc.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumHand;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.util.EntityTools;
+import net.shadowmage.ancientwarfare.npc.item.AWNPCItems;
 import net.shadowmage.ancientwarfare.npc.orders.RoutingOrder;
 
-public class ContainerRoutingOrder extends ContainerBase
-{
+import javax.annotation.Nonnull;
 
-private boolean hasChanged;
-public RoutingOrder routingOrder;
+public class ContainerRoutingOrder extends ContainerBase {
 
-public ContainerRoutingOrder(EntityPlayer player, int x, int y, int z)
-  {
-  super(player, x, y, z);
-  ItemStack stack = player.getCurrentEquippedItem();
-  if(stack==null || stack.getItem()==null){throw new IllegalArgumentException("Cannot open Routing Order GUI for null stack/item.");}  
-  routingOrder = RoutingOrder.getRoutingOrder(stack);
-  if(routingOrder==null){throw new IllegalArgumentException("Routing orders was null for some reason");}
-  
-  int x1 = ((256 - (9*18) - 16)/2) + 8; 
-  addPlayerSlots(player, x1, 240-4*18-8-4, 4);
-  }
+    private boolean hasChanged;
+    private EnumHand hand;
+    public final RoutingOrder routingOrder;
 
-@Override
-public void handlePacketData(NBTTagCompound tag)
-  {
-  if(tag.hasKey("routingOrder"))
-    {
-    routingOrder.readFromNBT(tag.getCompoundTag("routingOrder"));
-    hasChanged=true;
-    }  
-  }
+    public ContainerRoutingOrder(EntityPlayer player, int x, int y, int z) {
+        super(player);
+        this.hand = EntityTools.getHandHoldingItem(player, AWNPCItems.routingOrder);
+        @Nonnull ItemStack stack = player.getHeldItem(hand);
+        if (stack.isEmpty() || stack.getItem() == null) {
+            throw new IllegalArgumentException("Cannot open Routing Order GUI for null stack/item.");
+        }
+        routingOrder = RoutingOrder.getRoutingOrder(stack);
+        if (routingOrder == null) {
+            throw new IllegalArgumentException("Routing orders was null for some reason");
+        }
 
-@Override
-public void onContainerClosed(EntityPlayer par1EntityPlayer)
-  {  
-  super.onContainerClosed(par1EntityPlayer);
-  if(hasChanged && !player.worldObj.isRemote)
-    {
-    RoutingOrder.writeRoutingOrder(player.getCurrentEquippedItem(), routingOrder);
+        addPlayerSlots((256 - (9 * 18)) / 2, 240 - 4 * 18 - 8 - 4, 4);
     }
-  }
+
+    @Override
+    public void handlePacketData(NBTTagCompound tag) {
+        if (tag.hasKey("routingOrder")) {
+            routingOrder.deserializeNBT(tag.getCompoundTag("routingOrder"));
+            hasChanged = true;
+        }
+    }
+
+    @Override
+    public void onContainerClosed(EntityPlayer par1EntityPlayer) {
+        super.onContainerClosed(par1EntityPlayer);
+        if (hasChanged && !player.world.isRemote) {
+            routingOrder.write(player.getHeldItem(hand));
+        }
+    }
+
+    public void onClose() {
+        NBTTagCompound outer = new NBTTagCompound();
+        outer.setTag("routingOrder", routingOrder.serializeNBT());
+        sendDataToServer(outer);
+    }
 }

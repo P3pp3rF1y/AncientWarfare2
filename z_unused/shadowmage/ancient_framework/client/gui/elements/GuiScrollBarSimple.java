@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -30,12 +30,12 @@ import shadowmage.ancient_framework.common.config.Statics;
 public class GuiScrollBarSimple extends GuiElement
 {
 
-/**
+/*
  * height of the handle-button/barthingie, in MCpixels...
  */
 int handleHeight;
 
-/**
+/*
  * current position of the scroll bar
  */
 public int handleTop;
@@ -44,7 +44,7 @@ private int displayListNum;
 
 final int buffer = 4;
 
-/**
+/*
  * @param elementNum
  * @param parent
  * @param o
@@ -94,12 +94,12 @@ public void drawElement(int mouseX, int mouseY)
     height = this.height;
     float x1, y1, x2, y2, x3, y3, x4, y4;
     float u1, v1, u2, v2, u3, v3, u4, v4;
-    /**
+    /*
      * setup render bounds
      */
     
 
-    /**
+    /*
      * render the top-left bit
      */
     x1 = x;//top-left
@@ -120,7 +120,7 @@ public void drawElement(int mouseX, int mouseY)
     v4 = v3 - 8 * texPixPercent;     
     renderQuad(x1, y1, x2, y2, x3, y3, x4, y4, u1, v1, u2, v2, u3, v3, u4, v4);
     
-    /**
+    /*
      * render the top-right bit
      */
     x1 = x + (width/2);//top-left
@@ -142,7 +142,7 @@ public void drawElement(int mouseX, int mouseY)
     renderQuad(x1, y1, x2, y2, x3, y3, x4, y4, u1, v1, u2, v2, u3, v3, u4, v4);
     
 
-    /**
+    /*
      * render bottom-left bit
      */
     x1 = x;
@@ -190,7 +190,7 @@ public void drawElement(int mouseX, int mouseY)
       usedHeight = remainingHeight > 40 ? 40 : remainingHeight;
       remainingHeight-=usedHeight;
       
-      /**
+      /*
        * render left bit
        */
       x1 = x;//top-left
@@ -212,7 +212,7 @@ public void drawElement(int mouseX, int mouseY)
       v4 = v3 - usedHeight * texPixPercent;
       renderQuad(x1, y1, x2, y2, x3, y3, x4, y4, u1, v1, u2, v2, u3, v3, u4, v4);
       
-      /**
+      /*
        * render right bit
        */
       x1 = x + (width/2);//top-left
@@ -248,7 +248,7 @@ public void drawElement(int mouseX, int mouseY)
     width = this.width - (buffer*2);
     height = this.handleHeight;
     
-    /**
+    /*
      * render the top-left bit
      */
     x1 = x;//top-left
@@ -269,7 +269,7 @@ public void drawElement(int mouseX, int mouseY)
     v4 = v3 - 8 * texPixPercent;     
     renderQuad(x1, y1, x2, y2, x3, y3, x4, y4, u1, v1, u2, v2, u3, v3, u4, v4);
     
-    /**
+    /*
      * render the top-right bit
      */
     x1 = x+ (width/2);//top-left
@@ -291,7 +291,7 @@ public void drawElement(int mouseX, int mouseY)
     renderQuad(x1, y1, x2, y2, x3, y3, x4, y4, u1, v1, u2, v2, u3, v3, u4, v4);
     
 
-    /**
+    /*
      * render bottom-left bit
      */
     x1 = x;
@@ -312,7 +312,7 @@ public void drawElement(int mouseX, int mouseY)
     v4 = v3 - 8 * texPixPercent;
     renderQuad(x1, y1, x2, y2, x3, y3, x4, y4, u1, v1, u2, v2, u3, v3, u4, v4);
     
-    /**
+    /*
      * render bottom-right bit
      */
     x1 = x + (width/2);//top-left
@@ -340,7 +340,7 @@ public void drawElement(int mouseX, int mouseY)
       usedHeight = remainingHeight > 40 ? 40 : remainingHeight;
       remainingHeight-=usedHeight;
       
-      /**
+      /*
        * render left bit
        */
       x1 = x;//top-left
@@ -362,7 +362,7 @@ public void drawElement(int mouseX, int mouseY)
       v4 = v3 - usedHeight * texPixPercent;
       renderQuad(x1, y1, x2, y2, x3, y3, x4, y4, u1, v1, u2, v2, u3, v3, u4, v4);
       
-      /**
+      /*
        * render right bit
        */
       x1 = x + (width/2);//top-left
@@ -447,7 +447,7 @@ public boolean isMouseOver(int x, int y)
   return x>= renderPosX+guiLeft+buffer && x< renderPosX+guiLeft+width+buffer && y>=renderPosY+guiTop+handleTop+buffer && y < renderPosY+guiTop+handleTop+handleHeight+buffer;
   }
 
-/**
+/*
  * update the top (and bottom) displayPos of the the handle...
  */
 private void updateHandleDisplayPos(int yDelta)
@@ -466,7 +466,7 @@ private void updateHandleDisplayPos(int yDelta)
   this.displayListNum=0;
   }
 
-/**
+/*
  *  update the size of the handle, relative to the size of the underlying elementSet
  *  should be called BEFORE updateHandlePos, and before getTopIndex...
  */
@@ -486,7 +486,7 @@ public void updateHandleHeight(int setSize, int displayElements)
   this.displayListNum=0;
   }
 
-/**
+/*
  * 
  * @param setSize total number of elements in the underlying set
  * @param displayElements how many elements are displayed on the screen at any one time

@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -43,8 +43,8 @@ TeamData clientTeamData;
 @Override
 public void onPlayerLogin(EntityPlayer player)
   {
-  if(player.worldObj.isRemote){return;}
-  TeamData data = AWGameData.get(player.worldObj, "AWTeamData", TeamData.class);
+  if(player.world.isRemote){return;}
+  TeamData data = AWGameData.get(player.world, "AWTeamData", TeamData.class);
   if(data==null){return;}
   data.handlePlayerLogin(player.getEntityName());  
   this.sendTeamData(data);

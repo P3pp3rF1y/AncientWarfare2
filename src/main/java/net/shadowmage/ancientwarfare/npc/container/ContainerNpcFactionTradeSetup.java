@@ -2,63 +2,51 @@ package net.shadowmage.ancientwarfare.npc.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionTrader;
 import net.shadowmage.ancientwarfare.npc.trade.FactionTradeList;
 
-public class ContainerNpcFactionTradeSetup extends ContainerBase
-{
+public class ContainerNpcFactionTradeSetup extends ContainerNpcBase<NpcFactionTrader> {
 
-public final NpcFactionTrader trader;
-public FactionTradeList tradeList;
-public boolean tradesChanged = false;
-public ContainerNpcFactionTradeSetup(EntityPlayer player, int x, int y, int z)
-  {
-  super(player, x, y, z);
-  trader = (NpcFactionTrader) player.worldObj.getEntityByID(x);//will crash if something is fubar on entity-ids, probably not a bad thing
-  this.tradeList = trader.getTradeList();
-  this.trader.trader = player;
-  
-  addPlayerSlots(player, 8, 240-4-8-4*18, 4);
-  }
+    public final FactionTradeList tradeList;
+    public boolean tradesChanged = false;
 
-@Override
-public void sendInitData()
-  {    
-  tradeList.updateTradesForView();
-  NBTTagCompound tag = new NBTTagCompound();
-  tradeList.writeToNBT(tag);
-  
-  NBTTagCompound packetTag = new NBTTagCompound();
-  packetTag.setTag("tradeData", tag);
-  sendDataToClient(packetTag);
-  }
+    public ContainerNpcFactionTradeSetup(EntityPlayer player, int x, int y, int z) {
+        super(player, x);
+        this.tradeList = entity.getTradeList();
+        this.entity.startTrade(player);
 
-@Override
-public void handlePacketData(NBTTagCompound tag)
-  {
-  if(tag.hasKey("tradeData")){tradeList.readFromNBT(tag.getCompoundTag("tradeData"));}
-  refreshGui();
-  }
+        addPlayerSlots();
+    }
 
-@Override
-public void onContainerClosed(EntityPlayer p_75134_1_)
-  {
-  this.trader.trader = null;
-  super.onContainerClosed(p_75134_1_);
-  }
+    @Override
+    public void sendInitData() {
+        tradeList.updateTradesForView();
+        NBTTagCompound packetTag = new NBTTagCompound();
+        packetTag.setTag("tradeData", tradeList.serializeNBT());
+        sendDataToClient(packetTag);
+    }
 
-public void onGuiClosed()
-  {
-  if(player.worldObj.isRemote && tradesChanged)
-    {
-    tradeList.removeEmptyTrades();
-    NBTTagCompound tag = new NBTTagCompound();
-    tradeList.writeToNBT(tag);
-    NBTTagCompound packetTag = new NBTTagCompound();
-    packetTag.setTag("tradeData", tag);
-    sendDataToServer(packetTag);
-    }  
-  }
+    @Override
+    public void handlePacketData(NBTTagCompound tag) {
+        if (tag.hasKey("tradeData")) {
+            tradeList.deserializeNBT(tag.getCompoundTag("tradeData"));
+        }
+        refreshGui();
+    }
+
+    @Override
+    public void onContainerClosed(EntityPlayer p_75134_1_) {
+        this.entity.closeTrade();
+        super.onContainerClosed(p_75134_1_);
+    }
+
+    public void onGuiClosed() {
+        if (player.world.isRemote && tradesChanged) {
+            tradeList.removeEmptyTrades();
+            NBTTagCompound packetTag = new NBTTagCompound();
+            packetTag.setTag("tradeData", tradeList.serializeNBT());
+            sendDataToServer(packetTag);
+        }
+    }
 
 }

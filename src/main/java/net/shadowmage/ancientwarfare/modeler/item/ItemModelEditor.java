@@ -1,82 +1,49 @@
 package net.shadowmage.ancientwarfare.modeler.item;
 
-import java.util.List;
-
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+import net.shadowmage.ancientwarfare.core.item.ItemBase;
 import net.shadowmage.ancientwarfare.modeler.AncientWarfareModeler;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemModelEditor extends Item implements IItemClickable
-{
+import javax.annotation.Nullable;
+import java.util.List;
 
-public static final CreativeTabs editorTab = new CreativeTabs("tabs.editor")
-  {    
-  @Override
-  @SideOnly(Side.CLIENT)
-  public Item getTabIconItem()
-    {
-    return Items.stick;
+public class ItemModelEditor extends ItemBase {
+
+    public static final CreativeTabs editorTab = new CreativeTabs("tabs.editor") {
+        @Override
+        @SideOnly(Side.CLIENT)
+        public ItemStack getTabIconItem() {
+            return new ItemStack(Items.STICK);
+        }
+    };
+
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        tooltip.add(I18n.format("guistrings.modeler.right_click_to_open"));
     }
-  };
-  
-@SuppressWarnings({ "unchecked", "rawtypes" })
-@Override
-public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
-  {
-  par3List.add(StatCollector.translateToLocal("guistrings.modeler.right_click_to_open"));
-  }
 
-@Override
-public boolean cancelRightClick(EntityPlayer player, ItemStack stack)
-  {
-  return true;
-  }
-
-@Override
-public boolean cancelLeftClick(EntityPlayer player, ItemStack stack)
-  {
-  return false;
-  }
-
-public ItemModelEditor(String localizationKey)
-  {
-  this.setUnlocalizedName(localizationKey);
-  this.setCreativeTab(editorTab);
-  }
-
-@Override
-public boolean onRightClickClient(EntityPlayer player, ItemStack stack)
-  {
-  if(player.worldObj.isRemote)
-    {
-    AncientWarfareModeler.proxy.openGui(player);
+    public ItemModelEditor(String regName) {
+        super(AncientWarfareModeler.modID, regName);
+        setCreativeTab(editorTab);
+        //.setTextureName("ancientwarfare:modeler/editor_opener");
     }
-  return false;
-  }
 
-@Override
-public void onRightClick(EntityPlayer player, ItemStack stack)
-  {
-  
-  }
-
-@Override
-public boolean onLeftClickClient(EntityPlayer player, ItemStack stack)
-  {
-  return false;
-  }
-
-@Override
-public void onLeftClick(EntityPlayer player, ItemStack stack)
-  {
-  
-  }
-
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+        if (world.isRemote) {
+            AncientWarfareModeler.proxy.openGui(player);
+        }
+        return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+    }
 }

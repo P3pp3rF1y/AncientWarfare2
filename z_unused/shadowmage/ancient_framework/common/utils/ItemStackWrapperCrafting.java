@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -45,7 +45,7 @@ public ItemStackWrapperCrafting(ItemStack stack, int qty, boolean dmg, boolean t
 
 public ItemStackWrapperCrafting(ItemStack stack, boolean dmg, boolean tag)
   {
-  this(stack, stack.stackSize, dmg, tag);
+  this(stack, stack.getCount(), dmg, tag);
   }
 
 public ItemStackWrapperCrafting(Item item, int qty, int meta, boolean tag){this(new ItemStack(item,qty, meta),false,tag);}

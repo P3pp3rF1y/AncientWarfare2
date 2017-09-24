@@ -1,44 +1,76 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
+import net.shadowmage.ancientwarfare.core.gui.elements.Label;
+import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
+import net.shadowmage.ancientwarfare.core.gui.elements.Text;
+import net.shadowmage.ancientwarfare.npc.block.BlockTeleportHub;
 import net.shadowmage.ancientwarfare.npc.container.ContainerTownHall;
 
-public class GuiTownHallInventory extends GuiContainerBase
-{
- 
-ContainerTownHall container;
-public GuiTownHallInventory(ContainerBase container)
-  {
-  super(container);
-  this.container = (ContainerTownHall)container;
-  this.ySize = 3*18 + 4*18 + 8 + 8 + 4 + 8 + 16;
-  this.xSize = 178;
-  }
+public class GuiTownHallInventory extends GuiContainerBase<ContainerTownHall> {
 
-@Override
-public void initElements()
-  {
-  this.container.addSlots();
-  Button button = new Button(8, 8, 75, 12, "guistrings.npc.death_list")
-    {
+    private NumberInput input;
+    private Text name;
+    public GuiTownHallInventory(ContainerBase container) {
+        super(container);
+        this.ySize = 3 * 18 + 4 * 18 + 8 + 8 + 4 + 8 + 16;
+        this.xSize = 178;
+    }
+
     @Override
-    protected void onPressed()
-      {
-      container.removeSlots();
-      Minecraft.getMinecraft().displayGuiScreen(new GuiTownHallDeathList(GuiTownHallInventory.this));
-      }
-    };
-  addGuiElement(button);
-  }
+    public void initElements() {
+        this.getContainer().addSlots();
+        Button button = new Button(8, 8, 40, 12, "guistrings.npc.death_list") {
+            @Override
+            protected void onPressed() {
+                getContainer().removeSlots();
+                Minecraft.getMinecraft().displayGuiScreen(new GuiTownHallDeathList(GuiTownHallInventory.this));
+            }
+        };
+        addGuiElement(button);
+        
+        addGuiElement(new Label(110, 10, "guistrings.npc.town_range"));
+        input = new NumberInput(145, 8, 24, getContainer().tileEntity.getRange(), this);
+        input.setIntegerValue();
+        addGuiElement(input);
+    }
 
-@Override
-public void setupElements()
-  {
+    @Override
+    public void setupElements() {
+        if (getContainer().tileEntity.isHq) {
+            removeGuiElement(name);
+            // draw teleport button, if hub exists
+            BlockPos tpHubPos = getContainer().tileEntity.tpHubPos;
+            if (tpHubPos != null && mc.world.getBlockState(tpHubPos).getBlock() instanceof BlockTeleportHub) {
+                Button button = new Button(50, 8, 54, 12, "Visit Hub") {
+                    @Override
+                    protected void onPressed() {
+                        Minecraft.getMinecraft().displayGuiScreen(null);
+                        getContainer().teleportPlayer(player.getName());
+                    }
+                };
+                addGuiElement(button);
+            }
+        } else {
+            // draw label for naming town hall
+            name = new Text(50, 8, 54, getContainer().tileEntity.name, this);
+            addGuiElement(name);
+        }
+        
+        input.setValue(getContainer().tileEntity.getRange());
+    }
 
-  }
-
-
+    @Override
+    protected boolean onGuiCloseRequested() {
+        if (getContainer().tileEntity.getRange() != input.getIntegerValue())
+            getContainer().setRange(input.getIntegerValue());
+        if (!getContainer().tileEntity.name.equals(name.getText()))
+            getContainer().setName(name.getText());
+        
+        return super.onGuiCloseRequested();
+    }
 }

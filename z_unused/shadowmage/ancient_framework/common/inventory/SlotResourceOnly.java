@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -32,7 +32,7 @@ public class SlotResourceOnly extends Slot
 
 List<ItemStack> itemFilters;
 
-/**
+/*
  * 1=nbt
  * 2=damage
  * 3=both
@@ -40,7 +40,7 @@ List<ItemStack> itemFilters;
 int ignoreType = 0;
 int maxStackSize = 64;
 
-/**
+/*
  * @param par1iInventory
  * @param par2
  * @param par3

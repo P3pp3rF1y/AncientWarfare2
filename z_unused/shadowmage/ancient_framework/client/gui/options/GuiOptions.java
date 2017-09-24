@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -59,9 +59,9 @@ GuiTab activeTab;
 Keybind changingKeybind;
 GuiButtonSimple changingKeybindButton;
 
-private List<GuiElement> optionsTabElements = new ArrayList<GuiElement>();
-private List<GuiElement> keybindTabElements = new ArrayList<GuiElement>();
-private List<GuiElement> performanceTabElements = new ArrayList<GuiElement>();
+private List<GuiElement> optionsTabElements = new ArrayList<>();
+private List<GuiElement> keybindTabElements = new ArrayList<>();
+private List<GuiElement> performanceTabElements = new ArrayList<>();
 private HashMap<GuiElement, ClientConfigOption> optionsElementBooleanMap = new HashMap<GuiElement, ClientConfigOption>();
 private HashMap<GuiElement, ClientConfigOption> optionsElementIntegerMap = new HashMap<GuiElement, ClientConfigOption>();
 private HashMap<GuiElement, Keybind> keybindElementMap = new HashMap<GuiElement, Keybind>();

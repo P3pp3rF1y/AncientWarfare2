@@ -1,36 +1,30 @@
 package net.shadowmage.ancientwarfare.automation.proxy;
 
+import cofh.redstoneflux.api.IEnergyConnection;
+import cofh.redstoneflux.api.IEnergyReceiver;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
-import cofh.api.energy.IEnergyConnection;
-import cofh.api.energy.IEnergyHandler;
 
-public class RFProxyActual extends RFProxy
-{
+public class RFProxyActual extends RFProxy {
 
-protected RFProxyActual()
-  {
-  
-  }
+    protected RFProxyActual() {
 
-@Override
-public boolean isRFTile(TileEntity te)
-  {
-  return te instanceof IEnergyConnection;
-  }
-
-@Override
-public double transferPower(ITorqueTile generator, ForgeDirection from, TileEntity target)
-  {
-  IEnergyConnection iec = (IEnergyConnection)target;
-  if(iec instanceof IEnergyHandler)
-    {
-    IEnergyHandler h = (IEnergyHandler)iec;
-    return generator.drainTorque(from, (double)(h.receiveEnergy(from.getOpposite(), (int) (generator.getMaxTorqueOutput(from)*AWAutomationStatics.torqueToRf), false)*AWAutomationStatics.rfToTorque));
     }
-  return 0;
-  }
+
+    @Override
+    public boolean isRFTile(TileEntity te) {
+        return te instanceof IEnergyConnection;
+    }
+
+    @Override
+    public double transferPower(ITorqueTile generator, EnumFacing from, TileEntity target) {
+        if (target instanceof IEnergyReceiver) {
+            IEnergyReceiver h = (IEnergyReceiver) target;
+            return generator.drainTorque(from, (h.receiveEnergy(from.getOpposite(), (int) (generator.getMaxTorqueOutput(from) * AWAutomationStatics.torqueToRf), false) * AWAutomationStatics.rfToTorque));
+        }
+        return 0;
+    }
 
 }

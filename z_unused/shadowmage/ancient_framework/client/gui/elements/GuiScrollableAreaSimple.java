@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -41,7 +41,7 @@ int parentGuiHeight;
 public int totalHeight;
 protected int totalWidth;
 
-public List<GuiElement> elements = new ArrayList<GuiElement>();
+public List<GuiElement> elements = new ArrayList<>();
 
 protected GuiContainerAdvanced parentGui;
 

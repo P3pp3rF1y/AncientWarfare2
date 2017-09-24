@@ -1,158 +1,104 @@
-/**
-   Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
-   This software is distributed under the terms of the GNU General Public License.
-   Please see COPYING for precise license information.
+/*
+ Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
+ This software is distributed under the terms of the GNU General Public License.
+ Please see COPYING for precise license information.
 
-   This file is part of Ancient Warfare.
+ This file is part of Ancient Warfare.
 
-   Ancient Warfare is free software: you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation, either version 3 of the License, or
-   (at your option) any later version.
+ Ancient Warfare is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-   Ancient Warfare is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
+ Ancient Warfare is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-   You should have received a copy of the GNU General Public License
-   along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
+ You should have received a copy of the GNU General Public License
+ along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
 package net.shadowmage.ancientwarfare.structure.item;
 
-import java.util.List;
-
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntityMobSpawner;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
-import net.minecraft.util.StatCollector;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 
-public class ItemSpawnerPlacer extends Item implements IItemClickable
-{
+import javax.annotation.Nullable;
+import java.util.List;
 
-/**
- * @param itemID
- */
-public ItemSpawnerPlacer(String itemName)
-  {
-  this.setUnlocalizedName(itemName);
-  this.setCreativeTab(AWStructuresItemLoader.structureTab);
-  this.setTextureName("ancientwarfare:structure/"+itemName);
-  }
+public class ItemSpawnerPlacer extends ItemBaseStructure {
 
-@Override
-public boolean cancelRightClick(EntityPlayer player, ItemStack stack)
-  {
-  return true;
-  }
-
-@Override
-public boolean cancelLeftClick(EntityPlayer player, ItemStack stack)
-  {
-  return false;
-  }
-
-@SuppressWarnings({ "unchecked", "rawtypes" })
-@Override
-public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
-  {
-  list.add(StatCollector.translateToLocal("guistrings.selected_mob")+":");
-  if(stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnerData"))
-    {
-    NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData");
-    String mobID = tag.getString("EntityId");
-    if(mobID.equals(""))
-      {
-      mobID = "No Selection!!";
-      }
-    list.add(mobID);
-    }  
-  else
-    {
-    list.add(StatCollector.translateToLocal("guistrings.no_selection"));
+    public ItemSpawnerPlacer(String name) {
+        super(name);
+        //this.setTextureName("ancientwarfare:structure/" + name);
     }
-  list.add(EnumChatFormatting.RED + StatCollector.translateToLocal("guistrings.spawner.warning_1"));
-  list.add(EnumChatFormatting.RED + StatCollector.translateToLocal("guistrings.spawner.warning_2"));
-  }
 
-@Override
-public void onRightClick(EntityPlayer player, ItemStack stack)
-  {
-  if(player==null || player.worldObj==null || player.worldObj.isRemote || stack==null)
-    {
-    return;
-    }
-  MovingObjectPosition mophit = getMovingObjectPositionFromPlayer(player.worldObj, player, false);
-  if(player.capabilities.isCreativeMode && player.isSneaking())
-    {
-    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SPAWNER, 0, 0, 0);
-    }
-  else if(mophit!=null && mophit.typeOfHit == MovingObjectType.BLOCK)
-    {   
-    if(stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnerData"))
-      {
-      World world = player.worldObj;
-      BlockPosition hit = new BlockPosition(mophit.blockX, mophit.blockY, mophit.blockZ);
-      hit.offsetForMCSide(mophit.sideHit);
-      world.setBlock(hit.x, hit.y, hit.z, Blocks.mob_spawner);
-      NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData");
-      TileEntityMobSpawner te = (TileEntityMobSpawner) world.getTileEntity(hit.x, hit.y, hit.z);
-      tag.setInteger("x", hit.x);
-      tag.setInteger("y", hit.y);
-      tag.setInteger("z", hit.z);
-      te.readFromNBT(tag); 
 
-      if(!player.capabilities.isCreativeMode)
-        {
-        stack.stackSize--;
-        if(stack.stackSize<=0)
-          {
-          player.inventory.mainInventory[player.inventory.currentItem]=null;
-          }
+    @Override
+    public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
+        tooltip.add(I18n.format("guistrings.selected_mob") + ":");
+        if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnerData")) {
+            NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData");
+            String mobID = tag.getString("EntityId");
+            if (mobID.isEmpty()) {
+                tooltip.add(I18n.format("guistrings.no_selection"));
+            } else {
+                tooltip.add(I18n.format("entity." + mobID + ".name"));
+            }
+        } else {
+            tooltip.add(I18n.format("guistrings.no_selection"));
         }
-      }
-    else
-      {
-      /**
-       * TODO output chat message about missing NBT-data on item / no selection
-       */
-      }
+        tooltip.add(TextFormatting.RED + I18n.format("guistrings.spawner.warning_1"));
+        tooltip.add(TextFormatting.RED + I18n.format("guistrings.spawner.warning_2"));
     }
-  else
-    {
-    /**
-     * TODO output chat message about null hit/ w/e
-     */
+
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+        ItemStack stack = player.getHeldItem(hand);
+        if (player.world.isRemote) {
+            return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+        }
+        if (stack.isEmpty()) {
+            return new ActionResult<>(EnumActionResult.PASS, stack);
+        }
+        RayTraceResult traceResult = rayTrace(player.world, player, false);
+        if (player.capabilities.isCreativeMode && player.isSneaking()) {
+            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SPAWNER, 0, 0, 0);
+        } else if (traceResult != null && traceResult.typeOfHit == RayTraceResult.Type.BLOCK) {
+            if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnerData")) {
+                if (player.world.setBlockState(traceResult.getBlockPos(), Blocks.MOB_SPAWNER.getDefaultState())) {
+                    NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData"); //TODO may make more sense to just update spawner specific tags instead of everything
+                    tag.setString("id", Blocks.MOB_SPAWNER.getRegistryName().toString());
+                    tag.setInteger("x", traceResult.getBlockPos().getX());
+                    tag.setInteger("y", traceResult.getBlockPos().getY());
+                    tag.setInteger("z", traceResult.getBlockPos().getZ());
+                    TileEntity te = player.world.getTileEntity(traceResult.getBlockPos());
+                    te.readFromNBT(tag);
+
+                    if (!player.capabilities.isCreativeMode) {
+                        stack.shrink(1);
+                    }
+                }
+            } else {
+                player.sendMessage(new TextComponentTranslation("guistrings.spawner.nodata"));
+            }
+        } else {
+            player.sendMessage(new TextComponentTranslation("guistrings.spawner.noblock"));
+        }
+        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
-  }
-
-@Override
-public boolean onRightClickClient(EntityPlayer player, ItemStack stack)
-  {
-  return true;
-  }
-
-@Override
-public boolean onLeftClickClient(EntityPlayer player, ItemStack stack)
-  {
-  return false;
-  }
-
-@Override
-public void onLeftClick(EntityPlayer player, ItemStack stack)
-  {  
-  }
-
-
 
 }

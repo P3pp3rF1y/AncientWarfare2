@@ -2,57 +2,67 @@ package net.shadowmage.ancientwarfare.npc.item;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.MovingObjectPosition.MovingObjectType;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
 import net.shadowmage.ancientwarfare.core.util.RayTraceUtils;
 import net.shadowmage.ancientwarfare.npc.orders.TradeOrder;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class ItemTradeOrder extends ItemOrders
-{
+public class ItemTradeOrder extends ItemOrders {
 
-public ItemTradeOrder(String name)
-  {
-  super(name);
-  this.setTextureName("ancientwarfare:npc/combat_order");
-  }
+    public ItemTradeOrder() {
+        super("trade_order");
+    }
 
-@Override
-public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key)
-  {
-  return key==ItemKey.KEY_0 || key==ItemKey.KEY_1 || key==ItemKey.KEY_2;
-  }
+    @Override
+    public List<BlockPos> getPositionsForRender(ItemStack stack) {
+        List<BlockPos> positionList = new ArrayList<>();
+        TradeOrder order = TradeOrder.getTradeOrder(stack);
+        if (order != null && order.getRoute().size() > 0) {
+            for (int i = 0; i < order.getRoute().size(); i++) {
+                positionList.add(order.getRoute().get(i).getPosition());
+            }
+        }
+        return positionList;
+    }
 
-@Override
-public void onRightClick(EntityPlayer player, ItemStack stack)
-  {
-  NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_TRADE_ORDER, 0, 0, 0);
-  }
+    @Override
+    public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key) {
+        return key == ItemKey.KEY_0 || key == ItemKey.KEY_1 || key == ItemKey.KEY_2;
+    }
 
-@Override
-public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
-  {
-  MovingObjectPosition hit = RayTraceUtils.getPlayerTarget(player, 5, 0);
-  if(hit==null || hit.typeOfHit!=MovingObjectType.BLOCK){return;}
-  TradeOrder order = TradeOrder.getTradeOrder(stack);
-  BlockPosition pos = new BlockPosition(hit.blockX, hit.blockY, hit.blockZ);
-  if(key==ItemKey.KEY_0)
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
     {
-    order.getRoute().addRoutePoint(pos);
-    TradeOrder.writeTradeOrder(stack, order);
+        if(!world.isRemote)
+            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_TRADE_ORDER, 0, 0, 0);
+        return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
     }
-  else if(key==ItemKey.KEY_1)
-    {
-    order.getRestockData().setDepositPoint(pos, hit.sideHit);
-    TradeOrder.writeTradeOrder(stack, order);
+
+    @Override
+    public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
+        RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, 5, 0);
+        if (hit == null || hit.typeOfHit != RayTraceResult.Type.BLOCK) {
+            return;
+        }
+        TradeOrder order = TradeOrder.getTradeOrder(stack);
+        if (key == ItemKey.KEY_0) {
+            order.getRoute().addRoutePoint(hit.getBlockPos());
+            order.write(stack);
+        } else if (key == ItemKey.KEY_1) {
+            order.getRestockData().setDepositPoint(hit.getBlockPos(), hit.sideHit);
+            order.write(stack);
+        } else if (key == ItemKey.KEY_2) {
+            order.getRestockData().setWithdrawPoint(hit.getBlockPos(), hit.sideHit);
+            order.write(stack);
+        }
     }
-  else if(key==ItemKey.KEY_2)
-    {  
-    order.getRestockData().setWithdrawPoint(pos, hit.sideHit);
-    TradeOrder.writeTradeOrder(stack, order);
-    }
-  }
 
 }

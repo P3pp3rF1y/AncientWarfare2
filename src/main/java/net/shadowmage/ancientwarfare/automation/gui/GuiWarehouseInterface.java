@@ -1,7 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.gui;
 
-import java.util.List;
-
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseInterface;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseInterfaceFilter;
@@ -13,136 +11,118 @@ import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 
-public class GuiWarehouseInterface extends GuiContainerBase
-{
+import javax.annotation.Nonnull;
 
-CompositeScrolled area;
-ContainerWarehouseInterface container;
-boolean hasChanged = false;
+public class GuiWarehouseInterface extends GuiContainerBase<ContainerWarehouseInterface> {
 
-public GuiWarehouseInterface(ContainerBase par1Container)
-  {
-  super(par1Container, 178, 240, defaultBackground);
-  this.container = (ContainerWarehouseInterface)par1Container;  
-  }
+    private CompositeScrolled area;
 
-@Override
-public void initElements()
-  {
-  area = new CompositeScrolled(this, 0, 0, xSize, 88);
-  addGuiElement(area);
-  }
-
-@Override
-public void setupElements()
-  {
-  area.clearElements();
-  List<WarehouseInterfaceFilter> filters = container.filters;
-  
-  int totalHeight = 8;
-  
-  ItemSlot slot;
-  NumberInput input;  
-  Button button;  
-  
-  for(WarehouseInterfaceFilter filter : filters)
-    {    
-    slot = new FilterItemSlot(8, totalHeight, filter, this);
-    area.addGuiElement(slot);
-    
-    input = new FilterQuantityInput(8+30, totalHeight+3, filter);    
-    input.setIntegerValue();
-    area.addGuiElement(input);
-    
-    button = new FilterRemoveButton(xSize-16-12, totalHeight+3, filter);
-    area.addGuiElement(button);
-    
-    totalHeight+=18;
+    public GuiWarehouseInterface(ContainerBase par1Container) {
+        super(par1Container, 178, 240);
     }
-  
-  if(filters.size()<9)
-    {
-    button = new Button(8, totalHeight, 95, 12, "guistrings.automation.new_filter")
-      {
-      @Override
-      protected void onPressed()
-        {
-        WarehouseInterfaceFilter filter = new WarehouseInterfaceFilter();
-        filter.setFilterQuantity(64);
-        container.filters.add(filter);
-        container.sendFiltersToServer();
-        refreshGui();
+
+    @Override
+    public void initElements() {
+        area = new CompositeScrolled(this, 0, 0, xSize, 88);
+        addGuiElement(area);
+    }
+
+    @Override
+    public void setupElements() {
+        area.clearElements();
+
+        int totalHeight = 8;
+
+        ItemSlot slot;
+        NumberInput input;
+        Button button;
+
+        for (WarehouseInterfaceFilter filter : getContainer().filters) {
+            slot = new FilterItemSlot(8, totalHeight, filter, this);
+            area.addGuiElement(slot);
+
+            input = new FilterQuantityInput(8 + 30, totalHeight + 3, filter);
+            input.setIntegerValue();
+            area.addGuiElement(input);
+
+            button = new FilterRemoveButton(xSize - 16 - 12, totalHeight + 3, filter);
+            area.addGuiElement(button);
+
+            totalHeight += 18;
         }
-      };
-    area.addGuiElement(button);
-    totalHeight+=12;
+
+        if (getContainer().filters.size() < 9) {
+            button = new Button(8, totalHeight, 95, 12, "guistrings.automation.new_filter") {
+                @Override
+                protected void onPressed() {
+                    WarehouseInterfaceFilter filter = new WarehouseInterfaceFilter();
+                    filter.setFilterQuantity(64);
+                    getContainer().filters.add(filter);
+                    getContainer().sendFiltersToServer();
+                    refreshGui();
+                }
+            };
+            area.addGuiElement(button);
+            totalHeight += 12;
+        }
+
+        area.setAreaSize(totalHeight);
     }
-  
-  area.setAreaSize(totalHeight);
-  }
 
 
-private class FilterRemoveButton extends Button
-{
-WarehouseInterfaceFilter filter;
-public FilterRemoveButton(int topLeftX, int topLeftY, WarehouseInterfaceFilter filter)
-  {
-  super(topLeftX, topLeftY, 12, 12, "-");
-  this.filter = filter;
-  }
+    private class FilterRemoveButton extends Button {
+        WarehouseInterfaceFilter filter;
 
-@Override
-protected void onPressed()
-  {
-  container.filters.remove(filter);
-  container.sendFiltersToServer();
-  refreshGui();
-  }
-}
+        public FilterRemoveButton(int topLeftX, int topLeftY, WarehouseInterfaceFilter filter) {
+            super(topLeftX, topLeftY, 12, 12, "-");
+            this.filter = filter;
+        }
 
-private class FilterQuantityInput extends NumberInput
-{
-WarehouseInterfaceFilter filter;
-public FilterQuantityInput(int topLeftX, int topLeftY, WarehouseInterfaceFilter filter)
-  {
-  super(topLeftX, topLeftY, 40, filter.getFilterQuantity(), GuiWarehouseInterface.this);
-  this.filter = filter;
-  }
-
-@Override
-public void onValueUpdated(float value)
-  {
-  int val = (int)value;
-  this.filter.setFilterQuantity(val);
-  refreshGui();
-  container.sendFiltersToServer();
-  }
-
-}
-
-private class FilterItemSlot extends ItemSlot
-{
-WarehouseInterfaceFilter filter;
-public FilterItemSlot(int topLeftX, int topLeftY, WarehouseInterfaceFilter filter, ITooltipRenderer render)
-  {
-  super(topLeftX, topLeftY, filter.getFilterItem(), render);
-  this.filter = filter;
-  this.setRenderItemQuantity(false);
-  }
-
-@Override
-public void onSlotClicked(ItemStack stack)
-  {
-  ItemStack in = stack==null? null : stack.copy();
-  this.setItem(in);  
-  if(in!=null)
-    {
-    in.stackSize = 1;
+        @Override
+        protected void onPressed() {
+            getContainer().filters.remove(filter);
+            getContainer().sendFiltersToServer();
+            refreshGui();
+        }
     }
-  filter.setFilterQuantity(0);
-  filter.setFilterItem(in==null? null : in.copy());
-  container.sendFiltersToServer();
-  }
-}
+
+    private class FilterQuantityInput extends NumberInput {
+        WarehouseInterfaceFilter filter;
+
+        public FilterQuantityInput(int topLeftX, int topLeftY, WarehouseInterfaceFilter filter) {
+            super(topLeftX, topLeftY, 40, filter.getFilterQuantity(), GuiWarehouseInterface.this);
+            this.filter = filter;
+        }
+
+        @Override
+        public void onValueUpdated(float value) {
+            this.filter.setFilterQuantity((int) value);
+            refreshGui();
+            getContainer().sendFiltersToServer();
+        }
+
+    }
+
+    private class FilterItemSlot extends ItemSlot {
+        WarehouseInterfaceFilter filter;
+
+        public FilterItemSlot(int topLeftX, int topLeftY, WarehouseInterfaceFilter filter, ITooltipRenderer render) {
+            super(topLeftX, topLeftY, filter.getFilterItem(), render);
+            this.filter = filter;
+            this.setRenderItemQuantity(false);
+        }
+
+        @Override
+        public void onSlotClicked(ItemStack stack) {
+            @Nonnull ItemStack in = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
+            this.setItem(in);
+            if (!in.isEmpty()) {
+                in.setCount(1);
+            }
+            filter.setFilterQuantity(0);
+            filter.setFilterItem(in.isEmpty() ? ItemStack.EMPTY : in.copy());
+            getContainer().sendFiltersToServer();
+        }
+    }
 
 }

@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -49,7 +49,7 @@ public void onItemUsed(PlayerInteractEvent evt)
     AWItemClickable item = (AWItemClickable) evt.entityPlayer.inventory.getCurrentItem().getItem();
     if(item.hasLeftClick)
       {
-      item.onUsedFinalLeft(evt.entityPlayer.worldObj, evt.entityPlayer, evt.entityPlayer.inventory.getCurrentItem(), new BlockPosition(evt.x, evt.y, evt.z), evt.face);
+      item.onUsedFinalLeft(evt.entityPlayer.world, evt.entityPlayer, evt.entityPlayer.inventory.getCurrentItem(), new BlockPosition(evt.x, evt.y, evt.z), evt.face);
       evt.setCanceled(true);
       }    
     }  

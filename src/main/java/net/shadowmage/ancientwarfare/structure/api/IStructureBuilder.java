@@ -1,9 +1,9 @@
 package net.shadowmage.ancientwarfare.structure.api;
 
 import net.minecraft.block.Block;
+import net.minecraft.util.math.BlockPos;
 
-public interface IStructureBuilder
-{
+public interface IStructureBuilder {
 
-public void placeBlock(int x, int y, int z, Block block, int meta, int priority);
+    void placeBlock(BlockPos pos, Block block, int meta, int priority);
 }

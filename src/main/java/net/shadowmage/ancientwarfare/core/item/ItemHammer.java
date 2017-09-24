@@ -1,228 +1,188 @@
 package net.shadowmage.ancientwarfare.core.item;
 
-import java.util.List;
-
-import net.minecraft.block.Block;
+import com.google.common.collect.Multimap;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 
-import com.google.common.collect.Multimap;
+import javax.annotation.Nullable;
+import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+public class ItemHammer extends ItemBaseCore implements IItemKeyInterface {
 
-public class ItemHammer extends Item implements IItemKeyInterface, IItemClickable
-{
+    double attackDamage = 5.d;
 
-double attackDamage = 5.d;
+    private ToolMaterial material;
 
-private ToolMaterial material;
-
-public ItemHammer(String regName, ToolMaterial material)
-  {
-  this.setUnlocalizedName(regName);
-  this.setCreativeTab(AWCoreBlockLoader.coreTab);
-  this.setTextureName("ancientwarfare:core/"+regName);
-  this.attackDamage = 4.f + material.getDamageVsEntity();
-  this.material = material;
-  this.maxStackSize = 1;
-  this.setMaxDamage(material.getMaxUses());
-  }
-
-@Override
-public boolean cancelRightClick(EntityPlayer player, ItemStack stack)
-  {
-  return true;
-  }
-
-@Override
-public boolean cancelLeftClick(EntityPlayer player, ItemStack stack)
-  {
-  return false;
-  }
-
-public ToolMaterial getMaterial()
-  {
-  return material;
-  }
-
-/**
- * Return the enchantability factor of the item, most of the time is based on material.
- */
-@Override
-public int getItemEnchantability()
-  {
-  return this.material.getEnchantability();
-  }
-
-/**
- * Return whether this item is repairable in an anvil.
- */
-@Override
-public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack)
-  {
-  return this.material.func_150995_f() == par2ItemStack.getItem() ? true : super.getIsRepairable(par1ItemStack, par2ItemStack);
-  }
-
-/**
- * Current implementations of this method in child classes do not use the entry argument beside ev. They just raise
- * the damage on the stack.
- */
-@Override
-public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase par2EntityLivingBase, EntityLivingBase par3EntityLivingBase)
-  {
-  par1ItemStack.damageItem(1, par3EntityLivingBase);
-  return true;
-  }
-
-@Override
-public boolean onBlockDestroyed(ItemStack p_150894_1_, World p_150894_2_, Block p_150894_3_, int p_150894_4_, int p_150894_5_, int p_150894_6_, EntityLivingBase p_150894_7_)
-  {
-  if ((double)p_150894_3_.getBlockHardness(p_150894_2_, p_150894_4_, p_150894_5_, p_150894_6_) != 0.0D)
-    {
-    p_150894_1_.damageItem(2, p_150894_7_);
+    public ItemHammer(String regName, ToolMaterial material) {
+        super(regName);
+        //this.setTextureName("ancientwarfare:core/" + regName);
+        attackDamage = 4.f + material.getDamageVsEntity();
+        material = material;
+        maxStackSize = 1;
+        setMaxDamage(material.getMaxUses());
+        setHarvestLevel("hammer", material.getHarvestLevel());
     }
-  return true;
-  }
 
-/**
- * Gets a map of item attribute modifiers, used by ItemSword to increase hit damage.
- */
-@SuppressWarnings({ "unchecked", "deprecation", "rawtypes" })
-@Override
-public Multimap getItemAttributeModifiers()
-  {
-  Multimap multimap = super.getItemAttributeModifiers();
-  multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Weapon modifier", (double)this.attackDamage, 0));
-  return multimap;
-  }
+    public ToolMaterial getMaterial() {
+        return material;
+    }
 
-@SuppressWarnings({ "rawtypes", "unchecked" })
-@Override
-@SideOnly(Side.CLIENT)
-public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List list, boolean par4)
-  {
-  String key = InputHandler.instance().getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
-  list.add(StatCollector.translateToLocalFormatted("guistrings.core.hammer.use_primary_item_key", key));  
-  if(stack.hasTagCompound() && stack.getTagCompound().getBoolean("workMode"))
-    {
-    list.add(StatCollector.translateToLocal("guistrings.core.hammer.work_mode_1"));
-    list.add(StatCollector.translateToLocal("guistrings.core.hammer.work_mode_2"));
+    /*
+     * Return the enchantability factor of the item, most of the time is based on material.
+     */
+    @Override
+    public int getItemEnchantability() {
+        return this.material.getEnchantability();
     }
-  else
-    {
-    list.add(StatCollector.translateToLocal("guistrings.core.hammer.rotate_mode_1"));
-    list.add(StatCollector.translateToLocal("guistrings.core.hammer.rotate_mode_2"));
-    }
-  }
 
-@Override
-public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key)
-  {
-  return key==ItemKey.KEY_0;
-  }
+    /*
+     * Return whether this item is repairable in an anvil.
+     */
+    @Override
+    public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
+        return this.material.getRepairItemStack() == par2ItemStack || super.getIsRepairable(par1ItemStack, par2ItemStack);
+    }
 
-@Override
-public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
-  {
-  if(player.worldObj.isRemote){return;}
-  boolean mode = false;
-  if(stack.hasTagCompound())
-    {
-    mode = stack.getTagCompound().getBoolean("workMode");      
+    /*
+     * Current implementations of this method in child classes do not use the entry argument beside ev. They just raise
+     * the damage on the stack.
+     */
+    @Override
+    public boolean hitEntity(ItemStack par1ItemStack, EntityLivingBase par2EntityLivingBase, EntityLivingBase par3EntityLivingBase) {
+        par1ItemStack.damageItem(1, par3EntityLivingBase);
+        return true;
     }
-  else
-    {
-    stack.setTagCompound(new NBTTagCompound());
-    }
-  mode = !mode;
-  stack.getTagCompound().setBoolean("workMode", mode);
-  player.addChatMessage(new ChatComponentTranslation("guistrings.automation.work_mode_change"));
-  }
 
-@Override
-public void onRightClick(EntityPlayer player, ItemStack stack)
-  {
-  MovingObjectPosition hit = getMovingObjectPositionFromPlayer(player.worldObj, player, false);
-  if(hit==null){return;}
-  boolean mode = false;
-  if(stack.hasTagCompound())
-    {
-    mode = stack.getTagCompound().getBoolean("workMode");      
-    }
-  else
-    {
-    stack.setTagCompound(new NBTTagCompound());
-    }  
-  if(mode)
-    {
-    TileEntity te = player.worldObj.getTileEntity(hit.blockX, hit.blockY, hit.blockZ);
-    if(te instanceof IWorkSite)
-      {
-      if(((IWorkSite) te).hasWork())
-        {
-        ((IWorkSite) te).addEnergyFromPlayer(player);
+    @Override
+    public boolean onBlockDestroyed(ItemStack stack, World world, IBlockState state, BlockPos pos, EntityLivingBase entityLiving) {
+        if (state.getBlockHardness(world, pos) != 0) {
+            stack.damageItem(2, entityLiving);
         }
-      player.addChatMessage(new ChatComponentTranslation("guistrings.automation.doing_player_work"));
-      }
-    else
-      {
-      player.addChatMessage(new ChatComponentTranslation("guistrings.automation.wrong_hammer_mode"));
-      }
+        return true;
     }
-  else
-    {
-    Block block = player.worldObj.getBlock(hit.blockX, hit.blockY, hit.blockZ);
-    if(block==null){return;}    
-    player.addChatMessage(new ChatComponentTranslation("guistrings.automation.rotating_block"));
-    block.rotateBlock(player.worldObj, hit.blockX, hit.blockY, hit.blockZ, ForgeDirection.getOrientation(hit.sideHit));
+
+    /*
+     * Gets a map of item attribute modifiers, used by ItemSword to increase hit damage.
+     */
+    @Override
+    public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
+        Multimap<String, AttributeModifier> multimap = super.getAttributeModifiers(slot, stack);
+        multimap.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", this.attackDamage, 0));
+        return multimap;
     }
-  }
 
-/**
- * Returns True is the item is renderer in full 3D when hold.
- */
-@SideOnly(Side.CLIENT)
-@Override
-public boolean isFull3D()
-  {
-  return true;
-  }
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+        String key = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
+        tooltip.add(I18n.format("guistrings.core.hammer.use_primary_item_key", key));
+        //noinspection ConstantConditions
+        if (stack.hasTagCompound() && stack.getTagCompound().getBoolean("workMode")) {
+            tooltip.add(I18n.format("guistrings.core.hammer.work_mode"));
+        } else {
+            tooltip.add(I18n.format("guistrings.core.hammer.rotate_mode"));
+        }
+    }
 
-@Override
-public boolean onLeftClickClient(EntityPlayer player, ItemStack stack)
-  {
-  return false;
-  }
+    @Override
+    public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key) {
+        return key == ItemKey.KEY_0;
+    }
 
-@Override
-public boolean onRightClickClient(EntityPlayer player, ItemStack stack)
-  {
-  MovingObjectPosition hit = getMovingObjectPositionFromPlayer(player.worldObj, player, false);
-  if(hit==null){return false;}
-  return true;
-  }
+    @Override
+    public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
+        if (player.world.isRemote) {
+            return;
+        }
+        boolean mode = false;
+        if (stack.hasTagCompound()) {
+            mode = stack.getTagCompound().getBoolean("workMode");
+        } else {
+            stack.setTagCompound(new NBTTagCompound());
+        }
+        mode = !mode;
+        stack.getTagCompound().setBoolean("workMode", mode);
+        player.world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.UI_BUTTON_CLICK, SoundCategory.PLAYERS, 0.3F, 0.6F);
+    }
 
-@Override
-public void onLeftClick(EntityPlayer player, ItemStack stack)
-  {
-  
-  }
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+        ItemStack stack = player.getHeldItem(hand);
+        if(world.isRemote){
+            return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+        }
+        RayTraceResult hit = rayTrace(world, player, false);
+        if (hit == null) {
+            return new ActionResult<>(EnumActionResult.PASS, stack);
+        }
+        boolean mode = false;
+        if (stack.hasTagCompound()) {
+            mode = stack.getTagCompound().getBoolean("workMode");
+        } else {
+            stack.setTagCompound(new NBTTagCompound());
+        }
+        if (mode) {
+            TileEntity te = world.getTileEntity(hit.getBlockPos());
+            if (te instanceof IWorkSite && ((IWorkSite) te).hasWork()) {
+                ((IWorkSite) te).addEnergyFromPlayer(player);
+                playSound(world, hit, SoundEvents.BLOCK_PISTON_CONTRACT);
+            } else {
+                if(!world.isAirBlock(hit.getBlockPos()))
+                    playBlockSound(world, hit, world.getBlockState(hit.getBlockPos()));
+            }
+        } else {
+            if(!world.isAirBlock(hit.getBlockPos())) {
+                IBlockState state = world.getBlockState(hit.getBlockPos());
+                if (state.getBlock().rotateBlock(world, hit.getBlockPos(), hit.sideHit))
+                    playSound(world, hit, SoundEvents.BLOCK_PISTON_EXTEND);
+                else
+                    playBlockSound(world, hit, state);
+            }
+        }
+        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+    }
 
+    private void playSound(World world, RayTraceResult hit, SoundEvent sound){
+        world.playSound(null, hit.getBlockPos(), sound, SoundCategory.BLOCKS, 0.2F, world.rand.nextFloat() * 0.15F + 0.6F);
+    }
+
+    private void playBlockSound(World world, RayTraceResult hit, IBlockState state){
+        SoundType sound = state.getBlock().getSoundType(state, world, hit.getBlockPos(), null);
+        if(sound != null){
+            world.playSound(null, hit.getBlockPos(), sound.getPlaceSound(), SoundCategory.BLOCKS, sound.getVolume() * 0.5F, sound.getPitch() * 0.8F);
+        }
+    }
+
+    /*
+     * Returns True is the item is renderer in full 3D when hold.
+     */
+    @SideOnly(Side.CLIENT)
+    @Override
+    public boolean isFull3D() {
+        return true;
+    }
 }

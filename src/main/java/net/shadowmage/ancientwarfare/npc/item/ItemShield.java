@@ -1,47 +1,40 @@
 package net.shadowmage.ancientwarfare.npc.item;
 
-import net.minecraft.item.Item;
+import com.google.common.collect.Multimap;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemStack;
 
-public class ItemShield extends Item
-{
+import java.util.UUID;
 
-ToolMaterial material;
-int armorValue;
+public class ItemShield extends ItemBaseNPC {
+    public static final UUID shieldID = UUID.fromString("CB3F55D3-564C-4F38-A497-9C13A33DB5CF");
+    private final int armorValue;
 
-public ItemShield(String name, ToolMaterial material)
-  {
-  setUnlocalizedName(name);
-  setCreativeTab(AWNpcItemLoader.npcTab);
-  this.setFull3D();
-  this.setTextureName("ancientwarfare:npc/"+name);  
-  this.material = material;
-  this.armorValue = material.getHarvestLevel()*2 + 1;
-  }
+    public ItemShield(String name, ToolMaterial material) {
+        super(name);
+        this.setFull3D();
+        //this.setTextureName("ancientwarfare:npc/" + name);
+        this.armorValue = material.getHarvestLevel() * 2 + 1;
+        setMaxDamage(material.getMaxUses());
+    }
 
-public int getArmorBonusValue()
-  {
-  return armorValue;
-  }
+    public int getArmorBonusValue() {
+        return armorValue;
+    }
 
-//block action does strange orientation/rendering -- can perhaps try and counter it in render somehow
-//
-//@Override
-//public EnumAction getItemUseAction(ItemStack par1ItemStack)
-//  {
-//  return EnumAction.block;
-//  }
-//
-//@Override
-//public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
-//  {
-//  par3EntityPlayer.setItemInUse(par1ItemStack, this.getMaxItemUseDuration(par1ItemStack));
-//  return par1ItemStack;
-//  }
-//
-//@Override
-//public int getMaxItemUseDuration(ItemStack par1ItemStack)
-//  {
-//  return 72000;
-//  }
+    @Override
+    public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
+        Multimap map = super.getAttributeModifiers(slot, stack);
+        map.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(shieldID, "Shield modifier", 0.5, 2));
+        return map;
+    }
 
+    @Override
+    public boolean hitEntity(ItemStack stack, EntityLivingBase attacked, EntityLivingBase attacker) {
+        stack.damageItem(2, attacker);
+        return true;
+    }
 }

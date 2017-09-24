@@ -1,110 +1,149 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
-import java.util.List;
-
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControlLarge;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControlLight;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControlMedium;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 
-public class BlockFlywheel extends BlockTorqueBase
-{
+public class BlockFlywheel extends BlockTorqueBase {
+    static final PropertyEnum<Type> TYPE = PropertyEnum.create("type", Type.class);
 
-public BlockFlywheel(String regName)
-  {
-  super(Material.rock);
-  this.setCreativeTab(AWAutomationItemLoader.automationTab);
-  this.setBlockName(regName);
-  }
-
-@Override
-public boolean shouldSideBeRendered(net.minecraft.world.IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {return false;}
-
-@Override
-public boolean isOpaqueCube(){return false;}
-
-@Override
-public boolean isNormalCube(){return false;}
-
-@Override
-public boolean isNormalCube(IBlockAccess world, int x, int y, int z){return false;}
-
-@Override
-public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side){return true;}
-
-@Override
-public TileEntity createTileEntity(World world, int metadata)
-  {  
-  switch(metadata)
-  {
-  case 0:
-  return new TileFlywheelControlLight();
-  case 1:
-  return new TileFlywheelControlMedium();
-  case 2:
-  return new TileFlywheelControlLarge();
-  }  
-  return new TileFlywheelControlLight();
-  }
-
-@SuppressWarnings({ "unchecked", "rawtypes" })
-@Override
-public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List list)
-  {
-  list.add(new ItemStack(Item.getItemFromBlock(this),1,0));
-  list.add(new ItemStack(Item.getItemFromBlock(this),1,1));
-  list.add(new ItemStack(Item.getItemFromBlock(this),1,2));
-  }
-
-@Override
-public void registerBlockIcons(IIconRegister register)
-  {
-  }
-
-@Override
-public IIcon getIcon(int side, int meta)
-  {
-  switch(meta)
-  {
-  case 0:
-    {
-    return Blocks.planks.getIcon(side, 0);
+    public BlockFlywheel(String regName) {
+        super(Material.ROCK, regName);
     }
-  case 1:
-    {
-    return Blocks.iron_block.getIcon(side, 0);
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, TYPE);
     }
-  case 2:
-    {
-    //TODO change this to steel block icon...once I make a steel block...
-    return Blocks.iron_block.getIcon(side, 0);
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return getDefaultState().withProperty(TYPE, Type.byMetadata(meta));
     }
-  }
-  return Blocks.iron_block.getIcon(side, 0);
-  }
 
-@Override
-public boolean invertFacing()
-  {
-  return false;
-  }
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(TYPE).getMeta();
+    }
 
-@Override
-public RotationType getRotationType()
-  {
-  return RotationType.FOUR_WAY;
-  }
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess world, BlockPos pos, EnumFacing side) {
+        return false;
+    }
 
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isNormalCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return false;
+    }
+
+    @Override
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+        return true;
+    }
+
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
+        switch (state.getValue(TYPE)) {
+            case LIGHT:
+                return new TileFlywheelControlLight();
+            case MEDIUM:
+                return new TileFlywheelControlMedium();
+            case LARGE:
+                return new TileFlywheelControlLarge();
+        }
+        return null;
+    }
+
+    @Override
+    public void getSubBlocks(CreativeTabs item, NonNullList<ItemStack> items) {
+        items.add(new ItemStack(this, 1, 0));
+        items.add(new ItemStack(this, 1, 1));
+        items.add(new ItemStack(this, 1, 2));
+    }
+
+/*
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister register) {
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int side, int meta) {
+        switch (meta) {
+            case 0: {
+                return Blocks.PLANKS.getIcon(side, 0);
+            }
+            case 1: {
+                return Blocks.IRON_BLOCK.getIcon(side, 0);
+            }
+            case 2: {
+                //TODO change this to steel block icon...once I make a steel block...
+                return Blocks.IRON_BLOCK.getIcon(side, 0);
+            }
+        }
+        return Blocks.IRON_BLOCK.getIcon(side, 0);
+    }
+*/
+
+    @Override
+    public boolean invertFacing() {
+        return false;
+    }
+
+    @Override
+    public RotationType getRotationType() {
+        return RotationType.FOUR_WAY;
+    }
+
+    public enum Type implements IStringSerializable {
+        LIGHT(0),
+        MEDIUM(1),
+        LARGE(2);
+
+        private int meta;
+        Type(int meta) {
+            this.meta = meta;
+        }
+
+        @Override
+        public String getName() {
+            return name().toLowerCase();
+        }
+
+        public int getMeta() {
+            return meta;
+        }
+
+        public static Type byMetadata(int meta) {
+            return values()[meta];
+        }
+    }
 }

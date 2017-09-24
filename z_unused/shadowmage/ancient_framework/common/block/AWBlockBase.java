@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -47,7 +47,7 @@ public AWBlockBase(int par1, Material par2Material, String baseName)
   this.setUnlocalizedName(baseName);
   }
 
-/**
+/*
  * equivalent of onBlockActivated, used to activate a TE/open a gui/toggle a lever/etc
  * @param world
  * @param posX
@@ -62,7 +62,7 @@ public AWBlockBase(int par1, Material par2Material, String baseName)
  */
 public abstract boolean onBlockClicked(World world, int posX, int posY, int posZ, EntityPlayer player, int sideHit, float hitVecX, float hitVecY, float hitVecZ);
 
-/**
+/*
  * if this block has persistent inventory, return it here to be dropped on destruction
  * @param world
  * @param x
@@ -99,7 +99,7 @@ public Icon getIcon(int side, int meta)
   return super.getIcon(side, meta);
   }
 
-/**
+/*
  * ejects contained items into the world, and notifies neighbours of an update, as appropriate
  */
 @Override
@@ -130,15 +130,15 @@ public void dropItems(World world, int x, int y, int z, int par5, int par6, IInv
         float yOff = this.RNG.nextFloat() * 0.8F + 0.1F;
         float zOff = this.RNG.nextFloat() * 0.8F + 0.1F;
 
-        while (currentStack.stackSize > 0)
+        while (currentStack.getCount() > 0)
           {
           int randomDropQty = this.RNG.nextInt(21) + 10;
 
-          if (randomDropQty > currentStack.stackSize)
+          if (randomDropQty > currentStack.getCount())
             {
-            randomDropQty = currentStack.stackSize;
+            randomDropQty = currentStack.getCount();
             }
-          currentStack.stackSize -= randomDropQty;
+          currentStack.shrink(randomDropQty);
           EntityItem var14 = new EntityItem(world, (double)((float)x + xOff), (double)((float)y + yOff), (double)((float)z + zOff), new ItemStack(currentStack.itemID, randomDropQty, currentStack.getItemDamage()));
 
           if (currentStack.hasTagCompound())

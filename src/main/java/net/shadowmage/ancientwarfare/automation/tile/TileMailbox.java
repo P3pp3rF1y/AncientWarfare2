@@ -1,15 +1,11 @@
 package net.shadowmage.ancientwarfare.automation.tile;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
 import net.shadowmage.ancientwarfare.automation.gamedata.MailboxData;
 import net.shadowmage.ancientwarfare.automation.gamedata.MailboxData.DeliverableItem;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
@@ -17,237 +13,246 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySi
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
-import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
+import net.shadowmage.ancientwarfare.core.render.BlockRenderProperties;
+import net.shadowmage.ancientwarfare.core.tile.TileOwned;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public class TileMailbox extends TileEntity implements IOwnable, IInventory, ISidedInventory, IRotatableTile
-{
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
 
-private boolean autoExport;//should automatically try and export from output side
-private boolean privateBox;
+public class TileMailbox extends TileOwned implements ISidedInventory, IRotatableTile, ITickable {
 
-public InventorySided inventory;
+    private boolean autoExport;//TODO : should automatically try and export from output side
+    private boolean privateBox;
 
-private String owningPlayerName;
-private String mailboxName;
-private String destinationName;
+    public InventorySided inventory;
 
-public TileMailbox()
-  {
-  inventory = new InventorySided(this, RotationType.FOUR_WAY, 36);
-  int[] topIndices = new int[]{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17};
-  int[] bottomIndices = new int[]{18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35};
-  inventory.setAccessibleSideDefault(RelativeSide.TOP, RelativeSide.TOP, topIndices);
-  inventory.setAccessibleSideDefault(RelativeSide.BOTTOM, RelativeSide.BOTTOM, bottomIndices);
-  }
+    private String mailboxName;
+    private String destinationName;
 
-@Override
-public boolean canUpdate()
-  {
-  return true;
-  }
-
-@Override
-public void updateEntity()
-  {
-  if(worldObj.isRemote){return;}
-  if(mailboxName!=null)//try to receive mail
-    {
-    MailboxData data = AWGameData.INSTANCE.getData(MailboxData.name, worldObj, MailboxData.class);
-    
-    List<DeliverableItem> items = new ArrayList<DeliverableItem>();
-    data.getDeliverableItems(privateBox? owningPlayerName : null, mailboxName, items, worldObj, xCoord, yCoord, zCoord);
-    data.addMailboxReceiver(privateBox? owningPlayerName : null, mailboxName, this);
-    
-    if(destinationName!=null)//try to send mail
-      {
-      trySendItems(data);
-      }
-    }  
-  }
-
-private void trySendItems(MailboxData data)
-  {
-  ItemStack item;
-  String owner = privateBox ? owningPlayerName : null;
-  int dim = worldObj.provider.dimensionId;
-  for(int k = 18; k < 36; k++)
-    {
-    item = inventory.getStackInSlot(k);
-    if(item!=null)
-      {
-      data.addDeliverableItem(owner, destinationName, item, dim, xCoord, yCoord, zCoord);
-      inventory.setInventorySlotContents(k, null);
-      break;
-      }
+    public TileMailbox() {
+        inventory = new InventorySided(this, RotationType.FOUR_WAY, 36);
+        InventoryTools.IndexHelper helper = new InventoryTools.IndexHelper();
+        int[] topIndices = helper.getIndiceArrayForSpread(inventory.getSizeInventory()/2);
+        int[] bottomIndices = helper.getIndiceArrayForSpread(inventory.getSizeInventory()/2);
+        inventory.setAccessibleSideDefault(RelativeSide.TOP, RelativeSide.TOP, topIndices);
+        inventory.setAccessibleSideDefault(RelativeSide.BOTTOM, RelativeSide.BOTTOM, bottomIndices);
     }
-  }
 
-@Override
-public void setOwnerName(String commandSenderName)
-  {
-  this.owningPlayerName = commandSenderName;
-  }
+    @Override
+    public void update() {
+        if (!hasWorld() || world.isRemote) {
+            return;
+        }
+        if (mailboxName != null)//try to receive mail
+        {
+            MailboxData data = AWGameData.INSTANCE.getData(world, MailboxData.class);
 
-public String getMailboxName()
-  {
-  return mailboxName;
-  }
+            List<DeliverableItem> items = new ArrayList<>();
+            data.getDeliverableItems(privateBox ? getOwnerName() : null, mailboxName, items, world, pos.getX(), pos.getY(), pos.getZ());
+            data.addMailboxReceiver(privateBox ? getOwnerName() : null, mailboxName, this);
 
-public String getTargetName()
-  {
-  return destinationName;
-  }
-
-public void setMailboxName(String name)
-  {
-  if(worldObj.isRemote){return;}
-  mailboxName = name;
-  }
-
-public void setTargetName(String name)
-  {
-  if(worldObj.isRemote){return;}
-  destinationName = name;
-  }
-
-public boolean isAutoExport(){return autoExport;}
-public boolean isPrivateBox(){return privateBox;}
-public void setAutoExport(boolean val){autoExport = val;}
-
-public void setPrivateBox(boolean val)
-  {
-  if(worldObj.isRemote){return;}
-  if(val!=privateBox)
-    {
-    mailboxName = null;
-    destinationName = null;
+            if (destinationName != null)//try to send mail
+            {
+                trySendItems(data);
+            }
+        }
     }
-  privateBox = val;
-  }
 
-@Override
-public String getOwnerName()
-  {
-  return owningPlayerName;
-  }
+    private void trySendItems(MailboxData data) {
+        @Nonnull ItemStack item;
+        String owner = privateBox ? getOwnerName() : null;
+        int dim = world.provider.getDimension();
+        for (int k = inventory.getSizeInventory()/2; k < inventory.getSizeInventory(); k++) {
+            item = inventory.getStackInSlot(k);
+            if (!item.isEmpty()) {
+                data.addDeliverableItem(owner, destinationName, item, dim, pos);
+                inventory.setInventorySlotContents(k, ItemStack.EMPTY);
+                break;
+            }
+        }
+    }
 
-@Override
-public void readFromNBT(NBTTagCompound tag)
-  {
-  super.readFromNBT(tag);
-  owningPlayerName = tag.getString("ownerName");
-  if(tag.hasKey("targetName")){destinationName = tag.getString("targetName");}
-  if(tag.hasKey("mailboxName")){mailboxName = tag.getString("mailboxName");}
-  if(tag.hasKey("inventory")){inventory.readFromNBT(tag.getCompoundTag("inventory"));}  
-  }
+    public String getMailboxName() {
+        return mailboxName;
+    }
 
-@Override
-public void writeToNBT(NBTTagCompound tag)
-  {
-  super.writeToNBT(tag);
-  tag.setString("ownerName", owningPlayerName);
-  if(destinationName!=null){tag.setString("targetName", destinationName);}
-  if(mailboxName!=null){tag.setString("mailboxName", mailboxName);}
-  
-  NBTTagCompound tag1 = new NBTTagCompound();
-  inventory.writeToNBT(tag1);
-  tag.setTag("inventory", tag1);
-  }
+    public String getTargetName() {
+        return destinationName;
+    }
 
-@Override
-public int[] getAccessibleSlotsFromSide(int p_94128_1_)
-  {
-  return inventory.getAccessibleSlotsFromSide(p_94128_1_);
-  }
+    public void setMailboxName(String name) {
+        if (world.isRemote) {
+            return;
+        }
+        mailboxName = name;
+        markDirty();
+    }
 
-@Override
-public boolean canInsertItem(int slot, ItemStack stack,int side)
-  {
-  return inventory.canInsertItem(slot, stack, side);
-  }
+    public void setTargetName(String name) {
+        if (world.isRemote) {
+            return;
+        }
+        destinationName = name;
+        markDirty();
+    }
 
-@Override
-public boolean canExtractItem(int slot, ItemStack stack, int side)
-  {
-  return inventory.canExtractItem(slot, stack, side);
-  }
+    public boolean isAutoExport() {
+        return autoExport;
+    }
 
-@Override
-public int getSizeInventory()
-  {
-  return inventory.getSizeInventory();
-  }
+    public boolean isPrivateBox() {
+        return privateBox;
+    }
 
-@Override
-public ItemStack getStackInSlot(int slot)
-  {
-  return inventory.getStackInSlot(slot);
-  }
+    public void setAutoExport(boolean val) {
+        autoExport = val;
+    }
 
-@Override
-public ItemStack decrStackSize(int slot, int amt)
-  {
-  return inventory.decrStackSize(slot, amt);
-  }
+    public void setPrivateBox(boolean val) {
+        if (world.isRemote) {
+            return;
+        }
+        if (val != privateBox) {
+            mailboxName = null;
+            destinationName = null;
+            markDirty();
+        }
+        privateBox = val;
+    }
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+        if (tag.hasKey("targetName")) {
+            destinationName = tag.getString("targetName");
+        }
+        if (tag.hasKey("mailboxName")) {
+            mailboxName = tag.getString("mailboxName");
+        }
+        if (tag.hasKey("inventory")) {
+            inventory.deserializeNBT(tag.getCompoundTag("inventory"));
+        }
+    }
 
-@Override
-public ItemStack getStackInSlotOnClosing(int slot)
-  {
-  return inventory.getStackInSlotOnClosing(slot);
-  }
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
+        if (destinationName != null) {
+            tag.setString("targetName", destinationName);
+        }
+        if (mailboxName != null) {
+            tag.setString("mailboxName", mailboxName);
+        }
+        tag.setTag("inventory", inventory.serializeNBT());
+        return tag;
+    }
 
-@Override
-public void setInventorySlotContents(int slot, ItemStack stack)
-  {
-  inventory.setInventorySlotContents(slot, stack);
-  }
+    @Override
+    public int getSizeInventory() {
+        return inventory.getSizeInventory();
+    }
 
-@Override
-public String getInventoryName()
-  {
-  return inventory.getInventoryName();
-  }
+    @Override
+    public boolean isEmpty() {
+        return false;
+    }
 
-@Override
-public boolean hasCustomInventoryName()
-  {
-  return inventory.hasCustomInventoryName();
-  }
+    @Override
+    public ItemStack getStackInSlot(int slot) {
+        return inventory.getStackInSlot(slot);
+    }
 
-@Override
-public int getInventoryStackLimit()
-  {
-  return inventory.getInventoryStackLimit();
-  }
+    @Override
+    public ItemStack decrStackSize(int slot, int amt) {
+        return inventory.decrStackSize(slot, amt);
+    }
 
-@Override
-public boolean isUseableByPlayer(EntityPlayer p_70300_1_)
-  {
-  return inventory.isUseableByPlayer(p_70300_1_);
-  }
+    @Override
+    public ItemStack removeStackFromSlot(int slot) {
+        return inventory.removeStackFromSlot(slot);
+    }
 
-@Override
-public void openInventory(){}
+    @Override
+    public void setInventorySlotContents(int slot, ItemStack stack) {
+        inventory.setInventorySlotContents(slot, stack);
+    }
 
-@Override
-public void closeInventory(){}
+    @Override
+    public String getName() {
+        return inventory.getName();
+    }
 
-@Override
-public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_)
-  {
-  return inventory.isItemValidForSlot(p_94041_1_, p_94041_2_);
-  }
+    @Override
+    public boolean hasCustomName() {
+        return inventory.hasCustomName();
+    }
 
-@Override
-public ForgeDirection getPrimaryFacing()
-  {
-  return ForgeDirection.getOrientation(getBlockMetadata());
-  }
+    @Override
+    public int getInventoryStackLimit() {
+        return inventory.getInventoryStackLimit();
+    }
 
-@Override
-public void setPrimaryFacing(ForgeDirection face)
-  {
-  worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, face.ordinal(), 0);
-  }
+    @Override
+    public boolean isUsableByPlayer(EntityPlayer p_70300_1_) {
+        return inventory.isUsableByPlayer(p_70300_1_);
+    }
 
+    @Override
+    public void openInventory(EntityPlayer player) {
+    }
+
+    @Override
+    public void closeInventory(EntityPlayer player) {
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int p_94041_1_, ItemStack p_94041_2_) {
+        return inventory.isItemValidForSlot(p_94041_1_, p_94041_2_);
+    }
+
+    @Override
+    public int getField(int id) {
+        return inventory.getField(id);
+    }
+
+    @Override
+    public void setField(int id, int value) {
+        inventory.setField(id, value);
+    }
+
+    @Override
+    public int getFieldCount() {
+        return inventory.getFieldCount();
+    }
+
+    @Override
+    public void clear() {
+        inventory.clear();
+    }
+
+    @Override
+    public EnumFacing getPrimaryFacing() {
+        return world.getBlockState(pos).getValue(BlockRenderProperties.FACING);
+    }
+
+    @Override
+    public void setPrimaryFacing(EnumFacing face) {
+        world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockRenderProperties.FACING, face), 0);
+    }
+
+    @Override
+    public int[] getSlotsForFace(EnumFacing side) {
+        return inventory.getSlotsForFace(side);
+    }
+
+    @Override
+    public boolean canInsertItem(int index, ItemStack itemStackIn, EnumFacing direction) {
+        return inventory.canInsertItem(index, itemStackIn, direction);
+    }
+
+    @Override
+    public boolean canExtractItem(int index, ItemStack stack, EnumFacing direction) {
+        return inventory.canExtractItem(index, stack, direction);
+    }
 }

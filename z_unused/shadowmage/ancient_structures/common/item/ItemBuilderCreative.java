@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -40,7 +40,7 @@ import shadowmage.ancient_structures.common.template.build.StructureBuilder;
 public class ItemBuilderCreative extends AWItemClickable
 {
 
-/**
+/*
  * @param itemID
  */
 public ItemBuilderCreative(Configuration config, String itemName)
@@ -95,7 +95,7 @@ public boolean onUsedFinalLeft(World world, EntityPlayer player, ItemStack stack
 
 ItemStructureSettings viewSettings = new ItemStructureSettings();
 @Override
-public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
+public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag)
   {
   String structure = "none";
   ItemStructureSettings.getSettingsFor(stack, viewSettings);

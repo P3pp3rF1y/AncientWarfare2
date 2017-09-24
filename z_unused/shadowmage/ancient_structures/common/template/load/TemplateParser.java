@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -51,7 +51,7 @@ public StructureTemplate parseTemplate(File file)
   Scanner scan = null;
   try
     {
-    List<String> templateLines = new ArrayList<String>();
+    List<String> templateLines = new ArrayList<>();
     reader = new FileReader(file);
     scan = new Scanner(reader);
     while(scan.hasNextLine())
@@ -97,7 +97,7 @@ public StructureTemplate parseTemplate(File file)
   return null;
   }
 
-/**
+/*
  * used for debug/error output purposes, to know what line number is currently being iterated over/read through
  */
 public static int lineNumber = -1;
@@ -108,12 +108,12 @@ private StructureTemplate parseTemplateLines(File file, List<String> lines) thro
   Iterator<String> it = lines.iterator();
   String line;
  
-  List<TemplateRule> parsedRules = new ArrayList<TemplateRule>();  
-  List<TemplateRuleEntity> parsedEntities = new ArrayList<TemplateRuleEntity>();
+  List<TemplateRule> parsedRules = new ArrayList<>();
+  List<TemplateRuleEntity> parsedEntities = new ArrayList<>();
   TemplateRule[] ruleArray = null;
   TemplateRuleEntity[] entityRuleArray = null;
   StructureValidator validation = null;  
-  List<String> groupedLines = new ArrayList<String>();
+  List<String> groupedLines = new ArrayList<>();
   
   
   int parsedLayers = 0;
@@ -187,7 +187,7 @@ private StructureTemplate parseTemplateLines(File file, List<String> lines) thro
         throw new TemplateParsingException("Error parsing template: "+file.getName() +" at line: "+ (converter.lineNumber+1) + " for line: "+lines.get(converter.lineNumber));
         }
       }
-    /**
+    /*
      * parse out validation data
      */
     if(line.startsWith("validation:"))
@@ -206,7 +206,7 @@ private StructureTemplate parseTemplateLines(File file, List<String> lines) thro
       groupedLines.clear();
       }
     
-    /**
+    /*
      * parse out rule data
      */
     if(line.startsWith("rule:"))
@@ -233,7 +233,7 @@ private StructureTemplate parseTemplateLines(File file, List<String> lines) thro
       groupedLines.clear();
       } 
     
-    /**
+    /*
      * parse out rule data
      */
     if(line.startsWith("entity:"))
@@ -256,7 +256,7 @@ private StructureTemplate parseTemplateLines(File file, List<String> lines) thro
       groupedLines.clear();
       } 
     
-    /**
+    /*
      * parse out layer data
      */
     if(line.startsWith("layer:"))
@@ -277,7 +277,7 @@ private StructureTemplate parseTemplateLines(File file, List<String> lines) thro
       }
     }
   
-  /**
+  /*
    * initialze data for construction of template -- put rules into array
    */
   ruleArray = new TemplateRule[highestParsedRule+1];
@@ -313,7 +313,7 @@ private StructureTemplate constructTemplate(String name, int x, int y, int z, in
   return template;
   }
 
-/**
+/*
  * should parse layer and insert direcly into templateData
  */
 private void parseLayer(List<String> templateLines, int yLayer, int xSize, int ySize, int zSize, short[] templateData)

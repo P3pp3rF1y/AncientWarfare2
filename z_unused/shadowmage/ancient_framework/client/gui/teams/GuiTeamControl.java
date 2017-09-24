@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -173,7 +173,7 @@ protected HashMap<GuiButtonSimple, TeamEntry> teamApplyMap = new HashMap<GuiButt
 
 protected void addTeamSelection()
   {
-  TeamData data = TeamTracker.instance().getTeamData(container.player.worldObj);
+  TeamData data = TeamTracker.instance().getTeamData(container.player.world);
   
   int targetY = 0;
   int index = 0;

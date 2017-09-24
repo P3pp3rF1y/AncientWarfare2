@@ -1,97 +1,92 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
-import java.util.List;
-
+import com.google.common.base.Predicate;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
+import net.minecraftforge.common.util.INBTSerializable;
+import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-public final class WarehouseInterfaceFilter extends ItemSlotFilter
-{
+import javax.annotation.Nonnull;
 
-private ItemStack filterItem;
-private int quantity;
+public final class WarehouseInterfaceFilter implements Predicate<ItemStack>, INBTSerializable<NBTTagCompound> {
 
-public WarehouseInterfaceFilter(){}
+    @Nonnull
+    private ItemStack filterItem = ItemStack.EMPTY;
+    private int quantity;
 
-@Override
-public boolean isItemValid(ItemStack item)
-  {
-  if(item==null){return false;}
-  if(filterItem==null){return false;}//null filter item, invalid filter
-  if(item.getItem()!=filterItem.getItem()){return false;}//item not equivalent, obvious mis-match   
-  return InventoryTools.doItemStacksMatch(item, filterItem);//finally, items were equal, no ignores' -- check both dmg and tag
-  }
-
-public void readFromNBT(NBTTagCompound tag)
-  {
-  quantity = tag.getInteger("quantity");
-  if(tag.hasKey("filter")){filterItem = InventoryTools.readItemStack(tag.getCompoundTag("filter"));}
-  }
-
-public NBTTagCompound writeToNBT(NBTTagCompound tag)
-  {
-  tag.setInteger("quantity", quantity);
-  if(filterItem!=null){tag.setTag("filter", InventoryTools.writeItemStack(filterItem, new NBTTagCompound()));}  
-  return tag;
-  }
-
-public final ItemStack getFilterItem()
-  {
-  return filterItem;
-  }
-
-public final void setFilterItem(ItemStack item)
-  {
-  this.filterItem = item;
-  }
-
-public final int getFilterQuantity()
-  {
-  return quantity;
-  }
-
-public final void setFilterQuantity(int filterQuantity)
-  {
-  this.quantity = filterQuantity;
-  }
-
-@Override
-public String toString()
-  {
-  return "Filter item: "+filterItem + " quantity: "+quantity;
-  }
-
-public static NBTTagList writeFilterList(List<WarehouseInterfaceFilter> filters)
-  {
-  NBTTagList list = new NBTTagList();
-  for(WarehouseInterfaceFilter filter : filters)
-    {
-    list.appendTag(filter.writeToNBT(new NBTTagCompound()));
+    public WarehouseInterfaceFilter() {
     }
-  return list;
-  }
 
-public static List<WarehouseInterfaceFilter> readFilterList(NBTTagList list, List<WarehouseInterfaceFilter> filters)
-  {
-  WarehouseInterfaceFilter filter;
-  for(int i = 0; i < list.tagCount(); i++)
-    {
-    filter = new WarehouseInterfaceFilter();
-    filter.readFromNBT(list.getCompoundTagAt(i));   
-    filters.add(filter);    
+    @Override
+    public boolean apply(ItemStack item) {
+        if (item.isEmpty()) {
+            return false;
+        }
+        if (filterItem.isEmpty()) {
+            return false;
+        }//null filter item, invalid filter
+        if (item.getItem() != filterItem.getItem()) {
+            return false;
+        }//item not equivalent, obvious mis-match
+        return InventoryTools.doItemStacksMatch(filterItem, item);//finally, items were equal, no ignores' -- check both dmg and tag
     }
-  return filters;
-  }
 
-public WarehouseInterfaceFilter copy()
-  {
-  WarehouseInterfaceFilter filter = new WarehouseInterfaceFilter();
-  filter.filterItem = this.filterItem==null? null : this.filterItem.copy();
-  filter.quantity = this.quantity;
-  return filter;
-  }
+    @Override
+    public boolean equals(Object object) {
+        return object instanceof WarehouseInterfaceFilter && ((WarehouseInterfaceFilter) object).quantity == this.quantity && this.apply(((WarehouseInterfaceFilter) object).filterItem);
+    }
 
+    @Override
+    public int hashCode() {
+        int result = getFilterItem() != null ? new ItemQuantityMap.ItemHashEntry(getFilterItem()).hashCode() : 0;
+        return 31 * result + quantity;
+    }
+
+    public final ItemStack getFilterItem() {
+        return filterItem;
+    }
+
+    public final void setFilterItem(ItemStack item) {
+        this.filterItem = item;
+    }
+
+    public final int getFilterQuantity() {
+        return quantity;
+    }
+
+    public final void setFilterQuantity(int filterQuantity) {
+        this.quantity = filterQuantity;
+    }
+
+    @Override
+    public String toString() {
+        return "Filter item: " + filterItem + " quantity: " + quantity;
+    }
+
+    public WarehouseInterfaceFilter copy() {
+        WarehouseInterfaceFilter filter = new WarehouseInterfaceFilter();
+        if(this.filterItem!=null)
+            filter.setFilterItem(this.filterItem.copy());
+        filter.setFilterQuantity(this.quantity);
+        return filter;
+    }
+
+    @Override
+    public NBTTagCompound serializeNBT() {
+        NBTTagCompound tag = new NBTTagCompound();
+        tag.setInteger("quantity", quantity);
+        if (filterItem != null) {
+            tag.setTag("filter", filterItem.writeToNBT(new NBTTagCompound()));
+        }
+        return tag;
+    }
+
+    @Override
+    public void deserializeNBT(NBTTagCompound tag) {
+        quantity = tag.getInteger("quantity");
+        if (tag.hasKey("filter")) {
+            filterItem = new ItemStack(tag.getCompoundTag("filter"));
+        }
+    }
 }

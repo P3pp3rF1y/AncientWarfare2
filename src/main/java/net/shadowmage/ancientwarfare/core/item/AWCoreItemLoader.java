@@ -1,53 +1,68 @@
 package net.shadowmage.ancientwarfare.core.item;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
-import cpw.mods.fml.common.registry.GameRegistry;
 
-public class AWCoreItemLoader
-{
+import java.util.Locale;
 
-public static final AWCoreItemLoader INSTANCE = new AWCoreItemLoader();
-private AWCoreItemLoader(){}
+@Mod.EventBusSubscriber(modid = AncientWarfareCore.modID)
+public class AWCoreItemLoader {
 
-public void load()
-  {
-  AWItems.researchBook = new ItemResearchBook("research_book");
-  GameRegistry.registerItem(AWItems.researchBook, "research_book");
-  
-  AWItems.researchNote = new ItemResearchNotes("research_note");
-  GameRegistry.registerItem(AWItems.researchNote, "research_note");
-  
-  AWItems.backpack = new ItemBackpack("backpack");
-  GameRegistry.registerItem(AWItems.backpack, "backpack");
-  
-  AWItems.automationHammerWood = new ItemHammer("wooden_hammer", ToolMaterial.WOOD);
-  GameRegistry.registerItem(AWItems.automationHammerWood, "wooden_hammer");  
-  AWItems.automationHammerStone = new ItemHammer("stone_hammer", ToolMaterial.STONE);
-  GameRegistry.registerItem(AWItems.automationHammerStone, "stone_hammer");  
-  AWItems.automationHammerIron = new ItemHammer("iron_hammer", ToolMaterial.IRON);
-  GameRegistry.registerItem(AWItems.automationHammerIron, "iron_hammer");  
-  AWItems.automationHammerGold = new ItemHammer("gold_hammer", ToolMaterial.GOLD);
-  GameRegistry.registerItem(AWItems.automationHammerGold, "gold_hammer");  
-  AWItems.automationHammerDiamond = new ItemHammer("diamond_hammer", ToolMaterial.EMERALD);
-  GameRegistry.registerItem(AWItems.automationHammerDiamond, "diamond_hammer");
-  
-  AWItems.quillWood = new ItemQuill("wooden_quill", ToolMaterial.WOOD);
-  GameRegistry.registerItem(AWItems.quillWood, "wooden_quill");  
-  AWItems.quillStone = new ItemQuill("stone_quill", ToolMaterial.STONE);
-  GameRegistry.registerItem(AWItems.quillStone, "stone_quill");  
-  AWItems.quillIron = new ItemQuill("iron_quill", ToolMaterial.IRON);
-  GameRegistry.registerItem(AWItems.quillIron, "iron_quill");  
-  AWItems.quillGold = new ItemQuill("gold_quill", ToolMaterial.GOLD);
-  GameRegistry.registerItem(AWItems.quillGold, "gold_quill");  
-  AWItems.quillDiamond = new ItemQuill("diamond_quill", ToolMaterial.EMERALD);
-  GameRegistry.registerItem(AWItems.quillDiamond, "diamond_quill");
-  
-  AWItems.componentItem = new ItemComponent("component");
-  GameRegistry.registerItem(AWItems.componentItem, "component");
-  
-  AWItems.steel_ingot = new ItemSteelIngot("steel_ingot");
-  GameRegistry.registerItem(AWItems.steel_ingot, "steel_ingot");
-  }
+    public static final String PREFIX = "ancientwarfare:core/";
+    public static final AWCoreItemLoader INSTANCE = new AWCoreItemLoader();
 
+    private AWCoreItemLoader() {
+    }
+
+    public void load() {
+        OreDictionary.registerOre("ingotSteel", AWItems.steel_ingot);
+    }
+
+    @SubscribeEvent
+    public static void register(RegistryEvent.Register<Item> event) {
+        IForgeRegistry<Item> registry = event.getRegistry();
+
+        registry.register(new ItemResearchBook());
+
+        registry.register(new ItemResearchNotes());
+
+        registry.register(new ItemBackpack());
+
+        registry.register(new ItemHammer("wooden_hammer", ToolMaterial.WOOD));
+        registry.register(new ItemHammer("stone_hammer", ToolMaterial.STONE));
+        registry.register(new ItemHammer("iron_hammer", ToolMaterial.IRON));
+        registry.register(new ItemHammer("gold_hammer", ToolMaterial.GOLD));
+        registry.register(new ItemHammer("diamond_hammer", ToolMaterial.DIAMOND));
+
+        registry.register(new ItemQuill("wooden_quill", ToolMaterial.WOOD));
+        registry.register(new ItemQuill("stone_quill", ToolMaterial.STONE));
+        registry.register(new ItemQuill("iron_quill", ToolMaterial.IRON));
+        registry.register(new ItemQuill("gold_quill", ToolMaterial.GOLD));
+        registry.register(new ItemQuill("diamond_quill", ToolMaterial.DIAMOND));
+
+        AWItems.componentItem = new ItemComponent().listenToProxy(AncientWarfareCore.proxy);
+        registry.register(AWItems.componentItem);
+
+        registry.register(new ItemBaseCore("steel_ingot") {});
+    }
+
+//    public Item register(Item item, String name, String textPrefix) {
+//        item.setTextureName(textPrefix + name);
+//        return register(item, name);
+//    }
+
+    public String getName(ToolMaterial material) {
+        if (material == ToolMaterial.WOOD)
+            return "wooden";
+        else if (material == ToolMaterial.DIAMOND)
+            return "diamond";
+        return material.toString().toLowerCase(Locale.ENGLISH);
+    }
 }

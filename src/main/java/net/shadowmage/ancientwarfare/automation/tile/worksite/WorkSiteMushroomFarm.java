@@ -1,294 +1,218 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
-import java.util.Collection;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockHugeMushroom;
+import net.minecraft.block.BlockNetherWart;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.EnumPlantType;
+import net.minecraftforge.common.IPlantable;
+import net.shadowmage.ancientwarfare.automation.tile.TreeFinder;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
+import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import net.minecraft.block.Block;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.automation.tile.TreeFinder;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
-import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
-import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks {
 
-public class WorkSiteMushroomFarm extends TileWorksiteUserBlocks
-{
+    private final Set<BlockPos> blocksToHarvest;
+    private final Set<BlockPos> blocksToPlantMushroom;
+    private final Set<BlockPos> blocksToPlantNetherWart;
+    private int mushroomCount;
+    private int netherWartCount;
 
-Set<BlockPosition> blocksToHarvest;
-Set<BlockPosition> blocksToPlantMushroom;
-Set<BlockPosition> blocksToPlantNetherWart;
-int mushroomCount;
-int netherWartCount;
-boolean shouldCountResources;
+    public WorkSiteMushroomFarm() {
 
-public WorkSiteMushroomFarm()
-  {
-  this.shouldCountResources = true;
-  
-  blocksToHarvest = new HashSet<BlockPosition>();
-  blocksToPlantMushroom = new HashSet<BlockPosition>();
-  blocksToPlantNetherWart = new HashSet<BlockPosition>();
-  
-  this.inventory = new InventorySided(this, RotationType.FOUR_WAY, 30)
-    {
-    @Override
-    public void markDirty()
-      {
-      super.markDirty();
-      shouldCountResources = true;
-      }
-    };
-  int[] topIndices = InventoryTools.getIndiceArrayForSpread(0, 27);
-  int[] frontIndices = InventoryTools.getIndiceArrayForSpread(27, 3);
-  this.inventory.setAccessibleSideDefault(RelativeSide.TOP, RelativeSide.TOP, topIndices);
-  this.inventory.setAccessibleSideDefault(RelativeSide.FRONT, RelativeSide.FRONT, frontIndices);//plantables
-  
-  ItemSlotFilter filter = new ItemSlotFilter()
-    {
-    @Override
-    public boolean isItemValid(ItemStack stack)
-      {
-      if(stack==null){return true;}
-      Item item = stack.getItem();
-      if(item==Items.nether_wart)
-        {       
-        return true;
-        }
-      else if(item instanceof ItemBlock)
-        {
-        ItemBlock ib = (ItemBlock)item;
-        if(ib.field_150939_a==Blocks.red_mushroom || ib.field_150939_a==Blocks.brown_mushroom)
-          {
-          return true;
-          }
-        }      
-      return false;
-      }
-    };
-  this.inventory.setFilterForSlots(filter, frontIndices);
-  }
+        blocksToHarvest = new HashSet<>();
+        blocksToPlantMushroom = new HashSet<>();
+        blocksToPlantNetherWart = new HashSet<>();
 
-@Override
-public void onTargetsAdjusted()
-  {
-  validateCollection(blocksToPlantMushroom);
-  validateCollection(blocksToHarvest);
-  validateCollection(blocksToPlantNetherWart);
-  }
+        this.inventory = new SlotListener(TOP_LENGTH + FRONT_LENGTH);
+        InventoryTools.IndexHelper helper = new InventoryTools.IndexHelper();
+        int[] topIndices = helper.getIndiceArrayForSpread(TOP_LENGTH);
+        int[] frontIndices = helper.getIndiceArrayForSpread(FRONT_LENGTH);
+        this.inventory.setAccessibleSideDefault(RelativeSide.TOP, RelativeSide.TOP, topIndices);
+        this.inventory.setAccessibleSideDefault(RelativeSide.FRONT, RelativeSide.FRONT, frontIndices);//plantables
 
-@Override
-public void onBoundsAdjusted()
-  {
-  validateCollection(blocksToPlantMushroom);
-  validateCollection(blocksToHarvest);
-  validateCollection(blocksToPlantNetherWart);
-  }
-
-@Override
-protected void updateBlockWorksite()
-  {
-  worldObj.theProfiler.startSection("Count Resources");  
-  if(shouldCountResources){countResources();}  
-  worldObj.theProfiler.endSection();
-  }
-
-private void countResources()
-  {
-  this.mushroomCount = 0;
-  this.netherWartCount = 0;
-  this.shouldCountResources = false;
-  ItemStack item;
-  for(int i = 27; i < 30; i++)
-    {
-    item = inventory.getStackInSlot(i);
-    if(item==null){continue;}
-    if(item.getItem()==Items.nether_wart)
-      {
-      netherWartCount+=item.stackSize;
-      }
-    if(item.getItem() instanceof ItemBlock)
-      {
-      ItemBlock ib = (ItemBlock)item.getItem();
-      if(ib.field_150939_a==Blocks.red_mushroom || ib.field_150939_a==Blocks.brown_mushroom)
-        {
-        mushroomCount+=item.stackSize;
-        }
-      }
-    }
-  }
-
-@Override
-protected boolean processWork()
-  {
-  Iterator<BlockPosition> it;
-  if(!blocksToPlantMushroom.isEmpty())
-    {
-    it = blocksToPlantMushroom.iterator();
-    BlockPosition pos;
-    ItemStack item;
-    for(int i = 27; i < 30; i++)
-      {
-      item = inventory.getStackInSlot(i);
-      if(item==null){continue;}
-      if(item.getItem() instanceof ItemBlock)
-        {
-        ItemBlock ib = (ItemBlock)item.getItem();
-        if(ib.field_150939_a==Blocks.red_mushroom || ib.field_150939_a==Blocks.brown_mushroom)
-          {
-          while(it.hasNext() && (pos=it.next())!=null)
-            {
-            it.remove();
-            if(worldObj.isAirBlock(pos.x, pos.y, pos.z) && ib.field_150939_a.canBlockStay(worldObj, pos.x, pos.y, pos.z))
-              {
-              worldObj.setBlock(pos.x, pos.y, pos.z, ib.field_150939_a);
-              //plant the mushroom, decrease stack size
-              item.stackSize--;
-              mushroomCount--;
-              if(item.stackSize<=0){inventory.setInventorySlotContents(i, null);}
-              return true;              
-              }
-            } 
-          return false;
-          }
-        }
-      }    
-    }
-  else if(!blocksToPlantNetherWart.isEmpty())
-    {
-    it = blocksToPlantNetherWart.iterator();
-    BlockPosition pos;
-    ItemStack item;
-    for(int i = 27; i < 30; i++)
-      {
-      item = inventory.getStackInSlot(i);
-      if(item==null){continue;}
-      if(item.getItem()==Items.nether_wart)
-        {
-        while(it.hasNext() && (pos=it.next())!=null)
-          {
-          it.remove();
-          if(worldObj.isAirBlock(pos.x, pos.y, pos.z) && Blocks.nether_wart.canBlockStay(worldObj, pos.x, pos.y, pos.z))
-            {
-            worldObj.setBlock(pos.x, pos.y, pos.z, Blocks.nether_wart);
-            item.stackSize--;
-            netherWartCount--;
-            if(item.stackSize<=0){inventory.setInventorySlotContents(i, null);}
-            return true;              
+        ItemSlotFilter filter = new ItemSlotFilter() {
+            @Override
+            public boolean test(@Nullable ItemStack stack) {
+                if (stack == null || stack.getItem() == Items.NETHER_WART) {
+                    return true;
+                } else {
+                    Block block = Block.getBlockFromItem(stack.getItem());
+                    return isFarmable(block);
+                }
             }
-          } 
+        };
+        this.inventory.setFilterForSlots(filter, frontIndices);
+    }
+
+    @Override
+    protected boolean isFarmable(Block block, BlockPos farmablePos){
+        if(super.isFarmable(block, farmablePos)) {
+            EnumPlantType type = ((IPlantable) block).getPlantType(world, farmablePos);
+            return type == EnumPlantType.Cave || type == EnumPlantType.Nether;
+        }
         return false;
-        }
-      }     
     }
-  else if(!blocksToHarvest.isEmpty())
-    {
-    it = blocksToHarvest.iterator();
-    BlockPosition pos;
-    Block block;
-    while(it.hasNext() && (pos=it.next())!=null)
-      {
-      it.remove();
-      block = worldObj.getBlock(pos.x, pos.y, pos.z);
-      if(block==Blocks.nether_wart || block==Blocks.red_mushroom || block==Blocks.brown_mushroom_block)
+
+    @Override
+    public void onBoundsAdjusted() {
+        validateCollection(blocksToPlantMushroom);
+        validateCollection(blocksToHarvest);
+        validateCollection(blocksToPlantNetherWart);
+    }
+
+    @Override
+    protected void countResources() {
+        this.mushroomCount = 0;
+        this.netherWartCount = 0;
+        @Nonnull ItemStack item;
+        for (int i = TOP_LENGTH; i < getSizeInventory(); i++) {
+            item = getStackInSlot(i);
+            if (item.isEmpty()) {
+                continue;
+            }
+            if (item.getItem() == Items.NETHER_WART) {
+                netherWartCount += item.getCount();
+            } else {
+                Block block = Block.getBlockFromItem(item.getItem());
+                if(isFarmable(block))
+                    mushroomCount += item.getCount();
+            }
+        }
+    }
+
+    @Override
+    protected int[] getIndicesForPickup(){
+        return inventory.getRawIndicesCombined(RelativeSide.FRONT, RelativeSide.TOP);
+    }
+
+    @Override
+    protected boolean processWork() {
+        Iterator<BlockPos> it;
+        if (!blocksToHarvest.isEmpty()) {
+            it = blocksToHarvest.iterator();
+            BlockPos harvestPos;
+            Block block;
+            while (it.hasNext() && (harvestPos = it.next()) != null) {
+                it.remove();
+                block = world.getBlockState(harvestPos).getBlock();
+                if (block instanceof BlockHugeMushroom || isFarmable(block,harvestPos)) {
+                    return harvestBlock(harvestPos, RelativeSide.FRONT, RelativeSide.TOP);
+                }
+            }
+        }
+        else if (mushroomCount>0 && !blocksToPlantMushroom.isEmpty()) {
+            it = blocksToPlantMushroom.iterator();
+            BlockPos plantPos;
+            @Nonnull ItemStack item;
+            for (int i = TOP_LENGTH; i < getSizeInventory(); i++) {
+                item = getStackInSlot(i);
+                if (item.isEmpty()) {
+                    continue;
+                }
+                Block block = Block.getBlockFromItem(item.getItem());
+                if(isFarmable(block)) {
+                    while (it.hasNext() && (plantPos = it.next()) != null) {
+                        it.remove();
+                        if(tryPlace(item, plantPos, EnumFacing.UP)) {//plant the mushroom, decrease stack size
+                            mushroomCount--;
+                            if (item.getCount() <= 0) {
+                                setInventorySlotContents(i, ItemStack.EMPTY);
+                            }
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+            }
+        } else if (netherWartCount>0 && !blocksToPlantNetherWart.isEmpty()) {
+            it = blocksToPlantNetherWart.iterator();
+            BlockPos plantPos;
+            @Nonnull ItemStack item;
+            for (int i = TOP_LENGTH; i < getSizeInventory(); i++) {
+                item = getStackInSlot(i);
+                if (item.isEmpty()) {
+                    continue;
+                }
+                if (item.getItem() == Items.NETHER_WART) {
+                    while (it.hasNext() && (plantPos = it.next()) != null) {
+                        it.remove();
+                        if(tryPlace(item, plantPos, EnumFacing.UP)) {
+                            netherWartCount--;
+                            if (item.getCount() <= 0) {
+                                setInventorySlotContents(i, ItemStack.EMPTY);
+                            }
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public WorkType getWorkType() {
+        return WorkType.FARMING;
+    }
+
+    @Override
+    public boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
+        if (!player.world.isRemote) {
+            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_MUSHROOM_FARM, pos);
+        }
+        return true;
+    }
+
+    @Override
+    protected void scanBlockPosition(BlockPos scanPos) {
+        IBlockState state = world.getBlockState(scanPos);
+        Block block = state.getBlock();
+        if (block.isReplaceable(world, scanPos)) {
+            if (Blocks.NETHER_WART.canPlaceBlockAt(world, scanPos)) {
+                blocksToPlantNetherWart.add(scanPos);
+            } else if (Blocks.BROWN_MUSHROOM.canPlaceBlockAt(world, scanPos)) {
+                blocksToPlantMushroom.add(scanPos);
+            }
+        } else//not an air block, check for harvestable nether-wart
         {
-        int fortune = getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1)? 1 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2)? 2 : 0;
-        return harvestBlock(pos.x, pos.y, pos.z, fortune, RelativeSide.FRONT, RelativeSide.TOP);
+            if (block == Blocks.NETHER_WART){
+                if(state.getValue(BlockNetherWart.AGE) >= 3)
+                    blocksToHarvest.add(scanPos);
+            } else if (block instanceof BlockHugeMushroom && !blocksToHarvest.contains(scanPos)) {
+                TreeFinder.DEFAULT.findAttachedTreeBlocks(block, world, scanPos, blocksToHarvest);
+            } else if (isFarmable(block, scanPos)){
+                Set<BlockPos> harvestSet = new HashSet<>();
+                TreeFinder.DEFAULT.findAttachedTreeBlocks(block, world, scanPos, harvestSet);
+                for (BlockPos tp : harvestSet) {
+                    if (!isTarget(tp) && !blocksToHarvest.contains(tp))//don't harvest user-set planting blocks...
+                    {
+                        blocksToHarvest.add(tp);
+                    }
+                }
+            }
         }
-      }
     }
-  return false;
-  }
 
-@Override
-public WorkType getWorkType()
-  {
-  return WorkType.FARMING;
-  }
-
-@Override
-public boolean onBlockClicked(EntityPlayer player)
-  {
-  if(!player.worldObj.isRemote)
-    {
-    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_MUSHROOM_FARM, xCoord, yCoord, zCoord);
-    return true;
+    @Override
+    protected boolean hasWorksiteWork() {
+        return (mushroomCount > 0 && !blocksToPlantMushroom.isEmpty()) || (netherWartCount > 0 && !blocksToPlantNetherWart.isEmpty()) || !blocksToHarvest.isEmpty();
     }
-  return true;
-  }
-
-@Override
-protected void fillBlocksToProcess(Collection<BlockPosition> targets)
-  { 
-  int w = bbMax.x - bbMin.x + 1;
-  int h = bbMax.z - bbMin.z + 1;
-  BlockPosition p;
-  for(int x = 0; x < w; x++)
-    {
-    for(int z = 0; z< h; z++)
-      {
-      if(isTarget(bbMin.x+x, bbMin.z+z))
-        {
-        p = new BlockPosition(bbMin);
-        p.offset(x, 0, z);
-        targets.add(p);
-        }
-      }
-    }  
-  }
-
-@Override
-protected void scanBlockPosition(BlockPosition pos)
-  {
-  Block block;
-  if(worldObj.isAirBlock(pos.x, pos.y, pos.z))
-    {
-    block = worldObj.getBlock(pos.x, pos.y-1, pos.z);
-    if(block==Blocks.soul_sand)
-      {
-      blocksToPlantNetherWart.add(pos);
-      }
-    else if(Blocks.brown_mushroom.canPlaceBlockAt(worldObj, pos.x, pos.y, pos.z))
-      {
-      blocksToPlantMushroom.add(pos);
-      }
-    }
-  else//not an air block, check for harvestable nether-wart
-    {
-    block = worldObj.getBlock(pos.x, pos.y, pos.z);
-    if(block==Blocks.nether_wart && worldObj.getBlockMetadata(pos.x, pos.y, pos.z)>=3)        
-      {
-      blocksToHarvest.add(pos);
-      }
-    else if(block==Blocks.red_mushroom || block==Blocks.brown_mushroom)
-      {
-      Set<BlockPosition> harvestSet = new HashSet<BlockPosition>();
-      TreeFinder.findAttachedTreeBlocks(block, worldObj, pos.x, pos.y, pos.z, harvestSet);
-      for(BlockPosition tp : harvestSet)
-        {
-        if(!isTarget(tp) && !blocksToHarvest.contains(tp))//don't harvest user-set planting blocks...
-          {
-          blocksToHarvest.add(tp);
-          }
-        }
-      }
-    }
-  }
-
-@Override
-protected boolean hasWorksiteWork()
-  {
-  return (mushroomCount > 0 && !blocksToPlantMushroom.isEmpty()) || (netherWartCount>0 && !blocksToPlantNetherWart.isEmpty()) || !blocksToHarvest.isEmpty();
-  }
 
 }

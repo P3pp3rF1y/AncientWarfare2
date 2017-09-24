@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -35,7 +35,7 @@ ISLAND("island", StructureValidatorIsland.class, new ValidationProperty("minWate
 
 private String name;
 private Class<? extends StructureValidator> validatorClass;
-private List<ValidationProperty> props = new ArrayList<ValidationProperty>();
+private List<ValidationProperty> props = new ArrayList<>();
 
 StructureValidationType(String name, Class<? extends StructureValidator> validatorClass, ValidationProperty...props)
   {
@@ -88,7 +88,7 @@ public static StructureValidationType getTypeFromName(String name)
   return null;
   }
 
-/**
+/*
  * validation types:
  * ground:
  *    validate border edge blocks for depth and leveling

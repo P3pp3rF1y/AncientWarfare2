@@ -1,523 +1,425 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
-import java.util.EnumSet;
-
+import cofh.redstoneflux.api.IEnergyProvider;
+import cofh.redstoneflux.api.IEnergyReceiver;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.scoreboard.Team;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.ChunkCoordIntPair;
-import net.minecraftforge.common.ForgeChunkManager;
-import net.minecraftforge.common.ForgeChunkManager.Ticket;
-import net.minecraftforge.common.ForgeChunkManager.Type;
-import net.minecraftforge.common.util.ForgeDirection;
-import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
-import net.shadowmage.ancientwarfare.automation.chunkloader.AWChunkLoader;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraftforge.common.util.FakePlayer;
+import net.minecraftforge.fml.common.Optional;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.item.ItemWorksiteUpgrade;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
-import net.shadowmage.ancientwarfare.core.interfaces.IChunkLoaderTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
-import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
-import cofh.api.energy.IEnergyHandler;
-import cpw.mods.fml.common.Optional;
+import org.apache.commons.lang3.math.NumberUtils;
 
-@Optional.InterfaceList(value=
-  {
-  @Optional.Interface(iface="cofh.api.energy.IEnergyHandler", modid="CoFHCore",striprefs=true)
-  })
-public abstract class TileWorksiteBase extends TileEntity implements IWorkSite, IInteractableTile, IOwnable, ITorqueTile, IRotatableTile, IEnergyHandler, IChunkLoaderTile
-{
+import java.util.EnumSet;
+import java.util.UUID;
 
-protected String owningPlayer = "";
+@Optional.Interface(iface = "cofh.api.energy.IEnergyProvider", modid = "redstoneflux", striprefs = true)
+@Optional.Interface(iface = "cofh.api.energy.IEnergyReceiver", modid = "redstoneflux", striprefs = true)
+public abstract class TileWorksiteBase extends TileUpdatable implements ITickable, IWorkSite, IInteractableTile, IOwnable, IRotatableTile, IEnergyProvider, IEnergyReceiver {
 
-private double efficiencyBonusFactor = 0.f;
+    private String owningPlayer = "";
+    private UUID ownerId;
+    private EntityPlayer owner;
 
-private EnumSet<WorksiteUpgrade> upgrades = EnumSet.noneOf(WorksiteUpgrade.class);
+    private double efficiencyBonusFactor = 0.f;
 
-private ForgeDirection orientation = ForgeDirection.NORTH;
+    private EnumSet<WorksiteUpgrade> upgrades = EnumSet.noneOf(WorksiteUpgrade.class);
 
-private TorqueCell torqueCell;
+    private EnumFacing orientation = EnumFacing.NORTH;
 
-private int workRetryDelay = 20;
+    private final TorqueCell torqueCell;
 
-private Ticket chunkTicket = null;
+    private int workRetryDelay = 20;
 
-public TileWorksiteBase()
-  {
-  torqueCell = new TorqueCell(32, 0, AWCoreStatics.energyPerWorkUnit*3, 1);
-  }
-
-//*************************************** COFH RF METHODS ***************************************//
-@Optional.Method(modid="CoFHCore")
-@Override
-public final int getEnergyStored(ForgeDirection from)
-  {
-  return (int) (getTorqueStored(from) * AWAutomationStatics.torqueToRf);
-  }
-
-@Optional.Method(modid="CoFHCore")
-@Override
-public final int getMaxEnergyStored(ForgeDirection from)
-  {
-  return (int) (getMaxTorque(from) * AWAutomationStatics.torqueToRf);
-  }
-
-@Optional.Method(modid="CoFHCore")
-@Override
-public final boolean canConnectEnergy(ForgeDirection from)
-  {
-  return canOutputTorque(from) || canInputTorque(from);
-  }
-
-@Optional.Method(modid="CoFHCore")
-@Override
-public final int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate)
-  {
-  return 0;
-  }
-
-@Optional.Method(modid="CoFHCore")
-@Override
-public final int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate)
-  {
-  if(!canInputTorque(from)){return 0;}
-  if(simulate){return Math.min(maxReceive, (int)(AWAutomationStatics.torqueToRf * getMaxTorqueInput(from)));}
-  return (int)(AWAutomationStatics.torqueToRf * addTorque(from, (double)maxReceive * AWAutomationStatics.rfToTorque));
-  }
-//*************************************** UPGRADE HANDLING METHODS ***************************************//
-
-@Override
-public final EnumSet<WorksiteUpgrade> getUpgrades(){return upgrades;}
-
-@Override
-public EnumSet<WorksiteUpgrade> getValidUpgrades()
-  {
-  return EnumSet.of(
-      WorksiteUpgrade.ENCHANTED_TOOLS_1,
-      WorksiteUpgrade.ENCHANTED_TOOLS_2,
-      WorksiteUpgrade.TOOL_QUALITY_1,
-      WorksiteUpgrade.TOOL_QUALITY_2,
-      WorksiteUpgrade.TOOL_QUALITY_3
-      );
-  }
-
-@Override
-public void onBlockBroken()
-  {
-  for(WorksiteUpgrade ug : this.upgrades)
-    {
-    InventoryTools.dropItemInWorld(worldObj, ItemWorksiteUpgrade.getStack(ug), xCoord, yCoord, zCoord);
+    public TileWorksiteBase() {
+        torqueCell = new TorqueCell(32, 0, AWCoreStatics.energyPerWorkUnit * 3, 1);
     }
-  efficiencyBonusFactor = 0;
-  upgrades.clear();
-  if(this.chunkTicket!=null)
-    {
-    ForgeChunkManager.releaseTicket(chunkTicket);
-    this.chunkTicket = null;
+
+    //************************************** COFH RF METHODS ***************************************//
+    @Optional.Method(modid = "redstoneflux")
+    @Override
+    public final int getEnergyStored(EnumFacing from) {
+        return (int) (getTorqueStored(from) * AWAutomationStatics.torqueToRf);
     }
-  }
 
-@Override
-public void addUpgrade(WorksiteUpgrade upgrade)
-  {
-  upgrades.add(upgrade);
-  updateEfficiency();
-  worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-  markDirty();
-  if(upgrade==WorksiteUpgrade.BASIC_CHUNK_LOADER || upgrade==WorksiteUpgrade.QUARRY_CHUNK_LOADER)
-    {
-    setupInitialTicket();//setup chunkloading for the worksite
+    @Optional.Method(modid = "redstoneflux")
+    @Override
+    public final int getMaxEnergyStored(EnumFacing from) {
+        return (int) (getMaxTorque(from) * AWAutomationStatics.torqueToRf);
     }
-  }
 
-@Override
-public final void removeUpgrade(WorksiteUpgrade upgrade)
-  {
-  upgrades.remove(upgrade);
-  updateEfficiency();
-  worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-  markDirty();
-  if(upgrade==WorksiteUpgrade.BASIC_CHUNK_LOADER || upgrade==WorksiteUpgrade.QUARRY_CHUNK_LOADER)
-    {
-    setTicket(null);//release any existing ticket
+    @Optional.Method(modid = "redstoneflux")
+    @Override
+    public final boolean canConnectEnergy(EnumFacing from) {
+        return canOutputTorque(from) || canInputTorque(from);
     }
-  }
 
-//*************************************** TILE UPDATE METHODS ***************************************//
-
-protected abstract boolean processWork();
-
-protected abstract boolean hasWorksiteWork();
-
-protected abstract void updateWorksite();
-
-@Override
-public final boolean canUpdate()
-  {
-  return true;
-  }
-
-@Override
-public void updateEntity()
-  {
-  super.updateEntity();
-  if(worldObj.isRemote){return;}  
-  worldObj.theProfiler.startSection("AWWorksite");
-  if(workRetryDelay>0)
-    {
-    workRetryDelay--;    
+    @Optional.Method(modid = "redstoneflux")
+    @Override
+    public final int extractEnergy(EnumFacing from, int maxExtract, boolean simulate) {
+        return 0;
     }
-  else
-    {
-    worldObj.theProfiler.endStartSection("Check For Work");
-    double ePerUse = IWorkSite.WorksiteImplementation.getEnergyPerActivation(efficiencyBonusFactor);
-    boolean hasWork = getTorqueStored(ForgeDirection.UNKNOWN) >= ePerUse && hasWorksiteWork();
-    worldObj.theProfiler.endStartSection("Process Work");
-    if(hasWork)
-      {
-      if(processWork())
-        {
-        torqueCell.setEnergy(torqueCell.getEnergy() - ePerUse);
-        } 
-      else
-        {
-        workRetryDelay = 20;
+
+    @Optional.Method(modid = "redstoneflux")
+    @Override
+    public final int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
+        if (!canInputTorque(from)) {
+            return 0;
         }
-      }
-    }  
-  worldObj.theProfiler.endStartSection("WorksiteBaseUpdate");
-  updateWorksite();
-  worldObj.theProfiler.endSection();
-  worldObj.theProfiler.endSection();
-  }
-
-protected final void updateEfficiency()
-  {
-  efficiencyBonusFactor = IWorkSite.WorksiteImplementation.getEfficiencyFactor(upgrades);
-  }
-
-//*************************************** TILE INTERACTION METHODS ***************************************//
-
-@Override
-public abstract boolean onBlockClicked(EntityPlayer player);
-
-@Override
-public final Team getTeam()
-  {  
-  if(owningPlayer!=null)
-    {
-    return worldObj.getScoreboard().getPlayersTeam(owningPlayer);
-    }
-  return null;
-  }
-
-@Override
-public final String getOwnerName()
-  {  
-  return owningPlayer;
-  }
-
-@Override
-public final void setOwnerName(String name)
-  {
-  if(name==null){name="";}
-  this.owningPlayer = name;  
-  }
-
-//*************************************** TORQUE INTERACTION METHODS ***************************************//
-
-@Override
-public final float getClientOutputRotation(ForgeDirection from, float delta)
-  {
-  return 0;
-  }
-
-@Override
-public final boolean useOutputRotation(ForgeDirection from)
-  {
-  return false;
-  }
-
-@Override
-public final double getMaxTorqueOutput(ForgeDirection from)
-  {
-  return 0;
-  }
-
-@Override
-public final boolean canOutputTorque(ForgeDirection towards)
-  {
-  return false;
-  }
-
-@Override
-public final double drainTorque(ForgeDirection from, double energy)
-  {
-  return 0;
-  }
-
-@Override
-public final void addEnergyFromWorker(IWorker worker)
-  {  
-  addTorque(ForgeDirection.UNKNOWN, AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType()) * AWAutomationStatics.hand_cranked_generator_output);
-  }
-
-@Override
-public final void addEnergyFromPlayer(EntityPlayer player)
-  {
-  addTorque(ForgeDirection.UNKNOWN, AWCoreStatics.energyPerWorkUnit * AWAutomationStatics.hand_cranked_generator_output);
-  }
-
-@Override
-public final double addTorque(ForgeDirection from, double energy)
-  {
-  return torqueCell.addEnergy(energy);
-  }
-
-@Override
-public final double getMaxTorque(ForgeDirection from)
-  {
-  return torqueCell.getMaxEnergy();
-  }
-
-@Override
-public final double getTorqueStored(ForgeDirection from)
-  {
-  return torqueCell.getEnergy();
-  }
-
-@Override
-public final double getMaxTorqueInput(ForgeDirection from)
-  {
-  return torqueCell.getMaxTickInput();
-  }
-
-@Override
-public final boolean canInputTorque(ForgeDirection from)
-  {
-  return true;
-  }
-
-//*************************************** MISC METHODS ***************************************//
-
-@Override
-public void setTicket(Ticket tk)
-  {
-  if(chunkTicket!=null)
-    {
-    ForgeChunkManager.releaseTicket(chunkTicket);
-    chunkTicket=null;
-    }
-  this.chunkTicket = tk;  
-  if(this.chunkTicket==null){return;}
-  writeDataToTicket(chunkTicket);
-  ChunkCoordIntPair ccip = new ChunkCoordIntPair(xCoord>>4, zCoord>>4);
-  ForgeChunkManager.forceChunk(chunkTicket, ccip);  
-  if(this.hasWorkBounds())
-    {
-    int minX = getWorkBoundsMin().x>>4;
-    int minZ = getWorkBoundsMin().z>>4;
-    int maxX = getWorkBoundsMax().x>>4;
-    int maxZ = getWorkBoundsMax().z>>4;
-    for(int x = minX; x<=maxX; x++)
-      {
-      for(int z = minZ; z<=maxZ; z++)
-        {
-        ccip = new ChunkCoordIntPair(x, z);
-        ForgeChunkManager.forceChunk(chunkTicket, ccip);
+        if (simulate) {
+            return Math.min(maxReceive, (int) (AWAutomationStatics.torqueToRf * getMaxTorqueInput(from)));
         }
-      }
-    }  
-  }
-
-protected final void writeDataToTicket(Ticket tk)
-  {
-  AWChunkLoader.writeDataToTicket(tk, xCoord, yCoord, zCoord);
-  }
-
-public final void setupInitialTicket()
-  {
-  if(chunkTicket!=null){ForgeChunkManager.releaseTicket(chunkTicket);}
-  if(getUpgrades().contains(WorksiteUpgrade.BASIC_CHUNK_LOADER) || getUpgrades().contains(WorksiteUpgrade.QUARRY_CHUNK_LOADER))
-    {
-    setTicket(ForgeChunkManager.requestTicket(AncientWarfareAutomation.instance, worldObj, Type.NORMAL));    
+        return (int) (AWAutomationStatics.torqueToRf * addTorque(from, (double) maxReceive * AWAutomationStatics.rfToTorque));
     }
-  }
+//************************************** UPGRADE HANDLING METHODS ***************************************//
 
-@Override
-public void onPostBoundsAdjusted()
-  {
-  setupInitialTicket();  
-  }
-
-@Override
-public boolean shouldRenderInPass(int pass)
-  {
-  return pass==1;
-  }
-
-@Override
-public String toString()
-  {
-  return "Worksite Base["+torqueCell.getEnergy()+"]";
-  }
-
-@Override
-public boolean hasWork()
-  {
-  return torqueCell.getEnergy() < torqueCell.getMaxEnergy() && worldObj.getBlockPowerInput(xCoord, yCoord, zCoord)==0;  
-  }
-
-@Override
-public final ForgeDirection getPrimaryFacing()
-  {
-  return orientation;
-  }
-
-@Override
-public final void setPrimaryFacing(ForgeDirection face)
-  {
-  orientation = face;
-  this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-  this.worldObj.func_147453_f(xCoord, yCoord, zCoord, getBlockType());//notify neighbors of tile change
-  }
-
-//*************************************** NBT AND PACKET DATA METHODS ***************************************//
-
-@Override
-public void writeToNBT(NBTTagCompound tag)
-  {
-  super.writeToNBT(tag);
-  tag.setDouble("storedEnergy", torqueCell.getEnergy());
-  if(owningPlayer!=null)
-    {
-    tag.setString("owner", owningPlayer);
+    @Override
+    public final EnumSet<WorksiteUpgrade> getUpgrades() {
+        return upgrades;
     }
-  if(!getUpgrades().isEmpty())
-    {
-    int[] ug = new int[getUpgrades().size()];
-    int i = 0;
-    for(WorksiteUpgrade u : getUpgrades())
-      {
-      ug[i] = u.ordinal();
-      i++;
-      }
-    tag.setIntArray("upgrades", ug);    
-    }
-  tag.setInteger("orientation", orientation.ordinal());
-  }
 
-@Override
-public void readFromNBT(NBTTagCompound tag)
-  {
-  super.readFromNBT(tag);
-  torqueCell.setEnergy(tag.getDouble("storedEnergy"));
-  if(tag.hasKey("owner"))
-    {
-    owningPlayer = tag.getString("owner");
+    @Override
+    public EnumSet<WorksiteUpgrade> getValidUpgrades() {
+        return EnumSet.of(
+                WorksiteUpgrade.ENCHANTED_TOOLS_1,
+                WorksiteUpgrade.ENCHANTED_TOOLS_2,
+                WorksiteUpgrade.TOOL_QUALITY_1,
+                WorksiteUpgrade.TOOL_QUALITY_2,
+                WorksiteUpgrade.TOOL_QUALITY_3
+        );
     }
-  if(tag.hasKey("upgrades"))
-    {
-    NBTBase upgradeTag = tag.getTag("upgrades");
-    if(upgradeTag instanceof NBTTagIntArray)
-      {
-      int[] ug = tag.getIntArray("upgrades");
-      for(int i= 0; i < ug.length; i++)
-        {
-        upgrades.add(WorksiteUpgrade.values()[ug[i]]);
+
+    @Override
+    public void onBlockBroken() {
+        for (WorksiteUpgrade ug : this.upgrades) {
+            InventoryTools.dropItemInWorld(world, ItemWorksiteUpgrade.getStack(ug), pos);
         }
-      }
-    else if(upgradeTag instanceof NBTTagList)//template parser reads int-arrays as a tag list for some reason
-      {
-      NBTTagList list = (NBTTagList)upgradeTag;
-      for(int i =0; i < list.tagCount(); i++)
-        {
-        String st = list.getStringTagAt(i);
-        try
-          {
-          int ug = Integer.parseInt(st);
-          upgrades.add(WorksiteUpgrade.values()[ug]);
-          }
-        catch(NumberFormatException e){}
+        efficiencyBonusFactor = 0;
+        upgrades.clear();
+    }
+
+    @Override
+    public void addUpgrade(WorksiteUpgrade upgrade) {
+        upgrades.add(upgrade);
+        updateEfficiency();
+        BlockTools.notifyBlockUpdate(this);
+        markDirty();
+    }
+
+    @Override
+    public void removeUpgrade(WorksiteUpgrade upgrade) {
+        upgrades.remove(upgrade);
+        updateEfficiency();
+        BlockTools.notifyBlockUpdate(this);
+        markDirty();
+    }
+
+    public int getFortune() {
+        return getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2) ? 2 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1) ? 1 : 0;
+    }
+
+//************************************** TILE UPDATE METHODS ***************************************//
+
+    protected abstract boolean processWork();
+
+    protected abstract boolean hasWorksiteWork();
+
+    protected abstract void updateWorksite();
+
+    @Override
+    public final void update() {
+        if (!hasWorld() || world.isRemote) {
+            return;
         }
-      }
+        if (workRetryDelay > 0) {
+            workRetryDelay--;
+        } else {
+            world.profiler.startSection("Check For Work");
+            double ePerUse = IWorkSite.WorksiteImplementation.getEnergyPerActivation(efficiencyBonusFactor);
+            boolean hasWork = getTorqueStored(null) >= ePerUse && hasWorksiteWork();
+            if (hasWork) {
+                world.profiler.endStartSection("Process Work");
+                if (processWork()) {
+                    torqueCell.setEnergy(torqueCell.getEnergy() - ePerUse);
+                    markDirty();
+                } else {
+                    workRetryDelay = 20;
+                }
+            }
+            world.profiler.endSection();
+        }
+        world.profiler.startSection("WorksiteBaseUpdate");
+        updateWorksite();
+        world.profiler.endSection();
     }
 
-  if(tag.hasKey("orientation")){orientation = ForgeDirection.values()[tag.getInteger("orientation")];}
-  updateEfficiency();
-  }
-
-@Override
-public AxisAlignedBB getRenderBoundingBox()
-  {
-  if(hasWorkBounds() && getWorkBoundsMin()!=null && getWorkBoundsMax()!=null)
-    {
-    AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord+1, yCoord+1, zCoord+1);
-    BlockPosition min = getWorkBoundsMin();
-    BlockPosition max = getWorkBoundsMax();
-    bb.minX = min.x < bb.minX ? min.x : bb.minX;
-    bb.minY = min.y < bb.minY ? min.y : bb.minY;
-    bb.minZ = min.z < bb.minZ ? min.z : bb.minZ;
-    bb.maxX = max.x+1 > bb.maxX ? max.x+1 : bb.maxX;
-    bb.maxY = max.y+1 > bb.maxY ? max.y+1 : bb.maxY;
-    bb.maxZ = max.z+1 > bb.maxZ ? max.z+1 : bb.maxZ;
-    return bb;
+    protected final void updateEfficiency() {
+        efficiencyBonusFactor = IWorkSite.WorksiteImplementation.getEfficiencyFactor(upgrades);
     }
-  return super.getRenderBoundingBox();
-  }
 
-protected NBTTagCompound getDescriptionPacketTag(NBTTagCompound tag)
-  {
-  int[] ugs = new int[upgrades.size()];
-  int i = 0;
-  for(WorksiteUpgrade ug : upgrades)
-    {
-    ugs[i] = ug.ordinal();
-    i++;
+//************************************** TILE INTERACTION METHODS ***************************************//
+
+    @Override
+    public final Team getTeam() {
+        if (owningPlayer != null) {
+            return world.getScoreboard().getPlayersTeam(owningPlayer);
+        }
+        return null;
     }
-  tag.setIntArray("upgrades", ugs);
-  tag.setInteger("orientation", orientation.ordinal());
-  return tag;
-  }
 
-@Override
-public final Packet getDescriptionPacket()
-  {
-  NBTTagCompound tag = getDescriptionPacketTag(new NBTTagCompound()); 
-  return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, tag);
-  }
-
-@Override
-public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
-  {
-  super.onDataPacket(net, pkt);
-  upgrades.clear();
-  if(pkt.func_148857_g().hasKey("upgrades"))
-    {
-    int[] ugs = pkt.func_148857_g().getIntArray("upgrades");
-    for(int i = 0; i < ugs.length; i++)
-      {
-      upgrades.add(WorksiteUpgrade.values()[ugs[i]]);
-      }
+    @Override
+    public final String getOwnerName() {
+        return owningPlayer;
     }
-  orientation = ForgeDirection.values()[pkt.func_148857_g().getInteger("orientation")];
-  this.worldObj.func_147453_f(xCoord, yCoord, zCoord, getBlockType());
-  }
+    
+    @Override
+    public final UUID getOwnerUuid() {
+        return ownerId;
+    }
 
+    public final EntityPlayer getOwnerAsPlayer() {
+        if(!isOwnerReal()) {
+            owner = AncientWarfareCore.proxy.getFakePlayer(getWorld(), owningPlayer, ownerId);
+        }
+        return owner;
+    }
+
+    private boolean isOwnerReal(){
+        return owner!=null && owner.isEntityAlive() && !(owner instanceof FakePlayer);
+    }
+
+    @Override
+    public final boolean isOwner(EntityPlayer player){
+        if(player == null || player.getGameProfile() == null)
+            return false;
+        if(isOwnerReal())
+            return player.getGameProfile().equals(owner.getGameProfile());
+        if(ownerId!=null)
+            return player.getUniqueID().equals(ownerId);
+        return player.getName().equals(owningPlayer);
+    }
+
+    @Override
+    public final void setOwner(EntityPlayer player) {
+        if (player == null) {
+            this.owningPlayer = "";
+            this.owner = null;
+            this.ownerId = null;
+        }else{
+            this.owner = player;
+            this.owningPlayer = player.getName();
+            this.ownerId = player.getUniqueID();
+        }
+    }
+    
+    @Override
+    public final void setOwner(String ownerName, UUID ownerUuid) {
+        owningPlayer = ownerName;
+        ownerId = ownerUuid;
+        owner = AncientWarfareCore.proxy.getFakePlayer(getWorld(), ownerName, ownerUuid);
+    }
+
+//************************************** TORQUE INTERACTION METHODS ***************************************//
+
+    @Override
+    public final float getClientOutputRotation(EnumFacing from, float delta) {
+        return 0;
+    }
+
+    @Override
+    public final boolean useOutputRotation(EnumFacing from) {
+        return false;
+    }
+
+    @Override
+    public final double getMaxTorqueOutput(EnumFacing from) {
+        return 0;
+    }
+
+    @Override
+    public final boolean canOutputTorque(EnumFacing towards) {
+        return false;
+    }
+
+    @Override
+    public final double drainTorque(EnumFacing from, double energy) {
+        return 0;
+    }
+
+    @Override
+    public final void addEnergyFromWorker(IWorker worker) {
+        addTorque(null, AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType()) * AWAutomationStatics.hand_cranked_generator_output);
+    }
+
+    @Override
+    public final void addEnergyFromPlayer(EntityPlayer player) {
+        addTorque(null, AWCoreStatics.energyPerWorkUnit * AWAutomationStatics.hand_cranked_generator_output);
+    }
+
+    @Override
+    public final double addTorque(EnumFacing from, double energy) {
+        return torqueCell.addEnergy(energy);
+    }
+
+    @Override
+    public final double getMaxTorque(EnumFacing from) {
+        return torqueCell.getMaxEnergy();
+    }
+
+    @Override
+    public final double getTorqueStored(EnumFacing from) {
+        return torqueCell.getEnergy();
+    }
+
+    @Override
+    public final double getMaxTorqueInput(EnumFacing from) {
+        return torqueCell.getMaxTickInput();
+    }
+
+    @Override
+    public final boolean canInputTorque(EnumFacing from) {
+        return true;
+    }
+
+//************************************** MISC METHODS ***************************************//
+    @Override
+    public boolean shouldRenderInPass(int pass) {
+        return pass == 1;
+    }
+
+    @Override
+    public String toString() {
+        return "Worksite Base[" + torqueCell.getEnergy() + "]";
+    }
+
+    @Override
+    public boolean hasWork() {
+        return torqueCell.getEnergy() < torqueCell.getMaxEnergy() && world.getStrongPower(pos) == 0;
+    }
+
+    @Override
+    public final EnumFacing getPrimaryFacing() {
+        return orientation;
+    }
+
+    @Override
+    public final void setPrimaryFacing(EnumFacing face) {
+        orientation = face;
+        BlockTools.notifyBlockUpdate(this);
+        markDirty();//notify neighbors of tile change
+    }
+
+//************************************** NBT AND PACKET DATA METHODS ***************************************//
+
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+        super.writeToNBT(tag);
+        tag.setDouble("storedEnergy", torqueCell.getEnergy());
+        if (owningPlayer != null) {
+            tag.setString("owner", owningPlayer);
+            if(ownerId == null && hasWorld()){
+                getOwnerAsPlayer();
+                if(isOwnerReal()){
+                    ownerId = owner.getUniqueID();
+                }
+            }
+        }
+        if(ownerId!=null){
+            tag.setString("ownerId", ownerId.toString());
+        }
+        if (!getUpgrades().isEmpty()) {
+            int[] ug = new int[getUpgrades().size()];
+            int i = 0;
+            for (WorksiteUpgrade u : getUpgrades()) {
+                ug[i] = u.ordinal();
+                i++;
+            }
+            tag.setIntArray("upgrades", ug);
+        }
+        tag.setInteger("orientation", orientation.ordinal());
+
+        return tag;
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound tag) {
+        super.readFromNBT(tag);
+        torqueCell.setEnergy(tag.getDouble("storedEnergy"));
+        if (tag.hasKey("owner")) {
+            owningPlayer = tag.getString("owner");
+        }
+        if(tag.hasKey("ownerId")){
+            ownerId = UUID.fromString(tag.getString("ownerId"));
+        }
+        if (tag.hasKey("upgrades")) {
+            NBTBase upgradeTag = tag.getTag("upgrades");
+            if (upgradeTag instanceof NBTTagIntArray) {
+                int[] ug = tag.getIntArray("upgrades");
+                for (int anUg : ug) {
+                    upgrades.add(WorksiteUpgrade.values()[anUg]);
+                }
+            } else if (upgradeTag instanceof NBTTagList)//template parser reads int-arrays as a tag list for some reason
+            {
+                NBTTagList list = (NBTTagList) upgradeTag;
+                for (int i = 0; i < list.tagCount(); i++) {
+                    String st = list.getStringTagAt(i);
+                    int ug = NumberUtils.toInt(st, -1) ;
+                    if(ug > -1) {
+                        upgrades.add(WorksiteUpgrade.values()[ug]);
+                    }
+                }
+            }
+        }
+
+        if (tag.hasKey("orientation")) {
+            orientation = EnumFacing.values()[tag.getInteger("orientation")];
+        }
+        updateEfficiency();
+    }
+
+    @Override
+    protected void writeUpdateNBT(NBTTagCompound tag) {
+        super.writeUpdateNBT(tag);
+        int[] ugs = new int[upgrades.size()];
+        int i = 0;
+        for (WorksiteUpgrade ug : upgrades) {
+            ugs[i] = ug.ordinal();
+            i++;
+        }
+        tag.setIntArray("upgrades", ugs);
+        tag.setInteger("orientation", orientation.ordinal());
+    }
+
+    @Override
+    protected void handleUpdateNBT(NBTTagCompound tag) {
+        super.handleUpdateNBT(tag);
+        upgrades.clear();
+        if (tag.hasKey("upgrades")) {
+            int[] ugs = tag.getIntArray("upgrades");
+            for (int ug : ugs) {
+                upgrades.add(WorksiteUpgrade.values()[ug]);
+            }
+        }
+        updateEfficiency();
+        orientation = EnumFacing.values()[tag.getInteger("orientation")];
+        markDirty();
+    }
 }

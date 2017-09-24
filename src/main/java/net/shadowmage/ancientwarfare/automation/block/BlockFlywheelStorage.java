@@ -1,114 +1,109 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
-import java.util.List;
-
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileFlywheelStorage;
 
-public class BlockFlywheelStorage extends Block
-{
+public class BlockFlywheelStorage extends BlockBaseAutomation {
 
-public BlockFlywheelStorage(String regName)
-  {
-  super(Material.rock);
-  this.setBlockName(regName);
-  this.setCreativeTab(AWAutomationItemLoader.automationTab);
-  }
-
-@Override
-public boolean onBlockEventReceived(World world, int x, int y, int z, int a, int b)
-  {
-  TileEntity tileentity = world.getTileEntity(x, y, z);
-  return tileentity != null ? tileentity.receiveClientEvent(a, b) : false;
-  }
-
-@Override
-public boolean shouldSideBeRendered(net.minecraft.world.IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {return false;}
-
-@Override
-public boolean isOpaqueCube(){return false;}
-
-@Override
-public boolean isNormalCube(){return false;}
-
-@Override
-public IIcon getIcon(int side, int meta)
-  {
-  switch(meta)
-  {
-  case 0:
-    {
-    return Blocks.planks.getIcon(side, 0);
+    public BlockFlywheelStorage(String regName) {
+        super(Material.ROCK, regName);
     }
-  case 1:
-    {
-    return Blocks.iron_block.getIcon(side, 0);
+
+    @Override
+    public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param) {
+        TileEntity tileentity = world.getTileEntity(pos);
+        return tileentity != null && tileentity.receiveClientEvent(id, param);
     }
-  case 2:
-    {
-    //TODO change this to steel block icon...once I make a steel block...
-    return Blocks.iron_block.getIcon(side, 0);
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess world, BlockPos pos, EnumFacing side) {
+        return false;
     }
-  }
-  return Blocks.iron_block.getIcon(side, 0);
-  }
 
-@Override
-public void registerBlockIcons(IIconRegister register)
-  {
-  }
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
 
-@Override
-public void onPostBlockPlaced(World world, int x, int y, int z, int meta)
-  {
-  super.onPostBlockPlaced(world, x, y, z, meta);
-  TileFlywheelStorage te = (TileFlywheelStorage) world.getTileEntity(x, y, z);
-  te.blockPlaced();
-  }
+    @Override
+    public boolean isNormalCube(IBlockState state) {
+        return false;
+    }
 
-@Override
-public void breakBlock(World world, int x, int y, int z, Block p_149749_5_, int p_149749_6_)
-  {
-  TileFlywheelStorage te = (TileFlywheelStorage) world.getTileEntity(x, y, z);
-  super.breakBlock(world, x, y, z, p_149749_5_, p_149749_6_);
-  te.blockBroken();//have to call post block-break so that the controller properly sees the block as gone
-  }
+/*
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int side, int meta) {
+        switch (meta) {
+            case 0: {
+                return Blocks.PLANKS.getIcon(side, 0);
+            }
+            case 1: {
+                return Blocks.IRON_BLOCK.getIcon(side, 0);
+            }
+            case 2: {
+                //TODO change this to steel block icon...once I make a steel block...
+                return Blocks.IRON_BLOCK.getIcon(side, 0);
+            }
+        }
+        return Blocks.IRON_BLOCK.getIcon(side, 0);
+    }
 
-@Override
-public int damageDropped(int meta)
-  {
-  return meta;
-  }
+    @Override
+    @SideOnly(Side.CLIENT)
+    public void registerBlockIcons(IIconRegister register) {
+    }
 
-@Override
-public TileEntity createTileEntity(World world, int metadata)
-  {  
-  return new TileFlywheelStorage();
-  }
+*/
 
-@Override
-public boolean hasTileEntity(int metadata)
-  {
-  return true;
-  }
+    @Override
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+        super.onBlockPlacedBy(world, pos, state, placer, stack);
+        TileFlywheelStorage te = (TileFlywheelStorage) world.getTileEntity(pos);
+        te.blockPlaced();
+    }
 
-@SuppressWarnings({ "unchecked", "rawtypes" })
-@Override
-public void getSubBlocks(Item p_149666_1_, CreativeTabs p_149666_2_, List list)
-  {
-  list.add(new ItemStack(Item.getItemFromBlock(this),1,0));
-  list.add(new ItemStack(Item.getItemFromBlock(this),1,1));
-  list.add(new ItemStack(Item.getItemFromBlock(this),1,2));
-  }
+    @Override
+    public void breakBlock(World world, BlockPos pos, IBlockState state) {
+        TileFlywheelStorage te = (TileFlywheelStorage) world.getTileEntity(pos);
+        super.breakBlock(world, pos, state);
+        te.blockBroken();//have to call post block-break so that the controller properly sees the block as gone //TODO this should probably be invalidate
+    }
+
+    @Override
+    public int damageDropped(IBlockState state) {
+        return state.getBlock().getMetaFromState(state); //TODO new state property
+    }
+
+    @Override
+    public TileEntity createTileEntity(World world, IBlockState state) {
+        return new TileFlywheelStorage();
+    }
+
+    @Override
+    public boolean hasTileEntity(IBlockState state) {
+        return true;
+    }
+
+    @Override
+    public void getSubBlocks(CreativeTabs creativeTab, NonNullList<ItemStack> list) {
+        list.add(new ItemStack(Item.getItemFromBlock(this), 1, 0));
+        list.add(new ItemStack(Item.getItemFromBlock(this), 1, 1));
+        list.add(new ItemStack(Item.getItemFromBlock(this), 1, 2));
+    }
 
 }

@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -55,7 +55,7 @@ import shadowmage.ancient_structures.common.template.save.TemplateExporter;
 
 public class TemplateFormatConverter
 {
-/**
+/*
  * cached TE instances to use for writing out of basic NBT data into tag to use for
  * converted rule
  */
@@ -68,7 +68,7 @@ private static TileEntityHopper teHopper = new TileEntityHopper();
 private static TileEntityBrewingStand teBrewingStand = new TileEntityBrewingStand();
 private static TileEntityChest teChest = new TileEntityChest();
 
-private static HashSet<Block> specialHandledBlocks = new HashSet<Block>();//just a temp cache to keep track of what blocks to not register with blanket block rule
+private static HashSet<Block> specialHandledBlocks = new HashSet<>();//just a temp cache to keep track of what blocks to not register with blanket block rule
 
 static
 {
@@ -93,11 +93,11 @@ int lineNumber = -1;
 public StructureTemplate convertOldTemplate(File file, List<String> templateLines)
   {  
   lineNumber = -1;
-  /**
+  /*
    * parsed-out data, to be used to construct new template
    */
-  List<TemplateRule> parsedRules = new ArrayList<TemplateRule>();
-  List<TemplateRuleEntity> parsedEntityRules = new ArrayList<TemplateRuleEntity>();
+  List<TemplateRule> parsedRules = new ArrayList<>();
+  List<TemplateRuleEntity> parsedEntityRules = new ArrayList<>();
   short[] templateData = null;
   int xSize = 0, ySize = 0, zSize = 0;
   int xOffset = 0, yOffset = 0, zOffset = 0;
@@ -108,7 +108,7 @@ public StructureTemplate convertOldTemplate(File file, List<String> templateLine
     name = name.substring(0, name.length()-4);
     }
   Iterator<String> it = templateLines.iterator();
-  List<String> groupedLines = new ArrayList<String>();
+  List<String> groupedLines = new ArrayList<>();
   String line;
   int parsedLayers = 0;
   int readSizeParams = 0;

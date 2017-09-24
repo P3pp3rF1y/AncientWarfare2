@@ -1,101 +1,49 @@
 package net.shadowmage.ancientwarfare.npc.ai.faction;
 
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
-import net.minecraft.util.ChunkCoordinates;
-import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttack;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionMountedArcher;
 
-public class NpcAIFactionRangedAttack extends NpcAI
-{
+public class NpcAIFactionRangedAttack extends NpcAIAttack<NpcBase> {
 
-private final IRangedAttackMob rangedAttacker;
-private int attackDelay = 35;
-private double attackDistanceSq = 16.d * 16.d;
-private EntityLivingBase target;
+    private final IRangedAttackMob rangedAttacker;
+    private double attackDistanceSq = AWNPCStatics.archerRange * AWNPCStatics.archerRange;
 
-public NpcAIFactionRangedAttack(NpcBase npc)
-    {
-    super(npc);
-    this.rangedAttacker = (IRangedAttackMob)npc;//will classcastexception if improperly used..
-    this.moveSpeed = 1.d;
+    public NpcAIFactionRangedAttack(NpcBase npc) {
+        super(npc);
+        this.rangedAttacker = (IRangedAttackMob) npc;//will classcastexception if improperly used..
+        this.moveSpeed = 1.d;
+        if (npc instanceof NpcFactionMountedArcher)
+            attackDistanceSq /= 2;
     }
 
-@Override
-public boolean shouldExecute()
-  {
-  return npc.getIsAIEnabled() && npc.getAttackTarget()!=null && !npc.getAttackTarget().isDead;
-  }
-
-/**
- * Returns whether an in-progress EntityAIBase should continue executing
- */
-@Override
-public boolean continueExecuting()
-  {
-  return npc.getIsAIEnabled() && target!=null && !target.isDead && target==npc.getAttackTarget();
-  }
-
-/**
- * Resets the task
- */
-@Override
-public void resetTask()
-  {
-  target = null;
-  moveRetryDelay=0;
-  attackDelay=0;
-  npc.removeAITask(TASK_ATTACK + TASK_MOVE);
-  }
-
-@Override
-public void startExecuting()
-  {
-  target = npc.getAttackTarget();
-  moveRetryDelay=0;
-  attackDelay=0;
-  npc.addAITask(TASK_ATTACK);
-  }
-
-/**
- * Updates the task
- */
-@Override
-public void updateTask()
-  {  
-  double dist = this.npc.getDistanceSq(this.target.posX, this.target.posY, this.target.posZ);
-  boolean canSee = this.npc.getEntitySenses().canSee(this.target);  
-
-  this.attackDelay--;
-  this.npc.getLookHelper().setLookPositionWithEntity(this.target, 30.0F, 30.0F);
-  if(dist > attackDistanceSq || !canSee)
-    {
-    this.npc.addAITask(TASK_MOVE);
-    this.moveToEntity(target, dist);    
+    @Override
+    protected boolean shouldCloseOnTarget(double dist) {
+        return (dist > attackDistanceSq || !this.npc.getEntitySenses().canSee(this.getTarget()));
     }
-  else
-    {    
-    double homeDist = npc.getDistanceSqFromHome();
-    if(npc.getDistanceSqFromHome() > 9 && dist < 8*8)
-      {
-      npc.addAITask(TASK_MOVE);
-      ChunkCoordinates home = npc.getHomePosition();      
-      this.moveToPosition(home.posX, home.posY, home.posZ, homeDist); 
-      }
-    else
-      {
-      npc.removeAITask(TASK_MOVE);  
-      npc.getNavigator().clearPathEntity();
-      }
-    if(this.attackDelay<=0)
-      {
-      float pwr = (float)(attackDistanceSq / dist);
-      pwr = pwr < 0.1f ? 0.1f : pwr>1.f ? 1.f : pwr;
-      this.rangedAttacker.attackEntityWithRangedAttack(target, 1.f);
-      this.attackDelay=35;
-      }
-    }  
-  }
 
-
+    @Override
+    protected void doAttack(double dist){
+        double homeDist = npc.getDistanceSqFromHome();
+        if (homeDist > MIN_RANGE && dist < 8 * 8) {
+            npc.addAITask(TASK_MOVE);
+            this.moveToPosition(npc.getHomePosition(), homeDist);
+        } else {
+            npc.removeAITask(TASK_MOVE);
+            npc.getNavigator().clearPathEntity();
+        }
+        if (this.getAttackDelay() <= 0) {
+            int val = 0;//AIHelper.doQuiverBowThing(npc, getTarget()); TODO quiver bow alternative integration?
+            if(val>0){
+                this.setAttackDelay(val);
+                return;
+            }
+            float pwr = (float) (attackDistanceSq / dist);
+            pwr = pwr < 0.1f ? 0.1f : pwr > 1.f ? 1.f : pwr;
+            this.rangedAttacker.attackEntityWithRangedAttack(getTarget(), pwr);
+            this.setAttackDelay(35);
+        }
+    }
 }

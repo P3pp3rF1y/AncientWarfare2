@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -39,7 +39,7 @@ public class RenderTools
 static float zLevel = 0;
 
 
-/**
+/*
  * draw a player-position-normalized bounding box (can only be called during worldRender)
  * @param bb
  */
@@ -51,37 +51,37 @@ public static void drawOutlinedBoundingBox(AxisAlignedBB bb, float r, float g, f
   GL11.glLineWidth(8.0F);
   GL11.glDisable(GL11.GL_TEXTURE_2D);
   GL11.glDepthMask(false);
-  Tessellator tess = Tessellator.instance;
+  Tessellator tess = Tessellator.getInstance();
   tess.startDrawing(3);
-  tess.addVertex(bb.minX, bb.minY, bb.minZ);
-  tess.addVertex(bb.maxX, bb.minY, bb.minZ);
-  tess.addVertex(bb.maxX, bb.minY, bb.maxZ);
-  tess.addVertex(bb.minX, bb.minY, bb.maxZ);
-  tess.addVertex(bb.minX, bb.minY, bb.minZ);
+  bufferBuilder.pos(bb.minX, bb.minY, bb.minZ).endVertex();
+  bufferBuilder.pos(bb.maxX, bb.minY, bb.minZ).endVertex();
+  bufferBuilder.pos(bb.maxX, bb.minY, bb.maxZ).endVertex();
+  bufferBuilder.pos(bb.minX, bb.minY, bb.maxZ).endVertex();
+  bufferBuilder.pos(bb.minX, bb.minY, bb.minZ).endVertex();
   tess.draw();
   tess.startDrawing(3);
-  tess.addVertex(bb.minX, bb.maxY, bb.minZ);
-  tess.addVertex(bb.maxX, bb.maxY, bb.minZ);
-  tess.addVertex(bb.maxX, bb.maxY, bb.maxZ);
-  tess.addVertex(bb.minX, bb.maxY, bb.maxZ);
-  tess.addVertex(bb.minX, bb.maxY, bb.minZ);
+  bufferBuilder.pos(bb.minX, bb.maxY, bb.minZ).endVertex();
+  bufferBuilder.pos(bb.maxX, bb.maxY, bb.minZ).endVertex();
+  bufferBuilder.pos(bb.maxX, bb.maxY, bb.maxZ).endVertex();
+  bufferBuilder.pos(bb.minX, bb.maxY, bb.maxZ).endVertex();
+  bufferBuilder.pos(bb.minX, bb.maxY, bb.minZ).endVertex();
   tess.draw();
   tess.startDrawing(1);
-  tess.addVertex(bb.minX, bb.minY, bb.minZ);
-  tess.addVertex(bb.minX, bb.maxY, bb.minZ);
-  tess.addVertex(bb.maxX, bb.minY, bb.minZ);
-  tess.addVertex(bb.maxX, bb.maxY, bb.minZ);
-  tess.addVertex(bb.maxX, bb.minY, bb.maxZ);
-  tess.addVertex(bb.maxX, bb.maxY, bb.maxZ);
-  tess.addVertex(bb.minX, bb.minY, bb.maxZ);
-  tess.addVertex(bb.minX, bb.maxY, bb.maxZ);
+  bufferBuilder.pos(bb.minX, bb.minY, bb.minZ).endVertex();
+  bufferBuilder.pos(bb.minX, bb.maxY, bb.minZ).endVertex();
+  bufferBuilder.pos(bb.maxX, bb.minY, bb.minZ).endVertex();
+  bufferBuilder.pos(bb.maxX, bb.maxY, bb.minZ).endVertex();
+  bufferBuilder.pos(bb.maxX, bb.minY, bb.maxZ).endVertex();
+  bufferBuilder.pos(bb.maxX, bb.maxY, bb.maxZ).endVertex();
+  bufferBuilder.pos(bb.minX, bb.minY, bb.maxZ).endVertex();
+  bufferBuilder.pos(bb.minX, bb.maxY, bb.maxZ).endVertex();
   tess.draw();
   GL11.glDepthMask(true);
   GL11.glEnable(GL11.GL_TEXTURE_2D);
   GL11.glDisable(GL11.GL_BLEND);
   }
 
-/**
+/*
  * @param bb
  * @param player
  * @param partialTick
@@ -95,7 +95,7 @@ public static AxisAlignedBB adjustBBForPlayerPos(AxisAlignedBB bb, EntityPlayer 
   return bb.offset(-x, -y, -z);
   }
 
-/**
+/*
  * renders the given icon texture, of given size, at the current render coordinates
  * (pre-translate to position before rendering)
  * @param tex
@@ -104,7 +104,7 @@ public static AxisAlignedBB adjustBBForPlayerPos(AxisAlignedBB bb, EntityPlayer 
  */
 public static void renderIcon(String tex, int width, int height, int x, int y)
   {
-  Tessellator tess = Tessellator.instance;
+  Tessellator tess = Tessellator.getInstance();
   AWTextureManager.bindTexture(tex);
   int halfW = width/2;
   int halfH = height/2;
@@ -116,7 +116,7 @@ public static void renderIcon(String tex, int width, int height, int x, int y)
   tess.draw();
   }
 
-/**
+/*
  * renders the four corners of a texture, from the corner inward (e.g. for size-adaptable elements)
  * origin tex MUST be  256x256
  * @param x renderPosX
@@ -147,8 +147,9 @@ public static void drawTexturedModalRect(int par1, int par2, int par3, int par4,
   {
   float f = 0.00390625F;
   float f1 = 0.00390625F;
-  Tessellator tessellator = Tessellator.instance;
-  tessellator.startDrawingQuads();
+  Tessellator tessellator = Tessellator.getInstance();
+  BufferBuilder bufferBuilder = tessellator.getBuffer();
+  bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
   tessellator.addVertexWithUV((double)(par1 + 0), (double)(par2 + par6), (double)zLevel, (double)((float)(par3 + 0) * f), (double)((float)(par4 + par6) * f1));
   tessellator.addVertexWithUV((double)(par1 + par5), (double)(par2 + par6), (double)zLevel, (double)((float)(par3 + par5) * f), (double)((float)(par4 + par6) * f1));
   tessellator.addVertexWithUV((double)(par1 + par5), (double)(par2 + 0), (double)zLevel, (double)((float)(par3 + par5) * f), (double)((float)(par4 + 0) * f1));
@@ -158,8 +159,9 @@ public static void drawTexturedModalRect(int par1, int par2, int par3, int par4,
 
 public static void drawTexturedModelRectFromIcon(int par1, int par2, Icon par3Icon, int par4, int par5)
   {
-  Tessellator tessellator = Tessellator.instance;
-  tessellator.startDrawingQuads();
+  Tessellator tessellator = Tessellator.getInstance();
+  BufferBuilder bufferBuilder = tessellator.getBuffer();
+  bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION);
   tessellator.addVertexWithUV((double)(par1 + 0), (double)(par2 + par5), (double)zLevel, (double)par3Icon.getMinU(), (double)par3Icon.getMaxV());
   tessellator.addVertexWithUV((double)(par1 + par4), (double)(par2 + par5), (double)zLevel, (double)par3Icon.getMaxU(), (double)par3Icon.getMaxV());
   tessellator.addVertexWithUV((double)(par1 + par4), (double)(par2 + 0), (double)zLevel, (double)par3Icon.getMaxU(), (double)par3Icon.getMinV());
@@ -170,7 +172,7 @@ public static void drawTexturedModelRectFromIcon(int par1, int par2, Icon par3Ic
 public static List<String> getFormattedLines(List<String> inLines, int maxWidth)
   {
   FontRenderer render = Minecraft.getMinecraft().fontRenderer;
-  List<String> outLines = new ArrayList<String>();
+  List<String> outLines = new ArrayList<>();
   Iterator<String> inIt = inLines.iterator();
   
   String line;

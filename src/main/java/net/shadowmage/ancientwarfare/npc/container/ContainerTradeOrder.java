@@ -2,39 +2,43 @@ package net.shadowmage.ancientwarfare.npc.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumHand;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.util.EntityTools;
+import net.shadowmage.ancientwarfare.npc.item.AWNPCItems;
 import net.shadowmage.ancientwarfare.npc.orders.TradeOrder;
 
-public class ContainerTradeOrder extends ContainerBase
-{
+public class ContainerTradeOrder extends ContainerBase {
 
-public final TradeOrder orders;
+    private EnumHand hand;
+    public final TradeOrder orders;
 
-public ContainerTradeOrder(EntityPlayer player, int x, int y, int z)
-  {
-  super(player, x, y, z);
-  orders = TradeOrder.getTradeOrder(player.getCurrentEquippedItem());
-  
-  int startY = 240-4-8-4*18;  
-  addPlayerSlots(player, 8, startY, 4);
-  }
+    public ContainerTradeOrder(EntityPlayer player, int x, int y, int z) {
+        super(player);
+        this.hand = EntityTools.getHandHoldingItem(player, AWNPCItems.tradeOrder);
+        orders = TradeOrder.getTradeOrder(player.getHeldItem(hand));
 
-@Override
-public void handlePacketData(NBTTagCompound tag)
-  {
-  if(tag.hasKey("tradeOrder"))
-    {
-    orders.readFromNBT(tag.getCompoundTag("tradeOrder"));
-    }  
-  }
-
-@Override
-public void onContainerClosed(EntityPlayer par1EntityPlayer)
-  {  
-  if(!player.worldObj.isRemote)
-    {
-    TradeOrder.writeTradeOrder(player.getCurrentEquippedItem(), orders);
+        addPlayerSlots((256 - (9 * 18)) / 2, 240 - 4 - 8 - 4 * 18, 4);
     }
-  super.onContainerClosed(par1EntityPlayer);
-  }
+
+    @Override
+    public void handlePacketData(NBTTagCompound tag) {
+        if (tag.hasKey("tradeOrder")) {
+            orders.deserializeNBT(tag.getCompoundTag("tradeOrder"));
+        }
+    }
+
+    @Override
+    public void onContainerClosed(EntityPlayer par1EntityPlayer) {
+        if (!player.world.isRemote) {
+            orders.write(player.getHeldItem(hand));
+        }
+        super.onContainerClosed(par1EntityPlayer);
+    }
+
+    public void onClose() {
+        NBTTagCompound outer = new NBTTagCompound();
+        outer.setTag("tradeOrder", orders.serializeNBT());
+        sendDataToServer(outer);
+    }
 }

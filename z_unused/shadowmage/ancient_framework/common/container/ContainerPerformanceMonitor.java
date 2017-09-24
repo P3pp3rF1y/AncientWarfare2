@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -39,7 +39,7 @@ public long npcTick;
 public long vehicleTick;
 
 
-/**
+/*
  * @param openingPlayer
  * @param synch
  */
@@ -76,7 +76,7 @@ public List<NBTTagCompound> getInitData()
 public void detectAndSendChanges()
   {
   super.detectAndSendChanges();
-  if(player.worldObj.isRemote){return;}
+  if(player.world.isRemote){return;}
   NBTTagCompound tag = new NBTTagCompound();
   tag.setLong("tick", ServerPerformanceMonitor.tickTime);
   tag.setLong("tps", ServerPerformanceMonitor.tickPerSecond);

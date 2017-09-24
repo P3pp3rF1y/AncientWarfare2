@@ -24,7 +24,7 @@ private final int researchId;
 private final String researchName;
 private Set<Integer> dependencies;
 
-/**
+/*
  * set the first time dependencies for this goal are queried.  further queries for full-dependencies
  * will return this cached set
  */
@@ -34,7 +34,7 @@ public ResearchGoal(int id, String name)
   {
   researchId = id;
   researchName = name;
-  dependencies = new HashSet<Integer>();
+  dependencies = new HashSet<>();
   }
 
 public String getName()
@@ -56,7 +56,7 @@ public ResearchGoal addDependencies(int... deps)
   return this;
   }
 
-/**
+/*
  * return the direct dependencies for this goal -- does not include any sub-dependencies -- see {@link #resolveDependeciesFor(ResearchGoal)}
  * @return
  */
@@ -119,7 +119,7 @@ public static ResearchGoal getGoal(int id)
   return goalsByID.get(id);
   }
 
-/**
+/*
  * Return a set of ResearchGoals corresponding to the input collection of goal numbers.<br>
  * Invalid goal numbers, or duplicate input numbers, will be ignored.  The returned set will<br>
  * only contain valid research goals, with no duplicates.
@@ -128,7 +128,7 @@ public static ResearchGoal getGoal(int id)
  */
 public static Set<ResearchGoal> getGoalsFor(Collection<Integer> researchNums)
   {
-  Set<ResearchGoal> out = new HashSet<ResearchGoal>();
+  Set<ResearchGoal> out = new HashSet<>();
   for(Integer i : researchNums)
     {
     if(goalsByID.containsKey(i))
@@ -139,7 +139,7 @@ public static Set<ResearchGoal> getGoalsFor(Collection<Integer> researchNums)
   return out;
   }
 
-/**
+/*
  * Return a set of research goal numbers comprising the entire dependency tree for the input
  * research goal.  This dependency set shall contain every direct dependency for the input goal, and
  * any dependencies of those goals (recursive until base).
@@ -152,7 +152,7 @@ public static Set<Integer> resolveDependeciesFor(ResearchGoal goal)
     {
     return goal.resolvedDependencies;
     }
-  Set<Integer> foundDependencies = new HashSet<Integer>();
+  Set<Integer> foundDependencies = new HashSet<>();
   LinkedList<Integer> openList = new LinkedList<Integer>();  
   openList.addAll(goal.dependencies);
   Set<Integer> gDeps;  

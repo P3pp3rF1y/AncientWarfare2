@@ -1,167 +1,156 @@
 package net.shadowmage.ancientwarfare.npc.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.text.ITextComponent;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.npc.item.ItemUpkeepOrder;
 
-public class InventoryNpcEquipment implements IInventory
-{
+import javax.annotation.Nonnull;
 
-NpcBase npc;
+public class InventoryNpcEquipment implements IInventory {
 
-ItemStack[] inventory;
+    private final NpcBase npc;
+    private final NonNullList<ItemStack> inventory;
 
-public InventoryNpcEquipment(NpcBase npc)
-  {
-  this.npc = npc;
-  inventory = new ItemStack[8];
-  for(int i = 0; i < 5; i++)
-    {
-    inventory[i] = npc.getEquipmentInSlot(i)==null? null : npc.getEquipmentInSlot(i).copy();
+    public InventoryNpcEquipment(NpcBase npc) {
+        this.npc = npc;
+        inventory = NonNullList.withSize(getSizeInventory(), ItemStack.EMPTY);
+        for (int i = 0; i < inventory.size(); i++) {
+            if (!npc.getItemStackFromSlot(i).isEmpty()) {
+                inventory.set(i, npc.getItemStackFromSlot(i).copy());
+            }
+        }
     }
-  inventory[5]=npc.ordersStack==null ? null : npc.ordersStack.copy();
-  inventory[6]=npc.upkeepStack==null ? null : npc.upkeepStack.copy();
-  inventory[7]=npc.getShieldStack()==null ? null : npc.getShieldStack().copy();      
-  }
 
-@Override
-public int getSizeInventory()
-  {  
-  return 8;
-  }
-
-@Override
-public ItemStack getStackInSlot(int slot)
-  {
-  if(npc.worldObj.isRemote)
-    {
-    return inventory[slot];
+    @Override
+    public int getSizeInventory() {
+        return 8;
     }
-  else
-    {
-    if(slot==7){return npc.getShieldStack();}
-    else if(slot==6){return npc.upkeepStack;}
-    else if(slot==5){return npc.ordersStack;}
-    else
-      {
-      return npc.getEquipmentInSlot(slot);
-      }
+
+    @Override
+    public boolean isEmpty() {
+        return inventory.isEmpty();
     }
-  }
 
-@Override
-public void setInventorySlotContents(int slot, ItemStack stack)
-  {
-  if(npc.worldObj.isRemote)
-    {
-    inventory[slot]=stack;    
+    @Override
+    public ItemStack getStackInSlot(int slot) {
+        if (npc.world.isRemote) {
+            return inventory.get(slot);
+        } else {
+            return npc.getItemStackFromSlot(slot);
+        }
     }
-  else
-    {
-    if(slot==7){npc.setShieldStack(stack);}
-    else if(slot==6){npc.upkeepStack=stack;}
-    else if(slot==5){npc.ordersStack=stack;}
-    else
-      {
-      npc.setCurrentItemOrArmor(slot, stack);
-      }
+
+    @Override
+    public void setInventorySlotContents(int slot, ItemStack stack) {
+        if (npc.world.isRemote) {
+            inventory.set(slot, stack);
+        } else {
+            npc.setItemStackToSlot(slot, stack);
+        }
     }
-  }
 
-@Override
-public ItemStack decrStackSize(int slot, int amount)
-  {
-  ItemStack item = getStackInSlot(slot);
-  if(item!=null)
-    {
-    if(amount>item.stackSize){amount=item.stackSize;}
-    ItemStack copy = item.copy();
-    copy.stackSize=amount;
-    item.stackSize-=amount;
-    if(item.stackSize<=0)
-      {
-      setInventorySlotContents(slot, null);      
-      }
-    return copy;
+    @Override
+    public ItemStack decrStackSize(int slot, int amount) {
+        @Nonnull ItemStack item = getStackInSlot(slot);
+        if (!item.isEmpty()) {
+            if (amount > item.getCount()) {
+                amount = item.getCount();
+            }
+            @Nonnull ItemStack copy = item.copy();
+            copy.setCount(amount);
+            item.shrink(amount);
+            if (item.getCount() <= 0) {
+                setInventorySlotContents(slot, ItemStack.EMPTY);
+            }
+            return copy;
+        }
+        return ItemStack.EMPTY;
     }
-  return null;
-  }
 
-@Override
-public ItemStack getStackInSlotOnClosing(int var1)
-  {
-  ItemStack item = getStackInSlot(var1);
-  this.setInventorySlotContents(var1, null);
-  return item;
-  }
+    @Override
+    public ItemStack removeStackFromSlot(int var1) {
+        @Nonnull ItemStack item = getStackInSlot(var1);
+        this.setInventorySlotContents(var1, ItemStack.EMPTY);
+        return item;
+    }
 
-@Override
-public String getInventoryName()
-  {
-  return "AWNpcInventoryWrapper";
-  }
+    @Override
+    public String getName() {
+        return "AWNpcInventoryWrapper";
+    }
 
-@Override
-public boolean hasCustomInventoryName()
-  {
-  return false;
-  }
+    @Override
+    public boolean hasCustomName() {
+        return false;
+    }
 
-@Override
-public int getInventoryStackLimit()
-  {
-  return 64;
-  }
+    @Override
+    public ITextComponent getDisplayName() {
+        return null;
+    }
 
-@Override
-public void markDirty()
-  {
-  // TODO Auto-generated method stub
-  //TODO inform NPC to update work-types
-  }
+    @Override
+    public int getInventoryStackLimit() {
+        return 1;
+    }
 
-@Override
-public boolean isUseableByPlayer(EntityPlayer var1)
-  {
-  return true;
-  }
+    @Override
+    public void markDirty() {
 
-@Override
-public void openInventory()
-  {
-  // TODO Auto-generated method stub
-  }
+    }
 
-@Override
-public void closeInventory()
-  {
-  // TODO Auto-generated method stub
-  }
+    @Override
+    public boolean isUsableByPlayer(EntityPlayer var1) {
+        return npc.isEntityAlive();
+    }
 
-@Override
-public boolean isItemValidForSlot(int var1, ItemStack var2)
-  {
-  if(var2==null || var2.getItem()==null){return false;}
-  switch(var1)
-  {
-  case 0://weapon/tool, open
-  // TODO validate input for weapon slot?
-  return true;
-  case 1://head
-  return (var2.getItem() instanceof ItemArmor) && ((ItemArmor)var2.getItem()).armorType==3;
-  case 2://chest
-  return (var2.getItem() instanceof ItemArmor) && ((ItemArmor)var2.getItem()).armorType==2;
-  case 3://legs
-  return (var2.getItem() instanceof ItemArmor) && ((ItemArmor)var2.getItem()).armorType==1;
-  case 4://boots
-  return (var2.getItem() instanceof ItemArmor) && ((ItemArmor)var2.getItem()).armorType==0;
-  case 5:
-  return npc.isValidOrdersStack(var2);
-  default:
-  return true;
-  }
-  }
+    @Override
+    public void openInventory(EntityPlayer player) {
+
+    }
+
+    @Override
+    public void closeInventory(EntityPlayer player) {
+
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int var1, ItemStack var2) {
+        if (var2 == null || var2.isEmpty() || var1 < 0) {
+            return false;
+        }
+        if(var1 == NpcBase.UPKEEP_SLOT)
+            return var2.getItem() instanceof ItemUpkeepOrder;
+        else if(var1 == NpcBase.ORDER_SLOT)
+            return npc.isValidOrdersStack(var2);
+        else if(var1 > 1 && var1 < NpcBase.ORDER_SLOT)//armors
+            return var2.getItem().isValidArmor(var2, EntityEquipmentSlot.values()[NpcBase.ORDER_SLOT - 1 - var1], npc);
+        return true;//weapon/tool, shield slot   TODO add slot validation ?
+    }
+
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+        inventory.clear();
+    }
 
 }

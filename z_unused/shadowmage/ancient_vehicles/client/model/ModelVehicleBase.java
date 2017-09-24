@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -33,7 +33,7 @@ public abstract class ModelVehicleBase extends ModelBase
 {
 
 HashMap<String, ModelRendererVehicle> boxMap = new HashMap<String, ModelRendererVehicle>();
-List<ModelRendererVehicle> baseBoxes = new ArrayList<ModelRendererVehicle>();
+List<ModelRendererVehicle> baseBoxes = new ArrayList<>();
 
 @Override
 public abstract void render(Entity par1Entity, float par2, float par3, float par4, float par5, float par6, float par7);
@@ -67,7 +67,7 @@ public void setPieceRotation(String piece, float x, float y, float z)
 
 public void renderModel()
   {
-  /**
+  /*
    * TODO find a way to make a list of base pieces -- those with no parent
    */
   }

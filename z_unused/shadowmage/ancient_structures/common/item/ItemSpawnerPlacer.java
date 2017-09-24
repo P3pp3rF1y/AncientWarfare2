@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -37,7 +37,7 @@ import shadowmage.ancient_framework.common.utils.BlockPosition;
 public class ItemSpawnerPlacer extends AWItemClickable
 {
 
-/**
+/*
  * @param itemID
  */
 public ItemSpawnerPlacer(Configuration config, String itemName)
@@ -69,8 +69,8 @@ public boolean onUsedFinal(World world, EntityPlayer player, ItemStack stack, Bl
       }
     if(!player.capabilities.isCreativeMode)
       {
-      stack.stackSize--;
-      if(stack.stackSize<=0)
+      stack.shrink(1);
+      if(stack.getCount() <=0)
         {
         player.inventory.mainInventory[player.inventory.currentItem]=null;
         }
@@ -87,7 +87,7 @@ public boolean onUsedFinalLeft(World world, EntityPlayer player, ItemStack stack
   }
 
 @Override
-public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
+public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag)
   {
   if(stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnData"))
     {

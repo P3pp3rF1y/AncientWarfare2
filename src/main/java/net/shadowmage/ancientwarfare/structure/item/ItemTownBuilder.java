@@ -1,44 +1,29 @@
 package net.shadowmage.ancientwarfare.structure.item;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.core.interfaces.IItemClickable;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.structure.town.WorldTownGenerator;
-import codechicken.lib.math.MathHelper;
 
-public class ItemTownBuilder extends Item implements IItemKeyInterface, IItemClickable
-{
+public class ItemTownBuilder extends ItemBaseStructure implements IItemKeyInterface {
 
-/**
- * @param itemID
- */
-public ItemTownBuilder(String itemName)
-  {
-  this.setUnlocalizedName(itemName);
-  this.setCreativeTab(AWStructuresItemLoader.structureTab);
-  this.setMaxStackSize(1);  
-  this.setTextureName("ancientwarfare:structure/structure_builder");//TODO make texture...
-  }
-
-@Override
-public boolean cancelRightClick(EntityPlayer player, ItemStack stack)
-  {
-  return true;
-  }
-
-@Override
-public boolean cancelLeftClick(EntityPlayer player, ItemStack stack)
-  {
-  return false;
-  }
+    public ItemTownBuilder(String name) {
+        super(name);
+        setMaxStackSize(1);
+        //this.setTextureName("ancientwarfare:structure/structure_builder");//TODO make texture...
+    }
 
 //@SuppressWarnings({ "unchecked", "rawtypes" })
 //@Override
-//public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean par4)
+//public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag)
 //  {
 //  String structure = "guistrings.no_selection";
 //  ItemStructureSettings.getSettingsFor(stack, viewSettings);
@@ -46,44 +31,33 @@ public boolean cancelLeftClick(EntityPlayer player, ItemStack stack)
 //    {
 //    structure = viewSettings.name;
 //    }  
-//  list.add(StatCollector.translateToLocal("guistrings.current_structure")+" "+StatCollector.translateToLocal(structure));
+//  list.add(I18n.format("guistrings.current_structure")+" "+I18n.format(structure));
 //  }
 
-@Override
-public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player)
-  {
-  return false;
-  }
-
-@Override
-public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key)
-  {
-  return key==ItemKey.KEY_0;
-  }
-
-@Override
-public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key)
-  {
-  if(player==null || player.worldObj.isRemote)
-    {
-    return;
+    @Override
+    public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player) {
+        return false;
     }
-  long t1 = System.nanoTime();
-  WorldTownGenerator.instance().attemptGeneration(player.worldObj, player.worldObj.rand, MathHelper.floor_double(player.posX), MathHelper.floor_double(player.posZ));
-  long t2 = System.nanoTime();
-  AWLog.logDebug("Total Town gen nanos (incl. validation): "+(t2-t1));
-  }
 
-@Override
-public boolean onRightClickClient(EntityPlayer player, ItemStack stack){return false;}//TODO return true when switching to using GUI
+    @Override
+    public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key) {
+        return key == ItemKey.KEY_0;
+    }
 
-@Override
-public void onRightClick(EntityPlayer player, ItemStack stack){}//TODO open town-type selection GUI
+    @Override
+    public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
+        if (player == null || player.world.isRemote) {
+            return;
+        }
+        long t1 = System.nanoTime();
+        WorldTownGenerator.INSTANCE.attemptGeneration(player.world, MathHelper.floor(player.posX), MathHelper.floor(player.posZ));
+        long t2 = System.nanoTime();
+        AWLog.logDebug("Total Town gen nanos (incl. validation): " + (t2 - t1));
+    }
 
-@Override
-public boolean onLeftClickClient(EntityPlayer player, ItemStack stack){return false;}
-
-@Override
-public void onLeftClick(EntityPlayer player, ItemStack stack){}
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+        return new ActionResult<>(EnumActionResult.PASS, player.getHeldItem(hand));
+    }//TODO open town-type selection GUI
 
 }

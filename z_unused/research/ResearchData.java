@@ -7,7 +7,7 @@ import java.util.Set;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.world.WorldSavedData;
+import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
 
 public class ResearchData extends WorldSavedData
@@ -40,7 +40,7 @@ public void readFromNBT(NBTTagCompound tag)
     playerEntry = researchList.getCompoundTagAt(i);
     name = playerEntry.getString("playerName");
     researchData = playerEntry.getIntArray("researchSet");
-    research = new HashSet<Integer>();
+    research = new HashSet<>();
     for(int k = 0; k < researchData.length; k++)
       {
       research.add(researchData[k]);
@@ -78,7 +78,7 @@ public void writeToNBT(NBTTagCompound tag)
   tag.setTag("researchList", researchList);
   }
 
-/**
+/*
  * returns true if the player does not know the input research<br>
  * and the player already knows all dependencies of the input research
  * @param playerName
@@ -89,7 +89,7 @@ public boolean canPlayerLearn(String playerName, int research)
   {
   if(!playerResearchData.containsKey(playerName))
     {
-    playerResearchData.put(playerName, new HashSet<Integer>());
+    playerResearchData.put(playerName, new HashSet<>());
     this.markDirty();
     }
   return playerResearchData.get(playerName).containsAll(ResearchGoal.resolveDependeciesFor(ResearchGoal.getGoal(research)));
@@ -103,7 +103,7 @@ public Set<Integer> getResearchFor(String playerName)
     }
   else
     {
-    Set<Integer> research = new HashSet<Integer>();    
+    Set<Integer> research = new HashSet<>();
     playerResearchData.put(playerName, research);
     this.markDirty();
     return research;
@@ -114,7 +114,7 @@ public void addResearchTo(String playerName, int research)
   {
   if(!playerResearchData.containsKey(playerName))
     {
-    playerResearchData.put(playerName, new HashSet<Integer>());
+    playerResearchData.put(playerName, new HashSet<>());
     }
   playerResearchData.get(playerName).add(research);
   this.markDirty();

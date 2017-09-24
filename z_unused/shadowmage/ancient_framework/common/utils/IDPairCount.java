@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -22,7 +22,7 @@ package shadowmage.ancient_framework.common.utils;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-/**
+/*
  * need to remove, it is pretty much just an item-stack
  * @author Shadowmage
  *
@@ -31,7 +31,7 @@ public class IDPairCount extends IDPair
 {
 
 public int count = 1;
-/**
+/*
  * @param id
  * @param meta
  */

@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -44,9 +44,9 @@ Set<String> validTargetBlocksRear;
 public StructureValidatorHarbor()
   {
   super(StructureValidationType.HARBOR);
-  validTargetBlocks = new HashSet<String>();
-  validTargetBlocksSide = new HashSet<String>();
-  validTargetBlocksRear = new HashSet<String>();
+  validTargetBlocks = new HashSet<>();
+  validTargetBlocksSide = new HashSet<>();
+  validTargetBlocksRear = new HashSet<>();
   validTargetBlocks.addAll(WorldStructureGenerator.defaultTargetBlocks);
   validTargetBlocksSide.addAll(WorldStructureGenerator.defaultTargetBlocks);
   validTargetBlocksRear.add(BlockDataManager.getBlockName(Block.waterStill));  
@@ -64,7 +64,7 @@ protected void setDefaultSettings(StructureTemplate template)
 @Override
 public boolean shouldIncludeForSelection(World world, int x, int y, int z, int face, StructureTemplate template)
   {
-  /**
+  /*
    * testing that front target position is valid block
    * then test back target position to ensure that it has water at same level
    * or at an acceptable level difference

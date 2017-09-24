@@ -1,0 +1,1 @@
+START "" c:\eclipse\eclipse.exe -data "%CD%\eclipse"

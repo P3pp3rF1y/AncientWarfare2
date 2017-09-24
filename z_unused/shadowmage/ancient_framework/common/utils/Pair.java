@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -20,7 +20,7 @@
  */
 package shadowmage.ancient_framework.common.utils;
 
-/**
+/*
  * generic 2-tuple...becuase...java doesn't freaking have one...
  * @author Shadowmage
  *

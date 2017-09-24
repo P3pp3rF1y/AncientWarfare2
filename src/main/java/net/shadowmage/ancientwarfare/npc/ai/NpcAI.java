@@ -1,119 +1,178 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
-import net.minecraft.util.Vec3;
-import net.shadowmage.ancientwarfare.core.util.BlockPosition;
-import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
+import net.minecraft.entity.ai.RandomPositionGenerator;
+import net.minecraft.pathfinding.Path;
+import net.minecraft.pathfinding.PathPoint;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
-/**
+import java.util.HashSet;
+
+/*
  * AI template class with utility methods and member access for a non-specific NPC type
- * @author Shadowmage
  *
+ * @author Shadowmage
  */
-public abstract class NpcAI extends EntityAIBase
-{
-/**
- * used during npc-ai task-rendering to determine how many bits to loop through
- * of the task bitfield -- needs to be increased if more task types / bits are added
- */
-public static final int NUMBER_OF_TASKS = 10;
-public static final int TASK_ATTACK = 1;
-public static final int TASK_UPKEEP = 2;
-public static final int TASK_IDLE_HUNGRY = 4;
-public static final int TASK_GO_HOME = 8;
-public static final int TASK_WORK = 16;
-public static final int TASK_PATROL = 32;
-public static final int TASK_GUARD = 64;
-public static final int TASK_FOLLOW = 128;
-public static final int TASK_WANDER = 256;
-public static final int TASK_MOVE = 512;
+public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
+    /*
+     * used during npc-ai task-rendering to determine how many bits to loop through
+     * of the task bitfield -- needs to be increased if more task types / bits are added
+     */
+    public static final int NUMBER_OF_TASKS = 14;
+    public static final int TASK_ATTACK = 1;
+    public static final int TASK_UPKEEP = 2;
+    public static final int TASK_IDLE_HUNGRY = 4;
+    public static final int TASK_GO_HOME = 8;
+    public static final int TASK_WORK = 16;
+    public static final int TASK_PATROL = 32;
+    public static final int TASK_GUARD = 64;
+    public static final int TASK_FOLLOW = 128;
+    public static final int TASK_WANDER = 256;
+    public static final int TASK_MOVE = 512;
+    public static final int TASK_ALARM = 1024;
+    public static final int TASK_FLEE = 2048;
+    public static final int TASK_SLEEP = 4096;
+    public static final int TASK_RAIN = 8192;
+    
 
-/**
- * internal flag used to determine exclusion types
- */
-public static final int MOVE = 1;
-public static final int ATTACK = 2;
-public static final int SWIM = 4;
-public static final int HUNGRY = 8;
+    /*
+     * internal flag used to determine exclusion types
+     */
+    public static final int MOVE = 1;
+    public static final int ATTACK = 2;
+    public static final int SWIM = 4;
+    public static final int HUNGRY = 8;
 
-protected int moveRetryDelay;
-protected double moveSpeed = 1.d;
-private double maxPFDist;
-private double maxPFDistSq;
+    public static final int MIN_RANGE = 9;
+    
+    private static HashSet<String> HOSTILE_ENTITIES = new HashSet<>();
 
+    protected int moveRetryDelay;
+    protected double moveSpeed = 1.d;
+    private double maxPFDist;
+    private double maxPFDistSq;
 
-protected NpcBase npc;
+    protected T npc;
 
-public NpcAI(NpcBase npc)
-  {
-  this.npc = npc;
-  maxPFDist = AWNPCStatics.npcPathfindRange * 0.90d;
-  
-  maxPFDistSq = maxPFDist * maxPFDist;
-  }
+    public NpcAI(T npc) {
+        this.npc = npc;
+        maxPFDist = npc.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getBaseValue() * 0.90d;
 
-protected final void moveToEntity(Entity target, double sqDist)
-  {
-  moveToPosition(target.posX, target.boundingBox.minY, target.posZ, sqDist);
-  }
-
-protected final void moveToPosition(int x, int y, int z, double sqDist)
-  {
-  moveToPosition(x+0.5d, y, z+0.5d, sqDist);
-  }
-
-protected final void moveToPosition(BlockPosition pos, double sqDist)
-  {
-  moveToPosition(pos.x+0.5d, pos.y, pos.z+0.5d, sqDist);
-  }
-
-protected final void moveToPosition(double x, double y, double z, double sqDist)
-  {
-  moveRetryDelay--;
-  if(moveRetryDelay<=0)
-    {
-    if(sqDist > maxPFDistSq)
-      {
-      moveLongDistance(x, y, z);
-      moveRetryDelay = 60;//3 second delay between PF attempts, give the entity time to get a bit closer to target
-      }
-    else
-      {
-      npc.getNavigator().tryMoveToXYZ(x, y, z, moveSpeed);
-      moveRetryDelay=10;//base .5 second retry delay
-      if(sqDist>256){moveRetryDelay+=10;}//add .5 seconds if distance>16
-      if(sqDist>1024){moveRetryDelay+=20;}//add another 1 second if distance>32 (delay will be 2 seconds total at this point)
-      }
+        maxPFDistSq = maxPFDist * maxPFDist;
     }
-  }
 
-protected final void moveLongDistance(double x, double y, double z)
-  {
-  Vec3 vec = Vec3.createVectorHelper(x - npc.posX, y - npc.posY, z - npc.posZ);
-  
-  //normalize vector to a -1 <-> 1 value range
-  double w = Math.sqrt(vec.xCoord*vec.xCoord + vec.yCoord*vec.yCoord + vec.zCoord*vec.zCoord);
-  if(w!=0)
-    {
-    vec.xCoord /= w;
-    vec.yCoord /= w;
-    vec.zCoord /= w;
+    protected final void moveToEntity(Entity target, double sqDist) {
+        moveToPosition(target.posX, target.getEntityBoundingBox().minY, target.posZ, sqDist);
     }
-  
-  //then mult by PF distance to find the proper vector for our PF length
-  vec.xCoord *= maxPFDist;
-  vec.yCoord *= maxPFDist;
-  vec.zCoord *= maxPFDist;
-  
-  //finally re-offset by npc position to get an actual target position
-  vec.xCoord += npc.posX;
-  vec.yCoord += npc.posY;
-  vec.zCoord += npc.posZ;
-  
-  //move npc towards the calculated partial target
-  npc.getNavigator().tryMoveToXYZ(vec.xCoord, vec.yCoord, vec.zCoord, moveSpeed);
-  }
 
+    protected final void moveToPosition(int x, int y, int z, double sqDist) {
+        moveToPosition(x + 0.5d, y, z + 0.5d, sqDist);
+    }
+
+    protected final void moveToPosition(BlockPos pos, double sqDist) {
+        moveToPosition(pos.getX(), pos.getY(), pos.getZ(), sqDist);
+    }
+    
+    /*
+     * Forced move without delay. Should only be used in logic that has it's own delay.
+     * @param pos
+     * @param sqDist
+     * @param forced
+     */
+    protected final void moveToPosition(BlockPos pos, double sqDist, boolean forced) {
+        moveRetryDelay = 0;
+        moveToPosition(pos, sqDist);
+    }
+
+    protected final void moveToPosition(double x, double y, double z, double sqDist) {
+        moveRetryDelay--;
+        if (moveRetryDelay <= 0) {
+            if (sqDist > maxPFDistSq) {
+                moveLongDistance(x, y, z);
+                moveRetryDelay = 60;//3 second delay between PF attempts, give the entity time to get a bit closer to target
+            } else {
+                setPath(x, y, z);
+                moveRetryDelay = 10;//base .5 second retry delay
+                if (sqDist > 256) {
+                    moveRetryDelay += 10;
+                }//add .5 seconds if distance>16
+                if (sqDist > 1024) {
+                    moveRetryDelay += 20;
+                }//add another 1 second if distance>32 (delay will be 2 seconds total at this point)
+            }
+        }
+    }
+
+    protected final void moveLongDistance(double x, double y, double z) {
+        Vec3d vec = new Vec3d(x - npc.posX, y - npc.posY, z - npc.posZ);
+
+        //normalize vector to a -1 <-> 1 value range
+        double w = Math.sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
+        if (w != 0) {
+            vec = vec.scale(1d / w);
+        }
+
+        //then mult by PF distance to find the proper vector for our PF length
+        vec = vec.scale(maxPFDist);
+
+        //finally re-offset by npc position to get an actual target position
+        vec = vec.addVector(npc.posX, npc.posY, npc.posZ);
+
+        //move npc towards the calculated partial target
+        setPath(vec.x, vec.y, vec.z);
+    }
+
+    protected final void returnHome(){
+        setPath(npc.getHomePosition());
+    }
+
+    protected final void setPath(double x, double y, double z){
+        Path path = trimPath(npc.getNavigator().getPathToXYZ(x, y, z));
+        npc.getNavigator().setPath(path, moveSpeed);
+    }
+
+    protected final void setPath(BlockPos pos){
+        Path path = trimPath(npc.getNavigator().getPathToPos(pos));
+        npc.getNavigator().setPath(path, moveSpeed);
+    }
+
+    protected Path trimPath(Path path){
+        if(path!=null){
+            int index = path.getCurrentPathIndex();
+            PathPoint pathpoint = path.getPathPointFromIndex(index);
+            if(npc.getBlockPathWeight(new BlockPos(pathpoint.x, pathpoint.y, pathpoint.z)) >= 0) {
+
+                for (int i = index + 1; i < path.getCurrentPathLength() ; i++){
+                    pathpoint = path.getPathPointFromIndex(i);
+                    if (npc.getBlockPathWeight(new BlockPos(pathpoint.x, pathpoint.y, pathpoint.z))<0){
+                        path.setCurrentPathLength(i - 1);
+                        break;
+                    }
+                }
+            }else{
+                Vec3d vec = RandomPositionGenerator.findRandomTargetBlockAwayFrom(npc, MIN_RANGE, MIN_RANGE, new Vec3d(npc.posX, npc.posY, npc.posZ));
+                if(vec!=null)
+                    return npc.getNavigator().getPathToXYZ(vec.x, vec.y, vec.z);
+            }
+        }
+        return path;
+    }
+    
+    /*
+     * Returns true if the given entity targets/attacks NPC's
+     */
+    public static boolean isAlwaysHostileToNpcs(Entity entity) {
+        if (HOSTILE_ENTITIES.contains(EntityList.getEntityString(entity)))
+            return true;
+        return false;
+    }
+    
+    public static void addHostileEntity(Entity entity) {
+        HOSTILE_ENTITIES.add(EntityList.getEntityString(entity));
+    }
 }

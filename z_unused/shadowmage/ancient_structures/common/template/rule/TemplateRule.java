@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -35,7 +35,7 @@ import shadowmage.ancient_framework.common.utils.StringTools;
 import shadowmage.ancient_structures.AWStructures;
 import shadowmage.ancient_structures.common.template.load.TemplateParser;
 
-/**
+/*
  * base template-rule class.  Plugins should define their own rule classes.
  * all data to place the block/entity/target of the rule must be contained in the rule.
  * ONLY one rule per block-position in the template.  So -- no entity/block combination in same space unless
@@ -46,7 +46,7 @@ public abstract class TemplateRule
 {
 
 public int ruleNumber = -1;
-/**
+/*
  * all sub-classes must implement a no-param constructor for when loaded from file (at which point they should initialize from the parseRuleData method)
  */
 public TemplateRule()
@@ -54,7 +54,7 @@ public TemplateRule()
  
   }
 
-/**
+/*
  * input params are the target position for placement of this rule and destination orientation
  * @param world
  * @param turns
@@ -89,7 +89,7 @@ public final void writeTag(BufferedWriter out, NBTTagCompound tag) throws IOExce
   {
   out.write("tag:");
   out.newLine();
-  List<String> tagData = new ArrayList<String>();
+  List<String> tagData = new ArrayList<>();
   NBTTools.writeNBTToLines(tag, tagData);
   for(String line : tagData)
     {
@@ -102,7 +102,7 @@ public final void writeTag(BufferedWriter out, NBTTagCompound tag) throws IOExce
 
 public final NBTTagCompound readTag(List<String> ruleData)
   {
-  List<String> tagLines = new ArrayList<String>();  
+  List<String> tagLines = new ArrayList<>();
   String line;
   Iterator<String> it = ruleData.iterator();
   while(it.hasNext() && (line=it.next())!=null)
@@ -157,7 +157,7 @@ public static final TemplateRule getRule(List<String> ruleData, String ruleType)
   String name = null;
   int ruleNumber = -1;
   String line;
-  List<String> ruleDataPackage = new ArrayList<String>();
+  List<String> ruleDataPackage = new ArrayList<>();
   while(it.hasNext())
     {
     TemplateParser.lineNumber++;

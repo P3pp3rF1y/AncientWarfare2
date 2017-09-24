@@ -11,7 +11,7 @@ import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 public class RecipeResearched extends ShapedRecipes
 {
 
-Set<Integer> neededResearch = new HashSet<Integer>();
+Set<Integer> neededResearch = new HashSet<>();
 
 public RecipeResearched(int par1, int par2, ItemStack[] par3ArrayOfItemStack, ItemStack par4ItemStack)
   {

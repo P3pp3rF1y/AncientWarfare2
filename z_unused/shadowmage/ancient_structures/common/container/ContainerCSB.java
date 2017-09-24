@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -39,14 +39,14 @@ public String structureName = "";
 
 ItemStructureSettings settings = new ItemStructureSettings();
 
-/**
+/*
  * @param openingPlayer
  * @param synch
  */
 public ContainerCSB(EntityPlayer openingPlayer, int x, int y, int z) 
   {
   super(openingPlayer, x, y, z);
-  if(player.worldObj.isRemote)
+  if(player.world.isRemote)
     {
     return;
     }
@@ -86,7 +86,7 @@ public List<NBTTagCompound> getInitData()
     {
     NBTTagCompound tag = new NBTTagCompound();
     tag.setString("name", builderItem.getTagCompound().getCompoundTag("structData").getString("name"));    
-    ArrayList<NBTTagCompound> initList = new ArrayList<NBTTagCompound>();    
+    ArrayList<NBTTagCompound> initList = new ArrayList<>();
     initList.add(tag);
     return initList;
     } 
@@ -97,7 +97,7 @@ public List<NBTTagCompound> getInitData()
 public void onContainerClosed(EntityPlayer par1EntityPlayer)
   {
   super.onContainerClosed(par1EntityPlayer);
-  if(par1EntityPlayer.worldObj.isRemote)
+  if(par1EntityPlayer.world.isRemote)
     {
     return;
     }

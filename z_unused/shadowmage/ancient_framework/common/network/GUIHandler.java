@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -92,7 +92,7 @@ public Object getClientGuiElement(int ID, EntityPlayer player, World world, int 
   return null;
   }
 
-/**
+/*
  * auto-wrapper for sending an openGUI packet from client-server to open a server side GUI without
  * special scripting in every damn entity/TE, also handles sending init data after the GUI is opened
  * all synched containers must openGUI through here, or they must handle synching manually
@@ -105,9 +105,9 @@ public Object getClientGuiElement(int ID, EntityPlayer player, World world, int 
  */
 public void openGUI(int ID, EntityPlayer player, int x, int y, int z)
   {
-  AWLog.logDebug("opening gui: "+ID + " onSide client: "+player.worldObj.isRemote);
+  AWLog.logDebug("opening gui: "+ID + " onSide client: "+player.world.isRemote);
   new Exception().printStackTrace();
-  if(player.worldObj.isRemote)//send open GUI packet to server, let server relay actual open command
+  if(player.world.isRemote)//send open GUI packet to server, let server relay actual open command
     {
     Packet03GuiComs pkt = new Packet03GuiComs();
     pkt.setGuiToOpen((byte)ID, x, y, z);
@@ -115,7 +115,7 @@ public void openGUI(int ID, EntityPlayer player, int x, int y, int z)
     }
   else
     {
-    FMLNetworkHandler.openGui(player, AWFramework.instance, ID, player.worldObj, x, y, z);
+    FMLNetworkHandler.openGui(player, AWFramework.instance, ID, player.world, x, y, z);
     if(player.openContainer instanceof ContainerBase)
       {
       List<NBTTagCompound> packetTags = ((ContainerBase)player.openContainer).getInitData();      

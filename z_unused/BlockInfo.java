@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -27,14 +27,14 @@ import net.minecraft.block.Block;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.IDPairCount;
 
-/**
+/*
  * info wrapper for blocks which may be rotated dynamically
  * @author Shadowmage
  */
 public class BlockInfo
 {
 
-/**
+/*
  * contains data on all _special_ blocks, that need build priority or rotation data
  * e.g. Air: priority 0, to build/clear air blocks first
  * e.g. Stone: priority 1, needs no special treatment
@@ -44,22 +44,22 @@ public class BlockInfo
 public static BlockInfo[] blockList = new BlockInfo[4096];
 
 
-/**
+/*
  * MC blockID for this block
  */
 int blockID;
 
-/**
+/*
  * name of the block
  */
 String name = "";
 
-/**
+/*
  * can be rotated through meta-data
  */
 boolean rotatable = false;
 
-/**
+/*
  * does this block with metadata represent itself as an inventory block (and vice-versa)?
  */
 boolean isBasicSubTypeBlock = false;
@@ -69,13 +69,13 @@ int basicInventoryItemID = -1;
 int basicInventoryItemMeta = -1;
 int basicInventoryItemCount = -1;
 
-/**
+/*
  * the default build priority for this block, added to blockRules created for this block when templates are generated
  * may be overridden in template by user
  */
 public byte buildOrder = 0;
 
-/**
+/*
  * metadata rotation tables, one entry for each possible meta-data, broken into six tables.  Most blocks will only need
  * one or two tables. (pistons and levers need all six)
  * all rotations will fallback to meta-data 0 if no valid information is found in the table
@@ -83,7 +83,7 @@ public byte buildOrder = 0;
 byte[][] metaRotations = new byte[8][4];
 
 
-/**
+/*
  * list of meta id -> inventory id/meta
  * i.e. returns the itemstack itemid/meta needed to place this block given an input meta
  */
@@ -146,7 +146,7 @@ public BlockInfo setIsBasicSubtype()
   return this;
   }
 
-/**
+/*
  * return rotated metadata for this block for one turn to the right
  * @param current
  * @return
@@ -178,7 +178,7 @@ public int rotateRight(int current)
   return 0;
   }
 
-/**
+/*
  * return metadata for this block rotated specified number of turns to the right
  * @param current
  * @param turns
@@ -221,8 +221,8 @@ public BlockInfo setBasicInventoryItem(int id, int meta, int count)
   }
   
   
-/************************************** STATIC METHODS **************************************/
-/**
+/************************************* STATIC METHODS **************************************/
+/*
  * create a BlockInfo entry for specified Block, and ensure it is added into
  * the BlockInfo.blockList[]
  * @param block
@@ -254,7 +254,7 @@ public static int getRotatedMeta(int id, int meta, int rotationAmt)
   }
 
 
-/**
+/*
  * get the block or item id/meta combo needed in inventory in order to place this block
  * @param id of the block in the template
  * @param meta of the block in the template

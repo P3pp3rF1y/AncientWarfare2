@@ -32,25 +32,25 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 public class WorkSiteWarehouse extends TileWorksiteBase implements IWorkSite, IInteractableTile, IBoundedTile, IOwnable
 {
 
-/**************************WORKSITE FIELDS******************************/
+/*************************WORKSITE FIELDS******************************/
 private BlockPosition bbMin;
 private BlockPosition bbMax;
 
-/**************************WAREHOUSE FIELDS******************************/
+/*************************WAREHOUSE FIELDS******************************/
 private boolean init = false;
 private boolean warehouseInventoryUpdated = false;
-private List<IWarehouseStorageTile> storageTiles = new ArrayList<IWarehouseStorageTile>();
-private List<TileWarehouseInput> inputTiles = new ArrayList<TileWarehouseInput>();
-private List<TileWarehouseOutput> outputTiles = new ArrayList<TileWarehouseOutput>();
-private Set<TileEntity> tilesToUpdate = new HashSet<TileEntity>();
-private List<ContainerWarehouseControl> viewers = new ArrayList<ContainerWarehouseControl>();
+private List<IWarehouseStorageTile> storageTiles = new ArrayList<>();
+private List<TileWarehouseInput> inputTiles = new ArrayList<>();
+private List<TileWarehouseOutput> outputTiles = new ArrayList<>();
+private Set<TileEntity> tilesToUpdate = new HashSet<>();
+private List<ContainerWarehouseControl> viewers = new ArrayList<>();
 public InventoryBasic inventory = new InventoryBasic(9);//manual input/output inventory
 public ItemQuantityMap inventoryMap = new ItemQuantityMap();//TODO make this private, wrap whatever is needed for the container in access methods
 
-/**************************WORK QUEUES******************************/
-private List<TileWarehouseOutput> outputToCheck = new ArrayList<TileWarehouseOutput>();
-private List<TileWarehouseOutput> outputToFill = new ArrayList<TileWarehouseOutput>();
-private List<TileWarehouseInput> inputToEmpty = new ArrayList<TileWarehouseInput>();
+/*************************WORK QUEUES******************************/
+private List<TileWarehouseOutput> outputToCheck = new ArrayList<>();
+private List<TileWarehouseOutput> outputToFill = new ArrayList<>();
+private List<TileWarehouseInput> inputToEmpty = new ArrayList<>();
 
 int currentItemCount;//used slots--calced from item quantity map
 int currentMaxItemCount;//max number of slots -- calced from storage blocks
@@ -79,16 +79,16 @@ public void addEnergyFromWorker(IWorker worker)
   }
 
 @Override
-public void updateEntity()
+public void update()
   {
-  worldObj.theProfiler.startSection("AWWorksite");
-  worldObj.theProfiler.startSection("Warehouse");
+  world.profiler.startSection("AWWorksite");
+  world.profiler.startSection("Warehouse");
   if(!init)
     {
     init = true;
     scanInitialBlocks();  
     }
-  if(!worldObj.isRemote)
+  if(!world.isRemote)
     {
     if(warehouseInventoryUpdated)
       {
@@ -106,8 +106,8 @@ public void updateEntity()
       storedEnergy-=AWCoreStatics.energyPerWorkUnit;
       }
     }  
-  worldObj.theProfiler.endSection();
-  worldObj.theProfiler.endSection();
+  world.profiler.endSection();
+  world.profiler.endSection();
   }
 
 private void updateTiles()
@@ -127,7 +127,7 @@ private void updateTiles()
   }
 
 
-/************************************************ MULTIBLOCK SYNCH METHODS *************************************************/
+/*********************************************** MULTIBLOCK SYNCH METHODS *************************************************/
 
 public void addInputBlock(TileWarehouseInput input)
   {
@@ -252,7 +252,7 @@ public void validate()
   init = false;
   }
 
-/**
+/*
  * should be called when tile is first loaded from disk, after world is set
  */
 protected void scanInitialBlocks()
@@ -264,15 +264,15 @@ protected void scanInitialBlocks()
       {
       for(int y = bbMin.y; y<=bbMax.y; y++)
         {
-        if(!worldObj.blockExists(x, y, z)){continue;}
-        te = worldObj.getTileEntity(x, y, z);
+        if(!world.blockExists(x, y, z)){continue;}
+        te = world.getTileEntity(x, y, z);
         if(te==null){continue;}
         else if(te instanceof IWarehouseStorageTile)
           {
           addStorageBlock((IWarehouseStorageTile) te);
           if(te instanceof IControlledTile)
             {
-            ((IControlledTile) te).setControllerPosition(new BlockPosition(xCoord, yCoord, zCoord));
+            ((IControlledTile) te).setControllerPosition(new BlockPosition(x, y, z));
             }
           }
         else if(te instanceof TileWarehouseInput)
@@ -280,7 +280,7 @@ protected void scanInitialBlocks()
           addInputBlock((TileWarehouseInput) te);
           if(te instanceof IControlledTile)
             {
-            ((IControlledTile) te).setControllerPosition(new BlockPosition(xCoord, yCoord, zCoord));
+            ((IControlledTile) te).setControllerPosition(new BlockPosition(x, y, z));
             }
           }
         }
@@ -289,7 +289,7 @@ protected void scanInitialBlocks()
   }
 
 
-/************************************************ INVENTORY TRACKING METHODS *************************************************/
+/*********************************************** INVENTORY TRACKING METHODS *************************************************/
 
 private void onWarehouseInventoryUpdated()
   {
@@ -298,7 +298,7 @@ private void onWarehouseInventoryUpdated()
 
 private void recheckOutputTiles()
   {
-  Set<TileWarehouseOutput> toUpdate = new HashSet<TileWarehouseOutput>();
+  Set<TileWarehouseOutput> toUpdate = new HashSet<>();
   toUpdate.addAll(outputToCheck);
   toUpdate.addAll(outputToFill);
   outputToCheck.clear();
@@ -343,12 +343,12 @@ public void requestItem(ItemStack filter)
     }
   if(quantity<=0){return;}
   ItemStack toMerge = filter.copy();
-  toMerge.stackSize = quantity;
+  toMerge.setCount(quantity)
   inventoryMap.decreaseCount(filter, quantity);
   toMerge = InventoryTools.mergeItemStack(inventory, toMerge, -1);
   if(toMerge!=null)
     {
-    inventoryMap.addCount(toMerge, toMerge.stackSize);
+    inventoryMap.addCount(toMerge, toMerge.getCount());
     }
   updateViewers();
   onWarehouseInventoryUpdated();
@@ -378,7 +378,7 @@ private void updateOutputTile(TileWarehouseOutput tile)
   for(WarehouseInterfaceFilter filter : filters)
     {
     if(filter.getFilterItem()==null){continue;}
-    count = InventoryTools.getCountOf(tile, -1, filter.getFilterItem()); 
+    count = InventoryTools.getCountOf(tile, null, filter.getFilterItem());
     if(count<filter.getFilterQuantity())
       {
       count = inventoryMap.getCount(filter.getFilterItem());
@@ -411,7 +411,7 @@ public void decreaseCountOf(ItemStack item, int count)
   onWarehouseInventoryUpdated();
   }
 
-/************************************************ WORKSITE METHODS *************************************************/
+/*********************************************** WORKSITE METHODS *************************************************/
 
 @Override
 public WorkType getWorkType()
@@ -422,9 +422,9 @@ public WorkType getWorkType()
 @Override
 public boolean onBlockClicked(EntityPlayer player)
   {
-  if(!player.worldObj.isRemote)
+  if(!player.world.isRemote)
     {
-    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_CONTROL, xCoord, yCoord, zCoord);    
+    NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_CONTROL, x, y, z);
     }
   return true;
   }
@@ -491,15 +491,15 @@ private void processInputWork()
       if(stack!=null)
         {
         transferQuantity = currentMaxItemCount-currentItemCount;
-        if(transferQuantity>stack.stackSize)
+        if(transferQuantity>stack.getCount())
           {
-          transferQuantity=stack.stackSize;
+          transferQuantity=stack.getCount();
           }
         inventoryMap.addCount(stack, transferQuantity);
         onWarehouseInventoryUpdated();
-        stack.stackSize-=transferQuantity;
+        stack.shrink(transferQuantity);
         currentItemCount+=transferQuantity;
-        if(stack.stackSize<=0)
+        if(stack.getCount() <=0)
           {
           tile.setInventorySlotContents(i, null);
           }
@@ -530,7 +530,7 @@ private void processOutputWork()
       {
       if(filter.getFilterItem()==null){continue;}
       filterQuantity = filter.getFilterQuantity();
-      foundQuantity = InventoryTools.getCountOf(tile, -1, filter.getFilterItem());
+      foundQuantity = InventoryTools.getCountOf(tile, null, filter.getFilterItem());
       if(foundQuantity<filterQuantity)
         {
         transferQuantity = inventoryMap.getCount(filter.getFilterItem());
@@ -547,14 +547,14 @@ private void processOutputWork()
             {
             passXfer = toMerge.getMaxStackSize();
             }
-          toMerge.stackSize = passXfer;
+          toMerge.setCount(passXfer)
           transferQuantity -= passXfer;
           inventoryMap.decreaseCount(toMerge, passXfer);
           onWarehouseInventoryUpdated();
           toMerge = InventoryTools.mergeItemStack(tile, toMerge, -1);
           if(toMerge!=null)//could only partially merge--perhaps output is full?
             {
-            inventoryMap.addCount(toMerge, toMerge.stackSize);
+            inventoryMap.addCount(toMerge, toMerge.getCount());
             break;
             }
           }
@@ -568,7 +568,7 @@ private void processOutputWork()
   }
 
 
-/************************************************ NETWORK METHODS *************************************************/
+/*********************************************** NETWORK METHODS *************************************************/
 
 public void addViewer(ContainerWarehouseControl viewer)
   {
@@ -591,7 +591,7 @@ public void updateViewers()
   for(ContainerWarehouseControl container : this.viewers)
     {
     container.refreshGui();
-    if(!worldObj.isRemote)
+    if(!world.isRemote)
       {
       container.onWarehouseInventoryUpdated();
       }
@@ -641,7 +641,7 @@ public final Packet getDescriptionPacket()
     bbMax.writeToNBT(innerTag);
     tag.setTag("bbMax", innerTag);
     }
-  return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 3, tag);
+  return new S35PacketUpdateTileEntity(this.x, this.y, this.z, 3, tag);
   }
 
 @Override

@@ -1,4 +1,4 @@
-/**
+/*
    Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
    This software is distributed under the terms of the GNU General Public License.
    Please see COPYING for precise license information.
@@ -93,7 +93,7 @@ public Collection<String> getGeneratedUniques()
 private class StructureDimensionMap
 {
 private HashMap<Integer, StructureWorldMap> mapsByDimension = new HashMap<Integer, StructureWorldMap>();
-Set<String> generatedUniques = new HashSet<String>();
+Set<String> generatedUniques = new HashSet<>();
 
 public Collection<StructureEntry> getEntriesNear(int dimension, int chunkX, int chunkZ, int chunkRadius, boolean expandBySize, Collection<StructureEntry> list)
   {
@@ -264,7 +264,7 @@ public void writeToNBT(NBTTagCompound nbttagcompound)
 @Override
 public void handlePacketData(NBTTagCompound data)
   {
-  /**
+  /*
    * NOOP FOR STRUCTURE MAP -- not needed on client-side
    */
   }
