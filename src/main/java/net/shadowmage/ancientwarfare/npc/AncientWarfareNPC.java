@@ -79,11 +79,6 @@ public class AncientWarfareNPC {
         MinecraftForge.EVENT_BUS.register(net.shadowmage.ancientwarfare.npc.event.EventHandler.INSTANCE);
 
         /*
-         * load items, blocks, and entities
-         */
-        AWNPCEntityLoader.load();
-
-        /*
          * register containers
          */
         NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_INVENTORY, ContainerNpcInventory.class);

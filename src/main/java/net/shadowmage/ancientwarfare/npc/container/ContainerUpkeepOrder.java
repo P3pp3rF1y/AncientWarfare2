@@ -4,9 +4,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
-import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
+import net.shadowmage.ancientwarfare.npc.item.AWNPCItems;
 import net.shadowmage.ancientwarfare.npc.orders.UpkeepOrder;
 
 import javax.annotation.Nonnull;
@@ -20,7 +20,7 @@ public class ContainerUpkeepOrder extends ContainerBase {
 
     public ContainerUpkeepOrder(EntityPlayer player, int x, int y, int z) {
         super(player);
-        this.hand = EntityTools.getHandHoldingItem(player, AWItems.upkeepOrder);
+        this.hand = EntityTools.getHandHoldingItem(player, AWNPCItems.upkeepOrder);
         @Nonnull ItemStack stack = player.getHeldItem(hand);
         if (stack.isEmpty()) {
             throw new IllegalArgumentException("Cannot open Work Order GUI for null stack/item.");

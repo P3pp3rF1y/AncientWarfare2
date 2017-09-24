@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.item;
 
+import net.minecraft.item.Item;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 
@@ -19,4 +20,16 @@ public class AWNPCItems {
 	public static ItemShield goldShield;
 	@ObjectHolder("diamond_shield")
 	public static ItemShield diamondShield;
+	@ObjectHolder("npc_spawner")
+	public static Item npcSpawner;
+	@ObjectHolder("work_order")
+	public static Item workOrder;
+	@ObjectHolder("upkeep_order")
+	public static Item upkeepOrder;
+	@ObjectHolder("combat_order")
+	public static Item combatOrder;
+	@ObjectHolder("routing_order")
+	public static Item routingOrder;
+	@ObjectHolder("trade_order")
+	public static Item tradeOrder;
 }

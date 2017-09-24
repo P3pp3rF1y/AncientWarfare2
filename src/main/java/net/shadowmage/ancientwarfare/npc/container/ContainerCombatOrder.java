@@ -4,9 +4,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
-import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
+import net.shadowmage.ancientwarfare.npc.item.AWNPCItems;
 import net.shadowmage.ancientwarfare.npc.orders.CombatOrder;
 
 import javax.annotation.Nonnull;
@@ -19,7 +19,7 @@ public class ContainerCombatOrder extends ContainerBase {
 
     public ContainerCombatOrder(EntityPlayer player, int x, int y, int z) {
         super(player);
-        this.hand = EntityTools.getHandHoldingItem(player, AWItems.combatOrder);
+        this.hand = EntityTools.getHandHoldingItem(player, AWNPCItems.combatOrder);
         @Nonnull ItemStack stack = player.getHeldItem(hand);
         if (stack.isEmpty() || stack.getItem() == null) {
             throw new IllegalArgumentException("Cannot open Combat Order GUI for null stack/item.");

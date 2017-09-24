@@ -45,22 +45,6 @@ public class AWItems {
     public static Item steel_ingot;
 
     /*
-     * NPC module
-     */
-    @ObjectHolder("npc_spawner")
-    public static Item npcSpawner;
-    @ObjectHolder("work_order")
-    public static Item workOrder;
-    @ObjectHolder("upkeep_order")
-    public static Item upkeepOrder;
-    @ObjectHolder("combat_order")
-    public static Item combatOrder;
-    @ObjectHolder("routing_order")
-    public static Item routingOrder;
-    @ObjectHolder("trade_order")
-    public static Item tradeOrder;
-
-    /*
      * AUTOMATION module
      */
     public static ItemMulti worksiteUpgrade;

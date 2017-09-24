@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.npc.gui;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -141,11 +140,11 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
         addGuiElement(slot);
 
 
-        slot = new ItemSlot(28 + 18 * 2, 8 + 18 * 2, new ItemStack(AWItems.upkeepOrder), this);
+        slot = new ItemSlot(28 + 18 * 2, 8 + 18 * 2, new ItemStack(AWNPCItems.upkeepOrder), this);
         slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false).addTooltip("guistrings.npc.upkeep_order_slot");
         addGuiElement(slot);
 
-        slot = new ItemSlot(28 + 18 * 2, 8 + 18 * 3, new ItemStack(AWItems.routingOrder), this);
+        slot = new ItemSlot(28 + 18 * 2, 8 + 18 * 3, new ItemStack(AWNPCItems.routingOrder), this);
         slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false).addTooltip("guistrings.npc.manual_order_slot");
         addGuiElement(slot);
     }

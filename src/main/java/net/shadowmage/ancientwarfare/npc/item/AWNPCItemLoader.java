@@ -24,7 +24,7 @@ public class AWNPCItemLoader {
         @Override
         @SideOnly(Side.CLIENT)
         public ItemStack getTabIconItem() {
-            return new ItemStack(AWItems.npcSpawner);
+            return new ItemStack(AWNPCItems.npcSpawner);
         }
 
         @Override
@@ -72,7 +72,7 @@ public class AWNPCItemLoader {
             int i1p = getItemPriority(i1);
             int i2p = getItemPriority(i2);
             if (i1p == i2p) {
-                if (i1 == AWItems.npcSpawner && i2 == AWItems.npcSpawner) {
+                if (i1 == AWNPCItems.npcSpawner && i2 == AWNPCItems.npcSpawner) {
                     return compareSpawnerStacks(arg0, arg1);
                 }
                 return arg0.getDisplayName().compareTo(arg1.getDisplayName());
