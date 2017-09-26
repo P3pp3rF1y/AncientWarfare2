@@ -16,7 +16,6 @@ public class ItemShield extends ItemBaseNPC {
     public ItemShield(String name, ToolMaterial material) {
         super(name);
         this.setFull3D();
-        //this.setTextureName("ancientwarfare:npc/" + name);
         this.armorValue = material.getHarvestLevel() * 2 + 1;
         setMaxDamage(material.getMaxUses());
     }
@@ -27,6 +26,11 @@ public class ItemShield extends ItemBaseNPC {
 
     @Override
     public Multimap<String, AttributeModifier> getAttributeModifiers(EntityEquipmentSlot slot, ItemStack stack) {
+        //TODO perhaps figure out a different way shield could work now that there is actual off hand
+        if (slot != EntityEquipmentSlot.MAINHAND) {
+            return super.getAttributeModifiers(slot, stack);
+        }
+
         Multimap map = super.getAttributeModifiers(slot, stack);
         map.put(SharedMonsterAttributes.ATTACK_DAMAGE.getName(), new AttributeModifier(shieldID, "Shield modifier", 0.5, 2));
         return map;
