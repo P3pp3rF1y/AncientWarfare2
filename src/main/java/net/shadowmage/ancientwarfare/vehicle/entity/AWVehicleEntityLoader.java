@@ -46,7 +46,7 @@ public class AWVehicleEntityLoader {
     private static class VehiculeDeclaration extends EntityDeclaration {
 
         public VehiculeDeclaration(Class<? extends Entity> entityClass, String entityName) {
-            super(entityClass, entityName, nextID++);
+            super(entityClass, entityName, nextID++, AncientWarfareVehicles.modID);
         }
 
         @Override
