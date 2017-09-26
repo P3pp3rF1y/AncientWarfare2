@@ -10,6 +10,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockBase;
 import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
+import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 
@@ -32,6 +33,6 @@ public class BlockBaseStructure extends BlockBase implements IClientRegistrar {
             }
         });
 
-        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, new ModelResourceLocation(assetLocation, "inventory"));
+        ModelLoaderHelper.registerItem(this, "structure", "inventory");
     }
 }
