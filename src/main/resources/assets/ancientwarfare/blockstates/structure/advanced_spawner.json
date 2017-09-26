@@ -1,0 +1,21 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "cube_all",
+        "textures": {
+            "all": "ancientwarfare:blocks/structure/advanced_spawner"
+        },
+        "transform": "forge:default-block"
+    },
+    "variants": {
+        "inventory": [{}],
+        "transparent": {
+            "false": {},
+            "true": {
+                "textures": {
+                    "all": "ancientwarfare:blocks/structure/advanced_spawner2"
+                }
+            }
+        }
+    }
+}

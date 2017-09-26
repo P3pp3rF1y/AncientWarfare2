@@ -1,12 +1,15 @@
 package net.shadowmage.ancientwarfare.structure.block;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -24,25 +27,35 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 public class BlockAdvancedSpawner extends BlockBaseStructure {
+    private static final PropertyBool TRANSPARENT = PropertyBool.create("transparent");
 
     public BlockAdvancedSpawner() {
         super(Material.ROCK, "advanced_spawner");
-        //this.setBlockTextureName("ancientwarfare:structure/advanced_spawner");
         setHardness(2.f);
     }
 
-//    @Override
-//    @SideOnly(Side.CLIENT)
-//    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
-//        TileEntity te = world.getTileEntity(pos);
-//        if (te instanceof TileAdvancedSpawner) {
-//            TileAdvancedSpawner spawner = (TileAdvancedSpawner) te;
-//            if (spawner.getSettings().isTransparent()) {
-//                return transparentIcon;
-//            }
-//        }
-//        return super.getIcon(world, x, y, z, side);
-//    }
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer.Builder(this).add(TRANSPARENT).build();
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return 0;
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        IBlockState superState = super.getActualState(state, world, pos);
+        TileEntity te = world.getTileEntity(pos);
+        if (te instanceof TileAdvancedSpawner) {
+            TileAdvancedSpawner spawner = (TileAdvancedSpawner) te;
+            if (spawner.getSettings().isTransparent()) {
+                return superState.withProperty(TRANSPARENT, true);
+            }
+        }
+        return superState.withProperty(TRANSPARENT, false);
+    }
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -64,12 +77,10 @@ public class BlockAdvancedSpawner extends BlockBaseStructure {
         }
     }
 
-//    @Override
-//    @SideOnly(Side.CLIENT)
-//    public void registerBlockIcons(IIconRegister p_149651_1_) {
-//        super.registerBlockIcons(p_149651_1_);
-//        transparentIcon = p_149651_1_.registerIcon("ancientwarfare:structure/advanced_spawner2");
-//    }
+    @Override
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.CUTOUT;
+    }
 
     @Override
     public boolean hasTileEntity(IBlockState state) {
