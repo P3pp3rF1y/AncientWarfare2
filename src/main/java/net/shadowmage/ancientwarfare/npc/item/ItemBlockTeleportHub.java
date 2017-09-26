@@ -18,8 +18,8 @@ public class ItemBlockTeleportHub extends ItemBlockBase {
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(I18n.format("tile.teleportHub.tooltip.1"));
-        tooltip.add(I18n.format("tile.teleportHub.tooltip.2"));
-        tooltip.add(I18n.format("tile.teleportHub.tooltip.3"));
+        tooltip.add(I18n.format("tile.teleport_hub.tooltip.1"));
+        tooltip.add(I18n.format("tile.teleport_hub.tooltip.2"));
+        tooltip.add(I18n.format("tile.teleport_hub.tooltip.3"));
     }
 }

@@ -17,25 +17,6 @@ public class BlockTeleportHub extends BlockBaseNPC {
         setHardness(2.f);
     }
 
-/*
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister register) {
-        icons[0] = register.registerIcon("ancientwarfare:npc/town_hall_bottom");
-        icons[1] = register.registerIcon("ancientwarfare:npc/teleport_hub_top");
-        icons[2] = register.registerIcon("ancientwarfare:npc/teleport_hub_side");
-        icons[3] = register.registerIcon("ancientwarfare:npc/teleport_hub_side");
-        icons[4] = register.registerIcon("ancientwarfare:npc/teleport_hub_side");
-        icons[5] = register.registerIcon("ancientwarfare:npc/teleport_hub_side");
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-        return icons[side];
-    }
-*/
-
     @Override
     public boolean hasTileEntity(IBlockState state) {
         return true;

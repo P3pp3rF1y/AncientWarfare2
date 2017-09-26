@@ -46,25 +46,6 @@ public class BlockTownHall extends BlockBaseNPC {
         super.breakBlock(world, pos, state);
     }
 
-/*
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister register) {
-        icons[0] = register.registerIcon("ancientwarfare:npc/town_hall_bottom");
-        icons[1] = register.registerIcon("ancientwarfare:npc/town_hall_top");
-        icons[2] = register.registerIcon("ancientwarfare:npc/town_hall_side");
-        icons[3] = register.registerIcon("ancientwarfare:npc/town_hall_side");
-        icons[4] = register.registerIcon("ancientwarfare:npc/town_hall_side");
-        icons[5] = register.registerIcon("ancientwarfare:npc/town_hall_side");
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-        return icons[side];
-    }
-*/
-
     @Override
     public boolean hasTileEntity(IBlockState state) {
         return true;

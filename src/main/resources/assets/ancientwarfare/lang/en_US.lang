@@ -160,10 +160,10 @@ tile.structure_builder_ticked.name=Survival Structure Builder
 tile.town_hall.name=Town Hall
 tile.recruiting_station.name=Recruiting Station
 tile.headquarters.name=Headquarters
-tile.teleportHub.name=Teleport Hub
-tile.teleportHub.tooltip.1=For Admins and Map Makers to set the teleport 
-tile.teleportHub.tooltip.2=anchor of the world. Teleporting is done
-tile.teleportHub.tooltip.3=between player HQ's and this.
+tile.teleport_hub.name=Teleport Hub
+tile.teleport_hub.tooltip.1=For Admins and Map Makers to set the teleport
+tile.teleport_hub.tooltip.2=anchor of the world. Teleporting is done
+tile.teleport_hub.tooltip.3=between player HQ's and this.
 #vehicle
 
 #guistrings

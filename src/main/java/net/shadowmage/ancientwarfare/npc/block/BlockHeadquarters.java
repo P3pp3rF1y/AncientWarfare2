@@ -19,19 +19,6 @@ public class BlockHeadquarters extends BlockTownHall {
         super("headquarters");
     }
 
-/*
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister register) {
-        icons[0] = register.registerIcon("ancientwarfare:npc/town_hall_bottom");
-        icons[1] = register.registerIcon("ancientwarfare:npc/town_hall_top_hq");
-        icons[2] = register.registerIcon("ancientwarfare:npc/town_hall_side_hq");
-        icons[3] = register.registerIcon("ancientwarfare:npc/town_hall_side_hq");
-        icons[4] = register.registerIcon("ancientwarfare:npc/town_hall_side_hq");
-        icons[5] = register.registerIcon("ancientwarfare:npc/town_hall_side_hq");
-    }
-*/
-
     @Override
     public void getDrops(NonNullList<ItemStack> drops, IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
         drops.add(new ItemStack(Item.getItemFromBlock(AWNPCBlocks.townHall)));
