@@ -1,13 +1,36 @@
 package net.shadowmage.ancientwarfare.npc.block;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
+import net.minecraft.item.Item;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.ModelLoader;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockBase;
+import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.item.AWNPCItemLoader;
 
-public class BlockBaseNPC extends BlockBase {
+public class BlockBaseNPC extends BlockBase implements IClientRegistrar {
     public BlockBaseNPC(Material material, String regName) {
         super(material, AncientWarfareNPC.modID, regName);
-        this.setCreativeTab(AWNPCItemLoader.npcTab);
+        setCreativeTab(AWNPCItemLoader.npcTab);
+
+        AncientWarfareNPC.proxy.addClientRegistrar(this);
+    }
+
+    @Override
+    public void registerClient() {
+        final ModelResourceLocation modelLocation = new ModelResourceLocation(new ResourceLocation(AncientWarfareCore.modID, "npc/" + getRegistryName().getResourcePath()), "normal");
+        ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
+            @Override
+            protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+                return modelLocation;
+            }
+        });
+
+        ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, modelLocation);
     }
 }
