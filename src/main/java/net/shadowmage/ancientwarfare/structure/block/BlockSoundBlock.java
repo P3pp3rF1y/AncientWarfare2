@@ -1,7 +1,17 @@
 package net.shadowmage.ancientwarfare.structure.block;
 
+import codechicken.lib.block.property.unlisted.UnlistedStringProperty;
+import codechicken.lib.model.ModelRegistryHelper;
+import codechicken.lib.model.bakery.CCBakeryModel;
+import codechicken.lib.model.bakery.IBakeryProvider;
+import codechicken.lib.model.bakery.ModelBakery;
+import codechicken.lib.model.bakery.generation.IBakery;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -9,42 +19,40 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
+import net.shadowmage.ancientwarfare.structure.render.SoundBlockRenderer;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
 
 import javax.annotation.Nonnull;
 
-public class BlockSoundBlock extends BlockBaseStructure {
+public class BlockSoundBlock extends BlockBaseStructure implements IBakeryProvider {
+
+    public static final IUnlistedProperty<String> DISGUISE_BLOCK = new UnlistedStringProperty("disguise") {
+        @Override
+        public boolean isValid(String value) {
+            return value != null && Block.getBlockFromName(value) != null;
+        }
+    };
 
     public BlockSoundBlock() {
         super(Material.ROCK, "sound_block");
     }
 
-//    @Override
-//    @SideOnly(Side.CLIENT)
-//    public IIcon getIcon(IBlockAccess blockAccess, int x, int y, int z, int face){
-//        TileEntity tileEntity = blockAccess.getTileEntity(x, y, z);
-//        if(tileEntity instanceof TileSoundBlock) {
-//            Block block = ((TileSoundBlock) tileEntity).getBlockCache();
-//            if (block != null) {
-//                return block.getIcon(face, 0);
-//            }
-//        }
-//        return getIcon(face, 0);
-//    }
-//
-//    @Override
-//    @SideOnly(Side.CLIENT)
-//    public IIcon getIcon(int side, int meta){
-//        return Blocks.JUKEBOX.getIcon(side, meta);
-//    }
-//
-//    @Override
-//    @SideOnly(Side.CLIENT)
-//    public void registerBlockIcons(IIconRegister iconRegister){
-//
-//    }
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer.Builder(this).add(DISGUISE_BLOCK).build();
+    }
+
+    @Override
+    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return SoundBlockRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
+    }
 
     @Override
     public boolean hasTileEntity(IBlockState state) {
@@ -71,4 +79,23 @@ public class BlockSoundBlock extends BlockBaseStructure {
         return true;
     }
 
+    @Override
+    public void registerClient() {
+        ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
+            @Override
+            protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+                return SoundBlockRenderer.MODEL_LOCATION;
+            }
+        });
+        ModelRegistryHelper.register(SoundBlockRenderer.MODEL_LOCATION, new CCBakeryModel("minecraft:jukebox_side"));
+
+        ModelLoaderHelper.registerItem(this, "structure", "normal");
+
+        ModelBakery.registerBlockKeyGenerator(this, state -> state.getBlock().getRegistryName().toString() + "," + state.getValue(DISGUISE_BLOCK));
+    }
+
+    @Override
+    public IBakery getBakery() {
+        return SoundBlockRenderer.INSTANCE;
+    }
 }

@@ -162,7 +162,7 @@ public class TileSoundBlock extends TileUpdatable implements ISinger, ITickable{
     }
 
     public void setBlockCache(ItemStack itemStack){
-        blockCache = Block.getBlockFromItem(itemStack.getItem());
+        blockCache =  Block.getBlockFromItem(itemStack.getItem());
         BlockTools.notifyBlockUpdate(this);
         world.notifyNeighborsRespectDebug(pos, this.blockType, true);
         markDirty();
