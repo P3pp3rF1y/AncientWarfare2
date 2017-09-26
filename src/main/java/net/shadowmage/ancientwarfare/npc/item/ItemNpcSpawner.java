@@ -126,6 +126,7 @@ public class ItemNpcSpawner extends ItemBaseNPC {
         return stack;
     }
 
+    @Nullable
     public static String getNpcType(ItemStack stack) {
         if (stack.hasTagCompound() && stack.getTagCompound().hasKey("npcType")) {
             return stack.getTagCompound().getString("npcType");
@@ -159,6 +160,9 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 
         ModelLoader.setCustomMeshDefinition(this, stack -> {
 			String npcType = getNpcType(stack);
+			if (npcType == null) {
+                npcType = "worker.miner";
+            }
 			String npcSubType = getNpcSubtype(stack);
 			return modelLocations.get(npcSubType.isEmpty() ? npcType : npcType + "." + npcSubType);
 		});
