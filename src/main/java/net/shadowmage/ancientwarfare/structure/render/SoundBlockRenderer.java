@@ -14,7 +14,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.property.IExtendedBlockState;
-import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.structure.block.BlockSoundBlock;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
 
@@ -24,7 +24,7 @@ import java.util.List;
 
 public class SoundBlockRenderer implements ISimpleBlockBakery {
 
-    public static ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(new ResourceLocation(AncientWarfareStructures.modID, "structure/sound_block"), "normal");
+    public static ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(new ResourceLocation(AncientWarfareCore.modID, "structure/sound_block"), "normal");
 
     public static SoundBlockRenderer INSTANCE = new SoundBlockRenderer();
     private SoundBlockRenderer(){}

@@ -87,7 +87,7 @@ public class BlockSoundBlock extends BlockBaseStructure implements IBakeryProvid
                 return SoundBlockRenderer.MODEL_LOCATION;
             }
         });
-        ModelRegistryHelper.register(SoundBlockRenderer.MODEL_LOCATION, new CCBakeryModel("minecraft:jukebox_side"));
+        ModelRegistryHelper.register(SoundBlockRenderer.MODEL_LOCATION, new CCBakeryModel("minecraft:blocks/jukebox_side"));
 
         ModelLoaderHelper.registerItem(this, "structure", "normal");
 
