@@ -10,12 +10,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
-import net.minecraft.client.renderer.color.IBlockColor;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -34,16 +31,10 @@ import net.shadowmage.ancientwarfare.structure.render.SoundBlockRenderer;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class BlockSoundBlock extends BlockBaseStructure implements IBakeryProvider {
 
-    public static final IUnlistedProperty<String> DISGUISE_BLOCK = new UnlistedStringProperty("disguise") {
-        @Override
-        public boolean isValid(String value) {
-            return value != null && Block.getBlockFromName(value) != null;
-        }
-    };
+    public static final IUnlistedProperty<String> DISGUISE_BLOCK = new UnlistedStringProperty("disguise");
 
     public BlockSoundBlock() {
         super(Material.ROCK, "sound_block");
@@ -80,7 +71,7 @@ public class BlockSoundBlock extends BlockBaseStructure implements IBakeryProvid
         if(itemStack!=null && itemStack.getItem() instanceof ItemBlock){
             TileEntity tileEntity = world.getTileEntity(pos);
             if(tileEntity instanceof TileSoundBlock) {
-                ((TileSoundBlock)tileEntity).setBlockCache(itemStack);
+                ((TileSoundBlock)tileEntity).setDisguiseState(itemStack);
             }
         }
         if (!world.isRemote) {

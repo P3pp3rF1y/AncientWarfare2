@@ -33,11 +33,11 @@ public class SoundBlockRenderer implements ISimpleBlockBakery {
     @Override
     public List<BakedQuad> bakeQuads(@Nullable EnumFacing face, IExtendedBlockState state) {
         IBlockState disguiseState = Blocks.JUKEBOX.getDefaultState();
-        String registryName = state.getValue(BlockSoundBlock.DISGUISE_BLOCK);
-        if (registryName != null) {
-            Block disguiseBlock = Block.getBlockFromName(registryName);
-            if (disguiseBlock != null) {
-                disguiseState = disguiseBlock.getDefaultState();
+        String blockState = state.getValue(BlockSoundBlock.DISGUISE_BLOCK);
+        if (blockState != null) {
+            String[] parts = blockState.split("\\|");
+            if (parts.length == 2) {
+                disguiseState = Block.getBlockFromName(parts[0]).getStateFromMeta(Integer.valueOf(parts[1]));
             }
         }
         return Minecraft.getMinecraft().modelManager.getBlockModelShapes().getModelForState(disguiseState).getQuads(disguiseState, face, 0);
@@ -47,11 +47,11 @@ public class SoundBlockRenderer implements ISimpleBlockBakery {
     public IExtendedBlockState handleState(IExtendedBlockState state, IBlockAccess access, BlockPos pos) {
 
         TileEntity tileEntity = access.getTileEntity(pos);
-        String registryName = Blocks.JUKEBOX.getRegistryName().toString();
+        String registryName = String.join("|", Blocks.JUKEBOX.getRegistryName().toString(), "0");
         if(tileEntity instanceof TileSoundBlock) {
-            Block block = ((TileSoundBlock) tileEntity).getBlockCache();
-            if (block != null) {
-                registryName = block.getRegistryName().toString();
+            IBlockState disguiseState = ((TileSoundBlock) tileEntity).getDisguiseState();
+            if (disguiseState != null) {
+                registryName = String.join("|", disguiseState.getBlock().getRegistryName().toString(), Integer.toString(disguiseState.getBlock().getMetaFromState(disguiseState)));
             }
         }
         return state.withProperty(BlockSoundBlock.DISGUISE_BLOCK, registryName);

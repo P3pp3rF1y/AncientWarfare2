@@ -8,7 +8,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
@@ -70,10 +69,7 @@ public class ClientProxyStructures extends ClientProxyBase {
                 TileEntity tileEntity = world.getTileEntity(pos);
                 IBlockState disguiseState = Blocks.JUKEBOX.getDefaultState();
                 if(tileEntity instanceof TileSoundBlock) {
-                    Block block = ((TileSoundBlock) tileEntity).getBlockCache();
-                    if (block != null) {
-                        disguiseState = block.getDefaultState();
-                    }
+                    disguiseState = ((TileSoundBlock) tileEntity).getDisguiseState();
                 }
                 return Minecraft.getMinecraft().getBlockColors().colorMultiplier(disguiseState, world, pos, 0);
             }

@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.tile;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -23,7 +24,7 @@ public class TileSoundBlock extends TileUpdatable implements ISinger, ITickable{
     private int playerRange = 20;
     private int playTime;//tracking current play time.  when this exceeds length, cooldown delay is triggered
     private SongPlayData tuneData;
-    private Block blockCache;
+    private IBlockState disguiseState;
 
     public TileSoundBlock() {
         tuneData = new SongPlayData();
@@ -105,13 +106,14 @@ public class TileSoundBlock extends TileUpdatable implements ISinger, ITickable{
     private void cacheFromNBT(NBTTagCompound tag){
         String id = tag.getString("block");
         if(!id.isEmpty()){
-            blockCache = Block.getBlockFromName(id);
+            disguiseState = Block.getBlockFromName(id).getStateFromMeta(tag.getInteger("meta"));
         }
     }
 
     private void cacheToNBT(NBTTagCompound tag){
-        if(blockCache!=null){
-            tag.setString("block", blockCache.getRegistryName().toString());
+        if(disguiseState !=null){
+            tag.setString("block", disguiseState.getBlock().getRegistryName().toString());
+            tag.setInteger("meta", disguiseState.getBlock().getMetaFromState(disguiseState));
         }
     }
 
@@ -157,12 +159,13 @@ public class TileSoundBlock extends TileUpdatable implements ISinger, ITickable{
         return playerRange;
     }
 
-    public Block getBlockCache(){
-        return blockCache;
+    public IBlockState getDisguiseState(){
+        return disguiseState;
     }
 
-    public void setBlockCache(ItemStack itemStack){
-        blockCache =  Block.getBlockFromItem(itemStack.getItem());
+    public void setDisguiseState(ItemStack itemStack){
+        Block block = Block.getBlockFromItem(itemStack.getItem());
+        disguiseState = block.getStateFromMeta(itemStack.getMetadata());
         BlockTools.notifyBlockUpdate(this);
         world.notifyNeighborsRespectDebug(pos, this.blockType, true);
         markDirty();
