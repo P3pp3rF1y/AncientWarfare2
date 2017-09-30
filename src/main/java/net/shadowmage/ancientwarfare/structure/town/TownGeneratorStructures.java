@@ -284,7 +284,7 @@ public class TownGeneratorStructures {
         EnumFacing face = EnumFacing.HORIZONTALS[gen.rng.nextInt(4)];//select random face
         for (int i=0; i<4; i++) {//and then iterate until a valid face is found
             face = face.rotateY();
-            if (plot.roadBorders[face.ordinal()]) {
+            if (plot.roadBorders[face.getHorizontalIndex()]) {
                 break;
             }
         }
