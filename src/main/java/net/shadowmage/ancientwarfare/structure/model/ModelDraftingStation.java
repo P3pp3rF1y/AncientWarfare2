@@ -15,43 +15,53 @@ public class ModelDraftingStation extends ModelCraftingBase{
         b1.setTextureOffset(36, 18);
         b1.setRotationPoint(-4.5f, -2.5f, 4.5f);
         setPieceRotation(b1);
-        b1.addBox(-0.5f, -0.5f, -0.5f, 10, 1, 1);
+
+        b1.addBox(-0.5f, -0.5f, -0.5f, 10, 1, 1); //DONE
+
         paperLarge.addChild(b1);
         ModelRenderer b2 = new ModelRenderer(this, "b2");
         b2.setTextureOffset(36, 20);
         b2.setRotationPoint(-4.5f, -1.5f, -4.5f);
         setPieceRotation(b2);
-        b2.addBox(-0.5f, -1.5f, -0.5f, 5, 1, 1);
+
+        b2.addBox(-0.5f, -1.5f, -0.5f, 5, 1, 1);//DONE
+
         paperLarge.addChild(b2);
         ModelRenderer b3 = new ModelRenderer(this, "b3");
         b3.setTextureOffset(0, 32);
         b3.setRotationPoint(-4.5f, -2.5f, -3.5f);
         setPieceRotation(b3);
-        b3.addBox(-0.5f, -0.5f, -0.5f, 1, 1, 8);
+
+        b3.addBox(-0.5f, -0.5f, -0.5f, 1, 1, 8); //DONE
+
         paperLarge.addChild(b3);
         ModelRenderer b4 = new ModelRenderer(this, "b4");
         b4.setTextureOffset(19, 32);
         b4.setRotationPoint(4.5f, -2.5f, -3.5f);
         setPieceRotation(b4);
-        b4.addBox(-0.5f, -0.5f, -0.5f, 1, 1, 8);
+
+        b4.addBox(-0.5f, -0.5f, -0.5f, 1, 1, 8);//DONE
+
         paperLarge.addChild(b4);
         ModelRenderer b5 = new ModelRenderer(this, "b5");
         b5.setTextureOffset(36, 23);
         b5.setRotationPoint(1.5f, -2.5f, -4.5f);
         setPieceRotation(b5);
-        b5.addBox(-0.5f, -0.5f, -0.5f, 4, 1, 1);
+
+        b5.addBox(-0.5f, -0.5f, -0.5f, 4, 1, 1);//DONE
+
         paperLarge.addChild(b5);
         ModelRenderer b6 = new ModelRenderer(this, "b6");
         b6.setTextureOffset(0, 42);
         b6.setRotationPoint(-4.5f, -0.5f, -3.5f);
         setPieceRotation(b6);
-        b6.addBox(-0.5f, -0.5f, -0.5f, 1, 1, 8);
+        b6.addBox(-0.5f, -0.5f, -0.5f, 1, 1, 8);//DONE
         paperLarge.addChild(b6);
         ModelRenderer b7 = new ModelRenderer(this, "b7");
         b7.setTextureOffset(49, 20);
         b7.setRotationPoint(-4.5f, -1.5f, -4.5f);
         setPieceRotation(b7);
-        b7.addBox(-0.5f, -0.5f, -0.5f, 1, 1, 2);
+        b7.addBox(-0.5f, -0.5f, -0.5f, 1, 1, 2);//DONE
         paperLarge.addChild(b7);
         ModelRenderer b8 = new ModelRenderer(this, "b8");
         b8.setTextureOffset(59, 18);
@@ -111,13 +121,13 @@ public class ModelDraftingStation extends ModelCraftingBase{
         b17.setTextureOffset(19, 42);
         b17.setRotationPoint(4.5f, -0.5f, -3.5f);
         setPieceRotation(b17);
-        b17.addBox(-0.5f, -0.5f, -0.5f, 1, 1, 8);
+        b17.addBox(-0.5f, -0.5f, -0.5f, 1, 1, 8);//DONE
         paperLarge.addChild(b17);
         ModelRenderer b18 = new ModelRenderer(this, "b18");
         b18.setTextureOffset(38, 30);
         b18.setRotationPoint(4.5f, -1.5f, -0.5f);
         setPieceRotation(b18);
-        b18.addBox(-0.5f, -0.5f, -0.5f, 1, 1, 2);
+        b18.addBox(-0.5f, -0.5f, -0.5f, 1, 1, 2);//DONE
         paperLarge.addChild(b18);
         ModelRenderer b19 = new ModelRenderer(this, "b19");
         b19.setTextureOffset(45, 30);
