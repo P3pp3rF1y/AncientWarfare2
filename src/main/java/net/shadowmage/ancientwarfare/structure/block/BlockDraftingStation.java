@@ -1,7 +1,15 @@
 package net.shadowmage.ancientwarfare.structure.block;
 
+import codechicken.lib.model.ModelRegistryHelper;
+import codechicken.lib.model.bakery.CCBakeryModel;
+import codechicken.lib.model.bakery.IBakeryProvider;
+import codechicken.lib.model.bakery.generation.IBakery;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -9,24 +17,28 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
+import net.shadowmage.ancientwarfare.structure.gui.GuiDraftingStation;
+import net.shadowmage.ancientwarfare.structure.render.BlankExtendedBlockStateContainer;
+import net.shadowmage.ancientwarfare.structure.render.DraftingStationRenderer;
 import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
 
-public class BlockDraftingStation extends BlockBaseStructure {
-
-    //private BlockIconMap iconMap = new BlockIconMap();
+public class BlockDraftingStation extends BlockBaseStructure implements IBakeryProvider {
 
     public BlockDraftingStation() {
         super(Material.ROCK, "drafting_station");
         setHardness(2.f);
     }
 
-//    public BlockDraftingStation setIcon(int side, String texName) {
-//        this.iconMap.setIconTexture(side, 0, texName);
-//        return this;
-//    }
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlankExtendedBlockStateContainer(this);
+    }
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -44,17 +56,10 @@ public class BlockDraftingStation extends BlockBaseStructure {
         return false;
     }
 
-//    @Override
-//    @SideOnly(Side.CLIENT)
-//    public void registerBlockIcons(IIconRegister reg) {
-//        iconMap.registerIcons(reg);
-//    }
-//
-//    @Override
-//    @SideOnly(Side.CLIENT)
-//    public IIcon getIcon(int side, int meta) {
-//        return iconMap.getIconFor(side, meta);
-//    }
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
 
     @Override
     public boolean hasTileEntity(IBlockState state) {
@@ -72,5 +77,30 @@ public class BlockDraftingStation extends BlockBaseStructure {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_DRAFTING_STATION, pos);
         }
         return true;
+    }
+
+    @Override
+    public void registerClient() {
+        NetworkHandler.registerGui(NetworkHandler.GUI_DRAFTING_STATION, GuiDraftingStation.class);
+
+        ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
+            @Override protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+                return DraftingStationRenderer.MODEL_LOCATION;
+            }
+        });
+
+        ModelRegistryHelper.register(DraftingStationRenderer.MODEL_LOCATION, new CCBakeryModel(AncientWarfareCore.modID + ":model/structure/tile_drafting_station") {
+            @Override
+            public TextureAtlasSprite getParticleTexture() {
+                return DraftingStationRenderer.sprite;
+            }
+        });
+
+        ModelLoaderHelper.registerItem(this, "structure", "normal");
+    }
+
+    @Override
+    public IBakery getBakery() {
+        return DraftingStationRenderer.INSTANCE;
     }
 }
