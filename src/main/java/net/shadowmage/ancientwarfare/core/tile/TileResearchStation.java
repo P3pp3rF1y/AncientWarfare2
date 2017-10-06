@@ -22,6 +22,7 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
 import java.util.EnumSet;
 import java.util.List;
@@ -152,6 +153,19 @@ public class TileResearchStation extends TileOwned implements IWorkSite, IInvent
     }
 
     @Override
+    protected void writeUpdateNBT(NBTTagCompound tag) {
+        super.writeUpdateNBT(tag);
+        tag.setInteger("orientation", orientation.ordinal());
+    }
+
+    @Override
+    protected void handleUpdateNBT(NBTTagCompound tag) {
+        super.handleUpdateNBT(tag);
+        orientation = EnumFacing.VALUES[tag.getInteger("orientation")];
+        BlockTools.notifyBlockUpdate(this);
+    }
+
+    @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         bookInventory.deserializeNBT(tag.getCompoundTag("bookInventory"));
@@ -159,7 +173,7 @@ public class TileResearchStation extends TileOwned implements IWorkSite, IInvent
         this.useAdjacentInventory = tag.getBoolean("useAdjacentInventory");
         this.storedEnergy = tag.getDouble("storedEnergy");
         if (tag.hasKey("orientation")) {
-            setPrimaryFacing(EnumFacing.values()[tag.getInteger("orientation")]);
+            setPrimaryFacing(EnumFacing.VALUES[tag.getInteger("orientation")]);
         }
         this.inventoryDirection = EnumFacing.VALUES[tag.getInteger("inventoryDirection")];
         this.inventorySide = EnumFacing.VALUES[tag.getInteger("inventorySide")];

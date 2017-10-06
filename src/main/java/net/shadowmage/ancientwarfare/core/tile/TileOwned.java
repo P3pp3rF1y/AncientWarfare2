@@ -7,7 +7,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 
 import java.util.UUID;
 
-public class TileOwned extends TileEntity implements IOwnable {
+public class TileOwned extends TileUpdatable implements IOwnable {
     private String ownerName = "";
     private UUID owner;
     private final String tagKey;
