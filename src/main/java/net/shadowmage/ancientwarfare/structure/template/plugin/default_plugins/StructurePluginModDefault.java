@@ -28,6 +28,7 @@ import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.api.StructureContentPlugin;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockLogic;
@@ -60,7 +61,7 @@ public class StructurePluginModDefault implements StructureContentPlugin {
 
     @Override
     public void addHandledEntities(IStructurePluginManager manager) {
-        for (ResourceLocation key : EntityList.ENTITY_EGGS.keySet()) {
+        for (ResourceLocation key : ForgeRegistries.ENTITIES.getKeys()) {
             if(key.toString().startsWith(mod)) {
                 Class<? extends Entity> clazz = EntityList.getClass(key);
                 if (EntityHanging.class.isAssignableFrom(clazz)) {

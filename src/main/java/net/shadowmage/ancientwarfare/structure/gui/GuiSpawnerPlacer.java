@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.entity.EntityList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
@@ -63,7 +64,7 @@ public class GuiSpawnerPlacer extends GuiContainerBase<ContainerSpawnerPlacer> {
         labelToClass.clear();
 
         int totalHeight = 3;
-        Set<ResourceLocation> mp = EntityList.ENTITY_EGGS.keySet();
+        Set<ResourceLocation> mp = ForgeRegistries.ENTITIES.getKeys();
 
         Listener listener = new Listener(Listener.MOUSE_UP) {
             @Override

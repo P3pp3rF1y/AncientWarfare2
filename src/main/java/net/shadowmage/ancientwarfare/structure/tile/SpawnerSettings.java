@@ -13,6 +13,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
@@ -509,7 +510,7 @@ public class SpawnerSettings {
 
         public final void setEntityToSpawn(ResourceLocation entityId) {
             this.entityId = entityId;
-            if (!EntityList.ENTITY_EGGS.containsKey(this.entityId)) {
+            if (!ForgeRegistries.ENTITIES.containsKey(this.entityId)) {
                 AWLog.logError(entityId + " is not a valid entityId.  Spawner default to Zombie.");
                 this.entityId = new ResourceLocation("zombie");
             }

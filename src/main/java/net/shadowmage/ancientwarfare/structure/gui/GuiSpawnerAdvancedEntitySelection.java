@@ -7,6 +7,7 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.ModContainer;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
@@ -76,15 +77,12 @@ public class GuiSpawnerAdvancedEntitySelection extends GuiContainerBase {
     public void setupElements() {
         area.clearElements();
 
-        Iterator itr = Iterators.filter(EntityList.ENTITY_EGGS.keySet().iterator(), new Predicate<ResourceLocation>() {
-            @Override
-            public boolean apply(ResourceLocation registryName) {
-                if(registryName == null || AWStructureStatics.excludedSpawnerEntities.contains(registryName.toString())){//skip excluded entities
-                    return false;
-                }
-                return (search.getText().isEmpty() || registryName.toString().contains(search.getText()));
-            }
-        });
+        Iterator itr = Iterators.filter(ForgeRegistries.ENTITIES.getKeys().iterator(), registryName -> {
+			if(registryName == null || AWStructureStatics.excludedSpawnerEntities.contains(registryName.toString())){//skip excluded entities
+				return false;
+			}
+			return (search.getText().isEmpty() || registryName.toString().contains(search.getText()));
+		});
         int totalHeight = 8;
         Button button;
         while (itr.hasNext()) {
