@@ -132,8 +132,8 @@ public class AWAutomationBlockLoader {
         registry.register(new BlockWarehouseStockViewer("warehouse_stock_viewer"));
         GameRegistry.registerTileEntity(TileWarehouseStockViewer.class, "warehouse_stock_viewer_tile");
 
-        registry.register(new BlockAutoCrafting("civic_auto_crafting"));
-        GameRegistry.registerTileEntity(TileAutoCrafting.class, "civic_auto_crafting_tile");
+        registry.register(new BlockAutoCrafting("auto_crafting"));
+        GameRegistry.registerTileEntity(TileAutoCrafting.class, "auto_crafting_tile");
 
         registry.register(new BlockMailbox("mailbox"));
         GameRegistry.registerTileEntity(TileMailbox.class, "mailbox_tile");

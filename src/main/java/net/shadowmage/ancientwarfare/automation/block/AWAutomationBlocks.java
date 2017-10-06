@@ -19,7 +19,7 @@ public class AWAutomationBlocks {
 	public static BlockWorksiteBase worksiteFishFarm;
 	@ObjectHolder("civic_reed_farm")
 	public static BlockWorksiteBase worksiteReedFarm;
-	@ObjectHolder("civic_auto_crafting")
+	@ObjectHolder("auto_crafting")
 	public static BlockAutoCrafting worksiteAutoCrafting;
 	@ObjectHolder("civic_warehouse")
 	public static BlockWorksiteBase worksiteWarehouse;

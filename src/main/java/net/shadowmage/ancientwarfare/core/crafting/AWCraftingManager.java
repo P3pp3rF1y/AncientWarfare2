@@ -50,7 +50,8 @@ public class AWCraftingManager {
                 }
             }
         }
-        return CraftingManager.findMatchingRecipe(inventory, world).getCraftingResult(inventory);
+        IRecipe recipe = CraftingManager.findMatchingRecipe(inventory, world);
+        return recipe != null ? recipe.getCraftingResult(inventory) : ItemStack.EMPTY;
     }
 
     private boolean canPlayerCraft(IResearchRecipe recipe, World world, String playerName) {

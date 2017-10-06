@@ -1,11 +1,13 @@
 package net.shadowmage.ancientwarfare.automation.proxy;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.fml.client.config.DummyConfigElement.DummyCategoryElement;
 import net.minecraftforge.fml.client.config.IConfigElement;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.shadowmage.ancientwarfare.automation.KeyHandler;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.gui.GuiChunkLoaderDeluxe;
@@ -18,7 +20,6 @@ import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteAnimalControl;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteAnimalFarm;
-import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteAutoCrafting;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteBoundsAdjust;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteCropFarm;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteFishControl;
@@ -28,17 +29,20 @@ import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteMushroomFarm;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteQuarry;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteReedFarm;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteTreeFarm;
-import net.shadowmage.ancientwarfare.automation.model.ModelAutoCraftingStation;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.TileAutoCrafting;
+import net.shadowmage.ancientwarfare.automation.render.AutoCraftingRenderer;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.ConfigManager;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.ClientProxyBase;
-import net.shadowmage.ancientwarfare.core.render.TileCraftingTableRender;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ClientProxyAutomation extends ClientProxyBase {
+
+    public ClientProxyAutomation() {
+        MinecraftForge.EVENT_BUS.register(this);
+    }
 
     @Override
     public void preInit() {
@@ -49,7 +53,6 @@ public class ClientProxyAutomation extends ClientProxyBase {
 
         NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_INVENTORY_SIDE_ADJUST, GuiWorksiteInventorySideSelection.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_ANIMAL_CONTROL, GuiWorksiteAnimalControl.class);
-        NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_AUTO_CRAFT, GuiWorksiteAutoCrafting.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_FISH_CONTROL, GuiWorksiteFishControl.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_MAILBOX_INVENTORY, GuiMailboxInventory.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_CONTROL, GuiWarehouseControl.class);
@@ -73,10 +76,6 @@ public class ClientProxyAutomation extends ClientProxyBase {
         //ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseBase.class, new RenderTileWorksite());
         //ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseStockViewer.class, new RenderTileWarehouseStockViewer());
 
-
-        TileCraftingTableRender tctr = new TileCraftingTableRender(new ModelAutoCraftingStation(), "textures/model/automation/tile_auto_crafting.png");
-        ClientRegistry.bindTileEntitySpecialRenderer(TileAutoCrafting.class, tctr);
-        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.worksiteAutoCrafting), tctr);
 
         //********************************************CONDUIT / TRANSPORT RENDERS***************************************************************//
 
@@ -142,5 +141,8 @@ public class ClientProxyAutomation extends ClientProxyBase {
         }
     }
 
-
+    @SubscribeEvent
+    public void onPreTextureStitch(TextureStitchEvent.Pre evt) {
+        AutoCraftingRenderer.setSprite(evt.getMap().registerSprite(new ResourceLocation(AncientWarfareCore.modID + ":model/automation/tile_auto_crafting")));
+    }
 }

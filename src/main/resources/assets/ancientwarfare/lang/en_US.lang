@@ -114,7 +114,7 @@ entity.AncientWarfareNpc.combat.commander.name=Commander
 tile.engineering_station.0.name=Engineering Station
 tile.research_station.0.name=Research Station
 #automation
-tile.civic_auto_crafting.0.name=Auto Crafting Station
+tile.auto_crafting.0.name=Auto Crafting Station
 tile.civic_quarry.name=Quarry
 tile.civic_forestry.name=Tree Farm
 tile.civic_crop_farm.name=Crop Farm

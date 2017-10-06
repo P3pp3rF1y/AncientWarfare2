@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -10,12 +11,14 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.IExtendedBlockState;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
+import net.shadowmage.ancientwarfare.core.render.BlockRenderProperties;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.lang.reflect.Constructor;
@@ -32,7 +35,30 @@ public class BlockWorksiteBase extends BlockBaseAutomation implements IRotatable
         setHardness(2.f);
     }
 
-//    public BlockWorksiteBase setIcon(RelativeSide relativeSide, String texName) {
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer.Builder(this).add(BlockRenderProperties.UNLISTED_FACING).build();
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return 0;
+    }
+
+    @Override
+    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        EnumFacing facing = EnumFacing.NORTH;
+        TileEntity tileentity = world.getTileEntity(pos);
+
+        if (tileentity instanceof IRotatableTile) {
+            facing = ((IRotatableTile) tileentity).getPrimaryFacing();
+        }
+
+        return ((IExtendedBlockState) super.getExtendedState(state, world, pos)).withProperty(BlockRenderProperties.UNLISTED_FACING, facing);
+    }
+
+
+    //    public BlockWorksiteBase setIcon(RelativeSide relativeSide, String texName) {
 //        this.iconMap.setIcon(this, relativeSide, texName);
 //        return this;
 //    }
