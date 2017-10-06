@@ -26,6 +26,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
@@ -80,7 +81,7 @@ public class TemplateRuleBlockSign extends TemplateRuleVanillaBlocks {
     public void writeRuleData(NBTTagCompound tag) {
         super.writeRuleData(tag);
         for (int i = 0; i < 4; i++) {
-            tag.setString("signContents" + i, ITextComponent.Serializer.componentToJson(signContents[i]));
+            tag.setString("signContents" + i, signContents[i].getFormattedText());
         }
     }
 
@@ -90,7 +91,7 @@ public class TemplateRuleBlockSign extends TemplateRuleVanillaBlocks {
         this.signContents = new ITextComponent[4];
         for (int i = 0; i < 4; i++) {
             //TODO make sure that deserializing here works correctly. For some reason TileEntitySign does this through command instance
-            this.signContents[i] = ITextComponent.Serializer.jsonToComponent(tag.getString("signContents" + i));
+            this.signContents[i] = new TextComponentString(tag.getString("signContents" + i));
         }
     }
 
