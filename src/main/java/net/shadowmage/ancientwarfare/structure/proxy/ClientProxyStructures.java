@@ -59,7 +59,10 @@ public class ClientProxyStructures extends ClientProxyBase {
             TileEntity tileEntity = world.getTileEntity(pos);
             IBlockState disguiseState = Blocks.JUKEBOX.getDefaultState();
             if(tileEntity instanceof TileSoundBlock) {
-                disguiseState = ((TileSoundBlock) tileEntity).getDisguiseState();
+                IBlockState tileState = ((TileSoundBlock) tileEntity).getDisguiseState();
+                if (tileState != null) {
+                    disguiseState = tileState;
+                }
             }
             return Minecraft.getMinecraft().getBlockColors().colorMultiplier(disguiseState, world, pos, 0);
         }, AWStructuresBlocks.soundBlock);
