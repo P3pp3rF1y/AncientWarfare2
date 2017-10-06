@@ -161,7 +161,7 @@ public class GuiResearchStation extends GuiContainerBase<ContainerResearchStatio
                     List<ItemStack> resources = g.getResources();
                     for (int i = 0; i < layoutSlots.length; i++) {
                         if (i >= resources.size()) {
-                            layoutSlots[i].setItem(null);
+                            layoutSlots[i].setItem(ItemStack.EMPTY);
                         } else {
                             @Nonnull ItemStack resource = resources.get(i);
                             if (!InventoryTools.doItemStacksMatch(resource, layoutSlots[i].getStack())) {
@@ -184,7 +184,7 @@ public class GuiResearchStation extends GuiContainerBase<ContainerResearchStatio
 
     private void cleanLayout(){
         for (ItemSlot layoutSlot : layoutSlots) {
-            layoutSlot.setItem(null);
+            layoutSlot.setItem(ItemStack.EMPTY);
         }
     }
 
