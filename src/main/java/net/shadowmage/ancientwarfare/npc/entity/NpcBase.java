@@ -754,7 +754,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             pkt.packetData.setTag("pickEntity", tag);
             NetworkHandler.sendToServer(pkt);
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override
