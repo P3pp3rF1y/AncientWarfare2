@@ -22,7 +22,7 @@ public class CommonProxyBase {
 
     }
 
-    public EntityPlayer getClientPlayer() { //TODO replace with simple Minecraft.getMinecraft().player?
+    public EntityPlayer getClientPlayer() {
         //NOOP for commonProxy
         return null;
     }
