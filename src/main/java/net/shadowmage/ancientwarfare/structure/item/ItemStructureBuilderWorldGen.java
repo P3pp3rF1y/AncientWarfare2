@@ -28,7 +28,6 @@ public class ItemStructureBuilderWorldGen extends ItemBaseStructure implements I
     public ItemStructureBuilderWorldGen(String name) {
         super(name);
         setMaxStackSize(1);
-        //this.setTextureName("ancientwarfare:structure/structure_builder");
     }
 
 
@@ -83,5 +82,4 @@ public class ItemStructureBuilderWorldGen extends ItemBaseStructure implements I
         }
         return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
     }
-
 }

@@ -17,6 +17,7 @@ public class BlockStructureBuilder extends BlockBaseStructure {
     public BlockStructureBuilder() {
         super(Material.ROCK, "structure_builder_ticked");
         setHardness(2.f);
+        setCreativeTab(null);
     }
 
 //    public BlockStructureBuilder setIcon(int side, String texName) {

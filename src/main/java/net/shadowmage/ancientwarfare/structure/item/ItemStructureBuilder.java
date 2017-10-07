@@ -51,9 +51,7 @@ public class ItemStructureBuilder extends ItemBaseStructure implements IItemKeyI
     public ItemStructureBuilder(String name) {
         super(name);
         setMaxStackSize(1);
-        //this.setTextureName("ancientwarfare:structure/" + name);
     }
-
 
     @Override
     public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
