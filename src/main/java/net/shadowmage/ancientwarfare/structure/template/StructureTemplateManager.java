@@ -75,7 +75,7 @@ public class StructureTemplateManager {
         }
         PacketStructure pkt = new PacketStructure();
         pkt.packetData.setTag("structureList", list);
-        //NetworkHandler.sendToPlayer(player, pkt); TODO fix packet structure send on login - currently sent too soon, before there's open gl context
+        NetworkHandler.sendToPlayer(player, pkt);
 
 //  PacketStructureImageList pkt2 = new PacketStructureImageList(this.imageMD5s);
 //  NetworkHandler.sendToPlayer(player, pkt2);
