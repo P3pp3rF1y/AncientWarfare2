@@ -94,12 +94,11 @@ public class BlockTools {
      */
     public static BlockPos getBlockClickedOn(EntityPlayer player, World world, boolean offset) {
         //TODO can this be replaced with regular rayTrace?
-        float scaleFactor = 1.0F;
-        float rotPitch = player.prevRotationPitch + (player.rotationPitch - player.prevRotationPitch) * scaleFactor;
-        float rotYaw = player.prevRotationYaw + (player.rotationYaw - player.prevRotationYaw) * scaleFactor;
-        double testX = player.prevPosX + (player.posX - player.prevPosX) * scaleFactor;
-        double testY = player.prevPosY + (player.posY - player.prevPosY) * scaleFactor + 1.62D - player.getYOffset();
-        double testZ = player.prevPosZ + (player.posZ - player.prevPosZ) * scaleFactor;
+        float rotPitch = player.rotationPitch;
+        float rotYaw = player.rotationYaw;
+        double testX = player.posX;
+        double testY = player.posY + player.getEyeHeight();
+        double testZ = player.posZ;
         Vec3d testVector = new Vec3d(testX, testY, testZ);
         float var14 = MathHelper.cos(-rotYaw * 0.017453292F - (float) Math.PI);
         float var15 = MathHelper.sin(-rotYaw * 0.017453292F - (float) Math.PI);
@@ -118,7 +117,7 @@ public class BlockTools {
             return null;
         }
 
-        Vec3d var25 = player.getLook(scaleFactor);
+        Vec3d var25 = player.getLook(1.0F);
         float var27 = 1.0F;
         List<Entity> entitiesPossiblyHitByVector = world.getEntitiesWithinAABBExcludingEntity(player, player.getEntityBoundingBox().expand(var25.x * reachLength, var25.y * reachLength, var25.z * reachLength).expand(var27, var27, var27));
         for (Entity testEntity : entitiesPossiblyHitByVector) {
