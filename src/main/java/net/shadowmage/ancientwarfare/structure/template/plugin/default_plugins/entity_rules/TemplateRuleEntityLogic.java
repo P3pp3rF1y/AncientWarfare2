@@ -29,6 +29,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagDouble;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -42,8 +43,8 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
 
     public NBTTagCompound tag = new NBTTagCompound();
 
-    ItemStack[] inventory;
-    ItemStack[] equipment;
+    NonNullList<ItemStack> inventory;
+    NonNullList<ItemStack> equipment;
 
     public TemplateRuleEntityLogic() {
     }
@@ -54,19 +55,19 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
         if (entity instanceof EntityLiving)//handles villagers / potentially other living npcs with inventories
         {
             tag.removeTag("Equipment");
-            equipment = new ItemStack[EntityEquipmentSlot.values().length];
+            equipment = NonNullList.withSize(EntityEquipmentSlot.values().length, ItemStack.EMPTY);
             EntityLiving living = (EntityLiving) entity;
             for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
-                equipment[slot.ordinal()] = living.getItemStackFromSlot(slot).isEmpty() ? ItemStack.EMPTY : living.getItemStackFromSlot(slot).copy();
+                equipment.set(slot.ordinal(), living.getItemStackFromSlot(slot).isEmpty() ? ItemStack.EMPTY : living.getItemStackFromSlot(slot).copy());
             }
         }
         if (entity instanceof IInventory)//handles minecart-chests
         {
             tag.removeTag("Items");
             IInventory eInv = (IInventory) entity;
-            this.inventory = new ItemStack[eInv.getSizeInventory()];
+            this.inventory = NonNullList.withSize(eInv.getSizeInventory(), ItemStack.EMPTY);
             for (int i = 0; i < eInv.getSizeInventory(); i++) {
-                this.inventory[i] = eInv.getStackInSlot(i).isEmpty() ? ItemStack.EMPTY : eInv.getStackInSlot(i).copy();
+                this.inventory.set(i, eInv.getStackInSlot(i).isEmpty() ? ItemStack.EMPTY : eInv.getStackInSlot(i).copy());
             }
         }
         tag.removeTag("UUIDMost");
@@ -94,13 +95,13 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
         if (equipment != null && e instanceof EntityLiving) {
             EntityLiving living = (EntityLiving) e;
             for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
-                living.setItemStackToSlot(slot, equipment[slot.ordinal()].isEmpty() ? ItemStack.EMPTY : equipment[slot.ordinal()].copy());
+                living.setItemStackToSlot(slot, equipment.get(slot.ordinal()).isEmpty() ? ItemStack.EMPTY : equipment.get(slot.ordinal()).copy());
             }
         }
         if (inventory != null && e instanceof IInventory) {
             IInventory eInv = (IInventory) e;
-            for (int i = 0; i < inventory.length && i < eInv.getSizeInventory(); i++) {
-                eInv.setInventorySlotContents(i, inventory[i].isEmpty() ? ItemStack.EMPTY : inventory[i].copy());
+            for (int i = 0; i < inventory.size() && i < eInv.getSizeInventory(); i++) {
+                eInv.setInventorySlotContents(i, inventory.get(i).isEmpty() ? ItemStack.EMPTY : inventory.get(i).copy());
             }
         }
         e.rotationYaw = (rotation + 90.f * turns) % 360.f;
@@ -114,12 +115,12 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
 
         if (inventory != null) {
             NBTTagCompound invData = new NBTTagCompound();
-            invData.setInteger("length", inventory.length);
+            invData.setInteger("length", inventory.size());
             NBTTagCompound itemTag;
             NBTTagList list = new NBTTagList();
             @Nonnull ItemStack stack;
-            for (int i = 0; i < inventory.length; i++) {
-                stack = inventory[i];
+            for (int i = 0; i < inventory.size(); i++) {
+                stack = inventory.get(i);
                 if (stack.isEmpty()) {
                     continue;
                 }
@@ -132,12 +133,12 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
         }
         if (equipment != null) {
             NBTTagCompound invData = new NBTTagCompound();
-            invData.setInteger("length", equipment.length);
+            invData.setInteger("length", equipment.size());
             NBTTagCompound itemTag;
             NBTTagList list = new NBTTagList();
             @Nonnull ItemStack stack;
-            for (int i = 0; i < equipment.length; i++) {
-                stack = equipment[i];
+            for (int i = 0; i < equipment.size(); i++) {
+                stack = equipment.get(i);
                 if (stack.isEmpty()) {
                     continue;
                 }
@@ -157,7 +158,7 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
         if (tag.hasKey("inventoryData")) {
             NBTTagCompound inventoryTag = tag.getCompoundTag("inventoryData");
             int length = inventoryTag.getInteger("length");
-            inventory = new ItemStack[length];
+            inventory = NonNullList.withSize(length, ItemStack.EMPTY);
             NBTTagCompound itemTag;
             NBTTagList list = tag.getTagList("inventoryContents", Constants.NBT.TAG_COMPOUND);
             int slot;
@@ -167,14 +168,14 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
                 stack = new ItemStack(itemTag);
                 if (!stack.isEmpty()) {
                     slot = itemTag.getInteger("slot");
-                    inventory[slot] = stack;
+                    inventory.set(slot, stack);
                 }
             }
         }
         if (tag.hasKey("equipmentData")) {
             NBTTagCompound inventoryTag = tag.getCompoundTag("equipmentData");
             int length = inventoryTag.getInteger("length");
-            equipment = new ItemStack[length];
+            equipment = NonNullList.withSize(length, ItemStack.EMPTY);
             NBTTagCompound itemTag;
             NBTTagList list = inventoryTag.getTagList("equipmentContents", Constants.NBT.TAG_COMPOUND);
             int slot;
@@ -184,7 +185,7 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
                 stack = new ItemStack(itemTag);
                 if (!stack.isEmpty()) {
                     slot = itemTag.getInteger("slot");
-                    equipment[slot] = stack;
+                    equipment.set(slot, stack);
                 }
             }
         }

@@ -1,11 +1,16 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.*;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.IInventoryChangedListener;
+import net.minecraft.inventory.InventoryCraftResult;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
@@ -23,7 +28,7 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
     public InventoryCraftResult result;
     public InventoryBasic bookInventory;
 
-    ItemStack[] matrixShadow;
+    NonNullList<ItemStack> matrixShadow;
 
     public TileWarehouseCraftingStation() {
         Container c = new Container() {
@@ -39,7 +44,7 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
         };
 
         layoutMatrix = new InventoryCrafting(c, 3, 3);
-        matrixShadow = new ItemStack[layoutMatrix.getSizeInventory()];
+        matrixShadow = NonNullList.withSize(layoutMatrix.getSizeInventory(), ItemStack.EMPTY);
         result = new InventoryCraftResult();
         bookInventory = new InventoryBasic(1, this);
     }
@@ -51,7 +56,7 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
         @Nonnull ItemStack stack;
         for (int i = 0; i < layoutMatrix.getSizeInventory(); i++) {
             stack = layoutMatrix.getStackInSlot(i);
-            matrixShadow[i] = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
+            matrixShadow.set(i, stack.isEmpty() ? ItemStack.EMPTY : stack.copy());
         }
     }
 
@@ -64,8 +69,8 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
         int q;
         @Nonnull ItemStack layoutStack;
         for (int i = 0; i < layoutMatrix.getSizeInventory(); i++) {
-            layoutStack = matrixShadow[i];
-            if (layoutStack == null) {
+            layoutStack = matrixShadow.get(i);
+            if (layoutStack.isEmpty()) {
                 continue;
             }
             if (!layoutMatrix.getStackInSlot(i).isEmpty()) {

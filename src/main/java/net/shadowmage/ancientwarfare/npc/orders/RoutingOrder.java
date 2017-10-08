@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
@@ -96,7 +97,7 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
         RouteType routeType = RouteType.FILL_TARGET_TO;
         BlockPos target = BlockPos.ORIGIN;
         EnumFacing blockSide = EnumFacing.DOWN;
-        ItemStack[] filters = new ItemStack[12];
+        NonNullList<ItemStack> filters = NonNullList.withSize(12, ItemStack.EMPTY);
 
         private RoutePoint(NBTTagCompound tag) {
             readFromNBT(tag);
@@ -116,7 +117,7 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
         }
 
         public void setFilter(int index, ItemStack stack) {
-            filters[index] = stack;
+            filters.set(index, stack);
         }
 
         public EnumFacing getBlockSide() {
@@ -132,11 +133,11 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
         }
 
         public ItemStack getFilterInSlot(int slot) {
-            return filters[slot];
+            return filters.get(slot);
         }
 
         public int getFilterSize(){
-            return filters.length;
+            return filters.size();
         }
 
         public boolean getIgnoreDamage() {
@@ -366,12 +367,12 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
             for (int i = 0; i < filterList.tagCount(); i++) {
                 itemTag = filterList.getCompoundTagAt(i);
                 slot = itemTag.getInteger("slot");
-                if(slot >= filters.length){
-                    ItemStack[] temp = new ItemStack[slot+1];
-                    System.arraycopy(filters, 0, temp, 0, filters.length);
-                    filters = temp;
+
+                while (slot >= filters.size()) {
+                    filters.add(ItemStack.EMPTY);
                 }
-                filters[slot] = new ItemStack(itemTag);
+
+                filters.set(slot, new ItemStack(itemTag));
             }
         }
 
@@ -383,11 +384,11 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
             tag.setBoolean("ignoreTag", ignoreTag);
             NBTTagList filterList = new NBTTagList();
             NBTTagCompound itemTag;
-            for (int i = 0; i < filters.length; i++) {
-                if (filters[i] == null) {
+            for (int i = 0; i < filters.size(); i++) {
+                if (filters.get(i).isEmpty()) {
                     continue;
                 }
-                itemTag = filters[i].writeToNBT(new NBTTagCompound());
+                itemTag = filters.get(i).writeToNBT(new NBTTagCompound());
                 itemTag.setInteger("slot", i);
                 filterList.appendTag(itemTag);
             }

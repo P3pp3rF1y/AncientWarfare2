@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -156,10 +157,10 @@ public class BlockDataManager {
             } else {
                 item = Item.REGISTRY.getObject(new ResourceLocation(itemName));
                 if (item != null) {
-                    info.metaStacks[blockMeta] = new ItemStack(item, itemQuantity, itemDamage);
+                    info.metaStacks.set(blockMeta, new ItemStack(item, itemQuantity, itemDamage));
                 } else {
                     block2 = blockNameToBlock.get("minecraft:" + itemName);
-                    info.metaStacks[blockMeta] = new ItemStack(block2, itemQuantity, itemDamage);
+                    info.metaStacks.set(blockMeta, new ItemStack(block2, itemQuantity, itemDamage));
                 }
             }
         }
@@ -270,7 +271,7 @@ public class BlockDataManager {
         /*
          * item-stack map, by block-meta.  if singleItem==true, will use index[0] instead of whatever is passed in
          */
-        ItemStack[] metaStacks = new ItemStack[16];
+        NonNullList<ItemStack> metaStacks = NonNullList.withSize(16, ItemStack.EMPTY);
         boolean[] noItemFlags = new boolean[16];//flag will be true for a meta if it should return no item
 
         byte[] rotations = new byte[16];
@@ -289,12 +290,12 @@ public class BlockDataManager {
         }
 
         public ItemStack getStackFor(Block block, int meta) {
-            if (singleItem && metaStacks[0] != null) {
-                return metaStacks[0].copy();
+            if (singleItem && !metaStacks.get(0).isEmpty()) {
+                return metaStacks.get(0).copy();
             } else if (noItemFlags[meta]) {
-                return null;
-            } else if (metaStacks[meta] != null) {
-                return metaStacks[meta].copy();
+                return ItemStack.EMPTY;
+            } else if (!metaStacks.get(meta).isEmpty()) {
+                return metaStacks.get(meta).copy();
             }
             return new ItemStack(Item.getItemFromBlock(block), 1, meta);
         }

@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
@@ -17,27 +18,27 @@ import java.util.List;
  * Created by Olivier on 12/05/2015.
  */
 public abstract class Trade {
-    protected ItemStack[] input = new ItemStack[size()];
-    protected ItemStack[] output = new ItemStack[size()];
+    protected NonNullList<ItemStack> input = NonNullList.withSize(size(), ItemStack.EMPTY);
+    protected NonNullList<ItemStack> output = NonNullList.withSize(size(), ItemStack.EMPTY);
 
     public int size(){
         return 9;
     }
 
     public ItemStack getInputStack(int index) {
-        return input[index];
+        return input.get(index);
     }
 
     public ItemStack getOutputStack(int index) {
-        return output[index];
+        return output.get(index);
     }
 
     public void setInputStack(int index, ItemStack stack) {
-        input[index] = stack;
+        input.set(index, stack);
     }
 
     public void setOutputStack(int index, ItemStack stack) {
-        output[index] = stack;
+        output.set(index, stack);
     }
 
     /*
@@ -91,22 +92,22 @@ public abstract class Trade {
         NBTTagList list = new NBTTagList();
         NBTTagCompound itemTag;
 
-        for (int i = 0; i < input.length; i++) {
-            if (input[i] == null) {
+        for (int i = 0; i < input.size(); i++) {
+            if (input.get(i).isEmpty()) {
                 continue;
             }
-            itemTag = input[i].writeToNBT(new NBTTagCompound());
+            itemTag = input.get(i).writeToNBT(new NBTTagCompound());
             itemTag.setInteger("slot", i);
             list.appendTag(itemTag);
         }
         tag.setTag("inputItems", list);
 
         list = new NBTTagList();
-        for (int i = 0; i < output.length; i++) {
-            if (output[i] == null) {
+        for (int i = 0; i < output.size(); i++) {
+            if (output.get(i).isEmpty()) {
                 continue;
             }
-            itemTag = output[i].writeToNBT(new NBTTagCompound());
+            itemTag = output.get(i).writeToNBT(new NBTTagCompound());
             itemTag.setInteger("slot", i);
             list.appendTag(itemTag);
         }
@@ -120,13 +121,13 @@ public abstract class Trade {
         NBTTagList inputList = tag.getTagList("inputItems", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < inputList.tagCount(); i++) {
             itemTag = inputList.getCompoundTagAt(i);
-            input[itemTag.getInteger("slot")] = new ItemStack(itemTag);
+            input.set(itemTag.getInteger("slot"), new ItemStack(itemTag));
         }
 
         NBTTagList outputList = tag.getTagList("outputItems", Constants.NBT.TAG_COMPOUND);
         for (int i = 0; i < outputList.tagCount(); i++) {
             itemTag = outputList.getCompoundTagAt(i);
-            output[itemTag.getInteger("slot")] = new ItemStack(itemTag);
+            output.set(itemTag.getInteger("slot"), new ItemStack(itemTag));
         }
     }
 }

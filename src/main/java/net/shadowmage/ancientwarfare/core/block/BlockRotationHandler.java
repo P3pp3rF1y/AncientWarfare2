@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
@@ -247,7 +248,7 @@ public class BlockRotationHandler {
         private HashMap<RelativeSide, boolean[]> extractInsertFlags = new HashMap<>();//inventoryside x boolean[2]; [0]=extract, [1]=insert
         public final IRotatableTile te;
         public final RotationType rType;
-        private ItemStack[] inventorySlots;
+        private NonNullList<ItemStack> inventorySlots;
         private ItemSlotFilter[] filtersByInventorySlot;
 
         public InventorySided(IRotatableTile te, RotationType rType, int inventorySize) {
@@ -256,7 +257,7 @@ public class BlockRotationHandler {
             }
             this.te = te;
             this.rType = rType;
-            inventorySlots = new ItemStack[inventorySize];
+            inventorySlots = NonNullList.withSize(inventorySize, ItemStack.EMPTY);
             filtersByInventorySlot = new ItemSlotFilter[inventorySize];
             for (RelativeSide rSide : rType.getValidSides()) {
                 setAccessibleSideDefault(rSide, RelativeSide.NONE, new int[]{});
@@ -391,7 +392,7 @@ public class BlockRotationHandler {
 
         @Override
         public int getSizeInventory() {
-            return inventorySlots.length;
+            return inventorySlots.size();
         }
 
         @Override
@@ -407,19 +408,19 @@ public class BlockRotationHandler {
 
         @Override
         public ItemStack getStackInSlot(int var1) {
-            return inventorySlots[var1];
+            return inventorySlots.get(var1);
         }
 
         @Override
         public ItemStack decrStackSize(int var1, int var2) {
-            @Nonnull ItemStack stack = inventorySlots[var1];
+            @Nonnull ItemStack stack = inventorySlots.get(var1);
             if (!stack.isEmpty()) {
                 int qty = var2 > stack.getCount() ? stack.getCount() : var2;
                 stack.shrink(qty);
                 @Nonnull ItemStack returnStack = stack.copy();
                 returnStack.setCount(qty);
                 if (stack.getCount() <= 0) {
-                    inventorySlots[var1] = ItemStack.EMPTY;
+                    inventorySlots.set(var1, ItemStack.EMPTY);
                 }
                 if (returnStack.getCount() <= 0) {
                     returnStack = ItemStack.EMPTY;
@@ -432,15 +433,14 @@ public class BlockRotationHandler {
 
         @Override
         public ItemStack removeStackFromSlot(int var1) {
-            @Nonnull ItemStack stack = inventorySlots[var1];
-            inventorySlots[var1] = ItemStack.EMPTY;
+            @Nonnull ItemStack stack = inventorySlots.remove(var1);
             markDirty();
             return stack;
         }
 
         @Override
         public void setInventorySlotContents(int var1, ItemStack var2) {
-            inventorySlots[var1] = var2;
+            inventorySlots.set(var1, var2);
             markDirty();
         }
 
@@ -506,9 +506,7 @@ public class BlockRotationHandler {
 
         @Override
         public void clear() {
-            for(int i=0; i < inventorySlots.length; i++) {
-                inventorySlots[i] = ItemStack.EMPTY;
-            }
+            inventorySlots.clear();
         }
 
         @Override

@@ -3,9 +3,14 @@ package net.shadowmage.ancientwarfare.core.gui;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.NonNullList;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
-import net.shadowmage.ancientwarfare.core.gui.elements.*;
+import net.shadowmage.ancientwarfare.core.gui.elements.Button;
+import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
+import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
+import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
+import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.interfaces.IResearchRecipe;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
@@ -85,16 +90,16 @@ public class GuiResearchBook extends GuiContainerBase {
                 }
             }
             if(canShow){
-                ItemStack[] ingredients = new ItemStack[selectedRecipe.getIngredients().size()];
-                for(int i = 0; i < ingredients.length; i++){
+                NonNullList<ItemStack> ingredients = NonNullList.withSize(selectedRecipe.getIngredients().size(), ItemStack.EMPTY);
+                for(int i = 0; i < ingredients.size(); i++){
                     Ingredient ingredient = selectedRecipe.getIngredients().get(i);
                     if (ingredient.getMatchingStacks().length > 0) {
-                        ingredients[i] = ingredient.getMatchingStacks()[0];
+                        ingredients.set(i, ingredient.getMatchingStacks()[0]);
                     }
                 }
                 for(int i = 0; i < selectedRecipe.getRecipeWidth(); i++){
                     for(int j = 0; j < selectedRecipe.getRecipeHeight(); j++){
-                        detailsArea.addGuiElement(new ItemSlot(9 + 18 * i, totalHeight + 18 * j, ingredients[i + j * selectedRecipe.getRecipeWidth()], this));
+                        detailsArea.addGuiElement(new ItemSlot(9 + 18 * i, totalHeight + 18 * j, ingredients.get(i + j * selectedRecipe.getRecipeWidth()), this));
                     }
                 }
                 totalHeight += (selectedRecipe.getRecipeHeight()-1) * 9;

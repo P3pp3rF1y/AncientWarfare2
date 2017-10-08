@@ -1,10 +1,15 @@
 package net.shadowmage.ancientwarfare.core.tile;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.*;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.IInventoryChangedListener;
+import net.minecraft.inventory.InventoryCraftResult;
+import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
@@ -18,7 +23,7 @@ import javax.annotation.Nonnull;
 public class TileEngineeringStation extends TileUpdatable implements IRotatableTile, IInventoryChangedListener {
 
     EnumFacing facing = EnumFacing.NORTH;
-    ItemStack[] matrixShadow;
+    NonNullList<ItemStack> matrixShadow;
 
     public InventoryCrafting layoutMatrix;
     public InventoryCraftResult result;
@@ -38,7 +43,7 @@ public class TileEngineeringStation extends TileUpdatable implements IRotatableT
             }
         };
         layoutMatrix = new InventoryCrafting(c, 3, 3);
-        matrixShadow = new ItemStack[layoutMatrix.getSizeInventory()];
+        matrixShadow = NonNullList.withSize(layoutMatrix.getSizeInventory(), ItemStack.EMPTY);
         bookInventory = new InventoryBasic(1, this);
         result = new InventoryCraftResult();
         extraSlots = new InventoryBasic(18, this);
@@ -55,15 +60,15 @@ public class TileEngineeringStation extends TileUpdatable implements IRotatableT
         @Nonnull ItemStack stack;
         for (int i = 0; i < layoutMatrix.getSizeInventory(); i++) {
             stack = layoutMatrix.getStackInSlot(i);
-            matrixShadow[i] = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
+            matrixShadow.set(i, stack.isEmpty() ? ItemStack.EMPTY : stack.copy());
         }
     }
 
     public void onItemCrafted() {
         @Nonnull ItemStack layoutStack;
         for (int i = 0; i < layoutMatrix.getSizeInventory(); i++) {
-            layoutStack = matrixShadow[i];
-            if (layoutStack == null) {
+            layoutStack = matrixShadow.get(i);
+            if (layoutStack.isEmpty()) {
                 continue;
             }
             if (!layoutMatrix.getStackInSlot(i).isEmpty()) {
