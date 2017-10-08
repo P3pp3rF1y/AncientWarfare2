@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.entity.faction;
 
 import com.google.common.base.Predicate;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
@@ -14,10 +15,13 @@ import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.npc.ai.*;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackNearest;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIDoor;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIHurt;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionArcherStayAtHome;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRangedAttack;
-import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.RangeAttackHelper;
 
 public abstract class NpcFactionArcher extends NpcFaction implements IRangedAttackMob {
@@ -26,7 +30,7 @@ public abstract class NpcFactionArcher extends NpcFaction implements IRangedAtta
 
     public NpcFactionArcher(World par1World) {
         super(par1World);
-        Predicate<NpcBase> selector = entity -> {
+        Predicate<Entity> selector = entity -> {
 			if (!isHostileTowards(entity)) {
 				return false;
 			}

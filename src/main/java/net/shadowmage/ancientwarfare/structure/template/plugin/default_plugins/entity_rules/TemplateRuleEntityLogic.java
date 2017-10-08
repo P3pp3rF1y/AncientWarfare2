@@ -44,7 +44,7 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
     public NBTTagCompound tag = new NBTTagCompound();
 
     NonNullList<ItemStack> inventory;
-    NonNullList<ItemStack> equipment;
+    NonNullList<ItemStack> equipment = NonNullList.withSize(EntityEquipmentSlot.values().length, ItemStack.EMPTY);
 
     public TemplateRuleEntityLogic() {
     }
@@ -55,7 +55,6 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
         if (entity instanceof EntityLiving)//handles villagers / potentially other living npcs with inventories
         {
             tag.removeTag("Equipment");
-            equipment = NonNullList.withSize(EntityEquipmentSlot.values().length, ItemStack.EMPTY);
             EntityLiving living = (EntityLiving) entity;
             for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
                 equipment.set(slot.ordinal(), living.getItemStackFromSlot(slot).isEmpty() ? ItemStack.EMPTY : living.getItemStackFromSlot(slot).copy());
@@ -133,7 +132,6 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
         }
         if (equipment != null) {
             NBTTagCompound invData = new NBTTagCompound();
-            invData.setInteger("length", equipment.size());
             NBTTagCompound itemTag;
             NBTTagList list = new NBTTagList();
             @Nonnull ItemStack stack;
@@ -174,8 +172,6 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
         }
         if (tag.hasKey("equipmentData")) {
             NBTTagCompound inventoryTag = tag.getCompoundTag("equipmentData");
-            int length = inventoryTag.getInteger("length");
-            equipment = NonNullList.withSize(length, ItemStack.EMPTY);
             NBTTagCompound itemTag;
             NBTTagList list = inventoryTag.getTagList("equipmentContents", Constants.NBT.TAG_COMPOUND);
             int slot;

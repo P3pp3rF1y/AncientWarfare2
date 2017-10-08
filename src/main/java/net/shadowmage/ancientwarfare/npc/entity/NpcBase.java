@@ -1374,7 +1374,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
     
     public boolean getSleeping() {
-        return dataManager.get(IS_SLEEPING);
+        return dataManager == null ? false : dataManager.get(IS_SLEEPING);
     }
     
     public void setBedDirection(EnumFacing direction) {

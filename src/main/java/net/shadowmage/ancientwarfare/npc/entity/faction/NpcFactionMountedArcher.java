@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.entity.faction;
 
 import com.google.common.base.Predicate;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
@@ -22,7 +23,6 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionArcherStayAtHome;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRangedAttack;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRideHorse;
-import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.RangeAttackHelper;
 
 public abstract class NpcFactionMountedArcher extends NpcFactionMounted implements IRangedAttackMob {
@@ -32,7 +32,7 @@ public abstract class NpcFactionMountedArcher extends NpcFactionMounted implemen
     public NpcFactionMountedArcher(World par1World) {
         super(par1World);
 //  this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
-        Predicate<NpcBase> selector = entity -> {
+        Predicate<Entity> selector = entity -> {
 //      if(!canEntityBeSeen(entity)){return false;}
 			if (!isHostileTowards(entity)) {
 				return false;

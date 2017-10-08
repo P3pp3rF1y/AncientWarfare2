@@ -20,7 +20,7 @@ import java.util.List;
 
 public abstract class NpcFaction extends NpcBase {
 
-    protected final Predicate<NpcBase> selector = entity -> isHostileTowards(entity);
+    protected final Predicate<Entity> selector = entity -> isHostileTowards(entity);
 
     public NpcFaction(World par1World) {
         super(par1World);
