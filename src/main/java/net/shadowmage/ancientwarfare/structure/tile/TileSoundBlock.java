@@ -11,6 +11,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.ISinger;
 import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.SongPlayData;
+import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
 
 import java.util.List;
 
@@ -165,9 +166,11 @@ public class TileSoundBlock extends TileUpdatable implements ISinger, ITickable{
 
     public void setDisguiseState(ItemStack itemStack){
         Block block = Block.getBlockFromItem(itemStack.getItem());
-        disguiseState = block.getStateFromMeta(itemStack.getMetadata());
-        BlockTools.notifyBlockUpdate(this);
-        world.notifyNeighborsRespectDebug(pos, this.blockType, true);
-        markDirty();
+        if (block != AWStructuresBlocks.soundBlock) {
+            disguiseState = block.getStateFromMeta(itemStack.getMetadata());
+            BlockTools.notifyBlockUpdate(this);
+            world.notifyNeighborsRespectDebug(pos, this.blockType, true);
+            markDirty();
+        }
     }
 }
