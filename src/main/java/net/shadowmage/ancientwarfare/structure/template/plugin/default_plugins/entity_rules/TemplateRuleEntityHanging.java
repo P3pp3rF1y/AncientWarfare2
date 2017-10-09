@@ -43,7 +43,7 @@ public class TemplateRuleEntityHanging extends TemplateRuleVanillaEntity {
         super(world, entity, turns, x, y, z);
         EntityHanging hanging = (EntityHanging) entity;
         entity.writeToNBT(tag);
-        this.direction = EnumFacing.VALUES[(hanging.facingDirection.ordinal() + turns) % 4];
+        this.direction = EnumFacing.HORIZONTALS[(hanging.facingDirection.ordinal() + turns) % 4];
         tag.removeTag("UUIDMost");
         tag.removeTag("UUIDLeast");
     }
@@ -58,7 +58,7 @@ public class TemplateRuleEntityHanging extends TemplateRuleVanillaEntity {
         if (e == null) {
             throw new EntityPlacementException("Could not create entity for type: " + registryName.toString());
         }
-        EnumFacing direction = EnumFacing.VALUES[(this.direction.ordinal() + turns) % 4];
+        EnumFacing direction = EnumFacing.HORIZONTALS[(this.direction.ordinal() + turns) % 4];
         hangTarget = pos.offset(direction.rotateYCCW());
         //tag.setByte("Direction", (byte) direction.ordinal()); TODO needs a fix to set Rotation tags yaw and pitch
         //TODO again can we just update part of entities NBT instead of having to construct full?

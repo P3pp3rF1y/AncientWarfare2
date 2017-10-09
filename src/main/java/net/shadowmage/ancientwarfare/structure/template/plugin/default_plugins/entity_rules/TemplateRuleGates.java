@@ -59,7 +59,7 @@ public class TemplateRuleGates extends TemplateRuleEntity {
 
         this.pos1 = BlockTools.rotateAroundOrigin(gate.pos1.add(-x, -y, -z), turns);
         this.pos2 = BlockTools.rotateAroundOrigin(gate.pos2.add(-x, -y, -z), turns);
-        this.orientation = EnumFacing.VALUES[(gate.gateOrientation.ordinal() + turns) % 4];
+        this.orientation = EnumFacing.HORIZONTALS[(gate.gateOrientation.ordinal() + turns) % 4];
         this.gateType = Gate.getGateNameFor(gate);
     }
 
