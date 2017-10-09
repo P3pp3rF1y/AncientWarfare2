@@ -90,7 +90,7 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
     public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
         super.handlePlacement(world, turns, pos, builder);
         int localMeta = BlockDataManager.INSTANCE.getRotatedMeta(block, this.meta, turns);
-        world.setBlockState(pos, block.getStateFromMeta(meta), 3);
+        world.setBlockState(pos, block.getStateFromMeta(localMeta), 3);
         TileEntity te = world.getTileEntity(pos);
         if (!(te instanceof IInventory)) {
             return;
