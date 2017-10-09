@@ -56,17 +56,6 @@ public class ItemGateSpawner extends ItemBaseStructure implements IItemKeyInterf
         setMaxStackSize(1);
     }
 
-//    @Override
-//    public IIcon getIconFromDamage(int par1) {
-//        return Gate.getGateByID(par1).getIconTexture();
-//    }
-//
-//    @Override
-//    public void registerIcons(IIconRegister par1IconRegister) {
-//        Gate.registerIconsForGates(par1IconRegister);
-//    }
-
-
     @Override
     public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
         NBTTagCompound tag;

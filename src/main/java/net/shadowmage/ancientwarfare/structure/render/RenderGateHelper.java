@@ -23,6 +23,7 @@ package net.shadowmage.ancientwarfare.structure.render;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
+import net.shadowmage.ancientwarfare.structure.entity.DualBoundingBox;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.render.gate.RenderGateBasic;
 import net.shadowmage.ancientwarfare.structure.render.gate.RenderGateDouble;
@@ -52,31 +53,31 @@ public final class RenderGateHelper extends Render<EntityGate> {
     }
 
     @Override
-    public void doRender(EntityGate entity, double d0, double d1, double d2, float f, float f1) {
+    public void doRender(EntityGate gate, double d0, double d1, double d2, float f, float f1) {
         GL11.glPushMatrix();
-        if(renderManager.isDebugBoundingBox() && !entity.isInvisible()){
-            double x = d0 - entity.lastTickPosX, y = d1 - entity.lastTickPosY, z = d2 - entity.lastTickPosZ;
-// TODO dual bounding box implementaiton or regular block bounding boxes?
-//            if(gate.edgePosition > 0 && entity.getBoundingBox() instanceof DualBoundingBox){
-//                renderOffsetAABB(((DualBoundingBox) entity.getBoundingBox()).getTop(), x, y, z);
-//                renderOffsetAABB(((DualBoundingBox) entity.getBoundingBox()).getMin(), x, y, z);
-//                renderOffsetAABB(((DualBoundingBox) entity.getBoundingBox()).getMax(), x, y, z);
-//            }else
-                renderOffsetAABB(entity.getEntityBoundingBox(), x, y, z);
+        if(renderManager.isDebugBoundingBox() && !gate.isInvisible()){
+            double x = d0 - gate.lastTickPosX, y = d1 - gate.lastTickPosY, z = d2 - gate.lastTickPosZ;
+            // TODO dual bounding box implementaiton or regular block bounding boxes?
+            if(gate.edgePosition > 0 && gate.getEntityBoundingBox() instanceof DualBoundingBox){
+                renderOffsetAABB(((DualBoundingBox) gate.getEntityBoundingBox()).getTop(), x, y, z);
+                renderOffsetAABB(((DualBoundingBox) gate.getEntityBoundingBox()).getMin(), x, y, z);
+                renderOffsetAABB(((DualBoundingBox) gate.getEntityBoundingBox()).getMax(), x, y, z);
+            }else
+                renderOffsetAABB(gate.getEntityBoundingBox(), x, y, z);
 
             GL11.glPopMatrix();
             return;
         }
 
-        if (entity.hurtAnimationTicks > 0) {
-            float percent = ((float) entity.hurtAnimationTicks / 20.f);
+        if (gate.hurtAnimationTicks > 0) {
+            float percent = ((float) gate.hurtAnimationTicks / 20.f);
             GL11.glColor4f(1.f, 1.f - percent, 1.f - percent, 1.f);
         }
-        this.bindEntityTexture(entity);
+        this.bindEntityTexture(gate);
         GL11.glTranslated(d0, d1, d2);
         GL11.glRotatef(f, 0, 1, 0);
         GL11.glScalef(-1, -1, 1);
-        this.gateRenders.get(entity.getGateType().getGlobalID()).doRender(entity, d0, d1, d2, f, f1);
+        this.gateRenders.get(gate.getGateType().getGlobalID()).doRender(gate, d0, d1, d2, f, f1);
         GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
         GL11.glPopMatrix();
     }

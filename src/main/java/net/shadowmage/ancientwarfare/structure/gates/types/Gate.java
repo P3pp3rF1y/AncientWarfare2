@@ -22,6 +22,7 @@ package net.shadowmage.ancientwarfare.structure.gates.types;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -29,10 +30,12 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
+import net.shadowmage.ancientwarfare.structure.entity.DualBoundingBox;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.gates.IGateType;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
@@ -43,16 +46,16 @@ public class Gate implements IGateType {
 
     private static final Gate[] gateTypes = new Gate[16];
 
-    private static final Gate basicWood = new Gate(0, "Wood1.png").setName("gateBasicWood").setVariant(Variant.WOOD_BASIC);
-    private static final Gate basicIron = new Gate(1, "Iron1.png").setName("gateBasicIron").setVariant(Variant.IRON_BASIC).setModel(1);
+    private static final Gate basicWood = new Gate(0, "_wood_1.png").setName("gateBasicWood").setVariant(Variant.WOOD_BASIC);
+    private static final Gate basicIron = new Gate(1, "_iron_1.png").setName("gateBasicIron").setVariant(Variant.IRON_BASIC).setModel(1);
 
-    private static final Gate singleWood = new GateSingle(4, "Wood1.png").setName("gateSingleWood").setVariant(Variant.WOOD_SINGLE);
-    private static final Gate singleIron = new GateSingle(5, "Iron1.png").setName("gateSingleIron").setVariant(Variant.IRON_SINGLE).setModel(1);
+    private static final Gate singleWood = new GateSingle(4, "_wood_1.png").setName("gateSingleWood").setVariant(Variant.WOOD_SINGLE);
+    private static final Gate singleIron = new GateSingle(5, "_iron_1.png").setName("gateSingleIron").setVariant(Variant.IRON_SINGLE).setModel(1);
 
-    private static final Gate doubleWood = new GateDouble(8, "Wood1.png").setName("gateDoubleWood").setVariant(Variant.WOOD_DOUBLE);
-    private static final Gate doubleIron = new GateDouble(9, "Iron1.png").setName("gateDoubleIron").setVariant(Variant.IRON_DOUBLE).setModel(1);
+    private static final Gate doubleWood = new GateDouble(8, "_wood_1.png").setName("gateDoubleWood").setVariant(Variant.WOOD_DOUBLE);
+    private static final Gate doubleIron = new GateDouble(9, "_iron_1.png").setName("gateDoubleIron").setVariant(Variant.IRON_DOUBLE).setModel(1);
 
-    private static final Gate rotatingBridge = new GateRotatingBridge(12, "BridgeWood1.png");
+    private static final Gate rotatingBridge = new GateRotatingBridge(12, "_bridge_wood_1.png");
 
     public static final HashMap<String, Integer> gateIDByName = new HashMap<>();
 
@@ -220,13 +223,13 @@ public class Gate implements IGateType {
         }
         BlockPos min = BlockTools.getMin(gate.pos1, gate.pos2);
         BlockPos max = BlockTools.getMax(gate.pos1, gate.pos2);
-//        if(!(gate.getEntityBoundingBox() instanceof DualBoundingBox)) { //TODO gate's dual bounding box implementation
-//            try {
-//                ObfuscationReflectionHelper.setPrivateValue(Entity.class, gate, new DualBoundingBox(min, max), "boundingBox", "field_70121_D");
-//            } catch (Exception ignored) {
-//
-//            }
-//        }
+        if(!(gate.getEntityBoundingBox() instanceof DualBoundingBox)) {
+            try {
+                ObfuscationReflectionHelper.setPrivateValue(Entity.class, gate, new DualBoundingBox(min, max), "boundingBox", "field_70121_D");
+            } catch (Exception ignored) {
+
+            }
+        }
         if (gate.edgePosition > 0) {
             gate.setEntityBoundingBox(new AxisAlignedBB(min.getX(), max.getY() + 0.5d, min.getZ(), max.getX() + 1, max.getY() + 1, max.getZ() + 1));
         } else {
