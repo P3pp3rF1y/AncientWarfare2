@@ -48,12 +48,6 @@ public interface IGateType {
      */
     ResourceLocation getTexture();
 
-/* TODO readd in rendering
-    public IIcon getIconTexture();
-
-    public void registerIcons(IIconRegister reg);
-*/
-
     /*
      * return the speed at which the gate opens/closes when activated
      */

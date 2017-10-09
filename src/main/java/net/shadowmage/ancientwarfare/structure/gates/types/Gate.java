@@ -43,14 +43,14 @@ public class Gate implements IGateType {
 
     private static final Gate[] gateTypes = new Gate[16];
 
-    private static final Gate basicWood = new Gate(0, "Wood1.png").setName("gateBasicWood").setIcon("gateWoodBasic");
-    private static final Gate basicIron = new Gate(1, "Iron1.png").setName("gateBasicIron").setIcon("gateIronBasic").setModel(1);
+    private static final Gate basicWood = new Gate(0, "Wood1.png").setName("gateBasicWood").setVariant(Variant.WOOD_BASIC);
+    private static final Gate basicIron = new Gate(1, "Iron1.png").setName("gateBasicIron").setVariant(Variant.IRON_BASIC).setModel(1);
 
-    private static final Gate singleWood = new GateSingle(4, "Wood1.png").setName("gateSingleWood").setIcon("gateWoodSingle");
-    private static final Gate singleIron = new GateSingle(5, "Iron1.png").setName("gateSingleIron").setIcon("gateIronSingle").setModel(1);
+    private static final Gate singleWood = new GateSingle(4, "Wood1.png").setName("gateSingleWood").setVariant(Variant.WOOD_SINGLE);
+    private static final Gate singleIron = new GateSingle(5, "Iron1.png").setName("gateSingleIron").setVariant(Variant.IRON_SINGLE).setModel(1);
 
-    private static final Gate doubleWood = new GateDouble(8, "Wood1.png").setName("gateDoubleWood").setIcon("gateWoodDouble");
-    private static final Gate doubleIron = new GateDouble(9, "Iron1.png").setName("gateDoubleIron").setIcon("gateIronDouble").setModel(1);
+    private static final Gate doubleWood = new GateDouble(8, "Wood1.png").setName("gateDoubleWood").setVariant(Variant.WOOD_DOUBLE);
+    private static final Gate doubleIron = new GateDouble(9, "Iron1.png").setName("gateDoubleIron").setVariant(Variant.IRON_DOUBLE).setModel(1);
 
     private static final Gate rotatingBridge = new GateRotatingBridge(12, "BridgeWood1.png");
 
@@ -66,10 +66,24 @@ public class Gate implements IGateType {
         gateIDByName.put("gate.drawbridge", 12);
     }
 
+    public Variant getVariant() {
+        return variant;
+    }
+
+    public enum Variant {
+        WOOD_BASIC,
+        IRON_BASIC,
+        WOOD_SINGLE,
+        IRON_SINGLE,
+        WOOD_DOUBLE,
+        IRON_DOUBLE,
+        WOOD_ROTATING
+    }
+
     protected final int globalID;
     protected String displayName = "";
     protected String tooltip = "";
-    protected String iconTexture = "";
+    protected Variant variant;
     protected int maxHealth = 40;
     protected int modelType = 0;
 
@@ -99,8 +113,8 @@ public class Gate implements IGateType {
         return this;
     }
 
-    protected final Gate setIcon(String icon){
-        iconTexture = icon;
+    protected final Gate setVariant(Variant variant){
+        this.variant = variant;
         return this;
     }
 
@@ -108,16 +122,6 @@ public class Gate implements IGateType {
         modelType = type;
         return this;
     }
-
-//    @Override
-//    public void registerIcons(IIconRegister reg) {
-//        itemIcon = reg.registerIcon("ancientwarfare:structure/gates/" + iconTexture);
-//    }
-//
-//    @Override
-//    public IIcon getIconTexture() {
-//        return itemIcon;
-//    }
 
     @Override
     public int getGlobalID() {
@@ -216,7 +220,7 @@ public class Gate implements IGateType {
         }
         BlockPos min = BlockTools.getMin(gate.pos1, gate.pos2);
         BlockPos max = BlockTools.getMax(gate.pos1, gate.pos2);
-//        if(!(gate.getEntityBoundingBox() instanceof DualBoundingBox)) {
+//        if(!(gate.getEntityBoundingBox() instanceof DualBoundingBox)) { //TODO gate's dual bounding box implementation
 //            try {
 //                ObfuscationReflectionHelper.setPrivateValue(Entity.class, gate, new DualBoundingBox(min, max), "boundingBox", "field_70121_D");
 //            } catch (Exception ignored) {
@@ -357,13 +361,4 @@ public class Gate implements IGateType {
     public static ItemStack getItemToConstruct(String typeName) {
         return getGateByName(typeName).getConstructingItem();
     }
-
-//    public static void registerIconsForGates(IIconRegister reg) {
-//        for (IGateType t : gateTypes) {
-//            if (t == null) {
-//                continue;
-//            }
-//            t.registerIcons(reg);
-//        }
-//    }
 }

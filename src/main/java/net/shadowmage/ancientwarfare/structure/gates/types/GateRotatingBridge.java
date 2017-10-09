@@ -39,9 +39,8 @@ public class GateRotatingBridge extends Gate {
         super(id, tex);
         setName("gateDrawbridge");
         this.moveSpeed = 1.f;
-//  this.texture = "gateBridgeWood1.png";
         this.canSoldierInteract = false;
-        setIcon("gateWoodRotating");
+        setVariant(Variant.WOOD_ROTATING);
     }
 
     @Override

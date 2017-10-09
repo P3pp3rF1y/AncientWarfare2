@@ -49,20 +49,5 @@ public class AWStructuresBlockLoader {
 
         registry.register(new BlockSoundBlock());
         GameRegistry.registerTileEntity(TileSoundBlock.class, "sound_block_tile");
-
-        //        builder.setIcon(0, "ancientwarfare:structure/builder_bottom");
-        //        builder.setIcon(1, "ancientwarfare:structure/builder_top");
-        //        builder.setIcon(2, "ancientwarfare:structure/builder_side");
-        //        builder.setIcon(3, "ancientwarfare:structure/builder_side");
-        //        builder.setIcon(4, "ancientwarfare:structure/builder_side");
-        //        builder.setIcon(5, "ancientwarfare:structure/builder_side");
-        //        draftingStation.setIcon(0, "ancientwarfare:structure/drafting_station_bottom");
-        //        draftingStation.setIcon(1, "ancientwarfare:structure/drafting_station_top");
-        //        draftingStation.setIcon(2, "ancientwarfare:structure/drafting_station_front");
-        //        draftingStation.setIcon(3, "ancientwarfare:structure/drafting_station_front");
-        //        draftingStation.setIcon(4, "ancientwarfare:structure/drafting_station_side");
-        //        draftingStation.setIcon(5, "ancientwarfare:structure/drafting_station_side");
-
     }
-
 }

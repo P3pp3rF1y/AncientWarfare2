@@ -1,0 +1,46 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "builtin/generated",
+        "transform": "forge:default-item"
+    },
+    "variants": {
+        "variant": {
+            "gate_iron_basic": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/structure/gates/gate_iron_basic"
+                }
+            },
+            "gate_iron_double": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/structure/gates/gate_iron_double"
+                }
+            },
+            "gate_iron_single": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/structure/gates/gate_iron_single"
+                }
+            },
+            "gate_wood_basic": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/structure/gates/gate_wood_basic"
+                }
+            },
+            "gate_wood_double": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/structure/gates/gate_wood_double"
+                }
+            },
+            "gate_wood_rotating": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/structure/gates/gate_wood_rotating"
+                }
+            },
+            "gate_wood_single": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/structure/gates/gate_wood_single"
+                }
+            }
+        }
+    }
+}

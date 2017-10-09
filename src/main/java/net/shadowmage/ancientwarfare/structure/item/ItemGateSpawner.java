@@ -20,6 +20,8 @@
  */
 package net.shadowmage.ancientwarfare.structure.item;
 
+import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -30,10 +32,13 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -237,5 +242,43 @@ public class ItemGateSpawner extends ItemBaseStructure implements IItemKeyInterf
             p2 = p1;
         }
         Util.renderBoundingBox(player, BlockTools.getMin(p1, p2), BlockTools.getMax(p1, p2), delta);
+    }
+
+    @Override
+    public void registerClient() {
+        ResourceLocation basePath = new ResourceLocation(AncientWarfareCore.modID, "structure/gate_spawner");
+        ModelResourceLocation IRON_BASIC = new ModelResourceLocation(basePath, "variant=gate_iron_basic");
+        ModelResourceLocation IRON_DOUBLE = new ModelResourceLocation(basePath, "variant=gate_iron_double");
+        ModelResourceLocation IRON_SINGLE = new ModelResourceLocation(basePath, "variant=gate_iron_single");
+        ModelResourceLocation WOOD_BASIC = new ModelResourceLocation(basePath, "variant=gate_wood_basic");
+        ModelResourceLocation WOOD_DOUBLE = new ModelResourceLocation(basePath, "variant=gate_wood_double");
+        ModelResourceLocation WOOD_ROTATING = new ModelResourceLocation(basePath, "variant=gate_wood_rotating");
+        ModelResourceLocation WOOD_SINGLE = new ModelResourceLocation(basePath, "variant=gate_wood_single");
+
+        ModelLoader.setCustomMeshDefinition(this, new ItemMeshDefinition() {
+            @Override
+            public ModelResourceLocation getModelLocation(ItemStack stack) {
+                switch(Gate.getGateByID(stack.getMetadata()).getVariant()) {
+                    case IRON_BASIC:
+                        return IRON_BASIC;
+                    case IRON_DOUBLE:
+                        return IRON_DOUBLE;
+                    case IRON_SINGLE:
+                        return IRON_SINGLE;
+                    case WOOD_BASIC:
+                        return WOOD_BASIC;
+                    case WOOD_DOUBLE:
+                        return WOOD_DOUBLE;
+                    case WOOD_ROTATING:
+                        return WOOD_ROTATING;
+                    case WOOD_SINGLE:
+                        return WOOD_SINGLE;
+                    default:
+                        return WOOD_BASIC;
+                }
+            }
+        });
+
+        ModelLoader.registerItemVariants(this, IRON_BASIC, IRON_DOUBLE, IRON_SINGLE, WOOD_BASIC, WOOD_DOUBLE, WOOD_ROTATING, WOOD_SINGLE);
     }
 }
