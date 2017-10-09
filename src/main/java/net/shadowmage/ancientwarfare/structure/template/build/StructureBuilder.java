@@ -129,7 +129,7 @@ public class StructureBuilder implements IStructureBuilder {
         if (pos.getY() <= 0 || pos.getY() >= world.getHeight()) {
             return;
         }
-        world.setBlockState(pos, block.getStateFromMeta(meta));
+        world.setBlockState(pos, block.getStateFromMeta(meta), 0);
         //TODO this used to be more complicated for perf reasons - look into whether needs to be recreated
 //        Chunk chunk = world.getChunkFromBlockCoords(x, z);
 //        ExtendedBlockStorage stc = chunk.getBlockStorageArray()[y >> 4];
