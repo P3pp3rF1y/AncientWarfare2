@@ -55,7 +55,7 @@ public abstract class TemplateRuleEntity extends TemplateRule {
     }
 
     public final void writeRule(BufferedWriter out) throws IOException {
-        out.write("position=" + pos.toLong());
+        out.write("position=" + NBTTools.getCSVStringForArray(new int[]{pos.getX(), pos.getY(), pos.getZ()}));
         out.newLine();
         super.writeRule(out);
     }
@@ -64,7 +64,8 @@ public abstract class TemplateRuleEntity extends TemplateRule {
         this.ruleNumber = ruleNumber;
         for (String line : lines) {
             if (line.toLowerCase(Locale.ENGLISH).startsWith("position=")) {
-                pos = BlockPos.fromLong(NBTTools.safeParseLong(line));
+                int[] posArray = NBTTools.safeParseIntArray("=", line);
+                pos = new BlockPos(posArray[0], posArray[1], posArray[2]);
                 break;
             }
         }

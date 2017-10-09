@@ -25,7 +25,7 @@ public class NpcAIPlayerOwnedFindWorksite extends NpcAI<NpcWorker> {
         if (!npc.getIsAIEnabled()) {
             return false;
         }
-        return npc.ordersStack == null && npc.autoWorkTarget == null && (lastExecuted == -1 || npc.ticksExisted - lastExecuted > checkFrequency);
+        return npc.ordersStack.isEmpty() && npc.autoWorkTarget == null && (lastExecuted == -1 || npc.ticksExisted - lastExecuted > checkFrequency);
     }
 
     @Override

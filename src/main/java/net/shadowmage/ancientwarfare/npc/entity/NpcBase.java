@@ -83,9 +83,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     private ResourceLocation currentTexture = null;
     public static final int ORDER_SLOT = 6, UPKEEP_SLOT = 7;
     @Nonnull
-    public ItemStack ordersStack;
+    public ItemStack ordersStack = ItemStack.EMPTY;
     @Nonnull
-    public ItemStack upkeepStack;
+    public ItemStack upkeepStack = ItemStack.EMPTY;
     
     // used for flee/distress AI
     // this isn't really useful yet, combat NPC's will attack any mob they come in
@@ -99,7 +99,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     private int maxHealthOverride = -1;
     private String customTexRef = "";//might as well allow for player-owned as well...
     
-    private EnumFacing bedDirection;
+    private EnumFacing bedDirection = EnumFacing.NORTH;
     private BlockPos cachedBedPos;
     private boolean foundBed = false;
     private boolean rainedOn = false;

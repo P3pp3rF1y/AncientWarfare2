@@ -135,7 +135,7 @@ public class BlockTools {
         /*
          * if no entity was hit, return the position impacted.
          */
-        return testHitPosition.getBlockPos().offset(testHitPosition.sideHit);
+        return offset ? testHitPosition.getBlockPos().offset(testHitPosition.sideHit) : testHitPosition.getBlockPos();
     }
 
     public static BlockPos rotateAroundOrigin(BlockPos pos, int turns) {
