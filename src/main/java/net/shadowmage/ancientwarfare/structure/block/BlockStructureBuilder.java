@@ -12,30 +12,11 @@ import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 
 public class BlockStructureBuilder extends BlockBaseStructure {
 
-    //private BlockIconMap iconMap = new BlockIconMap();
-
     public BlockStructureBuilder() {
         super(Material.ROCK, "structure_builder_ticked");
         setHardness(2.f);
         setCreativeTab(null);
     }
-
-//    public BlockStructureBuilder setIcon(int side, String texName) {
-//        this.iconMap.setIconTexture(side, 0, texName);
-//        return this;
-//    }
-
-//    @Override
-//    @SideOnly(Side.CLIENT)
-//    public void registerBlockIcons(IIconRegister reg) {
-//        iconMap.registerIcons(reg);
-//    }
-//
-//    @Override
-//    @SideOnly(Side.CLIENT)
-//    public IIcon getIcon(int side, int meta) {
-//        return iconMap.getIconFor(side, meta);
-//    }
 
     @Override
     public boolean hasTileEntity(IBlockState state) {
