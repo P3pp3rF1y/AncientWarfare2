@@ -18,13 +18,13 @@ public interface IBoxRenderer {
 
         public static void renderBoundingBox(EntityPlayer player, BlockPos min, BlockPos max, float delta) {
             AxisAlignedBB bb = new AxisAlignedBB(min.getX(), min.getY(), min.getZ(), max.getX() + 1, max.getY() + 1, max.getZ() + 1);
-            RenderTools.adjustBBForPlayerPos(bb, player, delta);
+            bb = RenderTools.adjustBBForPlayerPos(bb, player, delta);
             RenderTools.drawOutlinedBoundingBox(bb, 1.f, 1.f, 1.f);
         }
 
         public static void renderBoundingBox(EntityPlayer player, BlockPos min, BlockPos max, float delta, float r, float g, float b) {
             AxisAlignedBB bb = new AxisAlignedBB(min.getX(), min.getY(), min.getZ(), max.getX() + 1, max.getY() + 1, max.getZ() + 1);
-            RenderTools.adjustBBForPlayerPos(bb, player, delta);
+            bb = RenderTools.adjustBBForPlayerPos(bb, player, delta);
             RenderTools.drawOutlinedBoundingBox(bb, r, g, b);
         }
     }
