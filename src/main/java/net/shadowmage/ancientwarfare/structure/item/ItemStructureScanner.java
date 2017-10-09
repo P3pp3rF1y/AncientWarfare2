@@ -33,7 +33,6 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
     public ItemStructureScanner(String name) {
         super(name);
         setMaxStackSize(1);
-        //this.setTextureName("ancientwarfare:structure/" + name);
     }
 
     @Override

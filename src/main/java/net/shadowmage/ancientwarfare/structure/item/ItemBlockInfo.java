@@ -17,7 +17,6 @@ public class ItemBlockInfo extends ItemBaseStructure {
 
     public ItemBlockInfo(String name) {
         super(name);
-        //this.setTextureName("ancientwarfare:structure/block_info");
     }
 
     @Override

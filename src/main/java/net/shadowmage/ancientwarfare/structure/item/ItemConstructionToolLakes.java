@@ -17,7 +17,6 @@ public class ItemConstructionToolLakes extends ItemBaseStructure {
 
     public ItemConstructionToolLakes(String name) {
         super(name);
-        //this.setTextureName("ancientwarfare:structure/" + "construction_tool");
     }
 
     @Override

@@ -25,7 +25,6 @@ public class ItemConstructionTool extends ItemBaseStructure implements IItemKeyI
 
     public ItemConstructionTool(String name) {
         super(name);
-        //this.setTextureName("ancientwarfare:structure/" + name);
     }
 
     @Override

@@ -43,7 +43,6 @@ public class ItemSpawnerPlacer extends ItemBaseStructure {
 
     public ItemSpawnerPlacer(String name) {
         super(name);
-        //this.setTextureName("ancientwarfare:structure/" + name);
     }
 
 

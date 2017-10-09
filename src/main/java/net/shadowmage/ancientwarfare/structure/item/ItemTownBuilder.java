@@ -18,7 +18,7 @@ public class ItemTownBuilder extends ItemBaseStructure implements IItemKeyInterf
     public ItemTownBuilder(String name) {
         super(name);
         setMaxStackSize(1);
-        //this.setTextureName("ancientwarfare:structure/structure_builder");//TODO make texture...
+        //TODO make texture (uses structure builder one currently)
     }
 
 //@SuppressWarnings({ "unchecked", "rawtypes" })
