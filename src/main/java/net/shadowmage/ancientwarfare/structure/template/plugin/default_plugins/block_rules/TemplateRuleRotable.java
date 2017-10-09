@@ -88,10 +88,10 @@ public class TemplateRuleRotable extends TemplateRuleBlock {
             this.tag = tag.getCompoundTag("teData");
         }
         if (tag.hasKey("pos1")) {
-            this.p1 = BlockPos.fromLong(tag.getLong("pos1"));
+            this.p1 = getBlockPosFromNBT(tag.getCompoundTag("pos1"));
         }
         if (tag.hasKey("pos2")) {
-            this.p2 = BlockPos.fromLong(tag.getLong("pos2"));
+            this.p2 = getBlockPosFromNBT(tag.getCompoundTag("pos2"));
         }
     }
 
@@ -101,10 +101,10 @@ public class TemplateRuleRotable extends TemplateRuleBlock {
         tag.setInteger("meta", meta);
         tag.setInteger("orientation", orientation);
         if (p1 != null) {
-            tag.setLong("pos1", p1.toLong());
+            tag.setTag("pos1", writeBlockPosToNBT(new NBTTagCompound(), p1));
         }
         if (p2 != null) {
-            tag.setLong("pos2", p2.toLong());
+            tag.setTag("pos2", writeBlockPosToNBT(new NBTTagCompound(), p2));
         }
         if (this.tag != null) {
             tag.setTag("teData", this.tag);
