@@ -2,8 +2,8 @@ package net.shadowmage.ancientwarfare.npc.render;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.RenderBiped;
@@ -32,7 +32,7 @@ public class RenderNpcBase extends RenderBiped<NpcBase> {
     List<Integer> renderTasks = new ArrayList<>();
 
     public RenderNpcBase(RenderManager renderManager) {
-        super(renderManager, new ModelBiped(), 0.6f);
+        super(renderManager, new ModelNpc(), 0.6f);
         addLayer(new LayerBipedArmor(this));
         addLayer(new LayerHeldItem(this));
     }
@@ -115,6 +115,13 @@ public class RenderNpcBase extends RenderBiped<NpcBase> {
             }
         }
     }
+
+    @Override
+    public void transformHeldFull3DItemLayer()
+    {
+        GlStateManager.translate(0.09375F, 0.1875F, 0.0F);
+    }
+
 
 //    @Override
 //    protected void func_82420_a(EntityLiving par1EntityLiving, ItemStack par2ItemStack) {

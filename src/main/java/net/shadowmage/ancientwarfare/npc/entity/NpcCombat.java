@@ -15,9 +15,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBow;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackMeleeLongRange;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackNearest;
@@ -44,8 +41,6 @@ import javax.annotation.Nonnull;
 import java.util.Collection;
 
 public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
-
-    private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.createKey(NpcCombat.class, DataSerializers.BOOLEAN);
 
     private EntityAIBase collideAI;
     private EntityAIBase arrowAI;
@@ -184,11 +179,6 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
         float precision = 10.0f - ( (float) this.getLevelingStats().getBaseLevel() / (float) AWNPCStatics.maxNpcLevel * 10.0f );
         RangeAttackHelper.doRangedAttack(this, target, force, precision);
     }
-
-    @Override
-    public void setSwingingArms(boolean swingingArms) {
-        this.dataManager.set(SWINGING_ARMS, swingingArms);
-    } //TODO add use of this data in rendering
 
     public void respondToDistress(NpcBase source) {
         // TODO: Target prioritizing or something...?

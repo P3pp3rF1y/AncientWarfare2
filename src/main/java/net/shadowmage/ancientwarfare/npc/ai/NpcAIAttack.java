@@ -26,6 +26,7 @@ public abstract class NpcAIAttack<T extends NpcBase> extends NpcAI<T>{
         moveRetryDelay = 0;
         attackDelay = 0;
         npc.addAITask(TASK_ATTACK);
+        npc.setSwingingArms(true);
     }
 
 
@@ -35,6 +36,7 @@ public abstract class NpcAIAttack<T extends NpcBase> extends NpcAI<T>{
         moveRetryDelay = 0;
         attackDelay = 0;
         npc.removeAITask(TASK_MOVE + TASK_ATTACK);
+        npc.setSwingingArms(false);
     }
 
     @Override

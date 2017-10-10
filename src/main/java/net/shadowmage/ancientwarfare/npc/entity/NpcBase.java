@@ -68,6 +68,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     private static final DataParameter<Integer> AI_TASKS = EntityDataManager.createKey(NpcBase.class, DataSerializers.VARINT);
     private static final DataParameter<BlockPos> BED_POS = EntityDataManager.createKey(NpcBase.class, DataSerializers.BLOCK_POS);
     private static final DataParameter<Boolean> IS_SLEEPING = EntityDataManager.createKey(NpcBase.class, DataSerializers.BOOLEAN);
+    private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.createKey(NpcBase.class, DataSerializers.BOOLEAN);
 
     private String ownerName = "";//the owner of this NPC, used for checking teams
     private UUID ownerId;
@@ -86,7 +87,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     public ItemStack ordersStack = ItemStack.EMPTY;
     @Nonnull
     public ItemStack upkeepStack = ItemStack.EMPTY;
-    
+
     // used for flee/distress AI
     // this isn't really useful yet, combat NPC's will attack any mob they come in
     // contact with during a distress response
@@ -98,7 +99,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     private int armorValue = -1;//faction based only
     private int maxHealthOverride = -1;
     private String customTexRef = "";//might as well allow for player-owned as well...
-    
+
     private EnumFacing bedDirection = EnumFacing.NORTH;
     private BlockPos cachedBedPos;
     private boolean foundBed = false;
@@ -119,6 +120,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         dataManager.register(AI_TASKS, 0);
         dataManager.register(BED_POS, BlockPos.ORIGIN);
         dataManager.register(IS_SLEEPING, false);
+        dataManager.register(SWINGING_ARMS, false);
     }
 
     @Override
@@ -157,10 +159,10 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         if (!world.isRemote) {
             if (!customTexRef.equals(this.customTexRef)) {
                 PacketEntity pkt = new PacketEntity(this);
-                if(customTexRef.startsWith("Player:")){
+                if (customTexRef.startsWith("Player:")) {
                     String name = customTexRef.split(":", 2)[1];
                     NBTTagCompound tagCompound = AncientWarfareNPC.proxy.cacheProfile((WorldServer) world, name);
-                    if(tagCompound != null)
+                    if (tagCompound != null)
                         pkt.packetData.setTag("profileTex", tagCompound);
                 }
                 pkt.packetData.setString("customTex", customTexRef);
@@ -206,7 +208,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         }
         int knockback = 0;
         if (target instanceof EntityLivingBase) {
-            damage += EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(), ((EntityLivingBase)target).getCreatureAttribute());
+            damage += EnchantmentHelper.getModifierForCreature(this.getHeldItemMainhand(), ((EntityLivingBase) target).getCreatureAttribute());
             knockback += EnchantmentHelper.getKnockbackModifier(this);
         }
         boolean targetHit = target.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
@@ -236,12 +238,11 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
      * Proper calculations for all types of armors, including shields
      */
     @Override
-    protected float applyArmorCalculations(DamageSource source, float amount){
-        if (!source.isUnblockable())
-        {
+    protected float applyArmorCalculations(DamageSource source, float amount) {
+        if (!source.isUnblockable()) {
             if (getArmorValueOverride() >= 0) {
                 return super.applyArmorCalculations(source, amount);
-            }else{
+            } else {
                 NonNullList<ItemStack> armor = NonNullList.create();
                 for (ItemStack armorPiece : getArmorInventoryList()) {
                     armor.add(armorPiece);
@@ -249,11 +250,11 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
                 float value = ISpecialArmor.ArmorProperties.applyArmor(this, armor, source, amount);
                 if (value > 0.0F && getShieldStack().getItem() instanceof ItemShield) {
                     float absorb = value * ((ItemShield) getShieldStack().getItem()).getArmorBonusValue() / 25F;
-                    int dmg = Math.max((int)absorb, 1);
+                    int dmg = Math.max((int) absorb, 1);
                     getShieldStack().damageItem(dmg, this);
                     value -= absorb;
                 }
-                if(value < 0.0F)
+                if (value < 0.0F)
                     return 0;
                 return value;
             }
@@ -279,25 +280,25 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     @Override
     public final double getYOffset() {
-        return - 0.5D;//fixes mounted offset for horses, probably minecarts
+        return -0.5D;//fixes mounted offset for horses, probably minecarts
     }
 
     @Override
     public int getMaxFallHeight() {
-        return this.getAttackTarget() == null ? 4 : 4 + (int)(this.getHealth()/3);
+        return this.getAttackTarget() == null ? 4 : 4 + (int) (this.getHealth() / 3);
     }
 
     @Override
-    public float getBlockPathWeight(BlockPos pos){
+    public float getBlockPathWeight(BlockPos pos) {
         IBlockState stateBelow = world.getBlockState(pos.down());
-        if(stateBelow.getMaterial() == Material.LAVA || stateBelow.getMaterial() == Material.CACTUS)//Avoid cacti and lava when wandering
+        if (stateBelow.getMaterial() == Material.LAVA || stateBelow.getMaterial() == Material.CACTUS)//Avoid cacti and lava when wandering
             return -10;
-        else if(stateBelow.getMaterial().isLiquid())//Don't try swimming too much
+        else if (stateBelow.getMaterial().isLiquid())//Don't try swimming too much
             return 0;
         /*if(this.getRidingEntity() instanceof EntityCreature)
             return ((EntityCreature)this.getRidingEntity()).getBlockPathWeight(varX, varY - 1, varZ);*/
         float level = world.getLightBrightness(pos);//Prefer lit areas
-        if(level < 0)
+        if (level < 0)
             return 0;
         else
             return level + (stateBelow.isSideSolid(world, pos.down(), EnumFacing.UP) ? 1 : 0);
@@ -326,12 +327,12 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         return null;//NOOP on non-player owned npc
     }
 
-    public void setHomeAreaAtCurrentPosition(){
+    public void setHomeAreaAtCurrentPosition() {
         setHomePosAndDistance(new BlockPos(MathHelper.floor(this.posX), MathHelper.floor(this.posY), MathHelper.floor(this.posZ)), getHomeRange());
     }
 
-    public int getHomeRange(){
-        if(hasHome()){
+    public int getHomeRange() {
+        if (hasHome()) {
             return MathHelper.floor(getMaximumHomeDistance());
         }
         return 5;
@@ -349,7 +350,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             setRainedOn(true);
         return shouldSleep() || isWaitingForRainToStop();
     }
-    
+
     private boolean isWaitingForRainToStop() {
         if (!this.world.isRaining()) {
             // rain has stopped, reset
@@ -358,7 +359,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         }
         return rainedOn;
     }
-    
+
     public void setRainedOn(boolean rainedOn) {
         this.rainedOn = rainedOn;
     }
@@ -404,7 +405,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     protected boolean tryCommand(EntityPlayer player) {
         boolean baton = !EntityTools.getItemFromEitherHand(player, ItemCommandBaton.class).isEmpty();
         if (!baton) {
-            if(!world.isRemote) {
+            if (!world.isRemote) {
                 if (player.isSneaking()) {
                     if (this.followingPlayerName != null && this.followingPlayerName.equals(player.getName())) {
                         this.followingPlayerName = null;
@@ -421,13 +422,13 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     @Override
-    public void applyEntityCollision(Entity entity){
-        if(!isInWater() && !isHostileTowards(entity)){
-            int d0 = (int)Math.signum(this.posX - entity.posX);
-            int d1 = (int)Math.signum(this.posZ - entity.posZ);
-            if(d0!=0 || d1!=0) {
+    public void applyEntityCollision(Entity entity) {
+        if (!isInWater() && !isHostileTowards(entity)) {
+            int d0 = (int) Math.signum(this.posX - entity.posX);
+            int d1 = (int) Math.signum(this.posZ - entity.posZ);
+            if (d0 != 0 || d1 != 0) {
                 Material material = world.getBlockState(new BlockPos(this.posX + d0, this.getEntityBoundingBox().minY - 1, this.posZ + d1)).getMaterial();
-                if(material.isLiquid() || material == Material.CACTUS) {
+                if (material.isLiquid() || material == Material.CACTUS) {
                     return;
                 }
                 this.entityCollisionReduction = 0.9F;
@@ -443,54 +444,54 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             return false;
         if (source.getTrueSource() != null && !canBeAttackedBy(source.getTrueSource()))
             return false;
-        if(source == DamageSource.IN_WALL && this.getRidingEntity() instanceof EntityLiving) {
+        if (source == DamageSource.IN_WALL && this.getRidingEntity() instanceof EntityLiving) {
             knockFromDamage(par2, world.getBlockState(new BlockPos(this.posX, this.posY + this.getEyeHeight(), this.posZ)).getMaterial());
             return false;
         }
-        if(source == DamageSource.CACTUS)
+        if (source == DamageSource.CACTUS)
             knockFromDamage(par2, Material.CACTUS);
-        else if(source == DamageSource.LAVA)
+        else if (source == DamageSource.LAVA)
             knockFromDamage(par2, Material.LAVA);
-        else if(source == DamageSource.DROWN)
+        else if (source == DamageSource.DROWN)
             jump();
         return super.attackEntityFrom(source, par2);
     }
 
-    private void knockFromDamage(float val, Material material){
+    private void knockFromDamage(float val, Material material) {
         BlockPos pos = new BlockPos(this.posX, this.getEntityBoundingBox().minY + 0.5, this.posZ);
-        if(world.getBlockState(pos.west()).getMaterial() == material){
+        if (world.getBlockState(pos.west()).getMaterial() == material) {
             knockBack(null, val, pos.getX() - 1 - this.posX, 0);
-        }else if(world.getBlockState(pos.north()).getMaterial() == material){
+        } else if (world.getBlockState(pos.north()).getMaterial() == material) {
             knockBack(null, val, 0, pos.getZ() - 1 - this.posZ);
-        }else if(world.getBlockState(pos.east()).getMaterial() == material){
+        } else if (world.getBlockState(pos.east()).getMaterial() == material) {
             knockBack(null, val, pos.getX() + 1 - this.posX, 0);
-        }else if(world.getBlockState(pos.south()).getMaterial() == material){
+        } else if (world.getBlockState(pos.south()).getMaterial() == material) {
             knockBack(null, val, 0, pos.getZ() + 1 - this.posZ);
-        }else if(world.getBlockState(pos.add(-1, 0, -1)).getMaterial() == material){
+        } else if (world.getBlockState(pos.add(-1, 0, -1)).getMaterial() == material) {
             knockBack(null, val, pos.getX() - 1 - this.posX, pos.getZ() - 1 - this.posZ);
-        }else if(world.getBlockState(pos.add(1, 0,-1)).getMaterial() == material){
+        } else if (world.getBlockState(pos.add(1, 0, -1)).getMaterial() == material) {
             knockBack(null, val, pos.getX() + 1 - this.posX, pos.getZ() - 1 - this.posZ);
-        }else if(world.getBlockState(pos.add(-1, 0,1)).getMaterial() == material){
+        } else if (world.getBlockState(pos.add(-1, 0, 1)).getMaterial() == material) {
             knockBack(null, val, pos.getX() - 1 - this.posX, pos.getZ() + 1 - this.posZ);
-        }else if(world.getBlockState(pos.add(1, 0, 1)).getMaterial() == material){
+        } else if (world.getBlockState(pos.add(1, 0, 1)).getMaterial() == material) {
             knockBack(null, val, pos.getX() + 1 - this.posX, pos.getZ() + 1 - this.posZ);
-        }else if(world.getBlockState(pos.down()).getMaterial() == material){
+        } else if (world.getBlockState(pos.down()).getMaterial() == material) {
             knockBack(null, val, 2 * getRNG().nextFloat() - 1, 2 * getRNG().nextFloat() - 1);
         }
-        if(world.isRemote || getNavigator().noPath())
+        if (world.isRemote || getNavigator().noPath())
             return;
         PathPoint point = getNavigator().getPath().getPathPointFromIndex(getNavigator().getPath().getCurrentPathIndex());
-        if(world.getBlockState(new BlockPos(point.x, point.y, point.z)).getMaterial() == material){
+        if (world.getBlockState(new BlockPos(point.x, point.y, point.z)).getMaterial() == material) {
             getNavigator().clearPathEntity();
-        }else if(world.getBlockState(new BlockPos(point.x, point.y - 1, point.z)).getMaterial() == material){
+        } else if (world.getBlockState(new BlockPos(point.x, point.y - 1, point.z)).getMaterial() == material) {
             getNavigator().clearPathEntity();
         }
     }
 
     @Override
-    public void setWorld(World world){
+    public void setWorld(World world) {
         super.setWorld(world);
-        ((NpcNavigator)navigator).onWorldChange();
+        ((NpcNavigator) navigator).onWorldChange();
     }
 
     @Override
@@ -511,7 +512,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     @Override
     protected final void dropEquipment(boolean par1, int par2) {
         if (!world.isRemote) {
-            for ( EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
+            for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
                 ItemStack itemstack = this.getItemStackFromSlot(slot);
                 if (!itemstack.isEmpty()) {
                     this.entityDropItem(itemstack, 0.0F);
@@ -783,10 +784,11 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             setHealth(getHealth() + 1);
         }
         super.onUpdate();
-        if(getHeldItemMainhand()!=null){
-            try{//Inserting Item#onUpdate, to let it do whatever it needs to do. Used by QuiverBow for burst fire
+        if (getHeldItemMainhand() != null) {
+            try {//Inserting Item#onUpdate, to let it do whatever it needs to do. Used by QuiverBow for burst fire
                 getHeldItemMainhand().updateAnimation(world, this, 0, true);
-            }catch (Exception ignored){}
+            } catch (Exception ignored) {
+            }
         }
         world.profiler.endSection();
     }
@@ -821,13 +823,13 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     @Override
-    public void setOwner(EntityPlayer player){
+    public void setOwner(EntityPlayer player) {
         ownerId = player.getUniqueID();
         setOwnerName(player.getName());
     }
-    
+
     @Override
-    public void setOwner(String ownerName, UUID ownerUuid){
+    public void setOwner(String ownerName, UUID ownerUuid) {
         setOwnerName(ownerName);
         ownerId = ownerUuid;
     }
@@ -841,10 +843,10 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             NBTTagCompound tag = new NBTTagCompound();
             tag.setString("ownerName", name);
             EntityPlayer player = world.getPlayerEntityByName(name);
-            if(player!=null){
+            if (player != null) {
                 ownerId = player.getUniqueID();
             }
-            if(ownerId!=null)
+            if (ownerId != null)
                 tag.setString("ownerId", ownerId.toString());
             pkt.packetData = tag;
             NetworkHandler.sendToAllTracking(this, pkt);
@@ -852,20 +854,20 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         ownerName = name;
     }
 
-    private void checkOwnerName(){
-        if(ownerId!=null){
+    private void checkOwnerName() {
+        if (ownerId != null) {
             EntityPlayer player = world.getPlayerEntityByUUID(ownerId);
-            if(player!=null && !player.getName().equals(ownerName)){
+            if (player != null && !player.getName().equals(ownerName)) {
                 setOwnerName(player.getName());
             }
         }
     }
 
     @Override
-    public boolean isOwner(EntityPlayer player){
-        if(player == null || player.getGameProfile() == null)
+    public boolean isOwner(EntityPlayer player) {
+        if (player == null || player.getGameProfile() == null)
             return false;
-        if(ownerId!=null)
+        if (ownerId != null)
             return player.getUniqueID().equals(ownerId);
         return player.getName().equals(ownerName);
     }
@@ -874,7 +876,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     public String getOwnerName() {
         return ownerName;
     }
-    
+
     @Override
     public UUID getOwnerUuid() {
         return ownerId;
@@ -884,7 +886,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     public Team getTeam() {
         return world.getScoreboard().getPlayersTeam(ownerName);
     }
-     
+
     public boolean hasCommandPermissions(String playerName) {
         // ensure the NPC is actually owned
         if (ownerName.isEmpty())
@@ -905,16 +907,16 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 //            return true;
         return false;
     }
-    
+
     @Override
-    protected int getExperiencePoints(EntityPlayer attacker){
-        if(attacker!=null && isHostileTowards(attacker) && canBeAttackedBy(attacker)){
+    protected int getExperiencePoints(EntityPlayer attacker) {
+        if (attacker != null && isHostileTowards(attacker) && canBeAttackedBy(attacker)) {
             return super.getExperiencePoints(attacker);
         }
         return 0;
     }
 
-    public void setExperienceDrop(int exp){
+    public void setExperienceDrop(int exp) {
         this.experienceValue = exp;
     }
 
@@ -923,7 +925,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     public abstract boolean canTarget(Entity e);
 
     public abstract boolean canBeAttackedBy(Entity e);
-    
+
     public boolean isEntitySameTeamOrFriends(Entity entityTarget) {
         return true;
 
@@ -960,7 +962,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             this.followingPlayerName = entity.getName();
         }
     }
-    
+
     public final void clearFollowingEntity() {
         this.followingPlayerName = null;
     }
@@ -1013,12 +1015,12 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         }
         if (tag.hasKey("foundBed"))
             this.foundBed = tag.getBoolean("foundBed");
-        
+
         readBaseTags(tag);
         onWeaponInventoryChanged();
     }
 
-    private void readBaseTags(NBTTagCompound tag){
+    private void readBaseTags(NBTTagCompound tag) {
         if (tag.hasKey("ordersStack")) {
             setItemStackToSlot(ORDER_SLOT, new ItemStack(tag.getCompoundTag("ordersStack")));
         }
@@ -1060,7 +1062,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         super.writeEntityToNBT(tag);
         if (!hasHome()) {
             BlockPos position = getTownHallPosition();
-            if(position != null)
+            if (position != null)
                 setHomePosAndDistance(position, getHomeRange());
             else
                 setHomeAreaAtCurrentPosition();
@@ -1082,7 +1084,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         writeBaseTags(tag);
     }
 
-    private void writeBaseTags(NBTTagCompound tag){
+    private void writeBaseTags(NBTTagCompound tag) {
         if (!ordersStack.isEmpty()) {
             tag.setTag("ordersStack", ordersStack.writeToNBT(new NBTTagCompound()));
         }
@@ -1107,11 +1109,12 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     public final void updateTexture() {
-        if(customTexRef.startsWith("Player:")){
+        if (customTexRef.startsWith("Player:")) {
             try {
                 currentTexture = AncientWarfareNPC.proxy.getPlayerSkin(customTexRef.split(":", 2)[1]);
-            }catch (Throwable ignored){}
-        }else {
+            } catch (Throwable ignored) {
+            }
+        } else {
             currentTexture = NpcSkinManager.INSTANCE.getTextureFor(this);
         }
     }
@@ -1120,17 +1123,18 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     public void handlePacketData(NBTTagCompound tag) {
         if (tag.hasKey("ownerName")) {
             setOwnerName(tag.getString("ownerName"));
-            if(tag.hasKey("ownerId")){
+            if (tag.hasKey("ownerId")) {
                 ownerId = UUID.fromString(tag.getString("ownerId"));
                 checkOwnerName();
             }
         } else if (tag.hasKey("profileTex") && tag.hasKey("customTex")) {
             customTexRef = tag.getString("customTex");
             NBTTagCompound tah = tag.getCompoundTag("profileTex");
-            if(world.isRemote) {
+            if (world.isRemote) {
                 try {
                     AncientWarfareNPC.proxy.cacheProfile(NBTUtil.readGameProfileFromNBT(tah));
-                }catch (Throwable ignored){}
+                } catch (Throwable ignored) {
+                }
             }
             updateTexture();
         } else if (tag.hasKey("customTex")) {
@@ -1160,14 +1164,14 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
                     return;
                 }
             }
-        }else
+        } else
             player.inventory.setInventorySlotContents(player.inventory.currentItem, item);
     }
 
     public double getDistanceSq(BlockPos pos) {
         return getDistanceSq(pos.getX() + 0.5d, pos.getY(), pos.getZ() + 0.5d);
     }
-    
+
     public BlockPos findBed() {
         if (!foundBed) {
             int originX = MathHelper.floor(this.posX);
@@ -1195,7 +1199,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
                     }
                 }
             }
-        
+
             int closetBedIndex = -1;
             for (int i = 0; i < foundBeds.size(); i++) {
                 double bedDistance = foundBeds.get(i).distanceSqToCenter(originX, originY, originZ);
@@ -1209,18 +1213,17 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             foundBed = true;
             cachedBedPos = foundBeds.get(closetBedIndex);
         }
-        
+
         IBlockState state = world.getBlockState(cachedBedPos);
         if (state.getBlock() instanceof BlockBed) {
             setBedDirection(state.getValue(BlockBed.FACING));
             return cachedBedPos;
-        }
-        else {
+        } else {
             foundBed = false;
             return null; // try again in a while
         }
     }
-    
+
     public boolean lieDown(BlockPos pos) {
         if (!foundBed)
             return false;
@@ -1240,10 +1243,10 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         }
         return false;
     }
-    
+
     public void wakeUp() {
         setSleeping(false);
-        
+
         BlockPos bedPos = getBedPosition();
         // set vacant
         world.setBlockState(bedPos, world.getBlockState(bedPos).withProperty(BlockBed.OCCUPIED, false), 4);
@@ -1263,7 +1266,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
         setSleeping(false); //TODO why are there 3 setSleeping(false) here?
     }
-    
+
     private boolean tryMovingToBedside(BlockPos posToMove) {
         //System.out.println(x + "x" + y + "x" + z);
         if (world.getBlockState(posToMove).getMaterial().blocksMovement())
@@ -1278,15 +1281,15 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         setSleeping(false);
         return true;
     }
-    
+
     private BlockPos getBedPosition() {
         return dataManager.get(BED_POS);
     }
-    
+
     private void setBedPosition(BlockPos pos) {
         dataManager.set(BED_POS, pos);
     }
-    
+
     @Override
     public void setPosition(double posX, double posY, double posZ) {
         if (getSleeping()) {
@@ -1295,12 +1298,12 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             this.posZ = posZ;
             float width = this.width / 2.0F;
             float height = this.height;
-            
+
             double minX = posX - (double) width;
             double minZ = posZ - (double) width;
             double maxX = posX + (double) width;
             double maxZ = posZ + (double) width;
-            
+
             switch (this.getBedDirection()) {
                 case SOUTH:
                 case NORTH:
@@ -1313,24 +1316,24 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
                     maxX += 0.6f;
                     break;
             }
-            
+
             this.setEntityBoundingBox(new AxisAlignedBB(minX, posY - this.getYOffset(), minZ, maxX, posY - this.getYOffset() + (double) height - 1.5f, maxZ));
             return;
         }
-        
+
         super.setPosition(posX, posY, posZ);
     }
-    
+
     // TODO: sitting around when idle
     //@Override
     //public boolean isRiding() {
     //    return true;
     //}
-    
+
     public void setPositionToBed() {
         float xOffset = 0.5F;
         float zOffset = 0.5F;
-        
+
         switch (this.getBedDirection()) {
             case SOUTH:
                 zOffset -= 0.5f;
@@ -1347,59 +1350,57 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         }
         setPosition(cachedBedPos.getX() + xOffset, cachedBedPos.getY() + 0.6, cachedBedPos.getZ() + zOffset);
     }
-    
+
     public boolean isBedCacheValid() {
         return (world.getBlockState(cachedBedPos).getBlock() instanceof BlockBed);
     }
-    
+
     @Override
     public void onCollideWithPlayer(EntityPlayer player) {
         if (!getSleeping())
             super.onCollideWithPlayer(player);
     }
-    
+
     @Override
     public boolean canBePushed() {
         return (!getSleeping());
     }
-    
+
     @Override
     protected void collideWithEntity(Entity entity) {
         if (!getSleeping())
             super.collideWithEntity(entity);
     }
-    
+
     public void setSleeping(boolean isSleeping) {
         dataManager.set(IS_SLEEPING, isSleeping);
     }
-    
+
     public boolean getSleeping() {
         return dataManager == null ? false : dataManager.get(IS_SLEEPING);
     }
-    
+
     public void setBedDirection(EnumFacing direction) {
         bedDirection = direction;
     }
-    
+
     public EnumFacing getBedDirection() {
         return bedDirection;
     }
-    
+
     public boolean shouldSleep() {
         return Timekeeper.isNighttime();
     }
-    
+
     // Only used by the renderer
     @SideOnly(Side.CLIENT)
     public float getBedOrientationInDegrees() {
         BlockPos bedLocation = getBedPosition();
         IBlockState state = bedLocation == null ? null : this.world.getBlockState(bedLocation);
-        if (state != null && state.getBlock().isBed(state, world, bedLocation, this))
-        {
+        if (state != null && state.getBlock().isBed(state, world, bedLocation, this)) {
             EnumFacing enumfacing = state.getBlock().getBedDirection(state, world, bedLocation);
 
-            switch (enumfacing)
-            {
+            switch (enumfacing) {
                 case SOUTH:
                     return 90.0F;
                 case WEST:
@@ -1412,5 +1413,14 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         }
 
         return 0.0F;
+    }
+
+    @SideOnly(Side.CLIENT)
+    public boolean isSwingingArms() {
+        return this.dataManager.get(SWINGING_ARMS);
+    }
+
+    public void setSwingingArms(boolean swingingArms) {
+        this.dataManager.set(SWINGING_ARMS, swingingArms);
     }
 }

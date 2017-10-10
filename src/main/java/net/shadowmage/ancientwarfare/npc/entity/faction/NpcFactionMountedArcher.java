@@ -10,9 +10,6 @@ import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializers;
-import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackNearest;
@@ -26,8 +23,6 @@ import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRideHorse;
 import net.shadowmage.ancientwarfare.npc.entity.RangeAttackHelper;
 
 public abstract class NpcFactionMountedArcher extends NpcFactionMounted implements IRangedAttackMob {
-
-    private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.createKey(NpcFactionMountedArcher.class, DataSerializers.BOOLEAN);
 
     public NpcFactionMountedArcher(World par1World) {
         super(par1World);
@@ -69,10 +64,4 @@ public abstract class NpcFactionMountedArcher extends NpcFactionMounted implemen
     public void attackEntityWithRangedAttack(EntityLivingBase target, float force) {
         RangeAttackHelper.doRangedAttack(this, target, force, 1.0f);
     }
-
-    @Override
-    public void setSwingingArms(boolean swingingArms)
-    {
-        this.dataManager.set(SWINGING_ARMS, swingingArms);
-    } //TODO add use of this data in rendering
 }
