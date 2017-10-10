@@ -307,7 +307,7 @@ rule:
 plugin=vanillaInventory
 number=15
 data:
-JSON:{{"val":{"lootLevel":{"val":"2","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"minecraft:diamond","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"188","id":"pi"},"y":{"val":"105","id":"pi"},"x":{"val":"-122","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:trapped_chest","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"2","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"minecraft:diamond","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"188","id":"pi"},"y":{"val":"105","id":"pi"},"x":{"val":"-122","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:trapped_chest","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -315,7 +315,7 @@ rule:
 plugin=vanillaInventory
 number=16
 data:
-JSON:{{"val":{"lootLevel":{"val":"3","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"minecraft:emerald","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"188","id":"pi"},"y":{"val":"105","id":"pi"},"x":{"val":"-121","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:trapped_chest","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"3","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"minecraft:emerald","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"188","id":"pi"},"y":{"val":"105","id":"pi"},"x":{"val":"-121","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:trapped_chest","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 

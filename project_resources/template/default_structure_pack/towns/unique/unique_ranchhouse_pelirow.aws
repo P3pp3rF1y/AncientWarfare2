@@ -459,7 +459,7 @@ rule:
 plugin=vanillaInventory
 number=13
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"minecraft:iron_chestplate","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:iron_sword","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"1","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:iron_ingot","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"2","id":"pi"},"slot":{"val":"2","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:iron_axe","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"3","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-41","id":"pi"},"y":{"val":"85","id":"pi"},"x":{"val":"32","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"minecraft:iron_chestplate","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"minecraft:iron_sword","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"1","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"minecraft:iron_ingot","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"2","id":"pi"},"slot":{"val":"2","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"minecraft:iron_axe","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"3","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-41","id":"pi"},"y":{"val":"85","id":"pi"},"x":{"val":"32","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -467,7 +467,7 @@ rule:
 plugin=vanillaInventory
 number=14
 data:
-JSON:{{"val":{"lootLevel":{"val":"2","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"minecraft:diamond","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"2","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-41","id":"pi"},"y":{"val":"85","id":"pi"},"x":{"val":"33","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"2","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"minecraft:diamond","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"2","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-41","id":"pi"},"y":{"val":"85","id":"pi"},"x":{"val":"33","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -859,7 +859,7 @@ rule:
 plugin=vanillaInventory
 number=63
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"minecraft:redstone_lamp","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"6","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-39","id":"pi"},"y":{"val":"94","id":"pi"},"x":{"val":"30","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"minecraft:redstone_lamp","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"6","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-39","id":"pi"},"y":{"val":"94","id":"pi"},"x":{"val":"30","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -875,7 +875,7 @@ rule:
 plugin=vanillaInventory
 number=65
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"minecraft:redstone_lamp","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"6","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-39","id":"pi"},"y":{"val":"94","id":"pi"},"x":{"val":"34","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"minecraft:redstone_lamp","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"6","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-39","id":"pi"},"y":{"val":"94","id":"pi"},"x":{"val":"34","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -891,7 +891,7 @@ rule:
 plugin=vanillaInventory
 number=67
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"minecraft:ender_pearl","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"4","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:fermented_spider_eye","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"16","id":"pi"},"slot":{"val":"1","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-38","id":"pi"},"y":{"val":"94","id":"pi"},"x":{"val":"27","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"minecraft:ender_pearl","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"4","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"minecraft:fermented_spider_eye","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"16","id":"pi"},"slot":{"val":"1","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-38","id":"pi"},"y":{"val":"94","id":"pi"},"x":{"val":"27","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -899,7 +899,7 @@ rule:
 plugin=vanillaInventory
 number=68
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"minecraft:redstone_lamp","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"6","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-36","id":"pi"},"y":{"val":"94","id":"pi"},"x":{"val":"27","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"minecraft:redstone_lamp","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"6","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-36","id":"pi"},"y":{"val":"94","id":"pi"},"x":{"val":"27","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -915,7 +915,7 @@ rule:
 plugin=vanillaInventory
 number=70
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"minecraft:ender_pearl","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"4","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:fermented_spider_eye","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"16","id":"pi"},"slot":{"val":"1","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-33","id":"pi"},"y":{"val":"94","id":"pi"},"x":{"val":"27","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"minecraft:ender_pearl","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"4","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"minecraft:fermented_spider_eye","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"16","id":"pi"},"slot":{"val":"1","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-33","id":"pi"},"y":{"val":"94","id":"pi"},"x":{"val":"27","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"5","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -931,7 +931,7 @@ rule:
 plugin=vanillaInventory
 number=72
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"minecraft:golden_rail","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"16","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:redstone_block","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"3","id":"pi"},"slot":{"val":"1","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-32","id":"pi"},"y":{"val":"94","id":"pi"},"x":{"val":"30","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"minecraft:golden_rail","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"16","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"minecraft:redstone_block","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"3","id":"pi"},"slot":{"val":"1","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-32","id":"pi"},"y":{"val":"94","id":"pi"},"x":{"val":"30","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -947,7 +947,7 @@ rule:
 plugin=vanillaInventory
 number=74
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"minecraft:dirt","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"64","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:golden_apple","id":"ss"},"damage":{"val":"1","id":"pi"},"quantity":{"val":"3","id":"pi"},"slot":{"val":"1","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-32","id":"pi"},"y":{"val":"94","id":"pi"},"x":{"val":"34","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"minecraft:dirt","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"64","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"minecraft:golden_apple","id":"ss"},"Damage":{"val":"1","id":"pi"},"Count":{"val":"3","id":"pi"},"slot":{"val":"1","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-32","id":"pi"},"y":{"val":"94","id":"pi"},"x":{"val":"34","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"2","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 

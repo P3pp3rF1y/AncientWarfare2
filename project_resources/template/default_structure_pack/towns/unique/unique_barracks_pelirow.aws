@@ -271,7 +271,7 @@ rule:
 plugin=vanillaInventory
 number=12
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"minecraft:cooked_beef","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"16","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:speckled_melon","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"8","id":"pi"},"slot":{"val":"1","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-60","id":"pi"},"y":{"val":"84","id":"pi"},"x":{"val":"30","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"minecraft:cooked_beef","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"16","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"minecraft:speckled_melon","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"8","id":"pi"},"slot":{"val":"1","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-60","id":"pi"},"y":{"val":"84","id":"pi"},"x":{"val":"30","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -279,7 +279,7 @@ rule:
 plugin=vanillaInventory
 number=13
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"minecraft:iron_helmet","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-60","id":"pi"},"y":{"val":"84","id":"pi"},"x":{"val":"35","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"minecraft:iron_helmet","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-60","id":"pi"},"y":{"val":"84","id":"pi"},"x":{"val":"35","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -287,7 +287,7 @@ rule:
 plugin=vanillaInventory
 number=14
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"AncientWarfareNpc:npc_spawner","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"2","id":"pi"},"slot":{"val":"0","id":"pi"},"stackTag":{"val":{"npcSubtype":{"val":"archer","id":"ss"},"npcType":{"val":"combat","id":"ss"}},"id":"ct"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-57","id":"pi"},"y":{"val":"84","id":"pi"},"x":{"val":"30","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"ancientwarfarenpc:npc_spawner","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"2","id":"pi"},"slot":{"val":"0","id":"pi"},"tag":{"val":{"npcSubtype":{"val":"archer","id":"ss"},"npcType":{"val":"combat","id":"ss"}},"id":"ct"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-57","id":"pi"},"y":{"val":"84","id":"pi"},"x":{"val":"30","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -295,7 +295,7 @@ rule:
 plugin=vanillaInventory
 number=15
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"minecraft:iron_chestplate","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-57","id":"pi"},"y":{"val":"84","id":"pi"},"x":{"val":"35","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"minecraft:iron_chestplate","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-57","id":"pi"},"y":{"val":"84","id":"pi"},"x":{"val":"35","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -303,7 +303,7 @@ rule:
 plugin=vanillaInventory
 number=16
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"minecraft:potion","id":"ss"},"damage":{"val":"16457","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:potion","id":"ss"},"damage":{"val":"8197","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"9","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-57","id":"pi"},"y":{"val":"84","id":"pi"},"x":{"val":"40","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"minecraft:potion","id":"ss"},"Damage":{"val":"16457","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"minecraft:potion","id":"ss"},"Damage":{"val":"8197","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"9","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-57","id":"pi"},"y":{"val":"84","id":"pi"},"x":{"val":"40","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -391,7 +391,7 @@ rule:
 plugin=vanillaInventory
 number=27
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"AncientWarfareNpc:npc_spawner","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"3","id":"pi"},"slot":{"val":"0","id":"pi"},"stackTag":{"val":{"npcSubtype":{"val":"","id":"ss"},"npcType":{"val":"combat","id":"ss"}},"id":"ct"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-60","id":"pi"},"y":{"val":"85","id":"pi"},"x":{"val":"40","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"ancientwarfarenpc:npc_spawner","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"3","id":"pi"},"slot":{"val":"0","id":"pi"},"tag":{"val":{"npcSubtype":{"val":"","id":"ss"},"npcType":{"val":"combat","id":"ss"}},"id":"ct"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-60","id":"pi"},"y":{"val":"85","id":"pi"},"x":{"val":"40","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -439,7 +439,7 @@ rule:
 plugin=vanillaInventory
 number=33
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"AncientWarfareNpc:iron_command_baton","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"},"stackTag":{"val":{"entityList":{"val":{"entryList":{"val":[],"id":"ls"}},"id":"ct"}},"id":"ct"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-60","id":"pi"},"y":{"val":"86","id":"pi"},"x":{"val":"30","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"ancientwarfarenpc:iron_command_baton","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"},"tag":{"val":{"entityList":{"val":{"entryList":{"val":[],"id":"ls"}},"id":"ct"}},"id":"ct"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-60","id":"pi"},"y":{"val":"86","id":"pi"},"x":{"val":"30","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -447,7 +447,7 @@ rule:
 plugin=vanillaInventory
 number=34
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"minecraft:cooked_beef","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"16","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:speckled_melon","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"8","id":"pi"},"slot":{"val":"1","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-60","id":"pi"},"y":{"val":"86","id":"pi"},"x":{"val":"35","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"minecraft:cooked_beef","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"16","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"minecraft:speckled_melon","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"8","id":"pi"},"slot":{"val":"1","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-60","id":"pi"},"y":{"val":"86","id":"pi"},"x":{"val":"35","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -455,7 +455,7 @@ rule:
 plugin=vanillaInventory
 number=35
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"AncientWarfare:steel_ingot","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"6","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-60","id":"pi"},"y":{"val":"86","id":"pi"},"x":{"val":"40","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"AncientWarfare:steel_ingot","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"6","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-60","id":"pi"},"y":{"val":"86","id":"pi"},"x":{"val":"40","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -463,7 +463,7 @@ rule:
 plugin=vanillaInventory
 number=36
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"minecraft:cooked_beef","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"16","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"minecraft:cake","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"1","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-57","id":"pi"},"y":{"val":"86","id":"pi"},"x":{"val":"30","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"minecraft:cooked_beef","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"16","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"minecraft:cake","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"1","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-57","id":"pi"},"y":{"val":"86","id":"pi"},"x":{"val":"30","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -471,7 +471,7 @@ rule:
 plugin=vanillaInventory
 number=37
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"AncientWarfareStructure:gate_spawner","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-57","id":"pi"},"y":{"val":"86","id":"pi"},"x":{"val":"35","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"AncientWarfareStructure:gate_spawner","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-57","id":"pi"},"y":{"val":"86","id":"pi"},"x":{"val":"35","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -479,7 +479,7 @@ rule:
 plugin=vanillaInventory
 number=38
 data:
-JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"item":{"val":"minecraft:fishing_rod","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"item":{"val":"AncientWarfareNpc:iron_shield","id":"ss"},"damage":{"val":"0","id":"pi"},"quantity":{"val":"1","id":"pi"},"slot":{"val":"10","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-57","id":"pi"},"y":{"val":"86","id":"pi"},"x":{"val":"40","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"lootLevel":{"val":"0","id":"pi"},"inventoryData":{"val":{"length":{"val":"27","id":"pi"},"inventoryContents":{"val":[{"val":{"id":{"val":"minecraft:fishing_rod","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"0","id":"pi"}},"id":"ct"},{"val":{"id":{"val":"ancientwarfarenpc:iron_shield","id":"ss"},"Damage":{"val":"0","id":"pi"},"Count":{"val":"1","id":"pi"},"slot":{"val":"10","id":"pi"}},"id":"ct"}],"id":"ls"}},"id":"ct"},"teData":{"val":{"id":{"val":"Chest","id":"ss"},"z":{"val":"-57","id":"pi"},"y":{"val":"86","id":"pi"},"x":{"val":"40","id":"pi"}},"id":"ct"},"blockName":{"val":"minecraft:chest","id":"ss"},"meta":{"val":"3","id":"pi"},"buildPass":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
