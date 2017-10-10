@@ -7,7 +7,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IRangedAttackMob;
 import net.minecraft.entity.ai.EntityAIRestrictOpenDoor;
 import net.minecraft.entity.ai.EntityAISwimming;
-import net.minecraft.entity.ai.EntityAIWatchClosest;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
@@ -17,6 +16,7 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIDoor;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIHurt;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIWatchClosest;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionArcherStayAtHome;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRangedAttack;
 import net.shadowmage.ancientwarfare.npc.entity.RangeAttackHelper;
@@ -49,7 +49,7 @@ public abstract class NpcFactionArcher extends NpcFaction implements IRangedAtta
 
         this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
         this.tasks.addTask(102, new NpcAIWander(this));
-        this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
+        this.tasks.addTask(103, new NpcAIWatchClosest(this, EntityLiving.class, 8.0F));
 
         this.targetTasks.addTask(1, new NpcAIHurt(this));
         this.targetTasks.addTask(2, new NpcAIAttackNearest(this, selector));
