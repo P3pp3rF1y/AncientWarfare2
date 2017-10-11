@@ -927,23 +927,23 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     public abstract boolean canBeAttackedBy(Entity e);
 
     public boolean isEntitySameTeamOrFriends(Entity entityTarget) {
-        return true;
+                Team targetTeam;
+        String targetOwnerOrName;
+        if (entityTarget instanceof NpcPlayerOwned) {
+            targetTeam = entityTarget.getTeam();
+            targetOwnerOrName = ((NpcPlayerOwned) entityTarget).getOwnerName();
+        } else if (entityTarget instanceof EntityPlayer) {
+            targetTeam = entityTarget.getTeam();
+            targetOwnerOrName = entityTarget.getName();
+        } else
+            return false;
 
+        if (targetTeam != null)
+            if (targetTeam.isSameTeam(getTeam()))
+                return true;
+
+        return getOwnerName().equals(targetOwnerOrName);
         //TODO ftbutils integration
-        //        Team targetTeam;
-//        String targetOwnerOrName;
-//        if (entityTarget instanceof NpcPlayerOwned) {
-//            targetTeam = entityTarget.getTeam();
-//            targetOwnerOrName = ((NpcPlayerOwned) entityTarget).getOwnerName();
-//        } else if (entityTarget instanceof EntityPlayer) {
-//            targetTeam = entityTarget.getTeam();
-//            targetOwnerOrName = entityTarget.getName();
-//        } else
-//            return false;
-//
-//        if (targetTeam != null)
-//            if (targetTeam.isSameTeam(getTeam()))
-//                return true;
 //        if (entityTarget.world.isRemote) {
 //            return ModAccessors.FTBU.isFriendOfClient(entityTarget.getUniqueID());
 //        }
