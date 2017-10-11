@@ -129,7 +129,7 @@ public class InventoryNpcEquipment implements IInventory {
         else if(var1 == NpcBase.ORDER_SLOT)
             return npc.isValidOrdersStack(var2);
         else if(var1 > 1 && var1 < NpcBase.ORDER_SLOT)//armors
-            return var2.getItem().isValidArmor(var2, EntityEquipmentSlot.values()[NpcBase.ORDER_SLOT - 1 - var1], npc);
+            return var2.getItem().isValidArmor(var2, EntityEquipmentSlot.values()[var1], npc);
         return true;//weapon/tool, shield slot   TODO add slot validation ?
     }
 
