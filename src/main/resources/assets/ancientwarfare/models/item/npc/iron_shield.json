@@ -1,5 +1,5 @@
 {
-  "parent": "item/generated",
+  "parent": "ancientwarfare:item/npc/shield",
   "textures": {
     "layer0": "ancientwarfare:items/npc/iron_shield"
   }
