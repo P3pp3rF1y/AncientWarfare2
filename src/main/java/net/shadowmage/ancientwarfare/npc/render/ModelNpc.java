@@ -65,31 +65,6 @@ public class ModelNpc extends ModelBiped {
         playerSkinBodyWear = new ModelRenderer(this, 16, 32);
         playerSkinBodyWear.addBox(-4.0F, 0.0F, -2.0F, 8, 12, 4, 0.25F);
         playerSkinBodyWear.setRotationPoint(0.0F, 0.0F, 0.0F);
-
-        setupPartVisibility(false);
-    }
-
-    private void setupPartVisibility(boolean usesPlayerSkin) {
-        playerSkinLeftArm.isHidden = !usesPlayerSkin;
-        playerSkinLeftArmwear.isHidden = !usesPlayerSkin;
-        playerSkinRightArm.isHidden = !usesPlayerSkin;
-        playerSkinRightArmwear.isHidden = !usesPlayerSkin;
-        playerSkinLeftLeg.isHidden = !usesPlayerSkin;
-        playerSkinLeftLegwear.isHidden = !usesPlayerSkin;
-        playerSkinRightLeg.isHidden = !usesPlayerSkin;
-        playerSkinRightLegwear.isHidden = !usesPlayerSkin;
-        playerSkinBody.isHidden = !usesPlayerSkin;
-        playerSkinBodyWear.isHidden = !usesPlayerSkin;
-        playerSkinHead.isHidden = !usesPlayerSkin;
-        playerSkinHeadwear.isHidden = !usesPlayerSkin;
-
-        bipedLeftArm.isHidden = usesPlayerSkin;
-        bipedLeftLeg.isHidden = usesPlayerSkin;
-        bipedRightLeg.isHidden = usesPlayerSkin;
-        bipedRightArm.isHidden = usesPlayerSkin;
-        bipedBody.isHidden = usesPlayerSkin;
-        bipedHead.isHidden = usesPlayerSkin;
-        bipedHeadwear.isHidden = usesPlayerSkin;
     }
 
     @Override
@@ -116,7 +91,6 @@ public class ModelNpc extends ModelBiped {
     @Override
     public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale) {
         boolean usesPlayerSkin = ((NpcBase) entityIn).getUsesPlayerSkin();
-        setupPartVisibility(usesPlayerSkin);
         if (usesPlayerSkin) {
             setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityIn);
             GlStateManager.pushMatrix();
