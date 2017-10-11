@@ -11,7 +11,6 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.layers.LayerBipedArmor;
 import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.util.ResourceLocation;
@@ -75,8 +74,9 @@ public class RenderNpcBase extends RenderBiped<NpcBase> {
                     break;
             }
             super.doRender(npc, xOffset, y, zOffset, par8, par9);
-        } else
+        } else {
             super.doRender(npc, x, y, z, par8, par9);
+        }
 
         if (isSleeping)
             y -= 1.5f;
@@ -122,105 +122,7 @@ public class RenderNpcBase extends RenderBiped<NpcBase> {
         GlStateManager.translate(0.09375F, 0.1875F, 0.0F);
     }
 
-
-//    @Override
-//    protected void func_82420_a(EntityLiving par1EntityLiving, ItemStack par2ItemStack) {
-//        super.func_82420_a(par1EntityLiving, par2ItemStack);
-//        NpcBase npc = (NpcBase) par1EntityLiving;
-//        this.field_82423_g.heldItemLeft = this.field_82425_h.heldItemLeft = this.modelBipedMain.heldItemLeft = npc.getShieldStack() != null ? 1 : 0;
-//    }
-
-//    @Override
-//    protected void renderEquippedItems(EntityLiving par1EntityLiving, float par2) {
-//        super.renderEquippedItems(par1EntityLiving, par2);
-//        NpcBase npc = (NpcBase) par1EntityLiving;
-//        @Nonnull ItemStack itemstack = npc.getShieldStack();
-//        Item item;
-//
-//        //TODO clean up this copypasta code
-//        float f1;
-//        if (itemstack != null && itemstack.getItem() != null) {
-//            item = itemstack.getItem();
-//            GL11.glPushMatrix();
-//
-//
-//            if (this.mainModel.isChild) {
-//                f1 = 0.5F;
-//                GL11.glTranslatef(0.0F, 0.625F, 0.0F);
-//                GL11.glRotatef(-20.0F, -1.0F, 0.0F, 0.0F);
-//                GL11.glScalef(f1, f1, f1);
-//            }
-//
-//
-//            this.modelBipedMain.bipedLeftArm.postRender(0.0625F);
-//            GL11.glTranslatef(0, 0.5625F, 0);//translate down to the 'hand'
-//
-//            IItemRenderer customRenderer = MinecraftForgeClient.getItemRenderer(itemstack, EQUIPPED);
-//            boolean is3D = (customRenderer != null && customRenderer.shouldUseRenderHelper(EQUIPPED, itemstack, BLOCK_3D));
-//
-//            if (item instanceof ItemBlock && (is3D || RenderBlocks.renderItemIn3d(Block.getBlockFromItem(item).getRenderType()))) {
-//                f1 = 0.5F;
-//                GL11.glTranslatef(0.0625F, 0.0625f, -0.25F);
-//                f1 *= 0.75F;
-//                GL11.glRotatef(20.0F, 1.0F, 0.0F, 0.0F);
-//                GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-//                GL11.glScalef(-f1, -f1, f1);
-//            } else if (item == Items.BOW) {
-//                f1 = 0.625F;
-//                GL11.glTranslatef(0.125F, 0.0F, 0.375F);
-//                GL11.glRotatef(20.0F, 0.0F, 1.0F, 0.0F);
-//                GL11.glScalef(f1, -f1, f1);
-//                GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
-//                GL11.glRotatef(35.0F, 0.0F, 1.0F, 0.0F);
-//            } else if (item.isFull3D()) {
-//                f1 = 0.625F;
-//
-//                if (item.shouldRotateAroundWhenRendering()) {
-//                    GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
-//                    GL11.glTranslatef(0.0F, -0.125F, 0.0F);
-//                }
-//
-//                GL11.glTranslatef(0.125F, 0.0625f, 0.0625F);
-//                GL11.glScalef(f1, -f1, f1);
-//                GL11.glRotatef(-100.0F, 1.0F, 0.0F, 0.0F);
-//                GL11.glRotatef(35.0F, 0.0F, 1.0F, 0.0F);
-//            } else {
-//                f1 = 0.375F;
-//                GL11.glTranslatef(0.1875F, 0.0F, -0.0625F);
-//                GL11.glScalef(f1, f1, f1);
-//                GL11.glRotatef(60.0F, 0.0F, 0.0F, 1.0F);
-//                GL11.glRotatef(-90.0F, 1.0F, 0.0F, 0.0F);
-//                GL11.glRotatef(20.0F, 0.0F, 0.0F, 1.0F);
-//                GL11.glRotatef(20.f, 0, 1, 0);
-//            }
-//
-//            float f2;
-//            float f3;
-//            int i;
-//
-//            if (itemstack.getItem().requiresMultipleRenderPasses()) {
-//                for (i = 0; i < itemstack.getItem().getRenderPasses(itemstack.getItemDamage()); ++i) {
-//                    int j = itemstack.getItem().getColorFromItemStack(itemstack, i);
-//                    f2 = (float) (j >> 16 & 255) / 255.0F;
-//                    f3 = (float) (j >> 8 & 255) / 255.0F;
-//                    float f4 = (float) (j & 255) / 255.0F;
-//                    GL11.glColor4f(f2, f3, f4, 1.0F);
-//                    this.renderManager.itemRenderer.renderItem(par1EntityLiving, itemstack, i);
-//                }
-//            } else {
-//                i = itemstack.getItem().getColorFromItemStack(itemstack, 0);
-//                float f5 = (float) (i >> 16 & 255) / 255.0F;
-//                f2 = (float) (i >> 8 & 255) / 255.0F;
-//                f3 = (float) (i & 255) / 255.0F;
-//                GL11.glColor4f(f5, f2, f3, 1.0F);
-//                this.renderManager.itemRenderer.renderItem(par1EntityLiving, itemstack, 0);
-//            }
-//
-//            GL11.glPopMatrix();
-//        }
-//    }
-
-    protected boolean func_110813_b(EntityLivingBase par1EntityLivingBase) {
+    protected boolean canRenderName(NpcBase par1EntityLivingBase) {
         return false;
     }
 

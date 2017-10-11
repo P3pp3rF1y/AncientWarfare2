@@ -99,6 +99,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     private int armorValue = -1;//faction based only
     private int maxHealthOverride = -1;
     private String customTexRef = "";//might as well allow for player-owned as well...
+    private boolean usesPlayerSkin = false;
 
     private EnumFacing bedDirection = EnumFacing.NORTH;
     private BlockPos cachedBedPos;
@@ -927,7 +928,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     public abstract boolean canBeAttackedBy(Entity e);
 
     public boolean isEntitySameTeamOrFriends(Entity entityTarget) {
-                Team targetTeam;
+        Team targetTeam;
         String targetOwnerOrName;
         if (entityTarget instanceof NpcPlayerOwned) {
             targetTeam = entityTarget.getTeam();
@@ -1109,9 +1110,11 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     public final void updateTexture() {
+        usesPlayerSkin = false;
         if (customTexRef.startsWith("Player:")) {
             try {
                 currentTexture = AncientWarfareNPC.proxy.getPlayerSkin(customTexRef.split(":", 2)[1]);
+                usesPlayerSkin = true;
             } catch (Throwable ignored) {
             }
         } else {
@@ -1422,5 +1425,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     public void setSwingingArms(boolean swingingArms) {
         this.dataManager.set(SWINGING_ARMS, swingingArms);
+    }
+
+    public boolean getUsesPlayerSkin() {
+        return usesPlayerSkin;
     }
 }
