@@ -47,7 +47,7 @@ public abstract class Trade {
     public void performTrade(EntityPlayer player, IInventory storage) {
         List<ItemStack> list = new ArrayList<>();
         for (ItemStack temp : input) {
-            if (temp != null) {
+            if (!temp.isEmpty()) {
                 list.add(temp.copy());
             }
         }
@@ -74,7 +74,7 @@ public abstract class Trade {
                 InventoryTools.mergeItemStack(storage, result, (EnumFacing) null);//merge into storage
         }
         for (ItemStack outputStack : output) {
-            if (outputStack == null) {
+            if (outputStack.isEmpty()) {
                 continue;
             }
             if(storage!=null)
