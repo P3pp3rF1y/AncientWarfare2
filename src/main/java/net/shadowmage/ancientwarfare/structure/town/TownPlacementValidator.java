@@ -54,8 +54,8 @@ public class TownPlacementValidator {
         int minY = (int) Math.min(0, world.provider.getHorizon() - 7);
 
         TownBoundingArea area = new TownBoundingArea();
-        area.minY = Math.max(minY, height);
-        area.maxY = Math.min(255, area.minY + 15);
+        area.minY = Math.max(minY, height - 2);
+        area.maxY = Math.min(255, area.minY + 17);
         area.chunkMinX = cx;
         area.chunkMaxX = cx;
         area.chunkMinZ = cz;
@@ -196,7 +196,7 @@ public class TownPlacementValidator {
                 total += val;
             }
         }
-        total /= world.getHeight();//make it the average top-height
+        total /= 256; //make it the average top-height of all blocks in chunk
         return total >= min && total <= max;
     }
 
