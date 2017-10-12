@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.util;
 
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -54,26 +55,26 @@ public class RenderTools {
     }
 
     public static void renderTexturedQuad(float x1, float y1, float x2, float y2, float u1, float v1, float u2, float v2) {
-        GL11.glBegin(GL11.GL_QUADS);
-        GL11.glTexCoord2f(u1, v1);
+        GlStateManager.glBegin(GL11.GL_QUADS);
+        GlStateManager.glTexCoord2f(u1, v1);
         GL11.glVertex2f(x1, y1);
-        GL11.glTexCoord2f(u1, v2);
+        GlStateManager.glTexCoord2f(u1, v2);
         GL11.glVertex2f(x1, y2);
-        GL11.glTexCoord2f(u2, v2);
+        GlStateManager.glTexCoord2f(u2, v2);
         GL11.glVertex2f(x2, y2);
-        GL11.glTexCoord2f(u2, v1);
+        GlStateManager.glTexCoord2f(u2, v1);
         GL11.glVertex2f(x2, y1);
-        GL11.glEnd();
+        GlStateManager.glEnd();
     }
 
     /*
      * render a BB as a set of enlarged cuboids.
      */
     public static void drawOutlinedBoundingBox2(AxisAlignedBB bb, float r, float g, float b, float width) {
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glColor4f(r, g, b, 0.4F);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GlStateManager.color(r, g, b, 0.4F);
+        GlStateManager.bindTexture(0);
         float hw = width / 2;
         drawCuboid((float) bb.minX, (float) bb.minY - hw, (float) bb.minZ - hw, (float) bb.maxX, (float) bb.minY + hw, (float) bb.minZ + hw);
         drawCuboid((float) bb.minX, (float) bb.maxY - hw, (float) bb.minZ - hw, (float) bb.maxX, (float) bb.maxY + hw, (float) bb.minZ + hw);
@@ -89,121 +90,121 @@ public class RenderTools {
         drawCuboid((float) bb.minX - hw, (float) bb.maxY - hw, (float) bb.minZ, (float) bb.minX + hw, (float) bb.maxY + hw, (float) bb.maxZ);
         drawCuboid((float) bb.maxX - hw, (float) bb.minY - hw, (float) bb.minZ, (float) bb.maxX + hw, (float) bb.minY + hw, (float) bb.maxZ);
         drawCuboid((float) bb.maxX - hw, (float) bb.maxY - hw, (float) bb.minZ, (float) bb.maxX + hw, (float) bb.maxY + hw, (float) bb.maxZ);
-        GL11.glDisable(GL11.GL_BLEND);
+        GlStateManager.disableBlend();
     }
 
     public static void drawCuboid(float x, float y, float z, float mx, float my, float mz) {
-        GL11.glBegin(GL11.GL_QUADS);
+        GlStateManager.glBegin(GL11.GL_QUADS);
         //z+ side
-        GL11.glNormal3f(0, 0, 1);
-        GL11.glVertex3f(x, my, mz);
-        GL11.glVertex3f(x, y, mz);
-        GL11.glVertex3f(mx, y, mz);
-        GL11.glVertex3f(mx, my, mz);
+        GlStateManager.glNormal3f(0, 0, 1);
+        GlStateManager.glVertex3f(x, my, mz);
+        GlStateManager.glVertex3f(x, y, mz);
+        GlStateManager.glVertex3f(mx, y, mz);
+        GlStateManager.glVertex3f(mx, my, mz);
 
         //x+ side
-        GL11.glNormal3f(1, 0, 0);
-        GL11.glVertex3f(mx, my, mz);
-        GL11.glVertex3f(mx, y, mz);
-        GL11.glVertex3f(mx, y, z);
-        GL11.glVertex3f(mx, my, z);
+        GlStateManager.glNormal3f(1, 0, 0);
+        GlStateManager.glVertex3f(mx, my, mz);
+        GlStateManager.glVertex3f(mx, y, mz);
+        GlStateManager.glVertex3f(mx, y, z);
+        GlStateManager.glVertex3f(mx, my, z);
 
         //y+ side
-        GL11.glNormal3f(0, 1, 0);
-        GL11.glVertex3f(x, my, z);
-        GL11.glVertex3f(x, my, mz);
-        GL11.glVertex3f(mx, my, mz);
-        GL11.glVertex3f(mx, my, z);
+        GlStateManager.glNormal3f(0, 1, 0);
+        GlStateManager.glVertex3f(x, my, z);
+        GlStateManager.glVertex3f(x, my, mz);
+        GlStateManager.glVertex3f(mx, my, mz);
+        GlStateManager.glVertex3f(mx, my, z);
 
         //z- side
-        GL11.glNormal3f(0, 0, -1);
-        GL11.glVertex3f(x, my, z);
-        GL11.glVertex3f(mx, my, z);
-        GL11.glVertex3f(mx, y, z);
-        GL11.glVertex3f(x, y, z);
+        GlStateManager.glNormal3f(0, 0, -1);
+        GlStateManager.glVertex3f(x, my, z);
+        GlStateManager.glVertex3f(mx, my, z);
+        GlStateManager.glVertex3f(mx, y, z);
+        GlStateManager.glVertex3f(x, y, z);
 
         //x-side
-        GL11.glNormal3f(-1, 0, 0);
-        GL11.glVertex3f(x, y, mz);
-        GL11.glVertex3f(x, my, mz);
-        GL11.glVertex3f(x, my, z);
-        GL11.glVertex3f(x, y, z);
+        GlStateManager.glNormal3f(-1, 0, 0);
+        GlStateManager.glVertex3f(x, y, mz);
+        GlStateManager.glVertex3f(x, my, mz);
+        GlStateManager.glVertex3f(x, my, z);
+        GlStateManager.glVertex3f(x, y, z);
 
         //y- side
-        GL11.glNormal3f(0, -1, 0);
-        GL11.glVertex3f(x, y, z);
-        GL11.glVertex3f(mx, y, z);
-        GL11.glVertex3f(mx, y, mz);
-        GL11.glVertex3f(x, y, mz);
+        GlStateManager.glNormal3f(0, -1, 0);
+        GlStateManager.glVertex3f(x, y, z);
+        GlStateManager.glVertex3f(mx, y, z);
+        GlStateManager.glVertex3f(mx, y, mz);
+        GlStateManager.glVertex3f(x, y, mz);
 
-        GL11.glEnd();
+        GlStateManager.glEnd();
     }
 
     /*
      * Renders a white point in center, and RGB lines/points for X,Y,Z axis'
      */
     public static void renderOrientationPoints(float colorMult) {
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
         GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_LIGHTING);
+        GlStateManager.disableTexture2D();
+        GlStateManager.disableLighting();
         GL11.glPointSize(3.f);
 
-        GL11.glColor4f(colorMult, colorMult, colorMult, 1.f);
+        GlStateManager.color(colorMult, colorMult, colorMult, 1.f);
 
         //draw origin point
-        GL11.glBegin(GL11.GL_POINTS);
-        GL11.glVertex3f(0, 0, 0);
-        GL11.glEnd();
+        GlStateManager.glBegin(GL11.GL_POINTS);
+        GlStateManager.glVertex3f(0, 0, 0);
+        GlStateManager.glEnd();
 
 
-        GL11.glColor4f(colorMult, 0, 0, 1.f);//red for x axis
-        GL11.glBegin(GL11.GL_LINES);
-        GL11.glVertex3f(0, 0, 0);
-        GL11.glVertex3f(1, 0, 0);
-        GL11.glEnd();
+        GlStateManager.color(colorMult, 0, 0, 1.f);//red for x axis
+        GlStateManager.glBegin(GL11.GL_LINES);
+        GlStateManager.glVertex3f(0, 0, 0);
+        GlStateManager.glVertex3f(1, 0, 0);
+        GlStateManager.glEnd();
 
-        GL11.glBegin(GL11.GL_POINTS);
-        GL11.glVertex3f(1, 0, 0);
-        GL11.glEnd();
-
-
-        GL11.glColor4f(0, colorMult, 0, 1.f);//green for y axis
-        GL11.glBegin(GL11.GL_LINES);
-        GL11.glVertex3f(0, 0, 0);
-        GL11.glVertex3f(0, 1, 0);
-        GL11.glEnd();
-
-        GL11.glBegin(GL11.GL_POINTS);
-        GL11.glVertex3f(0, 1, 0);
-        GL11.glEnd();
+        GlStateManager.glBegin(GL11.GL_POINTS);
+        GlStateManager.glVertex3f(1, 0, 0);
+        GlStateManager.glEnd();
 
 
-        GL11.glColor4f(0, 0, colorMult, 1.f);//blue for z axis
-        GL11.glBegin(GL11.GL_LINES);
-        GL11.glVertex3f(0, 0, 0);
-        GL11.glVertex3f(0, 0, 1);
-        GL11.glEnd();
+        GlStateManager.color(0, colorMult, 0, 1.f);//green for y axis
+        GlStateManager.glBegin(GL11.GL_LINES);
+        GlStateManager.glVertex3f(0, 0, 0);
+        GlStateManager.glVertex3f(0, 1, 0);
+        GlStateManager.glEnd();
 
-        GL11.glBegin(GL11.GL_POINTS);
-        GL11.glVertex3f(0, 0, 1);
-        GL11.glEnd();
+        GlStateManager.glBegin(GL11.GL_POINTS);
+        GlStateManager.glVertex3f(0, 1, 0);
+        GlStateManager.glEnd();
 
-        GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
-        GL11.glPopAttrib();
-        GL11.glPopMatrix();
+
+        GlStateManager.color(0, 0, colorMult, 1.f);//blue for z axis
+        GlStateManager.glBegin(GL11.GL_LINES);
+        GlStateManager.glVertex3f(0, 0, 0);
+        GlStateManager.glVertex3f(0, 0, 1);
+        GlStateManager.glEnd();
+
+        GlStateManager.glBegin(GL11.GL_POINTS);
+        GlStateManager.glVertex3f(0, 0, 1);
+        GlStateManager.glEnd();
+
+        GlStateManager.color(1.f, 1.f, 1.f, 1.f);
+        GlStateManager.popAttrib();
+        GlStateManager.popMatrix();
     }
 
     /*
      * draw a player-position-normalized bounding box (can only be called during worldRender)
      */
     public static void drawOutlinedBoundingBox(AxisAlignedBB bb, float r, float g, float b) {
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-        GL11.glColor4f(r, g, b, 0.4F);
-        GL11.glLineWidth(8.0F);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glDepthMask(false);
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GlStateManager.color(r, g, b, 0.4F);
+        GlStateManager.glLineWidth(8.0F);
+        GlStateManager.disableTexture2D();
+        GlStateManager.depthMask(false);
 
         Tessellator tess = Tessellator.getInstance();
         BufferBuilder bufferBuilder = tess.getBuffer();
@@ -232,9 +233,9 @@ public class RenderTools {
         bufferBuilder.pos(bb.minX, bb.maxY, bb.maxZ).endVertex();
         tess.draw();
 
-        GL11.glDepthMask(true);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_BLEND);
+        GlStateManager.depthMask(true);
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
     }
 
     /*

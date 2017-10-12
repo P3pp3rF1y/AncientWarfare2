@@ -20,7 +20,7 @@
  */
 package net.shadowmage.ancientwarfare.core.model;
 
-import org.lwjgl.opengl.GL11;
+import net.minecraft.client.renderer.GlStateManager;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -42,21 +42,21 @@ public abstract class Primitive {
     }
 
     protected void buildDisplayList(float tw, float th) {
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
         if (x != 0 || y != 0 || z != 0) {
-            GL11.glTranslatef(x, y, z);
+            GlStateManager.translate(x, y, z);
         }
         if (rx != 0) {
-            GL11.glRotatef(rx, 1, 0, 0);
+            GlStateManager.rotate(rx, 1, 0, 0);
         }
         if (ry != 0) {
-            GL11.glRotatef(ry, 0, 1, 0);
+            GlStateManager.rotate(ry, 0, 1, 0);
         }
         if (rz != 0) {
-            GL11.glRotatef(rz, 0, 0, 1);
+            GlStateManager.rotate(rz, 0, 0, 1);
         }
         renderPrimitive(tw, th);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     protected abstract void renderPrimitive(float tw, float th);

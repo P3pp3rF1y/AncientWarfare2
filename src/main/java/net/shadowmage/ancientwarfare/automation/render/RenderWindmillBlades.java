@@ -36,36 +36,36 @@ public class RenderWindmillBlades extends TileEntitySpecialRenderer implements I
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float delta) {
         TileWindmillBlade blade = (TileWindmillBlade) te;
         if (blade.isControl) {
-            GL11.glPushMatrix();
+            GlStateManager.pushMatrix();
             bindTexture(texture);
-            GL11.glTranslated(x + 0.5d, y + 0.5d, z + 0.5d);
+            GlStateManager.translate(x + 0.5d, y + 0.5d, z + 0.5d);
             renderModel(-blade.getRotation(delta), blade.windmillDirection, (blade.windmillSize - 1) / 2);
-            GL11.glPopMatrix();
+            GlStateManager.popMatrix();
         } else if (blade.controlPos == null) {
-            GL11.glPushMatrix();
+            GlStateManager.pushMatrix();
             bindTexture(cubeTexture);
-            GL11.glTranslated(x + 0.5d, y + 0.5d, z + 0.5d);
+            GlStateManager.translate(x + 0.5d, y + 0.5d, z + 0.5d);
             cube.renderModel();
-            GL11.glPopMatrix();
+            GlStateManager.popMatrix();
         }
     }
 
     protected void renderModel(float bladeRotatation, int face, int height) {
         float[] rot = ITorque.forgeDiretctionToRotationMatrix[face];
         if (rot[0] != 0) {
-            GL11.glRotatef(rot[0], 1, 0, 0);
+            GlStateManager.rotate(rot[0], 1, 0, 0);
         }
         else if (rot[1] != 0) {
-            GL11.glRotatef(rot[1], 0, 1, 0);
+            GlStateManager.rotate(rot[1], 0, 1, 0);
         }
 
         float textureWidth = model.textureWidth();
         float textureHeight = model.textureHeight();
-        GL11.glRotatef(bladeRotatation, 0, 0, 1);
+        GlStateManager.rotate(bladeRotatation, 0, 0, 1);
         windmillShaft.render(model.textureWidth(), model.textureHeight());
 
         for (int i = 0; i < 4; i++) {
-            GL11.glRotatef(90, 0, 0, 1);
+            GlStateManager.rotate(90, 0, 0, 1);
             bladeShaft.render(textureWidth, textureHeight);
             for (int k = 1; k < height; k++) {
                 blade.render(textureWidth, textureHeight);
@@ -73,10 +73,10 @@ public class RenderWindmillBlades extends TileEntitySpecialRenderer implements I
                     bladeJoint.render(textureWidth, textureHeight);
                 }
                 else {
-                    GL11.glTranslatef(0, 1, 0);
+                    GlStateManager.translate(0, 1, 0);
                 }
             }
-            GL11.glTranslatef(0, 2 - height, 0);
+            GlStateManager.translate(0, 2 - height, 0);
         }
     }
 
@@ -92,12 +92,12 @@ public class RenderWindmillBlades extends TileEntitySpecialRenderer implements I
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
         GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
         bindTexture(texture);
-        GL11.glTranslatef(0.5f, -0.25f, 0.5f);
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glScalef(0.35f, 0.35f, 0.35f);
+        GlStateManager.translate(0.5f, -0.25f, 0.5f);
+        GlStateManager.enableRescaleNormal();
+        GlStateManager.scale(0.35f, 0.35f, 0.35f);
 
         float textureWidth = model.textureWidth();
         float textureHeight = model.textureHeight();
@@ -112,11 +112,11 @@ public class RenderWindmillBlades extends TileEntitySpecialRenderer implements I
                 bladeJoint.render(textureWidth, textureHeight);
             }
             else {
-                GL11.glTranslatef(0, 1, 0);
+                GlStateManager.translate(0, 1, 0);
             }
         }
-        GL11.glPopAttrib();
-        GL11.glPopMatrix();
+        GlStateManager.popAttrib();
+        GlStateManager.popMatrix();
     }
 
 }

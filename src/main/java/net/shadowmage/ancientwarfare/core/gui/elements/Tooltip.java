@@ -3,12 +3,12 @@ package net.shadowmage.ancientwarfare.core.gui.elements;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,9 +46,9 @@ public class Tooltip {
         }
 
 
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+        GlStateManager.disableDepth();
+        GlStateManager.disableLighting();
+        GlStateManager.disableRescaleNormal();
         drawBackground(mouseX, mouseY);
 
         RenderHelper.disableStandardItemLighting();
@@ -92,11 +92,11 @@ public class Tooltip {
         float f5 = (float) (par6 >> 16 & 255) / 255.0F;
         float f6 = (float) (par6 >> 8 & 255) / 255.0F;
         float f7 = (float) (par6 & 255) / 255.0F;
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glDisable(GL11.GL_ALPHA_TEST);
+        GlStateManager.disableTexture2D();
+        GlStateManager.enableBlend();
+        GlStateManager.disableAlpha();
         OpenGlHelper.glBlendFunc(770, 771, 1, 0);
-        GL11.glShadeModel(GL11.GL_SMOOTH);
+        GlStateManager.shadeModel(GL11.GL_SMOOTH);
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferBuilder = tessellator.getBuffer();
         bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
@@ -105,10 +105,10 @@ public class Tooltip {
         bufferBuilder.pos((double) par1, (double) par4, (double) 0).color(f5, f6, f7, f4).endVertex();
         bufferBuilder.pos((double) par3, (double) par4, (double) 0).color(f5, f6, f7, f4).endVertex();
         tessellator.draw();
-        GL11.glShadeModel(GL11.GL_FLAT);
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glEnable(GL11.GL_ALPHA_TEST);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GlStateManager.shadeModel(GL11.GL_FLAT);
+        GlStateManager.disableBlend();
+        GlStateManager.enableAlpha();
+        GlStateManager.enableTexture2D();
     }
 
     private static void pushViewport(int x, int y, int w, int h) {

@@ -81,7 +81,7 @@ public void drawElement(int mouseX, int mouseY)
     displayListNum = GL11.glGenLists(1);
     AWTextureManager.bindTexture(tex);
     GL11.glNewList(displayListNum, GL11.GL_COMPILE_AND_EXECUTE);
-    GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
+    GlStateManager.color(1.f, 1.f, 1.f, 1.f);
     float texPixPercent = 1.f / 256.f;
     float x, y, u, v, uw, uh, width, height;
     x = renderPosX+guiLeft;
@@ -394,7 +394,7 @@ public void drawElement(int mouseX, int mouseY)
 
 protected void renderQuad(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4, float u1, float v1, float u2, float v2, float u3, float v3, float u4, float v4)
   {
-  GL11.glBegin(GL11.GL_QUADS);
+  GlStateManager.glBegin(GL11.GL_QUADS);
   GL11.glTexCoord2f(u1, v1);
   GL11.glVertex3f(x1, y1, 0);
   GL11.glTexCoord2f(u2, v2);
@@ -403,7 +403,7 @@ protected void renderQuad(float x1, float y1, float x2, float y2, float x3, floa
   GL11.glVertex3f(x3, y3, 0);
   GL11.glTexCoord2f(u4, v4);
   GL11.glVertex3f(x4, y4, 0);    
-  GL11.glEnd();
+  GlStateManager.glEnd();
   }
 
 @Override

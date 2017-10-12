@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.ItemStack;
@@ -93,28 +94,26 @@ public class ItemSlot extends GuiElement {
                 RenderTools.renderQuarteredTexture(256, 256, 152, 120, 18, 18, renderX, renderY, width, height);
             }
 
-            GL11.glDisable(GL11.GL_DEPTH_TEST);
             if (!this.item.isEmpty()) {
-                RenderHelper.enableGUIStandardItemLighting();
                 itemRender.zLevel = 10.0F;
                 FontRenderer font = item.getItem().getFontRenderer(item);
                 if (font == null) {
                     font = mc.fontRenderer;
                 }
 
-                GL11.glEnable(GL11.GL_LIGHTING);
-                GL11.glEnable(GL11.GL_DEPTH_TEST);//fix for chests / tile-renderers improper render stuff
+                GlStateManager.enableDepth();
+                RenderHelper.disableStandardItemLighting();
+                RenderHelper.enableGUIStandardItemLighting();
                 itemRender.renderItemAndEffectIntoGUI(item, renderX + 1, renderY + 1);
-                GL11.glDisable(GL11.GL_DEPTH_TEST);
                 if (renderItemQuantity && item.getCount() > 1) {
                     itemRender.renderItemOverlayIntoGUI(font, item, renderX + 1, renderY + 1, "");
                     renderStackSize(renderX + 1, renderY + 1, item.getCount(), font);
                 }
-                GL11.glDisable(GL11.GL_LIGHTING);
+                RenderHelper.enableStandardItemLighting();
                 if (renderLabel) {
                     int x = renderX + 18;
                     int y = renderY + 3;
-                    GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
+                    GlStateManager.color(1.f, 1.f, 1.f, 1.f);
                     font.drawStringWithShadow(item.getDisplayName(), x, y, 0xffffffff);
                 }
             }
@@ -125,20 +124,24 @@ public class ItemSlot extends GuiElement {
                      *  TODO -- find proper alpha for blend..it is close now, but probably not an exact match for vanilla
                      *  highlighting
                      */
-                    GL11.glColor4f(1.f, 1.f, 1.f, 0.55f);
-                    GL11.glEnable(GL11.GL_BLEND);
-                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-                    GL11.glDisable(GL11.GL_LIGHTING);
-                    GL11.glDisable(GL11.GL_TEXTURE_2D);
-                    GL11.glBegin(GL11.GL_QUADS);
+                    GlStateManager.color(1.f, 1.f, 1.f, 0.55f);
+
+                    GlStateManager.enableBlend();
+                    GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                    GlStateManager.disableLighting();
+                    GlStateManager.disableTexture2D();
+                    GlStateManager.pushMatrix();
+                    GlStateManager.translate(0, 0, 200);
+                    GlStateManager.glBegin(GL11.GL_QUADS);
                     GL11.glVertex2f(renderX, renderY);
                     GL11.glVertex2f(renderX, renderY + height);
                     GL11.glVertex2f(renderX + width, renderY + height);
                     GL11.glVertex2d(renderX + width, renderY);
-                    GL11.glEnd();
-                    GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
-                    GL11.glDisable(GL11.GL_BLEND);
-                    GL11.glEnable(GL11.GL_TEXTURE_2D);
+                    GlStateManager.glEnd();
+                    GlStateManager.popMatrix();
+                    GlStateManager.color(1.f, 1.f, 1.f, 1.f);
+                    GlStateManager.disableBlend();
+                    GlStateManager.enableTexture2D();
                 }
                 if (renderTooltip && this.render != null) {
                     if (this.tooltip != null) {
@@ -148,20 +151,18 @@ public class ItemSlot extends GuiElement {
                     }
                 }
             }
-            GL11.glEnable(GL11.GL_DEPTH_TEST);
-            GL11.glDisable(GL11.GL_LIGHTING);
-            GL11.glPopAttrib();
-            GL11.glColor4f(1, 1, 1, 1);
+            GlStateManager.popAttrib();
+            GlStateManager.color(1, 1, 1, 1);
         }
     }
 
     public void renderStackSize(int renderX, int renderY, int stackSize, FontRenderer fr) {
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
         float ox = renderX + 16, oy = renderY + 8;
-        GL11.glTranslatef(ox + 0.5f, oy + 0.5f, 0);
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
-        GL11.glDisable(GL11.GL_BLEND);
+        GlStateManager.translate(ox + 0.5f, oy + 0.5f, 0);
+        GlStateManager.disableLighting();
+        GlStateManager.disableDepth();
+        GlStateManager.disableBlend();
 
         String s1 = String.valueOf(stackSize);
 
@@ -170,13 +171,13 @@ public class ItemSlot extends GuiElement {
         int oy1 = stackSize > 99 ? 6 : 0;
 
 //  w *= scale;
-        GL11.glScalef(scale, scale, scale);
+        GlStateManager.scale(scale, scale, scale);
 
         fr.drawStringWithShadow(s1, -(int) w, oy1, 16777215);
 
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
-        GL11.glPopMatrix();
+        GlStateManager.enableLighting();
+        GlStateManager.enableDepth();
+        GlStateManager.popMatrix();
     }
 
     public void onSlotClicked(ItemStack stack) {

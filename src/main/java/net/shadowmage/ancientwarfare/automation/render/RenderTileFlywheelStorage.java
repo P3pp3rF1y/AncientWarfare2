@@ -55,29 +55,29 @@ public class RenderTileFlywheelStorage extends TileEntitySpecialRenderer impleme
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float delta) {
         TileFlywheelStorage storage = (TileFlywheelStorage) te;
         if (storage.controllerPos == null) {
-            GL11.glPushMatrix();
-            GL11.glTranslated(x + 0.5d, y, z + 0.5d);
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(x + 0.5d, y, z + 0.5d);
             renderSmallModel(te.getBlockMetadata(), 1, 0, MinecraftForgeClient.getRenderPass());
-            GL11.glPopMatrix();
+            GlStateManager.popMatrix();
         } else if (storage.isControl) {
             int pass = MinecraftForgeClient.getRenderPass();
-            GL11.glPushMatrix();
+            GlStateManager.pushMatrix();
             float rotation = (float) getRotation(storage.rotation, storage.prevRotation, delta);
             if (storage.setType >= 0 && storage.setHeight > 0) {
-                GL11.glTranslated(x + 0.5d, y, z + 0.5d);
+                GlStateManager.translate(x + 0.5d, y, z + 0.5d);
                 if (storage.setWidth > 1) {
                     renderLargeModel(te.getBlockMetadata(), storage.setHeight, -rotation, pass);
                 } else {
                     renderSmallModel(te.getBlockMetadata(), storage.setHeight, -rotation, pass);
                 }
             }
-            GL11.glPopMatrix();
+            GlStateManager.popMatrix();
         }
     }
 
     protected void renderSmallModel(int type, int height, float rotation, int pass) {
         bindTexture(smallTex[type]);
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
         if (pass == 0) {
             spindleSmall.setRotation(0, rotation, 0);
             spindleSmall.setVisible(true);
@@ -85,8 +85,8 @@ public class RenderTileFlywheelStorage extends TileEntitySpecialRenderer impleme
             upperWindowSmall.setVisible(false);
             lowerWindowSmall.setVisible(false);
         } else {
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glColor4f(1, 1, 1, 0.25f);
+            GlStateManager.enableBlend();
+            GlStateManager.color(1, 1, 1, 0.25f);
             caseBarsSmall.setVisible(false);
             spindleSmall.setVisible(false);
             lowerWindowSmall.setVisible(true);
@@ -104,18 +104,18 @@ public class RenderTileFlywheelStorage extends TileEntitySpecialRenderer impleme
                 upperWindowSmall.setVisible(i < height - 1);
                 smallModel.renderModel();
             }
-            GL11.glTranslatef(0, 1, 0);
+            GlStateManager.translate(0, 1, 0);
         }
         if (pass == 1) {
-            GL11.glColor4f(1, 1, 1, 1);
-            GL11.glDisable(GL11.GL_BLEND);
+            GlStateManager.color(1, 1, 1, 1);
+            GlStateManager.disableBlend();
         }
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     protected void renderLargeModel(int type, int height, float rotation, int pass) {
         bindTexture(largeTex[type]);
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
         if (pass == 0) {
             spindleLarge.setRotation(0, rotation, 0);
             spindleLarge.setVisible(true);
@@ -123,8 +123,8 @@ public class RenderTileFlywheelStorage extends TileEntitySpecialRenderer impleme
             upperWindowLarge.setVisible(false);
             lowerWindowLarge.setVisible(false);
         } else {
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glColor4f(1, 1, 1, 0.25f);
+            GlStateManager.enableBlend();
+            GlStateManager.color(1, 1, 1, 0.25f);
             caseBarsLarge.setVisible(false);
             spindleLarge.setVisible(false);
             lowerWindowLarge.setVisible(true);
@@ -142,13 +142,13 @@ public class RenderTileFlywheelStorage extends TileEntitySpecialRenderer impleme
                 upperWindowLarge.setVisible(i < height - 1);
                 largeModel.renderModel();
             }
-            GL11.glTranslatef(0, 1, 0);
+            GlStateManager.translate(0, 1, 0);
         }
         if (pass == 1) {
-            GL11.glColor4f(1, 1, 1, 1);
-            GL11.glDisable(GL11.GL_BLEND);
+            GlStateManager.color(1, 1, 1, 1);
+            GlStateManager.disableBlend();
         }
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     private double getRotation(double rotation, double prevRotation, float delta) {
@@ -168,10 +168,10 @@ public class RenderTileFlywheelStorage extends TileEntitySpecialRenderer impleme
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        GL11.glPushMatrix();
-        GL11.glTranslated(0.5d, 0, 0.5d);
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0.5d, 0, 0.5d);
         renderSmallModel(item.getItemDamage(), 1, 0, 0);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
 }

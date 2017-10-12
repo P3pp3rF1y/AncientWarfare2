@@ -2,12 +2,12 @@ package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.init.SoundEvents;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
-import org.lwjgl.opengl.GL11;
 
 public class Button extends GuiElement {
 
@@ -64,7 +64,7 @@ public class Button extends GuiElement {
             int usedHeight = 40;
             RenderTools.renderQuarteredTexture(textureSize, textureSize, startX, startY, usedWidth, usedHeight, renderX, renderY, width, height);
             Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(text, renderX + textX, renderY + textY, textColor);
-            GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
+            GlStateManager.color(1.f, 1.f, 1.f, 1.f);
         }
     }
 

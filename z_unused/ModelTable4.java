@@ -90,12 +90,12 @@ public void renderModel(TEAWCrafting te)
   TEAWVehicleCraft tev = (TEAWVehicleCraft)te;  
   if(tev.vehicleType>=0)
     {
-    GL11.glPushMatrix();
-    GL11.glScalef(-1, -1, 1);
-    GL11.glTranslatef(0, 12*0.0625f, 0);
-    GL11.glScalef(0.15f, 0.15f, 0.15f);
+    GlStateManager.pushMatrix();
+    GlStateManager.scale(-1, -1, 1);
+    GlStateManager.translate(0, 12*0.0625f, 0);
+    GlStateManager.scale(0.15f, 0.15f, 0.15f);
     RenderVehicleHelper.renderVehicleModel(tev.vehicleType, tev.vehicleLevel);
-    GL11.glPopMatrix();
+    GlStateManager.popMatrix();
     }  
   }
 

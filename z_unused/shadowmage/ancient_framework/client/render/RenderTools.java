@@ -45,11 +45,11 @@ static float zLevel = 0;
  */
 public static void drawOutlinedBoundingBox(AxisAlignedBB bb, float r, float g, float b)
   {
-  GL11.glEnable(GL11.GL_BLEND);
-  GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-  GL11.glColor4f(r, g, b, 0.4F);
+  GlStateManager.enableBlend();
+  GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+  GlStateManager.color(r, g, b, 0.4F);
   GL11.glLineWidth(8.0F);
-  GL11.glDisable(GL11.GL_TEXTURE_2D);
+  GlStateManager.disableTexture2D();
   GL11.glDepthMask(false);
   Tessellator tess = Tessellator.getInstance();
   tess.startDrawing(3);
@@ -77,8 +77,8 @@ public static void drawOutlinedBoundingBox(AxisAlignedBB bb, float r, float g, f
   bufferBuilder.pos(bb.minX, bb.maxY, bb.maxZ).endVertex();
   tess.draw();
   GL11.glDepthMask(true);
-  GL11.glEnable(GL11.GL_TEXTURE_2D);
-  GL11.glDisable(GL11.GL_BLEND);
+  GlStateManager.enableTexture2D();
+  GlStateManager.disableBlend();
   }
 
 /*
@@ -136,7 +136,7 @@ public static void drawQuadedTexture(int x, int y, int w, int h, int tw, int th,
   int u1 = u + tw - halfW;
   int v1 = v + th - halfH;
   AWTextureManager.bindTexture(tex);
-  GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+  GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
   drawTexturedModalRect(x, y, u, v, halfW, halfH);
   drawTexturedModalRect(x + halfW, y, u1, v, halfW, halfH);
   drawTexturedModalRect(x, y + halfH, u, v1, halfW, halfH);

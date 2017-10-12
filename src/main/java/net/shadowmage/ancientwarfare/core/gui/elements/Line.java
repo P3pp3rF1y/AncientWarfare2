@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import org.lwjgl.opengl.GL11;
 
 public class Line extends GuiElement {
@@ -22,19 +23,19 @@ public class Line extends GuiElement {
 
     @Override
     public void render(int mouseX, int mouseY, float partialTick) {
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_LIGHTING);
+        GlStateManager.disableTexture2D();
+        GlStateManager.disableLighting();
 
 
-        GL11.glLineWidth(lineWidth * getScaleFactor());
+        GlStateManager.glLineWidth(lineWidth * getScaleFactor());
         setColor();
-        GL11.glBegin(GL11.GL_LINE_LOOP);
+        GlStateManager.glBegin(GL11.GL_LINE_LOOP);
         GL11.glVertex2f(renderX, renderY);
         GL11.glVertex2f(renderX + x2, renderY + y2);
-        GL11.glEnd();
-        GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
+        GlStateManager.glEnd();
+        GlStateManager.color(1.f, 1.f, 1.f, 1.f);
 
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GlStateManager.enableTexture2D();
     }
 
     private void setColor() {
@@ -47,7 +48,7 @@ public class Line extends GuiElement {
         g = (float) g / 255.f;
         b = (float) b / 255.f;
         a = (float) a / 255.f;
-        GL11.glColor4f(r, g, b, a);
+        GlStateManager.color(r, g, b, a);
     }
 
     private int getScaleFactor() {

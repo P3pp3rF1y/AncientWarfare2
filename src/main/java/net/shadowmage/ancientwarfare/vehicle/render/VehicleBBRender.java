@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.vehicle.render;
 
 import net.minecraft.client.renderer.BufferBuilder;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
@@ -36,18 +37,18 @@ public class VehicleBBRender extends Render {
         }
         VehicleBase vehicle = (VehicleBase) entity;
 
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
 
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glEnable(GL11.GL_BLEND);
-        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GlStateManager.disableTexture2D();
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
         VehiclePart[] parts = vehicle.getParts();
 
-        GL11.glTranslated(x, y, z);
+        GlStateManager.translate(x, y, z);
 
         double x1, y1, z1;
-        GL11.glColor4f(0, .75f, 0, 0.75f);
+        GlStateManager.color(0, .75f, 0, 0.75f);
 
         for (VehiclePart part : parts) {
             x1 = part.posX - entity.posX;
@@ -58,7 +59,7 @@ public class VehicleBBRender extends Render {
             RenderTools.drawOutlinedBoundingBox2(renderAABB, 1, 0, 0, 0.0625f);
         }
 
-        GL11.glColor4f(.75f, .75f, .75f, 0.75f);
+        GlStateManager.color(.75f, .75f, .75f, 0.75f);
         renderAABB = entity.getEntityBoundingBox().offset(-entity.posX, -entity.posY, -entity.posZ);
         RenderTools.drawOutlinedBoundingBox2(renderAABB, 1, 1, 1, 0.0625f);
 
@@ -66,17 +67,17 @@ public class VehicleBBRender extends Render {
         renderAABB = new AxisAlignedBB(-vehicle.vehicleWidth / 2.f, 0, -vehicle.vehicleLength / 2.f, vehicle.vehicleWidth / 2.f, vehicle.vehicleHeight, vehicle.vehicleLength / 2.f);
         RenderTools.drawOutlinedBoundingBox2(renderAABB, 0, 1, 0, 0.0625f);
 
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_BLEND);
-        GL11.glPopMatrix();
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableBlend();
+        GlStateManager.popMatrix();
         if (entity instanceof VehicleTurreted) {
-            GL11.glPushMatrix();
-            GL11.glTranslated(x, y, z);
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(x, y, z);
             VehicleTurreted veh = (VehicleTurreted) entity;
             Vec3d turretOffset = veh.getTurretOffset();
             Vec3d launchVelocity = veh.getLaunchVelocity();
             TrajectoryRender.renderTrajectory(turretOffset.x, turretOffset.y, turretOffset.z, launchVelocity.x, launchVelocity.y, launchVelocity.z);
-            GL11.glPopMatrix();
+            GlStateManager.popMatrix();
         }
     }
 

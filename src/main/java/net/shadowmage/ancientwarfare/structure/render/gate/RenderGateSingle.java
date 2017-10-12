@@ -20,11 +20,11 @@
  */
 package net.shadowmage.ancientwarfare.structure.render.gate;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
-import org.lwjgl.opengl.GL11;
 
 public final class RenderGateSingle extends RenderGateBasic {
     public RenderGateSingle(RenderManager renderManager) {
@@ -61,15 +61,15 @@ public final class RenderGateSingle extends RenderGateBasic {
                 wallTx *= -1;
                 wallTz *= -1;
             }
-            GL11.glPushMatrix();
-            GL11.glTranslatef(wallTx, 0, wallTz);
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(wallTx, 0, wallTz);
             model.setModelRotation(axisRotation);
             if (gate.getGateType().getModelType() == 0) {
                 model.renderSolidWall();
             } else {
                 model.renderBars();
             }
-            GL11.glPopMatrix();
+            GlStateManager.popMatrix();
         }
     }
 }

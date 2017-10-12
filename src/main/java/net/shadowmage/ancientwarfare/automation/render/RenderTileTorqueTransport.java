@@ -69,8 +69,8 @@ public class RenderTileTorqueTransport extends TileEntitySpecialRenderer impleme
 
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float delta) {
-        GL11.glPushMatrix();
-        GL11.glTranslated(x + 0.5d, y + 0.5d, z + 0.5d);
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(x + 0.5d, y + 0.5d, z + 0.5d);
 
         TileTorqueSidedCell conduit = (TileTorqueSidedCell) te;
 
@@ -118,7 +118,7 @@ public class RenderTileTorqueTransport extends TileEntitySpecialRenderer impleme
         gearbox.setRotation(rotationArray[0], rotationArray[1], rotationArray[2]);
         gearbox.render(textureWidth, textureHeight);
 
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     @Override
@@ -133,8 +133,8 @@ public class RenderTileTorqueTransport extends TileEntitySpecialRenderer impleme
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        GL11.glPushMatrix();
-        GL11.glTranslated(0.5d, 0.5d, 0.5d);
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0.5d, 0.5d, 0.5d);
         bindTexture(textures[item.getItemDamage() % textures.length]);
         for (int i = 0; i < 2; i++) {
             gearHeads[i].setRotation(0, 0, 0);
@@ -142,7 +142,7 @@ public class RenderTileTorqueTransport extends TileEntitySpecialRenderer impleme
         }
         gearbox.setRotation(0, 0, 0);
         gearbox.render(textureWidth, textureHeight);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
 }

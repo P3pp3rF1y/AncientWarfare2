@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.interfaces.IWidgetSelection;
@@ -224,27 +225,27 @@ public class Text extends GuiElement {
 
     @Override
     public void render(int mouseX, int mouseY, float partialTick) {
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glColor4f(0.9f, 0.9f, 0.9f, 1.f);//lt-grey, for outline box
+        GlStateManager.disableLighting();
+        GlStateManager.disableTexture2D();
+        GlStateManager.color(0.9f, 0.9f, 0.9f, 1.f);//lt-grey, for outline box
 
-        GL11.glBegin(GL11.GL_QUADS);
+        GlStateManager.glBegin(GL11.GL_QUADS);
         GL11.glVertex2f(renderX, renderY);
         GL11.glVertex2f(renderX, renderY + height);
         GL11.glVertex2f(renderX + width, renderY + height);
         GL11.glVertex2f(renderX + width, renderY);
-        GL11.glEnd();
+        GlStateManager.glEnd();
 
-        GL11.glColor4f(0.0f, 0.0f, 0.0f, 1.f);//black, for the input box
-        GL11.glBegin(GL11.GL_QUADS);
+        GlStateManager.color(0.0f, 0.0f, 0.0f, 1.f);//black, for the input box
+        GlStateManager.glBegin(GL11.GL_QUADS);
         GL11.glVertex2f(renderX + 1, renderY + 1);
         GL11.glVertex2f(renderX + 1, renderY + height - 1);
         GL11.glVertex2f(renderX + width - 1, renderY + height - 1);
         GL11.glVertex2f(renderX + width - 1, renderY + 1);
-        GL11.glEnd();
+        GlStateManager.glEnd();
 
-        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.f);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GlStateManager.color(1.0f, 1.0f, 1.0f, 1.f);
+        GlStateManager.enableTexture2D();
 
         Minecraft.getMinecraft().fontRenderer.drawString(text, renderX + 2, renderY + 2, 0xffffffff);
 
@@ -256,7 +257,7 @@ public class Text extends GuiElement {
             Minecraft.getMinecraft().fontRenderer.drawString("_", renderX + 2 + w, renderY + 3, 0xffff0000);
         }
 
-        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.f);
+        GlStateManager.color(1.0f, 1.0f, 1.0f, 1.f);
     }
 
     public void setText(String text) {

@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.core.gui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
@@ -191,8 +192,8 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
     @Override
     protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3) {
         RenderHelper.disableStandardItemLighting();
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+        GlStateManager.disableLighting();
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         if (backgroundTexture != null) {
             Minecraft.getMinecraft().renderEngine.bindTexture(backgroundTexture);
             RenderTools.renderQuarteredTexture(256, 256, 0, 0, 256, 240, width / 2 - xSize / 2, (height / 2) - (ySize / 2), xSize, ySize);
@@ -220,15 +221,15 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
 
     @Override
     protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        GL11.glPushMatrix();
-        GL11.glTranslatef(-guiLeft, -guiTop, 0);
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(-guiLeft, -guiTop, 0);
         long time = System.currentTimeMillis();
-        GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
+        GlStateManager.color(1.f, 1.f, 1.f, 1.f);
         for (GuiElement element : elements) {
             element.render(par1, par2, partialRenderTick);
             element.postRender(par1, par2, partialRenderTick, time, this);
         }
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     /*

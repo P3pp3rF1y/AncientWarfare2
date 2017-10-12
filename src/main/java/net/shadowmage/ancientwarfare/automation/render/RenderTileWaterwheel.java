@@ -37,21 +37,21 @@ public class RenderTileWaterwheel extends TileEntitySpecialRenderer implements I
 
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float partialTick) {
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
         TileWaterwheel wheel = (TileWaterwheel) te;
 
         EnumFacing d = wheel.getPrimaryFacing();
-        GL11.glTranslated(x + 0.5d, y, z + 0.5d);
+        GlStateManager.translate(x + 0.5d, y, z + 0.5d);
 
         float rot[] = gearboxRotationMatrix[d.ordinal()];
         if (rot[0] != 0) {
-            GL11.glRotatef(rot[0], 1, 0, 0);
+            GlStateManager.rotate(rot[0], 1, 0, 0);
         }
         if (rot[1] != 0) {
-            GL11.glRotatef(rot[1], 0, 1, 0);
+            GlStateManager.rotate(rot[1], 0, 1, 0);
         }
         if (rot[2] != 0) {
-            GL11.glRotatef(rot[2], 0, 0, 1);
+            GlStateManager.rotate(rot[2], 0, 0, 1);
         }
         bindTexture(tex);
 
@@ -60,7 +60,7 @@ public class RenderTileWaterwheel extends TileEntitySpecialRenderer implements I
         outputGear.setRotation(0, 0, -wheel.getClientOutputRotation(wheel.getPrimaryFacing(), partialTick));
         model.renderModel();
 
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     private double getRotation(double rotation, double prevRotation, float delta) {
@@ -71,16 +71,16 @@ public class RenderTileWaterwheel extends TileEntitySpecialRenderer implements I
 //private void drawPointAtCurrentOrigin()
 //  {
 //  //debug point rendering
-//  GL11.glDisable(GL11.GL_TEXTURE_2D);
-//  GL11.glDisable(GL11.GL_LIGHTING);
-//  GL11.glColor4f(1.f, 0.f, 0.f, 1.f);
+//  GlStateManager.disableTexture2D();
+//  GlStateManager.disableLighting();
+//  GlStateManager.color(1.f, 0.f, 0.f, 1.f);
 //  GL11.glPointSize(10.f);
-//  GL11.glBegin(GL11.GL_POINTS);
-//  GL11.glVertex3f((float)0, (float)0, (float)0);
-//  GL11.glEnd();
-//  GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
-//  GL11.glEnable(GL11.GL_TEXTURE_2D);
-//  GL11.glEnable(GL11.GL_LIGHTING);
+//  GlStateManager.glBegin(GL11.GL_POINTS);
+//  GlStateManager.glVertex3f((float)0, (float)0, (float)0);
+//  GlStateManager.glEnd();
+//  GlStateManager.color(1.f, 1.f, 1.f, 1.f);
+//  GlStateManager.enableTexture2D();
+//  GlStateManager.enableLighting();
 //  }
 
     @Override
@@ -95,17 +95,17 @@ public class RenderTileWaterwheel extends TileEntitySpecialRenderer implements I
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        GL11.glPushMatrix();
-        GL11.glTranslatef(0.5f, 0, 0.5f);
-        GL11.glScalef(0.4f, 0.4f, 0.4f);
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0.5f, 0, 0.5f);
+        GlStateManager.scale(0.4f, 0.4f, 0.4f);
         GL11.glPushAttrib(GL12.GL_RESCALE_NORMAL);
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+        GlStateManager.enableRescaleNormal();
         bindTexture(tex);
         waterwheel.setRotation(0, 0, 0);
         outputGear.setRotation(0, 0, 0);
         model.renderModel();
-        GL11.glPopAttrib();
-        GL11.glPopMatrix();
+        GlStateManager.popAttrib();
+        GlStateManager.popMatrix();
     }
 
 }

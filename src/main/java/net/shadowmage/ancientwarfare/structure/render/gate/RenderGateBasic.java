@@ -20,6 +20,7 @@
  */
 package net.shadowmage.ancientwarfare.structure.render.gate;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
@@ -27,7 +28,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.model.ModelGateBasic;
-import org.lwjgl.opengl.GL11;
 
 public class RenderGateBasic extends Render {
 
@@ -39,7 +39,7 @@ public class RenderGateBasic extends Render {
 
     @Override
     public final void doRender(Entity entity, double d0, double d1, double d2, float f, float f1) {
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
         EntityGate g = (EntityGate) entity;
         BlockPos min = getMin(g);
         BlockPos max = getMax(g);
@@ -63,9 +63,9 @@ public class RenderGateBasic extends Render {
             width = max.getZ() - min.getZ() + 1;
             zOffset = -width * 0.5f + 0.5f;
         }
-        GL11.glTranslatef(-xOffset, 0, zOffset);
+        GlStateManager.translate(-xOffset, 0, zOffset);
         for (int y = 0; y < height; y++) {
-            GL11.glPushMatrix();
+            GlStateManager.pushMatrix();
             for (int x = 0; x < width; x++) {
                 model.setModelRotation(axisRotation);
                 if (y == height - 1 && x > 0 && x < width - 1) {
@@ -82,12 +82,12 @@ public class RenderGateBasic extends Render {
                     model.renderSide();
                 }
                 postRender(g, x, width, y, height, wideOnXAxis, axisRotation, f1);
-                GL11.glTranslatef(tx, 0, tz);
+                GlStateManager.translate(tx, 0, tz);
             }
-            GL11.glPopMatrix();
-            GL11.glTranslatef(0, ty, 0);
+            GlStateManager.popMatrix();
+            GlStateManager.translate(0, ty, 0);
         }
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     protected BlockPos getMin(EntityGate gate) {
@@ -100,15 +100,15 @@ public class RenderGateBasic extends Render {
 
     protected void postRender(EntityGate gate, int x, float width, int y, float height, boolean wideOnXAxis, float axisRotation, float frame) {
         if (y + gate.edgePosition <= height - 0.475f) {
-            GL11.glPushMatrix();
-            GL11.glTranslatef(0, -gate.edgePosition - gate.openingSpeed * (1 - frame), 0);
+            GlStateManager.pushMatrix();
+            GlStateManager.translate(0, -gate.edgePosition - gate.openingSpeed * (1 - frame), 0);
             model.setModelRotation(axisRotation);
             if (gate.getGateType().getModelType() == 0) {
                 model.renderSolidWall();
             } else {
                 model.renderBars();
             }
-            GL11.glPopMatrix();
+            GlStateManager.popMatrix();
         }
     }
 

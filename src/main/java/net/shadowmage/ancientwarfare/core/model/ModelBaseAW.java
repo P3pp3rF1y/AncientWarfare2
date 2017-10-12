@@ -20,8 +20,8 @@
  */
 package net.shadowmage.ancientwarfare.core.model;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
-import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,7 +55,7 @@ public class ModelBaseAW {
         for (ModelPiece piece2 : this.getBasePieces()) {
             piece2.renderForEditor(selectedPiece, selectedPrimitive, selectedPieceParents, textureWidth, textureHeight);
         }
-        GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
+        GlStateManager.color(1.f, 1.f, 1.f, 1.f);
     }
 
     public void setTextureSize(int width, int height) {

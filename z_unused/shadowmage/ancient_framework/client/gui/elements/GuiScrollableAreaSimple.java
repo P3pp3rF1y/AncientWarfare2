@@ -85,20 +85,20 @@ public void drawElement(int mouseX, int mouseY)
   mouseY = mouseY + this.scrollPosY - this.guiTop - this.renderPosY;  
   if(this.scrollBar!=null)
     {
-    GL11.glPushMatrix();
+    GlStateManager.pushMatrix();
     this.scrollBar.updateHandleHeight(totalHeight, height);  
     this.scrollPosY = this.scrollBar.getTopIndexForSet(totalHeight, height);  
     this.scrollBar.updateGuiPos(0, 0);
     this.scrollBar.drawElement(mouseX, mouseY-scrollPosY);
-    GL11.glPopMatrix();
+    GlStateManager.popMatrix();
     }
   for(GuiElement el : this.elements)
     {    
     if(el.renderPosX<width || el.renderPosX+el.width > 0 || el.renderPosY<height || el.renderPosY+el.height>0)
       {
-      GL11.glPushMatrix();
+      GlStateManager.pushMatrix();
       el.drawElement(mouseX, mouseY);  
-      GL11.glPopMatrix();    
+      GlStateManager.popMatrix();
       }    
     }  
   this.resetViewPort();
@@ -106,7 +106,7 @@ public void drawElement(int mouseX, int mouseY)
 
 public void setupViewport()
   {
-  GL11.glPushMatrix();
+  GlStateManager.pushMatrix();
   ScaledResolution scaledRes = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
   int guiScale = scaledRes.getScaleFactor();
 //  float vAspect = (float)this.mc.displayWidth/(float)this.mc.displayHeight;
@@ -117,13 +117,13 @@ public void setupViewport()
   float scaleY = (float)mc.displayHeight / h;
   float scaleX = (float)mc.displayWidth / w;  
   GL11.glViewport((int)x, (int)y, (int)w, (int)h);  
-  GL11.glScalef(scaleX, scaleY, 1);
+  GlStateManager.scale(scaleX, scaleY, 1);
   }
 
 public void resetViewPort()
   {
   GL11.glViewport(0, 0, this.mc.displayWidth, this.mc.displayHeight);
-  GL11.glPopMatrix();
+  GlStateManager.popMatrix();
   }
 
 @Override

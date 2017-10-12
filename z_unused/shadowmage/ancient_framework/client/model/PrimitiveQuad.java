@@ -59,7 +59,7 @@ protected void renderForDisplayList()
   if(rz!=0){GL11.glRotatef(rz, 0, 0, 1);}  
   
  
-  GL11.glBegin(GL11.GL_QUADS);
+  GlStateManager.glBegin(GL11.GL_QUADS);
 
   AWLog.logDebug("tx, ty: "+tx+","+ty);
   AWLog.logDebug("w,l,h: "+w+","+h);
@@ -81,7 +81,7 @@ protected void renderForDisplayList()
   GL11.glTexCoord2f(tx1, ty2);
   GL11.glVertex3f(x1, y2, 0.f);
   
-  GL11.glEnd();
+  GlStateManager.glEnd();
   }
 
 @Override

@@ -20,6 +20,7 @@
  */
 package net.shadowmage.ancientwarfare.core.model;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.math.MathHelper;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.core.util.Trig;
@@ -114,13 +115,13 @@ public class PrimitiveTriangle extends Primitive {
     @Override
     protected void renderPrimitive(float tw, float th) {
         if (rx != 0) {
-            GL11.glRotatef(rx, 1, 0, 0);
+            GlStateManager.rotate(rx, 1, 0, 0);
         }
         if (ry != 0) {
-            GL11.glRotatef(ry, 0, 1, 0);
+            GlStateManager.rotate(ry, 0, 1, 0);
         }
         if (rz != 0) {
-            GL11.glRotatef(rz, 0, 0, 1);
+            GlStateManager.rotate(rz, 0, 0, 1);
         }
 
         float px = 1.f / tw;
@@ -133,15 +134,15 @@ public class PrimitiveTriangle extends Primitive {
         v1 = this.v1 * py + this.ty() * py;
         v2 = this.v2 * py + this.ty() * py;
         v3 = this.v3 * py + this.ty() * py;
-        GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
-        GL11.glNormal3f(normalX, normalY, normalZ);
-        GL11.glTexCoord2f(u1, v1);
-        GL11.glVertex3f(x1, y1, z1);
-        GL11.glTexCoord2f(u2, v2);
-        GL11.glVertex3f(x2, y2, z2);
-        GL11.glTexCoord2f(u3, v3);
-        GL11.glVertex3f(x3, y3, z3);
-        GL11.glEnd();
+        GlStateManager.glBegin(GL11.GL_TRIANGLE_STRIP);
+        GlStateManager.glNormal3f(normalX, normalY, normalZ);
+        GlStateManager.glTexCoord2f(u1, v1);
+        GlStateManager.glVertex3f(x1, y1, z1);
+        GlStateManager.glTexCoord2f(u2, v2);
+        GlStateManager.glVertex3f(x2, y2, z2);
+        GlStateManager.glTexCoord2f(u3, v3);
+        GlStateManager.glVertex3f(x3, y3, z3);
+        GlStateManager.glEnd();
     }
 
     public void reverseVertexOrder() {

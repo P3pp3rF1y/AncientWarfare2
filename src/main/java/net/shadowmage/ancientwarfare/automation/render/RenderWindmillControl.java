@@ -28,32 +28,32 @@ public class RenderWindmillControl extends TileEntitySpecialRenderer implements 
 
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float delta) {
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
         bindTexture(texture);
-        GL11.glTranslated(x + 0.5d, y, z + 0.5d);
+        GlStateManager.translate(x + 0.5d, y, z + 0.5d);
 
         TileTorqueBase windmillControl = (TileTorqueBase) te;
         float outRotation = -windmillControl.getClientOutputRotation(windmillControl.getPrimaryFacing(), delta);
         renderModel(outRotation, windmillControl.getPrimaryFacing().ordinal());
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
         bindTexture(texture);
-        GL11.glTranslated(0.5d, 0, 0.5d);
+        GlStateManager.translate(0.5d, 0, 0.5d);
         renderModel(0, 2);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     protected void renderModel(float outR, int face) {
         float[] rot = ITorque.forgeDiretctionToRotationMatrix[face];
         if (rot[0] != 0) {
-            GL11.glRotatef(rot[0], 1, 0, 0);
+            GlStateManager.rotate(rot[0], 1, 0, 0);
         }
         else if (rot[1] != 0) {
-            GL11.glRotatef(rot[1], 0, 1, 0);
+            GlStateManager.rotate(rot[1], 0, 1, 0);
         }
         outputGear.setRotation(0, 0, outR);
         model.renderModel();

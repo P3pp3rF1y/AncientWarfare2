@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -198,22 +199,22 @@ public class ModelWidget extends GuiElement {
 
     @Override
     public void render(int mouseX, int mouseY, float partialTick) {
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
+        GlStateManager.enableDepth();
         setViewport();
         if (model != null) {
             if (doSelection) {
-                GL11.glClearColor(0.2f, 0.2f, 0.2f, 0.2f);
-                GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+                GlStateManager.clearColor(0.2f, 0.2f, 0.2f, 0.2f);
+                GlStateManager.clear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
                 doSelection();
                 doSelection = false;
             }
-            GL11.glClearColor(0.2f, 0.2f, 0.2f, 0.2f);
-            GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+            GlStateManager.clearColor(0.2f, 0.2f, 0.2f, 0.2f);
+            GlStateManager.clear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
             renderGrid();
 
             enableModelLighting();
-            GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
+            GlStateManager.color(1.f, 1.f, 1.f, 1.f);
 
             Minecraft.getMinecraft().renderEngine.bindTexture(texture);
             calculateHighlightedPieces();
@@ -222,8 +223,8 @@ public class ModelWidget extends GuiElement {
         }
 
         resetViewport();
-        GL11.glDisable(GL11.GL_DEPTH_TEST);//re-disable for rendering of the rest of widgets
-        GL11.glDisable(GL11.GL_LIGHTING);
+        GlStateManager.disableDepth();//re-disable for rendering of the rest of widgets
+        GlStateManager.disableLighting();
     }
 
     List<ModelPiece> parents = new ArrayList<>();
@@ -247,41 +248,41 @@ public class ModelWidget extends GuiElement {
     }
 
     private void renderGrid() {
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glLineWidth(2.f);
+        GlStateManager.disableTexture2D();
+        GlStateManager.disableLighting();
+        GlStateManager.glLineWidth(2.f);
         if (gridDisplayList >= 0) {
-            GL11.glCallList(gridDisplayList);
+            GlStateManager.callList(gridDisplayList);
         } else {
-            gridDisplayList = GL11.glGenLists(1);
-            GL11.glNewList(gridDisplayList, GL11.GL_COMPILE_AND_EXECUTE);
-            GL11.glColor4f(0.f, 0.f, 1.f, 1.f);
+            gridDisplayList = GlStateManager.glGenLists(1);
+            GlStateManager.glNewList(gridDisplayList, GL11.GL_COMPILE_AND_EXECUTE);
+            GlStateManager.color(0.f, 0.f, 1.f, 1.f);
             for (int x = -5; x <= 5; x++) {
-                GL11.glBegin(GL11.GL_LINE_LOOP);
-                GL11.glVertex3f(x, 0.f, -5.f);
-                GL11.glVertex3f(x, 0.f, 5.f);
-                GL11.glEnd();
+                GlStateManager.glBegin(GL11.GL_LINE_LOOP);
+                GlStateManager.glVertex3f(x, 0.f, -5.f);
+                GlStateManager.glVertex3f(x, 0.f, 5.f);
+                GlStateManager.glEnd();
             }
             for (int z = -5; z <= 5; z++) {
-                GL11.glBegin(GL11.GL_LINE_LOOP);
-                GL11.glVertex3f(-5.f, 0.f, z);
-                GL11.glVertex3f(5.f, 0.f, z);
-                GL11.glEnd();
+                GlStateManager.glBegin(GL11.GL_LINE_LOOP);
+                GlStateManager.glVertex3f(-5.f, 0.f, z);
+                GlStateManager.glVertex3f(5.f, 0.f, z);
+                GlStateManager.glEnd();
             }
-            GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
-            GL11.glEndList();
+            GlStateManager.color(1.f, 1.f, 1.f, 1.f);
+            GlStateManager.glEndList();
         }
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GlStateManager.enableLighting();
+        GlStateManager.enableTexture2D();
     }
 
     private void setViewport() {
         /*
          * load a clean projection matrix
          */
-        GL11.glMatrixMode(GL11.GL_PROJECTION);
-        GL11.glPushMatrix();
-        GL11.glLoadIdentity();
+        GlStateManager.matrixMode(GL11.GL_PROJECTION);
+        GlStateManager.pushMatrix();
+        GlStateManager.loadIdentity();
 
         /*
          * set up the base projection transformation matrix, as well as view target and position
@@ -295,15 +296,15 @@ public class ModelWidget extends GuiElement {
         /*
          * load a clean model-view matrix
          */
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        GL11.glPushMatrix();
-        GL11.glLoadIdentity();
+        GlStateManager.matrixMode(GL11.GL_MODELVIEW);
+        GlStateManager.pushMatrix();
+        GlStateManager.loadIdentity();
 
         /*
          * and finally, clear the depth buffer
          * (we want to ignore any world/etc, as we're rendering over-top of it all anyway)
          */
-        GL11.glClear(GL11.GL_DEPTH_BUFFER_BIT);
+        GlStateManager.clear(GL11.GL_DEPTH_BUFFER_BIT);
 
         /*
          * set the cropped viewport to render to
@@ -312,10 +313,10 @@ public class ModelWidget extends GuiElement {
     }
 
     private void resetViewport() {
-        GL11.glMatrixMode(GL11.GL_PROJECTION);
-        GL11.glPopMatrix();
-        GL11.glMatrixMode(GL11.GL_MODELVIEW);
-        GL11.glPopMatrix();
+        GlStateManager.matrixMode(GL11.GL_PROJECTION);
+        GlStateManager.popMatrix();
+        GlStateManager.matrixMode(GL11.GL_MODELVIEW);
+        GlStateManager.popMatrix();
         GuiContainerBase.popViewport();
     }
 
@@ -326,9 +327,9 @@ public class ModelWidget extends GuiElement {
         int posX = selectionX;
         int posY = selectionY;
 
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glClearColor(1.f, 1.f, 1.f, 1.f);
-        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+        GlStateManager.disableTexture2D();
+        GlStateManager.clearColor(1.f, 1.f, 1.f, 1.f);
+        GlStateManager.clear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
         model.renderForSelection();
 
         byte[] pixelColorsb = new byte[3];
@@ -343,13 +344,13 @@ public class ModelWidget extends GuiElement {
         int g = pixelColorsb[1] & 255;
         int b = pixelColorsb[2] & 255;
 
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GlStateManager.enableTexture2D();
         int color = (r << 14) | (g << 7) | b;
 
 //  AWLog.logDebug("picked color: "+color+" rgb: "+r+","+g+","+b);
 
-        GL11.glClearColor(.2f, .2f, .2f, 1.f);
-        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+        GlStateManager.clearColor(.2f, .2f, .2f, 1.f);
+        GlStateManager.clear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
         Primitive p = model.getPrimitive(color);
 
         this.selectedPrimitive = p;

@@ -20,6 +20,7 @@
  */
 package net.shadowmage.ancientwarfare.core.model;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import org.lwjgl.opengl.GL11;
 
@@ -48,17 +49,17 @@ public class PrimitiveQuad extends Primitive {
 
 //render the cube. only called a single time when building the display list for a piece
         if (rx != 0) {
-            GL11.glRotatef(rx, 1, 0, 0);
+            GlStateManager.rotate(rx, 1, 0, 0);
         }
         if (ry != 0) {
-            GL11.glRotatef(ry, 0, 1, 0);
+            GlStateManager.rotate(ry, 0, 1, 0);
         }
         if (rz != 0) {
-            GL11.glRotatef(rz, 0, 0, 1);
+            GlStateManager.rotate(rz, 0, 0, 1);
         }
 
 
-        GL11.glBegin(GL11.GL_QUADS);
+        GlStateManager.glBegin(GL11.GL_QUADS);
 
         //front side
         tx1 = (tx + l) * px;
@@ -66,17 +67,17 @@ public class PrimitiveQuad extends Primitive {
         tx2 = (tx + l + w) * px;
         ty2 = (th - (ty + l)) * py;
 
-        GL11.glNormal3f(0, 0, 1);
-        GL11.glTexCoord2f(tx1, ty1);
-        GL11.glVertex3f(x1, y1, 0.f);
-        GL11.glTexCoord2f(tx2, ty1);
-        GL11.glVertex3f(x2, y1, 0.f);
-        GL11.glTexCoord2f(tx2, ty2);
-        GL11.glVertex3f(x2, y2, 0.f);
-        GL11.glTexCoord2f(tx1, ty2);
-        GL11.glVertex3f(x1, y2, 0.f);
+        GlStateManager.glNormal3f(0, 0, 1);
+        GlStateManager.glTexCoord2f(tx1, ty1);
+        GlStateManager.glVertex3f(x1, y1, 0.f);
+        GlStateManager.glTexCoord2f(tx2, ty1);
+        GlStateManager.glVertex3f(x2, y1, 0.f);
+        GlStateManager.glTexCoord2f(tx2, ty2);
+        GlStateManager.glVertex3f(x2, y2, 0.f);
+        GlStateManager.glTexCoord2f(tx1, ty2);
+        GlStateManager.glVertex3f(x1, y2, 0.f);
 
-        GL11.glEnd();
+        GlStateManager.glEnd();
     }
 
     @Override

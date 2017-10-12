@@ -243,7 +243,7 @@ protected void doSelection()
   int posX = Mouse.getX();
   int posY = Mouse.getY();  
 
-  GL11.glDisable(GL11.GL_TEXTURE_2D);
+  GlStateManager.disableTexture2D();
   GL11.glClearColor(1.f, 1.f, 1.f, 1.f);
   GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
   GuiModelEditor.model.renderForSelection();   
@@ -261,7 +261,7 @@ protected void doSelection()
   int g = pixelColorsb[1];
   int b = pixelColorsb[2];
 
-  GL11.glEnable(GL11.GL_TEXTURE_2D);
+  GlStateManager.enableTexture2D();
   AWLog.logDebug("colors clicked on: "+r+","+g+","+b);
   int color = (r<<16) | (g<<8) | b;
   AWLog.logDebug("color out: "+color);
@@ -292,7 +292,7 @@ private void setupModelView()
    * load a clean projection matrix
    */
   GL11.glMatrixMode(GL11.GL_PROJECTION);
-  GL11.glPushMatrix(); 
+  GlStateManager.pushMatrix();
   GL11.glLoadIdentity();
   
   /*
@@ -307,7 +307,7 @@ private void setupModelView()
    * load a clean model-view matrix
    */
   GL11.glMatrixMode(GL11.GL_MODELVIEW);
-  GL11.glPushMatrix();  
+  GlStateManager.pushMatrix();
   GL11.glLoadIdentity();
   
   /*
@@ -320,9 +320,9 @@ private void setupModelView()
 private void resetModelView()
   {
   GL11.glMatrixMode(GL11.GL_PROJECTION);
-  GL11.glPopMatrix();
+  GlStateManager.popMatrix();
   GL11.glMatrixMode(GL11.GL_MODELVIEW);
-  GL11.glPopMatrix();
+  GlStateManager.popMatrix();
   }
 
 private void enableModelLighting()
@@ -340,8 +340,8 @@ int gridDisplayList = -1;
 
 private void renderGrid()
   {
-  GL11.glDisable(GL11.GL_TEXTURE_2D);
-  GL11.glDisable(GL11.GL_LIGHTING);
+  GlStateManager.disableTexture2D();
+  GlStateManager.disableLighting();
   GL11.glLineWidth(2.f);
   if(gridDisplayList>=0)
     {    
@@ -351,26 +351,26 @@ private void renderGrid()
     {
     gridDisplayList = GL11.glGenLists(1);
     GL11.glNewList(gridDisplayList, GL11.GL_COMPILE_AND_EXECUTE);
-    GL11.glColor4f(0.f, 0.f, 1.f, 1.f);
+    GlStateManager.color(0.f, 0.f, 1.f, 1.f);
     for(int x = -5; x<=5; x++)
       {
       GL11.glBegin(GL11.GL_LINE_LOOP);
       GL11.glVertex3f(x, 0.f, -5.f);
       GL11.glVertex3f(x, 0.f, 5.f);
-      GL11.glEnd();    
+      GlStateManager.glEnd();
       }  
     for(int z = -5; z<=5; z++)
       {
       GL11.glBegin(GL11.GL_LINE_LOOP);
       GL11.glVertex3f(-5.f, 0.f, z);
       GL11.glVertex3f(5.f, 0.f, z);
-      GL11.glEnd();    
+      GlStateManager.glEnd();
       }
-    GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
+    GlStateManager.color(1.f, 1.f, 1.f, 1.f);
     GL11.glEndList();
     }
-  GL11.glEnable(GL11.GL_LIGHTING);
-  GL11.glEnable(GL11.GL_TEXTURE_2D);
+  GlStateManager.enableLighting();
+  GlStateManager.enableTexture2D();
   }
 
 @Override

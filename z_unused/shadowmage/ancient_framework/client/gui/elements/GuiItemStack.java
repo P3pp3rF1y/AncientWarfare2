@@ -83,9 +83,9 @@ public ItemStack getStack()
 @Override
 public void drawElement(int mouseX, int mouseY)
   {
-  GL11.glPushMatrix();
-  GL11.glDisable(GL11.GL_DEPTH_TEST);
-  GL11.glDisable(GL11.GL_LIGHTING);
+  GlStateManager.pushMatrix();
+  GlStateManager.disableDepth();
+  GlStateManager.disableLighting();
 //  GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
   if(this.renderSlotBackground)
     {
@@ -96,17 +96,17 @@ public void drawElement(int mouseX, int mouseY)
   if(fakeStack!=null)
     {    
     RenderHelper.enableGUIStandardItemLighting();
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-    GL11.glEnable(GL11.GL_LIGHTING);
-    GL11.glEnable(GL11.GL_DEPTH_TEST);
+    GlStateManager.enableLighting();
+    GlStateManager.enableDepth();
     short short1 = 240;
     short short2 = 240;
     OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)short1 / 1.0F, (float)short2 / 1.0F);
     itemRenderer.renderItemAndEffectIntoGUI(mc.fontRenderer, mc.renderEngine, fakeStack, guiLeft+renderPosX+1, guiTop+renderPosY+1);
     itemRenderer.renderItemOverlayIntoGUI(mc.fontRenderer, mc.renderEngine, fakeStack,  guiLeft+renderPosX+1, guiTop+renderPosY+1);
-    GL11.glDisable(GL11.GL_DEPTH_TEST);
-    GL11.glDisable(GL11.GL_LIGHTING);
+    GlStateManager.disableDepth();
+    GlStateManager.disableLighting();
     GL11.glDisable(GL12.GL_RESCALE_NORMAL);
     } 
   if(this.renderSlotBackground && isMouseOver)
@@ -125,9 +125,9 @@ public void drawElement(int mouseX, int mouseY)
       this.drawString(fr, name, guiLeft+renderPosX+20, guiTop+renderPosY+4, 0xffffffff);
       }    
     }
-  GL11.glDisable(GL11.GL_LIGHTING);
-  GL11.glEnable(GL11.GL_DEPTH_TEST); 
-  GL11.glPopMatrix();
+  GlStateManager.disableLighting();
+  GlStateManager.enableDepth();
+  GlStateManager.popMatrix();
   }
 
 @Override

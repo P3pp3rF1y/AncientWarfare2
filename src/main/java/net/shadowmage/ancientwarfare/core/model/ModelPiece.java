@@ -20,10 +20,15 @@
  */
 package net.shadowmage.ancientwarfare.core.model;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import org.lwjgl.opengl.GL11;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /*
  * A single piece of a model.  A piece is a discrete static component of the model.  Pieces may be rotated and moved
@@ -191,97 +196,98 @@ public class ModelPiece {
         if (!visible) {
             return;
         }
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
         if (x != 0 || y != 0 || z != 0) {
-            GL11.glTranslatef(x, y, z);
+            GlStateManager.translate(x, y, z);
         }
         if (rx != 0) {
-            GL11.glRotatef(rx, 1, 0, 0);
+            GlStateManager.rotate(rx, 1, 0, 0);
         }
         if (ry != 0) {
-            GL11.glRotatef(ry, 0, 1, 0);
+            GlStateManager.rotate(ry, 0, 1, 0);
         }
         if (rz != 0) {
-            GL11.glRotatef(rz, 0, 0, 1);
+            GlStateManager.rotate(rz, 0, 0, 1);
         }
         renderPrimitives(textureWidth, textureHeight);
         for (ModelPiece child : this.children) {
             child.render(textureWidth, textureHeight);
         }
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
+
     }
 
     public void renderForEditor(ModelPiece piece, Primitive prim, List<ModelPiece> highlightedPieces, float tw, float th) {
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
         if (x != 0 || y != 0 || z != 0) {
-            GL11.glTranslatef(x, y, z);
+            GlStateManager.translate(x, y, z);
         }
         if (rx != 0) {
-            GL11.glRotatef(rx, 1, 0, 0);
+            GlStateManager.rotate(rx, 1, 0, 0);
         }
         if (ry != 0) {
-            GL11.glRotatef(ry, 0, 1, 0);
+            GlStateManager.rotate(ry, 0, 1, 0);
         }
         if (rz != 0) {
-            GL11.glRotatef(rz, 0, 0, 1);
+            GlStateManager.rotate(rz, 0, 0, 1);
         }
 
         boolean selected = piece == this;
         boolean colored = selected || highlightedPieces.contains(this);
         if (selected) {
-            GL11.glDisable(GL11.GL_LIGHTING);
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
+            GlStateManager.disableLighting();
+            GlStateManager.disableTexture2D();
             GL11.glEnable(GL11.GL_POINT_SMOOTH);
-            GL11.glColor4f(1.0f, 0.f, 0.f, 1.f);
+            GlStateManager.color(1.0f, 0.f, 0.f, 1.f);
             GL11.glPointSize(5.f);
-            GL11.glBegin(GL11.GL_POINTS);
-            GL11.glVertex3f(0, 0, 0);
-            GL11.glEnd();
-            GL11.glEnable(GL11.GL_LIGHTING);
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
+            GlStateManager.glBegin(GL11.GL_POINTS);
+            GlStateManager.glVertex3f(0, 0, 0);
+            GlStateManager.glEnd();
+            GlStateManager.enableLighting();
+            GlStateManager.enableTexture2D();
         }
         if (colored) {
-            GL11.glColor4f(0.75f, 0.5f, 0.5f, 1.f);
+            GlStateManager.color(0.75f, 0.5f, 0.5f, 1.f);
         } else {
-            GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
+            GlStateManager.color(1.f, 1.f, 1.f, 1.f);
         }
         for (Primitive primitive : this.primitives) {
             if (primitive == prim) {
-                GL11.glDisable(GL11.GL_LIGHTING);
-                GL11.glDisable(GL11.GL_TEXTURE_2D);
-                GL11.glColor4f(1.0f, 0.f, 0.f, 1.f);
-                GL11.glBegin(GL11.GL_POINTS);
-                GL11.glVertex3f(prim.x, prim.y, prim.z);
-                GL11.glEnd();
-                GL11.glEnable(GL11.GL_LIGHTING);
-                GL11.glEnable(GL11.GL_TEXTURE_2D);
-                GL11.glColor4f(1.0f, 0.5f, 0.5f, 1.f);
+                GlStateManager.disableLighting();
+                GlStateManager.disableTexture2D();
+                GlStateManager.color(1.0f, 0.f, 0.f, 1.f);
+                GlStateManager.glBegin(GL11.GL_POINTS);
+                GlStateManager.glVertex3f(prim.x, prim.y, prim.z);
+                GlStateManager.glEnd();
+                GlStateManager.enableLighting();
+                GlStateManager.enableTexture2D();
+                GlStateManager.color(1.0f, 0.5f, 0.5f, 1.f);
             } else if (colored) {
-                GL11.glColor4f(0.75f, 0.5f, 0.5f, 1.f);
+                GlStateManager.color(0.75f, 0.5f, 0.5f, 1.f);
             } else {
-                GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
+                GlStateManager.color(1.f, 1.f, 1.f, 1.f);
             }
             primitive.render(tw, th);
         }
         for (ModelPiece child : this.children) {
             child.renderForEditor(piece, prim, highlightedPieces, tw, th);
         }
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     public void renderForSelection(float tw, float th, ModelBaseAW model) {
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
         if (x != 0 || y != 0 || z != 0) {
-            GL11.glTranslatef(x, y, z);
+            GlStateManager.translate(x, y, z);
         }
         if (rx != 0) {
-            GL11.glRotatef(rx, 1, 0, 0);
+            GlStateManager.rotate(rx, 1, 0, 0);
         }
         if (ry != 0) {
-            GL11.glRotatef(ry, 0, 1, 0);
+            GlStateManager.rotate(ry, 0, 1, 0);
         }
         if (rz != 0) {
-            GL11.glRotatef(rz, 0, 0, 1);
+            GlStateManager.rotate(rz, 0, 0, 1);
         }
 
         for (Primitive primitive : this.primitives) {
@@ -294,16 +300,16 @@ public class ModelPiece {
 //    AWLog.logDebug("rendering for selection: "+model.iterationNum+" :: "+r+","+g+","+b);    
             GL11.glColor3b(r, g, b);
 
-            GL11.glPushMatrix();
+            GlStateManager.pushMatrix();
             primitive.render(tw, th);
-            GL11.glPopMatrix();
+            GlStateManager.popMatrix();
             model.iterationNum++;
         }
 
         for (ModelPiece child : this.children) {
             child.renderForSelection(tw, th, model);
         }
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     public void getPieces(List<ModelPiece> input) {
@@ -352,23 +358,23 @@ public class ModelPiece {
         if (!compiled) {
             compiled = true;
             if (displayList < 0) {
-                displayList = GL11.glGenLists(1);
+                displayList = GlStateManager.glGenLists(1);
             }
-            GL11.glNewList(displayList, GL11.GL_COMPILE);
+            GlStateManager.glNewList(displayList, GL11.GL_COMPILE);
             for (Primitive p : primitives) {
                 p.render(tw, th);
             }
-            GL11.glEndList();
-            GL11.glCallList(displayList);
+            GlStateManager.glEndList();
+            GlStateManager.callList(displayList);
         } else {
-            GL11.glCallList(displayList);
+            GlStateManager.callList(displayList);
         }
     }
 
     @Override
     protected void finalize() throws Throwable {
         if (displayList >= 0) {
-            GL11.glDeleteLists(displayList, 1);
+            GlStateManager.glDeleteLists(displayList, 1);
         }
         super.finalize();
     }

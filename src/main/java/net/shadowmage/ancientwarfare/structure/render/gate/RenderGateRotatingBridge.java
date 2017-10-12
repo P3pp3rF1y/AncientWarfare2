@@ -20,6 +20,7 @@
  */
 package net.shadowmage.ancientwarfare.structure.render.gate;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
@@ -28,7 +29,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.model.ModelGateBridge;
-import org.lwjgl.opengl.GL11;
 
 public final class RenderGateRotatingBridge extends Render {
 
@@ -40,7 +40,7 @@ public final class RenderGateRotatingBridge extends Render {
 
     @Override
     public void doRender(Entity entity, double d0, double d1, double d2, float f, float f1) {
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
         EntityGate g = (EntityGate) entity;
         BlockPos min = g.pos1;
         BlockPos max = g.pos2;
@@ -54,10 +54,10 @@ public final class RenderGateRotatingBridge extends Render {
             rx *= -1;
             rz *= -1;
         }
-//  GL11.glRotatef(90, 0, 1, 0);
-        GL11.glTranslatef(0, -0.5f, 0);
-        GL11.glRotatef(rx, 1, 0, 0);
-        GL11.glRotatef(rz, 0, 0, 1);
+//  GlStateManager.rotate(90, 0, 1, 0);
+        GlStateManager.translate(0, -0.5f, 0);
+        GlStateManager.rotate(rx, 1, 0, 0);
+        GlStateManager.rotate(rz, 0, 0, 1);
         float width = wideOnXAxis ? max.getX() - min.getX() + 1 : max.getZ() - min.getZ() + 1;
         float height = max.getY() - min.getY() + 1;
         float xOffset = wideOnXAxis ? width * 0.5f - 0.5f : 0f;
@@ -68,11 +68,11 @@ public final class RenderGateRotatingBridge extends Render {
         float tz = wideOnXAxis ? 0 : 1;
         float axisRotation = wideOnXAxis ? 180 : 90;
         if (invert) {
-            GL11.glRotatef(180, 0, 1, 0);
+            GlStateManager.rotate(180, 0, 1, 0);
         }
-        GL11.glTranslatef(-xOffset, 0, zOffset);
+        GlStateManager.translate(-xOffset, 0, zOffset);
         for (int y = 0; y < height; y++) {
-            GL11.glPushMatrix();
+            GlStateManager.pushMatrix();
             for (int x = 0; x < width; x++) {
                 model.setModelRotation(axisRotation);
                 if (y == 0) {
@@ -90,17 +90,17 @@ public final class RenderGateRotatingBridge extends Render {
                     model.renderSide2();
                 }
                 if (y > 0) {
-                    GL11.glPushMatrix();
+                    GlStateManager.pushMatrix();
                     model.setModelRotation(axisRotation);
                     model.renderSolidWall();
-                    GL11.glPopMatrix();
+                    GlStateManager.popMatrix();
                 }
-                GL11.glTranslatef(tx, 0, tz);
+                GlStateManager.translate(tx, 0, tz);
             }
-            GL11.glPopMatrix();
-            GL11.glTranslatef(0, ty, 0);
+            GlStateManager.popMatrix();
+            GlStateManager.translate(0, ty, 0);
         }
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     @Override

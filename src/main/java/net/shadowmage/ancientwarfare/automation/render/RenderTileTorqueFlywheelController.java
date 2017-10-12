@@ -43,8 +43,8 @@ public class RenderTileTorqueFlywheelController extends TileEntitySpecialRendere
 
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float delta) {
-        GL11.glPushMatrix();
-        GL11.glTranslated(x + 0.5d, y, z + 0.5d);
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(x + 0.5d, y, z + 0.5d);
 
         TileFlywheelControl flywheel = (TileFlywheelControl) te;
 
@@ -62,19 +62,19 @@ public class RenderTileTorqueFlywheelController extends TileEntitySpecialRendere
 
         bindTexture(texture[te.getBlockMetadata() % texture.length]);
         renderModel(outputRotation, inputRotation, flywheelRotation, d.ordinal());
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     protected void renderModel(float outR, float inR, float wheelR, int face) {
         float[] rot = gearboxRotationMatrix[face];
         if (rot[0] != 0) {
-            GL11.glRotatef(rot[0], 1, 0, 0);
+            GlStateManager.rotate(rot[0], 1, 0, 0);
         }
         if (rot[1] != 0) {
-            GL11.glRotatef(rot[1], 0, 1, 0);
+            GlStateManager.rotate(rot[1], 0, 1, 0);
         }
         if (rot[2] != 0) {
-            GL11.glRotatef(rot[2], 0, 0, 1);
+            GlStateManager.rotate(rot[2], 0, 0, 1);
         }
         controlInput.setRotation(0, 0, -inR);
         controlOutput.setRotation(0, 0, -outR);
@@ -94,11 +94,11 @@ public class RenderTileTorqueFlywheelController extends TileEntitySpecialRendere
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        GL11.glPushMatrix();
-        GL11.glTranslatef(0.5f, 0, 0.5f);
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0.5f, 0, 0.5f);
         bindTexture(texture[item.getItemDamage() % texture.length]);
         renderModel(0, 0, 0, 2);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
 }

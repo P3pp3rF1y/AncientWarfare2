@@ -47,7 +47,7 @@
 //        }
 //        Item item = stack.getItem();
 //
-//        GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
+//        GlStateManager.color(1.f, 1.f, 1.f, 1.f);
 //        if (item instanceof ItemOrders) {
 //            positionList.addAll(((ItemOrders) item).getPositionsForRender(stack));
 //        }
@@ -79,17 +79,17 @@
 //        double ox = RenderTools.getRenderOffsetX(player, partialTick);
 //        double oy = RenderTools.getRenderOffsetY(player, partialTick);
 //        double oz = RenderTools.getRenderOffsetZ(player, partialTick);
-//        GL11.glEnable(GL11.GL_BLEND);
-//        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-//        GL11.glColor4f(1.f, 1.f, 1.f, 0.4F);
-//        GL11.glDisable(GL11.GL_TEXTURE_2D);
-//        GL11.glDisable(GL11.GL_LIGHTING);
-//        GL11.glBegin(GL11.GL_LINE_LOOP);
+//        GlStateManager.enableBlend();
+//        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+//        GlStateManager.color(1.f, 1.f, 1.f, 0.4F);
+//        GlStateManager.disableTexture2D();
+//        GlStateManager.disableLighting();
+//        GlStateManager.glBegin(GL11.GL_LINE_LOOP);
 //        GL11.glVertex3d(x1 - ox, y1 - oy, z1 - oz);
 //        GL11.glVertex3d(x2 - ox, y2 - oy, z2 - oz);
-//        GL11.glEnd();
-//        GL11.glEnable(GL11.GL_TEXTURE_2D);
-//        GL11.glDisable(GL11.GL_BLEND);
+//        GlStateManager.glEnd();
+//        GlStateManager.enableTexture2D();
+//        GlStateManager.disableBlend();
 //    }
 //
 //    private void renderTextAt(EntityPlayer player, double x, double y, double z, String text, float partialTick) {
@@ -101,15 +101,15 @@
 //        z -= oz;
 //        float f = 1.6F;
 //        float f1 = 0.016666668F * f;
-//        GL11.glPushMatrix();
-//        GL11.glTranslatef((float) x, (float) y, (float) z);
-//        GL11.glRotatef(-player.rotationYaw, 0.0F, 1.0F, 0.0F);
-//        GL11.glRotatef(player.rotationPitch, 1.0F, 0.0F, 0.0F);
-//        GL11.glScalef(-f1, -f1, f1);
-//        GL11.glDisable(GL11.GL_LIGHTING);
-//        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+//        GlStateManager.pushMatrix();
+//        GlStateManager.translate((float) x, (float) y, (float) z);
+//        GlStateManager.rotate(-player.rotationYaw, 0.0F, 1.0F, 0.0F);
+//        GlStateManager.rotate(player.rotationPitch, 1.0F, 0.0F, 0.0F);
+//        GlStateManager.scale(-f1, -f1, f1);
+//        GlStateManager.disableLighting();
+//        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 //        Minecraft.getMinecraft().fontRenderer.drawString(text, 0, 0, 0xffffffff);
-//        GL11.glPopMatrix();
+//        GlStateManager.popMatrix();
 //    }
 //
 //}

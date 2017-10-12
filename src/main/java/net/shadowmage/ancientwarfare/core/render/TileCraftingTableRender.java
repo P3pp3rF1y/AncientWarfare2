@@ -1,13 +1,12 @@
 package net.shadowmage.ancientwarfare.core.render;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.model.crafting_table.ModelCraftingBase;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
 
 //TODO json model for both block and item form
 public class TileCraftingTableRender extends TileEntitySpecialRenderer {
@@ -22,27 +21,29 @@ public class TileCraftingTableRender extends TileEntitySpecialRenderer {
 
 //    @Override
 //    public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-//        GL11.glPushMatrix();
-//        GL11.glScalef(-1, -1, 1);
-//        GL11.glTranslatef(-0.5f, 0.0f, 0.5f);
-//        GL11.glRotatef(270, 0, 1, 0);
+//        GlStateManager.pushMatrix();
+//        GlStateManager.scale(-1, -1, 1);
+//        GlStateManager.translate(-0.5f, 0.0f, 0.5f);
+//        GlStateManager.rotate(270, 0, 1, 0);
 //        bindTexture(texture);
 //        model.renderModel();
-//        GL11.glPopMatrix();
+//        GlStateManager.popMatrix();
 //    }
 
     @Override
     public void render(TileEntity te, double x, double y, double z, float partialTicks, int destroyStage, float alpha) {
         float rotation = te instanceof IRotatableTile ? getRotation(((IRotatableTile) te).getPrimaryFacing()) : 0;
-        GL11.glPushMatrix();
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glTranslated(x + 0.5d, y, z + 0.5d);
-        GL11.glRotatef(rotation, 0, 1, 0);
-        GL11.glScalef(-1, -1, 1);
+        GlStateManager.pushMatrix();
+
+        GlStateManager.enableRescaleNormal();
+        GlStateManager.translate(x + 0.5d, y, z + 0.5d);
+        GlStateManager.rotate(rotation, 0, 1, 0);
+        GlStateManager.scale(-1, -1, 1);
         bindTexture(texture);
         model.renderModel(te);
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        GL11.glPopMatrix();
+
+        GlStateManager.disableRescaleNormal();
+        GlStateManager.popMatrix();
     }
 
     private float getRotation(EnumFacing direction) {

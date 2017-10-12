@@ -190,7 +190,7 @@ public void drawElement(int mouseX, int mouseY)
   
   
   bindTexture();
-  GL11.glBegin(GL11.GL_QUADS);
+  GlStateManager.glBegin(GL11.GL_QUADS);
   
   GL11.glTexCoord2f(u1, v1);
   GL11.glVertex3f(x1, y1, 0);
@@ -201,20 +201,20 @@ public void drawElement(int mouseX, int mouseY)
   GL11.glTexCoord2f(u4, v4);
   GL11.glVertex3f(x4, y4, 0);
   
-  GL11.glEnd();
+  GlStateManager.glEnd();
   resetBoundTexture();
   
   
-  GL11.glDisable(GL11.GL_TEXTURE_2D);
+  GlStateManager.disableTexture2D();
   
-  GL11.glColor4f(1.f, 0.f, 0.f, 1.f);
+  GlStateManager.color(1.f, 0.f, 0.f, 1.f);
   GL11.glPointSize(5);
   GL11.glBegin(GL11.GL_POINTS);
   GL11.glVertex3f(x, y, 0.f);
-  GL11.glEnd();
-  GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
+  GlStateManager.glEnd();
+  GlStateManager.color(1.f, 1.f, 1.f, 1.f);
   
-  GL11.glEnable(GL11.GL_TEXTURE_2D);
+  GlStateManager.enableTexture2D();
   }
 
 @Override

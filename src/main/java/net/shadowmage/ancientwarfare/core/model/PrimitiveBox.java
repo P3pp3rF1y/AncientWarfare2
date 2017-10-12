@@ -20,6 +20,7 @@
  */
 package net.shadowmage.ancientwarfare.core.model;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import org.lwjgl.opengl.GL11;
 
@@ -115,16 +116,16 @@ public class PrimitiveBox extends Primitive {
 
 //render the cube. only called a single time when building the display list for a piece
         if (rx != 0) {
-            GL11.glRotatef(rx, 1, 0, 0);
+            GlStateManager.rotate(rx, 1, 0, 0);
         }
         if (ry != 0) {
-            GL11.glRotatef(ry, 0, 1, 0);
+            GlStateManager.rotate(ry, 0, 1, 0);
         }
         if (rz != 0) {
-            GL11.glRotatef(rz, 0, 0, 1);
+            GlStateManager.rotate(rz, 0, 0, 1);
         }
 
-        GL11.glBegin(GL11.GL_QUADS);
+        GlStateManager.glBegin(GL11.GL_QUADS);
 
         //front side
         tx1 = (tx + l) * px;
@@ -133,15 +134,15 @@ public class PrimitiveBox extends Primitive {
         ty2 = (th - (ty + l)) * py;
         ty1 = 1.f - ty1;
         ty2 = 1.f - ty2;
-        GL11.glNormal3f(0, 0, 1);
-        GL11.glTexCoord2f(tx1, ty1);
-        GL11.glVertex3f(x1, y1, z2);
-        GL11.glTexCoord2f(tx2, ty1);
-        GL11.glVertex3f(x2, y1, z2);
-        GL11.glTexCoord2f(tx2, ty2);
-        GL11.glVertex3f(x2, y2, z2);
-        GL11.glTexCoord2f(tx1, ty2);
-        GL11.glVertex3f(x1, y2, z2);
+        GlStateManager.glNormal3f(0, 0, 1);
+        GlStateManager.glTexCoord2f(tx1, ty1);
+        GlStateManager.glVertex3f(x1, y1, z2);
+        GlStateManager.glTexCoord2f(tx2, ty1);
+        GlStateManager.glVertex3f(x2, y1, z2);
+        GlStateManager.glTexCoord2f(tx2, ty2);
+        GlStateManager.glVertex3f(x2, y2, z2);
+        GlStateManager.glTexCoord2f(tx1, ty2);
+        GlStateManager.glVertex3f(x1, y2, z2);
 
         ////rear side
         tx1 = (tx + l + l + w) * px;
@@ -150,15 +151,15 @@ public class PrimitiveBox extends Primitive {
         ty2 = (th - (ty + l)) * py;
         ty1 = 1.f - ty1;
         ty2 = 1.f - ty2;
-        GL11.glNormal3f(0, 0, -1);
-        GL11.glTexCoord2f(tx1, ty1);
-        GL11.glVertex3f(x2, y1, z1);
-        GL11.glTexCoord2f(tx2, ty1);
-        GL11.glVertex3f(x1, y1, z1);
-        GL11.glTexCoord2f(tx2, ty2);
-        GL11.glVertex3f(x1, y2, z1);
-        GL11.glTexCoord2f(tx1, ty2);
-        GL11.glVertex3f(x2, y2, z1);
+        GlStateManager.glNormal3f(0, 0, -1);
+        GlStateManager.glTexCoord2f(tx1, ty1);
+        GlStateManager.glVertex3f(x2, y1, z1);
+        GlStateManager.glTexCoord2f(tx2, ty1);
+        GlStateManager.glVertex3f(x1, y1, z1);
+        GlStateManager.glTexCoord2f(tx2, ty2);
+        GlStateManager.glVertex3f(x1, y2, z1);
+        GlStateManager.glTexCoord2f(tx1, ty2);
+        GlStateManager.glVertex3f(x2, y2, z1);
 
         //right side
         tx1 = (tx + l + w) * px;
@@ -167,15 +168,15 @@ public class PrimitiveBox extends Primitive {
         ty2 = (th - (ty + l)) * py;
         ty1 = 1.f - ty1;
         ty2 = 1.f - ty2;
-        GL11.glNormal3f(-1, 0, 0);
-        GL11.glTexCoord2f(tx1, ty1);
-        GL11.glVertex3f(x1, y1, z1);
-        GL11.glTexCoord2f(tx2, ty1);
-        GL11.glVertex3f(x1, y1, z2);
-        GL11.glTexCoord2f(tx2, ty2);
-        GL11.glVertex3f(x1, y2, z2);
-        GL11.glTexCoord2f(tx1, ty2);
-        GL11.glVertex3f(x1, y2, z1);
+        GlStateManager.glNormal3f(-1, 0, 0);
+        GlStateManager.glTexCoord2f(tx1, ty1);
+        GlStateManager.glVertex3f(x1, y1, z1);
+        GlStateManager.glTexCoord2f(tx2, ty1);
+        GlStateManager.glVertex3f(x1, y1, z2);
+        GlStateManager.glTexCoord2f(tx2, ty2);
+        GlStateManager.glVertex3f(x1, y2, z2);
+        GlStateManager.glTexCoord2f(tx1, ty2);
+        GlStateManager.glVertex3f(x1, y2, z1);
 
 //  //left side
         tx1 = (tx) * px;
@@ -184,15 +185,15 @@ public class PrimitiveBox extends Primitive {
         ty2 = (th - (ty + l)) * py;
         ty1 = 1.f - ty1;
         ty2 = 1.f - ty2;
-        GL11.glNormal3f(1, 0, 0);
-        GL11.glTexCoord2f(tx1, ty1);
-        GL11.glVertex3f(x2, y1, z2);
-        GL11.glTexCoord2f(tx2, ty1);
-        GL11.glVertex3f(x2, y1, z1);
-        GL11.glTexCoord2f(tx2, ty2);
-        GL11.glVertex3f(x2, y2, z1);
-        GL11.glTexCoord2f(tx1, ty2);
-        GL11.glVertex3f(x2, y2, z2);
+        GlStateManager.glNormal3f(1, 0, 0);
+        GlStateManager.glTexCoord2f(tx1, ty1);
+        GlStateManager.glVertex3f(x2, y1, z2);
+        GlStateManager.glTexCoord2f(tx2, ty1);
+        GlStateManager.glVertex3f(x2, y1, z1);
+        GlStateManager.glTexCoord2f(tx2, ty2);
+        GlStateManager.glVertex3f(x2, y2, z1);
+        GlStateManager.glTexCoord2f(tx1, ty2);
+        GlStateManager.glVertex3f(x2, y2, z2);
 
 //  //top side
         tx1 = (tx + l) * px;
@@ -201,15 +202,15 @@ public class PrimitiveBox extends Primitive {
         ty2 = (th - (ty)) * py;
         ty1 = 1.f - ty1;
         ty2 = 1.f - ty2;
-        GL11.glNormal3f(0, 1, 0);
-        GL11.glTexCoord2f(tx1, ty1);
-        GL11.glVertex3f(x2, y2, z1);
-        GL11.glTexCoord2f(tx2, ty1);
-        GL11.glVertex3f(x1, y2, z1);
-        GL11.glTexCoord2f(tx2, ty2);
-        GL11.glVertex3f(x1, y2, z2);
-        GL11.glTexCoord2f(tx1, ty2);
-        GL11.glVertex3f(x2, y2, z2);
+        GlStateManager.glNormal3f(0, 1, 0);
+        GlStateManager.glTexCoord2f(tx1, ty1);
+        GlStateManager.glVertex3f(x2, y2, z1);
+        GlStateManager.glTexCoord2f(tx2, ty1);
+        GlStateManager.glVertex3f(x1, y2, z1);
+        GlStateManager.glTexCoord2f(tx2, ty2);
+        GlStateManager.glVertex3f(x1, y2, z2);
+        GlStateManager.glTexCoord2f(tx1, ty2);
+        GlStateManager.glVertex3f(x2, y2, z2);
 
 //  //bottom side
         tx1 = (tx + l + w) * px;
@@ -218,17 +219,17 @@ public class PrimitiveBox extends Primitive {
         ty2 = (th - (ty)) * py;
         ty1 = 1.f - ty1;
         ty2 = 1.f - ty2;
-        GL11.glNormal3f(0, -1, 0);
-        GL11.glTexCoord2f(tx1, ty1);
-        GL11.glVertex3f(x2, y1, z2);
-        GL11.glTexCoord2f(tx2, ty1);
-        GL11.glVertex3f(x1, y1, z2);
-        GL11.glTexCoord2f(tx2, ty2);
-        GL11.glVertex3f(x1, y1, z1);
-        GL11.glTexCoord2f(tx1, ty2);
-        GL11.glVertex3f(x2, y1, z1);
+        GlStateManager.glNormal3f(0, -1, 0);
+        GlStateManager.glTexCoord2f(tx1, ty1);
+        GlStateManager.glVertex3f(x2, y1, z2);
+        GlStateManager.glTexCoord2f(tx2, ty1);
+        GlStateManager.glVertex3f(x1, y1, z2);
+        GlStateManager.glTexCoord2f(tx2, ty2);
+        GlStateManager.glVertex3f(x1, y1, z1);
+        GlStateManager.glTexCoord2f(tx1, ty2);
+        GlStateManager.glVertex3f(x2, y1, z1);
 
-        GL11.glEnd();
+        GlStateManager.glEnd();
     }
 
     @Override

@@ -20,6 +20,7 @@
  */
 package net.shadowmage.ancientwarfare.structure.render;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
@@ -29,7 +30,6 @@ import net.shadowmage.ancientwarfare.structure.render.gate.RenderGateBasic;
 import net.shadowmage.ancientwarfare.structure.render.gate.RenderGateDouble;
 import net.shadowmage.ancientwarfare.structure.render.gate.RenderGateRotatingBridge;
 import net.shadowmage.ancientwarfare.structure.render.gate.RenderGateSingle;
-import org.lwjgl.opengl.GL11;
 
 import java.util.HashMap;
 
@@ -54,7 +54,7 @@ public final class RenderGateHelper extends Render<EntityGate> {
 
     @Override
     public void doRender(EntityGate gate, double d0, double d1, double d2, float f, float f1) {
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
         if(renderManager.isDebugBoundingBox() && !gate.isInvisible()){
             double x = d0 - gate.lastTickPosX, y = d1 - gate.lastTickPosY, z = d2 - gate.lastTickPosZ;
             // TODO dual bounding box implementaiton or regular block bounding boxes?
@@ -65,21 +65,21 @@ public final class RenderGateHelper extends Render<EntityGate> {
             }else
                 renderOffsetAABB(gate.getEntityBoundingBox(), x, y, z);
 
-            GL11.glPopMatrix();
+            GlStateManager.popMatrix();
             return;
         }
 
         if (gate.hurtAnimationTicks > 0) {
             float percent = ((float) gate.hurtAnimationTicks / 20.f);
-            GL11.glColor4f(1.f, 1.f - percent, 1.f - percent, 1.f);
+            GlStateManager.color(1.f, 1.f - percent, 1.f - percent, 1.f);
         }
         this.bindEntityTexture(gate);
-        GL11.glTranslated(d0, d1, d2);
-        GL11.glRotatef(f, 0, 1, 0);
-        GL11.glScalef(-1, -1, 1);
+        GlStateManager.translate(d0, d1, d2);
+        GlStateManager.rotate(f, 0, 1, 0);
+        GlStateManager.scale(-1, -1, 1);
         this.gateRenders.get(gate.getGateType().getGlobalID()).doRender(gate, d0, d1, d2, f, f1);
-        GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
-        GL11.glPopMatrix();
+        GlStateManager.color(1.f, 1.f, 1.f, 1.f);
+        GlStateManager.popMatrix();
     }
 
     @Override

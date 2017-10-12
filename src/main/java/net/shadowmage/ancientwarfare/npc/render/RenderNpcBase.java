@@ -42,9 +42,9 @@ public class RenderNpcBase extends RenderBiped<NpcBase> {
         if (isSleeping) {
             float bedDirection = npc.getBedOrientationInDegrees();
             if (bedDirection != -1) {
-                GL11.glRotatef(bedDirection, 0.0F, 1.0F, 0.0F);
-                GL11.glRotatef(this.getDeathMaxRotation(npc), 0.0F, 0.0F, 1.0F);
-                GL11.glRotatef(270.0F, 0.0F, 1.0F, 0.0F);
+                GlStateManager.rotate(bedDirection, 0.0F, 1.0F, 0.0F);
+                GlStateManager.rotate(this.getDeathMaxRotation(npc), 0.0F, 0.0F, 1.0F);
+                GlStateManager.rotate(270.0F, 0.0F, 1.0F, 0.0F);
                 return;
             }
             isSleeping = false;
@@ -150,13 +150,13 @@ public class RenderNpcBase extends RenderBiped<NpcBase> {
         if (d3 <= (double) (renderDistance * renderDistance) && entity.canEntityBeSeen(renderManager.renderViewEntity)) {
             float f = 1.6F;
             float f1 = 0.016666668F * f;
-            GL11.glPushMatrix();
-            GL11.glTranslatef((float) x + 0.0F, (float) y + entity.height + 0.5F, (float) z);
-            GL11.glRotatef(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
-            GL11.glRotatef(this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
-            GL11.glScalef(-f1, -f1, f1);
-            GL11.glDisable(GL11.GL_LIGHTING);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            GlStateManager.pushMatrix();
+            GlStateManager.translate((float) x + 0.0F, (float) y + entity.height + 0.5F, (float) z);
+            GlStateManager.rotate(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate(this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
+            GlStateManager.scale(-f1, -f1, f1);
+            GlStateManager.disableLighting();
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             int tasks = entity.getAITasks();
             int mask;
             String icon;
@@ -175,8 +175,8 @@ public class RenderNpcBase extends RenderBiped<NpcBase> {
                 icon = getIconFor(renderTasks.get(i));
                 renderIcon(icon, 16, 16, startX + i * 20, -16);
             }
-            GL11.glEnable(GL11.GL_LIGHTING);
-            GL11.glPopMatrix();
+            GlStateManager.enableLighting();
+            GlStateManager.popMatrix();
             this.renderTasks.clear();
         }
     }
@@ -188,20 +188,20 @@ public class RenderNpcBase extends RenderBiped<NpcBase> {
             FontRenderer fontrenderer = this.getFontRendererFromRenderManager();
             float f = 1.6F;
             float f1 = 0.016666668F * f;
-            GL11.glPushMatrix();
-            GL11.glTranslatef((float) x + 0.0F, (float) y + entity.height + 0.5F, (float) z);
-            GL11.glNormal3f(0.0F, 1.0F, 0.0F);
-            GL11.glRotatef(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
-            GL11.glRotatef(this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
-            GL11.glScalef(-f1, -f1, f1);
-            GL11.glDisable(GL11.GL_LIGHTING);
-            GL11.glDepthMask(false);
-            GL11.glDisable(GL11.GL_DEPTH_TEST);
-            GL11.glEnable(GL11.GL_BLEND);
+            GlStateManager.pushMatrix();
+            GlStateManager.translate((float) x + 0.0F, (float) y + entity.height + 0.5F, (float) z);
+            GlStateManager.glNormal3f(0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate(-this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
+            GlStateManager.rotate(this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
+            GlStateManager.scale(-f1, -f1, f1);
+            GlStateManager.disableLighting();
+            GlStateManager.depthMask(false);
+            GlStateManager.disableDepth();
+            GlStateManager.enableBlend();
             OpenGlHelper.glBlendFunc(770, 771, 1, 0);
             Tessellator tessellator = Tessellator.getInstance();
 
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
+            GlStateManager.disableTexture2D();
             BufferBuilder bufferBuilder = tessellator.getBuffer();
             bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
             int j = fontrenderer.getStringWidth(string) / 2;
@@ -210,15 +210,15 @@ public class RenderNpcBase extends RenderBiped<NpcBase> {
             bufferBuilder.pos((double) (j + 1), (double) (8), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
             bufferBuilder.pos((double) (j + 1), (double) (-1), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
             tessellator.draw();
-            GL11.glEnable(GL11.GL_TEXTURE_2D);
+            GlStateManager.enableTexture2D();
             fontrenderer.drawString(string, -fontrenderer.getStringWidth(string) / 2, 0, color1);
-            GL11.glEnable(GL11.GL_DEPTH_TEST);
-            GL11.glDepthMask(true);
+            GlStateManager.enableDepth();
+            GlStateManager.depthMask(true);
             fontrenderer.drawString(string, -fontrenderer.getStringWidth(string) / 2, 0, color2);
-            GL11.glEnable(GL11.GL_LIGHTING);
-            GL11.glDisable(GL11.GL_BLEND);
-            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-            GL11.glPopMatrix();
+            GlStateManager.enableLighting();
+            GlStateManager.disableBlend();
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+            GlStateManager.popMatrix();
         }
     }
 

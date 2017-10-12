@@ -656,7 +656,7 @@ public void updateDrawPos(int x, int y)
 
 public void drawTextBox(FontRenderer fontRenderer, int xPos, int yPos)
   {   
-  GL11.glPushMatrix();
+  GlStateManager.pushMatrix();
   GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
   drawRect(xPos - 1, yPos - 1, xPos + this.xSize + 1, yPos + this.ySize + 1, -6250336);
   drawRect(xPos, yPos, xPos + this.xSize, yPos + this.ySize, -16777216);
@@ -677,7 +677,7 @@ public void drawTextBox(FontRenderer fontRenderer, int xPos, int yPos)
     }
   this.renderCursor(fontRenderer, xPos + border + charWidth * cursorPosX, yPos + border + charHeight*cursorPosY + 1);
   GL11.glPopAttrib();
-  GL11.glPopMatrix();
+  GlStateManager.popMatrix();
   }
 
 private void renderCursor(FontRenderer fontRenderer, int posX, int posY)

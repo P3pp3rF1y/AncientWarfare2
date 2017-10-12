@@ -250,7 +250,7 @@ protected void drawQuadedTexture(int x, int y, int w, int h, int tw, int th, Str
   int u1 = u + tw - halfW;
   int v1 = v + th - halfH;
   AWTextureManager.bindTexture(tex);
-  GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+  GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
   this.drawTexturedModalRect(x, y, u, v, halfW, halfH);
   this.drawTexturedModalRect(x + halfW, y, u1, v, halfW, halfH);
   this.drawTexturedModalRect(x, y + halfH, u, v1, halfW, halfH);

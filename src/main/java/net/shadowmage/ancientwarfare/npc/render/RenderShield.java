@@ -39,21 +39,21 @@
 //        if (iicon == null) {
 //            return;
 //        }
-//        GL11.glPushMatrix();
+//        GlStateManager.pushMatrix();
 //        TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
 //        texturemanager.bindTexture(texturemanager.getResourceLocation(stack.getItemSpriteNumber()));
 //        TextureUtil.func_152777_a(false, false, 1.0F);
-//        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+//        GlStateManager.enableRescaleNormal();
 //
-//        GL11.glTranslatef(-0.0F, -0.3F, 0.0F);
+//        GlStateManager.translate(-0.0F, -0.3F, 0.0F);
 //        float f6 = 1.5F;
-//        GL11.glScalef(f6, f6, f6);
-//        GL11.glRotatef(45.0F, 0.0F, 1.0F, 0.0F);
-//        GL11.glTranslatef(0.0625f, 0.125F, 0.6875f - 3.f * 0.0625f);
-//        GL11.glRotatef(90, 0, 1, 0);
-//        GL11.glTranslatef(-8.f * 0.0625f, 10.f * 0.0625f, 0);
-//        GL11.glRotatef(-80.f, 1, 0, 0);
-//        GL11.glTranslatef(0, -3.f * 0.0625f, 0);
+//        GlStateManager.scale(f6, f6, f6);
+//        GlStateManager.rotate(45.0F, 0.0F, 1.0F, 0.0F);
+//        GlStateManager.translate(0.0625f, 0.125F, 0.6875f - 3.f * 0.0625f);
+//        GlStateManager.rotate(90, 0, 1, 0);
+//        GlStateManager.translate(-8.f * 0.0625f, 10.f * 0.0625f, 0);
+//        GlStateManager.rotate(-80.f, 1, 0, 0);
+//        GlStateManager.translate(0, -3.f * 0.0625f, 0);
 //        Tessellator tessellator = Tessellator.getInstance();
 //        float f = iicon.getMinU();
 //        float f1 = iicon.getMaxU();
@@ -62,39 +62,39 @@
 //        ItemRenderer.renderItemIn2D(tessellator, f1, f2, f, f3, iicon.getIconWidth(), iicon.getIconHeight(), 0.0625F);
 //
 //        if (stack.hasEffect(stack.getItemDamage())){
-//            GL11.glDepthFunc(GL11.GL_EQUAL);
-//            GL11.glDisable(GL11.GL_LIGHTING);
+//            GlStateManager.depthFunc(GL11.GL_EQUAL);
+//            GlStateManager.disableLighting();
 //            texturemanager.bindTexture(RES_ITEM_GLINT);
-//            GL11.glEnable(GL11.GL_BLEND);
+//            GlStateManager.enableBlend();
 //            OpenGlHelper.glBlendFunc(768, 1, 1, 0);
 //            float f7 = 0.76F;
-//            GL11.glColor4f(0.5F * f7, 0.25F * f7, 0.8F * f7, 1.0F);
-//            GL11.glMatrixMode(GL11.GL_TEXTURE);
-//            GL11.glPushMatrix();
+//            GlStateManager.color(0.5F * f7, 0.25F * f7, 0.8F * f7, 1.0F);
+//            GlStateManager.matrixMode(GL11.GL_TEXTURE);
+//            GlStateManager.pushMatrix();
 //            float f8 = 0.125F;
-//            GL11.glScalef(f8, f8, f8);
+//            GlStateManager.scale(f8, f8, f8);
 //            float f9 = (float)(Minecraft.getSystemTime() % 3000L) / 3000.0F * 8.0F;
-//            GL11.glTranslatef(f9, 0.0F, 0.0F);
-//            GL11.glRotatef(-50.0F, 0.0F, 0.0F, 1.0F);
+//            GlStateManager.translate(f9, 0.0F, 0.0F);
+//            GlStateManager.rotate(-50.0F, 0.0F, 0.0F, 1.0F);
 //            ItemRenderer.renderItemIn2D(tessellator, 0.0F, 0.0F, 1.0F, 1.0F, 256, 256, 0.0625F);
-//            GL11.glPopMatrix();
-//            GL11.glPushMatrix();
-//            GL11.glScalef(f8, f8, f8);
+//            GlStateManager.popMatrix();
+//            GlStateManager.pushMatrix();
+//            GlStateManager.scale(f8, f8, f8);
 //            f9 = (float)(Minecraft.getSystemTime() % 4873L) / 4873.0F * 8.0F;
-//            GL11.glTranslatef(-f9, 0.0F, 0.0F);
-//            GL11.glRotatef(10.0F, 0.0F, 0.0F, 1.0F);
+//            GlStateManager.translate(-f9, 0.0F, 0.0F);
+//            GlStateManager.rotate(10.0F, 0.0F, 0.0F, 1.0F);
 //            ItemRenderer.renderItemIn2D(tessellator, 0.0F, 0.0F, 1.0F, 1.0F, 256, 256, 0.0625F);
-//            GL11.glPopMatrix();
-//            GL11.glMatrixMode(GL11.GL_MODELVIEW);
-//            GL11.glDisable(GL11.GL_BLEND);
-//            GL11.glEnable(GL11.GL_LIGHTING);
-//            GL11.glDepthFunc(GL11.GL_LEQUAL);
+//            GlStateManager.popMatrix();
+//            GlStateManager.matrixMode(GL11.GL_MODELVIEW);
+//            GlStateManager.disableBlend();
+//            GlStateManager.enableLighting();
+//            GlStateManager.depthFunc(GL11.GL_LEQUAL);
 //        }
 //
-//        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+//        GlStateManager.disableRescaleNormal();
 //        texturemanager.bindTexture(texturemanager.getResourceLocation(stack.getItemSpriteNumber()));
 //        TextureUtil.func_147945_b();
-//        GL11.glPopMatrix();
+//        GlStateManager.popMatrix();
 //    }
 //
 //

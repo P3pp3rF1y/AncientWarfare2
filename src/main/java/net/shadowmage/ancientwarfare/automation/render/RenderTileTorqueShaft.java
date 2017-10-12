@@ -42,20 +42,20 @@ public class RenderTileTorqueShaft extends TileEntitySpecialRenderer implements 
 
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float delta) {
-        GL11.glPushMatrix();
-        GL11.glTranslated(x + 0.5d, y + 0.5d, z + 0.5d);
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(x + 0.5d, y + 0.5d, z + 0.5d);
 
         TileTorqueShaft shaft = (TileTorqueShaft) te;
         EnumFacing d = shaft.getPrimaryFacing();
         float[] rotations = gearboxRotationMatrix[d.ordinal()];
         if (rotations[0] != 0) {
-            GL11.glRotatef(rotations[0], 1, 0, 0);
+            GlStateManager.rotate(rotations[0], 1, 0, 0);
         }
         if (rotations[1] != 0) {
-            GL11.glRotatef(rotations[1], 0, 1, 0);
+            GlStateManager.rotate(rotations[1], 0, 1, 0);
         }
         if (rotations[2] != 0) {
-            GL11.glRotatef(rotations[2], 0, 0, 1);
+            GlStateManager.rotate(rotations[2], 0, 0, 1);
         }
 
         this.inputHead.setVisible(shaft.prev() == null);
@@ -77,7 +77,7 @@ public class RenderTileTorqueShaft extends TileEntitySpecialRenderer implements 
 
         bindTexture(textures[te.getBlockMetadata() % textures.length]);
         model.renderModel();
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     @Override
@@ -92,18 +92,18 @@ public class RenderTileTorqueShaft extends TileEntitySpecialRenderer implements 
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        GL11.glPushMatrix();
-        GL11.glTranslatef(0.5f, 0.5f, 0.5f);
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0.5f, 0.5f, 0.5f);
 
         float[] rotations = gearboxRotationMatrix[1];//render as if facing upwards for items
         if (rotations[0] != 0) {
-            GL11.glRotatef(rotations[0], 1, 0, 0);
+            GlStateManager.rotate(rotations[0], 1, 0, 0);
         }
         if (rotations[1] != 0) {
-            GL11.glRotatef(rotations[1], 0, 1, 0);
+            GlStateManager.rotate(rotations[1], 0, 1, 0);
         }
         if (rotations[2] != 0) {
-            GL11.glRotatef(rotations[2], 0, 0, 1);
+            GlStateManager.rotate(rotations[2], 0, 0, 1);
         }
         this.inputHead.setVisible(true);
         this.gearbox.setVisible(true);
@@ -115,7 +115,7 @@ public class RenderTileTorqueShaft extends TileEntitySpecialRenderer implements 
 
         bindTexture(textures[item.getItemDamage() % textures.length]);
         model.renderModel();
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
 

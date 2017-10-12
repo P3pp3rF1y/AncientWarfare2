@@ -92,7 +92,7 @@ protected void renderForDisplayList()
   GL11.glVertex3f(x2, y2, z2);
   GL11.glTexCoord2f(u3, v3);
   GL11.glVertex3f(x3, y3, z3);  
-  GL11.glEnd();
+  GlStateManager.glEnd();
   }
 
 public void reverseVertexOrder()

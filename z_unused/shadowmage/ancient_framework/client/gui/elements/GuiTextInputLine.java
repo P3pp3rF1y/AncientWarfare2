@@ -88,7 +88,7 @@ public void drawElement(int mouseX, int mouseY)
     {
     this.updateCursorOffset();
     this.fr.drawString("_", xPos+2+cursorOffset, syPos, cursorColor, false);
-    GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
+    GlStateManager.color(1.f, 1.f, 1.f, 1.f);
     }
   }
 

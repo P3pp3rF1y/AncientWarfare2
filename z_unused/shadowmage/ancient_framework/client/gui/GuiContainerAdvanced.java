@@ -415,19 +415,19 @@ protected void drawGuiContainerBackgroundLayer(float var1, int mouseX, int mouse
       this.drawTexturedModalRect(slot.xDisplayPosition-1+guiLeft, slot.yDisplayPosition-1+guiTop, 152, 120, 18, 18);      
       }    
     }  
-  GL11.glPushMatrix();
+  GlStateManager.pushMatrix();
   this.renderExtraBackGround(mouseX, mouseY, var1);  
   GL11.glDisable(GL12.GL_RESCALE_NORMAL);
   RenderHelper.disableStandardItemLighting();
-  GL11.glDisable(GL11.GL_LIGHTING);
-  GL11.glDisable(GL11.GL_DEPTH_TEST);
+  GlStateManager.disableLighting();
+  GlStateManager.disableDepth();
   for(Integer i : this.guiElements.keySet())
     {
-    GL11.glPushMatrix();   
+    GlStateManager.pushMatrix();
     this.guiElements.get(i).drawElement(mouseX, mouseY);
-    GL11.glPopMatrix();
+    GlStateManager.popMatrix();
     }  
-  GL11.glPopMatrix();
+  GlStateManager.popMatrix();
   }
 
 public void drawExtraForeground(int mouseX, int mouseY, float partialTick)
@@ -465,13 +465,13 @@ protected void drawTooltips(int mouseX, int mouseY, float partialTick)
 public void drawScreen(int par1, int par2, float par3)
   {
   
-  GL11.glPushMatrix();
+  GlStateManager.pushMatrix();
   super.drawScreen(par1, par2, par3);
-  GL11.glPopMatrix(); 
+  GlStateManager.popMatrix();
   
-  GL11.glPushMatrix();
+  GlStateManager.pushMatrix();
   this.drawExtraForeground(par1, par2, par3);
-  GL11.glPopMatrix();
+  GlStateManager.popMatrix();
   
   Slot slot;
   for(int i = 0; i < this.inventorySlots.inventorySlots.size(); i++)
@@ -484,9 +484,9 @@ public void drawScreen(int par1, int par2, float par3)
       }
     }
   
-  GL11.glPushMatrix();
+  GlStateManager.pushMatrix();
   this.drawTooltips(par1, par2, par3);
-  GL11.glPopMatrix();
+  GlStateManager.popMatrix();
   
   }
 
@@ -498,22 +498,22 @@ public void drawScreen(int par1, int par2, float par3)
 public void renderItemStack(ItemStack stack, int x, int y, int mouseX, int mouseY, boolean renderOverlay, boolean useAlpha, boolean tooltip, boolean defer)
   {
   GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
-  GL11.glPushMatrix();
+  GlStateManager.pushMatrix();
   RenderHelper.enableGUIStandardItemLighting();
-  GL11.glDisable(GL11.GL_LIGHTING);
+  GlStateManager.disableLighting();
   GL11.glEnable(GL12.GL_RESCALE_NORMAL);
   GL11.glEnable(GL11.GL_COLOR_MATERIAL);
-  GL11.glEnable(GL11.GL_LIGHTING);  
+  GlStateManager.enableLighting();
   itemRenderer.zLevel = 100.0F; 
   if(useAlpha)
     {
-    GL11.glEnable(GL11.GL_BLEND);
+    GlStateManager.enableBlend();
     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_COLOR);
     }
   itemRenderer.renderItemAndEffectIntoGUI(fontRenderer, mc.renderEngine, stack, x, y);//render item
   if(useAlpha)
     {
-    GL11.glDisable(GL11.GL_BLEND);
+    GlStateManager.disableBlend();
     }
   if(renderOverlay)
     {
@@ -521,7 +521,7 @@ public void renderItemStack(ItemStack stack, int x, int y, int mouseX, int mouse
     itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.renderEngine, stack, x, y, stackSize);
     }
   itemRenderer.zLevel = 0.0F;
-  GL11.glDisable(GL11.GL_LIGHTING);
+  GlStateManager.disableLighting();
   if(tooltip && this.isMouseInRawArea(x, y, 16, 16, mouseX, mouseY))
     {
     if(!defer)
@@ -537,8 +537,8 @@ public void renderItemStack(ItemStack stack, int x, int y, int mouseX, int mouse
       this.tooltipStackY = y;      
       }
     }   
-  GL11.glPopMatrix();
-  GL11.glEnable(GL11.GL_DEPTH_TEST);
+  GlStateManager.popMatrix();
+  GlStateManager.enableDepth();
   GL11.glPopAttrib();
   }
 
@@ -561,8 +561,8 @@ protected void renderTooltip(int x, int y, List<String> info)
     }
   GL11.glDisable(GL12.GL_RESCALE_NORMAL);
   RenderHelper.disableStandardItemLighting();
-  GL11.glDisable(GL11.GL_LIGHTING);
-  GL11.glDisable(GL11.GL_DEPTH_TEST);
+  GlStateManager.disableLighting();
+  GlStateManager.disableDepth();
   Iterator<String> it = info.iterator();
   String line;
   if(!it.hasNext())
@@ -650,7 +650,7 @@ protected boolean isMouseInAdjustedArea(int slotX, int slotY, int slotWidth, int
  */
 public void render50pxStatusBar(int x, int y, int length)
   { 
-  GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+  GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
   AWTextureManager.bindTexture("/Catapult_Mod/gui/statusBar.png");
   this.drawTexturedModalRect(guiLeft+x, guiTop+y, 0, 0, length, 10);
   }
@@ -669,20 +669,20 @@ public void render50pxStatusBar(int x, int y, int length)
 public void renderEntityIntoInventory(Minecraft mc, int xTrans, int yTrans, int scaleFactor, Entity entity, float rotationFactor)
   {  
   GL11.glEnable(GL11.GL_COLOR_MATERIAL);
-  GL11.glPushMatrix();  
-  GL11.glTranslatef((float)xTrans, (float)yTrans, 50.0F);
-  GL11.glScalef((float)(-scaleFactor), (float)scaleFactor, (float)scaleFactor);
+  GlStateManager.pushMatrix();
+  GlStateManager.translate((float)xTrans, (float)yTrans, 50.0F);
+  GlStateManager.scale((float)(-scaleFactor), (float)scaleFactor, (float)scaleFactor);
   GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
   GL11.glRotatef(-rotationFactor+entity.rotationYaw, 0.0F, 1.0F, 0.0F);
   GL11.glRotatef(-135.0F, 0.0F, 1.0F, 0.0F);
-  GL11.glTranslatef(0.0F, mc.thePlayer.yOffset, 0.0F);
+  GlStateManager.translate(0.0F, mc.thePlayer.yOffset, 0.0F);
   RenderManager.instance.playerViewY = 180.0F;
   RenderManager.instance.renderEntityWithPosYaw(entity, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);  
-  GL11.glPopMatrix();  
+  GlStateManager.popMatrix();
   RenderHelper.disableStandardItemLighting();
   GL11.glDisable(GL12.GL_RESCALE_NORMAL);
   OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-  GL11.glDisable(GL11.GL_TEXTURE_2D);
+  GlStateManager.disableTexture2D();
   OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
   }
 
@@ -699,9 +699,9 @@ public void renderEntityIntoInventory(Minecraft mc, int xTrans, int yTrans, int 
 public void renderEntityLivingIntoInventory(Minecraft par0Minecraft, EntityLiving living, int xTrans, int yTrans, int scaleFactor, float cursorPosX, float cursorPosY)
   {
   GL11.glEnable(GL11.GL_COLOR_MATERIAL);
-  GL11.glPushMatrix();
-  GL11.glTranslatef((float)xTrans, (float)yTrans, 50.0F);
-  GL11.glScalef((float)(-scaleFactor), (float)scaleFactor, (float)scaleFactor);
+  GlStateManager.pushMatrix();
+  GlStateManager.translate((float)xTrans, (float)yTrans, 50.0F);
+  GlStateManager.scale((float)(-scaleFactor), (float)scaleFactor, (float)scaleFactor);
   GL11.glRotatef(180.0F, 0.0F, 0.0F, 1.0F);
   float var6 = living.renderYawOffset;
   float var7 = living.rotationYaw;
@@ -714,17 +714,17 @@ public void renderEntityLivingIntoInventory(Minecraft par0Minecraft, EntityLivin
   living.rotationYaw = (float)Math.atan((double)(cursorPosX / 40.0F)) * 40.0F;
   living.rotationPitch = -((float)Math.atan((double)(cursorPosY / 40.0F))) * 20.0F;
   living.rotationYawHead = living.rotationYaw;
-  GL11.glTranslatef(0.0F, par0Minecraft.thePlayer.yOffset, 0.0F);
+  GlStateManager.translate(0.0F, par0Minecraft.thePlayer.yOffset, 0.0F);
   RenderManager.instance.playerViewY = 180.0F;
   RenderManager.instance.renderEntityWithPosYaw(living, 0.0D, 0.0D, 0.0D, 0.0F, 1.0F);
   living.renderYawOffset = var6;
   living.rotationYaw = var7;
   living.rotationPitch = var8;
-  GL11.glPopMatrix();
+  GlStateManager.popMatrix();
   RenderHelper.disableStandardItemLighting();
   GL11.glDisable(GL12.GL_RESCALE_NORMAL);
   OpenGlHelper.setActiveTexture(OpenGlHelper.lightmapTexUnit);
-  GL11.glDisable(GL11.GL_TEXTURE_2D);
+  GlStateManager.disableTexture2D();
   OpenGlHelper.setActiveTexture(OpenGlHelper.defaultTexUnit);
   }
 

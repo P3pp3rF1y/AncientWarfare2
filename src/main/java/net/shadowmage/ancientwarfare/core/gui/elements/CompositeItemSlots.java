@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.ItemStack;
@@ -53,18 +54,18 @@ public class CompositeItemSlots extends CompositeScrolled {
 
         //needs texture enabled
         //lighting, full color and alpha, depth-test disabled
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
-        GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
+        GlStateManager.enableTexture2D();
+        GlStateManager.disableLighting();
+        GlStateManager.disableDepth();
+        GlStateManager.color(1.f, 1.f, 1.f, 1.f);
         for (ItemSlot slot : itemSlots) {
             renderSlotBackground(slot);
         }
 
         //needs texture, lighting, color, alpha, and depth-test enabled
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GlStateManager.enableDepth();
+        GlStateManager.enableLighting();
+        GlStateManager.enableTexture2D();
         RenderHelper.enableGUIStandardItemLighting();
         itemRender.zLevel = 10.0F;
         for (ItemSlot slot : itemSlots) {
@@ -73,29 +74,29 @@ public class CompositeItemSlots extends CompositeScrolled {
 
         //needs texture(fonts), color, alpha enabled
         //needs lighting, depth-test disabled
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GlStateManager.disableDepth();
+        GlStateManager.disableLighting();
+        GlStateManager.enableTexture2D();
         for (ItemSlot slot : itemSlots) {
             renderOverlay(slot);
         }
 
         //needs texture disabled (draw white quad @ alpha for highlight)
-        GL11.glDisable(GL11.GL_DEPTH_TEST);
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
-        GL11.glColor4f(1.f, 1.f, 1.f, 0.55f);
+        GlStateManager.disableDepth();
+        GlStateManager.disableLighting();
+        GlStateManager.disableTexture2D();
+        GlStateManager.color(1.f, 1.f, 1.f, 0.55f);
         for (ItemSlot slot : itemSlots) {
             renderSlotHighlight(slot, mouseX, mouseY);
         }
-        GL11.glColor4f(1.f, 1.f, 1.f, 1.f);
+        GlStateManager.color(1.f, 1.f, 1.f, 1.f);
 
         //reset renderabled and render-viewport
         itemSlots.clear();
         popViewport();
 
         //scroll-bar rendering, needs lighting/depth test disabled, texture enabled
-        GL11.glEnable(GL11.GL_TEXTURE_2D);
+        GlStateManager.enableTexture2D();
         scrollbar.render(mouseX, mouseY, partialTick);
     }
 
@@ -115,15 +116,15 @@ public class CompositeItemSlots extends CompositeScrolled {
              *  TODO -- find proper alpha for blend..it is close now, but probably not an exact match for vanilla
              *  highlighting
              */
-            GL11.glEnable(GL11.GL_BLEND);
-            GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-            GL11.glBegin(GL11.GL_QUADS);
+            GlStateManager.enableBlend();
+            GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+            GlStateManager.glBegin(GL11.GL_QUADS);
             GL11.glVertex2f(slot.renderX, slot.renderY);
             GL11.glVertex2f(slot.renderX, slot.renderY + slot.height);
             GL11.glVertex2f(slot.renderX + slot.width, slot.renderY + slot.height);
             GL11.glVertex2d(slot.renderX + slot.width, slot.renderY);
-            GL11.glEnd();
-            GL11.glDisable(GL11.GL_BLEND);
+            GlStateManager.glEnd();
+            GlStateManager.disableBlend();
             if (slot.renderTooltip && !slot.getStack().isEmpty() && render != null) {
                 if (slot.tooltip != null) {
                     this.render.handleElementTooltipRender(slot.tooltip, mouseX, mouseY);

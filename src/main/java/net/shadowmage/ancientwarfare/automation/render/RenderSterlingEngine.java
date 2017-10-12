@@ -42,11 +42,11 @@ public class RenderSterlingEngine extends TileEntitySpecialRenderer implements I
 
         float rotation = -(tt.getClientOutputRotation(d, partialTick));
 
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
 
-//  GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glTranslated(x + 0.5d, y, z + 0.5d);
-        GL11.glRotatef(-baseRotation, 0, 1, 0);
+//  GlStateManager.enableRescaleNormal();
+        GlStateManager.translate(x + 0.5d, y, z + 0.5d);
+        GlStateManager.rotate(-baseRotation, 0, 1, 0);
         bindTexture(texture);
 
         flywheel.setRotation(0, 0, rotation);
@@ -59,8 +59,8 @@ public class RenderSterlingEngine extends TileEntitySpecialRenderer implements I
         piston_arm.setRotation(0, 0, rotation + armAngle);
         piston_arm2.setRotation(0, 0, rotation + armAngle2);
         model.renderModel();
-//  GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        GL11.glPopMatrix();
+//  GlStateManager.disableRescaleNormal();
+        GlStateManager.popMatrix();
     }
 
     float pistonPos, armAngle, pistonPos2, armAngle2;
@@ -120,8 +120,8 @@ public class RenderSterlingEngine extends TileEntitySpecialRenderer implements I
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        GL11.glPushMatrix();
-        GL11.glTranslated(0.5d, 0, 0.5d);
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0.5d, 0, 0.5d);
         bindTexture(texture);
 
         flywheel.setRotation(0, 0, 0);
@@ -132,7 +132,7 @@ public class RenderSterlingEngine extends TileEntitySpecialRenderer implements I
         piston_arm.setRotation(0, 0, 0);
         piston_arm2.setRotation(0, 0, 0);
         model.renderModel();
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
 }

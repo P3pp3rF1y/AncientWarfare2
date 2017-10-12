@@ -30,18 +30,18 @@ public class RenderTileWarehouseStockViewer extends TileEntitySpecialRenderer {
         EnumFacing d = EnumFacing.VALUES[te.getBlockMetadata()).getOpposite(];
         float r = getRotationFromDirection(d);
 
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+        GlStateManager.enableRescaleNormal();
         RenderTools.setFullColorLightmap();
-        GL11.glPushMatrix();
-        GL11.glTranslated(x, y, z);
-        GL11.glTranslatef(0.5f, 1.f, 0.5f);//translate the point to the top-center of the block
-        GL11.glRotatef(r, 0, 1, 0);//rotate for rotation
-        GL11.glTranslatef(0.5f, 0, 0.5f);//translate to top-left corner
-        GL11.glTranslatef(0, -0.125f, -0.127f);//move out and down for front-face of sign
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(x, y, z);
+        GlStateManager.translate(0.5f, 1.f, 0.5f);//translate the point to the top-center of the block
+        GlStateManager.rotate(r, 0, 1, 0);//rotate for rotation
+        GlStateManager.translate(0.5f, 0, 0.5f);//translate to top-left corner
+        GlStateManager.translate(0, -0.125f, -0.127f);//move out and down for front-face of sign
         renderSignContents(tile);
 
-        GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-        GL11.glPopMatrix();
+        GlStateManager.disableRescaleNormal();
+        GlStateManager.popMatrix();
     }
 
     float getRotationFromDirection(EnumFacing d) {
@@ -66,13 +66,13 @@ public class RenderTileWarehouseStockViewer extends TileEntitySpecialRenderer {
      *//*
 
     private void renderSignContents(TileWarehouseStockViewer tile) {
-        GL11.glPushMatrix();
-        GL11.glTranslatef(0, 0, -0.002f);//move out from block face slightly, for depth-buffer/z-fighting
-        GL11.glScalef(-1, -1, -1);//rescale for gui rendering axis flip
-        GL11.glScalef(0.0050f, 0.0050f, 0.0050f);//this scale puts it at 200 units(pixels) per block
-        GL11.glScalef(1f, 1f, 0.0001f);//squash Z axis for 'flat' rendering of 3d blocks/items..LOLS
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(0, 0, -0.002f);//move out from block face slightly, for depth-buffer/z-fighting
+        GlStateManager.scale(-1, -1, -1);//rescale for gui rendering axis flip
+        GlStateManager.scale(0.0050f, 0.0050f, 0.0050f);//this scale puts it at 200 units(pixels) per block
+        GlStateManager.scale(1f, 1f, 0.0001f);//squash Z axis for 'flat' rendering of 3d blocks/items..LOLS
         FontRenderer fr = func_147498_b();
-        GL11.glDisable(GL11.GL_LIGHTING);
+        GlStateManager.disableLighting();
         @Nonnull ItemStack filterItem;
         WarehouseStockFilter filter;
         String name = "";
@@ -92,8 +92,8 @@ public class RenderTileWarehouseStockViewer extends TileEntitySpecialRenderer {
             name = String.valueOf(filter.getQuantity());
             fr.drawString(name, 200 - 13 - fr.getStringWidth(name), i * 18 + 4 + 10, 0xffffffff);
         }
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glPopMatrix();
+        GlStateManager.enableLighting();
+        GlStateManager.popMatrix();
     }
 
 }

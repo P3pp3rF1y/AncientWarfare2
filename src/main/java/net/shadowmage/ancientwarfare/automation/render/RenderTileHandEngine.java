@@ -30,24 +30,24 @@ public class RenderTileHandEngine extends TileEntitySpecialRenderer implements I
 
     @Override
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float delta) {
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
         bindTexture(texture);
-        GL11.glTranslated(x + 0.5d, y, z + 0.5d);
+        GlStateManager.translate(x + 0.5d, y, z + 0.5d);
 
         TileTorqueBase handEngine = (TileTorqueBase) te;
         float outRotation = -handEngine.getClientOutputRotation(handEngine.getPrimaryFacing(), delta);
         float inRotation = -handEngine.getClientOutputRotation(EnumFacing.UP, delta);//top side, not technically an 'output' rotation, but i'm lazy and not making a new method for it
         renderModel(inRotation, outRotation, ((TileTorqueBase) te).getPrimaryFacing().ordinal());
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
     protected void renderModel(float inR, float outR, int face) {
         float[] rot = ITorque.forgeDiretctionToRotationMatrix[face];
         if (rot[0] != 0) {
-            GL11.glRotatef(rot[0], 1, 0, 0);
+            GlStateManager.rotate(rot[0], 1, 0, 0);
         }
         else if (rot[1] != 0) {
-            GL11.glRotatef(rot[1], 0, 1, 0);
+            GlStateManager.rotate(rot[1], 0, 1, 0);
         }
         outputGear.setRotation(0, 0, outR);
         inputGear.setRotation(0, inR, 0);
@@ -66,11 +66,11 @@ public class RenderTileHandEngine extends TileEntitySpecialRenderer implements I
 
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        GL11.glPushMatrix();
+        GlStateManager.pushMatrix();
         bindTexture(texture);
-        GL11.glTranslated(0.5d, 0, 0.5d);
+        GlStateManager.translate(0.5d, 0, 0.5d);
         renderModel(0, 0, 2);
-        GL11.glPopMatrix();
+        GlStateManager.popMatrix();
     }
 
 }
