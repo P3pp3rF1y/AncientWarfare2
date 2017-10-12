@@ -205,7 +205,8 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
 
     @Override
     public void drawScreen(int par1, int par2, float par3) {
-        this.partialRenderTick = par3;
+        drawDefaultBackground();
+        partialRenderTick = par3;
         super.drawScreen(par1, par2, par3);
         if (!tooltipStack.isEmpty()) {
             super.renderToolTip(tooltipStack, tooltipX, tooltipY);
