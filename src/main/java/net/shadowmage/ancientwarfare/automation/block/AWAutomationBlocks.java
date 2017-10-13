@@ -27,7 +27,7 @@ public class AWAutomationBlocks {
 	public static BlockWarehouseStorage warehouseStorageBlock;
 	@ObjectHolder("warehouse_interface")
 	public static BlockWarehouseInterface warehouseInterface;
-	@ObjectHolder("warehouse_crafting_station")
+	@ObjectHolder("warehouse_crafting")
 	public static BlockWarehouseCraftingStation warehouseCrafting;
 	@ObjectHolder("warehouse_stock_viewer")
 	public static BlockWarehouseStockViewer warehouseStockViewer;

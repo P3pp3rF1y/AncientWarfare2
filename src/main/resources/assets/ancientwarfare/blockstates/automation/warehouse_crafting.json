@@ -1,0 +1,19 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "cube",
+        "textures": {
+            "particle": "ancientwarfare:blocks/automation/warehouse_crafting_side",
+            "down": "ancientwarfare:blocks/automation/warehouse_crafting_bottom",
+            "up": "ancientwarfare:blocks/automation/warehouse_crafting_top",
+            "north": "ancientwarfare:blocks/automation/warehouse_crafting_front",
+            "south": "ancientwarfare:blocks/automation/warehouse_crafting_front",
+            "west": "ancientwarfare:blocks/automation/warehouse_crafting_side",
+            "east": "ancientwarfare:blocks/automation/warehouse_crafting_side"
+        },
+        "transform": "forge:default-block"
+    },
+    "variants": {
+        "normal": [{}]
+    }
+}
