@@ -622,7 +622,7 @@ public class SpawnerSettings {
                     for (int y = spawnPos.getY() - range; y <= y + range; y++) {
                         e.setLocationAndAngles(x + 0.5d, y, z + 0.5d, world.rand.nextFloat() * 360, 0);
                         if (!forced && e instanceof EntityLiving) {
-                            doSpawn = ((EntityLiving) e).getCanSpawnHere();
+                            doSpawn = ((EntityLiving) e).getCanSpawnHere() && ((EntityLiving) e).isNotColliding();
                             if(doSpawn)
                                 break;
                         }else{
