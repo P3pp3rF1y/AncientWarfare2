@@ -167,7 +167,7 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
 
     @Override
     public void handleSlotClick(EntityPlayer player, ItemStack filter, boolean shiftClick) {
-        if (filter != null && player.inventory.getItemStack().isEmpty()) {
+        if (!filter.isEmpty() && player.inventory.getItemStack().isEmpty()) {
             tryGetItem(player, filter, shiftClick);
         } else if (!player.inventory.getItemStack().isEmpty()) {
             tryAddItem(player, player.inventory.getItemStack());
