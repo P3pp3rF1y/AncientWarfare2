@@ -1,0 +1,25 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "cube_directional",
+        "textures": {
+            "particle": "ancientwarfare:blocks/automation/warehouse_control_front",
+            "down": "ancientwarfare:blocks/automation/warehouse_control_bottom",
+            "up": "ancientwarfare:blocks/automation/warehouse_control_top",
+            "north": "ancientwarfare:blocks/automation/warehouse_control_front",
+            "east": "ancientwarfare:blocks/automation/warehouse_control_right",
+            "south": "ancientwarfare:blocks/automation/warehouse_control_rear",
+            "west": "ancientwarfare:blocks/automation/warehouse_control_left"
+        },
+        "transform": "forge:default-block"
+    },
+    "variants": {
+        "normal": [{}],
+        "facing": {
+            "north": {},
+            "south": {"y": 180 },
+            "west":  {"y": 270 },
+            "east":  {"y": 90 }
+        }
+    }
+}

@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
+import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -11,21 +12,18 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.property.IExtendedBlockState;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
-import net.shadowmage.ancientwarfare.core.render.BlockRenderProperties;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.lang.reflect.Constructor;
 
 public class BlockWorksiteBase extends BlockBaseAutomation implements IRotatableBlock {
 
-    //IconRotationMap iconMap = new IconRotationMap();
     public int maxWorkSize = 16;
     public int maxWorkSizeVertical = 1;
     private Constructor<? extends TileEntity> tile;
@@ -37,7 +35,7 @@ public class BlockWorksiteBase extends BlockBaseAutomation implements IRotatable
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer.Builder(this).add(BlockRenderProperties.UNLISTED_FACING).build();
+        return new BlockStateContainer(this, BlockHorizontal.FACING);
     }
 
     @Override
@@ -46,22 +44,10 @@ public class BlockWorksiteBase extends BlockBaseAutomation implements IRotatable
     }
 
     @Override
-    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        EnumFacing facing = EnumFacing.NORTH;
-        TileEntity tileentity = world.getTileEntity(pos);
-
-        if (tileentity instanceof IRotatableTile) {
-            facing = ((IRotatableTile) tileentity).getPrimaryFacing();
-        }
-
-        return ((IExtendedBlockState) super.getExtendedState(state, world, pos)).withProperty(BlockRenderProperties.UNLISTED_FACING, facing);
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+        TileEntity te = worldIn.getTileEntity(pos);
+        return te != null && te instanceof IRotatableTile ? state.withProperty(BlockHorizontal.FACING, ((IRotatableTile) te).getPrimaryFacing()) : state;
     }
-
-
-    //    public BlockWorksiteBase setIcon(RelativeSide relativeSide, String texName) {
-//        this.iconMap.setIcon(this, relativeSide, texName);
-//        return this;
-//    }
 
     public BlockWorksiteBase setWorkSize(int size) {
         this.maxWorkSize = size;
@@ -101,30 +87,6 @@ public class BlockWorksiteBase extends BlockBaseAutomation implements IRotatable
     public boolean hasTileEntity(IBlockState state) {
         return tile != null;
     }
-
-/*
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister p_149651_1_) {
-        iconMap.registerIcons(p_149651_1_);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-        return iconMap.getIcon(this, meta, side);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
-        TileEntity te = world.getTileEntity(pos);
-        if (te instanceof IRotatableTile) {
-            return getIcon(side, ((IRotatableTile) te).getPrimaryFacing().ordinal());
-        }
-        return super.getIcon(world, x, y, z, side);
-    }
-*/
 
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {

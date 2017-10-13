@@ -94,29 +94,29 @@ public class AWAutomationBlockLoader {
     public static void register(RegistryEvent.Register<Block> event) {
         IForgeRegistry<Block> registry = event.getRegistry();
 
-        registry.register(new BlockWorksiteBase("civic_quarry").setTileEntity(WorkSiteQuarry.class).setWorkSize(64));
-        GameRegistry.registerTileEntity(WorkSiteQuarry.class, "civic_quarry_tile");
+        registry.register(new BlockWorksiteBase("quarry").setTileEntity(WorkSiteQuarry.class).setWorkSize(64));
+        GameRegistry.registerTileEntity(WorkSiteQuarry.class, "quarry_tile");
 
-        registry.register(new BlockWorksiteBase("civic_forestry").setTileEntity(WorkSiteTreeFarm.class));
-        GameRegistry.registerTileEntity(WorkSiteTreeFarm.class, "civic_forestry_tile");
+        registry.register(new BlockWorksiteBase("tree_farm").setTileEntity(WorkSiteTreeFarm.class));
+        GameRegistry.registerTileEntity(WorkSiteTreeFarm.class, "forestry_tile");
 
-        registry.register(new BlockWorksiteBase("civic_crop_farm").setTileEntity(WorkSiteCropFarm.class));
-        GameRegistry.registerTileEntity(WorkSiteCropFarm.class, "civic_crop_farm_tile");
+        registry.register(new BlockWorksiteBase("crop_farm").setTileEntity(WorkSiteCropFarm.class));
+        GameRegistry.registerTileEntity(WorkSiteCropFarm.class, "crop_farm_tile");
 
-        registry.register(new BlockWorksiteBase("civic_mushroom_farm").setTileEntity(WorkSiteMushroomFarm.class));
-        GameRegistry.registerTileEntity(WorkSiteMushroomFarm.class, "civic_mushroom_farm_tile");
+        registry.register(new BlockWorksiteBase("mushroom_farm").setTileEntity(WorkSiteMushroomFarm.class));
+        GameRegistry.registerTileEntity(WorkSiteMushroomFarm.class, "mushroom_farm_tile");
 
-        registry.register(new BlockWorksiteBase("civic_animal_farm").setTileEntity(WorkSiteAnimalFarm.class));
-        GameRegistry.registerTileEntity(WorkSiteAnimalFarm.class, "civic_animal_farm_tile");
+        registry.register(new BlockWorksiteBase("animal_farm").setTileEntity(WorkSiteAnimalFarm.class));
+        GameRegistry.registerTileEntity(WorkSiteAnimalFarm.class, "animal_farm_tile");
 
-        registry.register(new BlockWorksiteBase("civic_fish_farm").setTileEntity(WorkSiteFishFarm.class));
-        GameRegistry.registerTileEntity(WorkSiteFishFarm.class, "civic_fish_farm_tile");
+        registry.register(new BlockWorksiteBase("fish_farm").setTileEntity(WorkSiteFishFarm.class));
+        GameRegistry.registerTileEntity(WorkSiteFishFarm.class, "fish_farm_tile");
 
-        registry.register(new BlockWorksiteBase("civic_reed_farm").setTileEntity(WorkSiteReedFarm.class));
-        GameRegistry.registerTileEntity(WorkSiteReedFarm.class, "civic_reed_farm_tile");
+        registry.register(new BlockWorksiteBase("reed_farm").setTileEntity(WorkSiteReedFarm.class));
+        GameRegistry.registerTileEntity(WorkSiteReedFarm.class, "reed_farm_tile");
 
-        registry.register(new BlockWorksiteBase("civic_warehouse").setTileEntity(TileWarehouse.class).setWorkVerticalSize(4));
-        GameRegistry.registerTileEntity(TileWarehouse.class, "civic_warehouse_tile");
+        registry.register(new BlockWorksiteBase("warehouse_control").setTileEntity(TileWarehouse.class).setWorkVerticalSize(4));
+        GameRegistry.registerTileEntity(TileWarehouse.class, "warehouse_control_tile");
 
         registry.register(new BlockWarehouseStorage("warehouse_storage"));
         GameRegistry.registerTileEntity(TileWarehouseStorageMedium.class, "warehouse_storage_medium_tile");
