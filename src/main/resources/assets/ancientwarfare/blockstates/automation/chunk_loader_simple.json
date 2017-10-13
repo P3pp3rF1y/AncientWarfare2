@@ -1,0 +1,15 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "cube_bottom_top",
+        "textures": {
+            "bottom": "ancientwarfare:blocks/automation/chunk_loader_simple_bottom",
+            "top": "ancientwarfare:blocks/automation/chunk_loader_simple_top",
+            "side": "ancientwarfare:blocks/automation/chunk_loader_simple_side"
+        },
+        "transform": "forge:default-block"
+    },
+    "variants": {
+        "normal": [{}]
+    }
+}
