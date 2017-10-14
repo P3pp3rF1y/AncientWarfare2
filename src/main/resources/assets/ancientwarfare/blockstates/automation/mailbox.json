@@ -1,0 +1,25 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "cube",
+        "textures": {
+            "particle": "ancientwarfare:blocks/automation/mailbox_front",
+            "down": "ancientwarfare:blocks/automation/mailbox_bottom",
+            "up": "ancientwarfare:blocks/automation/mailbox_top",
+            "north": "ancientwarfare:blocks/automation/mailbox_front",
+            "east": "ancientwarfare:blocks/automation/mailbox_right",
+            "south": "ancientwarfare:blocks/automation/mailbox_rear",
+            "west": "ancientwarfare:blocks/automation/mailbox_left"
+        },
+        "transform": "forge:default-block"
+    },
+    "variants": {
+        "normal": [{}],
+        "facing": {
+            "north": {},
+            "south": {"y": 180 },
+            "west":  {"y": 270 },
+            "east":  {"y": 90 }
+        }
+    }
+}
