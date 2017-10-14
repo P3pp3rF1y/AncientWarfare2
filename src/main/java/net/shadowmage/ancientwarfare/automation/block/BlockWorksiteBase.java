@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
-import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -22,6 +21,8 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.lang.reflect.Constructor;
 
+import static net.shadowmage.ancientwarfare.core.render.BlockRenderProperties.FACING;
+
 public class BlockWorksiteBase extends BlockBaseAutomation implements IRotatableBlock {
 
     public int maxWorkSize = 16;
@@ -35,7 +36,7 @@ public class BlockWorksiteBase extends BlockBaseAutomation implements IRotatable
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, BlockHorizontal.FACING);
+        return new BlockStateContainer(this, FACING);
     }
 
     @Override
@@ -46,7 +47,7 @@ public class BlockWorksiteBase extends BlockBaseAutomation implements IRotatable
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
         TileEntity te = worldIn.getTileEntity(pos);
-        return te != null && te instanceof IRotatableTile ? state.withProperty(BlockHorizontal.FACING, ((IRotatableTile) te).getPrimaryFacing()) : state;
+        return te != null && te instanceof IRotatableTile ? state.withProperty(FACING, ((IRotatableTile) te).getPrimaryFacing()) : state;
     }
 
     public BlockWorksiteBase setWorkSize(int size) {

@@ -1,7 +1,7 @@
 {
     "forge_marker": 1,
     "defaults": {
-        "model": "cube_directional",
+        "model": "cube",
         "textures": {
             "particle": "ancientwarfare:blocks/automation/tree_farm_front",
             "down": "ancientwarfare:blocks/automation/tree_farm_bottom",

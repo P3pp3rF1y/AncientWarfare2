@@ -181,22 +181,5 @@ public class AWAutomationBlockLoader {
 
         registry.register(new BlockChunkLoaderDeluxe("chunk_loader_deluxe"));
         GameRegistry.registerTileEntity(TileChunkLoaderDeluxe.class, "chunk_loader_deluxe_tile");
-
-//        warehouseInterface.setIcon(0, 0, "ancientwarfare:automation/warehouse_interface_bottom");
-//        warehouseInterface.setIcon(0, 1, "ancientwarfare:automation/warehouse_interface_top");
-//        warehouseInterface.setIcon(0, 2, "ancientwarfare:automation/warehouse_interface_side");
-//        warehouseInterface.setIcon(0, 3, "ancientwarfare:automation/warehouse_interface_side");
-//        warehouseInterface.setIcon(0, 4, "ancientwarfare:automation/warehouse_interface_side");
-//        warehouseInterface.setIcon(0, 5, "ancientwarfare:automation/warehouse_interface_side");
-
-//        warehouseCrafting.setIcon(0, 0, "ancientwarfare:automation/warehouse_crafting_bottom");
-//        warehouseCrafting.setIcon(0, 1, "ancientwarfare:automation/warehouse_crafting_top");
-//        warehouseCrafting.setIcon(0, 2, "ancientwarfare:automation/warehouse_crafting_front");
-//        warehouseCrafting.setIcon(0, 3, "ancientwarfare:automation/warehouse_crafting_front");
-//        warehouseCrafting.setIcon(0, 4, "ancientwarfare:automation/warehouse_crafting_side");
-//        warehouseCrafting.setIcon(0, 5, "ancientwarfare:automation/warehouse_crafting_side");
-
-
     }
-
 }
