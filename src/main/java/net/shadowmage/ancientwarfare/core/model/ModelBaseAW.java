@@ -20,9 +20,15 @@
  */
 package net.shadowmage.ancientwarfare.core.model;
 
+import com.sun.javafx.geom.Vec3f;
 import net.minecraft.client.renderer.GlStateManager;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +47,31 @@ public class ModelBaseAW {
     public void renderModel() {
         for (ModelPiece piece : this.getBasePieces()) {
             piece.render(textureWidth, textureHeight);
+        }
+    }
+
+    public void exportOBJ(String fileName) throws IOException {
+        File dir = new File(AWCoreStatics.configPathForFiles + "model_export");
+
+        File objExport = new File(dir, fileName);
+        if(!objExport.exists()) {
+            objExport.createNewFile();
+        }
+        FileWriter fileWriter = null;
+        try {
+            fileWriter = new FileWriter(objExport);
+            BufferedWriter writer = new BufferedWriter(fileWriter);
+
+            for (ModelPiece piece : this.getBasePieces()) {
+                for (Vec3f vert : piece.getVertices()) {
+                    writer.write(String.format("v %.6f %.6f %.6f", vert.x, vert.y, vert.z));
+                    writer.newLine();
+                }
+            }
+        }
+        finally {
+            if (fileWriter != null)
+                fileWriter.close();
         }
     }
 

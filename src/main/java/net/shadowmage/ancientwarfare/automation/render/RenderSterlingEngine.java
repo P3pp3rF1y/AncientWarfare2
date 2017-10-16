@@ -1,21 +1,17 @@
-/*
 package net.shadowmage.ancientwarfare.automation.render;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.IItemRenderer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileSterlingEngine;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelLoader;
 import net.shadowmage.ancientwarfare.core.model.ModelPiece;
 import net.shadowmage.ancientwarfare.core.util.Trig;
-import org.lwjgl.opengl.GL11;
 
-public class RenderSterlingEngine extends TileEntitySpecialRenderer implements IItemRenderer {
+public class RenderSterlingEngine extends TileEntitySpecialRenderer<TileSterlingEngine> {
 
     private final ModelBaseAW model;
     private final ResourceLocation texture;
@@ -35,8 +31,7 @@ public class RenderSterlingEngine extends TileEntitySpecialRenderer implements I
     }
 
     @Override
-    public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float partialTick) {
-        TileSterlingEngine tt = (TileSterlingEngine) tile;
+    public void render(TileSterlingEngine tt, double x, double y, double z, float partialTick, int destroyStage, float alpha) {
         EnumFacing d = tt.getPrimaryFacing();
         float baseRotation = d == EnumFacing.SOUTH ? 180.f : d == EnumFacing.WEST ? 270.f : d == EnumFacing.EAST ? 90.f : 0.f;
 
@@ -106,34 +101,4 @@ public class RenderSterlingEngine extends TileEntitySpecialRenderer implements I
         float rlrA = (float) Math.atan2(cx - bx, cy - by);
         armAngle2 = rlrA * Trig.TODEGREES;
     }
-
-
-    @Override
-    public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-        return true;
-    }
-
-    @Override
-    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-        return true;
-    }
-
-    @Override
-    public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        GlStateManager.pushMatrix();
-        GlStateManager.translate(0.5d, 0, 0.5d);
-        bindTexture(texture);
-
-        flywheel.setRotation(0, 0, 0);
-        pistonCrank2.setRotation(0, 0, 0);
-        flywheel_arm.setRotation(0, 0, 0);
-
-        pistonCrank.setRotation(0, 0, 0);
-        piston_arm.setRotation(0, 0, 0);
-        piston_arm2.setRotation(0, 0, 0);
-        model.renderModel();
-        GlStateManager.popMatrix();
-    }
-
 }
-*/

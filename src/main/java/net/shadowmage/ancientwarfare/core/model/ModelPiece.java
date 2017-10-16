@@ -20,6 +20,8 @@
  */
 package net.shadowmage.ancientwarfare.core.model;
 
+import com.google.common.collect.Lists;
+import com.sun.javafx.geom.Vec3f;
 import net.minecraft.client.renderer.GlStateManager;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import org.lwjgl.opengl.GL11;
@@ -379,4 +381,28 @@ public class ModelPiece {
         super.finalize();
     }
 
+    public List<Vec3f> getVertices() {
+        List<Vec3f> ret = Lists.newArrayList();
+
+        for (Primitive p : this.primitives) {
+            ret.addAll(rotateAndTranslateVertices(p.getVertices()));
+        }
+        for (ModelPiece p : this.children) {
+            ret.addAll(rotateAndTranslateVertices(p.getVertices()));
+        }
+
+        return ret;
+    }
+
+    private List<Vec3f> rotateAndTranslateVertices(List<Vec3f> vertices) {
+        List<Vec3f> ret = Lists.newArrayList();
+
+        for(Vec3f vert : vertices) {
+            Vec3f rotatedVert = OBJHelper.rotatePoint(vert, new Vec3f(rx, ry, rz));
+
+            ret.add(new Vec3f(x + (isBasePiece() ? 0.5f : 0.0f) + rotatedVert.x, y + rotatedVert.y, z + (isBasePiece() ? 0.5f : 0.0f) + rotatedVert.z));
+        }
+
+        return ret;
+    }
 }

@@ -20,10 +20,13 @@
  */
 package net.shadowmage.ancientwarfare.core.model;
 
+import com.google.common.collect.Lists;
+import com.sun.javafx.geom.Vec3f;
 import net.minecraft.client.renderer.GlStateManager;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Primitive {
 
@@ -133,4 +136,7 @@ public abstract class Primitive {
         }
     }
 
+    public List<Vec3f> getVertices() {
+        return Lists.newArrayList();
+    }
 }

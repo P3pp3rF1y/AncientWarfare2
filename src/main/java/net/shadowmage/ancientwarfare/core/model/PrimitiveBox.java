@@ -20,12 +20,15 @@
  */
 package net.shadowmage.ancientwarfare.core.model;
 
+import com.google.common.collect.Lists;
+import com.sun.javafx.geom.Vec3f;
 import net.minecraft.client.renderer.GlStateManager;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PrimitiveBox extends Primitive {
     float x1, y1, z1, x2, y2, z2;//extends of bounding box in local space (post rotation) -- used for w/l/h for boxes
@@ -316,6 +319,27 @@ public class PrimitiveBox extends Primitive {
                 setImagePixel(image, x, y, 0xff0000aa);
             }
         }
+    }
+
+    @Override
+    public List<Vec3f> getVertices() {
+        Vec3f rotationVec = new Vec3f(rx, ry, rz);
+        Vec3f rotatedPoint1 = OBJHelper.rotatePoint(new Vec3f(x1, y1, z1), rotationVec);
+        Vec3f rotatedPoint2 = OBJHelper.rotatePoint(new Vec3f(x2, y2, z2), rotationVec);
+
+        List<Vec3f> ret = Lists.newArrayList();
+
+        ret.add(new Vec3f(rotatedPoint1.x, rotatedPoint1.y, rotatedPoint1.z));
+        ret.add(new Vec3f(rotatedPoint1.x, rotatedPoint1.y, rotatedPoint2.z));
+        ret.add(new Vec3f(rotatedPoint1.x, rotatedPoint2.y, rotatedPoint1.z));
+        ret.add(new Vec3f(rotatedPoint1.x, rotatedPoint2.y, rotatedPoint2.z));
+
+        ret.add(new Vec3f(rotatedPoint2.x, rotatedPoint1.y, rotatedPoint1.z));
+        ret.add(new Vec3f(rotatedPoint2.x, rotatedPoint1.y, rotatedPoint2.z));
+        ret.add(new Vec3f(rotatedPoint2.x, rotatedPoint2.y, rotatedPoint1.z));
+        ret.add(new Vec3f(rotatedPoint2.x, rotatedPoint2.y, rotatedPoint2.z));
+
+        return ret;
     }
 
 }
