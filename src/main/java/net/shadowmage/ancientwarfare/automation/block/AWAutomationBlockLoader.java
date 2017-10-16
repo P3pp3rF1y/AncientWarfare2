@@ -94,29 +94,29 @@ public class AWAutomationBlockLoader {
     public static void register(RegistryEvent.Register<Block> event) {
         IForgeRegistry<Block> registry = event.getRegistry();
 
-        registry.register(new BlockWorksiteBase("civic_quarry").setTileEntity(WorkSiteQuarry.class).setWorkSize(64));
-        GameRegistry.registerTileEntity(WorkSiteQuarry.class, "civic_quarry_tile");
+        registry.register(new BlockWorksiteBase("quarry").setTileEntity(WorkSiteQuarry.class).setWorkSize(64));
+        GameRegistry.registerTileEntity(WorkSiteQuarry.class, "quarry_tile");
 
-        registry.register(new BlockWorksiteBase("civic_forestry").setTileEntity(WorkSiteTreeFarm.class));
-        GameRegistry.registerTileEntity(WorkSiteTreeFarm.class, "civic_forestry_tile");
+        registry.register(new BlockWorksiteBase("tree_farm").setTileEntity(WorkSiteTreeFarm.class));
+        GameRegistry.registerTileEntity(WorkSiteTreeFarm.class, "forestry_tile");
 
-        registry.register(new BlockWorksiteBase("civic_crop_farm").setTileEntity(WorkSiteCropFarm.class));
-        GameRegistry.registerTileEntity(WorkSiteCropFarm.class, "civic_crop_farm_tile");
+        registry.register(new BlockWorksiteBase("crop_farm").setTileEntity(WorkSiteCropFarm.class));
+        GameRegistry.registerTileEntity(WorkSiteCropFarm.class, "crop_farm_tile");
 
-        registry.register(new BlockWorksiteBase("civic_mushroom_farm").setTileEntity(WorkSiteMushroomFarm.class));
-        GameRegistry.registerTileEntity(WorkSiteMushroomFarm.class, "civic_mushroom_farm_tile");
+        registry.register(new BlockWorksiteBase("mushroom_farm").setTileEntity(WorkSiteMushroomFarm.class));
+        GameRegistry.registerTileEntity(WorkSiteMushroomFarm.class, "mushroom_farm_tile");
 
-        registry.register(new BlockWorksiteBase("civic_animal_farm").setTileEntity(WorkSiteAnimalFarm.class));
-        GameRegistry.registerTileEntity(WorkSiteAnimalFarm.class, "civic_animal_farm_tile");
+        registry.register(new BlockWorksiteBase("animal_farm").setTileEntity(WorkSiteAnimalFarm.class));
+        GameRegistry.registerTileEntity(WorkSiteAnimalFarm.class, "animal_farm_tile");
 
-        registry.register(new BlockWorksiteBase("civic_fish_farm").setTileEntity(WorkSiteFishFarm.class));
-        GameRegistry.registerTileEntity(WorkSiteFishFarm.class, "civic_fish_farm_tile");
+        registry.register(new BlockWorksiteBase("fish_farm").setTileEntity(WorkSiteFishFarm.class));
+        GameRegistry.registerTileEntity(WorkSiteFishFarm.class, "fish_farm_tile");
 
-        registry.register(new BlockWorksiteBase("civic_reed_farm").setTileEntity(WorkSiteReedFarm.class));
-        GameRegistry.registerTileEntity(WorkSiteReedFarm.class, "civic_reed_farm_tile");
+        registry.register(new BlockWorksiteBase("reed_farm").setTileEntity(WorkSiteReedFarm.class));
+        GameRegistry.registerTileEntity(WorkSiteReedFarm.class, "reed_farm_tile");
 
-        registry.register(new BlockWorksiteBase("civic_warehouse").setTileEntity(TileWarehouse.class).setWorkVerticalSize(4));
-        GameRegistry.registerTileEntity(TileWarehouse.class, "civic_warehouse_tile");
+        registry.register(new BlockWorksiteBase("warehouse_control").setTileEntity(TileWarehouse.class).setWorkVerticalSize(4));
+        GameRegistry.registerTileEntity(TileWarehouse.class, "warehouse_control_tile");
 
         registry.register(new BlockWarehouseStorage("warehouse_storage"));
         GameRegistry.registerTileEntity(TileWarehouseStorageMedium.class, "warehouse_storage_medium_tile");
@@ -126,8 +126,8 @@ public class AWAutomationBlockLoader {
         registry.register(new BlockWarehouseInterface("warehouse_interface"));
         GameRegistry.registerTileEntity(TileWarehouseInterface.class, "warehouse_interface_tile");
 
-        registry.register(new BlockWarehouseCraftingStation("warehouse_crafting_station"));
-        GameRegistry.registerTileEntity(TileWarehouseCraftingStation.class, "warehouse_crafting_station_tile");
+        registry.register(new BlockWarehouseCraftingStation("warehouse_crafting"));
+        GameRegistry.registerTileEntity(TileWarehouseCraftingStation.class, "warehouse_crafting_tile");
 
         registry.register(new BlockWarehouseStockViewer("warehouse_stock_viewer"));
         GameRegistry.registerTileEntity(TileWarehouseStockViewer.class, "warehouse_stock_viewer_tile");
@@ -181,97 +181,5 @@ public class AWAutomationBlockLoader {
 
         registry.register(new BlockChunkLoaderDeluxe("chunk_loader_deluxe"));
         GameRegistry.registerTileEntity(TileChunkLoaderDeluxe.class, "chunk_loader_deluxe_tile");
-
-        //        worksiteQuarry.setIcon(RelativeSide.TOP, "ancientwarfare:automation/quarry_top");
-//        worksiteQuarry.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/quarry_bottom");
-//        worksiteQuarry.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/quarry_front");
-//        worksiteQuarry.setIcon(RelativeSide.REAR, "ancientwarfare:automation/quarry_rear");
-//        worksiteQuarry.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/quarry_left");
-//        worksiteQuarry.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/quarry_right");
-
-//        worksiteForestry.setIcon(RelativeSide.TOP, "ancientwarfare:automation/tree_farm_top");
-//        worksiteForestry.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/tree_farm_bottom");
-//        worksiteForestry.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/tree_farm_front");
-//        worksiteForestry.setIcon(RelativeSide.REAR, "ancientwarfare:automation/tree_farm_rear");
-//        worksiteForestry.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/tree_farm_left");
-//        worksiteForestry.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/tree_farm_right");
-
-//        worksiteCropFarm.setIcon(RelativeSide.TOP, "ancientwarfare:automation/crop_farm_top");
-//        worksiteCropFarm.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/crop_farm_bottom");
-//        worksiteCropFarm.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/crop_farm_front");
-//        worksiteCropFarm.setIcon(RelativeSide.REAR, "ancientwarfare:automation/crop_farm_rear");
-//        worksiteCropFarm.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/crop_farm_left");
-//        worksiteCropFarm.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/crop_farm_right");
-
-//        worksiteMushroomFarm.setIcon(RelativeSide.TOP, "ancientwarfare:automation/mushroom_farm_top");
-//        worksiteMushroomFarm.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/mushroom_farm_bottom");
-//        worksiteMushroomFarm.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/mushroom_farm_front");
-//        worksiteMushroomFarm.setIcon(RelativeSide.REAR, "ancientwarfare:automation/mushroom_farm_rear");
-//        worksiteMushroomFarm.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/mushroom_farm_left");
-//        worksiteMushroomFarm.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/mushroom_farm_right");
-
-//        worksiteAnimalFarm.setIcon(RelativeSide.TOP, "ancientwarfare:automation/animal_farm_top");
-//        worksiteAnimalFarm.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/animal_farm_bottom");
-//        worksiteAnimalFarm.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/animal_farm_front");
-//        worksiteAnimalFarm.setIcon(RelativeSide.REAR, "ancientwarfare:automation/animal_farm_rear");
-//        worksiteAnimalFarm.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/animal_farm_left");
-//        worksiteAnimalFarm.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/animal_farm_right");
-
-//        worksiteFishFarm.setIcon(RelativeSide.TOP, "ancientwarfare:automation/fish_farm_top");
-//        worksiteFishFarm.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/fish_farm_bottom");
-//        worksiteFishFarm.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/fish_farm_front");
-//        worksiteFishFarm.setIcon(RelativeSide.REAR, "ancientwarfare:automation/fish_farm_rear");
-//        worksiteFishFarm.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/fish_farm_left");
-//        worksiteFishFarm.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/fish_farm_right");
-
-//        worksiteReedFarm.setIcon(RelativeSide.TOP, "ancientwarfare:automation/reed_farm_top");
-//        worksiteReedFarm.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/reed_farm_bottom");
-//        worksiteReedFarm.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/reed_farm_front");
-//        worksiteReedFarm.setIcon(RelativeSide.REAR, "ancientwarfare:automation/reed_farm_rear");
-//        worksiteReedFarm.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/reed_farm_left");
-//        worksiteReedFarm.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/reed_farm_right");
-
-//        worksiteWarehouse.setIcon(RelativeSide.TOP, "ancientwarfare:automation/warehouse_control_top");
-//        worksiteWarehouse.setIcon(RelativeSide.BOTTOM, "ancientwarfare:automation/warehouse_control_bottom");
-//        worksiteWarehouse.setIcon(RelativeSide.FRONT, "ancientwarfare:automation/warehouse_control_front");
-//        worksiteWarehouse.setIcon(RelativeSide.REAR, "ancientwarfare:automation/warehouse_control_rear");
-//        worksiteWarehouse.setIcon(RelativeSide.LEFT, "ancientwarfare:automation/warehouse_control_left");
-//        worksiteWarehouse.setIcon(RelativeSide.RIGHT, "ancientwarfare:automation/warehouse_control_right");
-
-//        warehouseStorageBlock.setIcon(0, 0, "ancientwarfare:automation/warehouse_storage_small_bottom");
-//        warehouseStorageBlock.setIcon(0, 1, "ancientwarfare:automation/warehouse_storage_small_top");
-//        warehouseStorageBlock.setIcon(0, 2, "ancientwarfare:automation/warehouse_storage_small_side");
-//        warehouseStorageBlock.setIcon(0, 3, "ancientwarfare:automation/warehouse_storage_small_side");
-//        warehouseStorageBlock.setIcon(0, 4, "ancientwarfare:automation/warehouse_storage_small_side");
-//        warehouseStorageBlock.setIcon(0, 5, "ancientwarfare:automation/warehouse_storage_small_side");
-//        warehouseStorageBlock.setIcon(1, 0, "ancientwarfare:automation/warehouse_storage_medium_bottom");
-//        warehouseStorageBlock.setIcon(1, 1, "ancientwarfare:automation/warehouse_storage_medium_top");
-//        warehouseStorageBlock.setIcon(1, 2, "ancientwarfare:automation/warehouse_storage_medium_side");
-//        warehouseStorageBlock.setIcon(1, 3, "ancientwarfare:automation/warehouse_storage_medium_side");
-//        warehouseStorageBlock.setIcon(1, 4, "ancientwarfare:automation/warehouse_storage_medium_side");
-//        warehouseStorageBlock.setIcon(1, 5, "ancientwarfare:automation/warehouse_storage_medium_side");
-//        warehouseStorageBlock.setIcon(2, 0, "ancientwarfare:automation/warehouse_storage_large_bottom");
-//        warehouseStorageBlock.setIcon(2, 1, "ancientwarfare:automation/warehouse_storage_large_top");
-//        warehouseStorageBlock.setIcon(2, 2, "ancientwarfare:automation/warehouse_storage_large_side");
-//        warehouseStorageBlock.setIcon(2, 3, "ancientwarfare:automation/warehouse_storage_large_side");
-//        warehouseStorageBlock.setIcon(2, 4, "ancientwarfare:automation/warehouse_storage_large_side");
-//        warehouseStorageBlock.setIcon(2, 5, "ancientwarfare:automation/warehouse_storage_large_side");
-
-//        warehouseInterface.setIcon(0, 0, "ancientwarfare:automation/warehouse_interface_bottom");
-//        warehouseInterface.setIcon(0, 1, "ancientwarfare:automation/warehouse_interface_top");
-//        warehouseInterface.setIcon(0, 2, "ancientwarfare:automation/warehouse_interface_side");
-//        warehouseInterface.setIcon(0, 3, "ancientwarfare:automation/warehouse_interface_side");
-//        warehouseInterface.setIcon(0, 4, "ancientwarfare:automation/warehouse_interface_side");
-//        warehouseInterface.setIcon(0, 5, "ancientwarfare:automation/warehouse_interface_side");
-
-//        warehouseCrafting.setIcon(0, 0, "ancientwarfare:automation/warehouse_crafting_bottom");
-//        warehouseCrafting.setIcon(0, 1, "ancientwarfare:automation/warehouse_crafting_top");
-//        warehouseCrafting.setIcon(0, 2, "ancientwarfare:automation/warehouse_crafting_front");
-//        warehouseCrafting.setIcon(0, 3, "ancientwarfare:automation/warehouse_crafting_front");
-//        warehouseCrafting.setIcon(0, 4, "ancientwarfare:automation/warehouse_crafting_side");
-//        warehouseCrafting.setIcon(0, 5, "ancientwarfare:automation/warehouse_crafting_side");
-
-
     }
-
 }

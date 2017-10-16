@@ -432,8 +432,8 @@ public class BlockRotationHandler {
         }
 
         @Override
-        public ItemStack removeStackFromSlot(int var1) {
-            @Nonnull ItemStack stack = inventorySlots.remove(var1);
+        public ItemStack removeStackFromSlot(int slot) {
+            @Nonnull ItemStack stack = inventorySlots.set(slot, ItemStack.EMPTY);
             markDirty();
             return stack;
         }

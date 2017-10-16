@@ -1,0 +1,35 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "cube_bottom_top",
+        "transform": "forge:default-block"
+    },
+    "variants": {
+        "size": {
+            "small": {
+                "textures": {
+                    "particle": "ancientwarfare:blocks/automation/warehouse_storage_small_side",
+                    "bottom": "ancientwarfare:blocks/automation/warehouse_storage_small_bottom",
+                    "top": "ancientwarfare:blocks/automation/warehouse_storage_small_top",
+                    "side": "ancientwarfare:blocks/automation/warehouse_storage_small_side"
+                }
+            },
+            "medium": {
+                "textures": {
+                    "particle": "ancientwarfare:blocks/automation/warehouse_storage_medium_side",
+                    "bottom": "ancientwarfare:blocks/automation/warehouse_storage_medium_bottom",
+                    "top": "ancientwarfare:blocks/automation/warehouse_storage_medium_top",
+                    "side": "ancientwarfare:blocks/automation/warehouse_storage_medium_side"
+                }
+            },
+            "large": {
+                "textures": {
+                    "particle": "ancientwarfare:blocks/automation/warehouse_storage_large_side",
+                    "bottom": "ancientwarfare:blocks/automation/warehouse_storage_large_bottom",
+                    "top": "ancientwarfare:blocks/automation/warehouse_storage_large_top",
+                    "side": "ancientwarfare:blocks/automation/warehouse_storage_large_side"
+                }
+            }
+        }
+    }
+}

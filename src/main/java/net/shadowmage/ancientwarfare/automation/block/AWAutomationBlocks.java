@@ -5,29 +5,29 @@ import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
 
 @ObjectHolder(AncientWarfareAutomation.modID)
 public class AWAutomationBlocks {
-	@ObjectHolder("civic_quarry")
+	@ObjectHolder("quarry")
 	public static BlockWorksiteBase worksiteQuarry;
-	@ObjectHolder("civic_forestry")
+	@ObjectHolder("tree_farm")
 	public static BlockWorksiteBase worksiteForestry;
-	@ObjectHolder("civic_crop_farm")
+	@ObjectHolder("crop_farm")
 	public static BlockWorksiteBase worksiteCropFarm;
-	@ObjectHolder("civic_mushroom_farm")
+	@ObjectHolder("mushroom_farm")
 	public static BlockWorksiteBase worksiteMushroomFarm;
-	@ObjectHolder("civic_animal_farm")
+	@ObjectHolder("animal_farm")
 	public static BlockWorksiteBase worksiteAnimalFarm;
-	@ObjectHolder("civic_fish_farm")
+	@ObjectHolder("fish_farm")
 	public static BlockWorksiteBase worksiteFishFarm;
-	@ObjectHolder("civic_reed_farm")
+	@ObjectHolder("reed_farm")
 	public static BlockWorksiteBase worksiteReedFarm;
 	@ObjectHolder("auto_crafting")
 	public static BlockAutoCrafting worksiteAutoCrafting;
-	@ObjectHolder("civic_warehouse")
+	@ObjectHolder("warehouse_control")
 	public static BlockWorksiteBase worksiteWarehouse;
 	@ObjectHolder("warehouse_storage")
 	public static BlockWarehouseStorage warehouseStorageBlock;
 	@ObjectHolder("warehouse_interface")
 	public static BlockWarehouseInterface warehouseInterface;
-	@ObjectHolder("warehouse_crafting_station")
+	@ObjectHolder("warehouse_crafting")
 	public static BlockWarehouseCraftingStation warehouseCrafting;
 	@ObjectHolder("warehouse_stock_viewer")
 	public static BlockWarehouseStockViewer warehouseStockViewer;

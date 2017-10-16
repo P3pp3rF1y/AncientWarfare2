@@ -213,9 +213,9 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
         }
 
         @Override
-        public ItemStack removeStackFromSlot(int var1) {
-            @Nonnull ItemStack result = super.removeStackFromSlot(var1);
-            if(!result.isEmpty() && getFilterForSlot(var1) != null)
+        public ItemStack removeStackFromSlot(int slot) {
+            @Nonnull ItemStack result = super.removeStackFromSlot(slot);
+            if(!result.isEmpty() && getFilterForSlot(slot) != null)
                 shouldCountResources = true;
             return result;
         }

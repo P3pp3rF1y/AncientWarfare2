@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.automation.block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
@@ -20,18 +21,9 @@ import static net.shadowmage.ancientwarfare.core.render.BlockRenderProperties.FA
 
 public class BlockMailbox extends BlockBaseAutomation implements IRotatableBlock {
 
-//    IconRotationMap iconMap = new IconRotationMap();
-
     public BlockMailbox(String regName) {
         super(Material.ROCK, regName);
         setHardness(2.f);
-//        String icon = "ancientwarfare:automation/"+regName;
-//        setIcon(RelativeSide.TOP, icon);
-//        setIcon(RelativeSide.FRONT, icon);
-//        setIcon(RelativeSide.REAR, icon);
-//        setIcon(RelativeSide.BOTTOM, icon);
-//        setIcon(RelativeSide.LEFT, icon);
-//        setIcon(RelativeSide.RIGHT, icon);
     }
 
     @Override
@@ -59,25 +51,6 @@ public class BlockMailbox extends BlockBaseAutomation implements IRotatableBlock
         return new TileMailbox();
     }
 
-//    public BlockMailbox setIcon(RelativeSide relativeSide, String texName) {
-//        this.iconMap.setIcon(this, relativeSide, texName+"_"+relativeSide);
-//        return this;
-//    }
-
-/*
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister p_149651_1_) {
-        iconMap.registerIcons(p_149651_1_);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-        return iconMap.getIcon(this, meta, side);
-    }
-
-*/
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (!world.isRemote) {
@@ -119,4 +92,8 @@ public class BlockMailbox extends BlockBaseAutomation implements IRotatableBlock
         super.breakBlock(world, pos, state);
     }
 
+    @Override
+    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+        return getDefaultState().withProperty(FACING, placer.getHorizontalFacing());
+    }
 }

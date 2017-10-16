@@ -467,10 +467,11 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
         List<IWarehouseStorageTile> destinations = new ArrayList<>();
         storageMap.getDestinations(stack, destinations);
         int moved = 0;
+        ItemStack copy = stack.copy();
         for (IWarehouseStorageTile tile : destinations) {
             moved = tile.insertItem(stack, stack.getCount());
             stack.shrink(moved);
-            changeCachedQuantity(stack, moved);
+            changeCachedQuantity(copy, moved);
             if (stack.getCount() <= 0) {
                 break;
             }

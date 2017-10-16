@@ -153,7 +153,7 @@ public class SongPlayData {
         }
 
         public String name() {
-            return sound.getSoundName().toString();
+            return sound != null ? sound.getSoundName().toString() : "";
         }
 
         public SoundEvent getSound() {

@@ -33,6 +33,6 @@ public abstract class BlockBaseAutomation extends BlockBase implements IClientRe
             }
         });
 
-        ModelLoaderHelper.registerItem(this, "automation", "inventory");
+        ModelLoaderHelper.registerItem(this, "automation", "normal");
     }
 }
