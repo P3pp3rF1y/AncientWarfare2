@@ -20,8 +20,10 @@
  */
 package net.shadowmage.ancientwarfare.core.model;
 
+import com.sun.javafx.geom.Vec2f;
 import com.sun.javafx.geom.Vec3f;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.Tuple;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 
@@ -62,16 +64,70 @@ public class ModelBaseAW {
             fileWriter = new FileWriter(objExport);
             BufferedWriter writer = new BufferedWriter(fileWriter);
 
+            int baseVertID = 0;
+            int baseTextureVertID = 0;
+            int baseNormalID = 0;
+
             for (ModelPiece piece : this.getBasePieces()) {
-                for (Vec3f vert : piece.getVertices()) {
-                    writer.write(String.format("v %.6f %.6f %.6f", vert.x, vert.y, vert.z));
-                    writer.newLine();
+                for (OBJGroup group : piece.getOBJGroups("", ()-> new Tuple<>(textureHeight, textureWidth))) {
+                    exportGroup(group, writer, baseVertID, baseTextureVertID, baseNormalID);
+
+                    baseVertID += group.getVertices().size();
+                    baseTextureVertID += group.getTextureVertices().size();
+                    baseNormalID += group.getNormals().size();
                 }
             }
+            writer.close();
         }
         finally {
             if (fileWriter != null)
                 fileWriter.close();
+        }
+    }
+
+    private void exportGroup(OBJGroup group,BufferedWriter writer, int baseVertID, int baseTextureVertID, int baseNormalID) throws IOException {
+        writer.write(String.format("g %s", group.getName()));
+        writer.newLine();
+
+        exportVertices(group, writer);
+        exportTextureVertices(group, writer);
+        exportNormals(group, writer);
+
+        writer.write("s off");
+        writer.newLine();
+
+        exportFaces(group, writer, baseVertID, baseTextureVertID, baseNormalID);
+
+    }
+
+    private void exportFaces(OBJGroup group, BufferedWriter writer, int baseVertID, int baseTextureVertID, int baseNormalID) throws IOException {
+        for (OBJGroup.Face face : group.getFaces()) {
+            writer.write("f");
+            for (int i = 0; i < face.normalIndexes.length; i++) {
+                writer.write(String.format(" %d/%d/%d", face.vertexIndexes[i] + baseVertID, face.textureVertexIndexes[i] + baseTextureVertID, face.normalIndexes[i] + baseNormalID));
+            }
+            writer.newLine();
+        }
+    }
+
+    private void exportNormals(OBJGroup group, BufferedWriter writer) throws IOException {
+        for(Vec3f vert : group.getNormals()) {
+            writer.write(String.format("vn %.6f %.6f %.6f", vert.x, vert.y, vert.z));
+            writer.newLine();
+        }
+    }
+
+    private void exportTextureVertices(OBJGroup group, BufferedWriter writer) throws IOException {
+        for(Vec2f vert : group.getTextureVertices()) {
+            writer.write(String.format("vt %.6f %.6f", vert.x, vert.y));
+            writer.newLine();
+        }
+    }
+
+    private void exportVertices(OBJGroup group, BufferedWriter writer) throws IOException {
+        for(Vec3f vert : group.getVertices()) {
+            writer.write(String.format("v %.6f %.6f %.6f", vert.x, vert.y, vert.z));
+            writer.newLine();
         }
     }
 

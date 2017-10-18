@@ -21,14 +21,17 @@
 package net.shadowmage.ancientwarfare.core.model;
 
 import com.google.common.collect.Lists;
+import com.sun.javafx.geom.Vec2f;
 import com.sun.javafx.geom.Vec3f;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.Tuple;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 public class PrimitiveBox extends Primitive {
     float x1, y1, z1, x2, y2, z2;//extends of bounding box in local space (post rotation) -- used for w/l/h for boxes
@@ -322,24 +325,183 @@ public class PrimitiveBox extends Primitive {
     }
 
     @Override
-    public List<Vec3f> getVertices() {
-        Vec3f rotationVec = new Vec3f(rx, ry, rz);
-        Vec3f rotatedPoint1 = OBJHelper.rotatePoint(new Vec3f(x1, y1, z1), rotationVec);
-        Vec3f rotatedPoint2 = OBJHelper.rotatePoint(new Vec3f(x2, y2, z2), rotationVec);
+    public OBJGroup getOBJGroup(String parentName, Supplier<Tuple<Integer, Integer>> getTextureSizes) {
+        return new OBJGroup.Builder()
+                .setName(parentName + "Box")
+                .setVertices(getVertices())
+                .setTextureVertices(getTextureVertices(getTextureSizes.get().getFirst(), getTextureSizes.get().getSecond()))
+                .setNormals(getNormals())
+                .setFaces(getFaces())
+                .build();
+    }
 
-        List<Vec3f> ret = Lists.newArrayList();
+    private List<Vec2f> getTextureVertices(float textureWidth, float textureHeight) {
+        List<Vec2f> ret = Lists.newArrayList();
 
-        ret.add(new Vec3f(rotatedPoint1.x, rotatedPoint1.y, rotatedPoint1.z));
-        ret.add(new Vec3f(rotatedPoint1.x, rotatedPoint1.y, rotatedPoint2.z));
-        ret.add(new Vec3f(rotatedPoint1.x, rotatedPoint2.y, rotatedPoint1.z));
-        ret.add(new Vec3f(rotatedPoint1.x, rotatedPoint2.y, rotatedPoint2.z));
+        float px = 1.f / textureWidth;
+        float py = 1.f / textureHeight;
+        float wi = (float) Math.ceil((x2 - x1) * 16.f);
+        float he = (float) Math.ceil((y2 - y1) * 16.f);
+        float le = (float) Math.ceil((z2 - z1) * 16.f);
+        float ty = this.ty();
+        float tx = this.tx();
 
-        ret.add(new Vec3f(rotatedPoint2.x, rotatedPoint1.y, rotatedPoint1.z));
-        ret.add(new Vec3f(rotatedPoint2.x, rotatedPoint1.y, rotatedPoint2.z));
-        ret.add(new Vec3f(rotatedPoint2.x, rotatedPoint2.y, rotatedPoint1.z));
-        ret.add(new Vec3f(rotatedPoint2.x, rotatedPoint2.y, rotatedPoint2.z));
+        float tx1, ty1, tx2, ty2;
+        if (wi < 1) {
+            wi = 1;
+        }
+        if (he < 1) {
+            he = 1;
+        }
+        if (le < 1) {
+            le = 1;
+        }
+
+        //west
+        tx1 = (tx + le + wi) * px;
+        ty1 = (textureHeight - (ty + le + he)) * py;
+        tx2 = (tx + le + wi + le) * px;
+        ty2 = (textureHeight - (ty + le)) * py;
+        ret.add(new Vec2f(tx2, ty2));
+        ret.add(new Vec2f(tx1, ty2));
+        ret.add(new Vec2f(tx1, ty1));
+        ret.add(new Vec2f(tx2, ty1));
+
+        //south
+        tx1 = (tx + le + le + wi) * px;
+        ty1 = (textureHeight - (ty + le + he)) * py;
+        tx2 = (tx + le + wi + le + wi) * px;
+        ty2 = (textureHeight - (ty + le)) * py;
+        ret.add(new Vec2f(tx2, ty2));
+        ret.add(new Vec2f(tx1, ty2));
+        ret.add(new Vec2f(tx1, ty1));
+        ret.add(new Vec2f(tx2, ty1));
+
+        //east
+        tx1 = (tx) * px;
+        ty1 = (textureHeight - (ty + le + he)) * py;
+        tx2 = (tx + le) * px;
+        ty2 = (textureHeight - (ty + le)) * py;
+        ret.add(new Vec2f(tx2, ty2));
+        ret.add(new Vec2f(tx1, ty2));
+        ret.add(new Vec2f(tx1, ty1));
+        ret.add(new Vec2f(tx2, ty1));
+
+        //north
+        tx1 = (tx + le) * px;
+        ty1 = (textureHeight - (ty + le + he)) * py;
+        tx2 = (tx + le + wi) * px;
+        ty2 = (textureHeight - (ty + le)) * py;
+        ret.add(new Vec2f(tx2, ty2));
+        ret.add(new Vec2f(tx1, ty2));
+        ret.add(new Vec2f(tx1, ty1));
+        ret.add(new Vec2f(tx2, ty1));
+
+        //down
+        tx1 = (tx + le + wi) * px;
+        ty1 = (textureHeight - (ty + le)) * py;
+        tx2 = (tx + le + wi + wi) * px;
+        ty2 = (textureHeight - (ty)) * py;
+        ret.add(new Vec2f(tx2, ty1));
+        ret.add(new Vec2f(tx1, ty1));
+        ret.add(new Vec2f(tx1, ty2));
+        ret.add(new Vec2f(tx2, ty2));
+
+        //up
+        tx1 = (tx + le) * px;
+        ty1 = (textureHeight - (ty + le)) * py;
+        tx2 = (tx + le + wi) * px;
+        ty2 = (textureHeight - (ty)) * py;
+        ret.add(new Vec2f(tx2, ty1));
+        ret.add(new Vec2f(tx1, ty1));
+        ret.add(new Vec2f(tx1, ty2));
+        ret.add(new Vec2f(tx2, ty2));
 
         return ret;
     }
 
+    private List<OBJGroup.Face> getFaces() {
+        List<OBJGroup.Face> faces = Lists.newArrayList();
+
+        //west
+        faces.add(new OBJGroup.Face(
+                new int[]{5,1,3,7},
+                new int[]{1,2,3,4},
+                new int[]{1, 1, 1, 1}
+        ));
+
+        //south
+        faces.add(new OBJGroup.Face(
+                new int[]{1,2,4,3},
+                new int[]{5,6,7,8},
+                new int[]{2,2,2,2}
+        ));
+
+        //east
+        faces.add(new OBJGroup.Face(
+                new int[]{2,6,8,4},
+                new int[]{9,10,11,12},
+                new int[]{3, 3, 3, 3}
+        ));
+
+        //north
+        faces.add(new OBJGroup.Face(
+                new int[]{6,5,7,8},
+                new int[]{13,14,15,16},
+                new int[]{4, 4, 4, 4}
+        ));
+
+        //down
+        faces.add(new OBJGroup.Face(
+                new int[]{5,6,2,1},
+                new int[]{17,18,19,20},
+                new int[]{5, 5, 5, 5}
+        ));
+
+        //up
+        faces.add(new OBJGroup.Face(
+                new int[]{3,4,8,7},
+                new int[]{21,22,23,24},
+                new int[]{6, 6, 6, 6}
+        ));
+
+        return faces;
+    }
+
+    private List<Vec3f> getVertices() {
+        Vec3f rotationVec = new Vec3f(rx, ry, rz);
+        List<Vec3f> ret = Lists.newArrayList();
+
+        ret.add(addVec(OBJHelper.rotatePoint(new Vec3f(x1, y1, z1), rotationVec), new Vec3f(x, y, z)));
+        ret.add(addVec(OBJHelper.rotatePoint(new Vec3f(x2, y1, z1), rotationVec), new Vec3f(x, y, z)));
+
+        ret.add(addVec(OBJHelper.rotatePoint(new Vec3f(x1, y2, z1), rotationVec), new Vec3f(x, y, z)));
+        ret.add(addVec(OBJHelper.rotatePoint(new Vec3f(x2, y2, z1), rotationVec), new Vec3f(x, y, z)));
+
+        ret.add(addVec(OBJHelper.rotatePoint(new Vec3f(x1, y1, z2), rotationVec), new Vec3f(x, y, z)));
+        ret.add(addVec(OBJHelper.rotatePoint(new Vec3f(x2, y1, z2), rotationVec), new Vec3f(x, y, z)));
+
+        ret.add(addVec(OBJHelper.rotatePoint(new Vec3f(x1, y2, z2), rotationVec), new Vec3f(x, y, z)));
+        ret.add(addVec(OBJHelper.rotatePoint(new Vec3f(x2, y2, z2), rotationVec), new Vec3f(x, y, z)));
+
+        return ret;
+    }
+
+    private Vec3f addVec(Vec3f primary, Vec3f toAdd) {
+        primary.add(toAdd);
+        return primary;
+    }
+
+    public List<Vec3f> getNormals() {
+        List<Vec3f> ret = Lists.newArrayList();
+
+        ret.add(new Vec3f(-1, 0, 0));
+        ret.add(new Vec3f(0, 0, -1));
+        ret.add(new Vec3f(1, 0, 0));
+        ret.add(new Vec3f(0, 0, 1));
+        ret.add(new Vec3f(0, -1, 0));
+        ret.add(new Vec3f(0, 1, 0));
+
+        return ret;
+    }
 }

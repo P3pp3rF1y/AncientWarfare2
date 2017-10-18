@@ -21,8 +21,8 @@
 package net.shadowmage.ancientwarfare.core.model;
 
 import com.google.common.collect.Lists;
-import com.sun.javafx.geom.Vec3f;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.Tuple;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import org.lwjgl.opengl.GL11;
 
@@ -31,6 +31,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Supplier;
 
 /*
  * A single piece of a model.  A piece is a discrete static component of the model.  Pieces may be rotated and moved
@@ -381,28 +382,32 @@ public class ModelPiece {
         super.finalize();
     }
 
-    public List<Vec3f> getVertices() {
-        List<Vec3f> ret = Lists.newArrayList();
+    public List<OBJGroup> getOBJGroups(String parentName, Supplier<Tuple<Integer, Integer>> getTextureSizes) {
+        List<OBJGroup> ret = Lists.newArrayList();
 
+        int groupID = 1;
         for (Primitive p : this.primitives) {
-            ret.addAll(rotateAndTranslateVertices(p.getVertices()));
+            OBJGroup group = p.getOBJGroup(parentName + pieceName + ".", getTextureSizes);
+            group.setName(group.getName() + String.format("%02d", groupID));
+            ret.add(rotateGroupVertices(group));
+            groupID++;
         }
         for (ModelPiece p : this.children) {
-            ret.addAll(rotateAndTranslateVertices(p.getVertices()));
+            ret.addAll(rotateGroupVertices(p.getOBJGroups(parentName + pieceName + ".", getTextureSizes)));
         }
 
         return ret;
     }
 
-    private List<Vec3f> rotateAndTranslateVertices(List<Vec3f> vertices) {
-        List<Vec3f> ret = Lists.newArrayList();
-
-        for(Vec3f vert : vertices) {
-            Vec3f rotatedVert = OBJHelper.rotatePoint(vert, new Vec3f(rx, ry, rz));
-
-            ret.add(new Vec3f(x + (isBasePiece() ? 0.5f : 0.0f) + rotatedVert.x, y + rotatedVert.y, z + (isBasePiece() ? 0.5f : 0.0f) + rotatedVert.z));
+    private List<OBJGroup> rotateGroupVertices(List<OBJGroup> groups) {
+        for(OBJGroup group : groups) {
+            rotateGroupVertices(group);
         }
+        return groups;
+    }
 
-        return ret;
+    private OBJGroup rotateGroupVertices(OBJGroup group) {
+        group.rotateAndTranslateVertices(x + (isBasePiece() ? 0.5f : 0.0f), y, z + (isBasePiece() ? 0.5f : 0.0f), rx, ry, rz);
+        return group;
     }
 }

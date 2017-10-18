@@ -18,9 +18,10 @@ public class OBJHelper {
         return rotated;
     }
 
+    //PI / 90 below is to just match what appears to be something doubling degrees in ModelBaseAW
     public static Vec3f rotateAroundX(Vec3f src, float rotation) {
-        double sin = sin(rotation);
-        double cos = cos(rotation);
+        double sin = sin(rotation * (Math.PI / 90f));
+        double cos = cos(rotation * (Math.PI / 90f));
 
         Vec3f dst = new Vec3f();
 
@@ -33,8 +34,8 @@ public class OBJHelper {
     }
 
     public static Vec3f rotateAroundY(Vec3f src, float rotation) {
-        double sin = sin(rotation);
-        double cos = cos(rotation);
+        double sin = sin(rotation * (Math.PI / 90f));
+        double cos = cos(rotation * (Math.PI / 90f));
 
         Vec3f dst = new Vec3f();
 
@@ -47,8 +48,8 @@ public class OBJHelper {
     }
 
     public static Vec3f rotateAroundZ(Vec3f src, float rotation) {
-        double sin = sin(rotation);
-        double cos = cos(rotation);
+        double sin = sin(rotation * (Math.PI / 90f));
+        double cos = cos(rotation * (Math.PI / 90f));
 
         Vec3f dst = new Vec3f();
 

@@ -32,6 +32,12 @@ public class RenderSterlingEngine extends TileEntitySpecialRenderer<TileSterling
 
     @Override
     public void render(TileSterlingEngine tt, double x, double y, double z, float partialTick, int destroyStage, float alpha) {
+/*        try {
+            model.exportOBJ("test.obj");
+        } catch (IOException e) {
+
+        }*/
+
         EnumFacing d = tt.getPrimaryFacing();
         float baseRotation = d == EnumFacing.SOUTH ? 180.f : d == EnumFacing.WEST ? 270.f : d == EnumFacing.EAST ? 90.f : 0.f;
 
