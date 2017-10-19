@@ -1,6 +1,8 @@
 package net.shadowmage.ancientwarfare.core.proxy;
 
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Property;
@@ -9,10 +11,13 @@ import net.minecraftforge.fml.client.config.GuiConfig;
 import net.minecraftforge.fml.client.config.GuiConfigEntries;
 import net.minecraftforge.fml.client.config.GuiConfigEntries.CategoryEntry;
 import net.minecraftforge.fml.client.config.IConfigElement;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.ConfigManager;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
-import net.shadowmage.ancientwarfare.core.render.TextureLoader;
+import net.shadowmage.ancientwarfare.core.render.EngineeringStationRenderer;
+import net.shadowmage.ancientwarfare.core.render.ResearchStationRenderer;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -32,7 +37,7 @@ public class ClientProxy extends ClientProxyBase {
         super.preInit();
 
         MinecraftForge.EVENT_BUS.register(InputHandler.instance);
-        MinecraftForge.EVENT_BUS.register(new TextureLoader());
+        MinecraftForge.EVENT_BUS.register(this);
         InputHandler.instance.loadConfig();
 
         ConfigManager.registerConfigCategory(new DummyCategoryElement("awconfig.core_keybinds", "awconfig.core_keybinds", KeybindCategoryEntry.class));
@@ -81,4 +86,9 @@ public class ClientProxy extends ClientProxyBase {
 
     }
 
+    @SubscribeEvent
+    public void onPreTextureStitch(TextureStitchEvent.Pre evt) {
+        EngineeringStationRenderer.INSTANCE.setSprite(evt.getMap().registerSprite(new ResourceLocation(AncientWarfareCore.modID + ":model/core/tile_engineering_station")));
+        ResearchStationRenderer.INSTANCE.setSprite(evt.getMap().registerSprite(new ResourceLocation(AncientWarfareCore.modID + ":model/core/tile_research_station")));
+    }
 }

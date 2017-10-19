@@ -92,7 +92,7 @@ public class BlockDraftingStation extends BlockBaseStructure implements IBakeryP
         ModelRegistryHelper.register(DraftingStationRenderer.MODEL_LOCATION, new CCBakeryModel(AncientWarfareCore.modID + ":model/structure/tile_drafting_station") {
             @Override
             public TextureAtlasSprite getParticleTexture() {
-                return DraftingStationRenderer.sprite;
+                return DraftingStationRenderer.INSTANCE.sprite;
             }
         });
 

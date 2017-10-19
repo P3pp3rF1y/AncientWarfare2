@@ -92,7 +92,7 @@ public class BlockAutoCrafting extends BlockWorksiteBase implements IBakeryProvi
         ModelRegistryHelper.register(AutoCraftingRenderer.MODEL_LOCATION, new CCBakeryModel(AncientWarfareCore.modID + ":model/automation/tile_auto_crafting") {
             @Override
             public TextureAtlasSprite getParticleTexture() {
-                return AutoCraftingRenderer.sprite;
+                return AutoCraftingRenderer.INSTANCE.sprite;
             }
         });
 

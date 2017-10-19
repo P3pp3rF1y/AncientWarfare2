@@ -129,7 +129,7 @@ public class BlockEngineeringStation extends BlockRotatableTile implements IClie
         ModelRegistryHelper.register(EngineeringStationRenderer.MODEL_LOCATION, new CCBakeryModel(AncientWarfareCore.modID + ":model/core/tile_engineering_station") {
             @Override
             public TextureAtlasSprite getParticleTexture() {
-                return EngineeringStationRenderer.sprite;
+                return EngineeringStationRenderer.INSTANCE.sprite;
             }
         });
 

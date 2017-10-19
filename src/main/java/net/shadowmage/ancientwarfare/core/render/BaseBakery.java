@@ -5,38 +5,51 @@ import codechicken.lib.model.bakery.generation.ISimpleBlockBakery;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCModelState;
 import codechicken.lib.render.CCRenderState;
+import codechicken.lib.render.OBJParser;
 import codechicken.lib.render.buffer.BakingVertexBuffer;
 import codechicken.lib.util.TransformUtils;
-import codechicken.lib.vec.Rotation;
-import codechicken.lib.vec.Vector3;
+import codechicken.lib.vec.RedundantTransformation;
 import codechicken.lib.vec.uv.IconTransformation;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.common.property.IExtendedBlockState;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
-public abstract class BaseStationRenderer implements ISimpleBlockBakery {
+public abstract class BaseBakery implements ISimpleBlockBakery {
     public IExtendedBlockState handleState(IExtendedBlockState state, IBlockAccess access, BlockPos pos) {
         return state;
     }
 
-    protected abstract CCModel getModel();
+    private Map<String, CCModel> groups;
+    public TextureAtlasSprite sprite;
+    private IconTransformation iconTransform;
 
-    protected abstract IconTransformation getIconTransform();
+    protected BaseBakery(String modelPath) {
+        groups = OBJParser.parseModels(new ResourceLocation(AncientWarfareCore.modID, "models/block/" +modelPath), 7, new RedundantTransformation());
 
-    protected EnumFacing getFacing(IExtendedBlockState state) {
-        return EnumFacing.NORTH;
+        for(Map.Entry<String, CCModel> group : groups.entrySet()) {
+            group.setValue(group.getValue().backfacedCopy().computeNormals());
+        }
+    }
+
+    public void setSprite(TextureAtlasSprite textureAtlasSprite) {
+        sprite = textureAtlasSprite;
+        iconTransform = new IconTransformation(sprite);
     }
 
     private static final PerspectiveAwareModelProperties MODEL_PROPERTIES;
@@ -67,10 +80,33 @@ public abstract class BaseStationRenderer implements ISimpleBlockBakery {
         ccrs.reset();
         ccrs.bind(buffer);
 
-        getModel().copy().apply(Rotation.quarterRotations[(getFacing(state).getHorizontalIndex() + 2) & 3].at(Vector3.center)).render(ccrs, getIconTransform());
+        Map<String, CCModel> transformedGroups = applyModelTransforms(groups, face, state);
+
+        renderBlockModels(transformedGroups, ccrs, face, state);
 
         buffer.finishDrawing();
         return buffer.bake();
+    }
+
+    protected Map<String, CCModel> applyModelTransforms(Map<String, CCModel> modelGroups, EnumFacing face, IExtendedBlockState state) {
+        return modelGroups;
+    }
+
+    protected void renderBlockModels(Map<String, CCModel> modelGroups, CCRenderState ccrs, EnumFacing face, IExtendedBlockState state) {
+        renderAllModels(modelGroups, ccrs);
+    }
+
+    private void renderAllModels(CCRenderState ccrs) {
+        renderAllModels(groups, ccrs);
+    }
+    private void renderAllModels(Map<String, CCModel> modelGroups, CCRenderState ccrs) {
+        for(Map.Entry<String, CCModel> group : modelGroups.entrySet()) {
+            group.getValue().render(ccrs, iconTransform);
+        }
+    }
+
+    protected void renderItemModels(CCRenderState ccrs) {
+        renderAllModels(ccrs);
     }
 
     @Nonnull
@@ -82,7 +118,7 @@ public abstract class BaseStationRenderer implements ISimpleBlockBakery {
         ccrs.reset();
         ccrs.bind(buffer);
 
-        getModel().render(ccrs, getIconTransform());
+        renderItemModels(ccrs);
 
         buffer.finishDrawing();
         return buffer.bake();

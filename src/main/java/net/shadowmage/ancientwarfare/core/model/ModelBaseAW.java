@@ -112,7 +112,7 @@ public class ModelBaseAW {
 
     private void exportNormals(OBJGroup group, BufferedWriter writer) throws IOException {
         for(Vec3f vert : group.getNormals()) {
-            writer.write(String.format("vn %.6f %.6f %.6f", vert.x, vert.y, vert.z));
+            writer.write(String.format("vn %.4f %.4f %.4f", vert.x, vert.y, vert.z));
             writer.newLine();
         }
     }

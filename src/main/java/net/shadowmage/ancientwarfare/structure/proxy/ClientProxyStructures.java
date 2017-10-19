@@ -70,6 +70,6 @@ public class ClientProxyStructures extends ClientProxyBase {
 
     @SubscribeEvent
     public void onPreTextureStitch(TextureStitchEvent.Pre evt) {
-        DraftingStationRenderer.setSprite(evt.getMap().registerSprite(new ResourceLocation(AncientWarfareCore.modID + ":model/structure/tile_drafting_station")));
+        DraftingStationRenderer.INSTANCE.setSprite(evt.getMap().registerSprite(new ResourceLocation(AncientWarfareCore.modID + ":model/structure/tile_drafting_station")));
     }
 }
