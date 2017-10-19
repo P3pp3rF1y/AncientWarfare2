@@ -26,7 +26,6 @@ import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 public class AWAutomationStatics extends ModConfiguration {
     //TODO config annotations
     public static int conduitRenderID = -1;
-    public static int sterlingEngineRenderID = -1;
 
     public static int fishFarmRescanTicks = 200;
     public static int animalFarmRescanTicks = 200;
@@ -66,7 +65,7 @@ public class AWAutomationStatics extends ModConfiguration {
     public static double med_storage_energy_max = 14400.d;
     public static double high_storage_energy_max = 24000.d;
 
-    public static double sterling_generator_output = 1.d;
+    public static double stirling_generator_output = 1.d;
     public static double waterwheel_generator_output = 1.d;
     public static double hand_cranked_generator_output = 1.d;
     public static double windmill_per_size_output = 1.d;
@@ -204,9 +203,9 @@ public class AWAutomationStatics extends ModConfiguration {
                 "Directly sets the amount of torque/MJ that a storage tile may store internally.").getDouble();
 
 
-        sterling_generator_output = config.get(serverOptions, "sterling_generator_output_factor", sterling_generator_output,
-                "Factor applied to energy output from sterling generator.\n" +
-                "Default = " + sterling_generator_output + "Lower values reduce output, higher values increase output.\n" +
+        stirling_generator_output = config.get(serverOptions, "stirling_generator_output_factor", stirling_generator_output,
+                "Factor applied to energy output from stirling generator.\n" +
+                "Default = " + stirling_generator_output + "Lower values reduce output, higher values increase output.\n" +
                         "Zero or negative values will result in no energy output").getDouble();
 
         waterwheel_generator_output = config.get(serverOptions, "waterwheel_generator_output_factor", waterwheel_generator_output,

@@ -15,7 +15,7 @@ import net.shadowmage.ancientwarfare.automation.chunkloader.AWChunkLoader;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.container.ContainerChunkLoaderDeluxe;
 import net.shadowmage.ancientwarfare.automation.container.ContainerMailbox;
-import net.shadowmage.ancientwarfare.automation.container.ContainerTorqueGeneratorSterling;
+import net.shadowmage.ancientwarfare.automation.container.ContainerTorqueGeneratorStirling;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseInterface;
@@ -106,7 +106,7 @@ public class AncientWarfareAutomation {
         NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_ANIMAL_FARM, ContainerWorksiteAnimalFarm.class);
         NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_REED_FARM, ContainerWorksiteReedFarm.class);
         NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_FISH_FARM, ContainerWorksiteFishFarm.class);
-        NetworkHandler.registerContainer(NetworkHandler.GUI_TORQUE_GENERATOR_STERLING, ContainerTorqueGeneratorSterling.class);
+        NetworkHandler.registerContainer(NetworkHandler.GUI_STIRLING_GENERATOR, ContainerTorqueGeneratorStirling.class);
         NetworkHandler.registerContainer(NetworkHandler.GUI_CHUNK_LOADER_DELUXE, ContainerChunkLoaderDeluxe.class);
         NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_STOCK, ContainerWarehouseStockViewer.class);
         NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_BOUNDS, ContainerWorksiteBoundsAdjust.class);

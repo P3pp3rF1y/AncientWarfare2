@@ -25,7 +25,7 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControlL
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControlLight;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControlMedium;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileHandGenerator;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileSterlingEngine;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileStirlingGenerator;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaftHeavy;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaftLight;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaftMedium;
@@ -80,7 +80,7 @@ public class AWAutomationBlockLoader {
         registry.register(new ItemBlockTorqueTile(AWAutomationBlocks.torqueConduit));
         registry.register(new ItemBlockTorqueTile(AWAutomationBlocks.torqueShaft));
         registry.register(new ItemBlockTorqueTile(AWAutomationBlocks.torqueDistributor));
-        registry.register(new ItemBlockTorqueTile(AWAutomationBlocks.torqueGeneratorSterling));
+        registry.register(new ItemBlockTorqueTile(AWAutomationBlocks.stirlingGenerator));
         registry.register(new ItemBlockTorqueTile(AWAutomationBlocks.torqueGeneratorWaterwheel));
         registry.register(new ItemBlockTorqueTile(AWAutomationBlocks.handCrankedEngine));
         registry.register(new ItemBlock(AWAutomationBlocks.windmillBlade).setRegistryName(AWAutomationBlocks.windmillBlade.getRegistryName()));
@@ -161,8 +161,8 @@ public class AWAutomationBlockLoader {
         GameRegistry.registerTileEntity(TileDistributorMedium.class, "torque_distributor_medium_tile");
         GameRegistry.registerTileEntity(TileDistributorHeavy.class, "torque_distributor_heavy_tile");
 
-        registry.register(new BlockTorqueGeneratorSterling("torque_generator_sterling"));
-        GameRegistry.registerTileEntity(TileSterlingEngine.class, "torque_generator_sterling_tile");
+        registry.register(new BlockStirlingGenerator("stirling_generator"));
+        GameRegistry.registerTileEntity(TileStirlingGenerator.class, "stirling_generator_tile");
 
         registry.register(new BlockTorqueGeneratorWaterwheel("torque_generator_waterwheel"));
         GameRegistry.registerTileEntity(TileWaterwheel.class, "torque_generator_waterwheel_tile");

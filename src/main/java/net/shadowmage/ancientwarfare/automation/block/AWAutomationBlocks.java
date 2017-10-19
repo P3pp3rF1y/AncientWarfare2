@@ -48,8 +48,8 @@ public class AWAutomationBlocks {
 	public static BlockTorqueDistributor torqueDistributor;
 	@ObjectHolder("hand_cranked_engine")
 	public static BlockHandCrankedEngine handCrankedEngine;
-	@ObjectHolder("torque_generator_sterling")
-	public static BlockTorqueGenerator torqueGeneratorSterling;
+	@ObjectHolder("stirling_generator")
+	public static BlockTorqueGenerator stirlingGenerator;
 	@ObjectHolder("torque_generator_waterwheel")
 	public static BlockTorqueGenerator torqueGeneratorWaterwheel;
 	@ObjectHolder("windmill_blade")

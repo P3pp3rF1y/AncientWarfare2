@@ -5,13 +5,13 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.MathHelper;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileSterlingEngine;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileStirlingGenerator;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelLoader;
 import net.shadowmage.ancientwarfare.core.model.ModelPiece;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
-public class RenderSterlingEngine extends TileEntitySpecialRenderer<TileSterlingEngine> {
+public class RenderSterlingEngine extends TileEntitySpecialRenderer<TileStirlingGenerator> {
 
     private final ModelBaseAW model;
     private final ResourceLocation texture;
@@ -19,7 +19,7 @@ public class RenderSterlingEngine extends TileEntitySpecialRenderer<TileSterling
 
     public RenderSterlingEngine() {
         ModelLoader loader = new ModelLoader();
-        texture = new ResourceLocation("ancientwarfare:textures/model/automation/sterling_engine.png");
+        texture = new ResourceLocation("ancientwarfare:textures/model/automation/stirling_generator.png");
         model = loader.loadModel(getClass().getResourceAsStream("/assets/ancientwarfare/models/automation/sterling_engine.m2f"));
         flywheel = model.getPiece("flywheel2");
         pistonCrank = model.getPiece("piston_crank");
@@ -31,8 +31,8 @@ public class RenderSterlingEngine extends TileEntitySpecialRenderer<TileSterling
     }
 
     @Override
-    public void render(TileSterlingEngine tt, double x, double y, double z, float partialTick, int destroyStage, float alpha) {
-/*        try {
+    public void render(TileStirlingGenerator tt, double x, double y, double z, float partialTick, int destroyStage, float alpha) {
+/*                try {
             model.exportOBJ("test.obj");
         } catch (IOException e) {
 
@@ -59,7 +59,7 @@ public class RenderSterlingEngine extends TileEntitySpecialRenderer<TileSterling
         pistonCrank.setRotation(0, 0, -rotation);
         piston_arm.setRotation(0, 0, rotation + armAngle);
         piston_arm2.setRotation(0, 0, rotation + armAngle2);
-        model.renderModel();
+        //model.renderModel();
 //  GlStateManager.disableRescaleNormal();
         GlStateManager.popMatrix();
     }
