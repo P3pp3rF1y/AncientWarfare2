@@ -10,7 +10,7 @@ public class OBJGroup {
     private String name;
     private List<Vec3f> vertices;
     private final List<Vec2f> textureVertices;
-    private final List<Vec3f> normals;
+    private List<Vec3f> normals;
     private final List<Face> faces;
 
     private OBJGroup(String name, List<Vec3f> vertices, List<Vec2f> textureVertices, List<Vec3f> normals, List<Face> faces) {
@@ -56,6 +56,15 @@ public class OBJGroup {
         }
 
         vertices = replace;
+
+        replace = Lists.newArrayList();
+        for (Vec3f vert : normals) {
+            Vec3f rotatedVert = OBJHelper.rotatePoint(vert, new Vec3f(rx, ry, rz));
+
+            replace.add(rotatedVert);
+        }
+
+        normals = replace;
     }
 
 
