@@ -5,6 +5,7 @@ import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
+import net.shadowmage.ancientwarfare.core.util.Trig;
 
 /*
  * base template class that includes a single torque cell and rotation synching
@@ -145,7 +146,13 @@ public abstract class TileTorqueSingleCell extends TileTorqueBase {
 
     @Override
     public float getClientOutputRotation(EnumFacing from, float delta) {
-        return from == orientation ? getRotation(rotation, prevRotation, delta) : 0;
+        //TODO why the from check here? Don't see how that relates to the rotation of the parts
+        return from == orientation ? Math.round(((getRotation(rotation, prevRotation, delta) * Trig.TORADIANS) % ((float) Math.PI * 2)) * getRoundRatio()) / getRoundRatio(): 0;
+    }
+
+    private float getRoundRatio() {
+        double rd = (rotation - prevRotation);
+        return (int) (100 / (rd > 0 ? rd : 1f));
     }
 
     @Override

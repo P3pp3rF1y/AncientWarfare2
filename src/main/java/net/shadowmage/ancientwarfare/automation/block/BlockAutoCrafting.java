@@ -23,7 +23,7 @@ import net.shadowmage.ancientwarfare.automation.tile.worksite.TileAutoCrafting;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.render.BlockRenderProperties;
+import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
 public class BlockAutoCrafting extends BlockWorksiteBase implements IBakeryProvider {
@@ -34,7 +34,7 @@ public class BlockAutoCrafting extends BlockWorksiteBase implements IBakeryProvi
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer.Builder(this).add(BlockRenderProperties.UNLISTED_FACING).build();
+        return new BlockStateContainer.Builder(this).add(CoreProperties.UNLISTED_FACING).build();
     }
 
     @Override
@@ -51,7 +51,7 @@ public class BlockAutoCrafting extends BlockWorksiteBase implements IBakeryProvi
             facing = ((BlockRotationHandler.IRotatableTile) tileentity).getPrimaryFacing();
         }
 
-        return ((IExtendedBlockState) super.getExtendedState(state, world, pos)).withProperty(BlockRenderProperties.UNLISTED_FACING, facing);
+        return ((IExtendedBlockState) super.getExtendedState(state, world, pos)).withProperty(CoreProperties.UNLISTED_FACING, facing);
     }
 
     @Override
@@ -98,7 +98,7 @@ public class BlockAutoCrafting extends BlockWorksiteBase implements IBakeryProvi
 
         ModelLoaderHelper.registerItem(this, "automation", "normal");
 
-        ModelBakery.registerBlockKeyGenerator(this, state -> state.getBlock().getRegistryName().toString() + "," + state.getValue(BlockRenderProperties.UNLISTED_FACING).toString());
+        ModelBakery.registerBlockKeyGenerator(this, state -> state.getBlock().getRegistryName().toString() + "," + state.getValue(CoreProperties.UNLISTED_FACING).toString());
 
     }
 

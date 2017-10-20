@@ -35,9 +35,9 @@ public abstract class BaseBakery implements ISimpleBlockBakery {
         return state;
     }
 
-    private Map<String, CCModel> groups;
+    protected Map<String, CCModel> groups;
     public TextureAtlasSprite sprite;
-    private IconTransformation iconTransform;
+    protected IconTransformation iconTransform;
 
     protected BaseBakery(String modelPath) {
         groups = OBJParser.parseModels(new ResourceLocation(AncientWarfareCore.modID, "models/block/" +modelPath), 7, new RedundantTransformation());

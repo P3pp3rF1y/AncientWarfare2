@@ -59,7 +59,7 @@ public class RenderSterlingEngine extends TileEntitySpecialRenderer<TileStirling
         pistonCrank.setRotation(0, 0, -rotation);
         piston_arm.setRotation(0, 0, rotation + armAngle);
         piston_arm2.setRotation(0, 0, rotation + armAngle2);
-        //model.renderModel();
+        model.renderModel();
 //  GlStateManager.disableRescaleNormal();
         GlStateManager.popMatrix();
     }

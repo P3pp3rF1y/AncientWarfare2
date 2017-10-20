@@ -12,7 +12,7 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 
-import static net.shadowmage.ancientwarfare.core.render.BlockRenderProperties.FACING;
+import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.FACING;
 
 public class ItemBlockOwnedRotatable extends ItemBlockBase {
 

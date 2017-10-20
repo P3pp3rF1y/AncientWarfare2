@@ -20,7 +20,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 
 import javax.annotation.Nullable;
 
-import static net.shadowmage.ancientwarfare.core.render.BlockRenderProperties.FACING;
+import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.FACING;
 
 public class BlockWarehouseStockViewer extends BlockBaseAutomation implements IRotatableBlock {
     public BlockWarehouseStockViewer(String regName) {

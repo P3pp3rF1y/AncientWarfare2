@@ -30,8 +30,8 @@ import net.shadowmage.ancientwarfare.core.gui.research.GuiResearchStation;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
-import net.shadowmage.ancientwarfare.core.render.BlockRenderProperties;
 import net.shadowmage.ancientwarfare.core.render.ResearchStationRenderer;
+import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 import net.shadowmage.ancientwarfare.core.tile.TileResearchStation;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
@@ -47,7 +47,7 @@ public class BlockResearchStation extends BlockBaseCore implements IRotatableBlo
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer.Builder(this).add(BlockRenderProperties.UNLISTED_FACING).build();
+        return new BlockStateContainer.Builder(this).add(CoreProperties.UNLISTED_FACING).build();
     }
 
     @Override
@@ -64,7 +64,7 @@ public class BlockResearchStation extends BlockBaseCore implements IRotatableBlo
             facing = ((TileResearchStation) tileentity).getPrimaryFacing();
         }
 
-        return ((IExtendedBlockState) super.getExtendedState(state, world, pos)).withProperty(BlockRenderProperties.UNLISTED_FACING, facing);
+        return ((IExtendedBlockState) super.getExtendedState(state, world, pos)).withProperty(CoreProperties.UNLISTED_FACING, facing);
     }
 
     @Override
@@ -137,7 +137,7 @@ public class BlockResearchStation extends BlockBaseCore implements IRotatableBlo
 
         ModelLoaderHelper.registerItem(this, "", "normal");
 
-        ModelBakery.registerBlockKeyGenerator(this, state -> state.getBlock().getRegistryName().toString() + "," + state.getValue(BlockRenderProperties.UNLISTED_FACING).toString());
+        ModelBakery.registerBlockKeyGenerator(this, state -> state.getBlock().getRegistryName().toString() + "," + state.getValue(CoreProperties.UNLISTED_FACING).toString());
     }
 
     @Override

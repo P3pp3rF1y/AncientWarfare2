@@ -17,7 +17,7 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationTyp
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-import static net.shadowmage.ancientwarfare.core.render.BlockRenderProperties.FACING;
+import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.FACING;
 
 public class BlockMailbox extends BlockBaseAutomation implements IRotatableBlock {
 

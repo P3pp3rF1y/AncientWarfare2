@@ -27,8 +27,8 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationTyp
 import net.shadowmage.ancientwarfare.core.gui.crafting.GuiEngineeringStation;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
-import net.shadowmage.ancientwarfare.core.render.BlockRenderProperties;
 import net.shadowmage.ancientwarfare.core.render.EngineeringStationRenderer;
+import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
@@ -43,7 +43,7 @@ public class BlockEngineeringStation extends BlockRotatableTile implements IClie
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer.Builder(this).add(BlockRenderProperties.UNLISTED_FACING).build();
+        return new BlockStateContainer.Builder(this).add(CoreProperties.UNLISTED_FACING).build();
     }
 
     @Override
@@ -60,7 +60,7 @@ public class BlockEngineeringStation extends BlockRotatableTile implements IClie
             facing = ((TileEngineeringStation) tileentity).getPrimaryFacing();
         }
 
-        return ((IExtendedBlockState) super.getExtendedState(state, world, pos)).withProperty(BlockRenderProperties.UNLISTED_FACING, facing);
+        return ((IExtendedBlockState) super.getExtendedState(state, world, pos)).withProperty(CoreProperties.UNLISTED_FACING, facing);
     }
 
     @Override
@@ -135,7 +135,7 @@ public class BlockEngineeringStation extends BlockRotatableTile implements IClie
 
         ModelLoaderHelper.registerItem(this, "", "normal");
 
-        ModelBakery.registerBlockKeyGenerator(this, state -> state.getBlock().getRegistryName().toString() + "," + state.getValue(BlockRenderProperties.UNLISTED_FACING).toString());
+        ModelBakery.registerBlockKeyGenerator(this, state -> state.getBlock().getRegistryName().toString() + "," + state.getValue(CoreProperties.UNLISTED_FACING).toString());
     }
 
     @Override

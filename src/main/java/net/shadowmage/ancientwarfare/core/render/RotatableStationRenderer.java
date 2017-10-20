@@ -6,6 +6,7 @@ import codechicken.lib.vec.Vector3;
 import com.google.common.collect.Maps;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.property.IExtendedBlockState;
+import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 
 import java.util.Map;
 
@@ -27,6 +28,6 @@ public abstract class RotatableStationRenderer extends BaseBakery {
     }
 
     protected EnumFacing getFacing(IExtendedBlockState state) {
-        return state.getValue(BlockRenderProperties.UNLISTED_FACING);
+        return state.getValue(CoreProperties.UNLISTED_FACING);
     }
 }

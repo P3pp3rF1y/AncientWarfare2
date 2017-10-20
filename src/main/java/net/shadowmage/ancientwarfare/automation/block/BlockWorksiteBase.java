@@ -21,7 +21,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.lang.reflect.Constructor;
 
-import static net.shadowmage.ancientwarfare.core.render.BlockRenderProperties.FACING;
+import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.FACING;
 
 public class BlockWorksiteBase extends BlockBaseAutomation implements IRotatableBlock {
 

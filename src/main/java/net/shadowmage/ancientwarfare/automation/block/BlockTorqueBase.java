@@ -17,7 +17,7 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueBase;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
-import net.shadowmage.ancientwarfare.core.render.BlockRenderProperties;
+import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
@@ -48,7 +48,7 @@ public abstract class BlockTorqueBase extends BlockBaseAutomation implements IRo
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer.Builder(this).add(BlockRenderProperties.UNLISTED_FACING).build();
+        return new BlockStateContainer.Builder(this).add(CoreProperties.UNLISTED_FACING).build();
     }
 
     @Override
@@ -65,7 +65,7 @@ public abstract class BlockTorqueBase extends BlockBaseAutomation implements IRo
             facing = ((TileTorqueBase) tileentity).getPrimaryFacing();
         }
 
-        return ((IExtendedBlockState) super.getExtendedState(state, world, pos)).withProperty(BlockRenderProperties.UNLISTED_FACING, facing);
+        return ((IExtendedBlockState) super.getExtendedState(state, world, pos)).withProperty(CoreProperties.UNLISTED_FACING, facing);
     }
 
 /*

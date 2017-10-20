@@ -8,6 +8,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.fml.client.config.DummyConfigElement.DummyCategoryElement;
 import net.minecraftforge.fml.client.config.IConfigElement;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.shadowmage.ancientwarfare.automation.KeyHandler;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
@@ -30,7 +31,9 @@ import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteQuarry;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteReedFarm;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteTreeFarm;
 import net.shadowmage.ancientwarfare.automation.render.AutoCraftingRenderer;
+import net.shadowmage.ancientwarfare.automation.render.StirlingGeneratorAnimationRenderer;
 import net.shadowmage.ancientwarfare.automation.render.StirlingGeneratorRenderer;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileStirlingGenerator;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.ConfigManager;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -102,8 +105,7 @@ public class ClientProxyAutomation extends ClientProxyBase {
         //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.flywheelStorage), storageRender);
 
         //********************************************GENERATOR RENDERS***************************************************************//
-        //RenderSterlingEngine sterlingRender = new RenderSterlingEngine();
-        //ClientRegistry.bindTileEntitySpecialRenderer(TileStirlingGenerator.class, sterlingRender);
+        ClientRegistry.bindTileEntitySpecialRenderer(TileStirlingGenerator.class, new StirlingGeneratorAnimationRenderer());
         //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.torqueGeneratorStirling), sterlingRender);
 
         //RenderTileWaterwheel waterwheelRender = new RenderTileWaterwheel();

@@ -13,7 +13,7 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySi
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
-import net.shadowmage.ancientwarfare.core.render.BlockRenderProperties;
+import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 import net.shadowmage.ancientwarfare.core.tile.TileOwned;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
@@ -233,12 +233,12 @@ public class TileMailbox extends TileOwned implements ISidedInventory, IRotatabl
 
     @Override
     public EnumFacing getPrimaryFacing() {
-        return world.getBlockState(pos).getValue(BlockRenderProperties.FACING);
+        return world.getBlockState(pos).getValue(CoreProperties.FACING);
     }
 
     @Override
     public void setPrimaryFacing(EnumFacing face) {
-        world.setBlockState(pos, world.getBlockState(pos).withProperty(BlockRenderProperties.FACING, face), 0);
+        world.setBlockState(pos, world.getBlockState(pos).withProperty(CoreProperties.FACING, face), 0);
     }
 
     @Override
