@@ -106,7 +106,6 @@ public class ClientProxyAutomation extends ClientProxyBase {
 
         //********************************************GENERATOR RENDERS***************************************************************//
         ClientRegistry.bindTileEntitySpecialRenderer(TileStirlingGenerator.class, new StirlingGeneratorAnimationRenderer());
-        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.torqueGeneratorStirling), sterlingRender);
 
         //RenderTileWaterwheel waterwheelRender = new RenderTileWaterwheel();
         //ClientRegistry.bindTileEntitySpecialRenderer(TileWaterwheel.class, waterwheelRender);
