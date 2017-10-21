@@ -34,8 +34,11 @@ import net.shadowmage.ancientwarfare.automation.render.AutoCraftingRenderer;
 import net.shadowmage.ancientwarfare.automation.render.HandCrankedGeneratorRenderer;
 import net.shadowmage.ancientwarfare.automation.render.StirlingGeneratorRenderer;
 import net.shadowmage.ancientwarfare.automation.render.TorqueAnimationRenderer;
+import net.shadowmage.ancientwarfare.automation.render.WorksiteRenderer;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileHandCrankedGenerator;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileStirlingGenerator;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseBase;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBase;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.ConfigManager;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -77,8 +80,8 @@ public class ClientProxyAutomation extends ClientProxyBase {
         NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_BOUNDS, GuiWorksiteBoundsAdjust.class);
 
 
-        //ClientRegistry.bindTileEntitySpecialRenderer(TileWorksiteBase.class, new RenderTileWorksite());
-        //ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseBase.class, new RenderTileWorksite());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileWorksiteBase.class, new WorksiteRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseBase.class, new WorksiteRenderer());
         //ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseStockViewer.class, new RenderTileWarehouseStockViewer());
 
 
