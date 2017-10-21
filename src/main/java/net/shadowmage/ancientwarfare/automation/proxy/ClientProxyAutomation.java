@@ -31,8 +31,10 @@ import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteQuarry;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteReedFarm;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteTreeFarm;
 import net.shadowmage.ancientwarfare.automation.render.AutoCraftingRenderer;
-import net.shadowmage.ancientwarfare.automation.render.StirlingGeneratorAnimationRenderer;
+import net.shadowmage.ancientwarfare.automation.render.HandCrankedGeneratorRenderer;
 import net.shadowmage.ancientwarfare.automation.render.StirlingGeneratorRenderer;
+import net.shadowmage.ancientwarfare.automation.render.TorqueAnimationRenderer;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileHandCrankedGenerator;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileStirlingGenerator;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.ConfigManager;
@@ -105,15 +107,13 @@ public class ClientProxyAutomation extends ClientProxyBase {
         //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.flywheelStorage), storageRender);
 
         //********************************************GENERATOR RENDERS***************************************************************//
-        ClientRegistry.bindTileEntitySpecialRenderer(TileStirlingGenerator.class, new StirlingGeneratorAnimationRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileStirlingGenerator.class, new TorqueAnimationRenderer());
 
         //RenderTileWaterwheel waterwheelRender = new RenderTileWaterwheel();
         //ClientRegistry.bindTileEntitySpecialRenderer(TileWaterwheel.class, waterwheelRender);
         //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.torqueGeneratorWaterwheel), waterwheelRender);
 
-        //RenderTileHandEngine handGeneratorRender = new RenderTileHandEngine();
-        //ClientRegistry.bindTileEntitySpecialRenderer(TileHandGenerator.class, handGeneratorRender);
-        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.handCrankedEngine), handGeneratorRender);
+        ClientRegistry.bindTileEntitySpecialRenderer(TileHandCrankedGenerator.class, new TorqueAnimationRenderer());
 
         //RenderWindmillControl windmillControlRender = new RenderWindmillControl();
         //ClientRegistry.bindTileEntitySpecialRenderer(TileWindmillController.class, windmillControlRender);
@@ -146,6 +146,7 @@ public class ClientProxyAutomation extends ClientProxyBase {
     public void onPreTextureStitch(TextureStitchEvent.Pre evt) {
         AutoCraftingRenderer.INSTANCE.setSprite(registerSprite(evt, "tile_auto_crafting"));
         StirlingGeneratorRenderer.INSTANCE.setSprite(registerSprite(evt, "stirling_generator"));
+        HandCrankedGeneratorRenderer.INSTANCE.setSprite(registerSprite(evt, "hand_cranked_generator"));
     }
 
     private TextureAtlasSprite registerSprite(TextureStitchEvent.Pre evt, String spriteName) {

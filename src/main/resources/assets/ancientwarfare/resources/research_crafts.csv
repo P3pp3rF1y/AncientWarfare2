@@ -65,8 +65,8 @@ theory_of_gravity,AncientWarfareAutomation:flywheel,0,1,pgp,ppp,pgp,p,plankWood,
 the_wheel,AncientWarfareAutomation:windmill_control,0,1,ppp,gpg,ppp,p,plankWood,g,gearWood
 #Iron gear based (AncientWarfare:component,1,1)
 theory_of_gravity,AncientWarfareAutomation:flywheel,1,1,igi,iii,igi,i,ingotIron,g,gearIron
-the_wheel,AncientWarfareAutomation:hand_cranked_engine,0,1,igi,gig,iii,i,ingotIron,g,gearIron
-machinery,AncientWarfareAutomation:torque_generator_sterling,0,1,iii,ggg,igi,i,ingotIron,g,gearIron
+the_wheel,AncientWarfareAutomation:hand_cranked_generator,0,1,igi,gig,iii,i,ingotIron,g,gearIron
+machinery,AncientWarfareAutomation:stirling_generator,0,1,iii,ggg,igi,i,ingotIron,g,gearIron
 theory_of_gravity,AncientWarfareAutomation:torque_generator_waterwheel,0,1,igi,gwg,iwi,i,plankWood,g,gearIron,w,gearWood
 the_wheel,AncientWarfareAutomation:torque_conduit,1,1,_s_,sgs,_s_,s,shaftIron,g,gearIron
 the_wheel,AncientWarfareAutomation:torque_distributor,1,1,_s_,ggg,_s_,s,shaftIron,g,gearIron

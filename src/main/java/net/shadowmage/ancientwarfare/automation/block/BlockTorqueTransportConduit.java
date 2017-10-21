@@ -31,8 +31,8 @@ public class BlockTorqueTransportConduit extends BlockTorqueBase {
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, TYPE);
+    protected void addProperties(BlockStateContainer.Builder builder) {
+        builder.add(TYPE);
     }
 
     @Override

@@ -4,6 +4,7 @@ import codechicken.lib.model.ModelRegistryHelper;
 import codechicken.lib.model.bakery.CCBakeryModel;
 import codechicken.lib.model.bakery.IBakeryProvider;
 import codechicken.lib.model.bakery.generation.IBakery;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
@@ -17,26 +18,35 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.shadowmage.ancientwarfare.automation.gui.GuiStirlingGenerator;
-import net.shadowmage.ancientwarfare.automation.render.StirlingGeneratorRenderer;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileStirlingGenerator;
+import net.shadowmage.ancientwarfare.automation.render.HandCrankedGeneratorRenderer;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileHandCrankedGenerator;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
-import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 
-public class BlockStirlingGenerator extends BlockTorqueGenerator implements IBakeryProvider {
+public class BlockHandCrankedGenerator extends BlockTorqueBase implements IBakeryProvider {
 
-    public BlockStirlingGenerator(String regName) {
-        super(regName);
+    protected BlockHandCrankedGenerator(String regName) {
+        super(Material.ROCK, regName);
     }
 
     @Override
     public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return StirlingGeneratorRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
+        return HandCrankedGeneratorRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
     }
 
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileStirlingGenerator();
+        return new TileHandCrankedGenerator();
+    }
+
+    @Override
+    public RotationType getRotationType() {
+        return RotationType.FOUR_WAY;
+    }
+
+    @Override
+    public boolean invertFacing() {
+        return false;
     }
 
     @Override
@@ -61,28 +71,25 @@ public class BlockStirlingGenerator extends BlockTorqueGenerator implements IBak
     }
 
     @Override
-    public IBakery getBakery() {
-        return StirlingGeneratorRenderer.INSTANCE;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
     public void registerClient() {
         super.registerClient();
 
-        NetworkHandler.registerGui(NetworkHandler.GUI_STIRLING_GENERATOR, GuiStirlingGenerator.class);
-
         ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
             @Override protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                return StirlingGeneratorRenderer.MODEL_LOCATION;
+                return HandCrankedGeneratorRenderer.MODEL_LOCATION;
             }
         });
 
-        ModelRegistryHelper.register(StirlingGeneratorRenderer.MODEL_LOCATION, new CCBakeryModel(AncientWarfareCore.modID + ":model/automation/stirling_generator") {
+        ModelRegistryHelper.register(HandCrankedGeneratorRenderer.MODEL_LOCATION, new CCBakeryModel(AncientWarfareCore.modID + ":model/automation/hand_cranked_generator") {
             @Override
             public TextureAtlasSprite getParticleTexture() {
-                return StirlingGeneratorRenderer.INSTANCE.sprite;
+                return HandCrankedGeneratorRenderer.INSTANCE.sprite;
             }
         });
+    }
+
+    @Override
+    public IBakery getBakery() {
+        return HandCrankedGeneratorRenderer.INSTANCE;
     }
 }

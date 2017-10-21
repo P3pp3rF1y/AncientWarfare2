@@ -17,7 +17,7 @@ import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlocks;
 import net.shadowmage.ancientwarfare.automation.block.BlockAutoCrafting;
 import net.shadowmage.ancientwarfare.automation.block.BlockChunkLoaderSimple;
 import net.shadowmage.ancientwarfare.automation.block.BlockFlywheel;
-import net.shadowmage.ancientwarfare.automation.block.BlockHandCrankedEngine;
+import net.shadowmage.ancientwarfare.automation.block.BlockHandCrankedGenerator;
 import net.shadowmage.ancientwarfare.automation.block.BlockMailbox;
 import net.shadowmage.ancientwarfare.automation.block.BlockTorqueBase;
 import net.shadowmage.ancientwarfare.automation.block.BlockTorqueGenerator;
@@ -96,7 +96,7 @@ public class AWAutomationItemLoader {
                     return 10;
                 } else if (block instanceof BlockFlywheel) {
                     return 9;
-                } else if (block instanceof BlockTorqueGenerator || block instanceof BlockHandCrankedEngine) {
+                } else if (block instanceof BlockTorqueGenerator || block instanceof BlockHandCrankedGenerator) {
                     return 8;
                 } else if (block instanceof BlockTorqueBase) {
                     return 7;

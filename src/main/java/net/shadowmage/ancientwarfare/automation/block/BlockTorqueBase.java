@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
+import codechicken.lib.model.bakery.ModelBakery;
+import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -13,6 +15,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
+import net.shadowmage.ancientwarfare.automation.render.property.AutomationProperties;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueBase;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
@@ -20,10 +24,11 @@ import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
+
+import java.util.Optional;
 
 public abstract class BlockTorqueBase extends BlockBaseAutomation implements IRotatableBlock {
-
-    //HashMap<Integer, IconRotationMap> iconMaps = new HashMap<>();
 
     protected BlockTorqueBase(Material material, String regName) {
         super(material, regName);
@@ -48,7 +53,24 @@ public abstract class BlockTorqueBase extends BlockBaseAutomation implements IRo
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer.Builder(this).add(CoreProperties.UNLISTED_FACING).build();
+        BlockStateContainer.Builder builder = new BlockStateContainer.Builder(this);
+        addProperties(builder);
+
+        return builder
+                .add(CoreProperties.UNLISTED_FACING,
+                        AutomationProperties.ACTIVE,
+                        AutomationProperties.DYNAMIC,
+                        AutomationProperties.ROTATIONS[0],
+                        AutomationProperties.ROTATIONS[1],
+                        AutomationProperties.ROTATIONS[2],
+                        AutomationProperties.ROTATIONS[3],
+                        AutomationProperties.ROTATIONS[4],
+                        AutomationProperties.ROTATIONS[5])
+                .build();
+    }
+
+    protected void addProperties(BlockStateContainer.Builder builder) {
+
     }
 
     @Override
@@ -67,62 +89,6 @@ public abstract class BlockTorqueBase extends BlockBaseAutomation implements IRo
 
         return ((IExtendedBlockState) super.getExtendedState(state, world, pos)).withProperty(CoreProperties.UNLISTED_FACING, facing);
     }
-
-/*
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister register) {
-        for (IconRotationMap map : this.iconMaps.values()) {
-            map.registerIcons(register);
-        }
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(IBlockAccess block, int x, int y, int z, int side) {
-        IRotatableTile tt = (IRotatableTile) block.getTileEntity(x, y, z);
-        int meta = 2;
-        if (tt != null) {
-            EnumFacing d = tt.getPrimaryFacing();
-            if (d != null) {
-                meta = d.ordinal();
-            }
-        }
-        IconRotationMap icr = iconMaps.get(meta);
-        if (icr != null) {
-            return icr.getIcon(this, meta, side);
-        }
-        return null;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-        IconRotationMap icr = iconMaps.get(meta);
-        if (icr != null) {
-            return icr.getIcon(this, meta, side);
-        }
-        return null;
-    }
-
-    @Override
-    public BlockTorqueBase setIcon(RelativeSide side, String texName) {
-        throw new UnsupportedOperationException("Cannot set side icons directly on torque block, need to use meta-sensitive version");
-    }
-
-    public BlockTorqueBase setIcon(int meta, RelativeSide side, String texName) {
-        if (!this.iconMaps.containsKey(meta)) {
-            this.iconMaps.put(meta, new IconRotationMap());
-        }
-        iconMaps.get(meta).setIcon(this, side, texName);
-        return this;
-    }
-
-    public IIcon getIcon(int meta, RelativeSide side) {
-        return iconMaps.get(meta).getIcon(side);
-    }
-
-*/
 
     @Override
     public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
@@ -181,5 +147,29 @@ public abstract class BlockTorqueBase extends BlockBaseAutomation implements IRo
     @Override
     public int damageDropped(IBlockState state) {
         return getMetaFromState(state);
+    }
+
+    @Override
+    public void registerClient() {
+        ModelLoaderHelper.registerItem(this, "automation", "normal");
+
+        ModelBakery.registerBlockKeyGenerator(this, state -> state.getBlock().getRegistryName().toString()
+                + "," + state.getValue(CoreProperties.UNLISTED_FACING).toString()
+                + "," + state.getValue(AutomationProperties.DYNAMIC)
+                + getRotationKeyPart(state)
+        );
+    }
+
+    private String getRotationKeyPart(IExtendedBlockState state) {
+        ImmutableMap<IUnlistedProperty<?>, Optional<?>> properties = state.getUnlistedProperties();
+        StringBuilder ret = new StringBuilder();
+        for(EnumFacing facing : EnumFacing.VALUES) {
+            if (properties.containsKey(AutomationProperties.ROTATIONS[facing.ordinal()])) {
+                ret.append(",");
+                ret.append(String.format("%.6f", state.getValue(AutomationProperties.ROTATIONS[facing.ordinal()])));
+            }
+        }
+
+        return ret.toString();
     }
 }
