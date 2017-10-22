@@ -44,7 +44,7 @@ public class TorqueAnimationRenderer extends FastTESR<TileTorqueBase> {
             float[] rotations = new float[6];
             for(EnumFacing f : EnumFacing.VALUES) {
                 if(properties.containsKey(AutomationProperties.ROTATIONS[f.getIndex()])) {
-                    float rotation = te.getClientOutputRotation(f, partial);
+                    float rotation = te.getClientOutputRotation(f, partialTicks);
                     rotations[f.getIndex()] = rotation;
                     exState = exState.withProperty(AutomationProperties.ROTATIONS[f.getIndex()], rotation);
 
@@ -53,6 +53,7 @@ public class TorqueAnimationRenderer extends FastTESR<TileTorqueBase> {
                 }
             }
             exState = exState.withProperty(AutomationProperties.DYNAMIC, true);
+            exState = updateAdditionalProperties(exState, te);
 
             int hashcode = Arrays.hashCode(rotations);
             int count = counter.containsKey(hashcode) ? counter.get(hashcode) : 0;
@@ -70,5 +71,9 @@ public class TorqueAnimationRenderer extends FastTESR<TileTorqueBase> {
 
             blockRenderer.getBlockModelRenderer().renderModel(world, model, exState, pos, renderer, false);
         }
+    }
+
+    protected IExtendedBlockState updateAdditionalProperties(IExtendedBlockState state, TileTorqueBase te) {
+        return state;
     }
 }

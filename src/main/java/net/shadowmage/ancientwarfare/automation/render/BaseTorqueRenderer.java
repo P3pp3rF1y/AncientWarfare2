@@ -59,7 +59,7 @@ public abstract class BaseTorqueRenderer extends BaseBakery {
 					rotations[facing.getIndex()] = state.getValue(AutomationProperties.ROTATIONS[facing.getIndex()]);
 				}
 			}
-			transformMovingParts(transformedGroups, frontFacing, rotations);
+			transformMovingParts(transformedGroups, frontFacing, rotations, state);
 		} else {
 			for(Map.Entry<String, CCModel> group : modelGroups.entrySet()) {
 				transformedGroups.put(group.getKey(), rotateFacing(group.getValue().copy(), frontFacing));
@@ -73,12 +73,12 @@ public abstract class BaseTorqueRenderer extends BaseBakery {
 	protected void renderItemModels(CCRenderState ccrs) {
 		super.renderItemModels(ccrs);
 		Map<String, CCModel> movingParts = Maps.newHashMap();
-		transformMovingParts(movingParts, EnumFacing.NORTH, new float[6]);
+		transformMovingParts(movingParts, EnumFacing.NORTH, new float[6], null);
 
 		movingParts.forEach((k, m) -> m.render(ccrs, iconTransform));
 	}
 
-	protected abstract void transformMovingParts(Map<String, CCModel> transformedGroups, EnumFacing frontFacing, float[] rotations);
+	protected abstract void transformMovingParts(Map<String, CCModel> transformedGroups, EnumFacing frontFacing, float[] rotations, IExtendedBlockState state);
 
 	protected Map<String, CCModel> rotateModels(Map<String, CCModel> groups, EnumFacing frontFacing, Transformation transform) {
 		return groups.entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e-> rotateFacing(e.getValue().copy().apply(transform), frontFacing)));
@@ -104,6 +104,12 @@ public abstract class BaseTorqueRenderer extends BaseBakery {
 			updatedState = updatedState.withProperty(AutomationProperties.ROTATIONS[f.getIndex()], 0f);
 		}
 
+		updatedState = handleAdditionalProperties(updatedState, tileentity);
+
 		return updatedState;
+	}
+
+	protected IExtendedBlockState handleAdditionalProperties(IExtendedBlockState state, TileEntity tileEntity) {
+		return state;
 	}
 }

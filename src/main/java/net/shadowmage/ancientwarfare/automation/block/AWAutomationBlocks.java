@@ -50,7 +50,7 @@ public class AWAutomationBlocks {
 	public static BlockHandCrankedGenerator handCrankedGenerator;
 	@ObjectHolder("stirling_generator")
 	public static BlockTorqueGenerator stirlingGenerator;
-	@ObjectHolder("torque_generator_waterwheel")
+	@ObjectHolder("waterwheel_generator")
 	public static BlockTorqueGenerator torqueGeneratorWaterwheel;
 	@ObjectHolder("windmill_blade")
 	public static BlockWindmillBlade windmillBlade;

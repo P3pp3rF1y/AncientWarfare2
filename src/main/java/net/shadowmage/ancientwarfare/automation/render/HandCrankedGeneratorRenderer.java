@@ -5,6 +5,7 @@ import codechicken.lib.vec.Rotation;
 import codechicken.lib.vec.Vector3;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.property.IExtendedBlockState;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 import java.util.Map;
@@ -25,7 +26,7 @@ public class HandCrankedGeneratorRenderer extends BaseTorqueRenderer {
 	}
 
 	@Override
-	protected void transformMovingParts(Map<String, CCModel> transformedGroups, EnumFacing frontFacing, float[] rotations) {
+	protected void transformMovingParts(Map<String, CCModel> transformedGroups, EnumFacing frontFacing, float[] rotations, IExtendedBlockState state) {
 		float inR = -rotations[EnumFacing.UP.getIndex()];
 		float outR = -rotations[frontFacing.getIndex()];
 		transformedGroups.putAll(rotateModels(outputGear, frontFacing, new Rotation(outR, 0, 0, 1).at(new Vector3(8d/16d, 8d/16d, 8d/16d))));

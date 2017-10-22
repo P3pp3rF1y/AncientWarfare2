@@ -160,7 +160,7 @@ public abstract class BlockTorqueBase extends BlockBaseAutomation implements IRo
         );
     }
 
-    private String getRotationKeyPart(IExtendedBlockState state) {
+    protected String getRotationKeyPart(IExtendedBlockState state) {
         ImmutableMap<IUnlistedProperty<?>, Optional<?>> properties = state.getUnlistedProperties();
         StringBuilder ret = new StringBuilder();
         for(EnumFacing facing : EnumFacing.VALUES) {

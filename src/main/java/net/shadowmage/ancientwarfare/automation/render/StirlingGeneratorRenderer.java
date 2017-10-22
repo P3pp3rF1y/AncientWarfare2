@@ -7,6 +7,7 @@ import codechicken.lib.vec.Vector3;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.common.property.IExtendedBlockState;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 import java.util.Map;
@@ -40,7 +41,7 @@ public class StirlingGeneratorRenderer extends BaseTorqueRenderer {
 	}
 
 	@Override
-	protected void transformMovingParts(Map<String, CCModel> transformedGroups, EnumFacing frontFacing, float[] rotations) {
+	protected void transformMovingParts(Map<String, CCModel> transformedGroups, EnumFacing frontFacing, float[] rotations, IExtendedBlockState state) {
 		float rotation = rotations[frontFacing.getIndex()];
 		calculateArmAngle1(rotation);
 		calculateArmAngle2(rotation - 90);

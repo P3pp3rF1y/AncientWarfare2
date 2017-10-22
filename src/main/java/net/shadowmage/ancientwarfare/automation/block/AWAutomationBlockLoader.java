@@ -29,7 +29,7 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.TileStirlingGenerato
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaftHeavy;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaftLight;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaftMedium;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileWaterwheel;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileWaterwheelGenerator;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileWindmillController;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileFlywheelStorage;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileWindmillBlade;
@@ -164,8 +164,8 @@ public class AWAutomationBlockLoader {
         registry.register(new BlockStirlingGenerator("stirling_generator"));
         GameRegistry.registerTileEntity(TileStirlingGenerator.class, "stirling_generator_tile");
 
-        registry.register(new BlockTorqueGeneratorWaterwheel("torque_generator_waterwheel"));
-        GameRegistry.registerTileEntity(TileWaterwheel.class, "torque_generator_waterwheel_tile");
+        registry.register(new BlockWaterwheelGenerator("waterwheel_generator"));
+        GameRegistry.registerTileEntity(TileWaterwheelGenerator.class, "waterwheel_generator_tile");
 
         registry.register(new BlockHandCrankedGenerator("hand_cranked_generator"));
         GameRegistry.registerTileEntity(TileHandCrankedGenerator.class, "hand_cranked_generator_tile");
