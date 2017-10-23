@@ -24,13 +24,15 @@ import java.util.Map;
 import java.util.Optional;
 
 public class TorqueAnimationRenderer extends FastTESR<TileTorqueBase> {
-    protected static BlockRendererDispatcher blockRenderer;
+    private static BlockRendererDispatcher blockRenderer;
 
     private Map<Integer, Integer> counter = Maps.newHashMap();
 
     @Override
     public void renderTileEntityFast(TileTorqueBase te, double x, double y, double z, float partialTicks, int destroyStage, float partial, BufferBuilder renderer) {
-        if(blockRenderer == null) blockRenderer = Minecraft.getMinecraft().getBlockRendererDispatcher();
+        if(blockRenderer == null) {
+            blockRenderer = Minecraft.getMinecraft().getBlockRendererDispatcher();
+        }
         BlockPos pos = te.getPos();
         IBlockAccess world = MinecraftForgeClient.getRegionRenderCache(te.getWorld(), pos);
         IBlockState state = world.getBlockState(pos);
@@ -56,7 +58,7 @@ public class TorqueAnimationRenderer extends FastTESR<TileTorqueBase> {
             exState = updateAdditionalProperties(exState, te);
 
             int hashcode = Arrays.hashCode(rotations);
-            int count = counter.containsKey(hashcode) ? counter.get(hashcode) : 0;
+            int count = counter.getOrDefault(hashcode, 0);
             IBakedModel model;
 
             //making sure that we don't overfill cache with models that are not going to be used anymore
