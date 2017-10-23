@@ -18,11 +18,11 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.shadowmage.ancientwarfare.automation.render.property.AutomationProperties;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueBase;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
-import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
@@ -115,10 +115,12 @@ public abstract class BlockTorqueBase extends BlockBaseAutomation implements IRo
         }
         IRotatableTile tt = (IRotatableTile) world.getTileEntity(pos);
         EnumFacing facing = tt.getPrimaryFacing();
-        EnumFacing rotatedFacing = facing.rotateAround(axis.getAxis());
+        EnumFacing rotatedFacing = facing;
+        if (axis.getAxis() == EnumFacing.Axis.Y || getRotationType() == BlockRotationHandler.RotationType.SIX_WAY) {
+            rotatedFacing = facing.rotateAround(axis.getAxis());
+        }
         if (facing != rotatedFacing) {
             tt.setPrimaryFacing(rotatedFacing);
-            BlockTools.notifyBlockUpdate(world, pos);
             return true;
         }
         return false;

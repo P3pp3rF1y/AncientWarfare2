@@ -47,7 +47,7 @@ public class BlockResearchStation extends BlockBaseCore implements IRotatableBlo
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer.Builder(this).add(CoreProperties.UNLISTED_FACING).build();
+        return new BlockStateContainer.Builder(this).add(CoreProperties.UNLISTED_HORIZONTAL_FACING).build();
     }
 
     @Override
@@ -64,7 +64,7 @@ public class BlockResearchStation extends BlockBaseCore implements IRotatableBlo
             facing = ((TileResearchStation) tileentity).getPrimaryFacing();
         }
 
-        return ((IExtendedBlockState) super.getExtendedState(state, world, pos)).withProperty(CoreProperties.UNLISTED_FACING, facing);
+        return ((IExtendedBlockState) super.getExtendedState(state, world, pos)).withProperty(CoreProperties.UNLISTED_HORIZONTAL_FACING, facing);
     }
 
     @Override
@@ -137,7 +137,7 @@ public class BlockResearchStation extends BlockBaseCore implements IRotatableBlo
 
         ModelLoaderHelper.registerItem(this, "", "normal");
 
-        ModelBakery.registerBlockKeyGenerator(this, state -> state.getBlock().getRegistryName().toString() + "," + state.getValue(CoreProperties.UNLISTED_FACING).toString());
+        ModelBakery.registerBlockKeyGenerator(this, state -> state.getBlock().getRegistryName().toString() + "," + state.getValue(CoreProperties.UNLISTED_HORIZONTAL_FACING).toString());
     }
 
     @Override

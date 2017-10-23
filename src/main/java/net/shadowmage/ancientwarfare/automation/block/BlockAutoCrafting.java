@@ -34,7 +34,7 @@ public class BlockAutoCrafting extends BlockWorksiteBase implements IBakeryProvi
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer.Builder(this).add(CoreProperties.UNLISTED_FACING).build();
+        return new BlockStateContainer.Builder(this).add(CoreProperties.UNLISTED_HORIZONTAL_FACING).build();
     }
 
     @Override
@@ -51,7 +51,7 @@ public class BlockAutoCrafting extends BlockWorksiteBase implements IBakeryProvi
             facing = ((BlockRotationHandler.IRotatableTile) tileentity).getPrimaryFacing();
         }
 
-        return ((IExtendedBlockState) super.getExtendedState(state, world, pos)).withProperty(CoreProperties.UNLISTED_FACING, facing);
+        return ((IExtendedBlockState) super.getExtendedState(state, world, pos)).withProperty(CoreProperties.UNLISTED_HORIZONTAL_FACING, facing);
     }
 
     @Override
@@ -98,7 +98,7 @@ public class BlockAutoCrafting extends BlockWorksiteBase implements IBakeryProvi
 
         ModelLoaderHelper.registerItem(this, "automation", "normal");
 
-        ModelBakery.registerBlockKeyGenerator(this, state -> state.getBlock().getRegistryName().toString() + "," + state.getValue(CoreProperties.UNLISTED_FACING).toString());
+        ModelBakery.registerBlockKeyGenerator(this, state -> state.getBlock().getRegistryName().toString() + "," + state.getValue(CoreProperties.UNLISTED_HORIZONTAL_FACING).toString());
 
     }
 

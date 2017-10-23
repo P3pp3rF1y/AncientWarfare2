@@ -28,6 +28,6 @@ public abstract class RotatableStationRenderer extends BaseBakery {
     }
 
     protected EnumFacing getFacing(IExtendedBlockState state) {
-        return state.getValue(CoreProperties.UNLISTED_FACING);
+        return state.getValue(CoreProperties.UNLISTED_HORIZONTAL_FACING);
     }
 }

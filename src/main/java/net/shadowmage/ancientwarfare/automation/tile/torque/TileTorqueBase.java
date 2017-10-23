@@ -325,6 +325,7 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
     protected void handleUpdateNBT(NBTTagCompound tag) {
         super.handleUpdateNBT(tag);
         orientation = EnumFacing.VALUES[tag.getInteger("orientation")];
+        BlockTools.notifyBlockUpdate(this);
         this.invalidateNeighborCache(); //TODO is this needed on client??
     }
 }
