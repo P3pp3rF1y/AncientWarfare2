@@ -31,11 +31,6 @@ public class TileStirlingGenerator extends TileTorqueSingleCell implements IInve
     }
 
     @Override
-    public boolean hasFastRenderer() {
-        return true;
-    }
-
-    @Override
     public void update() {
         super.update();
         if (!world.isRemote) {

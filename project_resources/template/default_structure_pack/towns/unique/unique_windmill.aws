@@ -1587,7 +1587,7 @@ rule:
 plugin=awTorqueTile
 number=157
 data:
-JSON:{{"val":{"orientation":{"val":"2","id":"pi"},"teData":{"val":{"id":{"val":"windmill_control_tile","id":"ss"},"orientation":{"val":"5","id":"pi"},"clientEnergy":{"val":"100","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"15","id":"pi"},"x":{"val":"-735","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:windmill_control","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"orientation":{"val":"2","id":"pi"},"teData":{"val":{"id":{"val":"windmill_control_tile","id":"ss"},"orientation":{"val":"5","id":"pi"},"clientEnergy":{"val":"100","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"15","id":"pi"},"x":{"val":"-735","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:windmill_generator","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 

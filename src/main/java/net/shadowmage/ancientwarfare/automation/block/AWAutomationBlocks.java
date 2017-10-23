@@ -54,8 +54,8 @@ public class AWAutomationBlocks {
 	public static BlockTorqueGenerator torqueGeneratorWaterwheel;
 	@ObjectHolder("windmill_blade")
 	public static BlockWindmillBlade windmillBlade;
-	@ObjectHolder("windmill_control")
-	public static BlockWindmillControll windmillControl;
+	@ObjectHolder("windmill_generator")
+	public static BlockWindmillGenerator windmillControl;
 	@ObjectHolder("chunk_loader_simple")
 	public static BlockChunkLoaderSimple chunkLoaderSimple;
 	@ObjectHolder("chunk_loader_deluxe")

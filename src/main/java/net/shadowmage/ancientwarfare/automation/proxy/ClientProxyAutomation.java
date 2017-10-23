@@ -37,11 +37,13 @@ import net.shadowmage.ancientwarfare.automation.render.HandCrankedGeneratorRende
 import net.shadowmage.ancientwarfare.automation.render.StirlingGeneratorRenderer;
 import net.shadowmage.ancientwarfare.automation.render.TorqueAnimationRenderer;
 import net.shadowmage.ancientwarfare.automation.render.WaterwheelGeneratorRenderer;
+import net.shadowmage.ancientwarfare.automation.render.WindmillGeneratorRenderer;
 import net.shadowmage.ancientwarfare.automation.render.WorksiteRenderer;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileHandCrankedGenerator;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileStirlingGenerator;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueBase;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileWaterwheelGenerator;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileWindmillController;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseBase;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBase;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
@@ -127,9 +129,7 @@ public class ClientProxyAutomation extends ClientProxyBase {
         });
         ClientRegistry.bindTileEntitySpecialRenderer(TileHandCrankedGenerator.class, new TorqueAnimationRenderer());
 
-        //RenderWindmillControl windmillControlRender = new RenderWindmillControl();
-        //ClientRegistry.bindTileEntitySpecialRenderer(TileWindmillController.class, windmillControlRender);
-        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.windmillControl), windmillControlRender);
+        ClientRegistry.bindTileEntitySpecialRenderer(TileWindmillController.class, new TorqueAnimationRenderer());
 
         //RenderWindmillBlades bladeRender = new RenderWindmillBlades();
         //ClientRegistry.bindTileEntitySpecialRenderer(TileWindmillBlade.class, bladeRender);
@@ -160,6 +160,7 @@ public class ClientProxyAutomation extends ClientProxyBase {
         StirlingGeneratorRenderer.INSTANCE.setSprite(registerSprite(evt, "stirling_generator"));
         HandCrankedGeneratorRenderer.INSTANCE.setSprite(registerSprite(evt, "hand_cranked_generator"));
         WaterwheelGeneratorRenderer.INSTANCE.setSprite(registerSprite(evt, "waterwheel_generator"));
+        WindmillGeneratorRenderer.INSTANCE.setSprite(registerSprite(evt, "windmill_generator"));
     }
 
     private TextureAtlasSprite registerSprite(TextureStitchEvent.Pre evt, String spriteName) {

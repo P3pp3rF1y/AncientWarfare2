@@ -1,0 +1,30 @@
+package net.shadowmage.ancientwarfare.automation.render;
+
+import codechicken.lib.render.CCModel;
+import codechicken.lib.vec.Rotation;
+import codechicken.lib.vec.Vector3;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+
+import java.util.Map;
+
+public class WindmillGeneratorRenderer extends BaseTorqueRenderer {
+
+	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/windmill_generator", "normal");
+	public static final WindmillGeneratorRenderer INSTANCE = new WindmillGeneratorRenderer();
+
+	private final Map<String, CCModel> outputGear;
+
+	private WindmillGeneratorRenderer() {
+		super("automation/windmill_generator.obj");
+		outputGear = removeGroups(s -> s.startsWith("base.outputGear."));
+	}
+
+	@Override
+	protected void transformMovingParts(Map<String, CCModel> transformedGroups, EnumFacing frontFacing, float[] rotations, IExtendedBlockState state) {
+		float outR = -rotations[frontFacing.getIndex()];
+		transformedGroups.putAll(rotateModels(outputGear, frontFacing, new Rotation(outR, 0, 0, 1).at(new Vector3(8d/16d, 8d/16d, 8d/16d))));
+	}
+}

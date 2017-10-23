@@ -1,19 +1,18 @@
-/*
 package net.shadowmage.ancientwarfare.automation.render;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.IItemRenderer;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueBase;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelLoader;
 import net.shadowmage.ancientwarfare.core.model.ModelPiece;
-import org.lwjgl.opengl.GL11;
 
-public class RenderWindmillControl extends TileEntitySpecialRenderer implements IItemRenderer {
+import java.io.IOException;
+
+public class RenderWindmillControl extends TileEntitySpecialRenderer {
 
     private final ResourceLocation texture;
     private final ModelBaseAW model;
@@ -22,12 +21,17 @@ public class RenderWindmillControl extends TileEntitySpecialRenderer implements 
     public RenderWindmillControl() {
         ModelLoader loader = new ModelLoader();
         model = loader.loadModel(getClass().getResourceAsStream("/assets/ancientwarfare/models/automation/windmill_control.m2f"));
-        texture = new ResourceLocation("ancientwarfare", "textures/model/automation/windmill_control.png");
+        texture = new ResourceLocation("ancientwarfare", "textures/model/automation/windmill_generator.png");
         outputGear = model.getPiece("outputGear");
     }
 
     @Override
-    public void renderTileEntityAt(TileEntity te, double x, double y, double z, float delta) {
+    public void render(TileEntity te, double x, double y, double z, float delta, int destroyStage, float alpha) {
+        try {
+            model.exportOBJ("windmill_generator.obj");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         GlStateManager.pushMatrix();
         bindTexture(texture);
         GlStateManager.translate(x + 0.5d, y, z + 0.5d);
@@ -35,15 +39,6 @@ public class RenderWindmillControl extends TileEntitySpecialRenderer implements 
         TileTorqueBase windmillControl = (TileTorqueBase) te;
         float outRotation = -windmillControl.getClientOutputRotation(windmillControl.getPrimaryFacing(), delta);
         renderModel(outRotation, windmillControl.getPrimaryFacing().ordinal());
-        GlStateManager.popMatrix();
-    }
-
-    @Override
-    public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        GlStateManager.pushMatrix();
-        bindTexture(texture);
-        GlStateManager.translate(0.5d, 0, 0.5d);
-        renderModel(0, 2);
         GlStateManager.popMatrix();
     }
 
@@ -58,16 +53,4 @@ public class RenderWindmillControl extends TileEntitySpecialRenderer implements 
         outputGear.setRotation(0, 0, outR);
         model.renderModel();
     }
-
-    @Override
-    public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-        return true;
-    }
-
-    @Override
-    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-        return true;
-    }
-
 }
-*/

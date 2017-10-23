@@ -173,8 +173,8 @@ public class AWAutomationBlockLoader {
         registry.register(new BlockWindmillBlade("windmill_blade"));
         GameRegistry.registerTileEntity(TileWindmillBlade.class, "windmill_blade_tile");
 
-        registry.register(new BlockWindmillControll("windmill_control"));
-        GameRegistry.registerTileEntity(TileWindmillController.class, "windmill_control_tile");
+        registry.register(new BlockWindmillGenerator("windmill_generator"));
+        GameRegistry.registerTileEntity(TileWindmillController.class, "windmill_generator_tile");
 
         registry.register(new BlockChunkLoaderSimple("chunk_loader_simple"));
         GameRegistry.registerTileEntity(TileChunkLoaderSimple.class, "chunk_loader_simple_tile");

@@ -23,26 +23,6 @@ public class BlockWindmillBlade extends BlockBaseAutomation {
         return tileentity != null && tileentity.receiveClientEvent(id, param);
     }
 
-    @Override
-    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-        return false;
-    }
-
-    @Override
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
-
-    @Override
-    public boolean isNormalCube(IBlockState state) {
-        return false;
-    }
-
-    @Override
-    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-        return false;
-    }
-
 /*
     @Override
     @SideOnly(Side.CLIENT)

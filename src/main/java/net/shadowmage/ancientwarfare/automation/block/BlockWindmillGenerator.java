@@ -16,31 +16,34 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.shadowmage.ancientwarfare.automation.gui.GuiStirlingGenerator;
-import net.shadowmage.ancientwarfare.automation.render.StirlingGeneratorRenderer;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileStirlingGenerator;
+import net.shadowmage.ancientwarfare.automation.render.WindmillGeneratorRenderer;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileWindmillController;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
-import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
-public class BlockStirlingGenerator extends BlockTorqueGenerator implements IBakeryProvider {
+public class BlockWindmillGenerator extends BlockTorqueGenerator implements IBakeryProvider {
 
-    public BlockStirlingGenerator(String regName) {
+    public BlockWindmillGenerator(String regName) {
         super(regName);
     }
 
     @Override
     public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return StirlingGeneratorRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
+        return WindmillGeneratorRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
+    }
+
+    @Override
+    public boolean invertFacing() {
+        return true;
     }
 
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileStirlingGenerator();
+        return new TileWindmillController();
     }
 
     @Override
     public IBakery getBakery() {
-        return StirlingGeneratorRenderer.INSTANCE;
+        return WindmillGeneratorRenderer.INSTANCE;
     }
 
     @Override
@@ -48,19 +51,18 @@ public class BlockStirlingGenerator extends BlockTorqueGenerator implements IBak
     public void registerClient() {
         super.registerClient();
 
-        NetworkHandler.registerGui(NetworkHandler.GUI_STIRLING_GENERATOR, GuiStirlingGenerator.class);
-
         ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
             @Override protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                return StirlingGeneratorRenderer.MODEL_LOCATION;
+                return WindmillGeneratorRenderer.MODEL_LOCATION;
             }
         });
 
-        ModelRegistryHelper.register(StirlingGeneratorRenderer.MODEL_LOCATION, new CCBakeryModel(AncientWarfareCore.modID + ":model/automation/stirling_generator") {
+        ModelRegistryHelper.register(WindmillGeneratorRenderer.MODEL_LOCATION, new CCBakeryModel(AncientWarfareCore.modID + ":model/automation/windmill_generator") {
             @Override
             public TextureAtlasSprite getParticleTexture() {
-                return StirlingGeneratorRenderer.INSTANCE.sprite;
+                return WindmillGeneratorRenderer.INSTANCE.sprite;
             }
         });
     }
+
 }

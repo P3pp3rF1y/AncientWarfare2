@@ -230,7 +230,7 @@ tile.torque_shaft.2.name=Arbre de torsion lourd
 tile.hand_cranked_generator.0.name=générateur de torsion à manivelle
 tile.chunk_loader_simple.name=Chargeur de parcelle simple
 tile.chunk_loader_deluxe.name=Chargeur de parcelle deluxe
-tile.windmill_control.0.name=Contrôleur d'éolienne
+tile.windmill_generator.0.name=Contrôleur d'éolienne
 tile.windmill_blade.name=Pale d'éolienne
 #structure
 tile.advanced_spawner.name=Cage de monstre avancée

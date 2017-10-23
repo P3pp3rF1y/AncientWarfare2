@@ -176,6 +176,11 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
 //************************************** generic stuff ***************************************//
 
     @Override
+    public boolean hasFastRenderer() {
+        return true;
+    }
+
+    @Override
     public final void setPrimaryFacing(EnumFacing d) {
         this.orientation = d;
         this.world.updateComparatorOutputLevel(pos, getBlockType());

@@ -150,7 +150,7 @@ tile.torque_shaft.2.name=Heavy Torque Shaft
 tile.hand_cranked_generator.0.name=Hand Cranked Torque Generator
 tile.chunk_loader_simple.name=Simple Chunk Loader
 tile.chunk_loader_deluxe.name=Deluxe Chunk Loader
-tile.windmill_control.0.name=Windmill Controller
+tile.windmill_generator.0.name=Windmill Controller
 tile.windmill_blade.name=Windmill Blade
 #structure
 tile.advanced_spawner.name=Advanced Monster Spawner

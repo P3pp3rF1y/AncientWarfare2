@@ -13,8 +13,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControlLarge;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControlLight;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControlMedium;
@@ -40,27 +38,6 @@ public class BlockFlywheel extends BlockTorqueBase {
     @Override
     public int getMetaFromState(IBlockState state) {
         return state.getValue(TYPE).getMeta();
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess world, BlockPos pos, EnumFacing side) {
-        return false;
-    }
-
-    @Override
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
-
-    @Override
-    public boolean isNormalCube(IBlockState state) {
-        return false;
-    }
-
-    @Override
-    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return false;
     }
 
     @Override
