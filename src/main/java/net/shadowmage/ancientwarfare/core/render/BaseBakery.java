@@ -26,6 +26,7 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -80,7 +81,7 @@ public abstract class BaseBakery implements ISimpleBlockBakery {
         ccrs.reset();
         ccrs.bind(buffer);
 
-        Map<String, CCModel> transformedGroups = applyModelTransforms(groups, face, state);
+        Collection<CCModel> transformedGroups = applyModelTransforms(groups.values(), face, state);
 
         renderBlockModels(transformedGroups, ccrs, face, state);
 
@@ -88,20 +89,20 @@ public abstract class BaseBakery implements ISimpleBlockBakery {
         return buffer.bake();
     }
 
-    protected Map<String, CCModel> applyModelTransforms(Map<String, CCModel> modelGroups, EnumFacing face, IExtendedBlockState state) {
+    protected Collection<CCModel> applyModelTransforms(Collection<CCModel> modelGroups, EnumFacing face, IExtendedBlockState state) {
         return modelGroups;
     }
 
-    protected void renderBlockModels(Map<String, CCModel> modelGroups, CCRenderState ccrs, EnumFacing face, IExtendedBlockState state) {
+    protected void renderBlockModels(Collection<CCModel> modelGroups, CCRenderState ccrs, EnumFacing face, IExtendedBlockState state) {
         renderAllModels(modelGroups, ccrs);
     }
 
     private void renderAllModels(CCRenderState ccrs) {
-        renderAllModels(groups, ccrs);
+        renderAllModels(groups.values(), ccrs);
     }
-    private void renderAllModels(Map<String, CCModel> modelGroups, CCRenderState ccrs) {
-        for(Map.Entry<String, CCModel> group : modelGroups.entrySet()) {
-            group.getValue().render(ccrs, iconTransform);
+    private void renderAllModels(Collection<CCModel> modelGroups, CCRenderState ccrs) {
+        for(CCModel group : modelGroups) {
+            group.render(ccrs, iconTransform);
         }
     }
 

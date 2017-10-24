@@ -8,6 +8,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
+import java.util.Collection;
 import java.util.Map;
 
 public class WindmillGeneratorRenderer extends BaseTorqueRenderer {
@@ -23,8 +24,8 @@ public class WindmillGeneratorRenderer extends BaseTorqueRenderer {
 	}
 
 	@Override
-	protected void transformMovingParts(Map<String, CCModel> transformedGroups, EnumFacing frontFacing, float[] rotations, IExtendedBlockState state) {
+	protected void transformMovingParts(Collection<CCModel> transformedGroups, EnumFacing frontFacing, float[] rotations, IExtendedBlockState state) {
 		float outR = -rotations[frontFacing.getIndex()];
-		transformedGroups.putAll(rotateModels(outputGear, frontFacing, new Rotation(outR, 0, 0, 1).at(new Vector3(8d/16d, 8d/16d, 8d/16d))));
+		transformedGroups.addAll(rotateModels(outputGear.values(), frontFacing, new Rotation(outR, 0, 0, 1).at(new Vector3(8d/16d, 8d/16d, 8d/16d))));
 	}
 }

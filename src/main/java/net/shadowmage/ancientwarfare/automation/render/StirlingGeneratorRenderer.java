@@ -10,6 +10,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
+import java.util.Collection;
 import java.util.Map;
 
 public class StirlingGeneratorRenderer extends BaseTorqueRenderer {
@@ -41,18 +42,18 @@ public class StirlingGeneratorRenderer extends BaseTorqueRenderer {
 	}
 
 	@Override
-	protected void transformMovingParts(Map<String, CCModel> transformedGroups, EnumFacing frontFacing, float[] rotations, IExtendedBlockState state) {
+	protected void transformMovingParts(Collection<CCModel> transformedGroups, EnumFacing frontFacing, float[] rotations, IExtendedBlockState state) {
 		float rotation = rotations[frontFacing.getIndex()];
 		calculateArmAngle1(rotation);
 		calculateArmAngle2(rotation - 90);
 		Transformation flywheelRotation = new Rotation(-rotation, 0, 0, 1).at(new Vector3(1d / 2d, 1d / 2d, 0));
-		transformedGroups.putAll(rotateModels(flywheel, frontFacing, flywheelRotation));
+		transformedGroups.addAll(rotateModels(flywheel.values(), frontFacing, flywheelRotation));
 		Transformation pistonCrankRotation = new Rotation(rotation, 0, 0, 1).at(new Vector3(12d/16d, 12d/16d, 0d));
-		transformedGroups.putAll(rotateModels(pistonCrank, frontFacing, pistonCrankRotation));
-		transformedGroups.putAll(rotateModels(pistonCrank2, frontFacing, new Rotation(-rotation, 0, 0, 1).at(new Vector3(12d/16d, 11d/16d, 0d))));
-		transformedGroups.putAll(rotateModels(flywheelArm, frontFacing, new Rotation(rotation, 0, 0, 1).at(new Vector3(9d/16d, 8d/16d, 7.5d/16d)).with(flywheelRotation)));
-		transformedGroups.putAll(rotateModels(pistonArm, frontFacing, new Rotation(-rotation + armAngle, 0, 0, 1).at(new Vector3(11d/16d, 12d/16d, 0d)).with(pistonCrankRotation)));
-		transformedGroups.putAll(rotateModels(pistonArm2, frontFacing, new Rotation(-rotation + armAngle2, 0, 0, 1).at(new Vector3(11d/16d, 12d/16d, 0d)).with(pistonCrankRotation)));
+		transformedGroups.addAll(rotateModels(pistonCrank.values(), frontFacing, pistonCrankRotation));
+		transformedGroups.addAll(rotateModels(pistonCrank2.values(), frontFacing, new Rotation(-rotation, 0, 0, 1).at(new Vector3(12d/16d, 11d/16d, 0d))));
+		transformedGroups.addAll(rotateModels(flywheelArm.values(), frontFacing, new Rotation(rotation, 0, 0, 1).at(new Vector3(9d/16d, 8d/16d, 7.5d/16d)).with(flywheelRotation)));
+		transformedGroups.addAll(rotateModels(pistonArm.values(), frontFacing, new Rotation(-rotation + armAngle, 0, 0, 1).at(new Vector3(11d/16d, 12d/16d, 0d)).with(pistonCrankRotation)));
+		transformedGroups.addAll(rotateModels(pistonArm2.values(), frontFacing, new Rotation(-rotation + armAngle2, 0, 0, 1).at(new Vector3(11d/16d, 12d/16d, 0d)).with(pistonCrankRotation)));
 	}
 
 	private void calculateArmAngle1(float crankAngle) {

@@ -10,6 +10,7 @@ import net.shadowmage.ancientwarfare.automation.block.BlockWaterwheelGenerator;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 import javax.annotation.Nullable;
+import java.util.Collection;
 import java.util.Map;
 
 public class WaterwheelGeneratorRenderer extends BaseTorqueRenderer {
@@ -28,12 +29,12 @@ public class WaterwheelGeneratorRenderer extends BaseTorqueRenderer {
 	}
 
 	@Override
-	protected void transformMovingParts(Map<String, CCModel> transformedGroups, EnumFacing frontFacing, float[] rotations, @Nullable IExtendedBlockState state) {
+	protected void transformMovingParts(Collection<CCModel> transformedGroups, EnumFacing frontFacing, float[] rotations, @Nullable IExtendedBlockState state) {
 		float wheelR = -rotations[frontFacing.getOpposite().getIndex()];
 		float outR = rotations[frontFacing.getIndex()];
-		transformedGroups.putAll(rotateModels(outputGear, frontFacing, new Rotation(outR, 0, 0, 1).at(new Vector3(8d/16d, 8d/16d, 8d/16d))));
+		transformedGroups.addAll(rotateModels(outputGear.values(), frontFacing, new Rotation(outR, 0, 0, 1).at(new Vector3(8d/16d, 8d/16d, 8d/16d))));
 		if (state != null && state.getValue(BlockWaterwheelGenerator.VALID_SETUP)) {
-			transformedGroups.putAll(rotateModels(waterwheel, frontFacing, new Rotation(-wheelR, 0, 0, 1).at(new Vector3(8d/16d, 8d/16d, 16d/16d))));
+			transformedGroups.addAll(rotateModels(waterwheel.values(), frontFacing, new Rotation(-wheelR, 0, 0, 1).at(new Vector3(8d/16d, 8d/16d, 16d/16d))));
 		}
 	}
 }

@@ -19,9 +19,9 @@ public class TileWindmillController extends TileTorqueSingleCell {
         super.update();
         if (!world.isRemote) {
             TileWindmillBlade blade = getControlledBlade();
-            if (blade != null && blade.energy > 0) {
-                double d = blade.energy;
-                blade.energy = 0;
+            if (blade != null && blade.getEnergy() > 0) {
+                double d = blade.getEnergy();
+                blade.setEnergy(0);
                 torqueCell.setEnergy(torqueCell.getEnergy() + d);
             }
         }
@@ -32,7 +32,7 @@ public class TileWindmillController extends TileTorqueSingleCell {
         BlockPos behind = pos.offset(getPrimaryFacing().getOpposite());
         if (world.isBlockLoaded(behind) && (te = world.getTileEntity(behind)) instanceof TileWindmillBlade) {
             TileWindmillBlade blade = (TileWindmillBlade) te;
-            if (blade.isControl) {
+            if (blade.isControl()) {
                 return blade;
             }
         }

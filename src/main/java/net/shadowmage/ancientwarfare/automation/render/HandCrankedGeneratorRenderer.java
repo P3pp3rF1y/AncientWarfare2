@@ -8,6 +8,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
+import java.util.Collection;
 import java.util.Map;
 
 public class HandCrankedGeneratorRenderer extends BaseTorqueRenderer {
@@ -26,10 +27,10 @@ public class HandCrankedGeneratorRenderer extends BaseTorqueRenderer {
 	}
 
 	@Override
-	protected void transformMovingParts(Map<String, CCModel> transformedGroups, EnumFacing frontFacing, float[] rotations, IExtendedBlockState state) {
+	protected void transformMovingParts(Collection<CCModel> transformedGroups, EnumFacing frontFacing, float[] rotations, IExtendedBlockState state) {
 		float inR = -rotations[EnumFacing.UP.getIndex()];
 		float outR = -rotations[frontFacing.getIndex()];
-		transformedGroups.putAll(rotateModels(outputGear, frontFacing, new Rotation(outR, 0, 0, 1).at(new Vector3(8d/16d, 8d/16d, 8d/16d))));
-		transformedGroups.putAll(rotateModels(inputGear, frontFacing, new Rotation(inR, 0, 1, 0).at(new Vector3(8d/16d, 10.5d/16d, 11.5d/16d))));
+		transformedGroups.addAll(rotateModels(outputGear.values(), frontFacing, new Rotation(outR, 0, 0, 1).at(new Vector3(8d/16d, 8d/16d, 8d/16d))));
+		transformedGroups.addAll(rotateModels(inputGear.values(), frontFacing, new Rotation(inR, 0, 1, 0).at(new Vector3(8d/16d, 10.5d/16d, 11.5d/16d))));
 	}
 }

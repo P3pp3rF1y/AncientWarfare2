@@ -1,15 +1,18 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque.multiblock;
 
+import com.google.common.collect.Lists;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlocks;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.util.BlockFinder;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.Trig;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
@@ -21,25 +24,42 @@ public class TileWindmillBlade extends TileUpdatable implements ITickable {
 
     public BlockPos controlPos;
 
-    public boolean isControl = false;//set to true if this is the control block for a setup
+    private boolean isControl = false;//set to true if this is the control block for a setup
     protected float rotation, prevRotation;//used in rendering
 
     /*
      * the raw size of the windmill in blocks tall
      */
-    public int windmillSize = 0;
-
+    private int windmillSize = 0;
     public double energy = 0;
-
-    /*
-     * 0/1 == INVALID
-     * 2/3 == north/south face (expands on x-axis)
-     * 4/5 == east/west face (expands on z-axis)
-     */
-    public int windmillDirection = 2;
+    private EnumFacing windmillDirection = EnumFacing.NORTH;
 
     public TileWindmillBlade() {
 
+    }
+
+    public boolean isControl() {
+        return isControl;
+    }
+
+    public boolean isFormed() {
+        return controlPos != null;
+    }
+
+    public EnumFacing getDirection() {
+        return windmillDirection;
+    }
+
+    public int getWindmillSize() {
+        return windmillSize;
+    }
+
+    public double getEnergy() {
+        return energy;
+    }
+
+    public void setEnergy(int energy) {
+        this.energy = energy;
     }
 
     @Override
@@ -54,7 +74,7 @@ public class TileWindmillBlade extends TileUpdatable implements ITickable {
     }
 
     public float getRotation(float delta){
-        return prevRotation + (rotation - prevRotation) * delta;
+        return ((prevRotation + (rotation - prevRotation) * delta) % 360) * Trig.TORADIANS;
     }
 
     protected void updateRotation() {
@@ -73,7 +93,7 @@ public class TileWindmillBlade extends TileUpdatable implements ITickable {
                 int expand = (windmillSize - 1) / 2;
                 if(expand>0) {
                     TileEntity tileEntity;
-                    if (windmillDirection == 2 || windmillDirection == 3) {
+                    if (windmillDirection.getAxis() == EnumFacing.Axis.Z) {
                         for (int j = -expand; j < expand + 1; j++) {
                             for (int i = -expand; i < expand + 1; i++) {
                                 tileEntity = world.getTileEntity(pos.add(i, j, 0));
@@ -82,7 +102,7 @@ public class TileWindmillBlade extends TileUpdatable implements ITickable {
                                 }
                             }
                         }
-                    } else if (windmillDirection == 4 || windmillDirection == 5) {
+                    } else if (windmillDirection.getAxis() == EnumFacing.Axis.X) {
                         for (int j = -expand; j < expand + 1; j++) {
                             for (int i = -expand; i < expand + 1; i++) {
                                 tileEntity = world.getTileEntity(pos.add(0, j, i));
@@ -149,9 +169,36 @@ public class TileWindmillBlade extends TileUpdatable implements ITickable {
             setValidSetup(finder.getPositions(), controlX, controlY, controlZ, xSize, ySize, zSize);
         } else {
             finder.connect(corners.getLeft(), new BlockPos(xSize, ySize, zSize));
-            setInvalidSetup(finder.getPositions());
+            setInvalidSetup(getAllConnectedBlades());
         }
         return valid;
+    }
+
+    private List<BlockPos> getAllConnectedBlades() {
+        int maxRadius = 20;
+        List<BlockPos> connectedBlocks = Lists.newArrayList();
+        List<BlockPos> searchedPositions = Lists.newArrayList();
+        BlockPos currentPos = pos;
+
+        connectedBlocks.add(currentPos);
+        searchedPositions.add(currentPos);
+
+        getConnectedBlades(maxRadius, connectedBlocks, searchedPositions, currentPos);
+
+        return connectedBlocks;
+    }
+
+    private void getConnectedBlades(int maxRadius, List<BlockPos> connectedBlocks, List<BlockPos> searchedPositions, BlockPos currentPos) {
+        if(currentPos.getDistance(pos.getX(), pos.getY(), pos.getZ()) < maxRadius) {
+            for(EnumFacing facing : EnumFacing.VALUES) {
+                BlockPos offsetPos = currentPos.offset(facing);
+                if (!searchedPositions.contains(offsetPos) && world.getBlockState(offsetPos).getBlock() == AWAutomationBlocks.windmillBlade) {
+                    connectedBlocks.add(offsetPos);
+                    searchedPositions.add(offsetPos);
+                    getConnectedBlades(maxRadius, connectedBlocks, searchedPositions, offsetPos);
+                }
+            }
+        }
     }
 
     private void informNeighborsToValidate() {
@@ -193,7 +240,7 @@ public class TileWindmillBlade extends TileUpdatable implements ITickable {
     }
 
     private void setValidSetup(List<BlockPos> set, int cx, int cy, int cz, int xs, int ys, int zs) {
-        controlPos = new BlockPos(cx, cy, cz);
+        setController(new BlockPos(cx, cy, cz));
         TileEntity te = world.getTileEntity(controlPos);
         if (te instanceof TileWindmillBlade) {
             ((TileWindmillBlade) te).setAsController(xs, ys, zs);
@@ -204,11 +251,11 @@ public class TileWindmillBlade extends TileUpdatable implements ITickable {
                 }
             }
         }else
-            controlPos = null;
+            setController(null);
     }
 
     private void setAsController(int xSize, int ySize, int zSize) {
-        windmillDirection = xSize == 1 ? 4 : zSize == 1 ? 2 : 0;
+        windmillDirection = xSize == 1 ? EnumFacing.WEST : EnumFacing.NORTH;
         windmillSize = ySize;
         this.isControl = true;
         markDirty();
@@ -224,7 +271,7 @@ public class TileWindmillBlade extends TileUpdatable implements ITickable {
         }
         if (isControl) {
             tag.setInteger("size", windmillSize);
-            tag.setInteger("direction", windmillDirection);
+            tag.setByte("direction", (byte) windmillDirection.ordinal());
         }
     }
 
@@ -235,8 +282,9 @@ public class TileWindmillBlade extends TileUpdatable implements ITickable {
         isControl = tag.getBoolean("isControl");
         if (isControl) {
             windmillSize = tag.getInteger("size");
-            windmillDirection = tag.getInteger("direction");
+            windmillDirection = EnumFacing.VALUES[tag.getByte("direction")];
         }
+        BlockTools.notifyBlockUpdate(this);
     }
 
     @Override
@@ -246,7 +294,7 @@ public class TileWindmillBlade extends TileUpdatable implements ITickable {
         isControl = tag.getBoolean("isControl");
         if (isControl) {
             windmillSize = tag.getInteger("size");
-            windmillDirection = tag.getInteger("direction");
+            windmillDirection = EnumFacing.VALUES[tag.getByte("direction")];
         }
     }
 
@@ -259,7 +307,7 @@ public class TileWindmillBlade extends TileUpdatable implements ITickable {
         }
         if (isControl) {
             tag.setInteger("size", windmillSize);
-            tag.setInteger("direction", windmillDirection);
+            tag.setByte("direction", (byte) windmillDirection.ordinal());
         }
 
         return tag;
