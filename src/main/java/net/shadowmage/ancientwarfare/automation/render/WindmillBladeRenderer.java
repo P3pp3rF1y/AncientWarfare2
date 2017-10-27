@@ -62,10 +62,10 @@ public class WindmillBladeRenderer extends AnimatedBlockRenderer {
 		MODEL_PROPERTIES = new PerspectiveAwareModelProperties(new CCModelState(defaultBlockBuilder.build()), true, true);
 	}
 
-	private final Map<String, CCModel> bladeShaft;
-	private final Map<String, CCModel> windmillShaft;
-	private final Map<String, CCModel> blade;
-	private final Map<String, CCModel> bladeJoint;
+	private final Collection<CCModel> bladeShaft;
+	private final Collection<CCModel> windmillShaft;
+	private final Collection<CCModel> blade;
+	private final Collection<CCModel> bladeJoint;
 	private final CCModel cube;
 	public TextureAtlasSprite cubeSprite;
 	protected IconTransformation cubeIconTransform;
@@ -73,10 +73,10 @@ public class WindmillBladeRenderer extends AnimatedBlockRenderer {
 	private WindmillBladeRenderer() {
 		super("automation/windmill_blade.obj");
 		cube = OBJParser.parseModels(new ResourceLocation(AncientWarfareCore.modID, "models/block/automation/windmill_blade_cube.obj"), 7, new RedundantTransformation()).values().iterator().next().backfacedCopy();
-		bladeShaft = removeGroups(s -> s.startsWith("bladeShaft."));
-		windmillShaft = transformModels(removeGroups(s -> s.startsWith("windmillShaft.")), new Translation(0d,0.5d,0d));
-		blade = removeGroups(s -> s.startsWith("blade."));
-		bladeJoint = removeGroups(s -> s.startsWith("bladeJoint."));
+		bladeShaft = removeGroups(s -> s.startsWith("bladeShaft.")).values();
+		windmillShaft = transformModels(removeGroups(s -> s.startsWith("windmillShaft.")), new Translation(0d,0.5d,0d)).values();
+		blade = removeGroups(s -> s.startsWith("blade.")).values();
+		bladeJoint = removeGroups(s -> s.startsWith("bladeJoint.")).values();
 	}
 
 	private Map<String, CCModel> transformModels(Map<String, CCModel> groups, Transformation transform) {
@@ -110,7 +110,7 @@ public class WindmillBladeRenderer extends AnimatedBlockRenderer {
 	@Override
 	protected Collection<CCModel> applyModelTransforms(Collection<CCModel> modelGroups, EnumFacing face, IExtendedBlockState state) {
 		if(!state.getValue(BlockWindmillBlade.FORMED)) {
-			return modelGroups;
+			return Collections.singleton(cube);
 		}
 
 		EnumFacing frontFacing = state.getValue(CoreProperties.UNLISTED_HORIZONTAL_FACING);
@@ -120,21 +120,26 @@ public class WindmillBladeRenderer extends AnimatedBlockRenderer {
 		return transformBlades(frontFacing, height, rotation);
 	}
 
+	@Override
+	protected IconTransformation getIconTransform(IExtendedBlockState state) {
+		return !state.getValue(BlockWindmillBlade.FORMED) ? cubeIconTransform : iconTransform;
+	}
+
 	private Set<CCModel> transformBlades(EnumFacing frontFacing, int height, float rotation) {
 		Set<CCModel> transformedGroups = Sets.newHashSet();
 		Vector3 center = new Vector3(8d / 16d, 8d / 16d, 8d / 16d);
 		Transformation baseRotation = new Rotation(rotation, 0, 0, 1).at(center);
-		transformedGroups.addAll(rotateModels(windmillShaft.values(), frontFacing, baseRotation));
+		transformedGroups.addAll(rotateModels(windmillShaft, frontFacing, baseRotation));
 
 		for (int i = 0; i < 4; i++) {
 			Transformation bladeTransform = new Rotation(((float) i) * Trig.PI / 2f, 0, 0, 1).at(center).with(baseRotation);
 			if(i < 2) {
-				transformedGroups.addAll(rotateModels(bladeShaft.values(), frontFacing, bladeTransform));
+				transformedGroups.addAll(rotateModels(bladeShaft, frontFacing, bladeTransform));
 			}
 			for (int k = 1; k < height; k++) {
-				transformedGroups.addAll(rotateModels(blade.values(), frontFacing, bladeTransform));
+				transformedGroups.addAll(rotateModels(blade, frontFacing, bladeTransform));
 				if (k == height - 1) {
-					transformedGroups.addAll(rotateModels(bladeJoint.values(), frontFacing, bladeTransform));
+					transformedGroups.addAll(rotateModels(bladeJoint, frontFacing, bladeTransform));
 				}
 				else {
 					bladeTransform = new Translation(0, 1, 0).with(bladeTransform);
@@ -168,7 +173,7 @@ public class WindmillBladeRenderer extends AnimatedBlockRenderer {
 	}
 
 	@Override
-	protected void renderItemModels(CCRenderState ccrs) {
+	protected void renderItemModels(CCRenderState ccrs, ItemStack stack) {
 		transformBlades(EnumFacing.NORTH, 2, 0).forEach(m -> m.render(ccrs, iconTransform));
 	}
 }

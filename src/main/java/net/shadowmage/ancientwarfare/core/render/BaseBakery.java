@@ -9,6 +9,7 @@ import codechicken.lib.render.OBJParser;
 import codechicken.lib.render.buffer.BakingVertexBuffer;
 import codechicken.lib.util.TransformUtils;
 import codechicken.lib.vec.RedundantTransformation;
+import codechicken.lib.vec.Transformation;
 import codechicken.lib.vec.uv.IconTransformation;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -41,11 +42,15 @@ public abstract class BaseBakery implements ISimpleBlockBakery {
     protected IconTransformation iconTransform;
 
     protected BaseBakery(String modelPath) {
-        groups = OBJParser.parseModels(new ResourceLocation(AncientWarfareCore.modID, "models/block/" +modelPath), 7, new RedundantTransformation());
+        groups = OBJParser.parseModels(new ResourceLocation(AncientWarfareCore.modID, "models/block/" +modelPath), 7, getBaseTransformation());
 
         for(Map.Entry<String, CCModel> group : groups.entrySet()) {
             group.setValue(group.getValue().backfacedCopy().computeNormals());
         }
+    }
+
+    protected Transformation getBaseTransformation() {
+        return new RedundantTransformation();
     }
 
     public void setSprite(TextureAtlasSprite textureAtlasSprite) {
@@ -94,20 +99,31 @@ public abstract class BaseBakery implements ISimpleBlockBakery {
     }
 
     protected void renderBlockModels(Collection<CCModel> modelGroups, CCRenderState ccrs, EnumFacing face, IExtendedBlockState state) {
-        renderAllModels(modelGroups, ccrs);
+        renderAllModels(modelGroups, ccrs, state);
     }
 
-    private void renderAllModels(CCRenderState ccrs) {
-        renderAllModels(groups.values(), ccrs);
-    }
-    private void renderAllModels(Collection<CCModel> modelGroups, CCRenderState ccrs) {
+    private void renderAllModels(Collection<CCModel> modelGroups, CCRenderState ccrs, IExtendedBlockState state) {
         for(CCModel group : modelGroups) {
-            group.render(ccrs, iconTransform);
+            group.render(ccrs, getIconTransform(state));
         }
     }
 
-    protected void renderItemModels(CCRenderState ccrs) {
-        renderAllModels(ccrs);
+    private void renderAllModels(CCRenderState ccrs, ItemStack stack) {
+        for(CCModel group : groups.values()) {
+            group.render(ccrs, getIconTransform(stack));
+        }
+    }
+
+    protected IconTransformation getIconTransform(IExtendedBlockState state) {
+        return iconTransform;
+    }
+
+    protected IconTransformation getIconTransform(ItemStack stack) {
+        return iconTransform;
+    }
+
+    protected void renderItemModels(CCRenderState ccrs, ItemStack stack) {
+        renderAllModels(ccrs, stack);
     }
 
     @Nonnull
@@ -119,7 +135,7 @@ public abstract class BaseBakery implements ISimpleBlockBakery {
         ccrs.reset();
         ccrs.bind(buffer);
 
-        renderItemModels(ccrs);
+        renderItemModels(ccrs, stack);
 
         buffer.finishDrawing();
         return buffer.bake();

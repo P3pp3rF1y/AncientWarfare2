@@ -1,20 +1,19 @@
-/*
 package net.shadowmage.ancientwarfare.automation.render;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.IItemRenderer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaft;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelLoader;
 import net.shadowmage.ancientwarfare.core.model.ModelPiece;
-import org.lwjgl.opengl.GL11;
 
-public class RenderTileTorqueShaft extends TileEntitySpecialRenderer implements IItemRenderer {
+import java.io.IOException;
+
+public class RenderTileTorqueShaft extends TileEntitySpecialRenderer {
 
     private final float[][] gearboxRotationMatrix = new float[6][];
     private final ModelBaseAW model;
@@ -41,7 +40,13 @@ public class RenderTileTorqueShaft extends TileEntitySpecialRenderer implements 
     }
 
     @Override
-    public void renderTileEntityAt(TileEntity te, double x, double y, double z, float delta) {
+    public void render(TileEntity te, double x, double y, double z, float delta, int destroyStage, float alpha) {
+        try {
+            model.exportOBJ("torque_shaft.obj");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         GlStateManager.pushMatrix();
         GlStateManager.translate(x + 0.5d, y + 0.5d, z + 0.5d);
 
@@ -80,16 +85,7 @@ public class RenderTileTorqueShaft extends TileEntitySpecialRenderer implements 
         GlStateManager.popMatrix();
     }
 
-    @Override
-    public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-        return true;
-    }
-
-    @Override
-    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-        return true;
-    }
-
+/*
     @Override
     public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
         GlStateManager.pushMatrix();
@@ -117,7 +113,7 @@ public class RenderTileTorqueShaft extends TileEntitySpecialRenderer implements 
         model.renderModel();
         GlStateManager.popMatrix();
     }
+*/
 
 
 }
-*/

@@ -23,6 +23,10 @@ public class ModelLoaderHelper {
         registerItem(item, prefix, "inventory", subItemsUseSameModel);
     }
 
+    public static void registerItem(Block block, String prefix, String variant, boolean subItemsUseSameModel) {
+        registerItem(Item.getItemFromBlock(block), prefix, variant, subItemsUseSameModel);
+    }
+
     public static void registerItem(Block block, String prefix, String variant) {
         registerItem(Item.getItemFromBlock(block), prefix, variant);
     }

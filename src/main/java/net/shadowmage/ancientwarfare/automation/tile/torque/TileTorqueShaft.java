@@ -5,6 +5,8 @@ import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 
+import javax.annotation.Nullable;
+
 public abstract class TileTorqueShaft extends TileTorqueSingleCell {
 
     private TileTorqueShaft prev, next;
@@ -78,6 +80,7 @@ public abstract class TileTorqueShaft extends TileTorqueSingleCell {
         prev = next = null;
     }
 
+    @Nullable
     public TileTorqueShaft prev() {
         if (prevNeighborInvalid) {
             prevNeighborInvalid = false;
@@ -90,6 +93,7 @@ public abstract class TileTorqueShaft extends TileTorqueSingleCell {
         return prev;
     }
 
+    @Nullable
     public TileTorqueShaft next() {
         if (nextNeighborInvalid) {
             nextNeighborInvalid = false;

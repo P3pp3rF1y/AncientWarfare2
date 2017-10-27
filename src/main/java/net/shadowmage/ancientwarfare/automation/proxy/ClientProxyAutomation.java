@@ -12,6 +12,7 @@ import net.minecraftforge.fml.client.config.IConfigElement;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.shadowmage.ancientwarfare.automation.KeyHandler;
+import net.shadowmage.ancientwarfare.automation.block.BlockTorqueTransportShaft;
 import net.shadowmage.ancientwarfare.automation.block.BlockWaterwheelGenerator;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.gui.GuiChunkLoaderDeluxe;
@@ -34,8 +35,11 @@ import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteReedFarm;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteTreeFarm;
 import net.shadowmage.ancientwarfare.automation.render.AutoCraftingRenderer;
 import net.shadowmage.ancientwarfare.automation.render.HandCrankedGeneratorRenderer;
+import net.shadowmage.ancientwarfare.automation.render.RenderTileTorqueShaft;
 import net.shadowmage.ancientwarfare.automation.render.StirlingGeneratorRenderer;
 import net.shadowmage.ancientwarfare.automation.render.TorqueAnimationRenderer;
+import net.shadowmage.ancientwarfare.automation.render.TorqueShaftAnimationRenderer;
+import net.shadowmage.ancientwarfare.automation.render.TorqueShaftRenderer;
 import net.shadowmage.ancientwarfare.automation.render.WaterwheelGeneratorRenderer;
 import net.shadowmage.ancientwarfare.automation.render.WindmillBladeAnimationRenderer;
 import net.shadowmage.ancientwarfare.automation.render.WindmillBladeRenderer;
@@ -44,6 +48,7 @@ import net.shadowmage.ancientwarfare.automation.render.WorksiteRenderer;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileHandCrankedGenerator;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileStirlingGenerator;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueBase;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaft;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileWaterwheelGenerator;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileWindmillController;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileWindmillBlade;
@@ -105,8 +110,8 @@ public class ClientProxyAutomation extends ClientProxyBase {
         //ClientRegistry.bindTileEntitySpecialRenderer(TileDistributor.class, distributorRender);
         //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.torqueDistributor), distributorRender);
 
-        //RenderTileTorqueShaft shaftRender = new RenderTileTorqueShaft(new ResourceLocation("ancientwarfare", "textures/model/automation/torque_shaft_light.png"), new ResourceLocation("ancientwarfare", "textures/model/automation/torque_shaft_medium.png"), new ResourceLocation("ancientwarfare", "textures/model/automation/torque_shaft_heavy.png"));
-        //ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueShaft.class, shaftRender);
+        RenderTileTorqueShaft shaftRender = new RenderTileTorqueShaft(new ResourceLocation("ancientwarfare", "textures/model/automation/torque_shaft_light.png"), new ResourceLocation("ancientwarfare", "textures/model/automation/torque_shaft_medium.png"), new ResourceLocation("ancientwarfare", "textures/model/automation/torque_shaft_heavy.png"));
+        ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueShaft.class, new TorqueShaftAnimationRenderer());
         //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.torqueShaft), shaftRender);
 
 
@@ -164,6 +169,9 @@ public class ClientProxyAutomation extends ClientProxyBase {
         WindmillGeneratorRenderer.INSTANCE.setSprite(registerSprite(evt, "windmill_generator"));
         WindmillBladeRenderer.INSTANCE.setSprite(registerSprite(evt, "windmill_blade"));
         WindmillBladeRenderer.INSTANCE.setCubeSprite(registerSprite(evt, "windmill_blade_cube"));
+        TorqueShaftRenderer.INSTANCE.setSprite(BlockTorqueTransportShaft.Type.HEAVY, registerSprite(evt, "torque_shaft_heavy"));
+        TorqueShaftRenderer.INSTANCE.setSprite(BlockTorqueTransportShaft.Type.MEDIUM, registerSprite(evt, "torque_shaft_medium"));
+        TorqueShaftRenderer.INSTANCE.setSprite(BlockTorqueTransportShaft.Type.LIGHT, registerSprite(evt, "torque_shaft_light"));
     }
 
     private TextureAtlasSprite registerSprite(TextureStitchEvent.Pre evt, String spriteName) {

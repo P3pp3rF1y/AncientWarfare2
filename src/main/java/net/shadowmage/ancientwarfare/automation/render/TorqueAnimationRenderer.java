@@ -10,10 +10,10 @@ import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 
 import java.util.Optional;
 
-public class TorqueAnimationRenderer extends BaseAnimationRenderer<TileTorqueBase> {
+public class TorqueAnimationRenderer<T extends TileTorqueBase> extends BaseAnimationRenderer<T> {
 
     @Override
-    protected IExtendedBlockState handleState(TileTorqueBase te, float partialTicks, IExtendedBlockState state) {
+    protected IExtendedBlockState handleState(T te, float partialTicks, IExtendedBlockState state) {
         EnumFacing facing = te.getPrimaryFacing();
         state = state.withProperty(CoreProperties.UNLISTED_FACING, facing);
         ImmutableMap<IUnlistedProperty<?>, Optional<?>> properties = state.getUnlistedProperties();
