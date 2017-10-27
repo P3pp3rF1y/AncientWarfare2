@@ -150,20 +150,20 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
     @Override
     public void validate() {
         super.validate();
-        invalidateNeighborCache();
+        invalidateTorqueCache();
     }
 
     @Override
     public void invalidate() {
         super.invalidate();
-        invalidateNeighborCache();
+        invalidateTorqueCache();
     }
 
     public void onNeighborTileChanged() {
-        invalidateNeighborCache();
+        invalidateTorqueCache();
     }
 
-    protected final void invalidateNeighborCache() {
+    protected final void invalidateTorqueCache() {
         torqueCache = null;
         rfCache = null;
         onNeighborCacheInvalidated();
@@ -184,7 +184,7 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
     public final void setPrimaryFacing(EnumFacing d) {
         this.orientation = d;
         this.world.updateComparatorOutputLevel(pos, getBlockType());
-        this.invalidateNeighborCache();
+        this.invalidateTorqueCache();
         BlockTools.notifyBlockUpdate(this);
     }
 
@@ -330,7 +330,7 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
     protected void handleUpdateNBT(NBTTagCompound tag) {
         super.handleUpdateNBT(tag);
         orientation = EnumFacing.VALUES[tag.getInteger("orientation")];
-        this.invalidateNeighborCache(); //TODO is this needed on client??
+        this.invalidateTorqueCache(); //TODO is this needed on client??
         BlockTools.notifyBlockUpdate(this);
     }
 }

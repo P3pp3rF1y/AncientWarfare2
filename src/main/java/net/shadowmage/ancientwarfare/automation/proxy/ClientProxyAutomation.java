@@ -35,7 +35,6 @@ import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteReedFarm;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteTreeFarm;
 import net.shadowmage.ancientwarfare.automation.render.AutoCraftingRenderer;
 import net.shadowmage.ancientwarfare.automation.render.HandCrankedGeneratorRenderer;
-import net.shadowmage.ancientwarfare.automation.render.RenderTileTorqueShaft;
 import net.shadowmage.ancientwarfare.automation.render.StirlingGeneratorRenderer;
 import net.shadowmage.ancientwarfare.automation.render.TorqueAnimationRenderer;
 import net.shadowmage.ancientwarfare.automation.render.TorqueShaftAnimationRenderer;
@@ -110,10 +109,7 @@ public class ClientProxyAutomation extends ClientProxyBase {
         //ClientRegistry.bindTileEntitySpecialRenderer(TileDistributor.class, distributorRender);
         //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.torqueDistributor), distributorRender);
 
-        RenderTileTorqueShaft shaftRender = new RenderTileTorqueShaft(new ResourceLocation("ancientwarfare", "textures/model/automation/torque_shaft_light.png"), new ResourceLocation("ancientwarfare", "textures/model/automation/torque_shaft_medium.png"), new ResourceLocation("ancientwarfare", "textures/model/automation/torque_shaft_heavy.png"));
         ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueShaft.class, new TorqueShaftAnimationRenderer());
-        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.torqueShaft), shaftRender);
-
 
         //********************************************STORAGE RENDERS***************************************************************//
         //RenderTileTorqueFlywheelController storageControlRender = new RenderTileTorqueFlywheelController();

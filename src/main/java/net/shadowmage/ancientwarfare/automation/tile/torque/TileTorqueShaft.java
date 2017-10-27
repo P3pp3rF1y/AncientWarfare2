@@ -4,6 +4,7 @@ import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
+import net.shadowmage.ancientwarfare.core.util.Trig;
 
 import javax.annotation.Nullable;
 
@@ -69,15 +70,23 @@ public abstract class TileTorqueShaft extends TileTorqueSingleCell {
     }
 
     protected void onNeighborCacheInvalidated() {
+        invalidateNeighborCache();
+        invalidateLocalCache();
+    }
+
+    private void invalidateLocalCache() {
         prevNeighborInvalid = true;
         nextNeighborInvalid = true;
+        prev = next = null;
+    }
+
+    private void invalidateNeighborCache() {
         if (next != null) {
-            next.prev = null;
+            next.invalidateLocalCache();
         }
         if (prev != null) {
-            prev.next = null;
+            prev.invalidateLocalCache();
         }
-        prev = next = null;
     }
 
     @Nullable
@@ -108,7 +117,7 @@ public abstract class TileTorqueShaft extends TileTorqueSingleCell {
 
     @Override
     public float getClientOutputRotation(EnumFacing from, float delta) {
-        return prev() == null ? getRotation(rotation, prevRotation, delta) : prev().getClientOutputRotation(from, delta);
+        return (prev() == null ? getRotation(rotation, prevRotation, delta) : prev().getClientOutputRotation(from, delta)) * Trig.TORADIANS;
     }
 
 }
