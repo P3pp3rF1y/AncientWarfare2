@@ -152,9 +152,9 @@ public class AWAutomationBlockLoader {
         GameRegistry.registerTileEntity(TileConduitHeavy.class, "torque_conduit_heavy_tile");
 
         registry.register(new BlockTorqueTransportShaft("torque_shaft"));
-        GameRegistry.registerTileEntity(TileTorqueShaftLight.class, "torque_driveline_tile");
-        GameRegistry.registerTileEntity(TileTorqueShaftMedium.class, "torque_driveline_medium_tile");
-        GameRegistry.registerTileEntity(TileTorqueShaftHeavy.class, "torque_driveline_heavy_tile");
+        GameRegistry.registerTileEntity(TileTorqueShaftLight.class, "torque_shaft_light_tile");
+        GameRegistry.registerTileEntity(TileTorqueShaftMedium.class, "torque_shaft_medium_tile");
+        GameRegistry.registerTileEntity(TileTorqueShaftHeavy.class, "torque_shaft_heavy_tile");
 
         registry.register(new BlockTorqueDistributor("torque_distributor"));
         GameRegistry.registerTileEntity(TileDistributorLight.class, "torque_distributor_tile");
