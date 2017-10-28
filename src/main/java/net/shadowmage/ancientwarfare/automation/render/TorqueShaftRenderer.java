@@ -73,15 +73,15 @@ public class TorqueShaftRenderer extends BaseTorqueRendererGeneric<TileTorqueSha
 		boolean hasPrevious = state != null && state.getValue(BlockTorqueTransportShaft.HAS_PREVIOUS);
 		boolean useInput = state != null && state.getValue(BlockTorqueTransportShaft.USE_INPUT);
 		boolean hasNext = state!= null && state.getValue(BlockTorqueTransportShaft.HAS_NEXT);
+		if(!hasNext) {
+			transformedGroups.addAll(rotateModels(outputHead, frontFacing, new Rotation(-rotation, 0, 0, 1).at(new Vector3(8d/16d, 8d/16d, 8d/16d))));
+		}
+
 		if(!hasPrevious) {
 			if(useInput) {
 				rotation = state.getValue(BlockTorqueTransportShaft.INPUT_ROTATION);
 			}
 			transformedGroups.addAll(rotateModels(inputHead, frontFacing, new Rotation(-rotation, 0, 0, 1).at(new Vector3(8d/16d, 8d/16d, 8d/16d))));
-		}
-
-		if(!hasNext) {
-			transformedGroups.addAll(rotateModels(outputHead, frontFacing, new Rotation(-rotation, 0, 0, 1).at(new Vector3(8d/16d, 8d/16d, 8d/16d))));
 		}
 	}
 

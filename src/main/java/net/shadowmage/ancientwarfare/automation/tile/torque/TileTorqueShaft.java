@@ -117,7 +117,7 @@ public abstract class TileTorqueShaft extends TileTorqueSingleCell {
 
     @Override
     public float getClientOutputRotation(EnumFacing from, float delta) {
-        return (prev() == null ? getRotation(rotation, prevRotation, delta) : prev().getClientOutputRotation(from, delta)) * Trig.TORADIANS;
+        return getRotation(rotation, prevRotation, delta) * Trig.TORADIANS;
     }
 
 }
