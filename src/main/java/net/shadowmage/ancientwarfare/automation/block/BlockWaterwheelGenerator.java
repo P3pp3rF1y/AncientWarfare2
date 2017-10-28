@@ -20,7 +20,6 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.shadowmage.ancientwarfare.automation.render.WaterwheelGeneratorRenderer;
 import net.shadowmage.ancientwarfare.automation.render.property.AutomationProperties;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileWaterwheelGenerator;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
@@ -68,7 +67,7 @@ public class BlockWaterwheelGenerator extends BlockTorqueGenerator implements IB
             }
         });
 
-        ModelRegistryHelper.register(WaterwheelGeneratorRenderer.MODEL_LOCATION, new CCBakeryModel(AncientWarfareCore.modID + ":model/automation/waterwheel_generator") {
+        ModelRegistryHelper.register(WaterwheelGeneratorRenderer.MODEL_LOCATION, new CCBakeryModel() {
             @Override
             public TextureAtlasSprite getParticleTexture() {
                 return WaterwheelGeneratorRenderer.INSTANCE.sprite;

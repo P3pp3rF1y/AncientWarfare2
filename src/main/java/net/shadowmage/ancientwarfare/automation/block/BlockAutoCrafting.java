@@ -20,7 +20,6 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteAutoCrafting;
 import net.shadowmage.ancientwarfare.automation.render.AutoCraftingRenderer;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileAutoCrafting;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
@@ -89,7 +88,7 @@ public class BlockAutoCrafting extends BlockWorksiteBase implements IBakeryProvi
             }
         });
 
-        ModelRegistryHelper.register(AutoCraftingRenderer.MODEL_LOCATION, new CCBakeryModel(AncientWarfareCore.modID + ":model/automation/tile_auto_crafting") {
+        ModelRegistryHelper.register(AutoCraftingRenderer.MODEL_LOCATION, new CCBakeryModel() {
             @Override
             public TextureAtlasSprite getParticleTexture() {
                 return AutoCraftingRenderer.INSTANCE.sprite;

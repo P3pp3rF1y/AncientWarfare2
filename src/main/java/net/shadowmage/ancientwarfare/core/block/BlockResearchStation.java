@@ -128,7 +128,7 @@ public class BlockResearchStation extends BlockBaseCore implements IRotatableBlo
             }
         });
 
-        ModelRegistryHelper.register(ResearchStationRenderer.MODEL_LOCATION, new CCBakeryModel(AncientWarfareCore.modID + ":model/core/tile_research_station") {
+        ModelRegistryHelper.register(ResearchStationRenderer.MODEL_LOCATION, new CCBakeryModel() {
             @Override
             public TextureAtlasSprite getParticleTexture() {
                 return ResearchStationRenderer.INSTANCE.sprite;

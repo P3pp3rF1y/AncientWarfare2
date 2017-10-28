@@ -17,7 +17,6 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.shadowmage.ancientwarfare.automation.render.HandCrankedGeneratorRenderer;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileHandCrankedGenerator;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 
 public class BlockHandCrankedGenerator extends BlockTorqueBase implements IBakeryProvider {
@@ -56,7 +55,7 @@ public class BlockHandCrankedGenerator extends BlockTorqueBase implements IBaker
             }
         });
 
-        ModelRegistryHelper.register(HandCrankedGeneratorRenderer.MODEL_LOCATION, new CCBakeryModel(AncientWarfareCore.modID + ":model/automation/hand_cranked_generator") {
+        ModelRegistryHelper.register(HandCrankedGeneratorRenderer.MODEL_LOCATION, new CCBakeryModel() {
             @Override
             public TextureAtlasSprite getParticleTexture() {
                 return HandCrankedGeneratorRenderer.INSTANCE.sprite;

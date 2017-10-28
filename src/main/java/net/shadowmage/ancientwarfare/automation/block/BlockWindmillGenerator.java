@@ -18,7 +18,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.automation.render.WindmillGeneratorRenderer;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileWindmillController;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 public class BlockWindmillGenerator extends BlockTorqueGenerator implements IBakeryProvider {
 
@@ -57,7 +56,7 @@ public class BlockWindmillGenerator extends BlockTorqueGenerator implements IBak
             }
         });
 
-        ModelRegistryHelper.register(WindmillGeneratorRenderer.MODEL_LOCATION, new CCBakeryModel(AncientWarfareCore.modID + ":model/automation/windmill_generator") {
+        ModelRegistryHelper.register(WindmillGeneratorRenderer.MODEL_LOCATION, new CCBakeryModel() {
             @Override
             public TextureAtlasSprite getParticleTexture() {
                 return WindmillGeneratorRenderer.INSTANCE.sprite;

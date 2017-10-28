@@ -28,7 +28,6 @@ import net.minecraftforge.common.property.PropertyFloat;
 import net.shadowmage.ancientwarfare.automation.render.WindmillBladeRenderer;
 import net.shadowmage.ancientwarfare.automation.render.property.AutomationProperties;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileWindmillBlade;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
 import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.UNLISTED_HORIZONTAL_FACING;
@@ -139,7 +138,7 @@ public class BlockWindmillBlade extends BlockBaseAutomation implements IBakeryPr
             }
         });
 
-        ModelRegistryHelper.register(WindmillBladeRenderer.MODEL_LOCATION, new CCBakeryModel(AncientWarfareCore.modID + ":model/automation/windmill_blade") {
+        ModelRegistryHelper.register(WindmillBladeRenderer.MODEL_LOCATION, new CCBakeryModel() {
             @Override
             public TextureAtlasSprite getParticleTexture() {
                 return WindmillBladeRenderer.INSTANCE.cubeSprite;

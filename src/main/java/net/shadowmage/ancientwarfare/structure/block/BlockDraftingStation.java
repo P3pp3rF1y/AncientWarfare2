@@ -20,7 +20,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 import net.shadowmage.ancientwarfare.structure.gui.GuiDraftingStation;
@@ -89,7 +88,7 @@ public class BlockDraftingStation extends BlockBaseStructure implements IBakeryP
             }
         });
 
-        ModelRegistryHelper.register(DraftingStationRenderer.MODEL_LOCATION, new CCBakeryModel(AncientWarfareCore.modID + ":model/structure/tile_drafting_station") {
+        ModelRegistryHelper.register(DraftingStationRenderer.MODEL_LOCATION, new CCBakeryModel() {
             @Override
             public TextureAtlasSprite getParticleTexture() {
                 return DraftingStationRenderer.INSTANCE.sprite;

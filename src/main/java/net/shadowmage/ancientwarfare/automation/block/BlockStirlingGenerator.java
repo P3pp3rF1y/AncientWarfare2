@@ -19,7 +19,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.automation.gui.GuiStirlingGenerator;
 import net.shadowmage.ancientwarfare.automation.render.StirlingGeneratorRenderer;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileStirlingGenerator;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
 public class BlockStirlingGenerator extends BlockTorqueGenerator implements IBakeryProvider {
@@ -56,7 +55,7 @@ public class BlockStirlingGenerator extends BlockTorqueGenerator implements IBak
             }
         });
 
-        ModelRegistryHelper.register(StirlingGeneratorRenderer.MODEL_LOCATION, new CCBakeryModel(AncientWarfareCore.modID + ":model/automation/stirling_generator") {
+        ModelRegistryHelper.register(StirlingGeneratorRenderer.MODEL_LOCATION, new CCBakeryModel() {
             @Override
             public TextureAtlasSprite getParticleTexture() {
                 return StirlingGeneratorRenderer.INSTANCE.sprite;
