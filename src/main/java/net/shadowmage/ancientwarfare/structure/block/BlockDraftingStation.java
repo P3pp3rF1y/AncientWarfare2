@@ -95,7 +95,7 @@ public class BlockDraftingStation extends BlockBaseStructure implements IBakeryP
             }
         });
 
-        ModelLoaderHelper.registerItem(this, "structure", "normal");
+        ModelLoaderHelper.registerItem(this, DraftingStationRenderer.MODEL_LOCATION);
     }
 
     @Override

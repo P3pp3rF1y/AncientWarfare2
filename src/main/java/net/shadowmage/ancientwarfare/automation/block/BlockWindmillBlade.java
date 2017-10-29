@@ -121,7 +121,7 @@ public class BlockWindmillBlade extends BlockBaseAutomation implements IBakeryPr
 
     @Override
     public void registerClient() {
-        ModelLoaderHelper.registerItem(this, "automation", "normal");
+        ModelLoaderHelper.registerItem(this, WindmillBladeRenderer.MODEL_LOCATION);
 
         ModelBakery.registerBlockKeyGenerator(this, state -> state.getBlock().getRegistryName().toString()
                 + "," + state.getValue(FORMED)

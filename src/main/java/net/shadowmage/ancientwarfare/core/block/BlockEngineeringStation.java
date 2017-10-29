@@ -133,7 +133,7 @@ public class BlockEngineeringStation extends BlockRotatableTile implements IClie
             }
         });
 
-        ModelLoaderHelper.registerItem(this, "", "normal");
+        ModelLoaderHelper.registerItem(this, EngineeringStationRenderer.MODEL_LOCATION);
 
         ModelBakery.registerBlockKeyGenerator(this, state -> state.getBlock().getRegistryName().toString() + "," + state.getValue(CoreProperties.UNLISTED_HORIZONTAL_FACING).toString());
     }

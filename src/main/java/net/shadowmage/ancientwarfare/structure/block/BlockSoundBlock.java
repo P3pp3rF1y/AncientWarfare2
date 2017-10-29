@@ -6,7 +6,6 @@ import codechicken.lib.model.bakery.CCBakeryModel;
 import codechicken.lib.model.bakery.IBakeryProvider;
 import codechicken.lib.model.bakery.ModelBakery;
 import codechicken.lib.model.bakery.generation.IBakery;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -90,7 +89,7 @@ public class BlockSoundBlock extends BlockBaseStructure implements IBakeryProvid
         });
         ModelRegistryHelper.register(SoundBlockRenderer.MODEL_LOCATION, new CCBakeryModel("minecraft:blocks/jukebox_side"));
 
-        ModelLoaderHelper.registerItem(this, "structure", "normal");
+        ModelLoaderHelper.registerItem(this, SoundBlockRenderer.MODEL_LOCATION);
 
         ModelBakery.registerBlockKeyGenerator(this, state -> state.getBlock().getRegistryName().toString() + "," + state.getValue(DISGUISE_BLOCK));
     }

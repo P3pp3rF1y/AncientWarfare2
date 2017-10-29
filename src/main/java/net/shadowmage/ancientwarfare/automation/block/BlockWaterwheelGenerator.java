@@ -52,7 +52,7 @@ public class BlockWaterwheelGenerator extends BlockTorqueGenerator implements IB
 
     @Override
     public void registerClient() {
-        ModelLoaderHelper.registerItem(this, "automation", "normal");
+        ModelLoaderHelper.registerItem(this, WaterwheelGeneratorRenderer.MODEL_LOCATION);
 
         ModelBakery.registerBlockKeyGenerator(this, state -> state.getBlock().getRegistryName().toString()
                 + "," + state.getValue(CoreProperties.UNLISTED_FACING).toString()

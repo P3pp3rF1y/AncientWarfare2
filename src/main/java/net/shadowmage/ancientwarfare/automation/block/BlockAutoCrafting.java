@@ -95,7 +95,7 @@ public class BlockAutoCrafting extends BlockWorksiteBase implements IBakeryProvi
             }
         });
 
-        ModelLoaderHelper.registerItem(this, "automation", "normal");
+        ModelLoaderHelper.registerItem(this, AutoCraftingRenderer.MODEL_LOCATION);
 
         ModelBakery.registerBlockKeyGenerator(this, state -> state.getBlock().getRegistryName().toString() + "," + state.getValue(CoreProperties.UNLISTED_HORIZONTAL_FACING).toString());
 

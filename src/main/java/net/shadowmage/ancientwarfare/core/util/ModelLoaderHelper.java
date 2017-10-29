@@ -5,7 +5,6 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
@@ -40,19 +39,27 @@ public class ModelLoaderHelper {
     }
 
     public static void registerItem(Item item, String prefix, boolean metaSuffix, Function<Integer, String> getVariant, boolean subItemsUseSameModel) {
-        ResourceLocation registryName = item.getRegistryName();
-        //TODO if we really mean the split of mods we should split the resources as well and use registryName.getResourceDomain() here
-        String modelName = AncientWarfareCore.modID + ":" + (prefix.isEmpty() ? "" : prefix + "/") + registryName.getResourcePath();
+        registerItem(item, (it, meta) -> {
+			String modelName = AncientWarfareCore.modID + ":" + (prefix.isEmpty() ? "" : prefix + "/") + it.getRegistryName().getResourcePath();
+			String suffix = it.getHasSubtypes() && !subItemsUseSameModel && metaSuffix ? "_" + meta : "";
+			return new ModelResourceLocation(modelName + suffix, getVariant.apply(meta));
+		});
+    }
 
+    public static void registerItem(Block block, ModelResourceLocation modelLocation) {
+        registerItem(Item.getItemFromBlock(block), (i, m) -> modelLocation);
+    }
+
+    public static void registerItem(Item item, Function2<Item, Integer, ModelResourceLocation> getModelLocation) {
         if (item.getHasSubtypes()) {
             NonNullList<ItemStack> subItems = NonNullList.create();
             item.getSubItems(item.getCreativeTab(), subItems);
 
             for(ItemStack subItem : subItems) {
-                registerItem(item, subItem.getMetadata(), subItemsUseSameModel ? modelName : modelName + (metaSuffix ? "_" + subItem.getMetadata() : ""), getVariant.apply(subItem.getMetadata()));
+                ModelLoader.setCustomModelResourceLocation(item, subItem.getMetadata(), getModelLocation.apply(item, subItem.getMetadata()));
             }
         } else {
-            registerItem(item, 0, modelName, getVariant.apply(0));
+            ModelLoader.setCustomModelResourceLocation(item, 0, getModelLocation.apply(item, 0));
         }
     }
 
@@ -63,5 +70,9 @@ public class ModelLoaderHelper {
 
     public static void registerItem(Item item, int meta, String modelName, String variant) {
         ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(modelName, variant));
+    }
+
+    private interface Function2<T1, T2, R> {
+        R apply(T1 paramOne, T2 paramTwo);
     }
 }

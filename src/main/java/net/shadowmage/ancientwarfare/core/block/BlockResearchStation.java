@@ -135,7 +135,7 @@ public class BlockResearchStation extends BlockBaseCore implements IRotatableBlo
             }
         });
 
-        ModelLoaderHelper.registerItem(this, "", "normal");
+        ModelLoaderHelper.registerItem(this, ResearchStationRenderer.MODEL_LOCATION);
 
         ModelBakery.registerBlockKeyGenerator(this, state -> state.getBlock().getRegistryName().toString() + "," + state.getValue(CoreProperties.UNLISTED_HORIZONTAL_FACING).toString());
     }
