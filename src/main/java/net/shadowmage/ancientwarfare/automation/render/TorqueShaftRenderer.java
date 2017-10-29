@@ -109,11 +109,4 @@ public class TorqueShaftRenderer extends BaseTorqueRendererGeneric<TileTorqueSha
 		state = state.withProperty(BlockTorqueTransportShaft.INPUT_ROTATION, 0f);
 		return state;
 	}
-
-	@Override
-	protected CCModel rotateFacing(CCModel group, EnumFacing frontFacing) {
-		double angle = Math.PI/2d * (frontFacing.getAxis() == EnumFacing.Axis.Y ? frontFacing.getFrontOffsetY() : -((frontFacing.getHorizontalIndex() + 2) & 3));
-
-		return group.apply(new Rotation(angle, frontFacing.getAxis() == EnumFacing.Axis.Y ? 1 : 0, frontFacing.getAxis() != EnumFacing.Axis.Y ? 1 : 0, 0).at(Vector3.center));
-	}
 }
