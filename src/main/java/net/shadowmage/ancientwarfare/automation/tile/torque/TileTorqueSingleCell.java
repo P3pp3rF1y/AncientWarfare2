@@ -146,12 +146,7 @@ public abstract class TileTorqueSingleCell extends TileTorqueBase {
 
     @Override
     public float getClientOutputRotation(EnumFacing from, float delta) {
-        return from == orientation ? Math.round(((getRotation(rotation, prevRotation, delta) * Trig.TORADIANS) % ((float) Math.PI * 2)) * getRoundRatio()) / getRoundRatio(): 0;
-    }
-
-    private float getRoundRatio() {
-        double rd = (rotation - prevRotation);
-        return (int) (1000 / (rd > 0 ? rd : 1f));
+        return from == orientation ? ((getRotation(rotation, prevRotation, delta) * Trig.TORADIANS) % ((float) Math.PI * 2)) : 0;
     }
 
     @Override

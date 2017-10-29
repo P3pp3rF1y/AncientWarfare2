@@ -270,12 +270,7 @@ public class TileHandCrankedGenerator extends TileTorqueSingleCell implements IW
         } else if (from == EnumFacing.UP) {
             ret = getRotation(inputRotation, prevInputRotation, delta);
         }
-        return Math.round(((ret * Trig.TORADIANS) % ((float) Math.PI * 2)) * getRoundRatio()) / getRoundRatio();
-    }
-
-    private float getRoundRatio() {
-        double rd = (rotation - prevRotation);
-        return (int) (1000 / (rd > 0 ? rd : 1f));
+        return (ret * Trig.TORADIANS) % ((float) Math.PI * 2);
     }
 
     @Override

@@ -146,13 +146,8 @@ public class TileWaterwheelGenerator extends TileTorqueSingleCell {
         if (from == orientation.getOpposite()) {
             float rotationRad = ((prevWheelRotation + ((wheelRotation - prevWheelRotation) * delta)) % 360) * Trig.TORADIANS;
 
-            return Math.round(rotationRad * getRoundRatio()) / getRoundRatio();
+            return rotationRad;
         }
         return super.getClientOutputRotation(from, delta);
-    }
-
-    private float getRoundRatio() {
-        double rd = (wheelRotation - prevWheelRotation);
-        return (int) (1000 / (rd > 0 ? rd : 1f));
     }
 }
