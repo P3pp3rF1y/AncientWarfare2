@@ -38,7 +38,6 @@ import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -73,14 +72,14 @@ public class WindmillBladeRenderer extends AnimatedBlockRenderer {
 	private WindmillBladeRenderer() {
 		super("automation/windmill_blade.obj");
 		cube = OBJParser.parseModels(new ResourceLocation(AncientWarfareCore.modID, "models/block/automation/windmill_blade_cube.obj"), 7, new RedundantTransformation()).values().iterator().next().backfacedCopy();
-		bladeShaft = removeGroups(s -> s.startsWith("bladeShaft.")).values();
-		windmillShaft = transformModels(removeGroups(s -> s.startsWith("windmillShaft.")), new Translation(0d,0.5d,0d)).values();
-		blade = removeGroups(s -> s.startsWith("blade.")).values();
-		bladeJoint = removeGroups(s -> s.startsWith("bladeJoint.")).values();
+		bladeShaft = removeGroups(s -> s.startsWith("bladeShaft."));
+		windmillShaft = transformModels(removeGroups(s -> s.startsWith("windmillShaft.")), new Translation(0d,0.5d,0d));
+		blade = removeGroups(s -> s.startsWith("blade."));
+		bladeJoint = removeGroups(s -> s.startsWith("bladeJoint."));
 	}
 
-	private Map<String, CCModel> transformModels(Map<String, CCModel> groups, Transformation transform) {
-		return groups.entrySet().stream().collect(Collectors.toMap(e -> e.getKey(), e-> e.getValue().copy().apply(transform)));
+	private Collection<CCModel> transformModels(Collection<CCModel> groups, Transformation transform) {
+		return groups.stream().map(e -> e.copy().apply(transform)).collect(Collectors.toSet());
 	}
 
 	public void setCubeSprite(TextureAtlasSprite sprite) {

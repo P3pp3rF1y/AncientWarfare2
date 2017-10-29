@@ -39,10 +39,10 @@ public class TorqueShaftRenderer extends BaseTorqueRendererGeneric<TileTorqueSha
 
 	private TorqueShaftRenderer() {
 		super("automation/torque_shaft.obj");
-		inputHead = removeGroups(s -> s.startsWith("southShaft.")).values();
-		outputHead = removeGroups(s -> s.startsWith("northShaft.")).values();
-		shaft = removeGroups(s -> s.startsWith("shaft.")).values();
-		gearbox = removeGroups(s -> s.startsWith("gearBox.")).values();
+		inputHead = removeGroups(s -> s.startsWith("southShaft."));
+		outputHead = removeGroups(s -> s.startsWith("northShaft."));
+		shaft = removeGroups(s -> s.startsWith("shaft."));
+		gearbox = removeGroups(s -> s.startsWith("gearBox."));
 	}
 
 	@Override

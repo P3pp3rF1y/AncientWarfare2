@@ -9,14 +9,13 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 import java.util.Collection;
-import java.util.Map;
 
 public class WindmillGeneratorRenderer extends BaseTorqueRenderer {
 
 	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/windmill_generator", "normal");
 	public static final WindmillGeneratorRenderer INSTANCE = new WindmillGeneratorRenderer();
 
-	private final Map<String, CCModel> outputGear;
+	private final Collection<CCModel> outputGear;
 
 	private WindmillGeneratorRenderer() {
 		super("automation/windmill_generator.obj");
@@ -26,6 +25,6 @@ public class WindmillGeneratorRenderer extends BaseTorqueRenderer {
 	@Override
 	protected void transformMovingParts(Collection<CCModel> transformedGroups, EnumFacing frontFacing, float[] rotations, IExtendedBlockState state) {
 		float outR = -rotations[frontFacing.getIndex()];
-		transformedGroups.addAll(rotateModels(outputGear.values(), frontFacing, new Rotation(outR, 0, 0, 1).at(new Vector3(8d/16d, 8d/16d, 8d/16d))));
+		transformedGroups.addAll(rotateModels(outputGear, frontFacing, new Rotation(outR, 0, 0, 1).at(new Vector3(8d/16d, 8d/16d, 8d/16d))));
 	}
 }
