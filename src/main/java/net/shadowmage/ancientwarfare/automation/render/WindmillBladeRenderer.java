@@ -112,6 +112,10 @@ public class WindmillBladeRenderer extends AnimatedBlockRenderer {
 			return Collections.singleton(cube);
 		}
 
+		if(!state.getValue(AutomationProperties.DYNAMIC)) {
+			return Collections.emptySet();
+		}
+
 		EnumFacing frontFacing = state.getValue(CoreProperties.UNLISTED_HORIZONTAL_FACING);
 		int height = (state.getValue(BlockWindmillBlade.SIZE) - 1) / 2;
 		float rotation = state.getValue(BlockWindmillBlade.ROTATION);
@@ -156,10 +160,10 @@ public class WindmillBladeRenderer extends AnimatedBlockRenderer {
 			TileWindmillBlade blade = (TileWindmillBlade) te;
 
 			state = state.withProperty(BlockWindmillBlade.FORMED, blade.isFormed());
-			state = state.withProperty(BlockWindmillBlade.IS_CONTROL, blade.isControl());
-			state = state.withProperty(BlockWindmillBlade.SIZE, blade.getWindmillSize());
+			state = state.withProperty(BlockWindmillBlade.IS_CONTROL, false);
+			state = state.withProperty(BlockWindmillBlade.SIZE, 0);
 			state = state.withProperty(BlockWindmillBlade.ROTATION, 0f);
-			state = state.withProperty(CoreProperties.UNLISTED_HORIZONTAL_FACING, blade.getDirection());
+			state = state.withProperty(CoreProperties.UNLISTED_HORIZONTAL_FACING, EnumFacing.NORTH);
 			state = state.withProperty(AutomationProperties.DYNAMIC, false);
 		}
 
