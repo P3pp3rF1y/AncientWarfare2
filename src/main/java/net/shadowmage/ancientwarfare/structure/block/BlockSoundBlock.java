@@ -25,6 +25,7 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.render.BlockStateKeyGenerator;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 import net.shadowmage.ancientwarfare.structure.render.SoundBlockRenderer;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
@@ -91,7 +92,8 @@ public class BlockSoundBlock extends BlockBaseStructure implements IBakeryProvid
 
         ModelLoaderHelper.registerItem(this, SoundBlockRenderer.MODEL_LOCATION);
 
-        ModelBakery.registerBlockKeyGenerator(this, state -> state.getBlock().getRegistryName().toString() + "," + state.getValue(DISGUISE_BLOCK));
+        ModelBakery.registerBlockKeyGenerator(this,
+                new BlockStateKeyGenerator.Builder().addKeyProperties(DISGUISE_BLOCK).build());
     }
 
     @Override

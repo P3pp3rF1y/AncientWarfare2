@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
 import codechicken.lib.model.bakery.ModelBakery;
-import com.google.common.collect.ImmutableMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
@@ -15,7 +14,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.property.IExtendedBlockState;
-import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.automation.render.property.AutomationProperties;
@@ -24,11 +22,10 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
+import net.shadowmage.ancientwarfare.core.render.BlockStateKeyGenerator;
 import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
-
-import java.util.Optional;
 
 public abstract class BlockTorqueBase extends BlockBaseAutomation implements IRotatableBlock {
 
@@ -173,23 +170,10 @@ public abstract class BlockTorqueBase extends BlockBaseAutomation implements IRo
     public void registerClient() {
         ModelLoaderHelper.registerItem(this, "automation", "normal");
 
-        ModelBakery.registerBlockKeyGenerator(this, state -> state.getBlock().getRegistryName().toString()
-                + "," + state.getValue(CoreProperties.UNLISTED_FACING).toString()
-                + "," + state.getValue(AutomationProperties.DYNAMIC)
-                + getRotationKeyPart(state)
+        ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder()
+                .addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC)
+                .addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.ROTATIONS)
+                .build()
         );
-    }
-
-    protected String getRotationKeyPart(IExtendedBlockState state) {
-        ImmutableMap<IUnlistedProperty<?>, Optional<?>> properties = state.getUnlistedProperties();
-        StringBuilder ret = new StringBuilder();
-        for(EnumFacing facing : EnumFacing.VALUES) {
-            if (properties.containsKey(AutomationProperties.ROTATIONS[facing.ordinal()])) {
-                ret.append(",");
-                ret.append(String.format("%.6f", state.getValue(AutomationProperties.ROTATIONS[facing.ordinal()])));
-            }
-        }
-
-        return ret.toString();
     }
 }

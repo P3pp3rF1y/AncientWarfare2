@@ -27,6 +27,7 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationTyp
 import net.shadowmage.ancientwarfare.core.gui.crafting.GuiEngineeringStation;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
+import net.shadowmage.ancientwarfare.core.render.BlockStateKeyGenerator;
 import net.shadowmage.ancientwarfare.core.render.EngineeringStationRenderer;
 import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
@@ -135,7 +136,7 @@ public class BlockEngineeringStation extends BlockRotatableTile implements IClie
 
         ModelLoaderHelper.registerItem(this, EngineeringStationRenderer.MODEL_LOCATION);
 
-        ModelBakery.registerBlockKeyGenerator(this, state -> state.getBlock().getRegistryName().toString() + "," + state.getValue(CoreProperties.UNLISTED_HORIZONTAL_FACING).toString());
+        ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder().addKeyProperties(CoreProperties.UNLISTED_HORIZONTAL_FACING).build());
     }
 
     @Override

@@ -28,6 +28,7 @@ import net.minecraftforge.common.property.PropertyFloat;
 import net.shadowmage.ancientwarfare.automation.render.WindmillBladeRenderer;
 import net.shadowmage.ancientwarfare.automation.render.property.AutomationProperties;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileWindmillBlade;
+import net.shadowmage.ancientwarfare.core.render.BlockStateKeyGenerator;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
 import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.UNLISTED_HORIZONTAL_FACING;
@@ -123,14 +124,9 @@ public class BlockWindmillBlade extends BlockBaseAutomation implements IBakeryPr
     public void registerClient() {
         ModelLoaderHelper.registerItem(this, WindmillBladeRenderer.MODEL_LOCATION);
 
-        ModelBakery.registerBlockKeyGenerator(this, state -> state.getBlock().getRegistryName().toString()
-                + "," + state.getValue(FORMED)
-                + "," + state.getValue(IS_CONTROL)
-                + "," + state.getValue(SIZE)
-                + "," + String.format("%.6f", state.getValue(ROTATION))
-                + "," + state.getValue(UNLISTED_HORIZONTAL_FACING)
-                + "," + state.getValue(AutomationProperties.DYNAMIC)
-        );
+        ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder()
+                .addKeyProperties(FORMED, IS_CONTROL, SIZE, UNLISTED_HORIZONTAL_FACING, AutomationProperties.DYNAMIC)
+                .addKeyProperties(o -> String.format("%.6f", o), ROTATION).build());
 
         ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
             @Override protected ModelResourceLocation getModelResourceLocation(IBlockState state) {

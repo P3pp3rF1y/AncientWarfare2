@@ -5,6 +5,7 @@ import codechicken.lib.model.bakery.CCBakeryModel;
 import codechicken.lib.model.bakery.IBakeryProvider;
 import codechicken.lib.model.bakery.ModelBakery;
 import codechicken.lib.model.bakery.generation.IBakery;
+import codechicken.lib.model.bakery.key.IBlockStateKeyGenerator;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -28,6 +29,7 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaft;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaftHeavy;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaftLight;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaftMedium;
+import net.shadowmage.ancientwarfare.core.render.BlockStateKeyGenerator;
 import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
@@ -93,20 +95,21 @@ public class BlockTorqueTransportShaft extends BlockTorqueTransportConduit imple
         }
         return new AxisAlignedBB(x1, y1, z1, x2, y2, z2);
     }
+    private static final IBlockStateKeyGenerator KEY_GENERATOR = new BlockStateKeyGenerator.Builder()
+            .addKeyProperties(TYPE)
+            .addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC, HAS_PREVIOUS, HAS_NEXT)
+            .addKeyProperties(o -> String.format("%.6f",o), INPUT_ROTATION)
+            .addKeyProperties(o -> String.format("%.6f",o), AutomationProperties.ROTATIONS).build();
 
     @Override
     public void registerClient() {
         ModelLoaderHelper.registerItem(this, "automation", "light", false); //the actual switch for itemstack types is processed by renderer
 
-        ModelBakery.registerBlockKeyGenerator(this, state -> state.getBlock().getRegistryName().toString()
-                + "," + state.getValue(CoreProperties.UNLISTED_FACING).toString()
-                + "," + state.getValue(AutomationProperties.DYNAMIC)
-                + "," + state.getValue(TYPE)
-                + "," + state.getValue(HAS_PREVIOUS)
-                + "," + state.getValue(HAS_NEXT)
-                + "," + state.getValue(INPUT_ROTATION)
-                + getRotationKeyPart(state)
-        );
+        ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder()
+                .addKeyProperties(TYPE)
+                .addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC, HAS_PREVIOUS, HAS_NEXT)
+                .addKeyProperties(o -> String.format("%.6f",o), INPUT_ROTATION)
+                .addKeyProperties(o -> String.format("%.6f",o), AutomationProperties.ROTATIONS).build());
 
         ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
             @Override protected ModelResourceLocation getModelResourceLocation(IBlockState state) {

@@ -30,6 +30,7 @@ import net.shadowmage.ancientwarfare.core.gui.research.GuiResearchStation;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
+import net.shadowmage.ancientwarfare.core.render.BlockStateKeyGenerator;
 import net.shadowmage.ancientwarfare.core.render.ResearchStationRenderer;
 import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 import net.shadowmage.ancientwarfare.core.tile.TileResearchStation;
@@ -137,7 +138,8 @@ public class BlockResearchStation extends BlockBaseCore implements IRotatableBlo
 
         ModelLoaderHelper.registerItem(this, ResearchStationRenderer.MODEL_LOCATION);
 
-        ModelBakery.registerBlockKeyGenerator(this, state -> state.getBlock().getRegistryName().toString() + "," + state.getValue(CoreProperties.UNLISTED_HORIZONTAL_FACING).toString());
+        ModelBakery.registerBlockKeyGenerator(this,
+                new BlockStateKeyGenerator.Builder().addKeyProperties(CoreProperties.UNLISTED_HORIZONTAL_FACING).build());
     }
 
     @Override

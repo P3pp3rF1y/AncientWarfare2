@@ -20,6 +20,7 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.shadowmage.ancientwarfare.automation.render.WaterwheelGeneratorRenderer;
 import net.shadowmage.ancientwarfare.automation.render.property.AutomationProperties;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileWaterwheelGenerator;
+import net.shadowmage.ancientwarfare.core.render.BlockStateKeyGenerator;
 import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
@@ -54,11 +55,11 @@ public class BlockWaterwheelGenerator extends BlockTorqueGenerator implements IB
     public void registerClient() {
         ModelLoaderHelper.registerItem(this, WaterwheelGeneratorRenderer.MODEL_LOCATION);
 
-        ModelBakery.registerBlockKeyGenerator(this, state -> state.getBlock().getRegistryName().toString()
-                + "," + state.getValue(CoreProperties.UNLISTED_FACING).toString()
-                + "," + state.getValue(AutomationProperties.DYNAMIC)
-                + getRotationKeyPart(state)
-                + "," + state.getValue(VALID_SETUP)
+        ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder()
+                .addKeyProperties(VALID_SETUP)
+                .addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC)
+                .addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.ROTATIONS)
+                .build()
         );
 
         ModelLoader.setCustomStateMapper(this, new StateMapperBase() {

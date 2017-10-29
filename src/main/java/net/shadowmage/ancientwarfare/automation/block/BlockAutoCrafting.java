@@ -22,6 +22,7 @@ import net.shadowmage.ancientwarfare.automation.render.AutoCraftingRenderer;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileAutoCrafting;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.render.BlockStateKeyGenerator;
 import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
@@ -39,6 +40,11 @@ public class BlockAutoCrafting extends BlockWorksiteBase implements IBakeryProvi
     @Override
     public int getMetaFromState(IBlockState state) {
         return 0;
+    }
+
+    @Override
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+        return state;
     }
 
     @Override
@@ -97,7 +103,8 @@ public class BlockAutoCrafting extends BlockWorksiteBase implements IBakeryProvi
 
         ModelLoaderHelper.registerItem(this, AutoCraftingRenderer.MODEL_LOCATION);
 
-        ModelBakery.registerBlockKeyGenerator(this, state -> state.getBlock().getRegistryName().toString() + "," + state.getValue(CoreProperties.UNLISTED_HORIZONTAL_FACING).toString());
+        ModelBakery.registerBlockKeyGenerator(this,
+                new BlockStateKeyGenerator.Builder().addKeyProperties(CoreProperties.UNLISTED_HORIZONTAL_FACING).build());
 
     }
 
