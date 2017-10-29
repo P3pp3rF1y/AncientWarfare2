@@ -46,12 +46,7 @@ public class BlockWindmillBlade extends BlockBaseAutomation implements IBakeryPr
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer.Builder(this)
-                .add(FORMED)
-                .add(IS_CONTROL)
-                .add(SIZE)
-                .add(ROTATION)
-                .add(UNLISTED_HORIZONTAL_FACING)
-                .add(AutomationProperties.DYNAMIC)
+                .add(FORMED, IS_CONTROL, SIZE, ROTATION, UNLISTED_HORIZONTAL_FACING, AutomationProperties.DYNAMIC)
                 .build();
     }
 
