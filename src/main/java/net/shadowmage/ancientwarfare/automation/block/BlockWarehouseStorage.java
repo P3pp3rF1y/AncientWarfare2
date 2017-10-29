@@ -135,6 +135,6 @@ public class BlockWarehouseStorage extends BlockBaseAutomation {
             }
         });
 
-        ModelLoaderHelper.registerItem(Item.getItemFromBlock(this), "automation", false, meta -> "size=" + Size.values()[meta].name().toLowerCase(), false);
+        ModelLoaderHelper.registerItem(Item.getItemFromBlock(this), "automation", false, meta -> "size=" + Size.values()[meta].name().toLowerCase());
     }
 }

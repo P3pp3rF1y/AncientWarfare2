@@ -65,6 +65,6 @@ public class ItemBardInstrument extends ItemBaseNPC {
 
     @Override
     public void registerClient() {
-        ModelLoaderHelper.registerItem(this, "npc", false, meta -> "variant=" + instrumentNames[meta], false);
+        ModelLoaderHelper.registerItem(this, "npc", false, meta -> "variant=" + instrumentNames[meta]);
     }
 }

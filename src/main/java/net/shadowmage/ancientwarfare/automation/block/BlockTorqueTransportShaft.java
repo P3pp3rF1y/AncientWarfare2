@@ -96,7 +96,7 @@ public class BlockTorqueTransportShaft extends BlockTorqueTransportConduit imple
 
     @Override
     public void registerClient() {
-        ModelLoaderHelper.registerItem(this, "automation", "light", true); //the actual switch for itemstack types is processed by renderer
+        ModelLoaderHelper.registerItem(this, "automation", "light", false); //the actual switch for itemstack types is processed by renderer
 
         ModelBakery.registerBlockKeyGenerator(this, state -> state.getBlock().getRegistryName().toString()
                 + "," + state.getValue(CoreProperties.UNLISTED_FACING).toString()

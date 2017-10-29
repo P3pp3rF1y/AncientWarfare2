@@ -18,12 +18,12 @@ public class ModelLoaderHelper {
         registerItem(item, prefix, "inventory");
     }
 
-    public static void registerItem(Item item, String prefix, boolean subItemsUseSameModel) {
-        registerItem(item, prefix, "inventory", subItemsUseSameModel);
+    public static void registerItem(Item item, String prefix, boolean metaSuffix) {
+        registerItem(item, prefix, metaSuffix, "inventory");
     }
 
-    public static void registerItem(Block block, String prefix, String variant, boolean subItemsUseSameModel) {
-        registerItem(Item.getItemFromBlock(block), prefix, variant, subItemsUseSameModel);
+    public static void registerItem(Block block, String prefix, String variant, boolean metaSuffix) {
+        registerItem(Item.getItemFromBlock(block), prefix, metaSuffix, variant);
     }
 
     public static void registerItem(Block block, String prefix, String variant) {
@@ -31,17 +31,17 @@ public class ModelLoaderHelper {
     }
 
     public static void registerItem(Item item, String prefix, String variant) {
-        registerItem(item, prefix, variant, false);
+        registerItem(item, prefix, true, variant);
     }
 
-    public static void registerItem(Item item, String prefix, String variant, boolean subItemsUseSameModel) {
-        registerItem(item, prefix, true, meta -> variant, subItemsUseSameModel);
+    public static void registerItem(Item item, String prefix, boolean metaSuffix, String variant) {
+        registerItem(item, prefix, metaSuffix, meta -> variant);
     }
 
-    public static void registerItem(Item item, String prefix, boolean metaSuffix, Function<Integer, String> getVariant, boolean subItemsUseSameModel) {
+    public static void registerItem(Item item, String prefix, boolean metaSuffix, Function<Integer, String> getVariant) {
         registerItem(item, (it, meta) -> {
 			String modelName = AncientWarfareCore.modID + ":" + (prefix.isEmpty() ? "" : prefix + "/") + it.getRegistryName().getResourcePath();
-			String suffix = it.getHasSubtypes() && !subItemsUseSameModel && metaSuffix ? "_" + meta : "";
+			String suffix = it.getHasSubtypes() && metaSuffix ? "_" + meta : "";
 			return new ModelResourceLocation(modelName + suffix, getVariant.apply(meta));
 		});
     }

@@ -78,7 +78,7 @@ public class ItemBackpack extends ItemBaseCore {
 
     @Override
     public void registerClient() {
-        ModelLoaderHelper.registerItem(this, "core", true);
+        ModelLoaderHelper.registerItem(this, "core", false);
 
         NetworkHandler.registerGui(NetworkHandler.GUI_BACKPACK, GuiBackpack.class);
     }
