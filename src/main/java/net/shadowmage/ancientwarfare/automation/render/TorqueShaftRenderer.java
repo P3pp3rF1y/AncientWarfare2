@@ -81,7 +81,7 @@ public class TorqueShaftRenderer extends BaseTorqueRendererGeneric<TileTorqueSha
 			if(useInput) {
 				rotation = state.getValue(BlockTorqueTransportShaft.INPUT_ROTATION);
 			}
-			transformedGroups.addAll(rotateModels(inputHead, frontFacing, new Rotation(-rotation, 0, 0, 1).at(new Vector3(8d/16d, 8d/16d, 8d/16d))));
+			transformedGroups.addAll(rotateModels(inputHead, frontFacing, new Rotation(rotation, 0, 0, 1).at(new Vector3(8d/16d, 8d/16d, 8d/16d))));
 		}
 	}
 

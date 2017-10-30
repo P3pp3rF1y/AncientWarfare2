@@ -57,7 +57,7 @@ animal_husbandry,AncientWarfareAutomation:civic_animal_farm,0,1,___,gwg,_c_,_,pl
 engineering,AncientWarfareAutomation:civic_quarry,0,1,___,gwg,_c_,_,plankWood,w,iron_pickaxe,c,chest,g,gearWood
 farming,AncientWarfareAutomation:civic_forestry,0,1,___,gwg,_c_,_,plankWood,w,iron_axe,c,chest,g,gearWood
 fishing,AncientWarfareAutomation:civic_fish_farm,0,1,___,gwg,_c_,_,plankWood,w,fishing_rod,c,chest,g,gearWood
-the_wheel,AncientWarfareAutomation:torque_conduit,0,1,_s_,sgs,_s_,s,shaftWood,g,gearWood
+the_wheel,AncientWarfareAutomation:torque_junction,0,1,_s_,sgs,_s_,s,shaftWood,g,gearWood
 the_wheel,AncientWarfareAutomation:torque_distributor,0,1,_s_,ggg,_s_,s,shaftWood,g,gearWood
 the_wheel,AncientWarfareAutomation:torque_shaft,0,1,s,s,g,s,shaftWood,g,gearWood
 theory_of_gravity,AncientWarfareAutomation:flywheel,0,1,pgp,ppp,pgp,p,plankWood,g,gearWood
@@ -68,12 +68,12 @@ theory_of_gravity,AncientWarfareAutomation:flywheel,1,1,igi,iii,igi,i,ingotIron,
 the_wheel,AncientWarfareAutomation:hand_cranked_generator,0,1,igi,gig,iii,i,ingotIron,g,gearIron
 machinery,AncientWarfareAutomation:stirling_generator,0,1,iii,ggg,igi,i,ingotIron,g,gearIron
 theory_of_gravity,AncientWarfareAutomation:torque_generator_waterwheel,0,1,igi,gwg,iwi,i,plankWood,g,gearIron,w,gearWood
-the_wheel,AncientWarfareAutomation:torque_conduit,1,1,_s_,sgs,_s_,s,shaftIron,g,gearIron
+the_wheel,AncientWarfareAutomation:torque_junction,1,1,_s_,sgs,_s_,s,shaftIron,g,gearIron
 the_wheel,AncientWarfareAutomation:torque_distributor,1,1,_s_,ggg,_s_,s,shaftIron,g,gearIron
 the_wheel,AncientWarfareAutomation:torque_shaft,1,1,s,s,g,s,shaftIron,g,gearIron
 #Steel gear based (AncientWarfare:component,2,1)
 mass_production,AncientWarfareAutomation:flywheel,2,1,igi,iii,igi,i,ingotSteel,g,gearSteel
-mass_production,AncientWarfareAutomation:torque_conduit,2,1,_s_,sgs,_s_,s,shaftSteel,g,gearSteel
+mass_production,AncientWarfareAutomation:torque_junction,2,1,_s_,sgs,_s_,s,shaftSteel,g,gearSteel
 mass_production,AncientWarfareAutomation:torque_distributor,2,1,_s_,ggg,_s_,s,shaftSteel,g,gearSteel
 mass_production,AncientWarfareAutomation:torque_shaft,2,1,s,s,g,s,shaftSteel,g,gearSteel
 

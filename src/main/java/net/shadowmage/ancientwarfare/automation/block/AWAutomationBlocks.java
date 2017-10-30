@@ -40,8 +40,8 @@ public class AWAutomationBlocks {
 	public static BlockFlywheel flywheel;
 	@ObjectHolder("flywheel_storage")
 	public static BlockFlywheelStorage flywheelStorage;
-	@ObjectHolder("torque_conduit")
-	public static BlockTorqueTransportConduit torqueConduit;
+	@ObjectHolder("torque_junction")
+	public static BlockTorqueTransport torqueJunction;
 	@ObjectHolder("torque_shaft")
 	public static BlockTorqueTransportShaft torqueShaft;
 	@ObjectHolder("torque_distributor")

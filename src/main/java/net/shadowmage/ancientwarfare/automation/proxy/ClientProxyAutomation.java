@@ -37,6 +37,8 @@ import net.shadowmage.ancientwarfare.automation.render.AutoCraftingRenderer;
 import net.shadowmage.ancientwarfare.automation.render.HandCrankedGeneratorRenderer;
 import net.shadowmage.ancientwarfare.automation.render.StirlingGeneratorRenderer;
 import net.shadowmage.ancientwarfare.automation.render.TorqueAnimationRenderer;
+import net.shadowmage.ancientwarfare.automation.render.TorqueJunctionAnimationRenderer;
+import net.shadowmage.ancientwarfare.automation.render.TorqueJunctionRenderer;
 import net.shadowmage.ancientwarfare.automation.render.TorqueShaftAnimationRenderer;
 import net.shadowmage.ancientwarfare.automation.render.TorqueShaftRenderer;
 import net.shadowmage.ancientwarfare.automation.render.WaterwheelGeneratorRenderer;
@@ -48,6 +50,7 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.TileHandCrankedGener
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileStirlingGenerator;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueBase;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaft;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueSidedCell;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileWaterwheelGenerator;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileWindmillController;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileWindmillBlade;
@@ -101,9 +104,7 @@ public class ClientProxyAutomation extends ClientProxyBase {
 
         //********************************************CONDUIT / TRANSPORT RENDERS***************************************************************//
 
-        //RenderTileTorqueTransport conduitRender = new RenderTileTorqueTransport(new ResourceLocation("ancientwarfare", "textures/model/automation/torque_conduit_light.png"), new ResourceLocation("ancientwarfare", "textures/model/automation/torque_conduit_medium.png"), new ResourceLocation("ancientwarfare", "textures/model/automation/torque_conduit_heavy.png"));
-        //ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueSidedCell.class, conduitRender);
-        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.torqueConduit), conduitRender);
+        ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueSidedCell.class, new TorqueJunctionAnimationRenderer());
 
         //RenderTileTorqueTransport distributorRender = new RenderTileTorqueTransport(new ResourceLocation("ancientwarfare", "textures/model/automation/torque_distributor_light.png"), new ResourceLocation("ancientwarfare", "textures/model/automation/torque_distributor_medium.png"), new ResourceLocation("ancientwarfare", "textures/model/automation/torque_distributor_heavy.png"));
         //ClientRegistry.bindTileEntitySpecialRenderer(TileDistributor.class, distributorRender);
@@ -168,6 +169,9 @@ public class ClientProxyAutomation extends ClientProxyBase {
         TorqueShaftRenderer.INSTANCE.setSprite(BlockTorqueTransportShaft.Type.HEAVY, registerSprite(evt, "torque_shaft_heavy"));
         TorqueShaftRenderer.INSTANCE.setSprite(BlockTorqueTransportShaft.Type.MEDIUM, registerSprite(evt, "torque_shaft_medium"));
         TorqueShaftRenderer.INSTANCE.setSprite(BlockTorqueTransportShaft.Type.LIGHT, registerSprite(evt, "torque_shaft_light"));
+        TorqueJunctionRenderer.INSTANCE.setSprite(BlockTorqueTransportShaft.Type.HEAVY, registerSprite(evt, "torque_junction_heavy"));
+        TorqueJunctionRenderer.INSTANCE.setSprite(BlockTorqueTransportShaft.Type.MEDIUM, registerSprite(evt, "torque_junction_medium"));
+        TorqueJunctionRenderer.INSTANCE.setSprite(BlockTorqueTransportShaft.Type.LIGHT, registerSprite(evt, "torque_junction_light"));
     }
 
     private TextureAtlasSprite registerSprite(TextureStitchEvent.Pre evt, String spriteName) {

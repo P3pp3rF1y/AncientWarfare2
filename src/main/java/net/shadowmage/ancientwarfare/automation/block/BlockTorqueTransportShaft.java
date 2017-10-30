@@ -33,7 +33,7 @@ import net.shadowmage.ancientwarfare.core.render.BlockStateKeyGenerator;
 import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
-public class BlockTorqueTransportShaft extends BlockTorqueTransportConduit implements IBakeryProvider {
+public class BlockTorqueTransportShaft extends BlockTorqueTransport implements IBakeryProvider {
     public static final IUnlistedProperty<Boolean> HAS_PREVIOUS = Properties.toUnlisted(PropertyBool.create("has_previous"));
     public static final IUnlistedProperty<Boolean> HAS_NEXT = Properties.toUnlisted(PropertyBool.create("has_next"));
     public static final IUnlistedProperty<Boolean> USE_INPUT = Properties.toUnlisted(PropertyBool.create("use_input"));

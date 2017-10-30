@@ -1,0 +1,117 @@
+package net.shadowmage.ancientwarfare.automation.block;
+
+import codechicken.lib.model.ModelRegistryHelper;
+import codechicken.lib.model.bakery.CCBakeryModel;
+import codechicken.lib.model.bakery.IBakeryProvider;
+import codechicken.lib.model.bakery.ModelBakery;
+import codechicken.lib.model.bakery.generation.IBakery;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
+import net.minecraftforge.common.property.Properties;
+import net.shadowmage.ancientwarfare.automation.render.TorqueJunctionRenderer;
+import net.shadowmage.ancientwarfare.automation.render.property.AutomationProperties;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileConduitHeavy;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileConduitLight;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileConduitMedium;
+import net.shadowmage.ancientwarfare.core.render.BlockStateKeyGenerator;
+import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
+import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
+
+public class BlockTorqueTransportJunction extends BlockTorqueTransport implements IBakeryProvider {
+	public static final IUnlistedProperty<Boolean>[] CONNECTIONS = new IUnlistedProperty[6];
+	static {
+		for(EnumFacing facing : EnumFacing.VALUES) {
+			CONNECTIONS[facing.ordinal()] = Properties.toUnlisted(PropertyBool.create("connection_" + facing.name()));
+		}
+	}
+
+	protected BlockTorqueTransportJunction(String regName) {
+		super(regName);
+	}
+
+	@Override
+	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return TorqueJunctionRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
+	}
+
+	@Override
+	protected void addProperties(BlockStateContainer.Builder builder) {
+		super.addProperties(builder);
+		builder.add(CONNECTIONS);
+	}
+
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		switch (state.getValue(TYPE)) {
+			case LIGHT:
+				return new TileConduitLight();
+			case MEDIUM:
+				return new TileConduitMedium();
+			case HEAVY:
+				return new TileConduitHeavy();
+		}
+		return new TileConduitLight();
+	}
+
+	@Override
+	public void registerClient() {
+		ModelLoaderHelper.registerItem(this, "automation", "light", false); //the actual switch for itemstack types is processed by renderer
+
+		ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder()
+				.addKeyProperties(TYPE)
+				.addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC)
+				.addKeyProperties(CONNECTIONS)
+				.addKeyProperties(o -> String.format("%.6f",o), AutomationProperties.ROTATIONS).build());
+
+		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
+			@Override protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+				switch(state.getValue(TYPE)) {
+					case LIGHT:
+						return TorqueJunctionRenderer.LIGHT_MODEL_LOCATION;
+					case MEDIUM:
+						return TorqueJunctionRenderer.MEDIUM_MODEL_LOCATION;
+					default:
+						return TorqueJunctionRenderer.HEAVY_MODEL_LOCATION;
+				}
+			}
+		});
+
+		ModelRegistryHelper.register(TorqueJunctionRenderer.LIGHT_MODEL_LOCATION, new CCBakeryModel() {
+			@Override
+			public TextureAtlasSprite getParticleTexture() {
+				return TorqueJunctionRenderer.INSTANCE.getSprite(Type.LIGHT);
+			}
+		});
+
+		ModelRegistryHelper.register(TorqueJunctionRenderer.MEDIUM_MODEL_LOCATION, new CCBakeryModel() {
+			@Override
+			public TextureAtlasSprite getParticleTexture() {
+				return TorqueJunctionRenderer.INSTANCE.getSprite(Type.MEDIUM);
+			}
+		});
+
+		ModelRegistryHelper.register(TorqueJunctionRenderer.HEAVY_MODEL_LOCATION, new CCBakeryModel() {
+			@Override
+			public TextureAtlasSprite getParticleTexture() {
+				return TorqueJunctionRenderer.INSTANCE.getSprite(Type.HEAVY);
+			}
+		});
+	}
+
+	@Override
+	public IBakery getBakery() {
+		return TorqueJunctionRenderer.INSTANCE;
+	}
+}

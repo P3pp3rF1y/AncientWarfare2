@@ -507,7 +507,7 @@ rule:
 plugin=awTorqueTile
 number=22
 data:
-JSON:{{"val":{"orientation":{"val":"2","id":"pi"},"teData":{"val":{"id":{"val":"torque_conduit_tile","id":"ss"},"orientation":{"val":"5","id":"pi"},"clientEnergy":{"val":"99","id":"pi"},"energyList":{"val":[{"val":{"energy":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"32.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"0.006626348718352101","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"31.92000000000001","id":"pd"}},"id":"ct"}],"id":"ls"},"z":{"val":"237","id":"pi"},"y":{"val":"7","id":"pi"},"x":{"val":"-729","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_conduit","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"orientation":{"val":"2","id":"pi"},"teData":{"val":{"id":{"val":"torque_junction_tile","id":"ss"},"orientation":{"val":"5","id":"pi"},"clientEnergy":{"val":"99","id":"pi"},"energyList":{"val":[{"val":{"energy":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"32.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"0.006626348718352101","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"31.92000000000001","id":"pd"}},"id":"ct"}],"id":"ls"},"z":{"val":"237","id":"pi"},"y":{"val":"7","id":"pi"},"x":{"val":"-729","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_junction","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -1635,7 +1635,7 @@ rule:
 plugin=awTorqueTile
 number=163
 data:
-JSON:{{"val":{"orientation":{"val":"0","id":"pi"},"teData":{"val":{"id":{"val":"torque_conduit_tile","id":"ss"},"orientation":{"val":"0","id":"pi"},"clientEnergy":{"val":"99","id":"pi"},"energyList":{"val":[{"val":{"energy":{"val":"31.776056603933082","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"32.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"0.0","id":"pd"}},"id":"ct"}],"id":"ls"},"z":{"val":"237","id":"pi"},"y":{"val":"15","id":"pi"},"x":{"val":"-729","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_conduit","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"orientation":{"val":"0","id":"pi"},"teData":{"val":{"id":{"val":"torque_junction_tile","id":"ss"},"orientation":{"val":"0","id":"pi"},"clientEnergy":{"val":"99","id":"pi"},"energyList":{"val":[{"val":{"energy":{"val":"31.776056603933082","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"32.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"0.0","id":"pd"}},"id":"ct"}],"id":"ls"},"z":{"val":"237","id":"pi"},"y":{"val":"15","id":"pi"},"x":{"val":"-729","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_junction","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 

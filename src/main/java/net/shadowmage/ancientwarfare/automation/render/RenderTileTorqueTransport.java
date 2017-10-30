@@ -1,20 +1,19 @@
-/*
 package net.shadowmage.ancientwarfare.automation.render;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.IItemRenderer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueSidedCell;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelLoader;
 import net.shadowmage.ancientwarfare.core.model.ModelPiece;
-import org.lwjgl.opengl.GL11;
 
-public class RenderTileTorqueTransport extends TileEntitySpecialRenderer implements IItemRenderer {
+import java.io.IOException;
+
+public class RenderTileTorqueTransport extends TileEntitySpecialRenderer{
 
     private static float[][] headRotationDirectionMatrix = new float[6][];
     private static float[][] gearboxRotationMatrix = new float[6][];
@@ -32,15 +31,13 @@ public class RenderTileTorqueTransport extends TileEntitySpecialRenderer impleme
         textures[2] = heavy;
     }
 
-    */
-/*
-     * really should be called optionalStaticInitialization()... but w/e
-     *//*
+     /* really should be called optionalStaticInitialization()... but w/e */
+
 
     private void constructModel() {
         if (model == null) {
             ModelLoader loader = new ModelLoader();
-            model = loader.loadModel(getClass().getResourceAsStream("/assets/ancientwarfare/models/automation/torque_conduit.m2f"));
+            model = loader.loadModel(getClass().getResourceAsStream("/assets/ancientwarfare/models/automation/torque_junction.m2f"));
             gearHeads = new ModelPiece[6];
             gearHeads[0] = model.getPiece("downShaft");
             gearHeads[1] = model.getPiece("upShaft");
@@ -68,7 +65,14 @@ public class RenderTileTorqueTransport extends TileEntitySpecialRenderer impleme
     }
 
     @Override
-    public void renderTileEntityAt(TileEntity te, double x, double y, double z, float delta) {
+    public void render(TileEntity te, double x, double y, double z, float delta, int destroyStage, float alpha) {
+        try {
+            model.exportOBJ("torque_junction.obj");
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
+
         GlStateManager.pushMatrix();
         GlStateManager.translate(x + 0.5d, y + 0.5d, z + 0.5d);
 
@@ -90,7 +94,7 @@ public class RenderTileTorqueTransport extends TileEntitySpecialRenderer impleme
             if (connections[i]) {
                 piece = gearHeads[i];
                 rotationArray = headRotationDirectionMatrix[i];
-                if (conduit.canOutputTorque(EnumFacing.VALUES[i))] {
+                if (conduit.canOutputTorque(EnumFacing.VALUES[i])) {
                     rx = rotationArray[0] * rotation;
                     ry = rotationArray[1] * rotation;
                     rz = rotationArray[2] * rotation;
@@ -120,30 +124,4 @@ public class RenderTileTorqueTransport extends TileEntitySpecialRenderer impleme
 
         GlStateManager.popMatrix();
     }
-
-    @Override
-    public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-        return true;
-    }
-
-    @Override
-    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-        return true;
-    }
-
-    @Override
-    public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        GlStateManager.pushMatrix();
-        GlStateManager.translate(0.5d, 0.5d, 0.5d);
-        bindTexture(textures[item.getItemDamage() % textures.length]);
-        for (int i = 0; i < 2; i++) {
-            gearHeads[i].setRotation(0, 0, 0);
-            gearHeads[i].render(textureWidth, textureHeight);
-        }
-        gearbox.setRotation(0, 0, 0);
-        gearbox.render(textureWidth, textureHeight);
-        GlStateManager.popMatrix();
-    }
-
 }
-*/

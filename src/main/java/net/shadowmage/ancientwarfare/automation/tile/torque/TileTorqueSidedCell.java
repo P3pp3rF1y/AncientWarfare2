@@ -10,6 +10,7 @@ import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.SidedTorqueCell;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
+import net.shadowmage.ancientwarfare.core.util.Trig;
 
 public abstract class TileTorqueSidedCell extends TileTorqueBase {
 
@@ -222,7 +223,7 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
 
     @Override
     public float getClientOutputRotation(EnumFacing from, float delta) {
-        return getRotation(rotation, prevRotation, delta);
+        return (getRotation(rotation, prevRotation, delta) * Trig.TORADIANS) % (Trig.PI * 2);
     }
 
     @Override

@@ -46,7 +46,7 @@ public class StructurePluginAutomation implements StructureContentPlugin {
         manager.registerBlockHandler("awWorksite", AWAutomationBlocks.worksiteWarehouse, TemplateRuleRotable.class);
 
         manager.registerBlockHandler("awTorqueTile", AWAutomationBlocks.torqueShaft, TemplateRuleRotable.class);
-        manager.registerBlockHandler("awTorqueTile", AWAutomationBlocks.torqueConduit, TemplateRuleRotable.class);
+        manager.registerBlockHandler("awTorqueTile", AWAutomationBlocks.torqueJunction, TemplateRuleRotable.class);
         manager.registerBlockHandler("awTorqueTile", AWAutomationBlocks.torqueDistributor, TemplateRuleRotable.class);
         manager.registerBlockHandler("awTorqueTile", AWAutomationBlocks.flywheel, TemplateRuleRotable.class);
         manager.registerBlockHandler("awTorqueTile", AWAutomationBlocks.stirlingGenerator, TemplateRuleRotable.class);
