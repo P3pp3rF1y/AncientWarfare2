@@ -35,7 +35,8 @@ public class TileHandCrankedGenerator extends TileTorqueSingleCell implements IW
     /*
      * used client side for rendering
      */
-    double inputRotation, prevInputRotation;
+    double inputRotation;
+    double lastInputRotationDiff;
 
     public TileHandCrankedGenerator() {
         double eff = AWAutomationStatics.low_efficiency_factor;
@@ -45,7 +46,6 @@ public class TileHandCrankedGenerator extends TileTorqueSingleCell implements IW
 
     @Override
     public void update() {
-        //TODO really no call to super
         if (!world.isRemote) {
             serverNetworkUpdate();
             torqueIn = torqueCell.getEnergy() - prevEnergy;
@@ -80,10 +80,10 @@ public class TileHandCrankedGenerator extends TileTorqueSingleCell implements IW
     @Override
     protected void updateRotation() {
         super.updateRotation();
-        prevInputRotation = inputRotation;
         if (clientInputEnergy > 0) {
-            double r = AWAutomationStatics.low_rpt * clientInputEnergy * 0.01d;
-            inputRotation += r;
+            lastInputRotationDiff = -(AWAutomationStatics.low_rpt * clientInputEnergy * 0.01d) * Trig.TORADIANS;
+            inputRotation += lastInputRotationDiff;
+            inputRotation %= Trig.PI * (float) 2;
         }
     }
 
@@ -266,11 +266,11 @@ public class TileHandCrankedGenerator extends TileTorqueSingleCell implements IW
     public float getClientOutputRotation(EnumFacing from, float delta) {
         float ret = 0;
         if (from == getPrimaryFacing()) {
-            ret = getRotation(rotation, prevRotation, delta);
+            ret = getRenderRotation(rotation, lastRotationDiff, delta);
         } else if (from == EnumFacing.UP) {
-            ret = getRotation(inputRotation, prevInputRotation, delta);
+            ret = getRenderRotation(inputRotation, lastInputRotationDiff, delta);
         }
-        return (ret * Trig.TORADIANS) % ((float) Math.PI * 2);
+        return ret;
     }
 
     @Override

@@ -12,6 +12,7 @@ import net.shadowmage.ancientwarfare.core.network.PacketBlockEvent;
 import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.util.BlockFinder;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.Trig;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
@@ -23,7 +24,8 @@ public class TileFlywheelStorage extends TileUpdatable implements ITickable {
     public int setWidth, setHeight, setCube, setType;//validation params, only 'valid' in the control block.  used by rendering
     public double storedEnergy, maxEnergyStored, maxRpm = 100;
     public double torqueLoss;
-    public double rotation, prevRotation;//used in rendering
+    public double rotation;//used in rendering
+    public double lastRotationDiff;
     private int clientEnergy, clientDestEnergy;
     private int networkUpdateTicks = 0;
 
@@ -108,8 +110,9 @@ public class TileFlywheelStorage extends TileUpdatable implements ITickable {
 
     protected void updateRotation() {
         double rpm = (double) clientEnergy * 0.01d * this.maxRpm;
-        prevRotation = rotation;
-        rotation += rpm * AWAutomationStatics.rpmToRpt;
+        lastRotationDiff = -(rpm * AWAutomationStatics.rpmToRpt) * Trig.TORADIANS;
+        rotation += lastRotationDiff;
+        rotation %= Trig.PI * 2;
     }
 
     public void blockBroken() {

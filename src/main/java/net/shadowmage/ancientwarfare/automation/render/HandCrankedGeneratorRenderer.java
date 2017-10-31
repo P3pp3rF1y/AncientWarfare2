@@ -27,8 +27,8 @@ public class HandCrankedGeneratorRenderer extends BaseTorqueRenderer {
 
 	@Override
 	protected void transformMovingParts(Collection<CCModel> transformedGroups, EnumFacing frontFacing, float[] rotations, IExtendedBlockState state) {
-		float inR = -rotations[EnumFacing.UP.getIndex()];
-		float outR = -rotations[frontFacing.getIndex()];
+		float inR = rotations[EnumFacing.UP.getIndex()];
+		float outR = rotations[frontFacing.getIndex()];
 		transformedGroups.addAll(rotateModels(outputGear, frontFacing, new Rotation(outR, 0, 0, 1).at(new Vector3(8d/16d, 8d/16d, 8d/16d))));
 		transformedGroups.addAll(rotateModels(inputGear, frontFacing, new Rotation(inR, 0, 1, 0).at(new Vector3(8d/16d, 10.5d/16d, 11.5d/16d))));
 	}

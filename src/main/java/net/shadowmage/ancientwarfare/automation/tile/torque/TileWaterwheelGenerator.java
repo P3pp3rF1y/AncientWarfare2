@@ -15,7 +15,7 @@ import net.shadowmage.ancientwarfare.core.util.Trig;
 public class TileWaterwheelGenerator extends TileTorqueSingleCell {
 
     public float wheelRotation;
-    public float prevWheelRotation;
+    public float lastWheelRotationDiff;
 
     private float rotTick;
     private byte rotationDirection = 1; //TODO get rid of magic numbers used for this
@@ -53,9 +53,10 @@ public class TileWaterwheelGenerator extends TileTorqueSingleCell {
     @Override
     protected void updateRotation() {
         super.updateRotation();
-        prevWheelRotation = wheelRotation;
         if (validSetup) {
-            wheelRotation += rotTick * (float) rotationDirection;
+            lastWheelRotationDiff = (rotTick * (float) rotationDirection) * Trig.TORADIANS;
+            wheelRotation += lastWheelRotationDiff;
+            wheelRotation %= Trig.PI * 2;
         }
     }
 
@@ -144,9 +145,7 @@ public class TileWaterwheelGenerator extends TileTorqueSingleCell {
     @Override
     public float getClientOutputRotation(EnumFacing from, float delta) {
         if (from == orientation.getOpposite()) {
-            float rotationRad = ((prevWheelRotation + ((wheelRotation - prevWheelRotation) * delta)) % 360) * Trig.TORADIANS;
-
-            return rotationRad;
+            return getRenderRotation(wheelRotation, lastWheelRotationDiff, delta);
         }
         return super.getClientOutputRotation(from, delta);
     }

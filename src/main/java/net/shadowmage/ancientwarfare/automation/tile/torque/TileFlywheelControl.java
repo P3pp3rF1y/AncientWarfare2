@@ -83,7 +83,6 @@ public abstract class TileFlywheelControl extends TileTorqueSingleCell {
 
     @Override
     protected void updateRotation() {
-        prevRotation = rotation;
         if (!powered) {
             super.updateRotation();
         }
@@ -108,7 +107,7 @@ public abstract class TileFlywheelControl extends TileTorqueSingleCell {
 
     public float getFlywheelRotation(float delta) {
         TileFlywheelStorage storage = getControlledFlywheel();
-        return storage == null ? 0 : getRotation(storage.rotation, storage.prevRotation, delta);
+        return storage == null ? 0 : getRenderRotation(storage.rotation, storage.lastRotationDiff, delta);
     }
 
     protected double getFlywheelEnergy() {

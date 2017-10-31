@@ -24,7 +24,7 @@ public class WindmillGeneratorRenderer extends BaseTorqueRenderer {
 
 	@Override
 	protected void transformMovingParts(Collection<CCModel> transformedGroups, EnumFacing frontFacing, float[] rotations, IExtendedBlockState state) {
-		float outR = -rotations[frontFacing.getIndex()];
+		float outR = rotations[frontFacing.getIndex()];
 		transformedGroups.addAll(rotateModels(outputGear, frontFacing, new Rotation(outR, 0, 0, 1).at(new Vector3(8d/16d, 8d/16d, 8d/16d))));
 	}
 }

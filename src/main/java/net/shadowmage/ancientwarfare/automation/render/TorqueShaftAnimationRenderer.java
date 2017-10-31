@@ -18,7 +18,7 @@ public class TorqueShaftAnimationRenderer extends TorqueAnimationRenderer<TileTo
 
         ITorque.ITorqueTile itt = shaft.getTorqueCache()[facing.getOpposite().ordinal()];
         state = state.withProperty(BlockTorqueTransportShaft.USE_INPUT, itt != null && itt.canOutputTorque(facing) && itt.useOutputRotation(null));
-        state = state.withProperty(BlockTorqueTransportShaft.INPUT_ROTATION, itt != null ? itt.getClientOutputRotation(facing, 1) : 0);
+        state = state.withProperty(BlockTorqueTransportShaft.INPUT_ROTATION, itt != null ? itt.getClientOutputRotation(facing, partialTicks) : 0);
 
         return state;
     }

@@ -289,9 +289,8 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
         NetworkHandler.sendToAllTrackingChunk(world, pos.getX() >> 4, pos.getZ() >> 4, pkt);
     }
 
-    protected final float getRotation(double rotation, double prevRotation, float delta) {
-        double rd = rotation - prevRotation;
-        return (float) (prevRotation + rd * delta);
+    protected final float getRenderRotation(double rotation, double lastRotationDiff, float partialTicks) {
+        return (float) (rotation - (lastRotationDiff * (1 - partialTicks)));
     }
 
     @Override

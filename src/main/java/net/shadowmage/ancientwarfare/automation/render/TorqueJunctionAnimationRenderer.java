@@ -24,10 +24,6 @@ public class TorqueJunctionAnimationRenderer extends TorqueAnimationRenderer<Til
 
 					int direction = (facing.ordinal() % 2 == 0) ? -1 : 1;//evens rotate in the other direction
 					state = state.withProperty(AutomationProperties.ROTATIONS[facing.ordinal()], direction * r);
-				} else {
-					if(facing.ordinal() % 2 == 0) { //evens rotate in the other direction
-						state = state.withProperty(AutomationProperties.ROTATIONS[facing.ordinal()], state.getValue(AutomationProperties.ROTATIONS[facing.ordinal()]));
-					}
 				}
 			}
 		}

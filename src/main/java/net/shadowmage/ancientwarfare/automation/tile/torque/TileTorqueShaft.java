@@ -55,15 +55,15 @@ public abstract class TileTorqueShaft extends TileTorqueSingleCell {
     @Override
     protected void updateRotation() {
         if (prev() == null) {
-            prevRotation = rotation;
             if (clientEnergyState > 0) {
-                double r = AWAutomationStatics.low_rpt * clientEnergyState * 0.01d;
-                rotation += r;
+                lastRotationDiff = -(AWAutomationStatics.low_rpt * clientEnergyState * 0.01d) * Trig.TORADIANS;
+                rotation += lastRotationDiff;
+                rotation %= Trig.PI * 2;
             }
             TileTorqueShaft n = next;
             while (n != null) {
                 n.rotation = rotation;
-                n.prevRotation = prevRotation;
+                n.lastRotationDiff = lastRotationDiff;
                 n = n.next;
             }
         }
@@ -117,7 +117,7 @@ public abstract class TileTorqueShaft extends TileTorqueSingleCell {
 
     @Override
     public float getClientOutputRotation(EnumFacing from, float delta) {
-        return getRotation(rotation, prevRotation, delta) * Trig.TORADIANS;
+        return getRenderRotation(rotation, lastRotationDiff, delta);
     }
 
 }

@@ -31,7 +31,8 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
     /*
      * used client side for rendering
      */
-    double rotation, prevRotation;
+    double rotation;
+    double lastRotationDiff;
 
     public TileTorqueSidedCell() {
         double max = getMaxTransfer();
@@ -114,10 +115,10 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
 
     @Override
     protected void updateRotation() {
-        prevRotation = rotation;
         if (clientEnergyState > 0) {
-            double r = AWAutomationStatics.low_rpt * clientEnergyState * 0.01d;
-            rotation += r;
+            lastRotationDiff = -(AWAutomationStatics.low_rpt * clientEnergyState * 0.01d) * Trig.TORADIANS;
+            rotation += lastRotationDiff;
+            rotation %= Trig.PI * 2;
         }
     }
 
@@ -223,7 +224,7 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
 
     @Override
     public float getClientOutputRotation(EnumFacing from, float delta) {
-        return (getRotation(rotation, prevRotation, delta) * Trig.TORADIANS) % (Trig.PI * 2);
+        return getRenderRotation(rotation, lastRotationDiff, delta);
     }
 
     @Override

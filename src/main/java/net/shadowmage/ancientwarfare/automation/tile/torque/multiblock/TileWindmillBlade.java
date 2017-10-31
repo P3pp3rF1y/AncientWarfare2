@@ -25,7 +25,8 @@ public class TileWindmillBlade extends TileUpdatable implements ITickable {
     public BlockPos controlPos;
 
     private boolean isControl = false;//set to true if this is the control block for a setup
-    protected float rotation, prevRotation;//used in rendering
+    protected float rotation;//used in rendering
+    protected float lastRotationDiff;
 
     /*
      * the raw size of the windmill in blocks tall
@@ -74,12 +75,13 @@ public class TileWindmillBlade extends TileUpdatable implements ITickable {
     }
 
     public float getRotation(float delta){
-        return ((prevRotation + (rotation - prevRotation) * delta) % 360) * Trig.TORADIANS;
+        return rotation - lastRotationDiff * (1 - delta);
     }
 
     protected void updateRotation() {
-        prevRotation = rotation;
-        rotation += bladeRpt;
+        lastRotationDiff = (float) (bladeRpt * Trig.TORADIANS);
+        rotation += lastRotationDiff;
+        rotation %= Trig.PI * 2;
     }
 
     public void blockPlaced() {

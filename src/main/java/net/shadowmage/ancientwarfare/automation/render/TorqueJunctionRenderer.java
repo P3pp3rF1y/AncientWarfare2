@@ -60,7 +60,7 @@ public class TorqueJunctionRenderer extends BaseTorqueRendererGeneric<TileTorque
 		if(state != null) {
 			for(EnumFacing facing : EnumFacing.VALUES) {
 				if(state.getValue(BlockTorqueTransportJunction.CONNECTIONS[facing.ordinal()])) {
-					transformedGroups.addAll(rotateShaft(gearHeads[facing.ordinal()], facing, -state.getValue(AutomationProperties.ROTATIONS[facing.ordinal()])));
+					transformedGroups.addAll(rotateShaft(gearHeads[facing.ordinal()], facing, state.getValue(AutomationProperties.ROTATIONS[facing.ordinal()])));
 				}
 			}
 		} else {
