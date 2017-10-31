@@ -236,6 +236,7 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
     protected void handleUpdateNBT(NBTTagCompound tag) {
         super.handleUpdateNBT(tag);
         clientDestEnergyState = tag.getInteger("clientEnergy");
+        connections = null; //clear connections on update
     }
 
     @Override
