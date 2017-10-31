@@ -146,7 +146,7 @@ public class AWAutomationBlockLoader {
         registry.register(new BlockFlywheelStorage("flywheel_storage"));
         GameRegistry.registerTileEntity(TileFlywheelStorage.class, "flywheel_storage_tile");
 
-        registry.register(new BlockTorqueTransportJunction("torque_junction"));
+        registry.register(new BlockTorqueJunction("torque_junction"));
         GameRegistry.registerTileEntity(TileConduitLight.class, "torque_junction_tile");
         GameRegistry.registerTileEntity(TileConduitMedium.class, "torque_junction_medium_tile");
         GameRegistry.registerTileEntity(TileConduitHeavy.class, "torque_junction_heavy_tile");

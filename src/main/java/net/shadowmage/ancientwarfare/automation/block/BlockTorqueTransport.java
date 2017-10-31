@@ -19,7 +19,7 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueSidedCell;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 
-public class BlockTorqueTransport extends BlockTorqueBase {
+public abstract class BlockTorqueTransport extends BlockTorqueBase {
     public static final PropertyEnum<Type> TYPE = PropertyEnum.create("type", Type.class);
 
     protected BlockTorqueTransport(String regName) {

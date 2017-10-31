@@ -37,15 +37,17 @@ import net.shadowmage.ancientwarfare.automation.render.AutoCraftingRenderer;
 import net.shadowmage.ancientwarfare.automation.render.HandCrankedGeneratorRenderer;
 import net.shadowmage.ancientwarfare.automation.render.StirlingGeneratorRenderer;
 import net.shadowmage.ancientwarfare.automation.render.TorqueAnimationRenderer;
-import net.shadowmage.ancientwarfare.automation.render.TorqueJunctionAnimationRenderer;
+import net.shadowmage.ancientwarfare.automation.render.TorqueDistributorRenderer;
 import net.shadowmage.ancientwarfare.automation.render.TorqueJunctionRenderer;
 import net.shadowmage.ancientwarfare.automation.render.TorqueShaftAnimationRenderer;
 import net.shadowmage.ancientwarfare.automation.render.TorqueShaftRenderer;
+import net.shadowmage.ancientwarfare.automation.render.TorqueTransportAnimationRenderer;
 import net.shadowmage.ancientwarfare.automation.render.WaterwheelGeneratorRenderer;
 import net.shadowmage.ancientwarfare.automation.render.WindmillBladeAnimationRenderer;
 import net.shadowmage.ancientwarfare.automation.render.WindmillBladeRenderer;
 import net.shadowmage.ancientwarfare.automation.render.WindmillGeneratorRenderer;
 import net.shadowmage.ancientwarfare.automation.render.WorksiteRenderer;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileDistributor;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileHandCrankedGenerator;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileStirlingGenerator;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueBase;
@@ -101,15 +103,11 @@ public class ClientProxyAutomation extends ClientProxyBase {
         ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseBase.class, new WorksiteRenderer());
         //ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseStockViewer.class, new RenderTileWarehouseStockViewer());
 
-
         //********************************************CONDUIT / TRANSPORT RENDERS***************************************************************//
 
-        ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueSidedCell.class, new TorqueJunctionAnimationRenderer());
-
-        //RenderTileTorqueTransport distributorRender = new RenderTileTorqueTransport(new ResourceLocation("ancientwarfare", "textures/model/automation/torque_distributor_light.png"), new ResourceLocation("ancientwarfare", "textures/model/automation/torque_distributor_medium.png"), new ResourceLocation("ancientwarfare", "textures/model/automation/torque_distributor_heavy.png"));
-        //ClientRegistry.bindTileEntitySpecialRenderer(TileDistributor.class, distributorRender);
-        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.torqueDistributor), distributorRender);
-
+        TorqueTransportAnimationRenderer transportSidedRenderer = new TorqueTransportAnimationRenderer();
+        ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueSidedCell.class, transportSidedRenderer);
+        ClientRegistry.bindTileEntitySpecialRenderer(TileDistributor.class, transportSidedRenderer);
         ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueShaft.class, new TorqueShaftAnimationRenderer());
 
         //********************************************STORAGE RENDERS***************************************************************//
@@ -122,8 +120,8 @@ public class ClientProxyAutomation extends ClientProxyBase {
         //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.flywheelStorage), storageRender);
 
         //********************************************GENERATOR RENDERS***************************************************************//
-        ClientRegistry.bindTileEntitySpecialRenderer(TileStirlingGenerator.class, new TorqueAnimationRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileWaterwheelGenerator.class, new TorqueAnimationRenderer() {
+        ClientRegistry.bindTileEntitySpecialRenderer(TileStirlingGenerator.class, new TorqueAnimationRenderer<>());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileWaterwheelGenerator.class, new TorqueAnimationRenderer<TileWaterwheelGenerator>() {
             @Override
             protected IExtendedBlockState updateAdditionalProperties(IExtendedBlockState state, TileTorqueBase te) {
                 if (te instanceof TileWaterwheelGenerator) {
@@ -132,9 +130,9 @@ public class ClientProxyAutomation extends ClientProxyBase {
                 return state;
             }
         });
-        ClientRegistry.bindTileEntitySpecialRenderer(TileHandCrankedGenerator.class, new TorqueAnimationRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileHandCrankedGenerator.class, new TorqueAnimationRenderer<>());
 
-        ClientRegistry.bindTileEntitySpecialRenderer(TileWindmillController.class, new TorqueAnimationRenderer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileWindmillController.class, new TorqueAnimationRenderer<>());
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileWindmillBlade.class, new WindmillBladeAnimationRenderer());
     }
@@ -172,6 +170,9 @@ public class ClientProxyAutomation extends ClientProxyBase {
         TorqueJunctionRenderer.INSTANCE.setSprite(BlockTorqueTransportShaft.Type.HEAVY, registerSprite(evt, "torque_junction_heavy"));
         TorqueJunctionRenderer.INSTANCE.setSprite(BlockTorqueTransportShaft.Type.MEDIUM, registerSprite(evt, "torque_junction_medium"));
         TorqueJunctionRenderer.INSTANCE.setSprite(BlockTorqueTransportShaft.Type.LIGHT, registerSprite(evt, "torque_junction_light"));
+        TorqueDistributorRenderer.INSTANCE.setSprite(BlockTorqueTransportShaft.Type.HEAVY, registerSprite(evt, "torque_distributor_heavy"));
+        TorqueDistributorRenderer.INSTANCE.setSprite(BlockTorqueTransportShaft.Type.MEDIUM, registerSprite(evt, "torque_distributor_medium"));
+        TorqueDistributorRenderer.INSTANCE.setSprite(BlockTorqueTransportShaft.Type.LIGHT, registerSprite(evt, "torque_distributor_light"));
     }
 
     private TextureAtlasSprite registerSprite(TextureStitchEvent.Pre evt, String spriteName) {
