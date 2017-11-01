@@ -11,7 +11,6 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.property.IExtendedBlockState;
-import net.shadowmage.ancientwarfare.automation.block.BlockTorqueJunction;
 import net.shadowmage.ancientwarfare.automation.block.BlockTorqueTransport;
 import net.shadowmage.ancientwarfare.automation.block.BlockTorqueTransportSided;
 import net.shadowmage.ancientwarfare.automation.render.property.AutomationProperties;
@@ -38,7 +37,7 @@ public class TorqueTransportSidedRenderer extends BaseTorqueRendererGeneric<Tile
 		gearHeads[5] = removeGroups(s -> s.startsWith("eastShaft."));
 	}
 
-	public void setSprite(BlockTorqueJunction.Type type, TextureAtlasSprite sprite) {
+	public void setSprite(BlockTorqueTransportSided.Type type, TextureAtlasSprite sprite) {
 		sprites.put(type, sprite);
 		iconTransforms.put(type, new IconTransformation(sprite));
 	}
@@ -70,8 +69,8 @@ public class TorqueTransportSidedRenderer extends BaseTorqueRendererGeneric<Tile
 	}
 
 	@Override
-	protected IExtendedBlockState handleAdditionalProperties(IExtendedBlockState state, TileTorqueSidedCell junction) {
-		state = super.handleAdditionalProperties(state, junction);
+	protected IExtendedBlockState handleAdditionalProperties(IExtendedBlockState state, TileTorqueSidedCell cell) {
+		state = super.handleAdditionalProperties(state, cell);
 
 		for(EnumFacing facing: EnumFacing.VALUES) {
 			state = state.withProperty(BlockTorqueTransportSided.CONNECTIONS[facing.ordinal()], false);
@@ -82,15 +81,15 @@ public class TorqueTransportSidedRenderer extends BaseTorqueRendererGeneric<Tile
 
 	@Override
 	protected IconTransformation getIconTransform(IExtendedBlockState state) {
-		return iconTransforms.get(state.getValue(BlockTorqueJunction.TYPE));
+		return iconTransforms.get(state.getValue(BlockTorqueTransportSided.TYPE));
 	}
 
 	@Override
 	protected IconTransformation getIconTransform(ItemStack stack) {
-		return iconTransforms.get(BlockTorqueJunction.Type.values()[stack.getMetadata()]);
+		return iconTransforms.get(BlockTorqueTransportSided.Type.values()[stack.getMetadata()]);
 	}
 
-	public TextureAtlasSprite getSprite(BlockTorqueJunction.Type type) {
+	public TextureAtlasSprite getSprite(BlockTorqueTransportSided.Type type) {
 		return sprites.get(type);
 	}
 }
