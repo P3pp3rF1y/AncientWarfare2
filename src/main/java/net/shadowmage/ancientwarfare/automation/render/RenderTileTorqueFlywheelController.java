@@ -1,20 +1,19 @@
-/*
 package net.shadowmage.ancientwarfare.automation.render;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.IItemRenderer;
 import net.minecraft.util.EnumFacing;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControl;
+import net.minecraft.util.ResourceLocation;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelController;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelLoader;
 import net.shadowmage.ancientwarfare.core.model.ModelPiece;
-import org.lwjgl.opengl.GL11;
 
-public class RenderTileTorqueFlywheelController extends TileEntitySpecialRenderer implements IItemRenderer {
+import java.io.IOException;
+
+public class RenderTileTorqueFlywheelController extends TileEntitySpecialRenderer {
 
     private float[][] gearboxRotationMatrix = new float[6][];
     private final ModelBaseAW controllerModel;
@@ -29,6 +28,11 @@ public class RenderTileTorqueFlywheelController extends TileEntitySpecialRendere
 
         ModelLoader loader = new ModelLoader();
         controllerModel = loader.loadModel(getClass().getResourceAsStream("/assets/ancientwarfare/models/automation/flywheel_controller.m2f"));
+        try {
+            controllerModel.exportOBJ("flywheel_controller.obj");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         controlInput = controllerModel.getPiece("inputGear");
         controlOutput = controllerModel.getPiece("outputGear");
         controlSpindle = controllerModel.getPiece("spindle");
@@ -39,14 +43,15 @@ public class RenderTileTorqueFlywheelController extends TileEntitySpecialRendere
         gearboxRotationMatrix[3] = new float[]{0, 180, 0};//s
         gearboxRotationMatrix[4] = new float[]{0, 90, 0};//w
         gearboxRotationMatrix[5] = new float[]{0, 270, 0};//e
+
     }
 
     @Override
-    public void renderTileEntityAt(TileEntity te, double x, double y, double z, float delta) {
+    public void render(TileEntity te, double x, double y, double z, float delta, int destroyStage, float alpha) {
         GlStateManager.pushMatrix();
         GlStateManager.translate(x + 0.5d, y, z + 0.5d);
 
-        TileFlywheelControl flywheel = (TileFlywheelControl) te;
+        TileFlywheelController flywheel = (TileFlywheelController) te;
 
         ITorqueTile[] neighbors = flywheel.getTorqueCache();
         EnumFacing d = flywheel.getPrimaryFacing();
@@ -81,25 +86,4 @@ public class RenderTileTorqueFlywheelController extends TileEntitySpecialRendere
         controlSpindle.setRotation(0, -wheelR, 0);
         controllerModel.renderModel();
     }
-
-    @Override
-    public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-        return true;
-    }
-
-    @Override
-    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-        return true;
-    }
-
-    @Override
-    public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        GlStateManager.pushMatrix();
-        GlStateManager.translate(0.5f, 0, 0.5f);
-        bindTexture(texture[item.getItemDamage() % texture.length]);
-        renderModel(0, 0, 0, 2);
-        GlStateManager.popMatrix();
-    }
-
 }
-*/

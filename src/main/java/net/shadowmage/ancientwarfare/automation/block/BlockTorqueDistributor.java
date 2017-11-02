@@ -5,7 +5,6 @@ import codechicken.lib.model.bakery.CCBakeryModel;
 import codechicken.lib.model.bakery.IBakeryProvider;
 import codechicken.lib.model.bakery.ModelBakery;
 import codechicken.lib.model.bakery.generation.IBakery;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
@@ -26,8 +25,6 @@ import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
 public class BlockTorqueDistributor extends BlockTorqueTransportSided implements IBakeryProvider {
-    static final PropertyEnum<Type> TYPE = PropertyEnum.create("type", Type.class);
-
     protected BlockTorqueDistributor(String regName) {
         super(regName);
     }
@@ -39,7 +36,7 @@ public class BlockTorqueDistributor extends BlockTorqueTransportSided implements
 
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        switch (state.getValue(TYPE)) {
+        switch (state.getValue(AutomationProperties.TIER)) {
             case LIGHT:
                 return new TileDistributorLight();
             case MEDIUM:
@@ -55,14 +52,14 @@ public class BlockTorqueDistributor extends BlockTorqueTransportSided implements
         ModelLoaderHelper.registerItem(this, "automation", "light", false); //the actual switch for itemstack types is processed by renderer
 
         ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder()
-                .addKeyProperties(TYPE)
+                .addKeyProperties(AutomationProperties.TIER)
                 .addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC)
                 .addKeyProperties(BlockTorqueTransportSided.CONNECTIONS)
                 .addKeyProperties(o -> String.format("%.6f",o), AutomationProperties.ROTATIONS).build());
 
         ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
             @Override protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                switch(state.getValue(TYPE)) {
+                switch(state.getValue(AutomationProperties.TIER)) {
                     case LIGHT:
                         return TorqueDistributorRenderer.LIGHT_MODEL_LOCATION;
                     case MEDIUM:
@@ -76,21 +73,21 @@ public class BlockTorqueDistributor extends BlockTorqueTransportSided implements
         ModelRegistryHelper.register(TorqueDistributorRenderer.LIGHT_MODEL_LOCATION, new CCBakeryModel() {
             @Override
             public TextureAtlasSprite getParticleTexture() {
-                return TorqueDistributorRenderer.INSTANCE.getSprite(Type.LIGHT);
+                return TorqueDistributorRenderer.INSTANCE.getSprite(TorqueTier.LIGHT);
             }
         });
 
         ModelRegistryHelper.register(TorqueDistributorRenderer.MEDIUM_MODEL_LOCATION, new CCBakeryModel() {
             @Override
             public TextureAtlasSprite getParticleTexture() {
-                return TorqueDistributorRenderer.INSTANCE.getSprite(Type.MEDIUM);
+                return TorqueDistributorRenderer.INSTANCE.getSprite(TorqueTier.MEDIUM);
             }
         });
 
         ModelRegistryHelper.register(TorqueDistributorRenderer.HEAVY_MODEL_LOCATION, new CCBakeryModel() {
             @Override
             public TextureAtlasSprite getParticleTexture() {
-                return TorqueDistributorRenderer.INSTANCE.getSprite(Type.HEAVY);
+                return TorqueDistributorRenderer.INSTANCE.getSprite(TorqueTier.HEAVY);
             }
         });
     }

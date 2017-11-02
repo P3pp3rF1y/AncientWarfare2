@@ -6,11 +6,12 @@ import codechicken.lib.vec.Vector3;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.property.IExtendedBlockState;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileWindmillController;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 import java.util.Collection;
 
-public class WindmillGeneratorRenderer extends BaseTorqueRenderer {
+public class WindmillGeneratorRenderer extends BaseTorqueRenderer<TileWindmillController> {
 
 	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/windmill_generator", "normal");
 	public static final WindmillGeneratorRenderer INSTANCE = new WindmillGeneratorRenderer();

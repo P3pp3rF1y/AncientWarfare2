@@ -5,25 +5,17 @@ import codechicken.lib.vec.Rotation;
 import codechicken.lib.vec.Transformation;
 import codechicken.lib.vec.Translation;
 import codechicken.lib.vec.Vector3;
-import codechicken.lib.vec.uv.IconTransformation;
-import com.google.common.collect.Maps;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.property.IExtendedBlockState;
-import net.shadowmage.ancientwarfare.automation.block.BlockTorqueTransport;
 import net.shadowmage.ancientwarfare.automation.block.BlockTorqueTransportSided;
 import net.shadowmage.ancientwarfare.automation.render.property.AutomationProperties;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueSidedCell;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
-import java.util.Map;
 import java.util.stream.Collectors;
 
-public class TorqueTransportSidedRenderer extends BaseTorqueRendererGeneric<TileTorqueSidedCell> {
-	public Map<BlockTorqueTransport.Type, TextureAtlasSprite> sprites = Maps.newHashMap();
-	public Map<BlockTorqueTransport.Type, IconTransformation> iconTransforms = Maps.newHashMap();
+public class TorqueTransportSidedRenderer extends TorqueTieredRenderer<TileTorqueSidedCell> {
 
 	protected Collection<CCModel>[] gearHeads = new Collection[6];
 
@@ -35,11 +27,6 @@ public class TorqueTransportSidedRenderer extends BaseTorqueRendererGeneric<Tile
 		gearHeads[3] = removeGroups(s -> s.startsWith("southShaft."));
 		gearHeads[4] = removeGroups(s -> s.startsWith("westShaft."));
 		gearHeads[5] = removeGroups(s -> s.startsWith("eastShaft."));
-	}
-
-	public void setSprite(BlockTorqueTransportSided.Type type, TextureAtlasSprite sprite) {
-		sprites.put(type, sprite);
-		iconTransforms.put(type, new IconTransformation(sprite));
 	}
 
 	@Override
@@ -79,17 +66,4 @@ public class TorqueTransportSidedRenderer extends BaseTorqueRendererGeneric<Tile
 		return state;
 	}
 
-	@Override
-	protected IconTransformation getIconTransform(IExtendedBlockState state) {
-		return iconTransforms.get(state.getValue(BlockTorqueTransportSided.TYPE));
-	}
-
-	@Override
-	protected IconTransformation getIconTransform(ItemStack stack) {
-		return iconTransforms.get(BlockTorqueTransportSided.Type.values()[stack.getMetadata()]);
-	}
-
-	public TextureAtlasSprite getSprite(BlockTorqueTransportSided.Type type) {
-		return sprites.get(type);
-	}
 }

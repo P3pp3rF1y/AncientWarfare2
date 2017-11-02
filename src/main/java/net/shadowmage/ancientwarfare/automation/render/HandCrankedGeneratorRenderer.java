@@ -6,11 +6,12 @@ import codechicken.lib.vec.Vector3;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.property.IExtendedBlockState;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileHandCrankedGenerator;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 import java.util.Collection;
 
-public class HandCrankedGeneratorRenderer extends BaseTorqueRenderer {
+public class HandCrankedGeneratorRenderer extends BaseTorqueRenderer<TileHandCrankedGenerator> {
 
 	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/hand_cranked_generator", "normal");
 	public static final HandCrankedGeneratorRenderer INSTANCE = new HandCrankedGeneratorRenderer();

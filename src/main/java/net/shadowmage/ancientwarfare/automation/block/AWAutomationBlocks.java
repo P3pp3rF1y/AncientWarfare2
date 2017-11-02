@@ -37,7 +37,7 @@ public class AWAutomationBlocks {
 		 * POWER NETWORK BLOCKS
 		 */
 	@ObjectHolder("flywheel_controller")
-	public static BlockFlywheel flywheel;
+	public static BlockFlywheelController flywheel;
 	@ObjectHolder("flywheel_storage")
 	public static BlockFlywheelStorage flywheelStorage;
 	@ObjectHolder("torque_junction")

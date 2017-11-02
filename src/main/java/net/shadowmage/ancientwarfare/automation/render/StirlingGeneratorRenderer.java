@@ -8,11 +8,12 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.common.property.IExtendedBlockState;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileStirlingGenerator;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 import java.util.Collection;
 
-public class StirlingGeneratorRenderer extends BaseTorqueRenderer {
+public class StirlingGeneratorRenderer extends BaseTorqueRenderer<TileStirlingGenerator> {
 
 	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/stirling_generator", "normal");
 	public static final StirlingGeneratorRenderer INSTANCE = new StirlingGeneratorRenderer();

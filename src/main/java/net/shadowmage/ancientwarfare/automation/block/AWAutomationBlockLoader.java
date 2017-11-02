@@ -21,9 +21,9 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.TileConduitMedium;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileDistributorHeavy;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileDistributorLight;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileDistributorMedium;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControlLarge;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControlLight;
-import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControlMedium;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControllerHeavy;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControllerLight;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControllerMedium;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileHandCrankedGenerator;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileStirlingGenerator;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaftHeavy;
@@ -138,10 +138,10 @@ public class AWAutomationBlockLoader {
         registry.register(new BlockMailbox("mailbox"));
         GameRegistry.registerTileEntity(TileMailbox.class, "mailbox_tile");
 
-        registry.register(new BlockFlywheel("flywheel_controller"));
-        GameRegistry.registerTileEntity(TileFlywheelControlLight.class, "flywheel_tile");
-        GameRegistry.registerTileEntity(TileFlywheelControlMedium.class, "flywheel_medium_tile");
-        GameRegistry.registerTileEntity(TileFlywheelControlLarge.class, "flywheel_large_tile");
+        registry.register(new BlockFlywheelController("flywheel_controller"));
+        GameRegistry.registerTileEntity(TileFlywheelControllerLight.class, "flywheel_tile");
+        GameRegistry.registerTileEntity(TileFlywheelControllerMedium.class, "flywheel_medium_tile");
+        GameRegistry.registerTileEntity(TileFlywheelControllerHeavy.class, "flywheel_large_tile");
 
         registry.register(new BlockFlywheelStorage("flywheel_storage"));
         GameRegistry.registerTileEntity(TileFlywheelStorage.class, "flywheel_storage_tile");

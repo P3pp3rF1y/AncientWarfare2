@@ -7,12 +7,13 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.shadowmage.ancientwarfare.automation.block.BlockWaterwheelGenerator;
+import net.shadowmage.ancientwarfare.automation.tile.torque.TileWaterwheelGenerator;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 import javax.annotation.Nullable;
 import java.util.Collection;
 
-public class WaterwheelGeneratorRenderer extends BaseTorqueRenderer {
+public class WaterwheelGeneratorRenderer extends BaseTorqueRenderer<TileWaterwheelGenerator> {
 
 	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/waterwheel_generator", "normal");
 	public static final WaterwheelGeneratorRenderer INSTANCE = new WaterwheelGeneratorRenderer();

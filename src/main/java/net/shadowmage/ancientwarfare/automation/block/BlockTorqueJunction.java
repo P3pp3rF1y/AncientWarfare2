@@ -36,7 +36,7 @@ public class BlockTorqueJunction extends BlockTorqueTransportSided implements IB
 
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		switch (state.getValue(TYPE)) {
+		switch (state.getValue(AutomationProperties.TIER)) {
 			case LIGHT:
 				return new TileConduitLight();
 			case MEDIUM:
@@ -52,14 +52,14 @@ public class BlockTorqueJunction extends BlockTorqueTransportSided implements IB
 		ModelLoaderHelper.registerItem(this, "automation", "light", false); //the actual switch for itemstack types is processed by renderer
 
 		ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder()
-				.addKeyProperties(TYPE)
+				.addKeyProperties(AutomationProperties.TIER)
 				.addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC)
 				.addKeyProperties(BlockTorqueTransportSided.CONNECTIONS)
 				.addKeyProperties(o -> String.format("%.6f",o), AutomationProperties.ROTATIONS).build());
 
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
 			@Override protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-				switch(state.getValue(TYPE)) {
+				switch(state.getValue(AutomationProperties.TIER)) {
 					case LIGHT:
 						return TorqueJunctionRenderer.LIGHT_MODEL_LOCATION;
 					case MEDIUM:
@@ -73,21 +73,21 @@ public class BlockTorqueJunction extends BlockTorqueTransportSided implements IB
 		ModelRegistryHelper.register(TorqueJunctionRenderer.LIGHT_MODEL_LOCATION, new CCBakeryModel() {
 			@Override
 			public TextureAtlasSprite getParticleTexture() {
-				return TorqueJunctionRenderer.INSTANCE.getSprite(Type.LIGHT);
+				return TorqueJunctionRenderer.INSTANCE.getSprite(TorqueTier.LIGHT);
 			}
 		});
 
 		ModelRegistryHelper.register(TorqueJunctionRenderer.MEDIUM_MODEL_LOCATION, new CCBakeryModel() {
 			@Override
 			public TextureAtlasSprite getParticleTexture() {
-				return TorqueJunctionRenderer.INSTANCE.getSprite(Type.MEDIUM);
+				return TorqueJunctionRenderer.INSTANCE.getSprite(TorqueTier.MEDIUM);
 			}
 		});
 
 		ModelRegistryHelper.register(TorqueJunctionRenderer.HEAVY_MODEL_LOCATION, new CCBakeryModel() {
 			@Override
 			public TextureAtlasSprite getParticleTexture() {
-				return TorqueJunctionRenderer.INSTANCE.getSprite(Type.HEAVY);
+				return TorqueJunctionRenderer.INSTANCE.getSprite(TorqueTier.HEAVY);
 			}
 		});
 	}

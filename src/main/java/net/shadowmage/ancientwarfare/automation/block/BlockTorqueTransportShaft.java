@@ -22,7 +22,6 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.common.property.Properties;
-import net.minecraftforge.common.property.PropertyFloat;
 import net.shadowmage.ancientwarfare.automation.render.TorqueShaftRenderer;
 import net.shadowmage.ancientwarfare.automation.render.property.AutomationProperties;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaft;
@@ -36,8 +35,6 @@ import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 public class BlockTorqueTransportShaft extends BlockTorqueTransport implements IBakeryProvider {
     public static final IUnlistedProperty<Boolean> HAS_PREVIOUS = Properties.toUnlisted(PropertyBool.create("has_previous"));
     public static final IUnlistedProperty<Boolean> HAS_NEXT = Properties.toUnlisted(PropertyBool.create("has_next"));
-    public static final IUnlistedProperty<Boolean> USE_INPUT = Properties.toUnlisted(PropertyBool.create("use_input"));
-    public static final IUnlistedProperty<Float> INPUT_ROTATION = new PropertyFloat("input_rotation");
 
     public BlockTorqueTransportShaft(String regName) {
         super(regName);
@@ -45,7 +42,7 @@ public class BlockTorqueTransportShaft extends BlockTorqueTransport implements I
 
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        switch (state.getValue(TYPE)) {
+        switch (state.getValue(AutomationProperties.TIER)) {
             case LIGHT:
                 return new TileTorqueShaftLight();
             case MEDIUM:
@@ -59,7 +56,7 @@ public class BlockTorqueTransportShaft extends BlockTorqueTransport implements I
     @Override
     protected void addProperties(BlockStateContainer.Builder builder) {
         super.addProperties(builder);
-        builder.add(HAS_PREVIOUS, HAS_NEXT, USE_INPUT, INPUT_ROTATION);
+        builder.add(HAS_PREVIOUS, HAS_NEXT, AutomationProperties.USE_INPUT, AutomationProperties.INPUT_ROTATION);
     }
 
     @Override
@@ -96,9 +93,9 @@ public class BlockTorqueTransportShaft extends BlockTorqueTransport implements I
         return new AxisAlignedBB(x1, y1, z1, x2, y2, z2);
     }
     private static final IBlockStateKeyGenerator KEY_GENERATOR = new BlockStateKeyGenerator.Builder()
-            .addKeyProperties(TYPE)
+            .addKeyProperties(AutomationProperties.TIER)
             .addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC, HAS_PREVIOUS, HAS_NEXT)
-            .addKeyProperties(o -> String.format("%.6f",o), INPUT_ROTATION)
+            .addKeyProperties(o -> String.format("%.6f",o), AutomationProperties.INPUT_ROTATION)
             .addKeyProperties(o -> String.format("%.6f",o), AutomationProperties.ROTATIONS).build();
 
     @Override
@@ -106,14 +103,14 @@ public class BlockTorqueTransportShaft extends BlockTorqueTransport implements I
         ModelLoaderHelper.registerItem(this, "automation", "light", false); //the actual switch for itemstack types is processed by renderer
 
         ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder()
-                .addKeyProperties(TYPE)
+                .addKeyProperties(AutomationProperties.TIER)
                 .addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC, HAS_PREVIOUS, HAS_NEXT)
-                .addKeyProperties(o -> String.format("%.6f",o), INPUT_ROTATION)
+                .addKeyProperties(o -> String.format("%.6f",o), AutomationProperties.INPUT_ROTATION)
                 .addKeyProperties(o -> String.format("%.6f",o), AutomationProperties.ROTATIONS).build());
 
         ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
             @Override protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                switch(state.getValue(TYPE)) {
+                switch(state.getValue(AutomationProperties.TIER)) {
                     case LIGHT:
                         return TorqueShaftRenderer.LIGHT_MODEL_LOCATION;
                     case MEDIUM:
@@ -127,21 +124,21 @@ public class BlockTorqueTransportShaft extends BlockTorqueTransport implements I
         ModelRegistryHelper.register(TorqueShaftRenderer.LIGHT_MODEL_LOCATION, new CCBakeryModel() {
             @Override
             public TextureAtlasSprite getParticleTexture() {
-                return TorqueShaftRenderer.INSTANCE.getSprite(Type.LIGHT);
+                return TorqueShaftRenderer.INSTANCE.getSprite(TorqueTier.LIGHT);
             }
         });
 
         ModelRegistryHelper.register(TorqueShaftRenderer.MEDIUM_MODEL_LOCATION, new CCBakeryModel() {
             @Override
             public TextureAtlasSprite getParticleTexture() {
-                return TorqueShaftRenderer.INSTANCE.getSprite(Type.MEDIUM);
+                return TorqueShaftRenderer.INSTANCE.getSprite(TorqueTier.MEDIUM);
             }
         });
 
         ModelRegistryHelper.register(TorqueShaftRenderer.HEAVY_MODEL_LOCATION, new CCBakeryModel() {
             @Override
             public TextureAtlasSprite getParticleTexture() {
-                return TorqueShaftRenderer.INSTANCE.getSprite(Type.HEAVY);
+                return TorqueShaftRenderer.INSTANCE.getSprite(TorqueTier.HEAVY);
             }
         });
     }
