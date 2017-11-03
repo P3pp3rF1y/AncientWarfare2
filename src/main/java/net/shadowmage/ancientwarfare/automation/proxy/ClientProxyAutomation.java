@@ -37,6 +37,7 @@ import net.shadowmage.ancientwarfare.automation.render.AutoCraftingRenderer;
 import net.shadowmage.ancientwarfare.automation.render.FlywheelControllerAnimationRenderer;
 import net.shadowmage.ancientwarfare.automation.render.FlywheelControllerRenderer;
 import net.shadowmage.ancientwarfare.automation.render.HandCrankedGeneratorRenderer;
+import net.shadowmage.ancientwarfare.automation.render.RenderTileFlywheelStorage;
 import net.shadowmage.ancientwarfare.automation.render.StirlingGeneratorRenderer;
 import net.shadowmage.ancientwarfare.automation.render.TorqueAnimationRenderer;
 import net.shadowmage.ancientwarfare.automation.render.TorqueDistributorRenderer;
@@ -58,6 +59,7 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaft;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueSidedCell;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileWaterwheelGenerator;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileWindmillController;
+import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileFlywheelStorage;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileWindmillBlade;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseBase;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBase;
@@ -116,8 +118,8 @@ public class ClientProxyAutomation extends ClientProxyBase {
         //********************************************STORAGE RENDERS***************************************************************//
         ClientRegistry.bindTileEntitySpecialRenderer(TileFlywheelController.class, new FlywheelControllerAnimationRenderer());
 
-        //RenderTileFlywheelStorage storageRender = new RenderTileFlywheelStorage();
-        //ClientRegistry.bindTileEntitySpecialRenderer(TileFlywheelStorage.class, storageRender);
+        RenderTileFlywheelStorage storageRender = new RenderTileFlywheelStorage();
+        ClientRegistry.bindTileEntitySpecialRenderer(TileFlywheelStorage.class, storageRender);
         //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.flywheelStorage), storageRender);
 
         //********************************************GENERATOR RENDERS***************************************************************//

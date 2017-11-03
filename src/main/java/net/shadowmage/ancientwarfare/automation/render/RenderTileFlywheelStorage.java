@@ -1,19 +1,18 @@
-/*
 package net.shadowmage.ancientwarfare.automation.render;
 
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileFlywheelStorage;
 import net.shadowmage.ancientwarfare.core.model.ModelBaseAW;
 import net.shadowmage.ancientwarfare.core.model.ModelLoader;
 import net.shadowmage.ancientwarfare.core.model.ModelPiece;
-import org.lwjgl.opengl.GL11;
 
-public class RenderTileFlywheelStorage extends TileEntitySpecialRenderer implements IItemRenderer {
+import java.io.IOException;
+
+public class RenderTileFlywheelStorage extends TileEntitySpecialRenderer {
 
     private final ModelBaseAW smallModel, largeModel;
     private final ResourceLocation smallTex[] = new ResourceLocation[3], largeTex[] = new ResourceLocation[3];
@@ -41,6 +40,7 @@ public class RenderTileFlywheelStorage extends TileEntitySpecialRenderer impleme
         upperWindowSmall = smallModel.getPiece("windowUpper");
         caseBarsSmall = smallModel.getPiece("caseBars");
 
+
         largeModel = loader.loadModel(getClass().getResourceAsStream("/assets/ancientwarfare/models/automation/flywheel_large.m2f"));
         spindleLarge = largeModel.getPiece("spindle");
         upperShroudLarge = largeModel.getPiece("shroudUpper");
@@ -49,10 +49,19 @@ public class RenderTileFlywheelStorage extends TileEntitySpecialRenderer impleme
         lowerWindowLarge = largeModel.getPiece("windowLower");
         upperWindowLarge = largeModel.getPiece("windowUpper");
         caseBarsLarge = largeModel.getPiece("caseBars");
+
+        try {
+            smallModel.exportOBJ("flywheel_small.obj");
+            largeModel.exportOBJ("flywheel_large.obj");
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
-    public void renderTileEntityAt(TileEntity te, double x, double y, double z, float delta) {
+    public void render(TileEntity te, double x, double y, double z, float delta, int destroyStage, float alpha) {
         TileFlywheelStorage storage = (TileFlywheelStorage) te;
         if (storage.controllerPos == null) {
             GlStateManager.pushMatrix();
@@ -62,7 +71,7 @@ public class RenderTileFlywheelStorage extends TileEntitySpecialRenderer impleme
         } else if (storage.isControl) {
             int pass = MinecraftForgeClient.getRenderPass();
             GlStateManager.pushMatrix();
-            float rotation = (float) getRotation(storage.rotation, storage.prevRotation, delta);
+            float rotation = (float) getRotation(storage.rotation, storage.lastRotationDiff, delta);
             if (storage.setType >= 0 && storage.setHeight > 0) {
                 GlStateManager.translate(x + 0.5d, y, z + 0.5d);
                 if (storage.setWidth > 1) {
@@ -155,24 +164,4 @@ public class RenderTileFlywheelStorage extends TileEntitySpecialRenderer impleme
         double rd = rotation - prevRotation;
         return (prevRotation + rd * delta);
     }
-
-    @Override
-    public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-        return true;
-    }
-
-    @Override
-    public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-        return true;
-    }
-
-    @Override
-    public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-        GlStateManager.pushMatrix();
-        GlStateManager.translate(0.5d, 0, 0.5d);
-        renderSmallModel(item.getItemDamage(), 1, 0, 0);
-        GlStateManager.popMatrix();
-    }
-
 }
-*/
