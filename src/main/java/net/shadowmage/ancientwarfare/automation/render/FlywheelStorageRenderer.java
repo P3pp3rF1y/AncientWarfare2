@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.render;
 
+import codechicken.lib.colour.ColourRGBA;
 import codechicken.lib.model.bakery.generation.ILayeredBlockBakery;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
@@ -87,8 +88,8 @@ public class FlywheelStorageRenderer implements ILayeredBlockBakery {
         spindleSmall = removeGroups(smallModel, s -> s.startsWith("spindle."));
         upperShroudSmall = removeGroups(smallModel, s -> s.startsWith("shroudUpper."));
         lowerShroudSmall = removeGroups(smallModel, s -> s.startsWith("shroudLower."));
-        lowerWindowSmall = removeGroups(smallModel, s -> s.startsWith("windowLower."));
-        upperWindowSmall = removeGroups(smallModel, s -> s.startsWith("windowUpper."));
+        lowerWindowSmall = setAlpha(removeGroups(smallModel, s -> s.startsWith("windowLower.")), 0.25d);
+        upperWindowSmall = setAlpha(removeGroups(smallModel, s -> s.startsWith("windowUpper.")), 0.25d);
         caseBarsSmall = removeGroups(smallModel, s -> s.startsWith("caseBars."));
 
 
@@ -97,8 +98,8 @@ public class FlywheelStorageRenderer implements ILayeredBlockBakery {
         spindleLarge = removeGroups(largeModel, s -> s.startsWith("spindle."));
         upperShroudLarge = removeGroups(largeModel, s -> s.startsWith("shroudUpper."));
         lowerShroudLarge = removeGroups(largeModel, s -> s.startsWith("shroudLower."));
-        lowerWindowLarge = removeGroups(largeModel, s -> s.startsWith("windowLower."));
-        upperWindowLarge = removeGroups(largeModel, s -> s.startsWith("windowUpper."));
+        lowerWindowLarge = setAlpha(removeGroups(largeModel, s -> s.startsWith("windowLower.")), 0.25d);
+        upperWindowLarge = setAlpha(removeGroups(largeModel, s -> s.startsWith("windowUpper.")), 0.25d);
         caseBarsLarge = removeGroups(largeModel, s -> s.startsWith("caseBars."));
     }
 
@@ -223,6 +224,11 @@ public class FlywheelStorageRenderer implements ILayeredBlockBakery {
         }
 
         renderModels(transformedGroups, ccrs, largeModel, tier);
+    }
+
+    private Collection<CCModel> setAlpha(Collection<CCModel> models, double alpha) {
+        models.forEach(m -> m.setColour(new ColourRGBA(1, 1, 1, alpha).pack()));
+        return models;
     }
 
     @Override
