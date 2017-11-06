@@ -258,9 +258,7 @@ public class TileFlywheelStorage extends TileUpdatable implements ITickable {
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         controllerPos = tag.hasKey("controllerPos") ? BlockPos.fromLong(tag.getLong("controllerPos")) : null;
-        if (controllerPos != null) {
-            isControl = tag.getBoolean("isControl");
-        }
+        isControl = tag.getBoolean("isControl");
         if (isControl) {
             maxEnergyStored = tag.getDouble("maxEnergy");
             setHeight = tag.getInteger("setHeight");
