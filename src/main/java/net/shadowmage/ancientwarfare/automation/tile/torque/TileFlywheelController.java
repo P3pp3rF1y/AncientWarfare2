@@ -28,7 +28,6 @@ public abstract class TileFlywheelController extends TileTorqueSingleCell {
 
     @Override
     public void update() {
-        //TODO is this really not supposed to call super.update?
         if (!world.isRemote) {
             serverNetworkUpdate();
             torqueIn = torqueCell.getEnergy() - prevEnergy;
@@ -61,19 +60,19 @@ public abstract class TileFlywheelController extends TileTorqueSingleCell {
         TileFlywheelStorage storage = getControlledFlywheel();
         double in = inputCell.getEnergy();
         double out = torqueCell.getEnergy();
-        double transfer = torqueCell.getMaxEnergy() - out;
-        transfer = Math.min(in, transfer);
-        in -= transfer;
-        out += transfer;
+        double outputGap = torqueCell.getMaxEnergy() - out;
+        double addOutput = Math.min(in, outputGap);
+        in -= addOutput;
+        out += addOutput;
         if (storage != null) {
             double store = storage.storedEnergy;
-            transfer = Math.min(store, torqueCell.getMaxEnergy() - out);
-            store -= transfer;
-            out += transfer;
+            double storeToTransfer = Math.min(store, torqueCell.getMaxEnergy() - out);
+            store -= storeToTransfer;
+            out += storeToTransfer;
 
-            transfer = Math.min(in, storage.maxEnergyStored - store);
-            in -= transfer;
-            store += transfer;
+            double addToStore = Math.min(in, storage.maxEnergyStored - store);
+            in -= addToStore;
+            store += addToStore;
             storage.storedEnergy = store;
             torqueLoss += storage.torqueLoss;
         }
