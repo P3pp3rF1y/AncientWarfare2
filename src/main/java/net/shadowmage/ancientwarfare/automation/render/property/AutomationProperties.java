@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.automation.render.property;
 
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.common.property.Properties;
@@ -15,8 +16,12 @@ public class AutomationProperties {
 	public static final IUnlistedProperty<Boolean> USE_INPUT = Properties.toUnlisted(PropertyBool.create("use_input"));
 	public static final IUnlistedProperty<Float> INPUT_ROTATION = new PropertyFloat("input_rotation");
 	public static final PropertyEnum<TorqueTier> TIER = PropertyEnum.create("tier", TorqueTier.class);
+    public static final IUnlistedProperty<Boolean> IS_CONTROL = Properties.toUnlisted(PropertyBool.create("is_control"));
+    public static final IUnlistedProperty<Integer> HEIGHT = Properties.toUnlisted(PropertyInteger.create("height", 0, 30));
+    public static final IUnlistedProperty<Integer> WIDTH = Properties.toUnlisted(PropertyInteger.create("width", 0, 30));
+    public static final IUnlistedProperty<Float> ROTATION = new PropertyFloat("rotation");
 
-	static {
+    static {
         for(EnumFacing facing : EnumFacing.VALUES) {
             ROTATIONS[facing.getIndex()] = new PropertyFloat("rotation_" + facing.name().toLowerCase());
         }

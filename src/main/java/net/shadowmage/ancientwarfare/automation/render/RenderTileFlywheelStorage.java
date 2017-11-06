@@ -72,7 +72,7 @@ public class RenderTileFlywheelStorage extends TileEntitySpecialRenderer {
             int pass = MinecraftForgeClient.getRenderPass();
             GlStateManager.pushMatrix();
             float rotation = (float) getRotation(storage.rotation, storage.lastRotationDiff, delta);
-            if (storage.setType >= 0 && storage.setHeight > 0) {
+            if (storage.setHeight > 0) {
                 GlStateManager.translate(x + 0.5d, y, z + 0.5d);
                 if (storage.setWidth > 1) {
                     renderLargeModel(te.getBlockMetadata(), storage.setHeight, -rotation, pass);

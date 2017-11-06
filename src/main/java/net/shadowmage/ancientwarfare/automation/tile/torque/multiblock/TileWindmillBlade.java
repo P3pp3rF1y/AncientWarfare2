@@ -137,7 +137,7 @@ public class TileWindmillBlade extends TileUpdatable implements ITickable {
 
     protected boolean validateSetup() {
         BlockFinder finder = new BlockFinder(world, getBlockType(), getBlockMetadata(), 9*9);
-        Pair<BlockPos, BlockPos> corners = finder.cross(pos, new BlockPos(17, 17, 17));
+        Pair<BlockPos, BlockPos> corners = finder.cross(pos);
         int minX = corners.getLeft().getX(), minY = corners.getLeft().getY(), minZ = corners.getLeft().getZ();
         int xSize = corners.getRight().getX() - minX + 1, ySize = corners.getRight().getY() - minY + 1, zSize = corners.getRight().getZ() - minZ + 1;
 

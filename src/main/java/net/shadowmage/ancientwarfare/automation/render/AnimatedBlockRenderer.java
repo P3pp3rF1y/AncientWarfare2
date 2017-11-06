@@ -19,9 +19,13 @@ public abstract class AnimatedBlockRenderer extends RotatableBlockRenderer {
     }
 
     protected Collection<CCModel> removeGroups(Function<String, Boolean> filter) {
+        return removeGroups(groups, filter);
+    }
+
+    protected Collection<CCModel> removeGroups(Map<String, CCModel> objGroups, Function<String, Boolean> filter) {
         Set<CCModel> ret = Sets.newHashSet();
 
-        Iterator<Map.Entry<String, CCModel>> iterator = groups.entrySet().iterator();
+        Iterator<Map.Entry<String, CCModel>> iterator = objGroups.entrySet().iterator();
         while(iterator.hasNext()) {
             Map.Entry<String, CCModel> entry = iterator.next();
 

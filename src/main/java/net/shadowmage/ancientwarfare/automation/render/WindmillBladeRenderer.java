@@ -90,7 +90,7 @@ public class WindmillBladeRenderer extends AnimatedBlockRenderer {
 	@Nonnull
 	@Override
 	public List<BakedQuad> bakeQuads(@Nullable EnumFacing face, IExtendedBlockState state) {
-		if(state.getValue(BlockWindmillBlade.FORMED) && (!state.getValue(AutomationProperties.DYNAMIC) || !state.getValue(BlockWindmillBlade.IS_CONTROL))) {
+		if(state.getValue(BlockWindmillBlade.FORMED) && (!state.getValue(AutomationProperties.DYNAMIC) || !state.getValue(AutomationProperties.IS_CONTROL))) {
 			return Collections.emptyList(); //formed blade doesn't have static rendering and only control gets rendered
 		}
 
@@ -117,8 +117,8 @@ public class WindmillBladeRenderer extends AnimatedBlockRenderer {
 		}
 
 		EnumFacing frontFacing = state.getValue(CoreProperties.UNLISTED_HORIZONTAL_FACING);
-		int height = (state.getValue(BlockWindmillBlade.SIZE) - 1) / 2;
-		float rotation = state.getValue(BlockWindmillBlade.ROTATION);
+		int height = (state.getValue(AutomationProperties.HEIGHT) - 1) / 2;
+		float rotation = state.getValue(AutomationProperties.ROTATION);
 
 		return transformBlades(frontFacing, height, rotation);
 	}
@@ -160,9 +160,9 @@ public class WindmillBladeRenderer extends AnimatedBlockRenderer {
 			TileWindmillBlade blade = (TileWindmillBlade) te;
 
 			state = state.withProperty(BlockWindmillBlade.FORMED, blade.isFormed());
-			state = state.withProperty(BlockWindmillBlade.IS_CONTROL, false);
-			state = state.withProperty(BlockWindmillBlade.SIZE, 0);
-			state = state.withProperty(BlockWindmillBlade.ROTATION, 0f);
+			state = state.withProperty(AutomationProperties.IS_CONTROL, false);
+			state = state.withProperty(AutomationProperties.HEIGHT, 0);
+			state = state.withProperty(AutomationProperties.ROTATION, 0f);
 			state = state.withProperty(CoreProperties.UNLISTED_HORIZONTAL_FACING, EnumFacing.NORTH);
 			state = state.withProperty(AutomationProperties.DYNAMIC, false);
 		}

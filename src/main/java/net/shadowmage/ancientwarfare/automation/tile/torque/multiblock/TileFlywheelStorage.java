@@ -21,7 +21,7 @@ public class TileFlywheelStorage extends TileUpdatable implements ITickable {
 
     public BlockPos controllerPos;
     public boolean isControl = false;//set to true if this is the control block for a setup
-    public int setWidth, setHeight, setCube, setType;//validation params, only 'valid' in the control block.  used by rendering
+    public int setWidth, setHeight, setCube;//validation params, only 'valid' in the control block.  used by rendering
     public double storedEnergy, maxEnergyStored, maxRpm = 100;
     public double torqueLoss;
     public double rotation;//used in rendering
@@ -116,57 +116,42 @@ public class TileFlywheelStorage extends TileUpdatable implements ITickable {
     }
 
     public void blockBroken() {
-        if (isControl) {
-            TileEntity tileEntity;
-            for(int i = -1; i < 3; i++){
-                for(int j = -1; j < setHeight + 1; j++){
-                    for(int k = -1; k < 3; k++){
-                        tileEntity = world.getTileEntity(pos.add(i, j, k));
-                        if(tileEntity instanceof TileFlywheelStorage){
-                            ((TileFlywheelStorage) tileEntity).setController(null);
-                        }
-                    }
-                }
-            }
-            isControl = false;
-        } else if (controllerPos != null) {
-            TileFlywheelStorage controller = getController();
-            controllerPos = null;
-            if (controller != null) {
-                controller.validateSetup();
-            } else {
-                informNeighborsToValidate();
-            }
-        } else {
-            informNeighborsToValidate();
-        }
+        informNeighborsToValidate();
     }
 
     public final void blockPlaced() {
         validateSetup();
     }
 
-    public final void setController(BlockPos pos) {
-        this.controllerPos = pos;
-        markDirty();
-        if (controllerPos != null) {
-            BlockTools.notifyBlockUpdate(this);
+    public final void setController(BlockPos controllerPos) {
+        this.controllerPos = controllerPos;
+        isControl = (controllerPos == null || controllerPos.equals(pos));
+        if(controllerPos == null) {
+            setWidth = 1;
+            setHeight = 1;
+            setCube = 1;
         }
+
+        markDirty();
+        BlockTools.notifyBlockUpdate(this);
     }
 
     protected boolean validateSetup() {
         BlockFinder finder = new BlockFinder(world, getBlockType(), getBlockMetadata(), 30);
-        Pair<BlockPos, BlockPos> corners = finder.cross(pos, new BlockPos(3, world.getActualHeight(), 3));
-        int minX = corners.getLeft().getX(), minY = corners.getLeft().getY(), minZ = corners.getLeft().getZ();
-        int w = corners.getRight().getX() - minX + 1, h = corners.getRight().getY() - minY + 1, l = corners.getRight().getZ() - minZ + 1;
+        Pair<BlockPos, BlockPos> corners = finder.cross(pos);
+        int minX = corners.getLeft().getX();
+        int minY = corners.getLeft().getY();
+        int minZ = corners.getLeft().getZ();
+        int w = corners.getRight().getX() - minX + 1;
+        int h = corners.getRight().getY() - minY + 1;
+        int l = corners.getRight().getZ() - minZ + 1;
         boolean valid = w == l && (w == 1 || w == 3)  && finder.box(corners);
         if (valid) {
             int cx = w == 1 ? minX : minX + 1;
             int cz = l == 1 ? minZ : minZ + 1;
             setValidSetup(finder.getPositions(), cx, minY, cz, w, h, getBlockMetadata());
         } else {
-            finder.connect(corners.getLeft(), new BlockPos(w, h, l));
-            setInvalidSetup(finder.getPositions());
+            setInvalidSetup(finder.getAllConnectedBlocks(pos));
         }
         return valid;
     }
@@ -191,7 +176,6 @@ public class TileFlywheelStorage extends TileUpdatable implements ITickable {
         this.isControl = true;
         this.setWidth = size;
         this.setHeight = height;
-        this.setType = type;
         this.setCube = size * size * height;
         double energyPerBlockForType = 1600;
         switch (type) {
@@ -215,13 +199,11 @@ public class TileFlywheelStorage extends TileUpdatable implements ITickable {
 
     private void setInvalidSetup(List<BlockPos> set) {
         TileEntity te;
-        controllerPos = null;
-        isControl = false;
+        setController(null);
         for (BlockPos pos : set) {
             te = world.getTileEntity(pos);
             if (te instanceof TileFlywheelStorage) {
                 ((TileFlywheelStorage) te).setController(null);
-                ((TileFlywheelStorage) te).isControl = false;
             }
         }
     }
@@ -249,13 +231,12 @@ public class TileFlywheelStorage extends TileUpdatable implements ITickable {
         super.writeUpdateNBT(tag);
         if (controllerPos != null) {
             tag.setLong("controllerPos", controllerPos.toLong());
-            if (isControl) {
-                tag.setBoolean("isControl", true);
-                tag.setInteger("setWidth", setWidth);
-                tag.setInteger("setHeight", setHeight);
-                tag.setInteger("setType", setType);
-                tag.setInteger("clientEnergy", clientEnergy);
-            }
+        }
+        if (isControl) {
+            tag.setBoolean("isControl", true);
+            tag.setInteger("setWidth", setWidth);
+            tag.setInteger("setHeight", setHeight);
+            tag.setInteger("clientEnergy", clientEnergy);
         }
     }
 
@@ -263,16 +244,14 @@ public class TileFlywheelStorage extends TileUpdatable implements ITickable {
     protected void handleUpdateNBT(NBTTagCompound tag) {
         super.handleUpdateNBT(tag);
         controllerPos = tag.hasKey("controllerPos") ? BlockPos.fromLong(tag.getLong("controllerPos")) : null;
-        if (controllerPos != null) {
-            isControl = tag.getBoolean("isControl");
-            if (isControl) {
-                setHeight = tag.getInteger("setHeight");
-                setWidth = tag.getInteger("setWidth");
-                setCube = setWidth * setWidth * setHeight;
-                setType = tag.getInteger("type");
-                clientEnergy = tag.getInteger("clientEnergy");
-            }
+        isControl = tag.getBoolean("isControl");
+        if (isControl) {
+            setHeight = tag.getInteger("setHeight");
+            setWidth = tag.getInteger("setWidth");
+            setCube = setWidth * setWidth * setHeight;
+            clientEnergy = tag.getInteger("clientEnergy");
         }
+        BlockTools.notifyBlockUpdate(this);
     }
 
     @Override
@@ -281,13 +260,12 @@ public class TileFlywheelStorage extends TileUpdatable implements ITickable {
         controllerPos = tag.hasKey("controllerPos") ? BlockPos.fromLong(tag.getLong("controllerPos")) : null;
         if (controllerPos != null) {
             isControl = tag.getBoolean("isControl");
-            if (isControl) {
-                maxEnergyStored = tag.getDouble("maxEnergy");
-                setHeight = tag.getInteger("setHeight");
-                setWidth = tag.getInteger("setWidth");
-                setCube = setWidth * setWidth * setHeight;
-                setType = tag.getInteger("type");
-            }
+        }
+        if (isControl) {
+            maxEnergyStored = tag.getDouble("maxEnergy");
+            setHeight = tag.getInteger("setHeight");
+            setWidth = tag.getInteger("setWidth");
+            setCube = setWidth * setWidth * setHeight;
         }
         storedEnergy = tag.getDouble("storedEnergy");
     }
@@ -297,13 +275,12 @@ public class TileFlywheelStorage extends TileUpdatable implements ITickable {
         super.writeToNBT(tag);
         if (controllerPos != null) {
             tag.setLong("controllerPos", controllerPos.toLong());
-            if (isControl) {
-                tag.setBoolean("isControl", true);
-                tag.setDouble("maxEnergy", maxEnergyStored);
-                tag.setInteger("setWidth", setWidth);
-                tag.setInteger("setHeight", setHeight);
-                tag.setInteger("setType", setType);
-            }
+        }
+        if (isControl) {
+            tag.setBoolean("isControl", true);
+            tag.setDouble("maxEnergy", maxEnergyStored);
+            tag.setInteger("setWidth", setWidth);
+            tag.setInteger("setHeight", setHeight);
         }
         tag.setDouble("storedEnergy", storedEnergy);
         return tag;

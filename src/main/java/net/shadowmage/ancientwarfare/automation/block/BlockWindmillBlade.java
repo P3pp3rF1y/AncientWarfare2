@@ -7,7 +7,6 @@ import codechicken.lib.model.bakery.ModelBakery;
 import codechicken.lib.model.bakery.generation.IBakery;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
-import net.minecraft.block.properties.PropertyInteger;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -24,7 +23,6 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.common.property.Properties;
-import net.minecraftforge.common.property.PropertyFloat;
 import net.shadowmage.ancientwarfare.automation.render.WindmillBladeRenderer;
 import net.shadowmage.ancientwarfare.automation.render.property.AutomationProperties;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileWindmillBlade;
@@ -35,9 +33,6 @@ import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.
 
 public class BlockWindmillBlade extends BlockBaseAutomation implements IBakeryProvider {
     public static final IUnlistedProperty<Boolean> FORMED = Properties.toUnlisted(PropertyBool.create("formed"));
-    public static final IUnlistedProperty<Boolean> IS_CONTROL = Properties.toUnlisted(PropertyBool.create("is_control"));
-    public static final IUnlistedProperty<Integer> SIZE = Properties.toUnlisted(PropertyInteger.create("height", 0, 30));
-    public static final IUnlistedProperty<Float> ROTATION = new PropertyFloat("rotation");
 
     public BlockWindmillBlade(String regName) {
         super(Material.WOOD, regName);
@@ -46,7 +41,7 @@ public class BlockWindmillBlade extends BlockBaseAutomation implements IBakeryPr
     @Override
     protected BlockStateContainer createBlockState() {
         return new BlockStateContainer.Builder(this)
-                .add(FORMED, IS_CONTROL, SIZE, ROTATION, UNLISTED_HORIZONTAL_FACING, AutomationProperties.DYNAMIC)
+                .add(FORMED, AutomationProperties.IS_CONTROL, AutomationProperties.HEIGHT, AutomationProperties.ROTATION, UNLISTED_HORIZONTAL_FACING, AutomationProperties.DYNAMIC)
                 .build();
     }
 
@@ -120,8 +115,8 @@ public class BlockWindmillBlade extends BlockBaseAutomation implements IBakeryPr
         ModelLoaderHelper.registerItem(this, WindmillBladeRenderer.MODEL_LOCATION);
 
         ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder()
-                .addKeyProperties(FORMED, IS_CONTROL, SIZE, UNLISTED_HORIZONTAL_FACING, AutomationProperties.DYNAMIC)
-                .addKeyProperties(o -> String.format("%.6f", o), ROTATION).build());
+                .addKeyProperties(FORMED, AutomationProperties.IS_CONTROL, AutomationProperties.HEIGHT, UNLISTED_HORIZONTAL_FACING, AutomationProperties.DYNAMIC)
+                .addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.ROTATION).build());
 
         ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
             @Override protected ModelResourceLocation getModelResourceLocation(IBlockState state) {

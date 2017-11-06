@@ -50,7 +50,7 @@ public class FlywheelControllerRenderer extends TorqueTieredRenderer<TileFlywhee
 
 		transformedGroups.addAll(rotateModels(controlInput, frontFacing, new Rotation(inputRotation, 0, 0, 1).at(Vector3.center)));
 		transformedGroups.addAll(rotateModels(controlOutput, frontFacing, new Rotation(outputRotation, 0, 0, 1).at(Vector3.center)));
-		transformedGroups.addAll(rotateModels(controlSpindle, frontFacing, new Rotation(flywheelRotation, 0, 0, 1).at(Vector3.center)));
+		transformedGroups.addAll(rotateModels(controlSpindle, frontFacing, new Rotation(flywheelRotation, 0, 1, 0).at(Vector3.center)));
 	}
 
 	@Override

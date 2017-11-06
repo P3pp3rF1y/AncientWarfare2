@@ -36,8 +36,9 @@ import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteTreeFarm;
 import net.shadowmage.ancientwarfare.automation.render.AutoCraftingRenderer;
 import net.shadowmage.ancientwarfare.automation.render.FlywheelControllerAnimationRenderer;
 import net.shadowmage.ancientwarfare.automation.render.FlywheelControllerRenderer;
+import net.shadowmage.ancientwarfare.automation.render.FlywheelStorageAnimationRenderer;
+import net.shadowmage.ancientwarfare.automation.render.FlywheelStorageRenderer;
 import net.shadowmage.ancientwarfare.automation.render.HandCrankedGeneratorRenderer;
-import net.shadowmage.ancientwarfare.automation.render.RenderTileFlywheelStorage;
 import net.shadowmage.ancientwarfare.automation.render.StirlingGeneratorRenderer;
 import net.shadowmage.ancientwarfare.automation.render.TorqueAnimationRenderer;
 import net.shadowmage.ancientwarfare.automation.render.TorqueDistributorRenderer;
@@ -117,10 +118,7 @@ public class ClientProxyAutomation extends ClientProxyBase {
 
         //********************************************STORAGE RENDERS***************************************************************//
         ClientRegistry.bindTileEntitySpecialRenderer(TileFlywheelController.class, new FlywheelControllerAnimationRenderer());
-
-        RenderTileFlywheelStorage storageRender = new RenderTileFlywheelStorage();
-        ClientRegistry.bindTileEntitySpecialRenderer(TileFlywheelStorage.class, storageRender);
-        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(AWAutomationBlockLoader.flywheelStorage), storageRender);
+        ClientRegistry.bindTileEntitySpecialRenderer(TileFlywheelStorage.class, new FlywheelStorageAnimationRenderer());
 
         //********************************************GENERATOR RENDERS***************************************************************//
         ClientRegistry.bindTileEntitySpecialRenderer(TileStirlingGenerator.class, new TorqueAnimationRenderer<>());
@@ -134,9 +132,7 @@ public class ClientProxyAutomation extends ClientProxyBase {
             }
         });
         ClientRegistry.bindTileEntitySpecialRenderer(TileHandCrankedGenerator.class, new TorqueAnimationRenderer<>());
-
         ClientRegistry.bindTileEntitySpecialRenderer(TileWindmillController.class, new TorqueAnimationRenderer<>());
-
         ClientRegistry.bindTileEntitySpecialRenderer(TileWindmillBlade.class, new WindmillBladeAnimationRenderer());
     }
 
@@ -187,6 +183,13 @@ public class ClientProxyAutomation extends ClientProxyBase {
         FlywheelControllerRenderer.INSTANCE.setSprite(TorqueTier.HEAVY, registerSprite(evt, "flywheel_controller_heavy"));
         FlywheelControllerRenderer.INSTANCE.setSprite(TorqueTier.MEDIUM, registerSprite(evt, "flywheel_controller_medium"));
         FlywheelControllerRenderer.INSTANCE.setSprite(TorqueTier.LIGHT, registerSprite(evt, "flywheel_controller_light"));
+
+        FlywheelStorageRenderer.INSTANCE.setSprite(false, TorqueTier.HEAVY, registerSprite(evt, "flywheel_small_heavy"));
+        FlywheelStorageRenderer.INSTANCE.setSprite(false, TorqueTier.MEDIUM, registerSprite(evt, "flywheel_small_medium"));
+        FlywheelStorageRenderer.INSTANCE.setSprite(false, TorqueTier.LIGHT, registerSprite(evt, "flywheel_small_light"));
+        FlywheelStorageRenderer.INSTANCE.setSprite(true, TorqueTier.HEAVY, registerSprite(evt, "flywheel_large_heavy"));
+        FlywheelStorageRenderer.INSTANCE.setSprite(true, TorqueTier.MEDIUM, registerSprite(evt, "flywheel_large_medium"));
+        FlywheelStorageRenderer.INSTANCE.setSprite(true, TorqueTier.LIGHT, registerSprite(evt, "flywheel_large_light"));
     }
 
     private TextureAtlasSprite registerSprite(TextureStitchEvent.Pre evt, String spriteName) {

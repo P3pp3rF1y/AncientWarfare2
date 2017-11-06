@@ -10,9 +10,9 @@ public class WindmillBladeAnimationRenderer extends BaseAnimationRenderer<TileWi
     @Override
     protected IExtendedBlockState handleState(TileWindmillBlade blade, float partialTicks, IExtendedBlockState state) {
         state = state.withProperty(BlockWindmillBlade.FORMED, blade.isFormed());
-        state = state.withProperty(BlockWindmillBlade.IS_CONTROL, blade.isControl());
-        state = state.withProperty(BlockWindmillBlade.SIZE, blade.getWindmillSize());
-        state = state.withProperty(BlockWindmillBlade.ROTATION, blade.getRotation(partialTicks));
+        state = state.withProperty(AutomationProperties.IS_CONTROL, blade.isControl());
+        state = state.withProperty(AutomationProperties.HEIGHT, blade.getWindmillSize());
+        state = state.withProperty(AutomationProperties.ROTATION, blade.getRotation(partialTicks));
         state = state.withProperty(CoreProperties.UNLISTED_HORIZONTAL_FACING, blade.getDirection());
         state = state.withProperty(AutomationProperties.DYNAMIC, true);
 
@@ -21,6 +21,6 @@ public class WindmillBladeAnimationRenderer extends BaseAnimationRenderer<TileWi
 
     @Override
     protected int getModelHashCode(IExtendedBlockState exState) {
-        return 31 + Float.floatToIntBits(exState.getValue(BlockWindmillBlade.ROTATION));
+        return 31 + Float.floatToIntBits(exState.getValue(AutomationProperties.ROTATION));
     }
 }
