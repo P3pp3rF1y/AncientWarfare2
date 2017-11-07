@@ -8,37 +8,18 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class BlockWarehouseCraftingStation extends BlockBaseAutomation {
-
-//    private BlockIconMap iconMap = new BlockIconMap();
 
     public BlockWarehouseCraftingStation(String regName) {
         super(Material.ROCK, regName);
         setHardness(2.f);
     }
-
-//    public BlockWarehouseCraftingStation setIcon(int meta, int side, String texName) {
-//        this.iconMap.setIconTexture(side, meta, texName);
-//        return this;
-//    }
-
-/*
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister reg) {
-        iconMap.registerIcons(reg);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-        return iconMap.getIconFor(side, meta);
-    }
-*/
 
     @Override
     public boolean hasTileEntity(IBlockState state) {
@@ -67,4 +48,10 @@ public class BlockWarehouseCraftingStation extends BlockBaseAutomation {
         super.breakBlock(world, pos, state);
     }
 
+    @Override
+    public void registerClient() {
+        super.registerClient();
+
+        NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_CRAFTING, GuiWarehouseCraftingStation.class);
+    }
 }

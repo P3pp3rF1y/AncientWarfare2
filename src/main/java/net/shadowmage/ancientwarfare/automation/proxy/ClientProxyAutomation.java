@@ -15,13 +15,7 @@ import net.shadowmage.ancientwarfare.automation.KeyHandler;
 import net.shadowmage.ancientwarfare.automation.block.BlockWaterwheelGenerator;
 import net.shadowmage.ancientwarfare.automation.block.TorqueTier;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
-import net.shadowmage.ancientwarfare.automation.gui.GuiChunkLoaderDeluxe;
-import net.shadowmage.ancientwarfare.automation.gui.GuiMailboxInventory;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseControl;
-import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseCraftingStation;
-import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseInterface;
-import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseStockViewer;
-import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteAnimalControl;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteAnimalFarm;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteBoundsAdjust;
@@ -46,6 +40,7 @@ import net.shadowmage.ancientwarfare.automation.render.TorqueJunctionRenderer;
 import net.shadowmage.ancientwarfare.automation.render.TorqueShaftAnimationRenderer;
 import net.shadowmage.ancientwarfare.automation.render.TorqueShaftRenderer;
 import net.shadowmage.ancientwarfare.automation.render.TorqueTransportAnimationRenderer;
+import net.shadowmage.ancientwarfare.automation.render.WarehouseStockViewerRenderer;
 import net.shadowmage.ancientwarfare.automation.render.WaterwheelGeneratorRenderer;
 import net.shadowmage.ancientwarfare.automation.render.WindmillBladeAnimationRenderer;
 import net.shadowmage.ancientwarfare.automation.render.WindmillBladeRenderer;
@@ -63,6 +58,7 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.TileWindmillControll
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileFlywheelStorage;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileWindmillBlade;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseBase;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteBase;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.ConfigManager;
@@ -88,11 +84,7 @@ public class ClientProxyAutomation extends ClientProxyBase {
         NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_INVENTORY_SIDE_ADJUST, GuiWorksiteInventorySideSelection.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_ANIMAL_CONTROL, GuiWorksiteAnimalControl.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_FISH_CONTROL, GuiWorksiteFishControl.class);
-        NetworkHandler.registerGui(NetworkHandler.GUI_MAILBOX_INVENTORY, GuiMailboxInventory.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_CONTROL, GuiWarehouseControl.class);
-        NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_STORAGE, GuiWarehouseStorage.class);
-        NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_OUTPUT, GuiWarehouseInterface.class);
-        NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_CRAFTING, GuiWarehouseCraftingStation.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_QUARRY, GuiWorksiteQuarry.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_TREE_FARM, GuiWorksiteTreeFarm.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_CROP_FARM, GuiWorksiteCropFarm.class);
@@ -100,14 +92,11 @@ public class ClientProxyAutomation extends ClientProxyBase {
         NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_ANIMAL_FARM, GuiWorksiteAnimalFarm.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_REED_FARM, GuiWorksiteReedFarm.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_FISH_FARM, GuiWorksiteFishFarm.class);
-        NetworkHandler.registerGui(NetworkHandler.GUI_CHUNK_LOADER_DELUXE, GuiChunkLoaderDeluxe.class);
-        NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_STOCK, GuiWarehouseStockViewer.class);
         NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_BOUNDS, GuiWorksiteBoundsAdjust.class);
-
 
         ClientRegistry.bindTileEntitySpecialRenderer(TileWorksiteBase.class, new WorksiteRenderer());
         ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseBase.class, new WorksiteRenderer());
-        //ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseStockViewer.class, new RenderTileWarehouseStockViewer());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseStockViewer.class, new WarehouseStockViewerRenderer());
 
         //********************************************CONDUIT / TRANSPORT RENDERS***************************************************************//
 

@@ -19,11 +19,13 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
+import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorageLarge;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorageMedium;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
 public class BlockWarehouseStorage extends BlockBaseAutomation {
@@ -136,5 +138,7 @@ public class BlockWarehouseStorage extends BlockBaseAutomation {
         });
 
         ModelLoaderHelper.registerItem(Item.getItemFromBlock(this), "automation", false, meta -> "size=" + Size.values()[meta].name().toLowerCase());
+
+        NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_STORAGE, GuiWarehouseStorage.class);
     }
 }
