@@ -20,9 +20,13 @@
  */
 package net.shadowmage.ancientwarfare.structure.block;
 
+import codechicken.lib.model.DummyBakedModel;
+import codechicken.lib.model.ModelRegistryHelper;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -34,15 +38,18 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
+import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 
 import javax.annotation.Nullable;
 import java.util.Random;
 
-public final class BlockGateProxy extends BlockContainer {
+public final class BlockGateProxy extends BlockContainer implements IClientRegistrar {
 
     public BlockGateProxy() {
         super(Material.ROCK);
@@ -52,6 +59,7 @@ public final class BlockGateProxy extends BlockContainer {
         setRegistryName(new ResourceLocation(AncientWarfareStructures.modID, "gate_proxy"));
         setResistance(2000.f);
         setHardness(5.f);
+        AncientWarfareStructures.proxy.addClientRegistrar(this);
     }
 
     @Override
@@ -159,5 +167,18 @@ public final class BlockGateProxy extends BlockContainer {
             return world.getBlockState(pos.offset(EnumFacing.NORTH)).getBlock() == this;
         }
         return true;
+    }
+
+    @Override
+    public void registerClient() {
+        ModelResourceLocation modelLocation = new ModelResourceLocation(getRegistryName(), "normal");
+        ModelLoaderHelper.registerItem(this, modelLocation);
+        ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
+            @Override
+            protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+                return modelLocation;
+            }
+        });
+        ModelRegistryHelper.register(modelLocation, new DummyBakedModel());
     }
 }
