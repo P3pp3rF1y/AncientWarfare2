@@ -1,0 +1,27 @@
+{
+  "type": "ancientwarfare:research_recipe",
+  "research": "construction",
+  "pattern": [
+    "_P_",
+    "_W_",
+    "_S_"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:paper"
+    },
+    "S": {
+      "item": "minecraft:stone",
+      "data": 0
+    },
+    "W": {
+      "item": "minecraft:crafting_table"
+    },
+    "_": {
+      "item": "#PLANKWOOD"
+    }
+  },
+  "result": {
+    "item": "ancientwarfarestructure:drafting_station"
+  }
+}

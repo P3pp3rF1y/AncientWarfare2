@@ -154,7 +154,7 @@ public class AWCoreStatics extends ModConfiguration{
         return get().getBoolean(name, recipeDetailSettings, true, "");
     }
 
-    public static boolean isItemResearched(Item item) {
+    public static boolean isItemResearcheable(Item item) {
         String name = item.getRegistryName().toString();
         return get().getBoolean(name, recipeResearchDetails, true, "");
     }

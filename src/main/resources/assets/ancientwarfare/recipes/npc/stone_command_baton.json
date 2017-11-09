@@ -1,0 +1,24 @@
+{
+  "type": "ancientwarfare:research_recipe",
+  "research": "command",
+  "pattern": [
+    "  M",
+    " I ",
+    "S  "
+  ],
+  "key": {
+    "S": {
+      "item": "#STICKWOOD"
+    },
+    "I": {
+      "item": "#INGOTIRON"
+    },
+    "M": {
+      "item": "minecraft:stone",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "ancientwarfarenpc:stone_command_baton"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    " P ",
+    " P ",
+    " P "
+  ],
+  "key": {
+    "P": {
+      "item": "#INGOTSTEEL"
+    }
+  },
+  "result": {
+    "item": "ancientwarfare:component",
+    "data": 8
+  }
+}

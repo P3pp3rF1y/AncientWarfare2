@@ -1,12 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.crafting;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Enchantments;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlocks;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
-import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 
 import javax.annotation.Nonnull;
@@ -32,28 +27,29 @@ public class AWAutomationCrafting {
 
         //TODO json recipes
         //TODO fence type agnostic recipes?
-        AWCraftingManager.INSTANCE.createRecipe(upgradeBoundsMed, "engineering",
+/*
+        AWCraftingManager.createRecipe(upgradeBoundsMed, "engineering",
                 " s ",
                 "fff",
                 " s ",
                 's', Items.STRING,
                 'f', Blocks.OAK_FENCE);
 
-        AWCraftingManager.INSTANCE.createRecipe(upgradeBoundsLarge, "mathematics",
+        AWCraftingManager.createRecipe(upgradeBoundsLarge, "mathematics",
                 "fff",
                 "sss",
                 "fff",
                 's', Items.STRING,
                 'f', Blocks.OAK_FENCE);
 
-        AWCraftingManager.INSTANCE.createRecipe(upgradeQuarryMed, "mining",
+        AWCraftingManager.createRecipe(upgradeQuarryMed, "mining",
                 "ppp",
                 "f f",
                 "f f",
                 'p', "plankWood",
                 'f', Blocks.OAK_FENCE);
 
-        AWCraftingManager.INSTANCE.createRecipe(upgradeQuarryLarge, "machinery",
+        AWCraftingManager.createRecipe(upgradeQuarryLarge, "machinery",
                 "ppp",
                 "fif",
                 "fif",
@@ -64,7 +60,7 @@ public class AWAutomationCrafting {
         @Nonnull ItemStack enchantedBook = new ItemStack(Items.ENCHANTED_BOOK);
         enchantedBook.addEnchantment(Enchantments.FORTUNE, 1);
 
-        AWCraftingManager.INSTANCE.createRecipe(upgradeEnchantedTools1, "mathematics",
+        AWCraftingManager.createRecipe(upgradeEnchantedTools1, "mathematics",
                 " b ",
                 "iii",
                 'b', enchantedBook,
@@ -73,25 +69,25 @@ public class AWAutomationCrafting {
         enchantedBook = new ItemStack(Items.ENCHANTED_BOOK);
         enchantedBook.addEnchantment(Enchantments.FORTUNE, 2);
 
-        AWCraftingManager.INSTANCE.createRecipe(upgradeEnchantedTools2, "mass_production",
+        AWCraftingManager.createRecipe(upgradeEnchantedTools2, "mass_production",
                 "b b",
                 "iii",
                 'b', enchantedBook,
                 'i', "ingotIron");
 
-        AWCraftingManager.INSTANCE.createRecipe(upgradeQualityTools1, "engineering",
+        AWCraftingManager.createRecipe(upgradeQualityTools1, "engineering",
                 "psa",
                 'p', Items.IRON_PICKAXE,
                 's', Items.IRON_SHOVEL,
                 'a', Items.IRON_AXE);
 
-        AWCraftingManager.INSTANCE.createRecipe(upgradeQualityTools2, "construction",
+        AWCraftingManager.createRecipe(upgradeQualityTools2, "construction",
                 "psa",
                 'p', Items.DIAMOND_PICKAXE,
                 's', Items.DIAMOND_SHOVEL,
                 'a', Items.DIAMOND_AXE);
 
-        AWCraftingManager.INSTANCE.createRecipe(upgradeQualityTools3, "refining",
+        AWCraftingManager.createRecipe(upgradeQualityTools3, "refining",
                 "oto",
                 "psa",
                 "oto",
@@ -101,19 +97,20 @@ public class AWAutomationCrafting {
                 's', Items.DIAMOND_SHOVEL,
                 'a', Items.DIAMOND_AXE);
 
-        AWCraftingManager.INSTANCE.createRecipe(upgradeBasicChunkloader, "mathematics",
+        AWCraftingManager.createRecipe(upgradeBasicChunkloader, "mathematics",
                 " i ",
                 "ici",
                 " i ",
                 'i', "ingotIron",
                 'c', AWAutomationBlocks.chunkLoaderSimple);
 
-        AWCraftingManager.INSTANCE.createRecipe(upgradeQuarryChunkloader, "machinery",
+        AWCraftingManager.createRecipe(upgradeQuarryChunkloader, "machinery",
                 " i ",
                 "ici",
                 " i ",
                 'i', "ingotIron",
                 'c', AWAutomationBlocks.chunkLoaderDeluxe);
+*/
 
     }
 

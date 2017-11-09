@@ -1,0 +1,21 @@
+{
+  "type": "ancientwarfare:research_recipe",
+  "research": "the_wheel",
+  "pattern": [
+    " S ",
+    "GGG",
+    " S "
+  ],
+  "key": {
+    "S": {
+      "item": "#SHAFTIRON"
+    },
+    "G": {
+      "item": "#GEARIRON"
+    }
+  },
+  "result": {
+    "item": "ancientwarfareautomation:torque_distributor",
+    "data": 1
+  }
+}

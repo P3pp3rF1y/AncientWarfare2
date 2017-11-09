@@ -172,7 +172,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements ISidedInventor
 
     /* ***********************************INVENTORY METHODS*********************************************** */
     private void onLayoutMatrixChanged() {
-        this.outputSlot.setInventorySlotContents(0, AWCraftingManager.INSTANCE.findMatchingRecipe(craftMatrix, world, getCrafterName()));
+        this.outputSlot.setInventorySlotContents(0, AWCraftingManager.findMatchingRecipe(craftMatrix, world, getCrafterName()));
     }
 
     @Override

@@ -1,0 +1,26 @@
+{
+  "type": "ancientwarfare:research_recipe",
+  "research": "fishing",
+  "pattern": [
+    "___",
+    "GWG",
+    "_C_"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:chest"
+    },
+    "W": {
+      "item": "minecraft:fishing_rod"
+    },
+    "G": {
+      "item": "#GEARWOOD"
+    },
+    "_": {
+      "item": "#PLANKWOOD"
+    }
+  },
+  "result": {
+    "item": "ancientwarfareautomation:fish_farm"
+  }
+}

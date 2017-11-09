@@ -1,9 +1,5 @@
 package net.shadowmage.ancientwarfare.structure.crafting;
 
-import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
-import net.shadowmage.ancientwarfare.structure.gates.types.Gate;
-
-
 public class AWStructureCrafting {
 
     /*
@@ -11,7 +7,8 @@ public class AWStructureCrafting {
      */
     public static void loadRecipes() {
 
-        AWCraftingManager.INSTANCE.createRecipe(Gate.getItemToConstruct("gate.verticalWooden"), "construction",
+/*
+        AWCraftingManager.createRecipe(Gate.getItemToConstruct("gate.verticalWooden"), "construction",
                 "sps",
                 "sps",
                 "srs",
@@ -19,7 +16,7 @@ public class AWStructureCrafting {
                 'r', "dustRedstone",
                 's', "stone");
 
-        AWCraftingManager.INSTANCE.createRecipe(Gate.getItemToConstruct("gate.verticalIron"), "construction",
+        AWCraftingManager.createRecipe(Gate.getItemToConstruct("gate.verticalIron"), "construction",
                 "sps",
                 "sps",
                 "srs",
@@ -27,7 +24,7 @@ public class AWStructureCrafting {
                 'r', "dustRedstone",
                 's', "stone");
 
-        AWCraftingManager.INSTANCE.createRecipe(Gate.getItemToConstruct("gate.singleWood"), "construction",
+        AWCraftingManager.createRecipe(Gate.getItemToConstruct("gate.singleWood"), "construction",
                 "sss",
                 "ppp",
                 "srs",
@@ -35,7 +32,7 @@ public class AWStructureCrafting {
                 'r', "dustRedstone",
                 's', "stone");
 
-        AWCraftingManager.INSTANCE.createRecipe(Gate.getItemToConstruct("gate.singleIron"), "construction",
+        AWCraftingManager.createRecipe(Gate.getItemToConstruct("gate.singleIron"), "construction",
                 "sss",
                 "ppp",
                 "srs",
@@ -43,7 +40,7 @@ public class AWStructureCrafting {
                 'r', "dustRedstone",
                 's', "stone");
 
-        AWCraftingManager.INSTANCE.createRecipe(Gate.getItemToConstruct("gate.doubleWood"), "construction",
+        AWCraftingManager.createRecipe(Gate.getItemToConstruct("gate.doubleWood"), "construction",
                 "sss",
                 "ppp",
                 "prp",
@@ -51,7 +48,7 @@ public class AWStructureCrafting {
                 'r', "dustRedstone",
                 's', "stone");
 
-        AWCraftingManager.INSTANCE.createRecipe(Gate.getItemToConstruct("gate.doubleIron"), "construction",
+        AWCraftingManager.createRecipe(Gate.getItemToConstruct("gate.doubleIron"), "construction",
                 "sss",
                 "ppp",
                 "prp",
@@ -59,12 +56,13 @@ public class AWStructureCrafting {
                 'r', "dustRedstone",
                 's', "stone");
 
-        AWCraftingManager.INSTANCE.createRecipe(Gate.getItemToConstruct("gate.drawbridge"), "construction",
+        AWCraftingManager.createRecipe(Gate.getItemToConstruct("gate.drawbridge"), "construction",
                 "ppp",
                 "ppp",
                 "prp",
                 'p', "plankWood",
                 'r', "dustRedstone");
+*/
     }
 
 }

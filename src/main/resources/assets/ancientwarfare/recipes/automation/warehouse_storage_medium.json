@@ -1,0 +1,24 @@
+{
+  "type": "ancientwarfare:research_recipe",
+  "research": "trade",
+  "pattern": [
+    "PIP",
+    " C ",
+    "PIP"
+  ],
+  "key": {
+    "P": {
+      "item": "#PLANKWOOD"
+    },
+    "C": {
+      "item": "minecraft:chest"
+    },
+    "I": {
+      "item": "#INGOTIRON"
+    }
+  },
+  "result": {
+    "item": "ancientwarfareautomation:warehouse_storage",
+    "data": 1
+  }
+}

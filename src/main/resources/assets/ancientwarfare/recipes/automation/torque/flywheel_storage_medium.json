@@ -1,0 +1,21 @@
+{
+  "type": "ancientwarfare:research_recipe",
+  "research": "theory_of_gravity",
+  "pattern": [
+    "GPG",
+    "PPP",
+    "GGG"
+  ],
+  "key": {
+    "P": {
+      "item": "#INGOTIRON"
+    },
+    "G": {
+      "item": "minecraft:glass_pane"
+    }
+  },
+  "result": {
+    "item": "ancientwarfareautomation:flywheel_storage",
+    "data": 1
+  }
+}

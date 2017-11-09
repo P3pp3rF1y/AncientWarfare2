@@ -4,20 +4,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
-import net.shadowmage.ancientwarfare.core.interfaces.IResearchRecipe;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class UnformedRecipeResearched extends ShapelessOreRecipe implements IResearchRecipe{
+public class UnformedRecipeResearched extends ShapelessOreRecipe {
     private final Set<Integer> neededResearch = new HashSet<>();
 
     public UnformedRecipeResearched(ItemStack result, Object... recipe) {
         super(new ResourceLocation(AncientWarfareCore.modID, result.getItem().getRegistryName().getResourcePath()), result, recipe);
     }
 
-    @Override
     public Set<Integer> getNeededResearch() {
         return neededResearch;
     }
@@ -26,7 +24,6 @@ public class UnformedRecipeResearched extends ShapelessOreRecipe implements IRes
         return getIngredients().size();
     }
 
-    @Override
     public int getRecipeHeight() {
         int sqrt = (int) Math.sqrt(getRecipeSize());
         int diff = getRecipeSize() - (sqrt * sqrt);
@@ -35,7 +32,6 @@ public class UnformedRecipeResearched extends ShapelessOreRecipe implements IRes
         return sqrt;
     }
 
-    @Override
     public int getRecipeWidth() {
         int h = getRecipeHeight();
         for(int i = 1; i < h + 2; i++){
@@ -46,8 +42,7 @@ public class UnformedRecipeResearched extends ShapelessOreRecipe implements IRes
         return h + 2;
     }
 
-    @Override
-    public IResearchRecipe addResearch(String... names) {
+    public UnformedRecipeResearched addResearch(String... names) {
         ResearchGoal g;
         for (String name : names) {
             name = name.startsWith("research.") ? name : "research." + name;

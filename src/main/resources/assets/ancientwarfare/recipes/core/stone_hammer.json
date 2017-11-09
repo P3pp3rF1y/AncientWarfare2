@@ -1,0 +1,21 @@
+{
+  "type": "ancientwarfare:research_recipe",
+  "research": "engineering",
+  "pattern": [
+    " S ",
+    "MSM",
+    " S "
+  ],
+  "key": {
+    "S": {
+      "item": "#STICKWOOD"
+    },
+    "M": {
+      "item": "minecraft:stone",
+      "data": 0
+    }
+  },
+  "result": {
+    "item": "ancientwarfare:stone_hammer"
+  }
+}

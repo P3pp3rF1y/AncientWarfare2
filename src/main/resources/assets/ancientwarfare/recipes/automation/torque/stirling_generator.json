@@ -1,0 +1,20 @@
+{
+  "type": "ancientwarfare:research_recipe",
+  "research": "machinery",
+  "pattern": [
+    "III",
+    "GGG",
+    "IGI"
+  ],
+  "key": {
+    "G": {
+      "item": "#GEARIRON"
+    },
+    "I": {
+      "item": "#INGOTIRON"
+    }
+  },
+  "result": {
+    "item": "ancientwarfareautomation:stirling_generator"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "type": "ancientwarfare:research_recipe",
+  "research": "leadership",
+  "pattern": [
+    "S S",
+    "_C_",
+    "S_S"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:chest"
+    },
+    "S": {
+      "item": "minecraft:stonebrick",
+      "data": 0
+    },
+    "_": {
+      "item": "#LOGWOOD"
+    }
+  },
+  "result": {
+    "item": "ancientwarfarenpc:town_hall"
+  }
+}

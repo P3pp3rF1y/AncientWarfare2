@@ -103,7 +103,7 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
     }
 
     private void onLayoutMatrixChanged() {
-        this.result.setInventorySlotContents(0, AWCraftingManager.INSTANCE.findMatchingRecipe(layoutMatrix, world, getCrafterName()));
+        this.result.setInventorySlotContents(0, AWCraftingManager.findMatchingRecipe(layoutMatrix, world, getCrafterName()));
     }
 
     public String getCrafterName() {

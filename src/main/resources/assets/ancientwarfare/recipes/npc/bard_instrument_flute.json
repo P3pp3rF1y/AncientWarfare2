@@ -1,0 +1,21 @@
+{
+  "type": "ancientwarfare:research_recipe",
+  "research": "leadership",
+  "pattern": [
+    "  S",
+    " S ",
+    "I  "
+  ],
+  "key": {
+    "S": {
+      "item": "#STICKWOOD"
+    },
+    "I": {
+      "item": "#INGOTIRON"
+    }
+  },
+  "result": {
+    "item": "ancientwarfarenpc:bard_instrument",
+    "data": 1
+  }
+}

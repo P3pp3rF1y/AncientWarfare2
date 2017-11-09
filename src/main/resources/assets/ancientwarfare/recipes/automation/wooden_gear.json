@@ -1,0 +1,20 @@
+{
+  "type": "forge:ore_shaped",
+  "pattern": [
+    "S S",
+    " P ",
+    "S S"
+  ],
+  "key": {
+    "P": {
+      "item": "#PLANKWOOD"
+    },
+    "S": {
+      "item": "#STICKWOOD"
+    }
+  },
+  "result": {
+    "item": "ancientwarfare:component",
+    "data": 0
+  }
+}

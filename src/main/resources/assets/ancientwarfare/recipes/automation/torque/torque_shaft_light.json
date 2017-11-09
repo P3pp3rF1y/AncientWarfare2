@@ -1,0 +1,21 @@
+{
+  "type": "ancientwarfare:research_recipe",
+  "research": "the_wheel",
+  "pattern": [
+    "S",
+    "S",
+    "G"
+  ],
+  "key": {
+    "S": {
+      "item": "#SHAFTWOOD"
+    },
+    "G": {
+      "item": "#GEARWOOD"
+    }
+  },
+  "result": {
+    "item": "ancientwarfareautomation:torque_shaft",
+    "data": 0
+  }
+}

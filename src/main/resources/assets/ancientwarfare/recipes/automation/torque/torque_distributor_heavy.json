@@ -1,0 +1,21 @@
+{
+  "type": "ancientwarfare:research_recipe",
+  "research": "mass_production",
+  "pattern": [
+    " S ",
+    "GGG",
+    " S "
+  ],
+  "key": {
+    "S": {
+      "item": "#SHAFTSTEEL"
+    },
+    "G": {
+      "item": "#GEARSTEEL"
+    }
+  },
+  "result": {
+    "item": "ancientwarfareautomation:torque_distributor",
+    "data": 2
+  }
+}

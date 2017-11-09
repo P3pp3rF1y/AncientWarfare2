@@ -1,0 +1,19 @@
+{
+  "type": "ancientwarfare:research_recipe",
+  "research": "trade",
+  "pattern": [
+    "P",
+    "S"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:paper"
+    },
+    "S": {
+      "item": "minecraft:sign"
+    }
+  },
+  "result": {
+    "item": "ancientwarfareautomation:warehouse_stock_viewer"
+  }
+}

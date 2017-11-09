@@ -6,12 +6,12 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
+import net.shadowmage.ancientwarfare.core.crafting.ResearchRecipe;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
-import net.shadowmage.ancientwarfare.core.interfaces.IResearchRecipe;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
@@ -23,7 +23,7 @@ import java.util.Set;
 
 public class GuiResearchBook extends GuiContainerBase {
 
-    private IResearchRecipe selectedRecipe = null;
+    private ResearchRecipe selectedRecipe = null;
     private ResearchGoal selectedGoal = null;
 
     private CompositeScrolled area;
@@ -70,7 +70,7 @@ public class GuiResearchBook extends GuiContainerBase {
     private void addRecipeModeControls() {
         int totalHeight = 8;
 
-        for (IResearchRecipe recipe : AWCraftingManager.INSTANCE.getRecipes()) {
+        for (ResearchRecipe recipe : AWCraftingManager.getRecipes()) {
             area.addGuiElement(new RecipeButton(8, totalHeight, recipe));
             totalHeight += 12;
         }
@@ -81,14 +81,8 @@ public class GuiResearchBook extends GuiContainerBase {
         totalHeight += 14;
 
         if (selectedRecipe != null) {
-            Set<Integer> depIds = selectedRecipe.getNeededResearch();
-            boolean canShow = true;
-            for (int num : depIds) {
-                if (!ResearchTracker.INSTANCE.hasPlayerCompleted(mc.world, mc.player.getName(), num)) {
-                    canShow = false;
-                    break;
-                }
-            }
+            int depId = selectedRecipe.getNeededResearch();
+            boolean canShow = ResearchTracker.INSTANCE.hasPlayerCompleted(mc.world, mc.player.getName(), depId);
             if(canShow){
                 NonNullList<ItemStack> ingredients = NonNullList.withSize(selectedRecipe.getIngredients().size(), ItemStack.EMPTY);
                 for(int i = 0; i < ingredients.size(); i++){
@@ -114,13 +108,10 @@ public class GuiResearchBook extends GuiContainerBase {
             totalHeight += 14;
             GoalButton button;
             ResearchGoal goal;
-            for (int num : depIds) {
-                goal = ResearchGoal.getGoal(num);
-                if (goal != null) {
-                    button = new GoalButton(8, totalHeight, goal);
-                    detailsArea.addGuiElement(button);
-                    totalHeight += 12;
-                }
+            goal = ResearchGoal.getGoal(depId);
+            if (goal != null) {
+                button = new GoalButton(8, totalHeight, goal);
+                detailsArea.addGuiElement(button);
             }
         }
     }
@@ -141,10 +132,10 @@ public class GuiResearchBook extends GuiContainerBase {
         totalHeight += 16;
 
         if (selectedGoal != null) {
-            List<IResearchRecipe> recipes = AWCraftingManager.INSTANCE.getRecipes();
-            List<IResearchRecipe> list = new ArrayList<>();
-            for (IResearchRecipe recipe : recipes) {
-                if (recipe.getNeededResearch().contains(selectedGoal.getId())) {
+            List<ResearchRecipe> recipes = AWCraftingManager.getRecipes();
+            List<ResearchRecipe> list = new ArrayList<>();
+            for (ResearchRecipe recipe : recipes) {
+                if (recipe.getNeededResearch() == selectedGoal.getId()) {
                     list.add(recipe);
                 }
             }
@@ -174,8 +165,8 @@ public class GuiResearchBook extends GuiContainerBase {
 
     private class RecipeSlot extends ItemSlot{
 
-        private final IResearchRecipe researched;
-        public RecipeSlot(int i, int totalHeight, IResearchRecipe recipe, ITooltipRenderer render) {
+        private final ResearchRecipe researched;
+        public RecipeSlot(int i, int totalHeight, ResearchRecipe recipe, ITooltipRenderer render) {
             super(8 + (18 * (i % 9)), totalHeight + 18 * (i / 9), recipe.getRecipeOutput(), render);
             setRenderItemQuantity(false);
             researched = recipe;
@@ -189,14 +180,14 @@ public class GuiResearchBook extends GuiContainerBase {
         }
     }
 
-    private Button getRecipeButton(int topLeftX, int topLeftY, IResearchRecipe recipe){
+    private Button getRecipeButton(int topLeftX, int topLeftY, ResearchRecipe recipe){
         return new Button(topLeftX, topLeftY, 160, 12, recipe == null ? "guistrings.no_selection" : recipe.getRecipeOutput().getDisplayName());
     }
 
     private class RecipeButton extends Button {
-        final IResearchRecipe recipe;
+        final ResearchRecipe recipe;
 
-        public RecipeButton(int topLeftX, int topLeftY, IResearchRecipe recipe) {
+        public RecipeButton(int topLeftX, int topLeftY, ResearchRecipe recipe) {
             super(topLeftX, topLeftY, 160, 12, recipe == null ? "guistrings.no_selection" : recipe.getRecipeOutput().getDisplayName());
             this.recipe = recipe;
         }

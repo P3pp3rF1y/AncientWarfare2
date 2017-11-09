@@ -1,0 +1,20 @@
+{
+  "type": "ancientwarfare:research_recipe",
+  "research": "leadership",
+  "pattern": [
+    "PLP",
+    " P "
+  ],
+  "key": {
+    "P": {
+      "item": "#PLANKWOOD"
+    },
+    "L": {
+      "item": "minecraft:leather"
+    }
+  },
+  "result": {
+    "item": "ancientwarfarenpc:bard_instrument",
+    "data": 3
+  }
+}

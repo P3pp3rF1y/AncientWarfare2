@@ -1,8 +1,5 @@
 package net.shadowmage.ancientwarfare.core.crafting;
 
-import net.minecraftforge.oredict.RecipeSorter;
-import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
-
 public class AWCoreCrafting {
 
     /*
@@ -10,8 +7,8 @@ public class AWCoreCrafting {
      */
     public static void loadRecipes() {
         //TODO custom recipe factories
-        RecipeSorter.register("ancientwarfare:researched", RecipeResearched.class, RecipeSorter.Category.SHAPED, "after:forge:shapedore");
-        RecipeSorter.register("ancientwarfare:shapelessresearched", UnformedRecipeResearched.class, RecipeSorter.Category.SHAPELESS, "after:forge:shapelessore");
-        AWCraftingManager.INSTANCE.parseRecipes(AWCoreStatics.resourcePath + "research_crafts.csv");
+        //RecipeSorter.register("ancientwarfare:researched", ResearchRecipe.class, RecipeSorter.Category.SHAPED, "after:forge:shapedore");
+        //RecipeSorter.register("ancientwarfare:shapelessresearched", UnformedRecipeResearched.class, RecipeSorter.Category.SHAPELESS, "after:forge:shapelessore");
+        //AWCraftingManager.parseRecipes(AWCoreStatics.resourcePath + "research_crafts.csv");
     }
 }
