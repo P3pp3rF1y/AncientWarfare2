@@ -1,7 +1,5 @@
 package net.shadowmage.ancientwarfare.npc.crafting;
 
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -13,10 +11,8 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
-import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.item.AWNPCItems;
-import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 
 import javax.annotation.Nonnull;
 
@@ -31,56 +27,6 @@ public class AWNpcCrafting {
         registry.register(new OrderCopyingRecipe("combat_order_copy", AWNPCItems.combatOrder));
         registry.register(new OrderCopyingRecipe("work_order_copy", AWNPCItems.workOrder));
     }
-
-    /*
-     * load any recipes for automation module recipes
-     */
-    public static void loadRecipes() {
-        //worker spawner
-        AWCraftingManager.createRecipe(ItemNpcSpawner.getStackForNpcType("worker", ""), "leadership",
-                "gf",
-                "gt",
-                'f', "foodBundle",
-                't', Items.WOODEN_PICKAXE,
-                'g', "ingotGold");
-        //combat spawner
-        AWCraftingManager.createRecipe(ItemNpcSpawner.getStackForNpcType("combat", ""), "conscription",
-                "gf",
-                "gt",
-                'f', "foodBundle",
-                't', Items.WOODEN_SWORD,
-                'g', "ingotGold");
-        //courier bundle
-        AWCraftingManager.createRecipe(ItemNpcSpawner.getStackForNpcType("courier", ""), "trade",
-                "gf",
-                "gt",
-                'f', "foodBundle",
-                't', Blocks.WOOL,
-                'g', "ingotGold");
-        //trader spawner
-        AWCraftingManager.createRecipe(ItemNpcSpawner.getStackForNpcType("trader", ""), "trade",
-                "gf ",
-                "gtb",
-                'f', "foodBundle",
-                't', Blocks.WOOL,
-                'g', "ingotGold",
-                'b', Items.BOOK);
-        //priest spawner
-        AWCraftingManager.createRecipe(ItemNpcSpawner.getStackForNpcType("priest", ""), "leadership",
-                "gf",
-                "gb",
-                'f', "foodBundle",
-                'g', "ingotGold",
-                'b', Items.BOOK);
-        //bard spawner
-        AWCraftingManager.createRecipe(ItemNpcSpawner.getStackForNpcType("bard", ""), "leadership",
-                "gf",
-                "gb",
-                'f', "foodBundle",
-                'g', "ingotGold",
-                'b', new ItemStack(AWNPCItems.bardInstrument, 1, 0));
-    }
-
 
     private static class OrderCopyingRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IRecipe {
         private final Item item;

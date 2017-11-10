@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "research": "mathematics",
+  "pattern": [
+    "FFF",
+    "SSS",
+    "FFF"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:string"
+    },
+    "F": {
+      "item": "minecraft:fence"
+    }
+  },
+  "result": {
+    "item": "ancientwarfareautomation:worksite_upgrade",
+    "data": 1
+  }
+}

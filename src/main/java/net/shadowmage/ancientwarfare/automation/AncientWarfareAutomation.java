@@ -33,7 +33,6 @@ import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteMushr
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteQuarry;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteReedFarm;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteTreeFarm;
-import net.shadowmage.ancientwarfare.automation.crafting.AWAutomationCrafting;
 import net.shadowmage.ancientwarfare.automation.gamedata.MailboxTicker;
 import net.shadowmage.ancientwarfare.automation.proxy.RFProxy;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
@@ -127,7 +126,6 @@ public class AncientWarfareAutomation {
          */
         proxy.init();
 
-        AWAutomationCrafting.loadRecipes();
         statics.save();
     }
 

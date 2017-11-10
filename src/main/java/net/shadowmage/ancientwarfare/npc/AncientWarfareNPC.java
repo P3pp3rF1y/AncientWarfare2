@@ -35,7 +35,6 @@ import net.shadowmage.ancientwarfare.npc.container.ContainerTownHall;
 import net.shadowmage.ancientwarfare.npc.container.ContainerTradeOrder;
 import net.shadowmage.ancientwarfare.npc.container.ContainerUpkeepOrder;
 import net.shadowmage.ancientwarfare.npc.container.ContainerWorkOrder;
-import net.shadowmage.ancientwarfare.npc.crafting.AWNpcCrafting;
 import net.shadowmage.ancientwarfare.npc.entity.AWNPCEntityLoader;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
 import net.shadowmage.ancientwarfare.npc.network.PacketFactionUpdate;
@@ -101,11 +100,6 @@ public class AncientWarfareNPC {
     @EventHandler
     public void init(FMLInitializationEvent evt) {
         proxy.init();
-
-        /*
-         * construct recipes, load plugins
-         */
-        AWNpcCrafting.loadRecipes();
     }
 
     @EventHandler

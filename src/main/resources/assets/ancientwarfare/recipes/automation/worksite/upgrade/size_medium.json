@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "research": "engineering",
+  "pattern": [
+    " S ",
+    "FFF",
+    " S "
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:string"
+    },
+    "F": {
+      "item": "minecraft:fence"
+    }
+  },
+  "result": {
+    "item": "ancientwarfareautomation:worksite_upgrade",
+    "data": 0
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "type": "ancientwarfare:research_recipe",
+  "research": "theory_of_gravity",
+  "pattern": [
+    "IGI",
+    "GWG",
+    "IWI"
+  ],
+  "key": {
+    "G": {
+      "item": "#GEARIRON"
+    },
+    "W": {
+      "item": "#GEARWOOD"
+    },
+    "I": {
+      "item": "#PLANKWOOD"
+    }
+  },
+  "result": {
+    "item": "ancientwarfareautomation:waterwheel_generator"
+  }
+}

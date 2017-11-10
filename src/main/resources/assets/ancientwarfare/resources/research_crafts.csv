@@ -2,23 +2,13 @@
 #lines beginning with # denote comments, this file define crafts that use the research system,,,,,,
 #Crafting items can be alternatively defined with: (craft_item_name, craft_item_damage, craft_item_count) or by forge dictionary name,,,,,
 ##AUTOMATION
-trade,ancientwarfareautomation:warehouse,0,1,_p_,_c_,_c_,_,plankWood,p,paper,c,chest
-trade,ancientwarfareautomation:warehouse_crafting_station,0,1,_p_,_w_,_i_,_,plankWood,p,paper,w,crafting_table,i,ingotIron
-theory_of_gravity,ancientwarfareautomation:flywheel,0,1,pgp,ppp,pgp,p,plankWood,g,gearWood
-theory_of_gravity,ancientwarfareautomation:flywheel,1,1,igi,iii,igi,i,ingotIron,g,gearIron
-mass_production,ancientwarfareautomation:flywheel,2,1,igi,iii,igi,i,ingotSteel,g,gearSteel
-farming,ancientwarfareautomation:forestry,0,1,___,gwg,_c_,_,plankWood,w,iron_axe,c,chest,g,gearWood
-theory_of_gravity,ancientwarfareautomation:torque_generator_waterwheel,0,1,igi,gwg,iwi,i,plankWood,g,gearIron,w,gearWood
-
-
-
-
-
-
-
-##STRUCTURE
-construction,ancientwarfarestructure:drafting_station,0,1,_p_,_w_,_s_,_,plankWood,p,paper,w,crafting_table,s,stone
-
+#trade,ancientwarfareautomation:warehouse_control,0,1,_p_,_c_,_c_,_,plankWood,p,paper,c,chest
+#trade,ancientwarfareautomation:warehouse_crafting,0,1,_p_,_w_,_i_,_,plankWood,p,paper,w,crafting_table,i,ingotIron
+#theory_of_gravity,ancientwarfareautomation:flywheel_controller,0,1,pgp,ppp,pgp,p,plankWood,g,gearWood
+#theory_of_gravity,ancientwarfareautomation:flywheel_controller,1,1,igi,iii,igi,i,ingotIron,g,gearIron
+#mass_production,ancientwarfareautomation:flywheel_controller,2,1,igi,iii,igi,i,ingotSteel,g,gearSteel
+#farming,ancientwarfareautomation:tree_farm,0,1,___,gwg,_c_,_,plankWood,w,iron_axe,c,chest,g,gearWood
+#theory_of_gravity,ancientwarfareautomation:waterwheel_generator,0,1,igi,gwg,iwi,i,plankWood,g,gearIron,w,gearWood
 
 ##CORE
 #,ancientwarfare:research_book,0,1,ill,ppp,ill,i,ingotIron,l,leather,p,paper
@@ -108,3 +98,5 @@ construction,ancientwarfarestructure:drafting_station,0,1,_p_,_w_,_s_,_,plankWoo
 
 #trade,ancientwarfarenpc:routing_order,0,1,d,p,w,d,dyeLightGray,w,plankWood,p,paper
 #trade,ancientwarfarenpc:trade_order,0,1,d,p,w,d,dyeGreen,w,plankWood,p,paper
+##STRUCTURE
+#construction,ancientwarfarestructure:drafting_station,0,1,_p_,_w_,_s_,_,plankWood,p,paper,w,crafting_table,s,stone

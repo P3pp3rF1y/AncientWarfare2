@@ -1,0 +1,21 @@
+{
+  "type": "ancientwarfare:research_recipe",
+  "research": "mass_production",
+  "pattern": [
+    "IGI",
+    "III",
+    "IGI"
+  ],
+  "key": {
+    "G": {
+      "item": "#GEARSTEEL"
+    },
+    "I": {
+      "item": "#INGOTSTEEL"
+    }
+  },
+  "result": {
+    "item": "ancientwarfareautomation:flywheel_controller",
+    "data": 2
+  }
+}

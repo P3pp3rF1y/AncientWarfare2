@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "research": "construction",
+  "pattern": [
+    "PSA"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:diamond_pickaxe"
+    },
+    "A": {
+      "item": "minecraft:diamond_axe"
+    },
+    "S": {
+      "item": "minecraft:diamond_shovel"
+    }
+  },
+  "result": {
+    "item": "ancientwarfareautomation:worksite_upgrade",
+    "data": 7
+  }
+}

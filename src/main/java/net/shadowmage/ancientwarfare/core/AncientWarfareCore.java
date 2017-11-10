@@ -19,7 +19,6 @@ import net.shadowmage.ancientwarfare.core.container.ContainerBackpack;
 import net.shadowmage.ancientwarfare.core.container.ContainerEngineeringStation;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchBook;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchStation;
-import net.shadowmage.ancientwarfare.core.crafting.AWCoreCrafting;
 import net.shadowmage.ancientwarfare.core.gamedata.Timekeeper;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.item.AWCoreItemLoader;
@@ -100,10 +99,6 @@ public class AncientWarfareCore {
          * initialize any other core module information
          */
         ResearchGoal.initializeResearch();
-        /*
-         * register recipes
-         */
-        AWCoreCrafting.loadRecipes();
         /*
          * Setup FTBU_AW2 interoperability
          */

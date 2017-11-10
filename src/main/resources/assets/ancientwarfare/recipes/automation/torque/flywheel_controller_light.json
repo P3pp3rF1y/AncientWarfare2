@@ -1,0 +1,21 @@
+{
+  "type": "ancientwarfare:research_recipe",
+  "research": "theory_of_gravity",
+  "pattern": [
+    "PGP",
+    "PPP",
+    "PGP"
+  ],
+  "key": {
+    "P": {
+      "item": "#PLANKWOOD"
+    },
+    "G": {
+      "item": "#GEARWOOD"
+    }
+  },
+  "result": {
+    "item": "ancientwarfareautomation:flywheel_controller",
+    "data": 0
+  }
+}

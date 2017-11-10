@@ -1,0 +1,24 @@
+{
+  "type": "ancientwarfare:research_recipe",
+  "research": "conscription",
+  "pattern": [
+    "GF",
+    "GT"
+  ],
+  "key": {
+    "T": {
+      "item": "minecraft:wooden_sword"
+    },
+    "F": {
+      "item": "#FOODBUNDLE"
+    },
+    "G": {
+      "item": "#INGOTGOLD"
+    }
+  },
+  "result": {
+    "type": "minecraft:item_nbt",
+    "item": "ancientwarfarenpc:npc_spawner",
+    "nbt": "{npcSubtype:\"\",npcType:\"combat\"}"
+  }
+}

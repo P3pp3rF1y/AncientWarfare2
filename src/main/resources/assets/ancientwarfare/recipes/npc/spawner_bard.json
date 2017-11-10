@@ -1,0 +1,25 @@
+{
+  "type": "ancientwarfare:research_recipe",
+  "research": "leadership",
+  "pattern": [
+    "GF",
+    "GB"
+  ],
+  "key": {
+    "B": {
+      "item": "ancientwarfarenpc:bard_instrument",
+      "data": 0
+    },
+    "F": {
+      "item": "#FOODBUNDLE"
+    },
+    "G": {
+      "item": "#INGOTGOLD"
+    }
+  },
+  "result": {
+    "type": "minecraft:item_nbt",
+    "item": "ancientwarfarenpc:npc_spawner",
+    "nbt": "{npcSubtype:\"\",npcType:\"bard\"}"
+  }
+}

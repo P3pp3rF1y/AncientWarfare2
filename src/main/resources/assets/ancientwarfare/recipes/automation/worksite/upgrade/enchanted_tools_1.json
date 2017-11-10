@@ -1,0 +1,22 @@
+{
+  "type": "ancientwarfare:research_recipe",
+  "research": "mathematics",
+  "pattern": [
+    " B ",
+    "III"
+  ],
+  "key": {
+    "B": {
+      "type": "minecraft:item_nbt",
+      "item": "minecraft:enchanted_book",
+      "nbt": "{ench:[{lvl:1s,id:35s}]}"
+    },
+    "I": {
+      "item": "#INGOTIRON"
+    }
+  },
+  "result": {
+    "item": "ancientwarfareautomation:worksite_upgrade",
+    "data": 4
+  }
+}

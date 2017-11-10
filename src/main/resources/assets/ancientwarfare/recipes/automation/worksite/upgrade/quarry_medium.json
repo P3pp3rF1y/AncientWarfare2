@@ -1,0 +1,21 @@
+{
+  "type": "ancientwarfare:research_recipe",
+  "research": "mining",
+  "pattern": [
+    "PPP",
+    "F F",
+    "F F"
+  ],
+  "key": {
+    "P": {
+      "item": "#PLANKWOOD"
+    },
+    "F": {
+      "item": "minecraft:fence"
+    }
+  },
+  "result": {
+    "item": "ancientwarfareautomation:worksite_upgrade",
+    "data": 2
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "type": "ancientwarfare:research_recipe",
+  "research": "trade",
+  "pattern": [
+    "_P_",
+    "_W_",
+    "_I_"
+  ],
+  "key": {
+    "P": {
+      "item": "minecraft:paper"
+    },
+    "W": {
+      "item": "minecraft:crafting_table"
+    },
+    "I": {
+      "item": "#INGOTIRON"
+    },
+    "_": {
+      "item": "#PLANKWOOD"
+    }
+  },
+  "result": {
+    "item": "ancientwarfareautomation:warehouse_crafting"
+  }
+}

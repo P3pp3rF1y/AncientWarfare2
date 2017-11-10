@@ -1,0 +1,23 @@
+{
+  "type": "ancientwarfare:research_recipe",
+  "research": "construction",
+  "pattern": [
+    "SPS",
+    "SPS",
+    "SRS"
+  ],
+  "key": {
+    "P": {
+      "item": "#PLANKWOOD"
+    },
+    "R": {
+      "item": "#DUSTREDSTONE"
+    },
+    "S": {
+      "item": "#STONE"
+    }
+  },
+  "result": {
+    "item": "ancientwarfarestructure:gate_spawner"
+  }
+}
