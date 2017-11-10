@@ -66,7 +66,7 @@ public class NpcAIPlayerOwnedCourier extends NpcAI<NpcCourier> {
             moveToPosition(pos, dist);
         } else {
             moveRetryDelay = 0;
-            npc.getNavigator().clearPathEntity();
+            npc.getNavigator().clearPath();
             npc.removeAITask(TASK_MOVE);
             workAtSite();
         }
@@ -77,7 +77,7 @@ public class NpcAIPlayerOwnedCourier extends NpcAI<NpcCourier> {
         ticksToWork = 0;
         ticksAtSite = 0;
         moveRetryDelay = 0;
-        npc.getNavigator().clearPathEntity();
+        npc.getNavigator().clearPath();
         npc.removeAITask(TASK_WORK + TASK_MOVE);
     }
 

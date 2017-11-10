@@ -65,7 +65,7 @@ public class NpcAIPlayerOwnedWork extends NpcAI<NpcBase> {
         } else {
 //    AWLog.logDebug("working at site....."+pos);
             if(dist < 10 || shouldMoveFromTimeAtSite(entry) || shouldMoveFromNoWork(entry)) {
-                npc.getNavigator().clearPathEntity();
+                npc.getNavigator().clearPath();
                 npc.removeAITask(TASK_MOVE);
             }
             workAtSite(entry);

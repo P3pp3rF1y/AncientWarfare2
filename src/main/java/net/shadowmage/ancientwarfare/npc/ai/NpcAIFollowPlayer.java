@@ -62,7 +62,7 @@ public class NpcAIFollowPlayer extends NpcAI<NpcBase> {
             moveToEntity(target, distance);
         } else {
             this.npc.removeAITask(TASK_MOVE);
-            this.npc.getNavigator().clearPathEntity();
+            this.npc.getNavigator().clearPath();
         }
     }
 

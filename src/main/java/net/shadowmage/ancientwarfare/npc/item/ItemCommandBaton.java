@@ -46,7 +46,7 @@ public class ItemCommandBaton extends ItemBaseNPC implements IItemKeyInterface {
 
     public ItemCommandBaton(String name, ToolMaterial material) {
         super(name);
-        this.attackDamage = 4 + material.getDamageVsEntity();
+        this.attackDamage = 4 + material.getAttackDamage();
         this.material = material;
         this.setMaxStackSize(1);
         this.setMaxDamage(material.getMaxUses());

@@ -119,7 +119,7 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI<NpcPlayerOwned> {
         if (sqDist > MIN_RANGE) {
             moveToEntity(e, sqDist);//move to entity...
         } else {
-            npc.getNavigator().clearPathEntity();//clear path to stop moving
+            npc.getNavigator().clearPath();//clear path to stop moving
             if (e instanceof EntityHorse && e.getPassengers().isEmpty()) {
                 npc.startRiding(e);
                 e.prevRotationYaw = e.rotationYaw = npc.rotationYaw % 360F;

@@ -200,7 +200,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
     @Override
     public void resetTask() {
         fleeVector = null;
-        npc.getNavigator().clearPathEntity();
+        npc.getNavigator().clearPath();
         npc.setAttackTarget(null);
         npc.removeAITask(TASK_GO_HOME + TASK_FLEE + TASK_ALARM);
         homeCompromised = false;

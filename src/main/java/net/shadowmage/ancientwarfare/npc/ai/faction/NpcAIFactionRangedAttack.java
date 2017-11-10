@@ -32,7 +32,7 @@ public class NpcAIFactionRangedAttack extends NpcAIAttack<NpcBase> {
             this.moveToPosition(npc.getHomePosition(), homeDist);
         } else {
             npc.removeAITask(TASK_MOVE);
-            npc.getNavigator().clearPathEntity();
+            npc.getNavigator().clearPath();
         }
         if (this.getAttackDelay() <= 0) {
             int val = 0;//AIHelper.doQuiverBowThing(npc, getTarget()); TODO quiver bow alternative integration?

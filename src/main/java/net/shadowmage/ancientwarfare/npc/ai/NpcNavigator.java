@@ -59,12 +59,12 @@ public class NpcNavigator extends PathNavigateGround {
     }
 
     @Override
-    public void clearPathEntity(){
+    public void clearPath(){
         if(hasMount()) {
-            ((EntityLiving)entity.getRidingEntity()).getNavigator().clearPathEntity();
+            ((EntityLiving)entity.getRidingEntity()).getNavigator().clearPath();
             //System.out.println("Clearing path from " + Thread.currentThread().getStackTrace()[2]);
         }
-        super.clearPathEntity();
+        super.clearPath();
     }
 
     @Override

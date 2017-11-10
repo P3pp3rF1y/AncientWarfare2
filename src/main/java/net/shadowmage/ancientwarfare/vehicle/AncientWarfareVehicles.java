@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.vehicle;
 
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -18,6 +17,7 @@ import net.shadowmage.ancientwarfare.vehicle.network.PacketInputReply;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketInputState;
 import net.shadowmage.ancientwarfare.vehicle.proxy.VehicleCommonProxy;
 
+/*
 @Mod
         (
                 name = "Ancient Warfare Vehicles",
@@ -25,6 +25,7 @@ import net.shadowmage.ancientwarfare.vehicle.proxy.VehicleCommonProxy;
                 version = "@VERSION@",
                 dependencies = "required-after:ancientwarfare"
         )
+*/
 
 public class AncientWarfareVehicles {
     public static final String modID = "ancientwarfarevehicle";

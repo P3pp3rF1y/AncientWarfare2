@@ -483,9 +483,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             return;
         PathPoint point = getNavigator().getPath().getPathPointFromIndex(getNavigator().getPath().getCurrentPathIndex());
         if (world.getBlockState(new BlockPos(point.x, point.y, point.z)).getMaterial() == material) {
-            getNavigator().clearPathEntity();
+            getNavigator().clearPath();
         } else if (world.getBlockState(new BlockPos(point.x, point.y - 1, point.z)).getMaterial() == material) {
-            getNavigator().clearPathEntity();
+            getNavigator().clearPath();
         }
     }
 

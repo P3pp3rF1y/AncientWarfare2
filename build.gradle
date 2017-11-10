@@ -1,7 +1,5 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
-ext.versionFile = file('gradle.properties')
-
 buildscript {
     repositories {
         jcenter()
@@ -39,6 +37,7 @@ repositories {
         name "FTBLib"
         artifactPattern "http://addons-origin.cursecdn.com/files/${ftblib_cf}/[module]-[revision].[ext]"
     }
+    maven { url "http://dvs1.progwml6.com/files/maven" }
 }
 
 minecraft{
@@ -46,7 +45,7 @@ minecraft{
     mappings = mcp_mappings
     runDir = "run"
 }
-version = project.major +"."+ project.minor +"."+  project.build+"-"+ project.releasetype + "-MC" +minecraft.version
+version = minecraft.version + "-" + project.major +"."+ project.minor +"."+  project.build
 group = "shadowmage"
 archivesBaseName = "ancientwarfare"
 
@@ -54,24 +53,12 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 dependencies {
-    deobfCompile "cofh:RedstoneFlux:1.12-2.0.0.1:universal"
-    compile "codechicken:CodeChickenLib:1.12-3.1.0.+:deobf"
+    deobfCompile "cofh:RedstoneFlux:${rf_version}:universal"
+    deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
+    compile "codechicken:CodeChickenLib:${ccl_version}:deobf"
     //deobfCompile name: 'FTBLib', version: ftblib_version, ext: 'jar'
     //deobfCompile name: 'FTBUtilities', version: ftbutilities_version, ext: 'jar'
 }
-
-task updateVersion(type:Copy){
-    ant.propertyfile(file: versionFile) {
-        entry(key: 'build', type: 'int', operation: '+', value: 001)
-    }
-    from(sourceSets.main.java.srcDirs){
-        exclude 'mcmod.info'
-    }
-    into 'build/sources/java'
-    filter(ReplaceTokens, tokens: [VERSION: project.version])
-}
-
-compileJava.dependsOn updateVersion
 
 processResources{
     // replace stuff in mcmod.info, nothing else

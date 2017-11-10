@@ -44,7 +44,7 @@ public class NpcAIPlayerOwnedWorkRandom extends NpcAI<NpcWorker> {
             ticksAtSite = 0;
             moveToPosition(pos, dist);
         } else {
-            npc.getNavigator().clearPathEntity();
+            npc.getNavigator().clearPath();
             npc.removeAITask(TASK_MOVE);
             workAtSite();
         }

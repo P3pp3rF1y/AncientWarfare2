@@ -40,7 +40,7 @@ public class ItemHammer extends ItemBaseCore implements IItemKeyInterface {
     public ItemHammer(String regName, ToolMaterial material) {
         super(regName);
         //this.setTextureName("ancientwarfare:core/" + regName);
-        attackDamage = 4.f + material.getDamageVsEntity();
+        attackDamage = 4.f + material.getAttackDamage();
         material = material;
         maxStackSize = 1;
         setMaxDamage(material.getMaxUses());

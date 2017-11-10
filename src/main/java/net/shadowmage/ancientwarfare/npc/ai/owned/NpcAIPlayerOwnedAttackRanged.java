@@ -24,7 +24,7 @@ public class NpcAIPlayerOwnedAttackRanged extends NpcAIAttack<NpcBase> {
     @Override
     protected void doAttack(double dist) {
         npc.removeAITask(TASK_MOVE);
-        this.npc.getNavigator().clearPathEntity();
+        this.npc.getNavigator().clearPath();
         if (this.getAttackDelay() <= 0) {
 //  TODO readd quiverbow integration or just remove
 //            int val = AIHelper.doQuiverBowThing(npc, getTarget());

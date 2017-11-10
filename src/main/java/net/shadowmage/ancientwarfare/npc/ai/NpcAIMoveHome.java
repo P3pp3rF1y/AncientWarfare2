@@ -117,7 +117,7 @@ public class NpcAIMoveHome extends NpcAI<NpcBase> {
 
     private void stopMovement() {
         npc.removeAITask(TASK_MOVE);
-        npc.getNavigator().clearPathEntity();
+        npc.getNavigator().clearPath();
     }
 
     @Override
