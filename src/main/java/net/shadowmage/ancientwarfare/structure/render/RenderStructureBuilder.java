@@ -37,7 +37,7 @@ public class RenderStructureBuilder extends TileEntitySpecialRenderer<TileStruct
         if (expansion != 0.f) {
             bb = bb.expand(expansion, expansion, expansion);
         }
-        bb.offset(-pos.getX(), - pos.getY(), -pos.getZ());
+        bb = bb.offset(-pos.getX(), - pos.getY(), -pos.getZ());
         RenderTools.drawOutlinedBoundingBox2(bb, 1.f, 1.f, 1.f, 0.0625f);
         GlStateManager.enableLighting();
     }

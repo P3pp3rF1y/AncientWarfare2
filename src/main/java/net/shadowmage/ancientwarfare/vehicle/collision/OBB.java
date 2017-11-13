@@ -638,7 +638,7 @@ public final class OBB {
      */
     public final void setAABBToOBBExtents(Entity entity) {
         AxisAlignedBB bb = new AxisAlignedBB(-widthExtent, 0, -lengthExtent, widthExtent, height, lengthExtent);
-        bb.offset(x, y, z);
+        bb = bb.offset(x, y, z);
         entity.setEntityBoundingBox(bb);
     }
 
