@@ -416,9 +416,9 @@ public class BlockRotationHandler {
             @Nonnull ItemStack stack = inventorySlots.get(var1);
             if (!stack.isEmpty()) {
                 int qty = var2 > stack.getCount() ? stack.getCount() : var2;
-                stack.shrink(qty);
                 @Nonnull ItemStack returnStack = stack.copy();
                 returnStack.setCount(qty);
+                stack.shrink(qty);
                 if (stack.getCount() <= 0) {
                     inventorySlots.set(var1, ItemStack.EMPTY);
                 }
