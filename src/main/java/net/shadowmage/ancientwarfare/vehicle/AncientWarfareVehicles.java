@@ -1,8 +1,5 @@
 package net.shadowmage.ancientwarfare.vehicle;
 
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.Mod.Instance;
-import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
@@ -30,19 +27,21 @@ import net.shadowmage.ancientwarfare.vehicle.proxy.VehicleCommonProxy;
 public class AncientWarfareVehicles {
     public static final String modID = "ancientwarfarevehicle";
 
-    @Instance(value = modID)
+//    @Instance(value = modID)
     public static AncientWarfareVehicles instance;
 
+/*
     @SidedProxy
             (
                     clientSide = "net.shadowmage.ancientwarfare.vehicle.proxy.VehicleClientProxy",
                     serverSide = "net.shadowmage.ancientwarfare.vehicle.proxy.VehicleCommonProxy"
             )
+*/
     public static VehicleCommonProxy proxy;
 
     public static AWVehicleStatics statics;
 
-    @EventHandler
+//    @EventHandler
     public void preInit(FMLPreInitializationEvent evt) {
 
         ModuleStatus.vehiclesLoaded = true;
@@ -69,7 +68,7 @@ public class AncientWarfareVehicles {
         }
     }
 
-    @EventHandler
+//    @EventHandler
     public void init(FMLInitializationEvent evt) {
         proxy.init();
 

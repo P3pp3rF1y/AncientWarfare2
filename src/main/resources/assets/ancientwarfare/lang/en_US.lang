@@ -752,3 +752,6 @@ ftbu_aw2.notification.townhall_hqmissing.msg=See tooltip for details...
 ftbu_aw2.notification.townhall_hqmissing.tooltip.1=You might want to set a HQ to claim
 ftbu_aw2.notification.townhall_hqmissing.tooltip.2=and protect your territory. Just
 ftbu_aw2.notification.townhall_hqmissing.tooltip.3=(re)place a Town Hall to set HQ.
+
+#jei
+jei.recipe.research_recipe=Research Recipe

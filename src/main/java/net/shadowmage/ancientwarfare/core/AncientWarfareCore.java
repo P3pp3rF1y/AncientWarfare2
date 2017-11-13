@@ -85,6 +85,8 @@ public class AncientWarfareCore {
         NetworkHandler.registerContainer(NetworkHandler.GUI_BACKPACK, ContainerBackpack.class);
         NetworkHandler.registerContainer(NetworkHandler.GUI_RESEARCH_BOOK, ContainerResearchBook.class);
 
+        ResearchGoal.initializeResearch();
+
         proxy.preInit();
     }
 
@@ -95,10 +97,6 @@ public class AncientWarfareCore {
 
         AWCoreItemLoader.INSTANCE.load();
 
-        /*
-         * initialize any other core module information
-         */
-        ResearchGoal.initializeResearch();
         /*
          * Setup FTBU_AW2 interoperability
          */

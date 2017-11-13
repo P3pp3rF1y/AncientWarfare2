@@ -7,24 +7,16 @@ import com.google.common.collect.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
-import net.shadowmage.ancientwarfare.core.util.StringTools;
 
-import javax.annotation.Nonnull;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -83,92 +75,92 @@ public class AWCraftingManager {
      *
      * @param path to file, incl. filename + extension, running-dir relative
      */
-    public static void parseRecipes(String path) {
-        List<String> lines = StringTools.getResourceLines(path);
-        for (String line : lines) {
-            String[] split = StringTools.parseStringArray(line);
-            if (split.length < 5) {
-                continue;
-            }
-            @Nonnull ItemStack stack = StringTools.safeParseStack(split[1], split[2], split[3]);
-            if (stack.isEmpty()) {
-                continue;
-            }
-            boolean shaped = true;
-            if (split.length < 7 || split[4].length() > 3) {
-                shaped = false;
-            }
-            Object[] craft_par = new Object[split.length - 4];//All the inputs
-            int i = 4;
-            while (split[i].length() > 0 && split[i + 1].length() < 4) {//Any height of crafting grid, width limited at 1-3
-                craft_par[i - 4] = split[i];
-                i++;
-            }
-            for (; i < split.length; i += 2) {
-                if(shaped)
-                    craft_par[i - 4] = split[i].charAt(0);//The character key
-                else
-                    i--;
-                if (split[i + 1].startsWith("(") && split[i + 3].endsWith(")")) {
-                    craft_par[i - 3] = StringTools.safeParseStack(split[i + 1].substring(1), split[i + 2], split[i + 3].substring(0, split[i + 3].length() - 1));
-                    i = i + 2;
-                } else {
-                    Object crafting_item = Item.REGISTRY.getObject(new ResourceLocation(split[i + 1]));
-                    if (crafting_item == null) {//Not an item name
-                        crafting_item = Block.REGISTRY.getObject(new ResourceLocation(split[i + 1]));
-                        if (crafting_item == Blocks.AIR) {//Not a block name
-                            crafting_item = split[i + 1];//Maybe a generic "ore" name ?
-                        }
-                    }
-                    craft_par[i - 3] = crafting_item;//The item value
-                }
-            }
-            ArrayList<Object> list = new ArrayList<>();
-            for (Object object : craft_par) {
-                if (object != null) {
-                    list.add(object);
-                }
-            }
-            try {
-                createRecipe(shaped, stack, split[0].trim(), list.toArray());
-            } catch (Throwable throwable) {
-                AWLog.logError("Error creating recipe for parsed line: " + line);
-            }
-        }
-    }
+//    public static void parseRecipes(String path) {
+//        List<String> lines = StringTools.getResourceLines(path);
+//        for (String line : lines) {
+//            String[] split = StringTools.parseStringArray(line);
+//            if (split.length < 5) {
+//                continue;
+//            }
+//            @Nonnull ItemStack stack = StringTools.safeParseStack(split[1], split[2], split[3]);
+//            if (stack.isEmpty()) {
+//                continue;
+//            }
+//            boolean shaped = true;
+//            if (split.length < 7 || split[4].length() > 3) {
+//                shaped = false;
+//            }
+//            Object[] craft_par = new Object[split.length - 4];//All the inputs
+//            int i = 4;
+//            while (split[i].length() > 0 && split[i + 1].length() < 4) {//Any height of crafting grid, width limited at 1-3
+//                craft_par[i - 4] = split[i];
+//                i++;
+//            }
+//            for (; i < split.length; i += 2) {
+//                if(shaped)
+//                    craft_par[i - 4] = split[i].charAt(0);//The character key
+//                else
+//                    i--;
+//                if (split[i + 1].startsWith("(") && split[i + 3].endsWith(")")) {
+//                    craft_par[i - 3] = StringTools.safeParseStack(split[i + 1].substring(1), split[i + 2], split[i + 3].substring(0, split[i + 3].length() - 1));
+//                    i = i + 2;
+//                } else {
+//                    Object crafting_item = Item.REGISTRY.getObject(new ResourceLocation(split[i + 1]));
+//                    if (crafting_item == null) {//Not an item name
+//                        crafting_item = Block.REGISTRY.getObject(new ResourceLocation(split[i + 1]));
+//                        if (crafting_item == Blocks.AIR) {//Not a block name
+//                            crafting_item = split[i + 1];//Maybe a generic "ore" name ?
+//                        }
+//                    }
+//                    craft_par[i - 3] = crafting_item;//The item value
+//                }
+//            }
+//            ArrayList<Object> list = new ArrayList<>();
+//            for (Object object : craft_par) {
+//                if (object != null) {
+//                    list.add(object);
+//                }
+//            }
+//            try {
+//                createRecipe(shaped, stack, split[0].trim(), list.toArray());
+//            } catch (Throwable throwable) {
+//                AWLog.logError("Error creating recipe for parsed line: " + line);
+//            }
+//        }
+//    }
 
-    public static void createRecipe(ItemStack result, String research, Object... inputArray) {
-        createRecipe(true, result, research, inputArray);
-    }
+//    public static void createRecipe(ItemStack result, String research, Object... inputArray) {
+//        createRecipe(true, result, research, inputArray);
+//    }
 
-    private static void createRecipe(boolean shaped, ItemStack result, Object[] inputArray) {
-        if(AWCoreStatics.isItemCraftable(result.getItem())) {
-            ResourceLocation registryName = new ResourceLocation(AncientWarfareCore.modID, result.getItem().getRegistryName().getResourcePath());
-            if(shaped) {
-                addShapedRecipe(result, inputArray);
-            } else {
-                addShapelessRecipe(result, inputArray);
-            }
-            IRecipe recipe = shaped ? new ShapedOreRecipe(registryName, result, inputArray) : new ShapelessOreRecipe(registryName, result, inputArray);
-            recipe.setRegistryName(result.getItem().getRegistryName());
-            ForgeRegistries.RECIPES.register(recipe);
-        }
-    }
+//    private static void createRecipe(boolean shaped, ItemStack result, Object[] inputArray) {
+//        if(AWCoreStatics.isItemCraftable(result.getItem())) {
+//            ResourceLocation registryName = new ResourceLocation(AncientWarfareCore.modID, result.getItem().getRegistryName().getResourcePath());
+//            if(shaped) {
+//                addShapedRecipe(result, inputArray);
+//            } else {
+//                addShapelessRecipe(result, inputArray);
+//            }
+//            IRecipe recipe = shaped ? new ShapedOreRecipe(registryName, result, inputArray) : new ShapelessOreRecipe(registryName, result, inputArray);
+//            recipe.setRegistryName(result.getItem().getRegistryName());
+//            ForgeRegistries.RECIPES.register(recipe);
+//        }
+//    }
 
-    public static ResearchRecipe createRecipe(boolean shaped, ItemStack result, String research, Object... inputArray) {
-        if (research == null || research.isEmpty()) {
-            createRecipe(shaped, result, inputArray);
-        }
-
-        ResearchRecipe recipe = new ResearchRecipe(research, result, inputArray);
-        if(shaped) {
-            addShapedRecipe(result, inputArray);
-        } else {
-            addShapelessRecipe(result, inputArray);
-        }
-        addRecipe(recipe);
-        return recipe;
-    }
+//    public static ResearchRecipe createRecipe(boolean shaped, ItemStack result, String research, Object... inputArray) {
+//        if (research == null || research.isEmpty()) {
+//            createRecipe(shaped, result, inputArray);
+//        }
+//
+//        ResearchRecipe recipe = new ResearchRecipe(research, result, inputArray);
+//        if(shaped) {
+//            addShapedRecipe(result, inputArray);
+//        } else {
+//            addShapelessRecipe(result, inputArray);
+//        }
+//        addRecipe(recipe);
+//        return recipe;
+//    }
 
     public static List<ResearchRecipe> getRecipes() {
         return recipes;
