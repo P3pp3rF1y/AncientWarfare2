@@ -270,7 +270,7 @@ public class RenderNpcBase extends RenderBiped<NpcBase> {
             case NpcAI.TASK_FLEE:
                 return "ancientwarfare:textures/entity/npc/ai/task_flee.png";
             case NpcAI.TASK_SLEEP:
-                return "minecraft:textures/items/bed.png";
+                return "ancientwarfare:textures/entity/npc/ai/task_sleep.png";
             case NpcAI.TASK_RAIN:
                 return "ancientwarfare:textures/entity/npc/ai/task_rain.png";
             default:
