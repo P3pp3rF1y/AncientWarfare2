@@ -139,7 +139,7 @@ public class AWAutomationBlockLoader {
         GameRegistry.registerTileEntity(TileMailbox.class, "mailbox_tile");
 
         registry.register(new BlockFlywheelController("flywheel_controller"));
-        GameRegistry.registerTileEntity(TileFlywheelControllerLight.class, "flywheel_tile");
+        GameRegistry.registerTileEntity(TileFlywheelControllerLight.class, "flywheel_light_tile");
         GameRegistry.registerTileEntity(TileFlywheelControllerMedium.class, "flywheel_medium_tile");
         GameRegistry.registerTileEntity(TileFlywheelControllerHeavy.class, "flywheel_large_tile");
 
@@ -147,7 +147,7 @@ public class AWAutomationBlockLoader {
         GameRegistry.registerTileEntity(TileFlywheelStorage.class, "flywheel_storage_tile");
 
         registry.register(new BlockTorqueJunction("torque_junction"));
-        GameRegistry.registerTileEntity(TileConduitLight.class, "torque_junction_tile");
+        GameRegistry.registerTileEntity(TileConduitLight.class, "torque_junction_light_tile");
         GameRegistry.registerTileEntity(TileConduitMedium.class, "torque_junction_medium_tile");
         GameRegistry.registerTileEntity(TileConduitHeavy.class, "torque_junction_heavy_tile");
 
@@ -157,7 +157,7 @@ public class AWAutomationBlockLoader {
         GameRegistry.registerTileEntity(TileTorqueShaftHeavy.class, "torque_shaft_heavy_tile");
 
         registry.register(new BlockTorqueDistributor("torque_distributor"));
-        GameRegistry.registerTileEntity(TileDistributorLight.class, "torque_distributor_tile");
+        GameRegistry.registerTileEntity(TileDistributorLight.class, "torque_distributor_light_tile");
         GameRegistry.registerTileEntity(TileDistributorMedium.class, "torque_distributor_medium_tile");
         GameRegistry.registerTileEntity(TileDistributorHeavy.class, "torque_distributor_heavy_tile");
 

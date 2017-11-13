@@ -507,7 +507,7 @@ rule:
 plugin=awTorqueTile
 number=22
 data:
-JSON:{{"val":{"orientation":{"val":"2","id":"pi"},"teData":{"val":{"id":{"val":"torque_junction_tile","id":"ss"},"orientation":{"val":"5","id":"pi"},"clientEnergy":{"val":"99","id":"pi"},"energyList":{"val":[{"val":{"energy":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"32.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"0.006626348718352101","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"31.92000000000001","id":"pd"}},"id":"ct"}],"id":"ls"},"z":{"val":"237","id":"pi"},"y":{"val":"7","id":"pi"},"x":{"val":"-729","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_junction","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"orientation":{"val":"2","id":"pi"},"teData":{"val":{"id":{"val":"torque_junction_light_tile","id":"ss"},"orientation":{"val":"5","id":"pi"},"clientEnergy":{"val":"99","id":"pi"},"energyList":{"val":[{"val":{"energy":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"32.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"0.006626348718352101","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"31.92000000000001","id":"pd"}},"id":"ct"}],"id":"ls"},"z":{"val":"237","id":"pi"},"y":{"val":"7","id":"pi"},"x":{"val":"-729","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_junction","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -515,7 +515,7 @@ rule:
 plugin=awTorqueTile
 number=23
 data:
-JSON:{{"val":{"orientation":{"val":"2","id":"pi"},"teData":{"val":{"id":{"val":"torque_driveline_tile","id":"ss"},"orientation":{"val":"5","id":"pi"},"clientEnergy":{"val":"99","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"7","id":"pi"},"x":{"val":"-728","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"orientation":{"val":"2","id":"pi"},"teData":{"val":{"id":{"val":"torque_shaft_light_tile","id":"ss"},"orientation":{"val":"5","id":"pi"},"clientEnergy":{"val":"99","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"7","id":"pi"},"x":{"val":"-728","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -523,7 +523,7 @@ rule:
 plugin=awTorqueTile
 number=24
 data:
-JSON:{{"val":{"orientation":{"val":"2","id":"pi"},"teData":{"val":{"id":{"val":"torque_driveline_tile","id":"ss"},"orientation":{"val":"5","id":"pi"},"clientEnergy":{"val":"0","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"7","id":"pi"},"x":{"val":"-727","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"orientation":{"val":"2","id":"pi"},"teData":{"val":{"id":{"val":"torque_shaft_light_tile","id":"ss"},"orientation":{"val":"5","id":"pi"},"clientEnergy":{"val":"0","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"7","id":"pi"},"x":{"val":"-727","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -531,7 +531,7 @@ rule:
 plugin=awTorqueTile
 number=25
 data:
-JSON:{{"val":{"orientation":{"val":"2","id":"pi"},"teData":{"val":{"id":{"val":"torque_driveline_tile","id":"ss"},"orientation":{"val":"5","id":"pi"},"clientEnergy":{"val":"0","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"7","id":"pi"},"x":{"val":"-726","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"orientation":{"val":"2","id":"pi"},"teData":{"val":{"id":{"val":"torque_shaft_light_tile","id":"ss"},"orientation":{"val":"5","id":"pi"},"clientEnergy":{"val":"0","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"7","id":"pi"},"x":{"val":"-726","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -539,7 +539,7 @@ rule:
 plugin=awTorqueTile
 number=26
 data:
-JSON:{{"val":{"orientation":{"val":"2","id":"pi"},"teData":{"val":{"id":{"val":"torque_driveline_tile","id":"ss"},"orientation":{"val":"5","id":"pi"},"clientEnergy":{"val":"0","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"7","id":"pi"},"x":{"val":"-725","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"orientation":{"val":"2","id":"pi"},"teData":{"val":{"id":{"val":"torque_shaft_light_tile","id":"ss"},"orientation":{"val":"5","id":"pi"},"clientEnergy":{"val":"0","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"7","id":"pi"},"x":{"val":"-725","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -619,7 +619,7 @@ rule:
 plugin=awTorqueTile
 number=36
 data:
-JSON:{{"val":{"orientation":{"val":"0","id":"pi"},"teData":{"val":{"id":{"val":"torque_driveline_tile","id":"ss"},"orientation":{"val":"0","id":"pi"},"clientEnergy":{"val":"0","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"8","id":"pi"},"x":{"val":"-729","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"orientation":{"val":"0","id":"pi"},"teData":{"val":{"id":{"val":"torque_shaft_light_tile","id":"ss"},"orientation":{"val":"0","id":"pi"},"clientEnergy":{"val":"0","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"8","id":"pi"},"x":{"val":"-729","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -755,7 +755,7 @@ rule:
 plugin=awTorqueTile
 number=53
 data:
-JSON:{{"val":{"orientation":{"val":"0","id":"pi"},"teData":{"val":{"id":{"val":"torque_driveline_tile","id":"ss"},"orientation":{"val":"0","id":"pi"},"clientEnergy":{"val":"0","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"9","id":"pi"},"x":{"val":"-729","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"orientation":{"val":"0","id":"pi"},"teData":{"val":{"id":{"val":"torque_shaft_light_tile","id":"ss"},"orientation":{"val":"0","id":"pi"},"clientEnergy":{"val":"0","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"9","id":"pi"},"x":{"val":"-729","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -899,7 +899,7 @@ rule:
 plugin=awTorqueTile
 number=71
 data:
-JSON:{{"val":{"orientation":{"val":"0","id":"pi"},"teData":{"val":{"id":{"val":"torque_driveline_tile","id":"ss"},"orientation":{"val":"0","id":"pi"},"clientEnergy":{"val":"0","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"10","id":"pi"},"x":{"val":"-729","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"orientation":{"val":"0","id":"pi"},"teData":{"val":{"id":{"val":"torque_shaft_light_tile","id":"ss"},"orientation":{"val":"0","id":"pi"},"clientEnergy":{"val":"0","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"10","id":"pi"},"x":{"val":"-729","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -1035,7 +1035,7 @@ rule:
 plugin=awTorqueTile
 number=88
 data:
-JSON:{{"val":{"orientation":{"val":"0","id":"pi"},"teData":{"val":{"id":{"val":"torque_driveline_tile","id":"ss"},"orientation":{"val":"0","id":"pi"},"clientEnergy":{"val":"0","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"11","id":"pi"},"x":{"val":"-729","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"orientation":{"val":"0","id":"pi"},"teData":{"val":{"id":{"val":"torque_shaft_light_tile","id":"ss"},"orientation":{"val":"0","id":"pi"},"clientEnergy":{"val":"0","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"11","id":"pi"},"x":{"val":"-729","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -1171,7 +1171,7 @@ rule:
 plugin=awTorqueTile
 number=105
 data:
-JSON:{{"val":{"orientation":{"val":"0","id":"pi"},"teData":{"val":{"id":{"val":"torque_driveline_tile","id":"ss"},"orientation":{"val":"0","id":"pi"},"clientEnergy":{"val":"0","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"12","id":"pi"},"x":{"val":"-729","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"orientation":{"val":"0","id":"pi"},"teData":{"val":{"id":{"val":"torque_shaft_light_tile","id":"ss"},"orientation":{"val":"0","id":"pi"},"clientEnergy":{"val":"0","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"12","id":"pi"},"x":{"val":"-729","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -1307,7 +1307,7 @@ rule:
 plugin=awTorqueTile
 number=122
 data:
-JSON:{{"val":{"orientation":{"val":"0","id":"pi"},"teData":{"val":{"id":{"val":"torque_driveline_tile","id":"ss"},"orientation":{"val":"0","id":"pi"},"clientEnergy":{"val":"0","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"13","id":"pi"},"x":{"val":"-729","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"orientation":{"val":"0","id":"pi"},"teData":{"val":{"id":{"val":"torque_shaft_light_tile","id":"ss"},"orientation":{"val":"0","id":"pi"},"clientEnergy":{"val":"0","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"13","id":"pi"},"x":{"val":"-729","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -1451,7 +1451,7 @@ rule:
 plugin=awTorqueTile
 number=140
 data:
-JSON:{{"val":{"orientation":{"val":"0","id":"pi"},"teData":{"val":{"id":{"val":"torque_driveline_tile","id":"ss"},"orientation":{"val":"0","id":"pi"},"clientEnergy":{"val":"99","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"14","id":"pi"},"x":{"val":"-729","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"orientation":{"val":"0","id":"pi"},"teData":{"val":{"id":{"val":"torque_shaft_light_tile","id":"ss"},"orientation":{"val":"0","id":"pi"},"clientEnergy":{"val":"99","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"14","id":"pi"},"x":{"val":"-729","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -1595,7 +1595,7 @@ rule:
 plugin=awTorqueTile
 number=158
 data:
-JSON:{{"val":{"orientation":{"val":"2","id":"pi"},"teData":{"val":{"id":{"val":"torque_driveline_tile","id":"ss"},"orientation":{"val":"5","id":"pi"},"clientEnergy":{"val":"99","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"15","id":"pi"},"x":{"val":"-734","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"orientation":{"val":"2","id":"pi"},"teData":{"val":{"id":{"val":"torque_shaft_light_tile","id":"ss"},"orientation":{"val":"5","id":"pi"},"clientEnergy":{"val":"99","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"15","id":"pi"},"x":{"val":"-734","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -1603,7 +1603,7 @@ rule:
 plugin=awTorqueTile
 number=159
 data:
-JSON:{{"val":{"orientation":{"val":"2","id":"pi"},"teData":{"val":{"id":{"val":"torque_driveline_tile","id":"ss"},"orientation":{"val":"5","id":"pi"},"clientEnergy":{"val":"0","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"15","id":"pi"},"x":{"val":"-733","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"orientation":{"val":"2","id":"pi"},"teData":{"val":{"id":{"val":"torque_shaft_light_tile","id":"ss"},"orientation":{"val":"5","id":"pi"},"clientEnergy":{"val":"0","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"15","id":"pi"},"x":{"val":"-733","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -1611,7 +1611,7 @@ rule:
 plugin=awTorqueTile
 number=160
 data:
-JSON:{{"val":{"orientation":{"val":"2","id":"pi"},"teData":{"val":{"id":{"val":"torque_driveline_tile","id":"ss"},"orientation":{"val":"5","id":"pi"},"clientEnergy":{"val":"46","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"15","id":"pi"},"x":{"val":"-732","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"orientation":{"val":"2","id":"pi"},"teData":{"val":{"id":{"val":"torque_shaft_light_tile","id":"ss"},"orientation":{"val":"5","id":"pi"},"clientEnergy":{"val":"46","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"15","id":"pi"},"x":{"val":"-732","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -1619,7 +1619,7 @@ rule:
 plugin=awTorqueTile
 number=161
 data:
-JSON:{{"val":{"orientation":{"val":"2","id":"pi"},"teData":{"val":{"id":{"val":"torque_driveline_tile","id":"ss"},"orientation":{"val":"5","id":"pi"},"clientEnergy":{"val":"0","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"15","id":"pi"},"x":{"val":"-731","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"orientation":{"val":"2","id":"pi"},"teData":{"val":{"id":{"val":"torque_shaft_light_tile","id":"ss"},"orientation":{"val":"5","id":"pi"},"clientEnergy":{"val":"0","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"15","id":"pi"},"x":{"val":"-731","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -1627,7 +1627,7 @@ rule:
 plugin=awTorqueTile
 number=162
 data:
-JSON:{{"val":{"orientation":{"val":"2","id":"pi"},"teData":{"val":{"id":{"val":"torque_driveline_tile","id":"ss"},"orientation":{"val":"5","id":"pi"},"clientEnergy":{"val":"0","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"15","id":"pi"},"x":{"val":"-730","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"orientation":{"val":"2","id":"pi"},"teData":{"val":{"id":{"val":"torque_shaft_light_tile","id":"ss"},"orientation":{"val":"5","id":"pi"},"clientEnergy":{"val":"0","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"237","id":"pi"},"y":{"val":"15","id":"pi"},"x":{"val":"-730","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_shaft","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 
@@ -1635,7 +1635,7 @@ rule:
 plugin=awTorqueTile
 number=163
 data:
-JSON:{{"val":{"orientation":{"val":"0","id":"pi"},"teData":{"val":{"id":{"val":"torque_junction_tile","id":"ss"},"orientation":{"val":"0","id":"pi"},"clientEnergy":{"val":"99","id":"pi"},"energyList":{"val":[{"val":{"energy":{"val":"31.776056603933082","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"32.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"0.0","id":"pd"}},"id":"ct"}],"id":"ls"},"z":{"val":"237","id":"pi"},"y":{"val":"15","id":"pi"},"x":{"val":"-729","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_junction","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"orientation":{"val":"0","id":"pi"},"teData":{"val":{"id":{"val":"torque_junction_light_tile","id":"ss"},"orientation":{"val":"0","id":"pi"},"clientEnergy":{"val":"99","id":"pi"},"energyList":{"val":[{"val":{"energy":{"val":"31.776056603933082","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"0.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"32.0","id":"pd"}},"id":"ct"},{"val":{"energy":{"val":"0.0","id":"pd"}},"id":"ct"}],"id":"ls"},"z":{"val":"237","id":"pi"},"y":{"val":"15","id":"pi"},"x":{"val":"-729","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:torque_junction","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 

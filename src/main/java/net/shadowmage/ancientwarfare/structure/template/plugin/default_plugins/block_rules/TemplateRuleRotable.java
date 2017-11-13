@@ -63,9 +63,11 @@ public class TemplateRuleRotable extends TemplateRuleBlock {
                 tag.setInteger("y", pos.getY());
                 tag.setInteger("z", pos.getZ());
                 worksite.readFromNBT(tag);
-                EnumFacing o = EnumFacing.HORIZONTALS[orientation];
-                for (int i = 0; i < turns; i++) {
-                    o = o.rotateY();
+                EnumFacing o = EnumFacing.VALUES[orientation];
+                if(o.getAxis() != EnumFacing.Axis.Y) {
+                    for (int i = 0; i < turns; i++) {
+                        o = o.rotateY();
+                    }
                 }
                 ((BlockRotationHandler.IRotatableTile) worksite).setPrimaryFacing(o);
                 if (worksite instanceof IBoundedSite && p1 != null && p2 != null) {
