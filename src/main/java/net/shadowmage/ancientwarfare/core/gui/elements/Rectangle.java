@@ -15,7 +15,6 @@ public class Rectangle extends GuiElement {
 
     @Override
     public void render(int mouseX, int mouseY, float partialTick) {
-        GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
         GlStateManager.disableTexture2D();
         GlStateManager.disableLighting();
         setColor(getColor(mouseX, mouseY));
@@ -26,7 +25,6 @@ public class Rectangle extends GuiElement {
         GL11.glVertex2f(renderX + width, renderY);
         GlStateManager.glEnd();
         GlStateManager.color(1.f, 1.f, 1.f, 1.f);
-        GlStateManager.popAttrib();
     }
 
     protected int getColor(int mouseX, int mouseY) {
