@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.core.compat.jei;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeWrapper;
 import mezz.jei.api.recipe.IStackHelper;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.crafting.ResearchRecipe;
@@ -31,7 +32,8 @@ public class ResearchRecipeWrapper implements IRecipeWrapper {
         return recipe.getRecipeHeight();
     }
 
-    public String getResearch() {
-        return I18n.format(ResearchGoal.getGoal(recipe.getNeededResearch()).getName());
+    @Override
+    public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+        minecraft.fontRenderer.drawString(I18n.format(ResearchGoal.getGoal(recipe.getNeededResearch()).getName()), 60, 0, 0x444444, false);
     }
 }

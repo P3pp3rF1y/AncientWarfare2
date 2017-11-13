@@ -8,12 +8,12 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.IRecipeCategory;
 import mezz.jei.config.Constants;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ResearchRecipeCategory implements IRecipeCategory<ResearchRecipeWrapper> {
@@ -25,13 +25,14 @@ public class ResearchRecipeCategory implements IRecipeCategory<ResearchRecipeWra
     private final String localizedName;
     private final IDrawable background;
     private final ICraftingGridHelper craftingGridHelper;
-    private String currentResearch;
+    private final IDrawable icon;
 
     public ResearchRecipeCategory(IGuiHelper guiHelper) {
         ResourceLocation location = Constants.RECIPE_GUI_VANILLA;
         background = guiHelper.createDrawable(location, 0, 60, width, height);
         localizedName = I18n.format("jei.recipe.research_recipe");
         craftingGridHelper = guiHelper.createCraftingGridHelper(craftInputSlot, craftOutputSlot);
+        icon = guiHelper.createDrawable(new ResourceLocation(AncientWarfareCore.modID + ":textures/items/core/research_book.png"), 0, 0, 16, 16, 16, 16);
     }
 
     @Override
@@ -42,6 +43,13 @@ public class ResearchRecipeCategory implements IRecipeCategory<ResearchRecipeWra
     @Override
     public String getTitle() {
         return localizedName;
+    }
+
+
+    @Nullable
+    @Override
+    public IDrawable getIcon() {
+        return icon;
     }
 
     @Override
@@ -72,11 +80,5 @@ public class ResearchRecipeCategory implements IRecipeCategory<ResearchRecipeWra
 
         craftingGridHelper.setInputs(guiItemStacks, inputs, recipeWrapper.getWidth(), recipeWrapper.getHeight());
         guiItemStacks.set(craftOutputSlot, outputs.get(0));
-        currentResearch = recipeWrapper.getResearch();
-    }
-
-    @Override
-    public void drawExtras(Minecraft minecraft) {
-        minecraft.fontRenderer.drawString(currentResearch, 60, 0, 0x444444, false);
     }
 }
