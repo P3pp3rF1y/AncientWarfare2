@@ -48,7 +48,7 @@ public class TorqueTransportSidedRenderer extends TorqueTieredRenderer<TileTorqu
 	}
 
 	private CCModel rotateShaftPart(CCModel part, EnumFacing facing, float rotation) {
-		return part.copy().apply(new Rotation(rotation,
+		return part.copy().apply(new Rotation((facing.getAxis() == EnumFacing.Axis.Y || (facing.ordinal() % 2 == 0)) ? rotation : -rotation,
 				facing.getAxis() == EnumFacing.Axis.X ? 1 : 0,
 				facing.getAxis() == EnumFacing.Axis.Y ? 1 : 0,
 				facing.getAxis() == EnumFacing.Axis.Z ? 1 : 0
