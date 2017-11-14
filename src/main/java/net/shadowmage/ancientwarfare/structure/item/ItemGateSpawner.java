@@ -54,6 +54,7 @@ public class ItemGateSpawner extends ItemBaseStructure implements IItemKeyInterf
     public ItemGateSpawner(String name) {
         super(name);
         setMaxStackSize(1);
+        setHasSubtypes(true);
     }
 
     @Override
