@@ -176,19 +176,19 @@ public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
         @Nonnull ItemStack slotStackCopy = ItemStack.EMPTY;
         Slot theSlot = this.getSlot(slotClickedIndex);
-        if (theSlot != null && theSlot.getHasStack()) {
+        if (theSlot.getHasStack()) {
             @Nonnull ItemStack slotStack = theSlot.getStack();
             slotStackCopy = slotStack.copy();
             if (slotClickedIndex < tileEntity.getSizeInventory())//book slot
             {
                 if (!this.mergeItemStack(slotStack, tileEntity.getSizeInventory(), tileEntity.getSizeInventory() + playerSlots, false))//merge into player inventory
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             } else {
                 if (!this.mergeItemStack(slotStack, 0, tileEntity.getSizeInventory(), false))//merge into player inventory
                 {
-                    return null;
+                    return ItemStack.EMPTY;
                 }
             }
             if (slotStack.getCount() == 0) {
@@ -197,7 +197,7 @@ public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
                 theSlot.onSlotChanged();
             }
             if (slotStack.getCount() == slotStackCopy.getCount()) {
-                return null;
+                return ItemStack.EMPTY;
             }
             theSlot.onTake(par1EntityPlayer, slotStack);
         }
