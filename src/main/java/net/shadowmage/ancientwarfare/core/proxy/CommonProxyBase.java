@@ -1,11 +1,10 @@
 package net.shadowmage.ancientwarfare.core.proxy;
 
-import com.mojang.authlib.GameProfile;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.util.FakePlayerFactory;
+import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
 
+import javax.annotation.Nullable;
 import java.util.UUID;
 
 public class CommonProxyBase {
@@ -27,7 +26,7 @@ public class CommonProxyBase {
         return null;
     }
 
-    public EntityPlayer getFakePlayer(World world, String name, UUID id) {
+    public EntityPlayer getFakePlayer(World world, @Nullable String name, @Nullable UUID id) {
         EntityPlayer player;
         if(id!=null) {
             player = world.getPlayerEntityByUUID(id);
@@ -39,9 +38,9 @@ public class CommonProxyBase {
             if(player!=null){
                 return player;
             }
-            return FakePlayerFactory.get((WorldServer) world, new GameProfile(id, name));
+            return AWFakePlayer.get(world);
         }
-        return FakePlayerFactory.get((WorldServer) world, new GameProfile(id, "AncientWarfare"));
+        return AWFakePlayer.get(world);
     }
 
     public boolean isKeyPressed(String keyName) {

@@ -318,9 +318,10 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
         {
             if (Blocks.CACTUS.canBlockStay(world, scanPos)) {
                 cactusToPlant.add(scanPos);
-            } else if (Blocks.REEDS.canBlockStay(world, scanPos)) {
+            }
+            if (Blocks.REEDS.canBlockStay(world, scanPos)) {
                 reedToPlant.add(scanPos);
-            }else if (isJungleLog(scanPos.west()) || isJungleLog(scanPos.east()) || isJungleLog(scanPos.north()) || isJungleLog(scanPos.south())) {
+            } else if (isJungleLog(scanPos.west()) || isJungleLog(scanPos.east()) || isJungleLog(scanPos.north()) || isJungleLog(scanPos.south())) {
                 cocoaToPlant.add(scanPos);
             }
         }

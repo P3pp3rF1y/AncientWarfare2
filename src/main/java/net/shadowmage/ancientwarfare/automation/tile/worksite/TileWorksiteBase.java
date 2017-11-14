@@ -202,6 +202,10 @@ public abstract class TileWorksiteBase extends TileUpdatable implements ITickabl
         return owner;
     }
 
+    public final EntityPlayer getFakePlayer() {
+        return AncientWarfareCore.proxy.getFakePlayer(getWorld(), null, null);
+    }
+
     private boolean isOwnerReal(){
         return owner!=null && owner.isEntityAlive() && !(owner instanceof FakePlayer);
     }

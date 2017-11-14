@@ -12,7 +12,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.common.util.FakePlayer;
 import net.shadowmage.ancientwarfare.api.IAncientWarfarePlantable;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
@@ -80,10 +79,8 @@ public abstract class TileWorksiteUserBlocks extends TileWorksiteBlockBased {
         if(stack.getItem() instanceof IAncientWarfarePlantable) {
             return ((IAncientWarfarePlantable) stack.getItem()).tryPlant(world, pos.offset(direction), stack.copy());
         }
-        EntityPlayer owner = getOwnerAsPlayer(); //TODO shouldn't this really only ever return fake player?
-        if(owner instanceof FakePlayer){
-            owner.setHeldItem(EnumHand.MAIN_HAND, stack);
-        }
+        EntityPlayer owner = getFakePlayer();
+        owner.setHeldItem(EnumHand.MAIN_HAND, stack);
         return stack.onItemUse(owner, world, pos.offset(direction), EnumHand.MAIN_HAND, face, 0.25F, 0.25F, 0.25F) == EnumActionResult.SUCCESS;
     }
 
