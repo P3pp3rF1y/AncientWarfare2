@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.core.util;
 
+import com.google.common.collect.Lists;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
@@ -9,19 +10,24 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 public class InventoryTools {
 
@@ -568,6 +574,28 @@ public class InventoryTools {
         return map.getItems();
     }
 
+    public static void mergeItemStacks(List<ItemStack> stacks, List<ItemStack> stacksToMerge) {
+        for(ItemStack stackToMerge : stacksToMerge) {
+            if(stackToMerge.isEmpty()) {
+                continue;
+            }
+
+            for(ItemStack stack : stacks) {
+                if(stack.getCount() < stack.getMaxStackSize() && ItemHandlerHelper.canItemStacksStack(stackToMerge, stack)) {
+                    int count = Math.min(stack.getMaxStackSize() - stack.getCount(), stackToMerge.getCount());
+                    stack.grow(count);
+                    stackToMerge.shrink(count);
+                    if(stackToMerge.isEmpty()) {
+                        break;
+                    }
+                }
+            }
+            if(!stackToMerge.isEmpty()) {
+                stacks.add(stackToMerge);
+            }
+        }
+    }
+
     /*
      * Item-stack comparator.  Configurable in constructor to sort by localized or unlocalized name, as well as
      * sort-order (regular or reverse).
@@ -726,4 +754,52 @@ public class InventoryTools {
         }
     }
 
+    public static List<Integer> getEmptySlotsRandomized(IInventory inventory, Random rand)
+    {
+        List<Integer> list = Lists.newArrayList();
+
+        for (int i = 0; i < inventory.getSizeInventory(); ++i)
+        {
+            if (inventory.getStackInSlot(i).isEmpty())
+            {
+                list.add(i);
+            }
+        }
+
+        Collections.shuffle(list, rand);
+        return list;
+    }
+
+    public static void shuffleItems(List<ItemStack> stacks, int numberOfSlots, Random rand)
+    {
+        numberOfSlots = numberOfSlots - stacks.size();
+
+        int MIN_SIZE_TO_SPLIT = 3;
+
+        List<ItemStack> splittableStacks = stacks.stream().filter(s -> (s.getCount() >= MIN_SIZE_TO_SPLIT)).collect(Collectors.toList());
+
+        while (numberOfSlots > 0 && !splittableStacks.isEmpty())
+        {
+            int slot = rand.nextInt(splittableStacks.size());
+
+            ItemStack stack = splittableStacks.get(slot);
+
+            int splitCount = MathHelper.getInt(rand, 1, stack.getCount() / 2);
+            ItemStack splitStack = stack.splitStack(splitCount);
+
+            if(stack.getCount() < MIN_SIZE_TO_SPLIT) {
+                splittableStacks.remove(slot);
+            }
+
+            if(splitStack.getCount() >= MIN_SIZE_TO_SPLIT) {
+                splittableStacks.add(splitStack);
+            }
+
+            stacks.add(splitStack);
+
+            numberOfSlots--;
+        }
+
+        Collections.shuffle(stacks, rand);
+    }
 }

@@ -20,6 +20,7 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules;
 
+import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
@@ -32,13 +33,17 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootTable;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
 import javax.annotation.Nonnull;
+import java.util.List;
 import java.util.Random;
 
 public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
@@ -115,10 +120,34 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
         BlockTools.notifyBlockUpdate(world, pos);
     }
 
-    public void generateLootFor(World world, IInventory inventory, Random rng) {
+    private void generateLootFor(World world, IInventory inventory, Random rng) {
         LootContext.Builder builder = new LootContext.Builder((WorldServer) world);
+        LootTable lootTable = world.getLootTableManager().getLootTableFromLocation(LootTableList.CHESTS_SIMPLE_DUNGEON);
+        LootContext lootContext = builder.build();
+        List<ItemStack> loot = Lists.newArrayList();
         for (int i = 0; i < randomLootLevel; i++) {
-            world.getLootTableManager().getLootTableFromLocation(LootTableList.CHESTS_SIMPLE_DUNGEON).fillInventory(inventory, rng, builder.build());
+            InventoryTools.mergeItemStacks(loot, lootTable.generateLootForPools(rng, lootContext));
+        }
+
+        List<Integer> randomSlots = InventoryTools.getEmptySlotsRandomized(inventory, rng);
+        InventoryTools.shuffleItems(loot, randomSlots.size(), rng);
+
+        for (ItemStack itemstack : loot)
+        {
+            if (randomSlots.isEmpty())
+            {
+                AncientWarfareCore.log.warn("Tried to over-fill a container");
+                return;
+            }
+
+            if (itemstack.isEmpty())
+            {
+                inventory.setInventorySlotContents(randomSlots.remove(randomSlots.size() - 1), ItemStack.EMPTY);
+            }
+            else
+            {
+                inventory.setInventorySlotContents(randomSlots.remove(randomSlots.size() - 1), itemstack);
+            }
         }
     }
 
