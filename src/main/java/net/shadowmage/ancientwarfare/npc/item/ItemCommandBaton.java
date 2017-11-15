@@ -23,6 +23,7 @@ import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.util.RayTraceUtils;
@@ -91,8 +92,10 @@ public class ItemCommandBaton extends ItemBaseNPC implements IItemKeyInterface {
      * Return whether this item is repairable in an anvil.
      */
     @Override
-    public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-        return this.material.getRepairItemStack() == par2ItemStack;
+    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+        ItemStack mat = this.material.getRepairItemStack();
+        if (!mat.isEmpty() && OreDictionary.itemMatches(mat,repair,false)) return true;
+        return super.getIsRepairable(toRepair, repair);
     }
 
     /*

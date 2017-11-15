@@ -24,6 +24,7 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
@@ -41,7 +42,7 @@ public class ItemHammer extends ItemBaseCore implements IItemKeyInterface {
         super(regName);
         //this.setTextureName("ancientwarfare:core/" + regName);
         attackDamage = 4.f + material.getAttackDamage();
-        material = material;
+        this.material = material;
         maxStackSize = 1;
         setMaxDamage(material.getMaxUses());
         setHarvestLevel("hammer", material.getHarvestLevel());
@@ -63,8 +64,10 @@ public class ItemHammer extends ItemBaseCore implements IItemKeyInterface {
      * Return whether this item is repairable in an anvil.
      */
     @Override
-    public boolean getIsRepairable(ItemStack par1ItemStack, ItemStack par2ItemStack) {
-        return this.material.getRepairItemStack() == par2ItemStack || super.getIsRepairable(par1ItemStack, par2ItemStack);
+    public boolean getIsRepairable(ItemStack toRepair, ItemStack repair) {
+        ItemStack mat = this.material.getRepairItemStack();
+        if (!mat.isEmpty() && OreDictionary.itemMatches(mat,repair,false)) return true;
+        return super.getIsRepairable(toRepair, repair);
     }
 
     /*
