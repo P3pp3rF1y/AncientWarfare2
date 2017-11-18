@@ -18,7 +18,7 @@ public class RayTraceUtils {
         if (player.getRidingEntity() != null) {
             excluded.add(player.getRidingEntity());
         }
-        float yOffset = player.world.isRemote ? 0.f : 1.62F;
+        float yOffset = player.getEyeHeight();
         Vec3d look = player.getLookVec();
         look = look.scale(range);
         look = look.addVector(player.posX, player.posY + yOffset, player.posZ);
