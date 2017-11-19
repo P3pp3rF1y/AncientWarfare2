@@ -18,6 +18,7 @@
     }
   },
   "result": {
-    "item": "ancientwarfarestructure:gate_spawner"
+    "item": "ancientwarfarestructure:gate_spawner",
+    "data": 0
   }
 }
