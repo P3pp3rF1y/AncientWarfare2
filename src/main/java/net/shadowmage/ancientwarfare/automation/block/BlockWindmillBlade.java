@@ -23,6 +23,8 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.common.property.Properties;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.automation.render.WindmillBladeRenderer;
 import net.shadowmage.ancientwarfare.automation.render.property.AutomationProperties;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileWindmillBlade;
@@ -111,6 +113,7 @@ public class BlockWindmillBlade extends BlockBaseAutomation implements IBakeryPr
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerClient() {
         ModelLoaderHelper.registerItem(this, WindmillBladeRenderer.MODEL_LOCATION);
 

@@ -15,6 +15,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.automation.render.HandCrankedGeneratorRenderer;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileHandCrankedGenerator;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
@@ -46,6 +48,7 @@ public class BlockHandCrankedGenerator extends BlockTorqueBase implements IBaker
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerClient() {
         super.registerClient();
 

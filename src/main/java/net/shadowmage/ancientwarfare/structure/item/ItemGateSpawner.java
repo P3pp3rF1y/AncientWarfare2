@@ -38,6 +38,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
@@ -235,6 +237,7 @@ public class ItemGateSpawner extends ItemBaseStructure implements IItemKeyInterf
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerClient() {
         ResourceLocation basePath = new ResourceLocation(AncientWarfareCore.modID, "structure/gate_spawner");
         ModelResourceLocation IRON_BASIC = new ModelResourceLocation(basePath, "variant=gate_iron_basic");

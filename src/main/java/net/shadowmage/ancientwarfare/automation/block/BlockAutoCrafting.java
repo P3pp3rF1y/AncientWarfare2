@@ -17,6 +17,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteAutoCrafting;
 import net.shadowmage.ancientwarfare.automation.render.AutoCraftingRenderer;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileAutoCrafting;
@@ -85,6 +87,7 @@ public class BlockAutoCrafting extends BlockWorksiteBase implements IBakeryProvi
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerClient() {
         NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_AUTO_CRAFT, GuiWorksiteAutoCrafting.class);
 

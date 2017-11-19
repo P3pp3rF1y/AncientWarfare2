@@ -167,6 +167,7 @@ public abstract class BlockTorqueBase extends BlockBaseAutomation implements IRo
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerClient() {
         ModelLoaderHelper.registerItem(this, "automation", "normal");
 

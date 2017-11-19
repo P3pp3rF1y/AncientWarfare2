@@ -22,6 +22,8 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.common.property.Properties;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.automation.render.TorqueShaftRenderer;
 import net.shadowmage.ancientwarfare.automation.render.property.AutomationProperties;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaft;
@@ -99,6 +101,7 @@ public class BlockTorqueTransportShaft extends BlockTorqueTransport implements I
             .addKeyProperties(o -> String.format("%.6f",o), AutomationProperties.ROTATIONS).build();
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerClient() {
         ModelLoaderHelper.registerItem(this, "automation", "light", false); //the actual switch for itemstack types is processed by renderer
 

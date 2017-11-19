@@ -170,6 +170,7 @@ public final class BlockGateProxy extends BlockContainer implements IClientRegis
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerClient() {
         ModelResourceLocation modelLocation = new ModelResourceLocation(getRegistryName(), "normal");
         ModelLoaderHelper.registerItem(this, modelLocation);

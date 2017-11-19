@@ -10,6 +10,8 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.gui.GuiResearchBook;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -60,6 +62,7 @@ public class ItemResearchBook extends ItemBaseCore {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerClient() {
         super.registerClient();
 

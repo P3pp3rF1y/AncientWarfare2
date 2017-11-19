@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.item;
 
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.item.ItemBase;
 import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
@@ -14,6 +16,7 @@ public abstract class ItemBaseNPC extends ItemBase implements IClientRegistrar {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerClient() {
         ModelLoaderHelper.registerItem(this, "npc");
     }

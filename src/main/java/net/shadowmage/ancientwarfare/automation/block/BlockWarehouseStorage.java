@@ -19,6 +19,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStorageLarge;
@@ -127,6 +129,7 @@ public class BlockWarehouseStorage extends BlockBaseAutomation {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerClient() {
         final ResourceLocation assetLocation = new ResourceLocation(AncientWarfareCore.modID, "automation/" + getRegistryName().getResourcePath());
 

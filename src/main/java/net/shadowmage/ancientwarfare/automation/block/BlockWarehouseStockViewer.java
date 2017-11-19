@@ -134,6 +134,7 @@ public class BlockWarehouseStockViewer extends BlockBaseAutomation implements IR
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerClient() {
         super.registerClient();
 
