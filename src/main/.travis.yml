@@ -1,8 +1,0 @@
-language: java
-jdk:
-- oraclejdk8
-install: true
-script:
-- "./gradlew clean"
-- "./gradlew setupCIWorkspace"
-- "./gradlew build"
