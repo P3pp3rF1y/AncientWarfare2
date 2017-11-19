@@ -14,7 +14,12 @@ buildscript {
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1+"
     }
+}
+
+plugins {
+    id "com.jfrog.bintray" version "1.5"
 }
 
 // We apply the 'forge' plugin, so ForgeGradle can do it's stuff.
@@ -45,7 +50,7 @@ minecraft{
     mappings = mcp_mappings
     runDir = "run"
 }
-version = minecraft.version + "-" + project.major +"."+ project.minor +"."+  project.build
+version = minecraft.version + "-" + project.major +"."+ project.minor +"."+ getBuildNumber() + getStable()
 group = "shadowmage"
 archivesBaseName = "ancientwarfare"
 
@@ -74,4 +79,41 @@ processResources{
         exclude 'mcmod.info'
     }
     rename '(.+_at.cfg)', 'META-INF/$1'
+}
+
+def getBuildNumber() {
+    if (System.getenv("TRAVIS_BUILD_NUMBER") != null) {
+        return System.getenv("TRAVIS_BUILD_NUMBER").toString()
+    }
+    return ""
+}
+
+def getStable() {
+    if ((System.getenv("DRONE_BRANCH") == null || System.getenv("DRONE_BRANCH").endsWith("-dev"))
+            && (System.getenv("TRAVIS_BRANCH") == null || System.getenv("TRAVIS_BRANCH").endsWith("-dev"))) {
+        return "unstable"
+    }
+    return ""
+}
+
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
+    publish = true
+    filesSpec {
+        from 'build/libs'
+        into '.'
+        exclude '*sources.jar'
+    }
+    pkg {
+        version {
+            name = "${project.version}"
+            released = new Date()
+        }
+        repo = 'maven'
+        name = 'AncientWarfare2'
+        licenses = ['GPL-3.0']
+        vcsUrl = 'https://github.com/P3pp3rF1y/AncientWarfare2.git'
+    }
+
 }
