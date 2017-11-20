@@ -1,6 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.render;
 
-import codechicken.lib.model.PerspectiveAwareModelProperties;
+import codechicken.lib.model.bakedmodels.ModelProperties.PerspectiveProperties;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCModelState;
 import codechicken.lib.render.CCRenderState;
@@ -46,19 +46,19 @@ public class WindmillBladeRenderer extends AnimatedBlockRenderer {
 	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/windmill_blade", "normal");
 	public static final WindmillBladeRenderer INSTANCE = new WindmillBladeRenderer();
 
-	private static final PerspectiveAwareModelProperties MODEL_PROPERTIES;
+	private static final PerspectiveProperties MODEL_PROPERTIES;
 
 	static {
-		TRSRTransformation thirdPerson = TransformUtils.get(0, 2.5f, 0, 75, 225, 0, 0.375f);
+		TRSRTransformation thirdPerson = TransformUtils.create(0, 2.5f, 0, 75, 225, 0, 0.375f);
 		ImmutableMap.Builder<ItemCameraTransforms.TransformType, TRSRTransformation> defaultBlockBuilder = ImmutableMap.builder();
-		defaultBlockBuilder.put(ItemCameraTransforms.TransformType.GUI, TransformUtils.get(0, 0, 0, 30, 225, 90, 0.320f));
-		defaultBlockBuilder.put(ItemCameraTransforms.TransformType.GROUND, TransformUtils.get(0, 3, 0, 0, 0, 0, 0.125f));
-		defaultBlockBuilder.put(ItemCameraTransforms.TransformType.FIXED, TransformUtils.get(0, 0, 0, 0, 0, 0, 0.25f));
+		defaultBlockBuilder.put(ItemCameraTransforms.TransformType.GUI, TransformUtils.create(0, 0, 0, 30, 225, 90, 0.320f));
+		defaultBlockBuilder.put(ItemCameraTransforms.TransformType.GROUND, TransformUtils.create(0, 3, 0, 0, 0, 0, 0.125f));
+		defaultBlockBuilder.put(ItemCameraTransforms.TransformType.FIXED, TransformUtils.create(0, 0, 0, 0, 0, 0, 0.25f));
 		defaultBlockBuilder.put(ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, thirdPerson);
-		defaultBlockBuilder.put(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, TransformUtils.leftify(thirdPerson));
-		defaultBlockBuilder.put(ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, TransformUtils.get(0, 0, 0, 0, 135, 0, 0.2f));
-		defaultBlockBuilder.put(ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, TransformUtils.get(0, 0, 0, 0, 135, 0, 0.2f));
-		MODEL_PROPERTIES = new PerspectiveAwareModelProperties(new CCModelState(defaultBlockBuilder.build()), true, true);
+		defaultBlockBuilder.put(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, TransformUtils.flipLeft(thirdPerson));
+		defaultBlockBuilder.put(ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, TransformUtils.create(0, 0, 0, 0, 135, 0, 0.2f));
+		defaultBlockBuilder.put(ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, TransformUtils.create(0, 0, 0, 0, 135, 0, 0.2f));
+		MODEL_PROPERTIES = new PerspectiveProperties(new CCModelState(defaultBlockBuilder.build()), true, true);
 	}
 
 	private final Collection<CCModel> bladeShaft;
@@ -171,7 +171,7 @@ public class WindmillBladeRenderer extends AnimatedBlockRenderer {
 	}
 
 	@Override
-	public PerspectiveAwareModelProperties getModelProperties(ItemStack stack) {
+	public PerspectiveProperties getModelProperties(ItemStack stack) {
 		return MODEL_PROPERTIES;
 	}
 

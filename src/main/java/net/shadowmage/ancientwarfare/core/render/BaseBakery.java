@@ -1,6 +1,6 @@
 package net.shadowmage.ancientwarfare.core.render;
 
-import codechicken.lib.model.PerspectiveAwareModelProperties;
+import codechicken.lib.model.bakedmodels.ModelProperties.PerspectiveProperties;
 import codechicken.lib.model.bakery.generation.ISimpleBlockBakery;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCModelState;
@@ -58,19 +58,19 @@ public abstract class BaseBakery implements ISimpleBlockBakery {
         iconTransform = new IconTransformation(sprite);
     }
 
-    private static final PerspectiveAwareModelProperties MODEL_PROPERTIES;
+    private static final PerspectiveProperties MODEL_PROPERTIES;
 
     static {
-        TRSRTransformation thirdPerson = TransformUtils.get(0, 2.5f, 0, 75, 225, 0, 0.375f);
+        TRSRTransformation thirdPerson = TransformUtils.create(0, 2.5f, 0, 75, 225, 0, 0.375f);
         ImmutableMap.Builder<ItemCameraTransforms.TransformType, TRSRTransformation> defaultBlockBuilder = ImmutableMap.builder();
-        defaultBlockBuilder.put(ItemCameraTransforms.TransformType.GUI, TransformUtils.get(0, 0, 0, 30, 225, 0, 0.625f));
-        defaultBlockBuilder.put(ItemCameraTransforms.TransformType.GROUND, TransformUtils.get(0, 3, 0, 0, 0, 0, 0.25f));
-        defaultBlockBuilder.put(ItemCameraTransforms.TransformType.FIXED, TransformUtils.get(0, 0, 0, 0, 0, 0, 0.5f));
+        defaultBlockBuilder.put(ItemCameraTransforms.TransformType.GUI, TransformUtils.create(0, 0, 0, 30, 225, 0, 0.625f));
+        defaultBlockBuilder.put(ItemCameraTransforms.TransformType.GROUND, TransformUtils.create(0, 3, 0, 0, 0, 0, 0.25f));
+        defaultBlockBuilder.put(ItemCameraTransforms.TransformType.FIXED, TransformUtils.create(0, 0, 0, 0, 0, 0, 0.5f));
         defaultBlockBuilder.put(ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, thirdPerson);
-        defaultBlockBuilder.put(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, TransformUtils.leftify(thirdPerson));
-        defaultBlockBuilder.put(ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, TransformUtils.get(0, 0, 0, 0, 135, 0, 0.4f));
-        defaultBlockBuilder.put(ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, TransformUtils.get(0, 0, 0, 0, 135, 0, 0.4f));
-        MODEL_PROPERTIES = new PerspectiveAwareModelProperties(new CCModelState(defaultBlockBuilder.build()), true, true);
+        defaultBlockBuilder.put(ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, TransformUtils.flipLeft(thirdPerson));
+        defaultBlockBuilder.put(ItemCameraTransforms.TransformType.FIRST_PERSON_RIGHT_HAND, TransformUtils.create(0, 0, 0, 0, 135, 0, 0.4f));
+        defaultBlockBuilder.put(ItemCameraTransforms.TransformType.FIRST_PERSON_LEFT_HAND, TransformUtils.create(0, 0, 0, 0, 135, 0, 0.4f));
+        MODEL_PROPERTIES = new PerspectiveProperties(new CCModelState(defaultBlockBuilder.build()), true, true);
     }
 
     @Nonnull
@@ -142,7 +142,7 @@ public abstract class BaseBakery implements ISimpleBlockBakery {
     }
 
     @Override
-    public PerspectiveAwareModelProperties getModelProperties(ItemStack stack) {
+    public PerspectiveProperties getModelProperties(ItemStack stack) {
         return MODEL_PROPERTIES;
     }
 }
