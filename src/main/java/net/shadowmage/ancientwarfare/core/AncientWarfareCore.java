@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.core;
 
+import codechicken.lib.CodeChickenLib;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
@@ -39,7 +40,7 @@ import java.util.UUID;
                 modid = AncientWarfareCore.modID,
                 version = "@VERSION@",
                 guiFactory = "net.shadowmage.ancientwarfare.core.gui.options.OptionsGuiFactory",
-                dependencies = "required-after:codechickenlib"
+                dependencies = CodeChickenLib.MOD_VERSION_DEP
         )
 public class AncientWarfareCore {
 
