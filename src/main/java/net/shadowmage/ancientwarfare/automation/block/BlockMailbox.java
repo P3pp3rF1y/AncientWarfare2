@@ -11,6 +11,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.automation.gui.GuiMailboxInventory;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
@@ -99,6 +101,7 @@ public class BlockMailbox extends BlockBaseAutomation implements IRotatableBlock
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerClient() {
         super.registerClient();
 

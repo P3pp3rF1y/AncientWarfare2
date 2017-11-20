@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.npc.item;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -206,31 +207,31 @@ public class ItemCommandBaton extends ItemBaseNPC implements IItemKeyInterface {
         if (player == null || npc == null || stack.isEmpty() || stack.getItem() != this) {
             return;
         }
-        CommandSet.loadFromStack(stack).onNpcClicked(npc, stack);
+        CommandSet.loadFromStack(stack, false).onNpcClicked(npc, stack);
     }
 
     public static List<Entity> getCommandedEntities(World world, ItemStack stack) {
         if (world == null || stack.isEmpty() || !(stack.getItem() instanceof ItemCommandBaton)) {
             return new ArrayList<>();
         }
-        return CommandSet.loadFromStack(stack).getEntities(world);
+        return CommandSet.loadFromStack(stack, world.isRemote).getEntities(world);
     }
 
     /*
-     * relies on NPCs transmitting their unique entity-id to client-side<br>
-     *
-     * @author Shadowmage
-     */
+		 * relies on NPCs transmitting their unique entity-id to client-side<br>
+		 *
+		 * @author Shadowmage
+		 */
     private static class CommandSet {
         private Set<UUID> ids = new HashSet<>();
 
         private CommandSet() {
         }
 
-        public static CommandSet loadFromStack(ItemStack stack) {
+        public static CommandSet loadFromStack(ItemStack stack, boolean client) {
             CommandSet set = new CommandSet();
             if (stack.hasTagCompound() && stack.getTagCompound().hasKey("entityList")) {
-                set.readFromNBT(stack.getTagCompound().getCompoundTag("entityList"));
+                set.readFromNBT(stack.getTagCompound().getCompoundTag("entityList"), client);
             }
             return set;
         }
@@ -239,12 +240,12 @@ public class ItemCommandBaton extends ItemBaseNPC implements IItemKeyInterface {
             stack.setTagInfo("entityList", writeToNBT());
         }
 
-        private void readFromNBT(NBTTagCompound tag) {
+        private void readFromNBT(NBTTagCompound tag, boolean client) {
             NBTTagList entryList = tag.getTagList("entryList", Constants.NBT.TAG_COMPOUND);
             NBTTagCompound idTag;
             for (int i = 0; i < entryList.tagCount(); i++) {
                 idTag = entryList.getCompoundTagAt(i);
-                ids.add(new UUID(idTag.getLong("idmsb"), idTag.getLong("idlsb")));
+                ids.add(idTag.getUniqueId("uuid"));
             }
         }
 
@@ -254,11 +255,11 @@ public class ItemCommandBaton extends ItemBaseNPC implements IItemKeyInterface {
             NBTTagCompound idTag;
             for (UUID id : ids) {
                 idTag = new NBTTagCompound();
-                idTag.setLong("idmsb", id.getMostSignificantBits());
-                idTag.setLong("idlsb", id.getLeastSignificantBits());
+                idTag.setUniqueId("uuid", id);
                 entryList.appendTag(idTag);
             }
             tag.setTag("entryList", entryList);
+
             return tag;
         }
 
@@ -280,6 +281,14 @@ public class ItemCommandBaton extends ItemBaseNPC implements IItemKeyInterface {
                     Entity e = worldServer.getEntityFromUuid(id);
                     if (e != null) {
                         in.add(e);
+                    }
+                }
+            } else if (world instanceof WorldClient) {
+                for(Entity entity: world.loadedEntityList) {
+                    for(UUID id : ids) {
+                        if(entity.getPersistentID().equals(id)) {
+                            in.add(entity);
+                        }
                     }
                 }
             }

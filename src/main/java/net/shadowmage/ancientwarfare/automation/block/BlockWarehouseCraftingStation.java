@@ -8,6 +8,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
@@ -49,6 +51,7 @@ public class BlockWarehouseCraftingStation extends BlockBaseAutomation {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerClient() {
         super.registerClient();
 

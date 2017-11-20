@@ -12,6 +12,8 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
 public class ItemBardInstrument extends ItemBaseNPC {
@@ -64,6 +66,7 @@ public class ItemBardInstrument extends ItemBaseNPC {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerClient() {
         ModelLoaderHelper.registerItem(this, "npc", false, meta -> "variant=" + instrumentNames[meta]);
     }

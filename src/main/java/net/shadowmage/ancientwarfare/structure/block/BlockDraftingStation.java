@@ -79,6 +79,7 @@ public class BlockDraftingStation extends BlockBaseStructure implements IBakeryP
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerClient() {
         NetworkHandler.registerGui(NetworkHandler.GUI_DRAFTING_STATION, GuiDraftingStation.class);
 

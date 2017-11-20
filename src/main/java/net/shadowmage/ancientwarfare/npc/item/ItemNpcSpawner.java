@@ -17,6 +17,8 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.npc.entity.AWNPCEntityLoader;
@@ -142,6 +144,7 @@ public class ItemNpcSpawner extends ItemBaseNPC {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerClient() {
 
         final Map<String, ModelResourceLocation> modelLocations = Maps.newHashMap();

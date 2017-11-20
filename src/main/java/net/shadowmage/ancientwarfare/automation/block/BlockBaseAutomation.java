@@ -6,6 +6,8 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
 import net.shadowmage.ancientwarfare.automation.item.AWAutomationItemLoader;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
@@ -23,6 +25,7 @@ public abstract class BlockBaseAutomation extends BlockBase implements IClientRe
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerClient() {
         final ResourceLocation assetLocation = new ResourceLocation(AncientWarfareCore.modID, "automation/" + getRegistryName().getResourcePath());
 

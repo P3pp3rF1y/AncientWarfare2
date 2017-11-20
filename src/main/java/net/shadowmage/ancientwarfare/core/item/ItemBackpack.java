@@ -11,6 +11,8 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.gui.GuiBackpack;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBackpack;
@@ -77,6 +79,7 @@ public class ItemBackpack extends ItemBaseCore {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerClient() {
         ModelLoaderHelper.registerItem(this, "core", false);
 

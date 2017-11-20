@@ -15,6 +15,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.automation.render.TorqueJunctionRenderer;
 import net.shadowmage.ancientwarfare.automation.render.property.AutomationProperties;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileConduitHeavy;
@@ -48,6 +50,7 @@ public class BlockTorqueJunction extends BlockTorqueTransportSided implements IB
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void registerClient() {
 		ModelLoaderHelper.registerItem(this, "automation", "light", false); //the actual switch for itemstack types is processed by renderer
 

@@ -23,6 +23,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.automation.render.FlywheelStorageRenderer;
 import net.shadowmage.ancientwarfare.automation.render.property.AutomationProperties;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileFlywheelStorage;
@@ -120,6 +122,7 @@ public class BlockFlywheelStorage extends BlockBaseAutomation implements IBakery
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerClient() {
         ModelLoaderHelper.registerItem(this, FlywheelStorageRenderer.LIGHT_MODEL_LOCATION); //the actual switch for itemstack types is processed by renderer
 

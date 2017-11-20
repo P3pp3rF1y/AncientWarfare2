@@ -14,7 +14,12 @@ buildscript {
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1+"
     }
+}
+
+plugins {
+    id "com.jfrog.bintray" version "1.5"
 }
 
 // We apply the 'forge' plugin, so ForgeGradle can do it's stuff.
@@ -45,7 +50,7 @@ minecraft{
     mappings = mcp_mappings
     runDir = "run"
 }
-version = minecraft.version + "-" + project.major +"."+ project.minor +"."+  project.build
+version = minecraft.version + "-" + project.major +"."+ project.minor +"."+ getBuildNumber() + getStable()
 group = "shadowmage"
 archivesBaseName = "ancientwarfare"
 
@@ -73,60 +78,42 @@ processResources{
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
     }
+    rename '(.+_at.cfg)', 'META-INF/$1'
 }
 
-task expand_jar(type: Copy, dependsOn: reobf){
-    from zipTree('build/libs/ancientwarfare-'+version+'.jar')
-    into 'build/tmp/expanded'
-}
-
-task packFullJar(type: Jar, dependsOn: expand_jar){
-    archiveName 'ancientwarfare-'+version+'-FULL.jar'
-    from 'build/tmp/expanded'
-    exclude 'net/shadowmage/ancientwarfare/modeler/', 'net/shadowmage/ancientwarfare/vehicle'
-    manifest {
-        attributes 'FMLAT': "ancientwarfare_at.cfg"
+def getBuildNumber() {
+    if (System.getenv("TRAVIS_BUILD_NUMBER") != null) {
+        return System.getenv("TRAVIS_BUILD_NUMBER").toString()
     }
-    rename 'ancientwarfare_at.cfg', 'META-INF/ancientwarfare_at.cfg'
+    return ""
 }
 
-task packCoreJar(type: Jar, dependsOn: expand_jar){
-    archiveName 'ancientwarfare-'+version+'-CORE.jar'
-    from 'build/tmp/expanded'
-    include 'net/shadowmage/ancientwarfare/api/', 'net/shadowmage/ancientwarfare/core/', 'assets/', 'AW_logo.png', 'mcmod.info', 'net/shadowmage/ancientwarfare/nei_plugin/'
-}
-
-task packAutomationJar(type: Jar, dependsOn: expand_jar){
-    archiveName 'ancientwarfare-'+version+'-AUTOMATION.jar'
-    from 'build/tmp/expanded'
-    include 'net/shadowmage/ancientwarfare/automation/'
-}
-
-task packNpcJar(type: Jar, dependsOn: expand_jar){
-    archiveName 'ancientwarfare-'+version+'-NPC.jar'
-    from 'build/tmp/expanded'
-    include 'net/shadowmage/ancientwarfare/npc/', 'ancientwarfare_at.cfg'
-    manifest {
-        attributes 'FMLAT': "ancientwarfare_at.cfg"
+def getStable() {
+    if ((System.getenv("DRONE_BRANCH") == null || System.getenv("DRONE_BRANCH").endsWith("-dev"))
+            && (System.getenv("TRAVIS_BRANCH") == null || System.getenv("TRAVIS_BRANCH").endsWith("-dev"))) {
+        return "unstable"
     }
-    rename 'ancientwarfare_at.cfg', 'META-INF/ancientwarfare_at.cfg'
+    return ""
 }
 
-task packStructureJar(type: Jar, dependsOn: expand_jar){
-    archiveName 'ancientwarfare-'+version+'-STRUCTURE.jar'
-    from 'build/tmp/expanded'
-    include 'net/shadowmage/ancientwarfare/structure/'
+bintray {
+    user = System.getenv('BINTRAY_USER')
+    key = System.getenv('BINTRAY_KEY')
+    publish = true
+    filesSpec {
+        from 'build/libs'
+        into '.'
+        exclude '*sources.jar'
+    }
+    pkg {
+        version {
+            name = "${project.version}"
+            released = new Date()
+        }
+        repo = 'maven'
+        name = 'AncientWarfare2'
+        licenses = ['GPL-3.0']
+        vcsUrl = 'https://github.com/P3pp3rF1y/AncientWarfare2.git'
+    }
+
 }
-
-artifacts{
-    archives packCoreJar
-    archives packAutomationJar
-    archives packNpcJar
-    archives packStructureJar
-    archives packFullJar
-}
-
-
-
-
-

@@ -3,6 +3,8 @@ package net.shadowmage.ancientwarfare.core.item;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
 import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
@@ -65,6 +67,7 @@ public class ItemMulti extends ItemBase implements IClientRegistrar {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerClient() {
         for (Map.Entry<Integer, String> entry : subItems.entrySet()) {
             ModelLoaderHelper.registerItem(this, entry.getKey(), entry.getValue());

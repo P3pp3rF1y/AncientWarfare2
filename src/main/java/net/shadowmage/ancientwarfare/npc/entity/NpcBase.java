@@ -14,6 +14,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,7 +30,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
@@ -67,6 +67,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     private static final DataParameter<Integer> AI_TASKS = EntityDataManager.createKey(NpcBase.class, DataSerializers.VARINT);
     private static final DataParameter<BlockPos> BED_POS = EntityDataManager.createKey(NpcBase.class, DataSerializers.BLOCK_POS);
+    private static final DataParameter<Byte> BED_DIRECTION = EntityDataManager.createKey(NpcBase.class, DataSerializers.BYTE);
     private static final DataParameter<Boolean> IS_SLEEPING = EntityDataManager.createKey(NpcBase.class, DataSerializers.BOOLEAN);
     private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.createKey(NpcBase.class, DataSerializers.BOOLEAN);
 
@@ -101,10 +102,11 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     private String customTexRef = "";//might as well allow for player-owned as well...
     private boolean usesPlayerSkin = false;
 
-    private EnumFacing bedDirection = EnumFacing.NORTH;
     private BlockPos cachedBedPos;
     private boolean foundBed = false;
     private boolean rainedOn = false;
+    private float originalWidth;
+    private float originalHeight;
 
     public NpcBase(World par1World) {
         super(par1World);
@@ -120,6 +122,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         super.entityInit();
         dataManager.register(AI_TASKS, 0);
         dataManager.register(BED_POS, BlockPos.ORIGIN);
+        dataManager.register(BED_DIRECTION, (byte) EnumFacing.NORTH.ordinal());
         dataManager.register(IS_SLEEPING, false);
         dataManager.register(SWINGING_ARMS, false);
     }
@@ -281,7 +284,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     @Override
     public final double getYOffset() {
-        return -0.5D;//fixes mounted offset for horses, probably minecarts
+        return isRiding() ? -0.5D : 0.0D;//fixes mounted offset for horses, probably minecarts
     }
 
     @Override
@@ -310,7 +313,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         /*
          * need to test how well it works for an npc (perhaps drop sand on their head?)
          */
-        if (!world.isRemote) {
+        if (!world.isRemote && !getSleeping()) {
             this.pushOutOfBlocks(this.posX, (this.getEntityBoundingBox().minY + this.getEntityBoundingBox().maxY) / 2.0D, this.posZ);
         }
         super.onEntityUpdate();
@@ -1075,7 +1078,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         tag.setInteger("armorValueOverride", armorValue);
         tag.setString("customTex", customTexRef);
         tag.setBoolean("aiEnabled", aiEnabled);
-        tag.setByte("bedDirection", (byte) bedDirection.ordinal());
+        tag.setByte("bedDirection", (byte) getBedDirection().ordinal());
         tag.setBoolean("isSleeping", this.getSleeping());
         BlockPos bedPos = this.getBedPosition();
         tag.setLong("bedPos", bedPos.toLong());
@@ -1193,7 +1196,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
                     for (int z = minZ; z <= maxZ; z++) {
                         IBlockState state = world.getBlockState(new BlockPos(x, y, z));
                         if (state.getBlock() instanceof BlockBed) {
-                            if (state.getValue(BlockBed.PART) != BlockBed.EnumPartType.HEAD)
+                            if (state.getValue(BlockBed.PART) != BlockBed.EnumPartType.FOOT)
                                 continue;
                             if (!state.getValue(BlockBed.OCCUPIED)) { // occupied check
                                 foundBeds.add(new BlockPos(x, y, z));
@@ -1219,7 +1222,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
         IBlockState state = world.getBlockState(cachedBedPos);
         if (state.getBlock() instanceof BlockBed) {
-            setBedDirection(state.getValue(BlockBed.FACING));
             return cachedBedPos;
         } else {
             foundBed = false;
@@ -1241,6 +1243,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             world.setBlockState(pos, state);
             setBedPosition(pos);
             setSleeping(true);
+            originalHeight = height;
+            originalWidth = width;
+            setSize(0.2F, 0.2F);
             this.setPositionToBed();
             return true;
         }
@@ -1249,10 +1254,12 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     public void wakeUp() {
         setSleeping(false);
-
         BlockPos bedPos = getBedPosition();
         // set vacant
-        world.setBlockState(bedPos, world.getBlockState(bedPos).withProperty(BlockBed.OCCUPIED, false), 4);
+        IBlockState bedState = world.getBlockState(bedPos);
+        if(bedState.getBlock() == Blocks.BED) {
+            world.setBlockState(bedPos, bedState.withProperty(BlockBed.OCCUPIED, false), 4);
+        }
 
         // Try placing the NPC to an empty spot next to the bed. We don't want them standing on top of the bed, chance for suffocation
         EnumFacing bedDirection = getBedDirection();
@@ -1267,7 +1274,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         if (tryMovingToBedside(offsetPos.offset(bedDirection.rotateY()))) return;
         if (tryMovingToBedside(offsetPos.offset(bedDirection.rotateYCCW()))) return;
 
-        setSleeping(false); //TODO why are there 3 setSleeping(false) here?
+        setSize(originalWidth, originalHeight);
     }
 
     private boolean tryMovingToBedside(BlockPos posToMove) {
@@ -1281,7 +1288,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         this.aiEnabled = false;
         this.setPosition(posToMove.getX() + 0.5, posToMove.getY() + 0.5, posToMove.getZ() + 0.5);
         this.aiEnabled = true;
-        setSleeping(false);
         return true;
     }
 
@@ -1293,40 +1299,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         dataManager.set(BED_POS, pos);
     }
 
-    @Override
-    public void setPosition(double posX, double posY, double posZ) {
-        if (getSleeping()) {
-            this.posX = posX;
-            this.posY = posY;
-            this.posZ = posZ;
-            float width = this.width / 2.0F;
-            float height = this.height;
-
-            double minX = posX - (double) width;
-            double minZ = posZ - (double) width;
-            double maxX = posX + (double) width;
-            double maxZ = posZ + (double) width;
-
-            switch (this.getBedDirection()) {
-                case SOUTH:
-                case NORTH:
-                    minZ -= 0.6f;
-                    maxZ += 0.6f;
-                    break;
-                case WEST:
-                case EAST:
-                    minX -= 0.6f;
-                    maxX += 0.6f;
-                    break;
-            }
-
-            this.setEntityBoundingBox(new AxisAlignedBB(minX, posY - this.getYOffset(), minZ, maxX, posY - this.getYOffset() + (double) height - 1.5f, maxZ));
-            return;
-        }
-
-        super.setPosition(posX, posY, posZ);
-    }
-
     // TODO: sitting around when idle
     //@Override
     //public boolean isRiding() {
@@ -1334,24 +1306,23 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     //}
 
     public void setPositionToBed() {
-        float xOffset = 0.5F;
-        float zOffset = 0.5F;
+        float xOffset = 0.5F + (float)getBedDirection().getFrontOffsetX() * 0.4F;
+        float zOffset = 0.5F + (float)getBedDirection().getFrontOffsetZ() * 0.4F;
 
-        switch (this.getBedDirection()) {
-            case SOUTH:
-                zOffset -= 0.5f;
-                break;
-            case WEST:
-                xOffset += 0.5f;
-                break;
-            case NORTH:
-                zOffset += 0.5f;
-                break;
-            case EAST:
-                xOffset -= 0.5f;
-                break;
-        }
         setPosition(cachedBedPos.getX() + xOffset, cachedBedPos.getY() + 0.6, cachedBedPos.getZ() + zOffset);
+    }
+
+    @Override
+    public void travel(float strafe, float vertical, float forward) {
+        if(getSleeping()) {
+            isJumping = false;
+            moveStrafing = 0.0F;
+            moveForward = 0.0F;
+            randomYawVelocity = 0.0F;
+            super.travel(0, 0, 0);
+        } else {
+            super.travel(strafe, vertical, forward);
+        }
     }
 
     public boolean isBedCacheValid() {
@@ -1384,11 +1355,11 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     public void setBedDirection(EnumFacing direction) {
-        bedDirection = direction;
+        dataManager.set(BED_DIRECTION, (byte) direction.ordinal());
     }
 
     public EnumFacing getBedDirection() {
-        return bedDirection;
+        return EnumFacing.VALUES[dataManager.get(BED_DIRECTION)];
     }
 
     public boolean shouldSleep() {

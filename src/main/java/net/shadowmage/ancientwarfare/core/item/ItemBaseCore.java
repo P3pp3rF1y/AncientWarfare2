@@ -1,5 +1,7 @@
 package net.shadowmage.ancientwarfare.core.item;
 
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
@@ -14,6 +16,7 @@ public abstract class ItemBaseCore extends ItemBase implements IClientRegistrar 
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerClient() {
         ModelLoaderHelper.registerItem(this, "core");
     }

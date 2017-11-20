@@ -23,12 +23,15 @@ package net.shadowmage.ancientwarfare.structure.config;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Locale;
@@ -69,6 +72,8 @@ public class AWStructureStatics extends ModConfiguration {
     private static final String targetBlocks = "e_world_gen_target_blocks";
     private static final String scanSkippedBlocks = "f_scanner_skipped_blocks";
     private static final String townValidTargetBlocksCategory = "g_town_target_blocks";
+
+    private static final Field BIOME_NAME_FIELD = ReflectionHelper.findField(Biome.class, "field_76791_y", "biomeName");
 
     @Override
     public void initializeCategories() {
@@ -917,9 +922,19 @@ public class AWStructureStatics extends ModConfiguration {
     public static Set<String> getUserDefinedTargetBlocks() {
         return worldGenTargetBlocks;
     }
-
     public static String getBiomeName(Biome biome) {
-        return (biome == null || biome.getBiomeName() == null) ? "null" : biome.getBiomeName().toLowerCase(Locale.ENGLISH);
+        if(biome == null) {
+            return "null";
+        }
+        String biomeName;
+        try {
+            biomeName = (String) BIOME_NAME_FIELD.get(biome);
+        }
+        catch(IllegalAccessException e) {
+            AncientWarfareCore.log.error(e);
+            biomeName = null;
+        }
+        return biomeName == null ? "null" : biomeName.toLowerCase(Locale.ENGLISH);
     }
 
     public static boolean shouldSkipScan(Block block) {
