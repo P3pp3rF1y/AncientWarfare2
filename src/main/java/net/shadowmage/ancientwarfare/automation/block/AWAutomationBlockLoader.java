@@ -94,28 +94,28 @@ public class AWAutomationBlockLoader {
     public static void register(RegistryEvent.Register<Block> event) {
         IForgeRegistry<Block> registry = event.getRegistry();
 
-        registry.register(new BlockWorksiteBase("quarry").setTileEntity(WorkSiteQuarry.class).setWorkSize(64));
+        registry.register(new BlockWorksiteBase("quarry").setTileFactory(WorkSiteQuarry::new).setWorkSize(64));
         GameRegistry.registerTileEntity(WorkSiteQuarry.class, "quarry_tile");
 
-        registry.register(new BlockWorksiteBase("tree_farm").setTileEntity(WorkSiteTreeFarm.class));
+        registry.register(new BlockWorksiteBase("tree_farm").setTileFactory(WorkSiteTreeFarm::new));
         GameRegistry.registerTileEntity(WorkSiteTreeFarm.class, "forestry_tile");
 
-        registry.register(new BlockWorksiteBase("crop_farm").setTileEntity(WorkSiteCropFarm.class));
+        registry.register(new BlockWorksiteBase("crop_farm").setTileFactory(WorkSiteCropFarm::new));
         GameRegistry.registerTileEntity(WorkSiteCropFarm.class, "crop_farm_tile");
 
-        registry.register(new BlockWorksiteBase("mushroom_farm").setTileEntity(WorkSiteMushroomFarm.class));
+        registry.register(new BlockWorksiteBase("mushroom_farm").setTileFactory(WorkSiteMushroomFarm::new));
         GameRegistry.registerTileEntity(WorkSiteMushroomFarm.class, "mushroom_farm_tile");
 
-        registry.register(new BlockWorksiteBase("animal_farm").setTileEntity(WorkSiteAnimalFarm.class));
+        registry.register(new BlockWorksiteBase("animal_farm").setTileFactory(WorkSiteAnimalFarm::new));
         GameRegistry.registerTileEntity(WorkSiteAnimalFarm.class, "animal_farm_tile");
 
-        registry.register(new BlockWorksiteBase("fish_farm").setTileEntity(WorkSiteFishFarm.class));
+        registry.register(new BlockWorksiteBase("fish_farm").setTileFactory(WorkSiteFishFarm::new));
         GameRegistry.registerTileEntity(WorkSiteFishFarm.class, "fish_farm_tile");
 
-        registry.register(new BlockWorksiteBase("reed_farm").setTileEntity(WorkSiteReedFarm.class));
+        registry.register(new BlockWorksiteBase("reed_farm").setTileFactory(WorkSiteReedFarm::new));
         GameRegistry.registerTileEntity(WorkSiteReedFarm.class, "reed_farm_tile");
 
-        registry.register(new BlockWorksiteBase("warehouse_control").setTileEntity(TileWarehouse.class).setWorkVerticalSize(4));
+        registry.register(new BlockWorksiteBase("warehouse_control").setTileFactory(TileWarehouse::new).setWorkVerticalSize(4));
         GameRegistry.registerTileEntity(TileWarehouse.class, "warehouse_control_tile");
 
         registry.register(new BlockWarehouseStorage("warehouse_storage"));

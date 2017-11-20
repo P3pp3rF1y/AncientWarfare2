@@ -19,7 +19,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-import java.lang.reflect.Constructor;
+import java.util.function.Supplier;
 
 import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.FACING;
 
@@ -27,7 +27,7 @@ public class BlockWorksiteBase extends BlockBaseAutomation implements IRotatable
 
     public int maxWorkSize = 16;
     public int maxWorkSizeVertical = 1;
-    private Constructor<? extends TileEntity> tile;
+    private Supplier<TileEntity> renderFactory;
 
     public BlockWorksiteBase(String regName) {
         super(Material.WOOD, regName);
@@ -60,12 +60,8 @@ public class BlockWorksiteBase extends BlockBaseAutomation implements IRotatable
         return this;
     }
 
-    public BlockWorksiteBase setTileEntity(Class<? extends TileEntity> clzz) {
-        try {
-            //TODO replace with factory method and ::new
-            tile = clzz.getConstructor();
-        } catch (Exception e) {
-        }
+    public BlockWorksiteBase setTileFactory(Supplier<TileEntity> renderFactory) {
+            this.renderFactory = renderFactory;
         return this;
     }
 
@@ -77,16 +73,12 @@ public class BlockWorksiteBase extends BlockBaseAutomation implements IRotatable
      */
     @Override
     public TileEntity createTileEntity(World world, IBlockState state) {
-        try {
-            return tile.newInstance();
-        } catch (Exception e) {
-        }
-        return null;
+        return renderFactory.get();
     }
 
     @Override
     public boolean hasTileEntity(IBlockState state) {
-        return tile != null;
+        return renderFactory != null;
     }
 
     @Override
