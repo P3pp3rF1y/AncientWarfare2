@@ -16,9 +16,9 @@ import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteAutoC
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.container.ContainerEngineeringStation;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
-import scala.actors.threadpool.Arrays;
 
 import javax.annotation.Nonnull;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
