@@ -1,6 +1,6 @@
 [
 {
-  "modid": "AncientWarfare",
+  "modid": "ancientwarfare",
   "name": "Ancient Warfare Core",
   "description": "Ancient Warfare mod for Minecraft 1.7+",
   "version": "${version}",
@@ -14,7 +14,7 @@
   "dependencies": []
 },
 {
-  "modid": "AncientWarfareVehicle",
+  "modid": "ancientwarfarevehicle",
   "name": "Ancient Warfare Vehicles",
   "description": "Ancient Warfare Vehicles for Minecraft 1.7+",
   "version": "${version}",
@@ -29,7 +29,7 @@
   "dependencies": ["AncientWarfare"]
 },
 {
-  "modid": "AncientWarfareStructure",
+  "modid": "ancientwarfarestructure",
   "name": "Ancient Warfare Structures",
   "description": "Ancient Warfare Structures for Minecraft 1.7+",
   "version": "${version}",
@@ -44,22 +44,7 @@
   "dependencies": ["AncientWarfare"]
 },
 {
-  "modid": "AncientWarfareModeler",
-  "name": "Ancient Warfare Model Editor",
-  "description": "Ancient Warfare Model Editor for Minecraft 1.7+",
-  "version": "${version}",
-  "mcversion": "${mcversion}",
-  "url": "ancientwarfare.wikispaces.com",
-  "updateUrl": "ancientwarfare.wikispaces.com",
-  "authorList": ["shadowmage45"],
-  "credits": "",
-  "logoFile": "",
-  "screenshots": [],
-  "parent":"AncientWarfare",
-  "dependencies": ["AncientWarfare"]
-},
-{
-  "modid": "AncientWarfareAutomation",
+  "modid": "ancientwarfareautomation",
   "name": "Ancient Warfare Automation",
   "description": "Ancient Warfare Automation Module for Minecraft 1.7+",
   "version": "${version}",
@@ -74,7 +59,7 @@
   "dependencies": ["AncientWarfare"]
 },
 {
-  "modid": "AncientWarfareNpc",
+  "modid": "ancientwarfarenpc",
   "name": "Ancient Warfare NPCs",
   "description": "Ancient Warfare NPCs for Minecraft 1.7+",
   "version": "${version}",
