@@ -81,7 +81,7 @@ public class TEGateProxy extends TileEntity implements ITickable{
         if(this.owner != null){
             return owner.getPickedResult(target);
         }
-        return null;
+        return ItemStack.EMPTY;
     }
 
     @Override
