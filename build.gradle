@@ -81,6 +81,12 @@ processResources{
     rename '(.+_at.cfg)', 'META-INF/$1'
 }
 
+jar {
+    manifest {
+        attributes 'FMLAT': 'ancientwarfare_at.cfg'
+    }
+}
+
 def getBuildNumber() {
     if (System.getenv("TRAVIS_BUILD_NUMBER") != null) {
         return System.getenv("TRAVIS_BUILD_NUMBER").toString()
