@@ -4,6 +4,7 @@ import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -101,7 +102,9 @@ public class AncientWarfareNPC {
 
     @EventHandler
     public void init(FMLInitializationEvent evt) {
-        AWJEIPlugin.addNbtItems(AWNPCItems.npcSpawner);
+        if(Loader.isModLoaded("jei")) {
+            AWJEIPlugin.addNbtItems(AWNPCItems.npcSpawner);
+        }
 
         proxy.init();
     }
