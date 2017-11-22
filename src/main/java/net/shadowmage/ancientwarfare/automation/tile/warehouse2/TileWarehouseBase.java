@@ -152,7 +152,9 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
             stackMove = toMove > stack.getCount() ? stack.getCount() : toMove;
             moved = dest.insertItem(stack, stackMove);
             if (moved > 0) {
-                changeCachedQuantity(stack, moved);
+                ItemStack filter = stack.copy();
+                filter.setCount(1);
+                changeCachedQuantity(filter, moved);
             }
             stack.shrink(moved);
             toMove -= moved;
@@ -470,8 +472,10 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
         ItemStack copy = stack.copy();
         for (IWarehouseStorageTile tile : destinations) {
             moved = tile.insertItem(stack, stack.getCount());
+            ItemStack filter = stack.copy();
+            filter.setCount(1);
+            changeCachedQuantity(filter, moved);
             stack.shrink(moved);
-            changeCachedQuantity(copy, moved);
             if (stack.getCount() <= 0) {
                 break;
             }

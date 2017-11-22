@@ -34,9 +34,11 @@ public class TileWarehouse extends TileWarehouseBase {
         int moved;
         for (IWarehouseStorageTile tile : destinations) {
             moved = tile.insertItem(cursorStack, cursorStack.getCount());
-            cursorStack.shrink(moved);
-            changeCachedQuantity(cursorStack, moved);
+            ItemStack filter = cursorStack.copy();
+            filter.setCount(1);
+            changeCachedQuantity(filter, moved);
             updateViewers();
+            cursorStack.shrink(moved);
             if (cursorStack.getCount() <= 0) {
                 break;
             }

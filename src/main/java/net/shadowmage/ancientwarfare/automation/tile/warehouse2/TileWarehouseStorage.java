@@ -34,11 +34,13 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
     @Override
     public ItemStack tryAdd(ItemStack cursorStack) {
         int moved = insertItem(cursorStack, cursorStack.getCount());
-        cursorStack.shrink(moved);
         TileWarehouseBase twb = (TileWarehouseBase) getController();
         if (twb != null) {
-            twb.changeCachedQuantity(cursorStack, moved);
+            ItemStack filter = cursorStack.copy();
+            filter.setCount(1);
+            twb.changeCachedQuantity(filter, moved);
         }
+        cursorStack.shrink(moved);
         if (cursorStack.getCount() <= 0) {
             return ItemStack.EMPTY;
         }
@@ -178,11 +180,13 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
         int stackSize = cursorStack.getCount();
         int moved;
         moved = insertItem(cursorStack, cursorStack.getCount());
-        cursorStack.shrink(moved);
         TileWarehouseBase twb = (TileWarehouseBase) getController();
         if (twb != null) {
-            twb.changeCachedQuantity(cursorStack, moved);
+            ItemStack filter = cursorStack.copy();
+            filter.setCount(1);
+            twb.changeCachedQuantity(filter, moved);
         }
+        cursorStack.shrink(moved);
         if (cursorStack.getCount() <= 0) {
             player.inventory.setItemStack(ItemStack.EMPTY);
         }
