@@ -14,41 +14,11 @@ import net.shadowmage.ancientwarfare.automation.tile.TileChunkLoaderSimple;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 
 public class BlockChunkLoaderSimple extends BlockBaseAutomation {
-
-    //BlockIconMap iconMap = new BlockIconMap();
-
     protected BlockChunkLoaderSimple(String regName) {
         super(Material.ROCK, regName);
         setHardness(2.f);
-//        String icon = "ancientwarfare:automation/" + regName + "_bottom";
-//        setIcon(0, 0, icon);
-//        setIcon(0, 1, icon);
-//        icon = "ancientwarfare:automation/" + regName + "_side";
-//        setIcon(0, 2, icon);
-//        setIcon(0, 3, icon);
-//        setIcon(0, 4, icon);
-//        setIcon(0, 5, icon);
     }
 
-//    public BlockChunkLoaderSimple setIcon(int meta, int side, String texName) {
-//        this.iconMap.setIconTexture(side, meta, texName);
-//        return this;
-//    }
-
-/*
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerBlockIcons(IIconRegister reg) {
-        iconMap.registerIcons(reg);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IIcon getIcon(int side, int meta) {
-        return iconMap.getIconFor(side, meta);
-    }
-
-*/
     @Override
     public boolean hasTileEntity(IBlockState state) {
         return true;

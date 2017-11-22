@@ -37,13 +37,9 @@ public class BlockRotationHandler {
     }
 
     public interface IRotatableBlock {
-        public RotationType getRotationType();
+        RotationType getRotationType();
 
-        public boolean invertFacing();
-
-/* TODO reimplement this icon stuff
-        public Block setIcon(RelativeSide side, String texName);
-*/
+        boolean invertFacing();
     }
 
     public interface IRotatableTile {
@@ -80,11 +76,6 @@ public class BlockRotationHandler {
             return validSides;
         }
     }
-
-//public static enum InventorySide
-//{
-//BOTTOM,TOP,FRONT,REAR,LEFT,RIGHT,NONE;
-//}
 
     public enum RelativeSide {
         TOP("guistrings.inventory.side.top"),

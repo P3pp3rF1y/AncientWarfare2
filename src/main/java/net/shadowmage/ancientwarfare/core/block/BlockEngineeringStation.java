@@ -23,6 +23,7 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.gui.crafting.GuiEngineeringStation;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -33,7 +34,7 @@ import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
-public class BlockEngineeringStation extends BlockRotatableTile implements IClientRegistrar, IBakeryProvider {
+public class BlockEngineeringStation extends BlockBaseCore implements IClientRegistrar, IBakeryProvider, IRotatableBlock {
 
     protected BlockEngineeringStation() {
         super(Material.ROCK, "engineering_station");
