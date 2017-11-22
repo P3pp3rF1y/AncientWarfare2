@@ -23,17 +23,6 @@ public class ContainerSpawnerPlacer extends ContainerBase {
     public int requiredPlayerRange;
     public int spawnRange;
 
-    /*
-     * par1NBTTagCompound.setString("EntityId", this.getEntityNameToSpawn());
-     * par1NBTTagCompound.setShort("Delay", (short)this.spawnDelay);
-     * par1NBTTagCompound.setShort("MinSpawnDelay", (short)this.minSpawnDelay);
-     * par1NBTTagCompound.setShort("MaxSpawnDelay", (short)this.maxSpawnDelay);
-     * par1NBTTagCompound.setShort("SpawnCount", (short)this.spawnCount);
-     * par1NBTTagCompound.setShort("MaxNearbyEntities", (short)this.maxNearbyEntities);
-     * par1NBTTagCompound.setShort("RequiredPlayerRange", (short)this.activatingRangeFromPlayer);
-     * par1NBTTagCompound.setShort("SpawnRange", (short)this.spawnRange);
-     */
-
     public ContainerSpawnerPlacer(EntityPlayer player, int x, int y, int z) {
         super(player);
         @Nonnull ItemStack stack = EntityTools.getItemFromEitherHand(player, ItemSpawnerPlacer.class);

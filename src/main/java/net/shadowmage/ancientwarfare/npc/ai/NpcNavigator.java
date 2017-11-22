@@ -52,7 +52,6 @@ public class NpcNavigator extends PathNavigateGround {
     @Override
     public boolean setPath(Path path, double speed){
         if(hasMount()){
-            //System.out.println("Changing path from "+ Thread.currentThread().getStackTrace()[3]);
             ((EntityLiving)entity.getRidingEntity()).getNavigator().setPath(path, speed);
         }
         return super.setPath(path, speed);
@@ -62,7 +61,6 @@ public class NpcNavigator extends PathNavigateGround {
     public void clearPath(){
         if(hasMount()) {
             ((EntityLiving)entity.getRidingEntity()).getNavigator().clearPath();
-            //System.out.println("Clearing path from " + Thread.currentThread().getStackTrace()[2]);
         }
         super.clearPath();
     }

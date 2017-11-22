@@ -210,13 +210,6 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
         return true;
     }
 
-    /*
-    protected boolean isHostileTowards(Team team) {
-        Team a = getTeam();
-        return a != null && !a.isSameTeam(team);
-    }
-    */
-
     @Override
     public void onWeaponInventoryChanged() {
         updateTexture();

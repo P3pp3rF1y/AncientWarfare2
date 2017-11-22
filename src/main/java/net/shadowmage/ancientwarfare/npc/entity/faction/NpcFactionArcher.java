@@ -43,7 +43,7 @@ public abstract class NpcFactionArcher extends NpcFaction implements IRangedAtta
         this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
         this.tasks.addTask(0, new NpcAIDoor(this, true));
         this.tasks.addTask(1, new NpcAIFollowPlayer(this));
-//  this.tasks.addTask(2, new NpcAIMoveHome(this, 50.f, 5.f, 30.f, 5.f)); 
+//  this.tasks.addTask(2, new NpcAIMoveHome(this, 50.f, 5.f, 30.f, 5.f)); TODO why the archer doesn't have move home?
         this.tasks.addTask(2, new NpcAIFactionArcherStayAtHome(this));
         this.tasks.addTask(3, new NpcAIFactionRangedAttack(this));
 

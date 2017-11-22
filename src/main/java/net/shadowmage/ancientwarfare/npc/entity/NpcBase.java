@@ -299,8 +299,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             return -10;
         else if (stateBelow.getMaterial().isLiquid())//Don't try swimming too much
             return 0;
-        /*if(this.getRidingEntity() instanceof EntityCreature)
-            return ((EntityCreature)this.getRidingEntity()).getBlockPathWeight(varX, varY - 1, varZ);*/
         float level = world.getLightBrightness(pos);//Prefer lit areas
         if (level < 0)
             return 0;
@@ -1278,7 +1276,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     private boolean tryMovingToBedside(BlockPos posToMove) {
-        //System.out.println(x + "x" + y + "x" + z);
         if (world.getBlockState(posToMove).getMaterial().blocksMovement())
             return false;
         if (world.getBlockState(posToMove.up()).getMaterial().blocksMovement())

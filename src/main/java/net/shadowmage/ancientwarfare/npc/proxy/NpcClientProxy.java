@@ -90,15 +90,6 @@ public class NpcClientProxy extends NpcCommonProxy {
         MinecraftForge.EVENT_BUS.register(RenderCommandOverlay.INSTANCE);//register overlay renderer
         MinecraftForge.EVENT_BUS.register(RenderCommandOverlay.INSTANCE);//register block/entity highlight renderer
 
-        //RenderShield shieldRender = new RenderShield();
-/*
-        MinecraftForgeClient.registerItemRenderer(AWNPCItemLoader.woodenShield, shieldRender);
-        MinecraftForgeClient.registerItemRenderer(AWNPCItemLoader.stoneShield, shieldRender);
-        MinecraftForgeClient.registerItemRenderer(AWNPCItemLoader.ironShield, shieldRender);
-        MinecraftForgeClient.registerItemRenderer(AWNPCItemLoader.goldShield, shieldRender);
-        MinecraftForgeClient.registerItemRenderer(AWNPCItemLoader.diamondShield, shieldRender);
-*/
-
         registerClientOptions();
     }
 

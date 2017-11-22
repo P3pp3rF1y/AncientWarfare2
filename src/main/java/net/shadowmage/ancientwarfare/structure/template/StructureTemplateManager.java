@@ -37,7 +37,6 @@ import java.util.HashMap;
 public class StructureTemplateManager {
     private HashMap<String, StructureTemplateClient> clientTemplates = new HashMap<>();//server-side client-templates
     private HashMap<String, BufferedImage> templateImages = new HashMap<>();//server-side images
-    //private HashMap<String,String> imageMD5s = new HashMap<>();
     private HashMap<String, StructureTemplate> loadedTemplates = new HashMap<>();
 
     private StructureTemplateManager() {
@@ -76,9 +75,6 @@ public class StructureTemplateManager {
         PacketStructure pkt = new PacketStructure();
         pkt.packetData.setTag("structureList", list);
         NetworkHandler.sendToPlayer(player, pkt);
-
-//  PacketStructureImageList pkt2 = new PacketStructureImageList(this.imageMD5s);
-//  NetworkHandler.sendToPlayer(player, pkt2);
     }
 
     public boolean removeTemplate(String name) {

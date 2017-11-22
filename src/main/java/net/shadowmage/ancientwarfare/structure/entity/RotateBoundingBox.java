@@ -53,13 +53,13 @@ public class RotateBoundingBox extends AxisAlignedBB{
                 }
                 double length = MathHelper.sin(angle * TO_RAD) * (maxY - minY + 1);
                 switch (facing.getHorizontalIndex()) {
-                    case 0://z++
+                    case 0:
                         return mask.minZ < length + minZ && mask.maxZ > minZ;
-                    case 1://x--
+                    case 1:
                         return mask.maxX > maxX - length && mask.minX < maxX;
-                    case 2://z--
+                    case 2:
                         return mask.maxZ > maxZ - length && mask.minZ < maxZ;
-                    case 3://x++
+                    case 3:
                         return mask.minX < length + minX && mask.maxX > minX;
                 }
             }

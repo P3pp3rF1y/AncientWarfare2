@@ -170,7 +170,6 @@ public class ItemSlot extends GuiElement {
         float scale = stackSize > 99 ? 0.5f : 1.f;
         int oy1 = stackSize > 99 ? 6 : 0;
 
-//  w *= scale;
         GlStateManager.scale(scale, scale, scale);
 
         fr.drawStringWithShadow(s1, -(int) w, oy1, 16777215);

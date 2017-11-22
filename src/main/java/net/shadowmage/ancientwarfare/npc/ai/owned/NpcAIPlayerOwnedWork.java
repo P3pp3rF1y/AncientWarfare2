@@ -56,14 +56,11 @@ public class NpcAIPlayerOwnedWork extends NpcAI<NpcBase> {
         WorkEntry entry = order.get(workIndex);
         BlockPos pos = entry.getPosition();
         double dist = npc.getDistanceSq(pos);
-//  AWLog.logDebug("distance to site: "+dist);
         if (dist > ((IWorker)npc).getWorkRangeSq()) {
-//    AWLog.logDebug("moving to worksite..."+pos);
             npc.addAITask(TASK_MOVE);
             ticksAtSite = 0;
             moveToPosition(pos, dist);
         } else {
-//    AWLog.logDebug("working at site....."+pos);
             if(dist < 10 || shouldMoveFromTimeAtSite(entry) || shouldMoveFromNoWork(entry)) {
                 npc.getNavigator().clearPath();
                 npc.removeAITask(TASK_MOVE);

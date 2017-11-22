@@ -65,20 +65,17 @@ public class MailboxData extends WorldSavedData {
 
     public boolean addMailbox(String owner, String name) {
         MailboxSet set = owner == null ? publicMailboxes : getOrCreatePrivateMailbox(owner);
-//  AWLog.logDebug("creating mailbox of name: "+name+" for owner: "+owner + " in set: "+set);
         return set.addMailbox(name);
     }
 
     public boolean deleteMailbox(String owner, String name) {
         MailboxSet set = owner == null ? publicMailboxes : getOrCreatePrivateMailbox(owner);
-//  AWLog.logDebug("deleting mailbox of name: "+name+" for owner: "+owner + " in set: "+set);
         return set.deleteMailbox(name);
     }
 
     public void addDeliverableItem(String owner, String name, ItemStack item, int dim, BlockPos pos) {
         MailboxSet set = owner == null ? publicMailboxes : getOrCreatePrivateMailbox(owner);
         MailboxEntry entry = set.getOrCreateMailbox(name);
-//  AWLog.logDebug("adding deliverable item to: "+set.owningPlayerName +" :: "+entry+ " of: "+item);
         entry.addDeliverableItem(item, dim, pos);
         markDirty();
     }

@@ -54,7 +54,6 @@ public final class RenderGateRotatingBridge extends Render {
             rx *= -1;
             rz *= -1;
         }
-//  GlStateManager.rotate(90, 0, 1, 0);
         GlStateManager.translate(0, -0.5f, 0);
         GlStateManager.rotate(rx, 1, 0, 0);
         GlStateManager.rotate(rz, 0, 0, 1);

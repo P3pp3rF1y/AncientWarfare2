@@ -54,7 +54,6 @@ public class TemplateRuleBlockSign extends TemplateRuleVanillaBlocks {
     @Override
     public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
         Block block = Block.getBlockFromName(blockName);
-//  Block block = wall? Blocks.WALL_SIGN : Blocks.STANDING_SIGN;//BlockDataManager.getBlockByName(blockName);
         int meta = 0;
         if (block == Blocks.STANDING_SIGN) {
             meta = (this.meta + 4 * turns) % 16;

@@ -417,7 +417,7 @@ public class InventoryTools {
     }
 
     /*
-     * drops the input itemstack into the world at the input position;
+     * drops the input itemstack into the world at the input position
      */
     public static void dropItemInWorld(World world, ItemStack item, BlockPos pos) {
         dropItemInWorld(world, item, pos.getX(), pos.getY(), pos.getZ());

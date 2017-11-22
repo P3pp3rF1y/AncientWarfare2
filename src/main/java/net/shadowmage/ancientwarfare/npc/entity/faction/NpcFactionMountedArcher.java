@@ -26,7 +26,7 @@ public abstract class NpcFactionMountedArcher extends NpcFactionMounted implemen
 
     public NpcFactionMountedArcher(World par1World) {
         super(par1World);
-//  this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
+//  this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.BOW)); TODO figure out if we need this code back
         Predicate<Entity> selector = entity -> {
 //      if(!canEntityBeSeen(entity)){return false;}
 			if (!isHostileTowards(entity)) {
@@ -49,7 +49,7 @@ public abstract class NpcFactionMountedArcher extends NpcFactionMounted implemen
         this.tasks.addTask(1, new NpcAIFollowPlayer(this));
         this.tasks.addTask(2, new NpcAIFactionArcherStayAtHome(this));
         this.tasks.addTask(3, new NpcAIFactionRangedAttack(this));
-//  this.tasks.addTask(2, new NpcAIMoveHome(this, 50.f, 5.f, 30.f, 5.f)); 
+//  this.tasks.addTask(2, new NpcAIMoveHome(this, 50.f, 5.f, 30.f, 5.f)); TODO figure out if this needs to be uncommented
 //  this.tasks.addTask(3, new EntityAIArrowAttack(this, 1.0D, 20, 60, 15.0F));
 
         this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));

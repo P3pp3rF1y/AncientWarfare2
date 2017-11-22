@@ -8,8 +8,6 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 
 public final class Timekeeper {
-    //public static final Timekeeper INSTANCE = new Timekeeper();
-    
     private static int timeOfDayInTicks;
     private static int timeOfDayHourRaw;
     private static int timeOfDayHour;

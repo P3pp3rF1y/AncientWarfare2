@@ -300,7 +300,6 @@ public class ModelPiece {
             g = (byte) ((model.iterationNum >> 7) & 0x7f);
             b = (byte) ((model.iterationNum >> 0) & 0x7f);
 
-//    AWLog.logDebug("rendering for selection: "+model.iterationNum+" :: "+r+","+g+","+b);    
             GL11.glColor3b(r, g, b);
 
             GlStateManager.pushMatrix();

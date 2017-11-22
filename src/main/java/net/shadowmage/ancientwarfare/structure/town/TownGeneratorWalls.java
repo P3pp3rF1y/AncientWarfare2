@@ -101,14 +101,11 @@ public class TownGeneratorWalls {
         } else if (template.getWallStyle() == 3)//patterned
         {
             int[] pattern = template.getWallPattern(wallLength);
-//    AWLog.logDebug("found pattern for wall size: "+wallLength+ "::" +Arrays.toString(pattern)+" op index: "+index);
             if (pattern != null && wallLength <= pattern.length) {
                 TownWallEntry entry = template.getWall(template.getWallPattern(wallLength)[index]);
                 if (entry != null) {
-//        AWLog.logDebug("found wall entry for index: "+entry.templateName+" :: "+entry.typeName);
                     return StructureTemplateManager.INSTANCE.getTemplate(entry.templateName);
                 } else {
-//        AWLog.logDebug("Could not locate wall entry for index: "+index);
                 }
             }
         }

@@ -53,11 +53,6 @@ public class AWCoreItemLoader {
         registry.register(new ItemBaseCore("steel_ingot") {});
     }
 
-//    public Item register(Item item, String name, String textPrefix) {
-//        item.setTextureName(textPrefix + name);
-//        return register(item, name);
-//    }
-
     public String getName(ToolMaterial material) {
         if (material == ToolMaterial.WOOD)
             return "wooden";

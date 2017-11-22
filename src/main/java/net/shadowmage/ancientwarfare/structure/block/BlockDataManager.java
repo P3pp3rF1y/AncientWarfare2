@@ -153,7 +153,6 @@ public class BlockDataManager {
                 } else {
                     info.noItemFlags[blockMeta] = true;
                 }
-                //leave null;
             } else {
                 item = Item.REGISTRY.getObject(new ResourceLocation(itemName));
                 if (item != null) {

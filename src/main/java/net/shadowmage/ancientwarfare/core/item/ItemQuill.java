@@ -31,7 +31,6 @@ public class ItemQuill extends ItemBaseCore {
     public ItemQuill(String regName, ToolMaterial material) {
         super(regName);
         this.material = material;
-        //this.setTextureName("ancientwarfare:core/" + regName);
         attackDamage = 1.f + material.getAttackDamage();
         maxStackSize = 1;
         setMaxDamage(material.getMaxUses());

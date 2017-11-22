@@ -67,13 +67,11 @@ public class ItemBlockStructureBuilder extends ItemBlockBase implements IBoxRend
             }
         }
         items.addAll(displayCache);
-//  super.getSubItems(p_150895_1_, p_150895_2_, p_150895_3_);
     }
 
     @Override
     public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
         if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey("structureName")) {
-//    stack.setTagInfo("structureName", new NBTTagString("no_selection")); 
             return false;
         }
         boolean val = super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, newState);

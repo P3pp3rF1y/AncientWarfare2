@@ -41,7 +41,6 @@ public class ContainerChunkLoaderDeluxe extends ContainerTileBase<TileChunkLoade
                 ccip = new ChunkPos(ccipTag.getInteger("x"), ccipTag.getInteger("z"));
                 ccipSet.add(ccip);
             }
-//    AWLog.logDebug("received forced chunk set of: "+ccipSet);
             refreshGui();
         }
         else if (tag.hasKey("forced")) {

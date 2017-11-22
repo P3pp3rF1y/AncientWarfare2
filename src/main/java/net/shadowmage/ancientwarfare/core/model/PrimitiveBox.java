@@ -248,7 +248,6 @@ public class PrimitiveBox extends Primitive {
 
     @Override
     public void readFromLine(String[] lineBits) {
-//  String parent = lineBits[0];
         x = StringTools.safeParseFloat(lineBits[1]);
         y = StringTools.safeParseFloat(lineBits[2]);
         z = StringTools.safeParseFloat(lineBits[3]);

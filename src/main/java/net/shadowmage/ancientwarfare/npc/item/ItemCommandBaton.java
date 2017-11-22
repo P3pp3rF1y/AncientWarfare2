@@ -43,7 +43,7 @@ import java.util.UUID;
 public class ItemCommandBaton extends ItemBaseNPC implements IItemKeyInterface {
 
     private final double attackDamage;
-    int range = 120;//TODO set range from config;
+    int range = 120;//TODO set range from config
     private final ToolMaterial material;
 
     public ItemCommandBaton(String name, ToolMaterial material) {

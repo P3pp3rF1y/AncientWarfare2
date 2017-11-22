@@ -189,9 +189,6 @@ public class PrimitiveTriangle extends Primitive {
         u3 = (float) Math.sin(radianAngle) * length;
         v3 = (float) Math.cos(radianAngle) * length;
 
-
-//  AWLog.logDebug(String.format("orig: %.2f, %.2f, %.2f, %.2f, %.2f, %.2f  new: %.2f, %.2f, %.2f, %.2f, %.2f, %.2f", u1(), v1(), u2(), v2(), u3(), v3(), u1, v1, u2, v2, u3, v3));
-
         setUV(u1, v1, u2, v2, u3, v3);
     }
 
@@ -218,7 +215,6 @@ public class PrimitiveTriangle extends Primitive {
 
     @Override
     public void readFromLine(String[] lineBits) {
-//  String parent = lineBits[0];
         x = StringTools.safeParseFloat(lineBits[1]);
         y = StringTools.safeParseFloat(lineBits[2]);
         z = StringTools.safeParseFloat(lineBits[3]);
@@ -432,17 +428,6 @@ public class PrimitiveTriangle extends Primitive {
         }
     }
 
-///*
-// * should only be called when loading from disk?
-// * @param cx
-// * @param cy
-// */
-//public void setCenterx(float cx, float cy)
-//  {
-//  this.cx = cx;
-//  this.cy = cy;
-//  }
-
     public static class Point2i {
         public int x;
         public int y;
@@ -452,6 +437,4 @@ public class PrimitiveTriangle extends Primitive {
             this.y = y;
         }
     }
-
-
 }

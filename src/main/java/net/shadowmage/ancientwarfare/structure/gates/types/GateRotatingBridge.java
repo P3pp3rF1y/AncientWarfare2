@@ -80,7 +80,6 @@ public class GateRotatingBridge extends Gate {
         if (!open) {
             return super.canActivate(gate, false);
         } else {
-//    boolean wideOnXAxis = gate.pos1.getX()!=gate.pos2.getX();
             BlockPos min = BlockTools.getMin(gate.pos1, gate.pos2);
             BlockPos max = BlockTools.getMax(gate.pos1, gate.pos2);
             int heightAdj = max.getY() - min.getY();
@@ -124,34 +123,6 @@ public class GateRotatingBridge extends Gate {
         BlockPos min = BlockTools.getMin(gate.pos1, gate.pos2).add(0, 1, 0);
         BlockPos max = BlockTools.getMax(gate.pos1, gate.pos2);
         removeBetween(gate.world, min, max);
-
-//  int heightAdj = max.getY() - min.getY();
-//  BlockPos pos3 = max.copy();
-//  pos3.getY() = min.getY();
-//  adjustBounds(pos3, heightAdj, gate.gateOrientation);  
-//  BlockPos minTemp = min.copy();
-//  min = BlockTools.getMin(min, pos3);    
-//  max = BlockTools.getMax(minTemp, pos3);
-//  for(int x = min.getX(); x <= max.getX(); x++)
-//    {
-//    for(int y = min.getY(); y <=max.getY(); y++)
-//      {
-//      for(int z = min.getZ(); z<= max.getZ(); z++)
-//        {
-//        id = gate.world.getBlock(x, y, z);
-//        if(id==Blocks.AIR)
-//          {
-//          gate.world.setBlock(x, y, z, AWStructuresItemLoader.gateProxy);
-//          TileEntity te = gate.world.getTileEntity(x, y, z);
-//          if(te!=null && te instanceof TEGateProxy)
-//            {
-//            TEGateProxy teg = (TEGateProxy)te;
-//            teg.setOwner(gate);
-//            }
-//          }
-//        }
-//      }
-//    }
     }
 
     @Override
@@ -193,33 +164,6 @@ public class GateRotatingBridge extends Gate {
     @Override
     public void onGateFinishClose(EntityGate gate) {
         super.onGateFinishClose(gate);
-//  boolean widestOnXAxis = gate.pos1.getX() != gate.pos2.getX();
-//  int heightAdj = max.getY() - min.getY();
-//  BlockPos pos3 = max.copy();
-//  pos3.getY() = min.getY();
-//  adjustBounds(pos3, heightAdj, gate.gateOrientation);  
-//  BlockPos minTemp = min.copy();
-//  min = BlockTools.getMin(min, pos3);    
-//  max = BlockTools.getMax(minTemp, pos3);
-//  Block id;
-//  for(int x = min.getX(); x <= max.getX(); x++)
-//    {
-//    for(int y = min.getY(); y <=max.getY(); y++)
-//      {
-//      for(int z = min.getZ(); z<= max.getZ(); z++)
-//        {
-//        if((widestOnXAxis && z==gate.pos1.getZ()) || (!widestOnXAxis && x==gate.pos1.getX()))
-//          {
-//          continue;
-//          }
-//        id = gate.world.getBlock(x, y, z);
-//        if(id==AWStructuresItemLoader.gateProxy)
-//          {
-//          gate.world.setBlockToAir(x, y, z);
-//          }
-//        }
-//      }
-//    }
     }
 
 }

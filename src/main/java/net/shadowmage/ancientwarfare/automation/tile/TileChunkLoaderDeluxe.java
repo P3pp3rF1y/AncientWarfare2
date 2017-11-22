@@ -74,8 +74,6 @@ public class TileChunkLoaderDeluxe extends TileChunkLoaderSimple implements IInt
         for (ChunkPos ccip : ccipSet) {
             ForgeChunkManager.forceChunk(this.chunkTicket, ccip);
         }
-//  AWLog.logDebug("ticket now has chunks: "+tk.getChunkList());
-//  AWLog.logDebug("total forced chunks are: "+ForgeChunkManager.getPersistentChunksFor(world));
     }
 
     @Override

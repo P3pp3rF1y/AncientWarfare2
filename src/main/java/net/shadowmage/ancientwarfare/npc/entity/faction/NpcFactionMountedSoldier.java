@@ -20,7 +20,7 @@ public abstract class NpcFactionMountedSoldier extends NpcFactionMounted {
 
     public NpcFactionMountedSoldier(World par1World) {
         super(par1World);
-//  this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SWORD));
+//  this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SWORD)); TODO uncomment?
 
         this.tasks.addTask(0, new EntityAISwimming(this));
         this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));

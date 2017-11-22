@@ -6,9 +6,21 @@ import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.block.Direction;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
-import net.shadowmage.ancientwarfare.core.gui.elements.*;
+import net.shadowmage.ancientwarfare.core.gui.elements.Button;
+import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
+import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
+import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
+import net.shadowmage.ancientwarfare.core.gui.elements.Label;
+import net.shadowmage.ancientwarfare.core.gui.elements.Line;
+import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
 import net.shadowmage.ancientwarfare.npc.container.ContainerTradeOrder;
-import net.shadowmage.ancientwarfare.npc.trade.*;
+import net.shadowmage.ancientwarfare.npc.trade.POTradeDepositEntry;
+import net.shadowmage.ancientwarfare.npc.trade.POTradePoint;
+import net.shadowmage.ancientwarfare.npc.trade.POTradeRestockData;
+import net.shadowmage.ancientwarfare.npc.trade.POTradeRoute;
+import net.shadowmage.ancientwarfare.npc.trade.POTradeWithdrawEntry;
+import net.shadowmage.ancientwarfare.npc.trade.Trade;
+import net.shadowmage.ancientwarfare.npc.trade.TradeList;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -407,7 +419,6 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
         restockArea.addGuiElement(deleteButton);
 
         startHeight += 18;
-//  restockArea.addGuiElement(new Line(0, startHeight+2, xSize, startHeight+2, 1, 0x000000ff));
         startHeight += 5;
         return startHeight;
     }
@@ -442,7 +453,6 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
         restockArea.addGuiElement(deleteButton);
 
         startHeight += 18;
-//  restockArea.addGuiElement(new Line(0, startHeight+2, xSize, startHeight+2, 1, 0x000000ff));
         startHeight += 5;
         return startHeight;
     }

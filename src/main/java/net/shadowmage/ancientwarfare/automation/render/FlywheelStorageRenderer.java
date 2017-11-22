@@ -214,7 +214,6 @@ public class FlywheelStorageRenderer implements ILayeredBlockBakery {
                         transformedGroups.addAll(transformModels(lowerShroud, translation));//at ground level
                     }
                 } else {
-                    //TODO set alpha channel GlStateManager.color(1, 1, 1, 0.25f);
                     transformedGroups.addAll(transformModels(lowerWindow, translation));
                     if (i < height - 1) {
                         transformedGroups.addAll(transformModels(upperWindow, translation));

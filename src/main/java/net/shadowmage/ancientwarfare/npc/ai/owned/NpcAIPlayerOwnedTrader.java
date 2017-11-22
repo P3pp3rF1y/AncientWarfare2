@@ -58,7 +58,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
     private BlockPos shelterPoint;
 
     /*
-     * convenience access fields;
+     * convenience access fields
      * trade orders is set/updated when orders item is changed or when entity is loaded from NBT
      */
     private TradeOrder orders;

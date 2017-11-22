@@ -165,11 +165,9 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
                 shears = stack;
             }
         }
-//  AWLog.logDebug("counting animal farm resources.."+wheatCount+","+seedCount+","+carrotCount+","+bucketCount+","+shears);
     }
 
     private void rescan() {
-//  AWLog.logDebug("rescanning animal farm");
         pigsToBreed.clear();
         cowsToBreed.clear();
         cowsToMilk = 0;
@@ -278,7 +276,6 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 
     @Override
     protected boolean processWork() {
-//  AWLog.logDebug("processing animal farm work!");
         if (!cowsToBreed.isEmpty() && wheatCount >= 2) {
             if (tryBreeding(cowsToBreed)) {
                 wheatCount -= 2;

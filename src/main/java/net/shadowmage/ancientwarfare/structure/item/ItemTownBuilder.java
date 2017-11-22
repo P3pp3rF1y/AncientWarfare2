@@ -21,19 +21,6 @@ public class ItemTownBuilder extends ItemBaseStructure implements IItemKeyInterf
         //TODO make texture (uses structure builder one currently)
     }
 
-//@SuppressWarnings({ "unchecked", "rawtypes" })
-//@Override
-//public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag)
-//  {
-//  String structure = "guistrings.no_selection";
-//  ItemStructureSettings.getSettingsFor(stack, viewSettings);
-//  if(viewSettings.hasName())
-//    {
-//    structure = viewSettings.name;
-//    }  
-//  list.add(I18n.format("guistrings.current_structure")+" "+I18n.format(structure));
-//  }
-
     @Override
     public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player) {
         return false;

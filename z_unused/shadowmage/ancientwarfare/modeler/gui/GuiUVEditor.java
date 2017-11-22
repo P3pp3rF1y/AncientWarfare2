@@ -135,7 +135,7 @@ public class GuiUVEditor extends GuiContainerBase {
     }
 
     /*
-     * should be called whenever a piece moves and the texture needs updating;
+     * should be called whenever a piece moves and the texture needs updating
      */
     private void updateTexture() {
         for (int x = 0; x < GuiModelEditor.image.getWidth(); x++) {

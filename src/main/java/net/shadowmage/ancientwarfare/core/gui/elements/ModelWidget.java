@@ -347,8 +347,6 @@ public class ModelWidget extends GuiElement {
         GlStateManager.enableTexture2D();
         int color = (r << 14) | (g << 7) | b;
 
-//  AWLog.logDebug("picked color: "+color+" rgb: "+r+","+g+","+b);
-
         GlStateManager.clearColor(.2f, .2f, .2f, 1.f);
         GlStateManager.clear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
         Primitive p = model.getPrimitive(color);

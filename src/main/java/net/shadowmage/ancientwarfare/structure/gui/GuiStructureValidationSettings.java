@@ -113,8 +113,6 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
         this.refreshGui();
     }
 
-//private HashMap<GuiElement, String> elementToPropertyName = new HashMap<>();
-
     @Override
     public void setupElements() {
         typeLabel.setText(I18n.format("guistrings.validation_type") + ": " + parent.validationType.getName());

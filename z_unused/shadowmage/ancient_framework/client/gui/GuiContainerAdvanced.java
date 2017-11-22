@@ -437,7 +437,6 @@ public void drawExtraForeground(int mouseX, int mouseY, float partialTick)
 
 protected void drawTooltips(int mouseX, int mouseY, float partialTick)
   {
-  //Config.logDebug("Gui mouse element: " + this.currentMouseElement);
   if(this.currentMouseElement instanceof GuiItemStack)
     {    
     GuiItemStack slot = (GuiItemStack)this.currentMouseElement;
@@ -527,11 +526,9 @@ public void renderItemStack(ItemStack stack, int x, int y, int mouseX, int mouse
     if(!defer)
       {
       this.drawItemStackTooltip(stack, x, y);
-//      this.renderTooltip(x, y, stack.getTooltip(player, false));
       }
     else
       {
-//      Config.logDebug("delaying tooltip for: "+stack);
       this.tooltipStack = stack;
       this.tooltipStackX = x;
       this.tooltipStackY = y;      

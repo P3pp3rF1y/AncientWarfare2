@@ -26,7 +26,6 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
 
     public GuiWarehouseStorage(ContainerBase par1Container) {
         super(par1Container, 178, 240);
-        //  this.ySize = container.guiHeight;
     }
 
     @Override
