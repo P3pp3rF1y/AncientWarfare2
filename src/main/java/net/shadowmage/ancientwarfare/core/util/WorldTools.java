@@ -22,8 +22,7 @@ public class WorldTools {
 				for(int z = (z1 >> 4); z <= (z2 >> 4); z++) {
 					Chunk chunk = world.getChunkFromChunkCoords(x, z);
 					if(chunk != null) {
-						for(Object obj : chunk.getTileEntityMap().values()) {
-							TileEntity entity = (TileEntity) obj;
+						for(TileEntity entity : chunk.getTileEntityMap().values()) {
 							if(!entity.isInvalid()) {
 								if(entity.getPos().getX() >= x1 && entity.getPos().getY() >= y1 && entity.getPos().getZ() >= z1 && entity.getPos().getX() <= x2 && entity.getPos().getY() <= y2 && entity.getPos().getZ() <= z2) {
 									tileEntities.add(entity);

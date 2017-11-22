@@ -158,7 +158,21 @@ public class BlockTools {
      * @return true if it does
      */
     public static boolean isPositionWithinBounds(BlockPos test, BlockPos pos1, BlockPos pos2) {
-        return new AxisAlignedBB(pos1, pos2).contains(new Vec3d(test));
+        if (test.getX() >= pos1.getX() && test.getX() <= pos2.getX())
+        {
+            if (test.getY() >= pos1.getY() && test.getY() <= pos2.getY())
+            {
+                return test.getZ() >= pos1.getZ() && test.getZ() <= pos2.getZ();
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
     }
 
     /*
