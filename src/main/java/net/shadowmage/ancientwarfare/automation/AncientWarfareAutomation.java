@@ -33,7 +33,6 @@ import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteMushr
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteQuarry;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteReedFarm;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteTreeFarm;
-import net.shadowmage.ancientwarfare.automation.gamedata.MailboxTicker;
 import net.shadowmage.ancientwarfare.automation.proxy.RFProxy;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
@@ -113,7 +112,6 @@ public class AncientWarfareAutomation {
         /*
          * register tick-handlers
          */
-        MinecraftForge.EVENT_BUS.register(MailboxTicker.INSTANCE);
         MinecraftForge.EVENT_BUS.register(this);
 
         ForgeChunkManager.setForcedChunkLoadingCallback(this, AWChunkLoader.INSTANCE);

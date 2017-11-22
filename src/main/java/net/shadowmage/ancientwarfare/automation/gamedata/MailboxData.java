@@ -6,7 +6,10 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.storage.WorldSavedData;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
@@ -21,12 +24,20 @@ import java.util.Iterator;
 import java.util.List;
 
 public class MailboxData extends WorldSavedData {
-//TODO world capability
+    //TODO world capability
     private MailboxSet publicMailboxes = new MailboxSet("public");
     private HashMap<String, MailboxSet> privateMailboxes = new HashMap<>();
 
     public MailboxData(String par1Str) {
         super(par1Str);
+        MinecraftForge.EVENT_BUS.register(this);
+    }
+
+    @SubscribeEvent
+    public void serverTick(TickEvent.ServerTickEvent evt) {
+        if (evt.phase == TickEvent.Phase.END) {
+            onTick(1);
+        }
     }
 
     @Override
@@ -57,9 +68,13 @@ public class MailboxData extends WorldSavedData {
     }
 
     public void onTick(int length) {
-        publicMailboxes.tick(length);
-        for (MailboxSet set : this.privateMailboxes.values()) {
-            set.tick(length);
+        synchronized(publicMailboxes) {
+            publicMailboxes.tick(length);
+        }
+        synchronized(privateMailboxes) {
+            for (MailboxSet set : this.privateMailboxes.values()) {
+                set.tick(length);
+            }
         }
     }
 
