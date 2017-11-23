@@ -2,12 +2,10 @@ package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
 import net.minecraft.util.math.BlockPos;
 
+import javax.annotation.Nullable;
+
 public interface IControlledTile {
-
-    public void setController(IControllerTile tile);
-
-    public IControllerTile getController();
-
-    public BlockPos getPos();
-
+    void setController(@Nullable IControllerTile tile);
+    IControllerTile getController();
+    BlockPos getPosition();
 }

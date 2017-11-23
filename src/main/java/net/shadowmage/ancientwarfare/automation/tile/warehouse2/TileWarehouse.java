@@ -3,7 +3,10 @@ package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -13,6 +16,22 @@ public class TileWarehouse extends TileWarehouseBase {
 
     public TileWarehouse() {
 
+    }
+
+    @Override
+    public void invalidate() {
+        BlockPos max = getWorkBoundsMax();
+        if(max == null)
+            return;
+        BlockPos min = getWorkBoundsMin();
+        if(min == null)
+            return;
+        List<TileEntity> tiles = WorldTools.getTileEntitiesInArea(world, min.getX(), min.getY(), min.getZ(), max.getX(), max.getY(), max.getZ());
+        for (TileEntity te : tiles) {
+            if (te instanceof IControlledTile && ((IControlledTile) te).getController() == this) {
+                ((IControlledTile) te).setController(null);
+            }
+        }
     }
 
     @Override

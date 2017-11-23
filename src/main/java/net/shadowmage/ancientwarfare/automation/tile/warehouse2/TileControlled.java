@@ -89,6 +89,11 @@ public abstract class TileControlled extends TileUpdatable implements IControlle
     }
 
     @Override
+    public BlockPos getPosition() {
+        return getPos();
+    }
+
+    @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         if (tag.hasKey("controllerPosition")) {
