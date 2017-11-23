@@ -4,6 +4,7 @@ import codechicken.lib.CodeChickenLib;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -23,6 +24,7 @@ import net.shadowmage.ancientwarfare.core.container.ContainerBackpack;
 import net.shadowmage.ancientwarfare.core.container.ContainerEngineeringStation;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchBook;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchStation;
+import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
 import net.shadowmage.ancientwarfare.core.gamedata.Timekeeper;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
@@ -102,6 +104,8 @@ public class AncientWarfareCore {
 
         AWCoreItemLoader.INSTANCE.load();
 
+        AWCraftingManager.loadRecipes();
+
         /*
          * Setup FTBU_AW2 interoperability
          */
@@ -132,6 +136,11 @@ public class AncientWarfareCore {
             statics.save();
             proxy.onConfigChanged();
         }
+    }
+
+    @SubscribeEvent
+    public void createResearchRecipeRegistry(RegistryEvent.NewRegistry evt) {
+        AWCraftingManager.init();
     }
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)

@@ -8,6 +8,6 @@ public interface IControllerTile {
 
     public void removeControlledTile(IControlledTile tile);
 
-    public BlockPos getPos();
+    public BlockPos getPosisition();
 
 }

@@ -21,45 +21,10 @@
         }
     },
     {
-        "name": "GEARSTEEL",
-        "ingredient": {
-            "type": "forge:ore_dict",
-            "ore": "gearSteel"
-        }
-    },
-    {
         "name": "PLANKWOOD",
         "ingredient": {
             "type": "forge:ore_dict",
             "ore": "plankWood"
-        }
-    },
-    {
-        "name": "GEARIRON",
-        "ingredient": {
-            "type": "forge:ore_dict",
-            "ore": "gearIron"
-        }
-    },
-    {
-        "name": "SHAFTSTEEL",
-        "ingredient": {
-            "type": "forge:ore_dict",
-            "ore": "shaftSteel"
-        }
-    },
-    {
-        "name": "SHAFTWOOD",
-        "ingredient": {
-            "type": "forge:ore_dict",
-            "ore": "shaftWood"
-        }
-    },
-    {
-        "name": "SHAFTIRON",
-        "ingredient": {
-            "type": "forge:ore_dict",
-            "ore": "shaftIron"
         }
     },
     {
@@ -70,80 +35,10 @@
         }
     },
     {
-        "name": "GEARWOOD",
-        "ingredient": {
-            "type": "forge:ore_dict",
-            "ore": "gearWood"
-        }
-    },
-    {
         "name": "INGOTGOLD",
         "ingredient": {
             "type": "forge:ore_dict",
             "ore": "ingotGold"
-        }
-    },
-    {
-        "name": "DYERED",
-        "ingredient": {
-            "type": "forge:ore_dict",
-            "ore": "dyeRed"
-        }
-    },
-    {
-        "name": "DYELIGHTGRAY",
-        "ingredient": {
-            "type": "forge:ore_dict",
-            "ore": "dyeLightGray"
-        }
-    },
-    {
-        "name": "FOODBUNDLE",
-        "ingredient": {
-            "type": "forge:ore_dict",
-            "ore": "foodBundle"
-        }
-    },
-    {
-        "name": "DYEGREEN",
-        "ingredient": {
-            "type": "forge:ore_dict",
-            "ore": "dyeGreen"
-        }
-    },
-    {
-        "name": "DYEBLACK",
-        "ingredient": {
-            "type": "forge:ore_dict",
-            "ore": "dyeBlack"
-        }
-    },
-    {
-        "name": "DYEGRAY",
-        "ingredient": {
-            "type": "forge:ore_dict",
-            "ore": "dyeGray"
-        }
-    },
-    {
-        "name": "DUSTREDSTONE",
-        "ingredient": {
-            "type": "forge:ore_dict",
-            "ore": "dustRedstone"
-        }
-    },
-    {
-        "name": "STONE",
-        "ingredient": {
-            "type": "forge:ore_dict",
-            "ore": "stone"
-        }
-    },
-    {
-        "name": "GEMDIAMOND",
-        "ingredient": {
-            "type": "forge:ore_dict",
-            "ore": "gemDiamond"
         }
     }
 ]

@@ -15,7 +15,7 @@ import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 
 import javax.annotation.Nonnull;
 
-public class ResearchRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements IShapedRecipe {
+public class ResearchRecipe extends IForgeRegistryEntry.Impl<ResearchRecipe> {
 
     private int neededResearch = -1;
     protected ItemStack output = ItemStack.EMPTY;
@@ -30,7 +30,6 @@ public class ResearchRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements
         this.input = primer.input;
 
         addResearch(research);
-        AWCraftingManager.addRecipe(this);
     }
 
     private void addResearch(String name) {
@@ -48,7 +47,6 @@ public class ResearchRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements
         return neededResearch;
     }
 
-    @Override
     public boolean matches(@Nonnull InventoryCrafting inv, @Nonnull World world)
     {
         for (int x = 0; x <= ShapedOreRecipe.MAX_CRAFT_GRID_WIDTH - width; x++)
@@ -100,33 +98,60 @@ public class ResearchRecipe extends IForgeRegistryEntry.Impl<IRecipe> implements
         return true;
     }
 
-    @Override
     public ItemStack getCraftingResult(InventoryCrafting inv) {
         return output.copy();
     }
 
-    @Override
-    public boolean canFit(int width, int height) {
-        return width >= this.width && height >= this.height;
-    }
-
-    @Override
     public ItemStack getRecipeOutput() {
         return output;
     }
 
-    @Override
     public int getRecipeWidth() {
         return width;
     }
 
-    @Override
     public int getRecipeHeight() {
         return height;
     }
 
-    @Override
     public NonNullList<Ingredient> getIngredients() {
         return input;
     }
+
+    public static class IRecipeWrapper extends Impl<IRecipe> implements IShapedRecipe {
+        private ResearchRecipe recipe;
+        public IRecipeWrapper(ResearchRecipe recipe) {
+            this.recipe = recipe;
+        }
+
+		@Override
+		public boolean matches(InventoryCrafting inv, World worldIn) {
+			return recipe.matches(inv, worldIn);
+		}
+
+		@Override
+		public ItemStack getCraftingResult(InventoryCrafting inv) {
+			return recipe.getCraftingResult(inv);
+		}
+
+		@Override
+		public boolean canFit(int width, int height) {
+			return width >= this.getRecipeWidth() && height >= this.getRecipeHeight();
+		}
+
+		@Override
+		public ItemStack getRecipeOutput() {
+			return recipe.getRecipeOutput();
+		}
+
+		@Override
+		public int getRecipeWidth() {
+			return recipe.getRecipeWidth();
+		}
+
+		@Override
+		public int getRecipeHeight() {
+			return recipe.getRecipeHeight();
+		}
+	}
 }
