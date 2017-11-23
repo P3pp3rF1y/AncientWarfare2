@@ -419,6 +419,11 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
     }
 
     @Override
+    public BlockPos getPosisition() {
+        return getPos();
+    }
+
+    @Override
     public final WorkType getWorkType() {
         return WorkType.CRAFTING;
     }

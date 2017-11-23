@@ -79,7 +79,7 @@ public abstract class TileControlled extends TileUpdatable implements IControlle
     @Override
     public final void setController(IControllerTile tile) {
         this.controller = tile;
-        this.controllerPosition = tile == null ? null : tile.getPos();
+        this.controllerPosition = tile == null ? null : tile.getPosisition();
     }
 
     @Nullable
