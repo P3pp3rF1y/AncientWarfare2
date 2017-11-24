@@ -21,6 +21,7 @@
 package net.shadowmage.ancientwarfare.structure.template.build;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -129,7 +130,9 @@ public class StructureBuilder implements IStructureBuilder {
         if (pos.getY() <= 0 || pos.getY() >= world.getHeight()) {
             return;
         }
-        world.setBlockState(pos, block.getStateFromMeta(meta), 2);
+        IBlockState state = block.getStateFromMeta(meta);
+        int updateFlag = state.canProvidePower() ? 3 : 2;
+        world.setBlockState(pos, state, updateFlag);
         //TODO this used to be more complicated for perf reasons - look into whether needs to be recreated
 //        Chunk chunk = world.getChunkFromBlockCoords(x, z);
 //        ExtendedBlockStorage stc = chunk.getBlockStorageArray()[y >> 4];
