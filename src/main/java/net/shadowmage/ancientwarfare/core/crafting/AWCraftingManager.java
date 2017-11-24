@@ -59,7 +59,7 @@ public class AWCraftingManager {
      */
     public static ItemStack findMatchingRecipe(InventoryCrafting inventory, World world, String playerName) {
         if (world == null)
-            return null;
+            return ItemStack.EMPTY;
         if (playerName != null && !playerName.isEmpty()) {
             for (ResearchRecipe recipe : RESEARCH_RECIPES) {
                 if (recipe.matches(inventory, world) && canPlayerCraft(recipe, world, playerName)) {
