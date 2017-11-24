@@ -1240,6 +1240,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             state = state.withProperty(BlockBed.OCCUPIED, true);
             world.setBlockState(pos, state);
             setBedPosition(pos);
+            setBedDirection(state.getValue(BlockBed.FACING));
             setSleeping(true);
             originalHeight = height;
             originalWidth = width;
@@ -1303,10 +1304,11 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     //}
 
     public void setPositionToBed() {
-        float xOffset = 0.5F + (float)getBedDirection().getFrontOffsetX() * 0.4F;
-        float zOffset = 0.5F + (float)getBedDirection().getFrontOffsetZ() * 0.4F;
+        float xOffset = 0.5F;
+        float yOffset = 0.6F;
+        float zOffset = 0.5F;
 
-        setPosition(cachedBedPos.getX() + xOffset, cachedBedPos.getY() + 0.6, cachedBedPos.getZ() + zOffset);
+        setPosition(cachedBedPos.getX() + xOffset, cachedBedPos.getY() + yOffset, cachedBedPos.getZ() + zOffset);
     }
 
     @Override

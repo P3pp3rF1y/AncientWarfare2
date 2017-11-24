@@ -57,22 +57,9 @@ public class RenderNpcBase extends RenderBiped<NpcBase> {
         isSleeping = npc.getSleeping();
         if (isSleeping) {
             // render the body a bit offset because we're manually shifting the bounding box
-            double xOffset = x;
-            double zOffset = z;
-            switch (npc.getBedDirection()) {
-                case SOUTH:
-                    zOffset -= 0.9f;
-                    break;
-                case WEST:
-                    xOffset += 0.9f;
-                    break;
-                case NORTH:
-                    zOffset += 0.9f;
-                    break;
-                case EAST:
-                    xOffset -= 0.9f;
-                    break;
-            }
+            double xOffset = x - (npc.getBedDirection().getFrontOffsetX() * 0.5);
+            double zOffset = z - (npc.getBedDirection().getFrontOffsetZ() * 0.5);
+
             super.doRender(npc, xOffset, y, zOffset, par8, par9);
         } else {
             super.doRender(npc, x, y, z, par8, par9);
