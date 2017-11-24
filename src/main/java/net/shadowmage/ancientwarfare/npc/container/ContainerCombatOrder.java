@@ -21,8 +21,8 @@ public class ContainerCombatOrder extends ContainerBase {
         super(player);
         this.hand = EntityTools.getHandHoldingItem(player, AWNPCItems.combatOrder);
         @Nonnull ItemStack stack = player.getHeldItem(hand);
-        if (stack.isEmpty() || stack.getItem() == null) {
-            throw new IllegalArgumentException("Cannot open Combat Order GUI for null stack/item.");
+        if (stack.isEmpty()) {
+            throw new IllegalArgumentException("Cannot open Combat Order GUI for empty stack/item.");
         }
         combatOrder = CombatOrder.getCombatOrder(stack);
         if (combatOrder == null) {

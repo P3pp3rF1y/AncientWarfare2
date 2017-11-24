@@ -73,7 +73,7 @@ public class TemplateRuleVanillaBlocks extends TemplateRuleBlock {
         }
 
         @Nonnull ItemStack stack = BlockDataManager.INSTANCE.getInventoryStackForBlock(block, meta);
-        if (!stack.isEmpty() && stack.getItem() == null) {
+        if (!stack.isEmpty()) {
             throw new IllegalArgumentException("Could not create item for block: " + block + " (lookup name: " + blockName + ") meta: " + meta);
         }
         if (!stack.isEmpty()) {

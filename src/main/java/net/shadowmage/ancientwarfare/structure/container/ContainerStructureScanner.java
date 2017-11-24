@@ -53,7 +53,7 @@ public class ContainerStructureScanner extends ContainerBase {
     }
 
     private boolean isInvalid(ItemStack stack) {
-        return stack.isEmpty() || stack.getItem() == null || !(stack.getItem() instanceof ItemStructureScanner);
+        return stack.isEmpty() || !(stack.getItem() instanceof ItemStructureScanner);
     }
 
     public void export(String name, boolean include, NBTTagCompound validation) {
