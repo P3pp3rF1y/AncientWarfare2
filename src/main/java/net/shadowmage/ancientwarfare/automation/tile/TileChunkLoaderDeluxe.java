@@ -67,9 +67,7 @@ public class TileChunkLoaderDeluxe extends TileChunkLoaderSimple implements IInt
 
     @Override
     protected void forceTicketChunks() {
-        int cx = pos.getX() >> 4;
-        int cz = pos.getZ() >> 4;
-        ChunkPos ccip1 = new ChunkPos(cx, cz);
+        ChunkPos ccip1 = new ChunkPos(pos);
         ForgeChunkManager.forceChunk(this.chunkTicket, ccip1);
         for (ChunkPos ccip : ccipSet) {
             ForgeChunkManager.forceChunk(this.chunkTicket, ccip);
@@ -85,7 +83,7 @@ public class TileChunkLoaderDeluxe extends TileChunkLoaderSimple implements IInt
         ccipSet.clear();
         for (int i = 0; i < list.tagCount(); i++) {
             ccipTag = list.getCompoundTagAt(i);
-            ccip = new ChunkPos(ccipTag.getInteger("x") >> 4, ccipTag.getInteger("z") >> 4);
+            ccip = new ChunkPos(ccipTag.getInteger("x"), ccipTag.getInteger("z"));
             ccipSet.add(ccip);
         }
     }
@@ -97,12 +95,11 @@ public class TileChunkLoaderDeluxe extends TileChunkLoaderSimple implements IInt
         NBTTagCompound ccipTag;
         for (ChunkPos chunkPos : this.ccipSet) {
             ccipTag = new NBTTagCompound();
-            ccipTag.setInteger("x", chunkPos.getXStart());
-            ccipTag.setInteger("z", chunkPos.getZStart());
+            ccipTag.setInteger("x", chunkPos.x);
+            ccipTag.setInteger("z", chunkPos.z);
             list.appendTag(ccipTag);
         }
         tag.setTag("chunkList", list);
         return tag;
     }
-
 }

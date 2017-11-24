@@ -116,7 +116,7 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
             return;
         }
         AWChunkLoader.INSTANCE.writeDataToTicket(chunkTicket, pos);
-        ChunkPos ccip = new ChunkPos(pos.getX() >> 4, pos.getZ() >> 4);
+        ChunkPos ccip = new ChunkPos(pos);
         ForgeChunkManager.forceChunk(chunkTicket, ccip);
         if (hasWorkBounds()) {
             int minX = getWorkBoundsMin().getX() >> 4;

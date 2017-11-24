@@ -61,8 +61,8 @@ public class ContainerChunkLoaderDeluxe extends ContainerTileBase<TileChunkLoade
         NBTTagCompound ccipTag;
         for (ChunkPos chunkPos : this.ccipSet) {
             ccipTag = new NBTTagCompound();
-            ccipTag.setInteger("x", chunkPos.getXStart());
-            ccipTag.setInteger("z", chunkPos.getZStart());
+            ccipTag.setInteger("x", chunkPos.x);
+            ccipTag.setInteger("z", chunkPos.z);
             list.appendTag(ccipTag);
         }
         tag.setTag("chunkList", list);
@@ -72,8 +72,8 @@ public class ContainerChunkLoaderDeluxe extends ContainerTileBase<TileChunkLoade
     public void force(ChunkPos ccip){
         NBTTagCompound tag = new NBTTagCompound();
         tag.setBoolean("forced", true);
-        tag.setInteger("x", ccip.getXStart());
-        tag.setInteger("z", ccip.getZStart());
+        tag.setInteger("x", ccip.x);
+        tag.setInteger("z", ccip.z);
         sendDataToServer(tag);
     }
 
