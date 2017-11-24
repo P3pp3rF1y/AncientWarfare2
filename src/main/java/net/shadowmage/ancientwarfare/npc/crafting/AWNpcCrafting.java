@@ -47,9 +47,9 @@ public class AWNpcCrafting {
                     continue;
                 }
                 if (stack.getItem() == item) {
-                    if (order1 == null) {
+                    if (order1.isEmpty()) {
                         order1 = stack;
-                    } else if (order2 == null) {
+                    } else if (order2.isEmpty()) {
                         order2 = stack;
                     } else {
                         foundOtherStuff = true;
@@ -60,7 +60,7 @@ public class AWNpcCrafting {
                     break;
                 }
             }
-            return !foundOtherStuff && order1 != null && order2 != null;
+            return !foundOtherStuff && !order1.isEmpty() && !order2.isEmpty();
         }
 
         @Override
@@ -74,9 +74,9 @@ public class AWNpcCrafting {
                     continue;
                 }
                 if (stack.getItem() == item) {
-                    if (order1 == null) {
+                    if (order1.isEmpty()) {
                         order1 = stack;
-                    } else if (order2 == null) {
+                    } else if (order2.isEmpty()) {
                         order2 = stack;
                     } else {
                         foundOtherStuff = true;
@@ -87,8 +87,8 @@ public class AWNpcCrafting {
                     break;
                 }
             }
-            if (foundOtherStuff || order1 == null || order2 == null) {
-                return null;
+            if (foundOtherStuff || order1.isEmpty() || order2.isEmpty()) {
+                return ItemStack.EMPTY;
             }
             @Nonnull ItemStack retStack = order2.copy();
             if (order1.getTagCompound() != null) {
