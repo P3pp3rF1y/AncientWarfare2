@@ -58,15 +58,20 @@ public class TemplateRuleEntityHanging extends TemplateRuleVanillaEntity {
         if (e == null) {
             throw new EntityPlacementException("Could not create entity for type: " + registryName.toString());
         }
+        hangTarget = pos;
         EnumFacing direction = EnumFacing.HORIZONTALS[(this.direction.ordinal() + turns) % 4];
-        hangTarget = pos.offset(direction.rotateYCCW());
-        //tag.setByte("Direction", (byte) direction.ordinal()); TODO needs a fix to set Rotation tags yaw and pitch
-        //TODO again can we just update part of entities NBT instead of having to construct full?
+/*
+        hangTarget = pos.offset(direction);
+*/
+        tag.setByte("Facing", (byte)direction.getHorizontalIndex());
         NBTTagList posList = new NBTTagList();
         posList.appendTag(new NBTTagDouble(hangTarget.getX()));
         posList.appendTag(new NBTTagDouble(hangTarget.getY()));
         posList.appendTag(new NBTTagDouble(hangTarget.getZ()));
         tag.setTag("Pos", posList);
+        tag.setInteger("TileX", hangTarget.getX());
+        tag.setInteger("TileY", hangTarget.getY());
+        tag.setInteger("TileZ", hangTarget.getZ());
         e.readFromNBT(tag);
         world.spawnEntity(e);
     }
