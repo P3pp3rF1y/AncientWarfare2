@@ -159,13 +159,12 @@ public class InventoryTools {
      */
     public static ItemStack removeItems(IInventory inventory, @Nullable EnumFacing side, ItemStack filter, int quantity) {
         int[] slotIndices = getSlotsForSide(inventory, side);
-        if (slotIndices == null) {
+        if (slotIndices == null || quantity <= 0) {
             return ItemStack.EMPTY;
         }
         if (quantity > filter.getMaxStackSize()) {
             quantity = filter.getMaxStackSize();
         }
-        @Nonnull ItemStack returnStack = ItemStack.EMPTY;
         int returnCount = 0;
         @Nonnull ItemStack slotStack;
         for (int index : slotIndices) {
@@ -173,29 +172,28 @@ public class InventoryTools {
             if (slotStack.isEmpty() || !doItemStacksMatch(filter, slotStack)) {
                 continue;
             }
-            if (returnStack.isEmpty()) {
-                returnStack = filter.copy();
+
+            int toMove = Math.min(quantity - returnCount, slotStack.getCount());
+            slotStack.getCount();
+            if (toMove + returnCount > filter.getMaxStackSize()) {
+                toMove = filter.getMaxStackSize() - returnCount;
             }
-            int toMove = slotStack.getCount();
-            if (toMove > quantity) {
-                toMove = quantity;
-            }
-            if (toMove + returnStack.getCount() > returnStack.getMaxStackSize()) {
-                toMove = returnStack.getMaxStackSize() - returnStack.getCount();
-            }
-            slotStack.shrink(toMove);
-            quantity -= toMove;
             returnCount += toMove;
+
+            slotStack.shrink(toMove);
             if (slotStack.getCount() <= 0) {
                 inventory.setInventorySlotContents(index, ItemStack.EMPTY);
             }
             inventory.markDirty();
-            if (quantity <= 0) {
+
+            if (quantity - returnCount <= 0) {
                 break;
             }
         }
-        if (!returnStack.isEmpty()) {
-            returnStack.grow(returnCount);
+        @Nonnull ItemStack returnStack = ItemStack.EMPTY;
+        if(returnCount > 0) {
+            returnStack = filter.copy();
+            returnStack.setCount(returnCount);
         }
         return returnStack;
     }
