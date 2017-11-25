@@ -87,7 +87,6 @@ public class ItemSlot extends GuiElement {
     @Override
     public void render(int mouseX, int mouseY, float partialTick) {
         if (visible) {
-            GL11.glPushAttrib(GL11.GL_ENABLE_BIT);
             Minecraft mc = Minecraft.getMinecraft();
             if (renderSlotBackground) {
                 mc.renderEngine.bindTexture(widgetTexture1);
@@ -151,7 +150,6 @@ public class ItemSlot extends GuiElement {
                     }
                 }
             }
-            GlStateManager.popAttrib();
             GlStateManager.color(1, 1, 1, 1);
         }
     }
