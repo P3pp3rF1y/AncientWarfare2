@@ -80,7 +80,7 @@ public class GuiResearchStation extends GuiContainerBase<ContainerResearchStatio
         for (int i = 0; i < layoutSlots.length; i++) {
             x = (i % 3) * 18 + 98;
             y = (i / 3) * 18 + 98;
-            layoutSlots[i] = new ItemSlot(x, y, null, this);
+            layoutSlots[i] = new ItemSlot(x, y, ItemStack.EMPTY, this);
             addGuiElement(layoutSlots[i]);
         }
         addGuiElement(new Label(8, 8 + 18 * 2 + 12 + 1, "guistrings.research.progress"));

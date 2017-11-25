@@ -132,10 +132,10 @@ public class ItemSlot extends GuiElement {
                     GlStateManager.pushMatrix();
                     GlStateManager.translate(0, 0, 200);
                     GlStateManager.glBegin(GL11.GL_QUADS);
-                    GL11.glVertex2f(renderX, renderY);
-                    GL11.glVertex2f(renderX, renderY + height);
-                    GL11.glVertex2f(renderX + width, renderY + height);
-                    GL11.glVertex2d(renderX + width, renderY);
+                    GL11.glVertex2f(renderX + 1, renderY + 1);
+                    GL11.glVertex2f(renderX + 1, renderY + 1 + (height - 2));
+                    GL11.glVertex2f(renderX + 1 + (width - 2), renderY + 1 + (height - 2));
+                    GL11.glVertex2d(renderX + 1 + (width - 2), renderY + 1);
                     GlStateManager.glEnd();
                     GlStateManager.popMatrix();
                     GlStateManager.color(1.f, 1.f, 1.f, 1.f);
