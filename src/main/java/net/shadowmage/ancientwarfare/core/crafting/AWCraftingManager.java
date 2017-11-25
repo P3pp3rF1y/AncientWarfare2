@@ -80,11 +80,13 @@ public class AWCraftingManager {
         return true;
     }
 
-    public static void addRecipe(ResearchRecipe recipe) {
+    public static void addRecipe(ResearchRecipe recipe, boolean checkForExistence) {
         Item item = recipe.getRecipeOutput().getItem();
         if (AWCoreStatics.isItemCraftable(item)) {
             if (recipe.getNeededResearch() != - 1 && AWCoreStatics.isItemResearcheable(item) && AWCoreStatics.useResearchSystem) {
-                RESEARCH_RECIPES.register(recipe);
+                if (!checkForExistence || !RESEARCH_RECIPES.containsKey(recipe.getRegistryName())) {
+                    RESEARCH_RECIPES.register(recipe);
+                }
             } else {
                 ForgeRegistries.RECIPES.register(new ResearchRecipe.IRecipeWrapper(recipe));
             }
@@ -100,13 +102,16 @@ public class AWCraftingManager {
     private static final Method LOAD_CONSTANTS = ReflectionHelper.findMethod(JsonContext.class, "loadConstants",null, JsonObject[].class);
 
     public static void loadRecipes() {
-        Loader.instance().getActiveModList().forEach(AWCraftingManager::loadRecipes);
+        ModContainer awModContainer = Loader.instance().activeModContainer();
+
+        loadRecipes(awModContainer, new File(AWCoreStatics.configPathForFiles + "research_recipes"), "");
+        Loader.instance().getActiveModList().forEach(m -> AWCraftingManager.loadRecipes(m, m.getSource(), "assets/" + m.getModId() + "/research_recipes"));
     }
 
-    private static void loadRecipes(ModContainer mod) {
+    private static void loadRecipes(ModContainer mod, File source, String base) {
         JsonContext ctx = new JsonContext(mod.getModId());
 
-        findFiles(mod, "assets/" + mod.getModId() + "/research_recipes",
+        findFiles(source, base,
             root ->
             {
                 Path fPath = root.resolve("_constants.json");
@@ -152,7 +157,7 @@ public class AWCraftingManager {
                 if(type.equals(AncientWarfareCore.modID + ":research_recipe")) {
                     ResearchRecipe recipe = factory.parse(ctx, json);
                     recipe.setRegistryName(key);
-                    addRecipe(recipe);
+                    addRecipe(recipe, mod.getModId().equals(AncientWarfareCore.modID));
                 } else {
                     AncientWarfareCore.log.info("Skipping recipe {} of type {} because it's not AW research recipe", key, type);
                 }
@@ -169,11 +174,9 @@ public class AWCraftingManager {
         });
     }
 
-    private static void findFiles(ModContainer mod, String base, Function<Path, Boolean> preprocessor, @Nullable BiConsumer<Path, Path> processor) {
+    private static void findFiles(File source, String base, Function<Path, Boolean> preprocessor, @Nullable BiConsumer<Path, Path> processor) {
         FileSystem fs = null;
         try {
-            File source = mod.getSource();
-
             @Nullable Path root = null;
             if(source.isFile()) {
                 try {
@@ -204,7 +207,7 @@ public class AWCraftingManager {
                     itr = Files.walk(root).iterator();
                 }
                 catch(IOException e) {
-                    AncientWarfareCore.log.error("Error iterating filesystem for: {}", mod.getModId(), e);
+                    AncientWarfareCore.log.error("Error iterating filesystem for: {}", root, e);
                     return;
                 }
 
