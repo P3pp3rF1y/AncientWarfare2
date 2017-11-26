@@ -94,7 +94,7 @@ public class TileDraftingStation extends TileEntity implements IInventoryChanged
     }
 
     private boolean tryFinish() {
-        if (outputSlot.getStackInSlot(0) == null) {
+        if (outputSlot.getStackInSlot(0).isEmpty()) {
             @Nonnull ItemStack item = new ItemStack(AWStructuresBlocks.builderBlock);
             item.setTagInfo("structureName", new NBTTagString(structureName));
             outputSlot.setInventorySlotContents(0, item);
