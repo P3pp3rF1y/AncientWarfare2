@@ -6,7 +6,13 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 public class ResearchData extends WorldSavedData {
 
@@ -61,18 +67,21 @@ public class ResearchData extends WorldSavedData {
     public void removeResearchFrom(String playerName, int research) {
         if (playerResearchEntries.containsKey(playerName)) {
             playerResearchEntries.get(playerName).removeResearch(research);
+            markDirty();
         }
     }
 
     public void clearResearchFor(String playerName) {
         if (playerResearchEntries.containsKey(playerName)) {
             playerResearchEntries.get(playerName).clearResearch();
+            markDirty();
         }
     }
 
     public void fillResearchFor(String playerName) {
         if (playerResearchEntries.containsKey(playerName)) {
             playerResearchEntries.get(playerName).fillResearch();
+            markDirty();
         }
     }
 
@@ -94,9 +103,9 @@ public class ResearchData extends WorldSavedData {
     public void addResearchTo(String playerName, int research) {
         if (!playerResearchEntries.containsKey(playerName)) {
             playerResearchEntries.put(playerName, new ResearchEntry());
+            markDirty();
         }
         this.playerResearchEntries.get(playerName).addResearch(research);
-        this.markDirty();
     }
 
     public boolean hasPlayerCompletedResearch(String playerName, int research) {
@@ -120,34 +129,35 @@ public class ResearchData extends WorldSavedData {
     public void startResearch(String playerName, int goal) {
         if (playerResearchEntries.containsKey(playerName)) {
             playerResearchEntries.get(playerName).startResearch(goal);
-            this.markDirty();
+            markDirty();
         }
     }
 
     public void finishResearch(String playerName, int goal) {
         if (playerResearchEntries.containsKey(playerName)) {
             playerResearchEntries.get(playerName).finishResearch(goal);
-            this.markDirty();
+            markDirty();
         }
     }
 
     public void setCurrentResearchProgress(String playerName, int progress) {
         if (playerResearchEntries.containsKey(playerName)) {
             playerResearchEntries.get(playerName).setResearchProgress(progress);
-            this.markDirty();
+            markDirty();
         }
     }
 
     public void addQueuedResearch(String playerName, int goal) {
         if (playerResearchEntries.containsKey(playerName)) {
             playerResearchEntries.get(playerName).addQueuedResearch(goal);
+            markDirty();
         }
     }
 
     public void removeQueuedResearch(String playerName, int goal) {
         if (playerResearchEntries.containsKey(playerName)) {
             playerResearchEntries.get(playerName).removeQueuedResearch(goal);
-            this.markDirty();
+            markDirty();
         }
     }
 
@@ -159,7 +169,13 @@ public class ResearchData extends WorldSavedData {
     }
 
     public boolean addProgress(String playerName, int amount) {
-        return playerResearchEntries.containsKey(playerName) && playerResearchEntries.get(playerName).addProgress(amount);
+        boolean ret = false;
+        if(playerResearchEntries.containsKey(playerName)) {
+            ret = playerResearchEntries.get(playerName).addProgress(amount);
+            markDirty();
+        }
+
+        return  ret;
     }
 
     public boolean hasResearchStarted(String playerName) {
