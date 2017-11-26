@@ -100,9 +100,9 @@ gunpowder,sand,0,12
 gunpowder,coal,1,12
 gunpowder,paper,0,8
 mass_production,ingotSteel,12
-mass_production,AncientWarfare:component,2,6
-mass_production,AncientWarfare:component,5,3
-mass_production,AncientWarfare:component,8,3
+mass_production,ancientwarfare:component,2,6
+mass_production,ancientwarfare:component,5,3
+mass_production,ancientwarfare:component,8,3
 flight,wool,0,16
 flight,plankWood,12
 flight,string,0,12

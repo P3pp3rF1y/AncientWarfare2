@@ -92,8 +92,6 @@ public class AncientWarfareCore {
         NetworkHandler.registerContainer(NetworkHandler.GUI_BACKPACK, ContainerBackpack.class);
         NetworkHandler.registerContainer(NetworkHandler.GUI_RESEARCH_BOOK, ContainerResearchBook.class);
 
-        ResearchGoal.initializeResearch();
-
         proxy.preInit();
     }
 
@@ -103,6 +101,8 @@ public class AncientWarfareCore {
         proxy.init();
 
         AWCoreItemLoader.INSTANCE.load();
+
+        ResearchGoal.initializeResearch();
 
         AWCraftingManager.loadRecipes();
 

@@ -1,8 +1,10 @@
 package net.shadowmage.ancientwarfare.core.research;
 
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -10,7 +12,15 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 public class ResearchGoal {
 
@@ -323,7 +333,7 @@ public class ResearchGoal {
         }
 
         public List<ItemStack> getEquivalents(){
-            return OreDictionary.getOres(name);
+            return expandWildCardItems(OreDictionary.getOres(name));
         }
 
         public ItemStack getEquivalent(Random random){
@@ -331,6 +341,21 @@ public class ResearchGoal {
             @Nonnull ItemStack temp = temps.get(random.nextInt(temps.size())).copy();
             temp.setCount(size);
             return temp;
+        }
+
+        private List<ItemStack> expandWildCardItems(List<ItemStack> stacks) {
+            NonNullList<ItemStack> addedStacks = NonNullList.create();
+            Iterator<ItemStack> it = stacks.iterator();
+            while(it.hasNext()) {
+                ItemStack stack = it.next();
+                if(stack.getMetadata() == OreDictionary.WILDCARD_VALUE) {
+                    Item item = stack.getItem();
+                    item.getSubItems(item.getCreativeTab(), addedStacks);
+                    it.remove();
+                }
+            }
+            stacks.addAll(addedStacks);
+            return stacks;
         }
     }
 }
