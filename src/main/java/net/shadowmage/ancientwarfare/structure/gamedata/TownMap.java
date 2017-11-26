@@ -10,7 +10,7 @@ import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//TODO world capability
 public class TownMap extends WorldSavedData {
 
     private List<StructureBB> boundingBoxes = new ArrayList<>();

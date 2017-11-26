@@ -24,7 +24,6 @@ import java.util.Iterator;
 import java.util.List;
 
 public class MailboxData extends WorldSavedData {
-    //TODO world capability
     private MailboxSet publicMailboxes = new MailboxSet("public");
     private HashMap<String, MailboxSet> privateMailboxes = new HashMap<>();
 
@@ -69,22 +68,31 @@ public class MailboxData extends WorldSavedData {
 
     public void onTick(int length) {
         synchronized(publicMailboxes) {
-            publicMailboxes.tick(length);
+            boolean change = publicMailboxes.tick(length);
+            if(change) {
+                markDirty();
+            }
         }
         synchronized(privateMailboxes) {
+            boolean change = false;
             for (MailboxSet set : this.privateMailboxes.values()) {
-                set.tick(length);
+                change |= set.tick(length);
+            }
+            if(change) {
+                markDirty();
             }
         }
     }
 
     public boolean addMailbox(String owner, String name) {
         MailboxSet set = owner == null ? publicMailboxes : getOrCreatePrivateMailbox(owner);
+        markDirty();
         return set.addMailbox(name);
     }
 
     public boolean deleteMailbox(String owner, String name) {
         MailboxSet set = owner == null ? publicMailboxes : getOrCreatePrivateMailbox(owner);
+        markDirty();
         return set.deleteMailbox(name);
     }
 
@@ -129,11 +137,13 @@ public class MailboxData extends WorldSavedData {
     public void removeDeliverableItem(String owner, String name, DeliverableItem item) {
         MailboxSet set = owner == null ? publicMailboxes : getOrCreatePrivateMailbox(owner);
         set.removeDeliverableItem(name, item);
+        markDirty();
     }
 
     public void addMailboxReceiver(String owner, String name, TileMailbox box) {
         MailboxSet set = owner == null ? publicMailboxes : getOrCreatePrivateMailbox(owner);
         set.addReceiver(name, box);
+        markDirty();
     }
 
     private final class MailboxSet {
@@ -153,7 +163,6 @@ public class MailboxData extends WorldSavedData {
                 return false;
             }
             mailboxes.put(name, new MailboxEntry(name));
-            markDirty();
             return true;
         }
 
@@ -194,16 +203,17 @@ public class MailboxData extends WorldSavedData {
             return tag;
         }
 
-        private void tick(int length) {
+        private boolean tick(int length) {
+            boolean ret = false;
             for (MailboxEntry entry : this.mailboxes.values()) {
-                entry.tick(length);
+                ret |= entry.tick(length);
             }
+            return ret;
         }
 
         private MailboxEntry getOrCreateMailbox(String name) {
             if (!this.mailboxes.containsKey(name)) {
                 this.mailboxes.put(name, new MailboxEntry(name));
-                markDirty();
             }
             return this.mailboxes.get(name);
         }
@@ -246,7 +256,6 @@ public class MailboxData extends WorldSavedData {
 
         private void removeDeliverableItem(DeliverableItem item) {
             incomingItems.remove(item);
-            markDirty();
         }
 
         private List<DeliverableItem> getDeliverableItems(List<DeliverableItem> items, World world, int x, int y, int z) {
@@ -271,7 +280,6 @@ public class MailboxData extends WorldSavedData {
         private void addDeliverableItem(ItemStack item, int dimension, BlockPos pos) {
             DeliverableItem item1 = new DeliverableItem(item, dimension, pos.getX(), pos.getY(), pos.getZ());
             incomingItems.add(item1);
-            markDirty();
         }
 
         private void readFromNBT(NBTTagCompound tag) {
@@ -299,7 +307,8 @@ public class MailboxData extends WorldSavedData {
             return tag;
         }
 
-        private void tick(int length) {
+        private boolean tick(int length) {
+            boolean ret = incomingItems.size() > 0;
             for (DeliverableItem item : this.incomingItems) {
                 item.tick(length);
             }
@@ -336,6 +345,8 @@ public class MailboxData extends WorldSavedData {
                 }
             }
             receivers.clear();
+
+            return ret;
         }
 
         @Override
@@ -382,7 +393,6 @@ public class MailboxData extends WorldSavedData {
 
         private void tick(int length) {
             deliveryTime += length;
-            markDirty();
         }
     }
 

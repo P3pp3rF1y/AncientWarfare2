@@ -1,4 +1,3 @@
-//TODO world capability
 package net.shadowmage.ancientwarfare.core.gamedata;
 
 import net.minecraft.nbt.NBTTagCompound;
