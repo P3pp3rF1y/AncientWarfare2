@@ -82,8 +82,7 @@ public class StructureBuilderTicked extends StructureBuilder {
             clearPos = new BlockPos(bb.min.getX(), clearPos.getY(), clearPos.getZ());
             clearPos = clearPos.south();
             if (clearPos.getZ() > bb.max.getZ()) {
-                //TODO no reset of Z coordinate??
-                clearPos.up();
+                clearPos = new BlockPos(bb.min.getX(), clearPos.up().getY(), bb.min.getZ());
                 if (clearPos.getY() > bb.max.getY()) {
                     return false;
                 }
