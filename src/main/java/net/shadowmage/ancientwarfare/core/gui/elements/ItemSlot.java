@@ -100,15 +100,15 @@ public class ItemSlot extends GuiElement {
                     font = mc.fontRenderer;
                 }
 
-                GlStateManager.enableDepth();
-                RenderHelper.disableStandardItemLighting();
+                GlStateManager.enableRescaleNormal();
                 RenderHelper.enableGUIStandardItemLighting();
                 itemRender.renderItemAndEffectIntoGUI(item, renderX + 1, renderY + 1);
                 if (renderItemQuantity && item.getCount() > 1) {
                     itemRender.renderItemOverlayIntoGUI(font, item, renderX + 1, renderY + 1, "");
                     renderStackSize(renderX + 1, renderY + 1, item.getCount(), font);
                 }
-                RenderHelper.enableStandardItemLighting();
+                RenderHelper.disableStandardItemLighting();
+                GlStateManager.disableRescaleNormal();
                 if (renderLabel) {
                     int x = renderX + 18;
                     int y = renderY + 3;
@@ -139,8 +139,8 @@ public class ItemSlot extends GuiElement {
                     GlStateManager.glEnd();
                     GlStateManager.popMatrix();
                     GlStateManager.color(1.f, 1.f, 1.f, 1.f);
-                    GlStateManager.disableBlend();
                     GlStateManager.enableTexture2D();
+                    GlStateManager.disableBlend();
                 }
                 if (renderTooltip && this.render != null) {
                     if (this.tooltip != null) {
