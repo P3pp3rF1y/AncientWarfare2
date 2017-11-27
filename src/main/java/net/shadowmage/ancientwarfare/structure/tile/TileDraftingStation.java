@@ -3,10 +3,13 @@ package net.shadowmage.ancientwarfare.structure.tile;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.IInventoryChangedListener;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
+import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
@@ -183,6 +186,10 @@ public class TileDraftingStation extends TileEntity implements IInventoryChanged
         isFinished = tag.getBoolean("isFinished");
         remainingTime = tag.getInteger("remainingTime");
         totalTime = tag.getInteger("totalTime");
+        NBTTagList resources = tag.getTagList("neededResources", Constants.NBT.TAG_COMPOUND);
+        for(NBTBase resource : resources) {
+            neededResources.add(new ItemStack((NBTTagCompound) resource));
+        }
     }
 
     @Override
@@ -200,9 +207,12 @@ public class TileDraftingStation extends TileEntity implements IInventoryChanged
         tag.setInteger("remainingTime", remainingTime);
         tag.setInteger("totalTime", totalTime);
 
-        /*
-         * TODO write out resource-list
-         */
+        NBTTagList resources = new NBTTagList();
+        for(ItemStack resource : neededResources) {
+            resources.appendTag(resource.writeToNBT(new NBTTagCompound()));
+        }
+        tag.setTag("neededResources", resources);
+
         return tag;
     }
 
