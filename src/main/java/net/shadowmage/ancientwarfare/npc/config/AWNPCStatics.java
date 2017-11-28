@@ -22,6 +22,7 @@ package net.shadowmage.ancientwarfare.npc.config;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -30,6 +31,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 import net.shadowmage.ancientwarfare.core.util.BlockAndMeta;
@@ -389,7 +391,7 @@ public class AWNPCStatics extends ModConfiguration {
                                                                                                                           "With old method, mobs did not need line-of-sight before they decided to chase an NPC. \n" +
                                                                                                                           "With the new AI they do need LOS by default. Disable it here if you want for some reason.").getBoolean();
         
-        targets = targetConfig.get(targetSettings, "auto_targetting.exclude", new String[]{}, "Exclude these entities from auto-injection, i.e. 'force passive'. Any entities listed here\n" + 
+        targets = targetConfig.get(targetSettings, "auto_targetting.exclude", new String[]{EntityRegistry.getEntry(EntityCreeper.class).getName()}, "Exclude these entities from auto-injection, i.e. 'force passive'. Any entities listed here\n" +
                                                                                               "will *not* target NPC's, and NPC's in turn will not be alarmed by these entities.\n" +
                                                                                               //"Note that the mob will only be excluded if it is also NOT listed on the include list below.\n" + 
                                                                                               "Check the AncientWarfareNpc.cfg for a setting to export entity names.").getStringList();
