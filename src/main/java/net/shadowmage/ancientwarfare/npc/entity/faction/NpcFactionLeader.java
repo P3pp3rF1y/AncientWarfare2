@@ -38,4 +38,13 @@ public abstract class NpcFactionLeader extends NpcFaction {
         this.targetTasks.addTask(2, new NpcAIAttackNearest(this, selector));
     }
 
+    @Override
+    public boolean worksInRain() {
+        return true;
+    }
+
+    @Override
+    public boolean shouldSleep() {
+        return false;
+    }
 }

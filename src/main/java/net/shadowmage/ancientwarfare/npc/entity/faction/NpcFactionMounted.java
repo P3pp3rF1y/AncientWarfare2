@@ -48,4 +48,13 @@ public abstract class NpcFactionMounted extends NpcFaction {
         }
     }
 
+    @Override
+    public boolean worksInRain() {
+        return true;
+    }
+
+    @Override
+    public boolean shouldSleep() {
+        return false;
+    }
 }

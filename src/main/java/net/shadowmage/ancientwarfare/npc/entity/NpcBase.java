@@ -354,12 +354,16 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     private boolean isWaitingForRainToStop() {
-        if (!this.world.isRaining()) {
+        if (!worksInRain() || !this.world.isRaining()) {
             // rain has stopped, reset
             setRainedOn(false);
             return false;
         }
         return rainedOn;
+    }
+
+    public boolean worksInRain() {
+        return false;
     }
 
     public void setRainedOn(boolean rainedOn) {

@@ -109,7 +109,7 @@ public class NpcAIMoveHome extends NpcAI<NpcBase> {
             npc.addAITask(TASK_SLEEP);
         else
             npc.removeAITask(TASK_SLEEP);
-        if (npc.world.isRaining())
+        if (!npc.worksInRain() && npc.world.isRaining())
             npc.addAITask(TASK_RAIN);
         else
             npc.removeAITask(TASK_RAIN);

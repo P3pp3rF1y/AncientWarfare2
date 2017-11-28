@@ -64,4 +64,14 @@ public abstract class NpcFactionArcher extends NpcFaction implements IRangedAtta
     public boolean canAttackClass(Class claz) {
         return true;
     }
+
+	@Override
+	public boolean worksInRain() {
+		return true;
+	}
+
+	@Override
+	public boolean shouldSleep() {
+		return false;
+	}
 }

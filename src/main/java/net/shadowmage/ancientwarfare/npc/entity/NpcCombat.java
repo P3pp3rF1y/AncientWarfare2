@@ -117,6 +117,16 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
         return (isBow(getHeldItemMainhand().getItem())) || super.canAttackClass(claz);
     }
 
+    @Override
+    public boolean worksInRain() {
+        return true;
+    }
+
+    @Override
+    public boolean shouldSleep() {
+        return false;
+    }
+
     private boolean isBow(Item item){
         // Inserting QuiverBow recognition here (for b78)
         // TODO quiverbow integration??
