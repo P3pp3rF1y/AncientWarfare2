@@ -20,10 +20,9 @@ public class TorqueTransportAnimationRenderer extends TorqueAnimationRenderer<Ti
 
 			if (connections[facing.ordinal()]) {
 				if (!transportCell.canOutputTorque(facing) && neighbors[facing.ordinal()] != null && neighbors[facing.ordinal()].useOutputRotation(null)) {
-					float r = neighbors[facing.ordinal()].getClientOutputRotation(facing.getOpposite(), partialTicks);
+					float r = -neighbors[facing.ordinal()].getClientOutputRotation(facing.getOpposite(), partialTicks);
 
-					int direction = (facing.ordinal() % 2 == 0) ? -1 : 1;//evens rotate in the other direction
-					state = state.withProperty(AutomationProperties.ROTATIONS[facing.ordinal()], direction * r);
+					state = state.withProperty(AutomationProperties.ROTATIONS[facing.ordinal()], r);
 				}
 			}
 		}
