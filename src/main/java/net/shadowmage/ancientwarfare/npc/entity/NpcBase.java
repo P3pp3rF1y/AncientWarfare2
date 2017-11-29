@@ -16,7 +16,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTUtil;
@@ -560,6 +563,12 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         if (slot == EntityEquipmentSlot.MAINHAND) {
             onWeaponInventoryChanged();
         }
+    }
+
+    @Override
+    protected boolean canEquipItem(ItemStack stack) {
+        Item item = stack.getItem();
+        return item instanceof ItemArmor || (item instanceof ItemSword && getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).getItem() instanceof ItemSword);
     }
 
     public final void setItemStackToSlot(int slot, ItemStack stack) {
