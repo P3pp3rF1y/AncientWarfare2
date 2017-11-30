@@ -4,6 +4,7 @@ import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 import javax.annotation.Nullable;
@@ -95,6 +96,9 @@ public abstract class TileTorqueShaft extends TileTorqueSingleCell {
             prevNeighborInvalid = false;
             ITorqueTile input = getTorqueCache()[orientation.getOpposite().ordinal()];
             if (input instanceof TileTorqueShaft && input.getClass() == this.getClass() && input.canOutputTorque(orientation)) {
+                if (prev == null) {
+                    BlockTools.notifyBlockUpdate(this);
+                }
                 prev = (TileTorqueShaft) input;
                 prev.next = this;
             }
