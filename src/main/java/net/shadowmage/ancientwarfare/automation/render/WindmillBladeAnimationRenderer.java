@@ -23,9 +23,4 @@ public class WindmillBladeAnimationRenderer extends BaseAnimationRenderer<TileWi
 
         return state;
     }
-
-    @Override
-    protected int getModelHashCode(IExtendedBlockState exState) {
-        return 31 + Float.floatToIntBits(exState.getValue(AutomationProperties.ROTATION));
-    }
 }

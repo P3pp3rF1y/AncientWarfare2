@@ -21,14 +21,4 @@ public class FlywheelStorageAnimationRenderer extends BaseAnimationRenderer<Tile
 
         return state;
     }
-
-    @Override
-    protected int getModelHashCode(IExtendedBlockState exState) {
-        int result = exState.getValue(DYNAMIC).hashCode();
-        result = 31 * result + exState.getValue(IS_CONTROL).hashCode();
-        result = 31 * result + exState.getValue(WIDTH);
-        result = 31 * result + exState.getValue(HEIGHT);
-        result = 31 * result + Float.floatToIntBits(exState.getValue(ROTATION));
-        return result;
-    }
 }

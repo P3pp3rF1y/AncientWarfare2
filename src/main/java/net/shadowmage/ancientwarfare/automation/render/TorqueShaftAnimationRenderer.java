@@ -28,9 +28,4 @@ public class TorqueShaftAnimationRenderer extends TorqueAnimationRenderer<TileTo
 
         return state;
     }
-
-    @Override
-    protected int getModelHashCode(IExtendedBlockState exState) {
-        return 31 * super.getModelHashCode(exState) + Float.floatToIntBits(exState.getValue(AutomationProperties.INPUT_ROTATION));
-    }
 }

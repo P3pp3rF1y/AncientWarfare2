@@ -37,15 +37,6 @@ public class TorqueAnimationRenderer<T extends TileTorqueBase> extends BaseAnima
         return state;
     }
 
-    @Override
-    protected int getModelHashCode(IExtendedBlockState exState) {
-        int result = 1;
-        for(EnumFacing facing : EnumFacing.VALUES) {
-            result = 31 * result + Float.floatToIntBits(exState.getValue(AutomationProperties.ROTATIONS[facing.getIndex()]));
-        }
-        return result;
-    }
-
     protected IExtendedBlockState updateAdditionalProperties(IExtendedBlockState state, TileTorqueBase te) {
         return state;
     }

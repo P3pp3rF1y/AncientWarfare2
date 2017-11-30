@@ -47,6 +47,4 @@ public abstract class BaseAnimationRenderer<T extends TileEntity> extends FastTE
     }
 
     protected abstract IExtendedBlockState handleState(T te, float partialTicks, IExtendedBlockState state);
-
-    protected abstract int getModelHashCode(IExtendedBlockState exState);
 }

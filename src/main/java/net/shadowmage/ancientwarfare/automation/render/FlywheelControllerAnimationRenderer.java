@@ -24,12 +24,4 @@ public class FlywheelControllerAnimationRenderer extends TorqueAnimationRenderer
 
 		return state;
 	}
-
-	@Override
-	protected int getModelHashCode(IExtendedBlockState exState) {
-		int result = super.getModelHashCode(exState);
-		result = 31 * result + Float.floatToIntBits(exState.getValue(AutomationProperties.INPUT_ROTATION));
-		result = 31 * result + Float.floatToIntBits(exState.getValue(BlockFlywheelController.FLYWHEEL_ROTATION));
-		return result;
-	}
 }

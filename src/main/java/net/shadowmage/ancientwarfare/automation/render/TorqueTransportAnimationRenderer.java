@@ -33,15 +33,4 @@ public class TorqueTransportAnimationRenderer extends TorqueAnimationRenderer<Ti
 
 		return state;
 	}
-
-	@Override
-	protected int getModelHashCode(IExtendedBlockState exState) {
-		int result = super.getModelHashCode(exState);
-
-		for(IUnlistedProperty property : BlockTorqueTransportSided.CONNECTIONS) {
-			result = 31 * result + exState.getValue(property).hashCode();
-		}
-
-		return result;
-	}
 }
