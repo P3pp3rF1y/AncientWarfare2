@@ -70,7 +70,9 @@ public class InventoryTools {
         ItemQuantityMap itemQuantities = new ItemQuantityMap();
 
         for (ItemStack stack : stacks) {
-            itemQuantities.addCount(stack, stack.getCount());
+            if (!stack.isEmpty()) {
+                itemQuantities.addCount(stack, stack.getCount());
+            }
         }
 
         for (int slot : slots) {

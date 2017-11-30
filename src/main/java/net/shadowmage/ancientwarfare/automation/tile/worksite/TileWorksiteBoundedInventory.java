@@ -65,6 +65,9 @@ public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded i
             stacks = ((IAncientWarfareFarmable) block).doHarvest(world, pos, getFortune());
         } else {
             block.getDrops(stacks, world, pos, state, getFortune());
+
+            //TODO check for IInventory or IItemHandler cap and get these added to stacks
+
             if (!InventoryTools.canInventoryHold(inventory, combinedIndices, stacks)) {
                 return false;
             }
