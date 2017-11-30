@@ -12,6 +12,10 @@ import java.util.Optional;
 
 public class TorqueAnimationRenderer<T extends TileTorqueBase> extends BaseAnimationRenderer<T> {
 
+    public TorqueAnimationRenderer(AnimatedBlockRenderer bakery) {
+        super(bakery);
+    }
+
     @Override
     protected IExtendedBlockState handleState(T te, float partialTicks, IExtendedBlockState state) {
         EnumFacing facing = te.getPrimaryFacing();

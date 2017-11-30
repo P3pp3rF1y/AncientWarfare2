@@ -9,6 +9,10 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueSidedCell;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 
 public class TorqueTransportAnimationRenderer extends TorqueAnimationRenderer<TileTorqueSidedCell> {
+	public TorqueTransportAnimationRenderer(AnimatedBlockRenderer bakery) {
+		super(bakery);
+	}
+
 	@Override
 	protected IExtendedBlockState handleState(TileTorqueSidedCell transportCell, float partialTicks, IExtendedBlockState state) {
 		state = super.handleState(transportCell, partialTicks, state);

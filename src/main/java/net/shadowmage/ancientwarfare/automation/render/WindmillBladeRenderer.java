@@ -112,7 +112,7 @@ public class WindmillBladeRenderer extends AnimatedBlockRenderer {
 			return Collections.singleton(cube);
 		}
 
-		if(!state.getValue(AutomationProperties.DYNAMIC)) {
+		if(!state.getValue(AutomationProperties.DYNAMIC) || !state.getValue(AutomationProperties.IS_CONTROL)) {
 			return Collections.emptySet();
 		}
 

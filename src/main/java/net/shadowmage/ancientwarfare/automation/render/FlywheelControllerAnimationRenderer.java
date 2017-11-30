@@ -8,6 +8,10 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.TileFlywheelControll
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 
 public class FlywheelControllerAnimationRenderer extends TorqueAnimationRenderer<TileFlywheelController> {
+	public FlywheelControllerAnimationRenderer() {
+		super(FlywheelControllerRenderer.INSTANCE);
+	}
+
 	@Override
 	protected IExtendedBlockState handleState(TileFlywheelController te, float partialTicks, IExtendedBlockState state) {
 		state = super.handleState(te, partialTicks, state);

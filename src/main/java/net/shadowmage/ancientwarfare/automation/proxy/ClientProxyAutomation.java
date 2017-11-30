@@ -100,9 +100,8 @@ public class ClientProxyAutomation extends ClientProxyBase {
 
         //********************************************CONDUIT / TRANSPORT RENDERS***************************************************************//
 
-        TorqueTransportAnimationRenderer transportSidedRenderer = new TorqueTransportAnimationRenderer();
-        ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueSidedCell.class, transportSidedRenderer);
-        ClientRegistry.bindTileEntitySpecialRenderer(TileDistributor.class, transportSidedRenderer);
+        ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueSidedCell.class, new TorqueTransportAnimationRenderer(TorqueJunctionRenderer.INSTANCE));
+        ClientRegistry.bindTileEntitySpecialRenderer(TileDistributor.class, new TorqueTransportAnimationRenderer(TorqueDistributorRenderer.INSTANCE));
         ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueShaft.class, new TorqueShaftAnimationRenderer());
 
         //********************************************STORAGE RENDERS***************************************************************//
@@ -110,8 +109,8 @@ public class ClientProxyAutomation extends ClientProxyBase {
         ClientRegistry.bindTileEntitySpecialRenderer(TileFlywheelStorage.class, new FlywheelStorageAnimationRenderer());
 
         //********************************************GENERATOR RENDERS***************************************************************//
-        ClientRegistry.bindTileEntitySpecialRenderer(TileStirlingGenerator.class, new TorqueAnimationRenderer<>());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileWaterwheelGenerator.class, new TorqueAnimationRenderer<TileWaterwheelGenerator>() {
+        ClientRegistry.bindTileEntitySpecialRenderer(TileStirlingGenerator.class, new TorqueAnimationRenderer<>(StirlingGeneratorRenderer.INSTANCE));
+        ClientRegistry.bindTileEntitySpecialRenderer(TileWaterwheelGenerator.class, new TorqueAnimationRenderer<TileWaterwheelGenerator>(WaterwheelGeneratorRenderer.INSTANCE) {
             @Override
             protected IExtendedBlockState updateAdditionalProperties(IExtendedBlockState state, TileTorqueBase te) {
                 if (te instanceof TileWaterwheelGenerator) {
@@ -120,8 +119,8 @@ public class ClientProxyAutomation extends ClientProxyBase {
                 return state;
             }
         });
-        ClientRegistry.bindTileEntitySpecialRenderer(TileHandCrankedGenerator.class, new TorqueAnimationRenderer<>());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileWindmillController.class, new TorqueAnimationRenderer<>());
+        ClientRegistry.bindTileEntitySpecialRenderer(TileHandCrankedGenerator.class, new TorqueAnimationRenderer<>(HandCrankedGeneratorRenderer.INSTANCE));
+        ClientRegistry.bindTileEntitySpecialRenderer(TileWindmillController.class, new TorqueAnimationRenderer<>(WindmillGeneratorRenderer.INSTANCE));
         ClientRegistry.bindTileEntitySpecialRenderer(TileWindmillBlade.class, new WindmillBladeAnimationRenderer());
     }
 

@@ -1,9 +1,14 @@
 package net.shadowmage.ancientwarfare.automation.render;
 
+import codechicken.lib.lighting.LightModel;
 import codechicken.lib.render.CCModel;
+import codechicken.lib.render.CCRenderState;
+import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.vec.Transformation;
 import com.google.common.collect.Sets;
+import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.property.IExtendedBlockState;
 import net.shadowmage.ancientwarfare.core.render.RotatableBlockRenderer;
 
 import java.util.Collection;
@@ -13,7 +18,7 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public abstract class AnimatedBlockRenderer extends RotatableBlockRenderer {
+public abstract class AnimatedBlockRenderer extends RotatableBlockRenderer implements ITESRRenderer {
     protected AnimatedBlockRenderer(String modelPath) {
         super(modelPath);
     }
@@ -40,5 +45,16 @@ public abstract class AnimatedBlockRenderer extends RotatableBlockRenderer {
 
     protected Collection<CCModel> rotateModels(Collection<CCModel> groups, EnumFacing frontFacing, Transformation transform) {
         return groups.stream().map(e -> rotateFacing(e.copy().apply(transform), frontFacing)).collect(Collectors.toSet());
+    }
+
+    @Override
+    public void renderTransformedBlockModels(CCRenderState ccrs, IExtendedBlockState state) {
+        Collection<CCModel> transformedGroups = applyModelTransforms(groups.values(), null, state);
+
+        TextureUtils.bindBlockTexture();
+
+        for(CCModel group : transformedGroups) {
+            group.render(ccrs, LightModel.standardLightModel, getIconTransform(state));
+        }
     }
 }

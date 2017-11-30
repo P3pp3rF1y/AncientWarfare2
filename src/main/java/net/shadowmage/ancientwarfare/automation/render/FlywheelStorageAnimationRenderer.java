@@ -7,6 +7,10 @@ import static net.shadowmage.ancientwarfare.automation.render.property.Automatio
 
 public class FlywheelStorageAnimationRenderer extends BaseAnimationRenderer<TileFlywheelStorage> {
 
+    public FlywheelStorageAnimationRenderer() {
+        super(FlywheelStorageRenderer.INSTANCE);
+    }
+
     @Override
     protected IExtendedBlockState handleState(TileFlywheelStorage te, float partialTicks, IExtendedBlockState state) {
         state = state.withProperty(DYNAMIC, true);

@@ -7,6 +7,11 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileWindm
 import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 
 public class WindmillBladeAnimationRenderer extends BaseAnimationRenderer<TileWindmillBlade> {
+
+    public WindmillBladeAnimationRenderer() {
+        super(WindmillBladeRenderer.INSTANCE);
+    }
+
     @Override
     protected IExtendedBlockState handleState(TileWindmillBlade blade, float partialTicks, IExtendedBlockState state) {
         state = state.withProperty(BlockWindmillBlade.FORMED, blade.isFormed());

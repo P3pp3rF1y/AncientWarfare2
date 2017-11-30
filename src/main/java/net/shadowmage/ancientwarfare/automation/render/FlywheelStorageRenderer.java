@@ -1,11 +1,13 @@
 package net.shadowmage.ancientwarfare.automation.render;
 
 import codechicken.lib.colour.ColourRGBA;
+import codechicken.lib.lighting.LightModel;
 import codechicken.lib.model.bakery.generation.ILayeredBlockBakery;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.OBJParser;
 import codechicken.lib.render.buffer.BakingVertexBuffer;
+import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.vec.RedundantTransformation;
 import codechicken.lib.vec.Rotation;
 import codechicken.lib.vec.Transformation;
@@ -37,6 +39,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +47,9 @@ import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class FlywheelStorageRenderer implements ILayeredBlockBakery {
+import static net.shadowmage.ancientwarfare.automation.render.property.AutomationProperties.IS_CONTROL;
+
+public class FlywheelStorageRenderer implements ILayeredBlockBakery, ITESRRenderer {
     public static final ModelResourceLocation LIGHT_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/flywheel_storage", "small_light");
     public static final ModelResourceLocation MEDIUM_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/flywheel_storage", "small_medium");
     public static final ModelResourceLocation HEAVY_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/flywheel_storage", "small_heavy");
@@ -144,9 +149,12 @@ public class FlywheelStorageRenderer implements ILayeredBlockBakery {
         ccrs.bind(buffer);
 
         TorqueTier tier = TorqueTier.byMetadata(stack.getMetadata());
-        renderStorage(ccrs, BlockRenderLayer.SOLID, false, true, 0f, 1, tier);
-        renderStorage(ccrs, BlockRenderLayer.SOLID, false, false, 0f, 1, tier);
-        renderStorage(ccrs, BlockRenderLayer.TRANSLUCENT, false, false, 0f, 1, tier);
+
+        HashSet<CCModel> transformedModels = Sets.newHashSet();
+        transformedModels.addAll(getTransformedModels(BlockRenderLayer.SOLID, false, true, 0f, 1));
+        transformedModels.addAll(getTransformedModels(BlockRenderLayer.SOLID, false, false, 0f, 1));
+        transformedModels.addAll(getTransformedModels(BlockRenderLayer.TRANSLUCENT, false, false, 0f, 1));
+        renderModels(transformedModels, ccrs, false, tier);
 
         buffer.finishDrawing();
         return buffer.bake();
@@ -165,23 +173,29 @@ public class FlywheelStorageRenderer implements ILayeredBlockBakery {
         ccrs.reset();
         ccrs.bind(buffer);
 
-        renderBlockModels(ccrs, layer, state);
+        boolean largeModel = state.getValue(AutomationProperties.WIDTH) > 1;
+        TorqueTier tier = state.getValue(AutomationProperties.TIER);
+
+        renderModels(getTransformedModels(layer, state), ccrs, largeModel, tier);
 
         buffer.finishDrawing();
         return buffer.bake();
     }
 
-    protected void renderBlockModels(CCRenderState ccrs, BlockRenderLayer layer, IExtendedBlockState state) {
+    private Set<CCModel> getTransformedModels(BlockRenderLayer layer, IExtendedBlockState state) {
+        if(!state.getValue(IS_CONTROL)) {
+            return Collections.emptySet();
+        }
+
         boolean largeModel = state.getValue(AutomationProperties.WIDTH) > 1;
         boolean displayDynamicParts = state.getValue(AutomationProperties.DYNAMIC);
         float rotation = state.getValue(AutomationProperties.ROTATION);
         int height = state.getValue(AutomationProperties.HEIGHT);
-        TorqueTier tier = state.getValue(AutomationProperties.TIER);
 
-        renderStorage(ccrs, layer, largeModel, displayDynamicParts, rotation, height, tier);
+        return getTransformedModels(layer, largeModel, displayDynamicParts, rotation, height);
     }
 
-    private void renderStorage(CCRenderState ccrs, BlockRenderLayer layer, boolean largeModel, boolean displayDynamicParts, float rotation, int height, TorqueTier tier) {
+    private Set<CCModel> getTransformedModels(BlockRenderLayer layer, boolean largeModel, boolean displayDynamicParts, float rotation, int height) {
         Set<CCModel> transformedGroups = Sets.newHashSet();
         Collection<CCModel> spindle = largeModel ? spindleLarge : spindleSmall;
         Collection<CCModel> flywheelExtension = largeModel ? flywheelExtensionLarge : flywheelExtensionSmall;
@@ -222,7 +236,7 @@ public class FlywheelStorageRenderer implements ILayeredBlockBakery {
             }
         }
 
-        renderModels(transformedGroups, ccrs, largeModel, tier);
+        return transformedGroups;
     }
 
     private Collection<CCModel> setAlpha(Collection<CCModel> models, double alpha) {
@@ -258,6 +272,20 @@ public class FlywheelStorageRenderer implements ILayeredBlockBakery {
     private void renderModels(Collection<CCModel> modelGroups, CCRenderState ccrs, boolean large, TorqueTier tier) {
         for(CCModel group : modelGroups) {
             group.render(ccrs, getIconTransformation(large, tier));
+        }
+    }
+
+    @Override
+    public void renderTransformedBlockModels(CCRenderState ccrs, IExtendedBlockState state) {
+        TextureUtils.bindBlockTexture();
+
+        boolean largeModel = state.getValue(AutomationProperties.WIDTH) > 1;
+        TorqueTier tier = state.getValue(AutomationProperties.TIER);
+
+        Set<CCModel> modelGroups = getTransformedModels(BlockRenderLayer.SOLID, state);
+
+        for(CCModel group : modelGroups) {
+            group.render(ccrs, LightModel.standardLightModel, getIconTransformation(largeModel, tier));
         }
     }
 }

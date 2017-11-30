@@ -9,6 +9,11 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITorque;
 import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 
 public class TorqueShaftAnimationRenderer extends TorqueAnimationRenderer<TileTorqueShaft> {
+
+    public TorqueShaftAnimationRenderer() {
+        super(TorqueShaftRenderer.INSTANCE);
+    }
+
     @Override
     protected IExtendedBlockState handleState(TileTorqueShaft shaft, float partialTicks, IExtendedBlockState state) {
         state = super.handleState(shaft, partialTicks, state);
