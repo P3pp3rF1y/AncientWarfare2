@@ -596,11 +596,7 @@ public class AWStructureStatics extends ModConfiguration {
     private void initializeDefaultSkippedEntities() {
         String[] defaultExcludedEntities = new String[]
                 {
-                        "AncientWarfare.entity.gate",
-                        "AncientWarfare.entity.missile",
-                        "AncientWarfare.entity.npc",
-                        "AncientWarfare.entity.vehicle",
-                        "AncientWarfareStructure.aw_gate",
+                        "ancientwarfarestructure:aw_gate",
                         "Arrow",
                         "awger_Hoy.EntityHoy",
                         "awer_Punt.EntityPunt",
