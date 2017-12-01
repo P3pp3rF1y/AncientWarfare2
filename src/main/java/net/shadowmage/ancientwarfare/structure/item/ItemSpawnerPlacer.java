@@ -35,6 +35,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.structure.gui.GuiSpawnerPlacer;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -100,4 +101,10 @@ public class ItemSpawnerPlacer extends ItemBaseStructure {
         return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
 
+    @Override
+    public void registerClient() {
+        super.registerClient();
+
+        NetworkHandler.registerGui(NetworkHandler.GUI_SPAWNER, GuiSpawnerPlacer.class);
+    }
 }

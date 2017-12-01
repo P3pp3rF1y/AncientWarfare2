@@ -29,6 +29,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.render.BlockStateKeyGenerator;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
+import net.shadowmage.ancientwarfare.structure.gui.GuiSoundBlock;
 import net.shadowmage.ancientwarfare.structure.render.SoundBlockRenderer;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
 
@@ -97,6 +98,8 @@ public class BlockSoundBlock extends BlockBaseStructure implements IBakeryProvid
 
         ModelBakery.registerBlockKeyGenerator(this,
                 new BlockStateKeyGenerator.Builder().addKeyProperties(DISGUISE_BLOCK).build());
+
+        NetworkHandler.registerGui(NetworkHandler.GUI_SOUND_BLOCK, GuiSoundBlock.class);
     }
 
     @Override

@@ -8,6 +8,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.shadowmage.ancientwarfare.structure.render.RenderStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 
 public class BlockStructureBuilder extends BlockBaseStructure {
@@ -48,5 +50,12 @@ public class BlockStructureBuilder extends BlockBaseStructure {
             }
         }
         return true;
+    }
+
+    @Override
+    public void registerClient() {
+        super.registerClient();
+
+        ClientRegistry.bindTileEntitySpecialRenderer(TileStructureBuilder.class, new RenderStructureBuilder());
     }
 }

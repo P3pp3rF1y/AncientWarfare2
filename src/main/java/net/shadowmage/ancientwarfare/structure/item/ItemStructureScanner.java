@@ -16,6 +16,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.event.IBoxRenderer;
+import net.shadowmage.ancientwarfare.structure.gui.GuiStructureScanner;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidationType;
@@ -144,5 +145,12 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
             max = BlockTools.getMax(pos1, pos2);
             Util.renderBoundingBox(player, min, max, delta);
         }
+    }
+
+    @Override
+    public void registerClient() {
+        super.registerClient();
+
+        NetworkHandler.registerGui(NetworkHandler.GUI_SCANNER, GuiStructureScanner.class);
     }
 }
