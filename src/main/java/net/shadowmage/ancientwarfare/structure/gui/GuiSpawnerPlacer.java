@@ -1,7 +1,8 @@
 package net.shadowmage.ancientwarfare.structure.gui;
 
-import net.minecraft.entity.EntityList;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
@@ -11,11 +12,14 @@ import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
+import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerPlacer;
 
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Set;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class GuiSpawnerPlacer extends GuiContainerBase<ContainerSpawnerPlacer> {
 
@@ -23,7 +27,7 @@ public class GuiSpawnerPlacer extends GuiContainerBase<ContainerSpawnerPlacer> {
     private CompositeScrolled typeSelectionArea;
     private CompositeScrolled attributesArea;
 
-    private final HashMap<Label, String> labelToClass = new HashMap<>();
+    private final HashMap<Label, String> labelToRegistry = new HashMap<>();
 
     public GuiSpawnerPlacer(ContainerBase par1Container) {
         super(par1Container);
@@ -61,16 +65,19 @@ public class GuiSpawnerPlacer extends GuiContainerBase<ContainerSpawnerPlacer> {
     public void setupElements() {
         typeSelectionArea.clearElements();
         attributesArea.clearElements();
-        labelToClass.clear();
+        labelToRegistry.clear();
 
         int totalHeight = 3;
-        Set<ResourceLocation> mp = ForgeRegistries.ENTITIES.getKeys();
+        List<String> mp = ForgeRegistries.ENTITIES.getEntries().stream()
+                .map(e -> e.getKey().toString())
+                .sorted(Comparator.comparing(rl -> I18n.format(getUnlocName(rl))))
+                .collect(Collectors.toList());
 
         Listener listener = new Listener(Listener.MOUSE_UP) {
             @Override
             public boolean onEvent(GuiElement widget, ActivationEvent evt) {
                 if (widget.isMouseOverElement(evt.mx, evt.my)) {
-                    getContainer().entityId = labelToClass.get(widget);
+                    getContainer().entityId = labelToRegistry.get(widget);
                     updateSelectionName();
                 }
                 return true;
@@ -78,16 +85,14 @@ public class GuiSpawnerPlacer extends GuiContainerBase<ContainerSpawnerPlacer> {
         };
 
         Label label;
-        for (ResourceLocation registryName : mp) {
-            String name = registryName.toString();
-
-            if (AWStructureStatics.excludedSpawnerEntities.contains(name)) {
+        for (String rl : mp) {
+            if (AWStructureStatics.excludedSpawnerEntities.contains(rl)) {
                 continue;//skip excluded entities
             }
-            label = new Label(8, totalHeight, "entity." + name + ".name");
+            label = new Label(8, totalHeight, getUnlocName(rl));
             label.addNewListener(listener);
             typeSelectionArea.addGuiElement(label);
-            labelToClass.put(label, name);
+            labelToRegistry.put(label, rl);
             totalHeight += 12;
         }
         typeSelectionArea.setAreaSize(totalHeight);
@@ -185,8 +190,16 @@ public class GuiSpawnerPlacer extends GuiContainerBase<ContainerSpawnerPlacer> {
         attributesArea.setAreaSize(totalHeight);
     }
 
+    private String getUnlocName(String resourceLocation) {
+        return getUnlocName(new ResourceLocation(resourceLocation));
+    }
+    private String getUnlocName(ResourceLocation registryName) {
+        EntityEntry e = ForgeRegistries.ENTITIES.getValue(registryName);
+        return "entity." + (registryName.getResourceDomain().equals(AncientWarfareNPC.modID) ? "AncientWarfareNpc." : "") + e.getName() + ".name";
+    }
+
     private void updateSelectionName() {
-        currentSelectionName.setText("entity." + getContainer().entityId + ".name");
+        currentSelectionName.setText(getUnlocName(getContainer().entityId));
     }
 
 }
