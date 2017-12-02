@@ -4,6 +4,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -12,6 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -20,6 +22,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
+import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 
 import javax.annotation.Nonnull;
@@ -32,6 +36,20 @@ public class BlockAdvancedSpawner extends BlockBaseStructure {
     public BlockAdvancedSpawner() {
         super(Material.ROCK, "advanced_spawner");
         setHardness(2.f);
+    }
+
+    @Override
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
+        if (tab != AWStructuresItemLoader.structureTab) {
+            return;
+        }
+
+        @Nonnull ItemStack stack = new ItemStack(this);
+        SpawnerSettings settings = SpawnerSettings.getDefaultSettings();
+        NBTTagCompound defaultTag = new NBTTagCompound();
+        settings.writeToNBT(defaultTag);
+        stack.setTagInfo("spawnerSettings", defaultTag);
+        items.add(stack);
     }
 
     @Override

@@ -4,13 +4,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -23,7 +21,6 @@ import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings.EntitySpawnG
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings.EntitySpawnSettings;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -88,21 +85,4 @@ public class ItemBlockAdvancedSpawner extends ItemBlockBase implements IItemKeyI
             }
         }
     }
-
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void getSubItems(CreativeTabs creativeTab, NonNullList<ItemStack> stackList) {
-        if (creativeTab != AWStructuresItemLoader.structureTab) {
-            return;
-        }
-
-        @Nonnull ItemStack stack = new ItemStack(this.getBlock());
-        SpawnerSettings settings = SpawnerSettings.getDefaultSettings();
-        NBTTagCompound defaultTag = new NBTTagCompound();
-        settings.writeToNBT(defaultTag);
-        stack.setTagInfo("spawnerSettings", defaultTag);
-        stackList.add(stack);
-    }
-
 }
