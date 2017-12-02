@@ -55,11 +55,14 @@ public class StructureTemplateManager {
         StructureTemplateClient cl = new StructureTemplateClient(template);
         clientTemplates.put(template.name, cl);
 
-        NBTTagCompound tag = new NBTTagCompound();
-        cl.writeToNBT(tag);
-        PacketStructure pkt = new PacketStructure();
-        pkt.packetData.setTag("singleStructure", tag);
-        NetworkHandler.sendToAllPlayers(pkt);
+        MinecraftServer server = FMLCommonHandler.instance().getSide() == Side.SERVER ? FMLServerHandler.instance().getServer() : null;
+        if (server != null && server.isServerRunning() && server.getPlayerList() != null) {
+            NBTTagCompound tag = new NBTTagCompound();
+            cl.writeToNBT(tag);
+            PacketStructure pkt = new PacketStructure();
+            pkt.packetData.setTag("singleStructure", tag);
+            NetworkHandler.sendToAllPlayers(pkt);
+        }
     }
 
     public void onPlayerConnect(EntityPlayerMP player) {
