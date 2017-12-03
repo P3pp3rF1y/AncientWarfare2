@@ -31,8 +31,10 @@ public class TemplateRuleRotable extends TemplateRuleBlock {
         this.meta = meta;
         TileEntity worksite = world.getTileEntity(pos);
         EnumFacing o = ((BlockRotationHandler.IRotatableTile) worksite).getPrimaryFacing();
-        for (int i = 0; i < turns; i++) {
-            o = o.rotateY();
+        if (o.getAxis() != EnumFacing.Axis.Y) {
+            for (int i = 0; i < turns; i++) {
+                o = o.rotateY();
+            }
         }
         this.orientation = o.ordinal();
         if (worksite instanceof IBoundedSite && ((IBoundedSite) worksite).hasWorkBounds()) {

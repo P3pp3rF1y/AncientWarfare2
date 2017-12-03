@@ -47,10 +47,11 @@ public class TemplateExporter {
                 return false;
             }
         }
-        FileWriter fileWriter = null;
-        try {
-            fileWriter = new FileWriter(exportFile);
-            BufferedWriter writer = new BufferedWriter(fileWriter);
+        try (
+                FileWriter fileWriter = new FileWriter(exportFile);
+                BufferedWriter writer = new BufferedWriter(fileWriter)
+        ) {
+
 
             writeHeader(template, writer);
             writeValidationSettings(template.getValidationSettings(), writer);
@@ -72,15 +73,6 @@ public class TemplateExporter {
             AWLog.logError("Could not export template..could not create file : " + exportFile.getAbsolutePath());
             e.printStackTrace();
             return false;
-        } finally {
-            if (fileWriter != null) {
-                try {
-                    fileWriter.close();
-                } catch (IOException e) {
-                    AWLog.logError("Could not export template..could not close file : " + exportFile.getAbsolutePath());
-                    e.printStackTrace();
-                }
-            }
         }
         return true;
     }

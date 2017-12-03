@@ -17,7 +17,7 @@ public class ContainerStructureScanner extends ContainerBase {
     public ContainerStructureScanner(EntityPlayer player, int x, int y, int z) {
         super(player);
         @Nonnull ItemStack builderItem = EntityTools.getItemFromEitherHand(player, ItemStructureScanner.class);
-        if (isInvalid(builderItem)) {
+        if (builderItem.isEmpty()) {
             throw new IllegalArgumentException("No scanner in hand");
         }
         settings = ItemStructureSettings.getSettingsFor(builderItem);
@@ -31,7 +31,7 @@ public class ContainerStructureScanner extends ContainerBase {
             boolean include = tag.getBoolean("export");
             String name = tag.getString("name");
             NBTTagCompound validation = tag.getCompoundTag("validation");
-            if (ItemStructureScanner.scanStructure(player.world, settings.pos1(), settings.pos2(), settings.buildKey(), settings.face().ordinal(), name, include, validation))
+            if (ItemStructureScanner.scanStructure(player.world, settings.pos1(), settings.pos2(), settings.buildKey(), settings.face(), name, include, validation))
                 settings.clearSettings();
         }
         if (tag.hasKey("reset")) {
@@ -46,14 +46,10 @@ public class ContainerStructureScanner extends ContainerBase {
             return;
         }
         @Nonnull ItemStack builderItem = EntityTools.getItemFromEitherHand(player, ItemStructureScanner.class);
-        if (isInvalid(builderItem)) {
+        if (builderItem.isEmpty()) {
             return;
         }
         ItemStructureSettings.setSettingsFor(builderItem, settings);
-    }
-
-    private boolean isInvalid(ItemStack stack) {
-        return stack.isEmpty() || !(stack.getItem() instanceof ItemStructureScanner);
     }
 
     public void export(String name, boolean include, NBTTagCompound validation) {

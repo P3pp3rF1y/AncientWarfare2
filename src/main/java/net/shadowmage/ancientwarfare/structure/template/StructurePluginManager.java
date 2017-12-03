@@ -41,8 +41,11 @@ import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateParser;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginAutomation;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginModDefault;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginNpcs;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginVanillaHandler;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginVehicles;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -95,52 +98,22 @@ public class StructurePluginManager implements IStructurePluginManager, IStructu
     }
 
     private boolean isDefaultMods(String modid){
-        return modid.equals("mcp") || modid.equals("FML") || modid.equals("Forge") || modid.startsWith(AncientWarfareCore.modID);
+        return modid.equals("minecraft") || modid.equals("mcp") || modid.equals("FML") || modid.equals("forge") || modid.startsWith(AncientWarfareCore.modID);
     }
 
     private void loadNpcPlugin() {
-        try {
-            Class<?> clz = Class.forName("net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginNpcs");
-            if (clz != null) {
-                Object e = clz.getDeclaredConstructor().newInstance();
-                if (e instanceof StructureContentPlugin) {
-                    addPlugin((StructureContentPlugin) e);
-                    AWLog.log("Loaded NPC Module Structure Plugin");
-                }
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        addPlugin(new StructurePluginNpcs());
+        AWLog.log("Loaded NPC Module Structure Plugin");
     }
 
     private void loadVehiclePlugin() {
-        try {
-            Class<?> clz = Class.forName("net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginVehicles");
-            if (clz != null) {
-                Object e = clz.getDeclaredConstructor().newInstance();
-                if (e instanceof StructureContentPlugin) {
-                    addPlugin((StructureContentPlugin) e);
-                    AWLog.log("Loaded Vehicle Module Structure Plugin");
-                }
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        addPlugin(new StructurePluginVehicles());
+        AWLog.log("Loaded Vehicle Module Structure Plugin");
     }
 
     private void loadAutomationPlugin() {
-        try {
-            Class<?> clz = Class.forName("net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.StructurePluginAutomation");
-            if (clz != null) {
-                Object e = clz.getDeclaredConstructor().newInstance();
-                if (e instanceof StructureContentPlugin) {
-                    addPlugin((StructureContentPlugin) e);
-                    AWLog.log("Loaded Automation Module Structure Plugin");
-                }
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        addPlugin(new StructurePluginAutomation());
+        AWLog.log("Loaded Automation Module Structure Plugin");
     }
 
     public void addPlugin(StructureContentPlugin plugin) {
