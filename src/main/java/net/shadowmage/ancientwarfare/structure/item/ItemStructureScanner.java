@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -79,10 +80,10 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
         return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
 
-    public static boolean scanStructure(World world, BlockPos pos1, BlockPos pos2, BlockPos key, int face, String name, boolean include, NBTTagCompound tag) {
+    public static boolean scanStructure(World world, BlockPos pos1, BlockPos pos2, BlockPos key, EnumFacing face, String name, boolean include, NBTTagCompound tag) {
         BlockPos min = BlockTools.getMin(pos1, pos2);
         BlockPos max = BlockTools.getMax(pos1, pos2);
-        int turns = (6-face)%4;
+        int turns = (6-face.getHorizontalIndex())%4;
         StructureTemplate template = TemplateScanner.scan(world, min, max, key, turns, name);
 
         StructureValidationType type = StructureValidationType.getTypeFromName(tag.getString("validationType"));

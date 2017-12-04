@@ -98,7 +98,6 @@ public class StructurePluginVanillaHandler implements StructureContentPlugin {
                 manager.registerBlockHandler("vanillaBlocks", block, TemplateRuleVanillaBlocks.class);
             }
         }
-        specialHandledBlocks.clear();
 
         manager.registerBlockHandler("vanillaDoors", Blocks.IRON_DOOR, TemplateRuleBlockDoors.class);
         manager.registerBlockHandler("vanillaDoors", Blocks.SPRUCE_DOOR, TemplateRuleBlockDoors.class);

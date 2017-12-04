@@ -4,13 +4,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -26,14 +23,10 @@ import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilderTicked;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ItemBlockStructureBuilder extends ItemBlockBase implements IBoxRenderer {
-
-    List<ItemStack> displayCache = null;
 
     public ItemBlockStructureBuilder(Block block) {
         super(block);
@@ -48,25 +41,6 @@ public class ItemBlockStructureBuilder extends ItemBlockBase implements IBoxRend
             name = stack.getTagCompound().getString("structureName");
         }
         tooltip.add(I18n.format("guistrings.structure.structure_name") + ": " + name);
-    }
-
-    @Override
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if (tab != AWStructuresItemLoader.structureTab) {
-            return;
-        }
-
-        if (displayCache == null) {
-            displayCache = new ArrayList<>();
-            List<StructureTemplateClient> templates = StructureTemplateManagerClient.instance().getSurvivalStructures();
-            @Nonnull ItemStack item;
-            for (StructureTemplateClient t : templates) {
-                item = new ItemStack(this);
-                item.setTagInfo("structureName", new NBTTagString(t.name));
-                displayCache.add(item);
-            }
-        }
-        items.addAll(displayCache);
     }
 
     @Override

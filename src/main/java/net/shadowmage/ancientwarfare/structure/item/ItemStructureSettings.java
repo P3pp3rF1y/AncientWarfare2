@@ -61,7 +61,7 @@ public class ItemStructureSettings {
             settings.setKeys[1] = true;
         }
         if (tag.hasKey("buildKey")) {
-            settings.key = BlockPos.fromLong(tag.getLong("buildKey"));
+            settings.key = BlockPos.fromLong(tag.getCompoundTag("buildKey").getLong("key"));
             settings.setKeys[2] = true;
             settings.buildFace = EnumFacing.VALUES[tag.getCompoundTag("buildKey").getByte("face")];
         }
@@ -83,7 +83,8 @@ public class ItemStructureSettings {
         if (settings.setKeys[2]) {
             NBTTagCompound tag1 = new NBTTagCompound();
             tag1.setByte("face", (byte) settings.buildFace.ordinal());
-            tag.setLong("buildKey", settings.key.toLong());
+            tag1.setLong("key", settings.key.toLong());
+            tag.setTag("buildKey", tag1);
         }
         if (settings.setKeys[3]) {
             tag.setString("name", settings.name);

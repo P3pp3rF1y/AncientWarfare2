@@ -2,22 +2,55 @@ package net.shadowmage.ancientwarfare.structure.block;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.shadowmage.ancientwarfare.structure.render.RenderStructureBuilder;
+import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
+import net.shadowmage.ancientwarfare.structure.template.StructureTemplateClient;
+import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManagerClient;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 
+import javax.annotation.Nonnull;
+import java.util.ArrayList;
+import java.util.List;
+
 public class BlockStructureBuilder extends BlockBaseStructure {
+
+    List<ItemStack> displayCache = null;
 
     public BlockStructureBuilder() {
         super(Material.ROCK, "structure_builder_ticked");
         setHardness(2.f);
-        setCreativeTab(null);
+    }
+
+    @Override
+    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
+        if (tab != AWStructuresItemLoader.structureTab) {
+            return;
+        }
+
+        if (displayCache == null || displayCache.isEmpty()) {
+            displayCache = new ArrayList<>();
+            List<StructureTemplateClient> templates = StructureTemplateManagerClient.instance().getSurvivalStructures();
+            @Nonnull ItemStack item;
+            for (StructureTemplateClient t : templates) {
+                item = new ItemStack(this);
+                item.setTagInfo("structureName", new NBTTagString(t.name));
+                displayCache.add(item);
+            }
+        }
+        if (!displayCache.isEmpty()) {
+            items.addAll(displayCache);
+        }
     }
 
     @Override
