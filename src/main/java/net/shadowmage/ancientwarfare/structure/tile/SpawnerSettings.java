@@ -16,6 +16,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
+import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 
@@ -570,7 +571,7 @@ public class SpawnerSettings {
         }
 
         public final String getEntityName(){
-            return "entity." + entityId + ".name";
+            return EntityTools.getUnlocName(entityId);
         }
 
         public final int getSpawnMin() {

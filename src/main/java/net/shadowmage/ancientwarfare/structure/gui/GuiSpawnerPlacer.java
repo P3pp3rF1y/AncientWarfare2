@@ -1,8 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
@@ -12,7 +10,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
-import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
+import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerPlacer;
 
@@ -70,7 +68,7 @@ public class GuiSpawnerPlacer extends GuiContainerBase<ContainerSpawnerPlacer> {
         int totalHeight = 3;
         List<String> mp = ForgeRegistries.ENTITIES.getEntries().stream()
                 .map(e -> e.getKey().toString())
-                .sorted(Comparator.comparing(rl -> I18n.format(getUnlocName(rl))))
+                .sorted(Comparator.comparing(rl -> I18n.format(EntityTools.getUnlocName(rl))))
                 .collect(Collectors.toList());
 
         Listener listener = new Listener(Listener.MOUSE_UP) {
@@ -89,7 +87,7 @@ public class GuiSpawnerPlacer extends GuiContainerBase<ContainerSpawnerPlacer> {
             if (AWStructureStatics.excludedSpawnerEntities.contains(rl)) {
                 continue;//skip excluded entities
             }
-            label = new Label(8, totalHeight, getUnlocName(rl));
+            label = new Label(8, totalHeight, EntityTools.getUnlocName(rl));
             label.addNewListener(listener);
             typeSelectionArea.addGuiElement(label);
             labelToRegistry.put(label, rl);
@@ -190,16 +188,8 @@ public class GuiSpawnerPlacer extends GuiContainerBase<ContainerSpawnerPlacer> {
         attributesArea.setAreaSize(totalHeight);
     }
 
-    private String getUnlocName(String resourceLocation) {
-        return getUnlocName(new ResourceLocation(resourceLocation));
-    }
-    private String getUnlocName(ResourceLocation registryName) {
-        EntityEntry e = ForgeRegistries.ENTITIES.getValue(registryName);
-        return "entity." + (registryName.getResourceDomain().equals(AncientWarfareNPC.modID) ? "AncientWarfareNpc." : "") + e.getName() + ".name";
-    }
-
     private void updateSelectionName() {
-        currentSelectionName.setText(getUnlocName(getContainer().entityId));
+        currentSelectionName.setText(EntityTools.getUnlocName(getContainer().entityId));
     }
 
 }

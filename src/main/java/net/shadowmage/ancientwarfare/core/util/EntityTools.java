@@ -5,8 +5,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 
 import javax.annotation.Nullable;
 
@@ -75,5 +79,14 @@ public class EntityTools {
             }
         }
         return ItemStack.EMPTY;
+    }
+
+    public static String getUnlocName(String resourceLocation) {
+        return getUnlocName(new ResourceLocation(resourceLocation));
+    }
+
+    public static String getUnlocName(ResourceLocation registryName) {
+        EntityEntry e = ForgeRegistries.ENTITIES.getValue(registryName);
+        return "entity." + (registryName.getResourceDomain().equals(AncientWarfareNPC.modID) ? "AncientWarfareNpc." : "") + e.getName() + ".name";
     }
 }

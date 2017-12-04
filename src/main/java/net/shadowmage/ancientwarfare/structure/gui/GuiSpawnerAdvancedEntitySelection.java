@@ -1,12 +1,8 @@
 package net.shadowmage.ancientwarfare.structure.gui;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterators;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.EntityList;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -14,10 +10,13 @@ import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.core.gui.elements.Tooltip;
+import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings.EntitySpawnSettings;
 
-import java.util.Iterator;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class GuiSpawnerAdvancedEntitySelection extends GuiContainerBase {
 
@@ -77,38 +76,25 @@ public class GuiSpawnerAdvancedEntitySelection extends GuiContainerBase {
     public void setupElements() {
         area.clearElements();
 
-        Iterator itr = Iterators.filter(ForgeRegistries.ENTITIES.getKeys().iterator(), registryName -> {
-			if(registryName == null || AWStructureStatics.excludedSpawnerEntities.contains(registryName.toString())){//skip excluded entities
+        List<ResourceLocation> entities = ForgeRegistries.ENTITIES.getKeys().stream().filter(rl -> {
+			if(rl == null || AWStructureStatics.excludedSpawnerEntities.contains(rl.toString())){//skip excluded entities
 				return false;
 			}
-			return (search.getText().isEmpty() || registryName.toString().contains(search.getText()));
-		});
+			return (search.getText().isEmpty() || rl.toString().contains(search.getText().toLowerCase()));
+		}).sorted(Comparator.comparing(registryName -> I18n.format(EntityTools.getUnlocName(registryName)))).collect(Collectors.toList());
         int totalHeight = 8;
         Button button;
-        while (itr.hasNext()) {
-            final String name = itr.next().toString();
-            button = new Button(8, totalHeight, 256 - 8 - 16, 12, "entity." + name + ".name") {
+        for (ResourceLocation registryName : entities) {
+            button = new Button(8, totalHeight, 256 - 8 - 16, 12, I18n.format(EntityTools.getUnlocName(registryName))) {
                 @Override
                 protected void onPressed() {
-                    settings.setEntityToSpawn(new ResourceLocation(name));
+                    settings.setEntityToSpawn(registryName);
                     selectionLabel.setText(settings.getEntityName());
                     refreshGui();
                 }
             };
-            String mod = "Minecraft";
-            String[] temp = name.split("\\.", 2);
-            if(temp.length>1) {
-                ModContainer modContainer = FMLCommonHandler.instance().findContainerFor(temp[0]);
-                if(modContainer!=null)
-                    mod = modContainer.getName();
-            }
-            Tooltip tip = new Tooltip(50, 20);
-            tip.addTooltipElement(new Label(0, 0, mod));
-            if(temp.length>1){
-                tip.addTooltipElement(new Label(0, 10, temp[1]));
-            }else{
-                tip.addTooltipElement(new Label(0, 10, name));
-            }
+            Tooltip tip = new Tooltip(50, 10);
+            tip.addTooltipElement(new Label(0, 0, registryName.toString()));
             button.setTooltip(tip);
             area.addGuiElement(button);
             totalHeight += 12;
