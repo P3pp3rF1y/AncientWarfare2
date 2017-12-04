@@ -6,11 +6,13 @@ import codechicken.lib.model.bakery.CCBakeryModel;
 import codechicken.lib.model.bakery.IBakeryProvider;
 import codechicken.lib.model.bakery.ModelBakery;
 import codechicken.lib.model.bakery.generation.IBakery;
+import codechicken.lib.texture.TextureUtils;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -71,7 +73,7 @@ public class BlockSoundBlock extends BlockBaseStructure implements IBakeryProvid
     @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         @Nonnull ItemStack itemStack = player.getHeldItem(hand);
-        if(itemStack!=null && itemStack.getItem() instanceof ItemBlock){
+        if(!itemStack.isEmpty() && itemStack.getItem() instanceof ItemBlock){
             TileEntity tileEntity = world.getTileEntity(pos);
             if(tileEntity instanceof TileSoundBlock) {
                 ((TileSoundBlock)tileEntity).setDisguiseState(itemStack);
@@ -92,7 +94,12 @@ public class BlockSoundBlock extends BlockBaseStructure implements IBakeryProvid
                 return SoundBlockRenderer.MODEL_LOCATION;
             }
         });
-        ModelRegistryHelper.register(SoundBlockRenderer.MODEL_LOCATION, new CCBakeryModel("minecraft:blocks/jukebox_side"));
+        ModelRegistryHelper.register(SoundBlockRenderer.MODEL_LOCATION, new CCBakeryModel() {
+            @Override
+            public TextureAtlasSprite getParticleTexture() {
+                return TextureUtils.getTexture("minecraft:blocks/jukebox_side");
+            }
+        });
 
         ModelLoaderHelper.registerItem(this, SoundBlockRenderer.MODEL_LOCATION);
 
