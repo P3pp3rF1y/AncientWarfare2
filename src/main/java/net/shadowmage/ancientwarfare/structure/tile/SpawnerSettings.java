@@ -7,7 +7,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -459,7 +458,6 @@ public class SpawnerSettings {
     public static final class EntitySpawnSettings {
         ResourceLocation entityId = new ResourceLocation("pig");
         NBTTagCompound customTag;
-        List<DataParameter> customData = new ArrayList<>();
         int minToSpawn = 2;
         int maxToSpawn = 4;
         int remainingSpawnCount = -1;
@@ -482,12 +480,6 @@ public class SpawnerSettings {
             tag.setInteger("minToSpawn", minToSpawn);
             tag.setInteger("maxToSpawn", maxToSpawn);
             tag.setInteger("remainingSpawnCount", remainingSpawnCount);
-            NBTTagList list = new NBTTagList();
-// TODO Replace watchable data logic with DataParameters
-            //            for(DataParameter custom : customData){
-//                list.appendTag(custom.toTag());
-//            }
-            tag.setTag("customData", list);
         }
 
         public final void readFromNBT(NBTTagCompound tag) {
@@ -499,14 +491,6 @@ public class SpawnerSettings {
             minToSpawn = tag.getInteger("minToSpawn");
             maxToSpawn = tag.getInteger("maxToSpawn");
             remainingSpawnCount = tag.getInteger("remainingSpawnCount");
-            customData.clear();
-// TODO Replace watchable data logic with DataParameters
-//            if(tag.hasKey("customData")) {
-//                NBTTagList list = tag.getTagList("customData", Constants.NBT.TAG_COMPOUND);
-//                for(int i = 0; i < list.tagCount(); i++){
-//                    addCustomData(WatchedData.fromTag(list.getCompoundTagAt(i)));
-//                }
-//            }
         }
 
         public final void setEntityToSpawn(ResourceLocation entityId) {
@@ -523,24 +507,6 @@ public class SpawnerSettings {
 
         public final void setCustomSpawnTag(NBTTagCompound tag) {
             this.customTag = tag;
-        }
-
-        public final void addCustomData(DataParameter data){
-// TODO Replace watchable data logic with DataParameters
-//            if(data!=null){
-//                Iterator<DataParameter> itr = customData.iterator();
-//                while(itr.hasNext()){
-//                    if(data.collideWith(itr.next())){
-//                        itr.remove();
-//                    }
-//                }
-//                customData.add(data);
-//            }
-//            Collections.sort(customData, WatchedData.IndexSorter.INSTANCE);
-        }
-
-        public final List<DataParameter> getCustomData(){
-            return customData;
         }
 
         public final void setSpawnCountMin(int min) {
@@ -657,31 +623,7 @@ public class SpawnerSettings {
                 }
                 e.readFromNBT(temp);
             }
-// TODO Replace watchable data logic with DataParameters
-//            if(!customData.isEmpty()){
-//                applyCustomData(e.getDataWatcher());
-//            }
             world.spawnEntity(e);
         }
-
-        // TODO Replace watchable data logic with DataParameters
-
-//        private void applyCustomData(DataWatcher watcher){
-//            List<DataWatcher.WatchableObject> data = watcher.getAllWatched();
-//            if(data!=null){
-//                for (WatchedData custom : customData) {
-//                    for (DataWatcher.WatchableObject vanilla : data) {
-//                        if (custom.canReplace(vanilla)) {
-//                            watcher.updateObject(vanilla.getDataValueId(), custom.getObject());
-//                            break;
-//                        }
-//                    }
-//                }
-//            }else{
-//                for(WatchedData d : customData){
-//                    d.add(watcher);
-//                }
-//            }
-//        }
     }
 }
