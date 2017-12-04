@@ -61,7 +61,7 @@ public class ItemResearchNotes extends ItemBaseCore {
             return;
         }
 
-        if (displayCache != null) {
+        if (displayCache != null && displayCache.size() > 0) {
             items.addAll(displayCache);
             return;
         }
