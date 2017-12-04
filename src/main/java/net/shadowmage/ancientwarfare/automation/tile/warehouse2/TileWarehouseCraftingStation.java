@@ -7,6 +7,7 @@ import net.minecraft.inventory.IInventoryChangedListener;
 import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
@@ -103,7 +104,8 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
     }
 
     private void onLayoutMatrixChanged() {
-        this.result.setInventorySlotContents(0, AWCraftingManager.findMatchingRecipe(layoutMatrix, world, getCrafterName()));
+        result.setInventorySlotContents(0, AWCraftingManager.findMatchingRecipe(layoutMatrix, world, getCrafterName()));
+        result.setRecipeUsed(CraftingManager.findMatchingRecipe(layoutMatrix, world));
     }
 
     public String getCrafterName() {

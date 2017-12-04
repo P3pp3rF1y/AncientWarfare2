@@ -1,4 +1,3 @@
-//TODO recipes
 package net.shadowmage.ancientwarfare.core.crafting;
 
 import net.minecraft.inventory.InventoryCrafting;
