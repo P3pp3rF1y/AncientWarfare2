@@ -13,7 +13,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.gui.GuiBackpack;
 import net.shadowmage.ancientwarfare.core.inventory.InventoryBackpack;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -51,8 +50,9 @@ public class ItemBackpack extends ItemBaseCore {
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if (tab != AWCoreBlockLoader.coreTab)
+        if (!isInCreativeTab(tab)) {
             return;
+        }
 
         for (int i = 0; i < 4; i++) {
             items.add(new ItemStack(this, 1, i));

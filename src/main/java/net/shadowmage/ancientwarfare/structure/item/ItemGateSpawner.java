@@ -78,7 +78,7 @@ public class ItemGateSpawner extends ItemBaseStructure implements IItemKeyInterf
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if (tab != AWStructuresItemLoader.structureTab) {
+        if (!isInCreativeTab(tab)) {
             return;
         }
 

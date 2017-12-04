@@ -27,7 +27,7 @@ public class ItemBardInstrument extends ItemBaseNPC {
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if (tab != AWNPCItemLoader.npcTab) {
+        if (!isInCreativeTab(tab)) {
             return;
         }
 

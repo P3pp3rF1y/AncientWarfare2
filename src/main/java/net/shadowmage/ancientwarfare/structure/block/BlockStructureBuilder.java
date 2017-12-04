@@ -13,7 +13,6 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
-import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 import net.shadowmage.ancientwarfare.structure.render.RenderStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateClient;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManagerClient;
@@ -34,10 +33,6 @@ public class BlockStructureBuilder extends BlockBaseStructure {
 
     @Override
     public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if (tab != AWStructuresItemLoader.structureTab) {
-            return;
-        }
-
         if (displayCache == null || displayCache.isEmpty()) {
             displayCache = new ArrayList<>();
             List<StructureTemplateClient> templates = StructureTemplateManagerClient.instance().getSurvivalStructures();
