@@ -6,6 +6,7 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.scoreboard.Team;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
@@ -128,5 +129,10 @@ public abstract class NpcFaction extends NpcBase {
     public String getFaction() {
         String type = getNpcType();
         return type.substring(0, type.indexOf("."));
+    }
+
+    @Override
+    public Team getTeam() {
+        return null;
     }
 }
