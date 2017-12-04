@@ -38,7 +38,7 @@ public class ItemResearchNotes extends ItemBaseCore {
         if (tag != null && tag.hasKey("researchName")) {
             String name = tag.getString("researchName");
             ResearchGoal goal = ResearchGoal.getGoal(name);
-            if (goal != null && Minecraft.getMinecraft().player != null) {
+            if (goal != null && Minecraft.getMinecraft().player != null && world != null) {
                 researchName = I18n.format(name);
                 known = ResearchTracker.INSTANCE.hasPlayerCompleted(world, Minecraft.getMinecraft().player.getName(), goal.getId());
             } else {
