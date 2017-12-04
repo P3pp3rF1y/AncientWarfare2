@@ -35,6 +35,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.event.IBoxRenderer;
+import net.shadowmage.ancientwarfare.structure.gui.GuiStructureSelection;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateClient;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
@@ -129,5 +130,12 @@ public class ItemStructureBuilder extends ItemBaseStructure implements IItemKeyI
         }
         StructureBB bb = new StructureBB(hit, player.getHorizontalFacing(), structure.xSize, structure.ySize, structure.zSize, structure.xOffset, structure.yOffset, structure.zOffset);
         Util.renderBoundingBox(player, bb.min, bb.max, delta);
+    }
+
+    @Override
+    public void registerClient() {
+        super.registerClient();
+
+        NetworkHandler.registerGui(NetworkHandler.GUI_BUILDER, GuiStructureSelection.class);
     }
 }

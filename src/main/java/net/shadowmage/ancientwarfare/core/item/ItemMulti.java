@@ -37,7 +37,7 @@ public class ItemMulti extends ItemBase implements IClientRegistrar {
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if (tab != this.getCreativeTab()) {
+        if (!isInCreativeTab(tab)) {
             return;
         }
 

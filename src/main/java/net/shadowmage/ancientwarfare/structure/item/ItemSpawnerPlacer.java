@@ -30,11 +30,13 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.structure.gui.GuiSpawnerPlacer;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -78,13 +80,14 @@ public class ItemSpawnerPlacer extends ItemBaseStructure {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SPAWNER, 0, 0, 0);
         } else if (traceResult != null && traceResult.typeOfHit == RayTraceResult.Type.BLOCK) {
             if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnerData")) {
-                if (player.world.setBlockState(traceResult.getBlockPos(), Blocks.MOB_SPAWNER.getDefaultState())) {
-                    NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData"); //TODO may make more sense to just update spawner specific tags instead of everything
+                BlockPos placePos = traceResult.getBlockPos().offset(traceResult.sideHit);
+                if (player.world.setBlockState(placePos, Blocks.MOB_SPAWNER.getDefaultState())) {
+                    NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData");
                     tag.setString("id", Blocks.MOB_SPAWNER.getRegistryName().toString());
-                    tag.setInteger("x", traceResult.getBlockPos().getX());
-                    tag.setInteger("y", traceResult.getBlockPos().getY());
-                    tag.setInteger("z", traceResult.getBlockPos().getZ());
-                    TileEntity te = player.world.getTileEntity(traceResult.getBlockPos());
+                    tag.setInteger("x", placePos.getX());
+                    tag.setInteger("y", placePos.getY());
+                    tag.setInteger("z", placePos.getZ());
+                    TileEntity te = player.world.getTileEntity(placePos);
                     te.readFromNBT(tag);
 
                     if (!player.capabilities.isCreativeMode) {
@@ -100,4 +103,10 @@ public class ItemSpawnerPlacer extends ItemBaseStructure {
         return new ActionResult<>(EnumActionResult.SUCCESS, stack);
     }
 
+    @Override
+    public void registerClient() {
+        super.registerClient();
+
+        NetworkHandler.registerGui(NetworkHandler.GUI_SPAWNER, GuiSpawnerPlacer.class);
+    }
 }

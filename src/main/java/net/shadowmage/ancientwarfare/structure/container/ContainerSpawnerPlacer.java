@@ -3,6 +3,8 @@ package net.shadowmage.ancientwarfare.structure.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.structure.item.ItemSpawnerPlacer;
@@ -30,7 +32,7 @@ public class ContainerSpawnerPlacer extends ContainerBase {
             throw new IllegalArgumentException("Incorrect held item");
         }
         if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey("spawnerData")) {
-            entityId = "Pig";
+            entityId = "minecraft:pig";
             delay = 20;
             minSpawnDelay = 800;
             maxSpawnDelay = 800;
@@ -40,7 +42,14 @@ public class ContainerSpawnerPlacer extends ContainerBase {
             spawnRange = 4;
         } else {
             NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData");
-            entityId = tag.getString("EntityId");
+            if (tag.hasKey("SpawnPotentials", Constants.NBT.TAG_LIST)) {
+                NBTTagList nbttaglist = tag.getTagList("SpawnPotentials", 10);
+                if (nbttaglist.tagCount() > 0) {
+                    entityId = nbttaglist.getCompoundTagAt(0).getCompoundTag("Entity").getString("id");
+                }
+            } else {
+                entityId = "minecraft:pig";
+            }
             delay = tag.getShort("Delay");
             minSpawnDelay = tag.getShort("MinSpawnDelay");
             maxSpawnDelay = tag.getShort("MaxSpawnDelay");
@@ -75,7 +84,13 @@ public class ContainerSpawnerPlacer extends ContainerBase {
         NBTTagCompound tag2 = new NBTTagCompound();
         NBTTagCompound tag = new NBTTagCompound();
 
-        tag.setString("EntityId", this.entityId);
+        NBTTagList potentials = new NBTTagList();
+        NBTTagCompound entity = new NBTTagCompound();
+        entity.setString("id", this.entityId);
+        NBTTagCompound weightedEntity = new NBTTagCompound();
+        weightedEntity.setTag("Entity", entity);
+        potentials.appendTag(weightedEntity);
+        tag.setTag("SpawnPotentials", potentials);
         tag.setShort("Delay", (short) this.delay);
         tag.setShort("MinSpawnDelay", (short) this.minSpawnDelay);
         tag.setShort("MaxSpawnDelay", (short) this.maxSpawnDelay);

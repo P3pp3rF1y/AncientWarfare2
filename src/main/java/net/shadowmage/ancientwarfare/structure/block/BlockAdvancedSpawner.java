@@ -22,7 +22,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
+import net.shadowmage.ancientwarfare.structure.gui.GuiSpawnerAdvanced;
+import net.shadowmage.ancientwarfare.structure.gui.GuiSpawnerAdvancedInventory;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 
@@ -40,10 +41,6 @@ public class BlockAdvancedSpawner extends BlockBaseStructure {
 
     @Override
     public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if (tab != AWStructuresItemLoader.structureTab) {
-            return;
-        }
-
         @Nonnull ItemStack stack = new ItemStack(this);
         SpawnerSettings settings = SpawnerSettings.getDefaultSettings();
         NBTTagCompound defaultTag = new NBTTagCompound();
@@ -157,4 +154,13 @@ public class BlockAdvancedSpawner extends BlockBaseStructure {
         return super.onBlockActivated(world, pos, state, player, hand, facing, hitX, hitY, hitZ);
     }
 
+    @Override
+    public void registerClient() {
+        super.registerClient();
+
+        NetworkHandler.registerGui(NetworkHandler.GUI_SPAWNER_ADVANCED, GuiSpawnerAdvanced.class);
+        NetworkHandler.registerGui(NetworkHandler.GUI_SPAWNER_ADVANCED_BLOCK, GuiSpawnerAdvanced.class);
+        NetworkHandler.registerGui(NetworkHandler.GUI_SPAWNER_ADVANCED_INVENTORY, GuiSpawnerAdvancedInventory.class);
+        NetworkHandler.registerGui(NetworkHandler.GUI_SPAWNER_ADVANCED_BLOCK_INVENTORY, GuiSpawnerAdvancedInventory.class);
+    }
 }

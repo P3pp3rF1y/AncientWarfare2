@@ -14,7 +14,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.block.AWCoreBlockLoader;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 
@@ -39,7 +38,7 @@ public class ItemResearchNotes extends ItemBaseCore {
         if (tag != null && tag.hasKey("researchName")) {
             String name = tag.getString("researchName");
             ResearchGoal goal = ResearchGoal.getGoal(name);
-            if (goal != null && Minecraft.getMinecraft().player != null) {
+            if (goal != null && Minecraft.getMinecraft().player != null && world != null) {
                 researchName = I18n.format(name);
                 known = ResearchTracker.INSTANCE.hasPlayerCompleted(world, Minecraft.getMinecraft().player.getName(), goal.getId());
             } else {
@@ -58,11 +57,11 @@ public class ItemResearchNotes extends ItemBaseCore {
 
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if (tab != AWCoreBlockLoader.coreTab) {
+        if (!isInCreativeTab(tab)) {
             return;
         }
 
-        if (displayCache != null) {
+        if (displayCache != null && displayCache.size() > 0) {
             items.addAll(displayCache);
             return;
         }

@@ -46,7 +46,7 @@ public class ItemVehicleSpawner extends ItemBase {
     @Override
     @SideOnly(Side.CLIENT)
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if (tab != AWVehicleItemLoader.vehicleTab) {
+        if (!isInCreativeTab(tab)) {
             return;
         }
 

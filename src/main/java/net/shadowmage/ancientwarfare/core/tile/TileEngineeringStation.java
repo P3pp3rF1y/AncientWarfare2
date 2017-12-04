@@ -7,6 +7,7 @@ import net.minecraft.inventory.IInventoryChangedListener;
 import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
@@ -79,7 +80,8 @@ public class TileEngineeringStation extends TileUpdatable implements IRotatableT
     }
 
     private void onLayoutMatrixChanged() {
-        this.result.setInventorySlotContents(0, AWCraftingManager.findMatchingRecipe(layoutMatrix, world, getCrafterName()));
+        result.setInventorySlotContents(0, AWCraftingManager.findMatchingRecipe(layoutMatrix, world, getCrafterName()));
+        result.setRecipeUsed(CraftingManager.findMatchingRecipe(layoutMatrix, world));
     }
 
     @Override

@@ -156,6 +156,8 @@ tile.windmill_blade.name=Windmill Blade
 tile.advanced_spawner.name=Advanced Monster Spawner
 tile.drafting_station.name=Drafting Station
 tile.structure_builder_ticked.name=Survival Structure Builder
+tile.sound_block.name=Sound Block
+tile.gate_proxy.name=Gate Proxy Block
 #npc
 tile.town_hall.name=Town Hall
 tile.recruiting_station.name=Recruiting Station
