@@ -155,6 +155,7 @@ public class BlockAdvancedSpawner extends BlockBaseStructure {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerClient() {
         super.registerClient();
 
