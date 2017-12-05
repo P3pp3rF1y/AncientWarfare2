@@ -669,7 +669,7 @@ public class AWNPCStatics extends ModConfiguration {
             eqmp.get(faction + ".leader.elite")[0] = "minecraft:diamond_sword";
             eqmp.get(faction + ".trader")[0] = "minecraft:book";
             eqmp.get(faction + ".priest")[0] = "minecraft:book";
-            eqmp.get(faction + ".bard")[0] = "AncientWarfareNpc:bard_instrument";
+            eqmp.get(faction + ".bard")[0] = "ancientwarfarenpc:bard_instrument";
         }
 
         String[] array;

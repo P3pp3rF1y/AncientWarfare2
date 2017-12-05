@@ -444,6 +444,11 @@ public class AWNPCEntityLoader {
      * has to be called during post-init so that all items/etc are fully initialized
      */
     public static void loadNpcSubtypeEquipment() {
+        addNpcEquipment("bard", new ItemStack(AWNPCItems.bardInstrument));
+        addNpcEquipment("priest", new ItemStack(Items.BOOK));
+        addNpcEquipment("trader", new ItemStack(Items.BOOK));
+        addNpcEquipment("courier", new ItemStack(AWItems.backpack));
+
         addNpcSubtypeEquipment("worker", "farmer", new ItemStack(Items.IRON_HOE));
         addNpcSubtypeEquipment("worker", "miner", new ItemStack(Items.IRON_PICKAXE));
         addNpcSubtypeEquipment("worker", "lumberjack", new ItemStack(Items.IRON_AXE));
@@ -475,6 +480,14 @@ public class AWNPCEntityLoader {
             throw new IllegalArgumentException("npc type must first be mapped");
         }
         npcMap.get(npcType).addSubtype(npcSubtype, modelVariant);
+    }
+
+    private static void addNpcEquipment(String npcType, ItemStack equipment) {
+        if (!npcMap.containsKey(npcType)) {
+            throw new IllegalArgumentException("npc type must first be mapped");
+        }
+        NpcDeclaration reg = npcMap.get(npcType);
+        reg.spawnEquipment.put("", equipment);
     }
 
     private static void addNpcSubtypeEquipment(String npcType, String npcSubtype, ItemStack equipment) {
@@ -543,11 +556,9 @@ public class AWNPCEntityLoader {
 
         public NpcBase createEntity(World world, String subType) {
             NpcBase npc = (NpcBase) createEntity(world);
-            if (!subType.isEmpty()) {
-                @Nonnull ItemStack stack = spawnEquipment.get(subType);
-                if (!stack.isEmpty()) {
-                    npc.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, stack.copy());
-                }
+            @Nonnull ItemStack stack = spawnEquipment.get(subType);
+            if (!stack.isEmpty()) {
+                npc.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, stack.copy());
             }
             return npc;
         }
