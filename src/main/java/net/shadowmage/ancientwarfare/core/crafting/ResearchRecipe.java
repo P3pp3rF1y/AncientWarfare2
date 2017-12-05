@@ -120,11 +120,11 @@ public class ResearchRecipe extends IForgeRegistryEntry.Impl<ResearchRecipe> {
         return input;
     }
 
-    public static class IRecipeWrapper implements IShapedRecipe, IForgeRegistryEntry<IRecipe> {
+    public static class ShapedWrapper implements IShapedRecipe, IForgeRegistryEntry<IRecipe> {
 
         private TypeToken<IRecipe> token = new TypeToken<IRecipe>(getClass()){};
         private ResearchRecipe recipe;
-        public IRecipeWrapper(ResearchRecipe recipe) {
+        public ShapedWrapper(ResearchRecipe recipe) {
             this.recipe = recipe;
         }
 
@@ -173,6 +173,11 @@ public class ResearchRecipe extends IForgeRegistryEntry.Impl<ResearchRecipe> {
         @Override
         public Class<IRecipe> getRegistryType() {
             return (Class<IRecipe>) token.getRawType();
+        }
+
+        @Override
+        public NonNullList<Ingredient> getIngredients() {
+            return recipe.getIngredients();
         }
     }
 }
