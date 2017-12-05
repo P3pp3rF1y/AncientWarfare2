@@ -1,10 +1,12 @@
 package net.shadowmage.ancientwarfare.core.crafting;
 
+import com.google.common.reflect.TypeToken;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.CraftingHelper;
 import net.minecraftforge.common.crafting.IShapedRecipe;
@@ -13,6 +15,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class ResearchRecipe extends IForgeRegistryEntry.Impl<ResearchRecipe> {
 
@@ -117,7 +120,9 @@ public class ResearchRecipe extends IForgeRegistryEntry.Impl<ResearchRecipe> {
         return input;
     }
 
-    public static class IRecipeWrapper extends Impl<IRecipe> implements IShapedRecipe {
+    public static class IRecipeWrapper implements IShapedRecipe, IForgeRegistryEntry<IRecipe> {
+
+        private TypeToken<IRecipe> token = new TypeToken<IRecipe>(getClass()){};
         private ResearchRecipe recipe;
         public IRecipeWrapper(ResearchRecipe recipe) {
             this.recipe = recipe;
@@ -152,5 +157,22 @@ public class ResearchRecipe extends IForgeRegistryEntry.Impl<ResearchRecipe> {
 		public int getRecipeHeight() {
 			return recipe.getRecipeHeight();
 		}
-	}
+
+        @Override
+        public IRecipe setRegistryName(ResourceLocation name) {
+            recipe.setRegistryName(name);
+            return this;
+        }
+
+        @Nullable
+        @Override
+        public ResourceLocation getRegistryName() {
+            return recipe.getRegistryName();
+        }
+
+        @Override
+        public Class<IRecipe> getRegistryType() {
+            return (Class<IRecipe>) token.getRawType();
+        }
+    }
 }
