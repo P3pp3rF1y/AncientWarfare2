@@ -32,6 +32,8 @@ import net.shadowmage.ancientwarfare.structure.network.PacketStructureRemove;
 
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class StructureTemplateManager {
     private HashMap<String, StructureTemplateClient> clientTemplates = new HashMap<>();//server-side client-templates
@@ -99,4 +101,7 @@ public class StructureTemplateManager {
         return templateImages.get(imageName);
     }
 
+    public Map<String,StructureTemplate> getSurvivalStructures() {
+        return loadedTemplates.entrySet().stream().filter(e -> e.getValue().getValidationSettings().isSurvival()).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
 }
