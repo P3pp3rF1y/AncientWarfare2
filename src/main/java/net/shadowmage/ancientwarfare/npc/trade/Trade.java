@@ -66,7 +66,7 @@ public abstract class Trade {
      */
     protected void doTrade(EntityPlayer player, IInventory storage) {
         for (ItemStack inputStack : input) {
-            if (inputStack == null) {
+            if (inputStack.isEmpty()) {
                 continue;
             }
             @Nonnull ItemStack result = InventoryTools.removeItems(player.inventory, null, inputStack, inputStack.getCount());//remove from trade grid

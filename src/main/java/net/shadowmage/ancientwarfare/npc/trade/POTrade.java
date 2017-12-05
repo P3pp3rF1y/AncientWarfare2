@@ -29,7 +29,7 @@ public class POTrade extends Trade {
     private void updateCompactInput() {
         ArrayList<ItemStack> list = new ArrayList<>();
         for (ItemStack temp : input) {
-            if (temp != null) {
+            if (!temp.isEmpty()) {
                 list.add(temp.copy());
             }
         }
@@ -39,7 +39,7 @@ public class POTrade extends Trade {
     private void updateCompactOutput() {
         ArrayList<ItemStack> list = new ArrayList<>();
         for (ItemStack temp : output) {
-            if (temp != null) {
+            if (!temp.isEmpty()) {
                 list.add(temp.copy());
             }
         }
