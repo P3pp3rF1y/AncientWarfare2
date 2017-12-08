@@ -23,8 +23,8 @@ public class ContainerNpcPlayerOwnedTrade extends ContainerNpcBase<NpcTrader> {
         this.entity.startTrade(player);
 
         addPlayerSlots();
-        this.hand = EntityTools.getHandHoldingItem(player, AWItems.backpack);
-        storage = ItemBackpack.getInventoryFor(entity.getHeldItem(hand));
+        this.hand = EntityTools.getHandHoldingItem(entity, AWItems.backpack);
+        storage =  hand != null ? ItemBackpack.getInventoryFor(entity.getHeldItem(hand)) : null;
         if (storage != null) {
             for (int i = 0; i < storage.getSizeInventory(); i++) {
                 /*

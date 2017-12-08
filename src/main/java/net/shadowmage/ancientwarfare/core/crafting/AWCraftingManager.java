@@ -21,6 +21,7 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.core.compat.jei.AWJEIPlugin;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 import org.apache.commons.io.FilenameUtils;
@@ -88,7 +89,11 @@ public class AWCraftingManager {
                     RESEARCH_RECIPES.register(recipe);
                 }
             } else {
-                ForgeRegistries.RECIPES.register(new ResearchRecipe.IRecipeWrapper(recipe));
+                ResearchRecipe.ShapedWrapper r = new ResearchRecipe.ShapedWrapper(recipe);
+                ForgeRegistries.RECIPES.register(r);
+                if (Loader.isModLoaded("jei")) {
+                    AWJEIPlugin.addWrappedRecipe(r);
+                }
             }
         }
     }

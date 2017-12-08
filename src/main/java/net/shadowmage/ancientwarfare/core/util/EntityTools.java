@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.core.util;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -61,10 +62,10 @@ public class EntityTools {
     }
 
     @Nullable
-    public static EnumHand getHandHoldingItem(EntityPlayer player, Item item) {
-        if (player.getHeldItemMainhand().getItem() == item) {
+    public static EnumHand getHandHoldingItem(EntityLivingBase entity, Item item) {
+        if (entity.getHeldItemMainhand().getItem() == item) {
             return EnumHand.MAIN_HAND;
-        } else if (player.getHeldItemOffhand().getItem() == item) {
+        } else if (entity.getHeldItemOffhand().getItem() == item) {
             return EnumHand.OFF_HAND;
         }
         return null;

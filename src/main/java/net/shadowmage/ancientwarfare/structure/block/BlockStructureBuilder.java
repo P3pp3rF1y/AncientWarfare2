@@ -13,16 +13,19 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.structure.render.RenderStructureBuilder;
-import net.shadowmage.ancientwarfare.structure.template.StructureTemplateClient;
+import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManagerClient;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class BlockStructureBuilder extends BlockBaseStructure {
 
@@ -37,13 +40,21 @@ public class BlockStructureBuilder extends BlockBaseStructure {
     public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
         if (displayCache == null || displayCache.isEmpty()) {
             displayCache = new ArrayList<>();
-            List<StructureTemplateClient> templates = StructureTemplateManagerClient.instance().getSurvivalStructures();
+
+            //TODO rework structure template manager so that it keeps only one central repository that either is already filled on server or gets updated on client.
+            Set<String> templateNames;
+            if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
+                templateNames = StructureTemplateManager.INSTANCE.getSurvivalStructures().keySet();
+            } else {
+                templateNames = StructureTemplateManagerClient.instance().getSurvivalStructures().stream().map(t -> t.name).collect(Collectors.toSet());
+            }
             @Nonnull ItemStack item;
-            for (StructureTemplateClient t : templates) {
+            for (String templateName : templateNames) {
                 item = new ItemStack(this);
-                item.setTagInfo("structureName", new NBTTagString(t.name));
+                item.setTagInfo("structureName", new NBTTagString(templateName));
                 displayCache.add(item);
             }
+
         }
         if (!displayCache.isEmpty()) {
             items.addAll(displayCache);
