@@ -360,7 +360,30 @@ public class InventoryTools {
         if (stack1 == stack2) {
             return true;
         }
-        return OreDictionary.itemMatches(stack1, stack2, !stack1.isEmpty() && (stack1.isItemStackDamageable() || stack1.getItemDamage() != OreDictionary.WILDCARD_VALUE)) && ItemStack.areItemStackTagsEqual(stack1, stack2);
+        return OreDictionary.itemMatches(stack1, stack2, !stack1.isEmpty() && (stack1.isItemStackDamageable() || stack1.getItemDamage() != OreDictionary.WILDCARD_VALUE)) && areItemStackTagsEqual(stack1, stack2);
+    }
+
+    public static boolean areItemStackTagsEqual(ItemStack stackA, ItemStack stackB)
+    {
+        if (stackA.isEmpty() && stackB.isEmpty())
+        {
+            return true;
+        }
+        else if (!stackA.isEmpty() && !stackB.isEmpty())
+        {
+            if ((stackA.getTagCompound() == null || stackA.getTagCompound().hasNoTags()) && (stackB.getTagCompound() != null && !stackB.getTagCompound().hasNoTags()))
+            {
+                return false;
+            }
+            else
+            {
+                return (stackA.getTagCompound() == null || stackA.getTagCompound().equals(stackB.getTagCompound())) && stackA.areCapsCompatible(stackB);
+            }
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public static boolean doItemStacksMatch(ItemStack stack1, ItemStack stack2, boolean ignoreDamage, boolean ignoreNBT) {
@@ -379,7 +402,7 @@ public class InventoryTools {
         if (!ignoreDamage && stack1.getItemDamage() != stack2.getItemDamage()) {
             return false;
         }
-        return ignoreNBT || ItemStack.areItemStackTagsEqual(stack1, stack2);
+        return ignoreNBT || areItemStackTagsEqual(stack1, stack2);
     }
 
     /*
