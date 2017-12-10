@@ -61,8 +61,8 @@ dependencies {
     deobfCompile "cofh:RedstoneFlux:${rf_version}:universal"
     deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
     compile "codechicken:CodeChickenLib:${ccl_version}:deobf"
-    //deobfCompile name: 'FTBLib', version: ftblib_version, ext: 'jar'
-    //deobfCompile name: 'FTBUtilities', version: ftbutilities_version, ext: 'jar'
+    deobfCompile name: 'FTBLib', version: ftblib_version, ext: 'jar'
+    deobfCompile name: 'FTBUtilities', version: ftbutilities_version, ext: 'jar'
 }
 
 processResources{
