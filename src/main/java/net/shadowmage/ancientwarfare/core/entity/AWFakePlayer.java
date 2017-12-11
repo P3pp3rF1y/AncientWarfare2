@@ -6,10 +6,13 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayer;
 
+import java.util.UUID;
+
 public class AWFakePlayer extends FakePlayer {
+    private static final String PLAYER_NAME = "AncientWarfareFakePlayer";
     private static AWFakePlayer instance;
     private AWFakePlayer(WorldServer world) {
-        super(world, new GameProfile(null, "AncientWarfareFakePlayer"));
+        super(world, new GameProfile(UUID.nameUUIDFromBytes(PLAYER_NAME.getBytes()), PLAYER_NAME));
     }
 
     public static AWFakePlayer get(World world) {
@@ -17,6 +20,11 @@ public class AWFakePlayer extends FakePlayer {
             instance = new AWFakePlayer((WorldServer) world);
         }
         return instance;
+    }
+
+    @Override
+    public GameProfile getGameProfile() {
+        return super.getGameProfile();
     }
 
     @Override
