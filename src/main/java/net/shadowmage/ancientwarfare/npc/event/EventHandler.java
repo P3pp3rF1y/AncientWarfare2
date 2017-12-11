@@ -5,17 +5,12 @@ import net.minecraft.entity.EntityList;
 import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.EntityAITasks.EntityAITaskEntry;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
-import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
-import net.shadowmage.ancientwarfare.npc.gamedata.HeadquartersTracker;
 
 import java.util.Iterator;
 
@@ -26,23 +21,6 @@ public class EventHandler {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onEntityJoinWorld(EntityJoinWorldEvent event) {
-        
-        if (event.getEntity() instanceof EntityPlayer && !event.getWorld().isRemote) {
-            if (ModAccessors.FTBU_LOADED && !HeadquartersTracker.get(event.getWorld()).validateCurrentHq(event.getEntity().getName(), event.getWorld())) {
-                final String playerName = event.getEntity().getName();
-                Thread thread = new Thread(){
-                    public void run(){
-                        try {
-                            Thread.sleep(10000);
-                        } catch (InterruptedException e) {}
-                        HeadquartersTracker.notifyHqMissing(playerName);
-                    }
-                };
-                thread.start();
-            }
-        }
-        
-        
         if (event.getEntity() instanceof NpcBase)
             return;
         if (!(event.getEntity() instanceof EntityCreature))
@@ -125,19 +103,4 @@ public class EventHandler {
         }
     }
 */
-
-    @SubscribeEvent
-    public void onPlayerRespawn(PlayerEvent.Clone event) {
-        if (event.getEntityPlayer().world.isRemote)
-            return;
-        if (event.isWasDeath()) {
-            if (event.getEntityPlayer().getBedLocation(event.getEntityPlayer().dimension) == null) {
-                // player has no bed in the respawned dimension
-                BlockPos hqPos = HeadquartersTracker.get(event.getEntityPlayer().world).getHqPos(event.getEntityPlayer().getName(), event.getEntityPlayer().world);
-                if (hqPos != null) {
-                    EntityTools.teleportPlayerToBlock(event.getEntityPlayer(), event.getEntityPlayer().world, hqPos, true);
-                }
-            }
-        }
-    }
 }

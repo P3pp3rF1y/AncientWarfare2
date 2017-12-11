@@ -65,12 +65,6 @@ public class AWNPCStatics extends ModConfiguration {
     public static boolean npcAllowUpkeepAnyInventory = true;
     public static int townMaxRange = 100;
     public static int townUpdateFreq = 100; //5 second broadcast frequency
-    public static int townChunkClaimRadius = 1;
-    public static int townChunkLoadRadius = -1;
-    public static boolean townActiveNpcSearch = false;
-    public static double townActiveNpcSearchRateFactor = 0.2;
-    public static double townActiveNpcSearchLimit = 5.0;
-    public static int townActiveNpcSearchHeight = 15;
     public static boolean exportEntityNames = false;
     public static boolean npcAIDebugMode = false;
     public static double archerRange = 16.0;
@@ -271,39 +265,8 @@ public class AWNPCStatics extends ModConfiguration {
         townUpdateFreq = config.get(serverOptions, "town_hall_ticks", townUpdateFreq, "Default=" + townUpdateFreq + "\n" +
                 "How many game ticks should pass between Town Hall updates." +
                 "This affect how an NPC can change its selected Town Hall by moving to different places.\n" +
-                "Lower values will make an NPC change its Town Hall faster, but is more costly for a server.\n" +
-                "If chunk loading is available (via FTBU_AW2), this also set the frequency of force-loading chunks.").getInt();
+                "Lower values will make an NPC change its Town Hall faster, but is more costly for a server.\n").getInt();
         
-        townChunkClaimRadius = config.get(serverOptions, "town_hall_chunk_claim_radius", townChunkClaimRadius, "Default=" + townChunkClaimRadius + "\n" +
-                "[ REQUIRES FTBU_AW2 ]\n" +
-                "Specify the claimed chunk radius around Town Hall, not inclusive of the Town Hall chunk itself.\n" +
-                "E.g. 0 would claim the chunk of the Town Hall only, 1 = a 3x3 chunk area centered on the Town Hall.\n" +
-                "Warning: changing this value will NOT update existing worlds. You will have to manually destroy/replace\n" +
-                "every Town Hall block to reflect any new value you set.").getInt();
-        
-        townChunkLoadRadius = config.get(serverOptions, "town_hall_chunk_load_radius", townChunkLoadRadius, "Default=" + townChunkLoadRadius + "\n" +
-                "Specify the loaded chunk radius around Town Hall, not inclusive of the Town Hall chunk itself.\n" +
-                "E.g. 2 = a 5x5 chunk area centered on the Town Hall, 3 = a 7x7 area.\n" +
-                "If using chunk claiming via FTBU_AW2, you probably want this to be at least 1 higher than the claim radius.\n" +
-                "WARNING - There is a good chance you'll want to edit the forgeChunkLoading config - the default mod limit of\n"+
-                "25 chunks per ticket may be too low (each Town Hall has it's own ticket), as well as total ticket limit.").getInt();
-        
-        townActiveNpcSearch = config.get(serverOptions, "town_hall_active_requires_nearby_npc_or_player", townActiveNpcSearch, "Nearby NPC or Player required for chunk claim/loading activation \nDefault=" + townActiveNpcSearch + "\n" +
-                "If you have chunk claim/loading enabled via FTBU_AW2 options, you can enable this to only keep the claims/loads 'active' while there is an NPC within range.\n" +
-                "The range will be the same chunk radius as the chunk loading radius, and will not function if it's disabled (i.e. set to -1).").getBoolean();
-        
-        townActiveNpcSearchRateFactor = config.get(serverOptions, "town_hall_active_check_rate", townActiveNpcSearchRateFactor, "Default=" + townActiveNpcSearchRateFactor + "\n" +
-                "If the Town Hall active check is enabled, it will check for nearby NPC's or players by this factor of the town_hall_active_check_limit setting.\n" +
-                "E.g. if the town_hall_active_check_limit is 5.0 (5 minutes), setting this to 0.2 will check every minute.").getDouble();
-        
-        townActiveNpcSearchLimit = config.get(serverOptions, "town_hall_active_check_limit", townActiveNpcSearchLimit, "Default=" + townActiveNpcSearchLimit + "\n" +
-                "Configure the starting countdown value (in minutes) that inactive Town Halls (i.e. no friendly player or NPC nearby) will progress a stage\n" +
-                "of abandonment. If it is reached once, it will send a warning to the player of abandonment - if reached again, it will abandon. \n" +
-                "The limit is also reset (and capture/reactivate if relevant) if a player opens the Town Hall GUI OR if an NPC takes food from it.").getDouble();
-
-        townActiveNpcSearchHeight = config.get(serverOptions, "town_hall_active_search_height", townActiveNpcSearchHeight, "Default=" + townActiveNpcSearchHeight + "\n" +
-                "Search range in blocks upwards/downwards (either direction) to check for friendly NPC's/Players when determining active status (if enabled).").getInt();
-
         factionLossOnDeath = factionConfig.get(factionSettings, "faction_loss_on_kill", factionLossOnDeath, "Faction Loss On Kill\nDefault=10\n" +
                 "How much faction standing should be lost if you or one of your minions kills a faction based NPC.").getInt();
 

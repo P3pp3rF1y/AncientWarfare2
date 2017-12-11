@@ -1,21 +1,12 @@
 package net.shadowmage.ancientwarfare.npc.container;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.shadowmage.ancientwarfare.core.api.AWSounds;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
-import net.shadowmage.ancientwarfare.core.util.EntityTools;
-import net.shadowmage.ancientwarfare.npc.gamedata.HeadquartersTracker;
-import net.shadowmage.ancientwarfare.npc.tile.TileTeleportHub;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall.NpcDeathEntry;
 
@@ -43,29 +34,6 @@ public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
 
     @Override
     public void handlePacketData(NBTTagCompound tag) {
-        if (tag.hasKey("playerName")) {
-            if (!tileEntity.getWorld().isRemote) {
-                BlockPos tpHubPos = HeadquartersTracker.get(tileEntity.getWorld()).getTeleportHubPosition(tileEntity.getWorld());
-                if (tpHubPos != null) {
-                    TileEntity te = tileEntity.getWorld().getTileEntity(tpHubPos);
-                    if (te instanceof TileTeleportHub) {
-                        String playerName = tag.getString("playerName");
-                        List<EntityPlayerMP> playerList = FMLCommonHandler.instance().getMinecraftServerInstance().getPlayerList().getPlayers();
-                        for (EntityPlayerMP entityPlayer : playerList) {
-                            if (entityPlayer.getName().equals(playerName)) {
-                                final float randomPitch = (float) (Math.random() * (1.1f - 0.9f) + 0.9f);
-                                entityPlayer.world.playSound(null, entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, AWSounds.TOWN_HALL_TELEPORT_OUT, SoundCategory.BLOCKS, 0.6F, randomPitch);
-                                ((TileTeleportHub) te).addArrival(playerName);
-                                EntityTools.teleportPlayerToBlock(entityPlayer, entityPlayer.world, tpHubPos, false);
-                                entityPlayer.world.playSound(null, entityPlayer.posX, entityPlayer.posY, entityPlayer.posZ, AWSounds.TOWN_HALL_TELEPORT_IN, SoundCategory.BLOCKS, 0.6F, randomPitch);
-                            }
-                        }
-                    }
-                }
-            }
-            // we don't need to do anything else
-            return;
-        }
         if (tag.hasKey("deathList")) {
             deathList.clear();
             NBTTagList list = tag.getTagList("deathList", Constants.NBT.TAG_COMPOUND);
@@ -75,15 +43,6 @@ public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
             refreshGui();
         } else if (tag.hasKey("clear")) {
             tileEntity.clearDeathNotices();
-        }
-        
-        if (tag.hasKey("isHq")) {
-            tileEntity.isHq = tag.getBoolean("isHq");
-            refreshGui();
-        }
-        
-        if (tag.hasKey("tpHubPos")) {
-            tileEntity.tpHubPos = BlockPos.fromLong(tag.getLong("tpHubPos"));
         }
         
         if (tag.hasKey("range")) {
@@ -103,7 +62,6 @@ public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
 
     @Override
     public void sendInitData() {
-        sendHqDataToClient();
         sendTownHallDataToClient(false);
     }
 
@@ -145,15 +103,6 @@ public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
         sendDataToServer(tag);
     }
     
-    private void sendHqDataToClient() {
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setBoolean("isHq", tileEntity.isHq);
-        BlockPos tpHubPos = HeadquartersTracker.get(tileEntity.getWorld()).getTeleportHubPosition(tileEntity.getWorld());
-        if (tpHubPos != null)
-            tag.setLong("tpHubPos", tpHubPos.toLong());
-        sendDataToClient(tag);
-    }
-
     private void sendTownHallDataToClient(boolean onlyDeathList) {
         NBTTagList list = new NBTTagList();
         for (NpcDeathEntry entry : deathList) {
