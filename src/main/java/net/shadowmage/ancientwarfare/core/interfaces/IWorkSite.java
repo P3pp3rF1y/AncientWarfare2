@@ -7,6 +7,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 
 import java.util.EnumSet;
+import java.util.UUID;
 
 public interface IWorkSite extends ITorqueTile {
 
@@ -14,44 +15,46 @@ public interface IWorkSite extends ITorqueTile {
      * workers should call this before calling doWork() to make sure that the site
      * actually has work to do.
      */
-    public boolean hasWork();
+    boolean hasWork();
 
     /*
      * can be called by a worker if hasWork() returns true.
      */
-    public void addEnergyFromWorker(IWorker worker);
+    void addEnergyFromWorker(IWorker worker);
 
-    public void addEnergyFromPlayer(EntityPlayer player);
+    void addEnergyFromPlayer(EntityPlayer player);
 
     /*
      * called by workers to validate work-type when IWorker.canWorkAt(IWorkSite) is called
      * workers should be responsible for maintaining their own list of acceptable work types
      */
-    public WorkType getWorkType();
+    WorkType getWorkType();
 
-    public Team getTeam();
+    Team getTeam();
     
-    public String getOwnerName();
+    String getOwnerName();
 
-    public EnumSet<WorksiteUpgrade> getUpgrades();
+    UUID getOwnerUuid();
 
-    public EnumSet<WorksiteUpgrade> getValidUpgrades();
+    EnumSet<WorksiteUpgrade> getUpgrades();
+
+    EnumSet<WorksiteUpgrade> getValidUpgrades();
 
     /*
      * Add the input upgrade to the present upgrade set.  Apply any necessary bonuses at this time.<br>
      * Calling this method with an upgrade that is already present has undefined results.
      */
-    public void addUpgrade(WorksiteUpgrade upgrade);
+    void addUpgrade(WorksiteUpgrade upgrade);
 
     /*
      * Remove the input upgrade from the present upgrade set.  Remove any bonuses that it had applied.<br>
      * Calling this method with an upgrade that is not present has undefined results.
      */
-    public void removeUpgrade(WorksiteUpgrade upgrade);
+    void removeUpgrade(WorksiteUpgrade upgrade);
 
-    public void onBlockBroken();
+    void onBlockBroken();
 
-    public static enum WorkType {
+    enum WorkType {
         /*
          * any change to reg. names will fubar npc-leveling system, as they use these names to store accumulated xp
          */
@@ -73,7 +76,7 @@ public interface IWorkSite extends ITorqueTile {
      *
      * @author Shadowmage
      */
-    public static final class WorksiteImplementation {
+    final class WorksiteImplementation {
 
         private WorksiteImplementation() {
         }
@@ -101,7 +104,5 @@ public interface IWorkSite extends ITorqueTile {
             }
             return efficiencyBonusFactor;
         }
-
     }
-
 }

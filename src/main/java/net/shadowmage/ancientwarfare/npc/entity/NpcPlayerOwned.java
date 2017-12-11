@@ -133,7 +133,8 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
         }//cannot validate, unloaded...assume good
         TileEntity te = world.getTileEntity(pos);
         if (te instanceof TileTownHall) {
-            if (hasCommandPermissions(((TileTownHall) te).getOwnerName()))
+            TileTownHall townHall = (TileTownHall) te;
+            if (hasCommandPermissions(townHall.getOwnerUuid(), townHall.getOwnerName()))
                 return true;
         }
         setTownHallPosition(null);
@@ -268,7 +269,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
 
     @Override
     protected boolean tryCommand(EntityPlayer player) {
-        if (hasCommandPermissions(player.getName()))
+        if (hasCommandPermissions(player.getUniqueID(), player.getName()))
             return super.tryCommand(player);
         return false;
     }

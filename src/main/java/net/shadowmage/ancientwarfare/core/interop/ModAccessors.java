@@ -1,8 +1,13 @@
 package net.shadowmage.ancientwarfare.core.interop;
 
+import net.minecraftforge.fml.common.Loader;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.core.compat.ftb.FTBUCompat;
+import net.shadowmage.ancientwarfare.core.compat.ftb.FTBUCompatDummy;
+import net.shadowmage.ancientwarfare.core.compat.ftb.IFTBUCompat;
+
 public class ModAccessors {
-    //public static InteropFtbuInterface FTBU;
-    public static boolean FTBU_LOADED = false;
+    public static IFTBUCompat FTBU;
     //public static InteropHarderWildlifeInterface HARDER_WILDLIFE;
     public static boolean HARDER_WILDLIFE_LOADED = false;
     //public static InteropEnviromineInterface ENVIROMINE;
@@ -14,16 +19,14 @@ public class ModAccessors {
     
     public static void init() {
         try {
-//TODO ftbutils integration
-            //            if (Loader.isModLoaded("FTBU_AW2")) {
-//                AncientWarfareCore.log.info("FTBU_AW2 found!");
-//                FTBU = Class.forName("net.shadowmage.ancientwarfare.core.interop.InteropFtbu").asSubclass(InteropFtbuInterface.class).newInstance();
-//                FTBU_LOADED = true;
-//            } else {
-//                AncientWarfareCore.log.info("FTBU_AW2 not found.");
-//                FTBU = Class.forName("net.shadowmage.ancientwarfare.core.interop.InteropFtbuDummy").asSubclass(InteropFtbuInterface.class).newInstance();
-//            }
-            
+            if (Loader.isModLoaded("ftbu")) {
+                AncientWarfareCore.log.info("FTB utils found!");
+                FTBU = new FTBUCompat();
+            } else {
+                AncientWarfareCore.log.info("FTB utils not found.");
+                FTBU = new FTBUCompatDummy();
+            }
+
 /*
             if (Loader.isModLoaded("HarderWildlife")) {
                 AncientWarfareCore.log.info("HarderWildlife found!");

@@ -81,7 +81,7 @@ public class RenderNpcBase extends RenderBiped<NpcBase> {
                 renderColoredLabel(npc, name, x, y, z, 64, 0x20ff0000, 0xffff0000);
             }
         } else {
-            boolean canBeCommandedBy = npc.hasCommandPermissions(player.getName());
+            boolean canBeCommandedBy = npc.hasCommandPermissions(player.getUniqueID(), player.getName());
             if (AWNPCStatics.renderFriendlyNames.getBoolean()) {
                 String name = getNameForRender(npc, false);
                 if (AWNPCStatics.renderTeamColors.getBoolean()) {

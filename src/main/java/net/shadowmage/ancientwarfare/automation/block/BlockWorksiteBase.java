@@ -17,6 +17,7 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationTyp
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
+import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.function.Supplier;
@@ -92,9 +93,8 @@ public class BlockWorksiteBase extends BlockBaseAutomation implements IRotatable
                 IWorkSite site = ((IWorkSite) te);
                 if ((player.getTeam() != null) && (player.getTeam() == site.getTeam()))
                     canClick = true;
-                //TODO ftbutils integration
-//                if (ModAccessors.FTBU.areFriends(player.getName(), site.getOwnerName()))
-//                    canClick = true;
+                if (ModAccessors.FTBU.areTeamMates(player.getUniqueID(), site.getOwnerUuid()))
+                    canClick = true;
             }
             if (canClick) {
                 return ((IInteractableTile) te).onBlockClicked(player, hand);

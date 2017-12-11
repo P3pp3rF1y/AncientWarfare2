@@ -136,7 +136,7 @@ public class ItemGateSpawner extends ItemBaseStructure implements IItemKeyInterf
             }
             EntityGate entity = Gate.constructGate(world, pos1, pos2, Gate.getGateByID(stack.getItemDamage()), player.getHorizontalFacing());
             if (entity != null) {
-                entity.setOwnerName(player.getName());
+                entity.setOwner(player);
                 world.spawnEntity(entity);
                 if (!player.capabilities.isCreativeMode) {
                     stack.shrink(1);

@@ -106,7 +106,7 @@ public class AncientWarfareCore {
         AWCraftingManager.loadRecipes();
 
         /*
-         * Setup FTBU_AW2 interoperability
+         * Setup compats
          */
         ModAccessors.init();
     }

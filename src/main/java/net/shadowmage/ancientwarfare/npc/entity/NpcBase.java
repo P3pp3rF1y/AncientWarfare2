@@ -48,6 +48,7 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.gamedata.Timekeeper;
 import net.shadowmage.ancientwarfare.core.interfaces.IEntityPacketHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
+import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketEntity;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
@@ -61,6 +62,7 @@ import net.shadowmage.ancientwarfare.npc.item.ItemShield;
 import net.shadowmage.ancientwarfare.npc.skin.NpcSkinManager;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -902,14 +904,14 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         return world.getScoreboard().getPlayersTeam(ownerName);
     }
 
-    public boolean hasCommandPermissions(String playerName) {
+    public boolean hasCommandPermissions(@Nullable UUID playerId, String playerName) {
         // ensure the NPC is actually owned
-        if (ownerName.isEmpty())
+        if (ownerName == null || ownerName.isEmpty())
             return false;
-        if (playerName == null)
+        if (playerId == null)
             return false;
         // check if same player
-        if (playerName.equals(getOwnerName()))
+        if (playerId.equals(getOwnerUuid()))
             return true;
         // check if same team
         Team npcTeam = getTeam();
@@ -917,9 +919,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             if (npcTeam.isSameTeam(world.getScoreboard().getPlayersTeam(playerName)))
                 return true;
         // check if friends in FTBUtils
-        //TODO ftbutils integration
-//        if (ModAccessors.FTBU.areFriends(getOwnerName(), playerName))
-//            return true;
+        if (ModAccessors.FTBU.areTeamMates(getOwnerUuid(), playerId))
+            return true;
         return false;
     }
 
@@ -943,13 +944,13 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
     public boolean isEntitySameTeamOrFriends(Entity entityTarget) {
         Team targetTeam;
-        String targetOwnerOrName;
+        UUID targetOwnerOrId;
         if (entityTarget instanceof NpcPlayerOwned) {
             targetTeam = entityTarget.getTeam();
-            targetOwnerOrName = ((NpcPlayerOwned) entityTarget).getOwnerName();
+            targetOwnerOrId = ((NpcPlayerOwned) entityTarget).getOwnerUuid();
         } else if (entityTarget instanceof EntityPlayer) {
             targetTeam = entityTarget.getTeam();
-            targetOwnerOrName = entityTarget.getName();
+            targetOwnerOrId = entityTarget.getUniqueID();
         } else
             return false;
 
@@ -957,12 +958,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             if (targetTeam.isSameTeam(getTeam()))
                 return true;
 
-        return getOwnerName().equals(targetOwnerOrName);
-        //TODO ftbutils integration
-//        if (entityTarget.world.isRemote) {
-//            return ModAccessors.FTBU.isFriendOfClient(entityTarget.getUniqueID());
-//        }
-//        return ModAccessors.FTBU.areFriends(targetOwnerOrName, getOwnerName());
+        return ModAccessors.FTBU.areFriendly(targetOwnerOrId, getOwnerUuid());
     }
 
     public final EntityLivingBase getFollowingEntity() {
@@ -973,7 +969,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     }
 
     public final void setFollowingEntity(EntityLivingBase entity) {
-        if (entity instanceof EntityPlayer && hasCommandPermissions(entity.getName())) {
+        if (entity instanceof EntityPlayer && hasCommandPermissions(entity.getUniqueID(), entity.getName())) {
             this.followingPlayerName = entity.getName();
         }
     }

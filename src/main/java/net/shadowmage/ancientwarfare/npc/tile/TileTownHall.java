@@ -79,7 +79,7 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
         List<NpcPlayerOwned> entities = world.getEntitiesWithinAABB(NpcPlayerOwned.class, bb);
         if (entities.size() > 0) {
             for (Entity entity : entities) {
-                if (((NpcPlayerOwned)entity).hasCommandPermissions(getOwnerName())) {
+                if (((NpcPlayerOwned)entity).hasCommandPermissions(getOwnerUuid(), getOwnerName())) {
                     ((NpcPlayerOwned)entity).handleTownHallBroadcast(this, pos);
                 }
             }

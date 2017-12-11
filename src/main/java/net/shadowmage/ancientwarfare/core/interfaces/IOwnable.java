@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.core.interfaces;
 
 import net.minecraft.entity.player.EntityPlayer;
 
+import javax.annotation.Nullable;
 import java.util.UUID;
 
 /*
@@ -11,13 +12,15 @@ import java.util.UUID;
  */
 public interface IOwnable {
 
-    public void setOwner(EntityPlayer player);
+    void setOwner(EntityPlayer player);
     
-    public void setOwner(String ownerName, UUID ownerUuid);
+    void setOwner(String ownerName, UUID ownerUuid);
 
-    public String getOwnerName();
-    
-    public UUID getOwnerUuid();
+    @Nullable
+    String getOwnerName();
 
-    public boolean isOwner(EntityPlayer player);
+    @Nullable
+    UUID getOwnerUuid();
+
+    boolean isOwner(EntityPlayer player);
 }
