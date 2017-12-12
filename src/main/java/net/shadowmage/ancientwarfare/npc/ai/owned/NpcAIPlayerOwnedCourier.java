@@ -117,8 +117,8 @@ public class NpcAIPlayerOwnedCourier extends NpcAI<NpcCourier> {
         TileEntity te = npc.world.getTileEntity(order.get(routeIndex).getTarget());
         if (te instanceof IInventory) {
             if(te instanceof IOwnable){
-                String name = ((IOwnable) te).getOwnerName();
-                if(name != null && !npc.hasCommandPermissions(name)){
+                IOwnable ownableTE = (IOwnable) te;
+                if(ownableTE.getOwnerName() != null && !npc.hasCommandPermissions(ownableTE.getOwnerUuid(), ownableTE.getOwnerName())){
                     return null;
                 }
             }

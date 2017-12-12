@@ -8,8 +8,4 @@ import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 public class AWNPCBlocks {
 	@ObjectHolder("town_hall")
 	public static Block townHall;
-	@ObjectHolder("headquarters")
-	public static Block headquarters;
-	@ObjectHolder("teleport_hub")
-	public static Block teleportHub;
 }

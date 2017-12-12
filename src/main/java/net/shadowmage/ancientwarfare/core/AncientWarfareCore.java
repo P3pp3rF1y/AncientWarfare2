@@ -15,7 +15,6 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
-import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.shadowmage.ancientwarfare.core.command.CommandResearch;
@@ -107,7 +106,7 @@ public class AncientWarfareCore {
         AWCraftingManager.loadRecipes();
 
         /*
-         * Setup FTBU_AW2 interoperability
+         * Setup compats
          */
         ModAccessors.init();
     }
@@ -120,16 +119,8 @@ public class AncientWarfareCore {
     @EventHandler
     public void serverStartingEvent(FMLServerStartingEvent evt) {
         evt.registerServerCommand(new CommandResearch());
-        //TODO ftbutils integration
-        //ModAccessors.FTBU.startWorkerThread();
     }
     
-    @EventHandler
-    public void serverStoppingEvent(FMLServerStoppingEvent evt) {
-        //TODO ftbutils integration
-        //ModAccessors.FTBU.stopWorkerThread();
-    }
-
     @SubscribeEvent
     public void configChangedEvent(OnConfigChangedEvent evt) {
         if (modID.equals(evt.getModID())) {

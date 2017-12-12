@@ -18,6 +18,7 @@ import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.UUID;
 
 public abstract class NpcFaction extends NpcBase {
 
@@ -51,7 +52,7 @@ public abstract class NpcFaction extends NpcBase {
     }
 
     @Override
-    public boolean hasCommandPermissions(String playerName) {
+    public boolean hasCommandPermissions(UUID playerUuid, String playerName) {
         return false;
     }
 

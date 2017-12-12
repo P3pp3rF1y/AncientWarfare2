@@ -40,7 +40,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
             if(selectedEntity.isEntityAlive()) {
                 if (selectedEntity instanceof NpcBase) {
                     if (((NpcBase)selectedEntity).getNpcSubType().equals("soldier"))
-                        if (((NpcBase)selectedEntity).hasCommandPermissions(npc.getOwnerName()))
+                        if (((NpcBase)selectedEntity).hasCommandPermissions(npc.getOwnerUuid(), npc.getOwnerName()))
                             return true; // is a friendly soldier
                     return ((NpcBase) selectedEntity).isHostileTowards(NpcAIFleeHostiles.this.npc);
                 } else
@@ -102,7 +102,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
             if (npc.canEntityBeSeen((Entity)entity)) {
                 if (entity instanceof NpcBase) {
                         if (((NpcBase)entity).getNpcSubType().equals("soldier"))
-                            if (((NpcBase)entity).hasCommandPermissions(npc.getOwnerName()))
+                            if (((NpcBase)entity).hasCommandPermissions(npc.getOwnerUuid(), npc.getOwnerName()))
                                 nearbySoldiers.add((NpcCombat)entity);
                 } else
                         npc.nearbyHostiles.add((Entity)entity);

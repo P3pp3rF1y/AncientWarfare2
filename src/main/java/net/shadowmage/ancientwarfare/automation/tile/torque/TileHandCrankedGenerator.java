@@ -11,6 +11,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
+import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
 import java.util.EnumSet;
@@ -158,7 +159,7 @@ public class TileHandCrankedGenerator extends TileTorqueSingleCell implements IW
 
     @Override
     public boolean isOwner(EntityPlayer player){
-        return player!=null && player.getName().equals(ownerName);
+        return EntityTools.isOwnerOrSameTeam(player, ownerId, ownerName);
     }
 
     @Override

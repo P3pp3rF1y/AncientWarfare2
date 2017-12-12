@@ -144,7 +144,7 @@ public class ItemCommandBaton extends ItemBaseNPC implements IItemKeyInterface {
             RayTraceResult pos = RayTraceUtils.getPlayerTarget(player, range, 0);
             if (pos != null && pos.typeOfHit == Type.ENTITY && pos.entityHit instanceof NpcBase) {
                 NpcBase npc = (NpcBase) pos.entityHit;
-                if (npc.hasCommandPermissions(player.getName())) {
+                if (npc.hasCommandPermissions(player.getUniqueID(), player.getName())) {
                     onNpcClicked(player, npc, stack);
                 }
             }

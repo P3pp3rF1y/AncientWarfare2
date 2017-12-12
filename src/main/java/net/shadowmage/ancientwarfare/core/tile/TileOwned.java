@@ -2,14 +2,14 @@ package net.shadowmage.ancientwarfare.core.tile;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
+import net.shadowmage.ancientwarfare.core.util.EntityTools;
 
 import java.util.UUID;
 
 public class TileOwned extends TileUpdatable implements IOwnable {
     private String ownerName = "";
-    private UUID owner;
+    private UUID ownerId;
     private final String tagKey;
     public TileOwned() {
         tagKey = "ownerName";
@@ -22,13 +22,13 @@ public class TileOwned extends TileUpdatable implements IOwnable {
     @Override
     public final void setOwner(EntityPlayer player) {
         ownerName = player.getName();
-        owner = player.getUniqueID();
+        ownerId = player.getUniqueID();
     }
     
     @Override
     public final void setOwner(String ownerName, UUID ownerUuid) {
         this.ownerName = ownerName;
-        this.owner = ownerUuid;
+        this.ownerId = ownerUuid;
     }
 
     @Override
@@ -38,32 +38,12 @@ public class TileOwned extends TileUpdatable implements IOwnable {
     
     @Override
     public final UUID getOwnerUuid() {
-        return owner;
+        return ownerId;
     }
 
     @Override
     public final boolean isOwner(EntityPlayer player) {
-        if(player == null)
-            return false;
-        if(owner!=null)
-            return player.getUniqueID().equals(owner);
-        return player.getName().equals(ownerName);
-    }
-
-    private void checkOwnerName(){
-        if(hasWorld()){
-            if(owner!=null) {
-                EntityPlayer player = world.getPlayerEntityByUUID(owner);
-                if (player != null) {
-                    setOwner(player);
-                }
-            }else if(ownerName!=null){
-                EntityPlayer player = world.getPlayerEntityByName(ownerName);
-                if(player!=null){
-                    setOwner(player);
-                }
-            }
-        }
+        return EntityTools.isOwnerOrSameTeam(player, ownerId, ownerName);
     }
 
     @Override
@@ -71,16 +51,15 @@ public class TileOwned extends TileUpdatable implements IOwnable {
         super.readFromNBT(tag);
         ownerName = tag.getString(tagKey);
         if(tag.hasKey("ownerId"))
-            owner = UUID.fromString(tag.getString("ownerId"));
+            ownerId = UUID.fromString(tag.getString("ownerId"));
     }
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
-        checkOwnerName();
         tag.setString(tagKey, ownerName);
-        if(owner!=null)
-            tag.setString("ownerId", owner.toString());
+        if(ownerId !=null)
+            tag.setString("ownerId", ownerId.toString());
         return tag;
     }
 }

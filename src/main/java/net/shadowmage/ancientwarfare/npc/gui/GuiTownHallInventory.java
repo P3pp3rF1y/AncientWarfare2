@@ -1,14 +1,12 @@
 package net.shadowmage.ancientwarfare.npc.gui;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
-import net.shadowmage.ancientwarfare.npc.block.BlockTeleportHub;
 import net.shadowmage.ancientwarfare.npc.container.ContainerTownHall;
 
 public class GuiTownHallInventory extends GuiContainerBase<ContainerTownHall> {
@@ -41,26 +39,10 @@ public class GuiTownHallInventory extends GuiContainerBase<ContainerTownHall> {
 
     @Override
     public void setupElements() {
-        if (getContainer().tileEntity.isHq) {
-            removeGuiElement(name);
-            // draw teleport button, if hub exists
-            BlockPos tpHubPos = getContainer().tileEntity.tpHubPos;
-            if (tpHubPos != null && mc.world.getBlockState(tpHubPos).getBlock() instanceof BlockTeleportHub) {
-                Button button = new Button(50, 8, 54, 12, "Visit Hub") {
-                    @Override
-                    protected void onPressed() {
-                        Minecraft.getMinecraft().displayGuiScreen(null);
-                        getContainer().teleportPlayer(player.getName());
-                    }
-                };
-                addGuiElement(button);
-            }
-        } else {
-            // draw label for naming town hall
-            name = new Text(50, 8, 54, getContainer().tileEntity.name, this);
-            addGuiElement(name);
-        }
-        
+        // draw label for naming town hall
+        name = new Text(50, 8, 54, getContainer().tileEntity.name, this);
+        addGuiElement(name);
+
         input.setValue(getContainer().tileEntity.getRange());
     }
 

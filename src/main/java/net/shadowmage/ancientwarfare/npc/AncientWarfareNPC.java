@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.npc;
 
-import net.minecraftforge.common.ForgeChunkManager;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
@@ -118,7 +117,6 @@ public class AncientWarfareNPC {
         proxy.loadSkins();
         AWNPCEntityLoader.loadNpcSubtypeEquipment();
         statics.save();
-        ForgeChunkManager.setForcedChunkLoadingCallback(instance, new AW2NpcChunkloaderCallback());
     }
 
     @SubscribeEvent

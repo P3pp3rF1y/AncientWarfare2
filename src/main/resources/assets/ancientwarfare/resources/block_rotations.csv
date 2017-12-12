@@ -68,6 +68,7 @@ carrots,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
 leaves2,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
 carpet,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
 hardened_clay,0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15
+skull,0,1,5,4,2,3,,,,,,,,,,
 #below here are custom mapped AW blocks,(most of these no longer use meta..need to re-examine/remove),,,,,,,,,,,,,,,
 civic_quarry,0,1,5,4,2,3,,,,,,,,,,
 civic_forestry,0,1,5,4,2,3,,,,,,,,,,

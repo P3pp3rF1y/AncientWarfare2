@@ -25,6 +25,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -35,7 +36,7 @@ import java.util.UUID;
 @Optional.Interface(iface = "cofh.redstoneflux.api.IEnergyReceiver", modid = "redstoneflux", striprefs = true)
 public abstract class TileWorksiteBase extends TileUpdatable implements ITickable, IWorkSite, IInteractableTile, IOwnable, IRotatableTile, IEnergyProvider, IEnergyReceiver {
 
-    private String owningPlayer = "";
+    private String ownerName = "";
     private UUID ownerId;
     private EntityPlayer owner;
 
@@ -179,15 +180,15 @@ public abstract class TileWorksiteBase extends TileUpdatable implements ITickabl
 
     @Override
     public final Team getTeam() {
-        if (owningPlayer != null) {
-            return world.getScoreboard().getPlayersTeam(owningPlayer);
+        if (ownerName != null) {
+            return world.getScoreboard().getPlayersTeam(ownerName);
         }
         return null;
     }
 
     @Override
     public final String getOwnerName() {
-        return owningPlayer;
+        return ownerName;
     }
     
     @Override
@@ -197,7 +198,7 @@ public abstract class TileWorksiteBase extends TileUpdatable implements ITickabl
 
     public final EntityPlayer getOwnerAsPlayer() {
         if(!isOwnerReal()) {
-            owner = AncientWarfareCore.proxy.getFakePlayer(getWorld(), owningPlayer, ownerId);
+            owner = AncientWarfareCore.proxy.getFakePlayer(getWorld(), ownerName, ownerId);
         }
         return owner;
     }
@@ -212,31 +213,25 @@ public abstract class TileWorksiteBase extends TileUpdatable implements ITickabl
 
     @Override
     public final boolean isOwner(EntityPlayer player){
-        if(player == null || player.getGameProfile() == null)
-            return false;
-        if(isOwnerReal())
-            return player.getGameProfile().equals(owner.getGameProfile());
-        if(ownerId!=null)
-            return player.getUniqueID().equals(ownerId);
-        return player.getName().equals(owningPlayer);
+        return EntityTools.isOwnerOrSameTeam(player, ownerId, ownerName);
     }
 
     @Override
     public final void setOwner(EntityPlayer player) {
         if (player == null) {
-            this.owningPlayer = "";
+            this.ownerName = "";
             this.owner = null;
             this.ownerId = null;
         }else{
             this.owner = player;
-            this.owningPlayer = player.getName();
+            this.ownerName = player.getName();
             this.ownerId = player.getUniqueID();
         }
     }
     
     @Override
     public final void setOwner(String ownerName, UUID ownerUuid) {
-        owningPlayer = ownerName;
+        this.ownerName = ownerName;
         ownerId = ownerUuid;
         owner = AncientWarfareCore.proxy.getFakePlayer(getWorld(), ownerName, ownerUuid);
     }
@@ -337,8 +332,8 @@ public abstract class TileWorksiteBase extends TileUpdatable implements ITickabl
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
         tag.setDouble("storedEnergy", torqueCell.getEnergy());
-        if (owningPlayer != null) {
-            tag.setString("owner", owningPlayer);
+        if (ownerName != null) {
+            tag.setString("owner", ownerName);
             if(ownerId == null && hasWorld()){
                 getOwnerAsPlayer();
                 if(isOwnerReal()){
@@ -368,7 +363,7 @@ public abstract class TileWorksiteBase extends TileUpdatable implements ITickabl
         super.readFromNBT(tag);
         torqueCell.setEnergy(tag.getDouble("storedEnergy"));
         if (tag.hasKey("owner")) {
-            owningPlayer = tag.getString("owner");
+            ownerName = tag.getString("owner");
         }
         if(tag.hasKey("ownerId")){
             ownerId = UUID.fromString(tag.getString("ownerId"));

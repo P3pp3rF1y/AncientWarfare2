@@ -11,9 +11,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 
 import javax.annotation.Nullable;
+import java.util.UUID;
 
 public class EntityTools {
     
@@ -89,5 +91,13 @@ public class EntityTools {
     public static String getUnlocName(ResourceLocation registryName) {
         EntityEntry e = ForgeRegistries.ENTITIES.getValue(registryName);
         return "entity." + (registryName.getResourceDomain().equals(AncientWarfareNPC.modID) ? "AncientWarfareNpc." : "") + e.getName() + ".name";
+    }
+
+    public static boolean isOwnerOrSameTeam(@Nullable EntityPlayer player, @Nullable UUID ownerId, String ownerName) {
+        if(player == null)
+            return false;
+        if(ownerId!=null)
+            return ModAccessors.FTBU.areFriendly(player.getUniqueID(), ownerId);
+        return player.getName().equals(ownerName);
     }
 }

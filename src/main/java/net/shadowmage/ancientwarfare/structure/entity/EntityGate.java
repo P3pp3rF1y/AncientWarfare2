@@ -38,6 +38,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.shadowmage.ancientwarfare.core.interfaces.IEntityPacketHandler;
+import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketEntity;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -45,6 +46,7 @@ import net.shadowmage.ancientwarfare.structure.gates.types.Gate;
 import net.shadowmage.ancientwarfare.structure.gates.types.GateRotatingBridge;
 
 import javax.annotation.Nonnull;
+import java.util.UUID;
 
 /*
  * an class to represent ALL gate types
@@ -73,6 +75,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
     private boolean hasSetWorldEntityRadius = false;
     public boolean wasPoweredA = false;
     public boolean wasPoweredB = false;
+    private UUID ownerId;
 
     public EntityGate(World par1World) {
         super(par1World);
@@ -80,8 +83,9 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
         this.preventEntitySpawning = true;
     }
 
-    public void setOwnerName(String name) {
-        this.ownerName = name;
+    public void setOwner(EntityPlayer player) {
+        this.ownerName = player.getName();
+        this.ownerId = player.getUniqueID();
     }
 
     public Team getTeam() {
@@ -213,15 +217,14 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
         }
         
         boolean canInteract = false;
-        if (ownerName == null || ownerName.isEmpty())
+        if (ownerId == null)
             canInteract = true; // neutral/worldgen gates
-        if (player.getName().equals(ownerName))
+        if (player.getUniqueID().equals(ownerId))
             canInteract = true; // owned gates
-        if (player.getTeam()!=null && player.getTeam().isSameTeam(this.getTeam()))
+        if (player.getTeam()!=null && player.getTeam().isSameTeam(getTeam()))
             canInteract = true; // same team gates
-        //TODO ftbutils integration
-//        if (ModAccessors.FTBU.areFriends(player.getName(), this.ownerName))
-//            canInteract = true; // friend gates
+        if (ModAccessors.FTBU.areTeamMates(player.getUniqueID(), ownerId))
+            canInteract = true; // friend gates
         if(canInteract){
             if (player.isSneaking()) {
                 NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_GATE_CONTROL, getEntityId(), 0, 0);
@@ -433,6 +436,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
         this.pos2 = BlockPos.fromLong(tag.getLong("pos2"));
         this.setGateType(Gate.getGateByID(tag.getInteger("type")));
         this.ownerName = tag.getString("owner");
+        this.ownerId = tag.getUniqueId("ownerId");
         this.edgePosition = tag.getFloat("edge");
         this.edgeMax = tag.getFloat("edgeMax");
         this.setHealth(tag.getInteger("health"));
@@ -449,6 +453,9 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
         tag.setInteger("type", this.gateType.getGlobalID());
         if (ownerName != null && !ownerName.isEmpty()) {
             tag.setString("owner", ownerName);
+        }
+        if (ownerId != null) {
+            tag.setUniqueId("ownerId", ownerId);
         }
         tag.setFloat("edge", this.edgePosition);
         tag.setFloat("edgeMax", this.edgeMax);

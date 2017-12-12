@@ -21,6 +21,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
+import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilderTicked;
@@ -31,7 +32,7 @@ import java.util.UUID;
 
 public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IOwnable, ITickable {
 
-    protected UUID owningPlayer;
+    protected UUID ownerId;
     private EntityPlayer owner;
     private String ownerName;
 
@@ -161,18 +162,18 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
      */
     @Override
     public void setOwner(EntityPlayer player) {
-        this.owningPlayer = player.getUniqueID();
+        this.ownerId = player.getUniqueID();
     }
     
     @Override
     public void setOwner(String ownerName, UUID ownerUuid) {
         this.ownerName = ownerName;
-        this.owningPlayer = ownerUuid;
+        this.ownerId = ownerUuid;
     }
 
     @Override
     public boolean isOwner(EntityPlayer player){
-        return this.owningPlayer == null || this.owningPlayer.equals(player.getUniqueID());
+        return EntityTools.isOwnerOrSameTeam(player, ownerId, ownerName);
     }
 
     @Override
@@ -182,12 +183,12 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
     
     @Override
     public UUID getOwnerUuid() {
-        return owningPlayer;
+        return ownerId;
     }
 
     public final EntityPlayer getOwnerAsPlayer() {
         if(owner==null || !owner.isEntityAlive() || (owner instanceof FakePlayer)) { //TODO this condition needs looking into - no idea why owner needs to be set everytime
-            owner = AncientWarfareCore.proxy.getFakePlayer(this.getWorld(), null, owningPlayer);
+            owner = AncientWarfareCore.proxy.getFakePlayer(this.getWorld(), null, ownerId);
         }
         return owner;
     }
@@ -248,7 +249,7 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
         this.isStarted = tag.getBoolean("started");
         this.storedEnergy = tag.getDouble("storedEnergy");
         if(tag.hasKey("ownerId")){
-            this.owningPlayer = UUID.fromString(tag.getString("ownerId"));
+            this.ownerId = UUID.fromString(tag.getString("ownerId"));
         }
     }
 
@@ -262,8 +263,8 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
         }
         tag.setBoolean("started", isStarted);
         tag.setDouble("storedEnergy", storedEnergy);
-        if(owningPlayer!=null){
-            tag.setString("ownerId", owningPlayer.toString());
+        if(ownerId !=null){
+            tag.setString("ownerId", ownerId.toString());
         }
         return tag;
     }
@@ -281,7 +282,7 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 
     @Override
     public final Team getTeam() {
-        if (owningPlayer != null) {
+        if (ownerId != null) {
             world.getScoreboard().getPlayersTeam(getOwnerName());
         }
         return null;
