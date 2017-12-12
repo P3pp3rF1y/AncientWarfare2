@@ -23,6 +23,7 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -281,9 +282,8 @@ public class TileTownHall extends TileOwned implements IInventory, IInteractable
     }
 
     @Override
-    @SuppressWarnings("squid:S3516")
-    public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
-        if (!player.world.isRemote) {
+    public boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
+        if (!player.world.isRemote && isOwner(player)) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_TOWN_HALL, pos);
         }
         return true;

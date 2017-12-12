@@ -842,12 +842,12 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     @Override
     public void setOwner(EntityPlayer player) {
         ownerId = player.getUniqueID();
-        setOwnerName(player.getName());
+        ownerName = player.getName();
     }
 
     @Override
     public void setOwner(String ownerName, UUID ownerUuid) {
-        setOwnerName(ownerName);
+        this.ownerName = ownerName;
         ownerId = ownerUuid;
     }
 
@@ -869,15 +869,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             NetworkHandler.sendToAllTracking(this, pkt);
         }
         ownerName = name;
-    }
-
-    private void checkOwnerName() {
-        if (ownerId != null) {
-            EntityPlayer player = world.getPlayerEntityByUUID(ownerId);
-            if (player != null && !player.getName().equals(ownerName)) {
-                setOwnerName(player.getName());
-            }
-        }
     }
 
     @Override
@@ -1031,6 +1022,29 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         onWeaponInventoryChanged();
     }
 
+    @Override
+    public void writeEntityToNBT(NBTTagCompound tag) {
+        super.writeEntityToNBT(tag);
+        if (!hasHome()) {
+            BlockPos position = getTownHallPosition();
+            if (position != null)
+                setHomePosAndDistance(position, getHomeRange());
+            else
+                setHomeAreaAtCurrentPosition();
+        }
+        tag.setLong("home", getHomePosition().toLong());
+        tag.setInteger("homeRange", getHomeRange());
+        tag.setByte("bedDirection", (byte) getBedDirection().ordinal());
+        tag.setBoolean("isSleeping", this.getSleeping());
+        if (cachedBedPos != null)
+            tag.setLong("cachedBedPos", cachedBedPos.toLong());
+        BlockPos bedPos = this.getBedPosition();
+        tag.setLong("bedPos", bedPos.toLong());
+        tag.setBoolean("foundBed", foundBed);
+
+        writeBaseTags(tag);
+    }
+
     private void readBaseTags(NBTTagCompound tag) {
         if (tag.hasKey("ordersStack")) {
             setItemStackToSlot(ORDER_SLOT, new ItemStack(tag.getCompoundTag("ordersStack")));
@@ -1065,34 +1079,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         if (tag.hasKey("aiEnabled")) {
             setIsAIEnabled(tag.getBoolean("aiEnabled"));
         }
-        setOwnerName(tag.getString("owner"));
-    }
-
-    @Override
-    public void writeEntityToNBT(NBTTagCompound tag) {
-        super.writeEntityToNBT(tag);
-        if (!hasHome()) {
-            BlockPos position = getTownHallPosition();
-            if (position != null)
-                setHomePosAndDistance(position, getHomeRange());
-            else
-                setHomeAreaAtCurrentPosition();
-        }
-        tag.setLong("home", getHomePosition().toLong());
-        tag.setInteger("homeRange", getHomeRange());
-        tag.setString("owner", ownerName);
-        tag.setInteger("attackDamageOverride", attackDamage);
-        tag.setInteger("armorValueOverride", armorValue);
-        tag.setString("customTex", customTexRef);
-        tag.setBoolean("aiEnabled", aiEnabled);
-        tag.setByte("bedDirection", (byte) getBedDirection().ordinal());
-        tag.setBoolean("isSleeping", this.getSleeping());
-        BlockPos bedPos = this.getBedPosition();
-        tag.setLong("bedPos", bedPos.toLong());
-        if (cachedBedPos != null)
-            tag.setLong("cachedBedPos", cachedBedPos.toLong());
-        tag.setBoolean("foundBed", foundBed);
-        writeBaseTags(tag);
+        setOwner(tag.getString("ownerName"), tag.getUniqueId("ownerId"));
     }
 
     private void writeBaseTags(NBTTagCompound tag) {
@@ -1105,11 +1092,18 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
         tag.setTag("levelingStats", getLevelingStats().writeToNBT(new NBTTagCompound()));
         tag.setFloat("maxHealth", getMaxHealth());
         tag.setFloat("health", getHealth());
-        tag.setInteger("food", getFoodRemaining());
         if (hasCustomName()) {
             tag.setString("name", getCustomNameTag());
         }
-        checkOwnerName();
+        tag.setInteger("food", getFoodRemaining());
+        tag.setInteger("attackDamageOverride", attackDamage);
+        tag.setInteger("armorValueOverride", armorValue);
+        tag.setString("customTex", customTexRef);
+        tag.setBoolean("aiEnabled", aiEnabled);
+        tag.setString("ownerName", ownerName);
+        if (ownerId != null) {
+            tag.setUniqueId("ownerId", ownerId);
+        }
     }
 
     public final ResourceLocation getTexture() {
@@ -1135,10 +1129,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
     @Override
     public void handlePacketData(NBTTagCompound tag) {
         if (tag.hasKey("ownerName")) {
-            setOwnerName(tag.getString("ownerName"));
+            this.ownerName = tag.getString("ownerName");
             if (tag.hasKey("ownerId")) {
                 ownerId = UUID.fromString(tag.getString("ownerId"));
-                checkOwnerName();
             }
         } else if (tag.hasKey("profileTex") && tag.hasKey("customTex")) {
             customTexRef = tag.getString("customTex");
