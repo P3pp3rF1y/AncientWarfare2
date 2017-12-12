@@ -221,7 +221,7 @@ public class TemplateFormatConverter {
         return output;
     }
 
-    private TemplateRule parseOldBlockRule(List<String> lines) {
+    private TemplateRule parseOldBlockRule(List<String> lines) { //TODO remove this stuff (if still needed convert what's needed to new format)
         int number = 0;
         int id = 0;
         int meta = 0;

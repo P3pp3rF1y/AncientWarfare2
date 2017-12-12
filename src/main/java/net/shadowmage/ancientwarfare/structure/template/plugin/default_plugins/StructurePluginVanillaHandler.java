@@ -52,6 +52,7 @@ import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.b
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleBlockSign;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleFlowerPot;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleVanillaBlocks;
+import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules.TemplateRuleVanillaSkull;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules.TemplateRuleEntityHanging;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules.TemplateRuleEntityLogic;
 import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules.TemplateRuleGates;
@@ -120,6 +121,7 @@ public class StructurePluginVanillaHandler implements StructureContentPlugin {
         manager.registerBlockHandler("vanillaInventory", Blocks.HOPPER, TemplateRuleBlockInventory.class);
         manager.registerBlockHandler("vanillaInventory", Blocks.TRAPPED_CHEST, TemplateRuleBlockInventory.class);
         manager.registerBlockHandler("vanillaFlowerPot", Blocks.FLOWER_POT, TemplateRuleFlowerPot.class);
+        manager.registerBlockHandler("vanillaSkull", Blocks.SKULL, TemplateRuleVanillaSkull.class);
 
         manager.registerBlockHandler("awAdvancedSpawner", AWStructuresBlocks.advancedSpawner, TemplateRuleBlockLogic.class);
         manager.registerBlockHandler("awCoreLogic", AWBlocks.engineeringStation, TemplateRuleBlockLogic.class);
