@@ -36,6 +36,7 @@ import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.load.TemplateParser;
+import net.shadowmage.ancientwarfare.structure.world_gen.NoGenWorld;
 import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator;
 
 import java.io.BufferedWriter;
@@ -133,12 +134,12 @@ public abstract class StructureValidator {
     /*
      * should this template be included for selection for generation? should only validate block placement, most other stuff has been checked (dimension/biome/cluster value/etc)
      */
-    public abstract boolean shouldIncludeForSelection(World world, int x, int y, int z, EnumFacing face, StructureTemplate template);
+    public abstract boolean shouldIncludeForSelection(NoGenWorld world, int x, int y, int z, EnumFacing face, StructureTemplate template); //TODO convert to passing BlockPos in
 
     /*
      * if template should be included for selection, get the adjusted spawn Y level from the input block position.  this adjustedY will be used for validation and generation if template is selected and validated
      */
-    public int getAdjustedSpawnY(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
+    public int getAdjustedSpawnY(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) { //TODO convert to passing BlockPos in
         return y;
     }
 

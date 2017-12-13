@@ -24,6 +24,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraft.world.biome.Biome;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
@@ -31,7 +32,9 @@ import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
 import net.shadowmage.ancientwarfare.structure.world_gen.StructureEntry;
+import net.shadowmage.ancientwarfare.structure.world_gen.WorldGenManager;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -47,9 +50,6 @@ public class WorldGenStructureManager {
     /*
      * cached list objects, used for temp searching, as to not allocate new lists for every chunk-generated....
      */
-    List<StructureEntry> searchCache = new ArrayList<>();
-    List<StructureTemplate> trimmedPotentialStructures = new ArrayList<>();
-    HashMap<String, Integer> distancesFound = new HashMap<>();
     BlockPos rearBorderPos = BlockPos.ORIGIN;
 
     public static final WorldGenStructureManager INSTANCE = new WorldGenStructureManager();
@@ -89,10 +89,11 @@ public class WorldGenStructureManager {
         }
     }
 
+    @Nullable
     public StructureTemplate selectTemplateForGeneration(World world, Random rng, int x, int y, int z, EnumFacing face) {
-        searchCache.clear();
-        trimmedPotentialStructures.clear();
-        distancesFound.clear();
+        List<StructureTemplate> trimmedPotentialStructures = new ArrayList<>();
+        List<StructureEntry> searchCache = new ArrayList<>();
+        HashMap<String, Integer> distancesFound = new HashMap<>();
         StructureMap map = AWGameData.INSTANCE.getData(world, StructureMap.class);
         if (map == null) {
             return null;
@@ -158,7 +159,7 @@ public class WorldGenStructureManager {
                     continue;
                 }//skip if minDuplicate distance is not met
             }
-            if (!settings.shouldIncludeForSelection(world, x, y, z, face, template)) {
+            if (!settings.shouldIncludeForSelection(WorldGenManager.getPreGenWorld((WorldServer) world), x, y, z, face, template)) {
                 continue;
             }
             trimmedPotentialStructures.add(template);
@@ -179,8 +180,6 @@ public class WorldGenStructureManager {
                 break;
             }
         }
-        distancesFound.clear();
-        trimmedPotentialStructures.clear();
         return toReturn;
     }
 

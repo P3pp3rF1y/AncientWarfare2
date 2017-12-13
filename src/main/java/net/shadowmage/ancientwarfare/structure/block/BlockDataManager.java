@@ -63,7 +63,7 @@ public class BlockDataManager {
     /*
      * loads OLD (1.6) block names from file -- used to enable loading of older templates
      */
-    private void loadBlockNamesAndIDs(List<String> lines) { //TODO remove?
+    private void loadBlockNamesAndIDs(List<String> lines) { //TODO remove this mapping and the file when reworking template stuff to blockstates
         String[] bits;
 
         Block block;
@@ -221,7 +221,7 @@ public class BlockDataManager {
     /*
      * get the 1.7 name for the input Block
      */
-    public String getNameForBlock(Block block) {
+    public String getNameForBlock(Block block) {//TODO replace most of uses with simple get registry name, perhaps add return empty if null here if needed
         String name = block.getRegistryName() == null ? null : block.getRegistryName().toString();
         if (name == null) {
             name = blockToName.get(block);

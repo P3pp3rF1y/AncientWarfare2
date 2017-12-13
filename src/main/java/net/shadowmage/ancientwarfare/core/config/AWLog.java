@@ -9,6 +9,9 @@ public class AWLog {
         AncientWarfareCore.log.log(Level.INFO, message);
     }
 
+    public static void logError(Exception e) {
+        AncientWarfareCore.log.log(Level.ERROR, e);
+    }
     public static void logError(String message) {
         AncientWarfareCore.log.log(Level.ERROR, message);
     }

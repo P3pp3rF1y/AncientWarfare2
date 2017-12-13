@@ -114,6 +114,21 @@ public class WorldStructureGenerator implements IWorldGenerator {
         world.profiler.endSection();
     }
 
+    public static int getTargetY(NoGenWorld world, BlockPos pos, boolean skipWater) {
+        Block block;
+        for (BlockPos groundPos = world.getGroundPos(pos); groundPos.getY() > 0; groundPos = groundPos.down()) {
+            block = world.getBlockState(groundPos).getBlock();
+            if (AWStructureStatics.skippableBlocksContains(block)) {
+                continue;
+            }
+            if (skipWater && (block == Blocks.WATER || block == Blocks.FLOWING_WATER)) {
+                continue;
+            }
+            return groundPos.getY();
+        }
+        return -1;
+    }
+
     public static int getTargetY(World world, int x, int z, boolean skipWater) {
         Block block;
         for (int y = world.getActualHeight(); y > 0; y--) {

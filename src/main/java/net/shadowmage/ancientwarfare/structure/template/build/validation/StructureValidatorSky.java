@@ -26,6 +26,7 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
+import net.shadowmage.ancientwarfare.structure.world_gen.NoGenWorld;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -70,7 +71,7 @@ public class StructureValidatorSky extends StructureValidator {
     }
 
     @Override
-    public boolean shouldIncludeForSelection(World world, int x, int y, int z, EnumFacing face, StructureTemplate template) {
+    public boolean shouldIncludeForSelection(NoGenWorld world, int x, int y, int z, EnumFacing face, StructureTemplate template) {
         int remainingHeight = world.getActualHeight() - minFlyingHeight - (template.ySize - template.yOffset);
         return y < remainingHeight;
     }

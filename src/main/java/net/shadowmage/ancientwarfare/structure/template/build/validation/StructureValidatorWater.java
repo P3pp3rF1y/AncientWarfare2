@@ -27,6 +27,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
+import net.shadowmage.ancientwarfare.structure.world_gen.NoGenWorld;
 
 public class StructureValidatorWater extends StructureValidator {
 
@@ -35,7 +36,7 @@ public class StructureValidatorWater extends StructureValidator {
     }
 
     @Override
-    public boolean shouldIncludeForSelection(World world, int x, int y, int z, EnumFacing face, StructureTemplate template) {
+    public boolean shouldIncludeForSelection(NoGenWorld world, int x, int y, int z, EnumFacing face, StructureTemplate template) {
         Block block = world.getBlockState(new BlockPos(x, y - 1, z)).getBlock();
         return block == Blocks.WATER || block == Blocks.FLOWING_WATER;
     }

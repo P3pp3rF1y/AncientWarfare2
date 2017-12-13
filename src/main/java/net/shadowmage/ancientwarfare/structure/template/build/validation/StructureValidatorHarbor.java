@@ -28,6 +28,7 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
+import net.shadowmage.ancientwarfare.structure.world_gen.NoGenWorld;
 import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator;
 
 import java.util.HashSet;
@@ -61,7 +62,7 @@ public class StructureValidatorHarbor extends StructureValidator {
     }
 
     @Override
-    public boolean shouldIncludeForSelection(World world, int x, int y, int z, EnumFacing face, StructureTemplate template) {
+    public boolean shouldIncludeForSelection(NoGenWorld world, int x, int y, int z, EnumFacing face, StructureTemplate template) {
         /*
          * testing that front target position is valid block
          * then test back target position to ensure that it has water at same level
@@ -70,7 +71,7 @@ public class StructureValidatorHarbor extends StructureValidator {
         Block block = world.getBlockState(new BlockPos(x, y - 1, z)).getBlock();
         if (block != null && validTargetBlocks.contains(BlockDataManager.INSTANCE.getNameForBlock(block))) {
             testMin = new BlockPos(x, y, z).offset(face, template.zOffset);
-            int by = WorldStructureGenerator.getTargetY(world, testMin.getX(), testMin.getZ(), false);
+            int by = WorldStructureGenerator.getTargetY(world, testMin, false);
             if (y - by > getMaxFill()) {
                 return false;
             }

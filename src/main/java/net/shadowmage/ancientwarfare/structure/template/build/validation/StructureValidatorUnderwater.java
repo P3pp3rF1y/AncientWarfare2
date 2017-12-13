@@ -27,6 +27,7 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
+import net.shadowmage.ancientwarfare.structure.world_gen.NoGenWorld;
 import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator;
 
 import java.io.BufferedWriter;
@@ -62,10 +63,10 @@ public class StructureValidatorUnderwater extends StructureValidator {
     }
 
     @Override
-    public boolean shouldIncludeForSelection(World world, int x, int y, int z, EnumFacing face, StructureTemplate template) {
+    public boolean shouldIncludeForSelection(NoGenWorld world, int x, int y, int z, EnumFacing face, StructureTemplate template) {
         int water = 0;
         int startY = y;
-        y = WorldStructureGenerator.getTargetY(world, x, z, true) + 1;
+        y = WorldStructureGenerator.getTargetY(world, new BlockPos(x, y, z), true) + 1;
         water = startY - y;
         return !(water < minWaterDepth || water > maxWaterDepth);
     }
