@@ -8,7 +8,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.ChunkPrimer;
+import net.minecraft.world.storage.MapStorage;
 
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class NoGenWorld {
@@ -16,10 +18,11 @@ public class NoGenWorld {
 
     private final ChunkGeneratorWrapper generatorWrapper;
     private final WorldServer world;
-    private int actualHeight;
+    public Random rand;
 
     public NoGenWorld(WorldServer world) {
         this.world = world;
+        rand = world.rand;
         generatorWrapper = ChunkGeneratorWrapper.getWrapper(world.getChunkProvider().chunkGenerator);
     }
 
@@ -27,7 +30,7 @@ public class NoGenWorld {
         if (chunkExists(pos)) {
             return world.getBlockState(pos);
         } else {
-            return getChunkPrimer(pos).getBlockState(pos.getX(), pos.getY(), pos.getZ());
+            return getChunkPrimer(pos).getBlockState(pos.getX() & 15, pos.getY(), pos.getZ() & 15);
         }
     }
 
@@ -42,7 +45,8 @@ public class NoGenWorld {
 
             return groundPos;
         } else {
-            return new BlockPos(pos.getX(), getChunkPrimer(pos).findGroundBlockIdx(pos.getX() & 15, pos.getZ() & 15), pos.getZ());
+            //Passing in z-1 because ChunkPrimer is borked and actually checks z + 1 instead of the passed in z
+            return new BlockPos(pos.getX(), getChunkPrimer(pos).findGroundBlockIdx(pos.getX() & 15, (pos.getZ() & 15) - 1), pos.getZ());
         }
     }
 
@@ -67,5 +71,17 @@ public class NoGenWorld {
 
     public int getActualHeight() {
         return world.getActualHeight();
+    }
+
+    public int getDimension() {
+        return world.provider.getDimension();
+    }
+
+    public MapStorage getPerWorldStorage() {
+        return world.getPerWorldStorage();
+    }
+
+    public int getHeight() {
+        return world.getHeight();
     }
 }

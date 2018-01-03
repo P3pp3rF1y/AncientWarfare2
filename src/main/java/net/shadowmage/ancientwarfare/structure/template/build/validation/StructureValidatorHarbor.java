@@ -84,13 +84,13 @@ public class StructureValidatorHarbor extends StructureValidator {
     }
 
     @Override
-    public int getAdjustedSpawnY(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
+    public int getAdjustedSpawnY(NoGenWorld world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
         testMin = new BlockPos(x, y, z).offset(face, template.zOffset);
-        return WorldStructureGenerator.getTargetY(world, testMin.getX(), testMin.getZ(), false) + 1;
+        return WorldStructureGenerator.getTargetY(world, testMin, false) + 1;
     }
 
     @Override
-    public boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
+    public boolean validatePlacement(NoGenWorld world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
         int bx, bz;
 
         int minY = getMinY(template, bb);
@@ -143,8 +143,8 @@ public class StructureValidatorHarbor extends StructureValidator {
     }
 
     @Override
-    public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb) {
-        prePlacementBorder(world, template, bb);
+    public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb, int minX, int minZ, int maxX, int maxZ) {
+        prePlacementBorder(world, template, bb, minX, minZ, maxX, maxZ);
     }
 
     @Override

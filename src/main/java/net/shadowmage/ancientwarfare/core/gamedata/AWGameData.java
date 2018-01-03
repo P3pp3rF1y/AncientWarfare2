@@ -18,7 +18,11 @@ public final class AWGameData {
     }
 
     public <T extends WorldSavedData> T getPerWorldData(World world, Class<T> clz) {
-        return initData(world.getPerWorldStorage(), clz);
+        return getPerWorldData(world.getPerWorldStorage(), clz);
+    }
+
+    public <T extends WorldSavedData> T getPerWorldData(MapStorage storage, Class<T> clz) {
+        return initData(storage, clz);
     }
 
 

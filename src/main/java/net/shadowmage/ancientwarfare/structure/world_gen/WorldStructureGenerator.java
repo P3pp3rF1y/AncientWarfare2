@@ -20,13 +20,18 @@
  */
 package net.shadowmage.ancientwarfare.structure.world_gen;
 
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.BlockFaceShape;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
@@ -44,10 +49,13 @@ import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilderWo
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 public class WorldStructureGenerator implements IWorldGenerator {
-
+    private static final Set<StructureChunkGenTicket> structureTickets = Sets.newHashSet();
     public static final HashSet<String> defaultTargetBlocks = new HashSet<>();
 
     static {
@@ -72,46 +80,78 @@ public class WorldStructureGenerator implements IWorldGenerator {
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
+        generateStructures(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
+
         BlockPos cc = world.getSpawnPoint();
         double distSq = cc.distanceSq(chunkX * 16, cc.getY(), chunkZ * 16);
         if (AWStructureStatics.withinProtectionRange(distSq)) {
             return;
         }
-        if (rng.nextFloat() < AWStructureStatics.randomGenerationChance)
-            WorldGenTickHandler.INSTANCE.addChunkForGeneration(world, chunkX, chunkZ);
+        if (rng.nextFloat() < AWStructureStatics.randomGenerationChance) {
+            if (world == null) {
+                return;
+            }
+            long t1 = System.currentTimeMillis();
+            long seed = (((long) chunkX) << 32) | (((long) chunkZ) & 0xffffffffl);
+            rng.setSeed(seed);
+            int x = chunkX * 16 + rng.nextInt(16);
+            int z = chunkZ * 16 + rng.nextInt(16);
+            int y = getTargetY(world, x, z, false) + 1;
+            if (y <= 0) {
+                return;
+            }
+
+            EnumFacing face = EnumFacing.HORIZONTALS[rng.nextInt(4)];
+            world.profiler.startSection("AWTemplateSelection");
+            StructureTemplate template = WorldGenStructureManager.INSTANCE.selectTemplateForGeneration(world, rng, x, y, z, face);
+            world.profiler.endSection();
+            AWLog.logDebug("Template selection took: " + (System.currentTimeMillis() - t1) + " ms.");
+            if (template == null) {
+                return;
+            }
+            StructureMap map = AWGameData.INSTANCE.getData(world, StructureMap.class);
+            if (map == null) {
+                return;
+            }
+            BlockPos pos = new BlockPos(x, y, z);
+            if (isLocationValidForTemplate(new NoGenWorld((WorldServer) world), pos, face, template, map)) {
+                markStructureGenerated(world, pos, face, template, map);
+                StructureChunkGenTicket ticket = new StructureChunkGenTicket(world, template, face, pos);
+                structureTickets.add(ticket);
+                generateInPopulatedChunks(ticket, chunkProvider);
+                //generate in current chunk (not marked as populated yet, but won't be called again that's why this is outside of call above)
+                ticket.generateInChunk(chunkX, chunkZ);
+            }
+        }
     }
 
-    public void generateAt(int chunkX, int chunkZ, World world) {
-        if(world==null){
-            return;
+    private void generateInPopulatedChunks(StructureChunkGenTicket ticket, IChunkProvider chunkProvider) {
+        Iterator<Map.Entry<ChunkPos, StructureBuilderWorldGen>> it = ticket.chunkParts.entrySet().iterator();
+        while(it.hasNext()) {
+            Map.Entry<ChunkPos, StructureBuilderWorldGen> part = it.next();
+            ChunkPos chunkPos = part.getKey();
+            if(chunkProvider.isChunkGeneratedAt(chunkPos.x, chunkPos.z)) {
+                Chunk chunk = chunkProvider.getLoadedChunk(chunkPos.x, chunkPos.z);
+                if (chunk != null && chunk.isTerrainPopulated()) {
+                    part.getValue().instantConstruction();
+                    it.remove();
+                }
+            }
         }
-        long t1 = System.currentTimeMillis();
-        long seed = (((long) chunkX) << 32) | (((long) chunkZ) & 0xffffffffl);
-        rng.setSeed(seed);
-        int x = chunkX * 16 + rng.nextInt(16);
-        int z = chunkZ * 16 + rng.nextInt(16);
-        int y = getTargetY(world, x, z, false) + 1;
-        if (y <= 0) {
-            return;
+    }
+
+
+    private void generateStructures(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
+        Iterator<StructureChunkGenTicket> it = structureTickets.iterator();
+        while(it.hasNext()) {
+            StructureChunkGenTicket ticket = it.next();
+            if (ticket.dimension == world.provider.getDimension()) {
+                ticket.generateInChunk(chunkX, chunkZ);
+            }
+            if (ticket.isFullyGenerated()) {
+                it.remove();
+            }
         }
-        
-        EnumFacing face = EnumFacing.HORIZONTALS[rng.nextInt(4)];
-        world.profiler.startSection("AWTemplateSelection");
-        StructureTemplate template = WorldGenStructureManager.INSTANCE.selectTemplateForGeneration(world, rng, x, y, z, face);
-        world.profiler.endSection();
-        AWLog.logDebug("Template selection took: " + (System.currentTimeMillis() - t1) + " ms.");
-        if (template == null) {
-            return;
-        }
-        StructureMap map = AWGameData.INSTANCE.getData(world, StructureMap.class);
-        if(map == null){
-            return;
-        }
-        world.profiler.startSection("AWTemplateGeneration");
-        if (attemptStructureGenerationAt(world, new BlockPos(x, y, z), face, template, map)) {
-            AWLog.log(String.format("Generated structure: %s at %s, %s, %s, time: %sms", template.name, x, y, z, (System.currentTimeMillis() - t1)));
-        }
-        world.profiler.endSection();
     }
 
     public static int getTargetY(NoGenWorld world, BlockPos pos, boolean skipWater) {
@@ -145,13 +185,21 @@ public class WorldStructureGenerator implements IWorldGenerator {
     }
 
     public static void sprinkleSnow(World world, StructureBB bb, int border) {
-        BlockPos p1 = bb.min.add(- border, 0, -border);
-        BlockPos p2 = bb.max.add(border, 0, border);
-        for (int x = p1.getX(); x <= p2.getX(); x++) {
-            for (int z = p1.getZ(); z <= p2.getZ(); z++) {
+        sprinkleSnow(world, bb.min.add(- border, 0, -border), bb.max.add(border, 0, border));
+    }
+
+    public static void sprinkleSnow(World world, int minX, int minZ, int maxX, int maxZ) {
+        BlockPos p1 = new BlockPos(minX, 0, minZ);
+        BlockPos p2 = new BlockPos(maxX, 0, maxZ);
+        sprinkleSnow(world, p1, p2);
+    }
+
+    public static void sprinkleSnow(World world, BlockPos min, BlockPos max) {
+        for (int x = min.getX(); x <= max.getX(); x++) {
+            for (int z = min.getZ(); z <= max.getZ(); z++) {
                 int y = world.getPrecipitationHeight(new BlockPos(x, 1, z)).getY() - 1;
                 BlockPos pos = new BlockPos(x, y, z);
-                if(p2.getY() >= y && y > 0 && world.canSnowAtBody(pos.up(), true)) {
+                if(max.getY() >= y && y > 0 && world.canSnowAtBody(pos.up(), true)) {
                     IBlockState state = world.getBlockState(pos);
                     Block block = state.getBlock();
                     if (block != Blocks.AIR && state.getBlockFaceShape(world, pos, EnumFacing.UP) == BlockFaceShape.SOLID) {
@@ -177,7 +225,17 @@ public class WorldStructureGenerator implements IWorldGenerator {
         return steps;
     }
 
-    public final boolean attemptStructureGenerationAt(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureMap map) {
+    public final boolean attemptStructureGenerationAt(WorldServer world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureMap map) {
+        if (isLocationValidForTemplate(new NoGenWorld(world), pos, face, template, map)) {
+            markStructureGenerated(world, pos, face, template, map);
+            generateStructureAt(world, pos, face, template, map);
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean isLocationValidForTemplate(NoGenWorld world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureMap map) {
         long t1 = System.currentTimeMillis();
         int prevY = pos.getY();
         StructureBB bb = new StructureBB(pos, face, template.xSize, template.ySize, template.zSize, template.xOffset, template.yOffset, template.zOffset);
@@ -189,7 +247,7 @@ public class WorldStructureGenerator implements IWorldGenerator {
         int zs = bb.getZSize();
         int size = ((xs > zs ? xs : zs) / 16) + 3;
         if(map!=null) {
-            Collection<StructureEntry> bbCheckList = map.getEntriesNear(world, pos.getX(), pos.getZ(), size, true, new ArrayList<>());
+            Collection<StructureEntry> bbCheckList = map.getEntriesNear(world.getDimension(), pos.getX(), pos.getZ(), size, true, new ArrayList<>());
             for (StructureEntry entry : bbCheckList) {
                 if (bb.crossWith(entry.getBB())) {
                     return false;
@@ -197,24 +255,69 @@ public class WorldStructureGenerator implements IWorldGenerator {
             }
         }
 
-        TownMap townMap = AWGameData.INSTANCE.getPerWorldData(world, TownMap.class);
+        TownMap townMap = AWGameData.INSTANCE.getPerWorldData(world.getPerWorldStorage(), TownMap.class);
         if (townMap!=null && townMap.intersectsWithTown(bb)) {
             AWLog.logDebug("Skipping structure generation: " + template.name + " at: " + bb + " for intersection with existing town");
             return false;
         }
-        if (template.getValidationSettings().validatePlacement(world, pos.getX(), pos.getY(), pos.getZ(), face, template, bb)) {
-            AWLog.logDebug("Validation took: " + (System.currentTimeMillis() - t1 + " ms"));
-            generateStructureAt(world, pos, face, template, map);
-            return true;
+        if (!template.getValidationSettings().validatePlacement(world, pos.getX(), pos.getY(), pos.getZ(), face, template, bb)) {
+            return false;
         }
-        return false;
+        AWLog.logDebug("Validation took: " + (System.currentTimeMillis() - t1 + " ms"));
+        return true;
     }
 
-    private void generateStructureAt(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureMap map) {
+    private void markStructureGenerated(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureMap map) {
         if(map!=null) {
             map.setGeneratedAt(world, pos.getX(), pos.getY(), pos.getZ(), face, new StructureEntry(pos.getX(), pos.getY(), pos.getZ(), face, template), template.getValidationSettings().isUnique());
         }
+    }
+
+    private void generateStructureAt(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureMap map) {
         WorldGenTickHandler.INSTANCE.addStructureForGeneration(new StructureBuilderWorldGen(world, template, face, pos));
     }
 
+    private static class StructureChunkGenTicket {
+        int dimension;
+        private Map<ChunkPos, StructureBuilderWorldGen> chunkParts = Maps.newHashMap();
+
+        public StructureChunkGenTicket(World world, StructureTemplate template, EnumFacing face, BlockPos origin) {
+            this.dimension = world.provider.getDimension();
+
+            StructureBB bb = new StructureBB(origin, face, template);
+
+            int border = template.getValidationSettings().getBorderSize();
+            int minX = bb.min.getX() - border;
+            int minZ = bb.min.getZ() - border;
+            int maxX = bb.max.getX() + border;
+            int maxZ = bb.max.getZ() + border;
+
+            for(int chunkX = minX >> 4; chunkX <= maxX >> 4; chunkX++) {
+                for(int chunkZ = minZ >> 4; chunkZ <= maxZ >> 4; chunkZ++) {
+                    int stMinX = Math.max(minX, chunkX << 4) - bb.min.getX();
+                    int stMinZ = Math.max(minZ, chunkZ << 4) - bb.min.getZ();
+                    int stMaxX = Math.min(maxX, (chunkX << 4) + 15) - bb.min.getX();
+                    int stMaxZ = Math.min(maxZ, (chunkZ << 4) + 15) - bb.min.getZ();
+                    chunkParts.put(new ChunkPos(chunkX, chunkZ), new StructureBuilderWorldGen(world, template, face, origin, bb, stMinX, stMinZ, stMaxX, stMaxZ));
+                }
+            }
+        }
+
+        public void generateInChunk(int chunkX, int chunkZ) {
+            long chunkId = ChunkPos.asLong(chunkX, chunkZ);
+            Iterator<Map.Entry<ChunkPos, StructureBuilderWorldGen>> it = chunkParts.entrySet().iterator();
+            while(it.hasNext()) {
+                Map.Entry<ChunkPos, StructureBuilderWorldGen> chunkPart = it.next();
+                ChunkPos chunkPos = chunkPart.getKey();
+                if (ChunkPos.asLong(chunkPos.x, chunkPos.z) == chunkId) {
+                    chunkPart.getValue().instantConstruction();
+                    it.remove();
+                }
+            }
+        }
+
+        public boolean isFullyGenerated() {
+            return chunkParts.isEmpty();
+        }
+    }
 }

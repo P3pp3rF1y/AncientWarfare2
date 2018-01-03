@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -69,7 +70,7 @@ public class ItemStructureBuilderWorldGen extends ItemBaseStructure implements I
                 return;
             }
             StructureMap map = AWGameData.INSTANCE.getData(player.world, StructureMap.class);
-            WorldStructureGenerator.INSTANCE.attemptStructureGenerationAt(player.world, bpHit, player.getHorizontalFacing(), template, map);
+            WorldStructureGenerator.INSTANCE.attemptStructureGenerationAt((WorldServer) player.world, bpHit, player.getHorizontalFacing(), template, map);
         } else {
             player.sendMessage(new TextComponentTranslation("guistrings.structure.no_selection"));
         }

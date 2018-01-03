@@ -77,19 +77,19 @@ public class StructureValidatorSky extends StructureValidator {
     }
 
     @Override
-    public int getAdjustedSpawnY(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
+    public int getAdjustedSpawnY(NoGenWorld world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
         int range = maxGenerationHeight - minGenerationHeight + 1;
         return y + minFlyingHeight + world.rand.nextInt(range);
     }
 
     @Override
-    public boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
+    public boolean validatePlacement(NoGenWorld world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
         int maxY = minGenerationHeight - minFlyingHeight;
         return validateBorderBlocks(world, template, bb, 0, maxY, false);
     }
 
     @Override
-    public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb) {
+    public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb, int minX, int minZ, int maxX, int maxZ) {
 
     }
 }

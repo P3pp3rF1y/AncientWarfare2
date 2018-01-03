@@ -109,6 +109,10 @@ public class StructureBuilderTicked extends StructureBuilder {
             this.currentX = tag.getInteger("x");
             this.currentY = tag.getInteger("y");
             this.currentZ = tag.getInteger("z");
+            minX = tag.getInteger("minX");
+            minZ = tag.getInteger("minZ");
+            maxX = tag.getInteger("maxX");
+            maxZ = tag.getInteger("maxZ");
             this.clearPos = BlockPos.fromLong(tag.getLong("clearPos"));
             this.hasClearedArea = tag.getBoolean("cleared");
             this.turns = tag.getInteger("turns");
@@ -133,12 +137,18 @@ public class StructureBuilderTicked extends StructureBuilder {
         tag.setInteger("x", currentX);
         tag.setInteger("y", currentY);
         tag.setInteger("z", currentZ);
+        tag.setInteger("minX", minX);
+        tag.setInteger("minZ", minZ);
+        tag.setInteger("maxX", maxX);
+        tag.setInteger("maxZ", maxZ);
         tag.setLong("clearPos", clearPos.toLong());
         tag.setBoolean("cleared", hasClearedArea);
 
         tag.setLong("buildOrigin", buildOrigin.toLong());
         tag.setLong("bbMin", bb.min.toLong());
         tag.setLong("bbMax", bb.max.toLong());
+
+
     }
 
     /*

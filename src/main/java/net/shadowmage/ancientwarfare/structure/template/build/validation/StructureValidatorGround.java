@@ -56,23 +56,23 @@ public class StructureValidatorGround extends StructureValidator {
     }
 
     @Override
-    public boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
+    public boolean validatePlacement(NoGenWorld world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
         int minY = getMinY(template, bb);
         int maxY = getMaxY(template, bb);
         return validateBorderBlocks(world, template, bb, minY, maxY, false);
     }
 
     @Override
-    public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb) {
-        prePlacementBorder(world, template, bb);
-        prePlacementUnderfill(world, template, bb);
+    public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb, int minX, int minZ, int maxX, int maxZ) {
+        prePlacementBorder(world, template, bb, minX, minZ, maxX, maxZ);
+        prePlacementUnderfill(world, template, bb, minX, minZ, maxX, maxZ);
     }
 
     @Override
-    public void postGeneration(World world, BlockPos origin, StructureBB bb) {
+    public void postGeneration(World world, BlockPos origin, StructureBB bb, int minX, int minZ, int maxX, int maxZ) {
         Biome biome = world.getBiome(origin);
         if (biome != null && biome.getEnableSnow()) {
-            WorldStructureGenerator.sprinkleSnow(world, bb, getBorderSize());
+            WorldStructureGenerator.sprinkleSnow(world, minX, minZ, maxX, maxZ);
         }
     }
 

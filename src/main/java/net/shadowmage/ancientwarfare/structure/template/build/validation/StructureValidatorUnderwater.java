@@ -72,21 +72,21 @@ public class StructureValidatorUnderwater extends StructureValidator {
     }
 
     @Override
-    public int getAdjustedSpawnY(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
-        return WorldStructureGenerator.getTargetY(world, x, z, true) + 1;
+    public int getAdjustedSpawnY(NoGenWorld world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
+        return WorldStructureGenerator.getTargetY(world, new BlockPos(x, y, z), true) + 1;
     }
 
     @Override
-    public boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
+    public boolean validatePlacement(NoGenWorld world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
         int minY = getMinY(template, bb);
         int maxY = getMaxY(template, bb);
         return validateBorderBlocks(world, template, bb, minY, maxY, true);
     }
 
     @Override
-    public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb) {
-        prePlacementBorder(world, template, bb);
-        prePlacementUnderfill(world, template, bb);
+    public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb, int minX, int minZ, int maxX, int maxZ) {
+        prePlacementBorder(world, template, bb, minX, minZ, maxX, maxZ);
+        prePlacementUnderfill(world, template, bb, minX, minZ, maxX, maxZ);
     }
 
     @Override

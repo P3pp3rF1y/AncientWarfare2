@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.world_gen;
 
+import com.google.common.collect.Lists;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -10,24 +11,18 @@ import net.shadowmage.ancientwarfare.structure.town.WorldTownGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public final class WorldGenTickHandler {
 
     public static final WorldGenTickHandler INSTANCE = new WorldGenTickHandler();
-    private final List<ChunkGenerationTicket> newWorldGenTickets, newTownGenTickets, chunksToGen, townChunksToGen;
-    private final List<StructureTicket> newStructureGenTickets, structuresToGen;
+    private final List<ChunkGenerationTicket> newTownGenTickets, townChunksToGen;
+    private final CopyOnWriteArrayList<StructureTicket> structuresToGen;
 
     private WorldGenTickHandler() {
-        newWorldGenTickets = new ArrayList<>();
         newTownGenTickets = new ArrayList<>();
-        newStructureGenTickets = new ArrayList<>();
-        chunksToGen = new ArrayList<>();
         townChunksToGen = new ArrayList<>();
-        structuresToGen = new ArrayList<>();
-    }
-
-    public void addChunkForGeneration(World world, int chunkX, int chunkZ) {
-        newWorldGenTickets.add(new ChunkGenerationTicket(world, chunkX, chunkZ));
+        structuresToGen = Lists.newCopyOnWriteArrayList();
     }
 
     public void addChunkForTownGeneration(World world, int chunkX, int chunkZ) {
@@ -35,42 +30,27 @@ public final class WorldGenTickHandler {
     }
 
     public void addStructureForGeneration(StructureBuilder builder) {
-        newStructureGenTickets.add(new StructureGenerationTicket(builder));
+        structuresToGen.add(new StructureGenerationTicket(builder));
     }
 
     public void addStructureGenCallback(StructureGenerationCallbackTicket tk) {
-        newStructureGenTickets.add(tk);
+        structuresToGen.add(tk);
     }
 
     @SubscribeEvent
     public void serverTick(ServerTickEvent evt) {
         if (evt.phase == Phase.END) {
-            genChunks();
             genStructures();
             genTowns();
         }
     }
 
     public void finalTick(){
-        while(!chunksToGen.isEmpty()){
-            genChunks();
-        }
         while (!structuresToGen.isEmpty()){
             genStructures();
         }
         while (!townChunksToGen.isEmpty()){
             genTowns();
-        }
-    }
-
-    private void genChunks() {
-        if (!chunksToGen.isEmpty()) {
-            ChunkGenerationTicket tk = chunksToGen.remove(0);
-            WorldStructureGenerator.INSTANCE.generateAt(tk.chunkX, tk.chunkZ, tk.getWorld());
-        }
-        if (!newWorldGenTickets.isEmpty()) {
-            chunksToGen.addAll(newWorldGenTickets);
-            newWorldGenTickets.clear();
         }
     }
 
@@ -88,10 +68,6 @@ public final class WorldGenTickHandler {
     private void genStructures() {
         if (!structuresToGen.isEmpty()) {
             structuresToGen.remove(0).call();
-        }
-        if (!newStructureGenTickets.isEmpty()) {
-            structuresToGen.addAll(newStructureGenTickets);
-            newStructureGenTickets.clear();
         }
     }
 

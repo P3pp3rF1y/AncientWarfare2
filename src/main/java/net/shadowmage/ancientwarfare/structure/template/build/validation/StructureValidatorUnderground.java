@@ -80,20 +80,20 @@ public class StructureValidatorUnderground extends StructureValidator {
     }
 
     @Override
-    public int getAdjustedSpawnY(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
-        y = WorldStructureGenerator.getTargetY(world, x, z, true);
+    public int getAdjustedSpawnY(NoGenWorld world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
+        y = WorldStructureGenerator.getTargetY(world, new BlockPos(x, y, z), true);
         int range = maxGenerationDepth - minGenerationDepth + 1;
         int tHeight = (template.ySize - template.yOffset);
         return y - minOverfill - world.rand.nextInt(range) - tHeight;
     }
 
     @Override
-    public boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
+    public boolean validatePlacement(NoGenWorld world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
         int minY = bb.min.getY() + template.yOffset + minOverfill;
         int topBlockY;
         for (int bx = bb.min.getX(); bx <= bb.max.getX(); bx++) {
             for (int bz = bb.min.getZ(); bz <= bb.max.getZ(); bz++) {
-                topBlockY = WorldStructureGenerator.getTargetY(world, bx, bz, true);
+                topBlockY = WorldStructureGenerator.getTargetY(world, new BlockPos(bx, 0, bz), true);
                 if (topBlockY <= minY) {
                     return false;
                 }
@@ -103,7 +103,7 @@ public class StructureValidatorUnderground extends StructureValidator {
     }
 
     @Override
-    public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb) {
+    public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb, int minX, int minZ, int maxX, int maxZ) {
 //  /*
 //   * TODO remove debug stuff
 //   */

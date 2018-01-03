@@ -82,18 +82,18 @@ public class StructureValidatorIsland extends StructureValidator {
     }
 
     @Override
-    public boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
+    public boolean validatePlacement(NoGenWorld world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
         int minY = y - maxWaterDepth;
         int maxY = y - minWaterDepth;
         return validateBorderBlocks(world, template, bb, minY, maxY, true);
     }
 
     @Override
-    public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb) {
+    public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb, int minX, int minZ, int maxX, int maxZ) {
         Block block;
         Set<String> validTargetBlocks = getTargetBlocks();
-        for (int bx = bb.min.getX(); bx <= bb.max.getX(); bx++) {
-            for (int bz = bb.min.getZ(); bz <= bb.max.getZ(); bz++) {
+        for (int bx = minX; bx <= maxX; bx++) {
+            for (int bz = minZ; bz <= maxZ; bz++) {
                 for (int by = bb.min.getY() - 1; by > 0; by--) {
                     BlockPos currentPos = new BlockPos(bx, by, bz);
                     block = world.getBlockState(currentPos).getBlock();

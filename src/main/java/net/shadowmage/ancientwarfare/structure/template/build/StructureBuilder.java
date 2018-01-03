@@ -33,6 +33,10 @@ import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 
 public class StructureBuilder implements IStructureBuilder {
 
+    protected int minX;
+    protected int minZ;
+    protected int maxX;
+    protected int maxZ;
     protected StructureTemplate template;
     protected World world;
     protected BlockPos buildOrigin;
@@ -48,11 +52,14 @@ public class StructureBuilder implements IStructureBuilder {
 
     private boolean isFinished = false;
 
+    public StructureBuilder(World world, StructureTemplate template, EnumFacing face, BlockPos pos, StructureBB bb) {
+        this(world, template, face, pos, bb, 0, 0, template.xSize, template.zSize);
+    }
     public StructureBuilder(World world, StructureTemplate template, EnumFacing face, BlockPos pos) {
         this(world, template, face, pos, new StructureBB(pos, face, template));
     }
 
-    public StructureBuilder(World world, StructureTemplate template, EnumFacing face, BlockPos buildKey, StructureBB bb) {
+    public StructureBuilder(World world, StructureTemplate template, EnumFacing face, BlockPos buildKey, StructureBB bb, int minX, int minZ, int maxX, int maxZ) {
         this.world = world;
         this.template = template;
         this.buildFace = face;
@@ -64,6 +71,11 @@ public class StructureBuilder implements IStructureBuilder {
         destYSize = template.ySize;
         destZSize = template.zSize;
         currentPriority = 0;
+
+        this.minX = minX;
+        this.minZ = minZ;
+        this.maxX = maxX;
+        this.maxZ = maxZ;
 
         turns = ((face.getHorizontalIndex() + 2) % 4);
         int swap;
@@ -108,7 +120,7 @@ public class StructureBuilder implements IStructureBuilder {
     protected void placeEntities() {
         TemplateRuleEntity[] rules = template.getEntityRules();
         for (TemplateRuleEntity rule : rules) {
-            if (rule == null) {
+            if (rule == null || !isPositionInLimits(rule.getPosition())) {
                 continue;
             }
             destination = BlockTools.rotateInArea(rule.getPosition(), template.xSize, template.zSize, turns).add(bb.min);
@@ -118,6 +130,13 @@ public class StructureBuilder implements IStructureBuilder {
                 e.printStackTrace();
             }
         }
+    }
+
+    private boolean isPositionInLimits(BlockPos position) {
+        int x = position.getX();
+        int z = position.getZ();
+
+        return x >= minX && x <= maxX && z >= minZ && z <= maxZ;
     }
 
     /*
@@ -208,11 +227,11 @@ public class StructureBuilder implements IStructureBuilder {
      */
     protected boolean incrementPosition() {
         currentX++;
-        if (currentX >= template.xSize) {
-            currentX = 0;
+        if (currentX > maxX) {
+            currentX = minX;
             currentZ++;
-            if (currentZ >= template.zSize) {
-                currentZ = 0;
+            if (currentZ > maxZ) {
+                currentZ = minZ;
                 currentY++;
                 if (currentY >= template.ySize) {
                     currentY = 0;

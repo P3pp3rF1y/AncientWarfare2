@@ -59,9 +59,13 @@ public class StructureMap extends WorldSavedData {
     }
 
     public Collection<StructureEntry> getEntriesNear(World world, int worldX, int worldZ, int chunkRadius, boolean expandBySize, Collection<StructureEntry> list) {
+        return getEntriesNear(world.provider.getDimension(), worldX, worldZ, chunkRadius, expandBySize, list);
+    }
+
+    public Collection<StructureEntry> getEntriesNear(int dimension, int worldX, int worldZ, int chunkRadius, boolean expandBySize, Collection<StructureEntry> list) {
         int cx = worldX >> 4;
         int cz = worldZ >> 4;
-        return map.getEntriesNear(world.provider.getDimension(), cx, cz, chunkRadius, expandBySize, list);
+        return map.getEntriesNear(dimension, cx, cz, chunkRadius, expandBySize, list);
     }
 
     public void setGeneratedAt(World world, int worldX, int worldY, int worldZ, EnumFacing face, StructureEntry entry, boolean unique) {

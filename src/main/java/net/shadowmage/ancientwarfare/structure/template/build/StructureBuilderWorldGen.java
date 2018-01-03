@@ -34,9 +34,24 @@ import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 
 public class StructureBuilderWorldGen extends StructureBuilder {
+    private boolean containsStructurePart = false;
+    private int overallMinX;
+    private int overallMinZ;
+    private int overallMaxX;
+    private int overallMaxZ;
 
+
+    public StructureBuilderWorldGen(World world, StructureTemplate template, EnumFacing face, BlockPos pos, StructureBB bb, int minX, int minZ, int maxX, int maxZ) {
+        super(world, template, face, pos, bb, Math.max(minX, 0), Math.max(minZ, 0), Math.min(maxX, template.xSize), Math.min(maxZ, template.zSize));
+        containsStructurePart = (minX > 0 && minX < template.xSize) || (minZ > 0 && minZ < template.zSize) || (maxX > 0 && maxX < template.xSize) || (maxZ > 0 && maxZ < template.zSize);
+        overallMinX = minX;
+        overallMinZ = minZ;
+        overallMaxX = maxX;
+        overallMaxZ = maxZ;
+    }
     public StructureBuilderWorldGen(World world, StructureTemplate template, EnumFacing face, BlockPos pos) {
         super(world, template, face, pos);
+        containsStructurePart = true;
     }
 
     @Override
@@ -92,9 +107,11 @@ public class StructureBuilderWorldGen extends StructureBuilder {
 
     @Override
     public void instantConstruction() {
-        template.getValidationSettings().preGeneration(world, buildOrigin, buildFace, template, bb);
-        super.instantConstruction();
-        template.getValidationSettings().postGeneration(world, buildOrigin, bb);
+        template.getValidationSettings().preGeneration(world, buildOrigin, buildFace, template, bb, bb.min.getX() + overallMinX, bb.min.getZ() + overallMinZ, bb.min.getX() + overallMaxX, bb.min.getZ() + overallMaxZ);
+        if (containsStructurePart) {
+            super.instantConstruction();
+        }
+        template.getValidationSettings().postGeneration(world, buildOrigin, bb, bb.min.getX() + overallMinX, bb.min.getZ() + overallMinZ, bb.min.getX() + overallMaxX, bb.min.getZ() + overallMaxZ);
     }
 
 }
