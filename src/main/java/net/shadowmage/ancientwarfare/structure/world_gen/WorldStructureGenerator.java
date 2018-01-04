@@ -31,12 +31,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
-import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
@@ -80,8 +80,6 @@ public class WorldStructureGenerator implements IWorldGenerator {
 
     @Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
-        generateStructures(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
-
         BlockPos cc = world.getSpawnPoint();
         double distSq = cc.distanceSq(chunkX * 16, cc.getY(), chunkZ * 16);
         if (AWStructureStatics.withinProtectionRange(distSq)) {
@@ -118,35 +116,25 @@ public class WorldStructureGenerator implements IWorldGenerator {
                 markStructureGenerated(world, pos, face, template, map);
                 StructureChunkGenTicket ticket = new StructureChunkGenTicket(world, template, face, pos);
                 structureTickets.add(ticket);
-                generateInPopulatedChunks(ticket, chunkProvider);
-                //generate in current chunk (not marked as populated yet, but won't be called again that's why this is outside of call above)
-                ticket.generateInChunk(chunkX, chunkZ);
             }
         }
+        generateStructures(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
     }
-
-    private void generateInPopulatedChunks(StructureChunkGenTicket ticket, IChunkProvider chunkProvider) {
-        Iterator<Map.Entry<ChunkPos, StructureBuilderWorldGen>> it = ticket.chunkParts.entrySet().iterator();
-        while(it.hasNext()) {
-            Map.Entry<ChunkPos, StructureBuilderWorldGen> part = it.next();
-            ChunkPos chunkPos = part.getKey();
-            if(chunkProvider.isChunkGeneratedAt(chunkPos.x, chunkPos.z)) {
-                Chunk chunk = chunkProvider.getLoadedChunk(chunkPos.x, chunkPos.z);
-                if (chunk != null && chunk.isTerrainPopulated()) {
-                    part.getValue().instantConstruction();
-                    it.remove();
-                }
-            }
-        }
-    }
-
 
     private void generateStructures(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
+        generateStructuresInChunk(chunkX, chunkZ, world);
+        generateStructuresInChunk(chunkX + 1, chunkZ, world);
+        generateStructuresInChunk(chunkX - 1, chunkZ, world);
+        generateStructuresInChunk(chunkX, chunkZ + 1, world);
+        generateStructuresInChunk(chunkX, chunkZ - 1, world);
+    }
+
+    private void generateStructuresInChunk(int chunkX, int chunkZ, World world) {
         Iterator<StructureChunkGenTicket> it = structureTickets.iterator();
         while(it.hasNext()) {
             StructureChunkGenTicket ticket = it.next();
             if (ticket.dimension == world.provider.getDimension()) {
-                ticket.generateInChunk(chunkX, chunkZ);
+                ticket.generateInChunk(world, chunkX, chunkZ);
             }
             if (ticket.isFullyGenerated()) {
                 it.remove();
@@ -286,34 +274,89 @@ public class WorldStructureGenerator implements IWorldGenerator {
 
             StructureBB bb = new StructureBB(origin, face, template);
 
+            int turns = ((face.getHorizontalIndex() + 2) % 4);
+            BlockPos corner1 = BlockTools.rotateInArea(new BlockPos(template.xSize - 1, 0, template.zSize - 1), template.xSize, template.zSize, turns).add(bb.min);
+            BlockPos corner2 = BlockTools.rotateInArea(new BlockPos(0, 0, 0), template.xSize, template.zSize, turns).add(bb.min);
+
+            BlockPos min = new BlockPos(Math.min(corner1.getX(), corner2.getX()), 0, Math.min(corner1.getZ(), corner2.getZ()));
+            BlockPos max = new BlockPos(Math.max(corner1.getX(), corner2.getX()), 0, Math.max(corner1.getZ(), corner2.getZ()));
+
             int border = template.getValidationSettings().getBorderSize();
-            int minX = bb.min.getX() - border;
-            int minZ = bb.min.getZ() - border;
-            int maxX = bb.max.getX() + border;
-            int maxZ = bb.max.getZ() + border;
+            int minX = min.getX() - border;
+            int minZ = min.getZ() - border;
+            int maxX = max.getX() + border;
+            int maxZ = max.getZ() + border;
 
             for(int chunkX = minX >> 4; chunkX <= maxX >> 4; chunkX++) {
                 for(int chunkZ = minZ >> 4; chunkZ <= maxZ >> 4; chunkZ++) {
-                    int stMinX = Math.max(minX, chunkX << 4) - bb.min.getX();
-                    int stMinZ = Math.max(minZ, chunkZ << 4) - bb.min.getZ();
-                    int stMaxX = Math.min(maxX, (chunkX << 4) + 15) - bb.min.getX();
-                    int stMaxZ = Math.min(maxZ, (chunkZ << 4) + 15) - bb.min.getZ();
-                    chunkParts.put(new ChunkPos(chunkX, chunkZ), new StructureBuilderWorldGen(world, template, face, origin, bb, stMinX, stMinZ, stMaxX, stMaxZ));
+                    int stMinX = Math.max(minX, chunkX << 4) - min.getX();
+                    int stMinZ = Math.max(minZ, chunkZ << 4) - min.getZ();
+                    int stMaxX = Math.min(maxX, (chunkX << 4) + 15) - min.getX();
+                    int stMaxZ = Math.min(maxZ, (chunkZ << 4) + 15) - min.getZ();
+
+                    int xSize = max.getX() - min.getX() + 1;
+                    int zSize = max.getZ() - min.getZ() + 1;
+
+                    BlockPos chunkCorner1 = BlockTools.rotateInAreaCW(new BlockPos(stMinX, 0, stMinZ), xSize, zSize, turns);
+                    BlockPos chunkCorner2 = BlockTools.rotateInAreaCW(new BlockPos(stMaxX, 0, stMaxZ), xSize, zSize, turns);
+
+                    chunkParts.put(new ChunkPos(chunkX, chunkZ), new StructureBuilderWorldGen(world, template, face, origin, bb,
+                            Math.min(chunkCorner1.getX(), chunkCorner2.getX()), Math.min(chunkCorner1.getZ(), chunkCorner2.getZ()),
+                            Math.max(chunkCorner1.getX(), chunkCorner2.getX()), Math.max(chunkCorner1.getZ(), chunkCorner2.getZ())));
                 }
             }
         }
 
-        public void generateInChunk(int chunkX, int chunkZ) {
+        public void generateInChunk(World world, int chunkX, int chunkZ) {
             long chunkId = ChunkPos.asLong(chunkX, chunkZ);
             Iterator<Map.Entry<ChunkPos, StructureBuilderWorldGen>> it = chunkParts.entrySet().iterator();
             while(it.hasNext()) {
                 Map.Entry<ChunkPos, StructureBuilderWorldGen> chunkPart = it.next();
                 ChunkPos chunkPos = chunkPart.getKey();
                 if (ChunkPos.asLong(chunkPos.x, chunkPos.z) == chunkId) {
-                    chunkPart.getValue().instantConstruction();
-                    it.remove();
+                    if (areNeededChunksGenerated(world, chunkX, chunkZ)) {
+                        StructureBuilderWorldGen builder = chunkPart.getValue();
+                        int pass = builder.getPass();
+
+                        boolean generated = false;
+
+                        while (!builder.isFinished() && (builder.getPass() < 0 || areNeighborsAtPass(chunkX, chunkZ, pass))) {
+                            builder.incrementPass();
+                            builder.constructCurrentPass();
+                            generated = true;
+                        }
+                        if (builder.isFinished()) {
+                            it.remove();
+                        }
+                        if (generated) {
+                            generateInChunk(world, chunkX + 1, chunkZ);
+                            generateInChunk(world, chunkX - 1, chunkZ);
+                            generateInChunk(world, chunkX, chunkZ + 1);
+                            generateInChunk(world, chunkX, chunkZ - 1);
+                        }
+                    }
+                    break;
                 }
             }
+        }
+
+        private boolean areNeighborsAtPass(int chunkX, int chunkZ, int pass) {
+            return isChunkAtPassOrEmpty(new ChunkPos(chunkX + 1, chunkZ), pass)
+                    && isChunkAtPassOrEmpty(new ChunkPos(chunkX - 1, chunkZ), pass)
+                    && isChunkAtPassOrEmpty(new ChunkPos(chunkX, chunkZ + 1), pass)
+                    && isChunkAtPassOrEmpty(new ChunkPos(chunkX, chunkZ - 1), pass);
+        }
+
+        private boolean isChunkAtPassOrEmpty(ChunkPos chunkPos, int pass) {
+            return !chunkParts.containsKey(chunkPos) || chunkParts.get(chunkPos).getPass() >= pass;
+        }
+
+        private boolean areNeededChunksGenerated(World world, int chunkX, int chunkZ) {
+            return world.isChunkGeneratedAt(chunkX, chunkZ)
+                    && world.isChunkGeneratedAt(chunkX + 1, chunkZ)
+                    && world.isChunkGeneratedAt(chunkX - 1, chunkZ)
+                    && world.isChunkGeneratedAt(chunkX, chunkZ + 1)
+                    && world.isChunkGeneratedAt(chunkX, chunkZ - 1);
         }
 
         public boolean isFullyGenerated() {

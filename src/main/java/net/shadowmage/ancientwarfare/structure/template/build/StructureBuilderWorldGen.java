@@ -42,12 +42,13 @@ public class StructureBuilderWorldGen extends StructureBuilder {
 
 
     public StructureBuilderWorldGen(World world, StructureTemplate template, EnumFacing face, BlockPos pos, StructureBB bb, int minX, int minZ, int maxX, int maxZ) {
-        super(world, template, face, pos, bb, Math.max(minX, 0), Math.max(minZ, 0), Math.min(maxX, template.xSize), Math.min(maxZ, template.zSize));
-        containsStructurePart = (minX > 0 && minX < template.xSize) || (minZ > 0 && minZ < template.zSize) || (maxX > 0 && maxX < template.xSize) || (maxZ > 0 && maxZ < template.zSize);
+        super(world, template, face, pos, bb, Math.max(minX, 0), Math.max(minZ, 0), Math.min(maxX, template.xSize - 1), Math.min(maxZ, template.zSize - 1));
+        containsStructurePart = (minX > 0 && minX < template.xSize && minZ > 0 && minZ < template.zSize) || (maxX > 0 && maxX < template.xSize && maxZ > 0 && maxZ < template.zSize);
         overallMinX = minX;
         overallMinZ = minZ;
         overallMaxX = maxX;
         overallMaxZ = maxZ;
+        currentPass = -1;
     }
     public StructureBuilderWorldGen(World world, StructureTemplate template, EnumFacing face, BlockPos pos) {
         super(world, template, face, pos);

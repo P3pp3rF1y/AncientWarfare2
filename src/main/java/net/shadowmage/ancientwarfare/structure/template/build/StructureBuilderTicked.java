@@ -60,7 +60,7 @@ public class StructureBuilderTicked extends StructureBuilder {
         } else if (!this.isFinished()) {
             while (!this.isFinished()) {
                 TemplateRule rule = template.getRuleAt(currentX, currentY, currentZ);
-                if (rule == null || !rule.shouldPlaceOnBuildPass(world, turns, destination, currentPriority)) {
+                if (rule == null || !rule.shouldPlaceOnBuildPass(world, turns, destination, currentPass)) {
                     increment();//skip that position, was either air/null rule, or could not be placed on current pass, auto-increment to next
                 } else//place it...
                 {
@@ -117,8 +117,8 @@ public class StructureBuilderTicked extends StructureBuilder {
             this.hasClearedArea = tag.getBoolean("cleared");
             this.turns = tag.getInteger("turns");
             this.buildFace = EnumFacing.VALUES[tag.getByte("buildFace")];
-            this.maxPriority = tag.getInteger("maxPriority");
-            this.currentPriority = tag.getInteger("currentPriority");
+            this.maxPasses = tag.getInteger("maxPasses");
+            this.currentPass = tag.getInteger("currentPass");
 
             this.bb = new StructureBB(BlockPos.fromLong(tag.getLong("bbMin")), BlockPos.fromLong(tag.getLong("bbMax")));
             this.buildOrigin = BlockPos.fromLong(tag.getLong("buildOrigin"));
@@ -132,8 +132,8 @@ public class StructureBuilderTicked extends StructureBuilder {
         tag.setString("name", template.name);
         tag.setByte("face", (byte) buildFace.ordinal());
         tag.setInteger("turns", turns);
-        tag.setInteger("maxPriority", maxPriority);
-        tag.setInteger("currentPriority", currentPriority);
+        tag.setInteger("maxPasses", maxPasses);
+        tag.setInteger("currentPass", currentPass);
         tag.setInteger("x", currentX);
         tag.setInteger("y", currentY);
         tag.setInteger("z", currentZ);

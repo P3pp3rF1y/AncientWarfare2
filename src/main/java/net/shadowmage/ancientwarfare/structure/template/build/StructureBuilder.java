@@ -42,8 +42,8 @@ public class StructureBuilder implements IStructureBuilder {
     protected BlockPos buildOrigin;
     protected EnumFacing buildFace;
     protected int turns;
-    protected int maxPriority = 4;
-    protected int currentPriority;//current build priority...may not be needed anymore?
+    protected int maxPasses = 4;
+    protected int currentPass;//current build priority...may not be needed anymore?
     protected int currentX, currentY, currentZ;//coords in template
     protected int destXSize, destYSize, destZSize;
     protected BlockPos destination;
@@ -51,6 +51,7 @@ public class StructureBuilder implements IStructureBuilder {
     protected StructureBB bb;
 
     private boolean isFinished = false;
+    private boolean currentPassFinished = false;
 
     public StructureBuilder(World world, StructureTemplate template, EnumFacing face, BlockPos pos, StructureBB bb) {
         this(world, template, face, pos, bb, 0, 0, template.xSize, template.zSize);
@@ -66,14 +67,15 @@ public class StructureBuilder implements IStructureBuilder {
         this.bb = bb;
         buildOrigin = buildKey;
         destination = BlockPos.ORIGIN;
-        currentX = currentY = currentZ = 0;
+        currentY = 0;
         destXSize = template.xSize;
         destYSize = template.ySize;
         destZSize = template.zSize;
-        currentPriority = 0;
 
         this.minX = minX;
+        currentX = minX;
         this.minZ = minZ;
+        currentZ = minZ;
         this.maxX = maxX;
         this.maxZ = maxZ;
 
@@ -104,17 +106,27 @@ public class StructureBuilder implements IStructureBuilder {
     }
 
     public void instantConstruction() {
+        while (!this.isFinished()) {
+            constructCurrentPass();
+            incrementPass();
+        }
+    }
+
+    public void constructCurrentPass() {
         try {
-            while (!this.isFinished()) {
+            currentPassFinished = false;
+            while (!currentPassFinished) {
                 TemplateRule rule = template.getRuleAt(currentX, currentY, currentZ);
                 placeCurrentPosition(rule);
-                increment();
+                increment(false);
             }
         } catch (Exception e) {
             TemplateRule rule = template.getRuleAt(currentX, currentY, currentZ);
             throw new RuntimeException("Caught exception while constructing template blocks: " + rule, e);
         }
-        this.placeEntities();
+        if (currentPass == maxPasses) {
+            this.placeEntities();
+        }
     }
 
     protected void placeEntities() {
@@ -179,23 +191,29 @@ public class StructureBuilder implements IStructureBuilder {
 
     protected void placeCurrentPosition(TemplateRule rule) {
         if (rule == null) {
-            if(currentPriority == 0) {
+            if(currentPass == 0) {
                 placeAir();
             }
         }
-        else if (rule.shouldPlaceOnBuildPass(world, turns, destination, currentPriority)) {
+        else if (rule.shouldPlaceOnBuildPass(world, turns, destination, currentPass)) {
             this.placeRule(rule);
         }
     }
 
     protected boolean increment() {
+        return increment(true);
+    }
+    protected boolean increment(boolean incrementPass) {
         if (isFinished) {
             return false;
         }
-        if (incrementPosition()) {
+        if (incrementPosition(incrementPass)) {
             incrementDestination();
         } else {
-            this.isFinished = true;
+            currentPassFinished = true;
+            if (incrementPass || currentPass == maxPasses) {
+                isFinished = true;
+            }
         }
         return !isFinished;
     }
@@ -225,7 +243,7 @@ public class StructureBuilder implements IStructureBuilder {
      * return true if could increment position
      * return false if template is finished
      */
-    protected boolean incrementPosition() {
+    private boolean incrementPosition(boolean incrementPass) {
         currentX++;
         if (currentX > maxX) {
             currentX = minX;
@@ -235,13 +253,23 @@ public class StructureBuilder implements IStructureBuilder {
                 currentY++;
                 if (currentY >= template.ySize) {
                     currentY = 0;
-                    currentPriority++;
-                    if (currentPriority > maxPriority) {
-                        currentPriority = 0;
+                    if (!incrementPass) {
+                        return false;
+                    }
+                    if(!incrementPass()) {
                         return false;
                     }
                 }
             }
+        }
+        return true;
+    }
+
+    public boolean incrementPass() {
+        currentPass++;
+        if (currentPass > maxPasses) {
+            currentPass = 0;
+            return false;
         }
         return true;
     }
@@ -259,11 +287,11 @@ public class StructureBuilder implements IStructureBuilder {
     }
 
     public int getPass() {
-        return currentPriority;
+        return currentPass;
     }
 
     public int getMaxPasses() {
-        return maxPriority;
+        return maxPasses;
     }
 
 }

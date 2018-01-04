@@ -218,6 +218,26 @@ public class BlockTools {
         return new BlockPos(x, pos.getY(), z);
     }
 
+    public static BlockPos rotateInAreaCW(BlockPos pos, int xSize, int zSize, int turns) {
+        int xSize1 = xSize;
+        int zSize1 = zSize;
+        int x = pos.getX();
+        int z = pos.getZ();
+        int x1 = x;
+        int z1 = z;
+        for (int i = 0; i < turns; i++) {
+            x = z1;
+            z = xSize - 1 - x1;
+            x1 = x;
+            z1 = z;
+            xSize = zSize1;
+            zSize = xSize1;
+            xSize1 = xSize;
+            zSize1 = zSize;
+        }
+        return new BlockPos(x, pos.getY(), z);
+    }
+
     public static boolean breakBlockAndDrop(World world, EntityPlayer player, BlockPos pos) {
         return breakBlock(world, player, pos, 0, true);
     }
