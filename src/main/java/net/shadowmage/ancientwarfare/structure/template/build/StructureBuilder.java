@@ -50,7 +50,7 @@ public class StructureBuilder implements IStructureBuilder {
 
     protected StructureBB bb;
 
-    private boolean isFinished = false;
+    protected boolean isFinished = false;
     private boolean currentPassFinished = false;
 
     public StructureBuilder(World world, StructureTemplate template, EnumFacing face, BlockPos pos, StructureBB bb) {
@@ -115,7 +115,7 @@ public class StructureBuilder implements IStructureBuilder {
     public void constructCurrentPass() {
         try {
             currentPassFinished = false;
-            while (!currentPassFinished) {
+            while (!currentPassFinished && !isFinished) {
                 TemplateRule rule = template.getRuleAt(currentX, currentY, currentZ);
                 placeCurrentPosition(rule);
                 increment(false);

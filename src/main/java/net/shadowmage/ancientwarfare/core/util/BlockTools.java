@@ -197,12 +197,6 @@ public class BlockTools {
         int zSize1 = zSize;
         int x = pos.getX();
         int z = pos.getZ();
-        if (x >= xSize) {
-            x = 0;
-        }
-        if (z >= zSize) {
-            z = 0;
-        }
         int x1 = x;
         int z1 = z;
         for (int i = 0; i < turns; i++) {

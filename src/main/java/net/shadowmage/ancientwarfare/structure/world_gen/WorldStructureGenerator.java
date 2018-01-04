@@ -356,7 +356,11 @@ public class WorldStructureGenerator implements IWorldGenerator {
                     && world.isChunkGeneratedAt(chunkX + 1, chunkZ)
                     && world.isChunkGeneratedAt(chunkX - 1, chunkZ)
                     && world.isChunkGeneratedAt(chunkX, chunkZ + 1)
-                    && world.isChunkGeneratedAt(chunkX, chunkZ - 1);
+                    && world.isChunkGeneratedAt(chunkX, chunkZ - 1)
+                    && world.isChunkGeneratedAt(chunkX -1, chunkZ - 1)
+                    && world.isChunkGeneratedAt(chunkX + 1, chunkZ - 1)
+                    && world.isChunkGeneratedAt(chunkX - 1, chunkZ + 1)
+                    && world.isChunkGeneratedAt(chunkX + 1, chunkZ + 1);
         }
 
         public boolean isFullyGenerated() {

@@ -31,6 +31,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.terraingen.BiomeEvent;
 import net.minecraftforge.event.terraingen.BiomeEvent.GetVillageBlockID;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 
 public class StructureBuilderWorldGen extends StructureBuilder {
@@ -44,10 +45,13 @@ public class StructureBuilderWorldGen extends StructureBuilder {
     public StructureBuilderWorldGen(World world, StructureTemplate template, EnumFacing face, BlockPos pos, StructureBB bb, int minX, int minZ, int maxX, int maxZ) {
         super(world, template, face, pos, bb, Math.max(minX, 0), Math.max(minZ, 0), Math.min(maxX, template.xSize - 1), Math.min(maxZ, template.zSize - 1));
         containsStructurePart = (minX > 0 && minX < template.xSize && minZ > 0 && minZ < template.zSize) || (maxX > 0 && maxX < template.xSize && maxZ > 0 && maxZ < template.zSize);
-        overallMinX = minX;
-        overallMinZ = minZ;
-        overallMaxX = maxX;
-        overallMaxZ = maxZ;
+        BlockPos rotatedMin = BlockTools.rotateInArea(new BlockPos(minX, 0, minZ), template.xSize, template.zSize, turns);
+        BlockPos rotatedMax = BlockTools.rotateInArea(new BlockPos(maxX, 0, maxZ), template.xSize, template.zSize, turns);
+
+        overallMinX = rotatedMin.getX();
+        overallMinZ = rotatedMin.getZ();
+        overallMaxX = rotatedMax.getX();
+        overallMaxZ = rotatedMax.getZ();
         currentPass = -1;
     }
     public StructureBuilderWorldGen(World world, StructureTemplate template, EnumFacing face, BlockPos pos) {
@@ -107,12 +111,17 @@ public class StructureBuilderWorldGen extends StructureBuilder {
     }
 
     @Override
-    public void instantConstruction() {
-        template.getValidationSettings().preGeneration(world, buildOrigin, buildFace, template, bb, bb.min.getX() + overallMinX, bb.min.getZ() + overallMinZ, bb.min.getX() + overallMaxX, bb.min.getZ() + overallMaxZ);
-        if (containsStructurePart) {
-            super.instantConstruction();
+    public void constructCurrentPass() {
+        if (currentPass == 0) {
+            template.getValidationSettings().preGeneration(world, buildOrigin, buildFace, template, bb, bb.min.getX() + overallMinX, bb.min.getZ() + overallMinZ, bb.min.getX() + overallMaxX, bb.min.getZ() + overallMaxZ);
         }
-        template.getValidationSettings().postGeneration(world, buildOrigin, bb, bb.min.getX() + overallMinX, bb.min.getZ() + overallMinZ, bb.min.getX() + overallMaxX, bb.min.getZ() + overallMaxZ);
+        if (containsStructurePart) {
+            super.constructCurrentPass();
+        } else {
+            isFinished = true;
+        }
+        if (isFinished()) {
+            template.getValidationSettings().postGeneration(world, buildOrigin, bb, bb.min.getX() + overallMinX, bb.min.getZ() + overallMinZ, bb.min.getX() + overallMaxX, bb.min.getZ() + overallMaxZ);
+        }
     }
-
 }
