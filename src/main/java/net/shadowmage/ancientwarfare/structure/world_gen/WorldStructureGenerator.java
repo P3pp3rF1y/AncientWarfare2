@@ -127,6 +127,10 @@ public class WorldStructureGenerator implements IWorldGenerator {
         generateStructuresInChunk(chunkX - 1, chunkZ, world);
         generateStructuresInChunk(chunkX, chunkZ + 1, world);
         generateStructuresInChunk(chunkX, chunkZ - 1, world);
+        generateStructuresInChunk(chunkX + 1, chunkZ + 1, world);
+        generateStructuresInChunk(chunkX - 1, chunkZ - 1, world);
+        generateStructuresInChunk(chunkX - 1, chunkZ + 1, world);
+        generateStructuresInChunk(chunkX + 1, chunkZ - 1, world);
     }
 
     private void generateStructuresInChunk(int chunkX, int chunkZ, World world) {
@@ -303,6 +307,7 @@ public class WorldStructureGenerator implements IWorldGenerator {
                     chunkParts.put(new ChunkPos(chunkX, chunkZ), new StructureBuilderWorldGen(world, template, face, origin, bb,
                             Math.min(chunkCorner1.getX(), chunkCorner2.getX()), Math.min(chunkCorner1.getZ(), chunkCorner2.getZ()),
                             Math.max(chunkCorner1.getX(), chunkCorner2.getX()), Math.max(chunkCorner1.getZ(), chunkCorner2.getZ())));
+                    AWLog.logDebug("Structure " + template.name + " had part in chunk x " + chunkX + " z " + chunkZ + " added to list of parts to be generated");
                 }
             }
         }
@@ -324,9 +329,11 @@ public class WorldStructureGenerator implements IWorldGenerator {
                             builder.incrementPass();
                             builder.constructCurrentPass();
                             generated = true;
+                            AWLog.logDebug("Structure " + builder.getTemplate().name + " had part in chunk x " + chunkX + " z " + chunkZ + " pass " + builder.getPass() + " generated");
                         }
                         if (builder.isFinished()) {
                             it.remove();
+                            AWLog.logDebug("Structure " + builder.getTemplate().name + " had part in chunk x " + chunkX + " z " + chunkZ + " fully generated and was removed from the list of parts to be generated");
                         }
                         if (generated) {
                             generateInChunk(world, chunkX + 1, chunkZ);

@@ -44,7 +44,7 @@ public class StructureBuilderWorldGen extends StructureBuilder {
 
     public StructureBuilderWorldGen(World world, StructureTemplate template, EnumFacing face, BlockPos pos, StructureBB bb, int minX, int minZ, int maxX, int maxZ) {
         super(world, template, face, pos, bb, Math.max(minX, 0), Math.max(minZ, 0), Math.min(maxX, template.xSize - 1), Math.min(maxZ, template.zSize - 1));
-        containsStructurePart = (minX > 0 && minX < template.xSize && minZ > 0 && minZ < template.zSize) || (maxX > 0 && maxX < template.xSize && maxZ > 0 && maxZ < template.zSize);
+        containsStructurePart = overlapsStructure(template, minX, minZ, maxX, maxZ);
         BlockPos rotatedMin = BlockTools.rotateInArea(new BlockPos(minX, 0, minZ), template.xSize, template.zSize, turns);
         BlockPos rotatedMax = BlockTools.rotateInArea(new BlockPos(maxX, 0, maxZ), template.xSize, template.zSize, turns);
 
@@ -54,6 +54,18 @@ public class StructureBuilderWorldGen extends StructureBuilder {
         overallMaxZ = rotatedMax.getZ();
         currentPass = -1;
     }
+
+    private boolean overlapsStructure(StructureTemplate template, int minX, int minZ, int maxX, int maxZ) {
+        return isInStructureBounds(template, minX, minZ)
+                || isInStructureBounds(template, maxX, maxZ)
+                || isInStructureBounds(template, maxX, minZ)
+                || isInStructureBounds(template, minX, maxZ);
+    }
+
+    private boolean isInStructureBounds(StructureTemplate template, int x, int z) {
+        return x >= 0 && x < template.xSize && z >= 0 && z < template.zSize;
+    }
+
     public StructureBuilderWorldGen(World world, StructureTemplate template, EnumFacing face, BlockPos pos) {
         super(world, template, face, pos);
         containsStructurePart = true;
