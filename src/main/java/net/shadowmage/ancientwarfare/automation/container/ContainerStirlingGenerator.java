@@ -5,21 +5,23 @@ import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileStirlingGenerator;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 
 import javax.annotation.Nonnull;
 
-public class ContainerTorqueGeneratorStirling extends ContainerTileBase<TileStirlingGenerator> {
+public class ContainerStirlingGenerator extends ContainerTileBase<TileStirlingGenerator> {
 
     public int guiHeight;
     public double energy;
     public int burnTime;
     public int burnTimeBase;
 
-    public ContainerTorqueGeneratorStirling(EntityPlayer player, int x, int y, int z) {
+    public ContainerStirlingGenerator(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
-        addSlotToContainer(new Slot(tileEntity, 0, 8 + 4 * 18, 8 + 12) {
+        addSlotToContainer(new SlotItemHandler(tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), 0, 8 + 4 * 18, 8 + 12) {
             @Override
             public boolean isItemValid(ItemStack par1ItemStack) {
                 return TileEntityFurnace.isItemFuel(par1ItemStack);
@@ -80,7 +82,7 @@ public class ContainerTorqueGeneratorStirling extends ContainerTileBase<TileStir
         if (slot == null || !slot.getHasStack()) {
             return ItemStack.EMPTY;
         }
-        int slots = tileEntity.getSizeInventory();
+        int slots = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null).getSlots();
         @Nonnull ItemStack stackFromSlot = slot.getStack();
         if (slotClickedIndex < slots)//click on input slot, merge into player inventory
         {

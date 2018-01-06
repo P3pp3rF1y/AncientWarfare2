@@ -1,13 +1,13 @@
 package net.shadowmage.ancientwarfare.automation.gui;
 
 import net.minecraft.client.resources.I18n;
-import net.shadowmage.ancientwarfare.automation.container.ContainerTorqueGeneratorStirling;
+import net.shadowmage.ancientwarfare.automation.container.ContainerStirlingGenerator;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.ProgressBar;
 
-public class GuiStirlingGenerator extends GuiContainerBase<ContainerTorqueGeneratorStirling> {
+public class GuiStirlingGenerator extends GuiContainerBase<ContainerStirlingGenerator> {
 
     private Label energyLabel;
 
@@ -15,7 +15,7 @@ public class GuiStirlingGenerator extends GuiContainerBase<ContainerTorqueGenera
     private ProgressBar pg1;
 
     public GuiStirlingGenerator(ContainerBase par1Container) {
-        super(par1Container, 178, ((ContainerTorqueGeneratorStirling) par1Container).guiHeight);
+        super(par1Container, 178, ((ContainerStirlingGenerator) par1Container).guiHeight);
     }
 
     @Override
