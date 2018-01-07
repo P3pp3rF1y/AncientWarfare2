@@ -1,10 +1,9 @@
 package net.shadowmage.ancientwarfare.core.research;
 
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -121,12 +120,12 @@ public class ResearchGoal {
         return knownResearch.containsAll(fullDependencies);
     }
 
-    public boolean tryStart(IInventory inventory, EnumFacing side) {
+    public boolean tryStart(IItemHandler handler) {
         if (!AWCoreStatics.enableResearchResourceUse) {
             return true;
         }
         for (ItemStack stack : this.researchResources) {
-            if (InventoryTools.getCountOf(inventory, side, stack) < stack.getCount()) {
+            if (InventoryTools.getCountOf(handler, stack) < stack.getCount()) {
                 return false;
             }
         }
@@ -135,7 +134,7 @@ public class ResearchGoal {
         for(OreSized ore : researchOres){
             count = 0;
             for(ItemStack temp : ore.getEquivalents()) {
-                count += InventoryTools.getCountOf(inventory, side, temp);
+                count += InventoryTools.getCountOf(handler, temp);
                 if(count >= ore.size)
                     break;
             }
@@ -144,14 +143,14 @@ public class ResearchGoal {
         }
 
         for (ItemStack stack : this.researchResources) {
-            InventoryTools.removeItems(inventory, side, stack, stack.getCount());
+            InventoryTools.removeItems(handler, stack, stack.getCount());
         }
         int required;
         @Nonnull ItemStack remove;
         for(OreSized ore : researchOres){
             required = ore.size;
             for(ItemStack temp : ore.getEquivalents()) {
-                remove = InventoryTools.removeItems(inventory, side, temp, required);
+                remove = InventoryTools.removeItems(handler, temp, required);
                 if(!remove.isEmpty()){
                     required -= remove.getCount();
                     if(required <= 0){

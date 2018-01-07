@@ -1,8 +1,6 @@
 package net.shadowmage.ancientwarfare.core.tile;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.IInventoryChangedListener;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
@@ -10,13 +8,15 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ITickable;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
-import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
@@ -24,15 +24,33 @@ import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
 
-public class TileResearchStation extends TileOwned implements IWorkSite, IInventory, IInventoryChangedListener, ITorqueTile, IInteractableTile, IRotatableTile, ITickable {
+public class TileResearchStation extends TileOwned implements IWorkSite, ITorqueTile, IInteractableTile, IRotatableTile, ITickable {
 
     private EnumFacing orientation = EnumFacing.NORTH;//default for old blocks
 
-    private final InventoryBasic bookInventory = new InventoryBasic(1, this);
-    private final InventoryBasic resourceInventory = new InventoryBasic(9, this);
+    public final ItemStackHandler bookInventory = new ItemStackHandler(1) {
+        @Override
+        protected void onContentsChanged(int slot) {
+            markDirty();
+        }
+
+        @Nonnull
+        @Override
+        public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+            return ItemResearchBook.getResearcherName(stack) != null ? super.insertItem(slot, stack, simulate) : stack;
+        }
+    };
+    public final ItemStackHandler resourceInventory = new ItemStackHandler(9) {
+        @Override
+        protected void onContentsChanged(int slot) {
+            markDirty();
+        }
+    };
 
     int startCheckDelay = 0;
     int startCheckDelayMax = 40;
@@ -219,13 +237,13 @@ public class TileResearchStation extends TileOwned implements IWorkSite, IInvent
             if (goalInstance == null) {
                 return;
             }
-            if (goalInstance.tryStart(resourceInventory, null)) {
+            if (goalInstance.tryStart(resourceInventory)) {
                 ResearchTracker.INSTANCE.startResearch(world, name, goalId);
             } else if (useAdjacentInventory) {
                 TileEntity t;
                 boolean started = false;
-                if ((t = world.getTileEntity(pos.offset(inventoryDirection))) instanceof IInventory) {
-                    started = goalInstance.tryStart((IInventory) t, inventorySide);
+                if ((t = world.getTileEntity(pos.offset(inventoryDirection))).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, inventorySide)) {
+                    started = goalInstance.tryStart(t.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, inventorySide));
                 }
                 if (started) {
                     ResearchTracker.INSTANCE.startResearch(world, name, goalId);
@@ -243,106 +261,6 @@ public class TileResearchStation extends TileOwned implements IWorkSite, IInvent
     @Override
     public final Team getTeam() {
         return world.getScoreboard().getPlayersTeam(getOwnerName());
-    }
-
-    @Override
-    public int getSizeInventory() {
-        return bookInventory.getSizeInventory() + resourceInventory.getSizeInventory();
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return bookInventory.isEmpty() && resourceInventory.isEmpty();
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int var1) {
-        if(var1 < bookInventory.getSizeInventory())
-            return bookInventory.getStackInSlot(var1);
-        return resourceInventory.getStackInSlot(var1 - bookInventory.getSizeInventory());
-    }
-
-    @Override
-    public ItemStack decrStackSize(int var1, int var2) {
-        if(var1 < bookInventory.getSizeInventory()) {
-            return bookInventory.decrStackSize(var1, var2);
-        }
-        return resourceInventory.decrStackSize(var1 - bookInventory.getSizeInventory(), var2);
-    }
-
-    @Override
-    public ItemStack removeStackFromSlot(int var1) {
-        if(var1 < bookInventory.getSizeInventory())
-            return bookInventory.removeStackFromSlot(var1);
-        return resourceInventory.removeStackFromSlot(var1 - bookInventory.getSizeInventory());
-    }
-
-    @Override
-    public void setInventorySlotContents(int var1, ItemStack var2) {
-        if(var1 < bookInventory.getSizeInventory()) {
-            bookInventory.setInventorySlotContents(var1, var2);
-            return;
-        }
-        resourceInventory.setInventorySlotContents(var1 - bookInventory.getSizeInventory(), var2);
-    }
-
-    @Override
-    public void onInventoryChanged(IInventory internal){
-        markDirty();
-    }
-
-    @Override
-    public String getName() {
-        return "research.station";
-    }
-
-    @Override
-    public boolean hasCustomName() {
-        return false;
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return 64;
-    }
-
-    @Override
-    public boolean isUsableByPlayer(EntityPlayer var1) {
-        return true;
-    }
-
-    @Override
-    public void openInventory(EntityPlayer player) {
-    }
-
-    @Override
-    public void closeInventory(EntityPlayer player) {
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int var1, ItemStack var2) {
-        return var1 >= bookInventory.getSizeInventory() || ItemResearchBook.getResearcherName(var2) != null;
-    }
-
-    @Override
-    public int getField(int id) {
-        return 0;
-    }
-
-    @Override
-    public void setField(int id, int value) {
-        //NOOP
-    }
-
-    @Override
-    public int getFieldCount() {
-        return 0;
-    }
-
-    @Override
-    public void clear() {
-        bookInventory.clear();
-        resourceInventory.clear();
     }
 
     @Override
@@ -385,4 +303,17 @@ public class TileResearchStation extends TileOwned implements IWorkSite, IInvent
         return 0;
     }
 
+    @Override
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+    }
+
+    @Nullable
+    @Override
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            return (T) resourceInventory;
+        }
+        return super.getCapability(capability, facing);
+    }
 }
