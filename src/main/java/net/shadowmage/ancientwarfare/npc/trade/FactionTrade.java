@@ -1,8 +1,8 @@
 package net.shadowmage.ancientwarfare.npc.trade;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.items.IItemHandler;
 
 public class FactionTrade extends Trade {
 
@@ -85,14 +85,14 @@ public class FactionTrade extends Trade {
     }
 
     @Override
-    public void performTrade(EntityPlayer player, IInventory storage) {
+    public void performTrade(EntityPlayer player, IItemHandler storage) {
         if (currentAvailable > 0) {
             super.performTrade(player, null);
         }
     }
 
     @Override
-    protected void doTrade(EntityPlayer player, IInventory storage) {
+    protected void doTrade(EntityPlayer player, IItemHandler storage) {
         if (refillFrequency != 0) {
             currentAvailable--;
         }//0 denotes instant restock, no reason to decrease qty if it will just be instantly restocked when GUI is opened next

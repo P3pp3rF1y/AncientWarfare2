@@ -4,8 +4,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
+import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
-import net.shadowmage.ancientwarfare.core.inventory.InventoryBackpack;
+import net.shadowmage.ancientwarfare.core.inventory.ItemHandlerBackpack;
 import net.shadowmage.ancientwarfare.core.item.ItemBackpack;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 
@@ -17,7 +18,7 @@ public class ContainerBackpack extends ContainerBase {
     public final EnumHand hand;
     public final int guiHeight;
 
-    private final InventoryBackpack inventory;
+    private final ItemHandlerBackpack handler;
 
     public ContainerBackpack(EntityPlayer player, int x, int y, int z) {
         super(player);
@@ -26,12 +27,12 @@ public class ContainerBackpack extends ContainerBase {
         @Nonnull ItemStack stack = player.getHeldItem(hand);
         backpackSlotIndex = hand == EnumHand.MAIN_HAND ? player.inventory.currentItem : -1;
 
-        inventory = ItemBackpack.getInventoryFor(stack);
+        handler = ItemBackpack.getInventoryFor(stack);
         int xPos, yPos;
-        for (int i = 0; i < inventory.getSizeInventory(); i++) {
+        for(int i = 0; i < handler.getSlots(); i++) {
             xPos = (i % 9) * 18 + 8;
             yPos = (i / 9) * 18 + 8;
-            addSlotToContainer(new Slot(inventory, i, xPos, yPos) {
+            addSlotToContainer(new SlotItemHandler(handler, i, xPos, yPos) {
                 @Override
                 public boolean isItemValid(ItemStack itemStack) {
                     return this.inventory.isItemValidForSlot(this.getSlotIndex(), itemStack);
@@ -46,7 +47,7 @@ public class ContainerBackpack extends ContainerBase {
     public void onContainerClosed(EntityPlayer par1EntityPlayer) {
         super.onContainerClosed(par1EntityPlayer);
         if (!par1EntityPlayer.world.isRemote) {
-            ItemBackpack.writeBackpackToItem(inventory, par1EntityPlayer.getHeldItem(hand));
+            ItemBackpack.writeBackpackToItem(handler, par1EntityPlayer.getHeldItem(hand));
         }
     }
 
@@ -83,7 +84,7 @@ public class ContainerBackpack extends ContainerBase {
     public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
         @Nonnull ItemStack slotStackCopy = ItemStack.EMPTY;
         Slot theSlot = this.getSlot(slotClickedIndex);
-        int size = inventory.getSizeInventory();
+        int size = handler.getSlots();
         if (theSlot != null && theSlot.getHasStack()) {
             @Nonnull ItemStack slotStack = theSlot.getStack();
             slotStackCopy = slotStack.copy();

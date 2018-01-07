@@ -164,7 +164,7 @@ public class GuiResearchStation extends GuiContainerBase<ContainerResearchStatio
                             layoutSlots[i].setItem(ItemStack.EMPTY);
                         } else {
                             @Nonnull ItemStack resource = resources.get(i);
-                            if (!InventoryTools.doItemStacksMatch(resource, layoutSlots[i].getStack())) {
+                            if(!InventoryTools.doItemStacksMatchRelaxed(resource, layoutSlots[i].getStack())) {
                                 layoutSlots[i].setItem(resource.copy());
                             }
                         }

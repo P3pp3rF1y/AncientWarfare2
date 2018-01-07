@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.npc.orders;
 
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -9,6 +8,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.items.IItemHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.OrderingList;
 import net.shadowmage.ancientwarfare.npc.item.ItemRoutingOrder;
@@ -156,19 +156,12 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
             ignoreTag = !ignoreTag;
         }
 
-        private int depositAllItems(IInventory from, IInventory to, boolean reversed) {
-            EnumFacing fromSide = null;
-            EnumFacing toSide = getBlockSide();
-            if (reversed) {
-                fromSide = getBlockSide();
-                toSide = null;
-            }
+        private int depositAllItems(IItemHandler from, IItemHandler to, boolean reversed) {
             int moved = 0;
             @Nonnull ItemStack stack;
             int stackSize = 0;
-            int fromIndices[] = InventoryTools.getSlotsForSide(from, fromSide);
             boolean shouldMove;
-            for (int index : fromIndices) {
+            for(int index = 0; index < from.getSlots(); index++) {
                 stack = from.getStackInSlot(index);
                 if (stack.isEmpty()) {
                     continue;
@@ -185,32 +178,21 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
                     }
                 }
                 if (shouldMove) {
-                    stack = InventoryTools.mergeItemStack(to, stack, toSide);
-                    if (stack.isEmpty()) {
-                        from.setInventorySlotContents(index, ItemStack.EMPTY);
-                    }
+                    stack = InventoryTools.mergeItemStack(to, stack);
                 }
                 if (stack.isEmpty() || stack.getCount() != stackSize) {
                     moved++;
-                    from.markDirty();
                 }
             }
             return moved;
         }
 
-        private int depositAllItemsExcept(IInventory from, IInventory to, boolean reversed) {
-            EnumFacing fromSide = null;
-            EnumFacing toSide = getBlockSide();
-            if (reversed) {
-                fromSide = getBlockSide();
-                toSide = null;
-            }
+        private int depositAllItemsExcept(IItemHandler from, IItemHandler to, boolean reversed) {
             int moved = 0;
             @Nonnull ItemStack stack;
             int stackSize = 0;
-            int fromIndices[] = InventoryTools.getSlotsForSide(from, fromSide);
             boolean shouldMove;
-            for (int index : fromIndices) {
+            for(int index = 0; index < from.getSlots(); index++) {
                 stack = from.getStackInSlot(index);
                 if (stack.isEmpty()) {
                     continue;
@@ -227,26 +209,16 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
                     }
                 }
                 if (shouldMove) {
-                    stack = InventoryTools.mergeItemStack(to, stack, toSide);
-                    if (stack.isEmpty()) {
-                        from.setInventorySlotContents(index, ItemStack.EMPTY);
-                    }
+                    stack = InventoryTools.mergeItemStack(to, stack);
                 }
                 if (stack.isEmpty() || stack.getCount() != stackSize) {
                     moved++;
-                    from.markDirty();
                 }
             }
             return moved;
         }
 
-        private int fillTo(IInventory from, IInventory to, boolean reversed) {
-            EnumFacing fromSide = null;
-            EnumFacing toSide = getBlockSide();
-            if (reversed) {
-                fromSide = getBlockSide();
-                toSide = null;
-            }
+        private int fillTo(IItemHandler from, IItemHandler to, boolean reversed) {
             int moved = 0;
             int toMove = 0;
             int foundCount = 0;
@@ -255,47 +227,35 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
                 if (filter == null) {
                     continue;
                 }
-                foundCount = InventoryTools.getCountOf(to, toSide, filter);
+                foundCount = InventoryTools.getCountOf(to, filter);
                 toMove = filter.getCount();
                 if (foundCount > toMove) {
                     continue;
                 }
                 toMove -= foundCount;
-                m1 = InventoryTools.transferItems(from, to, filter, toMove, fromSide, toSide, ignoreDamage, ignoreTag);
+                m1 = InventoryTools.transferItems(from, to, filter, toMove, ignoreDamage, ignoreTag);
                 moved += m1 / filter.getMaxStackSize();
             }
             return moved;
         }
-        
-        private int depositRatio(IInventory from, IInventory to, boolean reversed) {
-            EnumFacing fromSide = null;
-            EnumFacing toSide = getBlockSide();
-            if (reversed) {
-                fromSide = getBlockSide();
-                toSide = null;
-            }
+
+        private int depositRatio(IItemHandler from, IItemHandler to, boolean reversed) {
             int movedTotal = 0;
             int toMove = 0;
             for (ItemStack filter : filters) {
                 if (filter == null) {
                     continue;
                 }
-                int foundCount = InventoryTools.getCountOf(from, fromSide, filter);
+                int foundCount = InventoryTools.getCountOf(from, filter);
                 toMove = (int) (foundCount * (1f/(float)filter.getCount()));
-                InventoryTools.transferItems(from, to, filter, toMove, fromSide, toSide, ignoreDamage, ignoreTag);
+                InventoryTools.transferItems(from, to, filter, toMove, ignoreDamage, ignoreTag);
                 movedTotal++;
             }
             
             return movedTotal;
         }
-        
-        private int depositExact(IInventory from, IInventory to, boolean reversed) {
-            EnumFacing fromSide = null;
-            EnumFacing toSide = getBlockSide();
-            if (reversed) {
-                fromSide = getBlockSide();
-                toSide = null;
-            }
+
+        private int depositExact(IItemHandler from, IItemHandler to, boolean reversed) {
             int movedTotal = 0;
             int toMove = 0;
             int foundCount = 0;
@@ -304,26 +264,20 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
                 if (filter == null) {
                     continue;
                 }
-                foundCount = InventoryTools.getCountOf(from, fromSide, filter);
+                foundCount = InventoryTools.getCountOf(from, filter);
                 toMove = filter.getCount();
                 if (foundCount < toMove) {
                     continue;
                 }
-                if (!InventoryTools.canInventoryHold(to, toSide, filter))
+                if(!InventoryTools.canInventoryHold(to, filter))
                     continue;
-                moved = InventoryTools.transferItems(from, to, filter, toMove, fromSide, toSide, ignoreDamage, ignoreTag);
+                moved = InventoryTools.transferItems(from, to, filter, toMove, ignoreDamage, ignoreTag);
                 movedTotal += moved / filter.getMaxStackSize();
             }
             return movedTotal;
         }
-        
-        private int fillAtLeast(IInventory from, IInventory to, boolean reversed) {
-            EnumFacing fromSide = null;
-            EnumFacing toSide = getBlockSide();
-            if (reversed) {
-                fromSide = getBlockSide();
-                toSide = null;
-            }
+
+        private int fillAtLeast(IItemHandler from, IItemHandler to, boolean reversed) {
             int movedTotal = 0;
             int toMove = 0;
             int foundCount = 0;
@@ -333,8 +287,8 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
                 if (filter == null) {
                     continue;
                 }
-                foundCount = InventoryTools.getCountOf(from, fromSide, filter);
-                existingCount = InventoryTools.getCountOf(to, toSide, filter);
+                foundCount = InventoryTools.getCountOf(from, filter);
+                existingCount = InventoryTools.getCountOf(to, filter);
                 toMove = filter.getCount() - existingCount; // we only want to move items up to the specified filter size
                 if (toMove < 1) {
                     // the target already has more than the filter specifies
@@ -347,9 +301,9 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
                 }
                 @Nonnull ItemStack filterAdjusted = filter.copy();
                 filterAdjusted.setCount(toMove);
-                if (!InventoryTools.canInventoryHold(to, toSide, filterAdjusted))
+                if(!InventoryTools.canInventoryHold(to, filterAdjusted))
                     continue;
-                moved = InventoryTools.transferItems(from, to, filterAdjusted, foundCount, fromSide, toSide, ignoreDamage, ignoreTag);
+                moved = InventoryTools.transferItems(from, to, filterAdjusted, foundCount, ignoreDamage, ignoreTag);
                 movedTotal += moved / filter.getMaxStackSize();
             }
             return movedTotal;
@@ -501,7 +455,7 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
      * do the routing action for the courier at the given route-point.  position/distance is not checked, should check in AI before calling<br>
      * returns the number of stacks processed for determining the length the courier should 'work' at the point
      */
-    public int handleRouteAction(RoutePoint p, IInventory npc, IInventory target) {
+    public int handleRouteAction(RoutePoint p, IItemHandler npc, IItemHandler target) {
         switch (p.routeType) {
             case FILL_COURIER_TO:
                 return p.fillTo(target, npc, true);

@@ -33,7 +33,6 @@ import java.util.stream.Collectors;
 
 public class InventoryTools {
 
-
 	public static boolean canInventoryHold(IItemHandler handler, ItemStack stack) {
 		int toMerge = stack.getCount();
 		@Nonnull ItemStack existing;
@@ -41,7 +40,7 @@ public class InventoryTools {
 			existing = handler.getStackInSlot(index);
 			if(existing.isEmpty()) {
 				return true;
-			} else if(ItemStack.areItemStacksEqual(stack, existing)) {
+			} else if(doItemStacksMatch(stack, existing)) {
 				toMerge -= existing.getMaxStackSize() - existing.getCount();
 			}
 			if(toMerge <= 0) {
@@ -51,26 +50,28 @@ public class InventoryTools {
 		return toMerge <= 0;
 	}
 
-	public static boolean canInventoryHold(IInventory inventory, EnumFacing side, ItemStack stack) {
-		return canInventoryHold(inventory, getSlotsForSide(inventory, side), stack);
-	}
+	public static boolean canInventoryHold(IItemHandler handler, List<ItemStack> stacks) {
+		int emptySlots = 0;
+		ItemQuantityMap itemQuantities = new ItemQuantityMap();
 
-	private static boolean canInventoryHold(IInventory inventory, int[] slots, ItemStack stack) {
-		int toMerge = stack.getCount();
-		@Nonnull ItemStack existing;
-		for(int index : slots) {
-			existing = inventory.getStackInSlot(index);
-			if(existing.isEmpty()) {
-				return true;
-			} else if(ItemStack.areItemStacksEqual(stack, existing)) {
-				toMerge -= existing.getMaxStackSize() - existing.getCount();
-			}
-			if(toMerge <= 0) {
-				break;
+		for(ItemStack stack : stacks) {
+			if(!stack.isEmpty()) {
+				itemQuantities.addCount(stack, stack.getCount());
 			}
 		}
-		return toMerge <= 0;
+
+		for(int slot = 0; slot < handler.getSlots(); slot++) {
+			@Nonnull ItemStack stack = handler.getStackInSlot(slot);
+			if(stack.isEmpty()) {
+				emptySlots++;
+			} else if(itemQuantities.contains(stack)) {
+				itemQuantities.decreaseCount(stack, stack.getMaxStackSize() - stack.getCount());
+			}
+		}
+
+		return emptySlots >= itemQuantities.keySet().size();
 	}
+
 
 	/*
 	 * Checks if the input inventory can hold all of the items.<br>
@@ -144,7 +145,7 @@ public class InventoryTools {
 
 				ItemStack slotStack = handler.getStackInSlot(i);
 
-				if(ItemStack.areItemStacksEqual(slotStack, stack)) {
+				if(doItemStacksMatch(slotStack, stack)) {
 					int j = slotStack.getCount() + stack.getCount();
 					int maxSize = Math.min(handler.getSlotLimit(i), stack.getMaxStackSize());
 
@@ -161,7 +162,7 @@ public class InventoryTools {
 		}
 
 		if(!stack.isEmpty()) {
-			for (int i = 0; i < handler.getSlots(); i++) {
+			for(int i = 0; i < handler.getSlots(); i++) {
 				ItemStack itemstack1 = handler.getStackInSlot(i);
 
 				if(itemstack1.isEmpty() && handler.insertItem(i, stack, true).isEmpty()) {
@@ -189,7 +190,7 @@ public class InventoryTools {
 		for(int index : slotIndices) {
 			toMove = stack.getCount();
 			slotStack = inventory.getStackInSlot(index);
-			if(doItemStacksMatch(stack, slotStack)) {
+			if(doItemStacksMatchRelaxed(stack, slotStack)) {
 				if(toMove > slotStack.getMaxStackSize() - slotStack.getCount()) {
 					toMove = slotStack.getMaxStackSize() - slotStack.getCount();
 				}
@@ -236,7 +237,7 @@ public class InventoryTools {
 		@Nonnull ItemStack slotStack;
 		for(int index = 0; index < handler.getSlots(); index++) {
 			slotStack = handler.getStackInSlot(index);
-			if(slotStack.isEmpty() || !doItemStacksMatch(filter, slotStack)) {
+			if(slotStack.isEmpty() || !doItemStacksMatchRelaxed(filter, slotStack)) {
 				continue;
 			}
 
@@ -269,7 +270,7 @@ public class InventoryTools {
 		@Nonnull ItemStack slotStack;
 		for(int index : slotIndices) {
 			slotStack = inventory.getStackInSlot(index);
-			if(slotStack.isEmpty() || !doItemStacksMatch(filter, slotStack)) {
+			if(slotStack.isEmpty() || !doItemStacksMatchRelaxed(filter, slotStack)) {
 				continue;
 			}
 
@@ -338,8 +339,8 @@ public class InventoryTools {
 	 * @param fromSide the side of 'from' inventory to withdraw out of
 	 * @param toSide   the side of 'to' inventory to deposit into
 	 */
-	public static int transferItems(IInventory from, IInventory to, ItemStack filter, int quantity, EnumFacing fromSide, EnumFacing toSide) {
-		return transferItems(from, to, filter, quantity, fromSide, toSide, false, false);
+	public static int transferItems(IItemHandler from, IItemHandler to, ItemStack filter, int quantity) {
+		return transferItems(from, to, filter, quantity, false, false);
 	}
 
 	/*
@@ -354,13 +355,12 @@ public class InventoryTools {
 	 * @param ignoreDamage ignore item-damage when looking for items to move
 	 * @param ignoreNBT    ignore item-tag when looking for items to move
 	 */
-	public static int transferItems(IInventory from, IInventory to, ItemStack filter, int quantity, EnumFacing fromSide, EnumFacing toSide, boolean ignoreDamage, boolean ignoreNBT) {
+	public static int transferItems(IItemHandler from, IItemHandler to, ItemStack filter, int quantity, boolean ignoreDamage, boolean ignoreNBT) {
 		int moved = 0;
-		int[] fromIndices = getSlotsForSide(from, fromSide);
 		@Nonnull ItemStack s1, s2;
 		int toMove = quantity;
 		int stackSize;
-		for(int fromIndex : fromIndices) {
+		for(int fromIndex = 0; fromIndex < from.getSlots(); fromIndex++) {
 			s1 = from.getStackInSlot(fromIndex);
 			if(s1.isEmpty() || !doItemStacksMatch(filter, s1, ignoreDamage, ignoreNBT)) {
 				continue;
@@ -372,30 +372,25 @@ public class InventoryTools {
 				s2.setCount(toMove);
 				s1.shrink(toMove);
 				stackSize = s2.getCount();
-				s2 = mergeItemStack(to, s2, toSide);
+				s2 = mergeItemStack(to, s2);
 				if(!s2.isEmpty())//partial merge, destination full, break out
 				{
 					moved += stackSize - s2.getCount();
-					mergeItemStack(from, s2, fromSide);//put back the remainder of the partial stack that was copied out
-					from.markDirty();
+					mergeItemStack(from, s2);//put back the remainder of the partial stack that was copied out
 					break;
 				} else {
 					moved += stackSize;
 					toMove -= stackSize;
-					from.markDirty();
 				}
 			} else {
-				s1 = mergeItemStack(to, s1, toSide);
+				s1 = mergeItemStack(to, s1);
 				if(!s1.isEmpty())//destination inventory was full, break out
 				{
 					moved += stackSize - s1.getCount();
-					from.markDirty();
 					break;
 				} else {
 					moved += stackSize;
 					toMove -= stackSize;
-					from.setInventorySlotContents(fromIndex, ItemStack.EMPTY);
-					from.markDirty();
 				}
 			}
 			if(toMove <= 0) {
@@ -403,28 +398,6 @@ public class InventoryTools {
 			}
 		}
 		return moved;
-	}
-
-	/*
-	 * return a count of how many slots in an inventory contain a certain item stack (any size)
-	 */
-	public static int getNumOfSlotsContaining(IInventory inv, EnumFacing side, ItemStack filter) {
-		if(inv.getSizeInventory() <= 0) {
-			return 0;
-		}
-		int[] slotIndices = getSlotsForSide(inv, side);
-		if(slotIndices == null || slotIndices.length == 0) {
-			return 0;
-		}
-		int count = 0;
-		@Nonnull ItemStack stack;
-		for(int slotIndice : slotIndices) {
-			stack = inv.getStackInSlot(slotIndice);
-			if(!stack.isEmpty() && doItemStacksMatch(filter, stack)) {
-				count++;
-			}
-		}
-		return count;
 	}
 
 	public static int getCountOf(IItemHandler handler, ItemStack filter) {
@@ -435,7 +408,7 @@ public class InventoryTools {
 		@Nonnull ItemStack stack;
 		for(int slot = 0; slot < handler.getSlots(); slot++) {
 			stack = handler.getStackInSlot(slot);
-			if(!stack.isEmpty() && doItemStacksMatch(filter, stack)) {
+			if(!stack.isEmpty() && doItemStacksMatchRelaxed(filter, stack)) {
 				count += stack.getCount();
 			}
 		}
@@ -459,7 +432,7 @@ public class InventoryTools {
 		@Nonnull ItemStack stack;
 		for(int slotIndice : slotIndices) {
 			stack = inv.getStackInSlot(slotIndice);
-			if(!stack.isEmpty() && doItemStacksMatch(filter, stack)) {
+			if(!stack.isEmpty() && doItemStacksMatchRelaxed(filter, stack)) {
 				count += stack.getCount();
 			}
 		}
@@ -469,7 +442,7 @@ public class InventoryTools {
 	/*
 	 * validates that stacks are the same item / damage / tag, ignores quantity
 	 */
-	public static boolean doItemStacksMatch(ItemStack stack1, ItemStack stack2) {
+	public static boolean doItemStacksMatchRelaxed(ItemStack stack1, ItemStack stack2) {
 		if(stack1 == stack2) {
 			return true;
 		}
@@ -490,23 +463,22 @@ public class InventoryTools {
 		}
 	}
 
-	public static boolean doItemStacksMatch(ItemStack stack1, ItemStack stack2, boolean ignoreDamage, boolean ignoreNBT) {
-		if(!ignoreDamage && !ignoreNBT) {
-			return doItemStacksMatch(stack1, stack2);
-		}
-		if(stack1.isEmpty()) {
-			return stack2.isEmpty();
-		}
-		if(stack2.isEmpty()) {
+	public static boolean doItemStacksMatch(ItemStack stackA, ItemStack stackB) {
+		return doItemStacksMatch(stackA, stackB, false, false);
+	}
+
+	public static boolean doItemStacksMatch(ItemStack stackA, ItemStack stackB, boolean ignoreDamage, boolean ignoreNBT) {
+		if(stackA.isEmpty() && stackB.isEmpty()) {
+			return true;
+		} else if(stackA.getItem() != stackB.getItem()) {
 			return false;
-		}
-		if(stack1.getItem() != stack2.getItem()) {
+		} else if((stackA.getHasSubtypes() || !ignoreDamage) && stackA.getItemDamage() != stackB.getItemDamage()) {
 			return false;
-		}
-		if(!ignoreDamage && stack1.getItemDamage() != stack2.getItemDamage()) {
+		} else if(!ignoreNBT && stackA.getTagCompound() == null && stackB.getTagCompound() != null) {
 			return false;
+		} else {
+			return (ignoreNBT || stackA.getTagCompound() == null || stackA.getTagCompound().equals(stackB.getTagCompound())) && stackA.areCapsCompatible(stackB);
 		}
-		return ignoreNBT || areItemStackTagsEqual(stack1, stack2);
 	}
 
 	/*
@@ -633,7 +605,7 @@ public class InventoryTools {
 		for(ItemStack inStack : in) {
 			tmax = inStack.getCount();
 			for(ItemStack outStack : out) {
-				if(!InventoryTools.doItemStacksMatch(inStack, outStack) || outStack.getCount() >= outStack.getMaxStackSize()) {
+				if(!InventoryTools.doItemStacksMatchRelaxed(inStack, outStack) || outStack.getCount() >= outStack.getMaxStackSize()) {
 					continue;
 				}
 				transfer = outStack.getMaxStackSize() - outStack.getCount();

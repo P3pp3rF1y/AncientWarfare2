@@ -1,11 +1,12 @@
 package net.shadowmage.ancientwarfare.npc.ai.owned;
 
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
@@ -13,6 +14,7 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcCourier;
 import net.shadowmage.ancientwarfare.npc.orders.RoutingOrder;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 public class NpcAIPlayerOwnedCourier extends NpcAI<NpcCourier> {
 
@@ -96,7 +98,7 @@ public class NpcAIPlayerOwnedCourier extends NpcAI<NpcCourier> {
     }
 
     private void startWork() {
-        IInventory target = getTargetInventory();
+        IItemHandler target = getTargetHandler();
         if (target != null) {
             ticksAtSite = 0;
             int moved = order.handleRouteAction(order.get(routeIndex), npc.backpackInventory, target);
@@ -113,16 +115,18 @@ public class NpcAIPlayerOwnedCourier extends NpcAI<NpcCourier> {
         setMoveToNextSite();
     }
 
-    private IInventory getTargetInventory() {
-        TileEntity te = npc.world.getTileEntity(order.get(routeIndex).getTarget());
-        if (te instanceof IInventory) {
+    @Nullable
+    private IItemHandler getTargetHandler() {
+        RoutingOrder.RoutePoint point = order.get(routeIndex);
+        TileEntity te = npc.world.getTileEntity(point.getTarget());
+        if(te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, point.getBlockSide())) {
             if(te instanceof IOwnable){
                 IOwnable ownableTE = (IOwnable) te;
                 if(ownableTE.getOwnerName() != null && !npc.hasCommandPermissions(ownableTE.getOwnerUuid(), ownableTE.getOwnerName())){
                     return null;
                 }
             }
-            return (IInventory) te;
+            return te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, point.getBlockSide());
         }
         return null;
     }

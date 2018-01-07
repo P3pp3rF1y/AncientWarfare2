@@ -9,16 +9,25 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.inventory.InventoryBackpack;
+import net.shadowmage.ancientwarfare.core.inventory.ItemHandlerBackpack;
 import net.shadowmage.ancientwarfare.core.item.ItemBackpack;
-import net.shadowmage.ancientwarfare.npc.ai.*;
-import net.shadowmage.ancientwarfare.npc.ai.owned.*;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIDoor;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIFleeHostiles;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedAlarmResponse;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedCourier;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedFollowCommand;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedGetFood;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedIdleWhenHungry;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedRideHorse;
 import net.shadowmage.ancientwarfare.npc.item.ItemRoutingOrder;
 
 public class NpcCourier extends NpcPlayerOwned {
 
     NpcAIPlayerOwnedCourier courierAI;
-    public InventoryBackpack backpackInventory;
+    public ItemHandlerBackpack backpackInventory;
 
     public NpcCourier(World par1World) {
         super(par1World);

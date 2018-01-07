@@ -1,11 +1,11 @@
 package net.shadowmage.ancientwarfare.npc.container;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Slot;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
+import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
-import net.shadowmage.ancientwarfare.core.inventory.InventoryBackpack;
+import net.shadowmage.ancientwarfare.core.inventory.ItemHandlerBackpack;
 import net.shadowmage.ancientwarfare.core.item.ItemBackpack;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.npc.entity.NpcTrader;
@@ -15,7 +15,7 @@ public class ContainerNpcPlayerOwnedTrade extends ContainerNpcBase<NpcTrader> {
 
     private EnumHand hand;
     public TradeList tradeList;
-    public final InventoryBackpack storage;
+    public final ItemHandlerBackpack storage;
 
     public ContainerNpcPlayerOwnedTrade(EntityPlayer player, int x, int y, int z) {
         super(player, x);
@@ -24,14 +24,14 @@ public class ContainerNpcPlayerOwnedTrade extends ContainerNpcBase<NpcTrader> {
 
         addPlayerSlots();
         this.hand = EntityTools.getHandHoldingItem(entity, AWItems.backpack);
-        storage =  hand != null ? ItemBackpack.getInventoryFor(entity.getHeldItem(hand)) : null;
+        storage = hand != null ? ItemBackpack.getInventoryFor(entity.getHeldItem(hand)) : null;
         if (storage != null) {
-            for (int i = 0; i < storage.getSizeInventory(); i++) {
+            for(int i = 0; i < storage.getSlots(); i++) {
                 /*
                  * add backpack items to slots in container so that they are synchronized to client side inventory/container
                  * --will be used to validate trades on client-side
                  */
-                addSlotToContainer(new Slot(storage, i, 100000, 100000));
+                addSlotToContainer(new SlotItemHandler(storage, i, 100000, 100000));
             }
         }
     }

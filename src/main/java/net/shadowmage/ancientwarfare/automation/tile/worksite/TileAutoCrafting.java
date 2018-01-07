@@ -102,7 +102,7 @@ public class TileAutoCrafting extends TileWorksiteBase implements IInventoryChan
             }
             found = false;
             for (ItemStack stack3 : compactedCraft) {
-                if (InventoryTools.doItemStacksMatch(stack3, stack1)) {
+                if(InventoryTools.doItemStacksMatchRelaxed(stack3, stack1)) {
                     stack3.grow(1);
                     found = true;
                     break;

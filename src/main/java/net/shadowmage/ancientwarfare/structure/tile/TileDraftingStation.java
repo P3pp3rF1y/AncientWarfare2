@@ -74,8 +74,8 @@ public class TileDraftingStation extends TileEntity implements IInventoryChanged
             }
             for (int i = 0; i < neededResources.size(); i++) {
                 stack1 = neededResources.get(i);
-                if (InventoryTools.doItemStacksMatch(stack1, stack2)) {
-                    stack1.shrink(1);
+				if(InventoryTools.doItemStacksMatchRelaxed(stack1, stack2)) {
+					stack1.shrink(1);
                     stack2.shrink(1);
                     if (stack1.getCount() <= 0) {
                         neededResources.remove(i);

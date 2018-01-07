@@ -29,7 +29,7 @@ public final class WarehouseInterfaceFilter implements Predicate<ItemStack>, INB
         if (item.getItem() != filterItem.getItem()) {
             return false;
         }//item not equivalent, obvious mis-match
-        return InventoryTools.doItemStacksMatch(filterItem, item);//finally, items were equal, no ignores' -- check both dmg and tag
+        return InventoryTools.doItemStacksMatchRelaxed(filterItem, item);//finally, items were equal, no ignores' -- check both dmg and tag
     }
 
     @Override

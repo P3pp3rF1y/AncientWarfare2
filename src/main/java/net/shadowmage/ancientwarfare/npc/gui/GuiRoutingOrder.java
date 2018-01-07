@@ -8,7 +8,11 @@ import net.minecraft.util.text.TextFormatting;
 import net.shadowmage.ancientwarfare.core.block.Direction;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
-import net.shadowmage.ancientwarfare.core.gui.elements.*;
+import net.shadowmage.ancientwarfare.core.gui.elements.Button;
+import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
+import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
+import net.shadowmage.ancientwarfare.core.gui.elements.Label;
+import net.shadowmage.ancientwarfare.core.gui.elements.Line;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.npc.container.ContainerRoutingOrder;
@@ -187,7 +191,7 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
                 point.setFilter(index, ItemStack.EMPTY);
                 slot.setItem(ItemStack.EMPTY);
             } else {
-                if (InventoryTools.doItemStacksMatch(stack, slot.getStack())) {
+                if(InventoryTools.doItemStacksMatchRelaxed(stack, slot.getStack())) {
                     if (Mouse.getEventButton() == 0)//left
                     {
                         slot.getStack().grow(stack.getCount());

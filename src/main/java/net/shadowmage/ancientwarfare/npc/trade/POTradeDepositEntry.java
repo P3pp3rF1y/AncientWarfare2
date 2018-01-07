@@ -1,8 +1,7 @@
 package net.shadowmage.ancientwarfare.npc.trade;
 
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
+import net.minecraftforge.items.IItemHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public final class POTradeDepositEntry extends POTradeTransferEntry {
@@ -30,29 +29,29 @@ public final class POTradeDepositEntry extends POTradeTransferEntry {
     public enum POTradeDepositType implements TransferType {
         ALL_OF {
             @Override
-            public void doTransfer(IInventory storage, IInventory move, EnumFacing side, ItemStack filter) {
-                int count = InventoryTools.getCountOf(storage, null, filter);
+            public void doTransfer(IItemHandler storage, IItemHandler move, ItemStack filter) {
+                int count = InventoryTools.getCountOf(storage, filter);
                 if (count > 0) {
-                    InventoryTools.transferItems(storage, move, filter, count, null, side);
+                    InventoryTools.transferItems(storage, move, filter, count);
                 }
             }
         },
         QUANTITY {
             @Override
-            public void doTransfer(IInventory storage, IInventory move, EnumFacing side, ItemStack filter) {
-                int count = InventoryTools.getCountOf(storage, null, filter);
+            public void doTransfer(IItemHandler storage, IItemHandler move, ItemStack filter) {
+                int count = InventoryTools.getCountOf(storage, filter);
                 if (count > filter.getCount()) {
                     count = filter.getCount();
                 }
-                InventoryTools.transferItems(storage, move, filter, count, null, side);
+                InventoryTools.transferItems(storage, move, filter, count);
             }
         },
         DEPOSIT_EXCESS {
             @Override
-            public void doTransfer(IInventory storage, IInventory move, EnumFacing side, ItemStack filter) {
-                int count = InventoryTools.getCountOf(storage, null, filter);
+            public void doTransfer(IItemHandler storage, IItemHandler move, ItemStack filter) {
+                int count = InventoryTools.getCountOf(storage, filter);
                 if (count > filter.getCount()) {
-                    InventoryTools.transferItems(storage, move, filter, count - filter.getCount(), null, side);
+                    InventoryTools.transferItems(storage, move, filter, count - filter.getCount());
                 }
             }
         }

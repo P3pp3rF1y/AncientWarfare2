@@ -1,9 +1,8 @@
 package net.shadowmage.ancientwarfare.npc.trade;
 
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumFacing;
+import net.minecraftforge.items.IItemHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.ArrayList;
@@ -49,14 +48,14 @@ public class POTrade extends Trade {
     /*
      * Check through the input inventory and ensure it contains all materials necessary to complete this trade.<br>
      */
-    public boolean isAvailable(IInventory storage) {
-        for (ItemStack stack : compactOutput) {
-            if (InventoryTools.getCountOf(storage, null, stack) < stack.getCount()) {
-                return false;
+	public boolean isAvailable(IItemHandler storage) {
+		for (ItemStack stack : compactOutput) {
+			if(InventoryTools.getCountOf(storage, stack) < stack.getCount()) {
+				return false;
             }
         }
-        return InventoryTools.canInventoryHold(storage, (EnumFacing) null, compactInput);
-    }
+		return InventoryTools.canInventoryHold(storage, compactInput);
+	}
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
