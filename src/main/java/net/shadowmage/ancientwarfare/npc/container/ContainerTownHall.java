@@ -6,6 +6,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall.NpcDeathEntry;
@@ -20,10 +23,11 @@ public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
     public ContainerTownHall(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
         int xPos, yPos;
-        for (int i = 0; i < tileEntity.getSizeInventory(); i++) {
+        IItemHandler handler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+        for (int i = 0; i < handler.getSlots(); i++) {
             xPos = (i % 9) * 18 + 8;
             yPos = (i / 9) * 18 + 8 + 16;
-            addSlotToContainer(new Slot(tileEntity, i, xPos, yPos));
+            addSlotToContainer(new SlotItemHandler(handler, i, xPos, yPos));
         }
         addPlayerSlots(8 + 3 * 18 + 8 + 16);
         if (!player.world.isRemote) {
@@ -128,14 +132,15 @@ public class ContainerTownHall extends ContainerTileBase<TileTownHall> {
         if (theSlot.getHasStack()) {
             @Nonnull ItemStack slotStack = theSlot.getStack();
             slotStackCopy = slotStack.copy();
-            if (slotClickedIndex < tileEntity.getSizeInventory())//book slot
+            IItemHandler handler = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+            if (slotClickedIndex < handler.getSlots())//book slot
             {
-                if (!this.mergeItemStack(slotStack, tileEntity.getSizeInventory(), tileEntity.getSizeInventory() + playerSlots, false))//merge into player inventory
+                if (!this.mergeItemStack(slotStack, handler.getSlots(), handler.getSlots() + playerSlots, false))//merge into player inventory
                 {
                     return ItemStack.EMPTY;
                 }
             } else {
-                if (!this.mergeItemStack(slotStack, 0, tileEntity.getSizeInventory(), false))//merge into player inventory
+                if (!this.mergeItemStack(slotStack, 0, handler.getSlots(), false))//merge into player inventory
                 {
                     return ItemStack.EMPTY;
                 }
