@@ -8,7 +8,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
@@ -19,7 +18,7 @@ import javax.annotation.Nullable;
 
 public class TileStirlingGenerator extends TileTorqueSingleCell {
 
-    private final IItemHandler fuelHandler = new ItemStackHandler(1) {
+    private final ItemStackHandler fuelHandler = new ItemStackHandler(1) {
         @Nonnull
         @Override
         public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
@@ -74,6 +73,9 @@ public class TileStirlingGenerator extends TileTorqueSingleCell {
         super.readFromNBT(tag);
         burnTime = tag.getInteger("burnTicks");
         burnTimeBase = tag.getInteger("burnTicksBase");
+        if (tag.hasKey("inventory")) {
+            fuelHandler.deserializeNBT(tag.getCompoundTag("inventory"));
+        }
     }
 
     @Override
@@ -81,6 +83,7 @@ public class TileStirlingGenerator extends TileTorqueSingleCell {
         super.writeToNBT(tag);
         tag.setInteger("burnTicks", burnTime);
         tag.setInteger("burnTicksBase", burnTimeBase);
+        tag.setTag("inventory", fuelHandler.serializeNBT());
         return tag;
     }
 
