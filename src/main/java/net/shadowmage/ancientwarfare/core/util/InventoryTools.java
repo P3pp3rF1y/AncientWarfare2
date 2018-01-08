@@ -500,6 +500,22 @@ public class InventoryTools {
 		world.spawnEntity(entityToSpawn);
 	}
 
+	public static void dropInventoryInWorld(World world, IItemHandler inventory, BlockPos pos) {
+		if(world.isRemote) {
+			return;
+		}
+		if(inventory != null) {
+			@Nonnull ItemStack stack;
+			for(int i = 0; i < inventory.getSlots(); i++) {
+				stack = inventory.getStackInSlot(i);
+				if(stack.isEmpty()) {
+					continue;
+				}
+				dropItemInWorld(world, inventory.extractItem(i, stack.getCount(), false), pos.getX(), pos.getY(), pos.getZ());
+			}
+		}
+	}
+
 	public static void dropInventoryInWorld(World world, IInventory localInventory, BlockPos pos) {
 		dropInventoryInWorld(world, localInventory, pos.getX(), pos.getY(), pos.getZ());
 	}
