@@ -108,7 +108,6 @@ public class InventoryTools {
 		return remaining;
 	}
 
-
 	/*
 	 * Checks if the input inventory can hold all of the items.<br>
 	 * <br>
@@ -727,7 +726,13 @@ public class InventoryTools {
 		}
 	}
 
-	public static void dropItemsInWorld(World world, NonNullList<ItemStack> stacks, BlockPos pos) {
+	public static void dropItemsInWorld(World world, IItemHandler handler, BlockPos pos) {
+		for(int slot = 0; slot < handler.getSlots(); slot++) {
+			dropItemInWorld(world, handler.getStackInSlot(slot), pos);
+		}
+	}
+
+	public static void dropItemsInWorld(World world, List<ItemStack> stacks, BlockPos pos) {
 		for(ItemStack stack : stacks) {
 			dropItemInWorld(world, stack, pos);
 		}
