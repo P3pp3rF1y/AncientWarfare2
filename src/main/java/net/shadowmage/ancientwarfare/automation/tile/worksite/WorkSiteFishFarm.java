@@ -11,9 +11,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.storage.loot.LootContext;
 import net.minecraft.world.storage.loot.LootTableList;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
@@ -21,8 +18,6 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import javax.annotation.Nonnull;
 
 public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
-
-    private static final int TOP_LENGTH = 27;
     private static final int MAX_WATER = 1280;
     private boolean harvestFish = true;
     private boolean harvestInk = true;
@@ -31,8 +26,7 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
     private int waterRescanDelay = 0;
 
     public WorkSiteFishFarm() {
-        this.inventory = new InventorySided(this, RotationType.FOUR_WAY, TOP_LENGTH);
-        this.inventory.setAccessibleSideDefault(RelativeSide.TOP, RelativeSide.TOP, InventoryTools.getIndiceArrayForSpread(TOP_LENGTH));
+        super();
     }
 
     @Override
@@ -96,7 +90,7 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
                     LootContext.Builder context = new LootContext.Builder((WorldServer)world);
                     context.withLuck(getFortune());
                     for (@Nonnull ItemStack fishStack : this.world.getLootTableManager().getLootTableFromLocation(LootTableList.GAMEPLAY_FISHING).generateLootForPools(world.rand, context.build())) {
-                        addStackToInventory(fishStack, RelativeSide.TOP);
+                        InventoryTools.insertOrDropItem(mainInventory, fishStack, world, pos);
                     }
                 }
                 if (ink) {
@@ -105,7 +99,7 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
                     if (fortune > 0) {
                         inkItem.grow(world.rand.nextInt(fortune + 1));
                     }
-                    addStackToInventory(inkItem, RelativeSide.TOP);
+                    InventoryTools.insertOrDropItem(mainInventory, inkItem, world, pos);
                     return true;
                 }
             }

@@ -199,12 +199,14 @@ public class BlockRotationHandler {
             return key;
         }
 
-        public static RelativeSide getSideViewed(RotationType t, EnumFacing facing, EnumFacing side) {
-            if (t == RotationType.FOUR_WAY) {
-                return fourWayMap[side.ordinal()][facing.ordinal()];
-            } else if (t == RotationType.SIX_WAY) {
-                return sixWayMap[side.ordinal()][facing.ordinal()];
-            }
+		public static RelativeSide getSideViewed(RotationType t, EnumFacing facing, @Nullable EnumFacing side) {
+			if(side != null) {
+				if(t == RotationType.FOUR_WAY) {
+					return fourWayMap[side.ordinal()][facing.ordinal()];
+				} else if(t == RotationType.SIX_WAY) {
+					return sixWayMap[side.ordinal()][facing.ordinal()];
+				}
+			}
             return ANY_SIDE;
         }
 

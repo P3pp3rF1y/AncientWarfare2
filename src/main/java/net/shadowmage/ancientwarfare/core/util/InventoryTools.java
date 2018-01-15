@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
+import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
@@ -29,6 +30,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class InventoryTools {
@@ -70,6 +72,40 @@ public class InventoryTools {
 		}
 
 		return emptySlots >= itemQuantities.keySet().size();
+	}
+
+	public static NonNullList<ItemStack> insertItems(IItemHandler handler, List<ItemStack> stacks, boolean simulate) {
+		NonNullList<ItemStack> remainingItems = NonNullList.create();
+		if(simulate) {
+			handler = cloneItemHandler(handler);
+		}
+		for(ItemStack stack : stacks) {
+			ItemStack remainingItem = insertItem(handler, stack, false);
+			if(!remainingItem.isEmpty()) {
+				remainingItems.add(remainingItem);
+			}
+		}
+		return remainingItems;
+	}
+
+	private static IItemHandler cloneItemHandler(IItemHandler handler) {
+		ItemStackHandler copy = new ItemStackHandler(handler.getSlots());
+
+		for(int slot = 0; slot < handler.getSlots(); slot++) {
+			copy.setStackInSlot(slot, handler.getStackInSlot(slot).copy());
+		}
+		return copy;
+	}
+
+	public static ItemStack insertItem(IItemHandler handler, ItemStack stack, boolean simulate) {
+		ItemStack remaining = stack.copy();
+		for(int slot = 0; slot < handler.getSlots(); slot++) {
+			remaining = handler.insertItem(slot, remaining, simulate);
+			if(remaining.isEmpty()) {
+				break;
+			}
+		}
+		return remaining;
 	}
 
 
@@ -400,15 +436,28 @@ public class InventoryTools {
 		return moved;
 	}
 
-	public static int getCountOf(IItemHandler handler, ItemStack filter) {
+	public static int findItemSlot(IItemHandler handler, Predicate<ItemStack> filter) {
+		for(int slot = 0; slot < handler.getSlots(); slot++) {
+			@Nonnull ItemStack stack = handler.getStackInSlot(slot);
+			if(filter.test(stack)) {
+				return slot;
+			}
+		}
+		return -1;
+	}
+
+	public static int getCountOf(IItemHandler handler, ItemStack filterStack) {
+		return getCountOf(handler, stack -> !stack.isEmpty() && doItemStacksMatchRelaxed(filterStack, stack));
+	}
+
+	public static int getCountOf(IItemHandler handler, Predicate<ItemStack> filter) {
 		if(handler.getSlots() <= 0) {
 			return 0;
 		}
 		int count = 0;
-		@Nonnull ItemStack stack;
 		for(int slot = 0; slot < handler.getSlots(); slot++) {
-			stack = handler.getStackInSlot(slot);
-			if(!stack.isEmpty() && doItemStacksMatchRelaxed(filter, stack)) {
+			@Nonnull ItemStack stack = handler.getStackInSlot(slot);
+			if(filter.test(stack)) {
 				count += stack.getCount();
 			}
 		}
@@ -690,6 +739,7 @@ public class InventoryTools {
 	 *
 	 * @author Shadowmage
 	 */
+
 	public static final class ComparatorItemStack implements Comparator<ItemStack> {
 
 		public enum SortType {
@@ -882,5 +932,18 @@ public class InventoryTools {
 		}
 
 		Collections.shuffle(stacks, rand);
+	}
+
+	public static void insertOrDropItem(IItemHandler handler, ItemStack stack, World world, BlockPos pos) {
+		ItemStack remaining = insertItem(handler, stack, false);
+		if(!remaining.isEmpty()) {
+			dropItemInWorld(world, stack, pos);
+		}
+	}
+
+	public static void insertOrDropItems(IItemHandler handler, List<ItemStack> stacks, World world, BlockPos pos) {
+		for(ItemStack stack : stacks) {
+			insertOrDropItem(handler, stack, world, pos);
+		}
 	}
 }

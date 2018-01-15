@@ -8,6 +8,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
@@ -22,8 +23,6 @@ import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.tile.TreeFinder;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
-import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
@@ -34,49 +33,30 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
-
+public class WorkSiteTreeFarm extends TileWorksiteFarm {
     private static final TreeFinder TREE = new TreeFinder(17), LEAF = new TreeFinder(4);
     private boolean hasShears;
-    private int saplingCount;
-    private int bonemealCount;
     private final Set<BlockPos> blocksToShear;
     private final Set<BlockPos> blocksToChop;
     private final Set<BlockPos> blocksToPlant;
     private final Set<BlockPos> blocksToFertilize;
 
     public WorkSiteTreeFarm() {
-
+        super();
         blocksToChop = new HashSet<>();
         blocksToPlant = new HashSet<>();
         blocksToFertilize = new HashSet<>();
         blocksToShear = new HashSet<>();
-
-        InventoryTools.IndexHelper helper = new InventoryTools.IndexHelper();
-        int[] topIndices = helper.getIndiceArrayForSpread(TOP_LENGTH);
-        int[] frontIndices = helper.getIndiceArrayForSpread(FRONT_LENGTH);
-        int[] bottomIndices = helper.getIndiceArrayForSpread(BOTTOM_LENGTH);
-        this.inventory.setAccessibleSideDefault(RelativeSide.TOP, RelativeSide.TOP, topIndices);
-        this.inventory.setAccessibleSideDefault(RelativeSide.FRONT, RelativeSide.FRONT, frontIndices);//saplings
-        this.inventory.setAccessibleSideDefault(RelativeSide.BOTTOM, RelativeSide.BOTTOM, bottomIndices);//bonemeal and shears
-        ItemSlotFilter filter = new ItemSlotFilter() {
-            @Override
-            public boolean test(@Nullable ItemStack stack) {
-                return stack == null || isSapling(stack);
-            }
-        };
-        this.inventory.setFilterForSlots(filter, frontIndices);
-        filter = new ItemSlotFilter() {
-            @Override
-            public boolean test(@Nullable ItemStack stack) {
-                return stack == null || isBonemeal(stack) || stack.getItem() instanceof ItemShears;
-            }
-        };
-        this.inventory.setFilterForSlots(filter, bottomIndices);
     }
 
-    private boolean isSapling(ItemStack stack) {
+    @Override
+    protected boolean isPlantable(ItemStack stack) {
         return isFarmable(Block.getBlockFromItem(stack.getItem()));
+    }
+
+    @Override
+    protected boolean isMiscItem(ItemStack stack) {
+        return stack.getItem() == Items.SHEARS || super.isMiscItem(stack);
     }
 
     @Override
@@ -105,24 +85,8 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
 
     @Override
     protected void countResources() {
-        hasShears = false;
-        saplingCount = 0;
-        bonemealCount = 0;
-        @Nonnull ItemStack stack;
-        for (int i = TOP_LENGTH; i < getSizeInventory(); i++) {
-            stack = getStackInSlot(i);
-            if (stack.isEmpty()) {
-                continue;
-            }
-            if (i < TOP_LENGTH + FRONT_LENGTH){
-                if(isSapling(stack))
-                    saplingCount += stack.getCount();
-            } else if (isBonemeal(stack)) {
-                bonemealCount += stack.getCount();
-            } else if(stack.getItem() instanceof ItemShears){
-                hasShears = true;
-            }
-        }
+        super.countResources();
+        hasShears = InventoryTools.getCountOf(miscInventory, s -> s.getItem() == Items.SHEARS) > 0;
     }
 
     @Override
@@ -135,18 +99,15 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
                 Block block = world.getBlockState(position).getBlock();
                 if (block instanceof IShearable) {
                     @Nonnull ItemStack stack;
-                    for (int i = TOP_LENGTH + FRONT_LENGTH; i < getSizeInventory(); i++) {
-                        stack = getStackInSlot(i);
+                    for(int slot = 0; slot < miscInventory.getSlots(); slot++) {
+                        stack = miscInventory.getStackInSlot(slot);
                         if(!stack.isEmpty() && stack.getItem() instanceof ItemShears){
                             if(((IShearable) block).isShearable(stack, world, position)){
-                                List<ItemStack> drops = ((IShearable) block).onSheared(stack, world, position, getFortune());
-                                int[] combinedIndices = inventory.getRawIndicesCombined(RelativeSide.TOP, RelativeSide.FRONT);
-                                for(ItemStack drop : drops){
-                                    if(drop!=null) {
-                                        drop = InventoryTools.mergeItemStack(inventory, drop, combinedIndices);
-                                        InventoryTools.dropItemInWorld(world, drop, position);
-                                    }
-                                }
+                                ItemStack clone = stack.copy();
+                                List<ItemStack> drops = ((IShearable) block).onSheared(clone, world, position, getFortune());
+                                miscInventory.setStackInSlot(slot, clone);
+                                drops = InventoryTools.insertItems(plantableInventory, drops, false);
+                                InventoryTools.insertOrDropItems(mainInventory, drops, world, pos);
                                 world.setBlockToAir(position);
 /* TODO enviromine integration
                                 ModAccessors.ENVIROMINE.schedulePhysUpdate(world, position, true, "Normal");
@@ -161,16 +122,17 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
             Iterator<BlockPos> it = blocksToChop.iterator();
             while (it.hasNext() && (position = it.next()) != null) {
                 it.remove();
-                if(harvestBlock(position, RelativeSide.TOP)){
+                if(harvestBlock(position)) {
                     addLeavesAround(position);
                     return true;
                 }
             }
-        } else if (saplingCount > 0 && !blocksToPlant.isEmpty()) {
+        } else if(plantableCount > 0 && !blocksToPlant.isEmpty()) {
             @Nonnull ItemStack stack = ItemStack.EMPTY;
-            for (int i = TOP_LENGTH; i < TOP_LENGTH + FRONT_LENGTH; i++) {
-                stack = getStackInSlot(i);
-                if (!stack.isEmpty() && isSapling(stack)) {
+            int slot = 0;
+            for(; slot < plantableInventory.getSlots(); slot++) {
+                stack = plantableInventory.getStackInSlot(slot);
+                if(!stack.isEmpty() && isPlantable(stack)) {
                     break;
                 } else {
                     stack = ItemStack.EMPTY;
@@ -187,8 +149,8 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
                         ModAccessors.ENVIROMINE.schedulePhysUpdate(world, position, true, "Normal");
 */
                     }
-                    if (canReplace(position) && tryPlace(stack, position, EnumFacing.UP)) {
-                        saplingCount--;
+                    if(canReplace(position) && tryPlace(stack.copy(), position, EnumFacing.UP)) {
+                        plantableInventory.extractItem(slot, 1, false);
                         return true;
                     }
                 }
@@ -200,14 +162,11 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
                 Block block = world.getBlockState(position).getBlock();
                 if (isFarmable(block, position)) {
                     @Nonnull ItemStack stack;
-                    for (int i = TOP_LENGTH + FRONT_LENGTH; i < getSizeInventory(); i++) {
-                        stack = getStackInSlot(i);
+                    for(int slot = 0; slot < miscInventory.getSlots(); slot++) {
+                        stack = miscInventory.getStackInSlot(slot);
                         if (!stack.isEmpty() && isBonemeal(stack)) {
-                            if(ItemDye.applyBonemeal(stack, world, position, getOwnerAsPlayer(), EnumHand.MAIN_HAND)){
-                                bonemealCount--;
-                                if (stack.getCount() <= 0) {
-                                    setInventorySlotContents(i, ItemStack.EMPTY);
-                                }
+                            if(ItemDye.applyBonemeal(stack.copy(), world, position, getOwnerAsPlayer(), EnumHand.MAIN_HAND)) {
+                                miscInventory.extractItem(slot, 1, false);
                             }
                             IBlockState state = world.getBlockState(position);
                             block = state.getBlock();
@@ -227,11 +186,6 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
             }
         }
         return false;
-    }
-
-    @Override
-    protected int[] getIndicesForPickup(){
-        return inventory.getRawIndicesCombined(RelativeSide.BOTTOM, RelativeSide.FRONT, RelativeSide.TOP);
     }
 
     private void addTreeBlocks(Block block, BlockPos base) {
@@ -336,6 +290,6 @@ public class WorkSiteTreeFarm extends TileWorksiteUserBlocks {
 
     @Override
     protected boolean hasWorksiteWork() {
-        return (hasShears && !blocksToShear.isEmpty()) || !blocksToChop.isEmpty() || (bonemealCount > 0 && !blocksToFertilize.isEmpty()) || (saplingCount > 0 && !blocksToPlant.isEmpty());
+        return (hasShears && !blocksToShear.isEmpty()) || !blocksToChop.isEmpty() || (bonemealCount > 0 && !blocksToFertilize.isEmpty()) || (plantableCount > 0 && !blocksToPlant.isEmpty());
     }
 }
