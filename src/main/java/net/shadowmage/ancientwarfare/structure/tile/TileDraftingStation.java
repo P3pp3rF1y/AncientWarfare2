@@ -10,7 +10,7 @@ import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
+import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
@@ -29,8 +29,19 @@ public class TileDraftingStation extends TileEntity implements IInventoryChanged
     private int remainingTime;//not really time, but raw item count
     private int totalTime;//total raw-item count
 
-    public InventoryBasic inputSlots = new InventoryBasic(27, this);
-    public InventoryBasic outputSlot = new InventoryBasic(1, this);
+    public ItemStackHandler inputSlots = new ItemStackHandler(27) {
+        @Override
+        protected void onContentsChanged(int slot) {
+            markDirty();
+        }
+    };
+
+    public ItemStackHandler outputSlot = new ItemStackHandler(1) {
+        @Override
+        protected void onContentsChanged(int slot) {
+            markDirty();
+        }
+    };
 
     public TileDraftingStation() {
 
@@ -67,7 +78,7 @@ public class TileDraftingStation extends TileEntity implements IInventoryChanged
     private boolean tryRemoveResource() {
         @Nonnull ItemStack stack1, stack2;
         outerLoopLabel:
-        for (int k = 0; k < inputSlots.getSizeInventory(); k++) {
+        for(int k = 0; k < inputSlots.getSlots(); k++) {
             stack2 = inputSlots.getStackInSlot(k);
             if (stack2.isEmpty()) {
                 continue;
@@ -81,7 +92,7 @@ public class TileDraftingStation extends TileEntity implements IInventoryChanged
                         neededResources.remove(i);
                     }
                     if (stack2.getCount() <= 0) {
-                        inputSlots.setInventorySlotContents(k, ItemStack.EMPTY);
+                        inputSlots.setStackInSlot(k, ItemStack.EMPTY);
                     }
                     break outerLoopLabel;
                 }
@@ -100,7 +111,7 @@ public class TileDraftingStation extends TileEntity implements IInventoryChanged
         if (outputSlot.getStackInSlot(0).isEmpty()) {
             @Nonnull ItemStack item = new ItemStack(AWStructuresBlocks.builderBlock);
             item.setTagInfo("structureName", new NBTTagString(structureName));
-            outputSlot.setInventorySlotContents(0, item);
+            outputSlot.setStackInSlot(0, item);
             return true;
         }
         return false;

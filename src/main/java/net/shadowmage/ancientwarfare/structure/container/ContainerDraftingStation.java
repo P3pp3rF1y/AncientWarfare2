@@ -7,8 +7,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
-import net.shadowmage.ancientwarfare.core.inventory.SlotFiltered;
+import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
 
 import javax.annotation.Nonnull;
@@ -48,11 +47,16 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
                 slotNum = y1 * 9 + x1;
                 xp = 8 + x1 * 18;
                 yp = y2 + y1 * 18;
-                addSlotToContainer(new Slot(tile.inputSlots, slotNum, xp, yp));
+                addSlotToContainer(new SlotItemHandler(tile.inputSlots, slotNum, xp, yp));
             }
         }
 
-        addSlotToContainer(new SlotFiltered(tile.outputSlot, 0, 8 + 4 * 18, 94 - 16 - 18, ItemSlotFilter.FALSE));
+        addSlotToContainer(new SlotItemHandler(tile.outputSlot, 0, 8 + 4 * 18, 94 - 16 - 18) {
+            @Override
+            public boolean isItemValid(@Nonnull ItemStack stack) {
+                return false;
+            }
+        });
 
         this.addPlayerSlots(156);
     }
@@ -70,7 +74,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
             @Nonnull ItemStack slotStack = theSlot.getStack();
             slotStackCopy = slotStack.copy();
 
-            int playerSlotStart = tile.inputSlots.getSizeInventory();
+            int playerSlotStart = tile.inputSlots.getSlots();
             int playerSlotEnd = playerSlotStart + playerSlots;
             if (slotClickedIndex < playerSlotStart)//storage slots
             {
