@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.automation.tile.worksite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.IInventoryChangedListener;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
@@ -26,9 +25,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 
-public class TileAutoCrafting extends TileWorksiteBase implements IInventoryChangedListener {
-    public ItemStackHandler bookSlot = new ItemStackHandler(1) {
-
+public class TileAutoCrafting extends TileWorksiteBase {
+	public ItemStackHandler bookSlot = new ItemStackHandler(1) {
         @Nonnull
         @Override
         public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
@@ -73,18 +71,6 @@ public class TileAutoCrafting extends TileWorksiteBase implements IInventoryChan
     private IRecipe recipe;
 
     public TileAutoCrafting() {
-        Container dummy = new Container() {
-            @Override
-            public boolean canInteractWith(EntityPlayer var1) {
-                return true;
-            }
-
-            @Override
-            public void onCraftMatrixChanged(IInventory par1iInventory) {
-                onLayoutMatrixChanged();
-                onInventoryChanged(null); //TODO pass something else than null here - just pass in the inventory in parameter?
-            }
-        };
     }
 
     private boolean canCraft() {
@@ -205,13 +191,6 @@ public class TileAutoCrafting extends TileWorksiteBase implements IInventoryChan
     private void onLayoutMatrixChanged() {
         this.outputSlot.setInventorySlotContents(0, AWCraftingManager.findMatchingRecipe(craftMatrix, world, getCrafterName()));
         updateRecipe();
-    }
-
-    @Override
-    public void onInventoryChanged(IInventory internal){
-        if(internal == bookSlot)
-            onLayoutMatrixChanged();
-        markDirty();
     }
 
     @Override
