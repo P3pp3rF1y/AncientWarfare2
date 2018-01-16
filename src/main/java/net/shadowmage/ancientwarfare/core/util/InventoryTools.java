@@ -181,17 +181,12 @@ public class InventoryTools {
 				ItemStack slotStack = handler.getStackInSlot(i);
 
 				if(doItemStacksMatch(slotStack, stack)) {
-					int j = slotStack.getCount() + stack.getCount();
 					int maxSize = Math.min(handler.getSlotLimit(i), stack.getMaxStackSize());
 
-					if(j <= maxSize) {
-						stack.setCount(0);
-						slotStack.setCount(j);
-					} else if(slotStack.getCount() < maxSize) {
-						stack.shrink(maxSize - slotStack.getCount());
-						slotStack.setCount(maxSize);
-					}
-					ret = ItemStack.EMPTY;
+					int change = Math.min(maxSize - slotStack.getCount(), stack.getCount());
+
+					stack.shrink(change);
+					handler.extractItem(i, change, false);
 				}
 			}
 		}

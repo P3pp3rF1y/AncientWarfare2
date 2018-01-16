@@ -1,8 +1,10 @@
 package net.shadowmage.ancientwarfare.automation.container;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Slot;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseInterfaceFilter;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
@@ -17,8 +19,9 @@ public class ContainerWarehouseInterface extends ContainerTileBase<TileWarehouse
 
     public ContainerWarehouseInterface(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
+        IItemHandler inventory = tileEntity.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         for (int i = 0; i < 9; i++) {
-            addSlotToContainer(new Slot(tileEntity, i, (i % 3) * 18 + 8 + 3 * 18, (i / 3) * 18 + 8 + 80 + 8));
+            addSlotToContainer(new SlotItemHandler(inventory, i, (i % 3) * 18 + 8 + 3 * 18, (i / 3) * 18 + 8 + 80 + 8));
         }
         tileEntity.addViewer(this);
         filters.addAll(tileEntity.getFilters());
