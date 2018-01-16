@@ -32,7 +32,7 @@ public class POTrade extends Trade {
                 list.add(temp.copy());
             }
         }
-        compactInput = InventoryTools.compactStackList3(list);
+        compactInput = InventoryTools.compactStackList(list);
     }
 
     private void updateCompactOutput() {
@@ -42,7 +42,7 @@ public class POTrade extends Trade {
                 list.add(temp.copy());
             }
         }
-        compactOutput = InventoryTools.compactStackList3(list);
+        compactOutput = InventoryTools.compactStackList(list);
     }
 
     /*

@@ -44,6 +44,7 @@ import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.gamedata.Timekeeper;
 import net.shadowmage.ancientwarfare.core.interfaces.IEntityPacketHandler;
@@ -980,7 +981,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
             return;
         if (!player.world.isRemote && isEntityAlive()) {
             onRepack();
-            @Nonnull ItemStack item = InventoryTools.mergeItemStack(player.inventory, this.getItemToSpawn(), (EnumFacing) null);
+            @Nonnull
+            ItemStack item = InventoryTools.mergeItemStack(player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), this.getItemToSpawn());
             if (!item.isEmpty()) {
                 InventoryTools.dropItemInWorld(player.world, item, player.posX, player.posY, player.posZ);
             }

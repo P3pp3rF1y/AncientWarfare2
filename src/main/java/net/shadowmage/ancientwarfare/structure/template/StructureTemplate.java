@@ -129,8 +129,8 @@ public class StructureTemplate {
                     }
                 }
             }
-            resourceList = InventoryTools.compactStackList3(stacks);
-        }
+			resourceList = InventoryTools.compactStackList(stacks);
+		}
         return resourceList;
     }
 

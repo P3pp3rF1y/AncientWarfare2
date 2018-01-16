@@ -4,9 +4,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
@@ -51,9 +51,9 @@ public abstract class Trade {
                 list.add(temp.copy());
             }
         }
-        list = InventoryTools.compactStackList3(list);
+        list = InventoryTools.compactStackList(list);
         for (ItemStack stack : list) {
-            if (InventoryTools.getCountOf(player.inventory, null, stack) < stack.getCount()) {
+            if (InventoryTools.getCountOf(player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), stack) < stack.getCount()) {
                 return;
             }
         }
@@ -65,11 +65,12 @@ public abstract class Trade {
      * and remove result from storage and merge into player inventory/drop on ground<br>
      */
     protected void doTrade(EntityPlayer player, IItemHandler storage) {
+        IItemHandler playerInventory = player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         for (ItemStack inputStack : input) {
             if (inputStack.isEmpty()) {
                 continue;
             }
-            @Nonnull ItemStack result = InventoryTools.removeItems(player.inventory, null, inputStack, inputStack.getCount());//remove from trade grid
+            @Nonnull ItemStack result = InventoryTools.removeItems(playerInventory, inputStack, inputStack.getCount());//remove from trade grid
             if(!result.isEmpty() && storage!=null)
                 InventoryTools.mergeItemStack(storage, result);//merge into storage
         }
@@ -81,7 +82,7 @@ public abstract class Trade {
                 outputStack = InventoryTools.removeItems(storage, outputStack, outputStack.getCount());//remove from storage
             else
                 outputStack = outputStack.copy();
-            outputStack = InventoryTools.mergeItemStack(player.inventory, outputStack, (EnumFacing) null);//merge into player inventory, drop any unused portion on next line
+            outputStack = InventoryTools.mergeItemStack(playerInventory, outputStack);//merge into player inventory, drop any unused portion on next line
             if (!outputStack.isEmpty() && !player.world.isRemote) {//only drop into world if on server!
                 InventoryTools.dropItemInWorld(player.world, outputStack, player.posX, player.posY, player.posZ);
             }
