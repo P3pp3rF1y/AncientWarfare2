@@ -20,13 +20,6 @@
     <option name="FINALLY_ON_NEW_LINE" value="true" />
     <option name="ALIGN_MULTILINE_PARAMETERS" value="false" />
     <option name="ALIGN_MULTILINE_RESOURCES" value="false" />
-    <option name="SPACE_BEFORE_IF_PARENTHESES" value="false" />
-    <option name="SPACE_BEFORE_WHILE_PARENTHESES" value="false" />
-    <option name="SPACE_BEFORE_FOR_PARENTHESES" value="false" />
-    <option name="SPACE_BEFORE_TRY_PARENTHESES" value="false" />
-    <option name="SPACE_BEFORE_CATCH_PARENTHESES" value="false" />
-    <option name="SPACE_BEFORE_SWITCH_PARENTHESES" value="false" />
-    <option name="SPACE_BEFORE_SYNCHRONIZED_PARENTHESES" value="false" />
     <option name="SPACE_BEFORE_ARRAY_INITIALIZER_LBRACE" value="true" />
     <option name="EXTENDS_KEYWORD_WRAP" value="1" />
     <option name="THROWS_KEYWORD_WRAP" value="1" />
