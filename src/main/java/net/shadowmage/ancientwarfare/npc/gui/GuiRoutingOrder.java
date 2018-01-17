@@ -15,6 +15,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Line;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.npc.container.ContainerRoutingOrder;
 import net.shadowmage.ancientwarfare.npc.orders.RoutingOrder.RoutePoint;
 import org.lwjgl.input.Mouse;
@@ -56,7 +57,7 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
             label = new Label(8, totalHeight, block == null ? "" : block.getLocalizedName());
             area.addGuiElement(label);
 
-            label = new Label(120, totalHeight, pos.toString());
+            label = new Label(120, totalHeight, StringTools.formatPos(pos));
             area.addGuiElement(label);
 
             labelString = Direction.getDirectionFor(point.getBlockSide()).getTranslationKey();

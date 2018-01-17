@@ -25,6 +25,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
@@ -32,20 +33,16 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Scanner;
 import java.util.Set;
 
 public class StringTools {
@@ -324,24 +321,6 @@ public class StringTools {
         return 0;
     }
 
-    public static double safeParseDouble(String num) {
-        try {
-            return Double.parseDouble(num.trim());
-        } catch (NumberFormatException e) {
-
-        }
-        return 0;
-    }
-
-    public static long safeParseLong(String num) {
-        try {
-            return Long.parseLong(num.trim());
-        } catch (NumberFormatException e) {
-
-        }
-        return 0;
-    }
-
     public static byte safeParseByte(String num) {
         try {
             return Byte.parseByte(num.trim());
@@ -351,18 +330,9 @@ public class StringTools {
         return 0;
     }
 
-    public static short safeParseShort(String num) {
-        try {
-            return Short.parseShort(num.trim());
-        } catch (NumberFormatException e) {
-
-        }
-        return 0;
-    }
-
     /*
      * returns a value after a split at regex, or zero (0)
-     */
+	 */
     public static int safeParseInt(String regex, String test) {
         String[] split = test.split(regex);
         if (split.length > 1) {
@@ -372,68 +342,11 @@ public class StringTools {
     }
 
     /*
-     * returns a value after a split at regex, or zero (0)
-     */
-    public static byte safeParseByte(String regex, String test) {
-        String[] split = test.split(regex);
-        if (split.length > 1) {
-            return Byte.parseByte(split[1].trim());
-        }
-        return 0;
-    }
-
-    /*
-     * returns a value after a split at regex, or zero (0)
-     */
-    public static short safeParseShort(String regex, String test) {
-        String[] split = test.split(regex);
-        if (split.length > 1) {
-            return Short.parseShort(split[1].trim());
-        }
-        return 0;
-    }
-
-    public static boolean isNumber(String test) {
-        try {
-            Integer.parseInt(test.trim());
-        } catch (NumberFormatException e) {
-            return false;
-        }
-        return true;
-    }
-
-    /*
-     * write a list of lines to a byte[] as UTF-8 encoded chars
-     */
-    public static byte[] getByteArray(List<String> lines) throws UnsupportedEncodingException, IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        for (String line : lines) {
-            line = line + "\n";
-            baos.write(line.getBytes("UTF-8"));
-        }
-        return baos.toByteArray();
-    }
-
-    /*
-     * read a list of lines from a byte[] as UTF-8 encoded chars
-     */
-    public static List<String> getLines(byte[] bytes) {
-        ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
-        List<String> lines = new ArrayList<>();
-        Scanner scan = new Scanner(bais, "UTF-8");
-        while (scan.hasNext()) {
-            lines.add(scan.nextLine());
-        }
-        scan.close();
-        return lines;
-    }
-
-    /*
      * Return a list of strings for the input fileName -- used to parse configuration data
-     * from in-jar resource files.
-     *
-     * @param path to file, incl. filename + extension, running-dir relative
-     */
+	 * from in-jar resource files.
+	 *
+	 * @param path to file, incl. filename + extension, running-dir relative
+	 */
     public static List<String> getResourceLines(String path) {
         InputStream is = null;
         File overrideFile = new File("resources" + path);
@@ -482,5 +395,9 @@ public class StringTools {
             return b == null;
         } else
             return b != null && a.equals(b);
+    }
+
+    public static String formatPos(BlockPos pos) {
+        return String.format("X:%d Y:%d Z:%d", pos.getX(), pos.getY(), pos.getZ());
     }
 }

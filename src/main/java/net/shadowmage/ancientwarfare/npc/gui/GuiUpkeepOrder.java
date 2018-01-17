@@ -8,6 +8,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
+import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.npc.container.ContainerUpkeepOrder;
 
 public class GuiUpkeepOrder extends GuiContainerBase<ContainerUpkeepOrder> {
@@ -35,7 +36,7 @@ public class GuiUpkeepOrder extends GuiContainerBase<ContainerUpkeepOrder> {
             slot = new ItemSlot(8, 10, getContainer().upkeepBlock, this);
             addGuiElement(slot);
 
-            label = new Label(8 + 18 + 4, 8, pos.toString());
+            label = new Label(8 + 18 + 4, 8, StringTools.formatPos(pos));
             addGuiElement(label);
 
             button = new Button(8 + 18 + 10, 8 + 10, 55, 12, "guistrings.npc.remove_upkeep_point") {
