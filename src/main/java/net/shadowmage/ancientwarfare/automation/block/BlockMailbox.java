@@ -5,7 +5,6 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -24,87 +23,84 @@ import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.
 
 public class BlockMailbox extends BlockBaseAutomation implements IRotatableBlock {
 
-    public BlockMailbox(String regName) {
-        super(Material.ROCK, regName);
-        setHardness(2.f);
-    }
+	public BlockMailbox(String regName) {
+		super(Material.ROCK, regName);
+		setHardness(2.f);
+	}
 
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, FACING);
-    }
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, FACING);
+	}
 
-    @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(FACING, EnumFacing.VALUES[meta]);
-    }
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(FACING, EnumFacing.VALUES[meta]);
+	}
 
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        return state.getValue(FACING).ordinal();
-    }
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(FACING).ordinal();
+	}
 
-    @Override
-    public boolean hasTileEntity(IBlockState state) {
-        return true;
-    }
+	@Override
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
 
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileMailbox();
-    }
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		return new TileMailbox();
+	}
 
-    @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if (!world.isRemote) {
-            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_MAILBOX_INVENTORY, pos.getX(), pos.getY(), pos.getZ());
-        }
-        return true;
-    }
+	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if (!world.isRemote) {
+			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_MAILBOX_INVENTORY, pos.getX(), pos.getY(), pos.getZ());
+		}
+		return true;
+	}
 
-    @Override
-    public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis) {
-        if(world.isRemote)
-            return false;
-        IBlockState state = world.getBlockState(pos);
-        EnumFacing facing = state.getValue(FACING);
-        EnumFacing rotatedFacing = facing.rotateAround(axis.getAxis());
-        if (facing != rotatedFacing) {
-            world.setBlockState(pos, state.withProperty(FACING, rotatedFacing));
-            return true;
-        }
-        return false;
-    }
+	@Override
+	public boolean rotateBlock(World world, BlockPos pos, EnumFacing axis) {
+		if (world.isRemote)
+			return false;
+		IBlockState state = world.getBlockState(pos);
+		EnumFacing facing = state.getValue(FACING);
+		EnumFacing rotatedFacing = facing.rotateAround(axis.getAxis());
+		if (facing != rotatedFacing) {
+			world.setBlockState(pos, state.withProperty(FACING, rotatedFacing));
+			return true;
+		}
+		return false;
+	}
 
-    @Override
-    public RotationType getRotationType() {
-        return RotationType.FOUR_WAY;
-    }
+	@Override
+	public RotationType getRotationType() {
+		return RotationType.FOUR_WAY;
+	}
 
-    @Override
-    public boolean invertFacing() {
-        return true;
-    }
+	@Override
+	public boolean invertFacing() {
+		return true;
+	}
 
-    @Override
-    public void breakBlock(World world, BlockPos pos, IBlockState state) {
-        TileEntity te = world.getTileEntity(pos);
-        if (te instanceof IInventory) {
-            InventoryTools.dropInventoryInWorld(world, (IInventory) te, pos);
-        }
-        super.breakBlock(world, pos, state);
-    }
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		InventoryTools.dropInventoryInWorld(world.getTileEntity(pos));
+		super.breakBlock(world, pos, state);
+	}
 
-    @Override
-    public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-        return getDefaultState().withProperty(FACING, placer.getHorizontalFacing());
-    }
+	@Override
+	public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing());
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerClient() {
-        super.registerClient();
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerClient() {
+		super.registerClient();
 
-        NetworkHandler.registerGui(NetworkHandler.GUI_MAILBOX_INVENTORY, GuiMailboxInventory.class);
-    }
+		NetworkHandler.registerGui(NetworkHandler.GUI_MAILBOX_INVENTORY, GuiMailboxInventory.class);
+	}
 }

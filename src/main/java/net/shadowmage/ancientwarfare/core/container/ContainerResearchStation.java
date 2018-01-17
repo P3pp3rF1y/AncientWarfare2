@@ -5,6 +5,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
@@ -34,8 +35,7 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
             }
         }
 
-        int slotNum = 0;
-        Slot slot = new Slot(tileEntity, slotNum, 8, 18 + 4) {
+        Slot slot = new SlotItemHandler(tileEntity.bookInventory, 0, 8, 18 + 4) {
             @Override
             public boolean isItemValid(ItemStack par1ItemStack) {
                 return ItemResearchBook.getResearcherName(par1ItemStack) != null;
@@ -44,13 +44,14 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
         addSlotToContainer(slot);
 
         int x2, y2, yBase = 8 + 3 * 18 + 10 + 12 + 4 + 10;
+        int slotNum = 0;
         for (int y1 = 0; y1 < 3; y1++) {
             y2 = y1 * 18 + yBase;
             for (int x1 = 0; x1 < 3; x1++) {
                 x2 = x1 * 18 + 8 + 18;//x1*18 + 8 + 3*18;
-                slotNum++;
-                slot = new Slot(tileEntity, slotNum, x2, y2);
+                slot = new SlotItemHandler(tileEntity.resourceInventory, slotNum, x2, y2);
                 addSlotToContainer(slot);
+                slotNum++;
             }
         }
 
@@ -65,7 +66,7 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
             @Nonnull ItemStack slotStack = theSlot.getStack();
             slotStackCopy = slotStack.copy();
 
-            int playerSlotStart = tileEntity.getSizeInventory();
+            int playerSlotStart = tileEntity.bookInventory.getSlots() + tileEntity.resourceInventory.getSlots();
             int playerSlotEnd = playerSlotStart + playerSlots;
             if (slotClickedIndex < playerSlotStart)//book , storage slot
             {

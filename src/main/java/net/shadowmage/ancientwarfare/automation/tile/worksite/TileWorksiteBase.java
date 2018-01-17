@@ -405,6 +405,18 @@ public abstract class TileWorksiteBase extends TileUpdatable implements ITickabl
         }
         tag.setIntArray("upgrades", ugs);
         tag.setInteger("orientation", orientation.ordinal());
+        if (ownerName != null) {
+            tag.setString("owner", ownerName);
+            if(ownerId == null && hasWorld()){
+                getOwnerAsPlayer();
+                if(isOwnerReal()){
+                    ownerId = owner.getUniqueID();
+                }
+            }
+        }
+        if(ownerId!=null){
+            tag.setString("ownerId", ownerId.toString());
+        }
     }
 
     @Override
@@ -419,6 +431,12 @@ public abstract class TileWorksiteBase extends TileUpdatable implements ITickabl
         }
         updateEfficiency();
         orientation = EnumFacing.values()[tag.getInteger("orientation")];
+        if (tag.hasKey("owner")) {
+            ownerName = tag.getString("owner");
+        }
+        if(tag.hasKey("ownerId")){
+            ownerId = UUID.fromString(tag.getString("ownerId"));
+        }
         markDirty();
     }
 }

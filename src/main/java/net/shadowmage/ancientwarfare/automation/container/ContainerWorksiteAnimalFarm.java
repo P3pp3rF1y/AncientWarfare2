@@ -1,28 +1,24 @@
 package net.shadowmage.ancientwarfare.automation.container;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteAnimalFarm;
 
-public class ContainerWorksiteAnimalFarm extends ContainerWorksiteBase {
+public class ContainerWorksiteAnimalFarm extends ContainerWorksiteBase<WorkSiteAnimalFarm> {
 
-    public ContainerWorksiteAnimalFarm(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
+	public ContainerWorksiteAnimalFarm(EntityPlayer player, int x, int y, int z) {
+		super(player, x, y, z);
 
-        int layerY = 8;
-        int labelGap = 12;
+		int layerY = 78;
 
-        topLabel = layerY;
-        layerY += labelGap;
-        layerY = addSlots(8, layerY, 0, 27) + 4;
-        frontLabel = layerY;
-        layerY += labelGap;
-        layerY = addSlots(8, layerY, 27, 3) + 4;
-        bottomLabel = layerY;
-        layerY += labelGap;
-        layerY = addSlots(8, layerY, 30, 3) + 4;
-        playerLabel = layerY;
-        layerY += labelGap;
-        guiHeight = addPlayerSlots(layerY) + 8;
-    }
-
+		frontLabel = layerY;
+		layerY += LABEL_GAP;
+		layerY = addSlots(tileEntity.foodInventory, 8, layerY) + 4;
+		bottomLabel = layerY;
+		layerY += LABEL_GAP;
+		layerY = addSlots(tileEntity.toolInventory, 8, layerY) + 4;
+		playerLabel = layerY;
+		layerY += LABEL_GAP;
+		guiHeight = addPlayerSlots(layerY) + 8;
+	}
 
 }

@@ -4,8 +4,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
-import net.shadowmage.ancientwarfare.core.gui.elements.*;
+import net.shadowmage.ancientwarfare.core.gui.elements.Button;
+import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
+import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
+import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
+import net.shadowmage.ancientwarfare.core.gui.elements.Label;
+import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
 import net.shadowmage.ancientwarfare.core.interfaces.IWidgetSelection;
+import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.npc.container.ContainerWorkOrder;
 import net.shadowmage.ancientwarfare.npc.orders.WorkOrder.WorkEntry;
 
@@ -60,7 +66,7 @@ public class GuiWorkOrder extends GuiContainerBase<ContainerWorkOrder> {
             GuiElement element = new ItemSlot(8, totalHeight + 2, new ItemStack(entry.getBlock(Minecraft.getMinecraft().world)), this);
             area.addGuiElement(element);
 
-            element = new Label(8 + 20, totalHeight, entry.getPosition().toString());
+            element = new Label(8 + 20, totalHeight, StringTools.formatPos(entry.getPosition()));
             area.addGuiElement(element);
 
             element = new IndexedButton(8 + 20 + 20, totalHeight + 10, 12, 12, "+", index) {

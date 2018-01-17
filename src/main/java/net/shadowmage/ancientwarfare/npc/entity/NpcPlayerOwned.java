@@ -4,8 +4,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -14,6 +12,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.items.IItemHandler;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
@@ -274,7 +273,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
         return false;
     }
 
-    public boolean withdrawFood(IInventory inventory, EnumFacing side) {
+    public boolean withdrawFood(IItemHandler handler) {
         int amount = getUpkeepAmount() - getFoodRemaining();
         if (amount <= 0) {
             return true;
@@ -282,38 +281,15 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood{
         @Nonnull ItemStack stack;
         int val;
         int eaten = 0;
-        if (side != null && inventory instanceof ISidedInventory) {
-            int[] ind = ((ISidedInventory) inventory).getSlotsForFace(side);
-            for (int i : ind) {
-                stack = inventory.getStackInSlot(i);
-                val = AncientWarfareNPC.statics.getFoodValue(stack);
-                if (val <= 0) {
-                    continue;
-                }
-                while (eaten < amount && !stack.isEmpty()) {
-                    eaten += val;
-                    stack.shrink(1);
-                    inventory.markDirty();
-                }
-                if (stack.getCount() <= 0) {
-                    inventory.setInventorySlotContents(i, ItemStack.EMPTY);
-                }
+        for(int i = 0; i < handler.getSlots(); i++) {
+            stack = handler.getStackInSlot(i);
+            val = AncientWarfareNPC.statics.getFoodValue(stack);
+            if(val <= 0) {
+                continue;
             }
-        } else {
-            for (int i = 0; i < inventory.getSizeInventory(); i++) {
-                stack = inventory.getStackInSlot(i);
-                val = AncientWarfareNPC.statics.getFoodValue(stack);
-                if (val <= 0) {
-                    continue;
-                }
-                while (eaten < amount && !stack.isEmpty()) {
-                    eaten += val;
-                    stack.shrink(1);
-                    inventory.markDirty();
-                }
-                if (stack.getCount() <= 0) {
-                    inventory.setInventorySlotContents(i, ItemStack.EMPTY);
-                }
+            while(eaten < amount && !stack.isEmpty()) {
+                eaten += val;
+                stack.shrink(1);
             }
         }
         setFoodRemaining(getFoodRemaining() + eaten);

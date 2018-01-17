@@ -24,7 +24,7 @@ import java.util.List;
 
 public class ItemResearchNotes extends ItemBaseCore {
 
-    private List<ItemStack> displayCache = null;
+    private NonNullList<ItemStack> displayCache = null;
 
     public ItemResearchNotes() {
         super("research_note");
@@ -65,7 +65,7 @@ public class ItemResearchNotes extends ItemBaseCore {
             items.addAll(displayCache);
             return;
         }
-        displayCache = new ArrayList<>();
+        displayCache = NonNullList.create();
         List<ResearchGoal> goals = new ArrayList<>();
         goals.addAll(ResearchGoal.getResearchGoals());
         /*

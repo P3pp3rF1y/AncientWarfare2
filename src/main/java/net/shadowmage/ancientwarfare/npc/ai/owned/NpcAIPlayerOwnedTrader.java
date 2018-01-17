@@ -1,11 +1,11 @@
 package net.shadowmage.ancientwarfare.npc.ai.owned;
 
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
-import net.shadowmage.ancientwarfare.core.inventory.InventoryBackpack;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.shadowmage.ancientwarfare.core.inventory.ItemHandlerBackpack;
 import net.shadowmage.ancientwarfare.core.item.ItemBackpack;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
@@ -185,8 +185,8 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
     protected boolean tryWithdrawUpkeep() {
         BlockPos p = npc.getUpkeepPoint();
         TileEntity te = npc.world.getTileEntity(p);
-        if (te instanceof IInventory) {
-            return npc.withdrawFood((IInventory) te, npc.getUpkeepBlockSide());
+        if(te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, npc.getUpkeepBlockSide())) {
+            return npc.withdrawFood(te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, npc.getUpkeepBlockSide()));
         }
         return false;
     }
@@ -285,12 +285,11 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
     private void doDeposit() {
         @Nonnull ItemStack backpack = npc.getHeldItemMainhand();
         if (!backpack.isEmpty() && backpack.getItem() instanceof ItemBackpack) {
-            InventoryBackpack inv = ItemBackpack.getInventoryFor(backpack);
+            ItemHandlerBackpack inv = ItemBackpack.getInventoryFor(backpack);
             BlockPos pos = orders.getRestockData().getDepositPoint();
             TileEntity te = npc.world.getTileEntity(pos);
-            if (te instanceof IInventory) {
-                IInventory dep = (IInventory) te;
-                orders.getRestockData().doDeposit(inv, dep, orders.getRestockData().getDepositSide());
+            if(te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, orders.getRestockData().getDepositSide())) {
+                orders.getRestockData().doDeposit(inv, te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, orders.getRestockData().getDepositSide()));
                 ItemBackpack.writeBackpackToItem(inv, backpack);
             }
         }
@@ -299,11 +298,11 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
     private void doWithdraw() {
         @Nonnull ItemStack backpack = npc.getHeldItemMainhand();
         if (!backpack.isEmpty() && backpack.getItem() instanceof ItemBackpack) {
-            InventoryBackpack inv = ItemBackpack.getInventoryFor(backpack);
+            ItemHandlerBackpack inv = ItemBackpack.getInventoryFor(backpack);
             BlockPos pos = orders.getRestockData().getWithdrawPoint();
             TileEntity te = npc.world.getTileEntity(pos);
-            if (te instanceof IInventory) {
-                orders.getRestockData().doWithdraw(inv, (IInventory) te, orders.getRestockData().getWithdrawSide());
+            if(te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, orders.getRestockData().getWithdrawSide())) {
+                orders.getRestockData().doWithdraw(inv, te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, orders.getRestockData().getWithdrawSide()));
                 ItemBackpack.writeBackpackToItem(inv, backpack);
             }
         }

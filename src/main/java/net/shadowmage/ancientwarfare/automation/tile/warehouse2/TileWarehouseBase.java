@@ -4,9 +4,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface.InterfaceEmptyRequest;
@@ -138,7 +139,8 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
     }
 
     private boolean tryRemoveFromRequest(TileWarehouseInterface tile, InterfaceEmptyRequest request) {
-        @Nonnull ItemStack stack = tile.getStackInSlot(request.slotNum);
+        IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+        @Nonnull ItemStack stack = inventory.getStackInSlot(request.slotNum);
         if (stack.isEmpty()) {
             return false;
         }
@@ -156,12 +158,9 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
                 filter.setCount(1);
                 changeCachedQuantity(filter, moved);
             }
-            stack.shrink(moved);
+            ;
             toMove -= moved;
-            if (stack.getCount() != count) {
-                if (stack.getCount() <= 0) {
-                    tile.inventory.setInventorySlotContents(request.slotNum, ItemStack.EMPTY);
-                }
+            if(!inventory.extractItem(request.slotNum, moved, false).isEmpty()) {
                 return true;
             }
             if (toMove <= 0) {
@@ -198,13 +197,14 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
         int found, moved;
         @Nonnull ItemStack stack;
         int stackSize;
+        IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         for (IWarehouseStorageTile source : potentialStorage) {
             found = source.getQuantityStored(request.requestedItem);
             if (found > 0) {
                 stack = request.requestedItem.copy();
                 stack.setCount(found > stack.getMaxStackSize() ? stack.getMaxStackSize() : found);
                 stackSize = stack.getCount();
-                stack = InventoryTools.mergeItemStack(tile.inventory, stack, (EnumFacing) null);
+                stack = InventoryTools.mergeItemStack(inventory, stack);
                 if (stack.isEmpty() || stack.getCount() != stackSize) {
                     moved = stack.isEmpty() ? stackSize : stackSize - stack.getCount();
                     source.extractItem(request.requestedItem, moved);

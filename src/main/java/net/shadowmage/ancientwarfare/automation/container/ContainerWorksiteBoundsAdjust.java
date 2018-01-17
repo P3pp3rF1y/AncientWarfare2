@@ -3,7 +3,7 @@ package net.shadowmage.ancientwarfare.automation.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteUserBlocks;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteFarm;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedSite;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -23,12 +23,12 @@ public class ContainerWorksiteBoundsAdjust extends ContainerTileBase {
 
     @Override
     public void sendInitData() {
-        if (tileEntity instanceof TileWorksiteUserBlocks) {
-            TileWorksiteUserBlocks twub = (TileWorksiteUserBlocks) tileEntity;
-            NBTTagCompound tag = new NBTTagCompound();
-            tag.setByteArray("checkedMap", twub.getTargetMap());
-            sendDataToGui(tag);
-        }
+		if(tileEntity instanceof TileWorksiteFarm) {
+			TileWorksiteFarm twub = (TileWorksiteFarm) tileEntity;
+			NBTTagCompound tag = new NBTTagCompound();
+			tag.setByteArray("checkedMap", twub.getTargetMap());
+			sendDataToGui(tag);
+		}
     }
 
     @Override
@@ -42,12 +42,12 @@ public class ContainerWorksiteBoundsAdjust extends ContainerTileBase {
                 getWorksite().onBoundsAdjusted();
                 getWorksite().onPostBoundsAdjusted();
             }
-            if (tag.hasKey("checkedMap") && tileEntity instanceof TileWorksiteUserBlocks) {
-                TileWorksiteUserBlocks twub = (TileWorksiteUserBlocks) tileEntity;
-                byte[] map = tag.getByteArray("checkedMap");
-                twub.setTargetBlocks(map);
-            }
-            BlockTools.notifyBlockUpdate(player.world, getPos());
+			if(tag.hasKey("checkedMap") && tileEntity instanceof TileWorksiteFarm) {
+				TileWorksiteFarm twub = (TileWorksiteFarm) tileEntity;
+				byte[] map = tag.getByteArray("checkedMap");
+				twub.setTargetBlocks(map);
+			}
+			BlockTools.notifyBlockUpdate(player.world, getPos());
         }
     }
 
@@ -58,11 +58,11 @@ public class ContainerWorksiteBoundsAdjust extends ContainerTileBase {
             tag.setLong("min", min.toLong());
             tag.setLong("max", max.toLong());
         }
-        if (targetsAdjusted && tileEntity instanceof TileWorksiteUserBlocks) {
-            tag.setByteArray("checkedMap", checkedMap);
-        }
-        sendDataToServer(tag);
-    }
+		if(targetsAdjusted && tileEntity instanceof TileWorksiteFarm) {
+			tag.setByteArray("checkedMap", checkedMap);
+		}
+		sendDataToServer(tag);
+	}
 
     public BlockPos getPos() {
         return tileEntity.getPos();

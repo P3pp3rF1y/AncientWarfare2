@@ -7,15 +7,11 @@ public class ContainerWorksiteQuarry extends ContainerWorksiteBase {
     public ContainerWorksiteQuarry(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
 
-        int layerY = 8;
-        int labelGap = 12;
-        topLabel = layerY;
-        layerY += labelGap;
+		int layerY = 78;
 
-        layerY = addSlots(8, layerY, 0, 27) + 4;
         playerLabel = layerY;
-        layerY += labelGap;
-        guiHeight = addPlayerSlots(layerY) + 8;
-    }
+		layerY += LABEL_GAP;
+		guiHeight = addPlayerSlots(layerY) + 8;
+	}
 
 }

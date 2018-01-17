@@ -24,10 +24,7 @@ import net.shadowmage.ancientwarfare.api.IAncientWarfareFarmable;
 import net.shadowmage.ancientwarfare.api.IAncientWarfarePlantable;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
-import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -36,25 +33,21 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
-
+public class WorkSiteCropFarm extends TileWorksiteFarm {
     private final Set<BlockPos> blocksToTill;
     private final Set<BlockPos> blocksToHarvest;
     private final Set<BlockPos> blocksToPlant;
     private final Set<BlockPos> blocksToFertilize;
 
-    private int plantableCount;
-    private int bonemealCount;
-    
     private final static List<Block[]> blocksTillableAndTilled = new ArrayList<>();
 
     public WorkSiteCropFarm() {
-
+        super();
         blocksToTill = new HashSet<>();
         blocksToHarvest = new HashSet<>();
         blocksToPlant = new HashSet<>();
         blocksToFertilize = new HashSet<>();
-        
+
         if (blocksTillableAndTilled.size() == 0) {
             AncientWarfareCore.log.info("Building crop farmable block list...");
             for (String entry : AWAutomationStatics.crop_farm_blocks) {
@@ -84,33 +77,10 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
                 }
             }
         }
-
-        InventoryTools.IndexHelper helper = new InventoryTools.IndexHelper();
-        int[] topIndices = helper.getIndiceArrayForSpread(TOP_LENGTH);
-        int[] frontIndices = helper.getIndiceArrayForSpread(FRONT_LENGTH);
-        int[] bottomIndices = helper.getIndiceArrayForSpread(BOTTOM_LENGTH);
-        this.inventory.setAccessibleSideDefault(RelativeSide.TOP, RelativeSide.TOP, topIndices);
-        this.inventory.setAccessibleSideDefault(RelativeSide.FRONT, RelativeSide.FRONT, frontIndices);//plantables
-        this.inventory.setAccessibleSideDefault(RelativeSide.BOTTOM, RelativeSide.BOTTOM, bottomIndices);//bonemeal
-
-        ItemSlotFilter filter = new ItemSlotFilter() {
-            @Override
-            public boolean test(ItemStack stack) {
-                return stack.isEmpty() || isPlantable(stack);
-            }
-        };
-        this.inventory.setFilterForSlots(filter, frontIndices);
-
-        filter = new ItemSlotFilter() {
-            @Override
-            public boolean test(ItemStack stack) {
-                return stack.isEmpty() || isBonemeal(stack);
-            }
-        };
-        this.inventory.setFilterForSlots(filter, bottomIndices);
     }
 
-    private boolean isPlantable(ItemStack stack) {
+    @Override
+    protected boolean isPlantable(ItemStack stack) {
         Item item = stack.getItem();
         if(item instanceof IAncientWarfarePlantable) {
             return ((IAncientWarfarePlantable) item).isPlantable(stack);
@@ -143,30 +113,6 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
         validateCollection(blocksToHarvest);
         validateCollection(blocksToPlant);
         validateCollection(blocksToTill);
-    }
-
-    @Override
-    protected void countResources() {
-        plantableCount = 0;
-        bonemealCount = 0;
-        @Nonnull ItemStack stack;
-        for (int i = TOP_LENGTH; i < getSizeInventory(); i++) {
-            stack = getStackInSlot(i);
-            if (stack.isEmpty()) {
-                continue;
-            }
-            if (i < TOP_LENGTH + FRONT_LENGTH){
-                if(isPlantable(stack))
-                    plantableCount += stack.getCount();
-            }else if(isBonemeal(stack)){
-                bonemealCount += stack.getCount();
-            }
-        }
-    }
-
-    @Override
-    protected int[] getIndicesForPickup(){
-        return inventory.getRawIndicesCombined(RelativeSide.BOTTOM, RelativeSide.FRONT, RelativeSide.TOP);
     }
 
     @Override
@@ -243,13 +189,14 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
                 IBlockState state = world.getBlockState(position);
                 block = state.getBlock();
                 if (melonOrPumpkin(state)) {
-                    return harvestBlock(position, RelativeSide.FRONT, RelativeSide.TOP);
+                    return harvestBlock(position);
                 }
                 else if (block instanceof IGrowable) {
                     if (!((IGrowable) block).canGrow(world, position, state, world.isRemote) && !(block instanceof BlockStem)) {
                         if(Loader.isModLoaded("AgriCraft")){
                             if(!(block instanceof IAncientWarfareFarmable)) {//Not using the API
                                 Class<? extends Block> c = block.getClass();
+                                //TODO refactor this out
                                 if ("com.InfinityRaider.AgriCraft.blocks.BlockCrop".equals(c.getName())) {//A crop from AgriCraft
                                     try {//Use the harvest method, hopefully dropping stuff
                                         c.getDeclaredMethod("harvest", World.class, int.class, int.class, int.class, EntityPlayer.class).invoke(block, world, position, null);
@@ -260,10 +207,10 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
                                 }
                             }
                         }
-                        return harvestBlock(position, RelativeSide.FRONT, RelativeSide.TOP);
+                        return harvestBlock(position);
                     }
                 }else if(isFarmable(block, position)){
-                    return harvestBlock(position, RelativeSide.FRONT, RelativeSide.TOP);
+                    return harvestBlock(position);
                 }
             }
         } else if (hasToPlant()) {
@@ -272,17 +219,15 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
                 it.remove();
                 if (canReplace(position)) {
                     @Nonnull ItemStack stack;
-                    for (int i = TOP_LENGTH; i < TOP_LENGTH + FRONT_LENGTH; i++) {
-                        stack = getStackInSlot(i);
+                    for(int slot = 0; slot < plantableInventory.getSlots(); slot++) {
+                        stack = plantableInventory.getStackInSlot(slot);
                         if (stack.isEmpty()) {
                             continue;
                         }
                         if (isPlantable(stack)) {
-                            if(tryPlace(stack, position, EnumFacing.UP)) {
-                                plantableCount--;
-                                if (stack.getCount() <= 0) {
-                                    setInventorySlotContents(i, ItemStack.EMPTY);
-                                }
+                            ItemStack clone = stack.copy();
+                            if(tryPlace(clone, position, EnumFacing.UP)) {
+                                plantableInventory.extractItem(slot, 1, false);
                                 return true;
                             }
                         }
@@ -298,17 +243,15 @@ public class WorkSiteCropFarm extends TileWorksiteUserBlocks {
                 block = state.getBlock();
                 if (block instanceof IGrowable) {
                     @Nonnull ItemStack stack;
-                    for (int i = TOP_LENGTH + FRONT_LENGTH; i < getSizeInventory(); i++) {
-                        stack = getStackInSlot(i);
+                    for(int slot = 0; slot < miscInventory.getSlots(); slot++) {
+                        stack = miscInventory.getStackInSlot(slot);
                         if (stack.isEmpty()) {
                             continue;
                         }
                         if (isBonemeal(stack)) {
-                            if(ItemDye.applyBonemeal(stack, world, position, getOwnerAsPlayer(), EnumHand.MAIN_HAND)){
-                                bonemealCount--;
-                                if (stack.getCount() <= 0) {
-                                    setInventorySlotContents(i, ItemStack.EMPTY);
-                                }
+                            ItemStack clone = stack.copy();
+                            if(ItemDye.applyBonemeal(clone, world, position, getOwnerAsPlayer(), EnumHand.MAIN_HAND)) {
+                                miscInventory.extractItem(slot, 1, false);
                             }
                             block = world.getBlockState(position).getBlock();
                             if(block instanceof IAncientWarfareFarmable) {

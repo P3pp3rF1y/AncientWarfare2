@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.IInventoryChangedListener;
 import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -13,21 +12,26 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
+import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
-import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nonnull;
 
-public class TileWarehouseCraftingStation extends TileEntity implements IInteractableTile, IInventoryChangedListener {
+public class TileWarehouseCraftingStation extends TileEntity implements IInteractableTile {
 
     public InventoryCrafting layoutMatrix;
     public InventoryCraftResult result;
-    public InventoryBasic bookInventory;
+    public ItemStackHandler bookInventory = new ItemStackHandler(1) {
+        @Override
+        protected void onContentsChanged(int slot) {
+            onInventoryChanged();
+        }
+    };
 
     NonNullList<ItemStack> matrixShadow;
 
@@ -40,14 +44,13 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
 
             @Override
             public void onCraftMatrixChanged(IInventory par1iInventory) {
-                onInventoryChanged(null);
+                onInventoryChanged();
             }
         };
 
         layoutMatrix = new InventoryCrafting(c, 3, 3);
         matrixShadow = NonNullList.withSize(layoutMatrix.getSizeInventory(), ItemStack.EMPTY);
         result = new InventoryCraftResult();
-        bookInventory = new InventoryBasic(1, this);
     }
 
     /*
@@ -118,8 +121,7 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
         onLayoutMatrixChanged();
     }
 
-    @Override
-    public void onInventoryChanged(IInventory internal){
+    private void onInventoryChanged() {
         onLayoutMatrixChanged();
         markDirty();
     }
@@ -127,7 +129,7 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        InventoryTools.readInventoryFromNBT(bookInventory, tag.getCompoundTag("bookInventory"));
+        bookInventory.deserializeNBT(tag.getCompoundTag("bookInventory"));
         InventoryTools.readInventoryFromNBT(result, tag.getCompoundTag("resultInventory"));
         InventoryTools.readInventoryFromNBT(layoutMatrix, tag.getCompoundTag("layoutMatrix"));
     }
@@ -136,10 +138,9 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
         super.writeToNBT(tag);
 
-        NBTTagCompound inventoryTag = InventoryTools.writeInventoryToNBT(bookInventory, new NBTTagCompound());
-        tag.setTag("bookInventory", inventoryTag);
+        tag.setTag("bookInventory", bookInventory.serializeNBT());
 
-        inventoryTag = InventoryTools.writeInventoryToNBT(result, new NBTTagCompound());
+        NBTTagCompound inventoryTag = InventoryTools.writeInventoryToNBT(result, new NBTTagCompound());
         tag.setTag("resultInventory", inventoryTag);
 
         inventoryTag = InventoryTools.writeInventoryToNBT(layoutMatrix, new NBTTagCompound());

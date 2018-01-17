@@ -11,8 +11,6 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import org.lwjgl.input.Mouse;
 
-import java.util.EnumSet;
-
 public class GuiMailboxInventorySideSetup extends GuiContainerBase<ContainerMailbox> {
 
     private final GuiMailboxInventory parent;
@@ -52,7 +50,13 @@ public class GuiMailboxInventorySideSetup extends GuiContainerBase<ContainerMail
             label = new Label(74, height, Direction.getDirectionFor(dir).getTranslationKey());
             addGuiElement(label);
 
-            accessed = getContainer().sideMap.get(side);
+            if(getContainer().receivedSides.contains(dir)) {
+                accessed = RelativeSide.TOP;
+            } else if(getContainer().sendSides.contains(dir)) {
+                accessed = RelativeSide.BOTTOM;
+            } else {
+                accessed = RelativeSide.NONE;
+            }
             sideButton = new SideButton(128, height, side, accessed);
             addGuiElement(sideButton);
 
@@ -85,23 +89,19 @@ public class GuiMailboxInventorySideSetup extends GuiContainerBase<ContainerMail
 
         @Override
         protected void onPressed() {
-            int ordinal = selection.ordinal();
-            RelativeSide next;
-            EnumSet<RelativeSide> validSides = getContainer().tileEntity.inventory.getValidSides();
-            for (int i = 0; i < RelativeSide.values().length; i++) {
-                ordinal++;
-                if (ordinal >= RelativeSide.values().length) {
-                    ordinal = 0;
-                }
-                next = RelativeSide.values()[ordinal];
-                if (validSides.contains(next)) {
-                    selection = next;
+            switch(selection) {
+                case TOP:
+                    selection = RelativeSide.BOTTOM;
                     break;
-                }
+                case BOTTOM:
+                    selection = RelativeSide.NONE;
+                    break;
+                default:
+                    selection = RelativeSide.TOP;
             }
-            getContainer().sideMap.put(side, selection);
             setText(selection.getTranslationKey());
             getContainer().sendSlotChange(side, selection);
+            getContainer().updateSides(side, selection);
         }
 
     }

@@ -15,25 +15,24 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
+import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.InventorySided;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
-import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.ItemWrapper;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
-
-    private static final int TOP_LENGTH = 27, FRONT_LENGTH = 3, BOTTOM_LENGTH = 3;
+    private static final int FOOD_INVENTORY_SIZE = 3;
+    private static final int TOOL_INVENTORY_SIZE = 3;
     private int workerRescanDelay;
     private boolean shouldCountResources;
 
@@ -46,7 +45,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
     private int bucketCount;
     private int carrotCount;
     private int seedCount;
-    private ItemStack shears = ItemStack.EMPTY;
+    private int shearsSlot = -1;
 
     private List<EntityPair> pigsToBreed = new ArrayList<>();
     private List<EntityPair> chickensToBreed = new ArrayList<>();
@@ -57,39 +56,44 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
     private List<Integer> entitiesToCull = new ArrayList<>();
 
     private static ArrayList<ItemWrapper> ANIMAL_DROPS = new ArrayList<>();
-    
-    public WorkSiteAnimalFarm() {
-        this.shouldCountResources = true;
 
-        this.inventory = new InventorySided(this, RotationType.FOUR_WAY, TOP_LENGTH + FRONT_LENGTH + BOTTOM_LENGTH) {
+    public final ItemStackHandler foodInventory;
+    public final ItemStackHandler toolInventory;
+
+    public WorkSiteAnimalFarm() {
+        super();
+        shouldCountResources = true;
+
+        foodInventory = new ItemStackHandler(FOOD_INVENTORY_SIZE) {
             @Override
-            public void markDirty() {
-                super.markDirty();
+            protected void onContentsChanged(int slot) {
+                markDirty();
                 shouldCountResources = true;
             }
-        };
-        InventoryTools.IndexHelper helper = new InventoryTools.IndexHelper();
-        int[] topIndices = helper.getIndiceArrayForSpread(TOP_LENGTH);
-        int[] frontIndices = helper.getIndiceArrayForSpread(FRONT_LENGTH);
-        int[] bottomIndices = helper.getIndiceArrayForSpread(BOTTOM_LENGTH);
-        this.inventory.setAccessibleSideDefault(RelativeSide.TOP, RelativeSide.TOP, topIndices);
-        this.inventory.setAccessibleSideDefault(RelativeSide.FRONT, RelativeSide.FRONT, frontIndices);//feed
-        this.inventory.setAccessibleSideDefault(RelativeSide.BOTTOM, RelativeSide.BOTTOM, bottomIndices);//buckets/shears
-        ItemSlotFilter filter = new ItemSlotFilter() {
-            @Override
-            public boolean test(@Nullable ItemStack stack) {
-                return stack.isEmpty() || isFood(stack.getItem());
-            }
-        };
-        inventory.setFilterForSlots(filter, frontIndices);
 
-        filter = new ItemSlotFilter() {
+            @Nonnull
             @Override
-            public boolean test(@Nullable ItemStack stack) {
-                return stack.isEmpty() || isTool(stack.getItem());
+            public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+                return isFood(stack.getItem()) ? super.insertItem(slot, stack, simulate) : stack;
             }
         };
-        inventory.setFilterForSlots(filter, bottomIndices);
+
+        toolInventory = new ItemStackHandler(TOOL_INVENTORY_SIZE) {
+            @Override
+            protected void onContentsChanged(int slot) {
+                markDirty();
+                shouldCountResources = true;
+            }
+
+            @Nonnull
+            @Override
+            public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+                return isTool(stack.getItem()) ? super.insertItem(slot, stack, simulate) : stack;
+            }
+        };
+
+        setSideInventory(RelativeSide.FRONT, foodInventory, RelativeSide.FRONT);
+        setSideInventory(RelativeSide.BOTTOM, foodInventory, RelativeSide.TOP);
     }
 
     private boolean isFood(Item item){
@@ -110,9 +114,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         return !entitiesToCull.isEmpty()
                 || (carrotCount > 0 && !pigsToBreed.isEmpty())
                 || (seedCount > 0 && !chickensToBreed.isEmpty())
-                || (wheatCount > 0 && (!cowsToBreed.isEmpty() || !sheepToBreed.isEmpty()))
-                || (bucketCount > 0 && cowsToMilk > 0)
-                || (!shears.isEmpty() && !sheepToShear.isEmpty());
+                || (wheatCount > 0 && (!cowsToBreed.isEmpty() || !sheepToBreed.isEmpty())) || (bucketCount > 0 && cowsToMilk > 0) || (shearsSlot >= 0 && !sheepToShear.isEmpty());
     }
 
     @Override
@@ -135,36 +137,11 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
     }
 
     private void countResources() {
-        carrotCount = 0;
-        seedCount = 0;
-        wheatCount = 0;
-        bucketCount = 0;
-        shears = ItemStack.EMPTY;
-        @Nonnull ItemStack stack;
-        for (int i = TOP_LENGTH; i < TOP_LENGTH + FRONT_LENGTH; i++) {
-            stack = getStackInSlot(i);
-            if (stack.isEmpty()) {
-                continue;
-            }
-            if (stack.getItem() == Items.CARROT) {
-                carrotCount += stack.getCount();
-            } else if (stack.getItem() == Items.WHEAT_SEEDS) {
-                seedCount += stack.getCount();
-            } else if (stack.getItem() == Items.WHEAT) {
-                wheatCount += stack.getCount();
-            }
-        }
-        for (int i = TOP_LENGTH + FRONT_LENGTH; i < getSizeInventory(); i++) {
-            stack = getStackInSlot(i);
-            if (stack.isEmpty()) {
-                continue;
-            }
-            if (stack.getItem() == Items.BUCKET) {
-                bucketCount += stack.getCount();
-            } else if (stack.getItem() instanceof ItemShears) {
-                shears = stack;
-            }
-        }
+        carrotCount = InventoryTools.getCountOf(foodInventory, s -> s.getItem() == Items.CARROT);
+        seedCount = InventoryTools.getCountOf(foodInventory, s -> s.getItem() == Items.WHEAT_SEEDS);
+        wheatCount = InventoryTools.getCountOf(foodInventory, s -> s.getItem() == Items.WHEAT);
+        bucketCount = InventoryTools.getCountOf(toolInventory, s -> s.getItem() == Items.BUCKET);
+        shearsSlot = InventoryTools.findItemSlot(toolInventory, s -> s.getItem() instanceof ItemShears);
     }
 
     private void rescan() {
@@ -175,7 +152,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         chickensToBreed.clear();
         entitiesToCull.clear();
 
-        List<EntityAnimal> entityList = getEntitiesWithinBounds(EntityAnimal.class);
+        List<EntityAnimal> entityList = EntityTools.getEntitiesWithinBounds(world, EntityAnimal.class, getWorkBoundsMin(), getWorkBoundsMax());
 
         List<EntityAnimal> cows = new ArrayList<>();
         List<EntityAnimal> pigs = new ArrayList<>();
@@ -279,28 +256,28 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         if (!cowsToBreed.isEmpty() && wheatCount >= 2) {
             if (tryBreeding(cowsToBreed)) {
                 wheatCount -= 2;
-                InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.FRONT), new ItemStack(Items.WHEAT), 2);
+                InventoryTools.removeItems(foodInventory, new ItemStack(Items.WHEAT), 2);
                 return true;
             }
         }
         if (!sheepToBreed.isEmpty() && wheatCount >= 2) {
             if (tryBreeding(sheepToBreed)) {
                 wheatCount -= 2;
-                InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.FRONT), new ItemStack(Items.WHEAT), 2);
+                InventoryTools.removeItems(foodInventory, new ItemStack(Items.WHEAT), 2);
                 return true;
             }
         }
         if (!chickensToBreed.isEmpty() && seedCount >= 2) {
             if (tryBreeding(chickensToBreed)) {
                 seedCount -= 2;
-                InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.FRONT), new ItemStack(Items.WHEAT_SEEDS), 2);
+                InventoryTools.removeItems(foodInventory, new ItemStack(Items.WHEAT_SEEDS), 2);
                 return true;
             }
         }
         if (!pigsToBreed.isEmpty() && carrotCount >= 2) {
             if (tryBreeding(pigsToBreed)) {
                 carrotCount -= 2;
-                InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.FRONT), new ItemStack(Items.CARROT), 2);
+                InventoryTools.removeItems(foodInventory, new ItemStack(Items.CARROT), 2);
                 return true;
             }
         }
@@ -308,8 +285,8 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
             return true;
         }
         if (bucketCount > 0 && tryMilking()) {
-            InventoryTools.removeItems(inventory, inventory.getAccessDirectionFor(RelativeSide.BOTTOM), new ItemStack(Items.BUCKET), 1);
-            this.addStackToInventory(new ItemStack(Items.MILK_BUCKET), RelativeSide.TOP);
+            InventoryTools.removeItems(toolInventory, new ItemStack(Items.BUCKET), 1);
+            InventoryTools.insertOrDropItem(mainInventory, new ItemStack(Items.MILK_BUCKET), world, pos);
             return true;
         }
         return tryCulling();
@@ -345,16 +322,18 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
     }
 
     private boolean tryShearing() {
-        if(shears.isEmpty() || sheepToShear.isEmpty()) {
+        if(shearsSlot < 0 || sheepToShear.isEmpty()) {
             return false;
         }
         EntitySheep sheep = (EntitySheep) world.getEntityByID(sheepToShear.remove(0));
+        ItemStack shears = toolInventory.getStackInSlot(shearsSlot);
         if (sheep == null || !sheep.isShearable(shears, world, pos)) {
             return false;
         }
-        List<ItemStack> items = sheep.onSheared(shears, world, pos, getFortune());
+        //shears do not get damaged, if they did this would need clone of the stack and additional setStackInSlot call
+        NonNullList<ItemStack> items = InventoryTools.toNonNullList(sheep.onSheared(shears, world, pos, getFortune()));
         for (ItemStack item : items) {
-            addStackToInventory(item, RelativeSide.TOP);
+            InventoryTools.insertOrDropItem(mainInventory, item, world, pos);
         }
         return true;
     }
@@ -381,7 +360,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
                         if (fortune > 0) {
                             stack.grow(world.rand.nextInt(fortune));
                         }
-                        this.addStackToInventory(stack, RelativeSide.TOP);
+                        InventoryTools.insertOrDropItem(mainInventory, stack, world, pos);
                     }
                 }
                 animal.capturedDrops.clear();
@@ -404,8 +383,8 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         if (ANIMAL_DROPS.size() == 0) {
             ANIMAL_DROPS = ItemWrapper.buildList("Animal Farm drops", AWAutomationStatics.animal_farm_pickups);
         }
-        
-        List<EntityItem> items = getEntitiesWithinBounds(EntityItem.class);
+
+        List<EntityItem> items = EntityTools.getEntitiesWithinBounds(world, EntityItem.class, getWorkBoundsMin(), getWorkBoundsMax());
         @Nonnull ItemStack stack;
         for (EntityItem item : items) {
             stack = item.getItem();
@@ -414,7 +393,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
                 for (ItemWrapper animalDrop : ANIMAL_DROPS) {
                     if (droppedItem.equals(animalDrop.item)) {
                         if (animalDrop.damage == -1 || animalDrop.damage == stack.getItemDamage()) {
-                            stack = InventoryTools.mergeItemStack(inventory, stack, inventory.getRawIndices(RelativeSide.TOP));
+                            stack = InventoryTools.mergeItemStack(mainInventory, stack);
                             if (!stack.isEmpty()) {
                                 item.setItem(stack);
                             } else {
@@ -440,18 +419,12 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
-        if (tag.hasKey("maxChickens")) {
-            maxChickenCount = tag.getInteger("maxChickens");
-        }
-        if (tag.hasKey("maxCows")) {
-            maxCowCount = tag.getInteger("maxCows");
-        }
-        if (tag.hasKey("maxPigs")) {
-            maxPigCount = tag.getInteger("maxPigs");
-        }
-        if (tag.hasKey("maxSheep")) {
-            maxSheepCount = tag.getInteger("maxSheep");
-        }
+        maxChickenCount = tag.getInteger("maxChickens");
+        maxCowCount = tag.getInteger("maxCows");
+        maxPigCount = tag.getInteger("maxPigs");
+        maxSheepCount = tag.getInteger("maxSheep");
+        foodInventory.deserializeNBT(tag.getCompoundTag("foodInventory"));
+        toolInventory.deserializeNBT(tag.getCompoundTag("toolInventory"));
     }
 
     @Override
@@ -461,6 +434,8 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         tag.setInteger("maxCows", maxCowCount);
         tag.setInteger("maxPigs", maxPigCount);
         tag.setInteger("maxSheep", maxSheepCount);
+        tag.setTag("foodInventory", foodInventory.serializeNBT());
+        tag.setTag("toolInventory", toolInventory.serializeNBT());
         return tag;
     }
 

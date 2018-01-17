@@ -12,7 +12,6 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -86,11 +85,8 @@ public class BlockResearchStation extends BlockBaseCore implements IRotatableBlo
 
     @Override
     public void breakBlock(World world, BlockPos pos, IBlockState state) {
-        TileEntity tile = world.getTileEntity(pos);
-        if (tile instanceof IInventory) {
-            InventoryTools.dropInventoryInWorld(world, (IInventory)tile, pos);
-        }
-        super.breakBlock(world, pos, state);
+		InventoryTools.dropInventoryInWorld(world.getTileEntity(pos));
+		super.breakBlock(world, pos, state);
     }
 
     @Override

@@ -194,6 +194,9 @@ public abstract class StructureValidator {
                 biome = StringTools.safeParseBoolean("=", line);
             } else if (startLow(line, "dimensionwhitelist=")) {
                 dimension = StringTools.safeParseBoolean("=", line);
+                if (dimensions == null) {
+                    dimensions = new int[] {};
+                }
             } else if (startLow(line, "preserveblocks=")) {
                 blocks = StringTools.safeParseBoolean("=", line);
             } else if (startLow(line, "dimensionlist=")) {
@@ -227,6 +230,13 @@ public abstract class StructureValidator {
             }
             TemplateParser.lineNumber++;
         }
+
+        //defaulting templates to overworld dimension if no dimension list provided
+        if (dimensions == null) {
+            dimension = true;
+            dimensions = new int[] {0};
+        }
+
         StructureValidationType validatorType = StructureValidationType.getTypeFromName(type);
         StructureValidator validator;
         if (validatorType == null) {

@@ -11,7 +11,6 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
@@ -336,7 +335,7 @@ public class MailboxData extends WorldSavedData {
                     }
                     if (item.deliveryTime >= time)//find if item is deliverable to this box
                     {
-                        stack = InventoryTools.mergeItemStack(box.inventory, item.item, box.inventory.getAccessDirectionFor(RelativeSide.TOP));
+                        stack = InventoryTools.mergeItemStack(box.receivedInventory, item.item);
                         if (stack.isEmpty()) {
                             it.remove();
                         }

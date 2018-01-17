@@ -1,18 +1,16 @@
 package net.shadowmage.ancientwarfare.npc.trade;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
 
 /*
  * Created by Olivier on 12/05/2015.
@@ -44,16 +42,16 @@ public abstract class Trade {
     /*
      * If items are all present in trade grid, delegate to #doTrade
      */
-    public void performTrade(EntityPlayer player, IInventory storage) {
-        List<ItemStack> list = new ArrayList<>();
+    public void performTrade(EntityPlayer player, IItemHandler storage) {
+        NonNullList<ItemStack> list = NonNullList.create();
         for (ItemStack temp : input) {
             if (!temp.isEmpty()) {
                 list.add(temp.copy());
             }
         }
-        list = InventoryTools.compactStackList3(list);
+        list = InventoryTools.compactStackList(list);
         for (ItemStack stack : list) {
-            if (InventoryTools.getCountOf(player.inventory, null, stack) < stack.getCount()) {
+            if (InventoryTools.getCountOf(player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), stack) < stack.getCount()) {
                 return;
             }
         }
@@ -64,24 +62,25 @@ public abstract class Trade {
      * will remove necessary items from player inventory and add to storage
      * and remove result from storage and merge into player inventory/drop on ground<br>
      */
-    protected void doTrade(EntityPlayer player, IInventory storage) {
+    protected void doTrade(EntityPlayer player, IItemHandler storage) {
+        IItemHandler playerInventory = player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
         for (ItemStack inputStack : input) {
             if (inputStack.isEmpty()) {
                 continue;
             }
-            @Nonnull ItemStack result = InventoryTools.removeItems(player.inventory, null, inputStack, inputStack.getCount());//remove from trade grid
+            @Nonnull ItemStack result = InventoryTools.removeItems(playerInventory, inputStack, inputStack.getCount());//remove from trade grid
             if(!result.isEmpty() && storage!=null)
-                InventoryTools.mergeItemStack(storage, result, (EnumFacing) null);//merge into storage
+                InventoryTools.mergeItemStack(storage, result);//merge into storage
         }
         for (ItemStack outputStack : output) {
             if (outputStack.isEmpty()) {
                 continue;
             }
             if(storage!=null)
-                outputStack = InventoryTools.removeItems(storage, null, outputStack, outputStack.getCount());//remove from storage
+                outputStack = InventoryTools.removeItems(storage, outputStack, outputStack.getCount());//remove from storage
             else
                 outputStack = outputStack.copy();
-            outputStack = InventoryTools.mergeItemStack(player.inventory, outputStack, (EnumFacing) null);//merge into player inventory, drop any unused portion on next line
+            outputStack = InventoryTools.mergeItemStack(playerInventory, outputStack);//merge into player inventory, drop any unused portion on next line
             if (!outputStack.isEmpty() && !player.world.isRemote) {//only drop into world if on server!
                 InventoryTools.dropItemInWorld(player.world, outputStack, player.posX, player.posY, player.posZ);
             }

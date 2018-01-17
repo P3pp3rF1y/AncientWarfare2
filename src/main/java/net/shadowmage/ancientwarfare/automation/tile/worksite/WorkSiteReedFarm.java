@@ -18,8 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
-import net.shadowmage.ancientwarfare.core.inventory.ItemSlotFilter;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
@@ -28,8 +26,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
-
+public class WorkSiteReedFarm extends TileWorksiteFarm {
     private final Set<BlockPos> cocoaToPlant;
     private final Set<BlockPos> cactusToPlant;
     private final Set<BlockPos> reedToPlant;
@@ -39,43 +36,23 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
     private int reedCount;
     private int cactusCount;
     private int cocoaCount;
-    private int bonemealCount;
 
     public WorkSiteReedFarm() {
-
+        super();
         cocoaToPlant = new HashSet<>();
         cactusToPlant = new HashSet<>();
         reedToPlant = new HashSet<>();
         blocksToHarvest = new HashSet<>();
         cocoaToGrow = new HashSet<>();
-
-        InventoryTools.IndexHelper helper = new InventoryTools.IndexHelper();
-        int[] topIndices = helper.getIndiceArrayForSpread(TOP_LENGTH);
-        int[] frontIndices = helper.getIndiceArrayForSpread(FRONT_LENGTH);
-        int[] bottomIndices = helper.getIndiceArrayForSpread(BOTTOM_LENGTH);
-        this.inventory.setAccessibleSideDefault(RelativeSide.TOP, RelativeSide.TOP, topIndices);
-        this.inventory.setAccessibleSideDefault(RelativeSide.FRONT, RelativeSide.FRONT, frontIndices);//plantables
-        this.inventory.setAccessibleSideDefault(RelativeSide.BOTTOM, RelativeSide.BOTTOM, bottomIndices);//bonemeal
-
-        ItemSlotFilter filter = new ItemSlotFilter() {
-            @Override
-            public boolean test(ItemStack stack) {
-                return stack.isEmpty() || isCocoDye(stack) || stack.getItem() == Items.REEDS || Block.getBlockFromItem(stack.getItem()) instanceof BlockCactus;
-            }
-        };
-        this.inventory.setFilterForSlots(filter, frontIndices);
-
-        filter = new ItemSlotFilter() {
-            @Override
-            public boolean test(ItemStack stack) {
-                return stack.isEmpty() || isBonemeal(stack);
-            }
-        };
-        this.inventory.setFilterForSlots(filter, bottomIndices);
     }
 
     private boolean isCocoDye(ItemStack stack){
         return stack.getItem() == Items.DYE && stack.getItemDamage() == 3;
+    }
+
+    @Override
+    protected boolean isPlantable(ItemStack stack) {
+        return isCocoDye(stack) || stack.getItem() == Items.REEDS || Block.getBlockFromItem(stack.getItem()) instanceof BlockCactus;
     }
 
     @Override
@@ -148,17 +125,14 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
         Block block = state.getBlock();
         if (block instanceof BlockCocoa && ((BlockCocoa) block).canGrow(world, p, state, world.isRemote)) {
             @Nonnull ItemStack stack;
-            for (int i = TOP_LENGTH + FRONT_LENGTH; i < getSizeInventory(); i++) {
-                stack = getStackInSlot(i);
+            for(int slot = 0; slot < miscInventory.getSlots(); slot++) {
+                stack = miscInventory.getStackInSlot(slot);
                 if (stack.isEmpty()) {
                     continue;
                 }
                 if (isBonemeal(stack)) {
-                    if (ItemDye.applyBonemeal(stack, world, p, getOwnerAsPlayer(), EnumHand.MAIN_HAND)) {
-                        bonemealCount--;
-                        if (stack.getCount() <= 0) {
-                            setInventorySlotContents(i, ItemStack.EMPTY);
-                        }
+                    if(ItemDye.applyBonemeal(stack.copy(), world, p, getOwnerAsPlayer(), EnumHand.MAIN_HAND)) {
+                        miscInventory.extractItem(slot, 1, false);
                     }
                     if (((BlockCocoa) block).canGrow(world, p, state, world.isRemote)) {
                         cocoaToGrow.add(p);
@@ -172,10 +146,11 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
         return false;
     }
 
-    private boolean harvestBlock(BlockPos p) {
+    @Override
+    protected boolean harvestBlock(BlockPos p) {
         Block block = world.getBlockState(p).getBlock();
         if (block instanceof BlockCactus || block instanceof BlockReed || block instanceof BlockCocoa) {
-            return harvestBlock(p, RelativeSide.FRONT, RelativeSide.TOP);
+            return super.harvestBlock(p);
         }
         return false;
     }
@@ -185,13 +160,13 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
             return false;
         }
         @Nonnull ItemStack stack;
-        for (int i = TOP_LENGTH; i < TOP_LENGTH + FRONT_LENGTH; i++) {
-            stack = getStackInSlot(i);
+        for(int slot = 0; slot < plantableInventory.getSlots(); slot++) {
+            stack = plantableInventory.getStackInSlot(slot);
             if (stack.isEmpty()) {
                 continue;
             }
-            if (stack.getItem() == Item.getItemFromBlock(Blocks.CACTUS) && tryPlace(stack, p, EnumFacing.UP)){
-                cactusCount--;
+            if(stack.getItem() == Item.getItemFromBlock(Blocks.CACTUS) && tryPlace(stack.copy(), p, EnumFacing.UP)) {
+                plantableInventory.extractItem(slot, 1, false);
                 return true;
             }
         }
@@ -203,13 +178,13 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
             return false;
         }
         @Nonnull ItemStack stack;
-        for (int i = TOP_LENGTH; i < TOP_LENGTH + FRONT_LENGTH; i++) {
-            stack = getStackInSlot(i);
+        for(int slot = 0; slot < plantableInventory.getSlots(); slot++) {
+            stack = plantableInventory.getStackInSlot(slot);
             if (stack.isEmpty()) {
                 continue;
             }
-            if (stack.getItem() == Items.REEDS && tryPlace(stack, p, EnumFacing.UP)){
-                reedCount--;
+            if(stack.getItem() == Items.REEDS && tryPlace(stack.copy(), p, EnumFacing.UP)) {
+                plantableInventory.extractItem(slot, 1, false);
                 return true;
             }
         }
@@ -233,13 +208,13 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
         if(meta == null)
             return false;
         @Nonnull ItemStack stack;
-        for (int i = TOP_LENGTH; i < TOP_LENGTH + FRONT_LENGTH; i++) {
-            stack = getStackInSlot(i);
+        for(int slot = 0; slot < plantableInventory.getSlots(); slot++) {
+            stack = plantableInventory.getStackInSlot(slot);
             if (stack.isEmpty()) {
                 continue;
             }
-            if (isCocoDye(stack) && tryPlace(stack, p, meta)) {
-                cocoaCount--;
+            if(isCocoDye(stack) && tryPlace(stack.copy(), p, meta)) {
+                plantableInventory.extractItem(slot, 1, false);
                 return true;
             }
         }
@@ -253,37 +228,10 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
 
     @Override
     protected void countResources() {
-        cactusCount = 0;
-        reedCount = 0;
-        cocoaCount = 0;
-        bonemealCount = 0;
-        @Nonnull ItemStack stack;
-        for (int i = TOP_LENGTH; i < TOP_LENGTH + FRONT_LENGTH; i++) {
-            stack = getStackInSlot(i);
-            if (stack.isEmpty()) {
-                continue;
-            }
-            if (isCocoDye(stack))
-                cocoaCount += stack.getCount();
-            else if(stack.getItem() == Items.REEDS)
-                reedCount += stack.getCount();
-            else if (Block.getBlockFromItem(stack.getItem()) instanceof BlockCactus)
-                cactusCount += stack.getCount();
-        }
-        for (int i = TOP_LENGTH + FRONT_LENGTH; i < getSizeInventory(); i++) {
-            stack = getStackInSlot(i);
-            if (stack.isEmpty()) {
-                continue;
-            }
-            if(isBonemeal(stack)){
-                bonemealCount += stack.getCount();
-            }
-        }
-    }
-
-    @Override
-    protected int[] getIndicesForPickup(){
-        return inventory.getRawIndicesCombined(RelativeSide.BOTTOM, RelativeSide.FRONT, RelativeSide.TOP);
+        super.countResources();
+        cactusCount = InventoryTools.getCountOf(plantableInventory, s -> Block.getBlockFromItem(s.getItem()) instanceof BlockCactus);
+        reedCount = InventoryTools.getCountOf(plantableInventory, s -> s.getItem() == Items.REEDS);
+        cocoaCount = InventoryTools.getCountOf(plantableInventory, s -> isCocoDye(s));
     }
 
     @Override
@@ -304,7 +252,7 @@ public class WorkSiteReedFarm extends TileWorksiteUserBlocks {
         Block block = world.getBlockState(scanPos).getBlock();
         if (block instanceof BlockCactus || block instanceof BlockReed) {//find top of cactus/reeds, harvest from top down (leave 1 at bottom)
             for (BlockPos current = scanPos.up(4); current.getY() > scanPos.getY(); current = current.down()) {
-                if(world.getBlockState(current) == block) {
+                if(world.getBlockState(current).getBlock() == block) {
                     blocksToHarvest.add(current);
                 }
             }

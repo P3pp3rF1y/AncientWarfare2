@@ -1,13 +1,15 @@
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseInterface;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
-import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.NBTSerializableUtils;
@@ -17,19 +19,20 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileWarehouseInterface extends TileControlled implements IInventory, IInteractableTile {
+public class TileWarehouseInterface extends TileControlled implements IInteractableTile {
+    private final ItemStackHandler inventory = new ItemStackHandler(27) {
+        @Override
+        protected void onContentsChanged(int slot) {
+            markDirty();
+        }
+    };
 
-    final InventoryBasic inventory = new InventoryBasic(27);
 
     private boolean init = false;
     private final List<InterfaceFillRequest> fillRequests = new ArrayList<>();
     private final List<InterfaceEmptyRequest> emptyRequests = new ArrayList<>();
     List<WarehouseInterfaceFilter> filters = new ArrayList<>();
     List<ContainerWarehouseInterface> viewers = new ArrayList<>();
-
-    public TileWarehouseInterface() {
-
-    }
 
     public void addViewer(ContainerWarehouseInterface viewer) {
         if (!hasWorld() || world.isRemote) {
@@ -72,96 +75,6 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
     }
 
     @Override
-    public int getSizeInventory() {
-        return inventory.getSizeInventory();
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return inventory.isEmpty();
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int var1) {
-        return inventory.getStackInSlot(var1);
-    }
-
-    @Override
-    public ItemStack decrStackSize(int var1, int var2) {
-        @Nonnull ItemStack stack = inventory.decrStackSize(var1, var2);
-        if(!stack.isEmpty())
-            markDirty();
-        return stack;
-    }
-
-    @Override
-    public ItemStack removeStackFromSlot(int var1) {
-        @Nonnull ItemStack stack = inventory.removeStackFromSlot(var1);
-        recalcRequests();
-        return stack;
-    }
-
-    @Override
-    public void setInventorySlotContents(int var1, ItemStack var2) {
-        inventory.setInventorySlotContents(var1, var2);
-        recalcRequests();
-        markDirty();
-    }
-
-    @Override
-    public String getName() {
-        return inventory.getName();
-    }
-
-    @Override
-    public boolean hasCustomName() {
-        return false;
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return inventory.getInventoryStackLimit();
-    }
-
-    @Override
-    public boolean isUsableByPlayer(EntityPlayer var1) {
-        return inventory.isUsableByPlayer(var1);
-    }
-
-    @Override
-    public void openInventory(EntityPlayer player) {
-    }//noop
-
-    @Override
-    public void closeInventory(EntityPlayer player) {
-    }//noop
-
-    @Override
-    public boolean isItemValidForSlot(int var1, ItemStack var2) {
-        return inventory.isItemValidForSlot(var1, var2);
-    }
-
-    @Override
-    public int getField(int id) {
-        return inventory.getField(id);
-    }
-
-    @Override
-    public void setField(int id, int value) {
-        inventory.setField(id, value);
-    }
-
-    @Override
-    public int getFieldCount() {
-        return inventory.getFieldCount();
-    }
-
-    @Override
-    public void clear() {
-        inventory.clear();
-    }
-
-    @Override
     public boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
         if (!player.world.isRemote) {
             NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_OUTPUT, pos);
@@ -191,7 +104,7 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
         fillRequests.clear();
         emptyRequests.clear();
         @Nonnull ItemStack stack;
-        for (int i = 0; i < inventory.getSizeInventory(); i++) {
+        for(int i = 0; i < inventory.getSlots(); i++) {
             stack = inventory.getStackInSlot(i);
             if (stack.isEmpty()) {
                 continue;
@@ -200,7 +113,7 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
                 emptyRequests.add(new InterfaceEmptyRequest(i, stack.getCount()));
             } else//matches, remove extras
             {
-                int count = InventoryTools.getCountOf(inventory, null, stack);
+                int count = InventoryTools.getCountOf(inventory, stack);
                 int max = getFilterQuantity(stack);
                 if (count > max) {
                     emptyRequests.add(new InterfaceEmptyRequest(i, count - max));
@@ -213,7 +126,7 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
             if (filter.getFilterItem().isEmpty()) {
                 continue;
             }
-            count = InventoryTools.getCountOf(inventory, null, filter.getFilterItem());
+            count = InventoryTools.getCountOf(inventory, filter.getFilterItem());
             if (count < filter.getFilterQuantity()) {
                 fillRequests.add(new InterfaceFillRequest(filter.getFilterItem().copy(), filter.getFilterQuantity() - count));
             }
@@ -274,4 +187,17 @@ public class TileWarehouseInterface extends TileControlled implements IInventory
         }
     }
 
+    @Override
+    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+        return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+    }
+
+    @Nullable
+    @Override
+    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+        if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            return (T) inventory;
+        }
+        return super.getCapability(capability, facing);
+    }
 }

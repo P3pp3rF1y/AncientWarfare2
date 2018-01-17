@@ -1,11 +1,11 @@
 package net.shadowmage.ancientwarfare.npc.trade;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.items.IItemHandler;
 import net.shadowmage.ancientwarfare.core.util.OrderingList;
 
 /*
@@ -21,7 +21,7 @@ public class TradeList extends OrderingList<Trade> implements INBTSerializable<N
         return new POTrade();
     }
 
-    public void performTrade(EntityPlayer player, IInventory storage, int integer) {
+    public void performTrade(EntityPlayer player, IItemHandler storage, int integer) {
         get(integer).performTrade(player, storage);
     }
 

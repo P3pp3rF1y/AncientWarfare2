@@ -2,9 +2,9 @@ package net.shadowmage.ancientwarfare.npc.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.core.inventory.SlotLimited;
+import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
-import net.shadowmage.ancientwarfare.npc.inventory.InventoryNpcEquipment;
+import net.shadowmage.ancientwarfare.npc.inventory.NpcEquipmentHandler;
 
 public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
 
@@ -13,15 +13,15 @@ public class ContainerNpcInventory extends ContainerNpcBase<NpcBase> {
 
     public ContainerNpcInventory(EntityPlayer player, int x, int y, int z) {
         super(player, x);
-        InventoryNpcEquipment inventory = new InventoryNpcEquipment(entity);
-        addSlotToContainer(new SlotLimited(inventory, 0, 8, 8)); //weapon slot
-        addSlotToContainer(new SlotLimited(inventory, 2, 8, 8 + 18 * 5));//boots
-        addSlotToContainer(new SlotLimited(inventory, 3, 8, 8 + 18 * 4));//legs
-        addSlotToContainer(new SlotLimited(inventory, 4, 8, 8 + 18 * 3));//chest
-        addSlotToContainer(new SlotLimited(inventory, 5, 8, 8 + 18 * 2));//helm
-        addSlotToContainer(new SlotLimited(inventory, 6, 8 + 18 * 2, 8 + 18 * 3));//work/combat/route orders slot
-        addSlotToContainer(new SlotLimited(inventory, 7, 8 + 18 * 2, 8 + 18 * 2));//upkeep orders slot
-        addSlotToContainer(new SlotLimited(inventory, 1, 8, 8 + 18 * 1));//shield slot
+        NpcEquipmentHandler inventory = new NpcEquipmentHandler(entity);
+        addSlotToContainer(new SlotItemHandler(inventory, 0, 8, 8)); //weapon slot
+        addSlotToContainer(new SlotItemHandler(inventory, 2, 8, 8 + 18 * 5));//boots
+        addSlotToContainer(new SlotItemHandler(inventory, 3, 8, 8 + 18 * 4));//legs
+        addSlotToContainer(new SlotItemHandler(inventory, 4, 8, 8 + 18 * 3));//chest
+        addSlotToContainer(new SlotItemHandler(inventory, 5, 8, 8 + 18 * 2));//helm
+        addSlotToContainer(new SlotItemHandler(inventory, 6, 8 + 18 * 2, 8 + 18 * 3));//work/combat/route orders slot
+        addSlotToContainer(new SlotItemHandler(inventory, 7, 8 + 18 * 2, 8 + 18 * 2));//upkeep orders slot
+        addSlotToContainer(new SlotItemHandler(inventory, 1, 8, 8 + 18 * 1));//shield slot
 
         guiHeight = addPlayerSlots(8 + 5 * 18 + 8 + 18) + 8;
         name = entity.getCustomNameTag();

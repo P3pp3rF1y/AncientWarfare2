@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.core.gui.research;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.shadowmage.ancientwarfare.core.block.Direction;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchBook;
@@ -158,13 +159,13 @@ public class GuiResearchStation extends GuiContainerBase<ContainerResearchStatio
                 ResearchGoal g = ResearchGoal.getGoal(g1);
                 if (g != null) {
                     name = g.getName();
-                    List<ItemStack> resources = g.getResources();
+                    NonNullList<ItemStack> resources = g.getResources();
                     for (int i = 0; i < layoutSlots.length; i++) {
                         if (i >= resources.size()) {
                             layoutSlots[i].setItem(ItemStack.EMPTY);
                         } else {
                             @Nonnull ItemStack resource = resources.get(i);
-                            if (!InventoryTools.doItemStacksMatch(resource, layoutSlots[i].getStack())) {
+                            if(!InventoryTools.doItemStacksMatchRelaxed(resource, layoutSlots[i].getStack())) {
                                 layoutSlots[i].setItem(resource.copy());
                             }
                         }

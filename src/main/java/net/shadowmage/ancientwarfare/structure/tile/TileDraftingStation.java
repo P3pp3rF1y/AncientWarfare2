@@ -1,7 +1,5 @@
 package net.shadowmage.ancientwarfare.structure.tile;
 
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.IInventoryChangedListener;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -9,28 +7,38 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
+import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
 
-public class TileDraftingStation extends TileEntity implements IInventoryChangedListener, ITickable {
+public class TileDraftingStation extends TileEntity implements ITickable {
 
     private String structureName;//structure pulled from live structure list anytime a ref is needed
     private boolean isStarted;//has started compiling resources -- will need input to cancel
-    private ArrayList<ItemStack> neededResources = new ArrayList<>();
+    private NonNullList<ItemStack> neededResources = NonNullList.create();
     private boolean isFinished;//is finished compiling resources, awaiting output-slot availability
     private int remainingTime;//not really time, but raw item count
     private int totalTime;//total raw-item count
 
-    public InventoryBasic inputSlots = new InventoryBasic(27, this);
-    public InventoryBasic outputSlot = new InventoryBasic(1, this);
+    public ItemStackHandler inputSlots = new ItemStackHandler(27) {
+        @Override
+        protected void onContentsChanged(int slot) {
+            markDirty();
+        }
+    };
+
+    public ItemStackHandler outputSlot = new ItemStackHandler(1) {
+        @Override
+        protected void onContentsChanged(int slot) {
+            markDirty();
+        }
+    };
 
     public TileDraftingStation() {
 
@@ -67,21 +75,21 @@ public class TileDraftingStation extends TileEntity implements IInventoryChanged
     private boolean tryRemoveResource() {
         @Nonnull ItemStack stack1, stack2;
         outerLoopLabel:
-        for (int k = 0; k < inputSlots.getSizeInventory(); k++) {
+        for(int k = 0; k < inputSlots.getSlots(); k++) {
             stack2 = inputSlots.getStackInSlot(k);
             if (stack2.isEmpty()) {
                 continue;
             }
             for (int i = 0; i < neededResources.size(); i++) {
                 stack1 = neededResources.get(i);
-                if (InventoryTools.doItemStacksMatch(stack1, stack2)) {
-                    stack1.shrink(1);
+				if(InventoryTools.doItemStacksMatchRelaxed(stack1, stack2)) {
+					stack1.shrink(1);
                     stack2.shrink(1);
                     if (stack1.getCount() <= 0) {
                         neededResources.remove(i);
                     }
                     if (stack2.getCount() <= 0) {
-                        inputSlots.setInventorySlotContents(k, ItemStack.EMPTY);
+                        inputSlots.setStackInSlot(k, ItemStack.EMPTY);
                     }
                     break outerLoopLabel;
                 }
@@ -100,7 +108,7 @@ public class TileDraftingStation extends TileEntity implements IInventoryChanged
         if (outputSlot.getStackInSlot(0).isEmpty()) {
             @Nonnull ItemStack item = new ItemStack(AWStructuresBlocks.builderBlock);
             item.setTagInfo("structureName", new NBTTagString(structureName));
-            outputSlot.setInventorySlotContents(0, item);
+            outputSlot.setStackInSlot(0, item);
             return true;
         }
         return false;
@@ -126,7 +134,7 @@ public class TileDraftingStation extends TileEntity implements IInventoryChanged
         return totalTime;
     }
 
-    public List<ItemStack> getNeededResources() {
+    public NonNullList<ItemStack> getNeededResources() {
         return neededResources;
     }
 
@@ -215,10 +223,4 @@ public class TileDraftingStation extends TileEntity implements IInventoryChanged
 
         return tag;
     }
-
-    @Override
-    public void onInventoryChanged(IInventory internal){
-        markDirty();
-    }
-
 }

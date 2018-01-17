@@ -1,10 +1,9 @@
 package net.shadowmage.ancientwarfare.core.research;
 
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -34,7 +33,7 @@ public class ResearchGoal {
     private final String researchName;
     private final Set<Integer> dependencies;//parsed shallow-dependency list
 
-    private final List<ItemStack> researchResources;
+    private final NonNullList<ItemStack> researchResources;
     private final List<OreSized> researchOres;
     private int researchTime;
 
@@ -48,7 +47,7 @@ public class ResearchGoal {
         researchId = id;
         researchName = name;
         dependencies = new HashSet<>();
-        researchResources = new ArrayList<>();
+        researchResources = NonNullList.create();
         researchOres = new ArrayList<>();
         random = new Random(researchName.hashCode());
     }
@@ -99,8 +98,8 @@ public class ResearchGoal {
         return this;
     }
 
-    public List<ItemStack> getResources() {
-        List<ItemStack> result = new ArrayList<>();
+    public NonNullList<ItemStack> getResources() {
+        NonNullList<ItemStack> result = NonNullList.create();
         result.addAll(researchResources);
         for(OreSized ore : researchOres){
             result.add(ore.getEquivalent(random));
@@ -121,12 +120,12 @@ public class ResearchGoal {
         return knownResearch.containsAll(fullDependencies);
     }
 
-    public boolean tryStart(IInventory inventory, EnumFacing side) {
+    public boolean tryStart(IItemHandler handler) {
         if (!AWCoreStatics.enableResearchResourceUse) {
             return true;
         }
         for (ItemStack stack : this.researchResources) {
-            if (InventoryTools.getCountOf(inventory, side, stack) < stack.getCount()) {
+            if (InventoryTools.getCountOf(handler, stack) < stack.getCount()) {
                 return false;
             }
         }
@@ -135,7 +134,7 @@ public class ResearchGoal {
         for(OreSized ore : researchOres){
             count = 0;
             for(ItemStack temp : ore.getEquivalents()) {
-                count += InventoryTools.getCountOf(inventory, side, temp);
+                count += InventoryTools.getCountOf(handler, temp);
                 if(count >= ore.size)
                     break;
             }
@@ -144,14 +143,14 @@ public class ResearchGoal {
         }
 
         for (ItemStack stack : this.researchResources) {
-            InventoryTools.removeItems(inventory, side, stack, stack.getCount());
+            InventoryTools.removeItems(handler, stack, stack.getCount());
         }
         int required;
         @Nonnull ItemStack remove;
         for(OreSized ore : researchOres){
             required = ore.size;
             for(ItemStack temp : ore.getEquivalents()) {
-                remove = InventoryTools.removeItems(inventory, side, temp, required);
+                remove = InventoryTools.removeItems(handler, temp, required);
                 if(!remove.isEmpty()){
                     required -= remove.getCount();
                     if(required <= 0){
@@ -332,18 +331,18 @@ public class ResearchGoal {
                 this.size = size;
         }
 
-        public List<ItemStack> getEquivalents(){
+        public NonNullList<ItemStack> getEquivalents() {
             return expandWildCardItems(OreDictionary.getOres(name));
         }
 
         public ItemStack getEquivalent(Random random){
-            List<ItemStack> temps = getEquivalents();
+            NonNullList<ItemStack> temps = getEquivalents();
             @Nonnull ItemStack temp = temps.get(random.nextInt(temps.size())).copy();
             temp.setCount(size);
             return temp;
         }
 
-        private List<ItemStack> expandWildCardItems(List<ItemStack> stacks) {
+        private NonNullList<ItemStack> expandWildCardItems(NonNullList<ItemStack> stacks) {
             NonNullList<ItemStack> addedStacks = NonNullList.create();
             Iterator<ItemStack> it = stacks.iterator();
             while(it.hasNext()) {

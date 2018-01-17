@@ -6,6 +6,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileAutoCrafting;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
@@ -33,7 +34,7 @@ public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCra
         };
         addSlotToContainer(slot);
 
-        slot = new Slot(tileEntity.bookSlot, 0, 8, 18 + 8) {
+        slot = new SlotItemHandler(tileEntity.bookSlot, 0, 8, 18 + 8) {
             @Override
             public boolean isItemValid(ItemStack par1ItemStack) {
                 return ItemResearchBook.getResearcherName(par1ItemStack) != null;
@@ -57,7 +58,7 @@ public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCra
             for (int x1 = 0; x1 < 9; x1++) {
                 x2 = x1 * 18 + 8;
                 slotNum = y1 * 9 + x1;
-                slot = new Slot(tileEntity.resourceInventory, slotNum, x2, y2);
+                slot = new SlotItemHandler(tileEntity.resourceInventory, slotNum, x2, y2);
                 addSlotToContainer(slot);
             }
         }
@@ -66,7 +67,7 @@ public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCra
         for (int x1 = 0; x1 < 9; x1++) {
             x2 = x1 * 18 + 8;
             slotNum = x1;
-            slot = new Slot(tileEntity.outputInventory, slotNum, x2, y2);
+            slot = new SlotItemHandler(tileEntity.outputInventory, slotNum, x2, y2);
             addSlotToContainer(slot);
         }
 
@@ -90,8 +91,8 @@ public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCra
             slotStackCopy = slotStack.copy();
 
             int storageSlotsStart = 1 + 1 + tileEntity.craftMatrix.getSizeInventory();
-            int outputSlotsStart = storageSlotsStart + tileEntity.resourceInventory.getSizeInventory();
-            int playerSlotStart = outputSlotsStart + tileEntity.outputInventory.getSizeInventory();
+            int outputSlotsStart = storageSlotsStart + tileEntity.resourceInventory.getSlots();
+            int playerSlotStart = outputSlotsStart + tileEntity.outputInventory.getSlots();
             int playerSlotEnd = playerSlotStart + playerSlots;
             if (slotClickedIndex < 2)//result or book slot
             {

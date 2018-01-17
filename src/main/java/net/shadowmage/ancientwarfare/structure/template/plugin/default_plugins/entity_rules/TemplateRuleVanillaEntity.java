@@ -24,6 +24,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -31,8 +32,6 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuildingException.EntityPlacementException;
-
-import java.util.List;
 
 public class TemplateRuleVanillaEntity extends TemplateRuleEntity {
 
@@ -97,7 +96,7 @@ public class TemplateRuleVanillaEntity extends TemplateRuleEntity {
     }
 
     @Override
-    public void addResources(List<ItemStack> resources) {
+    public void addResources(NonNullList<ItemStack> resources) {
 
     }
 

@@ -21,13 +21,11 @@
 package net.shadowmage.ancientwarfare.structure.template;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class StructureTemplate {
 
@@ -44,7 +42,7 @@ public class StructureTemplate {
     private TemplateRule[] templateRules;
     private TemplateRuleEntity[] entityRules;
     private short[] templateData;
-    List<ItemStack> resourceList;
+    NonNullList<ItemStack> resourceList;
 
     /*
      * world generation placement validation settings
@@ -115,10 +113,10 @@ public class StructureTemplate {
         return b.toString();
     }
 
-    public List<ItemStack> getResourceList() {
+    public NonNullList<ItemStack> getResourceList() {
         if (resourceList == null) {
             TemplateRule rule;
-            List<ItemStack> stacks = new ArrayList<>();
+            NonNullList<ItemStack> stacks = NonNullList.create();
             for (int x = 0; x < this.xSize; x++) {
                 for (int y = 0; y < this.ySize; y++) {
                     for (int z = 0; z < this.zSize; z++) {
@@ -129,8 +127,8 @@ public class StructureTemplate {
                     }
                 }
             }
-            resourceList = InventoryTools.compactStackList3(stacks);
-        }
+			resourceList = InventoryTools.compactStackList(stacks);
+		}
         return resourceList;
     }
 

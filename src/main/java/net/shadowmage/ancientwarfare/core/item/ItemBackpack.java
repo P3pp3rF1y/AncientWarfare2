@@ -14,9 +14,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.gui.GuiBackpack;
-import net.shadowmage.ancientwarfare.core.inventory.InventoryBackpack;
+import net.shadowmage.ancientwarfare.core.inventory.ItemHandlerBackpack;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
 import javax.annotation.Nullable;
@@ -59,21 +58,21 @@ public class ItemBackpack extends ItemBaseCore {
         }
     }
 
-    public static InventoryBackpack getInventoryFor(ItemStack stack) {
+    public static ItemHandlerBackpack getInventoryFor(ItemStack stack) {
         if (!stack.isEmpty() && stack.getItem() instanceof ItemBackpack) {
-            InventoryBackpack pack = new InventoryBackpack((stack.getItemDamage() + 1) * 9);
+            ItemHandlerBackpack pack = new ItemHandlerBackpack((stack.getItemDamage() + 1) * 9);
             //noinspection ConstantConditions
-            if (stack.hasTagCompound() && stack.getTagCompound().hasKey("backpackItems")) {
-                InventoryTools.readInventoryFromNBT(pack, stack.getTagCompound().getCompoundTag("backpackItems"));
+            if(stack.hasTagCompound() && stack.getTagCompound().hasKey("backpackItems")) {
+                pack.deserializeNBT(stack.getTagCompound().getCompoundTag("backpackItems"));
             }
             return pack;
         }
         return null;
     }
 
-    public static void writeBackpackToItem(InventoryBackpack pack, ItemStack stack) {
+    public static void writeBackpackToItem(ItemHandlerBackpack pack, ItemStack stack) {
         if (!stack.isEmpty() && stack.getItem() instanceof ItemBackpack) {
-            NBTTagCompound invTag = InventoryTools.writeInventoryToNBT(pack, new NBTTagCompound());
+            NBTTagCompound invTag = pack.serializeNBT();
             stack.setTagInfo("backpackItems", invTag);
         }
     }

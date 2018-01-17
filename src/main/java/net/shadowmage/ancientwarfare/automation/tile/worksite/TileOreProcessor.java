@@ -1,31 +1,30 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.IInventoryChangedListener;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.shadowmage.ancientwarfare.core.inventory.InventoryBasic;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 
-public class TileOreProcessor extends TileWorksiteBase implements ISidedInventory, IInventoryChangedListener {
+public class TileOreProcessor extends TileWorksiteBase {
 
-    private final InventoryBasic inventory;
+	private final ItemStackHandler inventory;
 
     public TileOreProcessor() {
-        inventory = new InventoryBasic(2, this);
-    }
+		inventory = new ItemStackHandler(2) {
+			@Override
+			protected void onContentsChanged(int slot) {
+				markDirty();
+			}
+		};
 
-    @Override
-    public void onInventoryChanged(IInventory internal) {
-        markDirty();
     }
 
     @Override
@@ -67,106 +66,6 @@ public class TileOreProcessor extends TileWorksiteBase implements ISidedInventor
 //************************************* BRIDGE/TEMPLATE/ACCESSOR METHODS ****************************************//
 
     @Override
-    public int[] getSlotsForFace(EnumFacing side) {
-        // TODO implement re-mappable relative block sides
-        return null;
-    }
-
-    @Override
-    public boolean canInsertItem(int slot, ItemStack stack, EnumFacing side) {
-        return slot == 0 && isItemValidForSlot(slot, stack);
-    }
-
-    @Override
-    public boolean canExtractItem(int slot, ItemStack stack, EnumFacing side) {
-        return true;
-    }
-
-    @Override
-    public boolean isItemValidForSlot(int slot, ItemStack stack) {
-        //TODO set from recipe list
-        return true;
-    }
-
-    @Override
-    public int getField(int id) {
-        return 0;
-    }
-
-    @Override
-    public void setField(int id, int value) {
-
-    }
-
-    @Override
-    public int getFieldCount() {
-        return 0;
-    }
-
-    @Override
-    public void clear() {
-        inventory.clear();
-    }
-
-    @Override
-    public int getSizeInventory() {
-        return inventory.getSizeInventory();
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return inventory.isEmpty();
-    }
-
-    @Override
-    public ItemStack getStackInSlot(int slot) {
-        return inventory.getStackInSlot(slot);
-    }
-
-    @Override
-    public ItemStack decrStackSize(int slot, int amt) {
-        return inventory.decrStackSize(slot, amt);
-    }
-
-    @Override
-    public ItemStack removeStackFromSlot(int slot) {
-        return inventory.removeStackFromSlot(slot);
-    }
-
-    @Override
-    public void setInventorySlotContents(int slot, ItemStack stack) {
-        inventory.setInventorySlotContents(slot, stack);
-    }
-
-    @Override
-    public String getName() {
-        return inventory.getName();
-    }
-
-    @Override
-    public boolean hasCustomName() {
-        return inventory.hasCustomName();
-    }
-
-    @Override
-    public int getInventoryStackLimit() {
-        return inventory.getInventoryStackLimit();
-    }
-
-    @Override
-    public boolean isUsableByPlayer(EntityPlayer player) {
-        return inventory.isUsableByPlayer(player);
-    }
-
-    @Override
-    public void openInventory(EntityPlayer player) {
-    }//NOOP
-
-    @Override
-    public void closeInventory(EntityPlayer player) {
-    }//NOOP
-
-    @Override
     public EnumSet<WorksiteUpgrade> getValidUpgrades() {
         return EnumSet.noneOf(WorksiteUpgrade.class);
     }//NOOP
@@ -185,4 +84,18 @@ public class TileOreProcessor extends TileWorksiteBase implements ISidedInventor
         tag.setTag("inventory", inventory.serializeNBT());
         return tag;
     }
+
+	@Override
+	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, facing);
+	}
+
+	@Nullable
+	@Override
+	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+			return (T) inventory;
+		}
+		return super.getCapability(capability, facing);
+	}
 }

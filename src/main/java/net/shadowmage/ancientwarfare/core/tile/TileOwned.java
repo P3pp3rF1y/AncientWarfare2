@@ -47,6 +47,20 @@ public class TileOwned extends TileUpdatable implements IOwnable {
     }
 
     @Override
+    protected void writeUpdateNBT(NBTTagCompound tag) {
+        tag.setString(tagKey, ownerName);
+        if(ownerId !=null)
+            tag.setString("ownerId", ownerId.toString());
+    }
+
+    @Override
+    protected void handleUpdateNBT(NBTTagCompound tag) {
+        ownerName = tag.getString(tagKey);
+        if(tag.hasKey("ownerId"))
+            ownerId = UUID.fromString(tag.getString("ownerId"));
+    }
+
+    @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         ownerName = tag.getString(tagKey);

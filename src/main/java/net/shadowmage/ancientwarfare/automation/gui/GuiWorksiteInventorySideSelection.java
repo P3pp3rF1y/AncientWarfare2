@@ -10,7 +10,7 @@ import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 
-import java.util.EnumSet;
+import java.util.Set;
 
 public class GuiWorksiteInventorySideSelection extends GuiContainerBase<ContainerWorksiteInventorySideSelection> {
 
@@ -45,7 +45,7 @@ public class GuiWorksiteInventorySideSelection extends GuiContainerBase<Containe
         SideButton sideButton;
         RelativeSide accessed;
         EnumFacing dir;
-        for (RelativeSide side : RotationType.FOUR_WAY.getValidSides()) {
+        for(RelativeSide side : getContainer().sideMap.keySet()) {
             label = new Label(8, height, side.getTranslationKey());
             addGuiElement(label);
 
@@ -78,14 +78,14 @@ public class GuiWorksiteInventorySideSelection extends GuiContainerBase<Containe
         protected void onPressed() {
             int ordinal = selection.ordinal();
             RelativeSide next;
-            EnumSet<RelativeSide> validSides = getContainer().tileEntity.inventory.getValidSides();
+            Set<RelativeSide> validSides = getContainer().tileEntity.getSideInventories().keySet();
             for (int i = 0; i < RelativeSide.values().length; i++) {
                 ordinal++;
                 if (ordinal >= RelativeSide.values().length) {
                     ordinal = 0;
                 }
                 next = RelativeSide.values()[ordinal];
-                if (validSides.contains(next)) {
+                if(validSides.contains(next) || next == RelativeSide.NONE) {
                     selection = next;
                     break;
                 }

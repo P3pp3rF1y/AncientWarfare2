@@ -1,11 +1,11 @@
 package net.shadowmage.ancientwarfare.npc.trade;
 
-import net.minecraft.inventory.IInventory;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.items.IItemHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,15 +76,15 @@ public class POTradeRestockData {
         withdrawSide = side;
     }
 
-    public void doDeposit(IInventory storage, IInventory deposit, EnumFacing side) {
+    public void doDeposit(IItemHandler storage, IItemHandler deposit) {
         for (POTradeDepositEntry aDeposit : depositList) {
-            aDeposit.process(storage, deposit, side);
+            aDeposit.process(storage, deposit);
         }
     }
 
-    public void doWithdraw(IInventory storage, IInventory withdraw, EnumFacing side) {
+    public void doWithdraw(IItemHandler storage, IItemHandler withdraw) {
         for (POTradeWithdrawEntry aWithdraw : withdrawList) {
-            aWithdraw.process(storage, withdraw, side);
+            aWithdraw.process(storage, withdraw);
         }
     }
 

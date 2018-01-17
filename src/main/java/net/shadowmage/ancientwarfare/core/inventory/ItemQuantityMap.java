@@ -5,12 +5,16 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 public class ItemQuantityMap {
 
@@ -152,8 +156,8 @@ public class ItemQuantityMap {
      * Return the most compact set of item-stacks that can represent the contents of this map.<br>
      * May return multiple stacks of the same item if the quantity contained is > maxStackSize.<br>
      */
-    public List<ItemStack> getItems() {
-        List<ItemStack> items = new ArrayList<>();
+    public NonNullList<ItemStack> getItems() {
+        NonNullList<ItemStack> items = NonNullList.create();
         @Nonnull ItemStack outStack;
         int qty;
         for (ItemHashEntry wrap1 : map.keySet()) {
@@ -174,7 +178,7 @@ public class ItemQuantityMap {
      *
      * @param items will be filled with the item-stacks from this map, must not be NULL
      */
-    public void getCompactItems(List<ItemStack> items) {
+    public void getCompactItems(NonNullList<ItemStack> items) {
         @Nonnull ItemStack outStack;
         for (ItemHashEntry wrap1 : map.keySet()) {
             outStack = wrap1.getItemStack().copy();

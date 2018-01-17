@@ -3,17 +3,18 @@ package net.shadowmage.ancientwarfare.automation.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseBase;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
-import net.shadowmage.ancientwarfare.core.inventory.SlotResearchCrafting;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 
 import javax.annotation.Nonnull;
@@ -28,8 +29,8 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
         super(player, x, y, z);
         InventoryCrafting inventory = tileEntity.layoutMatrix;
 
-        Slot slot = new SlotResearchCrafting(player, inventory, tileEntity.result, 0, 3 * 18 + 3 * 18 + 8 + 18, 1 * 18 + 8) {
-            @Override
+		Slot slot = new SlotCrafting(player, inventory, tileEntity.result, 0, 3 * 18 + 3 * 18 + 8 + 18, 1 * 18 + 8) {
+			@Override
             public ItemStack onTake(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack) {
                 tileEntity.preItemCrafted();
                 @Nonnull ItemStack ret = super.onTake(par1EntityPlayer, par2ItemStack);
@@ -40,7 +41,7 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
         };
         addSlotToContainer(slot);
 
-        slot = new Slot(tileEntity.bookInventory, 0, 8, 18 + 8) {
+        slot = new SlotItemHandler(tileEntity.bookInventory, 0, 8, 18 + 8) {
             @Override
             public boolean isItemValid(ItemStack par1ItemStack) {
                 return ItemResearchBook.getResearcherName(par1ItemStack) != null;
