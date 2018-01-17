@@ -17,6 +17,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagLong;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
@@ -30,7 +31,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 public class WorkSiteTreeFarm extends TileWorksiteFarm {
@@ -104,7 +104,7 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
                         if(!stack.isEmpty() && stack.getItem() instanceof ItemShears){
                             if(((IShearable) block).isShearable(stack, world, position)){
                                 ItemStack clone = stack.copy();
-                                List<ItemStack> drops = ((IShearable) block).onSheared(clone, world, position, getFortune());
+                                NonNullList<ItemStack> drops = InventoryTools.toNonNullList(((IShearable) block).onSheared(clone, world, position, getFortune()));
                                 miscInventory.setStackInSlot(slot, clone);
                                 drops = InventoryTools.insertItems(plantableInventory, drops, false);
                                 InventoryTools.insertOrDropItems(mainInventory, drops, world, pos);

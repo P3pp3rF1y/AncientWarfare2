@@ -22,14 +22,12 @@ import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 public class BlockStructureBuilder extends BlockBaseStructure {
 
-    List<ItemStack> displayCache = null;
+    NonNullList<ItemStack> displayCache = null;
 
     public BlockStructureBuilder() {
         super(Material.ROCK, "structure_builder_ticked");
@@ -39,7 +37,7 @@ public class BlockStructureBuilder extends BlockBaseStructure {
     @Override
     public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
         if (displayCache == null || displayCache.isEmpty()) {
-            displayCache = new ArrayList<>();
+            displayCache = NonNullList.create();
 
             //TODO rework structure template manager so that it keeps only one central repository that either is already filled on server or gets updated on client.
             Set<String> templateNames;

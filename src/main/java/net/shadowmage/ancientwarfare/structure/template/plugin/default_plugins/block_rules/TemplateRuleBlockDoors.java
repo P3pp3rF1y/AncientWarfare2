@@ -24,12 +24,11 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
-
-import java.util.List;
 
 public class TemplateRuleBlockDoors extends TemplateRuleVanillaBlocks {
 
@@ -82,7 +81,7 @@ public class TemplateRuleBlockDoors extends TemplateRuleVanillaBlocks {
     }
 
     @Override
-    public void addResources(List<ItemStack> resources) {
+    public void addResources(NonNullList<ItemStack> resources) {
         if (sideFlag > 0) {
             super.addResources(resources);
         }

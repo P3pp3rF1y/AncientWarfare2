@@ -5,14 +5,13 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ContainerDraftingStation extends ContainerStructureSelectionBase {
 
@@ -20,7 +19,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
     private boolean isFinished = false;
     private int remainingTime;
     private int totalTime;
-    public final List<ItemStack> neededResources = new ArrayList<>();
+    public final NonNullList<ItemStack> neededResources = NonNullList.create();
 
     private final TileDraftingStation tile;
 
@@ -116,7 +115,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
         this.sendDataToClient(tag);
     }
 
-    private NBTTagList getResourceListTag(List<ItemStack> resources) {
+    private NBTTagList getResourceListTag(NonNullList<ItemStack> resources) {
         NBTTagList list = new NBTTagList();
         NBTTagCompound tag;
         for (ItemStack item : resources) {
@@ -127,7 +126,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
         return list;
     }
 
-    private void readResourceList(NBTTagList list, List<ItemStack> resources) {
+    private void readResourceList(NBTTagList list, NonNullList<ItemStack> resources) {
         NBTTagCompound tag;
         @Nonnull ItemStack stack;
         for (int i = 0; i < list.tagCount(); i++) {

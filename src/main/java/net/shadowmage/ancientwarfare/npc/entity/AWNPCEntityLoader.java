@@ -5,6 +5,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -21,7 +22,6 @@ import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 import javax.annotation.Nonnull;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Mod.EventBusSubscriber(modid = AncientWarfareNPC.modID)
@@ -492,7 +492,7 @@ public class AWNPCEntityLoader {
      * used by npc spawner item to get the sub-items
      */
 
-    public static void getSpawnerSubItems(List<ItemStack> list) {
+    public static void getSpawnerSubItems(NonNullList<ItemStack> list) {
         for (NpcDeclaration dec : npcMap.values()) {
             if (dec.canSpawnBaseEntity) {
                 list.add(ItemNpcSpawner.getStackForNpcType(dec.npcType, ""));

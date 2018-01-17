@@ -1,10 +1,16 @@
 package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
-import net.shadowmage.ancientwarfare.core.gui.elements.*;
+import net.shadowmage.ancientwarfare.core.gui.elements.Button;
+import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
+import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
+import net.shadowmage.ancientwarfare.core.gui.elements.Label;
+import net.shadowmage.ancientwarfare.core.gui.elements.Text;
+import net.shadowmage.ancientwarfare.core.gui.elements.TexturedRectangle;
 import net.shadowmage.ancientwarfare.structure.container.ContainerStructureSelectionBase;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateClient;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManagerClient;
@@ -125,8 +131,8 @@ public class GuiStructureSelectionBase extends GuiContainerBase<ContainerStructu
         if (template != null) {
             ResourceLocation l = StructureTemplateManagerClient.instance().getImageFor(template.name);
             rect.setTexture(l);
-            List<ItemStack> resources = template.resourceList;
-            ItemSlot item;
+			NonNullList<ItemStack> resources = template.resourceList;
+			ItemSlot item;
             for (ItemStack stack : resources) {
                 item = new ItemSlot(8, totalHeight, stack, this);
                 resourceArea.addGuiElement(item);

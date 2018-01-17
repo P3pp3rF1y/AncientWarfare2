@@ -5,6 +5,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStorage;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.inventory.InventorySlotlessBasic;
@@ -55,7 +56,7 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
     public void onTileBroken() {
         ItemQuantityMap qtm = new ItemQuantityMap();
         addItems(qtm);
-        List<ItemStack> list = qtm.getItems();
+        NonNullList<ItemStack> list = qtm.getItems();
         for (ItemStack stack : list) {
             InventoryTools.dropItemInWorld(world, stack, pos);
         }

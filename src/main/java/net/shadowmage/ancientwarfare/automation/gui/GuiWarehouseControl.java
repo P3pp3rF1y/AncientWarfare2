@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.automation.gui;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
@@ -21,8 +22,6 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStac
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortType;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseControl> {
@@ -108,8 +107,8 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 
     private void addInventoryViewElements() {
         @Nonnull ItemStack stack;
-        List<ItemStack> displayStacks = new ArrayList<>();
-        for (ItemHashEntry entry : getContainer().itemMap.keySet()) {
+		NonNullList<ItemStack> displayStacks = NonNullList.create();
+		for (ItemHashEntry entry : getContainer().itemMap.keySet()) {
             stack = entry.getItemStack();
             stack.setCount(getContainer().itemMap.getCount(entry));
             displayStacks.add(stack);
@@ -138,8 +137,8 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
         area.setAreaSize(totalSize + 8);
     }
 
-    private void sortItems(List<ItemStack> items) {
-        sorter.setSortType(sortType);
+	private void sortItems(NonNullList<ItemStack> items) {
+		sorter.setSortType(sortType);
         sorter.setSortOrder(sortOrder);
         sorter.setTextInput(input.getText());
         items.sort(sorter);

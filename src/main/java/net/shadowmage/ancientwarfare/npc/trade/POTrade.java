@@ -2,16 +2,14 @@ package net.shadowmage.ancientwarfare.npc.trade;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.items.IItemHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class POTrade extends Trade {
 
-    private List<ItemStack> compactInput = new ArrayList<>();
-    private List<ItemStack> compactOutput = new ArrayList<>();
+	private NonNullList<ItemStack> compactInput = NonNullList.create();
+	private NonNullList<ItemStack> compactOutput = NonNullList.create();
 
     @Override
     public void setInputStack(int index, ItemStack stack) {
@@ -26,8 +24,8 @@ public class POTrade extends Trade {
     }
 
     private void updateCompactInput() {
-        ArrayList<ItemStack> list = new ArrayList<>();
-        for (ItemStack temp : input) {
+		NonNullList<ItemStack> list = NonNullList.create();
+		for (ItemStack temp : input) {
             if (!temp.isEmpty()) {
                 list.add(temp.copy());
             }
@@ -36,8 +34,8 @@ public class POTrade extends Trade {
     }
 
     private void updateCompactOutput() {
-        ArrayList<ItemStack> list = new ArrayList<>();
-        for (ItemStack temp : output) {
+		NonNullList<ItemStack> list = NonNullList.create();
+		for (ItemStack temp : output) {
             if (!temp.isEmpty()) {
                 list.add(temp.copy());
             }

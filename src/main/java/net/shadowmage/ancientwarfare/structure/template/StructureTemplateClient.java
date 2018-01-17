@@ -23,17 +23,16 @@ package net.shadowmage.ancientwarfare.structure.template;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
 
 public class StructureTemplateClient {
 
     public final String name;
     public final int xSize, ySize, zSize, xOffset, yOffset, zOffset;
-    public final List<ItemStack> resourceList = new ArrayList<>();
+    public final NonNullList<ItemStack> resourceList = NonNullList.create();
     public boolean survival;
 
     public StructureTemplateClient(StructureTemplate template) {

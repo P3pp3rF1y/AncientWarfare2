@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.gui;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStorage;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.WarehouseStorageFilter;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
@@ -16,7 +17,6 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.List;
 
 public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStorage> {
@@ -99,7 +99,7 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
         @Nonnull ItemStack stack;
         int x = 0, y = 0;
         int totalSize = 8;
-        List<ItemStack> displayStacks = new ArrayList<>();
+        NonNullList<ItemStack> displayStacks = NonNullList.create();
         for (ItemHashEntry entry : getContainer().itemMap.keySet()) {
             qty = getContainer().itemMap.getCount(entry);
             stack = entry.getItemStack();

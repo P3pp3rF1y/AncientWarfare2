@@ -23,6 +23,7 @@ package net.shadowmage.ancientwarfare.structure.api;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.Json;
@@ -66,7 +67,7 @@ public abstract class TemplateRule {
 
     public abstract void writeRuleData(NBTTagCompound tag);
 
-    public abstract void addResources(List<ItemStack> resources);
+    public abstract void addResources(NonNullList<ItemStack> resources);
 
     public abstract boolean shouldPlaceOnBuildPass(World world, int turns, BlockPos pos, int buildPass);
 

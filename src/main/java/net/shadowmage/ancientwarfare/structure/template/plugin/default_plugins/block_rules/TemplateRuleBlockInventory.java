@@ -20,7 +20,6 @@
  */
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules;
 
-import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
@@ -124,9 +123,9 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
         LootContext.Builder builder = new LootContext.Builder((WorldServer) world);
         LootTable lootTable = world.getLootTableManager().getLootTableFromLocation(LootTableList.CHESTS_SIMPLE_DUNGEON);
         LootContext lootContext = builder.build();
-        List<ItemStack> loot = Lists.newArrayList();
+        NonNullList<ItemStack> loot = NonNullList.create();
         for (int i = 0; i < randomLootLevel; i++) {
-            InventoryTools.mergeItemStacks(loot, lootTable.generateLootForPools(rng, lootContext));
+            InventoryTools.mergeItemStacks(loot, InventoryTools.toNonNullList(lootTable.generateLootForPools(rng, lootContext)));
         }
 
         List<Integer> randomSlots = InventoryTools.getEmptySlotsRandomized(inventory, rng);

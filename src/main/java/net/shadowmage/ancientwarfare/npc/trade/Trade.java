@@ -11,8 +11,6 @@ import net.minecraftforge.items.IItemHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
 
 /*
  * Created by Olivier on 12/05/2015.
@@ -45,7 +43,7 @@ public abstract class Trade {
      * If items are all present in trade grid, delegate to #doTrade
      */
     public void performTrade(EntityPlayer player, IItemHandler storage) {
-        List<ItemStack> list = new ArrayList<>();
+        NonNullList<ItemStack> list = NonNullList.create();
         for (ItemStack temp : input) {
             if (!temp.isEmpty()) {
                 list.add(temp.copy());

@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
@@ -330,7 +331,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
             return false;
         }
         //shears do not get damaged, if they did this would need clone of the stack and additional setStackInSlot call
-        List<ItemStack> items = sheep.onSheared(shears, world, pos, getFortune());
+        NonNullList<ItemStack> items = InventoryTools.toNonNullList(sheep.onSheared(shears, world, pos, getFortune()));
         for (ItemStack item : items) {
             InventoryTools.insertOrDropItem(mainInventory, item, world, pos);
         }

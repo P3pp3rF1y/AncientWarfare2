@@ -7,6 +7,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
@@ -15,14 +16,12 @@ import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
 
 public class TileDraftingStation extends TileEntity implements ITickable {
 
     private String structureName;//structure pulled from live structure list anytime a ref is needed
     private boolean isStarted;//has started compiling resources -- will need input to cancel
-    private ArrayList<ItemStack> neededResources = new ArrayList<>();
+    private NonNullList<ItemStack> neededResources = NonNullList.create();
     private boolean isFinished;//is finished compiling resources, awaiting output-slot availability
     private int remainingTime;//not really time, but raw item count
     private int totalTime;//total raw-item count
@@ -135,7 +134,7 @@ public class TileDraftingStation extends TileEntity implements ITickable {
         return totalTime;
     }
 
-    public List<ItemStack> getNeededResources() {
+    public NonNullList<ItemStack> getNeededResources() {
         return neededResources;
     }
 

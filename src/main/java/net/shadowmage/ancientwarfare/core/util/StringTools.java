@@ -23,6 +23,7 @@ package net.shadowmage.ancientwarfare.core.util;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.oredict.OreDictionary;
@@ -299,7 +300,7 @@ public class StringTools {
         Item item = safeParseItem(name);
         if (item == null) {
             if(dictionary) {
-                List<ItemStack> list = OreDictionary.getOres(name);
+                NonNullList<ItemStack> list = OreDictionary.getOres(name);
                 for (ItemStack temp : list) {
                     if (temp != null && temp.getMaxStackSize() >= i) {
                         @Nonnull ItemStack result = temp.copy();

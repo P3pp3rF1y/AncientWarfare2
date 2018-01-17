@@ -19,6 +19,7 @@ import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
+import org.apache.commons.lang3.Validate;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -35,11 +36,11 @@ public class InventoryTools {
 		return insertItem(handler, stack, true).isEmpty();
 	}
 
-	public static boolean canInventoryHold(IItemHandler handler, List<ItemStack> stacks) {
+	public static boolean canInventoryHold(IItemHandler handler, NonNullList<ItemStack> stacks) {
 		return insertItems(handler, stacks, true).isEmpty();
 	}
 
-	public static NonNullList<ItemStack> insertItems(IItemHandler handler, List<ItemStack> stacks, boolean simulate) {
+	public static NonNullList<ItemStack> insertItems(IItemHandler handler, NonNullList<ItemStack> stacks, boolean simulate) {
 		NonNullList<ItemStack> remainingItems = NonNullList.create();
 		if (simulate) {
 			handler = cloneItemHandler(handler);
@@ -419,7 +420,7 @@ public class InventoryTools {
 	 * but does use more memory in the process.  On average 2x faster than compactStackList and 4x+ faster than
 	 * compacctStackList2
 	 */
-	public static List<ItemStack> compactStackList(List<ItemStack> in) {
+	public static NonNullList<ItemStack> compactStackList(NonNullList<ItemStack> in) {
 		ItemQuantityMap map = new ItemQuantityMap();
 		for (ItemStack stack : in) {
 			map.addCount(stack, stack.getCount());
@@ -427,7 +428,7 @@ public class InventoryTools {
 		return map.getItems();
 	}
 
-	public static void mergeItemStacks(List<ItemStack> stacks, List<ItemStack> stacksToMerge) {
+	public static void mergeItemStacks(NonNullList<ItemStack> stacks, NonNullList<ItemStack> stacksToMerge) {
 		for (ItemStack stackToMerge : stacksToMerge) {
 			if (stackToMerge.isEmpty()) {
 				continue;
@@ -455,7 +456,7 @@ public class InventoryTools {
 		}
 	}
 
-	public static void dropItemsInWorld(World world, List<ItemStack> stacks, BlockPos pos) {
+	public static void dropItemsInWorld(World world, NonNullList<ItemStack> stacks, BlockPos pos) {
 		for (ItemStack stack : stacks) {
 			dropItemInWorld(world, stack, pos);
 		}
@@ -607,7 +608,7 @@ public class InventoryTools {
 		return list;
 	}
 
-	public static void shuffleItems(List<ItemStack> stacks, int numberOfSlots, Random rand) {
+	public static void shuffleItems(NonNullList<ItemStack> stacks, int numberOfSlots, Random rand) {
 		numberOfSlots = numberOfSlots - stacks.size();
 
 		int MIN_SIZE_TO_SPLIT = 3;
@@ -645,9 +646,20 @@ public class InventoryTools {
 		}
 	}
 
-	public static void insertOrDropItems(IItemHandler handler, List<ItemStack> stacks, World world, BlockPos pos) {
+	public static void insertOrDropItems(IItemHandler handler, NonNullList<ItemStack> stacks, World world, BlockPos pos) {
 		for (ItemStack stack : stacks) {
 			insertOrDropItem(handler, stack, world, pos);
 		}
+	}
+
+	public static NonNullList<ItemStack> toNonNullList(List<ItemStack> stacks) {
+		NonNullList<ItemStack> ret = NonNullList.create();
+
+		for (ItemStack stack : stacks) {
+			Validate.notNull(stack);
+			ret.add(stack);
+		}
+
+		return ret;
 	}
 }

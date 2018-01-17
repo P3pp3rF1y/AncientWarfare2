@@ -33,7 +33,7 @@ public class ResearchGoal {
     private final String researchName;
     private final Set<Integer> dependencies;//parsed shallow-dependency list
 
-    private final List<ItemStack> researchResources;
+    private final NonNullList<ItemStack> researchResources;
     private final List<OreSized> researchOres;
     private int researchTime;
 
@@ -47,7 +47,7 @@ public class ResearchGoal {
         researchId = id;
         researchName = name;
         dependencies = new HashSet<>();
-        researchResources = new ArrayList<>();
+        researchResources = NonNullList.create();
         researchOres = new ArrayList<>();
         random = new Random(researchName.hashCode());
     }
@@ -98,8 +98,8 @@ public class ResearchGoal {
         return this;
     }
 
-    public List<ItemStack> getResources() {
-        List<ItemStack> result = new ArrayList<>();
+    public NonNullList<ItemStack> getResources() {
+        NonNullList<ItemStack> result = NonNullList.create();
         result.addAll(researchResources);
         for(OreSized ore : researchOres){
             result.add(ore.getEquivalent(random));
@@ -331,18 +331,18 @@ public class ResearchGoal {
                 this.size = size;
         }
 
-        public List<ItemStack> getEquivalents(){
+        public NonNullList<ItemStack> getEquivalents() {
             return expandWildCardItems(OreDictionary.getOres(name));
         }
 
         public ItemStack getEquivalent(Random random){
-            List<ItemStack> temps = getEquivalents();
+            NonNullList<ItemStack> temps = getEquivalents();
             @Nonnull ItemStack temp = temps.get(random.nextInt(temps.size())).copy();
             temp.setCount(size);
             return temp;
         }
 
-        private List<ItemStack> expandWildCardItems(List<ItemStack> stacks) {
+        private NonNullList<ItemStack> expandWildCardItems(NonNullList<ItemStack> stacks) {
             NonNullList<ItemStack> addedStacks = NonNullList.create();
             Iterator<ItemStack> it = stacks.iterator();
             while(it.hasNext()) {
