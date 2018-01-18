@@ -17,8 +17,10 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.ChunkCache;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -62,7 +64,7 @@ public class BlockAdvancedSpawner extends BlockBaseStructure {
     @Override
     public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
         IBlockState superState = super.getActualState(state, world, pos);
-        TileEntity te = world.getTileEntity(pos);
+        TileEntity te = world instanceof ChunkCache ? ((ChunkCache) world).getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK) : world.getTileEntity(pos);
         if (te instanceof TileAdvancedSpawner) {
             TileAdvancedSpawner spawner = (TileAdvancedSpawner) te;
             if (spawner.getSettings().isTransparent()) {
