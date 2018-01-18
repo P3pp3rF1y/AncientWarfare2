@@ -71,6 +71,11 @@ public abstract class NpcFactionArcher extends NpcFaction implements IRangedAtta
 	}
 
 	@Override
+	public boolean isPassive() {
+		return false;
+	}
+
+	@Override
 	public boolean shouldSleep() {
 		return false;
 	}

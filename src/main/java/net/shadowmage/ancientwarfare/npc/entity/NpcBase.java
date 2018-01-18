@@ -370,6 +370,10 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		return false;
 	}
 
+	public boolean isPassive() {
+		return true;
+	}
+
 	public void setRainedOn(boolean rainedOn) {
 		this.rainedOn = rainedOn;
 	}

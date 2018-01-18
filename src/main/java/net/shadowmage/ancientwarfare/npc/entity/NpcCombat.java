@@ -123,6 +123,11 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
     }
 
     @Override
+    public boolean isPassive() {
+        return false;
+    }
+
+    @Override
     public boolean shouldSleep() {
         return false;
     }
