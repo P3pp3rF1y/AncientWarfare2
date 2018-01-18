@@ -58,6 +58,7 @@ import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 import net.shadowmage.ancientwarfare.npc.item.ItemShield;
+import net.shadowmage.ancientwarfare.npc.network.UUIDDataSerializer;
 import net.shadowmage.ancientwarfare.npc.skin.NpcSkinManager;
 
 import javax.annotation.Nonnull;
@@ -74,9 +75,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	private static final DataParameter<Byte> BED_DIRECTION = EntityDataManager.createKey(NpcBase.class, DataSerializers.BYTE);
 	private static final DataParameter<Boolean> IS_SLEEPING = EntityDataManager.createKey(NpcBase.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.createKey(NpcBase.class, DataSerializers.BOOLEAN);
+	private static final DataParameter<UUID> OWNER_ID = EntityDataManager.createKey(NpcBase.class, UUIDDataSerializer.INSTANCE);
 
 	private String ownerName = "";//the owner of this NPC, used for checking teams
-	private UUID ownerId;
 	protected String followingPlayerName;//set/cleared onInteract from player if player.team==this.team
 
 	protected NpcLevelingStats levelingStats;
@@ -129,6 +130,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		dataManager.register(BED_DIRECTION, (byte) EnumFacing.NORTH.ordinal());
 		dataManager.register(IS_SLEEPING, false);
 		dataManager.register(SWINGING_ARMS, false);
+		dataManager.register(OWNER_ID, null);
 	}
 
 	@Override
@@ -315,7 +317,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		/*
 		 * need to test how well it works for an npc (perhaps drop sand on their head?)
          */
-		if (!world.isRemote && !getSleeping()) {
+		if (!world.isRemote && !isSleeping()) {
 			this.pushOutOfBlocks(this.posX, (this.getEntityBoundingBox().minY + this.getEntityBoundingBox().maxY) / 2.0D, this.posZ);
 		}
 		super.onEntityUpdate();
@@ -454,7 +456,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	@Override
 	public final boolean attackEntityFrom(DamageSource source, float par2) {
-		if (getSleeping()) // prevent suffocation damage (allows bunk beds and such)
+		if (isSleeping()) // prevent suffocation damage (allows bunk beds and such)
 			return false;
 		if (source.getTrueSource() != null && !canBeAttackedBy(source.getTrueSource()))
 			return false;
@@ -837,14 +839,14 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	@Override
 	public void setOwner(EntityPlayer player) {
-		ownerId = player.getUniqueID();
+		setOwnerUuid(player.getUniqueID());
 		ownerName = player.getName();
 	}
 
 	@Override
 	public void setOwner(String ownerName, UUID ownerUuid) {
 		this.ownerName = ownerName;
-		ownerId = ownerUuid;
+		setOwnerUuid(ownerUuid);
 	}
 
 	public void setOwnerName(String name) {
@@ -857,10 +859,10 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 			tag.setString("ownerName", name);
 			EntityPlayer player = world.getPlayerEntityByName(name);
 			if (player != null) {
-				ownerId = player.getUniqueID();
+				setOwnerUuid(player.getUniqueID());
 			}
-			if (ownerId != null)
-				tag.setString("ownerId", ownerId.toString());
+			if (getOwnerUuid() != null)
+				tag.setString("ownerId", getOwnerUuid().toString());
 			pkt.packetData = tag;
 			NetworkHandler.sendToAllTracking(this, pkt);
 		}
@@ -871,8 +873,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	public boolean isOwner(EntityPlayer player) {
 		if (player == null || player.getGameProfile() == null)
 			return false;
-		if (ownerId != null)
-			return player.getUniqueID().equals(ownerId);
+		if (getOwnerUuid() != null)
+			return player.getUniqueID().equals(getOwnerUuid());
 		return player.getName().equals(ownerName);
 	}
 
@@ -883,7 +885,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	@Override
 	public UUID getOwnerUuid() {
-		return ownerId;
+		return dataManager.get(OWNER_ID);
 	}
 
 	@Override
@@ -1032,7 +1034,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		tag.setLong("home", getHomePosition().toLong());
 		tag.setInteger("homeRange", getHomeRange());
 		tag.setByte("bedDirection", (byte) getBedDirection().ordinal());
-		tag.setBoolean("isSleeping", this.getSleeping());
+		tag.setBoolean("isSleeping", this.isSleeping());
 		if (cachedBedPos != null)
 			tag.setLong("cachedBedPos", cachedBedPos.toLong());
 		BlockPos bedPos = this.getBedPosition();
@@ -1098,8 +1100,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		tag.setString("customTex", customTexRef);
 		tag.setBoolean("aiEnabled", aiEnabled);
 		tag.setString("ownerName", ownerName);
-		if (ownerId != null) {
-			tag.setUniqueId("ownerId", ownerId);
+		if (getOwnerUuid() != null) {
+			tag.setUniqueId("ownerId", getOwnerUuid());
 		}
 	}
 
@@ -1129,7 +1131,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		if (tag.hasKey("ownerName")) {
 			this.ownerName = tag.getString("ownerName");
 			if (tag.hasKey("ownerId")) {
-				ownerId = UUID.fromString(tag.getString("ownerId"));
+				setOwnerUuid(UUID.fromString(tag.getString("ownerId")));
 			}
 		} else if (tag.hasKey("profileTex") && tag.hasKey("customTex")) {
 			customTexRef = tag.getString("customTex");
@@ -1293,7 +1295,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	@Override
 	public void travel(float strafe, float vertical, float forward) {
-		if (getSleeping()) {
+		if (isSleeping()) {
 			isJumping = false;
 			moveStrafing = 0.0F;
 			moveForward = 0.0F;
@@ -1310,18 +1312,18 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	@Override
 	public void onCollideWithPlayer(EntityPlayer player) {
-		if (!getSleeping())
+		if (!isSleeping())
 			super.onCollideWithPlayer(player);
 	}
 
 	@Override
 	public boolean canBePushed() {
-		return (!getSleeping());
+		return (!isSleeping());
 	}
 
 	@Override
 	protected void collideWithEntity(Entity entity) {
-		if (!getSleeping())
+		if (!isSleeping())
 			super.collideWithEntity(entity);
 	}
 
@@ -1329,8 +1331,12 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		dataManager.set(IS_SLEEPING, isSleeping);
 	}
 
-	public boolean getSleeping() {
+	public boolean isSleeping() {
 		return dataManager == null ? false : dataManager.get(IS_SLEEPING);
+	}
+
+	public void setOwnerUuid(UUID ownerId) {
+		dataManager.set(OWNER_ID, ownerId);
 	}
 
 	public void setBedDirection(EnumFacing direction) {
