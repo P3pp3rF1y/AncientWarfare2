@@ -15,7 +15,7 @@ public class UpkeepOrder implements INBTSerializable<NBTTagCompound> {
 
     private BlockPos upkeepPosition;
     private int upkeepDimension;
-    private EnumFacing blockSide;
+    private EnumFacing blockSide = EnumFacing.DOWN;
     private int upkeepAmount = 6000;
 
     public UpkeepOrder() {
