@@ -3,12 +3,12 @@ package net.shadowmage.ancientwarfare.automation.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileAutoCrafting;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
+import net.shadowmage.ancientwarfare.core.inventory.SlotResearchCrafting;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 
 import javax.annotation.Nonnull;
@@ -26,7 +26,7 @@ public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCra
         //slot 29-37 = outputSlots
         //slot 38-73 = playerInventory
 
-        Slot slot = new SlotCrafting(player, inventory, tileEntity.outputSlot, 0, 3 * 18 + 3 * 18 + 8 + 18, 1 * 18 + 8) {
+        Slot slot = new SlotResearchCrafting(player, inventory, tileEntity.outputSlot, 0, 3 * 18 + 3 * 18 + 8 + 18, 1 * 18 + 8) {
             @Override
             public boolean canTakeStack(EntityPlayer par1EntityPlayer) {
                 return false;
