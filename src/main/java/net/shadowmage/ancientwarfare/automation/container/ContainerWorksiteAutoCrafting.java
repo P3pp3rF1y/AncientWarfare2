@@ -67,8 +67,13 @@ public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCra
         for (int x1 = 0; x1 < 9; x1++) {
             x2 = x1 * 18 + 8;
             slotNum = x1;
-            slot = new SlotItemHandler(tileEntity.outputInventory, slotNum, x2, y2);
-            addSlotToContainer(slot);
+			slot = new SlotItemHandler(tileEntity.outputInventory, slotNum, x2, y2) {
+				@Override
+				public boolean isItemValid(@Nonnull ItemStack stack) {
+					return false;
+				}
+			};
+			addSlotToContainer(slot);
         }
 
         int y1 = 8 + 8 + 3 * 18 + 2 * 18 + 4 + 4 + 18;
