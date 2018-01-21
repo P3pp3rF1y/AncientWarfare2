@@ -11,6 +11,7 @@ import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
 import javax.annotation.Nonnull;
 
 public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeringStation> {
+	private static final int BOOK_SLOT = 1;
 
 	public ContainerEngineeringStation(EntityPlayer player, int x, int y, int z) {
 		super(player, x, y, z);
@@ -82,7 +83,7 @@ public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeri
 					if(!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
 						return ItemStack.EMPTY;
 				} else if(slotClickedIndex < playerSlotEnd) {//player slots, merge into storage
-					if(!this.mergeItemStack(slotStack, storageSlotsStart, playerSlotStart, false))//merge into storage
+					if (!mergeItemStack(slotStack, BOOK_SLOT, BOOK_SLOT + 1, false) && !this.mergeItemStack(slotStack, storageSlotsStart, playerSlotStart, false))//merge into storage
 						return ItemStack.EMPTY;
 				}
 			}

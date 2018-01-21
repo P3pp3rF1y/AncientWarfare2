@@ -13,9 +13,6 @@ import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IContainerGuiCallback;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketGui;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
-
-import javax.annotation.Nonnull;
 
 public class ContainerBase extends Container {
 
@@ -180,57 +177,4 @@ public class ContainerBase extends Container {
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotClickedIndex) {
 		return ItemStack.EMPTY;
 	}
-
-	/*
-	 * merges provided ItemStack with the first available one in the container/player inventory<br>
-	 * overriden to clean up the mess of the code that was the vanilla code.
-	 *
-	 * @return true if item-stack was fully-consumed/merged
-	 */
-	@Override
-	protected boolean mergeItemStack(ItemStack incomingStack, int startIndex, int endBeforeIndex, boolean iterateBackwards) {
-		Slot slotFromContainer;
-		@Nonnull ItemStack stackFromSlot;
-		int currentIndex, start, stop, transferAmount;
-		int iterator = iterateBackwards ? -1 : 1;
-		start = iterateBackwards ? endBeforeIndex : startIndex;
-		stop = iterateBackwards ? startIndex : endBeforeIndex;
-		if (incomingStack.isStackable()) {
-			for (currentIndex = start; incomingStack.getCount() > 0 && currentIndex != stop; currentIndex += iterator) {
-				slotFromContainer = this.getSlot(currentIndex);
-				if (!slotFromContainer.isItemValid(incomingStack)) {
-					continue;
-				}
-				stackFromSlot = slotFromContainer.getStack();
-				if (stackFromSlot.isEmpty() || !InventoryTools.doItemStacksMatch(incomingStack, stackFromSlot, !incomingStack.getHasSubtypes(), false)) {
-					continue;
-				}
-				transferAmount = stackFromSlot.getMaxStackSize() - stackFromSlot.getCount();
-				if (transferAmount > incomingStack.getCount()) {
-					transferAmount = incomingStack.getCount();
-				}
-				if (transferAmount > 0) {
-					incomingStack.shrink(transferAmount);
-					stackFromSlot.grow(transferAmount);
-					slotFromContainer.onSlotChanged();
-				}
-			}
-		}
-		if (incomingStack.getCount() > 0) {
-			for (currentIndex = start; incomingStack.getCount() > 0 && currentIndex != stop; currentIndex += iterator) {
-				slotFromContainer = this.getSlot(currentIndex);
-				if (!slotFromContainer.isItemValid(incomingStack)) {
-					continue;
-				}
-				if (!slotFromContainer.getHasStack()) {
-					slotFromContainer.putStack(incomingStack.copy());
-					slotFromContainer.onSlotChanged();
-					incomingStack.setCount(0);
-					break;
-				}
-			}
-		}
-		return incomingStack.getCount() == 0;
-	}
-
 }

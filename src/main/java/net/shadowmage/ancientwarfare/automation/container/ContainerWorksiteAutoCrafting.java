@@ -14,6 +14,7 @@ import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import javax.annotation.Nonnull;
 
 public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCrafting> {
+    private static final int BOOK_SLOT = 1;
 
     public ContainerWorksiteAutoCrafting(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
@@ -117,10 +118,9 @@ public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCra
                 {
                     return ItemStack.EMPTY;
                 }
-            } else if (slotClickedIndex < playerSlotEnd)//player slots, merge into storage
+            } else if (slotClickedIndex < playerSlotEnd)//player slots, merge into book slot and then storage
             {
-                if (!this.mergeItemStack(slotStack, storageSlotsStart, outputSlotsStart, false))//merge into storage
-                {
+                if (!mergeItemStack(slotStack, BOOK_SLOT, BOOK_SLOT + 1, false) && !this.mergeItemStack(slotStack, storageSlotsStart, outputSlotsStart, false)) {
                     return ItemStack.EMPTY;
                 }
             }
