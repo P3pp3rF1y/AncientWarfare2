@@ -68,7 +68,7 @@ public class NpcAIPlayerOwnedGetFood extends NpcAI<NpcPlayerOwned> {
 
     protected void tryUpkeep(BlockPos pos) {
         TileEntity te = npc.world.getTileEntity(pos);
-		if(te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, npc.getUpkeepBlockSide())) {
+		if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, npc.getUpkeepBlockSide())) {
 			npc.withdrawFood(te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, npc.getUpkeepBlockSide()));
 		}
     }
