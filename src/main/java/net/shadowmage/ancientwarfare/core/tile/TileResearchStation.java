@@ -240,9 +240,9 @@ public class TileResearchStation extends TileOwned implements IWorkSite, ITorque
             if (goalInstance.tryStart(resourceInventory)) {
                 ResearchTracker.INSTANCE.startResearch(world, name, goalId);
             } else if (useAdjacentInventory) {
-                TileEntity t;
+                TileEntity t = world.getTileEntity(pos.offset(inventoryDirection));
                 boolean started = false;
-                if ((t = world.getTileEntity(pos.offset(inventoryDirection))).hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, inventorySide)) {
+                if (t != null && t.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, inventorySide)) {
                     started = goalInstance.tryStart(t.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, inventorySide));
                 }
                 if (started) {
