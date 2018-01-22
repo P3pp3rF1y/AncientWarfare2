@@ -8,9 +8,10 @@ import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.inventory.ItemHandlerBackpack;
-import net.shadowmage.ancientwarfare.core.item.ItemBackpack;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIDoor;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFleeHostiles;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
@@ -27,7 +28,7 @@ import net.shadowmage.ancientwarfare.npc.item.ItemRoutingOrder;
 public class NpcCourier extends NpcPlayerOwned {
 
     NpcAIPlayerOwnedCourier courierAI;
-    public ItemHandlerBackpack backpackInventory;
+    public IItemHandler backpackInventory;
 
     public NpcCourier(World par1World) {
         super(par1World);
@@ -63,14 +64,7 @@ public class NpcCourier extends NpcPlayerOwned {
     @Override
     public void onWeaponInventoryChanged() {
         super.onWeaponInventoryChanged();
-        backpackInventory = ItemBackpack.getInventoryFor(getHeldItemMainhand());
-    }
-
-    /*
-     * should be called from courier routing AI whenever work done>0, to ensure items are saved to backpack
-     */
-    public void updateBackpackItemContents() {
-        ItemBackpack.writeBackpackToItem(backpackInventory, getHeldItemMainhand());
+        backpackInventory = getHeldItemMainhand().getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, (EnumFacing) null);
     }
 
     @Override
