@@ -2,20 +2,21 @@ package net.shadowmage.ancientwarfare.core.container;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.SlotItemHandler;
+import net.shadowmage.ancientwarfare.core.inventory.SlotResearchCrafting;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
 
 import javax.annotation.Nonnull;
 
 public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeringStation> {
+	private static final int BOOK_SLOT = 1;
 
 	public ContainerEngineeringStation(EntityPlayer player, int x, int y, int z) {
 		super(player, x, y, z);
 
-		Slot slot = new SlotCrafting(player, tileEntity.layoutMatrix, tileEntity.result, 0, 3 * 18 + 3 * 18 + 8 + 18, 1 * 18 + 8) {
+		Slot slot = new SlotResearchCrafting(player, tileEntity.layoutMatrix, tileEntity.result, 0, 3 * 18 + 3 * 18 + 8 + 18, 1 * 18 + 8) {
 			@Override
 			public ItemStack onTake(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack) {
 				tileEntity.preItemCrafted();
@@ -82,7 +83,7 @@ public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeri
 					if(!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
 						return ItemStack.EMPTY;
 				} else if(slotClickedIndex < playerSlotEnd) {//player slots, merge into storage
-					if(!this.mergeItemStack(slotStack, storageSlotsStart, playerSlotStart, false))//merge into storage
+					if (!mergeItemStack(slotStack, BOOK_SLOT, BOOK_SLOT + 1, false) && !this.mergeItemStack(slotStack, storageSlotsStart, playerSlotStart, false))//merge into storage
 						return ItemStack.EMPTY;
 				}
 			}

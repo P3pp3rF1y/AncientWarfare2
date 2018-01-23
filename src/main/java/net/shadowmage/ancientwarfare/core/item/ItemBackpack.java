@@ -8,16 +8,21 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.shadowmage.ancientwarfare.core.gui.GuiBackpack;
 import net.shadowmage.ancientwarfare.core.inventory.ItemHandlerBackpack;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -58,25 +63,6 @@ public class ItemBackpack extends ItemBaseCore {
         }
     }
 
-    public static ItemHandlerBackpack getInventoryFor(ItemStack stack) {
-        if (!stack.isEmpty() && stack.getItem() instanceof ItemBackpack) {
-            ItemHandlerBackpack pack = new ItemHandlerBackpack((stack.getItemDamage() + 1) * 9);
-            //noinspection ConstantConditions
-            if(stack.hasTagCompound() && stack.getTagCompound().hasKey("backpackItems")) {
-                pack.deserializeNBT(stack.getTagCompound().getCompoundTag("backpackItems"));
-            }
-            return pack;
-        }
-        return null;
-    }
-
-    public static void writeBackpackToItem(ItemHandlerBackpack pack, ItemStack stack) {
-        if (!stack.isEmpty() && stack.getItem() instanceof ItemBackpack) {
-            NBTTagCompound invTag = pack.serializeNBT();
-            stack.setTagInfo("backpackItems", invTag);
-        }
-    }
-
     @Override
     @SideOnly(Side.CLIENT)
     public void registerClient() {
@@ -84,4 +70,21 @@ public class ItemBackpack extends ItemBaseCore {
 
         NetworkHandler.registerGui(NetworkHandler.GUI_BACKPACK, GuiBackpack.class);
     }
+
+	@Nullable
+	@Override
+	public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable NBTTagCompound nbt) {
+		return new ICapabilityProvider() {
+			@Override
+			public boolean hasCapability(@Nonnull Capability<?> capability, @Nullable EnumFacing facing) {
+				return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
+			}
+
+			@Nullable
+			@Override
+			public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
+				return (T) new ItemHandlerBackpack(stack);
+			}
+		};
+	}
 }

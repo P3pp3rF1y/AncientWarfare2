@@ -71,7 +71,7 @@ public class TileEngineeringStation extends TileUpdatable implements IRotatableT
 		@Nonnull ItemStack stack;
 		for(int i = 0; i < layoutMatrix.getSizeInventory(); i++) {
 			stack = layoutMatrix.getStackInSlot(i);
-			matrixShadow.set(i, stack.isEmpty() ? ItemStack.EMPTY : stack.copy());
+			matrixShadow.set(i, stack.copy());
 		}
 	}
 

@@ -103,9 +103,9 @@ public class ResearchData extends WorldSavedData {
     public void addResearchTo(String playerName, int research) {
         if (!playerResearchEntries.containsKey(playerName)) {
             playerResearchEntries.put(playerName, new ResearchEntry());
-            markDirty();
         }
         this.playerResearchEntries.get(playerName).addResearch(research);
+        markDirty();
     }
 
     public boolean hasPlayerCompletedResearch(String playerName, int research) {

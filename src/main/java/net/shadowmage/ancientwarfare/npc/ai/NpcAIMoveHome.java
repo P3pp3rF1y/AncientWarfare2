@@ -6,125 +6,125 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public class NpcAIMoveHome extends NpcAI<NpcBase> {
 
-    private final float dayRange, nightRange;
-    private final float dayLeash, nightLeash;
-    
-    private int ticker = 0;
-    private final static int TICKER_MAX = 10; // TODO: Maybe move to config? 
-    private boolean goneHome = false;
+	private final float dayRange, nightRange;
+	private final float dayLeash, nightLeash;
 
-    public NpcAIMoveHome(NpcBase npc, float dayRange, float nightRange, float dayLeash, float nightLeash) {
-        super(npc);
-        this.setMutexBits(MOVE + ATTACK);
-        this.dayRange = dayRange;
-        this.nightRange = nightRange;
-        this.dayLeash = dayLeash;
-        this.nightLeash = nightLeash;
-    }
+	private int ticker = 0;
+	private final static int TICKER_MAX = 10; // TODO: Maybe move to config?
+	private boolean goneHome = false;
 
-    @Override
-    public boolean shouldExecute() {
-        if (!npc.getIsAIEnabled() || !npc.hasHome()) {
-            return false;
-        }
-        BlockPos cc = npc.getHomePosition();
-        float distSq = (float) npc.getDistanceSq(cc.getX() + 0.5d, cc.getY(), cc.getZ() + 0.5d);
-        return npc.shouldBeAtHome() || exceedsRange(distSq);
-    }
+	public NpcAIMoveHome(NpcBase npc, float dayRange, float nightRange, float dayLeash, float nightLeash) {
+		super(npc);
+		this.setMutexBits(MOVE + ATTACK);
+		this.dayRange = dayRange;
+		this.nightRange = nightRange;
+		this.dayLeash = dayLeash;
+		this.nightLeash = nightLeash;
+	}
 
-    protected boolean exceedsRange(float distSq) {
-        float range = getRange() * getRange();
-        return distSq > range;
-    }
+	@Override
+	public boolean shouldExecute() {
+		if (!npc.getIsAIEnabled() || !npc.hasHome()) {
+			return false;
+		}
+		BlockPos cc = npc.getHomePosition();
+		float distSq = (float) npc.getDistanceSq(cc.getX() + 0.5d, cc.getY(), cc.getZ() + 0.5d);
+		return npc.shouldBeAtHome() || exceedsRange(distSq);
+	}
 
-    protected boolean exceedsLeash(float distSq) {
-        float leash = getLeashRange() * getLeashRange();
-        return distSq > leash;
-    }
+	protected boolean exceedsRange(float distSq) {
+		float range = getRange() * getRange();
+		return distSq > range;
+	}
 
-    protected float getLeashRange() {
-        return !npc.shouldSleep() ? dayLeash : nightLeash;
-    }
+	protected boolean exceedsLeash(float distSq) {
+		float leash = getLeashRange() * getLeashRange();
+		return distSq > leash;
+	}
 
-    protected float getRange() {
-        return !npc.shouldSleep() ? dayRange : nightRange;
-    }
+	protected float getLeashRange() {
+		return !npc.shouldSleep() ? dayLeash : nightLeash;
+	}
 
-    @Override
-    public void startExecuting() {
-        npc.addAITask(TASK_GO_HOME);
-        updateTasks();
-        goneHome = false;
-    }
+	protected float getRange() {
+		return !npc.shouldSleep() ? dayRange : nightRange;
+	}
 
-    @Override
-    public void updateTask() {
-        ticker++;
-        if (ticker >= TICKER_MAX) {
-            if (npc.getSleeping()) {
-                if (npc.isBedCacheValid())
-                    npc.setPositionToBed();
-                else
-                    npc.wakeUp();
-                return;
-            }
-        }
-        BlockPos cc = npc.getHomePosition();
-        double dist = npc.getDistanceSq(cc.getX() + 0.5d, cc.getY(), cc.getZ() + 0.5d);
-        double leash = getLeashRange() * getLeashRange();
-        if ((dist > leash) && (!goneHome) && (!npc.getSleeping())) {
-            npc.addAITask(TASK_MOVE);
-            moveToPosition(cc, dist);
-        } else {
-            // NPC is home
-            npc.removeAITask(TASK_MOVE);
-            goneHome = true;
-            if (npc.getOwnerName().isEmpty())
-                stopMovement();
-            else {
-                if ((ticker >= TICKER_MAX) && (npc.shouldSleep())) {
-                    BlockPos pos = npc.findBed();
-                    if (pos != null) {
-                        dist = npc.getDistanceSq(pos);
-                        if (dist > AWNPCStatics.npcActionRange * AWNPCStatics.npcActionRange) {
-                            moveToPosition(pos, dist, true);
-                        } else {
-                            if (npc.lieDown(pos)) {
-                                npc.setPositionToBed();
-                                stopMovement();
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        if (ticker >= TICKER_MAX) {
-            updateTasks();
-            ticker = 0;
-        }
-    }
-    
-    private void updateTasks() {
-        if (npc.shouldSleep())
-            npc.addAITask(TASK_SLEEP);
-        else
-            npc.removeAITask(TASK_SLEEP);
-        if (!npc.worksInRain() && npc.world.isRaining())
-            npc.addAITask(TASK_RAIN);
-        else
-            npc.removeAITask(TASK_RAIN);
-    }
+	@Override
+	public void startExecuting() {
+		npc.addAITask(TASK_GO_HOME);
+		updateTasks();
+		goneHome = false;
+	}
 
-    private void stopMovement() {
-        npc.removeAITask(TASK_MOVE);
-        npc.getNavigator().clearPath();
-    }
+	@Override
+	public void updateTask() {
+		ticker++;
+		if (ticker >= TICKER_MAX) {
+			if (npc.isSleeping()) {
+				if (npc.isBedCacheValid())
+					npc.setPositionToBed();
+				else
+					npc.wakeUp();
+				return;
+			}
+		}
+		BlockPos cc = npc.getHomePosition();
+		double dist = npc.getDistanceSq(cc.getX() + 0.5d, cc.getY(), cc.getZ() + 0.5d);
+		double leash = getLeashRange() * getLeashRange();
+		if ((dist > leash) && (!goneHome) && (!npc.isSleeping())) {
+			npc.addAITask(TASK_MOVE);
+			moveToPosition(cc, dist);
+		} else {
+			// NPC is home
+			npc.removeAITask(TASK_MOVE);
+			goneHome = true;
+			if (npc.getOwnerName().isEmpty())
+				stopMovement();
+			else {
+				if ((ticker >= TICKER_MAX) && (npc.shouldSleep())) {
+					BlockPos pos = npc.findBed();
+					if (pos != null) {
+						dist = npc.getDistanceSq(pos);
+						if (dist > AWNPCStatics.npcActionRange * AWNPCStatics.npcActionRange) {
+							moveToPosition(pos, dist, true);
+						} else {
+							if (npc.lieDown(pos)) {
+								npc.setPositionToBed();
+								stopMovement();
+							}
+						}
+					}
+				}
+			}
+		}
+		if (ticker >= TICKER_MAX) {
+			updateTasks();
+			ticker = 0;
+		}
+	}
 
-    @Override
-    public void resetTask() {
-        stopMovement();
-        npc.removeAITask(TASK_GO_HOME + TASK_RAIN + TASK_SLEEP);
-        if (npc.getSleeping())
-            npc.wakeUp();
-    }
+	private void updateTasks() {
+		if (npc.shouldSleep())
+			npc.addAITask(TASK_SLEEP);
+		else
+			npc.removeAITask(TASK_SLEEP);
+		if (!npc.worksInRain() && npc.world.isRaining())
+			npc.addAITask(TASK_RAIN);
+		else
+			npc.removeAITask(TASK_RAIN);
+	}
+
+	private void stopMovement() {
+		npc.removeAITask(TASK_MOVE);
+		npc.getNavigator().clearPath();
+	}
+
+	@Override
+	public void resetTask() {
+		stopMovement();
+		npc.removeAITask(TASK_GO_HOME + TASK_RAIN + TASK_SLEEP);
+		if (npc.isSleeping())
+			npc.wakeUp();
+	}
 }

@@ -3,17 +3,18 @@ package net.shadowmage.ancientwarfare.automation.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
-import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileAutoCrafting;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
+import net.shadowmage.ancientwarfare.core.inventory.SlotResearchCrafting;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 
 import javax.annotation.Nonnull;
 
 public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCrafting> {
+    private static final int BOOK_SLOT = 1;
 
     public ContainerWorksiteAutoCrafting(EntityPlayer player, int x, int y, int z) {
         super(player, x, y, z);
@@ -26,7 +27,7 @@ public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCra
         //slot 29-37 = outputSlots
         //slot 38-73 = playerInventory
 
-        Slot slot = new SlotCrafting(player, inventory, tileEntity.outputSlot, 0, 3 * 18 + 3 * 18 + 8 + 18, 1 * 18 + 8) {
+        Slot slot = new SlotResearchCrafting(player, inventory, tileEntity.outputSlot, 0, 3 * 18 + 3 * 18 + 8 + 18, 1 * 18 + 8) {
             @Override
             public boolean canTakeStack(EntityPlayer par1EntityPlayer) {
                 return false;
@@ -67,8 +68,13 @@ public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCra
         for (int x1 = 0; x1 < 9; x1++) {
             x2 = x1 * 18 + 8;
             slotNum = x1;
-            slot = new SlotItemHandler(tileEntity.outputInventory, slotNum, x2, y2);
-            addSlotToContainer(slot);
+			slot = new SlotItemHandler(tileEntity.outputInventory, slotNum, x2, y2) {
+				@Override
+				public boolean isItemValid(@Nonnull ItemStack stack) {
+					return false;
+				}
+			};
+			addSlotToContainer(slot);
         }
 
         int y1 = 8 + 8 + 3 * 18 + 2 * 18 + 4 + 4 + 18;
@@ -112,10 +118,9 @@ public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCra
                 {
                     return ItemStack.EMPTY;
                 }
-            } else if (slotClickedIndex < playerSlotEnd)//player slots, merge into storage
+            } else if (slotClickedIndex < playerSlotEnd)//player slots, merge into book slot and then storage
             {
-                if (!this.mergeItemStack(slotStack, storageSlotsStart, outputSlotsStart, false))//merge into storage
-                {
+                if (!mergeItemStack(slotStack, BOOK_SLOT, BOOK_SLOT + 1, false) && !this.mergeItemStack(slotStack, storageSlotsStart, outputSlotsStart, false)) {
                     return ItemStack.EMPTY;
                 }
             }

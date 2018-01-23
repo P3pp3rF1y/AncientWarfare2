@@ -5,7 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.shadowmage.ancientwarfare.core.inventory.ItemHandlerBackpack;
+import net.minecraftforge.items.IItemHandler;
 import net.shadowmage.ancientwarfare.core.item.ItemBackpack;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
@@ -285,12 +285,11 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
     private void doDeposit() {
         @Nonnull ItemStack backpack = npc.getHeldItemMainhand();
         if (!backpack.isEmpty() && backpack.getItem() instanceof ItemBackpack) {
-            ItemHandlerBackpack inv = ItemBackpack.getInventoryFor(backpack);
+            IItemHandler inv = backpack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
             BlockPos pos = orders.getRestockData().getDepositPoint();
             TileEntity te = npc.world.getTileEntity(pos);
             if(te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, orders.getRestockData().getDepositSide())) {
                 orders.getRestockData().doDeposit(inv, te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, orders.getRestockData().getDepositSide()));
-                ItemBackpack.writeBackpackToItem(inv, backpack);
             }
         }
     }
@@ -298,12 +297,11 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
     private void doWithdraw() {
         @Nonnull ItemStack backpack = npc.getHeldItemMainhand();
         if (!backpack.isEmpty() && backpack.getItem() instanceof ItemBackpack) {
-            ItemHandlerBackpack inv = ItemBackpack.getInventoryFor(backpack);
+            IItemHandler inv = backpack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
             BlockPos pos = orders.getRestockData().getWithdrawPoint();
             TileEntity te = npc.world.getTileEntity(pos);
             if(te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, orders.getRestockData().getWithdrawSide())) {
                 orders.getRestockData().doWithdraw(inv, te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, orders.getRestockData().getWithdrawSide()));
-                ItemBackpack.writeBackpackToItem(inv, backpack);
             }
         }
     }

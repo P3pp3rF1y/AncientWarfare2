@@ -157,65 +157,29 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
         }
 
         private int depositAllItems(IItemHandler from, IItemHandler to, boolean reversed) {
-            int moved = 0;
-            @Nonnull ItemStack stack;
-            int stackSize = 0;
-            boolean shouldMove;
-            for(int index = 0; index < from.getSlots(); index++) {
-                stack = from.getStackInSlot(index);
-                if (stack.isEmpty()) {
+            int movedStacks = 0;
+            int movedSize = 0;
+            for (ItemStack filter : filters) {
+                if (filter.isEmpty()) {
                     continue;
                 }
-                shouldMove = false;
-                stackSize = stack.getCount();
-                for (ItemStack filter : filters) {
-                    if (filter == null) {
-                        continue;
-                    }
-                    if (InventoryTools.doItemStacksMatch(stack, filter, ignoreDamage, ignoreTag)) {
-                        shouldMove = true;
-                        break;
-                    }
-                }
-                if (shouldMove) {
-                    stack = InventoryTools.mergeItemStack(to, stack);
-                }
-                if (stack.isEmpty() || stack.getCount() != stackSize) {
-                    moved++;
-                }
+                movedSize += InventoryTools.transferItems(from, to, filter, Integer.MAX_VALUE, ignoreDamage, ignoreTag);
+                movedStacks += movedSize / filter.getMaxStackSize();
             }
-            return moved;
+            return movedStacks;
         }
 
         private int depositAllItemsExcept(IItemHandler from, IItemHandler to, boolean reversed) {
-            int moved = 0;
-            @Nonnull ItemStack stack;
-            int stackSize = 0;
-            boolean shouldMove;
-            for(int index = 0; index < from.getSlots(); index++) {
-                stack = from.getStackInSlot(index);
-                if (stack.isEmpty()) {
+            int movedStacks = 0;
+            int movedSize = 0;
+            for (ItemStack filter : filters) {
+                if (filter.isEmpty()) {
                     continue;
                 }
-                shouldMove = true;
-                stackSize = stack.getCount();
-                for (ItemStack filter : filters) {
-                    if (filter == null) {
-                        continue;
-                    }
-                    if (InventoryTools.doItemStacksMatch(stack, filter, ignoreDamage, ignoreTag)) {
-                        shouldMove = false;
-                        break;
-                    }
-                }
-                if (shouldMove) {
-                    stack = InventoryTools.mergeItemStack(to, stack);
-                }
-                if (stack.isEmpty() || stack.getCount() != stackSize) {
-                    moved++;
-                }
+                movedSize += InventoryTools.transferItems(from, to, stack -> !InventoryTools.doItemStacksMatch(stack, filter, ignoreDamage, ignoreTag), Integer.MAX_VALUE);
+                movedStacks += movedSize / filter.getMaxStackSize();
             }
-            return moved;
+            return movedStacks;
         }
 
         private int fillTo(IItemHandler from, IItemHandler to, boolean reversed) {
@@ -224,7 +188,7 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
             int foundCount = 0;
             int m1;
             for (ItemStack filter : filters) {
-                if (filter == null) {
+                if (filter.isEmpty()) {
                     continue;
                 }
                 foundCount = InventoryTools.getCountOf(to, filter);
@@ -243,7 +207,7 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
             int movedTotal = 0;
             int toMove = 0;
             for (ItemStack filter : filters) {
-                if (filter == null) {
+                if (filter.isEmpty()) {
                     continue;
                 }
                 int foundCount = InventoryTools.getCountOf(from, filter);
@@ -261,7 +225,7 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
             int foundCount = 0;
             int moved;
             for (ItemStack filter : filters) {
-                if (filter == null) {
+                if (filter.isEmpty()) {
                     continue;
                 }
                 foundCount = InventoryTools.getCountOf(from, filter);
@@ -284,7 +248,7 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
             int existingCount = 0;
             int moved;
             for (ItemStack filter : filters) {
-                if (filter == null) {
+                if (filter.isEmpty()) {
                     continue;
                 }
                 foundCount = InventoryTools.getCountOf(from, filter);

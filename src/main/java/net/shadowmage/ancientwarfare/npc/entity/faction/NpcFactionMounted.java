@@ -54,6 +54,11 @@ public abstract class NpcFactionMounted extends NpcFaction {
     }
 
     @Override
+    public boolean isPassive() {
+        return false;
+    }
+
+    @Override
     public boolean shouldSleep() {
         return false;
     }

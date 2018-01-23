@@ -3,10 +3,10 @@ package net.shadowmage.ancientwarfare.npc.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumHand;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
-import net.shadowmage.ancientwarfare.core.inventory.ItemHandlerBackpack;
-import net.shadowmage.ancientwarfare.core.item.ItemBackpack;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.npc.entity.NpcTrader;
 import net.shadowmage.ancientwarfare.npc.trade.TradeList;
@@ -15,7 +15,7 @@ public class ContainerNpcPlayerOwnedTrade extends ContainerNpcBase<NpcTrader> {
 
     private EnumHand hand;
     public TradeList tradeList;
-    public final ItemHandlerBackpack storage;
+    public final IItemHandler storage;
 
     public ContainerNpcPlayerOwnedTrade(EntityPlayer player, int x, int y, int z) {
         super(player, x);
@@ -24,7 +24,7 @@ public class ContainerNpcPlayerOwnedTrade extends ContainerNpcBase<NpcTrader> {
 
         addPlayerSlots();
         this.hand = EntityTools.getHandHoldingItem(entity, AWItems.backpack);
-        storage = hand != null ? ItemBackpack.getInventoryFor(entity.getHeldItem(hand)) : null;
+        storage = hand != null ? entity.getHeldItem(hand).getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null) : null;
         if (storage != null) {
             for(int i = 0; i < storage.getSlots(); i++) {
                 /*
@@ -60,9 +60,6 @@ public class ContainerNpcPlayerOwnedTrade extends ContainerNpcBase<NpcTrader> {
     @Override
     public void onContainerClosed(EntityPlayer player) {
         this.entity.closeTrade();
-        if (storage != null) {
-            ItemBackpack.writeBackpackToItem(storage, this.entity.getHeldItem(hand));
-        }
         super.onContainerClosed(player);
     }
 

@@ -47,7 +47,7 @@ public class EventHandler {
                     }
                 }
                 if (targetTaskPriority != -1) {
-                    entity.targetTasks.addTask(targetTaskPriority, new EntityAINearestAttackableTarget(entity, NpcBase.class, 0, AncientWarfareNPC.statics.autoTargettingConfigLos, false, null));
+                    entity.targetTasks.addTask(targetTaskPriority, new EntityAINearestAttackableTarget<>(entity, NpcBase.class, 0, AncientWarfareNPC.statics.autoTargettingConfigLos, false, e -> !e.isPassive()));
                     // add this entity to the internal list of hostile mobs, so NPC's know to fight it
                     NpcAI.addHostileEntity(entity);
                     //System.out.println("Injected EntityAINearestAttackableTarget on " + EntityList.getEntityString(entity) + " @" + targetTaskPriority);
@@ -56,7 +56,7 @@ public class EventHandler {
         } else {
             // Legacy whitelist/manual method
             EntityCreature e = (EntityCreature) event.getEntity();
-            e.targetTasks.addTask(2, new EntityAINearestAttackableTarget(e, NpcBase.class, 0, false, false, null));
+            e.targetTasks.addTask(2, new EntityAINearestAttackableTarget<>(e, NpcBase.class, 0, false, false, null));
         }
     }
 

@@ -44,6 +44,11 @@ public abstract class NpcFactionLeader extends NpcFaction {
     }
 
     @Override
+    public boolean isPassive() {
+        return false;
+    }
+
+    @Override
     public boolean shouldSleep() {
         return false;
     }

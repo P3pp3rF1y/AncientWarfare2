@@ -12,10 +12,10 @@ import java.util.List;
 
 public class POTradeRestockData {
     private BlockPos withdrawPoint;
-    private EnumFacing withdrawSide;
+    private EnumFacing withdrawSide = EnumFacing.DOWN;
     private List<POTradeWithdrawEntry> withdrawList = new ArrayList<>();
     private BlockPos depositPoint;
-    private EnumFacing depositSide;
+    private EnumFacing depositSide = EnumFacing.UP;
     private List<POTradeDepositEntry> depositList = new ArrayList<>();
 
     public BlockPos getDepositPoint() {

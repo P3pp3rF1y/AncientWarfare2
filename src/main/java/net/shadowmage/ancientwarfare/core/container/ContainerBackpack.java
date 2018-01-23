@@ -9,8 +9,6 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
-import net.shadowmage.ancientwarfare.core.inventory.ItemHandlerBackpack;
-import net.shadowmage.ancientwarfare.core.item.ItemBackpack;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 
 import javax.annotation.Nonnull;
@@ -21,7 +19,7 @@ public class ContainerBackpack extends ContainerBase {
 	public final EnumHand hand;
 	public final int guiHeight;
 
-	private final ItemHandlerBackpack handler;
+	private final IItemHandler handler;
 
 	public ContainerBackpack(EntityPlayer player, int x, int y, int z) {
 		super(player);
@@ -30,7 +28,7 @@ public class ContainerBackpack extends ContainerBase {
         @Nonnull ItemStack stack = player.getHeldItem(hand);
         backpackSlotIndex = hand == EnumHand.MAIN_HAND ? player.inventory.currentItem : -1;
 
-		handler = ItemBackpack.getInventoryFor(stack);
+		handler = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 		int xPos, yPos;
 		for (int i = 0; i < handler.getSlots(); i++) {
 			xPos = (i % 9) * 18 + 8;
@@ -38,20 +36,12 @@ public class ContainerBackpack extends ContainerBase {
 			addSlotToContainer(new SlotItemHandler(handler, i, xPos, yPos) {
 				@Override
 				public boolean isItemValid(ItemStack itemStack) {
-					return this.inventory.isItemValidForSlot(this.getSlotIndex(), itemStack);
+					return itemStack.getItem() != AWItems.backpack && super.isItemValid(itemStack);
 				}
 			});
 		}
 		int height = (stack.getItemDamage() + 1) * 18 + 8;
 		guiHeight = addPlayerSlots(height + 8) + 8;
-	}
-
-	@Override
-	public void onContainerClosed(EntityPlayer par1EntityPlayer) {
-		super.onContainerClosed(par1EntityPlayer);
-		if (!par1EntityPlayer.world.isRemote) {
-			ItemBackpack.writeBackpackToItem(handler, par1EntityPlayer.getHeldItem(hand));
-		}
 	}
 
 	@Override

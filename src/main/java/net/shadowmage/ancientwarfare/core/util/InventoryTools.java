@@ -28,6 +28,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -192,47 +193,34 @@ public class InventoryTools {
 	 * @param ignoreDamage ignore item-damage when looking for items to move
 	 * @param ignoreNBT    ignore item-tag when looking for items to move
 	 */
-	public static int transferItems(IItemHandler from, IItemHandler to, ItemStack filter, int quantity, boolean ignoreDamage, boolean ignoreNBT) {
+	public static int transferItems(IItemHandler from, IItemHandler to, ItemStack filterStack, int quantity, boolean ignoreDamage, boolean ignoreNBT) {
+		return transferItems(from, to, stack -> doItemStacksMatch(filterStack, stack, ignoreDamage, ignoreNBT), quantity);
+	}
+
+	public static int transferItems(IItemHandler from, IItemHandler to, Function<ItemStack, Boolean> filter, int quantity) {
 		int moved = 0;
-		@Nonnull ItemStack s1, s2;
 		int toMove = quantity;
-		int stackSize;
-		for (int fromIndex = 0; fromIndex < from.getSlots(); fromIndex++) {
-			s1 = from.getStackInSlot(fromIndex);
-			if (s1.isEmpty() || !doItemStacksMatch(filter, s1, ignoreDamage, ignoreNBT)) {
+		for (int slot = 0; slot < from.getSlots() && toMove > 0; slot++) {
+			@Nonnull ItemStack stack = from.getStackInSlot(slot);
+			if (stack.isEmpty() || !filter.apply(stack)) {
 				continue;
 			}
-			stackSize = s1.getCount();
-			if (s1.getCount() > toMove)//move partial stack
-			{
-				s2 = s1.copy();
-				s2.setCount(toMove);
-				s1.shrink(toMove);
-				stackSize = s2.getCount();
-				s2 = mergeItemStack(to, s2);
-				if (!s2.isEmpty())//partial merge, destination full, break out
-				{
-					moved += stackSize - s2.getCount();
-					mergeItemStack(from, s2);//put back the remainder of the partial stack that was copied out
-					break;
-				} else {
-					moved += stackSize;
-					toMove -= stackSize;
-				}
-			} else {
-				s1 = mergeItemStack(to, s1);
-				if (!s1.isEmpty())//destination inventory was full, break out
-				{
-					moved += stackSize - s1.getCount();
-					break;
-				} else {
-					moved += stackSize;
-					toMove -= stackSize;
-				}
+
+			int stackSizeToMove = Math.min(stack.getMaxStackSize(), toMove);
+
+			ItemStack stackToMove = stack.copy();
+			stackToMove.setCount(stackSizeToMove);
+
+			ItemStack remaining = insertItem(to, stackToMove, false);
+
+			int stackSizeMoved = stackSizeToMove - remaining.getCount();
+
+			if (stackSizeMoved > 0) {
+				from.extractItem(slot, stackSizeMoved, false);
 			}
-			if (toMove <= 0) {
-				break;
-			}
+
+			moved += stackSizeMoved;
+			toMove = quantity - moved;
 		}
 		return moved;
 	}
