@@ -11,22 +11,20 @@ import javax.annotation.Nonnull;
 
 public class ItemHandlerBackpack implements IItemHandlerModifiable {
 	private ItemStack backpackStack;
-	private ItemStackHandler handler;
 
 	public ItemHandlerBackpack(ItemStack backpackStack) {
 		this.backpackStack = backpackStack;
-		this.handler = getHandler(backpackStack);
 	}
 
 	@Override
 	public int getSlots() {
-		return handler.getSlots();
+		return getHandler(backpackStack).getSlots();
 	}
 
 	@Nonnull
 	@Override
 	public ItemStack getStackInSlot(int slot) {
-		return handler.getStackInSlot(slot);
+		return getHandler(backpackStack).getStackInSlot(slot);
 	}
 
 	@Nonnull
@@ -34,8 +32,9 @@ public class ItemHandlerBackpack implements IItemHandlerModifiable {
 	public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
 		ItemStack ret = stack;
 		if (stack.getItem() != AWItems.backpack) {
+			ItemStackHandler handler = getHandler(backpackStack);
 			ret = handler.insertItem(slot, stack, simulate);
-			saveToStack();
+			saveToStack(handler);
 		}
 		return ret;
 	}
@@ -43,20 +42,22 @@ public class ItemHandlerBackpack implements IItemHandlerModifiable {
 	@Nonnull
 	@Override
 	public ItemStack extractItem(int slot, int amount, boolean simulate) {
+		ItemStackHandler handler = getHandler(backpackStack);
 		ItemStack ret = handler.extractItem(slot, amount, simulate);
-		saveToStack();
+		saveToStack(handler);
 		return ret;
 	}
 
 	@Override
 	public int getSlotLimit(int slot) {
-		return handler.getSlotLimit(slot);
+		return getHandler(backpackStack).getSlotLimit(slot);
 	}
 
 	@Override
 	public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
+		ItemStackHandler handler = getHandler(backpackStack);
 		handler.setStackInSlot(slot, stack);
-		saveToStack();
+		saveToStack(handler);
 	}
 
 	private ItemStackHandler getHandler(ItemStack stack) {
@@ -71,7 +72,7 @@ public class ItemHandlerBackpack implements IItemHandlerModifiable {
 		return null;
 	}
 
-	private void saveToStack() {
+	private void saveToStack(ItemStackHandler handler) {
 		NBTTagCompound invTag = handler.serializeNBT();
 		backpackStack.setTagInfo("backpackItems", invTag);
 	}
