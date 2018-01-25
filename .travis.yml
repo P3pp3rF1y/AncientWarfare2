@@ -3,7 +3,7 @@ jdk:
 - oraclejdk8
 install: true
 script:
-- "./gradlew clean"
+- "./gradlew clean --info"
 - "./gradlew setupCIWorkspace"
 - "./gradlew build"
 - "./gradlew bintrayUpload"
