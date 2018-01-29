@@ -1,5 +1,5 @@
 # ignore everything that's not specifically excluded below
-*
+/*
 
 !gradle
 !project_resources
