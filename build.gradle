@@ -34,15 +34,13 @@ repositories {
         name = "ChickenBones Maven"
         url = "http://chickenbones.net/maven/"
     }
-    ivy {
-        name "FTBUtilities"
-        artifactPattern "http://addons-origin.cursecdn.com/files/${ftbutilities_cf}/[module]-[revision].[ext]"
+    ivy { 
+        name "com.latmod.mods" 
+        artifactPattern "http://mods.latmod.com/[module]/[revision]/[module]-[revision](-[classifier]).[ext]" 
     }
-    ivy {
-        name "FTBLib"
-        artifactPattern "http://addons-origin.cursecdn.com/files/${ftblib_cf}/[module]-[revision].[ext]"
+    maven { 
+        url "http://dvs1.progwml6.com/files/maven" 
     }
-    maven { url "http://dvs1.progwml6.com/files/maven" }
 }
 
 minecraft{
@@ -61,8 +59,7 @@ dependencies {
     deobfCompile "cofh:RedstoneFlux:${rf_version}:universal"
     deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
     compile "codechicken:CodeChickenLib:${ccl_version}:deobf"
-    deobfCompile name: 'FTBLib', version: ftblib_version, ext: 'jar'
-    deobfCompile name: 'FTBUtilities', version: ftbutilities_version, ext: 'jar'
+    compile "com.latmod.mods:FTBLib:${ftblib_version}:deobf"
 }
 
 processResources{
