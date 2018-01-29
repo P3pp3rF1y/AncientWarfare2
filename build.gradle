@@ -35,7 +35,7 @@ repositories {
         url = "http://chickenbones.net/maven/"
     }
     ivy { 
-        name "com.latmod.mods" 
+        name "LatvianModder Ivy"
         artifactPattern "http://mods.latmod.com/[module]/[revision]/[module]-[revision](-[classifier]).[ext]" 
     }
     maven { 
