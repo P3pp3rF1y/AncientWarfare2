@@ -13,3 +13,7 @@
 !gradlew.bat
 !LICENSE.txt
 !README.md
+
+build
+.gradle
+.DS_Store
