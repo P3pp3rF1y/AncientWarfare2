@@ -108,10 +108,15 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
     private void addInventoryViewElements() {
         @Nonnull ItemStack stack;
 		NonNullList<ItemStack> displayStacks = NonNullList.create();
+        String searchInput = input.getText().toLowerCase(Locale.ENGLISH);
+
 		for (ItemHashEntry entry : getContainer().itemMap.keySet()) {
             stack = entry.getItemStack();
-            stack.setCount(getContainer().itemMap.getCount(entry));
-            displayStacks.add(stack);
+
+            if (searchInput.isEmpty() || stack.getDisplayName().toLowerCase().contains(searchInput)) {
+                stack.setCount(getContainer().itemMap.getCount(entry));
+                displayStacks.add(stack);
+            }
         }
 
         sortItems(displayStacks);
@@ -140,7 +145,6 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 	private void sortItems(NonNullList<ItemStack> items) {
 		sorter.setSortType(sortType);
         sorter.setSortOrder(sortOrder);
-        sorter.setTextInput(input.getText());
         items.sort(sorter);
     }
 

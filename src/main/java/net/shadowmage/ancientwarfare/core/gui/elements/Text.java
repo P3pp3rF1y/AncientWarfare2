@@ -186,9 +186,11 @@ public class Text extends GuiElement {
                 }
                 newText = newText + text.charAt(i);
             }
-            text = newText;
             cursorIndex--;
+            String oldText = text;
             setText(newText);
+            onTextUpdated(oldText, newText);
+
         }
     }
 

@@ -24,7 +24,6 @@ import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -480,7 +479,6 @@ public class InventoryTools {
 
 		private SortOrder sortOrder;
 		private SortType sortType;
-		private String textInput = "";
 
 		/*
 		 * @param order 1 for normal, -1 for reverse
@@ -488,13 +486,6 @@ public class InventoryTools {
 		public ComparatorItemStack(SortType type, SortOrder order) {
 			this.sortOrder = order;
 			this.sortType = type;
-		}
-
-		public void setTextInput(String text) {
-			if (text == null) {
-				text = "";
-			}
-			this.textInput = text;
 		}
 
 		public void setSortOrder(SortOrder order) {
@@ -507,30 +498,7 @@ public class InventoryTools {
 
 		@Override
 		public int compare(ItemStack o1, ItemStack o2) {
-			int val;
-			if (!textInput.isEmpty()) {
-				val = compareViaTextInput(o1, o2);
-			} else {
-				val = sortType.compare(o1, o2);
-			}
-			return val * sortOrder.mult;
-		}
-
-		private int compareViaTextInput(ItemStack o1, ItemStack o2) {
-			String input = textInput.toLowerCase(Locale.ENGLISH);
-			String n1 = o1.getDisplayName().toLowerCase(Locale.ENGLISH), n2 = o2.getDisplayName().toLowerCase(Locale.ENGLISH);
-			if (n1.startsWith(input)) {
-				if (!n2.startsWith(input))
-					return 1;
-			} else if (n2.startsWith(input)) {
-				return -1;
-			} else if (n1.contains(input)) {
-				if (!n2.contains(input))
-					return 1;
-			} else if (n2.contains(input)) {
-				return -1;
-			}
-			return sortType.compare(o1, o2);
+			return sortType.compare(o1, o2) * sortOrder.mult;
 		}
 	}
 
