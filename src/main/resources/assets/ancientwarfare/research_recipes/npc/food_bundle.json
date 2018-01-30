@@ -23,7 +23,11 @@
       "item": "minecraft:cooked_beef"
     },
     "W": {
-      "item": "minecraft:potion"
+      "type": "minecraft:item_nbt",
+      "item": "minecraft:potion",
+      "nbt": {
+        "Potion": "minecraft:water"
+      }
     }
   },
   "result": {
