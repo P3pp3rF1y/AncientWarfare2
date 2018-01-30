@@ -6,14 +6,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseBase;
+import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouse;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortOrder;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortType;
 
 import javax.annotation.Nonnull;
 
-public class ContainerWarehouseControl extends ContainerTileBase<TileWarehouseBase> {
+public class ContainerWarehouseControl extends ContainerTileBase<TileWarehouse> {
 
 	public ItemQuantityMap itemMap = new ItemQuantityMap();
 	private final ItemQuantityMap cache = new ItemQuantityMap();
@@ -62,8 +64,16 @@ public class ContainerWarehouseControl extends ContainerTileBase<TileWarehouseBa
 			tileEntity.handleSlotClick(player, item, reqTag.getBoolean("isShiftClick"));
 		} else if (tag.hasKey("changeList")) {
 			handleChangeList(tag.getTagList("changeList", Constants.NBT.TAG_COMPOUND));
-		} else if (tag.hasKey("maxStorage")) {
-			maxStorage = tag.getInteger("maxStorage");
+		} else {
+			if (tag.hasKey("maxStorage")) {
+				maxStorage = tag.getInteger("maxStorage");
+			}
+			if (tag.hasKey("sortType")) {
+				tileEntity.setSortType(SortType.values()[tag.getByte("sortType")]);
+			}
+			if (tag.hasKey("sortOrder")) {
+				tileEntity.setSortOrder(SortOrder.values()[tag.getByte("sortOrder")]);
+			}
 		}
 		currentStored = itemMap.getTotalItemCount();
 		refreshGui();
@@ -93,6 +103,8 @@ public class ContainerWarehouseControl extends ContainerTileBase<TileWarehouseBa
 			maxStorage = tileEntity.getMaxStorage();
 			NBTTagCompound tag = new NBTTagCompound();
 			tag.setInteger("maxStorage", maxStorage);
+			tag.setByte("sortOrder", (byte) getSortOrder().ordinal());
+			tag.setByte("sortType", (byte) getSortType().ordinal());
 			sendDataToClient(tag);
 		}
 	}
@@ -144,4 +156,25 @@ public class ContainerWarehouseControl extends ContainerTileBase<TileWarehouseBa
 		shouldUpdate = true;
 	}
 
+	public SortType getSortType() {
+		return tileEntity.getSortType();
+	}
+
+	public void setSortType(SortType sortType) {
+		tileEntity.setSortType(sortType);
+		NBTTagCompound tag = new NBTTagCompound();
+		tag.setByte("sortType", (byte) sortType.ordinal());
+		sendDataToServer(tag);
+	}
+
+	public SortOrder getSortOrder() {
+		return tileEntity.getSortOrder();
+	}
+
+	public void setSortOrder(SortOrder sortOrder) {
+		tileEntity.setSortOrder(sortOrder);
+		NBTTagCompound tag = new NBTTagCompound();
+		tag.setByte("sortOrder", (byte) sortOrder.ordinal());
+		sendDataToServer(tag);
+	}
 }

@@ -19,7 +19,6 @@ import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntr
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortOrder;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortType;
 
 import javax.annotation.Nonnull;
 import java.util.Locale;
@@ -28,23 +27,21 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 
     private CompositeScrolled area;
     private Text input;
-    private SortType sortType = SortType.NAME;
-    private SortOrder sortOrder = SortOrder.DESCENDING;
     private final ComparatorItemStack sorter;
     private Label storedLabel;
 
     public GuiWarehouseControl(ContainerBase par1Container) {
         super(par1Container, 178, 240);
-        sorter = new ComparatorItemStack(sortType, sortOrder);
+        sorter = new ComparatorItemStack(getContainer().getSortType(), getContainer().getSortOrder());
     }
 
     @Override
     public void initElements() {
-        Button sortChange = new Button(8, 8, 110, 12, "guistrings.automation." + sortType.toString()) {
+        Button sortChange = new Button(8, 8, 110, 12, "guistrings.automation." + getContainer().getSortType().toString()) {
             @Override
             protected void onPressed() {
-                sortType = sortType.next();
-                setText("guistrings.automation." + sortType.toString());
+                getContainer().setSortType(getContainer().getSortType().next());
+                setText("guistrings.automation." + getContainer().getSortType().toString());
                 refreshGui();
             }
         };
@@ -54,12 +51,13 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
             @Override
             public void onToggled() {
                 super.onToggled();
-                sortOrder = checked() ? SortOrder.ASCENDING : SortOrder.DESCENDING;
-                String name = sortOrder.name().toLowerCase(Locale.ENGLISH);
+                getContainer().setSortOrder(checked() ? SortOrder.ASCENDING : SortOrder.DESCENDING);
+                String name = getContainer().getSortOrder().name().toLowerCase(Locale.ENGLISH);
                 label = I18n.format("guistrings.automation." + name);
                 refreshGui();
             }
         };
+        sortOrderBox.setChecked(getContainer().getSortOrder() == SortOrder.ASCENDING);
         addGuiElement(sortOrderBox);
 
         input = new Text(8, 8 + 12 + 4, 178 - 16, "", this) {
@@ -143,8 +141,8 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
     }
 
 	private void sortItems(NonNullList<ItemStack> items) {
-		sorter.setSortType(sortType);
-        sorter.setSortOrder(sortOrder);
+        sorter.setSortType(getContainer().getSortType());
+        sorter.setSortOrder(getContainer().getSortOrder());
         items.sort(sorter);
     }
 

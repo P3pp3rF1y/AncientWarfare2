@@ -3,9 +3,12 @@ package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortOrder;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortType;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 import javax.annotation.Nonnull;
@@ -13,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TileWarehouse extends TileWarehouseBase {
+
+	private SortType sortType = SortType.NAME;
+	private SortOrder sortOrder = SortOrder.DESCENDING;
 
 	public TileWarehouse() {
 
@@ -91,4 +97,54 @@ public class TileWarehouse extends TileWarehouseBase {
 		InventoryTools.updateCursorItem((EntityPlayerMP) player, newCursorStack, shiftClick);
 	}
 
+	@Override
+	protected void writeUpdateNBT(NBTTagCompound tag) {
+		super.writeUpdateNBT(tag);
+		writeSort(tag);
+	}
+
+	@Override
+	protected void handleUpdateNBT(NBTTagCompound tag) {
+		super.handleUpdateNBT(tag);
+		readSort(tag);
+	}
+
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+		super.writeToNBT(tag);
+		writeSort(tag);
+		return tag;
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound tag) {
+		super.readFromNBT(tag);
+		readSort(tag);
+	}
+
+	private void writeSort(NBTTagCompound tag) {
+		tag.setByte("sortOrder", (byte) getSortOrder().ordinal());
+		tag.setByte("sortType", (byte) getSortType().ordinal());
+	}
+
+	private void readSort(NBTTagCompound tag) {
+		setSortOrder(SortOrder.values()[tag.getByte("sortOrder")]);
+		setSortType(SortType.values()[tag.getByte("sortType")]);
+	}
+
+	public SortType getSortType() {
+		return sortType;
+	}
+
+	public void setSortType(SortType sortType) {
+		this.sortType = sortType;
+	}
+
+	public SortOrder getSortOrder() {
+		return sortOrder;
+	}
+
+	public void setSortOrder(SortOrder sortOrder) {
+		this.sortOrder = sortOrder;
+	}
 }
