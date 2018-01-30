@@ -320,8 +320,8 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
         /*
          * the mouse button number.
          * -1 = none
-         * 0 = RMB
-         * 1 = LMB
+         * 0 = LMB
+         * 1 = RMB
          * 2+= ?
          */
         public int mButton;
