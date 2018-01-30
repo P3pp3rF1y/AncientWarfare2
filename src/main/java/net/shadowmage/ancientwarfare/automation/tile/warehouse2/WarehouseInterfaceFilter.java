@@ -34,12 +34,13 @@ public final class WarehouseInterfaceFilter implements Predicate<ItemStack>, INB
 
     @Override
     public boolean equals(Object object) {
-        return object instanceof WarehouseInterfaceFilter && ((WarehouseInterfaceFilter) object).quantity == this.quantity && this.apply(((WarehouseInterfaceFilter) object).filterItem);
+        return object instanceof WarehouseInterfaceFilter && ((WarehouseInterfaceFilter) object).quantity == this.quantity && ItemStack
+                .areItemStacksEqual(this.filterItem, ((WarehouseInterfaceFilter) object).filterItem);
     }
 
     @Override
     public int hashCode() {
-        int result = getFilterItem() != null ? new ItemQuantityMap.ItemHashEntry(getFilterItem()).hashCode() : 0;
+        int result = !getFilterItem().isEmpty() ? new ItemQuantityMap.ItemHashEntry(getFilterItem()).hashCode() : 0;
         return 31 * result + quantity;
     }
 
@@ -66,7 +67,7 @@ public final class WarehouseInterfaceFilter implements Predicate<ItemStack>, INB
 
     public WarehouseInterfaceFilter copy() {
         WarehouseInterfaceFilter filter = new WarehouseInterfaceFilter();
-        if(this.filterItem!=null)
+        if (!this.filterItem.isEmpty())
             filter.setFilterItem(this.filterItem.copy());
         filter.setFilterQuantity(this.quantity);
         return filter;
@@ -76,7 +77,7 @@ public final class WarehouseInterfaceFilter implements Predicate<ItemStack>, INB
     public NBTTagCompound serializeNBT() {
         NBTTagCompound tag = new NBTTagCompound();
         tag.setInteger("quantity", quantity);
-        if (filterItem != null) {
+        if (!filterItem.isEmpty()) {
             tag.setTag("filter", filterItem.writeToNBT(new NBTTagCompound()));
         }
         return tag;

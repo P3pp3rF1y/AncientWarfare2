@@ -25,6 +25,7 @@ public class TileWarehouseInterface extends TileControlled implements IInteracta
 		@Override
 		protected void onContentsChanged(int slot) {
 			markDirty();
+			recalcRequests();
 		}
 	};
 
