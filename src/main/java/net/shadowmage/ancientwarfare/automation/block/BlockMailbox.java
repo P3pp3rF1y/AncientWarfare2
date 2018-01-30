@@ -17,7 +17,6 @@ import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.FACING;
 
@@ -83,12 +82,6 @@ public class BlockMailbox extends BlockBaseAutomation implements IRotatableBlock
 	@Override
 	public boolean invertFacing() {
 		return true;
-	}
-
-	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		InventoryTools.dropInventoryInWorld(world.getTileEntity(pos));
-		super.breakBlock(world, pos, state);
 	}
 
 	@Override

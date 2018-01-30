@@ -73,6 +73,15 @@ public class TileAutoCrafting extends TileWorksiteBase {
 	public TileAutoCrafting() {
 	}
 
+	@Override
+	public void onBlockBroken() {
+		InventoryTools.dropItemsInWorld(world, bookSlot, pos);
+		InventoryTools.dropItemsInWorld(world, outputInventory, pos);
+		InventoryTools.dropItemsInWorld(world, resourceInventory, pos);
+		InventoryTools.dropItemsInWorld(world, craftMatrix, pos);
+		super.onBlockBroken();
+	}
+
 	private boolean canCraft() {
 		if(outputSlot.getStackInSlot(0).isEmpty()) {
 			return false;

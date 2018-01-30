@@ -14,6 +14,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nullable;
 import java.util.Map;
@@ -29,95 +30,102 @@ import java.util.Map;
  * @author Shadowmage
  */
 public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded {
-    private static final int MAIN_INVENTORY_SIZE = 27;
-    public final ItemStackHandler mainInventory;
-    private final Map<RelativeSide, IItemHandler> sideInventories = Maps.newHashMap();
-    private final Map<RelativeSide, RelativeSide> inventorySideMappings = Maps.newHashMap();
+	private static final int MAIN_INVENTORY_SIZE = 27;
+	public final ItemStackHandler mainInventory;
+	private final Map<RelativeSide, IItemHandler> sideInventories = Maps.newHashMap();
+	private final Map<RelativeSide, RelativeSide> inventorySideMappings = Maps.newHashMap();
 
-    public TileWorksiteBoundedInventory() {
-        initSideMappings();
-        mainInventory = new ItemStackHandler(MAIN_INVENTORY_SIZE);
-        setSideInventory(RelativeSide.TOP, mainInventory, RelativeSide.BOTTOM);
-    }
+	public TileWorksiteBoundedInventory() {
+		initSideMappings();
+		mainInventory = new ItemStackHandler(MAIN_INVENTORY_SIZE);
+		setSideInventory(RelativeSide.TOP, mainInventory, RelativeSide.BOTTOM);
+	}
 
-    private void initSideMappings() {
-        for(RelativeSide side : BlockRotationHandler.RotationType.FOUR_WAY.getValidSides()) {
-            inventorySideMappings.put(side, RelativeSide.NONE);
-        }
-    }
+	private void initSideMappings() {
+		for (RelativeSide side : BlockRotationHandler.RotationType.FOUR_WAY.getValidSides()) {
+			inventorySideMappings.put(side, RelativeSide.NONE);
+		}
+	}
 
-    public void setSideInventory(RelativeSide inventorySide, @Nullable IItemHandler handler, RelativeSide defaultMachineSide) {
-        sideInventories.put(inventorySide, handler);
-        setInventorySideMappings(defaultMachineSide, inventorySide);
-    }
+	public void setSideInventory(RelativeSide inventorySide, @Nullable IItemHandler handler, RelativeSide defaultMachineSide) {
+		sideInventories.put(inventorySide, handler);
+		setInventorySideMappings(defaultMachineSide, inventorySide);
+	}
 
-    public void setInventorySideMappings(RelativeSide machineSide, RelativeSide inventorySide) {
-        inventorySideMappings.put(machineSide, inventorySide);
-    }
+	public void setInventorySideMappings(RelativeSide machineSide, RelativeSide inventorySide) {
+		inventorySideMappings.put(machineSide, inventorySide);
+	}
 
-    public Map<RelativeSide, IItemHandler> getSideInventories() {
-        return sideInventories;
-    }
+	public Map<RelativeSide, IItemHandler> getSideInventories() {
+		return sideInventories;
+	}
 
-    public Map<RelativeSide, RelativeSide> getInventorySideMappings() {
-        return inventorySideMappings;
-    }
+	public Map<RelativeSide, RelativeSide> getInventorySideMappings() {
+		return inventorySideMappings;
+	}
 
-    @Nullable
-    private IItemHandler getInventoryMappedToFacing(@Nullable EnumFacing facing) {
-        RelativeSide machineSide = RelativeSide.getSideViewed(BlockRotationHandler.RotationType.FOUR_WAY, getPrimaryFacing(), facing);
+	@Nullable
+	private IItemHandler getInventoryMappedToFacing(@Nullable EnumFacing facing) {
+		RelativeSide machineSide = RelativeSide.getSideViewed(BlockRotationHandler.RotationType.FOUR_WAY, getPrimaryFacing(), facing);
 
-        if(inventorySideMappings.containsKey(machineSide)) {
-            return sideInventories.get(inventorySideMappings.get(machineSide));
-        }
+		if (inventorySideMappings.containsKey(machineSide)) {
+			return sideInventories.get(inventorySideMappings.get(machineSide));
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    public void openAltGui(EntityPlayer player) {
-        //noop, must be implemented by individual tiles, if they have an alt-control gui
-    }
+	@Override
+	public void onBlockBroken() {
+		super.onBlockBroken();
+		InventoryTools.dropItemsInWorld(world, mainInventory, pos);
+	}
 
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        super.writeToNBT(tag);
-        tag.setTag("mainInventory", mainInventory.serializeNBT());
+	public void openAltGui(EntityPlayer player) {
+		//noop, must be implemented by individual tiles, if they have an alt-control gui
+	}
 
-        NBTTagList sideMappings = new NBTTagList();
-        for(Map.Entry<RelativeSide, RelativeSide> mapping : inventorySideMappings.entrySet()) {
-            sideMappings.appendTag(new NBTTagIntArray(new int[] {mapping.getKey().ordinal(), mapping.getValue().ordinal()}));
-        }
-        tag.setTag("inventorySideMappings", sideMappings);
-        return tag;
-    }
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+		super.writeToNBT(tag);
+		tag.setTag("mainInventory", mainInventory.serializeNBT());
 
-    @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        super.readFromNBT(tag);
-        if(tag.hasKey("mainInventory")) {
-            mainInventory.deserializeNBT(tag.getCompoundTag("mainInventory"));
-        }
-        for(NBTBase nbt : tag.getTagList("inventorySideMappings", Constants.NBT.TAG_INT_ARRAY)) {
-            NBTTagIntArray mapping = (NBTTagIntArray) nbt;
-            setInventorySideMappings(RelativeSide.values()[mapping.getIntArray()[0]], RelativeSide.values()[mapping.getIntArray()[1]]);
-        }
-    }
+		NBTTagList sideMappings = new NBTTagList();
+		for (Map.Entry<RelativeSide, RelativeSide> mapping : inventorySideMappings.entrySet()) {
+			sideMappings.appendTag(new NBTTagIntArray(new int[] {mapping.getKey().ordinal(), mapping.getValue().ordinal()}));
+		}
+		tag.setTag("inventorySideMappings", sideMappings);
+		return tag;
+	}
 
-    @Override
-    public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-        return (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && getInventoryMappedToFacing(facing) != null) || super.hasCapability(capability, facing);
-    }
+	@Override
+	public void readFromNBT(NBTTagCompound tag) {
+		super.readFromNBT(tag);
+		if (tag.hasKey("mainInventory")) {
+			mainInventory.deserializeNBT(tag.getCompoundTag("mainInventory"));
+		}
+		for (NBTBase nbt : tag.getTagList("inventorySideMappings", Constants.NBT.TAG_INT_ARRAY)) {
+			NBTTagIntArray mapping = (NBTTagIntArray) nbt;
+			setInventorySideMappings(RelativeSide.values()[mapping.getIntArray()[0]], RelativeSide.values()[mapping.getIntArray()[1]]);
+		}
+	}
 
-    @SuppressWarnings("unchecked")
-    @Nullable
-    @Override
-    public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-        if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            IItemHandler handler = getInventoryMappedToFacing(facing);
-            if(handler != null) {
-                return (T) handler;
-            }
-        }
-        return super.getCapability(capability, facing);
-    }
+	@Override
+	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
+		return (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && getInventoryMappedToFacing(facing) != null) || super
+				.hasCapability(capability, facing);
+	}
+
+	@SuppressWarnings("unchecked")
+	@Nullable
+	@Override
+	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+			IItemHandler handler = getInventoryMappedToFacing(facing);
+			if (handler != null) {
+				return (T) handler;
+			}
+		}
+		return super.getCapability(capability, facing);
+	}
 }

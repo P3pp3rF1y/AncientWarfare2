@@ -14,47 +14,36 @@ import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class BlockWarehouseCraftingStation extends BlockBaseAutomation {
 
-    public BlockWarehouseCraftingStation(String regName) {
-        super(Material.ROCK, regName);
-        setHardness(2.f);
-    }
+	public BlockWarehouseCraftingStation(String regName) {
+		super(Material.ROCK, regName);
+		setHardness(2.f);
+	}
 
-    @Override
-    public boolean hasTileEntity(IBlockState state) {
-        return true;
-    }
+	@Override
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
 
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileWarehouseCraftingStation();
-    }
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		return new TileWarehouseCraftingStation();
+	}
 
-    @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        TileEntity te = world.getTileEntity(pos);
-        return te instanceof IInteractableTile && ((IInteractableTile) te).onBlockClicked(player, hand);
-    }
+	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY,
+			float hitZ) {
+		TileEntity te = world.getTileEntity(pos);
+		return te instanceof IInteractableTile && ((IInteractableTile) te).onBlockClicked(player, hand);
+	}
 
-    @Override
-    public void breakBlock(World world, BlockPos pos, IBlockState state) {
-        TileEntity te = world.getTileEntity(pos);
-        if (te instanceof TileWarehouseCraftingStation) {
-            TileWarehouseCraftingStation twcs = (TileWarehouseCraftingStation) te;
-            InventoryTools.dropInventoryInWorld(world, twcs.layoutMatrix, pos);
-            InventoryTools.dropInventoryInWorld(world, twcs.bookInventory, pos);
-        }
-        super.breakBlock(world, pos, state);
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerClient() {
+		super.registerClient();
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerClient() {
-        super.registerClient();
-
-        NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_CRAFTING, GuiWarehouseCraftingStation.class);
-    }
+		NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_CRAFTING, GuiWarehouseCraftingStation.class);
+	}
 }

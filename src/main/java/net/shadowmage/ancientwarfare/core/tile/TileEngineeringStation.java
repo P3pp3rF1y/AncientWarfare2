@@ -159,8 +159,8 @@ public class TileEngineeringStation extends TileUpdatable implements IRotatableT
 	}
 
 	public void onBlockBreak() {
-		InventoryTools.dropInventoryInWorld(world, bookInventory, pos);
-		InventoryTools.dropInventoryInWorld(world, extraSlots, pos);
-		InventoryTools.dropInventoryInWorld(world, layoutMatrix, pos);
+		InventoryTools.dropItemsInWorld(world, bookInventory, pos);
+		InventoryTools.dropItemsInWorld(world, extraSlots, pos);
+		InventoryTools.dropItemsInWorld(world, layoutMatrix, pos);
 	}
 }
