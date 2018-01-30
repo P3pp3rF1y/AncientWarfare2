@@ -58,7 +58,6 @@ import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 import net.shadowmage.ancientwarfare.npc.item.ItemShield;
-import net.shadowmage.ancientwarfare.npc.network.UUIDDataSerializer;
 import net.shadowmage.ancientwarfare.npc.skin.NpcSkinManager;
 
 import javax.annotation.Nonnull;
@@ -75,9 +74,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	private static final DataParameter<Byte> BED_DIRECTION = EntityDataManager.createKey(NpcBase.class, DataSerializers.BYTE);
 	private static final DataParameter<Boolean> IS_SLEEPING = EntityDataManager.createKey(NpcBase.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.createKey(NpcBase.class, DataSerializers.BOOLEAN);
-	private static final DataParameter<UUID> OWNER_ID = EntityDataManager.createKey(NpcBase.class, UUIDDataSerializer.INSTANCE);
 
 	private String ownerName = "";//the owner of this NPC, used for checking teams
+	private UUID ownerUuid = new UUID(0, 0);//uuid of the owner of this NPC, used for checking teams
 	protected String followingPlayerName;//set/cleared onInteract from player if player.team==this.team
 
 	protected NpcLevelingStats levelingStats;
@@ -130,7 +129,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		dataManager.register(BED_DIRECTION, (byte) EnumFacing.NORTH.ordinal());
 		dataManager.register(IS_SLEEPING, false);
 		dataManager.register(SWINGING_ARMS, false);
-		dataManager.register(OWNER_ID, null);
 	}
 
 	@Override
@@ -777,6 +775,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		buffer.writeLong(getUniqueID().getMostSignificantBits());
 		buffer.writeLong(getUniqueID().getLeastSignificantBits());
 		ByteBufUtils.writeUTF8String(buffer, ownerName);
+		buffer.writeLong(ownerUuid.getMostSignificantBits());
+		buffer.writeLong(ownerUuid.getLeastSignificantBits());
 		ByteBufUtils.writeUTF8String(buffer, customTexRef);
 	}
 
@@ -786,6 +786,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		long l2 = buffer.readLong();
 		this.entityUniqueID = new UUID(l1, l2);
 		ownerName = ByteBufUtils.readUTF8String(buffer);
+		ownerUuid = new UUID(buffer.readLong(), buffer.readLong());
 		customTexRef = ByteBufUtils.readUTF8String(buffer);
 		this.updateTexture();
 	}
@@ -839,14 +840,20 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	@Override
 	public void setOwner(EntityPlayer player) {
-		setOwnerUuid(player.getUniqueID());
+		ownerUuid = player.getUniqueID();
 		ownerName = player.getName();
 	}
 
 	@Override
 	public void setOwner(String ownerName, UUID ownerUuid) {
 		this.ownerName = ownerName;
-		setOwnerUuid(ownerUuid);
+		this.ownerUuid = ownerUuid;
+	}
+
+	@Nullable
+	@Override
+	public UUID getOwnerUuid() {
+		return ownerUuid;
 	}
 
 	public void setOwnerName(String name) {
@@ -859,7 +866,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 			tag.setString("ownerName", name);
 			EntityPlayer player = world.getPlayerEntityByName(name);
 			if (player != null) {
-				setOwnerUuid(player.getUniqueID());
+				ownerUuid = player.getUniqueID();
 			}
 			if (getOwnerUuid() != null)
 				tag.setString("ownerId", getOwnerUuid().toString());
@@ -881,11 +888,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	@Override
 	public String getOwnerName() {
 		return ownerName;
-	}
-
-	@Override
-	public UUID getOwnerUuid() {
-		return dataManager.get(OWNER_ID);
 	}
 
 	@Override
@@ -1131,7 +1133,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		if (tag.hasKey("ownerName")) {
 			this.ownerName = tag.getString("ownerName");
 			if (tag.hasKey("ownerId")) {
-				setOwnerUuid(UUID.fromString(tag.getString("ownerId")));
+				ownerUuid = UUID.fromString(tag.getString("ownerId"));
 			}
 		} else if (tag.hasKey("profileTex") && tag.hasKey("customTex")) {
 			customTexRef = tag.getString("customTex");
@@ -1333,10 +1335,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	public boolean isSleeping() {
 		return dataManager == null ? false : dataManager.get(IS_SLEEPING);
-	}
-
-	public void setOwnerUuid(UUID ownerId) {
-		dataManager.set(OWNER_ID, ownerId);
 	}
 
 	public void setBedDirection(EnumFacing direction) {
