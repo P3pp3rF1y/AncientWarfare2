@@ -111,11 +111,11 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
             for (int i = 0; i < point.getFilterSize(); i++) {
                 slot = new IndexedRoutePointItemSlot(9 + i * 18, totalHeight + 10 + 12 + 2, point.getFilterInSlot(i), this, point, i) {
                     @Override
-                    public void onSlotClicked(ItemStack stack) {
-                        onFilterSlotClicked(this, point, index, stack);
-                    }
-                };
-                area.addGuiElement(slot);
+					public void onSlotClicked(ItemStack stack, boolean rightClicked) {
+						onFilterSlotClicked(this, point, index, stack);
+					}
+				};
+				area.addGuiElement(slot);
             }
             
             button = new IndexedButton(8 + 55 + 2 + 80 + 2 + 40 + 2 + 40, totalHeight, 12, 9, "guistrings.npc.remove_point", index) {

@@ -29,78 +29,80 @@ import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
 
 public class BlockDraftingStation extends BlockBaseStructure implements IBakeryProvider {
 
-    public BlockDraftingStation() {
-        super(Material.ROCK, "drafting_station");
-        setHardness(2.f);
-    }
+	public BlockDraftingStation() {
+		super(Material.ROCK, "drafting_station");
+		setHardness(2.f);
+	}
 
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlankExtendedBlockStateContainer(this);
-    }
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlankExtendedBlockStateContainer(this);
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess world, BlockPos pos, EnumFacing side) {
-        return false;
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess world, BlockPos pos, EnumFacing side) {
+		return false;
+	}
 
-    @Override
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    public boolean isNormalCube(IBlockState state) {
-        return false;
-    }
+	@Override
+	public boolean isNormalCube(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    public boolean isFullCube(IBlockState state) {
-        return false;
-    }
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    public boolean hasTileEntity(IBlockState state) {
-        return true;
-    }
+	@Override
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
 
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileDraftingStation();
-    }
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		return new TileDraftingStation();
+	}
 
-    @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if (!world.isRemote) {
-            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_DRAFTING_STATION, pos);
-        }
-        return true;
-    }
+	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY,
+			float hitZ) {
+		if (!world.isRemote) {
+			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_DRAFTING_STATION, pos);
+		}
+		return true;
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerClient() {
-        NetworkHandler.registerGui(NetworkHandler.GUI_DRAFTING_STATION, GuiDraftingStation.class);
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerClient() {
+		NetworkHandler.registerGui(NetworkHandler.GUI_DRAFTING_STATION, GuiDraftingStation.class);
 
-        ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
-            @Override protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                return DraftingStationRenderer.MODEL_LOCATION;
-            }
-        });
+		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
+			@Override
+			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+				return DraftingStationRenderer.MODEL_LOCATION;
+			}
+		});
 
-        ModelRegistryHelper.register(DraftingStationRenderer.MODEL_LOCATION, new CCBakeryModel() {
-            @Override
-            public TextureAtlasSprite getParticleTexture() {
-                return DraftingStationRenderer.INSTANCE.sprite;
-            }
-        });
+		ModelRegistryHelper.register(DraftingStationRenderer.MODEL_LOCATION, new CCBakeryModel() {
+			@Override
+			public TextureAtlasSprite getParticleTexture() {
+				return DraftingStationRenderer.INSTANCE.sprite;
+			}
+		});
 
-        ModelLoaderHelper.registerItem(this, DraftingStationRenderer.MODEL_LOCATION);
-    }
+		ModelLoaderHelper.registerItem(this, DraftingStationRenderer.MODEL_LOCATION);
+	}
 
-    @Override
-    public IBakery getBakery() {
-        return DraftingStationRenderer.INSTANCE;
-    }
+	@Override
+	public IBakery getBakery() {
+		return DraftingStationRenderer.INSTANCE;
+	}
 }

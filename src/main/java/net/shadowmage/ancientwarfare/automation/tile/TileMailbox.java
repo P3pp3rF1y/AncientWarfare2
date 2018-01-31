@@ -13,7 +13,9 @@ import net.shadowmage.ancientwarfare.automation.gamedata.MailboxData.Deliverable
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
+import net.shadowmage.ancientwarfare.core.tile.IBlockBreakHandler;
 import net.shadowmage.ancientwarfare.core.tile.TileOwned;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -22,7 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TileMailbox extends TileOwned implements IRotatableTile, ITickable {
+public class TileMailbox extends TileOwned implements IRotatableTile, ITickable, IBlockBreakHandler {
 
 	private boolean autoExport;//TODO : should automatically try and export from output side
 	private boolean privateBox;
@@ -42,10 +44,10 @@ public class TileMailbox extends TileOwned implements IRotatableTile, ITickable 
 
 	@Override
 	public void update() {
-		if(!hasWorld() || world.isRemote) {
+		if (!hasWorld() || world.isRemote) {
 			return;
 		}
-		if(mailboxName != null)//try to receive mail
+		if (mailboxName != null)//try to receive mail
 		{
 			MailboxData data = AWGameData.INSTANCE.getData(world, MailboxData.class);
 
@@ -53,7 +55,7 @@ public class TileMailbox extends TileOwned implements IRotatableTile, ITickable 
 			data.getDeliverableItems(privateBox ? getOwnerName() : null, mailboxName, items, world, pos.getX(), pos.getY(), pos.getZ());
 			data.addMailboxReceiver(privateBox ? getOwnerName() : null, mailboxName, this);
 
-			if(destinationName != null)//try to send mail
+			if (destinationName != null)//try to send mail
 			{
 				trySendItems(data);
 			}
@@ -64,9 +66,9 @@ public class TileMailbox extends TileOwned implements IRotatableTile, ITickable 
 		@Nonnull ItemStack item;
 		String owner = privateBox ? getOwnerName() : null;
 		int dim = world.provider.getDimension();
-		for(int slot = 0; slot < sendInventory.getSlots(); slot++) {
+		for (int slot = 0; slot < sendInventory.getSlots(); slot++) {
 			item = sendInventory.getStackInSlot(slot);
-			if(!item.isEmpty()) {
+			if (!item.isEmpty()) {
 				data.addDeliverableItem(owner, destinationName, sendInventory.extractItem(slot, item.getCount(), false), dim, pos);
 				break;
 			}
@@ -82,7 +84,7 @@ public class TileMailbox extends TileOwned implements IRotatableTile, ITickable 
 	}
 
 	public void setMailboxName(String name) {
-		if(world.isRemote) {
+		if (world.isRemote) {
 			return;
 		}
 		mailboxName = name;
@@ -90,7 +92,7 @@ public class TileMailbox extends TileOwned implements IRotatableTile, ITickable 
 	}
 
 	public void setTargetName(String name) {
-		if(world.isRemote) {
+		if (world.isRemote) {
 			return;
 		}
 		destinationName = name;
@@ -110,10 +112,10 @@ public class TileMailbox extends TileOwned implements IRotatableTile, ITickable 
 	}
 
 	public void setPrivateBox(boolean val) {
-		if(world.isRemote) {
+		if (world.isRemote) {
 			return;
 		}
-		if(val != privateBox) {
+		if (val != privateBox) {
 			mailboxName = null;
 			destinationName = null;
 			markDirty();
@@ -124,23 +126,23 @@ public class TileMailbox extends TileOwned implements IRotatableTile, ITickable 
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
-		if(tag.hasKey("targetName")) {
+		if (tag.hasKey("targetName")) {
 			destinationName = tag.getString("targetName");
 		}
-		if(tag.hasKey("mailboxName")) {
+		if (tag.hasKey("mailboxName")) {
 			mailboxName = tag.getString("mailboxName");
 		}
-		if(tag.hasKey("sendInventory")) {
+		if (tag.hasKey("sendInventory")) {
 			sendInventory.deserializeNBT(tag.getCompoundTag("sendInventory"));
 		}
-		if(tag.hasKey("receivedInventory")) {
+		if (tag.hasKey("receivedInventory")) {
 			receivedInventory.deserializeNBT(tag.getCompoundTag("receivedInventory"));
 		}
-		if(tag.hasKey("sendSides")) {
+		if (tag.hasKey("sendSides")) {
 			int[] sides = tag.getIntArray("sendSides");
 			sendSides = Arrays.stream(sides).mapToObj(o -> EnumFacing.VALUES[o]).collect(Collectors.toList());
 		}
-		if(tag.hasKey("receivedSides")) {
+		if (tag.hasKey("receivedSides")) {
 			int[] sides = tag.getIntArray("receivedSides");
 			receivedSides = Arrays.stream(sides).mapToObj(o -> EnumFacing.VALUES[o]).collect(Collectors.toList());
 		}
@@ -149,10 +151,10 @@ public class TileMailbox extends TileOwned implements IRotatableTile, ITickable 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
-		if(destinationName != null) {
+		if (destinationName != null) {
 			tag.setString("targetName", destinationName);
 		}
-		if(mailboxName != null) {
+		if (mailboxName != null) {
 			tag.setString("mailboxName", mailboxName);
 		}
 		tag.setTag("sendInventory", sendInventory.serializeNBT());
@@ -181,14 +183,20 @@ public class TileMailbox extends TileOwned implements IRotatableTile, ITickable 
 	@Nullable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			if(receivedSides.contains(facing)) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+			if (receivedSides.contains(facing)) {
 				return (T) receivedInventory;
-			} else if(sendSides.contains(facing)) {
+			} else if (sendSides.contains(facing)) {
 				return (T) sendInventory;
 			}
 		}
 
 		return super.getCapability(capability, facing);
+	}
+
+	@Override
+	public void onBlockBroken() {
+		InventoryTools.dropItemsInWorld(world, sendInventory, pos);
+		InventoryTools.dropItemsInWorld(world, receivedInventory, pos);
 	}
 }

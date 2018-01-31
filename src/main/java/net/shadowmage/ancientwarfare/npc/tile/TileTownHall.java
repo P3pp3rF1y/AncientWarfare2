@@ -18,7 +18,9 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.tile.IBlockBreakHandler;
 import net.shadowmage.ancientwarfare.core.tile.TileOwned;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.container.ContainerTownHall;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
@@ -29,7 +31,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TileTownHall extends TileOwned implements IInteractableTile, ITickable {
+public class TileTownHall extends TileOwned implements IInteractableTile, ITickable, IBlockBreakHandler {
 
 	public boolean alarmActive = false;
 
@@ -153,6 +155,11 @@ public class TileTownHall extends TileOwned implements IInteractableTile, ITicka
 		if(oldOwner != null)
 			tag.setString("oldOwner", oldOwner);
 		return tag;
+	}
+
+	@Override
+	public void onBlockBroken() {
+		InventoryTools.dropItemsInWorld(world, inventory, pos);
 	}
 
 	public static class NpcDeathEntry {

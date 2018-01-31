@@ -21,12 +21,16 @@
     <option name="ALIGN_MULTILINE_PARAMETERS" value="false" />
     <option name="ALIGN_MULTILINE_RESOURCES" value="false" />
     <option name="SPACE_BEFORE_ARRAY_INITIALIZER_LBRACE" value="true" />
+    <option name="CALL_PARAMETERS_WRAP" value="1"/>
+    <option name="METHOD_PARAMETERS_WRAP" value="1"/>
     <option name="EXTENDS_KEYWORD_WRAP" value="1" />
     <option name="THROWS_KEYWORD_WRAP" value="1" />
+    <option name="METHOD_CALL_CHAIN_WRAP" value="1"/>
     <option name="BINARY_OPERATION_SIGN_ON_NEXT_LINE" value="true" />
     <option name="ARRAY_INITIALIZER_WRAP" value="5" />
     <option name="PARAMETER_ANNOTATION_WRAP" value="1" />
     <option name="VARIABLE_ANNOTATION_WRAP" value="1" />
+    <option name="ENUM_CONSTANTS_WRAP" value="2"/>
     <indentOptions>
       <option name="USE_TAB_CHARACTER" value="true" />
     </indentOptions>

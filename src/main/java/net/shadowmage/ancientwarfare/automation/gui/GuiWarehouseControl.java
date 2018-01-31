@@ -19,7 +19,6 @@ import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntr
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortOrder;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortType;
 
 import javax.annotation.Nonnull;
 import java.util.Locale;
@@ -28,23 +27,21 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 
     private CompositeScrolled area;
     private Text input;
-    private SortType sortType = SortType.NAME;
-    private SortOrder sortOrder = SortOrder.DESCENDING;
     private final ComparatorItemStack sorter;
     private Label storedLabel;
 
     public GuiWarehouseControl(ContainerBase par1Container) {
         super(par1Container, 178, 240);
-        sorter = new ComparatorItemStack(sortType, sortOrder);
+        sorter = new ComparatorItemStack(getContainer().getSortType(), getContainer().getSortOrder());
     }
 
     @Override
     public void initElements() {
-        Button sortChange = new Button(8, 8, 110, 12, "guistrings.automation." + sortType.toString()) {
+        Button sortChange = new Button(8, 8, 110, 12, "guistrings.automation." + getContainer().getSortType().toString()) {
             @Override
             protected void onPressed() {
-                sortType = sortType.next();
-                setText("guistrings.automation." + sortType.toString());
+                getContainer().setSortType(getContainer().getSortType().next());
+                setText("guistrings.automation." + getContainer().getSortType().toString());
                 refreshGui();
             }
         };
@@ -54,12 +51,13 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
             @Override
             public void onToggled() {
                 super.onToggled();
-                sortOrder = checked() ? SortOrder.ASCENDING : SortOrder.DESCENDING;
-                String name = sortOrder.name().toLowerCase(Locale.ENGLISH);
+                getContainer().setSortOrder(checked() ? SortOrder.ASCENDING : SortOrder.DESCENDING);
+                String name = getContainer().getSortOrder().name().toLowerCase(Locale.ENGLISH);
                 label = I18n.format("guistrings.automation." + name);
                 refreshGui();
             }
         };
+        sortOrderBox.setChecked(getContainer().getSortOrder() == SortOrder.ASCENDING);
         addGuiElement(sortOrderBox);
 
         input = new Text(8, 8 + 12 + 4, 178 - 16, "", this) {
@@ -70,15 +68,27 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
                 }
             }
         };
+        Listener l = new Listener(Listener.MOUSE_UP) {
+            @Override
+            public boolean onEvent(GuiElement widget, ActivationEvent evt) {
+                if (evt.mButton == 1) {
+                    ((Text) widget).setText("");
+                    refreshGui();
+                }
+
+                return false;
+            }
+        };
+        input.addNewListener(l);
         addGuiElement(input);
 
         area = new CompositeItemSlots(this, 0, 8 + 12 + 4 + 12 + 2, 178, 96, this);
 
-        Listener l = new Listener(Listener.MOUSE_DOWN) {
+        l = new Listener(Listener.MOUSE_DOWN) {
             @Override
             public boolean onEvent(GuiElement widget, ActivationEvent evt) {
                 if (evt.mButton == 0 && widget.isMouseOverElement(evt.mx, evt.my) && !area.isMouseOverSubElement(evt.mx, evt.my)) {
-                    getContainer().handleClientRequestSpecific(ItemStack.EMPTY, isShiftKeyDown());
+                    getContainer().handleClientRequestSpecific(ItemStack.EMPTY, isShiftKeyDown(), false);
                 }
                 return true;
             }
@@ -108,10 +118,15 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
     private void addInventoryViewElements() {
         @Nonnull ItemStack stack;
 		NonNullList<ItemStack> displayStacks = NonNullList.create();
+        String searchInput = input.getText().toLowerCase(Locale.ENGLISH);
+
 		for (ItemHashEntry entry : getContainer().itemMap.keySet()) {
             stack = entry.getItemStack();
-            stack.setCount(getContainer().itemMap.getCount(entry));
-            displayStacks.add(stack);
+
+            if (searchInput.isEmpty() || stack.getDisplayName().toLowerCase().contains(searchInput)) {
+                stack.setCount(getContainer().itemMap.getCount(entry));
+                displayStacks.add(stack);
+            }
         }
 
         sortItems(displayStacks);
@@ -122,8 +137,8 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
         for (ItemStack displayStack : displayStacks) {
             slot = new ItemSlot(4 + x * 18, 3 + y * 18, displayStack, this) {
                 @Override
-                public void onSlotClicked(ItemStack stack) {
-                    getContainer().handleClientRequestSpecific(getStack(), isShiftKeyDown());
+                public void onSlotClicked(ItemStack stack, boolean rightClicked) {
+                    getContainer().handleClientRequestSpecific(getStack(), isShiftKeyDown(), rightClicked);
                 }
             };
             area.addGuiElement(slot);
@@ -138,9 +153,8 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
     }
 
 	private void sortItems(NonNullList<ItemStack> items) {
-		sorter.setSortType(sortType);
-        sorter.setSortOrder(sortOrder);
-        sorter.setTextInput(input.getText());
+        sorter.setSortType(getContainer().getSortType());
+        sorter.setSortOrder(getContainer().getSortOrder());
         items.sort(sorter);
     }
 

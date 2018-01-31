@@ -33,113 +33,107 @@ import net.shadowmage.ancientwarfare.core.render.BlockStateKeyGenerator;
 import net.shadowmage.ancientwarfare.core.render.ResearchStationRenderer;
 import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 import net.shadowmage.ancientwarfare.core.tile.TileResearchStation;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
 public class BlockResearchStation extends BlockBaseCore implements IRotatableBlock, IBakeryProvider, IClientRegistrar {
 
-    public BlockResearchStation() {
-        super(Material.ROCK, "research_station");
-        setHardness(2.f);
+	public BlockResearchStation() {
+		super(Material.ROCK, "research_station");
+		setHardness(2.f);
 
-        AncientWarfareCore.proxy.addClientRegistrar(this);
-    }
+		AncientWarfareCore.proxy.addClientRegistrar(this);
+	}
 
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer.Builder(this).add(CoreProperties.UNLISTED_HORIZONTAL_FACING).build();
-    }
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer.Builder(this).add(CoreProperties.UNLISTED_HORIZONTAL_FACING).build();
+	}
 
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        return 0;
-    }
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return 0;
+	}
 
-    @Override
-    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        EnumFacing facing = EnumFacing.NORTH;
-        TileEntity tileentity = world.getTileEntity(pos);
+	@Override
+	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+		EnumFacing facing = EnumFacing.NORTH;
+		TileEntity tileentity = world.getTileEntity(pos);
 
-        if (tileentity instanceof TileResearchStation) {
-            facing = ((TileResearchStation) tileentity).getPrimaryFacing();
-        }
+		if (tileentity instanceof TileResearchStation) {
+			facing = ((TileResearchStation) tileentity).getPrimaryFacing();
+		}
 
-        return ((IExtendedBlockState) super.getExtendedState(state, world, pos)).withProperty(CoreProperties.UNLISTED_HORIZONTAL_FACING, facing);
-    }
+		return ((IExtendedBlockState) super.getExtendedState(state, world, pos)).withProperty(CoreProperties.UNLISTED_HORIZONTAL_FACING, facing);
+	}
 
-    @Override
-    public boolean hasTileEntity(IBlockState state) {
-        return true;
-    }
+	@Override
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
 
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileResearchStation();
-    }
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		return new TileResearchStation();
+	}
 
-    @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        TileEntity te = world.getTileEntity(pos);
-        return te instanceof IInteractableTile && ((IInteractableTile) te).onBlockClicked(player, hand);
-    }
+	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY,
+			float hitZ) {
+		TileEntity te = world.getTileEntity(pos);
+		return te instanceof IInteractableTile && ((IInteractableTile) te).onBlockClicked(player, hand);
+	}
 
-    @Override
-    public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		InventoryTools.dropInventoryInWorld(world.getTileEntity(pos));
-		super.breakBlock(world, pos, state);
-    }
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
+	@Override
+	public boolean isNormalCube(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    public boolean isNormalCube(IBlockState state) {
-        return false;
-    }
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    public boolean isFullCube(IBlockState state) {
-        return false;
-    }
+	@Override
+	public RotationType getRotationType() {
+		return RotationType.FOUR_WAY;
+	}
 
-    @Override
-    public RotationType getRotationType() {
-        return RotationType.FOUR_WAY;
-    }
+	@Override
+	public boolean invertFacing() {
+		return true;
+	}
 
-    @Override
-    public boolean invertFacing() {
-        return true;
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerClient() {
+		NetworkHandler.registerGui(NetworkHandler.GUI_RESEARCH_STATION, GuiResearchStation.class);
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerClient() {
-        NetworkHandler.registerGui(NetworkHandler.GUI_RESEARCH_STATION, GuiResearchStation.class);
+		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
+			@Override
+			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+				return ResearchStationRenderer.MODEL_LOCATION;
+			}
+		});
 
-        ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
-            @Override protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                return ResearchStationRenderer.MODEL_LOCATION;
-            }
-        });
+		ModelRegistryHelper.register(ResearchStationRenderer.MODEL_LOCATION, new CCBakeryModel() {
+			@Override
+			public TextureAtlasSprite getParticleTexture() {
+				return ResearchStationRenderer.INSTANCE.sprite;
+			}
+		});
 
-        ModelRegistryHelper.register(ResearchStationRenderer.MODEL_LOCATION, new CCBakeryModel() {
-            @Override
-            public TextureAtlasSprite getParticleTexture() {
-                return ResearchStationRenderer.INSTANCE.sprite;
-            }
-        });
+		ModelLoaderHelper.registerItem(this, ResearchStationRenderer.MODEL_LOCATION);
 
-        ModelLoaderHelper.registerItem(this, ResearchStationRenderer.MODEL_LOCATION);
+		ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder().addKeyProperties(CoreProperties.UNLISTED_HORIZONTAL_FACING).build());
+	}
 
-        ModelBakery.registerBlockKeyGenerator(this,
-                new BlockStateKeyGenerator.Builder().addKeyProperties(CoreProperties.UNLISTED_HORIZONTAL_FACING).build());
-    }
-
-    @Override
-    public IBakery getBakery() {
-        return ResearchStationRenderer.INSTANCE;
-    }
+	@Override
+	public IBakery getBakery() {
+		return ResearchStationRenderer.INSTANCE;
+	}
 }

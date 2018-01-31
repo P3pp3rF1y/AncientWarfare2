@@ -14,7 +14,6 @@ import net.shadowmage.ancientwarfare.automation.gui.GuiWarehouseInterface;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseInterface;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 public class BlockWarehouseInterface extends BlockBaseAutomation {
 
@@ -37,12 +36,6 @@ public class BlockWarehouseInterface extends BlockBaseAutomation {
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		TileEntity te = world.getTileEntity(pos);
 		return te instanceof IInteractableTile && ((IInteractableTile) te).onBlockClicked(player, hand);
-	}
-
-	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		InventoryTools.dropInventoryInWorld(world.getTileEntity(pos));
-		super.breakBlock(world, pos, state);
 	}
 
 	@Override

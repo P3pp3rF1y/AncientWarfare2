@@ -136,6 +136,13 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
         world.profiler.endSection();
     }
 
+    @Override
+    public void onBlockBroken() {
+        super.onBlockBroken();
+        InventoryTools.dropItemsInWorld(world, foodInventory, pos);
+        InventoryTools.dropItemsInWorld(world, toolInventory, pos);
+    }
+
     private void countResources() {
         carrotCount = InventoryTools.getCountOf(foodInventory, s -> s.getItem() == Items.CARROT);
         seedCount = InventoryTools.getCountOf(foodInventory, s -> s.getItem() == Items.WHEAT_SEEDS);

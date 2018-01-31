@@ -12,11 +12,13 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.tile.IBlockBreakHandler;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-public class TileStirlingGenerator extends TileTorqueSingleCell {
+public class TileStirlingGenerator extends TileTorqueSingleCell implements IBlockBreakHandler {
 
     private final ItemStackHandler fuelHandler = new ItemStackHandler(1) {
         @Nonnull
@@ -105,5 +107,10 @@ public class TileStirlingGenerator extends TileTorqueSingleCell {
             return (T) fuelHandler;
         }
         return super.getCapability(capability, facing);
+    }
+
+    @Override
+    public void onBlockBroken() {
+        InventoryTools.dropItemsInWorld(world, fuelHandler, pos);
     }
 }

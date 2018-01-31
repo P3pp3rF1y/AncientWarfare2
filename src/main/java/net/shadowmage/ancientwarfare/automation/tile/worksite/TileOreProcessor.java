@@ -37,8 +37,8 @@ public class TileOreProcessor extends TileWorksiteBase {
     public void onBlockBroken() {
         super.onBlockBroken();
         if (!world.isRemote) {
-            InventoryTools.dropInventoryInWorld(world, inventory, pos);
-        }
+			InventoryTools.dropItemsInWorld(world, inventory, pos);
+		}
     }
 
     @Override

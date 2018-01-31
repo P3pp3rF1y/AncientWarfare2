@@ -206,11 +206,11 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
         stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
         final ItemSlot slot = new ItemSlot(x, y, stack, this) {
             @Override
-            public void onSlotClicked(ItemStack stack) {
-                stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
-                setItem(stack);
-                trade.setInputStack(slotNum, stack);
-            }
+			public void onSlotClicked(ItemStack stack, boolean rightClicked) {
+				stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
+				setItem(stack);
+				trade.setInputStack(slotNum, stack);
+			}
         };
         if (stack.isEmpty()) {
             slot.addTooltip("guistrings.npc.trade_input_slot");
@@ -223,11 +223,11 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
         stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
         final ItemSlot slot = new ItemSlot(x, y, stack, this) {
             @Override
-            public void onSlotClicked(ItemStack stack) {
-                stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
-                setItem(stack);
-                trade.setOutputStack(slotNum, stack);
-            }
+			public void onSlotClicked(ItemStack stack, boolean rightClicked) {
+				stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
+				setItem(stack);
+				trade.setOutputStack(slotNum, stack);
+			}
         };
         if (stack.isEmpty()) {
             slot.addTooltip("guistrings.npc.trade_output_slot");
@@ -393,11 +393,11 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
     private int addDepositEntry(final POTradeDepositEntry entry, final int index, int startHeight) {
         ItemSlot slot = new ItemSlot(8, startHeight, entry.getFilter(), this) {
             @Override
-            public void onSlotClicked(ItemStack stack) {
-                stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
-                entry.setFilter(stack);
-                setItem(stack);
-            }
+			public void onSlotClicked(ItemStack stack, boolean rightClicked) {
+				stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
+				entry.setFilter(stack);
+				setItem(stack);
+			}
         };
         restockArea.addGuiElement(slot);
 
@@ -427,11 +427,11 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
     private int addWithdrawEntry(final POTradeWithdrawEntry entry, final int index, int startHeight) {
         ItemSlot slot = new ItemSlot(8, startHeight, entry.getFilter(), this) {
             @Override
-            public void onSlotClicked(ItemStack stack) {
-                stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
-                entry.setFilter(stack);
-                setItem(stack);
-            }
+			public void onSlotClicked(ItemStack stack, boolean rightClicked) {
+				stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
+				entry.setFilter(stack);
+				setItem(stack);
+			}
         };
         restockArea.addGuiElement(slot);
 

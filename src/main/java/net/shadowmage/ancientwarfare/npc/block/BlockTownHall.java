@@ -10,7 +10,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 
 public class BlockTownHall extends BlockBaseNPC {
@@ -25,12 +24,6 @@ public class BlockTownHall extends BlockBaseNPC {
 	}
 
 	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		InventoryTools.dropInventoryInWorld(world.getTileEntity(pos));
-		super.breakBlock(world, pos, state);
-	}
-
-	@Override
 	public boolean hasTileEntity(IBlockState state) {
 		return true;
 	}
@@ -41,7 +34,8 @@ public class BlockTownHall extends BlockBaseNPC {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY,
+			float hitZ) {
 		TileEntity te = world.getTileEntity(pos);
 		return te instanceof IInteractableTile && ((IInteractableTile) te).onBlockClicked(player, hand);
 	}

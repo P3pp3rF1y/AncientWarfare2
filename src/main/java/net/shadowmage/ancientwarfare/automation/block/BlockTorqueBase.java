@@ -23,7 +23,6 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableT
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.render.BlockStateKeyGenerator;
 import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
 public abstract class BlockTorqueBase extends BlockBaseAutomation implements IRotatableBlock {
@@ -139,12 +138,6 @@ public abstract class BlockTorqueBase extends BlockBaseAutomation implements IRo
 	@Override
 	public boolean hasTileEntity(IBlockState state) {
 		return true;
-	}
-
-	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		InventoryTools.dropInventoryInWorld(world.getTileEntity(pos));
-		super.breakBlock(world, pos, state);
 	}
 
 	@Override

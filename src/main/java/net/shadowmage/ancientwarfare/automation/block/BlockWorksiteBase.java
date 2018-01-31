@@ -19,7 +19,6 @@ import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
-import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import java.util.function.Supplier;
 
@@ -132,16 +131,6 @@ public class BlockWorksiteBase extends BlockBaseAutomation implements IRotatable
 	@Override
 	public final EnumFacing[] getValidRotations(World world, BlockPos pos) {
 		return new EnumFacing[] {EnumFacing.DOWN, EnumFacing.UP};
-	}
-
-	@Override
-	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		TileEntity te = world.getTileEntity(pos);
-		InventoryTools.dropInventoryInWorld(te);
-		if (te instanceof IWorkSite) {
-			((IWorkSite) te).onBlockBroken();
-		}
-		super.breakBlock(world, pos, state);
 	}
 
 	@Override

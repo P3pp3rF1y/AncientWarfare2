@@ -70,16 +70,6 @@ public class BlockStructureBuilder extends BlockBaseStructure {
     }
 
     @Override
-    public void breakBlock(World world, BlockPos pos, IBlockState state) {
-        if (!world.isRemote) {
-            TileEntity te = world.getTileEntity(pos);
-            if (te instanceof TileStructureBuilder) {
-                ((TileStructureBuilder) te).onBlockBroken();
-            }
-        }
-    }
-
-    @Override
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         if (!world.isRemote) {
             TileEntity te = world.getTileEntity(pos);

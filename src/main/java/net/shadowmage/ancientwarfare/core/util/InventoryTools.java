@@ -1,13 +1,12 @@
 package net.shadowmage.ancientwarfare.core.util;
 
 import com.google.common.collect.Lists;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -22,11 +21,9 @@ import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import org.apache.commons.lang3.Validate;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -260,14 +257,17 @@ public class InventoryTools {
 		if (stack1 == stack2) {
 			return true;
 		}
-		return OreDictionary.itemMatches(stack1, stack2, !stack1.isEmpty() && (stack1.isItemStackDamageable() || stack1.getItemDamage() != OreDictionary.WILDCARD_VALUE)) && ItemStack.areItemsEqualIgnoreDurability(stack1, stack2) && stack1.areCapsCompatible(stack2);
+		return OreDictionary.itemMatches(stack1, stack2,
+				!stack1.isEmpty() && (stack1.isItemStackDamageable() || stack1.getItemDamage() != OreDictionary.WILDCARD_VALUE)) && ItemStack
+				.areItemsEqualIgnoreDurability(stack1, stack2) && stack1.areCapsCompatible(stack2);
 	}
 
 	public static boolean areItemStackTagsEqual(ItemStack stackA, ItemStack stackB) {
 		if (stackA.isEmpty() && stackB.isEmpty()) {
 			return true;
 		} else if (!stackA.isEmpty() && !stackB.isEmpty()) {
-			if ((stackA.getTagCompound() == null || stackA.getTagCompound().hasNoTags()) && (stackB.getTagCompound() != null && !stackB.getTagCompound().hasNoTags())) {
+			if ((stackA.getTagCompound() == null || stackA.getTagCompound().hasNoTags()) && (stackB.getTagCompound() != null && !stackB.getTagCompound()
+					.hasNoTags())) {
 				return false;
 			} else {
 				return (stackA.getTagCompound() == null || stackA.getTagCompound().equals(stackB.getTagCompound())) && stackA.areCapsCompatible(stackB);
@@ -291,7 +291,8 @@ public class InventoryTools {
 		} else if (!ignoreNBT && stackA.getTagCompound() == null && stackB.getTagCompound() != null) {
 			return false;
 		} else {
-			return (ignoreNBT || stackA.getTagCompound() == null || stackA.getTagCompound().equals(stackB.getTagCompound())) && stackA.areCapsCompatible(stackB);
+			return (ignoreNBT || stackA.getTagCompound() == null || stackA.getTagCompound().equals(stackB.getTagCompound())) && stackA
+					.areCapsCompatible(stackB);
 		}
 	}
 
@@ -299,67 +300,7 @@ public class InventoryTools {
 	 * drops the input itemstack into the world at the input position
 	 */
 	public static void dropItemInWorld(World world, ItemStack item, BlockPos pos) {
-		dropItemInWorld(world, item, pos.getX(), pos.getY(), pos.getZ());
-	}
-
-	public static void dropItemInWorld(World world, ItemStack item, double x, double y, double z) {
-		if (item.isEmpty() || world == null || world.isRemote) {
-			return;
-		}
-		EntityItem entityToSpawn;
-		x += world.rand.nextFloat() * 0.6f - 0.3f;
-		y += world.rand.nextFloat() * 0.6f + 1 - 0.3f;
-		z += world.rand.nextFloat() * 0.6f - 0.3f;
-		entityToSpawn = new EntityItem(world, x, y, z, item);
-		world.spawnEntity(entityToSpawn);
-	}
-
-	public static void dropInventoryInWorld(@Nullable TileEntity te) {
-		if (te == null) {
-			return;
-		}
-
-		IItemHandler handler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-
-		if (handler != null) {
-			dropInventoryInWorld(te.getWorld(), handler, te.getPos());
-		}
-	}
-
-	public static void dropInventoryInWorld(World world, IItemHandler inventory, BlockPos pos) {
-		if (world.isRemote) {
-			return;
-		}
-		if (inventory != null) {
-			@Nonnull ItemStack stack;
-			for (int i = 0; i < inventory.getSlots(); i++) {
-				stack = inventory.getStackInSlot(i);
-				if (stack.isEmpty()) {
-					continue;
-				}
-				dropItemInWorld(world, inventory.extractItem(i, stack.getCount(), false), pos.getX(), pos.getY(), pos.getZ());
-			}
-		}
-	}
-
-	public static void dropInventoryInWorld(World world, IInventory localInventory, BlockPos pos) {
-		dropInventoryInWorld(world, localInventory, pos.getX(), pos.getY(), pos.getZ());
-	}
-
-	public static void dropInventoryInWorld(World world, IInventory localInventory, double x, double y, double z) {
-		if (world.isRemote) {
-			return;
-		}
-		if (localInventory != null) {
-			@Nonnull ItemStack stack;
-			for (int i = 0; i < localInventory.getSizeInventory(); i++) {
-				stack = localInventory.removeStackFromSlot(i);
-				if (stack.isEmpty()) {
-					continue;
-				}
-				dropItemInWorld(world, stack, x, y, z);
-			}
-		}
+		InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), item);
 	}
 
 	/*
@@ -438,6 +379,12 @@ public class InventoryTools {
 		}
 	}
 
+	public static void dropItemsInWorld(World world, IInventory inventory, BlockPos pos) {
+		for (int slot = 0; slot < inventory.getSizeInventory(); slot++) {
+			dropItemInWorld(world, inventory.getStackInSlot(slot), pos);
+		}
+	}
+
 	public static void dropItemsInWorld(World world, IItemHandler handler, BlockPos pos) {
 		for (int slot = 0; slot < handler.getSlots(); slot++) {
 			dropItemInWorld(world, handler.getStackInSlot(slot), pos);
@@ -469,7 +416,8 @@ public class InventoryTools {
 					}
 					return r;
 				}
-			}, NAME("sort_type_name") {
+			},
+			NAME("sort_type_name") {
 				@Override
 				public int compare(ItemStack o1, ItemStack o2) {
 					int r = o1.getDisplayName().compareTo(o2.getDisplayName());
@@ -478,7 +426,8 @@ public class InventoryTools {
 					}
 					return r;
 				}
-			}, DAMAGE("sort_type_damage");
+			},
+			DAMAGE("sort_type_damage");
 
 			public final String unlocalizedName;
 
@@ -518,7 +467,8 @@ public class InventoryTools {
 		}
 
 		public static enum SortOrder {
-			ASCENDING(-1), DESCENDING(1);
+			ASCENDING(-1),
+			DESCENDING(1);
 
 			SortOrder(int mult) {
 				this.mult = mult;
@@ -529,7 +479,6 @@ public class InventoryTools {
 
 		private SortOrder sortOrder;
 		private SortType sortType;
-		private String textInput = "";
 
 		/*
 		 * @param order 1 for normal, -1 for reverse
@@ -537,13 +486,6 @@ public class InventoryTools {
 		public ComparatorItemStack(SortType type, SortOrder order) {
 			this.sortOrder = order;
 			this.sortType = type;
-		}
-
-		public void setTextInput(String text) {
-			if (text == null) {
-				text = "";
-			}
-			this.textInput = text;
 		}
 
 		public void setSortOrder(SortOrder order) {
@@ -556,30 +498,7 @@ public class InventoryTools {
 
 		@Override
 		public int compare(ItemStack o1, ItemStack o2) {
-			int val;
-			if (!textInput.isEmpty()) {
-				val = compareViaTextInput(o1, o2);
-			} else {
-				val = sortType.compare(o1, o2);
-			}
-			return val * sortOrder.mult;
-		}
-
-		private int compareViaTextInput(ItemStack o1, ItemStack o2) {
-			String input = textInput.toLowerCase(Locale.ENGLISH);
-			String n1 = o1.getDisplayName().toLowerCase(Locale.ENGLISH), n2 = o2.getDisplayName().toLowerCase(Locale.ENGLISH);
-			if (n1.startsWith(input)) {
-				if (!n2.startsWith(input))
-					return 1;
-			} else if (n2.startsWith(input)) {
-				return -1;
-			} else if (n1.contains(input)) {
-				if (!n2.contains(input))
-					return 1;
-			} else if (n2.contains(input)) {
-				return -1;
-			}
-			return sortType.compare(o1, o2);
+			return sortType.compare(o1, o2) * sortOrder.mult;
 		}
 	}
 
