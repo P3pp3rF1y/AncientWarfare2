@@ -99,11 +99,11 @@ public class GuiWarehouseStockViewer extends GuiContainerBase<ContainerWarehouse
         }
 
         @Override
-        public void onSlotClicked(ItemStack stack) {
-            @Nonnull ItemStack in = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
-            this.setItem(in);
-            if (!in.isEmpty()) {
-                in.setCount(1);
+		public void onSlotClicked(ItemStack stack, boolean rightClicked) {
+			@Nonnull ItemStack in = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
+			this.setItem(in);
+			if (!in.isEmpty()) {
+				in.setCount(1);
             }
             filter.setItem(in.isEmpty() ? ItemStack.EMPTY : in.copy());
             getContainer().sendFiltersToServer();

@@ -61,7 +61,7 @@ public class ContainerWarehouseControl extends ContainerTileBase<TileWarehouse> 
 			if (reqTag.hasKey("reqItem")) {
 				item = new ItemStack(reqTag.getCompoundTag("reqItem"));
 			}
-			tileEntity.handleSlotClick(player, item, reqTag.getBoolean("isShiftClick"));
+			tileEntity.handleSlotClick(player, item, reqTag.getBoolean("isShiftClick"), reqTag.getBoolean("isRightClick"));
 		} else if (tag.hasKey("changeList")) {
 			handleChangeList(tag.getTagList("changeList", Constants.NBT.TAG_COMPOUND));
 		} else {
@@ -79,7 +79,7 @@ public class ContainerWarehouseControl extends ContainerTileBase<TileWarehouse> 
 		refreshGui();
 	}
 
-	public void handleClientRequestSpecific(ItemStack stack, boolean isShiftClick) {
+	public void handleClientRequestSpecific(ItemStack stack, boolean isShiftClick, boolean isRightClick) {
 		NBTTagCompound tag = new NBTTagCompound();
 		if (!stack.isEmpty()) {
 			ItemStack copy = stack.copy();
@@ -87,6 +87,7 @@ public class ContainerWarehouseControl extends ContainerTileBase<TileWarehouse> 
 			tag.setTag("reqItem", copy.writeToNBT(new NBTTagCompound()));
 		}
 		tag.setBoolean("isShiftClick", isShiftClick);
+		tag.setBoolean("isRightClick", isRightClick);
 		NBTTagCompound pktTag = new NBTTagCompound();
 		pktTag.setTag("slotClick", tag);
 		sendDataToServer(pktTag);

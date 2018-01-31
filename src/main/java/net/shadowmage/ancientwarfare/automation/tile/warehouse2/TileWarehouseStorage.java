@@ -15,7 +15,6 @@ import net.shadowmage.ancientwarfare.core.tile.IBlockBreakHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.NBTSerializableUtils;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -171,11 +170,11 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
 	}
 
 	@Override
-	public void handleSlotClick(EntityPlayer player, ItemStack filter, boolean shiftClick) {
-		if (!filter.isEmpty() && player.inventory.getItemStack().isEmpty()) {
-			tryGetItem(player, filter, shiftClick);
-		} else if (!player.inventory.getItemStack().isEmpty()) {
+	public void handleSlotClick(EntityPlayer player, ItemStack filter, boolean shiftClick, boolean rightClick) {
+		if (!shiftClick && !player.inventory.getItemStack().isEmpty()) {
 			tryAddItem(player, player.inventory.getItemStack());
+		} else {
+			tryGetItem(player, filter, shiftClick, rightClick);
 		}
 	}
 
@@ -198,22 +197,39 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
 		}
 	}
 
-	private void tryGetItem(EntityPlayer player, ItemStack filter, boolean shiftClick) {
-		@Nonnull ItemStack newCursorStack = filter.copy();
-		newCursorStack.setCount(0);
-		int count;
-		int toMove;
-		count = getQuantityStored(filter);
-		toMove = newCursorStack.getMaxStackSize() - newCursorStack.getCount();
+	private void tryGetItem(EntityPlayer player, ItemStack filter, boolean shiftClick, boolean rightClick) {
+		int stackSize = 0;
+		if (!player.inventory.getItemStack().isEmpty()) {
+			stackSize = player.inventory.getItemStack().getCount();
+			ItemStack comparableStack = player.inventory.getItemStack().copy();
+			comparableStack.setCount(filter.getCount());
+			if (!ItemStack.areItemStacksEqual(filter, comparableStack))
+				return;
+		}
+
+		int count = getQuantityStored(filter);
+		int toMoveMax = filter.getMaxStackSize();
+		if (rightClick && (toMoveMax > 1)) {
+			if (shiftClick) {
+				toMoveMax = Math.min(stackSize + 1, toMoveMax);
+			} else {
+				if (toMoveMax > count) {
+					toMoveMax = count;
+				}
+				toMoveMax = (int) Math.ceil(toMoveMax / 2.0);
+			}
+		}
+		int toMove = toMoveMax - stackSize;
 		toMove = toMove > count ? count : toMove;
 		if (toMove > 0) {
-			newCursorStack.grow(toMove);
 			extractItem(filter, toMove);
 			TileWarehouseBase twb = (TileWarehouseBase) getController();
 			if (twb != null) {
 				twb.changeCachedQuantity(filter, -toMove);
 			}
 		}
-		InventoryTools.updateCursorItem((EntityPlayerMP) player, newCursorStack, shiftClick);
+		ItemStack newCursorStack = filter.copy();
+		newCursorStack.setCount(stackSize + toMove);
+		InventoryTools.updateCursorItem((EntityPlayerMP) player, newCursorStack, !rightClick && shiftClick);
 	}
 }

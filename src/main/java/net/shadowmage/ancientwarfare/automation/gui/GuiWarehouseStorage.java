@@ -38,11 +38,11 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
             @Override
             public boolean onEvent(GuiElement widget, ActivationEvent evt) {
                 if (evt.mButton == 0 && widget.isMouseOverElement(evt.mx, evt.my) && !area2.isMouseOverSubElement(evt.mx, evt.my)) {
-                    getContainer().handleClientRequestSpecific(ItemStack.EMPTY, isShiftKeyDown());
-                }
-                return true;
-            }
-        };
+					getContainer().handleClientRequestSpecific(ItemStack.EMPTY, isShiftKeyDown(), false);
+				}
+				return true;
+			}
+		};
         area2 = new CompositeItemSlots(this, 0, 74, xSize, 74, this);
         area2.addNewListener(l);
         addGuiElement(area2);
@@ -110,12 +110,15 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
         for (ItemStack displayStack : displayStacks) {
             slot = new ItemSlot(4 + x * 18, 8 + y * 18, displayStack, this) {
                 @Override
-                public void onSlotClicked(ItemStack stack) {
-                    getContainer().handleClientRequestSpecific(getStack(), isShiftKeyDown());
-                }
-            };
-            area2.addGuiElement(slot);
-            x++;
+				public void onSlotClicked(ItemStack stack, boolean rightClicked) {
+					@Nonnull ItemStack reqStack = getStack();
+					if (!(rightClicked && isShiftKeyDown()) && !reqStack.isEmpty() && (reqStack.isItemEqual(stack) && ItemStack.areItemStackTagsEqual(stack, reqStack)))
+						reqStack = ItemStack.EMPTY;
+					getContainer().handleClientRequestSpecific(reqStack, isShiftKeyDown(), rightClicked);
+				}
+			};
+			area2.addGuiElement(slot);
+			x++;
             if (x >= 9) {
                 x = 0;
                 y++;
@@ -150,11 +153,11 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
         }
 
         @Override
-        public void onSlotClicked(ItemStack stack) {
-            @Nonnull ItemStack in = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
-            this.setItem(in);
-            if (!in.isEmpty()) {
-                in.setCount(1);
+		public void onSlotClicked(ItemStack stack, boolean rightClicked) {
+			@Nonnull ItemStack in = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
+			this.setItem(in);
+			if (!in.isEmpty()) {
+				in.setCount(1);
             }
             filter.setFilterItem(in.isEmpty() ? ItemStack.EMPTY : in.copy());
             getContainer().sendFiltersToServer();
