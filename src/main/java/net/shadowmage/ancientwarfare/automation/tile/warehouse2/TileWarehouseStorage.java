@@ -110,6 +110,9 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
 	public int extractItem(ItemStack filter, int amount) {
 		int removed = inventory.extractItem(filter, amount);
 		updateViewersForInventory();
+		if (removed > 0) {
+			markDirty();
+		}
 		return removed;
 	}
 
@@ -117,6 +120,9 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
 	public int insertItem(ItemStack filter, int amount) {
 		int inserted = inventory.insertItem(filter, amount);
 		updateViewersForInventory();
+		if (inserted > 0) {
+			markDirty();
+		}
 		return inserted;
 	}
 
@@ -158,7 +164,6 @@ public class TileWarehouseStorage extends TileControlled implements IWarehouseSt
 		for (ContainerWarehouseStorage viewer : viewers) {
 			viewer.onStorageInventoryUpdated();
 		}
-		markDirty();
 	}
 
 	@Override
