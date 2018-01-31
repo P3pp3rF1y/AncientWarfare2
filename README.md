@@ -5,9 +5,10 @@ In order to develop on this project you will need to:
 
 1) Download the repository into a local folder.  
 
-2) Locate this folder, run `gradlew.bat` or `./gradlew`.
+2) Locate this folder, run `gradlew setupDecompWorkspace` (or `./gradlew setupDecompWorkspace`). This sets up base minecraft and minecraftforge libraries and their dependencies.
 
-This should download all dependencies and setup proper `.classpath`. Import the project into Eclipse from the downloaded folder/repository.  
+3) Run `gradlew idea` or `gradlew eclipse` based on the IDE you use to setup project files.
+
 At this point it should be completely setup to begin development.  
   
 This is a rewrite of Ancient Warfare mod for Minecraft for Minecraft versions 1.12.x+.
