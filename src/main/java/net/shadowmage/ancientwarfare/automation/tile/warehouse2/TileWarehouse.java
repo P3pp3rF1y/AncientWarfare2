@@ -105,7 +105,7 @@ public class TileWarehouse extends TileWarehouseBase {
 		int newStackSize = stackSize;
 		for (IWarehouseStorageTile tile : destinations) {
 			count = tile.getQuantityStored(filter);
-			toMove = toMoveMax - stackSize;
+			toMove = toMoveMax - newStackSize;
 			toMove = toMove > count ? count : toMove;
 			if (toMove > 0) {
 				newStackSize += toMove;
