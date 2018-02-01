@@ -6,6 +6,7 @@
 !releases
 !src
 !z_unused
+!code_format
 
 !.gitignore
 !build.gradle
@@ -14,3 +15,4 @@
 !gradlew.bat
 !LICENSE.txt
 !README.md
+!.travis.yml
