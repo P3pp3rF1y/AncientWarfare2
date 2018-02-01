@@ -1,0 +1,118 @@
+Vehicles:
+
+Catapult
+    Stand Fixed
+        ammo
+        armor        
+        upgrades
+        rider offset
+        missile offset
+        name
+    Stand Turret
+    Mobile Fixed
+    Mobile Turret
+
+Ballista
+    Stand Fixed
+    Stand Turret
+    Mobile Fixed
+    Mobile Turret
+
+Battering Ram
+    Mobile Fixed
+
+Trebuchet Small
+    Stand Fixed
+    Stand Turret
+    Mobile Fixed
+    
+Trebuchet Large
+    Stand Fixed
+
+Hwacha---maybe......    
+    Mobile Fixed
+
+Cannon
+    Stand Fixed
+    Stand Turret
+    Mobile Fixed
+    
+Chest Cart
+    No Combat
+
+Transport Ship
+    No Combat
+
+Destroyer (ship w/ large ballista -- for anti-ship use)
+
+BattleShip (coastal direct fire -- w/ either cannon/catapult)
+
+BombardShip (coastal bombard -- w/ either trebuchet or hwacha)
+
+
+
+
+
+
+
+
+
+/*****************************************************************************/
+IVehicleType -- basic interface for what is necessary to describe a vehicle
+VehicleTypeBase -- base class implementing above interface.
+        -- there will should be one VehicleTypeBase subclass for each vehicle description
+        -- will have an inner class for the VehicleVarsHelper, just to keep things in one freaking place...
+VehicleBase -- the base entity that all vehicles will use.  it will implement most methods (through helpers for many)
+    to handle the basics of vehicles (input, movement, updates).
+VehicleVarsHelper -- holds vehicle-specific variables, mostly used for client-side animation updating
+/*****************************************************************************/    
+Registry Process:
+Create VehicleType, extends VehicleType)
+Create VehicleVarsHelper, extends VehicleVarsHelper, set VehicleType to return that specific type;
+Create static instance of type in VehicleType
+        --static instance creation will trigger registry of item and mapping of type
+Create Vehicle Model
+Create VehicleRender, extends RenderVehicleBase
+Register VehicleRender in RenderRegistry
+/*****************************************************************************/    
+Vehicle stats will be calculated thusly:
+stat = base stat taken from VehicleType for the vehicle
+stat *= materialModifier for that stat, if any (generally percentage based)   
+stat += any modifiers from upgrades for that stat, if any
+return stat;
+/*****************************************************************************/
+Vehicle Aiming:
+every tick bound turretRotation between home and home+-min/max
+every tick bound pitch between min and max
+every tick update rotation home point to vehicle rotation
+every tick update rotation and pitch if rotating or pitching
+every tick if not power-adjustable, bound power to 1<->maxPower
+
+Client:
+on keyboard input, if aimable, send input to server
+on mouse input, if aimable, send input to server
+update local client vars from input
+
+Server:
+on client input received, if valid and an update, send input update packet to all clients
+/*****************************************************************************/
+Missile Positioning:
+calc turretPos relative to vehicle from vehicle yaw and vehicle.turretPos
+calc position relative to turretPos from turret yaw and missileOffset
+/*****************************************************************************/
+Rider Positioning:
+if movesWithTurret
+    calc turretPos relative to vehicle from vehicle yaw and vehicle.turretPos
+    calc position relative to turretPos from riderOffset and turretYaw
+else
+    calc position relative to vehicle from vehicle yaw and riderOffset
+/*****************************************************************************/
+
+power using vehicles (use power to determine shot range): 
+catapult
+trebuchet
+hwacha
+
+pitch using vehicles (use pitch to determine shot range):
+ballista/turret
+cannon
