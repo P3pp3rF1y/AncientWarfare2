@@ -4,10 +4,13 @@ import net.minecraft.util.math.BlockPos;
 
 public interface IControllerTile {
 
-    public void addControlledTile(IControlledTile tile);
+	void addControlledTile(IControlledTile tile);
 
-    public void removeControlledTile(IControlledTile tile);
+	void removeControlledTile(IControlledTile tile);
 
-    public BlockPos getPosisition();
+	BlockPos getPosisition();
 
+	BlockPos getWorkBoundsMin();
+
+	BlockPos getWorkBoundsMax();
 }

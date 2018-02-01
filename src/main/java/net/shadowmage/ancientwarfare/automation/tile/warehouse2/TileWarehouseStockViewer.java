@@ -24,214 +24,219 @@ import java.util.UUID;
 
 public class TileWarehouseStockViewer extends TileControlled implements IOwnable, IInteractableTile {
 
-    private final List<WarehouseStockFilter> filters = new ArrayList<>();
-    private UUID ownerId;
-    private String ownerName = "";
-    private boolean shouldUpdate = false;
+	private final List<WarehouseStockFilter> filters = new ArrayList<>();
+	private UUID ownerId;
+	private String ownerName = "";
+	private boolean shouldUpdate = false;
 
-    private final Set<ContainerWarehouseStockViewer> viewers = new HashSet<>();
+	private final Set<ContainerWarehouseStockViewer> viewers = new HashSet<>();
 
-    public TileWarehouseStockViewer() {
-    }
+	public TileWarehouseStockViewer() {
+	}
 
-    public void updateViewers() {
-        for (ContainerWarehouseStockViewer viewer : viewers) {
-            viewer.onFiltersChanged();
-        }
-    }
+	public void updateViewers() {
+		for (ContainerWarehouseStockViewer viewer : viewers) {
+			viewer.onFiltersChanged();
+		}
+	}
 
-    public void addViewer(ContainerWarehouseStockViewer viewer) {
-        viewers.add(viewer);
-    }
+	public void addViewer(ContainerWarehouseStockViewer viewer) {
+		viewers.add(viewer);
+	}
 
-    public void removeViewer(ContainerWarehouseStockViewer viewer) {
-        viewers.remove(viewer);
-    }
+	public void removeViewer(ContainerWarehouseStockViewer viewer) {
+		viewers.remove(viewer);
+	}
 
-    public List<WarehouseStockFilter> getFilters() {
-        return filters;
-    }
+	public List<WarehouseStockFilter> getFilters() {
+		return filters;
+	}
 
-    public void setFilters(List<WarehouseStockFilter> filters) {
-        this.filters.clear();
-        this.filters.addAll(filters);
-        shouldUpdate = false;//set to false, as we are manually updating right now
-        recountFilters(false);//recount filters, do not send update
-        BlockTools.notifyBlockUpdate(this); //to re-send description packet to client with new filters
-    }
+	public void setFilters(List<WarehouseStockFilter> filters) {
+		this.filters.clear();
+		this.filters.addAll(filters);
+		shouldUpdate = false;//set to false, as we are manually updating right now
+		recountFilters(false);//recount filters, do not send update
+		BlockTools.notifyBlockUpdate(this); //to re-send description packet to client with new filters
+	}
 
-    /*
-     * should be called whenever controller tile is set or warehouse inventory updated
-     */
-    private void recountFilters(boolean sendToClients) {
-        TileWarehouseBase twb = (TileWarehouseBase) getController();
-        int count;
-        int index = 0;
-        if (twb == null) {
-            count = 0;
-            for (WarehouseStockFilter filter : this.filters) {
-                if (count != filter.getQuantity()) {
-                    filter.setQuantity(0);
-                    if (sendToClients) {
-                        world.addBlockEvent(pos, getBlockType(), index, count);
-                    }
-                }
-                index++;
-            }
-        } else {
-            for (WarehouseStockFilter filter : this.filters) {
-                count = filter.getFilterItem().isEmpty() ? 0 : twb.getCountOf(filter.getFilterItem());
-                if (count != filter.getQuantity()) {
-                    filter.setQuantity(count);
-                    if (sendToClients) {
-                        world.addBlockEvent(pos, getBlockType(), index, count);
-                    }
-                }
-                index++;
-            }
-        }
-    }
+	/*
+	 * should be called whenever controller tile is set or warehouse inventory updated
+	 */
+	private void recountFilters(boolean sendToClients) {
+		TileWarehouseBase twb = (TileWarehouseBase) getController();
+		int count;
+		int index = 0;
+		if (twb == null) {
+			count = 0;
+			for (WarehouseStockFilter filter : this.filters) {
+				if (count != filter.getQuantity()) {
+					filter.setQuantity(0);
+					if (sendToClients) {
+						world.addBlockEvent(pos, getBlockType(), index, count);
+					}
+				}
+				index++;
+			}
+		} else {
+			for (WarehouseStockFilter filter : this.filters) {
+				count = filter.getFilterItem().isEmpty() ? 0 : twb.getCountOf(filter.getFilterItem());
+				if (count != filter.getQuantity()) {
+					filter.setQuantity(count);
+					if (sendToClients) {
+						world.addBlockEvent(pos, getBlockType(), index, count);
+					}
+				}
+				index++;
+			}
+		}
+	}
 
-    @Override
-    public boolean isOwner(EntityPlayer player){
-        return EntityTools.isOwnerOrSameTeam(player, ownerId, ownerName);
-    }
+	@Override
+	protected boolean isValidController(IControllerTile tile) {
+		return BlockTools.isPositionWithinBounds(getPos(), tile.getWorkBoundsMin().add(-1, 0, -1), tile.getWorkBoundsMax().add(1, 0, 1));
+	}
 
-    @Override
-    public void setOwner(EntityPlayer player) {
-        this.ownerId = player.getUniqueID();
-        this.ownerName = player.getName();
-    }
-    
-    @Override
-    public void setOwner(String ownerName, UUID ownerUuid) {
-        this.ownerName = ownerName;
-        this.ownerId = ownerUuid;
-    }
+	@Override
+	public boolean isOwner(EntityPlayer player) {
+		return EntityTools.isOwnerOrSameTeam(player, ownerId, ownerName);
+	}
 
-    @Override
-    public String getOwnerName() {
-        return ownerName;
-    }
-    
-    @Override
-    public UUID getOwnerUuid() {
-        return ownerId;
-    }
+	@Override
+	public void setOwner(EntityPlayer player) {
+		this.ownerId = player.getUniqueID();
+		this.ownerName = player.getName();
+	}
 
-    @Override
-    public boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
-        if (!player.world.isRemote && isOwner(player)) {
-            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_STOCK, pos);
-        }
-        return true;
-    }
+	@Override
+	public void setOwner(String ownerName, UUID ownerUuid) {
+		this.ownerName = ownerName;
+		this.ownerId = ownerUuid;
+	}
 
-    @Override
-    protected void updateTile() {
-        if (shouldUpdate) {
-            shouldUpdate = false;
-            recountFilters(true);
-        }
-    }
+	@Override
+	public String getOwnerName() {
+		return ownerName;
+	}
 
-    /*
-     * should be called on SERVER whenever warehouse inventory changes
-     */
-    public void onWarehouseInventoryUpdated() {
-        shouldUpdate = true;
-    }
+	@Override
+	public UUID getOwnerUuid() {
+		return ownerId;
+	}
 
-    @Override
-    protected void writeUpdateNBT(NBTTagCompound tag) {
-        super.writeUpdateNBT(tag);
-        NBTSerializableUtils.write(tag, "filterList", filters);
-    }
+	@Override
+	public boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
+		if (!player.world.isRemote && isOwner(player)) {
+			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_STOCK, pos);
+		}
+		return true;
+	}
 
-    @Override
-    protected void handleUpdateNBT(NBTTagCompound tag) {
-        super.handleUpdateNBT(tag);
-        this.filters.clear();
-        this.filters.addAll(NBTSerializableUtils.read(tag, "filterList", WarehouseStockFilter.class));
-        updateViewers();
-    }
+	@Override
+	protected void updateTile() {
+		if (shouldUpdate) {
+			shouldUpdate = false;
+			recountFilters(true);
+		}
+	}
 
-    @Override
-    public boolean receiveClientEvent(int a, int b) {
-        if (world.isRemote) {
-            if (a >= 0 && a < filters.size()) {
-                filters.get(a).setQuantity(b);
-                updateViewers();
-            }
-        }
-        return true;
-    }
+	/*
+	 * should be called on SERVER whenever warehouse inventory changes
+	 */
+	public void onWarehouseInventoryUpdated() {
+		shouldUpdate = true;
+	}
 
-    @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        super.readFromNBT(tag);
-        filters.addAll(NBTSerializableUtils.read(tag, "filterList", WarehouseStockFilter.class));
-        ownerName = tag.getString("ownerName");
-        if(tag.hasKey("ownerId"))
-            ownerId = UUID.fromString(tag.getString("ownerId"));
-    }
+	@Override
+	protected void writeUpdateNBT(NBTTagCompound tag) {
+		super.writeUpdateNBT(tag);
+		NBTSerializableUtils.write(tag, "filterList", filters);
+	}
 
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        super.writeToNBT(tag);
-        NBTSerializableUtils.write(tag, "filterList", filters);
-        tag.setString("ownerName", ownerName);
-        if(ownerId !=null)
-            tag.setString("ownerId", ownerId.toString());
+	@Override
+	protected void handleUpdateNBT(NBTTagCompound tag) {
+		super.handleUpdateNBT(tag);
+		this.filters.clear();
+		this.filters.addAll(NBTSerializableUtils.read(tag, "filterList", WarehouseStockFilter.class));
+		updateViewers();
+	}
 
-        return tag;
-    }
+	@Override
+	public boolean receiveClientEvent(int a, int b) {
+		if (world.isRemote) {
+			if (a >= 0 && a < filters.size()) {
+				filters.get(a).setQuantity(b);
+				updateViewers();
+			}
+		}
+		return true;
+	}
 
-    public static class WarehouseStockFilter implements INBTSerializable<NBTTagCompound> {
-        @Nonnull
-        private ItemStack item = ItemStack.EMPTY;
-        ItemHashEntry hashKey;
-        private int quantity;
+	@Override
+	public void readFromNBT(NBTTagCompound tag) {
+		super.readFromNBT(tag);
+		filters.addAll(NBTSerializableUtils.read(tag, "filterList", WarehouseStockFilter.class));
+		ownerName = tag.getString("ownerName");
+		if (tag.hasKey("ownerId"))
+			ownerId = UUID.fromString(tag.getString("ownerId"));
+	}
 
-        public WarehouseStockFilter() {
-        }
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+		super.writeToNBT(tag);
+		NBTSerializableUtils.write(tag, "filterList", filters);
+		tag.setString("ownerName", ownerName);
+		if (ownerId != null)
+			tag.setString("ownerId", ownerId.toString());
 
-        public WarehouseStockFilter(ItemStack item, int qty) {
-            setQuantity(qty);
-            setItem(item);
-        }
+		return tag;
+	}
 
-        public void setItem(ItemStack item) {
-            this.item = item;
-            this.hashKey = item.isEmpty() ? null : new ItemHashEntry(item);
-        }
+	public static class WarehouseStockFilter implements INBTSerializable<NBTTagCompound> {
+		@Nonnull
+		private ItemStack item = ItemStack.EMPTY;
+		ItemHashEntry hashKey;
+		private int quantity;
 
-        public void setQuantity(int quantity) {
-            this.quantity = quantity;
-        }
+		public WarehouseStockFilter() {
+		}
 
-        public ItemStack getFilterItem() {
-            return item;
-        }
+		public WarehouseStockFilter(ItemStack item, int qty) {
+			setQuantity(qty);
+			setItem(item);
+		}
 
-        public int getQuantity() {
-            return quantity;
-        }
+		public void setItem(ItemStack item) {
+			this.item = item;
+			this.hashKey = item.isEmpty() ? null : new ItemHashEntry(item);
+		}
 
-        @Override
-        public NBTTagCompound serializeNBT() {
-            NBTTagCompound tag = new NBTTagCompound();
-            if (!item.isEmpty()) {
-                tag.setTag("item", item.writeToNBT(new NBTTagCompound()));
-            }
-            tag.setInteger("quantity", quantity);
-            return tag;
-        }
+		public void setQuantity(int quantity) {
+			this.quantity = quantity;
+		}
 
-        @Override
-        public void deserializeNBT(NBTTagCompound tag) {
-            setItem(tag.hasKey("item") ? new ItemStack(tag.getCompoundTag("item")) : ItemStack.EMPTY);
-            setQuantity(tag.getInteger("quantity"));
-        }
-    }
+		public ItemStack getFilterItem() {
+			return item;
+		}
+
+		public int getQuantity() {
+			return quantity;
+		}
+
+		@Override
+		public NBTTagCompound serializeNBT() {
+			NBTTagCompound tag = new NBTTagCompound();
+			if (!item.isEmpty()) {
+				tag.setTag("item", item.writeToNBT(new NBTTagCompound()));
+			}
+			tag.setInteger("quantity", quantity);
+			return tag;
+		}
+
+		@Override
+		public void deserializeNBT(NBTTagCompound tag) {
+			setItem(tag.hasKey("item") ? new ItemStack(tag.getCompoundTag("item")) : ItemStack.EMPTY);
+			setQuantity(tag.getInteger("quantity"));
+		}
+	}
 }

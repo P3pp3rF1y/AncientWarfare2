@@ -28,486 +28,482 @@ import java.util.Set;
 
 public abstract class TileWarehouseBase extends TileWorksiteBounded implements IControllerTile {
 
-    private boolean init;
-    private boolean shouldRecount;
+	private boolean init;
+	private boolean shouldRecount;
 
-    private final Set<TileWarehouseStockViewer> stockViewers = new HashSet<>();
-    private final Set<TileWarehouseInterface> interfaceTiles = new HashSet<>();
-    private final Set<IWarehouseStorageTile> storageTiles = new HashSet<>();
+	private final Set<TileWarehouseStockViewer> stockViewers = new HashSet<>();
+	private final Set<TileWarehouseInterface> interfaceTiles = new HashSet<>();
+	private final Set<IWarehouseStorageTile> storageTiles = new HashSet<>();
 
-    /*
-     * Interfaces that need filling, AND there are items available to fill.
-     * Anytime storage block inventories are updated, this list needs to be rechecked
-     * to make sure items are still available
-     */
-    private final Set<TileWarehouseInterface> interfacesToFill = new HashSet<>();
+	/*
+	 * Interfaces that need filling, AND there are items available to fill.
+	 * Anytime storage block inventories are updated, this list needs to be rechecked
+	 * to make sure items are still available
+	 */
+	private final Set<TileWarehouseInterface> interfacesToFill = new HashSet<>();
 
-    /*
-     * Interfaces that have an excess of items or non-matching items will be in this set
-     */
-    private final Set<TileWarehouseInterface> interfacesToEmpty = new HashSet<>();
+	/*
+	 * Interfaces that have an excess of items or non-matching items will be in this set
+	 */
+	private final Set<TileWarehouseInterface> interfacesToEmpty = new HashSet<>();
 
-    protected WarehouseStorageMap storageMap = new WarehouseStorageMap();
-    private ItemQuantityMap cachedItemMap = new ItemQuantityMap();
+	protected WarehouseStorageMap storageMap = new WarehouseStorageMap();
+	private ItemQuantityMap cachedItemMap = new ItemQuantityMap();
 
-    private final Set<ContainerWarehouseControl> viewers = new HashSet<>();
-    private final Set<ContainerWarehouseCraftingStation> craftingViewers = new HashSet<>();
+	private final Set<ContainerWarehouseControl> viewers = new HashSet<>();
+	private final Set<ContainerWarehouseCraftingStation> craftingViewers = new HashSet<>();
 
-    public TileWarehouseBase() {
+	public TileWarehouseBase() {
 
-    }
+	}
 
-    /*
-     * SERVER ONLY
-     *
-     * @return max allowed storage by item quantity
-     */
-    public int getMaxStorage() {
-        int max = 0;
-        for (IWarehouseStorageTile t : storageTiles) {
-            max += t.getStorageAdditionSize();
-        }
-        return max;
-    }
+	/*
+	 * SERVER ONLY
+	 *
+	 * @return max allowed storage by item quantity
+	 */
+	public int getMaxStorage() {
+		int max = 0;
+		for (IWarehouseStorageTile t : storageTiles) {
+			max += t.getStorageAdditionSize();
+		}
+		return max;
+	}
 
-    @Override
-    public void onBoundsAdjusted() {
-        BlockPos max = getWorkBoundsMax();
-        setWorkBoundsMax(max.up(getWorkBoundsMin().getY() + getBoundsMaxHeight() - max.getY()));
-        this.interfacesToEmpty.clear();
-        this.interfacesToFill.clear();
-        for (TileWarehouseInterface i : interfaceTiles) {
-            i.setController(null);
-        }
-        this.interfaceTiles.clear();
-        for (TileWarehouseStockViewer i : stockViewers) {
-            i.setController(null);
-        }
-        this.stockViewers.clear();
-        for (IWarehouseStorageTile i : storageTiles) {
-            if (i instanceof IControlledTile)
-                ((IControlledTile) i).setController(null);
-        }
-        this.storageTiles.clear();
+	@Override
+	public void onBoundsAdjusted() {
+		BlockPos max = getWorkBoundsMax();
+		setWorkBoundsMax(max.up(getWorkBoundsMin().getY() + getBoundsMaxHeight() - max.getY()));
+		this.interfacesToEmpty.clear();
+		this.interfacesToFill.clear();
+		for (TileWarehouseInterface i : interfaceTiles) {
+			i.setController(null);
+		}
+		this.interfaceTiles.clear();
+		for (TileWarehouseStockViewer i : stockViewers) {
+			i.setController(null);
+		}
+		this.stockViewers.clear();
+		for (IWarehouseStorageTile i : storageTiles) {
+			if (i instanceof IControlledTile)
+				((IControlledTile) i).setController(null);
+		}
+		this.storageTiles.clear();
 
-        storageMap = new WarehouseStorageMap();
-        cachedItemMap.clear();
+		storageMap = new WarehouseStorageMap();
+		cachedItemMap.clear();
 
-        scanForInitialTiles();
-    }
+		scanForInitialTiles();
+	}
 
-    @Override
-    public boolean userAdjustableBlocks() {
-        return false;
-    }
+	@Override
+	public boolean userAdjustableBlocks() {
+		return false;
+	}
 
-    @Override
-    public int getBoundsMaxHeight() {
-        return 3;
-    }
+	@Override
+	public int getBoundsMaxHeight() {
+		return 3;
+	}
 
-    public abstract void handleSlotClick(EntityPlayer player, ItemStack filter, boolean shiftClick, boolean rightClick);
+	public abstract void handleSlotClick(EntityPlayer player, ItemStack filter, boolean shiftClick, boolean rightClick);
 
-    public void changeCachedQuantity(ItemStack filter, int change) {
-        if (change > 0) {
-            cachedItemMap.addCount(filter, change);
-        } else {
-            cachedItemMap.decreaseCount(filter, -change);
-        }
-        updateViewers();
-    }
+	public void changeCachedQuantity(ItemStack filter, int change) {
+		if (change > 0) {
+			cachedItemMap.addCount(filter, change);
+		} else {
+			cachedItemMap.decreaseCount(filter, -change);
+		}
+		updateViewers();
+	}
 
-    private boolean tryEmptyInterfaces() {
-        List<TileWarehouseInterface> toEmpty = new ArrayList<TileWarehouseInterface>(interfacesToEmpty);
-        for (TileWarehouseInterface tile : toEmpty) {
-            if (tryEmptyTile(tile)) {
-                tile.recalcRequests();
-                return true;
-            }
-        }
-        return false;
-    }
+	private boolean tryEmptyInterfaces() {
+		List<TileWarehouseInterface> toEmpty = new ArrayList<TileWarehouseInterface>(interfacesToEmpty);
+		for (TileWarehouseInterface tile : toEmpty) {
+			if (tryEmptyTile(tile)) {
+				tile.recalcRequests();
+				return true;
+			}
+		}
+		return false;
+	}
 
-    private boolean tryEmptyTile(TileWarehouseInterface tile) {
-        List<InterfaceEmptyRequest> reqs = tile.getEmptyRequests();
-        for (InterfaceEmptyRequest req : reqs) {
-            if (tryRemoveFromRequest(tile, req)) {
-                return true;
-            }
-        }
-        return false;
-    }
+	private boolean tryEmptyTile(TileWarehouseInterface tile) {
+		List<InterfaceEmptyRequest> reqs = tile.getEmptyRequests();
+		for (InterfaceEmptyRequest req : reqs) {
+			if (tryRemoveFromRequest(tile, req)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-    private boolean tryRemoveFromRequest(TileWarehouseInterface tile, InterfaceEmptyRequest request) {
-        IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-        @Nonnull ItemStack stack = inventory.getStackInSlot(request.slotNum);
-        if (stack.isEmpty()) {
-            return false;
-        }
-        int count = stack.getCount();
-        int moved;
-        int toMove = request.count;
-        int stackMove;
-        List<IWarehouseStorageTile> potentialStorage = new ArrayList<>();
-        storageMap.getDestinations(stack, potentialStorage);
-        for (IWarehouseStorageTile dest : potentialStorage) {
-            stackMove = toMove > stack.getCount() ? stack.getCount() : toMove;
-            moved = dest.insertItem(stack, stackMove);
-            if (moved > 0) {
-                ItemStack filter = stack.copy();
-                filter.setCount(1);
-                changeCachedQuantity(filter, moved);
-            }
-            ;
-            toMove -= moved;
-            if(!inventory.extractItem(request.slotNum, moved, false).isEmpty()) {
-                return true;
-            }
-            if (toMove <= 0) {
-                break;
-            }
-        }
-        return false;
-    }
+	private boolean tryRemoveFromRequest(TileWarehouseInterface tile, InterfaceEmptyRequest request) {
+		IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+		@Nonnull ItemStack stack = inventory.getStackInSlot(request.slotNum);
+		if (stack.isEmpty()) {
+			return false;
+		}
+		int count = stack.getCount();
+		int moved;
+		int toMove = request.count;
+		int stackMove;
+		List<IWarehouseStorageTile> potentialStorage = storageMap.getDestinations(stack);
+		for (IWarehouseStorageTile dest : potentialStorage) {
+			stackMove = toMove > stack.getCount() ? stack.getCount() : toMove;
+			moved = dest.insertItem(stack, stackMove);
+			if (moved > 0) {
+				ItemStack filter = stack.copy();
+				filter.setCount(1);
+				changeCachedQuantity(filter, moved);
+			}
 
-    private boolean tryFillInterfaces() {
-        List<TileWarehouseInterface> toFill = new ArrayList<TileWarehouseInterface>(interfacesToFill);
-        for (TileWarehouseInterface tile : toFill) {
-            if (tryFillTile(tile)) {
-                tile.recalcRequests();
-                return true;
-            }
-        }
-        return false;
-    }
+			toMove -= moved;
+			if (!inventory.extractItem(request.slotNum, moved, false).isEmpty()) {
+				return true;
+			}
+			if (toMove <= 0) {
+				break;
+			}
+		}
+		return false;
+	}
 
-    private boolean tryFillTile(TileWarehouseInterface tile) {
-        List<InterfaceFillRequest> reqs = tile.getFillRequests();
-        for (InterfaceFillRequest req : reqs) {
-            if (tryFillFromRequest(tile, req)) {
-                return true;
-            }
-        }
-        return false;
-    }
+	private boolean tryFillInterfaces() {
+		List<TileWarehouseInterface> toFill = new ArrayList<TileWarehouseInterface>(interfacesToFill);
+		for (TileWarehouseInterface tile : toFill) {
+			if (tryFillTile(tile)) {
+				tile.recalcRequests();
+				return true;
+			}
+		}
+		return false;
+	}
 
-    private boolean tryFillFromRequest(TileWarehouseInterface tile, InterfaceFillRequest request) {
-        List<IWarehouseStorageTile> potentialStorage = new ArrayList<>();
-        storageMap.getDestinations(request.requestedItem, potentialStorage);
-        int found, moved;
-        @Nonnull ItemStack stack;
-        int stackSize;
-        IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
-        for (IWarehouseStorageTile source : potentialStorage) {
-            found = source.getQuantityStored(request.requestedItem);
-            if (found > 0) {
-                stack = request.requestedItem.copy();
-                stack.setCount(found > stack.getMaxStackSize() ? stack.getMaxStackSize() : found);
-                stackSize = stack.getCount();
-                stack = InventoryTools.mergeItemStack(inventory, stack);
-                if (stack.isEmpty() || stack.getCount() != stackSize) {
-                    moved = stack.isEmpty() ? stackSize : stackSize - stack.getCount();
-                    source.extractItem(request.requestedItem, moved);
-                    cachedItemMap.decreaseCount(request.requestedItem, moved);
-                    updateViewers();
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+	private boolean tryFillTile(TileWarehouseInterface tile) {
+		List<InterfaceFillRequest> reqs = tile.getFillRequests();
+		for (InterfaceFillRequest req : reqs) {
+			if (tryFillFromRequest(tile, req)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-    public final void getItems(ItemQuantityMap map) {
-        map.addAll(cachedItemMap);
-    }
+	private boolean tryFillFromRequest(TileWarehouseInterface tile, InterfaceFillRequest request) {
+		List<IWarehouseStorageTile> potentialStorage = storageMap.getDestinations();
+		int found, moved;
+		@Nonnull ItemStack stack;
+		int stackSize;
+		IItemHandler inventory = tile.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+		for (IWarehouseStorageTile source : potentialStorage) {
+			found = source.getQuantityStored(request.requestedItem);
+			if (found > 0) {
+				stack = request.requestedItem.copy();
+				stack.setCount(found > stack.getMaxStackSize() ? stack.getMaxStackSize() : found);
+				stackSize = stack.getCount();
+				stack = InventoryTools.mergeItemStack(inventory, stack);
+				if (stack.isEmpty() || stack.getCount() != stackSize) {
+					moved = stack.isEmpty() ? stackSize : stackSize - stack.getCount();
+					source.extractItem(request.requestedItem, moved);
+					cachedItemMap.decreaseCount(request.requestedItem, moved);
+					updateViewers();
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
-    public final void clearItemCache() {
-        cachedItemMap.clear();
-    }
+	public final void getItems(ItemQuantityMap map) {
+		map.addAll(cachedItemMap);
+	}
 
-    public final void addItemsToCache(ItemQuantityMap map) {
-        cachedItemMap.addAll(map);
-    }
+	public final void clearItemCache() {
+		cachedItemMap.clear();
+	}
 
-    @Override
-    protected boolean processWork() {
-        if (!interfacesToEmpty.isEmpty()) {
-            if (tryEmptyInterfaces()) {
-                return true;
-            }
-        }
-        if (!interfacesToFill.isEmpty()) {
-            if (tryFillInterfaces()) {
-                return true;
-            }
-        }
-        return false;
-    }
+	public final void addItemsToCache(ItemQuantityMap map) {
+		cachedItemMap.addAll(map);
+	}
 
-    @Override
-    protected boolean hasWorksiteWork() {
-        return !interfacesToEmpty.isEmpty() || !interfacesToFill.isEmpty();
-    }
+	@Override
+	protected boolean processWork() {
+		if (!interfacesToEmpty.isEmpty()) {
+			if (tryEmptyInterfaces()) {
+				return true;
+			}
+		}
+		if (!interfacesToFill.isEmpty()) {
+			if (tryFillInterfaces()) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-    @Override
-    protected final void updateWorksite() {
-        if (!init) {
-            scanForInitialTiles();
-        }
-        if (shouldRecount) {
-            shouldRecount = false;
-            recountInventory();
-        }
-    }
+	@Override
+	protected boolean hasWorksiteWork() {
+		return !interfacesToEmpty.isEmpty() || !interfacesToFill.isEmpty();
+	}
 
-    private void scanForInitialTiles() {
-        BlockPos max = getWorkBoundsMax();
-        if(max == null)
-            return;
-        BlockPos min = getWorkBoundsMin();
-        if(min == null)
-            return;
-        List<TileEntity> tiles = WorldTools.getTileEntitiesInArea(world, min.getX(), min.getY(), min.getZ(), max.getX(), max.getY(), max.getZ());
-        for (TileEntity te : tiles) {
-            if (te instanceof IControlledTile && ((IControlledTile) te).getController() == null) {
-                addControlledTile((IControlledTile) te);
-            }
-        }
-        init = true;
-    }
+	@Override
+	protected final void updateWorksite() {
+		if (!init) {
+			scanForInitialTiles();
+		}
+		if (shouldRecount) {
+			shouldRecount = false;
+			recountInventory();
+		}
+	}
 
-    private void recountInventory() {
-        cachedItemMap.clear();
-        for (IWarehouseStorageTile tile : storageTiles) {
-            tile.addItems(cachedItemMap);
-        }
-    }
+	private void scanForInitialTiles() {
+		BlockPos max = getWorkBoundsMax();
+		if (max == null)
+			return;
+		BlockPos min = getWorkBoundsMin();
+		if (min == null)
+			return;
+		List<TileEntity> tiles = WorldTools.getTileEntitiesInArea(world, min.getX(), min.getY(), min.getZ(), max.getX(), max.getY(), max.getZ());
+		for (TileEntity te : tiles) {
+			if (te instanceof IControlledTile && ((IControlledTile) te).getController() == null) {
+				addControlledTile((IControlledTile) te);
+			}
+		}
+		init = true;
+	}
 
-    public final void addViewer(ContainerWarehouseControl viewer) {
-        if (!hasWorld() || world.isRemote) {
-            return;
-        }
-        viewers.add(viewer);
-    }
+	private void recountInventory() {
+		cachedItemMap.clear();
+		for (IWarehouseStorageTile tile : storageTiles) {
+			tile.addItems(cachedItemMap);
+		}
+	}
 
-    public final void addCraftingViewer(ContainerWarehouseCraftingStation viewer) {
-        if (!hasWorld() || world.isRemote) {
-            return;
-        }
-        craftingViewers.add(viewer);
-    }
+	public final void addViewer(ContainerWarehouseControl viewer) {
+		if (!hasWorld() || world.isRemote) {
+			return;
+		}
+		viewers.add(viewer);
+	}
 
-    public final void removeViewer(ContainerWarehouseControl viewer) {
-        viewers.remove(viewer);
-    }
+	public final void addCraftingViewer(ContainerWarehouseCraftingStation viewer) {
+		if (!hasWorld() || world.isRemote) {
+			return;
+		}
+		craftingViewers.add(viewer);
+	}
 
-    public final void removeCraftingViewer(ContainerWarehouseCraftingStation viewer) {
-        craftingViewers.remove(viewer);
-    }
+	public final void removeViewer(ContainerWarehouseControl viewer) {
+		viewers.remove(viewer);
+	}
 
-    public final void updateViewers() {
-        for (ContainerWarehouseControl viewer : viewers) {
-            viewer.onWarehouseInventoryUpdated();
-        }
-        for (TileWarehouseStockViewer viewer : stockViewers) {
-            viewer.onWarehouseInventoryUpdated();
-        }
-        for (ContainerWarehouseCraftingStation viewer : craftingViewers) {
-            viewer.onWarehouseInventoryUpdated();
-        }
-    }
+	public final void removeCraftingViewer(ContainerWarehouseCraftingStation viewer) {
+		craftingViewers.remove(viewer);
+	}
 
-    public final void addStorageTile(IWarehouseStorageTile tile) {
-        if (world.isRemote) {
-            return;
-        }
-        if (!storageTiles.contains(tile)) {
-            if (tile instanceof IControlledTile) {
-                ((IControlledTile) tile).setController(this);
-            }
-            storageTiles.add(tile);
-            storageMap.addStorageTile(tile);
-            tile.addItems(cachedItemMap);
-        }
-    }
+	public final void updateViewers() {
+		for (ContainerWarehouseControl viewer : viewers) {
+			viewer.onWarehouseInventoryUpdated();
+		}
+		for (TileWarehouseStockViewer viewer : stockViewers) {
+			viewer.onWarehouseInventoryUpdated();
+		}
+		for (ContainerWarehouseCraftingStation viewer : craftingViewers) {
+			viewer.onWarehouseInventoryUpdated();
+		}
+	}
 
-    public final void removeStorageTile(IWarehouseStorageTile tile) {
-        ItemQuantityMap iqm = new ItemQuantityMap();
-        tile.addItems(iqm);
-        this.cachedItemMap.removeAll(iqm);
-        storageTiles.remove(tile);
-        storageMap.removeStorageTile(tile);
-        updateViewers();
-    }
+	public final void addStorageTile(IWarehouseStorageTile tile) {
+		if (world.isRemote) {
+			return;
+		}
+		if (!storageTiles.contains(tile)) {
+			if (tile instanceof IControlledTile) {
+				((IControlledTile) tile).setController(this);
+			}
+			storageTiles.add(tile);
+			storageMap.addStorageTile(tile);
+			tile.addItems(cachedItemMap);
+		}
+	}
 
-    public final void addInterfaceTile(TileWarehouseInterface tile) {
-        if (world.isRemote) {
-            return;
-        }
-        if (!interfaceTiles.contains(tile)) {
-            interfaceTiles.add(tile);
-            tile.setController(this);
-            if (!tile.getEmptyRequests().isEmpty()) {
-                interfacesToEmpty.add(tile);
-            }
-            if (!tile.getFillRequests().isEmpty()) {
-                interfacesToFill.add(tile);
-            }
-        }
-    }
+	public final void removeStorageTile(IWarehouseStorageTile tile) {
+		ItemQuantityMap iqm = new ItemQuantityMap();
+		tile.addItems(iqm);
+		this.cachedItemMap.removeAll(iqm);
+		storageTiles.remove(tile);
+		storageMap.removeStorageTile(tile);
+		updateViewers();
+	}
 
-    public final void removeInterfaceTile(TileWarehouseInterface tile) {
-        interfaceTiles.remove(tile);
-        interfacesToFill.remove(tile);
-        interfacesToEmpty.remove(tile);
-    }
+	public final void addInterfaceTile(TileWarehouseInterface tile) {
+		if (world.isRemote) {
+			return;
+		}
+		if (!interfaceTiles.contains(tile)) {
+			interfaceTiles.add(tile);
+			tile.setController(this);
+			if (!tile.getEmptyRequests().isEmpty()) {
+				interfacesToEmpty.add(tile);
+			}
+			if (!tile.getFillRequests().isEmpty()) {
+				interfacesToFill.add(tile);
+			}
+		}
+	}
 
-    public final void onIterfaceInventoryChanged(TileWarehouseInterface tile) {
-        if (world.isRemote) {
-            return;
-        }
-        interfacesToFill.remove(tile);
-        interfacesToEmpty.remove(tile);
-        if (!tile.getEmptyRequests().isEmpty()) {
-            interfacesToEmpty.add(tile);
-        }
-        if (!tile.getFillRequests().isEmpty()) {
-            interfacesToFill.add(tile);
-        }
-    }
+	public final void removeInterfaceTile(TileWarehouseInterface tile) {
+		interfaceTiles.remove(tile);
+		interfacesToFill.remove(tile);
+		interfacesToEmpty.remove(tile);
+	}
 
-    public final void onStorageFilterChanged(IWarehouseStorageTile tile, List<WarehouseStorageFilter> oldFilters, List<WarehouseStorageFilter> newFilters) {
-        if (world.isRemote) {
-            return;
-        }
-        storageMap.updateTileFilters(tile, oldFilters, newFilters);
-    }
+	public final void onIterfaceInventoryChanged(TileWarehouseInterface tile) {
+		if (world.isRemote) {
+			return;
+		}
+		interfacesToFill.remove(tile);
+		interfacesToEmpty.remove(tile);
+		if (!tile.getEmptyRequests().isEmpty()) {
+			interfacesToEmpty.add(tile);
+		}
+		if (!tile.getFillRequests().isEmpty()) {
+			interfacesToFill.add(tile);
+		}
+	}
 
-    public final void addStockViewer(TileWarehouseStockViewer viewer) {
-        if (world.isRemote) {
-            return;
-        }
-        stockViewers.add(viewer);
-        viewer.setController(this);
-        viewer.onWarehouseInventoryUpdated();
-    }
+	public final void onStorageFilterChanged(IWarehouseStorageTile tile, List<WarehouseStorageFilter> oldFilters, List<WarehouseStorageFilter> newFilters) {
+		if (world.isRemote) {
+			return;
+		}
+		storageMap.updateTileFilters(tile, oldFilters, newFilters);
+	}
 
-    public final void removeStockViewer(TileWarehouseStockViewer tile) {
-        stockViewers.remove(tile);
-    }
+	public final void addStockViewer(TileWarehouseStockViewer viewer) {
+		if (world.isRemote) {
+			return;
+		}
+		stockViewers.add(viewer);
+		viewer.setController(this);
+		viewer.onWarehouseInventoryUpdated();
+	}
 
-    @Override
-    public final void addControlledTile(IControlledTile tile) {
-        if (tile instanceof IWarehouseStorageTile) {
-            addStorageTile((IWarehouseStorageTile) tile);
-        } else if (tile instanceof TileWarehouseInterface) {
-            addInterfaceTile((TileWarehouseInterface) tile);
-        } else if (tile instanceof TileWarehouseStockViewer) {
-            addStockViewer((TileWarehouseStockViewer) tile);
-        }
-    }
+	public final void removeStockViewer(TileWarehouseStockViewer tile) {
+		stockViewers.remove(tile);
+	}
 
-    @Override
-    public final void removeControlledTile(IControlledTile tile) {
-        if (tile instanceof IWarehouseStorageTile) {
-            removeStorageTile((IWarehouseStorageTile) tile);
-        } else if (tile instanceof TileWarehouseInterface) {
-            removeInterfaceTile((TileWarehouseInterface) tile);
-        } else if (tile instanceof TileWarehouseStockViewer) {
-            removeStockViewer((TileWarehouseStockViewer) tile);
-        }
-    }
+	@Override
+	public final void addControlledTile(IControlledTile tile) {
+		if (tile instanceof IWarehouseStorageTile) {
+			addStorageTile((IWarehouseStorageTile) tile);
+		} else if (tile instanceof TileWarehouseInterface) {
+			addInterfaceTile((TileWarehouseInterface) tile);
+		} else if (tile instanceof TileWarehouseStockViewer) {
+			addStockViewer((TileWarehouseStockViewer) tile);
+		}
+	}
 
-    @Override
-    public BlockPos getPosisition() {
-        return getPos();
-    }
+	@Override
+	public final void removeControlledTile(IControlledTile tile) {
+		if (tile instanceof IWarehouseStorageTile) {
+			removeStorageTile((IWarehouseStorageTile) tile);
+		} else if (tile instanceof TileWarehouseInterface) {
+			removeInterfaceTile((TileWarehouseInterface) tile);
+		} else if (tile instanceof TileWarehouseStockViewer) {
+			removeStockViewer((TileWarehouseStockViewer) tile);
+		}
+	}
 
-    @Override
-    public final WorkType getWorkType() {
-        return WorkType.CRAFTING;
-    }
+	@Override
+	public BlockPos getPosisition() {
+		return getPos();
+	}
 
-    @Override
-    public final boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
-        if (!player.world.isRemote) {
-            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_CONTROL, pos);
-        }
-        return true;
-    }
+	@Override
+	public final WorkType getWorkType() {
+		return WorkType.CRAFTING;
+	}
 
-    @Override
-    public final boolean shouldRenderInPass(int pass) {
-        return pass == 1;//it is for the TESR (for bounds rendering), block renders as per normal
-    }
+	@Override
+	public final boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
+		if (!player.world.isRemote) {
+			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WAREHOUSE_CONTROL, pos);
+		}
+		return true;
+	}
 
-    public int getCountOf(ItemStack layoutStack) {
-        return cachedItemMap.getCount(layoutStack);
-    }
+	@Override
+	public final boolean shouldRenderInPass(int pass) {
+		return pass == 1;//it is for the TESR (for bounds rendering), block renders as per normal
+	}
 
-    public void decreaseCountOf(ItemStack layoutStack, int i) {
-        if (world.isRemote) {
-            cachedItemMap.decreaseCount(layoutStack, i);
-            return;
-        }
-        List<IWarehouseStorageTile> dest = new ArrayList<>();
-        storageMap.getDestinations(layoutStack, dest);
-        int found = 0;
-        for (IWarehouseStorageTile tile : dest) {
-            found = tile.getQuantityStored(layoutStack);
-            if (found > 0) {
-                if (found > i) {
-                    found = i;
-                }
-                i -= found;
-                tile.extractItem(layoutStack, found);
-                cachedItemMap.decreaseCount(layoutStack, found);
-                if (i <= 0) {
-                    break;
-                }
-            }
-        }
-        updateViewers();
-    }
+	public int getCountOf(ItemStack layoutStack) {
+		return cachedItemMap.getCount(layoutStack);
+	}
 
-    public ItemStack tryAdd(ItemStack stack) {
-        List<IWarehouseStorageTile> destinations = new ArrayList<>();
-        storageMap.getDestinations(stack, destinations);
-        int moved = 0;
-        ItemStack copy = stack.copy();
-        for (IWarehouseStorageTile tile : destinations) {
-            moved = tile.insertItem(stack, stack.getCount());
-            ItemStack filter = stack.copy();
-            filter.setCount(1);
-            changeCachedQuantity(filter, moved);
-            stack.shrink(moved);
-            if (stack.getCount() <= 0) {
-                break;
-            }
-        }
-        if (stack.getCount() <= 0) {
-            return ItemStack.EMPTY;
-        }
-        return stack;
-    }
+	public void decreaseCountOf(ItemStack layoutStack, int i) {
+		if (world.isRemote) {
+			cachedItemMap.decreaseCount(layoutStack, i);
+			return;
+		}
+		List<IWarehouseStorageTile> dest = storageMap.getDestinations();
+		int found = 0;
+		for (IWarehouseStorageTile tile : dest) {
+			found = tile.getQuantityStored(layoutStack);
+			if (found > 0) {
+				if (found > i) {
+					found = i;
+				}
+				i -= found;
+				tile.extractItem(layoutStack, found);
+				cachedItemMap.decreaseCount(layoutStack, found);
+				if (i <= 0) {
+					break;
+				}
+			}
+		}
+		updateViewers();
+	}
 
-    @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        super.readFromNBT(tag);
-        if (tag.hasKey("min")) {
-            setWorkBoundsMin(BlockPos.fromLong(tag.getLong("min")));
-        }
-        if (tag.hasKey("max")) {
-            setWorkBoundsMax(BlockPos.fromLong(tag.getLong("max")));
-        }
-    }
+	public ItemStack tryAdd(ItemStack stack) {
+		List<IWarehouseStorageTile> destinations = storageMap.getDestinations(stack);
+		int moved = 0;
+		ItemStack copy = stack.copy();
+		for (IWarehouseStorageTile tile : destinations) {
+			moved = tile.insertItem(stack, stack.getCount());
+			ItemStack filter = stack.copy();
+			filter.setCount(1);
+			changeCachedQuantity(filter, moved);
+			stack.shrink(moved);
+			if (stack.getCount() <= 0) {
+				break;
+			}
+		}
+		if (stack.getCount() <= 0) {
+			return ItemStack.EMPTY;
+		}
+		return stack;
+	}
 
-    /*
-     * Used by user-set-blocks tile to set all default harvest-checks to true when bounds are FIRST set
-     */
-    @Override
-    protected void onBoundsSet() {
-        setWorkBoundsMax(getWorkBoundsMax().up(getWorkBoundsMin().getY() + getBoundsMaxHeight() - getWorkBoundsMax().getY()));
-        BlockTools.notifyBlockUpdate(this);
-    }
+	@Override
+	public void readFromNBT(NBTTagCompound tag) {
+		super.readFromNBT(tag);
+		if (tag.hasKey("min")) {
+			setWorkBoundsMin(BlockPos.fromLong(tag.getLong("min")));
+		}
+		if (tag.hasKey("max")) {
+			setWorkBoundsMax(BlockPos.fromLong(tag.getLong("max")));
+		}
+	}
+
+	/*
+	 * Used by user-set-blocks tile to set all default harvest-checks to true when bounds are FIRST set
+	 */
+	@Override
+	protected void onBoundsSet() {
+		setWorkBoundsMax(getWorkBoundsMax().up(getWorkBoundsMin().getY() + getBoundsMaxHeight() - getWorkBoundsMax().getY()));
+		BlockTools.notifyBlockUpdate(this);
+	}
 }

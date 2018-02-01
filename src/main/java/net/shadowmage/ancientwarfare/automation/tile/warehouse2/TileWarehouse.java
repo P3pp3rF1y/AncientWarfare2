@@ -11,7 +11,6 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStac
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortType;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TileWarehouse extends TileWarehouseBase {
@@ -52,8 +51,7 @@ public class TileWarehouse extends TileWarehouseBase {
 		if (cursorStack.isEmpty()) {
 			return;
 		}
-		List<IWarehouseStorageTile> destinations = new ArrayList<>();
-		storageMap.getDestinations(cursorStack, destinations);
+		List<IWarehouseStorageTile> destinations = storageMap.getDestinations(cursorStack);
 		int stackSize = cursorStack.getCount();
 		int moved;
 		for (IWarehouseStorageTile tile : destinations) {
@@ -73,8 +71,6 @@ public class TileWarehouse extends TileWarehouseBase {
 	}
 
 	private void tryGetItem(EntityPlayer player, ItemStack filter, boolean shiftClick, boolean rightClick) {
-		List<IWarehouseStorageTile> destinations = new ArrayList<>();
-
 		int stackSize = 0;
 		if (!player.inventory.getItemStack().isEmpty()) {
 			stackSize = player.inventory.getItemStack().getCount();
@@ -84,7 +80,7 @@ public class TileWarehouse extends TileWarehouseBase {
 				return;
 		}
 
-		storageMap.getDestinations(filter, destinations);
+		List<IWarehouseStorageTile> destinations = storageMap.getDestinations();
 		int count;
 		int toMove;
 		int toMoveMax = filter.getMaxStackSize();
@@ -105,7 +101,7 @@ public class TileWarehouse extends TileWarehouseBase {
 		int newStackSize = stackSize;
 		for (IWarehouseStorageTile tile : destinations) {
 			count = tile.getQuantityStored(filter);
-			toMove = toMoveMax - stackSize;
+			toMove = toMoveMax - newStackSize;
 			toMove = toMove > count ? count : toMove;
 			if (toMove > 0) {
 				newStackSize += toMove;
