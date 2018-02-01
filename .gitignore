@@ -5,7 +5,6 @@
 !project_resources
 !releases
 !src
-!z_unused
 !code_format
 
 !.gitignore
