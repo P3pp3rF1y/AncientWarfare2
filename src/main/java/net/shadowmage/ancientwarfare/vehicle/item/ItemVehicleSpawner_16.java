@@ -39,7 +39,6 @@ public class ItemVehicleSpawner extends AWItemClickable {
 
 	public ItemVehicleSpawner(int itemID) {
 		super(itemID, true);
-		this.setCreativeTab(CreativeTabAW.vehicleTab);
 	}
 
 	@Override

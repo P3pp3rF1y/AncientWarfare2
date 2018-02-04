@@ -33,9 +33,9 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.util.Trig;
 import shadowmage.ancient_warfare.common.interfaces.IMissileHitCallback;
 import shadowmage.ancient_warfare.common.registry.AmmoRegistry;
-import shadowmage.ancient_warfare.common.utils.Trig;
 
 import java.util.Iterator;
 import java.util.List;

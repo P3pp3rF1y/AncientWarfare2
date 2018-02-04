@@ -23,13 +23,13 @@ package shadowmage.ancient_warfare.common.vehicles.types;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
+import net.shadowmage.ancientwarfare.core.util.Trig;
 import shadowmage.ancient_warfare.common.config.Config;
 import shadowmage.ancient_warfare.common.item.ItemLoader;
 import shadowmage.ancient_warfare.common.registry.ArmorRegistry;
 import shadowmage.ancient_warfare.common.registry.VehicleUpgradeRegistry;
 import shadowmage.ancient_warfare.common.research.ResearchGoal;
 import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
-import shadowmage.ancient_warfare.common.utils.Trig;
 import shadowmage.ancient_warfare.common.vehicles.VehicleBase;
 import shadowmage.ancient_warfare.common.vehicles.helpers.VehicleFiringVarsHelper;
 import shadowmage.ancient_warfare.common.vehicles.materials.VehicleMaterial;
