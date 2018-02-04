@@ -52,7 +52,7 @@ public class InventoryTools {
 		return remainingItems;
 	}
 
-	private static IItemHandler cloneItemHandler(IItemHandler handler) {
+	public static IItemHandler cloneItemHandler(IItemHandler handler) {
 		ItemStackHandler copy = new ItemStackHandler(handler.getSlots());
 
 		for (int slot = 0; slot < handler.getSlots(); slot++) {
