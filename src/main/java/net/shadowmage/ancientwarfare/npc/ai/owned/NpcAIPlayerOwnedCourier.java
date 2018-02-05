@@ -118,7 +118,7 @@ public class NpcAIPlayerOwnedCourier extends NpcAI<NpcCourier> {
     private IItemHandler getTargetHandler() {
         RoutingOrder.RoutePoint point = order.get(routeIndex);
         TileEntity te = npc.world.getTileEntity(point.getTarget());
-        if(te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, point.getBlockSide())) {
+        if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, point.getBlockSide())) {
             if(te instanceof IOwnable){
                 IOwnable ownableTE = (IOwnable) te;
                 if(ownableTE.getOwnerName() != null && !npc.hasCommandPermissions(ownableTE.getOwnerUuid(), ownableTE.getOwnerName())){
