@@ -21,10 +21,10 @@
 
 package net.shadowmage.ancientwarfare.vehicle.render.missile;
 
+import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmoType;
+import net.shadowmage.ancientwarfare.vehicle.missiles.MissileBase;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelArrow2;
 import net.shadowmage.ancientwarfare.vehicle.render.RenderMissileBase;
-import shadowmage.ancient_warfare.common.vehicles.missiles.IAmmoType;
-import shadowmage.ancient_warfare.common.vehicles.missiles.MissileBase;
 
 public class RenderArrow extends RenderMissileBase {
 

@@ -21,12 +21,12 @@
 
 package net.shadowmage.ancientwarfare.vehicle.render.vehicle;
 
+import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelSubmarine;
 import net.shadowmage.ancientwarfare.vehicle.render.RenderVehicleBase;
 import org.lwjgl.opengl.GL11;
 import shadowmage.ancient_warfare.client.render.AWTextureManager;
 import shadowmage.ancient_warfare.common.config.Config;
-import shadowmage.ancient_warfare.common.vehicles.VehicleBase;
 
 public class RenderSubmarine extends RenderVehicleBase {
 

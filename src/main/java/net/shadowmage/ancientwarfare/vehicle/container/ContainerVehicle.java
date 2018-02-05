@@ -25,14 +25,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
-import shadowmage.ancient_warfare.common.interfaces.IEntityContainerSynch;
-import shadowmage.ancient_warfare.common.inventory.SlotVehicleAmmo;
-import shadowmage.ancient_warfare.common.inventory.SlotVehicleArmor;
-import shadowmage.ancient_warfare.common.inventory.SlotVehicleUpgrade;
-import shadowmage.ancient_warfare.common.item.ItemLoader;
-import shadowmage.ancient_warfare.common.vehicles.VehicleBase;
+import net.shadowmage.ancientwarfare.vehicle.entity.IEntityContainerSynch;
+import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
+import net.shadowmage.ancientwarfare.vehicle.item.AWVehicleItems;
 
+import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.List;
 
@@ -53,7 +52,8 @@ public class ContainerVehicle extends ContainerBase {
 	 * @param synch
 	 */
 	public ContainerVehicle(EntityPlayer openingPlayer, IEntityContainerSynch synch, VehicleBase vehicle) {
-		super(openingPlayer, synch);
+		super(openingPlayer);
+		//TODO figure out what to do with synch param
 		this.vehicle = vehicle;
 		int y;
 		int x;
@@ -62,20 +62,19 @@ public class ContainerVehicle extends ContainerBase {
 		int yPos;
 
 		storageY = 4 + 10 + 20;
-		int invHeight = (vehicle.inventory.storageInventory.getSizeInventory() / 9 + (vehicle.inventory.storageInventory
-				.getSizeInventory() % 9 == 0 ? 0 : 1)) * 18;
+		int invHeight = (vehicle.inventory.storageInventory.getSlots() / 9 + (vehicle.inventory.storageInventory.getSlots() % 9 == 0 ? 0 : 1)) * 18;
 		invHeight = invHeight > 3 * 18 ? 3 * 18 : invHeight;
 		extrasY = storageY + (invHeight == 0 ? 0 : 10) + invHeight;
 		playerY = extrasY + 4 + 10 + 2 * 18;
-		this.addPlayerSlots(player, 8, playerY, 4);
+		this.addPlayerSlots(8, playerY, 4);
 
 		for (y = 0; y < 2; y++) {
 			for (x = 0; x < 3; x++) {
 				slotNum = y * 3 + x;
-				if (slotNum < vehicle.inventory.ammoInventory.getSizeInventory()) {
+				if (slotNum < vehicle.inventory.ammoInventory.getSlots()) {
 					xPos = 8 + x * 18;
 					yPos = y * 18 + extrasY;
-					this.addSlotToContainer(new SlotVehicleAmmo(vehicle.inventory.ammoInventory, vehicle, slotNum, xPos, yPos));
+					this.addSlotToContainer(new SlotItemHandler(vehicle.inventory.ammoInventory, slotNum, xPos, yPos));
 				}
 			}
 		}
@@ -83,36 +82,36 @@ public class ContainerVehicle extends ContainerBase {
 			for (x = 0; x < 3; x++) {
 
 				slotNum = y * 3 + x;
-				if (slotNum < vehicle.inventory.upgradeInventory.getSizeInventory()) {
+				if (slotNum < vehicle.inventory.upgradeInventory.getSlots()) {
 					xPos = 8 + x * 18 + 3 * 18 + 5;
 					yPos = y * 18 + extrasY;
-					this.addSlotToContainer(new SlotVehicleUpgrade(vehicle.inventory.upgradeInventory, vehicle, slotNum, xPos, yPos));
+					this.addSlotToContainer(new SlotItemHandler(vehicle.inventory.upgradeInventory, slotNum, xPos, yPos));
 				}
 			}
 		}
 		for (y = 0; y < 2; y++) {
 			for (x = 0; x < 3; x++) {
 				slotNum = y * 3 + x;
-				if (slotNum < vehicle.inventory.armorInventory.getSizeInventory()) {
+				if (slotNum < vehicle.inventory.armorInventory.getSlots()) {
 					xPos = 8 + x * 18 + 6 * 18 + 2 * 5;
 					yPos = y * 18 + extrasY;
-					this.addSlotToContainer(new SlotVehicleArmor(vehicle.inventory.armorInventory, vehicle, slotNum, xPos, yPos));
+					this.addSlotToContainer(new SlotItemHandler(vehicle.inventory.armorInventory, slotNum, xPos, yPos));
 				}
 			}
 		}
 
-		storageSlots = new Slot[vehicle.inventory.storageInventory.getSizeInventory()];
-		for (y = 0; y < vehicle.inventory.storageInventory.getSizeInventory() / 9; y++) {
+		storageSlots = new Slot[vehicle.inventory.storageInventory.getSlots()];
+		for (y = 0; y < vehicle.inventory.storageInventory.getSlots() / 9; y++) {
 			for (x = 0; x < 9; x++) {
 				slotNum = y * 9 + x;
-				if (slotNum < vehicle.inventory.storageInventory.getSizeInventory()) {
+				if (slotNum < vehicle.inventory.storageInventory.getSlots()) {
 					xPos = 8 + x * 18;
 					yPos = y * 18 + storageY;
 					if (slotNum >= 27) {
 						xPos = -1000;
 						yPos = -1000;
 					}
-					Slot slot = new Slot(vehicle.inventory.storageInventory, slotNum, xPos, yPos);
+					Slot slot = new SlotItemHandler(vehicle.inventory.storageInventory, slotNum, xPos, yPos);
 					storageSlots[slotNum] = slot;
 					this.addSlotToContainer(slot);
 				}
@@ -143,10 +142,10 @@ public class ContainerVehicle extends ContainerBase {
 
 		int curRow = 0;
 
-		for (y = 0; y < vehicle.inventory.storageInventory.getSizeInventory() / 9; y++) {
+		for (y = 0; y < vehicle.inventory.storageInventory.getSlots() / 9; y++) {
 			for (x = 0; x < 9; x++) {
 				slotNum = y * 9 + x;
-				if (slotNum < vehicle.inventory.storageInventory.getSizeInventory()) {
+				if (slotNum < vehicle.inventory.storageInventory.getSlots()) {
 
 					if (y < row || y >= row + 3) {
 						xPos = -1000;
@@ -155,8 +154,8 @@ public class ContainerVehicle extends ContainerBase {
 						xPos = 8 + x * 18;
 						yPos = storageY + curRow * 18;
 					}
-					storageSlots[slotNum].xDisplayPosition = xPos;
-					storageSlots[slotNum].yDisplayPosition = yPos;
+					storageSlots[slotNum].xPos = xPos;
+					storageSlots[slotNum].yPos = yPos;
 				}
 			}
 			if (y >= row && y < row + 3) {
@@ -165,61 +164,55 @@ public class ContainerVehicle extends ContainerBase {
 		}
 	}
 
+	@Nonnull
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
-		ItemStack slotStackCopy = null;
-		Slot theSlot = (Slot) this.inventorySlots.get(slotClickedIndex);
+	public ItemStack transferStackInSlot(EntityPlayer player, int slotClickedIndex) {
+		ItemStack slotStackCopy = ItemStack.EMPTY;
+		Slot theSlot = this.inventorySlots.get(slotClickedIndex);
 		if (theSlot != null && theSlot.getHasStack()) {
 			ItemStack slotStack = theSlot.getStack();
 			slotStackCopy = slotStack.copy();
-			int ammoSlots = vehicle.inventory.ammoInventory.getSizeInventory();
-			int upgradeSlots = vehicle.inventory.upgradeInventory.getSizeInventory();
-			int armorSlots = vehicle.inventory.armorInventory.getSizeInventory();
-			int storageSlots = vehicle.inventory.storageInventory.getSizeInventory();
+			int ammoSlots = vehicle.inventory.ammoInventory.getSlots();
+			int upgradeSlots = vehicle.inventory.upgradeInventory.getSlots();
+			int armorSlots = vehicle.inventory.armorInventory.getSlots();
+			int storageSlots = vehicle.inventory.storageInventory.getSlots();
 			if (slotClickedIndex < 36)//player slots...
 			{
-				if (slotStackCopy.itemID == ItemLoader.ammoItem.itemID && vehicle.inventory.isAmmoValid(slotStackCopy))//is ammo item...
-				{
-					if (!this.mergeItemStack(slotStack, 36, 36 + ammoSlots, false))//merge into ammo inventory
-					{
-						return null;
+				if (slotStackCopy.getItem() == AWVehicleItems.ammo) {
+					if (!this.mergeItemStack(slotStack, 36, 36 + ammoSlots, false)) {
+						return ItemStack.EMPTY;
 					}
-				} else if (slotStackCopy.itemID == ItemLoader.vehicleUpgrade.itemID && vehicle.inventory.isUpgradeValid(slotStackCopy))//is upgrade item...
-				{
+				} else if (slotStackCopy.getItem() == AWVehicleItems.upgrade) {
 					if (!this.mergeItemStack(slotStack, 36 + ammoSlots, 36 + ammoSlots + upgradeSlots, false))//merge into upgrade inventory
 					{
-						return null;
+						return ItemStack.EMPTY;
 					}
-				} else if (slotStackCopy.itemID == ItemLoader.armorItem.itemID && vehicle.inventory.isArmorValid(slotStackCopy)) {
-					if (!this.mergeItemStack(slotStack, 36 + ammoSlots + upgradeSlots, 36 + ammoSlots + upgradeSlots + armorSlots,
-							false))//merge into armor inventory
+				} else if (slotStackCopy.getItem() == AWVehicleItems.armor) {
+					if (!this.mergeItemStack(slotStack, 36 + ammoSlots + upgradeSlots, 36 + ammoSlots + upgradeSlots + armorSlots, false))//merge into armor inventory
 					{
-						return null;
+						return ItemStack.EMPTY;
 					}
 				} else//attempt merge into storage inventory, if vehicle has one...
 				{
 					if (!this.mergeItemStack(slotStack, 36 + ammoSlots + upgradeSlots + armorSlots, 36 + ammoSlots + upgradeSlots + armorSlots + storageSlots,
 							false))//merge into storage inventory
 					{
-						return null;
+						return ItemStack.EMPTY;
 					}
 				}
 			} else if (slotClickedIndex >= 36 && slotClickedIndex < 36 + ammoSlots + upgradeSlots + armorSlots + storageSlots)//vehicle slots, merge to player inventory
 			{
 				if (!this.mergeItemStack(slotStack, 0, 36, true))//merge into player inventory
 				{
-					return null;
+					return ItemStack.EMPTY;
 				}
 			}
-			if (slotStack.stackSize == 0) {
-				theSlot.putStack((ItemStack) null);
-			} else {
-				theSlot.onSlotChanged();
+			theSlot.onSlotChanged();
+
+			if (slotStack.getCount() == slotStackCopy.getCount()) {
+				return ItemStack.EMPTY;
 			}
-			if (slotStack.stackSize == slotStackCopy.stackSize) {
-				return null;
-			}
-			theSlot.onPickupFromSlot(par1EntityPlayer, slotStack);
+			theSlot.onTake(player, slotStack);
 		}
 		return slotStackCopy;
 	}

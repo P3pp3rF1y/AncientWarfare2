@@ -1,0 +1,88 @@
+package net.shadowmage.ancientwarfare.vehicle.refactoring.proxy;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraftforge.common.config.ConfigElement;
+import net.minecraftforge.common.config.Property;
+import net.minecraftforge.fml.client.config.DummyConfigElement.DummyCategoryElement;
+import net.minecraftforge.fml.client.config.IConfigElement;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.shadowmage.ancientwarfare.core.config.ConfigManager;
+import net.shadowmage.ancientwarfare.core.input.InputHandler;
+import net.shadowmage.ancientwarfare.core.input.InputHandler.InputCallback;
+import net.shadowmage.ancientwarfare.vehicle.refactoring.config.AWVehicleStatics;
+import net.shadowmage.ancientwarfare.vehicle.refactoring.entity.VehicleBase;
+import net.shadowmage.ancientwarfare.vehicle.refactoring.entity.VehicleCatapult;
+import net.shadowmage.ancientwarfare.vehicle.refactoring.input.VehicleInputKey;
+import net.shadowmage.ancientwarfare.vehicle.refactoring.render.RenderCatapult;
+import net.shadowmage.ancientwarfare.vehicle.refactoring.render.VehicleBBRender;
+import org.lwjgl.input.Keyboard;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class VehicleClientProxy extends VehicleCommonProxy {
+
+    @Override
+    public void preInit() {
+        super.preInit();
+
+        RenderingRegistry.registerEntityRenderingHandler(VehicleBase.class, VehicleBBRender::new);
+        RenderingRegistry.registerEntityRenderingHandler(MissileBase.class, RenderMissile::new);
+        RenderingRegistry.registerEntityRenderingHandler(VehicleCatapult.class, RenderCatapult::new);
+        registerClientOptions();
+    }
+
+    public void registerClientOptions() {
+        InputHandler.instance.registerKeybind(AWVehicleStatics.KEY_VEHICLE_FORWARD, Keyboard.KEY_W, new VehicleInputCallback(VehicleInputKey.FORWARD));
+        InputHandler.instance.registerKeybind(AWVehicleStatics.KEY_VEHICLE_REVERSE, Keyboard.KEY_S, new VehicleInputCallback(VehicleInputKey.REVERSE));
+        InputHandler.instance.registerKeybind(AWVehicleStatics.KEY_VEHICLE_LEFT, Keyboard.KEY_A, new VehicleInputCallback(VehicleInputKey.LEFT));
+        InputHandler.instance.registerKeybind(AWVehicleStatics.KEY_VEHICLE_RIGHT, Keyboard.KEY_D, new VehicleInputCallback(VehicleInputKey.RIGHT));
+        InputHandler.instance.registerKeybind(AWVehicleStatics.KEY_VEHICLE_FIRE, Keyboard.KEY_SPACE, new VehicleInputCallback(VehicleInputKey.FIRE));
+        InputHandler.instance.registerKeybind(AWVehicleStatics.KEY_VEHICLE_ASCEND, Keyboard.KEY_R, new VehicleInputCallback(VehicleInputKey.ASCEND));
+        InputHandler.instance.registerKeybind(AWVehicleStatics.KEY_VEHICLE_DESCEND, Keyboard.KEY_F, new VehicleInputCallback(VehicleInputKey.DESCEND));
+        ConfigManager.registerConfigCategory(new VehicleCategory("awconfig.vehicle_keybinds"));
+    }
+
+    public static final class VehicleInputCallback implements InputCallback {
+        VehicleInputKey key;
+
+        public VehicleInputCallback(VehicleInputKey key) {
+            this.key = key;
+        }
+
+        @Override
+        public void onKeyPressed() {
+            onKeyAction(true);
+        }
+
+        @Override
+        public void onKeyReleased() {
+            onKeyAction(false);
+        }
+
+        private void onKeyAction(boolean state) {
+            EntityPlayer player = Minecraft.getMinecraft().player;
+            if (player.getRidingEntity() instanceof VehicleBase) {
+                ((VehicleBase) player.getRidingEntity()).inputHandler.onKeyChanged(key, state);
+            }
+        }
+    }
+
+    public static final class VehicleCategory extends DummyCategoryElement {
+
+        public VehicleCategory(String name) {
+            super(name, name, getElementList());
+        }
+
+        private static List<IConfigElement> getElementList() {
+            List<Property> props = InputHandler.instance.getKeyConfig("vehicle");
+            List<IConfigElement> list = new ArrayList<>();
+            for(Property property : props) {
+                list.add(new ConfigElement(property));
+            }
+            return list;
+        }
+    }
+
+}

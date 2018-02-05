@@ -22,7 +22,7 @@
 package shadowmage.ancient_warfare.common.vehicles.VehicleVarHelpers;
 
 import net.minecraft.nbt.NBTTagCompound;
-import shadowmage.ancient_warfare.common.vehicles.VehicleBase;
+import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import shadowmage.ancient_warfare.common.vehicles.helpers.VehicleFiringVarsHelper;
 
 public class CatapultVarHelper extends VehicleFiringVarsHelper {

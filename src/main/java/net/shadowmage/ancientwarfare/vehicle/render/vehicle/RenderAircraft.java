@@ -21,10 +21,10 @@
 
 package net.shadowmage.ancientwarfare.vehicle.render.vehicle;
 
+import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelAirplane;
 import net.shadowmage.ancientwarfare.vehicle.render.RenderVehicleBase;
 import org.lwjgl.opengl.GL11;
-import shadowmage.ancient_warfare.common.vehicles.VehicleBase;
 
 public class RenderAircraft extends RenderVehicleBase {
 

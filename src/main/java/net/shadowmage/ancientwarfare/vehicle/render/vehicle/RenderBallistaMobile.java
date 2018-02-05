@@ -21,9 +21,9 @@
 
 package net.shadowmage.ancientwarfare.vehicle.render.vehicle;
 
+import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelBallistaMobile;
 import net.shadowmage.ancientwarfare.vehicle.render.RenderVehicleBase;
-import shadowmage.ancient_warfare.common.vehicles.VehicleBase;
 import shadowmage.ancient_warfare.common.vehicles.helpers.VehicleFiringVarsHelper;
 
 public class RenderBallistaMobile extends RenderVehicleBase {

@@ -1,0 +1,184 @@
+/**
+ * Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
+ * This software is distributed under the terms of the GNU General Public License.
+ * Please see COPYING for precise license information.
+ * <p>
+ * This file is part of Ancient Warfare.
+ * <p>
+ * Ancient Warfare is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * <p>
+ * Ancient Warfare is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License
+ * along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package net.shadowmage.ancientwarfare.vehicle.entity;
+
+import net.minecraft.item.ItemStack;
+import net.shadowmage.ancientwarfare.vehicle.armors.IVehicleArmor;
+import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmoType;
+import net.shadowmage.ancientwarfare.vehicle.upgrades.IVehicleUpgradeType;
+import shadowmage.ancient_warfare.common.crafting.ResourceListRecipe;
+import shadowmage.ancient_warfare.common.research.IResearchGoal;
+import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
+import shadowmage.ancient_warfare.common.vehicles.helpers.VehicleFiringVarsHelper;
+import shadowmage.ancient_warfare.common.vehicles.materials.IVehicleMaterial;
+
+import java.util.HashSet;
+import java.util.List;
+
+public interface IVehicleType {
+
+	//TODO REFACTOR really 200 lines in interface? break this down into logical groups
+
+	float getWidth();
+
+	float getHeight();
+
+	float getBaseWeight();
+
+	/*adjustable stats, set at time of vehicle registration DO NOT CHANGE DURING RUN-TIME--CHANGES WILL NOT PROPOGATE PROPERLY*/
+	float getBaseHealth();//base max health, before any materials adjustments
+
+	void setBaseHealth(float val);
+
+	float getBaseForwardSpeed();
+
+	void setBaseForwardSpeed(float val);
+
+	float getBaseStrafeSpeed();
+
+	void setBaseStrafeSpeed(float val);
+
+	float getBasePitchMin();
+
+	void setBasePitchMin(float val);
+
+	float getBasePitchMax();
+
+	void setBasePitchMax(float val);
+
+	float getBaseTurretRotationAmount();//max rotation from a center point. >=180 means the turret can spin around completely
+
+	void setBaseTurretRotationAmount(float val);
+
+	float getBaseMissileVelocityMax();//base missile velocity, before materials or upgrades
+
+	void setBaseMissileVelocity(float val);
+
+	float getBaseAccuracy();
+
+	void setBaseAccuracy(float val);
+
+	String getTextureForMaterialLevel(int level);//get the texture for the input material quality level
+
+	String getDisplayName();
+
+	String getLocalizedName();
+
+	List<String> getDisplayTooltip();
+
+	int getGlobalVehicleType();//by number, registry num...
+
+	IVehicleMaterial getMaterialType();//wood, iron...?? material type will apply adjustments to base stats, before upgrades/etc are applied
+
+	boolean isMountable();//should allow mounting
+
+	boolean isDrivable();//should check movement input params?
+
+	boolean isCombatEngine();//should check non-movement input params?
+
+	boolean canSoldiersPilot();//can npcs pilot this vehicle (e.g. normal ground vehicle)
+
+	boolean canAdjustYaw();//can aim yaw be adjusted independently of vehicle yaw?
+
+	boolean canAdjustPitch();//can aim pitch be adjusted? (should be EITHER pitch OR power)
+
+	boolean canAdjustPower();//can shot velocity be adjusted? (should be EITHER pitch OR power)
+
+	float getMissileForwardsOffset();//the offset in the turretYaw direction from the turretPosition
+
+	float getMissileHorizontalOffset();//the offset in the turretYaw+90 direction from the turretPosition
+
+	float getMissileVerticalOffset();//the offset in the y+ direction from the turretPosition
+
+	float getTurretPosX();//the offset of the turret from 0,0 at vehicle rotation 0
+
+	float getTurretPosY();//the offset of the turret from 0,0 at vehicle rotation 0
+
+	float getTurretPosZ();//the offset of the turret from 0,0 at vehicle rotation 0
+
+	float getRiderForwardsOffset();//the offset from 0,0 or turretPos of the rider
+
+	float getRiderHorizontalOffset();//the offset from 0,0 or turretPos of the rider
+
+	float getRiderVerticalOffest();//the offset from 0,0 or turretPos of the rider
+
+	float getMinAttackDistance();//used by soldiers to determine when to get off a vehicle
+
+	boolean shouldRiderSit();//should rider be seated while riding?
+
+	boolean moveRiderWithTurret();//should position of rider update with the position of the turret, rather than vehicle?
+
+	boolean isAmmoValidForInventory(IAmmoType ammo);//does not determine if it can be fired, only if it can be placed into inventory
+
+	boolean isUpgradeValid(IVehicleUpgradeType upgrade);
+
+	boolean isArmorValid(IVehicleArmor armor);
+
+	List<IAmmoType> getValidAmmoTypes();
+
+	List<IVehicleUpgradeType> getValidUpgrades();
+
+	List<IVehicleArmor> getValidArmors();
+
+	int getStorageBaySize();
+
+	int getAmmoBaySize();
+
+	int getArmorBaySize();
+
+	int getUpgradeBaySize();
+
+	float getMaxMissileWeight();//in KG--will be adjusted by material... any additional missile weight over this will reduce max launch speed by a ratio
+
+	int getMaterialQuantity();//get the quantity of the main material to construct this vehicle
+
+	List<ItemStackWrapperCrafting> getAdditionalMaterials();//get a list of additional materials needed to construct this vehicle
+
+	ItemStack getStackForLevel(int level);
+
+	IAmmoType getAmmoForSoldierRank(int rank);//what ammo type should soldiers use if !Config.soldiersUseAmmo
+
+	String getIconTexture();
+
+	VehicleFiringVarsHelper getFiringVarsHelper(VehicleBase veh);
+
+	ResourceListRecipe constructRecipe(int level);
+
+	HashSet<IResearchGoal> getNeededResearchFor(int level);
+
+	VehicleMovementType getMovementType();
+
+	void setEnabled(boolean val);
+
+	boolean isEnabled();//determined via config, used to add recipes and to loot tables
+
+	boolean isEnabledForLoot();
+
+	boolean isEnabledForCrafting();
+
+	void setEnabledForLoot(boolean val);
+
+	void setEnabledForCrafting(boolean val);
+
+	String getConfigName();//get the name used to load config settings for this vehicle
+
+}

@@ -21,11 +21,11 @@
 
 package net.shadowmage.ancientwarfare.vehicle.render.vehicle;
 
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 import net.shadowmage.ancientwarfare.core.util.Trig;
+import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelChestCart;
 import net.shadowmage.ancientwarfare.vehicle.render.RenderVehicleBase;
-import shadowmage.ancient_warfare.common.vehicles.VehicleBase;
 
 public class RenderChestCart extends RenderVehicleBase {
 	ModelChestCart model = new ModelChestCart();

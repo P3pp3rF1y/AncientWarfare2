@@ -23,14 +23,14 @@ package shadowmage.ancient_warfare.common.vehicles.helpers;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
+import net.shadowmage.ancientwarfare.vehicle.missiles.DamageType;
+import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
+import net.shadowmage.ancientwarfare.vehicle.registry.VehicleUpgradeRegistry;
+import net.shadowmage.ancientwarfare.vehicle.upgrades.IVehicleUpgradeType;
 import shadowmage.ancient_warfare.common.interfaces.INBTTaggable;
 import shadowmage.ancient_warfare.common.network.Packet02Vehicle;
-import shadowmage.ancient_warfare.common.registry.ArmorRegistry;
-import shadowmage.ancient_warfare.common.registry.VehicleUpgradeRegistry;
-import shadowmage.ancient_warfare.common.vehicles.VehicleBase;
 import shadowmage.ancient_warfare.common.vehicles.armors.IVehicleArmorType;
-import shadowmage.ancient_warfare.common.vehicles.missiles.DamageType;
-import shadowmage.ancient_warfare.common.vehicles.upgrades.IVehicleUpgradeType;
 
 import java.util.ArrayList;
 import java.util.List;

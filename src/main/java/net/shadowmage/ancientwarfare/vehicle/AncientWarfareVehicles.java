@@ -5,14 +5,14 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
-import net.shadowmage.ancientwarfare.vehicle.ballistics.TrajectoryPlotter;
-import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.crafting.AWVehicleCrafting;
-import net.shadowmage.ancientwarfare.vehicle.entity.AWVehicleEntityLoader;
 import net.shadowmage.ancientwarfare.vehicle.item.AWVehicleItemLoader;
-import net.shadowmage.ancientwarfare.vehicle.network.PacketInputReply;
-import net.shadowmage.ancientwarfare.vehicle.network.PacketInputState;
-import net.shadowmage.ancientwarfare.vehicle.proxy.VehicleCommonProxy;
+import net.shadowmage.ancientwarfare.vehicle.refactoring.ballistics.TrajectoryPlotter;
+import net.shadowmage.ancientwarfare.vehicle.refactoring.config.AWVehicleStatics;
+import net.shadowmage.ancientwarfare.vehicle.refactoring.entity.AWVehicleEntityLoader;
+import net.shadowmage.ancientwarfare.vehicle.refactoring.network.PacketInputReply;
+import net.shadowmage.ancientwarfare.vehicle.refactoring.network.PacketInputState;
+import net.shadowmage.ancientwarfare.vehicle.refactoring.proxy.VehicleCommonProxy;
 
 /*
 @Mod
@@ -33,8 +33,8 @@ public class AncientWarfareVehicles {
 /*
     @SidedProxy
             (
-                    clientSide = "net.shadowmage.ancientwarfare.vehicle.proxy.VehicleClientProxy",
-                    serverSide = "net.shadowmage.ancientwarfare.vehicle.proxy.VehicleCommonProxy"
+                    clientSide = "VehicleClientProxy",
+                    serverSide = "VehicleCommonProxy"
             )
 */
     public static VehicleCommonProxy proxy;

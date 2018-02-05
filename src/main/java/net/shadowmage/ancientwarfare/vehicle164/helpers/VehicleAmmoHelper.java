@@ -23,15 +23,15 @@ package shadowmage.ancient_warfare.common.vehicles.helpers;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
+import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmoType;
+import net.shadowmage.ancientwarfare.vehicle.missiles.MissileBase;
+import net.shadowmage.ancientwarfare.vehicle.registry.VehicleAmmoEntry;
 import shadowmage.ancient_warfare.common.config.Config;
 import shadowmage.ancient_warfare.common.interfaces.INBTTaggable;
 import shadowmage.ancient_warfare.common.item.ItemLoader;
 import shadowmage.ancient_warfare.common.network.Packet02Vehicle;
 import shadowmage.ancient_warfare.common.npcs.NpcBase;
-import shadowmage.ancient_warfare.common.registry.entry.VehicleAmmoEntry;
-import shadowmage.ancient_warfare.common.vehicles.VehicleBase;
-import shadowmage.ancient_warfare.common.vehicles.missiles.IAmmoType;
-import shadowmage.ancient_warfare.common.vehicles.missiles.MissileBase;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -26,24 +26,24 @@ import shadowmage.ancient_warfare.common.research.IResearchGoal;
 
 public interface IVehicleMaterial {
 
-	public abstract int getNumOfLevels();
+	int getNumOfLevels();
 
-	public abstract float getHPFactor(int level);
+	float getHPFactor(int level);
 
-	public abstract float getSpeedForwardFactor(int level);
+	float getSpeedForwardFactor(int level);
 
-	public abstract float getSpeedStrafeFactor(int level);
+	float getSpeedStrafeFactor(int level);
 
-	public abstract float getWeightFactor(int level);
+	float getWeightFactor(int level);
 
-	public abstract float getAccuracyFactor(int level);
+	float getAccuracyFactor(int level);
 
-	public abstract float getMisfireChance(int level);
+	float getMisfireChance(int level);
 
-	public abstract ItemStack getItem(int level);
+	ItemStack getItem(int level);
 
-	public abstract IResearchGoal getResearchForLevel(int level);
+	IResearchGoal getResearchForLevel(int level);
 
-	public abstract String getDisplayName(int level);
+	String getDisplayName(int level);
 
 }

@@ -23,17 +23,13 @@ package net.shadowmage.ancientwarfare.vehicle.armors;
 
 public class VehicleArmorStone extends VehicleArmorBase {
 
-	/**
-	 * @param armorType
-	 */
-	public VehicleArmorStone(int armorType) {
-		super(armorType);
+	public VehicleArmorStone() {
+		super(ArmorType.STONE);
 		this.displayName = "item.vehicleArmor.stone";
 		this.tooltip = "item.vehicleArmor.stone.tooltip";
 		this.general = 2.5f;
 		this.explosive = 2.5f;
 		this.fire = 7;
-		this.iconTexture = "armorStone1";
 	}
 
 /* TODO research recipe

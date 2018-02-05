@@ -24,11 +24,11 @@ package shadowmage.ancient_warfare.common.vehicles.VehicleVarHelpers;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
+import net.shadowmage.ancientwarfare.vehicle.missiles.DamageType;
 import shadowmage.ancient_warfare.common.utils.BlockPosition;
 import shadowmage.ancient_warfare.common.utils.BlockTools;
-import shadowmage.ancient_warfare.common.vehicles.VehicleBase;
 import shadowmage.ancient_warfare.common.vehicles.helpers.VehicleFiringVarsHelper;
-import shadowmage.ancient_warfare.common.vehicles.missiles.DamageType;
 import shadowmage.ancient_warfare.common.vehicles.types.VehicleTypeBatteringRam;
 import shadowmage.ancient_warfare.common.warzone.WarzoneManager;
 

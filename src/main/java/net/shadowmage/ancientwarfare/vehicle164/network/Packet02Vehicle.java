@@ -25,7 +25,7 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
-import shadowmage.ancient_warfare.common.vehicles.VehicleBase;
+import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
 public class Packet02Vehicle extends PacketBase {
 	int entityID;

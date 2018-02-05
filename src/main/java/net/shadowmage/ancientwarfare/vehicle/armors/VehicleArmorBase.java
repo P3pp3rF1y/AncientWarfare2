@@ -22,29 +22,28 @@
 package net.shadowmage.ancientwarfare.vehicle.armors;
 
 import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.vehicle.item.AWVehicleItemLoader;
+import net.shadowmage.ancientwarfare.vehicle.item.AWVehicleItems;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public abstract class VehicleArmorBase implements IVehicleArmor {
 
-	int armorType = 0;
+	ArmorType armorType;
 	String displayName = "";
 	String tooltip = "";
-	String iconTexture = "foo.png";
 	float general = 0.f;
 	float explosive = 0.f;
 	float fire = 0.f;
 	float weight = 50.f;
 	Set<Integer> neededResearch = new HashSet<>();
 
-	public VehicleArmorBase(int armorType) {
+	public VehicleArmorBase(ArmorType armorType) {
 		this.armorType = armorType;
 	}
 
 	@Override
-	public int getGlobalArmorType() {
+	public ArmorType getArmorType() {
 		return this.armorType;
 	}
 
@@ -80,14 +79,17 @@ public abstract class VehicleArmorBase implements IVehicleArmor {
 
 	@Override
 	public ItemStack getArmorStack(int qty) {
-		return new ItemStack(AWVehicleItemLoader.ARMOR, qty, armorType);
+		return new ItemStack(AWVehicleItems.armor, qty, armorType.ordinal());
 	}
 
+/* TODO armor rendering
 	@Override
 	public String getIconTexture() {
 		return "ancientwarfare:armor/" + iconTexture;
 	}
+*/
 
+/* TODO research recipes
 	protected void addNeededResearch(Integer res) {
 		this.neededResearch.add(res);
 	}
@@ -95,6 +97,7 @@ public abstract class VehicleArmorBase implements IVehicleArmor {
 	protected void addNeededResource(ItemStack stack, boolean dmg) {
 		this.neededResources.add(new ItemStackWrapperCrafting(stack, dmg, false));
 	}
+*/
 
 	@Override
 	public Set<Integer> getNeededResearch() {

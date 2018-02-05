@@ -25,9 +25,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmoType;
+import net.shadowmage.ancientwarfare.vehicle.missiles.MissileBase;
 import org.lwjgl.opengl.GL11;
-import shadowmage.ancient_warfare.common.vehicles.missiles.IAmmoType;
-import shadowmage.ancient_warfare.common.vehicles.missiles.MissileBase;
 
 public abstract class RenderMissileBase extends Render {
 	static Minecraft mc = Minecraft.getMinecraft();

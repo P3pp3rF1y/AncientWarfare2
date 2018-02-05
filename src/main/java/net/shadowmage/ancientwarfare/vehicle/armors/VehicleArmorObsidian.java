@@ -21,25 +21,19 @@
 
 package net.shadowmage.ancientwarfare.vehicle.armors;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import shadowmage.ancient_warfare.common.research.ResearchGoalNumbers;
-
 public class VehicleArmorObsidian extends VehicleArmorBase {
 
-	/**
-	 * @param armorType
-	 */
-	public VehicleArmorObsidian(int armorType) {
-		super(armorType);
+	public VehicleArmorObsidian() {
+		super(ArmorType.OBSIDIAN);
 		this.displayName = "item.vehicleArmor.obsidian";
 		this.tooltip = "item.vehicleArmor.obsidian.tooltip";
 		this.general = 2.5f;
 		this.explosive = 7.f;
 		this.fire = 2.5f;
-		this.iconTexture = "armorObsidian1";
+/* TODO research recipe
 		this.neededResearch.add(ResearchGoalNumbers.iron3);
 		this.addNeededResource(new ItemStack(Block.obsidian, 5), false);
+*/
 	}
 
 }

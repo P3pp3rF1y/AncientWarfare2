@@ -25,8 +25,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import shadowmage.ancient_warfare.client.registry.RenderRegistry;
-import shadowmage.ancient_warfare.common.vehicles.missiles.MissileBase;
+import net.shadowmage.ancientwarfare.vehicle.missiles.MissileBase;
+import net.shadowmage.ancientwarfare.vehicle.registry.RenderRegistry;
 
 public class RenderMissileHelper extends Render {
 

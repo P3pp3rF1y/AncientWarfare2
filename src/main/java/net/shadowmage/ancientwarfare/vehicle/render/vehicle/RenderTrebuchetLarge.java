@@ -21,11 +21,11 @@
 
 package net.shadowmage.ancientwarfare.vehicle.render.vehicle;
 
+import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelTrebuchetStandFixed;
 import net.shadowmage.ancientwarfare.vehicle.render.RenderVehicleBase;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
-import shadowmage.ancient_warfare.common.vehicles.VehicleBase;
 import shadowmage.ancient_warfare.common.vehicles.helpers.VehicleFiringVarsHelper;
 
 public class RenderTrebuchetLarge extends RenderVehicleBase {

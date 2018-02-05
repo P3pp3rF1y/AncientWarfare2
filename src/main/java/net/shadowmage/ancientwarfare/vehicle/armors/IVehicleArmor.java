@@ -27,13 +27,11 @@ import java.util.Set;
 
 public interface IVehicleArmor {
 
-	int getGlobalArmorType();
+	ArmorType getArmorType();
 
 	String getDisplayName();
 
 	String getDisplayTooltip();
-
-	String getIconTexture();
 
 	float getGeneralDamageReduction();
 
