@@ -23,7 +23,6 @@ package net.shadowmage.ancientwarfare.vehicle.entity;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
