@@ -54,7 +54,8 @@ public abstract class TileControlled extends TileUpdatable implements IControlle
 		}
 	}
 
-	protected boolean isValidController(IControllerTile tile) {
+	@Override
+	public boolean isValidController(IControllerTile tile) {
 		return BlockTools.isPositionWithinBounds(getPos(), tile.getWorkBoundsMin(), tile.getWorkBoundsMax());
 	}
 
@@ -78,8 +79,13 @@ public abstract class TileControlled extends TileUpdatable implements IControlle
 
 	@Override
 	public final void setController(IControllerTile tile) {
+		IControllerTile oldController = tile;
 		this.controller = tile;
 		this.controllerPosition = tile == null ? null : tile.getPosisition();
+		onControllerChanged(oldController, controller);
+	}
+
+	protected void onControllerChanged(IControllerTile oldController, IControllerTile newController) {
 	}
 
 	@Nullable

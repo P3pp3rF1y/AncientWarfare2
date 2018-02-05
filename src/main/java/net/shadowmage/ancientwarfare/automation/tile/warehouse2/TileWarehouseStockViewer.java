@@ -93,8 +93,13 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
 	}
 
 	@Override
-	protected boolean isValidController(IControllerTile tile) {
+	public boolean isValidController(IControllerTile tile) {
 		return BlockTools.isPositionWithinBounds(getPos(), tile.getWorkBoundsMin().add(-1, 0, -1), tile.getWorkBoundsMax().add(1, 0, 1));
+	}
+
+	@Override
+	protected void onControllerChanged(IControllerTile oldController, IControllerTile newController) {
+		onWarehouseInventoryUpdated();
 	}
 
 	@Override
