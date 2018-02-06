@@ -24,7 +24,6 @@ package net.shadowmage.ancientwarfare.vehicle.missiles;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import shadowmage.ancient_warfare.common.config.Config;
 import shadowmage.ancient_warfare.common.crafting.ResourceListRecipe;
 
 public class AmmoSoldierArrow extends Ammo {
@@ -49,9 +48,9 @@ public class AmmoSoldierArrow extends Ammo {
 			this.configName = "soldier_arrow_" + damage;
 		}
 		if (damage <= 5) {
-			this.modelTexture = Config.texturePath + "models/ammo/arrowWood.png";
+			this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowWood");
 		} else {
-			this.modelTexture = Config.texturePath + "models/ammo/arrowIron.png";
+			this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowIron");
 		}
 	}
 

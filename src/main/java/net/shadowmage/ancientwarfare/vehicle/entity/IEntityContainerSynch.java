@@ -26,17 +26,16 @@ import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * interface for tile entities or entities that need info synched between client(s), but only when gui's are open...
- * @author Shadowmage
  *
+ * @author Shadowmage
  */
 public interface IEntityContainerSynch {
 
-	public void handleClientInput(NBTTagCompound tag);
+	void handleClientInput(NBTTagCompound tag);
 
-	public void addPlayer(EntityPlayer player);
+	void addPlayer(EntityPlayer player);
 
-	public void removePlayer(EntityPlayer player);
+	void removePlayer(EntityPlayer player);
 
-	public boolean canInteract(EntityPlayer player);
-
+	boolean canInteract(EntityPlayer player);
 }

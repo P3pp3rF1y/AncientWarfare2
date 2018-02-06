@@ -22,36 +22,36 @@
 package net.shadowmage.ancientwarfare.vehicle.registry;
 
 import net.shadowmage.ancientwarfare.vehicle.entity.IVehicleType;
-import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmoType;
+import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleType;
+import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeAirBomber;
+import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeAirInterceptor;
+import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeBallistaMobile;
+import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeBallistaMobileTurret;
+import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeBallistaStand;
+import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeBallistaStandTurret;
+import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeBatteringRam;
+import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeBoatBallista;
+import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeBoatCatapult;
+import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeBoatTransport;
+import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeCannonMobileFixed;
+import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeCannonStandFixed;
+import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeCannonStandTurret;
+import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeCatapultMobileFixed;
+import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeCatapultMobileTurret;
+import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeCatapultStandFixed;
+import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeCatapultStandTurret;
+import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeChestCart;
+import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeHelicopter;
+import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeHwacha;
+import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeSubmarine;
+import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeTrebuchetLarge;
+import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeTrebuchetMobileFixed;
+import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeTrebuchetStandFixed;
+import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeTrebuchetStandTurret;
+import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 import shadowmage.ancient_warfare.common.config.Config;
 import shadowmage.ancient_warfare.common.item.ItemLoader;
 import shadowmage.ancient_warfare.common.registry.entry.Description;
-import shadowmage.ancient_warfare.common.vehicles.types.VehicleType;
-import shadowmage.ancient_warfare.common.vehicles.types.VehicleTypeAirBomber;
-import shadowmage.ancient_warfare.common.vehicles.types.VehicleTypeAirInterceptor;
-import shadowmage.ancient_warfare.common.vehicles.types.VehicleTypeBallistaMobile;
-import shadowmage.ancient_warfare.common.vehicles.types.VehicleTypeBallistaMobileTurret;
-import shadowmage.ancient_warfare.common.vehicles.types.VehicleTypeBallistaStand;
-import shadowmage.ancient_warfare.common.vehicles.types.VehicleTypeBallistaStandTurret;
-import shadowmage.ancient_warfare.common.vehicles.types.VehicleTypeBatteringRam;
-import shadowmage.ancient_warfare.common.vehicles.types.VehicleTypeBoatBallista;
-import shadowmage.ancient_warfare.common.vehicles.types.VehicleTypeBoatCatapult;
-import shadowmage.ancient_warfare.common.vehicles.types.VehicleTypeBoatTransport;
-import shadowmage.ancient_warfare.common.vehicles.types.VehicleTypeCannonMobileFixed;
-import shadowmage.ancient_warfare.common.vehicles.types.VehicleTypeCannonStandFixed;
-import shadowmage.ancient_warfare.common.vehicles.types.VehicleTypeCannonStandTurret;
-import shadowmage.ancient_warfare.common.vehicles.types.VehicleTypeCatapultMobileFixed;
-import shadowmage.ancient_warfare.common.vehicles.types.VehicleTypeCatapultMobileTurret;
-import shadowmage.ancient_warfare.common.vehicles.types.VehicleTypeCatapultStandFixed;
-import shadowmage.ancient_warfare.common.vehicles.types.VehicleTypeCatapultStandTurret;
-import shadowmage.ancient_warfare.common.vehicles.types.VehicleTypeChestCart;
-import shadowmage.ancient_warfare.common.vehicles.types.VehicleTypeHelicopter;
-import shadowmage.ancient_warfare.common.vehicles.types.VehicleTypeHwacha;
-import shadowmage.ancient_warfare.common.vehicles.types.VehicleTypeSubmarine;
-import shadowmage.ancient_warfare.common.vehicles.types.VehicleTypeTrebuchetLarge;
-import shadowmage.ancient_warfare.common.vehicles.types.VehicleTypeTrebuchetMobileFixed;
-import shadowmage.ancient_warfare.common.vehicles.types.VehicleTypeTrebuchetStandFixed;
-import shadowmage.ancient_warfare.common.vehicles.types.VehicleTypeTrebuchetStandTurret;
 
 import java.util.Iterator;
 
@@ -137,8 +137,8 @@ public class VehicleRegistry {
 						(float) Config.getConfig().get("e_vehicle_config", vehicle.getConfigName() + ".turret_rotation", vehicle.getBaseTurretRotationAmount())
 								.getDouble(vehicle.getBaseTurretRotationAmount()));
 
-				Iterator<IAmmoType> it = vehicle.getValidAmmoTypes().iterator();
-				IAmmoType t;
+				Iterator<IAmmo> it = vehicle.getValidAmmoTypes().iterator();
+				IAmmo t;
 				while (it.hasNext()) {
 					t = it.next();
 					if (!t.isEnabled()) {

@@ -24,7 +24,6 @@ package net.shadowmage.ancientwarfare.vehicle.missiles;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import shadowmage.ancient_warfare.common.config.Config;
 import shadowmage.ancient_warfare.common.item.ItemLoader;
 import shadowmage.ancient_warfare.common.research.ResearchGoalNumbers;
 import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
@@ -46,7 +45,7 @@ public class AmmoPebbleShot extends Ammo {
 		this.renderScale = (weight / scaleFactor) * 2;
 		this.iconTexture = "ammoPebble1";
 		this.configName = "pebble_shot_" + weight;
-		this.modelTexture = Config.texturePath + "models/ammo/ammoStoneShot.png";
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/ammoStoneShot");
 
 		this.neededResearch.add(ResearchGoalNumbers.explosives1);
 		int cases = 1;

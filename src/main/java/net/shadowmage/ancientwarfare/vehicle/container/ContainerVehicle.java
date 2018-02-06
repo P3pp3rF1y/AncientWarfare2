@@ -32,8 +32,6 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.item.AWVehicleItems;
 
 import javax.annotation.Nonnull;
-import java.util.Collections;
-import java.util.List;
 
 public class ContainerVehicle extends ContainerBase {
 
@@ -219,15 +217,6 @@ public class ContainerVehicle extends ContainerBase {
 
 	@Override
 	public void handlePacketData(NBTTagCompound tag) {
-	}
-
-	@Override
-	public void handleInitData(NBTTagCompound tag) {
-	}
-
-	@Override
-	public List<NBTTagCompound> getInitData() {
-		return Collections.emptyList();
 	}
 
 	@Override

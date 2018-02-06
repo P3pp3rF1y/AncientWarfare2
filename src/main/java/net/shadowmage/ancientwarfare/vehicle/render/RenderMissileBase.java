@@ -25,7 +25,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmoType;
+import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 import net.shadowmage.ancientwarfare.vehicle.missiles.MissileBase;
 import org.lwjgl.opengl.GL11;
 
@@ -47,7 +47,7 @@ public abstract class RenderMissileBase extends Render {
 		GL11.glPopMatrix();
 	}
 
-	public abstract void renderMissile(MissileBase missile, IAmmoType ammo, double x, double y, double z, float yaw, float tick);
+	public abstract void renderMissile(MissileBase missile, IAmmo ammo, double x, double y, double z, float yaw, float tick);
 
 	@Override
 	protected ResourceLocation getEntityTexture(Entity entity) {

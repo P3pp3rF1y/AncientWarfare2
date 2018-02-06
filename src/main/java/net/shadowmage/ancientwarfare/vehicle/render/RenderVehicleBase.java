@@ -24,6 +24,7 @@ package net.shadowmage.ancientwarfare.vehicle.render;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import net.shadowmage.ancientwarfare.core.util.AWTextureManager;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
 public abstract class RenderVehicleBase extends Render {

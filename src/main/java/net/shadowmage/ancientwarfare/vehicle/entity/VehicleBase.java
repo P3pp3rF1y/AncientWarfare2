@@ -37,10 +37,19 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.Trig;
+import net.shadowmage.ancientwarfare.vehicle.VehicleVarHelpers.DummyVehicleHelper;
+import net.shadowmage.ancientwarfare.vehicle.entity.materials.IVehicleMaterial;
+import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleType;
+import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleAmmoHelper;
+import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringHelper;
+import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
+import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleMoveHelper;
+import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleUpgradeHelper;
 import net.shadowmage.ancientwarfare.vehicle.inventory.VehicleInventory;
-import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmoType;
+import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleRegistry;
 import net.shadowmage.ancientwarfare.vehicle.upgrades.IVehicleUpgradeType;
 import shadowmage.ancient_warfare.common.config.Config;
@@ -56,15 +65,7 @@ import shadowmage.ancient_warfare.common.utils.ByteTools;
 import shadowmage.ancient_warfare.common.utils.InventoryTools;
 import shadowmage.ancient_warfare.common.utils.Pos3f;
 import shadowmage.ancient_warfare.common.utils.ServerPerformanceMonitor;
-import shadowmage.ancient_warfare.common.vehicles.VehicleVarHelpers.DummyVehicleHelper;
 import shadowmage.ancient_warfare.common.vehicles.armors.IVehicleArmorType;
-import shadowmage.ancient_warfare.common.vehicles.helpers.VehicleAmmoHelper;
-import shadowmage.ancient_warfare.common.vehicles.helpers.VehicleFiringHelper;
-import shadowmage.ancient_warfare.common.vehicles.helpers.VehicleFiringVarsHelper;
-import shadowmage.ancient_warfare.common.vehicles.helpers.VehicleMoveHelper;
-import shadowmage.ancient_warfare.common.vehicles.helpers.VehicleUpgradeHelper;
-import shadowmage.ancient_warfare.common.vehicles.materials.IVehicleMaterial;
-import shadowmage.ancient_warfare.common.vehicles.types.VehicleType;
 
 import java.util.List;
 import java.util.Random;
@@ -265,7 +266,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		float width = vehicleType.getWidth();
 		float height = vehicleType.getHeight();
 		this.setSize(width, height);
-		for (IAmmoType ammo : vehicleType.getValidAmmoTypes()) {
+		for (IAmmo ammo : vehicleType.getValidAmmoTypes()) {
 			this.ammoHelper.addUseableAmmo(ammo);
 		}
 		for (IVehicleUpgradeType up : this.vehicleType.getValidUpgrades()) {
@@ -343,7 +344,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	 */
 	public ItemStack getItemForVehicle() {
 		ItemStack stack = this.vehicleType.getStackForLevel(vehicleMaterialLevel);
-		stack.getTagCompound().getCompoundTag("AWVehSpawner").setFloat("health", getHealth());
+		stack.getTagCompound().getCompoundTag("spawnData").setFloat("health", getHealth());
 		return stack;
 	}
 
@@ -442,7 +443,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	 *
 	 * @return
 	 */
-	public Pos3f getMissileOffset() {
+	public Vec3d getMissileOffset() {
 		Pos3f off = new Pos3f();
 		float x1 = this.vehicleType.getTurretPosX();
 		float y1 = this.vehicleType.getTurretPosY();

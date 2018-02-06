@@ -31,12 +31,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
 import net.shadowmage.ancientwarfare.vehicle.entity.IVehicleType;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
+import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleType;
 import net.shadowmage.ancientwarfare.vehicle.registry.RenderRegistry;
 import org.lwjgl.opengl.GL11;
 import shadowmage.ancient_warfare.client.model.ModelVehicleBase;
 import shadowmage.ancient_warfare.common.config.Settings;
-import shadowmage.ancient_warfare.common.item.ItemVehicleSpawner;
-import shadowmage.ancient_warfare.common.vehicles.types.VehicleType;
 
 import java.text.DecimalFormat;
 

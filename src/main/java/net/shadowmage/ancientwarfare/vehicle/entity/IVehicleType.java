@@ -22,16 +22,13 @@
 package net.shadowmage.ancientwarfare.vehicle.entity;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.vehicle.armors.IVehicleArmor;
-import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmoType;
+import net.shadowmage.ancientwarfare.vehicle.entity.materials.IVehicleMaterial;
+import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
+import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 import net.shadowmage.ancientwarfare.vehicle.upgrades.IVehicleUpgradeType;
-import shadowmage.ancient_warfare.common.crafting.ResourceListRecipe;
-import shadowmage.ancient_warfare.common.research.IResearchGoal;
-import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
-import shadowmage.ancient_warfare.common.vehicles.helpers.VehicleFiringVarsHelper;
-import shadowmage.ancient_warfare.common.vehicles.materials.IVehicleMaterial;
 
-import java.util.HashSet;
 import java.util.List;
 
 public interface IVehicleType {
@@ -77,7 +74,7 @@ public interface IVehicleType {
 
 	void setBaseAccuracy(float val);
 
-	String getTextureForMaterialLevel(int level);//get the texture for the input material quality level
+	ResourceLocation getTextureForMaterialLevel(int level);//get the texture for the input material quality level
 
 	String getDisplayName();
 
@@ -127,13 +124,13 @@ public interface IVehicleType {
 
 	boolean moveRiderWithTurret();//should position of rider update with the position of the turret, rather than vehicle?
 
-	boolean isAmmoValidForInventory(IAmmoType ammo);//does not determine if it can be fired, only if it can be placed into inventory
+	boolean isAmmoValidForInventory(IAmmo ammo);//does not determine if it can be fired, only if it can be placed into inventory
 
 	boolean isUpgradeValid(IVehicleUpgradeType upgrade);
 
 	boolean isArmorValid(IVehicleArmor armor);
 
-	List<IAmmoType> getValidAmmoTypes();
+	List<IAmmo> getValidAmmoTypes();
 
 	List<IVehicleUpgradeType> getValidUpgrades();
 
@@ -149,21 +146,25 @@ public interface IVehicleType {
 
 	float getMaxMissileWeight();//in KG--will be adjusted by material... any additional missile weight over this will reduce max launch speed by a ratio
 
+/* TODO vehicle recipe - probably different from research or an extension to allow mutliple stacks
 	int getMaterialQuantity();//get the quantity of the main material to construct this vehicle
 
 	List<ItemStackWrapperCrafting> getAdditionalMaterials();//get a list of additional materials needed to construct this vehicle
+*/
 
 	ItemStack getStackForLevel(int level);
 
-	IAmmoType getAmmoForSoldierRank(int rank);//what ammo type should soldiers use if !Config.soldiersUseAmmo
+	IAmmo getAmmoForSoldierRank(int rank);//what ammo type should soldiers use if !Config.soldiersUseAmmo
 
 	String getIconTexture();
 
 	VehicleFiringVarsHelper getFiringVarsHelper(VehicleBase veh);
 
+/* TODO vehicle recipe
 	ResourceListRecipe constructRecipe(int level);
 
 	HashSet<IResearchGoal> getNeededResearchFor(int level);
+*/
 
 	VehicleMovementType getMovementType();
 

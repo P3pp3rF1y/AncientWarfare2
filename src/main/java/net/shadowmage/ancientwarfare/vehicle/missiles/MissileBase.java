@@ -46,7 +46,7 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 	 * Must be set after missile is constructed, but before spawned server side.  Client-side this will be set by the readSpawnData method.  This ammo type is responsible for many onTick qualities,
 	 * effects of impact, and model/render instance used.
 	 */
-	public IAmmoType ammoType = Ammo.ammoArrow;
+	public IAmmo ammoType = Ammo.ammoArrow;
 	public Entity launcher = null;
 	public Entity shooterLiving;
 	IMissileHitCallback shooter = null;
@@ -89,7 +89,7 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 	 * @param my
 	 * @param mz
 	 */
-	public void setMissileParams(IAmmoType type, float x, float y, float z, float mx, float my, float mz) {
+	public void setMissileParams(IAmmo type, float x, float y, float z, float mx, float my, float mz) {
 		this.ammoType = type;
 		if (ammoType != null) {
 			this.missileType = ammoType.getAmmoType();
@@ -124,7 +124,7 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 		//  Config.logDebug("missile spawning. motY: "+this.motionY);
 	}
 
-	public void setMissileParams2(IAmmoType ammo, float x, float y, float z, float yaw, float angle, float velocity) {
+	public void setMissileParams2(IAmmo ammo, float x, float y, float z, float yaw, float angle, float velocity) {
 		float vX = -Trig.sinDegrees(yaw) * Trig.cosDegrees(angle) * velocity * 0.05f;
 		float vY = Trig.sinDegrees(angle) * velocity * 0.05f;
 		float vZ = -Trig.cosDegrees(yaw) * Trig.cosDegrees(angle) * velocity * 0.05f;

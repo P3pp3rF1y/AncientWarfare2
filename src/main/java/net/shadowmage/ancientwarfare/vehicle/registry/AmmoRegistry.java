@@ -23,7 +23,7 @@ package net.shadowmage.ancientwarfare.vehicle.registry;
 
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.vehicle.missiles.Ammo;
-import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmoType;
+import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 import net.shadowmage.ancientwarfare.vehicle.missiles.MissileBase;
 import shadowmage.ancient_warfare.common.config.Config;
 import shadowmage.ancient_warfare.common.item.AWItemBase;
@@ -42,7 +42,7 @@ public class AmmoRegistry {
 
 	private static AmmoRegistry INSTANCE;
 
-	private Map<Integer, IAmmoType> ammoInstances = new HashMap<Integer, IAmmoType>();
+	private Map<Integer, IAmmo> ammoInstances = new HashMap<Integer, IAmmo>();
 
 	public static AmmoRegistry instance() {
 		if (INSTANCE == null) {
@@ -71,10 +71,10 @@ public class AmmoRegistry {
 		}
 	}
 
-	public List<IAmmoType> getAmmoTypes() {
-		List<IAmmoType> ammosList = new ArrayList<IAmmoType>();
+	public List<IAmmo> getAmmoTypes() {
+		List<IAmmo> ammosList = new ArrayList<IAmmo>();
 		for (Integer key : this.ammoInstances.keySet()) {
-			IAmmoType t = this.ammoInstances.get(key);
+			IAmmo t = this.ammoInstances.get(key);
 			if (t != null) {
 				ammosList.add(t);
 			}
@@ -88,11 +88,11 @@ public class AmmoRegistry {
 	 * @param type
 	 * @return
 	 */
-	public IAmmoType getAmmoEntry(int type) {
+	public IAmmo getAmmoEntry(int type) {
 		return this.ammoInstances.get(type);
 	}
 
-	public void registerAmmoTypeWithItem(IAmmoType ammo) {
+	public void registerAmmoTypeWithItem(IAmmo ammo) {
 		AWItemBase item = ItemLoader.ammoItem;
 		List<String> tips = ammo.getDisplayTooltip();
 		Description d = ItemLoader.instance().addSubtypeInfoToItem(item, ammo.getAmmoType(), ammo.getDisplayName());
@@ -117,7 +117,7 @@ public class AmmoRegistry {
 		//  if(ammo.getSecondaryAmmoType() != null && ammo.getSecondaryAmmoTypeCount()>0)
 		//    {
 		//    d.addTooltip("Cluster ammunition, spawns "+ammo.getSecondaryAmmoTypeCount()+" submunitions", ammo.getAmmoType());
-		//    IAmmoType t = ammo.getSecondaryAmmoType();
+		//    IAmmo t = ammo.getSecondaryAmmoType();
 		//    d.addTooltip("Submunition Entity Damage: "+t.getEntityDamage(), ammo.getAmmoType());
 		//    d.addTooltip("Submunition Vehicle Damage: "+t.getVehicleDamage(), ammo.getAmmoType());
 		//    }
@@ -126,7 +126,7 @@ public class AmmoRegistry {
 		this.registerAmmoType(ammo);
 	}
 
-	public void registerAmmoType(IAmmoType ammo) {
+	public void registerAmmoType(IAmmo ammo) {
 		if (ammo == null) {
 			return;
 		}
@@ -139,7 +139,7 @@ public class AmmoRegistry {
 		}
 	}
 
-	public IAmmoType getAmmoForStack(ItemStack stack) {
+	public IAmmo getAmmoForStack(ItemStack stack) {
 		if (stack == null || stack.itemID != ItemLoader.ammoItem.itemID) {
 			return null;
 		}

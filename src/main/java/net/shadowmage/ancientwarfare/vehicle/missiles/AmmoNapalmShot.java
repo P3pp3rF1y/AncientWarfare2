@@ -25,7 +25,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import shadowmage.ancient_warfare.common.config.Config;
 import shadowmage.ancient_warfare.common.item.ItemLoader;
 import shadowmage.ancient_warfare.common.research.ResearchGoalNumbers;
 import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
@@ -44,7 +43,7 @@ public class AmmoNapalmShot extends Ammo {
 		this.renderScale = (weight / scaleFactor) * 2;
 		this.iconTexture = "ammoNapalm1";
 		this.configName = "napalm_shot_" + weight;
-		this.modelTexture = Config.texturePath + "models/ammo/ammoStoneShot.png";
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/ammoStoneShot");
 		this.isFlaming = true;
 
 		this.neededResearch.add(ResearchGoalNumbers.flammables3);

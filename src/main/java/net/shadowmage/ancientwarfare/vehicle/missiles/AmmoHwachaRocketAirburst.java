@@ -26,7 +26,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import shadowmage.ancient_warfare.common.config.Config;
 import shadowmage.ancient_warfare.common.item.ItemLoader;
 import shadowmage.ancient_warfare.common.research.ResearchGoalNumbers;
 import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
@@ -50,7 +49,7 @@ public class AmmoHwachaRocketAirburst extends Ammo {
 		this.renderScale = 0.2f;
 		this.configName = "hwacha_rocket_airburst";
 		this.iconTexture = "ammoRocketAirburst1";
-		this.modelTexture = Config.texturePath + "models/ammo/arrowWood.png";
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowWood");
 
 		this.numCrafted = 6;
 		this.neededResearch.add(ResearchGoalNumbers.rockets3);

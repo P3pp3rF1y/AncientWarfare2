@@ -24,7 +24,6 @@ package net.shadowmage.ancientwarfare.vehicle.missiles;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import shadowmage.ancient_warfare.common.config.Config;
 import shadowmage.ancient_warfare.common.crafting.ResourceListRecipe;
 
 public class AmmoBallShot extends Ammo {
@@ -42,7 +41,7 @@ public class AmmoBallShot extends Ammo {
 		this.configName = "ball_shot";
 		this.iconTexture = "ammoStone1";
 		this.isCraftable = false;
-		this.modelTexture = Config.texturePath + "models/ammo/ammoStoneShot.png";
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/ammoStoneShot");
 	}
 
 	@Override

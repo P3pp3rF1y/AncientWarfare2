@@ -24,7 +24,6 @@ package net.shadowmage.ancientwarfare.vehicle.missiles;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import shadowmage.ancient_warfare.common.config.Config;
 import shadowmage.ancient_warfare.common.item.ItemLoader;
 import shadowmage.ancient_warfare.common.research.ResearchGoalNumbers;
 import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
@@ -46,7 +45,7 @@ public class AmmoStoneShot extends Ammo {
 		this.vehicleDamage = weight;
 		float scaleFactor = weight + 45.f;
 		this.renderScale = (weight / scaleFactor) * 2;
-		this.modelTexture = Config.texturePath + "models/ammo/ammoStoneShot.png";
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/ammoStoneShot");
 
 		int cases = 1;
 		this.numCrafted = 10;

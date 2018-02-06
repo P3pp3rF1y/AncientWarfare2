@@ -22,9 +22,9 @@
 package net.shadowmage.ancientwarfare.vehicle.render.vehicle;
 
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
+import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelBoatTransport;
 import net.shadowmage.ancientwarfare.vehicle.render.RenderVehicleBase;
-import shadowmage.ancient_warfare.common.vehicles.helpers.VehicleFiringVarsHelper;
 
 public class RenderBoatTransport extends RenderVehicleBase {
 

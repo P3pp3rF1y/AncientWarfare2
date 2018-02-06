@@ -1,100 +1,110 @@
+/**
+ * Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
+ * This software is distributed under the terms of the GNU General Public License.
+ * Please see COPYING for precise license information.
+ * <p>
+ * This file is part of Ancient Warfare.
+ * <p>
+ * Ancient Warfare is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * <p>
+ * Ancient Warfare is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * <p>
+ * You should have received a copy of the GNU General Public License
+ * along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package net.shadowmage.ancientwarfare.vehicle.item;
 
-import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagString;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.NonNullList;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.vehicle.refactoring.entity.AWVehicleEntityLoader;
+import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
+import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleType;
+import shadowmage.ancient_warfare.common.config.Config;
+import shadowmage.ancient_warfare.common.tracker.TeamTracker;
+import shadowmage.ancient_warfare.common.utils.BlockPosition;
+import shadowmage.ancient_warfare.common.utils.BlockTools;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemSpawner extends ItemBaseVehicle {
 
-    /*
-	 * TODO this can probably be removed in favor of modeled items
-     */
-	//private static HashMap<String, IIcon> regNameToIcon = new HashMap<>();
-
-	public ItemSpawner() {
+	public ItemSpawner(int itemID) {
 		super("spawner");
-		setHasSubtypes(true);
-		setCreativeTab(AWVehicleItemLoader.vehicleTab);
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		// TODO add info regarding vehicle type and any potentially stored stats therein
-		super.addInformation(stack, worldIn, tooltip, flagIn);
+	public boolean onUsedFinal(World world, EntityPlayer player, ItemStack stack, BlockPosition hit, int side) {
+		if (hit == null || world.isRemote || stack == null) {
+			return false;
+		}
+		if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnData")) {
+			NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnData");
+			int level = tag.getInteger("level");
+			hit = BlockTools.offsetForSide(hit, side);
+			VehicleBase vehicle = VehicleType.getVehicleForType(world, stack.getItemDamage(), level);
+			if (tag.hasKey("health")) {
+				vehicle.setHealth(tag.getFloat("health"));
+			}
+			vehicle.teamNum = TeamTracker.instance().getTeamForPlayer(player);
+			vehicle.setPosition(hit.x + 0.5d, hit.y, hit.z + 0.5d);
+			vehicle.prevRotationYaw = vehicle.rotationYaw = -player.rotationYaw + 180;
+			vehicle.localTurretDestRot = vehicle.localTurretRotation = vehicle.localTurretRotationHome = vehicle.rotationYaw;
+			if (Config.useVehicleSetupTime) {
+				vehicle.setSetupState(true, 100);
+			}
+			world.spawnEntityInWorld(vehicle);
+			if (!player.capabilities.isCreativeMode) {
+				stack.stackSize--;
+				if (stack.stackSize <= 0) {
+					player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+				}
+			}
+			return true;
+		}
+		Config.logError("Vehicle spawner item was missing NBT data, something may have corrupted this item");
+		return false;
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-		if (!isInCreativeTab(tab)) {
-			return;
-		}
-
-		List<String> types = AWVehicleEntityLoader.getVehicleTypes();
-		@Nonnull ItemStack stack;
-		for (String t : types) {
-			stack = new ItemStack(this);
-			stack.setTagInfo("type", new NBTTagString(t));
-			items.add(stack);
+	public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
+		super.addInformation(stack, par2EntityPlayer, par3List, par4);
+		if (stack != null) {
+			if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnData")) {
+				NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnData");
+				par3List.add("Material Level: " + tag.getInteger("level"));
+				if (tag.hasKey("health")) {
+					par3List.add("Vehicle Health: " + tag.getFloat("health"));
+				}
+			}
 		}
 	}
-
-	//    @Override
-	//    @SideOnly(Side.CLIENT)
-	//    public void registerIcons(IIconRegister reg) {
-	//        List<String> types = AWVehicleEntityLoader.getVehicleTypes();
-	//        for (String t : types) {
-	//            regNameToIcon.put(t, reg.registerIcon(AWVehicleEntityLoader.getIcon(t)));
-	//        }
-	//    }
-	//
-	//    @Override
-	//    public IIcon getIcon(ItemStack stack, int pass) {
-	//        if (stack.hasTagCompound() && stack.getTagCompound().hasKey("type")) {
-	//            return regNameToIcon.get(stack.getTagCompound().getString("type"));
-	//        }
-	//        //TODO return a default placeholder Icon?
-	//        return super.getIcon(stack, pass);
-	//    }
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-		ItemStack stack = player.getHeldItem(hand);
-		// TODO lookup entity spawn type, spawn entity in world
-		if (world.isRemote) {
-			return new ActionResult<>(EnumActionResult.SUCCESS, stack);
-		}
-		AWLog.logDebug("right click on spawner!!");
-		if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey("type")) {
-			AWLog.logDebug("Invalid spawner item!!");
-			return new ActionResult<>(EnumActionResult.FAIL, stack);
-		}
-		String type = stack.getTagCompound().getString("type");
-
-		// TODO
-		/*
-        Entity e = AWEntityRegistry.createEntity(type, player.world);
-        if (e != null) {
-            e.setPosition(player.posX, player.posY, player.posZ);//TODO set position from player clicked-on target
-            player.world.spawnEntity(e);
-        }
-        */
-		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
+		List displayStacks = VehicleType.getCreativeDisplayItems();
+		par3List.addAll(displayStacks);
 	}
+
+	public static int getVehicleLevelForStack(ItemStack stack) {
+		if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnData")) {
+			return stack.getTagCompound().getCompoundTag("spawnData").getInteger("level");
+		}
+		return 0;
+	}
+
+	@Override
+	public boolean onUsedFinalLeft(World world, EntityPlayer player, ItemStack stack, BlockPosition hit, int side) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

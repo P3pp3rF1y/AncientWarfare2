@@ -18,6 +18,8 @@ import java.util.HashMap;
 
 public final class NetworkHandler implements IGuiHandler {
 
+	//TODO split this into separate GUI handlers for separate mods. Also rename to something that says it's guihandler
+
     public static final String CHANNELNAME = "AWCORE";
     public static final NetworkHandler INSTANCE = new NetworkHandler();
 
@@ -88,6 +90,7 @@ public final class NetworkHandler implements IGuiHandler {
     public static final int GUI_NPC_PLAYER_OWNED_TRADE = 47;
     public static final int GUI_SOUND_BLOCK = 48;
     public static final int GUI_NPC_FACTION_BARD = 49;
+	public static final int GUI_VEHICLE_DEBUG = 50;
 
     private FMLEventChannel channel;
 

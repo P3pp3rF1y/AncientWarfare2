@@ -24,8 +24,8 @@ package shadowmage.ancient_warfare.common.research.vehicle;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.shadowmage.ancientwarfare.vehicle.entity.materials.VehicleMaterial;
 import shadowmage.ancient_warfare.common.research.ResearchGoal;
-import shadowmage.ancient_warfare.common.vehicles.materials.VehicleMaterial;
 
 public class ResearchMaterialLevel extends ResearchGoal {
 

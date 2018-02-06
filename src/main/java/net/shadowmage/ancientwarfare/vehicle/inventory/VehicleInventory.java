@@ -26,7 +26,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.vehicle.armors.IVehicleArmor;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
-import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmoType;
+import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 import net.shadowmage.ancientwarfare.vehicle.registry.AmmoRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleAmmoEntry;
@@ -137,7 +137,7 @@ public class VehicleInventory {
 		ArrayList<VehicleAmmoEntry> counts = new ArrayList<VehicleAmmoEntry>();
 		for (int i = 0; i < this.ammoInventory.getSlots(); i++) {
 			ItemStack stack = this.ammoInventory.getStackInSlot(i);
-			IAmmoType ammo = AmmoRegistry.instance().getAmmoForStack(stack);
+			IAmmo ammo = AmmoRegistry.instance().getAmmoForStack(stack);
 			if (ammo != null) {
 				boolean found = false;
 				for (VehicleAmmoEntry ent : counts) {
@@ -157,7 +157,7 @@ public class VehicleInventory {
 	}
 
 	public boolean isAmmoValid(ItemStack stack) {
-		IAmmoType type = AmmoRegistry.instance().getAmmoForStack(stack);
+		IAmmo type = AmmoRegistry.instance().getAmmoForStack(stack);
 		return type != null && vehicle.vehicleType.isAmmoValidForInventory(type);
 	}
 

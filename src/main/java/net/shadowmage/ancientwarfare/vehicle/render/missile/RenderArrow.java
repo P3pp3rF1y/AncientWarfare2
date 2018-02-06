@@ -21,7 +21,7 @@
 
 package net.shadowmage.ancientwarfare.vehicle.render.missile;
 
-import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmoType;
+import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 import net.shadowmage.ancientwarfare.vehicle.missiles.MissileBase;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelArrow2;
 import net.shadowmage.ancientwarfare.vehicle.render.RenderMissileBase;
@@ -31,7 +31,7 @@ public class RenderArrow extends RenderMissileBase {
 	public ModelArrow2 arrow2 = new ModelArrow2();
 
 	@Override
-	public void renderMissile(MissileBase missile, IAmmoType ammo, double x, double y, double z, float yaw, float tick) {
+	public void renderMissile(MissileBase missile, IAmmo ammo, double x, double y, double z, float yaw, float tick) {
 		arrow2.render(missile, 0, 0, 0, 0, 0, 0.0625f);
 	}
 

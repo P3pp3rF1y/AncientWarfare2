@@ -25,7 +25,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import shadowmage.ancient_warfare.common.config.Config;
 import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
 
 public class AmmoArrow extends Ammo {
@@ -41,7 +40,7 @@ public class AmmoArrow extends Ammo {
 		this.isPersistent = true;
 		this.iconTexture = "ammoArrow1";
 		this.configName = "arrow";
-		this.modelTexture = Config.texturePath + "models/ammo/arrowWood.png";
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowWood");
 		this.resources.add(new ItemStackWrapperCrafting(Item.flint, 5));
 		this.resources.add(new ItemStackWrapperCrafting(Item.stick, 5));
 		this.resources.add(new ItemStackWrapperCrafting(Item.feather, 5));

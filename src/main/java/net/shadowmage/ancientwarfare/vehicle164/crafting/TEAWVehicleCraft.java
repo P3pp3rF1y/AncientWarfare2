@@ -25,10 +25,10 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.vehicle.entity.IVehicleType;
+import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleType;
 import shadowmage.ancient_warfare.common.civics.CivicWorkType;
 import shadowmage.ancient_warfare.common.inventory.AWInventoryBasic;
 import shadowmage.ancient_warfare.common.network.GUIHandler;
-import shadowmage.ancient_warfare.common.vehicles.types.VehicleType;
 
 public class TEAWVehicleCraft extends TEAWCraftingWorkSite {
 
@@ -59,8 +59,8 @@ public class TEAWVehicleCraft extends TEAWCraftingWorkSite {
 				int type = result.getItemDamage();
 				int level = 0;
 				IVehicleType t = VehicleType.getVehicleType(type);
-				if (result.hasTagCompound() && result.getTagCompound().hasKey("AWVehSpawner")) {
-					level = result.getTagCompound().getCompoundTag("AWVehSpawner").getInteger("lev");
+				if (result.hasTagCompound() && result.getTagCompound().hasKey("spawnData")) {
+					level = result.getTagCompound().getCompoundTag("spawnData").getInteger("level");
 				}
 				this.vehicleType = type;
 				this.vehicleLevel = level;
@@ -82,25 +82,25 @@ public class TEAWVehicleCraft extends TEAWCraftingWorkSite {
 	public void readDescriptionPacket(NBTTagCompound tag) {
 		if (tag.hasKey("type")) {
 			this.vehicleType = tag.getInteger("type");
-			this.vehicleLevel = tag.getInteger("lev");
+			this.vehicleLevel = tag.getInteger("level");
 		}
 	}
 
 	@Override
 	public void writeDescriptionData(NBTTagCompound tag) {
 		tag.setInteger("type", this.vehicleType);
-		tag.setInteger("lev", this.vehicleLevel);
+		tag.setInteger("level", this.vehicleLevel);
 	}
 
 	@Override
 	public void writeExtraNBT(NBTTagCompound tag) {
 		tag.setInteger("type", this.vehicleType);
-		tag.setInteger("lev", this.vehicleLevel);
+		tag.setInteger("level", this.vehicleLevel);
 	}
 
 	@Override
 	public void readExtraNBT(NBTTagCompound tag) {
-		this.vehicleLevel = tag.getInteger("lev");
+		this.vehicleLevel = tag.getInteger("level");
 		this.vehicleType = tag.getInteger("type");
 	}
 

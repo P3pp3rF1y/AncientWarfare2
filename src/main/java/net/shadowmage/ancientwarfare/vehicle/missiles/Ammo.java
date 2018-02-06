@@ -54,7 +54,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-public abstract class Ammo implements IAmmoType {
+public abstract class Ammo implements IAmmo {
 
 	private static Random rng = new Random();
 	public static Ammo[] ammoTypes = new Ammo[64];//starting with 64 types...can/will expand as needed
@@ -156,7 +156,7 @@ public abstract class Ammo implements IAmmoType {
 	float entityProximity = 0.f;
 	float ammoWeight = 10;
 	float renderScale = 1.f;
-	IAmmoType secondaryAmmoType = null;
+	IAmmo secondaryAmmoType = null;
 	int secondaryAmmoCount = 0;
 	String iconTexture = "foo";
 	HashSet<Integer> neededResearch = new HashSet<Integer>();
@@ -307,7 +307,7 @@ public abstract class Ammo implements IAmmoType {
 	}
 
 	@Override
-	public IAmmoType getSecondaryAmmoType() {
+	public IAmmo getSecondaryAmmoType() {
 		return secondaryAmmoType;
 	}
 
@@ -480,7 +480,7 @@ public abstract class Ammo implements IAmmoType {
 		explosion.doExplosionB(true);
 	}
 
-	protected void spawnGroundBurst(World world, float x, float y, float z, float maxVelocity, IAmmoType type, int count, float minPitch, int sideHit,
+	protected void spawnGroundBurst(World world, float x, float y, float z, float maxVelocity, IAmmo type, int count, float minPitch, int sideHit,
 			Entity shooter) {
 		if (type != null && !world.isRemote) {
 			world.newExplosion(null, x, y, z, 0.25f, false, true);
@@ -566,11 +566,11 @@ public abstract class Ammo implements IAmmoType {
 		return null;
 	}
 
-	protected void spawnAirBurst(World world, float x, float y, float z, float maxVelocity, IAmmoType type, int count, Entity shooter) {
+	protected void spawnAirBurst(World world, float x, float y, float z, float maxVelocity, IAmmo type, int count, Entity shooter) {
 		spawnGroundBurst(world, x, y, z, maxVelocity, type, count, -90, 0, shooter);
 	}
 
-	public MissileBase getMissileByType(IAmmoType type, World world, float x, float y, float z, float yaw, float pitch, float velocity, Entity shooter) {
+	public MissileBase getMissileByType(IAmmo type, World world, float x, float y, float z, float yaw, float pitch, float velocity, Entity shooter) {
 		if (type == null) {
 			return null;
 		}

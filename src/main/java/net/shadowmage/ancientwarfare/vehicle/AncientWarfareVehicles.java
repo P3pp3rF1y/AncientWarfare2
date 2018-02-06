@@ -13,6 +13,7 @@ import net.shadowmage.ancientwarfare.vehicle.refactoring.entity.AWVehicleEntityL
 import net.shadowmage.ancientwarfare.vehicle.refactoring.network.PacketInputReply;
 import net.shadowmage.ancientwarfare.vehicle.refactoring.network.PacketInputState;
 import net.shadowmage.ancientwarfare.vehicle.refactoring.proxy.VehicleCommonProxy;
+import org.apache.logging.log4j.Logger;
 
 /*
 @Mod
@@ -41,8 +42,12 @@ public class AncientWarfareVehicles {
 
     public static AWVehicleStatics statics;
 
+    public static Logger log;
+
 //    @EventHandler
     public void preInit(FMLPreInitializationEvent evt) {
+
+        log = evt.getModLog();
 
         ModuleStatus.vehiclesLoaded = true;
 

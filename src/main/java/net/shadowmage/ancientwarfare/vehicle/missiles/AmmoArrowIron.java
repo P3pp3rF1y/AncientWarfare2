@@ -25,7 +25,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import shadowmage.ancient_warfare.common.config.Config;
 import shadowmage.ancient_warfare.common.research.ResearchGoalNumbers;
 import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
 
@@ -45,7 +44,7 @@ public class AmmoArrowIron extends Ammo {
 		this.isPersistent = true;
 		this.iconTexture = "ammoArrowIron1";
 		this.configName = "arrow_iron";
-		this.modelTexture = Config.texturePath + "models/ammo/arrowIron.png";
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowIron");
 		this.neededResearch.add(ResearchGoalNumbers.ballistics1);
 		this.resources.add(new ItemStackWrapperCrafting(Item.flint, 5));
 		this.resources.add(new ItemStackWrapperCrafting(Item.ingotIron, 2));

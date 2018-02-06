@@ -26,7 +26,6 @@ import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import shadowmage.ancient_warfare.client.gui.GuiContainerAdvanced;
 import shadowmage.ancient_warfare.client.gui.elements.IGuiElement;
-import shadowmage.ancient_warfare.common.config.Config;
 
 public class GuiVehicleStats extends GuiContainerAdvanced {
 
@@ -57,7 +56,7 @@ public class GuiVehicleStats extends GuiContainerAdvanced {
 
 	@Override
 	public String getGuiBackGroundTexture() {
-		return Config.texturePath + "gui/guiBackgroundLarge.png";
+		return new ResourceLocation(AncientWarfareVehicles.modID, "gui/guiBackgroundLarge.png";
 	}
 
 	@Override

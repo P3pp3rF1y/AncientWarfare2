@@ -23,12 +23,11 @@ package shadowmage.ancient_warfare.client.gui.vehicle;
 
 import net.minecraft.inventory.Container;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
-import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmoType;
+import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 import shadowmage.ancient_warfare.client.gui.GuiContainerAdvanced;
 import shadowmage.ancient_warfare.client.gui.elements.GuiButtonVehicleAmmo;
 import shadowmage.ancient_warfare.client.gui.elements.GuiScrollableArea;
 import shadowmage.ancient_warfare.client.gui.elements.IGuiElement;
-import shadowmage.ancient_warfare.common.config.Config;
 
 import java.util.List;
 
@@ -57,7 +56,7 @@ public class GuiVehicleAmmoSelection extends GuiContainerAdvanced {
 
 	@Override
 	public String getGuiBackGroundTexture() {
-		return Config.texturePath + "gui/guiBackgroundLarge.png";
+		return new ResourceLocation(AncientWarfareVehicles.modID, "gui/guiBackgroundLarge.png";
 	}
 
 	@Override
@@ -86,7 +85,7 @@ public class GuiVehicleAmmoSelection extends GuiContainerAdvanced {
 
 	@Override
 	public void setupControls() {
-		List<IAmmoType> ammos = vehicle.vehicleType.getValidAmmoTypes();
+		List<IAmmo> ammos = vehicle.vehicleType.getValidAmmoTypes();
 		int totalHeight = ammos.size() * 22;
 		area = new GuiScrollableArea(0, this, 10, 40, getXSize() - 20, getYSize() - 40 - 10, totalHeight);
 		this.guiElements.put(0, area);
@@ -102,7 +101,7 @@ public class GuiVehicleAmmoSelection extends GuiContainerAdvanced {
 
 	@Override
 	public void updateControls() {
-		List<IAmmoType> ammos = vehicle.vehicleType.getValidAmmoTypes();
+		List<IAmmo> ammos = vehicle.vehicleType.getValidAmmoTypes();
 		int totalHeight = ammos.size() * 22;
 		area.updateTotalHeight(totalHeight);
 	}

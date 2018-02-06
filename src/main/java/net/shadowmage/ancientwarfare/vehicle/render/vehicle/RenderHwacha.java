@@ -24,9 +24,9 @@ package net.shadowmage.ancientwarfare.vehicle.render.vehicle;
 import net.minecraft.util.MathHelper;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
+import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelHwacha;
 import net.shadowmage.ancientwarfare.vehicle.render.RenderVehicleBase;
-import shadowmage.ancient_warfare.common.vehicles.helpers.VehicleFiringVarsHelper;
 
 public class RenderHwacha extends RenderVehicleBase {
 

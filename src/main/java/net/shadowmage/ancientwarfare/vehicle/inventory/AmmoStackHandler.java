@@ -3,7 +3,7 @@ package net.shadowmage.ancientwarfare.vehicle.inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
-import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmoType;
+import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 import net.shadowmage.ancientwarfare.vehicle.registry.AmmoRegistry;
 
 import javax.annotation.Nonnull;
@@ -30,7 +30,7 @@ public class AmmoStackHandler extends ItemStackHandler {
 	}
 
 	private boolean isValidAmmo(ItemStack stack) {
-		IAmmoType ammo = AmmoRegistry.instance().getAmmoForStack(stack);
+		IAmmo ammo = AmmoRegistry.instance().getAmmoForStack(stack);
 		return ammo != null && vehicle.vehicleType.isAmmoValidForInventory(ammo);
 	}
 }

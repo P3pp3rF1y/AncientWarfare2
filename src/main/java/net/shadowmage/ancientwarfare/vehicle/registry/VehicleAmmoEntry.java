@@ -21,14 +21,14 @@
 
 package net.shadowmage.ancientwarfare.vehicle.registry;
 
-import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmoType;
+import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 
 public class VehicleAmmoEntry {
 
-	public IAmmoType baseAmmoType;
+	public IAmmo baseAmmoType;
 	public int ammoCount;
 
-	public VehicleAmmoEntry(IAmmoType ammo) {
+	public VehicleAmmoEntry(IAmmo ammo) {
 		this.baseAmmoType = ammo;
 	}
 
