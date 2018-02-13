@@ -22,7 +22,7 @@
 package net.shadowmage.ancientwarfare.vehicle.missiles;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.RayTraceResult;
 import net.minecraft.world.World;
 import shadowmage.ancient_warfare.common.item.ItemLoader;
 import shadowmage.ancient_warfare.common.research.ResearchGoalNumbers;
@@ -92,7 +92,7 @@ public class AmmoExplosiveShot extends Ammo {
 	}
 
 	@Override
-	public void onImpactWorld(World world, float x, float y, float z, MissileBase missile, MovingObjectPosition hit) {
+	public void onImpactWorld(World world, float x, float y, float z, MissileBase missile, RayTraceResult hit) {
 		if (!world.isRemote) {
 			float maxPower = bigExplosion ? 7.f : 2.5f;
 			float powerPercent = ammoWeight / 45.f;

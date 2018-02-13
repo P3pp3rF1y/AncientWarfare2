@@ -23,6 +23,7 @@ package net.shadowmage.ancientwarfare.vehicle.helpers;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.shadowmage.ancientwarfare.vehicle.armors.IVehicleArmor;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.missiles.DamageType;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
@@ -41,13 +42,13 @@ public class VehicleUpgradeHelper implements INBTTaggable {
 	 * currently installed upgrades, will be iterated through linearly to call upgrade.applyEffects, multiple upgrades may have cumulative effects
 	 */
 	private List<IVehicleUpgradeType> upgrades = new ArrayList<IVehicleUpgradeType>();
-	private List<IVehicleArmorType> installedArmor = new ArrayList<IVehicleArmorType>();
+	private List<IVehicleArmor> installedArmor = new ArrayList<>();
 
 	/**
 	 * list of all upgrades that are valid for this vehicle, used by inventoryChecking to see whether it can be installed or not
 	 */
 	private List<IVehicleUpgradeType> validUpgrades = new ArrayList<IVehicleUpgradeType>();
-	private List<IVehicleArmorType> validArmorTypes = new ArrayList<IVehicleArmorType>();
+	private List<IVehicleArmor> validArmorTypes = new ArrayList<>();
 	private VehicleBase vehicle;
 
 	public VehicleUpgradeHelper(VehicleBase vehicle) {
@@ -70,7 +71,7 @@ public class VehicleUpgradeHelper implements INBTTaggable {
 		return null;
 	}
 
-	public int getLocalArmorType(IVehicleArmorType armor) {
+	public int getLocalArmorType(IVehicleArmor armor) {
 		for (int i = 0; i < validArmorTypes.size(); i++) {
 			if (validArmorTypes.get(i) == armor) {
 				return i;
@@ -180,7 +181,7 @@ public class VehicleUpgradeHelper implements INBTTaggable {
 		}
 	}
 
-	public void addValidArmor(IVehicleArmorType armor) {
+	public void addValidArmor(IVehicleArmor armor) {
 		if (armor != null && !this.validArmorTypes.contains(armor)) {
 			this.validArmorTypes.add(armor);
 		}

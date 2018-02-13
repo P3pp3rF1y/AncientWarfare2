@@ -21,17 +21,10 @@
 
 package net.shadowmage.ancientwarfare.vehicle.upgrades;
 
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import shadowmage.ancient_warfare.common.crafting.RecipeType;
-import shadowmage.ancient_warfare.common.crafting.ResourceListRecipe;
-import shadowmage.ancient_warfare.common.item.ItemLoader;
-import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
+import net.shadowmage.ancientwarfare.vehicle.item.AWVehicleItems;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 
 public abstract class VehicleUpgradeBase implements IVehicleUpgradeType {
 
@@ -39,8 +32,9 @@ public abstract class VehicleUpgradeBase implements IVehicleUpgradeType {
 	String displayName = "";
 	String tooltip = "";
 	String iconTexture = "foo";
-	List<ItemStackWrapperCrafting> resources = new ArrayList<ItemStackWrapperCrafting>();
-	HashSet<Integer> neededResearch = new HashSet<Integer>();
+	/*
+		List<ItemStackWrapperCrafting> resources = new ArrayList<ItemStackWrapperCrafting>();
+	*/ HashSet<Integer> neededResearch = new HashSet<Integer>();
 
 	public VehicleUpgradeBase(int num) {
 		this.typeNum = num;
@@ -63,7 +57,7 @@ public abstract class VehicleUpgradeBase implements IVehicleUpgradeType {
 
 	@Override
 	public ItemStack getUpgradeStack(int qty) {
-		return new ItemStack(ItemLoader.vehicleUpgrade.itemID, qty, this.typeNum);
+		return new ItemStack(AWVehicleItems.upgrade, qty, this.typeNum);
 	}
 
 	@Override
@@ -71,6 +65,7 @@ public abstract class VehicleUpgradeBase implements IVehicleUpgradeType {
 		return "ancientwarfare:upgrade/" + iconTexture;
 	}
 
+/* TODO recipe
 	@Override
 	public ResourceListRecipe constructRecipe() {
 		ResourceListRecipe recipe = new ResourceListRecipe(getUpgradeStack(1), RecipeType.VEHICLE_MISC);
@@ -87,5 +82,6 @@ public abstract class VehicleUpgradeBase implements IVehicleUpgradeType {
 	public Collection<Integer> getNeededResearch() {
 		return this.neededResearch;
 	}
+*/
 
 }

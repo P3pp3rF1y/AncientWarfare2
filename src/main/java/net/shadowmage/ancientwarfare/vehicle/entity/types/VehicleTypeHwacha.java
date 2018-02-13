@@ -196,7 +196,7 @@ public class VehicleTypeHwacha extends VehicleType {
 			float targetY = ((float) currentRow) * 0.0625f * 2.f;
 			float targetZ = 0.f;
 			float targetAngle = 0.f + vehicle.rotationYaw;
-			float len = MathHelper.sqrt_float(targetX * targetX + targetZ * targetZ);
+			float len = MathHelper.sqrt(targetX * targetX + targetZ * targetZ);
 			missileOffsetX = Trig.cosDegrees(targetAngle) * len;
 			if (targetX < 0) {
 				missileOffsetX *= -1;

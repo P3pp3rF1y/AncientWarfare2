@@ -22,7 +22,7 @@
 package net.shadowmage.ancientwarfare.vehicle.missiles;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.RayTraceResult;
 import net.minecraft.world.World;
 import shadowmage.ancient_warfare.common.crafting.ResourceListRecipe;
 
@@ -55,7 +55,7 @@ public class AmmoSoldierArrow extends Ammo {
 	}
 
 	@Override
-	public void onImpactWorld(World world, float x, float y, float z, MissileBase missile, MovingObjectPosition hit) {
+	public void onImpactWorld(World world, float x, float y, float z, MissileBase missile, RayTraceResult hit) {
 
 	}
 

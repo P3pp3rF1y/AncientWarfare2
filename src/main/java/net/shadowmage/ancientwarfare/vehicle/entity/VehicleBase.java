@@ -32,15 +32,17 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetServerHandler;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.Trig;
+import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.vehicle.VehicleVarHelpers.DummyVehicleHelper;
+import net.shadowmage.ancientwarfare.vehicle.armors.IVehicleArmor;
 import net.shadowmage.ancientwarfare.vehicle.entity.materials.IVehicleMaterial;
 import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleType;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleAmmoHelper;
@@ -49,25 +51,13 @@ import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleMoveHelper;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleUpgradeHelper;
 import net.shadowmage.ancientwarfare.vehicle.inventory.VehicleInventory;
+import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoHwachaRocket;
 import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
+import net.shadowmage.ancientwarfare.vehicle.pathing.Navigator;
+import net.shadowmage.ancientwarfare.vehicle.pathing.PathWorldAccessEntity;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleRegistry;
 import net.shadowmage.ancientwarfare.vehicle.upgrades.IVehicleUpgradeType;
-import shadowmage.ancient_warfare.common.config.Config;
-import shadowmage.ancient_warfare.common.interfaces.IMissileHitCallback;
-import shadowmage.ancient_warfare.common.interfaces.IPathableEntity;
-import shadowmage.ancient_warfare.common.network.Packet02Vehicle;
-import shadowmage.ancient_warfare.common.npcs.NpcBase;
-import shadowmage.ancient_warfare.common.pathfinding.Node;
-import shadowmage.ancient_warfare.common.pathfinding.PathWorldAccess;
-import shadowmage.ancient_warfare.common.pathfinding.PathWorldAccessEntity;
-import shadowmage.ancient_warfare.common.pathfinding.navigator.Navigator;
-import shadowmage.ancient_warfare.common.utils.ByteTools;
-import shadowmage.ancient_warfare.common.utils.InventoryTools;
-import shadowmage.ancient_warfare.common.utils.Pos3f;
-import shadowmage.ancient_warfare.common.utils.ServerPerformanceMonitor;
-import shadowmage.ancient_warfare.common.vehicles.armors.IVehicleArmorType;
 
-import java.util.List;
 import java.util.Random;
 
 public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, IMissileHitCallback, IEntityContainerSynch, IPathableEntity, IInventory {
@@ -202,7 +192,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	}
 
 	@Override
-	public ItemStack getPickedResult(MovingObjectPosition target) {
+	public ItemStack getPickedResult(RayTraceResult target) {
 		return this.vehicleType.getStackForLevel(vehicleMaterialLevel);
 	}
 
@@ -223,7 +213,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 			health = this.baseHealth;
 		}
 		this.localVehicleHealth = health;
-		if (!worldObj.isRemote) {
+		if (!world.isRemote) {
 			this.dataWatcher.updateObject(7, Integer.valueOf((int) health));
 		}
 	}
@@ -233,7 +223,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	}
 
 	public float getHealth() {
-		if (this.worldObj.isRemote) {
+		if (this.world.isRemote) {
 			return this.getHealthClient();
 		} else {
 			return this.getHealthServer();
@@ -272,7 +262,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		for (IVehicleUpgradeType up : this.vehicleType.getValidUpgrades()) {
 			this.upgradeHelper.addValidUpgrade(up);
 		}
-		for (IVehicleArmorType armor : this.vehicleType.getValidArmors()) {
+		for (IVehicleArmor armor : this.vehicleType.getValidArmors()) {
 			this.upgradeHelper.addValidArmor(armor);
 		}
 		this.inventory.setInventorySizes(vehicle.getUpgradeBaySize(), vehicle.getAmmoBaySize(), vehicle.getArmorBaySize(), vehicle.getStorageBaySize());
@@ -307,7 +297,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	}
 
 	public void updateBaseStats() {
-		//  Config.logDebug("updating base stats. server"+!worldObj.isRemote);
+		//  Config.logDebug("updating base stats. server"+!world.isRemote);
 		IVehicleMaterial material = vehicleType.getMaterialType();
 		int level = this.vehicleMaterialLevel;
 		baseForwardSpeed = vehicleType.getBaseForwardSpeed() * material.getSpeedForwardFactor(level);
@@ -330,10 +320,12 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	@Override
 	public void onCollideWithPlayer(EntityPlayer par1EntityPlayer) {
 		super.onCollideWithPlayer(par1EntityPlayer);
-		if (!worldObj.isRemote && par1EntityPlayer instanceof EntityPlayerMP && par1EntityPlayer.posY > posY && par1EntityPlayer.isCollidedVertically) {
+		if (!world.isRemote && par1EntityPlayer instanceof EntityPlayerMP && par1EntityPlayer.posY > posY && par1EntityPlayer.isCollidedVertically) {
 			EntityPlayerMP player = (EntityPlayerMP) par1EntityPlayer;
-			NetServerHandler serv = player.playerNetServerHandler;
-			serv.ticksForFloatKick = 0;
+/*			TODO handle collision with players to allow them flying and disallow once they stop colliding
+			probably a collection of players in collision with this entity, on update check if they have collided in the last 10? ticks and if not disallow flying
+			player.capabilities.allowFlying = true;
+*/
 		}
 	}
 
@@ -434,8 +426,39 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		} else {
 			angle = currentTurretPitchMin;//else get the lowest
 		}
-		return Trig.getEffectiveRange(verticalOffset, angle, firingHelper.getAdjustedMaxMissileVelocity(), 0,
+		return getEffectiveRange(verticalOffset, angle, firingHelper.getAdjustedMaxMissileVelocity(), 0,
 				ammoHelper.getCurrentAmmoType() != null && ammoHelper.getCurrentAmmoType().isRocket());
+	}
+
+	private float getEffectiveRange(float y, float angle, float velocity, int maxIterations, boolean rocket) {
+		float motX = Trig.sinDegrees(angle) * velocity * 0.05f;
+		float motY = Trig.cosDegrees(angle) * velocity * 0.05f;
+		float rocketX = 0;
+		float rocketY = 0;
+		if (rocket) {
+			int rocketBurnTime = (int) (velocity * AmmoHwachaRocket.burnTimeFactor);
+			float motX0 = (motX / (velocity * 0.05f)) * AmmoHwachaRocket.accelerationFactor;
+			float motY0 = (motY / (velocity * 0.05f)) * AmmoHwachaRocket.accelerationFactor;
+			motX = motX0;
+			motY = motY0;
+			while (rocketBurnTime > 0) {
+				rocketX += motX;
+				rocketY += motY;
+				rocketBurnTime--;
+				motX += motX0;
+				motY += motY0;
+			}
+			y -= rocketY;
+		}
+		motX *= 20.f;
+		motY *= 20.f;
+		float gravity = 9.81f;
+		float t = motY / gravity;
+		float tQ = MathHelper.sqrt(((motY * motY) / (gravity * gravity)) - ((2 * y) / gravity));
+		float tPlus = t + tQ;
+		float tMinus = t - tQ;
+		t = tPlus > tMinus ? tPlus : tMinus;
+		return (motX * t) + rocketX;
 	}
 
 	/**
@@ -444,7 +467,6 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	 * @return
 	 */
 	public Vec3d getMissileOffset() {
-		Pos3f off = new Pos3f();
 		float x1 = this.vehicleType.getTurretPosX();
 		float y1 = this.vehicleType.getTurretPosY();
 		float z1 = this.vehicleType.getTurretPosZ();
@@ -452,7 +474,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		float len = 0;
 		if (x1 != 0 || z1 != 0) {
 			angle = Trig.toDegrees((float) Math.atan2(z1, x1));
-			len = MathHelper.sqrt_float(x1 * x1 + z1 * z1);
+			len = MathHelper.sqrt(x1 * x1 + z1 * z1);
 			angle += this.rotationYaw;
 			x1 = Trig.cosDegrees(angle) * len;
 			z1 = -Trig.sinDegrees(angle) * len;
@@ -463,7 +485,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		float z = this.getForwardsMissileOffset();
 		if (x != 0 || z != 0 || y != 0) {
 			angle = Trig.toDegrees((float) Math.atan2(z, x));
-			len = MathHelper.sqrt_float(x * x + z * z + y * y);
+			len = MathHelper.sqrt(x * x + z * z + y * y);
 			angle += this.localTurretRotation;
 			x = Trig.cosDegrees(angle) * Trig.sinDegrees(localTurretPitch + rotationPitch) * len;
 			z = -Trig.sinDegrees(angle) * Trig.sinDegrees(localTurretPitch + rotationPitch) * len;
@@ -472,9 +494,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		x += x1;
 		z += z1;
 		y += y1;
-		off.x = x;
-		off.y = y;
-		off.z = z;
+		Vec3d off = new Vec3d(x, y, z);
 		return off;
 	}
 
@@ -521,11 +541,11 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 
 	@Override
 	public void setDead() {
-		if (!this.worldObj.isRemote && !this.isDead && this.getHealth() <= 0) {
-			InventoryTools.dropInventoryInWorld(worldObj, inventory.ammoInventory, posX, posY, posZ);
-			InventoryTools.dropInventoryInWorld(worldObj, inventory.armorInventory, posX, posY, posZ);
-			InventoryTools.dropInventoryInWorld(worldObj, inventory.upgradeInventory, posX, posY, posZ);
-			InventoryTools.dropInventoryInWorld(worldObj, inventory.storageInventory, posX, posY, posZ);
+		if (!this.world.isRemote && !this.isDead && this.getHealth() <= 0) {
+			InventoryTools.dropItemsInWorld(world, inventory.ammoInventory, posX, posY, posZ);
+			InventoryTools.dropItemsInWorld(world, inventory.armorInventory, posX, posY, posZ);
+			InventoryTools.dropItemsInWorld(world, inventory.upgradeInventory, posX, posY, posZ);
+			InventoryTools.dropItemsInWorld(world, inventory.storageInventory, posX, posY, posZ);
 		}
 		super.setDead();
 	}
@@ -534,7 +554,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	public void onUpdate() {
 		long t1 = System.nanoTime();
 		super.onUpdate();
-		if (this.worldObj.isRemote) {
+		if (this.world.isRemote) {
 			this.onUpdateClient();
 		} else {
 			this.onUpdateServer();
@@ -554,9 +574,8 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 			}
 		}
 		if (this.assignedRider != null) {
-			if (this.assignedRider.isDead || this.assignedRider.ridingEntity != this || this.assignedRider.wayNav
-					.getMountTarget() == null || this.assignedRider.wayNav.getMountTarget() != this || this
-					.getDistanceToEntity(assignedRider) > Config.npcAISearchRange) {
+			if (assignedRider.isDead || assignedRider.getRidingEntity() != this || assignedRider.wayNav.getMountTarget() == null || this.assignedRider.wayNav
+					.getMountTarget() != this || this.getDistanceToEntity(assignedRider) > Config.npcAISearchRange) {
 				this.assignedRider = null;
 			}
 		}
@@ -579,14 +598,32 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		}
 	}
 
+	@Override
+	public boolean startRiding(Entity entity, boolean force) {
+		if (super.startRiding(entity, force)) {
+			if (entity instanceof EntityPlayerMP) {
+				EntityPlayerMP player = (EntityPlayerMP) entity;
+				player.capabilities.allowFlying = true;
+			}
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	protected void removePassenger(Entity passenger) {
+		if (passenger instanceof EntityPlayerMP) {
+			((EntityPlayerMP) passenger).capabilities.allowFlying = false;
+		}
+		super.removePassenger(passenger);
+	}
+
 	/**
 	 * server-side updates...
 	 */
 	public void onUpdateServer() {
-		if (this.riddenByEntity instanceof EntityPlayerMP) {
-			EntityPlayerMP player = (EntityPlayerMP) this.riddenByEntity;
-			NetServerHandler serv = player.playerNetServerHandler;
-			serv.ticksForFloatKick = 0;
+		if (this.getControllingPassenger() instanceof EntityPlayerMP) {
+			EntityPlayerMP player = (EntityPlayerMP) this.getControllingPassenger();
 			if (player.isSneaking()) {
 				this.handleDismount(player);
 				player.setSneaking(false);
@@ -595,17 +632,17 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	}
 
 	public void handleDismount(EntityLivingBase rider) {
-		int xMin = MathHelper.floor_double(this.posX - this.width / 2);
-		int zMin = MathHelper.floor_double(this.posZ - this.width / 2);
-		int yMin = MathHelper.floor_double(posY) - 2;
+		int xMin = MathHelper.floor(this.posX - this.width / 2);
+		int zMin = MathHelper.floor(this.posZ - this.width / 2);
+		int yMin = MathHelper.floor(posY) - 2;
 		boolean foundTarget = false;
-		rider.mountEntity(null);
+		removePassenger(rider);
 		searchLabel:
 		for (int y = yMin; y <= yMin + 3; y++) {
 			for (int x = xMin; x <= xMin + (int) width; x++) {
 				for (int z = zMin; z <= zMin + (int) width; z++) {
-					if (worldObj.doesBlockHaveSolidTopSurface(x, y, z) || this.worldObj.getBlockMaterial(x, y, z) == Material.water) {
-						if (worldObj.isAirBlock(x, y + 1, z) && worldObj.isAirBlock(x, y + 2, z)) {
+					if (world.doesBlockHaveSolidTopSurface(x, y, z) || this.world.getBlockMaterial(x, y, z) == Material.water) {
+						if (world.isAirBlock(x, y + 1, z) && world.isAirBlock(x, y + 2, z)) {
 							rider.setPositionAndUpdate(x + 0.5d, y + 1, z + 0.5d);
 							foundTarget = true;
 							break searchLabel;
@@ -731,7 +768,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	}
 
 	public void sendCompleteTurretPacket() {
-		if (this.worldObj.isRemote) {
+		if (this.world.isRemote) {
 			return;
 		}
 		NBTTagCompound tag = new NBTTagCompound();
@@ -758,19 +795,19 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	 * spits out inventory into world, and packs the vehicle into an item, also spat into the world
 	 */
 	public void packVehicle() {
-		if (!this.worldObj.isRemote) {
-			worldObj.spawnEntityInWorld(new EntityItem(this.worldObj, posX, posY + 0.5d, posZ, this.getItemForVehicle()));
-			InventoryTools.dropInventoryInWorld(worldObj, inventory.ammoInventory, posX, posY, posZ);
-			InventoryTools.dropInventoryInWorld(worldObj, inventory.armorInventory, posX, posY, posZ);
-			InventoryTools.dropInventoryInWorld(worldObj, inventory.upgradeInventory, posX, posY, posZ);
-			InventoryTools.dropInventoryInWorld(worldObj, inventory.storageInventory, posX, posY, posZ);
+		if (!this.world.isRemote) {
+			world.spawnEntityInWorld(new EntityItem(this.world, posX, posY + 0.5d, posZ, this.getItemForVehicle()));
+			InventoryTools.dropInventoryInWorld(world, inventory.ammoInventory, posX, posY, posZ);
+			InventoryTools.dropInventoryInWorld(world, inventory.armorInventory, posX, posY, posZ);
+			InventoryTools.dropInventoryInWorld(world, inventory.upgradeInventory, posX, posY, posZ);
+			InventoryTools.dropInventoryInWorld(world, inventory.storageInventory, posX, posY, posZ);
 			this.setDead();
 		}
 	}
 
 	@Override
 	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
-		if (this.worldObj.isRemote) {
+		if (this.world.isRemote) {
 			return false;
 		}
 		super.attackEntityFrom(par1DamageSource, par2);
@@ -838,7 +875,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	@Override
 	public boolean interactFirst(EntityPlayer player) {
 		if (this.isSettingUp) {
-			if (!player.worldObj.isRemote) {
+			if (!player.world.isRemote) {
 				player.addChatMessage("Vehicle is currently being set-up.  It has " + setupTicks + " ticks remaining.");
 			}
 			return false;

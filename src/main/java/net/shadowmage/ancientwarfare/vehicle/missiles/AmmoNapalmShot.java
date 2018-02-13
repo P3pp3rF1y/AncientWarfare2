@@ -23,7 +23,7 @@ package net.shadowmage.ancientwarfare.vehicle.missiles;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.RayTraceResult;
 import net.minecraft.world.World;
 import shadowmage.ancient_warfare.common.item.ItemLoader;
 import shadowmage.ancient_warfare.common.research.ResearchGoalNumbers;
@@ -81,7 +81,7 @@ public class AmmoNapalmShot extends Ammo {
 	}
 
 	@Override
-	public void onImpactWorld(World world, float x, float y, float z, MissileBase missile, MovingObjectPosition hit) {
+	public void onImpactWorld(World world, float x, float y, float z, MissileBase missile, RayTraceResult hit) {
 		int bx = MathHelper.floor_float(x);
 		int by = MathHelper.floor_float(y);
 		int bz = MathHelper.floor_float(z);

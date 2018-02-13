@@ -35,7 +35,7 @@ import shadowmage.ancient_warfare.common.interfaces.INBTTaggable;
 import shadowmage.ancient_warfare.common.network.Packet02Vehicle;
 import shadowmage.ancient_warfare.common.npcs.NpcBase;
 import shadowmage.ancient_warfare.common.utils.Pair;
-import shadowmage.ancient_warfare.common.utils.Pos3f;
+import shadowmage.ancient_warfare.common.utils.Vec3d;
 
 import java.util.Random;
 
@@ -65,7 +65,7 @@ public class VehicleFiringHelper implements INBTTaggable {
 	/**
 	 * used on final launch, to calc final angle from 'approximate' firing arm/turret angle
 	 */
-	public Pos3f targetPos = null;
+	public Vec3d targetPos = null;
 
 	/**
 	 * is this vehicle in the process of launching a missile ? (animation, etc)
@@ -124,7 +124,7 @@ public class VehicleFiringHelper implements INBTTaggable {
 			if (vehicle.ammoHelper.getCurrentAmmoCount() > 0) {
 				vehicle.ammoHelper.decreaseCurrentAmmo(1);
 
-				Pos3f off = vehicle.getMissileOffset();
+				Vec3d off = vehicle.getMissileOffset();
 				float x = (float) vehicle.posX + off.x + ox;
 				float y = (float) vehicle.posY + off.y + oy;
 				float z = (float) vehicle.posZ + off.z + oz;
@@ -463,14 +463,14 @@ public class VehicleFiringHelper implements INBTTaggable {
 		boolean updatePitch = false;
 		boolean updatePower = false;
 		boolean updateYaw = false;
-		Pos3f offset = vehicle.getMissileOffset();
+		Vec3d offset = vehicle.getMissileOffset();
 		float x = (float) vehicle.posX + offset.x;
 		float y = (float) vehicle.posY + offset.y;
 		float z = (float) vehicle.posZ + offset.z;
 		float tx = (float) (target.xCoord - x);
 		float ty = (float) (target.yCoord - y);
 		float tz = (float) (target.zCoord - z);
-		float range = MathHelper.sqrt_float(tx * tx + tz * tz);
+		float range = MathHelper.sqrt(tx * tx + tz * tz);
 		if (vehicle.canAimPitch()) {
 			Pair<Float, Float> angles = Trig.getLaunchAngleToHit(tx, ty, tz, vehicle.localLaunchPower);
 			if (angles.key().isNaN() || angles.value().isNaN()) {
@@ -587,14 +587,14 @@ public class VehicleFiringHelper implements INBTTaggable {
 		boolean updatePitch = false;
 		boolean updatePower = false;
 		boolean updateYaw = false;
-		Pos3f offset = vehicle.getMissileOffset();
+		Vec3d offset = vehicle.getMissileOffset();
 		float x = (float) vehicle.posX + offset.x;
 		float y = (float) vehicle.posY + offset.y;
 		float z = (float) vehicle.posZ + offset.z;
 		float tx = (float) (targetX - x);
 		float ty = (float) (targetY - y);
 		float tz = (float) (targetZ - z);
-		float range = MathHelper.sqrt_float(tx * tx + tz * tz);
+		float range = MathHelper.sqrt(tx * tx + tz * tz);
 		if (vehicle.canAimPitch()) {
 			Pair<Float, Float> angles = Trig.getLaunchAngleToHit(tx, ty, tz, vehicle.localLaunchPower);
 			if (angles.key().isNaN() || angles.value().isNaN()) {

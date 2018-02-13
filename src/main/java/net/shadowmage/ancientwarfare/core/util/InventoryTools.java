@@ -300,7 +300,11 @@ public class InventoryTools {
 	 * drops the input itemstack into the world at the input position
 	 */
 	public static void dropItemInWorld(World world, ItemStack item, BlockPos pos) {
-		InventoryHelper.spawnItemStack(world, pos.getX(), pos.getY(), pos.getZ(), item);
+		dropItemInWorld(world, item, pos.getX(), pos.getY(), pos.getZ());
+	}
+
+	public static void dropItemInWorld(World world, ItemStack item, double x, double y, double z) {
+		InventoryHelper.spawnItemStack(world, x, y, z, item);
 	}
 
 	/*
@@ -388,6 +392,12 @@ public class InventoryTools {
 	public static void dropItemsInWorld(World world, IItemHandler handler, BlockPos pos) {
 		for (int slot = 0; slot < handler.getSlots(); slot++) {
 			dropItemInWorld(world, handler.getStackInSlot(slot), pos);
+		}
+	}
+
+	public static void dropItemsInWorld(World world, IItemHandler handler, double x, double y, double z) {
+		for (int slot = 0; slot < handler.getSlots(); slot++) {
+			dropItemInWorld(world, handler.getStackInSlot(slot), x, y, z);
 		}
 	}
 

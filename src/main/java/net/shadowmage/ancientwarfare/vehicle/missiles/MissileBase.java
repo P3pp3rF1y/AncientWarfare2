@@ -30,7 +30,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.RayTraceResult;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.Trig;
@@ -111,7 +111,7 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 		this.prevRotationYaw = this.rotationYaw;
 		if (this.ammoType.isRocket() || this.ammoType.isTorpedo())//use launch power to determine rocket burn time...
 		{
-			float temp = MathHelper.sqrt_float(mx * mx + my * my + mz * mz);
+			float temp = MathHelper.sqrt(mx * mx + my * my + mz * mz);
 			this.rocketBurnTime = (int) (temp * 20.f * AmmoHwachaRocket.burnTimeFactor);
 
 			this.mX = (float) (motionX / temp) * AmmoHwachaRocket.accelerationFactor;
@@ -144,21 +144,21 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 	}
 
 	public void onImpactEntity(Entity ent, float x, float y, float z) {
-		if (Ammo.shouldEffectEntity(worldObj, ent, this)) {
-			this.ammoType.onImpactEntity(worldObj, ent, x, y, z, this);
+		if (Ammo.shouldEffectEntity(world, ent, this)) {
+			this.ammoType.onImpactEntity(world, ent, x, y, z, this);
 			if (this.shooter != null) {
-				this.shooter.onMissileImpactEntity(worldObj, ent);
+				this.shooter.onMissileImpactEntity(world, ent);
 			}
 		}
 	}
 
-	public void onImpactWorld(MovingObjectPosition hit) {
-		if (!worldObj.isRemote) {
+	public void onImpactWorld(RayTraceResult hit) {
+		if (!world.isRemote) {
 			//    Config.logDebug("World Impacted by: "+this.ammoType.getDisplayName()+" :: "+this);
 		}
-		this.ammoType.onImpactWorld(worldObj, hit.blockX, hit.blockY, hit.blockZ, this, hit);
+		this.ammoType.onImpactWorld(world, hit.blockX, hit.blockY, hit.blockZ, this, hit);
 		if (this.shooter != null) {
-			this.shooter.onMissileImpact(worldObj, hit.blockX, hit.blockY, hit.blockZ);
+			this.shooter.onMissileImpact(world, hit.blockX, hit.blockY, hit.blockZ);
 		}
 	}
 
@@ -191,7 +191,7 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 		this.ticksExisted++;
 		super.onUpdate();
 		this.onMovementTick();
-		if (!this.worldObj.isRemote) {
+		if (!this.world.isRemote) {
 			if (this.ticksExisted > 6000)//5 min timer max for missiles...
 			{
 				this.setDead();
@@ -213,13 +213,13 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 		int y = (int) posY;
 		int z = (int) posZ;
 		boolean impacted = false;
-		MovingObjectPosition hit;
+		RayTraceResult hit;
 		if (ammoType.groundProximity() > 0) {
 			while (id == 0 && groundDiff <= ammoType.groundProximity()) {
-				id = worldObj.getBlockId(x, y - groundDiff, z);
+				id = world.getBlockId(x, y - groundDiff, z);
 				groundDiff++;
 				if (id != 0) {
-					this.onImpactWorld(new MovingObjectPosition(x, y, z, 0, Vec3.createVectorHelper(x, y, z)));
+					this.onImpactWorld(new RayTraceResult(x, y, z, 0, Vec3.createVectorHelper(x, y, z)));
 					impacted = true;
 					break;
 				}
@@ -229,7 +229,7 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 		if (!impacted && ammoType.entityProximity() > 0) {
 			float entProx = ammoType.entityProximity();
 			float foundDist = 0;
-			List entities = worldObj.getEntitiesWithinAABBExcludingEntity(this,
+			List entities = world.getEntitiesWithinAABBExcludingEntity(this,
 					AxisAlignedBB.getBoundingBox(posX - entProx, posY - entProx, posZ - entProx, posX + entProx, posY + entProx, posZ + entProx));
 			if (entities != null && !entities.isEmpty()) {
 				Iterator it = entities.iterator();
@@ -251,8 +251,8 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 
 	public void onMovementTick() {
 		if (this.inGround) {
-			int id = this.worldObj.getBlockId(blockX, blockY, blockZ);
-			int meta = this.worldObj.getBlockMetadata(blockX, blockY, blockZ);
+			int id = this.world.getBlockId(blockX, blockY, blockZ);
+			int meta = this.world.getBlockMetadata(blockX, blockY, blockZ);
 			if (id != blockID || meta != blockMeta) {
 				this.motionX = 0;
 				this.motionY = 0;
@@ -261,18 +261,18 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 			}
 		}
 		if (!this.inGround) {
-			Vec3 positionVector = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
-			Vec3 moveVector = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
-			MovingObjectPosition hitPosition = this.worldObj.rayTraceBlocks_do_do(positionVector, moveVector, false, true);
-			positionVector = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
-			moveVector = this.worldObj.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+			Vec3 positionVector = this.world.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+			Vec3 moveVector = this.world.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
+			RayTraceResult hitPosition = this.world.rayTraceBlocks_do_do(positionVector, moveVector, false, true);
+			positionVector = this.world.getWorldVec3Pool().getVecFromPool(this.posX, this.posY, this.posZ);
+			moveVector = this.world.getWorldVec3Pool().getVecFromPool(this.posX + this.motionX, this.posY + this.motionY, this.posZ + this.motionZ);
 			Entity hitEntity = null;
 			boolean testEntities = true;
-			if (this.worldObj.isRemote) {
+			if (this.world.isRemote) {
 				testEntities = false;
 			}
 			if (testEntities) {
-				List nearbyEntities = this.worldObj.getEntitiesWithinAABBExcludingEntity(this,
+				List nearbyEntities = this.world.getEntitiesWithinAABBExcludingEntity(this,
 						this.boundingBox.addCoord(this.motionX, this.motionY, this.motionZ).expand(1.0D, 1.0D, 1.0D));
 				double closestHit = 0.0D;
 				float borderSize;
@@ -287,7 +287,7 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 						}
 						borderSize = 0.3F;
 						AxisAlignedBB var12 = curEnt.boundingBox.expand((double) borderSize, (double) borderSize, (double) borderSize);
-						MovingObjectPosition checkHit = var12.calculateIntercept(positionVector, moveVector);
+						RayTraceResult checkHit = var12.calculateIntercept(positionVector, moveVector);
 						if (checkHit != null) {
 							double hitDistance = positionVector.distanceTo(checkHit.hitVec);
 							if (hitDistance < closestHit || closestHit == 0.0D) {
@@ -299,13 +299,13 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 				}
 			}
 			if (hitEntity != null) {
-				hitPosition = new MovingObjectPosition(hitEntity);
+				hitPosition = new RayTraceResult(hitEntity);
 			}
 			if (hitPosition != null) {
 				if (hitPosition.entityHit != null) {
 					this.onImpactEntity(hitPosition.entityHit, (float) posX, (float) posY, (float) posZ);
 					this.hasImpacted = true;
-					if (!this.ammoType.isPenetrating() && !this.worldObj.isRemote) {
+					if (!this.ammoType.isPenetrating() && !this.world.isRemote) {
 						this.setDead();
 					} else if (this.ammoType.isPenetrating()) {
 						this.motionX *= 0.65f;
@@ -325,14 +325,14 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 						this.posZ -= this.motionZ / (double) var20 * 0.05000000074505806D;
 						this.playSound("random.bowhit", 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
 						this.inGround = true;
-						if (!this.ammoType.isPersistent() && !this.worldObj.isRemote) {
+						if (!this.ammoType.isPersistent() && !this.world.isRemote) {
 							this.setDead();
 						} else if (this.ammoType.isPersistent()) {
 							this.blockX = hitPosition.blockX;
 							this.blockY = hitPosition.blockY;
 							this.blockZ = hitPosition.blockZ;
-							this.blockID = this.worldObj.getBlockId(blockX, blockY, blockZ);
-							this.blockMeta = this.worldObj.getBlockMetadata(blockX, blockY, blockZ);
+							this.blockID = this.world.getBlockId(blockX, blockY, blockZ);
+							this.blockMeta = this.world.getBlockMetadata(blockX, blockY, blockZ);
 						}
 					} else {
 						this.motionX *= 0.65f;
@@ -359,8 +359,8 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 				this.motionX += mX;
 				this.motionY += mY;
 				this.motionZ += mZ;
-				if (this.worldObj.isRemote) {
-					this.worldObj.spawnParticle("smoke", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+				if (this.world.isRemote) {
+					this.world.spawnParticle("smoke", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
 				}
 			} else if (this.ammoType.isTorpedo()) {
 				if (this.rocketBurnTime > 0) {
@@ -369,11 +369,11 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 					this.motionY += mY;
 					this.motionZ += mZ;
 				}
-				if (this.worldObj.isRemote && this.inWater) {
+				if (this.world.isRemote && this.inWater) {
 					if (this.inWater) {
-						this.worldObj.spawnParticle("bubble", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+						this.world.spawnParticle("bubble", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
 					} else {
-						this.worldObj.spawnParticle("smoke", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
+						this.world.spawnParticle("smoke", this.posX, this.posY, this.posZ, 0.0D, 0.0D, 0.0D);
 					}
 				}
 				if (!this.isInWater()) {
@@ -498,7 +498,7 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 		this.rocketBurnTime = data.readInt();
 		boolean hasLauncher = data.readBoolean();
 		if (hasLauncher) {
-			Entity launcher = worldObj.getEntityByID(data.readInt());
+			Entity launcher = world.getEntityByID(data.readInt());
 		}
 	}
 }

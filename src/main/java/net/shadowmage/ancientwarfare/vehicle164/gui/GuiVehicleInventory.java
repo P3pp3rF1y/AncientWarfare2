@@ -22,6 +22,8 @@
 package shadowmage.ancient_warfare.client.gui.vehicle;
 
 import net.minecraft.inventory.Container;
+import net.minecraft.util.ResourceLocation;
+import net.shadowmage.ancientwarfare.vehicle.AncientWarfareVehicles;
 import shadowmage.ancient_warfare.client.gui.GuiContainerAdvanced;
 import shadowmage.ancient_warfare.client.gui.elements.IGuiElement;
 import shadowmage.ancient_warfare.common.container.ContainerDummy;
@@ -53,8 +55,8 @@ public class GuiVehicleInventory extends GuiContainerAdvanced {
 	}
 
 	@Override
-	public String getGuiBackGroundTexture() {
-		return new ResourceLocation(AncientWarfareVehicles.modID, "gui/guiBackgroundLarge.png";
+	public ResourceLocation getGuiBackGroundTexture() {
+		return new ResourceLocation(AncientWarfareVehicles.modID, "gui/guiBackgroundLarge.png");
 	}
 
 	@Override

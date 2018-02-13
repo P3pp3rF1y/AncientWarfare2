@@ -24,7 +24,7 @@ package net.shadowmage.ancientwarfare.vehicle.missiles;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
-import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import shadowmage.ancient_warfare.common.crafting.ResourceListRecipe;
@@ -112,7 +112,7 @@ public interface IAmmo {
 
 	float getRenderScale();//get relative render scale of the ammo compared to the model default scale...(varies per ammo/model)
 
-	void onImpactWorld(World world, float x, float y, float z, MissileBase missile, MovingObjectPosition hit);//called when the entity impacts a world block
+	void onImpactWorld(World world, float x, float y, float z, MissileBase missile, RayTraceResult hit);//called when the entity impacts a world block
 
 	void onImpactEntity(World world, Entity ent, float x, float y, float z, MissileBase missile);//called when the entity impacts another entity
 

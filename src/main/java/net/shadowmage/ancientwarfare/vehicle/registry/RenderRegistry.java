@@ -25,7 +25,9 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import net.minecraft.client.model.ModelBiped;
 import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.vehicle.entity.IVehicleType;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.missiles.Ammo;
@@ -141,7 +143,7 @@ public class RenderRegistry {
 	private HashMap<Integer, Render> gateRenders = new HashMap<Integer, Render>();
 
 	private HashMap<Integer, ModelTEBase> teModels = new HashMap<Integer, ModelTEBase>();
-	private HashMap<Integer, String> teModelTextures = new HashMap<Integer, String>();
+	private HashMap<Integer, ResourceLocation> teModelTextures = new HashMap<>();
 
 	public void loadRenders() {
 		/**
@@ -271,14 +273,14 @@ public class RenderRegistry {
 		this.addTEModel(6, new ModelTable7());
 		this.addTEModel(7, new ModelTable8());
 
-		this.teModelTextures.put(0, new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/crafting/teResearchTable.png");
-		this.teModelTextures.put(1, new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/crafting/teEngineeringStation.png");
-		this.teModelTextures.put(2, new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/crafting/teCivilEngineeringStation.png");
-		this.teModelTextures.put(3, new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/crafting/teVehicleStation.png");
-		this.teModelTextures.put(4, new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/crafting/teAmmoStation.png");
-		this.teModelTextures.put(5, new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/crafting/teNpcStation.png");
-		this.teModelTextures.put(6, new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/crafting/teAlchemyStation.png");
-		this.teModelTextures.put(7, new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/crafting/teAutoCrafting.png");
+		this.teModelTextures.put(0, new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/crafting/teResearchTable.png"));
+		this.teModelTextures.put(1, new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/crafting/teEngineeringStation.png"));
+		this.teModelTextures.put(2, new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/crafting/teCivilEngineeringStation.png"));
+		this.teModelTextures.put(3, new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/crafting/teVehicleStation.png"));
+		this.teModelTextures.put(4, new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/crafting/teAmmoStation.png"));
+		this.teModelTextures.put(5, new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/crafting/teNpcStation.png"));
+		this.teModelTextures.put(6, new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/crafting/teAlchemyStation.png"));
+		this.teModelTextures.put(7, new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/crafting/teAutoCrafting.png"));
 
 		/**
 		 * load up the vehicle item renderer...

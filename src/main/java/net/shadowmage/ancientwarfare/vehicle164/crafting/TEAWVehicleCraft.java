@@ -67,7 +67,7 @@ public class TEAWVehicleCraft extends TEAWCraftingWorkSite {
 			}
 		}
 		this.recipeStartCheckDelayTicks = 0;
-		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		this.world.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class TEAWVehicleCraft extends TEAWCraftingWorkSite {
 		super.stopAndClear();
 		this.vehicleLevel = -1;
 		this.vehicleType = -1;
-		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		this.world.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 
 	@Override
@@ -106,8 +106,8 @@ public class TEAWVehicleCraft extends TEAWCraftingWorkSite {
 
 	@Override
 	public void onBlockClicked(EntityPlayer player) {
-		if (!player.worldObj.isRemote) {
-			GUIHandler.instance().openGUI(GUIHandler.VEHICLE_CRAFT, player, player.worldObj, xCoord, yCoord, zCoord);
+		if (!player.world.isRemote) {
+			GUIHandler.instance().openGUI(GUIHandler.VEHICLE_CRAFT, player, player.world, xCoord, yCoord, zCoord);
 		}
 	}
 

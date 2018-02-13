@@ -19,29 +19,35 @@
  * along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.shadowmage.ancientwarfare.vehicle.upgrades;
+package net.shadowmage.ancientwarfare.vehicle.entity;
 
-import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
+import net.minecraft.entity.Entity;
+import net.minecraft.world.World;
 
-public interface IVehicleUpgradeType {
+/**
+ * used by missiles to communicate hit information to vastly different classes
+ * (soldiers and vehicles)
+ * soldiers and vehicles use this for stat tracking purposes
+ * effectively server-side only.
+ *
+ * @author Shadowmage
+ */
+public interface IMissileHitCallback {
+	/**
+	 * callback for when a fired missile impacts a position
+	 *
+	 * @param world
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
+	void onMissileImpact(World world, double x, double y, double z);
 
-	int getUpgradeGlobalTypeNum();
-
-	String getDisplayName();
-
-	String getDisplayTooltip();
-
-	String getIconTexture();
-
-	void applyVehicleEffects(VehicleBase vehicle);
-
-	ItemStack getUpgradeStack(int qty);
-
-/* TODO
-	ResourceListRecipe constructRecipe();
-
-	Collection<Integer> getNeededResearch();
-*/
-
+	/**
+	 * callback for when a fired missile impacts an entity
+	 *
+	 * @param world
+	 * @param entity
+	 */
+	void onMissileImpactEntity(World world, Entity entity);
 }

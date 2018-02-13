@@ -19,29 +19,28 @@
  * along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.shadowmage.ancientwarfare.vehicle.upgrades;
+package net.shadowmage.ancientwarfare.vehicle.entity;
 
-import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
+import net.minecraft.entity.Entity;
+import net.shadowmage.ancientwarfare.vehicle.pathing.Node;
+import net.shadowmage.ancientwarfare.vehicle.pathing.PathWorldAccess;
 
-public interface IVehicleUpgradeType {
+import java.util.List;
 
-	int getUpgradeGlobalTypeNum();
+public interface IPathableEntity {
 
-	String getDisplayName();
+	void setPath(List<Node> path);
 
-	String getDisplayTooltip();
+	void setMoveTo(double x, double y, double z, float moveSpeed);
 
-	String getIconTexture();
+	float getDefaultMoveSpeed();
 
-	void applyVehicleEffects(VehicleBase vehicle);
+	boolean isPathableEntityOnLadder();
 
-	ItemStack getUpgradeStack(int qty);
+	Entity getEntity();
 
-/* TODO
-	ResourceListRecipe constructRecipe();
+	PathWorldAccess getWorldAccess();
 
-	Collection<Integer> getNeededResearch();
-*/
+	void onStuckDetected();
 
 }

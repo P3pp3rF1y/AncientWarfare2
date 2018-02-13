@@ -557,9 +557,9 @@ public class VehicleMoveHelper implements INBTTaggable {
 			return;
 		}
 		for (int var24 = 0; var24 < 4; ++var24) {
-			int x = MathHelper.floor_double(vehicle.posX + ((double) (var24 % 2) - 0.5D) * 0.8D);
-			int y = MathHelper.floor_double(vehicle.posY);
-			int z = MathHelper.floor_double(vehicle.posZ + ((double) (var24 / 2) - 0.5D) * 0.8D);
+			int x = MathHelper.floor(vehicle.posX + ((double) (var24 % 2) - 0.5D) * 0.8D);
+			int y = MathHelper.floor(vehicle.posY);
+			int z = MathHelper.floor(vehicle.posZ + ((double) (var24 / 2) - 0.5D) * 0.8D);
 			//check top/upper blocks(riding through)
 			int id = vehicle.world.getBlockId(x, y, z);
 			if (isPlant(id)) {

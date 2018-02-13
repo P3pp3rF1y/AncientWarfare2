@@ -95,7 +95,7 @@ public class BatteringRamVarHelper extends VehicleFiringVarsHelper {
 	}
 
 	public void doDamageEffects() {
-		if (vehicle.worldObj.isRemote) {
+		if (vehicle.world.isRemote) {
 			return;
 		}
 		BlockPosition[] effectedPositions = VehicleTypeBatteringRam.getEffectedPositions(vehicle);
@@ -106,14 +106,14 @@ public class BatteringRamVarHelper extends VehicleFiringVarsHelper {
 				continue;
 			}
 			bb = AxisAlignedBB.getAABBPool().getAABB(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1);
-			hitEntities = vehicle.worldObj.getEntitiesWithinAABBExcludingEntity(vehicle, bb);
+			hitEntities = vehicle.world.getEntitiesWithinAABBExcludingEntity(vehicle, bb);
 			if (hitEntities != null) {
 				for (Entity ent : hitEntities) {
 					ent.attackEntityFrom(DamageType.batteringDamage, 5 + vehicle.vehicleMaterialLevel);
 				}
 			}
-			if (WarzoneManager.instance().shouldBreakBlock(vehicle.worldObj, pos.x, pos.y, pos.z)) {
-				BlockTools.breakBlockAndDrop(vehicle.worldObj, pos.x, pos.y, pos.z, 0);
+			if (WarzoneManager.instance().shouldBreakBlock(vehicle.world, pos.x, pos.y, pos.z)) {
+				BlockTools.breakBlockAndDrop(vehicle.world, pos.x, pos.y, pos.z, 0);
 			}
 		}
 	}
