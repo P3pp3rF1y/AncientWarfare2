@@ -111,4 +111,7 @@ public class Trig {
         return max;
     }
 
+	public static float wrapTo360(float angle) {
+		return (angle %= 360) >= 0 ? angle : (angle + 360);
+	}
 }

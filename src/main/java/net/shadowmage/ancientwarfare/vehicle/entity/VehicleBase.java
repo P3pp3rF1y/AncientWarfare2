@@ -24,6 +24,7 @@ package net.shadowmage.ancientwarfare.vehicle.entity;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -32,7 +33,12 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -40,6 +46,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.Trig;
+import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.vehicle.VehicleVarHelpers.DummyVehicleHelper;
 import net.shadowmage.ancientwarfare.vehicle.armors.IVehicleArmor;
@@ -61,6 +68,10 @@ import net.shadowmage.ancientwarfare.vehicle.upgrades.IVehicleUpgradeType;
 import java.util.Random;
 
 public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, IMissileHitCallback, IEntityContainerSynch, IPathableEntity, IInventory {
+
+	private static final DataParameter<Integer> VEHICLE_HEALTH = EntityDataManager.createKey(VehicleBase.class, DataSerializers.VARINT);
+	private static final DataParameter<Byte> FORWARD_INPUT = EntityDataManager.createKey(VehicleBase.class, DataSerializers.BYTE);
+	private static final DataParameter<Byte> STRAFE_INPUT = EntityDataManager.createKey(VehicleBase.class, DataSerializers.BYTE);
 
 	/**
 	 * these are the current max stats.  set from setVehicleType().
@@ -186,9 +197,9 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 
 	@Override
 	protected void entityInit() {
-		this.dataWatcher.addObject(5, Byte.valueOf((byte) 0));//f in
-		this.dataWatcher.addObject(6, Byte.valueOf((byte) 0));//s in
-		this.dataWatcher.addObject(7, Integer.valueOf(100));
+		dataManager.register(VEHICLE_HEALTH, 100);
+		dataManager.register(FORWARD_INPUT, (byte) 0);
+		dataManager.register(STRAFE_INPUT, (byte) 0);
 	}
 
 	@Override
@@ -205,7 +216,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	}
 
 	private int getHealthClient() {
-		return this.dataWatcher.getWatchableObjectInt(7);
+		return dataManager.get(VEHICLE_HEALTH);
 	}
 
 	public void setHealth(float health) {
@@ -214,7 +225,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		}
 		this.localVehicleHealth = health;
 		if (!world.isRemote) {
-			this.dataWatcher.updateObject(7, Integer.valueOf((int) health));
+			dataManager.set(VEHICLE_HEALTH, (int) health);
 		}
 	}
 
@@ -231,19 +242,19 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	}
 
 	public byte getForwardInput() {
-		return (byte) this.dataWatcher.getWatchableObjectByte(5);
+		return dataManager.get(FORWARD_INPUT);
 	}
 
 	public byte getStrafeInput() {
-		return (byte) this.dataWatcher.getWatchableObjectByte(6);
+		return dataManager.get(STRAFE_INPUT);
 	}
 
 	public void setForwardInput(byte in) {
-		this.dataWatcher.updateObject(5, Byte.valueOf(in));
+		dataManager.set(FORWARD_INPUT, in);
 	}
 
 	public void setStrafeInput(byte in) {
-		this.dataWatcher.updateObject(6, Byte.valueOf(in));
+		dataManager.set(STRAFE_INPUT, in);
 	}
 
 	public void setVehicleType(IVehicleType vehicle, int materialLevel) {
@@ -574,12 +585,15 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 			}
 		}
 		if (this.assignedRider != null) {
-			if (assignedRider.isDead || assignedRider.getRidingEntity() != this || assignedRider.wayNav.getMountTarget() == null || this.assignedRider.wayNav
-					.getMountTarget() != this || this.getDistanceToEntity(assignedRider) > Config.npcAISearchRange) {
+			if (assignedRider.isDead || assignedRider.getRidingEntity() != this || !assignedRider.isRiding() || assignedRider.getRidingEntity() != this || (this
+					.getDistanceToEntity(assignedRider) > (AWNPCStatics.npcActionRange * AWNPCStatics.npcActionRange))) {
+				//TODO config setting for vehicle search range
 				this.assignedRider = null;
 			}
 		}
+/* TODO perf test vehicles
 		ServerPerformanceMonitor.addVehicleTickTime(System.nanoTime() - t1);
+*/
 	}
 
 	/**
@@ -593,7 +607,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 			}
 			this.localVehicleHealth = this.getHealth();
 		}
-		if (this.riddenByEntity instanceof NpcBase) {
+		if (getControllingPassenger() instanceof NpcBase) {
 			this.updateRiderPosition();
 		}
 	}
@@ -641,10 +655,12 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		for (int y = yMin; y <= yMin + 3; y++) {
 			for (int x = xMin; x <= xMin + (int) width; x++) {
 				for (int z = zMin; z <= zMin + (int) width; z++) {
-					if (world.doesBlockHaveSolidTopSurface(x, y, z) || this.world.getBlockMaterial(x, y, z) == Material.water) {
-						if (world.isAirBlock(x, y + 1, z) && world.isAirBlock(x, y + 2, z)) {
+					BlockPos pos = new BlockPos(x, y, z);
+					IBlockState state = world.getBlockState(pos);
+					if (state.isSideSolid(world, pos, EnumFacing.UP) || state.getMaterial() == Material.WATER) {
+						if (world.isAirBlock(pos.up()) && world.isAirBlock(pos.up().up())) {
 							rider.setPositionAndUpdate(x + 0.5d, y + 1, z + 0.5d);
-							foundTarget = true;
+							foundTarget = true; //TODO what is this supposed to do?
 							break searchLabel;
 						}
 					}
@@ -669,7 +685,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 			localTurretDestPitch = localTurretPitch;
 		}
 		if (localTurretPitch != localTurretDestPitch) {
-			if (Trig.getAbsDiff(localTurretDestPitch, localTurretPitch) < localTurretPitchInc) {
+			if (Math.abs(localTurretDestPitch - localTurretPitch) < localTurretPitchInc) {
 				localTurretPitch = localTurretDestPitch;
 			}
 			if (localTurretPitch > localTurretDestPitch) {
