@@ -185,7 +185,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
     protected boolean tryWithdrawUpkeep() {
         BlockPos p = npc.getUpkeepPoint();
         TileEntity te = npc.world.getTileEntity(p);
-        if(te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, npc.getUpkeepBlockSide())) {
+        if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, npc.getUpkeepBlockSide())) {
             return npc.withdrawFood(te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, npc.getUpkeepBlockSide()));
         }
         return false;
@@ -288,7 +288,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
             IItemHandler inv = backpack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
             BlockPos pos = orders.getRestockData().getDepositPoint();
             TileEntity te = npc.world.getTileEntity(pos);
-            if(te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, orders.getRestockData().getDepositSide())) {
+            if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, orders.getRestockData().getDepositSide())) {
                 orders.getRestockData().doDeposit(inv, te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, orders.getRestockData().getDepositSide()));
             }
         }
@@ -300,7 +300,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
             IItemHandler inv = backpack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
             BlockPos pos = orders.getRestockData().getWithdrawPoint();
             TileEntity te = npc.world.getTileEntity(pos);
-            if(te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, orders.getRestockData().getWithdrawSide())) {
+            if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, orders.getRestockData().getWithdrawSide())) {
                 orders.getRestockData().doWithdraw(inv, te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, orders.getRestockData().getWithdrawSide()));
             }
         }

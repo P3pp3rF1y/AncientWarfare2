@@ -7,14 +7,17 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nonnull;
 
 public class ContainerBackpack extends ContainerBase {
 
+	private ItemStack backpackStack;
 	public final int backpackSlotIndex;
 	public final EnumHand hand;
 	public final int guiHeight;
@@ -25,10 +28,11 @@ public class ContainerBackpack extends ContainerBase {
 		super(player);
 
         this.hand = EntityTools.getHandHoldingItem(player, AWItems.backpack);
-        @Nonnull ItemStack stack = player.getHeldItem(hand);
-        backpackSlotIndex = hand == EnumHand.MAIN_HAND ? player.inventory.currentItem : -1;
+		backpackStack = player.getHeldItem(hand);
+		backpackSlotIndex = hand == EnumHand.MAIN_HAND ? player.inventory.currentItem : -1;
 
-		handler = stack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+		handler = InventoryTools.cloneItemHandler(backpackStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null));
+
 		int xPos, yPos;
 		for (int i = 0; i < handler.getSlots(); i++) {
 			xPos = (i % 9) * 18 + 8;
@@ -40,7 +44,7 @@ public class ContainerBackpack extends ContainerBase {
 				}
 			});
 		}
-		int height = (stack.getItemDamage() + 1) * 18 + 8;
+		int height = (backpackStack.getItemDamage() + 1) * 18 + 8;
 		guiHeight = addPlayerSlots(height + 8) + 8;
 	}
 
@@ -72,6 +76,17 @@ public class ContainerBackpack extends ContainerBase {
 		}
 		playerSlots = 35;
 		return ty + (4 * 18) + gap;
+	}
+
+	@Override
+	public void onContainerClosed(EntityPlayer playerIn) {
+		IItemHandlerModifiable backpackHandler = (IItemHandlerModifiable) backpackStack.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
+
+		for (int slot = 0; slot < handler.getSlots(); slot++) {
+			backpackHandler.setStackInSlot(slot, handler.getStackInSlot(slot));
+		}
+
+		super.onContainerClosed(playerIn);
 	}
 
 	@Override

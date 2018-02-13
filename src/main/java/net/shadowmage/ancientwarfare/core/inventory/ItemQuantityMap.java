@@ -39,11 +39,18 @@ public class ItemQuantityMap {
 	}
 
 	/*
-	 * removes all key/value pairs that have corresponding keys contained in toRemove
+	 * removes given counts of items from this map, if the resulting count is 0 removes that entry as well.
 	 */
 	public void removeAll(ItemQuantityMap toRemove) {
 		for (ItemHashEntry entry : toRemove.map.keySet()) {
-			remove(entry);
+			int currentCount = map.get(entry);
+			int countToRemove = toRemove.map.get(entry);
+
+			if (countToRemove >= currentCount) {
+				remove(entry);
+			} else {
+				map.put(entry, currentCount - countToRemove);
+			}
 		}
 	}
 
