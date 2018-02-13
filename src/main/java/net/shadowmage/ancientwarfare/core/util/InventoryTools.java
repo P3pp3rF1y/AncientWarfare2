@@ -203,7 +203,7 @@ public class InventoryTools {
 				continue;
 			}
 
-			int stackSizeToMove = Math.min(stack.getMaxStackSize(), toMove);
+			int stackSizeToMove = Math.min(stack.getMaxStackSize(), Math.min(stack.getCount(), toMove));
 
 			ItemStack stackToMove = stack.copy();
 			stackToMove.setCount(stackSizeToMove);
