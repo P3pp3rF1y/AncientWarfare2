@@ -35,9 +35,9 @@ public abstract class PacketBase {
         return null;
     }
 
-    protected abstract void writeToStream(ByteBuf data);
+    protected abstract void writeToStream(PacketBuffer data);
 
-    protected abstract void readFromStream(ByteBuf data);
+    protected abstract void readFromStream(PacketBuffer data);
 
     protected void execute() {
     }
@@ -46,7 +46,7 @@ public abstract class PacketBase {
         execute();
     }
 
-    public static PacketBase readPacket(ByteBuf data) {
+    public static PacketBase readPacket(PacketBuffer data) {
         PacketBase pkt = readHeaderFromStream(data);
         if (pkt != null) {
             pkt.readFromStream(data);

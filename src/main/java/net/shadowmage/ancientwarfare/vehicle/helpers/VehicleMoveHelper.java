@@ -30,9 +30,9 @@ import net.minecraft.util.MathHelper;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleMovementType;
+import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicle;
 import shadowmage.ancient_warfare.common.config.Config;
 import shadowmage.ancient_warfare.common.interfaces.INBTTaggable;
-import shadowmage.ancient_warfare.common.network.Packet02Vehicle;
 import shadowmage.ancient_warfare.common.utils.BlockTools;
 
 public class VehicleMoveHelper implements INBTTaggable {
@@ -222,7 +222,7 @@ public class VehicleMoveHelper implements INBTTaggable {
 		sendUpdate = sendUpdate && this.vehicle.ticksExisted % Config.vehicleMoveUpdateFrequency == 0;
 		sendUpdate = sendUpdate || this.vehicle.ticksExisted % 60 == 0;
 		if (sendUpdate) {
-			Packet02Vehicle pkt = new Packet02Vehicle();
+			PacketVehicle pkt = new PacketVehicle();
 			pkt.setMoveUpdate(this.vehicle, true, move == VehicleMovementType.AIR1 || move == VehicleMovementType.AIR2, true);
 			pkt.sendPacketToAllTrackingClients(vehicle);
 		}

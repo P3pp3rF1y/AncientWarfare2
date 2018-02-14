@@ -26,11 +26,11 @@ import net.minecraft.util.DamageSource;
 import net.shadowmage.ancientwarfare.vehicle.armors.IVehicleArmor;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.missiles.DamageType;
+import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicle;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleUpgradeRegistry;
 import net.shadowmage.ancientwarfare.vehicle.upgrades.IVehicleUpgradeType;
 import shadowmage.ancient_warfare.common.interfaces.INBTTaggable;
-import shadowmage.ancient_warfare.common.network.Packet02Vehicle;
 import shadowmage.ancient_warfare.common.vehicles.armors.IVehicleArmorType;
 
 import java.util.ArrayList;
@@ -130,7 +130,7 @@ public class VehicleUpgradeHelper implements INBTTaggable {
 		}
 		tag.setIntArray("ints2", arInts);
 
-		Packet02Vehicle pkt = new Packet02Vehicle();
+		PacketVehicle pkt = new PacketVehicle();
 		pkt.setParams(vehicle);
 		pkt.setUpgradeData(tag);
 		pkt.sendPacketToAllTrackingClients(vehicle);

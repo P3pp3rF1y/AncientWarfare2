@@ -21,33 +21,38 @@
 
 package net.shadowmage.ancientwarfare.vehicle.entity;
 
-import com.google.common.io.ByteArrayDataInput;
-import com.google.common.io.ByteArrayDataOutput;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.vehicle.AncientWarfareVehicles;
 import net.shadowmage.ancientwarfare.vehicle.VehicleVarHelpers.DummyVehicleHelper;
 import net.shadowmage.ancientwarfare.vehicle.armors.IVehicleArmor;
 import net.shadowmage.ancientwarfare.vehicle.entity.materials.IVehicleMaterial;
@@ -60,11 +65,16 @@ import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleUpgradeHelper;
 import net.shadowmage.ancientwarfare.vehicle.inventory.VehicleInventory;
 import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoHwachaRocket;
 import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
+import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicle;
 import net.shadowmage.ancientwarfare.vehicle.pathing.Navigator;
+import net.shadowmage.ancientwarfare.vehicle.pathing.Node;
+import net.shadowmage.ancientwarfare.vehicle.pathing.PathWorldAccess;
 import net.shadowmage.ancientwarfare.vehicle.pathing.PathWorldAccessEntity;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleRegistry;
 import net.shadowmage.ancientwarfare.vehicle.upgrades.IVehicleUpgradeType;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Random;
 
 public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, IMissileHitCallback, IEntityContainerSynch, IPathableEntity, IInventory {
@@ -608,7 +618,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 			this.localVehicleHealth = this.getHealth();
 		}
 		if (getControllingPassenger() instanceof NpcBase) {
-			this.updateRiderPosition();
+			this.updatePassenger(getControllingPassenger());
 		}
 	}
 
@@ -706,7 +716,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		} else {
 			//    localTurretRotation += moveHelper.strafeMotion;
 		}
-		if (Trig.getAbsDiff(localTurretDestRot, localTurretRotation) > localTurretRotInc) {
+		if (Math.abs(localTurretDestRot - localTurretRotation) > localTurretRotInc) {
 			while (localTurretRotation < 0) {
 				localTurretRotation += 360;
 				prevYaw += 360;
@@ -738,7 +748,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		} else {
 			localTurretRotation = localTurretDestRot;
 		}
-		if (Trig.getAbsDiff(localTurretDestRot, localTurretRotation) < localTurretRotInc) {
+		if (Math.abs(localTurretDestRot - localTurretRotation) < localTurretRotInc) {
 			localTurretRotation = localTurretDestRot;
 		}
 		this.currentTurretYawSpeed = this.localTurretRotation - prevYaw;
@@ -751,7 +761,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	}
 
 	/**
-	 * Called from Packet02Vehicle
+	 * Called from PacketVehicle
 	 * Generic update method for client-server coms
 	 *
 	 * @param tag
@@ -790,9 +800,9 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setFloat("p", localTurretPitch);
 		tag.setFloat("r", localTurretRotation);
-		Packet02Vehicle pkt = new Packet02Vehicle();
+		PacketVehicle pkt = new PacketVehicle();
 		pkt.setTurretParams(tag);
-		pkt.sendPacketToAllTrackingClients(this);
+		NetworkHandler.sendToAllTracking(this, pkt);
 	}
 
 	protected void handleTurretPacket(NBTTagCompound tag) {
@@ -812,11 +822,11 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	 */
 	public void packVehicle() {
 		if (!this.world.isRemote) {
-			world.spawnEntityInWorld(new EntityItem(this.world, posX, posY + 0.5d, posZ, this.getItemForVehicle()));
-			InventoryTools.dropInventoryInWorld(world, inventory.ammoInventory, posX, posY, posZ);
-			InventoryTools.dropInventoryInWorld(world, inventory.armorInventory, posX, posY, posZ);
-			InventoryTools.dropInventoryInWorld(world, inventory.upgradeInventory, posX, posY, posZ);
-			InventoryTools.dropInventoryInWorld(world, inventory.storageInventory, posX, posY, posZ);
+			InventoryTools.dropItemInWorld(world, getItemForVehicle(), posX, posY, posZ);
+			InventoryTools.dropItemsInWorld(world, inventory.ammoInventory, posX, posY, posZ);
+			InventoryTools.dropItemsInWorld(world, inventory.armorInventory, posX, posY, posZ);
+			InventoryTools.dropItemsInWorld(world, inventory.upgradeInventory, posX, posY, posZ);
+			InventoryTools.dropItemsInWorld(world, inventory.storageInventory, posX, posY, posZ);
 			this.setDead();
 		}
 	}
@@ -838,15 +848,15 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	}
 
 	@Override
-	public void applyEntityCollision(Entity par1Entity) {
-		if (par1Entity != this.riddenByEntity && !(par1Entity instanceof NpcBase))//skip if it if it is the rider
+	public void applyEntityCollision(Entity entity) {
+		if (entity != getControllingPassenger() && !(entity instanceof NpcBase))//skip if it if it is the rider
 		{
-			double xDiff = par1Entity.posX - this.posX;
-			double zDiff = par1Entity.posZ - this.posZ;
-			double entityDistance = MathHelper.abs_max(xDiff, zDiff);
+			double xDiff = entity.posX - this.posX;
+			double zDiff = entity.posZ - this.posZ;
+			double entityDistance = MathHelper.absMax(xDiff, zDiff);
 
 			if (entityDistance >= 0.009999999776482582D) {
-				entityDistance = (double) MathHelper.sqrt_double(entityDistance);
+				entityDistance = Math.sqrt(entityDistance);
 				xDiff /= entityDistance;
 				zDiff /= entityDistance;
 				double normalizeToDistance = 1.0D / entityDistance;
@@ -862,21 +872,22 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 				xDiff *= (double) (1.0F - this.entityCollisionReduction);
 				zDiff *= (double) (1.0F - this.entityCollisionReduction);
 				this.addVelocity(-xDiff, 0.0D, -zDiff);
-				par1Entity.addVelocity(xDiff, 0.0D, zDiff);
+				entity.addVelocity(xDiff, 0.0D, zDiff);
 			}
 		}
 	}
 
-	public String getTexture() {
+	public ResourceLocation getTexture() {
 		return vehicleType.getTextureForMaterialLevel(vehicleMaterialLevel);
 	}
 
 	@Override
-	public void updateRiderPosition() {
+	public void updatePassenger(Entity passenger) {
+
 		double posX = this.posX;
 		double posY = this.posY + this.getRiderVerticalOffset();
 		double posZ = this.posZ;
-		if (this.riddenByEntity instanceof NpcBase) {
+		if (passenger instanceof NpcBase) {
 			posY -= 0.5f;
 		}
 		float yaw = this.vehicleType.moveRiderWithTurret() ? localTurretRotation : rotationYaw;
@@ -884,15 +895,15 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		posX += Trig.sinDegrees(yaw + 90) * this.getRiderHorizontalOffset();
 		posZ += Trig.cosDegrees(yaw) * -this.getRiderForwardOffset();
 		posZ += Trig.cosDegrees(yaw + 90) * this.getRiderHorizontalOffset();
-		this.riddenByEntity.setPosition(posX, posY + this.riddenByEntity.getYOffset(), posZ);
-		this.riddenByEntity.rotationYaw -= this.moveHelper.getRotationSpeed();
+		passenger.setPosition(posX, posY + passenger.getYOffset(), posZ);
+		passenger.rotationYaw -= this.moveHelper.getRotationSpeed();
 	}
 
 	@Override
-	public boolean interactFirst(EntityPlayer player) {
+	public boolean processInitialInteract(EntityPlayer player, EnumHand hand) {
 		if (this.isSettingUp) {
 			if (!player.world.isRemote) {
-				player.addChatMessage("Vehicle is currently being set-up.  It has " + setupTicks + " ticks remaining.");
+				player.sendMessage(new TextComponentString("Vehicle is currently being set-up.  It has " + setupTicks + " ticks remaining."));
 			}
 			return false;
 		}
@@ -901,12 +912,13 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 
 	@Override
 	public String toString() {
-		return String.format("%s::%s @ %.2f, %.2f, %.2f  -- y:%.2f p:%.2f -- m: %.2f, %.2f, %.2f", this.vehicleType.getDisplayName(), this.entityId, this.posX,
+		return String
+				.format("%s::%s @ %.2f, %.2f, %.2f  -- y:%.2f p:%.2f -- m: %.2f, %.2f, %.2f", this.vehicleType.getDisplayName(), this.getEntityId(), this.posX,
 				this.posY, this.posZ, this.rotationYaw, this.rotationPitch, this.motionX, this.motionY, this.motionZ);
 	}
 
 	@Override
-	public void setPositionAndRotation2(double par1, double par3, double par5, float yaw, float par8, int par9) {
+	public void setPositionAndRotationDirect(double x, double y, double z, float yaw, float pitch, int posRotationIncrements, boolean teleport) {
 
 	}
 
@@ -926,14 +938,8 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	}
 
 	@Override
-	public AxisAlignedBB getBoundingBox() {
-		return this.boundingBox;
-	}
-
-	@Override
-	public AxisAlignedBB getCollisionBox(Entity par1Entity) {
-		//  return par1Entity.canBePushed() ? par1Entity.boundingBox : null;
-		return par1Entity.getBoundingBox();
+	public AxisAlignedBB getCollisionBox(Entity entity) {
+		return entity.getEntityBoundingBox();
 	}
 
 	@Override
@@ -942,52 +948,59 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	}
 
 	@Override
-	public void writeSpawnData(ByteArrayDataOutput data) {
-		data.writeFloat(this.getHealth());
-		data.writeInt(this.vehicleType.getGlobalVehicleType());
-		data.writeInt(this.vehicleMaterialLevel);
-		ByteTools.writeNBTTagCompound(upgradeHelper.getNBTTag(), data);
-		ByteTools.writeNBTTagCompound(ammoHelper.getNBTTag(), data);
-		ByteTools.writeNBTTagCompound(moveHelper.getNBTTag(), data);
-		ByteTools.writeNBTTagCompound(firingHelper.getNBTTag(), data);
-		ByteTools.writeNBTTagCompound(firingVarsHelper.getNBTTag(), data);
-		data.writeFloat(localLaunchPower);
-		data.writeFloat(localTurretPitch);
-		data.writeFloat(localTurretRotation);
-		data.writeFloat(localTurretDestPitch);
-		data.writeFloat(localTurretDestRot);
-		data.writeInt(teamNum);
-		data.writeFloat(localTurretRotationHome);
-		data.writeBoolean(this.isSettingUp);
+	public void writeSpawnData(ByteBuf buffer) {
+		PacketBuffer pb = new PacketBuffer(buffer);
+		pb.writeFloat(this.getHealth());
+		pb.writeInt(this.vehicleType.getGlobalVehicleType());
+		pb.writeInt(this.vehicleMaterialLevel);
+		pb.writeCompoundTag(upgradeHelper.serializeNBT());
+		pb.writeCompoundTag(ammoHelper.serializeNBT());
+		pb.writeCompoundTag(moveHelper.serializeNBT());
+		pb.writeCompoundTag(firingHelper.serializeNBT());
+		pb.writeCompoundTag(firingVarsHelper.serializeNBT());
+		pb.writeFloat(localLaunchPower);
+		pb.writeFloat(localTurretPitch);
+		pb.writeFloat(localTurretRotation);
+		pb.writeFloat(localTurretDestPitch);
+		pb.writeFloat(localTurretDestRot);
+		pb.writeInt(teamNum);
+		pb.writeFloat(localTurretRotationHome);
+		pb.writeBoolean(this.isSettingUp);
 		if (this.isSettingUp) {
-			data.writeInt(this.setupTicks);
+			pb.writeInt(this.setupTicks);
 		}
 	}
 
 	@Override
-	public void readSpawnData(ByteArrayDataInput data) {
-		this.setHealth(data.readFloat());
-		IVehicleType type = VehicleType.getVehicleType(data.readInt());
-		this.setVehicleType(type, data.readInt());
-		this.upgradeHelper.readFromNBT(ByteTools.readNBTTagCompound(data));
-		this.ammoHelper.readFromNBT(ByteTools.readNBTTagCompound(data));
-		this.moveHelper.readFromNBT(ByteTools.readNBTTagCompound(data));
-		this.firingHelper.readFromNBT(ByteTools.readNBTTagCompound(data));
-		this.firingVarsHelper.readFromNBT(ByteTools.readNBTTagCompound(data));
-		this.localLaunchPower = data.readFloat();
-		this.localTurretPitch = data.readFloat();
-		this.localTurretRotation = data.readFloat();
-		this.localTurretDestPitch = data.readFloat();
-		this.localTurretDestRot = data.readFloat();
+	public void readSpawnData(ByteBuf additionalData) {
+		PacketBuffer pb = new PacketBuffer(additionalData);
+		this.setHealth(pb.readFloat());
+		IVehicleType type = VehicleType.getVehicleType(pb.readInt());
+		this.setVehicleType(type, pb.readInt());
+		try {
+			this.upgradeHelper.deserializeNBT(pb.readCompoundTag());
+			this.ammoHelper.deserializeNBT(pb.readCompoundTag());
+			this.moveHelper.deserializeNBT(pb.readCompoundTag());
+			this.firingHelper.deserializeNBT(pb.readCompoundTag());
+			this.firingVarsHelper.deserializeNBT(pb.readCompoundTag());
+		}
+		catch (IOException e) {
+			AncientWarfareVehicles.log.error(e);
+		}
+		this.localLaunchPower = pb.readFloat();
+		this.localTurretPitch = pb.readFloat();
+		this.localTurretRotation = pb.readFloat();
+		this.localTurretDestPitch = pb.readFloat();
+		this.localTurretDestRot = pb.readFloat();
 		this.firingHelper.clientLaunchSpeed = localLaunchPower;
 		this.firingHelper.clientTurretPitch = localTurretPitch;
 		this.firingHelper.clientTurretYaw = localTurretRotation;
 		this.upgradeHelper.updateUpgradeStats();
-		this.teamNum = data.readInt();
-		this.localTurretRotationHome = data.readFloat();
-		this.isSettingUp = data.readBoolean();
+		this.teamNum = pb.readInt();
+		this.localTurretRotationHome = pb.readFloat();
+		this.isSettingUp = pb.readBoolean();
 		if (this.isSettingUp) {
-			this.setupTicks = data.readInt();
+			this.setupTicks = pb.readInt();
 		}
 		this.setPosition(posX, posY, posZ);//this is to reset the bounding box, because the size of the entity changed during vehicleType setup
 	}
@@ -1000,11 +1013,11 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		this.setHealth(tag.getFloat("health"));
 		this.localTurretRotationHome = tag.getFloat("turHome");
 		this.inventory.readFromNBT(tag);
-		this.upgradeHelper.readFromNBT(tag.getCompoundTag("upgrades"));
-		this.ammoHelper.readFromNBT(tag.getCompoundTag("ammo"));
-		this.moveHelper.readFromNBT(tag.getCompoundTag("move"));
-		this.firingHelper.readFromNBT(tag.getCompoundTag("fire"));
-		this.firingVarsHelper.readFromNBT(tag.getCompoundTag("vars"));
+		this.upgradeHelper.deserializeNBT(tag.getCompoundTag("upgrades"));
+		this.ammoHelper.deserializeNBT(tag.getCompoundTag("ammo"));
+		this.moveHelper.deserializeNBT(tag.getCompoundTag("move"));
+		this.firingHelper.deserializeNBT(tag.getCompoundTag("fire"));
+		this.firingVarsHelper.deserializeNBT(tag.getCompoundTag("vars"));
 		this.localLaunchPower = tag.getFloat("lc");
 		this.localTurretPitch = tag.getFloat("tp");
 		this.localTurretDestPitch = tag.getFloat("tpd");
@@ -1027,11 +1040,11 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		tag.setFloat("health", this.getHealth());
 		tag.setFloat("turHome", this.localTurretRotationHome);
 		this.inventory.writeToNBT(tag);//yah..I wrote this one a long time ago, is why it is different.....
-		tag.setCompoundTag("upgrades", this.upgradeHelper.getNBTTag());
-		tag.setCompoundTag("ammo", this.ammoHelper.getNBTTag());
-		tag.setCompoundTag("move", this.moveHelper.getNBTTag());
-		tag.setCompoundTag("fire", this.firingHelper.getNBTTag());
-		tag.setCompoundTag("vars", this.firingVarsHelper.getNBTTag());
+		tag.setTag("upgrades", this.upgradeHelper.serializeNBT());
+		tag.setTag("ammo", this.ammoHelper.serializeNBT());
+		tag.setTag("move", this.moveHelper.serializeNBT());
+		tag.setTag("fire", this.firingHelper.serializeNBT());
+		tag.setTag("vars", this.firingVarsHelper.serializeNBT());
 		tag.setFloat("lc", localLaunchPower);
 		tag.setFloat("tp", localTurretPitch);
 		tag.setFloat("tpd", localTurretDestPitch);
@@ -1049,15 +1062,15 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	 */
 	@Override
 	public void onMissileImpact(World world, double x, double y, double z) {
-		if (this.ridingEntity instanceof IMissileHitCallback) {
-			((IMissileHitCallback) this.ridingEntity).onMissileImpact(world, x, y, z);
+		if (getRidingEntity() instanceof IMissileHitCallback) {
+			((IMissileHitCallback) getRidingEntity()).onMissileImpact(world, x, y, z);
 		}
 	}
 
 	@Override
 	public void onMissileImpactEntity(World world, Entity entity) {
-		if (this.ridingEntity instanceof IMissileHitCallback) {
-			((IMissileHitCallback) this.ridingEntity).onMissileImpactEntity(world, entity);
+		if (getRidingEntity() instanceof IMissileHitCallback) {
+			((IMissileHitCallback) getRidingEntity()).onMissileImpactEntity(world, entity);
 		}
 	}
 
@@ -1120,8 +1133,8 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 
 	@Override
 	public void onStuckDetected() {
-		if (this.riddenByEntity instanceof NpcBase) {
-			((NpcBase) this.riddenByEntity).onStuckDetected();
+		if (getControllingPassenger() instanceof NpcBase) {
+			((NpcBase) getControllingPassenger()).onStuckDetected();
 		}
 	}
 

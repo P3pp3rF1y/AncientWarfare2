@@ -23,7 +23,6 @@ package net.shadowmage.ancientwarfare.vehicle.entity;
 
 import net.minecraft.entity.Entity;
 import net.shadowmage.ancientwarfare.vehicle.pathing.Node;
-import net.shadowmage.ancientwarfare.vehicle.pathing.PathWorldAccess;
 
 import java.util.List;
 
@@ -38,8 +37,6 @@ public interface IPathableEntity {
 	boolean isPathableEntityOnLadder();
 
 	Entity getEntity();
-
-	PathWorldAccess getWorldAccess();
 
 	void onStuckDetected();
 

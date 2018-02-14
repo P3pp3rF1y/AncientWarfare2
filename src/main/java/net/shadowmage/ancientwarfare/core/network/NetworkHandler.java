@@ -39,6 +39,7 @@ public final class NetworkHandler implements IGuiHandler {
     public static final int PACKET_BLOCK_EVENT = 14;
     public static final int PACKET_VEHICLE_INPUT_STATE = 15;//full input state packet, from client->server
     public static final int PACKET_VEHICLE_INPUT_RESPONSE = 16;//response to an input state/change packet, from server->client
+	public static final int PACKET_VEHICLE = 17; //vehical packet
 
     public static final int GUI_CRAFTING = 0;
     public static final int GUI_SCANNER = 1;

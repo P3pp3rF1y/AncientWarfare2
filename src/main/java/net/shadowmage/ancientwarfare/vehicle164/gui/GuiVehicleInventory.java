@@ -24,11 +24,11 @@ package shadowmage.ancient_warfare.client.gui.vehicle;
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.vehicle.AncientWarfareVehicles;
+import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicle;
 import shadowmage.ancient_warfare.client.gui.GuiContainerAdvanced;
 import shadowmage.ancient_warfare.client.gui.elements.IGuiElement;
 import shadowmage.ancient_warfare.common.container.ContainerDummy;
 import shadowmage.ancient_warfare.common.container.ContainerVehicle;
-import shadowmage.ancient_warfare.common.network.Packet02Vehicle;
 
 public class GuiVehicleInventory extends GuiContainerAdvanced {
 	ContainerVehicle container;
@@ -85,7 +85,7 @@ public class GuiVehicleInventory extends GuiContainerAdvanced {
 				mc.displayGuiScreen(new GuiVehicleStats(new ContainerDummy(), ((ContainerVehicle) this.inventorySlots).vehicle));
 				break;
 			case 2:
-				Packet02Vehicle pkt = new Packet02Vehicle();
+				PacketVehicle pkt = new PacketVehicle();
 				pkt.setParams(((ContainerVehicle) this.inventorySlots).vehicle);
 				pkt.setPackCommand();
 				pkt.sendPacketToServer();

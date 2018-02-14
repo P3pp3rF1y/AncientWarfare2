@@ -19,15 +19,18 @@
  * along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package shadowmage.ancient_warfare.common.network;
+package net.shadowmage.ancientwarfare.vehicle.network;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
+import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
-public class Packet02Vehicle extends PacketBase {
+public class PacketVehicle extends PacketBase {
+	//TODO refactor and break down into smaller packets
+
 	int entityID;
 
 	@Override

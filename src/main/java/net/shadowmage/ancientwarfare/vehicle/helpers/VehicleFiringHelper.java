@@ -29,10 +29,10 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleMovementType;
 import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 import net.shadowmage.ancientwarfare.vehicle.missiles.MissileBase;
+import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicle;
 import shadowmage.ancient_warfare.common.config.Config;
 import shadowmage.ancient_warfare.common.config.Settings;
 import shadowmage.ancient_warfare.common.interfaces.INBTTaggable;
-import shadowmage.ancient_warfare.common.network.Packet02Vehicle;
 import shadowmage.ancient_warfare.common.npcs.NpcBase;
 import shadowmage.ancient_warfare.common.utils.Pair;
 import shadowmage.ancient_warfare.common.utils.Vec3d;
@@ -330,7 +330,7 @@ public class VehicleFiringHelper implements INBTTaggable {
 			if (shouldFire)//if should fire...do so.  if server, relay should-fire to clients
 			{
 				if (!vehicle.world.isRemote) {
-					Packet02Vehicle pkt = new Packet02Vehicle();
+					PacketVehicle pkt = new PacketVehicle();
 					pkt.setParams(vehicle);
 					NBTTagCompound reply = new NBTTagCompound();
 					reply.setBoolean("fm", true);
@@ -367,7 +367,7 @@ public class VehicleFiringHelper implements INBTTaggable {
 		}
 		if (!vehicle.world.isRemote && sendReply) {
 			reply.setBoolean("aim", true);
-			Packet02Vehicle pkt = new Packet02Vehicle();
+			PacketVehicle pkt = new PacketVehicle();
 			pkt.setParams(vehicle);
 			pkt.setInputData(reply);
 			pkt.sendPacketToAllTrackingClients(vehicle);
@@ -388,7 +388,7 @@ public class VehicleFiringHelper implements INBTTaggable {
 				tag.setFloat("fmy", (float) target.yCoord);
 				tag.setFloat("fmz", (float) target.zCoord);
 			}
-			Packet02Vehicle pkt = new Packet02Vehicle();
+			PacketVehicle pkt = new PacketVehicle();
 			pkt.setParams(vehicle);
 			pkt.setInputData(tag);
 			pkt.sendPacketToServer();
@@ -446,7 +446,7 @@ public class VehicleFiringHelper implements INBTTaggable {
 			if (yawUpdated) {
 				tag.setFloat("aimYaw", clientTurretYaw);
 			}
-			Packet02Vehicle pkt = new Packet02Vehicle();
+			PacketVehicle pkt = new PacketVehicle();
 			pkt.setParams(vehicle);
 			pkt.setInputData(tag);
 			pkt.sendPacketToServer();
@@ -524,7 +524,7 @@ public class VehicleFiringHelper implements INBTTaggable {
 			if (updatePower) {
 				tag.setFloat("aimPow", this.clientLaunchSpeed);
 			}
-			Packet02Vehicle pkt = new Packet02Vehicle();
+			PacketVehicle pkt = new PacketVehicle();
 			pkt.setParams(vehicle);
 			pkt.setInputData(tag);
 			pkt.sendPacketToServer();
@@ -645,7 +645,7 @@ public class VehicleFiringHelper implements INBTTaggable {
 				tag.setFloat("aimPow", this.vehicle.localLaunchPower);
 			}
 			if (!vehicle.world.isRemote) {
-				Packet02Vehicle pkt = new Packet02Vehicle();
+				PacketVehicle pkt = new PacketVehicle();
 				pkt.setParams(vehicle);
 				pkt.setInputData(tag);
 				pkt.sendPacketToAllTrackingClients(vehicle);

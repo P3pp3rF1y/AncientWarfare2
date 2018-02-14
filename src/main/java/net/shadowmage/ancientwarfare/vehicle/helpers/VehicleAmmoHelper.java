@@ -26,11 +26,11 @@ import net.minecraft.nbt.NBTTagList;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 import net.shadowmage.ancientwarfare.vehicle.missiles.MissileBase;
+import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicle;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleAmmoEntry;
 import shadowmage.ancient_warfare.common.config.Config;
 import shadowmage.ancient_warfare.common.interfaces.INBTTaggable;
 import shadowmage.ancient_warfare.common.item.ItemLoader;
-import shadowmage.ancient_warfare.common.network.Packet02Vehicle;
 import shadowmage.ancient_warfare.common.npcs.NpcBase;
 
 import java.util.ArrayList;
@@ -79,7 +79,7 @@ public class VehicleAmmoHelper implements INBTTaggable {
 				NBTTagCompound tag = new NBTTagCompound();
 				tag.setInteger("num", this.currentAmmoType);
 				tag.setInteger("cnt", entry.ammoCount);
-				Packet02Vehicle pkt = new Packet02Vehicle();
+				PacketVehicle pkt = new PacketVehicle();
 				pkt.setParams(vehicle);
 				pkt.setAmmoUpdate(tag);
 				pkt.sendPacketToAllTrackingClients(vehicle);
@@ -141,7 +141,7 @@ public class VehicleAmmoHelper implements INBTTaggable {
 		if (type >= 0 && type <= this.ammoEntries.size() && type != this.currentAmmoType) {
 			NBTTagCompound innerTag = new NBTTagCompound();
 			innerTag.setInteger("num", type);
-			Packet02Vehicle pkt = new Packet02Vehicle();
+			PacketVehicle pkt = new PacketVehicle();
 			pkt.setParams(vehicle);
 			pkt.setAmmoSelect(innerTag);
 			pkt.sendPacketToServer();
@@ -180,7 +180,7 @@ public class VehicleAmmoHelper implements INBTTaggable {
 			if (!vehicle.world.isRemote) {
 				NBTTagCompound innerTag = new NBTTagCompound();
 				innerTag.setInteger("num", num);
-				Packet02Vehicle pkt = new Packet02Vehicle();
+				PacketVehicle pkt = new PacketVehicle();
 				pkt.setParams(vehicle);
 				pkt.setAmmoSelect(innerTag);
 				pkt.sendPacketToAllTrackingClients(vehicle);
@@ -239,7 +239,7 @@ public class VehicleAmmoHelper implements INBTTaggable {
 			tagList.appendTag(entryTag);
 		}
 		tag.setTag("list", tagList);
-		Packet02Vehicle pkt = new Packet02Vehicle();
+		PacketVehicle pkt = new PacketVehicle();
 		pkt.setParams(vehicle);
 		pkt.setAmmoData(tag);
 		pkt.sendPacketToAllTrackingClients(vehicle);

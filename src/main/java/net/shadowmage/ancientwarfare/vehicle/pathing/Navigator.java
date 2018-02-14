@@ -28,6 +28,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.MathHelper;
 import net.shadowmage.ancientwarfare.vehicle.entity.IPathableEntity;
+import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import shadowmage.ancient_warfare.common.block.BlockLoader;
 import shadowmage.ancient_warfare.common.gates.EntityGate;
 import shadowmage.ancient_warfare.common.gates.TEGateProxy;
@@ -76,7 +77,7 @@ public class Navigator implements IEntityNavigator, IPathableCallback {
 	 * TODO crawler needs to test for vertical clearance when moving up/down (see theta)
 	 *
 	 */
-	public Navigator(IPathableEntity owner) {
+	public Navigator(VehicleBase owner) {
 		this.owner = owner;
 		this.entity = owner.getEntity();
 		this.world = owner.getWorldAccess();
