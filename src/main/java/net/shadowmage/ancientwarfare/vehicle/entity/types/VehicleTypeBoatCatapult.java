@@ -24,6 +24,7 @@ package net.shadowmage.ancientwarfare.vehicle.entity.types;
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.vehicle.VehicleVarHelpers.CatapultVarHelper;
+import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleMovementType;
 import net.shadowmage.ancientwarfare.vehicle.entity.materials.VehicleMaterial;
@@ -31,7 +32,6 @@ import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.missiles.Ammo;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleUpgradeRegistry;
-import shadowmage.ancient_warfare.common.config.Config;
 
 public class VehicleTypeBoatCatapult extends VehicleType {
 
@@ -64,7 +64,7 @@ public class VehicleTypeBoatCatapult extends VehicleType {
 		this.validAmmoTypes.add(Ammo.ammoArrowIron);
 		this.validAmmoTypes.add(Ammo.ammoArrowIronFlame);
 
-		if (Config.addOversizeAmmo) {
+		if (AWVehicleStatics.oversizeAmmoEnabled) {
 			this.validAmmoTypes.add(Ammo.ammoStoneShot30);
 			this.validAmmoTypes.add(Ammo.ammoStoneShot45);
 			this.validAmmoTypes.add(Ammo.ammoFireShot30);

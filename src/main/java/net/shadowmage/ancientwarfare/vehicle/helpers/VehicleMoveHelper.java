@@ -32,10 +32,10 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleMovementType;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicle;
 import shadowmage.ancient_warfare.common.config.Config;
-import shadowmage.ancient_warfare.common.interfaces.INBTTaggable;
+import shadowmage.ancient_warfare.common.interfaces.INBTSerializable;
 import shadowmage.ancient_warfare.common.utils.BlockTools;
 
-public class VehicleMoveHelper implements INBTTaggable {
+public class VehicleMoveHelper implements INBTSerializable {
 
 	byte forwardInput;
 	byte turnInput;

@@ -21,6 +21,9 @@
 
 package net.shadowmage.ancientwarfare.vehicle.entity.types;
 
+import net.minecraft.util.ResourceLocation;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+
 public class VehicleTypeCatapultStandFixed extends VehicleTypeCatapult {
 	/**
 	 * @param typeNum
@@ -50,7 +53,7 @@ public class VehicleTypeCatapultStandFixed extends VehicleTypeCatapult {
 	}
 
 	@Override
-	public String getTextureForMaterialLevel(int level) {
+	public ResourceLocation getTextureForMaterialLevel(int level) {
 		switch (level) {
 			case 0:
 				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/catapultStandFixed1");

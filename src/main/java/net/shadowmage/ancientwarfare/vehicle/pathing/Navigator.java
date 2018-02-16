@@ -80,7 +80,7 @@ public class Navigator implements IEntityNavigator, IPathableCallback {
 	public Navigator(VehicleBase owner) {
 		this.owner = owner;
 		this.entity = owner.getEntity();
-		this.world = owner.getWorldAccess();
+		this.world = owner.worldAccess;
 		this.path = new EntityPath();
 		finalTarget.reassign(MathHelper.floor(entity.posX), MathHelper.floor(entity.posY), MathHelper.floor(entity.posZ));
 		this.stuckCheckPosition.setup(entity.posX, entity.posY, entity.posZ);

@@ -23,19 +23,13 @@ package net.shadowmage.ancientwarfare.vehicle.missiles;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
-import cpw.mods.fml.common.registry.IEntityAdditionalSpawnData;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.RayTraceResult;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.shadowmage.ancientwarfare.core.util.Trig;
+import net.shadowmage.ancientwarfare.vehicle.entity.IMissileHitCallback;
 import net.shadowmage.ancientwarfare.vehicle.registry.AmmoRegistry;
-import shadowmage.ancient_warfare.common.interfaces.IMissileHitCallback;
 
 import java.util.Iterator;
 import java.util.List;

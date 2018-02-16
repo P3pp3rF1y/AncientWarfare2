@@ -22,16 +22,13 @@
 package net.shadowmage.ancientwarfare.vehicle.entity.types;
 
 import net.shadowmage.ancientwarfare.vehicle.VehicleVarHelpers.CatapultVarHelper;
+import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.materials.VehicleMaterial;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.missiles.Ammo;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleUpgradeRegistry;
-import shadowmage.ancient_warfare.common.config.Config;
-import shadowmage.ancient_warfare.common.item.ItemLoader;
-import shadowmage.ancient_warfare.common.research.ResearchGoal;
-import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
 
 public class VehicleTypeCatapult extends VehicleType {
 
@@ -65,7 +62,7 @@ public class VehicleTypeCatapult extends VehicleType {
 		this.validAmmoTypes.add(Ammo.ammoArrowIron);
 		this.validAmmoTypes.add(Ammo.ammoArrowIronFlame);
 
-		if (Config.addOversizeAmmo) {
+		if (AWVehicleStatics.oversizeAmmoEnabled) {
 			this.validAmmoTypes.add(Ammo.ammoStoneShot30);
 			this.validAmmoTypes.add(Ammo.ammoStoneShot45);
 			this.validAmmoTypes.add(Ammo.ammoFireShot30);
@@ -120,6 +117,7 @@ public class VehicleTypeCatapult extends VehicleType {
 		this.drivable = false;
 		this.riderSits = true;
 		this.riderMovesWithTurret = false;
+/* TODO vehicle recipe
 		this.addNeededResearchForMaterials();
 		this.addNeededResearch(0, ResearchGoal.vehicleTorsion1);
 		this.addNeededResearch(1, ResearchGoal.vehicleTorsion2);
@@ -128,6 +126,7 @@ public class VehicleTypeCatapult extends VehicleType {
 		this.addNeededResearch(4, ResearchGoal.vehicleTorsion5);
 		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.torsionUnit, 3, false, false));
 		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.equipmentBay, 1, false, false));
+*/
 	}
 
 	@Override

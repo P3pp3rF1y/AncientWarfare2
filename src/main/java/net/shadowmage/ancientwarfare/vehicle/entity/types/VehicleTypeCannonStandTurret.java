@@ -21,10 +21,6 @@
 
 package net.shadowmage.ancientwarfare.vehicle.entity.types;
 
-import shadowmage.ancient_warfare.common.item.ItemLoader;
-import shadowmage.ancient_warfare.common.research.ResearchGoal;
-import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
-
 public class VehicleTypeCannonStandTurret extends VehicleTypeCannon {
 
 	/**
@@ -49,12 +45,14 @@ public class VehicleTypeCannonStandTurret extends VehicleTypeCannon {
 		this.turretVerticalOffset = 13.5f * 0.0625f;
 		this.riderVerticalOffset = 0.55f;
 		this.riderForwardsOffset = -1.25f;
+/* TODO vehicle recipe
 		this.addNeededResearch(0, ResearchGoal.vehicleTurrets1);
 		this.addNeededResearch(1, ResearchGoal.vehicleTurrets2);
 		this.addNeededResearch(2, ResearchGoal.vehicleTurrets3);
 		this.addNeededResearch(3, ResearchGoal.vehicleTurrets4);
 		this.addNeededResearch(4, ResearchGoal.vehicleTurrets5);
 		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.turretComponents, 1, false, false));
+*/
 	}
 
 }

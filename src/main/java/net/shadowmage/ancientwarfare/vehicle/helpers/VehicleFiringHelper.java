@@ -32,7 +32,7 @@ import net.shadowmage.ancientwarfare.vehicle.missiles.MissileBase;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicle;
 import shadowmage.ancient_warfare.common.config.Config;
 import shadowmage.ancient_warfare.common.config.Settings;
-import shadowmage.ancient_warfare.common.interfaces.INBTTaggable;
+import shadowmage.ancient_warfare.common.interfaces.INBTSerializable;
 import shadowmage.ancient_warfare.common.npcs.NpcBase;
 import shadowmage.ancient_warfare.common.utils.Pair;
 import shadowmage.ancient_warfare.common.utils.Vec3d;
@@ -44,7 +44,7 @@ import java.util.Random;
  *
  * @author Shadowmage
  */
-public class VehicleFiringHelper implements INBTTaggable {
+public class VehicleFiringHelper implements INBTSerializable {
 
 	protected static Random rng = new Random();
 	/**

@@ -21,16 +21,14 @@
 
 package net.shadowmage.ancientwarfare.vehicle.entity.types;
 
-import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ResourceLocation;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.materials.VehicleMaterial;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.missiles.Ammo;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
-import shadowmage.ancient_warfare.common.item.ItemLoader;
-import shadowmage.ancient_warfare.common.research.ResearchGoal;
-import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
 
 public class VehicleTypeTrebuchetLarge extends VehicleType {
 
@@ -117,6 +115,7 @@ public class VehicleTypeTrebuchetLarge extends VehicleType {
 
 		this.basePitchMax = 70.f;
 		this.basePitchMin = 70.f;
+/* TODO vehicle recipe
 		this.addNeededResearchForMaterials();
 		this.addNeededResearch(0, ResearchGoal.vehicleCounterweights3);
 		this.addNeededResearch(1, ResearchGoal.vehicleCounterweights3);
@@ -127,6 +126,7 @@ public class VehicleTypeTrebuchetLarge extends VehicleType {
 		this.additionalMaterials.add(new ItemStackWrapperCrafting(Item.leather, 12, false, false));
 		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.counterWeightUnit, 12, false, false));
 		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.equipmentBay, 1, false, false));
+*/
 	}
 
 	@Override
@@ -135,7 +135,7 @@ public class VehicleTypeTrebuchetLarge extends VehicleType {
 	}
 
 	@Override
-	public String getTextureForMaterialLevel(int level) {
+	public ResourceLocation getTextureForMaterialLevel(int level) {
 		switch (level) {
 			case 0:
 				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/trebuchet1");

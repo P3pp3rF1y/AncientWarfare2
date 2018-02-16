@@ -21,17 +21,18 @@
 
 package net.shadowmage.ancientwarfare.vehicle.entity.types;
 
+import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.ResourceLocation;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.materials.VehicleMaterial;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.missiles.Ammo;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleUpgradeRegistry;
-import shadowmage.ancient_warfare.common.config.Config;
-import shadowmage.ancient_warfare.common.item.ItemLoader;
-import shadowmage.ancient_warfare.common.research.ResearchGoal;
-import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
 
 public class VehicleTypeCannon extends VehicleType {
 
@@ -52,7 +53,7 @@ public class VehicleTypeCannon extends VehicleType {
 		this.validAmmoTypes.add(Ammo.ammoCanisterShot5);
 		this.validAmmoTypes.add(Ammo.ammoCanisterShot10);
 
-		if (Config.addOversizeAmmo) {
+		if (AWVehicleStatics.oversizeAmmoEnabled) {
 			this.validAmmoTypes.add(Ammo.ammoIronShot15);
 			this.validAmmoTypes.add(Ammo.ammoIronShot25);
 			this.validAmmoTypes.add(Ammo.ammoGrapeShot15);
@@ -97,6 +98,7 @@ public class VehicleTypeCannon extends VehicleType {
 		this.armorBaySize = 3;
 		this.upgradeBaySize = 3;
 		this.ammoBaySize = 6;
+/* TODO vehicle recipe
 		this.addNeededResearchForMaterials();
 		this.addNeededResearch(0, ResearchGoal.vehicleGunpowderWeapons1);
 		this.addNeededResearch(1, ResearchGoal.vehicleGunpowderWeapons2);
@@ -105,10 +107,11 @@ public class VehicleTypeCannon extends VehicleType {
 		this.addNeededResearch(4, ResearchGoal.vehicleGunpowderWeapons5);
 		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.powderCase, 2, false, false));
 		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.equipmentBay, 1, false, false));
+*/
 	}
 
 	@Override
-	public String getTextureForMaterialLevel(int level) {
+	public ResourceLocation getTextureForMaterialLevel(int level) {
 		switch (level) {
 			case 0:
 				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/cannon1");
@@ -157,16 +160,16 @@ public class VehicleTypeCannon extends VehicleType {
 		public void onFiringUpdate() {
 			if (firingTicks == 0 && !vehicle.world.isRemote) {
 				vehicle.playSound(SoundEvents.ENTITY_FIREWORK_LAUNCH, 0.50F, .25F);
-				vehicle.playSound("random.fuse", 1.0F, 0.5F);
+				vehicle.playSound(SoundEvents.ENTITY_TNT_PRIMED, 1.0F, 0.5F);
 			}
 			firingTicks++;
 			if (vehicle.world.isRemote) {
 				//TODO offset
-				vehicle.world.spawnParticle("smoke", vehicle.posX, vehicle.posY + 1.2d, vehicle.posZ, 0.0D, 0.05D, 0.0D);
+				vehicle.world.spawnParticle(EnumParticleTypes.SMOKE_NORMAL, vehicle.posX, vehicle.posY + 1.2d, vehicle.posZ, 0.0D, 0.05D, 0.0D);
 			}
 			if (firingTicks > 10) {
 				if (!vehicle.world.isRemote) {
-					vehicle.playSound("random.explode", 1.f, 1.f);
+					vehicle.playSound(SoundEvents.ENTITY_GENERIC_EXPLODE, 1.f, 1.f);
 				}
 				this.vehicle.firingHelper.startLaunching();
 				firingTicks = 0;

@@ -30,13 +30,13 @@ import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicle;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleUpgradeRegistry;
 import net.shadowmage.ancientwarfare.vehicle.upgrades.IVehicleUpgradeType;
-import shadowmage.ancient_warfare.common.interfaces.INBTTaggable;
+import shadowmage.ancient_warfare.common.interfaces.INBTSerializable;
 import shadowmage.ancient_warfare.common.vehicles.armors.IVehicleArmorType;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class VehicleUpgradeHelper implements INBTTaggable {
+public class VehicleUpgradeHelper implements INBTSerializable {
 
 	/**
 	 * currently installed upgrades, will be iterated through linearly to call upgrade.applyEffects, multiple upgrades may have cumulative effects

@@ -21,10 +21,9 @@
 
 package net.shadowmage.ancientwarfare.vehicle.entity.types;
 
+import net.minecraft.util.ResourceLocation;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleUpgradeRegistry;
-import shadowmage.ancient_warfare.common.item.ItemLoader;
-import shadowmage.ancient_warfare.common.research.ResearchGoal;
-import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
 
 public class VehicleTypeCatapultMobileTurret extends VehicleTypeCatapult {
 
@@ -55,6 +54,7 @@ public class VehicleTypeCatapultMobileTurret extends VehicleTypeCatapult {
 		this.riderMovesWithTurret = true;
 		this.turretRotationMax = 180.f;
 		this.validUpgrades.add(VehicleUpgradeRegistry.speedUpgrade);
+/* TODO vehicle recipe
 		this.addNeededResearch(0, ResearchGoal.vehicleMobility1);
 		this.addNeededResearch(1, ResearchGoal.vehicleMobility2);
 		this.addNeededResearch(2, ResearchGoal.vehicleMobility3);
@@ -67,10 +67,11 @@ public class VehicleTypeCatapultMobileTurret extends VehicleTypeCatapult {
 		this.addNeededResearch(4, ResearchGoal.vehicleTurrets5);
 		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.mobilityUnit, 1, false, false));
 		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.turretComponents, 1, false, false));
+*/
 	}
 
 	@Override
-	public String getTextureForMaterialLevel(int level) {
+	public ResourceLocation getTextureForMaterialLevel(int level) {
 		switch (level) {
 			case 0:
 				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/catapultMobileTurret1");

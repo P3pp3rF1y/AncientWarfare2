@@ -21,8 +21,7 @@
 
 package net.shadowmage.ancientwarfare.vehicle.pathing;
 
-import net.minecraft.block.Block;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.MathHelper;
 
 public class Node implements Comparable {
 
@@ -39,12 +38,7 @@ public class Node implements Comparable {
 	public boolean obstacle = false;
 	;
 	public boolean closed = false;
-	int LADDER = Block.ladder.blockID;
 
-	/**
-	 * @param bX
-	 * @param i
-	 */
 	public Node(int bX, int bY, int bZ) {
 		this.x = bX;
 		this.y = bY;

@@ -21,8 +21,11 @@
 
 package net.shadowmage.ancientwarfare.vehicle.entity.types;
 
+import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.materials.VehicleMaterial;
@@ -30,9 +33,6 @@ import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.missiles.Ammo;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleUpgradeRegistry;
-import shadowmage.ancient_warfare.common.item.ItemLoader;
-import shadowmage.ancient_warfare.common.research.ResearchGoal;
-import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
 
 public class VehicleTypeHwacha extends VehicleType {
 
@@ -102,6 +102,7 @@ public class VehicleTypeHwacha extends VehicleType {
 		this.armorBaySize = 3;
 		this.ammoBaySize = 6;
 		this.upgradeBaySize = 3;
+/*
 		this.addNeededResearchForMaterials();
 		this.addNeededResearch(0, ResearchGoal.vehicleGunpowderWeapons1);
 		this.addNeededResearch(1, ResearchGoal.vehicleGunpowderWeapons2);
@@ -110,10 +111,11 @@ public class VehicleTypeHwacha extends VehicleType {
 		this.addNeededResearch(4, ResearchGoal.vehicleGunpowderWeapons5);
 		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.powderCase, 1, false, false));
 		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.equipmentBay, 1, false, false));
+*/
 	}
 
 	@Override
-	public String getTextureForMaterialLevel(int level) {
+	public ResourceLocation getTextureForMaterialLevel(int level) {
 		switch (level) {
 			case 0:
 				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/hwacha1");

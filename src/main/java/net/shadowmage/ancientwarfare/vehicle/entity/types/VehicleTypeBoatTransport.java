@@ -21,7 +21,8 @@
 
 package net.shadowmage.ancientwarfare.vehicle.entity.types;
 
-import net.minecraft.block.Block;
+import net.minecraft.util.ResourceLocation;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.vehicle.VehicleVarHelpers.DummyVehicleHelper;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleMovementType;
@@ -29,9 +30,6 @@ import net.shadowmage.ancientwarfare.vehicle.entity.materials.VehicleMaterial;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleUpgradeRegistry;
-import shadowmage.ancient_warfare.common.item.ItemLoader;
-import shadowmage.ancient_warfare.common.research.ResearchGoal;
-import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
 
 public class VehicleTypeBoatTransport extends VehicleType {
 
@@ -67,6 +65,7 @@ public class VehicleTypeBoatTransport extends VehicleType {
 		this.displayTooltip.add("item.vehicleSpawner.tooltip.noturret");
 		this.displayTooltip.add("item.vehicleSpawner.tooltip.storage");
 		this.validUpgrades.add(VehicleUpgradeRegistry.speedUpgrade);
+/* TODO vehicle recipe
 		this.addNeededResearchForMaterials();
 		this.addNeededResearch(0, ResearchGoal.vehicleMobility1);
 		this.addNeededResearch(1, ResearchGoal.vehicleMobility2);
@@ -83,10 +82,11 @@ public class VehicleTypeBoatTransport extends VehicleType {
 		this.additionalMaterials.add(new ItemStackWrapperCrafting(Block.chest, 8, false, false));
 		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.equipmentBay, 1, false, false));
 		this.additionalMaterials.add(new ItemStackWrapperCrafting(Block.cactus, 2, false, false));
+*/
 	}
 
 	@Override
-	public String getTextureForMaterialLevel(int level) {
+	public ResourceLocation getTextureForMaterialLevel(int level) {
 		switch (level) {
 			case 0:
 				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/boatTransport1");

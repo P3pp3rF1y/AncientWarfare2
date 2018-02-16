@@ -21,22 +21,26 @@
 
 package net.shadowmage.ancientwarfare.vehicle.helpers;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.common.util.INBTSerializable;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
+import net.shadowmage.ancientwarfare.vehicle.item.AWVehicleItems;
 import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 import net.shadowmage.ancientwarfare.vehicle.missiles.MissileBase;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicle;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleAmmoEntry;
-import shadowmage.ancient_warfare.common.config.Config;
-import shadowmage.ancient_warfare.common.interfaces.INBTTaggable;
-import shadowmage.ancient_warfare.common.item.ItemLoader;
-import shadowmage.ancient_warfare.common.npcs.NpcBase;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class VehicleAmmoHelper implements INBTTaggable {
+public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 
 	private VehicleBase vehicle;
 
@@ -68,10 +72,11 @@ public class VehicleAmmoHelper implements INBTTaggable {
 			return;
 		}
 		if (currentAmmoType >= 0 && currentAmmoType < this.ammoEntries.size()) {
-			num = num - vehicle.inventory.ammoInventory.decreaseCountOf(ItemLoader.ammoItem.itemID, this.getCurrentAmmoType().getAmmoType(), num);
+			int removed = InventoryTools
+					.removeItems(vehicle.inventory.ammoInventory, new ItemStack(AWVehicleItems.ammo, getCurrentAmmoType().getAmmoType()), num).getCount();
 			VehicleAmmoEntry entry = this.ammoEntries.get(this.currentAmmoType);
 			int origCount = entry.ammoCount;
-			entry.ammoCount -= num;
+			entry.ammoCount -= removed;
 			if (entry.ammoCount < 0) {
 				entry.ammoCount = 0;
 			}
@@ -82,7 +87,7 @@ public class VehicleAmmoHelper implements INBTTaggable {
 				PacketVehicle pkt = new PacketVehicle();
 				pkt.setParams(vehicle);
 				pkt.setAmmoUpdate(tag);
-				pkt.sendPacketToAllTrackingClients(vehicle);
+				NetworkHandler.sendToAllTracking(vehicle, pkt);
 			}
 		}
 	}
@@ -94,7 +99,7 @@ public class VehicleAmmoHelper implements INBTTaggable {
 	 * @return
 	 */
 	public int getCurrentAmmoCount() {
-		if (!Config.soldiersUseAmmo && vehicle.riddenByEntity instanceof NpcBase) {
+		if (!AWVehicleStatics.soldiersUseAmmo && vehicle.getControllingPassenger() instanceof NpcBase) {
 			return 64;
 		}
 		if (this.ammoEntries.size() > 0 && this.currentAmmoType < this.ammoEntries.size()) {
@@ -144,7 +149,7 @@ public class VehicleAmmoHelper implements INBTTaggable {
 			PacketVehicle pkt = new PacketVehicle();
 			pkt.setParams(vehicle);
 			pkt.setAmmoSelect(innerTag);
-			pkt.sendPacketToServer();
+			NetworkHandler.sendToServer(pkt);
 		}
 	}
 
@@ -183,7 +188,7 @@ public class VehicleAmmoHelper implements INBTTaggable {
 				PacketVehicle pkt = new PacketVehicle();
 				pkt.setParams(vehicle);
 				pkt.setAmmoSelect(innerTag);
-				pkt.sendPacketToAllTrackingClients(vehicle);
+				NetworkHandler.sendToAllTracking(vehicle, pkt);
 			}
 			float maxPower = vehicle.firingHelper.getAdjustedMaxMissileVelocity();
 			if (!vehicle.canAimPower()) {
@@ -242,7 +247,7 @@ public class VehicleAmmoHelper implements INBTTaggable {
 		PacketVehicle pkt = new PacketVehicle();
 		pkt.setParams(vehicle);
 		pkt.setAmmoData(tag);
-		pkt.sendPacketToAllTrackingClients(vehicle);
+		NetworkHandler.sendToAllTracking(vehicle, pkt);
 	}
 
 	/**
@@ -255,9 +260,9 @@ public class VehicleAmmoHelper implements INBTTaggable {
 		for (VehicleAmmoEntry ent : this.ammoEntries) {
 			ent.ammoCount = 0;
 		}
-		NBTTagList tagList = tag.getTagList("list");
+		NBTTagList tagList = tag.getTagList("list", Constants.NBT.TAG_COMPOUND);
 		for (int i = 0; i < tagList.tagCount(); i++) {
-			NBTTagCompound entryTag = (NBTTagCompound) tagList.tagAt(i);
+			NBTTagCompound entryTag = (NBTTagCompound) tagList.get(i);
 			int type = entryTag.getInteger("type");
 			int count = entryTag.getInteger("count");
 			for (VehicleAmmoEntry ent : this.ammoEntries) {
@@ -270,8 +275,8 @@ public class VehicleAmmoHelper implements INBTTaggable {
 	}
 
 	public IAmmo getCurrentAmmoType() {
-		if (!Config.soldiersUseAmmo && vehicle.riddenByEntity instanceof NpcBase) {
-			NpcBase npc = (NpcBase) vehicle.riddenByEntity;
+		if (!AWVehicleStatics.soldiersUseAmmo && vehicle.getControllingPassenger() instanceof NpcBase) {
+			NpcBase npc = (NpcBase) vehicle.getControllingPassenger();
 			return vehicle.vehicleType.getAmmoForSoldierRank(npc.rank);
 		}
 		if (currentAmmoType < this.ammoEntries.size() && currentAmmoType >= 0) {
@@ -304,7 +309,7 @@ public class VehicleAmmoHelper implements INBTTaggable {
 			missile.setMissileParams2(ammo, x, y, z, yaw, pitch, velocity);
 			missile.setMissileCallback(vehicle);
 			missile.setLaunchingEntity(vehicle);
-			missile.setShooter(vehicle.riddenByEntity);
+			missile.setShooter(vehicle.getControllingPassenger());
 			return missile;
 		}
 		return null;
@@ -332,9 +337,9 @@ public class VehicleAmmoHelper implements INBTTaggable {
 			ent.ammoCount = 0;
 		}
 		this.currentAmmoType = tag.getInteger("am");
-		NBTTagList tagList = tag.getTagList("list");
+		NBTTagList tagList = tag.getTagList("list", Constants.NBT.TAG_COMPOUND);
 		for (int i = 0; i < tagList.tagCount(); i++) {
-			NBTTagCompound entryTag = (NBTTagCompound) tagList.tagAt(i);
+			NBTTagCompound entryTag = (NBTTagCompound) tagList.get(i);
 			int num = entryTag.getInteger("num");
 			int cnt = entryTag.getInteger("cnt");
 			for (VehicleAmmoEntry ent : this.ammoEntries) {

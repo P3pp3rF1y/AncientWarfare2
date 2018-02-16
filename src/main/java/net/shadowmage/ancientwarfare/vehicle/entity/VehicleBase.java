@@ -28,7 +28,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
@@ -46,7 +45,9 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.Trig;
@@ -68,16 +69,16 @@ import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicle;
 import net.shadowmage.ancientwarfare.vehicle.pathing.Navigator;
 import net.shadowmage.ancientwarfare.vehicle.pathing.Node;
-import net.shadowmage.ancientwarfare.vehicle.pathing.PathWorldAccess;
 import net.shadowmage.ancientwarfare.vehicle.pathing.PathWorldAccessEntity;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleRegistry;
 import net.shadowmage.ancientwarfare.vehicle.upgrades.IVehicleUpgradeType;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
-public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, IMissileHitCallback, IEntityContainerSynch, IPathableEntity, IInventory {
+public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, IMissileHitCallback, IEntityContainerSynch, IPathableEntity {
 
 	private static final DataParameter<Integer> VEHICLE_HEALTH = EntityDataManager.createKey(VehicleBase.class, DataSerializers.VARINT);
 	private static final DataParameter<Byte> FORWARD_INPUT = EntityDataManager.createKey(VehicleBase.class, DataSerializers.BYTE);
@@ -1122,11 +1123,6 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	}
 
 	@Override
-	public PathWorldAccess getWorldAccess() {
-		return worldAccess;
-	}
-
-	@Override
 	public float getDefaultMoveSpeed() {
 		return this.currentForwardSpeedMax;
 	}
@@ -1138,68 +1134,12 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		}
 	}
 
+	@Nullable
 	@Override
-	public int getSizeInventory() {
-		return inventory.storageInventory.getSizeInventory();
-	}
-
-	@Override
-	public ItemStack getStackInSlot(int i) {
-		return inventory.storageInventory.getStackInSlot(i);
-	}
-
-	@Override
-	public ItemStack decrStackSize(int i, int j) {
-		return inventory.storageInventory.decrStackSize(i, j);
-	}
-
-	@Override
-	public ItemStack getStackInSlotOnClosing(int i) {
-		return inventory.storageInventory.getStackInSlotOnClosing(i);
-	}
-
-	@Override
-	public void setInventorySlotContents(int i, ItemStack itemstack) {
-		inventory.storageInventory.setInventorySlotContents(i, itemstack);
-	}
-
-	@Override
-	public String getInvName() {
-		return inventory.storageInventory.getInvName();
-	}
-
-	@Override
-	public boolean isInvNameLocalized() {
-		return inventory.storageInventory.isInvNameLocalized();
-	}
-
-	@Override
-	public int getInventoryStackLimit() {
-		return inventory.storageInventory.getInventoryStackLimit();
-	}
-
-	@Override
-	public void onInventoryChanged() {
-		inventory.storageInventory.onInventoryChanged();
-	}
-
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer) {
-		return inventory.storageInventory.isUseableByPlayer(entityplayer);
-	}
-
-	@Override
-	public void openChest() {
-
-	}
-
-	@Override
-	public void closeChest() {
-
-	}
-
-	@Override
-	public boolean isItemValidForSlot(int i, ItemStack itemstack) {
-		return inventory.storageInventory.isItemValidForSlot(i, itemstack);
+	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+			return (T) inventory.storageInventory;
+		}
+		return super.getCapability(capability, facing);
 	}
 }

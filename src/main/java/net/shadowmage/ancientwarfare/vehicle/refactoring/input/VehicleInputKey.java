@@ -1,6 +1,6 @@
 package net.shadowmage.ancientwarfare.vehicle.refactoring.input;
 
-import net.shadowmage.ancientwarfare.vehicle.refactoring.config.AWVehicleStatics;
+import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 
 public enum VehicleInputKey {
     FORWARD(AWVehicleStatics.KEY_VEHICLE_FORWARD),

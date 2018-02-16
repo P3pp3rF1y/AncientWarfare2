@@ -24,10 +24,9 @@ package shadowmage.ancient_warfare.common.targeting;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import shadowmage.ancient_warfare.common.interfaces.INBTTaggable;
 import shadowmage.ancient_warfare.common.interfaces.ITargetEntry;
 
-public class TargetPosition implements ITargetEntry, INBTTaggable {
+public class TargetPosition implements ITargetEntry, INBTSerializable {
 
 	protected TargetType type;
 	protected int x;
