@@ -23,15 +23,10 @@ package net.shadowmage.ancientwarfare.vehicle.missiles;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
-import net.minecraft.util.RayTraceResult;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
-import shadowmage.ancient_warfare.common.crafting.ResourceListRecipe;
-import shadowmage.ancient_warfare.common.research.IResearchGoal;
-import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -77,7 +72,9 @@ public interface IAmmo {
 
 	IAmmo getSecondaryAmmoType();//if this is just a 'container' ammo, get the contained type
 
+/* TODO ammo rendering
 	Icon getDisplayIcon();//pull the icon for this item from..wherever (desc. registry).
+*/
 
 	int getSecondaryAmmoTypeCount();//get the contained qty of what this ammo represents (used by cluster/grapeshot)
 
@@ -116,6 +113,7 @@ public interface IAmmo {
 
 	void onImpactEntity(World world, Entity ent, float x, float y, float z, MissileBase missile);//called when the entity impacts another entity
 
+/* TODO ammo/vehicle recipes
 	ResourceListRecipe constructRecipe();
 
 	Collection<Integer> getNeededResearch();
@@ -127,5 +125,6 @@ public interface IAmmo {
 	Collection<ItemStackWrapperCrafting> getResources();
 
 	int getNumCrafted();
+*/
 
 }

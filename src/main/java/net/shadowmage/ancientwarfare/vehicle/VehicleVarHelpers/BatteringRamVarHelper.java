@@ -30,7 +30,6 @@ import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.missiles.DamageType;
 import shadowmage.ancient_warfare.common.utils.BlockPosition;
 import shadowmage.ancient_warfare.common.utils.BlockTools;
-import shadowmage.ancient_warfare.common.warzone.WarzoneManager;
 
 import java.util.List;
 
@@ -112,9 +111,10 @@ public class BatteringRamVarHelper extends VehicleFiringVarsHelper {
 					ent.attackEntityFrom(DamageType.batteringDamage, 5 + vehicle.vehicleMaterialLevel);
 				}
 			}
+/* TODO warzone implementation?
 			if (WarzoneManager.instance().shouldBreakBlock(vehicle.world, pos.x, pos.y, pos.z)) {
-				BlockTools.breakBlockAndDrop(vehicle.world, pos.x, pos.y, pos.z, 0);
-			}
+*/
+			BlockTools.breakBlockAndDrop(vehicle.world, pos.x, pos.y, pos.z, 0);
 		}
 	}
 

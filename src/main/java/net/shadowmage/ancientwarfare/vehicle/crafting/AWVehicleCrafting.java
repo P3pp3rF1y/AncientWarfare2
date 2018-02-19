@@ -30,7 +30,7 @@
 //                this.upgradeRecipes.add(recipe);
 //            }
 //        }
-//        for (IVehicleArmorType t : ArmorRegistry.instance().getArmorTypes()) {
+//        for (IVehicleArmor t : ArmorRegistry.instance().getArmorTypes()) {
 //            recipe = t.constructRecipe();
 //            if (t != null) {
 //                this.upgradeRecipes.add(recipe);

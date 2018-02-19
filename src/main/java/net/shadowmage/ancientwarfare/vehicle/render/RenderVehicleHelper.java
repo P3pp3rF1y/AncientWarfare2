@@ -57,7 +57,7 @@ public class RenderVehicleHelper extends Render implements IItemRenderer {
 	@Override
 	public void doRender(Entity var1, double x, double y, double z, float yaw, float tick) {
 		boolean useAlpha = false;
-		if (!Settings.renderVehiclesInFirstPerson && var1.riddenByEntity == mc.thePlayer && mc.gameSettings.thirdPersonView == 0) {
+		if (!Settings.renderVehiclesInFirstPerson && var1.getControllingPassenger() == mc.thePlayer && mc.gameSettings.thirdPersonView == 0) {
 			useAlpha = true;
 			GL11.glColor4f(1.f, 1.f, 1.f, 0.2f);
 			GL11.glEnable(GL11.GL_BLEND);
@@ -85,7 +85,7 @@ public class RenderVehicleHelper extends Render implements IItemRenderer {
 		/**
 		 * dont' render nameplate for the vehicle that thePlayer is on
 		 */
-		if (Settings.getRenderVehicleNameplates() && vehicle.riddenByEntity != mc.thePlayer) {
+		if (Settings.getRenderVehicleNameplates() && vehicle.getControllingPassenger() != mc.thePlayer) {
 			renderNamePlate(vehicle, x, y, z, yaw, tick);
 		}
 	}

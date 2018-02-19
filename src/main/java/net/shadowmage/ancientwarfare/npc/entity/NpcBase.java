@@ -83,7 +83,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	private UUID ownerUuid = new UUID(0, 0);//uuid of the owner of this NPC, used for checking teams
 	protected String followingPlayerName;//set/cleared onInteract from player if player.team==this.team
 
-	protected NpcLevelingStats levelingStats;
+	private NpcLevelingStats levelingStats;
 
 	/*
 	 * a single base texture for ALL npcs to share, used in case other textures were not set

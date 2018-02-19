@@ -113,7 +113,7 @@ public class VehicleTypeChestCart extends VehicleType {
 		//public boolean interact(EntityPlayer player)
 		//  {
 		//  boolean control = PlayerTracker.instance().isControlPressed(player);
-		//  if(vehicle.mountable() && !player.world.isRemote && !control && (vehicle.riddenByEntity==null || vehicle.riddenByEntity==player))
+		//  if(vehicle.mountable() && !player.world.isRemote && !control && (vehicle.getControllingPassenger()==null || vehicle.getControllingPassenger()==player))
 		//    {
 		//    player.mountEntity(vehicle);
 		//    return true;

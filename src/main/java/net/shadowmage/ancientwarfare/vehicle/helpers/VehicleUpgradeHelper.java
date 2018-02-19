@@ -23,6 +23,8 @@ package net.shadowmage.ancientwarfare.vehicle.helpers;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.DamageSource;
+import net.minecraftforge.common.util.INBTSerializable;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.vehicle.armors.IVehicleArmor;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.missiles.DamageType;
@@ -30,13 +32,11 @@ import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicle;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleUpgradeRegistry;
 import net.shadowmage.ancientwarfare.vehicle.upgrades.IVehicleUpgradeType;
-import shadowmage.ancient_warfare.common.interfaces.INBTSerializable;
-import shadowmage.ancient_warfare.common.vehicles.armors.IVehicleArmorType;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class VehicleUpgradeHelper implements INBTSerializable {
+public class VehicleUpgradeHelper implements INBTSerializable<NBTTagCompound> {
 
 	/**
 	 * currently installed upgrades, will be iterated through linearly to call upgrade.applyEffects, multiple upgrades may have cumulative effects
@@ -80,7 +80,7 @@ public class VehicleUpgradeHelper implements INBTSerializable {
 		return -1;
 	}
 
-	public IVehicleArmorType getArmorFromLocal(int local) {
+	public IVehicleArmor getArmorFromLocal(int local) {
 		if (local >= 0 && local < this.validArmorTypes.size()) {
 			return this.validArmorTypes.get(local);
 		}
@@ -102,17 +102,11 @@ public class VehicleUpgradeHelper implements INBTSerializable {
 			}
 		}
 		NBTTagCompound tag = new NBTTagCompound();
-		int len = this.upgrades.size();
-		int[] upInts = new int[len];
-		for (int i = 0; i < this.upgrades.size(); i++) {
-			upInts[i] = this.upgrades.get(i).getUpgradeGlobalTypeNum();
-		}
-
-		tag.setIntArray("ints", upInts);
+		serializeUpgrades(tag);
 
 		this.installedArmor.clear();
-		List<IVehicleArmorType> armors = vehicle.inventory.getInventoryArmor();
-		for (IVehicleArmorType ar : armors) {
+		List<IVehicleArmor> armors = vehicle.inventory.getInventoryArmor();
+		for (IVehicleArmor ar : armors) {
 			//    Config.logDebug("installed armor: "+ar.getDisplayName());
 			if (this.validArmorTypes.contains(ar)) {
 				this.installedArmor.add(ar);
@@ -124,17 +118,33 @@ public class VehicleUpgradeHelper implements INBTSerializable {
 				//        }
 			}
 		}
-		int[] arInts = new int[this.installedArmor.size()];
-		for (int i = 0; i < this.installedArmor.size(); i++) {
-			arInts[i] = this.installedArmor.get(i).getGlobalArmorType();
-		}
-		tag.setIntArray("ints2", arInts);
+
+		serializeInstalledArmors(tag);
 
 		PacketVehicle pkt = new PacketVehicle();
 		pkt.setParams(vehicle);
 		pkt.setUpgradeData(tag);
-		pkt.sendPacketToAllTrackingClients(vehicle);
+		NetworkHandler.sendToAllTracking(vehicle, pkt);
 		this.updateUpgradeStats();
+	}
+
+	private void serializeUpgrades(NBTTagCompound tag) {
+		int len = this.upgrades.size();
+		int[] upInts = new int[len];
+		for (int i = 0; i < this.upgrades.size(); i++) {
+			upInts[i] = this.upgrades.get(i).getUpgradeGlobalTypeNum();
+		}
+
+		tag.setIntArray("ints", upInts);
+	}
+
+	private void serializeInstalledArmors(NBTTagCompound tag) {
+		int[] armorTypes = new int[installedArmor.size()];
+		for (int i = 0; i < armorTypes.length; i++) {
+			armorTypes[i] = installedArmor.get(i).getArmorType().ordinal();
+		}
+
+		tag.setIntArray("armors", armorTypes);
 	}
 
 	/**
@@ -142,6 +152,25 @@ public class VehicleUpgradeHelper implements INBTSerializable {
 	 */
 	public void handleUpgradePacketData(NBTTagCompound tag) {
 		this.upgrades.clear();
+		deserializeUpgrades(tag);
+
+		this.installedArmor.clear();
+		deserializeInstalledArmor(tag);
+
+		this.updateUpgradeStats();
+	}
+
+	private void deserializeInstalledArmor(NBTTagCompound tag) {
+		int[] arInts = tag.getIntArray("armors");
+		for (int i = 0; i < arInts.length; i++) {
+			IVehicleArmor armor = ArmorRegistry.getArmorType(arInts[i]);
+			if (armor != null) {
+				this.installedArmor.add(armor);
+			}
+		}
+	}
+
+	private void deserializeUpgrades(NBTTagCompound tag) {
 		int[] upInts = tag.getIntArray("ints");
 		for (int i = 0; i < upInts.length; i++) {
 			int up = upInts[i];
@@ -150,17 +179,6 @@ public class VehicleUpgradeHelper implements INBTSerializable {
 				this.upgrades.add(upgrade);
 			}
 		}
-
-		this.installedArmor.clear();
-		int[] arInts = tag.getIntArray("ints2");
-		for (int i = 0; i < arInts.length; i++) {
-			IVehicleArmorType armor = ArmorRegistry.instance().getArmorType(arInts[i]);
-			if (armor != null) {
-				this.installedArmor.add(armor);
-			}
-		}
-
-		this.updateUpgradeStats();
 	}
 
 	/**
@@ -172,7 +190,7 @@ public class VehicleUpgradeHelper implements INBTSerializable {
 		for (IVehicleUpgradeType upgrade : this.upgrades) {
 			upgrade.applyVehicleEffects(vehicle);
 		}
-		for (IVehicleArmorType armor : this.installedArmor) {
+		for (IVehicleArmor armor : this.installedArmor) {
 			//    Config.logDebug("updating armor stats");
 			vehicle.currentExplosionResist += armor.getExplosiveDamageReduction();
 			vehicle.currentFireResist += armor.getFireDamageReduction();
@@ -188,7 +206,7 @@ public class VehicleUpgradeHelper implements INBTSerializable {
 	}
 
 	public void addValidArmor(int type) {
-		IVehicleArmorType armor = ArmorRegistry.instance().getArmorType(type);
+		IVehicleArmor armor = ArmorRegistry.getArmorType(type);
 		if (armor != null && !this.validArmorTypes.contains(armor)) {
 			this.validArmorTypes.add(armor);
 		}
@@ -211,7 +229,8 @@ public class VehicleUpgradeHelper implements INBTSerializable {
 		float floatAmt = (float) amt;
 		if (src == DamageType.explosiveMissile || src.isExplosion()) {
 			return floatAmt * (1 - (vehicle.currentExplosionResist * 0.01f));
-		} else if (src == DamageType.fireMissile || src == DamageType.inFire || src == DamageType.lava || src == DamageType.onFire || src.isFireDamage()) {
+		} else if (src == DamageType.fireMissile || src == DamageSource.IN_FIRE || src == DamageSource.LAVA || src == DamageSource.ON_FIRE || src
+				.isFireDamage()) {
 			return floatAmt * (1 - (vehicle.currentFireResist * 0.01f));
 		}
 		return floatAmt * (1 - (vehicle.currentGenericResist * 0.01f));
@@ -220,32 +239,20 @@ public class VehicleUpgradeHelper implements INBTSerializable {
 	@Override
 	public NBTTagCompound serializeNBT() {
 		NBTTagCompound tag = new NBTTagCompound();
-		int[] ints = new int[this.upgrades.size()];
-		for (int i = 0; i < this.upgrades.size(); i++) {
-			ints[i] = this.upgrades.get(i).getUpgradeGlobalTypeNum();
-		}
-		tag.setIntArray("ints", ints);
 
-		int[] ints2 = new int[this.installedArmor.size()];
-		for (int i = 0; i < this.installedArmor.size(); i++) {
-			ints2[i] = this.installedArmor.get(i).getGlobalArmorType();
-		}
-		tag.setIntArray("ints2", ints2);
+		serializeUpgrades(tag);
+		serializeInstalledArmors(tag);
+
 		return tag;
 	}
 
 	@Override
 	public void deserializeNBT(NBTTagCompound tag) {
 		this.upgrades.clear();
-		int[] ints = tag.getIntArray("ints");
-		for (int i = 0; i < ints.length; i++) {
-			this.upgrades.add(VehicleUpgradeRegistry.instance().getUpgrade(ints[i]));
-		}
+		deserializeUpgrades(tag);
+
 		this.installedArmor.clear();
-		ints = tag.getIntArray("ints2");
-		for (int i = 0; i < ints.length; i++) {
-			this.installedArmor.add(ArmorRegistry.instance().getArmorType(ints[i]));
-		}
+		deserializeInstalledArmor(tag);
 	}
 
 	public boolean hasUpgrade(IVehicleUpgradeType upgrade) {

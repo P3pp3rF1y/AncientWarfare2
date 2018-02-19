@@ -22,20 +22,18 @@
 package net.shadowmage.ancientwarfare.vehicle.helpers;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.Tuple;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+import net.minecraftforge.common.util.INBTSerializable;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.Trig;
+import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleMovementType;
 import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 import net.shadowmage.ancientwarfare.vehicle.missiles.MissileBase;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicle;
-import shadowmage.ancient_warfare.common.config.Config;
-import shadowmage.ancient_warfare.common.config.Settings;
-import shadowmage.ancient_warfare.common.interfaces.INBTSerializable;
-import shadowmage.ancient_warfare.common.npcs.NpcBase;
-import shadowmage.ancient_warfare.common.utils.Pair;
-import shadowmage.ancient_warfare.common.utils.Vec3d;
 
 import java.util.Random;
 
@@ -44,7 +42,9 @@ import java.util.Random;
  *
  * @author Shadowmage
  */
-public class VehicleFiringHelper implements INBTSerializable {
+public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
+
+	private static final int TRAJECTORY_ITERATIONS_CLIENT = 20;
 
 	protected static Random rng = new Random();
 	/**
@@ -125,9 +125,9 @@ public class VehicleFiringHelper implements INBTSerializable {
 				vehicle.ammoHelper.decreaseCurrentAmmo(1);
 
 				Vec3d off = vehicle.getMissileOffset();
-				float x = (float) vehicle.posX + off.x + ox;
-				float y = (float) vehicle.posY + off.y + oy;
-				float z = (float) vehicle.posZ + off.z + oz;
+				float x = (float) (vehicle.posX + off.x + ox);
+				float y = (float) (vehicle.posY + off.y + oy);
+				float z = (float) (vehicle.posZ + off.z + oz);
 
 				int count = ammo.hasSecondaryAmmo() ? ammo.getSecondaryAmmoTypeCount() : 1;
 				//      Config.logDebug("type: "+ammo.getDisplayName()+" missile count to fire: "+count + " hasSecondaryAmmo: "+ammo.hasSecondaryAmmo() + " secType: "+ammo.getSecondaryAmmoType());
@@ -142,7 +142,7 @@ public class VehicleFiringHelper implements INBTSerializable {
 					power = vehicle.localLaunchPower > maxPower ? maxPower : vehicle.localLaunchPower;
 					yaw = vehicle.localTurretRotation;
 					pitch = vehicle.localTurretPitch + vehicle.rotationPitch;
-					if (Config.adjustMissilesForAccuracy) {
+					if (AWVehicleStatics.adjustMissilesForAccuracy) {
 						accuracy = getAccuracyAdjusted();
 						yaw += (float) rng.nextGaussian() * (1.f - accuracy) * 10.f;
 						if (vehicle.canAimPower() && !ammo.isRocket()) {
@@ -165,7 +165,7 @@ public class VehicleFiringHelper implements INBTSerializable {
 						missile.motionZ += vehicle.motionZ;
 					}
 					if (missile != null) {
-						vehicle.world.spawnEntityInWorld(missile);
+						vehicle.world.spawnEntity(missile);
 					}
 				}
 			}
@@ -255,10 +255,12 @@ public class VehicleFiringHelper implements INBTSerializable {
 	 */
 	public float getAccuracyAdjusted() {
 		float accuracy = this.vehicle.currentAccuracy;
-		if (vehicle.riddenByEntity != null && vehicle.riddenByEntity instanceof NpcBase) {
-			NpcBase npc = (NpcBase) vehicle.riddenByEntity;
-			return accuracy *= npc.getAccuracy();
+/* TODO implement
+		if (vehicle.getControllingPassenger() != null && vehicle.getControllingPassenger() instanceof NpcBase) {
+			NpcBase npc = (NpcBase) vehicle.getControllingPassenger();
+			return accuracy * npc.getAccuracy();
 		}
+*/
 		return accuracy;
 	}
 
@@ -303,11 +305,6 @@ public class VehicleFiringHelper implements INBTSerializable {
 		this.reloadingTicks = vehicle.currentReloadTicks;
 	}
 
-	/**
-	 * called from the vehicle to handle input packet data for firing and/or aim updates
-	 *
-	 * @param tag
-	 */
 	public void handleInputData(NBTTagCompound tag) {
 		if (tag.hasKey("fm") && (this.reloadingTicks <= 0 || vehicle.world.isRemote))//if fire command and not already firing (or is client)...
 		{
@@ -318,11 +315,6 @@ public class VehicleFiringHelper implements INBTSerializable {
 		}
 	}
 
-	/**
-	 * handle fire updates
-	 *
-	 * @param tag
-	 */
 	public void handleFireUpdate() {
 		if (reloadingTicks <= 0 || vehicle.world.isRemote)//if not already firing, or client, accept packet
 		{
@@ -335,7 +327,7 @@ public class VehicleFiringHelper implements INBTSerializable {
 					NBTTagCompound reply = new NBTTagCompound();
 					reply.setBoolean("fm", true);
 					pkt.setInputData(reply);
-					pkt.sendPacketToAllTrackingClients(vehicle);
+					NetworkHandler.sendToAllTracking(vehicle, pkt);
 				}
 				this.initiateLaunchSequence();
 			}
@@ -370,7 +362,7 @@ public class VehicleFiringHelper implements INBTSerializable {
 			PacketVehicle pkt = new PacketVehicle();
 			pkt.setParams(vehicle);
 			pkt.setInputData(reply);
-			pkt.sendPacketToAllTrackingClients(vehicle);
+			NetworkHandler.sendToAllTracking(vehicle, pkt);
 		}
 	}
 
@@ -379,19 +371,19 @@ public class VehicleFiringHelper implements INBTSerializable {
 	 *
 	 * @param target
 	 */
-	public void handleFireInput(Vec3 target) {
+	public void handleFireInput(Vec3d target) {
 		if (!this.isFiring && (vehicle.ammoHelper.getCurrentAmmoCount() > 0 || vehicle.ammoHelper.getCurrentAmmoType() == null)) {
 			NBTTagCompound tag = new NBTTagCompound();
 			tag.setBoolean("fm", true);
 			if (target != null) {
-				tag.setFloat("fmx", (float) target.xCoord);
-				tag.setFloat("fmy", (float) target.yCoord);
-				tag.setFloat("fmz", (float) target.zCoord);
+				tag.setFloat("fmx", (float) target.x);
+				tag.setFloat("fmy", (float) target.y);
+				tag.setFloat("fmz", (float) target.z);
 			}
 			PacketVehicle pkt = new PacketVehicle();
 			pkt.setParams(vehicle);
 			pkt.setInputData(tag);
-			pkt.sendPacketToServer();
+			NetworkHandler.sendToServer(pkt);
 		}
 	}
 
@@ -449,7 +441,7 @@ public class VehicleFiringHelper implements INBTSerializable {
 			PacketVehicle pkt = new PacketVehicle();
 			pkt.setParams(vehicle);
 			pkt.setInputData(tag);
-			pkt.sendPacketToServer();
+			NetworkHandler.sendToServer(pkt);
 		}
 	}
 
@@ -458,37 +450,37 @@ public class VehicleFiringHelper implements INBTSerializable {
 	 *
 	 * @param target
 	 */
-	public void handleAimInput(Vec3 target) {
+	public void handleAimInput(Vec3d target) {
 		boolean updated = false;
 		boolean updatePitch = false;
 		boolean updatePower = false;
 		boolean updateYaw = false;
 		Vec3d offset = vehicle.getMissileOffset();
-		float x = (float) vehicle.posX + offset.x;
-		float y = (float) vehicle.posY + offset.y;
-		float z = (float) vehicle.posZ + offset.z;
-		float tx = (float) (target.xCoord - x);
-		float ty = (float) (target.yCoord - y);
-		float tz = (float) (target.zCoord - z);
+		float x = (float) (vehicle.posX + offset.x);
+		float y = (float) (vehicle.posY + offset.y);
+		float z = (float) (vehicle.posZ + offset.z);
+		float tx = (float) (target.x - x);
+		float ty = (float) (target.y - y);
+		float tz = (float) (target.z - z);
 		float range = MathHelper.sqrt(tx * tx + tz * tz);
 		if (vehicle.canAimPitch()) {
-			Pair<Float, Float> angles = Trig.getLaunchAngleToHit(tx, ty, tz, vehicle.localLaunchPower);
-			if (angles.key().isNaN() || angles.value().isNaN()) {
-			} else if (angles.value() >= vehicle.currentTurretPitchMin && angles.value() <= vehicle.currentTurretPitchMax) {
-				if (this.clientTurretPitch != angles.value()) {
-					this.clientTurretPitch = angles.value();
+			Tuple<Float, Float> angles = Trig.getLaunchAngleToHit(tx, ty, tz, vehicle.localLaunchPower);
+			if (angles.getFirst().isNaN() || angles.getSecond().isNaN()) {
+			} else if (angles.getSecond() >= vehicle.currentTurretPitchMin && angles.getSecond() <= vehicle.currentTurretPitchMax) {
+				if (this.clientTurretPitch != angles.getSecond()) {
+					this.clientTurretPitch = angles.getSecond();
 					updated = true;
 					updatePitch = true;
 				}
-			} else if (angles.key() >= vehicle.currentTurretPitchMin && angles.key() <= vehicle.currentTurretPitchMax) {
-				if (this.clientTurretPitch != angles.key()) {
-					this.clientTurretPitch = angles.key();
+			} else if (angles.getFirst() >= vehicle.currentTurretPitchMin && angles.getFirst() <= vehicle.currentTurretPitchMax) {
+				if (this.clientTurretPitch != angles.getFirst()) {
+					this.clientTurretPitch = angles.getFirst();
 					updated = true;
 					updatePitch = true;
 				}
 			}
 		} else if (vehicle.canAimPower()) {
-			float power = Trig.iterativeSpeedFinder(tx, ty, tz, vehicle.localTurretPitch + vehicle.rotationPitch, Settings.getClientPowerIterations(),
+			float power = Trig.iterativeSpeedFinder(tx, ty, tz, vehicle.localTurretPitch + vehicle.rotationPitch, TRAJECTORY_ITERATIONS_CLIENT,
 					(vehicle.ammoHelper.getCurrentAmmoType() != null && vehicle.ammoHelper.getCurrentAmmoType().isRocket()));
 			if (this.clientLaunchSpeed != power && power < getAdjustedMaxMissileVelocity()) {
 				this.clientLaunchSpeed = power;
@@ -497,13 +489,13 @@ public class VehicleFiringHelper implements INBTSerializable {
 			}
 		}
 		if (vehicle.canAimRotate()) {
-			float xAO = (float) (vehicle.posX + offset.x - target.xCoord);
-			float zAO = (float) (vehicle.posZ + offset.z - target.zCoord);
+			float xAO = (float) (vehicle.posX + offset.x - target.x);
+			float zAO = (float) (vehicle.posZ + offset.z - target.z);
 			float yaw = Trig.toDegrees((float) Math.atan2(xAO, zAO));
 			if (yaw != this.clientTurretYaw && (vehicle.currentTurretRotationMax >= 180 || Trig
 					.isAngleBetween(yaw, vehicle.localTurretRotationHome - vehicle.currentTurretRotationMax,
 							vehicle.localTurretRotationHome + vehicle.currentTurretRotationMax))) {
-				if (Trig.getAbsDiff(yaw, this.clientTurretYaw) > 0.25f) {
+				if (Math.abs(yaw - clientTurretYaw) > 0.25f) {
 					this.clientTurretYaw = yaw;
 					updated = true;
 					updateYaw = true;
@@ -527,7 +519,7 @@ public class VehicleFiringHelper implements INBTSerializable {
 			PacketVehicle pkt = new PacketVehicle();
 			pkt.setParams(vehicle);
 			pkt.setInputData(tag);
-			pkt.sendPacketToServer();
+			NetworkHandler.sendToServer(pkt);
 		}
 	}
 
@@ -552,7 +544,7 @@ public class VehicleFiringHelper implements INBTSerializable {
 			dest -= 360.f;
 		}
 		//  Config.logDebug("y: "+yaw+" d: "+dest);
-		return vehicle.localTurretDestPitch == vehicle.localTurretPitch && Trig.getAbsDiff(yaw, dest) < 0.35f;
+		return vehicle.localTurretDestPitch == vehicle.localTurretPitch && Math.abs(yaw - dest) < 0.35f;
 	}
 
 	public boolean isNearTarget() {
@@ -571,48 +563,41 @@ public class VehicleFiringHelper implements INBTSerializable {
 			dest -= 360.f;
 		}
 		//  Config.logDebug("y: "+yaw+" d: "+dest);
-		return Trig.getAbsDiff(vehicle.localTurretDestPitch, vehicle.localTurretPitch) < 5 && vehicle.localTurretDestPitch == vehicle.localTurretPitch && Trig
-				.getAbsDiff(yaw, dest) < 5f;
+		return Math.abs(vehicle.localTurretDestPitch - vehicle.localTurretPitch) < 5 && vehicle.localTurretDestPitch == vehicle.localTurretPitch && Math
+				.abs(yaw - dest) < 5f;
 	}
 
-	/**
-	 * used by soldiers to attempt to target a position. range should have already been validated by getEffectiveRange at some point
-	 *
-	 * @param o
-	 * @param oY
-	 * @param oZ
-	 */
 	public void handleSoldierTargetInput(double targetX, double targetY, double targetZ) {
 		boolean updated = false;
 		boolean updatePitch = false;
 		boolean updatePower = false;
 		boolean updateYaw = false;
 		Vec3d offset = vehicle.getMissileOffset();
-		float x = (float) vehicle.posX + offset.x;
-		float y = (float) vehicle.posY + offset.y;
-		float z = (float) vehicle.posZ + offset.z;
+		float x = (float) (vehicle.posX + offset.x);
+		float y = (float) (vehicle.posY + offset.y);
+		float z = (float) (vehicle.posZ + offset.z);
 		float tx = (float) (targetX - x);
 		float ty = (float) (targetY - y);
 		float tz = (float) (targetZ - z);
 		float range = MathHelper.sqrt(tx * tx + tz * tz);
 		if (vehicle.canAimPitch()) {
-			Pair<Float, Float> angles = Trig.getLaunchAngleToHit(tx, ty, tz, vehicle.localLaunchPower);
-			if (angles.key().isNaN() || angles.value().isNaN()) {
-			} else if (angles.value() >= vehicle.currentTurretPitchMin && angles.value() <= vehicle.currentTurretPitchMax) {
-				if (vehicle.localTurretDestPitch != angles.value()) {
-					vehicle.localTurretDestPitch = angles.value();
+			Tuple<Float, Float> angles = Trig.getLaunchAngleToHit(tx, ty, tz, vehicle.localLaunchPower);
+			if (angles.getFirst().isNaN() || angles.getSecond().isNaN()) {
+			} else if (angles.getSecond() >= vehicle.currentTurretPitchMin && angles.getSecond() <= vehicle.currentTurretPitchMax) {
+				if (vehicle.localTurretDestPitch != angles.getSecond()) {
+					vehicle.localTurretDestPitch = angles.getSecond();
 					updated = true;
 					updatePitch = true;
 				}
-			} else if (angles.key() >= vehicle.currentTurretPitchMin && angles.key() <= vehicle.currentTurretPitchMax) {
-				if (vehicle.localTurretDestPitch != angles.key()) {
-					vehicle.localTurretDestPitch = angles.key();
+			} else if (angles.getFirst() >= vehicle.currentTurretPitchMin && angles.getFirst() <= vehicle.currentTurretPitchMax) {
+				if (vehicle.localTurretDestPitch != angles.getFirst()) {
+					vehicle.localTurretDestPitch = angles.getFirst();
 					updated = true;
 					updatePitch = true;
 				}
 			}
 		} else if (vehicle.canAimPower()) {
-			float power = Trig.iterativeSpeedFinder(tx, ty, tz, vehicle.localTurretPitch + vehicle.rotationPitch, Settings.getClientPowerIterations(),
+			float power = Trig.iterativeSpeedFinder(tx, ty, tz, vehicle.localTurretPitch + vehicle.rotationPitch, TRAJECTORY_ITERATIONS_CLIENT,
 					(vehicle.ammoHelper.getCurrentAmmoType() != null && vehicle.ammoHelper.getCurrentAmmoType().isRocket()));
 			if (vehicle.localLaunchPower != power && power < getAdjustedMaxMissileVelocity()) {
 				this.vehicle.localLaunchPower = power;
@@ -648,7 +633,7 @@ public class VehicleFiringHelper implements INBTSerializable {
 				PacketVehicle pkt = new PacketVehicle();
 				pkt.setParams(vehicle);
 				pkt.setInputData(tag);
-				pkt.sendPacketToAllTrackingClients(vehicle);
+				NetworkHandler.sendToAllTracking(vehicle, pkt);
 			}
 		}
 	}

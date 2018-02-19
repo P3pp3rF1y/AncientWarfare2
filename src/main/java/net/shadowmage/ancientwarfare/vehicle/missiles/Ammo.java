@@ -21,38 +21,26 @@
 
 package net.shadowmage.ancientwarfare.vehicle.missiles;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.ChunkPosition;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.world.BlockEvent;
+import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.EntityTools;
+import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
-import shadowmage.ancient_warfare.common.AWCore;
-import shadowmage.ancient_warfare.common.config.Config;
-import shadowmage.ancient_warfare.common.crafting.RecipeType;
-import shadowmage.ancient_warfare.common.crafting.ResourceListRecipe;
-import shadowmage.ancient_warfare.common.item.ItemLoader;
-import shadowmage.ancient_warfare.common.npcs.NpcBase;
-import shadowmage.ancient_warfare.common.registry.DescriptionRegistry2;
-import shadowmage.ancient_warfare.common.registry.entry.Description;
-import shadowmage.ancient_warfare.common.research.IResearchGoal;
-import shadowmage.ancient_warfare.common.tracker.TeamTracker;
-import shadowmage.ancient_warfare.common.utils.BlockTools;
-import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
-import shadowmage.ancient_warfare.common.warzone.WarzoneManager;
+import net.shadowmage.ancientwarfare.vehicle.item.AWVehicleItems;
 
+import javax.annotation.Nonnull;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 public abstract class Ammo implements IAmmo {
 
@@ -159,13 +147,11 @@ public abstract class Ammo implements IAmmo {
 	IAmmo secondaryAmmoType = null;
 	int secondaryAmmoCount = 0;
 	String iconTexture = "foo";
-	HashSet<Integer> neededResearch = new HashSet<Integer>();
-	List<ItemStackWrapperCrafting> resources = new ArrayList<ItemStackWrapperCrafting>();
 	int numCrafted = 10;
 
 	public Ammo(int ammoType) {
 		this.ammoType = ammoType;
-		this.ammoStack = new ItemStack(ItemLoader.ammoItem.itemID, 1, ammoType);
+		this.ammoStack = new ItemStack(AWVehicleItems.ammo, 1, ammoType);
 		if (ammoType >= 0 && ammoType < ammoTypes.length) {
 			ammoTypes[ammoType] = this;
 		}
@@ -225,7 +211,7 @@ public abstract class Ammo implements IAmmo {
 
 	@Override
 	public ItemStack getAmmoStack(int qty) {
-		return new ItemStack(ItemLoader.ammoItem.itemID, qty, this.getAmmoType());
+		return new ItemStack(AWVehicleItems.ammo, qty, this.getAmmoType());
 	}
 
 	@Override
@@ -341,6 +327,7 @@ public abstract class Ammo implements IAmmo {
 		return "ancientwarfare:ammo/" + iconTexture;
 	}
 
+/* TODO ammo recipes
 	@Override
 	public ResourceListRecipe constructRecipe() {
 		if (!this.isCraftable || !this.isEnabled) {
@@ -372,11 +359,17 @@ public abstract class Ammo implements IAmmo {
 		return this.resources;
 	}
 
+	@Override
+	public int getNumCrafted() {
+		return this.numCrafted;
+	}
+*/
+
 	protected void breakBlockAndDrop(World world, int x, int y, int z) {
-		if (!Config.blockDestruction || !WarzoneManager.instance().shouldBreakBlock(world, x, y, z)) {
+		if (!AWVehicleStatics.blockDestruction /*|| !WarzoneManager.instance().shouldBreakBlock(world, x, y, z) TODO warzone implementation?*/) {
 			return;
 		}
-		BlockTools.breakBlockAndDrop(world, x, y, z, 0);
+		BlockTools.breakBlockAndDrop(world, AWFakePlayer.get(world), new BlockPos(x, y, z));
 	}
 
 	/**
@@ -388,36 +381,30 @@ public abstract class Ammo implements IAmmo {
 	 * @param z
 	 */
 	protected void igniteBlock(World world, int x, int y, int z, int maxSearch) {
-		if (!Config.blockFires) {
+		if (!AWVehicleStatics.blockFires) {
 			return;
 		}
-		int id;
 		for (int i = 0; i < maxSearch && y - i >= 1; i++) {
-			id = world.getBlockId(x, y - i, z);
-			if (id != 0) {
-				if (world.getBlockId(x, y - i + 1, z) == 0) {
-					world.setBlock(x, y - i + 1, z, Block.fire.blockID, 0, 3);
-				}
-				break;
+			BlockPos curPos = new BlockPos(x, y - i, z);
+			if (!world.isAirBlock(curPos) && world.isAirBlock(curPos.up())) {
+				world.setBlockState(curPos.up(), Blocks.FIRE.getDefaultState(), 3);
 			}
 		}
 	}
 
 	public static boolean shouldEffectEntity(World world, Entity entity, MissileBase missile) {
-		if (!Config.allowFriendlyFire && missile.shooterLiving instanceof NpcBase) {
-			NpcBase shooter = (NpcBase) missile.shooterLiving;
-			int aTeam = shooter.teamNum;
-			int team = -1;
+		if (!AWVehicleStatics.allowFriendlyFire && missile.shooterLiving instanceof NpcBase) {
+			@Nonnull NpcBase npc = ((NpcBase) missile.shooterLiving);
+			UUID otherId = null;
+			String otherName = "";
 			if (entity instanceof NpcBase) {
-				team = ((NpcBase) entity).teamNum;
+				otherId = ((NpcBase) entity).getOwnerUuid();
+				otherName = ((NpcBase) entity).getOwnerName();
 			} else if (entity instanceof EntityPlayer) {
-				team = TeamTracker.instance().getTeamForPlayer((EntityPlayer) entity);
+				otherId = entity.getUniqueID();
+				otherName = entity.getName();
 			}
-			if (team >= 0) {
-				if (!TeamTracker.instance().isHostileTowards(world, aTeam, team)) {
-					return false;
-				}
-			}
+			return !EntityTools.isOwnerOrSameTeam(npc.getOwnerUuid(), npc.getOwnerName(), otherId, otherName);
 		}
 		return true;
 	}
@@ -431,15 +418,15 @@ public abstract class Ammo implements IAmmo {
 	 * @param z
 	 */
 	protected void setBlockToLava(World world, int x, int y, int z, int maxSearch) {
-		if (!Config.blockFires) {
+		if (!AWVehicleStatics.blockFires) {
 			return;
 		}
 		int id;
 		for (int i = 0; i < maxSearch && y - i >= 1; i++) {
-			id = world.getBlockId(x, y - i, z);
-			if (id != 0) {
-				if (world.getBlockId(x, y - i + 1, z) == 0) {
-					world.setBlock(x, y - i + 1, z, Block.lavaMoving.blockID, 0, 3);
+			BlockPos curPos = new BlockPos(x, y - i, z);
+			if (!world.isAirBlock(curPos)) {
+				if (world.isAirBlock(curPos.up())) {
+					world.setBlockState(curPos.up(), Blocks.LAVA.getDefaultState(), 3);
 				}
 				break;
 			}
@@ -447,36 +434,13 @@ public abstract class Ammo implements IAmmo {
 	}
 
 	protected void createExplosion(World world, MissileBase missile, float x, float y, float z, float power) {
-		boolean destroyBlocks = Config.blockDestruction;
-		boolean fires = Config.blockFires;
+		boolean destroyBlocks = AWVehicleStatics.blockDestruction;
+		boolean fires = AWVehicleStatics.blockFires;
 
-		Explosion explosion = new Explosion(world, missile, x, y, z, power);
-		explosion.isFlaming = fires;
-		explosion.isSmoking = destroyBlocks;
+		Explosion explosion = new Explosion(world, missile, x, y, z, power, fires, destroyBlocks);
 
 		explosion.doExplosionA();
 
-		if (Config.fireBlockBreakEvents) {
-			Iterator<ChunkPosition> it = explosion.affectedBlockPositions.iterator();
-			ChunkPosition cp;
-			int ix, iy, iz;
-			while (it.hasNext()) {
-				cp = it.next();
-				ix = MathHelper.floor_float(x);
-				iy = MathHelper.floor_float(y);
-				iz = MathHelper.floor_float(z);
-				Block block = Block.blocksList[world.getBlockId(ix, iy, iz)];
-				if (block == null) {
-					continue;
-				}
-				int meta = world.getBlockMetadata(ix, iy, iz);
-				BlockEvent.BreakEvent event = new BlockEvent.BreakEvent(ix, iy, iz, world, block, meta, AWCore.instance.proxy.getFakePlayer(world));
-				MinecraftForge.EVENT_BUS.post(event);
-				if (event.isCanceled()) {
-					it.remove();
-				}
-			}
-		}
 		explosion.doExplosionB(true);
 	}
 
@@ -519,7 +483,7 @@ public abstract class Ammo implements IAmmo {
 				}
 				missile = getMissileByType(type, world, x, y, z, yaw, pitch, velocity, shooter);
 				if (missile != null) {
-					world.spawnEntityInWorld(missile);
+					world.spawnEntity(missile);
 				}
 			}
 		}
@@ -557,6 +521,7 @@ public abstract class Ammo implements IAmmo {
 		return 0;
 	}
 
+/* TODO ammo rendering
 	@Override
 	public Icon getDisplayIcon() {
 		Description d = DescriptionRegistry2.instance().getDescriptionFor(ItemLoader.ammoItem.itemID);
@@ -565,6 +530,7 @@ public abstract class Ammo implements IAmmo {
 		}
 		return null;
 	}
+*/
 
 	protected void spawnAirBurst(World world, float x, float y, float z, float maxVelocity, IAmmo type, int count, Entity shooter) {
 		spawnGroundBurst(world, x, y, z, maxVelocity, type, count, -90, 0, shooter);
@@ -578,10 +544,5 @@ public abstract class Ammo implements IAmmo {
 		missile.setShooter(shooter);
 		missile.setMissileParams2(type, x, y, z, yaw, pitch, velocity);
 		return missile;
-	}
-
-	@Override
-	public int getNumCrafted() {
-		return this.numCrafted;
 	}
 }

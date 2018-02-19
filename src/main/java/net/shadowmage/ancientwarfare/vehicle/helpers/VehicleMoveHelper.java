@@ -21,21 +21,34 @@
 
 package net.shadowmage.ancientwarfare.vehicle.helpers;
 
+import com.google.common.collect.Lists;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.MoverType;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.common.util.INBTSerializable;
+import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.Trig;
+import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleMovementType;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicle;
-import shadowmage.ancient_warfare.common.config.Config;
-import shadowmage.ancient_warfare.common.interfaces.INBTSerializable;
-import shadowmage.ancient_warfare.common.utils.BlockTools;
 
-public class VehicleMoveHelper implements INBTSerializable {
+import java.util.List;
+
+public class VehicleMoveHelper implements INBTSerializable<NBTTagCompound> {
+
+	private static final int VEHICLE_MOVE_UPDATE_FREQUENCY = 3;
 
 	byte forwardInput;
 	byte turnInput;
@@ -89,23 +102,23 @@ public class VehicleMoveHelper implements INBTSerializable {
 
 	public void handleMoveData(NBTTagCompound tag) {
 		if (tag.hasKey("rp")) {
-			this.pitchTicks = Config.vehicleMoveUpdateFrequency + 1;
+			this.pitchTicks = VEHICLE_MOVE_UPDATE_FREQUENCY + 1;
 			this.destPitch = tag.getFloat("rp");
 		}
 		if (tag.hasKey("ry")) {
-			this.rotationTicks = Config.vehicleMoveUpdateFrequency + 1;
+			this.rotationTicks = VEHICLE_MOVE_UPDATE_FREQUENCY + 1;
 			this.destYaw = tag.getFloat("ry");
 		}
 		if (tag.hasKey("px")) {
-			this.moveTicks = Config.vehicleMoveUpdateFrequency + 1;
+			this.moveTicks = VEHICLE_MOVE_UPDATE_FREQUENCY + 1;
 			this.destX = tag.getFloat("px");
 		}
 		if (tag.hasKey("py")) {
-			this.moveTicks = Config.vehicleMoveUpdateFrequency + 1;
+			this.moveTicks = VEHICLE_MOVE_UPDATE_FREQUENCY + 1;
 			this.destY = tag.getFloat("py");
 		}
 		if (tag.hasKey("pz")) {
-			this.moveTicks = Config.vehicleMoveUpdateFrequency + 1;
+			this.moveTicks = VEHICLE_MOVE_UPDATE_FREQUENCY + 1;
 			this.destZ = tag.getFloat("pz");
 		}
 		if (tag.hasKey("tr")) {
@@ -135,7 +148,7 @@ public class VehicleMoveHelper implements INBTSerializable {
 		if (vehicle.world.isRemote) {
 			onUpdateClient();
 		} else {
-			if (this.vehicle.riddenByEntity == null) {
+			if (this.vehicle.getControllingPassenger() == null) {
 				this.clearInputFromDismount();
 			}
 			onUpdateServer();
@@ -177,7 +190,7 @@ public class VehicleMoveHelper implements INBTSerializable {
 		} else {
 			vehicle.wheelRotation += forwardMotion * 60;
 		}
-		this.vehicle.moveEntity(vehicle.motionX, vehicle.motionY, vehicle.motionZ);
+		this.vehicle.move(MoverType.SELF, vehicle.motionX, vehicle.motionY, vehicle.motionZ);
 	}
 
 	protected void onUpdateServer() {
@@ -205,26 +218,26 @@ public class VehicleMoveHelper implements INBTSerializable {
 		}
 		if (move == VehicleMovementType.AIR1 || move == VehicleMovementType.AIR2) {
 			vehicle.fallDistance = 0.f;
-			if (vehicle.riddenByEntity != null) {
-				vehicle.riddenByEntity.fallDistance = 0.f;
+			if (vehicle.getControllingPassenger() != null) {
+				vehicle.getControllingPassenger().fallDistance = 0.f;
 			}
 		}
 		vehicle.motionX = Trig.sinDegrees(vehicle.rotationYaw) * -forwardMotion;
 		vehicle.motionZ = Trig.cosDegrees(vehicle.rotationYaw) * -forwardMotion;
-		this.vehicle.moveEntity(vehicle.motionX, vehicle.motionY, vehicle.motionZ);
+		this.vehicle.move(MoverType.SELF, vehicle.motionX, vehicle.motionY, vehicle.motionZ);
 		this.wasOnGround = vehicle.onGround;
 		if (vehicle.isCollidedHorizontally) {
 			forwardMotion *= 0.65f;
 		}
 		this.tearUpGrass();
 		boolean sendUpdate = (vehicle.motionX != 0 || vehicle.motionY != 0 || vehicle.motionZ != 0 || vehicle.rotationYaw != vehicle.prevRotationYaw || vehicle.rotationPitch != vehicle.prevRotationPitch);
-		sendUpdate = sendUpdate || vehicle.riddenByEntity != null;
-		sendUpdate = sendUpdate && this.vehicle.ticksExisted % Config.vehicleMoveUpdateFrequency == 0;
+		sendUpdate = sendUpdate || vehicle.getControllingPassenger() != null;
+		sendUpdate = sendUpdate && this.vehicle.ticksExisted % VEHICLE_MOVE_UPDATE_FREQUENCY == 0;
 		sendUpdate = sendUpdate || this.vehicle.ticksExisted % 60 == 0;
 		if (sendUpdate) {
 			PacketVehicle pkt = new PacketVehicle();
 			pkt.setMoveUpdate(this.vehicle, true, move == VehicleMovementType.AIR1 || move == VehicleMovementType.AIR2, true);
-			pkt.sendPacketToAllTrackingClients(vehicle);
+			NetworkHandler.sendToAllTracking(vehicle, pkt);
 		}
 	}
 
@@ -250,8 +263,8 @@ public class VehicleMoveHelper implements INBTSerializable {
 			this.forwardMotion *= 0.85f;
 			this.strafeMotion *= 0.85f;
 		}
-		if (vehicle.riddenByEntity != null) {
-			vehicle.riddenByEntity.setAir(300);
+		if (vehicle.getControllingPassenger() != null) {
+			vehicle.getControllingPassenger().setAir(300);
 		}
 		this.applyForwardInput(0.0125f, true);
 	}
@@ -498,9 +511,9 @@ public class VehicleMoveHelper implements INBTSerializable {
 		}
 		if (vehicle.isCollidedHorizontally) {
 			if (!wasOnGround || crashSpeed) {
-				if (!vehicle.world.isRemote && vehicle.riddenByEntity instanceof EntityPlayer) {
-					EntityPlayer player = (EntityPlayer) vehicle.riddenByEntity;
-					player.addChatMessage("you have crashed!!");
+				if (!vehicle.world.isRemote && vehicle.getControllingPassenger() instanceof EntityPlayer) {
+					EntityPlayer player = (EntityPlayer) vehicle.getControllingPassenger();
+					player.sendMessage(new TextComponentString("you have crashed!!"));
 				}
 				if (!vehicle.world.isRemote) {
 					vehicle.setDead();
@@ -509,9 +522,9 @@ public class VehicleMoveHelper implements INBTSerializable {
 		}
 		if (vehicle.isCollidedVertically) {
 			if (vertCrashSpeed && !wasOnGround) {
-				if (!vehicle.world.isRemote && vehicle.riddenByEntity instanceof EntityPlayer) {
-					EntityPlayer player = (EntityPlayer) vehicle.riddenByEntity;
-					player.addChatMessage("you have crashed (vertical)!!");
+				if (!vehicle.world.isRemote && vehicle.getControllingPassenger() instanceof EntityPlayer) {
+					EntityPlayer player = (EntityPlayer) vehicle.getControllingPassenger();
+					player.sendMessage(new TextComponentString(("you have crashed (vertical)!!")));
 				}
 				if (!vehicle.world.isRemote) {
 					vehicle.setDead();
@@ -530,10 +543,10 @@ public class VehicleMoveHelper implements INBTSerializable {
 		AxisAlignedBB bb;
 		int submergedBits = 0;
 		for (int i = 0; i < 5; i++) {
-			bb = AxisAlignedBB.getAABBPool()
-					.getAABB(vehicle.boundingBox.minX, vehicle.boundingBox.minY + (i * bitHeight), vehicle.boundingBox.minZ, vehicle.boundingBox.maxX,
-							vehicle.boundingBox.minY + ((1 + i) * bitHeight), vehicle.boundingBox.maxZ);
-			if (vehicle.world.isAABBInMaterial(bb, Material.water)) {
+			bb = new AxisAlignedBB(vehicle.getEntityBoundingBox().minX, vehicle.getEntityBoundingBox().minY + (i * bitHeight),
+					vehicle.getEntityBoundingBox().minZ, vehicle.getEntityBoundingBox().maxX, vehicle.getEntityBoundingBox().minY + ((1 + i) * bitHeight),
+					vehicle.getEntityBoundingBox().maxZ);
+			if (vehicle.world.isMaterialInBB(bb, Material.WATER)) {
 				submergedBits++;
 			} else {
 				break;
@@ -553,7 +566,7 @@ public class VehicleMoveHelper implements INBTSerializable {
 	}
 
 	protected void tearUpGrass() {
-		if (vehicle.world.isRemote || !vehicle.onGround || !Config.vehiclesTearUpGrass) {
+		if (vehicle.world.isRemote || !vehicle.onGround || !AWVehicleStatics.vehiclesTearUpGrass) {
 			return;
 		}
 		for (int var24 = 0; var24 < 4; ++var24) {
@@ -561,33 +574,24 @@ public class VehicleMoveHelper implements INBTSerializable {
 			int y = MathHelper.floor(vehicle.posY);
 			int z = MathHelper.floor(vehicle.posZ + ((double) (var24 / 2) - 0.5D) * 0.8D);
 			//check top/upper blocks(riding through)
-			int id = vehicle.world.getBlockId(x, y, z);
-			if (isPlant(id)) {
-				BlockTools.breakBlockAndDrop(vehicle.world, x, y, z, 0);
+			BlockPos breakPos = new BlockPos(x, y, z);
+			IBlockState state = vehicle.world.getBlockState(breakPos);
+			if (isTrampable(state)) {
+				BlockTools.breakBlockAndDrop(vehicle.world, AWFakePlayer.get(vehicle.world), breakPos);
 			}
 			//check lower blocks (riding on)
-			if (vehicle.world.getBlockId(x, y - 1, z) == Block.grass.blockID) {
-				vehicle.world.setBlock(x, y - 1, z, Block.dirt.blockID, 0, 3);
+			if (vehicle.world.getBlockState(breakPos.down()).getBlock() == Blocks.GRASS) {
+				vehicle.world.setBlockState(breakPos.down(), Blocks.DIRT.getDefaultState(), 3);
 			}
 		}
 	}
 
-	protected static int[] plantBlockIDs = new int[] {Block.snow.blockID,
-			Block.deadBush.blockID,
-			Block.tallGrass.blockID,
-			Block.plantRed.blockID,
-			Block.plantYellow.blockID,
-			Block.mushroomBrown.blockID,
-			Block.mushroomRed.blockID};
-
-	protected boolean isPlant(int id) {
-		for (int i = 0; i < plantBlockIDs.length; i++) {
-			if (id == plantBlockIDs[i]) {
-				return true;
-			}
-		}
-		return false;
+	private boolean isTrampable(IBlockState state) {
+		return state.getBlock() instanceof IPlantable || trampableBlocks.contains(state.getBlock());
 	}
+
+	protected static List<Block> trampableBlocks = Lists
+			.newArrayList(Blocks.SNOW, Blocks.DEADBUSH, Blocks.TALLGRASS, Blocks.RED_FLOWER, Blocks.YELLOW_FLOWER, Blocks.BROWN_MUSHROOM, Blocks.RED_MUSHROOM);
 
 	public void setMoveTo(double x, double y, double z) {
 		float yawDiff = Trig.getYawTowardsTarget(vehicle.posX, vehicle.posZ, x, z, vehicle.rotationYaw);

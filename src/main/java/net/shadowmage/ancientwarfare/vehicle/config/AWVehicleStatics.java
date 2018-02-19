@@ -18,7 +18,13 @@ public class AWVehicleStatics extends ModConfiguration {
 
 	//TODO add configuration for these values (probably annotations)
 	public static boolean oversizeAmmoEnabled = true;
-	public static boolean soldiersUseAmmo = true;
+	public static boolean soldiersUseAmmo = false;
+	public static boolean adjustMissilesForAccuracy = false;
+	public static boolean vehiclesTearUpGrass = true;
+	public static boolean blockDestruction = true;
+	public static boolean blockFires = true;
+	public static boolean allowFriendlyFire = false;
+	public static boolean fireBlockBreakEvents = true;
 
 	@Override
 	public void initializeCategories() {

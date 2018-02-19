@@ -275,7 +275,8 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 					Entity curEnt = (Entity) nearbyEntities.get(i);
 					if (curEnt.canBeCollidedWith()) {
 						if (this.launcher != null) {
-							if (curEnt == this.launcher || curEnt == this.launcher.riddenByEntity || curEnt == this.shooterLiving || curEnt == this.shooter) {
+							if (curEnt == this.launcher || curEnt == this.launcher
+									.getControllingPassenger() || curEnt == this.shooterLiving || curEnt == this.shooter) {
 								continue;
 							}
 						}

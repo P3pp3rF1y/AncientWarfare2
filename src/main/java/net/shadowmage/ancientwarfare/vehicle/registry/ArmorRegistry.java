@@ -58,8 +58,8 @@ public class ArmorRegistry {
 		this.armorInstances.put(armor.getArmorType(), armor);
 	}
 
-	public static IVehicleArmor getArmorType(int type) {
-		return this.armorInstances.get(type);
+	public static IVehicleArmor getArmorType(int typeId) {
+		return armorInstances.get(typeId);
 	}
 
 	public static IVehicleArmor getArmorForStack(ItemStack stack) {
