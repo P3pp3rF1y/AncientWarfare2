@@ -22,11 +22,10 @@
 package net.shadowmage.ancientwarfare.vehicle.missiles;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.util.RayTraceResult;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import shadowmage.ancient_warfare.common.item.ItemLoader;
-import shadowmage.ancient_warfare.common.research.ResearchGoalNumbers;
-import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 public class AmmoExplosiveShot extends Ammo {
 
@@ -45,40 +44,48 @@ public class AmmoExplosiveShot extends Ammo {
 		this.renderScale = (weight / scaleFactor) * 2;
 
 		if (bigExplosion) {
+/* TODO rendering
 			this.iconTexture = "ammoHE1";
+*/
 			this.configName = "high_explosive_" + weight;
+/* TODO recipe
 			this.neededResearch.add(ResearchGoalNumbers.explosives3);
+*/
 		} else {
+/* TODO rendering
 			this.iconTexture = "ammoExplosive1";
+*/
 			this.configName = "explosive_" + weight;
+/* TODO recipes - commented out code below as well
 			this.neededResearch.add(ResearchGoalNumbers.explosives2);
+*/
 		}
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/ammoStoneShot");
 
 		int cases = 1;
 		int explosives = 1;
-		this.numCrafted = 2;
+		//this.numCrafted = 2;
 		switch (weight) {
 			case 10:
-				this.neededResearch.add(ResearchGoalNumbers.ballistics1);
+				//this.neededResearch.add(ResearchGoalNumbers.ballistics1);
 				cases = 1;
 				explosives = 1;
 				break;
 
 			case 15:
-				this.neededResearch.add(ResearchGoalNumbers.ballistics1);
+				//this.neededResearch.add(ResearchGoalNumbers.ballistics1);
 				cases = 2;
 				explosives = 2;
 				break;
 
 			case 30:
-				this.neededResearch.add(ResearchGoalNumbers.ballistics2);
+				//this.neededResearch.add(ResearchGoalNumbers.ballistics2);
 				cases = 4;
 				explosives = 4;
 				break;
 
 			case 45:
-				this.neededResearch.add(ResearchGoalNumbers.ballistics3);
+				//this.neededResearch.add(ResearchGoalNumbers.ballistics3);
 				cases = 6;
 				explosives = 6;
 				break;
@@ -87,8 +94,10 @@ public class AmmoExplosiveShot extends Ammo {
 			explosives *= 2;
 		}
 
+/*
 		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.explosiveCharge, explosives, false, false));
 		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.clayCasing, cases, false, false));
+*/
 	}
 
 	@Override

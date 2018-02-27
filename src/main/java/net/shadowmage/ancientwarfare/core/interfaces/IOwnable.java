@@ -11,8 +11,8 @@ import java.util.UUID;
  * @author Shadowmage
  */
 public interface IOwnable {
-
-    void setOwner(EntityPlayer player);
+	//TODO look into removing ownername from this if possible - uuid should be enough
+	void setOwner(EntityPlayer player);
     
     void setOwner(String ownerName, UUID ownerUuid);
 

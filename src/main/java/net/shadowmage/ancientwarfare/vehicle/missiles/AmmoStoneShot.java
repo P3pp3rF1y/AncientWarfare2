@@ -22,11 +22,10 @@
 package net.shadowmage.ancientwarfare.vehicle.missiles;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.util.RayTraceResult;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import shadowmage.ancient_warfare.common.item.ItemLoader;
-import shadowmage.ancient_warfare.common.research.ResearchGoalNumbers;
-import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 public class AmmoStoneShot extends Ammo {
 
@@ -39,7 +38,7 @@ public class AmmoStoneShot extends Ammo {
 		this.isArrow = false;
 		this.isRocket = false;
 		this.ammoWeight = weight;
-		this.iconTexture = "ammoStone1";
+		//		this.iconTexture = "ammoStone1"; TODO rendering
 		this.configName = "stone_shot_" + weight;
 		this.entityDamage = weight;
 		this.vehicleDamage = weight;
@@ -47,6 +46,7 @@ public class AmmoStoneShot extends Ammo {
 		this.renderScale = (weight / scaleFactor) * 2;
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/ammoStoneShot");
 
+/* TODO recipes
 		int cases = 1;
 		this.numCrafted = 10;
 		switch (weight) {
@@ -71,6 +71,7 @@ public class AmmoStoneShot extends Ammo {
 		}
 
 		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.clayCasing, cases, false, false));
+*/
 	}
 
 	@Override

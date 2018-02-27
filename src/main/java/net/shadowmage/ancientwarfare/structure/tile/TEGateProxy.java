@@ -67,19 +67,19 @@ public class TEGateProxy extends TileEntity implements ITickable{
     }
 
     public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
-        return this.owner == null || this.owner.processInitialInteract(player, hand);
+        return this.getOwner() == null || this.getOwner().processInitialInteract(player, hand);
     }
 
     public void onBlockAttacked(EntityPlayer player) {
-        if(this.owner != null){
+        if (this.getOwner() != null) {
             DamageSource source = player!=null ? DamageSource.causePlayerDamage(player) : DamageSource.GENERIC;
-            this.owner.attackEntityFrom(source, 1);
+            this.getOwner().attackEntityFrom(source, 1);
         }
     }
 
     public ItemStack onBlockPicked(RayTraceResult target) {
-        if(this.owner != null){
-            return owner.getPickedResult(target);
+        if (this.getOwner() != null) {
+            return getOwner().getPickedResult(target);
         }
         return ItemStack.EMPTY;
     }
@@ -91,8 +91,7 @@ public class TEGateProxy extends TileEntity implements ITickable{
         }
         if (this.entityID == null) {
             this.noParentTicks++;
-        }
-        else if (this.owner == null) {
+        } else if (this.getOwner() == null) {
             this.noParentTicks++;
 
             List<Entity> entities = this.world.loadedEntityList;
@@ -104,13 +103,17 @@ public class TEGateProxy extends TileEntity implements ITickable{
                 }
             }
         }
-        if (this.noParentTicks >= 100 || (owner != null && owner.isDead)) {
+        if (this.noParentTicks >= 100 || (getOwner() != null && getOwner().isDead)) {
             owner = null;
             this.world.setBlockToAir(pos);
         }
     }
 
     public boolean isGateClosed() {
-        return owner != null && owner.isClosed();
+        return getOwner() != null && getOwner().isClosed();
+    }
+
+    public EntityGate getOwner() {
+        return owner;
     }
 }

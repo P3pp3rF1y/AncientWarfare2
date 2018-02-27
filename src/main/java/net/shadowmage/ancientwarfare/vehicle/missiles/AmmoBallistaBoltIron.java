@@ -22,11 +22,10 @@
 package net.shadowmage.ancientwarfare.vehicle.missiles;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.item.Item;
-import net.minecraft.util.RayTraceResult;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import shadowmage.ancient_warfare.common.research.ResearchGoalNumbers;
-import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 public class AmmoBallistaBoltIron extends Ammo {
 
@@ -43,12 +42,16 @@ public class AmmoBallistaBoltIron extends Ammo {
 		this.isRocket = false;
 		this.isPersistent = true;
 		this.configName = "ballist_bolt_iron";
+/* TODO rendering
 		this.iconTexture = "ammoBoltIron1";
+*/
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowIron");
+/* TODO recipe
 		this.neededResearch.add(ResearchGoalNumbers.ballistics2);
 		this.resources.add(new ItemStackWrapperCrafting(Item.ingotIron, 7));
 		this.resources.add(new ItemStackWrapperCrafting(Item.feather, 5));
 		this.numCrafted = 8;
+*/
 	}
 
 	@Override

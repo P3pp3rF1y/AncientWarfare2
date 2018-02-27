@@ -45,7 +45,7 @@ public class VehicleOBBMoveHelper {
         }
         orientedBoundingBox.updateForPositionAndRotation(vehicle.posX, vehicle.posY, vehicle.posZ, rotationYaw);
         orientedBoundingBox.setAABBToOBBExtents(vehicle);
-        List<AxisAlignedBB> aabbs = world.getCollisionBoxes(vehicle, boundingBox.expand(Math.abs(x) + 0.2d, Math.abs(y) + stepHeight + 0.2d, Math.abs(z) + 0.2d));
+        List<AxisAlignedBB> aabbs = world.getCollisionBoxes(vehicle, boundingBox.grow(Math.abs(x) + 0.2d, Math.abs(y) + stepHeight + 0.2d, Math.abs(z) + 0.2d));
         //first do Y movement test, use basic OBB vs bbs test, move downard if not collided
         double xMove, yMove, zMove;
 
@@ -94,7 +94,7 @@ public class VehicleOBBMoveHelper {
         Vec3d mtvTemp = null;
         Vec3d mtv = null;
 
-        List<AxisAlignedBB> aabbs = world.getCollisionBoxes(vehicle, vehicle.getEntityBoundingBox().expand(0.2d, 0, 0.2d));
+        List<AxisAlignedBB> aabbs = world.getCollisionBoxes(vehicle, vehicle.getEntityBoundingBox().grow(0.2d, 0, 0.2d));
 
         AxisAlignedBB bb = null;
         int len = aabbs.size();
@@ -123,7 +123,7 @@ public class VehicleOBBMoveHelper {
             vehicle.setPosition(vehicle.posX + mtv.x, vehicle.posY, vehicle.posZ + mtv.z);
             orientedBoundingBox.updateForPositionAndRotation(vehicle.posX, vehicle.posY, vehicle.posZ, vehicle.rotationYaw + rotationDelta);
             orientedBoundingBox.setAABBToOBBExtents(vehicle);
-            aabbs = world.getCollisionBoxes(vehicle, vehicle.getEntityBoundingBox().expand(0.2d, 0, 0.2d));
+            aabbs = world.getCollisionBoxes(vehicle, vehicle.getEntityBoundingBox().grow(0.2d, 0, 0.2d));
             bb = null;
             len = aabbs.size();
             mtvTemp = null;

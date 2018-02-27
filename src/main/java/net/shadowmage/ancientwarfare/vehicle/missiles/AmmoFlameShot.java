@@ -22,11 +22,10 @@
 package net.shadowmage.ancientwarfare.vehicle.missiles;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.util.RayTraceResult;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import shadowmage.ancient_warfare.common.item.ItemLoader;
-import shadowmage.ancient_warfare.common.research.ResearchGoalNumbers;
-import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 public class AmmoFlameShot extends Ammo {
 
@@ -43,44 +42,48 @@ public class AmmoFlameShot extends Ammo {
 		this.ammoWeight = weight;
 		float scaleFactor = weight + 45.f;
 		this.renderScale = (weight / scaleFactor) * 2;
+/* TODO rendering
 		this.iconTexture = "ammoFlame1";
+*/
 		this.configName = "flame_shot_" + weight;
 		this.vehicleDamage = 8;
 		this.entityDamage = 8;
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/ammoStoneShot");
 
-		this.neededResearch.add(ResearchGoalNumbers.flammables2);
+		//		this.neededResearch.add(ResearchGoalNumbers.flammables2); TODO recipes - below as well
 		int cases = 1;
 		int explosives = 1;
-		this.numCrafted = 2;
+		//		this.numCrafted = 2;
 		switch (weight) {
 			case 10:
-				this.neededResearch.add(ResearchGoalNumbers.ballistics1);
+				//				this.neededResearch.add(ResearchGoalNumbers.ballistics1);
 				cases = 1;
 				explosives = 1;
 				break;
 
 			case 15:
-				this.neededResearch.add(ResearchGoalNumbers.ballistics1);
+				//				this.neededResearch.add(ResearchGoalNumbers.ballistics1);
 				cases = 2;
 				explosives = 2;
 				break;
 
 			case 30:
-				this.neededResearch.add(ResearchGoalNumbers.ballistics2);
+				//				this.neededResearch.add(ResearchGoalNumbers.ballistics2);
 				cases = 4;
 				explosives = 4;
 				break;
 
 			case 45:
-				this.neededResearch.add(ResearchGoalNumbers.ballistics3);
+				//				this.neededResearch.add(ResearchGoalNumbers.ballistics3);
 				cases = 6;
 				explosives = 6;
 				break;
 		}
 
+/*
 		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.flameCharge, explosives, false, false));
 		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.clayCasing, cases, false, false));
+*/
 	}
 
 	@Override

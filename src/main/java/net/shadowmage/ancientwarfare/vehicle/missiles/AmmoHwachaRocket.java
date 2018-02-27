@@ -22,13 +22,10 @@
 package net.shadowmage.ancientwarfare.vehicle.missiles;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.RayTraceResult;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import shadowmage.ancient_warfare.common.item.ItemLoader;
-import shadowmage.ancient_warfare.common.research.ResearchGoalNumbers;
-import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 public class AmmoHwachaRocket extends Ammo {
 
@@ -48,9 +45,10 @@ public class AmmoHwachaRocket extends Ammo {
 		this.ammoWeight = 1.f;
 		this.renderScale = 0.2f;
 		this.configName = "hwacha_rocket";
-		this.iconTexture = "ammoRocket1";
+		//		this.iconTexture = "ammoRocket1"; TODO rendering
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowWood");
 
+/* TODO recipe
 		this.numCrafted = 12;
 		this.neededResearch.add(ResearchGoalNumbers.rockets1);
 		this.neededResearch.add(ResearchGoalNumbers.ballistics1);
@@ -58,6 +56,7 @@ public class AmmoHwachaRocket extends Ammo {
 		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.stick), 12, false, false));
 		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.feather), 2, false, false));
 		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.ingotIron), 1, false, false));
+*/
 	}
 
 	@Override

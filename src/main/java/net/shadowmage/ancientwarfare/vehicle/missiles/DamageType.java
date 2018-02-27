@@ -21,11 +21,14 @@
 
 package net.shadowmage.ancientwarfare.vehicle.missiles;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentTranslation;
+
+import javax.annotation.Nullable;
 
 public class DamageType extends DamageSource {
 
@@ -49,8 +52,9 @@ public class DamageType extends DamageSource {
 		this.ent = source;
 	}
 
+	@Nullable
 	@Override
-	public Entity getEntity() {
+	public Entity getTrueSource() {
 		return ent;
 	}
 
@@ -67,13 +71,12 @@ public class DamageType extends DamageSource {
 	}
 
 	@Override
-	public ChatMessageComponent getDeathMessage(EntityLivingBase par1EntityLivingBase) {
-		EntityLivingBase entitylivingbase1 = par1EntityLivingBase.func_94060_bK();
+	public ITextComponent getDeathMessage(EntityLivingBase par1EntityLivingBase) {
+		EntityLivingBase entitylivingbase1 = par1EntityLivingBase.getAttackingEntity();
 		String s = "death.attack." + this.damageType;
 		String s1 = s + ".player";
-		return entitylivingbase1 != null && StatCollector.func_94522_b(s1) ? ChatMessageComponent.createFromTranslationWithSubstitutions(s1,
-				new Object[] {par1EntityLivingBase.getTranslatedEntityName(), entitylivingbase1.getTranslatedEntityName()}) : ChatMessageComponent
-				.createFromTranslationWithSubstitutions(s, new Object[] {par1EntityLivingBase.getTranslatedEntityName()});
+		return entitylivingbase1 != null && I18n.hasKey(s1) ? new TextComponentTranslation(s1, new Object[] {par1EntityLivingBase.getDisplayName(),
+				entitylivingbase1.getDisplayName()}) : new TextComponentTranslation(s, new Object[] {par1EntityLivingBase.getDisplayName()});
 	}
 
 }

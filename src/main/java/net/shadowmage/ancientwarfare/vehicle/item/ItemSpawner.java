@@ -21,77 +21,90 @@
 
 package net.shadowmage.ancientwarfare.vehicle.item;
 
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.vehicle.AncientWarfareVehicles;
+import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleType;
-import shadowmage.ancient_warfare.common.config.Config;
-import shadowmage.ancient_warfare.common.tracker.TeamTracker;
-import shadowmage.ancient_warfare.common.utils.BlockPosition;
-import shadowmage.ancient_warfare.common.utils.BlockTools;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemSpawner extends ItemBaseVehicle {
 
-	public ItemSpawner(int itemID) {
+	public ItemSpawner() {
 		super("spawner");
 	}
 
 	@Override
-	public boolean onUsedFinal(World world, EntityPlayer player, ItemStack stack, BlockPosition hit, int side) {
-		if (hit == null || world.isRemote || stack == null) {
-			return false;
+	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		ItemStack stack = player.getHeldItem(hand);
+
+		if (stack.isEmpty()) {
+			return EnumActionResult.FAIL;
+		} else if (world.isRemote) {
+			return EnumActionResult.PASS;
 		}
+
 		if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnData")) {
 			NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnData");
 			int level = tag.getInteger("level");
-			hit = BlockTools.offsetForSide(hit, side);
+			BlockPos offsetPos = pos.offset(facing);
 			VehicleBase vehicle = VehicleType.getVehicleForType(world, stack.getItemDamage(), level);
 			if (tag.hasKey("health")) {
 				vehicle.setHealth(tag.getFloat("health"));
 			}
-			vehicle.teamNum = TeamTracker.instance().getTeamForPlayer(player);
-			vehicle.setPosition(hit.x + 0.5d, hit.y, hit.z + 0.5d);
+			vehicle.setPosition(offsetPos.getX() + 0.5d, offsetPos.getY(), offsetPos.getZ() + 0.5d);
 			vehicle.prevRotationYaw = vehicle.rotationYaw = -player.rotationYaw + 180;
 			vehicle.localTurretDestRot = vehicle.localTurretRotation = vehicle.localTurretRotationHome = vehicle.rotationYaw;
-			if (Config.useVehicleSetupTime) {
+			if (AWVehicleStatics.useVehicleSetupTime) {
 				vehicle.setSetupState(true, 100);
 			}
-			world.spawnEntityInWorld(vehicle);
+			world.spawnEntity(vehicle);
 			if (!player.capabilities.isCreativeMode) {
-				stack.stackSize--;
-				if (stack.stackSize <= 0) {
-					player.inventory.setInventorySlotContents(player.inventory.currentItem, null);
+				stack.shrink(1);
+				if (stack.getCount() <= 0) {
+					player.setHeldItem(hand, ItemStack.EMPTY);
 				}
 			}
-			return true;
+			return EnumActionResult.SUCCESS;
 		}
-		Config.logError("Vehicle spawner item was missing NBT data, something may have corrupted this item");
-		return false;
+		AncientWarfareVehicles.log.error("Vehicle spawner item was missing NBT data, something may have corrupted this item");
+		return EnumActionResult.FAIL;
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer par2EntityPlayer, List par3List, boolean par4) {
-		super.addInformation(stack, par2EntityPlayer, par3List, par4);
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		super.addInformation(stack, worldIn, tooltip, flagIn);
 		if (stack != null) {
 			if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnData")) {
 				NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnData");
-				par3List.add("Material Level: " + tag.getInteger("level"));
+				tooltip.add("Material Level: " + tag.getInteger("level"));
 				if (tag.hasKey("health")) {
-					par3List.add("Vehicle Health: " + tag.getFloat("health"));
+					tooltip.add("Vehicle Health: " + tag.getFloat("health"));
 				}
 			}
 		}
 	}
 
 	@Override
-	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+		if (!isInCreativeTab(tab)) {
+			return;
+		}
+
 		List displayStacks = VehicleType.getCreativeDisplayItems();
-		par3List.addAll(displayStacks);
+		items.addAll(displayStacks);
 	}
 
 	public static int getVehicleLevelForStack(ItemStack stack) {
@@ -100,11 +113,4 @@ public class ItemSpawner extends ItemBaseVehicle {
 		}
 		return 0;
 	}
-
-	@Override
-	public boolean onUsedFinalLeft(World world, EntityPlayer player, ItemStack stack, BlockPosition hit, int side) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 }

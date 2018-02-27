@@ -24,28 +24,23 @@ package net.shadowmage.ancientwarfare.vehicle.pathing;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDoor;
 import net.minecraft.block.BlockFenceGate;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.MathHelper;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+import net.shadowmage.ancientwarfare.core.util.Trig;
+import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
+import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
+import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 import net.shadowmage.ancientwarfare.vehicle.entity.IPathableEntity;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
-import shadowmage.ancient_warfare.common.block.BlockLoader;
-import shadowmage.ancient_warfare.common.gates.EntityGate;
-import shadowmage.ancient_warfare.common.gates.TEGateProxy;
-import shadowmage.ancient_warfare.common.interfaces.IEntityNavigator;
-import shadowmage.ancient_warfare.common.pathfinding.EntityPath;
-import shadowmage.ancient_warfare.common.pathfinding.IPathableCallback;
-import shadowmage.ancient_warfare.common.pathfinding.PathFinderCrawler;
-import shadowmage.ancient_warfare.common.pathfinding.PathFinderThetaStar;
-import shadowmage.ancient_warfare.common.pathfinding.PathUtils;
-import shadowmage.ancient_warfare.common.utils.BlockPosition;
-import shadowmage.ancient_warfare.common.utils.Trig;
-import shadowmage.ancient_warfare.common.utils.Vec3d;
 
 import java.util.List;
 import java.util.Random;
 
-public class Navigator implements IEntityNavigator, IPathableCallback {
+public class Navigator implements IPathableCallback {
 
 	PathFinderThetaStar pathFinder = new PathFinderThetaStar();
 
@@ -59,12 +54,12 @@ public class Navigator implements IEntityNavigator, IPathableCallback {
 
 	protected EntityGate gate = null;
 	protected boolean hasDoor = false;
-	protected BlockPosition doorPos = new BlockPosition(0, 0, 0);
+	protected BlockPos doorPos = BlockPos.ORIGIN;
 	protected int doorOpenTicks = 0;
 	protected int doorCheckTicks = 0;
 	protected int doorOpenMax = 15;
 	protected int doorCheckTicksMax = 5;
-	protected final Vec3d stuckCheckPosition = new Vec3d(0, 0, 0);
+	protected Vec3d stuckCheckPosition = Vec3d.ZERO;
 	protected int stuckCheckTicks = 40;
 	protected int stuckCheckTicksMax = 40;
 
@@ -73,9 +68,8 @@ public class Navigator implements IEntityNavigator, IPathableCallback {
 	/**
 	 * TODO fallen detection
 	 * TODO better handling of when can't find path
-	 *    (remember last request(s), if same request/similar and no path, try what??)
+	 * (remember last request(s), if same request/similar and no path, try what??)
 	 * TODO crawler needs to test for vertical clearance when moving up/down (see theta)
-	 *
 	 */
 	public Navigator(VehicleBase owner) {
 		this.owner = owner;
@@ -83,7 +77,7 @@ public class Navigator implements IEntityNavigator, IPathableCallback {
 		this.world = owner.worldAccess;
 		this.path = new EntityPath();
 		finalTarget.reassign(MathHelper.floor(entity.posX), MathHelper.floor(entity.posY), MathHelper.floor(entity.posZ));
-		this.stuckCheckPosition.setup(entity.posX, entity.posY, entity.posZ);
+		this.stuckCheckPosition = new Vec3d(entity.posX, entity.posY, entity.posZ);
 		this.testCrawler = new PathFinderCrawler();
 	}
 
@@ -93,27 +87,26 @@ public class Navigator implements IEntityNavigator, IPathableCallback {
 		}
 	}
 
-	@Override
-	public void setMoveToTarget(int x, int y, int z) {
-		if (!entity.world.blockExists(x, y, z)) {
+	public void setMoveToTarget(BlockPos pos) {
+		//TODO 1.6.4 AW has logic in npcbase that uses this - readd?
+		if (!entity.world.isBlockLoaded(pos)) {
 			return;
 		}
-		this.sendToClients(x, y, z);
+		this.sendToClients(pos);
 		int ex = MathHelper.floor(entity.posX);
 		int ey = MathHelper.floor(entity.posY);
 		int ez = MathHelper.floor(entity.posZ);
 		if (entity.posY % 1.f > 0.75 && !world.isWalkable(ex, ey, ez)) {
 			ey++;
 		}
-		if (this.shouldCalculatePath(ex, ey, ez, x, y, z)) {
-			this.finalTarget.reassign(x, y, z);
-			this.calculatePath(ex, ey, ez, x, y, z);
+		if (this.shouldCalculatePath(ex, ey, ez, pos)) {
+			this.finalTarget.reassign(pos);
+			this.calculatePath(ex, ey, ez, pos);
 		} else {
 			//    Config.logDebug("skipping path calc...");
 		}
 	}
 
-	@Override
 	public void onMovementUpdate() {
 		this.updateMoveHelper();
 		this.detectStuck();
@@ -168,15 +161,15 @@ public class Navigator implements IEntityNavigator, IPathableCallback {
 					this.currentTarget = null;
 				}
 			}
-			this.stuckCheckPosition.setup(entity.posX, entity.posY, entity.posZ);
+			stuckCheckPosition = new Vec3d(entity.posX, entity.posY, entity.posZ);
 		} else {
 			this.stuckCheckTicks--;
 		}
 	}
 
-	protected boolean isNewTargetClose(int tx, int ty, int tz) {
+	protected boolean isNewTargetClose(BlockPos target) {
 		float dist = (float) entity.getDistance(finalTarget.x, finalTarget.y, finalTarget.z);
-		float tDist = Trig.getDistance(finalTarget.x, finalTarget.y, finalTarget.z, tx, ty, tz);
+		float tDist = Trig.getDistance(finalTarget.x, finalTarget.y, finalTarget.z, target.getX(), target.getY(), target.getZ());
 		if (tDist < dist * 0.1f) {
 			//    Config.logDebug("returning target was close enough to not recalc");
 			return true;
@@ -184,46 +177,46 @@ public class Navigator implements IEntityNavigator, IPathableCallback {
 		return false;
 	}
 
-	protected boolean isNewTarget(int tx, int ty, int tz) {//
-		return !isNewTargetClose(tx, ty, tz) && !this.finalTarget.equals(tx, ty, tz);
+	protected boolean isNewTarget(BlockPos target) {//
+		return !isNewTargetClose(target) && !this.finalTarget.equals(target.getX(), target.getY(), target.getZ());
 	}
 
-	protected boolean isAtTarget(int x, int y, int z) {
-		return entity.getDistance(x + 0.5d, y, z + 0.5d) < entity.width;
+	protected boolean isAtTarget(BlockPos pos) {
+		return entity.getDistance(pos.getX() + 0.5d, pos.getY(), pos.getZ() + 0.5d) < entity.width;
 	}
 
 	protected boolean isPathEmpty() {
 		return this.path.getActivePathSize() <= 0;
 	}
 
-	protected boolean shouldCalculatePath(int ex, int ey, int ez, int tx, int ty, int tz) {
+	protected boolean shouldCalculatePath(int ex, int ey, int ez, BlockPos target) {
 		//  Config.logDebug("new target: "+isNewTarget(tx, ty, tz));
 		//  Config.logDebug("path empty: "+isPathEmpty());
 		//  Config.logDebug("current target: " + (currentTarget==null));
 		//  Config.logDebug("at target: " + !isAtTarget(tx, ty, tz));
 		//  Config.logDebug("searching already: " + !pathFinder.isSearching);
-		return isNewTarget(tx, ty, tz) || (isPathEmpty() && !isAtTarget(tx, ty, tz) && currentTarget == null && !pathFinder.isSearching);
+		return isNewTarget(target) || (isPathEmpty() && !isAtTarget(target) && currentTarget == null && !pathFinder.isSearching);
 	}
 
-	protected void calculatePath(int ex, int ey, int ez, int tx, int ty, int tz) {
+	protected void calculatePath(int ex, int ey, int ez, BlockPos target) {
 		//  Config.logDebug("calculating path..");
 		//  Config.logDebug("checking path from: "+ex+","+ey+","+ez+" to: "+tx+","+ty+","+tz);
 		this.path.clearPath();
 		this.currentTarget = null;
-		if (PathUtils.canPathStraightToTarget(world, ex, ey, ez, tx, ty, tz)) {
+		if (PathUtils.canPathStraightToTarget(world, ex, ey, ez, target)) {
 			//    Config.logDebug("can path straight...");
-			this.currentTarget = new Node(tx, ty, tz);
+			this.currentTarget = new Node(target);
 		} else {
-			this.path.setPath(testCrawler.findPath(world, ex, ey, ez, tx, ty, tz, 8));
+			this.path.setPath(testCrawler.findPath(world, ex, ey, ez, target, 8));
 			Node end = this.path.getEndNode();
 			//    Config.logDebug("crawler path end node: "+end);
-			if (end != null && (end.x != tx || end.y != ty || end.z != tz)) {
+			if (end != null && (end.x != target.getX() || end.y != target.getY() || end.z != target.getZ())) {
 				//      Config.logDebug("crawler did not return complete path...");
-				this.pathFinder.findPath(world, end.x, end.y, end.z, tx, ty, tz, 60, this, false);
+				this.pathFinder.findPath(world, end.x, end.y, end.z, target, 60, this, false);
 			}
 		}
 		this.stuckCheckTicks = this.stuckCheckTicksMax;
-		this.stuckCheckPosition.setup(entity.posX, entity.posY, entity.posZ);
+		stuckCheckPosition = new Vec3d(entity.posX, entity.posY, entity.posZ);
 		Node start = this.path.getFirstNode();
 		if (start != null && (getEntityDistance(start) < 0.8f && start.y == ey)) {
 			this.path.claimNode();//skip the first node because it is probably behind you, move onto next
@@ -232,12 +225,9 @@ public class Navigator implements IEntityNavigator, IPathableCallback {
 	}
 
 	protected void doorInteraction() {
-		int ex = MathHelper.floor(entity.posX);
-		int ey = MathHelper.floor(entity.posY);
-		int ez = MathHelper.floor(entity.posZ);
 		if (this.doorCheckTicks <= 0) {
 			this.doorCheckTicks = this.doorCheckTicksMax;
-			if (this.entity.isCollidedHorizontally && checkForDoors(ex, ey, ez)) {
+			if (this.entity.isCollidedHorizontally && checkForDoors(entity.getPosition())) {
 				if (this.hasDoor) {
 					this.interactWithDoor(doorPos, true);
 					this.doorOpenTicks = this.doorOpenMax;
@@ -251,27 +241,23 @@ public class Navigator implements IEntityNavigator, IPathableCallback {
 		}
 	}
 
-	protected boolean checkForDoors(int ex, int ey, int ez) {
-		int doorId = Block.doorWood.blockID;
-		int gateId = Block.fenceGate.blockID;
-		int id;
-		id = entity.world.getBlockId(ex, ey, ez);
-		if (id == doorId || id == gateId) {
-			if (hasDoor && (doorPos.x != ex || doorPos.y != ey || doorPos.z != ez)) {
+	protected boolean checkForDoors(BlockPos entityPos) {
+		IBlockState state = entity.world.getBlockState(entityPos);
+		Block block = state.getBlock();
+		if ((block instanceof BlockDoor && state.getMaterial() == Material.WOOD) || block instanceof BlockFenceGate) {
+			if (hasDoor && !doorPos.equals(entityPos)) {
 				this.interactWithDoor(doorPos, false);
 			}
-			doorPos.x = ex;
-			doorPos.y = ey;
-			doorPos.z = ez;
+			doorPos = entityPos;
 			hasDoor = true;
 			return true;
 		}
-		if (id == BlockLoader.gateProxy.blockID) {
-			TEGateProxy proxy = (TEGateProxy) entity.world.getBlockTileEntity(ex, ey, ez);
+		if (block == AWStructuresBlocks.gateProxy) {
+			TEGateProxy proxy = (TEGateProxy) entity.world.getTileEntity(entityPos);
 			if (this.gate != null) {
 				this.interactWithGate(false);
 			}
-			this.gate = proxy.owner;
+			this.gate = proxy.getOwner();
 			return true;
 		}
 		float yaw = entity.rotationYaw;
@@ -281,9 +267,9 @@ public class Navigator implements IEntityNavigator, IPathableCallback {
 		while (yaw >= 360.f) {
 			yaw -= 360.f;
 		}
-		int x = ex;
-		int y = ey;
-		int z = ez;
+		int x = entityPos.getX();
+		int y = entityPos.getY();
+		int z = entityPos.getZ();
 		if (yaw >= 360 - 45 || yaw < 45)//south, check z+
 		{
 			z++;
@@ -297,23 +283,22 @@ public class Navigator implements IEntityNavigator, IPathableCallback {
 		{
 			x++;
 		}
-		id = entity.world.getBlockId(x, y, z);
-		if (id == doorId || id == gateId) {
-			if (hasDoor && (doorPos.x != x || doorPos.y != y || doorPos.z != z)) {
+		state = entity.world.getBlockState(new BlockPos(x, y, z));
+		block = state.getBlock();
+		if ((block instanceof BlockDoor && state.getMaterial() == Material.WOOD) || block instanceof BlockFenceGate) {
+			if (hasDoor && !doorPos.equals(entityPos)) {
 				this.interactWithDoor(doorPos, false);
 			}
-			doorPos.x = x;
-			doorPos.y = y;
-			doorPos.z = z;
+			doorPos = entityPos;
 			hasDoor = true;
 			return true;
 		}
-		if (id == BlockLoader.gateProxy.blockID) {
-			TEGateProxy proxy = (TEGateProxy) entity.world.getBlockTileEntity(x, y, z);
+		if (block == AWStructuresBlocks.gateProxy) {
+			TEGateProxy proxy = (TEGateProxy) entity.world.getTileEntity(new BlockPos(x, y, z));
 			if (this.gate != null) {
 				this.interactWithGate(false);
 			}
-			this.gate = proxy.owner;
+			this.gate = proxy.getOwner();
 			return true;
 		}
 		return false;
@@ -330,25 +315,21 @@ public class Navigator implements IEntityNavigator, IPathableCallback {
 		}
 	}
 
-	protected void interactWithDoor(BlockPosition doorPos, boolean open) {
-		Block block = Block.blocksList[entity.world.getBlockId(doorPos.x, doorPos.y, doorPos.z)];
+	protected void interactWithDoor(BlockPos doorPos, boolean open) {
+		IBlockState state = entity.world.getBlockState(doorPos);
+		Block block = state.getBlock();
 		if (block == null) {
 			return;
-		} else if (block.blockID == Block.doorWood.blockID) {
-			((BlockDoor) block).onPoweredBlockChange(entity.world, doorPos.x, doorPos.y, doorPos.z, open);
-		} else if (block.blockID == Block.fenceGate.blockID) {
-			int meta = entity.world.getBlockMetadata(doorPos.x, doorPos.y, doorPos.z);
-			boolean gateopen = BlockFenceGate.isFenceGateOpen(meta);
-			if (open != gateopen) {
-				int x = doorPos.x;
-				int y = doorPos.y;
-				int z = doorPos.z;
-				if (open && !BlockFenceGate.isFenceGateOpen(meta)) {
-					entity.world.setBlockMetadataWithNotify(x, y, z, meta | 4, 2);
-					entity.world.playAuxSFXAtEntity((EntityPlayer) null, 1003, x, y, z, 0);
-				} else if (!open && BlockFenceGate.isFenceGateOpen(meta)) {
-					entity.world.setBlockMetadataWithNotify(x, y, z, meta & -5, 2);
-					entity.world.playAuxSFXAtEntity((EntityPlayer) null, 1003, x, y, z, 0);
+		} else if (block instanceof BlockDoor && state.getMaterial() == Material.WOOD) {
+			((BlockDoor) block).toggleDoor(entity.world, doorPos, open);
+		} else if (block instanceof BlockFenceGate) {
+			if (open != state.getValue(BlockFenceGate.OPEN)) {
+				if (open && !state.getValue(BlockFenceGate.OPEN)) {
+					entity.world.setBlockState(doorPos, state.withProperty(BlockFenceGate.OPEN, true), 2);
+					entity.world.playEvent(null, 1008, doorPos, 0);
+				} else if (!open && state.getValue(BlockFenceGate.OPEN)) {
+					entity.world.setBlockState(doorPos, state.withProperty(BlockFenceGate.OPEN, false), 2);
+					entity.world.playEvent(null, 1014, doorPos, 0);
 				}
 			}
 		}
@@ -363,7 +344,7 @@ public class Navigator implements IEntityNavigator, IPathableCallback {
 				//      Config.logDebug("new move target: "+this.currentTarget);
 			}
 			this.stuckCheckTicks = this.stuckCheckTicksMax;
-			this.stuckCheckPosition.setup(entity.posX, entity.posY, entity.posZ);
+			stuckCheckPosition = new Vec3d(entity.posX, entity.posY, entity.posZ);
 		}
 
 	}
@@ -384,7 +365,7 @@ public class Navigator implements IEntityNavigator, IPathableCallback {
 		return entity == null ? 0.f : n == null ? 0.f : (float) entity.getDistance(n.x + 0.5d, n.y, n.z + 0.5d);
 	}
 
-	protected void sendToClients(int x, int y, int z) {
+	protected void sendToClients(BlockPos pos) {
 		//  if(Config.DEBUG && !world.isRemote() && owner.getEntity() instanceof NpcBase)//relay to client, force client-side to find path as well (debug rendering of path)
 		//    {
 		//    NBTTagCompound tag = new NBTTagCompound();
@@ -396,27 +377,6 @@ public class Navigator implements IEntityNavigator, IPathableCallback {
 		//    pkt.setPathTarget(tag);
 		//    pkt.sendPacketToAllTrackingClients(entity);
 		//    }
-	}
-
-	@Override
-	public void setCanSwim(boolean swim) {
-		if (this.world != null) {
-			this.world.canSwim = swim;
-		}
-	}
-
-	@Override
-	public void setCanOpenDoors(boolean doors) {
-		if (this.world != null) {
-			this.world.canOpenDoors = true;
-		}
-	}
-
-	@Override
-	public void setCanUseLadders(boolean ladders) {
-		if (this.world != null) {
-			this.world.canUseLaders = ladders;
-		}
 	}
 
 	@Override
@@ -432,26 +392,17 @@ public class Navigator implements IEntityNavigator, IPathableCallback {
 		this.path.addPath(world, pathNodes);
 	}
 
-	@Override
 	public void clearPath() {
 		this.path.clearPath();
 		this.currentTarget = null;
 	}
 
-	@Override
 	public void forcePath(List<Node> n) {
 		this.path.setPath(n);
 		this.claimNode();
 	}
 
-	@Override
-	public List<Node> getCurrentPath() {
-		return path.getActivePath();
-	}
-
-	@Override
 	public void setCanGoOnLand(boolean land) {
 		this.world.setCanGoOnLand(land);
 	}
-
 }

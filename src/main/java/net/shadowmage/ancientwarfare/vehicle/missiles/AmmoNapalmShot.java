@@ -22,12 +22,11 @@
 package net.shadowmage.ancientwarfare.vehicle.missiles;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.RayTraceResult;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import shadowmage.ancient_warfare.common.item.ItemLoader;
-import shadowmage.ancient_warfare.common.research.ResearchGoalNumbers;
-import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 public class AmmoNapalmShot extends Ammo {
 
@@ -41,50 +40,52 @@ public class AmmoNapalmShot extends Ammo {
 		this.vehicleDamage = weight;
 		float scaleFactor = weight + 45.f;
 		this.renderScale = (weight / scaleFactor) * 2;
-		this.iconTexture = "ammoNapalm1";
+		//		this.iconTexture = "ammoNapalm1";  TODO rendering
 		this.configName = "napalm_shot_" + weight;
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/ammoStoneShot");
 		this.isFlaming = true;
 
-		this.neededResearch.add(ResearchGoalNumbers.flammables3);
+		//		this.neededResearch.add(ResearchGoalNumbers.flammables3); //TODO recipes
 		int cases = 1;
 		int explosives = 1;
-		this.numCrafted = 2;
+		//		this.numCrafted = 2;
 		switch (weight) {
 			case 10:
-				this.neededResearch.add(ResearchGoalNumbers.ballistics1);
+				//				this.neededResearch.add(ResearchGoalNumbers.ballistics1);
 				cases = 1;
 				explosives = 1;
 				break;
 
 			case 15:
-				this.neededResearch.add(ResearchGoalNumbers.ballistics1);
+				//				this.neededResearch.add(ResearchGoalNumbers.ballistics1);
 				cases = 2;
 				explosives = 2;
 				break;
 
 			case 30:
-				this.neededResearch.add(ResearchGoalNumbers.ballistics2);
+				//				this.neededResearch.add(ResearchGoalNumbers.ballistics2);
 				cases = 4;
 				explosives = 4;
 				break;
 
 			case 45:
-				this.neededResearch.add(ResearchGoalNumbers.ballistics3);
+				//				this.neededResearch.add(ResearchGoalNumbers.ballistics3);
 				cases = 6;
 				explosives = 6;
 				break;
 		}
 
+/*
 		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.napalmCharge, explosives, false, false));
 		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.clayCasing, cases, false, false));
+*/
 	}
 
 	@Override
 	public void onImpactWorld(World world, float x, float y, float z, MissileBase missile, RayTraceResult hit) {
-		int bx = MathHelper.floor_float(x);
-		int by = MathHelper.floor_float(y);
-		int bz = MathHelper.floor_float(z);
+		int bx = MathHelper.floor(x);
+		int by = MathHelper.floor(y);
+		int bz = MathHelper.floor(z);
 		setBlockToLava(world, bx, by, bz, 5);
 		double dx = missile.motionX;
 		double dz = missile.motionZ;

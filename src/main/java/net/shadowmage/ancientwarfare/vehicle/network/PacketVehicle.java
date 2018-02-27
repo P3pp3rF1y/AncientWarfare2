@@ -23,6 +23,7 @@ package net.shadowmage.ancientwarfare.vehicle.network;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
@@ -102,6 +103,16 @@ public class PacketVehicle extends PacketBase {
 	@Override
 	public void readDataStream(ByteArrayDataInput data) {
 		this.entityID = data.readInt();
+	}
+
+	@Override
+	protected void writeToStream(ByteBuf data) {
+
+	}
+
+	@Override
+	protected void readFromStream(ByteBuf data) {
+
 	}
 
 	@Override

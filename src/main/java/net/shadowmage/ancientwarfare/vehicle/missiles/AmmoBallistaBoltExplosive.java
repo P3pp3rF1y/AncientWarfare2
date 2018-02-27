@@ -22,12 +22,10 @@
 package net.shadowmage.ancientwarfare.vehicle.missiles;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.item.Item;
-import net.minecraft.util.RayTraceResult;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import shadowmage.ancient_warfare.common.item.ItemLoader;
-import shadowmage.ancient_warfare.common.research.ResearchGoalNumbers;
-import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 public class AmmoBallistaBoltExplosive extends Ammo {
 
@@ -44,8 +42,11 @@ public class AmmoBallistaBoltExplosive extends Ammo {
 		this.isRocket = false;
 		this.isPersistent = false;
 		this.configName = "ballist_bolt_explosive";
+/* TODO rendering
 		this.iconTexture = "ammoBoltExplosive1";
+*/
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowWood");
+/* TODO recipe
 		this.neededResearch.add(ResearchGoalNumbers.ballistics1);
 		this.neededResearch.add(ResearchGoalNumbers.explosives1);
 		this.resources.add(new ItemStackWrapperCrafting(Item.stick, 5));
@@ -53,6 +54,7 @@ public class AmmoBallistaBoltExplosive extends Ammo {
 		this.resources.add(new ItemStackWrapperCrafting(Item.feather, 5));
 		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.explosiveCharge, 2, false, false));
 		this.numCrafted = 8;
+*/
 	}
 
 	@Override

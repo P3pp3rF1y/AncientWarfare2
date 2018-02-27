@@ -21,10 +21,13 @@
 
 package net.shadowmage.ancientwarfare.vehicle.missiles;
 
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
@@ -130,7 +133,7 @@ public abstract class Ammo implements IAmmo {
 	String displayName = "AW.Ammo";
 	String configName = "none";
 	List<String> displayTooltip = new ArrayList<String>();
-	String modelTexture = "foo.png";
+	ResourceLocation modelTexture = TextureMap.LOCATION_MISSING_TEXTURE;
 	boolean isRocket = false;
 	boolean isArrow = false;
 	boolean isPersistent = false;
@@ -146,8 +149,6 @@ public abstract class Ammo implements IAmmo {
 	float renderScale = 1.f;
 	IAmmo secondaryAmmoType = null;
 	int secondaryAmmoCount = 0;
-	String iconTexture = "foo";
-	int numCrafted = 10;
 
 	public Ammo(int ammoType) {
 		this.ammoType = ammoType;
@@ -225,7 +226,7 @@ public abstract class Ammo implements IAmmo {
 	}
 
 	@Override
-	public String getModelTexture() {
+	public ResourceLocation getModelTexture() {
 		return modelTexture;
 	}
 
@@ -322,10 +323,12 @@ public abstract class Ammo implements IAmmo {
 		return groundProximity;
 	}
 
+/* TODO rendering
 	@Override
 	public String getIconTexture() {
 		return "ancientwarfare:ammo/" + iconTexture;
 	}
+*/
 
 /* TODO ammo recipes
 	@Override
@@ -444,7 +447,7 @@ public abstract class Ammo implements IAmmo {
 		explosion.doExplosionB(true);
 	}
 
-	protected void spawnGroundBurst(World world, float x, float y, float z, float maxVelocity, IAmmo type, int count, float minPitch, int sideHit,
+	protected void spawnGroundBurst(World world, float x, float y, float z, float maxVelocity, IAmmo type, int count, float minPitch, EnumFacing sideHit,
 			Entity shooter) {
 		if (type != null && !world.isRemote) {
 			world.newExplosion(null, x, y, z, 0.25f, false, true);
@@ -460,7 +463,7 @@ public abstract class Ammo implements IAmmo {
 				type = type.getSecondaryAmmoType();
 			}
 			for (int i = 0; i < count; i++) {
-				if (sideHit == 1 || sideHit == 0) {
+				if (sideHit.getAxis().isVertical()) {
 					pitch = 90 - (rng.nextFloat() * randRange);
 					yaw = rng.nextFloat() * 360.f;
 					randVelocity = rng.nextFloat();
@@ -493,29 +496,29 @@ public abstract class Ammo implements IAmmo {
 	//e=-90/270 :: 5
 	//s=-180/180 :: 3
 	//w=-270/90 :: 4
-	private float getMinYaw(int side) {
+	private float getMinYaw(EnumFacing side) {
 		switch (side) {
-			case 2://north
+			case NORTH://north
 				return 360 - 45;
-			case 3://south
+			case SOUTH://south
 				return 180 - 45;
-			case 4://west
+			case WEST://west
 				return 90 - 45;
-			case 5://east
+			case EAST://east
 				return 270 - 45;
 		}
 		return 0;
 	}
 
-	private float getMaxYaw(int side) {
+	private float getMaxYaw(EnumFacing side) {
 		switch (side) {
-			case 2://north
+			case NORTH://north
 				return 360 + 45;
-			case 3://south
+			case SOUTH://south
 				return 180 + 45;
-			case 4://west
+			case WEST://west
 				return 90 + 45;
-			case 5://east
+			case EAST://east
 				return 270 + 45;
 		}
 		return 0;
@@ -533,7 +536,7 @@ public abstract class Ammo implements IAmmo {
 */
 
 	protected void spawnAirBurst(World world, float x, float y, float z, float maxVelocity, IAmmo type, int count, Entity shooter) {
-		spawnGroundBurst(world, x, y, z, maxVelocity, type, count, -90, 0, shooter);
+		spawnGroundBurst(world, x, y, z, maxVelocity, type, count, -90, EnumFacing.DOWN, shooter);
 	}
 
 	public MissileBase getMissileByType(IAmmo type, World world, float x, float y, float z, float yaw, float pitch, float velocity, Entity shooter) {

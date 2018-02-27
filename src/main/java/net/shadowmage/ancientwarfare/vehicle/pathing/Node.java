@@ -21,6 +21,7 @@
 
 package net.shadowmage.ancientwarfare.vehicle.pathing;
 
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
 public class Node implements Comparable {
@@ -39,6 +40,10 @@ public class Node implements Comparable {
 	;
 	public boolean closed = false;
 
+	public Node(BlockPos pos) {
+		this(pos.getX(), pos.getY(), pos.getZ());
+	}
+
 	public Node(int bX, int bY, int bZ) {
 		this.x = bX;
 		this.y = bY;
@@ -52,6 +57,10 @@ public class Node implements Comparable {
 		this.f = this.getH(goal) + this.g;
 	}
 
+	public Node reassign(BlockPos pos) {
+		return reassign(pos.getX(), pos.getY(), pos.getZ());
+	}
+
 	public Node reassign(int x, int y, int z) {
 		this.x = x;
 		this.y = y;
@@ -61,6 +70,7 @@ public class Node implements Comparable {
 
 	/**
 	 * calc travel cost of this node, and set to obstacle if completely unpathable (solid)
+	 *
 	 * @param world
 	 */
 	public void calcTraveCost(PathWorldAccess world, Node parentNode) {
@@ -78,29 +88,6 @@ public class Node implements Comparable {
 
 	protected float getH(int tx, int ty, int tz) {
 		return getDistanceFrom(tx, ty, tz) * 10 + travelCost;
-	}
-
-	protected boolean canCrossDiagonal(PathWorldAccess world, Node parentNode) {
-		if (parentNode != null) {
-			if (this.x < parentNode.x && this.z < parentNode.z) {
-				if (world.getBlockId(x, y, z + 1) != 0 || world.getBlockId(x + 1, y, z) != 0) {
-					return false;
-				}
-			} else if (this.x < parentNode.x && this.z > parentNode.z) {
-				if (world.getBlockId(x, y, z - 1) != 0 || world.getBlockId(x + 1, y, z) != 0) {
-					return false;
-				}
-			} else if (this.x > parentNode.x && this.z > parentNode.z) {
-				if (world.getBlockId(x, y, z - 1) != 0 || world.getBlockId(x - 1, y, z) != 0) {
-					return false;
-				}
-			} else if (this.x > parentNode.x && this.z < parentNode.z) {
-				if (world.getBlockId(x, y, z + 1) != 0 || world.getBlockId(x - 1, y, z) != 0) {
-					return false;
-				}
-			}
-		}
-		return true;
 	}
 
 	@Override

@@ -22,11 +22,10 @@
 package net.shadowmage.ancientwarfare.vehicle.missiles;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.util.RayTraceResult;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import shadowmage.ancient_warfare.common.item.ItemLoader;
-import shadowmage.ancient_warfare.common.research.ResearchGoalNumbers;
-import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 public class AmmoClusterShot extends Ammo {
 
@@ -38,13 +37,16 @@ public class AmmoClusterShot extends Ammo {
 		this.ammoWeight = weight;
 		float scaleFactor = weight + 45.f;
 		this.renderScale = (weight / scaleFactor) * 2;
+/* TODO rendering
 		this.iconTexture = "ammoCluster1";
+*/
 		this.configName = "cluster_shot_" + weight;
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/ammoStoneShot");
 
 		this.entityDamage = 5;
 		this.vehicleDamage = 5;
 
+/* TODO recipes
 		this.neededResearch.add(ResearchGoalNumbers.explosives1);
 		this.numCrafted = 4;
 		switch (weight) {
@@ -76,14 +78,15 @@ public class AmmoClusterShot extends Ammo {
 				this.resources.add(new ItemStackWrapperCrafting(ItemLoader.clayCasing, 9, false, false));
 				break;
 		}
+*/
 	}
 
 	@Override
 	public void onImpactWorld(World world, float x, float y, float z, MissileBase missile, RayTraceResult hit) {
 		if (!world.isRemote) {
-			double px = hit.hitVec.xCoord - missile.motionX;
-			double py = hit.hitVec.yCoord - missile.motionY;
-			double pz = hit.hitVec.zCoord - missile.motionZ;
+			double px = hit.hitVec.x - missile.motionX;
+			double py = hit.hitVec.y - missile.motionY;
+			double pz = hit.hitVec.z - missile.motionZ;
 			spawnGroundBurst(world, (float) px, (float) py, (float) pz, 10, ammoBallShot, (int) ammoWeight, 35, hit.sideHit, missile.shooterLiving);
 		}
 	}
@@ -91,8 +94,7 @@ public class AmmoClusterShot extends Ammo {
 	@Override
 	public void onImpactEntity(World world, Entity ent, float x, float y, float z, MissileBase missile) {
 		if (!world.isRemote) {
-			spawnAirBurst(world, (float) ent.posX, (float) ent.posY + ent.height, (float) ent.posZ, 10, ammoBallShot, (int) ammoWeight,
-					missile.shooterLiving);
+			spawnAirBurst(world, (float) ent.posX, (float) ent.posY + ent.height, (float) ent.posZ, 10, ammoBallShot, (int) ammoWeight, missile.shooterLiving);
 		}
 	}
 

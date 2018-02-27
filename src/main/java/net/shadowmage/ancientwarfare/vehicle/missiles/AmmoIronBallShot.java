@@ -22,9 +22,10 @@
 package net.shadowmage.ancientwarfare.vehicle.missiles;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.util.RayTraceResult;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import shadowmage.ancient_warfare.common.crafting.ResourceListRecipe;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 public class AmmoIronBallShot extends Ammo {
 
@@ -37,7 +38,7 @@ public class AmmoIronBallShot extends Ammo {
 		this.ammoWeight = 1.f;
 		this.entityDamage = 8;
 		this.vehicleDamage = 8;
-		this.iconTexture = "ammoStone1";
+		//		this.iconTexture = "ammoStone1"; TODO rendering
 		this.configName = "iron_ball_shot";
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/ammoStoneShot");
 		this.isCraftable = false;
@@ -55,9 +56,11 @@ public class AmmoIronBallShot extends Ammo {
 		}
 	}
 
+/* TODO define recipe?
 	@Override
 	public ResourceListRecipe constructRecipe() {
 		return null;
 	}
+*/
 
 }

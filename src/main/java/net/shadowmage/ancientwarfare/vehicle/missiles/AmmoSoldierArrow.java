@@ -22,9 +22,10 @@
 package net.shadowmage.ancientwarfare.vehicle.missiles;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.util.RayTraceResult;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import shadowmage.ancient_warfare.common.crafting.ResourceListRecipe;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 public class AmmoSoldierArrow extends Ammo {
 
@@ -41,10 +42,10 @@ public class AmmoSoldierArrow extends Ammo {
 		this.isCraftable = false;
 
 		if (flaming) {
-			this.iconTexture = "ammoArrowFlame1";
+			//			this.iconTexture = "ammoArrowFlame1"; TODO rendering
 			this.configName = "soldier_arrow_flame_" + damage;
 		} else {
-			this.iconTexture = "ammoArrow1";
+			//			this.iconTexture = "ammoArrow1"; TODO rendering
 			this.configName = "soldier_arrow_" + damage;
 		}
 		if (damage <= 5) {
@@ -66,8 +67,10 @@ public class AmmoSoldierArrow extends Ammo {
 		}
 	}
 
+/* TODO recipe - define new one?
 	@Override
 	public ResourceListRecipe constructRecipe() {
 		return null;
 	}
+*/
 }

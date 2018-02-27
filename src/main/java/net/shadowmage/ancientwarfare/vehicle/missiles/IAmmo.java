@@ -23,6 +23,7 @@ package net.shadowmage.ancientwarfare.vehicle.missiles;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
@@ -62,9 +63,11 @@ public interface IAmmo {
 
 	List<String> getDisplayTooltip();//the display tooltip for this ammo
 
-	String getModelTexture();//get the display texture
+	ResourceLocation getModelTexture();//get the display texture
 
+/* TODO rendering
 	String getIconTexture();
+*/
 
 	ItemStack getDisplayStack();//should be a persistent stack in the ammo instance, used to display ammo...
 

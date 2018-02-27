@@ -22,12 +22,10 @@
 package net.shadowmage.ancientwarfare.vehicle.missiles;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.item.Item;
-import net.minecraft.util.RayTraceResult;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import shadowmage.ancient_warfare.common.item.ItemLoader;
-import shadowmage.ancient_warfare.common.research.ResearchGoalNumbers;
-import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 public class AmmoArrowIronFlame extends Ammo {
 
@@ -45,14 +43,18 @@ public class AmmoArrowIronFlame extends Ammo {
 		this.isPersistent = true;
 		this.isFlaming = true;
 		this.configName = "arrow_iron_flame";
+/* TODO rendering
 		this.iconTexture = "ammoArrowIronFlame1";
+*/
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowIron");
+/* TODO recipe
 		this.neededResearch.add(ResearchGoalNumbers.ballistics1);
 		this.neededResearch.add(ResearchGoalNumbers.flammables1);
 		this.resources.add(new ItemStackWrapperCrafting(Item.flint, 5));
 		this.resources.add(new ItemStackWrapperCrafting(Item.ingotIron, 2));
 		this.resources.add(new ItemStackWrapperCrafting(Item.feather, 5));
 		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.flameCharge, 2, false, false));
+*/
 	}
 
 	@Override

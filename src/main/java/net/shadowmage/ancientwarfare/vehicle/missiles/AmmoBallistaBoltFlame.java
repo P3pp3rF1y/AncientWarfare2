@@ -22,12 +22,10 @@
 package net.shadowmage.ancientwarfare.vehicle.missiles;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.item.Item;
-import net.minecraft.util.RayTraceResult;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import shadowmage.ancient_warfare.common.item.ItemLoader;
-import shadowmage.ancient_warfare.common.research.ResearchGoalNumbers;
-import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 public class AmmoBallistaBoltFlame extends Ammo {
 
@@ -45,8 +43,11 @@ public class AmmoBallistaBoltFlame extends Ammo {
 		this.isPersistent = true;
 		this.isFlaming = true;
 		this.configName = "ballist_bolt_flame";
+/* TODO rendering
 		this.iconTexture = "ammoBoltFlame1";
+*/
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowWood");
+/* TODO recipe
 		this.neededResearch.add(ResearchGoalNumbers.ballistics1);
 		this.neededResearch.add(ResearchGoalNumbers.flammables1);
 		this.resources.add(new ItemStackWrapperCrafting(Item.stick, 5));
@@ -54,6 +55,7 @@ public class AmmoBallistaBoltFlame extends Ammo {
 		this.resources.add(new ItemStackWrapperCrafting(Item.feather, 5));
 		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.flameCharge, 2, false, false));
 		this.numCrafted = 8;
+*/
 	}
 
 	@Override

@@ -25,8 +25,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLeaves;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.block.BlockTrapDoor;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
 import shadowmage.ancient_warfare.common.block.BlockLoader;
 import shadowmage.ancient_warfare.common.gates.TEGateProxy;
 
@@ -51,8 +55,8 @@ public class PathWorldAccess {
 		}
 	}
 
-	public int getBlockId(int x, int y, int z) {
-		return world.getBlockId(x, y, z);
+	public Block getBlock(BlockPos pos) {
+		return world.getBlockState(pos).getBlock();
 	}
 
 	public int getTravelCost(int x, int y, int z) {
@@ -178,9 +182,9 @@ public class PathWorldAccess {
 
 	public boolean isWalkable(int x, int y, int z) {
 		return isWalkable2(x, y, z);
-		//  int id = world.getBlockId(x, y, z);
-		//  int id2 = world.getBlockId(x, y-1, z);
-		//  int id3 = world.getBlockId(x, y+1, z);
+		//  int id = world.getBlock(x, y, z);
+		//  int id2 = world.getBlock(x, y-1, z);
+		//  int id3 = world.getBlock(x, y+1, z);
 		//  boolean cube = !checkBlockBounds(x, y, z);//isSolidBlock(id);
 		//  boolean cube2 = !checkBlockBounds(x, y-1, z);//isSolidBlock(id2);
 		//  boolean cube3 = !checkBlockBounds(x, y+1, z);//isSolidBlock(id3);
@@ -272,9 +276,10 @@ public class PathWorldAccess {
 		return id == Block.waterMoving.blockID || id == Block.waterStill.blockID;
 	}
 
-	public boolean isDoor(int x, int y, int z) {
-		int id = world.getBlockId(x, y, z);
-		if (id == BlockLoader.gateProxy.blockID) {
+	public boolean isDoor(BlockPos pos) {
+		IBlockState state = world.getBlockState(pos);
+		Block block = state.getBlock();
+		if (block == AWStructuresBlocks.gateProxy) {
 			TEGateProxy proxy = (TEGateProxy) world.getBlockTileEntity(x, y, z);
 			if (proxy.owner == null || !proxy.owner.getGateType().canSoldierActivate() || proxy.owner.isLocked) {
 				return false;
@@ -319,8 +324,9 @@ public class PathWorldAccess {
 		return false;
 	}
 
-	protected boolean isLadder(int id) {
-		return id == Block.ladder.blockID || id == Block.vine.blockID;
+	protected boolean isLadder(BlockPos pos) {
+		Block block = world.getBlockState(pos).getBlock();
+		return block == Blocks.LADDER || block == Blocks.VINE;
 	}
 
 	public boolean isWalkable(int x, int y, int z, Node src) {

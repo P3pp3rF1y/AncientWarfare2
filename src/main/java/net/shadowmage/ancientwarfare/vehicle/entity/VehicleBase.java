@@ -48,6 +48,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.Trig;
@@ -77,8 +78,9 @@ import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
-public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, IMissileHitCallback, IEntityContainerSynch, IPathableEntity {
+public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, IMissileHitCallback, IEntityContainerSynch, IPathableEntity, IOwnable {
 
 	private static final DataParameter<Integer> VEHICLE_HEALTH = EntityDataManager.createKey(VehicleBase.class, DataSerializers.VARINT);
 	private static final DataParameter<Byte> FORWARD_INPUT = EntityDataManager.createKey(VehicleBase.class, DataSerializers.BYTE);
@@ -150,11 +152,6 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	public float wheelRotationPrev = 0.f;
 
 	/**
-	 * the team number this vehicle was assigned to
-	 */
-	public int teamNum = 0;
-
-	/**
 	 * used to determine if it should allow interaction (setup time on vehicle placement)
 	 */
 	private boolean isSettingUp = false;
@@ -185,6 +182,8 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	public PathWorldAccessEntity worldAccess;
 	public IVehicleType vehicleType = VehicleRegistry.CATAPULT_STAND_FIXED;//set to dummy vehicle so it is never null...
 	public int vehicleMaterialLevel = 0;//the current material level of this vehicle. should be read/set prior to calling updateBaseStats
+	private String ownerName;
+	private UUID ownerUuid;
 
 	public VehicleBase(World par1World) {
 		super(par1World);
@@ -964,7 +963,8 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		pb.writeFloat(localTurretRotation);
 		pb.writeFloat(localTurretDestPitch);
 		pb.writeFloat(localTurretDestRot);
-		pb.writeInt(teamNum);
+		pb.writeString(ownerName);
+		pb.writeUniqueId(ownerUuid);
 		pb.writeFloat(localTurretRotationHome);
 		pb.writeBoolean(this.isSettingUp);
 		if (this.isSettingUp) {
@@ -997,7 +997,8 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		this.firingHelper.clientTurretPitch = localTurretPitch;
 		this.firingHelper.clientTurretYaw = localTurretRotation;
 		this.upgradeHelper.updateUpgradeStats();
-		this.teamNum = pb.readInt();
+		this.ownerName = pb.readString(16);
+		this.ownerUuid = pb.readUniqueId();
 		this.localTurretRotationHome = pb.readFloat();
 		this.isSettingUp = pb.readBoolean();
 		if (this.isSettingUp) {
@@ -1026,7 +1027,8 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		this.localTurretDestRot = tag.getFloat("trd");
 		this.upgradeHelper.updateUpgrades();
 		this.ammoHelper.updateAmmoCounts();
-		this.teamNum = tag.getInteger("team");
+		this.ownerName = tag.getString("ownerName");
+		this.ownerUuid = tag.getUniqueId("ownerUuid");
 		this.isSettingUp = tag.getBoolean("setup");
 		if (this.isSettingUp) {
 			this.setupTicks = tag.getInteger("sTick");
@@ -1051,7 +1053,8 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		tag.setFloat("tpd", localTurretDestPitch);
 		tag.setFloat("tr", localTurretRotation);
 		tag.setFloat("trd", localTurretDestRot);
-		tag.setInteger("team", this.teamNum);
+		tag.setString("ownerName", ownerName);
+		tag.setUniqueId("ownerUuid", ownerUuid);
 		tag.setBoolean("setup", this.isSettingUp);
 		if (this.isSettingUp) {
 			tag.setInteger("sTick", this.setupTicks);
@@ -1141,5 +1144,34 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 			return (T) inventory.storageInventory;
 		}
 		return super.getCapability(capability, facing);
+	}
+
+	@Override
+	public void setOwner(EntityPlayer player) {
+		ownerName = player.getName();
+		ownerUuid = player.getUniqueID();
+	}
+
+	@Override
+	public void setOwner(String ownerName, UUID ownerUuid) {
+		this.ownerName = ownerName;
+		this.ownerUuid = ownerUuid;
+	}
+
+	@Nullable
+	@Override
+	public String getOwnerName() {
+		return ownerName;
+	}
+
+	@Nullable
+	@Override
+	public UUID getOwnerUuid() {
+		return ownerUuid;
+	}
+
+	@Override
+	public boolean isOwner(EntityPlayer player) {
+		return player.getUniqueID().equals(ownerUuid);
 	}
 }

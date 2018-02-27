@@ -22,11 +22,10 @@
 package net.shadowmage.ancientwarfare.vehicle.missiles;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.util.RayTraceResult;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import shadowmage.ancient_warfare.common.item.ItemLoader;
-import shadowmage.ancient_warfare.common.research.ResearchGoalNumbers;
-import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 public class AmmoGrapeShot extends Ammo {
 
@@ -40,43 +39,45 @@ public class AmmoGrapeShot extends Ammo {
 		this.secondaryAmmoCount = weight;
 		float scaleFactor = weight + 45.f;
 		this.renderScale = (weight / scaleFactor) * 2;
-		this.iconTexture = "ammoGrape1";
+		//		this.iconTexture = "ammoGrape1"; TODO rendering
 		this.configName = "grape_shot_" + weight;
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/ammoStoneShot");
 
-		this.neededResearch.add(ResearchGoalNumbers.explosives1);
+		//		this.neededResearch.add(ResearchGoalNumbers.explosives1);
 		int cases = 1;
 		int explosives = 1;
-		this.numCrafted = 4;
+		//		this.numCrafted = 4;
 		switch (weight) {
 			case 5:
-				this.neededResearch.add(ResearchGoalNumbers.ballistics1);
+				//				this.neededResearch.add(ResearchGoalNumbers.ballistics1);
 				cases = 1;
 				explosives = 1;
 				break;
 
 			case 10:
-				this.neededResearch.add(ResearchGoalNumbers.ballistics1);
+				//				this.neededResearch.add(ResearchGoalNumbers.ballistics1);
 				cases = 2;
 				explosives = 2;
 				break;
 
 			case 15:
-				this.neededResearch.add(ResearchGoalNumbers.ballistics2);
+				//				this.neededResearch.add(ResearchGoalNumbers.ballistics2);
 				cases = 4;
 				explosives = 4;
 				break;
 
 			case 25:
-				this.neededResearch.add(ResearchGoalNumbers.ballistics3);
+				//				this.neededResearch.add(ResearchGoalNumbers.ballistics3);
 				cases = 6;
 				explosives = 6;
 				break;
 		}
 
+/*
 		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.clusterCharge, explosives, false, false));
 		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.explosiveCharge, explosives, false, false));
 		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.ironCasing, cases, false, false));
+*/
 	}
 
 	@Override
