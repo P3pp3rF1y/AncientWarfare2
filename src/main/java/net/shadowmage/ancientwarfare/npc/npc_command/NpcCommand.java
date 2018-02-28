@@ -66,8 +66,8 @@ public class NpcCommand {
 
     public static final class Command {
         public CommandType type;
-        public BlockPos pos;
-        public boolean blockTarget;
+		public BlockPos pos = BlockPos.ORIGIN;
+		public boolean blockTarget;
 
         UUID entityUUID;
         int entityID;
