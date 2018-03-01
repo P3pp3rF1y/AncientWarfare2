@@ -32,6 +32,8 @@ import net.minecraft.world.World;
  */
 public class PathWorldAccessEntity extends PathWorldAccess {
 
+	//TODO look into completely removing this class
+
 	World world;//so there is no casting necessary to access world functions (getcolliding bb/etc)
 	Entity entity;
 

@@ -217,11 +217,11 @@ public class PathFinderThetaStar {
 		currentNode.closed = true;
 		this.findNeighbors(currentNode);
 		float tent;
-		isDoor = world.isDoor(currentNode.x, currentNode.y, currentNode.z);
-		isPDoor = currentNode.parentNode != null && world.isDoor(currentNode.parentNode.x, currentNode.parentNode.y, currentNode.parentNode.z);
+		isDoor = world.isDoor(currentNode.getPos());
+		isPDoor = currentNode.parentNode != null && world.isDoor(currentNode.parentNode.getPos());
 		boolean isNDoor = false;
 		for (Node n : this.searchNodes) {
-			isNDoor = world.isDoor(n.x, n.y, n.z);
+			isNDoor = world.isDoor(n.getPos());
 			//could test for goal here, and if found, set n.f =0, insert to priority q (force to head of line)
 			tent = currentNode.g + currentNode.getDistanceFrom(n);
 			if (n.closed && tent > n.g)//new path from current node to n (already examined node) is longer than n's current path, disregard
@@ -352,7 +352,7 @@ public class PathFinderThetaStar {
 					}
 				} else if (p.y < y)//moving up from parent, check parent.y ->parent.y+2
 				{
-					if (world.isPartialBlock(p.x, p.y - 1, p.z))//check to make sure its not going to be too far to jump up
+					if (world.isPartialBlock(p.getPos().down()))//check to make sure its not going to be too far to jump up
 					{
 						return;
 					}
@@ -378,7 +378,7 @@ public class PathFinderThetaStar {
 		}
 		n = new Node(x, y, z);
 		if (p != null) {
-			n.travelCost = world.getTravelCost(x, y, z);
+			n.travelCost = world.getTravelCost(new BlockPos(x, y, z));
 			n.parentNode = p;
 			n.g = p.g + n.getDistanceFrom(p) + n.travelCost;
 			n.f = n.g + n.getDistanceFrom(tx, ty, tz);

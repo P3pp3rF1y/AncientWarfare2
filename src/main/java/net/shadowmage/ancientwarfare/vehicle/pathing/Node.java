@@ -148,6 +148,10 @@ public class Node implements Comparable {
 		return len;
 	}
 
+	public BlockPos getPos() {
+		return new BlockPos(x, y, z);
+	}
+
 	@Override
 	public int hashCode() {
 		return (x << 16) ^ z ^ (y << 24);

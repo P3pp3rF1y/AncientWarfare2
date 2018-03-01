@@ -339,10 +339,10 @@ public class PathUtils {
 		boolean canPath = true;
 		for (int i = 0; i < dx + dz; i++) {
 			//test hit here..., break/return false
-			if (worldAccess.isDoor(ex, cy, ez)) {
+			if (worldAccess.isDoor(new BlockPos(ex, cy, ez))) {
 				canPath = false;
 				break;
-			} else if (worldAccess.isLadder(worldAccess.getBlock(ex, cy, ey))) {
+			} else if (worldAccess.isLadder(new BlockPos(ex, cy, ey))) {
 				canPath = false;
 				break;
 			}

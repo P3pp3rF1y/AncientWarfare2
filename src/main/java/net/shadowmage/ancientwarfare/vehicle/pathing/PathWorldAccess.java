@@ -22,17 +22,18 @@
 package net.shadowmage.ancientwarfare.vehicle.pathing;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockLeaves;
-import net.minecraft.block.BlockStairs;
+import net.minecraft.block.BlockDoor;
+import net.minecraft.block.BlockFence;
+import net.minecraft.block.BlockFenceGate;
 import net.minecraft.block.BlockTrapDoor;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
-import shadowmage.ancient_warfare.common.block.BlockLoader;
-import shadowmage.ancient_warfare.common.gates.TEGateProxy;
+import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
 
 public class PathWorldAccess {
 
@@ -59,10 +60,9 @@ public class PathWorldAccess {
 		return world.getBlockState(pos).getBlock();
 	}
 
-	public int getTravelCost(int x, int y, int z) {
-		int id = world.getBlockId(x, y, z);
-		if ((id == Block.waterMoving.blockID || id == Block.waterStill.blockID))//can't swim check
-		{
+	public int getTravelCost(BlockPos pos) {
+		Block block = getBlock(pos);
+		if (block == Blocks.WATER || block == Blocks.FLOWING_WATER) {//can't swim check
 			if (!canGoOnLand) {
 				return 10;
 			}
@@ -76,28 +76,27 @@ public class PathWorldAccess {
 
 	/**
 	 * checks the collision bounds of the block at x,y,z to make sure it is <= 0.5 tall (pathable)
+	 *
 	 * @param x
 	 * @param y
 	 * @param z
 	 * @return true if it is a pathable block, false if it fails bounds checks
 	 */
 	public boolean checkBlockBounds(int x, int y, int z) {
-		Block block;
-		int id = world.getBlockId(x, y, z);
-		if (id == Block.waterMoving.blockID || id == Block.waterStill.blockID) {
+		BlockPos pos = new BlockPos(x, y, z);
+		IBlockState state = world.getBlockState(pos);
+		Block block = state.getBlock();
+		if (block == Blocks.WATER || block == Blocks.FLOWING_WATER) {
 			return true;
-		} else if (id == Block.trapdoor.blockID) {
-			int meta = world.getBlockMetadata(x, y, z);
-			return BlockTrapDoor.isTrapdoorOpen(meta);
+		} else if (block == Blocks.TRAPDOOR) {
+			return state.getValue(BlockTrapDoor.OPEN);
 		}
-		block = Block.blocksList[id];
-		if (block != null) {
-			AxisAlignedBB bb = block.getCollisionBoundingBoxFromPool(world, x, y, z);
+		if (block != Blocks.AIR) {
+			AxisAlignedBB bb = block.getCollisionBoundingBox(state, world, pos);
 			if (bb == null) {
 				return true;
 			}
-			block.setBlockBoundsBasedOnState(world, x, y, z);
-			if (block.getBlockBoundsMaxY() >= 0.5d) {
+			if (bb.maxY >= 0.5d) {
 				return false;
 			}
 		}
@@ -105,47 +104,43 @@ public class PathWorldAccess {
 	}
 
 	public boolean isWalkable2(int x, int y, int z) {
-		int id = world.getBlockId(x, y, z);
-		int id2 = world.getBlockId(x, y - 1, z);
-		int id3 = world.getBlockId(x, y + 1, z);
+		BlockPos pos = new BlockPos(x, y, z);
+		Block block = getBlock(pos);
+		Block blockDown = getBlock(pos.down());
+		Block blockUp = getBlock(pos.up());
 		boolean cube = !checkBlockBounds(x, y, z);
 		boolean cube2 = !checkBlockBounds(x, y - 1, z);
 		boolean cube3 = !checkBlockBounds(x, y + 1, z);
-		if (isFence(id2) || (isDoor(x, y - 1, z) && isDoor(x, y,
-				z)) || (id == Block.cactus.blockID || id2 == Block.cactus.blockID || id3 == Block.cactus.blockID)) {
+		if (isFence(blockDown) || (isDoor(pos.down()) && isDoor(pos)) || (block == Blocks.CACTUS || blockDown == Blocks.CACTUS || blockUp == Blocks.CACTUS)) {
 			return false;
 		}
 		if (canGoOnLand) {
-			if (canUseLaders && isLadder(id)) {
+			if (canUseLaders && isLadder(block)) {
 				return true;
 			}
-			if (canOpenDoors && isDoor(x, y, z) && cube2) {
+			if (canOpenDoors && isDoor(pos) && cube2) {
 				return true;
 			}
-			if (!cube && !cube3 && (cube2 || canSupport(id, x, y, z)))//finally, check if block and blockY+1 are clear and blockY-1 is solid
+			if (!cube && !cube3 && (cube2 || canSupport(block, pos)))//finally, check if block and blockY+1 are clear and blockY-1 is solid
 			{
 				return true;
 			}
 		}
-		if (canSwim && isWater(id) && id3 == 0) {
+		if (canSwim && isWater(block) && blockUp == Blocks.AIR) {
 			return true;
 		}
 		return false;
 	}
 
-	public boolean isPartialBlock(int x, int y, int z) {
-		int id = world.getBlockId(x, y, z);
-		Block block;
-		block = Block.blocksList[id];
-		if (block != null) {
-			AxisAlignedBB bb = block.getCollisionBoundingBoxFromPool(world, x, y, z);
+	public boolean isPartialBlock(BlockPos pos) {
+		IBlockState state = world.getBlockState(pos);
+		if (state.getBlock() != Blocks.AIR) {
+			AxisAlignedBB bb = state.getCollisionBoundingBox(world, pos);
 			if (bb == null) {
 				return false;
 			}
-			block.setBlockBoundsBasedOnState(world, x, y, z);
-			if (block.getBlockBoundsMaxY() <= 0.75d) {
-				if (block.getBlockBoundsMinX() < 0.35 && block.getBlockBoundsMaxX() > 0.65 && block.getBlockBoundsMinZ() < 0.35 && block
-						.getBlockBoundsMaxZ() > 0.65) {
+			if (bb.maxY <= 0.75d) {
+				if (bb.minX < 0.35 && bb.maxX > 0.65 && bb.minZ < 0.35 && bb.maxZ > 0.65) {
 					return true;
 				}
 			}
@@ -153,22 +148,18 @@ public class PathWorldAccess {
 		return false;
 	}
 
-	public boolean canSupport(int id, int x, int y, int z) {
-		Block block;
-		block = Block.blocksList[id];
+	public boolean canSupport(Block block, BlockPos pos) {
 		if (block != null) {
-			if (block.blockID == Block.trapdoor.blockID) {
-				int meta = world.getBlockMetadata(x, y, z);
-				return !BlockTrapDoor.isTrapdoorOpen(meta) && (meta & 8) == 0;
+			IBlockState state = world.getBlockState(pos);
+			if (block == Blocks.TRAPDOOR) {
+				return !state.getValue(BlockTrapDoor.OPEN) && state.getValue(BlockTrapDoor.HALF) == BlockTrapDoor.DoorHalf.BOTTOM;
 			}
-			AxisAlignedBB bb = block.getCollisionBoundingBoxFromPool(world, x, y, z);
+			AxisAlignedBB bb = block.getCollisionBoundingBox(state, world, pos);
 			if (bb == null) {
 				return false;
 			}
-			block.setBlockBoundsBasedOnState(world, x, y, z);
-			if (block.getBlockBoundsMaxY() <= 0.5d) {
-				if (block.getBlockBoundsMinX() < 0.35 && block.getBlockBoundsMaxX() > 0.65 && block.getBlockBoundsMinZ() < 0.35 && block
-						.getBlockBoundsMaxZ() > 0.65) {
+			if (bb.maxY <= 0.5d) {
+				if (bb.minX < 0.35 && bb.maxX > 0.65 && bb.minZ < 0.35 && bb.maxZ > 0.65) {
 					return true;
 				}
 			}
@@ -176,8 +167,8 @@ public class PathWorldAccess {
 		return false;
 	}
 
-	public boolean isFence(int id) {
-		return id == Block.fence.blockID || id == Block.fenceGate.blockID || id == Block.cobblestoneWall.blockID;
+	public boolean isFence(Block block) {
+		return block instanceof BlockFence || block instanceof BlockFenceGate || block == Blocks.COBBLESTONE_WALL;
 	}
 
 	public boolean isWalkable(int x, int y, int z) {
@@ -268,65 +259,34 @@ public class PathWorldAccess {
 		//  return true;
 	}
 
-	public boolean isGate(int id) {
-		return id == Block.fence.blockID || id == Block.fenceGate.blockID || id == Block.cobblestoneWall.blockID;
-	}
-
-	public boolean isWater(int id) {
-		return id == Block.waterMoving.blockID || id == Block.waterStill.blockID;
+	public boolean isWater(Block block) {
+		return block == Blocks.WATER || block == Blocks.FLOWING_WATER;
 	}
 
 	public boolean isDoor(BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 		if (block == AWStructuresBlocks.gateProxy) {
-			TEGateProxy proxy = (TEGateProxy) world.getBlockTileEntity(x, y, z);
-			if (proxy.owner == null || !proxy.owner.getGateType().canSoldierActivate() || proxy.owner.isLocked) {
+			TEGateProxy proxy = (TEGateProxy) world.getTileEntity(pos);
+			if (proxy.getOwner() == null || !proxy.getOwner().getGateType().canSoldierActivate()) {
 				return false;
 			}
 			return true;
 		}
-		return id == Block.doorWood.blockID || id == Block.fenceGate.blockID;
-	}
-
-	protected boolean isCube(int x, int y, int z) {
-		int id = world.getBlockId(x, y, z);
-		return isSolidBlock(id);
-	}
-
-	protected boolean isSolidBlock(int id) {
-		Block block = Block.blocksList[id];
-		if (block == null) {
-			return false;
-		}
-		if (block.isOpaqueCube() || block.renderAsNormalBlock()) {
-			return true;
-		} else if (id == Block.fence.blockID || id == Block.fenceIron.blockID || id == Block.cobblestoneWall.blockID || id == Block.tilledField.blockID || id == Block.glass.blockID || id == Block.thinGlass.blockID) {
-			return true;
-		} else if (id == Block.woodSingleSlab.blockID || id == Block.stoneSingleSlab.blockID || id == Block.chest.blockID || id == Block.chestTrapped.blockID || id == Block.slowSand.blockID) {
-			return true;
-		} else if (id == BlockLoader.gateProxy.blockID) {
-			return true;
-		} else if (block instanceof BlockStairs || block instanceof BlockLeaves) {
-			return true;
-		}
-		return false;
-	}
-
-	protected boolean isPathable(int id) {
-		if (id == Block.lavaMoving.blockID || id == Block.lavaStill.blockID || id == Block.fence.blockID || id == Block.fenceIron.blockID || id == Block.cobblestoneWall.blockID || id == Block.thinGlass.blockID) {
-			return false;
-		}
-		return true;
+		return (block instanceof BlockDoor && state.getMaterial() == Material.WOOD) || block instanceof BlockFenceGate;
 	}
 
 	protected boolean checkColidingEntities(int x, int y, int z) {
 		return false;
 	}
 
+	protected boolean isLadder(Block block) {
+		return block == Blocks.LADDER || block == Blocks.VINE;
+	}
+
 	protected boolean isLadder(BlockPos pos) {
 		Block block = world.getBlockState(pos).getBlock();
-		return block == Blocks.LADDER || block == Blocks.VINE;
+		return isLadder(block);
 	}
 
 	public boolean isWalkable(int x, int y, int z, Node src) {

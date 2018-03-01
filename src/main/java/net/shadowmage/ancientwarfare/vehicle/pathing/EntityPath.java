@@ -62,7 +62,7 @@ public class EntityPath {
 		while (it.hasNext()) {
 			n = it.next();
 			if (!couldSee) {
-				if (PathUtils.canPathStraightToTarget(world, n.x, n.y, n.z, start.x, start.y, start.z)) {
+				if (PathUtils.canPathStraightToTarget(world, n.x, n.y, n.z, start.getPos())) {
 					couldSee = true;
 				}
 			} else {
