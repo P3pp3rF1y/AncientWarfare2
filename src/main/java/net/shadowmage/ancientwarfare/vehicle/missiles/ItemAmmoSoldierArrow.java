@@ -27,10 +27,10 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
-public class AmmoSoldierArrow extends Ammo {
+public class ItemAmmoSoldierArrow extends ItemAmmo {
 
-	public AmmoSoldierArrow(int ammoType, int damage, boolean flaming) {
-		super(ammoType);
+	public ItemAmmoSoldierArrow(int damage, boolean flaming) {
+		super("ammo_soldier_arrow_" + damage + (flaming ? "_flaming" : ""));
 		this.ammoWeight = 1.f;
 		this.renderScale = 0.125f;
 		this.vehicleDamage = damage;

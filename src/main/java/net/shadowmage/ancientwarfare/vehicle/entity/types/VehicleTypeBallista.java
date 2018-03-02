@@ -25,7 +25,7 @@ import net.shadowmage.ancientwarfare.vehicle.VehicleVarHelpers.BallistaVarHelper
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.materials.VehicleMaterial;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
-import net.shadowmage.ancientwarfare.vehicle.missiles.Ammo;
+import net.shadowmage.ancientwarfare.vehicle.missiles.ItemAmmo;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleUpgradeRegistry;
 
@@ -43,14 +43,14 @@ public abstract class VehicleTypeBallista extends VehicleType {
 
 		this.maxMissileWeight = 2.f;
 
-		this.validAmmoTypes.add(Ammo.ammoBallistaBolt);
-		this.validAmmoTypes.add(Ammo.ammoBallistaBoltFlame);
-		this.validAmmoTypes.add(Ammo.ammoBallistaBoltExplosive);
-		this.validAmmoTypes.add(Ammo.ammoBallistaBoltIron);
+		this.validAmmoTypes.add(ItemAmmo.ammoBallistaBolt);
+		this.validAmmoTypes.add(ItemAmmo.ammoBallistaBoltFlame);
+		this.validAmmoTypes.add(ItemAmmo.ammoBallistaBoltExplosive);
+		this.validAmmoTypes.add(ItemAmmo.ammoBallistaBoltIron);
 
-		this.ammoBySoldierRank.put(0, Ammo.ammoBallistaBolt);
-		this.ammoBySoldierRank.put(1, Ammo.ammoBallistaBolt);
-		this.ammoBySoldierRank.put(2, Ammo.ammoBallistaBoltFlame);
+		this.ammoBySoldierRank.put(0, ItemAmmo.ammoBallistaBolt);
+		this.ammoBySoldierRank.put(1, ItemAmmo.ammoBallistaBolt);
+		this.ammoBySoldierRank.put(2, ItemAmmo.ammoBallistaBoltFlame);
 
 		this.validUpgrades.add(VehicleUpgradeRegistry.pitchDownUpgrade);
 		this.validUpgrades.add(VehicleUpgradeRegistry.pitchUpUpgrade);

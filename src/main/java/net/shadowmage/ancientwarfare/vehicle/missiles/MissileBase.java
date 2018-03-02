@@ -28,6 +28,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ResourceLocation;
@@ -37,12 +38,12 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.vehicle.entity.IMissileHitCallback;
-import net.shadowmage.ancientwarfare.vehicle.registry.AmmoRegistry;
 
 import java.util.Iterator;
 import java.util.List;
@@ -53,11 +54,10 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 	 * Must be set after missile is constructed, but before spawned server side.  Client-side this will be set by the readSpawnData method.  This ammo type is responsible for many onTick qualities,
 	 * effects of impact, and model/render instance used.
 	 */
-	public IAmmo ammoType = Ammo.ammoArrow;
+	public IAmmo ammoType = ItemAmmo.ammoArrow;
 	public Entity launcher = null;
 	public Entity shooterLiving;
 	IMissileHitCallback shooter = null;
-	public int missileType = Ammo.ammoArrow.ammoType;
 	int rocketBurnTime = 0;
 	public int ticksImpacted = 0;
 
@@ -95,9 +95,6 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 	 */
 	public void setMissileParams(IAmmo type, float x, float y, float z, float mx, float my, float mz) {
 		this.ammoType = type;
-		if (ammoType != null) {
-			this.missileType = ammoType.getAmmoType();
-		}
 		this.setPosition(x, y, z);
 		this.prevPosX = this.posX;
 		this.prevPosY = this.posY;
@@ -116,11 +113,11 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 		if (this.ammoType.isRocket() || this.ammoType.isTorpedo())//use launch power to determine rocket burn time...
 		{
 			float temp = MathHelper.sqrt(mx * mx + my * my + mz * mz);
-			this.rocketBurnTime = (int) (temp * 20.f * AmmoHwachaRocket.burnTimeFactor);
+			this.rocketBurnTime = (int) (temp * 20.f * ItemAmmoHwachaRocket.burnTimeFactor);
 
-			this.mX = (float) (motionX / temp) * AmmoHwachaRocket.accelerationFactor;
-			this.mY = (float) (motionY / temp) * AmmoHwachaRocket.accelerationFactor;
-			this.mZ = (float) (motionZ / temp) * AmmoHwachaRocket.accelerationFactor;
+			this.mX = (float) (motionX / temp) * ItemAmmoHwachaRocket.accelerationFactor;
+			this.mY = (float) (motionY / temp) * ItemAmmoHwachaRocket.accelerationFactor;
+			this.mZ = (float) (motionZ / temp) * ItemAmmoHwachaRocket.accelerationFactor;
 			this.motionX = mX;
 			this.motionY = mY;
 			this.motionZ = mZ;
@@ -148,7 +145,7 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 	}
 
 	public void onImpactEntity(Entity ent, float x, float y, float z) {
-		if (Ammo.shouldEffectEntity(world, ent, this)) {
+		if (ItemAmmo.shouldEffectEntity(world, ent, this)) {
 			this.ammoType.onImpactEntity(world, ent, x, y, z, this);
 			if (this.shooter != null) {
 				this.shooter.onMissileImpactEntity(world, ent);
@@ -418,8 +415,8 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound tag) {
-		this.missileType = tag.getInteger("type");
-		this.ammoType = AmmoRegistry.instance().getAmmoEntry(missileType);
+		this.ammoType = ForgeRegistries.ITEMS.getValue(new ResourceLocation(tag.getString("ammoRegistryName")));
+		ammoregistry list?
 		this.inGround = tag.getBoolean("inGround");
 		persistentBlockPos = BlockPos.fromLong(tag.getLong("persistentBlockPos"));
 		persistentBlock = NBTUtil.readBlockState(tag.getCompoundTag("persistentBlock"));
@@ -428,13 +425,13 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 		this.mY = tag.getFloat("mY");
 		this.mZ = tag.getFloat("mZ");
 		if (this.ammoType == null) {
-			this.ammoType = Ammo.ammoArrow;
+			this.ammoType = ItemAmmo.ammoArrow;
 		}
 	}
 
 	@Override
 	protected void writeEntityToNBT(NBTTagCompound tag) {
-		tag.setInteger("type", missileType);
+		tag.setString("ammoRegistryName", ammoType.getRegistryName().toString());
 		tag.setBoolean("inGround", this.inGround);
 		tag.setLong("persistentBlockPos", persistentBlockPos.toLong());
 		NBTTagCompound block = new NBTTagCompound();
@@ -452,35 +449,34 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 
 	@Override
 	public void writeSpawnData(ByteBuf data) {
-		data.writeInt(missileType);
-		data.writeFloat(rotationYaw);
-		data.writeFloat(rotationPitch);
-		data.writeBoolean(inGround);
-		data.writeLong(persistentBlockPos.toLong());
-		data.writeInt(Block.getStateId(persistentBlock));
-		data.writeInt(rocketBurnTime);
-		data.writeBoolean(this.launcher != null);
+		PacketBuffer pb = new PacketBuffer(data);
+		pb.writeString(ammoType.getRegistryName().toString());
+		pb.writeFloat(rotationYaw);
+		pb.writeFloat(rotationPitch);
+		pb.writeBoolean(inGround);
+		pb.writeLong(persistentBlockPos.toLong());
+		pb.writeInt(Block.getStateId(persistentBlock));
+		pb.writeInt(rocketBurnTime);
+		pb.writeBoolean(this.launcher != null);
 		if (this.launcher != null) {
-			data.writeInt(this.launcher.getEntityId());
+			pb.writeInt(this.launcher.getEntityId());
 		}
 	}
 
 	@Override
 	public void readSpawnData(ByteBuf data) {
-		this.missileType = data.readInt();
-		this.ammoType = AmmoRegistry.instance().getAmmoEntry(missileType);
-		if (this.ammoType == null) {
-			this.ammoType = Ammo.ammoArrow;
-		}
-		this.prevRotationYaw = this.rotationYaw = data.readFloat();
-		this.prevRotationPitch = this.rotationPitch = data.readFloat();
-		this.inGround = data.readBoolean();
-		persistentBlockPos = BlockPos.fromLong(data.readLong());
-		persistentBlock = Block.getStateById(data.readInt());
-		this.rocketBurnTime = data.readInt();
-		boolean hasLauncher = data.readBoolean();
+		PacketBuffer pb = new PacketBuffer(data);
+		ammoType = ForgeRegistries.ITEMS.getValue(new ResourceLocation(pb.readString(64)));
+		ammoregistry list?
+		this.prevRotationYaw = this.rotationYaw = pb.readFloat();
+		this.prevRotationPitch = this.rotationPitch = pb.readFloat();
+		this.inGround = pb.readBoolean();
+		persistentBlockPos = BlockPos.fromLong(pb.readLong());
+		persistentBlock = Block.getStateById(pb.readInt());
+		this.rocketBurnTime = pb.readInt();
+		boolean hasLauncher = pb.readBoolean();
 		if (hasLauncher) {
-			launcher = world.getEntityByID(data.readInt());
+			launcher = world.getEntityByID(pb.readInt());
 		}
 	}
 }

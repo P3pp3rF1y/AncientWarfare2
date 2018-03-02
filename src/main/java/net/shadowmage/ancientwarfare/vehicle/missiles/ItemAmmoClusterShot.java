@@ -27,70 +27,72 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
-public class AmmoPebbleShot extends Ammo {
+public class ItemAmmoClusterShot extends ItemAmmo {
 
-	/**
-	 * @param ammoType
-	 */
-	public AmmoPebbleShot(int ammoType, int weight) {
-		super(ammoType);
-		this.isPersistent = false;
-		this.isArrow = false;
-		this.isRocket = false;
+	public ItemAmmoClusterShot(int weight) {
+		super("ammo_cluster_shot_" + weight);
 		this.ammoWeight = weight;
-		this.secondaryAmmoCount = weight;
-		this.secondaryAmmoType = ammoBallShot;
 		float scaleFactor = weight + 45.f;
 		this.renderScale = (weight / scaleFactor) * 2;
-		//		this.iconTexture = "ammoPebble1"; TODO rendering
-		this.configName = "pebble_shot_" + weight;
+/* TODO rendering
+		this.iconTexture = "ammoCluster1";
+*/
+		this.configName = "cluster_shot_" + weight;
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/ammoStoneShot");
+
+		this.entityDamage = 5;
+		this.vehicleDamage = 5;
 
 /* TODO recipes
 		this.neededResearch.add(ResearchGoalNumbers.explosives1);
-		int cases = 1;
-		int explosives = 1;
 		this.numCrafted = 4;
 		switch (weight) {
 			case 10:
 				this.neededResearch.add(ResearchGoalNumbers.ballistics1);
-				cases = 1;
-				explosives = 1;
+				this.resources.add(new ItemStackWrapperCrafting(ItemLoader.explosiveCharge, 1, false, false));
+				this.resources.add(new ItemStackWrapperCrafting(ItemLoader.clusterCharge, 2, false, false));
+				this.resources.add(new ItemStackWrapperCrafting(ItemLoader.clayCasing, 2, false, false));
 				break;
 
 			case 15:
 				this.neededResearch.add(ResearchGoalNumbers.ballistics1);
-				cases = 2;
-				explosives = 2;
+				this.resources.add(new ItemStackWrapperCrafting(ItemLoader.explosiveCharge, 1, false, false));
+				this.resources.add(new ItemStackWrapperCrafting(ItemLoader.clusterCharge, 3, false, false));
+				this.resources.add(new ItemStackWrapperCrafting(ItemLoader.clayCasing, 3, false, false));
 				break;
 
 			case 30:
 				this.neededResearch.add(ResearchGoalNumbers.ballistics2);
-				cases = 4;
-				explosives = 4;
+				this.resources.add(new ItemStackWrapperCrafting(ItemLoader.explosiveCharge, 2, false, false));
+				this.resources.add(new ItemStackWrapperCrafting(ItemLoader.clusterCharge, 6, false, false));
+				this.resources.add(new ItemStackWrapperCrafting(ItemLoader.clayCasing, 6, false, false));
 				break;
 
 			case 45:
 				this.neededResearch.add(ResearchGoalNumbers.ballistics3);
-				cases = 6;
-				explosives = 6;
+				this.resources.add(new ItemStackWrapperCrafting(ItemLoader.explosiveCharge, 3, false, false));
+				this.resources.add(new ItemStackWrapperCrafting(ItemLoader.clusterCharge, 9, false, false));
+				this.resources.add(new ItemStackWrapperCrafting(ItemLoader.clayCasing, 9, false, false));
 				break;
 		}
-
-		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.clusterCharge, explosives, false, false));
-		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.explosiveCharge, explosives, false, false));
-		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.clayCasing, cases, false, false));
 */
 	}
 
 	@Override
 	public void onImpactWorld(World world, float x, float y, float z, MissileBase missile, RayTraceResult hit) {
-
+		if (!world.isRemote) {
+			double px = hit.hitVec.x - missile.motionX;
+			double py = hit.hitVec.y - missile.motionY;
+			double pz = hit.hitVec.z - missile.motionZ;
+			spawnGroundBurst(world, (float) px, (float) py, (float) pz, 10, ammoBallShot, (int) ammoWeight, 35, hit.sideHit, missile.shooterLiving);
+		}
 	}
 
 	@Override
 	public void onImpactEntity(World world, Entity ent, float x, float y, float z, MissileBase missile) {
-
+		if (!world.isRemote) {
+			spawnAirBurst(world, (float) ent.posX, (float) ent.posY + ent.height, (float) ent.posZ, 10, ammoBallShot, (int) ammoWeight, missile.shooterLiving);
+		}
 	}
 
 }

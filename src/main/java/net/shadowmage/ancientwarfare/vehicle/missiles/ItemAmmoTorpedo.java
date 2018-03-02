@@ -27,13 +27,10 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
-public class AmmoTorpedo extends Ammo {
+public class ItemAmmoTorpedo extends ItemAmmo {
 
-	/**
-	 * @param ammoType
-	 */
-	public AmmoTorpedo(int ammoType, int weight) {
-		super(ammoType);
+	public ItemAmmoTorpedo(int weight) {
+		super("ammo_torpedo_" + weight);
 		this.isEnabled = false;
 		this.isPersistent = false;
 		this.isArrow = true;

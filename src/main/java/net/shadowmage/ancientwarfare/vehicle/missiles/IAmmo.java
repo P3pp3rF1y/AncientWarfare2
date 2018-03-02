@@ -22,13 +22,10 @@
 package net.shadowmage.ancientwarfare.vehicle.missiles;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
-
-import java.util.List;
 
 /**
  * interfaced used by ammo types, implemented for possible future API use and
@@ -38,12 +35,7 @@ import java.util.List;
  */
 public interface IAmmo {
 
-	/**
-	 * get this ammo types global reference/ID number (used by vehicles to determine usability)
-	 *
-	 * @return
-	 */
-	int getAmmoType();//the global unique ammo type, used by structure spawning to fill ammo bays
+	ResourceLocation getRegistryName();
 
 	int getEntityDamage();
 
@@ -59,19 +51,11 @@ public interface IAmmo {
 
 	void setVehicleDamage(int damage);
 
-	String getDisplayName();//the displayed item-name/ammo name for this ammo
-
-	List<String> getDisplayTooltip();//the display tooltip for this ammo
-
 	ResourceLocation getModelTexture();//get the display texture
 
 /* TODO rendering
 	String getIconTexture();
 */
-
-	ItemStack getDisplayStack();//should be a persistent stack in the ammo instance, used to display ammo...
-
-	ItemStack getAmmoStack(int qty);//used to create a stack of this ammo.  used in structure spawning
 
 	IAmmo getSecondaryAmmoType();//if this is just a 'container' ammo, get the contained type
 

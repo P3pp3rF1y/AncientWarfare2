@@ -22,34 +22,35 @@
 package net.shadowmage.ancientwarfare.vehicle.missiles;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
-public class AmmoBallShot extends Ammo {
+public class ItemAmmoArrow extends ItemAmmo {
 
-	/**
-	 * @param ammoType
-	 */
-	public AmmoBallShot(int ammoType) {
-		super(ammoType);
-		this.renderScale = 0.15f;
+	public ItemAmmoArrow() {
+		super("ammo_arrow");
 		this.ammoWeight = 1.f;
-		this.entityDamage = 5;
-		this.vehicleDamage = 5;
-		this.isPersistent = false;
-		this.configName = "ball_shot";
+		this.renderScale = 0.2f;
+		this.vehicleDamage = 8;
+		this.entityDamage = 8;
+		this.isArrow = true;
+		this.isRocket = false;
+		this.isPersistent = true;
 /* TODO rendering
-		this.iconTexture = "ammoStone1";
+		this.iconTexture = "ammoArrow1";
 */
-		this.isCraftable = false;
-		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/ammoStoneShot");
+		this.configName = "arrow";
+/* TODO recipe
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowWood");
+		this.resources.add(new ItemStackWrapperCrafting(Item.flint, 5));
+		this.resources.add(new ItemStackWrapperCrafting(Item.stick, 5));
+		this.resources.add(new ItemStackWrapperCrafting(Item.feather, 5));
+*/
 	}
 
 	@Override
 	public void onImpactWorld(World world, float x, float y, float z, MissileBase missile, RayTraceResult hit) {
-		//NOOP
+
 	}
 
 	@Override
@@ -58,12 +59,5 @@ public class AmmoBallShot extends Ammo {
 			ent.attackEntityFrom(DamageType.causeEntityMissileDamage(missile.shooterLiving, false, false), this.getEntityDamage());
 		}
 	}
-
-/* TODO recipe - add a new one?
-	@Override
-	public ResourceListRecipe constructRecipe() {
-		return null;
-	}
-*/
 
 }

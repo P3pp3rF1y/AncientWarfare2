@@ -27,40 +27,64 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
-public class AmmoIronBallShot extends Ammo {
+public class ItemAmmoGrapeShot extends ItemAmmo {
 
-	/**
-	 * @param ammoType
-	 */
-	public AmmoIronBallShot(int ammoType) {
-		super(ammoType);
-		this.renderScale = 0.05f;
-		this.ammoWeight = 1.f;
-		this.entityDamage = 8;
-		this.vehicleDamage = 8;
-		//		this.iconTexture = "ammoStone1"; TODO rendering
-		this.configName = "iron_ball_shot";
+	public ItemAmmoGrapeShot(int weight) {
+		super("ammo_grape_shot_" + weight);
+		this.ammoWeight = weight;
+		this.secondaryAmmoType = ammoBallIronShot;
+		this.secondaryAmmoCount = weight;
+		float scaleFactor = weight + 45.f;
+		this.renderScale = (weight / scaleFactor) * 2;
+		//		this.iconTexture = "ammoGrape1"; TODO rendering
+		this.configName = "grape_shot_" + weight;
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/ammoStoneShot");
-		this.isCraftable = false;
+
+		//		this.neededResearch.add(ResearchGoalNumbers.explosives1);
+		int cases = 1;
+		int explosives = 1;
+		//		this.numCrafted = 4;
+		switch (weight) {
+			case 5:
+				//				this.neededResearch.add(ResearchGoalNumbers.ballistics1);
+				cases = 1;
+				explosives = 1;
+				break;
+
+			case 10:
+				//				this.neededResearch.add(ResearchGoalNumbers.ballistics1);
+				cases = 2;
+				explosives = 2;
+				break;
+
+			case 15:
+				//				this.neededResearch.add(ResearchGoalNumbers.ballistics2);
+				cases = 4;
+				explosives = 4;
+				break;
+
+			case 25:
+				//				this.neededResearch.add(ResearchGoalNumbers.ballistics3);
+				cases = 6;
+				explosives = 6;
+				break;
+		}
+
+/*
+		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.clusterCharge, explosives, false, false));
+		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.explosiveCharge, explosives, false, false));
+		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.ironCasing, cases, false, false));
+*/
 	}
 
 	@Override
 	public void onImpactWorld(World world, float x, float y, float z, MissileBase missile, RayTraceResult hit) {
-		//NOOP
+
 	}
 
 	@Override
 	public void onImpactEntity(World world, Entity ent, float x, float y, float z, MissileBase missile) {
-		if (!world.isRemote) {
-			ent.attackEntityFrom(DamageType.causeEntityMissileDamage(missile.shooterLiving, false, false), this.getEntityDamage());
-		}
-	}
 
-/* TODO define recipe?
-	@Override
-	public ResourceListRecipe constructRecipe() {
-		return null;
 	}
-*/
 
 }

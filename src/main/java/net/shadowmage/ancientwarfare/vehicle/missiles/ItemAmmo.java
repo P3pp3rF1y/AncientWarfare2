@@ -22,6 +22,8 @@
 package net.shadowmage.ancientwarfare.vehicle.missiles;
 
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -37,18 +39,19 @@ import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
-import net.shadowmage.ancientwarfare.vehicle.item.AWVehicleItems;
+import net.shadowmage.ancientwarfare.vehicle.item.ItemBaseVehicle;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-public abstract class Ammo implements IAmmo {
+public abstract class ItemAmmo extends ItemBaseVehicle implements IAmmo {
 
 	private static Random rng = new Random();
-	public static Ammo[] ammoTypes = new Ammo[64];//starting with 64 types...can/will expand as needed
+	public static ItemAmmo[] ammoTypes = new ItemAmmo[64];//starting with 64 types...can/will expand as needed
 
 	/**
 	 * procedure to make new ammo type:
@@ -58,75 +61,73 @@ public abstract class Ammo implements IAmmo {
 	 * add ammo to applicable vehicle type constructors
 	 */
 
-	public static Ammo ammoBallShot = new AmmoBallShot(52);// has to be declared first, because others depend on it...
-	public static Ammo ammoBallIronShot = new AmmoIronBallShot(53);
+	public static ItemAmmo ammoBallShot = new ItemAmmoBallShot(52);// has to be declared first, because others depend on it...
+	public static ItemAmmo ammoBallIronShot = new ItemAmmoIronBallShot(53);
 
-	public static Ammo ammoStoneShot10 = new AmmoStoneShot(0, 10);//
-	public static Ammo ammoStoneShot15 = new AmmoStoneShot(1, 15);
-	public static Ammo ammoStoneShot30 = new AmmoStoneShot(2, 30);
-	public static Ammo ammoStoneShot45 = new AmmoStoneShot(3, 45);
-	public static Ammo ammoFireShot10 = new AmmoFlameShot(4, 10);//
-	public static Ammo ammoFireShot15 = new AmmoFlameShot(5, 15);
-	public static Ammo ammoFireShot30 = new AmmoFlameShot(6, 30);
-	public static Ammo ammoFireShot45 = new AmmoFlameShot(7, 45);
-	public static Ammo ammoExplosive10 = new AmmoExplosiveShot(8, 10, false);//
-	public static Ammo ammoExplosive15 = new AmmoExplosiveShot(9, 15, false);
-	public static Ammo ammoExplosive30 = new AmmoExplosiveShot(10, 30, false);
-	public static Ammo ammoExplosive45 = new AmmoExplosiveShot(11, 45, false);
-	public static Ammo ammoHE10 = new AmmoExplosiveShot(12, 10, true);//
-	public static Ammo ammoHE15 = new AmmoExplosiveShot(13, 15, true);
-	public static Ammo ammoHE30 = new AmmoExplosiveShot(14, 30, true);
-	public static Ammo ammoHE45 = new AmmoExplosiveShot(15, 45, true);
-	public static Ammo ammoNapalm10 = new AmmoNapalmShot(16, 10);//
-	public static Ammo ammoNapalm15 = new AmmoNapalmShot(17, 15);
-	public static Ammo ammoNapalm30 = new AmmoNapalmShot(18, 30);
-	public static Ammo ammoNapalm45 = new AmmoNapalmShot(19, 45);
-	public static Ammo ammoClusterShot10 = new AmmoClusterShot(20, 10);//
-	public static Ammo ammoClusterShot15 = new AmmoClusterShot(21, 15);
-	public static Ammo ammoClusterShot30 = new AmmoClusterShot(22, 30);
-	public static Ammo ammoClusterShot45 = new AmmoClusterShot(23, 45);
-	public static Ammo ammoPebbleShot10 = new AmmoPebbleShot(24, 10);//
-	public static Ammo ammoPebbleShot15 = new AmmoPebbleShot(25, 15);
-	public static Ammo ammoPebbleShot30 = new AmmoPebbleShot(26, 30);
-	public static Ammo ammoPebbleShot45 = new AmmoPebbleShot(27, 45);
-	public static Ammo ammoIronShot5 = new AmmoIronShot(28, 5, 10);//
-	public static Ammo ammoIronShot10 = new AmmoIronShot(29, 10, 15);
-	public static Ammo ammoIronShot15 = new AmmoIronShot(30, 15, 30);
-	public static Ammo ammoIronShot25 = new AmmoIronShot(31, 25, 45);
-	public static Ammo ammoCanisterShot5 = new AmmoCanisterShot(32, 5);//
-	public static Ammo ammoCanisterShot10 = new AmmoCanisterShot(33, 10);
-	public static Ammo ammoCanisterShot15 = new AmmoCanisterShot(34, 15);
-	public static Ammo ammoCanisterShot25 = new AmmoCanisterShot(35, 25);
-	public static Ammo ammoGrapeShot5 = new AmmoGrapeShot(36, 5);//
-	public static Ammo ammoGrapeShot10 = new AmmoGrapeShot(37, 10);
-	public static Ammo ammoGrapeShot15 = new AmmoGrapeShot(38, 15);
-	public static Ammo ammoGrapeShot25 = new AmmoGrapeShot(39, 25);
-	public static Ammo ammoArrow = new AmmoArrow(40);//
-	public static Ammo ammoArrowFlame = new AmmoArrowFlame(41);//
-	public static Ammo ammoArrowIron = new AmmoArrowIron(42);//
-	public static Ammo ammoArrowIronFlame = new AmmoArrowIronFlame(43);//
-	public static Ammo ammoBallistaBolt = new AmmoBallistaBolt(44);
-	public static Ammo ammoBallistaBoltFlame = new AmmoBallistaBoltFlame(45);//
-	public static Ammo ammoBallistaBoltExplosive = new AmmoBallistaBoltExplosive(46);//
-	public static Ammo ammoBallistaBoltIron = new AmmoBallistaBoltIron(47);//
-	public static Ammo ammoRocket = new AmmoHwachaRocket(48);
-	public static Ammo ammoHwachaRocketFlame = new AmmoHwachaRocketFlame(49);
-	public static Ammo ammoHwachaRocketExplosive = new AmmoHwachaRocketExplosive(50);
-	public static Ammo ammoHwachaRocketAirburst = new AmmoHwachaRocketAirburst(51);
+	public static ItemAmmo ammoStoneShot10 = new ItemAmmoStoneShot(0, 10);//
+	public static ItemAmmo ammoStoneShot15 = new ItemAmmoStoneShot(1, 15);
+	public static ItemAmmo ammoStoneShot30 = new ItemAmmoStoneShot(2, 30);
+	public static ItemAmmo ammoStoneShot45 = new ItemAmmoStoneShot(3, 45);
+	public static ItemAmmo ammoFireShot10 = new ItemAmmoFlameShot(4, 10);//
+	public static ItemAmmo ammoFireShot15 = new ItemAmmoFlameShot(5, 15);
+	public static ItemAmmo ammoFireShot30 = new ItemAmmoFlameShot(6, 30);
+	public static ItemAmmo ammoFireShot45 = new ItemAmmoFlameShot(7, 45);
+	public static ItemAmmo ammoExplosive10 = new ItemAmmoExplosiveShot(8, 10, false);//
+	public static ItemAmmo ammoExplosive15 = new ItemAmmoExplosiveShot(9, 15, false);
+	public static ItemAmmo ammoExplosive30 = new ItemAmmoExplosiveShot(10, 30, false);
+	public static ItemAmmo ammoExplosive45 = new ItemAmmoExplosiveShot(11, 45, false);
+	public static ItemAmmo ammoHE10 = new ItemAmmoExplosiveShot(12, 10, true);//
+	public static ItemAmmo ammoHE15 = new ItemAmmoExplosiveShot(13, 15, true);
+	public static ItemAmmo ammoHE30 = new ItemAmmoExplosiveShot(14, 30, true);
+	public static ItemAmmo ammoHE45 = new ItemAmmoExplosiveShot(15, 45, true);
+	public static ItemAmmo ammoNapalm10 = new ItemAmmoNapalmShot(16, 10);//
+	public static ItemAmmo ammoNapalm15 = new ItemAmmoNapalmShot(17, 15);
+	public static ItemAmmo ammoNapalm30 = new ItemAmmoNapalmShot(18, 30);
+	public static ItemAmmo ammoNapalm45 = new ItemAmmoNapalmShot(19, 45);
+	public static ItemAmmo ammoClusterShot10 = new ItemAmmoClusterShot(20, 10);//
+	public static ItemAmmo ammoClusterShot15 = new ItemAmmoClusterShot(21, 15);
+	public static ItemAmmo ammoClusterShot30 = new ItemAmmoClusterShot(22, 30);
+	public static ItemAmmo ammoClusterShot45 = new ItemAmmoClusterShot(23, 45);
+	public static ItemAmmo ammoPebbleShot10 = new ItemAmmoPebbleShot(24, 10);//
+	public static ItemAmmo ammoPebbleShot15 = new ItemAmmoPebbleShot(25, 15);
+	public static ItemAmmo ammoPebbleShot30 = new ItemAmmoPebbleShot(26, 30);
+	public static ItemAmmo ammoPebbleShot45 = new ItemAmmoPebbleShot(27, 45);
+	public static ItemAmmo ammoIronShot5 = new ItemAmmoIronShot(28, 5, 10);//
+	public static ItemAmmo ammoIronShot10 = new ItemAmmoIronShot(29, 10, 15);
+	public static ItemAmmo ammoIronShot15 = new ItemAmmoIronShot(30, 15, 30);
+	public static ItemAmmo ammoIronShot25 = new ItemAmmoIronShot(31, 25, 45);
+	public static ItemAmmo ammoCanisterShot5 = new ItemAmmoCanisterShot(32, 5);//
+	public static ItemAmmo ammoCanisterShot10 = new ItemAmmoCanisterShot(33, 10);
+	public static ItemAmmo ammoCanisterShot15 = new ItemAmmoCanisterShot(34, 15);
+	public static ItemAmmo ammoCanisterShot25 = new ItemAmmoCanisterShot(35, 25);
+	public static ItemAmmo ammoGrapeShot5 = new ItemAmmoGrapeShot(36, 5);//
+	public static ItemAmmo ammoGrapeShot10 = new ItemAmmoGrapeShot(37, 10);
+	public static ItemAmmo ammoGrapeShot15 = new ItemAmmoGrapeShot(38, 15);
+	public static ItemAmmo ammoGrapeShot25 = new ItemAmmoGrapeShot(39, 25);
+	public static ItemAmmo ammoArrow = new ItemAmmoArrow(40);//
+	public static ItemAmmo ammoArrowFlame = new ItemAmmoArrowFlame(41);//
+	public static ItemAmmo ammoArrowIron = new ItemAmmoArrowIron(42);//
+	public static ItemAmmo ammoArrowIronFlame = new ItemAmmoArrowIronFlame(43);//
+	public static ItemAmmo ammoBallistaBolt = new ItemAmmoBallistaBolt(44);
+	public static ItemAmmo ammoBallistaBoltFlame = new ItemAmmoBallistaBoltFlame(45);//
+	public static ItemAmmo ammoBallistaBoltExplosive = new ItemAmmoBallistaBoltExplosive(46);//
+	public static ItemAmmo ammoBallistaBoltIron = new ItemAmmoBallistaBoltIron(47);//
+	public static ItemAmmo ammoRocket = new ItemAmmoHwachaRocket(48);
+	public static ItemAmmo ammoHwachaRocketFlame = new ItemAmmoHwachaRocketFlame(49);
+	public static ItemAmmo ammoHwachaRocketExplosive = new ItemAmmoHwachaRocketExplosive(50);
+	public static ItemAmmo ammoHwachaRocketAirburst = new ItemAmmoHwachaRocketAirburst(51);
 	//52 stoneBallShot (decl. above)
 	//53 ironBallShot (decl. above)
-	public static Ammo ammoSoldierArrowWood = new AmmoSoldierArrow(54, 5, false);
-	public static Ammo ammoSoldierArrowIron = new AmmoSoldierArrow(55, 7, false);
-	public static Ammo ammoSoldierArrowWoodFlame = new AmmoSoldierArrow(56, 5, true);
-	public static Ammo ammoSoldierArrowIronFlame = new AmmoSoldierArrow(57, 7, true);
-	public static Ammo ammoTorpedo10 = new AmmoTorpedo(58, 10);
-	public static Ammo ammoTorpedo15 = new AmmoTorpedo(59, 15);
-	public static Ammo ammoTorpedo30 = new AmmoTorpedo(60, 30);
-	public static Ammo ammoTorpedo45 = new AmmoTorpedo(61, 45);
+	public static ItemAmmo ammoSoldierArrowWood = new ItemAmmoSoldierArrow(54, 5, false);
+	public static ItemAmmo ammoSoldierArrowIron = new ItemAmmoSoldierArrow(55, 7, false);
+	public static ItemAmmo ammoSoldierArrowWoodFlame = new ItemAmmoSoldierArrow(56, 5, true);
+	public static ItemAmmo ammoSoldierArrowIronFlame = new ItemAmmoSoldierArrow(57, 7, true);
+	public static ItemAmmo ammoTorpedo10 = new ItemAmmoTorpedo(58, 10);
+	public static ItemAmmo ammoTorpedo15 = new ItemAmmoTorpedo(59, 15);
+	public static ItemAmmo ammoTorpedo30 = new ItemAmmoTorpedo(60, 30);
+	public static ItemAmmo ammoTorpedo45 = new ItemAmmoTorpedo(61, 45);
 	//62-63 reserved for future ammo types
 
-	private final ItemStack ammoStack;
-	public final int ammoType;
 	int entityDamage;
 	int vehicleDamage;
 	static final float gravityFactor = 9.81f * 0.05f * 0.05f;
@@ -150,18 +151,18 @@ public abstract class Ammo implements IAmmo {
 	IAmmo secondaryAmmoType = null;
 	int secondaryAmmoCount = 0;
 
-	public Ammo(int ammoType) {
-		this.ammoType = ammoType;
-		this.ammoStack = new ItemStack(AWVehicleItems.ammo, 1, ammoType);
-		if (ammoType >= 0 && ammoType < ammoTypes.length) {
-			ammoTypes[ammoType] = this;
-		}
-		this.displayName = "ammo." + ammoType;
-		this.displayTooltip.add("ammo." + ammoType + ".tooltip");
+	private String regName;
+
+	public ItemAmmo(String regName) {
+		super(regName);
+
+		this.regName = regName;
+		setUnlocalizedName("ammo." + regName);
 	}
 
-	public void addTooltip(String tip) {
-		this.displayTooltip.add(tip);
+	@Override
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		tooltip.add(I18n.format("ammo." + regName + ".tooltip"));
 	}
 
 	@Override
@@ -198,31 +199,6 @@ public abstract class Ammo implements IAmmo {
 	@Override
 	public boolean isTorpedo() {
 		return this.isTorpedo;
-	}
-
-	@Override
-	public int getAmmoType() {
-		return this.ammoType;
-	}
-
-	@Override
-	public ItemStack getDisplayStack() {
-		return this.ammoStack;
-	}
-
-	@Override
-	public ItemStack getAmmoStack(int qty) {
-		return new ItemStack(AWVehicleItems.ammo, qty, this.getAmmoType());
-	}
-
-	@Override
-	public String getDisplayName() {
-		return displayName;
-	}
-
-	@Override
-	public List<String> getDisplayTooltip() {
-		return displayTooltip;
 	}
 
 	@Override

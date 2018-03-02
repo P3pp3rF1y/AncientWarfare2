@@ -30,7 +30,7 @@ import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.materials.VehicleMaterial;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
-import net.shadowmage.ancientwarfare.vehicle.missiles.Ammo;
+import net.shadowmage.ancientwarfare.vehicle.missiles.ItemAmmo;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleUpgradeRegistry;
 
@@ -46,25 +46,25 @@ public class VehicleTypeCannon extends VehicleType {
 		this.materialCount = 5;
 		this.maxMissileWeight = 10.f;
 
-		this.validAmmoTypes.add(Ammo.ammoIronShot5);
-		this.validAmmoTypes.add(Ammo.ammoIronShot10);
-		this.validAmmoTypes.add(Ammo.ammoGrapeShot5);
-		this.validAmmoTypes.add(Ammo.ammoGrapeShot10);
-		this.validAmmoTypes.add(Ammo.ammoCanisterShot5);
-		this.validAmmoTypes.add(Ammo.ammoCanisterShot10);
+		this.validAmmoTypes.add(ItemAmmo.ammoIronShot5);
+		this.validAmmoTypes.add(ItemAmmo.ammoIronShot10);
+		this.validAmmoTypes.add(ItemAmmo.ammoGrapeShot5);
+		this.validAmmoTypes.add(ItemAmmo.ammoGrapeShot10);
+		this.validAmmoTypes.add(ItemAmmo.ammoCanisterShot5);
+		this.validAmmoTypes.add(ItemAmmo.ammoCanisterShot10);
 
 		if (AWVehicleStatics.oversizeAmmoEnabled) {
-			this.validAmmoTypes.add(Ammo.ammoIronShot15);
-			this.validAmmoTypes.add(Ammo.ammoIronShot25);
-			this.validAmmoTypes.add(Ammo.ammoGrapeShot15);
-			this.validAmmoTypes.add(Ammo.ammoGrapeShot25);
-			this.validAmmoTypes.add(Ammo.ammoCanisterShot15);
-			this.validAmmoTypes.add(Ammo.ammoCanisterShot25);
+			this.validAmmoTypes.add(ItemAmmo.ammoIronShot15);
+			this.validAmmoTypes.add(ItemAmmo.ammoIronShot25);
+			this.validAmmoTypes.add(ItemAmmo.ammoGrapeShot15);
+			this.validAmmoTypes.add(ItemAmmo.ammoGrapeShot25);
+			this.validAmmoTypes.add(ItemAmmo.ammoCanisterShot15);
+			this.validAmmoTypes.add(ItemAmmo.ammoCanisterShot25);
 		}
 
-		this.ammoBySoldierRank.put(0, Ammo.ammoIronShot5);
-		this.ammoBySoldierRank.put(1, Ammo.ammoIronShot5);
-		this.ammoBySoldierRank.put(2, Ammo.ammoIronShot5);
+		this.ammoBySoldierRank.put(0, ItemAmmo.ammoIronShot5);
+		this.ammoBySoldierRank.put(1, ItemAmmo.ammoIronShot5);
+		this.ammoBySoldierRank.put(2, ItemAmmo.ammoIronShot5);
 
 		this.validUpgrades.add(VehicleUpgradeRegistry.pitchDownUpgrade);
 		this.validUpgrades.add(VehicleUpgradeRegistry.pitchUpUpgrade);

@@ -29,7 +29,7 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleMovementType;
 import net.shadowmage.ancientwarfare.vehicle.entity.materials.VehicleMaterial;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
-import net.shadowmage.ancientwarfare.vehicle.missiles.Ammo;
+import net.shadowmage.ancientwarfare.vehicle.missiles.ItemAmmo;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleUpgradeRegistry;
 
 public class VehicleTypeAirInterceptor extends VehicleType {
@@ -45,21 +45,21 @@ public class VehicleTypeAirInterceptor extends VehicleType {
 		this.movementType = VehicleMovementType.AIR1;
 		this.maxMissileWeight = 10.f;
 
-		this.validAmmoTypes.add(Ammo.ammoPebbleShot10);
+		this.validAmmoTypes.add(ItemAmmo.ammoPebbleShot10);
 
-		this.validAmmoTypes.add(Ammo.ammoArrow);
-		this.validAmmoTypes.add(Ammo.ammoArrowFlame);
-		this.validAmmoTypes.add(Ammo.ammoArrowIron);
-		this.validAmmoTypes.add(Ammo.ammoArrowIronFlame);
+		this.validAmmoTypes.add(ItemAmmo.ammoArrow);
+		this.validAmmoTypes.add(ItemAmmo.ammoArrowFlame);
+		this.validAmmoTypes.add(ItemAmmo.ammoArrowIron);
+		this.validAmmoTypes.add(ItemAmmo.ammoArrowIronFlame);
 
-		this.validAmmoTypes.add(Ammo.ammoRocket);
-		this.validAmmoTypes.add(Ammo.ammoHwachaRocketFlame);
-		this.validAmmoTypes.add(Ammo.ammoHwachaRocketExplosive);
-		this.validAmmoTypes.add(Ammo.ammoHwachaRocketAirburst);
+		this.validAmmoTypes.add(ItemAmmo.ammoRocket);
+		this.validAmmoTypes.add(ItemAmmo.ammoHwachaRocketFlame);
+		this.validAmmoTypes.add(ItemAmmo.ammoHwachaRocketExplosive);
+		this.validAmmoTypes.add(ItemAmmo.ammoHwachaRocketAirburst);
 
-		this.ammoBySoldierRank.put(0, Ammo.ammoArrow);
-		this.ammoBySoldierRank.put(1, Ammo.ammoArrowFlame);
-		this.ammoBySoldierRank.put(2, Ammo.ammoArrowIronFlame);
+		this.ammoBySoldierRank.put(0, ItemAmmo.ammoArrow);
+		this.ammoBySoldierRank.put(1, ItemAmmo.ammoArrowFlame);
+		this.ammoBySoldierRank.put(2, ItemAmmo.ammoArrowIronFlame);
 
 		this.validUpgrades.add(VehicleUpgradeRegistry.speedUpgrade);
 		this.validUpgrades.add(VehicleUpgradeRegistry.reloadUpgrade);

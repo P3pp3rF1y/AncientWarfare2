@@ -27,51 +27,51 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
-public class AmmoHwachaRocketFlame extends Ammo {
+public class ItemAmmoHwachaRocketAirburst extends ItemAmmo {
 
-	/**
-	 * @param ammoType
-	 */
-	public AmmoHwachaRocketFlame(int ammoType) {
-		super(ammoType);
-		this.entityDamage = 5;
-		this.vehicleDamage = 5;
+	public ItemAmmoHwachaRocketAirburst() {
+		super("ammo_hwacha_rocket_airburst");
+		this.entityDamage = 0;
+		this.vehicleDamage = 0;
 		this.isArrow = true;
-		this.isPersistent = true;
+		this.isPersistent = false;
 		this.isRocket = true;
-		this.isFlaming = true;
-		this.ammoWeight = 1.1f;
+		this.isProximityAmmo = true;
+		this.groundProximity = 12.f;
+		this.entityProximity = 10f;
+		this.ammoWeight = 1.4f;
 		this.renderScale = 0.2f;
-		this.renderScale = 0.2f;
-		this.configName = "hwacha_rocket_flame";
-		//		this.iconTexture = "ammoRocketFlame1"; TODO rendering
+		this.configName = "hwacha_rocket_airburst";
+		//		this.iconTexture = "ammoRocketAirburst1"; TODO rendering
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowWood");
 
 /* TODO recipe
-		this.numCrafted = 10;
-		this.neededResearch.add(ResearchGoalNumbers.rockets1);
-		this.neededResearch.add(ResearchGoalNumbers.ballistics2);
-		this.neededResearch.add(ResearchGoalNumbers.flammables2);
+		this.numCrafted = 6;
+		this.neededResearch.add(ResearchGoalNumbers.rockets3);
+		this.neededResearch.add(ResearchGoalNumbers.ballistics3);
+		this.neededResearch.add(ResearchGoalNumbers.explosives2);
 		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.rocketCharge, 1, false, false));
-		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.stick), 10, false, false));
-		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.feather), 2, false, false));
+		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.stick), 6, false, false));
+		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.feather), 1, false, false));
 		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.ingotIron), 1, false, false));
-		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.flameCharge, 1, false, false));
+		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.clusterCharge, 1, false, false));
+		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.explosiveCharge, 1, false, false));
 */
 	}
 
 	@Override
 	public void onImpactWorld(World world, float x, float y, float z, MissileBase missile, RayTraceResult hit) {
 		if (!world.isRemote) {
-			igniteBlock(world, (int) x, (int) y + 2, (int) z, 5);
+			this.spawnAirBurst(world, x, y, z, 10, ammoBallShot, 4, missile.shooterLiving);
+			missile.setDead();
 		}
 	}
 
 	@Override
 	public void onImpactEntity(World world, Entity ent, float x, float y, float z, MissileBase missile) {
 		if (!world.isRemote) {
-			ent.attackEntityFrom(DamageType.causeEntityMissileDamage(missile.shooterLiving, true, false), this.getEntityDamage());
-			ent.setFire(2);
+			this.spawnAirBurst(world, x, y, z, 10, ammoBallShot, 4, missile.shooterLiving);
+			missile.setDead();
 		}
 	}
 

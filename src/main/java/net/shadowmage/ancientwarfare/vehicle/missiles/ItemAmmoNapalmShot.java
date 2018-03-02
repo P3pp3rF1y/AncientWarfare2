@@ -23,34 +23,26 @@ package net.shadowmage.ancientwarfare.vehicle.missiles;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
-public class AmmoFlameShot extends Ammo {
+public class ItemAmmoNapalmShot extends ItemAmmo {
 
-	/**
-	 * @param ammoType
-	 * @param weight
-	 */
-	public AmmoFlameShot(int ammoType, int weight) {
-		super(ammoType);
-		this.isPersistent = false;
-		this.isArrow = false;
-		this.isRocket = false;
-		this.isFlaming = true;
+	public ItemAmmoNapalmShot(int weight) {
+		super("ammo_napalm_shot_" + weight);
 		this.ammoWeight = weight;
+		this.entityDamage = weight;
+		this.vehicleDamage = weight;
 		float scaleFactor = weight + 45.f;
 		this.renderScale = (weight / scaleFactor) * 2;
-/* TODO rendering
-		this.iconTexture = "ammoFlame1";
-*/
-		this.configName = "flame_shot_" + weight;
-		this.vehicleDamage = 8;
-		this.entityDamage = 8;
+		//		this.iconTexture = "ammoNapalm1";  TODO rendering
+		this.configName = "napalm_shot_" + weight;
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/ammoStoneShot");
+		this.isFlaming = true;
 
-		//		this.neededResearch.add(ResearchGoalNumbers.flammables2); TODO recipes - below as well
+		//		this.neededResearch.add(ResearchGoalNumbers.flammables3); //TODO recipes
 		int cases = 1;
 		int explosives = 1;
 		//		this.numCrafted = 2;
@@ -81,43 +73,42 @@ public class AmmoFlameShot extends Ammo {
 		}
 
 /*
-		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.flameCharge, explosives, false, false));
+		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.napalmCharge, explosives, false, false));
 		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.clayCasing, cases, false, false));
 */
 	}
 
 	@Override
 	public void onImpactWorld(World world, float x, float y, float z, MissileBase missile, RayTraceResult hit) {
-		if (!world.isRemote) {
-			int bx = (int) x;
-			int by = (int) y + 2;
-			int bz = (int) z;
-			this.igniteBlock(world, bx, by, bz, 5);
-			if (this.ammoWeight >= 15) {
-				this.igniteBlock(world, bx - 1, by, bz, 5);
-				this.igniteBlock(world, bx + 1, by, bz, 5);
-				this.igniteBlock(world, bx, by, bz - 1, 5);
-				this.igniteBlock(world, bx, by, bz + 1, 5);
-			}
-			if (ammoWeight >= 30) {
-				this.igniteBlock(world, bx - 1, by, bz - 1, 5);
-				this.igniteBlock(world, bx - 1, by, bz + 1, 5);
-				this.igniteBlock(world, bx + 1, by, bz - 1, 5);
-				this.igniteBlock(world, bx + 1, by, bz + 1, 5);
-				this.igniteBlock(world, bx - 2, by, bz, 5);
-				this.igniteBlock(world, bx + 2, by, bz, 5);
-				this.igniteBlock(world, bx, by, bz - 2, 5);
-				this.igniteBlock(world, bx, by, bz + 2, 5);
-			}
-			if (ammoWeight >= 45) {
-				this.igniteBlock(world, bx - 1, by, bz - 2, 5);
-				this.igniteBlock(world, bx + 1, by, bz - 2, 5);
-				this.igniteBlock(world, bx - 1, by, bz + 2, 5);
-				this.igniteBlock(world, bx + 1, by, bz + 2, 5);
-				this.igniteBlock(world, bx - 2, by, bz - 1, 5);
-				this.igniteBlock(world, bx - 2, by, bz + 1, 5);
-				this.igniteBlock(world, bx + 2, by, bz - 1, 5);
-				this.igniteBlock(world, bx + 2, by, bz + 1, 5);
+		int bx = MathHelper.floor(x);
+		int by = MathHelper.floor(y);
+		int bz = MathHelper.floor(z);
+		setBlockToLava(world, bx, by, bz, 5);
+		double dx = missile.motionX;
+		double dz = missile.motionZ;
+		if (Math.abs(dx) > Math.abs(dz)) {
+			dz = 0;
+		} else {
+			dx = 0;
+		}
+		dx = dx < 0 ? -1 : dx > 0 ? 1 : dx;
+		dz = dz < 0 ? -1 : dz > 0 ? 1 : dz;
+		if (ammoWeight >= 15)//set the 'forward' block to lava as well
+		{
+			setBlockToLava(world, bx + (int) dx, by, bz + (int) dz, 5);
+		}
+		if (ammoWeight >= 30)//set the 'rear' block to lava as well
+		{
+			setBlockToLava(world, bx - (int) dx, by, bz - (int) dz, 5);
+		}
+		if (ammoWeight >= 45) {
+			if (dx == 0)//have already done Z's
+			{
+				setBlockToLava(world, bx + 1, by, bz, 5);
+				setBlockToLava(world, bx - 1, by, bz, 5);
+			} else {
+				setBlockToLava(world, bx, by, bz + 1, 5);
+				setBlockToLava(world, bx, by, bz - 1, 5);
 			}
 		}
 	}
@@ -127,7 +118,7 @@ public class AmmoFlameShot extends Ammo {
 		if (!world.isRemote) {
 			ent.attackEntityFrom(DamageType.causeEntityMissileDamage(missile.shooterLiving, true, false), this.getEntityDamage());
 			ent.setFire(3);
-			onImpactWorld(world, x, y, z, missile, null);
+			onImpactWorld(world, x, (float) ent.posY, z, missile, null);
 		}
 	}
 

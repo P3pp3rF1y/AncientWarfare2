@@ -29,7 +29,7 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleMovementType;
 import net.shadowmage.ancientwarfare.vehicle.entity.materials.VehicleMaterial;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
-import net.shadowmage.ancientwarfare.vehicle.missiles.Ammo;
+import net.shadowmage.ancientwarfare.vehicle.missiles.ItemAmmo;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleUpgradeRegistry;
 
@@ -47,14 +47,14 @@ public class VehicleTypeSubmarine extends VehicleType {
 
 		this.maxMissileWeight = 15.f;
 
-		this.validAmmoTypes.add(Ammo.ammoTorpedo10);
-		this.validAmmoTypes.add(Ammo.ammoTorpedo15);
-		this.validAmmoTypes.add(Ammo.ammoTorpedo30);
-		this.validAmmoTypes.add(Ammo.ammoTorpedo45);
+		this.validAmmoTypes.add(ItemAmmo.ammoTorpedo10);
+		this.validAmmoTypes.add(ItemAmmo.ammoTorpedo15);
+		this.validAmmoTypes.add(ItemAmmo.ammoTorpedo30);
+		this.validAmmoTypes.add(ItemAmmo.ammoTorpedo45);
 
-		this.ammoBySoldierRank.put(0, Ammo.ammoBallistaBolt);
-		this.ammoBySoldierRank.put(1, Ammo.ammoBallistaBolt);
-		this.ammoBySoldierRank.put(2, Ammo.ammoBallistaBoltFlame);
+		this.ammoBySoldierRank.put(0, ItemAmmo.ammoBallistaBolt);
+		this.ammoBySoldierRank.put(1, ItemAmmo.ammoBallistaBolt);
+		this.ammoBySoldierRank.put(2, ItemAmmo.ammoBallistaBoltFlame);
 
 		this.validUpgrades.add(VehicleUpgradeRegistry.speedUpgrade);
 		this.validUpgrades.add(VehicleUpgradeRegistry.powerUpgrade);

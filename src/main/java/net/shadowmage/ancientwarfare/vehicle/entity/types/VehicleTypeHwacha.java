@@ -30,7 +30,7 @@ import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.materials.VehicleMaterial;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
-import net.shadowmage.ancientwarfare.vehicle.missiles.Ammo;
+import net.shadowmage.ancientwarfare.vehicle.missiles.ItemAmmo;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleUpgradeRegistry;
 
@@ -49,14 +49,14 @@ public class VehicleTypeHwacha extends VehicleType {
 
 		this.maxMissileWeight = 1.f;
 
-		this.validAmmoTypes.add(Ammo.ammoRocket);
-		this.validAmmoTypes.add(Ammo.ammoHwachaRocketFlame);
-		this.validAmmoTypes.add(Ammo.ammoHwachaRocketExplosive);
-		this.validAmmoTypes.add(Ammo.ammoHwachaRocketAirburst);
+		this.validAmmoTypes.add(ItemAmmo.ammoRocket);
+		this.validAmmoTypes.add(ItemAmmo.ammoHwachaRocketFlame);
+		this.validAmmoTypes.add(ItemAmmo.ammoHwachaRocketExplosive);
+		this.validAmmoTypes.add(ItemAmmo.ammoHwachaRocketAirburst);
 
-		this.ammoBySoldierRank.put(0, Ammo.ammoRocket);
-		this.ammoBySoldierRank.put(1, Ammo.ammoRocket);
-		this.ammoBySoldierRank.put(2, Ammo.ammoRocket);
+		this.ammoBySoldierRank.put(0, ItemAmmo.ammoRocket);
+		this.ammoBySoldierRank.put(1, ItemAmmo.ammoRocket);
+		this.ammoBySoldierRank.put(2, ItemAmmo.ammoRocket);
 
 		this.validArmors.add(ArmorRegistry.armorStone);
 		this.validArmors.add(ArmorRegistry.armorIron);

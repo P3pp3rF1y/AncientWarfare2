@@ -27,15 +27,12 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
-public class AmmoExplosiveShot extends Ammo {
+public class ItemAmmoExplosiveShot extends ItemAmmo {
 
 	boolean bigExplosion;
 
-	/**
-	 * @param ammoType
-	 */
-	public AmmoExplosiveShot(int ammoType, int weight, boolean bigExplosion) {
-		super(ammoType);
+	public ItemAmmoExplosiveShot(int weight, boolean bigExplosion) {
+		super("ammo_explosive_shot_" + weight + (bigExplosion ? "_big" : ""));
 		this.ammoWeight = weight;
 		this.bigExplosion = bigExplosion;
 		this.entityDamage = weight;

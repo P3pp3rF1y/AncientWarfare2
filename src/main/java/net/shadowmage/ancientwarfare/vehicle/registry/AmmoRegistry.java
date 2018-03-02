@@ -22,8 +22,8 @@
 package net.shadowmage.ancientwarfare.vehicle.registry;
 
 import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.vehicle.missiles.Ammo;
 import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
+import net.shadowmage.ancientwarfare.vehicle.missiles.ItemAmmo;
 import net.shadowmage.ancientwarfare.vehicle.missiles.MissileBase;
 
 import java.util.ArrayList;
@@ -53,7 +53,7 @@ public class AmmoRegistry {
 		/**
 		 * debug..these will need to use the itemRegistry method..
 		 */
-		for (Ammo ammo : Ammo.ammoTypes) {
+		for (ItemAmmo ammo : ItemAmmo.ammoTypes) {
 			if (ammo != null) {
 				ammo.setEnabled(Config.getConfig().get("f_ammo_config", ammo.getConfigName() + ".enabled", ammo.isEnabled()).getBoolean(ammo.isEnabled()));
 				if (ammo.isEnabled()) {

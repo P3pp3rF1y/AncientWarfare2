@@ -27,44 +27,37 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
-public class AmmoBallistaBoltIron extends Ammo {
+public class ItemAmmoIronBallShot extends ItemAmmo {
 
-	/**
-	 * @param ammoType
-	 */
-	public AmmoBallistaBoltIron(int ammoType) {
-		super(ammoType);
-		this.ammoWeight = 2.f;
-		this.renderScale = 0.3f;
-		this.vehicleDamage = 25;
-		this.entityDamage = 25;
-		this.isArrow = true;
-		this.isRocket = false;
-		this.isPersistent = true;
-		this.configName = "ballist_bolt_iron";
-/* TODO rendering
-		this.iconTexture = "ammoBoltIron1";
-*/
-		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowIron");
-/* TODO recipe
-		this.neededResearch.add(ResearchGoalNumbers.ballistics2);
-		this.resources.add(new ItemStackWrapperCrafting(Item.ingotIron, 7));
-		this.resources.add(new ItemStackWrapperCrafting(Item.feather, 5));
-		this.numCrafted = 8;
-*/
+	public ItemAmmoIronBallShot() {
+		super("ammo_iron_ball_shot");
+		this.renderScale = 0.05f;
+		this.ammoWeight = 1.f;
+		this.entityDamage = 8;
+		this.vehicleDamage = 8;
+		//		this.iconTexture = "ammoStone1"; TODO rendering
+		this.configName = "iron_ball_shot";
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/ammoStoneShot");
+		this.isCraftable = false;
 	}
 
 	@Override
 	public void onImpactWorld(World world, float x, float y, float z, MissileBase missile, RayTraceResult hit) {
-
+		//NOOP
 	}
 
 	@Override
 	public void onImpactEntity(World world, Entity ent, float x, float y, float z, MissileBase missile) {
 		if (!world.isRemote) {
 			ent.attackEntityFrom(DamageType.causeEntityMissileDamage(missile.shooterLiving, false, false), this.getEntityDamage());
-			ent.setFire(4);
 		}
 	}
+
+/* TODO define recipe?
+	@Override
+	public ResourceListRecipe constructRecipe() {
+		return null;
+	}
+*/
 
 }

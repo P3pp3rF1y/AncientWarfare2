@@ -27,32 +27,33 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
-public class AmmoArrowFlame extends Ammo {
+public class ItemAmmoHwachaRocketFlame extends ItemAmmo {
 
-	/**
-	 * @param ammoType
-	 */
-	public AmmoArrowFlame(int ammoType) {
-		super(ammoType);
-		this.ammoWeight = 1.2f;
-		this.renderScale = 0.2f;
-		this.vehicleDamage = 6;
-		this.entityDamage = 6;
+	public ItemAmmoHwachaRocketFlame() {
+		super("ammo_hwacha_rocket_flame");
+		this.entityDamage = 5;
+		this.vehicleDamage = 5;
 		this.isArrow = true;
-		this.isRocket = false;
 		this.isPersistent = true;
+		this.isRocket = true;
 		this.isFlaming = true;
-/* TODO rendering
-		this.iconTexture = "ammoArrowFlame1";
-*/
-		this.configName = "arrow_flame";
+		this.ammoWeight = 1.1f;
+		this.renderScale = 0.2f;
+		this.renderScale = 0.2f;
+		this.configName = "hwacha_rocket_flame";
+		//		this.iconTexture = "ammoRocketFlame1"; TODO rendering
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowWood");
+
 /* TODO recipe
-		this.neededResearch.add(ResearchGoalNumbers.flammables1);
-		this.resources.add(new ItemStackWrapperCrafting(Item.flint, 5));
-		this.resources.add(new ItemStackWrapperCrafting(Item.stick, 5));
-		this.resources.add(new ItemStackWrapperCrafting(Item.feather, 5));
-		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.flameCharge, 2, false, false));
+		this.numCrafted = 10;
+		this.neededResearch.add(ResearchGoalNumbers.rockets1);
+		this.neededResearch.add(ResearchGoalNumbers.ballistics2);
+		this.neededResearch.add(ResearchGoalNumbers.flammables2);
+		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.rocketCharge, 1, false, false));
+		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.stick), 10, false, false));
+		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.feather), 2, false, false));
+		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.ingotIron), 1, false, false));
+		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.flameCharge, 1, false, false));
 */
 	}
 
@@ -67,7 +68,7 @@ public class AmmoArrowFlame extends Ammo {
 	public void onImpactEntity(World world, Entity ent, float x, float y, float z, MissileBase missile) {
 		if (!world.isRemote) {
 			ent.attackEntityFrom(DamageType.causeEntityMissileDamage(missile.shooterLiving, true, false), this.getEntityDamage());
-			ent.setFire(3);
+			ent.setFire(2);
 		}
 	}
 

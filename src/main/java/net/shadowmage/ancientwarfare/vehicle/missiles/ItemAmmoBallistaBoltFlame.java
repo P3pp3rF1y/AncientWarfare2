@@ -27,33 +27,31 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
-public class AmmoArrowIronFlame extends Ammo {
+public class ItemAmmoBallistaBoltFlame extends ItemAmmo {
 
-	/**
-	 * @param ammoType
-	 */
-	public AmmoArrowIronFlame(int ammoType) {
-		super(ammoType);
-		this.ammoWeight = 1.8f;
-		this.renderScale = 0.2f;
-		this.vehicleDamage = 10;
-		this.entityDamage = 10;
+	public ItemAmmoBallistaBoltFlame() {
+		super("ammo_ballista_bolt_flame");
+		this.ammoWeight = 2.2f;
+		this.renderScale = 0.3f;
+		this.vehicleDamage = 16;
+		this.entityDamage = 16;
 		this.isArrow = true;
 		this.isRocket = false;
 		this.isPersistent = true;
 		this.isFlaming = true;
-		this.configName = "arrow_iron_flame";
+		this.configName = "ballist_bolt_flame";
 /* TODO rendering
-		this.iconTexture = "ammoArrowIronFlame1";
+		this.iconTexture = "ammoBoltFlame1";
 */
-		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowIron");
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowWood");
 /* TODO recipe
 		this.neededResearch.add(ResearchGoalNumbers.ballistics1);
 		this.neededResearch.add(ResearchGoalNumbers.flammables1);
-		this.resources.add(new ItemStackWrapperCrafting(Item.flint, 5));
+		this.resources.add(new ItemStackWrapperCrafting(Item.stick, 5));
 		this.resources.add(new ItemStackWrapperCrafting(Item.ingotIron, 2));
 		this.resources.add(new ItemStackWrapperCrafting(Item.feather, 5));
 		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.flameCharge, 2, false, false));
+		this.numCrafted = 8;
 */
 	}
 
