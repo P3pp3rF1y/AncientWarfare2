@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIBase;
 import net.minecraft.entity.ai.RandomPositionGenerator;
@@ -49,8 +48,8 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
     public static final int HUNGRY = 8;
 
     public static final int MIN_RANGE = 9;
-    
-    private static HashSet<String> HOSTILE_ENTITIES = new HashSet<>();
+
+    private static HashSet<Integer> HOSTILE_ENTITIES = new HashSet<>();
 
     protected int moveRetryDelay;
     protected double moveSpeed = 1.d;
@@ -167,12 +166,12 @@ public abstract class NpcAI<T extends NpcBase> extends EntityAIBase {
      * Returns true if the given entity targets/attacks NPC's
      */
     public static boolean isAlwaysHostileToNpcs(Entity entity) {
-        if (HOSTILE_ENTITIES.contains(EntityList.getEntityString(entity)))
+        if (HOSTILE_ENTITIES.contains(entity.getEntityId()))
             return true;
         return false;
     }
     
     public static void addHostileEntity(Entity entity) {
-        HOSTILE_ENTITIES.add(EntityList.getEntityString(entity));
+        HOSTILE_ENTITIES.add(entity.getEntityId());
     }
 }
