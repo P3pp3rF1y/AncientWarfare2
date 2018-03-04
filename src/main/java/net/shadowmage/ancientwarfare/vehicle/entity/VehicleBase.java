@@ -65,8 +65,8 @@ import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleMoveHelper;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleUpgradeHelper;
 import net.shadowmage.ancientwarfare.vehicle.inventory.VehicleInventory;
+import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoHwachaRocket;
 import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
-import net.shadowmage.ancientwarfare.vehicle.missiles.ItemAmmoHwachaRocket;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicle;
 import net.shadowmage.ancientwarfare.vehicle.pathing.Navigator;
 import net.shadowmage.ancientwarfare.vehicle.pathing.Node;
@@ -457,10 +457,10 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		float rocketX = 0;
 		float rocketY = 0;
 		if (rocket) {
-            int rocketBurnTime = (int) (velocity * ItemAmmoHwachaRocket.burnTimeFactor);
-            float motX0 = (motX / (velocity * 0.05f)) * ItemAmmoHwachaRocket.accelerationFactor;
-            float motY0 = (motY / (velocity * 0.05f)) * ItemAmmoHwachaRocket.accelerationFactor;
-            motX = motX0;
+			int rocketBurnTime = (int) (velocity * AmmoHwachaRocket.burnTimeFactor);
+			float motX0 = (motX / (velocity * 0.05f)) * AmmoHwachaRocket.accelerationFactor;
+			float motY0 = (motY / (velocity * 0.05f)) * AmmoHwachaRocket.accelerationFactor;
+			motX = motX0;
 			motY = motY0;
 			while (rocketBurnTime > 0) {
 				rocketX += motX;

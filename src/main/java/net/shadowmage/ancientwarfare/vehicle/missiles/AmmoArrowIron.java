@@ -25,25 +25,26 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 
-public class ItemAmmoArrow extends ItemAmmo {
+public class AmmoArrowIron extends Ammo {
 
-	public ItemAmmoArrow() {
-		super("ammo_arrow");
-		this.ammoWeight = 1.f;
+	public AmmoArrowIron() {
+		super("ammo_arrow_iron");
+		this.ammoWeight = 1.6f;
 		this.renderScale = 0.2f;
-		this.vehicleDamage = 8;
-		this.entityDamage = 8;
+		this.vehicleDamage = 12;
+		this.entityDamage = 12;
 		this.isArrow = true;
 		this.isRocket = false;
 		this.isPersistent = true;
 /* TODO rendering
-		this.iconTexture = "ammoArrow1";
+		this.iconTexture = "ammoArrowIron1";
 */
-		this.configName = "arrow";
+		this.configName = "arrow_iron";
 /* TODO recipe
-		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowWood");
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowIron");
+		this.neededResearch.add(ResearchGoalNumbers.ballistics1);
 		this.resources.add(new ItemStackWrapperCrafting(Item.flint, 5));
-		this.resources.add(new ItemStackWrapperCrafting(Item.stick, 5));
+		this.resources.add(new ItemStackWrapperCrafting(Item.ingotIron, 2));
 		this.resources.add(new ItemStackWrapperCrafting(Item.feather, 5));
 */
 	}

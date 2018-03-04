@@ -27,46 +27,41 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
-public class ItemAmmoBallistaBoltExplosive extends ItemAmmo {
+public class AmmoBallistaBolt extends Ammo {
 
-	public ItemAmmoBallistaBoltExplosive() {
-		super("ammo_ballista_bolt_explosive");
-		this.ammoWeight = 2.6f;
+	public AmmoBallistaBolt() {
+		super("ammo_ballista_bolt");
+		this.ammoWeight = 2.f;
 		this.renderScale = 0.3f;
-		this.vehicleDamage = 15;
-		this.entityDamage = 15;
+		this.vehicleDamage = 18;
+		this.entityDamage = 18;
 		this.isArrow = true;
 		this.isRocket = false;
-		this.isPersistent = false;
-		this.configName = "ballist_bolt_explosive";
+		this.isPersistent = true;
 /* TODO rendering
-		this.iconTexture = "ammoBoltExplosive1";
+		this.iconTexture = "ammoBolt1";
 */
+		this.configName = "ballist_bolt";
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowWood");
-/* TODO recipe
-		this.neededResearch.add(ResearchGoalNumbers.ballistics1);
-		this.neededResearch.add(ResearchGoalNumbers.explosives1);
+
+/*
 		this.resources.add(new ItemStackWrapperCrafting(Item.stick, 5));
 		this.resources.add(new ItemStackWrapperCrafting(Item.ingotIron, 2));
 		this.resources.add(new ItemStackWrapperCrafting(Item.feather, 5));
-		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.explosiveCharge, 2, false, false));
 		this.numCrafted = 8;
 */
 	}
 
 	@Override
 	public void onImpactWorld(World world, float x, float y, float z, MissileBase missile, RayTraceResult hit) {
-		if (!world.isRemote) {
-			createExplosion(world, missile, x, y, z, 0.8f);
-		}
+
 	}
 
 	@Override
 	public void onImpactEntity(World world, Entity ent, float x, float y, float z, MissileBase missile) {
 		if (!world.isRemote) {
-			ent.attackEntityFrom(DamageType.causeEntityMissileDamage(missile.shooterLiving, false, true), this.getEntityDamage());
-			ent.setFire(3);
-			createExplosion(world, missile, x, y, z, 1.2f);
+			ent.attackEntityFrom(DamageType.causeEntityMissileDamage(missile.shooterLiving, false, false), this.getEntityDamage());
 		}
 	}
+
 }

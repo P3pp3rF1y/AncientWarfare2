@@ -23,49 +23,47 @@ package net.shadowmage.ancientwarfare.vehicle.missiles;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.vehicle.registry.AmmoRegistry;
 
-public class ItemAmmoNapalmShot extends ItemAmmo {
+public class AmmoGrapeShot extends Ammo {
 
-	public ItemAmmoNapalmShot(int weight) {
-		super("ammo_napalm_shot_" + weight);
+	public AmmoGrapeShot(int weight) {
+		super("ammo_grape_shot_" + weight);
 		this.ammoWeight = weight;
-		this.entityDamage = weight;
-		this.vehicleDamage = weight;
+		this.secondaryAmmoCount = weight;
 		float scaleFactor = weight + 45.f;
 		this.renderScale = (weight / scaleFactor) * 2;
-		//		this.iconTexture = "ammoNapalm1";  TODO rendering
-		this.configName = "napalm_shot_" + weight;
+		//		this.iconTexture = "ammoGrape1"; TODO rendering
+		this.configName = "grape_shot_" + weight;
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/ammoStoneShot");
-		this.isFlaming = true;
 
-		//		this.neededResearch.add(ResearchGoalNumbers.flammables3); //TODO recipes
+		//		this.neededResearch.add(ResearchGoalNumbers.explosives1);
 		int cases = 1;
 		int explosives = 1;
-		//		this.numCrafted = 2;
+		//		this.numCrafted = 4;
 		switch (weight) {
-			case 10:
+			case 5:
 				//				this.neededResearch.add(ResearchGoalNumbers.ballistics1);
 				cases = 1;
 				explosives = 1;
 				break;
 
-			case 15:
+			case 10:
 				//				this.neededResearch.add(ResearchGoalNumbers.ballistics1);
 				cases = 2;
 				explosives = 2;
 				break;
 
-			case 30:
+			case 15:
 				//				this.neededResearch.add(ResearchGoalNumbers.ballistics2);
 				cases = 4;
 				explosives = 4;
 				break;
 
-			case 45:
+			case 25:
 				//				this.neededResearch.add(ResearchGoalNumbers.ballistics3);
 				cases = 6;
 				explosives = 6;
@@ -73,53 +71,30 @@ public class ItemAmmoNapalmShot extends ItemAmmo {
 		}
 
 /*
-		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.napalmCharge, explosives, false, false));
-		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.clayCasing, cases, false, false));
+		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.clusterCharge, explosives, false, false));
+		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.explosiveCharge, explosives, false, false));
+		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.ironCasing, cases, false, false));
 */
 	}
 
 	@Override
+	public boolean hasSecondaryAmmo() {
+		return true;
+	}
+
+	@Override
+	public IAmmo getSecondaryAmmoType() {
+		return AmmoRegistry.ammoBallIronShot;
+	}
+
+	@Override
 	public void onImpactWorld(World world, float x, float y, float z, MissileBase missile, RayTraceResult hit) {
-		int bx = MathHelper.floor(x);
-		int by = MathHelper.floor(y);
-		int bz = MathHelper.floor(z);
-		setBlockToLava(world, bx, by, bz, 5);
-		double dx = missile.motionX;
-		double dz = missile.motionZ;
-		if (Math.abs(dx) > Math.abs(dz)) {
-			dz = 0;
-		} else {
-			dx = 0;
-		}
-		dx = dx < 0 ? -1 : dx > 0 ? 1 : dx;
-		dz = dz < 0 ? -1 : dz > 0 ? 1 : dz;
-		if (ammoWeight >= 15)//set the 'forward' block to lava as well
-		{
-			setBlockToLava(world, bx + (int) dx, by, bz + (int) dz, 5);
-		}
-		if (ammoWeight >= 30)//set the 'rear' block to lava as well
-		{
-			setBlockToLava(world, bx - (int) dx, by, bz - (int) dz, 5);
-		}
-		if (ammoWeight >= 45) {
-			if (dx == 0)//have already done Z's
-			{
-				setBlockToLava(world, bx + 1, by, bz, 5);
-				setBlockToLava(world, bx - 1, by, bz, 5);
-			} else {
-				setBlockToLava(world, bx, by, bz + 1, 5);
-				setBlockToLava(world, bx, by, bz - 1, 5);
-			}
-		}
+
 	}
 
 	@Override
 	public void onImpactEntity(World world, Entity ent, float x, float y, float z, MissileBase missile) {
-		if (!world.isRemote) {
-			ent.attackEntityFrom(DamageType.causeEntityMissileDamage(missile.shooterLiving, true, false), this.getEntityDamage());
-			ent.setFire(3);
-			onImpactWorld(world, x, (float) ent.posY, z, missile, null);
-		}
+
 	}
 
 }

@@ -25,7 +25,7 @@ package net.shadowmage.ancientwarfare.core.util;
 
 import net.minecraft.util.Tuple;
 import net.minecraft.util.math.MathHelper;
-import net.shadowmage.ancientwarfare.vehicle.missiles.ItemAmmoHwachaRocket;
+import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoHwachaRocket;
 
 /*
  * Static Math utilities class<br>
@@ -181,9 +181,9 @@ public class Trig {
 			motX = Trig.sinDegrees(angle) * testVelocity * 0.05f;
 			motY = Trig.cosDegrees(angle) * testVelocity * 0.05f;
 
-			rocketBurnTime = (int) (testVelocity * ItemAmmoHwachaRocket.burnTimeFactor);
-			motX0 = (motX / (testVelocity * 0.05f)) * ItemAmmoHwachaRocket.accelerationFactor;
-			motY0 = (motY / (testVelocity * 0.05f)) * ItemAmmoHwachaRocket.accelerationFactor;
+			rocketBurnTime = (int) (testVelocity * AmmoHwachaRocket.burnTimeFactor);
+			motX0 = (motX / (testVelocity * 0.05f)) * AmmoHwachaRocket.accelerationFactor;
+			motY0 = (motY / (testVelocity * 0.05f)) * AmmoHwachaRocket.accelerationFactor;
 			motX = motX0;
 			motY = motY0;
 			while (motY >= 0 || posY >= y) {

@@ -27,47 +27,37 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
-public class ItemAmmoBallistaBoltFlame extends ItemAmmo {
+public class AmmoIronBallShot extends Ammo {
 
-	public ItemAmmoBallistaBoltFlame() {
-		super("ammo_ballista_bolt_flame");
-		this.ammoWeight = 2.2f;
-		this.renderScale = 0.3f;
-		this.vehicleDamage = 16;
-		this.entityDamage = 16;
-		this.isArrow = true;
-		this.isRocket = false;
-		this.isPersistent = true;
-		this.isFlaming = true;
-		this.configName = "ballist_bolt_flame";
-/* TODO rendering
-		this.iconTexture = "ammoBoltFlame1";
-*/
-		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowWood");
-/* TODO recipe
-		this.neededResearch.add(ResearchGoalNumbers.ballistics1);
-		this.neededResearch.add(ResearchGoalNumbers.flammables1);
-		this.resources.add(new ItemStackWrapperCrafting(Item.stick, 5));
-		this.resources.add(new ItemStackWrapperCrafting(Item.ingotIron, 2));
-		this.resources.add(new ItemStackWrapperCrafting(Item.feather, 5));
-		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.flameCharge, 2, false, false));
-		this.numCrafted = 8;
-*/
+	public AmmoIronBallShot() {
+		super("ammo_iron_ball_shot");
+		this.renderScale = 0.05f;
+		this.ammoWeight = 1.f;
+		this.entityDamage = 8;
+		this.vehicleDamage = 8;
+		//		this.iconTexture = "ammoStone1"; TODO rendering
+		this.configName = "iron_ball_shot";
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/ammoStoneShot");
+		this.isCraftable = false;
 	}
 
 	@Override
 	public void onImpactWorld(World world, float x, float y, float z, MissileBase missile, RayTraceResult hit) {
-		if (!world.isRemote) {
-			igniteBlock(world, (int) x, (int) y + 2, (int) z, 5);
-		}
+		//NOOP
 	}
 
 	@Override
 	public void onImpactEntity(World world, Entity ent, float x, float y, float z, MissileBase missile) {
 		if (!world.isRemote) {
-			ent.attackEntityFrom(DamageType.causeEntityMissileDamage(missile.shooterLiving, true, false), this.getEntityDamage());
-			ent.setFire(4);
+			ent.attackEntityFrom(DamageType.causeEntityMissileDamage(missile.shooterLiving, false, false), this.getEntityDamage());
 		}
 	}
+
+/* TODO define recipe?
+	@Override
+	public ResourceListRecipe constructRecipe() {
+		return null;
+	}
+*/
 
 }

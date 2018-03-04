@@ -38,12 +38,12 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.vehicle.entity.IMissileHitCallback;
+import net.shadowmage.ancientwarfare.vehicle.registry.AmmoRegistry;
 
 import java.util.Iterator;
 import java.util.List;
@@ -54,7 +54,7 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 	 * Must be set after missile is constructed, but before spawned server side.  Client-side this will be set by the readSpawnData method.  This ammo type is responsible for many onTick qualities,
 	 * effects of impact, and model/render instance used.
 	 */
-	public IAmmo ammoType = ItemAmmo.ammoArrow;
+	public IAmmo ammoType = AmmoRegistry.ammoArrow;
 	public Entity launcher = null;
 	public Entity shooterLiving;
 	IMissileHitCallback shooter = null;
@@ -113,11 +113,11 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 		if (this.ammoType.isRocket() || this.ammoType.isTorpedo())//use launch power to determine rocket burn time...
 		{
 			float temp = MathHelper.sqrt(mx * mx + my * my + mz * mz);
-			this.rocketBurnTime = (int) (temp * 20.f * ItemAmmoHwachaRocket.burnTimeFactor);
+			this.rocketBurnTime = (int) (temp * 20.f * AmmoHwachaRocket.burnTimeFactor);
 
-			this.mX = (float) (motionX / temp) * ItemAmmoHwachaRocket.accelerationFactor;
-			this.mY = (float) (motionY / temp) * ItemAmmoHwachaRocket.accelerationFactor;
-			this.mZ = (float) (motionZ / temp) * ItemAmmoHwachaRocket.accelerationFactor;
+			this.mX = (float) (motionX / temp) * AmmoHwachaRocket.accelerationFactor;
+			this.mY = (float) (motionY / temp) * AmmoHwachaRocket.accelerationFactor;
+			this.mZ = (float) (motionZ / temp) * AmmoHwachaRocket.accelerationFactor;
 			this.motionX = mX;
 			this.motionY = mY;
 			this.motionZ = mZ;
@@ -145,7 +145,7 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 	}
 
 	public void onImpactEntity(Entity ent, float x, float y, float z) {
-		if (ItemAmmo.shouldEffectEntity(world, ent, this)) {
+		if (Ammo.shouldEffectEntity(world, ent, this)) {
 			this.ammoType.onImpactEntity(world, ent, x, y, z, this);
 			if (this.shooter != null) {
 				this.shooter.onMissileImpactEntity(world, ent);
@@ -415,8 +415,7 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 
 	@Override
 	protected void readEntityFromNBT(NBTTagCompound tag) {
-		this.ammoType = ForgeRegistries.ITEMS.getValue(new ResourceLocation(tag.getString("ammoRegistryName")));
-		ammoregistry list?
+		this.ammoType = AmmoRegistry.getAmmo(new ResourceLocation(tag.getString("ammoRegistryName")));
 		this.inGround = tag.getBoolean("inGround");
 		persistentBlockPos = BlockPos.fromLong(tag.getLong("persistentBlockPos"));
 		persistentBlock = NBTUtil.readBlockState(tag.getCompoundTag("persistentBlock"));
@@ -425,7 +424,7 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 		this.mY = tag.getFloat("mY");
 		this.mZ = tag.getFloat("mZ");
 		if (this.ammoType == null) {
-			this.ammoType = ItemAmmo.ammoArrow;
+			this.ammoType = AmmoRegistry.ammoArrow;
 		}
 	}
 
@@ -466,8 +465,7 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 	@Override
 	public void readSpawnData(ByteBuf data) {
 		PacketBuffer pb = new PacketBuffer(data);
-		ammoType = ForgeRegistries.ITEMS.getValue(new ResourceLocation(pb.readString(64)));
-		ammoregistry list?
+		ammoType = AmmoRegistry.getAmmo(new ResourceLocation(pb.readString(64)));
 		this.prevRotationYaw = this.rotationYaw = pb.readFloat();
 		this.prevRotationPitch = this.rotationPitch = pb.readFloat();
 		this.inGround = pb.readBoolean();

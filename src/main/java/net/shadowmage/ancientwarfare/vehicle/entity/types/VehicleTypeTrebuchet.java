@@ -28,7 +28,7 @@ import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.materials.VehicleMaterial;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
-import net.shadowmage.ancientwarfare.vehicle.missiles.ItemAmmo;
+import net.shadowmage.ancientwarfare.vehicle.registry.AmmoRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleUpgradeRegistry;
 
@@ -43,44 +43,44 @@ public class VehicleTypeTrebuchet extends VehicleType {
 		this.materialCount = 8;
 		this.maxMissileWeight = 10.f;
 
-		this.validAmmoTypes.add(ItemAmmo.ammoStoneShot10);
-		this.validAmmoTypes.add(ItemAmmo.ammoStoneShot15);
-		this.validAmmoTypes.add(ItemAmmo.ammoFireShot10);
-		this.validAmmoTypes.add(ItemAmmo.ammoFireShot15);
-		this.validAmmoTypes.add(ItemAmmo.ammoPebbleShot10);
-		this.validAmmoTypes.add(ItemAmmo.ammoPebbleShot15);
-		this.validAmmoTypes.add(ItemAmmo.ammoClusterShot10);
-		this.validAmmoTypes.add(ItemAmmo.ammoClusterShot15);
-		this.validAmmoTypes.add(ItemAmmo.ammoExplosive10);
-		this.validAmmoTypes.add(ItemAmmo.ammoExplosive15);
-		this.validAmmoTypes.add(ItemAmmo.ammoHE10);
-		this.validAmmoTypes.add(ItemAmmo.ammoHE15);
-		this.validAmmoTypes.add(ItemAmmo.ammoNapalm10);
-		this.validAmmoTypes.add(ItemAmmo.ammoNapalm15);
+		this.validAmmoTypes.add(AmmoRegistry.ammoStoneShot10);
+		this.validAmmoTypes.add(AmmoRegistry.ammoStoneShot15);
+		this.validAmmoTypes.add(AmmoRegistry.ammoFireShot10);
+		this.validAmmoTypes.add(AmmoRegistry.ammoFireShot15);
+		this.validAmmoTypes.add(AmmoRegistry.ammoPebbleShot10);
+		this.validAmmoTypes.add(AmmoRegistry.ammoPebbleShot15);
+		this.validAmmoTypes.add(AmmoRegistry.ammoClusterShot10);
+		this.validAmmoTypes.add(AmmoRegistry.ammoClusterShot15);
+		this.validAmmoTypes.add(AmmoRegistry.ammoExplosive10);
+		this.validAmmoTypes.add(AmmoRegistry.ammoExplosive15);
+		this.validAmmoTypes.add(AmmoRegistry.ammoHE10);
+		this.validAmmoTypes.add(AmmoRegistry.ammoHE15);
+		this.validAmmoTypes.add(AmmoRegistry.ammoNapalm10);
+		this.validAmmoTypes.add(AmmoRegistry.ammoNapalm15);
 
-		this.validAmmoTypes.add(ItemAmmo.ammoArrow);
-		this.validAmmoTypes.add(ItemAmmo.ammoArrowFlame);
-		this.validAmmoTypes.add(ItemAmmo.ammoArrowIron);
-		this.validAmmoTypes.add(ItemAmmo.ammoArrowIronFlame);
+		this.validAmmoTypes.add(AmmoRegistry.ammoArrow);
+		this.validAmmoTypes.add(AmmoRegistry.ammoArrowFlame);
+		this.validAmmoTypes.add(AmmoRegistry.ammoArrowIron);
+		this.validAmmoTypes.add(AmmoRegistry.ammoArrowIronFlame);
 
 		if (AWVehicleStatics.oversizeAmmoEnabled) {
-			this.validAmmoTypes.add(ItemAmmo.ammoStoneShot30);
-			this.validAmmoTypes.add(ItemAmmo.ammoStoneShot45);
-			this.validAmmoTypes.add(ItemAmmo.ammoFireShot30);
-			this.validAmmoTypes.add(ItemAmmo.ammoFireShot45);
-			this.validAmmoTypes.add(ItemAmmo.ammoPebbleShot30);
-			this.validAmmoTypes.add(ItemAmmo.ammoPebbleShot45);
-			this.validAmmoTypes.add(ItemAmmo.ammoClusterShot30);
-			this.validAmmoTypes.add(ItemAmmo.ammoClusterShot45);
-			this.validAmmoTypes.add(ItemAmmo.ammoExplosive30);
-			this.validAmmoTypes.add(ItemAmmo.ammoExplosive45);
-			this.validAmmoTypes.add(ItemAmmo.ammoHE30);
-			this.validAmmoTypes.add(ItemAmmo.ammoHE45);
+			this.validAmmoTypes.add(AmmoRegistry.ammoStoneShot30);
+			this.validAmmoTypes.add(AmmoRegistry.ammoStoneShot45);
+			this.validAmmoTypes.add(AmmoRegistry.ammoFireShot30);
+			this.validAmmoTypes.add(AmmoRegistry.ammoFireShot45);
+			this.validAmmoTypes.add(AmmoRegistry.ammoPebbleShot30);
+			this.validAmmoTypes.add(AmmoRegistry.ammoPebbleShot45);
+			this.validAmmoTypes.add(AmmoRegistry.ammoClusterShot30);
+			this.validAmmoTypes.add(AmmoRegistry.ammoClusterShot45);
+			this.validAmmoTypes.add(AmmoRegistry.ammoExplosive30);
+			this.validAmmoTypes.add(AmmoRegistry.ammoExplosive45);
+			this.validAmmoTypes.add(AmmoRegistry.ammoHE30);
+			this.validAmmoTypes.add(AmmoRegistry.ammoHE45);
 		}
 
-		this.ammoBySoldierRank.put(0, ItemAmmo.ammoStoneShot10);
-		this.ammoBySoldierRank.put(1, ItemAmmo.ammoStoneShot10);
-		this.ammoBySoldierRank.put(2, ItemAmmo.ammoStoneShot10);
+		this.ammoBySoldierRank.put(0, AmmoRegistry.ammoStoneShot10);
+		this.ammoBySoldierRank.put(1, AmmoRegistry.ammoStoneShot10);
+		this.ammoBySoldierRank.put(2, AmmoRegistry.ammoStoneShot10);
 
 		this.validArmors.add(ArmorRegistry.armorStone);
 		this.validArmors.add(ArmorRegistry.armorIron);

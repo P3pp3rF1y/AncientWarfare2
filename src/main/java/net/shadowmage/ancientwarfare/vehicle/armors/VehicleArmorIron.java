@@ -24,9 +24,7 @@ package net.shadowmage.ancientwarfare.vehicle.armors;
 public class VehicleArmorIron extends VehicleArmorBase {
 
 	public VehicleArmorIron() {
-		super(ArmorType.IRON);
-		this.displayName = "item.vehicleArmor.iron";
-		this.tooltip = "item.vehicleArmor.iron.tooltip";
+		super("armor_iron");
 		this.general = 7.0f;
 		this.explosive = 2.5f;
 		this.fire = 2.5f;

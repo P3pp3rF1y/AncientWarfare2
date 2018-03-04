@@ -22,50 +22,41 @@
 package net.shadowmage.ancientwarfare.vehicle.missiles;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
-public class ItemAmmoArrowIronFlame extends ItemAmmo {
+public class AmmoArrow extends Ammo {
 
-	public ItemAmmoArrowIronFlame() {
-		super("ammo_arrow_iron_flame");
-		this.ammoWeight = 1.8f;
+	public AmmoArrow() {
+		super("ammo_arrow");
+		this.ammoWeight = 1.f;
 		this.renderScale = 0.2f;
-		this.vehicleDamage = 10;
-		this.entityDamage = 10;
+		this.vehicleDamage = 8;
+		this.entityDamage = 8;
 		this.isArrow = true;
 		this.isRocket = false;
 		this.isPersistent = true;
-		this.isFlaming = true;
-		this.configName = "arrow_iron_flame";
 /* TODO rendering
-		this.iconTexture = "ammoArrowIronFlame1";
+		this.iconTexture = "ammoArrow1";
 */
-		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowIron");
+		this.configName = "arrow";
 /* TODO recipe
-		this.neededResearch.add(ResearchGoalNumbers.ballistics1);
-		this.neededResearch.add(ResearchGoalNumbers.flammables1);
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowWood");
 		this.resources.add(new ItemStackWrapperCrafting(Item.flint, 5));
-		this.resources.add(new ItemStackWrapperCrafting(Item.ingotIron, 2));
+		this.resources.add(new ItemStackWrapperCrafting(Item.stick, 5));
 		this.resources.add(new ItemStackWrapperCrafting(Item.feather, 5));
-		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.flameCharge, 2, false, false));
 */
 	}
 
 	@Override
 	public void onImpactWorld(World world, float x, float y, float z, MissileBase missile, RayTraceResult hit) {
-		if (!world.isRemote) {
-			igniteBlock(world, (int) x, (int) y + 2, (int) z, 5);
-		}
+
 	}
 
 	@Override
 	public void onImpactEntity(World world, Entity ent, float x, float y, float z, MissileBase missile) {
 		if (!world.isRemote) {
-			ent.attackEntityFrom(DamageType.causeEntityMissileDamage(missile.shooterLiving, true, false), this.getEntityDamage());
-			ent.setFire(4);
+			ent.attackEntityFrom(DamageType.causeEntityMissileDamage(missile.shooterLiving, false, false), this.getEntityDamage());
 		}
 	}
 

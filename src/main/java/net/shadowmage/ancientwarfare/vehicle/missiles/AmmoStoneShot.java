@@ -27,26 +27,71 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
-public class ItemAmmoBallShot extends ItemAmmo {
+public class AmmoStoneShot extends Ammo {
 
-	public ItemAmmoBallShot() {
-		super("ammo_ball_shot");
-		this.renderScale = 0.15f;
-		this.ammoWeight = 1.f;
-		this.entityDamage = 5;
-		this.vehicleDamage = 5;
+	public AmmoStoneShot(int weight) {
+		super("ammo_stone_shot_" + weight);
 		this.isPersistent = false;
-		this.configName = "ball_shot";
-/* TODO rendering
-		this.iconTexture = "ammoStone1";
-*/
-		this.isCraftable = false;
+		this.isArrow = false;
+		this.isRocket = false;
+		this.ammoWeight = weight;
+		//		this.iconTexture = "ammoStone1"; TODO rendering
+		this.configName = "stone_shot_" + weight;
+		this.entityDamage = weight;
+		this.vehicleDamage = weight;
+		float scaleFactor = weight + 45.f;
+		this.renderScale = (weight / scaleFactor) * 2;
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/ammoStoneShot");
+
+/* TODO recipes
+		int cases = 1;
+		this.numCrafted = 10;
+		switch (weight) {
+			case 10:
+				cases = 1;
+				break;
+
+			case 15:
+				this.neededResearch.add(ResearchGoalNumbers.ballistics1);
+				cases = 2;
+				break;
+
+			case 30:
+				this.neededResearch.add(ResearchGoalNumbers.ballistics2);
+				cases = 4;
+				break;
+
+			case 45:
+				this.neededResearch.add(ResearchGoalNumbers.ballistics3);
+				cases = 6;
+				break;
+		}
+
+		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.clayCasing, cases, false, false));
+*/
 	}
 
 	@Override
 	public void onImpactWorld(World world, float x, float y, float z, MissileBase missile, RayTraceResult hit) {
-		//NOOP
+		if (ammoWeight >= 15 && !world.isRemote) {
+			int bx = (int) x;
+			int by = (int) y;
+			int bz = (int) z;
+			this.breakBlockAndDrop(world, bx, by, bz);
+			if (ammoWeight >= 30) {
+				this.breakBlockAndDrop(world, bx, by - 1, bz);
+				this.breakBlockAndDrop(world, bx - 1, by, bz);
+				this.breakBlockAndDrop(world, bx + 1, by, bz);
+				this.breakBlockAndDrop(world, bx, by, bz - 1);
+				this.breakBlockAndDrop(world, bx, by, bz + 1);
+			}
+			if (ammoWeight >= 45) {
+				this.breakBlockAndDrop(world, bx - 1, by, bz - 1);
+				this.breakBlockAndDrop(world, bx + 1, by, bz - 1);
+				this.breakBlockAndDrop(world, bx - 1, by, bz + 1);
+				this.breakBlockAndDrop(world, bx + 1, by, bz + 1);
+			}
+		}
 	}
 
 	@Override
@@ -55,12 +100,5 @@ public class ItemAmmoBallShot extends ItemAmmo {
 			ent.attackEntityFrom(DamageType.causeEntityMissileDamage(missile.shooterLiving, false, false), this.getEntityDamage());
 		}
 	}
-
-/* TODO recipe - add a new one?
-	@Override
-	public ResourceListRecipe constructRecipe() {
-		return null;
-	}
-*/
 
 }

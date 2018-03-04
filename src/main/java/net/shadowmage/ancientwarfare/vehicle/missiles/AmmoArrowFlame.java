@@ -27,40 +27,44 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
-public class ItemAmmoBallistaBoltIron extends ItemAmmo {
+public class AmmoArrowFlame extends Ammo {
 
-	public ItemAmmoBallistaBoltIron() {
-		super("ammo_ballista_bolt_iron");
-		this.ammoWeight = 2.f;
-		this.renderScale = 0.3f;
-		this.vehicleDamage = 25;
-		this.entityDamage = 25;
+	public AmmoArrowFlame() {
+		super("ammo_arrow_flame");
+		this.ammoWeight = 1.2f;
+		this.renderScale = 0.2f;
+		this.vehicleDamage = 6;
+		this.entityDamage = 6;
 		this.isArrow = true;
 		this.isRocket = false;
 		this.isPersistent = true;
-		this.configName = "ballist_bolt_iron";
+		this.isFlaming = true;
 /* TODO rendering
-		this.iconTexture = "ammoBoltIron1";
+		this.iconTexture = "ammoArrowFlame1";
 */
-		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowIron");
+		this.configName = "arrow_flame";
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowWood");
 /* TODO recipe
-		this.neededResearch.add(ResearchGoalNumbers.ballistics2);
-		this.resources.add(new ItemStackWrapperCrafting(Item.ingotIron, 7));
+		this.neededResearch.add(ResearchGoalNumbers.flammables1);
+		this.resources.add(new ItemStackWrapperCrafting(Item.flint, 5));
+		this.resources.add(new ItemStackWrapperCrafting(Item.stick, 5));
 		this.resources.add(new ItemStackWrapperCrafting(Item.feather, 5));
-		this.numCrafted = 8;
+		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.flameCharge, 2, false, false));
 */
 	}
 
 	@Override
 	public void onImpactWorld(World world, float x, float y, float z, MissileBase missile, RayTraceResult hit) {
-
+		if (!world.isRemote) {
+			igniteBlock(world, (int) x, (int) y + 2, (int) z, 5);
+		}
 	}
 
 	@Override
 	public void onImpactEntity(World world, Entity ent, float x, float y, float z, MissileBase missile) {
 		if (!world.isRemote) {
-			ent.attackEntityFrom(DamageType.causeEntityMissileDamage(missile.shooterLiving, false, false), this.getEntityDamage());
-			ent.setFire(4);
+			ent.attackEntityFrom(DamageType.causeEntityMissileDamage(missile.shooterLiving, true, false), this.getEntityDamage());
+			ent.setFire(3);
 		}
 	}
 

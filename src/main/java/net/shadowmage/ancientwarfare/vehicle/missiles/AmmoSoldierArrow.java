@@ -27,33 +27,32 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
-public class ItemAmmoHwachaRocket extends ItemAmmo {
+public class AmmoSoldierArrow extends Ammo {
 
-	public static float burnTimeFactor = 3.f;
-	public static float accelerationFactor = 0.01f;
-
-	public ItemAmmoHwachaRocket() {
-		super("ammo_hwacha_rocket");
-		this.entityDamage = 6;
-		this.vehicleDamage = 6;
-		this.isArrow = true;
-		this.isPersistent = true;
-		this.isRocket = true;
+	public AmmoSoldierArrow(int damage, boolean flaming) {
+		super("ammo_soldier_arrow_" + damage + (flaming ? "_flaming" : ""));
 		this.ammoWeight = 1.f;
-		this.renderScale = 0.2f;
-		this.configName = "hwacha_rocket";
-		//		this.iconTexture = "ammoRocket1"; TODO rendering
-		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowWood");
+		this.renderScale = 0.125f;
+		this.vehicleDamage = damage;
+		this.entityDamage = damage;
+		this.isArrow = true;
+		this.isRocket = false;
+		this.isPersistent = true;
+		this.isFlaming = flaming;
+		this.isCraftable = false;
 
-/* TODO recipe
-		this.numCrafted = 12;
-		this.neededResearch.add(ResearchGoalNumbers.rockets1);
-		this.neededResearch.add(ResearchGoalNumbers.ballistics1);
-		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.rocketCharge, 1, false, false));
-		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.stick), 12, false, false));
-		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.feather), 2, false, false));
-		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.ingotIron), 1, false, false));
-*/
+		if (flaming) {
+			//			this.iconTexture = "ammoArrowFlame1"; TODO rendering
+			this.configName = "soldier_arrow_flame_" + damage;
+		} else {
+			//			this.iconTexture = "ammoArrow1"; TODO rendering
+			this.configName = "soldier_arrow_" + damage;
+		}
+		if (damage <= 5) {
+			this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowWood");
+		} else {
+			this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowIron");
+		}
 	}
 
 	@Override
@@ -64,8 +63,14 @@ public class ItemAmmoHwachaRocket extends ItemAmmo {
 	@Override
 	public void onImpactEntity(World world, Entity ent, float x, float y, float z, MissileBase missile) {
 		if (!world.isRemote) {
-			ent.attackEntityFrom(DamageType.causeEntityMissileDamage(missile.shooterLiving, false, false), this.getEntityDamage());
+			ent.attackEntityFrom(DamageType.causeEntityMissileDamage(missile.shooterLiving, isFlaming, false), this.getEntityDamage());
 		}
 	}
 
+/* TODO recipe - define new one?
+	@Override
+	public ResourceListRecipe constructRecipe() {
+		return null;
+	}
+*/
 }

@@ -21,17 +21,13 @@
 
 package net.shadowmage.ancientwarfare.vehicle.armors;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 
 import java.util.Set;
 
 public interface IVehicleArmor {
 
-	ArmorType getArmorType();
-
-	String getDisplayName();
-
-	String getDisplayTooltip();
+	ResourceLocation getRegistryName();
 
 	float getGeneralDamageReduction();
 
@@ -40,8 +36,6 @@ public interface IVehicleArmor {
 	float getFireDamageReduction();
 
 	float getArmorWeight();
-
-	ItemStack getArmorStack(int qty);
 
 	Set<Integer> getNeededResearch();
 }

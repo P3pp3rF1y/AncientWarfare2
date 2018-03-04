@@ -137,7 +137,7 @@ public class VehicleInventory {
 		ArrayList<VehicleAmmoEntry> counts = new ArrayList<VehicleAmmoEntry>();
 		for (int i = 0; i < this.ammoInventory.getSlots(); i++) {
 			ItemStack stack = this.ammoInventory.getStackInSlot(i);
-			IAmmo ammo = AmmoRegistry.instance().getAmmoForStack(stack);
+			IAmmo ammo = AmmoRegistry.getAmmoForStack(stack);
 			if (ammo != null) {
 				boolean found = false;
 				for (VehicleAmmoEntry ent : counts) {
@@ -157,7 +157,7 @@ public class VehicleInventory {
 	}
 
 	public boolean isAmmoValid(ItemStack stack) {
-		IAmmo type = AmmoRegistry.instance().getAmmoForStack(stack);
+		IAmmo type = AmmoRegistry.getAmmoForStack(stack);
 		return type != null && vehicle.vehicleType.isAmmoValidForInventory(type);
 	}
 

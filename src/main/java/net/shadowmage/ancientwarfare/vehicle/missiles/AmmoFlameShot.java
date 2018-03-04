@@ -27,12 +27,12 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
-public class ItemAmmoFlameShot extends ItemAmmo {
+public class AmmoFlameShot extends Ammo {
 
 	/**
 	 * @param weight
 	 */
-	public ItemAmmoFlameShot(int weight) {
+	public AmmoFlameShot(int weight) {
 		super("ammo_flame_shot_" + weight);
 		this.isPersistent = false;
 		this.isArrow = false;

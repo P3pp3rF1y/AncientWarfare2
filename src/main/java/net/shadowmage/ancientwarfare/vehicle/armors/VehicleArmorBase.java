@@ -21,40 +21,28 @@
 
 package net.shadowmage.ancientwarfare.vehicle.armors;
 
-import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.vehicle.item.AWVehicleItems;
+import net.minecraft.util.ResourceLocation;
+import net.shadowmage.ancientwarfare.vehicle.AncientWarfareVehicles;
 
 import java.util.HashSet;
 import java.util.Set;
 
 public abstract class VehicleArmorBase implements IVehicleArmor {
 
-	ArmorType armorType;
-	String displayName = "";
-	String tooltip = "";
 	float general = 0.f;
 	float explosive = 0.f;
 	float fire = 0.f;
 	float weight = 50.f;
 	Set<Integer> neededResearch = new HashSet<>();
+	private ResourceLocation registryName;
 
-	public VehicleArmorBase(ArmorType armorType) {
-		this.armorType = armorType;
+	public VehicleArmorBase(String regName) {
+		registryName = new ResourceLocation(AncientWarfareVehicles.modID, regName);
 	}
 
 	@Override
-	public ArmorType getArmorType() {
-		return this.armorType;
-	}
-
-	@Override
-	public String getDisplayName() {
-		return displayName;
-	}
-
-	@Override
-	public String getDisplayTooltip() {
-		return tooltip;
+	public ResourceLocation getRegistryName() {
+		return registryName;
 	}
 
 	@Override
@@ -75,11 +63,6 @@ public abstract class VehicleArmorBase implements IVehicleArmor {
 	@Override
 	public float getArmorWeight() {
 		return weight;
-	}
-
-	@Override
-	public ItemStack getArmorStack(int qty) {
-		return new ItemStack(AWVehicleItems.armor, qty, armorType.ordinal());
 	}
 
 /* TODO armor rendering

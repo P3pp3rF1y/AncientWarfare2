@@ -26,10 +26,11 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.vehicle.registry.AmmoRegistry;
 
-public class ItemAmmoHwachaRocketAirburst extends ItemAmmo {
+public class AmmoHwachaRocketAirburst extends Ammo {
 
-	public ItemAmmoHwachaRocketAirburst() {
+	public AmmoHwachaRocketAirburst() {
 		super("ammo_hwacha_rocket_airburst");
 		this.entityDamage = 0;
 		this.vehicleDamage = 0;
@@ -62,7 +63,7 @@ public class ItemAmmoHwachaRocketAirburst extends ItemAmmo {
 	@Override
 	public void onImpactWorld(World world, float x, float y, float z, MissileBase missile, RayTraceResult hit) {
 		if (!world.isRemote) {
-			this.spawnAirBurst(world, x, y, z, 10, ammoBallShot, 4, missile.shooterLiving);
+			this.spawnAirBurst(world, x, y, z, 10, AmmoRegistry.ammoBallShot, 4, missile.shooterLiving);
 			missile.setDead();
 		}
 	}
@@ -70,7 +71,7 @@ public class ItemAmmoHwachaRocketAirburst extends ItemAmmo {
 	@Override
 	public void onImpactEntity(World world, Entity ent, float x, float y, float z, MissileBase missile) {
 		if (!world.isRemote) {
-			this.spawnAirBurst(world, x, y, z, 10, ammoBallShot, 4, missile.shooterLiving);
+			this.spawnAirBurst(world, x, y, z, 10, AmmoRegistry.ammoBallShot, 4, missile.shooterLiving);
 			missile.setDead();
 		}
 	}

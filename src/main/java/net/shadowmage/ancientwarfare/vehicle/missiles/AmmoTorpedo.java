@@ -1,5 +1,5 @@
 /**
- * Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
+ * Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
  * This software is distributed under the terms of the GNU General Public License.
  * Please see COPYING for precise license information.
  * <p>
@@ -27,27 +27,28 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
-public class ItemAmmoPebbleShot extends ItemAmmo {
+public class AmmoTorpedo extends Ammo {
 
-	public ItemAmmoPebbleShot(int weight) {
-		super("ammo_pebble_shot_" + weight);
+	public AmmoTorpedo(int weight) {
+		super("ammo_torpedo_" + weight);
+		this.isEnabled = false;
 		this.isPersistent = false;
-		this.isArrow = false;
+		this.isArrow = true;
 		this.isRocket = false;
+		this.isTorpedo = true;
 		this.ammoWeight = weight;
-		this.secondaryAmmoCount = weight;
-		this.secondaryAmmoType = ammoBallShot;
+		//		this.iconTexture = "ammoStone1"; TODO rendering
+		this.configName = "torpedo_" + weight;
+		this.entityDamage = weight * 2;
+		this.vehicleDamage = weight * 2;
 		float scaleFactor = weight + 45.f;
 		this.renderScale = (weight / scaleFactor) * 2;
-		//		this.iconTexture = "ammoPebble1"; TODO rendering
-		this.configName = "pebble_shot_" + weight;
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/ammoStoneShot");
 
 /* TODO recipes
-		this.neededResearch.add(ResearchGoalNumbers.explosives1);
 		int cases = 1;
 		int explosives = 1;
-		this.numCrafted = 4;
+		this.numCrafted = 2;
 		switch (weight) {
 			case 10:
 				this.neededResearch.add(ResearchGoalNumbers.ballistics1);
@@ -74,7 +75,8 @@ public class ItemAmmoPebbleShot extends ItemAmmo {
 				break;
 		}
 
-		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.clusterCharge, explosives, false, false));
+		explosives *= 2;
+
 		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.explosiveCharge, explosives, false, false));
 		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.clayCasing, cases, false, false));
 */
@@ -82,12 +84,22 @@ public class ItemAmmoPebbleShot extends ItemAmmo {
 
 	@Override
 	public void onImpactWorld(World world, float x, float y, float z, MissileBase missile, RayTraceResult hit) {
-
+		if (!world.isRemote) {
+			float maxPower = 7.f;
+			float powerPercent = ammoWeight / 45.f;
+			float power = maxPower * powerPercent;
+			this.createExplosion(world, missile, x, y, z, power);
+		}
 	}
 
 	@Override
 	public void onImpactEntity(World world, Entity ent, float x, float y, float z, MissileBase missile) {
-
+		if (!world.isRemote) {
+			float maxPower = 7.f;
+			float powerPercent = ammoWeight / 45.f;
+			float power = maxPower * powerPercent;
+			this.createExplosion(world, missile, x, y, z, power);
+		}
 	}
 
 }

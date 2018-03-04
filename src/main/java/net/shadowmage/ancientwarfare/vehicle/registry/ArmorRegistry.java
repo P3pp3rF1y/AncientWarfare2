@@ -21,12 +21,15 @@
 
 package net.shadowmage.ancientwarfare.vehicle.registry;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.registries.IForgeRegistry;
 import net.shadowmage.ancientwarfare.vehicle.armors.IVehicleArmor;
 import net.shadowmage.ancientwarfare.vehicle.armors.VehicleArmorIron;
 import net.shadowmage.ancientwarfare.vehicle.armors.VehicleArmorObsidian;
 import net.shadowmage.ancientwarfare.vehicle.armors.VehicleArmorStone;
-import net.shadowmage.ancientwarfare.vehicle.item.AWVehicleItems;
+import net.shadowmage.ancientwarfare.vehicle.item.ItemArmor;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -34,38 +37,37 @@ import java.util.Map;
 
 public class ArmorRegistry {
 
-	public static IVehicleArmor armorStone = new VehicleArmorStone();
-	public static IVehicleArmor armorIron = new VehicleArmorIron();
-	public static IVehicleArmor armorObsidian = new VehicleArmorObsidian();
+	public static IVehicleArmor armorStone;
+	public static IVehicleArmor armorIron;
+	public static IVehicleArmor armorObsidian;
 
-	private static Map<Integer, IVehicleArmor> armorInstances = new HashMap<>();
+	private static Map<ResourceLocation, IVehicleArmor> armorInstances = new HashMap<>();
+	private static Map<ResourceLocation, ItemArmor> armorItemInstances = new HashMap<>();
 
-	public static void registerArmorTypes() {
-		registerArmorType(armorStone);
-		registerArmorType(armorIron);
-		registerArmorType(armorObsidian);
+	public static void registerArmorTypes(IForgeRegistry<Item> registry) {
+		armorStone = registerArmorType(new VehicleArmorStone(), registry);
+		armorIron = registerArmorType(new VehicleArmorIron(), registry);
+		armorObsidian = registerArmorType(new VehicleArmorObsidian(), registry);
 	}
 
 	public static Collection<IVehicleArmor> getArmorTypes() {
 		return armorInstances.values();
 	}
 
-	public static void registerArmorType(IVehicleArmor armor) {
-		Description d = ItemLoader.instance()
-				.addSubtypeInfoToItem(AWVehicleItems.armor, armor.getArmorType(), armor.getDisplayName(), "", armor.getDisplayTooltip());
-		d.setIconTexture(armor.getIconTexture(), armor.getArmorType());
-		d.addDisplayStack(new ItemStack(AWVehicleItems.armor, 1, armor.getArmorType()));
-		this.armorInstances.put(armor.getArmorType(), armor);
+	public static IVehicleArmor registerArmorType(IVehicleArmor armor, IForgeRegistry<Item> registry) {
+
+		armorInstances.put(armor.getRegistryName(), armor);
+		ItemArmor item = new ItemArmor(armor.getRegistryName());
+		registry.register(item);
+		armorItemInstances.put(armor.getRegistryName(), item);
+		return armor;
 	}
 
-	public static IVehicleArmor getArmorType(int typeId) {
-		return armorInstances.get(typeId);
+	public static IVehicleArmor getArmorType(ResourceLocation registryName) {
+		return armorInstances.get(registryName);
 	}
 
 	public static IVehicleArmor getArmorForStack(ItemStack stack) {
-		if (stack != null && stack.itemID == ItemLoader.armorItem.itemID) {
-			return armorInstances.get(stack.getItemDamage());
-		}
-		return null;
+		return armorInstances.get(stack.getItem().getRegistryName());
 	}
 }

@@ -24,9 +24,7 @@ package net.shadowmage.ancientwarfare.vehicle.armors;
 public class VehicleArmorObsidian extends VehicleArmorBase {
 
 	public VehicleArmorObsidian() {
-		super(ArmorType.OBSIDIAN);
-		this.displayName = "item.vehicleArmor.obsidian";
-		this.tooltip = "item.vehicleArmor.obsidian.tooltip";
+		super("armor_obsidian");
 		this.general = 2.5f;
 		this.explosive = 7.f;
 		this.fire = 2.5f;
@@ -35,5 +33,4 @@ public class VehicleArmorObsidian extends VehicleArmorBase {
 		this.addNeededResource(new ItemStack(Block.obsidian, 5), false);
 */
 	}
-
 }

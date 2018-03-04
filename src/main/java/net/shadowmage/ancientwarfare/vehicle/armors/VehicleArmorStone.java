@@ -24,9 +24,7 @@ package net.shadowmage.ancientwarfare.vehicle.armors;
 public class VehicleArmorStone extends VehicleArmorBase {
 
 	public VehicleArmorStone() {
-		super(ArmorType.STONE);
-		this.displayName = "item.vehicleArmor.stone";
-		this.tooltip = "item.vehicleArmor.stone.tooltip";
+		super("armor_stone");
 		this.general = 2.5f;
 		this.explosive = 2.5f;
 		this.fire = 7;
@@ -37,5 +35,4 @@ public class VehicleArmorStone extends VehicleArmorBase {
   this.addNeededResource(new ItemStack(Blocks.STONE, 3), false);
   this.addNeededResource(new ItemStack(Items.IRON_INGOT, 2), false);
 */
-
 }

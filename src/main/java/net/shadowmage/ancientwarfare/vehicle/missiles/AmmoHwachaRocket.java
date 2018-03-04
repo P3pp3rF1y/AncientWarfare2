@@ -27,23 +27,38 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
-public class ItemAmmoIronBallShot extends ItemAmmo {
+public class AmmoHwachaRocket extends Ammo {
 
-	public ItemAmmoIronBallShot() {
-		super("ammo_iron_ball_shot");
-		this.renderScale = 0.05f;
+	public static float burnTimeFactor = 3.f;
+	public static float accelerationFactor = 0.01f;
+
+	public AmmoHwachaRocket() {
+		super("ammo_hwacha_rocket");
+		this.entityDamage = 6;
+		this.vehicleDamage = 6;
+		this.isArrow = true;
+		this.isPersistent = true;
+		this.isRocket = true;
 		this.ammoWeight = 1.f;
-		this.entityDamage = 8;
-		this.vehicleDamage = 8;
-		//		this.iconTexture = "ammoStone1"; TODO rendering
-		this.configName = "iron_ball_shot";
-		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/ammoStoneShot");
-		this.isCraftable = false;
+		this.renderScale = 0.2f;
+		this.configName = "hwacha_rocket";
+		//		this.iconTexture = "ammoRocket1"; TODO rendering
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowWood");
+
+/* TODO recipe
+		this.numCrafted = 12;
+		this.neededResearch.add(ResearchGoalNumbers.rockets1);
+		this.neededResearch.add(ResearchGoalNumbers.ballistics1);
+		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.rocketCharge, 1, false, false));
+		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.stick), 12, false, false));
+		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.feather), 2, false, false));
+		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.ingotIron), 1, false, false));
+*/
 	}
 
 	@Override
 	public void onImpactWorld(World world, float x, float y, float z, MissileBase missile, RayTraceResult hit) {
-		//NOOP
+
 	}
 
 	@Override
@@ -52,12 +67,5 @@ public class ItemAmmoIronBallShot extends ItemAmmo {
 			ent.attackEntityFrom(DamageType.causeEntityMissileDamage(missile.shooterLiving, false, false), this.getEntityDamage());
 		}
 	}
-
-/* TODO define recipe?
-	@Override
-	public ResourceListRecipe constructRecipe() {
-		return null;
-	}
-*/
 
 }

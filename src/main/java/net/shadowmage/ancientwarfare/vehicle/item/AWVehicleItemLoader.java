@@ -11,6 +11,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
+import net.shadowmage.ancientwarfare.vehicle.registry.AmmoRegistry;
 
 @Mod.EventBusSubscriber(modid = AncientWarfareCore.modID)
 public class AWVehicleItemLoader {
@@ -25,9 +26,6 @@ public class AWVehicleItemLoader {
 
     @SubscribeEvent
     public static void register(RegistryEvent.Register<Item> event) {
-        //TODO registration
-        //GameRegistry.registerItem(spawner, "vehicle_spawner");
-
         IForgeRegistry<Item> registry = event.getRegistry();
 
         registry.register(new ItemSpawner());
@@ -47,5 +45,7 @@ public class AWVehicleItemLoader {
         registry.register(new ItemBaseVehicle("counter_weight_unit"));
         registry.register(new ItemBaseVehicle("powder_case"));
         registry.register(new ItemBaseVehicle("equipment_bay"));
+
+        AmmoRegistry.registerAmmo(registry);
     }
 }

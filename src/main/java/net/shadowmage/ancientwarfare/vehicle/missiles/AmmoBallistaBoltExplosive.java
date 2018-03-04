@@ -22,43 +22,51 @@
 package net.shadowmage.ancientwarfare.vehicle.missiles;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
-public class ItemAmmoArrowIron extends ItemAmmo {
+public class AmmoBallistaBoltExplosive extends Ammo {
 
-	public ItemAmmoArrowIron() {
-		super("ammo_arrow_iron");
-		this.ammoWeight = 1.6f;
-		this.renderScale = 0.2f;
-		this.vehicleDamage = 12;
-		this.entityDamage = 12;
+	public AmmoBallistaBoltExplosive() {
+		super("ammo_ballista_bolt_explosive");
+		this.ammoWeight = 2.6f;
+		this.renderScale = 0.3f;
+		this.vehicleDamage = 15;
+		this.entityDamage = 15;
 		this.isArrow = true;
 		this.isRocket = false;
-		this.isPersistent = true;
+		this.isPersistent = false;
+		this.configName = "ballist_bolt_explosive";
 /* TODO rendering
-		this.iconTexture = "ammoArrowIron1";
+		this.iconTexture = "ammoBoltExplosive1";
 */
-		this.configName = "arrow_iron";
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowWood");
 /* TODO recipe
-		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowIron");
 		this.neededResearch.add(ResearchGoalNumbers.ballistics1);
-		this.resources.add(new ItemStackWrapperCrafting(Item.flint, 5));
+		this.neededResearch.add(ResearchGoalNumbers.explosives1);
+		this.resources.add(new ItemStackWrapperCrafting(Item.stick, 5));
 		this.resources.add(new ItemStackWrapperCrafting(Item.ingotIron, 2));
 		this.resources.add(new ItemStackWrapperCrafting(Item.feather, 5));
+		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.explosiveCharge, 2, false, false));
+		this.numCrafted = 8;
 */
 	}
 
 	@Override
 	public void onImpactWorld(World world, float x, float y, float z, MissileBase missile, RayTraceResult hit) {
-
+		if (!world.isRemote) {
+			createExplosion(world, missile, x, y, z, 0.8f);
+		}
 	}
 
 	@Override
 	public void onImpactEntity(World world, Entity ent, float x, float y, float z, MissileBase missile) {
 		if (!world.isRemote) {
-			ent.attackEntityFrom(DamageType.causeEntityMissileDamage(missile.shooterLiving, false, false), this.getEntityDamage());
+			ent.attackEntityFrom(DamageType.causeEntityMissileDamage(missile.shooterLiving, false, true), this.getEntityDamage());
+			ent.setFire(3);
+			createExplosion(world, missile, x, y, z, 1.2f);
 		}
 	}
-
 }

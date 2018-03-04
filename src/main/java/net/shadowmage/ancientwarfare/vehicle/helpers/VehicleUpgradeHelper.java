@@ -21,8 +21,13 @@
 
 package net.shadowmage.ancientwarfare.vehicle.helpers;
 
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.vehicle.armors.IVehicleArmor;
@@ -139,12 +144,13 @@ public class VehicleUpgradeHelper implements INBTSerializable<NBTTagCompound> {
 	}
 
 	private void serializeInstalledArmors(NBTTagCompound tag) {
-		int[] armorTypes = new int[installedArmor.size()];
-		for (int i = 0; i < armorTypes.length; i++) {
-			armorTypes[i] = installedArmor.get(i).getArmorType().ordinal();
+		NBTTagList armorTypes = new NBTTagList();
+
+		for (IVehicleArmor armor : installedArmor) {
+			armorTypes.appendTag(new NBTTagString(armor.getRegistryName().toString()));
 		}
 
-		tag.setIntArray("armors", armorTypes);
+		tag.setTag("armors", armorTypes);
 	}
 
 	/**
@@ -161,11 +167,11 @@ public class VehicleUpgradeHelper implements INBTSerializable<NBTTagCompound> {
 	}
 
 	private void deserializeInstalledArmor(NBTTagCompound tag) {
-		int[] arInts = tag.getIntArray("armors");
-		for (int i = 0; i < arInts.length; i++) {
-			IVehicleArmor armor = ArmorRegistry.getArmorType(arInts[i]);
+		NBTTagList armorTypes = tag.getTagList("armors", Constants.NBT.TAG_STRING);
+		for (NBTBase armorType : armorTypes) {
+			IVehicleArmor armor = ArmorRegistry.getArmorType(new ResourceLocation(((NBTTagString) armorType).getString()));
 			if (armor != null) {
-				this.installedArmor.add(armor);
+				installedArmor.add(armor);
 			}
 		}
 	}
@@ -205,21 +211,7 @@ public class VehicleUpgradeHelper implements INBTSerializable<NBTTagCompound> {
 		}
 	}
 
-	public void addValidArmor(int type) {
-		IVehicleArmor armor = ArmorRegistry.getArmorType(type);
-		if (armor != null && !this.validArmorTypes.contains(armor)) {
-			this.validArmorTypes.add(armor);
-		}
-	}
-
 	public void addValidUpgrade(IVehicleUpgradeType upgrade) {
-		if (upgrade != null && !this.validUpgrades.contains(upgrade)) {
-			this.validUpgrades.add(upgrade);
-		}
-	}
-
-	public void addValidUpgrade(int type) {
-		IVehicleUpgradeType upgrade = VehicleUpgradeRegistry.instance().getUpgrade(type);
 		if (upgrade != null && !this.validUpgrades.contains(upgrade)) {
 			this.validUpgrades.add(upgrade);
 		}
