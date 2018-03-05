@@ -31,7 +31,7 @@ public class RenderCatapultStandFixed extends RenderVehicleBase {
 	ModelCatapultStandFixed model = new ModelCatapultStandFixed();
 
 	@Override
-	public void renderVehicle(VehicleBase veh, double x, double y, double z, float yaw, float tick) {
+	public void doRender(VehicleBase veh, double x, double y, double z, float yaw, float tick) {
 		VehicleFiringVarsHelper var = veh.firingVarsHelper;
 		model.setArmRotation(var.getVar1() + (tick * var.getVar2()));
 		model.setCrankRotations(var.getVar3() + (tick * var.getVar4()));

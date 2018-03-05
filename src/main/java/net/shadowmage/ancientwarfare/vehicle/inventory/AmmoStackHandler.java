@@ -30,7 +30,7 @@ public class AmmoStackHandler extends ItemStackHandler {
 	}
 
 	private boolean isValidAmmo(ItemStack stack) {
-		IAmmo ammo = AmmoRegistry.instance().getAmmoForStack(stack);
+		IAmmo ammo = AmmoRegistry.getAmmoForStack(stack);
 		return ammo != null && vehicle.vehicleType.isAmmoValidForInventory(ammo);
 	}
 }

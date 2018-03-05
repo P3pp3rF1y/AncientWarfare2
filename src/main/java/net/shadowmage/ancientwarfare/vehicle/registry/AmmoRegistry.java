@@ -52,7 +52,6 @@ import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoSoldierArrow;
 import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoStoneShot;
 import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoTorpedo;
 import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
-import net.shadowmage.ancientwarfare.vehicle.missiles.MissileBase;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -134,14 +133,10 @@ public class AmmoRegistry {
 	private AmmoRegistry() {
 	}
 
-	private static AmmoRegistry INSTANCE;
-
 	private static Map<ResourceLocation, IAmmo> ammoInstances = new HashMap<>();
 	private static Map<ResourceLocation, ItemAmmo> ammoItemInstances = new HashMap<>();
 
 	public static void registerAmmo(IForgeRegistry<Item> registry) {
-
-		AWEntityRegistry.registerEntity(MissileBase.class, "entity.missile", 165, 5, true);
 
 		ammoBallShot = registerAmmoType(new AmmoBallShot(), registry);
 		ammoBallIronShot = registerAmmoType(new AmmoIronBallShot(), registry);

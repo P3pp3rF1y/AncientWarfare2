@@ -1,13 +1,16 @@
 package net.shadowmage.ancientwarfare.vehicle;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.crafting.AWVehicleCrafting;
 import net.shadowmage.ancientwarfare.vehicle.item.AWVehicleItemLoader;
+import net.shadowmage.ancientwarfare.vehicle.missiles.MissileBase;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicle;
 import net.shadowmage.ancientwarfare.vehicle.refactoring.ballistics.TrajectoryPlotter;
 import net.shadowmage.ancientwarfare.vehicle.refactoring.entity.AWVehicleEntityLoader;
@@ -73,6 +76,8 @@ public class AncientWarfareVehicles {
         for (int i = 0; i < 100; i++) {
             TrajectoryPlotter.loadTest();
         }
+
+        EntityRegistry.registerModEntity(new ResourceLocation(AncientWarfareVehicles.modID, "missile"), MissileBase.class, "missile", 1, this, 165, 5, true);
     }
 
 //    @EventHandler

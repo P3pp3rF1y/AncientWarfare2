@@ -22,24 +22,28 @@
 package net.shadowmage.ancientwarfare.vehicle.render;
 
 import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.entity.Entity;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
-import net.shadowmage.ancientwarfare.core.util.AWTextureManager;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
-public abstract class RenderVehicleBase extends Render {
+import javax.annotation.Nullable;
+
+public abstract class RenderVehicleBase extends Render<VehicleBase> {
+
+	protected RenderVehicleBase(RenderManager renderManager) {
+		super(renderManager);
+	}
 
 	@Override
-	public void doRender(Entity var1, double var2, double var4, double var6, float var8, float var9) {
+	public void doRender(VehicleBase entity, double x, double y, double z, float entityYaw, float partialTicks) {
 
 	}
 
-	public abstract void renderVehicle(VehicleBase vehicle, double x, double y, double z, float yaw, float tick);
+	@Nullable
+	@Override
+	protected ResourceLocation getEntityTexture(VehicleBase entity) {
+		return entity.getTexture();
+	}
 
 	public abstract void renderVehicleFlag();
-
-	@Override
-	protected ResourceLocation getEntityTexture(Entity entity) {
-		return AWTextureManager.getResource(((VehicleBase) entity).getTexture());
-	}
 }

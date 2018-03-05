@@ -31,12 +31,17 @@ public class RenderAircraft extends RenderVehicleBase {
 	ModelAirplane model = new ModelAirplane();
 
 	@Override
-	public void renderVehicle(VehicleBase veh, double x, double y, double z, float yaw, float tick) {
+	public void doRender(VehicleBase veh, double x, double y, double z, float yaw, float tick) {
 		GL11.glRotatef(-veh.rotationPitch, 1, 0, 0);
 		GL11.glRotatef(veh.moveHelper.getRotationSpeed() * 10, 0, 0, 1);
 		float wheelAngle = veh.wheelRotation + (tick * (veh.wheelRotation - veh.wheelRotationPrev));
 		model.setWheelRotations(wheelAngle, wheelAngle, wheelAngle, wheelAngle);
 		model.render(veh, 0, 0, 0, 0, 0, 0.0625f);
+	}
+
+	@Override
+	public void renderVehicle(VehicleBase vehicle, double x, double y, double z, float yaw, float tick) {
+
 	}
 
 	@Override
