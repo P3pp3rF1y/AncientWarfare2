@@ -79,7 +79,7 @@ public class CatapultVarHelper extends VehicleFiringVarsHelper {
 	}
 
 	@Override
-	public NBTTagCompound getNBTTag() {
+	public NBTTagCompound serializeNBT() {
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setFloat("cA", crankAngle);
 		tag.setFloat("cS", crankSpeed);
@@ -89,7 +89,7 @@ public class CatapultVarHelper extends VehicleFiringVarsHelper {
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag) {
+	public void deserializeNBT(NBTTagCompound tag) {
 		this.crankAngle = tag.getFloat("cA");
 		this.crankSpeed = tag.getFloat("cS");
 		this.armAngle = tag.getFloat("aA");

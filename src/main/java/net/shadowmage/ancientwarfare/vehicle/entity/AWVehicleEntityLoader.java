@@ -1,9 +1,10 @@
-package net.shadowmage.ancientwarfare.vehicle.refactoring.entity;
+package net.shadowmage.ancientwarfare.vehicle.entity;
 
 import net.minecraft.entity.Entity;
 import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry;
 import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry.EntityDeclaration;
 import net.shadowmage.ancientwarfare.vehicle.AncientWarfareVehicles;
+import net.shadowmage.ancientwarfare.vehicle.missiles.MissileBase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,12 +18,11 @@ public class AWVehicleEntityLoader {
     private static HashMap<String, String> regNameToIcon = new HashMap<>();
 
     public static void load() {
-        EntityDeclaration reg = new VehiculeDeclaration(VehicleTurreted.class, AWEntityRegistry.VEHICLE_TEST);
+        //TODO most probably expand to all the unique vehicle entities
+        EntityDeclaration reg = new VehiculeDeclaration(VehicleBase.class, AWEntityRegistry.VEHICLE_TEST);
         registerVehicleEntity(reg, "fooicon");
 
-        reg = new VehiculeDeclaration(VehicleCatapult.class, AWEntityRegistry.VEHICLE_CATAPULT);
-        registerVehicleEntity(reg, "fooicon");
-
+        //TODO the same as above - expand to all projectile entities
         reg = new VehiculeDeclaration(MissileBase.class, AWEntityRegistry.MISSILE_TEST);
         AWEntityRegistry.registerEntity(reg);
     }

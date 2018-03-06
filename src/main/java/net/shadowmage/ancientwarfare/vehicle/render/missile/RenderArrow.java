@@ -21,6 +21,7 @@
 
 package net.shadowmage.ancientwarfare.vehicle.render.missile;
 
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 import net.shadowmage.ancientwarfare.vehicle.missiles.MissileBase;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelArrow2;
@@ -29,6 +30,10 @@ import net.shadowmage.ancientwarfare.vehicle.render.RenderMissileBase;
 public class RenderArrow extends RenderMissileBase {
 
 	public ModelArrow2 arrow2 = new ModelArrow2();
+
+	protected RenderArrow(RenderManager renderManager) {
+		super(renderManager);
+	}
 
 	@Override
 	public void renderMissile(MissileBase missile, IAmmo ammo, double x, double y, double z, float yaw, float tick) {

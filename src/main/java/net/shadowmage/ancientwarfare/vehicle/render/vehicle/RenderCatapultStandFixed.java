@@ -21,6 +21,7 @@
 
 package net.shadowmage.ancientwarfare.vehicle.render.vehicle;
 
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelCatapultStandFixed;
@@ -30,8 +31,12 @@ public class RenderCatapultStandFixed extends RenderVehicleBase {
 
 	ModelCatapultStandFixed model = new ModelCatapultStandFixed();
 
+	protected RenderCatapultStandFixed(RenderManager renderManager) {
+		super(renderManager);
+	}
+
 	@Override
-	public void doRender(VehicleBase veh, double x, double y, double z, float yaw, float tick) {
+	public void renderVehicle(VehicleBase veh, double x, double y, double z, float yaw, float tick) {
 		VehicleFiringVarsHelper var = veh.firingVarsHelper;
 		model.setArmRotation(var.getVar1() + (tick * var.getVar2()));
 		model.setCrankRotations(var.getVar3() + (tick * var.getVar4()));

@@ -21,6 +21,7 @@
 
 package net.shadowmage.ancientwarfare.vehicle.render.vehicle;
 
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.math.MathHelper;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
@@ -31,6 +32,10 @@ import net.shadowmage.ancientwarfare.vehicle.render.RenderVehicleBase;
 public class RenderHwacha extends RenderVehicleBase {
 
 	ModelHwacha model = new ModelHwacha();
+
+	protected RenderHwacha(RenderManager renderManager) {
+		super(renderManager);
+	}
 
 	@Override
 	public void renderVehicle(VehicleBase vehicle, double x, double y, double z, float yaw, float tick) {

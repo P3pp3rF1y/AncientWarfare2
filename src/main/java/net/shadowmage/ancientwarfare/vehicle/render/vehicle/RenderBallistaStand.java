@@ -21,6 +21,7 @@
 
 package net.shadowmage.ancientwarfare.vehicle.render.vehicle;
 
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelBallistaStand;
@@ -29,6 +30,10 @@ import net.shadowmage.ancientwarfare.vehicle.render.RenderVehicleBase;
 public class RenderBallistaStand extends RenderVehicleBase {
 
 	ModelBallistaStand model = new ModelBallistaStand();
+
+	protected RenderBallistaStand(RenderManager renderManager) {
+		super(renderManager);
+	}
 
 	@Override
 	public void renderVehicle(VehicleBase veh, double x, double y, double z, float yaw, float tick) {

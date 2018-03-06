@@ -24,6 +24,7 @@ package net.shadowmage.ancientwarfare.vehicle.helpers;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -44,7 +45,7 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 
 	private VehicleBase vehicle;
 
-	public int currentAmmoType = 0;
+	public ResourceLocation currentAmmoType = null;
 
 	private List<VehicleAmmoEntry> ammoEntries = new ArrayList<VehicleAmmoEntry>();
 	//private HashMap<Integer, VehicleAmmoEntry> ammoTypes = new HashMap<Integer, VehicleAmmoEntry>();//local ammo type to global entry
@@ -142,7 +143,7 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 	 *
 	 * @param type
 	 */
-	public void handleClientAmmoSelection(int type) {
+	public void handleClientAmmoSelection(ResourceLocation registryName) {
 		if (type >= 0 && type <= this.ammoEntries.size() && type != this.currentAmmoType) {
 			NBTTagCompound innerTag = new NBTTagCompound();
 			innerTag.setInteger("num", type);

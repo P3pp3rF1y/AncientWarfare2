@@ -21,12 +21,7 @@
 
 package net.shadowmage.ancientwarfare.vehicle.upgrades;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
-import shadowmage.ancient_warfare.common.research.ResearchGoalNumbers;
-import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
 
 public class VehicleUpgradeAim extends VehicleUpgradeBase {
 
@@ -38,9 +33,11 @@ public class VehicleUpgradeAim extends VehicleUpgradeBase {
 		this.displayName = "item.vehicleUpgrade.aim";
 		this.tooltip = "item.vehicleUpgrade.aim.tooltip1";
 		this.iconTexture = "upgradeAim1";
+/* TODO recipe
 		this.neededResearch.add(ResearchGoalNumbers.ballistics2);
 		this.resources.add(new ItemStackWrapperCrafting(Item.paper, 3));
 		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Block.planks, 1), true, false));
+*/
 	}
 
 	@Override

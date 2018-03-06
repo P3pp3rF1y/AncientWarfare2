@@ -19,26 +19,25 @@
  * along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package shadowmage.ancient_warfare.client.gui.vehicle;
+package net.shadowmage.ancientwarfare.vehicle.gui;
 
-import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;
+import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.vehicle.AncientWarfareVehicles;
+import net.shadowmage.ancientwarfare.vehicle.container.ContainerVehicle;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicle;
-import shadowmage.ancient_warfare.client.gui.GuiContainerAdvanced;
 import shadowmage.ancient_warfare.client.gui.elements.IGuiElement;
 import shadowmage.ancient_warfare.common.container.ContainerDummy;
-import shadowmage.ancient_warfare.common.container.ContainerVehicle;
 
-public class GuiVehicleInventory extends GuiContainerAdvanced {
+public class GuiVehicleInventory extends GuiContainerBase<ContainerVehicle> {
 	ContainerVehicle container;
 
 	/**
 	 * @param container
 	 */
-	public GuiVehicleInventory(Container container) {
+	public GuiVehicleInventory(ContainerVehicle container) {
 		super(container);
-		this.container = (ContainerVehicle) container;
+		this.container = container;
 		this.shouldCloseOnVanillaKeys = true;
 		this.ySize = this.getYSize();
 		this.xSize = this.getXSize();
@@ -52,6 +51,16 @@ public class GuiVehicleInventory extends GuiContainerAdvanced {
 	@Override
 	public int getYSize() {
 		return container == null ? 240 : container.playerY + 4 * 18 + 8 + 4;
+	}
+
+	@Override
+	public void initElements() {
+
+	}
+
+	@Override
+	public void setupElements() {
+
 	}
 
 	@Override
@@ -122,5 +131,4 @@ public class GuiVehicleInventory extends GuiContainerAdvanced {
 		// TODO Auto-generated method stub
 
 	}
-
 }

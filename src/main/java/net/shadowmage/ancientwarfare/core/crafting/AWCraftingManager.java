@@ -13,7 +13,6 @@ import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.JsonContext;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -131,7 +130,7 @@ public class AWCraftingManager {
                     }
                     catch (IOException e)
                     {
-                        FMLLog.log.error("Error loading _constants.json: ", e);
+                        AncientWarfareCore.log.error("Error loading _constants.json: ", e);
                         return false;
                     }
                     catch(IllegalAccessException | InvocationTargetException e) {

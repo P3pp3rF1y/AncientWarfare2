@@ -21,6 +21,7 @@
 
 package net.shadowmage.ancientwarfare.vehicle.render.vehicle;
 
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelTrebuchetMobileFixed;
@@ -29,6 +30,10 @@ import net.shadowmage.ancientwarfare.vehicle.render.RenderVehicleBase;
 public class RenderTrebuchetMobileFixed extends RenderVehicleBase {
 
 	ModelTrebuchetMobileFixed model = new ModelTrebuchetMobileFixed();
+
+	protected RenderTrebuchetMobileFixed(RenderManager renderManager) {
+		super(renderManager);
+	}
 
 	@Override
 	public void renderVehicle(VehicleBase vehicle, double x, double y, double z, float yaw, float tick) {

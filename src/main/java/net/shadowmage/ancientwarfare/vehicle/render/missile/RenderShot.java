@@ -21,6 +21,7 @@
 
 package net.shadowmage.ancientwarfare.vehicle.render.missile;
 
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 import net.shadowmage.ancientwarfare.vehicle.missiles.MissileBase;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelShot;
@@ -29,6 +30,10 @@ import net.shadowmage.ancientwarfare.vehicle.render.RenderMissileBase;
 public class RenderShot extends RenderMissileBase {
 
 	public ModelShot shot = new ModelShot();
+
+	protected RenderShot(RenderManager renderManager) {
+		super(renderManager);
+	}
 
 	@Override
 	public void renderMissile(MissileBase missile, IAmmo ammo, double x, double y, double z, float yaw, float tick) {

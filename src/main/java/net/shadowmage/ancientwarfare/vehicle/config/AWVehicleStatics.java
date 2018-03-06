@@ -27,6 +27,9 @@ public class AWVehicleStatics extends ModConfiguration {
 	public static boolean fireBlockBreakEvents = true;
 	public static boolean useVehicleSetupTime = true;
 
+	public static boolean renderVehiclesInFirstPerson = true;
+	public static boolean renderVehicleNameplates = true;
+
 	@Override
 	public void initializeCategories() {
 

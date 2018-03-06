@@ -35,13 +35,13 @@ public class DummyVehicleHelper extends VehicleFiringVarsHelper {
 	}
 
 	@Override
-	public NBTTagCompound getNBTTag() {
+	public NBTTagCompound serializeNBT() {
 		// TODO Auto-generated method stub
 		return new NBTTagCompound();
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag) {
+	public void deserializeNBT(NBTTagCompound tag) {
 
 	}
 

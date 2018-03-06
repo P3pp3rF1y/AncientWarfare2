@@ -21,27 +21,27 @@
 
 package net.shadowmage.ancientwarfare.vehicle.render.vehicle;
 
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelAirplane;
 import net.shadowmage.ancientwarfare.vehicle.render.RenderVehicleBase;
-import org.lwjgl.opengl.GL11;
 
 public class RenderAircraft extends RenderVehicleBase {
 
 	ModelAirplane model = new ModelAirplane();
 
-	@Override
-	public void doRender(VehicleBase veh, double x, double y, double z, float yaw, float tick) {
-		GL11.glRotatef(-veh.rotationPitch, 1, 0, 0);
-		GL11.glRotatef(veh.moveHelper.getRotationSpeed() * 10, 0, 0, 1);
-		float wheelAngle = veh.wheelRotation + (tick * (veh.wheelRotation - veh.wheelRotationPrev));
-		model.setWheelRotations(wheelAngle, wheelAngle, wheelAngle, wheelAngle);
-		model.render(veh, 0, 0, 0, 0, 0, 0.0625f);
+	protected RenderAircraft(RenderManager renderManager) {
+		super(renderManager);
 	}
 
 	@Override
-	public void renderVehicle(VehicleBase vehicle, double x, double y, double z, float yaw, float tick) {
-
+	public void renderVehicle(VehicleBase veh, double x, double y, double z, float yaw, float tick) {
+		GlStateManager.rotate(-veh.rotationPitch, 1, 0, 0);
+		GlStateManager.rotate(veh.moveHelper.getRotationSpeed() * 10, 0, 0, 1);
+		float wheelAngle = veh.wheelRotation + (tick * (veh.wheelRotation - veh.wheelRotationPrev));
+		model.setWheelRotations(wheelAngle, wheelAngle, wheelAngle, wheelAngle);
+		model.render(veh, 0, 0, 0, 0, 0, 0.0625f);
 	}
 
 	@Override

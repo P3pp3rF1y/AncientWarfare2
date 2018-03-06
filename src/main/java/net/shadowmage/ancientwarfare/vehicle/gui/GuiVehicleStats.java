@@ -19,7 +19,7 @@
  * along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package shadowmage.ancient_warfare.client.gui.vehicle;
+package net.shadowmage.ancientwarfare.vehicle.gui;
 
 import net.minecraft.inventory.Container;
 import net.minecraft.util.ResourceLocation;

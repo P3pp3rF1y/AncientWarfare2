@@ -21,12 +21,7 @@
 
 package net.shadowmage.ancientwarfare.vehicle.upgrades;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
-import shadowmage.ancient_warfare.common.research.ResearchGoalNumbers;
-import shadowmage.ancient_warfare.common.utils.ItemStackWrapperCrafting;
 
 public class VehicleUpgradeSpeed extends VehicleUpgradeBase {
 
@@ -38,9 +33,11 @@ public class VehicleUpgradeSpeed extends VehicleUpgradeBase {
 		this.displayName = "item.vehicleUpgrade.speed";
 		this.tooltip = "item.vehicleUpgrade.speed.tooltip1";
 		this.iconTexture = "upgradeSpeed1";
+/* TODO recipe
 		this.neededResearch.add(ResearchGoalNumbers.mobility3);
 		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Block.planks, 3), true, false));
 		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.ingotIron, 3), false, false));
+*/
 	}
 
 	@Override

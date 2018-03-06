@@ -21,26 +21,28 @@
 
 package net.shadowmage.ancientwarfare.vehicle.render.vehicle;
 
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelHelicopter;
 import net.shadowmage.ancientwarfare.vehicle.render.RenderVehicleBase;
-import org.lwjgl.opengl.GL11;
 
 public class RenderHelicopter extends RenderVehicleBase {
 
 	ModelHelicopter model = new ModelHelicopter();
 
+	protected RenderHelicopter(RenderManager renderManager) {
+		super(renderManager);
+	}
+
 	/**
 	 *
 	 */
-	public RenderHelicopter() {
-		// TODO Auto-generated constructor stub
-	}
 
 	@Override
 	public void renderVehicle(VehicleBase vehicle, double x, double y, double z, float yaw, float tick) {
-		GL11.glRotatef(-vehicle.rotationPitch, 1, 0, 0);
-		GL11.glRotatef(vehicle.moveHelper.getRotationSpeed() * 10, 0, 0, 1);
+		GlStateManager.rotate(-vehicle.rotationPitch, 1, 0, 0);
+		GlStateManager.rotate(vehicle.moveHelper.getRotationSpeed() * 10, 0, 0, 1);
 		float wheelAngle = (vehicle.wheelRotation + (tick * (vehicle.wheelRotation - vehicle.wheelRotationPrev))) * -100;
 		model.setWheelRotations(wheelAngle, wheelAngle, wheelAngle, wheelAngle);
 		model.render(vehicle, 0, 0, 0, 0, 0, 0.0625f);

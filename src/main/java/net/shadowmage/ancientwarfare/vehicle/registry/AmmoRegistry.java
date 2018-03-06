@@ -217,4 +217,8 @@ public class AmmoRegistry {
 	public static IAmmo getAmmo(ResourceLocation registryName) {
 		return ammoInstances.get(registryName);
 	}
+
+	public static ItemAmmo getItemForAmmo(IAmmo ammo) {
+		return ammoItemInstances.get(ammo.getRegistryName());
+	}
 }

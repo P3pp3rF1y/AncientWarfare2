@@ -21,37 +21,38 @@
 
 package net.shadowmage.ancientwarfare.vehicle.render.vehicle;
 
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.entity.RenderManager;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelSubmarine;
 import net.shadowmage.ancientwarfare.vehicle.render.RenderVehicleBase;
 import org.lwjgl.opengl.GL11;
-import shadowmage.ancient_warfare.client.render.AWTextureManager;
-import shadowmage.ancient_warfare.common.config.Config;
 
 public class RenderSubmarine extends RenderVehicleBase {
 
 	ModelSubmarine model = new ModelSubmarine();
 
+	protected RenderSubmarine(RenderManager renderManager) {
+		super(renderManager);
+	}
+
 	/**
 	 *
 	 */
-	public RenderSubmarine() {
-
-	}
-
 	@Override
 	public void renderVehicle(VehicleBase veh, double x, double y, double z, float yaw, float tick) {
 		float wheelAngle = veh.wheelRotation + (tick * (veh.wheelRotation - veh.wheelRotationPrev));
 		model.setWheelRotations(wheelAngle, wheelAngle, wheelAngle, wheelAngle);
 		model.render(veh, 0, 0, 0, 0, 0, 0.0625f);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GL11.glDepthMask(false);
-		AWTextureManager.bindTexture(Config.texturePath + "models/submarine_screen.png");
+		GlStateManager.enableBlend();
+		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GlStateManager.depthMask(false);
+		//TODO fix to bind correct texture here
+		//bindTexture(Config.texturePath + "models/submarine_screen.png");
 		model.render(veh, 0, 0, 0, 0, 0, 0.0625f);
 		GL11.glDepthMask(true);
 		GL11.glDisable(GL11.GL_BLEND);
-		AWTextureManager.bindTexture(veh.getTexture());
+		bindTexture(veh.getTexture());
 	}
 
 	@Override

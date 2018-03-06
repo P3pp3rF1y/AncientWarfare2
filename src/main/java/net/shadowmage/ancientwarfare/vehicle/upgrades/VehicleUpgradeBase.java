@@ -24,8 +24,6 @@ package net.shadowmage.ancientwarfare.vehicle.upgrades;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.vehicle.item.AWVehicleItems;
 
-import java.util.HashSet;
-
 public abstract class VehicleUpgradeBase implements IVehicleUpgradeType {
 
 	int typeNum = 0;
@@ -34,7 +32,8 @@ public abstract class VehicleUpgradeBase implements IVehicleUpgradeType {
 	String iconTexture = "foo";
 	/*
 		List<ItemStackWrapperCrafting> resources = new ArrayList<ItemStackWrapperCrafting>();
-	*/ HashSet<Integer> neededResearch = new HashSet<Integer>();
+		HashSet<Integer> neededResearch = new HashSet<Integer>();
+	*/
 
 	public VehicleUpgradeBase(int num) {
 		this.typeNum = num;

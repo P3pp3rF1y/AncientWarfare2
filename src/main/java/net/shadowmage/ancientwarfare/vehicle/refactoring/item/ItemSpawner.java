@@ -13,9 +13,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.vehicle.entity.AWVehicleEntityLoader;
 import net.shadowmage.ancientwarfare.vehicle.item.AWVehicleItemLoader;
 import net.shadowmage.ancientwarfare.vehicle.item.ItemBaseVehicle;
-import net.shadowmage.ancientwarfare.vehicle.refactoring.entity.AWVehicleEntityLoader;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

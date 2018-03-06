@@ -23,13 +23,14 @@ package net.shadowmage.ancientwarfare.vehicle.VehicleVarHelpers;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeBatteringRam;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.missiles.DamageType;
-import shadowmage.ancient_warfare.common.utils.BlockPosition;
-import shadowmage.ancient_warfare.common.utils.BlockTools;
 
 import java.util.List;
 
@@ -46,7 +47,7 @@ public class BatteringRamVarHelper extends VehicleFiringVarsHelper {
 	}
 
 	@Override
-	public NBTTagCompound getNBTTag() {
+	public NBTTagCompound serializeNBT() {
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setFloat("lA", logAngle);
 		tag.setFloat("lS", logSpeed);
@@ -54,7 +55,7 @@ public class BatteringRamVarHelper extends VehicleFiringVarsHelper {
 	}
 
 	@Override
-	public void readFromNBT(NBTTagCompound tag) {
+	public void deserializeNBT(NBTTagCompound tag) {
 		logAngle = tag.getFloat("lA");
 		logSpeed = tag.getFloat("lS");
 	}
@@ -97,14 +98,14 @@ public class BatteringRamVarHelper extends VehicleFiringVarsHelper {
 		if (vehicle.world.isRemote) {
 			return;
 		}
-		BlockPosition[] effectedPositions = VehicleTypeBatteringRam.getEffectedPositions(vehicle);
+		BlockPos[] effectedPositions = VehicleTypeBatteringRam.getEffectedPositions(vehicle);
 		AxisAlignedBB bb;
 		List<Entity> hitEntities;
-		for (BlockPosition pos : effectedPositions) {
+		for (BlockPos pos : effectedPositions) {
 			if (pos == null) {
 				continue;
 			}
-			bb = AxisAlignedBB.getAABBPool().getAABB(pos.x, pos.y, pos.z, pos.x + 1, pos.y + 1, pos.z + 1);
+			bb = new AxisAlignedBB(pos, pos.add(1, 1, 1));
 			hitEntities = vehicle.world.getEntitiesWithinAABBExcludingEntity(vehicle, bb);
 			if (hitEntities != null) {
 				for (Entity ent : hitEntities) {
@@ -114,7 +115,7 @@ public class BatteringRamVarHelper extends VehicleFiringVarsHelper {
 /* TODO warzone implementation?
 			if (WarzoneManager.instance().shouldBreakBlock(vehicle.world, pos.x, pos.y, pos.z)) {
 */
-			BlockTools.breakBlockAndDrop(vehicle.world, pos.x, pos.y, pos.z, 0);
+			BlockTools.breakBlockAndDrop(vehicle.world, AWFakePlayer.get(vehicle.world), pos);
 		}
 	}
 
