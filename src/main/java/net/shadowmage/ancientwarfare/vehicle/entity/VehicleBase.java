@@ -770,9 +770,6 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		if (tag.hasKey("input")) {
 			this.handleInputData(tag.getCompoundTag("input"));
 		}
-		if (tag.hasKey("upgrade")) {
-			this.upgradeHelper.handleUpgradePacketData(tag.getCompoundTag("upgrade"));
-		}
 		if (tag.hasKey("ammo")) {
 			this.ammoHelper.handleAmmoUpdatePacket(tag.getCompoundTag("ammo"));
 		}

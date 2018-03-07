@@ -40,7 +40,7 @@ public abstract class VehicleUpgradeBase implements IVehicleUpgradeType {
 	}
 
 	@Override
-	public int getUpgradeGlobalTypeNum() {
+	public int getUpgradeId() {
 		return typeNum;
 	}
 

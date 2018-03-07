@@ -58,14 +58,9 @@ public class GuiVehicleAmmoSelection extends GuiContainerBase<ContainerVehicle> 
 
 	@Override
 	public void initElements() {
+		//TODO lang translations
 		area = new CompositeScrolled(this, 10, 40, xSize - 20, ySize - 40 - 10);
 		addGuiElement(area);
-	}
-
-	@Override
-	public void setupElements() {
-		List<IAmmo> ammos = vehicle.vehicleType.getValidAmmoTypes();
-		int totalHeight = ammos.size() * 22;
 
 		Button done = new Button(getXSize() - 35 - 5, 5, 35, 12, "Done");
 		done.addNewListener(new Listener(Listener.MOUSE_UP) {
@@ -76,6 +71,11 @@ public class GuiVehicleAmmoSelection extends GuiContainerBase<ContainerVehicle> 
 			}
 		});
 		addGuiElement(done);
+	}
+
+	@Override
+	public void setupElements() {
+		List<IAmmo> ammos = vehicle.vehicleType.getValidAmmoTypes();
 
 		area.clearElements();
 		for (int i = 0; i < ammos.size(); i++) {
@@ -89,6 +89,5 @@ public class GuiVehicleAmmoSelection extends GuiContainerBase<ContainerVehicle> 
 			});
 			area.addGuiElement(ammo);
 		}
-
 	}
 }

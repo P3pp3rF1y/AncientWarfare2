@@ -33,6 +33,7 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.vehicle.armors.IVehicleArmor;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.missiles.DamageType;
+import net.shadowmage.ancientwarfare.vehicle.network.PacketUpgradeUpdate;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicle;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleUpgradeRegistry;
@@ -46,7 +47,7 @@ public class VehicleUpgradeHelper implements INBTSerializable<NBTTagCompound> {
 	/**
 	 * currently installed upgrades, will be iterated through linearly to call upgrade.applyEffects, multiple upgrades may have cumulative effects
 	 */
-	private List<IVehicleUpgradeType> upgrades = new ArrayList<IVehicleUpgradeType>();
+	private List<IVehicleUpgradeType> upgrades = new ArrayList<>();
 	private List<IVehicleArmor> installedArmor = new ArrayList<>();
 
 	/**
@@ -126,9 +127,7 @@ public class VehicleUpgradeHelper implements INBTSerializable<NBTTagCompound> {
 
 		serializeInstalledArmors(tag);
 
-		PacketVehicle pkt = new PacketVehicle();
-		pkt.setParams(vehicle);
-		pkt.setUpgradeData(tag);
+		PacketVehicle pkt = new PacketUpgradeUpdate(vehicle);
 		NetworkHandler.sendToAllTracking(vehicle, pkt);
 		this.updateUpgradeStats();
 	}
@@ -137,7 +136,7 @@ public class VehicleUpgradeHelper implements INBTSerializable<NBTTagCompound> {
 		int len = this.upgrades.size();
 		int[] upInts = new int[len];
 		for (int i = 0; i < this.upgrades.size(); i++) {
-			upInts[i] = this.upgrades.get(i).getUpgradeGlobalTypeNum();
+			upInts[i] = this.upgrades.get(i).getUpgradeId();
 		}
 
 		tag.setIntArray("ints", upInts);
@@ -156,14 +155,22 @@ public class VehicleUpgradeHelper implements INBTSerializable<NBTTagCompound> {
 	/**
 	 * CLIENT ONLY..receives the packet sent above, and sets upgrade list directly from registry
 	 */
-	public void handleUpgradePacketData(NBTTagCompound tag) {
-		this.upgrades.clear();
-		deserializeUpgrades(tag);
+	public void updateUpgrades(List<IVehicleArmor> armor, List<IVehicleUpgradeType> upgrades) {
+		installedArmor.clear();
+		installedArmor.addAll(armor);
 
-		this.installedArmor.clear();
-		deserializeInstalledArmor(tag);
+		upgrades.clear();
+		upgrades.addAll(upgrades);
 
-		this.updateUpgradeStats();
+		updateUpgradeStats();
+	}
+
+	public List<IVehicleArmor> getInstalledArmor() {
+		return installedArmor;
+	}
+
+	public List<IVehicleUpgradeType> getUpgrades() {
+		return upgrades;
 	}
 
 	private void deserializeInstalledArmor(NBTTagCompound tag) {

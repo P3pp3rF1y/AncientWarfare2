@@ -85,11 +85,11 @@ public class VehicleUpgradeRegistry {
 	 * @param upgrade
 	 */
 	public void registerUpgrade(IVehicleUpgradeType upgrade) {
-		this.upgradeTypeMap.put(upgrade.getUpgradeGlobalTypeNum(), upgrade);
+		this.upgradeTypeMap.put(upgrade.getUpgradeId(), upgrade);
 		Description d = ItemLoader.instance()
-				.addSubtypeInfoToItem(ItemLoader.vehicleUpgrade, upgrade.getUpgradeGlobalTypeNum(), upgrade.getDisplayName(), "", upgrade.getDisplayTooltip());
-		d.setIconTexture(upgrade.getIconTexture(), upgrade.getUpgradeGlobalTypeNum());
-		d.addDisplayStack(new ItemStack(ItemLoader.vehicleUpgrade, 1, upgrade.getUpgradeGlobalTypeNum()));
+				.addSubtypeInfoToItem(ItemLoader.vehicleUpgrade, upgrade.getUpgradeId(), upgrade.getDisplayName(), "", upgrade.getDisplayTooltip());
+		d.setIconTexture(upgrade.getIconTexture(), upgrade.getUpgradeId());
+		d.addDisplayStack(new ItemStack(ItemLoader.vehicleUpgrade, 1, upgrade.getUpgradeId()));
 	}
 
 	public IVehicleUpgradeType getUpgrade(int type) {

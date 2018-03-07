@@ -26,7 +26,7 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
 public interface IVehicleUpgradeType {
 
-	int getUpgradeGlobalTypeNum();
+	int getUpgradeId();
 
 	String getDisplayName();
 

@@ -25,18 +25,38 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteArrayDataOutput;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
-public class PacketVehicle extends PacketBase {
-	//TODO refactor and break down into smaller packets
+import javax.annotation.Nullable;
 
-	int entityID;
+public abstract class PacketVehicle extends PacketBase {
+	//TODO call registerPacketType for all packet types
+
+	private int entityID;
+	protected VehicleBase vehicle = null;
+
+	public PacketVehicle(VehicleBase vehicle) {
+		this.entityID = vehicle.getEntityId();
+	}
 
 	@Override
-	public String getChannel() {
-		return "AW_vehicle";
+	protected void writeToStream(ByteBuf data) {
+		data.writeInt(entityID);
+	}
+
+	@Override
+	protected void readFromStream(ByteBuf data) {
+		entityID = data.readInt();
+	}
+
+	@Nullable
+	private VehicleBase getVehicle(World world) {
+		Entity vehicle = world.getEntityByID(entityID);
+		return vehicle instanceof VehicleBase ? (VehicleBase) vehicle : null;
 	}
 
 	public void setParams(Entity ent) {
@@ -45,10 +65,6 @@ public class PacketVehicle extends PacketBase {
 
 	public void setInputData(NBTTagCompound tag) {
 		this.packetData.setTag("input", tag);
-	}
-
-	public void setUpgradeData(NBTTagCompound tag) {
-		this.packetData.setTag("upgrade", tag);
 	}
 
 	public void setAmmoData(NBTTagCompound tag) {
@@ -106,13 +122,9 @@ public class PacketVehicle extends PacketBase {
 	}
 
 	@Override
-	protected void writeToStream(ByteBuf data) {
-
-	}
-
-	@Override
-	protected void readFromStream(ByteBuf data) {
-
+	protected void execute(EntityPlayer player) {
+		vehicle = getVehicle(player.world);
+		super.execute(player);
 	}
 
 	@Override

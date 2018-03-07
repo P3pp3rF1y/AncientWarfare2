@@ -21,29 +21,23 @@
 
 package net.shadowmage.ancientwarfare.vehicle.gui;
 
-import net.minecraft.inventory.Container;
-import net.minecraft.util.ResourceLocation;
+import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
+import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.util.Trig;
-import net.shadowmage.ancientwarfare.vehicle.AncientWarfareVehicles;
+import net.shadowmage.ancientwarfare.vehicle.container.ContainerVehicle;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
-import shadowmage.ancient_warfare.client.gui.GuiContainerAdvanced;
-import shadowmage.ancient_warfare.client.gui.elements.IGuiElement;
 
-public class GuiVehicleStats extends GuiContainerAdvanced {
+public class GuiVehicleStats extends GuiContainerBase<ContainerVehicle> {
 
 	VehicleBase vehicle;
 
 	/**
 	 * @param container
 	 */
-	public GuiVehicleStats(Container container, VehicleBase vehicle) {
+	public GuiVehicleStats(ContainerVehicle container, VehicleBase vehicle) {
 		super(container);
 		this.vehicle = vehicle;
 		this.shouldCloseOnVanillaKeys = true;
-	}
-
-	@Override
-	public void onElementActivated(IGuiElement element) {
 	}
 
 	@Override
@@ -57,52 +51,38 @@ public class GuiVehicleStats extends GuiContainerAdvanced {
 	}
 
 	@Override
-	public ResourceLocation getGuiBackGroundTexture() {
-		return new ResourceLocation(AncientWarfareVehicles.modID, "gui/guiBackgroundLarge.png");
+	public void initElements() {
+		//TODO lang translations
+		addGuiElement(new Label(10, 4, "Vehicle Type: " + vehicle.vehicleType.getLocalizedName()));
+		addGuiElement(new Label(10, 14, "Material Level: " + vehicle.vehicleMaterialLevel));
+		addGuiElement(new Label(10, 24, "Health: " + vehicle.getHealth() + "/" + vehicle.baseHealth));
+		addGuiElement(new Label(10, 34, "Weight: " + vehicle.currentWeight + "/" + vehicle.baseWeight));
+		addGuiElement(new Label(10, 44,
+				"Speed: " + (Trig.getVelocity(vehicle.motionX, vehicle.motionY, vehicle.motionZ) * 20) + "/" + (vehicle.currentForwardSpeedMax * 20)));
+		addGuiElement(new Label(10, 54, "Missile Velocity: " + vehicle.localLaunchPower + "/" + vehicle.currentLaunchSpeedPowerMax));
+		addGuiElement(new Label(10, 64,
+				"Resists: F: " + vehicle.currentFireResist + " E: " + vehicle.currentExplosionResist + " G: " + vehicle.currentGenericResist));
+		addGuiElement(new Label(10, 74, "Mountable: " + vehicle.isMountable()));
+		addGuiElement(new Label(10, 84, "Drivable: " + vehicle.isDrivable()));
+		addGuiElement(new Label(10, 94, "Combat Vehicle: " + vehicle.isAimable()));
+		addGuiElement(new Label(10, 104, "Rider Sits: " + vehicle.shouldRiderSit()));
+		addGuiElement(new Label(10, 114, "Rider On Turret: " + vehicle.vehicleType.moveRiderWithTurret()));
+		addGuiElement(new Label(10, 124, "Adjustable Yaw: " + vehicle.canAimRotate()));
+		addGuiElement(new Label(10, 134, "Adjustable Pitch: " + vehicle.canAimPitch()));
+		addGuiElement(new Label(10, 144, "Adjustable Power: " + vehicle.canAimPower()));
+		addGuiElement(new Label(10, 154, "Pitch Min: " + vehicle.currentTurretPitchMin));
+		addGuiElement(new Label(10, 164, "Pitch Max: " + vehicle.currentTurretPitchMax));
+		addGuiElement(new Label(10, 174, "Yaw Min: " + (vehicle.localTurretRotationHome - vehicle.currentTurretRotationMax)));
+		addGuiElement(new Label(10, 184, "Yaw Max: " + (vehicle.localTurretRotationHome + vehicle.currentTurretRotationMax)));
+		//TODO are empty labels required here? try removing and see if it still works correctly
+		addGuiElement(new Label(10, 194, ""));
+		addGuiElement(new Label(10, 204, "TeamNum: " + vehicle.getTeam().getName()));
+		addGuiElement(new Label(10, 214, ""));
+		addGuiElement(new Label(10, 224, ""));
 	}
 
 	@Override
-	public void renderExtraBackGround(int mouseX, int mouseY, float partialTime) {
-		int color = 0xffffffff;
-		this.drawStringGui("Vehicle Type: " + vehicle.vehicleType.getLocalizedName(), 10, 4, color);
-		this.drawStringGui("Material Level: " + vehicle.vehicleMaterialLevel, 10, 14, color);
-		this.drawStringGui("Health: " + vehicle.getHealth() + "/" + vehicle.baseHealth, 10, 24, color);
-		this.drawStringGui("Weight: " + vehicle.currentWeight + "/" + vehicle.baseWeight, 10, 34, color);
-		this.drawStringGui("Speed: " + (Trig.getVelocity(vehicle.motionX, vehicle.motionY, vehicle.motionZ) * 20) + "/" + (vehicle.currentForwardSpeedMax * 20),
-				10, 44, color);
-		this.drawStringGui("Missile Velocity: " + vehicle.localLaunchPower + "/" + vehicle.currentLaunchSpeedPowerMax, 10, 54, color);
-		this.drawStringGui("Resists: F: " + vehicle.currentFireResist + " E: " + vehicle.currentExplosionResist + " G: " + vehicle.currentGenericResist, 10, 64,
-				color);
-		this.drawStringGui("Mountable: " + vehicle.isMountable(), 10, 74, color);
-		this.drawStringGui("Drivable: " + vehicle.isDrivable(), 10, 84, color);
-		this.drawStringGui("Combat Vehicle: " + vehicle.isAimable(), 10, 94, color);
-		this.drawStringGui("Rider Sits: " + vehicle.shouldRiderSit(), 10, 104, color);
-		this.drawStringGui("Rider On Turret: " + vehicle.vehicleType.moveRiderWithTurret(), 10, 114, color);
-		this.drawStringGui("Adjustable Yaw: " + vehicle.canAimRotate(), 10, 124, color);
-		this.drawStringGui("Adjustable Pitch: " + vehicle.canAimPitch(), 10, 134, color);
-		this.drawStringGui("Adjustable Power: " + vehicle.canAimPower(), 10, 144, color);
-		this.drawStringGui("Pitch Min: " + vehicle.currentTurretPitchMin, 10, 154, color);
-		this.drawStringGui("Pitch Max: " + vehicle.currentTurretPitchMax, 10, 164, color);
-		this.drawStringGui("Yaw Min: " + (vehicle.localTurretRotationHome - vehicle.currentTurretRotationMax), 10, 174, color);
-		this.drawStringGui("Yaw Max: " + (vehicle.localTurretRotationHome + vehicle.currentTurretRotationMax), 10, 184, color);
-		this.drawStringGui("", 10, 194, color);
-		this.drawStringGui("TeamNum: " + vehicle.teamNum, 10, 204, color);
-		this.drawStringGui("", 10, 214, color);
-		this.drawStringGui("", 10, 224, color);
-	}
-
-	@Override
-	public void updateScreenContents() {
-	}
-
-	@Override
-	public void setupControls() {
+	public void setupElements() {
 
 	}
-
-	@Override
-	public void updateControls() {
-
-	}
-
 }

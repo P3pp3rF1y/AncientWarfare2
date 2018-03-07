@@ -21,20 +21,18 @@
 
 package net.shadowmage.ancientwarfare.vehicle.gui;
 
-import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
-import net.shadowmage.ancientwarfare.vehicle.AncientWarfareVehicles;
+import net.shadowmage.ancientwarfare.core.gui.Listener;
+import net.shadowmage.ancientwarfare.core.gui.elements.Button;
+import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
+import net.shadowmage.ancientwarfare.core.gui.elements.Label;
+import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.vehicle.container.ContainerVehicle;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicle;
-import shadowmage.ancient_warfare.client.gui.elements.IGuiElement;
-import shadowmage.ancient_warfare.common.container.ContainerDummy;
 
 public class GuiVehicleInventory extends GuiContainerBase<ContainerVehicle> {
 	ContainerVehicle container;
 
-	/**
-	 * @param container
-	 */
 	public GuiVehicleInventory(ContainerVehicle container) {
 		super(container);
 		this.container = container;
@@ -55,80 +53,70 @@ public class GuiVehicleInventory extends GuiContainerBase<ContainerVehicle> {
 
 	@Override
 	public void initElements() {
+		//TODO lang translations
+		if (this.container.vehicle.inventory.storageInventory.getSlots() > 0) {
+			addGuiElement(new Label(8, container.storageY - 10, "Storage"));
+		}
+		addGuiElement(new Label(8, container.extrasY - 10, "Ammo"));
+		addGuiElement(new Label(8 + 3 * 18 + 4, container.extrasY - 10, "Upg."));
+		addGuiElement(new Label(8 + 6 * 18 + 8, container.extrasY - 10, "Armor"));
+		addGuiElement(new Label(8, container.playerY - 10, "Player Inventory"));
+		Button done = new Button(8 + 90 + 8, 4, 45, 16, "Done");
+		done.addNewListener(new Listener(Listener.MOUSE_UP) {
+			@Override
+			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
+				closeGui();
+				return true;
+			}
+		});
+		addGuiElement(done);
 
+		Button stats = new Button(8, 4, 45, 16, "Stats");
+		stats.addNewListener(new Listener(Listener.MOUSE_UP) {
+			@Override
+			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
+				mc.displayGuiScreen(new GuiVehicleStats(container, container.vehicle));
+				return true;
+			}
+		});
+		addGuiElement(stats);
+		Button pack = new Button(8 + 45 + 4, 4, 45, 16, "Pack");
+		pack.addNewListener(new Listener(Listener.MOUSE_UP) {
+			@Override
+			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
+				PacketVehicle pkt = new PacketVehicle();
+				pkt.setParams(container.vehicle);
+				pkt.setPackCommand();
+				NetworkHandler.sendToServer(pkt);
+				closeGui();
+				return true;
+			}
+		});
+
+		if (container.vehicle.inventory.storageInventory.getSlots() > 0) {
+			Button minus = new Button(171, container.storageY - 1, 16, 16, "-");
+			minus.addNewListener(new Listener(Listener.MOUSE_UP) {
+				@Override
+				public boolean onEvent(GuiElement widget, ActivationEvent evt) {
+					container.prevRow();
+					return true;
+				}
+			});
+			addGuiElement(minus);
+			Button plus = new Button(171, container.storageY + 3 * 18 - 16 - 1, 16, 16, "+");
+			plus.addNewListener(new Listener(Listener.MOUSE_UP) {
+				@Override
+				public boolean onEvent(GuiElement widget, ActivationEvent evt) {
+					container.nextRow();
+					return true;
+				}
+			});
+			addGuiElement(plus);
+		}
 	}
 
 	@Override
 	public void setupElements() {
-
-	}
-
-	@Override
-	public ResourceLocation getGuiBackGroundTexture() {
-		return new ResourceLocation(AncientWarfareVehicles.modID, "gui/guiBackgroundLarge.png");
-	}
-
-	@Override
-	public void renderExtraBackGround(int mouseX, int mouseY, float partialTime) {
-		if (this.container.vehicle.inventory.storageInventory.getSizeInventory() > 0) {
-			this.drawStringGui("Storage", 8, container.storageY - 10, WHITE);
-		}
-		this.drawStringGui("Ammo", 8, container.extrasY - 10, WHITE);
-		this.drawStringGui("Upg.", 8 + 3 * 18 + 4, container.extrasY - 10, WHITE);
-		this.drawStringGui("Armor", 8 + 6 * 18 + 8, container.extrasY - 10, WHITE);
-		this.drawStringGui("Player Inventory", 8, container.playerY - 10, WHITE);
-	}
-
-	@Override
-	public void updateScreenContents() {
-
-	}
-
-	@Override
-	public void onElementActivated(IGuiElement element) {
-		switch (element.getElementNumber()) {
-			case 0:
-				this.closeGUI();
-				break;
-			case 1:
-				mc.displayGuiScreen(new GuiVehicleStats(new ContainerDummy(), ((ContainerVehicle) this.inventorySlots).vehicle));
-				break;
-			case 2:
-				PacketVehicle pkt = new PacketVehicle();
-				pkt.setParams(((ContainerVehicle) this.inventorySlots).vehicle);
-				pkt.setPackCommand();
-				pkt.sendPacketToServer();
-				this.closeGUI();
-				break;
-
-			case 3:
-				((ContainerVehicle) inventorySlots).prevRow();
-				break;
-
-			case 4:
-				((ContainerVehicle) inventorySlots).nextRow();
-				break;
-
-			default:
-				break;
-		}
-	}
-
-	@Override
-	public void setupControls() {
-		this.addGuiButton(0, 8 + 90 + 8, 4, 45, 16, "Done");
-		this.addGuiButton(1, 8, 4, 45, 16, "Stats");
-		this.addGuiButton(2, 8 + 45 + 4, 4, 45, 16, "Pack");
-
-		if (container.vehicle.inventory.storageInventory.getSizeInventory() > 0) {
-			this.addGuiButton(3, 171, container.storageY - 1, 16, 16, "-");
-			this.addGuiButton(4, 171, container.storageY + 3 * 18 - 16 - 1, 16, 16, "+");
-		}
-	}
-
-	@Override
-	public void updateControls() {
-		// TODO Auto-generated method stub
 
 	}
 }
