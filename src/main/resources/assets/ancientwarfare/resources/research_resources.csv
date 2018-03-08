@@ -85,8 +85,8 @@ refining,ingotGold,2
 refining,coal,0,12
 machinery,ingotSteel,10
 machinery,ingotIron,8
-machinery,AncientWarfare:component,1,3
-machinery,AncientWarfare:component,4,2
+machinery,gearIron,3
+machinery,bearingIron,2
 navigation,compass,0,1
 navigation,map,0,1
 navigation,paper,0,12
@@ -100,9 +100,9 @@ gunpowder,sand,0,12
 gunpowder,coal,1,12
 gunpowder,paper,0,8
 mass_production,ingotSteel,12
-mass_production,ancientwarfare:component,2,6
-mass_production,ancientwarfare:component,5,3
-mass_production,ancientwarfare:component,8,3
+mass_production,gearSteel,6
+mass_production,bearingSteel,3
+mass_production,shaftSteel,3
 flight,wool,0,16
 flight,plankWood,12
 flight,string,0,12

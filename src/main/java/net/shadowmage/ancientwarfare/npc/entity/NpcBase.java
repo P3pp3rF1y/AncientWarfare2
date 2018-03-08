@@ -25,6 +25,7 @@ import net.minecraft.nbt.NBTUtil;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.DamageSource;
@@ -45,7 +46,6 @@ import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.shadowmage.ancientwarfare.core.gamedata.Timekeeper;
 import net.shadowmage.ancientwarfare.core.interfaces.IEntityPacketHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
@@ -123,6 +123,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		this.inventoryHandsDropChances = new float[] {1.f, 1.f};
 		this.navigator = new NpcNavigator(this);
 		AncientWarfareNPC.statics.applyPathConfig(this);
+		setPathPriority(PathNodeType.DOOR_WOOD_CLOSED, 0);
 	}
 
 	@Override
@@ -1351,7 +1352,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	}
 
 	public boolean shouldSleep() {
-		return Timekeeper.isNighttime();
+		return !world.isDaytime();
 	}
 
 	// Only used by the renderer
