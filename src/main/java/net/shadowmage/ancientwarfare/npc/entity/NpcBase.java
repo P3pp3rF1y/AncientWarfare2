@@ -25,6 +25,7 @@ import net.minecraft.nbt.NBTUtil;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.PathPoint;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.DamageSource;
@@ -120,6 +121,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		this.inventoryHandsDropChances = new float[] {1.f, 1.f};
 		this.navigator = new NpcNavigator(this);
 		AncientWarfareNPC.statics.applyPathConfig(this);
+		setPathPriority(PathNodeType.DOOR_WOOD_CLOSED, 0);
 	}
 
 	@Override

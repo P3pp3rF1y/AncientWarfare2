@@ -13,6 +13,11 @@ import javax.annotation.Nullable;
 
 public class NpcWalkNodeProcessor extends WalkNodeProcessor {
 
+	public NpcWalkNodeProcessor() {
+		setCanOpenDoors(true);
+		setCanEnterDoors(true);
+	}
+
 	@Override
 	public int findPathOptions(PathPoint[] pathOptions, PathPoint currentPoint, PathPoint targetPoint, float maxDistance) {
 		int i = 0;
