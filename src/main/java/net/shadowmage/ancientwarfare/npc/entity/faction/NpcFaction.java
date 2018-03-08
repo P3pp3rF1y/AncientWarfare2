@@ -24,6 +24,8 @@ public abstract class NpcFaction extends NpcBase {
 
     protected final Predicate<Entity> selector = entity -> isHostileTowards(entity);
 
+    private String faction = "";
+
     public NpcFaction(World par1World) {
         super(par1World);
         String type = this.getNpcFullType();
@@ -127,9 +129,14 @@ public abstract class NpcFaction extends NpcBase {
         return "";
     }
 
+    //TODO refactor this so that faction is filled in on instance creation, perhaps it could even be Enum to be even faster
     public String getFaction() {
-        String type = getNpcType();
-        return type.substring(0, type.indexOf("."));
+        if (faction.isEmpty()) {
+            String type = getNpcType();
+            faction = type.substring(0, type.indexOf("."));
+        }
+
+        return faction;
     }
 
     @Override
