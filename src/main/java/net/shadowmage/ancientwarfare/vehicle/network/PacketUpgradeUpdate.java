@@ -1,16 +1,10 @@
 package net.shadowmage.ancientwarfare.vehicle.network;
 
-import com.google.common.collect.Lists;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.network.PacketBuffer;
-import net.minecraft.util.ResourceLocation;
-import net.shadowmage.ancientwarfare.vehicle.armors.IVehicleArmor;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
-import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
-import net.shadowmage.ancientwarfare.vehicle.registry.VehicleUpgradeRegistry;
-import net.shadowmage.ancientwarfare.vehicle.upgrades.IVehicleUpgradeType;
 
-import java.util.List;
+import java.io.IOException;
 
 public class PacketUpgradeUpdate extends PacketVehicle {
 	private int[] upgradeIds;
@@ -18,26 +12,8 @@ public class PacketUpgradeUpdate extends PacketVehicle {
 
 	public PacketUpgradeUpdate(VehicleBase vehicle) {
 		super(vehicle);
-		upgradeIds = serializeUpgrades(vehicle.upgradeHelper.getUpgrades());
-		armorRegistryNames = serializeArmor(vehicle.upgradeHelper.getInstalledArmor());
-	}
-
-	private int[] serializeUpgrades(List<IVehicleUpgradeType> upgrades) {
-		int len = upgrades.size();
-		int[] upgradeIds = new int[len];
-		for (int i = 0; i < upgrades.size(); i++) {
-			upgradeIds[i] = upgrades.get(i).getUpgradeId();
-		}
-		return upgradeIds;
-	}
-
-	private String[] serializeArmor(List<IVehicleArmor> installedArmor) {
-		String[] armor = new String[installedArmor.size()];
-
-		for (int i = 0; i < installedArmor.size(); i++) {
-			armor[i] = installedArmor.get(i).getRegistryName().toString();
-		}
-		return armor;
+		upgradeIds = vehicle.upgradeHelper.serializeUpgrades();
+		armorRegistryNames = vehicle.upgradeHelper.serializeInstalledArmors();
 	}
 
 	@Override
@@ -52,7 +28,7 @@ public class PacketUpgradeUpdate extends PacketVehicle {
 	}
 
 	@Override
-	protected void readFromStream(ByteBuf data) {
+	protected void readFromStream(ByteBuf data) throws IOException {
 		super.readFromStream(data);
 		PacketBuffer pb = new PacketBuffer(data);
 		upgradeIds = pb.readVarIntArray();
@@ -64,15 +40,6 @@ public class PacketUpgradeUpdate extends PacketVehicle {
 
 	@Override
 	public void execute() {
-		List<IVehicleArmor> armor = Lists.newArrayList();
-		for (String armorRegistryName : armorRegistryNames) {
-			armor.add(ArmorRegistry.getArmorType(new ResourceLocation(armorRegistryName)));
-		}
-
-		List<IVehicleUpgradeType> upgrades = Lists.newArrayList();
-		for (int upgradeId : upgradeIds) {
-			upgrades.add(VehicleUpgradeRegistry.instance().getUpgrade(upgradeId));
-		}
-		vehicle.upgradeHelper.updateUpgrades(armor, upgrades);
+		vehicle.upgradeHelper.updateUpgrades(armorRegistryNames, upgradeIds);
 	}
 }

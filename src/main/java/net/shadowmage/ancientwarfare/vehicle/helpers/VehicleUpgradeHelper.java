@@ -21,7 +21,6 @@
 
 package net.shadowmage.ancientwarfare.vehicle.helpers;
 
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
@@ -133,34 +132,43 @@ public class VehicleUpgradeHelper implements INBTSerializable<NBTTagCompound> {
 	}
 
 	private void serializeUpgrades(NBTTagCompound tag) {
+		tag.setIntArray("ints", serializeUpgrades());
+	}
+
+	public int[] serializeUpgrades() {
 		int len = this.upgrades.size();
 		int[] upInts = new int[len];
 		for (int i = 0; i < this.upgrades.size(); i++) {
 			upInts[i] = this.upgrades.get(i).getUpgradeId();
 		}
-
-		tag.setIntArray("ints", upInts);
+		return upInts;
 	}
 
 	private void serializeInstalledArmors(NBTTagCompound tag) {
 		NBTTagList armorTypes = new NBTTagList();
-
-		for (IVehicleArmor armor : installedArmor) {
-			armorTypes.appendTag(new NBTTagString(armor.getRegistryName().toString()));
+		for (String armor : serializeInstalledArmors()) {
+			armorTypes.appendTag(new NBTTagString(armor));
 		}
 
 		tag.setTag("armors", armorTypes);
 	}
 
+	public String[] serializeInstalledArmors() {
+		String[] armors = new String[installedArmor.size()];
+		for (int i = 0; i < installedArmor.size(); i++) {
+			armors[i] = installedArmor.get(i).getRegistryName().toString();
+		}
+		return armors;
+	}
+
 	/**
 	 * CLIENT ONLY..receives the packet sent above, and sets upgrade list directly from registry
 	 */
-	public void updateUpgrades(List<IVehicleArmor> armor, List<IVehicleUpgradeType> upgrades) {
+	public void updateUpgrades(String[] armorRegistryNames, int[] upgradeIds) {
 		installedArmor.clear();
-		installedArmor.addAll(armor);
+		deserializeInstalledArmor(armorRegistryNames);
 
-		upgrades.clear();
-		upgrades.addAll(upgrades);
+		deserializeUpgrades(upgradeIds);
 
 		updateUpgradeStats();
 	}
@@ -175,8 +183,16 @@ public class VehicleUpgradeHelper implements INBTSerializable<NBTTagCompound> {
 
 	private void deserializeInstalledArmor(NBTTagCompound tag) {
 		NBTTagList armorTypes = tag.getTagList("armors", Constants.NBT.TAG_STRING);
-		for (NBTBase armorType : armorTypes) {
-			IVehicleArmor armor = ArmorRegistry.getArmorType(new ResourceLocation(((NBTTagString) armorType).getString()));
+		String[] armorRegistryNames = new String[armorTypes.tagCount()];
+		for (int i = 0; i < armorRegistryNames.length; i++) {
+			armorRegistryNames[i] = ((NBTTagString) armorTypes.get(i)).getString();
+		}
+		deserializeInstalledArmor(armorRegistryNames);
+	}
+
+	private void deserializeInstalledArmor(String[] armorRegistryNames) {
+		for (String armorRegistryName : armorRegistryNames) {
+			IVehicleArmor armor = ArmorRegistry.getArmorType(new ResourceLocation(armorRegistryName));
 			if (armor != null) {
 				installedArmor.add(armor);
 			}
@@ -184,9 +200,12 @@ public class VehicleUpgradeHelper implements INBTSerializable<NBTTagCompound> {
 	}
 
 	private void deserializeUpgrades(NBTTagCompound tag) {
-		int[] upInts = tag.getIntArray("ints");
-		for (int i = 0; i < upInts.length; i++) {
-			int up = upInts[i];
+		deserializeUpgrades(tag.getIntArray("ints"));
+	}
+
+	private void deserializeUpgrades(int[] upgradeIds) {
+		for (int i = 0; i < upgradeIds.length; i++) {
+			int up = upgradeIds[i];
 			IVehicleUpgradeType upgrade = VehicleUpgradeRegistry.instance().getUpgrade(up);
 			if (upgrade != null) {
 				this.upgrades.add(upgrade);
@@ -225,14 +244,13 @@ public class VehicleUpgradeHelper implements INBTSerializable<NBTTagCompound> {
 	}
 
 	public float getScaledDamage(DamageSource src, float amt) {
-		float floatAmt = (float) amt;
 		if (src == DamageType.explosiveMissile || src.isExplosion()) {
-			return floatAmt * (1 - (vehicle.currentExplosionResist * 0.01f));
+			return amt * (1 - (vehicle.currentExplosionResist * 0.01f));
 		} else if (src == DamageType.fireMissile || src == DamageSource.IN_FIRE || src == DamageSource.LAVA || src == DamageSource.ON_FIRE || src
 				.isFireDamage()) {
-			return floatAmt * (1 - (vehicle.currentFireResist * 0.01f));
+			return amt * (1 - (vehicle.currentFireResist * 0.01f));
 		}
-		return floatAmt * (1 - (vehicle.currentGenericResist * 0.01f));
+		return amt * (1 - (vehicle.currentGenericResist * 0.01f));
 	}
 
 	@Override

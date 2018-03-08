@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.PacketBuffer;
 import net.minecraftforge.fml.common.network.internal.FMLProxyPacket;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 public abstract class PacketBase {
@@ -37,7 +38,7 @@ public abstract class PacketBase {
 
     protected abstract void writeToStream(ByteBuf data);
 
-    protected abstract void readFromStream(ByteBuf data);
+	protected abstract void readFromStream(ByteBuf data) throws IOException;
 
     protected void execute() {
     }

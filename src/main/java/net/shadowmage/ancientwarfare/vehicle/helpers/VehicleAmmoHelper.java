@@ -35,6 +35,7 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.item.AWVehicleItems;
 import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 import net.shadowmage.ancientwarfare.vehicle.missiles.MissileBase;
+import net.shadowmage.ancientwarfare.vehicle.network.PacketAmmoUpdate;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicle;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleAmmoEntry;
 
@@ -231,48 +232,15 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 		}
 		List<VehicleAmmoEntry> counts = vehicle.inventory.getAmmoCounts();
 
-		NBTTagCompound tag = new NBTTagCompound();
-		NBTTagList tagList = new NBTTagList();
 		for (VehicleAmmoEntry count : counts) {
-			NBTTagCompound entryTag = new NBTTagCompound();
 			for (VehicleAmmoEntry ent : this.ammoEntries) {
 				if (ent.baseAmmoType == count.baseAmmoType) {
 					ent.ammoCount = count.ammoCount;
 				}
 			}
-			entryTag.setInteger("type", count.baseAmmoType.getAmmoType());
-			entryTag.setInteger("count", count.ammoCount);
-			tagList.appendTag(entryTag);
 		}
-		tag.setTag("list", tagList);
-		PacketVehicle pkt = new PacketVehicle();
-		pkt.setParams(vehicle);
-		pkt.setAmmoData(tag);
+		PacketAmmoUpdate pkt = new PacketAmmoUpdate(vehicle, serializeAmmo(new NBTTagCompound()));
 		NetworkHandler.sendToAllTracking(vehicle, pkt);
-	}
-
-	/**
-	 * CLIENT ONLY--version of above
-	 *
-	 * @param tag
-	 */
-	public void handleAmmoUpdatePacket(NBTTagCompound tag) {
-		//  Config.logDebug("receiving ammo count client update");
-		for (VehicleAmmoEntry ent : this.ammoEntries) {
-			ent.ammoCount = 0;
-		}
-		NBTTagList tagList = tag.getTagList("list", Constants.NBT.TAG_COMPOUND);
-		for (int i = 0; i < tagList.tagCount(); i++) {
-			NBTTagCompound entryTag = (NBTTagCompound) tagList.get(i);
-			int type = entryTag.getInteger("type");
-			int count = entryTag.getInteger("count");
-			for (VehicleAmmoEntry ent : this.ammoEntries) {
-				if (ent.baseAmmoType.getAmmoType() == type) {
-					ent.ammoCount = count;
-					break;
-				}
-			}
-		}
 	}
 
 	public IAmmo getCurrentAmmoType() {
@@ -319,13 +287,17 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 	@Override
 	public NBTTagCompound serializeNBT() {
 		NBTTagCompound tag = new NBTTagCompound();
-		tag.setInteger("am", currentAmmoType);
+		tag.setString("currentAmmoType", currentAmmoType.toString());
+		serializeAmmo(tag);
+		return tag;
+	}
+
+	public NBTTagCompound serializeAmmo(NBTTagCompound tag) {
 		NBTTagList tagList = new NBTTagList();
 		for (VehicleAmmoEntry ent : this.ammoEntries) {
 			NBTTagCompound entryTag = new NBTTagCompound();
-			entryTag.setInteger("num", ent.baseAmmoType.getAmmoType());
+			entryTag.setString("type", ent.baseAmmoType.getRegistryName().toString());
 			entryTag.setInteger("cnt", ent.ammoCount);
-			//    Config.logDebug("writing ammo count "+entryTag.getInteger("num")+","+entryTag.getInteger("cnt"));
 			tagList.appendTag(entryTag);
 		}
 		tag.setTag("list", tagList);
@@ -337,15 +309,26 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 		for (VehicleAmmoEntry ent : this.ammoEntries) {
 			ent.ammoCount = 0;
 		}
-		this.currentAmmoType = tag.getInteger("am");
-		NBTTagList tagList = tag.getTagList("list", Constants.NBT.TAG_COMPOUND);
-		for (int i = 0; i < tagList.tagCount(); i++) {
-			NBTTagCompound entryTag = (NBTTagCompound) tagList.get(i);
-			int num = entryTag.getInteger("num");
-			int cnt = entryTag.getInteger("cnt");
+		this.currentAmmoType = new ResourceLocation(tag.getString("currentAmmoType"));
+		deserializeAmmo(tag);
+	}
+
+	public void updateAmmo(NBTTagCompound tag) {
+		for (VehicleAmmoEntry ent : this.ammoEntries) {
+			ent.ammoCount = 0;
+		}
+		deserializeAmmo(tag);
+	}
+
+	private void deserializeAmmo(NBTTagCompound tag) {
+		NBTTagList ammo = tag.getTagList("list", Constants.NBT.TAG_COMPOUND);
+		for (int i = 0; i < ammo.tagCount(); i++) {
+			NBTTagCompound entryTag = (NBTTagCompound) ammo.get(i);
+			String type = entryTag.getString("type");
+			int count = entryTag.getInteger("count");
 			for (VehicleAmmoEntry ent : this.ammoEntries) {
-				if (ent.baseAmmoType.getAmmoType() == num) {
-					ent.ammoCount = cnt;
+				if (ent.baseAmmoType.getRegistryName().toString().equals(type)) {
+					ent.ammoCount = count;
 					break;
 				}
 			}

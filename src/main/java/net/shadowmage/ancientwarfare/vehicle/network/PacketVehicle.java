@@ -32,6 +32,7 @@ import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
 import javax.annotation.Nullable;
+import java.io.IOException;
 
 public abstract class PacketVehicle extends PacketBase {
 	//TODO call registerPacketType for all packet types
@@ -49,7 +50,7 @@ public abstract class PacketVehicle extends PacketBase {
 	}
 
 	@Override
-	protected void readFromStream(ByteBuf data) {
+	protected void readFromStream(ByteBuf data) throws IOException {
 		entityID = data.readInt();
 	}
 
