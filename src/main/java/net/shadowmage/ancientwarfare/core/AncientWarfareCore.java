@@ -25,7 +25,6 @@ import net.shadowmage.ancientwarfare.core.container.ContainerResearchBook;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchStation;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
-import net.shadowmage.ancientwarfare.core.gamedata.Timekeeper;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.item.AWCoreItemLoader;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -78,7 +77,6 @@ public class AncientWarfareCore {
         NetworkHandler.INSTANCE.registerNetwork();//register network handler, server side
 
         MinecraftForge.EVENT_BUS.register(ResearchTracker.INSTANCE);
-        MinecraftForge.EVENT_BUS.register(new Timekeeper());
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(this);
 

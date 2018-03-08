@@ -46,7 +46,6 @@ import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.shadowmage.ancientwarfare.core.gamedata.Timekeeper;
 import net.shadowmage.ancientwarfare.core.interfaces.IEntityPacketHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
@@ -1350,7 +1349,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	}
 
 	public boolean shouldSleep() {
-		return Timekeeper.isNighttime();
+		return !world.isDaytime();
 	}
 
 	// Only used by the renderer
