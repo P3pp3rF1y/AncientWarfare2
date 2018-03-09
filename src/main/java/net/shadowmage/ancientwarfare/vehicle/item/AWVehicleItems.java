@@ -9,12 +9,8 @@ import static net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 public class AWVehicleItems {
 	@ObjectHolder("upgrade")
 	public static ItemBase upgrade;
-	@ObjectHolder("ammo")
-	public static ItemBase ammo;
 	@ObjectHolder("spawner")
 	public static ItemBase spawner;
-	@ObjectHolder("armor")
-	public static ItemBase armor;
 	@ObjectHolder("flame_charge")
 	public static ItemBase flameCharge;
 	@ObjectHolder("explosive_charge")

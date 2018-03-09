@@ -10,7 +10,7 @@ import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.AWVehicleEntityLoader;
 import net.shadowmage.ancientwarfare.vehicle.missiles.MissileBase;
-import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicle;
+import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.refactoring.ballistics.TrajectoryPlotter;
 import net.shadowmage.ancientwarfare.vehicle.refactoring.network.PacketInputReply;
 import net.shadowmage.ancientwarfare.vehicle.refactoring.network.PacketInputState;
@@ -69,7 +69,7 @@ public class AncientWarfareVehicles {
          */
 		PacketBase.registerPacketType(NetworkHandler.PACKET_VEHICLE_INPUT_STATE, PacketInputState.class);
 		PacketBase.registerPacketType(NetworkHandler.PACKET_VEHICLE_INPUT_RESPONSE, PacketInputReply.class);
-		PacketBase.registerPacketType(NetworkHandler.PACKET_VEHICLE, PacketVehicle.class);
+		PacketBase.registerPacketType(NetworkHandler.PACKET_VEHICLE, PacketVehicleBase.class);
 		for (int i = 0; i < 100; i++) {
 			TrajectoryPlotter.loadTest();
 		}

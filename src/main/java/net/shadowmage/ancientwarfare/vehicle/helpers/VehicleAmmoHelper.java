@@ -21,6 +21,7 @@
 
 package net.shadowmage.ancientwarfare.vehicle.helpers;
 
+import com.google.common.collect.Maps;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -32,15 +33,16 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
-import net.shadowmage.ancientwarfare.vehicle.item.AWVehicleItems;
 import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 import net.shadowmage.ancientwarfare.vehicle.missiles.MissileBase;
+import net.shadowmage.ancientwarfare.vehicle.network.PacketAmmoSelect;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketAmmoUpdate;
-import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicle;
+import net.shadowmage.ancientwarfare.vehicle.network.PacketSingleAmmoUpdate;
+import net.shadowmage.ancientwarfare.vehicle.registry.AmmoRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleAmmoEntry;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 
@@ -48,7 +50,7 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 
 	public ResourceLocation currentAmmoType = null;
 
-	private List<VehicleAmmoEntry> ammoEntries = new ArrayList<VehicleAmmoEntry>();
+	private Map<ResourceLocation, VehicleAmmoEntry> ammoEntries = Maps.newHashMap();
 	//private HashMap<Integer, VehicleAmmoEntry> ammoTypes = new HashMap<Integer, VehicleAmmoEntry>();//local ammo type to global entry
 
 	public VehicleAmmoHelper(VehicleBase vehicle) {
@@ -56,7 +58,7 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 	}
 
 	public int getCountOf(IAmmo type) {
-		for (VehicleAmmoEntry entry : this.ammoEntries) {
+		for (VehicleAmmoEntry entry : ammoEntries.values()) {
 			if (entry.baseAmmoType == type) {
 				return entry.ammoCount;
 			}
@@ -73,9 +75,8 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 		if (vehicle.world.isRemote) {
 			return;
 		}
-		if (currentAmmoType >= 0 && currentAmmoType < this.ammoEntries.size()) {
-			int removed = InventoryTools
-					.removeItems(vehicle.inventory.ammoInventory, new ItemStack(AWVehicleItems.ammo, getCurrentAmmoType().getAmmoType()), num).getCount();
+		if (ammoEntries.containsKey(currentAmmoType)) {
+			int removed = InventoryTools.removeItems(vehicle.inventory.ammoInventory, new ItemStack(AmmoRegistry.getItem(currentAmmoType)), num).getCount();
 			VehicleAmmoEntry entry = this.ammoEntries.get(this.currentAmmoType);
 			int origCount = entry.ammoCount;
 			entry.ammoCount -= removed;
@@ -83,13 +84,7 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 				entry.ammoCount = 0;
 			}
 			if (entry.ammoCount != origCount) {
-				NBTTagCompound tag = new NBTTagCompound();
-				tag.setInteger("num", this.currentAmmoType);
-				tag.setInteger("cnt", entry.ammoCount);
-				PacketVehicle pkt = new PacketVehicle();
-				pkt.setParams(vehicle);
-				pkt.setAmmoUpdate(tag);
-				NetworkHandler.sendToAllTracking(vehicle, pkt);
+				NetworkHandler.sendToAllTracking(vehicle, new PacketSingleAmmoUpdate(vehicle, currentAmmoType.toString(), entry.ammoCount));
 			}
 		}
 	}
@@ -104,7 +99,7 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 		if (!AWVehicleStatics.soldiersUseAmmo && vehicle.getControllingPassenger() instanceof NpcBase) {
 			return 64;
 		}
-		if (this.ammoEntries.size() > 0 && this.currentAmmoType < this.ammoEntries.size()) {
+		if (ammoEntries.containsKey(currentAmmoType)) {
 			return this.ammoEntries.get(currentAmmoType).ammoCount;
 		}
 		return 0;
@@ -116,81 +111,20 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 
 	public void addUseableAmmo(IAmmo ammo) {
 		VehicleAmmoEntry ent = new VehicleAmmoEntry(ammo);
-		this.ammoEntries.add(ent);
+		this.ammoEntries.put(ammo.getRegistryName(), ent);
 	}
 
-	/**
-	 * client-side ammo selection by ammo type
-	 *
-	 * @param type
-	 */
-	public void handleClientAmmoSelection(IAmmo type) {
-		int foundIndex = -1;
-		VehicleAmmoEntry entry;
-		for (int i = 0; i < this.ammoEntries.size(); i++) {
-			entry = this.ammoEntries.get(i);
-			if (entry != null && entry.baseAmmoType == type) {
-				foundIndex = i;
-				break;
-			}
-		}
-		if (foundIndex >= 0) {
-			this.handleClientAmmoSelection(foundIndex);
+	public void handleClientAmmoSelection(ResourceLocation ammoRegistryName) {
+		if (!ammoRegistryName.equals(currentAmmoType)) {
+			NetworkHandler.sendToServer(new PacketAmmoSelect(vehicle, ammoRegistryName.toString()));
 		}
 	}
 
-	/**
-	 * client-side ammo selection by number
-	 *
-	 * @param type
-	 */
-	public void handleClientAmmoSelection(ResourceLocation registryName) {
-		if (type >= 0 && type <= this.ammoEntries.size() && type != this.currentAmmoType) {
-			NBTTagCompound innerTag = new NBTTagCompound();
-			innerTag.setInteger("num", type);
-			PacketVehicle pkt = new PacketVehicle();
-			pkt.setParams(vehicle);
-			pkt.setAmmoSelect(innerTag);
-			NetworkHandler.sendToServer(pkt);
-		}
-	}
-
-	/**
-	 * client-side input from delta (used by keybind to change)
-	 *
-	 * @param delta
-	 */
-	public void handleAmmoSelectInput(int delta) {
-		if (this.ammoEntries.size() > 0) {
-			int test = this.currentAmmoType + delta;
-			while (test < 0) {
-				test += this.ammoEntries.size();
-			}
-			while (test >= this.ammoEntries.size()) {
-				test -= this.ammoEntries.size();
-			}
-			if (test >= 0) {
-				this.handleClientAmmoSelection(test);
-			}
-		}
-	}
-
-	/**
-	 * client AND server method to process valid ammo-type change packets. *
-	 *
-	 * @param tag
-	 */
-	public void handleAmmoSelectPacket(NBTTagCompound tag) {
-		int num = tag.getInteger("num");
-		if (num >= 0 && num < this.ammoEntries.size() && num != this.currentAmmoType) {
-			this.currentAmmoType = num;
+	public void updateSelectedAmmo(String ammoRegistryName) {
+		if (!ammoRegistryName.equals(currentAmmoType.toString())) {
+			this.currentAmmoType = new ResourceLocation(ammoRegistryName);
 			if (!vehicle.world.isRemote) {
-				NBTTagCompound innerTag = new NBTTagCompound();
-				innerTag.setInteger("num", num);
-				PacketVehicle pkt = new PacketVehicle();
-				pkt.setParams(vehicle);
-				pkt.setAmmoSelect(innerTag);
-				NetworkHandler.sendToAllTracking(vehicle, pkt);
+				NetworkHandler.sendToAllTracking(vehicle, new PacketAmmoSelect(vehicle, ammoRegistryName));
 			}
 			float maxPower = vehicle.firingHelper.getAdjustedMaxMissileVelocity();
 			if (!vehicle.canAimPower()) {
@@ -204,36 +138,25 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 		}
 	}
 
-	/**
-	 * sent to clients when ammo is used from firing...
-	 * CLIENT ONLY
-	 *
-	 * @param tag
-	 */
-	public void handleAmmoCountUpdate(NBTTagCompound tag) {
-		//  Config.logDebug("updating single ammo type");
-		int num = tag.getInteger("num");
-		if (num >= 0 && num < this.ammoEntries.size()) {
-			int count = tag.getInteger("cnt");
-			this.ammoEntries.get(num).ammoCount = count;
+	public void updateAmmoCount(String ammoRegistryName, int count) {
+		ResourceLocation rl = new ResourceLocation(ammoRegistryName);
+		if (ammoEntries.containsKey(rl)) {
+			this.ammoEntries.get(rl).ammoCount = count;
 		}
 	}
 
-	/**
-	 * SERVER ONLY....
-	 */
 	public void updateAmmoCounts() {
 		if (vehicle.world.isRemote) {
 			return;
 		}
 		//  Config.logDebug("counting ammos!!");
-		for (VehicleAmmoEntry ent : this.ammoEntries) {
+		for (VehicleAmmoEntry ent : this.ammoEntries.values()) {
 			ent.ammoCount = 0;
 		}
 		List<VehicleAmmoEntry> counts = vehicle.inventory.getAmmoCounts();
 
 		for (VehicleAmmoEntry count : counts) {
-			for (VehicleAmmoEntry ent : this.ammoEntries) {
+			for (VehicleAmmoEntry ent : this.ammoEntries.values()) {
 				if (ent.baseAmmoType == count.baseAmmoType) {
 					ent.ammoCount = count.ammoCount;
 				}
@@ -248,7 +171,7 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 			NpcBase npc = (NpcBase) vehicle.getControllingPassenger();
 			return vehicle.vehicleType.getAmmoForSoldierRank(npc.getLevelingStats().getLevel());
 		}
-		if (currentAmmoType < this.ammoEntries.size() && currentAmmoType >= 0) {
+		if (ammoEntries.containsKey(currentAmmoType)) {
 			VehicleAmmoEntry entry = this.ammoEntries.get(currentAmmoType);
 			if (entry != null) {
 				return entry.baseAmmoType;
@@ -294,7 +217,7 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 
 	public NBTTagCompound serializeAmmo(NBTTagCompound tag) {
 		NBTTagList tagList = new NBTTagList();
-		for (VehicleAmmoEntry ent : this.ammoEntries) {
+		for (VehicleAmmoEntry ent : this.ammoEntries.values()) {
 			NBTTagCompound entryTag = new NBTTagCompound();
 			entryTag.setString("type", ent.baseAmmoType.getRegistryName().toString());
 			entryTag.setInteger("cnt", ent.ammoCount);
@@ -306,7 +229,7 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 
 	@Override
 	public void deserializeNBT(NBTTagCompound tag) {
-		for (VehicleAmmoEntry ent : this.ammoEntries) {
+		for (VehicleAmmoEntry ent : this.ammoEntries.values()) {
 			ent.ammoCount = 0;
 		}
 		this.currentAmmoType = new ResourceLocation(tag.getString("currentAmmoType"));
@@ -314,7 +237,7 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 	}
 
 	public void updateAmmo(NBTTagCompound tag) {
-		for (VehicleAmmoEntry ent : this.ammoEntries) {
+		for (VehicleAmmoEntry ent : this.ammoEntries.values()) {
 			ent.ammoCount = 0;
 		}
 		deserializeAmmo(tag);
@@ -326,7 +249,7 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 			NBTTagCompound entryTag = (NBTTagCompound) ammo.get(i);
 			String type = entryTag.getString("type");
 			int count = entryTag.getInteger("count");
-			for (VehicleAmmoEntry ent : this.ammoEntries) {
+			for (VehicleAmmoEntry ent : this.ammoEntries.values()) {
 				if (ent.baseAmmoType.getRegistryName().toString().equals(type)) {
 					ent.ammoCount = count;
 					break;

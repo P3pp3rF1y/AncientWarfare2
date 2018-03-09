@@ -33,8 +33,10 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleMovementType;
 import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 import net.shadowmage.ancientwarfare.vehicle.missiles.MissileBase;
-import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicle;
+import net.shadowmage.ancientwarfare.vehicle.network.PacketAimUpdate;
+import net.shadowmage.ancientwarfare.vehicle.network.PacketFireUpdate;
 
+import java.util.Optional;
 import java.util.Random;
 
 /**
@@ -305,64 +307,37 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 		this.reloadingTicks = vehicle.currentReloadTicks;
 	}
 
-	public void handleInputData(NBTTagCompound tag) {
-		if (tag.hasKey("fm") && (this.reloadingTicks <= 0 || vehicle.world.isRemote))//if fire command and not already firing (or is client)...
-		{
-			this.handleFireUpdate();
-		}
-		if (tag.hasKey("aim")) {
-			this.handleAimUpdate(tag);
-		}
-	}
-
 	public void handleFireUpdate() {
-		if (reloadingTicks <= 0 || vehicle.world.isRemote)//if not already firing, or client, accept packet
-		{
+		if (reloadingTicks <= 0 || vehicle.world.isRemote) {
+
 			boolean shouldFire = vehicle.ammoHelper.getCurrentAmmoCount() > 0 || vehicle.ammoHelper.hasNoAmmo();
-			if (shouldFire)//if should fire...do so.  if server, relay should-fire to clients
-			{
+			if (shouldFire) {
+
 				if (!vehicle.world.isRemote) {
-					PacketVehicle pkt = new PacketVehicle();
-					pkt.setParams(vehicle);
-					NBTTagCompound reply = new NBTTagCompound();
-					reply.setBoolean("fm", true);
-					pkt.setInputData(reply);
-					NetworkHandler.sendToAllTracking(vehicle, pkt);
+					NetworkHandler.sendToAllTracking(vehicle, new PacketFireUpdate(vehicle));
 				}
 				this.initiateLaunchSequence();
 			}
 		}
 	}
 
-	/**
-	 * handle aim-update information
-	 *
-	 * @param tag
-	 */
-	public void handleAimUpdate(NBTTagCompound tag) {
-		NBTTagCompound reply = new NBTTagCompound();
+	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
+	public void updateAim(Optional<Float> pitch, Optional<Float> yaw, Optional<Float> power) {
 		boolean sendReply = false;
-		if (tag.hasKey("aimPitch")) {
+		if (pitch.isPresent()) {
 			sendReply = true;
-			vehicle.localTurretDestPitch = tag.getFloat("aimPitch");
-			reply.setFloat("aimPitch", vehicle.localTurretDestPitch);
+			vehicle.localTurretDestPitch = pitch.get();
 		}
-		if (tag.hasKey("aimYaw")) {
+		if (yaw.isPresent()) {
 			sendReply = true;
-			vehicle.localTurretDestRot = tag.getFloat("aimYaw");
-			reply.setFloat("aimYaw", vehicle.localTurretDestRot);
+			vehicle.localTurretDestRot = yaw.get();
 		}
-		if (tag.hasKey("aimPow")) {
+		if (power.isPresent()) {
 			sendReply = true;
-			vehicle.localLaunchPower = tag.getFloat("aimPow");
-			reply.setFloat("aimPow", vehicle.localLaunchPower);
+			vehicle.localLaunchPower = power.get();
 		}
 		if (!vehicle.world.isRemote && sendReply) {
-			reply.setBoolean("aim", true);
-			PacketVehicle pkt = new PacketVehicle();
-			pkt.setParams(vehicle);
-			pkt.setInputData(reply);
-			NetworkHandler.sendToAllTracking(vehicle, pkt);
+			NetworkHandler.sendToAllTracking(vehicle, new PacketAimUpdate(vehicle, pitch, yaw, power));
 		}
 	}
 
@@ -373,17 +348,7 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 	 */
 	public void handleFireInput(Vec3d target) {
 		if (!this.isFiring && (vehicle.ammoHelper.getCurrentAmmoCount() > 0 || vehicle.ammoHelper.getCurrentAmmoType() == null)) {
-			NBTTagCompound tag = new NBTTagCompound();
-			tag.setBoolean("fm", true);
-			if (target != null) {
-				tag.setFloat("fmx", (float) target.x);
-				tag.setFloat("fmy", (float) target.y);
-				tag.setFloat("fmz", (float) target.z);
-			}
-			PacketVehicle pkt = new PacketVehicle();
-			pkt.setParams(vehicle);
-			pkt.setInputData(tag);
-			NetworkHandler.sendToServer(pkt);
+			NetworkHandler.sendToServer(new PacketFireUpdate(vehicle));
 		}
 	}
 
@@ -427,21 +392,11 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 		}
 
 		if (powerUpdated || pitchUpdated || yawUpdated) {
-			NBTTagCompound tag = new NBTTagCompound();
-			tag.setBoolean("aim", true);
-			if (pitchUpdated) {
-				tag.setFloat("aimPitch", clientTurretPitch);
-			}
-			if (powerUpdated) {
-				tag.setFloat("aimPow", clientLaunchSpeed);
-			}
-			if (yawUpdated) {
-				tag.setFloat("aimYaw", clientTurretYaw);
-			}
-			PacketVehicle pkt = new PacketVehicle();
-			pkt.setParams(vehicle);
-			pkt.setInputData(tag);
-			NetworkHandler.sendToServer(pkt);
+			Optional<Float> turretPitch = pitchUpdated ? Optional.of(clientTurretPitch) : Optional.empty();
+			Optional<Float> turretYaw = yawUpdated ? Optional.of(clientTurretYaw) : Optional.empty();
+			Optional<Float> power = powerUpdated ? Optional.of(clientLaunchSpeed) : Optional.empty();
+
+			NetworkHandler.sendToServer(new PacketAimUpdate(vehicle, turretPitch, turretYaw, power));
 		}
 	}
 
@@ -505,21 +460,10 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 
 		if (updated) {
 			this.clientHitRange = range;
-			NBTTagCompound tag = new NBTTagCompound();
-			tag.setBoolean("aim", true);
-			if (updatePitch) {
-				tag.setFloat("aimPitch", this.clientTurretPitch);
-			}
-			if (updateYaw) {
-				tag.setFloat("aimYaw", this.clientTurretYaw);
-			}
-			if (updatePower) {
-				tag.setFloat("aimPow", this.clientLaunchSpeed);
-			}
-			PacketVehicle pkt = new PacketVehicle();
-			pkt.setParams(vehicle);
-			pkt.setInputData(tag);
-			NetworkHandler.sendToServer(pkt);
+			Optional<Float> turretPitch = updatePitch ? Optional.of(clientTurretPitch) : Optional.empty();
+			Optional<Float> turretYaw = updateYaw ? Optional.of(clientTurretYaw) : Optional.empty();
+			Optional<Float> power = updatePower ? Optional.of(clientLaunchSpeed) : Optional.empty();
+			NetworkHandler.sendToServer(new PacketAimUpdate(vehicle, turretPitch, turretYaw, power));
 		}
 	}
 
@@ -617,24 +561,11 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 				updateYaw = true;
 			}
 		}
-		if (updated) {
-			NBTTagCompound tag = new NBTTagCompound();
-			tag.setBoolean("aim", true);
-			if (updatePitch) {
-				tag.setFloat("aimPitch", this.vehicle.localTurretDestPitch);
-			}
-			if (updateYaw) {
-				tag.setFloat("aimYaw", this.vehicle.localTurretDestRot);
-			}
-			if (updatePower) {
-				tag.setFloat("aimPow", this.vehicle.localLaunchPower);
-			}
-			if (!vehicle.world.isRemote) {
-				PacketVehicle pkt = new PacketVehicle();
-				pkt.setParams(vehicle);
-				pkt.setInputData(tag);
-				NetworkHandler.sendToAllTracking(vehicle, pkt);
-			}
+		if (updated && !vehicle.world.isRemote) {
+			Optional<Float> turretPitch = updatePitch ? Optional.of(vehicle.localTurretDestPitch) : Optional.empty();
+			Optional<Float> turretYaw = updateYaw ? Optional.of(vehicle.localTurretDestRot) : Optional.empty();
+			Optional<Float> power = updatePower ? Optional.of(vehicle.localLaunchPower) : Optional.empty();
+			NetworkHandler.sendToAllTracking(vehicle, new PacketAimUpdate(vehicle, turretPitch, turretYaw, power));
 		}
 	}
 

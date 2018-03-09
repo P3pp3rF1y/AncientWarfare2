@@ -6,7 +6,7 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
 import java.io.IOException;
 
-public class PacketUpgradeUpdate extends PacketVehicle {
+public class PacketUpgradeUpdate extends PacketVehicleBase {
 	private int[] upgradeIds;
 	private String[] armorRegistryNames;
 

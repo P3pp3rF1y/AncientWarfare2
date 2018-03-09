@@ -28,7 +28,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.vehicle.container.ContainerVehicle;
-import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicle;
+import net.shadowmage.ancientwarfare.vehicle.network.PacketPackCommand;
 
 public class GuiVehicleInventory extends GuiContainerBase<ContainerVehicle> {
 	ContainerVehicle container;
@@ -84,10 +84,7 @@ public class GuiVehicleInventory extends GuiContainerBase<ContainerVehicle> {
 		pack.addNewListener(new Listener(Listener.MOUSE_UP) {
 			@Override
 			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
-				PacketVehicle pkt = new PacketVehicle();
-				pkt.setParams(container.vehicle);
-				pkt.setPackCommand();
-				NetworkHandler.sendToServer(pkt);
+				NetworkHandler.sendToServer(new PacketPackCommand(container.vehicle));
 				closeGui();
 				return true;
 			}

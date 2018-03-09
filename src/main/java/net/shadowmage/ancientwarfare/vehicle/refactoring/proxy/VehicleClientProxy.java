@@ -11,6 +11,7 @@ import net.shadowmage.ancientwarfare.core.config.ConfigManager;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.input.InputHandler.InputCallback;
 import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
+import net.shadowmage.ancientwarfare.vehicle.missiles.MissileBase;
 import net.shadowmage.ancientwarfare.vehicle.refactoring.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.refactoring.entity.VehicleCatapult;
 import net.shadowmage.ancientwarfare.vehicle.refactoring.input.VehicleInputKey;

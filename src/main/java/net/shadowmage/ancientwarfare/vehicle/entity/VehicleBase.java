@@ -67,7 +67,7 @@ import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleUpgradeHelper;
 import net.shadowmage.ancientwarfare.vehicle.inventory.VehicleInventory;
 import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoHwachaRocket;
 import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
-import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicle;
+import net.shadowmage.ancientwarfare.vehicle.network.PacketTurretAnglesUpdate;
 import net.shadowmage.ancientwarfare.vehicle.pathing.Navigator;
 import net.shadowmage.ancientwarfare.vehicle.pathing.Node;
 import net.shadowmage.ancientwarfare.vehicle.pathing.PathWorldAccessEntity;
@@ -760,58 +760,18 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		}
 	}
 
-	/**
-	 * Called from PacketVehicle
-	 * Generic update method for client-server coms
-	 *
-	 * @param tag
-	 */
-	public void handlePacketUpdate(NBTTagCompound tag) {
-		if (tag.hasKey("input")) {
-			this.handleInputData(tag.getCompoundTag("input"));
-		}
-		if (tag.hasKey("ammo")) {
-			this.ammoHelper.handleAmmoUpdatePacket(tag.getCompoundTag("ammo"));
-		}
-		if (tag.hasKey("ammoSel")) {
-			this.ammoHelper.handleAmmoSelectPacket(tag.getCompoundTag("ammoSel"));
-		}
-		if (tag.hasKey("ammoUpd")) {
-			this.ammoHelper.handleAmmoCountUpdate(tag.getCompoundTag("ammoUpd"));
-		}
-		if (tag.hasKey("pack")) {
-			this.packVehicle();
-		}
-		if (tag.hasKey("turret")) {
-			this.handleTurretPacket(tag.getCompoundTag("turret"));
-		}
-		if (tag.hasKey("moveData")) {
-			this.moveHelper.handleMoveData(tag);
-		}
-	}
-
 	public void sendCompleteTurretPacket() {
 		if (this.world.isRemote) {
 			return;
 		}
-		NBTTagCompound tag = new NBTTagCompound();
-		tag.setFloat("p", localTurretPitch);
-		tag.setFloat("r", localTurretRotation);
-		PacketVehicle pkt = new PacketVehicle();
-		pkt.setTurretParams(tag);
-		NetworkHandler.sendToAllTracking(this, pkt);
+		NetworkHandler.sendToAllTracking(this, new PacketTurretAnglesUpdate(this, localTurretPitch, localTurretRotation));
 	}
 
-	protected void handleTurretPacket(NBTTagCompound tag) {
-		this.localTurretPitch = tag.getFloat("p");
-		this.localTurretRotation = tag.getFloat("r");
+	public void updateTurretAngles(float pitch, float rotation) {
+		this.localTurretPitch = pitch;
+		this.localTurretRotation = rotation;
 		this.localTurretDestPitch = this.localTurretPitch;
 		this.localTurretDestRot = this.localTurretRotation;
-	}
-
-	public void handleInputData(NBTTagCompound tag) {
-		this.moveHelper.handleInputData(tag);
-		this.firingHelper.handleInputData(tag);
 	}
 
 	/**

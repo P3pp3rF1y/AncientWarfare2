@@ -42,7 +42,8 @@ import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleMovementType;
-import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicle;
+import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicleBase;
+import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicleMove;
 
 import java.util.List;
 
@@ -100,36 +101,25 @@ public class VehicleMoveHelper implements INBTSerializable<NBTTagCompound> {
 		this.turnInput = in;
 	}
 
-	public void handleMoveData(NBTTagCompound tag) {
-		if (tag.hasKey("rp")) {
-			this.pitchTicks = VEHICLE_MOVE_UPDATE_FREQUENCY + 1;
-			this.destPitch = tag.getFloat("rp");
-		}
-		if (tag.hasKey("ry")) {
-			this.rotationTicks = VEHICLE_MOVE_UPDATE_FREQUENCY + 1;
-			this.destYaw = tag.getFloat("ry");
-		}
-		if (tag.hasKey("px")) {
-			this.moveTicks = VEHICLE_MOVE_UPDATE_FREQUENCY + 1;
-			this.destX = tag.getFloat("px");
-		}
-		if (tag.hasKey("py")) {
-			this.moveTicks = VEHICLE_MOVE_UPDATE_FREQUENCY + 1;
-			this.destY = tag.getFloat("py");
-		}
-		if (tag.hasKey("pz")) {
-			this.moveTicks = VEHICLE_MOVE_UPDATE_FREQUENCY + 1;
-			this.destZ = tag.getFloat("pz");
-		}
-		if (tag.hasKey("tr")) {
-			this.throttle = tag.getFloat("tr");
-		}
-		if (tag.hasKey("fm")) {
-			this.forwardMotion = tag.getFloat("fm");
+	public void updateMoveData(double posX, double posY, double posZ, boolean air, float motion, float yaw, float pitch) {
+		this.pitchTicks = VEHICLE_MOVE_UPDATE_FREQUENCY + 1;
+		this.rotationTicks = VEHICLE_MOVE_UPDATE_FREQUENCY + 1;
+		this.moveTicks = VEHICLE_MOVE_UPDATE_FREQUENCY + 1;
+
+		this.destPitch = pitch;
+		this.destYaw = yaw;
+		this.destX = posX;
+		this.destY = posY;
+		this.destZ = posZ;
+		if (air) {
+			this.throttle = motion;
+		} else {
+			this.forwardMotion = motion;
 		}
 	}
 
 	public void handleInputData(NBTTagCompound tag) {
+		//TODO add logic for handling key inputs
 		if (tag.hasKey("f")) {
 			this.forwardInput = tag.getByte("f");
 		}
@@ -235,8 +225,10 @@ public class VehicleMoveHelper implements INBTSerializable<NBTTagCompound> {
 		sendUpdate = sendUpdate && this.vehicle.ticksExisted % VEHICLE_MOVE_UPDATE_FREQUENCY == 0;
 		sendUpdate = sendUpdate || this.vehicle.ticksExisted % 60 == 0;
 		if (sendUpdate) {
-			PacketVehicle pkt = new PacketVehicle();
-			pkt.setMoveUpdate(this.vehicle, true, move == VehicleMovementType.AIR1 || move == VehicleMovementType.AIR2, true);
+			boolean air = move == VehicleMovementType.AIR1 || move == VehicleMovementType.AIR2;
+			float motion = air ? vehicle.moveHelper.throttle : vehicle.moveHelper.forwardMotion;
+			PacketVehicleBase pkt = new PacketVehicleMove(vehicle, vehicle.posX, vehicle.posY, vehicle.posZ, air, motion, vehicle.rotationYaw,
+					vehicle.rotationPitch);
 			NetworkHandler.sendToAllTracking(vehicle, pkt);
 		}
 	}

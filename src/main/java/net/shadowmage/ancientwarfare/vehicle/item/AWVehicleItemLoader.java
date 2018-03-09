@@ -31,7 +31,6 @@ public class AWVehicleItemLoader {
 
         registry.register(new ItemSpawner());
         registry.register(new ItemBaseVehicle("upgrade"));
-        registry.register(new ItemBaseVehicle("ammo"));
         registry.register(new ItemBaseVehicle("flame_charge"));
         registry.register(new ItemBaseVehicle("explosive_charge"));
         registry.register(new ItemBaseVehicle("rocket_charge"));

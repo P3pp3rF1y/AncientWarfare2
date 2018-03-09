@@ -33,7 +33,7 @@ import net.shadowmage.ancientwarfare.vehicle.armors.IVehicleArmor;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.missiles.DamageType;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketUpgradeUpdate;
-import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicle;
+import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleUpgradeRegistry;
 import net.shadowmage.ancientwarfare.vehicle.upgrades.IVehicleUpgradeType;
@@ -126,7 +126,7 @@ public class VehicleUpgradeHelper implements INBTSerializable<NBTTagCompound> {
 
 		serializeInstalledArmors(tag);
 
-		PacketVehicle pkt = new PacketUpgradeUpdate(vehicle);
+		PacketVehicleBase pkt = new PacketUpgradeUpdate(vehicle);
 		NetworkHandler.sendToAllTracking(vehicle, pkt);
 		this.updateUpgradeStats();
 	}
