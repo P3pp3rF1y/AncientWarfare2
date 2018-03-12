@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.vehicle;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
@@ -11,10 +12,10 @@ import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.AWVehicleEntityLoader;
 import net.shadowmage.ancientwarfare.vehicle.missiles.MissileBase;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicleBase;
+import net.shadowmage.ancientwarfare.vehicle.proxy.CommonProxy;
 import net.shadowmage.ancientwarfare.vehicle.refactoring.ballistics.TrajectoryPlotter;
 import net.shadowmage.ancientwarfare.vehicle.refactoring.network.PacketInputReply;
 import net.shadowmage.ancientwarfare.vehicle.refactoring.network.PacketInputState;
-import net.shadowmage.ancientwarfare.vehicle.refactoring.proxy.VehicleCommonProxy;
 import org.apache.logging.log4j.Logger;
 
 /*
@@ -33,14 +34,8 @@ public class AncientWarfareVehicles {
 	//    @Instance(value = modID)
 	public static AncientWarfareVehicles instance;
 
-	/*
-		@SidedProxy
-				(
-						clientSide = "VehicleClientProxy",
-						serverSide = "VehicleCommonProxy"
-				)
-	*/
-	public static VehicleCommonProxy proxy;
+	@SidedProxy(clientSide = "net.shadowmage.ancientwarfare.vehicle.proxy.ClientProxy", serverSide = "net.shadowmage.ancientwarfare.vehicle.proxy.CommonProxy")
+	public static CommonProxy proxy;
 
 	public static AWVehicleStatics statics;
 
@@ -59,9 +54,8 @@ public class AncientWarfareVehicles {
 		statics = new AWVehicleStatics("AncientWarfareVehicle");
 
         /*
-         * load pre-init (items, blocks, entities)
+		 * load pre-init (items, blocks, entities)
          */
-		proxy.preInit();
 		AWVehicleEntityLoader.load();
 
         /*
