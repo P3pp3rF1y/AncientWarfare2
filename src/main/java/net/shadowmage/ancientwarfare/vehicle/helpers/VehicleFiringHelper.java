@@ -346,7 +346,7 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 	 *
 	 * @param target
 	 */
-	public void handleFireInput(Vec3d target) {
+	public void handleFireInput(Vec3d target) { //TODO is this target parameter supposed to have any purpose?
 		if (!this.isFiring && (vehicle.ammoHelper.getCurrentAmmoCount() > 0 || vehicle.ammoHelper.getCurrentAmmoType() == null)) {
 			NetworkHandler.sendToServer(new PacketFireUpdate(vehicle));
 		}

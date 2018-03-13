@@ -17,13 +17,13 @@ public class AWVehicleStatics extends ModConfiguration {
 	public static final String KEY_VEHICLE_TURRET_RIGHT = "keybind.vehicle.turret.right";
 	public static final String KEY_VEHICLE_MOUSE_AIM = "keybind.vehicle.mouse.aim";
 	public static final String KEY_VEHICLE_AMMO_SELECT = "keybind.vehicle.ammo.select";
-
 	public AWVehicleStatics(String mod) {
 		super(mod);
 	}
 
 	//TODO add configuration for these values (probably annotations) - descriptions in 1.6.4 AW
 	public static boolean oversizeAmmoEnabled = true;
+
 	public static boolean soldiersUseAmmo = false;
 	public static boolean adjustMissilesForAccuracy = false;
 	public static boolean vehiclesTearUpGrass = true;
@@ -32,9 +32,10 @@ public class AWVehicleStatics extends ModConfiguration {
 	public static boolean allowFriendlyFire = false;
 	public static boolean fireBlockBreakEvents = true;
 	public static boolean useVehicleSetupTime = true;
-
 	public static boolean renderVehiclesInFirstPerson = true;
+
 	public static boolean renderVehicleNameplates = true;
+	public static boolean enableMouseAim = true;
 
 	@Override
 	public void initializeCategories() {

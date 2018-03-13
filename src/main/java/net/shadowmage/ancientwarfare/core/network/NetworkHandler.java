@@ -187,16 +187,26 @@ public final class NetworkHandler implements IGuiHandler {
     public final void openGui(EntityPlayer player, int id, BlockPos pos) {
         openGui(player, id, pos.getX(), pos.getY(), pos.getZ());
     }
-    public final void openGui(EntityPlayer player, int id, int x, int y, int z) {
-        if (player.world.isRemote) {
-            PacketGui pkt = new PacketGui();
-            pkt.setOpenGui(id, x, y, z);
-            sendToServer(pkt);
-        } else {
-            FMLNetworkHandler.openGui(player, AncientWarfareCore.instance, id, player.world, x, y, z);
-            if (player.openContainer instanceof ContainerBase) {
-                ((ContainerBase) player.openContainer).sendInitData();
-            }
-        }
-    }
+
+	//TODO refactor stuff to use this overload (add one with no mod for core) where it only passes 0 to x, y, z
+	public final void openGui(EntityPlayer player, Object mod, int id) {
+		openGui(player, mod, id, 0, 0, 0);
+	}
+
+	public final void openGui(EntityPlayer player, int id, int x, int y, int z) {
+		openGui(player, AncientWarfareCore.instance, id, x, y, z);
+	}
+
+	public final void openGui(EntityPlayer player, Object mod, int id, int x, int y, int z) {
+		if (player.world.isRemote) {
+			PacketGui pkt = new PacketGui();
+			pkt.setOpenGui(id, x, y, z);
+			sendToServer(pkt);
+		} else {
+			FMLNetworkHandler.openGui(player, mod, id, player.world, x, y, z);
+			if (player.openContainer instanceof ContainerBase) {
+				((ContainerBase) player.openContainer).sendInitData();
+			}
+		}
+	}
 }

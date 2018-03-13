@@ -21,7 +21,6 @@
 
 package net.shadowmage.ancientwarfare.vehicle.helpers;
 
-import com.google.common.collect.Maps;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -41,8 +40,9 @@ import net.shadowmage.ancientwarfare.vehicle.network.PacketSingleAmmoUpdate;
 import net.shadowmage.ancientwarfare.vehicle.registry.AmmoRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleAmmoEntry;
 
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 
@@ -50,8 +50,7 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 
 	public ResourceLocation currentAmmoType = null;
 
-	private Map<ResourceLocation, VehicleAmmoEntry> ammoEntries = Maps.newHashMap();
-	//private HashMap<Integer, VehicleAmmoEntry> ammoTypes = new HashMap<Integer, VehicleAmmoEntry>();//local ammo type to global entry
+	private LinkedHashMap<ResourceLocation, VehicleAmmoEntry> ammoEntries = new LinkedHashMap<>();
 
 	public VehicleAmmoHelper(VehicleBase vehicle) {
 		this.vehicle = vehicle;
@@ -112,6 +111,54 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 	public void addUseableAmmo(IAmmo ammo) {
 		VehicleAmmoEntry ent = new VehicleAmmoEntry(ammo);
 		this.ammoEntries.put(ammo.getRegistryName(), ent);
+	}
+
+	public void setNextAmmo() {
+		boolean selectNext = false;
+		for (ResourceLocation ammoName : ammoEntries.keySet()) {
+			if (selectNext) {
+				currentAmmoType = ammoName;
+				handleClientAmmoSelection(currentAmmoType);
+				return;
+			}
+			if (ammoName.equals(currentAmmoType)) {
+				selectNext = true;
+			}
+		}
+
+		//select the first if none was selected above
+		Iterator<ResourceLocation> it = ammoEntries.keySet().iterator();
+		if (it.hasNext()) {
+			currentAmmoType = it.next();
+			handleClientAmmoSelection(currentAmmoType);
+		}
+	}
+
+	public void setPreviousAmmo() {
+		ResourceLocation lastName = null;
+		for (ResourceLocation ammoName : ammoEntries.keySet()) {
+			if (ammoName.equals(currentAmmoType)) {
+				if (lastName == null) {
+					break;
+				} else {
+					currentAmmoType = lastName;
+					handleClientAmmoSelection(currentAmmoType);
+					return;
+				}
+			}
+			lastName = ammoName;
+		}
+
+		//select the last if none was selected above
+		Iterator<ResourceLocation> it = ammoEntries.keySet().iterator();
+		ResourceLocation last = null;
+		while (it.hasNext()) {
+			last = it.next();
+		}
+		if (last != null) {
+			currentAmmoType = last;
+			handleClientAmmoSelection(currentAmmoType);
+		}
 	}
 
 	public void handleClientAmmoSelection(ResourceLocation ammoRegistryName) {
