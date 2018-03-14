@@ -19,7 +19,7 @@ import net.shadowmage.ancientwarfare.vehicle.AncientWarfareVehicles;
 import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.gui.GuiIds;
-import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicleMove;
+import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicleInput;
 import org.lwjgl.input.Keyboard;
 
 import java.util.List;
@@ -200,7 +200,27 @@ public class VehicleInputHandler {
 	}
 
 	protected void handleTickInput(VehicleBase vehicle) {
-		NetworkHandler.sendToServer(new PacketVehicleMove(vehicle, ));
+
+		PacketVehicleInput pkt = new PacketVehicleInput(vehicle);
+
+		if (FORWARD.isPressed() && !REVERSE.isPressed()) {
+			pkt.setForward();
+		} else if (REVERSE.isPressed() && !FORWARD.isPressed()) {
+			pkt.setReverse();
+		}
+
+		if (LEFT.isPressed() && !RIGHT.isPressed()) {
+			pkt.setLeft();
+		} else if (RIGHT.isPressed() && !LEFT.isPressed()) {
+			pkt.setRight();
+		}
+
+		if ()
+
+			NetworkHandler.sendToServer(pkt);
+
+		add cancel out code - if both forward and reverse it doesn 't go either way'
+
 
 		NBTTagCompound tag = null;
 		if (vehicle.ticksExisted % 20 == 0) {
