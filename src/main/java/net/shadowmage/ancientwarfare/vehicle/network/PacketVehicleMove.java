@@ -15,6 +15,9 @@ public class PacketVehicleMove extends PacketVehicleBase {
 	private float yaw;
 	private float pitch;
 
+	public PacketVehicleMove() {
+	}
+
 	public PacketVehicleMove(VehicleBase vehicle, double posX, double posY, double posZ, boolean air, float motion, float yaw, float pitch) {
 		super(vehicle);
 		this.posX = posX;

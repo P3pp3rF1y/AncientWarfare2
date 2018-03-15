@@ -41,7 +41,10 @@ public abstract class PacketBase {
 
 	protected abstract void readFromStream(ByteBuf data) throws IOException;
 
-	protected abstract void execute();
+	protected void execute() {
+	}
+
+	;
 
 	protected void execute(EntityPlayer player) {
 		execute();

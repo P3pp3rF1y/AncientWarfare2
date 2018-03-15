@@ -118,20 +118,11 @@ public class VehicleMoveHelper implements INBTSerializable<NBTTagCompound> {
 		}
 	}
 
-	public void handleInputData(NBTTagCompound tag) {
-		//TODO add logic for handling key inputs
-		if (tag.hasKey("f")) {
-			this.forwardInput = tag.getByte("f");
-		}
-		if (tag.hasKey("s")) {
-			this.turnInput = tag.getByte("s");
-		}
-		if (tag.hasKey("p")) {
-			this.powerInput = tag.getByte("p");
-		}
-		if (tag.hasKey("r")) {
-			this.rotationInput = tag.getByte("r");
-		}
+	public void handleInputData(byte forwardInput, byte turnInput, byte powerInput, byte rotationInput) {
+		this.forwardInput = forwardInput;
+		this.turnInput = turnInput;
+		this.powerInput = powerInput;
+		this.rotationInput = rotationInput;
 	}
 
 	public void onUpdate() {

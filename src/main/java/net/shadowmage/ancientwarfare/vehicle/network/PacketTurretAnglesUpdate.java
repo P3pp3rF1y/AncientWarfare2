@@ -9,6 +9,9 @@ public class PacketTurretAnglesUpdate extends PacketVehicleBase {
 	private float pitch;
 	private float rotation;
 
+	public PacketTurretAnglesUpdate() {
+	}
+
 	public PacketTurretAnglesUpdate(VehicleBase vehicle, float pitch, float rotation) {
 		super(vehicle);
 		this.pitch = pitch;

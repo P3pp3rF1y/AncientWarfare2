@@ -22,8 +22,10 @@ import net.shadowmage.ancientwarfare.vehicle.gui.GuiIds;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicleInput;
 import org.lwjgl.input.Keyboard;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class VehicleInputHandler {
 	public static final String CATEGORY = "keybind.category.awVehicles";
@@ -49,7 +51,9 @@ public class VehicleInputHandler {
 	public static final KeyBinding AMMO_SELECT = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_AMMO_SELECT, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_V,
 			CATEGORY);
 
-	private static Map<KeyBinding, InputCallbackDispatcher> keybindingCallbacks = Maps.newHashMap();
+	private static final Map<KeyBinding, InputCallbackDispatcher> keybindingCallbacks = Maps.newHashMap();
+	private static final Set<Integer> releaseableKeys = new HashSet<>();
+	private static boolean trackedKeyReleased = false;
 
 	private static final VehicleInputHandler INSTANCE = new VehicleInputHandler();
 
@@ -65,8 +69,26 @@ public class VehicleInputHandler {
 		ClientRegistry.registerKeyBinding(ASCEND_AIM_UP);
 		ClientRegistry.registerKeyBinding(DESCEND_AIM_DOWN);
 		ClientRegistry.registerKeyBinding(FIRE);
+		ClientRegistry.registerKeyBinding(AMMO_PREV);
+		ClientRegistry.registerKeyBinding(AMMO_NEXT);
+		ClientRegistry.registerKeyBinding(TURRET_LEFT);
+		ClientRegistry.registerKeyBinding(TURRET_RIGHT);
+		ClientRegistry.registerKeyBinding(MOUSE_AIM);
+		ClientRegistry.registerKeyBinding(AMMO_SELECT);
 
 		initCallbacks();
+		initReleaseableKeys();
+	}
+
+	private static void initReleaseableKeys() {
+		releaseableKeys.add(FORWARD.getKeyCode());
+		releaseableKeys.add(REVERSE.getKeyCode());
+		releaseableKeys.add(LEFT.getKeyCode());
+		releaseableKeys.add(RIGHT.getKeyCode());
+		releaseableKeys.add(ASCEND_AIM_UP.getKeyCode());
+		releaseableKeys.add(DESCEND_AIM_DOWN.getKeyCode());
+		releaseableKeys.add(TURRET_LEFT.getKeyCode());
+		releaseableKeys.add(TURRET_RIGHT.getKeyCode());
 	}
 
 	//TODO move this logic to core
@@ -82,12 +104,21 @@ public class VehicleInputHandler {
 	public void onKeyInput(InputEvent.KeyInputEvent evt) {
 		boolean state = Keyboard.getEventKeyState();
 
-		for (Map.Entry<KeyBinding, InputCallbackDispatcher> keybindingCallback : keybindingCallbacks.entrySet()) {
-			if (keybindingCallback.getKey().isKeyDown()) { //TODO see if there needs to be something to handle only initial key press that is .isPressed()
-				if (state) {
+		if (state) {
+			for (Map.Entry<KeyBinding, InputCallbackDispatcher> keybindingCallback : keybindingCallbacks.entrySet()) {
+				if (keybindingCallback.getKey().isKeyDown()) {
 					keybindingCallback.getValue().onKeyPressed();
 				}
 			}
+		} else {
+			trackReleasedKeys(evt);
+		}
+	}
+
+	private void trackReleasedKeys(InputEvent.KeyInputEvent evt) {
+		int key = Keyboard.getEventKey();
+		if (releaseableKeys.contains(key)) {
+			trackedKeyReleased = true;
 		}
 	}
 
@@ -199,94 +230,36 @@ public class VehicleInputHandler {
 		}
 	}
 
-	protected void handleTickInput(VehicleBase vehicle) {
+	protected static void handleTickInput(VehicleBase vehicle) {
+		if (trackedKeyReleased || vehicle.ticksExisted % 20 == 0) {
+			trackedKeyReleased = false;
 
-		PacketVehicleInput pkt = new PacketVehicleInput(vehicle);
+			PacketVehicleInput pkt = new PacketVehicleInput(vehicle);
+			if (FORWARD.isPressed() && !REVERSE.isPressed()) {
+				pkt.setForwardInput((byte) 1);
+			} else if (REVERSE.isPressed() && !FORWARD.isPressed()) {
+				pkt.setForwardInput((byte) -1);
+			}
 
-		if (FORWARD.isPressed() && !REVERSE.isPressed()) {
-			pkt.setForward();
-		} else if (REVERSE.isPressed() && !FORWARD.isPressed()) {
-			pkt.setReverse();
-		}
+			if (LEFT.isPressed() && !RIGHT.isPressed()) {
+				pkt.setTurnInput((byte) -1);
+			} else if (RIGHT.isPressed() && !LEFT.isPressed()) {
+				pkt.setTurnInput((byte) 1);
+			}
 
-		if (LEFT.isPressed() && !RIGHT.isPressed()) {
-			pkt.setLeft();
-		} else if (RIGHT.isPressed() && !LEFT.isPressed()) {
-			pkt.setRight();
-		}
+			if (ASCEND_AIM_UP.isPressed() && !DESCEND_AIM_DOWN.isPressed()) {
+				pkt.setPowerInput((byte) 1);
+			} else if (DESCEND_AIM_DOWN.isPressed() && !ASCEND_AIM_UP.isPressed()) {
+				pkt.setPowerInput((byte) -1);
+			}
 
-		if ()
+			if (TURRET_LEFT.isPressed() && !TURRET_RIGHT.isPressed()) {
+				pkt.setRotationInput((byte) -1);
+			} else if (TURRET_RIGHT.isPressed() && !TURRET_LEFT.isPressed()) {
+				pkt.setRotationInput((byte) 1);
+			}
 
 			NetworkHandler.sendToServer(pkt);
-
-		add cancel out code - if both forward and reverse it doesn 't go either way'
-
-
-		NBTTagCompound tag = null;
-		if (vehicle.ticksExisted % 20 == 0) {
-			tag = new NBTTagCompound();
-			tag.setByte("f", (byte) (forward.isPressed ? 1 : reverse.isPressed ? -1 : 0));
-			tag.setByte("s", (byte) (left.isPressed ? -1 : right.isPressed ? 1 : 0));
-			tag.setByte("p", (byte) (pitchUp.isPressed ? 1 : pitchDown.isPressed ? -1 : 0));
-			tag.setByte("r", (byte) (turretLeft.isPressed ? -1 : turretRight.isPressed ? 1 : 0));
-		} else {
-			if (changedKeys.isEmpty()) {
-				return;
-			}
-			tag = new NBTTagCompound();
-			for (Keybind k : this.changedKeys) {
-				if (k == forward) {
-					tag.setByte("f", (byte) (forward.isPressed ? 1 : 0));
-				} else if (k == reverse) {
-					tag.setByte("f", (byte) (reverse.isPressed ? -1 : 0));
-				} else if (k == left) {
-					tag.setByte("s", (byte) (left.isPressed ? -1 : 0));
-				} else if (k == right) {
-					tag.setByte("s", (byte) (right.isPressed ? 1 : 0));
-				} else if (k == pitchUp) {
-					tag.setByte("p", (byte) (pitchUp.isPressed ? 1 : 0));
-				} else if (k == pitchDown) {
-					tag.setByte("p", (byte) (pitchDown.isPressed ? -1 : 0));
-				} else if (k == turretLeft) {
-					tag.setByte("r", (byte) (turretLeft.isPressed ? -1 : 0));
-				} else if (k == turretRight) {
-					tag.setByte("r", (byte) (turretRight.isPressed ? 1 : 0));
-				}
-			}
-		}
-		if (tag != null) {
-			//    Config.logDebug("sending input packet to server");
-			Packet02Vehicle pkt = new Packet02Vehicle();
-			pkt.setParams(vehicle);
-			pkt.setInputData(tag);
-			pkt.sendPacketToServer();
 		}
 	}
-
-	//	public void onTickEnd()
-	//	{
-	//		if(mc.thePlayer!=null && mc.thePlayer.ridingEntity instanceof VehicleBase && mc.currentScreen==null)
-	//		{
-	//			VehicleBase vehicle = (VehicleBase)mc.thePlayer.ridingEntity;
-	//			if(vehicle!=null)
-	//			{
-	//				this.handleTickInput(vehicle);
-	//				if(Settings.getMouseAim())
-	//				{
-	//					this.handleMouseAimUpdate();
-	//				}
-	//			}
-	//		}
-	//		this.changedKeys.clear();
-	//	}
-	//
-	//
-	//
-	//
-	//
-	//
-
-	//
-	//
-
 }

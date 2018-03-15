@@ -9,6 +9,9 @@ import java.io.IOException;
 public class PacketAmmoSelect extends PacketVehicleBase {
 	private String ammoRegistryName;
 
+	public PacketAmmoSelect() {
+	}
+
 	public PacketAmmoSelect(VehicleBase vehicle, String ammoRegistryName) {
 		super(vehicle);
 		this.ammoRegistryName = ammoRegistryName;

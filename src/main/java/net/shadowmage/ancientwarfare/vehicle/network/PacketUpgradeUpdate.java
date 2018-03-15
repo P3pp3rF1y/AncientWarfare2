@@ -10,6 +10,9 @@ public class PacketUpgradeUpdate extends PacketVehicleBase {
 	private int[] upgradeIds;
 	private String[] armorRegistryNames;
 
+	public PacketUpgradeUpdate() {
+	}
+
 	public PacketUpgradeUpdate(VehicleBase vehicle) {
 		super(vehicle);
 		upgradeIds = vehicle.upgradeHelper.serializeUpgrades();

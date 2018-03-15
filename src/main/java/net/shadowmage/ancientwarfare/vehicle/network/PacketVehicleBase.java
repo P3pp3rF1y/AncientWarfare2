@@ -37,6 +37,9 @@ public abstract class PacketVehicleBase extends PacketBase {
 	private int entityID;
 	protected VehicleBase vehicle = null;
 
+	public PacketVehicleBase() {
+	}
+
 	public PacketVehicleBase(VehicleBase vehicle) {
 		this.entityID = vehicle.getEntityId();
 	}

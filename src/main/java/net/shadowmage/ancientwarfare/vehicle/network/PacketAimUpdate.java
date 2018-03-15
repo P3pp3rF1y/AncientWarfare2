@@ -14,6 +14,9 @@ public class PacketAimUpdate extends PacketVehicleBase {
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 	private Optional<Float> power;
 
+	public PacketAimUpdate() {
+	}
+
 	@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 	public PacketAimUpdate(VehicleBase vehicle, Optional<Float> pitch, Optional<Float> yaw, Optional<Float> power) {
 		super(vehicle);
