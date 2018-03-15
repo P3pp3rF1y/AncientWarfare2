@@ -92,7 +92,7 @@ public class VehicleInputHandler {
 	}
 
 	//TODO move this logic to core
-	public static void registerCallBack(KeyBinding keyBinding, InputHandler.IInputCallback callback) {
+	private static void registerCallBack(KeyBinding keyBinding, InputHandler.IInputCallback callback) {
 		if (keybindingCallbacks.containsKey(keyBinding)) {
 			keybindingCallbacks.get(keyBinding).addInputCallback(callback);
 		} else {
@@ -115,7 +115,7 @@ public class VehicleInputHandler {
 		}
 	}
 
-	private void trackReleasedKeys(InputEvent.KeyInputEvent evt) {
+	private static void trackReleasedKeys(InputEvent.KeyInputEvent evt) {
 		int key = Keyboard.getEventKey();
 		if (releaseableKeys.contains(key)) {
 			trackedKeyReleased = true;
@@ -140,7 +140,7 @@ public class VehicleInputHandler {
 
 	}
 
-	public static void handleFireAction(VehicleBase vehicle) {
+	private static void handleFireAction(VehicleBase vehicle) {
 		Minecraft mc = Minecraft.getMinecraft();
 		if (vehicle.isAimable()) {
 			RayTraceResult pos = getPlayerLookTargetClient(mc.player, 140, vehicle);
@@ -152,7 +152,7 @@ public class VehicleInputHandler {
 		}
 	}
 
-	public static RayTraceResult getPlayerLookTargetClient(EntityPlayer player, float range, Entity excludedEntity) {
+	private static RayTraceResult getPlayerLookTargetClient(EntityPlayer player, float range, Entity excludedEntity) {
 		Vec3d playerPos = player.getPositionVector();
 		Vec3d lookVector = player.getLook(0);
 		Vec3d endVector = playerPos.addVector(lookVector.x * range, lookVector.y * range, lookVector.z * range);
@@ -215,10 +215,10 @@ public class VehicleInputHandler {
 		}
 	}
 
-	int inputUpdateTicks = 0;
+	private int inputUpdateTicks = 0;
 
-	public void handleMouseAimUpdate(VehicleBase vehicle) {
-		inputUpdateTicks--;
+	private void handleMouseAimUpdate(VehicleBase vehicle) {
+		inputUpdateTicks--; //TODO can this be replaced with vehicle.ticksExisted % 5?
 		if (inputUpdateTicks > 0) {
 			return;
 		}
@@ -230,7 +230,7 @@ public class VehicleInputHandler {
 		}
 	}
 
-	protected static void handleTickInput(VehicleBase vehicle) {
+	private static void handleTickInput(VehicleBase vehicle) {
 		if (trackedKeyReleased || vehicle.ticksExisted % 20 == 0) {
 			trackedKeyReleased = false;
 
