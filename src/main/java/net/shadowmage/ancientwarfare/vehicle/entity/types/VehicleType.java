@@ -618,10 +618,4 @@ public abstract class VehicleType implements IVehicleType {
 	public void setEnabledForLoot(boolean val) {
 		this.enabledForLoot = val;
 	}
-
-	@Override
-	public void setEnabledForCrafting(boolean val) {
-		this.enabledForCrafting = val;
-	}
-
 }

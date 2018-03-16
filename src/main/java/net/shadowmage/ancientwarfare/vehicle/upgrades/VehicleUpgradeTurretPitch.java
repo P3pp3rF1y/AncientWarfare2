@@ -29,10 +29,7 @@ public class VehicleUpgradeTurretPitch extends VehicleUpgradeBase {
 	 * @param num
 	 */
 	public VehicleUpgradeTurretPitch(int num) {
-		super(num);
-		this.displayName = "item.vehicleUpgrade.pitchExtension";
-		this.tooltip = "item.vehicleUpgrade.pitchExtension.tooltip1";
-		this.iconTexture = "upgradePitch1";
+		super("vehicle_upgrade_turret_pitch");
 /* TODO recipe
 		this.neededResearch.add(ResearchGoalNumbers.mechanics2);
 		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Block.planks, 2), true, false));

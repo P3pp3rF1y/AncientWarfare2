@@ -31,7 +31,7 @@ import net.shadowmage.ancientwarfare.vehicle.entity.materials.VehicleMaterial;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.registry.AmmoRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
-import net.shadowmage.ancientwarfare.vehicle.registry.VehicleUpgradeRegistry;
+import net.shadowmage.ancientwarfare.vehicle.registry.UpgradeRegistry;
 
 public class VehicleTypeBoatCatapult extends VehicleType {
 
@@ -88,13 +88,13 @@ public class VehicleTypeBoatCatapult extends VehicleType {
 		this.validArmors.add(ArmorRegistry.armorObsidian);
 		this.validArmors.add(ArmorRegistry.armorIron);
 
-		this.validUpgrades.add(VehicleUpgradeRegistry.aimUpgrade);
-		this.validUpgrades.add(VehicleUpgradeRegistry.pitchDownUpgrade);
-		this.validUpgrades.add(VehicleUpgradeRegistry.pitchUpUpgrade);
-		this.validUpgrades.add(VehicleUpgradeRegistry.powerUpgrade);
-		this.validUpgrades.add(VehicleUpgradeRegistry.speedUpgrade);
-		this.validUpgrades.add(VehicleUpgradeRegistry.aimUpgrade);
-		this.validUpgrades.add(VehicleUpgradeRegistry.reloadUpgrade);
+		this.validUpgrades.add(UpgradeRegistry.aimUpgrade);
+		this.validUpgrades.add(UpgradeRegistry.pitchDownUpgrade);
+		this.validUpgrades.add(UpgradeRegistry.pitchUpUpgrade);
+		this.validUpgrades.add(UpgradeRegistry.powerUpgrade);
+		this.validUpgrades.add(UpgradeRegistry.speedUpgrade);
+		this.validUpgrades.add(UpgradeRegistry.aimUpgrade);
+		this.validUpgrades.add(UpgradeRegistry.reloadUpgrade);
 
 		this.storageBaySize = 0;
 		this.armorBaySize = 3;

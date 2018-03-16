@@ -3,7 +3,7 @@ package net.shadowmage.ancientwarfare.vehicle.inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
-import net.shadowmage.ancientwarfare.vehicle.registry.VehicleUpgradeRegistry;
+import net.shadowmage.ancientwarfare.vehicle.registry.UpgradeRegistry;
 import net.shadowmage.ancientwarfare.vehicle.upgrades.IVehicleUpgradeType;
 
 public class UpgradeStackHandler extends ItemStackHandler {
@@ -15,7 +15,7 @@ public class UpgradeStackHandler extends ItemStackHandler {
 	}
 
 	public boolean isItemValid(ItemStack par1ItemStack) {
-		IVehicleUpgradeType upgrade = VehicleUpgradeRegistry.instance().getUpgrade(par1ItemStack);
+		IVehicleUpgradeType upgrade = UpgradeRegistry.instance().getUpgrade(par1ItemStack);
 		if (upgrade != null) {
 			return vehicle.vehicleType.isUpgradeValid(upgrade);
 		}

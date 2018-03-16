@@ -84,15 +84,19 @@ public class ItemSpawner extends ItemBaseVehicle {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		super.addInformation(stack, worldIn, tooltip, flagIn);
+	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flagIn) {
+		super.addInformation(stack, world, tooltip, flagIn);
 		if (stack != null) {
 			if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnData")) {
 				NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnData");
-				tooltip.add("Material Level: " + tag.getInteger("level"));
+				int level = tag.getInteger("level");
+				tooltip.add("Material Level: " + level);
 				if (tag.hasKey("health")) {
 					tooltip.add("Vehicle Health: " + tag.getFloat("health"));
 				}
+
+				VehicleBase vehicle = VehicleType.getVehicleForType(world, stack.getItemDamage(), level);
+				tooltip.addAll(vehicle.vehicleType.getDisplayTooltip());
 			}
 		}
 	}

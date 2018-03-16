@@ -21,7 +21,7 @@
 //
 //    protected void addUpgradeRecipes() {
 //        ResourceListRecipe recipe;
-//        for (IVehicleUpgradeType upgrade : VehicleUpgradeRegistry.instance().getUpgradeList()) {
+//        for (IVehicleUpgradeType upgrade : UpgradeRegistry.instance().getUpgradeList()) {
 //            if (upgrade == null) {
 //                continue;
 //            }

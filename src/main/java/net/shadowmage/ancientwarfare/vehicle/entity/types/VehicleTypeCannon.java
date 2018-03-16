@@ -32,7 +32,7 @@ import net.shadowmage.ancientwarfare.vehicle.entity.materials.VehicleMaterial;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.registry.AmmoRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
-import net.shadowmage.ancientwarfare.vehicle.registry.VehicleUpgradeRegistry;
+import net.shadowmage.ancientwarfare.vehicle.registry.UpgradeRegistry;
 
 public class VehicleTypeCannon extends VehicleType {
 
@@ -66,12 +66,12 @@ public class VehicleTypeCannon extends VehicleType {
 		this.ammoBySoldierRank.put(1, AmmoRegistry.ammoIronShot5);
 		this.ammoBySoldierRank.put(2, AmmoRegistry.ammoIronShot5);
 
-		this.validUpgrades.add(VehicleUpgradeRegistry.pitchDownUpgrade);
-		this.validUpgrades.add(VehicleUpgradeRegistry.pitchUpUpgrade);
-		this.validUpgrades.add(VehicleUpgradeRegistry.pitchExtUpgrade);
-		this.validUpgrades.add(VehicleUpgradeRegistry.powerUpgrade);
-		this.validUpgrades.add(VehicleUpgradeRegistry.reloadUpgrade);
-		this.validUpgrades.add(VehicleUpgradeRegistry.aimUpgrade);
+		this.validUpgrades.add(UpgradeRegistry.pitchDownUpgrade);
+		this.validUpgrades.add(UpgradeRegistry.pitchUpUpgrade);
+		this.validUpgrades.add(UpgradeRegistry.pitchExtUpgrade);
+		this.validUpgrades.add(UpgradeRegistry.powerUpgrade);
+		this.validUpgrades.add(UpgradeRegistry.reloadUpgrade);
+		this.validUpgrades.add(UpgradeRegistry.aimUpgrade);
 
 		this.validArmors.add(ArmorRegistry.armorStone);
 		this.validArmors.add(ArmorRegistry.armorIron);

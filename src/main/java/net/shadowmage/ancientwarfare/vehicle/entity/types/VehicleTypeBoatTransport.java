@@ -29,7 +29,7 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleMovementType;
 import net.shadowmage.ancientwarfare.vehicle.entity.materials.VehicleMaterial;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
-import net.shadowmage.ancientwarfare.vehicle.registry.VehicleUpgradeRegistry;
+import net.shadowmage.ancientwarfare.vehicle.registry.UpgradeRegistry;
 
 public class VehicleTypeBoatTransport extends VehicleType {
 
@@ -64,7 +64,7 @@ public class VehicleTypeBoatTransport extends VehicleType {
 		this.displayTooltip.add("item.vehicleSpawner.tooltip.boat");
 		this.displayTooltip.add("item.vehicleSpawner.tooltip.noturret");
 		this.displayTooltip.add("item.vehicleSpawner.tooltip.storage");
-		this.validUpgrades.add(VehicleUpgradeRegistry.speedUpgrade);
+		this.validUpgrades.add(UpgradeRegistry.speedUpgrade);
 /* TODO vehicle recipe
 		this.addNeededResearchForMaterials();
 		this.addNeededResearch(0, ResearchGoal.vehicleMobility1);

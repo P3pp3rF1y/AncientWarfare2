@@ -35,7 +35,7 @@ import net.shadowmage.ancientwarfare.vehicle.missiles.DamageType;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketUpgradeUpdate;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
-import net.shadowmage.ancientwarfare.vehicle.registry.VehicleUpgradeRegistry;
+import net.shadowmage.ancientwarfare.vehicle.registry.UpgradeRegistry;
 import net.shadowmage.ancientwarfare.vehicle.upgrades.IVehicleUpgradeType;
 
 import java.util.ArrayList;
@@ -132,16 +132,20 @@ public class VehicleUpgradeHelper implements INBTSerializable<NBTTagCompound> {
 	}
 
 	private void serializeUpgrades(NBTTagCompound tag) {
-		tag.setIntArray("ints", serializeUpgrades());
+		NBTTagList upgrades = new NBTTagList();
+		for (String upgrade : serializeUpgrades()) {
+			upgrades.appendTag(new NBTTagString(upgrade));
+		}
+		tag.setTag("upgrades", upgrades);
 	}
 
-	public int[] serializeUpgrades() {
+	public String[] serializeUpgrades() {
 		int len = this.upgrades.size();
-		int[] upInts = new int[len];
+		String[] registryNames = new String[len];
 		for (int i = 0; i < this.upgrades.size(); i++) {
-			upInts[i] = this.upgrades.get(i).getUpgradeId();
+			registryNames[i] = this.upgrades.get(i).getRegistryName().toString();
 		}
-		return upInts;
+		return registryNames;
 	}
 
 	private void serializeInstalledArmors(NBTTagCompound tag) {
@@ -164,11 +168,11 @@ public class VehicleUpgradeHelper implements INBTSerializable<NBTTagCompound> {
 	/**
 	 * CLIENT ONLY..receives the packet sent above, and sets upgrade list directly from registry
 	 */
-	public void updateUpgrades(String[] armorRegistryNames, int[] upgradeIds) {
+	public void updateUpgrades(String[] armorRegistryNames, String[] upgradeRegistryNames) {
 		installedArmor.clear();
 		deserializeInstalledArmor(armorRegistryNames);
 
-		deserializeUpgrades(upgradeIds);
+		deserializeUpgrades(upgradeRegistryNames);
 
 		updateUpgradeStats();
 	}
@@ -200,13 +204,17 @@ public class VehicleUpgradeHelper implements INBTSerializable<NBTTagCompound> {
 	}
 
 	private void deserializeUpgrades(NBTTagCompound tag) {
-		deserializeUpgrades(tag.getIntArray("ints"));
+		NBTTagList upgradeTypes = tag.getTagList("upgrades", Constants.NBT.TAG_STRING);
+		String[] upgradeRegistryNames = new String[upgradeTypes.tagCount()];
+		for (int i = 0; i < upgradeRegistryNames.length; i++) {
+			upgradeRegistryNames[i] = ((NBTTagString) upgradeTypes.get(i)).getString();
+		}
+		deserializeUpgrades(upgradeRegistryNames);
 	}
 
-	private void deserializeUpgrades(int[] upgradeIds) {
-		for (int i = 0; i < upgradeIds.length; i++) {
-			int up = upgradeIds[i];
-			IVehicleUpgradeType upgrade = VehicleUpgradeRegistry.instance().getUpgrade(up);
+	private void deserializeUpgrades(String[] upgradeRegistryNames) {
+		for (int i = 0; i < upgradeRegistryNames.length; i++) {
+			IVehicleUpgradeType upgrade = UpgradeRegistry.getUpgrade(new ResourceLocation(upgradeRegistryNames[i]));
 			if (upgrade != null) {
 				this.upgrades.add(upgrade);
 			}

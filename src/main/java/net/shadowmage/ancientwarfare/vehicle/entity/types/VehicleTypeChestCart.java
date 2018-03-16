@@ -28,7 +28,7 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.materials.VehicleMaterial;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
-import net.shadowmage.ancientwarfare.vehicle.registry.VehicleUpgradeRegistry;
+import net.shadowmage.ancientwarfare.vehicle.registry.UpgradeRegistry;
 
 public class VehicleTypeChestCart extends VehicleType {
 
@@ -44,7 +44,7 @@ public class VehicleTypeChestCart extends VehicleType {
 		this.validArmors.add(ArmorRegistry.armorStone);
 		this.validArmors.add(ArmorRegistry.armorObsidian);
 		this.validArmors.add(ArmorRegistry.armorIron);
-		this.validUpgrades.add(VehicleUpgradeRegistry.speedUpgrade);
+		this.validUpgrades.add(UpgradeRegistry.speedUpgrade);
 		this.width = 2.7f;
 		this.height = 1.8f;
 		this.mountable = true;
@@ -109,6 +109,7 @@ public class VehicleTypeChestCart extends VehicleType {
 			super(vehicle);
 		}
 
+		//TODO implement chest cart GUI
 		//@Override
 		//public boolean interact(EntityPlayer player)
 		//  {
@@ -120,7 +121,7 @@ public class VehicleTypeChestCart extends VehicleType {
 		//    }
 		//  else if(!player.world.isRemote && control)
 		//    {
-		//    GUIHandler.instance().openGUI(GUIHandler.VEHICLE_DEBUG, player, vehicle.world, vehicle.entityId, 0, 0);
+		//    GUIHandler.instance().openGUI(GuiIds.VEHICLE_INVENTORY, player, vehicle.world, vehicle.entityId, 0, 0);
 		//    }
 		//  return true;
 		//  }

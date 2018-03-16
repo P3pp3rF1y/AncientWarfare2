@@ -23,7 +23,7 @@ package net.shadowmage.ancientwarfare.vehicle.entity.types;
 
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
-import net.shadowmage.ancientwarfare.vehicle.registry.VehicleUpgradeRegistry;
+import net.shadowmage.ancientwarfare.vehicle.registry.UpgradeRegistry;
 
 public class VehicleTypeBallistaMobileTurret extends VehicleTypeBallista {
 
@@ -55,7 +55,7 @@ public class VehicleTypeBallistaMobileTurret extends VehicleTypeBallista {
 		this.displayTooltip.add("item.vehicleSpawner.tooltip.mobile");
 		this.displayTooltip.add("item.vehicleSpawner.tooltip.fullturret");
 
-		this.validUpgrades.add(VehicleUpgradeRegistry.speedUpgrade);
+		this.validUpgrades.add(UpgradeRegistry.speedUpgrade);
 /* TODO vehicle recipe
 		this.addNeededResearch(0, ResearchGoal.vehicleMobility1);
 		this.addNeededResearch(1, ResearchGoal.vehicleMobility2);

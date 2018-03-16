@@ -29,10 +29,7 @@ public class VehicleUpgradeSpeed extends VehicleUpgradeBase {
 	 * @param num
 	 */
 	public VehicleUpgradeSpeed(int num) {
-		super(num);
-		this.displayName = "item.vehicleUpgrade.speed";
-		this.tooltip = "item.vehicleUpgrade.speed.tooltip1";
-		this.iconTexture = "upgradeSpeed1";
+		super("vehicle_upgrade_speed");
 /* TODO recipe
 		this.neededResearch.add(ResearchGoalNumbers.mobility3);
 		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Block.planks, 3), true, false));

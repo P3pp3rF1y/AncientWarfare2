@@ -21,7 +21,7 @@
 
 package net.shadowmage.ancientwarfare.vehicle.entity.types;
 
-import net.shadowmage.ancientwarfare.vehicle.registry.VehicleUpgradeRegistry;
+import net.shadowmage.ancientwarfare.vehicle.registry.UpgradeRegistry;
 
 public class VehicleTypeTrebuchetMobileFixed extends VehicleTypeTrebuchet {
 
@@ -43,7 +43,7 @@ public class VehicleTypeTrebuchetMobileFixed extends VehicleTypeTrebuchet {
 		this.riderForwardsOffset = 1.275f;
 		this.riderVerticalOffset = 0.8f;
 		this.turretVerticalOffset = (34.f + 67.5f + 24.0f + 12.f) * 0.0625f;
-		this.validUpgrades.add(VehicleUpgradeRegistry.speedUpgrade);
+		this.validUpgrades.add(UpgradeRegistry.speedUpgrade);
 /* TODO vehicle recipes
 		this.addNeededResearch(0, ResearchGoal.vehicleMobility1);
 		this.addNeededResearch(1, ResearchGoal.vehicleMobility2);

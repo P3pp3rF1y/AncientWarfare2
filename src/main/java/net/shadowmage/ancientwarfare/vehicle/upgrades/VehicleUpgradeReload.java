@@ -29,10 +29,7 @@ public class VehicleUpgradeReload extends VehicleUpgradeBase {
 	 * @param num
 	 */
 	public VehicleUpgradeReload(int num) {
-		super(num);
-		this.displayName = "item.vehicleUpgrade.reload";
-		this.tooltip = "item.vehicleUpgrade.reload.tooltip1";
-		this.iconTexture = "upgradeReload1";
+		super("vehicle_upgrade_reload");
 /* TODO recipe
 		this.neededResearch.add(ResearchGoalNumbers.mechanics2);
 		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Block.planks, 2), true, false));

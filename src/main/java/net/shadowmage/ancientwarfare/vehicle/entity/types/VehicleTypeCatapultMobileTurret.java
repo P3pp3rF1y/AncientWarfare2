@@ -23,7 +23,7 @@ package net.shadowmage.ancientwarfare.vehicle.entity.types;
 
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
-import net.shadowmage.ancientwarfare.vehicle.registry.VehicleUpgradeRegistry;
+import net.shadowmage.ancientwarfare.vehicle.registry.UpgradeRegistry;
 
 public class VehicleTypeCatapultMobileTurret extends VehicleTypeCatapult {
 
@@ -53,7 +53,7 @@ public class VehicleTypeCatapultMobileTurret extends VehicleTypeCatapult {
 		this.riderSits = true;
 		this.riderMovesWithTurret = true;
 		this.turretRotationMax = 180.f;
-		this.validUpgrades.add(VehicleUpgradeRegistry.speedUpgrade);
+		this.validUpgrades.add(UpgradeRegistry.speedUpgrade);
 /* TODO vehicle recipe
 		this.addNeededResearch(0, ResearchGoal.vehicleMobility1);
 		this.addNeededResearch(1, ResearchGoal.vehicleMobility2);

@@ -7,8 +7,7 @@ import static net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 
 @ObjectHolder(AncientWarfareVehicles.modID)
 public class AWVehicleItems {
-	@ObjectHolder("upgrade")
-	public static ItemBase upgrade;
+	//TODO review which ones of these are actually needed, likely only spawner
 	@ObjectHolder("spawner")
 	public static ItemBase spawner;
 	@ObjectHolder("flame_charge")

@@ -13,6 +13,7 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.vehicle.registry.AmmoRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
+import net.shadowmage.ancientwarfare.vehicle.registry.UpgradeRegistry;
 
 @Mod.EventBusSubscriber(modid = AncientWarfareCore.modID)
 public class AWVehicleItemLoader {
@@ -30,7 +31,6 @@ public class AWVehicleItemLoader {
         IForgeRegistry<Item> registry = event.getRegistry();
 
         registry.register(new ItemSpawner());
-        registry.register(new ItemBaseVehicle("upgrade"));
         registry.register(new ItemBaseVehicle("flame_charge"));
         registry.register(new ItemBaseVehicle("explosive_charge"));
         registry.register(new ItemBaseVehicle("rocket_charge"));
@@ -47,5 +47,6 @@ public class AWVehicleItemLoader {
 
         AmmoRegistry.registerAmmo(registry);
         ArmorRegistry.registerArmorTypes(registry);
+        UpgradeRegistry.registerUpgrades(registry);
     }
 }

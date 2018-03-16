@@ -25,14 +25,8 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
 public class VehicleUpgradeAim extends VehicleUpgradeBase {
 
-	/**
-	 * @param num
-	 */
-	public VehicleUpgradeAim(int num) {
-		super(num);
-		this.displayName = "item.vehicleUpgrade.aim";
-		this.tooltip = "item.vehicleUpgrade.aim.tooltip1";
-		this.iconTexture = "upgradeAim1";
+	public VehicleUpgradeAim() {
+		super("vehicle_upgrade_aim");
 /* TODO recipe
 		this.neededResearch.add(ResearchGoalNumbers.ballistics2);
 		this.resources.add(new ItemStackWrapperCrafting(Item.paper, 3));

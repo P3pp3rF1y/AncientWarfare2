@@ -21,22 +21,14 @@
 
 package net.shadowmage.ancientwarfare.vehicle.upgrades;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
 public interface IVehicleUpgradeType {
 
-	int getUpgradeId();
-
-	String getDisplayName();
-
-	String getDisplayTooltip();
-
-	String getIconTexture();
+	ResourceLocation getRegistryName();
 
 	void applyVehicleEffects(VehicleBase vehicle);
-
-	ItemStack getUpgradeStack(int qty);
 
 /* TODO
 	ResourceListRecipe constructRecipe();

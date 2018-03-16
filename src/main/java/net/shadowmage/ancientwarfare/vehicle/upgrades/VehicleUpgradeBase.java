@@ -21,47 +21,24 @@
 
 package net.shadowmage.ancientwarfare.vehicle.upgrades;
 
-import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.vehicle.item.AWVehicleItems;
+import net.minecraft.util.ResourceLocation;
+import net.shadowmage.ancientwarfare.vehicle.AncientWarfareVehicles;
 
 public abstract class VehicleUpgradeBase implements IVehicleUpgradeType {
 
-	int typeNum = 0;
-	String displayName = "";
-	String tooltip = "";
-	String iconTexture = "foo";
+	private ResourceLocation registryName;
 	/*
 		List<ItemStackWrapperCrafting> resources = new ArrayList<ItemStackWrapperCrafting>();
 		HashSet<Integer> neededResearch = new HashSet<Integer>();
 	*/
 
-	public VehicleUpgradeBase(int num) {
-		this.typeNum = num;
+	public VehicleUpgradeBase(String name) {
+		registryName = new ResourceLocation(AncientWarfareVehicles.modID, name);
 	}
 
 	@Override
-	public int getUpgradeId() {
-		return typeNum;
-	}
-
-	@Override
-	public String getDisplayName() {
-		return displayName;
-	}
-
-	@Override
-	public String getDisplayTooltip() {
-		return tooltip;
-	}
-
-	@Override
-	public ItemStack getUpgradeStack(int qty) {
-		return new ItemStack(AWVehicleItems.upgrade, qty, this.typeNum);
-	}
-
-	@Override
-	public String getIconTexture() {
-		return "ancientwarfare:upgrade/" + iconTexture;
+	public ResourceLocation getRegistryName() {
+		return registryName;
 	}
 
 /* TODO recipe

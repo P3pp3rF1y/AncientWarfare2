@@ -29,10 +29,7 @@ public class VehicleUpgradePower extends VehicleUpgradeBase {
 	 * @param num
 	 */
 	public VehicleUpgradePower(int num) {
-		super(num);
-		this.displayName = "item.vehicleUpgrade.power";
-		this.tooltip = "item.vehicleUpgrade.power.tooltip1";
-		this.iconTexture = "upgradePower1";
+		super("vehicle_upgrade_power");
 /* TODO recipe
 		this.neededResearch.add(ResearchGoalNumbers.mechanics3);
 		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Block.planks, 2), true, false));

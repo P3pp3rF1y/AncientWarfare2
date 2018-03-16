@@ -29,10 +29,7 @@ public class VehicleUpgradePitchUp extends VehicleUpgradeBase {
 	 * @param num
 	 */
 	public VehicleUpgradePitchUp(int num) {
-		super(num);
-		this.displayName = "item.vehicleUpgrade.pitchUp";
-		this.tooltip = "item.vehicleUpgrade.pitchUp.tooltip1";
-		this.iconTexture = "upgradePitchUp1";
+		super("vehicle_upgrade_pitch_up");
 /* TODO recipe
 		this.neededResearch.add(ResearchGoalNumbers.mechanics1);
 		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Block.planks, 2), true, false));

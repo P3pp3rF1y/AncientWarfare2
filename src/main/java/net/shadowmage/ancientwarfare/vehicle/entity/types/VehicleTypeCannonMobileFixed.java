@@ -21,7 +21,7 @@
 
 package net.shadowmage.ancientwarfare.vehicle.entity.types;
 
-import net.shadowmage.ancientwarfare.vehicle.registry.VehicleUpgradeRegistry;
+import net.shadowmage.ancientwarfare.vehicle.registry.UpgradeRegistry;
 
 public class VehicleTypeCannonMobileFixed extends VehicleTypeCannon {
 
@@ -44,7 +44,7 @@ public class VehicleTypeCannonMobileFixed extends VehicleTypeCannon {
 		this.riderVerticalOffset = 0.5f;
 		this.riderForwardsOffset = -2.45f;
 		this.baseMissileVelocityMax = 38.f;
-		this.validUpgrades.add(VehicleUpgradeRegistry.speedUpgrade);
+		this.validUpgrades.add(UpgradeRegistry.speedUpgrade);
 /* TODO vehicle recipe
 		this.addNeededResearch(0, ResearchGoal.vehicleMobility1);
 		this.addNeededResearch(1, ResearchGoal.vehicleMobility2);

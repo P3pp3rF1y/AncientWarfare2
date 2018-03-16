@@ -29,8 +29,8 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 import net.shadowmage.ancientwarfare.vehicle.registry.AmmoRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
+import net.shadowmage.ancientwarfare.vehicle.registry.UpgradeRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleAmmoEntry;
-import net.shadowmage.ancientwarfare.vehicle.registry.VehicleUpgradeRegistry;
 import net.shadowmage.ancientwarfare.vehicle.upgrades.IVehicleUpgradeType;
 
 import java.util.ArrayList;
@@ -125,7 +125,7 @@ public class VehicleInventory {
 		ArrayList<IVehicleUpgradeType> upgrades = new ArrayList<IVehicleUpgradeType>();
 		for (int i = 0; i < this.upgradeInventory.getSlots(); i++) {
 			ItemStack stack = this.upgradeInventory.getStackInSlot(i);
-			IVehicleUpgradeType upgrade = VehicleUpgradeRegistry.instance().getUpgrade(stack);
+			IVehicleUpgradeType upgrade = UpgradeRegistry.instance().getUpgrade(stack);
 			if (upgrade != null) {
 				upgrades.add(upgrade);
 			}
@@ -167,7 +167,7 @@ public class VehicleInventory {
 	}
 
 	public boolean isUpgradeValid(ItemStack stack) {
-		IVehicleUpgradeType upgrade = VehicleUpgradeRegistry.instance().getUpgrade(stack);
+		IVehicleUpgradeType upgrade = UpgradeRegistry.instance().getUpgrade(stack);
 		return upgrade != null && vehicle.vehicleType.isUpgradeValid(upgrade);
 	}
 

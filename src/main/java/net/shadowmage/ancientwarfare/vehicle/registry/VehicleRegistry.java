@@ -49,9 +49,6 @@ import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeTrebuchetMo
 import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeTrebuchetStandFixed;
 import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeTrebuchetStandTurret;
 import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
-import shadowmage.ancient_warfare.common.config.Config;
-import shadowmage.ancient_warfare.common.item.ItemLoader;
-import shadowmage.ancient_warfare.common.registry.entry.Description;
 
 import java.util.Iterator;
 
@@ -95,19 +92,24 @@ public class VehicleRegistry {
 	private VehicleRegistry() {
 	}
 
-	private static VehicleRegistry INSTANCE;
-
-	public static VehicleRegistry instance() {
-		if (INSTANCE == null) {
-			INSTANCE = new VehicleRegistry();
-		}
-		return INSTANCE;
-	}
-
-	public void registerVehicles() {
-		Description d = null;
+	public static void registerVehicles() {
 		for (IVehicleType vehicle : VehicleType.vehicleTypes) {
 			if (vehicle != null) {
+				vehicle.setEnabled(vehicle.isEnabled());
+				if (!vehicle.isEnabled()) {
+					VehicleType.vehicleTypes[vehicle.getGlobalVehicleType()] = null;
+					continue;
+				}
+				vehicle.setEnabledForLoot(true);
+				vehicle.setBaseAccuracy(vehicle.getBaseAccuracy());
+				vehicle.setBaseForwardSpeed(vehicle.getBaseForwardSpeed());
+				vehicle.setBaseHealth(vehicle.getBaseHealth());
+				vehicle.setBaseMissileVelocity(vehicle.getBaseMissileVelocityMax());
+				vehicle.setBasePitchMax(vehicle.getBasePitchMax());
+				vehicle.setBasePitchMin(vehicle.getBasePitchMin());
+				vehicle.setBaseStrafeSpeed(vehicle.getBaseStrafeSpeed());
+				vehicle.setBaseTurretRotationAmount(vehicle.getBaseTurretRotationAmount());
+/* TODO config settings based on this legacy code
 				vehicle.setEnabled(
 						Config.getConfig().get("e_vehicle_config", vehicle.getConfigName() + ".enabled", vehicle.isEnabled()).getBoolean(vehicle.isEnabled()));
 				if (!vehicle.isEnabled()) {
@@ -136,6 +138,7 @@ public class VehicleRegistry {
 				vehicle.setBaseTurretRotationAmount(
 						(float) Config.getConfig().get("e_vehicle_config", vehicle.getConfigName() + ".turret_rotation", vehicle.getBaseTurretRotationAmount())
 								.getDouble(vehicle.getBaseTurretRotationAmount()));
+*/
 
 				Iterator<IAmmo> it = vehicle.getValidAmmoTypes().iterator();
 				IAmmo t;
@@ -145,12 +148,6 @@ public class VehicleRegistry {
 						it.remove();
 					}
 				}
-
-				d = ItemLoader.instance().addSubtypeInfoToItem(ItemLoader.vehicleSpawner, vehicle.getGlobalVehicleType(), vehicle.getDisplayName());
-				for (String tip : vehicle.getDisplayTooltip()) {
-					d.addTooltip(tip, vehicle.getGlobalVehicleType());
-				}
-				d.setIconTexture("ancientwarfare:testIcon5", vehicle.getGlobalVehicleType());
 			}
 		}
 	}

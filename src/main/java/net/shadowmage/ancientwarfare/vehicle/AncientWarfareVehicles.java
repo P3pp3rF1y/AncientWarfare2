@@ -10,12 +10,20 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.AWVehicleEntityLoader;
+import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.missiles.MissileBase;
-import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicleBase;
+import net.shadowmage.ancientwarfare.vehicle.network.PacketAimUpdate;
+import net.shadowmage.ancientwarfare.vehicle.network.PacketAmmoSelect;
+import net.shadowmage.ancientwarfare.vehicle.network.PacketAmmoUpdate;
+import net.shadowmage.ancientwarfare.vehicle.network.PacketFireUpdate;
+import net.shadowmage.ancientwarfare.vehicle.network.PacketPackCommand;
+import net.shadowmage.ancientwarfare.vehicle.network.PacketSingleAmmoUpdate;
+import net.shadowmage.ancientwarfare.vehicle.network.PacketTurretAnglesUpdate;
+import net.shadowmage.ancientwarfare.vehicle.network.PacketUpgradeUpdate;
+import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicleInput;
+import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicleMove;
 import net.shadowmage.ancientwarfare.vehicle.proxy.CommonProxy;
-import net.shadowmage.ancientwarfare.vehicle.refactoring.ballistics.TrajectoryPlotter;
-import net.shadowmage.ancientwarfare.vehicle.refactoring.network.PacketInputReply;
-import net.shadowmage.ancientwarfare.vehicle.refactoring.network.PacketInputState;
+import net.shadowmage.ancientwarfare.vehicle.registry.VehicleRegistry;
 import org.apache.logging.log4j.Logger;
 
 /*
@@ -61,13 +69,18 @@ public class AncientWarfareVehicles {
         /*
          * register tick-handlers
          */
-		PacketBase.registerPacketType(NetworkHandler.PACKET_VEHICLE_INPUT_STATE, PacketInputState.class);
-		PacketBase.registerPacketType(NetworkHandler.PACKET_VEHICLE_INPUT_RESPONSE, PacketInputReply.class);
-		PacketBase.registerPacketType(NetworkHandler.PACKET_VEHICLE, PacketVehicleBase.class);
-		for (int i = 0; i < 100; i++) {
-			TrajectoryPlotter.loadTest();
-		}
+		PacketBase.registerPacketType(NetworkHandler.PACKET_AIM_UPDATE, PacketAimUpdate.class);
+		PacketBase.registerPacketType(NetworkHandler.PACKET_AMMO_SELECT, PacketAmmoSelect.class);
+		PacketBase.registerPacketType(NetworkHandler.PACKET_AMMO_UPDATE, PacketAmmoUpdate.class);
+		PacketBase.registerPacketType(NetworkHandler.PACKET_FIRE_UPDATE, PacketFireUpdate.class);
+		PacketBase.registerPacketType(NetworkHandler.PACKET_PACK_COMMAND, PacketPackCommand.class);
+		PacketBase.registerPacketType(NetworkHandler.PACKET_SINGLE_AMMO_UPDATE, PacketSingleAmmoUpdate.class);
+		PacketBase.registerPacketType(NetworkHandler.PACKET_TURRET_ANGLES_UPDATE, PacketTurretAnglesUpdate.class);
+		PacketBase.registerPacketType(NetworkHandler.PACKET_UPGRADE_UPDATE, PacketUpgradeUpdate.class);
+		PacketBase.registerPacketType(NetworkHandler.PACKET_VEHICLE_INPUT, PacketVehicleInput.class);
+		PacketBase.registerPacketType(NetworkHandler.PACKET_VEHICLE_MOVE, PacketVehicleMove.class);
 
+		EntityRegistry.registerModEntity(new ResourceLocation(AncientWarfareVehicles.modID, "vehicle"), VehicleBase.class, "vehicle", 0, this, 100, 5, true);
 		EntityRegistry.registerModEntity(new ResourceLocation(AncientWarfareVehicles.modID, "missile"), MissileBase.class, "missile", 1, this, 165, 5, true);
 	}
 
@@ -75,8 +88,10 @@ public class AncientWarfareVehicles {
 	public void init(FMLInitializationEvent evt) {
 		proxy.init();
 
-        /*
-         * save config for any changes that were made during loading stages
+		VehicleRegistry.registerVehicles();
+
+		/*
+		 * save config for any changes that were made during loading stages
          */
 		statics.save();
 	}

@@ -30,7 +30,7 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleMovementType;
 import net.shadowmage.ancientwarfare.vehicle.entity.materials.VehicleMaterial;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.registry.AmmoRegistry;
-import net.shadowmage.ancientwarfare.vehicle.registry.VehicleUpgradeRegistry;
+import net.shadowmage.ancientwarfare.vehicle.registry.UpgradeRegistry;
 
 public class VehicleTypeHelicopter extends VehicleType {
 
@@ -62,8 +62,8 @@ public class VehicleTypeHelicopter extends VehicleType {
 		this.ammoBySoldierRank.put(1, AmmoRegistry.ammoArrowFlame);
 		this.ammoBySoldierRank.put(2, AmmoRegistry.ammoArrowIronFlame);
 
-		this.validUpgrades.add(VehicleUpgradeRegistry.speedUpgrade);
-		this.validUpgrades.add(VehicleUpgradeRegistry.reloadUpgrade);
+		this.validUpgrades.add(UpgradeRegistry.speedUpgrade);
+		this.validUpgrades.add(UpgradeRegistry.reloadUpgrade);
 
 		this.armorBaySize = 0;
 		this.upgradeBaySize = 6;

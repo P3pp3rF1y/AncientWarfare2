@@ -178,8 +178,6 @@ public interface IVehicleType {
 
 	void setEnabledForLoot(boolean val);
 
-	void setEnabledForCrafting(boolean val);
-
 	String getConfigName();//get the name used to load config settings for this vehicle
 
 }

@@ -30,6 +30,8 @@ import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.IEntityContainerSynch;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.item.AWVehicleItems;
+import net.shadowmage.ancientwarfare.vehicle.item.ItemAmmo;
+import net.shadowmage.ancientwarfare.vehicle.item.ItemArmor;
 
 import javax.annotation.Nonnull;
 
@@ -176,7 +178,7 @@ public class ContainerVehicle extends ContainerBase {
 			int storageSlots = vehicle.inventory.storageInventory.getSlots();
 			if (slotClickedIndex < 36)//player slots...
 			{
-				if (slotStackCopy.getItem() == AWVehicleItems.ammo) {
+				if (slotStackCopy.getItem() instanceof ItemAmmo) {
 					if (!this.mergeItemStack(slotStack, 36, 36 + ammoSlots, false)) {
 						return ItemStack.EMPTY;
 					}
@@ -185,7 +187,7 @@ public class ContainerVehicle extends ContainerBase {
 					{
 						return ItemStack.EMPTY;
 					}
-				} else if (slotStackCopy.getItem() == AWVehicleItems.armor) {
+				} else if (slotStackCopy.getItem() instanceof ItemArmor) {
 					if (!this.mergeItemStack(slotStack, 36 + ammoSlots + upgradeSlots, 36 + ammoSlots + upgradeSlots + armorSlots, false))//merge into armor inventory
 					{
 						return ItemStack.EMPTY;

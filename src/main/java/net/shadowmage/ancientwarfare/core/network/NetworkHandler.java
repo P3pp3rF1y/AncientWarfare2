@@ -37,9 +37,17 @@ public final class NetworkHandler implements IGuiHandler {
     public static final int PACKET_NPC_COMMAND = 12;
     public static final int PACKET_FACTION_UPDATE = 13;
     public static final int PACKET_BLOCK_EVENT = 14;
-    public static final int PACKET_VEHICLE_INPUT_STATE = 15;//full input state packet, from client->server
-    public static final int PACKET_VEHICLE_INPUT_RESPONSE = 16;//response to an input state/change packet, from server->client
-	public static final int PACKET_VEHICLE = 17; //vehical packet
+
+	public static final int PACKET_AIM_UPDATE = 15;
+	public static final int PACKET_AMMO_SELECT = 16;
+	public static final int PACKET_AMMO_UPDATE = 17;
+	public static final int PACKET_FIRE_UPDATE = 18;
+	public static final int PACKET_PACK_COMMAND = 19;
+	public static final int PACKET_SINGLE_AMMO_UPDATE = 20;
+	public static final int PACKET_TURRET_ANGLES_UPDATE = 21;
+	public static final int PACKET_UPGRADE_UPDATE = 22;
+	public static final int PACKET_VEHICLE_INPUT = 23;
+	public static final int PACKET_VEHICLE_MOVE = 24;
 
     public static final int GUI_CRAFTING = 0;
     public static final int GUI_SCANNER = 1;
@@ -91,7 +99,6 @@ public final class NetworkHandler implements IGuiHandler {
     public static final int GUI_NPC_PLAYER_OWNED_TRADE = 47;
     public static final int GUI_SOUND_BLOCK = 48;
     public static final int GUI_NPC_FACTION_BARD = 49;
-	public static final int GUI_VEHICLE_DEBUG = 50;
 
     private FMLEventChannel channel;
 
