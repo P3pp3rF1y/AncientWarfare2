@@ -25,13 +25,13 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelBoatTransport;
-import net.shadowmage.ancientwarfare.vehicle.render.RenderVehicleBase;
+
 
 public class RenderBoatTransport extends RenderVehicleBase {
 
 	ModelBoatTransport model = new ModelBoatTransport();
 
-	protected RenderBoatTransport(RenderManager renderManager) {
+	public RenderBoatTransport(RenderManager renderManager) {
 		super(renderManager);
 	}
 

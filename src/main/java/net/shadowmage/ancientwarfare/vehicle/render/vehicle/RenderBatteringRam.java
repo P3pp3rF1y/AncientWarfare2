@@ -25,13 +25,13 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelBatteringRam;
-import net.shadowmage.ancientwarfare.vehicle.render.RenderVehicleBase;
+
 
 public class RenderBatteringRam extends RenderVehicleBase {
 
 	public ModelBatteringRam model = new ModelBatteringRam();
 
-	protected RenderBatteringRam(RenderManager renderManager) {
+	public RenderBatteringRam(RenderManager renderManager) {
 		super(renderManager);
 	}
 

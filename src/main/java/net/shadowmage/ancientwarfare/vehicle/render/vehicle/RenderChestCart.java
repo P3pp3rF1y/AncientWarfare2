@@ -26,12 +26,12 @@ import net.minecraft.util.math.MathHelper;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelChestCart;
-import net.shadowmage.ancientwarfare.vehicle.render.RenderVehicleBase;
+
 
 public class RenderChestCart extends RenderVehicleBase {
 	ModelChestCart model = new ModelChestCart();
 
-	protected RenderChestCart(RenderManager renderManager) {
+	public RenderChestCart(RenderManager renderManager) {
 		super(renderManager);
 	}
 

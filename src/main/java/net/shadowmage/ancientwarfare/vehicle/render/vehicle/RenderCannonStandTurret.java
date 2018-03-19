@@ -25,13 +25,13 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelCannonStandTurret;
-import net.shadowmage.ancientwarfare.vehicle.render.RenderVehicleBase;
+
 
 public class RenderCannonStandTurret extends RenderVehicleBase {
 
 	ModelCannonStandTurret model = new ModelCannonStandTurret();
 
-	protected RenderCannonStandTurret(RenderManager renderManager) {
+	public RenderCannonStandTurret(RenderManager renderManager) {
 		super(renderManager);
 	}
 

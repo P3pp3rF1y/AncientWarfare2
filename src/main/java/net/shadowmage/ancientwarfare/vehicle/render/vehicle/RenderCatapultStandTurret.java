@@ -25,13 +25,13 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelCatapultStandTurret;
-import net.shadowmage.ancientwarfare.vehicle.render.RenderVehicleBase;
+
 
 public class RenderCatapultStandTurret extends RenderVehicleBase {
 
 	ModelCatapultStandTurret model = new ModelCatapultStandTurret();
 
-	protected RenderCatapultStandTurret(RenderManager renderManager) {
+	public RenderCatapultStandTurret(RenderManager renderManager) {
 		super(renderManager);
 	}
 

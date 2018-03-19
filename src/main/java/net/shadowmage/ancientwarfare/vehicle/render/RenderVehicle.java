@@ -31,16 +31,70 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
+import net.shadowmage.ancientwarfare.vehicle.entity.IVehicleType;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
+import net.shadowmage.ancientwarfare.vehicle.registry.VehicleRegistry;
+import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderAircraft;
+import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderBallistaMobile;
+import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderBallistaStand;
+import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderBatteringRam;
+import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderBoatBallista;
+import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderBoatCatapult;
+import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderBoatTransport;
+import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderCannonMobileFixed;
+import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderCannonStandFixed;
+import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderCannonStandTurret;
+import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderCatapultMobileFixed;
+import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderCatapultMobileTurret;
+import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderCatapultStandFixed;
+import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderCatapultStandTurret;
+import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderChestCart;
+import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderHelicopter;
+import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderHwacha;
+import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderSubmarine;
+import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderTrebuchetLarge;
+import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderTrebuchetMobileFixed;
+import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderTrebuchetStandFixed;
+import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderTrebuchetStandTurret;
+import net.shadowmage.ancientwarfare.vehicle.render.vehicle.RenderVehicleBase;
 import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nullable;
 import java.text.DecimalFormat;
+import java.util.HashMap;
 
-public abstract class RenderVehicleBase extends Render<VehicleBase> {
+public class RenderVehicle extends Render<VehicleBase> {
 
-	protected RenderVehicleBase(RenderManager renderManager) {
+	private HashMap<IVehicleType, RenderVehicleBase> vehicleRenders = new HashMap<>();
+
+	protected RenderVehicle(RenderManager renderManager) {
 		super(renderManager);
+
+		vehicleRenders.put(VehicleRegistry.CATAPULT_STAND_FIXED, new RenderCatapultStandFixed(renderManager));
+		vehicleRenders.put(VehicleRegistry.CATAPULT_STAND_TURRET, new RenderCatapultStandTurret(renderManager));
+		vehicleRenders.put(VehicleRegistry.CATAPULT_MOBILE_FIXED, new RenderCatapultMobileFixed(renderManager));
+		vehicleRenders.put(VehicleRegistry.CATAPULT_MOBILE_TURRET, new RenderCatapultMobileTurret(renderManager));
+		vehicleRenders.put(VehicleRegistry.BALLISTA_STAND_FIXED, new RenderBallistaStand(renderManager));
+		vehicleRenders.put(VehicleRegistry.BALLISTA_STAND_TURRET, new RenderBallistaStand(renderManager));
+		vehicleRenders.put(VehicleRegistry.BALLISTA_MOBILE_FIXED, new RenderBallistaMobile(renderManager));
+		vehicleRenders.put(VehicleRegistry.BALLISTA_MOBILE_TURRET, new RenderBallistaMobile(renderManager));
+		vehicleRenders.put(VehicleRegistry.BATTERING_RAM, new RenderBatteringRam(renderManager));
+		vehicleRenders.put(VehicleRegistry.CANNON_STAND_FIXED, new RenderCannonStandFixed(renderManager));
+		vehicleRenders.put(VehicleRegistry.CANNON_STAND_TURRET, new RenderCannonStandTurret(renderManager));
+		vehicleRenders.put(VehicleRegistry.CANNON_MOBILE_FIXED, new RenderCannonMobileFixed(renderManager));
+		vehicleRenders.put(VehicleRegistry.HWACHA, new RenderHwacha(renderManager));
+		vehicleRenders.put(VehicleRegistry.TREBUCHET_STAND_FIXED, new RenderTrebuchetStandFixed(renderManager));
+		vehicleRenders.put(VehicleRegistry.TREBUCHET_STAND_TURRET, new RenderTrebuchetStandTurret(renderManager));
+		vehicleRenders.put(VehicleRegistry.TREBUCHET_MOBILE_FIXED, new RenderTrebuchetMobileFixed(renderManager));
+		vehicleRenders.put(VehicleRegistry.TREBUCHET_LARGE, new RenderTrebuchetLarge(renderManager));
+		vehicleRenders.put(VehicleRegistry.CHEST_CART, new RenderChestCart(renderManager));
+		vehicleRenders.put(VehicleRegistry.BOAT_BALLISTA, new RenderBoatBallista(renderManager));
+		vehicleRenders.put(VehicleRegistry.BOAT_CATAPULT, new RenderBoatCatapult(renderManager));
+		vehicleRenders.put(VehicleRegistry.BOAT_TRANSPORT, new RenderBoatTransport(renderManager));
+		vehicleRenders.put(VehicleRegistry.AIR_BOMBER, new RenderAircraft(renderManager));
+		vehicleRenders.put(VehicleRegistry.AIR_FIGHTER, new RenderAircraft(renderManager));
+		vehicleRenders.put(VehicleRegistry.AIR_HELICOPTER, new RenderHelicopter(renderManager));
+		vehicleRenders.put(VehicleRegistry.SUBMARINE_TEST, new RenderSubmarine(renderManager));
 	}
 
 	@Override
@@ -62,9 +116,10 @@ public abstract class RenderVehicleBase extends Render<VehicleBase> {
 			GlStateManager.color(1.f, 1.f - percent, 1.f - percent, 1.f);
 		}
 		bindTexture(vehicle.getTexture());
-		renderVehicle(vehicle, x, y, z, renderYaw, partialTicks);
+		RenderVehicleBase render = vehicleRenders.get(vehicle.vehicleType);
+		render.renderVehicle(vehicle, x, y, z, renderYaw, partialTicks);
 		//TODO add code to change to team color - similar to RenderNpcBase code for it
-		renderVehicleFlag();
+		render.renderVehicleFlag();
 		GlStateManager.color(1.f, 1.f, 1.f, 1.f);
 		GlStateManager.popMatrix();
 		if (useAlpha) {
@@ -125,13 +180,10 @@ public abstract class RenderVehicleBase extends Render<VehicleBase> {
 		}
 	}
 
-	protected abstract void renderVehicle(VehicleBase entity, double x, double y, double z, float entityYaw, float partialTicks);
-
 	@Nullable
 	@Override
 	protected ResourceLocation getEntityTexture(VehicleBase entity) {
 		return entity.getTexture();
 	}
 
-	public abstract void renderVehicleFlag();
 }

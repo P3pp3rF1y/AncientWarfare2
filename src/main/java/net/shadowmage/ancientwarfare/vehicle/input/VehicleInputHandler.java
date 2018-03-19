@@ -55,8 +55,6 @@ public class VehicleInputHandler {
 	private static final Set<Integer> releaseableKeys = new HashSet<>();
 	private static boolean trackedKeyReleased = false;
 
-	private static final VehicleInputHandler INSTANCE = new VehicleInputHandler();
-
 	private VehicleInputHandler() {
 		MinecraftForge.EVENT_BUS.register(this);
 	}
@@ -137,7 +135,6 @@ public class VehicleInputHandler {
 				NetworkHandler.INSTANCE.openGui(Minecraft.getMinecraft().player, AncientWarfareVehicles.instance, GuiIds.AMMO_SELECTION);
 			}
 		}));
-
 	}
 
 	private static void handleFireAction(VehicleBase vehicle) {

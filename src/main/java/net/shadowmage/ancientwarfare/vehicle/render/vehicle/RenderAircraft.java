@@ -25,13 +25,13 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelAirplane;
-import net.shadowmage.ancientwarfare.vehicle.render.RenderVehicleBase;
+
 
 public class RenderAircraft extends RenderVehicleBase {
 
 	ModelAirplane model = new ModelAirplane();
 
-	protected RenderAircraft(RenderManager renderManager) {
+	public RenderAircraft(RenderManager renderManager) {
 		super(renderManager);
 	}
 

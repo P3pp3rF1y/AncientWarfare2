@@ -27,13 +27,12 @@ import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelHwacha;
-import net.shadowmage.ancientwarfare.vehicle.render.RenderVehicleBase;
 
 public class RenderHwacha extends RenderVehicleBase {
 
 	ModelHwacha model = new ModelHwacha();
 
-	protected RenderHwacha(RenderManager renderManager) {
+	public RenderHwacha(RenderManager renderManager) {
 		super(renderManager);
 	}
 

@@ -25,13 +25,13 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelCatapultStandFixed;
-import net.shadowmage.ancientwarfare.vehicle.render.RenderVehicleBase;
+
 
 public class RenderCatapultStandFixed extends RenderVehicleBase {
 
 	ModelCatapultStandFixed model = new ModelCatapultStandFixed();
 
-	protected RenderCatapultStandFixed(RenderManager renderManager) {
+	public RenderCatapultStandFixed(RenderManager renderManager) {
 		super(renderManager);
 	}
 

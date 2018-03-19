@@ -25,14 +25,13 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelSubmarine;
-import net.shadowmage.ancientwarfare.vehicle.render.RenderVehicleBase;
 import org.lwjgl.opengl.GL11;
 
 public class RenderSubmarine extends RenderVehicleBase {
 
 	ModelSubmarine model = new ModelSubmarine();
 
-	protected RenderSubmarine(RenderManager renderManager) {
+	public RenderSubmarine(RenderManager renderManager) {
 		super(renderManager);
 	}
 

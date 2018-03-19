@@ -25,13 +25,13 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelCannonMobileFixed;
-import net.shadowmage.ancientwarfare.vehicle.render.RenderVehicleBase;
+
 
 public class RenderCannonMobileFixed extends RenderVehicleBase {
 
 	ModelCannonMobileFixed model = new ModelCannonMobileFixed();
 
-	protected RenderCannonMobileFixed(RenderManager renderManager) {
+	public RenderCannonMobileFixed(RenderManager renderManager) {
 		super(renderManager);
 	}
 

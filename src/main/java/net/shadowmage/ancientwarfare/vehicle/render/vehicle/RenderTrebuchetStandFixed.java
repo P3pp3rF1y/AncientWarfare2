@@ -25,13 +25,12 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelTrebuchetStandFixed;
-import net.shadowmage.ancientwarfare.vehicle.render.RenderVehicleBase;
 
 public class RenderTrebuchetStandFixed extends RenderVehicleBase {
 
 	ModelTrebuchetStandFixed model = new ModelTrebuchetStandFixed();
 
-	protected RenderTrebuchetStandFixed(RenderManager renderManager) {
+	public RenderTrebuchetStandFixed(RenderManager renderManager) {
 		super(renderManager);
 	}
 

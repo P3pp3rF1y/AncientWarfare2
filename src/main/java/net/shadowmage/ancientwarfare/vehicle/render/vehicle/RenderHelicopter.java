@@ -25,13 +25,12 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelHelicopter;
-import net.shadowmage.ancientwarfare.vehicle.render.RenderVehicleBase;
 
 public class RenderHelicopter extends RenderVehicleBase {
 
 	ModelHelicopter model = new ModelHelicopter();
 
-	protected RenderHelicopter(RenderManager renderManager) {
+	public RenderHelicopter(RenderManager renderManager) {
 		super(renderManager);
 	}
 

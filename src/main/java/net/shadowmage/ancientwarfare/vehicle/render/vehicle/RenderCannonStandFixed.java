@@ -25,13 +25,13 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelCannonStandFixed;
-import net.shadowmage.ancientwarfare.vehicle.render.RenderVehicleBase;
+
 
 public class RenderCannonStandFixed extends RenderVehicleBase {
 
 	ModelCannonStandFixed model = new ModelCannonStandFixed();
 
-	protected RenderCannonStandFixed(RenderManager renderManager) {
+	public RenderCannonStandFixed(RenderManager renderManager) {
 		super(renderManager);
 	}
 

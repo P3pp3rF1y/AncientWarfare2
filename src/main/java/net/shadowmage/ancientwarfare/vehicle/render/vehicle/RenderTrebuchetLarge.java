@@ -26,7 +26,6 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelTrebuchetStandFixed;
-import net.shadowmage.ancientwarfare.vehicle.render.RenderVehicleBase;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
@@ -34,7 +33,7 @@ public class RenderTrebuchetLarge extends RenderVehicleBase {
 
 	ModelTrebuchetStandFixed model = new ModelTrebuchetStandFixed();
 
-	protected RenderTrebuchetLarge(RenderManager renderManager) {
+	public RenderTrebuchetLarge(RenderManager renderManager) {
 		super(renderManager);
 	}
 

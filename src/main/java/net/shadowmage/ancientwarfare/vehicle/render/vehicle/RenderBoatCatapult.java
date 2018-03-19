@@ -25,13 +25,13 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelBoatCatapult;
-import net.shadowmage.ancientwarfare.vehicle.render.RenderVehicleBase;
+
 
 public class RenderBoatCatapult extends RenderVehicleBase {
 
 	ModelBoatCatapult model = new ModelBoatCatapult();
 
-	protected RenderBoatCatapult(RenderManager renderManager) {
+	public RenderBoatCatapult(RenderManager renderManager) {
 		super(renderManager);
 	}
 
