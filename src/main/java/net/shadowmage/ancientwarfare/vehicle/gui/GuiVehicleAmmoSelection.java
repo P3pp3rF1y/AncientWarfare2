@@ -28,7 +28,6 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.vehicle.container.ContainerVehicle;
-import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.gui.elements.ButtonAmmo;
 import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 
@@ -36,13 +35,10 @@ import java.util.List;
 
 public class GuiVehicleAmmoSelection extends GuiContainerBase<ContainerVehicle> {
 
-	VehicleBase vehicle;
-
 	private CompositeScrolled area;
 
-	public GuiVehicleAmmoSelection(ContainerBase container, VehicleBase vehicle) {
+	public GuiVehicleAmmoSelection(ContainerBase container) {
 		super(container);
-		this.vehicle = vehicle;
 		this.shouldCloseOnVanillaKeys = true;
 	}
 
@@ -75,11 +71,11 @@ public class GuiVehicleAmmoSelection extends GuiContainerBase<ContainerVehicle> 
 
 	@Override
 	public void setupElements() {
-		List<IAmmo> ammos = vehicle.vehicleType.getValidAmmoTypes();
+		List<IAmmo> ammos = getContainer().vehicle.vehicleType.getValidAmmoTypes();
 
 		area.clearElements();
 		for (int i = 0; i < ammos.size(); i++) {
-			ButtonAmmo ammo = new ButtonAmmo(5, i + 10, getXSize() - 20 - 20 - 5, i * 22, ammos.get(i), vehicle);
+			ButtonAmmo ammo = new ButtonAmmo(5, i + 10, getXSize() - 20 - 20 - 5, i * 22, ammos.get(i), getContainer().vehicle);
 			ammo.addNewListener(new Listener(Listener.MOUSE_UP) {
 				@Override
 				public boolean onEvent(GuiElement widget, ActivationEvent evt) {

@@ -10,6 +10,7 @@ import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
+import net.shadowmage.ancientwarfare.vehicle.container.ContainerVehicle;
 import net.shadowmage.ancientwarfare.vehicle.entity.AWVehicleEntityLoader;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketAimUpdate;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketAmmoSelect;
@@ -56,9 +57,6 @@ public class AncientWarfareVehicles {
          */
 		AWVehicleEntityLoader.load();
 
-        /*
-		 * register tick-handlers
-         */
 		PacketBase.registerPacketType(NetworkHandler.PACKET_AIM_UPDATE, PacketAimUpdate.class);
 		PacketBase.registerPacketType(NetworkHandler.PACKET_AMMO_SELECT, PacketAmmoSelect.class);
 		PacketBase.registerPacketType(NetworkHandler.PACKET_AMMO_UPDATE, PacketAmmoUpdate.class);
@@ -69,6 +67,10 @@ public class AncientWarfareVehicles {
 		PacketBase.registerPacketType(NetworkHandler.PACKET_UPGRADE_UPDATE, PacketUpgradeUpdate.class);
 		PacketBase.registerPacketType(NetworkHandler.PACKET_VEHICLE_INPUT, PacketVehicleInput.class);
 		PacketBase.registerPacketType(NetworkHandler.PACKET_VEHICLE_MOVE, PacketVehicleMove.class);
+
+		NetworkHandler.registerContainer(NetworkHandler.GUI_VEHICLE_INVENTORY, ContainerVehicle.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_VEHICLE_AMMO_SELECTION, ContainerVehicle.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_VEHICLE_STATS, ContainerVehicle.class);
 
 		proxy.preInit();
 	}

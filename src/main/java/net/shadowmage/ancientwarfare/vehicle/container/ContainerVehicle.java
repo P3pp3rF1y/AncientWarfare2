@@ -27,7 +27,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
-import net.shadowmage.ancientwarfare.vehicle.entity.IEntityContainerSynch;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.item.ItemAmmo;
 import net.shadowmage.ancientwarfare.vehicle.item.ItemArmor;
@@ -49,12 +48,11 @@ public class ContainerVehicle extends ContainerBase {
 
 	/**
 	 * @param openingPlayer
-	 * @param synch
 	 */
-	public ContainerVehicle(EntityPlayer openingPlayer, IEntityContainerSynch synch, VehicleBase vehicle) {
+	public ContainerVehicle(EntityPlayer openingPlayer, int entityId, int dummy1, int dummy2) {
 		super(openingPlayer);
 		//TODO figure out what to do with synch param
-		this.vehicle = vehicle;
+		this.vehicle = (VehicleBase) openingPlayer.world.getEntityByID(entityId);
 		int y;
 		int x;
 		int slotNum;

@@ -21,22 +21,19 @@
 
 package net.shadowmage.ancientwarfare.vehicle.gui;
 
+import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.vehicle.container.ContainerVehicle;
-import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
 public class GuiVehicleStats extends GuiContainerBase<ContainerVehicle> {
-
-	VehicleBase vehicle;
 
 	/**
 	 * @param container
 	 */
-	public GuiVehicleStats(ContainerVehicle container, VehicleBase vehicle) {
+	public GuiVehicleStats(ContainerBase container) {
 		super(container);
-		this.vehicle = vehicle;
 		this.shouldCloseOnVanillaKeys = true;
 	}
 
@@ -53,30 +50,28 @@ public class GuiVehicleStats extends GuiContainerBase<ContainerVehicle> {
 	@Override
 	public void initElements() {
 		//TODO lang translations
-		addGuiElement(new Label(10, 4, "Vehicle Type: " + vehicle.vehicleType.getLocalizedName()));
-		addGuiElement(new Label(10, 14, "Material Level: " + vehicle.vehicleMaterialLevel));
-		addGuiElement(new Label(10, 24, "Health: " + vehicle.getHealth() + "/" + vehicle.baseHealth));
-		addGuiElement(new Label(10, 34, "Weight: " + vehicle.currentWeight + "/" + vehicle.baseWeight));
-		addGuiElement(new Label(10, 44,
-				"Speed: " + (Trig.getVelocity(vehicle.motionX, vehicle.motionY, vehicle.motionZ) * 20) + "/" + (vehicle.currentForwardSpeedMax * 20)));
-		addGuiElement(new Label(10, 54, "Missile Velocity: " + vehicle.localLaunchPower + "/" + vehicle.currentLaunchSpeedPowerMax));
-		addGuiElement(new Label(10, 64,
-				"Resists: F: " + vehicle.currentFireResist + " E: " + vehicle.currentExplosionResist + " G: " + vehicle.currentGenericResist));
-		addGuiElement(new Label(10, 74, "Mountable: " + vehicle.isMountable()));
-		addGuiElement(new Label(10, 84, "Drivable: " + vehicle.isDrivable()));
-		addGuiElement(new Label(10, 94, "Combat Vehicle: " + vehicle.isAimable()));
-		addGuiElement(new Label(10, 104, "Rider Sits: " + vehicle.shouldRiderSit()));
-		addGuiElement(new Label(10, 114, "Rider On Turret: " + vehicle.vehicleType.moveRiderWithTurret()));
-		addGuiElement(new Label(10, 124, "Adjustable Yaw: " + vehicle.canAimRotate()));
-		addGuiElement(new Label(10, 134, "Adjustable Pitch: " + vehicle.canAimPitch()));
-		addGuiElement(new Label(10, 144, "Adjustable Power: " + vehicle.canAimPower()));
-		addGuiElement(new Label(10, 154, "Pitch Min: " + vehicle.currentTurretPitchMin));
-		addGuiElement(new Label(10, 164, "Pitch Max: " + vehicle.currentTurretPitchMax));
-		addGuiElement(new Label(10, 174, "Yaw Min: " + (vehicle.localTurretRotationHome - vehicle.currentTurretRotationMax)));
-		addGuiElement(new Label(10, 184, "Yaw Max: " + (vehicle.localTurretRotationHome + vehicle.currentTurretRotationMax)));
+		addGuiElement(new Label(10, 4, "Vehicle Type: " + getContainer().vehicle.vehicleType.getLocalizedName()));
+		addGuiElement(new Label(10, 14, "Material Level: " + getContainer().vehicle.vehicleMaterialLevel));
+		addGuiElement(new Label(10, 24, "Health: " + getContainer().vehicle.getHealth() + "/" + getContainer().vehicle.baseHealth));
+		addGuiElement(new Label(10, 34, "Weight: " + getContainer().vehicle.currentWeight + "/" + getContainer().vehicle.baseWeight));
+		addGuiElement(new Label(10, 44, "Speed: " + (Trig.getVelocity(getContainer().vehicle.motionX, getContainer().vehicle.motionY, getContainer().vehicle.motionZ) * 20) + "/" + (getContainer().vehicle.currentForwardSpeedMax * 20)));
+		addGuiElement(new Label(10, 54, "Missile Velocity: " + getContainer().vehicle.localLaunchPower + "/" + getContainer().vehicle.currentLaunchSpeedPowerMax));
+		addGuiElement(new Label(10, 64, "Resists: F: " + getContainer().vehicle.currentFireResist + " E: " + getContainer().vehicle.currentExplosionResist + " G: " + getContainer().vehicle.currentGenericResist));
+		addGuiElement(new Label(10, 74, "Mountable: " + getContainer().vehicle.isMountable()));
+		addGuiElement(new Label(10, 84, "Drivable: " + getContainer().vehicle.isDrivable()));
+		addGuiElement(new Label(10, 94, "Combat Vehicle: " + getContainer().vehicle.isAimable()));
+		addGuiElement(new Label(10, 104, "Rider Sits: " + getContainer().vehicle.shouldRiderSit()));
+		addGuiElement(new Label(10, 114, "Rider On Turret: " + getContainer().vehicle.vehicleType.moveRiderWithTurret()));
+		addGuiElement(new Label(10, 124, "Adjustable Yaw: " + getContainer().vehicle.canAimRotate()));
+		addGuiElement(new Label(10, 134, "Adjustable Pitch: " + getContainer().vehicle.canAimPitch()));
+		addGuiElement(new Label(10, 144, "Adjustable Power: " + getContainer().vehicle.canAimPower()));
+		addGuiElement(new Label(10, 154, "Pitch Min: " + getContainer().vehicle.currentTurretPitchMin));
+		addGuiElement(new Label(10, 164, "Pitch Max: " + getContainer().vehicle.currentTurretPitchMax));
+		addGuiElement(new Label(10, 174, "Yaw Min: " + (getContainer().vehicle.localTurretRotationHome - getContainer().vehicle.currentTurretRotationMax)));
+		addGuiElement(new Label(10, 184, "Yaw Max: " + (getContainer().vehicle.localTurretRotationHome + getContainer().vehicle.currentTurretRotationMax)));
 		//TODO are empty labels required here? try removing and see if it still works correctly
 		addGuiElement(new Label(10, 194, ""));
-		addGuiElement(new Label(10, 204, "TeamNum: " + vehicle.getTeam().getName()));
+		addGuiElement(new Label(10, 204, "TeamNum: " + getContainer().vehicle.getTeam().getName()));
 		addGuiElement(new Label(10, 214, ""));
 		addGuiElement(new Label(10, 224, ""));
 	}

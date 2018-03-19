@@ -27,7 +27,6 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
-import net.shadowmage.ancientwarfare.vehicle.gui.GuiIds;
 
 public abstract class VehicleFiringVarsHelper implements INBTSerializable<NBTTagCompound> {
 
@@ -62,13 +61,11 @@ public abstract class VehicleFiringVarsHelper implements INBTSerializable<NBTTag
 		if (player.world.isRemote) {
 			return true;
 		}
-		//TODO implement GUI interaction when control pressed?
-		//boolean control = PlayerTracker.instance().isControlPressed(player);
 		if (!player.isSneaking() && !vehicle.isBeingRidden()) {
 			player.startRiding(vehicle);
 			return true;
 		} else if (player.isSneaking()) {
-			NetworkHandler.INSTANCE.openGui(player, GuiIds.VEHICLE_INVENTORY, vehicle.getEntityId(), 0, 0);
+			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_VEHICLE_INVENTORY, vehicle.getEntityId());
 		} else if (vehicle.isBeingRidden() && vehicle.getPassengers().get(0) instanceof NpcBase) {
 			NpcBase npc = (NpcBase) vehicle.getPassengers().get(0);
 			npc.dismountRidingEntity();

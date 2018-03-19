@@ -121,7 +121,7 @@ public class VehicleTypeChestCart extends VehicleType {
 		//    }
 		//  else if(!player.world.isRemote && control)
 		//    {
-		//    GUIHandler.instance().openGUI(GuiIds.VEHICLE_INVENTORY, player, vehicle.world, vehicle.entityId, 0, 0);
+		//    GUIHandler.instance().openGUI(GuiIds.GUI_VEHICLE_INVENTORY, player, vehicle.world, vehicle.entityId, 0, 0);
 		//    }
 		//  return true;
 		//  }

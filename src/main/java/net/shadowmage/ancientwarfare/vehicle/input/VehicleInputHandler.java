@@ -15,10 +15,8 @@ import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.vehicle.AncientWarfareVehicles;
 import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
-import net.shadowmage.ancientwarfare.vehicle.gui.GuiIds;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicleInput;
 import org.lwjgl.input.Keyboard;
 
@@ -132,7 +130,7 @@ public class VehicleInputHandler {
 		registerCallBack(AMMO_PREV, new VehicleCallback(v -> v.ammoHelper.setPreviousAmmo()));
 		registerCallBack(AMMO_SELECT, new VehicleCallback(vehicle -> {
 			if (!vehicle.vehicleType.getValidAmmoTypes().isEmpty()) {
-				NetworkHandler.INSTANCE.openGui(Minecraft.getMinecraft().player, AncientWarfareVehicles.instance, GuiIds.AMMO_SELECTION);
+				NetworkHandler.INSTANCE.openGui(Minecraft.getMinecraft().player, NetworkHandler.GUI_VEHICLE_AMMO_SELECTION);
 			}
 		}));
 	}

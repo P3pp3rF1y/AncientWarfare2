@@ -100,6 +100,10 @@ public final class NetworkHandler implements IGuiHandler {
     public static final int GUI_SOUND_BLOCK = 48;
     public static final int GUI_NPC_FACTION_BARD = 49;
 
+	public static final int GUI_VEHICLE_AMMO_SELECTION = 50;
+	public static final int GUI_VEHICLE_INVENTORY = 51;
+	public static final int GUI_VEHICLE_STATS = 52;
+
     private FMLEventChannel channel;
 
     private HashMap<Integer, Class<? extends ContainerBase>> containerClasses = new HashMap<>();
@@ -195,22 +199,22 @@ public final class NetworkHandler implements IGuiHandler {
         openGui(player, id, pos.getX(), pos.getY(), pos.getZ());
     }
 
-	//TODO refactor stuff to use this overload (add one with no mod for core) where it only passes 0 to x, y, z
-	public final void openGui(EntityPlayer player, Object mod, int id) {
-		openGui(player, mod, id, 0, 0, 0);
+	//TODO refactor stuff to use this entityId overload
+	public final void openGui(EntityPlayer player, int guiId) {
+		openGui(player, guiId, 0);
+	}
+
+	public final void openGui(EntityPlayer player, int guiId, int entityId) {
+		openGui(player, guiId, entityId, 0, 0);
 	}
 
 	public final void openGui(EntityPlayer player, int id, int x, int y, int z) {
-		openGui(player, AncientWarfareCore.instance, id, x, y, z);
-	}
-
-	public final void openGui(EntityPlayer player, Object mod, int id, int x, int y, int z) {
 		if (player.world.isRemote) {
 			PacketGui pkt = new PacketGui();
 			pkt.setOpenGui(id, x, y, z);
 			sendToServer(pkt);
 		} else {
-			FMLNetworkHandler.openGui(player, mod, id, player.world, x, y, z);
+			FMLNetworkHandler.openGui(player, AncientWarfareCore.instance, id, player.world, x, y, z);
 			if (player.openContainer instanceof ContainerBase) {
 				((ContainerBase) player.openContainer).sendInitData();
 			}

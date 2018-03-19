@@ -21,6 +21,7 @@
 
 package net.shadowmage.ancientwarfare.vehicle.gui;
 
+import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -31,11 +32,8 @@ import net.shadowmage.ancientwarfare.vehicle.container.ContainerVehicle;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketPackCommand;
 
 public class GuiVehicleInventory extends GuiContainerBase<ContainerVehicle> {
-	ContainerVehicle container;
-
-	public GuiVehicleInventory(ContainerVehicle container) {
+	public GuiVehicleInventory(ContainerBase container) {
 		super(container);
-		this.container = container;
 		this.shouldCloseOnVanillaKeys = true;
 		this.ySize = this.getYSize();
 		this.xSize = this.getXSize();
@@ -48,19 +46,19 @@ public class GuiVehicleInventory extends GuiContainerBase<ContainerVehicle> {
 
 	@Override
 	public int getYSize() {
-		return container == null ? 240 : container.playerY + 4 * 18 + 8 + 4;
+		return getContainer() == null ? 240 : getContainer().playerY + 4 * 18 + 8 + 4;
 	}
 
 	@Override
 	public void initElements() {
 		//TODO lang translations
-		if (this.container.vehicle.inventory.storageInventory.getSlots() > 0) {
-			addGuiElement(new Label(8, container.storageY - 10, "Storage"));
+		if (getContainer().vehicle.inventory.storageInventory.getSlots() > 0) {
+			addGuiElement(new Label(8, getContainer().storageY - 10, "Storage"));
 		}
-		addGuiElement(new Label(8, container.extrasY - 10, "Ammo"));
-		addGuiElement(new Label(8 + 3 * 18 + 4, container.extrasY - 10, "Upg."));
-		addGuiElement(new Label(8 + 6 * 18 + 8, container.extrasY - 10, "Armor"));
-		addGuiElement(new Label(8, container.playerY - 10, "Player Inventory"));
+		addGuiElement(new Label(8, getContainer().extrasY - 10, "Ammo"));
+		addGuiElement(new Label(8 + 3 * 18 + 4, getContainer().extrasY - 10, "Upg."));
+		addGuiElement(new Label(8 + 6 * 18 + 8, getContainer().extrasY - 10, "Armor"));
+		addGuiElement(new Label(8, getContainer().playerY - 10, "Player Inventory"));
 		Button done = new Button(8 + 90 + 8, 4, 45, 16, "Done");
 		done.addNewListener(new Listener(Listener.MOUSE_UP) {
 			@Override
@@ -75,7 +73,7 @@ public class GuiVehicleInventory extends GuiContainerBase<ContainerVehicle> {
 		stats.addNewListener(new Listener(Listener.MOUSE_UP) {
 			@Override
 			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
-				mc.displayGuiScreen(new GuiVehicleStats(container, container.vehicle));
+				mc.displayGuiScreen(new GuiVehicleStats(getContainer()));
 				return true;
 			}
 		});
@@ -84,27 +82,27 @@ public class GuiVehicleInventory extends GuiContainerBase<ContainerVehicle> {
 		pack.addNewListener(new Listener(Listener.MOUSE_UP) {
 			@Override
 			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
-				NetworkHandler.sendToServer(new PacketPackCommand(container.vehicle));
+				NetworkHandler.sendToServer(new PacketPackCommand(getContainer().vehicle));
 				closeGui();
 				return true;
 			}
 		});
 
-		if (container.vehicle.inventory.storageInventory.getSlots() > 0) {
-			Button minus = new Button(171, container.storageY - 1, 16, 16, "-");
+		if (getContainer().vehicle.inventory.storageInventory.getSlots() > 0) {
+			Button minus = new Button(171, getContainer().storageY - 1, 16, 16, "-");
 			minus.addNewListener(new Listener(Listener.MOUSE_UP) {
 				@Override
 				public boolean onEvent(GuiElement widget, ActivationEvent evt) {
-					container.prevRow();
+					getContainer().prevRow();
 					return true;
 				}
 			});
 			addGuiElement(minus);
-			Button plus = new Button(171, container.storageY + 3 * 18 - 16 - 1, 16, 16, "+");
+			Button plus = new Button(171, getContainer().storageY + 3 * 18 - 16 - 1, 16, 16, "+");
 			plus.addNewListener(new Listener(Listener.MOUSE_UP) {
 				@Override
 				public boolean onEvent(GuiElement widget, ActivationEvent evt) {
-					container.nextRow();
+					getContainer().nextRow();
 					return true;
 				}
 			});
