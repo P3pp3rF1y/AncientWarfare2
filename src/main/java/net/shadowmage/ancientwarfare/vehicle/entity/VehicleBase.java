@@ -871,9 +871,10 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		return this.vehicleType.shouldRiderSit();
 	}
 
+	@Nullable
 	@Override
-	public AxisAlignedBB getCollisionBox(Entity entity) {
-		return entity.getEntityBoundingBox();
+	public AxisAlignedBB getCollisionBoundingBox() {
+		return getEntityBoundingBox();
 	}
 
 	@Override
