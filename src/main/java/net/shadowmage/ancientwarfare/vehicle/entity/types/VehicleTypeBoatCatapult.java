@@ -167,17 +167,17 @@ public class VehicleTypeBoatCatapult extends VehicleType {
 	public ResourceLocation getTextureForMaterialLevel(int level) {
 		switch (level) {
 			case 0:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/boatCatapult1");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/boat_catapult_1.png");
 			case 1:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/boatCatapult2");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/boat_catapult_2.png");
 			case 2:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/boatCatapult3");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/boat_catapult_3.png");
 			case 3:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/boatCatapult4");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/boat_catapult_4.png");
 			case 4:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/boatCatapult5");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/boat_catapult_5.png");
 			default:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/boatCatapult1");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/boat_catapult_1.png");
 		}
 	}
 

@@ -107,17 +107,17 @@ public class VehicleTypeBatteringRam extends VehicleType {
 	public ResourceLocation getTextureForMaterialLevel(int level) {
 		switch (level) {
 			case 0:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/batteringRam1");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/battering_ram_1.png");
 			case 1:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/batteringRam2");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/battering_ram_2.png");
 			case 2:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/batteringRam3");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/battering_ram_3.png");
 			case 3:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/batteringRam4");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/battering_ram_4.png");
 			case 4:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/batteringRam5");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/battering_ram_5.png");
 			default:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/batteringRam1");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/battering_ram_1.png");
 		}
 	}
 

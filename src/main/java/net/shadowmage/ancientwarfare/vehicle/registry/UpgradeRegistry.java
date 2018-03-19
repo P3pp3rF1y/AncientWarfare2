@@ -73,12 +73,12 @@ public class UpgradeRegistry {
 	 */
 	public static void registerUpgrades(IForgeRegistry<Item> registry) {
 		speedUpgrade = registerUpgrade(new VehicleUpgradeSpeed(0), registry);
-		aimUpgrade = registerUpgrade(new VehicleUpgradeAim(1), registry);
-		reloadUpgrade = registerUpgrade(new VehicleUpgradeReload(2), registry);
-		powerUpgrade = registerUpgrade(new VehicleUpgradePower(4), registry);
-		pitchExtUpgrade = registerUpgrade(new VehicleUpgradeTurretPitch(5), registry);
-		pitchUpUpgrade = registerUpgrade(new VehicleUpgradePitchUp(6), registry);
-		pitchDownUpgrade = registerUpgrade(new VehicleUpgradePitchDown(7), registry);
+		aimUpgrade = registerUpgrade(new VehicleUpgradeAim(), registry);
+		reloadUpgrade = registerUpgrade(new VehicleUpgradeReload(), registry);
+		powerUpgrade = registerUpgrade(new VehicleUpgradePower(), registry);
+		pitchExtUpgrade = registerUpgrade(new VehicleUpgradeTurretPitch(), registry);
+		pitchUpUpgrade = registerUpgrade(new VehicleUpgradePitchUp(), registry);
+		pitchDownUpgrade = registerUpgrade(new VehicleUpgradePitchDown(), registry);
 	}
 
 	private static IVehicleUpgradeType registerUpgrade(IVehicleUpgradeType upgrade, IForgeRegistry<Item> registry) {

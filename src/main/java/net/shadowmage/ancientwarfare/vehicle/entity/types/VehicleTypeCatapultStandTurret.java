@@ -67,17 +67,17 @@ public class VehicleTypeCatapultStandTurret extends VehicleTypeCatapult {
 	public ResourceLocation getTextureForMaterialLevel(int level) {
 		switch (level) {
 			case 0:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/catapultStandTurret1");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/catapult_stand_turret_1.png");
 			case 1:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/catapultStandTurret2");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/catapult_stand_turret_2.png");
 			case 2:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/catapultStandTurret3");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/catapult_stand_turret_3.png");
 			case 3:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/catapultStandTurret4");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/catapult_stand_turret_4.png");
 			case 4:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/catapultStandTurret5");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/catapult_stand_turret_5.png");
 			default:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/catapultStandTurret1");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/catapult_stand_turret_1.png");
 		}
 	}
 }

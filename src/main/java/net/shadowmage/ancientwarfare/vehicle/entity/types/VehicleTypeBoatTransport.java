@@ -89,17 +89,17 @@ public class VehicleTypeBoatTransport extends VehicleType {
 	public ResourceLocation getTextureForMaterialLevel(int level) {
 		switch (level) {
 			case 0:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/boatTransport1");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/boat_transport_1.png");
 			case 1:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/boatTransport2");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/boat_transport_2.png");
 			case 2:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/boatTransport3");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/boat_transport_3.png");
 			case 3:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/boatTransport4");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/boat_transport_4.png");
 			case 4:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/boatTransport5");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/boat_transport_5.png");
 			default:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/boatTransport1");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/boat_transport_1.png");
 		}
 	}
 

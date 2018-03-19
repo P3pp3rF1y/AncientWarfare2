@@ -25,10 +25,7 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
 public class VehicleUpgradeTurretPitch extends VehicleUpgradeBase {
 
-	/**
-	 * @param num
-	 */
-	public VehicleUpgradeTurretPitch(int num) {
+	public VehicleUpgradeTurretPitch() {
 		super("vehicle_upgrade_turret_pitch");
 /* TODO recipe
 		this.neededResearch.add(ResearchGoalNumbers.mechanics2);

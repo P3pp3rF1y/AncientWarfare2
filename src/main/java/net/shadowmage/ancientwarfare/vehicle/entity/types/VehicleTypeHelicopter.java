@@ -144,17 +144,17 @@ public class VehicleTypeHelicopter extends VehicleType {
 	public ResourceLocation getTextureForMaterialLevel(int level) {
 		switch (level) {
 			case 0:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/helicopter1");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/helicopter_1.png");
 			case 1:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/helicopter2");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/helicopter_2.png");
 			case 2:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/helicopter3");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/helicopter_3.png");
 			case 3:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/helicopter4");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/helicopter_4.png");
 			case 4:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/helicopter5");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/helicopter_5.png");
 			default:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/helicopter1");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/helicopter_1.png");
 		}
 	}
 

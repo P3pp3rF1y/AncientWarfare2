@@ -41,7 +41,7 @@ public class AmmoBallShot extends Ammo {
 		this.iconTexture = "ammoStone1";
 */
 		this.isCraftable = false;
-		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/ammoStoneShot");
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/ammoStoneShot");
 	}
 
 	@Override

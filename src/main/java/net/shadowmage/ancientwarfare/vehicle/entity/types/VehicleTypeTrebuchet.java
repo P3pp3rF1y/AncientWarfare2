@@ -134,17 +134,17 @@ public class VehicleTypeTrebuchet extends VehicleType {
 	public ResourceLocation getTextureForMaterialLevel(int level) {
 		switch (level) {
 			case 0:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/trebuchet1");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/trebuchet_1.png");
 			case 1:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/trebuchet2");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/trebuchet_2.png");
 			case 2:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/trebuchet3");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/trebuchet_3.png");
 			case 3:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/trebuchet4");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/trebuchet_4.png");
 			case 4:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/trebuchet5");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/trebuchet_5.png");
 			default:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/trebuchet1");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/trebuchet_1.png");
 		}
 	}
 

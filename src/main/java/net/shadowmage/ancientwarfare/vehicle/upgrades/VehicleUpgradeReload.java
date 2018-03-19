@@ -25,10 +25,7 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
 public class VehicleUpgradeReload extends VehicleUpgradeBase {
 
-	/**
-	 * @param num
-	 */
-	public VehicleUpgradeReload(int num) {
+	public VehicleUpgradeReload() {
 		super("vehicle_upgrade_reload");
 /* TODO recipe
 		this.neededResearch.add(ResearchGoalNumbers.mechanics2);

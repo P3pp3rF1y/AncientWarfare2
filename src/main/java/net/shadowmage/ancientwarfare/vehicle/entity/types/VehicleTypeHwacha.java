@@ -118,17 +118,17 @@ public class VehicleTypeHwacha extends VehicleType {
 	public ResourceLocation getTextureForMaterialLevel(int level) {
 		switch (level) {
 			case 0:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/hwacha1");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/hwacha_1.png");
 			case 1:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/hwacha2");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/hwacha_2.png");
 			case 2:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/hwacha3");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/hwacha_3.png");
 			case 3:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/hwacha4");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/hwacha_4.png");
 			case 4:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/hwacha5");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/hwacha_5.png");
 			default:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/hwacha1");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/hwacha_1.png");
 		}
 	}
 

@@ -67,17 +67,17 @@ public class VehicleTypeCatapultMobileFixed extends VehicleTypeCatapult {
 	public ResourceLocation getTextureForMaterialLevel(int level) {
 		switch (level) {
 			case 0:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/catapultMobileFixed1");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/catapult_mobile_fixed_1.png");
 			case 1:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/catapultMobileFixed2");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/catapult_mobile_fixed_2.png");
 			case 2:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/catapultMobileFixed3");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/catapult_mobile_fixed_3.png");
 			case 3:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/catapultMobileFixed4");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/catapult_mobile_fixed_4.png");
 			case 4:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/catapultMobileFixed5");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/catapult_mobile_fixed_5.png");
 			default:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/catapultMobileFixed1");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/catapult_mobile_fixed_1.png");
 		}
 	}
 }

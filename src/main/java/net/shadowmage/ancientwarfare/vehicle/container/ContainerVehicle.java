@@ -29,9 +29,9 @@ import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.IEntityContainerSynch;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
-import net.shadowmage.ancientwarfare.vehicle.item.AWVehicleItems;
 import net.shadowmage.ancientwarfare.vehicle.item.ItemAmmo;
 import net.shadowmage.ancientwarfare.vehicle.item.ItemArmor;
+import net.shadowmage.ancientwarfare.vehicle.item.ItemUpgrade;
 
 import javax.annotation.Nonnull;
 
@@ -182,7 +182,7 @@ public class ContainerVehicle extends ContainerBase {
 					if (!this.mergeItemStack(slotStack, 36, 36 + ammoSlots, false)) {
 						return ItemStack.EMPTY;
 					}
-				} else if (slotStackCopy.getItem() == AWVehicleItems.upgrade) {
+				} else if (slotStackCopy.getItem() instanceof ItemUpgrade) {
 					if (!this.mergeItemStack(slotStack, 36 + ammoSlots, 36 + ammoSlots + upgradeSlots, false))//merge into upgrade inventory
 					{
 						return ItemStack.EMPTY;

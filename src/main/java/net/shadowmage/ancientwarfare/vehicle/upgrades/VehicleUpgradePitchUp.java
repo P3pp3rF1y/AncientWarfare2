@@ -25,10 +25,7 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
 public class VehicleUpgradePitchUp extends VehicleUpgradeBase {
 
-	/**
-	 * @param num
-	 */
-	public VehicleUpgradePitchUp(int num) {
+	public VehicleUpgradePitchUp() {
 		super("vehicle_upgrade_pitch_up");
 /* TODO recipe
 		this.neededResearch.add(ResearchGoalNumbers.mechanics1);

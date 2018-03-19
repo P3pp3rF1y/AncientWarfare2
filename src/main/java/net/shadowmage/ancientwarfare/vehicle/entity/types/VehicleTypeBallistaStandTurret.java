@@ -68,17 +68,17 @@ public class VehicleTypeBallistaStandTurret extends VehicleTypeBallista {
 	public ResourceLocation getTextureForMaterialLevel(int level) {
 		switch (level) {
 			case 0:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ballistaStand1");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ballista_stand_1.png");
 			case 1:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ballistaStand2");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ballista_stand_2.png");
 			case 2:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ballistaStand3");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ballista_stand_3.png");
 			case 3:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ballistaStand4");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ballista_stand_4.png");
 			case 4:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ballistaStand5");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ballista_stand_5.png");
 			default:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ballistaStand1");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ballista_stand_1.png");
 		}
 	}
 

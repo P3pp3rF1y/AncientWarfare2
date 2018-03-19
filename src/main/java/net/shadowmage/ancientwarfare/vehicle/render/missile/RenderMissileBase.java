@@ -19,7 +19,7 @@
  * along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package net.shadowmage.ancientwarfare.vehicle.render;
+package net.shadowmage.ancientwarfare.vehicle.render.missile;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;

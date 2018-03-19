@@ -49,9 +49,9 @@ public class AmmoSoldierArrow extends Ammo {
 			this.configName = "soldier_arrow_" + damage;
 		}
 		if (damage <= 5) {
-			this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowWood");
+			this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/arrowWood");
 		} else {
-			this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowIron");
+			this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/arrowIron");
 		}
 	}
 

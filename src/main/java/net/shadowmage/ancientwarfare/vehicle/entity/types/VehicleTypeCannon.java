@@ -114,17 +114,17 @@ public class VehicleTypeCannon extends VehicleType {
 	public ResourceLocation getTextureForMaterialLevel(int level) {
 		switch (level) {
 			case 0:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/cannon1");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/cannon_1.png");
 			case 1:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/cannon2");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/cannon_2.png");
 			case 2:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/cannon3");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/cannon_3.png");
 			case 3:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/cannon4");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/cannon_4.png");
 			case 4:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/cannon5");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/cannon_5.png");
 			default:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/cannon1");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/cannon_1.png");
 		}
 	}
 

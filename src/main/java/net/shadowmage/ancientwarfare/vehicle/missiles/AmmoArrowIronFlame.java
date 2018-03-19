@@ -43,7 +43,7 @@ public class AmmoArrowIronFlame extends Ammo {
 /* TODO rendering
 		this.iconTexture = "ammoArrowIronFlame1";
 */
-		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowIron");
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/arrowIron");
 /* TODO recipe
 		this.neededResearch.add(ResearchGoalNumbers.ballistics1);
 		this.neededResearch.add(ResearchGoalNumbers.flammables1);

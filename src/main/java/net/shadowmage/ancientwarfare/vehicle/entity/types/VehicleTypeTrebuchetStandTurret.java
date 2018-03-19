@@ -59,17 +59,17 @@ public class VehicleTypeTrebuchetStandTurret extends VehicleTypeTrebuchet {
 	public ResourceLocation getTextureForMaterialLevel(int level) {
 		switch (level) {
 			case 0:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/trebuchetMobile1");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/trebuchet_mobile_1.png");
 			case 1:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/trebuchetMobile2");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/trebuchet_mobile_2.png");
 			case 2:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/trebuchetMobile3");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/trebuchet_mobile_3.png");
 			case 3:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/trebuchetMobile4");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/trebuchet_mobile_4.png");
 			case 4:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/trebuchetMobile5");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/trebuchet_mobile_5.png");
 			default:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/trebuchetMobile1");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/trebuchet_mobile_1.png");
 		}
 	}
 }

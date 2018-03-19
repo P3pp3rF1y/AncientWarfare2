@@ -67,7 +67,7 @@ public class RenderVehicle extends Render<VehicleBase> {
 
 	private HashMap<IVehicleType, RenderVehicleBase> vehicleRenders = new HashMap<>();
 
-	protected RenderVehicle(RenderManager renderManager) {
+	public RenderVehicle(RenderManager renderManager) {
 		super(renderManager);
 
 		vehicleRenders.put(VehicleRegistry.CATAPULT_STAND_FIXED, new RenderCatapultStandFixed(renderManager));

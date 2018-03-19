@@ -38,7 +38,7 @@ public class AmmoGrapeShot extends Ammo {
 		this.renderScale = (weight / scaleFactor) * 2;
 		//		this.iconTexture = "ammoGrape1"; TODO rendering
 		this.configName = "grape_shot_" + weight;
-		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/ammoStoneShot");
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/ammoStoneShot");
 
 		//		this.neededResearch.add(ResearchGoalNumbers.explosives1);
 		int cases = 1;

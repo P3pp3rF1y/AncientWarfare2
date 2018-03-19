@@ -57,7 +57,7 @@ public class AmmoExplosiveShot extends Ammo {
 			this.neededResearch.add(ResearchGoalNumbers.explosives2);
 */
 		}
-		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/ammoStoneShot");
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/ammoStoneShot");
 
 		int cases = 1;
 		int explosives = 1;

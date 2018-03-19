@@ -145,17 +145,17 @@ public class VehicleTypeAirBomber extends VehicleType {
 	public ResourceLocation getTextureForMaterialLevel(int level) {
 		switch (level) {
 			case 0:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/airplane1");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/airplane_1.png");
 			case 1:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/airplane2");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/airplane_2.png");
 			case 2:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/airplane3");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/airplane_3.png");
 			case 3:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/airplane4");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/airplane_4.png");
 			case 4:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/airplane5");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/airplane_5.png");
 			default:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/airplane1");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/airplane_1.png");
 		}
 	}
 

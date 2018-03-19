@@ -257,7 +257,9 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 	@Override
 	public NBTTagCompound serializeNBT() {
 		NBTTagCompound tag = new NBTTagCompound();
-		tag.setString("currentAmmoType", currentAmmoType.toString());
+		if (currentAmmoType != null) {
+			tag.setString("currentAmmoType", currentAmmoType.toString());
+		}
 		serializeAmmo(tag);
 		return tag;
 	}
@@ -279,7 +281,9 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 		for (VehicleAmmoEntry ent : this.ammoEntries.values()) {
 			ent.ammoCount = 0;
 		}
-		this.currentAmmoType = new ResourceLocation(tag.getString("currentAmmoType"));
+		if (tag.hasKey("currentAmmoType")) {
+			currentAmmoType = new ResourceLocation(tag.getString("currentAmmoType"));
+		}
 		deserializeAmmo(tag);
 	}
 

@@ -25,10 +25,7 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
 public class VehicleUpgradePower extends VehicleUpgradeBase {
 
-	/**
-	 * @param num
-	 */
-	public VehicleUpgradePower(int num) {
+	public VehicleUpgradePower() {
 		super("vehicle_upgrade_power");
 /* TODO recipe
 		this.neededResearch.add(ResearchGoalNumbers.mechanics3);

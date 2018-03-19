@@ -6,41 +6,16 @@ import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry.EntityDeclarat
 import net.shadowmage.ancientwarfare.vehicle.AncientWarfareVehicles;
 import net.shadowmage.ancientwarfare.vehicle.missiles.MissileBase;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 public class AWVehicleEntityLoader {
 
     private static int nextID = 0;
 
-    private static List<String> vehicleTypes = new ArrayList<>();
-    private static HashMap<String, String> regNameToIcon = new HashMap<>();
-
     public static void load() {
-        //TODO most probably expand to all the unique vehicle entities
         EntityDeclaration reg = new VehiculeDeclaration(VehicleBase.class, AWEntityRegistry.VEHICLE_TEST);
-        registerVehicleEntity(reg, "fooicon");
+        AWEntityRegistry.registerEntity(reg);
 
-        //TODO the same as above - expand to all projectile entities
         reg = new VehiculeDeclaration(MissileBase.class, AWEntityRegistry.MISSILE_TEST);
         AWEntityRegistry.registerEntity(reg);
-    }
-
-    private static void registerVehicleEntity(EntityDeclaration reg, String icon) {
-        if (!vehicleTypes.contains(reg.name())) {
-            vehicleTypes.add(reg.name());
-        }
-        AWEntityRegistry.registerEntity(reg);
-        regNameToIcon.put(reg.name(), icon);
-    }
-
-    public static List<String> getVehicleTypes() {
-        return vehicleTypes;
-    }
-
-    public static String getIcon(String vehicleType) {
-        return regNameToIcon.get(vehicleType);
     }
 
     private static class VehiculeDeclaration extends EntityDeclaration {

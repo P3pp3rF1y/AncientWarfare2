@@ -40,7 +40,7 @@ public class AmmoHwachaRocketExplosive extends Ammo {
 		this.renderScale = 0.2f;
 		this.configName = "hwacha_rocket_explosive";
 		//		this.iconTexture = "ammoRocketExplosive1"; TODO rendering
-		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowWood");
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/arrowWood");
 
 /* TODO recipe
 		this.numCrafted = 8;

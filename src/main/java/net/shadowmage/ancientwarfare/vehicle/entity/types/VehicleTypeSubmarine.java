@@ -135,17 +135,17 @@ public class VehicleTypeSubmarine extends VehicleType {
 	public ResourceLocation getTextureForMaterialLevel(int level) {
 		switch (level) {
 			case 0:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/submarine1");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/submarine_1.png");
 			case 1:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/submarine2");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/submarine_2.png");
 			case 2:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/submarine3");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/submarine_3.png");
 			case 3:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/submarine4");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/submarine_4.png");
 			case 4:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/submarine5");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/submarine_5.png");
 			default:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/submarine1");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/submarine_1.png");
 		}
 	}
 

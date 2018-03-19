@@ -53,7 +53,7 @@ public class ItemSpawner extends ItemBaseVehicle {
 		if (stack.isEmpty()) {
 			return EnumActionResult.FAIL;
 		} else if (world.isRemote) {
-			return EnumActionResult.PASS;
+			return EnumActionResult.SUCCESS;
 		}
 
 		if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnData")) {

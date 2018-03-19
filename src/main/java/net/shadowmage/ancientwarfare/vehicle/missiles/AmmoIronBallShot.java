@@ -37,7 +37,7 @@ public class AmmoIronBallShot extends Ammo {
 		this.vehicleDamage = 8;
 		//		this.iconTexture = "ammoStone1"; TODO rendering
 		this.configName = "iron_ball_shot";
-		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/ammoStoneShot");
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/ammoStoneShot");
 		this.isCraftable = false;
 	}
 

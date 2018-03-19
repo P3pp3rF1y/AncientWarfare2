@@ -41,7 +41,7 @@ public class AmmoArrowIron extends Ammo {
 */
 		this.configName = "arrow_iron";
 /* TODO recipe
-		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/arrowIron");
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/arrowIron");
 		this.neededResearch.add(ResearchGoalNumbers.ballistics1);
 		this.resources.add(new ItemStackWrapperCrafting(Item.flint, 5));
 		this.resources.add(new ItemStackWrapperCrafting(Item.ingotIron, 2));

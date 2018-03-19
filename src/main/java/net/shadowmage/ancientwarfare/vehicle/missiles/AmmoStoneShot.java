@@ -41,7 +41,7 @@ public class AmmoStoneShot extends Ammo {
 		this.vehicleDamage = weight;
 		float scaleFactor = weight + 45.f;
 		this.renderScale = (weight / scaleFactor) * 2;
-		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/ammoStoneShot");
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/ammoStoneShot");
 
 /* TODO recipes
 		int cases = 1;

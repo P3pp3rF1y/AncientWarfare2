@@ -86,17 +86,17 @@ public class VehicleTypeChestCart extends VehicleType {
 	public ResourceLocation getTextureForMaterialLevel(int level) {
 		switch (level) {
 			case 0:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/chestCart1");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/chest_cart_1.png");
 			case 1:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/chestCart2");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/chest_cart_2.png");
 			case 2:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/chestCart3");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/chest_cart_3.png");
 			case 3:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/chestCart4");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/chest_cart_4.png");
 			case 4:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/chestCart5");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/chest_cart_5.png");
 			default:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/chestCart1");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/chest_cart_1.png");
 		}
 	}
 

@@ -431,7 +431,7 @@ public abstract class VehicleType implements IVehicleType {
 			return displayItemCache;
 		}
 		List<ItemStack> stacks = new ArrayList<ItemStack>();
-		ItemStack stack = null;
+		ItemStack stack;
 		for (IVehicleType type : vehicleTypes) {
 			if (type == null || type.getMaterialType() == null || !type.isEnabled()) {
 				continue;

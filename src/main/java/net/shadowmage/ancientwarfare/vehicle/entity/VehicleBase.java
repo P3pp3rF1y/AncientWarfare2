@@ -82,7 +82,7 @@ import java.util.UUID;
 
 public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, IMissileHitCallback, IEntityContainerSynch, IPathableEntity, IOwnable {
 
-	private static final DataParameter<Integer> VEHICLE_HEALTH = EntityDataManager.createKey(VehicleBase.class, DataSerializers.VARINT);
+	private static final DataParameter<Float> VEHICLE_HEALTH = EntityDataManager.createKey(VehicleBase.class, DataSerializers.FLOAT);
 	private static final DataParameter<Byte> FORWARD_INPUT = EntityDataManager.createKey(VehicleBase.class, DataSerializers.BYTE);
 	private static final DataParameter<Byte> STRAFE_INPUT = EntityDataManager.createKey(VehicleBase.class, DataSerializers.BYTE);
 
@@ -133,7 +133,6 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	/**
 	 * local variables, may be altered by input/etc...
 	 */
-	private float localVehicleHealth = 100;
 	public float localTurretRotationHome = 0.f;
 	public float localTurretRotation = 0.f;
 	public float localTurretDestRot = 0.f;
@@ -182,8 +181,8 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	public PathWorldAccessEntity worldAccess;
 	public IVehicleType vehicleType = VehicleRegistry.CATAPULT_STAND_FIXED;//set to dummy vehicle so it is never null...
 	public int vehicleMaterialLevel = 0;//the current material level of this vehicle. should be read/set prior to calling updateBaseStats
-	private String ownerName;
-	private UUID ownerUuid;
+	private String ownerName = "";
+	private UUID ownerUuid = new UUID(0, 0);
 
 	public VehicleBase(World par1World) {
 		super(par1World);
@@ -207,7 +206,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 
 	@Override
 	protected void entityInit() {
-		dataManager.register(VEHICLE_HEALTH, 100);
+		dataManager.register(VEHICLE_HEALTH, 100f);
 		dataManager.register(FORWARD_INPUT, (byte) 0);
 		dataManager.register(STRAFE_INPUT, (byte) 0);
 	}
@@ -225,30 +224,15 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		return 1.6F;
 	}
 
-	private int getHealthClient() {
-		return dataManager.get(VEHICLE_HEALTH);
-	}
-
 	public void setHealth(float health) {
 		if (health > this.baseHealth) {
 			health = this.baseHealth;
 		}
-		this.localVehicleHealth = health;
-		if (!world.isRemote) {
-			dataManager.set(VEHICLE_HEALTH, (int) health);
-		}
-	}
-
-	private float getHealthServer() {
-		return this.localVehicleHealth;
+		dataManager.set(VEHICLE_HEALTH, health);
 	}
 
 	public float getHealth() {
-		if (this.world.isRemote) {
-			return this.getHealthClient();
-		} else {
-			return this.getHealthServer();
-		}
+		return dataManager.get(VEHICLE_HEALTH);
 	}
 
 	public byte getForwardInput() {
@@ -610,13 +594,6 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	 * client-side updates
 	 */
 	public void onUpdateClient() {
-		if (this.localVehicleHealth != this.getHealth()) {
-			if (localVehicleHealth > this.getHealth())//only play hit animation when attacked
-			{
-				this.hitAnimationTicks = 20;
-			}
-			this.localVehicleHealth = this.getHealth();
-		}
 		if (getControllingPassenger() instanceof NpcBase) {
 			this.updatePassenger(getControllingPassenger());
 		}
@@ -789,16 +766,16 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	}
 
 	@Override
-	public boolean attackEntityFrom(DamageSource par1DamageSource, float par2) {
+	public boolean attackEntityFrom(DamageSource damageSource, float amount) {
 		if (this.world.isRemote) {
+			hitAnimationTicks = 20;
 			return false;
 		}
-		super.attackEntityFrom(par1DamageSource, par2);
-		float adjDmg = upgradeHelper.getScaledDamage(par1DamageSource, par2);
+		super.attackEntityFrom(damageSource, amount);
+		float adjDmg = upgradeHelper.getScaledDamage(damageSource, amount);
 		this.setHealth(getHealth() - adjDmg);
-		//  Config.logDebug("Vehicle hit by attack.  RawDamage: "+par2+" : adjustedDmg: "+adjDmg+"  New health: "+localVehicleHealth);
-		if (this.getHealth() <= 0) {
-			this.setDead();
+		if (getHealth() <= 0) {
+			setDead();
 			return false;
 		}
 		return true;

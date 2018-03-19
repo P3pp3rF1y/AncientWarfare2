@@ -135,17 +135,17 @@ public class VehicleTypeBoatBallista extends VehicleType {
 	public ResourceLocation getTextureForMaterialLevel(int level) {
 		switch (level) {
 			case 0:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/boatBallista1");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/boat_ballista_1.png");
 			case 1:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/boatBallista2");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/boat_ballista_2.png");
 			case 2:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/boatBallista3");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/boat_ballista_3.png");
 			case 3:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/boatBallista4");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/boat_ballista_4.png");
 			case 4:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/boatBallista5");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/boat_ballista_5.png");
 			default:
-				return new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/boatBallista1");
+				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/boat_ballista_1.png");
 		}
 	}
 

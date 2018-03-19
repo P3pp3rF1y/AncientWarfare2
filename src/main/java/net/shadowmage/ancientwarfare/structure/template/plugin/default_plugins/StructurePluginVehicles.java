@@ -36,6 +36,7 @@ public class StructurePluginVehicles implements StructureContentPlugin {
 
     @Override
     public void addHandledEntities(IStructurePluginManager manager) {
+        //TODO add when vehicles are tuned
         //manager.registerEntityHandler("ancientWarfareVehicle", EntityVehicle.class, TemplateRuleEntityLogic.class);
     }
 }

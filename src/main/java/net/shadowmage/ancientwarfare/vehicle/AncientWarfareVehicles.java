@@ -1,17 +1,16 @@
 package net.shadowmage.ancientwarfare.vehicle;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.AWVehicleEntityLoader;
-import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
-import net.shadowmage.ancientwarfare.vehicle.missiles.MissileBase;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketAimUpdate;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketAmmoSelect;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketAmmoUpdate;
@@ -23,23 +22,14 @@ import net.shadowmage.ancientwarfare.vehicle.network.PacketUpgradeUpdate;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicleInput;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicleMove;
 import net.shadowmage.ancientwarfare.vehicle.proxy.CommonProxy;
-import net.shadowmage.ancientwarfare.vehicle.registry.VehicleRegistry;
 import org.apache.logging.log4j.Logger;
 
-/*
-@Mod
-        (
-                name = "Ancient Warfare Vehicles",
-                modid = AncientWarfareVehicles.modID,
-                version = "@VERSION@",
-                dependencies = "required-after:ancientwarfare"
-        )
-*/
+@Mod(name = "Ancient Warfare Vehicles", modid = AncientWarfareVehicles.modID, version = "@VERSION@", dependencies = "required-after:ancientwarfare")
 
 public class AncientWarfareVehicles {
 	public static final String modID = "ancientwarfarevehicle";
 
-	//    @Instance(value = modID)
+	@Instance(value = modID)
 	public static AncientWarfareVehicles instance;
 
 	@SidedProxy(clientSide = "net.shadowmage.ancientwarfare.vehicle.proxy.ClientProxy", serverSide = "net.shadowmage.ancientwarfare.vehicle.proxy.CommonProxy")
@@ -49,7 +39,7 @@ public class AncientWarfareVehicles {
 
 	public static Logger log;
 
-	//    @EventHandler
+	@EventHandler
 	public void preInit(FMLPreInitializationEvent evt) {
 
 		log = evt.getModLog();
@@ -67,7 +57,7 @@ public class AncientWarfareVehicles {
 		AWVehicleEntityLoader.load();
 
         /*
-         * register tick-handlers
+		 * register tick-handlers
          */
 		PacketBase.registerPacketType(NetworkHandler.PACKET_AIM_UPDATE, PacketAimUpdate.class);
 		PacketBase.registerPacketType(NetworkHandler.PACKET_AMMO_SELECT, PacketAmmoSelect.class);
@@ -80,15 +70,12 @@ public class AncientWarfareVehicles {
 		PacketBase.registerPacketType(NetworkHandler.PACKET_VEHICLE_INPUT, PacketVehicleInput.class);
 		PacketBase.registerPacketType(NetworkHandler.PACKET_VEHICLE_MOVE, PacketVehicleMove.class);
 
-		EntityRegistry.registerModEntity(new ResourceLocation(AncientWarfareVehicles.modID, "vehicle"), VehicleBase.class, "vehicle", 0, this, 100, 5, true);
-		EntityRegistry.registerModEntity(new ResourceLocation(AncientWarfareVehicles.modID, "missile"), MissileBase.class, "missile", 1, this, 165, 5, true);
+		proxy.preInit();
 	}
 
-	//    @EventHandler
+	@EventHandler
 	public void init(FMLInitializationEvent evt) {
 		proxy.init();
-
-		VehicleRegistry.registerVehicles();
 
 		/*
 		 * save config for any changes that were made during loading stages

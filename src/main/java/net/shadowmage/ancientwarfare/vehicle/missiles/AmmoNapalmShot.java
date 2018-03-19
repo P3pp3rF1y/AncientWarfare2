@@ -39,7 +39,7 @@ public class AmmoNapalmShot extends Ammo {
 		this.renderScale = (weight / scaleFactor) * 2;
 		//		this.iconTexture = "ammoNapalm1";  TODO rendering
 		this.configName = "napalm_shot_" + weight;
-		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "model/vehicle/ammo/ammoStoneShot");
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/ammoStoneShot");
 		this.isFlaming = true;
 
 		//		this.neededResearch.add(ResearchGoalNumbers.flammables3); //TODO recipes
