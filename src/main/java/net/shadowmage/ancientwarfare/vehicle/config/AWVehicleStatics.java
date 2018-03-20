@@ -17,6 +17,7 @@ public class AWVehicleStatics extends ModConfiguration {
 	public static final String KEY_VEHICLE_TURRET_RIGHT = "keybind.vehicle.turret.right";
 	public static final String KEY_VEHICLE_MOUSE_AIM = "keybind.vehicle.mouse.aim";
 	public static final String KEY_VEHICLE_AMMO_SELECT = "keybind.vehicle.ammo.select";
+
 	public AWVehicleStatics(String mod) {
 		super(mod);
 	}
@@ -36,6 +37,9 @@ public class AWVehicleStatics extends ModConfiguration {
 
 	public static boolean renderVehicleNameplates = true;
 	public static boolean enableMouseAim = true;
+
+	public static boolean renderOverlay = true;
+	public static boolean renderAdvOverlay = true;
 
 	@Override
 	public void initializeCategories() {
