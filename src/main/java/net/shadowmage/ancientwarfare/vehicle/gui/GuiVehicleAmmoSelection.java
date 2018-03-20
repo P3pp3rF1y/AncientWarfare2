@@ -23,10 +23,8 @@ package net.shadowmage.ancientwarfare.vehicle.gui;
 
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
-import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
-import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.vehicle.container.ContainerVehicle;
 import net.shadowmage.ancientwarfare.vehicle.gui.elements.ButtonAmmo;
 import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
@@ -58,14 +56,12 @@ public class GuiVehicleAmmoSelection extends GuiContainerBase<ContainerVehicle> 
 		area = new CompositeScrolled(this, 10, 40, xSize - 20, ySize - 40 - 10);
 		addGuiElement(area);
 
-		Button done = new Button(getXSize() - 35 - 5, 5, 35, 12, "Done");
-		done.addNewListener(new Listener(Listener.MOUSE_UP) {
+		Button done = new Button(getXSize() - 35 - 5, 5, 35, 12, "Done") {
 			@Override
-			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
+			protected void onPressed() {
 				closeGui();
-				return true;
 			}
-		});
+		};
 		addGuiElement(done);
 	}
 
@@ -75,14 +71,12 @@ public class GuiVehicleAmmoSelection extends GuiContainerBase<ContainerVehicle> 
 
 		area.clearElements();
 		for (int i = 0; i < ammos.size(); i++) {
-			ButtonAmmo ammo = new ButtonAmmo(5, i + 10, getXSize() - 20 - 20 - 5, i * 22, ammos.get(i), getContainer().vehicle);
-			ammo.addNewListener(new Listener(Listener.MOUSE_UP) {
+			ButtonAmmo ammo = new ButtonAmmo(5, i + 10, getXSize() - 20 - 20 - 5, i * 22, ammos.get(i), getContainer().vehicle) {
 				@Override
-				public boolean onEvent(GuiElement widget, ActivationEvent evt) {
+				protected void onPressed() {
 					closeGui();
-					return true;
 				}
-			});
+			};
 			area.addGuiElement(ammo);
 		}
 	}

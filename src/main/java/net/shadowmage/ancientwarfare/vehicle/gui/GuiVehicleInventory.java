@@ -23,9 +23,7 @@ package net.shadowmage.ancientwarfare.vehicle.gui;
 
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
-import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
-import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.vehicle.container.ContainerVehicle;
@@ -59,53 +57,36 @@ public class GuiVehicleInventory extends GuiContainerBase<ContainerVehicle> {
 		addGuiElement(new Label(8 + 3 * 18 + 4, getContainer().extrasY - 10, "Upg."));
 		addGuiElement(new Label(8 + 6 * 18 + 8, getContainer().extrasY - 10, "Armor"));
 		addGuiElement(new Label(8, getContainer().playerY - 10, "Player Inventory"));
-		Button done = new Button(8 + 90 + 8, 4, 45, 16, "Done");
-		done.addNewListener(new Listener(Listener.MOUSE_UP) {
+		Button stats = new Button(8, 4, 45, 16, "Stats") {
 			@Override
-			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
-				closeGui();
-				return true;
+			protected void onPressed() {
+				mc.displayGuiScreen(new GuiVehicleStats(GuiVehicleInventory.this, getContainer().vehicle));
 			}
-		});
-		addGuiElement(done);
-
-		Button stats = new Button(8, 4, 45, 16, "Stats");
-		stats.addNewListener(new Listener(Listener.MOUSE_UP) {
-			@Override
-			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
-				mc.displayGuiScreen(new GuiVehicleStats(getContainer()));
-				return true;
-			}
-		});
+		};
 		addGuiElement(stats);
-		Button pack = new Button(8 + 45 + 4, 4, 45, 16, "Pack");
-		pack.addNewListener(new Listener(Listener.MOUSE_UP) {
+		Button pack = new Button(8 + 45 + 4, 4, 45, 16, "Pack") {
 			@Override
-			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
+			protected void onPressed() {
 				NetworkHandler.sendToServer(new PacketPackCommand(getContainer().vehicle));
 				closeGui();
-				return true;
 			}
-		});
+		};
+		addGuiElement(pack);
 
 		if (getContainer().vehicle.inventory.storageInventory.getSlots() > 0) {
-			Button minus = new Button(171, getContainer().storageY - 1, 16, 16, "-");
-			minus.addNewListener(new Listener(Listener.MOUSE_UP) {
+			Button minus = new Button(171, getContainer().storageY - 1, 16, 16, "-") {
 				@Override
-				public boolean onEvent(GuiElement widget, ActivationEvent evt) {
+				protected void onPressed() {
 					getContainer().prevRow();
-					return true;
 				}
-			});
+			};
 			addGuiElement(minus);
-			Button plus = new Button(171, getContainer().storageY + 3 * 18 - 16 - 1, 16, 16, "+");
-			plus.addNewListener(new Listener(Listener.MOUSE_UP) {
+			Button plus = new Button(171, getContainer().storageY + 3 * 18 - 16 - 1, 16, 16, "+") {
 				@Override
-				public boolean onEvent(GuiElement widget, ActivationEvent evt) {
+				protected void onPressed() {
 					getContainer().nextRow();
-					return true;
 				}
-			});
+			};
 			addGuiElement(plus);
 		}
 	}

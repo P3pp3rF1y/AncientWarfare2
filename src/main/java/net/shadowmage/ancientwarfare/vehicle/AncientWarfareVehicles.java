@@ -70,7 +70,6 @@ public class AncientWarfareVehicles {
 
 		NetworkHandler.registerContainer(NetworkHandler.GUI_VEHICLE_INVENTORY, ContainerVehicle.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_VEHICLE_AMMO_SELECTION, ContainerVehicle.class);
-		NetworkHandler.registerContainer(NetworkHandler.GUI_VEHICLE_STATS, ContainerVehicle.class);
 
 		proxy.preInit();
 	}
