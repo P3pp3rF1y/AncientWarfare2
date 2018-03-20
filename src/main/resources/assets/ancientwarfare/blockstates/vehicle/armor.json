@@ -1,0 +1,26 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "builtin/generated",
+        "transform": "forge:default-item"
+    },
+    "variants": {
+        "variant": {
+            "armor_stone": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/armor/armor_stone"
+                }
+            },
+            "armor_iron": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/armor/armor_iron"
+                }
+            },
+            "armor_obsidian": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/armor/armor_obsidian"
+                }
+            }
+        }
+    }
+}
