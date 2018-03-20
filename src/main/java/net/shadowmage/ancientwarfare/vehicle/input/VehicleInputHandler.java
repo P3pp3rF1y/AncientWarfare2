@@ -53,8 +53,11 @@ public class VehicleInputHandler {
 	private static final Set<Integer> releaseableKeys = new HashSet<>();
 	private static boolean trackedKeyReleased = false;
 
+	static {
+		MinecraftForge.EVENT_BUS.register(new VehicleInputHandler());
+	}
+
 	private VehicleInputHandler() {
-		MinecraftForge.EVENT_BUS.register(this);
 	}
 
 	public static void initKeyBindings() {
@@ -230,27 +233,27 @@ public class VehicleInputHandler {
 			trackedKeyReleased = false;
 
 			PacketVehicleInput pkt = new PacketVehicleInput(vehicle);
-			if (FORWARD.isPressed() && !REVERSE.isPressed()) {
+			if (FORWARD.isKeyDown() && !REVERSE.isKeyDown()) {
 				pkt.setForwardInput((byte) 1);
-			} else if (REVERSE.isPressed() && !FORWARD.isPressed()) {
+			} else if (REVERSE.isKeyDown() && !FORWARD.isKeyDown()) {
 				pkt.setForwardInput((byte) -1);
 			}
 
-			if (LEFT.isPressed() && !RIGHT.isPressed()) {
+			if (LEFT.isKeyDown() && !RIGHT.isKeyDown()) {
 				pkt.setTurnInput((byte) -1);
-			} else if (RIGHT.isPressed() && !LEFT.isPressed()) {
+			} else if (RIGHT.isKeyDown() && !LEFT.isKeyDown()) {
 				pkt.setTurnInput((byte) 1);
 			}
 
-			if (ASCEND_AIM_UP.isPressed() && !DESCEND_AIM_DOWN.isPressed()) {
+			if (ASCEND_AIM_UP.isKeyDown() && !DESCEND_AIM_DOWN.isKeyDown()) {
 				pkt.setPowerInput((byte) 1);
-			} else if (DESCEND_AIM_DOWN.isPressed() && !ASCEND_AIM_UP.isPressed()) {
+			} else if (DESCEND_AIM_DOWN.isKeyDown() && !ASCEND_AIM_UP.isKeyDown()) {
 				pkt.setPowerInput((byte) -1);
 			}
 
-			if (TURRET_LEFT.isPressed() && !TURRET_RIGHT.isPressed()) {
+			if (TURRET_LEFT.isKeyDown() && !TURRET_RIGHT.isKeyDown()) {
 				pkt.setRotationInput((byte) -1);
-			} else if (TURRET_RIGHT.isPressed() && !TURRET_LEFT.isPressed()) {
+			} else if (TURRET_RIGHT.isKeyDown() && !TURRET_LEFT.isKeyDown()) {
 				pkt.setRotationInput((byte) 1);
 			}
 

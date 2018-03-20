@@ -555,6 +555,12 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		super.setDead();
 	}
 
+	@Nullable
+	@Override
+	public Entity getControllingPassenger() {
+		return getPassengers().isEmpty() ? null : getPassengers().get(0);
+	}
+
 	@Override
 	public void onUpdate() {
 		long t1 = System.nanoTime();
@@ -611,14 +617,6 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		return false;
 	}
 
-	@Override
-	protected void removePassenger(Entity passenger) {
-		if (passenger instanceof EntityPlayerMP) {
-			((EntityPlayerMP) passenger).capabilities.allowFlying = false;
-		}
-		super.removePassenger(passenger);
-	}
-
 	/**
 	 * server-side updates...
 	 */
@@ -637,7 +635,12 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		int zMin = MathHelper.floor(this.posZ - this.width / 2);
 		int yMin = MathHelper.floor(posY) - 2;
 		boolean foundTarget = false;
-		removePassenger(rider);
+
+		if (rider instanceof EntityPlayerMP) {
+			((EntityPlayerMP) rider).capabilities.allowFlying = false;
+		}
+		rider.dismountRidingEntity();
+
 		searchLabel:
 		for (int y = yMin; y <= yMin + 3; y++) {
 			for (int x = xMin; x <= xMin + (int) width; x++) {
