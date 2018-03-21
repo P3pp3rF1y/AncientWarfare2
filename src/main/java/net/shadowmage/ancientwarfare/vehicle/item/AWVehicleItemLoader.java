@@ -32,19 +32,20 @@ public class AWVehicleItemLoader {
         IForgeRegistry<Item> registry = event.getRegistry();
 
         registry.register(new ItemSpawner());
-        registry.register(new ItemBaseVehicle("flame_charge"));
-        registry.register(new ItemBaseVehicle("explosive_charge"));
-        registry.register(new ItemBaseVehicle("rocket_charge"));
-        registry.register(new ItemBaseVehicle("cluster_charge"));
-        registry.register(new ItemBaseVehicle("napalm_charge"));
-        registry.register(new ItemBaseVehicle("clay_casing"));
-        registry.register(new ItemBaseVehicle("iron_casing"));
-        registry.register(new ItemBaseVehicle("mobility_unit"));
-        registry.register(new ItemBaseVehicle("turret_components"));
-        registry.register(new ItemBaseVehicle("torsion_unit"));
-        registry.register(new ItemBaseVehicle("counter_weight_unit"));
-        registry.register(new ItemBaseVehicle("powder_case"));
-        registry.register(new ItemBaseVehicle("equipment_bay"));
+        //TODO do we really need items that are duplicates of ammo just for crafting?
+        registry.register(new ItemMisc("flame_charge"));
+        registry.register(new ItemMisc("explosive_charge"));
+        registry.register(new ItemMisc("rocket_charge"));
+        registry.register(new ItemMisc("cluster_charge"));
+        registry.register(new ItemMisc("napalm_charge"));
+        registry.register(new ItemMisc("clay_casing"));
+        registry.register(new ItemMisc("iron_casing"));
+        registry.register(new ItemMisc("mobility_unit"));
+        registry.register(new ItemMisc("turret_components"));
+        registry.register(new ItemMisc("torsion_unit"));
+        registry.register(new ItemMisc("counter_weight_unit"));
+        registry.register(new ItemMisc("powder_case"));
+        registry.register(new ItemMisc("equipment_bay"));
 
         AmmoRegistry.registerAmmo(registry);
         ArmorRegistry.registerArmorTypes(registry);

@@ -8,7 +8,7 @@ import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.vehicle.AncientWarfareVehicles;
 
-public class ItemBaseVehicle extends ItemBase implements IClientRegistrar {
+public abstract class ItemBaseVehicle extends ItemBase implements IClientRegistrar {
 	public ItemBaseVehicle(String regName) {
 		super(AncientWarfareVehicles.modID, regName);
 		setCreativeTab(AWVehicleItemLoader.vehicleTab);
