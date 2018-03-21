@@ -9,14 +9,14 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
+import net.shadowmage.ancientwarfare.vehicle.AncientWarfareVehicles;
 import net.shadowmage.ancientwarfare.vehicle.registry.AmmoRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.UpgradeRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleRegistry;
 
-@Mod.EventBusSubscriber(modid = AncientWarfareCore.modID)
+@Mod.EventBusSubscriber(modid = AncientWarfareVehicles.modID)
 public class AWVehicleItemLoader {
 
     public static final CreativeTabs vehicleTab = new CreativeTabs("tabs.vehicles") {

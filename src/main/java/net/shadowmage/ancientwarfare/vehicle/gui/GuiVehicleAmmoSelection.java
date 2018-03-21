@@ -70,14 +70,21 @@ public class GuiVehicleAmmoSelection extends GuiContainerBase<ContainerVehicle> 
 		List<IAmmo> ammos = getContainer().vehicle.vehicleType.getValidAmmoTypes();
 
 		area.clearElements();
+
+		int currentY = 10;
+
 		for (int i = 0; i < ammos.size(); i++) {
-			ButtonAmmo ammo = new ButtonAmmo(5, i + 10, getXSize() - 20 - 20 - 5, i * 22, ammos.get(i), getContainer().vehicle) {
+			ButtonAmmo ammo = new ButtonAmmo(5, currentY, getXSize() - 20 - 20 - 5, 22, ammos.get(i), getContainer().vehicle) {
 				@Override
 				protected void onPressed() {
+					super.onPressed();
 					closeGui();
 				}
 			};
 			area.addGuiElement(ammo);
+			currentY += 25;
 		}
+
+		area.setAreaSize(currentY);
 	}
 }

@@ -168,7 +168,7 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 	}
 
 	public void updateSelectedAmmo(String ammoRegistryName) {
-		if (!ammoRegistryName.equals(currentAmmoType.toString())) {
+		if (!ammoRegistryName.equals(currentAmmoType == null ? "" : currentAmmoType.toString())) {
 			this.currentAmmoType = new ResourceLocation(ammoRegistryName);
 			if (!vehicle.world.isRemote) {
 				NetworkHandler.sendToAllTracking(vehicle, new PacketAmmoSelect(vehicle, ammoRegistryName));
@@ -269,7 +269,7 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 		for (VehicleAmmoEntry ent : this.ammoEntries.values()) {
 			NBTTagCompound entryTag = new NBTTagCompound();
 			entryTag.setString("type", ent.baseAmmoType.getRegistryName().toString());
-			entryTag.setInteger("cnt", ent.ammoCount);
+			entryTag.setInteger("count", ent.ammoCount);
 			tagList.appendTag(entryTag);
 		}
 		tag.setTag("list", tagList);

@@ -23,13 +23,9 @@ package net.shadowmage.ancientwarfare.vehicle.gui.elements;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderItem;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
-import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
-import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 import net.shadowmage.ancientwarfare.vehicle.registry.AmmoRegistry;
@@ -49,14 +45,11 @@ public class ButtonAmmo extends Button {
 		if (ammo != null) {
 			setText(I18n.format("ammo." + ammo.getRegistryName().getResourcePath()));
 		}
-		addNewListener(new Listener(Listener.MOUSE_UP) {
-			@Override
-			public boolean onEvent(GuiElement widget, GuiContainerBase.ActivationEvent evt) {
-				vehicle.ammoHelper.handleClientAmmoSelection(ammo.getRegistryName());
-				return true;
-			}
-		});
+	}
 
+	@Override
+	protected void onPressed() {
+		vehicle.ammoHelper.handleClientAmmoSelection(ammo.getRegistryName());
 	}
 
 	@Override
@@ -66,15 +59,13 @@ public class ButtonAmmo extends Button {
 			//draw ammo icon on left
 			//draw ammo name to the right of that
 			//on the far right, ammo qty
-			int qty = 0;
 			if (this.ammo != null) {
 				String quantity = String.valueOf(vehicle.ammoHelper.getCountOf(ammo));
-				itemRenderer.renderItem(stack, ItemCameraTransforms.TransformType.GUI);
+				itemRenderer.renderItemIntoGUI(stack, renderX + 3, renderY + 3);
 				int quantityRenderX = renderX + this.width - 10 - Minecraft.getMinecraft().fontRenderer.getStringWidth(quantity);
-				Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(String.valueOf(qty), quantityRenderX, renderY + textY, 0xffffffff);
+				Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(String.valueOf(quantity), quantityRenderX, renderY + textY, 0xffffffff);
 			}
 			//TODO proper text rendering based on what was in GuiButtonVehicleAmmo
 		}
 	}
-
 }
