@@ -26,10 +26,10 @@ import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.vehicle.container.ContainerVehicle;
+import net.shadowmage.ancientwarfare.vehicle.container.ContainerVehicleInventory;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketPackCommand;
 
-public class GuiVehicleInventory extends GuiContainerBase<ContainerVehicle> {
+public class GuiVehicleInventory extends GuiContainerBase<ContainerVehicleInventory> {
 	public GuiVehicleInventory(ContainerBase container) {
 		super(container);
 		this.shouldCloseOnVanillaKeys = true;

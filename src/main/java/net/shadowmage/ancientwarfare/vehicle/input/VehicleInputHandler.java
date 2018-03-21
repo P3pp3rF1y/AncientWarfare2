@@ -133,7 +133,7 @@ public class VehicleInputHandler {
 		registerCallBack(AMMO_PREV, new VehicleCallback(v -> v.ammoHelper.setPreviousAmmo()));
 		registerCallBack(AMMO_SELECT, new VehicleCallback(vehicle -> {
 			if (!vehicle.vehicleType.getValidAmmoTypes().isEmpty()) {
-				NetworkHandler.INSTANCE.openGui(Minecraft.getMinecraft().player, NetworkHandler.GUI_VEHICLE_AMMO_SELECTION);
+				NetworkHandler.INSTANCE.openGui(Minecraft.getMinecraft().player, NetworkHandler.GUI_VEHICLE_AMMO_SELECTION, vehicle.getEntityId());
 			}
 		}));
 	}
