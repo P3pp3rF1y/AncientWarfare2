@@ -25,10 +25,7 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
 public class VehicleUpgradeSpeed extends VehicleUpgradeBase {
 
-	/**
-	 * @param num
-	 */
-	public VehicleUpgradeSpeed(int num) {
+	public VehicleUpgradeSpeed() {
 		super("vehicle_upgrade_speed");
 /* TODO recipe
 		this.neededResearch.add(ResearchGoalNumbers.mobility3);

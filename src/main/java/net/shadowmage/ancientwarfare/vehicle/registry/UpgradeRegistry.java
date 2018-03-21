@@ -72,7 +72,7 @@ public class UpgradeRegistry {
 	 * called during init to register upgrade types as items
 	 */
 	public static void registerUpgrades(IForgeRegistry<Item> registry) {
-		speedUpgrade = registerUpgrade(new VehicleUpgradeSpeed(0), registry);
+		speedUpgrade = registerUpgrade(new VehicleUpgradeSpeed(), registry);
 		aimUpgrade = registerUpgrade(new VehicleUpgradeAim(), registry);
 		reloadUpgrade = registerUpgrade(new VehicleUpgradeReload(), registry);
 		powerUpgrade = registerUpgrade(new VehicleUpgradePower(), registry);
