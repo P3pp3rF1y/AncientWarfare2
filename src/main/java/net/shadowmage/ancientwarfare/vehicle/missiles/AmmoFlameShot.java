@@ -47,7 +47,7 @@ public class AmmoFlameShot extends Ammo {
 		this.configName = "flame_shot_" + weight;
 		this.vehicleDamage = 8;
 		this.entityDamage = 8;
-		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/ammoStoneShot");
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/ammo_stone_shot.png");
 
 		//		this.neededResearch.add(ResearchGoalNumbers.flammables2); TODO recipes - below as well
 		int cases = 1;

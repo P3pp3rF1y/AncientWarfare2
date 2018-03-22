@@ -39,7 +39,7 @@ public class AmmoCanisterShot extends Ammo {
 		this.iconTexture = "ammoCanister1";
 */
 		this.configName = "canister_shot_" + weight;
-		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/ammoStoneShot");
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/ammo_stone_shot.png");
 		this.entityDamage = 8;
 		this.vehicleDamage = 8;
 /* TODO recipes

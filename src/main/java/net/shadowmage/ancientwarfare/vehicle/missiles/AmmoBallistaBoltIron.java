@@ -42,7 +42,7 @@ public class AmmoBallistaBoltIron extends Ammo {
 /* TODO rendering
 		this.iconTexture = "ammoBoltIron1";
 */
-		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/arrowIron");
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/arrow_iron.png");
 /* TODO recipe
 		this.neededResearch.add(ResearchGoalNumbers.ballistics2);
 		this.resources.add(new ItemStackWrapperCrafting(Item.ingotIron, 7));

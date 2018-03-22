@@ -41,7 +41,7 @@ public class AmmoPebbleShot extends Ammo {
 		this.renderScale = (weight / scaleFactor) * 2;
 		//		this.iconTexture = "ammoPebble1"; TODO rendering
 		this.configName = "pebble_shot_" + weight;
-		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/ammoStoneShot");
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/ammo_stone_shot.png");
 
 /* TODO recipes
 		this.neededResearch.add(ResearchGoalNumbers.explosives1);

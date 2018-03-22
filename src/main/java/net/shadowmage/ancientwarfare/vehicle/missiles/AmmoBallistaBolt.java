@@ -42,7 +42,7 @@ public class AmmoBallistaBolt extends Ammo {
 		this.iconTexture = "ammoBolt1";
 */
 		this.configName = "ballist_bolt";
-		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/arrowWood");
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/arrow_wood.png");
 
 /*
 		this.resources.add(new ItemStackWrapperCrafting(Item.stick, 5));

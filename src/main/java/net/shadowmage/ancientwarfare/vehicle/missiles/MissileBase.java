@@ -25,6 +25,7 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
@@ -63,8 +64,8 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 
 	public boolean inGround = false;
 	public boolean hasImpacted = false;
-	BlockPos persistentBlockPos;
-	IBlockState persistentBlock;
+	BlockPos persistentBlockPos = BlockPos.ORIGIN;
+	IBlockState persistentBlock = Blocks.AIR.getDefaultState();
 
 	/**
 	 * initial velocities, used by rocket for acceleration factor

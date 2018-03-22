@@ -42,7 +42,7 @@ public class AmmoBallistaBoltExplosive extends Ammo {
 /* TODO rendering
 		this.iconTexture = "ammoBoltExplosive1";
 */
-		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/arrowWood");
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/arrow_wood.png");
 /* TODO recipe
 		this.neededResearch.add(ResearchGoalNumbers.ballistics1);
 		this.neededResearch.add(ResearchGoalNumbers.explosives1);

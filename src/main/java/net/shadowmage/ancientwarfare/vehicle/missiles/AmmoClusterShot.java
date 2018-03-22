@@ -39,7 +39,7 @@ public class AmmoClusterShot extends Ammo {
 		this.iconTexture = "ammoCluster1";
 */
 		this.configName = "cluster_shot_" + weight;
-		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/ammoStoneShot");
+		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/ammo_stone_shot.png");
 
 		this.entityDamage = 5;
 		this.vehicleDamage = 5;
