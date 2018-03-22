@@ -27,6 +27,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
@@ -38,6 +39,7 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderOverlayAdvanced {
 
+	@SubscribeEvent
 	public void renderLast(RenderWorldLastEvent event) {
 		EntityPlayer player = Minecraft.getMinecraft().player;
 		if (AWVehicleStatics.renderAdvOverlay && player.getRidingEntity() instanceof VehicleBase && Minecraft.getMinecraft().currentScreen == null) {
@@ -101,11 +103,8 @@ public class RenderOverlayAdvanced {
 		int rocketBurnTime = (int) (speed * 20.f * AmmoHwachaRocket.burnTimeFactor);
 
 		float xAcc = (float) (vX / speed) * AmmoHwachaRocket.accelerationFactor;
-		;
 		float yAcc = (float) (vY / speed) * AmmoHwachaRocket.accelerationFactor;
-		;
 		float zAcc = (float) (vZ / speed) * AmmoHwachaRocket.accelerationFactor;
-		;
 		vX = xAcc;
 		vY = yAcc;
 		vZ = zAcc;

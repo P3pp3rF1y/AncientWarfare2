@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.vehicle.input;
 
+import codechicken.lib.raytracer.RayTracer;
 import com.google.common.collect.Maps;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
@@ -151,7 +152,7 @@ public class VehicleInputHandler {
 	}
 
 	private static RayTraceResult getPlayerLookTargetClient(EntityPlayer player, float range, Entity excludedEntity) {
-		Vec3d playerPos = player.getPositionVector();
+		Vec3d playerPos = RayTracer.getCorrectedHeadVec(player);
 		Vec3d lookVector = player.getLook(0);
 		Vec3d endVector = playerPos.addVector(lookVector.x * range, lookVector.y * range, lookVector.z * range);
 		RayTraceResult blockHit = player.world.rayTraceBlocks(playerPos, endVector);

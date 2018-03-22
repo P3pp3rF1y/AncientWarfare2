@@ -141,7 +141,7 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 				float power;
 				for (int i = 0; i < count; i++) {
 					maxPower = getAdjustedMaxMissileVelocity();
-					power = vehicle.localLaunchPower > maxPower ? maxPower : vehicle.localLaunchPower;
+					power = Math.min(vehicle.localLaunchPower, maxPower);
 					yaw = vehicle.localTurretRotation;
 					pitch = vehicle.localTurretPitch + vehicle.rotationPitch;
 					if (AWVehicleStatics.adjustMissilesForAccuracy) {
