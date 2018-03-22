@@ -20,8 +20,7 @@ public class ItemAmmo extends ItemBaseVehicle {
 	public ItemAmmo(ResourceLocation registryName) {
 		super(registryName.getResourcePath());
 
-		setUnlocalizedName("ammo." + registryName.getResourcePath());
-		tooltipName = "ammo." + registryName.getResourcePath() + ".tooltip";
+		tooltipName = "item." + registryName.getResourcePath() + ".tooltip";
 	}
 
 	@Override

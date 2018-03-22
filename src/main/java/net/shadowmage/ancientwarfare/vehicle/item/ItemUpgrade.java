@@ -21,7 +21,6 @@ public class ItemUpgrade extends ItemBaseVehicle {
 
 	public ItemUpgrade(ResourceLocation registryName) {
 		super(registryName.getResourcePath());
-		setUnlocalizedName("item." + registryName.getResourcePath() + ".name");
 		tooltipName = "item." + registryName.getResourcePath() + ".tooltip";
 	}
 

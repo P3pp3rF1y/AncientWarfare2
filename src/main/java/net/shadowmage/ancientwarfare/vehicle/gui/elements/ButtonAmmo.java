@@ -43,7 +43,7 @@ public class ButtonAmmo extends Button {
 		stack = new ItemStack(AmmoRegistry.getItemForAmmo(ammo));
 		this.vehicle = vehicle;
 		if (ammo != null) {
-			setText(I18n.format("ammo." + ammo.getRegistryName().getResourcePath()));
+			setText(I18n.format("item." + ammo.getRegistryName().getResourcePath() + ".name"));
 		}
 	}
 

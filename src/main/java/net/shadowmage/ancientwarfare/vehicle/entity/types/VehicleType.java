@@ -270,7 +270,7 @@ public abstract class VehicleType implements IVehicleType {
 
 	@Override
 	public String getLocalizedName() {
-		return I18n.format(this.getDisplayName());
+		return I18n.format(this.getDisplayName() + ".name");
 	}
 
 	@Override

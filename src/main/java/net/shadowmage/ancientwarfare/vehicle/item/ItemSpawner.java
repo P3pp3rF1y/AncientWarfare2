@@ -21,6 +21,7 @@
 
 package net.shadowmage.ancientwarfare.vehicle.item;
 
+import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,14 +35,15 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.vehicle.AncientWarfareVehicles;
 import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
+import net.shadowmage.ancientwarfare.vehicle.entity.IVehicleType;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleType;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ItemSpawner extends ItemBaseVehicle {
-
 	public ItemSpawner() {
 		super("spawner");
 	}
@@ -90,15 +92,26 @@ public class ItemSpawner extends ItemBaseVehicle {
 			if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnData")) {
 				NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnData");
 				int level = tag.getInteger("level");
-				tooltip.add("Material Level: " + level);
+				tooltip.add("Material Level: " + level);//TODO additional translations
 				if (tag.hasKey("health")) {
 					tooltip.add("Vehicle Health: " + tag.getFloat("health"));
 				}
 
 				VehicleBase vehicle = VehicleType.getVehicleForType(world, stack.getItemDamage(), level);
-				tooltip.addAll(vehicle.vehicleType.getDisplayTooltip());
+				tooltip.addAll(vehicle.vehicleType.getDisplayTooltip().stream().map(I18n::format).collect(Collectors.toSet()));
 			}
 		}
+	}
+
+	@Override
+	public String getUnlocalizedName(ItemStack stack) {
+		if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnData")) {
+			NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnData");
+			IVehicleType vehicle = VehicleType.vehicleTypes[stack.getItemDamage()];
+			return vehicle.getDisplayName();
+		}
+
+		return "item.vehicleSpawner";
 	}
 
 	@Override
