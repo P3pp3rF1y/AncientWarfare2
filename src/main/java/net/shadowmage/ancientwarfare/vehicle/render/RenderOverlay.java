@@ -60,7 +60,7 @@ public class RenderOverlay extends Gui {
 		IAmmo ammo = vehicle.ammoHelper.getCurrentAmmoType();
 		if (ammo != null) {
 			int count = vehicle.ammoHelper.getCurrentAmmoCount();
-			this.drawString(fontRenderer, "Ammo: " + I18n.format(AmmoRegistry.getItemForAmmo(ammo).getUnlocalizedName()), 10, 50, white);
+			this.drawString(fontRenderer, "Ammo: " + I18n.format(AmmoRegistry.getItemForAmmo(ammo).getUnlocalizedName() + ".name"), 10, 50, white);
 			this.drawString(fontRenderer, "Count: " + count, 10, 60, white);
 		} else {
 			this.drawString(fontRenderer, "No Ammo Selected", 10, 50, white);

@@ -967,3 +967,19 @@ item.armor_stone.name=Stone Armor
 item.armor_stone.tooltip=Reduce Fire Damage by 7%
 item.armor_obsidian.name=Obsidian Armor
 item.armor_obsidian.tooltip=Reduce Blast Damage by 7%
+
+#vehicle input keybinds
+keybind.category.awVehicle=Ancient Warfare Vehicles
+keybind.vehicle.forward=Forward / Accelerate
+keybind.vehicle.reverse=Reverse / Decelerate
+keybind.vehicle.left=Turn/Strafe Left
+keybind.vehicle.right=Turn/Strafe Right
+keybind.vehicle.fire=Fire
+keybind.vehicle.ascend.aim.up=Aim Up
+keybind.vehicle.descend.aim.down=Aim Down
+keybind.vehicle.ammo.prev=Previous Ammo
+keybind.vehicle.ammo.next=Next Ammo
+keybind.vehicle.turret.left=Turret Left
+keybind.vehicle.turret.right=Turret Right
+keybind.vehicle.mouse.aim=Enable/Disable Mouse Aim
+keybind.vehicle.ammo.select=Open Ammo Selection GUI
