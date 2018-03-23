@@ -21,6 +21,8 @@
 
 package net.shadowmage.ancientwarfare.vehicle.item;
 
+import codechicken.lib.model.ModelRegistryHelper;
+import codechicken.lib.render.item.IItemRenderer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -38,6 +40,7 @@ import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.IVehicleType;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleType;
+import net.shadowmage.ancientwarfare.vehicle.render.RenderItemSpawner;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -129,5 +132,12 @@ public class ItemSpawner extends ItemBaseVehicle {
 			return stack.getTagCompound().getCompoundTag("spawnData").getInteger("level");
 		}
 		return 0;
+	}
+
+	private static final IItemRenderer ITEM_RENDERER = new RenderItemSpawner();
+
+	@Override
+	public void registerClient() {
+		ModelRegistryHelper.registerItemRenderer(this, ITEM_RENDERER);
 	}
 }
