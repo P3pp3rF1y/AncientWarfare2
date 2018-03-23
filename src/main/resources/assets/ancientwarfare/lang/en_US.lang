@@ -961,9 +961,9 @@ item.vehicle_upgrade_pitch_down=Turret Wedge: -3'
 item.vehicle_upgrade_pitch_down.tooltip=Aim Pitch -3'
 
 #vehicle armor items
-item.armor_iron=Iron Armor
+item.armor_iron.name=Iron Armor
 item.armor_iron.tooltip=Reduce Most Damage by 7%
-item.armor_stone=Stone Armor
+item.armor_stone.name=Stone Armor
 item.armor_stone.tooltip=Reduce Fire Damage by 7%
-item.armor_obsidian=Obsidian Armor
+item.armor_obsidian.name=Obsidian Armor
 item.armor_obsidian.tooltip=Reduce Blast Damage by 7%

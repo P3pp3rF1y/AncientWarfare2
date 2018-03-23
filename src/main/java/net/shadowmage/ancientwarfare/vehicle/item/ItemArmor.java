@@ -19,7 +19,6 @@ public class ItemArmor extends ItemBaseVehicle {
 
 	public ItemArmor(ResourceLocation registryName) {
 		super(registryName.getResourcePath());
-		setUnlocalizedName("item." + registryName.getResourcePath() + ".name");
 		tooltipName = "item." + registryName.getResourcePath() + ".tooltip";
 	}
 
