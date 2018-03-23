@@ -9,7 +9,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.registries.IForgeRegistry;
-import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.vehicle.AncientWarfareVehicles;
 import net.shadowmage.ancientwarfare.vehicle.registry.AmmoRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
@@ -23,7 +22,7 @@ public class AWVehicleItemLoader {
         @Override
         @SideOnly(Side.CLIENT)
         public ItemStack getTabIconItem() {
-            return new ItemStack(AWItems.researchBook);//TODO set an appropriate icon for the vehicles tab
+            return new ItemStack(AWVehicleItems.spawner);
         }
     };
 
