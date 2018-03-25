@@ -757,6 +757,7 @@ ftbu_aw2.notification.townhall_hqmissing.tooltip.3=(re)place a Town Hall to set 
 
 #jei
 jei.recipe.research_recipe=Research Recipe
+jei.recipe.shapeless_research_recipe=Shapeless Research Recipe
 
 #vehicle spawner items
 item.vehicleSpawner.0.name=Catapult Stand Fixed
@@ -785,7 +786,7 @@ item.vehicleSpawner.22.name=Gunship
 item.vehicleSpawner.23.name=Helicopter
 item.vehicleSpawner.24.name=Submarine
 
-#vehicle ammo
+# vehicle ammo
 item.ammo_stone_shot_10.name=Stone Shot 10kg
 item.ammo_stone_shot_15.name=Stone Shot 15kg
 item.ammo_stone_shot_30.name=Stone Shot 30kg
@@ -911,7 +912,7 @@ item.ammo_torpedo_15.tooltip=Used by Submarines
 item.ammo_torpedo_30.tooltip=Used by Submarines
 item.ammo_torpedo_45.tooltip=Used by Submarines
 
-#tooltips used in vehicle items
+# tooltips used for vehicle items
 item.vehicleSpawner.tooltip.torsion=Torsion Weapon
 item.vehicleSpawner.tooltip.gunpowder=Gunpowder Weapon
 item.vehicleSpawner.tooltip.weight=Countweight Weapon
@@ -929,7 +930,7 @@ item.vehicleSpawner.tooltip.noweapon=No Weapons
 item.vehicleSpawner.tooltip.boat=Special: Boat
 item.vehicleSpawner.tooltip.submarine=Special: Submarine
 
-#components
+# components
 item.flame_charge.name=Flame Charge
 item.explosive_charge.name=Explosive Charge
 item.rocket_charge.name=Rocket Charge
@@ -945,22 +946,22 @@ item.powder_case.name=Powder Case
 item.equipment_bay.name=Equipment Bay
 
 # vehicle upgrades
-item.vehicle_upgrade_speed=Iron Bearings
+item.vehicle_upgrade_speed.name=Iron Bearings
 item.vehicle_upgrade_speed.tooltip=Max Speed + 0.25m/s
-item.vehicle_upgrade_aim=Basic Trajectory Calculator
+item.vehicle_upgrade_aim.name=Basic Trajectory Calculator
 item.vehicle_upgrade_aim.tooltip=Acc +3%
-item.vehicle_upgrade_reload=Spring-Fed Reloader
+item.vehicle_upgrade_reload.name=Spring-Fed Reloader
 item.vehicle_upgrade_reload.tooltip=Reload Time - 10%
-item.vehicle_upgrade_power=Power Upgrade
+item.vehicle_upgrade_power.name=Power Upgrade
 item.vehicle_upgrade_power.tooltip=Missile Speed + 2m/s
-item.vehicle_upgrade_turret_pitch=Pitch Extension
+item.vehicle_upgrade_turret_pitch.name=Pitch Extension
 item.vehicle_upgrade_turret_pitch.tooltip=Extends Turret Rotation
-item.vehicle_upgrade_pitch_up=Turret Wedge: +3'
+item.vehicle_upgrade_pitch_up.name=Turret Wedge: +3'
 item.vehicle_upgrade_pitch_up.tooltip=Aim Pitch +3'
-item.vehicle_upgrade_pitch_down=Turret Wedge: -3'
+item.vehicle_upgrade_pitch_down.name=Turret Wedge: -3'
 item.vehicle_upgrade_pitch_down.tooltip=Aim Pitch -3'
 
-#vehicle armor items
+# vehicle armor items
 item.armor_iron.name=Iron Armor
 item.armor_iron.tooltip=Reduce Most Damage by 7%
 item.armor_stone.name=Stone Armor
@@ -968,7 +969,7 @@ item.armor_stone.tooltip=Reduce Fire Damage by 7%
 item.armor_obsidian.name=Obsidian Armor
 item.armor_obsidian.tooltip=Reduce Blast Damage by 7%
 
-#vehicle input keybinds
+# vehicle input keybinds
 keybind.category.awVehicle=Ancient Warfare Vehicles
 keybind.vehicle.forward=Forward / Accelerate
 keybind.vehicle.reverse=Reverse / Decelerate

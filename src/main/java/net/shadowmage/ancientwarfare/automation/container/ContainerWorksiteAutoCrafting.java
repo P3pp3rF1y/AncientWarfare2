@@ -27,7 +27,7 @@ public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCra
         //slot 29-37 = outputSlots
         //slot 38-73 = playerInventory
 
-        Slot slot = new SlotResearchCrafting(player, inventory, tileEntity.outputSlot, 0, 3 * 18 + 3 * 18 + 8 + 18, 1 * 18 + 8) {
+        Slot slot = new SlotResearchCrafting(player, tileEntity.getCrafterName(), inventory, tileEntity.outputSlot, 0, 3 * 18 + 3 * 18 + 8 + 18, 1 * 18 + 8) {
             @Override
             public boolean canTakeStack(EntityPlayer par1EntityPlayer) {
                 return false;

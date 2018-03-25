@@ -16,7 +16,7 @@ public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeri
 	public ContainerEngineeringStation(EntityPlayer player, int x, int y, int z) {
 		super(player, x, y, z);
 
-		Slot slot = new SlotResearchCrafting(player, tileEntity.layoutMatrix, tileEntity.result, 0, 3 * 18 + 3 * 18 + 8 + 18, 1 * 18 + 8) {
+		Slot slot = new SlotResearchCrafting(player, tileEntity.getCrafterName(), tileEntity.layoutMatrix, tileEntity.result, 0, 3 * 18 + 3 * 18 + 8 + 18, 1 * 18 + 8) {
 			@Override
 			public ItemStack onTake(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack) {
 				tileEntity.preItemCrafted();

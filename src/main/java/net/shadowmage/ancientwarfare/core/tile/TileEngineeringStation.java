@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
+import net.shadowmage.ancientwarfare.core.crafting.ResearchRecipeBase;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
@@ -25,6 +26,7 @@ public class TileEngineeringStation extends TileUpdatable implements IRotatableT
 	EnumFacing facing = EnumFacing.NORTH;
 	NonNullList<ItemStack> matrixShadow;
 
+	private ResearchRecipeBase researchRecipe;
 	public InventoryCrafting layoutMatrix;
 	public InventoryCraftResult result;
 	public final ItemStackHandler bookInventory;
@@ -82,14 +84,25 @@ public class TileEngineeringStation extends TileUpdatable implements IRotatableT
 			if(layoutStack.isEmpty()) {
 				continue;
 			}
-			if(!layoutMatrix.getStackInSlot(i).isEmpty()) {
+			int ingredientCount = AWCraftingManager.getMatchingIngredientCount(researchRecipe, layoutStack);
+			int currentCount = layoutMatrix.getStackInSlot(i).getCount();
+			if (currentCount >= ingredientCount) {
 				continue;
 			}
-			layoutMatrix.setInventorySlotContents(i, InventoryTools.removeItems(extraSlots, layoutStack, 1));
+			ItemStack refilledStack = InventoryTools.removeItems(extraSlots, layoutStack, ingredientCount - currentCount);
+			if (currentCount > 0) {
+				refilledStack.grow(currentCount);
+			}
+			layoutMatrix.setInventorySlotContents(i, refilledStack);
 		}
+		researchRecipe = AWCraftingManager.findMatchingResearchRecipe(layoutMatrix, world, getCrafterName());
 	}
 
 	private void onLayoutMatrixChanged() {
+		ResearchRecipeBase researchRep = AWCraftingManager.findMatchingResearchRecipe(layoutMatrix, world, getCrafterName());
+		if (researchRep != null) {
+			researchRecipe = researchRep;
+		}
 		result.setInventorySlotContents(0, AWCraftingManager.findMatchingRecipe(layoutMatrix, world, getCrafterName()));
 		result.setRecipeUsed(CraftingManager.findMatchingRecipe(layoutMatrix, world));
 	}
@@ -109,6 +122,7 @@ public class TileEngineeringStation extends TileUpdatable implements IRotatableT
 	protected void writeUpdateNBT(NBTTagCompound tag) {
 		super.writeUpdateNBT(tag);
 		tag.setInteger("facing", facing.ordinal());
+		tag.setTag("bookInventory", bookInventory.serializeNBT());
 	}
 
 	@Override
@@ -116,6 +130,8 @@ public class TileEngineeringStation extends TileUpdatable implements IRotatableT
 		super.handleUpdateNBT(tag);
 		facing = EnumFacing.VALUES[tag.getInteger("facing")];
 		BlockTools.notifyBlockUpdate(this);
+		bookInventory.deserializeNBT(tag.getCompoundTag("bookInventory"));
+		onLayoutMatrixChanged();
 	}
 
 	@Override
@@ -125,6 +141,7 @@ public class TileEngineeringStation extends TileUpdatable implements IRotatableT
 		extraSlots.deserializeNBT(tag.getCompoundTag("extraInventory"));
 		InventoryTools.readInventoryFromNBT(result, tag.getCompoundTag("resultInventory"));
 		InventoryTools.readInventoryFromNBT(layoutMatrix, tag.getCompoundTag("layoutMatrix"));
+		onLayoutMatrixChanged();
 		facing = EnumFacing.values()[tag.getInteger("facing")];
 	}
 

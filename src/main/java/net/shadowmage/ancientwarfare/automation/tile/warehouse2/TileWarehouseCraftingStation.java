@@ -15,16 +15,19 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
+import net.shadowmage.ancientwarfare.core.crafting.ResearchRecipeBase;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.tile.IBlockBreakHandler;
+import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nonnull;
 
-public class TileWarehouseCraftingStation extends TileEntity implements IInteractableTile, IBlockBreakHandler {
+public class TileWarehouseCraftingStation extends TileUpdatable implements IInteractableTile, IBlockBreakHandler {
 
+	private ResearchRecipeBase researchRecipe;
 	public InventoryCrafting layoutMatrix;
 	public InventoryCraftResult result;
 	public ItemStackHandler bookInventory = new ItemStackHandler(1) {
@@ -78,15 +81,17 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
 			if (layoutStack.isEmpty()) {
 				continue;
 			}
-			if (!layoutMatrix.getStackInSlot(i).isEmpty()) {
+			int ingredientCount = AWCraftingManager.getMatchingIngredientCount(researchRecipe, layoutStack);
+			int currentCount = layoutMatrix.getStackInSlot(i).getCount();
+			if (currentCount >= ingredientCount) {
 				continue;
 			}
 			q = warehouse.getCountOf(layoutStack);
 			AWLog.logDebug("warehouse count of: " + layoutStack + " :: " + q);
-			if (q > 0) {
-				warehouse.decreaseCountOf(layoutStack, 1);
+			if (q + currentCount >= ingredientCount) {
+				warehouse.decreaseCountOf(layoutStack, ingredientCount - currentCount);
 				layoutStack = layoutStack.copy();
-				layoutStack.setCount(1);
+				layoutStack.setCount(ingredientCount);
 				layoutMatrix.setInventorySlotContents(i, layoutStack);
 			}
 		}
@@ -108,6 +113,10 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
 	}
 
 	private void onLayoutMatrixChanged() {
+		ResearchRecipeBase researchRecipe = AWCraftingManager.findMatchingResearchRecipe(layoutMatrix, world, getCrafterName());
+		if (researchRecipe != null) {
+			this.researchRecipe = researchRecipe;
+		}
 		result.setInventorySlotContents(0, AWCraftingManager.findMatchingRecipe(layoutMatrix, world, getCrafterName()));
 		result.setRecipeUsed(CraftingManager.findMatchingRecipe(layoutMatrix, world));
 	}
@@ -128,11 +137,24 @@ public class TileWarehouseCraftingStation extends TileEntity implements IInterac
 	}
 
 	@Override
+	protected void writeUpdateNBT(NBTTagCompound tag) {
+		super.writeUpdateNBT(tag);
+		tag.setTag("bookInventory", bookInventory.serializeNBT());
+	}
+
+	@Override
+	protected void handleUpdateNBT(NBTTagCompound tag) {
+		super.handleUpdateNBT(tag);
+		bookInventory.deserializeNBT(tag.getCompoundTag("bookInventory"));
+	}
+
+	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		bookInventory.deserializeNBT(tag.getCompoundTag("bookInventory"));
 		InventoryTools.readInventoryFromNBT(result, tag.getCompoundTag("resultInventory"));
 		InventoryTools.readInventoryFromNBT(layoutMatrix, tag.getCompoundTag("layoutMatrix"));
+		onLayoutMatrixChanged();
 	}
 
 	@Override

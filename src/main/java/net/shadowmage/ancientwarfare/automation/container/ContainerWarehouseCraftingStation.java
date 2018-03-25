@@ -30,8 +30,8 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 		super(player, x, y, z);
 		InventoryCrafting inventory = tileEntity.layoutMatrix;
 
-        Slot slot = new SlotResearchCrafting(player, inventory, tileEntity.result, 0, 3 * 18 + 3 * 18 + 8 + 18, 1 * 18 + 8) {
-            @Override
+		Slot slot = new SlotResearchCrafting(player, tileEntity.getCrafterName(), inventory, tileEntity.result, 0, 3 * 18 + 3 * 18 + 8 + 18, 1 * 18 + 8) {
+			@Override
 			public ItemStack onTake(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack) {
 				tileEntity.preItemCrafted();
 				@Nonnull ItemStack ret = super.onTake(par1EntityPlayer, par2ItemStack);
