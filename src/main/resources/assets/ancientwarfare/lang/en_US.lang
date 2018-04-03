@@ -944,6 +944,15 @@ item.torsion_unit.name=Torsion Unit
 item.counter_weight_unit.name=Counterweight Unit
 item.powder_case.name=Powder Case
 item.equipment_bay.name=Equipment Bay
+item.rough_wood.name=Rough Wood
+item.treated_wood.name=Treated Wood
+item.ironshod_wood.name=Ironshod Wood
+item.iron_core_wood.name=Iron Core Wood
+item.rough_iron.name=Rough Iron
+item.fine_iron.name=Fine Iron
+item.tempered_iron.name=Tempered Iron
+item.minor_alloy.name=Minor Alloy
+item.major_alloy.name=Major Alloy
 
 # vehicle upgrades
 item.vehicle_upgrade_speed.name=Iron Bearings

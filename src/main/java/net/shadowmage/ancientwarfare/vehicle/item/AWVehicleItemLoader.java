@@ -45,6 +45,15 @@ public class AWVehicleItemLoader {
         registry.register(new ItemMisc("counter_weight_unit"));
         registry.register(new ItemMisc("powder_case"));
         registry.register(new ItemMisc("equipment_bay"));
+        registry.register(new ItemMisc("rough_wood"));
+        registry.register(new ItemMisc("treated_wood"));
+        registry.register(new ItemMisc("ironshod_wood"));
+        registry.register(new ItemMisc("iron_core_wood"));
+        registry.register(new ItemMisc("rough_iron"));
+        registry.register(new ItemMisc("fine_iron"));
+        registry.register(new ItemMisc("tempered_iron"));
+        registry.register(new ItemMisc("minor_alloy"));
+        registry.register(new ItemMisc("major_alloy"));
 
         AmmoRegistry.registerAmmo(registry);
         ArmorRegistry.registerArmorTypes(registry);

@@ -24,6 +24,10 @@ public class RenderItemSpawner implements IItemRenderer {
 
 		VehicleBase vehicle = VehicleType.getVehicleForType(Minecraft.getMinecraft().world, stack.getItemDamage(), level);
 
+		if (vehicle == null) {
+			return;
+		}
+
 		GlStateManager.pushMatrix();
 
 		float baseScale = 0.6F;

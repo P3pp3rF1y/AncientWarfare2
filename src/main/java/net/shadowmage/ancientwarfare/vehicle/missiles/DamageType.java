@@ -34,6 +34,7 @@ public class DamageType extends DamageSource {
 
 	Entity ent;
 
+	//TODO convert these to DamageSource and get rid of cast?
 	public static DamageType fireMissile = (DamageType) new DamageType("dmg.firemissile").setFireDamage().setProjectile();
 	public static DamageType explosiveMissile = (DamageType) new DamageType("dmg.explosivemissile").setFireDamage().setProjectile();
 	public static DamageType genericMissile = (DamageType) new DamageType("dmg.genericmissile").setProjectile();

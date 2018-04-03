@@ -36,6 +36,7 @@ import net.shadowmage.ancientwarfare.vehicle.item.AWVehicleItems;
 import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 import net.shadowmage.ancientwarfare.vehicle.upgrades.IVehicleUpgradeType;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -413,6 +414,7 @@ public abstract class VehicleType implements IVehicleType {
 		return null;
 	}
 
+	@Nullable
 	public static VehicleBase getVehicleForType(World world, int type, int level) {
 		if (type >= 0 && type < vehicleTypes.length && vehicleTypes[type] != null && vehicleTypes[type].isEnabled()) {
 			IVehicleType vehType = getVehicleType(type);

@@ -70,6 +70,51 @@
                 "textures": {
                     "layer0": "ancientwarfare:items/vehicle/misc/vehicle_equipment_bay"
                 }
+            },
+            "rough_wood": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/misc/material_wood_1"
+                }
+            },
+            "treated_wood": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/misc/material_wood_2"
+                }
+            },
+            "ironshod_wood": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/misc/material_wood_3"
+                }
+            },
+            "iron_core_wood": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/misc/material_wood_4"
+                }
+            },
+            "rough_iron": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/misc/material_iron_1"
+                }
+            },
+            "fine_iron": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/misc/material_iron_2"
+                }
+            },
+            "tempered_iron": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/misc/material_iron_3"
+                }
+            },
+            "minor_alloy": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/misc/material_iron_4"
+                }
+            },
+            "major_alloy": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/misc/material_iron_5"
+                }
             }
         }
     }

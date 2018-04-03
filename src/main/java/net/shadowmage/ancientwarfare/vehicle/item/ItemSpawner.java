@@ -101,6 +101,9 @@ public class ItemSpawner extends ItemBaseVehicle {
 				}
 
 				VehicleBase vehicle = VehicleType.getVehicleForType(world, stack.getItemDamage(), level);
+				if (vehicle == null) {
+					return;
+				}
 				tooltip.addAll(vehicle.vehicleType.getDisplayTooltip().stream().map(I18n::format).collect(Collectors.toSet()));
 			}
 		}
@@ -111,7 +114,7 @@ public class ItemSpawner extends ItemBaseVehicle {
 		if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnData")) {
 			NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnData");
 			IVehicleType vehicle = VehicleType.vehicleTypes[stack.getItemDamage()];
-			return vehicle.getDisplayName();
+			return vehicle == null ? "" : vehicle.getDisplayName();
 		}
 
 		return "item.vehicleSpawner";
