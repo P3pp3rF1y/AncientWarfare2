@@ -31,6 +31,7 @@ public class ItemUpgrade extends ItemBaseVehicle {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void registerClient() {
 		final Map<String, ModelResourceLocation> modelLocations = new HashMap<>();
 

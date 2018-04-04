@@ -22,7 +22,6 @@
 package net.shadowmage.ancientwarfare.vehicle.item;
 
 import codechicken.lib.model.ModelRegistryHelper;
-import codechicken.lib.render.item.IItemRenderer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.creativetab.CreativeTabs;
@@ -35,6 +34,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.vehicle.AncientWarfareVehicles;
 import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.IVehicleType;
@@ -89,6 +90,7 @@ public class ItemSpawner extends ItemBaseVehicle {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, world, tooltip, flagIn);
 		if (stack != null) {
@@ -137,10 +139,9 @@ public class ItemSpawner extends ItemBaseVehicle {
 		return 0;
 	}
 
-	private static final IItemRenderer ITEM_RENDERER = new RenderItemSpawner();
-
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void registerClient() {
-		ModelRegistryHelper.registerItemRenderer(this, ITEM_RENDERER);
+		ModelRegistryHelper.registerItemRenderer(this, new RenderItemSpawner());
 	}
 }

@@ -21,7 +21,6 @@
 
 package net.shadowmage.ancientwarfare.vehicle.missiles;
 
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -39,8 +38,6 @@ import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -56,8 +53,7 @@ public abstract class Ammo implements IAmmo {
 	static final float gravityFactor = 9.81f * 0.05f * 0.05f;
 	String displayName = "AW.Ammo";
 	String configName = "none";
-	List<String> displayTooltip = new ArrayList<String>();
-	ResourceLocation modelTexture = TextureMap.LOCATION_MISSING_TEXTURE;
+	ResourceLocation modelTexture = new ResourceLocation("missingno");
 	boolean isRocket = false;
 	boolean isArrow = false;
 	boolean isPersistent = false;
