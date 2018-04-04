@@ -6,16 +6,16 @@ import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 
 public class ContainerStructureSelectionBase extends ContainerBase {
 
-    public String structureName;
+	public String structureName;
 
-    public ContainerStructureSelectionBase(EntityPlayer player) {
-        super(player);
-    }
+	public ContainerStructureSelectionBase(EntityPlayer player) {
+		super(player);
+	}
 
-    public void handleNameSelection(String name) {
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setString("structName", name);
-        sendDataToServer(tag);
-    }
+	public void handleNameSelection(String name) {
+		NBTTagCompound tag = new NBTTagCompound();
+		tag.setString("structName", name);
+		sendDataToServer(tag);
+	}
 
 }

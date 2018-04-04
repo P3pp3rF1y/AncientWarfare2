@@ -131,8 +131,8 @@ public class GuiStructureSelectionBase extends GuiContainerBase<ContainerStructu
         if (template != null) {
             ResourceLocation l = StructureTemplateManagerClient.instance().getImageFor(template.name);
             rect.setTexture(l);
-			NonNullList<ItemStack> resources = template.resourceList;
-			ItemSlot item;
+            NonNullList<ItemStack> resources = template.resourceList;
+            ItemSlot item;
             for (ItemStack stack : resources) {
                 item = new ItemSlot(8, totalHeight, stack, this);
                 resourceArea.addGuiElement(item);

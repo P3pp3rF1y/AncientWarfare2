@@ -3,7 +3,11 @@ package net.shadowmage.ancientwarfare.npc.gui;
 import net.minecraft.item.ItemStack;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
-import net.shadowmage.ancientwarfare.core.gui.elements.*;
+import net.shadowmage.ancientwarfare.core.gui.elements.Button;
+import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
+import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
+import net.shadowmage.ancientwarfare.core.gui.elements.Label;
+import net.shadowmage.ancientwarfare.core.gui.elements.Line;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcPlayerOwnedTrade;
 import net.shadowmage.ancientwarfare.npc.trade.POTrade;
@@ -53,15 +57,15 @@ public class GuiNpcPlayerOwnedTrade extends GuiContainerBase<ContainerNpcPlayerO
         }
     }
 
-    private void addSingleMessage(String text){
+    private void addSingleMessage(String text) {
         area.addGuiElement(new Label(8, 8, text));
     }
 
     private void addTrades() {
         int totalHeight = 8;
-        if(getContainer().tradeList.isEmpty()){
+        if (getContainer().tradeList.isEmpty()) {
             addSingleMessage("guistrings.trader.no_trade");
-        }else {
+        } else {
             POTrade trade;
             for (int i = 0; i < getContainer().tradeList.size(); i++) {
                 trade = (POTrade) getContainer().tradeList.get(i);
@@ -69,7 +73,7 @@ public class GuiNpcPlayerOwnedTrade extends GuiContainerBase<ContainerNpcPlayerO
                     totalHeight = addTrade(trade, i, totalHeight);
                 }
             }
-            if(totalHeight == 8){
+            if (totalHeight == 8) {
                 addSingleMessage("guistrings.trader.cant_trade");
             }
         }
@@ -132,6 +136,5 @@ public class GuiNpcPlayerOwnedTrade extends GuiContainerBase<ContainerNpcPlayerO
         }
         area.addGuiElement(slot);
     }
-
 
 }

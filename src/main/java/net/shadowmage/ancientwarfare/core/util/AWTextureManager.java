@@ -13,40 +13,40 @@ import java.util.HashMap;
  */
 public class AWTextureManager {
 
-    public static AWTextureManager instance() {
-        return instance;
-    }
+	public static AWTextureManager instance() {
+		return instance;
+	}
 
-    private static AWTextureManager instance = new AWTextureManager();
+	private static AWTextureManager instance = new AWTextureManager();
 
-    private AWTextureManager() {
-    }
+	private AWTextureManager() {
+	}
 
-    private HashMap<String, ResourceLocation> locationTextures = new HashMap<>();
-    private HashMap<String, TextureImageBased> imageBasedTextures = new HashMap<>();
+	private HashMap<String, ResourceLocation> locationTextures = new HashMap<>();
+	private HashMap<String, TextureImageBased> imageBasedTextures = new HashMap<>();
 
-    public void bindLocationTexture(String name) {
-        if (!locationTextures.containsKey(name)) {
-            locationTextures.put(name, new ResourceLocation(name));
-        }
-        Minecraft.getMinecraft().renderEngine.bindTexture(locationTextures.get(name));
-    }
+	public void bindLocationTexture(String name) {
+		if (!locationTextures.containsKey(name)) {
+			locationTextures.put(name, new ResourceLocation(name));
+		}
+		Minecraft.getMinecraft().renderEngine.bindTexture(locationTextures.get(name));
+	}
 
-    public ResourceLocation loadImageBasedTexture(String refName, BufferedImage image) {
-        ResourceLocation loc = new ResourceLocation(refName);
-        TextureImageBased tex = new TextureImageBased(loc, image);
-        Minecraft.getMinecraft().renderEngine.loadTexture(loc, tex);
-        imageBasedTextures.put(refName, tex);
-        locationTextures.put(refName, loc);
-        return loc;
-    }
+	public ResourceLocation loadImageBasedTexture(String refName, BufferedImage image) {
+		ResourceLocation loc = new ResourceLocation(refName);
+		TextureImageBased tex = new TextureImageBased(loc, image);
+		Minecraft.getMinecraft().renderEngine.loadTexture(loc, tex);
+		imageBasedTextures.put(refName, tex);
+		locationTextures.put(refName, loc);
+		return loc;
+	}
 
-    public void updateImageBasedTexture(String refName, BufferedImage image) {
-        TextureImageBased tex = imageBasedTextures.get(refName);
-        if (tex != null) {
-            tex.image = image;
-            tex.reUploadImage();
-        }
-    }
+	public void updateImageBasedTexture(String refName, BufferedImage image) {
+		TextureImageBased tex = imageBasedTextures.get(refName);
+		if (tex != null) {
+			tex.image = image;
+			tex.reUploadImage();
+		}
+	}
 
 }

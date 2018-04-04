@@ -243,8 +243,7 @@ public class RenderOverlayAdvanced {
 		float by = (float) (vehicle.posY + offset.y);
 		float bz = (float) (vehicle.posZ + offset.z);
 		BlockPos blockHit = new BlockPos(bx, by, bz);
-		AxisAlignedBB bb = new AxisAlignedBB(blockHit.getX() - 1, blockHit.getY(), blockHit.getZ(), blockHit.getX() + 2, blockHit.getY() + 1,
-				blockHit.getZ() + 1);
+		AxisAlignedBB bb = new AxisAlignedBB(blockHit.getX() - 1, blockHit.getY(), blockHit.getZ(), blockHit.getX() + 2, blockHit.getY() + 1, blockHit.getZ() + 1);
 		bb = adjustBBForPlayerPos(bb, player, partialTick);
 		RenderTools.drawOutlinedBoundingBox(bb, 1.f, 0.2f, 0.2f);
 		bb = new AxisAlignedBB(blockHit.getX(), blockHit.getY(), blockHit.getZ() - 1, blockHit.getX() + 1, blockHit.getY() + 1, blockHit.getZ() + 2);

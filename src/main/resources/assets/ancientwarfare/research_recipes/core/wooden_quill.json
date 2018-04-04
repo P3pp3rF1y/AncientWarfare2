@@ -1,23 +1,23 @@
 {
-  "type": "ancientwarfare:research_recipe",
-  "research": "engineering",
-  "pattern": [
-    "  F",
-    " S ",
-    "M  "
-  ],
-  "key": {
-    "S": {
-      "item": "#STICKWOOD"
+    "type": "ancientwarfare:research_recipe",
+    "research": "engineering",
+    "pattern": [
+        "  F",
+        " S ",
+        "M  "
+    ],
+    "key": {
+        "S": {
+            "item": "#STICKWOOD"
+        },
+        "F": {
+            "item": "minecraft:feather"
+        },
+        "M": {
+            "item": "#PLANKWOOD"
+        }
     },
-    "F": {
-      "item": "minecraft:feather"
-    },
-    "M": {
-      "item": "#PLANKWOOD"
+    "result": {
+        "item": "ancientwarfare:wooden_quill"
     }
-  },
-  "result": {
-    "item": "ancientwarfare:wooden_quill"
-  }
 }

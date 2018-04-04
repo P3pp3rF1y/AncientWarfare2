@@ -36,9 +36,9 @@ public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeri
 		addSlotToContainer(slot);
 
 		int x2, y2, slotNum = 0;
-		for(int y1 = 0; y1 < 3; y1++) {
+		for (int y1 = 0; y1 < 3; y1++) {
 			y2 = y1 * 18 + 8;
-			for(int x1 = 0; x1 < 3; x1++) {
+			for (int x1 = 0; x1 < 3; x1++) {
 				x2 = x1 * 18 + 8 + 3 * 18;
 				slotNum = y1 * 3 + x1;
 				slot = new Slot(tileEntity.layoutMatrix, slotNum, x2, y2);
@@ -46,9 +46,9 @@ public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeri
 			}
 		}
 
-		for(int y1 = 0; y1 < 2; y1++) {
+		for (int y1 = 0; y1 < 2; y1++) {
 			y2 = y1 * 18 + 8 + 3 * 18 + 4;
-			for(int x1 = 0; x1 < 9; x1++) {
+			for (int x1 = 0; x1 < 9; x1++) {
 				x2 = x1 * 18 + 8;
 				slotNum = y1 * 9 + x1;
 				slot = new SlotItemHandler(tileEntity.extraSlots, slotNum, x2, y2);
@@ -64,35 +64,35 @@ public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeri
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
 		@Nonnull ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot theSlot = this.getSlot(slotClickedIndex);
-		if(theSlot != null && theSlot.getHasStack()) {
+		if (theSlot != null && theSlot.getHasStack()) {
 			@Nonnull ItemStack slotStack = theSlot.getStack();
 			slotStackCopy = slotStack.copy();
 			int craftSlotStart = 2;
 			int storageSlotsStart = craftSlotStart + tileEntity.layoutMatrix.getSizeInventory();
 			int playerSlotStart = storageSlotsStart + tileEntity.extraSlots.getSlots();
 			int playerSlotEnd = playerSlotStart + playerSlots;
-			if(slotClickedIndex < craftSlotStart)//book or result slot
+			if (slotClickedIndex < craftSlotStart)//book or result slot
 			{
-				if(!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
+				if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
 					return ItemStack.EMPTY;
 			} else {
-				if(slotClickedIndex < storageSlotsStart) {//craft matrix
-					if(!this.mergeItemStack(slotStack, storageSlotsStart, playerSlotStart, false))//merge into storage
+				if (slotClickedIndex < storageSlotsStart) {//craft matrix
+					if (!this.mergeItemStack(slotStack, storageSlotsStart, playerSlotStart, false))//merge into storage
 						return ItemStack.EMPTY;
-				} else if(slotClickedIndex < playerSlotStart) {//storage slots
-					if(!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
+				} else if (slotClickedIndex < playerSlotStart) {//storage slots
+					if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
 						return ItemStack.EMPTY;
-				} else if(slotClickedIndex < playerSlotEnd) {//player slots, merge into storage
+				} else if (slotClickedIndex < playerSlotEnd) {//player slots, merge into storage
 					if (!mergeItemStack(slotStack, BOOK_SLOT, BOOK_SLOT + 1, false) && !this.mergeItemStack(slotStack, storageSlotsStart, playerSlotStart, false))//merge into storage
 						return ItemStack.EMPTY;
 				}
 			}
-			if(slotStack.getCount() == 0) {
+			if (slotStack.getCount() == 0) {
 				theSlot.putStack(ItemStack.EMPTY);
 			} else {
 				theSlot.onSlotChanged();
 			}
-			if(slotStack.getCount() == slotStackCopy.getCount()) {
+			if (slotStack.getCount() == slotStackCopy.getCount()) {
 				return ItemStack.EMPTY;
 			}
 			theSlot.onTake(par1EntityPlayer, slotStack);

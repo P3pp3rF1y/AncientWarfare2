@@ -1,28 +1,28 @@
 {
-  "type": "forge:ore_shaped",
-  "pattern": [
-    "IWI",
-    "GTG",
-    "ICI"
-  ],
-  "key": {
-    "C": {
-      "item": "minecraft:chest"
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "IWI",
+        "GTG",
+        "ICI"
+    ],
+    "key": {
+        "C": {
+            "item": "minecraft:chest"
+        },
+        "T": {
+            "item": "minecraft:crafting_table"
+        },
+        "W": {
+            "item": "#PLANKWOOD"
+        },
+        "G": {
+            "item": "#INGOTGOLD"
+        },
+        "I": {
+            "item": "#INGOTIRON"
+        }
     },
-    "T": {
-      "item": "minecraft:crafting_table"
-    },
-    "W": {
-      "item": "#PLANKWOOD"
-    },
-    "G": {
-      "item": "#INGOTGOLD"
-    },
-    "I": {
-      "item": "#INGOTIRON"
+    "result": {
+        "item": "ancientwarfare:research_station"
     }
-  },
-  "result": {
-    "item": "ancientwarfare:research_station"
-  }
 }

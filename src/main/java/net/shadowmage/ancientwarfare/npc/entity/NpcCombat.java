@@ -45,7 +45,7 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
     private EntityAIBase collideAI;
     private EntityAIBase arrowAI;
     private NpcAIPlayerOwnedPatrol patrolAI;
-    
+
     private NpcBase distressedTarget;
 
     public NpcCombat(World par1World) {
@@ -83,7 +83,7 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
     }
 
     @Override
-    public final boolean canPickUpLoot(){
+    public final boolean canPickUpLoot() {
         return !"archer".equals(getSubtypeFromEquipment());
     }
 
@@ -132,14 +132,14 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
         return false;
     }
 
-    private boolean isBow(Item item){
+    private boolean isBow(Item item) {
         // Inserting QuiverBow recognition here (for b78)
         // TODO quiverbow integration??
-//        if (Loader.isModLoaded("quiverchevsky")) {
-//            if (item instanceof com.domochevsky.quiverbow.weapons._WeaponBase) {
-//                return true;
-//            }
-//        }
+        //        if (Loader.isModLoaded("quiverchevsky")) {
+        //            if (item instanceof com.domochevsky.quiverbow.weapons._WeaponBase) {
+        //                return true;
+        //            }
+        //        }
         return item instanceof ItemBow;
     }
 
@@ -153,9 +153,9 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
         if (!stack.isEmpty()) {
             Item item = stack.getItem();
             Collection<String> tools = item.getToolClasses(stack);
-            if(tools.contains("axe")) {
+            if (tools.contains("axe")) {
                 return "medic";
-            } else if(tools.contains("hammer"))
+            } else if (tools.contains("hammer"))
                 return "engineer";
             if (isBow(item)) {
                 return "archer";
@@ -191,7 +191,7 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
     @Override
     public void attackEntityWithRangedAttack(EntityLivingBase target, float force) {
         // minimum precision = 10.0f, slowly reaches 0 (or close to it) as the NPC reaches max level
-        float precision = 10.0f - ( (float) this.getLevelingStats().getBaseLevel() / (float) AWNPCStatics.maxNpcLevel * 10.0f );
+        float precision = 10.0f - ((float) this.getLevelingStats().getBaseLevel() / (float) AWNPCStatics.maxNpcLevel * 10.0f);
         RangeAttackHelper.doRangedAttack(this, target, force, precision);
     }
 
@@ -203,7 +203,7 @@ public class NpcCombat extends NpcPlayerOwned implements IRangedAttackMob {
     public NpcBase getDistressedTarget() {
         return distressedTarget;
     }
-    
+
     public void clearDistress() {
         distressedTarget = null;
     }

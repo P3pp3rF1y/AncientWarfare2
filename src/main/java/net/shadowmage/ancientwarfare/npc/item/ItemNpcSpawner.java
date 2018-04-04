@@ -56,7 +56,7 @@ public class ItemNpcSpawner extends ItemBaseNPC {
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
         ItemStack stack = player.getHeldItem(hand);
-        if(world.isRemote){
+        if (world.isRemote) {
             return new ActionResult<>(EnumActionResult.SUCCESS, stack);
         }
         BlockPos hit = BlockTools.getBlockClickedOn(player, player.world, true);
@@ -78,8 +78,8 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 
     /*
      * create an NPC from the input item stack if valid, else return null<br>
-     * npc will have type, subtype, equipment, levels, health, food and owner set from item.
-     */
+	 * npc will have type, subtype, equipment, levels, health, food and owner set from item.
+	 */
     public static NpcBase createNpcFromItem(World world, ItemStack stack) {
         String type = getNpcType(stack);
         if (type == null) {
@@ -101,8 +101,8 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 
     /*
      * return an itemstack of npc spawner item that contains the data to spawn the input npc<br>
-     * npc type, subtype, equipment, levels health, food value, and owner will be stored.
-     */
+	 * npc type, subtype, equipment, levels health, food value, and owner will be stored.
+	 */
     public static ItemStack getSpawnerItemForNpc(NpcBase npc) {
         String type = npc.getNpcType();
         String sub = npc.getNpcSubType();
@@ -149,7 +149,7 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 
         final Map<String, ModelResourceLocation> modelLocations = Maps.newHashMap();
 
-        for(AWNPCEntityLoader.NpcDeclaration dec : AWNPCEntityLoader.getAllNpcDeclarations()) {
+        for (AWNPCEntityLoader.NpcDeclaration dec : AWNPCEntityLoader.getAllNpcDeclarations()) {
             if (dec.getCanSpawnBaseType()) {
                 modelLocations.put(dec.getType(), getModelLocation(dec.getType(), ""));
                 ModelLoader.registerItemVariants(this, modelLocations.get(dec.getType()));
@@ -162,18 +162,18 @@ public class ItemNpcSpawner extends ItemBaseNPC {
         }
 
         ModelLoader.setCustomMeshDefinition(this, stack -> {
-			String npcType = getNpcType(stack);
-			if (npcType == null) {
+            String npcType = getNpcType(stack);
+            if (npcType == null) {
                 npcType = "worker.miner";
             }
-			String npcSubType = getNpcSubtype(stack);
-			return modelLocations.get(npcSubType.isEmpty() ? npcType : npcType + "." + npcSubType);
+            String npcSubType = getNpcSubtype(stack);
+            return modelLocations.get(npcSubType.isEmpty() ? npcType : npcType + "." + npcSubType);
 		});
     }
 
     private ModelResourceLocation getModelLocation(String npcType, String npcSubType) {
         AWNPCEntityLoader.NpcDeclaration npc = AWNPCEntityLoader.getNpcDeclaration(npcType);
         String modelVariant = npcSubType.isEmpty() ? npc.getItemModelVariant() : npc.getSubTypeModelVariant(npcSubType);
-        return new ModelResourceLocation(AncientWarfareCore.modID + ":npc/npc_spawner", "variant=" +  modelVariant);
+        return new ModelResourceLocation(AncientWarfareCore.modID + ":npc/npc_spawner", "variant=" + modelVariant);
     }
 }

@@ -26,7 +26,6 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelCannonStandFixed;
 
-
 public class RenderCannonStandFixed extends RenderVehicleBase {
 
 	ModelCannonStandFixed model = new ModelCannonStandFixed();
@@ -38,8 +37,7 @@ public class RenderCannonStandFixed extends RenderVehicleBase {
 	@Override
 	public void renderVehicle(VehicleBase vehicle, double x, double y, double z, float yaw, float tick) {
 		VehicleFiringVarsHelper var = vehicle.firingVarsHelper;
-		model.setTurretRotation(yaw - vehicle.localTurretRotation - tick * vehicle.currentTurretYawSpeed,
-				vehicle.localTurretPitch - tick * vehicle.currentTurretPitchSpeed);
+		model.setTurretRotation(yaw - vehicle.localTurretRotation - tick * vehicle.currentTurretYawSpeed, vehicle.localTurretPitch - tick * vehicle.currentTurretPitchSpeed);
 		model.render(vehicle, 0, 0, 0, 0, 0, 0.0625f);
 	}
 

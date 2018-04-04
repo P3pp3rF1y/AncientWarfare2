@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules;
 
 import net.minecraft.block.Block;
@@ -131,20 +132,15 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
         List<Integer> randomSlots = InventoryTools.getEmptySlotsRandomized(inventory, rng);
         InventoryTools.shuffleItems(loot, randomSlots.size(), rng);
 
-        for (ItemStack itemstack : loot)
-        {
-            if (randomSlots.isEmpty())
-            {
+        for (ItemStack itemstack : loot) {
+            if (randomSlots.isEmpty()) {
                 AncientWarfareCore.log.warn("Tried to over-fill a container");
                 return;
             }
 
-            if (itemstack.isEmpty())
-            {
+            if (itemstack.isEmpty()) {
                 inventory.setInventorySlotContents(randomSlots.remove(randomSlots.size() - 1), ItemStack.EMPTY);
-            }
-            else
-            {
+            } else {
                 inventory.setInventorySlotContents(randomSlots.remove(randomSlots.size() - 1), itemstack);
             }
         }

@@ -11,6 +11,6 @@ import net.minecraft.nbt.NBTTagCompound;
  */
 public interface IEntityPacketHandler {
 
-    public void handlePacketData(NBTTagCompound tag);
+	public void handlePacketData(NBTTagCompound tag);
 
 }

@@ -156,11 +156,11 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
 
     /*
      * over-rideable method for onGuiClosed w/ proper functionality -- (is called before the fucking container disappears)
-     * derived classes can override this to handle custom onClosed functionality (e.g. call container to send data to server/
-     * finalize settings)
-     *
-     * @return true if the GUI should closed -- false if another GUI has been opened/the GUI should not closed
-     */
+	 * derived classes can override this to handle custom onClosed functionality (e.g. call container to send data to server/
+	 * finalize settings)
+	 *
+	 * @return true if the GUI should closed -- false if another GUI has been opened/the GUI should not closed
+	 */
     protected boolean onGuiCloseRequested() {
         return true;
     }
@@ -187,7 +187,6 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
         }
         super.updateScreen();
     }
-
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float var1, int var2, int var3) {
@@ -235,9 +234,9 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
 
     /*
      * call this method to enforce a re-initialization of gui at the start of next game tick (not render tick)<br>
-     * setupElements() will then be called<br>
-     * and all elements will have their position updated
-     */
+	 * setupElements() will then be called<br>
+	 * and all elements will have their position updated
+	 */
     @Override
     public void refreshGui() {
         this.shouldUpdate = true;
@@ -245,22 +244,22 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
 
     /*
      * Sub-classes should implement this method to add initial gui elements.<br>
-     * Only called a single time, shortly after construction,
-     * but before any rendering or other update methods are called
-     */
+	 * Only called a single time, shortly after construction,
+	 * but before any rendering or other update methods are called
+	 */
     public abstract void initElements();
 
     /*
      * sub-classes should implement this method to setup/change any elements that need adjusting when the gui is initialized<br>
-     * any elements that are positioned outside of the gui-window space will need their positions updated by calling element.setPosition(xPos, yPos)
-     * as they reference internal position relative to the guiLeft / guiTop values from this gui (which are passed in and updated directly after setupElements() is called)<br>
-     * Always called at least once, directly after {@link #initElements()}
-     */
+	 * any elements that are positioned outside of the gui-window space will need their positions updated by calling element.setPosition(xPos, yPos)
+	 * as they reference internal position relative to the guiLeft / guiTop values from this gui (which are passed in and updated directly after setupElements() is called)<br>
+	 * Always called at least once, directly after {@link #initElements()}
+	 */
     public abstract void setupElements();
 
     /*
      * sub-classes should override this method to handle any expected packet data
-     */
+	 */
     @Override
     public void handlePacketData(NBTTagCompound data) {
 
@@ -268,7 +267,7 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
 
     /*
      * deferred to allow proper render-order, and draw the tooltip on top of everything else
-     */
+	 */
     @Override
     protected void renderToolTip(ItemStack stack, int x, int y) {
         tooltipStack = stack;
@@ -298,52 +297,52 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
 
     /*
      * Action event for gui-widgets.  A single event is sent to all element / listeners for each input event (key up/down, mouse up/down/move/wheel)
-     *
-     * @author Shadowmage
-     */
+	 *
+	 * @author Shadowmage
+	 */
     public static class ActivationEvent {
         /*
          * the type of event:<br>
-         * 0=Key up <br>
-         * 1=Key down <br>
-         * 2=Mouse up <br>
-         * 4=Mouse Down <br>
-         * 8=Mouse Wheel
-         */
+		 * 0=Key up <br>
+		 * 1=Key down <br>
+		 * 2=Mouse up <br>
+		 * 4=Mouse Down <br>
+		 * 8=Mouse Wheel
+		 */
         public final int type;
 
         /*
          * what key was pressed?
-         */
+		 */
         public int key;
 
         /*
          * the mouse button number.
-         * -1 = none
-         * 0 = LMB
-         * 1 = RMB
-         * 2+= ?
-         */
+		 * -1 = none
+		 * 0 = LMB
+		 * 1 = RMB
+		 * 2+= ?
+		 */
         public int mButton;
         /*
          * the state of the button or key.  true for pressed, false for released
-         */
+		 */
         public boolean state;
         /*
          * the input char, for keyboard events
-         */
+		 */
         public char ch;
         /*
          * mouse x position
-         */
+		 */
         public int mx;
         /*
          * mouse y position
-         */
+		 */
         public int my;
         /*
          * mouse-wheel delta movement
-         */
+		 */
         public int mw;//mousewheel delta movement
 
         private ActivationEvent(int type, int button, boolean state, int mx, int my, int mw) {
@@ -363,12 +362,11 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
         }
     }
 
-
     /*
      * Push a new scissors-test viewport onto the stack.<br>
-     * If this viewport would extend outside of the currently-set viewport, it
-     * will be truncated to fit inside of the existing viewport
-     */
+	 * If this viewport would extend outside of the currently-set viewport, it
+	 * will be truncated to fit inside of the existing viewport
+	 */
     public static void pushViewport(int x, int y, int w, int h) {
         int tlx, tly, brx, bry;
         tlx = x;
@@ -408,7 +406,7 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
 
     /*
      * pop a scissors-test viewport off of the stack
-     */
+	 */
     public static void popViewport() {
         Viewport p = viewportStack.poll();
         if (p == null) {
@@ -429,10 +427,10 @@ public abstract class GuiContainerBase<T extends ContainerBase> extends GuiConta
 
     /*
      * class used to represent a currently drawable portion of the screen.
-     * Used in a stack for figuring out what composites may draw where
-     *
-     * @author John
-     */
+	 * Used in a stack for figuring out what composites may draw where
+	 *
+	 * @author John
+	 */
     private static class Viewport {
         int x, y, w, h;
 

@@ -32,13 +32,13 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
     public static final int DIRECTION_LENGTH = EnumFacing.VALUES.length;
     /*
      * The primary facing direction for this tile.  Default to north for uninitialized tiles (null is not a valid value)
-     */
+	 */
     protected EnumFacing orientation = EnumFacing.NORTH;
 
     /*
      * used by server to limit packet sending<br>
-     * used by client for lerp-ticks for lerping between power states
-     */
+	 * used by client for lerp-ticks for lerping between power states
+	 */
     protected int networkUpdateTicks;
 
     private TileEntity[] rfCache;//cannot reference interface directly, but can cast directly...//only used when cofh installed
@@ -46,13 +46,13 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
 
     /*
      * helper vars to be used by tiles during updating, to cache in/out/loss values<br>
-     * IMPORTANT: should NOT be relied upon for calculations, only for use for display purposes<br>
-     * E.G. A tile may choose to -not- update these vars.<br>
-     * However, best effort should be made to update these vars accurately.<br><br>
-     * Generated energy should be counted as 'in'<br>
-     * Any directly output energy should be counted as 'out'<br>
-     * Only direct power loss from transmission efficiency or per-tick loss should be counted for 'loss'
-     */
+	 * IMPORTANT: should NOT be relied upon for calculations, only for use for display purposes<br>
+	 * E.G. A tile may choose to -not- update these vars.<br>
+	 * However, best effort should be made to update these vars accurately.<br><br>
+	 * Generated energy should be counted as 'in'<br>
+	 * Any directly output energy should be counted as 'out'<br>
+	 * Only direct power loss from transmission efficiency or per-tick loss should be counted for 'loss'
+	 */
     protected double torqueIn, torqueOut, torqueLoss, prevEnergy;
 
     //************************************** COFH RF METHODS ***************************************//
@@ -86,7 +86,7 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
         return (int) (AWAutomationStatics.torqueToRf * addTorque(from, (double) maxReceive * AWAutomationStatics.rfToTorque));
     }
 
-//************************************** NEIGHBOR CACHE UPDATING ***************************************//
+    //************************************** NEIGHBOR CACHE UPDATING ***************************************//
 
     public final ITorqueTile[] getTorqueCache() {
         if (torqueCache == null) {
@@ -173,7 +173,7 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
 
     }
 
-//************************************** generic stuff ***************************************//
+    //************************************** generic stuff ***************************************//
 
     @Override
     public boolean hasFastRenderer() {
@@ -198,14 +198,14 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
         @Nonnull ItemStack stack = player.getHeldItem(hand);
         if (stack.isEmpty()) {
             if (!world.isRemote) {
-                player.sendMessage(new TextComponentTranslation("guistrings.automation.torque.values", String.format("%.2f", getTotalTorque()), String.format("%.2f", getTorqueIn()), String.format("%.2f",getTorqueOut()), String.format("%.2f",getTorqueLoss())));
+                player.sendMessage(new TextComponentTranslation("guistrings.automation.torque.values", String.format("%.2f", getTotalTorque()), String.format("%.2f", getTorqueIn()), String.format("%.2f", getTorqueOut()), String.format("%.2f", getTorqueLoss())));
             }
             return true;
         }
         return false;
     }
 
-//************************************** Utility Methods ***************************************//
+    //************************************** Utility Methods ***************************************//
 
     protected void updateRotation() {
         throw new UnsupportedOperationException();
@@ -223,26 +223,26 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
 
     /*
      * @return the TOTAL amount stored in the entire tile (not just one side), used by on-right-click functionality
-     */
+	 */
     protected abstract double getTotalTorque();
 
     /*
      * @return the total output of torque for the tick
-     */
+	 */
     protected double getTorqueOut() {
         return torqueOut;
     }
 
     /*
      * @return the total input of torque for the tick
-     */
+	 */
     protected double getTorqueIn() {
         return torqueIn;
     }
 
     /*
      * @return the total torque lost (destroyed, gone completely) for the tick
-     */
+	 */
     protected double getTorqueLoss() {
         return torqueLoss;
     }
@@ -304,14 +304,13 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
         return true;
     }
 
-//************************************** NBT / DATA PACKET ***************************************//
+    //************************************** NBT / DATA PACKET ***************************************//
 
     @Override
     public void readFromNBT(NBTTagCompound tag) {
         super.readFromNBT(tag);
         orientation = EnumFacing.VALUES[tag.getInteger("orientation")];
     }
-
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {

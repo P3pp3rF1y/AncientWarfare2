@@ -151,8 +151,8 @@ public class GuiNpcFactionTradeSetup extends GuiContainerBase<ContainerNpcFactio
         stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
         final ItemSlot slot = new ItemSlot(x, y, stack, this) {
             @Override
-			public void onSlotClicked(ItemStack stack, boolean rightClicked) {
-				stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
+            public void onSlotClicked(ItemStack stack, boolean rightClicked) {
+                stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
 				setItem(stack);
 				trade.setInputStack(slotNum, stack);
 				getContainer().tradesChanged = true;
@@ -169,8 +169,8 @@ public class GuiNpcFactionTradeSetup extends GuiContainerBase<ContainerNpcFactio
         stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
         final ItemSlot slot = new ItemSlot(x, y, stack, this) {
             @Override
-			public void onSlotClicked(ItemStack stack, boolean rightClicked) {
-				stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
+            public void onSlotClicked(ItemStack stack, boolean rightClicked) {
+                stack = stack.isEmpty() ? ItemStack.EMPTY : stack.copy();
 				setItem(stack);
 				trade.setOutputStack(slotNum, stack);
 				getContainer().tradesChanged = true;

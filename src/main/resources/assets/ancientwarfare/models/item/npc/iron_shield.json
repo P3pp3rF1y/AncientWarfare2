@@ -1,6 +1,6 @@
 {
-  "parent": "ancientwarfare:item/npc/shield",
-  "textures": {
-    "layer0": "ancientwarfare:items/npc/iron_shield"
-  }
+    "parent": "ancientwarfare:item/npc/shield",
+    "textures": {
+        "layer0": "ancientwarfare:items/npc/iron_shield"
+    }
 }

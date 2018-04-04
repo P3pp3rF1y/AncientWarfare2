@@ -9,37 +9,38 @@ import javax.annotation.Nonnull;
 
 public class WarehouseStorageFilter implements INBTSerializable<NBTTagCompound> {
 
-    ItemHashEntry hashKey;
-    @Nonnull ItemStack item;
+	ItemHashEntry hashKey;
+	@Nonnull
+	ItemStack item;
 
-    public WarehouseStorageFilter() {
-    }
+	public WarehouseStorageFilter() {
+	}
 
-    public WarehouseStorageFilter(ItemStack filter) {
-        setFilterItem(filter);
-    }
+	public WarehouseStorageFilter(ItemStack filter) {
+		setFilterItem(filter);
+	}
 
-    public ItemStack getFilterItem() {
-        return item;
-    }
+	public ItemStack getFilterItem() {
+		return item;
+	}
 
-    public void setFilterItem(ItemStack itemStack) {
-        item = itemStack;
-        hashKey = item.isEmpty() ? null : new ItemHashEntry(item);
-    }
+	public void setFilterItem(ItemStack itemStack) {
+		item = itemStack;
+		hashKey = item.isEmpty() ? null : new ItemHashEntry(item);
+	}
 
-    @Override
-    public NBTTagCompound serializeNBT() {
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setTag("item", item.writeToNBT(new NBTTagCompound()));
-        return tag;
-    }
+	@Override
+	public NBTTagCompound serializeNBT() {
+		NBTTagCompound tag = new NBTTagCompound();
+		tag.setTag("item", item.writeToNBT(new NBTTagCompound()));
+		return tag;
+	}
 
-    @Override
-    public void deserializeNBT(NBTTagCompound tag) {
-        if(tag.hasKey("item"))
-            setFilterItem(new ItemStack(tag.getCompoundTag("item")));
-        else
-            setFilterItem(ItemStack.EMPTY);
-    }
+	@Override
+	public void deserializeNBT(NBTTagCompound tag) {
+		if (tag.hasKey("item"))
+			setFilterItem(new ItemStack(tag.getCompoundTag("item")));
+		else
+			setFilterItem(ItemStack.EMPTY);
+	}
 }

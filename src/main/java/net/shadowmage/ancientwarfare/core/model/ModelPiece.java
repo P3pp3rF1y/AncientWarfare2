@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.core.model;
 
 import com.google.common.collect.Lists;
@@ -46,367 +47,367 @@ import java.util.function.Supplier;
  */
 public class ModelPiece {
 
-    private String pieceName;
-    private boolean visible = true;
-    private float x, y, z;//manipulatable coordinates for this piece, relative to either model origin or parent-piece origin (if base piece or has parent)
-    private float rx, ry, rz;//manipulatable rotation for this piece, relative to either model rotation or parent-piece rotation (if base piece or has parent)
-    private Set<ModelPiece> children = new HashSet<>();//the children of this piece
-    private List<Primitive> primitives = new ArrayList<>();//the list of boxes that make up this piece, really only used during first construction of display list
-    private ModelPiece parent;
+	private String pieceName;
+	private boolean visible = true;
+	private float x, y, z;//manipulatable coordinates for this piece, relative to either model origin or parent-piece origin (if base piece or has parent)
+	private float rx, ry, rz;//manipulatable rotation for this piece, relative to either model rotation or parent-piece rotation (if base piece or has parent)
+	private Set<ModelPiece> children = new HashSet<>();//the children of this piece
+	private List<Primitive> primitives = new ArrayList<>();//the list of boxes that make up this piece, really only used during first construction of display list
+	private ModelPiece parent;
 
-    boolean compiled = false;
-    int displayList = -1;
+	boolean compiled = false;
+	int displayList = -1;
 
-    public ModelPiece(ModelBaseAW model, String line) {
-        String[] bits = line.split(",");
-        this.pieceName = bits[0];
-        String parentName = bits[1];
-        float x = StringTools.safeParseFloat(bits[2]);
-        float y = StringTools.safeParseFloat(bits[3]);
-        float z = StringTools.safeParseFloat(bits[4]);
-        float rx = StringTools.safeParseFloat(bits[5]);
-        float ry = StringTools.safeParseFloat(bits[6]);
-        float rz = StringTools.safeParseFloat(bits[7]);
-        ModelPiece parent = parentName.equals("null") ? null : model.getPiece(parentName);
-        this.setPosition(x, y, z);
-        this.setRotation(rx, ry, rz);
-        if (parent != null) {
-            parent.addChild(this);
-        }
-    }
+	public ModelPiece(ModelBaseAW model, String line) {
+		String[] bits = line.split(",");
+		this.pieceName = bits[0];
+		String parentName = bits[1];
+		float x = StringTools.safeParseFloat(bits[2]);
+		float y = StringTools.safeParseFloat(bits[3]);
+		float z = StringTools.safeParseFloat(bits[4]);
+		float rx = StringTools.safeParseFloat(bits[5]);
+		float ry = StringTools.safeParseFloat(bits[6]);
+		float rz = StringTools.safeParseFloat(bits[7]);
+		ModelPiece parent = parentName.equals("null") ? null : model.getPiece(parentName);
+		this.setPosition(x, y, z);
+		this.setRotation(rx, ry, rz);
+		if (parent != null) {
+			parent.addChild(this);
+		}
+	}
 
-    public void setVisible(boolean val) {
-        this.visible = val;
-    }
+	public void setVisible(boolean val) {
+		this.visible = val;
+	}
 
-    public ModelPiece(String name, float x, float y, float z, float rx, float ry, float rz, ModelPiece parent) {
-        this.pieceName = name;
-        this.setPosition(x, y, z);
-        this.setRotation(rx, ry, rz);
-        if (parent != null) {
-            parent.addChild(this);
-        }
-    }
+	public ModelPiece(String name, float x, float y, float z, float rx, float ry, float rz, ModelPiece parent) {
+		this.pieceName = name;
+		this.setPosition(x, y, z);
+		this.setRotation(rx, ry, rz);
+		if (parent != null) {
+			parent.addChild(this);
+		}
+	}
 
-    public void clearParent() {
-        if (this.parent != null) {
-            this.parent.removeChild(this);
-        }
-    }
+	public void clearParent() {
+		if (this.parent != null) {
+			this.parent.removeChild(this);
+		}
+	}
 
-    public ModelPiece setParent(ModelPiece parent) {
-        if (this.parent != null) {
-            this.parent.removeChild(this);
-        }
-        if (parent != null) {
-            parent.addChild(this);
-        }
-        return this;
-    }
+	public ModelPiece setParent(ModelPiece parent) {
+		if (this.parent != null) {
+			this.parent.removeChild(this);
+		}
+		if (parent != null) {
+			parent.addChild(this);
+		}
+		return this;
+	}
 
-    public ModelPiece copy() {
-        ModelPiece piece = new ModelPiece(pieceName + "_copy", x, y, z, rx, ry, rz, parent);
-        for (Primitive primitive : this.primitives) {
-            piece.addPrimitive(primitive.copy());
-        }
-        return piece;
-    }
+	public ModelPiece copy() {
+		ModelPiece piece = new ModelPiece(pieceName + "_copy", x, y, z, rx, ry, rz, parent);
+		for (Primitive primitive : this.primitives) {
+			piece.addPrimitive(primitive.copy());
+		}
+		return piece;
+	}
 
-    public ModelPiece getParent() {
-        return parent;
-    }
+	public ModelPiece getParent() {
+		return parent;
+	}
 
-    public boolean isBasePiece() {
-        return getParent() == null;
-    }
+	public boolean isBasePiece() {
+		return getParent() == null;
+	}
 
-    public float x() {
-        return x;
-    }
+	public float x() {
+		return x;
+	}
 
-    public float y() {
-        return y;
-    }
+	public float y() {
+		return y;
+	}
 
-    public float z() {
-        return z;
-    }
+	public float z() {
+		return z;
+	}
 
-    public float rx() {
-        return rx;
-    }
+	public float rx() {
+		return rx;
+	}
 
-    public float ry() {
-        return ry;
-    }
+	public float ry() {
+		return ry;
+	}
 
-    public float rz() {
-        return rz;
-    }
+	public float rz() {
+		return rz;
+	}
 
-    public String getName() {
-        return pieceName;
-    }
+	public String getName() {
+		return pieceName;
+	}
 
-    public Collection<ModelPiece> getChildren() {
-        return children;
-    }
+	public Collection<ModelPiece> getChildren() {
+		return children;
+	}
 
-    public void setRotation(float rx, float ry, float rz) {
-        this.rx = rx;
-        this.ry = ry;
-        this.rz = rz;
-    }
+	public void setRotation(float rx, float ry, float rz) {
+		this.rx = rx;
+		this.ry = ry;
+		this.rz = rz;
+	}
 
-    public void recompilePiece() {
-        this.compiled = false;
-        for (ModelPiece p : children) {
-            p.recompilePiece();
-        }
-    }
+	public void recompilePiece() {
+		this.compiled = false;
+		for (ModelPiece p : children) {
+			p.recompilePiece();
+		}
+	}
 
-    public void setPosition(float x, float y, float z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-    }
+	public void setPosition(float x, float y, float z) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+	}
 
-    public void setName(String name) {
-        this.pieceName = name;
-    }
+	public void setName(String name) {
+		this.pieceName = name;
+	}
 
-    public void addPrimitive(Primitive primitive) {
-        this.primitives.add(primitive);
-        primitive.parent = this;
-    }
+	public void addPrimitive(Primitive primitive) {
+		this.primitives.add(primitive);
+		primitive.parent = this;
+	}
 
-    public void removePrimitive(Primitive primitive) {
-        this.primitives.remove(primitive);
-        primitive.parent = null;
-    }
+	public void removePrimitive(Primitive primitive) {
+		this.primitives.remove(primitive);
+		primitive.parent = null;
+	}
 
-    public void addChild(ModelPiece piece) {
-        this.children.add(piece);
-        piece.parent = this;
-    }
+	public void addChild(ModelPiece piece) {
+		this.children.add(piece);
+		piece.parent = this;
+	}
 
-    public void removeChild(ModelPiece piece) {
-        this.children.remove(piece);
-        piece.parent = null;
-    }
+	public void removeChild(ModelPiece piece) {
+		this.children.remove(piece);
+		piece.parent = null;
+	}
 
-    public void render(float textureWidth, float textureHeight) {
-        if (!visible) {
-            return;
-        }
-        GlStateManager.pushMatrix();
-        if (x != 0 || y != 0 || z != 0) {
-            GlStateManager.translate(x, y, z);
-        }
-        if (rx != 0) {
-            GlStateManager.rotate(rx, 1, 0, 0);
-        }
-        if (ry != 0) {
-            GlStateManager.rotate(ry, 0, 1, 0);
-        }
-        if (rz != 0) {
-            GlStateManager.rotate(rz, 0, 0, 1);
-        }
-        renderPrimitives(textureWidth, textureHeight);
-        for (ModelPiece child : this.children) {
-            child.render(textureWidth, textureHeight);
-        }
-        GlStateManager.popMatrix();
+	public void render(float textureWidth, float textureHeight) {
+		if (!visible) {
+			return;
+		}
+		GlStateManager.pushMatrix();
+		if (x != 0 || y != 0 || z != 0) {
+			GlStateManager.translate(x, y, z);
+		}
+		if (rx != 0) {
+			GlStateManager.rotate(rx, 1, 0, 0);
+		}
+		if (ry != 0) {
+			GlStateManager.rotate(ry, 0, 1, 0);
+		}
+		if (rz != 0) {
+			GlStateManager.rotate(rz, 0, 0, 1);
+		}
+		renderPrimitives(textureWidth, textureHeight);
+		for (ModelPiece child : this.children) {
+			child.render(textureWidth, textureHeight);
+		}
+		GlStateManager.popMatrix();
 
-    }
+	}
 
-    public void renderForEditor(ModelPiece piece, Primitive prim, List<ModelPiece> highlightedPieces, float tw, float th) {
-        GlStateManager.pushMatrix();
-        if (x != 0 || y != 0 || z != 0) {
-            GlStateManager.translate(x, y, z);
-        }
-        if (rx != 0) {
-            GlStateManager.rotate(rx, 1, 0, 0);
-        }
-        if (ry != 0) {
-            GlStateManager.rotate(ry, 0, 1, 0);
-        }
-        if (rz != 0) {
-            GlStateManager.rotate(rz, 0, 0, 1);
-        }
+	public void renderForEditor(ModelPiece piece, Primitive prim, List<ModelPiece> highlightedPieces, float tw, float th) {
+		GlStateManager.pushMatrix();
+		if (x != 0 || y != 0 || z != 0) {
+			GlStateManager.translate(x, y, z);
+		}
+		if (rx != 0) {
+			GlStateManager.rotate(rx, 1, 0, 0);
+		}
+		if (ry != 0) {
+			GlStateManager.rotate(ry, 0, 1, 0);
+		}
+		if (rz != 0) {
+			GlStateManager.rotate(rz, 0, 0, 1);
+		}
 
-        boolean selected = piece == this;
-        boolean colored = selected || highlightedPieces.contains(this);
-        if (selected) {
-            GlStateManager.disableLighting();
-            GlStateManager.disableTexture2D();
-            GL11.glEnable(GL11.GL_POINT_SMOOTH);
-            GlStateManager.color(1.0f, 0.f, 0.f, 1.f);
-            GL11.glPointSize(5.f);
-            GlStateManager.glBegin(GL11.GL_POINTS);
-            GlStateManager.glVertex3f(0, 0, 0);
-            GlStateManager.glEnd();
-            GlStateManager.enableLighting();
-            GlStateManager.enableTexture2D();
-        }
-        if (colored) {
-            GlStateManager.color(0.75f, 0.5f, 0.5f, 1.f);
-        } else {
-            GlStateManager.color(1.f, 1.f, 1.f, 1.f);
-        }
-        for (Primitive primitive : this.primitives) {
-            if (primitive == prim) {
-                GlStateManager.disableLighting();
-                GlStateManager.disableTexture2D();
-                GlStateManager.color(1.0f, 0.f, 0.f, 1.f);
-                GlStateManager.glBegin(GL11.GL_POINTS);
-                GlStateManager.glVertex3f(prim.x, prim.y, prim.z);
-                GlStateManager.glEnd();
-                GlStateManager.enableLighting();
-                GlStateManager.enableTexture2D();
-                GlStateManager.color(1.0f, 0.5f, 0.5f, 1.f);
-            } else if (colored) {
-                GlStateManager.color(0.75f, 0.5f, 0.5f, 1.f);
-            } else {
-                GlStateManager.color(1.f, 1.f, 1.f, 1.f);
-            }
-            primitive.render(tw, th);
-        }
-        for (ModelPiece child : this.children) {
-            child.renderForEditor(piece, prim, highlightedPieces, tw, th);
-        }
-        GlStateManager.popMatrix();
-    }
+		boolean selected = piece == this;
+		boolean colored = selected || highlightedPieces.contains(this);
+		if (selected) {
+			GlStateManager.disableLighting();
+			GlStateManager.disableTexture2D();
+			GL11.glEnable(GL11.GL_POINT_SMOOTH);
+			GlStateManager.color(1.0f, 0.f, 0.f, 1.f);
+			GL11.glPointSize(5.f);
+			GlStateManager.glBegin(GL11.GL_POINTS);
+			GlStateManager.glVertex3f(0, 0, 0);
+			GlStateManager.glEnd();
+			GlStateManager.enableLighting();
+			GlStateManager.enableTexture2D();
+		}
+		if (colored) {
+			GlStateManager.color(0.75f, 0.5f, 0.5f, 1.f);
+		} else {
+			GlStateManager.color(1.f, 1.f, 1.f, 1.f);
+		}
+		for (Primitive primitive : this.primitives) {
+			if (primitive == prim) {
+				GlStateManager.disableLighting();
+				GlStateManager.disableTexture2D();
+				GlStateManager.color(1.0f, 0.f, 0.f, 1.f);
+				GlStateManager.glBegin(GL11.GL_POINTS);
+				GlStateManager.glVertex3f(prim.x, prim.y, prim.z);
+				GlStateManager.glEnd();
+				GlStateManager.enableLighting();
+				GlStateManager.enableTexture2D();
+				GlStateManager.color(1.0f, 0.5f, 0.5f, 1.f);
+			} else if (colored) {
+				GlStateManager.color(0.75f, 0.5f, 0.5f, 1.f);
+			} else {
+				GlStateManager.color(1.f, 1.f, 1.f, 1.f);
+			}
+			primitive.render(tw, th);
+		}
+		for (ModelPiece child : this.children) {
+			child.renderForEditor(piece, prim, highlightedPieces, tw, th);
+		}
+		GlStateManager.popMatrix();
+	}
 
-    public void renderForSelection(float tw, float th, ModelBaseAW model) {
-        GlStateManager.pushMatrix();
-        if (x != 0 || y != 0 || z != 0) {
-            GlStateManager.translate(x, y, z);
-        }
-        if (rx != 0) {
-            GlStateManager.rotate(rx, 1, 0, 0);
-        }
-        if (ry != 0) {
-            GlStateManager.rotate(ry, 0, 1, 0);
-        }
-        if (rz != 0) {
-            GlStateManager.rotate(rz, 0, 0, 1);
-        }
+	public void renderForSelection(float tw, float th, ModelBaseAW model) {
+		GlStateManager.pushMatrix();
+		if (x != 0 || y != 0 || z != 0) {
+			GlStateManager.translate(x, y, z);
+		}
+		if (rx != 0) {
+			GlStateManager.rotate(rx, 1, 0, 0);
+		}
+		if (ry != 0) {
+			GlStateManager.rotate(ry, 0, 1, 0);
+		}
+		if (rz != 0) {
+			GlStateManager.rotate(rz, 0, 0, 1);
+		}
 
-        for (Primitive primitive : this.primitives) {
-            byte r, g, b;
+		for (Primitive primitive : this.primitives) {
+			byte r, g, b;
 
-            r = (byte) ((model.iterationNum >> 14) & 0x7f);
-            g = (byte) ((model.iterationNum >> 7) & 0x7f);
-            b = (byte) ((model.iterationNum >> 0) & 0x7f);
+			r = (byte) ((model.iterationNum >> 14) & 0x7f);
+			g = (byte) ((model.iterationNum >> 7) & 0x7f);
+			b = (byte) ((model.iterationNum >> 0) & 0x7f);
 
-            GL11.glColor3b(r, g, b);
+			GL11.glColor3b(r, g, b);
 
-            GlStateManager.pushMatrix();
-            primitive.render(tw, th);
-            GlStateManager.popMatrix();
-            model.iterationNum++;
-        }
+			GlStateManager.pushMatrix();
+			primitive.render(tw, th);
+			GlStateManager.popMatrix();
+			model.iterationNum++;
+		}
 
-        for (ModelPiece child : this.children) {
-            child.renderForSelection(tw, th, model);
-        }
-        GlStateManager.popMatrix();
-    }
+		for (ModelPiece child : this.children) {
+			child.renderForSelection(tw, th, model);
+		}
+		GlStateManager.popMatrix();
+	}
 
-    public void getPieces(List<ModelPiece> input) {
-        input.add(this);
-        for (ModelPiece piece : this.children) {
-            piece.getPieces(input);
-        }
-    }
+	public void getPieces(List<ModelPiece> input) {
+		input.add(this);
+		for (ModelPiece piece : this.children) {
+			piece.getPieces(input);
+		}
+	}
 
-    public List<Primitive> getPrimitives() {
-        return this.primitives;
-    }
+	public List<Primitive> getPrimitives() {
+		return this.primitives;
+	}
 
-    public void addPieceLines(ArrayList<String> lines) {
-        StringBuilder b = new StringBuilder("part=");
-        b.append(this.pieceName).append(",");
-        b.append(this.parent == null ? "null" : this.parent.getName()).append(",");
-        b.append(x).append(",").append(y).append(",").append(z).append(",").append(rx).append(",").append(ry).append(",").append(rz);
-        lines.add(b.toString());
-        for (Primitive p : this.primitives) {
-            p.addPrimitiveLines(lines);
-        }
-        for (ModelPiece p : this.children) {
-            p.addPieceLines(lines);
-        }
-    }
+	public void addPieceLines(ArrayList<String> lines) {
+		StringBuilder b = new StringBuilder("part=");
+		b.append(this.pieceName).append(",");
+		b.append(this.parent == null ? "null" : this.parent.getName()).append(",");
+		b.append(x).append(",").append(y).append(",").append(z).append(",").append(rx).append(",").append(ry).append(",").append(rz);
+		lines.add(b.toString());
+		for (Primitive p : this.primitives) {
+			p.addPrimitiveLines(lines);
+		}
+		for (ModelPiece p : this.children) {
+			p.addPieceLines(lines);
+		}
+	}
 
-    public Primitive getPickedPrimitive(int num, ModelBaseAW model) {
-        for (Primitive p : primitives) {
-            if (model.iterationNum == num) {
-                return p;
-            }
-            model.iterationNum++;
-        }
-        Primitive p;
-        for (ModelPiece mp : children) {
-            p = mp.getPickedPrimitive(num, model);
-            if (p != null) {
-                return p;
-            }
-        }
-        return null;
-    }
+	public Primitive getPickedPrimitive(int num, ModelBaseAW model) {
+		for (Primitive p : primitives) {
+			if (model.iterationNum == num) {
+				return p;
+			}
+			model.iterationNum++;
+		}
+		Primitive p;
+		for (ModelPiece mp : children) {
+			p = mp.getPickedPrimitive(num, model);
+			if (p != null) {
+				return p;
+			}
+		}
+		return null;
+	}
 
-    protected void renderPrimitives(float tw, float th) {
-        if (!compiled) {
-            compiled = true;
-            if (displayList < 0) {
-                displayList = GlStateManager.glGenLists(1);
-            }
-            GlStateManager.glNewList(displayList, GL11.GL_COMPILE);
-            for (Primitive p : primitives) {
-                p.render(tw, th);
-            }
-            GlStateManager.glEndList();
-            GlStateManager.callList(displayList);
-        } else {
-            GlStateManager.callList(displayList);
-        }
-    }
+	protected void renderPrimitives(float tw, float th) {
+		if (!compiled) {
+			compiled = true;
+			if (displayList < 0) {
+				displayList = GlStateManager.glGenLists(1);
+			}
+			GlStateManager.glNewList(displayList, GL11.GL_COMPILE);
+			for (Primitive p : primitives) {
+				p.render(tw, th);
+			}
+			GlStateManager.glEndList();
+			GlStateManager.callList(displayList);
+		} else {
+			GlStateManager.callList(displayList);
+		}
+	}
 
-    @Override
-    protected void finalize() throws Throwable {
-        if (displayList >= 0) {
-            GlStateManager.glDeleteLists(displayList, 1);
-        }
-        super.finalize();
-    }
+	@Override
+	protected void finalize() throws Throwable {
+		if (displayList >= 0) {
+			GlStateManager.glDeleteLists(displayList, 1);
+		}
+		super.finalize();
+	}
 
-    public List<OBJGroup> getOBJGroups(String parentName, Supplier<Tuple<Integer, Integer>> getTextureSizes) {
-        List<OBJGroup> ret = Lists.newArrayList();
+	public List<OBJGroup> getOBJGroups(String parentName, Supplier<Tuple<Integer, Integer>> getTextureSizes) {
+		List<OBJGroup> ret = Lists.newArrayList();
 
-        int groupID = 1;
-        for (Primitive p : this.primitives) {
-            OBJGroup group = p.getOBJGroup(parentName + pieceName + ".", getTextureSizes);
-            group.setName(group.getName() + String.format("%02d", groupID));
-            ret.add(rotateGroupVertices(group));
-            groupID++;
-        }
-        for (ModelPiece p : this.children) {
-            ret.addAll(rotateGroupVertices(p.getOBJGroups(parentName + pieceName + ".", getTextureSizes)));
-        }
+		int groupID = 1;
+		for (Primitive p : this.primitives) {
+			OBJGroup group = p.getOBJGroup(parentName + pieceName + ".", getTextureSizes);
+			group.setName(group.getName() + String.format("%02d", groupID));
+			ret.add(rotateGroupVertices(group));
+			groupID++;
+		}
+		for (ModelPiece p : this.children) {
+			ret.addAll(rotateGroupVertices(p.getOBJGroups(parentName + pieceName + ".", getTextureSizes)));
+		}
 
-        return ret;
-    }
+		return ret;
+	}
 
-    private List<OBJGroup> rotateGroupVertices(List<OBJGroup> groups) {
-        for(OBJGroup group : groups) {
-            rotateGroupVertices(group);
-        }
-        return groups;
-    }
+	private List<OBJGroup> rotateGroupVertices(List<OBJGroup> groups) {
+		for (OBJGroup group : groups) {
+			rotateGroupVertices(group);
+		}
+		return groups;
+	}
 
-    private OBJGroup rotateGroupVertices(OBJGroup group) {
-        group.rotateAndTranslateVertices(x + (isBasePiece() ? 0.5f : 0.0f), y, z + (isBasePiece() ? 0.5f : 0.0f), rx, ry, rz);
-        return group;
-    }
+	private OBJGroup rotateGroupVertices(OBJGroup group) {
+		group.rotateAndTranslateVertices(x + (isBasePiece() ? 0.5f : 0.0f), y, z + (isBasePiece() ? 0.5f : 0.0f), rx, ry, rz);
+		return group;
+	}
 }

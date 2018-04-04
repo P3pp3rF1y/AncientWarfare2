@@ -78,7 +78,7 @@ public class CommandStructure extends CommandBase {
             int y = CommandBase.parseInt(var2[3]);
             int z = CommandBase.parseInt(var2[4]);
             EnumFacing face = EnumFacing.SOUTH;
-            if(var2.length>5) {
+            if (var2.length > 5) {
                 String dl = var2[5].toLowerCase(Locale.ENGLISH);
                 if (dl.equals("north")) {
                     face = EnumFacing.NORTH;
@@ -100,18 +100,18 @@ public class CommandStructure extends CommandBase {
                 txt = new TextComponentTranslation("command.aw.structure.built", var2[1], x, y, z);
             }
             sender.sendMessage(txt);
-        }else if(cmd.toLowerCase(Locale.ENGLISH).equals("save")){
-            if(sender instanceof EntityLivingBase){
+        } else if (cmd.toLowerCase(Locale.ENGLISH).equals("save")) {
+            if (sender instanceof EntityLivingBase) {
                 @Nonnull ItemStack stack = ((EntityLivingBase) sender).getHeldItemMainhand();
-                if(!stack.isEmpty()){
+                if (!stack.isEmpty()) {
                     ItemStructureSettings settings = ItemStructureSettings.getSettingsFor(stack);
-                    if(settings.hasPos1() && settings.hasPos2() && settings.hasBuildKey() && (settings.hasName() || var2.length>1)){
+                    if (settings.hasPos1() && settings.hasPos2() && settings.hasBuildKey() && (settings.hasName() || var2.length > 1)) {
                         String name = settings.hasName() ? settings.name() : var2[1];
                         NBTTagCompound tagCompound = new NBTTagCompound();
-                        if(ItemStructureScanner.scanStructure(sender.getEntityWorld(), settings.pos1(), settings.pos2(), settings.buildKey(), settings.face(), name, true, tagCompound)) {
+                        if (ItemStructureScanner.scanStructure(sender.getEntityWorld(), settings.pos1(), settings.pos2(), settings.buildKey(), settings.face(), name, true, tagCompound)) {
                             sender.sendMessage(new TextComponentTranslation("command.aw.structure.exported", var2[1]));
                         }
-                    }else{
+                    } else {
                         sender.sendMessage(new TextComponentTranslation("command.aw.structure.incomplete_data"));
                     }
                 }
@@ -130,7 +130,7 @@ public class CommandStructure extends CommandBase {
     }
 
     @Override
-    public int getRequiredPermissionLevel(){
+    public int getRequiredPermissionLevel() {
         return 2;
     }
 
@@ -138,7 +138,7 @@ public class CommandStructure extends CommandBase {
     public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
         if (args.length == 1) {
             return CommandBase.getListOfStringsMatchingLastWord(args, "build", "delete", "save");
-        }else if(args.length > 5 && args[0].toLowerCase(Locale.ENGLISH).equals("build")){
+        } else if (args.length > 5 && args[0].toLowerCase(Locale.ENGLISH).equals("build")) {
             return CommandBase.getListOfStringsMatchingLastWord(args, "north", "east", "south", "west");
         }
         return Collections.emptyList();

@@ -12,6 +12,6 @@ import javax.annotation.Nullable;
  */
 public interface IInteractableTile {
 
-    public boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand);
+	public boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand);
 
 }

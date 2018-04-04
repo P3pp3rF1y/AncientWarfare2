@@ -10,24 +10,24 @@ import net.shadowmage.ancientwarfare.structure.item.ItemStructureSettings;
 
 public class ContainerStructureSelection extends ContainerStructureSelectionBase {
 
-    private ItemStructureSettings buildSettings;
+	private ItemStructureSettings buildSettings;
 
-    public ContainerStructureSelection(EntityPlayer player, int x, int y, int z) {
-        super(player);
-        buildSettings = ItemStructureSettings.getSettingsFor(EntityTools.getItemFromEitherHand(player, ItemStructureBuilder.class, ItemStructureBuilderWorldGen.class));
-        structureName = buildSettings.hasName() ? buildSettings.name() : null;
-        addPlayerSlots();
-        removeSlots();
-    }
+	public ContainerStructureSelection(EntityPlayer player, int x, int y, int z) {
+		super(player);
+		buildSettings = ItemStructureSettings.getSettingsFor(EntityTools.getItemFromEitherHand(player, ItemStructureBuilder.class, ItemStructureBuilderWorldGen.class));
+		structureName = buildSettings.hasName() ? buildSettings.name() : null;
+		addPlayerSlots();
+		removeSlots();
+	}
 
-    @Override
-    public void handlePacketData(NBTTagCompound tag) {
-        if (!player.world.isRemote && tag.hasKey("structName")) {
-            ItemStack stack = EntityTools.getItemFromEitherHand(player, ItemStructureBuilder.class, ItemStructureBuilderWorldGen.class);
-            buildSettings = ItemStructureSettings.getSettingsFor(stack);
-            buildSettings.setName(tag.getString("structName"));
-            ItemStructureSettings.setSettingsFor(stack, buildSettings);
-        }
-    }
+	@Override
+	public void handlePacketData(NBTTagCompound tag) {
+		if (!player.world.isRemote && tag.hasKey("structName")) {
+			ItemStack stack = EntityTools.getItemFromEitherHand(player, ItemStructureBuilder.class, ItemStructureBuilderWorldGen.class);
+			buildSettings = ItemStructureSettings.getSettingsFor(stack);
+			buildSettings.setName(tag.getString("structName"));
+			ItemStructureSettings.setSettingsFor(stack, buildSettings);
+		}
+	}
 
 }

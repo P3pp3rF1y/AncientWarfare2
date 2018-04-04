@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.structure.item;
 
 import net.minecraft.client.resources.I18n;
@@ -45,71 +46,70 @@ import java.util.List;
 
 public class ItemSpawnerPlacer extends ItemBaseStructure {
 
-    public ItemSpawnerPlacer(String name) {
-        super(name);
-    }
+	public ItemSpawnerPlacer(String name) {
+		super(name);
+	}
 
+	@Override
+	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
+		tooltip.add(I18n.format("guistrings.selected_mob") + ":");
+		if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnerData")) {
+			NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData");
+			String mobID = tag.getString("EntityId");
+			if (mobID.isEmpty()) {
+				tooltip.add(I18n.format("guistrings.no_selection"));
+			} else {
+				tooltip.add(I18n.format("entity." + mobID + ".name"));
+			}
+		} else {
+			tooltip.add(I18n.format("guistrings.no_selection"));
+		}
+		tooltip.add(TextFormatting.RED + I18n.format("guistrings.spawner.warning_1"));
+		tooltip.add(TextFormatting.RED + I18n.format("guistrings.spawner.warning_2"));
+	}
 
-    @Override
-    public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
-        tooltip.add(I18n.format("guistrings.selected_mob") + ":");
-        if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnerData")) {
-            NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData");
-            String mobID = tag.getString("EntityId");
-            if (mobID.isEmpty()) {
-                tooltip.add(I18n.format("guistrings.no_selection"));
-            } else {
-                tooltip.add(I18n.format("entity." + mobID + ".name"));
-            }
-        } else {
-            tooltip.add(I18n.format("guistrings.no_selection"));
-        }
-        tooltip.add(TextFormatting.RED + I18n.format("guistrings.spawner.warning_1"));
-        tooltip.add(TextFormatting.RED + I18n.format("guistrings.spawner.warning_2"));
-    }
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		ItemStack stack = player.getHeldItem(hand);
+		if (player.world.isRemote) {
+			return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+		}
+		if (stack.isEmpty()) {
+			return new ActionResult<>(EnumActionResult.PASS, stack);
+		}
+		RayTraceResult traceResult = rayTrace(player.world, player, false);
+		if (player.capabilities.isCreativeMode && player.isSneaking()) {
+			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SPAWNER, 0, 0, 0);
+		} else if (traceResult != null && traceResult.typeOfHit == RayTraceResult.Type.BLOCK) {
+			if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnerData")) {
+				BlockPos placePos = traceResult.getBlockPos().offset(traceResult.sideHit);
+				if (player.world.setBlockState(placePos, Blocks.MOB_SPAWNER.getDefaultState())) {
+					NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData");
+					tag.setString("id", Blocks.MOB_SPAWNER.getRegistryName().toString());
+					tag.setInteger("x", placePos.getX());
+					tag.setInteger("y", placePos.getY());
+					tag.setInteger("z", placePos.getZ());
+					TileEntity te = player.world.getTileEntity(placePos);
+					te.readFromNBT(tag);
 
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-        ItemStack stack = player.getHeldItem(hand);
-        if (player.world.isRemote) {
-            return new ActionResult<>(EnumActionResult.SUCCESS, stack);
-        }
-        if (stack.isEmpty()) {
-            return new ActionResult<>(EnumActionResult.PASS, stack);
-        }
-        RayTraceResult traceResult = rayTrace(player.world, player, false);
-        if (player.capabilities.isCreativeMode && player.isSneaking()) {
-            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SPAWNER, 0, 0, 0);
-        } else if (traceResult != null && traceResult.typeOfHit == RayTraceResult.Type.BLOCK) {
-            if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnerData")) {
-                BlockPos placePos = traceResult.getBlockPos().offset(traceResult.sideHit);
-                if (player.world.setBlockState(placePos, Blocks.MOB_SPAWNER.getDefaultState())) {
-                    NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData");
-                    tag.setString("id", Blocks.MOB_SPAWNER.getRegistryName().toString());
-                    tag.setInteger("x", placePos.getX());
-                    tag.setInteger("y", placePos.getY());
-                    tag.setInteger("z", placePos.getZ());
-                    TileEntity te = player.world.getTileEntity(placePos);
-                    te.readFromNBT(tag);
+					if (!player.capabilities.isCreativeMode) {
+						stack.shrink(1);
+					}
+				}
+			} else {
+				player.sendMessage(new TextComponentTranslation("guistrings.spawner.nodata"));
+			}
+		} else {
+			player.sendMessage(new TextComponentTranslation("guistrings.spawner.noblock"));
+		}
+		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+	}
 
-                    if (!player.capabilities.isCreativeMode) {
-                        stack.shrink(1);
-                    }
-                }
-            } else {
-                player.sendMessage(new TextComponentTranslation("guistrings.spawner.nodata"));
-            }
-        } else {
-            player.sendMessage(new TextComponentTranslation("guistrings.spawner.noblock"));
-        }
-        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerClient() {
+		super.registerClient();
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerClient() {
-        super.registerClient();
-
-        NetworkHandler.registerGui(NetworkHandler.GUI_SPAWNER, GuiSpawnerPlacer.class);
-    }
+		NetworkHandler.registerGui(NetworkHandler.GUI_SPAWNER, GuiSpawnerPlacer.class);
+	}
 }

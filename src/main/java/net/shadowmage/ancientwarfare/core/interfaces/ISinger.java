@@ -7,5 +7,5 @@ import net.shadowmage.ancientwarfare.core.util.SongPlayData;
  */
 public interface ISinger {
 
-    public SongPlayData getSongs();
+	public SongPlayData getSongs();
 }

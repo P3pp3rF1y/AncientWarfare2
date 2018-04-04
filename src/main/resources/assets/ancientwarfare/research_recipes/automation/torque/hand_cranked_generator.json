@@ -1,20 +1,20 @@
 {
-  "type": "ancientwarfare:research_recipe",
-  "research": "the_wheel",
-  "pattern": [
-    "IGI",
-    "GIG",
-    "III"
-  ],
-  "key": {
-    "G": {
-      "item": "#GEARIRON"
+    "type": "ancientwarfare:research_recipe",
+    "research": "the_wheel",
+    "pattern": [
+        "IGI",
+        "GIG",
+        "III"
+    ],
+    "key": {
+        "G": {
+            "item": "#GEARIRON"
+        },
+        "I": {
+            "item": "#INGOTIRON"
+        }
     },
-    "I": {
-      "item": "#INGOTIRON"
+    "result": {
+        "item": "ancientwarfareautomation:hand_cranked_generator"
     }
-  },
-  "result": {
-    "item": "ancientwarfareautomation:hand_cranked_generator"
-  }
 }

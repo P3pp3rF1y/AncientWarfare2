@@ -12,14 +12,14 @@ import java.util.List;
 
 public class ItemBlockTeleportHub extends ItemBlockBase {
 
-    public ItemBlockTeleportHub(Block block) {
-        super(block);
-    }
+	public ItemBlockTeleportHub(Block block) {
+		super(block);
+	}
 
-    @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(I18n.format("tile.teleport_hub.tooltip.1"));
-        tooltip.add(I18n.format("tile.teleport_hub.tooltip.2"));
-        tooltip.add(I18n.format("tile.teleport_hub.tooltip.3"));
-    }
+	@Override
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		tooltip.add(I18n.format("tile.teleport_hub.tooltip.1"));
+		tooltip.add(I18n.format("tile.teleport_hub.tooltip.2"));
+		tooltip.add(I18n.format("tile.teleport_hub.tooltip.3"));
+	}
 }

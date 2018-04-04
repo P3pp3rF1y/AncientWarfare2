@@ -7,47 +7,47 @@ import net.minecraft.util.math.BlockPos;
 
 public class PacketBlockEvent extends PacketBase {
 
-    BlockPos pos;
-    short id, a, b;
+	BlockPos pos;
+	short id, a, b;
 
-    public PacketBlockEvent() {
-        //TODO test if needed
-    }
+	public PacketBlockEvent() {
+		//TODO test if needed
+	}
 
-    /*
-     * @param pos    coordinates of block in the world
-     * @param block type to validate on client-side prior to reading event (id written as short)
-     * @param a     data part a - (written as a unsigned byte)
-     * @param b     data part b - (written as a unsigned byte)
-     */
-    public PacketBlockEvent(BlockPos pos, Block block, short a, short b) {
-        this.pos = pos;
-        this.id = (short) Block.getIdFromBlock(block);
-        this.a = a;
-        this.b = b;
-    }
+	/*
+	 * @param pos    coordinates of block in the world
+	 * @param block type to validate on client-side prior to reading event (id written as short)
+	 * @param a     data part a - (written as a unsigned byte)
+	 * @param b     data part b - (written as a unsigned byte)
+	 */
+	public PacketBlockEvent(BlockPos pos, Block block, short a, short b) {
+		this.pos = pos;
+		this.id = (short) Block.getIdFromBlock(block);
+		this.a = a;
+		this.b = b;
+	}
 
-    @Override
-    protected void writeToStream(ByteBuf data) {
-        data.writeLong(pos.toLong());
-        data.writeShort(id);
-        data.writeByte(a & 0xff);
-        data.writeByte(b & 0xff);
-    }
+	@Override
+	protected void writeToStream(ByteBuf data) {
+		data.writeLong(pos.toLong());
+		data.writeShort(id);
+		data.writeByte(a & 0xff);
+		data.writeByte(b & 0xff);
+	}
 
-    @Override
-    protected void readFromStream(ByteBuf data) {
-        pos = BlockPos.fromLong(data.readLong());
-        id = data.readShort();
-        a = data.readUnsignedByte();
-        b = data.readUnsignedByte();
-    }
+	@Override
+	protected void readFromStream(ByteBuf data) {
+		pos = BlockPos.fromLong(data.readLong());
+		id = data.readShort();
+		a = data.readUnsignedByte();
+		b = data.readUnsignedByte();
+	}
 
-    @Override
-    protected void execute(EntityPlayer player) {
-        player.world.addBlockEvent(pos, Block.getBlockById(id), a, b);
+	@Override
+	protected void execute(EntityPlayer player) {
+		player.world.addBlockEvent(pos, Block.getBlockById(id), a, b);
 
-        //TODO multi threading - scheduled tasks
-    }
+		//TODO multi threading - scheduled tasks
+	}
 
 }

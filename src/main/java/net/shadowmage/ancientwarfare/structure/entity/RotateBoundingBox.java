@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.structure.entity;
 
 import net.minecraft.util.EnumFacing;
@@ -25,49 +26,50 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
-public class RotateBoundingBox extends AxisAlignedBB{
-    private final static float TO_RAD = (float) Math.PI / 180F;
-    private final EnumFacing facing;
-    //From vertical axis
-    private float angle;
-    public RotateBoundingBox(EnumFacing face, BlockPos min, BlockPos max) {
-        this(face, min.getX(), min.getY(), min.getZ(), max.getX(), max.getY(), max.getZ());
-    }
+public class RotateBoundingBox extends AxisAlignedBB {
+	private final static float TO_RAD = (float) Math.PI / 180F;
+	private final EnumFacing facing;
+	//From vertical axis
+	private float angle;
 
-    private RotateBoundingBox(EnumFacing face, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
-        super(minX, minY, minZ, maxX, maxY, maxZ);
-        this.facing = face;
-    }
+	public RotateBoundingBox(EnumFacing face, BlockPos min, BlockPos max) {
+		this(face, min.getX(), min.getY(), min.getZ(), max.getX(), max.getY(), max.getZ());
+	}
 
-    @Override
-    public boolean intersects(AxisAlignedBB mask) {
-        if(mask.maxY > minY) {
-            double height = MathHelper.cos(angle * TO_RAD) * (maxY - minY);
-            if(mask.minY < height + minY) {
-                if(facing.getAxis() == EnumFacing.Axis.Z){//z
-                    if(!(mask.minX < maxX && mask.maxX > minX))
-                        return false;
-                }else{//x
-                    if(!(mask.minZ < maxZ && mask.maxZ > minZ))
-                        return false;
-                }
-                double length = MathHelper.sin(angle * TO_RAD) * (maxY - minY + 1);
-                switch (facing.getHorizontalIndex()) {
-                    case 0:
-                        return mask.minZ < length + minZ && mask.maxZ > minZ;
-                    case 1:
-                        return mask.maxX > maxX - length && mask.minX < maxX;
-                    case 2:
-                        return mask.maxZ > maxZ - length && mask.minZ < maxZ;
-                    case 3:
-                        return mask.minX < length + minX && mask.maxX > minX;
-                }
-            }
-        }
-        return false;
-    }
+	private RotateBoundingBox(EnumFacing face, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
+		super(minX, minY, minZ, maxX, maxY, maxZ);
+		this.facing = face;
+	}
 
-    public void rotate(float increment){
-        angle += increment;
-    }
+	@Override
+	public boolean intersects(AxisAlignedBB mask) {
+		if (mask.maxY > minY) {
+			double height = MathHelper.cos(angle * TO_RAD) * (maxY - minY);
+			if (mask.minY < height + minY) {
+				if (facing.getAxis() == EnumFacing.Axis.Z) {//z
+					if (!(mask.minX < maxX && mask.maxX > minX))
+						return false;
+				} else {//x
+					if (!(mask.minZ < maxZ && mask.maxZ > minZ))
+						return false;
+				}
+				double length = MathHelper.sin(angle * TO_RAD) * (maxY - minY + 1);
+				switch (facing.getHorizontalIndex()) {
+					case 0:
+						return mask.minZ < length + minZ && mask.maxZ > minZ;
+					case 1:
+						return mask.maxX > maxX - length && mask.minX < maxX;
+					case 2:
+						return mask.maxZ > maxZ - length && mask.minZ < maxZ;
+					case 3:
+						return mask.minX < length + minX && mask.maxX > minX;
+				}
+			}
+		}
+		return false;
+	}
+
+	public void rotate(float increment) {
+		angle += increment;
+	}
 }

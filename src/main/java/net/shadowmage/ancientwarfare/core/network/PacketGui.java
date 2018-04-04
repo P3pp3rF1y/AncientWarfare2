@@ -41,7 +41,8 @@ public class PacketGui extends PacketBase {
             ByteBufOutputStream bbos = new ByteBufOutputStream(data);
             try {
                 CompressedStreamTools.writeCompressed(packetData, bbos);
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -51,7 +52,8 @@ public class PacketGui extends PacketBase {
     protected void readFromStream(ByteBuf data) {
         try {
             packetData = CompressedStreamTools.readCompressed(new ByteBufInputStream(data));
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
     }

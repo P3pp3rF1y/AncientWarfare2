@@ -7,14 +7,14 @@ import net.shadowmage.ancientwarfare.core.tile.TileOwned;
 
 public class TileRecruitingStation extends TileOwned implements IInteractableTile {
 
-    public TileRecruitingStation() {
+	public TileRecruitingStation() {
 
-    }
+	}
 
-    @Override
-    public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
-        // TODO Auto-generated method stub
-        return false;
-    }
+	@Override
+	public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 }

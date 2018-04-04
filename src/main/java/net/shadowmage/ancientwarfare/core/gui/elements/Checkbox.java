@@ -26,69 +26,69 @@ import net.shadowmage.ancientwarfare.core.util.RenderTools;
  */
 public class Checkbox extends GuiElement {
 
-    private boolean pressed = false;
-    private boolean checked = false;
-    protected String label;
+	private boolean pressed = false;
+	private boolean checked = false;
+	protected String label;
 
-    /*
-     * @param label (optional -- use null for none)
-     */
-    public Checkbox(int topLeftX, int topLeftY, int width, int height, String label) {
-        super(topLeftX, topLeftY, width, height);
-        this.label = I18n.format(label);
-        this.setTooltipIfFound(label);
-        this.addNewListener(new Listener(Listener.MOUSE_UP) {
-            @Override
-            public boolean onEvent(GuiElement widget, ActivationEvent evt) {
-                if (pressed && visible && enabled && isMouseOverElement(evt.mx, evt.my)) {
-                    Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
-                    checked = !checked;
-                    onToggled();
-                }
-                pressed = false;
-                return true;
-            }
-        });
+	/*
+	 * @param label (optional -- use null for none)
+	 */
+	public Checkbox(int topLeftX, int topLeftY, int width, int height, String label) {
+		super(topLeftX, topLeftY, width, height);
+		this.label = I18n.format(label);
+		this.setTooltipIfFound(label);
+		this.addNewListener(new Listener(Listener.MOUSE_UP) {
+			@Override
+			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
+				if (pressed && visible && enabled && isMouseOverElement(evt.mx, evt.my)) {
+					Minecraft.getMinecraft().getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(SoundEvents.UI_BUTTON_CLICK, 1.0F));
+					checked = !checked;
+					onToggled();
+				}
+				pressed = false;
+				return true;
+			}
+		});
 
-        this.addNewListener(new Listener(Listener.MOUSE_DOWN) {
-            @Override
-            public boolean onEvent(GuiElement widget, ActivationEvent evt) {
-                if (enabled && visible && isMouseOverElement(evt.mx, evt.my)) {
-                    pressed = true;
-                }
-                return true;
-            }
-        });
-    }
+		this.addNewListener(new Listener(Listener.MOUSE_DOWN) {
+			@Override
+			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
+				if (enabled && visible && isMouseOverElement(evt.mx, evt.my)) {
+					pressed = true;
+				}
+				return true;
+			}
+		});
+	}
 
-    @Override
-    public void render(int mouseX, int mouseY, float partialTick) {
-        if (visible) {
-            Minecraft.getMinecraft().renderEngine.bindTexture(widgetTexture1);
-            int y = enabled ? isMouseOverElement(mouseX, mouseY) ? 200 : 160 : 120;
-            int x = checked ? 40 : 0;
-            RenderTools.renderQuarteredTexture(256, 256, x, y, 40, 40, renderX, renderY, width, height);
+	@Override
+	public void render(int mouseX, int mouseY, float partialTick) {
+		if (visible) {
+			Minecraft.getMinecraft().renderEngine.bindTexture(widgetTexture1);
+			int y = enabled ? isMouseOverElement(mouseX, mouseY) ? 200 : 160 : 120;
+			int x = checked ? 40 : 0;
+			RenderTools.renderQuarteredTexture(256, 256, x, y, 40, 40, renderX, renderY, width, height);
 
-            if (label != null) {
-                int v = (height - 8) / 2;
-                Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(label, renderX + width + 2, renderY + v, 0xffffffff);
-            }
-        }
-    }
+			if (label != null) {
+				int v = (height - 8) / 2;
+				Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(label, renderX + width + 2, renderY + v, 0xffffffff);
+			}
+		}
+	}
 
-    /*
-     * Anonymous classes can override this for an easy-access toggled-listener for this element
-     */
-    public void onToggled() {
+	/*
+	 * Anonymous classes can override this for an easy-access toggled-listener for this element
+	 */
+	public void onToggled() {
 
-    }
+	}
 
-    public void setChecked(boolean val) {
-        this.checked = val;
-    }
+	public void setChecked(boolean val) {
+		this.checked = val;
+	}
 
-    public boolean checked() {
-        return checked;
-    }
+	public boolean checked() {
+		return checked;
+	}
 
 }

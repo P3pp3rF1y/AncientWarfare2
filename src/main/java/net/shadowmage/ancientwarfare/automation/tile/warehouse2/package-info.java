@@ -1,6 +1,6 @@
 // Auto generated package-info by MCP
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
+
+@ParametersAreNonnullByDefault @MethodsReturnNonnullByDefault
 package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
 import mcp.MethodsReturnNonnullByDefault;

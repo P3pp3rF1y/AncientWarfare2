@@ -4,22 +4,22 @@ import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 
 public class GuiWorksiteAnimalFarm extends GuiWorksiteBase {
 
-    public GuiWorksiteAnimalFarm(ContainerBase par1Container) {
-        super(par1Container);
+	public GuiWorksiteAnimalFarm(ContainerBase par1Container) {
+		super(par1Container);
 
-    }
+	}
 
-    @Override
-    public void initElements() {
-        addLabels();
-        addSideSelectButton();
-        addBoundsAdjustButton();
-        addAltControlsButton();
-    }
+	@Override
+	public void initElements() {
+		addLabels();
+		addSideSelectButton();
+		addBoundsAdjustButton();
+		addAltControlsButton();
+	}
 
-    @Override
-    public void setupElements() {
+	@Override
+	public void setupElements() {
 
-    }
+	}
 
 }

@@ -16,35 +16,35 @@ import net.shadowmage.ancientwarfare.core.item.ItemBlockBase;
 
 public class ItemBlockTorqueTile extends ItemBlockBase {
 
-    IRotatableBlock rotatable;
+	IRotatableBlock rotatable;
 
-    public ItemBlockTorqueTile(Block block) {
-        super(block);
-        if (!(block instanceof IRotatableBlock)) {
-            throw new IllegalArgumentException("Must be a rotatable block!!");
-        }
-        rotatable = (IRotatableBlock) block;
-        NonNullList<ItemStack> subBlocks = NonNullList.create();
-        block.getSubBlocks(block.getCreativeTabToDisplayOn(), subBlocks);
-        setHasSubtypes(subBlocks.size() > 1);
-    }
+	public ItemBlockTorqueTile(Block block) {
+		super(block);
+		if (!(block instanceof IRotatableBlock)) {
+			throw new IllegalArgumentException("Must be a rotatable block!!");
+		}
+		rotatable = (IRotatableBlock) block;
+		NonNullList<ItemStack> subBlocks = NonNullList.create();
+		block.getSubBlocks(block.getCreativeTabToDisplayOn(), subBlocks);
+		setHasSubtypes(subBlocks.size() > 1);
+	}
 
-    @Override
-    public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
-        boolean val = super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, newState);
-        if (val) {
-            TileTorqueBase te = (TileTorqueBase) player.world.getTileEntity(pos);
-            if (te instanceof IOwnable) {
-                ((IOwnable) te).setOwner(player);
-            }
-            EnumFacing facing = BlockRotationHandler.getFaceForPlacement(player, rotatable, side);
-            te.setPrimaryFacing(facing);
-        }
-        return val;
-    }
+	@Override
+	public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
+		boolean val = super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, newState);
+		if (val) {
+			TileTorqueBase te = (TileTorqueBase) player.world.getTileEntity(pos);
+			if (te instanceof IOwnable) {
+				((IOwnable) te).setOwner(player);
+			}
+			EnumFacing facing = BlockRotationHandler.getFaceForPlacement(player, rotatable, side);
+			te.setPrimaryFacing(facing);
+		}
+		return val;
+	}
 
-    @Override
-    public String getUnlocalizedName(ItemStack stack) {
-        return super.getUnlocalizedName(stack) + "." + stack.getItemDamage();
-    }
+	@Override
+	public String getUnlocalizedName(ItemStack stack) {
+		return super.getUnlocalizedName(stack) + "." + stack.getItemDamage();
+	}
 }

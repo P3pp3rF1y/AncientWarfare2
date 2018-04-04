@@ -1,22 +1,22 @@
 {
-  "type": "forge:ore_shaped",
-  "pattern": [
-    "ILL",
-    "PPP",
-    "ILL"
-  ],
-  "key": {
-    "P": {
-      "item": "minecraft:paper"
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "ILL",
+        "PPP",
+        "ILL"
+    ],
+    "key": {
+        "P": {
+            "item": "minecraft:paper"
+        },
+        "I": {
+            "item": "#INGOTIRON"
+        },
+        "L": {
+            "item": "minecraft:leather"
+        }
     },
-    "I": {
-      "item": "#INGOTIRON"
-    },
-    "L": {
-      "item": "minecraft:leather"
+    "result": {
+        "item": "ancientwarfare:research_book"
     }
-  },
-  "result": {
-    "item": "ancientwarfare:research_book"
-  }
 }

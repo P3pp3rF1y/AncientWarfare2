@@ -8,13 +8,13 @@ import net.minecraft.util.math.BlockPos;
  */
 public interface IKeepFood {
 
-    int getUpkeepAmount();
+	int getUpkeepAmount();
 
-    EnumFacing getUpkeepBlockSide();
+	EnumFacing getUpkeepBlockSide();
 
-    int getUpkeepDimensionId();
+	int getUpkeepDimensionId();
 
-    void setUpkeepAutoPosition(BlockPos pos);
+	void setUpkeepAutoPosition(BlockPos pos);
 
-    BlockPos getUpkeepPoint();
+	BlockPos getUpkeepPoint();
 }

@@ -43,13 +43,7 @@ import net.shadowmage.ancientwarfare.npc.network.PacketFactionUpdate;
 import net.shadowmage.ancientwarfare.npc.network.PacketNpcCommand;
 import net.shadowmage.ancientwarfare.npc.proxy.NpcCommonProxy;
 
-@Mod
-        (
-                name = "Ancient Warfare NPCs",
-                modid = AncientWarfareNPC.modID,
-                version = "@VERSION@",
-                dependencies = "required-after:ancientwarfare"
-        )
+@Mod(name = "Ancient Warfare NPCs", modid = AncientWarfareNPC.modID, version = "@VERSION@", dependencies = "required-after:ancientwarfare")
 
 public class AncientWarfareNPC {
     public static final String modID = "ancientwarfarenpc";
@@ -57,11 +51,7 @@ public class AncientWarfareNPC {
     @Instance(value = modID)
     public static AncientWarfareNPC instance;
 
-    @SidedProxy
-            (
-                    clientSide = "net.shadowmage.ancientwarfare.npc.proxy.NpcClientProxy",
-                    serverSide = "net.shadowmage.ancientwarfare.npc.proxy.NpcCommonProxy"
-            )
+    @SidedProxy(clientSide = "net.shadowmage.ancientwarfare.npc.proxy.NpcClientProxy", serverSide = "net.shadowmage.ancientwarfare.npc.proxy.NpcCommonProxy")
     public static NpcCommonProxy proxy;
 
     public static AWNPCStatics statics;
@@ -101,7 +91,7 @@ public class AncientWarfareNPC {
 
     @EventHandler
     public void init(FMLInitializationEvent evt) {
-        if(Loader.isModLoaded("jei")) {
+        if (Loader.isModLoaded("jei")) {
             AWJEIPlugin.addNbtItems(AWNPCItems.npcSpawner);
         }
 

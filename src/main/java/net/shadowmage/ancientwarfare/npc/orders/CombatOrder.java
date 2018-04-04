@@ -62,7 +62,6 @@ public class CombatOrder extends OrderingList<BlockPos> implements INBTSerializa
         return tag;
     }
 
-
     @Override
     public void deserializeNBT(NBTTagCompound tag) {
         clear();
@@ -70,7 +69,7 @@ public class CombatOrder extends OrderingList<BlockPos> implements INBTSerializa
         if (tag.hasKey("pointList")) {
             NBTTagList list = tag.getTagList("pointList", Constants.NBT.TAG_LONG);
             for (int i = 0; i < list.tagCount(); i++) {
-                add(BlockPos.fromLong(((NBTTagLong)list.get(i)).getLong())); //TODO make sure that getting long from list here works correctly
+                add(BlockPos.fromLong(((NBTTagLong) list.get(i)).getLong())); //TODO make sure that getting long from list here works correctly
             }
         }
     }

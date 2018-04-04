@@ -20,7 +20,7 @@ import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import javax.annotation.Nonnull;
 
 public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWarehouseCraftingStation> {
-    private static final int BOOK_SLOT = 1;
+	private static final int BOOK_SLOT = 1;
 
 	private ItemQuantityMap itemMap = new ItemQuantityMap();
 	private final ItemQuantityMap cache = new ItemQuantityMap();
@@ -96,7 +96,7 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 				if (!mergeItemStack(slotStack, BOOK_SLOT, BOOK_SLOT + 1, false)) {
 					return ItemStack.EMPTY;
 				}
-            }
+			}
 			if (slotStack.getCount() == 0) {
 				theSlot.putStack(ItemStack.EMPTY);
 			} else {

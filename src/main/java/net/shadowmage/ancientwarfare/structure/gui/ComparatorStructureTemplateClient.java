@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateClient;
@@ -27,32 +28,32 @@ import java.util.Locale;
 
 public class ComparatorStructureTemplateClient implements Comparator<StructureTemplateClient> {
 
-    private String filterText = "";
+	private String filterText = "";
 
-    public void setFilterText(String tex) {
-        this.filterText = tex;
-    }
+	public void setFilterText(String tex) {
+		this.filterText = tex;
+	}
 
-    @Override
-    public int compare(StructureTemplateClient arg0, StructureTemplateClient arg1) {
-        if(arg0 == arg1){
-            return 0;
-        }
-        if (arg0 == null && arg1 != null) {
-            return 1;
-        } else if (arg0 != null && arg1 == null) {
-            return -1;
-        }
-        String a = arg0.name.toLowerCase(Locale.ENGLISH);
-        String b = arg1.name.toLowerCase(Locale.ENGLISH);
-        String tex = filterText.toLowerCase(Locale.ENGLISH);
-        if (a.startsWith(tex) && b.startsWith(tex)) {
-            return arg0.name.compareTo(arg1.name);
-        } else if (a.startsWith(tex)) {
-            return -1;
-        } else if (b.startsWith(tex)) {
-            return 1;
-        }
-        return a.compareTo(b);
-    }
+	@Override
+	public int compare(StructureTemplateClient arg0, StructureTemplateClient arg1) {
+		if (arg0 == arg1) {
+			return 0;
+		}
+		if (arg0 == null && arg1 != null) {
+			return 1;
+		} else if (arg0 != null && arg1 == null) {
+			return -1;
+		}
+		String a = arg0.name.toLowerCase(Locale.ENGLISH);
+		String b = arg1.name.toLowerCase(Locale.ENGLISH);
+		String tex = filterText.toLowerCase(Locale.ENGLISH);
+		if (a.startsWith(tex) && b.startsWith(tex)) {
+			return arg0.name.compareTo(arg1.name);
+		} else if (a.startsWith(tex)) {
+			return -1;
+		} else if (b.startsWith(tex)) {
+			return 1;
+		}
+		return a.compareTo(b);
+	}
 }

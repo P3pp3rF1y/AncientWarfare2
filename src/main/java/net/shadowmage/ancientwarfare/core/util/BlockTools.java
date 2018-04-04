@@ -20,6 +20,7 @@
 
 
  */
+
 package net.shadowmage.ancientwarfare.core.util;
 
 import net.minecraft.block.Block;
@@ -43,7 +44,7 @@ public class BlockTools {
 
     /*
      * rotate a float X offset (-1<=x<=1) within a block
-     */
+	 */
     public static float rotateFloatX(float x, float z, int turns) {
         float x1, z1;
         x1 = x;
@@ -91,7 +92,7 @@ public class BlockTools {
 
     /*
      * will return null if nothing is in range
-     */
+	 */
     public static BlockPos getBlockClickedOn(EntityPlayer player, World world, boolean offset) {
         //TODO can this be replaced with regular rayTrace?
         float rotPitch = player.rotationPitch;
@@ -147,51 +148,46 @@ public class BlockTools {
 
     /*
      * rotate a position around its origin (0,0,0), in 90' clockwise steps
-     */
+	 */
     public static BlockPos rotateAroundOrigin(BlockPos pos) {
         return new BlockPos(-pos.getZ(), pos.getY(), pos.getX());
     }
 
     /*
      * checks to see if TEST lies somewhere in the cube bounded by pos1 and pos2
-     *
-     * @return true if it does
-     */
+	 *
+	 * @return true if it does
+	 */
     public static boolean isPositionWithinBounds(BlockPos test, BlockPos pos1, BlockPos pos2) {
-        if (test.getX() >= pos1.getX() && test.getX() <= pos2.getX())
-        {
-            if (test.getY() >= pos1.getY() && test.getY() <= pos2.getY())
-            {
+        if (test.getX() >= pos1.getX() && test.getX() <= pos2.getX()) {
+            if (test.getY() >= pos1.getY() && test.getY() <= pos2.getY()) {
                 return test.getZ() >= pos1.getZ() && test.getZ() <= pos2.getZ();
-            }
-            else
-            {
+            } else {
                 return false;
             }
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
 
     /*
      * return a new BlockPos containing the minimum coordinates from the two passed in BlockPos
-     */
+	 */
     public static BlockPos getMin(BlockPos pos1, BlockPos pos2) {
         return new BlockPos(Math.min(pos1.getX(), pos2.getX()), Math.min(pos1.getY(), pos2.getY()), Math.min(pos1.getZ(), pos2.getZ()));
     }
+
     /*
      * return a new BlockPos containing the maximum coordinates from the two passed in BlockPos
-     */
+	 */
     public static BlockPos getMax(BlockPos pos1, BlockPos pos2) {
         return new BlockPos(Math.max(pos1.getX(), pos2.getX()), Math.max(pos1.getY(), pos2.getY()), Math.max(pos1.getZ(), pos2.getZ()));
     }
 
     /*
      * rotates a given block-position in a given area by the number of turns.  Used by templates
-     * to get a relative position.
-     */
+	 * to get a relative position.
+	 */
     public static BlockPos rotateInArea(BlockPos pos, int xSize, int zSize, int turns) {
         int xSize1 = xSize;
         int zSize1 = zSize;
@@ -239,7 +235,6 @@ public class BlockTools {
         }
         return world.setBlockToAir(pos);
     }
-
 
     public static boolean canBreakBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state) {
         return !AWCoreStatics.fireBlockBreakEvents || !MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, player));

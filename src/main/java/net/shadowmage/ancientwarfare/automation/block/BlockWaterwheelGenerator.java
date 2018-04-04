@@ -27,60 +27,56 @@ import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
 public class BlockWaterwheelGenerator extends BlockTorqueGenerator implements IBakeryProvider {
-    public static final PropertyBool VALID_SETUP = PropertyBool.create("valid_setup");
+	public static final PropertyBool VALID_SETUP = PropertyBool.create("valid_setup");
 
-    public BlockWaterwheelGenerator(String regName) {
-        super(regName);
-    }
+	public BlockWaterwheelGenerator(String regName) {
+		super(regName);
+	}
 
-    @Override
-    protected void addProperties(BlockStateContainer.Builder builder) {
-        builder.add(VALID_SETUP);
-    }
+	@Override
+	protected void addProperties(BlockStateContainer.Builder builder) {
+		builder.add(VALID_SETUP);
+	}
 
-    @Override
-    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return WaterwheelGeneratorRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
-    }
+	@Override
+	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return WaterwheelGeneratorRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
+	}
 
-    @Override
-    public boolean invertFacing() {
-        return true;
-    }
+	@Override
+	public boolean invertFacing() {
+		return true;
+	}
 
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileWaterwheelGenerator();
-    }
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		return new TileWaterwheelGenerator();
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerClient() {
-        ModelLoaderHelper.registerItem(this, WaterwheelGeneratorRenderer.MODEL_LOCATION);
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerClient() {
+		ModelLoaderHelper.registerItem(this, WaterwheelGeneratorRenderer.MODEL_LOCATION);
 
-        ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder()
-                .addKeyProperties(VALID_SETUP)
-                .addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC)
-                .addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.ROTATIONS)
-                .build()
-        );
+		ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder().addKeyProperties(VALID_SETUP).addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC).addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.ROTATIONS).build());
 
-        ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
-            @Override protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                return WaterwheelGeneratorRenderer.MODEL_LOCATION;
-            }
-        });
+		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
+			@Override
+			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+				return WaterwheelGeneratorRenderer.MODEL_LOCATION;
+			}
+		});
 
-        ModelRegistryHelper.register(WaterwheelGeneratorRenderer.MODEL_LOCATION, new CCBakeryModel() {
-            @Override
-            public TextureAtlasSprite getParticleTexture() {
-                return WaterwheelGeneratorRenderer.INSTANCE.sprite;
-            }
-        });
-    }
+		ModelRegistryHelper.register(WaterwheelGeneratorRenderer.MODEL_LOCATION, new CCBakeryModel() {
+			@Override
+			public TextureAtlasSprite getParticleTexture() {
+				return WaterwheelGeneratorRenderer.INSTANCE.sprite;
+			}
+		});
+	}
 
-    @Override
-    public IBakery getBakery() {
-        return WaterwheelGeneratorRenderer.INSTANCE;
-    }
+	@Override
+	public IBakery getBakery() {
+		return WaterwheelGeneratorRenderer.INSTANCE;
+	}
 }

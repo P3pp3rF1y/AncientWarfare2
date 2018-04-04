@@ -27,76 +27,73 @@ import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
 public class BlockTorqueDistributor extends BlockTorqueTransportSided implements IBakeryProvider {
-    protected BlockTorqueDistributor(String regName) {
-        super(regName);
-    }
+	protected BlockTorqueDistributor(String regName) {
+		super(regName);
+	}
 
-    @Override
-    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return TorqueDistributorRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
-    }
+	@Override
+	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return TorqueDistributorRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
+	}
 
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state) {
-        switch (state.getValue(AutomationProperties.TIER)) {
-            case LIGHT:
-                return new TileDistributorLight();
-            case MEDIUM:
-                return new TileDistributorMedium();
-            case HEAVY:
-                return new TileDistributorHeavy();
-        }
-        return new TileDistributorLight();
-    }
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		switch (state.getValue(AutomationProperties.TIER)) {
+			case LIGHT:
+				return new TileDistributorLight();
+			case MEDIUM:
+				return new TileDistributorMedium();
+			case HEAVY:
+				return new TileDistributorHeavy();
+		}
+		return new TileDistributorLight();
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerClient() {
-        ModelLoaderHelper.registerItem(this, "automation", "light", false); //the actual switch for itemstack types is processed by renderer
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerClient() {
+		ModelLoaderHelper.registerItem(this, "automation", "light", false); //the actual switch for itemstack types is processed by renderer
 
-        ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder()
-                .addKeyProperties(AutomationProperties.TIER)
-                .addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC)
-                .addKeyProperties(BlockTorqueTransportSided.CONNECTIONS)
-                .addKeyProperties(o -> String.format("%.6f",o), AutomationProperties.ROTATIONS).build());
+		ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder().addKeyProperties(AutomationProperties.TIER).addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC).addKeyProperties(BlockTorqueTransportSided.CONNECTIONS).addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.ROTATIONS).build());
 
-        ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
-            @Override protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                switch(state.getValue(AutomationProperties.TIER)) {
-                    case LIGHT:
-                        return TorqueDistributorRenderer.LIGHT_MODEL_LOCATION;
-                    case MEDIUM:
-                        return TorqueDistributorRenderer.MEDIUM_MODEL_LOCATION;
-                    default:
-                        return TorqueDistributorRenderer.HEAVY_MODEL_LOCATION;
-                }
-            }
-        });
+		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
+			@Override
+			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+				switch (state.getValue(AutomationProperties.TIER)) {
+					case LIGHT:
+						return TorqueDistributorRenderer.LIGHT_MODEL_LOCATION;
+					case MEDIUM:
+						return TorqueDistributorRenderer.MEDIUM_MODEL_LOCATION;
+					default:
+						return TorqueDistributorRenderer.HEAVY_MODEL_LOCATION;
+				}
+			}
+		});
 
-        ModelRegistryHelper.register(TorqueDistributorRenderer.LIGHT_MODEL_LOCATION, new CCBakeryModel() {
-            @Override
-            public TextureAtlasSprite getParticleTexture() {
-                return TorqueDistributorRenderer.INSTANCE.getSprite(TorqueTier.LIGHT);
-            }
-        });
+		ModelRegistryHelper.register(TorqueDistributorRenderer.LIGHT_MODEL_LOCATION, new CCBakeryModel() {
+			@Override
+			public TextureAtlasSprite getParticleTexture() {
+				return TorqueDistributorRenderer.INSTANCE.getSprite(TorqueTier.LIGHT);
+			}
+		});
 
-        ModelRegistryHelper.register(TorqueDistributorRenderer.MEDIUM_MODEL_LOCATION, new CCBakeryModel() {
-            @Override
-            public TextureAtlasSprite getParticleTexture() {
-                return TorqueDistributorRenderer.INSTANCE.getSprite(TorqueTier.MEDIUM);
-            }
-        });
+		ModelRegistryHelper.register(TorqueDistributorRenderer.MEDIUM_MODEL_LOCATION, new CCBakeryModel() {
+			@Override
+			public TextureAtlasSprite getParticleTexture() {
+				return TorqueDistributorRenderer.INSTANCE.getSprite(TorqueTier.MEDIUM);
+			}
+		});
 
-        ModelRegistryHelper.register(TorqueDistributorRenderer.HEAVY_MODEL_LOCATION, new CCBakeryModel() {
-            @Override
-            public TextureAtlasSprite getParticleTexture() {
-                return TorqueDistributorRenderer.INSTANCE.getSprite(TorqueTier.HEAVY);
-            }
-        });
-    }
+		ModelRegistryHelper.register(TorqueDistributorRenderer.HEAVY_MODEL_LOCATION, new CCBakeryModel() {
+			@Override
+			public TextureAtlasSprite getParticleTexture() {
+				return TorqueDistributorRenderer.INSTANCE.getSprite(TorqueTier.HEAVY);
+			}
+		});
+	}
 
-    @Override
-    public IBakery getBakery() {
-        return TorqueDistributorRenderer.INSTANCE;
-    }
+	@Override
+	public IBakery getBakery() {
+		return TorqueDistributorRenderer.INSTANCE;
+	}
 }

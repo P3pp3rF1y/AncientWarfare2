@@ -63,7 +63,7 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
         ItemStack stack = player.getHeldItem(hand);
-        if(world.isRemote){
+        if (world.isRemote) {
             return new ActionResult<>(EnumActionResult.SUCCESS, stack);
         }
         ItemStructureSettings scanSettings = ItemStructureSettings.getSettingsFor(stack);
@@ -85,7 +85,7 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
     public static boolean scanStructure(World world, BlockPos pos1, BlockPos pos2, BlockPos key, EnumFacing face, String name, boolean include, NBTTagCompound tag) {
         BlockPos min = BlockTools.getMin(pos1, pos2);
         BlockPos max = BlockTools.getMax(pos1, pos2);
-        int turns = (6-face.getHorizontalIndex())%4;
+        int turns = (6 - face.getHorizontalIndex()) % 4;
         StructureTemplate template = TemplateScanner.scan(world, min, max, key, turns, name);
 
         StructureValidationType type = StructureValidationType.getTypeFromName(tag.getString("validationType"));

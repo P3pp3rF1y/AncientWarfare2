@@ -11,29 +11,29 @@ import net.minecraft.world.storage.WorldSavedData;
  */
 public final class AWGameData {
 
-    public static final AWGameData INSTANCE = new AWGameData();
+	public static final AWGameData INSTANCE = new AWGameData();
 
-    public <T extends WorldSavedData> T getData(World world, Class<T> clz) {
-        return initData(world.getMapStorage(), clz);
-    }
+	public <T extends WorldSavedData> T getData(World world, Class<T> clz) {
+		return initData(world.getMapStorage(), clz);
+	}
 
-    public <T extends WorldSavedData> T getPerWorldData(World world, Class<T> clz) {
-        return initData(world.getPerWorldStorage(), clz);
-    }
+	public <T extends WorldSavedData> T getPerWorldData(World world, Class<T> clz) {
+		return initData(world.getPerWorldStorage(), clz);
+	}
 
-
-    private <T extends WorldSavedData> T initData(MapStorage storage, Class<T> clz){
-        String name = "AW"+clz.getSimpleName();
-        T data = (T) storage.getOrLoadData(clz, name);
-        if (data == null) {
-            try {
-                data = clz.getConstructor(String.class).newInstance(name);
-                storage.setData(name, data);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return data;
-    }
+	private <T extends WorldSavedData> T initData(MapStorage storage, Class<T> clz) {
+		String name = "AW" + clz.getSimpleName();
+		T data = (T) storage.getOrLoadData(clz, name);
+		if (data == null) {
+			try {
+				data = clz.getConstructor(String.class).newInstance(name);
+				storage.setData(name, data);
+			}
+			catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return data;
+	}
 
 }

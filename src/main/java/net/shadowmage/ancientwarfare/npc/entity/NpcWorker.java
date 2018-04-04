@@ -41,154 +41,154 @@ import java.util.Collection;
 
 public class NpcWorker extends NpcPlayerOwned implements IWorker {
 
-    public BlockPos autoWorkTarget;
-    private NpcAIPlayerOwnedWork workAI;
-    private NpcAIPlayerOwnedWorkRandom workRandomAI;
+	public BlockPos autoWorkTarget;
+	private NpcAIPlayerOwnedWork workAI;
+	private NpcAIPlayerOwnedWorkRandom workRandomAI;
 
-    public NpcWorker(World par1World) {
-        super(par1World);
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
-        this.tasks.addTask(0, new NpcAIDoor(this, true));
-        this.tasks.addTask(0, (horseAI = new NpcAIPlayerOwnedRideHorse(this)));
-        this.tasks.addTask(2, new NpcAIFollowPlayer(this));
-        this.tasks.addTask(2, new NpcAIPlayerOwnedFollowCommand(this));
-        this.tasks.addTask(3, new NpcAIFleeHostiles(this));
-        this.tasks.addTask(3, new NpcAIPlayerOwnedAlarmResponse(this));
-        this.tasks.addTask(4, new NpcAIPlayerOwnedGetFood(this));
-        this.tasks.addTask(5, new NpcAIPlayerOwnedIdleWhenHungry(this));
-        this.tasks.addTask(6, (workAI = new NpcAIPlayerOwnedWork(this)));
-        this.tasks.addTask(7, (workRandomAI = new NpcAIPlayerOwnedWorkRandom(this)));
-        this.tasks.addTask(8, new NpcAIMoveHome(this, 50F, 3F, 30F, 3F));
+	public NpcWorker(World par1World) {
+		super(par1World);
+		this.tasks.addTask(0, new EntityAISwimming(this));
+		this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
+		this.tasks.addTask(0, new NpcAIDoor(this, true));
+		this.tasks.addTask(0, (horseAI = new NpcAIPlayerOwnedRideHorse(this)));
+		this.tasks.addTask(2, new NpcAIFollowPlayer(this));
+		this.tasks.addTask(2, new NpcAIPlayerOwnedFollowCommand(this));
+		this.tasks.addTask(3, new NpcAIFleeHostiles(this));
+		this.tasks.addTask(3, new NpcAIPlayerOwnedAlarmResponse(this));
+		this.tasks.addTask(4, new NpcAIPlayerOwnedGetFood(this));
+		this.tasks.addTask(5, new NpcAIPlayerOwnedIdleWhenHungry(this));
+		this.tasks.addTask(6, (workAI = new NpcAIPlayerOwnedWork(this)));
+		this.tasks.addTask(7, (workRandomAI = new NpcAIPlayerOwnedWorkRandom(this)));
+		this.tasks.addTask(8, new NpcAIMoveHome(this, 50F, 3F, 30F, 3F));
 
-        //post-100 -- used by delayed shared tasks (look at random stuff, wander)
-        this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
-        this.tasks.addTask(102, new NpcAIWander(this));
-        this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
+		//post-100 -- used by delayed shared tasks (look at random stuff, wander)
+		this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
+		this.tasks.addTask(102, new NpcAIWander(this));
+		this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 
-        this.targetTasks.addTask(0, new NpcAIPlayerOwnedFindWorksite(this));
-    }
+		this.targetTasks.addTask(0, new NpcAIPlayerOwnedFindWorksite(this));
+	}
 
-    @Override
-    public String getNpcSubType() {
-        WorkType type = getWorkTypeFromEquipment();
-        switch (type) {
-            case CRAFTING:
-                return "craftsman";
-            case FARMING:
-                return "farmer";
-            case FORESTRY:
-                return "lumberjack";
-            case MINING:
-                return "miner";
-            case RESEARCH:
-                return "researcher";
-            case NONE:
-            default:
-                return "";
-        }
-    }
+	@Override
+	public String getNpcSubType() {
+		WorkType type = getWorkTypeFromEquipment();
+		switch (type) {
+			case CRAFTING:
+				return "craftsman";
+			case FARMING:
+				return "farmer";
+			case FORESTRY:
+				return "lumberjack";
+			case MINING:
+				return "miner";
+			case RESEARCH:
+				return "researcher";
+			case NONE:
+			default:
+				return "";
+		}
+	}
 
-    public void handleWorksiteBroadcast(IWorkSite site, BlockPos pos) {
+	public void handleWorksiteBroadcast(IWorkSite site, BlockPos pos) {
 
-    }
+	}
 
-    @Override
-    public String getNpcType() {
-        return "worker";
-    }
+	@Override
+	public String getNpcType() {
+		return "worker";
+	}
 
-    @Override
-    public float getWorkEffectiveness(WorkType type) {
-        if (canWorkAt(type)) {
-            float effectiveness = 1.f + this.getLevelingStats().getLevel() * 0.05F;
+	@Override
+	public float getWorkEffectiveness(WorkType type) {
+		if (canWorkAt(type)) {
+			float effectiveness = 1.f + this.getLevelingStats().getLevel() * 0.05F;
 
-            Item item = getHeldItemMainhand().getItem();
-            if (item instanceof ItemTool) {
-                effectiveness += ((ItemTool) item).toolMaterial.getEfficiency() * 0.05f;
-            } else if (item instanceof ItemHoe) {
-                ToolMaterial mat = ToolMaterial.valueOf(((ItemHoe) item).getMaterialName());
-                effectiveness += mat.getEfficiency() * 0.05f;
-            } else if (item instanceof ItemHammer) {
-                effectiveness += ((ItemHammer) item).getMaterial().getEfficiency() * 0.05f;
-            } else if (item instanceof ItemQuill) {
-                effectiveness += ((ItemQuill) item).getMaterial().getEfficiency() * 0.05f;
-            }
-            return effectiveness;
-        }
-        return 0.F;
-    }
+			Item item = getHeldItemMainhand().getItem();
+			if (item instanceof ItemTool) {
+				effectiveness += ((ItemTool) item).toolMaterial.getEfficiency() * 0.05f;
+			} else if (item instanceof ItemHoe) {
+				ToolMaterial mat = ToolMaterial.valueOf(((ItemHoe) item).getMaterialName());
+				effectiveness += mat.getEfficiency() * 0.05f;
+			} else if (item instanceof ItemHammer) {
+				effectiveness += ((ItemHammer) item).getMaterial().getEfficiency() * 0.05f;
+			} else if (item instanceof ItemQuill) {
+				effectiveness += ((ItemQuill) item).getMaterial().getEfficiency() * 0.05f;
+			}
+			return effectiveness;
+		}
+		return 0.F;
+	}
 
-    @Override
-    public boolean shouldBeAtHome() {
-        WorkOrder order = WorkOrder.getWorkOrder(ordersStack);
-        if(order == null || !order.isNightShift()){
-            return super.shouldBeAtHome();
-        }else{
-            if (getAttackTarget() != null || !hasHome() || !world.provider.hasSkyLight()) {
-                return false;
-            }
-            return world.isDaytime() || world.isRainingAt(getPosition());
-        }
-    }
+	@Override
+	public boolean shouldBeAtHome() {
+		WorkOrder order = WorkOrder.getWorkOrder(ordersStack);
+		if (order == null || !order.isNightShift()) {
+			return super.shouldBeAtHome();
+		} else {
+			if (getAttackTarget() != null || !hasHome() || !world.provider.hasSkyLight()) {
+				return false;
+			}
+			return world.isDaytime() || world.isRainingAt(getPosition());
+		}
+	}
 
-    @Override
-    public double getWorkRangeSq(){
-        return AWNPCStatics.npcActionRange * AWNPCStatics.npcActionRange;
-    }
+	@Override
+	public double getWorkRangeSq() {
+		return AWNPCStatics.npcActionRange * AWNPCStatics.npcActionRange;
+	}
 
-    @Override
-    public boolean canWorkAt(WorkType type) {
-        return type == getWorkTypeFromEquipment();
-    }
+	@Override
+	public boolean canWorkAt(WorkType type) {
+		return type == getWorkTypeFromEquipment();
+	}
 
-    @Override
-    public boolean isValidOrdersStack(ItemStack stack) {
-        return !stack.isEmpty() && stack.getItem() instanceof ItemWorkOrder;
-    }
+	@Override
+	public boolean isValidOrdersStack(ItemStack stack) {
+		return !stack.isEmpty() && stack.getItem() instanceof ItemWorkOrder;
+	}
 
-    protected WorkType getWorkTypeFromEquipment() {
-        @Nonnull ItemStack stack = getHeldItemMainhand();
-        if (!stack.isEmpty()) {
-            if (stack.getItem() instanceof ItemHoe) {
-                return WorkType.FARMING;
-            } else {
-                Collection<String> tools = stack.getItem().getToolClasses(stack);
-                if (tools.contains("axe")) {
-                    return WorkType.FORESTRY;
-                } else if (tools.contains("pickaxe")) {
-                    return WorkType.MINING;
-                } else if (tools.contains("hammer")) {
-                    return WorkType.CRAFTING;
-                } else if (tools.contains("quill")) {
-                    return WorkType.RESEARCH;
-                }
-            }
-        }
-        return WorkType.NONE;
-    }
+	protected WorkType getWorkTypeFromEquipment() {
+		@Nonnull ItemStack stack = getHeldItemMainhand();
+		if (!stack.isEmpty()) {
+			if (stack.getItem() instanceof ItemHoe) {
+				return WorkType.FARMING;
+			} else {
+				Collection<String> tools = stack.getItem().getToolClasses(stack);
+				if (tools.contains("axe")) {
+					return WorkType.FORESTRY;
+				} else if (tools.contains("pickaxe")) {
+					return WorkType.MINING;
+				} else if (tools.contains("hammer")) {
+					return WorkType.CRAFTING;
+				} else if (tools.contains("quill")) {
+					return WorkType.RESEARCH;
+				}
+			}
+		}
+		return WorkType.NONE;
+	}
 
-    @Override
-    public void onOrdersInventoryChanged() {
-        this.workAI.onOrdersChanged();
-    }
+	@Override
+	public void onOrdersInventoryChanged() {
+		this.workAI.onOrdersChanged();
+	}
 
-    @Override
-    public void readEntityFromNBT(NBTTagCompound tag) {
-        super.readEntityFromNBT(tag);
-        if (tag.hasKey("workAI")) {
-            workAI.readFromNBT(tag.getCompoundTag("workAI"));
-        }
-        if (tag.hasKey("workRandomAI")) {
-            workRandomAI.readFromNBT(tag.getCompoundTag("workRandomAI"));
-        }
-    }
+	@Override
+	public void readEntityFromNBT(NBTTagCompound tag) {
+		super.readEntityFromNBT(tag);
+		if (tag.hasKey("workAI")) {
+			workAI.readFromNBT(tag.getCompoundTag("workAI"));
+		}
+		if (tag.hasKey("workRandomAI")) {
+			workRandomAI.readFromNBT(tag.getCompoundTag("workRandomAI"));
+		}
+	}
 
-    @Override
-    public void writeEntityToNBT(NBTTagCompound tag) {
-        super.writeEntityToNBT(tag);
-        tag.setTag("workAI", workAI.writeToNBT(new NBTTagCompound()));
-        tag.setTag("workRandomAI", workRandomAI.writeToNBT(new NBTTagCompound()));
-    }
+	@Override
+	public void writeEntityToNBT(NBTTagCompound tag) {
+		super.writeEntityToNBT(tag);
+		tag.setTag("workAI", workAI.writeToNBT(new NBTTagCompound()));
+		tag.setTag("workRandomAI", workRandomAI.writeToNBT(new NBTTagCompound()));
+	}
 
 }

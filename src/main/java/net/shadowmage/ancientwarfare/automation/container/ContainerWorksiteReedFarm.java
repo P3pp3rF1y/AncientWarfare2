@@ -5,12 +5,12 @@ import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteFarm;
 
 public class ContainerWorksiteReedFarm extends ContainerWorksiteBase<TileWorksiteFarm> {
 
-    public ContainerWorksiteReedFarm(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
+	public ContainerWorksiteReedFarm(EntityPlayer player, int x, int y, int z) {
+		super(player, x, y, z);
 
 		int layerY = 78;
 
-        frontLabel = layerY;
+		frontLabel = layerY;
 		layerY += LABEL_GAP;
 		layerY = addSlots(tileEntity.plantableInventory, 8, layerY) + 4;
 		bottomLabel = layerY;

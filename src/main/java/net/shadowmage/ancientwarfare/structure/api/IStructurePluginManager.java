@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.structure.api;
 
 import net.minecraft.block.Block;
@@ -25,8 +26,8 @@ import net.minecraft.entity.Entity;
 
 public interface IStructurePluginManager extends IStructurePluginRegister {
 
-    void registerEntityHandler(String pluginName, Class<? extends Entity> entityClass, Class<? extends TemplateRuleEntity> ruleClass);
+	void registerEntityHandler(String pluginName, Class<? extends Entity> entityClass, Class<? extends TemplateRuleEntity> ruleClass);
 
-    void registerBlockHandler(String pluginName, Block block, Class<? extends TemplateRuleBlock> ruleClass);
+	void registerBlockHandler(String pluginName, Block block, Class<? extends TemplateRuleBlock> ruleClass);
 
 }

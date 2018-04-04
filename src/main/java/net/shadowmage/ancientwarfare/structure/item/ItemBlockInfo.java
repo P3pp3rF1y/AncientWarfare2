@@ -15,23 +15,23 @@ import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
 public class ItemBlockInfo extends ItemBaseStructure {
 
-    public ItemBlockInfo(String name) {
-        super(name);
-    }
+	public ItemBlockInfo(String name) {
+		super(name);
+	}
 
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-        if(!world.isRemote) {
-            BlockPos pos = BlockTools.getBlockClickedOn(player, player.world, false);
-            if (pos != null) {
-                IBlockState state = world.getBlockState(pos);
-                Block block = state.getBlock();
-                AWLog.logDebug("block: " + BlockDataManager.INSTANCE.getNameForBlock(block) + ", meta: " + block.getMetaFromState(state)); //TODO print property values?
-                if(block.hasTileEntity(state)){
-                    AWLog.logDebug("tile: " + world.getTileEntity(pos).getClass());
-                }
-            }
-        }
-        return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
-    }
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		if (!world.isRemote) {
+			BlockPos pos = BlockTools.getBlockClickedOn(player, player.world, false);
+			if (pos != null) {
+				IBlockState state = world.getBlockState(pos);
+				Block block = state.getBlock();
+				AWLog.logDebug("block: " + BlockDataManager.INSTANCE.getNameForBlock(block) + ", meta: " + block.getMetaFromState(state)); //TODO print property values?
+				if (block.hasTileEntity(state)) {
+					AWLog.logDebug("tile: " + world.getTileEntity(pos).getClass());
+				}
+			}
+		}
+		return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+	}
 }

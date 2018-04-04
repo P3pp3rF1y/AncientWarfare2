@@ -9,30 +9,31 @@ import net.minecraftforge.common.util.FakePlayer;
 import java.util.UUID;
 
 public class AWFakePlayer extends FakePlayer {
-    private static final String PLAYER_NAME = "AncientWarfareFakePlayer";
-    private static AWFakePlayer instance;
-    private AWFakePlayer(WorldServer world) {
-        super(world, new GameProfile(UUID.nameUUIDFromBytes(PLAYER_NAME.getBytes()), PLAYER_NAME));
-    }
+	private static final String PLAYER_NAME = "AncientWarfareFakePlayer";
+	private static AWFakePlayer instance;
 
-    public static AWFakePlayer get(World world) {
-        if(instance == null && world instanceof WorldServer) {
-            instance = new AWFakePlayer((WorldServer) world);
-        }
-        return instance;
-    }
+	private AWFakePlayer(WorldServer world) {
+		super(world, new GameProfile(UUID.nameUUIDFromBytes(PLAYER_NAME.getBytes()), PLAYER_NAME));
+	}
 
-    @Override
-    public GameProfile getGameProfile() {
-        return super.getGameProfile();
-    }
+	public static AWFakePlayer get(World world) {
+		if (instance == null && world instanceof WorldServer) {
+			instance = new AWFakePlayer((WorldServer) world);
+		}
+		return instance;
+	}
 
-    @Override
-    protected void onInsideBlock(IBlockState p_191955_1_) {
-        //noop
-    }
+	@Override
+	public GameProfile getGameProfile() {
+		return super.getGameProfile();
+	}
 
-    public static void onWorldUnload() {
-        instance = null;
-    }
+	@Override
+	protected void onInsideBlock(IBlockState p_191955_1_) {
+		//noop
+	}
+
+	public static void onWorldUnload() {
+		instance = null;
+	}
 }

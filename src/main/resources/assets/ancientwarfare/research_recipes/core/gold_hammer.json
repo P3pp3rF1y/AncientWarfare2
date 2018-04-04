@@ -1,20 +1,20 @@
 {
-  "type": "ancientwarfare:research_recipe",
-  "research": "engineering",
-  "pattern": [
-    " S ",
-    "MSM",
-    " S "
-  ],
-  "key": {
-    "S": {
-      "item": "#STICKWOOD"
+    "type": "ancientwarfare:research_recipe",
+    "research": "engineering",
+    "pattern": [
+        " S ",
+        "MSM",
+        " S "
+    ],
+    "key": {
+        "S": {
+            "item": "#STICKWOOD"
+        },
+        "M": {
+            "item": "#INGOTGOLD"
+        }
     },
-    "M": {
-      "item": "#INGOTGOLD"
+    "result": {
+        "item": "ancientwarfare:gold_hammer"
     }
-  },
-  "result": {
-    "item": "ancientwarfare:gold_hammer"
-  }
 }

@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.structure.api;
 
 import net.minecraftforge.fml.common.eventhandler.Cancelable;
@@ -31,12 +32,12 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 @Cancelable
 public class StructurePluginRegistrationEvent extends Event {
 
-    public final IStructurePluginRegister register;
-    public final String modId;
+	public final IStructurePluginRegister register;
+	public final String modId;
 
-    public StructurePluginRegistrationEvent(IStructurePluginRegister register, String mod) {
-        this.register = register;
-        this.modId = mod;
-    }
+	public StructurePluginRegistrationEvent(IStructurePluginRegister register, String mod) {
+		this.register = register;
+		this.modId = mod;
+	}
 
 }

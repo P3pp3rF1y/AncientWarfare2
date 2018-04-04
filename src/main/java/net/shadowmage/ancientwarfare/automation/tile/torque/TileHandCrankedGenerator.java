@@ -25,18 +25,15 @@ public class TileHandCrankedGenerator extends TileTorqueSingleCell implements IW
 
     /*
      * client side this == 0.0 -> 100.0 (integer percent)
-     */
-    double clientInputEnergy;
+	 */ double clientInputEnergy;
 
     /*
      * client side this == 0 -> 100.0 (integer percent)
-     */
-    int clientInputDestEnergy;
+	 */ int clientInputDestEnergy;
 
     /*
      * used client side for rendering
-     */
-    double inputRotation;
+	 */ double inputRotation;
     double lastInputRotationDiff;
 
     public TileHandCrankedGenerator() {
@@ -158,7 +155,7 @@ public class TileHandCrankedGenerator extends TileTorqueSingleCell implements IW
     }
 
     @Override
-    public boolean isOwner(EntityPlayer player){
+    public boolean isOwner(EntityPlayer player) {
         return EntityTools.isOwnerOrSameTeam(player, ownerId, ownerName);
     }
 
@@ -167,7 +164,7 @@ public class TileHandCrankedGenerator extends TileTorqueSingleCell implements IW
         this.ownerName = player.getName();
         this.ownerId = player.getUniqueID();
     }
-    
+
     @Override
     public void setOwner(String ownerName, UUID ownerUuid) {
         this.ownerName = ownerName;
@@ -178,7 +175,7 @@ public class TileHandCrankedGenerator extends TileTorqueSingleCell implements IW
     public String getOwnerName() {
         return ownerName;
     }
-    
+
     @Override
     public UUID getOwnerUuid() {
         return ownerId;

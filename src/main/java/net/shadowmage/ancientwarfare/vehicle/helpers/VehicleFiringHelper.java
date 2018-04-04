@@ -160,8 +160,7 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 						}
 					}
 					missile = vehicle.ammoHelper.getMissile2(x, y, z, yaw, pitch, power);
-					if (vehicle.vehicleType.getMovementType() == VehicleMovementType.AIR1 || vehicle.vehicleType
-							.getMovementType() == VehicleMovementType.AIR2) {
+					if (vehicle.vehicleType.getMovementType() == VehicleMovementType.AIR1 || vehicle.vehicleType.getMovementType() == VehicleMovementType.AIR2) {
 						missile.motionX += vehicle.motionX;
 						missile.motionY += vehicle.motionY;
 						missile.motionZ += vehicle.motionZ;
@@ -435,8 +434,7 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 				}
 			}
 		} else if (vehicle.canAimPower()) {
-			float power = Trig.iterativeSpeedFinder(tx, ty, tz, vehicle.localTurretPitch + vehicle.rotationPitch, TRAJECTORY_ITERATIONS_CLIENT,
-					(vehicle.ammoHelper.getCurrentAmmoType() != null && vehicle.ammoHelper.getCurrentAmmoType().isRocket()));
+			float power = Trig.iterativeSpeedFinder(tx, ty, tz, vehicle.localTurretPitch + vehicle.rotationPitch, TRAJECTORY_ITERATIONS_CLIENT, (vehicle.ammoHelper.getCurrentAmmoType() != null && vehicle.ammoHelper.getCurrentAmmoType().isRocket()));
 			if (this.clientLaunchSpeed != power && power < getAdjustedMaxMissileVelocity()) {
 				this.clientLaunchSpeed = power;
 				updated = true;
@@ -447,9 +445,7 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 			float xAO = (float) (vehicle.posX + offset.x - target.x);
 			float zAO = (float) (vehicle.posZ + offset.z - target.z);
 			float yaw = Trig.toDegrees((float) Math.atan2(xAO, zAO));
-			if (yaw != this.clientTurretYaw && (vehicle.currentTurretRotationMax >= 180 || Trig
-					.isAngleBetween(yaw, vehicle.localTurretRotationHome - vehicle.currentTurretRotationMax,
-							vehicle.localTurretRotationHome + vehicle.currentTurretRotationMax))) {
+			if (yaw != this.clientTurretYaw && (vehicle.currentTurretRotationMax >= 180 || Trig.isAngleBetween(yaw, vehicle.localTurretRotationHome - vehicle.currentTurretRotationMax, vehicle.localTurretRotationHome + vehicle.currentTurretRotationMax))) {
 				if (Math.abs(yaw - clientTurretYaw) > 0.25f) {
 					this.clientTurretYaw = yaw;
 					updated = true;
@@ -507,8 +503,7 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 			dest -= 360.f;
 		}
 		//  Config.logDebug("y: "+yaw+" d: "+dest);
-		return Math.abs(vehicle.localTurretDestPitch - vehicle.localTurretPitch) < 5 && vehicle.localTurretDestPitch == vehicle.localTurretPitch && Math
-				.abs(yaw - dest) < 5f;
+		return Math.abs(vehicle.localTurretDestPitch - vehicle.localTurretPitch) < 5 && vehicle.localTurretDestPitch == vehicle.localTurretPitch && Math.abs(yaw - dest) < 5f;
 	}
 
 	public void handleSoldierTargetInput(double targetX, double targetY, double targetZ) {
@@ -541,8 +536,7 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 				}
 			}
 		} else if (vehicle.canAimPower()) {
-			float power = Trig.iterativeSpeedFinder(tx, ty, tz, vehicle.localTurretPitch + vehicle.rotationPitch, TRAJECTORY_ITERATIONS_CLIENT,
-					(vehicle.ammoHelper.getCurrentAmmoType() != null && vehicle.ammoHelper.getCurrentAmmoType().isRocket()));
+			float power = Trig.iterativeSpeedFinder(tx, ty, tz, vehicle.localTurretPitch + vehicle.rotationPitch, TRAJECTORY_ITERATIONS_CLIENT, (vehicle.ammoHelper.getCurrentAmmoType() != null && vehicle.ammoHelper.getCurrentAmmoType().isRocket()));
 			if (vehicle.localLaunchPower != power && power < getAdjustedMaxMissileVelocity()) {
 				this.vehicle.localLaunchPower = power;
 				updated = true;
@@ -553,9 +547,7 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 			float xAO = (float) (vehicle.posX + offset.x - targetX);
 			float zAO = (float) (vehicle.posZ + offset.z - targetZ);
 			float yaw = Trig.toDegrees((float) Math.atan2(xAO, zAO));
-			if (yaw != this.vehicle.localTurretDestRot && (vehicle.currentTurretRotationMax >= 180 || Trig
-					.isAngleBetween(yaw, vehicle.localTurretRotationHome - vehicle.currentTurretRotationMax,
-							vehicle.localTurretRotationHome + vehicle.currentTurretRotationMax))) {
+			if (yaw != this.vehicle.localTurretDestRot && (vehicle.currentTurretRotationMax >= 180 || Trig.isAngleBetween(yaw, vehicle.localTurretRotationHome - vehicle.currentTurretRotationMax, vehicle.localTurretRotationHome + vehicle.currentTurretRotationMax))) {
 				this.vehicle.localTurretDestRot = yaw;
 				updated = true;
 				updateYaw = true;

@@ -10,58 +10,58 @@ import net.shadowmage.ancientwarfare.npc.trade.TradeList;
 
 public class TradeOrder implements INBTSerializable<NBTTagCompound> {
 
-    private POTradeRoute tradeRoute = new POTradeRoute();
-    private POTradeRestockData restockEntry = new POTradeRestockData();
-    private TradeList tradeList = new TradeList();
+	private POTradeRoute tradeRoute = new POTradeRoute();
+	private POTradeRestockData restockEntry = new POTradeRestockData();
+	private TradeList tradeList = new TradeList();
 
-    public TradeOrder() {
-    }
+	public TradeOrder() {
+	}
 
-    public static TradeOrder getTradeOrder(ItemStack stack) {
-        if (!stack.isEmpty() && stack.getItem() instanceof ItemTradeOrder) {
-            TradeOrder order = new TradeOrder();
-            if (stack.hasTagCompound() && stack.getTagCompound().hasKey("orders")) {
-                order.deserializeNBT(stack.getTagCompound().getCompoundTag("orders"));
-            }
-            return order;
-        }
-        return null;
-    }
+	public static TradeOrder getTradeOrder(ItemStack stack) {
+		if (!stack.isEmpty() && stack.getItem() instanceof ItemTradeOrder) {
+			TradeOrder order = new TradeOrder();
+			if (stack.hasTagCompound() && stack.getTagCompound().hasKey("orders")) {
+				order.deserializeNBT(stack.getTagCompound().getCompoundTag("orders"));
+			}
+			return order;
+		}
+		return null;
+	}
 
-    public void write(ItemStack stack) {
-        if (!stack.isEmpty() && stack.getItem() instanceof ItemTradeOrder) {
-            stack.setTagInfo("orders", serializeNBT());
-        }
-    }
+	public void write(ItemStack stack) {
+		if (!stack.isEmpty() && stack.getItem() instanceof ItemTradeOrder) {
+			stack.setTagInfo("orders", serializeNBT());
+		}
+	}
 
-    public TradeList getTradeList() {
-        return tradeList;
-    }
+	public TradeList getTradeList() {
+		return tradeList;
+	}
 
-    public POTradeRoute getRoute() {
-        return tradeRoute;
-    }
+	public POTradeRoute getRoute() {
+		return tradeRoute;
+	}
 
-    public POTradeRestockData getRestockData() {
-        return restockEntry;
-    }
+	public POTradeRestockData getRestockData() {
+		return restockEntry;
+	}
 
-    @Override
-    public NBTTagCompound serializeNBT() {
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setTag("tradeList", tradeList.serializeNBT());
-        tag.setTag("tradeRoute", tradeRoute.writeToNBT(new NBTTagCompound()));
-        tag.setTag("restockEntry", restockEntry.writeToNBT(new NBTTagCompound()));
-        return tag;
-    }
+	@Override
+	public NBTTagCompound serializeNBT() {
+		NBTTagCompound tag = new NBTTagCompound();
+		tag.setTag("tradeList", tradeList.serializeNBT());
+		tag.setTag("tradeRoute", tradeRoute.writeToNBT(new NBTTagCompound()));
+		tag.setTag("restockEntry", restockEntry.writeToNBT(new NBTTagCompound()));
+		return tag;
+	}
 
-    @Override
-    public void deserializeNBT(NBTTagCompound tag) {
-        tradeList = new TradeList();
-        tradeRoute = new POTradeRoute();
-        restockEntry = new POTradeRestockData();
-        tradeList.deserializeNBT(tag.getCompoundTag("tradeList"));
-        tradeRoute.readFromNBT(tag.getCompoundTag("tradeRoute"));
-        restockEntry.readFromNBT(tag.getCompoundTag("restockEntry"));
-    }
+	@Override
+	public void deserializeNBT(NBTTagCompound tag) {
+		tradeList = new TradeList();
+		tradeRoute = new POTradeRoute();
+		restockEntry = new POTradeRestockData();
+		tradeList.deserializeNBT(tag.getCompoundTag("tradeList"));
+		tradeRoute.readFromNBT(tag.getCompoundTag("tradeRoute"));
+		restockEntry.readFromNBT(tag.getCompoundTag("restockEntry"));
+	}
 }

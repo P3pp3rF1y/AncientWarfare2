@@ -1,21 +1,21 @@
 {
-  "type": "ancientwarfare:research_recipe",
-  "research": "the_wheel",
-  "pattern": [
-    "S",
-    "S",
-    "G"
-  ],
-  "key": {
-    "S": {
-      "item": "#SHAFTIRON"
+    "type": "ancientwarfare:research_recipe",
+    "research": "the_wheel",
+    "pattern": [
+        "S",
+        "S",
+        "G"
+    ],
+    "key": {
+        "S": {
+            "item": "#SHAFTIRON"
+        },
+        "G": {
+            "item": "#GEARIRON"
+        }
     },
-    "G": {
-      "item": "#GEARIRON"
+    "result": {
+        "item": "ancientwarfareautomation:torque_shaft",
+        "data": 1
     }
-  },
-  "result": {
-    "item": "ancientwarfareautomation:torque_shaft",
-    "data": 1
-  }
 }

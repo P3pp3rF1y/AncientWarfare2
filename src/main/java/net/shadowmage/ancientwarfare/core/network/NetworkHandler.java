@@ -32,7 +32,7 @@ public final class NetworkHandler implements IGuiHandler {
     public static final int PACKET_RESEARCH_ADD = 7;
     public static final int PACKET_RESEARCH_START = 8;
     //public static final int PACKET_STRUCTURE_IMAGE_LIST = 9;//unused
-//public static final int PACKET_STRUCTURE_IMAGE_DATA = 10;//unused
+    //public static final int PACKET_STRUCTURE_IMAGE_DATA = 10;//unused
     public static final int PACKET_STRUCTURE_REMOVE = 11;
     public static final int PACKET_NPC_COMMAND = 12;
     public static final int PACKET_FACTION_UPDATE = 13;
@@ -165,7 +165,8 @@ public final class NetworkHandler implements IGuiHandler {
         if (clz != null) {
             try {
                 return clz.getConstructor(EntityPlayer.class, int.class, int.class, int.class).newInstance(player, x, y, z);
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -180,7 +181,8 @@ public final class NetworkHandler implements IGuiHandler {
             try {
                 if (container != null)
                     return clz.getConstructor(ContainerBase.class).newInstance(container);
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 e.printStackTrace();
             }
         }

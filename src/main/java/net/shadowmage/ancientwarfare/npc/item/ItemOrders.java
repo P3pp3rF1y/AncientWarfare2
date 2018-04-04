@@ -15,25 +15,25 @@ import java.util.List;
 
 public abstract class ItemOrders extends ItemBaseNPC implements IItemKeyInterface {
 
-    public ItemOrders(String regName) {
-        super(regName);
-    }
+	public ItemOrders(String regName) {
+		super(regName);
+	}
 
-    @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(I18n.format("guistrings.npc.orders.open_gui"));
-        String key = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
-        tooltip.add(I18n.format("guistrings.npc.orders.add_position", key));
-    }
+	@Override
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		tooltip.add(I18n.format("guistrings.npc.orders.open_gui"));
+		String key = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
+		tooltip.add(I18n.format("guistrings.npc.orders.add_position", key));
+	}
 
-    @Override
-    public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key) {
-        return key == ItemKey.KEY_0;
-    }
+	@Override
+	public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key) {
+		return key == ItemKey.KEY_0;
+	}
 
-    public abstract List<BlockPos> getPositionsForRender(ItemStack stack);
+	public abstract List<BlockPos> getPositionsForRender(ItemStack stack);
 
-    public void addMessage(EntityPlayer player){
-        player.sendMessage(new TextComponentTranslation("guistrings.npc.orders.position_added"));
-    }
+	public void addMessage(EntityPlayer player) {
+		player.sendMessage(new TextComponentTranslation("guistrings.npc.orders.position_added"));
+	}
 }

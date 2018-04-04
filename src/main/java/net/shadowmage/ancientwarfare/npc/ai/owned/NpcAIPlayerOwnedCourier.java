@@ -18,148 +18,148 @@ import javax.annotation.Nullable;
 
 public class NpcAIPlayerOwnedCourier extends NpcAI<NpcCourier> {
 
-    private boolean init;
-    private int routeIndex;
-    private int ticksToWork;
-    private int ticksAtSite;
-    private RoutingOrder order;
-    @Nonnull
-    private ItemStack routeStack;
+	private boolean init;
+	private int routeIndex;
+	private int ticksToWork;
+	private int ticksAtSite;
+	private RoutingOrder order;
+	@Nonnull
+	private ItemStack routeStack;
 
-    public NpcAIPlayerOwnedCourier(NpcCourier npc) {
-        super(npc);
-        this.setMutexBits(ATTACK + MOVE);
-    }
+	public NpcAIPlayerOwnedCourier(NpcCourier npc) {
+		super(npc);
+		this.setMutexBits(ATTACK + MOVE);
+	}
 
-    @Override
-    public boolean shouldExecute() {
-        if (!init) {
-            init = true;
-            routeStack = npc.ordersStack;
-            order = RoutingOrder.getRoutingOrder(routeStack);
-            if ((order != null && routeIndex >= order.size()) || order == null) {
-                routeIndex = 0;
-            }
-        }
-        return shouldContinueExecuting();
-    }
+	@Override
+	public boolean shouldExecute() {
+		if (!init) {
+			init = true;
+			routeStack = npc.ordersStack;
+			order = RoutingOrder.getRoutingOrder(routeStack);
+			if ((order != null && routeIndex >= order.size()) || order == null) {
+				routeIndex = 0;
+			}
+		}
+		return shouldContinueExecuting();
+	}
 
-    @Override
-    public boolean shouldContinueExecuting() {
-        if (!npc.getIsAIEnabled() || npc.shouldBeAtHome()) {
-            return false;
-        }
-        return npc.backpackInventory != null && order != null && !order.isEmpty();
-    }
+	@Override
+	public boolean shouldContinueExecuting() {
+		if (!npc.getIsAIEnabled() || npc.shouldBeAtHome()) {
+			return false;
+		}
+		return npc.backpackInventory != null && order != null && !order.isEmpty();
+	}
 
-    @Override
-    public void startExecuting() {
-        npc.addAITask(TASK_WORK);
-    }
+	@Override
+	public void startExecuting() {
+		npc.addAITask(TASK_WORK);
+	}
 
-    @Override
-    public void updateTask() {
-        BlockPos pos = order.get(routeIndex).getTarget();
-        double dist = npc.getDistanceSq(pos);
-        if (dist > AWNPCStatics.npcActionRange * AWNPCStatics.npcActionRange) {
-            npc.addAITask(TASK_MOVE);
-            ticksAtSite = 0;
-            ticksToWork = 0;
-            moveToPosition(pos, dist);
-        } else {
-            moveRetryDelay = 0;
-            npc.getNavigator().clearPath();
-            npc.removeAITask(TASK_MOVE);
-            workAtSite();
-        }
-    }
+	@Override
+	public void updateTask() {
+		BlockPos pos = order.get(routeIndex).getTarget();
+		double dist = npc.getDistanceSq(pos);
+		if (dist > AWNPCStatics.npcActionRange * AWNPCStatics.npcActionRange) {
+			npc.addAITask(TASK_MOVE);
+			ticksAtSite = 0;
+			ticksToWork = 0;
+			moveToPosition(pos, dist);
+		} else {
+			moveRetryDelay = 0;
+			npc.getNavigator().clearPath();
+			npc.removeAITask(TASK_MOVE);
+			workAtSite();
+		}
+	}
 
-    @Override
-    public void resetTask() {
-        ticksToWork = 0;
-        ticksAtSite = 0;
-        moveRetryDelay = 0;
-        npc.getNavigator().clearPath();
-        npc.removeAITask(TASK_WORK + TASK_MOVE);
-    }
+	@Override
+	public void resetTask() {
+		ticksToWork = 0;
+		ticksAtSite = 0;
+		moveRetryDelay = 0;
+		npc.getNavigator().clearPath();
+		npc.removeAITask(TASK_WORK + TASK_MOVE);
+	}
 
-    public void workAtSite() {
-        if (ticksToWork == 0) {
-            startWork();
-        } else {
-            ticksAtSite++;
-            if (npc.ticksExisted % 10 == 0) {
-                npc.swingArm(EnumHand.MAIN_HAND);
-            }
-            if (ticksAtSite > ticksToWork) {
-                setMoveToNextSite();
-            }
-        }
-    }
+	public void workAtSite() {
+		if (ticksToWork == 0) {
+			startWork();
+		} else {
+			ticksAtSite++;
+			if (npc.ticksExisted % 10 == 0) {
+				npc.swingArm(EnumHand.MAIN_HAND);
+			}
+			if (ticksAtSite > ticksToWork) {
+				setMoveToNextSite();
+			}
+		}
+	}
 
-    private void startWork() {
-        IItemHandler target = getTargetHandler();
-        if (target != null) {
-            ticksAtSite = 0;
-            int moved = order.handleRouteAction(order.get(routeIndex), npc.backpackInventory, target);
-            if (moved > 0) {
-                ticksToWork = (AWNPCStatics.npcWorkTicks - npc.getLevelingStats().getLevel()) * moved;
-                if (ticksToWork <= 0) {
-                    ticksToWork = 0;
-                }
-                npc.addExperience(moved * AWNPCStatics.npcXpFromMoveItem);
-                return;
-            }
-        }
-        setMoveToNextSite();
-    }
+	private void startWork() {
+		IItemHandler target = getTargetHandler();
+		if (target != null) {
+			ticksAtSite = 0;
+			int moved = order.handleRouteAction(order.get(routeIndex), npc.backpackInventory, target);
+			if (moved > 0) {
+				ticksToWork = (AWNPCStatics.npcWorkTicks - npc.getLevelingStats().getLevel()) * moved;
+				if (ticksToWork <= 0) {
+					ticksToWork = 0;
+				}
+				npc.addExperience(moved * AWNPCStatics.npcXpFromMoveItem);
+				return;
+			}
+		}
+		setMoveToNextSite();
+	}
 
-    @Nullable
-    private IItemHandler getTargetHandler() {
-        RoutingOrder.RoutePoint point = order.get(routeIndex);
-        TileEntity te = npc.world.getTileEntity(point.getTarget());
-        if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, point.getBlockSide())) {
-            if(te instanceof IOwnable){
-                IOwnable ownableTE = (IOwnable) te;
-                if(ownableTE.getOwnerName() != null && !npc.hasCommandPermissions(ownableTE.getOwnerUuid(), ownableTE.getOwnerName())){
-                    return null;
-                }
-            }
-            return te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, point.getBlockSide());
-        }
-        return null;
-    }
+	@Nullable
+	private IItemHandler getTargetHandler() {
+		RoutingOrder.RoutePoint point = order.get(routeIndex);
+		TileEntity te = npc.world.getTileEntity(point.getTarget());
+		if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, point.getBlockSide())) {
+			if (te instanceof IOwnable) {
+				IOwnable ownableTE = (IOwnable) te;
+				if (ownableTE.getOwnerName() != null && !npc.hasCommandPermissions(ownableTE.getOwnerUuid(), ownableTE.getOwnerName())) {
+					return null;
+				}
+			}
+			return te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, point.getBlockSide());
+		}
+		return null;
+	}
 
-    public void setMoveToNextSite() {
-        ticksAtSite = 0;
-        ticksToWork = 0;
-        moveRetryDelay = 0;
-        routeIndex++;
-        if (routeIndex >= order.size()) {
-            routeIndex = 0;
-        }
-    }
+	public void setMoveToNextSite() {
+		ticksAtSite = 0;
+		ticksToWork = 0;
+		moveRetryDelay = 0;
+		routeIndex++;
+		if (routeIndex >= order.size()) {
+			routeIndex = 0;
+		}
+	}
 
-    public void onOrdersChanged() {
-        routeStack = npc.ordersStack;
-        order = RoutingOrder.getRoutingOrder(routeStack);
-        routeIndex = 0;
-        ticksAtSite = 0;
-        ticksToWork = 0;
-        moveRetryDelay = 0;
-    }
+	public void onOrdersChanged() {
+		routeStack = npc.ordersStack;
+		order = RoutingOrder.getRoutingOrder(routeStack);
+		routeIndex = 0;
+		ticksAtSite = 0;
+		ticksToWork = 0;
+		moveRetryDelay = 0;
+	}
 
-    public void readFromNBT(NBTTagCompound tag) {
-        routeIndex = tag.getInteger("routeIndex");
-        ticksAtSite = tag.getInteger("ticksAtSite");
-        ticksToWork = tag.getInteger("ticksToWork");
-    }
+	public void readFromNBT(NBTTagCompound tag) {
+		routeIndex = tag.getInteger("routeIndex");
+		ticksAtSite = tag.getInteger("ticksAtSite");
+		ticksToWork = tag.getInteger("ticksToWork");
+	}
 
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        tag.setInteger("routeIndex", routeIndex);
-        tag.setInteger("ticksAtSite", ticksAtSite);
-        tag.setInteger("ticksToWork", ticksToWork);
-        return tag;
-    }
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+		tag.setInteger("routeIndex", routeIndex);
+		tag.setInteger("ticksAtSite", ticksAtSite);
+		tag.setInteger("ticksToWork", ticksToWork);
+		return tag;
+	}
 
 }

@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins;
 
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
@@ -25,18 +26,18 @@ import net.shadowmage.ancientwarfare.structure.api.StructureContentPlugin;
 
 public class StructurePluginVehicles implements StructureContentPlugin {
 
-    public StructurePluginVehicles() {
+	public StructurePluginVehicles() {
 
-    }
+	}
 
-    @Override
-    public void addHandledBlocks(IStructurePluginManager manager) {
+	@Override
+	public void addHandledBlocks(IStructurePluginManager manager) {
 
-    }
+	}
 
-    @Override
-    public void addHandledEntities(IStructurePluginManager manager) {
-        //TODO add when vehicles are tuned
-        //manager.registerEntityHandler("ancientWarfareVehicle", EntityVehicle.class, TemplateRuleEntityLogic.class);
-    }
+	@Override
+	public void addHandledEntities(IStructurePluginManager manager) {
+		//TODO add when vehicles are tuned
+		//manager.registerEntityHandler("ancientWarfareVehicle", EntityVehicle.class, TemplateRuleEntityLogic.class);
+	}
 }

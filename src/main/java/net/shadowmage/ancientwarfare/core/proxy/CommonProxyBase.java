@@ -9,45 +9,45 @@ import java.util.UUID;
 
 public class CommonProxyBase {
 
-    public void addClientRegistrar(IClientRegistrar registrar) {
-        //NOOP for commonProxy
-    }
+	public void addClientRegistrar(IClientRegistrar registrar) {
+		//NOOP for commonProxy
+	}
 
-    public void preInit() {
+	public void preInit() {
 
-    }
+	}
 
-    public void init() {
+	public void init() {
 
-    }
+	}
 
-    public EntityPlayer getClientPlayer() {
-        //NOOP for commonProxy
-        return null;
-    }
+	public EntityPlayer getClientPlayer() {
+		//NOOP for commonProxy
+		return null;
+	}
 
-    public EntityPlayer getFakePlayer(World world, @Nullable String name, @Nullable UUID id) {
-        EntityPlayer player;
-        if(id!=null) {
-            player = world.getPlayerEntityByUUID(id);
-            if(player!=null)
-                return player;
-        }
-        if(name!=null) {
-            player = world.getPlayerEntityByName(name);
-            if(player!=null){
-                return player;
-            }
-            return AWFakePlayer.get(world);
-        }
-        return AWFakePlayer.get(world);
-    }
+	public EntityPlayer getFakePlayer(World world, @Nullable String name, @Nullable UUID id) {
+		EntityPlayer player;
+		if (id != null) {
+			player = world.getPlayerEntityByUUID(id);
+			if (player != null)
+				return player;
+		}
+		if (name != null) {
+			player = world.getPlayerEntityByName(name);
+			if (player != null) {
+				return player;
+			}
+			return AWFakePlayer.get(world);
+		}
+		return AWFakePlayer.get(world);
+	}
 
-    public boolean isKeyPressed(String keyName) {
-        return false;
-    }
+	public boolean isKeyPressed(String keyName) {
+		return false;
+	}
 
-    public void onConfigChanged() {
+	public void onConfigChanged() {
 
-    }
+	}
 }

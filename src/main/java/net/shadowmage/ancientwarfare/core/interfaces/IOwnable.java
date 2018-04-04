@@ -13,14 +13,14 @@ import java.util.UUID;
 public interface IOwnable {
 	//TODO look into removing ownername from this if possible - uuid should be enough
 	void setOwner(EntityPlayer player);
-    
-    void setOwner(String ownerName, UUID ownerUuid);
 
-    @Nullable
-    String getOwnerName();
+	void setOwner(String ownerName, UUID ownerUuid);
 
-    @Nullable
-    UUID getOwnerUuid();
+	@Nullable
+	String getOwnerName();
 
-    boolean isOwner(EntityPlayer player);
+	@Nullable
+	UUID getOwnerUuid();
+
+	boolean isOwner(EntityPlayer player);
 }

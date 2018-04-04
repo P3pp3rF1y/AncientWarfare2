@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.structure.template;
 
 import net.minecraft.util.EnumFacing;
@@ -46,8 +47,7 @@ public class WorldGenStructureManager {
     private HashMap<String, Set<StructureTemplate>> templatesByBiome = new HashMap<>();
     /*
      * cached list objects, used for temp searching, as to not allocate new lists for every chunk-generated....
-     */
-    List<StructureEntry> searchCache = new ArrayList<>();
+	 */ List<StructureEntry> searchCache = new ArrayList<>();
     List<StructureTemplate> trimmedPotentialStructures = new ArrayList<>();
     HashMap<String, Integer> distancesFound = new HashMap<>();
     BlockPos rearBorderPos = BlockPos.ORIGIN;

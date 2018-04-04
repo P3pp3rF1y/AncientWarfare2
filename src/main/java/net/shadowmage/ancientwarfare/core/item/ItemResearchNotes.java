@@ -24,85 +24,85 @@ import java.util.List;
 
 public class ItemResearchNotes extends ItemBaseCore {
 
-    private NonNullList<ItemStack> displayCache = null;
+	private NonNullList<ItemStack> displayCache = null;
 
-    public ItemResearchNotes() {
-        super("research_note");
-    }
+	public ItemResearchNotes() {
+		super("research_note");
+	}
 
-    @Override
-    public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flagIn) {
-        NBTTagCompound tag = stack.getTagCompound();
-        String researchName = "corrupt_item";
-        boolean known = false;
-        if (tag != null && tag.hasKey("researchName")) {
-            String name = tag.getString("researchName");
-            ResearchGoal goal = ResearchGoal.getGoal(name);
-            if (goal != null && Minecraft.getMinecraft().player != null && world != null) {
-                researchName = I18n.format(name);
-                known = ResearchTracker.INSTANCE.hasPlayerCompleted(world, Minecraft.getMinecraft().player.getName(), goal.getId());
-            } else {
-                researchName = "missing_goal_for_id_" + researchName;
-            }
-        }
-        tooltip.add(researchName);
-        if (known) {
-            tooltip.add(I18n.format("guistrings.research.known_research"));
-            tooltip.add(I18n.format("guistrings.research.click_to_add_progress"));
-        } else {
-            tooltip.add(I18n.format("guistrings.research.unknown_research"));
-            tooltip.add(I18n.format("guistrings.research.click_to_learn"));
-        }
-    }
+	@Override
+	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flagIn) {
+		NBTTagCompound tag = stack.getTagCompound();
+		String researchName = "corrupt_item";
+		boolean known = false;
+		if (tag != null && tag.hasKey("researchName")) {
+			String name = tag.getString("researchName");
+			ResearchGoal goal = ResearchGoal.getGoal(name);
+			if (goal != null && Minecraft.getMinecraft().player != null && world != null) {
+				researchName = I18n.format(name);
+				known = ResearchTracker.INSTANCE.hasPlayerCompleted(world, Minecraft.getMinecraft().player.getName(), goal.getId());
+			} else {
+				researchName = "missing_goal_for_id_" + researchName;
+			}
+		}
+		tooltip.add(researchName);
+		if (known) {
+			tooltip.add(I18n.format("guistrings.research.known_research"));
+			tooltip.add(I18n.format("guistrings.research.click_to_add_progress"));
+		} else {
+			tooltip.add(I18n.format("guistrings.research.unknown_research"));
+			tooltip.add(I18n.format("guistrings.research.click_to_learn"));
+		}
+	}
 
-    @Override
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if (!isInCreativeTab(tab)) {
-            return;
-        }
+	@Override
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+		if (!isInCreativeTab(tab)) {
+			return;
+		}
 
-        if (displayCache != null && displayCache.size() > 0) {
-            items.addAll(displayCache);
-            return;
-        }
-        displayCache = NonNullList.create();
-        List<ResearchGoal> goals = new ArrayList<>();
-        goals.addAll(ResearchGoal.getResearchGoals());
-        /*
-         * TODO sort list by ??
+		if (displayCache != null && displayCache.size() > 0) {
+			items.addAll(displayCache);
+			return;
+		}
+		displayCache = NonNullList.create();
+		List<ResearchGoal> goals = new ArrayList<>();
+		goals.addAll(ResearchGoal.getResearchGoals());
+		/*
+		 * TODO sort list by ??
          */
-        @Nonnull ItemStack stack;
-        for (ResearchGoal goal : goals) {
-            stack = new ItemStack(this);
-            stack.setTagInfo("researchName", new NBTTagString(goal.getName()));
-            displayCache.add(stack);
-            items.add(stack);
-        }
-    }
+		@Nonnull ItemStack stack;
+		for (ResearchGoal goal : goals) {
+			stack = new ItemStack(this);
+			stack.setTagInfo("researchName", new NBTTagString(goal.getName()));
+			displayCache.add(stack);
+			items.add(stack);
+		}
+	}
 
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-        ItemStack stack = player.getHeldItem(hand);
-        NBTTagCompound tag = stack.getTagCompound();
-        if (!world.isRemote && tag != null && tag.hasKey("researchName")) {
-            String name = tag.getString("researchName");
-            ResearchGoal goal = ResearchGoal.getGoal(name);
-            if (goal != null) {
-                boolean known = ResearchTracker.INSTANCE.hasPlayerCompleted(player.world, player.getName(), goal.getId());
-                if (!known) {
-                    if (ResearchTracker.INSTANCE.addResearchFromNotes(player.world, player.getName(), goal.getId()) && !player.capabilities.isCreativeMode) {
-                        player.sendMessage(new TextComponentTranslation("guistrings.research.learned_from_item"));
-                        stack.shrink(1);
-                    }
-                } else {
-                    if (ResearchTracker.INSTANCE.addProgressFromNotes(player.world, player.getName(), goal.getId()) && !player.capabilities.isCreativeMode) {
-                        player.sendMessage(new TextComponentTranslation("guistrings.research.added_progress"));
-                        stack.shrink(1);
-                    }
-                }
-            }
-        }
-        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
-    }
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		ItemStack stack = player.getHeldItem(hand);
+		NBTTagCompound tag = stack.getTagCompound();
+		if (!world.isRemote && tag != null && tag.hasKey("researchName")) {
+			String name = tag.getString("researchName");
+			ResearchGoal goal = ResearchGoal.getGoal(name);
+			if (goal != null) {
+				boolean known = ResearchTracker.INSTANCE.hasPlayerCompleted(player.world, player.getName(), goal.getId());
+				if (!known) {
+					if (ResearchTracker.INSTANCE.addResearchFromNotes(player.world, player.getName(), goal.getId()) && !player.capabilities.isCreativeMode) {
+						player.sendMessage(new TextComponentTranslation("guistrings.research.learned_from_item"));
+						stack.shrink(1);
+					}
+				} else {
+					if (ResearchTracker.INSTANCE.addProgressFromNotes(player.world, player.getName(), goal.getId()) && !player.capabilities.isCreativeMode) {
+						player.sendMessage(new TextComponentTranslation("guistrings.research.added_progress"));
+						stack.shrink(1);
+					}
+				}
+			}
+		}
+		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+	}
 
 }

@@ -6,24 +6,24 @@ import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvance
 
 public class GuiSpawnerAdvancedInventory extends GuiContainerBase {
 
-    public GuiSpawnerAdvancedInventory(ContainerBase par1Container) {
-        super(par1Container);
-    }
+	public GuiSpawnerAdvancedInventory(ContainerBase par1Container) {
+		super(par1Container);
+	}
 
-    @Override
-    public void initElements() {
+	@Override
+	public void initElements() {
 
-    }
+	}
 
-    @Override
-    public void setupElements() {
+	@Override
+	public void setupElements() {
 
-    }
+	}
 
-    @Override
-    protected boolean onGuiCloseRequested() {
-        ((ContainerSpawnerAdvancedInventoryBase) inventorySlots).sendSettingsToServer();
-        return true;
-    }
+	@Override
+	protected boolean onGuiCloseRequested() {
+		((ContainerSpawnerAdvancedInventoryBase) inventorySlots).sendSettingsToServer();
+		return true;
+	}
 
 }

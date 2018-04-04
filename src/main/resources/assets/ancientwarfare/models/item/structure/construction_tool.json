@@ -1,6 +1,6 @@
 {
-  "parent": "item/handheld_rod",
-  "textures": {
-    "layer0": "ancientwarfare:items/structure/construction_tool"
-  }
+    "parent": "item/handheld_rod",
+    "textures": {
+        "layer0": "ancientwarfare:items/structure/construction_tool"
+    }
 }

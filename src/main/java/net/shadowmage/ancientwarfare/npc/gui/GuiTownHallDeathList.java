@@ -14,82 +14,82 @@ import java.util.List;
 
 public class GuiTownHallDeathList extends GuiContainerBase<ContainerTownHall> {
 
-    private final GuiTownHallInventory parent;
-    private CompositeScrolled area;
+	private final GuiTownHallInventory parent;
+	private CompositeScrolled area;
 
-    public GuiTownHallDeathList(GuiTownHallInventory parent) {
-        super(parent.getContainer());
-        this.parent = parent;
-    }
+	public GuiTownHallDeathList(GuiTownHallInventory parent) {
+		super(parent.getContainer());
+		this.parent = parent;
+	}
 
-    @Override
-    public void initElements() {
-        area = new CompositeScrolled(this, 0, 40, xSize, ySize - 40);
-        addGuiElement(area);
-        Button button = new Button(8, 8, 55, 12, "guistrings.npc.clear_death_list") {
-            @Override
-            protected void onPressed() {
-                getContainer().clearList();
-            }
-        };
-        addGuiElement(button);
-    }
+	@Override
+	public void initElements() {
+		area = new CompositeScrolled(this, 0, 40, xSize, ySize - 40);
+		addGuiElement(area);
+		Button button = new Button(8, 8, 55, 12, "guistrings.npc.clear_death_list") {
+			@Override
+			protected void onPressed() {
+				getContainer().clearList();
+			}
+		};
+		addGuiElement(button);
+	}
 
-    @Override
-    public void setupElements() {
-        area.clearElements();
-        List<NpcDeathEntry> deathList = parent.getContainer().getDeathList();
-        int totalHeight = 8;
+	@Override
+	public void setupElements() {
+		area.clearElements();
+		List<NpcDeathEntry> deathList = parent.getContainer().getDeathList();
+		int totalHeight = 8;
 
-        Label label;
-        String labelText;
-        for (NpcDeathEntry entry : deathList) {
-            labelText = I18n.format("guistrings.npc.npc_name");
-            label = new Label(8, totalHeight, labelText + ": " + entry.npcName);
-            area.addGuiElement(label);
-            totalHeight += 12;
+		Label label;
+		String labelText;
+		for (NpcDeathEntry entry : deathList) {
+			labelText = I18n.format("guistrings.npc.npc_name");
+			label = new Label(8, totalHeight, labelText + ": " + entry.npcName);
+			area.addGuiElement(label);
+			totalHeight += 12;
 
-            labelText = I18n.format("guistrings.npc.npc_type");
-            label = new Label(8, totalHeight, labelText + ": " + I18n.format("entity.AncientWarfareNpc." + entry.npcType + ".name"));
-            area.addGuiElement(label);
-            totalHeight += 12;
+			labelText = I18n.format("guistrings.npc.npc_type");
+			label = new Label(8, totalHeight, labelText + ": " + I18n.format("entity.AncientWarfareNpc." + entry.npcType + ".name"));
+			area.addGuiElement(label);
+			totalHeight += 12;
 
-            labelText = I18n.format("guistrings.npc.death_cause", entry.deathCause);
-            label = new Label(8, totalHeight, labelText);
-            area.addGuiElement(label);
-            totalHeight += 12;
-            
-            if (entry.pos != null && entry.pos.length == 3) {
-                labelText = I18n.format("guistrings.npc.death_position", entry.pos[0], entry.pos[1], entry.pos[2]);
-                label = new Label(8, totalHeight, labelText);
-                area.addGuiElement(label);
-                totalHeight += 12;
-            }
+			labelText = I18n.format("guistrings.npc.death_cause", entry.deathCause);
+			label = new Label(8, totalHeight, labelText);
+			area.addGuiElement(label);
+			totalHeight += 12;
 
-            labelText = I18n.format("guistrings.npc.can_res", entry.canRes);
-            label = new Label(8, totalHeight, labelText);
-            area.addGuiElement(label);
-            totalHeight += 12;
+			if (entry.pos != null && entry.pos.length == 3) {
+				labelText = I18n.format("guistrings.npc.death_position", entry.pos[0], entry.pos[1], entry.pos[2]);
+				label = new Label(8, totalHeight, labelText);
+				area.addGuiElement(label);
+				totalHeight += 12;
+			}
 
-            if (entry.canRes) {
-                labelText = I18n.format("guistrings.npc.resurrected", entry.resurrected);
-                label = new Label(8, totalHeight, labelText);
-                area.addGuiElement(label);
-                totalHeight += 12;
-            }
+			labelText = I18n.format("guistrings.npc.can_res", entry.canRes);
+			label = new Label(8, totalHeight, labelText);
+			area.addGuiElement(label);
+			totalHeight += 12;
 
-            area.addGuiElement(new Line(0, totalHeight - 1, xSize, totalHeight - 1, 1, 0x000000ff));
-            totalHeight += 4;
-        }
-        area.setAreaSize(totalHeight);
-    }
+			if (entry.canRes) {
+				labelText = I18n.format("guistrings.npc.resurrected", entry.resurrected);
+				label = new Label(8, totalHeight, labelText);
+				area.addGuiElement(label);
+				totalHeight += 12;
+			}
 
-    @Override
-    protected boolean onGuiCloseRequested() {
-        Minecraft.getMinecraft().displayGuiScreen(parent);
-        parent.getContainer().addSlots();
-        parent.refreshGui();
-        return false;
-    }
+			area.addGuiElement(new Line(0, totalHeight - 1, xSize, totalHeight - 1, 1, 0x000000ff));
+			totalHeight += 4;
+		}
+		area.setAreaSize(totalHeight);
+	}
+
+	@Override
+	protected boolean onGuiCloseRequested() {
+		Minecraft.getMinecraft().displayGuiScreen(parent);
+		parent.getContainer().addSlots();
+		parent.refreshGui();
+		return false;
+	}
 
 }

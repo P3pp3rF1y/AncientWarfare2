@@ -1,20 +1,20 @@
 {
-  "type": "ancientwarfare:research_recipe",
-  "research": "refining",
-  "pattern": [
-    "C",
-    "I"
-  ],
-  "key": {
-    "C": {
-      "item": "minecraft:coal",
-      "data": 0
+    "type": "ancientwarfare:research_recipe",
+    "research": "refining",
+    "pattern": [
+        "C",
+        "I"
+    ],
+    "key": {
+        "C": {
+            "item": "minecraft:coal",
+            "data": 0
+        },
+        "I": {
+            "item": "#INGOTIRON"
+        }
     },
-    "I": {
-      "item": "#INGOTIRON"
+    "result": {
+        "item": "ancientwarfare:steel_ingot"
     }
-  },
-  "result": {
-    "item": "ancientwarfare:steel_ingot"
-  }
 }

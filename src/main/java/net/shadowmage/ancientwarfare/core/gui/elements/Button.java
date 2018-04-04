@@ -45,7 +45,7 @@ public class Button extends GuiElement {
     public final void setText(String text) {
         this.text = I18n.format(text);
         int tw = Minecraft.getMinecraft().fontRenderer.getStringWidth(this.text);
-        if(tw > width){
+        if (tw > width) {
             width = tw;
         }
         textX = (width - tw) / 2;
@@ -70,21 +70,19 @@ public class Button extends GuiElement {
 
     /*
      * sub-classes may override this as an on-pressed callback
-     * method is called whenever the 'pressed' sound is played.
-     * uses built-in click listener for sound to trigger method
-     */
+	 * method is called whenever the 'pressed' sound is played.
+	 * uses built-in click listener for sound to trigger method
+	 */
     protected void onPressed() {
-        
+
     }
-    
+
     /*
      * Button-sensitive version of onPressed. 0 = LMB, 1 = RMB
-     * @param mButton
-     */
+	 * @param mButton
+	 */
     protected void onPressed(int mButton) {
         onPressed(); // backwards compatibility
     }
-    
-    
 
 }

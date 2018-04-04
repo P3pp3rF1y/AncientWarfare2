@@ -21,67 +21,68 @@ import java.util.Optional;
 import java.util.Set;
 
 public abstract class BaseTorqueRenderer<T extends TileTorqueBase> extends AnimatedBlockRenderer {
-    protected BaseTorqueRenderer(String modelPath) {
-        super(modelPath);
-    }
+	protected BaseTorqueRenderer(String modelPath) {
+		super(modelPath);
+	}
 
-    @Override
-    protected Collection<CCModel> applyModelTransforms(Collection<CCModel> modelGroups, EnumFacing face, IExtendedBlockState state) {
-        Set<CCModel> transformedGroups = Sets.newHashSet();
+	@Override
+	protected Collection<CCModel> applyModelTransforms(Collection<CCModel> modelGroups, EnumFacing face, IExtendedBlockState state) {
+		Set<CCModel> transformedGroups = Sets.newHashSet();
 
-        EnumFacing frontFacing = state.getValue(CoreProperties.UNLISTED_FACING);
+		EnumFacing frontFacing = state.getValue(CoreProperties.UNLISTED_FACING);
 
-        if (state.getValue(AutomationProperties.DYNAMIC)) {
-            ImmutableMap<IUnlistedProperty<?>, Optional<?>> properties = state.getUnlistedProperties();
-            float[] rotations = new float[6];
-            for(EnumFacing facing : EnumFacing.VALUES) {
-                if(properties.containsKey(AutomationProperties.ROTATIONS[facing.getIndex()])) {
-                    rotations[facing.getIndex()] = state.getValue(AutomationProperties.ROTATIONS[facing.getIndex()]);
-                }
-            }
-            transformMovingParts(transformedGroups, frontFacing, rotations, state);
-        } else {
-            transformedGroups.addAll(rotateFacing(modelGroups, frontFacing));
-        }
+		if (state.getValue(AutomationProperties.DYNAMIC)) {
+			ImmutableMap<IUnlistedProperty<?>, Optional<?>> properties = state.getUnlistedProperties();
+			float[] rotations = new float[6];
+			for (EnumFacing facing : EnumFacing.VALUES) {
+				if (properties.containsKey(AutomationProperties.ROTATIONS[facing.getIndex()])) {
+					rotations[facing.getIndex()] = state.getValue(AutomationProperties.ROTATIONS[facing.getIndex()]);
+				}
+			}
+			transformMovingParts(transformedGroups, frontFacing, rotations, state);
+		} else {
+			transformedGroups.addAll(rotateFacing(modelGroups, frontFacing));
+		}
 
-        return transformedGroups;
-    }
+		return transformedGroups;
+	}
 
-    @Override
-    protected void renderItemModels(CCRenderState ccrs, ItemStack stack) {
-        super.renderItemModels(ccrs, stack);
-        Set<CCModel> movingParts = Sets.newHashSet();
-        transformMovingParts(movingParts, EnumFacing.NORTH, new float[6], null);
+	@Override
+	protected void renderItemModels(CCRenderState ccrs, ItemStack stack) {
+		super.renderItemModels(ccrs, stack);
+		Set<CCModel> movingParts = Sets.newHashSet();
+		transformMovingParts(movingParts, EnumFacing.NORTH, new float[6], null);
 
-        movingParts.forEach(m -> m.render(ccrs, getIconTransform(stack)));
-    }
+		movingParts.forEach(m -> m.render(ccrs, getIconTransform(stack)));
+	}
 
-    protected abstract void transformMovingParts(Collection<CCModel> transformedGroups, EnumFacing frontFacing, float[] rotations, @Nullable IExtendedBlockState state);
+	protected abstract void transformMovingParts(Collection<CCModel> transformedGroups, EnumFacing frontFacing, float[] rotations,
+			@Nullable IExtendedBlockState state);
 
-    @Override
-    public IExtendedBlockState handleState(IExtendedBlockState state, IBlockAccess access, BlockPos pos) {
-        EnumFacing facing = EnumFacing.NORTH;
-        TileEntity tileentity = access.getTileEntity(pos);
+	@Override
+	public IExtendedBlockState handleState(IExtendedBlockState state, IBlockAccess access, BlockPos pos) {
+		EnumFacing facing = EnumFacing.NORTH;
+		TileEntity tileentity = access.getTileEntity(pos);
 
-        if (tileentity instanceof TileTorqueBase) {
-            TileTorqueBase torquePart = ((TileTorqueBase) tileentity);
-            facing = torquePart.getPrimaryFacing();
-        }
+		if (tileentity instanceof TileTorqueBase) {
+			TileTorqueBase torquePart = ((TileTorqueBase) tileentity);
+			facing = torquePart.getPrimaryFacing();
+		}
 
-        IExtendedBlockState updatedState = state.withProperty(CoreProperties.UNLISTED_FACING, facing);
-        updatedState = updatedState.withProperty(AutomationProperties.DYNAMIC, false);
-        for(EnumFacing f : EnumFacing.VALUES) {
-            updatedState = updatedState.withProperty(AutomationProperties.ROTATIONS[f.getIndex()], 0f);
-        }
+		IExtendedBlockState updatedState = state.withProperty(CoreProperties.UNLISTED_FACING, facing);
+		updatedState = updatedState.withProperty(AutomationProperties.DYNAMIC, false);
+		for (EnumFacing f : EnumFacing.VALUES) {
+			updatedState = updatedState.withProperty(AutomationProperties.ROTATIONS[f.getIndex()], 0f);
+		}
 
-        if (tileentity instanceof TileTorqueBase) {
-            updatedState = handleAdditionalProperties(updatedState, (T) tileentity);
-        }
+		if (tileentity instanceof TileTorqueBase) {
+			updatedState = handleAdditionalProperties(updatedState, (T) tileentity);
+		}
 
-        return updatedState;
-    }
+		return updatedState;
+	}
 
-    protected IExtendedBlockState handleAdditionalProperties(IExtendedBlockState state, T tileEntity) {
-        return state;
-    }
+	protected IExtendedBlockState handleAdditionalProperties(IExtendedBlockState state, T tileEntity) {
+		return state;
+	}
 }

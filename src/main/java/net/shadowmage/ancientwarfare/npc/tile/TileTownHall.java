@@ -62,24 +62,24 @@ public class TileTownHall extends TileOwned implements IInteractableTile, ITicka
 
 	@Override
 	public void update() {
-		if(world == null || world.isRemote)
+		if (world == null || world.isRemote)
 			return;
 
 		updateDelayTicks--;
-		if(updateDelayTicks <= 0 && isActive) {
+		if (updateDelayTicks <= 0 && isActive) {
 			broadcast();
 			updateDelayTicks = AWNPCStatics.townUpdateFreq;
 		}
 	}
 
 	public void addViewer(ContainerTownHall viewer) {
-		if(!viewers.contains(viewer)) {
+		if (!viewers.contains(viewer)) {
 			viewers.add(viewer);
 		}
 	}
 
 	public void removeViewer(ContainerTownHall viewer) {
-		while(viewers.contains(viewer)) {
+		while (viewers.contains(viewer)) {
 			viewers.remove(viewer);
 		}
 	}
@@ -87,9 +87,9 @@ public class TileTownHall extends TileOwned implements IInteractableTile, ITicka
 	private void broadcast() {
 		AxisAlignedBB bb = new AxisAlignedBB(pos.getX() - broadcastRange, pos.getY() - broadcastRange / 2, pos.getZ() - broadcastRange, pos.getX() + broadcastRange + 1, pos.getY() + broadcastRange / 2 + 1, pos.getZ() + broadcastRange + 1);
 		List<NpcPlayerOwned> entities = world.getEntitiesWithinAABB(NpcPlayerOwned.class, bb);
-		if(entities.size() > 0) {
-			for(Entity entity : entities) {
-				if(((NpcPlayerOwned) entity).hasCommandPermissions(getOwnerUuid(), getOwnerName())) {
+		if (entities.size() > 0) {
+			for (Entity entity : entities) {
+				if (((NpcPlayerOwned) entity).hasCommandPermissions(getOwnerUuid(), getOwnerName())) {
 					((NpcPlayerOwned) entity).handleTownHallBroadcast(this, pos);
 				}
 			}
@@ -102,7 +102,7 @@ public class TileTownHall extends TileOwned implements IInteractableTile, ITicka
 	}
 
 	public void informViewers() {
-		for(ContainerTownHall cth : viewers) {
+		for (ContainerTownHall cth : viewers) {
 			cth.onTownHallDeathListUpdated();
 		}
 	}
@@ -120,21 +120,21 @@ public class TileTownHall extends TileOwned implements IInteractableTile, ITicka
 		inventory.deserializeNBT(tag.getCompoundTag("inventory"));
 		NBTTagList entryList = tag.getTagList("deathNotices", Constants.NBT.TAG_COMPOUND);
 		NpcDeathEntry entry;
-		for(int i = 0; i < entryList.tagCount(); i++) {
+		for (int i = 0; i < entryList.tagCount(); i++) {
 			entry = new NpcDeathEntry(entryList.getCompoundTagAt(i));
 			deathNotices.add(entry);
 		}
-		if(tag.hasKey("name"))
+		if (tag.hasKey("name"))
 			name = tag.getString("name");
-		if(tag.hasKey("range"))
+		if (tag.hasKey("range"))
 			setRange(tag.getInteger("range"));
-		if(tag.hasKey("alarmActive"))
+		if (tag.hasKey("alarmActive"))
 			alarmActive = (tag.getBoolean("alarmActive"));
-		if(tag.hasKey("isActive"))
+		if (tag.hasKey("isActive"))
 			isActive = (tag.getBoolean("isActive"));
-		if(tag.hasKey("isNeglected"))
+		if (tag.hasKey("isNeglected"))
 			isNeglected = (tag.getBoolean("isNeglected"));
-		if(tag.hasKey("oldOwner"))
+		if (tag.hasKey("oldOwner"))
 			oldOwner = (tag.getString("oldOwner"));
 	}
 
@@ -143,7 +143,7 @@ public class TileTownHall extends TileOwned implements IInteractableTile, ITicka
 		super.writeToNBT(tag);
 		tag.setTag("inventory", inventory.serializeNBT());
 		NBTTagList entryList = new NBTTagList();
-		for(NpcDeathEntry entry : deathNotices) {
+		for (NpcDeathEntry entry : deathNotices) {
 			entryList.appendTag(entry.writeToNBT(new NBTTagCompound()));
 		}
 		tag.setTag("deathNotices", entryList);
@@ -152,7 +152,7 @@ public class TileTownHall extends TileOwned implements IInteractableTile, ITicka
 		tag.setBoolean("alarmActive", alarmActive);
 		tag.setBoolean("isActive", isActive);
 		tag.setBoolean("isNeglected", isNeglected);
-		if(oldOwner != null)
+		if (oldOwner != null)
 			tag.setString("oldOwner", oldOwner);
 		return tag;
 	}
@@ -210,7 +210,7 @@ public class TileTownHall extends TileOwned implements IInteractableTile, ITicka
 
 	@Override
 	public boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
-		if(!player.world.isRemote && isOwner(player)) {
+		if (!player.world.isRemote && isOwner(player)) {
 			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_TOWN_HALL, pos);
 		}
 		return true;
@@ -225,7 +225,7 @@ public class TileTownHall extends TileOwned implements IInteractableTile, ITicka
 	}
 
 	public void setRange(int val) {
-		if(val < AWNPCStatics.townMaxRange) {
+		if (val < AWNPCStatics.townMaxRange) {
 			broadcastRange = val;
 		} else {
 			broadcastRange = AWNPCStatics.townMaxRange;
@@ -240,7 +240,7 @@ public class TileTownHall extends TileOwned implements IInteractableTile, ITicka
 	@Nullable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			return (T) inventory;
 		}
 

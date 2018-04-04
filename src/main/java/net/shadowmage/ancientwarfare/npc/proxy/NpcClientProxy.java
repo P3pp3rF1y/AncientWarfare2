@@ -56,7 +56,7 @@ public class NpcClientProxy extends NpcCommonProxy {
 
     @SubscribeEvent
     public void registerModels(ModelRegistryEvent event) {
-        for(IClientRegistrar registrar : clientRegistrars) {
+        for (IClientRegistrar registrar : clientRegistrars) {
             registrar.registerClient();
         }
     }
@@ -109,14 +109,15 @@ public class NpcClientProxy extends NpcCommonProxy {
             TextureImageBased tex = new TextureImageBased(loc, image);
             Minecraft.getMinecraft().renderEngine.loadTexture(loc, tex);
             return loc;
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
 
     @Override
-    public ResourceLocation getPlayerSkin(String name){
+    public ResourceLocation getPlayerSkin(String name) {
         GameProfile profile = getProfile(name);
         if (profile != null) {
             SkinManager manager = Minecraft.getMinecraft().getSkinManager();
@@ -128,9 +129,7 @@ public class NpcClientProxy extends NpcCommonProxy {
         return null;
     }
 
-
     public static final class NpcCategory extends DummyCategoryElement {
-
 
         public NpcCategory(String arg0) {
             super(arg0, arg0, getElementList());

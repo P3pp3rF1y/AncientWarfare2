@@ -4,13 +4,13 @@ import net.minecraft.world.World;
 
 public class NpcCustom_1SoldierElite extends NpcFactionSoldier {
 
-    public NpcCustom_1SoldierElite(World par1World) {
-        super(par1World);
-    }
+	public NpcCustom_1SoldierElite(World par1World) {
+		super(par1World);
+	}
 
-    @Override
-    public String getNpcType() {
-        return "custom_1.soldier.elite";
-    }
+	@Override
+	public String getNpcType() {
+		return "custom_1.soldier.elite";
+	}
 
 }

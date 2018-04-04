@@ -28,48 +28,48 @@ import java.util.List;
 
 public class ItemBackpack extends ItemBaseCore {
 
-    public ItemBackpack() {
-        super("backpack");
-        setMaxStackSize(1);
-        setHasSubtypes(true);
-    }
+	public ItemBackpack() {
+		super("backpack");
+		setMaxStackSize(1);
+		setHasSubtypes(true);
+	}
 
-    @Override
-    public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-        tooltip.add(I18n.format("guistrings.core.backpack.size", ((stack.getItemDamage() + 1) * 9)));
-        tooltip.add(I18n.format("guistrings.core.backpack.click_to_open"));
-    }
+	@Override
+	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
+		tooltip.add(I18n.format("guistrings.core.backpack.size", ((stack.getItemDamage() + 1) * 9)));
+		tooltip.add(I18n.format("guistrings.core.backpack.click_to_open"));
+	}
 
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-        if(!world.isRemote)
-            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_BACKPACK, 0, 0, 0);
-        return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
-    }
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		if (!world.isRemote)
+			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_BACKPACK, 0, 0, 0);
+		return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+	}
 
-    @Override
-    public String getUnlocalizedName(ItemStack par1ItemStack) {
-        return super.getUnlocalizedName(par1ItemStack) + "." + par1ItemStack.getItemDamage();
-    }
+	@Override
+	public String getUnlocalizedName(ItemStack par1ItemStack) {
+		return super.getUnlocalizedName(par1ItemStack) + "." + par1ItemStack.getItemDamage();
+	}
 
-    @Override
-    public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if (!isInCreativeTab(tab)) {
-            return;
-        }
+	@Override
+	public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
+		if (!isInCreativeTab(tab)) {
+			return;
+		}
 
-        for (int i = 0; i < 4; i++) {
-            items.add(new ItemStack(this, 1, i));
-        }
-    }
+		for (int i = 0; i < 4; i++) {
+			items.add(new ItemStack(this, 1, i));
+		}
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerClient() {
-        ModelLoaderHelper.registerItem(this, "core", false);
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerClient() {
+		ModelLoaderHelper.registerItem(this, "core", false);
 
-        NetworkHandler.registerGui(NetworkHandler.GUI_BACKPACK, GuiBackpack.class);
-    }
+		NetworkHandler.registerGui(NetworkHandler.GUI_BACKPACK, GuiBackpack.class);
+	}
 
 	@Nullable
 	@Override

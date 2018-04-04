@@ -10,19 +10,19 @@ import java.util.Locale;
 
 public class NpcAIFactionCommander extends NpcAIPlayerOwnedCommander {
 
-    public NpcAIFactionCommander(NpcFaction npc) {
-        super(npc);
-        if(npc.getNpcType().toLowerCase(Locale.ENGLISH).endsWith(".elite"))
-            effect = new PotionEffect(effect.getPotion(), effect.getDuration(), 1);
-    }
+	public NpcAIFactionCommander(NpcFaction npc) {
+		super(npc);
+		if (npc.getNpcType().toLowerCase(Locale.ENGLISH).endsWith(".elite"))
+			effect = new PotionEffect(effect.getPotion(), effect.getDuration(), 1);
+	}
 
-    @Override
-    protected boolean isCommander(NpcBase npc) {
-        return npc instanceof NpcFactionLeader;
-    }
+	@Override
+	protected boolean isCommander(NpcBase npc) {
+		return npc instanceof NpcFactionLeader;
+	}
 
-    @Override
-    protected boolean canBeCommanded(NpcBase npc){
-        return npc instanceof NpcFaction && ((NpcFaction) npc).getFaction().equals(((NpcFaction) this.npc).getFaction());
-    }
+	@Override
+	protected boolean canBeCommanded(NpcBase npc) {
+		return npc instanceof NpcFaction && ((NpcFaction) npc).getFaction().equals(((NpcFaction) this.npc).getFaction());
+	}
 }

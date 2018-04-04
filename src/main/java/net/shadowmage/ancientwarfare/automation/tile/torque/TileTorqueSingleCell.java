@@ -18,19 +18,16 @@ public abstract class TileTorqueSingleCell extends TileTorqueBase {
 
     /*
      * client side this == 0.0 -> 100, as a whole number percent of max rotation value
-     */
-    double clientEnergyState;
+	 */ double clientEnergyState;
 
     /*
      * server side this == 0 -> 100 (integer percent)
-     * client side this == 0 -> 100 (integer percent)
-     */
-    int clientDestEnergyState;
+	 * client side this == 0 -> 100 (integer percent)
+	 */ int clientDestEnergyState;
 
     /*
      * used client side for rendering
-     */
-    double rotation;
+	 */ double rotation;
     double lastRotationDiff;
 
     public TileTorqueSingleCell() {

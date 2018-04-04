@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.structure.template;
 
 import net.minecraft.item.ItemStack;
@@ -31,14 +32,14 @@ public class StructureTemplate {
 
     /*
      * base datas
-     */
+	 */
     public final String name;
     public final int xSize, ySize, zSize;
     public final int xOffset, yOffset, zOffset;
 
     /*
      * stored template data
-     */
+	 */
     private TemplateRule[] templateRules;
     private TemplateRuleEntity[] entityRules;
     private short[] templateData;
@@ -46,7 +47,7 @@ public class StructureTemplate {
 
     /*
      * world generation placement validation settings
-     */
+	 */
     private StructureValidator validator;
 
     public StructureTemplate(String name, int xSize, int ySize, int zSize, int xOffset, int yOffset, int zOffset) {
@@ -127,15 +128,17 @@ public class StructureTemplate {
                     }
                 }
             }
-			resourceList = InventoryTools.compactStackList(stacks);
-		}
+            resourceList = InventoryTools.compactStackList(stacks);
+        }
         return resourceList;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof StructureTemplate)) return false;
+        if (this == o)
+            return true;
+        if (!(o instanceof StructureTemplate))
+            return false;
         StructureTemplate that = (StructureTemplate) o;
         return xSize == that.xSize && ySize == that.ySize && zSize == that.zSize && xOffset == that.xOffset && yOffset == that.yOffset && zOffset == that.zOffset && name.equals(that.name);
     }

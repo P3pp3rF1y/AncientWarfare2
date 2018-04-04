@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.structure.render.gate;
 
 import net.minecraft.client.renderer.GlStateManager;
@@ -32,78 +33,78 @@ import net.shadowmage.ancientwarfare.structure.model.ModelGateBridge;
 
 public final class RenderGateRotatingBridge extends Render {
 
-    private final ModelGateBridge model = new ModelGateBridge();
+	private final ModelGateBridge model = new ModelGateBridge();
 
-    public RenderGateRotatingBridge(RenderManager renderManager) {
-        super(renderManager);
-    }
+	public RenderGateRotatingBridge(RenderManager renderManager) {
+		super(renderManager);
+	}
 
-    @Override
-    public void doRender(Entity entity, double d0, double d1, double d2, float f, float f1) {
-        GlStateManager.pushMatrix();
-        EntityGate g = (EntityGate) entity;
-        BlockPos min = g.pos1;
-        BlockPos max = g.pos2;
+	@Override
+	public void doRender(Entity entity, double d0, double d1, double d2, float f, float f1) {
+		GlStateManager.pushMatrix();
+		EntityGate g = (EntityGate) entity;
+		BlockPos min = g.pos1;
+		BlockPos max = g.pos2;
 
-        boolean wideOnXAxis = min.getX() != max.getX();
+		boolean wideOnXAxis = min.getX() != max.getX();
 
-        float rx = wideOnXAxis ? g.edgePosition + g.openingSpeed * (1 - f1) : 0;
-        float rz = wideOnXAxis ? 0 : g.edgePosition + g.openingSpeed * (1 - f1);
-        boolean invert = g.gateOrientation == EnumFacing.SOUTH || g.gateOrientation == EnumFacing.EAST;
-        if (invert) {
-            rx *= -1;
-            rz *= -1;
-        }
-        GlStateManager.translate(0, -0.5f, 0);
-        GlStateManager.rotate(rx, 1, 0, 0);
-        GlStateManager.rotate(rz, 0, 0, 1);
-        float width = wideOnXAxis ? max.getX() - min.getX() + 1 : max.getZ() - min.getZ() + 1;
-        float height = max.getY() - min.getY() + 1;
-        float xOffset = wideOnXAxis ? width * 0.5f - 0.5f : 0f;
-        float zOffset = wideOnXAxis ? 0f : -width * 0.5f + 0.5f;
+		float rx = wideOnXAxis ? g.edgePosition + g.openingSpeed * (1 - f1) : 0;
+		float rz = wideOnXAxis ? 0 : g.edgePosition + g.openingSpeed * (1 - f1);
+		boolean invert = g.gateOrientation == EnumFacing.SOUTH || g.gateOrientation == EnumFacing.EAST;
+		if (invert) {
+			rx *= -1;
+			rz *= -1;
+		}
+		GlStateManager.translate(0, -0.5f, 0);
+		GlStateManager.rotate(rx, 1, 0, 0);
+		GlStateManager.rotate(rz, 0, 0, 1);
+		float width = wideOnXAxis ? max.getX() - min.getX() + 1 : max.getZ() - min.getZ() + 1;
+		float height = max.getY() - min.getY() + 1;
+		float xOffset = wideOnXAxis ? width * 0.5f - 0.5f : 0f;
+		float zOffset = wideOnXAxis ? 0f : -width * 0.5f + 0.5f;
 
-        float tx = wideOnXAxis ? 1 : 0;
-        float ty = -1;
-        float tz = wideOnXAxis ? 0 : 1;
-        float axisRotation = wideOnXAxis ? 180 : 90;
-        if (invert) {
-            GlStateManager.rotate(180, 0, 1, 0);
-        }
-        GlStateManager.translate(-xOffset, 0, zOffset);
-        for (int y = 0; y < height; y++) {
-            GlStateManager.pushMatrix();
-            for (int x = 0; x < width; x++) {
-                model.setModelRotation(axisRotation);
-                if (y == 0) {
-                    model.renderGateBlock();
-                }
-                if (y == height - 1 && x > 0 && x < width - 1) {
-                    model.renderTop();
-                } else if (y == height - 1 && x == 0) {
-                    model.renderCorner();
-                } else if (y == height - 1 && x == width - 1) {
-                    model.renderCorner2();
-                } else if (x == 0 && y > 0) {
-                    model.renderSide1();
-                } else if (x == width - 1 && y > 0) {
-                    model.renderSide2();
-                }
-                if (y > 0) {
-                    GlStateManager.pushMatrix();
-                    model.setModelRotation(axisRotation);
-                    model.renderSolidWall();
-                    GlStateManager.popMatrix();
-                }
-                GlStateManager.translate(tx, 0, tz);
-            }
-            GlStateManager.popMatrix();
-            GlStateManager.translate(0, ty, 0);
-        }
-        GlStateManager.popMatrix();
-    }
+		float tx = wideOnXAxis ? 1 : 0;
+		float ty = -1;
+		float tz = wideOnXAxis ? 0 : 1;
+		float axisRotation = wideOnXAxis ? 180 : 90;
+		if (invert) {
+			GlStateManager.rotate(180, 0, 1, 0);
+		}
+		GlStateManager.translate(-xOffset, 0, zOffset);
+		for (int y = 0; y < height; y++) {
+			GlStateManager.pushMatrix();
+			for (int x = 0; x < width; x++) {
+				model.setModelRotation(axisRotation);
+				if (y == 0) {
+					model.renderGateBlock();
+				}
+				if (y == height - 1 && x > 0 && x < width - 1) {
+					model.renderTop();
+				} else if (y == height - 1 && x == 0) {
+					model.renderCorner();
+				} else if (y == height - 1 && x == width - 1) {
+					model.renderCorner2();
+				} else if (x == 0 && y > 0) {
+					model.renderSide1();
+				} else if (x == width - 1 && y > 0) {
+					model.renderSide2();
+				}
+				if (y > 0) {
+					GlStateManager.pushMatrix();
+					model.setModelRotation(axisRotation);
+					model.renderSolidWall();
+					GlStateManager.popMatrix();
+				}
+				GlStateManager.translate(tx, 0, tz);
+			}
+			GlStateManager.popMatrix();
+			GlStateManager.translate(0, ty, 0);
+		}
+		GlStateManager.popMatrix();
+	}
 
-    @Override
-    protected ResourceLocation getEntityTexture(Entity entity) {
-        return ((EntityGate) entity).getGateType().getTexture();
-    }
+	@Override
+	protected ResourceLocation getEntityTexture(Entity entity) {
+		return ((EntityGate) entity).getGateType().getTexture();
+	}
 }

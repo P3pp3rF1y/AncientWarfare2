@@ -9,96 +9,96 @@ public final class ITorque {
 
     /*
      * Used for rendering of, well, anything that has a default north-oriented model
-     */
+	 */
     public static final float[][] forgeDiretctionToRotationMatrix = new float[6][];
 
     static {
-        forgeDiretctionToRotationMatrix[0] = new float[]{-90, 0};//d
-        forgeDiretctionToRotationMatrix[1] = new float[]{90, 0};//u
-        forgeDiretctionToRotationMatrix[2] = new float[]{0, 0};//n
-        forgeDiretctionToRotationMatrix[3] = new float[]{0, 180};//s
-        forgeDiretctionToRotationMatrix[4] = new float[]{0, 90};//w
-        forgeDiretctionToRotationMatrix[5] = new float[]{0, 270};//e
+        forgeDiretctionToRotationMatrix[0] = new float[] {-90, 0};//d
+        forgeDiretctionToRotationMatrix[1] = new float[] {90, 0};//u
+        forgeDiretctionToRotationMatrix[2] = new float[] {0, 0};//n
+        forgeDiretctionToRotationMatrix[3] = new float[] {0, 180};//s
+        forgeDiretctionToRotationMatrix[4] = new float[] {0, 90};//w
+        forgeDiretctionToRotationMatrix[5] = new float[] {0, 270};//e
     }
 
     /*
      * Interface for implementation by torque tiles.  Tiles may handle their power internally by any means.<br>
-     * Tiles are responsible for outputting their own power, but should not request power from other torque tiles
-     * (the other tiles will output power when ready).<br>
-     *
-     * @author Shadowmage
-     */
+	 * Tiles are responsible for outputting their own power, but should not request power from other torque tiles
+	 * (the other tiles will output power when ready).<br>
+	 *
+	 * @author Shadowmage
+	 */
     public interface ITorqueTile {
 
         /*
          * Return the maximum amount of energy store-able in the passed in block side
-         */
+		 */
         double getMaxTorque(EnumFacing from);
 
         /*
          * Return the value of energy accessible from the passed in block side
-         */
+		 */
         double getTorqueStored(EnumFacing from);
 
         /*
          * Add energy to the specified block side, up to the specified amount.<br>
-         * Return the value of energy actually added, or 0 for none.
-         */
+		 * Return the value of energy actually added, or 0 for none.
+		 */
         double addTorque(EnumFacing from, double energy);
 
         /*
          * Remove energy from the specified block side, up to the specified amount.<br>
-         * Return the value of energy actually removed, or 0 for none.
-         */
+		 * Return the value of energy actually removed, or 0 for none.
+		 */
         double drainTorque(EnumFacing from, double energy);
 
         /*
          * Return the maximum amount of torque that the given side may output AT THIS TIME.<br>
-         * Analogous to the 'simulate' actions from other energy frameworks
-         */
+		 * Analogous to the 'simulate' actions from other energy frameworks
+		 */
         double getMaxTorqueOutput(EnumFacing from);
 
         /*
          * Return the maximum amount of torque that the given side may accept AT THIS TIME.<br>
-         * Analogous to the 'simulate' actions from other energy frameworks
-         */
+		 * Analogous to the 'simulate' actions from other energy frameworks
+		 */
         double getMaxTorqueInput(EnumFacing from);
 
         /*
          * Return true if this tile can output torque from the given block side.<br>
-         * Used by tiles for connection status.<br>
-         * Must return the same value between calls, or issue a neighbor-block update when the value changes.<br>
-         * You may return true from this method but return 0 for getMaxOutput() for 'toggleable' sides (side will connect but not always accept power)
-         */
+		 * Used by tiles for connection status.<br>
+		 * Must return the same value between calls, or issue a neighbor-block update when the value changes.<br>
+		 * You may return true from this method but return 0 for getMaxOutput() for 'toggleable' sides (side will connect but not always accept power)
+		 */
         boolean canOutputTorque(EnumFacing from);
 
         /*
          * Return true if this tile can input torque into the given block side.<br>
-         * Used by tiles for connection status.<br>
-         * Must return the same value between calls, or issue a neighbor-block update when the value changes.
-         * You may return true from this method but return 0 for getMaxInput() for 'toggleable' sides (side will connect but not always accept power)
-         */
+		 * Used by tiles for connection status.<br>
+		 * Must return the same value between calls, or issue a neighbor-block update when the value changes.
+		 * You may return true from this method but return 0 for getMaxInput() for 'toggleable' sides (side will connect but not always accept power)
+		 */
         boolean canInputTorque(EnumFacing from);
 
         /*
          * Used by client for rendering of torque tiles.  If TRUE this tiles neighbor will
-         * use this tiles output rotation values for rendering of the corresponding input side on the neighbor.
-         */
+		 * use this tiles output rotation values for rendering of the corresponding input side on the neighbor.
+		 */
         boolean useOutputRotation(EnumFacing from);
 
         /*
          * Return output shaft rotation for the given side.  Will only be called if useOutputRotation(from) returns true.
-         */
+		 */
         float getClientOutputRotation(EnumFacing from, float delta);
     }
 
     /*
      * default (simple) reference implementation of a torque delegate class<br>
-     * An ITorqueTile may have one or more of these for internal energy storage (or none, and handle energy entirely differently!).<br>
-     * This template class is merely included for convenience.
-     *
-     * @author Shadowmage
-     */
+	 * An ITorqueTile may have one or more of these for internal energy storage (or none, and handle energy entirely differently!).<br>
+	 * This template class is merely included for convenience.
+	 *
+	 * @author Shadowmage
+	 */
     public static class TorqueCell {
         protected double maxInput, maxOutput, maxEnergy, efficiency;
         protected double energy;
@@ -178,11 +178,11 @@ public final class ITorque {
 
     /*
      * Owner-sided aware torque storage cell.  Used by MIMO type torque tiles (conduit, distributor) to maintain a cell for each side
-     * without having to create new cells every time block orientation changes.<br>
-     * Caveat:  the side maintains energy level regardless of block orientation, the new 'input' side will have the energy from an old 'output' side.
-     *
-     * @author Shadowmage
-     */
+	 * without having to create new cells every time block orientation changes.<br>
+	 * Caveat:  the side maintains energy level regardless of block orientation, the new 'input' side will have the energy from an old 'output' side.
+	 *
+	 * @author Shadowmage
+	 */
     public static class SidedTorqueCell extends TorqueCell {
 
         EnumFacing dir;

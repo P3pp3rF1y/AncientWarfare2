@@ -33,6 +33,7 @@ import net.shadowmage.ancientwarfare.vehicle.registry.UpgradeRegistry;
 public class VehicleTypeChestCart extends VehicleType {
 
 	//TODO implement chest cart
+
 	/**
 	 * @param typeNum
 	 */

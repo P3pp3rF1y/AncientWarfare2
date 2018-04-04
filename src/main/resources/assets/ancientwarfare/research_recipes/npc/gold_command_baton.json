@@ -1,23 +1,23 @@
 {
-  "type": "ancientwarfare:research_recipe",
-  "research": "command",
-  "pattern": [
-    "  M",
-    " I ",
-    "S  "
-  ],
-  "key": {
-    "S": {
-      "item": "#STICKWOOD"
+    "type": "ancientwarfare:research_recipe",
+    "research": "command",
+    "pattern": [
+        "  M",
+        " I ",
+        "S  "
+    ],
+    "key": {
+        "S": {
+            "item": "#STICKWOOD"
+        },
+        "I": {
+            "item": "#INGOTIRON"
+        },
+        "M": {
+            "item": "#INGOTGOLD"
+        }
     },
-    "I": {
-      "item": "#INGOTIRON"
-    },
-    "M": {
-      "item": "#INGOTGOLD"
+    "result": {
+        "item": "ancientwarfarenpc:gold_command_baton"
     }
-  },
-  "result": {
-    "item": "ancientwarfarenpc:gold_command_baton"
-  }
 }

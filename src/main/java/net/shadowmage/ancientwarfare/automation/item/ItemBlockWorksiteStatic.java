@@ -26,7 +26,7 @@ public class ItemBlockWorksiteStatic extends ItemBlockBase {
     public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
         EnumFacing playerFacing = player.getHorizontalFacing();
         BlockPos pos1 = pos.offset(playerFacing).offset(playerFacing.rotateYCCW(), 2);
-        BlockPos pos2 = pos.offset(playerFacing,4).offset(playerFacing.rotateY(), 4);
+        BlockPos pos2 = pos.offset(playerFacing, 4).offset(playerFacing.rotateY(), 4);
         /*
          * TODO validate that block is not inside work bounds of any other nearby worksites ??
          * TODO validate that worksite does not intersect any others

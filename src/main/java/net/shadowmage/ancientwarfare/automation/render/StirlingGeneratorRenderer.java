@@ -48,12 +48,12 @@ public class StirlingGeneratorRenderer extends BaseTorqueRenderer<TileStirlingGe
 		calculateArmAngle2(-rotation - 90);
 		Transformation flywheelRotation = new Rotation(rotation, 0, 0, 1).at(new Vector3(1d / 2d, 1d / 2d, 0));
 		transformedGroups.addAll(rotateModels(flywheel, frontFacing, flywheelRotation));
-		Transformation pistonCrankRotation = new Rotation(-rotation, 0, 0, 1).at(new Vector3(12d/16d, 12d/16d, 0d));
+		Transformation pistonCrankRotation = new Rotation(-rotation, 0, 0, 1).at(new Vector3(12d / 16d, 12d / 16d, 0d));
 		transformedGroups.addAll(rotateModels(pistonCrank, frontFacing, pistonCrankRotation));
-		transformedGroups.addAll(rotateModels(pistonCrank2, frontFacing, new Rotation(rotation, 0, 0, 1).at(new Vector3(12d/16d, 11d/16d, 0d))));
-		transformedGroups.addAll(rotateModels(flywheelArm, frontFacing, new Rotation(-rotation, 0, 0, 1).at(new Vector3(9d/16d, 8d/16d, 7.5d/16d)).with(flywheelRotation)));
-		transformedGroups.addAll(rotateModels(pistonArm, frontFacing, new Rotation(rotation + armAngle, 0, 0, 1).at(new Vector3(11d/16d, 12d/16d, 0d)).with(pistonCrankRotation)));
-		transformedGroups.addAll(rotateModels(pistonArm2, frontFacing, new Rotation(rotation + armAngle2, 0, 0, 1).at(new Vector3(11d/16d, 12d/16d, 0d)).with(pistonCrankRotation)));
+		transformedGroups.addAll(rotateModels(pistonCrank2, frontFacing, new Rotation(rotation, 0, 0, 1).at(new Vector3(12d / 16d, 11d / 16d, 0d))));
+		transformedGroups.addAll(rotateModels(flywheelArm, frontFacing, new Rotation(-rotation, 0, 0, 1).at(new Vector3(9d / 16d, 8d / 16d, 7.5d / 16d)).with(flywheelRotation)));
+		transformedGroups.addAll(rotateModels(pistonArm, frontFacing, new Rotation(rotation + armAngle, 0, 0, 1).at(new Vector3(11d / 16d, 12d / 16d, 0d)).with(pistonCrankRotation)));
+		transformedGroups.addAll(rotateModels(pistonArm2, frontFacing, new Rotation(rotation + armAngle2, 0, 0, 1).at(new Vector3(11d / 16d, 12d / 16d, 0d)).with(pistonCrankRotation)));
 	}
 
 	private void calculateArmAngle1(float crankAngle) {

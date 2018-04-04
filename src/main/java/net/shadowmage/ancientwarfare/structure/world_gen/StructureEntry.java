@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.structure.world_gen;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -51,7 +52,7 @@ public class StructureEntry {
     public void writeToNBT(NBTTagCompound tag) {
         tag.setString("name", name);
         tag.setInteger("value", value);
-        tag.setIntArray("bb", new int[]{bb.min.getX(), bb.min.getY(), bb.min.getZ(), bb.max.getX(), bb.max.getY(), bb.max.getZ()});
+        tag.setIntArray("bb", new int[] {bb.min.getX(), bb.min.getY(), bb.min.getZ(), bb.max.getX(), bb.max.getY(), bb.max.getZ()});
     }
 
     public void readFromNBT(NBTTagCompound tag) {

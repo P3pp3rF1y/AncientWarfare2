@@ -8,58 +8,58 @@ import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRideHorse;
 
 public abstract class NpcFactionMounted extends NpcFaction {
 
-    protected NpcAIFactionRideHorse horseAI;
+	protected NpcAIFactionRideHorse horseAI;
 
-    public NpcFactionMounted(World par1World) {
-        super(par1World);
-    }
+	public NpcFactionMounted(World par1World) {
+		super(par1World);
+	}
 
-    @Override
-    public void onDeath(DamageSource source) {
-        if (!world.isRemote) {
-            if (horseAI != null) {
-                horseAI.onKilled();
-            }
-        }
-        super.onDeath(source);
-    }
+	@Override
+	public void onDeath(DamageSource source) {
+		if (!world.isRemote) {
+			if (horseAI != null) {
+				horseAI.onKilled();
+			}
+		}
+		super.onDeath(source);
+	}
 
-    @Override
-    public void readEntityFromNBT(NBTTagCompound tag) {
-        super.readEntityFromNBT(tag);
-        if (tag.hasKey("horseAI")) {
-            horseAI.readFromNBT(tag.getCompoundTag("horseAI"));
-        }
-    }
+	@Override
+	public void readEntityFromNBT(NBTTagCompound tag) {
+		super.readEntityFromNBT(tag);
+		if (tag.hasKey("horseAI")) {
+			horseAI.readFromNBT(tag.getCompoundTag("horseAI"));
+		}
+	}
 
-    @Override
-    public void writeEntityToNBT(NBTTagCompound tag) {
-        super.writeEntityToNBT(tag);
-        if (horseAI != null) {
-            tag.setTag("horseAI", horseAI.writeToNBT(new NBTTagCompound()));
-        }
-    }
+	@Override
+	public void writeEntityToNBT(NBTTagCompound tag) {
+		super.writeEntityToNBT(tag);
+		if (horseAI != null) {
+			tag.setTag("horseAI", horseAI.writeToNBT(new NBTTagCompound()));
+		}
+	}
 
-    @Override
-    protected void onRepack() {
-        if (getRidingEntity() instanceof EntityHorse) {
-            getRidingEntity().setDead();
-            dismountRidingEntity();
-        }
-    }
+	@Override
+	protected void onRepack() {
+		if (getRidingEntity() instanceof EntityHorse) {
+			getRidingEntity().setDead();
+			dismountRidingEntity();
+		}
+	}
 
-    @Override
-    public boolean worksInRain() {
-        return true;
-    }
+	@Override
+	public boolean worksInRain() {
+		return true;
+	}
 
-    @Override
-    public boolean isPassive() {
-        return false;
-    }
+	@Override
+	public boolean isPassive() {
+		return false;
+	}
 
-    @Override
-    public boolean shouldSleep() {
-        return false;
-    }
+	@Override
+	public boolean shouldSleep() {
+		return false;
+	}
 }

@@ -22,125 +22,125 @@ import java.util.UUID;
 
 public abstract class NpcFaction extends NpcBase {
 
-    protected final Predicate<Entity> selector = entity -> isHostileTowards(entity);
+	protected final Predicate<Entity> selector = entity -> isHostileTowards(entity);
 
-    private String faction = "";
+	private String faction = "";
 
-    public NpcFaction(World par1World) {
-        super(par1World);
-        String type = this.getNpcFullType();
-        @Nonnull ItemStack eqs;
-        for (int i = 0; i < 8; i++) {
-            eqs = AncientWarfareNPC.statics.getStartingEquipmentForSlot(type, i);
-            if (eqs != null) {
-                setItemStackToSlot(i, eqs);
-            }
-        }
-    }
+	public NpcFaction(World par1World) {
+		super(par1World);
+		String type = this.getNpcFullType();
+		@Nonnull ItemStack eqs;
+		for (int i = 0; i < 8; i++) {
+			eqs = AncientWarfareNPC.statics.getStartingEquipmentForSlot(type, i);
+			if (eqs != null) {
+				setItemStackToSlot(i, eqs);
+			}
+		}
+	}
 
-    @Override
-    public int getMaxFallHeight() {
-        int i = super.getMaxFallHeight();
-        if(i > 4)
-            i += world.getDifficulty().getDifficultyId() * getMaxHealth() / 5;
-        if(i >= getHealth())
-            return (int)getHealth();
-        return i;
-    }
+	@Override
+	public int getMaxFallHeight() {
+		int i = super.getMaxFallHeight();
+		if (i > 4)
+			i += world.getDifficulty().getDifficultyId() * getMaxHealth() / 5;
+		if (i >= getHealth())
+			return (int) getHealth();
+		return i;
+	}
 
-    @Override
-    protected boolean tryCommand(EntityPlayer player) {
-        return player.capabilities.isCreativeMode && super.tryCommand(player);
-    }
+	@Override
+	protected boolean tryCommand(EntityPlayer player) {
+		return player.capabilities.isCreativeMode && super.tryCommand(player);
+	}
 
-    @Override
-    public boolean hasCommandPermissions(UUID playerUuid, String playerName) {
-        return false;
-    }
+	@Override
+	public boolean hasCommandPermissions(UUID playerUuid, String playerName) {
+		return false;
+	}
 
-    @Override
-    public boolean isHostileTowards(Entity e) {
-        if (NpcAI.isAlwaysHostileToNpcs(e))
-            return true;
-        if (e instanceof EntityPlayer) {
-            int standing = FactionTracker.INSTANCE.getStandingFor(world, e.getName(), getFaction());
-            if (getNpcFullType().endsWith("elite")) {
-                standing -= 50;
-            }
-            return standing < 0;
-        } else if (e instanceof NpcPlayerOwned) {
-            NpcBase npc = (NpcBase) e;
-            int standing = FactionTracker.INSTANCE.getStandingFor(world, npc.getOwnerName(), getFaction());
-            if (getNpcFullType().endsWith("elite")) {
-                standing -= 50;
-            }
-            return standing < 0;
-        } else if (e instanceof NpcFaction) {
-            NpcFaction npc = (NpcFaction) e;
-            return AncientWarfareNPC.statics.shouldFactionBeHostileTowards(getFaction(), npc.getFaction());
-        } else {
-            // TODO
-            // This is for forced inclusions, which we don't currently support in new auto-targeting. This 
-            // is complicated because reasons. See comments in the AWNPCStatics class for details.
-            
-            if (!AncientWarfareNPC.statics.autoTargetting) {
-                List<String> targets = AncientWarfareNPC.statics.getValidTargetsFor(getNpcFullType(), "");
-                String t = EntityList.getEntityString(e);
-                if (targets.contains(t)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+	@Override
+	public boolean isHostileTowards(Entity e) {
+		if (NpcAI.isAlwaysHostileToNpcs(e))
+			return true;
+		if (e instanceof EntityPlayer) {
+			int standing = FactionTracker.INSTANCE.getStandingFor(world, e.getName(), getFaction());
+			if (getNpcFullType().endsWith("elite")) {
+				standing -= 50;
+			}
+			return standing < 0;
+		} else if (e instanceof NpcPlayerOwned) {
+			NpcBase npc = (NpcBase) e;
+			int standing = FactionTracker.INSTANCE.getStandingFor(world, npc.getOwnerName(), getFaction());
+			if (getNpcFullType().endsWith("elite")) {
+				standing -= 50;
+			}
+			return standing < 0;
+		} else if (e instanceof NpcFaction) {
+			NpcFaction npc = (NpcFaction) e;
+			return AncientWarfareNPC.statics.shouldFactionBeHostileTowards(getFaction(), npc.getFaction());
+		} else {
+			// TODO
+			// This is for forced inclusions, which we don't currently support in new auto-targeting. This
+			// is complicated because reasons. See comments in the AWNPCStatics class for details.
 
-    @Override
-    public boolean canTarget(Entity e) {
-        if (e instanceof NpcFaction) {
-            return !((NpcFaction) e).getFaction().equals(getFaction());
-        }
-        return e instanceof EntityLivingBase;
-    }
+			if (!AncientWarfareNPC.statics.autoTargetting) {
+				List<String> targets = AncientWarfareNPC.statics.getValidTargetsFor(getNpcFullType(), "");
+				String t = EntityList.getEntityString(e);
+				if (targets.contains(t)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
-    @Override
-    public boolean canBeAttackedBy(Entity e) {
-        if (e instanceof NpcFaction) {
-            return !getFaction().equals(((NpcFaction) e).getFaction());//can only be attacked by other factions, not your own...disable friendly fire
-        }
-        return true;
-    }
+	@Override
+	public boolean canTarget(Entity e) {
+		if (e instanceof NpcFaction) {
+			return !((NpcFaction) e).getFaction().equals(getFaction());
+		}
+		return e instanceof EntityLivingBase;
+	}
 
-    @Override
-    public void onDeath(DamageSource damageSource) {
-        super.onDeath(damageSource);
-        if (damageSource.getTrueSource() instanceof EntityPlayer) {
-            EntityPlayer player = (EntityPlayer) damageSource.getTrueSource();
-            FactionTracker.INSTANCE.adjustStandingFor(world, player.getName(), getFaction(), -AWNPCStatics.factionLossOnDeath);
-        } else if (damageSource.getTrueSource() instanceof NpcPlayerOwned) {
-            String playerName = ((NpcBase) damageSource.getTrueSource()).getOwnerName();
-            if (playerName != null) {
-                FactionTracker.INSTANCE.adjustStandingFor(world, playerName, getFaction(), -AWNPCStatics.factionLossOnDeath);
-            }
-        }
-    }
+	@Override
+	public boolean canBeAttackedBy(Entity e) {
+		if (e instanceof NpcFaction) {
+			return !getFaction().equals(((NpcFaction) e).getFaction());//can only be attacked by other factions, not your own...disable friendly fire
+		}
+		return true;
+	}
 
-    @Override
-    public String getNpcSubType() {
-        return "";
-    }
+	@Override
+	public void onDeath(DamageSource damageSource) {
+		super.onDeath(damageSource);
+		if (damageSource.getTrueSource() instanceof EntityPlayer) {
+			EntityPlayer player = (EntityPlayer) damageSource.getTrueSource();
+			FactionTracker.INSTANCE.adjustStandingFor(world, player.getName(), getFaction(), -AWNPCStatics.factionLossOnDeath);
+		} else if (damageSource.getTrueSource() instanceof NpcPlayerOwned) {
+			String playerName = ((NpcBase) damageSource.getTrueSource()).getOwnerName();
+			if (playerName != null) {
+				FactionTracker.INSTANCE.adjustStandingFor(world, playerName, getFaction(), -AWNPCStatics.factionLossOnDeath);
+			}
+		}
+	}
 
-    //TODO refactor this so that faction is filled in on instance creation, perhaps it could even be Enum to be even faster
-    public String getFaction() {
-        if (faction.isEmpty()) {
-            String type = getNpcType();
-            faction = type.substring(0, type.indexOf("."));
-        }
+	@Override
+	public String getNpcSubType() {
+		return "";
+	}
 
-        return faction;
-    }
+	//TODO refactor this so that faction is filled in on instance creation, perhaps it could even be Enum to be even faster
+	public String getFaction() {
+		if (faction.isEmpty()) {
+			String type = getNpcType();
+			faction = type.substring(0, type.indexOf("."));
+		}
 
-    @Override
-    public Team getTeam() {
-        return null;
-    }
+		return faction;
+	}
+
+	@Override
+	public Team getTeam() {
+		return null;
+	}
 }

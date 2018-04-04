@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules;
 
 import net.minecraft.block.Block;
@@ -34,64 +35,64 @@ import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
 public class TemplateRuleBlockSign extends TemplateRuleVanillaBlocks {
 
-    public ITextComponent signContents[];
+	public ITextComponent signContents[];
 
-    public TemplateRuleBlockSign(World world, BlockPos pos, Block block, int meta, int turns) {
-        super(world, pos, block, meta, turns);
-        TileEntitySign te = (TileEntitySign) world.getTileEntity(pos);
-        signContents = new ITextComponent[te.signText.length];
-        for (int i = 0; i < signContents.length; i++) {
-            signContents[i] = te.signText[i];
-        }
-        if (block == Blocks.STANDING_SIGN) {
-            this.meta = (meta + 4 * turns) % 16;
-        }
-    }
+	public TemplateRuleBlockSign(World world, BlockPos pos, Block block, int meta, int turns) {
+		super(world, pos, block, meta, turns);
+		TileEntitySign te = (TileEntitySign) world.getTileEntity(pos);
+		signContents = new ITextComponent[te.signText.length];
+		for (int i = 0; i < signContents.length; i++) {
+			signContents[i] = te.signText[i];
+		}
+		if (block == Blocks.STANDING_SIGN) {
+			this.meta = (meta + 4 * turns) % 16;
+		}
+	}
 
-    public TemplateRuleBlockSign() {
-    }
+	public TemplateRuleBlockSign() {
+	}
 
-    @Override
-    public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
-        Block block = Block.getBlockFromName(blockName);
-        int meta = 0;
-        if (block == Blocks.STANDING_SIGN) {
-            meta = (this.meta + 4 * turns) % 16;
-        } else {
-            meta = BlockDataManager.INSTANCE.getRotatedMeta(block, this.meta, turns);
-        }
-        if (world.setBlockState(pos, block.getStateFromMeta(meta), 2)) {
-            TileEntitySign te = (TileEntitySign) world.getTileEntity(pos);
-            if (te != null) {
-                for (int i = 0; i < this.signContents.length; i++) {
-                    te.signText[i] = this.signContents[i];
-                }
-            }
-            BlockTools.notifyBlockUpdate(world, pos);
-        }
-    }
+	@Override
+	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
+		Block block = Block.getBlockFromName(blockName);
+		int meta = 0;
+		if (block == Blocks.STANDING_SIGN) {
+			meta = (this.meta + 4 * turns) % 16;
+		} else {
+			meta = BlockDataManager.INSTANCE.getRotatedMeta(block, this.meta, turns);
+		}
+		if (world.setBlockState(pos, block.getStateFromMeta(meta), 2)) {
+			TileEntitySign te = (TileEntitySign) world.getTileEntity(pos);
+			if (te != null) {
+				for (int i = 0; i < this.signContents.length; i++) {
+					te.signText[i] = this.signContents[i];
+				}
+			}
+			BlockTools.notifyBlockUpdate(world, pos);
+		}
+	}
 
-    @Override
-    public boolean shouldReuseRule(World world, Block block, int meta, int turns, BlockPos pos) {
-        return false;
-    }
+	@Override
+	public boolean shouldReuseRule(World world, Block block, int meta, int turns, BlockPos pos) {
+		return false;
+	}
 
-    @Override
-    public void writeRuleData(NBTTagCompound tag) {
-        super.writeRuleData(tag);
-        for (int i = 0; i < 4; i++) {
-            tag.setString("signContents" + i, signContents[i].getFormattedText());
-        }
-    }
+	@Override
+	public void writeRuleData(NBTTagCompound tag) {
+		super.writeRuleData(tag);
+		for (int i = 0; i < 4; i++) {
+			tag.setString("signContents" + i, signContents[i].getFormattedText());
+		}
+	}
 
-    @Override
-    public void parseRuleData(NBTTagCompound tag) {
-        super.parseRuleData(tag);
-        this.signContents = new ITextComponent[4];
-        for (int i = 0; i < 4; i++) {
-            //TODO make sure that deserializing here works correctly. For some reason TileEntitySign does this through command instance
-            this.signContents[i] = new TextComponentString(tag.getString("signContents" + i));
-        }
-    }
+	@Override
+	public void parseRuleData(NBTTagCompound tag) {
+		super.parseRuleData(tag);
+		this.signContents = new ITextComponent[4];
+		for (int i = 0; i < 4; i++) {
+			//TODO make sure that deserializing here works correctly. For some reason TileEntitySign does this through command instance
+			this.signContents[i] = new TextComponentString(tag.getString("signContents" + i));
+		}
+	}
 
 }

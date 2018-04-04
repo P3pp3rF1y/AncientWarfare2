@@ -1,21 +1,21 @@
 {
-  "type": "ancientwarfare:research_recipe",
-  "research": "mass_production",
-  "pattern": [
-    "IGI",
-    "III",
-    "IGI"
-  ],
-  "key": {
-    "G": {
-      "item": "#GEARSTEEL"
+    "type": "ancientwarfare:research_recipe",
+    "research": "mass_production",
+    "pattern": [
+        "IGI",
+        "III",
+        "IGI"
+    ],
+    "key": {
+        "G": {
+            "item": "#GEARSTEEL"
+        },
+        "I": {
+            "item": "#INGOTSTEEL"
+        }
     },
-    "I": {
-      "item": "#INGOTSTEEL"
+    "result": {
+        "item": "ancientwarfareautomation:flywheel_controller",
+        "data": 2
     }
-  },
-  "result": {
-    "item": "ancientwarfareautomation:flywheel_controller",
-    "data": 2
-  }
 }

@@ -21,57 +21,57 @@ import java.util.HashSet;
 
 public class ItemWorksiteUpgrade extends ItemMulti {
 
-    public ItemWorksiteUpgrade() {
-        super(AncientWarfareAutomation.modID, "worksite_upgrade");
-        this.setCreativeTab(AWAutomationItemLoader.automationTab);
-    }
+	public ItemWorksiteUpgrade() {
+		super(AncientWarfareAutomation.modID, "worksite_upgrade");
+		this.setCreativeTab(AWAutomationItemLoader.automationTab);
+	}
 
-    public static WorksiteUpgrade getUpgrade(ItemStack stack) {
-        if (stack.isEmpty() || stack.getItem() != AWItems.worksiteUpgrade) {
-            throw new RuntimeException("Cannot retrieve worksite upgrade type for: " + stack + ".  Null stack, or item, or mismatched item!");
-        }
-        return WorksiteUpgrade.values()[stack.getItemDamage()];
-    }
+	public static WorksiteUpgrade getUpgrade(ItemStack stack) {
+		if (stack.isEmpty() || stack.getItem() != AWItems.worksiteUpgrade) {
+			throw new RuntimeException("Cannot retrieve worksite upgrade type for: " + stack + ".  Null stack, or item, or mismatched item!");
+		}
+		return WorksiteUpgrade.values()[stack.getItemDamage()];
+	}
 
-    public static ItemStack getStack(WorksiteUpgrade upgrade) {
-        return upgrade == null ? ItemStack.EMPTY : new ItemStack(AWItems.worksiteUpgrade, 1, upgrade.ordinal());
-    }
+	public static ItemStack getStack(WorksiteUpgrade upgrade) {
+		return upgrade == null ? ItemStack.EMPTY : new ItemStack(AWItems.worksiteUpgrade, 1, upgrade.ordinal());
+	}
 
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-        @Nonnull ItemStack stack = player.getHeldItem(hand);
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		@Nonnull ItemStack stack = player.getHeldItem(hand);
 
-        if(world.isRemote){
-            return new ActionResult<>(EnumActionResult.SUCCESS, stack);
-        }
-        BlockPos pos = BlockTools.getBlockClickedOn(player, world, false);
-        if (pos != null) {
-            TileEntity te = world.getTileEntity(pos);
-            if (te instanceof IWorkSite) {
-                IWorkSite ws = (IWorkSite) te;
-                WorksiteUpgrade upgrade = getUpgrade(stack);
-                if (!ws.getValidUpgrades().contains(upgrade)) {
-                    return new ActionResult<>(EnumActionResult.FAIL, stack);
-                }
-                HashSet<WorksiteUpgrade> wsug = new HashSet<>(ws.getUpgrades());
-                if (wsug.contains(upgrade)) {
-                    return new ActionResult<>(EnumActionResult.FAIL, stack);
-                }
-                for (WorksiteUpgrade ug : wsug) {
-                    if (ug.exclusive(upgrade)) {
-                        return new ActionResult<>(EnumActionResult.FAIL, stack);//exclusive upgrade present, exit early
-                    }
-                }
-                for (WorksiteUpgrade ug : wsug) {
-                    if (upgrade.overrides(ug)) {
-                        InventoryTools.dropItemInWorld(player.world, getStack(ug), te.getPos());
-                        ws.removeUpgrade(ug);
-                    }
-                }
-                ws.addUpgrade(upgrade);
-                stack.shrink(1);
-            }
-        }
-        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
-    }
+		if (world.isRemote) {
+			return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+		}
+		BlockPos pos = BlockTools.getBlockClickedOn(player, world, false);
+		if (pos != null) {
+			TileEntity te = world.getTileEntity(pos);
+			if (te instanceof IWorkSite) {
+				IWorkSite ws = (IWorkSite) te;
+				WorksiteUpgrade upgrade = getUpgrade(stack);
+				if (!ws.getValidUpgrades().contains(upgrade)) {
+					return new ActionResult<>(EnumActionResult.FAIL, stack);
+				}
+				HashSet<WorksiteUpgrade> wsug = new HashSet<>(ws.getUpgrades());
+				if (wsug.contains(upgrade)) {
+					return new ActionResult<>(EnumActionResult.FAIL, stack);
+				}
+				for (WorksiteUpgrade ug : wsug) {
+					if (ug.exclusive(upgrade)) {
+						return new ActionResult<>(EnumActionResult.FAIL, stack);//exclusive upgrade present, exit early
+					}
+				}
+				for (WorksiteUpgrade ug : wsug) {
+					if (upgrade.overrides(ug)) {
+						InventoryTools.dropItemInWorld(player.world, getStack(ug), te.getPos());
+						ws.removeUpgrade(ug);
+					}
+				}
+				ws.addUpgrade(upgrade);
+				stack.shrink(1);
+			}
+		}
+		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+	}
 }

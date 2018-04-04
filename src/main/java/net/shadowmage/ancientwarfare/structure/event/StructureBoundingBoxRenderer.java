@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.structure.event;
 
 import net.minecraft.client.Minecraft;
@@ -32,30 +33,30 @@ import javax.annotation.Nonnull;
 
 public class StructureBoundingBoxRenderer {
 
-    public static StructureBoundingBoxRenderer INSTANCE = new StructureBoundingBoxRenderer();
+	public static StructureBoundingBoxRenderer INSTANCE = new StructureBoundingBoxRenderer();
 
-    private StructureBoundingBoxRenderer() {
-    }
+	private StructureBoundingBoxRenderer() {
+	}
 
-    @SubscribeEvent
-    public void handleRenderLastEvent(RenderWorldLastEvent evt) {
-        Minecraft mc = Minecraft.getMinecraft();
-        if (mc == null) {
-            return;
-        }
-        EntityPlayer player = mc.player;
-        if (player == null) {
-            return;
-        }
-        for (EnumHand hand : EnumHand.values()) {
-            @Nonnull ItemStack stack = player.getHeldItem(hand);
-            Item item;
-            if (stack.isEmpty() || (item = stack.getItem()) == null) {
-                return;
-            }
-            if (item instanceof IBoxRenderer) {
-                ((IBoxRenderer) item).renderBox(player, stack, evt.getPartialTicks());
-            }
-        }
-    }
+	@SubscribeEvent
+	public void handleRenderLastEvent(RenderWorldLastEvent evt) {
+		Minecraft mc = Minecraft.getMinecraft();
+		if (mc == null) {
+			return;
+		}
+		EntityPlayer player = mc.player;
+		if (player == null) {
+			return;
+		}
+		for (EnumHand hand : EnumHand.values()) {
+			@Nonnull ItemStack stack = player.getHeldItem(hand);
+			Item item;
+			if (stack.isEmpty() || (item = stack.getItem()) == null) {
+				return;
+			}
+			if (item instanceof IBoxRenderer) {
+				((IBoxRenderer) item).renderBox(player, stack, evt.getPartialTicks());
+			}
+		}
+	}
 }

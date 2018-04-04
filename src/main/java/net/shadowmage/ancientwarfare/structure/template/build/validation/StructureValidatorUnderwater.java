@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
 import net.minecraft.init.Blocks;
@@ -35,62 +36,62 @@ import java.util.List;
 
 public class StructureValidatorUnderwater extends StructureValidator {
 
-    int minWaterDepth;
-    int maxWaterDepth;
+	int minWaterDepth;
+	int maxWaterDepth;
 
-    public StructureValidatorUnderwater() {
-        super(StructureValidationType.UNDERWATER);
-    }
+	public StructureValidatorUnderwater() {
+		super(StructureValidationType.UNDERWATER);
+	}
 
-    @Override
-    protected void readFromLines(List<String> lines) {
-        for (String line : lines) {
-            if (startLow(line, "minwaterdepth=")) {
-                minWaterDepth = StringTools.safeParseInt("=", line);
-            } else if (startLow(line, "maxwaterdepth=")) {
-                maxWaterDepth = StringTools.safeParseInt("=", line);
-            }
-        }
-    }
+	@Override
+	protected void readFromLines(List<String> lines) {
+		for (String line : lines) {
+			if (startLow(line, "minwaterdepth=")) {
+				minWaterDepth = StringTools.safeParseInt("=", line);
+			} else if (startLow(line, "maxwaterdepth=")) {
+				maxWaterDepth = StringTools.safeParseInt("=", line);
+			}
+		}
+	}
 
-    @Override
-    protected void write(BufferedWriter out) throws IOException {
-        out.write("minWaterDepth=" + minWaterDepth);
-        out.newLine();
-        out.write("maxWaterDepth=" + maxWaterDepth);
-        out.newLine();
-    }
+	@Override
+	protected void write(BufferedWriter out) throws IOException {
+		out.write("minWaterDepth=" + minWaterDepth);
+		out.newLine();
+		out.write("maxWaterDepth=" + maxWaterDepth);
+		out.newLine();
+	}
 
-    @Override
-    public boolean shouldIncludeForSelection(World world, int x, int y, int z, EnumFacing face, StructureTemplate template) {
-        int water = 0;
-        int startY = y;
-        y = WorldStructureGenerator.getTargetY(world, x, z, true) + 1;
-        water = startY - y;
-        return !(water < minWaterDepth || water > maxWaterDepth);
-    }
+	@Override
+	public boolean shouldIncludeForSelection(World world, int x, int y, int z, EnumFacing face, StructureTemplate template) {
+		int water = 0;
+		int startY = y;
+		y = WorldStructureGenerator.getTargetY(world, x, z, true) + 1;
+		water = startY - y;
+		return !(water < minWaterDepth || water > maxWaterDepth);
+	}
 
-    @Override
-    public int getAdjustedSpawnY(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
-        return WorldStructureGenerator.getTargetY(world, x, z, true) + 1;
-    }
+	@Override
+	public int getAdjustedSpawnY(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
+		return WorldStructureGenerator.getTargetY(world, x, z, true) + 1;
+	}
 
-    @Override
-    public boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
-        int minY = getMinY(template, bb);
-        int maxY = getMaxY(template, bb);
-        return validateBorderBlocks(world, template, bb, minY, maxY, true);
-    }
+	@Override
+	public boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
+		int minY = getMinY(template, bb);
+		int maxY = getMaxY(template, bb);
+		return validateBorderBlocks(world, template, bb, minY, maxY, true);
+	}
 
-    @Override
-    public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb) {
-        prePlacementBorder(world, template, bb);
-        prePlacementUnderfill(world, template, bb);
-    }
+	@Override
+	public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb) {
+		prePlacementBorder(world, template, bb);
+		prePlacementUnderfill(world, template, bb);
+	}
 
-    @Override
-    public void handleClearAction(World world, BlockPos pos, StructureTemplate template, StructureBB bb) {
-        world.setBlockState(pos, Blocks.WATER.getDefaultState());
-    }
+	@Override
+	public void handleClearAction(World world, BlockPos pos, StructureTemplate template, StructureBB bb) {
+		world.setBlockState(pos, Blocks.WATER.getDefaultState());
+	}
 
 }

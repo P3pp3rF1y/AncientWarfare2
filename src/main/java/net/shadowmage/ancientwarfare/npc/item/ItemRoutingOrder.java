@@ -17,41 +17,40 @@ import java.util.List;
 
 public class ItemRoutingOrder extends ItemOrders {
 
-    public ItemRoutingOrder() {
-        super("routing_order");
-    }
+	public ItemRoutingOrder() {
+		super("routing_order");
+	}
 
-    @Override
-    public List<BlockPos> getPositionsForRender(ItemStack stack) {
-        List<BlockPos> positionList = new ArrayList<>();
-        RoutingOrder order = RoutingOrder.getRoutingOrder(stack);
-        if (order != null && !order.isEmpty()) {
-            for (RoutingOrder.RoutePoint e : order.getEntries()) {
-                positionList.add(e.getTarget());
-            }
-        }
-        return positionList;
-    }
+	@Override
+	public List<BlockPos> getPositionsForRender(ItemStack stack) {
+		List<BlockPos> positionList = new ArrayList<>();
+		RoutingOrder order = RoutingOrder.getRoutingOrder(stack);
+		if (order != null && !order.isEmpty()) {
+			for (RoutingOrder.RoutePoint e : order.getEntries()) {
+				positionList.add(e.getTarget());
+			}
+		}
+		return positionList;
+	}
 
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
-    {
-        if(!world.isRemote)
-            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_ROUTING_ORDER, 0, 0, 0);
-        return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
-    }
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		if (!world.isRemote)
+			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_ROUTING_ORDER, 0, 0, 0);
+		return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+	}
 
-    @Override
-    public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
-        RoutingOrder order = RoutingOrder.getRoutingOrder(stack);
-        if (order != null) {
-            RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, 5, 0);
-            if (hit != null && hit.typeOfHit == RayTraceResult.Type.BLOCK) {
-                order.addRoutePoint(hit.sideHit, hit.getBlockPos());
-                order.write(stack);
-                addMessage(player);
-            }
-        }
-    }
+	@Override
+	public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
+		RoutingOrder order = RoutingOrder.getRoutingOrder(stack);
+		if (order != null) {
+			RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, 5, 0);
+			if (hit != null && hit.typeOfHit == RayTraceResult.Type.BLOCK) {
+				order.addRoutePoint(hit.sideHit, hit.getBlockPos());
+				order.write(stack);
+				addMessage(player);
+			}
+		}
+	}
 
 }

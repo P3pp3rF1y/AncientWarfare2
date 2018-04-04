@@ -11,37 +11,37 @@ import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 
 public class ContainerSpawnerAdvancedBlock extends ContainerSpawnerAdvancedBase {
 
-    private final TileAdvancedSpawner spawner;
+	private final TileAdvancedSpawner spawner;
 
-    public ContainerSpawnerAdvancedBlock(EntityPlayer player, int x, int y, int z) {
-        super(player);
-        TileEntity te = player.world.getTileEntity(new BlockPos(x, y, z));
-        if (te instanceof TileAdvancedSpawner) {
-            spawner = (TileAdvancedSpawner) te;
-            settings = spawner.getSettings();
-        } else {
-            throw new IllegalArgumentException("Spawner not found");
-        }
-    }
+	public ContainerSpawnerAdvancedBlock(EntityPlayer player, int x, int y, int z) {
+		super(player);
+		TileEntity te = player.world.getTileEntity(new BlockPos(x, y, z));
+		if (te instanceof TileAdvancedSpawner) {
+			spawner = (TileAdvancedSpawner) te;
+			settings = spawner.getSettings();
+		} else {
+			throw new IllegalArgumentException("Spawner not found");
+		}
+	}
 
-    @Override
-    public void sendInitData() {
-        if (!spawner.getWorld().isRemote) {
-            NetworkHandler.sendToPlayer((EntityPlayerMP) player, getSettingPacket());
-        }
-    }
+	@Override
+	public void sendInitData() {
+		if (!spawner.getWorld().isRemote) {
+			NetworkHandler.sendToPlayer((EntityPlayerMP) player, getSettingPacket());
+		}
+	}
 
-    @Override
-    public void handlePacketData(NBTTagCompound tag) {
-        if (tag.hasKey("spawnerSettings")) {
-            if (spawner.getWorld().isRemote) {
-                settings.readFromNBT(tag.getCompoundTag("spawnerSettings"));
-                this.refreshGui();
-            } else {
-                spawner.getSettings().readFromNBT(tag.getCompoundTag("spawnerSettings"));
-                spawner.markDirty();
-                BlockTools.notifyBlockUpdate(spawner);
-            }
-        }
-    }
+	@Override
+	public void handlePacketData(NBTTagCompound tag) {
+		if (tag.hasKey("spawnerSettings")) {
+			if (spawner.getWorld().isRemote) {
+				settings.readFromNBT(tag.getCompoundTag("spawnerSettings"));
+				this.refreshGui();
+			} else {
+				spawner.getSettings().readFromNBT(tag.getCompoundTag("spawnerSettings"));
+				spawner.markDirty();
+				BlockTools.notifyBlockUpdate(spawner);
+			}
+		}
+	}
 }

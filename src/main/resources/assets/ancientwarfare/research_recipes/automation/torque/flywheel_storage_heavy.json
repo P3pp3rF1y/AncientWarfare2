@@ -1,21 +1,21 @@
 {
-  "type": "ancientwarfare:research_recipe",
-  "research": "mass_production",
-  "pattern": [
-    "GPG",
-    "PPP",
-    "GGG"
-  ],
-  "key": {
-    "P": {
-      "item": "#INGOTSTEEL"
+    "type": "ancientwarfare:research_recipe",
+    "research": "mass_production",
+    "pattern": [
+        "GPG",
+        "PPP",
+        "GGG"
+    ],
+    "key": {
+        "P": {
+            "item": "#INGOTSTEEL"
+        },
+        "G": {
+            "item": "minecraft:glass_pane"
+        }
     },
-    "G": {
-      "item": "minecraft:glass_pane"
+    "result": {
+        "item": "ancientwarfareautomation:flywheel_storage",
+        "data": 2
     }
-  },
-  "result": {
-    "item": "ancientwarfareautomation:flywheel_storage",
-    "data": 2
-  }
 }

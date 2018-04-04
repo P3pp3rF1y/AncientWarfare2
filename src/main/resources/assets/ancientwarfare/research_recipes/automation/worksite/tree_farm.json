@@ -1,26 +1,26 @@
 {
-  "type": "ancientwarfare:research_recipe",
-  "research": "farming",
-  "pattern": [
-    "___",
-    "GWG",
-    "_C_"
-  ],
-  "key": {
-    "C": {
-      "item": "minecraft:chest"
+    "type": "ancientwarfare:research_recipe",
+    "research": "farming",
+    "pattern": [
+        "___",
+        "GWG",
+        "_C_"
+    ],
+    "key": {
+        "C": {
+            "item": "minecraft:chest"
+        },
+        "W": {
+            "item": "minecraft:iron_axe"
+        },
+        "G": {
+            "item": "#GEARWOOD"
+        },
+        "_": {
+            "item": "#PLANKWOOD"
+        }
     },
-    "W": {
-      "item": "minecraft:iron_axe"
-    },
-    "G": {
-      "item": "#GEARWOOD"
-    },
-    "_": {
-      "item": "#PLANKWOOD"
+    "result": {
+        "item": "ancientwarfareautomation:tree_farm"
     }
-  },
-  "result": {
-    "item": "ancientwarfareautomation:tree_farm"
-  }
 }

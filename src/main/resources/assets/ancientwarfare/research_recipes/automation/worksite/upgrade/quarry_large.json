@@ -1,24 +1,24 @@
 {
-  "type": "ancientwarfare:research_recipe",
-  "research": "machinery",
-  "pattern": [
-    "PPP",
-    "FIF",
-    "FIF"
-  ],
-  "key": {
-    "P": {
-      "item": "#PLANKWOOD"
+    "type": "ancientwarfare:research_recipe",
+    "research": "machinery",
+    "pattern": [
+        "PPP",
+        "FIF",
+        "FIF"
+    ],
+    "key": {
+        "P": {
+            "item": "#PLANKWOOD"
+        },
+        "F": {
+            "item": "minecraft:fence"
+        },
+        "I": {
+            "item": "#INGOTIRON"
+        }
     },
-    "F": {
-      "item": "minecraft:fence"
-    },
-    "I": {
-      "item": "#INGOTIRON"
+    "result": {
+        "item": "ancientwarfareautomation:worksite_upgrade",
+        "data": 3
     }
-  },
-  "result": {
-    "item": "ancientwarfareautomation:worksite_upgrade",
-    "data": 3
-  }
 }

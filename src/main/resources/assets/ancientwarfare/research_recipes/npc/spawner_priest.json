@@ -1,24 +1,24 @@
 {
-  "type": "ancientwarfare:research_recipe",
-  "research": "leadership",
-  "pattern": [
-    "GF",
-    "GB"
-  ],
-  "key": {
-    "B": {
-      "item": "minecraft:book"
+    "type": "ancientwarfare:research_recipe",
+    "research": "leadership",
+    "pattern": [
+        "GF",
+        "GB"
+    ],
+    "key": {
+        "B": {
+            "item": "minecraft:book"
+        },
+        "F": {
+            "item": "#FOODBUNDLE"
+        },
+        "G": {
+            "item": "#INGOTGOLD"
+        }
     },
-    "F": {
-      "item": "#FOODBUNDLE"
-    },
-    "G": {
-      "item": "#INGOTGOLD"
+    "result": {
+        "type": "minecraft:item_nbt",
+        "item": "ancientwarfarenpc:npc_spawner",
+        "nbt": "{npcSubtype:\"\",npcType:\"priest\"}"
     }
-  },
-  "result": {
-    "type": "minecraft:item_nbt",
-    "item": "ancientwarfarenpc:npc_spawner",
-    "nbt": "{npcSubtype:\"\",npcType:\"priest\"}"
-  }
 }

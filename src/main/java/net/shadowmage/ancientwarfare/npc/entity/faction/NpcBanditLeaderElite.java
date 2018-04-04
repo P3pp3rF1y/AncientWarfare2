@@ -4,13 +4,13 @@ import net.minecraft.world.World;
 
 public class NpcBanditLeaderElite extends NpcFactionLeader {
 
-    public NpcBanditLeaderElite(World par1World) {
-        super(par1World);
-    }
+	public NpcBanditLeaderElite(World par1World) {
+		super(par1World);
+	}
 
-    @Override
-    public String getNpcType() {
-        return "bandit.leader.elite";
-    }
+	@Override
+	public String getNpcType() {
+		return "bandit.leader.elite";
+	}
 
 }

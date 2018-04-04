@@ -23,6 +23,7 @@ public class StructureTemplateManagerClient {
 
     private HashMap<String, ResourceLocation> clientTemplateImages = new HashMap<>();
     private HashMap<String, StructureTemplateClient> clientTemplates = new HashMap<>();
+
     private StructureTemplateManagerClient() {
     }
 
@@ -85,7 +86,6 @@ public class StructureTemplateManagerClient {
         return clientTemplateImages.get(templateName + ".jpg");
     }
 
-
     private void loadTemplateImage(String imageName) {
         String pathBase = AWCoreStatics.configPathForFiles + "structures/image_cache/";
         File file = new File(pathBase + imageName);
@@ -106,7 +106,8 @@ public class StructureTemplateManagerClient {
                 } else {
                     AWLog.logError("Error parsing image: " + file.getName() + " image was not of correct size. Found: " + image.getWidth() + "x" + image.getHeight() + "  Needed: " + AWStructureStatics.structureImageWidth + "x" + AWStructureStatics.structureImageHeight);
                 }
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -145,7 +146,8 @@ public class StructureTemplateManagerClient {
         try {
             file = new File(pathBase + imageName);
             ImageIO.write(image, "jpg", file);
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             e.printStackTrace();
         }
         loadTemplateImage(imageName);

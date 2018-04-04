@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.client.Minecraft;
@@ -31,75 +32,77 @@ import net.shadowmage.ancientwarfare.core.util.SongPlayData;
 
 import java.util.Iterator;
 
-public class GuiSoundSelect extends GuiContainerBase{
-    private final GuiContainerBase parent;
-    private final SongPlayData.SongEntry songEntry;
-    private CompositeScrolled area;
-    private Text selectionLabel;
-    protected GuiSoundSelect(GuiContainerBase parent, SongPlayData.SongEntry entry) {
-        super(parent.getContainer());
-        this.parent = parent;
-        this.songEntry = entry;
-    }
+public class GuiSoundSelect extends GuiContainerBase {
+	private final GuiContainerBase parent;
+	private final SongPlayData.SongEntry songEntry;
+	private CompositeScrolled area;
+	private Text selectionLabel;
 
-    @Override
-    public void initElements() {
-        Button button = new Button(256 - 8 - 55, 8, 55, 12, "guistrings.done") {
-            @Override
-            protected void onPressed() {
-                Minecraft.getMinecraft().displayGuiScreen(parent);
-                parent.refreshGui();
-            }
-        };
-        addGuiElement(button);
-        selectionLabel = new Text(8, 30, 240, songEntry.name(), this) {
-            @Override
-            protected void handleKeyInput(int keyCode, char ch) {
-                String old = getText();
-                super.handleKeyInput(keyCode, ch);
-                String text = getText();
-                if (!text.equals(old)) {
-                    refreshGui();
-                }
-            }
-        };
-        addGuiElement(selectionLabel);
-        area = new CompositeScrolled(this, 0, 40, 256, 200);
-        addGuiElement(area);
-    }
+	protected GuiSoundSelect(GuiContainerBase parent, SongPlayData.SongEntry entry) {
+		super(parent.getContainer());
+		this.parent = parent;
+		this.songEntry = entry;
+	}
 
-    @Override
-    public void setupElements() {
-        area.clearElements();
-        Iterator<ResourceLocation> itr;
-        try {
-            itr = ForgeRegistries.SOUND_EVENTS.getKeys().stream().filter(input -> input.toString().contains(selectionLabel.getText())).iterator();
-        }catch (Exception e){
-            return;
-        }
+	@Override
+	public void initElements() {
+		Button button = new Button(256 - 8 - 55, 8, 55, 12, "guistrings.done") {
+			@Override
+			protected void onPressed() {
+				Minecraft.getMinecraft().displayGuiScreen(parent);
+				parent.refreshGui();
+			}
+		};
+		addGuiElement(button);
+		selectionLabel = new Text(8, 30, 240, songEntry.name(), this) {
+			@Override
+			protected void handleKeyInput(int keyCode, char ch) {
+				String old = getText();
+				super.handleKeyInput(keyCode, ch);
+				String text = getText();
+				if (!text.equals(old)) {
+					refreshGui();
+				}
+			}
+		};
+		addGuiElement(selectionLabel);
+		area = new CompositeScrolled(this, 0, 40, 256, 200);
+		addGuiElement(area);
+	}
 
-        int totalHeight = 8;
-        Button button;
-        while (itr.hasNext()) {
-            final ResourceLocation regisryName = itr.next();
-            final String name = regisryName.toString();
-            button = new Button(8, totalHeight, 256 - 8 - 16, 12, name) {
-                @Override
-                protected void onPressed() {
-                    songEntry.setSound(ForgeRegistries.SOUND_EVENTS.getValue(regisryName));
-                    selectionLabel.setText(name);
-                    refreshGui();
-                }
-            };
-            area.addGuiElement(button);
-            totalHeight += 12;
-        }
-        area.setAreaSize(totalHeight);
-    }
+	@Override
+	public void setupElements() {
+		area.clearElements();
+		Iterator<ResourceLocation> itr;
+		try {
+			itr = ForgeRegistries.SOUND_EVENTS.getKeys().stream().filter(input -> input.toString().contains(selectionLabel.getText())).iterator();
+		}
+		catch (Exception e) {
+			return;
+		}
 
-    @Override
-    protected boolean onGuiCloseRequested() {
-        Minecraft.getMinecraft().displayGuiScreen(parent);
-        return false;
-    }
+		int totalHeight = 8;
+		Button button;
+		while (itr.hasNext()) {
+			final ResourceLocation regisryName = itr.next();
+			final String name = regisryName.toString();
+			button = new Button(8, totalHeight, 256 - 8 - 16, 12, name) {
+				@Override
+				protected void onPressed() {
+					songEntry.setSound(ForgeRegistries.SOUND_EVENTS.getValue(regisryName));
+					selectionLabel.setText(name);
+					refreshGui();
+				}
+			};
+			area.addGuiElement(button);
+			totalHeight += 12;
+		}
+		area.setAreaSize(totalHeight);
+	}
+
+	@Override
+	protected boolean onGuiCloseRequested() {
+		Minecraft.getMinecraft().displayGuiScreen(parent);
+		return false;
+	}
 }

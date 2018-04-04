@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
 import net.minecraft.block.Block;
@@ -71,7 +72,7 @@ public abstract class StructureValidator {
     public final StructureValidationType validationType;
 
     private HashMap<String, StructureValidationProperty> properties = new HashMap<>();
-//private boolean survival;
+    //private boolean survival;
 
     protected StructureValidator(StructureValidationType validationType) {
         this.validationType = validationType;
@@ -82,9 +83,9 @@ public abstract class StructureValidator {
 
     /*
      * should be called from validator setup GUI when swapping between validator types,
-     * to transfer any comparable settings from the old one to the new one.<br>
-     * This method should be called on the NEW StructureValidator.
-     */
+	 * to transfer any comparable settings from the old one to the new one.<br>
+	 * This method should be called on the NEW StructureValidator.
+	 */
     public void inheritPropertiesFrom(StructureValidator validator) {
         StructureValidationProperty prop;
         for (String name : this.properties.keySet()) {
@@ -101,11 +102,10 @@ public abstract class StructureValidator {
     protected void write(BufferedWriter writer) throws IOException {
     }
 
-
     /*
      * helper method to read data from tag -- to be overriden by
-     * child-classes that have additional validation data set through gui
-     */
+	 * child-classes that have additional validation data set through gui
+	 */
     public final void readFromNBT(NBTTagCompound tag) {
         for (StructureValidationProperty prop : this.properties.values()) {
             prop.readFromNBT(tag);
@@ -123,50 +123,50 @@ public abstract class StructureValidator {
         /*
          * TODO
          */
-//  this.validTargetBlocks.addAll(WorldStructureGenerator.defaultTargetBlocks); 
-//  int size = (template.ySize-template.yOffset)/3;
-//  this.borderSize = size;
-//  this.maxLeveling = template.ySize-template.yOffset;
-//  this.maxFill = size;
+        //  this.validTargetBlocks.addAll(WorldStructureGenerator.defaultTargetBlocks);
+        //  int size = (template.ySize-template.yOffset)/3;
+        //  this.borderSize = size;
+        //  this.maxLeveling = template.ySize-template.yOffset;
+        //  this.maxFill = size;
     }
 
     /*
      * should this template be included for selection for generation? should only validate block placement, most other stuff has been checked (dimension/biome/cluster value/etc)
-     */
+	 */
     public abstract boolean shouldIncludeForSelection(World world, int x, int y, int z, EnumFacing face, StructureTemplate template);
 
     /*
      * if template should be included for selection, get the adjusted spawn Y level from the input block position.  this adjustedY will be used for validation and generation if template is selected and validated
-     */
+	 */
     public int getAdjustedSpawnY(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
         return y;
     }
 
     /*
      * if selected for placement, validate that placement. return false if placement is invalid
-     */
+	 */
     public abstract boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb);
 
     /*
      * after validation, do any necessary clearing or leveling/etc
-     */
+	 */
     public abstract void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb);
 
-    public void postGeneration(World world, BlockPos origin, StructureBB bb){
+    public void postGeneration(World world, BlockPos origin, StructureBB bb) {
 
     }
 
     /*
      * called from StructureBuilder when constructed with world-gen settings whenever a '0' rule is detected
-     * in the template
-     * implementations should fill the input x,y,z with whatever block is an appropriate 'fill' for that
-     * validation type -- e.g. air or water
-     */
-    public void handleClearAction(World world, BlockPos pos, StructureTemplate template, StructureBB bb){
+	 * in the template
+	 * implementations should fill the input x,y,z with whatever block is an appropriate 'fill' for that
+	 * validation type -- e.g. air or water
+	 */
+    public void handleClearAction(World world, BlockPos pos, StructureTemplate template, StructureBB bb) {
         world.setBlockToAir(pos);
     }
 
-    public static boolean startLow(String text, String test){
+    public static boolean startLow(String text, String test) {
         return text.toLowerCase(Locale.ENGLISH).startsWith(test);
     }
 
@@ -444,15 +444,15 @@ public abstract class StructureValidator {
 
     /*
      * validates both top block height and block type for the input position and settings
-     */
+	 */
     protected boolean validateBlockHeightAndType(World world, int x, int z, int min, int max, boolean skipWater, Set<String> validBlocks) {
         return validateBlockType(world, x, validateBlockHeight(world, x, z, min, max, skipWater), z, validBlocks);
     }
 
     /*
      * validates top block height at X, Z is >=  min and <= max (inclusive)
-     * returns topFoundY or -1 if not within range
-     */
+	 * returns topFoundY or -1 if not within range
+	 */
     protected int validateBlockHeight(World world, int x, int z, int minimumAcceptableY, int maximumAcceptableY, boolean skipWater) {
         int topFilledY = WorldStructureGenerator.getTargetY(world, x, z, skipWater);
         if (topFilledY < minimumAcceptableY || topFilledY > maximumAcceptableY) {
@@ -464,7 +464,7 @@ public abstract class StructureValidator {
 
     /*
      * validates the target block at x,y,z is one of the input valid blocks
-     */
+	 */
     protected boolean validateBlockType(World world, int x, int y, int z, Set<String> validBlocks) {
         if (y < 0 || y >= world.getHeight()) {
             return false;
@@ -483,8 +483,8 @@ public abstract class StructureValidator {
 
     /*
      * return the lowest acceptable Y level for a filled block
-     * for the input template and BB
-     */
+	 * for the input template and BB
+	 */
     protected int getMinY(StructureTemplate template, StructureBB bb) {
         int minY = bb.min.getY() - getMaxFill() - 1;
         if (getBorderSize() > 0) {
@@ -495,8 +495,8 @@ public abstract class StructureValidator {
 
     /*
      * return the highest acceptable Y level for a filled block
-     * for the input template and BB
-     */
+	 * for the input template and BB
+	 */
     protected int getMaxY(StructureTemplate template, StructureBB bb) {
         return bb.min.getY() + template.yOffset + getMaxLeveling();
     }
@@ -526,7 +526,7 @@ public abstract class StructureValidator {
         for (int y = bb.min.getY() + template.yOffset + step; y <= topFilledY; y++) {
             handleClearAction(world, new BlockPos(x, y, z), template, bb);
         }
-        Biome biome = world.getBiome(new BlockPos(x, 1,  z));
+        Biome biome = world.getBiome(new BlockPos(x, 1, z));
         IBlockState fillBlock = Blocks.GRASS.getDefaultState();
         if (biome != null && biome.topBlock != null) {
             fillBlock = biome.topBlock;

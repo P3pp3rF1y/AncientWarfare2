@@ -4,13 +4,13 @@ import net.minecraft.world.World;
 
 public class NpcVikingMountedSoldier extends NpcFactionMountedSoldier {
 
-    public NpcVikingMountedSoldier(World par1World) {
-        super(par1World);
-    }
+	public NpcVikingMountedSoldier(World par1World) {
+		super(par1World);
+	}
 
-    @Override
-    public String getNpcType() {
-        return "viking.cavalry";
-    }
+	@Override
+	public String getNpcType() {
+		return "viking.cavalry";
+	}
 
 }

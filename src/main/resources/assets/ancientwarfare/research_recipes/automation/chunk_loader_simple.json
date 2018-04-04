@@ -1,21 +1,21 @@
 {
-  "type": "ancientwarfare:research_recipe",
-  "research": "mathematics",
-  "pattern": [
-    "BBB",
-    "BEB",
-    "BBB"
-  ],
-  "key": {
-    "B": {
-      "item": "minecraft:stonebrick",
-      "data": 0
+    "type": "ancientwarfare:research_recipe",
+    "research": "mathematics",
+    "pattern": [
+        "BBB",
+        "BEB",
+        "BBB"
+    ],
+    "key": {
+        "B": {
+            "item": "minecraft:stonebrick",
+            "data": 0
+        },
+        "E": {
+            "item": "minecraft:ender_pearl"
+        }
     },
-    "E": {
-      "item": "minecraft:ender_pearl"
+    "result": {
+        "item": "ancientwarfareautomation:chunk_loader_simple"
     }
-  },
-  "result": {
-    "item": "ancientwarfareautomation:chunk_loader_simple"
-  }
 }

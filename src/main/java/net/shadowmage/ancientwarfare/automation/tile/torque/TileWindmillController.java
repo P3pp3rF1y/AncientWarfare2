@@ -9,39 +9,39 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 
 public class TileWindmillController extends TileTorqueSingleCell {
 
-    public TileWindmillController() {
-        double max = AWAutomationStatics.low_transfer_max;
-        torqueCell = new TorqueCell(max, max, max, AWAutomationStatics.low_efficiency_factor);
-    }
+	public TileWindmillController() {
+		double max = AWAutomationStatics.low_transfer_max;
+		torqueCell = new TorqueCell(max, max, max, AWAutomationStatics.low_efficiency_factor);
+	}
 
-    @Override
-    public void update() {
-        super.update();
-        if (!world.isRemote) {
-            TileWindmillBlade blade = getControlledBlade();
-            if (blade != null && blade.getEnergy() > 0) {
-                double d = blade.getEnergy();
-                blade.setEnergy(0);
-                torqueCell.setEnergy(torqueCell.getEnergy() + d);
-            }
-        }
-    }
+	@Override
+	public void update() {
+		super.update();
+		if (!world.isRemote) {
+			TileWindmillBlade blade = getControlledBlade();
+			if (blade != null && blade.getEnergy() > 0) {
+				double d = blade.getEnergy();
+				blade.setEnergy(0);
+				torqueCell.setEnergy(torqueCell.getEnergy() + d);
+			}
+		}
+	}
 
-    private TileWindmillBlade getControlledBlade() {
-        TileEntity te;
-        BlockPos behind = pos.offset(getPrimaryFacing().getOpposite());
-        if (world.isBlockLoaded(behind) && (te = world.getTileEntity(behind)) instanceof TileWindmillBlade) {
-            TileWindmillBlade blade = (TileWindmillBlade) te;
-            if (blade.isControl()) {
-                return blade;
-            }
-        }
-        return null;
-    }
+	private TileWindmillBlade getControlledBlade() {
+		TileEntity te;
+		BlockPos behind = pos.offset(getPrimaryFacing().getOpposite());
+		if (world.isBlockLoaded(behind) && (te = world.getTileEntity(behind)) instanceof TileWindmillBlade) {
+			TileWindmillBlade blade = (TileWindmillBlade) te;
+			if (blade.isControl()) {
+				return blade;
+			}
+		}
+		return null;
+	}
 
-    @Override
-    public boolean canInputTorque(EnumFacing from) {
-        return false;
-    }
+	@Override
+	public boolean canInputTorque(EnumFacing from) {
+		return false;
+	}
 
 }

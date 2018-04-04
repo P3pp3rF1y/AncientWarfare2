@@ -1,23 +1,23 @@
 {
-  "type": "ancientwarfare:research_recipe",
-  "research": "trade",
-  "pattern": [
-    "D",
-    "P",
-    "W"
-  ],
-  "key": {
-    "P": {
-      "item": "minecraft:paper"
+    "type": "ancientwarfare:research_recipe",
+    "research": "trade",
+    "pattern": [
+        "D",
+        "P",
+        "W"
+    ],
+    "key": {
+        "P": {
+            "item": "minecraft:paper"
+        },
+        "D": {
+            "item": "#DYELIGHTGRAY"
+        },
+        "W": {
+            "item": "#PLANKWOOD"
+        }
     },
-    "D": {
-      "item": "#DYELIGHTGRAY"
-    },
-    "W": {
-      "item": "#PLANKWOOD"
+    "result": {
+        "item": "ancientwarfarenpc:routing_order"
     }
-  },
-  "result": {
-    "item": "ancientwarfarenpc:routing_order"
-  }
 }

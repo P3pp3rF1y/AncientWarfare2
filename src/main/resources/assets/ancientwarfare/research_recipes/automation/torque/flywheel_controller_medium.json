@@ -1,21 +1,21 @@
 {
-  "type": "ancientwarfare:research_recipe",
-  "research": "theory_of_gravity",
-  "pattern": [
-    "IGI",
-    "III",
-    "IGI"
-  ],
-  "key": {
-    "G": {
-      "item": "#GEARIRON"
+    "type": "ancientwarfare:research_recipe",
+    "research": "theory_of_gravity",
+    "pattern": [
+        "IGI",
+        "III",
+        "IGI"
+    ],
+    "key": {
+        "G": {
+            "item": "#GEARIRON"
+        },
+        "I": {
+            "item": "#INGOTIRON"
+        }
     },
-    "I": {
-      "item": "#INGOTIRON"
+    "result": {
+        "item": "ancientwarfareautomation:flywheel_controller",
+        "data": 1
     }
-  },
-  "result": {
-    "item": "ancientwarfareautomation:flywheel_controller",
-    "data": 1
-  }
 }

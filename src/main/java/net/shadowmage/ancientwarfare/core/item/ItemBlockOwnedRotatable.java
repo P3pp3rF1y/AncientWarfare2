@@ -16,24 +16,24 @@ import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.
 
 public class ItemBlockOwnedRotatable extends ItemBlockBase {
 
-    IRotatableBlock rotatable;
+	IRotatableBlock rotatable;
 
-    public <T extends Block & IRotatableBlock> ItemBlockOwnedRotatable(T block) {
-        super(block);
-        rotatable = block;
-    }
+	public <T extends Block & IRotatableBlock> ItemBlockOwnedRotatable(T block) {
+		super(block);
+		rotatable = block;
+	}
 
-    @Override
-    public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
-        EnumFacing facing = BlockRotationHandler.getFaceForPlacement(player, rotatable, side);
-        newState = newState.withProperty(FACING, facing);
-        boolean val = super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, newState);
-        if (val) {
-            TileEntity te = player.world.getTileEntity(pos);
-            if (te instanceof IOwnable) {
-                ((IOwnable) te).setOwner(player);
-            }
-        }
-        return val;
-    }
+	@Override
+	public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
+		EnumFacing facing = BlockRotationHandler.getFaceForPlacement(player, rotatable, side);
+		newState = newState.withProperty(FACING, facing);
+		boolean val = super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, newState);
+		if (val) {
+			TileEntity te = player.world.getTileEntity(pos);
+			if (te instanceof IOwnable) {
+				((IOwnable) te).setOwner(player);
+			}
+		}
+		return val;
+	}
 }

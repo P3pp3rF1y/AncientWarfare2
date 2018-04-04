@@ -11,13 +11,13 @@ import net.minecraft.world.World;
  * This interface has to be implemented in the Block class of your crops
  */
 public interface IAncientWarfareFarmable extends IGrowable {
-    /*
-     * Checks if the crop is mature and can be harvested by the crop farm
-     * @param world
-     * @param pos
-     * @return true if the crop is ready to be harvested, false if not
-     */
-    boolean isMature(World world, BlockPos pos);
+	/*
+	 * Checks if the crop is mature and can be harvested by the crop farm
+	 * @param world
+	 * @param pos
+	 * @return true if the crop is ready to be harvested, false if not
+	 */
+	boolean isMature(World world, BlockPos pos);
 
 	/*
 	 * This is called to get the list of drops that would be dropped from crop.

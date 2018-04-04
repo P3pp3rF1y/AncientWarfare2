@@ -13,44 +13,44 @@ import java.util.Set;
 
 public class ClientProxyBase extends CommonProxyBase {
 
-    private Set<IClientRegistrar> clientRegistrars = Sets.newHashSet();
+	private Set<IClientRegistrar> clientRegistrars = Sets.newHashSet();
 
-    public ClientProxyBase() {
-        MinecraftForge.EVENT_BUS.register(this);
-    }
+	public ClientProxyBase() {
+		MinecraftForge.EVENT_BUS.register(this);
+	}
 
-    @SubscribeEvent
-    public void registerModels(ModelRegistryEvent event) {
-        for(IClientRegistrar registrar : clientRegistrars) {
-            registrar.registerClient();
-        }
-    }
+	@SubscribeEvent
+	public void registerModels(ModelRegistryEvent event) {
+		for (IClientRegistrar registrar : clientRegistrars) {
+			registrar.registerClient();
+		}
+	}
 
-    @Override
-    public void addClientRegistrar(IClientRegistrar registrar) {
-        clientRegistrars.add(registrar);
-    }
+	@Override
+	public void addClientRegistrar(IClientRegistrar registrar) {
+		clientRegistrars.add(registrar);
+	}
 
-    @Override
-    public void preInit() {
-        super.preInit();
+	@Override
+	public void preInit() {
+		super.preInit();
 
-    }
+	}
 
-    @Override
-    public void init() {
-        super.init();
+	@Override
+	public void init() {
+		super.init();
 
-    }
+	}
 
-    @Override
-    public final EntityPlayer getClientPlayer() {
-        return Minecraft.getMinecraft().player;
-    }
+	@Override
+	public final EntityPlayer getClientPlayer() {
+		return Minecraft.getMinecraft().player;
+	}
 
-    @Override
-    public final boolean isKeyPressed(String keyName) {
-        Keybind kb = InputHandler.instance.getKeybind(keyName);
-        return kb != null && kb.isPressed();
-    }
+	@Override
+	public final boolean isKeyPressed(String keyName) {
+		Keybind kb = InputHandler.instance.getKeybind(keyName);
+		return kb != null && kb.isPressed();
+	}
 }

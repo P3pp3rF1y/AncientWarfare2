@@ -27,7 +27,6 @@ import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelChestCart;
 
-
 public class RenderChestCart extends RenderVehicleBase {
 	ModelChestCart model = new ModelChestCart();
 

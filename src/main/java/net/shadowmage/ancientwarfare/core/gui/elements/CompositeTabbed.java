@@ -22,156 +22,156 @@ import java.util.List;
  */
 public class CompositeTabbed extends Composite implements ITabCallback {
 
-    protected HashMap<Tab, List<GuiElement>> tabElements = new HashMap<>();
-    protected HashMap<String, Tab> tabs = new HashMap<>();
-    protected Tab currentTab = null;
+	protected HashMap<Tab, List<GuiElement>> tabElements = new HashMap<>();
+	protected HashMap<String, Tab> tabs = new HashMap<>();
+	protected Tab currentTab = null;
 
-    protected boolean hasTopTabs = false;
-    protected boolean hasBottomTabs = false;
+	protected boolean hasTopTabs = false;
+	protected boolean hasBottomTabs = false;
 
-    public CompositeTabbed(GuiContainerBase gui, int topLeftX, int topLeftY, int width, int height) {
-        super(gui, topLeftX, topLeftY, width, height);
-    }
+	public CompositeTabbed(GuiContainerBase gui, int topLeftX, int topLeftY, int width, int height) {
+		super(gui, topLeftX, topLeftY, width, height);
+	}
 
-    @Override
-    protected void addDefaultListeners() {
-        this.addNewListener(new Listener(Listener.ALL_EVENTS) {
-            @Override
-            public boolean onEvent(GuiElement widget, ActivationEvent evt) {
-                if ((evt.type & Listener.KEY_TYPES) != 0) {
-                    if (currentTab != null) {
-                        for (GuiElement element : tabElements.get(currentTab)) {
-                            element.handleKeyboardInput(evt);
-                        }
-                    }
-                } else if ((evt.type & Listener.MOUSE_TYPES) != 0) {
-                    if (isMouseOverElement(evt.mx, evt.my)) {
-                        for (GuiElement element : tabElements.get(currentTab)) {
-                            element.handleMouseInput(evt);
-                        }
-                        for (GuiElement element : elements) {
-                            element.handleMouseInput(evt);
-                        }
-                    } else if (evt.type == Listener.MOUSE_UP) {
-                        for (GuiElement element : tabElements.get(currentTab)) {
-                            element.setSelected(false);
-                        }
-                    }
-                }
-                return true;
-            }
-        });
-    }
+	@Override
+	protected void addDefaultListeners() {
+		this.addNewListener(new Listener(Listener.ALL_EVENTS) {
+			@Override
+			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
+				if ((evt.type & Listener.KEY_TYPES) != 0) {
+					if (currentTab != null) {
+						for (GuiElement element : tabElements.get(currentTab)) {
+							element.handleKeyboardInput(evt);
+						}
+					}
+				} else if ((evt.type & Listener.MOUSE_TYPES) != 0) {
+					if (isMouseOverElement(evt.mx, evt.my)) {
+						for (GuiElement element : tabElements.get(currentTab)) {
+							element.handleMouseInput(evt);
+						}
+						for (GuiElement element : elements) {
+							element.handleMouseInput(evt);
+						}
+					} else if (evt.type == Listener.MOUSE_UP) {
+						for (GuiElement element : tabElements.get(currentTab)) {
+							element.setSelected(false);
+						}
+					}
+				}
+				return true;
+			}
+		});
+	}
 
-    public void addTab(String tabName, boolean top) {
-        int w = 3;//offset by starting border
-        for (Tab t : tabs.values()) {
-            if (t.top == top) {
-                w += t.width;
-            }
-        }
-        Tab t = new Tab(w, top ? 0 : height - 16, top, tabName, this);
-        this.tabs.put(tabName, t);
-        this.elements.add(t);
-        this.tabElements.put(t, new ArrayList<>());
-        if (currentTab == null) {
-            this.onTabSelected(t);
-        }
-        if (top) {
-            this.hasTopTabs = true;
-        } else {
-            this.hasBottomTabs = true;
-        }
-    }
+	public void addTab(String tabName, boolean top) {
+		int w = 3;//offset by starting border
+		for (Tab t : tabs.values()) {
+			if (t.top == top) {
+				w += t.width;
+			}
+		}
+		Tab t = new Tab(w, top ? 0 : height - 16, top, tabName, this);
+		this.tabs.put(tabName, t);
+		this.elements.add(t);
+		this.tabElements.put(t, new ArrayList<>());
+		if (currentTab == null) {
+			this.onTabSelected(t);
+		}
+		if (top) {
+			this.hasTopTabs = true;
+		} else {
+			this.hasBottomTabs = true;
+		}
+	}
 
-    @Override
-    public void addGuiElement(GuiElement element) {
-        if (this.currentTab != null) {
-            this.tabElements.get(currentTab).add(element);
-        } else {
-            throw new IllegalArgumentException("cannot add elements to a null tab, you must create at least one tab first");
-        }
-    }
+	@Override
+	public void addGuiElement(GuiElement element) {
+		if (this.currentTab != null) {
+			this.tabElements.get(currentTab).add(element);
+		} else {
+			throw new IllegalArgumentException("cannot add elements to a null tab, you must create at least one tab first");
+		}
+	}
 
-    public void addGuiElement(String tabName, GuiElement element) {
-        if (!tabs.containsKey(tabName)) {
-            throw new IllegalArgumentException("cannot add elements to a null tab, you must create the tab first");
-        }
-        this.tabElements.get(tabs.get(tabName)).add(element);
-    }
+	public void addGuiElement(String tabName, GuiElement element) {
+		if (!tabs.containsKey(tabName)) {
+			throw new IllegalArgumentException("cannot add elements to a null tab, you must create the tab first");
+		}
+		this.tabElements.get(tabs.get(tabName)).add(element);
+	}
 
-    public void removeGuiElement(String tabName, GuiElement element) {
-        if (!tabs.containsKey(tabName)) {
-            throw new IllegalArgumentException("cannot remove elements from a null tab, you must create the tab first");
-        }
-        this.tabElements.get(tabs.get(tabName)).remove(element);
-    }
+	public void removeGuiElement(String tabName, GuiElement element) {
+		if (!tabs.containsKey(tabName)) {
+			throw new IllegalArgumentException("cannot remove elements from a null tab, you must create the tab first");
+		}
+		this.tabElements.get(tabs.get(tabName)).remove(element);
+	}
 
-    public void removeTab(String tabName) {
-        Tab tab = this.tabs.get(tabName);
-        if (tab == null) {
-            return;
-        }
-        tabs.remove(tabName);
-        tabElements.remove(tab);
-        if (tab == this.currentTab) {
-            if (tabs.isEmpty()) {
-                this.currentTab = null;
-            } else {
-                this.currentTab = tabs.values().iterator().next();
-            }
-        }
-    }
+	public void removeTab(String tabName) {
+		Tab tab = this.tabs.get(tabName);
+		if (tab == null) {
+			return;
+		}
+		tabs.remove(tabName);
+		tabElements.remove(tab);
+		if (tab == this.currentTab) {
+			if (tabs.isEmpty()) {
+				this.currentTab = null;
+			} else {
+				this.currentTab = tabs.values().iterator().next();
+			}
+		}
+	}
 
-    public void setActiveTab(String tabName) {
-        this.onTabSelected(tabs.get(tabName));
-    }
+	public void setActiveTab(String tabName) {
+		this.onTabSelected(tabs.get(tabName));
+	}
 
-    @Override
-    public void onTabSelected(Tab tab) {
-        this.currentTab = tab;
-        for (GuiElement t : this.tabs.values()) {
-            t.setSelected(false);
-        }
-        tab.setSelected(true);
-        for (GuiElement element : this.tabElements.get(currentTab)) {
-            element.updateGuiPosition(0, hasTopTabs ? 13 : 0);
-        }
-    }
+	@Override
+	public void onTabSelected(Tab tab) {
+		this.currentTab = tab;
+		for (GuiElement t : this.tabs.values()) {
+			t.setSelected(false);
+		}
+		tab.setSelected(true);
+		for (GuiElement element : this.tabElements.get(currentTab)) {
+			element.updateGuiPosition(0, hasTopTabs ? 13 : 0);
+		}
+	}
 
-    @Override
-    public void render(int mouseX, int mouseY, float partialTick) {
-        if (!isMouseOverElement(mouseX, mouseY)) {
-            mouseX = Integer.MIN_VALUE;
-            mouseY = Integer.MIN_VALUE;
-        }
-        Minecraft.getMinecraft().renderEngine.bindTexture(backgroundTextureLocation);
-        int topY = renderY;
-        int height = this.height;
-        if (hasTopTabs) {
-            topY += 13;
-            height -= 13;
-        }
-        if (hasBottomTabs) {
-            height -= 13;
-        }
-        RenderTools.renderQuarteredTexture(256, 256, 0, 0, 256, 240, renderX, topY, width, height);
-        setViewport();
-        for (GuiElement element : this.tabs.values()) {
-            element.render(mouseX, mouseY, partialTick);
-        }
-        for (GuiElement element : this.tabElements.get(currentTab)) {
-            element.render(mouseX, mouseY, partialTick);
-        }
-        popViewport();
-    }
+	@Override
+	public void render(int mouseX, int mouseY, float partialTick) {
+		if (!isMouseOverElement(mouseX, mouseY)) {
+			mouseX = Integer.MIN_VALUE;
+			mouseY = Integer.MIN_VALUE;
+		}
+		Minecraft.getMinecraft().renderEngine.bindTexture(backgroundTextureLocation);
+		int topY = renderY;
+		int height = this.height;
+		if (hasTopTabs) {
+			topY += 13;
+			height -= 13;
+		}
+		if (hasBottomTabs) {
+			height -= 13;
+		}
+		RenderTools.renderQuarteredTexture(256, 256, 0, 0, 256, 240, renderX, topY, width, height);
+		setViewport();
+		for (GuiElement element : this.tabs.values()) {
+			element.render(mouseX, mouseY, partialTick);
+		}
+		for (GuiElement element : this.tabElements.get(currentTab)) {
+			element.render(mouseX, mouseY, partialTick);
+		}
+		popViewport();
+	}
 
-    @Override
-    protected void updateElementPositions() {
-        super.updateElementPositions();
-        for (GuiElement element : this.tabElements.get(currentTab)) {
-            element.updateGuiPosition(renderX, renderY + (hasTopTabs ? 13 : 0));
-        }
-    }
+	@Override
+	protected void updateElementPositions() {
+		super.updateElementPositions();
+		for (GuiElement element : this.tabElements.get(currentTab)) {
+			element.updateGuiPosition(renderX, renderY + (hasTopTabs ? 13 : 0));
+		}
+	}
 
 }

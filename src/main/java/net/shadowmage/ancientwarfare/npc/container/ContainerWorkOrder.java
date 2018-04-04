@@ -13,42 +13,42 @@ import javax.annotation.Nonnull;
 
 public class ContainerWorkOrder extends ContainerBase {
 
-    private EnumHand hand;
-    public final WorkOrder wo;
-    private boolean hasChanged;
+	private EnumHand hand;
+	public final WorkOrder wo;
+	private boolean hasChanged;
 
-    public ContainerWorkOrder(EntityPlayer player, int x, int y, int z) {
-        super(player);
-        hand = EntityTools.getHandHoldingItem(player, AWNPCItems.workOrder);
-        @Nonnull ItemStack stack = player.getHeldItem(hand);
-        if (stack.isEmpty()) {
-            throw new IllegalArgumentException("Cannot open Work Order GUI for empty stack/item.");
-        }
-        wo = WorkOrder.getWorkOrder(stack);
-        if (wo == null) {
-            throw new IllegalArgumentException("Work orders was null for some reason");
-        }
-    }
+	public ContainerWorkOrder(EntityPlayer player, int x, int y, int z) {
+		super(player);
+		hand = EntityTools.getHandHoldingItem(player, AWNPCItems.workOrder);
+		@Nonnull ItemStack stack = player.getHeldItem(hand);
+		if (stack.isEmpty()) {
+			throw new IllegalArgumentException("Cannot open Work Order GUI for empty stack/item.");
+		}
+		wo = WorkOrder.getWorkOrder(stack);
+		if (wo == null) {
+			throw new IllegalArgumentException("Work orders was null for some reason");
+		}
+	}
 
-    @Override
-    public void handlePacketData(NBTTagCompound tag) {
-        if (tag.hasKey("wo")) {
-            wo.deserializeNBT(tag.getCompoundTag("wo"));
-            hasChanged = true;
-        }
-    }
+	@Override
+	public void handlePacketData(NBTTagCompound tag) {
+		if (tag.hasKey("wo")) {
+			wo.deserializeNBT(tag.getCompoundTag("wo"));
+			hasChanged = true;
+		}
+	}
 
-    @Override
-    public void onContainerClosed(EntityPlayer par1EntityPlayer) {
-        super.onContainerClosed(par1EntityPlayer);
-        if (hasChanged && !player.world.isRemote) {
-            wo.write(player.getHeldItem(hand));
-        }
-    }
+	@Override
+	public void onContainerClosed(EntityPlayer par1EntityPlayer) {
+		super.onContainerClosed(par1EntityPlayer);
+		if (hasChanged && !player.world.isRemote) {
+			wo.write(player.getHeldItem(hand));
+		}
+	}
 
-    public void onClose() {
-        NBTTagCompound outer = new NBTTagCompound();
-        outer.setTag("wo", wo.serializeNBT());
-        sendDataToServer(outer);
-    }
+	public void onClose() {
+		NBTTagCompound outer = new NBTTagCompound();
+		outer.setTag("wo", wo.serializeNBT());
+		sendDataToServer(outer);
+	}
 }

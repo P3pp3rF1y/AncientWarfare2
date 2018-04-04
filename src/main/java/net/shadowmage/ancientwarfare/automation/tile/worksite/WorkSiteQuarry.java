@@ -21,8 +21,8 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 
     /*
      * Current position within work bounds.
-     * Incremented when work is processed.
-     */
+	 * Incremented when work is processed.
+	 */
     private BlockPos current = BlockPos.ORIGIN;//position within bounds that is the 'active' position
     private BlockPos validate = BlockPos.ORIGIN;
 
@@ -41,7 +41,7 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
         offsetBounds();
     }
 
-    private void offsetBounds(){
+    private void offsetBounds() {
         BlockPos boundsMax = getWorkBoundsMax();
         setWorkBoundsMax(boundsMax.up(pos.getY() - 1 - boundsMax.getY()));
         boundsMax = getWorkBoundsMin();
@@ -58,16 +58,7 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 
     @Override
     public EnumSet<WorksiteUpgrade> getValidUpgrades() {
-        return EnumSet.of(
-                WorksiteUpgrade.ENCHANTED_TOOLS_1,
-                WorksiteUpgrade.ENCHANTED_TOOLS_2,
-                WorksiteUpgrade.QUARRY_MEDIUM,
-                WorksiteUpgrade.QUARRY_LARGE,
-                WorksiteUpgrade.TOOL_QUALITY_1,
-                WorksiteUpgrade.TOOL_QUALITY_2,
-                WorksiteUpgrade.TOOL_QUALITY_3,
-                WorksiteUpgrade.QUARRY_CHUNK_LOADER
-        );
+        return EnumSet.of(WorksiteUpgrade.ENCHANTED_TOOLS_1, WorksiteUpgrade.ENCHANTED_TOOLS_2, WorksiteUpgrade.QUARRY_MEDIUM, WorksiteUpgrade.QUARRY_LARGE, WorksiteUpgrade.TOOL_QUALITY_1, WorksiteUpgrade.TOOL_QUALITY_2, WorksiteUpgrade.TOOL_QUALITY_3, WorksiteUpgrade.QUARRY_CHUNK_LOADER);
     }
 
     @Override
@@ -134,11 +125,11 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 
         block.getDrops(stacks, world, current, state, getFortune());
 
-        if(!InventoryTools.insertItems(mainInventory, stacks, true).isEmpty()) {
+        if (!InventoryTools.insertItems(mainInventory, stacks, true).isEmpty()) {
             return false;
         }
 
-        if(!BlockTools.canBreakBlock(world, getOwnerAsPlayer(), current, state) || !world.setBlockToAir(current)) {
+        if (!BlockTools.canBreakBlock(world, getOwnerAsPlayer(), current, state) || !world.setBlockToAir(current)) {
             return false;
         }
         world.playEvent(2001, current, Block.getStateId(state));
@@ -188,7 +179,7 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
         //TODO add block-breaking exclusion list to config
         IBlockState state = world.getBlockState(harvestPos);
         Block block = state.getBlock();
-        if(world.isAirBlock(harvestPos) || state.getMaterial().isLiquid()){
+        if (world.isAirBlock(harvestPos) || state.getMaterial().isLiquid()) {
             return false;
         }
         int harvestLevel = block.getHarvestLevel(state);
@@ -252,6 +243,5 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
     protected boolean hasWorksiteWork() {
         return !finished;
     }
-
 
 }

@@ -38,10 +38,10 @@ public class FlywheelControllerRenderer extends TorqueTieredRenderer<TileFlywhee
 		float inputRotation = 0;
 		float flywheelRotation = 0;
 
-		if(state != null) {
-			 outputRotation = state.getValue(AutomationProperties.ROTATIONS[frontFacing.ordinal()]);
-			 inputRotation = outputRotation;
-			 flywheelRotation = state.getValue(BlockFlywheelController.FLYWHEEL_ROTATION);
+		if (state != null) {
+			outputRotation = state.getValue(AutomationProperties.ROTATIONS[frontFacing.ordinal()]);
+			inputRotation = outputRotation;
+			flywheelRotation = state.getValue(BlockFlywheelController.FLYWHEEL_ROTATION);
 
 			if (state.getValue(AutomationProperties.USE_INPUT)) {
 				inputRotation = state.getValue(AutomationProperties.INPUT_ROTATION);

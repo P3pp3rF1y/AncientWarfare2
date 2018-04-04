@@ -1,21 +1,21 @@
 {
-  "type": "ancientwarfare:research_recipe",
-  "research": "the_wheel",
-  "pattern": [
-    "SCS",
-    "CSC",
-    "SCS"
-  ],
-  "key": {
-    "C": {
-      "item": "minecraft:wool",
-      "data": 0
+    "type": "ancientwarfare:research_recipe",
+    "research": "the_wheel",
+    "pattern": [
+        "SCS",
+        "CSC",
+        "SCS"
+    ],
+    "key": {
+        "C": {
+            "item": "minecraft:wool",
+            "data": 0
+        },
+        "S": {
+            "item": "#STICKWOOD"
+        }
     },
-    "S": {
-      "item": "#STICKWOOD"
+    "result": {
+        "item": "ancientwarfareautomation:windmill_blade"
     }
-  },
-  "result": {
-    "item": "ancientwarfareautomation:windmill_blade"
-  }
 }

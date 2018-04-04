@@ -1,21 +1,21 @@
 {
-  "type": "ancientwarfare:research_recipe",
-  "research": "mathematics",
-  "pattern": [
-    " I ",
-    "ICI",
-    " I "
-  ],
-  "key": {
-    "C": {
-      "item": "ancientwarfareautomation:chunk_loader_simple"
+    "type": "ancientwarfare:research_recipe",
+    "research": "mathematics",
+    "pattern": [
+        " I ",
+        "ICI",
+        " I "
+    ],
+    "key": {
+        "C": {
+            "item": "ancientwarfareautomation:chunk_loader_simple"
+        },
+        "I": {
+            "item": "#INGOTIRON"
+        }
     },
-    "I": {
-      "item": "#INGOTIRON"
+    "result": {
+        "item": "ancientwarfareautomation:worksite_upgrade",
+        "data": 9
     }
-  },
-  "result": {
-    "item": "ancientwarfareautomation:worksite_upgrade",
-    "data": 9
-  }
 }

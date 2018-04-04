@@ -19,87 +19,87 @@ import java.util.Set;
 
 public class TileChunkLoaderDeluxe extends TileChunkLoaderSimple implements IInteractableTile {
 
-    private final Set<ChunkPos> ccipSet = new HashSet<>();
+	private final Set<ChunkPos> ccipSet = new HashSet<>();
 
-    private final List<ContainerChunkLoaderDeluxe> viewers = new ArrayList<>();
+	private final List<ContainerChunkLoaderDeluxe> viewers = new ArrayList<>();
 
-    public TileChunkLoaderDeluxe() {
+	public TileChunkLoaderDeluxe() {
 
-    }
+	}
 
-    @Override
-    public boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
-        if (!player.world.isRemote) {
-            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_CHUNK_LOADER_DELUXE, pos);
-        }
-        return true;
-    }
+	@Override
+	public boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
+		if (!player.world.isRemote) {
+			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_CHUNK_LOADER_DELUXE, pos);
+		}
+		return true;
+	}
 
-    public void addViewer(ContainerChunkLoaderDeluxe viewer) {
-        viewers.add(viewer);
-    }
+	public void addViewer(ContainerChunkLoaderDeluxe viewer) {
+		viewers.add(viewer);
+	}
 
-    public void removeViewer(ContainerChunkLoaderDeluxe viewer) {
-        viewers.remove(viewer);
-    }
+	public void removeViewer(ContainerChunkLoaderDeluxe viewer) {
+		viewers.remove(viewer);
+	}
 
-    public void addOrRemoveChunk(ChunkPos ccip) {
-        if (ccipSet.contains(ccip)) {
-            ccipSet.remove(ccip);
-            ForgeChunkManager.unforceChunk(chunkTicket, ccip);
-        } else {
-            ccipSet.add(ccip);
-            ForgeChunkManager.forceChunk(chunkTicket, ccip);
-        }
-        markDirty();
-        informViewers();
-    }
+	public void addOrRemoveChunk(ChunkPos ccip) {
+		if (ccipSet.contains(ccip)) {
+			ccipSet.remove(ccip);
+			ForgeChunkManager.unforceChunk(chunkTicket, ccip);
+		} else {
+			ccipSet.add(ccip);
+			ForgeChunkManager.forceChunk(chunkTicket, ccip);
+		}
+		markDirty();
+		informViewers();
+	}
 
-    private void informViewers() {
-        for (ContainerChunkLoaderDeluxe viewer : viewers) {
-            viewer.onChunkLoaderSetUpdated(ccipSet);
-        }
-    }
+	private void informViewers() {
+		for (ContainerChunkLoaderDeluxe viewer : viewers) {
+			viewer.onChunkLoaderSetUpdated(ccipSet);
+		}
+	}
 
-    public Set<ChunkPos> getForcedChunks() {
-        return new HashSet<>(ccipSet);
-    }
+	public Set<ChunkPos> getForcedChunks() {
+		return new HashSet<>(ccipSet);
+	}
 
-    @Override
-    protected void forceTicketChunks() {
-        ChunkPos ccip1 = new ChunkPos(pos);
-        ForgeChunkManager.forceChunk(this.chunkTicket, ccip1);
-        for (ChunkPos ccip : ccipSet) {
-            ForgeChunkManager.forceChunk(this.chunkTicket, ccip);
-        }
-    }
+	@Override
+	protected void forceTicketChunks() {
+		ChunkPos ccip1 = new ChunkPos(pos);
+		ForgeChunkManager.forceChunk(this.chunkTicket, ccip1);
+		for (ChunkPos ccip : ccipSet) {
+			ForgeChunkManager.forceChunk(this.chunkTicket, ccip);
+		}
+	}
 
-    @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        super.readFromNBT(tag);
-        NBTTagList list = tag.getTagList("chunkList", Constants.NBT.TAG_COMPOUND);
-        NBTTagCompound ccipTag;
-        ChunkPos ccip;
-        ccipSet.clear();
-        for (int i = 0; i < list.tagCount(); i++) {
-            ccipTag = list.getCompoundTagAt(i);
-            ccip = new ChunkPos(ccipTag.getInteger("x"), ccipTag.getInteger("z"));
-            ccipSet.add(ccip);
-        }
-    }
+	@Override
+	public void readFromNBT(NBTTagCompound tag) {
+		super.readFromNBT(tag);
+		NBTTagList list = tag.getTagList("chunkList", Constants.NBT.TAG_COMPOUND);
+		NBTTagCompound ccipTag;
+		ChunkPos ccip;
+		ccipSet.clear();
+		for (int i = 0; i < list.tagCount(); i++) {
+			ccipTag = list.getCompoundTagAt(i);
+			ccip = new ChunkPos(ccipTag.getInteger("x"), ccipTag.getInteger("z"));
+			ccipSet.add(ccip);
+		}
+	}
 
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        super.writeToNBT(tag);
-        NBTTagList list = new NBTTagList();
-        NBTTagCompound ccipTag;
-        for (ChunkPos chunkPos : this.ccipSet) {
-            ccipTag = new NBTTagCompound();
-            ccipTag.setInteger("x", chunkPos.x);
-            ccipTag.setInteger("z", chunkPos.z);
-            list.appendTag(ccipTag);
-        }
-        tag.setTag("chunkList", list);
-        return tag;
-    }
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+		super.writeToNBT(tag);
+		NBTTagList list = new NBTTagList();
+		NBTTagCompound ccipTag;
+		for (ChunkPos chunkPos : this.ccipSet) {
+			ccipTag = new NBTTagCompound();
+			ccipTag.setInteger("x", chunkPos.x);
+			ccipTag.setInteger("z", chunkPos.z);
+			list.appendTag(ccipTag);
+		}
+		tag.setTag("chunkList", list);
+		return tag;
+	}
 }

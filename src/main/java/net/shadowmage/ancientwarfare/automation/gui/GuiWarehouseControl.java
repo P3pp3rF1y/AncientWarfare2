@@ -25,137 +25,137 @@ import java.util.Locale;
 
 public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseControl> {
 
-    private CompositeScrolled area;
-    private Text input;
-    private final ComparatorItemStack sorter;
-    private Label storedLabel;
+	private CompositeScrolled area;
+	private Text input;
+	private final ComparatorItemStack sorter;
+	private Label storedLabel;
 
-    public GuiWarehouseControl(ContainerBase par1Container) {
-        super(par1Container, 178, 240);
-        sorter = new ComparatorItemStack(getContainer().getSortType(), getContainer().getSortOrder());
-    }
+	public GuiWarehouseControl(ContainerBase par1Container) {
+		super(par1Container, 178, 240);
+		sorter = new ComparatorItemStack(getContainer().getSortType(), getContainer().getSortOrder());
+	}
 
-    @Override
-    public void initElements() {
-        Button sortChange = new Button(8, 8, 110, 12, "guistrings.automation." + getContainer().getSortType().toString()) {
-            @Override
-            protected void onPressed() {
-                getContainer().setSortType(getContainer().getSortType().next());
-                setText("guistrings.automation." + getContainer().getSortType().toString());
-                refreshGui();
-            }
-        };
-        addGuiElement(sortChange);
+	@Override
+	public void initElements() {
+		Button sortChange = new Button(8, 8, 110, 12, "guistrings.automation." + getContainer().getSortType().toString()) {
+			@Override
+			protected void onPressed() {
+				getContainer().setSortType(getContainer().getSortType().next());
+				setText("guistrings.automation." + getContainer().getSortType().toString());
+				refreshGui();
+			}
+		};
+		addGuiElement(sortChange);
 
-        Checkbox sortOrderBox = new Checkbox(8 + 55 + 55 + 4, 6, 16, 16, "guistrings.automation.descending") {
-            @Override
-            public void onToggled() {
-                super.onToggled();
-                getContainer().setSortOrder(checked() ? SortOrder.ASCENDING : SortOrder.DESCENDING);
-                String name = getContainer().getSortOrder().name().toLowerCase(Locale.ENGLISH);
-                label = I18n.format("guistrings.automation." + name);
-                refreshGui();
-            }
-        };
-        sortOrderBox.setChecked(getContainer().getSortOrder() == SortOrder.ASCENDING);
-        addGuiElement(sortOrderBox);
+		Checkbox sortOrderBox = new Checkbox(8 + 55 + 55 + 4, 6, 16, 16, "guistrings.automation.descending") {
+			@Override
+			public void onToggled() {
+				super.onToggled();
+				getContainer().setSortOrder(checked() ? SortOrder.ASCENDING : SortOrder.DESCENDING);
+				String name = getContainer().getSortOrder().name().toLowerCase(Locale.ENGLISH);
+				label = I18n.format("guistrings.automation." + name);
+				refreshGui();
+			}
+		};
+		sortOrderBox.setChecked(getContainer().getSortOrder() == SortOrder.ASCENDING);
+		addGuiElement(sortOrderBox);
 
-        input = new Text(8, 8 + 12 + 4, 178 - 16, "", this) {
-            @Override
-            public void onTextUpdated(String oldText, String newText) {
-                if (!oldText.equals(newText)) {
-                    refreshGui();
-                }
-            }
-        };
-        Listener l = new Listener(Listener.MOUSE_UP) {
-            @Override
-            public boolean onEvent(GuiElement widget, ActivationEvent evt) {
-                if (evt.mButton == 1) {
-                    ((Text) widget).setText("");
-                    refreshGui();
-                }
+		input = new Text(8, 8 + 12 + 4, 178 - 16, "", this) {
+			@Override
+			public void onTextUpdated(String oldText, String newText) {
+				if (!oldText.equals(newText)) {
+					refreshGui();
+				}
+			}
+		};
+		Listener l = new Listener(Listener.MOUSE_UP) {
+			@Override
+			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
+				if (evt.mButton == 1) {
+					((Text) widget).setText("");
+					refreshGui();
+				}
 
-                return false;
-            }
-        };
-        input.addNewListener(l);
-        addGuiElement(input);
+				return false;
+			}
+		};
+		input.addNewListener(l);
+		addGuiElement(input);
 
-        area = new CompositeItemSlots(this, 0, 8 + 12 + 4 + 12 + 2, 178, 96, this);
+		area = new CompositeItemSlots(this, 0, 8 + 12 + 4 + 12 + 2, 178, 96, this);
 
-        l = new Listener(Listener.MOUSE_DOWN) {
-            @Override
-            public boolean onEvent(GuiElement widget, ActivationEvent evt) {
-                if (evt.mButton == 0 && widget.isMouseOverElement(evt.mx, evt.my) && !area.isMouseOverSubElement(evt.mx, evt.my)) {
-                    getContainer().handleClientRequestSpecific(ItemStack.EMPTY, isShiftKeyDown(), false);
-                }
-                return true;
-            }
-        };
-        area.addNewListener(l);
-        addGuiElement(area);
+		l = new Listener(Listener.MOUSE_DOWN) {
+			@Override
+			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
+				if (evt.mButton == 0 && widget.isMouseOverElement(evt.mx, evt.my) && !area.isMouseOverSubElement(evt.mx, evt.my)) {
+					getContainer().handleClientRequestSpecific(ItemStack.EMPTY, isShiftKeyDown(), false);
+				}
+				return true;
+			}
+		};
+		area.addNewListener(l);
+		addGuiElement(area);
 
-        Button b = new Button(8, 240 - 8 - 12, 40, 12, "guistrings.automation.adjust_bounds") {
-            @Override
-            protected void onPressed() {
-                NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_BOUNDS, getContainer().tileEntity.getPos());
-            }
-        };
-        addGuiElement(b);
+		Button b = new Button(8, 240 - 8 - 12, 40, 12, "guistrings.automation.adjust_bounds") {
+			@Override
+			protected void onPressed() {
+				NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_BOUNDS, getContainer().tileEntity.getPos());
+			}
+		};
+		addGuiElement(b);
 
-        storedLabel = new Label(8 + 40 + 4, 240 - 8 - 11, I18n.format("guistrings.warehouse.storage", getContainer().currentStored, getContainer().maxStorage));
-        addGuiElement(storedLabel);
-    }
+		storedLabel = new Label(8 + 40 + 4, 240 - 8 - 11, I18n.format("guistrings.warehouse.storage", getContainer().currentStored, getContainer().maxStorage));
+		addGuiElement(storedLabel);
+	}
 
-    @Override
-    public void setupElements() {
-        area.clearElements();
-        addInventoryViewElements();
-        storedLabel.setText(I18n.format("guistrings.warehouse.storage", getContainer().currentStored, getContainer().maxStorage));
-    }
+	@Override
+	public void setupElements() {
+		area.clearElements();
+		addInventoryViewElements();
+		storedLabel.setText(I18n.format("guistrings.warehouse.storage", getContainer().currentStored, getContainer().maxStorage));
+	}
 
-    private void addInventoryViewElements() {
-        @Nonnull ItemStack stack;
+	private void addInventoryViewElements() {
+		@Nonnull ItemStack stack;
 		NonNullList<ItemStack> displayStacks = NonNullList.create();
-        String searchInput = input.getText().toLowerCase(Locale.ENGLISH);
+		String searchInput = input.getText().toLowerCase(Locale.ENGLISH);
 
 		for (ItemHashEntry entry : getContainer().itemMap.keySet()) {
-            stack = entry.getItemStack();
+			stack = entry.getItemStack();
 
-            if (searchInput.isEmpty() || stack.getDisplayName().toLowerCase().contains(searchInput)) {
-                stack.setCount(getContainer().itemMap.getCount(entry));
-                displayStacks.add(stack);
-            }
-        }
+			if (searchInput.isEmpty() || stack.getDisplayName().toLowerCase().contains(searchInput)) {
+				stack.setCount(getContainer().itemMap.getCount(entry));
+				displayStacks.add(stack);
+			}
+		}
 
-        sortItems(displayStacks);
+		sortItems(displayStacks);
 
-        int x = 0, y = 0;
-        int totalSize = 8;
-        ItemSlot slot;
-        for (ItemStack displayStack : displayStacks) {
-            slot = new ItemSlot(4 + x * 18, 3 + y * 18, displayStack, this) {
-                @Override
-                public void onSlotClicked(ItemStack stack, boolean rightClicked) {
-                    getContainer().handleClientRequestSpecific(getStack(), isShiftKeyDown(), rightClicked);
-                }
-            };
-            area.addGuiElement(slot);
-            x++;
-            if (x >= 9) {
-                x = 0;
-                y++;
-                totalSize += 18;
-            }
-        }
-        area.setAreaSize(totalSize + 8);
-    }
+		int x = 0, y = 0;
+		int totalSize = 8;
+		ItemSlot slot;
+		for (ItemStack displayStack : displayStacks) {
+			slot = new ItemSlot(4 + x * 18, 3 + y * 18, displayStack, this) {
+				@Override
+				public void onSlotClicked(ItemStack stack, boolean rightClicked) {
+					getContainer().handleClientRequestSpecific(getStack(), isShiftKeyDown(), rightClicked);
+				}
+			};
+			area.addGuiElement(slot);
+			x++;
+			if (x >= 9) {
+				x = 0;
+				y++;
+				totalSize += 18;
+			}
+		}
+		area.setAreaSize(totalSize + 8);
+	}
 
 	private void sortItems(NonNullList<ItemStack> items) {
-        sorter.setSortType(getContainer().getSortType());
-        sorter.setSortOrder(getContainer().getSortOrder());
-        items.sort(sorter);
-    }
+		sorter.setSortType(getContainer().getSortType());
+		sorter.setSortOrder(getContainer().getSortOrder());
+		items.sort(sorter);
+	}
 
 }

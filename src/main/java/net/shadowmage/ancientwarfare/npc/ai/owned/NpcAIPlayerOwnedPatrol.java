@@ -11,103 +11,103 @@ import javax.annotation.Nonnull;
 
 public class NpcAIPlayerOwnedPatrol extends NpcAI<NpcBase> {
 
-    double moveSpeed = 1.d;
-    private boolean init = false;
-    private int patrolIndex;
-    private boolean atPoint;
-    private int ticksAtPoint;
+	double moveSpeed = 1.d;
+	private boolean init = false;
+	private int patrolIndex;
+	private boolean atPoint;
+	private int ticksAtPoint;
 
-    private int maxTicksAtPoint = 50;//default 2.5 second idle at each point
+	private int maxTicksAtPoint = 50;//default 2.5 second idle at each point
 
-    public CombatOrder orders;
-    @Nonnull
-    private ItemStack ordersStack;
+	public CombatOrder orders;
+	@Nonnull
+	private ItemStack ordersStack;
 
-    public NpcAIPlayerOwnedPatrol(NpcBase npc) {
-        super(npc);
-        setMutexBits(ATTACK + MOVE);
-    }
+	public NpcAIPlayerOwnedPatrol(NpcBase npc) {
+		super(npc);
+		setMutexBits(ATTACK + MOVE);
+	}
 
-    public void onOrdersInventoryChanged() {
-        patrolIndex = 0;
-        ordersStack = npc.ordersStack;
-        orders = CombatOrder.getCombatOrder(ordersStack);
-    }
+	public void onOrdersInventoryChanged() {
+		patrolIndex = 0;
+		ordersStack = npc.ordersStack;
+		orders = CombatOrder.getCombatOrder(ordersStack);
+	}
 
-    @Override
-    public boolean shouldExecute() {
-        if (!init) {
-            init = true;
-            ordersStack = npc.ordersStack;
-            orders = CombatOrder.getCombatOrder(ordersStack);
-            if (orders == null || patrolIndex >= orders.size()) {
-                patrolIndex = 0;
-            }
-        }
-        return shouldContinueExecuting();
-    }
+	@Override
+	public boolean shouldExecute() {
+		if (!init) {
+			init = true;
+			ordersStack = npc.ordersStack;
+			orders = CombatOrder.getCombatOrder(ordersStack);
+			if (orders == null || patrolIndex >= orders.size()) {
+				patrolIndex = 0;
+			}
+		}
+		return shouldContinueExecuting();
+	}
 
-    @Override
-    public boolean shouldContinueExecuting() {
-        if (!npc.getIsAIEnabled() || npc.getAttackTarget() != null) {
-            return false;
-        }
-        return orders != null && !ordersStack.isEmpty() && orders.getPatrolDimension() == npc.world.provider.getDimension() && !orders.isEmpty();
-    }
+	@Override
+	public boolean shouldContinueExecuting() {
+		if (!npc.getIsAIEnabled() || npc.getAttackTarget() != null) {
+			return false;
+		}
+		return orders != null && !ordersStack.isEmpty() && orders.getPatrolDimension() == npc.world.provider.getDimension() && !orders.isEmpty();
+	}
 
-    @Override
-    public void startExecuting() {
-        npc.addAITask(TASK_PATROL);
-    }
+	@Override
+	public void startExecuting() {
+		npc.addAITask(TASK_PATROL);
+	}
 
-    @Override
-    public void updateTask() {
-        if (atPoint) {
-            npc.removeAITask(TASK_MOVE);
-            ticksAtPoint++;
-            if (ticksAtPoint > maxTicksAtPoint) {
-                setMoveToNextPoint();
-            }
-        } else {
-            BlockPos pos = orders.get(patrolIndex);
-            double dist = npc.getDistanceSq(pos.getX() + 0.5d, pos.getY(), pos.getZ() + 0.5d);
-            if (dist > 2.d * 2.d) {
-                moveToPosition(pos, dist);
-            } else {
-                atPoint = true;
-                ticksAtPoint = 0;
-            }
-        }
-    }
+	@Override
+	public void updateTask() {
+		if (atPoint) {
+			npc.removeAITask(TASK_MOVE);
+			ticksAtPoint++;
+			if (ticksAtPoint > maxTicksAtPoint) {
+				setMoveToNextPoint();
+			}
+		} else {
+			BlockPos pos = orders.get(patrolIndex);
+			double dist = npc.getDistanceSq(pos.getX() + 0.5d, pos.getY(), pos.getZ() + 0.5d);
+			if (dist > 2.d * 2.d) {
+				moveToPosition(pos, dist);
+			} else {
+				atPoint = true;
+				ticksAtPoint = 0;
+			}
+		}
+	}
 
-    private void setMoveToNextPoint() {
-        atPoint = false;
-        ticksAtPoint = 0;
-        patrolIndex++;
-        moveRetryDelay = 0;
-        if (patrolIndex >= orders.size()) {
-            patrolIndex = 0;
-        }
-    }
+	private void setMoveToNextPoint() {
+		atPoint = false;
+		ticksAtPoint = 0;
+		patrolIndex++;
+		moveRetryDelay = 0;
+		if (patrolIndex >= orders.size()) {
+			patrolIndex = 0;
+		}
+	}
 
-    @Override
-    public void resetTask() {
-        ticksAtPoint = 0;
-        moveRetryDelay = 0;
-        npc.removeAITask(TASK_PATROL + TASK_MOVE);
-    }
+	@Override
+	public void resetTask() {
+		ticksAtPoint = 0;
+		moveRetryDelay = 0;
+		npc.removeAITask(TASK_PATROL + TASK_MOVE);
+	}
 
-    public void readFromNBT(NBTTagCompound tag) {
-        patrolIndex = tag.getInteger("patrolIndex");
-        atPoint = tag.getBoolean("atPoint");
-        ticksAtPoint = tag.getInteger("ticksAtPoint");
-    }
+	public void readFromNBT(NBTTagCompound tag) {
+		patrolIndex = tag.getInteger("patrolIndex");
+		atPoint = tag.getBoolean("atPoint");
+		ticksAtPoint = tag.getInteger("ticksAtPoint");
+	}
 
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        tag.setInteger("patrolIndex", patrolIndex);
-        tag.setBoolean("atPoint", atPoint);
-        tag.setInteger("ticksAtPoint", ticksAtPoint);
-        return tag;
-    }
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+		tag.setInteger("patrolIndex", patrolIndex);
+		tag.setBoolean("atPoint", atPoint);
+		tag.setInteger("ticksAtPoint", ticksAtPoint);
+		return tag;
+	}
 
 }

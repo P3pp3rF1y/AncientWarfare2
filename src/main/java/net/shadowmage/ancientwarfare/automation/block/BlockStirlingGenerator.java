@@ -23,43 +23,44 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
 public class BlockStirlingGenerator extends BlockTorqueGenerator implements IBakeryProvider {
 
-    public BlockStirlingGenerator(String regName) {
-        super(regName);
-    }
+	public BlockStirlingGenerator(String regName) {
+		super(regName);
+	}
 
-    @Override
-    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return StirlingGeneratorRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
-    }
+	@Override
+	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return StirlingGeneratorRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
+	}
 
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileStirlingGenerator();
-    }
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		return new TileStirlingGenerator();
+	}
 
-    @Override
-    public IBakery getBakery() {
-        return StirlingGeneratorRenderer.INSTANCE;
-    }
+	@Override
+	public IBakery getBakery() {
+		return StirlingGeneratorRenderer.INSTANCE;
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerClient() {
-        super.registerClient();
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerClient() {
+		super.registerClient();
 
-        NetworkHandler.registerGui(NetworkHandler.GUI_STIRLING_GENERATOR, GuiStirlingGenerator.class);
+		NetworkHandler.registerGui(NetworkHandler.GUI_STIRLING_GENERATOR, GuiStirlingGenerator.class);
 
-        ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
-            @Override protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                return StirlingGeneratorRenderer.MODEL_LOCATION;
-            }
-        });
+		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
+			@Override
+			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+				return StirlingGeneratorRenderer.MODEL_LOCATION;
+			}
+		});
 
-        ModelRegistryHelper.register(StirlingGeneratorRenderer.MODEL_LOCATION, new CCBakeryModel() {
-            @Override
-            public TextureAtlasSprite getParticleTexture() {
-                return StirlingGeneratorRenderer.INSTANCE.sprite;
-            }
-        });
-    }
+		ModelRegistryHelper.register(StirlingGeneratorRenderer.MODEL_LOCATION, new CCBakeryModel() {
+			@Override
+			public TextureAtlasSprite getParticleTexture() {
+				return StirlingGeneratorRenderer.INSTANCE.sprite;
+			}
+		});
+	}
 }

@@ -12,41 +12,43 @@ import java.io.IOException;
 
 public class PacketFactionUpdate extends PacketBase {
 
-    NBTTagCompound packetData;
+	NBTTagCompound packetData;
 
-    public PacketFactionUpdate(NBTTagCompound tag) {
-        this.packetData = tag;
-    }
+	public PacketFactionUpdate(NBTTagCompound tag) {
+		this.packetData = tag;
+	}
 
-    public PacketFactionUpdate() {
-    }
+	public PacketFactionUpdate() {
+	}
 
-    @Override
-    protected void writeToStream(ByteBuf data) {
-        if (packetData != null) {
-            ByteBufOutputStream bbos = new ByteBufOutputStream(data);
-            try {
-                CompressedStreamTools.writeCompressed(packetData, bbos);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+	@Override
+	protected void writeToStream(ByteBuf data) {
+		if (packetData != null) {
+			ByteBufOutputStream bbos = new ByteBufOutputStream(data);
+			try {
+				CompressedStreamTools.writeCompressed(packetData, bbos);
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
-    @Override
-    protected void readFromStream(ByteBuf data) {
-        try {
-            packetData = CompressedStreamTools.readCompressed(new ByteBufInputStream(data));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	@Override
+	protected void readFromStream(ByteBuf data) {
+		try {
+			packetData = CompressedStreamTools.readCompressed(new ByteBufInputStream(data));
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-    @Override
-    protected void execute() {
-        if (packetData != null) {
-            FactionTracker.INSTANCE.handlePacketData(packetData);
-        }
-    }
+	@Override
+	protected void execute() {
+		if (packetData != null) {
+			FactionTracker.INSTANCE.handlePacketData(packetData);
+		}
+	}
 
 }

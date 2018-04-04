@@ -32,23 +32,23 @@ public class StructureValidationProperty {
     public StructureValidationProperty(String regName, Object defaultValue) {
         this.regName = regName;
         this.data = defaultValue;
-        if(data == null){
+        if (data == null) {
             dataType = DATA_TYPE_UNKNOWN;
-        }else if (Integer.class.isInstance(data)) {
+        } else if (Integer.class.isInstance(data)) {
             dataType = DATA_TYPE_INT;
-        }else if (Byte.class.isInstance(data)) {
+        } else if (Byte.class.isInstance(data)) {
             dataType = DATA_TYPE_BYTE;
-        }else if (Float.class.isInstance(data)) {
+        } else if (Float.class.isInstance(data)) {
             dataType = DATA_TYPE_FLOAT;
-        }else if (Boolean.class.isInstance(data)) {
+        } else if (Boolean.class.isInstance(data)) {
             dataType = DATA_TYPE_BOOLEAN;
-        }else if (String.class.isInstance(data)) {
+        } else if (String.class.isInstance(data)) {
             dataType = DATA_TYPE_STRING;
-        }else if (Set.class.isInstance(data)) {
+        } else if (Set.class.isInstance(data)) {
             dataType = DATA_TYPE_STRING_SET;
-        }else if (int[].class.isAssignableFrom(data.getClass())) {
+        } else if (int[].class.isAssignableFrom(data.getClass())) {
             dataType = DATA_TYPE_INT_ARRAY;
-        }else {
+        } else {
             dataType = DATA_TYPE_UNKNOWN;
         }
     }
@@ -147,9 +147,8 @@ public class StructureValidationProperty {
         return false;
     }
 
-
     public Set<String> getDataStringSet() {
-        if(dataType == DATA_TYPE_STRING_SET) {
+        if (dataType == DATA_TYPE_STRING_SET) {
             return (Set<String>) data;
         }
         return new HashSet<>();
@@ -233,10 +232,10 @@ public class StructureValidationProperty {
 
     public StructureValidationProperty copy() {
         Object copy = data;
-        if(copy != null){
-            if(dataType == DATA_TYPE_STRING_SET) {
+        if (copy != null) {
+            if (dataType == DATA_TYPE_STRING_SET) {
                 copy = new HashSet<>(getDataStringSet());
-            }else if(dataType == DATA_TYPE_INT_ARRAY){
+            } else if (dataType == DATA_TYPE_INT_ARRAY) {
                 int[] temp = getDataIntArray();
                 copy = new int[temp.length];
                 System.arraycopy(temp, 0, copy, 0, temp.length);

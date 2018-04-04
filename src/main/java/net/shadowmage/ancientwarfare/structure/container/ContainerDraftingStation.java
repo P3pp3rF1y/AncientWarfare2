@@ -61,7 +61,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer var1){
+    public boolean canInteractWith(EntityPlayer var1) {
         return tile.getDistanceSq(var1.posX, var1.posY, var1.posZ) <= 64D;
     }
 
@@ -158,8 +158,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
             } else {
                 tile.setTemplate(tag.getString("structName"));
             }
-        }
-        else if (tag.hasKey("clearName")) {
+        } else if (tag.hasKey("clearName")) {
             structureName = null;
         }
         if (tag.hasKey("isStarted")) {
@@ -180,8 +179,7 @@ public class ContainerDraftingStation extends ContainerStructureSelectionBase {
         }
         if (tag.hasKey("stop")) {
             tile.stopCurrentWork();
-        }
-        else if (tag.hasKey("start")) {
+        } else if (tag.hasKey("start")) {
             tile.tryStart();
         }
         refreshGui();

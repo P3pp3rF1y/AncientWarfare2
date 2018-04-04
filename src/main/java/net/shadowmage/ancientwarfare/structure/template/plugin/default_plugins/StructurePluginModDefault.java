@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins;
 
 import net.minecraft.block.Block;
@@ -39,40 +40,39 @@ import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.e
 
 public class StructurePluginModDefault implements StructureContentPlugin {
 
-    private final String mod;
-    public StructurePluginModDefault(String id) {
-        this.mod = id;
-    }
+	private final String mod;
 
+	public StructurePluginModDefault(String id) {
+		this.mod = id;
+	}
 
-    @Override
-    public void addHandledBlocks(IStructurePluginManager manager) {
-        for (Block aBlock : Block.REGISTRY) {
-            if(aBlock!=null && aBlock.getRegistryName().getResourceDomain().equals(mod)) {
-                if (aBlock.hasTileEntity()) {
-                    manager.registerBlockHandler("modContainerDefault", aBlock, TemplateRuleBlockLogic.class);
-                } else {
-                    manager.registerBlockHandler("modBlockDefault", aBlock, TemplateRuleModBlocks.class);
-                }
-            }
-        }
-    }
+	@Override
+	public void addHandledBlocks(IStructurePluginManager manager) {
+		for (Block aBlock : Block.REGISTRY) {
+			if (aBlock != null && aBlock.getRegistryName().getResourceDomain().equals(mod)) {
+				if (aBlock.hasTileEntity()) {
+					manager.registerBlockHandler("modContainerDefault", aBlock, TemplateRuleBlockLogic.class);
+				} else {
+					manager.registerBlockHandler("modBlockDefault", aBlock, TemplateRuleModBlocks.class);
+				}
+			}
+		}
+	}
 
-
-    @Override
-    public void addHandledEntities(IStructurePluginManager manager) {
-        for (ResourceLocation key : ForgeRegistries.ENTITIES.getKeys()) {
-            if(key.toString().startsWith(mod)) {
-                Class<? extends Entity> clazz = EntityList.getClass(key);
-                if (EntityHanging.class.isAssignableFrom(clazz)) {
-                    manager.registerEntityHandler("modHangingDefault", clazz, TemplateRuleEntityHanging.class);
-                } else if (EntityAnimal.class.isAssignableFrom(clazz)) {
-                    manager.registerEntityHandler("modAnimalDefault", clazz, TemplateRuleVanillaEntity.class);
-                } else if (EntityLiving.class.isAssignableFrom(clazz) || IInventory.class.isAssignableFrom(clazz)) {
-                    manager.registerEntityHandler("modEquippedDefault", clazz, TemplateRuleEntityLogic.class);
-                }
-            }
-        }
-    }
+	@Override
+	public void addHandledEntities(IStructurePluginManager manager) {
+		for (ResourceLocation key : ForgeRegistries.ENTITIES.getKeys()) {
+			if (key.toString().startsWith(mod)) {
+				Class<? extends Entity> clazz = EntityList.getClass(key);
+				if (EntityHanging.class.isAssignableFrom(clazz)) {
+					manager.registerEntityHandler("modHangingDefault", clazz, TemplateRuleEntityHanging.class);
+				} else if (EntityAnimal.class.isAssignableFrom(clazz)) {
+					manager.registerEntityHandler("modAnimalDefault", clazz, TemplateRuleVanillaEntity.class);
+				} else if (EntityLiving.class.isAssignableFrom(clazz) || IInventory.class.isAssignableFrom(clazz)) {
+					manager.registerEntityHandler("modEquippedDefault", clazz, TemplateRuleEntityLogic.class);
+				}
+			}
+		}
+	}
 
 }

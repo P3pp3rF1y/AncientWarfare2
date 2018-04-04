@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.automation.render;
 
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.property.IExtendedBlockState;
-import net.minecraftforge.common.property.IUnlistedProperty;
 import net.shadowmage.ancientwarfare.automation.block.BlockTorqueTransportSided;
 import net.shadowmage.ancientwarfare.automation.render.property.AutomationProperties;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueSidedCell;
@@ -19,7 +18,7 @@ public class TorqueTransportAnimationRenderer extends TorqueAnimationRenderer<Ti
 
 		ITorque.ITorqueTile[] neighbors = transportCell.getTorqueCache();
 		boolean[] connections = transportCell.getConnections();
-		for(EnumFacing facing: EnumFacing.VALUES) {
+		for (EnumFacing facing : EnumFacing.VALUES) {
 			state = state.withProperty(BlockTorqueTransportSided.CONNECTIONS[facing.ordinal()], connections[facing.ordinal()]);
 
 			if (connections[facing.ordinal()]) {

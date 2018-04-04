@@ -4,13 +4,13 @@ import net.minecraft.world.World;
 
 public class NpcVikingCivilianFemale extends NpcFactionCivilian {
 
-    public NpcVikingCivilianFemale(World par1World) {
-        super(par1World);
-    }
+	public NpcVikingCivilianFemale(World par1World) {
+		super(par1World);
+	}
 
-    @Override
-    public String getNpcType() {
-        return "viking.civilian.female";
-    }
+	@Override
+	public String getNpcType() {
+		return "viking.civilian.female";
+	}
 
 }

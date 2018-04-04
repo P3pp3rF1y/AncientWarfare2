@@ -20,86 +20,86 @@ import java.util.stream.Collectors;
 
 public class GuiSpawnerAdvancedEntitySelection extends GuiContainerBase {
 
-    private final GuiContainerBase parent;
-    private final EntitySpawnSettings settings;
+	private final GuiContainerBase parent;
+	private final EntitySpawnSettings settings;
 
-    private CompositeScrolled area;
-    private Label selectionLabel;
-    private Text search;
+	private CompositeScrolled area;
+	private Label selectionLabel;
+	private Text search;
 
-    public GuiSpawnerAdvancedEntitySelection(GuiContainerBase parent, EntitySpawnSettings settings) {
-        super(parent.getContainer());
-        this.parent = parent;
-        this.settings = settings;
-    }
+	public GuiSpawnerAdvancedEntitySelection(GuiContainerBase parent, EntitySpawnSettings settings) {
+		super(parent.getContainer());
+		this.parent = parent;
+		this.settings = settings;
+	}
 
-    @Override
-    protected boolean onGuiCloseRequested() {
-        Minecraft.getMinecraft().displayGuiScreen(parent);
-        return false;
-    }
+	@Override
+	protected boolean onGuiCloseRequested() {
+		Minecraft.getMinecraft().displayGuiScreen(parent);
+		return false;
+	}
 
-    @Override
-    public void initElements() {
-        area = new CompositeScrolled(this, 0, 42, 256, 200);
-        addGuiElement(area);
+	@Override
+	public void initElements() {
+		area = new CompositeScrolled(this, 0, 42, 256, 200);
+		addGuiElement(area);
 
-        Label label = new Label(8, 6, "guistrings.spawner.select_entity");
-        addGuiElement(label);
+		Label label = new Label(8, 6, "guistrings.spawner.select_entity");
+		addGuiElement(label);
 
-        Button button = new Button(xSize - 8 - 55, 6, 55, 12, "guistrings.done") {
-            @Override
-            protected void onPressed() {
-                Minecraft.getMinecraft().displayGuiScreen(parent);
-            }
-        };
-        addGuiElement(button);
+		Button button = new Button(xSize - 8 - 55, 6, 55, 12, "guistrings.done") {
+			@Override
+			protected void onPressed() {
+				Minecraft.getMinecraft().displayGuiScreen(parent);
+			}
+		};
+		addGuiElement(button);
 
-        selectionLabel = new Label(8, 18, settings.getEntityName());
-        addGuiElement(selectionLabel);
+		selectionLabel = new Label(8, 18, settings.getEntityName());
+		addGuiElement(selectionLabel);
 
-        search = new Text(8, 30, 240, "", this) {
-            @Override
-            protected void handleKeyInput(int keyCode, char ch) {
-                String old = getText();
-                super.handleKeyInput(keyCode, ch);
-                String text = getText();
-                if(!text.equals(old)){
-                    refreshGui();
-                }
-            }
-        };
-        addGuiElement(search);
-    }
+		search = new Text(8, 30, 240, "", this) {
+			@Override
+			protected void handleKeyInput(int keyCode, char ch) {
+				String old = getText();
+				super.handleKeyInput(keyCode, ch);
+				String text = getText();
+				if (!text.equals(old)) {
+					refreshGui();
+				}
+			}
+		};
+		addGuiElement(search);
+	}
 
-    @Override
-    public void setupElements() {
-        area.clearElements();
+	@Override
+	public void setupElements() {
+		area.clearElements();
 
-        List<ResourceLocation> entities = ForgeRegistries.ENTITIES.getKeys().stream().filter(rl -> {
-			if(rl == null || AWStructureStatics.excludedSpawnerEntities.contains(rl.toString())){//skip excluded entities
+		List<ResourceLocation> entities = ForgeRegistries.ENTITIES.getKeys().stream().filter(rl -> {
+			if (rl == null || AWStructureStatics.excludedSpawnerEntities.contains(rl.toString())) {//skip excluded entities
 				return false;
 			}
 			return (search.getText().isEmpty() || rl.toString().contains(search.getText().toLowerCase()));
 		}).sorted(Comparator.comparing(registryName -> I18n.format(EntityTools.getUnlocName(registryName)))).collect(Collectors.toList());
-        int totalHeight = 8;
-        Button button;
-        for (ResourceLocation registryName : entities) {
-            button = new Button(8, totalHeight, 256 - 8 - 16, 12, I18n.format(EntityTools.getUnlocName(registryName))) {
-                @Override
-                protected void onPressed() {
-                    settings.setEntityToSpawn(registryName);
-                    selectionLabel.setText(settings.getEntityName());
-                    refreshGui();
-                }
-            };
-            Tooltip tip = new Tooltip(50, 10);
-            tip.addTooltipElement(new Label(0, 0, registryName.toString()));
-            button.setTooltip(tip);
-            area.addGuiElement(button);
-            totalHeight += 12;
-        }
-        area.setAreaSize(totalHeight);
-    }
+		int totalHeight = 8;
+		Button button;
+		for (ResourceLocation registryName : entities) {
+			button = new Button(8, totalHeight, 256 - 8 - 16, 12, I18n.format(EntityTools.getUnlocName(registryName))) {
+				@Override
+				protected void onPressed() {
+					settings.setEntityToSpawn(registryName);
+					selectionLabel.setText(settings.getEntityName());
+					refreshGui();
+				}
+			};
+			Tooltip tip = new Tooltip(50, 10);
+			tip.addTooltipElement(new Label(0, 0, registryName.toString()));
+			button.setTooltip(tip);
+			area.addGuiElement(button);
+			totalHeight += 12;
+		}
+		area.setAreaSize(totalHeight);
+	}
 
 }

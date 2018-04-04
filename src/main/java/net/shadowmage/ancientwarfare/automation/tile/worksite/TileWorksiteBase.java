@@ -34,7 +34,8 @@ import java.util.UUID;
 
 @Optional.Interface(iface = "cofh.redstoneflux.api.IEnergyProvider", modid = "redstoneflux", striprefs = true)
 @Optional.Interface(iface = "cofh.redstoneflux.api.IEnergyReceiver", modid = "redstoneflux", striprefs = true)
-public abstract class TileWorksiteBase extends TileUpdatable implements ITickable, IWorkSite, IInteractableTile, IOwnable, IRotatableTile, IEnergyProvider, IEnergyReceiver {
+public abstract class TileWorksiteBase extends TileUpdatable
+        implements ITickable, IWorkSite, IInteractableTile, IOwnable, IRotatableTile, IEnergyProvider, IEnergyReceiver {
 
     private String ownerName = "";
     private UUID ownerId;
@@ -90,7 +91,7 @@ public abstract class TileWorksiteBase extends TileUpdatable implements ITickabl
         }
         return (int) (AWAutomationStatics.torqueToRf * addTorque(from, (double) maxReceive * AWAutomationStatics.rfToTorque));
     }
-//************************************** UPGRADE HANDLING METHODS ***************************************//
+    //************************************** UPGRADE HANDLING METHODS ***************************************//
 
     @Override
     public final EnumSet<WorksiteUpgrade> getUpgrades() {
@@ -99,13 +100,7 @@ public abstract class TileWorksiteBase extends TileUpdatable implements ITickabl
 
     @Override
     public EnumSet<WorksiteUpgrade> getValidUpgrades() {
-        return EnumSet.of(
-                WorksiteUpgrade.ENCHANTED_TOOLS_1,
-                WorksiteUpgrade.ENCHANTED_TOOLS_2,
-                WorksiteUpgrade.TOOL_QUALITY_1,
-                WorksiteUpgrade.TOOL_QUALITY_2,
-                WorksiteUpgrade.TOOL_QUALITY_3
-        );
+        return EnumSet.of(WorksiteUpgrade.ENCHANTED_TOOLS_1, WorksiteUpgrade.ENCHANTED_TOOLS_2, WorksiteUpgrade.TOOL_QUALITY_1, WorksiteUpgrade.TOOL_QUALITY_2, WorksiteUpgrade.TOOL_QUALITY_3);
     }
 
     @Override
@@ -137,7 +132,7 @@ public abstract class TileWorksiteBase extends TileUpdatable implements ITickabl
         return getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_2) ? 2 : getUpgrades().contains(WorksiteUpgrade.ENCHANTED_TOOLS_1) ? 1 : 0;
     }
 
-//************************************** TILE UPDATE METHODS ***************************************//
+    //************************************** TILE UPDATE METHODS ***************************************//
 
     protected abstract boolean processWork();
 
@@ -176,7 +171,7 @@ public abstract class TileWorksiteBase extends TileUpdatable implements ITickabl
         efficiencyBonusFactor = IWorkSite.WorksiteImplementation.getEfficiencyFactor(upgrades);
     }
 
-//************************************** TILE INTERACTION METHODS ***************************************//
+    //************************************** TILE INTERACTION METHODS ***************************************//
 
     @Override
     public final Team getTeam() {
@@ -190,14 +185,14 @@ public abstract class TileWorksiteBase extends TileUpdatable implements ITickabl
     public final String getOwnerName() {
         return ownerName;
     }
-    
+
     @Override
     public final UUID getOwnerUuid() {
         return ownerId;
     }
 
     public final EntityPlayer getOwnerAsPlayer() {
-        if(!isOwnerReal()) {
+        if (!isOwnerReal()) {
             owner = AncientWarfareCore.proxy.getFakePlayer(getWorld(), ownerName, ownerId);
         }
         return owner;
@@ -207,12 +202,12 @@ public abstract class TileWorksiteBase extends TileUpdatable implements ITickabl
         return AncientWarfareCore.proxy.getFakePlayer(getWorld(), null, null);
     }
 
-    private boolean isOwnerReal(){
-        return owner!=null && owner.isEntityAlive() && !(owner instanceof FakePlayer);
+    private boolean isOwnerReal() {
+        return owner != null && owner.isEntityAlive() && !(owner instanceof FakePlayer);
     }
 
     @Override
-    public final boolean isOwner(EntityPlayer player){
+    public final boolean isOwner(EntityPlayer player) {
         return EntityTools.isOwnerOrSameTeam(player, ownerId, ownerName);
     }
 
@@ -222,13 +217,13 @@ public abstract class TileWorksiteBase extends TileUpdatable implements ITickabl
             this.ownerName = "";
             this.owner = null;
             this.ownerId = null;
-        }else{
+        } else {
             this.owner = player;
             this.ownerName = player.getName();
             this.ownerId = player.getUniqueID();
         }
     }
-    
+
     @Override
     public final void setOwner(String ownerName, UUID ownerUuid) {
         this.ownerName = ownerName;
@@ -236,7 +231,7 @@ public abstract class TileWorksiteBase extends TileUpdatable implements ITickabl
         owner = AncientWarfareCore.proxy.getFakePlayer(getWorld(), ownerName, ownerUuid);
     }
 
-//************************************** TORQUE INTERACTION METHODS ***************************************//
+    //************************************** TORQUE INTERACTION METHODS ***************************************//
 
     @Override
     public final float getClientOutputRotation(EnumFacing from, float delta) {
@@ -298,7 +293,7 @@ public abstract class TileWorksiteBase extends TileUpdatable implements ITickabl
         return true;
     }
 
-//************************************** MISC METHODS ***************************************//
+    //************************************** MISC METHODS ***************************************//
     @Override
     public boolean shouldRenderInPass(int pass) {
         return pass == 1;
@@ -326,7 +321,7 @@ public abstract class TileWorksiteBase extends TileUpdatable implements ITickabl
         markDirty();//notify neighbors of tile change
     }
 
-//************************************** NBT AND PACKET DATA METHODS ***************************************//
+    //************************************** NBT AND PACKET DATA METHODS ***************************************//
 
     @Override
     public NBTTagCompound writeToNBT(NBTTagCompound tag) {
@@ -334,14 +329,14 @@ public abstract class TileWorksiteBase extends TileUpdatable implements ITickabl
         tag.setDouble("storedEnergy", torqueCell.getEnergy());
         if (ownerName != null) {
             tag.setString("owner", ownerName);
-            if(ownerId == null && hasWorld()){
+            if (ownerId == null && hasWorld()) {
                 getOwnerAsPlayer();
-                if(isOwnerReal()){
+                if (isOwnerReal()) {
                     ownerId = owner.getUniqueID();
                 }
             }
         }
-        if(ownerId!=null){
+        if (ownerId != null) {
             tag.setString("ownerId", ownerId.toString());
         }
         if (!getUpgrades().isEmpty()) {
@@ -365,7 +360,7 @@ public abstract class TileWorksiteBase extends TileUpdatable implements ITickabl
         if (tag.hasKey("owner")) {
             ownerName = tag.getString("owner");
         }
-        if(tag.hasKey("ownerId")){
+        if (tag.hasKey("ownerId")) {
             ownerId = UUID.fromString(tag.getString("ownerId"));
         }
         if (tag.hasKey("upgrades")) {
@@ -380,8 +375,8 @@ public abstract class TileWorksiteBase extends TileUpdatable implements ITickabl
                 NBTTagList list = (NBTTagList) upgradeTag;
                 for (int i = 0; i < list.tagCount(); i++) {
                     String st = list.getStringTagAt(i);
-                    int ug = NumberUtils.toInt(st, -1) ;
-                    if(ug > -1) {
+                    int ug = NumberUtils.toInt(st, -1);
+                    if (ug > -1) {
                         upgrades.add(WorksiteUpgrade.values()[ug]);
                     }
                 }
@@ -407,14 +402,14 @@ public abstract class TileWorksiteBase extends TileUpdatable implements ITickabl
         tag.setInteger("orientation", orientation.ordinal());
         if (ownerName != null) {
             tag.setString("owner", ownerName);
-            if(ownerId == null && hasWorld()){
+            if (ownerId == null && hasWorld()) {
                 getOwnerAsPlayer();
-                if(isOwnerReal()){
+                if (isOwnerReal()) {
                     ownerId = owner.getUniqueID();
                 }
             }
         }
-        if(ownerId!=null){
+        if (ownerId != null) {
             tag.setString("ownerId", ownerId.toString());
         }
     }
@@ -434,7 +429,7 @@ public abstract class TileWorksiteBase extends TileUpdatable implements ITickabl
         if (tag.hasKey("owner")) {
             ownerName = tag.getString("owner");
         }
-        if(tag.hasKey("ownerId")){
+        if (tag.hasKey("ownerId")) {
             ownerId = UUID.fromString(tag.getString("ownerId"));
         }
         markDirty();

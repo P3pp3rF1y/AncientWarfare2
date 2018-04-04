@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.structure.template.build;
 
 import net.minecraft.block.Block;
@@ -35,66 +36,66 @@ import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 
 public class StructureBuilderWorldGen extends StructureBuilder {
 
-    public StructureBuilderWorldGen(World world, StructureTemplate template, EnumFacing face, BlockPos pos) {
-        super(world, template, face, pos);
-    }
+	public StructureBuilderWorldGen(World world, StructureTemplate template, EnumFacing face, BlockPos pos) {
+		super(world, template, face, pos);
+	}
 
-    @Override
-    public void placeBlock(BlockPos pos, Block block, int meta, int priority) {
-        if (template.getValidationSettings().isBlockSwap()) {
-            Biome biome = world.getBiome(pos);
-            BiomeEvent.GetVillageBlockID evt1 = new GetVillageBlockID(biome, block.getStateFromMeta(meta));
-            MinecraftForge.EVENT_BUS.post(evt1);
-            if (evt1.getResult() == Result.DENY && evt1.getReplacement().getBlock() != block) {
-                block = evt1.getReplacement().getBlock();
-            } else {
-                block = getBiomeSpecificBlock(block, meta, biome);
-            }
-            BiomeEvent.GetVillageBlockID evt2 = new GetVillageBlockID(biome, block.getStateFromMeta(meta));
-            MinecraftForge.EVENT_BUS.post(evt2);
-            if (evt2.getResult() == Result.DENY) {
-                meta = evt2.getReplacement().getBlock().getMetaFromState(evt2.getReplacement());
-            } else {
-                meta = getBiomeSpecificBlockMetadata(block, meta, biome);
-            }
-        }
-        super.placeBlock(pos, block, meta, priority);
-    }
+	@Override
+	public void placeBlock(BlockPos pos, Block block, int meta, int priority) {
+		if (template.getValidationSettings().isBlockSwap()) {
+			Biome biome = world.getBiome(pos);
+			BiomeEvent.GetVillageBlockID evt1 = new GetVillageBlockID(biome, block.getStateFromMeta(meta));
+			MinecraftForge.EVENT_BUS.post(evt1);
+			if (evt1.getResult() == Result.DENY && evt1.getReplacement().getBlock() != block) {
+				block = evt1.getReplacement().getBlock();
+			} else {
+				block = getBiomeSpecificBlock(block, meta, biome);
+			}
+			BiomeEvent.GetVillageBlockID evt2 = new GetVillageBlockID(biome, block.getStateFromMeta(meta));
+			MinecraftForge.EVENT_BUS.post(evt2);
+			if (evt2.getResult() == Result.DENY) {
+				meta = evt2.getReplacement().getBlock().getMetaFromState(evt2.getReplacement());
+			} else {
+				meta = getBiomeSpecificBlockMetadata(block, meta, biome);
+			}
+		}
+		super.placeBlock(pos, block, meta, priority);
+	}
 
-    protected Block getBiomeSpecificBlock(Block par1, int par2, Biome biome) {
-        if (biome == Biomes.DESERT || biome == Biomes.DESERT_HILLS || biome.topBlock == Blocks.SAND) {
-            if (par1 == Blocks.LOG || par1 == Blocks.COBBLESTONE || par1 == Blocks.PLANKS || par1 == Blocks.GRAVEL) {
-                return Blocks.SANDSTONE;
-            }
+	protected Block getBiomeSpecificBlock(Block par1, int par2, Biome biome) {
+		if (biome == Biomes.DESERT || biome == Biomes.DESERT_HILLS || biome.topBlock == Blocks.SAND) {
+			if (par1 == Blocks.LOG || par1 == Blocks.COBBLESTONE || par1 == Blocks.PLANKS || par1 == Blocks.GRAVEL) {
+				return Blocks.SANDSTONE;
+			}
 
-            if (par1 == Blocks.OAK_STAIRS || par1 == Blocks.STONE_STAIRS) {
-                return Blocks.SANDSTONE_STAIRS;
-            }
-        }
+			if (par1 == Blocks.OAK_STAIRS || par1 == Blocks.STONE_STAIRS) {
+				return Blocks.SANDSTONE_STAIRS;
+			}
+		}
 
-        return par1;
-    }
+		return par1;
+	}
 
-    /*
-     * Gets the replacement block metadata for the current biome
-     */
-    protected int getBiomeSpecificBlockMetadata(Block par1, int par2, Biome biome) {
-        if (biome == Biomes.DESERT || biome == Biomes.DESERT_HILLS || biome.topBlock == Blocks.SAND) {
-            if (par1 == Blocks.LOG || par1 == Blocks.COBBLESTONE) {
-                return 0;
-            }
-            if (par1 == Blocks.PLANKS) {
-                return 2;
-            }
-        }
-        return par2;
-    }
+	/*
+	 * Gets the replacement block metadata for the current biome
+	 */
+	protected int getBiomeSpecificBlockMetadata(Block par1, int par2, Biome biome) {
+		if (biome == Biomes.DESERT || biome == Biomes.DESERT_HILLS || biome.topBlock == Blocks.SAND) {
+			if (par1 == Blocks.LOG || par1 == Blocks.COBBLESTONE) {
+				return 0;
+			}
+			if (par1 == Blocks.PLANKS) {
+				return 2;
+			}
+		}
+		return par2;
+	}
 
-    @Override
-    public void instantConstruction() {
-        template.getValidationSettings().preGeneration(world, buildOrigin, buildFace, template, bb);
-        super.instantConstruction();
-        template.getValidationSettings().postGeneration(world, buildOrigin, bb);
-    }
+	@Override
+	public void instantConstruction() {
+		template.getValidationSettings().preGeneration(world, buildOrigin, buildFace, template, bb);
+		super.instantConstruction();
+		template.getValidationSettings().postGeneration(world, buildOrigin, bb);
+	}
 
 }

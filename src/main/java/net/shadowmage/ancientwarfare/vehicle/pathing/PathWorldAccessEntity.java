@@ -27,8 +27,8 @@ import net.minecraft.world.World;
 /**
  * a wrapper for a world-obj that will do additional validation of nodes to see if the entity can walk
  * on the node, and fit in the area (used more for vehicles than soldiers)
- * @author Shadowmage
  *
+ * @author Shadowmage
  */
 public class PathWorldAccessEntity extends PathWorldAccess {
 

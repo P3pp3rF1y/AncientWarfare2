@@ -17,52 +17,51 @@ import java.util.List;
 
 public class ItemTradeOrder extends ItemOrders {
 
-    public ItemTradeOrder() {
-        super("trade_order");
-    }
+	public ItemTradeOrder() {
+		super("trade_order");
+	}
 
-    @Override
-    public List<BlockPos> getPositionsForRender(ItemStack stack) {
-        List<BlockPos> positionList = new ArrayList<>();
-        TradeOrder order = TradeOrder.getTradeOrder(stack);
-        if (order != null && order.getRoute().size() > 0) {
-            for (int i = 0; i < order.getRoute().size(); i++) {
-                positionList.add(order.getRoute().get(i).getPosition());
-            }
-        }
-        return positionList;
-    }
+	@Override
+	public List<BlockPos> getPositionsForRender(ItemStack stack) {
+		List<BlockPos> positionList = new ArrayList<>();
+		TradeOrder order = TradeOrder.getTradeOrder(stack);
+		if (order != null && order.getRoute().size() > 0) {
+			for (int i = 0; i < order.getRoute().size(); i++) {
+				positionList.add(order.getRoute().get(i).getPosition());
+			}
+		}
+		return positionList;
+	}
 
-    @Override
-    public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key) {
-        return key == ItemKey.KEY_0 || key == ItemKey.KEY_1 || key == ItemKey.KEY_2;
-    }
+	@Override
+	public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key) {
+		return key == ItemKey.KEY_0 || key == ItemKey.KEY_1 || key == ItemKey.KEY_2;
+	}
 
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand)
-    {
-        if(!world.isRemote)
-            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_TRADE_ORDER, 0, 0, 0);
-        return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
-    }
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		if (!world.isRemote)
+			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_TRADE_ORDER, 0, 0, 0);
+		return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+	}
 
-    @Override
-    public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
-        RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, 5, 0);
-        if (hit == null || hit.typeOfHit != RayTraceResult.Type.BLOCK) {
-            return;
-        }
-        TradeOrder order = TradeOrder.getTradeOrder(stack);
-        if (key == ItemKey.KEY_0) {
-            order.getRoute().addRoutePoint(hit.getBlockPos());
-            order.write(stack);
-        } else if (key == ItemKey.KEY_1) {
-            order.getRestockData().setDepositPoint(hit.getBlockPos(), hit.sideHit);
-            order.write(stack);
-        } else if (key == ItemKey.KEY_2) {
-            order.getRestockData().setWithdrawPoint(hit.getBlockPos(), hit.sideHit);
-            order.write(stack);
-        }
-    }
+	@Override
+	public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
+		RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, 5, 0);
+		if (hit == null || hit.typeOfHit != RayTraceResult.Type.BLOCK) {
+			return;
+		}
+		TradeOrder order = TradeOrder.getTradeOrder(stack);
+		if (key == ItemKey.KEY_0) {
+			order.getRoute().addRoutePoint(hit.getBlockPos());
+			order.write(stack);
+		} else if (key == ItemKey.KEY_1) {
+			order.getRestockData().setDepositPoint(hit.getBlockPos(), hit.sideHit);
+			order.write(stack);
+		} else if (key == ItemKey.KEY_2) {
+			order.getRestockData().setWithdrawPoint(hit.getBlockPos(), hit.sideHit);
+			order.write(stack);
+		}
+	}
 
 }

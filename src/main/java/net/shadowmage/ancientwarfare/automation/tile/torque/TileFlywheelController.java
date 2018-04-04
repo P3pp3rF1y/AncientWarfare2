@@ -11,211 +11,211 @@ import javax.annotation.Nullable;
 
 public abstract class TileFlywheelController extends TileTorqueSingleCell {
 
-    private boolean powered;
+	private boolean powered;
 
-    private final TorqueCell inputCell;
+	private final TorqueCell inputCell;
 
-    public TileFlywheelController() {
-        double max = getMaxTransfer();
-        double eff = getEfficiency();
-        inputCell = new TorqueCell(max, max, max, eff);
-        torqueCell = new TorqueCell(max, max, max, eff);
-    }
+	public TileFlywheelController() {
+		double max = getMaxTransfer();
+		double eff = getEfficiency();
+		inputCell = new TorqueCell(max, max, max, eff);
+		torqueCell = new TorqueCell(max, max, max, eff);
+	}
 
-    protected abstract double getEfficiency();
+	protected abstract double getEfficiency();
 
-    protected abstract double getMaxTransfer();
+	protected abstract double getMaxTransfer();
 
-    @Override
-    public void update() {
-        if (!world.isRemote) {
-            serverNetworkUpdate();
-            torqueIn = torqueCell.getEnergy() - prevEnergy;
-            torqueLoss = applyPowerDrain(torqueCell);
-            torqueLoss += applyPowerDrain(inputCell);
-            torqueLoss += applyDrainToStorage();
-            torqueOut = transferPowerTo(getPrimaryFacing());
-            balancePower();
-            prevEnergy = torqueCell.getEnergy();
-        } else {
-            clientNetworkUpdate();
-            updateRotation();
-        }
-    }
+	@Override
+	public void update() {
+		if (!world.isRemote) {
+			serverNetworkUpdate();
+			torqueIn = torqueCell.getEnergy() - prevEnergy;
+			torqueLoss = applyPowerDrain(torqueCell);
+			torqueLoss += applyPowerDrain(inputCell);
+			torqueLoss += applyDrainToStorage();
+			torqueOut = transferPowerTo(getPrimaryFacing());
+			balancePower();
+			prevEnergy = torqueCell.getEnergy();
+		} else {
+			clientNetworkUpdate();
+			updateRotation();
+		}
+	}
 
-    protected double applyDrainToStorage() {
-        TileFlywheelStorage storage = getControlledFlywheel();
-        if (storage == null) {
-            return 0;
-        }
-        return storage.torqueLoss;
-    }
+	protected double applyDrainToStorage() {
+		TileFlywheelStorage storage = getControlledFlywheel();
+		if (storage == null) {
+			return 0;
+		}
+		return storage.torqueLoss;
+	}
 
-    /*
-     * fill output from input
-     * fill output from storage
-     * fill storage from input
-     */
-    protected void balancePower() {
-        TileFlywheelStorage storage = getControlledFlywheel();
-        double in = inputCell.getEnergy();
-        double out = torqueCell.getEnergy();
-        double outputGap = torqueCell.getMaxEnergy() - out;
-        double addOutput = Math.min(in, outputGap);
-        in -= addOutput;
-        out += addOutput;
-        if (storage != null) {
-            double store = storage.storedEnergy;
-            double storeToTransfer = Math.min(store, torqueCell.getMaxEnergy() - out);
-            store -= storeToTransfer;
-            out += storeToTransfer;
+	/*
+	 * fill output from input
+	 * fill output from storage
+	 * fill storage from input
+	 */
+	protected void balancePower() {
+		TileFlywheelStorage storage = getControlledFlywheel();
+		double in = inputCell.getEnergy();
+		double out = torqueCell.getEnergy();
+		double outputGap = torqueCell.getMaxEnergy() - out;
+		double addOutput = Math.min(in, outputGap);
+		in -= addOutput;
+		out += addOutput;
+		if (storage != null) {
+			double store = storage.storedEnergy;
+			double storeToTransfer = Math.min(store, torqueCell.getMaxEnergy() - out);
+			store -= storeToTransfer;
+			out += storeToTransfer;
 
-            double addToStore = Math.min(in, storage.maxEnergyStored - store);
-            in -= addToStore;
-            store += addToStore;
-            storage.storedEnergy = store;
-            torqueLoss += storage.torqueLoss;
-        }
-        torqueCell.setEnergy(out);
-        inputCell.setEnergy(in);
-    }
+			double addToStore = Math.min(in, storage.maxEnergyStored - store);
+			in -= addToStore;
+			store += addToStore;
+			storage.storedEnergy = store;
+			torqueLoss += storage.torqueLoss;
+		}
+		torqueCell.setEnergy(out);
+		inputCell.setEnergy(in);
+	}
 
-    @Override
-    protected void updateRotation() {
-        if (!powered) {
-            super.updateRotation();
-        }
-    }
+	@Override
+	protected void updateRotation() {
+		if (!powered) {
+			super.updateRotation();
+		}
+	}
 
-    @Nullable
-    public TileFlywheelStorage getControlledFlywheel() {
-        BlockPos controllerPos = pos.offset(EnumFacing.DOWN);
-        TileEntity te = world.getTileEntity(controllerPos);
-        if (te instanceof TileFlywheelStorage) {
-            TileFlywheelStorage fs = (TileFlywheelStorage) te;
-            if (fs.controllerPos != null) {
-                controllerPos = fs.controllerPos;
-                te = world.getTileEntity(controllerPos);
-                if (te instanceof TileFlywheelStorage) {
-                    return (TileFlywheelStorage) te;
-                }
-            }
-        }
-        return null;
-    }
+	@Nullable
+	public TileFlywheelStorage getControlledFlywheel() {
+		BlockPos controllerPos = pos.offset(EnumFacing.DOWN);
+		TileEntity te = world.getTileEntity(controllerPos);
+		if (te instanceof TileFlywheelStorage) {
+			TileFlywheelStorage fs = (TileFlywheelStorage) te;
+			if (fs.controllerPos != null) {
+				controllerPos = fs.controllerPos;
+				te = world.getTileEntity(controllerPos);
+				if (te instanceof TileFlywheelStorage) {
+					return (TileFlywheelStorage) te;
+				}
+			}
+		}
+		return null;
+	}
 
-    public float getFlywheelRotation(float delta) {
-        TileFlywheelStorage storage = getControlledFlywheel();
-        return storage == null ? 0 : getRenderRotation(storage.rotation, storage.lastRotationDiff, delta);
-    }
+	public float getFlywheelRotation(float delta) {
+		TileFlywheelStorage storage = getControlledFlywheel();
+		return storage == null ? 0 : getRenderRotation(storage.rotation, storage.lastRotationDiff, delta);
+	}
 
-    protected double getFlywheelEnergy() {
-        TileFlywheelStorage storage = getControlledFlywheel();
-        return storage == null ? 0 : storage.storedEnergy;//TODO
-    }
+	protected double getFlywheelEnergy() {
+		TileFlywheelStorage storage = getControlledFlywheel();
+		return storage == null ? 0 : storage.storedEnergy;//TODO
+	}
 
-    @Override
-    protected double getTotalTorque() {
-        return inputCell.getEnergy() + torqueCell.getEnergy() + getFlywheelEnergy();
-    }
+	@Override
+	protected double getTotalTorque() {
+		return inputCell.getEnergy() + torqueCell.getEnergy() + getFlywheelEnergy();
+	}
 
-    @Override
-    public void onNeighborTileChanged() {
-        super.onNeighborTileChanged();
-        if (!world.isRemote) {
-            boolean p = world.getStrongPower(pos) > 0;
-            if (p != powered) {
-                powered = p;
-                sendDataToClient(7, powered ? 1 : 0);
-            }
-        }
-    }
+	@Override
+	public void onNeighborTileChanged() {
+		super.onNeighborTileChanged();
+		if (!world.isRemote) {
+			boolean p = world.getStrongPower(pos) > 0;
+			if (p != powered) {
+				powered = p;
+				sendDataToClient(7, powered ? 1 : 0);
+			}
+		}
+	}
 
-    @Override
-    public boolean receiveClientEvent(int a, int b) {
-        if (world.isRemote) {
-            if (a == 7) {
-                powered = b == 1;
-            }
-        }
-        return super.receiveClientEvent(a, b);
-    }
+	@Override
+	public boolean receiveClientEvent(int a, int b) {
+		if (world.isRemote) {
+			if (a == 7) {
+				powered = b == 1;
+			}
+		}
+		return super.receiveClientEvent(a, b);
+	}
 
-    @Override
-    public double getMaxTorqueOutput(EnumFacing from) {
-        if (powered) {
-            return 0;
-        }
-        return torqueCell.getMaxTickOutput();
-    }
+	@Override
+	public double getMaxTorqueOutput(EnumFacing from) {
+		if (powered) {
+			return 0;
+		}
+		return torqueCell.getMaxTickOutput();
+	}
 
-    @Override
-    public double getMaxTorque(EnumFacing from) {
-        TorqueCell cell = getCell(from);
-        return cell == null ? 0 : cell.getMaxEnergy();
-    }
+	@Override
+	public double getMaxTorque(EnumFacing from) {
+		TorqueCell cell = getCell(from);
+		return cell == null ? 0 : cell.getMaxEnergy();
+	}
 
-    @Override
-    public double getTorqueStored(EnumFacing from) {
-        TorqueCell cell = getCell(from);
-        return cell == null ? 0 : cell.getEnergy();
-    }
+	@Override
+	public double getTorqueStored(EnumFacing from) {
+		TorqueCell cell = getCell(from);
+		return cell == null ? 0 : cell.getEnergy();
+	}
 
-    @Override
-    public double addTorque(EnumFacing from, double energy) {
-        TorqueCell cell = getCell(from);
-        return cell == null ? 0 : cell.addEnergy(energy);
-    }
+	@Override
+	public double addTorque(EnumFacing from, double energy) {
+		TorqueCell cell = getCell(from);
+		return cell == null ? 0 : cell.addEnergy(energy);
+	}
 
-    @Override
-    public double drainTorque(EnumFacing from, double energy) {
-        TorqueCell cell = getCell(from);
-        return cell == null ? 0 : cell.drainEnergy(energy);
-    }
+	@Override
+	public double drainTorque(EnumFacing from, double energy) {
+		TorqueCell cell = getCell(from);
+		return cell == null ? 0 : cell.drainEnergy(energy);
+	}
 
-    @Override
-    public double getMaxTorqueInput(EnumFacing from) {
-        TorqueCell cell = getCell(from);
-        return cell == null ? 0 : cell.getMaxTickInput();
-    }
+	@Override
+	public double getMaxTorqueInput(EnumFacing from) {
+		TorqueCell cell = getCell(from);
+		return cell == null ? 0 : cell.getMaxTickInput();
+	}
 
-    @Nullable
-    private TorqueCell getCell(EnumFacing from) {
-        if (from == orientation) {
-            return torqueCell;
-        } else if (from == orientation.getOpposite()) {
-            return inputCell;
-        }
-        return null;
-    }
+	@Nullable
+	private TorqueCell getCell(EnumFacing from) {
+		if (from == orientation) {
+			return torqueCell;
+		} else if (from == orientation.getOpposite()) {
+			return inputCell;
+		}
+		return null;
+	}
 
-    //************************************** NBT / DATA PACKET ***************************************//
+	//************************************** NBT / DATA PACKET ***************************************//
 
-    @Override
-    protected void handleUpdateNBT(NBTTagCompound tag) {
-        super.handleUpdateNBT(tag);
-        powered = tag.getBoolean("powered");
-    }
+	@Override
+	protected void handleUpdateNBT(NBTTagCompound tag) {
+		super.handleUpdateNBT(tag);
+		powered = tag.getBoolean("powered");
+	}
 
-    @Override
-    protected void writeUpdateNBT(NBTTagCompound tag) {
-        super.writeUpdateNBT(tag);
-        tag.setBoolean("powered", powered);
-    }
+	@Override
+	protected void writeUpdateNBT(NBTTagCompound tag) {
+		super.writeUpdateNBT(tag);
+		tag.setBoolean("powered", powered);
+	}
 
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        super.writeToNBT(tag);
-        tag.setBoolean("powered", powered);
-        tag.setDouble("torqueEnergyIn", inputCell.getEnergy());
-        return tag;
-    }
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+		super.writeToNBT(tag);
+		tag.setBoolean("powered", powered);
+		tag.setDouble("torqueEnergyIn", inputCell.getEnergy());
+		return tag;
+	}
 
-    @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        super.readFromNBT(tag);
-        powered = tag.getBoolean("powered");
-        inputCell.setEnergy(tag.getDouble("torqueEnergyIn"));
-    }
+	@Override
+	public void readFromNBT(NBTTagCompound tag) {
+		super.readFromNBT(tag);
+		powered = tag.getBoolean("powered");
+		inputCell.setEnergy(tag.getDouble("torqueEnergyIn"));
+	}
 
 }

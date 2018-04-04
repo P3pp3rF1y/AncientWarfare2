@@ -85,35 +85,35 @@ public class TileAutoCrafting extends TileWorksiteBase {
 	}
 
 	private boolean canCraft() {
-		if(outputSlot.getStackInSlot(0).isEmpty()) {
+		if (outputSlot.getStackInSlot(0).isEmpty()) {
 			return false;
 		}//no output stack, don't even bother checking
 		ArrayList<ItemStack> compactedCraft = new ArrayList<>();
 		@Nonnull ItemStack stack1;
 		@Nonnull ItemStack stack2;
 		boolean found;
-		for(int i = 0; i < craftMatrix.getSizeInventory(); i++) {
+		for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
 			stack1 = craftMatrix.getStackInSlot(i);
-			if(stack1.isEmpty()) {
+			if (stack1.isEmpty()) {
 				continue;
 			}
 			found = false;
-			for(ItemStack stack3 : compactedCraft) {
-				if(InventoryTools.doItemStacksMatchRelaxed(stack3, stack1)) {
+			for (ItemStack stack3 : compactedCraft) {
+				if (InventoryTools.doItemStacksMatchRelaxed(stack3, stack1)) {
 					stack3.grow(1);
 					found = true;
 					break;
 				}
 			}
-			if(!found) {
+			if (!found) {
 				stack2 = stack1.copy();
 				stack2.setCount(1);
 				compactedCraft.add(stack2);
 			}
 		}
 		found = true;
-		for(ItemStack stack3 : compactedCraft) {
-			if(InventoryTools.getCountOf(resourceInventory, stack3) < stack3.getCount()) {
+		for (ItemStack stack3 : compactedCraft) {
+			if (InventoryTools.getCountOf(resourceInventory, stack3) < stack3.getCount()) {
 				found = false;
 				break;
 			}
@@ -126,7 +126,7 @@ public class TileAutoCrafting extends TileWorksiteBase {
 	}
 
 	public boolean tryCraftItem() {
-		if(canCraft() && canHold()) {
+		if (canCraft() && canHold()) {
 			craftItem();
 			return true;
 		}
@@ -137,21 +137,21 @@ public class TileAutoCrafting extends TileWorksiteBase {
 		@Nonnull ItemStack stack = this.outputSlot.getStackInSlot(0).copy();
 		useResources();
 		stack = InventoryTools.mergeItemStack(outputInventory, stack);
-		if(!stack.isEmpty()) {
+		if (!stack.isEmpty()) {
 			InventoryTools.dropItemInWorld(world, stack, pos);
 		}
 	}
 
 	private void useResources() {
-		for(int i = 0; i < craftMatrix.getSizeInventory(); i++) {
+		for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
 			ItemStack stack = craftMatrix.getStackInSlot(i);
-			if(stack.isEmpty()) {
+			if (stack.isEmpty()) {
 				continue;
 			}
 			int ingredientCount = AWCraftingManager.getMatchingIngredientCount(researchRecipe, stack);
 			if (InventoryTools.getCountOf(resourceInventory, stack) >= ingredientCount) {
 				InventoryTools.removeItems(resourceInventory, stack, ingredientCount);
-				if(recipe != null) {
+				if (recipe != null) {
 					NonNullList<ItemStack> remainingItems = recipe.getRemainingItems(craftMatrix);
 					InventoryTools.dropItemsInWorld(world, remainingItems, pos);
 				}
@@ -160,7 +160,7 @@ public class TileAutoCrafting extends TileWorksiteBase {
 	}
 
 	private void updateRecipe() {
-		if(AWCraftingManager.findMatchingRecipe(craftMatrix, world, getCrafterName()).isEmpty()) {
+		if (AWCraftingManager.findMatchingRecipe(craftMatrix, world, getCrafterName()).isEmpty()) {
 			recipe = CraftingManager.findMatchingRecipe(craftMatrix, world);
 		} else {
 			recipe = null;
@@ -212,7 +212,7 @@ public class TileAutoCrafting extends TileWorksiteBase {
 
 	@Override
 	public boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
-		if(!player.world.isRemote) {
+		if (!player.world.isRemote) {
 			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_AUTO_CRAFT, pos);
 		}
 		return true;
@@ -252,8 +252,8 @@ public class TileAutoCrafting extends TileWorksiteBase {
 	@Nullable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing != null) {
-			if(facing == EnumFacing.DOWN) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && facing != null) {
+			if (facing == EnumFacing.DOWN) {
 				return (T) outputInventory;
 			} else {
 				return (T) resourceInventory;

@@ -8,6 +8,6 @@ package net.shadowmage.ancientwarfare.core.interfaces;
  */
 public interface IScrollableCallback {
 
-    public void onScrolled(int newTop);
+	public void onScrolled(int newTop);
 
 }

@@ -34,14 +34,7 @@ import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 
 import java.util.UUID;
 
-@Mod
-        (
-                name = "Ancient Warfare Core",
-                modid = AncientWarfareCore.modID,
-                version = "@VERSION@",
-                guiFactory = "net.shadowmage.ancientwarfare.core.gui.options.OptionsGuiFactory",
-                dependencies = CodeChickenLib.MOD_VERSION_DEP
-        )
+@Mod(name = "Ancient Warfare Core", modid = AncientWarfareCore.modID, version = "@VERSION@", guiFactory = "net.shadowmage.ancientwarfare.core.gui.options.OptionsGuiFactory", dependencies = CodeChickenLib.MOD_VERSION_DEP)
 public class AncientWarfareCore {
 
     public static final String modID = "ancientwarfare";
@@ -49,17 +42,13 @@ public class AncientWarfareCore {
     @Instance(value = AncientWarfareCore.modID)
     public static AncientWarfareCore instance;
 
-    @SidedProxy
-            (
-                    clientSide = "net.shadowmage.ancientwarfare.core.proxy.ClientProxy",
-                    serverSide = "net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase"
-            )
+    @SidedProxy(clientSide = "net.shadowmage.ancientwarfare.core.proxy.ClientProxy", serverSide = "net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase")
     public static CommonProxyBase proxy;
 
     public static org.apache.logging.log4j.Logger log;
 
     public static AWCoreStatics statics;
-    
+
     // Used by FakePlayerFactory
     public static GameProfile gameProfile = new GameProfile(UUID.nameUUIDFromBytes("AncientWarfareMod".getBytes()), "[AncientWarfareMod]");
 
@@ -118,7 +107,7 @@ public class AncientWarfareCore {
     public void serverStartingEvent(FMLServerStartingEvent evt) {
         evt.registerServerCommand(new CommandResearch());
     }
-    
+
     @SubscribeEvent
     public void configChangedEvent(OnConfigChangedEvent evt) {
         if (modID.equals(evt.getModID())) {

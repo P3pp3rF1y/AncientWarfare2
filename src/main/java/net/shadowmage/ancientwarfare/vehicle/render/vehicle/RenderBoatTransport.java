@@ -26,7 +26,6 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelBoatTransport;
 
-
 public class RenderBoatTransport extends RenderVehicleBase {
 
 	ModelBoatTransport model = new ModelBoatTransport();

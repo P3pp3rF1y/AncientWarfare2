@@ -1,26 +1,26 @@
 {
-  "type": "ancientwarfare:research_recipe",
-  "research": "agriculture",
-  "pattern": [
-    "___",
-    "GWG",
-    "_C_"
-  ],
-  "key": {
-    "C": {
-      "item": "minecraft:chest"
+    "type": "ancientwarfare:research_recipe",
+    "research": "agriculture",
+    "pattern": [
+        "___",
+        "GWG",
+        "_C_"
+    ],
+    "key": {
+        "C": {
+            "item": "minecraft:chest"
+        },
+        "W": {
+            "item": "minecraft:iron_hoe"
+        },
+        "G": {
+            "item": "#GEARWOOD"
+        },
+        "_": {
+            "item": "#PLANKWOOD"
+        }
     },
-    "W": {
-      "item": "minecraft:iron_hoe"
-    },
-    "G": {
-      "item": "#GEARWOOD"
-    },
-    "_": {
-      "item": "#PLANKWOOD"
+    "result": {
+        "item": "ancientwarfareautomation:crop_farm"
     }
-  },
-  "result": {
-    "item": "ancientwarfareautomation:crop_farm"
-  }
 }

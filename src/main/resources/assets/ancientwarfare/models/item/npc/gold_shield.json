@@ -1,6 +1,6 @@
 {
-  "parent": "ancientwarfare:item/npc/shield",
-  "textures": {
-    "layer0": "ancientwarfare:items/npc/gold_shield"
-  }
+    "parent": "ancientwarfare:item/npc/shield",
+    "textures": {
+        "layer0": "ancientwarfare:items/npc/gold_shield"
+    }
 }

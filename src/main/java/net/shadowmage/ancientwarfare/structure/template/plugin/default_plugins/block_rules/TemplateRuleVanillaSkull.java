@@ -9,46 +9,46 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 
 public class TemplateRuleVanillaSkull extends TemplateRuleBlockLogic {
-    public int rotation;
+	public int rotation;
 
-    public TemplateRuleVanillaSkull(World world, BlockPos pos, Block block, int meta, int turns) {
-        super(world, pos, block, meta, turns);
-        int t = tag.getInteger("Rot");
-        AWLog.logDebug("base rot: " + t);
-        t = getRotation(t, turns);
-        AWLog.logDebug("rotated Rot: " + t);
-        rotation = t;
-    }
+	public TemplateRuleVanillaSkull(World world, BlockPos pos, Block block, int meta, int turns) {
+		super(world, pos, block, meta, turns);
+		int t = tag.getInteger("Rot");
+		AWLog.logDebug("base rot: " + t);
+		t = getRotation(t, turns);
+		AWLog.logDebug("rotated Rot: " + t);
+		rotation = t;
+	}
 
-    public TemplateRuleVanillaSkull() {
-    }
+	public TemplateRuleVanillaSkull() {
+	}
 
-    @Override
-    public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
-        tag.setInteger("Rot", getRotation(rotation, turns));
-        AWLog.logDebug("pre-place rot: " + tag.getInteger("Rot"));
-        super.handlePlacement(world, turns, pos, builder);
-    }
+	@Override
+	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
+		tag.setInteger("Rot", getRotation(rotation, turns));
+		AWLog.logDebug("pre-place rot: " + tag.getInteger("Rot"));
+		super.handlePlacement(world, turns, pos, builder);
+	}
 
-    private int getRotation(int originalRotation, int turns) {
-        EnumFacing facing = EnumFacing.getHorizontal((originalRotation % 16) / 4).getOpposite();
+	private int getRotation(int originalRotation, int turns) {
+		EnumFacing facing = EnumFacing.getHorizontal((originalRotation % 16) / 4).getOpposite();
 
-        for(int t=0; t < turns; t++) {
-            facing = facing.rotateY();
-        }
+		for (int t = 0; t < turns; t++) {
+			facing = facing.rotateY();
+		}
 
-        return facing.getOpposite().getHorizontalIndex() * 4;
-    }
+		return facing.getOpposite().getHorizontalIndex() * 4;
+	}
 
-    @Override
-    public void writeRuleData(NBTTagCompound tag) {
-        this.tag.setInteger("Rot", rotation);
-        super.writeRuleData(tag);
-    }
+	@Override
+	public void writeRuleData(NBTTagCompound tag) {
+		this.tag.setInteger("Rot", rotation);
+		super.writeRuleData(tag);
+	}
 
-    @Override
-    public void parseRuleData(NBTTagCompound tag) {
-        super.parseRuleData(tag);
-        rotation = this.tag.getInteger("Rot");
-    }
+	@Override
+	public void parseRuleData(NBTTagCompound tag) {
+		super.parseRuleData(tag);
+		rotation = this.tag.getInteger("Rot");
+	}
 }

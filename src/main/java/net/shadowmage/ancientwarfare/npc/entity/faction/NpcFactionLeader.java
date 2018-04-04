@@ -18,38 +18,38 @@ import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionCommander;
 
 public abstract class NpcFactionLeader extends NpcFaction {
 
-    public NpcFactionLeader(World par1World) {
-        super(par1World);
-//  this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.DIAMOND_SWORD));
+	public NpcFactionLeader(World par1World) {
+		super(par1World);
+		//  this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.DIAMOND_SWORD));
 
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
-        this.tasks.addTask(0, new NpcAIDoor(this, true));
-        this.tasks.addTask(1, new NpcAIFactionCommander(this));
-        this.tasks.addTask(1, new NpcAIFollowPlayer(this));
-        this.tasks.addTask(2, new NpcAIMoveHome(this, 50F, 5F, 30F, 5F));
-        this.tasks.addTask(3, new NpcAIAttackMeleeLongRange(this));
+		this.tasks.addTask(0, new EntityAISwimming(this));
+		this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
+		this.tasks.addTask(0, new NpcAIDoor(this, true));
+		this.tasks.addTask(1, new NpcAIFactionCommander(this));
+		this.tasks.addTask(1, new NpcAIFollowPlayer(this));
+		this.tasks.addTask(2, new NpcAIMoveHome(this, 50F, 5F, 30F, 5F));
+		this.tasks.addTask(3, new NpcAIAttackMeleeLongRange(this));
 
-        this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
-        this.tasks.addTask(102, new NpcAIWander(this));
-        this.tasks.addTask(103, new NpcAIWatchClosest(this, EntityLiving.class, 8.0F));
+		this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
+		this.tasks.addTask(102, new NpcAIWander(this));
+		this.tasks.addTask(103, new NpcAIWatchClosest(this, EntityLiving.class, 8.0F));
 
-        this.targetTasks.addTask(1, new NpcAIHurt(this));
-        this.targetTasks.addTask(2, new NpcAIAttackNearest(this, selector));
-    }
+		this.targetTasks.addTask(1, new NpcAIHurt(this));
+		this.targetTasks.addTask(2, new NpcAIAttackNearest(this, selector));
+	}
 
-    @Override
-    public boolean worksInRain() {
-        return true;
-    }
+	@Override
+	public boolean worksInRain() {
+		return true;
+	}
 
-    @Override
-    public boolean isPassive() {
-        return false;
-    }
+	@Override
+	public boolean isPassive() {
+		return false;
+	}
 
-    @Override
-    public boolean shouldSleep() {
-        return false;
-    }
+	@Override
+	public boolean shouldSleep() {
+		return false;
+	}
 }

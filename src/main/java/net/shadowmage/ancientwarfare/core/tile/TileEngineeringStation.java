@@ -71,7 +71,7 @@ public class TileEngineeringStation extends TileUpdatable implements IRotatableT
 	 */
 	public void preItemCrafted() {
 		@Nonnull ItemStack stack;
-		for(int i = 0; i < layoutMatrix.getSizeInventory(); i++) {
+		for (int i = 0; i < layoutMatrix.getSizeInventory(); i++) {
 			stack = layoutMatrix.getStackInSlot(i);
 			matrixShadow.set(i, stack.copy());
 		}
@@ -79,9 +79,9 @@ public class TileEngineeringStation extends TileUpdatable implements IRotatableT
 
 	public void onItemCrafted() {
 		@Nonnull ItemStack layoutStack;
-		for(int i = 0; i < layoutMatrix.getSizeInventory(); i++) {
+		for (int i = 0; i < layoutMatrix.getSizeInventory(); i++) {
 			layoutStack = matrixShadow.get(i);
-			if(layoutStack.isEmpty()) {
+			if (layoutStack.isEmpty()) {
 				continue;
 			}
 			int ingredientCount = AWCraftingManager.getMatchingIngredientCount(researchRecipe, layoutStack);

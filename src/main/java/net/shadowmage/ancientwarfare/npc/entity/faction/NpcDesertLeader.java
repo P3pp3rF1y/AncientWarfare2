@@ -4,13 +4,13 @@ import net.minecraft.world.World;
 
 public class NpcDesertLeader extends NpcFactionLeader {
 
-    public NpcDesertLeader(World par1World) {
-        super(par1World);
-    }
+	public NpcDesertLeader(World par1World) {
+		super(par1World);
+	}
 
-    @Override
-    public String getNpcType() {
-        return "desert.leader";
-    }
+	@Override
+	public String getNpcType() {
+		return "desert.leader";
+	}
 
 }
