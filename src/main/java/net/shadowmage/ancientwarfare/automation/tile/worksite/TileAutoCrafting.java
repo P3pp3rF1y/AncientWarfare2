@@ -17,6 +17,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
+import net.shadowmage.ancientwarfare.core.crafting.ResearchRecipeBase;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
@@ -26,6 +27,7 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 
 public class TileAutoCrafting extends TileWorksiteBase {
+	private ResearchRecipeBase researchRecipe;
 	public ItemStackHandler bookSlot = new ItemStackHandler(1) {
 		@Nonnull
 		@Override
@@ -146,7 +148,9 @@ public class TileAutoCrafting extends TileWorksiteBase {
 			if(stack.isEmpty()) {
 				continue;
 			}
-			if(!InventoryTools.removeItems(resourceInventory, stack, 1).isEmpty()) {
+			int ingredientCount = AWCraftingManager.getMatchingIngredientCount(researchRecipe, stack);
+			if (InventoryTools.getCountOf(resourceInventory, stack) >= ingredientCount) {
+				InventoryTools.removeItems(resourceInventory, stack, ingredientCount);
 				if(recipe != null) {
 					NonNullList<ItemStack> remainingItems = recipe.getRemainingItems(craftMatrix);
 					InventoryTools.dropItemsInWorld(world, remainingItems, pos);
@@ -198,6 +202,10 @@ public class TileAutoCrafting extends TileWorksiteBase {
 
 	/* ***********************************INVENTORY METHODS*********************************************** */
 	private void onLayoutMatrixChanged() {
+		ResearchRecipeBase researchRecipe = AWCraftingManager.findMatchingResearchRecipe(craftMatrix, world, getCrafterName());
+		if (researchRecipe != null) {
+			this.researchRecipe = researchRecipe;
+		}
 		this.outputSlot.setInventorySlotContents(0, AWCraftingManager.findMatchingRecipe(craftMatrix, world, getCrafterName()));
 		updateRecipe();
 	}

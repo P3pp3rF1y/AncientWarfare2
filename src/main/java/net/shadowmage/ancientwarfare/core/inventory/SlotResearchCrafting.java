@@ -12,6 +12,8 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
+import net.shadowmage.ancientwarfare.core.crafting.ResearchRecipeBase;
 
 /**
  * This needs to be used instead of vanilla SlotCrafting because vanilla one can only work with ingredients of IRecipes, but has no clue what to do
@@ -31,10 +33,13 @@ public class SlotResearchCrafting extends Slot {
 	 */
 	private int amountCrafted;
 
-	public SlotResearchCrafting(EntityPlayer player, InventoryCrafting craftingInventory, IInventory inventory, int slotIndex, int xPosition, int yPosition) {
+	private String crafterName;
+
+	public SlotResearchCrafting(EntityPlayer player, String crafterName, InventoryCrafting craftingInventory, IInventory inventory, int slotIndex, int xPosition, int yPosition) {
 		super(inventory, slotIndex, xPosition, yPosition);
 		this.player = player;
 		this.craftMatrix = craftingInventory;
+		this.crafterName = crafterName;
 	}
 
 	/**
@@ -90,7 +95,10 @@ public class SlotResearchCrafting extends Slot {
 		onCrafting(stack);
 		InventoryCraftResult inventorycraftresult = (InventoryCraftResult) inventory;
 		NonNullList<ItemStack> nonnulllist;
-		if (inventorycraftresult.getRecipeUsed() != null) {
+
+		ResearchRecipeBase researchRecipe = AWCraftingManager.findMatchingResearchRecipe(craftMatrix, thePlayer.world, crafterName);
+
+		if (researchRecipe == null && inventorycraftresult.getRecipeUsed() != null) {
 			net.minecraftforge.common.ForgeHooks.setCraftingPlayer(thePlayer);
 			nonnulllist = CraftingManager.getRemainingItems(craftMatrix, thePlayer.world);
 			net.minecraftforge.common.ForgeHooks.setCraftingPlayer(null);
@@ -101,7 +109,7 @@ public class SlotResearchCrafting extends Slot {
 			ItemStack itemstack = this.craftMatrix.getStackInSlot(i);
 			ItemStack itemstack1 = nonnulllist.get(i);
 			if (!itemstack.isEmpty()) {
-				this.craftMatrix.decrStackSize(i, 1);
+				this.craftMatrix.decrStackSize(i, AWCraftingManager.getMatchingIngredientCount(researchRecipe, itemstack));
 				itemstack = this.craftMatrix.getStackInSlot(i);
 			}
 			if (!itemstack1.isEmpty()) {

@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.npc.entity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.INpc;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -28,7 +29,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood {
+public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc {
 
 	public boolean isAlarmed = false;
 	public boolean deathNotifiedTownhall = false;

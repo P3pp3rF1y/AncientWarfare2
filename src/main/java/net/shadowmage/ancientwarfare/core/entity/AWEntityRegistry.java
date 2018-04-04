@@ -128,9 +128,9 @@ public class AWEntityRegistry {
      * Vehicle Module Entity Registrations
      */
 
-    public static final String VEHICLE_TEST = "vehicle_test";
+    public static final String VEHICLE_TEST = "vehicle";
     public static final String VEHICLE_CATAPULT = "catapult";
-    public static final String MISSILE_TEST = "missile_test";
+    public static final String MISSILE_TEST = "missile";
 
     /*
      * Structure Module Entity Registrations

@@ -23,8 +23,8 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
      * Current position within work bounds.
      * Incremented when work is processed.
      */
-    private BlockPos current;//position within bounds that is the 'active' position
-    private BlockPos validate;
+    private BlockPos current = BlockPos.ORIGIN;//position within bounds that is the 'active' position
+    private BlockPos validate = BlockPos.ORIGIN;
 
     public WorkSiteQuarry() {
         super();

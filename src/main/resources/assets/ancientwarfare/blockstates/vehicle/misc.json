@@ -1,0 +1,121 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "builtin/generated",
+        "transform": "forge:default-item"
+    },
+    "variants": {
+        "variant": {
+            "flame_charge": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_flame_charge"
+                }
+            },
+            "explosive_charge": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_explosive_charge"
+                }
+            },
+            "rocket_charge": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_rocket_charge"
+                }
+            },
+            "cluster_charge": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_cluster_charge"
+                }
+            },
+            "napalm_charge": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_napalm_charge"
+                }
+            },
+            "clay_casing": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_clay_casing"
+                }
+            },
+            "iron_casing": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_iron_casing"
+                }
+            },
+            "mobility_unit": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/misc/vehicle_mobility_unit"
+                }
+            },
+            "turret_components": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/misc/vehicle_turret_components"
+                }
+            },
+            "torsion_unit": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/misc/vehicle_torsion_unit"
+                }
+            },
+            "counter_weight_unit": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/misc/vehicle_counter_weight_unit"
+                }
+            },
+            "powder_case": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/misc/vehicle_powder_case"
+                }
+            },
+            "equipment_bay": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/misc/vehicle_equipment_bay"
+                }
+            },
+            "rough_wood": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/misc/material_wood_1"
+                }
+            },
+            "treated_wood": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/misc/material_wood_2"
+                }
+            },
+            "ironshod_wood": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/misc/material_wood_3"
+                }
+            },
+            "iron_core_wood": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/misc/material_wood_4"
+                }
+            },
+            "rough_iron": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/misc/material_iron_1"
+                }
+            },
+            "fine_iron": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/misc/material_iron_2"
+                }
+            },
+            "tempered_iron": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/misc/material_iron_3"
+                }
+            },
+            "minor_alloy": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/misc/material_iron_4"
+                }
+            },
+            "major_alloy": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/misc/material_iron_5"
+                }
+            }
+        }
+    }
+}

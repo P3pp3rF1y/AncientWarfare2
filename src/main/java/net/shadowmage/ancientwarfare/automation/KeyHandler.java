@@ -10,6 +10,7 @@ import net.shadowmage.ancientwarfare.automation.proxy.ClientProxyAutomation.Auto
 import org.lwjgl.input.Keyboard;
 
 public class KeyHandler {
+    //TODO refactor to one common way - keybindings in core with call back handlers
     public static final int TOGGLE_WORKBOUNDS_RENDER = 0;
     
     private final Minecraft mc;

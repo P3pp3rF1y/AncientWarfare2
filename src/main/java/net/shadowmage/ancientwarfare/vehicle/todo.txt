@@ -1,8 +1,0 @@
-vehicles todo:
-
-how to handle multiple vehicle types?
--- need single OBB vehicles
--- need multi OBB vehicles
--- some multi-OBB vehicles might have pieces rotated independently from main body
-
-can go low-level, non-generic, little/no inheritance.  program every vehicle independently
