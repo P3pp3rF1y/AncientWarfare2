@@ -47,6 +47,12 @@ minecraft{
     version = minecraft_version + "-" + forge_version
     mappings = mcp_mappings
     runDir = "run"
+    replaceIn "automation/AncientWarfareAutomation.java"
+    replaceIn "core/AncientWarfareCore.java"
+    replaceIn "npc/AncientWarfareNPC.java"
+    replaceIn "structure/AncientWarfareStructures.java"
+    replaceIn "vehicle/AncientWarfareVehicles.java"
+    replace "@VERSION@", "${project.minecraft.version}-${project.major}.${project.minor}." + getBuildNumber() + getStable()
 }
 version = minecraft.version + "-" + project.major +"."+ project.minor +"."+ getBuildNumber() + getStable()
 group = "shadowmage"
