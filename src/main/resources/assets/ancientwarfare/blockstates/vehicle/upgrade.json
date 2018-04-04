@@ -1,0 +1,46 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "builtin/generated",
+        "transform": "forge:default-item"
+    },
+    "variants": {
+        "variant": {
+            "vehicle_upgrade_speed": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/upgrade/upgrade_speed"
+                }
+            },
+            "vehicle_upgrade_aim": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/upgrade/upgrade_aim"
+                }
+            },
+            "vehicle_upgrade_reload": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/upgrade/upgrade_reload"
+                }
+            },
+            "vehicle_upgrade_power": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/upgrade/upgrade_power"
+                }
+            },
+            "vehicle_upgrade_turret_pitch": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/upgrade/upgrade_turret_pitch"
+                }
+            },
+            "vehicle_upgrade_pitch_up": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/upgrade/upgrade_pitch_up"
+                }
+            },
+            "vehicle_upgrade_pitch_down": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/upgrade/upgrade_pitch_down"
+                }
+            }
+        }
+    }
+}

@@ -4,43 +4,18 @@ import net.minecraft.entity.Entity;
 import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry;
 import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry.EntityDeclaration;
 import net.shadowmage.ancientwarfare.vehicle.AncientWarfareVehicles;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import net.shadowmage.ancientwarfare.vehicle.missiles.MissileBase;
 
 public class AWVehicleEntityLoader {
 
     private static int nextID = 0;
 
-    private static List<String> vehicleTypes = new ArrayList<>();
-    private static HashMap<String, String> regNameToIcon = new HashMap<>();
-
     public static void load() {
-        EntityDeclaration reg = new VehiculeDeclaration(VehicleTurreted.class, AWEntityRegistry.VEHICLE_TEST);
-        registerVehicleEntity(reg, "fooicon");
-
-        reg = new VehiculeDeclaration(VehicleCatapult.class, AWEntityRegistry.VEHICLE_CATAPULT);
-        registerVehicleEntity(reg, "fooicon");
+        EntityDeclaration reg = new VehiculeDeclaration(VehicleBase.class, AWEntityRegistry.VEHICLE_TEST);
+        AWEntityRegistry.registerEntity(reg);
 
         reg = new VehiculeDeclaration(MissileBase.class, AWEntityRegistry.MISSILE_TEST);
         AWEntityRegistry.registerEntity(reg);
-    }
-
-    private static void registerVehicleEntity(EntityDeclaration reg, String icon) {
-        if (!vehicleTypes.contains(reg.name())) {
-            vehicleTypes.add(reg.name());
-        }
-        AWEntityRegistry.registerEntity(reg);
-        regNameToIcon.put(reg.name(), icon);
-    }
-
-    public static List<String> getVehicleTypes() {
-        return vehicleTypes;
-    }
-
-    public static String getIcon(String vehicleType) {
-        return regNameToIcon.get(vehicleType);
     }
 
     private static class VehiculeDeclaration extends EntityDeclaration {

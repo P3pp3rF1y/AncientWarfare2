@@ -8,20 +8,22 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
+import java.io.IOException;
+
 public class PacketHandlerServer {
 
-    @SubscribeEvent
-    public void onServerPacket(FMLNetworkEvent.ServerCustomPacketEvent evt) {
-        PacketBase packet = PacketBase.readPacket(evt.getPacket().payload());
-        EntityPlayer player  = ((NetHandlerPlayServer) evt.getHandler()).player;
+	@SubscribeEvent
+	public void onServerPacket(FMLNetworkEvent.ServerCustomPacketEvent evt) throws IOException {
+		PacketBase packet = PacketBase.readPacket(evt.getPacket().payload());
+		EntityPlayer player = ((NetHandlerPlayServer) evt.getHandler()).player;
 
-        ((WorldServer) player.world).addScheduledTask(() -> packet.execute(player));
-    }
+		((WorldServer) player.world).addScheduledTask(() -> packet.execute(player));
+	}
 
-    @SubscribeEvent
-    public void onClientPacket(FMLNetworkEvent.ClientCustomPacketEvent evt) {
-        PacketBase packet = PacketBase.readPacket(evt.getPacket().payload());
+	@SubscribeEvent
+	public void onClientPacket(FMLNetworkEvent.ClientCustomPacketEvent evt) throws IOException {
+		PacketBase packet = PacketBase.readPacket(evt.getPacket().payload());
 
-        Minecraft.getMinecraft().addScheduledTask(() -> packet.execute(AncientWarfareCore.proxy.getClientPlayer()));
-    }
+		Minecraft.getMinecraft().addScheduledTask(() -> packet.execute(AncientWarfareCore.proxy.getClientPlayer()));
+	}
 }

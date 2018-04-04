@@ -18,6 +18,8 @@ import java.util.HashMap;
 
 public final class NetworkHandler implements IGuiHandler {
 
+	//TODO split this into separate GUI handlers for separate mods. Also rename to something that says it's guihandler
+
     public static final String CHANNELNAME = "AWCORE";
     public static final NetworkHandler INSTANCE = new NetworkHandler();
 
@@ -35,8 +37,17 @@ public final class NetworkHandler implements IGuiHandler {
     public static final int PACKET_NPC_COMMAND = 12;
     public static final int PACKET_FACTION_UPDATE = 13;
     public static final int PACKET_BLOCK_EVENT = 14;
-    public static final int PACKET_VEHICLE_INPUT_STATE = 15;//full input state packet, from client->server
-    public static final int PACKET_VEHICLE_INPUT_RESPONSE = 16;//response to an input state/change packet, from server->client
+
+	public static final int PACKET_AIM_UPDATE = 15;
+	public static final int PACKET_AMMO_SELECT = 16;
+	public static final int PACKET_AMMO_UPDATE = 17;
+	public static final int PACKET_FIRE_UPDATE = 18;
+	public static final int PACKET_PACK_COMMAND = 19;
+	public static final int PACKET_SINGLE_AMMO_UPDATE = 20;
+	public static final int PACKET_TURRET_ANGLES_UPDATE = 21;
+	public static final int PACKET_UPGRADE_UPDATE = 22;
+	public static final int PACKET_VEHICLE_INPUT = 23;
+	public static final int PACKET_VEHICLE_MOVE = 24;
 
     public static final int GUI_CRAFTING = 0;
     public static final int GUI_SCANNER = 1;
@@ -88,6 +99,10 @@ public final class NetworkHandler implements IGuiHandler {
     public static final int GUI_NPC_PLAYER_OWNED_TRADE = 47;
     public static final int GUI_SOUND_BLOCK = 48;
     public static final int GUI_NPC_FACTION_BARD = 49;
+
+	public static final int GUI_VEHICLE_AMMO_SELECTION = 50;
+	public static final int GUI_VEHICLE_INVENTORY = 51;
+	public static final int GUI_VEHICLE_STATS = 52;
 
     private FMLEventChannel channel;
 
@@ -183,16 +198,26 @@ public final class NetworkHandler implements IGuiHandler {
     public final void openGui(EntityPlayer player, int id, BlockPos pos) {
         openGui(player, id, pos.getX(), pos.getY(), pos.getZ());
     }
-    public final void openGui(EntityPlayer player, int id, int x, int y, int z) {
-        if (player.world.isRemote) {
-            PacketGui pkt = new PacketGui();
-            pkt.setOpenGui(id, x, y, z);
-            sendToServer(pkt);
-        } else {
-            FMLNetworkHandler.openGui(player, AncientWarfareCore.instance, id, player.world, x, y, z);
-            if (player.openContainer instanceof ContainerBase) {
-                ((ContainerBase) player.openContainer).sendInitData();
-            }
-        }
-    }
+
+	//TODO refactor stuff to use this entityId overload
+	public final void openGui(EntityPlayer player, int guiId) {
+		openGui(player, guiId, 0);
+	}
+
+	public final void openGui(EntityPlayer player, int guiId, int entityId) {
+		openGui(player, guiId, entityId, 0, 0);
+	}
+
+	public final void openGui(EntityPlayer player, int id, int x, int y, int z) {
+		if (player.world.isRemote) {
+			PacketGui pkt = new PacketGui();
+			pkt.setOpenGui(id, x, y, z);
+			sendToServer(pkt);
+		} else {
+			FMLNetworkHandler.openGui(player, AncientWarfareCore.instance, id, player.world, x, y, z);
+			if (player.openContainer instanceof ContainerBase) {
+				((ContainerBase) player.openContainer).sendInitData();
+			}
+		}
+	}
 }

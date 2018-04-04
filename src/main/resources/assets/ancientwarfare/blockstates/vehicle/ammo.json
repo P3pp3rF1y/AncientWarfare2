@@ -1,0 +1,321 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "builtin/generated",
+        "transform": "forge:default-item"
+    },
+    "variants": {
+        "variant": {
+            "ammo_ball_shot": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_stone"
+                }
+            },
+            "ammo_iron_ball_shot": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_stone"
+                }
+            },
+            "ammo_stone_shot_10": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_stone"
+                }
+            },
+            "ammo_stone_shot_15": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_stone"
+                }
+            },
+            "ammo_stone_shot_30": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_stone"
+                }
+            },
+            "ammo_stone_shot_45": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_stone"
+                }
+            },
+            "ammo_flame_shot_10": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_flame"
+                }
+            },
+            "ammo_flame_shot_15": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_flame"
+                }
+            },
+            "ammo_flame_shot_30": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_flame"
+                }
+            },
+            "ammo_flame_shot_45": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_flame"
+                }
+            },
+            "ammo_explosive_shot_10": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_he"
+                }
+            },
+            "ammo_explosive_shot_15": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_he"
+                }
+            },
+            "ammo_explosive_shot_30": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_he"
+                }
+            },
+            "ammo_explosive_shot_45": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_he"
+                }
+            },
+            "ammo_explosive_shot_10_big": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_he"
+                }
+            },
+            "ammo_explosive_shot_15_big": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_he"
+                }
+            },
+            "ammo_explosive_shot_30_big": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_he"
+                }
+            },
+            "ammo_explosive_shot_45_big": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_he"
+                }
+            },
+            "ammo_napalm_shot_10": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_napalm"
+                }
+            },
+            "ammo_napalm_shot_15": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_napalm"
+                }
+            },
+            "ammo_napalm_shot_30": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_napalm"
+                }
+            },
+            "ammo_napalm_shot_45": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_napalm"
+                }
+            },
+            "ammo_cluster_shot_10": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_cluster"
+                }
+            },
+            "ammo_cluster_shot_15": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_cluster"
+                }
+            },
+            "ammo_cluster_shot_30": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_cluster"
+                }
+            },
+            "ammo_cluster_shot_45": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_cluster"
+                }
+            },
+            "ammo_pebble_shot_10": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_pebble"
+                }
+            },
+            "ammo_pebble_shot_15": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_pebble"
+                }
+            },
+            "ammo_pebble_shot_30": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_pebble"
+                }
+            },
+            "ammo_pebble_shot_45": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_pebble"
+                }
+            },
+            "ammo_iron_shot_5_10": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_iron"
+                }
+            },
+            "ammo_iron_shot_10_15": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_iron"
+                }
+            },
+            "ammo_iron_shot_15_30": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_iron"
+                }
+            },
+            "ammo_iron_shot_25_45": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_iron"
+                }
+            },
+            "ammo_canister_shot_5": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_canister"
+                }
+            },
+            "ammo_canister_shot_10": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_canister"
+                }
+            },
+            "ammo_canister_shot_15": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_canister"
+                }
+            },
+            "ammo_canister_shot_25": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_canister"
+                }
+            },
+            "ammo_grape_shot_5": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_grape"
+                }
+            },
+            "ammo_grape_shot_10": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_grape"
+                }
+            },
+            "ammo_grape_shot_15": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_grape"
+                }
+            },
+            "ammo_grape_shot_25": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_grape"
+                }
+            },
+            "ammo_arrow": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_arrow"
+                }
+            },
+            "ammo_arrow_flame": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_arrow_flame"
+                }
+            },
+            "ammo_arrow_iron": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_arrow_iron"
+                }
+            },
+            "ammo_arrow_iron_flame": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_arrow_iron_flame"
+                }
+            },
+            "ammo_ballista_bolt": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_bolt"
+                }
+            },
+            "ammo_ballista_bolt_flame": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_bolt_flame"
+                }
+            },
+            "ammo_ballista_bolt_explosive": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_bolt_explosive"
+                }
+            },
+            "ammo_ballista_bolt_iron": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_bolt_iron"
+                }
+            },
+            "ammo_hwacha_rocket": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_rocket"
+                }
+            },
+            "ammo_hwacha_rocket_flame": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_rocket_flame"
+                }
+            },
+            "ammo_hwacha_rocket_explosive": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_rocket_explosive"
+                }
+            },
+            "ammo_hwacha_rocket_airburst": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_rocket_airburst"
+                }
+            },
+            "ammo_soldier_arrow_5": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_arrow"
+                }
+            },
+            "ammo_soldier_arrow_7": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_arrow"
+                }
+            },
+            "ammo_soldier_arrow_5_flaming": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_arrow_flame"
+                }
+            },
+            "ammo_soldier_arrow_7_flaming": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_arrow_flame"
+                }
+            },
+            "ammo_torpedo_10": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_stone"
+                }
+            },
+            "ammo_torpedo_15": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_stone"
+                }
+            },
+            "ammo_torpedo_30": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_stone"
+                }
+            },
+            "ammo_torpedo_45": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/vehicle/ammo/ammo_stone"
+                }
+            }
+        }
+    }
+}

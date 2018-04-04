@@ -1,48 +1,53 @@
-/*
- Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
 package net.shadowmage.ancientwarfare.vehicle.config;
 
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 
 public class AWVehicleStatics extends ModConfiguration {
 
-    public static final String KEY_VEHICLE_FORWARD = "keybind.vehicle.forward";
-    public static final String KEY_VEHICLE_REVERSE = "keybind.vehicle.reverse";
-    public static final String KEY_VEHICLE_LEFT = "keybind.vehicle.left";
-    public static final String KEY_VEHICLE_RIGHT = "keybind.vehicle.right";
-    public static final String KEY_VEHICLE_FIRE = "keybind.vehicle.fire";
-    public static final String KEY_VEHICLE_ASCEND = "keybind.vehicle.ascend";
-    public static final String KEY_VEHICLE_DESCEND = "keybind.vehicle.descend";
+	public static final String KEY_VEHICLE_FORWARD = "keybind.vehicle.forward";
+	public static final String KEY_VEHICLE_REVERSE = "keybind.vehicle.reverse";
+	public static final String KEY_VEHICLE_LEFT = "keybind.vehicle.left";
+	public static final String KEY_VEHICLE_RIGHT = "keybind.vehicle.right";
+	public static final String KEY_VEHICLE_FIRE = "keybind.vehicle.fire";
+	public static final String KEY_VEHICLE_ASCEND_AIM_UP = "keybind.vehicle.ascend.aim.up";
+	public static final String KEY_VEHICLE_DESCEND_AIM_DOWN = "keybind.vehicle.descend.aim.down";
+	public static final String KEY_VEHICLE_AMMO_PREV = "keybind.vehicle.ammo.prev";
+	public static final String KEY_VEHICLE_AMMO_NEXT = "keybind.vehicle.ammo.next";
+	public static final String KEY_VEHICLE_TURRET_LEFT = "keybind.vehicle.turret.left";
+	public static final String KEY_VEHICLE_TURRET_RIGHT = "keybind.vehicle.turret.right";
+	public static final String KEY_VEHICLE_MOUSE_AIM = "keybind.vehicle.mouse.aim";
+	public static final String KEY_VEHICLE_AMMO_SELECT = "keybind.vehicle.ammo.select";
 
-    public AWVehicleStatics(String mod) {
-        super(mod);
-    }
+	public AWVehicleStatics(String mod) {
+		super(mod);
+	}
 
-    @Override
-    public void initializeCategories() {
+	//TODO add configuration for these values (probably annotations) - descriptions in 1.6.4 AW
+	public static boolean oversizeAmmoEnabled = true;
 
-    }
+	public static boolean soldiersUseAmmo = false;
+	public static boolean adjustMissilesForAccuracy = false;
+	public static boolean vehiclesTearUpGrass = true;
+	public static boolean blockDestruction = true;
+	public static boolean blockFires = true;
+	public static boolean allowFriendlyFire = false;
+	public static boolean fireBlockBreakEvents = true;
+	public static boolean useVehicleSetupTime = true;
+	public static boolean renderVehiclesInFirstPerson = true;
 
-    @Override
-    public void initializeValues() {
-    }
+	public static boolean renderVehicleNameplates = true;
+	public static boolean enableMouseAim = true;
+
+	public static boolean renderOverlay = true;
+	public static boolean renderAdvOverlay = true;
+
+	@Override
+	public void initializeCategories() {
+
+	}
+
+	@Override
+	public void initializeValues() {
+	}
 
 }

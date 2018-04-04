@@ -16,7 +16,12 @@ import net.shadowmage.ancientwarfare.core.network.PacketItemInteraction;
 import org.lwjgl.input.Keyboard;
 
 import javax.annotation.Nonnull;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class InputHandler {
 
@@ -104,8 +109,6 @@ public class InputHandler {
             for (Keybind k : keys) {
                 if (state) {
                     k.onKeyPressed();
-                } else {
-                    k.onKeyReleased();
                 }
             }
         }
@@ -119,7 +122,7 @@ public class InputHandler {
         return Keyboard.getKeyName(getKeybind(name).getKeyCode());
     }
 
-    public void registerKeybind(String name, int keyCode, InputCallback cb) {
+    public void registerKeybind(String name, int keyCode, IInputCallback cb) {
         if (!keybindMap.containsKey(name)) {
             Property property = getKeybindProp(name, keyCode);
             property.setComment("Default key: " + Keyboard.getKeyName(keyCode));
@@ -159,7 +162,7 @@ public class InputHandler {
         bindsByKey.get(newKey).add(k);
     }
 
-    public void addInputCallback(String name, InputCallback cb) {
+    public void addInputCallback(String name, IInputCallback cb) {
         keybindMap.get(name).inputHandlers.add(cb);
     }
 
@@ -168,7 +171,7 @@ public class InputHandler {
     }
 
     public static final class Keybind {
-        List<InputCallback> inputHandlers = new ArrayList<>();
+        List<IInputCallback> inputHandlers = new ArrayList<>();
 
         private int key;
         private final String name;
@@ -189,14 +192,8 @@ public class InputHandler {
 
         private void onKeyPressed() {
             isPressed = true;
-            for (InputCallback c : inputHandlers) {
+            for (IInputCallback c : inputHandlers) {
                 c.onKeyPressed();
-            }
-        }
-
-        public void onKeyReleased() {
-            for (InputCallback c : inputHandlers) {
-                c.onKeyReleased();
             }
         }
 
@@ -220,13 +217,11 @@ public class InputHandler {
         }
     }
 
-    public static interface InputCallback {
-        public void onKeyPressed();
-
-        public void onKeyReleased();
+    public interface IInputCallback {
+        void onKeyPressed();
     }
 
-    private static final class ItemInputCallback implements InputCallback {
+    private static final class ItemInputCallback implements IInputCallback {
         private final ItemKey key;
 
         public ItemInputCallback(ItemKey key) {
@@ -255,11 +250,6 @@ public class InputHandler {
             }
             return false;
         }
-
-        @Override
-        public void onKeyReleased() {
-        }
-
     }
 
 }

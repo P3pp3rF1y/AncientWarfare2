@@ -60,6 +60,9 @@ import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 import net.shadowmage.ancientwarfare.npc.item.ItemShield;
 import net.shadowmage.ancientwarfare.npc.skin.NpcSkinManager;
+import net.shadowmage.ancientwarfare.vehicle.entity.IPathableEntity;
+import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
+import net.shadowmage.ancientwarfare.vehicle.pathing.Node;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -68,7 +71,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class NpcBase extends EntityCreature implements IEntityAdditionalSpawnData, IOwnable, IEntityPacketHandler {
+public abstract class NpcBase extends EntityCreature implements IEntityAdditionalSpawnData, IOwnable, IEntityPacketHandler, IPathableEntity {
 
 	private static final DataParameter<Integer> AI_TASKS = EntityDataManager.createKey(NpcBase.class, DataSerializers.VARINT);
 	private static final DataParameter<BlockPos> BED_POS = EntityDataManager.createKey(NpcBase.class, DataSerializers.BLOCK_POS);
@@ -80,7 +83,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	private UUID ownerUuid = new UUID(0, 0);//uuid of the owner of this NPC, used for checking teams
 	protected String followingPlayerName;//set/cleared onInteract from player if player.team==this.team
 
-	protected NpcLevelingStats levelingStats;
+	private NpcLevelingStats levelingStats;
 
 	/*
 	 * a single base texture for ALL npcs to share, used in case other textures were not set
@@ -1386,5 +1389,61 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	public boolean getUsesPlayerSkin() {
 		return usesPlayerSkin;
+	}
+
+	//TODO refactor vehicle stuff out - perhaps capability??
+
+	@Nullable
+	private VehicleBase getRidingVehicle() {
+		if (getRidingEntity() instanceof VehicleBase) {
+			return (VehicleBase) getRidingEntity();
+		}
+		return null;
+	}
+
+	@Override
+	public void setPath(List<Node> path) {
+		VehicleBase vehicle = this.getRidingVehicle();
+		if (vehicle != null) {
+			vehicle.nav.forcePath(path);
+		} else {
+			//TODO implement forcePath for NPC
+			//this.nav.forcePath(path);
+		}
+	}
+
+	@Override
+	public void setMoveTo(double x, double y, double z, float moveSpeed) {
+		getMoveHelper().setMoveTo(x, y, z, moveSpeed);
+	}
+
+	@Override
+	public float getDefaultMoveSpeed() {
+		return 1f;
+	}
+
+	@Override
+	public boolean isPathableEntityOnLadder() {
+		return isOnLadder();
+	}
+
+	@Override
+	public Entity getEntity() {
+		return this;
+	}
+
+	@Override
+	public void onStuckDetected() {
+/* TODO implement stuck logic for NPC
+		if (!this.worldObj.isRemote && Config.enableNpcTeleportHome && this.wayNav.getHomePoint() != null && this.getTargetType() == TargetType.SHELTER) {
+			WayPoint p = this.wayNav.getHomePoint();
+			if (this.worldObj.blockExists(p.floorX(), p.floorY(), p.floorZ()) && this.worldObj.isAirBlock(p.floorX(), p.floorY() + 1, p.floorZ())) {
+				this.setPosition(p.floorX() + 0.5d, p.floorY(), p.floorZ() + 0.5d);
+				this.motionX = this.motionY = this.motionZ = 0;
+				this.clearPath();
+				this.setTargetAW(null);
+			}
+		}
+*/
 	}
 }

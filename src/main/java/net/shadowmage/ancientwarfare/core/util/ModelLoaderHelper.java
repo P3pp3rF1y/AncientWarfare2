@@ -72,7 +72,7 @@ public class ModelLoaderHelper {
         ModelLoader.setCustomModelResourceLocation(item, meta, new ModelResourceLocation(modelName, variant));
     }
 
-    private interface Function2<T1, T2, R> {
-        R apply(T1 paramOne, T2 paramTwo);
+	public interface Function2<T1, T2, R> {
+		R apply(T1 paramOne, T2 paramTwo);
     }
 }
