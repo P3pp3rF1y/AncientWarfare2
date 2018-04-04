@@ -10,6 +10,7 @@ import net.minecraft.entity.EntityCreature;
 import net.minecraft.entity.EntityFlying;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.INpc;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -71,7 +72,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class NpcBase extends EntityCreature implements IEntityAdditionalSpawnData, IOwnable, IEntityPacketHandler, IPathableEntity {
+public abstract class NpcBase extends EntityCreature implements IEntityAdditionalSpawnData, IOwnable, IEntityPacketHandler, IPathableEntity, INpc {
 
 	private static final DataParameter<Integer> AI_TASKS = EntityDataManager.createKey(NpcBase.class, DataSerializers.VARINT);
 	private static final DataParameter<BlockPos> BED_POS = EntityDataManager.createKey(NpcBase.class, DataSerializers.BLOCK_POS);
@@ -227,8 +228,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		boolean targetHit = target.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
 		if (targetHit) {
 			if (knockback > 0) {
-				target.addVelocity((double) (-MathHelper.sin(this.rotationYaw * (float) Math.PI / 180.0F) * (float) knockback * 0.5F), 0.1D,
-						(double) (MathHelper.cos(this.rotationYaw * (float) Math.PI / 180.0F) * (float) knockback * 0.5F));
+				target.addVelocity((double) (-MathHelper.sin(this.rotationYaw * (float) Math.PI / 180.0F) * (float) knockback * 0.5F), 0.1D, (double) (MathHelper.cos(this.rotationYaw * (float) Math.PI / 180.0F) * (float) knockback * 0.5F));
 				this.motionX *= 0.6D;
 				this.motionZ *= 0.6D;
 			}
@@ -519,6 +519,14 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		if (entity != null && !canTarget(entity))
 			return;
 		super.setAttackTarget(entity);
+
+		updateAttackTargetClient();
+	}
+
+	private void updateAttackTargetClient() {
+		PacketEntity pkt = new PacketEntity(this);
+		pkt.packetData.setInteger("attackTarget", getAttackTarget() == null ? 0 : getAttackTarget().getEntityId());
+		NetworkHandler.sendToAllTracking(this, pkt);
 	}
 
 	@Override
@@ -986,8 +994,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 			return;
 		if (!player.world.isRemote && isEntityAlive()) {
 			onRepack();
-			@Nonnull ItemStack item = InventoryTools
-					.mergeItemStack(player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), this.getItemToSpawn());
+			@Nonnull
+			ItemStack item = InventoryTools.mergeItemStack(player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), this.getItemToSpawn());
 			if (!item.isEmpty()) {
 				InventoryHelper.spawnItemStack(player.world, player.posX, player.posY, player.posZ, item);
 			}
@@ -1154,6 +1162,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 			updateTexture();
 		} else if (tag.hasKey("customTex")) {
 			setCustomTexRef(tag.getString("customTex"));
+		} else if (tag.hasKey("attackTarget")) {
+			int entityId = tag.getInteger("attackTarget");
+			setAttackTarget((EntityLivingBase) world.getEntityByID(entityId));
 		}
 	}
 
