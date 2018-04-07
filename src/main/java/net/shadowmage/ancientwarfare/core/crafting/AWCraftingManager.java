@@ -57,7 +57,7 @@ public class AWCraftingManager {
 	public static ItemStack findMatchingRecipe(InventoryCrafting inventory, World world, String playerName) {
 		if (world == null)
 			return ItemStack.EMPTY;
-		if (playerName != null && !playerName.isEmpty()) {
+		if (!AWCoreStatics.useResearchSystem || (playerName != null && !playerName.isEmpty())) {
 			for (ResearchRecipeBase recipe : RESEARCH_RECIPES) {
 				if (recipe.matches(inventory, world) && canPlayerCraft(recipe, world, playerName)) {
 					return recipe.getCraftingResult(inventory);
@@ -70,7 +70,7 @@ public class AWCraftingManager {
 
 	@Nullable
 	public static ResearchRecipeBase findMatchingResearchRecipe(InventoryCrafting inventory, World world, String playerName) {
-		if (world != null && playerName != null && !playerName.isEmpty()) {
+		if (world != null && (!AWCoreStatics.useResearchSystem || (playerName != null && !playerName.isEmpty()))) {
 			for (ResearchRecipeBase recipe : RESEARCH_RECIPES) {
 				if (recipe.matches(inventory, world) && canPlayerCraft(recipe, world, playerName)) {
 					return recipe;
@@ -92,7 +92,7 @@ public class AWCraftingManager {
 	public static void addRecipe(ResearchRecipeBase recipe, boolean checkForExistence) {
 		Item item = recipe.getRecipeOutput().getItem();
 		if (AWCoreStatics.isItemCraftable(item)) {
-			if (recipe.getNeededResearch() != -1 && AWCoreStatics.isItemResearcheable(item) && AWCoreStatics.useResearchSystem) {
+			if ((recipe.getNeededResearch() != -1 && AWCoreStatics.isItemResearcheable(item) && AWCoreStatics.useResearchSystem) || hasCountIngredient(recipe)) {
 				if (!checkForExistence || !RESEARCH_RECIPES.containsKey(recipe.getRegistryName())) {
 					RESEARCH_RECIPES.register(recipe);
 				}
@@ -104,6 +104,10 @@ public class AWCraftingManager {
 				}
 			}
 		}
+	}
+
+	private static boolean hasCountIngredient(ResearchRecipeBase recipe) {
+		return recipe.getIngredients().stream().anyMatch(i -> i instanceof IIngredientCount);
 	}
 
 	public static List<ResearchRecipeBase> getRecipes() {

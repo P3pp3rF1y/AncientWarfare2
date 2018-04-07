@@ -6,6 +6,7 @@ import mezz.jei.api.recipe.IStackHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.crafting.ResearchRecipeBase;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 
@@ -35,6 +36,7 @@ public class ResearchRecipeWrapper implements IRecipeWrapper {
 
 	@Override
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-		minecraft.fontRenderer.drawString(I18n.format(ResearchGoal.getGoal(recipe.getNeededResearch()).getName()), 60, 0, 0x444444, false);
+		String research = AWCoreStatics.useResearchSystem ? I18n.format(ResearchGoal.getGoal(recipe.getNeededResearch()).getName()) : "Research disabled";
+		minecraft.fontRenderer.drawString(research, 60, 0, 0x444444, false);
 	}
 }
