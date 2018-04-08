@@ -1,0 +1,22 @@
+{
+    "type": "ancientwarfare:shapeless_research_recipe",
+    "research": "machinery",
+    "ingredients": [
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "plankWood",
+            "count": 2
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "ingotIron",
+            "count": 3
+        },
+        {
+            "item": "minecraft:piston"
+        }
+    ],
+    "result": {
+        "item": "ancientwarfarevehicle:vehicle_upgrade_turret_pitch"
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "type": "ancientwarfare:shapeless_research_recipe",
+    "research": "ballistics",
+    "ingredients": [
+        {
+            "item": "ancientwarfarevehicle:cluster_charge"
+        },
+        {
+            "item": "ancientwarfarevehicle:explosive_charge"
+        },
+        {
+            "item": "ancientwarfarevehicle:clay_casing"
+        }
+    ],
+    "result": {
+        "item": "ancientwarfarevehicle:ammo_pebble_shot_10",
+        "count": 4
+    }
+}

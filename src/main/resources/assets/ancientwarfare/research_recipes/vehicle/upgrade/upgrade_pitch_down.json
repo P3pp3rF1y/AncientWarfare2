@@ -1,0 +1,18 @@
+{
+    "type": "ancientwarfare:shapeless_research_recipe",
+    "research": "machinery",
+    "ingredients": [
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "plankWood",
+            "count": 2
+        },
+        {
+            "type": "forge:ore_dict",
+            "ore": "ingotIron"
+        }
+    ],
+    "result": {
+        "item": "ancientwarfarevehicle:vehicle_upgrade_pitch_down"
+    }
+}

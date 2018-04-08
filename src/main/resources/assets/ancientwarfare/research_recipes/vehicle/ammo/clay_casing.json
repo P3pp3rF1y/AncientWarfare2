@@ -1,0 +1,19 @@
+{
+    "type": "ancientwarfare:shapeless_research_recipe",
+    "research": "ballistics",
+    "ingredients": [
+        {
+            "type": "ancientwarfare:item_count",
+            "item": "minecraft:clay",
+            "count": 4
+        },
+        {
+            "item": "minecraft:wool",
+            "data": 32767
+        }
+    ],
+    "result": {
+        "item": "ancientwarfarevehicle:clay_casing",
+        "count": 8
+    }
+}

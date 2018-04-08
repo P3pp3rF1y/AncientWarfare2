@@ -42,3 +42,6 @@ naval_warfare,navigation
 naval_warfare,tactics
 advanced_siege_warfare,siege_warfare
 advanced_siege_warfare,machinery
+ballistics,theory_of_gravity
+rocketry,ballistics
+rocketry,explosives

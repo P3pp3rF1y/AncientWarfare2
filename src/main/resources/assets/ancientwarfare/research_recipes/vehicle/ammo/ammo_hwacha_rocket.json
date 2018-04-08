@@ -1,0 +1,27 @@
+{
+    "type": "ancientwarfare:shapeless_research_recipe",
+    "research": "ballistics",
+    "ingredients": [
+        {
+            "item": "ancientwarfarevehicle:rocket_charge"
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "stickWood",
+            "count": 12
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "feather",
+            "count": 2
+        },
+        {
+            "type": "forge:ore_dict",
+            "ore": "ingotIron"
+        }
+    ],
+    "result": {
+        "item": "ancientwarfarevehicle:ammo_hwacha_rocket",
+        "count": 12
+    }
+}

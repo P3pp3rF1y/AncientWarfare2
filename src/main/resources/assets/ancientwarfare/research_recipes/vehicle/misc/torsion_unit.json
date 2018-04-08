@@ -1,0 +1,23 @@
+{
+    "type": "ancientwarfare:shapeless_research_recipe",
+    "research": "the_wheel",
+    "ingredients": [
+        {
+            "type": "forge:ore_dict",
+            "ore": "ingotIron"
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "stickWood",
+            "count": 2
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "string",
+            "count": 4
+        }
+    ],
+    "result": {
+        "item": "ancientwarfarevehicle:torsion_unit"
+    }
+}

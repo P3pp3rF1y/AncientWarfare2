@@ -1,0 +1,23 @@
+{
+    "type": "ancientwarfare:shapeless_research_recipe",
+    "research": "explosives",
+    "ingredients": [
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "gunpowder",
+            "count": 2
+        },
+        {
+            "item": "minecraft:coal",
+            "data": 0
+        },
+        {
+            "type": "forge:ore_dict",
+            "ore": "string"
+        }
+    ],
+    "result": {
+        "item": "ancientwarfarevehicle:explosive_charge",
+        "count": 8
+    }
+}

@@ -1,0 +1,21 @@
+{
+    "type": "ancientwarfare:shapeless_research_recipe",
+    "research": "machinery",
+    "ingredients": [
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "ingotIron",
+            "count": 12
+        },
+        {
+            "type": "ancientwarfare:item_count",
+            "item": "minecraft:coal",
+            "data": 0,
+            "count": 4
+        }
+    ],
+    "result": {
+        "item": "ancientwarfarevehicle:tempered_iron",
+        "count": 8
+    }
+}

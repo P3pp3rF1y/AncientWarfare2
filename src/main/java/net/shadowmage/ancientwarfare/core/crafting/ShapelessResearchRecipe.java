@@ -84,6 +84,11 @@ public class ShapelessResearchRecipe extends ResearchRecipeBase {
 		}
 
 		@Override
+		public NonNullList<Ingredient> getIngredients() {
+			return recipe.getIngredients();
+		}
+
+		@Override
 		public IRecipe setRegistryName(ResourceLocation name) {
 			recipe.setRegistryName(name);
 			return this;

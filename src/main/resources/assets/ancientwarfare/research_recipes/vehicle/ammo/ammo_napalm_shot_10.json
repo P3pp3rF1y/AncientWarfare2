@@ -1,0 +1,16 @@
+{
+    "type": "ancientwarfare:shapeless_research_recipe",
+    "research": "ballistics",
+    "ingredients": [
+        {
+            "item": "ancientwarfarevehicle:napalm_charge"
+        },
+        {
+            "item": "ancientwarfarevehicle:clay_casing"
+        }
+    ],
+    "result": {
+        "item": "ancientwarfarevehicle:ammo_napalm_shot_10",
+        "count": 2
+    }
+}

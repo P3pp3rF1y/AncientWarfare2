@@ -1,0 +1,23 @@
+{
+    "type": "ancientwarfare:shapeless_research_recipe",
+    "research": "rocketry",
+    "ingredients": [
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "gunpowder",
+            "count": 2
+        },
+        {
+            "type": "forge:ore_dict",
+            "ore": "paper"
+        },
+        {
+            "type": "forge:ore_dict",
+            "ore": "string"
+        }
+    ],
+    "result": {
+        "item": "ancientwarfarevehicle:rocket_charge",
+        "count": 8
+    }
+}

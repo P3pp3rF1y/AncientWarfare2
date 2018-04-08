@@ -1,0 +1,14 @@
+{
+    "type": "ancientwarfare:shapeless_research_recipe",
+    "research": "machinery",
+    "ingredients": [
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "ingotIron",
+            "count": 5
+        }
+    ],
+    "result": {
+        "item": "ancientwarfarevehicle:armor_iron"
+    }
+}

@@ -1,0 +1,18 @@
+{
+    "type": "ancientwarfare:shapeless_research_recipe",
+    "research": "ballistics",
+    "ingredients": [
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "paper",
+            "count": 3
+        },
+        {
+            "type": "forge:ore_dict",
+            "ore": "plankWood"
+        }
+    ],
+    "result": {
+        "item": "ancientwarfarevehicle:vehicle_upgrade_aim"
+    }
+}
