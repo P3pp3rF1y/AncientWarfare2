@@ -11,7 +11,6 @@ import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
 import mezz.jei.api.recipe.transfer.IRecipeTransferRegistry;
 import mezz.jei.plugins.vanilla.crafting.ShapelessRecipeWrapper;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraftforge.common.crafting.IShapedRecipe;
@@ -23,20 +22,15 @@ import net.shadowmage.ancientwarfare.core.container.ContainerEngineeringStation;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.crafting.ShapedResearchRecipe;
 import net.shadowmage.ancientwarfare.core.crafting.ShapelessResearchRecipe;
+import net.shadowmage.ancientwarfare.npc.item.AWNPCItems;
+import net.shadowmage.ancientwarfare.vehicle.item.AWVehicleItems;
 
 import javax.annotation.Nonnull;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @JEIPlugin
 public class AWJEIPlugin implements IModPlugin {
-	private static List<Item> nbtItems = Lists.newArrayList();
-
-	public static void addNbtItems(Item... items) {
-		nbtItems.addAll(Arrays.asList(items));
-	}
-
 	private static List<IRecipe> wrappedRecipes = Lists.newArrayList();
 
 	public static void addWrappedRecipe(IRecipe recipe) {
@@ -45,7 +39,9 @@ public class AWJEIPlugin implements IModPlugin {
 
 	@Override
 	public void registerItemSubtypes(@Nonnull ISubtypeRegistry subtypeRegistry) {
-		subtypeRegistry.useNbtForSubtypes(nbtItems.toArray(new Item[nbtItems.size()]));
+		subtypeRegistry.useNbtForSubtypes(AWNPCItems.npcSpawner);
+		subtypeRegistry.registerSubtypeInterpreter(AWVehicleItems.spawner,
+				itemStack -> Integer.toString(itemStack.getMetadata()) + ":" + (itemStack.hasTagCompound() ? itemStack.getTagCompound().toString() : ""));
 	}
 
 	@Override

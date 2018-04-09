@@ -1,0 +1,36 @@
+{
+    "type": "ancientwarfare:shapeless_research_recipe",
+    "research": "siege_warfare",
+    "ingredients": [
+        {
+            "type": "ancientwarfare:item_count",
+            "item": "ancientwarfarevehicle:iron_core_wood",
+            "count": 8
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "string",
+            "count": 8
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "leather",
+            "count": 4
+        },
+        {
+            "item": "ancientwarfarevehicle:counter_weight_unit"
+        },
+        {
+            "item": "ancientwarfarevehicle:equipment_bay"
+        },
+        {
+            "item": "ancientwarfarevehicle:turret_components"
+        }
+    ],
+    "result": {
+        "type": "minecraft:item_nbt",
+        "item": "ancientwarfarevehicle:spawner",
+        "data": 14,
+        "nbt": "{spawnData:{level:3}}"
+    }
+}

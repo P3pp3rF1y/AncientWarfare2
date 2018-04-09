@@ -1,0 +1,23 @@
+{
+    "type": "ancientwarfare:shapeless_research_recipe",
+    "research": "advanced_siege_warfare",
+    "ingredients": [
+        {
+            "type": "ancientwarfare:item_count",
+            "item": "ancientwarfarevehicle:rough_iron",
+            "count": 4
+        },
+        {
+            "item": "ancientwarfarevehicle:powder_case"
+        },
+        {
+            "item": "ancientwarfarevehicle:equipment_bay"
+        }
+    ],
+    "result": {
+        "type": "minecraft:item_nbt",
+        "item": "ancientwarfarevehicle:spawner",
+        "data": 12,
+        "nbt": "{spawnData:{level:4}}"
+    }
+}

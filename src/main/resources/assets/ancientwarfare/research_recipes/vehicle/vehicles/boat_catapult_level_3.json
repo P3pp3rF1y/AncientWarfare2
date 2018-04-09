@@ -1,0 +1,35 @@
+{
+    "type": "ancientwarfare:shapeless_research_recipe",
+    "research": "naval_warfare",
+    "ingredients": [
+        {
+            "type": "ancientwarfare:item_count",
+            "item": "ancientwarfarevehicle:iron_core_wood",
+            "count": 5
+        },
+        {
+            "type": "ancientwarfare:item_count",
+            "item": "ancientwarfarevehicle:torsion_unit",
+            "count": 3
+        },
+        {
+            "item": "ancientwarfarevehicle:equipment_bay"
+        },
+        {
+            "type": "ancientwarfare:item_count",
+            "item": "ancientwarfarevehicle:mobility_unit",
+            "count": 2
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "blockCactus",
+            "count": 2
+        }
+    ],
+    "result": {
+        "type": "minecraft:item_nbt",
+        "item": "ancientwarfarevehicle:spawner",
+        "data": 19,
+        "nbt": "{spawnData:{level:3}}"
+    }
+}
