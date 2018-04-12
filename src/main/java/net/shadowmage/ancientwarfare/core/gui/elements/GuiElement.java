@@ -28,27 +28,28 @@ public abstract class GuiElement {
 	protected boolean keyboardInterface;
 
 	protected boolean enabled;
+
 	protected boolean visible;
+
 	protected boolean selected;//isFocused -- for text-input lines / etc
 	protected boolean scrollInput = false;//if should intercept scroll input, mostly used inside compositescrolled containers, really should only be true for number input widget
 	protected boolean renderTooltip = true;
-
 	protected Tooltip tooltip;
+
 	protected long hoverStart;
-
 	protected int topLeftX;
+
 	protected int topLeftY;
-
 	protected int renderX;
+
 	protected int renderY;
-
 	protected int width;
-	protected int height;
 
+	protected int height;
 	public static final ResourceLocation backgroundTextureLocation = new ResourceLocation("ancientwarfare", "textures/gui/guiBackgroundLarge.png");
+
 	public static final ResourceLocation widgetTexture1 = new ResourceLocation("ancientwarfare", "textures/gui/guiButtons1.png");
 	public static final ResourceLocation widgetTexture2 = new ResourceLocation("ancientwarfare", "textures/gui/guiButtons2.png");
-
 	public GuiElement(int topLeftX, int topLeftY) {
 		this.topLeftX = topLeftX;
 		this.topLeftY = topLeftY;
@@ -60,6 +61,10 @@ public abstract class GuiElement {
 		this(topLeftX, topLeftY);
 		this.width = width;
 		this.height = height;
+	}
+
+	public void setVisible(boolean visible) {
+		this.visible = visible;
 	}
 
 	public void setEnabled(boolean enabled) {

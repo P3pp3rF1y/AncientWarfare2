@@ -25,6 +25,9 @@ import net.minecraftforge.registries.RegistryBuilder;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.compat.jei.AWJEIPlugin;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
+import net.shadowmage.ancientwarfare.core.crafting.wrappers.NoRecipeWrapper;
+import net.shadowmage.ancientwarfare.core.crafting.wrappers.RegularCraftingWrapper;
+import net.shadowmage.ancientwarfare.core.crafting.wrappers.ResearchCraftingWrapper;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -39,6 +42,7 @@ import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -49,6 +53,40 @@ public class AWCraftingManager {
 
 	public static void init() {
 		//noop - just call this so that the static final gets initialized at proper time
+	}
+
+	private static List<ICraftingRecipe> findMatchingResearchRecipes(InventoryCrafting inventory, World world, String playerName) {
+		List<ICraftingRecipe> ret = new ArrayList<>();
+		if (world == null)
+			return ret;
+		if (!AWCoreStatics.useResearchSystem || (playerName != null && !playerName.isEmpty())) {
+			for (ResearchRecipeBase recipe : RESEARCH_RECIPES) {
+				if (recipe.matches(inventory, world) && canPlayerCraft(recipe, world, playerName)) {
+					ret.add(new ResearchCraftingWrapper(recipe));
+				}
+			}
+		}
+		return ret;
+	}
+
+	private static List<ICraftingRecipe> findMatchingRegularRecipes(InventoryCrafting inventory, World world) {
+		List<ICraftingRecipe> ret = new ArrayList<>();
+		if (world == null) {
+			return ret;
+		}
+		for (IRecipe recipe : CraftingManager.REGISTRY) {
+			if (recipe.matches(inventory, world)) {
+				ret.add(new RegularCraftingWrapper(recipe));
+			}
+		}
+		return ret;
+	}
+
+	public static List<ICraftingRecipe> findMatchinRecipes(InventoryCrafting inventory, World world, String playerName) {
+		List<ICraftingRecipe> recipes = findMatchingResearchRecipes(inventory, world, playerName);
+		recipes.addAll(findMatchingRegularRecipes(inventory, world));
+
+		return recipes;
 	}
 
 	/*
@@ -69,7 +107,7 @@ public class AWCraftingManager {
 	}
 
 	@Nullable
-	public static ResearchRecipeBase findMatchingResearchRecipe(InventoryCrafting inventory, World world, String playerName) {
+	public static ResearchRecipeBase findMatchingResearchRecipe(InventoryCrafting inventory, World world, @Nullable String playerName) {
 		if (world != null && (!AWCoreStatics.useResearchSystem || (playerName != null && !playerName.isEmpty()))) {
 			for (ResearchRecipeBase recipe : RESEARCH_RECIPES) {
 				if (recipe.matches(inventory, world) && canPlayerCraft(recipe, world, playerName)) {
@@ -243,5 +281,18 @@ public class AWCraftingManager {
 			}
 		}
 		return 1;
+	}
+
+	public static ICraftingRecipe getRecipe(RecipeResourceLocation recipe) {
+		switch (recipe.getRecipeType()) {
+			case REGULAR:
+				IRecipe regRecipe = CraftingManager.REGISTRY.getObject(recipe.getResourceLocation());
+				return regRecipe != null ? new RegularCraftingWrapper(regRecipe) : NoRecipeWrapper.INSTANCE;
+			case RESEARCH:
+				ResearchRecipeBase resRecipe = RESEARCH_RECIPES.getValue(recipe.getResourceLocation());
+				return resRecipe != null ? new ResearchCraftingWrapper(resRecipe) : NoRecipeWrapper.INSTANCE;
+			default:
+				return NoRecipeWrapper.INSTANCE;
+		}
 	}
 }

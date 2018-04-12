@@ -133,6 +133,10 @@ public class InventoryTools {
 	 * @return the removed item.
 	 */
 	public static ItemStack removeItems(IItemHandler handler, ItemStack filter, int quantity) {
+		return removeItems(handler, filter, quantity, false);
+	}
+
+	public static ItemStack removeItems(IItemHandler handler, ItemStack filter, int quantity, boolean simulate) {
 		if (quantity <= 0) {
 			return ItemStack.EMPTY;
 		}
@@ -150,7 +154,7 @@ public class InventoryTools {
 			int toMove = Math.min(quantity - returnCount, slotStack.getCount());
 			returnCount += toMove;
 
-			handler.extractItem(index, toMove, false);
+			handler.extractItem(index, toMove, simulate);
 
 			if (quantity - returnCount <= 0) {
 				break;

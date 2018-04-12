@@ -3,44 +3,30 @@ package net.shadowmage.ancientwarfare.automation.tile.worksite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
-import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
-import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
+import net.shadowmage.ancientwarfare.automation.tile.CraftingRecipeMemory;
+import net.shadowmage.ancientwarfare.core.crafting.IIngredientCount;
 import net.shadowmage.ancientwarfare.core.crafting.ResearchRecipeBase;
-import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
+import java.util.List;
 
 public class TileAutoCrafting extends TileWorksiteBase {
 	private ResearchRecipeBase researchRecipe;
-	public ItemStackHandler bookSlot = new ItemStackHandler(1) {
-		@Nonnull
-		@Override
-		public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
-			return ItemResearchBook.getResearcherName(stack) != null ? super.insertItem(slot, stack, simulate) : stack;
-		}
-
-		@Override
-		protected void onContentsChanged(int slot) {
-			onLayoutMatrixChanged();
-			markDirty();
-		}
-	};
+	public CraftingRecipeMemory craftingRecipeMemory = new CraftingRecipeMemory(this);
 	public ItemStackHandler outputInventory = new ItemStackHandler(9) {
 		@Override
 		protected void onContentsChanged(int slot) {
@@ -53,76 +39,59 @@ public class TileAutoCrafting extends TileWorksiteBase {
 			markDirty();
 		}
 	};
-	public InventoryCraftResult outputSlot = new InventoryCraftResult();//the templated output slot, non-pullable
-	public InventoryCrafting craftMatrix = new InventoryCrafting(new Container() {
-		@Override
-		public void onCraftMatrixChanged(IInventory inventoryIn) {
-			onLayoutMatrixChanged();
-			markDirty();
-		}
-
-		@Override
-		public boolean canInteractWith(EntityPlayer playerIn) {
-			return true;
-		}
-	}, 3, 3);//the 3x3 recipe template/matrix
 
 	private boolean canCraftLastCheck = false;
 	private boolean canHoldLastCheck = false;
-
-	private IRecipe recipe;
 
 	public TileAutoCrafting() {
 	}
 
 	@Override
 	public void onBlockBroken() {
-		InventoryTools.dropItemsInWorld(world, bookSlot, pos);
+		craftingRecipeMemory.dropInventory();
 		InventoryTools.dropItemsInWorld(world, outputInventory, pos);
 		InventoryTools.dropItemsInWorld(world, resourceInventory, pos);
-		InventoryTools.dropItemsInWorld(world, craftMatrix, pos);
 		super.onBlockBroken();
 	}
 
 	private boolean canCraft() {
-		if (outputSlot.getStackInSlot(0).isEmpty()) {
+		if (!craftingRecipeMemory.hasValidRecipe()) {
 			return false;
-		}//no output stack, don't even bother checking
-		ArrayList<ItemStack> compactedCraft = new ArrayList<>();
-		@Nonnull ItemStack stack1;
-		@Nonnull ItemStack stack2;
-		boolean found;
-		for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
-			stack1 = craftMatrix.getStackInSlot(i);
-			if (stack1.isEmpty()) {
+		}
+
+		List<Ingredient> ingredients = craftingRecipeMemory.getIngredients();
+
+		IItemHandler clonedResourceInventory = InventoryTools.cloneItemHandler(resourceInventory);
+		for (Ingredient ingredient : ingredients) {
+			if (ingredient.apply(ItemStack.EMPTY)) { //skip empty ingredients
 				continue;
 			}
-			found = false;
-			for (ItemStack stack3 : compactedCraft) {
-				if (InventoryTools.doItemStacksMatchRelaxed(stack3, stack1)) {
-					stack3.grow(1);
-					found = true;
-					break;
+
+			int count = ingredient instanceof IIngredientCount ? ((IIngredientCount) ingredient).getCount() : 1;
+			boolean found = false;
+			for (int slot = 0; slot < clonedResourceInventory.getSlots(); slot++) {
+				ItemStack resourceStack = clonedResourceInventory.getStackInSlot(slot);
+
+				//required for ingredient to actually see proper count and say it's a good item
+				ItemStack properCountStack = new ItemStack(resourceStack.writeToNBT(new NBTTagCompound()));
+				properCountStack.setCount(count);
+
+				if (!resourceStack.isEmpty() && ingredient.apply(properCountStack)) {
+					ItemStack removedStack = InventoryTools.removeItems(clonedResourceInventory, resourceStack, count, true);
+
+					if (removedStack.getCount() == count) {
+						InventoryTools.removeItems(clonedResourceInventory, resourceStack, count, false);
+						found = true;
+						break;
+					}
 				}
 			}
 			if (!found) {
-				stack2 = stack1.copy();
-				stack2.setCount(1);
-				compactedCraft.add(stack2);
+				return false;
 			}
 		}
-		found = true;
-		for (ItemStack stack3 : compactedCraft) {
-			if (InventoryTools.getCountOf(resourceInventory, stack3) < stack3.getCount()) {
-				found = false;
-				break;
-			}
-		}
-		return found;
-	}
 
-	public String getCrafterName() {
-		return ItemResearchBook.getResearcherName(bookSlot.getStackInSlot(0));
+		return true;
 	}
 
 	public boolean tryCraftItem() {
@@ -134,36 +103,77 @@ public class TileAutoCrafting extends TileWorksiteBase {
 	}
 
 	private void craftItem() {
-		@Nonnull ItemStack stack = this.outputSlot.getStackInSlot(0).copy();
-		useResources();
+		List<ItemStack> resources = getCraftingResources(resourceInventory);
+		InventoryCrafting invCrafting = fillCraftingMatrixFromInventory(resources);
+		@Nonnull ItemStack stack = craftingRecipeMemory.getCraftingResult(invCrafting);
+		useResources(resources);
+		NonNullList<ItemStack> remainingItems = craftingRecipeMemory.getRemainingItems(invCrafting);
+		InventoryTools.insertOrDropItems(outputInventory, remainingItems, world, pos);
+
 		stack = InventoryTools.mergeItemStack(outputInventory, stack);
 		if (!stack.isEmpty()) {
 			InventoryTools.dropItemInWorld(world, stack, pos);
 		}
 	}
 
-	private void useResources() {
-		for (int i = 0; i < craftMatrix.getSizeInventory(); i++) {
-			ItemStack stack = craftMatrix.getStackInSlot(i);
-			if (stack.isEmpty()) {
-				continue;
+	private InventoryCrafting fillCraftingMatrixFromInventory(List<ItemStack> resources) {
+		InventoryCrafting invCrafting = new InventoryCrafting(new Container() {
+			@Override
+			public boolean canInteractWith(EntityPlayer playerIn) {
+				return true;
 			}
-			int ingredientCount = AWCraftingManager.getMatchingIngredientCount(researchRecipe, stack);
-			if (InventoryTools.getCountOf(resourceInventory, stack) >= ingredientCount) {
-				InventoryTools.removeItems(resourceInventory, stack, ingredientCount);
-				if (recipe != null) {
-					NonNullList<ItemStack> remainingItems = recipe.getRemainingItems(craftMatrix);
-					InventoryTools.dropItemsInWorld(world, remainingItems, pos);
-				}
+
+			@Override
+			public void onCraftMatrixChanged(IInventory inventoryIn) {
 			}
+		}, 3, 3);
+
+		for (int i = 0; i < resources.size(); i++) {
+			invCrafting.setInventorySlotContents(i, resources.get(i));
 		}
+
+		return invCrafting;
 	}
 
-	private void updateRecipe() {
-		if (AWCraftingManager.findMatchingRecipe(craftMatrix, world, getCrafterName()).isEmpty()) {
-			recipe = CraftingManager.findMatchingRecipe(craftMatrix, world);
-		} else {
-			recipe = null;
+	private List<ItemStack> getCraftingResources(IItemHandler inventory) {
+		NonNullList<ItemStack> ret = NonNullList.withSize(9, ItemStack.EMPTY);
+		IItemHandler clonedInventory = InventoryTools.cloneItemHandler(inventory);
+
+		for (int i = 0; i < craftingRecipeMemory.getIngredients().size(); i++) {
+			Ingredient ingredient = craftingRecipeMemory.getIngredients().get(i);
+			if (ingredient.apply(ItemStack.EMPTY)) { //skip empty ingredients
+				continue;
+			}
+			int count = ingredient instanceof IIngredientCount ? ((IIngredientCount) ingredient).getCount() : 1;
+			ItemStack stackFound = ItemStack.EMPTY;
+			for (int slot = 0; slot < clonedInventory.getSlots(); slot++) {
+				ItemStack resourceStack = clonedInventory.getStackInSlot(slot);
+
+				//required for ingredient to actually see proper count and say it's a good item
+				ItemStack properCountStack = new ItemStack(resourceStack.writeToNBT(new NBTTagCompound()));
+				properCountStack.setCount(count);
+
+				if (!resourceStack.isEmpty() && ingredient.apply(properCountStack)) {
+					ItemStack removedStack = InventoryTools.removeItems(clonedInventory, resourceStack, count, true);
+
+					if (removedStack.getCount() == count) {
+						InventoryTools.removeItems(clonedInventory, resourceStack, count, false);
+						stackFound = removedStack;
+						break;
+					}
+				}
+			}
+			if (stackFound.isEmpty()) {
+				return ret;
+			}
+			ret.set(i, stackFound);
+		}
+		return ret;
+	}
+
+	private void useResources(List<ItemStack> resources) {
+		for (ItemStack stack : resources) {
+			InventoryTools.removeItems(resourceInventory, stack, stack.getCount());
 		}
 	}
 
@@ -175,41 +185,43 @@ public class TileAutoCrafting extends TileWorksiteBase {
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
-		bookSlot.deserializeNBT(tag.getCompoundTag("bookSlot"));
+		craftingRecipeMemory.readFromNBT(tag);
 		resourceInventory.deserializeNBT(tag.getCompoundTag("resourceInventory"));
 		outputInventory.deserializeNBT(tag.getCompoundTag("outputInventory"));
-		InventoryTools.readInventoryFromNBT(outputSlot, tag.getCompoundTag("outputSlot"));
-		InventoryTools.readInventoryFromNBT(craftMatrix, tag.getCompoundTag("craftMatrix"));
-		updateRecipe();
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
-		tag.setTag("bookSlot", bookSlot.serializeNBT());
+		craftingRecipeMemory.writeToNBT(tag);
 		tag.setTag("resourceInventory", resourceInventory.serializeNBT());
 		tag.setTag("outputInventory", outputInventory.serializeNBT());
-		tag.setTag("outputSlot", InventoryTools.writeInventoryToNBT(outputSlot, new NBTTagCompound()));
-		tag.setTag("craftMatrix", InventoryTools.writeInventoryToNBT(craftMatrix, new NBTTagCompound()));
 		return tag;
 	}
+
+	@Override
+	protected void writeUpdateNBT(NBTTagCompound tag) {
+		super.writeUpdateNBT(tag);
+		craftingRecipeMemory.writeToNBT(tag);
+	}
+
+	@Override
+	protected void handleUpdateNBT(NBTTagCompound tag) {
+		super.handleUpdateNBT(tag);
+		craftingRecipeMemory.readFromNBT(tag);
+	}
+
+	//TODO make sure that this call really isn't needed
+/*
 
 	@Override
 	public void setWorld(World world) {
 		super.setWorld(world);
 		onLayoutMatrixChanged();
 	}
+*/
 
 	/* ***********************************INVENTORY METHODS*********************************************** */
-	private void onLayoutMatrixChanged() {
-		ResearchRecipeBase researchRecipe = AWCraftingManager.findMatchingResearchRecipe(craftMatrix, world, getCrafterName());
-		if (researchRecipe != null) {
-			this.researchRecipe = researchRecipe;
-		}
-		this.outputSlot.setInventorySlotContents(0, AWCraftingManager.findMatchingRecipe(craftMatrix, world, getCrafterName()));
-		updateRecipe();
-	}
-
 	@Override
 	public boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
 		if (!player.world.isRemote) {
@@ -225,7 +237,7 @@ public class TileAutoCrafting extends TileWorksiteBase {
 
 	@Override
 	protected boolean hasWorksiteWork() {
-		return canCraftLastCheck && canHoldLastCheck && !outputSlot.getStackInSlot(0).isEmpty();
+		return canCraftLastCheck && canHoldLastCheck && !craftingRecipeMemory.getRecipeOutput().isEmpty();
 	}
 
 	@Override
@@ -235,7 +247,7 @@ public class TileAutoCrafting extends TileWorksiteBase {
 	}
 
 	private boolean canHold() {
-		@Nonnull ItemStack test = outputSlot.getStackInSlot(0);
+		@Nonnull ItemStack test = craftingRecipeMemory.getRecipeOutput();
 		return !test.isEmpty() && InventoryTools.canInventoryHold(outputInventory, test);
 	}
 

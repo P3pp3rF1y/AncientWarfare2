@@ -18,7 +18,12 @@ import java.util.List;
 public class Composite extends GuiElement {
 
 	protected List<GuiElement> elements = new ArrayList<>();
+
 	private GuiContainerBase gui;
+
+	public GuiContainerBase getGui() {
+		return gui;
+	}
 
 	public Composite(GuiContainerBase gui, int topLeftX, int topLeftY, int width, int height) {
 		super(topLeftX, topLeftY, width, height);
