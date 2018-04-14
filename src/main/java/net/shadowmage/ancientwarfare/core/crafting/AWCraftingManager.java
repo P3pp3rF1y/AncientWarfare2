@@ -54,6 +54,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -331,14 +332,24 @@ public class AWCraftingManager {
 	}
 
 	public static boolean canCraftFromInventory(ICraftingRecipe recipe, IItemHandler inventory) {
-		return getRecipeInventoryMatch(recipe, inventory).stream().anyMatch(s -> !s.isEmpty());
+		return getRecipeInventoryMatch(recipe, inventory, () -> true, (b, i, s) -> b, (b, i) -> false, true);
 	}
 
 	public static NonNullList<ItemStack> getRecipeInventoryMatch(ICraftingRecipe recipe, IItemHandler inventory) {
-		return getRecipeInventoryMatch(recipe, inventory, () -> NonNullList.withSize(9, ItemStack.EMPTY), NonNullList::set, (a, i) -> a.clear(), true);
+		return getRecipeInventoryMatch(recipe, inventory, () -> NonNullList.withSize(9, ItemStack.EMPTY), (TriConsumer<NonNullList<ItemStack>, Integer, ItemStack>) NonNullList::set, (a, i) -> a.clear(), true);
 	}
 
 	public static <T> T getRecipeInventoryMatch(ICraftingRecipe recipe, IItemHandler inventory, Supplier<T> initialize, TriConsumer<T, Integer, ItemStack> onMatch, BiConsumer<T, Integer> onFail, boolean stopOnFail) {
+		return getRecipeInventoryMatch(recipe, inventory, initialize, (t, i, s) -> {
+			onMatch.accept(t, i, s);
+			return t;
+		}, (t, i) -> {
+			onFail.accept(t, i);
+			return t;
+		}, stopOnFail);
+	}
+
+	public static <T> T getRecipeInventoryMatch(ICraftingRecipe recipe, IItemHandler inventory, Supplier<T> initialize, TriFunction<T, Integer, ItemStack, T> onMatch, BiFunction<T, Integer, T> onFail, boolean stopOnFail) {
 		T ret = initialize.get();
 
 		if (!recipe.isValid()) {
@@ -357,12 +368,12 @@ public class AWCraftingManager {
 			ItemStack stackFound = getIngredientInventoryMatch(clonedResourceInventory, ingredient);
 
 			if (stackFound.isEmpty()) {
-				onFail.accept(ret, i);
+				ret = onFail.apply(ret, i);
 				if (stopOnFail) {
 					return ret;
 				}
 			} else {
-				onMatch.accept(ret, i, stackFound);
+				ret = onMatch.apply(ret, i, stackFound);
 			}
 		}
 
@@ -393,5 +404,9 @@ public class AWCraftingManager {
 			}
 		}
 		return stackFound;
+	}
+
+	private interface TriFunction<K, V, S, R> {
+		R apply(K k, V v, S s);
 	}
 }

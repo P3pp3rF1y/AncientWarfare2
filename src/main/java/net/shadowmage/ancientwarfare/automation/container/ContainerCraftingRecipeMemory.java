@@ -91,10 +91,6 @@ public class ContainerCraftingRecipeMemory {
 	}
 
 	private void updateSelectedIndex() {
-		if (!world.isRemote) {
-			return;
-		}
-
 		if (recipes.stream().anyMatch(r -> r.getRegistryName().equals(craftingRecipeMemory.getRecipe().getRegistryName()))) {
 			setSelectedRecipeIndex(recipes.indexOf(
 					recipes.stream().filter(r -> r.getRegistryName().equals(craftingRecipeMemory.getRecipe().getRegistryName())).findFirst().orElseGet(null)));
@@ -107,6 +103,7 @@ public class ContainerCraftingRecipeMemory {
 		if (recipes.size() > 1) {
 			setSelectedRecipeIndex(selectedRecipeIndex + 1 < recipes.size() ? selectedRecipeIndex + 1 : 0);
 			updateSelectedRecipe();
+			updateServer();
 		}
 	}
 
@@ -114,6 +111,7 @@ public class ContainerCraftingRecipeMemory {
 		if (recipes.size() > 1) {
 			setSelectedRecipeIndex(selectedRecipeIndex - 1 >= 0 ? selectedRecipeIndex - 1 : recipes.size() - 1);
 			updateSelectedRecipe();
+			updateServer();
 		}
 	}
 
@@ -138,12 +136,10 @@ public class ContainerCraftingRecipeMemory {
 		} else {
 			craftingRecipeMemory.setRecipe(recipes.get(selectedRecipeIndex));
 		}
-
-		updateServer();
 	}
 
 	private void updateServer() {
-		if (isUpdatePending() && !isInRecipeUpdateCooldown()) {
+		if (isUpdatePending()) {
 			updatePending = false;
 			NBTTagCompound data = new NBTTagCompound();
 			data.setString("recipe", craftingRecipeMemory.getRecipe().getRegistryName().toString());
