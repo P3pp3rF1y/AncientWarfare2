@@ -407,6 +407,50 @@ public class InventoryTools {
 		}
 	}
 
+	public static NonNullList<ItemStack> getItems(IItemHandler handler) {
+		NonNullList<ItemStack> ret = NonNullList.create();
+
+		for (int slot = 0; slot < handler.getSlots(); slot++) {
+			ItemStack slotStack = handler.getStackInSlot(slot);
+			if (!slotStack.isEmpty()) {
+				ret.add(slotStack);
+			}
+		}
+		return ret;
+	}
+
+	public static NonNullList<ItemStack> removeItems(IItemHandler handler, NonNullList<ItemStack> stacks) {
+		return removeItems(handler, stacks, false);
+	}
+
+	public static NonNullList<ItemStack> removeItems(IItemHandler handler, NonNullList<ItemStack> stacks, boolean simulate) {
+		NonNullList<ItemStack> extractedItems = NonNullList.create();
+		if (simulate) {
+			handler = cloneItemHandler(handler);
+		}
+		for (ItemStack stack : stacks) {
+			ItemStack extracted = removeItem(handler, stack, false);
+			if (!extracted.isEmpty()) {
+				extractedItems.add(extracted);
+			}
+		}
+		return extractedItems;
+	}
+
+	private static ItemStack removeItem(IItemHandler handler, ItemStack stack, boolean simulate) {
+		ItemStack extracted = ItemStack.EMPTY;
+		for (int slot = 0; slot < handler.getSlots(); slot++) {
+			ItemStack slotStack = handler.getStackInSlot(slot);
+			if (doItemStacksMatchRelaxed(stack, slotStack)) {
+				extracted = handler.extractItem(slot, stack.getCount(), simulate);
+				if (extracted.getCount() == stack.getCount()) {
+					break;
+				}
+			}
+		}
+		return extracted;
+	}
+
 	/*
 	 * Item-stack comparator.  Configurable in constructor to sort by localized or unlocalized name, as well as
 	 * sort-order (regular or reverse).

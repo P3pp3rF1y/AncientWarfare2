@@ -4,13 +4,18 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.JsonUtils;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.CraftingHelper;
@@ -20,6 +25,7 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
@@ -29,8 +35,10 @@ import net.shadowmage.ancientwarfare.core.crafting.wrappers.NoRecipeWrapper;
 import net.shadowmage.ancientwarfare.core.crafting.wrappers.RegularCraftingWrapper;
 import net.shadowmage.ancientwarfare.core.crafting.wrappers.ResearchCraftingWrapper;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.util.TriConsumer;
 
 import javax.annotation.Nullable;
 import java.io.BufferedReader;
@@ -47,6 +55,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class AWCraftingManager {
 	public static final IForgeRegistry<ResearchRecipeBase> RESEARCH_RECIPES = (new RegistryBuilder<ResearchRecipeBase>()).setName(new ResourceLocation(AncientWarfareCore.modID, "research_recipes")).setType(ResearchRecipeBase.class).setMaxID(Integer.MAX_VALUE >> 5).disableSaving().allowModification().create();
@@ -294,5 +303,95 @@ public class AWCraftingManager {
 			default:
 				return NoRecipeWrapper.INSTANCE;
 		}
+	}
+
+	public static InventoryCrafting fillCraftingMatrixFromInventory(List<ItemStack> resources) {
+		InventoryCrafting invCrafting = new InventoryCrafting(new Container() {
+			@Override
+			public boolean canInteractWith(EntityPlayer playerIn) {
+				return true;
+			}
+
+			@Override
+			public void onCraftMatrixChanged(IInventory inventoryIn) {
+			}
+		}, 3, 3);
+
+		for (int i = 0; i < resources.size(); i++) {
+			invCrafting.setInventorySlotContents(i, resources.get(i));
+		}
+
+		return invCrafting;
+	}
+
+	public static ICraftingRecipe findMatchingRecipe(World world, String playerName, NonNullList<ItemStack> inputs, ItemStack result) {
+		InventoryCrafting inv = fillCraftingMatrixFromInventory(inputs);
+		List<ICraftingRecipe> recipes = findMatchinRecipes(inv, world, playerName);
+		return recipes.stream().filter(r -> r.getRecipeOutput().isItemEqual(result)).findFirst().orElse(NoRecipeWrapper.INSTANCE);
+	}
+
+	public static boolean canCraftFromInventory(ICraftingRecipe recipe, IItemHandler inventory) {
+		return getRecipeInventoryMatch(recipe, inventory).stream().anyMatch(s -> !s.isEmpty());
+	}
+
+	public static NonNullList<ItemStack> getRecipeInventoryMatch(ICraftingRecipe recipe, IItemHandler inventory) {
+		return getRecipeInventoryMatch(recipe, inventory, () -> NonNullList.withSize(9, ItemStack.EMPTY), NonNullList::set, (a, i) -> a.clear(), true);
+	}
+
+	public static <T> T getRecipeInventoryMatch(ICraftingRecipe recipe, IItemHandler inventory, Supplier<T> initialize, TriConsumer<T, Integer, ItemStack> onMatch, BiConsumer<T, Integer> onFail, boolean stopOnFail) {
+		T ret = initialize.get();
+
+		if (!recipe.isValid()) {
+			return ret;
+		}
+
+		List<Ingredient> ingredients = recipe.getIngredients();
+
+		IItemHandler clonedResourceInventory = InventoryTools.cloneItemHandler(inventory);
+		for (int i = 0; i < ingredients.size(); i++) {
+			Ingredient ingredient = ingredients.get(i);
+			if (ingredient.apply(ItemStack.EMPTY)) { //skip empty ingredients
+				continue;
+			}
+
+			ItemStack stackFound = getIngredientInventoryMatch(clonedResourceInventory, ingredient);
+
+			if (stackFound.isEmpty()) {
+				onFail.accept(ret, i);
+				if (stopOnFail) {
+					return ret;
+				}
+			} else {
+				onMatch.accept(ret, i, stackFound);
+			}
+		}
+
+		return ret;
+	}
+
+	private static ItemStack getIngredientInventoryMatch(IItemHandler clonedResourceInventory, Ingredient ingredient) {
+		ItemStack stackFound = ItemStack.EMPTY;
+		int count = ingredient instanceof IIngredientCount ? ((IIngredientCount) ingredient).getCount() : 1;
+		for (int slot = 0; slot < clonedResourceInventory.getSlots(); slot++) {
+			ItemStack resourceStack = clonedResourceInventory.getStackInSlot(slot);
+
+			if (!resourceStack.isEmpty()) {
+				//required for ingredient to actually see proper count and say it's a good item
+				//e.g. ingredient requires stack of 3 but inventory only has 3 stacks of 1 of the item - that's still a match for the recipe
+				ItemStack properCountStack = new ItemStack(resourceStack.writeToNBT(new NBTTagCompound()));
+				properCountStack.setCount(count);
+
+				if (ingredient.apply(properCountStack)) {
+					ItemStack removedStack = InventoryTools.removeItems(clonedResourceInventory, resourceStack, count, true);
+
+					if (removedStack.getCount() == count) {
+						InventoryTools.removeItems(clonedResourceInventory, resourceStack, count, false);
+						stackFound = removedStack;
+						break;
+					}
+				}
+			}
+		}
+		return stackFound;
 	}
 }

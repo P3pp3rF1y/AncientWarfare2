@@ -4,13 +4,21 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.SlotItemHandler;
+import net.minecraftforge.items.wrapper.CombinedInvWrapper;
+import net.minecraftforge.items.wrapper.InvWrapper;
+import net.minecraftforge.items.wrapper.PlayerInvWrapper;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileAutoCrafting;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
+import net.shadowmage.ancientwarfare.core.container.ICraftingContainer;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nonnull;
 
-public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCrafting> {
+public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCrafting> implements ICraftingContainer {
 	private static final int BOOK_SLOT = 1;
 	public ContainerCraftingRecipeMemory containerCrafting;
 
@@ -123,5 +131,31 @@ public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCra
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setBoolean("craft", true);
 		sendDataToServer(tag);
+	}
+
+	@Override
+	public ContainerCraftingRecipeMemory getCraftingMemoryContainer() {
+		return containerCrafting;
+	}
+
+	@Override
+	public IItemHandlerModifiable[] getInventories() {
+		return new IItemHandlerModifiable[] {tileEntity.resourceInventory, tileEntity.outputInventory, new PlayerInvWrapper(player.inventory)};
+	}
+
+	@Override
+	public boolean pushCraftingMatrixToInventories() {
+		IItemHandler craftMatrixWrapper = new InvWrapper(tileEntity.craftingRecipeMemory.craftMatrix);
+		NonNullList<ItemStack> craftingItems = InventoryTools.getItems(craftMatrixWrapper);
+
+		IItemHandler inventories = new CombinedInvWrapper(tileEntity.resourceInventory, new PlayerInvWrapper(player.inventory));
+
+		if (InventoryTools.insertItems(inventories, craftingItems, true).isEmpty()) {
+			InventoryTools.insertItems(inventories, craftingItems, false);
+			InventoryTools.removeItems(craftMatrixWrapper, craftingItems);
+			return true;
+		}
+
+		return false;
 	}
 }

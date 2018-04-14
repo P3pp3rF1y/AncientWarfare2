@@ -26,9 +26,15 @@ public class ContainerCraftingRecipeMemory {
 
 	private boolean updatePending = false;
 	private int selectedRecipeIndex = -1;
+	private boolean recipeUpdateCooldown = false;
+	private long cooldownTime = 0;
 
 	public List<Slot> getSlots() {
 		return slots;
+	}
+
+	public List<Slot> getCraftingMatrixSlots() {
+		return slots.subList(2, slots.size());
 	}
 
 	public List<Slot> slots = new ArrayList<>();
@@ -123,13 +129,22 @@ public class ContainerCraftingRecipeMemory {
 	}
 
 	private void updateSelectedRecipe() {
+		if (isInRecipeUpdateCooldown()) {
+			return;
+		}
+
 		if (selectedRecipeIndex == -1) {
 			craftingRecipeMemory.setRecipe(NoRecipeWrapper.INSTANCE);
 		} else {
 			craftingRecipeMemory.setRecipe(recipes.get(selectedRecipeIndex));
 		}
 
-		if (isUpdatePending()) {
+		updateServer();
+	}
+
+	private void updateServer() {
+		if (isUpdatePending() && !isInRecipeUpdateCooldown()) {
+			updatePending = false;
 			NBTTagCompound data = new NBTTagCompound();
 			data.setString("recipe", craftingRecipeMemory.getRecipe().getRegistryName().toString());
 			NetworkHandler.sendToServer(new PacketGui(data));
@@ -140,17 +155,60 @@ public class ContainerCraftingRecipeMemory {
 		return recipes;
 	}
 
+	public void setRecipe(ICraftingRecipe recipe, boolean forceSet) {
+		if (forceSet || (!isInRecipeUpdateCooldown() && recipes.stream().anyMatch(r -> r.getRegistryName().equals(recipe.getRegistryName())))) {
+			craftingRecipeMemory.setRecipe(recipe);
+			updateSelectedIndex();
+		}
+	}
+
+	private boolean isInRecipeUpdateCooldown() {
+		if (!world.isRemote) {
+			return false;
+		}
+
+		if (recipeUpdateCooldown && world.getWorldTime() > cooldownTime) {
+			recipeUpdateCooldown = false;
+		}
+		return recipeUpdateCooldown;
+	}
+
 	public void handleRecipeUpdate(NBTTagCompound tag) {
-		craftingRecipeMemory.setRecipe(AWCraftingManager.getRecipe(RecipeResourceLocation.deserialize(tag.getString("recipe"))));
-		updateSelectedIndex();
-		updateClients(tag.getString("recipe"));
+		if (tag.hasKey("recipe")) {
+			setRecipe(AWCraftingManager.getRecipe(RecipeResourceLocation.deserialize(tag.getString("recipe"))), tag.getBoolean("forceSet"));
+			updateSelectedIndex();
+
+			if (world.isRemote && tag.hasKey("forceSet")) {
+				recipeUpdateCooldown = true;
+				if (recipeUpdateCooldown) {
+					cooldownTime = world.getWorldTime() + 20;
+				}
+			} else {
+				updateClients(tag.getString("recipe"));
+			}
+		}
 	}
 
 	private void updateClients(String recipeRegistryName) {
+		updateClients(recipeRegistryName, false);
+	}
+
+	private void updateClients(String recipeRegistryName, boolean cooldown) {
 		if (!world.isRemote && isUpdatePending()) {
 			NBTTagCompound data = new NBTTagCompound();
 			data.setString("recipe", recipeRegistryName);
+			if (cooldown) {
+				data.setBoolean("forceSet", true);
+			}
 			NetworkHandler.sendToAllPlayers(new PacketGui(data));
 		}
+	}
+
+	public void updateClients() {
+		updateClients(craftingRecipeMemory.getRecipe().getRegistryName().toString(), true);
+	}
+
+	public void setUpdatePending() {
+		updatePending = true;
 	}
 }
