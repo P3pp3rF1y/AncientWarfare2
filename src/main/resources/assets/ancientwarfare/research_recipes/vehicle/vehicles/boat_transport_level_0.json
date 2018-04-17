@@ -1,6 +1,6 @@
 {
     "type": "ancientwarfare:shapeless_research_recipe",
-    "research": "naval_warfare",
+    "research": "seafaring",
     "ingredients": [
         {
             "type": "ancientwarfare:item_count",
