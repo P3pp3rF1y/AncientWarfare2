@@ -5,12 +5,15 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortOrder;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools.ComparatorItemStack.SortType;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
 public class TileWarehouse extends TileWarehouseBase {
@@ -51,23 +54,28 @@ public class TileWarehouse extends TileWarehouseBase {
 		if (cursorStack.isEmpty()) {
 			return;
 		}
-		List<IWarehouseStorageTile> destinations = storageMap.getDestinations(cursorStack);
-		int stackSize = cursorStack.getCount();
-		int moved;
-		for (IWarehouseStorageTile tile : destinations) {
-			moved = tile.insertItem(cursorStack, cursorStack.getCount());
-			ItemStack filter = cursorStack.copy();
-			filter.setCount(1);
-			changeCachedQuantity(filter, moved);
-			updateViewers();
-			cursorStack.shrink(moved);
-			if (cursorStack.getCount() <= 0) {
-				break;
-			}
-		}
-		if (stackSize != cursorStack.getCount()) {
+		ItemStack result = tryAddItem(cursorStack, cursorStack.getCount());
+		if (result.getCount() != cursorStack.getCount()) {
+			player.inventory.setItemStack(result);
 			((EntityPlayerMP) player).updateHeldItem();
 		}
+	}
+
+	private ItemStack tryAddItem(ItemStack stack, int count) {
+		List<IWarehouseStorageTile> destinations = storageMap.getDestinations(stack);
+		int moved = 0;
+		for (IWarehouseStorageTile tile : destinations) {
+			moved = tile.insertItem(stack, count);
+			changeCachedQuantity(stack, moved);
+			updateViewers();
+			if (moved >= count) {
+				return ItemStack.EMPTY;
+			}
+		}
+
+		ItemStack result = stack.copy();
+		result.shrink(moved);
+		return result;
 	}
 
 	private void tryGetItem(EntityPlayer player, ItemStack filter, boolean shiftClick, boolean rightClick) {
@@ -81,8 +89,6 @@ public class TileWarehouse extends TileWarehouseBase {
 		}
 
 		List<IWarehouseStorageTile> destinations = storageMap.getDestinations();
-		int count;
-		int toMove;
 		int toMoveMax = filter.getMaxStackSize();
 		if (rightClick && (toMoveMax > 1)) {
 			if (shiftClick) {
@@ -98,25 +104,36 @@ public class TileWarehouse extends TileWarehouseBase {
 				toMoveMax = (int) Math.ceil(toMoveMax / 2.0);
 			}
 		}
-		int newStackSize = stackSize;
-		for (IWarehouseStorageTile tile : destinations) {
-			count = tile.getQuantityStored(filter);
-			toMove = toMoveMax - newStackSize;
-			toMove = toMove > count ? count : toMove;
-			if (toMove > 0) {
-				newStackSize += toMove;
-				tile.extractItem(filter, toMove);
-				changeCachedQuantity(filter, -toMove);
+		int toRemove = toMoveMax - stackSize;
+		ItemStack removedStack = tryGetItem(filter, toRemove);
+
+		ItemStack newCursorStack = filter.copy();
+		newCursorStack.setCount(stackSize + removedStack.getCount());
+		InventoryTools.updateCursorItem((EntityPlayerMP) player, newCursorStack, !rightClick && shiftClick);
+	}
+
+	private ItemStack tryGetItem(ItemStack filter, int toRemove) {
+		int removed = 0;
+		for (IWarehouseStorageTile tile : storageMap.getDestinations()) {
+			int count = tile.getQuantityStored(filter);
+			int removeFromTile = Math.min(toRemove - removed, count);
+			if (toRemove > 0) {
+				removed += removeFromTile;
+				tile.extractItem(filter, toRemove);
+				changeCachedQuantity(filter, -toRemove);
 				updateViewers();
 			}
-			if (newStackSize >= toMoveMax) {
+			if (removed >= toRemove) {
 				break;
 			}
 		}
+		if (removed == 0) {
+			return ItemStack.EMPTY;
+		}
 
-		ItemStack newCursorStack = filter.copy();
-		newCursorStack.setCount(newStackSize);
-		InventoryTools.updateCursorItem((EntityPlayerMP) player, newCursorStack, !rightClick && shiftClick);
+		ItemStack result = filter.copy();
+		result.setCount(removed);
+		return result;
 	}
 
 	@Override
@@ -168,5 +185,99 @@ public class TileWarehouse extends TileWarehouseBase {
 
 	public void setSortOrder(SortOrder sortOrder) {
 		this.sortOrder = sortOrder;
+	}
+
+	public IItemHandlerModifiable getItemHandler() {
+		int additionalSlots = 10;
+		NonNullList<ItemStack> cachedItems = cachedItemMap.getItems();
+
+		for (int i = 0; i < additionalSlots; i++) {
+			cachedItems.add(ItemStack.EMPTY);
+		}
+
+		return new IItemHandlerModifiable() {
+			@Override
+			public void setStackInSlot(int slot, @Nonnull ItemStack stack) {
+				ItemStack currentStack = cachedItems.get(slot);
+
+				if (currentStack.isEmpty()) {
+					insertItem(slot, stack, false);
+				} else {
+					int countChange = stack.getCount() - currentStack.getCount();
+
+					if (countChange == 0) {
+						return;
+					}
+
+					if (countChange > 0) {
+						ItemStack copy = stack.copy();
+						copy.setCount(countChange);
+						insertItem(slot, copy, false);
+					} else {
+						extractItem(slot, -countChange, false);
+					}
+				}
+			}
+
+			@Override
+			public int getSlots() {
+				return cachedItems.size();
+			}
+
+			@Nonnull
+			@Override
+			public ItemStack getStackInSlot(int slot) {
+				return slot < cachedItems.size() ? cachedItems.get(slot) : ItemStack.EMPTY;
+			}
+
+			@Nonnull
+			@Override
+			public ItemStack insertItem(int slot, @Nonnull ItemStack stack, boolean simulate) {
+				ItemStack cachedStack = cachedItems.get(slot);
+				if (cachedStack.isEmpty() || InventoryTools.doItemStacksMatchRelaxed(stack, cachedStack)) {
+					int maxToAdd = Math.min(stack.getMaxStackSize() - cachedStack.getCount(), stack.getCount());
+					if (!simulate) {
+						cachedStack.setCount(cachedStack.getCount() + maxToAdd);
+						return tryAddItem(stack, maxToAdd);
+					}
+					ItemStack ret = ItemStack.EMPTY;
+					if (maxToAdd < stack.getCount()) {
+						ret = stack.copy();
+						ret.setCount(stack.getCount() - maxToAdd);
+					}
+
+					return ret;
+				}
+
+				return stack;
+			}
+
+			@Nonnull
+			@Override
+			public ItemStack extractItem(int slot, int amount, boolean simulate) {
+				ItemStack cachedStack = cachedItems.get(slot);
+
+				if (cachedStack.isEmpty()) {
+					return ItemStack.EMPTY;
+				}
+
+				int maxToRemove = Math.min(cachedStack.getCount(), amount);
+
+				if (!simulate) {
+					ItemStack result = tryGetItem(cachedStack, maxToRemove);
+					cachedStack.setCount(cachedStack.getCount() - maxToRemove);
+					return result;
+				}
+
+				ItemStack ret = cachedStack.copy();
+				ret.setCount(maxToRemove);
+				return ret;
+			}
+
+			@Override
+			public int getSlotLimit(int slot) {
+				return 64;
+			}
+		};
 	}
 }

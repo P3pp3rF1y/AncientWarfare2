@@ -66,14 +66,16 @@ public class AWCraftingManager {
 	}
 
 	private static List<ICraftingRecipe> findMatchingResearchRecipes(InventoryCrafting inventory, World world, String playerName) {
+		return findMatchingResearchRecipes(inventory, world, playerName, true);
+	}
+
+	private static List<ICraftingRecipe> findMatchingResearchRecipes(InventoryCrafting inventory, World world, String playerName, boolean checkPlayerResearch) {
 		List<ICraftingRecipe> ret = new ArrayList<>();
 		if (world == null)
 			return ret;
-		if (!AWCoreStatics.useResearchSystem || (playerName != null && !playerName.isEmpty())) {
-			for (ResearchRecipeBase recipe : RESEARCH_RECIPES) {
-				if (recipe.matches(inventory, world) && canPlayerCraft(recipe, world, playerName)) {
-					ret.add(new ResearchCraftingWrapper(recipe));
-				}
+		for (ResearchRecipeBase recipe : RESEARCH_RECIPES) {
+			if (recipe.matches(inventory, world) && (!checkPlayerResearch || canPlayerCraft(recipe, world, playerName))) {
+				ret.add(new ResearchCraftingWrapper(recipe));
 			}
 		}
 		return ret;
@@ -92,49 +94,26 @@ public class AWCraftingManager {
 		return ret;
 	}
 
-	public static List<ICraftingRecipe> findMatchinRecipes(InventoryCrafting inventory, World world, String playerName) {
+	private static List<ICraftingRecipe> findMatchingRecipesNoResearchCheck(InventoryCrafting inventory, World world) {
+		List<ICraftingRecipe> recipes = findMatchingResearchRecipes(inventory, world, "", false);
+		recipes.addAll(findMatchingRegularRecipes(inventory, world));
+
+		return recipes;
+	}
+
+	public static List<ICraftingRecipe> findMatchingRecipes(InventoryCrafting inventory, World world, String playerName) {
 		List<ICraftingRecipe> recipes = findMatchingResearchRecipes(inventory, world, playerName);
 		recipes.addAll(findMatchingRegularRecipes(inventory, world));
 
 		return recipes;
 	}
 
-	/*
-	 * First search within research recipes, then delegates to CraftingManager.findMatchingRecipe
-	 */
-	public static ItemStack findMatchingRecipe(InventoryCrafting inventory, World world, String playerName) {
-		if (world == null)
-			return ItemStack.EMPTY;
-		if (!AWCoreStatics.useResearchSystem || (playerName != null && !playerName.isEmpty())) {
-			for (ResearchRecipeBase recipe : RESEARCH_RECIPES) {
-				if (recipe.matches(inventory, world) && canPlayerCraft(recipe, world, playerName)) {
-					return recipe.getCraftingResult(inventory);
-				}
-			}
-		}
-		IRecipe recipe = CraftingManager.findMatchingRecipe(inventory, world);
-		return recipe != null ? recipe.getCraftingResult(inventory) : ItemStack.EMPTY;
-	}
-
-	@Nullable
-	public static ResearchRecipeBase findMatchingResearchRecipe(InventoryCrafting inventory, World world, @Nullable String playerName) {
-		if (world != null && (!AWCoreStatics.useResearchSystem || (playerName != null && !playerName.isEmpty()))) {
-			for (ResearchRecipeBase recipe : RESEARCH_RECIPES) {
-				if (recipe.matches(inventory, world) && canPlayerCraft(recipe, world, playerName)) {
-					return recipe;
-				}
-			}
-		}
-		return null;
+	public static boolean canPlayerCraft(World world, String playerName, int research) {
+		return research == -1 || ResearchTracker.INSTANCE.hasPlayerCompleted(world, playerName, research);
 	}
 
 	private static boolean canPlayerCraft(ResearchRecipeBase recipe, World world, String playerName) {
-		if (AWCoreStatics.useResearchSystem) {
-			if (!ResearchTracker.INSTANCE.hasPlayerCompleted(world, playerName, recipe.getNeededResearch())) {
-				return false;
-			}
-		}
-		return true;
+		return !AWCoreStatics.useResearchSystem || canPlayerCraft(world, playerName, recipe.getNeededResearch());
 	}
 
 	public static void addRecipe(ResearchRecipeBase recipe, boolean checkForExistence) {
@@ -325,31 +304,34 @@ public class AWCraftingManager {
 		return invCrafting;
 	}
 
-	public static ICraftingRecipe findMatchingRecipe(World world, String playerName, NonNullList<ItemStack> inputs, ItemStack result) {
+	public static ICraftingRecipe findMatchingRecipe(World world, NonNullList<ItemStack> inputs, ItemStack result) {
 		InventoryCrafting inv = fillCraftingMatrixFromInventory(inputs);
-		List<ICraftingRecipe> recipes = findMatchinRecipes(inv, world, playerName);
+		List<ICraftingRecipe> recipes = findMatchingRecipesNoResearchCheck(inv, world);
 		return recipes.stream().filter(r -> r.getRecipeOutput().isItemEqual(result)).findFirst().orElse(NoRecipeWrapper.INSTANCE);
 	}
 
 	public static boolean canCraftFromInventory(ICraftingRecipe recipe, IItemHandler inventory) {
-		return getRecipeInventoryMatch(recipe, inventory, () -> true, (b, i, s) -> b, (b, i) -> false, true);
+		return getRecipeInventoryMatch(recipe, inventory, () -> true, (b, i, s) -> b, (b, in) -> false, true);
 	}
 
 	public static NonNullList<ItemStack> getRecipeInventoryMatch(ICraftingRecipe recipe, IItemHandler inventory) {
-		return getRecipeInventoryMatch(recipe, inventory, () -> NonNullList.withSize(9, ItemStack.EMPTY), (TriConsumer<NonNullList<ItemStack>, Integer, ItemStack>) NonNullList::set, (a, i) -> a.clear(), true);
+		return getRecipeInventoryMatch(recipe, inventory, () -> NonNullList.withSize(9, ItemStack.EMPTY),
+				(TriConsumer<NonNullList<ItemStack>, Integer, ItemStack>) NonNullList::set, (a, in) -> a.clear(), true);
 	}
 
-	public static <T> T getRecipeInventoryMatch(ICraftingRecipe recipe, IItemHandler inventory, Supplier<T> initialize, TriConsumer<T, Integer, ItemStack> onMatch, BiConsumer<T, Integer> onFail, boolean stopOnFail) {
+	public static <T> T getRecipeInventoryMatch(ICraftingRecipe recipe, IItemHandler inventory, Supplier<T> initialize,
+			TriConsumer<T, Integer, ItemStack> onMatch, BiConsumer<T, Ingredient> onFail, boolean stopOnFail) {
 		return getRecipeInventoryMatch(recipe, inventory, initialize, (t, i, s) -> {
 			onMatch.accept(t, i, s);
 			return t;
-		}, (t, i) -> {
-			onFail.accept(t, i);
+		}, (t, in) -> {
+			onFail.accept(t, in);
 			return t;
 		}, stopOnFail);
 	}
 
-	public static <T> T getRecipeInventoryMatch(ICraftingRecipe recipe, IItemHandler inventory, Supplier<T> initialize, TriFunction<T, Integer, ItemStack, T> onMatch, BiFunction<T, Integer, T> onFail, boolean stopOnFail) {
+	public static <T> T getRecipeInventoryMatch(ICraftingRecipe recipe, IItemHandler inventory, Supplier<T> initialize,
+			TriFunction<T, Integer, ItemStack, T> onMatch, BiFunction<T, Ingredient, T> onFail, boolean stopOnFail) {
 		T ret = initialize.get();
 
 		if (!recipe.isValid()) {
@@ -368,7 +350,7 @@ public class AWCraftingManager {
 			ItemStack stackFound = getIngredientInventoryMatch(clonedResourceInventory, ingredient);
 
 			if (stackFound.isEmpty()) {
-				ret = onFail.apply(ret, i);
+				ret = onFail.apply(ret, ingredient);
 				if (stopOnFail) {
 					return ret;
 				}

@@ -1,12 +1,10 @@
 package net.shadowmage.ancientwarfare.core.gui.crafting;
 
-import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
+import net.shadowmage.ancientwarfare.core.container.ContainerEngineeringStation;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
-import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 
-public class GuiEngineeringStation extends GuiContainerBase {
+public class GuiEngineeringStation extends GuiContainerBase<ContainerEngineeringStation> {
 
     public GuiEngineeringStation(ContainerBase par1Container) {
         super(par1Container, 176, 192);
@@ -14,10 +12,9 @@ public class GuiEngineeringStation extends GuiContainerBase {
 
     @Override
     public void initElements() {
-        ItemSlot bookSlotIcon = new ItemSlot(8, 8, new ItemStack(AWItems.researchBook), this);
-        bookSlotIcon.setRenderTooltip(false).setHighlightOnMouseOver(false).setRenderSlotBackground(false).setRenderItemQuantity(false);
-        addGuiElement(bookSlotIcon);
-    }
+		ResearchCraftingElement research = new ResearchCraftingElement(this, getContainer().containerCrafting, 0, 0);
+		addGuiElement(research);
+	}
 
     @Override
     public void setupElements() {

@@ -9,11 +9,8 @@ import mezz.jei.api.ISubtypeRegistry;
 import mezz.jei.api.JEIPlugin;
 import mezz.jei.api.recipe.IRecipeCategoryRegistration;
 import mezz.jei.api.recipe.VanillaRecipeCategoryUid;
-import mezz.jei.api.recipe.transfer.IRecipeTransferInfo;
 import mezz.jei.api.recipe.transfer.IRecipeTransferRegistry;
 import mezz.jei.plugins.vanilla.crafting.ShapelessRecipeWrapper;
-import mezz.jei.startup.StackHelper;
-import mezz.jei.transfer.BasicRecipeTransferInfo;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -23,6 +20,7 @@ import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseCraf
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteAutoCrafting;
 import net.shadowmage.ancientwarfare.core.api.AWBlocks;
 import net.shadowmage.ancientwarfare.core.container.ContainerEngineeringStation;
+import net.shadowmage.ancientwarfare.core.container.ICraftingContainer;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.crafting.ShapedResearchRecipe;
 import net.shadowmage.ancientwarfare.core.crafting.ShapelessResearchRecipe;
@@ -68,12 +66,12 @@ public class AWJEIPlugin implements IModPlugin {
 
 		IRecipeTransferRegistry transferRegistry = registry.getRecipeTransferRegistry();
 
-		ContainerSlotInfo<ContainerWorksiteAutoCrafting> autoCraftingInfo = new ContainerSlotInfo<>(ContainerWorksiteAutoCrafting.class, 2, 9, 11, 63);
-
 		if (!shapedResearchRecipes.isEmpty()) {
-			registerMultiRecipeTransferHandler(transferRegistry, registry.getJeiHelpers(), getRecipeTransferInfo(ShapedResearchRecipeCategory.UID, autoCraftingInfo));
-			transferRegistry.addRecipeTransferHandler(ContainerWarehouseCraftingStation.class, ShapedResearchRecipeCategory.UID, 2, 9, 11, 36);
-			transferRegistry.addRecipeTransferHandler(ContainerEngineeringStation.class, ShapedResearchRecipeCategory.UID, 2, 9, 11, 54);
+			registerMultiRecipeTransferHandler(ContainerWorksiteAutoCrafting.class, ShapedResearchRecipeCategory.UID, transferRegistry,
+					registry.getJeiHelpers());
+			registerMultiRecipeTransferHandler(ContainerWarehouseCraftingStation.class, ShapedResearchRecipeCategory.UID, transferRegistry,
+					registry.getJeiHelpers());
+			registerMultiRecipeTransferHandler(ContainerEngineeringStation.class, ShapedResearchRecipeCategory.UID, transferRegistry, registry.getJeiHelpers());
 
 			registry.addRecipeCatalyst(new ItemStack(AWAutomationBlocks.worksiteAutoCrafting), ShapedResearchRecipeCategory.UID);
 			registry.addRecipeCatalyst(new ItemStack(AWAutomationBlocks.warehouseCrafting), ShapedResearchRecipeCategory.UID);
@@ -81,51 +79,35 @@ public class AWJEIPlugin implements IModPlugin {
 		}
 
 		if (!shapelessResearchRecipes.isEmpty()) {
-			registerMultiRecipeTransferHandler(transferRegistry, registry.getJeiHelpers(), getRecipeTransferInfo(ShapelessResearchRecipeCategory.UID, autoCraftingInfo));
-			transferRegistry.addRecipeTransferHandler(ContainerWarehouseCraftingStation.class, ShapelessResearchRecipeCategory.UID, 2, 9, 11, 36);
-			transferRegistry.addRecipeTransferHandler(ContainerEngineeringStation.class, ShapelessResearchRecipeCategory.UID, 2, 9, 11, 54);
+			registerMultiRecipeTransferHandler(ContainerWorksiteAutoCrafting.class, ShapelessResearchRecipeCategory.UID, transferRegistry,
+					registry.getJeiHelpers());
+			registerMultiRecipeTransferHandler(ContainerWarehouseCraftingStation.class, ShapelessResearchRecipeCategory.UID, transferRegistry,
+					registry.getJeiHelpers());
+			registerMultiRecipeTransferHandler(ContainerEngineeringStation.class, ShapelessResearchRecipeCategory.UID, transferRegistry,
+					registry.getJeiHelpers());
 
 			registry.addRecipeCatalyst(new ItemStack(AWAutomationBlocks.worksiteAutoCrafting), ShapelessResearchRecipeCategory.UID);
 			registry.addRecipeCatalyst(new ItemStack(AWAutomationBlocks.warehouseCrafting), ShapelessResearchRecipeCategory.UID);
 			registry.addRecipeCatalyst(new ItemStack(AWBlocks.engineeringStation), ShapelessResearchRecipeCategory.UID);
 		}
 
-		registerMultiRecipeTransferHandler(transferRegistry, registry.getJeiHelpers(), getRecipeTransferInfo(VanillaRecipeCategoryUid.CRAFTING, autoCraftingInfo));
-		transferRegistry.addRecipeTransferHandler(ContainerWorksiteAutoCrafting.class, VanillaRecipeCategoryUid.CRAFTING, 2, 9, 11, 63);
-		transferRegistry.addRecipeTransferHandler(ContainerWarehouseCraftingStation.class, VanillaRecipeCategoryUid.CRAFTING, 2, 9, 11, 36);
-		transferRegistry.addRecipeTransferHandler(ContainerEngineeringStation.class, VanillaRecipeCategoryUid.CRAFTING, 2, 9, 11, 54);
+		registerMultiRecipeTransferHandler(ContainerWorksiteAutoCrafting.class, VanillaRecipeCategoryUid.CRAFTING, transferRegistry, registry.getJeiHelpers());
+		registerMultiRecipeTransferHandler(ContainerWarehouseCraftingStation.class, VanillaRecipeCategoryUid.CRAFTING, transferRegistry,
+				registry.getJeiHelpers());
+		registerMultiRecipeTransferHandler(ContainerEngineeringStation.class, VanillaRecipeCategoryUid.CRAFTING, transferRegistry, registry.getJeiHelpers());
 
 		registry.addRecipeCatalyst(new ItemStack(AWAutomationBlocks.worksiteAutoCrafting), VanillaRecipeCategoryUid.CRAFTING);
 		registry.addRecipeCatalyst(new ItemStack(AWAutomationBlocks.warehouseCrafting), VanillaRecipeCategoryUid.CRAFTING);
 		registry.addRecipeCatalyst(new ItemStack(AWBlocks.engineeringStation), VanillaRecipeCategoryUid.CRAFTING);
 	}
 
-	private <C extends Container> void registerMultiRecipeTransferHandler(IRecipeTransferRegistry transferRegistry, IJeiHelpers jeiHelpers, IRecipeTransferInfo<C> recipeTransferInfo) {
-		MultiRecipeTransferHandler<C> handler = new MultiRecipeTransferHandler<>((StackHelper) jeiHelpers.getStackHelper(), jeiHelpers.recipeTransferHandlerHelper(), recipeTransferInfo);
-		transferRegistry.addRecipeTransferHandler(handler, recipeTransferInfo.getRecipeCategoryUid());
-	}
-
-	private <C extends Container> IRecipeTransferInfo<C> getRecipeTransferInfo(String recipeCategoryUid, ContainerSlotInfo<C> slotInfo) {
-		return new BasicRecipeTransferInfo<>(slotInfo.containerClass, recipeCategoryUid, slotInfo.recipeSlotStart, slotInfo.recipeSlotCount, slotInfo.inventorySlotStart, slotInfo.inventorySlotCount);
+	private <C extends Container & ICraftingContainer> void registerMultiRecipeTransferHandler(Class<C> containerClass, String recipeCategoryUid,
+			IRecipeTransferRegistry transferRegistry, IJeiHelpers jeiHelpers) {
+		MultiRecipeTransferHandler<C> handler = new MultiRecipeTransferHandler<>(containerClass, jeiHelpers.recipeTransferHandlerHelper());
+		transferRegistry.addRecipeTransferHandler(handler, recipeCategoryUid);
 	}
 
 	private ShapelessRecipeWrapper wrapRecipe(IJeiHelpers jeiHelpers, IRecipe recipe) {
 		return recipe instanceof IShapedRecipe ? new ShapedRecipeWrapper(jeiHelpers, (IShapedRecipe) recipe) : new ShapelessRecipeWrapper<>(jeiHelpers, recipe);
-	}
-
-	private static class ContainerSlotInfo<C extends Container> {
-		final Class<C> containerClass;
-		final int recipeSlotStart;
-		final int recipeSlotCount;
-		final int inventorySlotStart;
-		final int inventorySlotCount;
-
-		public ContainerSlotInfo(Class<C> containerClass, int recipeSlotStart, int recipeSlotCount, int inventorySlotStart, int inventorySlotCount) {
-			this.containerClass = containerClass;
-			this.recipeSlotStart = recipeSlotStart;
-			this.recipeSlotCount = recipeSlotCount;
-			this.inventorySlotStart = inventorySlotStart;
-			this.inventorySlotCount = inventorySlotCount;
-		}
 	}
 }

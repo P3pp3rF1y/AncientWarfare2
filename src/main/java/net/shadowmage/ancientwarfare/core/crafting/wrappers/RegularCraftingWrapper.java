@@ -50,4 +50,9 @@ public class RegularCraftingWrapper implements ICraftingRecipe {
 	public RecipeResourceLocation getRegistryName() {
 		return registryName;
 	}
+
+	@Override
+	public int getNeededResearch() {
+		return -1;
+	}
 }

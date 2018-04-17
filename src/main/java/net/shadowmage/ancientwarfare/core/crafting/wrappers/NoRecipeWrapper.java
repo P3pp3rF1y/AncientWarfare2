@@ -42,4 +42,9 @@ public class NoRecipeWrapper implements ICraftingRecipe {
 	public RecipeResourceLocation getRegistryName() {
 		return RecipeResourceLocation.NO_RECIPE_REGISTRY_NAME;
 	}
+
+	@Override
+	public int getNeededResearch() {
+		return -1;
+	}
 }

@@ -48,7 +48,7 @@ public abstract class TileWarehouseBase extends TileWorksiteBounded implements I
 	private final Set<TileWarehouseInterface> interfacesToEmpty = new HashSet<>();
 
 	protected WarehouseStorageMap storageMap = new WarehouseStorageMap();
-	private ItemQuantityMap cachedItemMap = new ItemQuantityMap();
+	protected ItemQuantityMap cachedItemMap = new ItemQuantityMap();
 
 	private final Set<ContainerWarehouseControl> viewers = new HashSet<>();
 	private final Set<ContainerWarehouseCraftingStation> craftingViewers = new HashSet<>();

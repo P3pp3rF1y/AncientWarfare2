@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
@@ -52,7 +53,7 @@ public class InventoryTools {
 		return remainingItems;
 	}
 
-	public static IItemHandler cloneItemHandler(IItemHandler handler) {
+	public static IItemHandlerModifiable cloneItemHandler(IItemHandler handler) {
 		ItemStackHandler copy = new ItemStackHandler(handler.getSlots());
 
 		for (int slot = 0; slot < handler.getSlots(); slot++) {

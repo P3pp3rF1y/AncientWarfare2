@@ -1,26 +1,37 @@
 package net.shadowmage.ancientwarfare.automation.container;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.NonNullList;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.Constants;
-import net.minecraftforge.items.SlotItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.wrapper.CombinedInvWrapper;
+import net.minecraftforge.items.wrapper.InvWrapper;
+import net.minecraftforge.items.wrapper.PlayerInvWrapper;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseBase;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseCraftingStation;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
+import net.shadowmage.ancientwarfare.core.container.ICraftingContainer;
+import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
+import net.shadowmage.ancientwarfare.core.crafting.ICraftingRecipe;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
-import net.shadowmage.ancientwarfare.core.inventory.SlotResearchCrafting;
-import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nonnull;
 
-public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWarehouseCraftingStation> {
+import static net.minecraft.util.EnumActionResult.PASS;
+import static net.minecraft.util.EnumActionResult.SUCCESS;
+
+public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWarehouseCraftingStation> implements ICraftingContainer {
 	private static final int BOOK_SLOT = 1;
+	public ContainerCraftingRecipeMemory containerCrafting;
 
 	private ItemQuantityMap itemMap = new ItemQuantityMap();
 	private final ItemQuantityMap cache = new ItemQuantityMap();
@@ -28,37 +39,33 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 
 	public ContainerWarehouseCraftingStation(final EntityPlayer player, int x, int y, int z) {
 		super(player, x, y, z);
-		InventoryCrafting inventory = tileEntity.layoutMatrix;
 
-		Slot slot = new SlotResearchCrafting(player, tileEntity.getCrafterName(), inventory, tileEntity.result, 0, 3 * 18 + 3 * 18 + 8 + 18, 1 * 18 + 8) {
+		containerCrafting = new ContainerCraftingRecipeMemory(tileEntity.craftingRecipeMemory, player) {
 			@Override
-			public ItemStack onTake(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack) {
-				tileEntity.preItemCrafted();
-				@Nonnull ItemStack ret = super.onTake(par1EntityPlayer, par2ItemStack);
-				tileEntity.onItemCrafted();
+			protected OnTakeResult handleOnTake(EntityPlayer player, ItemStack stack) {
+				ICraftingRecipe recipe = tileEntity.craftingRecipeMemory.getRecipe();
+				IItemHandler handler = tileEntity.getWarehouse().getItemHandler();
+				if (AWCraftingManager.canCraftFromInventory(recipe, handler)) {
+					NonNullList<ItemStack> resources = AWCraftingManager.getRecipeInventoryMatch(recipe, handler);
+					InventoryTools.removeItems(handler, resources);
 
-				return ret;
+					ForgeHooks.setCraftingPlayer(player);
+					NonNullList<ItemStack> remainingItems = tileEntity.craftingRecipeMemory.getRemainingItems();
+					ForgeHooks.setCraftingPlayer(null);
+					InventoryTools.insertOrDropItems(handler, remainingItems, tileEntity.getWorld(), tileEntity.getPos());
+
+					return new OnTakeResult(SUCCESS, stack);
+				}
+				return new OnTakeResult(PASS, stack);
+			}
+
+			@Override
+			protected boolean canTakeStackFromOutput(EntityPlayer player) {
+				return true;
 			}
 		};
-		addSlotToContainer(slot);
-
-		slot = new SlotItemHandler(tileEntity.bookInventory, 0, 8, 18 + 8) {
-			@Override
-			public boolean isItemValid(ItemStack par1ItemStack) {
-				return ItemResearchBook.getResearcherName(par1ItemStack) != null;
-			}
-		};
-		addSlotToContainer(slot);
-
-		int x2, y2, slotNum = 0;
-		for (int y1 = 0; y1 < 3; y1++) {
-			y2 = y1 * 18 + 8;
-			for (int x1 = 0; x1 < 3; x1++) {
-				x2 = x1 * 18 + 8 + 3 * 18;
-				slotNum = y1 * 3 + x1;
-				slot = new Slot(inventory, slotNum, x2, y2);
-				addSlotToContainer(slot);
-			}
+		for (Slot slot : containerCrafting.getSlots()) {
+			addSlotToContainer(slot);
 		}
 
 		int y1 = 8 + 3 * 18 + 8;
@@ -85,7 +92,7 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 		if (theSlot != null && theSlot.getHasStack()) {
 			@Nonnull ItemStack slotStack = theSlot.getStack();
 			slotStackCopy = slotStack.copy();
-			int playerSlotStart = 2 + tileEntity.layoutMatrix.getSizeInventory();
+			int playerSlotStart = 2 + tileEntity.craftingRecipeMemory.craftMatrix.getSizeInventory();
 			if (slotClickedIndex < playerSlotStart)//result slot, book slot
 			{
 				if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotStart + playerSlots, false))//merge into player inventory
@@ -115,6 +122,8 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 		if (tag.hasKey("changeList")) {
 			AWLog.logDebug("rec. warehouse item map..");
 			handleChangeList(tag.getTagList("changeList", Constants.NBT.TAG_COMPOUND));
+		} else if (tag.hasKey("recipe")) {
+			containerCrafting.handleRecipeUpdate(tag);
 		}
 		refreshGui();
 	}
@@ -183,5 +192,31 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 	public void onWarehouseInventoryUpdated() {
 		AWLog.logDebug("update callback from warehouse...");
 		shouldUpdate = true;
+	}
+
+	@Override
+	public ContainerCraftingRecipeMemory getCraftingMemoryContainer() {
+		return containerCrafting;
+	}
+
+	@Override
+	public IItemHandlerModifiable[] getInventories() {
+		return new IItemHandlerModifiable[] {tileEntity.getWarehouse().getItemHandler(), new PlayerInvWrapper(player.inventory)};
+	}
+
+	@Override
+	public boolean pushCraftingMatrixToInventories() {
+		IItemHandler craftMatrixWrapper = new InvWrapper(tileEntity.craftingRecipeMemory.craftMatrix);
+		NonNullList<ItemStack> craftingItems = InventoryTools.getItems(craftMatrixWrapper);
+
+		IItemHandler inventories = new CombinedInvWrapper(tileEntity.getWarehouse().getItemHandler(), new PlayerInvWrapper(player.inventory));
+
+		if (InventoryTools.insertItems(inventories, craftingItems, true).isEmpty()) {
+			InventoryTools.insertItems(inventories, craftingItems, false);
+			InventoryTools.removeItems(craftMatrixWrapper, craftingItems);
+			return true;
+		}
+
+		return false;
 	}
 }

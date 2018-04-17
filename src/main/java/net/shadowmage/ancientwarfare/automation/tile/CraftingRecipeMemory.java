@@ -5,7 +5,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
@@ -19,7 +18,6 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.List;
 
 public class CraftingRecipeMemory {
 	private final TileEntity tileEntity;
@@ -37,7 +35,12 @@ public class CraftingRecipeMemory {
 			tileEntity.markDirty();
 		}
 	};
-	public InventoryCraftResult outputSlot = new InventoryCraftResult();
+	public InventoryCraftResult outputSlot = new InventoryCraftResult() {
+		@Override
+		public void setInventorySlotContents(int index, ItemStack stack) {
+			super.setInventorySlotContents(index, stack);
+		}
+	};
 	//TODO change this to ItemStackHandler?
 	public InventoryCrafting craftMatrix = new InventoryCrafting(new Container() {
 		@Override
@@ -49,6 +52,7 @@ public class CraftingRecipeMemory {
 		public void markDirty() {
 			super.markDirty();
 			tileEntity.markDirty();
+			updateOutput(this);
 		}
 	};//the 3x3 recipe template/matrix
 
@@ -67,18 +71,6 @@ public class CraftingRecipeMemory {
 		return ItemResearchBook.getResearcherName(bookSlot.getStackInSlot(0));
 	}
 
-	public boolean hasValidRecipe() {
-		return recipe.isValid();
-	}
-
-	public List<Ingredient> getIngredients() {
-		return recipe.getIngredients();
-	}
-
-	public ItemStack getCraftingResult(InventoryCrafting inv) {
-		return recipe.getCraftingResult(inv);
-	}
-
 	public void readFromNBT(NBTTagCompound tag) {
 		bookSlot.deserializeNBT(tag.getCompoundTag("bookSlot"));
 		InventoryTools.readInventoryFromNBT(outputSlot, tag.getCompoundTag("outputSlot"));
@@ -94,20 +86,24 @@ public class CraftingRecipeMemory {
 		return tag;
 	}
 
-	public ItemStack getRecipeOutput() {
-		return recipe.getRecipeOutput();
-	}
-
-	public NonNullList<ItemStack> getRemainingItems(InventoryCrafting invCrafting) {
-		return recipe.getRemainingItems(invCrafting);
-	}
-
 	public void setRecipe(ICraftingRecipe recipe) {
 		this.recipe = recipe;
-		outputSlot.setInventorySlotContents(0, recipe.getRecipeOutput());
+		updateOutput(craftMatrix);
+	}
+
+	private void updateOutput(InventoryCrafting craftingMatrix) {
+		outputSlot.setInventorySlotContents(0, recipe.getCraftingResult(craftingMatrix));
 	}
 
 	public ICraftingRecipe getRecipe() {
 		return recipe;
+	}
+
+	public ItemStack getCraftingResult() {
+		return recipe.getCraftingResult(craftMatrix);
+	}
+
+	public NonNullList<ItemStack> getRemainingItems() {
+		return recipe.getRemainingItems(craftMatrix);
 	}
 }

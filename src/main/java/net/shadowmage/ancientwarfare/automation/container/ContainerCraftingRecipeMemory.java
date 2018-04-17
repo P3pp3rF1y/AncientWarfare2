@@ -5,6 +5,7 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumActionResult;
 import net.minecraft.world.World;
 import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.automation.tile.CraftingRecipeMemory;
@@ -17,7 +18,9 @@ import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketGui;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ContainerCraftingRecipeMemory {
@@ -48,11 +51,23 @@ public class ContainerCraftingRecipeMemory {
 
 		InventoryCrafting inventory = craftingRecipeMemory.craftMatrix;
 
-		craftingSlot = new SlotResearchCrafting(player, craftingRecipeMemory.getCrafterName(), inventory, craftingRecipeMemory.outputSlot, 0,
-				3 * 18 + 3 * 18 + 8 + 18, 18 + 8) {
+		craftingSlot = new SlotResearchCrafting(player, craftingRecipeMemory, inventory, craftingRecipeMemory.outputSlot, 0, 3 * 18 + 3 * 18 + 8 + 18, 18 + 8) {
 			@Override
-			public boolean canTakeStack(EntityPlayer par1EntityPlayer) {
-				return false;
+			public boolean canTakeStack(EntityPlayer player) {
+				return canTakeStackFromOutput(player);
+			}
+
+			@Override
+			public ItemStack onTake(EntityPlayer player, ItemStack stack) {
+				OnTakeResult result = handleOnTake(player, stack);
+				ItemStack ret = result.getStack();
+				if (result.getResult() != EnumActionResult.SUCCESS) {
+					ret = super.onTake(player, stack);
+				}
+
+				updateRecipes();
+				updateSelectedRecipe();
+				return ret;
 			}
 		};
 
@@ -85,8 +100,17 @@ public class ContainerCraftingRecipeMemory {
 		}
 	}
 
+	protected boolean canTakeStackFromOutput(EntityPlayer player) {
+		return false;
+	}
+
+	protected OnTakeResult handleOnTake(EntityPlayer player, ItemStack stack) {
+		return new OnTakeResult(EnumActionResult.PASS, stack);
+	}
+
 	private void updateRecipes() {
-		recipes = AWCraftingManager.findMatchinRecipes(craftingRecipeMemory.craftMatrix, world, craftingRecipeMemory.getCrafterName());
+		recipes = AWCraftingManager.findMatchingRecipes(craftingRecipeMemory.craftMatrix, world, craftingRecipeMemory.getCrafterName());
+		recipes.sort(Comparator.comparing(r -> r.getRegistryName().toString()));
 		updateSelectedIndex();
 	}
 
@@ -206,5 +230,28 @@ public class ContainerCraftingRecipeMemory {
 
 	public void setUpdatePending() {
 		updatePending = true;
+	}
+
+	public class OnTakeResult {
+		private final EnumActionResult result;
+		private final ItemStack stack;
+
+		public OnTakeResult(EnumActionResult result, ItemStack stack) {
+			this.result = result;
+			this.stack = stack;
+		}
+
+		public EnumActionResult getResult() {
+			return result;
+		}
+
+		public ItemStack getStack() {
+			return stack;
+		}
+	}
+
+	@Nullable
+	public String getCrafterName() {
+		return craftingRecipeMemory.getCrafterName();
 	}
 }

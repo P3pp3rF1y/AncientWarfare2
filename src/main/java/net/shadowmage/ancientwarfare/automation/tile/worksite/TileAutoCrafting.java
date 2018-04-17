@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -62,10 +61,10 @@ public class TileAutoCrafting extends TileWorksiteBase {
 
 	private void craftItem() {
 		List<ItemStack> resources = AWCraftingManager.getRecipeInventoryMatch(craftingRecipeMemory.getRecipe(), resourceInventory);
-		InventoryCrafting invCrafting = AWCraftingManager.fillCraftingMatrixFromInventory(resources);
-		@Nonnull ItemStack stack = craftingRecipeMemory.getRecipe().getCraftingResult(invCrafting);
+		@Nonnull ItemStack stack = craftingRecipeMemory.getCraftingResult();
 		useResources(resources);
-		NonNullList<ItemStack> remainingItems = craftingRecipeMemory.getRecipe().getRemainingItems(invCrafting);
+		//TODO add setting / unsetting player similar to SlotCrafting
+		NonNullList<ItemStack> remainingItems = craftingRecipeMemory.getRemainingItems();
 		InventoryTools.insertOrDropItems(outputInventory, remainingItems, world, pos);
 
 		stack = InventoryTools.mergeItemStack(outputInventory, stack);
@@ -114,16 +113,6 @@ public class TileAutoCrafting extends TileWorksiteBase {
 		craftingRecipeMemory.readFromNBT(tag);
 	}
 
-	//TODO make sure that this call really isn't needed
-/*
-
-	@Override
-	public void setWorld(World world) {
-		super.setWorld(world);
-		onLayoutMatrixChanged();
-	}
-*/
-
 	/* ***********************************INVENTORY METHODS*********************************************** */
 	@Override
 	public boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
@@ -140,7 +129,7 @@ public class TileAutoCrafting extends TileWorksiteBase {
 
 	@Override
 	protected boolean hasWorksiteWork() {
-		return canCraftLastCheck && canHoldLastCheck && !craftingRecipeMemory.getRecipeOutput().isEmpty();
+		return canCraftLastCheck && canHoldLastCheck && !craftingRecipeMemory.getRecipe().getRecipeOutput().isEmpty();
 	}
 
 	@Override
@@ -150,7 +139,7 @@ public class TileAutoCrafting extends TileWorksiteBase {
 	}
 
 	private boolean canHold() {
-		@Nonnull ItemStack test = craftingRecipeMemory.getRecipeOutput();
+		@Nonnull ItemStack test = craftingRecipeMemory.getRecipe().getRecipeOutput();
 		return !test.isEmpty() && InventoryTools.canInventoryHold(outputInventory, test);
 	}
 

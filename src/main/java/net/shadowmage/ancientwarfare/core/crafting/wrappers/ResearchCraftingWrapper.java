@@ -9,7 +9,7 @@ import net.shadowmage.ancientwarfare.core.crafting.RecipeResourceLocation;
 import net.shadowmage.ancientwarfare.core.crafting.ResearchRecipeBase;
 
 public class ResearchCraftingWrapper implements ICraftingRecipe {
-	private static final NonNullList<ItemStack> EMPTY_STACK_LIST = NonNullList.create();
+	private static final NonNullList<ItemStack> EMPTY_STACK_LIST = NonNullList.withSize(9, ItemStack.EMPTY);
 	private final ResearchRecipeBase recipe;
 	private final RecipeResourceLocation registryName;
 
@@ -49,5 +49,10 @@ public class ResearchCraftingWrapper implements ICraftingRecipe {
 	@Override
 	public RecipeResourceLocation getRegistryName() {
 		return registryName;
+	}
+
+	@Override
+	public int getNeededResearch() {
+		return recipe.getNeededResearch();
 	}
 }

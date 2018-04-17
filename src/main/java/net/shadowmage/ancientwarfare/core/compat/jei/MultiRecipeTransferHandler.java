@@ -4,11 +4,9 @@ import mezz.jei.api.gui.IGuiIngredient;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.recipe.transfer.IRecipeTransferError;
+import mezz.jei.api.recipe.transfer.IRecipeTransferHandler;
 import mezz.jei.api.recipe.transfer.IRecipeTransferHandlerHelper;
-import mezz.jei.api.recipe.transfer.IRecipeTransferInfo;
 import mezz.jei.config.SessionData;
-import mezz.jei.startup.StackHelper;
-import mezz.jei.transfer.BasicRecipeTransferHandler;
 import mezz.jei.util.Translator;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,34 +14,31 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.items.wrapper.CombinedInvWrapper;
+import net.shadowmage.ancientwarfare.core.container.ICraftingContainer;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.crafting.ICraftingRecipe;
-import net.shadowmage.ancientwarfare.core.crafting.wrappers.RegularCraftingWrapper;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class MultiRecipeTransferHandler<C extends Container> extends BasicRecipeTransferHandler<C> {
-	private final StackHelper stackHelper;
+public class MultiRecipeTransferHandler<C extends Container & ICraftingContainer> implements IRecipeTransferHandler<C> {
 	private final IRecipeTransferHandlerHelper handlerHelper;
-	private final IRecipeTransferInfo<C> transferHelper;
+	private Class<C> containerClass;
 
-	public MultiRecipeTransferHandler(StackHelper stackHelper, IRecipeTransferHandlerHelper handlerHelper, IRecipeTransferInfo<C> transferHelper) {
-		super(stackHelper, handlerHelper, transferHelper);
-		this.stackHelper = stackHelper;
+	public MultiRecipeTransferHandler(Class<C> containerClass, IRecipeTransferHandlerHelper handlerHelper) {
 		this.handlerHelper = handlerHelper;
-		this.transferHelper = transferHelper;
+		this.containerClass = containerClass;
 	}
 
 	@Override
 	public Class<C> getContainerClass() {
-		return transferHelper.getContainerClass();
+		return containerClass;
 	}
 
 	@Nullable
@@ -52,17 +47,29 @@ public class MultiRecipeTransferHandler<C extends Container> extends BasicRecipe
 		IGuiItemStackGroup stacks = recipeLayout.getItemStacks();
 		ItemStack result = stacks.getGuiIngredients().get(0).getDisplayedIngredient();
 		NonNullList<ItemStack> inputs = NonNullList.create();
-		for (int i = 1; i < stacks.getGuiIngredients().size(); i++) {
+		for (int i = 0; i < stacks.getGuiIngredients().size(); i++) {
 			IGuiIngredient<ItemStack> ingredient = stacks.getGuiIngredients().get(i);
-			if (ingredient.getDisplayedIngredient() != null) {
-				inputs.add(ingredient.getDisplayedIngredient());
+			if (ingredient.isInput()) {
+				if (ingredient.getAllIngredients().isEmpty()) {
+					inputs.add(ItemStack.EMPTY);
+				} else {
+					inputs.add(ingredient.getDisplayedIngredient());
+				}
 			}
 		}
+		ICraftingRecipe recipe = AWCraftingManager.findMatchingRecipe(Minecraft.getMinecraft().world, inputs, result);
 
-		ICraftingRecipe recipe = AWCraftingManager.findMatchingRecipe(Minecraft.getMinecraft().world, Minecraft.getMinecraft().player.getName(), inputs, result);
+		if (recipe.getNeededResearch() > -1) {
+			if (container.getCraftingMemoryContainer().getCrafterName() == null) {
+				String tooltipMessage = Translator.translateToLocal("jei.tooltip.error.recipe.transfer.no.research_book");
+				return handlerHelper.createUserErrorWithTooltip(tooltipMessage);
+			}
 
-		if (recipe instanceof RegularCraftingWrapper) {
-			return super.transferRecipe(container, recipeLayout, player, maxTransfer, doTransfer);
+			if (!AWCraftingManager
+					.canPlayerCraft(Minecraft.getMinecraft().world, container.getCraftingMemoryContainer().getCrafterName(), recipe.getNeededResearch())) {
+				String tooltipMessage = Translator.translateToLocal("jei.tooltip.error.recipe.transfer.missing.research");
+				return handlerHelper.createUserErrorWithTooltip(tooltipMessage);
+			}
 		}
 
 		if (!SessionData.isJeiOnServer()) {
@@ -70,68 +77,32 @@ public class MultiRecipeTransferHandler<C extends Container> extends BasicRecipe
 			return handlerHelper.createUserErrorWithTooltip(tooltipMessage);
 		}
 
-		if (!transferHelper.canHandle(container)) {
-			return handlerHelper.createInternalError();
-		}
+		List<Slot> craftingSlots = container.getCraftingMemoryContainer().getCraftingMatrixSlots();
 
-		Map<Integer, Slot> inventorySlots = new HashMap<>();
-		for (Slot slot : transferHelper.getInventorySlots(container)) {
-			inventorySlots.put(slot.slotNumber, slot);
-		}
-
-		Map<Integer, Slot> craftingSlots = new HashMap<>();
-		for (Slot slot : transferHelper.getRecipeSlots(container)) {
-			craftingSlots.put(slot.slotNumber, slot);
-		}
-
-		int inputCount = 0;
-		IGuiItemStackGroup itemStackGroup = recipeLayout.getItemStacks();
-		for (IGuiIngredient<ItemStack> ingredient : itemStackGroup.getGuiIngredients().values()) {
-			if (ingredient.isInput() && !ingredient.getAllIngredients().isEmpty()) {
-				inputCount++;
-			}
-		}
-
-		NonNullList<ItemStack> availableItemStacks = NonNullList.create();
-		int filledCraftSlotCount = 0;
-		int emptySlotCount = 0;
-
-		for (Slot slot : craftingSlots.values()) {
+		NonNullList<ItemStack> craftingMatrixStacks = NonNullList.create();
+		for (Slot slot : craftingSlots) {
 			final ItemStack stack = slot.getStack();
 			if (!stack.isEmpty()) {
-				filledCraftSlotCount++;
-				availableItemStacks.add(stack.copy());
+				craftingMatrixStacks.add(stack.copy());
 			}
 		}
 
-		for (Slot slot : inventorySlots.values()) {
-			final ItemStack stack = slot.getStack();
-			if (!stack.isEmpty()) {
-				availableItemStacks.add(stack.copy());
-			} else {
-				emptySlotCount++;
-			}
-		}
+		IItemHandlerModifiable inventories = new CombinedInvWrapper(container.getInventories());
+		IItemHandlerModifiable allInventories = new CombinedInvWrapper(new ItemStackHandler(craftingMatrixStacks), inventories);
 
-		// check if we have enough inventory space to shuffle items around to their final locations
-		if (filledCraftSlotCount - inputCount > emptySlotCount) {
+		// check if we have enough inventory space to put crafting slots into inventories
+		if (!InventoryTools.insertItems(inventories, craftingMatrixStacks, true).isEmpty()) {
 			String message = Translator.translateToLocal("jei.tooltip.error.recipe.transfer.inventory.full");
 			return handlerHelper.createUserErrorWithTooltip(message);
 		}
 
-		List<Integer> missingItems = AWCraftingManager.getRecipeInventoryMatch(recipe, new ItemStackHandler(availableItemStacks), ArrayList::new, (a, i, s) -> {
-		}, ArrayList::add, false);
+		List<Integer> missingItems = AWCraftingManager.getRecipeInventoryMatch(recipe, allInventories, ArrayList::new, (a, i, s) -> {
+		}, (a, in) -> a.add(inputs.indexOf(inputs.stream().filter(in::apply).findFirst().orElse(ItemStack.EMPTY)) + 1), false);
 
 		if (!missingItems.isEmpty()) {
 			String message = Translator.translateToLocal("jei.tooltip.error.recipe.transfer.missing");
 			return handlerHelper.createUserErrorForSlots(message, missingItems);
 		}
-
-		List<Integer> craftingSlotIndexes = new ArrayList<>(craftingSlots.keySet());
-		Collections.sort(craftingSlotIndexes);
-
-		List<Integer> inventorySlotIndexes = new ArrayList<>(inventorySlots.keySet());
-		Collections.sort(inventorySlotIndexes);
 
 		if (doTransfer) {
 			NetworkHandler.sendToServer(new PacketTransferRecipe(recipe));

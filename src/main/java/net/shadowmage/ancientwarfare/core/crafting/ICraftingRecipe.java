@@ -17,4 +17,6 @@ public interface ICraftingRecipe {
 	NonNullList<ItemStack> getRemainingItems(InventoryCrafting invCrafting);
 
 	RecipeResourceLocation getRegistryName();
+
+	int getNeededResearch();
 }
