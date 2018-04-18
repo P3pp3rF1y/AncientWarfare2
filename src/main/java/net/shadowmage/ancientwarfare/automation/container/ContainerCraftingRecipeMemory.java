@@ -18,6 +18,7 @@ import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketGui;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -77,6 +78,19 @@ public class ContainerCraftingRecipeMemory {
 			@Override
 			public boolean isItemValid(ItemStack par1ItemStack) {
 				return ItemResearchBook.getResearcherName(par1ItemStack) != null;
+			}
+
+			@Override
+			public void putStack(@Nonnull ItemStack stack) {
+				super.putStack(stack);
+			}
+
+			@Override
+			public void onSlotChanged() {
+				super.onSlotChanged();
+
+				updateRecipes();
+				updateSelectedRecipe();
 			}
 		};
 		slots.add(slot);
