@@ -13,6 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
@@ -26,6 +27,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MultiRecipeTransferHandler<C extends Container & ICraftingContainer> implements IRecipeTransferHandler<C> {
 	private final IRecipeTransferHandlerHelper handlerHelper;
@@ -97,7 +99,7 @@ public class MultiRecipeTransferHandler<C extends Container & ICraftingContainer
 		}
 
 		List<Integer> missingItems = AWCraftingManager.getRecipeInventoryMatch(recipe, allInventories, ArrayList::new, (a, i, s) -> {
-		}, (a, in) -> a.add(inputs.indexOf(inputs.stream().filter(in::apply).findFirst().orElse(ItemStack.EMPTY)) + 1), false);
+		}, (a, in) -> addMissingItem(a, in, inputs), false);
 
 		if (!missingItems.isEmpty()) {
 			String message = Translator.translateToLocal("jei.tooltip.error.recipe.transfer.missing");
@@ -109,5 +111,23 @@ public class MultiRecipeTransferHandler<C extends Container & ICraftingContainer
 		}
 
 		return null;
+	}
+
+	private void addMissingItem(List<Integer> missingItems, Ingredient missingIngredient, NonNullList<ItemStack> inputs) {
+		List<ItemStack> matchingStacks = inputs.stream().filter(s -> missingIngredient.apply(s) && !missingItems.contains(getInputIndex(inputs.indexOf(s))))
+				.collect(Collectors.toList());
+		if (!matchingStacks.isEmpty()) {
+			ItemStack matched = matchingStacks.get(matchingStacks.size() - 1);
+			for (int i = inputs.size() - 1; i >= 0; i--) {
+				if (!missingItems.contains(getInputIndex(i)) && inputs.get(i) == matched) {
+					missingItems.add(getInputIndex(i));
+				}
+			}
+		}
+	}
+
+	private int getInputIndex(int craftMatrixIndex) {
+		int firstInputIndex = 1;
+		return craftMatrixIndex + firstInputIndex;
 	}
 }
