@@ -88,18 +88,6 @@ public abstract class VehicleTypeBallista extends VehicleType {
 		this.drivable = false;//adjust based on isMobile or not
 		this.yawAdjustable = false;//adjust based on hasTurret or not
 		this.turretRotationMax = 360.f;//adjust based on mobile fixed (0), stand fixed(90'), or mobile or stand turret (360)
-/* TODO vehicle recipe
-		this.addNeededResearchForMaterials();
-		this.addNeededResearch(0, ResearchGoal.vehicleTorsion1);
-		this.addNeededResearch(1, ResearchGoal.vehicleTorsion2);
-		this.addNeededResearch(2, ResearchGoal.vehicleTorsion3);
-		this.addNeededResearch(3, ResearchGoal.vehicleTorsion4);
-		this.addNeededResearch(4, ResearchGoal.vehicleTorsion5);
-
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(Item.silk, 8, false, false));
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.torsionUnit, 2, false, false));
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.equipmentBay, 1, false, false));
-*/
 	}
 
 	@Override

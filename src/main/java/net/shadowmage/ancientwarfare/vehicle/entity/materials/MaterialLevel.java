@@ -29,10 +29,6 @@ public class MaterialLevel {
 	public float weightFactor;
 	public float accuracyFactor;
 	public float misfireChance;
-	/* TODO make this into vehicle recipe
-	following
-		public ItemStack filter;
-	*/
 	public Integer neededResearch;
 	String displayName = "";
 

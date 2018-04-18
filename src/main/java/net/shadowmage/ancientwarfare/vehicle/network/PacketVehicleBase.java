@@ -32,8 +32,6 @@ import javax.annotation.Nullable;
 import java.io.IOException;
 
 public abstract class PacketVehicleBase extends PacketBase {
-	//TODO call registerPacketType for all packet types
-
 	private int entityID;
 	protected VehicleBase vehicle = null;
 

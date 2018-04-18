@@ -214,51 +214,6 @@ public abstract class Ammo implements IAmmo {
 		return groundProximity;
 	}
 
-/* TODO rendering
-	@Override
-	public String getIconTexture() {
-		return "ancientwarfare:ammo/" + iconTexture;
-	}
-*/
-
-/* TODO ammo recipes
-	@Override
-	public ResourceListRecipe constructRecipe() {
-		if (!this.isCraftable || !this.isEnabled) {
-			return null;
-		}
-		ResourceListRecipe recipe = new ResourceListRecipe(getAmmoStack(this.getNumCrafted()), RecipeType.AMMO);
-		recipe.addNeededResearch(getNeededResearch());
-		recipe.addResources(getResources());
-		return recipe;
-	}
-
-	@Override
-	public Collection<Integer> getNeededResearch() {
-		return this.neededResearch;
-	}
-
-	@Override
-	public void addResearch(Integer num) {
-		this.neededResearch.add(num);
-	}
-
-	@Override
-	public void addResearch(IResearchGoal goal) {
-		this.neededResearch.add(goal.getGlobalResearchNum());
-	}
-
-	@Override
-	public Collection<ItemStackWrapperCrafting> getResources() {
-		return this.resources;
-	}
-
-	@Override
-	public int getNumCrafted() {
-		return this.numCrafted;
-	}
-*/
-
 	protected void breakBlockAndDrop(World world, int x, int y, int z) {
 		if (!AWVehicleStatics.blockDestruction /*|| !WarzoneManager.instance().shouldBreakBlock(world, x, y, z) TODO warzone implementation?*/) {
 			return;
@@ -413,17 +368,6 @@ public abstract class Ammo implements IAmmo {
 		}
 		return 0;
 	}
-
-/* TODO ammo rendering
-	@Override
-	public Icon getDisplayIcon() {
-		Description d = DescriptionRegistry2.instance().getDescriptionFor(ItemLoader.ammoItem.itemID);
-		if (d != null) {
-			return d.getIconFor(getAmmoType());
-		}
-		return null;
-	}
-*/
 
 	protected void spawnAirBurst(World world, float x, float y, float z, float maxVelocity, IAmmo type, int count, Entity shooter) {
 		spawnGroundBurst(world, x, y, z, maxVelocity, type, count, -90, EnumFacing.DOWN, shooter);

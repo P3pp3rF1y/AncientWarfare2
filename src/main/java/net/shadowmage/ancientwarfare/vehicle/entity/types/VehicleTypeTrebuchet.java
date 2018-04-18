@@ -93,6 +93,7 @@ public class VehicleTypeTrebuchet extends VehicleType {
 		this.validUpgrades.add(UpgradeRegistry.aimUpgrade);
 
 		this.displayName = "Trebuchet";
+		//TODO fix display tooltip
 		//  this.displayTooltip.add("Trebuchet Firing Mechanism");
 		//  this.displayTooltip.add("Fixed-Emplacement");
 		//  this.displayTooltip.add("No Turret");
@@ -116,18 +117,6 @@ public class VehicleTypeTrebuchet extends VehicleType {
 		this.basePitchMin = 70.f;
 		this.turretVerticalOffset = (34.f + 67.5f + 24.0f) * 0.0625f;
 		this.baseMissileVelocityMax = 40.f;
-/* TODO vehicle recipe
-		this.addNeededResearchForMaterials();
-		this.addNeededResearch(0, ResearchGoal.vehicleCounterweights1);
-		this.addNeededResearch(1, ResearchGoal.vehicleCounterweights2);
-		this.addNeededResearch(2, ResearchGoal.vehicleCounterweights3);
-		this.addNeededResearch(3, ResearchGoal.vehicleCounterweights4);
-		this.addNeededResearch(4, ResearchGoal.vehicleCounterweights5);
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(Item.silk, 8, false, false));
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(Item.leather, 4, false, false));
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.counterWeightUnit, 4, false, false));
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.equipmentBay, 1, false, false));
-*/
 	}
 
 	@Override
@@ -271,5 +260,4 @@ public class VehicleTypeTrebuchet extends VehicleType {
 			return 0;
 		}
 	}
-
 }

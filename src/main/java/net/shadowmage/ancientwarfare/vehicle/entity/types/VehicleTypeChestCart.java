@@ -66,16 +66,6 @@ public class VehicleTypeChestCart extends VehicleType {
 		this.displayTooltip.add("item.vehicleSpawner.tooltip.mobile");
 		this.displayTooltip.add("item.vehicleSpawner.tooltip.noturret");
 		this.displayTooltip.add("item.vehicleSpawner.tooltip.storage");
-/* TODO vehicle recipe
-		this.addNeededResearchForMaterials();
-		this.addNeededResearch(0, ResearchGoal.vehicleMobility1);
-		this.addNeededResearch(1, ResearchGoal.vehicleMobility2);
-		this.addNeededResearch(2, ResearchGoal.vehicleMobility3);
-		this.addNeededResearch(3, ResearchGoal.vehicleMobility4);
-		this.addNeededResearch(4, ResearchGoal.vehicleMobility5);
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(Block.chest, 8, false, false));
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.equipmentBay, 1, false, false));
-*/
 	}
 
 	@Override

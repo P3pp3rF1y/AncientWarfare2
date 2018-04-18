@@ -39,19 +39,7 @@ public class AmmoBallistaBoltExplosive extends Ammo {
 		this.isRocket = false;
 		this.isPersistent = false;
 		this.configName = "ballist_bolt_explosive";
-/* TODO rendering
-		this.iconTexture = "ammoBoltExplosive1";
-*/
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/arrow_wood.png");
-/* TODO recipe
-		this.neededResearch.add(ResearchGoalNumbers.ballistics1);
-		this.neededResearch.add(ResearchGoalNumbers.explosives1);
-		this.resources.add(new ItemStackWrapperCrafting(Item.stick, 5));
-		this.resources.add(new ItemStackWrapperCrafting(Item.ingotIron, 2));
-		this.resources.add(new ItemStackWrapperCrafting(Item.feather, 5));
-		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.explosiveCharge, 2, false, false));
-		this.numCrafted = 8;
-*/
 	}
 
 	@Override

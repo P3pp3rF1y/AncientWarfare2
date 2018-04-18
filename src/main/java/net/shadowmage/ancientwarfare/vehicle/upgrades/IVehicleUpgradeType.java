@@ -29,11 +29,4 @@ public interface IVehicleUpgradeType {
 	ResourceLocation getRegistryName();
 
 	void applyVehicleEffects(VehicleBase vehicle);
-
-/* TODO
-	ResourceListRecipe constructRecipe();
-
-	Collection<Integer> getNeededResearch();
-*/
-
 }

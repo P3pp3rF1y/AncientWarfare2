@@ -38,18 +38,8 @@ public class AmmoBallistaBolt extends Ammo {
 		this.isArrow = true;
 		this.isRocket = false;
 		this.isPersistent = true;
-/* TODO rendering
-		this.iconTexture = "ammoBolt1";
-*/
 		this.configName = "ballist_bolt";
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/arrow_wood.png");
-
-/*
-		this.resources.add(new ItemStackWrapperCrafting(Item.stick, 5));
-		this.resources.add(new ItemStackWrapperCrafting(Item.ingotIron, 2));
-		this.resources.add(new ItemStackWrapperCrafting(Item.feather, 5));
-		this.numCrafted = 8;
-*/
 	}
 
 	@Override

@@ -79,23 +79,6 @@ public class VehicleTypeBatteringRam extends VehicleType {
 		this.storageBaySize = 0;
 		this.armorBaySize = 6;
 		this.upgradeBaySize = 3;
-/* TODO vehicle recipe
-		this.addNeededResearchForMaterials();
-		this.addNeededResearch(0, ResearchGoal.vehicleCounterweights1);
-		this.addNeededResearch(1, ResearchGoal.vehicleCounterweights2);
-		this.addNeededResearch(2, ResearchGoal.vehicleCounterweights3);
-		this.addNeededResearch(3, ResearchGoal.vehicleCounterweights4);
-		this.addNeededResearch(4, ResearchGoal.vehicleCounterweights5);
-		this.addNeededResearch(0, ResearchGoal.vehicleMobility1);
-		this.addNeededResearch(1, ResearchGoal.vehicleMobility2);
-		this.addNeededResearch(2, ResearchGoal.vehicleMobility3);
-		this.addNeededResearch(3, ResearchGoal.vehicleMobility4);
-		this.addNeededResearch(4, ResearchGoal.vehicleMobility5);
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.mobilityUnit, 1, false, false));
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(Item.silk, 8, false, false));
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.counterWeightUnit, 2, false, false));
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.equipmentBay, 1, false, false));
-*/
 	}
 
 	@Override

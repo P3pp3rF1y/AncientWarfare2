@@ -117,21 +117,10 @@ public class VehicleTypeCatapult extends VehicleType {
 		this.drivable = false;
 		this.riderSits = true;
 		this.riderMovesWithTurret = false;
-/* TODO vehicle recipe
-		this.addNeededResearchForMaterials();
-		this.addNeededResearch(0, ResearchGoal.vehicleTorsion1);
-		this.addNeededResearch(1, ResearchGoal.vehicleTorsion2);
-		this.addNeededResearch(2, ResearchGoal.vehicleTorsion3);
-		this.addNeededResearch(3, ResearchGoal.vehicleTorsion4);
-		this.addNeededResearch(4, ResearchGoal.vehicleTorsion5);
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.torsionUnit, 3, false, false));
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.equipmentBay, 1, false, false));
-*/
 	}
 
 	@Override
 	public VehicleFiringVarsHelper getFiringVarsHelper(VehicleBase veh) {
 		return new CatapultVarHelper(veh);
 	}
-
 }

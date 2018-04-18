@@ -37,26 +37,5 @@ public interface IVehicleMaterial {
 
 	float getMisfireChance(int level);
 
-/* TODO vehicle recipe
-
-1.6.4 components
-item.component.0=Rough Wood Materials
-item.component.1=Treated Wood Materials
-item.component.2=Ironshod Wood Materials
-item.component.3=Ironcore Wood Materials
-item.component.4=Rough Iron Materials
-item.component.5=Fine Iron Materials
-item.component.6=Tempered Iron Materials
-item.component.7=Minor Alloy Materials
-item.component.8=Alloy Materials
-
-	ItemStack getItem(int level);
-*/
-
-/* TODO put research in vehicle recipe or possibly make a dynamically discovered from material?
-	IResearchGoal getResearchForLevel(int level);
-*/
-
 	String getDisplayName(int level);
-
 }

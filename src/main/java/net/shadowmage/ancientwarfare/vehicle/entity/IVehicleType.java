@@ -146,12 +146,6 @@ public interface IVehicleType {
 
 	float getMaxMissileWeight();//in KG--will be adjusted by material... any additional missile weight over this will reduce max launch speed by a ratio
 
-/* TODO vehicle recipe - probably different from research or an extension to allow mutliple stacks
-	int getMaterialQuantity();//get the quantity of the main material to construct this vehicle
-
-	List<ItemStackWrapperCrafting> getAdditionalMaterials();//get a list of additional materials needed to construct this vehicle
-*/
-
 	ItemStack getStackForLevel(int level);
 
 	IAmmo getAmmoForSoldierRank(int rank);//what ammo type should soldiers use if !Config.soldiersUseAmmo
@@ -159,12 +153,6 @@ public interface IVehicleType {
 	String getIconTexture();
 
 	VehicleFiringVarsHelper getFiringVarsHelper(VehicleBase veh);
-
-/* TODO vehicle recipe
-	ResourceListRecipe constructRecipe(int level);
-
-	HashSet<IResearchGoal> getNeededResearchFor(int level);
-*/
 
 	VehicleMovementType getMovementType();
 

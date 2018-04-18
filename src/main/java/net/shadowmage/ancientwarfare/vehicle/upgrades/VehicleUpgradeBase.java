@@ -27,10 +27,6 @@ import net.shadowmage.ancientwarfare.vehicle.AncientWarfareVehicles;
 public abstract class VehicleUpgradeBase implements IVehicleUpgradeType {
 
 	private ResourceLocation registryName;
-	/*
-		List<ItemStackWrapperCrafting> resources = new ArrayList<ItemStackWrapperCrafting>();
-		HashSet<Integer> neededResearch = new HashSet<Integer>();
-	*/
 
 	public VehicleUpgradeBase(String name) {
 		registryName = new ResourceLocation(AncientWarfareVehicles.modID, name);
@@ -40,24 +36,4 @@ public abstract class VehicleUpgradeBase implements IVehicleUpgradeType {
 	public ResourceLocation getRegistryName() {
 		return registryName;
 	}
-
-/* TODO recipe
-	@Override
-	public ResourceListRecipe constructRecipe() {
-		ResourceListRecipe recipe = new ResourceListRecipe(getUpgradeStack(1), RecipeType.VEHICLE_MISC);
-		recipe.addNeededResearch(getNeededResearch());
-		if (!this.resources.isEmpty()) {
-			recipe.addResources(resources);
-		} else {
-			recipe.addResource(new ItemStack(Item.paper), 1, false, false);
-		}
-		return recipe;
-	}
-
-	@Override
-	public Collection<Integer> getNeededResearch() {
-		return this.neededResearch;
-	}
-*/
-
 }

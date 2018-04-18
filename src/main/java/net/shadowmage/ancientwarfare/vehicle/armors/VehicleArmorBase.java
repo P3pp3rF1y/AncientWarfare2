@@ -65,23 +65,6 @@ public abstract class VehicleArmorBase implements IVehicleArmor {
 		return weight;
 	}
 
-/* TODO armor rendering
-	@Override
-	public String getIconTexture() {
-		return "ancientwarfare:armor/" + iconTexture;
-	}
-*/
-
-/* TODO research recipes
-	protected void addNeededResearch(Integer res) {
-		this.neededResearch.add(res);
-	}
-
-	protected void addNeededResource(ItemStack stack, boolean dmg) {
-		this.neededResources.add(new ItemStackWrapperCrafting(stack, dmg, false));
-	}
-*/
-
 	@Override
 	public Set<Integer> getNeededResearch() {
 		return this.neededResearch;

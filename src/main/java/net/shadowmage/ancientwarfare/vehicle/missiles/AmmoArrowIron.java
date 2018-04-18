@@ -38,17 +38,8 @@ public class AmmoArrowIron extends Ammo {
 		this.isArrow = true;
 		this.isRocket = false;
 		this.isPersistent = true;
-/* TODO rendering
-		this.iconTexture = "ammoArrowIron1";
-*/
 		this.configName = "arrow_iron";
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/arrow_iron.png");
-/* TODO recipe
-		this.neededResearch.add(ResearchGoalNumbers.ballistics1);
-		this.resources.add(new ItemStackWrapperCrafting(Item.flint, 5));
-		this.resources.add(new ItemStackWrapperCrafting(Item.ingotIron, 2));
-		this.resources.add(new ItemStackWrapperCrafting(Item.feather, 5));
-*/
 	}
 
 	@Override

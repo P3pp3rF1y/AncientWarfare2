@@ -64,23 +64,10 @@ public class VehicleMaterialWood extends VehicleMaterial {
 		level2.weightFactor = 1.1f;
 		level3.weightFactor = 1.3f;
 		level4.weightFactor = 1.7f;
-/* TODO vehicle recipe
-		level0.filter = new ItemStack(ItemLoader.componentItem, 1, 0);
-		level1.filter = new ItemStack(ItemLoader.componentItem, 1, 1);
-		level2.filter = new ItemStack(ItemLoader.componentItem, 1, 2);
-		level3.filter = new ItemStack(ItemLoader.componentItem, 1, 3);
-		level4.filter = new ItemStack(ItemLoader.componentItem, 1, 4);
-		level0.neededResearch = ResearchGoalNumbers.wood1;
-		level1.neededResearch = ResearchGoalNumbers.wood2;
-		level2.neededResearch = ResearchGoalNumbers.wood3;
-		level3.neededResearch = ResearchGoalNumbers.wood4;
-		level4.neededResearch = ResearchGoalNumbers.iron1;
-*/
 		level0.displayName = "Rough Wood";
 		level1.displayName = "Treated Wood";
 		level2.displayName = "Ironshod Wood";
 		level3.displayName = "Iron Core Wood";
 		level4.displayName = "Iron Substitute";
 	}
-
 }

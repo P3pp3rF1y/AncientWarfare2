@@ -27,18 +27,11 @@ public class VehicleUpgradeSpeed extends VehicleUpgradeBase {
 
 	public VehicleUpgradeSpeed() {
 		super("vehicle_upgrade_speed");
-/* TODO recipe
-		this.neededResearch.add(ResearchGoalNumbers.mobility3);
-		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Block.planks, 3), true, false));
-		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.ingotIron, 3), false, false));
-*/
 	}
 
 	@Override
 	public void applyVehicleEffects(VehicleBase vehicle) {
-		//  Config.logDebug("prev vehicle max speed: "+vehicle.currentForwardSpeedMax);
 		vehicle.currentForwardSpeedMax += 0.25f * 0.05f;
-		//  Config.logDebug("new vehicle max speed: "+vehicle.currentForwardSpeedMax);
 	}
 
 }

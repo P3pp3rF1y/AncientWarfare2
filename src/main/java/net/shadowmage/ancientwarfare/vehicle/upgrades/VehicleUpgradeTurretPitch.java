@@ -27,12 +27,6 @@ public class VehicleUpgradeTurretPitch extends VehicleUpgradeBase {
 
 	public VehicleUpgradeTurretPitch() {
 		super("vehicle_upgrade_turret_pitch");
-/* TODO recipe
-		this.neededResearch.add(ResearchGoalNumbers.mechanics2);
-		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Block.planks, 2), true, false));
-		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.ingotIron, 3), false, false));
-		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Block.pistonBase, 1), true, false));
-*/
 	}
 
 	@Override

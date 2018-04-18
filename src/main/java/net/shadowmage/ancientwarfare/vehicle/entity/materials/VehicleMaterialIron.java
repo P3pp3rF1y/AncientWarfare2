@@ -65,24 +65,10 @@ public class VehicleMaterialIron extends VehicleMaterial {
 		level2.weightFactor = 1.1f;
 		level3.weightFactor = 1.3f;
 		level4.weightFactor = 1.7f;
-/* TODO vehicle recipe
-		level0.filter = new ItemStack(ItemLoader.componentItem, 1, 4);
-		level1.filter = new ItemStack(ItemLoader.componentItem, 1, 5);
-		level2.filter = new ItemStack(ItemLoader.componentItem, 1, 6);
-		level3.filter = new ItemStack(ItemLoader.componentItem, 1, 7);
-		level4.filter = new ItemStack(ItemLoader.componentItem, 1, 8);
-		level0.neededResearch = ResearchGoalNumbers.iron1;
-		level1.neededResearch = ResearchGoalNumbers.iron2;
-		level2.neededResearch = ResearchGoalNumbers.iron3;
-		level3.neededResearch = ResearchGoalNumbers.iron4;
-		level4.neededResearch = ResearchGoalNumbers.iron5;
-*/
 		level0.displayName = "Rough Iron";
 		level1.displayName = "Fine Iron";
 		level2.displayName = "Tempered Iron";
 		level3.displayName = "Minor Alloy";
 		level4.displayName = "Major Alloy";
-
 	}
-
 }

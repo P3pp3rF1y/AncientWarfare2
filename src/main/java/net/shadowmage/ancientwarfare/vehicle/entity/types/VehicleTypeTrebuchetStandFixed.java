@@ -38,5 +38,4 @@ public class VehicleTypeTrebuchetStandFixed extends VehicleTypeTrebuchet {
 		this.armorBaySize = 4;
 		this.upgradeBaySize = 4;
 	}
-
 }

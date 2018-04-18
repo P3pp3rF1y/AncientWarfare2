@@ -39,18 +39,8 @@ public class AmmoArrowFlame extends Ammo {
 		this.isRocket = false;
 		this.isPersistent = true;
 		this.isFlaming = true;
-/* TODO rendering
-		this.iconTexture = "ammoArrowFlame1";
-*/
 		this.configName = "arrow_flame";
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/arrow_wood.png");
-/* TODO recipe
-		this.neededResearch.add(ResearchGoalNumbers.flammables1);
-		this.resources.add(new ItemStackWrapperCrafting(Item.flint, 5));
-		this.resources.add(new ItemStackWrapperCrafting(Item.stick, 5));
-		this.resources.add(new ItemStackWrapperCrafting(Item.feather, 5));
-		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.flameCharge, 2, false, false));
-*/
 	}
 
 	@Override
