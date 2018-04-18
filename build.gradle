@@ -126,3 +126,10 @@ bintray {
     }
 
 }
+
+sonarqube {
+    properties {
+        property "sonar.projectName", "Ancient Warfare 2"
+        property "sonar.projectKey", "ancientwarfare"
+    }
+}
