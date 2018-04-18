@@ -37,7 +37,8 @@ public class RenderCannonStandFixed extends RenderVehicleBase {
 	@Override
 	public void renderVehicle(VehicleBase vehicle, double x, double y, double z, float yaw, float tick) {
 		VehicleFiringVarsHelper var = vehicle.firingVarsHelper;
-		model.setTurretRotation(yaw - vehicle.localTurretRotation - tick * vehicle.currentTurretYawSpeed, vehicle.localTurretPitch - tick * vehicle.currentTurretPitchSpeed);
+		model.setTurretRotation(yaw - vehicle.localTurretRotation - tick * vehicle.currentTurretYawSpeed,
+				vehicle.localTurretPitch - tick * vehicle.currentTurretPitchSpeed);
 		model.render(vehicle, 0, 0, 0, 0, 0, 0.0625f);
 	}
 

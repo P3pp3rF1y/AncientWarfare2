@@ -489,7 +489,7 @@ public class AWNPCEntityLoader {
 	}
 
     /*
-     * used by npc spawner item to get the sub-items
+	 * used by npc spawner item to get the sub-items
      */
 
 	public static void getSpawnerSubItems(NonNullList<ItemStack> list) {

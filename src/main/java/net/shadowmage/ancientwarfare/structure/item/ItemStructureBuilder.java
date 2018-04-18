@@ -125,7 +125,8 @@ public class ItemStructureBuilder extends ItemBaseStructure implements IItemKeyI
 		if (hit == null) {
 			return;
 		}
-		StructureBB bb = new StructureBB(hit, player.getHorizontalFacing(), structure.xSize, structure.ySize, structure.zSize, structure.xOffset, structure.yOffset, structure.zOffset);
+		StructureBB bb = new StructureBB(hit, player.getHorizontalFacing(), structure.xSize, structure.ySize, structure.zSize, structure.xOffset,
+				structure.yOffset, structure.zOffset);
 		Util.renderBoundingBox(player, bb.min, bb.max, delta);
 	}
 

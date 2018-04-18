@@ -180,13 +180,15 @@ public class ContainerVehicleInventory extends ContainerVehicle {
 						return ItemStack.EMPTY;
 					}
 				} else if (slotStackCopy.getItem() instanceof ItemArmor) {
-					if (!this.mergeItemStack(slotStack, 36 + ammoSlots + upgradeSlots, 36 + ammoSlots + upgradeSlots + armorSlots, false))//merge into armor inventory
+					if (!this.mergeItemStack(slotStack, 36 + ammoSlots + upgradeSlots, 36 + ammoSlots + upgradeSlots + armorSlots,
+							false))//merge into armor inventory
 					{
 						return ItemStack.EMPTY;
 					}
 				} else//attempt merge into storage inventory, if vehicle has one...
 				{
-					if (!this.mergeItemStack(slotStack, 36 + ammoSlots + upgradeSlots + armorSlots, 36 + ammoSlots + upgradeSlots + armorSlots + storageSlots, false))//merge into storage inventory
+					if (!this.mergeItemStack(slotStack, 36 + ammoSlots + upgradeSlots + armorSlots, 36 + ammoSlots + upgradeSlots + armorSlots + storageSlots,
+							false))//merge into storage inventory
 					{
 						return ItemStack.EMPTY;
 					}

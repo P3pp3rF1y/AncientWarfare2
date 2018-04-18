@@ -60,7 +60,8 @@ public class StructureMap extends WorldSavedData {
 		return mapTag;
 	}
 
-	public Collection<StructureEntry> getEntriesNear(World world, int worldX, int worldZ, int chunkRadius, boolean expandBySize, Collection<StructureEntry> list) {
+	public Collection<StructureEntry> getEntriesNear(World world, int worldX, int worldZ, int chunkRadius, boolean expandBySize,
+			Collection<StructureEntry> list) {
 		int cx = worldX >> 4;
 		int cz = worldZ >> 4;
 		return map.getEntriesNear(world.provider.getDimension(), cx, cz, chunkRadius, expandBySize, list);
@@ -81,7 +82,8 @@ public class StructureMap extends WorldSavedData {
 		private HashMap<Integer, StructureWorldMap> mapsByDimension = new HashMap<>();
 		Set<String> generatedUniques = new HashSet<>();
 
-		public Collection<StructureEntry> getEntriesNear(int dimension, int chunkX, int chunkZ, int chunkRadius, boolean expandBySize, Collection<StructureEntry> list) {
+		public Collection<StructureEntry> getEntriesNear(int dimension, int chunkX, int chunkZ, int chunkRadius, boolean expandBySize,
+				Collection<StructureEntry> list) {
 			if (mapsByDimension.containsKey(dimension)) {
 				return mapsByDimension.get(dimension).getEntriesNear(chunkX, chunkZ, chunkRadius, expandBySize, list);
 			}

@@ -254,7 +254,8 @@ public class VehicleUpgradeHelper implements INBTSerializable<NBTTagCompound> {
 	public float getScaledDamage(DamageSource src, float amt) {
 		if (src == DamageType.explosiveMissile || src.isExplosion()) {
 			return amt * (1 - (vehicle.currentExplosionResist * 0.01f));
-		} else if (src == DamageType.fireMissile || src == DamageSource.IN_FIRE || src == DamageSource.LAVA || src == DamageSource.ON_FIRE || src.isFireDamage()) {
+		} else if (src == DamageType.fireMissile || src == DamageSource.IN_FIRE || src == DamageSource.LAVA || src == DamageSource.ON_FIRE || src
+				.isFireDamage()) {
 			return amt * (1 - (vehicle.currentFireResist * 0.01f));
 		}
 		return amt * (1 - (vehicle.currentGenericResist * 0.01f));

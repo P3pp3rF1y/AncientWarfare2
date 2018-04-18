@@ -27,7 +27,8 @@ public class ItemBlockRotatableMetaTile extends ItemBlockBase {
 	}
 
 	@Override
-	public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
+	public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ,
+			IBlockState newState) {
 		boolean val = super.placeBlockAt(stack, player, world, pos, side, hitX, hitY, hitZ, newState);
 		if (val) {
 			TileEntity te = player.world.getTileEntity(pos);

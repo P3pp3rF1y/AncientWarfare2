@@ -32,15 +32,23 @@ public class VehicleInputHandler {
 	public static final KeyBinding REVERSE = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_REVERSE, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_S, CATEGORY);
 	public static final KeyBinding LEFT = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_LEFT, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_A, CATEGORY);
 	public static final KeyBinding RIGHT = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_RIGHT, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_D, CATEGORY);
-	public static final KeyBinding ASCEND_AIM_UP = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_ASCEND_AIM_UP, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_R, CATEGORY);
-	public static final KeyBinding DESCEND_AIM_DOWN = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_DESCEND_AIM_DOWN, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_F, CATEGORY);
+	public static final KeyBinding ASCEND_AIM_UP = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_ASCEND_AIM_UP, VehicleKeyConflictContext.INSTANCE,
+			Keyboard.KEY_R, CATEGORY);
+	public static final KeyBinding DESCEND_AIM_DOWN = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_DESCEND_AIM_DOWN, VehicleKeyConflictContext.INSTANCE,
+			Keyboard.KEY_F, CATEGORY);
 	public static final KeyBinding FIRE = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_FIRE, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_SPACE, CATEGORY);
-	public static final KeyBinding AMMO_PREV = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_AMMO_PREV, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_T, CATEGORY);
-	public static final KeyBinding AMMO_NEXT = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_AMMO_NEXT, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_G, CATEGORY);
-	public static final KeyBinding TURRET_LEFT = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_TURRET_LEFT, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_Z, CATEGORY);
-	public static final KeyBinding TURRET_RIGHT = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_TURRET_RIGHT, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_X, CATEGORY);
-	public static final KeyBinding MOUSE_AIM = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_MOUSE_AIM, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_C, CATEGORY);
-	public static final KeyBinding AMMO_SELECT = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_AMMO_SELECT, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_V, CATEGORY);
+	public static final KeyBinding AMMO_PREV = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_AMMO_PREV, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_T,
+			CATEGORY);
+	public static final KeyBinding AMMO_NEXT = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_AMMO_NEXT, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_G,
+			CATEGORY);
+	public static final KeyBinding TURRET_LEFT = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_TURRET_LEFT, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_Z,
+			CATEGORY);
+	public static final KeyBinding TURRET_RIGHT = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_TURRET_RIGHT, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_X,
+			CATEGORY);
+	public static final KeyBinding MOUSE_AIM = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_MOUSE_AIM, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_C,
+			CATEGORY);
+	public static final KeyBinding AMMO_SELECT = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_AMMO_SELECT, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_V,
+			CATEGORY);
 
 	private static final Map<KeyBinding, InputCallbackDispatcher> keybindingCallbacks = Maps.newHashMap();
 	private static final Set<Integer> releaseableKeys = new HashSet<>();
@@ -115,7 +123,8 @@ public class VehicleInputHandler {
 	}
 
 	private static void initCallbacks() {
-		registerCallBack(MOUSE_AIM, () -> AWVehicleStatics.enableMouseAim = !AWVehicleStatics.enableMouseAim); //TODO add code to update config once mouseAim is made into config setting
+		registerCallBack(MOUSE_AIM,
+				() -> AWVehicleStatics.enableMouseAim = !AWVehicleStatics.enableMouseAim); //TODO add code to update config once mouseAim is made into config setting
 		registerCallBack(FIRE, new VehicleCallback(VehicleInputHandler::handleFireAction));
 		registerCallBack(ASCEND_AIM_UP, new VehicleCallback(v -> v.firingHelper.handleAimKeyInput(-1, 0)));
 		registerCallBack(DESCEND_AIM_DOWN, new VehicleCallback(v -> v.firingHelper.handleAimKeyInput(1, 0)));
@@ -155,7 +164,9 @@ public class VehicleInputHandler {
 			closestFound = (float) blockHit.hitVec.distanceTo(playerPos);
 		}
 		Minecraft mc = Minecraft.getMinecraft();
-		List<Entity> possibleHitEntities = mc.world.getEntitiesWithinAABBExcludingEntity(mc.getRenderViewEntity(), mc.getRenderViewEntity().getEntityBoundingBox().expand(lookVector.x * range, lookVector.y * range, lookVector.z * range).grow(var9, var9, var9));
+		List<Entity> possibleHitEntities = mc.world.getEntitiesWithinAABBExcludingEntity(mc.getRenderViewEntity(),
+				mc.getRenderViewEntity().getEntityBoundingBox().expand(lookVector.x * range, lookVector.y * range, lookVector.z * range)
+						.grow(var9, var9, var9));
 		Entity hitEntity = null;
 		for (Entity currentExaminingEntity : possibleHitEntities) {
 			if (currentExaminingEntity == excludedEntity) {

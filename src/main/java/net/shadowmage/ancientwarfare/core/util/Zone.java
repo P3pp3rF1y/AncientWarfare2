@@ -21,7 +21,8 @@ public class Zone implements INBTSerializable<NBTTagCompound> {
 	 * does the input share any block position with this zone ?
 	 */
 	public boolean crossWith(Zone z) {
-		if (max.getX() < z.min.getX() || max.getY() < z.min.getY() || max.getZ() < z.min.getZ() || min.getX() > z.max.getX() || min.getY() > z.max.getY() || min.getZ() > z.max.getZ()) {
+		if (max.getX() < z.min.getX() || max.getY() < z.min.getY() || max.getZ() < z.min.getZ() || min.getX() > z.max.getX() || min.getY() > z.max.getY() || min
+				.getZ() > z.max.getZ()) {
 			return false;
 		}
 		return true;

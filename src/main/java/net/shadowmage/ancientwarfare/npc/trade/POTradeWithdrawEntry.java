@@ -35,7 +35,8 @@ public final class POTradeWithdrawEntry extends POTradeTransferEntry {
 					InventoryTools.transferItems(move, storage, filter, count);
 				}
 			}
-		}, FILL_TO {
+		},
+		FILL_TO {
 			@Override
 			public void doTransfer(IItemHandler storage, IItemHandler move, ItemStack filter) {
 				int count = InventoryTools.getCountOf(storage, filter);

@@ -147,7 +147,8 @@ public class TownGeneratorStructures {
 				if (templatesToGenerate.isEmpty()) {
 					break outer;
 				}
-				plotDistance = Trig.getDistance(plot.bb.getCenterX(), 0, plot.bb.getCenterZ(), gen.maximalBounds.getCenterX(), 0, gen.maximalBounds.getCenterZ()) - minDistance;
+				plotDistance = Trig.getDistance(plot.bb.getCenterX(), 0, plot.bb.getCenterZ(), gen.maximalBounds.getCenterX(), 0,
+						gen.maximalBounds.getCenterZ()) - minDistance;
 				distPercent = plotDistance / minMaxDelta;
 				distPercent = 1.f - distPercent;
 				distPercent *= distPercent;
@@ -321,7 +322,8 @@ public class TownGeneratorStructures {
 	 * @param length   rotated structure z-dimension
 	 * @param center   should the structure be centered in plot, or placed along road-edge?
 	 */
-	private static void generateStructure(TownGenerator gen, TownPartPlot plot, StructureTemplate template, EnumFacing face, int width, int length, boolean center) {
+	private static void generateStructure(TownGenerator gen, TownPartPlot plot, StructureTemplate template, EnumFacing face, int width, int length,
+			boolean center) {
 		int plotWidth = plot.getWidth();
 		int plotLength = plot.getLength();
 		int extraWidth = plotWidth - width;//unused width portion of the plot
@@ -343,7 +345,8 @@ public class TownGeneratorStructures {
 		BlockPos max = new BlockPos(min.getX() + (width - 1), min.getY() + template.ySize, min.getZ() + (length - 1));
 		StructureBB bb = new StructureBB(min, max);
 
-		BlockPos buildKey = bb.getRLCorner(face, BlockPos.ORIGIN).offset(face.rotateY(), template.xOffset).offset(face.getOpposite(), template.zOffset).up(gen.townBounds.min.getY() - template.yOffset);
+		BlockPos buildKey = bb.getRLCorner(face, BlockPos.ORIGIN).offset(face.rotateY(), template.xOffset).offset(face.getOpposite(), template.zOffset)
+				.up(gen.townBounds.min.getY() - template.yOffset);
 		bb.add(0, -template.yOffset, 0);
 		gen.structureDoors.add(buildKey);
 		WorldGenTickHandler.INSTANCE.addStructureForGeneration(new StructureBuilder(gen.world, template, face, buildKey, bb));

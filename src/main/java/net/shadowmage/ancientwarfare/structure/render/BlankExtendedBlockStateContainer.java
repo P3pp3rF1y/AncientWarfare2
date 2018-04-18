@@ -19,9 +19,8 @@ public class BlankExtendedBlockStateContainer extends ExtendedBlockState {
 
 	@Nonnull
 	@Override
-	protected StateImplementation createState(
-			@Nonnull Block block,
-			@Nonnull ImmutableMap<IProperty<?>, Comparable<?>> properties, @Nullable ImmutableMap<IUnlistedProperty<?>, Optional<?>> unlistedProperties) {
+	protected StateImplementation createState(@Nonnull Block block, @Nonnull ImmutableMap<IProperty<?>, Comparable<?>> properties,
+			@Nullable ImmutableMap<IUnlistedProperty<?>, Optional<?>> unlistedProperties) {
 		return new BlankExtendedStateImplementation(block);
 	}
 

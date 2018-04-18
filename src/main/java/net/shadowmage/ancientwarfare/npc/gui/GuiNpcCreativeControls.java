@@ -129,7 +129,7 @@ public class GuiNpcCreativeControls extends GuiContainerBase<ContainerNpcCreativ
 		}
 
         /*
-         * force opening of normal gui (whatever that may be for the npc) when advanced controls is closed
+		 * force opening of normal gui (whatever that may be for the npc) when advanced controls is closed
          */
 		getContainer().entity.openGUI(player);
 		return false;

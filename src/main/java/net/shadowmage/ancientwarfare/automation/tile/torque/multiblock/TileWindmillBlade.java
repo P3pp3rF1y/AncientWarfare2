@@ -319,7 +319,8 @@ public class TileWindmillBlade extends TileUpdatable implements ITickable {
 	public AxisAlignedBB getRenderBoundingBox() {
 		if (isControl) {
 			int expand = (windmillSize - 1) / 2;
-			return new AxisAlignedBB(pos.getX() - expand, pos.getY() - expand, pos.getZ() - expand, pos.getX() + 1 + expand, pos.getY() + 1 + expand, pos.getZ() + 1 + expand);
+			return new AxisAlignedBB(pos.getX() - expand, pos.getY() - expand, pos.getZ() - expand, pos.getX() + 1 + expand, pos.getY() + 1 + expand,
+					pos.getZ() + 1 + expand);
 		}
 		return getBlockType().getCollisionBoundingBox(world.getBlockState(pos), world, pos);
 	}

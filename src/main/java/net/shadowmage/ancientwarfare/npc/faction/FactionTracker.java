@@ -67,7 +67,8 @@ public class FactionTracker {
 			if (clientEntry != null) {
 				return clientEntry.getStandingFor(factionName);
 			} else {
-				throw new RuntimeException("Client side faction data was null while attempting lookup for: " + playerName + " for faction: " + factionName + " for client world: " + world);
+				throw new RuntimeException(
+						"Client side faction data was null while attempting lookup for: " + playerName + " for faction: " + factionName + " for client world: " + world);
 			}
 		} else {
 			FactionData data = AWGameData.INSTANCE.getData(world, FactionData.class);

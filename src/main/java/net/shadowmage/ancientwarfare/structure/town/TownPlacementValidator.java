@@ -101,7 +101,8 @@ public class TownPlacementValidator {
 		if (map == null) {
 			return true;
 		}
-		StructureBB bb = new StructureBB(new BlockPos(area.getBlockMinX(), area.getMinY(), area.getBlockMaxX()), new BlockPos(area.getBlockMaxX(), area.getMaxY(), area.getBlockMaxZ()));
+		StructureBB bb = new StructureBB(new BlockPos(area.getBlockMinX(), area.getMinY(), area.getBlockMaxX()),
+				new BlockPos(area.getBlockMaxX(), area.getMaxY(), area.getBlockMaxZ()));
 		int size = Math.max(area.getChunkWidth(), area.getChunkLength());
 		List<StructureEntry> entries = new ArrayList<>();
 		map.getEntriesNear(world, area.getCenterX(), area.getCenterZ(), size, true, entries);

@@ -29,52 +29,52 @@ import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 
 public class StructureEntry {
 
-    public String name;
-    private int value;
-    public final StructureBB bb;
+	public String name;
+	private int value;
+	public final StructureBB bb;
 
-    public StructureEntry(int x, int y, int z, EnumFacing face, StructureTemplate template) {
-        name = template.name;
-        bb = new StructureBB(new BlockPos(x, y, z), face, template.xSize, template.ySize, template.zSize, template.xOffset, template.yOffset, template.zOffset);
-        value = template.getValidationSettings().getClusterValue();
-    }
+	public StructureEntry(int x, int y, int z, EnumFacing face, StructureTemplate template) {
+		name = template.name;
+		bb = new StructureBB(new BlockPos(x, y, z), face, template.xSize, template.ySize, template.zSize, template.xOffset, template.yOffset, template.zOffset);
+		value = template.getValidationSettings().getClusterValue();
+	}
 
-    public StructureEntry(StructureBB bb, String name, int value) {
-        this.name = name;
-        this.bb = bb;
-        this.value = value;
-    }
+	public StructureEntry(StructureBB bb, String name, int value) {
+		this.name = name;
+		this.bb = bb;
+		this.value = value;
+	}
 
-    public StructureEntry() {
-        bb = new StructureBB(BlockPos.ORIGIN, BlockPos.ORIGIN);
-    }//NBT constructor
+	public StructureEntry() {
+		bb = new StructureBB(BlockPos.ORIGIN, BlockPos.ORIGIN);
+	}//NBT constructor
 
-    public void writeToNBT(NBTTagCompound tag) {
-        tag.setString("name", name);
-        tag.setInteger("value", value);
-        tag.setIntArray("bb", new int[] {bb.min.getX(), bb.min.getY(), bb.min.getZ(), bb.max.getX(), bb.max.getY(), bb.max.getZ()});
-    }
+	public void writeToNBT(NBTTagCompound tag) {
+		tag.setString("name", name);
+		tag.setInteger("value", value);
+		tag.setIntArray("bb", new int[] {bb.min.getX(), bb.min.getY(), bb.min.getZ(), bb.max.getX(), bb.max.getY(), bb.max.getZ()});
+	}
 
-    public void readFromNBT(NBTTagCompound tag) {
-        name = tag.getString("name");
-        value = tag.getInteger("value");
-        int[] datas = tag.getIntArray("bb");
-        if (datas.length >= 6) {
-            bb.min = new BlockPos(datas[0], datas[1], datas[2]);
-            bb.max = new BlockPos(datas[3], datas[4], datas[5]);
-        }
-    }
+	public void readFromNBT(NBTTagCompound tag) {
+		name = tag.getString("name");
+		value = tag.getInteger("value");
+		int[] datas = tag.getIntArray("bb");
+		if (datas.length >= 6) {
+			bb.min = new BlockPos(datas[0], datas[1], datas[2]);
+			bb.max = new BlockPos(datas[3], datas[4], datas[5]);
+		}
+	}
 
-    public String getName() {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public int getValue() {
-        return value;
-    }
+	public int getValue() {
+		return value;
+	}
 
-    public StructureBB getBB() {
-        return bb;
-    }
+	public StructureBB getBB() {
+		return bb;
+	}
 
 }

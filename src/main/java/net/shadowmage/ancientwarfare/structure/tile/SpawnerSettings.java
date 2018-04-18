@@ -135,7 +135,8 @@ public class SpawnerSettings {
 			}
 		}
 		if (playerRange > 0) {
-			List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos, pos.add(1, 1, 1)).grow(playerRange, playerRange, playerRange));
+			List<EntityPlayer> nearbyPlayers = world
+					.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos, pos.add(1, 1, 1)).grow(playerRange, playerRange, playerRange));
 			if (nearbyPlayers.isEmpty()) {
 				return;
 			}
@@ -153,7 +154,8 @@ public class SpawnerSettings {
 		}
 
 		if (maxNearbyMonsters > 0 && mobRange > 0) {
-			int nearbyCount = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos, pos.add(1, 1, 1)).grow(mobRange, mobRange, mobRange)).size();
+			int nearbyCount = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos, pos.add(1, 1, 1)).grow(mobRange, mobRange, mobRange))
+					.size();
 			if (nearbyCount >= maxNearbyMonsters) {
 				AWLog.logDebug("skipping spawning because of too many nearby entities");
 				return;

@@ -92,7 +92,8 @@ public final class RenderCommandOverlay {
 			AxisAlignedBB bb = null;
 			if (pos.typeOfHit == RayTraceResult.Type.BLOCK) {
 				bb = new AxisAlignedBB(pos.getBlockPos(), pos.getBlockPos().add(1, 1, 1)).grow(0.1d, 0.1d, 0.1d);
-			} else if (pos.typeOfHit == RayTraceResult.Type.ENTITY && pos.entityHit.getEntityBoundingBox() != null && pos.entityHit instanceof EntityLivingBase) {
+			} else if (pos.typeOfHit == RayTraceResult.Type.ENTITY && pos.entityHit
+					.getEntityBoundingBox() != null && pos.entityHit instanceof EntityLivingBase) {
 				Entity e = pos.entityHit;
 				float t = 1.f - evt.getPartialTicks();
 				double dx = e.posX - e.lastTickPosX;

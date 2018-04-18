@@ -19,7 +19,8 @@ public class FlywheelControllerAnimationRenderer extends TorqueAnimationRenderer
 		state = state.withProperty(BlockFlywheelController.FLYWHEEL_ROTATION, te.getFlywheelRotation(partialTicks));
 		EnumFacing d = te.getPrimaryFacing();
 		ITorque.ITorqueTile inputNeighbor = te.getTorqueCache()[d.getOpposite().ordinal()];
-		state = state.withProperty(AutomationProperties.USE_INPUT, inputNeighbor != null && inputNeighbor.canOutputTorque(d) && inputNeighbor.useOutputRotation(d.getOpposite()));
+		state = state.withProperty(AutomationProperties.USE_INPUT,
+				inputNeighbor != null && inputNeighbor.canOutputTorque(d) && inputNeighbor.useOutputRotation(d.getOpposite()));
 		state = state.withProperty(AutomationProperties.INPUT_ROTATION, inputNeighbor != null ? inputNeighbor.getClientOutputRotation(d, partialTicks) : 0);
 
 		return state;

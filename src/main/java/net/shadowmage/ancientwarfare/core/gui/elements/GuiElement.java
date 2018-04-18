@@ -50,6 +50,7 @@ public abstract class GuiElement {
 
 	public static final ResourceLocation widgetTexture1 = new ResourceLocation("ancientwarfare", "textures/gui/guiButtons1.png");
 	public static final ResourceLocation widgetTexture2 = new ResourceLocation("ancientwarfare", "textures/gui/guiButtons2.png");
+
 	public GuiElement(int topLeftX, int topLeftY) {
 		this.topLeftX = topLeftX;
 		this.topLeftY = topLeftY;

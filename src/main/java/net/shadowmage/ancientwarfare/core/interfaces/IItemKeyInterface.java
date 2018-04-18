@@ -13,7 +13,11 @@ import net.minecraft.item.ItemStack;
 public interface IItemKeyInterface {
 
 	public static enum ItemKey {
-		KEY_0, KEY_1, KEY_2, KEY_3, KEY_4;
+		KEY_0,
+		KEY_1,
+		KEY_2,
+		KEY_3,
+		KEY_4;
 	}
 
 	/*

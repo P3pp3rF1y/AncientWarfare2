@@ -13,7 +13,8 @@ public final class RangeAttackHelper {
 	 * @author Funwayguy for the speedFactor (range) calculations
 	 */
 	public static void doRangedAttack(EntityLivingBase attacker, EntityLivingBase target, float force, float precision) {
-		double targetDist = attacker.getDistance(target.posX + (target.posX - target.lastTickPosX), target.getEntityBoundingBox().minY, target.posZ + (target.posZ - target.lastTickPosZ));
+		double targetDist = attacker.getDistance(target.posX + (target.posX - target.lastTickPosX), target.getEntityBoundingBox().minY,
+				target.posZ + (target.posZ - target.lastTickPosZ));
 		float speedFactor = (float) ((0.00013 * (targetDist) * (targetDist)) + (0.02 * targetDist) + 1.25);
 
 		EntityArrow entityarrow = new EntityTippedArrow(attacker.world, attacker);

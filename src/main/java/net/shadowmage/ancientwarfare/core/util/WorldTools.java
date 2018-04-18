@@ -24,7 +24,8 @@ public class WorldTools {
 					if (chunk != null) {
 						for (TileEntity entity : chunk.getTileEntityMap().values()) {
 							if (!entity.isInvalid()) {
-								if (entity.getPos().getX() >= x1 && entity.getPos().getY() >= y1 && entity.getPos().getZ() >= z1 && entity.getPos().getX() <= x2 && entity.getPos().getY() <= y2 && entity.getPos().getZ() <= z2) {
+								if (entity.getPos().getX() >= x1 && entity.getPos().getY() >= y1 && entity.getPos().getZ() >= z1 && entity.getPos()
+										.getX() <= x2 && entity.getPos().getY() <= y2 && entity.getPos().getZ() <= z2) {
 									tileEntities.add(entity);
 								}
 							}

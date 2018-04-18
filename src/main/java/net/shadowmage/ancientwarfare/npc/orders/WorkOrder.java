@@ -179,7 +179,9 @@ public class WorkOrder extends OrderingList<WorkOrder.WorkEntry> implements INBT
 				}
 				return 0;
 			}
-		}, ROUTE, TIMED;
+		},
+		ROUTE,
+		TIMED;
 
 		public int getNextWorkIndex(int current, List<WorkEntry> orders, NpcBase npcBase) {
 			if (current + 1 >= orders.size()) {

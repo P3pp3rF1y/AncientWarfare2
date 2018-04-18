@@ -133,7 +133,8 @@ public class BlockAdvancedSpawner extends BlockBaseStructure {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY,
+			float hitZ) {
 		if (player.capabilities.isCreativeMode) {
 			if (!world.isRemote) {
 				if (player.isSneaking()) {

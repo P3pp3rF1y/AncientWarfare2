@@ -228,7 +228,8 @@ public class PathFinderThetaStar {
 			{
 				continue;
 			}
-			if (!qNodes.contains(n) || tent < n.g)//if we haven't seen n before, or if we have but the path through current to n is less than n's best known path
+			if (!qNodes
+					.contains(n) || tent < n.g)//if we haven't seen n before, or if we have but the path through current to n is less than n's best known path
 			{//update n's stats to path through current -> n
 				//this is where it deviates from A*, we will check to see if n can see the parent of current.  if so
 				//we calculate the path to n as if it went through the parent of current, skipping current completely.

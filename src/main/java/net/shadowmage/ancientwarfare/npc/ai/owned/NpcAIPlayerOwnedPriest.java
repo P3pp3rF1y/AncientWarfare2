@@ -30,7 +30,8 @@ public class NpcAIPlayerOwnedPriest extends NpcAI<NpcPlayerOwned> {
 		if (!npc.getIsAIEnabled()) {
 			return false;
 		}
-		return (lastCheckTicks == -1 || npc.ticksExisted - lastCheckTicks > UPDATE_FREQ) && npc.getTownHall() != null && !npc.getTownHall().getDeathList().isEmpty();
+		return (lastCheckTicks == -1 || npc.ticksExisted - lastCheckTicks > UPDATE_FREQ) && npc.getTownHall() != null && !npc.getTownHall().getDeathList()
+				.isEmpty();
 	}
 
 	@Override

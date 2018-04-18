@@ -27,7 +27,8 @@ public class RenderTools {
 	 * @param renderHeight  render height
 	 * @param renderWidth   render width
 	 */
-	public static void renderQuarteredTexture(int textureWidth, int textureHeight, int texStartX, int texStartY, int texUsedWidth, int texUsedHeight, int renderStartX, int renderStartY, int renderWidth, int renderHeight) {
+	public static void renderQuarteredTexture(int textureWidth, int textureHeight, int texStartX, int texStartY, int texUsedWidth, int texUsedHeight,
+			int renderStartX, int renderStartY, int renderWidth, int renderHeight) {
 		//perspective percent x, y
 		float perX = 1.f / ((float) textureWidth);
 		float perY = 1.f / ((float) textureHeight);
@@ -41,16 +42,20 @@ public class RenderTools {
 		float halfRenderHeight = ((float) renderHeight) * 0.5f;
 
 		//draw top-left quadrant
-		renderTexturedQuad(renderStartX, renderStartY, renderStartX + halfRenderWidth, renderStartY + halfRenderHeight, texMinX, texMinY, texMinX + halfWidth, texMinY + halfHeight);
+		renderTexturedQuad(renderStartX, renderStartY, renderStartX + halfRenderWidth, renderStartY + halfRenderHeight, texMinX, texMinY, texMinX + halfWidth,
+				texMinY + halfHeight);
 
 		//draw top-right quadrant
-		renderTexturedQuad(renderStartX + halfRenderWidth, renderStartY, renderStartX + halfRenderWidth * 2, renderStartY + halfRenderHeight, texMaxX - halfWidth, texMinY, texMaxX, texMinY + halfHeight);
+		renderTexturedQuad(renderStartX + halfRenderWidth, renderStartY, renderStartX + halfRenderWidth * 2, renderStartY + halfRenderHeight,
+				texMaxX - halfWidth, texMinY, texMaxX, texMinY + halfHeight);
 
 		//draw bottom-left quadrant
-		renderTexturedQuad(renderStartX, renderStartY + halfRenderHeight, renderStartX + halfRenderWidth, renderStartY + halfRenderHeight * 2, texMinX, texMaxY - halfHeight, texMinX + halfWidth, texMaxY);
+		renderTexturedQuad(renderStartX, renderStartY + halfRenderHeight, renderStartX + halfRenderWidth, renderStartY + halfRenderHeight * 2, texMinX,
+				texMaxY - halfHeight, texMinX + halfWidth, texMaxY);
 
 		//draw bottom-right quadrant
-		renderTexturedQuad(renderStartX + halfRenderWidth, renderStartY + halfRenderHeight, renderStartX + halfRenderWidth * 2, renderStartY + halfRenderHeight * 2, texMaxX - halfWidth, texMaxY - halfHeight, texMaxX, texMaxY);
+		renderTexturedQuad(renderStartX + halfRenderWidth, renderStartY + halfRenderHeight, renderStartX + halfRenderWidth * 2,
+				renderStartY + halfRenderHeight * 2, texMaxX - halfWidth, texMaxY - halfHeight, texMaxX, texMaxY);
 	}
 
 	public static void renderTexturedQuad(float x1, float y1, float x2, float y2, float u1, float v1, float u2, float v2) {

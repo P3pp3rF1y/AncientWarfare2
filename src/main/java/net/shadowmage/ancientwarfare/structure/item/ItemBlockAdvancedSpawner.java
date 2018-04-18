@@ -31,7 +31,8 @@ public class ItemBlockAdvancedSpawner extends ItemBlockBase implements IItemKeyI
 	}
 
 	@Override
-	public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
+	public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ,
+			IBlockState newState) {
 		if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey("spawnerSettings")) {
 			SpawnerSettings settings = SpawnerSettings.getDefaultSettings();
 			NBTTagCompound defaultTag = new NBTTagCompound();
@@ -79,9 +80,12 @@ public class ItemBlockAdvancedSpawner extends ItemBlockBase implements IItemKeyI
 		EntitySpawnGroup group;
 		for (int i = 0; i < groups.size(); i++) {
 			group = groups.get(i);
-			tooltip.add(I18n.format("guistrings.spawner.group_number") + ": " + (i + 1) + " " + I18n.format("guistrings.spawner.group_weight") + ": " + group.getWeight());
+			tooltip.add(I18n.format("guistrings.spawner.group_number") + ": " + (i + 1) + " " + I18n.format("guistrings.spawner.group_weight") + ": " + group
+					.getWeight());
 			for (EntitySpawnSettings set : group.getEntitiesToSpawn()) {
-				tooltip.add("  " + I18n.format("guistrings.spawner.entity_type") + ": " + I18n.format(set.getEntityName()) + " " + set.getSpawnMin() + " to " + set.getSpawnMax() + " (" + (set.getSpawnTotal() < 0 ? "infinite" : set.getSpawnTotal()) + " total)");
+				tooltip.add(
+						"  " + I18n.format("guistrings.spawner.entity_type") + ": " + I18n.format(set.getEntityName()) + " " + set.getSpawnMin() + " to " + set
+								.getSpawnMax() + " (" + (set.getSpawnTotal() < 0 ? "infinite" : set.getSpawnTotal()) + " total)");
 			}
 		}
 	}

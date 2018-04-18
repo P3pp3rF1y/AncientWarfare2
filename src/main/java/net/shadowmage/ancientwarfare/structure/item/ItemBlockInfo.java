@@ -26,7 +26,8 @@ public class ItemBlockInfo extends ItemBaseStructure {
 			if (pos != null) {
 				IBlockState state = world.getBlockState(pos);
 				Block block = state.getBlock();
-				AWLog.logDebug("block: " + BlockDataManager.INSTANCE.getNameForBlock(block) + ", meta: " + block.getMetaFromState(state)); //TODO print property values?
+				AWLog.logDebug("block: " + BlockDataManager.INSTANCE.getNameForBlock(block) + ", meta: " + block
+						.getMetaFromState(state)); //TODO print property values?
 				if (block.hasTileEntity(state)) {
 					AWLog.logDebug("tile: " + world.getTileEntity(pos).getClass());
 				}

@@ -33,7 +33,8 @@ public abstract class BlockTorqueBase extends BlockBaseAutomation implements IRo
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY,
+			float hitZ) {
 		TileEntity te = world.getTileEntity(pos);
 		return te instanceof IInteractableTile && ((IInteractableTile) te).onBlockClicked(player, hand);
 	}
@@ -69,7 +70,9 @@ public abstract class BlockTorqueBase extends BlockBaseAutomation implements IRo
 		BlockStateContainer.Builder builder = new BlockStateContainer.Builder(this);
 		addProperties(builder);
 
-		return builder.add(CoreProperties.UNLISTED_FACING, AutomationProperties.ACTIVE, AutomationProperties.DYNAMIC, AutomationProperties.ROTATIONS[0], AutomationProperties.ROTATIONS[1], AutomationProperties.ROTATIONS[2], AutomationProperties.ROTATIONS[3], AutomationProperties.ROTATIONS[4], AutomationProperties.ROTATIONS[5]).build();
+		return builder.add(CoreProperties.UNLISTED_FACING, AutomationProperties.ACTIVE, AutomationProperties.DYNAMIC, AutomationProperties.ROTATIONS[0],
+				AutomationProperties.ROTATIONS[1], AutomationProperties.ROTATIONS[2], AutomationProperties.ROTATIONS[3], AutomationProperties.ROTATIONS[4],
+				AutomationProperties.ROTATIONS[5]).build();
 	}
 
 	protected void addProperties(BlockStateContainer.Builder builder) {
@@ -150,6 +153,8 @@ public abstract class BlockTorqueBase extends BlockBaseAutomation implements IRo
 	public void registerClient() {
 		ModelLoaderHelper.registerItem(this, "automation", "normal");
 
-		ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder().addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC).addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.ROTATIONS).build());
+		ModelBakery.registerBlockKeyGenerator(this,
+				new BlockStateKeyGenerator.Builder().addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC)
+						.addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.ROTATIONS).build());
 	}
 }

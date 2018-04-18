@@ -82,8 +82,10 @@ public class AWNPCItemLoader {
 		private int compareSpawnerStacks(ItemStack arg0, ItemStack arg1) {
 			String s1 = arg0.getUnlocalizedName();
 			String s2 = arg1.getUnlocalizedName();
-			boolean f1 = s1.contains("bandit") || s1.contains("viking") || s1.contains("native") || s1.contains("desert") || s1.contains("pirate") || s1.contains("custom_1") || s1.contains("custom_2") || s1.contains("custom_3");
-			boolean f2 = s2.contains("bandit") || s2.contains("viking") || s2.contains("native") || s2.contains("desert") || s2.contains("pirate") || s2.contains("custom_1") || s2.contains("custom_2") || s2.contains("custom_3");
+			boolean f1 = s1.contains("bandit") || s1.contains("viking") || s1.contains("native") || s1.contains("desert") || s1.contains("pirate") || s1
+					.contains("custom_1") || s1.contains("custom_2") || s1.contains("custom_3");
+			boolean f2 = s2.contains("bandit") || s2.contains("viking") || s2.contains("native") || s2.contains("desert") || s2.contains("pirate") || s2
+					.contains("custom_1") || s2.contains("custom_2") || s2.contains("custom_3");
 			if (f1 == f2) {
 				return s1.compareTo(s2);
 			} else {

@@ -44,7 +44,8 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
 		Button b = new Button(48, 12, 40, 12, "guistrings.inventory.direction.north") {
 			@Override
 			protected void onPressed() {
-				if (getContainer().max.getZ() >= getContainer().getZ() && (getContainer().min.getX() > getContainer().getX() || getContainer().max.getX() < getContainer().getX())) {
+				if (getContainer().max.getZ() >= getContainer().getZ() && (getContainer().min.getX() > getContainer().getX() || getContainer().max
+						.getX() < getContainer().getX())) {
 					getContainer().min = getContainer().min.offset(EnumFacing.NORTH);
 					getContainer().max = getContainer().max.offset(EnumFacing.NORTH);
 					boundsAdjusted = true;
@@ -57,7 +58,8 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
 		b = new Button(48 + 40, 12, 40, 12, "guistrings.inventory.direction.south") {
 			@Override
 			protected void onPressed() {
-				if (getContainer().min.getZ() <= getContainer().getZ() && (getContainer().min.getX() > getContainer().getX() || getContainer().max.getX() < getContainer().getX())) {
+				if (getContainer().min.getZ() <= getContainer().getZ() && (getContainer().min.getX() > getContainer().getX() || getContainer().max
+						.getX() < getContainer().getX())) {
 					getContainer().min = getContainer().min.offset(EnumFacing.SOUTH);
 					getContainer().max = getContainer().max.offset(EnumFacing.SOUTH);
 					boundsAdjusted = true;
@@ -70,7 +72,8 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
 		b = new Button(48 + 80, 12, 40, 12, "guistrings.inventory.direction.west") {
 			@Override
 			protected void onPressed() {
-				if (getContainer().max.getX() >= getContainer().getX() && (getContainer().min.getZ() > getContainer().getZ() || getContainer().max.getZ() < getContainer().getZ())) {
+				if (getContainer().max.getX() >= getContainer().getX() && (getContainer().min.getZ() > getContainer().getZ() || getContainer().max
+						.getZ() < getContainer().getZ())) {
 					getContainer().min = getContainer().min.offset(EnumFacing.WEST);
 					getContainer().max = getContainer().max.offset(EnumFacing.WEST);
 					boundsAdjusted = true;
@@ -83,7 +86,8 @@ public class GuiWorksiteBoundsAdjust extends GuiContainerBase<ContainerWorksiteB
 		b = new Button(48 + 120, 12, 40, 12, "guistrings.inventory.direction.east") {
 			@Override
 			protected void onPressed() {
-				if (getContainer().min.getX() <= getContainer().getX() && (getContainer().min.getZ() > getContainer().getZ() || getContainer().max.getZ() < getContainer().getZ())) {
+				if (getContainer().min.getX() <= getContainer().getX() && (getContainer().min.getZ() > getContainer().getZ() || getContainer().max
+						.getZ() < getContainer().getZ())) {
 					getContainer().min = getContainer().min.offset(EnumFacing.EAST);
 					getContainer().max = getContainer().max.offset(EnumFacing.EAST);
 					boundsAdjusted = true;

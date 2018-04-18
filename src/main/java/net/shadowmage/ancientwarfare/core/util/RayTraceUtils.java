@@ -25,7 +25,8 @@ public class RayTraceUtils {
 		return tracePath(player.world, player.posX, player.posY + yOffset, player.posZ, look.x, look.y, look.z, border, excluded);
 	}
 
-	public static RayTraceResult tracePathWithYawPitch(World world, float x, float y, float z, float yaw, float pitch, float range, float borderSize, HashSet<Entity> excluded) {
+	public static RayTraceResult tracePathWithYawPitch(World world, float x, float y, float z, float yaw, float pitch, float range, float borderSize,
+			HashSet<Entity> excluded) {
 		float tx = x + (Trig.sinDegrees(yaw + 180) * range * Trig.cosDegrees(pitch));
 		float ty = (-Trig.sinDegrees(pitch) * range) + y;
 		float tz = z + (Trig.cosDegrees(yaw) * range * Trig.cosDegrees(pitch));
@@ -44,7 +45,8 @@ public class RayTraceUtils {
      * @return a RayTraceResult of either the block hit (no entity hit), the entity hit (hit an entity), or null for nothing hit
      */
 
-	public static RayTraceResult tracePath(World world, double x, double y, double z, double tx, double ty, double tz, float borderSize, HashSet<Entity> excluded) {
+	public static RayTraceResult tracePath(World world, double x, double y, double z, double tx, double ty, double tz, float borderSize,
+			HashSet<Entity> excluded) {
 		double minX = x < tx ? x : tx;
 		double minY = y < ty ? y : ty;
 		double minZ = z < tz ? z : tz;

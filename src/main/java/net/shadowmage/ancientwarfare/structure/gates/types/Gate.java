@@ -75,7 +75,13 @@ public class Gate implements IGateType {
 	}
 
 	public enum Variant {
-		WOOD_BASIC, IRON_BASIC, WOOD_SINGLE, IRON_SINGLE, WOOD_DOUBLE, IRON_DOUBLE, WOOD_ROTATING
+		WOOD_BASIC,
+		IRON_BASIC,
+		WOOD_SINGLE,
+		IRON_SINGLE,
+		WOOD_DOUBLE,
+		IRON_DOUBLE,
+		WOOD_ROTATING
 	}
 
 	protected final int globalID;
@@ -328,7 +334,8 @@ public class Gate implements IGateType {
 				for (int z = min.getZ(); z <= max.getZ(); z++) {
 					BlockPos pos = new BlockPos(x, y, z);
 					if (!world.isAirBlock(pos)) {
-						AWLog.logDebug("could not create gate for non-air block at: " + x + "," + y + "," + z + " block: " + world.getBlockState(pos).getBlock());
+						AWLog.logDebug(
+								"could not create gate for non-air block at: " + x + "," + y + "," + z + " block: " + world.getBlockState(pos).getBlock());
 						return null;
 					}
 				}

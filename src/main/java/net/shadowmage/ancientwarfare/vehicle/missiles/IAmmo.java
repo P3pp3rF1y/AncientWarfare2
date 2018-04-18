@@ -61,7 +61,8 @@ public interface IAmmo {
 
 	boolean isFlaming();//used by client-side rendering to render the missile on-fire, does nothing else
 
-	boolean isAmmoValidFor(VehicleBase vehicle);//can be used for per-upgrade compatibility.  vehicle will check this before firing or adding ammo to the vehicle
+	boolean isAmmoValidFor(
+			VehicleBase vehicle);//can be used for per-upgrade compatibility.  vehicle will check this before firing or adding ammo to the vehicle
 
 	boolean updateAsArrow();//should update pitch like an arrow (relative to flight direction)
 

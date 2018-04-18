@@ -15,9 +15,12 @@ import javax.annotation.Nullable;
 import java.util.Collection;
 
 public class FlywheelControllerRenderer extends TorqueTieredRenderer<TileFlywheelController> {
-	public static final ModelResourceLocation LIGHT_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/flywheel_controller", "light");
-	public static final ModelResourceLocation MEDIUM_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/flywheel_controller", "medium");
-	public static final ModelResourceLocation HEAVY_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/flywheel_controller", "heavy");
+	public static final ModelResourceLocation LIGHT_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/flywheel_controller",
+			"light");
+	public static final ModelResourceLocation MEDIUM_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/flywheel_controller",
+			"medium");
+	public static final ModelResourceLocation HEAVY_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/flywheel_controller",
+			"heavy");
 
 	public static final FlywheelControllerRenderer INSTANCE = new FlywheelControllerRenderer();
 

@@ -59,7 +59,9 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class AWCraftingManager {
-	public static final IForgeRegistry<ResearchRecipeBase> RESEARCH_RECIPES = (new RegistryBuilder<ResearchRecipeBase>()).setName(new ResourceLocation(AncientWarfareCore.modID, "research_recipes")).setType(ResearchRecipeBase.class).setMaxID(Integer.MAX_VALUE >> 5).disableSaving().allowModification().create();
+	public static final IForgeRegistry<ResearchRecipeBase> RESEARCH_RECIPES = (new RegistryBuilder<ResearchRecipeBase>())
+			.setName(new ResourceLocation(AncientWarfareCore.modID, "research_recipes")).setType(ResearchRecipeBase.class).setMaxID(Integer.MAX_VALUE >> 5)
+			.disableSaving().allowModification().create();
 
 	public static void init() {
 		//noop - just call this so that the static final gets initialized at proper time
@@ -119,7 +121,8 @@ public class AWCraftingManager {
 	public static void addRecipe(ResearchRecipeBase recipe, boolean checkForExistence) {
 		Item item = recipe.getRecipeOutput().getItem();
 		if (AWCoreStatics.isItemCraftable(item)) {
-			if ((recipe.getNeededResearch() != -1 && AWCoreStatics.isItemResearcheable(item) && AWCoreStatics.useResearchSystem) || hasCountIngredient(recipe)) {
+			if ((recipe.getNeededResearch() != -1 && AWCoreStatics.isItemResearcheable(item) && AWCoreStatics.useResearchSystem) || hasCountIngredient(
+					recipe)) {
 				if (!checkForExistence || !RESEARCH_RECIPES.containsKey(recipe.getRegistryName())) {
 					RESEARCH_RECIPES.register(recipe);
 				}
@@ -147,8 +150,10 @@ public class AWCraftingManager {
 
 	public static void loadRecipes() {
 		ModContainer awModContainer = Loader.instance().activeModContainer();
-		CraftingHelper.register(new ResourceLocation(AncientWarfareCore.modID, "item_count"), (IIngredientFactory) (c, j) -> new IngredientCount(CraftingHelper.getItemStack(j, c)));
-		CraftingHelper.register(new ResourceLocation(AncientWarfareCore.modID, "ore_dict_count"), (IIngredientFactory) (c, j) -> new IngredientOreCount(JsonUtils.getString(j, "ore"), JsonUtils.getInt(j, "count", 1)));
+		CraftingHelper.register(new ResourceLocation(AncientWarfareCore.modID, "item_count"),
+				(IIngredientFactory) (c, j) -> new IngredientCount(CraftingHelper.getItemStack(j, c)));
+		CraftingHelper.register(new ResourceLocation(AncientWarfareCore.modID, "ore_dict_count"),
+				(IIngredientFactory) (c, j) -> new IngredientOreCount(JsonUtils.getString(j, "ore"), JsonUtils.getInt(j, "count", 1)));
 
 		loadRecipes(awModContainer, new File(AWCoreStatics.configPathForFiles + "research_recipes"), "");
 		Loader.instance().getActiveModList().forEach(m -> AWCraftingManager.loadRecipes(m, m.getSource(), "assets/" + m.getModId() + "/research_recipes"));

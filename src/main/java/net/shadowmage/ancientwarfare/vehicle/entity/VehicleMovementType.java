@@ -22,8 +22,13 @@
 package net.shadowmage.ancientwarfare.vehicle.entity;
 
 public enum VehicleMovementType {
-	NONE, GROUND, WATER, AIR1, //airplane style
-	AIR2, //helicopter style
+	NONE,
+	GROUND,
+	WATER,
+	AIR1,
+	//airplane style
+	AIR2,
+	//helicopter style
 	WATER2,
 
 }

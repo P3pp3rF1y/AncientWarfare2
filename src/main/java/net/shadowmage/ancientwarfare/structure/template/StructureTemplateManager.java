@@ -57,7 +57,8 @@ public class StructureTemplateManager {
 		StructureTemplateClient cl = new StructureTemplateClient(template);
 		clientTemplates.put(template.name, cl);
 
-		MinecraftServer server = FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER ? FMLCommonHandler.instance().getMinecraftServerInstance() : null;
+		MinecraftServer server = FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER ? FMLCommonHandler.instance()
+				.getMinecraftServerInstance() : null;
 		if (server != null && server.isServerRunning() && server.getPlayerList() != null) {
 			NBTTagCompound tag = new NBTTagCompound();
 			cl.writeToNBT(tag);
@@ -103,6 +104,7 @@ public class StructureTemplateManager {
 	}
 
 	public Map<String, StructureTemplate> getSurvivalStructures() {
-		return loadedTemplates.entrySet().stream().filter(e -> e.getValue().getValidationSettings().isSurvival()).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+		return loadedTemplates.entrySet().stream().filter(e -> e.getValue().getValidationSettings().isSurvival())
+				.collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 	}
 }

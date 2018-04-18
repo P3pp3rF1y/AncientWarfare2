@@ -72,7 +72,8 @@ public final class RenderWorkLines {
 			RenderTools.drawOutlinedBoundingBox(bb, 1.f, 1.f, 1.f);
 			renderTextAt(player, point.getX() + 0.5d, point.getY() + 1.5d, point.getZ() + 0.5d, String.valueOf(index), partialTick);
 			if (prev != null) {
-				renderLineBetween(player, point.getX() + 0.5d, point.getY() + 0.5d, point.getZ() + 0.5d, prev.getX() + 0.5d, prev.getY() + 0.5d, prev.getZ() + 0.5d, partialTick);
+				renderLineBetween(player, point.getX() + 0.5d, point.getY() + 0.5d, point.getZ() + 0.5d, prev.getX() + 0.5d, prev.getY() + 0.5d,
+						prev.getZ() + 0.5d, partialTick);
 			}
 			prev = point;
 			index++;

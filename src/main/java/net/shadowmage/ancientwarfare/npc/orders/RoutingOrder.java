@@ -176,7 +176,8 @@ public class RoutingOrder extends OrderingList<RoutingOrder.RoutePoint> implemen
 				if (filter.isEmpty()) {
 					continue;
 				}
-				movedSize += InventoryTools.transferItems(from, to, stack -> !InventoryTools.doItemStacksMatch(stack, filter, ignoreDamage, ignoreTag), Integer.MAX_VALUE);
+				movedSize += InventoryTools
+						.transferItems(from, to, stack -> !InventoryTools.doItemStacksMatch(stack, filter, ignoreDamage, ignoreTag), Integer.MAX_VALUE);
 				movedStacks += movedSize / filter.getMaxStackSize();
 			}
 			return movedStacks;

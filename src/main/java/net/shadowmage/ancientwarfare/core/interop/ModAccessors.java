@@ -37,7 +37,7 @@ public class ModAccessors {
 */
 
 /* TODO enviromine support
-            if (Loader.isModLoaded("enviromine")) {
+			if (Loader.isModLoaded("enviromine")) {
                 AncientWarfareCore.log.info("Enviromine found!");
                 ENVIROMINE = Class.forName("net.shadowmage.ancientwarfare.core.interop.InteropEnviromine").asSubclass(InteropEnviromineInterface.class).newInstance();
                 ENVIROMINE_LOADED = true;

@@ -94,7 +94,8 @@ public class PrimitiveQuad extends Primitive {
 	@Override
 	public void addPrimitiveLines(ArrayList<String> lines) {
 		StringBuilder b = new StringBuilder("quad=" + parent.getName() + ",");
-		b.append(x).append(",").append(y).append(",").append(z).append(",").append(rx).append(",").append(ry).append(",").append(rz).append(",").append(tx()).append(",").append(ty()).append(",");
+		b.append(x).append(",").append(y).append(",").append(z).append(",").append(rx).append(",").append(ry).append(",").append(rz).append(",").append(tx())
+				.append(",").append(ty()).append(",");
 		b.append(x1).append(",").append(y1).append(",").append(x2).append(",").append(y2);
 		lines.add(b.toString());
 	}

@@ -130,7 +130,9 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
 		NumberInput input;
 		for (StructureValidationProperty property : parent.validator.getProperties()) {
 			propName = property.getRegName();
-			if (propName.equals(StructureValidator.PROP_BIOME_LIST) || propName.equals(StructureValidator.PROP_BIOME_WHITE_LIST) || propName.equals(StructureValidator.PROP_DIMENSION_LIST) || propName.equals(StructureValidator.PROP_DIMENSION_WHITE_LIST) || propName.equals(StructureValidator.PROP_BLOCK_LIST)) {
+			if (propName.equals(StructureValidator.PROP_BIOME_LIST) || propName.equals(StructureValidator.PROP_BIOME_WHITE_LIST) || propName
+					.equals(StructureValidator.PROP_DIMENSION_LIST) || propName.equals(StructureValidator.PROP_DIMENSION_WHITE_LIST) || propName
+					.equals(StructureValidator.PROP_BLOCK_LIST)) {
 				continue;//skip the properties handled by blocks, biome, or dimensions setup guis
 			}
 			label = new Label(8, totalHeight, "structure.validation." + property.getRegName());

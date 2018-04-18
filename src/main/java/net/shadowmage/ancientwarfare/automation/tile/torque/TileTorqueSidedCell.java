@@ -167,7 +167,8 @@ public abstract class TileTorqueSidedCell extends TileTorqueBase {
 		for (int i = 0; i < cache.length; i++) {
 			dir = EnumFacing.values()[i];
 			if (cache[i] != null) {
-				connections[i] = (cache[i].canInputTorque(dir.getOpposite()) && canOutputTorque(dir)) || (cache[i].canOutputTorque(dir.getOpposite()) && canInputTorque(dir));
+				connections[i] = (cache[i].canInputTorque(dir.getOpposite()) && canOutputTorque(dir)) || (cache[i]
+						.canOutputTorque(dir.getOpposite()) && canInputTorque(dir));
 			}
 		}
 		if (ModuleStatus.redstoneFluxEnabled) {

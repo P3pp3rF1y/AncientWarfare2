@@ -80,7 +80,8 @@ public class TownPartQuadrant {
 
 				sbb = new StructureBB(new BlockPos(xStart, y1, zStart), new BlockPos(xEnd, y2, zEnd));
 				borders = gridRoads ? getBordersGrid(xIndex, zIndex) : getBordersExterior(x, z);
-				distFromTownCenter = Trig.getDistance(sbb.getCenterX(), y1, sbb.getCenterZ(), gen.maximalBounds.getCenterX(), y1, gen.maximalBounds.getCenterZ());
+				distFromTownCenter = Trig
+						.getDistance(sbb.getCenterX(), y1, sbb.getCenterZ(), gen.maximalBounds.getCenterX(), y1, gen.maximalBounds.getCenterZ());
 				block = new TownPartBlock(this, sbb, xIndex, zIndex, borders, distFromTownCenter);
 
 				setBlock(block, xIndex, zIndex);

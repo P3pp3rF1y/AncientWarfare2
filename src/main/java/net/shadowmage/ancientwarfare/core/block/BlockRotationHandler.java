@@ -63,7 +63,14 @@ public class BlockRotationHandler {
 	}
 
 	public enum RelativeSide {
-		TOP("guistrings.inventory.side.top"), BOTTOM("guistrings.inventory.side.bottom"), FRONT("guistrings.inventory.side.front"), REAR("guistrings.inventory.side.rear"), LEFT("guistrings.inventory.side.left"), RIGHT("guistrings.inventory.side.right"), ANY_SIDE("guistrings.inventory.side.all_sides"), NONE("guistrings.inventory.side.none");
+		TOP("guistrings.inventory.side.top"),
+		BOTTOM("guistrings.inventory.side.bottom"),
+		FRONT("guistrings.inventory.side.front"),
+		REAR("guistrings.inventory.side.rear"),
+		LEFT("guistrings.inventory.side.left"),
+		RIGHT("guistrings.inventory.side.right"),
+		ANY_SIDE("guistrings.inventory.side.all_sides"),
+		NONE("guistrings.inventory.side.none");
 
 		private static final int DOWN = EnumFacing.DOWN.ordinal();
 		private static final int UP = EnumFacing.UP.ordinal();

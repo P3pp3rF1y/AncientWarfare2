@@ -450,7 +450,8 @@ public class PathUtils {
 	 * @param z1
 	 * @return
 	 */
-	public static List<BlockPos> getPositionsBetween(float x0, float y0, float z0, float x1, float y1, float z1) {//4-connected line alg...from..somewhere online (stack overflow post)
+	public static List<BlockPos> getPositionsBetween(float x0, float y0, float z0, float x1, float y1,
+			float z1) {//4-connected line alg...from..somewhere online (stack overflow post)
 		/**
 		 * void drawLine(int x0, int y0, int x1, int y1) {
 		 int dx = abs(x1 - x0);

@@ -73,7 +73,8 @@ public class WorkSiteCropFarm extends TileWorksiteFarm {
 					continue;
 				} else if (farmablePairBlocks[0] != Blocks.AIR && farmablePairBlocks[1] != Blocks.AIR) {
 					blocksTillableAndTilled.add(farmablePairBlocks);
-					AncientWarfareCore.log.info("...added " + farmablePair[0] + " > " + farmablePair[1] + " as " + farmablePairBlocks[0].getLocalizedName() + " > " + farmablePairBlocks[1].getLocalizedName());
+					AncientWarfareCore.log.info("...added " + farmablePair[0] + " > " + farmablePair[1] + " as " + farmablePairBlocks[0]
+							.getLocalizedName() + " > " + farmablePairBlocks[1].getLocalizedName());
 				}
 			}
 		}
@@ -198,7 +199,8 @@ public class WorkSiteCropFarm extends TileWorksiteFarm {
 								//TODO refactor this out
 								if ("com.InfinityRaider.AgriCraft.blocks.BlockCrop".equals(c.getName())) {//A crop from AgriCraft
 									try {//Use the harvest method, hopefully dropping stuff
-										c.getDeclaredMethod("harvest", World.class, int.class, int.class, int.class, EntityPlayer.class).invoke(block, world, position, null);
+										c.getDeclaredMethod("harvest", World.class, int.class, int.class, int.class, EntityPlayer.class)
+												.invoke(block, world, position, null);
 										return true;
 									}
 									catch (Throwable ignored) {

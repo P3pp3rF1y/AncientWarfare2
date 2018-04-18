@@ -273,7 +273,7 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
 			tag.setBoolean("privateBox", privateBox);
 		}
 		/*
-         * detect changes to public or private names list
+		 * detect changes to public or private names list
          */
 		MailboxData data = AWGameData.INSTANCE.getData(player.world, MailboxData.class);
 		if (!publicBoxNames.equals(data.getPublicBoxNames())) {

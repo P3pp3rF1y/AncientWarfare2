@@ -58,7 +58,9 @@ public class BlockWaterwheelGenerator extends BlockTorqueGenerator implements IB
 	public void registerClient() {
 		ModelLoaderHelper.registerItem(this, WaterwheelGeneratorRenderer.MODEL_LOCATION);
 
-		ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder().addKeyProperties(VALID_SETUP).addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC).addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.ROTATIONS).build());
+		ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder().addKeyProperties(VALID_SETUP)
+				.addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC)
+				.addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.ROTATIONS).build());
 
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
 			@Override

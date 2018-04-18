@@ -28,7 +28,15 @@ import java.util.List;
 import java.util.Locale;
 
 public enum StructureValidationType {
-	GROUND(StructureValidatorGround.class), UNDERGROUND(StructureValidatorUnderground.class, new StructureValidationProperty("minGenDepth", 0), new StructureValidationProperty("maxGenDepth", 0), new StructureValidationProperty("minOverfill", 0)), SKY(StructureValidatorSky.class, new StructureValidationProperty("minGenHeight", 0), new StructureValidationProperty("maxGenHeight", 0), new StructureValidationProperty("minFlyingHeight", 0)), WATER(StructureValidatorWater.class), UNDERWATER(StructureValidatorUnderwater.class, new StructureValidationProperty("minWaterDepth", 0), new StructureValidationProperty("maxWaterDepth", 0)), HARBOR(StructureValidatorHarbor.class), ISLAND(StructureValidatorIsland.class, new StructureValidationProperty("minWaterDepth", 0), new StructureValidationProperty("maxWaterDepth", 0));
+	GROUND(StructureValidatorGround.class),
+	UNDERGROUND(StructureValidatorUnderground.class, new StructureValidationProperty("minGenDepth", 0), new StructureValidationProperty("maxGenDepth", 0),
+			new StructureValidationProperty("minOverfill", 0)),
+	SKY(StructureValidatorSky.class, new StructureValidationProperty("minGenHeight", 0), new StructureValidationProperty("maxGenHeight", 0),
+			new StructureValidationProperty("minFlyingHeight", 0)),
+	WATER(StructureValidatorWater.class),
+	UNDERWATER(StructureValidatorUnderwater.class, new StructureValidationProperty("minWaterDepth", 0), new StructureValidationProperty("maxWaterDepth", 0)),
+	HARBOR(StructureValidatorHarbor.class),
+	ISLAND(StructureValidatorIsland.class, new StructureValidationProperty("minWaterDepth", 0), new StructureValidationProperty("maxWaterDepth", 0));
 
 	private Class<? extends StructureValidator> validatorClass;
 

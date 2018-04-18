@@ -36,6 +36,7 @@ public class ItemAmmo extends ItemBaseVehicle {
 	public void registerClient() {
 		final Map<String, ModelResourceLocation> modelLocations = new HashMap<>();
 
-		ModelLoaderHelper.registerItem(this, (i, m) -> new ModelResourceLocation(new ResourceLocation(AncientWarfareCore.modID, "vehicle/ammo"), "variant=" + getRegistryName().getResourcePath()));
+		ModelLoaderHelper.registerItem(this, (i, m) -> new ModelResourceLocation(new ResourceLocation(AncientWarfareCore.modID, "vehicle/ammo"),
+				"variant=" + getRegistryName().getResourcePath()));
 	}
 }

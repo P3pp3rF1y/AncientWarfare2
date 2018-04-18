@@ -95,14 +95,20 @@ public class BlockTorqueTransportShaft extends BlockTorqueTransport implements I
 		return new AxisAlignedBB(x1, y1, z1, x2, y2, z2);
 	}
 
-	private static final IBlockStateKeyGenerator KEY_GENERATOR = new BlockStateKeyGenerator.Builder().addKeyProperties(AutomationProperties.TIER).addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC, HAS_PREVIOUS, HAS_NEXT).addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.INPUT_ROTATION).addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.ROTATIONS).build();
+	private static final IBlockStateKeyGenerator KEY_GENERATOR = new BlockStateKeyGenerator.Builder().addKeyProperties(AutomationProperties.TIER)
+			.addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC, HAS_PREVIOUS, HAS_NEXT)
+			.addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.INPUT_ROTATION)
+			.addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.ROTATIONS).build();
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerClient() {
 		ModelLoaderHelper.registerItem(this, "automation", "light", false); //the actual switch for itemstack types is processed by renderer
 
-		ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder().addKeyProperties(AutomationProperties.TIER).addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC, HAS_PREVIOUS, HAS_NEXT).addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.INPUT_ROTATION).addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.ROTATIONS).build());
+		ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder().addKeyProperties(AutomationProperties.TIER)
+				.addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC, HAS_PREVIOUS, HAS_NEXT)
+				.addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.INPUT_ROTATION)
+				.addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.ROTATIONS).build());
 
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
 			@Override

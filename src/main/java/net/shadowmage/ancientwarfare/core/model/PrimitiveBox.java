@@ -242,7 +242,8 @@ public class PrimitiveBox extends Primitive {
 	@Override
 	public void addPrimitiveLines(ArrayList<String> lines) {
 		StringBuilder b = new StringBuilder("box=").append(parent.getName()).append(",");
-		b.append(x).append(",").append(y).append(",").append(z).append(",").append(rx).append(",").append(ry).append(",").append(rz).append(",").append(tx()).append(",").append(ty()).append(",");
+		b.append(x).append(",").append(y).append(",").append(z).append(",").append(rx).append(",").append(ry).append(",").append(rz).append(",").append(tx())
+				.append(",").append(ty()).append(",");
 		b.append(x1).append(",").append(y1).append(",").append(z1).append(",").append(x2).append(",").append(y2).append(",").append(z2);
 		lines.add(b.toString());
 	}
@@ -326,7 +327,9 @@ public class PrimitiveBox extends Primitive {
 
 	@Override
 	public OBJGroup getOBJGroup(String parentName, Supplier<Tuple<Integer, Integer>> getTextureSizes) {
-		return new OBJGroup.Builder().setName(parentName + "Box").setVertices(getVertices()).setTextureVertices(getTextureVertices(getTextureSizes.get().getFirst(), getTextureSizes.get().getSecond())).setNormals(getNormals()).setFaces(getFaces()).build();
+		return new OBJGroup.Builder().setName(parentName + "Box").setVertices(getVertices())
+				.setTextureVertices(getTextureVertices(getTextureSizes.get().getFirst(), getTextureSizes.get().getSecond())).setNormals(getNormals())
+				.setFaces(getFaces()).build();
 	}
 
 	private List<Vec2f> getTextureVertices(float textureWidth, float textureHeight) {

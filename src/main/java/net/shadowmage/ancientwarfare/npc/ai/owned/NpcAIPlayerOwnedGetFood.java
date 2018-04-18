@@ -19,7 +19,8 @@ public class NpcAIPlayerOwnedGetFood extends NpcAI<NpcPlayerOwned> {
 		if (!npc.getIsAIEnabled()) {
 			return false;
 		}
-		return npc.requiresUpkeep() && npc.getUpkeepPoint() != null && npc.getFoodRemaining() == 0 && npc.getUpkeepDimensionId() == npc.world.provider.getDimension();
+		return npc.requiresUpkeep() && npc.getUpkeepPoint() != null && npc.getFoodRemaining() == 0 && npc.getUpkeepDimensionId() == npc.world.provider
+				.getDimension();
 	}
 
 	@Override
@@ -27,7 +28,8 @@ public class NpcAIPlayerOwnedGetFood extends NpcAI<NpcPlayerOwned> {
 		if (!npc.getIsAIEnabled()) {
 			return false;
 		}
-		return npc.requiresUpkeep() && npc.getUpkeepPoint() != null && npc.getFoodRemaining() < npc.getUpkeepAmount() && npc.getUpkeepDimensionId() == npc.world.provider.getDimension();
+		return npc.requiresUpkeep() && npc.getUpkeepPoint() != null && npc.getFoodRemaining() < npc.getUpkeepAmount() && npc
+				.getUpkeepDimensionId() == npc.world.provider.getDimension();
 	}
 
 	/*

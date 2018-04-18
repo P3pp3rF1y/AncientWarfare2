@@ -65,7 +65,8 @@ public class BlockFlywheelController extends BlockTorqueBase implements IBakeryP
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer,
+			EnumHand hand) {
 		return getStateFromMeta(placer.getHeldItem(hand).getMetadata());
 	}
 
@@ -109,7 +110,10 @@ public class BlockFlywheelController extends BlockTorqueBase implements IBakeryP
 	public void registerClient() {
 		ModelLoaderHelper.registerItem(this, "automation", "light", false); //the actual switch for itemstack types is processed by renderer
 
-		ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder().addKeyProperties(AutomationProperties.TIER).addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC, FLYWHEEL_ROTATION, AutomationProperties.USE_INPUT).addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.ROTATIONS).addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.INPUT_ROTATION).build());
+		ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder().addKeyProperties(AutomationProperties.TIER)
+				.addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC, FLYWHEEL_ROTATION, AutomationProperties.USE_INPUT)
+				.addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.ROTATIONS)
+				.addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.INPUT_ROTATION).build());
 
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
 			@Override

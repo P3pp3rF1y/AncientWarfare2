@@ -83,7 +83,8 @@ public class TemplateRuleEntityLogic extends TemplateRuleVanillaEntity {
 	protected Entity createEntity(World world, int turns, BlockPos pos, IStructureBuilder builder) throws EntityPlacementException {
 		Entity e = EntityList.createEntityByIDFromName(registryName, world);
 		if (e == null) {
-			throw new EntityPlacementException("Could not create entity for name: " + registryName.toString() + " Entity skipped during structure creation.\n" + "Entity data: " + tag);
+			throw new EntityPlacementException(
+					"Could not create entity for name: " + registryName.toString() + " Entity skipped during structure creation.\n" + "Entity data: " + tag);
 		}
 		NBTTagList list = new NBTTagList();
 		list.appendTag(new NBTTagDouble(pos.getX() + BlockTools.rotateFloatX(xOffset, zOffset, turns)));

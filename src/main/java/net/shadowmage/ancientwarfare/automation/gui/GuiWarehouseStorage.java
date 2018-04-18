@@ -111,7 +111,8 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
 				@Override
 				public void onSlotClicked(ItemStack stack, boolean rightClicked) {
 					@Nonnull ItemStack reqStack = getStack();
-					if (!(rightClicked && isShiftKeyDown()) && !reqStack.isEmpty() && (reqStack.isItemEqual(stack) && ItemStack.areItemStackTagsEqual(stack, reqStack)))
+					if (!(rightClicked && isShiftKeyDown()) && !reqStack.isEmpty() && (reqStack.isItemEqual(stack) && ItemStack
+							.areItemStackTagsEqual(stack, reqStack)))
 						reqStack = ItemStack.EMPTY;
 					getContainer().handleClientRequestSpecific(reqStack, isShiftKeyDown(), rightClicked);
 				}

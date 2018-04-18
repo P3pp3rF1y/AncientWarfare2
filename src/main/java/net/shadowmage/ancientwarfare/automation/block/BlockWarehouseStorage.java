@@ -78,7 +78,8 @@ public class BlockWarehouseStorage extends BlockBaseAutomation {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY,
+			float hitZ) {
 		TileEntity te = world.getTileEntity(pos);
 		return te instanceof IInteractableTile && ((IInteractableTile) te).onBlockClicked(player, hand);
 	}
@@ -96,7 +97,9 @@ public class BlockWarehouseStorage extends BlockBaseAutomation {
 	}
 
 	public enum Size implements IStringSerializable {
-		SMALL(0), MEDIUM(1), LARGE(2);
+		SMALL(0),
+		MEDIUM(1),
+		LARGE(2);
 
 		private int meta;
 

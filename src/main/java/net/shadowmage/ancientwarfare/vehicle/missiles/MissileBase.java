@@ -218,7 +218,8 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 			while (groundDiff <= ammoType.groundProximity()) {
 				groundDiff++;
 				if (!world.isAirBlock(new BlockPos(x, y - groundDiff, z))) {
-					this.onImpactWorld(new RayTraceResult(new Vec3d(x, y, z), EnumFacing.DOWN, new BlockPos(x, y, z))); //TODO correct raytraceresult created? Test
+					this.onImpactWorld(
+							new RayTraceResult(new Vec3d(x, y, z), EnumFacing.DOWN, new BlockPos(x, y, z))); //TODO correct raytraceresult created? Test
 					impacted = true;
 					break;
 				}
@@ -228,7 +229,8 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 		if (!impacted && ammoType.entityProximity() > 0) {
 			float entProx = ammoType.entityProximity();
 			float foundDist = 0;
-			List entities = world.getEntitiesWithinAABBExcludingEntity(this, new AxisAlignedBB(posX - entProx, posY - entProx, posZ - entProx, posX + entProx, posY + entProx, posZ + entProx));
+			List entities = world.getEntitiesWithinAABBExcludingEntity(this,
+					new AxisAlignedBB(posX - entProx, posY - entProx, posZ - entProx, posX + entProx, posY + entProx, posZ + entProx));
 			if (!entities.isEmpty()) {
 				Iterator it = entities.iterator();
 				Entity ent;
@@ -266,7 +268,8 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 				testEntities = false;
 			}
 			if (testEntities) {
-				List nearbyEntities = this.world.getEntitiesWithinAABBExcludingEntity(this, this.getEntityBoundingBox().offset(this.motionX, this.motionY, this.motionZ).grow(1.0D, 1.0D, 1.0D));
+				List nearbyEntities = this.world.getEntitiesWithinAABBExcludingEntity(this,
+						this.getEntityBoundingBox().offset(this.motionX, this.motionY, this.motionZ).grow(1.0D, 1.0D, 1.0D));
 				double closestHit = 0.0D;
 				float borderSize;
 
@@ -274,7 +277,8 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 					Entity curEnt = (Entity) nearbyEntities.get(i);
 					if (curEnt.canBeCollidedWith()) {
 						if (this.launcher != null) {
-							if (curEnt == this.launcher || curEnt == this.launcher.getControllingPassenger() || curEnt == this.shooterLiving || curEnt == this.shooter) {
+							if (curEnt == this.launcher || curEnt == this.launcher
+									.getControllingPassenger() || curEnt == this.shooterLiving || curEnt == this.shooter) {
 								continue;
 							}
 						}

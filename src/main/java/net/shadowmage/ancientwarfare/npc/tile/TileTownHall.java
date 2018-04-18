@@ -85,7 +85,8 @@ public class TileTownHall extends TileOwned implements IInteractableTile, ITicka
 	}
 
 	private void broadcast() {
-		AxisAlignedBB bb = new AxisAlignedBB(pos.getX() - broadcastRange, pos.getY() - broadcastRange / 2, pos.getZ() - broadcastRange, pos.getX() + broadcastRange + 1, pos.getY() + broadcastRange / 2 + 1, pos.getZ() + broadcastRange + 1);
+		AxisAlignedBB bb = new AxisAlignedBB(pos.getX() - broadcastRange, pos.getY() - broadcastRange / 2, pos.getZ() - broadcastRange,
+				pos.getX() + broadcastRange + 1, pos.getY() + broadcastRange / 2 + 1, pos.getZ() + broadcastRange + 1);
 		List<NpcPlayerOwned> entities = world.getEntitiesWithinAABB(NpcPlayerOwned.class, bb);
 		if (entities.size() > 0) {
 			for (Entity entity : entities) {

@@ -187,7 +187,8 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 	}
 
 	public final EntityPlayer getOwnerAsPlayer() {
-		if (owner == null || !owner.isEntityAlive() || (owner instanceof FakePlayer)) { //TODO this condition needs looking into - no idea why owner needs to be set everytime
+		if (owner == null || !owner
+				.isEntityAlive() || (owner instanceof FakePlayer)) { //TODO this condition needs looking into - no idea why owner needs to be set everytime
 			owner = AncientWarfareCore.proxy.getFakePlayer(this.getWorld(), null, ownerId);
 		}
 		return owner;

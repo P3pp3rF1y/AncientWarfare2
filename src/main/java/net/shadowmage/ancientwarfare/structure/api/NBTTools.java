@@ -216,7 +216,7 @@ public class NBTTools {
 	/*********************************************************** NBT STREAM READ ********************************************************************************/
 
     /*
-     * Reads a compressed NBTTagCompound from the InputStream
+	 * Reads a compressed NBTTagCompound from the InputStream
      */
 	public static NBTTagCompound readNBTTagCompound(DataInputStream data) throws IOException {
 		short var1 = data.readShort();

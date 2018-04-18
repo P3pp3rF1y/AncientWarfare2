@@ -208,8 +208,10 @@ public class PrimitiveTriangle extends Primitive {
 	@Override
 	public void addPrimitiveLines(ArrayList<String> lines) {
 		StringBuilder b = new StringBuilder("triangle=").append(parent.getName()).append(",");
-		b.append(x).append(",").append(y).append(",").append(z).append(",").append(rx).append(",").append(ry).append(",").append(rz).append(",").append(tx()).append(",").append(ty()).append(",");
-		b.append(x1).append(",").append(y1).append(",").append(z1).append(",").append(x2).append(",").append(y2).append(",").append(z2).append(",").append(x3).append(",").append(y3).append(",").append(z3).append(",");
+		b.append(x).append(",").append(y).append(",").append(z).append(",").append(rx).append(",").append(ry).append(",").append(rz).append(",").append(tx())
+				.append(",").append(ty()).append(",");
+		b.append(x1).append(",").append(y1).append(",").append(z1).append(",").append(x2).append(",").append(y2).append(",").append(z2).append(",").append(x3)
+				.append(",").append(y3).append(",").append(z3).append(",");
 		b.append(u1).append(",").append(v1).append(",").append(u2).append(",").append(v2).append(",").append(u3).append(",").append(v3);
 		lines.add(b.toString());
 	}

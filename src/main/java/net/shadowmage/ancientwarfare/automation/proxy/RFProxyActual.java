@@ -22,7 +22,8 @@ public class RFProxyActual extends RFProxy {
 	public double transferPower(ITorqueTile generator, EnumFacing from, TileEntity target) {
 		if (target instanceof IEnergyReceiver) {
 			IEnergyReceiver h = (IEnergyReceiver) target;
-			return generator.drainTorque(from, (h.receiveEnergy(from.getOpposite(), (int) (generator.getMaxTorqueOutput(from) * AWAutomationStatics.torqueToRf), false) * AWAutomationStatics.rfToTorque));
+			return generator.drainTorque(from, (h.receiveEnergy(from.getOpposite(), (int) (generator.getMaxTorqueOutput(from) * AWAutomationStatics.torqueToRf),
+					false) * AWAutomationStatics.rfToTorque));
 		}
 		return 0;
 	}

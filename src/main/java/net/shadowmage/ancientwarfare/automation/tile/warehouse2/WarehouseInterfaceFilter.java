@@ -34,7 +34,8 @@ public final class WarehouseInterfaceFilter implements Predicate<ItemStack>, INB
 
 	@Override
 	public boolean equals(Object object) {
-		return object instanceof WarehouseInterfaceFilter && ((WarehouseInterfaceFilter) object).quantity == this.quantity && ItemStack.areItemStacksEqual(this.filterItem, ((WarehouseInterfaceFilter) object).filterItem);
+		return object instanceof WarehouseInterfaceFilter && ((WarehouseInterfaceFilter) object).quantity == this.quantity && ItemStack
+				.areItemStacksEqual(this.filterItem, ((WarehouseInterfaceFilter) object).filterItem);
 	}
 
 	@Override

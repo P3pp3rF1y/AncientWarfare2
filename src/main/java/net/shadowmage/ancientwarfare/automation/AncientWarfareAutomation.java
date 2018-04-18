@@ -71,7 +71,7 @@ public class AncientWarfareAutomation {
 		statics = new AWAutomationStatics("AncientWarfareAutomation");
 
         /*
-         * must be loaded after items/blocks, as it needs them registered
+		 * must be loaded after items/blocks, as it needs them registered
          */
 		proxy.preInit();
 

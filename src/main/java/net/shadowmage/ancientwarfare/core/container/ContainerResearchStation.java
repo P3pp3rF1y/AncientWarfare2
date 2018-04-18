@@ -206,7 +206,7 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
 		}
 
         /*
-         * synch queued research
+		 * synch queued research
          */
 		if (researcherName != null) {
 			List<Integer> queue = ResearchTracker.INSTANCE.getResearchQueueFor(player.world, researcherName);

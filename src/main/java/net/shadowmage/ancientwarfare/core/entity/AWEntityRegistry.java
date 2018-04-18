@@ -139,7 +139,9 @@ public class AWEntityRegistry {
 	public static final String AW_GATES = "aw_gate";
 
 	public static void registerEntity(EntityDeclaration reg) {
-		EntityRegistry.registerModEntity(new ResourceLocation(reg.modID, reg.entityName), reg.entityClass, reg.entityName, reg.id, reg.mod(), reg.trackingRange(), reg.updateFrequency(), reg.sendsVelocityUpdates());
+		EntityRegistry
+				.registerModEntity(new ResourceLocation(reg.modID, reg.entityName), reg.entityClass, reg.entityName, reg.id, reg.mod(), reg.trackingRange(),
+						reg.updateFrequency(), reg.sendsVelocityUpdates());
 	}
 
 	/*

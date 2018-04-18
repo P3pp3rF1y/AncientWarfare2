@@ -284,7 +284,7 @@ public class ModelWidget extends GuiElement {
 		GlStateManager.loadIdentity();
 
         /*
-         * set up the base projection transformation matrix, as well as view target and position
+		 * set up the base projection transformation matrix, as well as view target and position
          * (camera setup)
          */
 		Minecraft mc = Minecraft.getMinecraft();

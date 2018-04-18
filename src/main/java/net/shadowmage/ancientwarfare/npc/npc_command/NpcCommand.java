@@ -18,10 +18,18 @@ import java.util.UUID;
 public class NpcCommand {
 
 	public static enum CommandType {
-		MOVE, ATTACK,//attack click on entity
-		ATTACK_AREA,//attack click on block
-		GUARD,//attack click on friendly player or npc
-		SET_HOME, SET_UPKEEP, CLEAR_HOME, CLEAR_UPKEEP, CLEAR_COMMAND;
+		MOVE,
+		ATTACK,
+		//attack click on entity
+		ATTACK_AREA,
+		//attack click on block
+		GUARD,
+		//attack click on friendly player or npc
+		SET_HOME,
+		SET_UPKEEP,
+		CLEAR_HOME,
+		CLEAR_UPKEEP,
+		CLEAR_COMMAND;
 
 		public boolean isPersistent() {
 			return (this == ATTACK || this == GUARD || this == ATTACK_AREA);

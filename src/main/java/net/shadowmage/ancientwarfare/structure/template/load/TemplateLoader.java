@@ -101,7 +101,8 @@ public class TemplateLoader {
 		for (File f : this.probableStructureFiles) {
 			template = loadTemplateFromFile(f);
 			if (template != null) {
-				AWLog.log("Loaded Structure Template: [" + template.name + "] WorldGen: " + template.getValidationSettings().isWorldGenEnabled() + "  Survival: " + template.getValidationSettings().isSurvival());
+				AWLog.log("Loaded Structure Template: [" + template.name + "] WorldGen: " + template.getValidationSettings()
+						.isWorldGenEnabled() + "  Survival: " + template.getValidationSettings().isSurvival());
 				StructureTemplateManager.INSTANCE.addTemplate(template);
 				loadedStructureNames.add(template.name);
 				loadedCount++;
@@ -213,7 +214,8 @@ public class TemplateLoader {
 				images.put(imageName, image);
 				AWLog.logDebug("loaded structure image of: " + imageName);
 			} else {
-				AWLog.logError("Attempted to load improper sized template image: " + imageName + " with dimensions of: " + image.getWidth() + "x" + image.getHeight() + ".  Specified width/height is: " + AWStructureStatics.structureImageWidth + "x" + AWStructureStatics.structureImageHeight);
+				AWLog.logError("Attempted to load improper sized template image: " + imageName + " with dimensions of: " + image.getWidth() + "x" + image
+						.getHeight() + ".  Specified width/height is: " + AWStructureStatics.structureImageWidth + "x" + AWStructureStatics.structureImageHeight);
 			}
 		}
 		catch (IOException e) {
@@ -240,7 +242,8 @@ public class TemplateLoader {
 				} else if (entry.getName().toLowerCase(Locale.ENGLISH).endsWith("." + AWStructureStatics.templateExtension)) {
 					template = loadTemplateFromZip(entry, zis);
 					if (template != null) {
-						AWLog.log("Loaded Structure Template: [" + template.name + "] WorldGen: " + template.getValidationSettings().isWorldGenEnabled() + "  Survival: " + template.getValidationSettings().isSurvival());
+						AWLog.log("Loaded Structure Template: [" + template.name + "] WorldGen: " + template.getValidationSettings()
+								.isWorldGenEnabled() + "  Survival: " + template.getValidationSettings().isSurvival());
 						StructureTemplateManager.INSTANCE.addTemplate(template);
 						loadedStructureNames.add(template.name);
 						parsed++;

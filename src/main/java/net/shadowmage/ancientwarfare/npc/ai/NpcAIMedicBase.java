@@ -54,7 +54,8 @@ public class NpcAIMedicBase extends NpcAI<NpcBase> {
 			return false;
 		}
 		potentialTargets.sort(sorter);
-		List<EntityLivingBase> sub = potentialTargets.stream().filter(input -> input instanceof NpcBase || input instanceof EntityPlayer).collect(Collectors.toList());
+		List<EntityLivingBase> sub = potentialTargets.stream().filter(input -> input instanceof NpcBase || input instanceof EntityPlayer)
+				.collect(Collectors.toList());
 		for (EntityLivingBase base : sub) {
 			this.targetToHeal = base;
 			if (validateTarget())
