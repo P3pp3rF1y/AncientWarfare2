@@ -20,6 +20,7 @@ buildscript {
 
 plugins {
     id "com.jfrog.bintray" version "1.5"
+    id "org.sonarqube" version "2.6.2"
 }
 
 // We apply the 'forge' plugin, so ForgeGradle can do it's stuff.
@@ -34,9 +35,9 @@ repositories {
         name = "ChickenBones Maven"
         url = "http://chickenbones.net/maven/"
     }
-    ivy { 
+    maven {
         name "LatvianModder Ivy"
-        artifactPattern "http://mods.latmod.com/[module]/[revision]/[module]-[revision](-[classifier]).[ext]" 
+        url = "https://maven.latmod.com/"
     }
     maven { 
         url "http://dvs1.progwml6.com/files/maven" 
@@ -64,8 +65,8 @@ targetCompatibility = 1.8
 dependencies {
     deobfCompile "cofh:RedstoneFlux:${rf_version}:universal"
     deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
-    compile "codechicken:CodeChickenLib:${ccl_version}:deobf"
-    compile "com.latmod.mods:FTBLib:${ftblib_version}:deobf"
+    deobfCompile "codechicken:CodeChickenLib:${ccl_version}:deobf"
+    deobfCompile "com.feed_the_beast.mods:FTBLib:${ftblib_version}"
 }
 
 processResources{
