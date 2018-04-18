@@ -42,8 +42,7 @@ public class AWJEIPlugin implements IModPlugin {
 	@Override
 	public void registerItemSubtypes(@Nonnull ISubtypeRegistry subtypeRegistry) {
 		subtypeRegistry.useNbtForSubtypes(AWNPCItems.npcSpawner);
-		subtypeRegistry.registerSubtypeInterpreter(AWVehicleItems.spawner,
-				itemStack -> Integer.toString(itemStack.getMetadata()) + ":" + (itemStack.hasTagCompound() ? itemStack.getTagCompound().toString() : ""));
+		subtypeRegistry.registerSubtypeInterpreter(AWVehicleItems.spawner, itemStack -> Integer.toString(itemStack.getMetadata()) + ":" + (itemStack.hasTagCompound() ? itemStack.getTagCompound().toString() : ""));
 	}
 
 	@Override
@@ -56,24 +55,19 @@ public class AWJEIPlugin implements IModPlugin {
 
 	@Override
 	public void register(IModRegistry registry) {
-		List<ResearchRecipeWrapper> shapedResearchRecipes = AWCraftingManager.getRecipes().stream().filter(r -> r instanceof ShapedResearchRecipe)
-				.map(r -> new ResearchRecipeWrapper(registry.getJeiHelpers().getStackHelper(), r)).collect(Collectors.toList());
+		List<ResearchRecipeWrapper> shapedResearchRecipes = AWCraftingManager.getRecipes().stream().filter(r -> r instanceof ShapedResearchRecipe).map(r -> new ResearchRecipeWrapper(registry.getJeiHelpers().getStackHelper(), r)).collect(Collectors.toList());
 		registry.addRecipes(shapedResearchRecipes, ShapedResearchRecipeCategory.UID);
 
-		List<ResearchRecipeWrapper> shapelessResearchRecipes = AWCraftingManager.getRecipes().stream().filter(r -> r instanceof ShapelessResearchRecipe)
-				.map(r -> new ResearchRecipeWrapper(registry.getJeiHelpers().getStackHelper(), r)).collect(Collectors.toList());
+		List<ResearchRecipeWrapper> shapelessResearchRecipes = AWCraftingManager.getRecipes().stream().filter(r -> r instanceof ShapelessResearchRecipe).map(r -> new ResearchRecipeWrapper(registry.getJeiHelpers().getStackHelper(), r)).collect(Collectors.toList());
 		registry.addRecipes(shapelessResearchRecipes, ShapelessResearchRecipeCategory.UID);
 
-		registry.addRecipes(wrappedRecipes.stream().map(r -> wrapRecipe(registry.getJeiHelpers(), r)).collect(Collectors.toList()),
-				VanillaRecipeCategoryUid.CRAFTING);
+		registry.addRecipes(wrappedRecipes.stream().map(r -> wrapRecipe(registry.getJeiHelpers(), r)).collect(Collectors.toList()), VanillaRecipeCategoryUid.CRAFTING);
 
 		IRecipeTransferRegistry transferRegistry = registry.getRecipeTransferRegistry();
 
 		if (!shapedResearchRecipes.isEmpty()) {
-			registerMultiRecipeTransferHandler(ContainerWorksiteAutoCrafting.class, ShapedResearchRecipeCategory.UID, transferRegistry,
-					registry.getJeiHelpers());
-			registerMultiRecipeTransferHandler(ContainerWarehouseCraftingStation.class, ShapedResearchRecipeCategory.UID, transferRegistry,
-					registry.getJeiHelpers());
+			registerMultiRecipeTransferHandler(ContainerWorksiteAutoCrafting.class, ShapedResearchRecipeCategory.UID, transferRegistry, registry.getJeiHelpers());
+			registerMultiRecipeTransferHandler(ContainerWarehouseCraftingStation.class, ShapedResearchRecipeCategory.UID, transferRegistry, registry.getJeiHelpers());
 			registerMultiRecipeTransferHandler(ContainerEngineeringStation.class, ShapedResearchRecipeCategory.UID, transferRegistry, registry.getJeiHelpers());
 
 			registry.addRecipeCatalyst(new ItemStack(AWAutomationBlocks.worksiteAutoCrafting), ShapedResearchRecipeCategory.UID);
@@ -82,12 +76,9 @@ public class AWJEIPlugin implements IModPlugin {
 		}
 
 		if (!shapelessResearchRecipes.isEmpty()) {
-			registerMultiRecipeTransferHandler(ContainerWorksiteAutoCrafting.class, ShapelessResearchRecipeCategory.UID, transferRegistry,
-					registry.getJeiHelpers());
-			registerMultiRecipeTransferHandler(ContainerWarehouseCraftingStation.class, ShapelessResearchRecipeCategory.UID, transferRegistry,
-					registry.getJeiHelpers());
-			registerMultiRecipeTransferHandler(ContainerEngineeringStation.class, ShapelessResearchRecipeCategory.UID, transferRegistry,
-					registry.getJeiHelpers());
+			registerMultiRecipeTransferHandler(ContainerWorksiteAutoCrafting.class, ShapelessResearchRecipeCategory.UID, transferRegistry, registry.getJeiHelpers());
+			registerMultiRecipeTransferHandler(ContainerWarehouseCraftingStation.class, ShapelessResearchRecipeCategory.UID, transferRegistry, registry.getJeiHelpers());
+			registerMultiRecipeTransferHandler(ContainerEngineeringStation.class, ShapelessResearchRecipeCategory.UID, transferRegistry, registry.getJeiHelpers());
 
 			registry.addRecipeCatalyst(new ItemStack(AWAutomationBlocks.worksiteAutoCrafting), ShapelessResearchRecipeCategory.UID);
 			registry.addRecipeCatalyst(new ItemStack(AWAutomationBlocks.warehouseCrafting), ShapelessResearchRecipeCategory.UID);
@@ -95,8 +86,7 @@ public class AWJEIPlugin implements IModPlugin {
 		}
 
 		registerMultiRecipeTransferHandler(ContainerWorksiteAutoCrafting.class, VanillaRecipeCategoryUid.CRAFTING, transferRegistry, registry.getJeiHelpers());
-		registerMultiRecipeTransferHandler(ContainerWarehouseCraftingStation.class, VanillaRecipeCategoryUid.CRAFTING, transferRegistry,
-				registry.getJeiHelpers());
+		registerMultiRecipeTransferHandler(ContainerWarehouseCraftingStation.class, VanillaRecipeCategoryUid.CRAFTING, transferRegistry, registry.getJeiHelpers());
 		registerMultiRecipeTransferHandler(ContainerEngineeringStation.class, VanillaRecipeCategoryUid.CRAFTING, transferRegistry, registry.getJeiHelpers());
 
 		registry.addRecipeCatalyst(new ItemStack(AWAutomationBlocks.worksiteAutoCrafting), VanillaRecipeCategoryUid.CRAFTING);
@@ -104,8 +94,7 @@ public class AWJEIPlugin implements IModPlugin {
 		registry.addRecipeCatalyst(new ItemStack(AWBlocks.engineeringStation), VanillaRecipeCategoryUid.CRAFTING);
 	}
 
-	private <C extends Container & ICraftingContainer> void registerMultiRecipeTransferHandler(Class<C> containerClass, String recipeCategoryUid,
-			IRecipeTransferRegistry transferRegistry, IJeiHelpers jeiHelpers) {
+	private <C extends Container & ICraftingContainer> void registerMultiRecipeTransferHandler(Class<C> containerClass, String recipeCategoryUid, IRecipeTransferRegistry transferRegistry, IJeiHelpers jeiHelpers) {
 		MultiRecipeTransferHandler<C> handler = new MultiRecipeTransferHandler<>(containerClass, jeiHelpers.recipeTransferHandlerHelper());
 		transferRegistry.addRecipeTransferHandler(handler, recipeCategoryUid);
 	}

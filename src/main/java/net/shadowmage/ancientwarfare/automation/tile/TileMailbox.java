@@ -177,8 +177,7 @@ public class TileMailbox extends TileOwned implements IRotatableTile, ITickable,
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-		return (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && (sendSides.contains(facing) || receivedSides.contains(facing))) || super
-				.hasCapability(capability, facing);
+		return (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && (sendSides.contains(facing) || receivedSides.contains(facing))) || super.hasCapability(capability, facing);
 	}
 
 	@Nullable

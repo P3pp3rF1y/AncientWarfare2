@@ -104,8 +104,7 @@ public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeri
 					if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
 						return ItemStack.EMPTY;
 				} else if (slotClickedIndex < playerSlotEnd) {//player slots, merge into storage
-					if (!mergeItemStack(slotStack, BOOK_SLOT, BOOK_SLOT + 1, false) && !this
-							.mergeItemStack(slotStack, storageSlotsStart, playerSlotStart, false))//merge into storage
+					if (!mergeItemStack(slotStack, BOOK_SLOT, BOOK_SLOT + 1, false) && !this.mergeItemStack(slotStack, storageSlotsStart, playerSlotStart, false))//merge into storage
 						return ItemStack.EMPTY;
 				}
 			}

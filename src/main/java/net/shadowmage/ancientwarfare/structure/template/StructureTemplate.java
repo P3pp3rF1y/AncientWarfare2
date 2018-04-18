@@ -140,8 +140,7 @@ public class StructureTemplate {
 		if (!(o instanceof StructureTemplate))
 			return false;
 		StructureTemplate that = (StructureTemplate) o;
-		return xSize == that.xSize && ySize == that.ySize && zSize == that.zSize && xOffset == that.xOffset && yOffset == that.yOffset && zOffset == that.zOffset && name
-				.equals(that.name);
+		return xSize == that.xSize && ySize == that.ySize && zSize == that.zSize && xOffset == that.xOffset && yOffset == that.yOffset && zOffset == that.zOffset && name.equals(that.name);
 	}
 
 	@Override

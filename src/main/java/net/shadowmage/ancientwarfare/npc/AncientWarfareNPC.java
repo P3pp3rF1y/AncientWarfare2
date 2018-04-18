@@ -67,7 +67,7 @@ public class AncientWarfareNPC {
 		MinecraftForge.EVENT_BUS.register(net.shadowmage.ancientwarfare.npc.event.EventHandler.INSTANCE);
 
         /*
-         * register containers
+		 * register containers
          */
 		NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_INVENTORY, ContainerNpcInventory.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_WORK_ORDER, ContainerWorkOrder.class);
@@ -94,7 +94,7 @@ public class AncientWarfareNPC {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent evt) {
 		/*
-         * save config for any changes that were made during loading stages
+		 * save config for any changes that were made during loading stages
          */
 		statics.postInitCallback();
 		proxy.loadSkins();

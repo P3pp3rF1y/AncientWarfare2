@@ -289,8 +289,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
 			BlockPos pos = orders.getRestockData().getDepositPoint();
 			TileEntity te = npc.world.getTileEntity(pos);
 			if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, orders.getRestockData().getDepositSide())) {
-				orders.getRestockData()
-						.doDeposit(inv, te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, orders.getRestockData().getDepositSide()));
+				orders.getRestockData().doDeposit(inv, te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, orders.getRestockData().getDepositSide()));
 			}
 		}
 	}
@@ -302,8 +301,7 @@ public class NpcAIPlayerOwnedTrader extends NpcAI<NpcPlayerOwned> {
 			BlockPos pos = orders.getRestockData().getWithdrawPoint();
 			TileEntity te = npc.world.getTileEntity(pos);
 			if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, orders.getRestockData().getWithdrawSide())) {
-				orders.getRestockData()
-						.doWithdraw(inv, te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, orders.getRestockData().getWithdrawSide()));
+				orders.getRestockData().doWithdraw(inv, te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, orders.getRestockData().getWithdrawSide()));
 			}
 		}
 	}

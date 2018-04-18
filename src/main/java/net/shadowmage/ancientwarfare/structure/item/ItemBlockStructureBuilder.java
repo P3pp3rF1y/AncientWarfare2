@@ -43,8 +43,7 @@ public class ItemBlockStructureBuilder extends ItemBlockBase implements IBoxRend
 	}
 
 	@Override
-	public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ,
-			IBlockState newState) {
+	public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
 		if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey("structureName")) {
 			return false;
 		}

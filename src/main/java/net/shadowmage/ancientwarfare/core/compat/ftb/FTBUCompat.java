@@ -33,8 +33,6 @@ public class FTBUCompat extends FTBUCompatDummy {
 
 	@Override
 	public boolean areFriendly(UUID player1, UUID player2) {
-		return checkFTBPlayers(player1, player2,
-				t -> t.getFirst().getTeam() != null && (t.getFirst().getTeam().isMember(t.getSecond()) || t.getFirst().getTeam()
-						.isAlly(t.getSecond()))) || super.areFriendly(player1, player2);
+		return checkFTBPlayers(player1, player2, t -> t.getFirst().getTeam() != null && (t.getFirst().getTeam().isMember(t.getSecond()) || t.getFirst().getTeam().isAlly(t.getSecond()))) || super.areFriendly(player1, player2);
 	}
 }

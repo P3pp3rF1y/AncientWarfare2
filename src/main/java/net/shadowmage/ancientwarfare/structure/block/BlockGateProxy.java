@@ -118,8 +118,7 @@ public final class BlockGateProxy extends BlockContainer implements IClientRegis
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY,
-			float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		TileEntity proxy = world.getTileEntity(pos);
 		return proxy instanceof TEGateProxy && ((TEGateProxy) proxy).onBlockClicked(player, hand);
 	}

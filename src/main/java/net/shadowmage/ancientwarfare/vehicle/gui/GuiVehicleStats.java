@@ -59,11 +59,9 @@ public class GuiVehicleStats extends GuiContainerBase<GuiVehicleStats.DummyConta
 		addGuiElement(new Label(10, 14, "Material Level: " + vehicle.vehicleMaterialLevel));
 		addGuiElement(new Label(10, 24, "Health: " + vehicle.getHealth() + "/" + vehicle.baseHealth));
 		addGuiElement(new Label(10, 34, "Weight: " + vehicle.currentWeight + "/" + vehicle.baseWeight));
-		addGuiElement(new Label(10, 44,
-				"Speed: " + (Trig.getVelocity(vehicle.motionX, vehicle.motionY, vehicle.motionZ) * 20) + "/" + (vehicle.currentForwardSpeedMax * 20)));
+		addGuiElement(new Label(10, 44, "Speed: " + (Trig.getVelocity(vehicle.motionX, vehicle.motionY, vehicle.motionZ) * 20) + "/" + (vehicle.currentForwardSpeedMax * 20)));
 		addGuiElement(new Label(10, 54, "Missile Velocity: " + vehicle.localLaunchPower + "/" + vehicle.currentLaunchSpeedPowerMax));
-		addGuiElement(new Label(10, 64,
-				"Resists: F: " + vehicle.currentFireResist + " E: " + vehicle.currentExplosionResist + " G: " + vehicle.currentGenericResist));
+		addGuiElement(new Label(10, 64, "Resists: F: " + vehicle.currentFireResist + " E: " + vehicle.currentExplosionResist + " G: " + vehicle.currentGenericResist));
 		addGuiElement(new Label(10, 74, "Mountable: " + vehicle.isMountable()));
 		addGuiElement(new Label(10, 84, "Drivable: " + vehicle.isDrivable()));
 		addGuiElement(new Label(10, 94, "Combat Vehicle: " + vehicle.isAimable()));

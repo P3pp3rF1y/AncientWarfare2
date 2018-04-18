@@ -126,9 +126,7 @@ public class BlockFlywheelStorage extends BlockBaseAutomation implements IBakery
 	public void registerClient() {
 		ModelLoaderHelper.registerItem(this, FlywheelStorageRenderer.LIGHT_MODEL_LOCATION); //the actual switch for itemstack types is processed by renderer
 
-		ModelBakery.registerBlockKeyGenerator(this,
-				new BlockStateKeyGenerator.Builder().addKeyProperties(TIER).addKeyProperties(DYNAMIC, IS_CONTROL, WIDTH, HEIGHT)
-						.addKeyProperties(o -> String.format("%.6f", o), ROTATION).build());
+		ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder().addKeyProperties(TIER).addKeyProperties(DYNAMIC, IS_CONTROL, WIDTH, HEIGHT).addKeyProperties(o -> String.format("%.6f", o), ROTATION).build());
 
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
 			@Override

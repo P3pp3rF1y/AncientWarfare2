@@ -128,8 +128,7 @@ public class TemplateParser {
 					return converter.convertOldTemplate(fileName, lines);
 				}
 				catch (Exception e) {
-					throw new TemplateParsingException("Error parsing template: " + fileName + " at line: " + (converter.lineNumber + 1) + " for line: " + lines
-							.get(converter.lineNumber));
+					throw new TemplateParsingException("Error parsing template: " + fileName + " at line: " + (converter.lineNumber + 1) + " for line: " + lines.get(converter.lineNumber));
 				}
 			}
 			/*
@@ -182,7 +181,7 @@ public class TemplateParser {
 			}
 
             /*
-             * parse out rule data
+			 * parse out rule data
              */
 			if (line.startsWith("entity:")) {
 				groupedLines.add(line);
@@ -212,7 +211,7 @@ public class TemplateParser {
 			}
 
             /*
-             * parse out layer data
+			 * parse out layer data
              */
 			if (line.startsWith("layer:")) {
 				groupedLines.add(line);
@@ -253,8 +252,7 @@ public class TemplateParser {
 		return StructurePluginManager.getRule(templateLines, ruleType);
 	}
 
-	private StructureTemplate constructTemplate(String name, int x, int y, int z, int xo, int yo, int zo, short[] templateData, TemplateRule[] rules,
-			TemplateRuleEntity[] entityRules, StructureValidator validation) {
+	private StructureTemplate constructTemplate(String name, int x, int y, int z, int xo, int yo, int zo, short[] templateData, TemplateRule[] rules, TemplateRuleEntity[] entityRules, StructureValidator validation) {
 		StructureTemplate template = new StructureTemplate(name, x, y, z, xo, yo, zo);
 		template.setRuleArray(rules);
 		template.setEntityRules(entityRules);

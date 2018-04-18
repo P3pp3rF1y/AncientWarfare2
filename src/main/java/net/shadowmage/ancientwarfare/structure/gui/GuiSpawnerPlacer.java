@@ -65,8 +65,7 @@ public class GuiSpawnerPlacer extends GuiContainerBase<ContainerSpawnerPlacer> {
 		labelToRegistry.clear();
 
 		int totalHeight = 3;
-		List<String> mp = ForgeRegistries.ENTITIES.getEntries().stream().map(e -> e.getKey().toString())
-				.sorted(Comparator.comparing(rl -> I18n.format(EntityTools.getUnlocName(rl)))).collect(Collectors.toList());
+		List<String> mp = ForgeRegistries.ENTITIES.getEntries().stream().map(e -> e.getKey().toString()).sorted(Comparator.comparing(rl -> I18n.format(EntityTools.getUnlocName(rl)))).collect(Collectors.toList());
 
 		Listener listener = new Listener(Listener.MOUSE_UP) {
 			@Override

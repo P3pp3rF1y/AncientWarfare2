@@ -76,7 +76,7 @@ public class AncientWarfareAutomation {
 		proxy.preInit();
 
         /*
-         * register containers
+		 * register containers
          */
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_INVENTORY_SIDE_ADJUST, ContainerWorksiteInventorySideSelection.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_ANIMAL_CONTROL, ContainerWorksiteAnimalControl.class);
@@ -100,7 +100,7 @@ public class AncientWarfareAutomation {
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_BOUNDS, ContainerWorksiteBoundsAdjust.class);
 
         /*
-         * register tick-handlers
+		 * register tick-handlers
          */
 		MinecraftForge.EVENT_BUS.register(this);
 

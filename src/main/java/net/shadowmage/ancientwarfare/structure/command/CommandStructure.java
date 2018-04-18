@@ -108,9 +108,7 @@ public class CommandStructure extends CommandBase {
 					if (settings.hasPos1() && settings.hasPos2() && settings.hasBuildKey() && (settings.hasName() || var2.length > 1)) {
 						String name = settings.hasName() ? settings.name() : var2[1];
 						NBTTagCompound tagCompound = new NBTTagCompound();
-						if (ItemStructureScanner
-								.scanStructure(sender.getEntityWorld(), settings.pos1(), settings.pos2(), settings.buildKey(), settings.face(), name, true,
-										tagCompound)) {
+						if (ItemStructureScanner.scanStructure(sender.getEntityWorld(), settings.pos1(), settings.pos2(), settings.buildKey(), settings.face(), name, true, tagCompound)) {
 							sender.sendMessage(new TextComponentTranslation("command.aw.structure.exported", var2[1]));
 						}
 					} else {

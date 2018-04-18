@@ -76,9 +76,8 @@ public class DamageType extends DamageSource {
 		EntityLivingBase entitylivingbase1 = par1EntityLivingBase.getAttackingEntity();
 		String s = "death.attack." + this.damageType;
 		String s1 = s + ".player";
-		return entitylivingbase1 != null && I18n.hasKey(s1) ? new TextComponentTranslation(s1,
-				new Object[] {par1EntityLivingBase.getDisplayName(), entitylivingbase1.getDisplayName()}) : new TextComponentTranslation(s,
-				new Object[] {par1EntityLivingBase.getDisplayName()});
+		return entitylivingbase1 != null && I18n.hasKey(s1) ? new TextComponentTranslation(s1, new Object[] {par1EntityLivingBase.getDisplayName(),
+				entitylivingbase1.getDisplayName()}) : new TextComponentTranslation(s, new Object[] {par1EntityLivingBase.getDisplayName()});
 	}
 
 }

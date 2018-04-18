@@ -104,8 +104,7 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 						if (!stack.isEmpty() && stack.getItem() instanceof ItemShears) {
 							if (((IShearable) block).isShearable(stack, world, position)) {
 								ItemStack clone = stack.copy();
-								NonNullList<ItemStack> drops = InventoryTools
-										.toNonNullList(((IShearable) block).onSheared(clone, world, position, getFortune()));
+								NonNullList<ItemStack> drops = InventoryTools.toNonNullList(((IShearable) block).onSheared(clone, world, position, getFortune()));
 								miscInventory.setStackInSlot(slot, clone);
 								drops = InventoryTools.insertItems(plantableInventory, drops, false);
 								InventoryTools.insertOrDropItems(mainInventory, drops, world, pos);
@@ -291,7 +290,6 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 
 	@Override
 	protected boolean hasWorksiteWork() {
-		return (hasShears && !blocksToShear.isEmpty()) || !blocksToChop.isEmpty() || (bonemealCount > 0 && !blocksToFertilize
-				.isEmpty()) || (plantableCount > 0 && !blocksToPlant.isEmpty());
+		return (hasShears && !blocksToShear.isEmpty()) || !blocksToChop.isEmpty() || (bonemealCount > 0 && !blocksToFertilize.isEmpty()) || (plantableCount > 0 && !blocksToPlant.isEmpty());
 	}
 }

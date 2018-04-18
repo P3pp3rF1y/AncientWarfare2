@@ -92,9 +92,7 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
 					refreshGui();
 				}
 			};
-			button.addTooltip(
-					I18n.format("guistrings.dmg.tooltipprefix." + (point.getIgnoreDamage() ? "disabled" : "enabled")) + I18n.format("guistrings.dmg.tooltip"),
-					28);
+			button.addTooltip(I18n.format("guistrings.dmg.tooltipprefix." + (point.getIgnoreDamage() ? "disabled" : "enabled")) + I18n.format("guistrings.dmg.tooltip"), 28);
 			area.addGuiElement(button);
 
 			labelString = point.getIgnoreTag() ? TextFormatting.RED.toString() + TextFormatting.STRIKETHROUGH.toString() : "";
@@ -107,8 +105,7 @@ public class GuiRoutingOrder extends GuiContainerBase<ContainerRoutingOrder> {
 					refreshGui();
 				}
 			};
-			button.addTooltip(
-					I18n.format("guistrings.tag.tooltipprefix." + (point.getIgnoreTag() ? "disabled" : "enabled")) + I18n.format("guistrings.tag.tooltip"), 28);
+			button.addTooltip(I18n.format("guistrings.tag.tooltipprefix." + (point.getIgnoreTag() ? "disabled" : "enabled")) + I18n.format("guistrings.tag.tooltip"), 28);
 			area.addGuiElement(button);
 
 			for (int i = 0; i < point.getFilterSize(); i++) {

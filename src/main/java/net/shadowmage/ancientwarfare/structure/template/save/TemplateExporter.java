@@ -90,8 +90,7 @@ public class TemplateExporter {
 		Calendar cal = Calendar.getInstance();
 		writer.write("# Ancient Warfare Structure Template File");
 		writer.newLine();
-		writer.write("# Auto-generated structure template file. created on: " + (cal.get(Calendar.MONTH) + 1) + "/" + cal.get(Calendar.DAY_OF_MONTH) + "/" + cal
-				.get(Calendar.YEAR) + " at: " + cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE) + ":" + cal.get(Calendar.SECOND));
+		writer.write("# Auto-generated structure template file. created on: " + (cal.get(Calendar.MONTH) + 1) + "/" + cal.get(Calendar.DAY_OF_MONTH) + "/" + cal.get(Calendar.YEAR) + " at: " + cal.get(Calendar.HOUR_OF_DAY) + ":" + cal.get(Calendar.MINUTE) + ":" + cal.get(Calendar.SECOND));
 		writer.newLine();
 		writer.write("# Lines beginning with # denote comments");
 		writer.newLine();

@@ -301,7 +301,7 @@ public class ContainerMailbox extends ContainerTileBase<TileMailbox> {
 			tag.setTag("privateBoxNames", nameList);
 		}
 		/*
-         * if tag is not null (something has changed), send it to client
+		 * if tag is not null (something has changed), send it to client
          */
 		if (tag != null) {
 			sendDataToClient(tag);

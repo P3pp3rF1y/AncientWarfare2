@@ -71,8 +71,7 @@ public class BlockSoundBlock extends BlockBaseStructure implements IBakeryProvid
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY,
-			float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		@Nonnull ItemStack itemStack = player.getHeldItem(hand);
 		if (!itemStack.isEmpty() && itemStack.getItem() instanceof ItemBlock) {
 			TileEntity tileEntity = world.getTileEntity(pos);

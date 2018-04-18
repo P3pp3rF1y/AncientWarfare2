@@ -71,8 +71,7 @@ public class CommandResearch extends CommandBase {
 
 	@Override
 	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] text, @Nullable BlockPos targetPos) {
-		return text.length == 1 ? getListOfStringsMatchingLastWord(text, "add", "remove", "fill",
-				"clear") : text.length == 2 ? getListOfStringsMatchingLastWord(text, server.getOnlinePlayerNames()) : null;
+		return text.length == 1 ? getListOfStringsMatchingLastWord(text, "add", "remove", "fill", "clear") : text.length == 2 ? getListOfStringsMatchingLastWord(text, server.getOnlinePlayerNames()) : null;
 	}
 
 	@Override

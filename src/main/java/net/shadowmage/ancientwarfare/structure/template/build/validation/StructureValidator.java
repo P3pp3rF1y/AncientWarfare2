@@ -456,8 +456,7 @@ public abstract class StructureValidator {
 	protected int validateBlockHeight(World world, int x, int z, int minimumAcceptableY, int maximumAcceptableY, boolean skipWater) {
 		int topFilledY = WorldStructureGenerator.getTargetY(world, x, z, skipWater);
 		if (topFilledY < minimumAcceptableY || topFilledY > maximumAcceptableY) {
-			AWLog.logDebug(
-					"rejected for leveling or depth test. foundY: " + topFilledY + " min: " + minimumAcceptableY + " max:" + maximumAcceptableY + " at: " + x + "," + topFilledY + "," + z);
+			AWLog.logDebug("rejected for leveling or depth test. foundY: " + topFilledY + " min: " + minimumAcceptableY + " max:" + maximumAcceptableY + " at: " + x + "," + topFilledY + "," + z);
 			return -1;
 		}
 		return topFilledY;
@@ -476,8 +475,7 @@ public abstract class StructureValidator {
 			return false;
 		}
 		if (!validBlocks.contains(BlockDataManager.INSTANCE.getNameForBlock(block))) {
-			AWLog.logDebug("Rejected for non-matching block: " + BlockDataManager.INSTANCE
-					.getNameForBlock(block) + " at: " + x + "," + y + "," + z + " Valid blocks: " + validBlocks);
+			AWLog.logDebug("Rejected for non-matching block: " + BlockDataManager.INSTANCE.getNameForBlock(block) + " at: " + x + "," + y + "," + z + " Valid blocks: " + validBlocks);
 			return false;
 		}
 		return true;

@@ -79,59 +79,30 @@ public class AWStructureStatics extends ModConfiguration {
 	@Override
 	public void initializeCategories() {
 		this.config.addCustomCategoryComment(worldGenCategory, "Settings that effect all world-structure-generation.");
-		this.config.addCustomCategoryComment(villageGenCategory,
-				"Settings that effect the generation of vanilla villages.\nCurrently there are no village-generation options, and no structures will generate in villages.");
-		this.config.addCustomCategoryComment(excludedEntitiesCategory,
-				"Entities that will not show up in the Mob Spawner Placer entity selection list.\nAdd any mobs here that will crash if spawned via the vanilla mob-spawner (usually complex NBT-defined entities).");
-		this.config.addCustomCategoryComment(worldGenBlocks,
-				"Blocks that should be skipped/ignored during world gen -- should list all plant blocks/logs/foliage");
-		this.config.addCustomCategoryComment(targetBlocks,
-				"List of target blocks to add to the target-block selection GUI.\nVanilla block names should be listed as the 1.7 registered name. \nMod blocks should be listed as their registered name");
-		this.config.addCustomCategoryComment(scanSkippedBlocks,
-				"List of blocks that the structure scanner will completely ignore.\nWhenever these blocks are encountered the template will instead fill that block position with a hard-air rule.\nAdd any blocks to this list that may cause crashes when scanned or duplicated.\nVanilla blocks should not need to be added, but some mod-blocks may.\nBlock names must be specified by fully-qualified name (e.g. \"minecraft:stone\")");
-		this.config.addCustomCategoryComment(townValidTargetBlocksCategory,
-				"List of blocks that are valid target blocks for town creation.\nAny solid block found that is not on this list will prevent a town from spawning in a given chunk");
+		this.config.addCustomCategoryComment(villageGenCategory, "Settings that effect the generation of vanilla villages.\nCurrently there are no village-generation options, and no structures will generate in villages.");
+		this.config.addCustomCategoryComment(excludedEntitiesCategory, "Entities that will not show up in the Mob Spawner Placer entity selection list.\nAdd any mobs here that will crash if spawned via the vanilla mob-spawner (usually complex NBT-defined entities).");
+		this.config.addCustomCategoryComment(worldGenBlocks, "Blocks that should be skipped/ignored during world gen -- should list all plant blocks/logs/foliage");
+		this.config.addCustomCategoryComment(targetBlocks, "List of target blocks to add to the target-block selection GUI.\nVanilla block names should be listed as the 1.7 registered name. \nMod blocks should be listed as their registered name");
+		this.config.addCustomCategoryComment(scanSkippedBlocks, "List of blocks that the structure scanner will completely ignore.\nWhenever these blocks are encountered the template will instead fill that block position with a hard-air rule.\nAdd any blocks to this list that may cause crashes when scanned or duplicated.\nVanilla blocks should not need to be added, but some mod-blocks may.\nBlock names must be specified by fully-qualified name (e.g. \"minecraft:stone\")");
+		this.config.addCustomCategoryComment(townValidTargetBlocksCategory, "List of blocks that are valid target blocks for town creation.\nAny solid block found that is not on this list will prevent a town from spawning in a given chunk");
 	}
 
 	@Override
 	protected void initializeValues() {
-		templateExtension = config.get(worldGenCategory, "template_extension", "aws",
-				"Default=" + templateExtension + "\n" + "The template extension used when looking for and exporting templates.\n" + "Only files matching this extension will be examined.")
-				.getString();
-		enableStructureGeneration = config.get(worldGenCategory, "enable_structure_generation", enableStructureGeneration,
-				"Default=" + enableStructureGeneration + "\n" + "Enable or disable structure (not town) generation.").getBoolean(enableStructureGeneration);
-		enableTownGeneration = config.get(worldGenCategory, "enable_town_generation", enableTownGeneration,
-				"Default=" + enableTownGeneration + "\n" + "Enable or disable custom town generation e.g. walls and additional buildings.")
-				.getBoolean(enableTownGeneration);
-		loadDefaultPack = config.get(worldGenCategory, "load_default_structure_pack", loadDefaultPack,
-				"If true the default structure pack will be loaded and enabled for world-gen.").getBoolean(loadDefaultPack);
-		duplicateStructureSearchRange = config.get(worldGenCategory, "validation_duplicate_search_radius", duplicateStructureSearchRange,
-				"Default=" + duplicateStructureSearchRange + "\n" + "The minimum radius in chunks to be searched for duplicate structures.\n" + "This setting should generally not need to be adjusted unless you have templates with extremely\n" + "large 'minDuplicateDistance' values\n" + "Extremely large values may introduce extra lag during generation.  Lower values may reduce lag during generation,\n" + "at the cost of some accuracy in the min duplicate distance tests.")
-				.getInt(duplicateStructureSearchRange);
-		clusterValueSearchRange = config.get(worldGenCategory, "validation_cluster_value_search_radius", clusterValueSearchRange,
-				"Default=" + clusterValueSearchRange + "\n" + "The minimum radius in chunks to be searched for structures when tallying cluster value in an area.\n" + "This setting should be adjusted along with maxClusterValue and the clusterValue in templates to encourage\n" + "or discourage specific structures to generate near eachother.\n" + "Extremely large values may introduce extra lag during generation.  Lower values may reduce lag during generation,\n" + "at the cost of some accuracy in the cluster value tests.")
-				.getInt(clusterValueSearchRange);
-		maxClusterValue = config.get(worldGenCategory, "max_cluster_value", maxClusterValue,
-				"Default=" + maxClusterValue + "\n" + "The maximum allowed cluster value that may be present inside of 'validation_chunk_radius'.\n" + "")
-				.getInt(maxClusterValue);
-		randomGenerationChance = (float) config.get(worldGenCategory, "random_generation_chance", randomGenerationChance,
-				"Default=" + randomGenerationChance + "\n" + "Accepts values between 0 and 1.\n" + "Determines the chance that a structure will attempt to be generated in any given chunk.\n" + "Number is specified as a percentage -- e.g. 0.75 == 75% chance to attempt generation.\n" + "Higher values will result in more attempts to generate structures.  Actual number\n" + "generated will depend upon your specific templates and their validation settings.\n" + "Values of 0 or lower will result in no structures generating.  Values higher than 1\n" + "will result in a generation attempt in every chunk.")
-				.getDouble(randomGenerationChance);
-		spawnProtectionRange = config.get(worldGenCategory, "spawn_protection_chunk_radius", spawnProtectionRange,
-				"Default=" + spawnProtectionRange + "\n" + "Determines the area around the central spawn coordinate that will be excluded from random structure generation.\n" + "Larger values will see a larger area around spawn that is devoid of structures.")
-				.getInt(spawnProtectionRange);
-		exportBlockNames = config.getBoolean("export_block_name_list", serverOptions, exportBlockNames,
-				"If true, will export a list of all registered block names on startup.\n" + "Will toggle itself back to false after exporting the list a single time.\n" + "Block names be used to populate skippable and target blocks lists.\n" + "If false, no action will be taken.");
-		enableWorldGen = config.get(serverOptions, "enable_world_generation", enableWorldGen,
-				"Default=" + enableWorldGen + "\n" + "Enable or disable world generation entirely. If disabled, all other options will have no effect.")
-				.getBoolean(enableWorldGen);
+		templateExtension = config.get(worldGenCategory, "template_extension", "aws", "Default=" + templateExtension + "\n" + "The template extension used when looking for and exporting templates.\n" + "Only files matching this extension will be examined.").getString();
+		enableStructureGeneration = config.get(worldGenCategory, "enable_structure_generation", enableStructureGeneration, "Default=" + enableStructureGeneration + "\n" + "Enable or disable structure (not town) generation.").getBoolean(enableStructureGeneration);
+		enableTownGeneration = config.get(worldGenCategory, "enable_town_generation", enableTownGeneration, "Default=" + enableTownGeneration + "\n" + "Enable or disable custom town generation e.g. walls and additional buildings.").getBoolean(enableTownGeneration);
+		loadDefaultPack = config.get(worldGenCategory, "load_default_structure_pack", loadDefaultPack, "If true the default structure pack will be loaded and enabled for world-gen.").getBoolean(loadDefaultPack);
+		duplicateStructureSearchRange = config.get(worldGenCategory, "validation_duplicate_search_radius", duplicateStructureSearchRange, "Default=" + duplicateStructureSearchRange + "\n" + "The minimum radius in chunks to be searched for duplicate structures.\n" + "This setting should generally not need to be adjusted unless you have templates with extremely\n" + "large 'minDuplicateDistance' values\n" + "Extremely large values may introduce extra lag during generation.  Lower values may reduce lag during generation,\n" + "at the cost of some accuracy in the min duplicate distance tests.").getInt(duplicateStructureSearchRange);
+		clusterValueSearchRange = config.get(worldGenCategory, "validation_cluster_value_search_radius", clusterValueSearchRange, "Default=" + clusterValueSearchRange + "\n" + "The minimum radius in chunks to be searched for structures when tallying cluster value in an area.\n" + "This setting should be adjusted along with maxClusterValue and the clusterValue in templates to encourage\n" + "or discourage specific structures to generate near eachother.\n" + "Extremely large values may introduce extra lag during generation.  Lower values may reduce lag during generation,\n" + "at the cost of some accuracy in the cluster value tests.").getInt(clusterValueSearchRange);
+		maxClusterValue = config.get(worldGenCategory, "max_cluster_value", maxClusterValue, "Default=" + maxClusterValue + "\n" + "The maximum allowed cluster value that may be present inside of 'validation_chunk_radius'.\n" + "").getInt(maxClusterValue);
+		randomGenerationChance = (float) config.get(worldGenCategory, "random_generation_chance", randomGenerationChance, "Default=" + randomGenerationChance + "\n" + "Accepts values between 0 and 1.\n" + "Determines the chance that a structure will attempt to be generated in any given chunk.\n" + "Number is specified as a percentage -- e.g. 0.75 == 75% chance to attempt generation.\n" + "Higher values will result in more attempts to generate structures.  Actual number\n" + "generated will depend upon your specific templates and their validation settings.\n" + "Values of 0 or lower will result in no structures generating.  Values higher than 1\n" + "will result in a generation attempt in every chunk.").getDouble(randomGenerationChance);
+		spawnProtectionRange = config.get(worldGenCategory, "spawn_protection_chunk_radius", spawnProtectionRange, "Default=" + spawnProtectionRange + "\n" + "Determines the area around the central spawn coordinate that will be excluded from random structure generation.\n" + "Larger values will see a larger area around spawn that is devoid of structures.").getInt(spawnProtectionRange);
+		exportBlockNames = config.getBoolean("export_block_name_list", serverOptions, exportBlockNames, "If true, will export a list of all registered block names on startup.\n" + "Will toggle itself back to false after exporting the list a single time.\n" + "Block names be used to populate skippable and target blocks lists.\n" + "If false, no action will be taken.");
+		enableWorldGen = config.get(serverOptions, "enable_world_generation", enableWorldGen, "Default=" + enableWorldGen + "\n" + "Enable or disable world generation entirely. If disabled, all other options will have no effect.").getBoolean(enableWorldGen);
 
-		townClosestDistance = config.get(worldGenCategory, "town_min_distance", townClosestDistance,
-				"Default=" + townClosestDistance + "\n" + "Minimum distance between towns.  This should be set to a value quite a bit larger than the largest town" + "that you have configured for generation.  E.G.  Max town size=16, this value should be >= 40.")
-				.getInt(townClosestDistance);
-		townGenerationChance = (float) config.get(worldGenCategory, "town_generation_chance", townGenerationChance,
-				"Default=" + townGenerationChance + "\n" + "Accepts values between 0 and 1.0.  Decimal percent chance to -attempt- town generation for any given chunk.  Higher settings may result in" + "more towns being generated, but may come with a performance hit during new chunk generation.  Lower values WILL result in fewer towns, and" + "-may- improve performance during chunk generation.")
-				.getDouble(townGenerationChance);
+		townClosestDistance = config.get(worldGenCategory, "town_min_distance", townClosestDistance, "Default=" + townClosestDistance + "\n" + "Minimum distance between towns.  This should be set to a value quite a bit larger than the largest town" + "that you have configured for generation.  E.G.  Max town size=16, this value should be >= 40.").getInt(townClosestDistance);
+		townGenerationChance = (float) config.get(worldGenCategory, "town_generation_chance", townGenerationChance, "Default=" + townGenerationChance + "\n" + "Accepts values between 0 and 1.0.  Decimal percent chance to -attempt- town generation for any given chunk.  Higher settings may result in" + "more towns being generated, but may come with a performance hit during new chunk generation.  Lower values WILL result in fewer towns, and" + "-may- improve performance during chunk generation.").getDouble(townGenerationChance);
 
 		initializeDefaultSkippableBlocks();
 		initializeDefaultSkippedEntities();
@@ -144,8 +115,7 @@ public class AWStructureStatics extends ModConfiguration {
 		String[] defaultSkippableBlocks = new String[] {"AncientWarfareStructure:gate_proxy",
 				//skip gate proxy blocks by default... possibly some others that need skipping as well
 		};
-		defaultSkippableBlocks = config
-				.getStringList("scanner_skipped_blocks", scanSkippedBlocks, defaultSkippableBlocks, "Blocks TO be skipped by structure scanner");
+		defaultSkippableBlocks = config.getStringList("scanner_skipped_blocks", scanSkippedBlocks, defaultSkippableBlocks, "Blocks TO be skipped by structure scanner");
 		Collections.addAll(scannerSkippedBlocks, defaultSkippableBlocks);
 	}
 

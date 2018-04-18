@@ -24,8 +24,7 @@ import java.util.List;
 
 public class SoundBlockRenderer implements ISimpleBlockBakery {
 
-	public static ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(new ResourceLocation(AncientWarfareCore.modID, "structure/sound_block"),
-			"normal");
+	public static ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(new ResourceLocation(AncientWarfareCore.modID, "structure/sound_block"), "normal");
 
 	public static SoundBlockRenderer INSTANCE = new SoundBlockRenderer();
 
@@ -54,8 +53,7 @@ public class SoundBlockRenderer implements ISimpleBlockBakery {
 		if (tileEntity instanceof TileSoundBlock) {
 			IBlockState disguiseState = ((TileSoundBlock) tileEntity).getDisguiseState();
 			if (disguiseState != null) {
-				registryName = String.join("|", disguiseState.getBlock().getRegistryName().toString(),
-						Integer.toString(disguiseState.getBlock().getMetaFromState(disguiseState)));
+				registryName = String.join("|", disguiseState.getBlock().getRegistryName().toString(), Integer.toString(disguiseState.getBlock().getMetaFromState(disguiseState)));
 			}
 		}
 		return state.withProperty(BlockSoundBlock.DISGUISE_BLOCK, registryName);

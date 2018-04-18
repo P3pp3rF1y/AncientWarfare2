@@ -13,8 +13,7 @@ import java.util.Collection;
 
 public class HandCrankedGeneratorRenderer extends BaseTorqueRenderer<TileHandCrankedGenerator> {
 
-	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/hand_cranked_generator",
-			"normal");
+	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/hand_cranked_generator", "normal");
 	public static final HandCrankedGeneratorRenderer INSTANCE = new HandCrankedGeneratorRenderer();
 
 	private final Collection<CCModel> outputGear;

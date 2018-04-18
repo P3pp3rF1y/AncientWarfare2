@@ -14,8 +14,7 @@ public class BlockStateKeyGenerator implements IBlockStateKeyGenerator {
 	private final Map<IProperty, Function<Object, String>> propertyFormats;
 	private final Map<IUnlistedProperty, Function<Object, String>> unlistedPropertyFormats;
 
-	private BlockStateKeyGenerator(Map<IProperty, Function<Object, String>> propertyFormats,
-			Map<IUnlistedProperty, Function<Object, String>> unlistedPropertyFormats) {
+	private BlockStateKeyGenerator(Map<IProperty, Function<Object, String>> propertyFormats, Map<IUnlistedProperty, Function<Object, String>> unlistedPropertyFormats) {
 
 		this.propertyFormats = propertyFormats;
 		this.unlistedPropertyFormats = unlistedPropertyFormats;

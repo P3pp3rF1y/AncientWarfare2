@@ -8,7 +8,6 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 
 public class CoreProperties {
 	public static final PropertyDirection FACING = BlockHorizontal.FACING;
-	public static final IUnlistedProperty<EnumFacing> UNLISTED_HORIZONTAL_FACING = net.minecraftforge.common.property.Properties
-			.toUnlisted(BlockHorizontal.FACING);
+	public static final IUnlistedProperty<EnumFacing> UNLISTED_HORIZONTAL_FACING = net.minecraftforge.common.property.Properties.toUnlisted(BlockHorizontal.FACING);
 	public static final IUnlistedProperty<EnumFacing> UNLISTED_FACING = net.minecraftforge.common.property.Properties.toUnlisted(BlockDirectional.FACING);
 }

@@ -104,8 +104,7 @@ public class StructureTemplateManagerClient {
 					Minecraft.getMinecraft().renderEngine.loadTexture(loc, new TextureImageBased(loc, image));
 					clientTemplateImages.put(imageName, loc);
 				} else {
-					AWLog.logError("Error parsing image: " + file.getName() + " image was not of correct size. Found: " + image.getWidth() + "x" + image
-							.getHeight() + "  Needed: " + AWStructureStatics.structureImageWidth + "x" + AWStructureStatics.structureImageHeight);
+					AWLog.logError("Error parsing image: " + file.getName() + " image was not of correct size. Found: " + image.getWidth() + "x" + image.getHeight() + "  Needed: " + AWStructureStatics.structureImageWidth + "x" + AWStructureStatics.structureImageHeight);
 				}
 			}
 			catch (IOException e) {

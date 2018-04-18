@@ -67,8 +67,7 @@ public class MultiRecipeTransferHandler<C extends Container & ICraftingContainer
 				return handlerHelper.createUserErrorWithTooltip(tooltipMessage);
 			}
 
-			if (!AWCraftingManager
-					.canPlayerCraft(Minecraft.getMinecraft().world, container.getCraftingMemoryContainer().getCrafterName(), recipe.getNeededResearch())) {
+			if (!AWCraftingManager.canPlayerCraft(Minecraft.getMinecraft().world, container.getCraftingMemoryContainer().getCrafterName(), recipe.getNeededResearch())) {
 				String tooltipMessage = Translator.translateToLocal("jei.tooltip.error.recipe.transfer.missing.research");
 				return handlerHelper.createUserErrorWithTooltip(tooltipMessage);
 			}
@@ -114,8 +113,7 @@ public class MultiRecipeTransferHandler<C extends Container & ICraftingContainer
 	}
 
 	private void addMissingItem(List<Integer> missingItems, Ingredient missingIngredient, NonNullList<ItemStack> inputs) {
-		List<ItemStack> matchingStacks = inputs.stream().filter(s -> missingIngredient.apply(s) && !missingItems.contains(getInputIndex(inputs.indexOf(s))))
-				.collect(Collectors.toList());
+		List<ItemStack> matchingStacks = inputs.stream().filter(s -> missingIngredient.apply(s) && !missingItems.contains(getInputIndex(inputs.indexOf(s)))).collect(Collectors.toList());
 		if (!matchingStacks.isEmpty()) {
 			ItemStack matched = matchingStacks.get(matchingStacks.size() - 1);
 			for (int i = inputs.size() - 1; i >= 0; i--) {

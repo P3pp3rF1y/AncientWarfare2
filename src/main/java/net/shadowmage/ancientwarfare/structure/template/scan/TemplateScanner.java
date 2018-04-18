@@ -117,8 +117,7 @@ public final class TemplateScanner {
 		}//end scan y-level for
 
 		List<TemplateRuleEntity> scannedEntityRules = new ArrayList<>();
-		List<Entity> entitiesInAABB = world
-				.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(min.getX(), min.getY(), min.getZ(), max.getX() + 1, max.getY() + 1, max.getZ() + 1));
+		List<Entity> entitiesInAABB = world.getEntitiesWithinAABB(Entity.class, new AxisAlignedBB(min.getX(), min.getY(), min.getZ(), max.getX() + 1, max.getY() + 1, max.getZ() + 1));
 		nextRuleID = 0;
 		for (Entity e : entitiesInAABB) {
 			int ex = MathHelper.floor(e.posX);

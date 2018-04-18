@@ -123,8 +123,7 @@ public class NpcWalkNodeProcessor extends WalkNodeProcessor {
 					if (pathpoint != null && (pathpoint.nodeType == PathNodeType.OPEN || pathpoint.nodeType == PathNodeType.WALKABLE) && this.entity.width < 1.0F) {
 						double d2 = (double) (x - facing.getFrontOffsetX()) + 0.5D;
 						double d3 = (double) (z - facing.getFrontOffsetZ()) + 0.5D;
-						AxisAlignedBB axisalignedbb = new AxisAlignedBB(d2 - d1, (double) y + 0.001D, d3 - d1, d2 + d1,
-								(double) ((float) y + this.entity.height), d3 + d1);
+						AxisAlignedBB axisalignedbb = new AxisAlignedBB(d2 - d1, (double) y + 0.001D, d3 - d1, d2 + d1, (double) ((float) y + this.entity.height), d3 + d1);
 						AxisAlignedBB axisalignedbb1 = this.blockaccess.getBlockState(blockpos).getBoundingBox(this.blockaccess, blockpos);
 						AxisAlignedBB axisalignedbb2 = axisalignedbb.expand(0.0D, axisalignedbb1.maxY - 0.002D, 0.0D);
 
@@ -135,8 +134,7 @@ public class NpcWalkNodeProcessor extends WalkNodeProcessor {
 				}
 
 				if (pathnodetype == PathNodeType.OPEN) {
-					AxisAlignedBB axisalignedbb3 = new AxisAlignedBB((double) x - d1 + 0.5D, (double) y + 0.001D, (double) z - d1 + 0.5D,
-							(double) x + d1 + 0.5D, (double) ((float) y + this.entity.height), (double) z + d1 + 0.5D);
+					AxisAlignedBB axisalignedbb3 = new AxisAlignedBB((double) x - d1 + 0.5D, (double) y + 0.001D, (double) z - d1 + 0.5D, (double) x + d1 + 0.5D, (double) ((float) y + this.entity.height), (double) z + d1 + 0.5D);
 
 					if (this.entity.world.collidesWithAnyBlock(axisalignedbb3)) {
 						return null;
@@ -184,7 +182,6 @@ public class NpcWalkNodeProcessor extends WalkNodeProcessor {
 	}
 
 	private PathNodeType getPathNodeType(EntityLiving entitylivingIn, int x, int y, int z) {
-		return this.getPathNodeType(this.blockaccess, x, y, z, entitylivingIn, this.entitySizeX, this.entitySizeY, this.entitySizeZ, this.getCanOpenDoors(),
-				this.getCanEnterDoors());
+		return this.getPathNodeType(this.blockaccess, x, y, z, entitylivingIn, this.entitySizeX, this.entitySizeY, this.entitySizeZ, this.getCanOpenDoors(), this.getCanEnterDoors());
 	}
 }

@@ -48,7 +48,7 @@ public class ModAccessors {
 */
 
 /* TODO treecapitator support
-            if (Loader.isModLoaded("Treecapitator")) {
+			if (Loader.isModLoaded("Treecapitator")) {
                 AncientWarfareCore.log.info("Treecapitator found!");
                 TREECAPITATOR = Class.forName("net.shadowmage.ancientwarfare.core.interop.InteropTreecapitator").asSubclass(InteropTreecapitatorInterface.class).newInstance();
                 TREECAPITATOR_LOADED = true;

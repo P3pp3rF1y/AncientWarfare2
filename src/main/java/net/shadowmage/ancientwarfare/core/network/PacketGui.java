@@ -65,8 +65,7 @@ public class PacketGui extends PacketBase {
 	@Override
 	protected void execute(EntityPlayer player) {
 		if (packetData.hasKey("openGui")) {
-			NetworkHandler.INSTANCE
-					.openGui(player, packetData.getInteger("id"), packetData.getInteger("x"), packetData.getInteger("y"), packetData.getInteger("z"));
+			NetworkHandler.INSTANCE.openGui(player, packetData.getInteger("id"), packetData.getInteger("x"), packetData.getInteger("y"), packetData.getInteger("z"));
 		} else if (player.openContainer instanceof ContainerBase) {
 			((ContainerBase) player.openContainer).onPacketData(packetData);
 		} else {

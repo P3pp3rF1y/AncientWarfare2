@@ -277,7 +277,6 @@ public class WorkSiteReedFarm extends TileWorksiteFarm {
 
 	@Override
 	protected boolean hasWorksiteWork() {
-		return (reedCount > 0 && !reedToPlant.isEmpty()) || (cactusCount > 0 && !cactusToPlant.isEmpty()) || (cocoaCount > 0 && !cocoaToPlant
-				.isEmpty()) || !blocksToHarvest.isEmpty() || (bonemealCount > 0 && !cocoaToGrow.isEmpty());
+		return (reedCount > 0 && !reedToPlant.isEmpty()) || (cactusCount > 0 && !cactusToPlant.isEmpty()) || (cocoaCount > 0 && !cocoaToPlant.isEmpty()) || !blocksToHarvest.isEmpty() || (bonemealCount > 0 && !cocoaToGrow.isEmpty());
 	}
 }

@@ -73,10 +73,8 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 			if (npc.getTownHallPosition() != null || npc.hasHome())
 				flee = true;
 			else {
-				fleeVector = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.npc, MAX_FLEE_RANGE, HEIGHT_CHECK,
-						new Vec3d(nearestHostile.posX, nearestHostile.posY, nearestHostile.posZ));
-				if (fleeVector == null || nearestHostile.getDistanceSq(fleeVector.x, fleeVector.y, fleeVector.z) < nearestHostile
-						.getDistanceSqToEntity(this.npc))
+				fleeVector = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.npc, MAX_FLEE_RANGE, HEIGHT_CHECK, new Vec3d(nearestHostile.posX, nearestHostile.posY, nearestHostile.posZ));
+				if (fleeVector == null || nearestHostile.getDistanceSq(fleeVector.x, fleeVector.y, fleeVector.z) < nearestHostile.getDistanceSqToEntity(this.npc))
 					flee = false; //did not find random flee-towards target, perhaps retry next tick
 				else
 					flee = true;
@@ -85,8 +83,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 				if (nearestHostile instanceof EntityLivingBase)
 					npc.setAttackTarget((EntityLivingBase) nearestHostile);
 				else
-					AncientWarfareCore.log.error("Attempted to flee an entity that isn't EntityLiving: '" + EntityList
-							.getEntityString(nearestHostile) + "', ignoring! Please report this error.");
+					AncientWarfareCore.log.error("Attempted to flee an entity that isn't EntityLiving: '" + EntityList.getEntityString(nearestHostile) + "', ignoring! Please report this error.");
 			}
 		}
 		return flee;
@@ -95,9 +92,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 	private void findNearbyRelevantEntities() {
 		npc.nearbyHostiles.clear();
 		nearbySoldiers.clear();
-		List nearbyHostilesOrFriendlySoldiers = this.npc.world
-				.getEntitiesWithinAABB(EntityLiving.class, this.npc.getEntityBoundingBox().expand(this.distanceFromEntity, 3.0D, this.distanceFromEntity),
-						this.hostileOrFriendlyCombatNpcSelector);
+		List nearbyHostilesOrFriendlySoldiers = this.npc.world.getEntitiesWithinAABB(EntityLiving.class, this.npc.getEntityBoundingBox().expand(this.distanceFromEntity, 3.0D, this.distanceFromEntity), this.hostileOrFriendlyCombatNpcSelector);
 		if (nearbyHostilesOrFriendlySoldiers.isEmpty())
 			return;
 
@@ -183,8 +178,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 				moveToPosition(fleeVector.x, fleeVector.y, fleeVector.z, distSq);
 			else {
 				if (npc.getDistanceSqToEntity(npc.getAttackTarget()) < PURSUE_RANGE) {//entity still chasing, find a new flee vector
-					fleeVector = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.npc, MAX_FLEE_RANGE, HEIGHT_CHECK,
-							new Vec3d(npc.getAttackTarget().posX, npc.getAttackTarget().posY, npc.getAttackTarget().posZ));
+					fleeVector = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.npc, MAX_FLEE_RANGE, HEIGHT_CHECK, new Vec3d(npc.getAttackTarget().posX, npc.getAttackTarget().posY, npc.getAttackTarget().posZ));
 					if (fleeVector == null)
 						npc.setAttackTarget(null);//retry next tick..perhaps...
 				} else // entity too far to care, stop running

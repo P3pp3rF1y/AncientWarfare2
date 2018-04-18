@@ -262,17 +262,14 @@ public class InventoryTools {
 		if (stack1 == stack2) {
 			return true;
 		}
-		return OreDictionary.itemMatches(stack1, stack2,
-				!stack1.isEmpty() && (stack1.isItemStackDamageable() || stack1.getItemDamage() != OreDictionary.WILDCARD_VALUE)) && ItemStack
-				.areItemsEqualIgnoreDurability(stack1, stack2) && stack1.areCapsCompatible(stack2);
+		return OreDictionary.itemMatches(stack1, stack2, !stack1.isEmpty() && (stack1.isItemStackDamageable() || stack1.getItemDamage() != OreDictionary.WILDCARD_VALUE)) && ItemStack.areItemsEqualIgnoreDurability(stack1, stack2) && stack1.areCapsCompatible(stack2);
 	}
 
 	public static boolean areItemStackTagsEqual(ItemStack stackA, ItemStack stackB) {
 		if (stackA.isEmpty() && stackB.isEmpty()) {
 			return true;
 		} else if (!stackA.isEmpty() && !stackB.isEmpty()) {
-			if ((stackA.getTagCompound() == null || stackA.getTagCompound().hasNoTags()) && (stackB.getTagCompound() != null && !stackB.getTagCompound()
-					.hasNoTags())) {
+			if ((stackA.getTagCompound() == null || stackA.getTagCompound().hasNoTags()) && (stackB.getTagCompound() != null && !stackB.getTagCompound().hasNoTags())) {
 				return false;
 			} else {
 				return (stackA.getTagCompound() == null || stackA.getTagCompound().equals(stackB.getTagCompound())) && stackA.areCapsCompatible(stackB);
@@ -296,8 +293,7 @@ public class InventoryTools {
 		} else if (!ignoreNBT && stackA.getTagCompound() == null && stackB.getTagCompound() != null) {
 			return false;
 		} else {
-			return (ignoreNBT || stackA.getTagCompound() == null || stackA.getTagCompound().equals(stackB.getTagCompound())) && stackA
-					.areCapsCompatible(stackB);
+			return (ignoreNBT || stackA.getTagCompound() == null || stackA.getTagCompound().equals(stackB.getTagCompound())) && stackA.areCapsCompatible(stackB);
 		}
 	}
 
@@ -475,8 +471,7 @@ public class InventoryTools {
 					}
 					return r;
 				}
-			},
-			NAME("sort_type_name") {
+			}, NAME("sort_type_name") {
 				@Override
 				public int compare(ItemStack o1, ItemStack o2) {
 					int r = o1.getDisplayName().compareTo(o2.getDisplayName());
@@ -485,8 +480,7 @@ public class InventoryTools {
 					}
 					return r;
 				}
-			},
-			DAMAGE("sort_type_damage");
+			}, DAMAGE("sort_type_damage");
 
 			public final String unlocalizedName;
 
@@ -526,8 +520,7 @@ public class InventoryTools {
 		}
 
 		public static enum SortOrder {
-			ASCENDING(-1),
-			DESCENDING(1);
+			ASCENDING(-1), DESCENDING(1);
 
 			SortOrder(int mult) {
 				this.mult = mult;

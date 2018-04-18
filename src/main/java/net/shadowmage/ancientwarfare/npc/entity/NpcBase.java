@@ -228,8 +228,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		boolean targetHit = target.attackEntityFrom(DamageSource.causeMobDamage(this), damage);
 		if (targetHit) {
 			if (knockback > 0) {
-				target.addVelocity((double) (-MathHelper.sin(this.rotationYaw * (float) Math.PI / 180.0F) * (float) knockback * 0.5F), 0.1D,
-						(double) (MathHelper.cos(this.rotationYaw * (float) Math.PI / 180.0F) * (float) knockback * 0.5F));
+				target.addVelocity((double) (-MathHelper.sin(this.rotationYaw * (float) Math.PI / 180.0F) * (float) knockback * 0.5F), 0.1D, (double) (MathHelper.cos(this.rotationYaw * (float) Math.PI / 180.0F) * (float) knockback * 0.5F));
 				this.motionX *= 0.6D;
 				this.motionZ *= 0.6D;
 			}
@@ -997,8 +996,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 			return;
 		if (!player.world.isRemote && isEntityAlive()) {
 			onRepack();
-			@Nonnull ItemStack item = InventoryTools
-					.mergeItemStack(player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), this.getItemToSpawn());
+			@Nonnull
+			ItemStack item = InventoryTools.mergeItemStack(player.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null), this.getItemToSpawn());
 			if (!item.isEmpty()) {
 				InventoryHelper.spawnItemStack(player.world, player.posX, player.posY, player.posZ, item);
 			}

@@ -136,8 +136,7 @@ public class TileHandCrankedGenerator extends TileTorqueSingleCell implements IW
 
 	@Override
 	public void addEnergyFromWorker(IWorker worker) {
-		inputCell.setEnergy(inputCell.getEnergy() + AWCoreStatics.energyPerWorkUnit * worker
-				.getWorkEffectiveness(getWorkType()) * AWAutomationStatics.hand_cranked_generator_output);
+		inputCell.setEnergy(inputCell.getEnergy() + AWCoreStatics.energyPerWorkUnit * worker.getWorkEffectiveness(getWorkType()) * AWAutomationStatics.hand_cranked_generator_output);
 	}
 
 	@Override

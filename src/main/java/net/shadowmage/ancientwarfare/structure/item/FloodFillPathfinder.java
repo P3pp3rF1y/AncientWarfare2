@@ -60,8 +60,7 @@ public class FloodFillPathfinder {
 	}
 
 	private boolean isWithinDist(BlockPos pos) {
-		return pos.getX() >= startingPos.getX() - maxDist && pos.getX() <= startingPos.getX() + maxDist && pos.getY() >= startingPos.getY() - maxDist && pos
-				.getY() <= startingPos.getY() + maxDist && pos.getZ() >= startingPos.getZ() - maxDist && pos.getZ() <= startingPos.getZ() + maxDist;
+		return pos.getX() >= startingPos.getX() - maxDist && pos.getX() <= startingPos.getX() + maxDist && pos.getY() >= startingPos.getY() - maxDist && pos.getY() <= startingPos.getY() + maxDist && pos.getZ() >= startingPos.getZ() - maxDist && pos.getZ() <= startingPos.getZ() + maxDist;
 	}
 
 	private void addNeighbors(BlockPos pos) {

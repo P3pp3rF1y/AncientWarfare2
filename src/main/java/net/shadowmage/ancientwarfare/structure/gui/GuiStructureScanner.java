@@ -38,8 +38,7 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 		this.addGuiElement(label);
 
 		nameInput = new Text(8, 8 + 12, 160, "", this);
-		nameInput.removeAllowedChars('/', '\\', '$', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', ':', ';', '"', '\'', '+', '=', '<', '>', '?', '.', ',',
-				'[', ']', '{', '}', '|');
+		nameInput.removeAllowedChars('/', '\\', '$', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', ':', ';', '"', '\'', '+', '=', '<', '>', '?', '.', ',', '[', ']', '{', '}', '|');
 		this.addGuiElement(nameInput);
 
 		Button button = new Button(256 - 55 - 8, 8, 55, 16, "guistrings.export");

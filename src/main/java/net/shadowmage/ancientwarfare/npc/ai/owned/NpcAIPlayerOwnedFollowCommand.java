@@ -28,8 +28,7 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI<NpcPlayerOwned> {
 		}
 		if (cmd.type == CommandType.GUARD || cmd.type == CommandType.ATTACK_AREA)//if it is an attack or entity-targeting task
 		{
-			return npc
-					.getAttackTarget() == null;//only continue with task while attack target is null, else persist command until next run and let the attack ai run
+			return npc.getAttackTarget() == null;//only continue with task while attack target is null, else persist command until next run and let the attack ai run
 		}
 		return true;//else it was not one of the aformentioned commands OR attack target==null, continue with command
 	}

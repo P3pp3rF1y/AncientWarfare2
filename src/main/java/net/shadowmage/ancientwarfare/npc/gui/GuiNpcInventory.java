@@ -116,13 +116,11 @@ public class GuiNpcInventory extends GuiContainerBase<ContainerNpcInventory> {
 		boolean isCombatNpc = getContainer().entity instanceof NpcCombat;
 
 		slot = new ItemSlot(26, 8, new ItemStack(isCombatNpc ? Items.IRON_SWORD : Items.IRON_PICKAXE), this);
-		slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false)
-				.addTooltip(isCombatNpc ? "guistrings.npc.weapon_slot" : "guistrings.npc.tool_slot");
+		slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false).addTooltip(isCombatNpc ? "guistrings.npc.weapon_slot" : "guistrings.npc.tool_slot");
 		addGuiElement(slot);
 
 		slot = new ItemSlot(26, 8 + 18 * 1, new ItemStack(AWNPCItems.woodenShield), this);
-		slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false)
-				.addTooltip(isCombatNpc ? "guistrings.npc.shield_slot" : "guistrings.npc.offhand_slot");
+		slot.setRenderSlotBackground(false).setRenderItemQuantity(false).setHighlightOnMouseOver(false).addTooltip(isCombatNpc ? "guistrings.npc.shield_slot" : "guistrings.npc.offhand_slot");
 		addGuiElement(slot);
 
 		slot = new ItemSlot(26, 8 + 18 * 2, new ItemStack(Items.IRON_HELMET), this);

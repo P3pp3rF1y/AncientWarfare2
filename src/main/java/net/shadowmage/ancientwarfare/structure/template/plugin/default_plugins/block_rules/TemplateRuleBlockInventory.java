@@ -61,8 +61,7 @@ public class TemplateRuleBlockInventory extends TemplateRuleVanillaBlocks {
 				return;
 			}
 			@Nonnull ItemStack keyStack = inventory.getStackInSlot(0);
-			boolean useKey = !keyStack.isEmpty() && (keyStack.getItem() == Items.GOLD_INGOT || keyStack.getItem() == Items.DIAMOND || keyStack
-					.getItem() == Items.EMERALD);
+			boolean useKey = !keyStack.isEmpty() && (keyStack.getItem() == Items.GOLD_INGOT || keyStack.getItem() == Items.DIAMOND || keyStack.getItem() == Items.EMERALD);
 			if (useKey) {
 				for (int i = 1; i < inventory.getSizeInventory(); i++) {
 					if (!inventory.getStackInSlot(i).isEmpty()) {

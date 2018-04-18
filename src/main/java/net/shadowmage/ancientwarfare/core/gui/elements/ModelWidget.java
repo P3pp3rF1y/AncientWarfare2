@@ -293,14 +293,14 @@ public class ModelWidget extends GuiElement {
 		GLU.gluLookAt(viewPosX, viewPosY, viewPosZ, viewTargetX, viewTargetY, viewTargetZ, 0, 1, 0);
 
         /*
-         * load a clean model-view matrix
+		 * load a clean model-view matrix
          */
 		GlStateManager.matrixMode(GL11.GL_MODELVIEW);
 		GlStateManager.pushMatrix();
 		GlStateManager.loadIdentity();
 
         /*
-         * and finally, clear the depth buffer
+		 * and finally, clear the depth buffer
          * (we want to ignore any world/etc, as we're rendering over-top of it all anyway)
          */
 		GlStateManager.clear(GL11.GL_DEPTH_BUFFER_BIT);

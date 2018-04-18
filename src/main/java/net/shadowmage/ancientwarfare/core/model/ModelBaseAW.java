@@ -105,8 +105,7 @@ public class ModelBaseAW {
 		for (OBJGroup.Face face : group.getFaces()) {
 			writer.write("f");
 			for (int i = 0; i < face.normalIndexes.length; i++) {
-				writer.write(String.format(" %d/%d/%d", face.vertexIndexes[i] + baseVertID, face.textureVertexIndexes[i] + baseTextureVertID,
-						face.normalIndexes[i] + baseNormalID));
+				writer.write(String.format(" %d/%d/%d", face.vertexIndexes[i] + baseVertID, face.textureVertexIndexes[i] + baseTextureVertID, face.normalIndexes[i] + baseNormalID));
 			}
 			writer.newLine();
 		}

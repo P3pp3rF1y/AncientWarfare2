@@ -322,8 +322,7 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
 		/********************************* DEPOSIT LIST **********************************************/
 		restockArea.addGuiElement(new Label(120, totalHeight, "guistrings.deposit").setRenderCentered());
 		totalHeight += 12;
-		restockArea.addGuiElement(
-				new Label(70, totalHeight, restock.getDepositPoint() == null ? "guistrings.none" : StringTools.formatPos(restock.getDepositPoint())));
+		restockArea.addGuiElement(new Label(70, totalHeight, restock.getDepositPoint() == null ? "guistrings.none" : StringTools.formatPos(restock.getDepositPoint())));
 		restockArea.addGuiElement(new Label(8, totalHeight, "guistrings.position"));
 		totalHeight += 12;
 		restockArea.addGuiElement(new Label(8, totalHeight, "guistrings.side"));
@@ -359,8 +358,7 @@ public class GuiTradeOrder extends GuiContainerBase<ContainerTradeOrder> {
 
 		restockArea.addGuiElement(new Label(120, totalHeight, "guistrings.withdraw").setRenderCentered());
 		totalHeight += 12;
-		restockArea.addGuiElement(
-				new Label(70, totalHeight, restock.getWithdrawPoint() == null ? "guistrings.none" : StringTools.formatPos(restock.getWithdrawPoint())));
+		restockArea.addGuiElement(new Label(70, totalHeight, restock.getWithdrawPoint() == null ? "guistrings.none" : StringTools.formatPos(restock.getWithdrawPoint())));
 		restockArea.addGuiElement(new Label(8, totalHeight, "guistrings.position"));
 		totalHeight += 12;
 		restockArea.addGuiElement(new Label(8, totalHeight, "guistrings.side"));

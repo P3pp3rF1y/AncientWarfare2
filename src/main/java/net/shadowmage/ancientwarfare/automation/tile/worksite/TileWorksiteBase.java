@@ -100,9 +100,8 @@ public abstract class TileWorksiteBase extends TileUpdatable
 
 	@Override
 	public EnumSet<WorksiteUpgrade> getValidUpgrades() {
-		return EnumSet.of(WorksiteUpgrade.ENCHANTED_TOOLS_1, WorksiteUpgrade.ENCHANTED_TOOLS_2, WorksiteUpgrade.TOOL_QUALITY_1, WorksiteUpgrade.TOOL_QUALITY_2,
-				WorksiteUpgrade.TOOL_QUALITY_3);
-	}
+        return EnumSet.of(WorksiteUpgrade.ENCHANTED_TOOLS_1, WorksiteUpgrade.ENCHANTED_TOOLS_2, WorksiteUpgrade.TOOL_QUALITY_1, WorksiteUpgrade.TOOL_QUALITY_2, WorksiteUpgrade.TOOL_QUALITY_3);
+    }
 
 	@Override
 	public void onBlockBroken() {

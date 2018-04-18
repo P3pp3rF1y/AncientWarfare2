@@ -38,10 +38,8 @@ public abstract class RotatableBlockRenderer extends BaseBakery {
 	}
 
 	protected CCModel rotateFacing(CCModel group, EnumFacing frontFacing) {
-		double angle = Math.PI / 2d * (frontFacing.getAxis() == EnumFacing.Axis.Y ? frontFacing.getFrontOffsetY() : -((frontFacing
-				.getHorizontalIndex() + 2) & 3));
+		double angle = Math.PI / 2d * (frontFacing.getAxis() == EnumFacing.Axis.Y ? frontFacing.getFrontOffsetY() : -((frontFacing.getHorizontalIndex() + 2) & 3));
 
-		return group.apply(new Rotation(angle, frontFacing.getAxis() == EnumFacing.Axis.Y ? 1 : 0, frontFacing.getAxis() != EnumFacing.Axis.Y ? 1 : 0, 0)
-				.at(Vector3.center));
+		return group.apply(new Rotation(angle, frontFacing.getAxis() == EnumFacing.Axis.Y ? 1 : 0, frontFacing.getAxis() != EnumFacing.Axis.Y ? 1 : 0, 0).at(Vector3.center));
 	}
 }

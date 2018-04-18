@@ -47,16 +47,14 @@ public class AmmoCanisterShot extends Ammo {
 			double px = hit.hitVec.x - missile.motionX;
 			double py = hit.hitVec.y - missile.motionY;
 			double pz = hit.hitVec.z - missile.motionZ;
-			spawnGroundBurst(world, (float) px, (float) py, (float) pz, 10, AmmoRegistry.ammoBallIronShot, (int) ammoWeight, 35, hit.sideHit,
-					missile.shooterLiving);
+			spawnGroundBurst(world, (float) px, (float) py, (float) pz, 10, AmmoRegistry.ammoBallIronShot, (int) ammoWeight, 35, hit.sideHit, missile.shooterLiving);
 		}
 	}
 
 	@Override
 	public void onImpactEntity(World world, Entity ent, float x, float y, float z, MissileBase missile) {
 		if (!world.isRemote) {
-			spawnAirBurst(world, (float) ent.posX, (float) ent.posY + ent.height, (float) ent.posZ, 10, AmmoRegistry.ammoBallIronShot, (int) ammoWeight,
-					missile.shooterLiving);
+			spawnAirBurst(world, (float) ent.posX, (float) ent.posY + ent.height, (float) ent.posZ, 10, AmmoRegistry.ammoBallIronShot, (int) ammoWeight, missile.shooterLiving);
 		}
 	}
 

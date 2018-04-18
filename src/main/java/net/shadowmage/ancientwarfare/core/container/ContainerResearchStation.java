@@ -227,7 +227,7 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
 		}
 
         /*
-         * synch use-adjacent inventory status
+		 * synch use-adjacent inventory status
          */
 		if (tileEntity.useAdjacentInventory != useAdjacentInventory) {
 			if (tag == null) {

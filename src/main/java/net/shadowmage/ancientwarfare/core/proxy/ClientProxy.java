@@ -69,10 +69,7 @@ public class ClientProxy extends ClientProxyBase {
 
 		@Override
 		protected GuiScreen buildChildScreen() {
-			return new GuiConfig(this.owningScreen, getKeybindElements(), this.owningScreen.modID,
-					owningScreen.allRequireWorldRestart || this.configElement.requiresWorldRestart(),
-					owningScreen.allRequireMcRestart || this.configElement.requiresMcRestart(), this.owningScreen.title,
-					((this.owningScreen.titleLine2 == null ? "" : this.owningScreen.titleLine2) + " > " + this.name));
+			return new GuiConfig(this.owningScreen, getKeybindElements(), this.owningScreen.modID, owningScreen.allRequireWorldRestart || this.configElement.requiresWorldRestart(), owningScreen.allRequireMcRestart || this.configElement.requiresMcRestart(), this.owningScreen.title, ((this.owningScreen.titleLine2 == null ? "" : this.owningScreen.titleLine2) + " > " + this.name));
 		}
 
 		private static List<IConfigElement> getKeybindElements() {
@@ -88,9 +85,7 @@ public class ClientProxy extends ClientProxyBase {
 
 	@SubscribeEvent
 	public void onPreTextureStitch(TextureStitchEvent.Pre evt) {
-		EngineeringStationRenderer.INSTANCE
-				.setSprite(evt.getMap().registerSprite(new ResourceLocation(AncientWarfareCore.modID + ":model/core/tile_engineering_station")));
-		ResearchStationRenderer.INSTANCE
-				.setSprite(evt.getMap().registerSprite(new ResourceLocation(AncientWarfareCore.modID + ":model/core/tile_research_station")));
+		EngineeringStationRenderer.INSTANCE.setSprite(evt.getMap().registerSprite(new ResourceLocation(AncientWarfareCore.modID + ":model/core/tile_engineering_station")));
+		ResearchStationRenderer.INSTANCE.setSprite(evt.getMap().registerSprite(new ResourceLocation(AncientWarfareCore.modID + ":model/core/tile_research_station")));
 	}
 }

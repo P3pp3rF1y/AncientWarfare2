@@ -35,8 +35,7 @@ public class BlockWarehouseStockViewer extends BlockBaseAutomation implements IR
 		float wmax = 0.875f;
 		float hmin = 0.375f;
 		float hmax = 0.875f;
-		AABBS = ImmutableMap.of(EnumFacing.WEST, new AxisAlignedBB(wmax, hmin, 0, 1.f, hmax, 1), EnumFacing.EAST, new AxisAlignedBB(0, hmin, 0, wmin, hmax, 1),
-				EnumFacing.SOUTH, new AxisAlignedBB(0, hmin, 0, 1, hmax, wmin), EnumFacing.NORTH, new AxisAlignedBB(0, hmin, wmax, 1, hmax, 1));
+		AABBS = ImmutableMap.of(EnumFacing.WEST, new AxisAlignedBB(wmax, hmin, 0, 1.f, hmax, 1), EnumFacing.EAST, new AxisAlignedBB(0, hmin, 0, wmin, hmax, 1), EnumFacing.SOUTH, new AxisAlignedBB(0, hmin, 0, 1, hmax, wmin), EnumFacing.NORTH, new AxisAlignedBB(0, hmin, wmax, 1, hmax, 1));
 	}
 
 	public BlockWarehouseStockViewer(String regName) {
@@ -60,8 +59,7 @@ public class BlockWarehouseStockViewer extends BlockBaseAutomation implements IR
 	}
 
 	@Override
-	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer,
-			EnumHand hand) {
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
 		return getDefaultState().withProperty(FACING, placer.getHorizontalFacing());
 	}
 
@@ -118,8 +116,7 @@ public class BlockWarehouseStockViewer extends BlockBaseAutomation implements IR
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY,
-			float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		TileEntity te = world.getTileEntity(pos);
 		return te instanceof IInteractableTile && ((IInteractableTile) te).onBlockClicked(player, hand);
 	}

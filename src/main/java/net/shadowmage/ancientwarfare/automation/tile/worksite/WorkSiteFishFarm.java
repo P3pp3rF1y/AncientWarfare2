@@ -89,8 +89,8 @@ public class WorkSiteFishFarm extends TileWorksiteBoundedInventory {
 				if (fish) {
 					LootContext.Builder context = new LootContext.Builder((WorldServer) world);
 					context.withLuck(getFortune());
-					for (@Nonnull ItemStack fishStack : this.world.getLootTableManager().getLootTableFromLocation(LootTableList.GAMEPLAY_FISHING)
-							.generateLootForPools(world.rand, context.build())) {
+					for (@Nonnull
+							ItemStack fishStack : this.world.getLootTableManager().getLootTableFromLocation(LootTableList.GAMEPLAY_FISHING).generateLootForPools(world.rand, context.build())) {
 						InventoryTools.insertOrDropItem(mainInventory, fishStack, world, pos);
 					}
 				}

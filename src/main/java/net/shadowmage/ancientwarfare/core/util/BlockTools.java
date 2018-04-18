@@ -120,14 +120,13 @@ public class BlockTools {
 
 		Vec3d var25 = player.getLook(1.0F);
 		float var27 = 1.0F;
-		List<Entity> entitiesPossiblyHitByVector = world.getEntitiesWithinAABBExcludingEntity(player,
-				player.getEntityBoundingBox().expand(var25.x * reachLength, var25.y * reachLength, var25.z * reachLength).expand(var27, var27, var27));
+		List<Entity> entitiesPossiblyHitByVector = world.getEntitiesWithinAABBExcludingEntity(player, player.getEntityBoundingBox().expand(var25.x * reachLength, var25.y * reachLength, var25.z * reachLength).expand(var27, var27, var27));
 		for (Entity testEntity : entitiesPossiblyHitByVector) {
 			if (testEntity.canBeCollidedWith()) {
 				float bbExpansionSize = testEntity.getCollisionBorderSize();
 				AxisAlignedBB entityBB = testEntity.getEntityBoundingBox().expand(bbExpansionSize, bbExpansionSize, bbExpansionSize);
 				/*
-                 * if an entity is hit, return its position
+				 * if an entity is hit, return its position
                  */
 				if (entityBB.contains(testVector)) {
 					return new BlockPos(testEntity.posX, testEntity.posY, testEntity.posZ);
@@ -135,7 +134,7 @@ public class BlockTools {
 			}
 		}
 		/*
-         * if no entity was hit, return the position impacted.
+		 * if no entity was hit, return the position impacted.
          */
 		return offset ? testHitPosition.getBlockPos().offset(testHitPosition.sideHit) : testHitPosition.getBlockPos();
 	}

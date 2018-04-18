@@ -35,8 +35,7 @@ public class SlotResearchCrafting extends Slot {
 
 	private CraftingRecipeMemory craftingRecipeMemory;
 
-	public SlotResearchCrafting(EntityPlayer player, CraftingRecipeMemory craftingRecipeMemory, InventoryCrafting craftingInventory, IInventory inventory,
-			int slotIndex, int xPosition, int yPosition) {
+	public SlotResearchCrafting(EntityPlayer player, CraftingRecipeMemory craftingRecipeMemory, InventoryCrafting craftingInventory, IInventory inventory, int slotIndex, int xPosition, int yPosition) {
 		super(inventory, slotIndex, xPosition, yPosition);
 		this.player = player;
 		this.craftMatrix = craftingInventory;

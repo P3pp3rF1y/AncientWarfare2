@@ -64,9 +64,7 @@ public class RecipeResourceLocation {
 	}
 
 	public enum RecipeType implements IStringSerializable {
-		NONE,
-		RESEARCH,
-		REGULAR;
+		NONE, RESEARCH, REGULAR;
 
 		@Override
 		public String getName() {

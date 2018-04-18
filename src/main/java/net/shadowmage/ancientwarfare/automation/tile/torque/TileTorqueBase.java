@@ -198,8 +198,7 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
 		@Nonnull ItemStack stack = player.getHeldItem(hand);
 		if (stack.isEmpty()) {
 			if (!world.isRemote) {
-				player.sendMessage(new TextComponentTranslation("guistrings.automation.torque.values", String.format("%.2f", getTotalTorque()),
-						String.format("%.2f", getTorqueIn()), String.format("%.2f", getTorqueOut()), String.format("%.2f", getTorqueLoss())));
+				player.sendMessage(new TextComponentTranslation("guistrings.automation.torque.values", String.format("%.2f", getTotalTorque()), String.format("%.2f", getTorqueIn()), String.format("%.2f", getTorqueOut()), String.format("%.2f", getTorqueLoss())));
 			}
 			return true;
 		}

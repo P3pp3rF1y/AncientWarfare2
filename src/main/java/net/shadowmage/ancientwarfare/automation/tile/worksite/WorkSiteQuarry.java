@@ -58,8 +58,7 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 
 	@Override
 	public EnumSet<WorksiteUpgrade> getValidUpgrades() {
-		return EnumSet.of(WorksiteUpgrade.ENCHANTED_TOOLS_1, WorksiteUpgrade.ENCHANTED_TOOLS_2, WorksiteUpgrade.QUARRY_MEDIUM, WorksiteUpgrade.QUARRY_LARGE,
-				WorksiteUpgrade.TOOL_QUALITY_1, WorksiteUpgrade.TOOL_QUALITY_2, WorksiteUpgrade.TOOL_QUALITY_3, WorksiteUpgrade.QUARRY_CHUNK_LOADER);
+		return EnumSet.of(WorksiteUpgrade.ENCHANTED_TOOLS_1, WorksiteUpgrade.ENCHANTED_TOOLS_2, WorksiteUpgrade.QUARRY_MEDIUM, WorksiteUpgrade.QUARRY_LARGE, WorksiteUpgrade.TOOL_QUALITY_1, WorksiteUpgrade.TOOL_QUALITY_2, WorksiteUpgrade.TOOL_QUALITY_3, WorksiteUpgrade.QUARRY_CHUNK_LOADER);
 	}
 
 	@Override
@@ -107,14 +106,14 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 		while (!canHarvest(current)) {
 			if (!incrementPosition()) {
 				/*
-                 * if no valid position was found, set finished, exit
+				 * if no valid position was found, set finished, exit
                  */
 				finished = true;
 				return false;
 			}
 		}
 		/*
-         * if made it this far, a valid position was found, break it and add blocks to inventory
+		 * if made it this far, a valid position was found, break it and add blocks to inventory
          */
 		return harvestBlock(current);
 	}
@@ -161,8 +160,7 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 
 	private void incrementValidationPosition() {
 		validate = validate.east();
-		if (validate.getY() >= current.getY() && validate.getZ() >= current.getZ() && validate.getX() >= current
-				.getX()) {//dont let validation pass current position
+		if (validate.getY() >= current.getY() && validate.getZ() >= current.getZ() && validate.getX() >= current.getX()) {//dont let validation pass current position
 			validate = new BlockPos(getWorkBoundsMin().getX(), getWorkBoundsMax().getY(), getWorkBoundsMin().getZ());
 		} else if (validate.getX() > getWorkBoundsMax().getX()) {
 			validate = new BlockPos(getWorkBoundsMin().getX(), validate.getY(), validate.getZ());

@@ -218,8 +218,7 @@ public class VehicleMoveHelper implements INBTSerializable<NBTTagCompound> {
 		if (sendUpdate) {
 			boolean air = move == VehicleMovementType.AIR1 || move == VehicleMovementType.AIR2;
 			float motion = air ? vehicle.moveHelper.throttle : vehicle.moveHelper.forwardMotion;
-			PacketVehicleBase pkt = new PacketVehicleMove(vehicle, vehicle.posX, vehicle.posY, vehicle.posZ, air, motion, vehicle.rotationYaw,
-					vehicle.rotationPitch);
+			PacketVehicleBase pkt = new PacketVehicleMove(vehicle, vehicle.posX, vehicle.posY, vehicle.posZ, air, motion, vehicle.rotationYaw, vehicle.rotationPitch);
 			NetworkHandler.sendToAllTracking(vehicle, pkt);
 		}
 	}
@@ -526,9 +525,7 @@ public class VehicleMoveHelper implements INBTSerializable<NBTTagCompound> {
 		AxisAlignedBB bb;
 		int submergedBits = 0;
 		for (int i = 0; i < 5; i++) {
-			bb = new AxisAlignedBB(vehicle.getEntityBoundingBox().minX, vehicle.getEntityBoundingBox().minY + (i * bitHeight),
-					vehicle.getEntityBoundingBox().minZ, vehicle.getEntityBoundingBox().maxX, vehicle.getEntityBoundingBox().minY + ((1 + i) * bitHeight),
-					vehicle.getEntityBoundingBox().maxZ);
+			bb = new AxisAlignedBB(vehicle.getEntityBoundingBox().minX, vehicle.getEntityBoundingBox().minY + (i * bitHeight), vehicle.getEntityBoundingBox().minZ, vehicle.getEntityBoundingBox().maxX, vehicle.getEntityBoundingBox().minY + ((1 + i) * bitHeight), vehicle.getEntityBoundingBox().maxZ);
 			if (vehicle.world.isMaterialInBB(bb, Material.WATER)) {
 				submergedBits++;
 			} else {
@@ -573,8 +570,7 @@ public class VehicleMoveHelper implements INBTSerializable<NBTTagCompound> {
 		return state.getBlock() instanceof IPlantable || trampableBlocks.contains(state.getBlock());
 	}
 
-	protected static List<Block> trampableBlocks = Lists
-			.newArrayList(Blocks.SNOW, Blocks.DEADBUSH, Blocks.TALLGRASS, Blocks.RED_FLOWER, Blocks.YELLOW_FLOWER, Blocks.BROWN_MUSHROOM, Blocks.RED_MUSHROOM);
+	protected static List<Block> trampableBlocks = Lists.newArrayList(Blocks.SNOW, Blocks.DEADBUSH, Blocks.TALLGRASS, Blocks.RED_FLOWER, Blocks.YELLOW_FLOWER, Blocks.BROWN_MUSHROOM, Blocks.RED_MUSHROOM);
 
 	public void setMoveTo(double x, double y, double z) {
 		float yawDiff = Trig.getYawTowardsTarget(vehicle.posX, vehicle.posZ, x, z, vehicle.rotationYaw);
@@ -588,8 +584,7 @@ public class VehicleMoveHelper implements INBTSerializable<NBTTagCompound> {
 				sMot = -1;//right
 			}
 		}
-		if (Math.abs(yawDiff) < 10 && Trig
-				.getVelocity(x - vehicle.posX, y - vehicle.posY, z - vehicle.posZ) >= 0.25f)//further away than 1 block, move towards it
+		if (Math.abs(yawDiff) < 10 && Trig.getVelocity(x - vehicle.posX, y - vehicle.posY, z - vehicle.posZ) >= 0.25f)//further away than 1 block, move towards it
 		{
 			fMot = 1;
 		}

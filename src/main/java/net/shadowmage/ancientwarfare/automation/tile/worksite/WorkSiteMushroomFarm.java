@@ -177,8 +177,7 @@ public class WorkSiteMushroomFarm extends TileWorksiteFarm {
 
 	@Override
 	protected boolean hasWorksiteWork() {
-		return (mushroomCount > 0 && !blocksToPlantMushroom.isEmpty()) || (netherWartCount > 0 && !blocksToPlantNetherWart.isEmpty()) || !blocksToHarvest
-				.isEmpty();
+		return (mushroomCount > 0 && !blocksToPlantMushroom.isEmpty()) || (netherWartCount > 0 && !blocksToPlantNetherWart.isEmpty()) || !blocksToHarvest.isEmpty();
 	}
 
 }

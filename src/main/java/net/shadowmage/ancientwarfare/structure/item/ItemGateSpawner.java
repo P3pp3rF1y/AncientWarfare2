@@ -127,8 +127,7 @@ public class ItemGateSpawner extends ItemBaseStructure implements IItemKeyInterf
 				max = pos1.getZ() - pos2.getZ();
 			else if (pos2.getZ() - pos1.getZ() > max)
 				max = pos2.getZ() - pos1.getZ();
-			if (player.getDistance(avg.getX() + 0.5, pos1.getY() + 0.5, avg.getZ() + 0.5) > max && player
-					.getDistance(avg.getX() + 0.5, pos2.getY() + 0.5, avg.getZ() + 0.5) > max) {
+			if (player.getDistance(avg.getX() + 0.5, pos1.getY() + 0.5, avg.getZ() + 0.5) > max && player.getDistance(avg.getX() + 0.5, pos2.getY() + 0.5, avg.getZ() + 0.5) > max) {
 				player.sendMessage(new TextComponentTranslation("guistrings.gate.too_far"));
 				return new ActionResult<>(EnumActionResult.FAIL, stack);
 			}

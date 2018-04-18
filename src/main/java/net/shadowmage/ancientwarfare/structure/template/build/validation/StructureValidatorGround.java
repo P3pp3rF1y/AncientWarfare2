@@ -94,8 +94,7 @@ public class StructureValidatorGround extends StructureValidator {
 		int y = bb.min.getY() + template.yOffset + step - 1;
 		BlockPos pos = new BlockPos(x, y, z);
 		Block block = world.getBlockState(pos).getBlock();
-		if (block != null && block != Blocks.AIR && block != Blocks.FLOWING_WATER && block != Blocks.WATER && !AWStructureStatics
-				.skippableBlocksContains(block)) {
+		if (block != null && block != Blocks.AIR && block != Blocks.FLOWING_WATER && block != Blocks.WATER && !AWStructureStatics.skippableBlocksContains(block)) {
 			world.setBlockState(pos, fillBlock);
 		}
 

@@ -293,8 +293,7 @@ public abstract class Ammo implements IAmmo {
 		explosion.doExplosionB(true);
 	}
 
-	protected void spawnGroundBurst(World world, float x, float y, float z, float maxVelocity, IAmmo type, int count, float minPitch, EnumFacing sideHit,
-			Entity shooter) {
+	protected void spawnGroundBurst(World world, float x, float y, float z, float maxVelocity, IAmmo type, int count, float minPitch, EnumFacing sideHit, Entity shooter) {
 		if (type != null && !world.isRemote) {
 			world.newExplosion(null, x, y, z, 0.25f, false, true);
 			createExplosion(world, null, x, y, z, 1.f);

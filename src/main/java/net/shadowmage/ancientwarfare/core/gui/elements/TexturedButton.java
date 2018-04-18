@@ -44,8 +44,7 @@ public class TexturedButton extends GuiElement {
 			int textureSize = 256;
 			boolean mouseOver = isMouseOverElement(mouseX, mouseY);
 			Texture texture = enabled ? mouseOver ? textureSet.getHighlighted() : textureSet.getEnabled() : textureSet.getDisabled();
-			RenderTools.renderQuarteredTexture(textureSize, textureSize, texture.getU(), texture.getV(), textureSet.getWidth(), textureSet.getHeight(), renderX,
-					renderY, width, height);
+			RenderTools.renderQuarteredTexture(textureSize, textureSize, texture.getU(), texture.getV(), textureSet.getWidth(), textureSet.getHeight(), renderX, renderY, width, height);
 		}
 	}
 
@@ -67,8 +66,7 @@ public class TexturedButton extends GuiElement {
 	}
 
 	public enum TextureSet {
-		LEFT_ARROW(Texture.LEFT_ARROW_DISABLED, Texture.LEFT_ARROW_ENABLED, Texture.LEFT_ARROW_HIGHLIGHTED, 10, 16),
-		RIGHT_ARROW(Texture.RIGHT_ARROW_DISABLED, Texture.RIGHT_ARROW_ENABLED, Texture.RIGHT_ARROW_HIGHLIGHTED, 10, 16);
+		LEFT_ARROW(Texture.LEFT_ARROW_DISABLED, Texture.LEFT_ARROW_ENABLED, Texture.LEFT_ARROW_HIGHLIGHTED, 10, 16), RIGHT_ARROW(Texture.RIGHT_ARROW_DISABLED, Texture.RIGHT_ARROW_ENABLED, Texture.RIGHT_ARROW_HIGHLIGHTED, 10, 16);
 
 		public Texture getDisabled() {
 			return disabled;
@@ -108,12 +106,7 @@ public class TexturedButton extends GuiElement {
 	}
 
 	private enum Texture {
-		LEFT_ARROW_DISABLED(170, 121),
-		LEFT_ARROW_ENABLED(190, 121),
-		LEFT_ARROW_HIGHLIGHTED(210, 121),
-		RIGHT_ARROW_DISABLED(180, 121),
-		RIGHT_ARROW_ENABLED(200, 121),
-		RIGHT_ARROW_HIGHLIGHTED(220, 121);
+		LEFT_ARROW_DISABLED(170, 121), LEFT_ARROW_ENABLED(190, 121), LEFT_ARROW_HIGHLIGHTED(210, 121), RIGHT_ARROW_DISABLED(180, 121), RIGHT_ARROW_ENABLED(200, 121), RIGHT_ARROW_HIGHLIGHTED(220, 121);
 
 		public int getU() {
 			return u;

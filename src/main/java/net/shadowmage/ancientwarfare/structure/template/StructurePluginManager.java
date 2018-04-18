@@ -154,8 +154,7 @@ public class StructurePluginManager implements IStructurePluginManager, IStructu
 			Class<? extends TemplateRuleEntity> entityRuleClass = this.entityRules.get(entityClass);
 			if (entityRuleClass != null) {
 				try {
-					return entityRuleClass.getConstructor(World.class, Entity.class, int.class, int.class, int.class, int.class)
-							.newInstance(world, entity, turns, x, y, z);
+					return entityRuleClass.getConstructor(World.class, Entity.class, int.class, int.class, int.class, int.class).newInstance(world, entity, turns, x, y, z);
 				}
 				catch (Exception e) {
 					e.printStackTrace();
@@ -169,8 +168,7 @@ public class StructurePluginManager implements IStructurePluginManager, IStructu
 		if (ruleByID.containsKey(pluginName)) {
 			if (!ruleByID.get(pluginName).equals(ruleClass)) {
 				Class<? extends TemplateRule> clz = ruleByID.get(pluginName);
-				throw new IllegalArgumentException(
-						"Attempt to overwrite " + clz + " with " + ruleClass + " by " + pluginName + " for entityClass: " + entityClass);
+				throw new IllegalArgumentException("Attempt to overwrite " + clz + " with " + ruleClass + " by " + pluginName + " for entityClass: " + entityClass);
 			}
 		} else {
 			ruleByID.put(pluginName, ruleClass);
@@ -236,13 +234,9 @@ public class StructurePluginManager implements IStructurePluginManager, IStructu
 		}
 		Class<? extends TemplateRule> clz = INSTANCE.getRuleByName(name);
 		if (clz == null) {
-			throw new TemplateRuleParsingException(
-					"Not enough data to create template rule.\n" + "Missing plugin for name: " + name + "\n" + "name: " + name + "\n" + "number:" + ruleNumber + "\n" + "ruleDataPackage.size:" + ruleDataPackage
-							.size() + "\n");
+			throw new TemplateRuleParsingException("Not enough data to create template rule.\n" + "Missing plugin for name: " + name + "\n" + "name: " + name + "\n" + "number:" + ruleNumber + "\n" + "ruleDataPackage.size:" + ruleDataPackage.size() + "\n");
 		} else if (name == null || ruleNumber < 0 || ruleDataPackage.isEmpty()) {
-			throw new TemplateRuleParsingException(
-					"Not enough data to create template rule.\n" + "name: " + name + "\n" + "number:" + ruleNumber + "\n" + "ruleDataPackage.size:" + ruleDataPackage
-							.size() + "\n" + "ruleClass: " + clz);
+			throw new TemplateRuleParsingException("Not enough data to create template rule.\n" + "name: " + name + "\n" + "number:" + ruleNumber + "\n" + "ruleDataPackage.size:" + ruleDataPackage.size() + "\n" + "ruleClass: " + clz);
 		}
 		try {
 			TemplateRule rule = clz.getConstructor().newInstance();

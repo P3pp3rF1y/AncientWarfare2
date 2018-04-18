@@ -56,9 +56,7 @@ public class GateRotatingBridge extends Gate {
 		} else if (gate.edgePosition < gate.edgeMax) {
 			if (!(gate.getEntityBoundingBox() instanceof RotateBoundingBox)) {
 				try {
-					ObfuscationReflectionHelper
-							.setPrivateValue(Entity.class, gate, new RotateBoundingBox(gate.gateOrientation, min, max.add(1, 1, 1)), "boundingBox",
-									"field_70121_D");
+					ObfuscationReflectionHelper.setPrivateValue(Entity.class, gate, new RotateBoundingBox(gate.gateOrientation, min, max.add(1, 1, 1)), "boundingBox", "field_70121_D");
 				}
 				catch (Exception ignored) {
 					ignored.printStackTrace();

@@ -111,9 +111,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 
 	@Override
 	protected boolean hasWorksiteWork() {
-		return !entitiesToCull.isEmpty() || (carrotCount > 0 && !pigsToBreed.isEmpty()) || (seedCount > 0 && !chickensToBreed
-				.isEmpty()) || (wheatCount > 0 && (!cowsToBreed.isEmpty() || !sheepToBreed
-				.isEmpty())) || (bucketCount > 0 && cowsToMilk > 0) || (shearsSlot >= 0 && !sheepToShear.isEmpty());
+		return !entitiesToCull.isEmpty() || (carrotCount > 0 && !pigsToBreed.isEmpty()) || (seedCount > 0 && !chickensToBreed.isEmpty()) || (wheatCount > 0 && (!cowsToBreed.isEmpty() || !sheepToBreed.isEmpty())) || (bucketCount > 0 && cowsToMilk > 0) || (shearsSlot >= 0 && !sheepToShear.isEmpty());
 	}
 
 	@Override

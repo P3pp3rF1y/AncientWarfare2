@@ -14,8 +14,7 @@ public class ContainerStructureSelection extends ContainerStructureSelectionBase
 
 	public ContainerStructureSelection(EntityPlayer player, int x, int y, int z) {
 		super(player);
-		buildSettings = ItemStructureSettings
-				.getSettingsFor(EntityTools.getItemFromEitherHand(player, ItemStructureBuilder.class, ItemStructureBuilderWorldGen.class));
+		buildSettings = ItemStructureSettings.getSettingsFor(EntityTools.getItemFromEitherHand(player, ItemStructureBuilder.class, ItemStructureBuilderWorldGen.class));
 		structureName = buildSettings.hasName() ? buildSettings.name() : null;
 		addPlayerSlots();
 		removeSlots();

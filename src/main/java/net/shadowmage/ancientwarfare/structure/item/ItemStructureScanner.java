@@ -82,8 +82,7 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
 		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
 	}
 
-	public static boolean scanStructure(World world, BlockPos pos1, BlockPos pos2, BlockPos key, EnumFacing face, String name, boolean include,
-			NBTTagCompound tag) {
+	public static boolean scanStructure(World world, BlockPos pos1, BlockPos pos2, BlockPos key, EnumFacing face, String name, boolean include, NBTTagCompound tag) {
 		BlockPos min = BlockTools.getMin(pos1, pos2);
 		BlockPos max = BlockTools.getMax(pos1, pos2);
 		int turns = (6 - face.getHorizontalIndex()) % 4;

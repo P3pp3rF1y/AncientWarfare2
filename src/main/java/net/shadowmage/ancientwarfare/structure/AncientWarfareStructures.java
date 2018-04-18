@@ -73,8 +73,7 @@ public class AncientWarfareStructures {
 			if (AWStructureStatics.enableTownGeneration)
 				GameRegistry.registerWorldGenerator(WorldTownGenerator.INSTANCE, 2);
 		}
-		EntityRegistry
-				.registerModEntity(new ResourceLocation(AncientWarfareStructures.modID, "aw_gate"), EntityGate.class, "aw_gate", 0, this, 250, 200, false);
+		EntityRegistry.registerModEntity(new ResourceLocation(AncientWarfareStructures.modID, "aw_gate"), EntityGate.class, "aw_gate", 0, this, 250, 200, false);
 		/*
 		 * internal registry
          */

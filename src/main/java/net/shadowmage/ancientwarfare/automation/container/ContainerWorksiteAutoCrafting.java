@@ -109,8 +109,7 @@ public class ContainerWorksiteAutoCrafting extends ContainerTileBase<TileAutoCra
 				}
 			} else if (slotClickedIndex < playerSlotEnd)//player slots, merge into book slot and then storage
 			{
-				if (!mergeItemStack(slotStack, BOOK_SLOT, BOOK_SLOT + 1, false) && !this
-						.mergeItemStack(slotStack, storageSlotsStart, outputSlotsStart, false)) {
+				if (!mergeItemStack(slotStack, BOOK_SLOT, BOOK_SLOT + 1, false) && !this.mergeItemStack(slotStack, storageSlotsStart, outputSlotsStart, false)) {
 					return ItemStack.EMPTY;
 				}
 			}

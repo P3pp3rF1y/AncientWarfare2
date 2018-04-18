@@ -42,9 +42,7 @@ public class BlockWindmillBlade extends BlockBaseAutomation implements IBakeryPr
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-		return new BlockStateContainer.Builder(this)
-				.add(FORMED, AutomationProperties.IS_CONTROL, AutomationProperties.HEIGHT, AutomationProperties.ROTATION, UNLISTED_HORIZONTAL_FACING,
-						AutomationProperties.DYNAMIC).build();
+		return new BlockStateContainer.Builder(this).add(FORMED, AutomationProperties.IS_CONTROL, AutomationProperties.HEIGHT, AutomationProperties.ROTATION, UNLISTED_HORIZONTAL_FACING, AutomationProperties.DYNAMIC).build();
 	}
 
 	@Override
@@ -117,9 +115,7 @@ public class BlockWindmillBlade extends BlockBaseAutomation implements IBakeryPr
 	public void registerClient() {
 		ModelLoaderHelper.registerItem(this, WindmillBladeRenderer.MODEL_LOCATION);
 
-		ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder()
-				.addKeyProperties(FORMED, AutomationProperties.IS_CONTROL, AutomationProperties.HEIGHT, UNLISTED_HORIZONTAL_FACING,
-						AutomationProperties.DYNAMIC).addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.ROTATION).build());
+		ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder().addKeyProperties(FORMED, AutomationProperties.IS_CONTROL, AutomationProperties.HEIGHT, UNLISTED_HORIZONTAL_FACING, AutomationProperties.DYNAMIC).addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.ROTATION).build());
 
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
 			@Override

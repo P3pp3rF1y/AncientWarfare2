@@ -112,8 +112,7 @@ public abstract class TileWorksiteBoundedInventory extends TileWorksiteBounded {
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
-		return (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && getInventoryMappedToFacing(facing) != null) || super
-				.hasCapability(capability, facing);
+		return (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && getInventoryMappedToFacing(facing) != null) || super.hasCapability(capability, facing);
 	}
 
 	@SuppressWarnings("unchecked")

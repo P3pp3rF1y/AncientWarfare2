@@ -130,8 +130,7 @@ public class ContainerCraftingRecipeMemory {
 
 	private void updateSelectedIndex() {
 		if (recipes.stream().anyMatch(r -> r.getRegistryName().equals(craftingRecipeMemory.getRecipe().getRegistryName()))) {
-			setSelectedRecipeIndex(recipes.indexOf(
-					recipes.stream().filter(r -> r.getRegistryName().equals(craftingRecipeMemory.getRecipe().getRegistryName())).findFirst().orElseGet(null)));
+			setSelectedRecipeIndex(recipes.indexOf(recipes.stream().filter(r -> r.getRegistryName().equals(craftingRecipeMemory.getRecipe().getRegistryName())).findFirst().orElseGet(null)));
 		} else {
 			setSelectedRecipeIndex(recipes.size() == 0 ? -1 : 0);
 		}
