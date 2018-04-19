@@ -13,7 +13,6 @@ import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 public class ResearchRecipeWrapper<T extends ResearchRecipeBase> implements IRecipeWrapper {
 	private final IStackHelper stackHelper;
 	protected T recipe;
-	private Object width;
 
 	ResearchRecipeWrapper(IStackHelper stackHelper, T recipe) {
 		this.stackHelper = stackHelper;

@@ -61,8 +61,6 @@ public class PacketTransferRecipe extends PacketBase {
 						slot.putStack(resources.get(ingredientIndex));
 					}
 				}
-				for (int i = 0; i < slots.size(); i++) {
-				}
 				craftingContainer.getCraftingMemoryContainer().setRecipe(recipe, true);
 				craftingContainer.getCraftingMemoryContainer().setUpdatePending();
 				craftingContainer.getCraftingMemoryContainer().updateClients();
