@@ -1,9 +1,27 @@
 language: java
+install: true
+addons:
+  sonarcloud:
+    organization: "p3pp3rf1y-github"
+    token: $SONAR_TOKEN
+
 jdk:
 - oraclejdk8
-install: true
-script:
-- "./gradlew clean"
-- "./gradlew setupCIWorkspace"
-- "./gradlew build"
-- "./gradlew bintrayUpload"
+
+jobs:
+  include:
+    -stage: Build
+    script:
+    - "./gradlew clean"
+    - "./gradlew setupCIWorkspace"
+    - "./gradlew build"
+    -stage: Upload
+    script: "./gradlew bintrayUpload"
+    -stage: Code Quality
+    script: "./gradlew sonarqube"
+
+cache:
+  directories:
+    - '$HOME/.sonar/cache'
+    - '$HOME/.gradle'
+    - '.gradle'
