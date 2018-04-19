@@ -1,6 +1,6 @@
 // Auto generated package-info by MCP
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
+
+@ParametersAreNonnullByDefault @MethodsReturnNonnullByDefault
 package net.shadowmage.ancientwarfare.structure.model;
 
 import mcp.MethodsReturnNonnullByDefault;

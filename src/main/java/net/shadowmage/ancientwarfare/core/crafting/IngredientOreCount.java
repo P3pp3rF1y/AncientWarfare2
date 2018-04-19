@@ -22,7 +22,7 @@ public class IngredientOreCount extends OreIngredient implements IIngredientCoun
 	@Override
 	public ItemStack[] getMatchingStacks() {
 		if (array == null) {
-			List<ItemStack> matchingStacks = Arrays.stream(super.getMatchingStacks()).collect(Collectors.toList());
+			List<ItemStack> matchingStacks = Arrays.stream(super.getMatchingStacks()).map(s -> new ItemStack(s.serializeNBT())).collect(Collectors.toList());
 			matchingStacks.forEach(s -> s.setCount(count));
 			array = matchingStacks.toArray(new ItemStack[matchingStacks.size()]);
 		}

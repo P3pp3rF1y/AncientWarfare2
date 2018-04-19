@@ -3,11 +3,10 @@ package net.shadowmage.ancientwarfare.automation.block;
 import net.minecraft.util.IStringSerializable;
 
 public enum TorqueTier implements IStringSerializable {
-	LIGHT(0),
-	MEDIUM(1),
-	HEAVY(2);
+	LIGHT(0), MEDIUM(1), HEAVY(2);
 
 	private int meta;
+
 	TorqueTier(int meta) {
 		this.meta = meta;
 	}

@@ -1,23 +1,23 @@
 {
-  "type": "ancientwarfare:research_recipe",
-  "research": "trade",
-  "pattern": [
-    "_P_",
-    "_C_",
-    "___"
-  ],
-  "key": {
-    "P": {
-      "item": "minecraft:paper"
+    "type": "ancientwarfare:research_recipe",
+    "research": "trade",
+    "pattern": [
+        "_P_",
+        "_C_",
+        "___"
+    ],
+    "key": {
+        "P": {
+            "item": "minecraft:paper"
+        },
+        "C": {
+            "item": "minecraft:chest"
+        },
+        "_": {
+            "item": "#PLANKWOOD"
+        }
     },
-    "C": {
-      "item": "minecraft:chest"
-    },
-    "_": {
-      "item": "#PLANKWOOD"
+    "result": {
+        "item": "ancientwarfareautomation:warehouse_interface"
     }
-  },
-  "result": {
-    "item": "ancientwarfareautomation:warehouse_interface"
-  }
 }

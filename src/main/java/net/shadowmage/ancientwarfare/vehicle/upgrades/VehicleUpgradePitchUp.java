@@ -27,11 +27,6 @@ public class VehicleUpgradePitchUp extends VehicleUpgradeBase {
 
 	public VehicleUpgradePitchUp() {
 		super("vehicle_upgrade_pitch_up");
-/* TODO recipe
-		this.neededResearch.add(ResearchGoalNumbers.mechanics1);
-		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Block.planks, 2), true, false));
-		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.ingotIron, 1), false, false));
-*/
 	}
 
 	@Override

@@ -1,0 +1,20 @@
+{
+    "type": "ancientwarfare:shapeless_research_recipe",
+    "research": "engineering",
+    "ingredients": [
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "ingotIron",
+            "count": 4
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "plankWood",
+            "count": 4
+        }
+    ],
+    "result": {
+        "item": "ancientwarfarevehicle:iron_core_wood",
+        "count": 8
+    }
+}

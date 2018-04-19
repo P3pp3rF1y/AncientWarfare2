@@ -1,28 +1,28 @@
 {
-  "type": "ancientwarfare:research_recipe",
-  "research": "trade",
-  "pattern": [
-    "GF ",
-    "GTB"
-  ],
-  "key": {
-    "B": {
-      "item": "minecraft:book"
+    "type": "ancientwarfare:research_recipe",
+    "research": "trade",
+    "pattern": [
+        "GF ",
+        "GTB"
+    ],
+    "key": {
+        "B": {
+            "item": "minecraft:book"
+        },
+        "T": {
+            "item": "minecraft:wool",
+            "data": 0
+        },
+        "F": {
+            "item": "#FOODBUNDLE"
+        },
+        "G": {
+            "item": "#INGOTGOLD"
+        }
     },
-    "T": {
-      "item": "minecraft:wool",
-      "data": 0
-    },
-    "F": {
-      "item": "#FOODBUNDLE"
-    },
-    "G": {
-      "item": "#INGOTGOLD"
+    "result": {
+        "type": "minecraft:item_nbt",
+        "item": "ancientwarfarenpc:npc_spawner",
+        "nbt": "{npcSubtype:\"\",npcType:\"trader\"}"
     }
-  },
-  "result": {
-    "type": "minecraft:item_nbt",
-    "item": "ancientwarfarenpc:npc_spawner",
-    "nbt": "{npcSubtype:\"\",npcType:\"trader\"}"
-  }
 }

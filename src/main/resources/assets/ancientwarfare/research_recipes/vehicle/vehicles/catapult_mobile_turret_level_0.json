@@ -1,0 +1,31 @@
+{
+    "type": "ancientwarfare:shapeless_research_recipe",
+    "research": "siege_warfare",
+    "ingredients": [
+        {
+            "type": "ancientwarfare:item_count",
+            "item": "ancientwarfarevehicle:rough_wood",
+            "count": 5
+        },
+        {
+            "type": "ancientwarfare:item_count",
+            "item": "ancientwarfarevehicle:torsion_unit",
+            "count": 3
+        },
+        {
+            "item": "ancientwarfarevehicle:equipment_bay"
+        },
+        {
+            "item": "ancientwarfarevehicle:mobility_unit"
+        },
+        {
+            "item": "ancientwarfarevehicle:turret_components"
+        }
+    ],
+    "result": {
+        "type": "minecraft:item_nbt",
+        "item": "ancientwarfarevehicle:spawner",
+        "data": 3,
+        "nbt": "{spawnData:{level:0}}"
+    }
+}

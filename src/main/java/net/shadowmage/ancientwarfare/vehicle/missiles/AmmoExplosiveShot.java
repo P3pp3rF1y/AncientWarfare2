@@ -41,60 +41,11 @@ public class AmmoExplosiveShot extends Ammo {
 		this.renderScale = (weight / scaleFactor) * 2;
 
 		if (bigExplosion) {
-/* TODO rendering
-			this.iconTexture = "ammoHE1";
-*/
 			this.configName = "high_explosive_" + weight;
-/* TODO recipe
-			this.neededResearch.add(ResearchGoalNumbers.explosives3);
-*/
 		} else {
-/* TODO rendering
-			this.iconTexture = "ammoExplosive1";
-*/
 			this.configName = "explosive_" + weight;
-/* TODO recipes - commented out code below as well
-			this.neededResearch.add(ResearchGoalNumbers.explosives2);
-*/
 		}
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/ammo_stone_shot.png");
-
-		int cases = 1;
-		int explosives = 1;
-		//this.numCrafted = 2;
-		switch (weight) {
-			case 10:
-				//this.neededResearch.add(ResearchGoalNumbers.ballistics1);
-				cases = 1;
-				explosives = 1;
-				break;
-
-			case 15:
-				//this.neededResearch.add(ResearchGoalNumbers.ballistics1);
-				cases = 2;
-				explosives = 2;
-				break;
-
-			case 30:
-				//this.neededResearch.add(ResearchGoalNumbers.ballistics2);
-				cases = 4;
-				explosives = 4;
-				break;
-
-			case 45:
-				//this.neededResearch.add(ResearchGoalNumbers.ballistics3);
-				cases = 6;
-				explosives = 6;
-				break;
-		}
-		if (bigExplosion) {
-			explosives *= 2;
-		}
-
-/*
-		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.explosiveCharge, explosives, false, false));
-		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.clayCasing, cases, false, false));
-*/
 	}
 
 	@Override

@@ -35,7 +35,6 @@ public class ItemUpgrade extends ItemBaseVehicle {
 	public void registerClient() {
 		final Map<String, ModelResourceLocation> modelLocations = new HashMap<>();
 
-		ModelLoaderHelper.registerItem(this, (i, m) -> new ModelResourceLocation(new ResourceLocation(AncientWarfareCore.modID, "vehicle/upgrade"),
-				"variant=" + getRegistryName().getResourcePath()));
+		ModelLoaderHelper.registerItem(this, (i, m) -> new ModelResourceLocation(new ResourceLocation(AncientWarfareCore.modID, "vehicle/upgrade"), "variant=" + getRegistryName().getResourcePath()));
 	}
 }

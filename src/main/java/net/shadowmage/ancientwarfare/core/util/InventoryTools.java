@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
@@ -52,7 +53,7 @@ public class InventoryTools {
 		return remainingItems;
 	}
 
-	public static IItemHandler cloneItemHandler(IItemHandler handler) {
+	public static IItemHandlerModifiable cloneItemHandler(IItemHandler handler) {
 		ItemStackHandler copy = new ItemStackHandler(handler.getSlots());
 
 		for (int slot = 0; slot < handler.getSlots(); slot++) {
@@ -133,6 +134,10 @@ public class InventoryTools {
 	 * @return the removed item.
 	 */
 	public static ItemStack removeItems(IItemHandler handler, ItemStack filter, int quantity) {
+		return removeItems(handler, filter, quantity, false);
+	}
+
+	public static ItemStack removeItems(IItemHandler handler, ItemStack filter, int quantity, boolean simulate) {
 		if (quantity <= 0) {
 			return ItemStack.EMPTY;
 		}
@@ -150,7 +155,7 @@ public class InventoryTools {
 			int toMove = Math.min(quantity - returnCount, slotStack.getCount());
 			returnCount += toMove;
 
-			handler.extractItem(index, toMove, false);
+			handler.extractItem(index, toMove, simulate);
 
 			if (quantity - returnCount <= 0) {
 				break;
@@ -257,17 +262,14 @@ public class InventoryTools {
 		if (stack1 == stack2) {
 			return true;
 		}
-		return OreDictionary.itemMatches(stack1, stack2,
-				!stack1.isEmpty() && (stack1.isItemStackDamageable() || stack1.getItemDamage() != OreDictionary.WILDCARD_VALUE)) && ItemStack
-				.areItemsEqualIgnoreDurability(stack1, stack2) && stack1.areCapsCompatible(stack2);
+		return OreDictionary.itemMatches(stack1, stack2, !stack1.isEmpty() && (stack1.isItemStackDamageable() || stack1.getItemDamage() != OreDictionary.WILDCARD_VALUE)) && ItemStack.areItemsEqualIgnoreDurability(stack1, stack2) && stack1.areCapsCompatible(stack2);
 	}
 
 	public static boolean areItemStackTagsEqual(ItemStack stackA, ItemStack stackB) {
 		if (stackA.isEmpty() && stackB.isEmpty()) {
 			return true;
 		} else if (!stackA.isEmpty() && !stackB.isEmpty()) {
-			if ((stackA.getTagCompound() == null || stackA.getTagCompound().hasNoTags()) && (stackB.getTagCompound() != null && !stackB.getTagCompound()
-					.hasNoTags())) {
+			if ((stackA.getTagCompound() == null || stackA.getTagCompound().hasNoTags()) && (stackB.getTagCompound() != null && !stackB.getTagCompound().hasNoTags())) {
 				return false;
 			} else {
 				return (stackA.getTagCompound() == null || stackA.getTagCompound().equals(stackB.getTagCompound())) && stackA.areCapsCompatible(stackB);
@@ -291,8 +293,7 @@ public class InventoryTools {
 		} else if (!ignoreNBT && stackA.getTagCompound() == null && stackB.getTagCompound() != null) {
 			return false;
 		} else {
-			return (ignoreNBT || stackA.getTagCompound() == null || stackA.getTagCompound().equals(stackB.getTagCompound())) && stackA
-					.areCapsCompatible(stackB);
+			return (ignoreNBT || stackA.getTagCompound() == null || stackA.getTagCompound().equals(stackB.getTagCompound())) && stackA.areCapsCompatible(stackB);
 		}
 	}
 
@@ -407,6 +408,50 @@ public class InventoryTools {
 		}
 	}
 
+	public static NonNullList<ItemStack> getItems(IItemHandler handler) {
+		NonNullList<ItemStack> ret = NonNullList.create();
+
+		for (int slot = 0; slot < handler.getSlots(); slot++) {
+			ItemStack slotStack = handler.getStackInSlot(slot);
+			if (!slotStack.isEmpty()) {
+				ret.add(slotStack);
+			}
+		}
+		return ret;
+	}
+
+	public static NonNullList<ItemStack> removeItems(IItemHandler handler, NonNullList<ItemStack> stacks) {
+		return removeItems(handler, stacks, false);
+	}
+
+	public static NonNullList<ItemStack> removeItems(IItemHandler handler, NonNullList<ItemStack> stacks, boolean simulate) {
+		NonNullList<ItemStack> extractedItems = NonNullList.create();
+		if (simulate) {
+			handler = cloneItemHandler(handler);
+		}
+		for (ItemStack stack : stacks) {
+			ItemStack extracted = removeItem(handler, stack, false);
+			if (!extracted.isEmpty()) {
+				extractedItems.add(extracted);
+			}
+		}
+		return extractedItems;
+	}
+
+	private static ItemStack removeItem(IItemHandler handler, ItemStack stack, boolean simulate) {
+		ItemStack extracted = ItemStack.EMPTY;
+		for (int slot = 0; slot < handler.getSlots(); slot++) {
+			ItemStack slotStack = handler.getStackInSlot(slot);
+			if (doItemStacksMatchRelaxed(stack, slotStack)) {
+				extracted = handler.extractItem(slot, stack.getCount(), simulate);
+				if (extracted.getCount() == stack.getCount()) {
+					break;
+				}
+			}
+		}
+		return extracted;
+	}
+
 	/*
 	 * Item-stack comparator.  Configurable in constructor to sort by localized or unlocalized name, as well as
 	 * sort-order (regular or reverse).
@@ -426,8 +471,7 @@ public class InventoryTools {
 					}
 					return r;
 				}
-			},
-			NAME("sort_type_name") {
+			}, NAME("sort_type_name") {
 				@Override
 				public int compare(ItemStack o1, ItemStack o2) {
 					int r = o1.getDisplayName().compareTo(o2.getDisplayName());
@@ -436,8 +480,7 @@ public class InventoryTools {
 					}
 					return r;
 				}
-			},
-			DAMAGE("sort_type_damage");
+			}, DAMAGE("sort_type_damage");
 
 			public final String unlocalizedName;
 
@@ -477,8 +520,7 @@ public class InventoryTools {
 		}
 
 		public static enum SortOrder {
-			ASCENDING(-1),
-			DESCENDING(1);
+			ASCENDING(-1), DESCENDING(1);
 
 			SortOrder(int mult) {
 				this.mult = mult;

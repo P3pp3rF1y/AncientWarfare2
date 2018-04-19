@@ -17,37 +17,37 @@ import java.util.List;
 
 public class ItemUpkeepOrder extends ItemOrders {
 
-    public ItemUpkeepOrder() {
-        super("upkeep_order");
-    }
+	public ItemUpkeepOrder() {
+		super("upkeep_order");
+	}
 
-    @Override
-    public List<BlockPos> getPositionsForRender(ItemStack stack) {
-        List<BlockPos> positionList = new ArrayList<>();
-        UpkeepOrder order = UpkeepOrder.getUpkeepOrder(stack);
-        if (order != null && order.getUpkeepPosition() != null)
-            positionList.add(order.getUpkeepPosition());
-        return positionList;
-    }
+	@Override
+	public List<BlockPos> getPositionsForRender(ItemStack stack) {
+		List<BlockPos> positionList = new ArrayList<>();
+		UpkeepOrder order = UpkeepOrder.getUpkeepOrder(stack);
+		if (order != null && order.getUpkeepPosition() != null)
+			positionList.add(order.getUpkeepPosition());
+		return positionList;
+	}
 
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand){
-        if(!world.isRemote)
-            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_UPKEEP_ORDER, 0, 0, 0);
-        return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
-    }
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		if (!world.isRemote)
+			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_UPKEEP_ORDER, 0, 0, 0);
+		return new ActionResult<>(EnumActionResult.SUCCESS, player.getHeldItem(hand));
+	}
 
-    @Override
-    public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
-        UpkeepOrder upkeepOrder = UpkeepOrder.getUpkeepOrder(stack);
-        if (upkeepOrder != null) {
-            BlockPos hit = BlockTools.getBlockClickedOn(player, player.world, false);
-            if (upkeepOrder.addUpkeepPosition(player.world, hit)) {
-                upkeepOrder.write(stack);
-                player.sendMessage(new TextComponentTranslation("guistrings.npc.upkeep_point_set"));
-            } else 
-                NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_UPKEEP_ORDER, 0, 0, 0);
-        }
-    }
+	@Override
+	public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
+		UpkeepOrder upkeepOrder = UpkeepOrder.getUpkeepOrder(stack);
+		if (upkeepOrder != null) {
+			BlockPos hit = BlockTools.getBlockClickedOn(player, player.world, false);
+			if (upkeepOrder.addUpkeepPosition(player.world, hit)) {
+				upkeepOrder.write(stack);
+				player.sendMessage(new TextComponentTranslation("guistrings.npc.upkeep_point_set"));
+			} else
+				NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_UPKEEP_ORDER, 0, 0, 0);
+		}
+	}
 
 }

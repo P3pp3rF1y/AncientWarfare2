@@ -34,111 +34,107 @@ import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.UNLISTED_HORIZONTAL_FACING;
 
 public class BlockWindmillBlade extends BlockBaseAutomation implements IBakeryProvider {
-    public static final IUnlistedProperty<Boolean> FORMED = Properties.toUnlisted(PropertyBool.create("formed"));
+	public static final IUnlistedProperty<Boolean> FORMED = Properties.toUnlisted(PropertyBool.create("formed"));
 
-    public BlockWindmillBlade(String regName) {
-        super(Material.WOOD, regName);
-    }
+	public BlockWindmillBlade(String regName) {
+		super(Material.WOOD, regName);
+	}
 
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer.Builder(this)
-                .add(FORMED, AutomationProperties.IS_CONTROL, AutomationProperties.HEIGHT, AutomationProperties.ROTATION, UNLISTED_HORIZONTAL_FACING, AutomationProperties.DYNAMIC)
-                .build();
-    }
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer.Builder(this).add(FORMED, AutomationProperties.IS_CONTROL, AutomationProperties.HEIGHT, AutomationProperties.ROTATION, UNLISTED_HORIZONTAL_FACING, AutomationProperties.DYNAMIC).build();
+	}
 
-    @Override
-    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return WindmillBladeRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
-    }
+	@Override
+	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return WindmillBladeRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
+	}
 
-    @Override
-    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-        return false;
-    }
+	@Override
+	public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+		return false;
+	}
 
-    @Override
-    public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param) {
-        TileEntity tileentity = world.getTileEntity(pos);
-        return tileentity != null && tileentity.receiveClientEvent(id, param);
-    }
+	@Override
+	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param) {
+		TileEntity tileentity = world.getTileEntity(pos);
+		return tileentity != null && tileentity.receiveClientEvent(id, param);
+	}
 
-    @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-        super.onBlockPlacedBy(world, pos, state, placer, stack);
-        TileWindmillBlade te = (TileWindmillBlade) world.getTileEntity(pos);
-        te.blockPlaced();
-    }
+	@Override
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		super.onBlockPlacedBy(world, pos, state, placer, stack);
+		TileWindmillBlade te = (TileWindmillBlade) world.getTileEntity(pos);
+		te.blockPlaced();
+	}
 
-    @Override
-    public void breakBlock(World world, BlockPos pos, IBlockState state) {
-        TileWindmillBlade te = (TileWindmillBlade) world.getTileEntity(pos);
-        super.breakBlock(world, pos, state);
-        te.blockBroken();//have to call post block-break so that the tile properly sees the block/tile as gone //TODO invalidate?
-    }
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		TileWindmillBlade te = (TileWindmillBlade) world.getTileEntity(pos);
+		super.breakBlock(world, pos, state);
+		te.blockBroken();//have to call post block-break so that the tile properly sees the block/tile as gone //TODO invalidate?
+	}
 
-    @Override
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    public boolean isNormalCube(IBlockState state) {
-        return false;
-    }
+	@Override
+	public boolean isNormalCube(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    public boolean isFullCube(IBlockState state) {
-        return false;
-    }
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileWindmillBlade();
-    }
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		return new TileWindmillBlade();
+	}
 
-    @Override
-    public boolean hasTileEntity(IBlockState state) {
-        return true;
-    }
+	@Override
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
 
-    @Override
-    public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
-        return 60;
-    }
+	@Override
+	public int getFireSpreadSpeed(IBlockAccess world, BlockPos pos, EnumFacing face) {
+		return 60;
+	}
 
-    @Override
-    public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
-        return 20;
-    }
+	@Override
+	public int getFlammability(IBlockAccess world, BlockPos pos, EnumFacing face) {
+		return 20;
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerClient() {
-        ModelLoaderHelper.registerItem(this, WindmillBladeRenderer.MODEL_LOCATION);
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerClient() {
+		ModelLoaderHelper.registerItem(this, WindmillBladeRenderer.MODEL_LOCATION);
 
-        ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder()
-                .addKeyProperties(FORMED, AutomationProperties.IS_CONTROL, AutomationProperties.HEIGHT, UNLISTED_HORIZONTAL_FACING, AutomationProperties.DYNAMIC)
-                .addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.ROTATION).build());
+		ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder().addKeyProperties(FORMED, AutomationProperties.IS_CONTROL, AutomationProperties.HEIGHT, UNLISTED_HORIZONTAL_FACING, AutomationProperties.DYNAMIC).addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.ROTATION).build());
 
-        ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
-            @Override protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                return WindmillBladeRenderer.MODEL_LOCATION;
-            }
-        });
+		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
+			@Override
+			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+				return WindmillBladeRenderer.MODEL_LOCATION;
+			}
+		});
 
-        ModelRegistryHelper.register(WindmillBladeRenderer.MODEL_LOCATION, new CCBakeryModel() {
-            @Override
-            public TextureAtlasSprite getParticleTexture() {
-                return WindmillBladeRenderer.INSTANCE.cubeSprite;
-            }
-        });
+		ModelRegistryHelper.register(WindmillBladeRenderer.MODEL_LOCATION, new CCBakeryModel() {
+			@Override
+			public TextureAtlasSprite getParticleTexture() {
+				return WindmillBladeRenderer.INSTANCE.cubeSprite;
+			}
+		});
 
+	}
 
-    }
-
-    @Override
-    public IBakery getBakery() {
-        return WindmillBladeRenderer.INSTANCE;
-    }
+	@Override
+	public IBakery getBakery() {
+		return WindmillBladeRenderer.INSTANCE;
+	}
 }

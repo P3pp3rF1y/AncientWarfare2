@@ -35,119 +35,113 @@ import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
 public class BlockTorqueTransportShaft extends BlockTorqueTransport implements IBakeryProvider {
-    public static final IUnlistedProperty<Boolean> HAS_PREVIOUS = Properties.toUnlisted(PropertyBool.create("has_previous"));
-    public static final IUnlistedProperty<Boolean> HAS_NEXT = Properties.toUnlisted(PropertyBool.create("has_next"));
+	public static final IUnlistedProperty<Boolean> HAS_PREVIOUS = Properties.toUnlisted(PropertyBool.create("has_previous"));
+	public static final IUnlistedProperty<Boolean> HAS_NEXT = Properties.toUnlisted(PropertyBool.create("has_next"));
 
-    public BlockTorqueTransportShaft(String regName) {
-        super(regName);
-    }
+	public BlockTorqueTransportShaft(String regName) {
+		super(regName);
+	}
 
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state) {
-        switch (state.getValue(AutomationProperties.TIER)) {
-            case LIGHT:
-                return new TileTorqueShaftLight();
-            case MEDIUM:
-                return new TileTorqueShaftMedium();
-            case HEAVY:
-                return new TileTorqueShaftHeavy();
-        }
-        return new TileTorqueShaftLight();
-    }
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		switch (state.getValue(AutomationProperties.TIER)) {
+			case LIGHT:
+				return new TileTorqueShaftLight();
+			case MEDIUM:
+				return new TileTorqueShaftMedium();
+			case HEAVY:
+				return new TileTorqueShaftHeavy();
+		}
+		return new TileTorqueShaftLight();
+	}
 
-    @Override
-    protected void addProperties(BlockStateContainer.Builder builder) {
-        super.addProperties(builder);
-        builder.add(HAS_PREVIOUS, HAS_NEXT, AutomationProperties.USE_INPUT, AutomationProperties.INPUT_ROTATION);
-    }
+	@Override
+	protected void addProperties(BlockStateContainer.Builder builder) {
+		super.addProperties(builder);
+		builder.add(HAS_PREVIOUS, HAS_NEXT, AutomationProperties.USE_INPUT, AutomationProperties.INPUT_ROTATION);
+	}
 
-    @Override
-    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return TorqueShaftRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
-    }
+	@Override
+	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return TorqueShaftRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
+	}
 
-    @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
-        //TODO static AABBs that are used to put together the total
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
+		//TODO static AABBs that are used to put together the total
 
-        float min = 0.1875f, max = 0.8125f;
-        float x1 = min, y1 = min, z1 = min, x2 = max, y2 = max, z2 = max;
-        TileEntity te = world.getTileEntity(pos);
-        if (te instanceof TileTorqueShaft) {
-            TileTorqueShaft tile = (TileTorqueShaft) world.getTileEntity(pos);
-            EnumFacing facing = tile.getPrimaryFacing();
-            int s1 = facing.ordinal();
-            switch (facing.getAxis()) {
-                case X:
-                    x1 = 0;
-                    x2 = 1;
-                    break;
-                case Y:
-                    y1 = 0;
-                    y2 = 1;
-                    break;
-                case Z:
-                    z1 = 0;
-                    z2 = 1;
-                    break;
-            }
-        }
-        return new AxisAlignedBB(x1, y1, z1, x2, y2, z2);
-    }
-    private static final IBlockStateKeyGenerator KEY_GENERATOR = new BlockStateKeyGenerator.Builder()
-            .addKeyProperties(AutomationProperties.TIER)
-            .addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC, HAS_PREVIOUS, HAS_NEXT)
-            .addKeyProperties(o -> String.format("%.6f",o), AutomationProperties.INPUT_ROTATION)
-            .addKeyProperties(o -> String.format("%.6f",o), AutomationProperties.ROTATIONS).build();
+		float min = 0.1875f, max = 0.8125f;
+		float x1 = min, y1 = min, z1 = min, x2 = max, y2 = max, z2 = max;
+		TileEntity te = world.getTileEntity(pos);
+		if (te instanceof TileTorqueShaft) {
+			TileTorqueShaft tile = (TileTorqueShaft) world.getTileEntity(pos);
+			EnumFacing facing = tile.getPrimaryFacing();
+			int s1 = facing.ordinal();
+			switch (facing.getAxis()) {
+				case X:
+					x1 = 0;
+					x2 = 1;
+					break;
+				case Y:
+					y1 = 0;
+					y2 = 1;
+					break;
+				case Z:
+					z1 = 0;
+					z2 = 1;
+					break;
+			}
+		}
+		return new AxisAlignedBB(x1, y1, z1, x2, y2, z2);
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerClient() {
-        ModelLoaderHelper.registerItem(this, "automation", "light", false); //the actual switch for itemstack types is processed by renderer
+	private static final IBlockStateKeyGenerator KEY_GENERATOR = new BlockStateKeyGenerator.Builder().addKeyProperties(AutomationProperties.TIER).addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC, HAS_PREVIOUS, HAS_NEXT).addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.INPUT_ROTATION).addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.ROTATIONS).build();
 
-        ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder()
-                .addKeyProperties(AutomationProperties.TIER)
-                .addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC, HAS_PREVIOUS, HAS_NEXT)
-                .addKeyProperties(o -> String.format("%.6f",o), AutomationProperties.INPUT_ROTATION)
-                .addKeyProperties(o -> String.format("%.6f",o), AutomationProperties.ROTATIONS).build());
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerClient() {
+		ModelLoaderHelper.registerItem(this, "automation", "light", false); //the actual switch for itemstack types is processed by renderer
 
-        ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
-            @Override protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                switch(state.getValue(AutomationProperties.TIER)) {
-                    case LIGHT:
-                        return TorqueShaftRenderer.LIGHT_MODEL_LOCATION;
-                    case MEDIUM:
-                        return TorqueShaftRenderer.MEDIUM_MODEL_LOCATION;
-                    default:
-                        return TorqueShaftRenderer.HEAVY_MODEL_LOCATION;
-                }
-            }
-        });
+		ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder().addKeyProperties(AutomationProperties.TIER).addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC, HAS_PREVIOUS, HAS_NEXT).addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.INPUT_ROTATION).addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.ROTATIONS).build());
 
-        ModelRegistryHelper.register(TorqueShaftRenderer.LIGHT_MODEL_LOCATION, new CCBakeryModel() {
-            @Override
-            public TextureAtlasSprite getParticleTexture() {
-                return TorqueShaftRenderer.INSTANCE.getSprite(TorqueTier.LIGHT);
-            }
-        });
+		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
+			@Override
+			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+				switch (state.getValue(AutomationProperties.TIER)) {
+					case LIGHT:
+						return TorqueShaftRenderer.LIGHT_MODEL_LOCATION;
+					case MEDIUM:
+						return TorqueShaftRenderer.MEDIUM_MODEL_LOCATION;
+					default:
+						return TorqueShaftRenderer.HEAVY_MODEL_LOCATION;
+				}
+			}
+		});
 
-        ModelRegistryHelper.register(TorqueShaftRenderer.MEDIUM_MODEL_LOCATION, new CCBakeryModel() {
-            @Override
-            public TextureAtlasSprite getParticleTexture() {
-                return TorqueShaftRenderer.INSTANCE.getSprite(TorqueTier.MEDIUM);
-            }
-        });
+		ModelRegistryHelper.register(TorqueShaftRenderer.LIGHT_MODEL_LOCATION, new CCBakeryModel() {
+			@Override
+			public TextureAtlasSprite getParticleTexture() {
+				return TorqueShaftRenderer.INSTANCE.getSprite(TorqueTier.LIGHT);
+			}
+		});
 
-        ModelRegistryHelper.register(TorqueShaftRenderer.HEAVY_MODEL_LOCATION, new CCBakeryModel() {
-            @Override
-            public TextureAtlasSprite getParticleTexture() {
-                return TorqueShaftRenderer.INSTANCE.getSprite(TorqueTier.HEAVY);
-            }
-        });
-    }
+		ModelRegistryHelper.register(TorqueShaftRenderer.MEDIUM_MODEL_LOCATION, new CCBakeryModel() {
+			@Override
+			public TextureAtlasSprite getParticleTexture() {
+				return TorqueShaftRenderer.INSTANCE.getSprite(TorqueTier.MEDIUM);
+			}
+		});
 
-    @Override
-    public IBakery getBakery() {
-        return TorqueShaftRenderer.INSTANCE;
-    }
+		ModelRegistryHelper.register(TorqueShaftRenderer.HEAVY_MODEL_LOCATION, new CCBakeryModel() {
+			@Override
+			public TextureAtlasSprite getParticleTexture() {
+				return TorqueShaftRenderer.INSTANCE.getSprite(TorqueTier.HEAVY);
+			}
+		});
+	}
+
+	@Override
+	public IBakery getBakery() {
+		return TorqueShaftRenderer.INSTANCE;
+	}
 }

@@ -4,34 +4,34 @@ import net.minecraft.util.math.BlockPos;
 
 public interface IBoundedSite {
 
-    BlockPos getWorkBoundsMin();
+	BlockPos getWorkBoundsMin();
 
-    BlockPos getWorkBoundsMax();
+	BlockPos getWorkBoundsMax();
 
-    boolean userAdjustableBlocks();
+	boolean userAdjustableBlocks();
 
-    boolean hasWorkBounds();
+	boolean hasWorkBounds();
 
-    int getBoundsMaxWidth();
+	int getBoundsMaxWidth();
 
-    int getBoundsMaxHeight();
+	int getBoundsMaxHeight();
 
-    void setBounds(BlockPos p1, BlockPos p2);
+	void setBounds(BlockPos p1, BlockPos p2);
 
-    void setWorkBoundsMax(BlockPos max);
+	void setWorkBoundsMax(BlockPos max);
 
-    void setWorkBoundsMin(BlockPos min);
+	void setWorkBoundsMin(BlockPos min);
 
-    /*
-     * Called from container when a user adjusts work bounds for a block.
-     * Tile should take the opportunity to revalidate the selection and/or offset bounds
-     * for tile special placement/offset/whatever
-     */
-    void onBoundsAdjusted();
+	/*
+	 * Called from container when a user adjusts work bounds for a block.
+	 * Tile should take the opportunity to revalidate the selection and/or offset bounds
+	 * for tile special placement/offset/whatever
+	 */
+	void onBoundsAdjusted();
 
-    /*
-     * Called from container AFTER bounds have been adjusted.  Tile should take this opportunity
-     * to reseat any chunkloading or re-init any scan stuff
-     */
-    void onPostBoundsAdjusted();
+	/*
+	 * Called from container AFTER bounds have been adjusted.  Tile should take this opportunity
+	 * to reseat any chunkloading or re-init any scan stuff
+	 */
+	void onPostBoundsAdjusted();
 }

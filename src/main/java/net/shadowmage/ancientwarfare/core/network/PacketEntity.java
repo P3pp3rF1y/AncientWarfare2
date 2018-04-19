@@ -13,45 +13,47 @@ import java.io.IOException;
 
 public class PacketEntity extends PacketBase {
 
-    int entityId;
-    public NBTTagCompound packetData = new NBTTagCompound();
+	int entityId;
+	public NBTTagCompound packetData = new NBTTagCompound();
 
-    public PacketEntity() {
-    }
+	public PacketEntity() {
+	}
 
-    public PacketEntity(Entity e) {
-        this.entityId = e.getEntityId();
-    }
+	public PacketEntity(Entity e) {
+		this.entityId = e.getEntityId();
+	}
 
-    @Override
-    protected void writeToStream(ByteBuf data) {
-        data.writeInt(entityId);
-        if (packetData != null) {
-            ByteBufOutputStream bbos = new ByteBufOutputStream(data);
-            try {
-                CompressedStreamTools.writeCompressed(packetData, bbos);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+	@Override
+	protected void writeToStream(ByteBuf data) {
+		data.writeInt(entityId);
+		if (packetData != null) {
+			ByteBufOutputStream bbos = new ByteBufOutputStream(data);
+			try {
+				CompressedStreamTools.writeCompressed(packetData, bbos);
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
-    @Override
-    protected void readFromStream(ByteBuf data) {
-        entityId = data.readInt();
-        try {
-            packetData = CompressedStreamTools.readCompressed(new ByteBufInputStream(data));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	@Override
+	protected void readFromStream(ByteBuf data) {
+		entityId = data.readInt();
+		try {
+			packetData = CompressedStreamTools.readCompressed(new ByteBufInputStream(data));
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-    @Override
-    protected void execute(EntityPlayer player) {
-        Entity e = player.world.getEntityByID(entityId);
-        if (e instanceof IEntityPacketHandler) {
-            ((IEntityPacketHandler) e).handlePacketData(packetData);
-        }
-    }
+	@Override
+	protected void execute(EntityPlayer player) {
+		Entity e = player.world.getEntityByID(entityId);
+		if (e instanceof IEntityPacketHandler) {
+			((IEntityPacketHandler) e).handlePacketData(packetData);
+		}
+	}
 
 }

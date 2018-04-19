@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.core.model;
 
 import net.minecraft.client.renderer.GlStateManager;
@@ -29,113 +30,113 @@ import java.util.function.Supplier;
 
 public abstract class Primitive {
 
-    private float tx;//texture offsets, in texture space (0->1)
-    private float ty;
-    float x, y, z;//origin of this primitive, relative to parent origin and orientation
-    float rx, ry, rz;//rotation of this primitive, relative to parent orientation
-    public ModelPiece parent;
+	private float tx;//texture offsets, in texture space (0->1)
+	private float ty;
+	float x, y, z;//origin of this primitive, relative to parent origin and orientation
+	float rx, ry, rz;//rotation of this primitive, relative to parent orientation
+	public ModelPiece parent;
 
-    public Primitive(ModelPiece parent) {
-        this.parent = parent;
-    }
+	public Primitive(ModelPiece parent) {
+		this.parent = parent;
+	}
 
-    public final void render(float tw, float th) {
-        buildDisplayList(tw, th);
-    }
+	public final void render(float tw, float th) {
+		buildDisplayList(tw, th);
+	}
 
-    protected void buildDisplayList(float tw, float th) {
-        GlStateManager.pushMatrix();
-        if (x != 0 || y != 0 || z != 0) {
-            GlStateManager.translate(x, y, z);
-        }
-        if (rx != 0) {
-            GlStateManager.rotate(rx, 1, 0, 0);
-        }
-        if (ry != 0) {
-            GlStateManager.rotate(ry, 0, 1, 0);
-        }
-        if (rz != 0) {
-            GlStateManager.rotate(rz, 0, 0, 1);
-        }
-        renderPrimitive(tw, th);
-        GlStateManager.popMatrix();
-    }
+	protected void buildDisplayList(float tw, float th) {
+		GlStateManager.pushMatrix();
+		if (x != 0 || y != 0 || z != 0) {
+			GlStateManager.translate(x, y, z);
+		}
+		if (rx != 0) {
+			GlStateManager.rotate(rx, 1, 0, 0);
+		}
+		if (ry != 0) {
+			GlStateManager.rotate(ry, 0, 1, 0);
+		}
+		if (rz != 0) {
+			GlStateManager.rotate(rz, 0, 0, 1);
+		}
+		renderPrimitive(tw, th);
+		GlStateManager.popMatrix();
+	}
 
-    protected abstract void renderPrimitive(float tw, float th);
+	protected abstract void renderPrimitive(float tw, float th);
 
-    public abstract Primitive copy();
+	public abstract Primitive copy();
 
-    public float x() {
-        return x;
-    }
+	public float x() {
+		return x;
+	}
 
-    public float y() {
-        return y;
-    }
+	public float y() {
+		return y;
+	}
 
-    public float z() {
-        return z;
-    }
+	public float z() {
+		return z;
+	}
 
-    public float rx() {
-        return rx;
-    }
+	public float rx() {
+		return rx;
+	}
 
-    public float ry() {
-        return ry;
-    }
+	public float ry() {
+		return ry;
+	}
 
-    public float rz() {
-        return rz;
-    }
+	public float rz() {
+		return rz;
+	}
 
-    public float tx() {
-        return tx;
-    }
+	public float tx() {
+		return tx;
+	}
 
-    public float ty() {
-        return ty;
-    }
+	public float ty() {
+		return ty;
+	}
 
-    public void setOrigin(float x, float y, float z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
-    }
+	public void setOrigin(float x, float y, float z) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+	}
 
-    public void setRotation(float rx, float ry, float rz) {
-        this.rx = rx;
-        this.ry = ry;
-        this.rz = rz;
-    }
+	public void setRotation(float rx, float ry, float rz) {
+		this.rx = rx;
+		this.ry = ry;
+		this.rz = rz;
+	}
 
-    public void setTx(float tx) {
-        if (tx < 0) {
-            tx = 0;
-        }
-        this.tx = tx;
-    }
+	public void setTx(float tx) {
+		if (tx < 0) {
+			tx = 0;
+		}
+		this.tx = tx;
+	}
 
-    public void setTy(float ty) {
-        if (ty < 0) {
-            ty = 0;
-        }
-        this.ty = ty;
-    }
+	public void setTy(float ty) {
+		if (ty < 0) {
+			ty = 0;
+		}
+		this.ty = ty;
+	}
 
-    public abstract void addPrimitiveLines(ArrayList<String> lines);
+	public abstract void addPrimitiveLines(ArrayList<String> lines);
 
-    public abstract void readFromLine(String[] lineBits);
+	public abstract void readFromLine(String[] lineBits);
 
-    public abstract void addUVMapToImage(BufferedImage image);
+	public abstract void addUVMapToImage(BufferedImage image);
 
-    protected void setImagePixel(BufferedImage image, int x, int y, int rgb) {
-        if (x >= 0 && x < image.getWidth() && y >= 0 && y < image.getHeight()) {
-            image.setRGB(x, y, rgb);
-        }
-    }
+	protected void setImagePixel(BufferedImage image, int x, int y, int rgb) {
+		if (x >= 0 && x < image.getWidth() && y >= 0 && y < image.getHeight()) {
+			image.setRGB(x, y, rgb);
+		}
+	}
 
-    public OBJGroup getOBJGroup(String parentName, Supplier<Tuple<Integer, Integer>> getTextureSizes) {
-        return new OBJGroup.Builder().build();
-    }
+	public OBJGroup getOBJGroup(String parentName, Supplier<Tuple<Integer, Integer>> getTextureSizes) {
+		return new OBJGroup.Builder().build();
+	}
 }

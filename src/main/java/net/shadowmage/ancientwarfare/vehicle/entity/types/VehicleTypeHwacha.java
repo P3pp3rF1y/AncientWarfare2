@@ -102,16 +102,6 @@ public class VehicleTypeHwacha extends VehicleType {
 		this.armorBaySize = 3;
 		this.ammoBaySize = 6;
 		this.upgradeBaySize = 3;
-/*
-		this.addNeededResearchForMaterials();
-		this.addNeededResearch(0, ResearchGoal.vehicleGunpowderWeapons1);
-		this.addNeededResearch(1, ResearchGoal.vehicleGunpowderWeapons2);
-		this.addNeededResearch(2, ResearchGoal.vehicleGunpowderWeapons3);
-		this.addNeededResearch(3, ResearchGoal.vehicleGunpowderWeapons4);
-		this.addNeededResearch(4, ResearchGoal.vehicleGunpowderWeapons5);
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.powderCase, 1, false, false));
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.equipmentBay, 1, false, false));
-*/
 	}
 
 	@Override

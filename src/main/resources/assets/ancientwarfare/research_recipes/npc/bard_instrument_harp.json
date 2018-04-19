@@ -1,21 +1,21 @@
 {
-  "type": "ancientwarfare:research_recipe",
-  "research": "leadership",
-  "pattern": [
-    "TT ",
-    "SST",
-    "TT "
-  ],
-  "key": {
-    "S": {
-      "item": "minecraft:string"
+    "type": "ancientwarfare:research_recipe",
+    "research": "leadership",
+    "pattern": [
+        "TT ",
+        "SST",
+        "TT "
+    ],
+    "key": {
+        "S": {
+            "item": "minecraft:string"
+        },
+        "T": {
+            "item": "#STICKWOOD"
+        }
     },
-    "T": {
-      "item": "#STICKWOOD"
+    "result": {
+        "item": "ancientwarfarenpc:bard_instrument",
+        "data": 2
     }
-  },
-  "result": {
-    "item": "ancientwarfarenpc:bard_instrument",
-    "data": 2
-  }
 }

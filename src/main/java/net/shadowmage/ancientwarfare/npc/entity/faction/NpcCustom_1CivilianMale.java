@@ -4,12 +4,12 @@ import net.minecraft.world.World;
 
 public class NpcCustom_1CivilianMale extends NpcFactionCivilian {
 
-    public NpcCustom_1CivilianMale(World par1World) {
-        super(par1World);
-    }
+	public NpcCustom_1CivilianMale(World par1World) {
+		super(par1World);
+	}
 
-    @Override
-    public String getNpcType() {
-        return "custom_1.civilian.male";
-    }
+	@Override
+	public String getNpcType() {
+		return "custom_1.civilian.male";
+	}
 }

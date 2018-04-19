@@ -1,6 +1,6 @@
 // Auto generated package-info by MCP
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
+
+@ParametersAreNonnullByDefault @MethodsReturnNonnullByDefault
 package net.shadowmage.ancientwarfare.core.inventory;
 
 import mcp.MethodsReturnNonnullByDefault;

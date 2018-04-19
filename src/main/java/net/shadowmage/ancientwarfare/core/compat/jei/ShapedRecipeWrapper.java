@@ -8,15 +8,15 @@ import net.minecraftforge.common.crafting.IShapedRecipe;
 public class ShapedRecipeWrapper extends ShapelessRecipeWrapper<IShapedRecipe> implements IShapedCraftingRecipeWrapper {
 	public ShapedRecipeWrapper(IJeiHelpers jeiHelpers, IShapedRecipe recipe) {
 		super(jeiHelpers, recipe);
-    }
+	}
 
-    @Override
-    public int getWidth() {
-        return recipe.getRecipeWidth();
-    }
+	@Override
+	public int getWidth() {
+		return recipe.getRecipeWidth();
+	}
 
-    @Override
-    public int getHeight() {
-        return recipe.getRecipeHeight();
-    }
+	@Override
+	public int getHeight() {
+		return recipe.getRecipeHeight();
+	}
 }

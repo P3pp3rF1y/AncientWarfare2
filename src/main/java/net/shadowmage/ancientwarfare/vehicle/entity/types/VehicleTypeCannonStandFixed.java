@@ -45,5 +45,4 @@ public class VehicleTypeCannonStandFixed extends VehicleTypeCannon {
 		this.upgradeBaySize = 4;
 		this.ammoBaySize = 6;
 	}
-
 }

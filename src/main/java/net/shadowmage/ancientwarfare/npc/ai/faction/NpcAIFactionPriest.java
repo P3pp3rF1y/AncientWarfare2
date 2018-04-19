@@ -5,13 +5,13 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public class NpcAIFactionPriest extends NpcAIMedicBase {
 
-    public NpcAIFactionPriest(NpcBase npc) {
-        super(npc);
-    }
+	public NpcAIFactionPriest(NpcBase npc) {
+		super(npc);
+	}
 
-    @Override
-    protected boolean isProperSubtype() {
-        return true;
-    }
+	@Override
+	protected boolean isProperSubtype() {
+		return true;
+	}
 
 }

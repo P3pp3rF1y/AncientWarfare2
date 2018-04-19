@@ -18,8 +18,9 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.structure.api;
 
 public interface IStructurePluginLookup {
-    String getPluginNameFor(Class<? extends TemplateRule> clz);
+	String getPluginNameFor(Class<? extends TemplateRule> clz);
 }

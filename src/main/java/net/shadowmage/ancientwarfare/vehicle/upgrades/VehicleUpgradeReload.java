@@ -27,12 +27,6 @@ public class VehicleUpgradeReload extends VehicleUpgradeBase {
 
 	public VehicleUpgradeReload() {
 		super("vehicle_upgrade_reload");
-/* TODO recipe
-		this.neededResearch.add(ResearchGoalNumbers.mechanics2);
-		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Block.planks, 2), true, false));
-		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.ingotIron, 3), false, false));
-		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.redstone, 2), false, false));
-*/
 	}
 
 	@Override

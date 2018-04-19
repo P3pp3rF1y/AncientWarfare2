@@ -1,0 +1,24 @@
+{
+    "type": "ancientwarfare:shapeless_research_recipe",
+    "research": "theory_of_gravity",
+    "ingredients": [
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "ingotIron",
+            "count": 2
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "cobblestone",
+            "count": 4
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "string",
+            "count": 4
+        }
+    ],
+    "result": {
+        "item": "ancientwarfarevehicle:counter_weight_unit"
+    }
+}

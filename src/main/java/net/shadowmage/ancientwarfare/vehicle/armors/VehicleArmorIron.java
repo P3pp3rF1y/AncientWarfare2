@@ -29,10 +29,4 @@ public class VehicleArmorIron extends VehicleArmorBase {
 		this.explosive = 2.5f;
 		this.fire = 2.5f;
 	}
-
-/* TODO research
-  this.neededResearch.add(ResearchGoalNumbers.iron2);
-  this.addNeededResource(new ItemStack(Item.ingotIron, 5), false);
-*/
-
 }

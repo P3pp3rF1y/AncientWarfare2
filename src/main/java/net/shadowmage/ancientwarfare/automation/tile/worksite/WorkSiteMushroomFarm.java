@@ -44,7 +44,7 @@ public class WorkSiteMushroomFarm extends TileWorksiteFarm {
 
 	@Override
 	protected boolean isPlantable(ItemStack stack) {
-		if(stack.getItem() == Items.NETHER_WART) {
+		if (stack.getItem() == Items.NETHER_WART) {
 			return true;
 		} else {
 			Block block = Block.getBlockFromItem(stack.getItem());
@@ -54,7 +54,7 @@ public class WorkSiteMushroomFarm extends TileWorksiteFarm {
 
 	@Override
 	protected boolean isFarmable(Block block, BlockPos farmablePos) {
-		if(super.isFarmable(block, farmablePos)) {
+		if (super.isFarmable(block, farmablePos)) {
 			EnumPlantType type = ((IPlantable) block).getPlantType(world, farmablePos);
 			return type == EnumPlantType.Cave || type == EnumPlantType.Nether;
 		}
@@ -77,31 +77,31 @@ public class WorkSiteMushroomFarm extends TileWorksiteFarm {
 	@Override
 	protected boolean processWork() {
 		Iterator<BlockPos> it;
-		if(!blocksToHarvest.isEmpty()) {
+		if (!blocksToHarvest.isEmpty()) {
 			it = blocksToHarvest.iterator();
 			BlockPos harvestPos;
 			Block block;
-			while(it.hasNext() && (harvestPos = it.next()) != null) {
+			while (it.hasNext() && (harvestPos = it.next()) != null) {
 				it.remove();
 				block = world.getBlockState(harvestPos).getBlock();
-				if(block instanceof BlockHugeMushroom || isFarmable(block, harvestPos)) {
+				if (block instanceof BlockHugeMushroom || isFarmable(block, harvestPos)) {
 					return harvestBlock(harvestPos);
 				}
 			}
-		} else if(mushroomCount > 0 && !blocksToPlantMushroom.isEmpty()) {
+		} else if (mushroomCount > 0 && !blocksToPlantMushroom.isEmpty()) {
 			it = blocksToPlantMushroom.iterator();
 			BlockPos plantPos;
 			@Nonnull ItemStack item;
-			for(int slot = 0; slot < plantableInventory.getSlots(); slot++) {
+			for (int slot = 0; slot < plantableInventory.getSlots(); slot++) {
 				item = plantableInventory.getStackInSlot(slot);
-				if(item.isEmpty()) {
+				if (item.isEmpty()) {
 					continue;
 				}
 				Block block = Block.getBlockFromItem(item.getItem());
-				if(isFarmable(block)) {
-					while(it.hasNext() && (plantPos = it.next()) != null) {
+				if (isFarmable(block)) {
+					while (it.hasNext() && (plantPos = it.next()) != null) {
 						it.remove();
-						if(tryPlace(item.copy(), plantPos, EnumFacing.UP)) {//plant the mushroom, decrease stack size
+						if (tryPlace(item.copy(), plantPos, EnumFacing.UP)) {//plant the mushroom, decrease stack size
 							plantableInventory.extractItem(slot, 1, false);
 							return true;
 						}
@@ -109,19 +109,19 @@ public class WorkSiteMushroomFarm extends TileWorksiteFarm {
 					return false;
 				}
 			}
-		} else if(netherWartCount > 0 && !blocksToPlantNetherWart.isEmpty()) {
+		} else if (netherWartCount > 0 && !blocksToPlantNetherWart.isEmpty()) {
 			it = blocksToPlantNetherWart.iterator();
 			BlockPos plantPos;
 			@Nonnull ItemStack item;
-			for(int slot = 0; slot < plantableInventory.getSlots(); slot++) {
+			for (int slot = 0; slot < plantableInventory.getSlots(); slot++) {
 				item = plantableInventory.getStackInSlot(slot);
-				if(item.isEmpty()) {
+				if (item.isEmpty()) {
 					continue;
 				}
-				if(item.getItem() == Items.NETHER_WART) {
-					while(it.hasNext() && (plantPos = it.next()) != null) {
+				if (item.getItem() == Items.NETHER_WART) {
+					while (it.hasNext() && (plantPos = it.next()) != null) {
 						it.remove();
-						if(tryPlace(item.copy(), plantPos, EnumFacing.UP)) {
+						if (tryPlace(item.copy(), plantPos, EnumFacing.UP)) {
 							plantableInventory.extractItem(slot, 1, false);
 							return true;
 						}
@@ -140,7 +140,7 @@ public class WorkSiteMushroomFarm extends TileWorksiteFarm {
 
 	@Override
 	public boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
-		if(!player.world.isRemote) {
+		if (!player.world.isRemote) {
 			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_MUSHROOM_FARM, pos);
 		}
 		return true;
@@ -150,23 +150,23 @@ public class WorkSiteMushroomFarm extends TileWorksiteFarm {
 	protected void scanBlockPosition(BlockPos scanPos) {
 		IBlockState state = world.getBlockState(scanPos);
 		Block block = state.getBlock();
-		if(block.isReplaceable(world, scanPos)) {
-			if(Blocks.NETHER_WART.canPlaceBlockAt(world, scanPos)) {
+		if (block.isReplaceable(world, scanPos)) {
+			if (Blocks.NETHER_WART.canPlaceBlockAt(world, scanPos)) {
 				blocksToPlantNetherWart.add(scanPos);
-			} else if(Blocks.BROWN_MUSHROOM.canPlaceBlockAt(world, scanPos)) {
+			} else if (Blocks.BROWN_MUSHROOM.canPlaceBlockAt(world, scanPos)) {
 				blocksToPlantMushroom.add(scanPos);
 			}
 		} else {//not an air block, check for harvestable nether-wart
-			if(block == Blocks.NETHER_WART) {
-				if(state.getValue(BlockNetherWart.AGE) >= 3)
+			if (block == Blocks.NETHER_WART) {
+				if (state.getValue(BlockNetherWart.AGE) >= 3)
 					blocksToHarvest.add(scanPos);
-			} else if(block instanceof BlockHugeMushroom && !blocksToHarvest.contains(scanPos)) {
+			} else if (block instanceof BlockHugeMushroom && !blocksToHarvest.contains(scanPos)) {
 				TreeFinder.DEFAULT.findAttachedTreeBlocks(block, world, scanPos, blocksToHarvest);
-			} else if(isFarmable(block, scanPos)) {
+			} else if (isFarmable(block, scanPos)) {
 				Set<BlockPos> harvestSet = new HashSet<>();
 				TreeFinder.DEFAULT.findAttachedTreeBlocks(block, world, scanPos, harvestSet);
-				for(BlockPos tp : harvestSet) {
-					if(!isTarget(tp) && !blocksToHarvest.contains(tp))//don't harvest user-set planting blocks...
+				for (BlockPos tp : harvestSet) {
+					if (!isTarget(tp) && !blocksToHarvest.contains(tp))//don't harvest user-set planting blocks...
 					{
 						blocksToHarvest.add(tp);
 					}

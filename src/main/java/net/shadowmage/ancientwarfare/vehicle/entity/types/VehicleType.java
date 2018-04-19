@@ -334,18 +334,6 @@ public abstract class VehicleType implements IVehicleType {
 		return this.validUpgrades;
 	}
 
-/* TODO vehicle recipes
-	@Override
-	public int getMaterialQuantity() {
-		return materialCount;
-	}
-
-	@Override
-	public List<ItemStackWrapperCrafting> getAdditionalMaterials() {
-		return additionalMaterials;
-	}
-*/
-
 	@Override
 	public boolean isArmorValid(IVehicleArmor armor) {
 		return this.validArmors.contains(armor);
@@ -474,56 +462,6 @@ public abstract class VehicleType implements IVehicleType {
 	public String getIconTexture() {
 		return "ancientwarfare:vehicle/" + iconTexture;
 	}
-
-/* TODO recipes
-	@Override
-	public ResourceListRecipe constructRecipe(int level) {
-		if (!isEnabled()) {
-			return null;
-		}
-		ResourceListRecipe recipe = new ResourceListRecipe(this.getStackForLevel(level).copy(), RecipeType.VEHICLE);
-		recipe.addResource(this.getMaterialType().getItem(level).copy(), this.getMaterialQuantity(), false, false);
-		recipe.addResources(getAdditionalMaterials());
-		recipe.addNeededResearch(this.neededResearch.get(level));
-		//  recipe.setDisplayName(getDisplayName() + " "+(level+1));
-		return recipe;
-	}
-
-	@Override
-	public HashSet<IResearchGoal> getNeededResearchFor(int level) {
-		if (this.neededResearch.containsKey(level)) {
-			HashSet<IResearchGoal> set = new HashSet<IResearchGoal>();
-			for (Integer i : this.neededResearch.get(level)) {
-				set.add(ResearchGoal.getGoalByID(i));
-			}
-			return set;
-		}
-		return new HashSet<IResearchGoal>();
-	}
-
-	public void addNeededResearch(int level, IResearchGoal goal) {
-		if (!this.neededResearch.containsKey(level)) {
-			this.neededResearch.put(level, new HashSet<Integer>());
-		}
-		this.neededResearch.get(level).add(goal.getGlobalResearchNum());
-	}
-
-	public void addNeededResearch(int level, int num) {
-		if (!this.neededResearch.containsKey(level)) {
-			this.neededResearch.put(level, new HashSet<Integer>());
-		}
-		this.neededResearch.get(level).add(num);
-	}
-
-	public void addNeededResearchForMaterials() {
-		for (int i = 0; i < this.getMaterialType().getNumOfLevels(); i++) {
-			if (!this.neededResearch.containsKey(i)) {
-				this.neededResearch.put(i, new HashSet<Integer>());
-			}
-			this.neededResearch.get(i).add(this.getMaterialType().getResearchForLevel(i).getGlobalResearchNum());
-		}
-	}
-*/
 
 	@Override
 	public String toString() {

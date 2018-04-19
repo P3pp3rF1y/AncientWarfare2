@@ -4,13 +4,13 @@ import net.minecraft.world.World;
 
 public class NpcBanditMountedSoldier extends NpcFactionMountedSoldier {
 
-    public NpcBanditMountedSoldier(World par1World) {
-        super(par1World);
-    }
+	public NpcBanditMountedSoldier(World par1World) {
+		super(par1World);
+	}
 
-    @Override
-    public String getNpcType() {
-        return "bandit.cavalry";
-    }
+	@Override
+	public String getNpcType() {
+		return "bandit.cavalry";
+	}
 
 }

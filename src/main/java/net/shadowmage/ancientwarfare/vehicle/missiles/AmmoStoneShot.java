@@ -35,40 +35,12 @@ public class AmmoStoneShot extends Ammo {
 		this.isArrow = false;
 		this.isRocket = false;
 		this.ammoWeight = weight;
-		//		this.iconTexture = "ammoStone1"; TODO rendering
 		this.configName = "stone_shot_" + weight;
 		this.entityDamage = weight;
 		this.vehicleDamage = weight;
 		float scaleFactor = weight + 45.f;
 		this.renderScale = (weight / scaleFactor) * 2;
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/ammo_stone_shot.png");
-
-/* TODO recipes
-		int cases = 1;
-		this.numCrafted = 10;
-		switch (weight) {
-			case 10:
-				cases = 1;
-				break;
-
-			case 15:
-				this.neededResearch.add(ResearchGoalNumbers.ballistics1);
-				cases = 2;
-				break;
-
-			case 30:
-				this.neededResearch.add(ResearchGoalNumbers.ballistics2);
-				cases = 4;
-				break;
-
-			case 45:
-				this.neededResearch.add(ResearchGoalNumbers.ballistics3);
-				cases = 6;
-				break;
-		}
-
-		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.clayCasing, cases, false, false));
-*/
 	}
 
 	@Override

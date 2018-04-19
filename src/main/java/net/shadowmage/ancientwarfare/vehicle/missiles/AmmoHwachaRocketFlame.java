@@ -41,20 +41,7 @@ public class AmmoHwachaRocketFlame extends Ammo {
 		this.renderScale = 0.2f;
 		this.renderScale = 0.2f;
 		this.configName = "hwacha_rocket_flame";
-		//		this.iconTexture = "ammoRocketFlame1"; TODO rendering
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/arrow_wood.png");
-
-/* TODO recipe
-		this.numCrafted = 10;
-		this.neededResearch.add(ResearchGoalNumbers.rockets1);
-		this.neededResearch.add(ResearchGoalNumbers.ballistics2);
-		this.neededResearch.add(ResearchGoalNumbers.flammables2);
-		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.rocketCharge, 1, false, false));
-		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.stick), 10, false, false));
-		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.feather), 2, false, false));
-		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.ingotIron), 1, false, false));
-		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.flameCharge, 1, false, false));
-*/
 	}
 
 	@Override
@@ -71,5 +58,4 @@ public class AmmoHwachaRocketFlame extends Ammo {
 			ent.setFire(2);
 		}
 	}
-
 }

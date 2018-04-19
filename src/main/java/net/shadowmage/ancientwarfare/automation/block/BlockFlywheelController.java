@@ -37,123 +37,119 @@ import net.shadowmage.ancientwarfare.core.render.BlockStateKeyGenerator;
 import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
-public class BlockFlywheelController extends BlockTorqueBase implements IBakeryProvider{
-    public static final IUnlistedProperty<Float> FLYWHEEL_ROTATION  = new PropertyFloat("flywheel_rotation");
+public class BlockFlywheelController extends BlockTorqueBase implements IBakeryProvider {
+	public static final IUnlistedProperty<Float> FLYWHEEL_ROTATION = new PropertyFloat("flywheel_rotation");
 
-    public BlockFlywheelController(String regName) {
-        super(Material.ROCK, regName);
-    }
+	public BlockFlywheelController(String regName) {
+		super(Material.ROCK, regName);
+	}
 
-    @Override
-    protected void addProperties(BlockStateContainer.Builder builder) {
-        builder.add(AutomationProperties.TIER).add(FLYWHEEL_ROTATION, AutomationProperties.USE_INPUT, AutomationProperties.INPUT_ROTATION);
-    }
+	@Override
+	protected void addProperties(BlockStateContainer.Builder builder) {
+		builder.add(AutomationProperties.TIER).add(FLYWHEEL_ROTATION, AutomationProperties.USE_INPUT, AutomationProperties.INPUT_ROTATION);
+	}
 
-    @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(AutomationProperties.TIER, TorqueTier.byMetadata(meta));
-    }
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(AutomationProperties.TIER, TorqueTier.byMetadata(meta));
+	}
 
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        return state.getValue(AutomationProperties.TIER).getMeta();
-    }
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(AutomationProperties.TIER).getMeta();
+	}
 
-    @Override
-    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return FlywheelControllerRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
-    }
+	@Override
+	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return FlywheelControllerRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
+	}
 
-    @Override
-    public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
-        return getStateFromMeta(placer.getHeldItem(hand).getMetadata());
-    }
+	@Override
+	public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer, EnumHand hand) {
+		return getStateFromMeta(placer.getHeldItem(hand).getMetadata());
+	}
 
-    @Override
-    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-        return true;
-    }
+	@Override
+	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+		return true;
+	}
 
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state) {
-        switch (state.getValue(AutomationProperties.TIER)) {
-            case LIGHT:
-                return new TileFlywheelControllerLight();
-            case MEDIUM:
-                return new TileFlywheelControllerMedium();
-            case HEAVY:
-                return new TileFlywheelControllerHeavy();
-        }
-        return null;
-    }
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		switch (state.getValue(AutomationProperties.TIER)) {
+			case LIGHT:
+				return new TileFlywheelControllerLight();
+			case MEDIUM:
+				return new TileFlywheelControllerMedium();
+			case HEAVY:
+				return new TileFlywheelControllerHeavy();
+		}
+		return null;
+	}
 
-    @Override
-    public void getSubBlocks(CreativeTabs item, NonNullList<ItemStack> items) {
-        items.add(new ItemStack(this, 1, 0));
-        items.add(new ItemStack(this, 1, 1));
-        items.add(new ItemStack(this, 1, 2));
-    }
+	@Override
+	public void getSubBlocks(CreativeTabs item, NonNullList<ItemStack> items) {
+		items.add(new ItemStack(this, 1, 0));
+		items.add(new ItemStack(this, 1, 1));
+		items.add(new ItemStack(this, 1, 2));
+	}
 
-    @Override
-    public boolean invertFacing() {
-        return false;
-    }
+	@Override
+	public boolean invertFacing() {
+		return false;
+	}
 
-    @Override
-    public RotationType getRotationType() {
-        return RotationType.FOUR_WAY;
-    }
+	@Override
+	public RotationType getRotationType() {
+		return RotationType.FOUR_WAY;
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerClient() {
-        ModelLoaderHelper.registerItem(this, "automation", "light", false); //the actual switch for itemstack types is processed by renderer
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerClient() {
+		ModelLoaderHelper.registerItem(this, "automation", "light", false); //the actual switch for itemstack types is processed by renderer
 
-        ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder()
-                .addKeyProperties(AutomationProperties.TIER)
-                .addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC, FLYWHEEL_ROTATION, AutomationProperties.USE_INPUT)
-                .addKeyProperties(o -> String.format("%.6f",o), AutomationProperties.ROTATIONS)
-                .addKeyProperties(o -> String.format("%.6f",o), AutomationProperties.INPUT_ROTATION)
-                .build());
+		ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder().addKeyProperties(AutomationProperties.TIER).addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC, FLYWHEEL_ROTATION, AutomationProperties.USE_INPUT).addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.ROTATIONS).addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.INPUT_ROTATION).build());
 
-        ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
-            @Override protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                switch(state.getValue(AutomationProperties.TIER)) {
-                    case LIGHT:
-                        return FlywheelControllerRenderer.LIGHT_MODEL_LOCATION;
-                    case MEDIUM:
-                        return FlywheelControllerRenderer.MEDIUM_MODEL_LOCATION;
-                    default:
-                        return FlywheelControllerRenderer.HEAVY_MODEL_LOCATION;
-                }
-            }
-        });
+		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
+			@Override
+			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+				switch (state.getValue(AutomationProperties.TIER)) {
+					case LIGHT:
+						return FlywheelControllerRenderer.LIGHT_MODEL_LOCATION;
+					case MEDIUM:
+						return FlywheelControllerRenderer.MEDIUM_MODEL_LOCATION;
+					default:
+						return FlywheelControllerRenderer.HEAVY_MODEL_LOCATION;
+				}
+			}
+		});
 
-        ModelRegistryHelper.register(FlywheelControllerRenderer.LIGHT_MODEL_LOCATION, new CCBakeryModel() {
-            @Override
-            public TextureAtlasSprite getParticleTexture() {
-                return FlywheelControllerRenderer.INSTANCE.getSprite(TorqueTier.LIGHT);
-            }
-        });
+		ModelRegistryHelper.register(FlywheelControllerRenderer.LIGHT_MODEL_LOCATION, new CCBakeryModel() {
+			@Override
+			public TextureAtlasSprite getParticleTexture() {
+				return FlywheelControllerRenderer.INSTANCE.getSprite(TorqueTier.LIGHT);
+			}
+		});
 
-        ModelRegistryHelper.register(FlywheelControllerRenderer.MEDIUM_MODEL_LOCATION, new CCBakeryModel() {
-            @Override
-            public TextureAtlasSprite getParticleTexture() {
-                return FlywheelControllerRenderer.INSTANCE.getSprite(TorqueTier.MEDIUM);
-            }
-        });
+		ModelRegistryHelper.register(FlywheelControllerRenderer.MEDIUM_MODEL_LOCATION, new CCBakeryModel() {
+			@Override
+			public TextureAtlasSprite getParticleTexture() {
+				return FlywheelControllerRenderer.INSTANCE.getSprite(TorqueTier.MEDIUM);
+			}
+		});
 
-        ModelRegistryHelper.register(FlywheelControllerRenderer.HEAVY_MODEL_LOCATION, new CCBakeryModel() {
-            @Override
-            public TextureAtlasSprite getParticleTexture() {
-                return FlywheelControllerRenderer.INSTANCE.getSprite(TorqueTier.HEAVY);
-            }
-        });
+		ModelRegistryHelper.register(FlywheelControllerRenderer.HEAVY_MODEL_LOCATION, new CCBakeryModel() {
+			@Override
+			public TextureAtlasSprite getParticleTexture() {
+				return FlywheelControllerRenderer.INSTANCE.getSprite(TorqueTier.HEAVY);
+			}
+		});
 
-    }
+	}
 
-    @Override
-    public IBakery getBakery() {
-        return FlywheelControllerRenderer.INSTANCE;
-    }
+	@Override
+	public IBakery getBakery() {
+		return FlywheelControllerRenderer.INSTANCE;
+	}
 }

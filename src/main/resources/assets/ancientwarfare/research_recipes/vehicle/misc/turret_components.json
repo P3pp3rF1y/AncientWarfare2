@@ -1,0 +1,25 @@
+{
+    "type": "ancientwarfare:shapeless_research_recipe",
+    "research": "machinery",
+    "ingredients": [
+        {
+            "type": "forge:ore_dict",
+            "ore": "ingotIron"
+        },
+        {
+            "item": "minecraft:piston"
+        },
+        {
+            "type": "forge:ore_dict",
+            "ore": "string"
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "dustRedstone",
+            "count": 2
+        }
+    ],
+    "result": {
+        "item": "ancientwarfarevehicle:turret_components"
+    }
+}

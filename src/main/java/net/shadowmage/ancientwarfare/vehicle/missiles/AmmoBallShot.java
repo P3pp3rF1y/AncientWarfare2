@@ -37,9 +37,6 @@ public class AmmoBallShot extends Ammo {
 		this.vehicleDamage = 5;
 		this.isPersistent = false;
 		this.configName = "ball_shot";
-/* TODO rendering
-		this.iconTexture = "ammoStone1";
-*/
 		this.isCraftable = false;
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/ammo_stone_shot.png");
 	}
@@ -55,12 +52,4 @@ public class AmmoBallShot extends Ammo {
 			ent.attackEntityFrom(DamageType.causeEntityMissileDamage(missile.shooterLiving, false, false), this.getEntityDamage());
 		}
 	}
-
-/* TODO recipe - add a new one?
-	@Override
-	public ResourceListRecipe constructRecipe() {
-		return null;
-	}
-*/
-
 }

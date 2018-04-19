@@ -20,75 +20,75 @@ import net.shadowmage.ancientwarfare.npc.trade.FactionTradeList;
 
 public abstract class NpcFactionTrader extends NpcFaction {
 
-    private FactionTradeList tradeList = new FactionTradeList();
-    private EntityPlayer trader;
+	private FactionTradeList tradeList = new FactionTradeList();
+	private EntityPlayer trader;
 
-    public NpcFactionTrader(World par1World) {
-        super(par1World);
+	public NpcFactionTrader(World par1World) {
+		super(par1World);
 
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
-        this.tasks.addTask(0, new NpcAIDoor(this, true));
-        this.tasks.addTask(1, new NpcAIFollowPlayer(this));
-        this.tasks.addTask(2, new NpcAIMoveHome(this, 50F, 5F, 30F, 5F));
+		this.tasks.addTask(0, new EntityAISwimming(this));
+		this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
+		this.tasks.addTask(0, new NpcAIDoor(this, true));
+		this.tasks.addTask(1, new NpcAIFollowPlayer(this));
+		this.tasks.addTask(2, new NpcAIMoveHome(this, 50F, 5F, 30F, 5F));
 
-        this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
-        this.tasks.addTask(102, new NpcAIWander(this));
-        this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
-    }
+		this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
+		this.tasks.addTask(102, new NpcAIWander(this));
+		this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
+	}
 
-    public FactionTradeList getTradeList() {
-        return tradeList;
-    }
+	public FactionTradeList getTradeList() {
+		return tradeList;
+	}
 
-    public void startTrade(EntityPlayer player) {
-        trader = player;
-    }
+	public void startTrade(EntityPlayer player) {
+		trader = player;
+	}
 
-    public void closeTrade() {
-        trader = null;
-    }
+	public void closeTrade() {
+		trader = null;
+	}
 
-    @Override
-    public void onUpdate() {
-        super.onUpdate();
-        if (!world.isRemote) {
-            tradeList.tick();
-        }
-    }
+	@Override
+	public void onUpdate() {
+		super.onUpdate();
+		if (!world.isRemote) {
+			tradeList.tick();
+		}
+	}
 
-    @Override
-    protected boolean processInteract(EntityPlayer player, EnumHand hand) {
-        boolean baton = !player.getHeldItem(hand).isEmpty() && player.getHeldItem(hand).getItem() instanceof ItemCommandBaton;
-        if (!baton && isEntityAlive()) {
-            if (!player.world.isRemote && trader == null) {
-                startTrade(player);
-                NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_FACTION_TRADE_VIEW, getEntityId(), 0, 0);
-            }
-            return true;
-        }
-        return false;
-    }
+	@Override
+	protected boolean processInteract(EntityPlayer player, EnumHand hand) {
+		boolean baton = !player.getHeldItem(hand).isEmpty() && player.getHeldItem(hand).getItem() instanceof ItemCommandBaton;
+		if (!baton && isEntityAlive()) {
+			if (!player.world.isRemote && trader == null) {
+				startTrade(player);
+				NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_NPC_FACTION_TRADE_VIEW, getEntityId(), 0, 0);
+			}
+			return true;
+		}
+		return false;
+	}
 
-    @Override
-    public boolean isHostileTowards(Entity e) {
-        return false;
-    }
+	@Override
+	public boolean isHostileTowards(Entity e) {
+		return false;
+	}
 
-    @Override
-    public boolean canTarget(Entity e) {
-        return false;
-    }
+	@Override
+	public boolean canTarget(Entity e) {
+		return false;
+	}
 
-    @Override
-    public void readEntityFromNBT(NBTTagCompound tag) {
-        super.readEntityFromNBT(tag);
-        tradeList.deserializeNBT(tag.getCompoundTag("tradeList"));
-    }
+	@Override
+	public void readEntityFromNBT(NBTTagCompound tag) {
+		super.readEntityFromNBT(tag);
+		tradeList.deserializeNBT(tag.getCompoundTag("tradeList"));
+	}
 
-    @Override
-    public void writeEntityToNBT(NBTTagCompound tag) {
-        super.writeEntityToNBT(tag);
-        tag.setTag("tradeList", tradeList.serializeNBT());
-    }
+	@Override
+	public void writeEntityToNBT(NBTTagCompound tag) {
+		super.writeEntityToNBT(tag);
+		tag.setTag("tradeList", tradeList.serializeNBT());
+	}
 }

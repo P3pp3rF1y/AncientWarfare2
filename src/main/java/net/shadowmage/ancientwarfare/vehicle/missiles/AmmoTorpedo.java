@@ -37,49 +37,12 @@ public class AmmoTorpedo extends Ammo {
 		this.isRocket = false;
 		this.isTorpedo = true;
 		this.ammoWeight = weight;
-		//		this.iconTexture = "ammoStone1"; TODO rendering
 		this.configName = "torpedo_" + weight;
 		this.entityDamage = weight * 2;
 		this.vehicleDamage = weight * 2;
 		float scaleFactor = weight + 45.f;
 		this.renderScale = (weight / scaleFactor) * 2;
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/ammo_stone_shot.png");
-
-/* TODO recipes
-		int cases = 1;
-		int explosives = 1;
-		this.numCrafted = 2;
-		switch (weight) {
-			case 10:
-				this.neededResearch.add(ResearchGoalNumbers.ballistics1);
-				cases = 1;
-				explosives = 1;
-				break;
-
-			case 15:
-				this.neededResearch.add(ResearchGoalNumbers.ballistics1);
-				cases = 2;
-				explosives = 2;
-				break;
-
-			case 30:
-				this.neededResearch.add(ResearchGoalNumbers.ballistics2);
-				cases = 4;
-				explosives = 4;
-				break;
-
-			case 45:
-				this.neededResearch.add(ResearchGoalNumbers.ballistics3);
-				cases = 6;
-				explosives = 6;
-				break;
-		}
-
-		explosives *= 2;
-
-		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.explosiveCharge, explosives, false, false));
-		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.clayCasing, cases, false, false));
-*/
 	}
 
 	@Override

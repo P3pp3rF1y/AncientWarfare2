@@ -24,10 +24,10 @@ public class TileAdvancedSpawner extends TileUpdatable implements ITickable {
 
 	@Override
 	public void update() {
-		if(!hasWorld() || world.isRemote) {
+		if (!hasWorld() || world.isRemote) {
 			return;
 		}
-		if(settings.world == null) {
+		if (settings.world == null) {
 			settings.setWorld(world, pos);
 		}
 		settings.onUpdate();
@@ -76,11 +76,11 @@ public class TileAdvancedSpawner extends TileUpdatable implements ITickable {
 	}
 
 	public void onBlockBroken() {
-		if(world.isRemote) {
+		if (world.isRemote) {
 			return;
 		}
 		int xp = settings.getXpToDrop();
-		while(xp > 0) {
+		while (xp > 0) {
 			int j = EntityXPOrb.getXPSplit(xp);
 			xp -= j;
 			this.world.spawnEntity(new EntityXPOrb(this.world, this.pos.getX() + 0.5d, this.pos.getY(), this.pos.getZ() + 0.5d, j));

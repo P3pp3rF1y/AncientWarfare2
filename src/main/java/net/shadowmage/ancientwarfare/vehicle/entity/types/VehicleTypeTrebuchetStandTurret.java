@@ -45,14 +45,6 @@ public class VehicleTypeTrebuchetStandTurret extends VehicleTypeTrebuchet {
 		this.riderForwardsOffset = 1.275f;
 		this.riderVerticalOffset = 0.7f;
 		this.turretVerticalOffset = (34.f + 67.5f + 24.0f + 9.5f) * 0.0625f;
-/* TODO vehicle recipes
-		this.addNeededResearch(0, ResearchGoal.vehicleTurrets1);
-		this.addNeededResearch(1, ResearchGoal.vehicleTurrets2);
-		this.addNeededResearch(2, ResearchGoal.vehicleTurrets3);
-		this.addNeededResearch(3, ResearchGoal.vehicleTurrets4);
-		this.addNeededResearch(4, ResearchGoal.vehicleTurrets5);
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.turretComponents, 1, false, false));
-*/
 	}
 
 	@Override

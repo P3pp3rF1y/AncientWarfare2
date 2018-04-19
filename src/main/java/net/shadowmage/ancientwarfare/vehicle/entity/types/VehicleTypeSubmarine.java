@@ -70,33 +70,6 @@ public class VehicleTypeSubmarine extends VehicleType {
 		this.ammoBaySize = 6;
 		this.storageBaySize = 0;
 
-/* TODO vehicle recipe
-		this.addNeededResearchForMaterials();
-		this.addNeededResearch(0, ResearchGoal.vehicleTorsion1);
-		this.addNeededResearch(1, ResearchGoal.vehicleTorsion2);
-		this.addNeededResearch(2, ResearchGoal.vehicleTorsion3);
-		this.addNeededResearch(3, ResearchGoal.vehicleTorsion4);
-		this.addNeededResearch(4, ResearchGoal.vehicleTorsion5);
-
-		this.addNeededResearch(0, ResearchGoal.vehicleMobility3);
-		this.addNeededResearch(1, ResearchGoal.vehicleMobility3);
-		this.addNeededResearch(2, ResearchGoal.vehicleMobility4);
-		this.addNeededResearch(3, ResearchGoal.vehicleMobility4);
-		this.addNeededResearch(4, ResearchGoal.vehicleMobility5);
-
-		this.addNeededResearch(0, ResearchGoal.upgradeMechanics3);
-		this.addNeededResearch(1, ResearchGoal.upgradeMechanics3);
-		this.addNeededResearch(2, ResearchGoal.upgradeMechanics4);
-		this.addNeededResearch(3, ResearchGoal.upgradeMechanics4);
-		this.addNeededResearch(4, ResearchGoal.upgradeMechanics5);
-
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(Item.silk, 8, false, false));
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.torsionUnit, 2, false, false));
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.equipmentBay, 1, false, false));
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.mobilityUnit, 1, false, false));
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(Block.cactus, 2, false, false));
-*/
-
 		this.width = 2.7f;
 		this.height = 1.4f;
 

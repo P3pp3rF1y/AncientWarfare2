@@ -1,22 +1,20 @@
 {
     "type": "ancientwarfare:shapeless_research_recipe",
-    "research": "siege_warfare",
+    "research": "explosives",
     "ingredients": [
         {
             "type": "ancientwarfare:ore_dict_count",
             "ore": "ingotIron",
-            "count": 2
-        },
-        {
-            "item": "minecraft:piston"
+            "count": 4
         },
         {
             "type": "ancientwarfare:item_count",
-            "item": "minecraft:redstone",
-            "count": 4
+            "item": "minecraft:wool",
+            "data": 32767,
+            "count": 2
         }
     ],
     "result": {
-        "item": "ancientwarfarevehicle:mobility_unit"
+        "item": "ancientwarfarevehicle:powder_case"
     }
 }

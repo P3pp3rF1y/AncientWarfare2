@@ -25,11 +25,11 @@ public class BlockStateKeyGenerator implements IBlockStateKeyGenerator {
 		StringJoiner stringJoiner = new StringJoiner("|");
 
 		stringJoiner.add(state.getBlock().getRegistryName().toString());
-		for(Map.Entry<IProperty, Function<Object, String>> entry : propertyFormats.entrySet()) {
+		for (Map.Entry<IProperty, Function<Object, String>> entry : propertyFormats.entrySet()) {
 			stringJoiner.add(entry.getValue().apply(state.getValue(entry.getKey())));
 		}
 
-		for(Map.Entry<IUnlistedProperty, Function<Object, String>> entry : unlistedPropertyFormats.entrySet()) {
+		for (Map.Entry<IUnlistedProperty, Function<Object, String>> entry : unlistedPropertyFormats.entrySet()) {
 			stringJoiner.add(entry.getValue().apply(state.getValue(entry.getKey())));
 		}
 
@@ -46,7 +46,7 @@ public class BlockStateKeyGenerator implements IBlockStateKeyGenerator {
 		}
 
 		public Builder addKeyProperties(Function<Object, String> formatValue, IProperty... properties) {
-			for(IProperty property : properties) {
+			for (IProperty property : properties) {
 				this.propertyFormats.put(property, formatValue);
 			}
 			return this;
@@ -62,7 +62,7 @@ public class BlockStateKeyGenerator implements IBlockStateKeyGenerator {
 		}
 
 		public Builder addKeyProperties(Function<Object, String> getFormat, IUnlistedProperty... properties) {
-			for(IUnlistedProperty property : properties) {
+			for (IUnlistedProperty property : properties) {
 				this.unlistedPropertyFormats.put(property, getFormat);
 			}
 			return this;

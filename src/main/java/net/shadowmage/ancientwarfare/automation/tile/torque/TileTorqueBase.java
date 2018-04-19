@@ -29,307 +29,306 @@ import javax.annotation.Nullable;
 @Optional.Interface(iface = "cofh.redstoneflux.api.IEnergyReceiver", modid = "redstoneflux", striprefs = true)
 public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTile, IInteractableTile, IRotatableTile, IEnergyReceiver, ITickable {
 
-    public static final int DIRECTION_LENGTH = EnumFacing.VALUES.length;
-    /*
-     * The primary facing direction for this tile.  Default to north for uninitialized tiles (null is not a valid value)
-     */
-    protected EnumFacing orientation = EnumFacing.NORTH;
+	public static final int DIRECTION_LENGTH = EnumFacing.VALUES.length;
+	/*
+	 * The primary facing direction for this tile.  Default to north for uninitialized tiles (null is not a valid value)
+	 */
+	protected EnumFacing orientation = EnumFacing.NORTH;
 
-    /*
-     * used by server to limit packet sending<br>
-     * used by client for lerp-ticks for lerping between power states
-     */
-    protected int networkUpdateTicks;
+	/*
+	 * used by server to limit packet sending<br>
+	 * used by client for lerp-ticks for lerping between power states
+	 */
+	protected int networkUpdateTicks;
 
-    private TileEntity[] rfCache;//cannot reference interface directly, but can cast directly...//only used when cofh installed
-    private ITorqueTile[] torqueCache;
+	private TileEntity[] rfCache;//cannot reference interface directly, but can cast directly...//only used when cofh installed
+	private ITorqueTile[] torqueCache;
 
-    /*
-     * helper vars to be used by tiles during updating, to cache in/out/loss values<br>
-     * IMPORTANT: should NOT be relied upon for calculations, only for use for display purposes<br>
-     * E.G. A tile may choose to -not- update these vars.<br>
-     * However, best effort should be made to update these vars accurately.<br><br>
-     * Generated energy should be counted as 'in'<br>
-     * Any directly output energy should be counted as 'out'<br>
-     * Only direct power loss from transmission efficiency or per-tick loss should be counted for 'loss'
-     */
-    protected double torqueIn, torqueOut, torqueLoss, prevEnergy;
+	/*
+	 * helper vars to be used by tiles during updating, to cache in/out/loss values<br>
+	 * IMPORTANT: should NOT be relied upon for calculations, only for use for display purposes<br>
+	 * E.G. A tile may choose to -not- update these vars.<br>
+	 * However, best effort should be made to update these vars accurately.<br><br>
+	 * Generated energy should be counted as 'in'<br>
+	 * Any directly output energy should be counted as 'out'<br>
+	 * Only direct power loss from transmission efficiency or per-tick loss should be counted for 'loss'
+	 */
+	protected double torqueIn, torqueOut, torqueLoss, prevEnergy;
 
-    //************************************** COFH RF METHODS ***************************************//
-    @Optional.Method(modid = "redstoneflux")
-    @Override
-    public final int getEnergyStored(EnumFacing from) {
-        return (int) (getTorqueStored(from) * AWAutomationStatics.torqueToRf);
-    }
+	//************************************** COFH RF METHODS ***************************************//
+	@Optional.Method(modid = "redstoneflux")
+	@Override
+	public final int getEnergyStored(EnumFacing from) {
+		return (int) (getTorqueStored(from) * AWAutomationStatics.torqueToRf);
+	}
 
-    @Optional.Method(modid = "redstoneflux")
-    @Override
-    public final int getMaxEnergyStored(EnumFacing from) {
-        return (int) (getMaxTorque(from) * AWAutomationStatics.torqueToRf);
-    }
+	@Optional.Method(modid = "redstoneflux")
+	@Override
+	public final int getMaxEnergyStored(EnumFacing from) {
+		return (int) (getMaxTorque(from) * AWAutomationStatics.torqueToRf);
+	}
 
-    @Optional.Method(modid = "redstoneflux")
-    @Override
-    public final boolean canConnectEnergy(EnumFacing from) {
-        return canOutputTorque(from) || canInputTorque(from);
-    }
+	@Optional.Method(modid = "redstoneflux")
+	@Override
+	public final boolean canConnectEnergy(EnumFacing from) {
+		return canOutputTorque(from) || canInputTorque(from);
+	}
 
-    @Optional.Method(modid = "redstoneflux")
-    @Override
-    public final int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
-        if (!canInputTorque(from)) {
-            return 0;
-        }
-        if (simulate) {
-            return Math.min(maxReceive, (int) (AWAutomationStatics.torqueToRf * getMaxTorqueInput(from)));
-        }
-        return (int) (AWAutomationStatics.torqueToRf * addTorque(from, (double) maxReceive * AWAutomationStatics.rfToTorque));
-    }
+	@Optional.Method(modid = "redstoneflux")
+	@Override
+	public final int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
+		if (!canInputTorque(from)) {
+			return 0;
+		}
+		if (simulate) {
+			return Math.min(maxReceive, (int) (AWAutomationStatics.torqueToRf * getMaxTorqueInput(from)));
+		}
+		return (int) (AWAutomationStatics.torqueToRf * addTorque(from, (double) maxReceive * AWAutomationStatics.rfToTorque));
+	}
 
-//************************************** NEIGHBOR CACHE UPDATING ***************************************//
+	//************************************** NEIGHBOR CACHE UPDATING ***************************************//
 
-    public final ITorqueTile[] getTorqueCache() {
-        if (torqueCache == null) {
-            buildTorqueCache();
-        }
-        return torqueCache;
-    }
+	public final ITorqueTile[] getTorqueCache() {
+		if (torqueCache == null) {
+			buildTorqueCache();
+		}
+		return torqueCache;
+	}
 
-    public final TileEntity[] getRFCache() {
-        if (rfCache == null) {
-            buildRFCache();
-        }
-        return rfCache;
-    }
+	public final TileEntity[] getRFCache() {
+		if (rfCache == null) {
+			buildRFCache();
+		}
+		return rfCache;
+	}
 
-    private void buildTorqueCache() {
-        if (!hasWorld()) {
-            throw new RuntimeException("Attempt to build neighbor cache on null world!!");
-        }
-        ITorqueTile[] torqueCache = new ITorqueTile[DIRECTION_LENGTH];
-        EnumFacing dir;
-        TileEntity te;
-        for (int i = 0; i < torqueCache.length; i++) {
-            dir = EnumFacing.values()[i];
-            if (!canOutputTorque(dir) && !canInputTorque(dir)) {
-                continue;
-            }
-            BlockPos offsetPos = pos.offset(dir);
-            if (!world.isBlockLoaded(offsetPos)) {
-                continue;
-            }
-            te = world.getTileEntity(offsetPos);
-            if (te instanceof ITorqueTile) {
-                torqueCache[i] = (ITorqueTile) te;
-            }
-        }
-        this.torqueCache = torqueCache;
-    }
+	private void buildTorqueCache() {
+		if (!hasWorld()) {
+			throw new RuntimeException("Attempt to build neighbor cache on null world!!");
+		}
+		ITorqueTile[] torqueCache = new ITorqueTile[DIRECTION_LENGTH];
+		EnumFacing dir;
+		TileEntity te;
+		for (int i = 0; i < torqueCache.length; i++) {
+			dir = EnumFacing.values()[i];
+			if (!canOutputTorque(dir) && !canInputTorque(dir)) {
+				continue;
+			}
+			BlockPos offsetPos = pos.offset(dir);
+			if (!world.isBlockLoaded(offsetPos)) {
+				continue;
+			}
+			te = world.getTileEntity(offsetPos);
+			if (te instanceof ITorqueTile) {
+				torqueCache[i] = (ITorqueTile) te;
+			}
+		}
+		this.torqueCache = torqueCache;
+	}
 
-    private void buildRFCache() {
-        TileEntity[] rfCache = new TileEntity[DIRECTION_LENGTH];
-        EnumFacing dir;
-        TileEntity te;
-        for (int i = 0; i < rfCache.length; i++) {
-            dir = EnumFacing.values()[i];
-            if (!canOutputTorque(dir) && !canInputTorque(dir)) {
-                continue;
-            }
-            BlockPos offsetPos = pos.offset(dir);
-            if (!world.isBlockLoaded(offsetPos)) {
-                continue;
-            }
-            te = world.getTileEntity(offsetPos);
-            if (RFProxy.instance.isRFTile(te)) {
-                rfCache[dir.ordinal()] = te;
-            }
-        }
-        this.rfCache = rfCache;
-    }
+	private void buildRFCache() {
+		TileEntity[] rfCache = new TileEntity[DIRECTION_LENGTH];
+		EnumFacing dir;
+		TileEntity te;
+		for (int i = 0; i < rfCache.length; i++) {
+			dir = EnumFacing.values()[i];
+			if (!canOutputTorque(dir) && !canInputTorque(dir)) {
+				continue;
+			}
+			BlockPos offsetPos = pos.offset(dir);
+			if (!world.isBlockLoaded(offsetPos)) {
+				continue;
+			}
+			te = world.getTileEntity(offsetPos);
+			if (RFProxy.instance.isRFTile(te)) {
+				rfCache[dir.ordinal()] = te;
+			}
+		}
+		this.rfCache = rfCache;
+	}
 
-    @Override
-    public void validate() {
-        super.validate();
-        invalidateTorqueCache();
-    }
+	@Override
+	public void validate() {
+		super.validate();
+		invalidateTorqueCache();
+	}
 
-    @Override
-    public void invalidate() {
-        super.invalidate();
-        invalidateTorqueCache();
-    }
+	@Override
+	public void invalidate() {
+		super.invalidate();
+		invalidateTorqueCache();
+	}
 
-    public void onNeighborTileChanged() {
-        invalidateTorqueCache();
-    }
+	public void onNeighborTileChanged() {
+		invalidateTorqueCache();
+	}
 
-    protected final void invalidateTorqueCache() {
-        torqueCache = null;
-        rfCache = null;
-        onNeighborCacheInvalidated();
-    }
+	protected final void invalidateTorqueCache() {
+		torqueCache = null;
+		rfCache = null;
+		onNeighborCacheInvalidated();
+	}
 
-    protected void onNeighborCacheInvalidated() {
+	protected void onNeighborCacheInvalidated() {
 
-    }
+	}
 
-//************************************** generic stuff ***************************************//
+	//************************************** generic stuff ***************************************//
 
-    @Override
-    public boolean hasFastRenderer() {
-        return true;
-    }
+	@Override
+	public boolean hasFastRenderer() {
+		return true;
+	}
 
-    @Override
-    public final void setPrimaryFacing(EnumFacing d) {
-        this.orientation = d;
-        this.world.updateComparatorOutputLevel(pos, getBlockType());
-        this.invalidateTorqueCache();
-        BlockTools.notifyBlockUpdate(this);
-    }
+	@Override
+	public final void setPrimaryFacing(EnumFacing d) {
+		this.orientation = d;
+		this.world.updateComparatorOutputLevel(pos, getBlockType());
+		this.invalidateTorqueCache();
+		BlockTools.notifyBlockUpdate(this);
+	}
 
-    @Override
-    public final EnumFacing getPrimaryFacing() {
-        return orientation;
-    }
+	@Override
+	public final EnumFacing getPrimaryFacing() {
+		return orientation;
+	}
 
-    @Override
-    public boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
-        @Nonnull ItemStack stack = player.getHeldItem(hand);
-        if (stack.isEmpty()) {
-            if (!world.isRemote) {
-                player.sendMessage(new TextComponentTranslation("guistrings.automation.torque.values", String.format("%.2f", getTotalTorque()), String.format("%.2f", getTorqueIn()), String.format("%.2f",getTorqueOut()), String.format("%.2f",getTorqueLoss())));
-            }
-            return true;
-        }
-        return false;
-    }
+	@Override
+	public boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
+		@Nonnull ItemStack stack = player.getHeldItem(hand);
+		if (stack.isEmpty()) {
+			if (!world.isRemote) {
+				player.sendMessage(new TextComponentTranslation("guistrings.automation.torque.values", String.format("%.2f", getTotalTorque()), String.format("%.2f", getTorqueIn()), String.format("%.2f", getTorqueOut()), String.format("%.2f", getTorqueLoss())));
+			}
+			return true;
+		}
+		return false;
+	}
 
-//************************************** Utility Methods ***************************************//
+	//************************************** Utility Methods ***************************************//
 
-    protected void updateRotation() {
-        throw new UnsupportedOperationException();
-    }
+	protected void updateRotation() {
+		throw new UnsupportedOperationException();
+	}
 
-    protected void clientNetworkUpdate() {
-        throw new UnsupportedOperationException();
-    }
+	protected void clientNetworkUpdate() {
+		throw new UnsupportedOperationException();
+	}
 
-    protected void serverNetworkSynch() {
-        throw new UnsupportedOperationException();
-    }
+	protected void serverNetworkSynch() {
+		throw new UnsupportedOperationException();
+	}
 
-    protected abstract void handleClientRotationData(EnumFacing side, int value);
+	protected abstract void handleClientRotationData(EnumFacing side, int value);
 
-    /*
-     * @return the TOTAL amount stored in the entire tile (not just one side), used by on-right-click functionality
-     */
-    protected abstract double getTotalTorque();
+	/*
+	 * @return the TOTAL amount stored in the entire tile (not just one side), used by on-right-click functionality
+	 */
+	protected abstract double getTotalTorque();
 
-    /*
-     * @return the total output of torque for the tick
-     */
-    protected double getTorqueOut() {
-        return torqueOut;
-    }
+	/*
+	 * @return the total output of torque for the tick
+	 */
+	protected double getTorqueOut() {
+		return torqueOut;
+	}
 
-    /*
-     * @return the total input of torque for the tick
-     */
-    protected double getTorqueIn() {
-        return torqueIn;
-    }
+	/*
+	 * @return the total input of torque for the tick
+	 */
+	protected double getTorqueIn() {
+		return torqueIn;
+	}
 
-    /*
-     * @return the total torque lost (destroyed, gone completely) for the tick
-     */
-    protected double getTorqueLoss() {
-        return torqueLoss;
-    }
+	/*
+	 * @return the total torque lost (destroyed, gone completely) for the tick
+	 */
+	protected double getTorqueLoss() {
+		return torqueLoss;
+	}
 
-    protected final void serverNetworkUpdate() {
-        networkUpdateTicks--;
-        if (networkUpdateTicks <= 0) {
-            networkUpdateTicks = AWAutomationStatics.energyMinNetworkUpdateFrequency;
-            serverNetworkSynch();
-        }
-    }
+	protected final void serverNetworkUpdate() {
+		networkUpdateTicks--;
+		if (networkUpdateTicks <= 0) {
+			networkUpdateTicks = AWAutomationStatics.energyMinNetworkUpdateFrequency;
+			serverNetworkSynch();
+		}
+	}
 
-    protected void sendSideRotation(EnumFacing side, int value) {
-        int valueBits = (value & 0xff);
-        sendDataToClient(side.ordinal(), valueBits);
-    }
+	protected void sendSideRotation(EnumFacing side, int value) {
+		int valueBits = (value & 0xff);
+		sendDataToClient(side.ordinal(), valueBits);
+	}
 
-    protected final double transferPowerTo(EnumFacing from) {
-        double transferred = 0;
-        ITorqueTile[] tc = getTorqueCache();
-        if (tc[from.ordinal()] != null) {
-            if (tc[from.ordinal()].canInputTorque(from.getOpposite())) {
-                return drainTorque(from, tc[from.ordinal()].addTorque(from.getOpposite(), getMaxTorqueOutput(from)));
-            }
-        } else {
-            if (ModuleStatus.redstoneFluxEnabled) {
-                transferred = RFProxy.instance.transferPower(this, from, getRFCache()[from.ordinal()]);
-                if (transferred > 0) {
-                    return transferred;
-                }
-            }
-        }
-        return transferred;
-    }
+	protected final double transferPowerTo(EnumFacing from) {
+		double transferred = 0;
+		ITorqueTile[] tc = getTorqueCache();
+		if (tc[from.ordinal()] != null) {
+			if (tc[from.ordinal()].canInputTorque(from.getOpposite())) {
+				return drainTorque(from, tc[from.ordinal()].addTorque(from.getOpposite(), getMaxTorqueOutput(from)));
+			}
+		} else {
+			if (ModuleStatus.redstoneFluxEnabled) {
+				transferred = RFProxy.instance.transferPower(this, from, getRFCache()[from.ordinal()]);
+				if (transferred > 0) {
+					return transferred;
+				}
+			}
+		}
+		return transferred;
+	}
 
-    protected final double applyPowerDrain(TorqueCell cell) {
-        double e = cell.getEnergy();
-        cell.setEnergy(e * cell.getEfficiency());
-        return cell.getEnergy() - e;
-    }
+	protected final double applyPowerDrain(TorqueCell cell) {
+		double e = cell.getEnergy();
+		cell.setEnergy(e * cell.getEfficiency());
+		return cell.getEnergy() - e;
+	}
 
-    protected final void sendDataToClient(int type, int data) {
-        PacketBlockEvent pkt = new PacketBlockEvent(pos, getBlockType(), (short) type, (short) data);
-        NetworkHandler.sendToAllTrackingChunk(world, pos.getX() >> 4, pos.getZ() >> 4, pkt);
-    }
+	protected final void sendDataToClient(int type, int data) {
+		PacketBlockEvent pkt = new PacketBlockEvent(pos, getBlockType(), (short) type, (short) data);
+		NetworkHandler.sendToAllTrackingChunk(world, pos.getX() >> 4, pos.getZ() >> 4, pkt);
+	}
 
-    protected final float getRenderRotation(double rotation, double lastRotationDiff, float partialTicks) {
-        return (float) (rotation - (lastRotationDiff * (1 - partialTicks)));
-    }
+	protected final float getRenderRotation(double rotation, double lastRotationDiff, float partialTicks) {
+		return (float) (rotation - (lastRotationDiff * (1 - partialTicks)));
+	}
 
-    @Override
-    public boolean receiveClientEvent(int a, int b) {
-        if (world.isRemote) {
-            if (a < DIRECTION_LENGTH) {
-                networkUpdateTicks = AWAutomationStatics.energyMinNetworkUpdateFrequency;
-                handleClientRotationData(EnumFacing.values()[a], b);
-            }
-        }
-        return true;
-    }
+	@Override
+	public boolean receiveClientEvent(int a, int b) {
+		if (world.isRemote) {
+			if (a < DIRECTION_LENGTH) {
+				networkUpdateTicks = AWAutomationStatics.energyMinNetworkUpdateFrequency;
+				handleClientRotationData(EnumFacing.values()[a], b);
+			}
+		}
+		return true;
+	}
 
-//************************************** NBT / DATA PACKET ***************************************//
+	//************************************** NBT / DATA PACKET ***************************************//
 
-    @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        super.readFromNBT(tag);
-        orientation = EnumFacing.VALUES[tag.getInteger("orientation")];
-    }
+	@Override
+	public void readFromNBT(NBTTagCompound tag) {
+		super.readFromNBT(tag);
+		orientation = EnumFacing.VALUES[tag.getInteger("orientation")];
+	}
 
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+		super.writeToNBT(tag);
+		tag.setInteger("orientation", orientation.ordinal());
 
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        super.writeToNBT(tag);
-        tag.setInteger("orientation", orientation.ordinal());
+		return tag;
+	}
 
-        return tag;
-    }
+	protected void writeUpdateNBT(NBTTagCompound tag) {
+		super.writeUpdateNBT(tag);
+		tag.setInteger("orientation", orientation.ordinal());
+	}
 
-    protected void writeUpdateNBT(NBTTagCompound tag) {
-        super.writeUpdateNBT(tag);
-        tag.setInteger("orientation", orientation.ordinal());
-    }
-
-    protected void handleUpdateNBT(NBTTagCompound tag) {
-        super.handleUpdateNBT(tag);
-        orientation = EnumFacing.VALUES[tag.getInteger("orientation")];
-        this.invalidateTorqueCache(); //TODO is this needed on client??
-        BlockTools.notifyBlockUpdate(this);
-    }
+	protected void handleUpdateNBT(NBTTagCompound tag) {
+		super.handleUpdateNBT(tag);
+		orientation = EnumFacing.VALUES[tag.getInteger("orientation")];
+		this.invalidateTorqueCache(); //TODO is this needed on client??
+		BlockTools.notifyBlockUpdate(this);
+	}
 }

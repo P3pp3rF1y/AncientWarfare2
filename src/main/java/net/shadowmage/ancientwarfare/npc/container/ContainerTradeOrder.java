@@ -10,35 +10,35 @@ import net.shadowmage.ancientwarfare.npc.orders.TradeOrder;
 
 public class ContainerTradeOrder extends ContainerBase {
 
-    private EnumHand hand;
-    public final TradeOrder orders;
+	private EnumHand hand;
+	public final TradeOrder orders;
 
-    public ContainerTradeOrder(EntityPlayer player, int x, int y, int z) {
-        super(player);
-        this.hand = EntityTools.getHandHoldingItem(player, AWNPCItems.tradeOrder);
-        orders = TradeOrder.getTradeOrder(player.getHeldItem(hand));
+	public ContainerTradeOrder(EntityPlayer player, int x, int y, int z) {
+		super(player);
+		this.hand = EntityTools.getHandHoldingItem(player, AWNPCItems.tradeOrder);
+		orders = TradeOrder.getTradeOrder(player.getHeldItem(hand));
 
-        addPlayerSlots((256 - (9 * 18)) / 2, 240 - 4 - 8 - 4 * 18, 4);
-    }
+		addPlayerSlots((256 - (9 * 18)) / 2, 240 - 4 - 8 - 4 * 18, 4);
+	}
 
-    @Override
-    public void handlePacketData(NBTTagCompound tag) {
-        if (tag.hasKey("tradeOrder")) {
-            orders.deserializeNBT(tag.getCompoundTag("tradeOrder"));
-        }
-    }
+	@Override
+	public void handlePacketData(NBTTagCompound tag) {
+		if (tag.hasKey("tradeOrder")) {
+			orders.deserializeNBT(tag.getCompoundTag("tradeOrder"));
+		}
+	}
 
-    @Override
-    public void onContainerClosed(EntityPlayer par1EntityPlayer) {
-        if (!player.world.isRemote) {
-            orders.write(player.getHeldItem(hand));
-        }
-        super.onContainerClosed(par1EntityPlayer);
-    }
+	@Override
+	public void onContainerClosed(EntityPlayer par1EntityPlayer) {
+		if (!player.world.isRemote) {
+			orders.write(player.getHeldItem(hand));
+		}
+		super.onContainerClosed(par1EntityPlayer);
+	}
 
-    public void onClose() {
-        NBTTagCompound outer = new NBTTagCompound();
-        outer.setTag("tradeOrder", orders.serializeNBT());
-        sendDataToServer(outer);
-    }
+	public void onClose() {
+		NBTTagCompound outer = new NBTTagCompound();
+		outer.setTag("tradeOrder", orders.serializeNBT());
+		sendDataToServer(outer);
+	}
 }

@@ -1,0 +1,14 @@
+{
+    "type": "ancientwarfare:shapeless_research_recipe",
+    "research": "machinery",
+    "ingredients": [
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "obsidian",
+            "count": 5
+        }
+    ],
+    "result": {
+        "item": "ancientwarfarevehicle:armor_obsidian"
+    }
+}

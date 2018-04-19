@@ -1,6 +1,6 @@
 {
-  "parent": "item/handheld",
-  "textures": {
-    "layer0": "ancientwarfare:items/npc/diamond_command_baton"
-  }
+    "parent": "item/handheld",
+    "textures": {
+        "layer0": "ancientwarfare:items/npc/diamond_command_baton"
+    }
 }

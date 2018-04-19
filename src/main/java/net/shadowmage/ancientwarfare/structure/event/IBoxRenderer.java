@@ -10,22 +10,22 @@ import net.shadowmage.ancientwarfare.core.util.RenderTools;
  * Created by Olivier on 05/02/2015.
  */
 public interface IBoxRenderer {
-    void renderBox(EntityPlayer player, ItemStack itemStack, float partialTick);
+	void renderBox(EntityPlayer player, ItemStack itemStack, float partialTick);
 
-    final class Util {
-        private Util() {
-        }
+	final class Util {
+		private Util() {
+		}
 
-        public static void renderBoundingBox(EntityPlayer player, BlockPos min, BlockPos max, float delta) {
-            AxisAlignedBB bb = new AxisAlignedBB(min.getX(), min.getY(), min.getZ(), max.getX() + 1, max.getY() + 1, max.getZ() + 1);
-            bb = RenderTools.adjustBBForPlayerPos(bb, player, delta);
-            RenderTools.drawOutlinedBoundingBox(bb, 1.f, 1.f, 1.f);
-        }
+		public static void renderBoundingBox(EntityPlayer player, BlockPos min, BlockPos max, float delta) {
+			AxisAlignedBB bb = new AxisAlignedBB(min.getX(), min.getY(), min.getZ(), max.getX() + 1, max.getY() + 1, max.getZ() + 1);
+			bb = RenderTools.adjustBBForPlayerPos(bb, player, delta);
+			RenderTools.drawOutlinedBoundingBox(bb, 1.f, 1.f, 1.f);
+		}
 
-        public static void renderBoundingBox(EntityPlayer player, BlockPos min, BlockPos max, float delta, float r, float g, float b) {
-            AxisAlignedBB bb = new AxisAlignedBB(min.getX(), min.getY(), min.getZ(), max.getX() + 1, max.getY() + 1, max.getZ() + 1);
-            bb = RenderTools.adjustBBForPlayerPos(bb, player, delta);
-            RenderTools.drawOutlinedBoundingBox(bb, r, g, b);
-        }
-    }
+		public static void renderBoundingBox(EntityPlayer player, BlockPos min, BlockPos max, float delta, float r, float g, float b) {
+			AxisAlignedBB bb = new AxisAlignedBB(min.getX(), min.getY(), min.getZ(), max.getX() + 1, max.getY() + 1, max.getZ() + 1);
+			bb = RenderTools.adjustBBForPlayerPos(bb, player, delta);
+			RenderTools.drawOutlinedBoundingBox(bb, r, g, b);
+		}
+	}
 }

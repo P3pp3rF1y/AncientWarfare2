@@ -1,0 +1,19 @@
+{
+    "type": "ancientwarfare:shapeless_research_recipe",
+    "research": "engineering",
+    "ingredients": [
+        {
+            "type": "forge:ore_dict",
+            "ore": "leather"
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "plankWood",
+            "count": 7
+        }
+    ],
+    "result": {
+        "item": "ancientwarfarevehicle:rough_wood",
+        "count": 8
+    }
+}

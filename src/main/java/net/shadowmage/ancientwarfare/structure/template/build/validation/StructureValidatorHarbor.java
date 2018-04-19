@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
 import net.minecraft.block.Block;
@@ -35,124 +36,124 @@ import java.util.Set;
 
 public class StructureValidatorHarbor extends StructureValidator {
 
-    BlockPos testMin = BlockPos.ORIGIN;
-    BlockPos testMax = BlockPos.ORIGIN;
+	BlockPos testMin = BlockPos.ORIGIN;
+	BlockPos testMax = BlockPos.ORIGIN;
 
-    Set<String> validTargetBlocks;
-    Set<String> validTargetBlocksSide;
-    Set<String> validTargetBlocksRear;
+	Set<String> validTargetBlocks;
+	Set<String> validTargetBlocksSide;
+	Set<String> validTargetBlocksRear;
 
-    public StructureValidatorHarbor() {
-        super(StructureValidationType.HARBOR);
-        validTargetBlocks = new HashSet<>();
-        validTargetBlocksSide = new HashSet<>();
-        validTargetBlocksRear = new HashSet<>();
-        validTargetBlocks.addAll(WorldStructureGenerator.defaultTargetBlocks);
-        validTargetBlocksSide.addAll(WorldStructureGenerator.defaultTargetBlocks);
-        validTargetBlocksRear.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.WATER));
-        validTargetBlocksRear.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.FLOWING_WATER));
-        validTargetBlocksSide.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.WATER));
-        validTargetBlocksSide.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.FLOWING_WATER));
-    }
+	public StructureValidatorHarbor() {
+		super(StructureValidationType.HARBOR);
+		validTargetBlocks = new HashSet<>();
+		validTargetBlocksSide = new HashSet<>();
+		validTargetBlocksRear = new HashSet<>();
+		validTargetBlocks.addAll(WorldStructureGenerator.defaultTargetBlocks);
+		validTargetBlocksSide.addAll(WorldStructureGenerator.defaultTargetBlocks);
+		validTargetBlocksRear.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.WATER));
+		validTargetBlocksRear.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.FLOWING_WATER));
+		validTargetBlocksSide.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.WATER));
+		validTargetBlocksSide.add(BlockDataManager.INSTANCE.getNameForBlock(Blocks.FLOWING_WATER));
+	}
 
-    @Override
-    protected void setDefaultSettings(StructureTemplate template) {
+	@Override
+	protected void setDefaultSettings(StructureTemplate template) {
 
-    }
+	}
 
-    @Override
-    public boolean shouldIncludeForSelection(World world, int x, int y, int z, EnumFacing face, StructureTemplate template) {
-        /*
-         * testing that front target position is valid block
+	@Override
+	public boolean shouldIncludeForSelection(World world, int x, int y, int z, EnumFacing face, StructureTemplate template) {
+		/*
+		 * testing that front target position is valid block
          * then test back target position to ensure that it has water at same level
          * or at an acceptable level difference
          */
-        Block block = world.getBlockState(new BlockPos(x, y - 1, z)).getBlock();
-        if (block != null && validTargetBlocks.contains(BlockDataManager.INSTANCE.getNameForBlock(block))) {
-            testMin = new BlockPos(x, y, z).offset(face, template.zOffset);
-            int by = WorldStructureGenerator.getTargetY(world, testMin.getX(), testMin.getZ(), false);
-            if (y - by > getMaxFill()) {
-                return false;
-            }
-            block = world.getBlockState(new BlockPos(testMin.getX(), by, testMin.getZ())).getBlock();
-            if (block == Blocks.WATER || block == Blocks.FLOWING_WATER) {
-                return true;
-            }
-        }
-        return false;
-    }
+		Block block = world.getBlockState(new BlockPos(x, y - 1, z)).getBlock();
+		if (block != null && validTargetBlocks.contains(BlockDataManager.INSTANCE.getNameForBlock(block))) {
+			testMin = new BlockPos(x, y, z).offset(face, template.zOffset);
+			int by = WorldStructureGenerator.getTargetY(world, testMin.getX(), testMin.getZ(), false);
+			if (y - by > getMaxFill()) {
+				return false;
+			}
+			block = world.getBlockState(new BlockPos(testMin.getX(), by, testMin.getZ())).getBlock();
+			if (block == Blocks.WATER || block == Blocks.FLOWING_WATER) {
+				return true;
+			}
+		}
+		return false;
+	}
 
-    @Override
-    public int getAdjustedSpawnY(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
-        testMin = new BlockPos(x, y, z).offset(face, template.zOffset);
-        return WorldStructureGenerator.getTargetY(world, testMin.getX(), testMin.getZ(), false) + 1;
-    }
+	@Override
+	public int getAdjustedSpawnY(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
+		testMin = new BlockPos(x, y, z).offset(face, template.zOffset);
+		return WorldStructureGenerator.getTargetY(world, testMin.getX(), testMin.getZ(), false) + 1;
+	}
 
-    @Override
-    public boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
-        int bx, bz;
+	@Override
+	public boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
+		int bx, bz;
 
-        int minY = getMinY(template, bb);
-        int maxY = getMaxY(template, bb);
-        StructureBB temp = bb.getFrontCorners(face, testMin, testMax);
-        testMin = temp.min;
-        testMax = temp.max;
-        for (bx = testMin.getX(); bx <= testMax.getX(); bx++) {
-            for (bz = testMin.getZ(); bz <= testMax.getZ(); bz++) {
-                if (!validateBlockHeightAndType(world, bx, bz, minY, maxY, false, validTargetBlocks)) {
-                    return false;
-                }
-            }
-        }
+		int minY = getMinY(template, bb);
+		int maxY = getMaxY(template, bb);
+		StructureBB temp = bb.getFrontCorners(face, testMin, testMax);
+		testMin = temp.min;
+		testMax = temp.max;
+		for (bx = testMin.getX(); bx <= testMax.getX(); bx++) {
+			for (bz = testMin.getZ(); bz <= testMax.getZ(); bz++) {
+				if (!validateBlockHeightAndType(world, bx, bz, minY, maxY, false, validTargetBlocks)) {
+					return false;
+				}
+			}
+		}
 
-        temp = bb.getRearCorners(face, testMin, testMax);
-        testMin = temp.min;
-        testMax = temp.max;
-        for (bx = testMin.getX(); bx <= testMax.getX(); bx++) {
-            for (bz = testMin.getZ(); bz <= testMax.getZ(); bz++) {
-                if (!validateBlockHeightAndType(world, bx, bz, minY, maxY, false, validTargetBlocksRear)) {
-                    return false;
-                }
-            }
-        }
+		temp = bb.getRearCorners(face, testMin, testMax);
+		testMin = temp.min;
+		testMax = temp.max;
+		for (bx = testMin.getX(); bx <= testMax.getX(); bx++) {
+			for (bz = testMin.getZ(); bz <= testMax.getZ(); bz++) {
+				if (!validateBlockHeightAndType(world, bx, bz, minY, maxY, false, validTargetBlocksRear)) {
+					return false;
+				}
+			}
+		}
 
-        temp = bb.getRightCorners(face, testMin, testMax);
-        testMin = temp.min;
-        testMax = temp.max;
-        for (bx = testMin.getX(); bx <= testMax.getX(); bx++) {
-            for (bz = testMin.getZ(); bz <= testMax.getZ(); bz++) {
-                if (!validateBlockHeightAndType(world, bx, bz, minY, maxY, false, validTargetBlocksSide)) {
-                    return false;
-                }
-            }
-        }
+		temp = bb.getRightCorners(face, testMin, testMax);
+		testMin = temp.min;
+		testMax = temp.max;
+		for (bx = testMin.getX(); bx <= testMax.getX(); bx++) {
+			for (bz = testMin.getZ(); bz <= testMax.getZ(); bz++) {
+				if (!validateBlockHeightAndType(world, bx, bz, minY, maxY, false, validTargetBlocksSide)) {
+					return false;
+				}
+			}
+		}
 
-        temp = bb.getLeftCorners(face, testMin, testMax);
-        testMin = temp.min;
-        testMax = temp.max;
-        for (bx = testMin.getX(); bx <= testMax.getX(); bx++) {
-            for (bz = testMin.getZ(); bz <= testMax.getZ(); bz++) {
-                if (!validateBlockHeightAndType(world, bx, bz, minY, maxY, false, validTargetBlocksSide)) {
-                    return false;
-                }
-            }
-        }
+		temp = bb.getLeftCorners(face, testMin, testMax);
+		testMin = temp.min;
+		testMax = temp.max;
+		for (bx = testMin.getX(); bx <= testMax.getX(); bx++) {
+			for (bz = testMin.getZ(); bz <= testMax.getZ(); bz++) {
+				if (!validateBlockHeightAndType(world, bx, bz, minY, maxY, false, validTargetBlocksSide)) {
+					return false;
+				}
+			}
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb) {
-        prePlacementBorder(world, template, bb);
-    }
+	@Override
+	public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb) {
+		prePlacementBorder(world, template, bb);
+	}
 
-    @Override
-    public void handleClearAction(World world, BlockPos pos, StructureTemplate template, StructureBB bb) {
-        if (pos.getY() >= bb.min.getY() + template.yOffset) {
-            super.handleClearAction(world, pos, template, bb);
-        } else {
-            world.setBlockState(pos, Blocks.WATER.getDefaultState());
-        }
-    }
+	@Override
+	public void handleClearAction(World world, BlockPos pos, StructureTemplate template, StructureBB bb) {
+		if (pos.getY() >= bb.min.getY() + template.yOffset) {
+			super.handleClearAction(world, pos, template, bb);
+		} else {
+			world.setBlockState(pos, Blocks.WATER.getDefaultState());
+		}
+	}
 
 }

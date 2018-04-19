@@ -1,0 +1,30 @@
+{
+    "type": "ancientwarfare:shapeless_research_recipe",
+    "research": "seafaring",
+    "ingredients": [
+        {
+            "type": "ancientwarfare:item_count",
+            "item": "ancientwarfarevehicle:ironshod_wood",
+            "count": 5
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "chest",
+            "count": 8
+        },
+        {
+            "item": "ancientwarfarevehicle:equipment_bay"
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "blockCactus",
+            "count": 2
+        }
+    ],
+    "result": {
+        "type": "minecraft:item_nbt",
+        "item": "ancientwarfarevehicle:spawner",
+        "data": 20,
+        "nbt": "{spawnData:{level:2}}"
+    }
+}

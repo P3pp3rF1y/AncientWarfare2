@@ -520,7 +520,9 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 			return;
 		super.setAttackTarget(entity);
 
-		updateAttackTargetClient();
+		if (!world.isRemote) {
+			updateAttackTargetClient();
+		}
 	}
 
 	private void updateAttackTargetClient() {

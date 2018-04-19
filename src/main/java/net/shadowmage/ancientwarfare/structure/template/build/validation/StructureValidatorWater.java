@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
 import net.minecraft.block.Block;
@@ -30,33 +31,33 @@ import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 
 public class StructureValidatorWater extends StructureValidator {
 
-    public StructureValidatorWater() {
-        super(StructureValidationType.WATER);
-    }
+	public StructureValidatorWater() {
+		super(StructureValidationType.WATER);
+	}
 
-    @Override
-    public boolean shouldIncludeForSelection(World world, int x, int y, int z, EnumFacing face, StructureTemplate template) {
-        Block block = world.getBlockState(new BlockPos(x, y - 1, z)).getBlock();
-        return block == Blocks.WATER || block == Blocks.FLOWING_WATER;
-    }
+	@Override
+	public boolean shouldIncludeForSelection(World world, int x, int y, int z, EnumFacing face, StructureTemplate template) {
+		Block block = world.getBlockState(new BlockPos(x, y - 1, z)).getBlock();
+		return block == Blocks.WATER || block == Blocks.FLOWING_WATER;
+	}
 
-    @Override
-    public boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
-        int minY = getMinY(template, bb);
-        return validateBorderBlocks(world, template, bb, 0, minY, true);
-    }
+	@Override
+	public boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
+		int minY = getMinY(template, bb);
+		return validateBorderBlocks(world, template, bb, 0, minY, true);
+	}
 
-    @Override
-    public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb) {
+	@Override
+	public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb) {
 
-    }
+	}
 
-    @Override
-    public void handleClearAction(World world, BlockPos pos, StructureTemplate template, StructureBB bb) {
-        if (pos.getY() < bb.min.getY() + template.yOffset) {
-            world.setBlockState(pos, Blocks.WATER.getDefaultState());
-        } else {
-            super.handleClearAction(world, pos, template, bb);
-        }
-    }
+	@Override
+	public void handleClearAction(World world, BlockPos pos, StructureTemplate template, StructureBB bb) {
+		if (pos.getY() < bb.min.getY() + template.yOffset) {
+			world.setBlockState(pos, Blocks.WATER.getDefaultState());
+		} else {
+			super.handleClearAction(world, pos, template, bb);
+		}
+	}
 }

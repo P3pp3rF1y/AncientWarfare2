@@ -5,12 +5,12 @@ import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteMushroomFa
 
 public class ContainerWorksiteMushroomFarm extends ContainerWorksiteBase<WorkSiteMushroomFarm> {
 
-    public ContainerWorksiteMushroomFarm(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
+	public ContainerWorksiteMushroomFarm(EntityPlayer player, int x, int y, int z) {
+		super(player, x, y, z);
 
 		int layerY = 78;
 
-        frontLabel = layerY;
+		frontLabel = layerY;
 		layerY += LABEL_GAP;
 		layerY = addSlots(tileEntity.plantableInventory, 8, layerY) + 4;
 		playerLabel = layerY;

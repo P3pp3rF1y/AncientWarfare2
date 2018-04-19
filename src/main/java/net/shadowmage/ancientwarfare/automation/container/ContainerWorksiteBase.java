@@ -28,12 +28,12 @@ public class ContainerWorksiteBase<T extends TileWorksiteBoundedInventory> exten
 	protected int addSlots(IItemHandler inventory, int xPosStart, int yPosStart) {
 		int x1, y1, xPos, yPos;
 		int maxY = 0;
-		for(int i = 0, slotNum = 0; i < inventory.getSlots(); i++, slotNum++) {
+		for (int i = 0, slotNum = 0; i < inventory.getSlots(); i++, slotNum++) {
 			x1 = i % 9;
 			y1 = i / 9;
 			xPos = xPosStart + x1 * 18;
 			yPos = yPosStart + y1 * 18;
-			if(yPos + 18 > maxY) {
+			if (yPos + 18 > maxY) {
 				maxY = yPos + 18;
 			}
 			SlotItemHandler slot = new SlotItemHandler(inventory, slotNum, xPos, yPos);
@@ -49,17 +49,17 @@ public class ContainerWorksiteBase<T extends TileWorksiteBoundedInventory> exten
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
 		Slot slot = this.getSlot(slotClickedIndex);
-		if(slot == null || !slot.getHasStack()) {
+		if (slot == null || !slot.getHasStack()) {
 			return ItemStack.EMPTY;
 		}
 
 		@Nonnull ItemStack stackFromSlot = slot.getStack();
-		if(slotClickedIndex < tileEntitySlots) {
+		if (slotClickedIndex < tileEntitySlots) {
 			this.mergeItemStack(stackFromSlot, tileEntitySlots, tileEntitySlots + playerSlots, false);
 		} else {
 			this.mergeItemStack(stackFromSlot, 0, tileEntitySlots, true);
 		}
-		if(stackFromSlot.getCount() == 0) {
+		if (stackFromSlot.getCount() == 0) {
 			slot.putStack(ItemStack.EMPTY);
 		} else {
 			slot.onSlotChanged();

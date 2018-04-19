@@ -1,0 +1,19 @@
+{
+    "type": "ancientwarfare:shapeless_research_recipe",
+    "research": "the_wheel",
+    "ingredients": [
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "plankWood",
+            "count": 3
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "ingotIron",
+            "count": 3
+        }
+    ],
+    "result": {
+        "item": "ancientwarfarevehicle:vehicle_upgrade_speed"
+    }
+}

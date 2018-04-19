@@ -3,52 +3,65 @@ package net.shadowmage.ancientwarfare.core.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
+import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.SlotItemHandler;
-import net.shadowmage.ancientwarfare.core.inventory.SlotResearchCrafting;
-import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
+import net.minecraftforge.items.wrapper.CombinedInvWrapper;
+import net.minecraftforge.items.wrapper.InvWrapper;
+import net.minecraftforge.items.wrapper.PlayerInvWrapper;
+import net.shadowmage.ancientwarfare.automation.container.ContainerCraftingRecipeMemory;
+import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
+import net.shadowmage.ancientwarfare.core.crafting.ICraftingRecipe;
 import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nonnull;
 
-public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeringStation> {
+import static net.minecraft.util.EnumActionResult.PASS;
+import static net.minecraft.util.EnumActionResult.SUCCESS;
+
+public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeringStation> implements ICraftingContainer {
 	private static final int BOOK_SLOT = 1;
+	public ContainerCraftingRecipeMemory containerCrafting;
 
 	public ContainerEngineeringStation(EntityPlayer player, int x, int y, int z) {
 		super(player, x, y, z);
 
-		Slot slot = new SlotResearchCrafting(player, tileEntity.getCrafterName(), tileEntity.layoutMatrix, tileEntity.result, 0, 3 * 18 + 3 * 18 + 8 + 18, 1 * 18 + 8) {
+		containerCrafting = new ContainerCraftingRecipeMemory(tileEntity.craftingRecipeMemory, player) {
 			@Override
-			public ItemStack onTake(EntityPlayer par1EntityPlayer, ItemStack par2ItemStack) {
-				tileEntity.preItemCrafted();
-				ItemStack stack = super.onTake(par1EntityPlayer, par2ItemStack);
-				tileEntity.onItemCrafted();
-				return stack;
+			protected OnTakeResult handleOnTake(EntityPlayer player, ItemStack stack) {
+				ICraftingRecipe recipe = tileEntity.craftingRecipeMemory.getRecipe();
+				if (AWCraftingManager.canCraftFromInventory(recipe, tileEntity.extraSlots)) {
+					NonNullList<ItemStack> resources = AWCraftingManager.getRecipeInventoryMatch(recipe, tileEntity.extraSlots);
+					InventoryTools.removeItems(tileEntity.extraSlots, resources);
+
+					ForgeHooks.setCraftingPlayer(player);
+					NonNullList<ItemStack> remainingItems = tileEntity.craftingRecipeMemory.getRemainingItems();
+					ForgeHooks.setCraftingPlayer(null);
+					InventoryTools.insertOrDropItems(tileEntity.extraSlots, remainingItems, tileEntity.getWorld(), tileEntity.getPos());
+
+					return new OnTakeResult(SUCCESS, stack);
+				}
+				return new OnTakeResult(PASS, stack);
+			}
+
+			@Override
+			protected boolean canTakeStackFromOutput(EntityPlayer player) {
+				return true;
 			}
 		};
-		addSlotToContainer(slot);
-
-		slot = new SlotItemHandler(tileEntity.bookInventory, 0, 8, 18 + 8) {
-			@Override
-			public boolean isItemValid(ItemStack par1ItemStack) {
-				return ItemResearchBook.getResearcherName(par1ItemStack) != null;
-			}
-		};
-		addSlotToContainer(slot);
-
-		int x2, y2, slotNum = 0;
-		for(int y1 = 0; y1 < 3; y1++) {
-			y2 = y1 * 18 + 8;
-			for(int x1 = 0; x1 < 3; x1++) {
-				x2 = x1 * 18 + 8 + 3 * 18;
-				slotNum = y1 * 3 + x1;
-				slot = new Slot(tileEntity.layoutMatrix, slotNum, x2, y2);
-				addSlotToContainer(slot);
-			}
+		for (Slot slot : containerCrafting.getSlots()) {
+			addSlotToContainer(slot);
 		}
 
-		for(int y1 = 0; y1 < 2; y1++) {
+		Slot slot;
+		int x2, y2, slotNum;
+		for (int y1 = 0; y1 < 2; y1++) {
 			y2 = y1 * 18 + 8 + 3 * 18 + 4;
-			for(int x1 = 0; x1 < 9; x1++) {
+			for (int x1 = 0; x1 < 9; x1++) {
 				x2 = x1 * 18 + 8;
 				slotNum = y1 * 9 + x1;
 				slot = new SlotItemHandler(tileEntity.extraSlots, slotNum, x2, y2);
@@ -61,38 +74,46 @@ public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeri
 	}
 
 	@Override
+	public void handlePacketData(NBTTagCompound tag) {
+		if (tag.hasKey("recipe")) {
+			containerCrafting.handleRecipeUpdate(tag);
+		}
+	}
+
+	@Override
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
 		@Nonnull ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot theSlot = this.getSlot(slotClickedIndex);
-		if(theSlot != null && theSlot.getHasStack()) {
+		if (theSlot != null && theSlot.getHasStack()) {
 			@Nonnull ItemStack slotStack = theSlot.getStack();
 			slotStackCopy = slotStack.copy();
 			int craftSlotStart = 2;
-			int storageSlotsStart = craftSlotStart + tileEntity.layoutMatrix.getSizeInventory();
+			//TODO replace the reference to craftMatrix here with something like crafting size reference on subcontainer itself
+			int storageSlotsStart = craftSlotStart + tileEntity.craftingRecipeMemory.craftMatrix.getSizeInventory();
 			int playerSlotStart = storageSlotsStart + tileEntity.extraSlots.getSlots();
 			int playerSlotEnd = playerSlotStart + playerSlots;
-			if(slotClickedIndex < craftSlotStart)//book or result slot
+			if (slotClickedIndex < craftSlotStart)//book or result slot
 			{
-				if(!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
+				if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
 					return ItemStack.EMPTY;
 			} else {
-				if(slotClickedIndex < storageSlotsStart) {//craft matrix
-					if(!this.mergeItemStack(slotStack, storageSlotsStart, playerSlotStart, false))//merge into storage
+				if (slotClickedIndex < storageSlotsStart) {//craft matrix
+					if (!this.mergeItemStack(slotStack, storageSlotsStart, playerSlotStart, false))//merge into storage
 						return ItemStack.EMPTY;
-				} else if(slotClickedIndex < playerSlotStart) {//storage slots
-					if(!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
+				} else if (slotClickedIndex < playerSlotStart) {//storage slots
+					if (!this.mergeItemStack(slotStack, playerSlotStart, playerSlotEnd, false))//merge into player inventory
 						return ItemStack.EMPTY;
-				} else if(slotClickedIndex < playerSlotEnd) {//player slots, merge into storage
+				} else if (slotClickedIndex < playerSlotEnd) {//player slots, merge into storage
 					if (!mergeItemStack(slotStack, BOOK_SLOT, BOOK_SLOT + 1, false) && !this.mergeItemStack(slotStack, storageSlotsStart, playerSlotStart, false))//merge into storage
 						return ItemStack.EMPTY;
 				}
 			}
-			if(slotStack.getCount() == 0) {
+			if (slotStack.getCount() == 0) {
 				theSlot.putStack(ItemStack.EMPTY);
 			} else {
 				theSlot.onSlotChanged();
 			}
-			if(slotStack.getCount() == slotStackCopy.getCount()) {
+			if (slotStack.getCount() == slotStackCopy.getCount()) {
 				return ItemStack.EMPTY;
 			}
 			theSlot.onTake(par1EntityPlayer, slotStack);
@@ -100,4 +121,29 @@ public class ContainerEngineeringStation extends ContainerTileBase<TileEngineeri
 		return slotStackCopy;
 	}
 
+	@Override
+	public ContainerCraftingRecipeMemory getCraftingMemoryContainer() {
+		return containerCrafting;
+	}
+
+	@Override
+	public IItemHandlerModifiable[] getInventories() {
+		return new IItemHandlerModifiable[] {tileEntity.extraSlots, new PlayerInvWrapper(player.inventory)};
+	}
+
+	@Override
+	public boolean pushCraftingMatrixToInventories() {
+		IItemHandler craftMatrixWrapper = new InvWrapper(tileEntity.craftingRecipeMemory.craftMatrix);
+		NonNullList<ItemStack> craftingItems = InventoryTools.getItems(craftMatrixWrapper);
+
+		IItemHandler inventories = new CombinedInvWrapper(tileEntity.extraSlots, new PlayerInvWrapper(player.inventory));
+
+		if (InventoryTools.insertItems(inventories, craftingItems, true).isEmpty()) {
+			InventoryTools.insertItems(inventories, craftingItems, false);
+			InventoryTools.removeItems(craftMatrixWrapper, craftingItems);
+			return true;
+		}
+
+		return false;
+	}
 }

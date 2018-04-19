@@ -27,7 +27,7 @@ public class ContainerBackpack extends ContainerBase {
 	public ContainerBackpack(EntityPlayer player, int x, int y, int z) {
 		super(player);
 
-        this.hand = EntityTools.getHandHoldingItem(player, AWItems.backpack);
+		this.hand = EntityTools.getHandHoldingItem(player, AWItems.backpack);
 		backpackStack = player.getHeldItem(hand);
 		backpackSlotIndex = hand == EnumHand.MAIN_HAND ? player.inventory.currentItem : -1;
 

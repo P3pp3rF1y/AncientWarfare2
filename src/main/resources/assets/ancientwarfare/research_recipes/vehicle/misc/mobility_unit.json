@@ -1,0 +1,22 @@
+{
+    "type": "ancientwarfare:shapeless_research_recipe",
+    "research": "the_wheel",
+    "ingredients": [
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "ingotIron",
+            "count": 2
+        },
+        {
+            "item": "minecraft:piston"
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "dustRedstone",
+            "count": 4
+        }
+    ],
+    "result": {
+        "item": "ancientwarfarevehicle:mobility_unit"
+    }
+}

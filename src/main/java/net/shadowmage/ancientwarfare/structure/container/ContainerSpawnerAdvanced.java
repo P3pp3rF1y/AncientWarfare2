@@ -11,22 +11,22 @@ import javax.annotation.Nonnull;
 
 public class ContainerSpawnerAdvanced extends ContainerSpawnerAdvancedBase {
 
-    public ContainerSpawnerAdvanced(EntityPlayer player, int x, int y, int z) {
-        super(player);
-        settings = new SpawnerSettings();
-        @Nonnull ItemStack item = EntityTools.getItemFromEitherHand(player, ItemBlockAdvancedSpawner.class);
-        if (item.isEmpty() || !item.hasTagCompound() || !item.getTagCompound().hasKey("spawnerSettings")) {
-            throw new IllegalArgumentException("stack cannot be null, and must have tag compounds!!");
-        }
-        settings.readFromNBT(item.getTagCompound().getCompoundTag("spawnerSettings"));
-    }
+	public ContainerSpawnerAdvanced(EntityPlayer player, int x, int y, int z) {
+		super(player);
+		settings = new SpawnerSettings();
+		@Nonnull ItemStack item = EntityTools.getItemFromEitherHand(player, ItemBlockAdvancedSpawner.class);
+		if (item.isEmpty() || !item.hasTagCompound() || !item.getTagCompound().hasKey("spawnerSettings")) {
+			throw new IllegalArgumentException("stack cannot be null, and must have tag compounds!!");
+		}
+		settings.readFromNBT(item.getTagCompound().getCompoundTag("spawnerSettings"));
+	}
 
-    @Override
-    public void handlePacketData(NBTTagCompound tag) {
-        if (tag.hasKey("spawnerSettings")) {
-            @Nonnull ItemStack item = EntityTools.getItemFromEitherHand(player, ItemBlockAdvancedSpawner.class);
-            item.setTagInfo("spawnerSettings", tag.getCompoundTag("spawnerSettings"));
-        }
-    }
+	@Override
+	public void handlePacketData(NBTTagCompound tag) {
+		if (tag.hasKey("spawnerSettings")) {
+			@Nonnull ItemStack item = EntityTools.getItemFromEitherHand(player, ItemBlockAdvancedSpawner.class);
+			item.setTagInfo("spawnerSettings", tag.getCompoundTag("spawnerSettings"));
+		}
+	}
 
 }

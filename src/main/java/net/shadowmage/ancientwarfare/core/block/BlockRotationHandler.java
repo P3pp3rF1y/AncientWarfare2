@@ -10,14 +10,14 @@ import java.util.Set;
 
 public class BlockRotationHandler {
 	public static EnumFacing getFaceForPlacement(EntityLivingBase entity, IRotatableBlock block, EnumFacing sideHit) {
-		if(block.getRotationType() == RotationType.NONE) {
+		if (block.getRotationType() == RotationType.NONE) {
 			return EnumFacing.NORTH;
 		}
 		EnumFacing facing = entity.getHorizontalFacing();
-		if(block.getRotationType() == RotationType.SIX_WAY && sideHit.getAxis() == EnumFacing.Axis.Y) {
+		if (block.getRotationType() == RotationType.SIX_WAY && sideHit.getAxis() == EnumFacing.Axis.Y) {
 			facing = sideHit.getOpposite();
 		}
-		if(block.invertFacing()) {
+		if (block.invertFacing()) {
 			facing = facing.getOpposite();
 		}
 		return facing;
@@ -176,10 +176,10 @@ public class BlockRotationHandler {
 		}
 
 		public static RelativeSide getSideViewed(RotationType t, EnumFacing facing, @Nullable EnumFacing side) {
-			if(side != null) {
-				if(t == RotationType.FOUR_WAY) {
+			if (side != null) {
+				if (t == RotationType.FOUR_WAY) {
 					return fourWayMap[side.ordinal()][facing.ordinal()];
-				} else if(t == RotationType.SIX_WAY) {
+				} else if (t == RotationType.SIX_WAY) {
 					return sixWayMap[side.ordinal()][facing.ordinal()];
 				}
 			}
@@ -189,8 +189,8 @@ public class BlockRotationHandler {
 		@Nullable
 		public static EnumFacing getMCSideToAccess(RotationType t, EnumFacing facing, RelativeSide access) {
 			RelativeSide[][] map = t == RotationType.FOUR_WAY ? fourWayMap : sixWayMap;
-			for(int x = 0; x < map.length; x++) {
-				if(map[x][facing.ordinal()] == access) {
+			for (int x = 0; x < map.length; x++) {
+				if (map[x][facing.ordinal()] == access) {
 					return EnumFacing.VALUES[x];
 				}
 			}

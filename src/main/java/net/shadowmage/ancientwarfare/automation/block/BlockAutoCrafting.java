@@ -30,89 +30,89 @@ import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
 public class BlockAutoCrafting extends BlockWorksiteBase implements IBakeryProvider {
 
-    public BlockAutoCrafting(String regName) {
-        super(regName);
-    }
+	public BlockAutoCrafting(String regName) {
+		super(regName);
+	}
 
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer.Builder(this).add(CoreProperties.UNLISTED_HORIZONTAL_FACING).build();
-    }
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer.Builder(this).add(CoreProperties.UNLISTED_HORIZONTAL_FACING).build();
+	}
 
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        return 0;
-    }
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return 0;
+	}
 
-    @Override
+	@Override
 	public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return state;
-    }
+	}
 
-    @Override
-    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        EnumFacing facing = EnumFacing.NORTH;
-        TileEntity tileentity = world.getTileEntity(pos);
+	@Override
+	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+		EnumFacing facing = EnumFacing.NORTH;
+		TileEntity tileentity = world.getTileEntity(pos);
 
-        if (tileentity instanceof BlockRotationHandler.IRotatableTile) {
-            facing = ((BlockRotationHandler.IRotatableTile) tileentity).getPrimaryFacing();
-        }
+		if (tileentity instanceof BlockRotationHandler.IRotatableTile) {
+			facing = ((BlockRotationHandler.IRotatableTile) tileentity).getPrimaryFacing();
+		}
 
-        return ((IExtendedBlockState) super.getExtendedState(state, world, pos)).withProperty(CoreProperties.UNLISTED_HORIZONTAL_FACING, facing);
-    }
+		return ((IExtendedBlockState) super.getExtendedState(state, world, pos)).withProperty(CoreProperties.UNLISTED_HORIZONTAL_FACING, facing);
+	}
 
-    @Override
-    public boolean hasTileEntity(IBlockState state) {
-        return true;
-    }
+	@Override
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
 
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileAutoCrafting();
-    }
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		return new TileAutoCrafting();
+	}
 
-    @Override
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    public boolean isNormalCube(IBlockState state) {
-        return false;
-    }
+	@Override
+	public boolean isNormalCube(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    public boolean isFullCube(IBlockState state) {
-        return false;
-    }
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerClient() {
-        NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_AUTO_CRAFT, GuiWorksiteAutoCrafting.class);
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerClient() {
+		NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_AUTO_CRAFT, GuiWorksiteAutoCrafting.class);
 
-        ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
-            @Override protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                return AutoCraftingRenderer.MODEL_LOCATION;
-            }
-        });
+		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
+			@Override
+			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+				return AutoCraftingRenderer.MODEL_LOCATION;
+			}
+		});
 
-        ModelRegistryHelper.register(AutoCraftingRenderer.MODEL_LOCATION, new CCBakeryModel() {
-            @Override
-            public TextureAtlasSprite getParticleTexture() {
-                return AutoCraftingRenderer.INSTANCE.sprite;
-            }
-        });
+		ModelRegistryHelper.register(AutoCraftingRenderer.MODEL_LOCATION, new CCBakeryModel() {
+			@Override
+			public TextureAtlasSprite getParticleTexture() {
+				return AutoCraftingRenderer.INSTANCE.sprite;
+			}
+		});
 
-        ModelLoaderHelper.registerItem(this, AutoCraftingRenderer.MODEL_LOCATION);
+		ModelLoaderHelper.registerItem(this, AutoCraftingRenderer.MODEL_LOCATION);
 
-        ModelBakery.registerBlockKeyGenerator(this,
-                new BlockStateKeyGenerator.Builder().addKeyProperties(CoreProperties.UNLISTED_HORIZONTAL_FACING).build());
+		ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder().addKeyProperties(CoreProperties.UNLISTED_HORIZONTAL_FACING).build());
 
-    }
+	}
 
-    @Override
-    public IBakery getBakery() {
-        return AutoCraftingRenderer.INSTANCE;
-    }
+	@Override
+	public IBakery getBakery() {
+		return AutoCraftingRenderer.INSTANCE;
+	}
 }

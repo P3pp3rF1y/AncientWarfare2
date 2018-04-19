@@ -1,0 +1,33 @@
+{
+    "type": "ancientwarfare:shapeless_research_recipe",
+    "research": "siege_warfare",
+    "ingredients": [
+        {
+            "type": "ancientwarfare:item_count",
+            "item": "ancientwarfarevehicle:ironshod_wood",
+            "count": 20
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "string",
+            "count": 24
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "leather",
+            "count": 12
+        },
+        {
+            "item": "ancientwarfarevehicle:counter_weight_unit"
+        },
+        {
+            "item": "ancientwarfarevehicle:equipment_bay"
+        }
+    ],
+    "result": {
+        "type": "minecraft:item_nbt",
+        "item": "ancientwarfarevehicle:spawner",
+        "data": 16,
+        "nbt": "{spawnData:{level:2}}"
+    }
+}

@@ -26,7 +26,6 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelBoatBallista;
 
-
 public class RenderBoatBallista extends RenderVehicleBase {
 
 	ModelBoatBallista model = new ModelBoatBallista();
@@ -38,8 +37,7 @@ public class RenderBoatBallista extends RenderVehicleBase {
 	@Override
 	public void renderVehicle(VehicleBase veh, double x, double y, double z, float yaw, float tick) {
 		VehicleFiringVarsHelper var = veh.firingVarsHelper;
-		model.setTurretRotation(yaw - veh.localTurretRotation + (1 - tick) * veh.currentTurretYawSpeed,
-				-veh.localTurretPitch + tick * veh.currentTurretPitchSpeed);
+		model.setTurretRotation(yaw - veh.localTurretRotation + (1 - tick) * veh.currentTurretYawSpeed, -veh.localTurretPitch + tick * veh.currentTurretPitchSpeed);
 		model.setCrankRotations(var.getVar1() + (tick * var.getVar2()));
 		model.setBowAndStringRotation(var.getVar3() + tick * var.getVar4(), var.getVar5() + tick * var.getVar6());
 		model.setTriggerAngle(var.getVar7());

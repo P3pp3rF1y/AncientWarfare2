@@ -24,11 +24,11 @@ import net.shadowmage.ancientwarfare.npc.entity.RangeAttackHelper;
 
 public abstract class NpcFactionMountedArcher extends NpcFactionMounted implements IRangedAttackMob {
 
-    public NpcFactionMountedArcher(World par1World) {
-        super(par1World);
-//  this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.BOW)); TODO figure out if we need this code back
-        Predicate<Entity> selector = entity -> {
-//      if(!canEntityBeSeen(entity)){return false;}
+	public NpcFactionMountedArcher(World par1World) {
+		super(par1World);
+		//  this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.BOW)); TODO figure out if we need this code back
+		Predicate<Entity> selector = entity -> {
+			//      if(!canEntityBeSeen(entity)){return false;}
 			if (!isHostileTowards(entity)) {
 				return false;
 			}
@@ -42,26 +42,26 @@ public abstract class NpcFactionMountedArcher extends NpcFactionMounted implemen
 			return true;
 		};
 
-        this.tasks.addTask(0, new EntityAISwimming(this));
-        this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
-        this.tasks.addTask(0, new NpcAIDoor(this, true));
-        this.tasks.addTask(0, (horseAI = new NpcAIFactionRideHorse(this)));
-        this.tasks.addTask(1, new NpcAIFollowPlayer(this));
-        this.tasks.addTask(2, new NpcAIFactionArcherStayAtHome(this));
-        this.tasks.addTask(3, new NpcAIFactionRangedAttack(this));
-//  this.tasks.addTask(2, new NpcAIMoveHome(this, 50.f, 5.f, 30.f, 5.f)); TODO figure out if this needs to be uncommented
-//  this.tasks.addTask(3, new EntityAIArrowAttack(this, 1.0D, 20, 60, 15.0F));
+		this.tasks.addTask(0, new EntityAISwimming(this));
+		this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
+		this.tasks.addTask(0, new NpcAIDoor(this, true));
+		this.tasks.addTask(0, (horseAI = new NpcAIFactionRideHorse(this)));
+		this.tasks.addTask(1, new NpcAIFollowPlayer(this));
+		this.tasks.addTask(2, new NpcAIFactionArcherStayAtHome(this));
+		this.tasks.addTask(3, new NpcAIFactionRangedAttack(this));
+		//  this.tasks.addTask(2, new NpcAIMoveHome(this, 50.f, 5.f, 30.f, 5.f)); TODO figure out if this needs to be uncommented
+		//  this.tasks.addTask(3, new EntityAIArrowAttack(this, 1.0D, 20, 60, 15.0F));
 
-        this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
-        this.tasks.addTask(102, new NpcAIWander(this));
-        this.tasks.addTask(103, new NpcAIWatchClosest(this, EntityLiving.class, 8.0F));
+		this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
+		this.tasks.addTask(102, new NpcAIWander(this));
+		this.tasks.addTask(103, new NpcAIWatchClosest(this, EntityLiving.class, 8.0F));
 
-        this.targetTasks.addTask(1, new NpcAIHurt(this));
-        this.targetTasks.addTask(2, new NpcAIAttackNearest(this, selector));
-    }
+		this.targetTasks.addTask(1, new NpcAIHurt(this));
+		this.targetTasks.addTask(2, new NpcAIAttackNearest(this, selector));
+	}
 
-    @Override
-    public void attackEntityWithRangedAttack(EntityLivingBase target, float force) {
-        RangeAttackHelper.doRangedAttack(this, target, force, 1.0f);
-    }
+	@Override
+	public void attackEntityWithRangedAttack(EntityLivingBase target, float force) {
+		RangeAttackHelper.doRangedAttack(this, target, force, 1.0f);
+	}
 }

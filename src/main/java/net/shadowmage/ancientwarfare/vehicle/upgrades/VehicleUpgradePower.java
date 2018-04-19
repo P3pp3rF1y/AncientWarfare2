@@ -27,11 +27,6 @@ public class VehicleUpgradePower extends VehicleUpgradeBase {
 
 	public VehicleUpgradePower() {
 		super("vehicle_upgrade_power");
-/* TODO recipe
-		this.neededResearch.add(ResearchGoalNumbers.mechanics3);
-		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Block.planks, 2), true, false));
-		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.ingotIron, 5), false, false));
-*/
 	}
 
 	@Override

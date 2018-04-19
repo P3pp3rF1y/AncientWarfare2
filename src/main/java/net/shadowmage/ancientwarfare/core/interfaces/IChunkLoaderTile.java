@@ -4,6 +4,6 @@ import net.minecraftforge.common.ForgeChunkManager.Ticket;
 
 public interface IChunkLoaderTile {
 
-    public void setTicket(Ticket tk);
+	public void setTicket(Ticket tk);
 
 }

@@ -40,97 +40,87 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
 
-@Mod
-        (
-                name = "Ancient Warfare Automation",
-                modid = AncientWarfareAutomation.modID,
-                version = "@VERSION@",
-                dependencies = "required-after:ancientwarfare;after:redstoneflux;after:buildcraftcore"
-        )
+@Mod(name = "Ancient Warfare Automation", modid = AncientWarfareAutomation.modID, version = "@VERSION@", dependencies = "required-after:ancientwarfare;after:redstoneflux;after:buildcraftcore")
 public class AncientWarfareAutomation {
-    public static final String modID = "ancientwarfareautomation";
+	public static final String modID = "ancientwarfareautomation";
 
-    @Instance(value = modID)
-    public static AncientWarfareAutomation instance;
+	@Instance(value = modID)
+	public static AncientWarfareAutomation instance;
 
-    @SidedProxy
-            (
-                    clientSide = "net.shadowmage.ancientwarfare.automation.proxy.ClientProxyAutomation",
-                    serverSide = "net.shadowmage.ancientwarfare.core.proxy.CommonProxy"
-            )
-    public static CommonProxyBase proxy;
+	@SidedProxy(clientSide = "net.shadowmage.ancientwarfare.automation.proxy.ClientProxyAutomation", serverSide = "net.shadowmage.ancientwarfare.core.proxy.CommonProxy")
+	public static CommonProxyBase proxy;
 
-    public static AWAutomationStatics statics;
+	public static AWAutomationStatics statics;
 
-    @EventHandler
-    public void preInit(FMLPreInitializationEvent evt) {
-        ModuleStatus.automationLoaded = true;
-        if (Loader.isModLoaded("buildcraftcore")) {
-            ModuleStatus.buildCraftLoaded = true;
-            AWLog.log("Detecting BuildCraft Core is loaded, enabling BC Compatibility");
-        }
-        if (Loader.isModLoaded("redstoneflux")) {
-            ModuleStatus.redstoneFluxEnabled = true;
-            AWLog.log("Detecting Redstone Flux is loaded, enabling RF Compatibility");
-        }
-        RFProxy.loadInstance();
+	@EventHandler
+	public void preInit(FMLPreInitializationEvent evt) {
+		ModuleStatus.automationLoaded = true;
+		if (Loader.isModLoaded("buildcraftcore")) {
+			ModuleStatus.buildCraftLoaded = true;
+			AWLog.log("Detecting BuildCraft Core is loaded, enabling BC Compatibility");
+		}
+		if (Loader.isModLoaded("redstoneflux")) {
+			ModuleStatus.redstoneFluxEnabled = true;
+			AWLog.log("Detecting Redstone Flux is loaded, enabling RF Compatibility");
+		}
+		RFProxy.loadInstance();
 
         /*
-         * setup module-owned config file and config-access class
+		 * setup module-owned config file and config-access class
          */
-        statics = new AWAutomationStatics("AncientWarfareAutomation");
+		statics = new AWAutomationStatics("AncientWarfareAutomation");
 
         /*
-         * must be loaded after items/blocks, as it needs them registered
+		 * must be loaded after items/blocks, as it needs them registered
          */
-        proxy.preInit();
+		proxy.preInit();
 
         /*
-         * register containers
+		 * register containers
          */
-        NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_INVENTORY_SIDE_ADJUST, ContainerWorksiteInventorySideSelection.class);
-        NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_ANIMAL_CONTROL, ContainerWorksiteAnimalControl.class);
-        NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_AUTO_CRAFT, ContainerWorksiteAutoCrafting.class);
-        NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_FISH_CONTROL, ContainerWorksiteFishControl.class);
-        NetworkHandler.registerContainer(NetworkHandler.GUI_MAILBOX_INVENTORY, ContainerMailbox.class);
-        NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_CONTROL, ContainerWarehouseControl.class);
-        NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_STORAGE, ContainerWarehouseStorage.class);
-        NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_OUTPUT, ContainerWarehouseInterface.class);
-        NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_CRAFTING, ContainerWarehouseCraftingStation.class);
-        NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_QUARRY, ContainerWorksiteQuarry.class);
-        NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_TREE_FARM, ContainerWorksiteTreeFarm.class);
-        NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_CROP_FARM, ContainerWorksiteCropFarm.class);
-        NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_MUSHROOM_FARM, ContainerWorksiteMushroomFarm.class);
-        NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_ANIMAL_FARM, ContainerWorksiteAnimalFarm.class);
-        NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_REED_FARM, ContainerWorksiteReedFarm.class);
-        NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_FISH_FARM, ContainerWorksiteFishFarm.class);
-        NetworkHandler.registerContainer(NetworkHandler.GUI_STIRLING_GENERATOR, ContainerStirlingGenerator.class);
-        NetworkHandler.registerContainer(NetworkHandler.GUI_CHUNK_LOADER_DELUXE, ContainerChunkLoaderDeluxe.class);
-        NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_STOCK, ContainerWarehouseStockViewer.class);
-        NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_BOUNDS, ContainerWorksiteBoundsAdjust.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_INVENTORY_SIDE_ADJUST, ContainerWorksiteInventorySideSelection.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_ANIMAL_CONTROL, ContainerWorksiteAnimalControl.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_AUTO_CRAFT, ContainerWorksiteAutoCrafting.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_FISH_CONTROL, ContainerWorksiteFishControl.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_MAILBOX_INVENTORY, ContainerMailbox.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_CONTROL, ContainerWarehouseControl.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_STORAGE, ContainerWarehouseStorage.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_OUTPUT, ContainerWarehouseInterface.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_CRAFTING, ContainerWarehouseCraftingStation.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_QUARRY, ContainerWorksiteQuarry.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_TREE_FARM, ContainerWorksiteTreeFarm.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_CROP_FARM, ContainerWorksiteCropFarm.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_MUSHROOM_FARM, ContainerWorksiteMushroomFarm.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_ANIMAL_FARM, ContainerWorksiteAnimalFarm.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_REED_FARM, ContainerWorksiteReedFarm.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_FISH_FARM, ContainerWorksiteFishFarm.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_STIRLING_GENERATOR, ContainerStirlingGenerator.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_CHUNK_LOADER_DELUXE, ContainerChunkLoaderDeluxe.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_WAREHOUSE_STOCK, ContainerWarehouseStockViewer.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_BOUNDS, ContainerWorksiteBoundsAdjust.class);
 
         /*
-         * register tick-handlers
+		 * register tick-handlers
          */
-        MinecraftForge.EVENT_BUS.register(this);
+		MinecraftForge.EVENT_BUS.register(this);
 
-        ForgeChunkManager.setForcedChunkLoadingCallback(this, AWChunkLoader.INSTANCE);
-    }
+		ForgeChunkManager.setForcedChunkLoadingCallback(this, AWChunkLoader.INSTANCE);
+	}
 
-    @EventHandler
-    public void init(FMLInitializationEvent evt) {
-        /*
-         * construct recipes, load plugins
+	@EventHandler
+	public void init(FMLInitializationEvent evt) {
+		/*
+		 * construct recipes, load plugins
          */
-        proxy.init();
+		proxy.init();
 
-        statics.save();
-    }
+		statics.save();
+	}
 
-    @SubscribeEvent
-    public void onConfigChanged(OnConfigChangedEvent evt) {
-        if (AncientWarfareCore.modID.equals(evt.getModID())) {
-            statics.save();
-        }
-    }
+	@SubscribeEvent
+	public void onConfigChanged(OnConfigChangedEvent evt) {
+		if (AncientWarfareCore.modID.equals(evt.getModID())) {
+			statics.save();
+		}
+	}
 }

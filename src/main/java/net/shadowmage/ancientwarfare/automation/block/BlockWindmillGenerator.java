@@ -21,47 +21,48 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.TileWindmillControll
 
 public class BlockWindmillGenerator extends BlockTorqueGenerator implements IBakeryProvider {
 
-    public BlockWindmillGenerator(String regName) {
-        super(regName);
-    }
+	public BlockWindmillGenerator(String regName) {
+		super(regName);
+	}
 
-    @Override
-    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return WindmillGeneratorRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
-    }
+	@Override
+	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return WindmillGeneratorRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
+	}
 
-    @Override
-    public boolean invertFacing() {
-        return true;
-    }
+	@Override
+	public boolean invertFacing() {
+		return true;
+	}
 
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileWindmillController();
-    }
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		return new TileWindmillController();
+	}
 
-    @Override
-    public IBakery getBakery() {
-        return WindmillGeneratorRenderer.INSTANCE;
-    }
+	@Override
+	public IBakery getBakery() {
+		return WindmillGeneratorRenderer.INSTANCE;
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerClient() {
-        super.registerClient();
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerClient() {
+		super.registerClient();
 
-        ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
-            @Override protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                return WindmillGeneratorRenderer.MODEL_LOCATION;
-            }
-        });
+		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
+			@Override
+			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+				return WindmillGeneratorRenderer.MODEL_LOCATION;
+			}
+		});
 
-        ModelRegistryHelper.register(WindmillGeneratorRenderer.MODEL_LOCATION, new CCBakeryModel() {
-            @Override
-            public TextureAtlasSprite getParticleTexture() {
-                return WindmillGeneratorRenderer.INSTANCE.sprite;
-            }
-        });
-    }
+		ModelRegistryHelper.register(WindmillGeneratorRenderer.MODEL_LOCATION, new CCBakeryModel() {
+			@Override
+			public TextureAtlasSprite getParticleTexture() {
+				return WindmillGeneratorRenderer.INSTANCE.sprite;
+			}
+		});
+	}
 
 }

@@ -5,18 +5,18 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationTyp
 
 public abstract class BlockTorqueGenerator extends BlockTorqueBase {
 
-    protected BlockTorqueGenerator(String regName) {
-        super(Material.ROCK, regName);
-    }
+	protected BlockTorqueGenerator(String regName) {
+		super(Material.ROCK, regName);
+	}
 
-    @Override
-    public RotationType getRotationType() {
-        return RotationType.FOUR_WAY;
-    }
+	@Override
+	public RotationType getRotationType() {
+		return RotationType.FOUR_WAY;
+	}
 
-    @Override
-    public boolean invertFacing() {
-        return false;
-    }
+	@Override
+	public boolean invertFacing() {
+		return false;
+	}
 
 }

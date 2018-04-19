@@ -53,15 +53,7 @@ public interface IAmmo {
 
 	ResourceLocation getModelTexture();//get the display texture
 
-/* TODO rendering
-	String getIconTexture();
-*/
-
 	IAmmo getSecondaryAmmoType();//if this is just a 'container' ammo, get the contained type
-
-/* TODO ammo rendering
-	Icon getDisplayIcon();//pull the icon for this item from..wherever (desc. registry).
-*/
 
 	int getSecondaryAmmoTypeCount();//get the contained qty of what this ammo represents (used by cluster/grapeshot)
 
@@ -69,8 +61,7 @@ public interface IAmmo {
 
 	boolean isFlaming();//used by client-side rendering to render the missile on-fire, does nothing else
 
-	boolean isAmmoValidFor(
-			VehicleBase vehicle);//can be used for per-upgrade compatibility.  vehicle will check this before firing or adding ammo to the vehicle
+	boolean isAmmoValidFor(VehicleBase vehicle);//can be used for per-upgrade compatibility.  vehicle will check this before firing or adding ammo to the vehicle
 
 	boolean updateAsArrow();//should update pitch like an arrow (relative to flight direction)
 
@@ -99,19 +90,4 @@ public interface IAmmo {
 	void onImpactWorld(World world, float x, float y, float z, MissileBase missile, RayTraceResult hit);//called when the entity impacts a world block
 
 	void onImpactEntity(World world, Entity ent, float x, float y, float z, MissileBase missile);//called when the entity impacts another entity
-
-/* TODO ammo/vehicle recipes
-	ResourceListRecipe constructRecipe();
-
-	Collection<Integer> getNeededResearch();
-
-	void addResearch(Integer num);
-
-	void addResearch(IResearchGoal goal);
-
-	Collection<ItemStackWrapperCrafting> getResources();
-
-	int getNumCrafted();
-*/
-
 }

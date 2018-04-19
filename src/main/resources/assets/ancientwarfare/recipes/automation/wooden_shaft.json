@@ -1,17 +1,17 @@
 {
-  "type": "forge:ore_shaped",
-  "pattern": [
-    " P ",
-    " P ",
-    " P "
-  ],
-  "key": {
-    "P": {
-      "item": "#PLANKWOOD"
+    "type": "forge:ore_shaped",
+    "pattern": [
+        " P ",
+        " P ",
+        " P "
+    ],
+    "key": {
+        "P": {
+            "item": "#PLANKWOOD"
+        }
+    },
+    "result": {
+        "item": "ancientwarfare:component",
+        "data": 6
     }
-  },
-  "result": {
-    "item": "ancientwarfare:component",
-    "data": 6
-  }
 }

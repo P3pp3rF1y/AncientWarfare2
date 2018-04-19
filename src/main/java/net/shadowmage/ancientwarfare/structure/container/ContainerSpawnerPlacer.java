@@ -13,97 +13,97 @@ import javax.annotation.Nonnull;
 
 public class ContainerSpawnerPlacer extends ContainerBase {
 
-    public String entityId;
-    /*
-     * all stored in tag as short
-     */
-    public int delay;
-    public int minSpawnDelay;
-    public int maxSpawnDelay;
-    public int spawnCount;
-    public int maxNearbyEntities;
-    public int requiredPlayerRange;
-    public int spawnRange;
+	public String entityId;
+	/*
+	 * all stored in tag as short
+	 */
+	public int delay;
+	public int minSpawnDelay;
+	public int maxSpawnDelay;
+	public int spawnCount;
+	public int maxNearbyEntities;
+	public int requiredPlayerRange;
+	public int spawnRange;
 
-    public ContainerSpawnerPlacer(EntityPlayer player, int x, int y, int z) {
-        super(player);
-        @Nonnull ItemStack stack = EntityTools.getItemFromEitherHand(player, ItemSpawnerPlacer.class);
-        if (isInValid(stack)) {
-            throw new IllegalArgumentException("Incorrect held item");
-        }
-        if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey("spawnerData")) {
-            entityId = "minecraft:pig";
-            delay = 20;
-            minSpawnDelay = 800;
-            maxSpawnDelay = 800;
-            spawnCount = 4;
-            maxNearbyEntities = 6;
-            requiredPlayerRange = 16;
-            spawnRange = 4;
-        } else {
-            NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData");
-            if (tag.hasKey("SpawnPotentials", Constants.NBT.TAG_LIST)) {
-                NBTTagList nbttaglist = tag.getTagList("SpawnPotentials", 10);
-                if (nbttaglist.tagCount() > 0) {
-                    entityId = nbttaglist.getCompoundTagAt(0).getCompoundTag("Entity").getString("id");
-                }
-            } else {
-                entityId = "minecraft:pig";
-            }
-            delay = tag.getShort("Delay");
-            minSpawnDelay = tag.getShort("MinSpawnDelay");
-            maxSpawnDelay = tag.getShort("MaxSpawnDelay");
-            spawnCount = tag.getShort("SpawnCount");
-            maxNearbyEntities = tag.getShort("MaxNearbyEntities");
-            requiredPlayerRange = tag.getShort("RequiredPlayerRange");
-            spawnRange = tag.getShort("SpawnRange");
-            /*
-             * TODO add input fields for 'custom mob data'
+	public ContainerSpawnerPlacer(EntityPlayer player, int x, int y, int z) {
+		super(player);
+		@Nonnull ItemStack stack = EntityTools.getItemFromEitherHand(player, ItemSpawnerPlacer.class);
+		if (isInValid(stack)) {
+			throw new IllegalArgumentException("Incorrect held item");
+		}
+		if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey("spawnerData")) {
+			entityId = "minecraft:pig";
+			delay = 20;
+			minSpawnDelay = 800;
+			maxSpawnDelay = 800;
+			spawnCount = 4;
+			maxNearbyEntities = 6;
+			requiredPlayerRange = 16;
+			spawnRange = 4;
+		} else {
+			NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData");
+			if (tag.hasKey("SpawnPotentials", Constants.NBT.TAG_LIST)) {
+				NBTTagList nbttaglist = tag.getTagList("SpawnPotentials", 10);
+				if (nbttaglist.tagCount() > 0) {
+					entityId = nbttaglist.getCompoundTagAt(0).getCompoundTag("Entity").getString("id");
+				}
+			} else {
+				entityId = "minecraft:pig";
+			}
+			delay = tag.getShort("Delay");
+			minSpawnDelay = tag.getShort("MinSpawnDelay");
+			maxSpawnDelay = tag.getShort("MaxSpawnDelay");
+			spawnCount = tag.getShort("SpawnCount");
+			maxNearbyEntities = tag.getShort("MaxNearbyEntities");
+			requiredPlayerRange = tag.getShort("RequiredPlayerRange");
+			spawnRange = tag.getShort("SpawnRange");
+			/*
+			 * TODO add input fields for 'custom mob data'
              */
-        }
-        addPlayerSlots();
-        removeSlots();
-    }
+		}
+		addPlayerSlots();
+		removeSlots();
+	}
 
-    @Override
-    public void handlePacketData(NBTTagCompound tag) {
-        if (tag.hasKey("spawnerData")) {
-            @Nonnull ItemStack stack = EntityTools.getItemFromEitherHand(player, ItemSpawnerPlacer.class);
-            if (isInValid(stack)) {
-                return;
-            }
-            stack.setTagInfo("spawnerData", tag.getCompoundTag("spawnerData"));
-            detectAndSendChanges();
-        }
-    }
+	@Override
+	public void handlePacketData(NBTTagCompound tag) {
+		if (tag.hasKey("spawnerData")) {
+			@Nonnull ItemStack stack = EntityTools.getItemFromEitherHand(player, ItemSpawnerPlacer.class);
+			if (isInValid(stack)) {
+				return;
+			}
+			stack.setTagInfo("spawnerData", tag.getCompoundTag("spawnerData"));
+			detectAndSendChanges();
+		}
+	}
 
-    /*
-     * onGuiClose -- called from client-side to send stored data to server to imprint on item
-     */
-    public void sendDataToServer() {
-        NBTTagCompound tag2 = new NBTTagCompound();
-        NBTTagCompound tag = new NBTTagCompound();
+	/*
+	 * onGuiClose -- called from client-side to send stored data to server to imprint on item
+	 */
+	public void sendDataToServer() {
+		NBTTagCompound tag2 = new NBTTagCompound();
+		NBTTagCompound tag = new NBTTagCompound();
 
-        NBTTagList potentials = new NBTTagList();
-        NBTTagCompound entity = new NBTTagCompound();
-        entity.setString("id", this.entityId);
-        NBTTagCompound weightedEntity = new NBTTagCompound();
-        weightedEntity.setTag("Entity", entity);
-        potentials.appendTag(weightedEntity);
-        tag.setTag("SpawnPotentials", potentials);
-        tag.setShort("Delay", (short) this.delay);
-        tag.setShort("MinSpawnDelay", (short) this.minSpawnDelay);
-        tag.setShort("MaxSpawnDelay", (short) this.maxSpawnDelay);
-        tag.setShort("SpawnCount", (short) this.spawnCount);
-        tag.setShort("MaxNearbyEntities", (short) this.maxNearbyEntities);
-        tag.setShort("RequiredPlayerRange", (short) this.requiredPlayerRange);
-        tag.setShort("SpawnRange", (short) this.spawnRange);
+		NBTTagList potentials = new NBTTagList();
+		NBTTagCompound entity = new NBTTagCompound();
+		entity.setString("id", this.entityId);
+		NBTTagCompound weightedEntity = new NBTTagCompound();
+		weightedEntity.setTag("Entity", entity);
+		potentials.appendTag(weightedEntity);
+		tag.setTag("SpawnPotentials", potentials);
+		tag.setShort("Delay", (short) this.delay);
+		tag.setShort("MinSpawnDelay", (short) this.minSpawnDelay);
+		tag.setShort("MaxSpawnDelay", (short) this.maxSpawnDelay);
+		tag.setShort("SpawnCount", (short) this.spawnCount);
+		tag.setShort("MaxNearbyEntities", (short) this.maxNearbyEntities);
+		tag.setShort("RequiredPlayerRange", (short) this.requiredPlayerRange);
+		tag.setShort("SpawnRange", (short) this.spawnRange);
 
-        tag2.setTag("spawnerData", tag);
-        sendDataToServer(tag2);
-    }
+		tag2.setTag("spawnerData", tag);
+		sendDataToServer(tag2);
+	}
 
-    private boolean isInValid(ItemStack stack) {
-        return stack.isEmpty() || !(stack.getItem() instanceof ItemSpawnerPlacer);
-    }
+	private boolean isInValid(ItemStack stack) {
+		return stack.isEmpty() || !(stack.getItem() instanceof ItemSpawnerPlacer);
+	}
 }

@@ -16,25 +16,25 @@ import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 
 public class BlockBaseStructure extends BlockBase implements IClientRegistrar {
-    public BlockBaseStructure(Material material, String regName) {
-        super(material, AncientWarfareStructures.modID, regName);
-        setCreativeTab(AWStructuresItemLoader.structureTab);
+	public BlockBaseStructure(Material material, String regName) {
+		super(material, AncientWarfareStructures.modID, regName);
+		setCreativeTab(AWStructuresItemLoader.structureTab);
 
-        AncientWarfareStructures.proxy.addClientRegistrar(this);
-    }
+		AncientWarfareStructures.proxy.addClientRegistrar(this);
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerClient() {
-        final ResourceLocation assetLocation = new ResourceLocation(AncientWarfareCore.modID, "structure/" + getRegistryName().getResourcePath());
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerClient() {
+		final ResourceLocation assetLocation = new ResourceLocation(AncientWarfareCore.modID, "structure/" + getRegistryName().getResourcePath());
 
-        ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
-            @Override
-            protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                return new ModelResourceLocation(assetLocation, getPropertyString(state.getProperties()));
-            }
-        });
+		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
+			@Override
+			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+				return new ModelResourceLocation(assetLocation, getPropertyString(state.getProperties()));
+			}
+		});
 
-        ModelLoaderHelper.registerItem(this, "structure", "inventory");
-    }
+		ModelLoaderHelper.registerItem(this, "structure", "inventory");
+	}
 }

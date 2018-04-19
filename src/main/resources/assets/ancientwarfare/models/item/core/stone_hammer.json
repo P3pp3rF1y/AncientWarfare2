@@ -1,6 +1,6 @@
 {
-  "parent": "item/handheld",
-  "textures": {
-    "layer0": "ancientwarfare:items/core/stone_hammer"
-  }
+    "parent": "item/handheld",
+    "textures": {
+        "layer0": "ancientwarfare:items/core/stone_hammer"
+    }
 }

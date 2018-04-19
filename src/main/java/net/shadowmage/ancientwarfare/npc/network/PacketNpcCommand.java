@@ -17,51 +17,51 @@ import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.CommandType;
  */
 public class PacketNpcCommand extends PacketBase {
 
-    private CommandType type;
-    private boolean blockTarget;
-    private BlockPos pos;
-    private int entityID;
+	private CommandType type;
+	private boolean blockTarget;
+	private BlockPos pos;
+	private int entityID;
 
-    public PacketNpcCommand(CommandType type, Entity ent) {
-        this.type = type;
-        this.blockTarget = false;
-        this.entityID = ent.getEntityId();
-    }
+	public PacketNpcCommand(CommandType type, Entity ent) {
+		this.type = type;
+		this.blockTarget = false;
+		this.entityID = ent.getEntityId();
+	}
 
-    public PacketNpcCommand(CommandType type, BlockPos pos) {
-        this.type = type;
-        this.blockTarget = true;
-        this.pos = pos;
-    }
+	public PacketNpcCommand(CommandType type, BlockPos pos) {
+		this.type = type;
+		this.blockTarget = true;
+		this.pos = pos;
+	}
 
-    public PacketNpcCommand() {
-    }
+	public PacketNpcCommand() {
+	}
 
-    @Override
-    protected void writeToStream(ByteBuf data) {
-        data.writeInt(type.ordinal());
-        data.writeBoolean(blockTarget);
-        if (blockTarget) {
-            data.writeLong(pos.toLong());
-        } else {
-            data.writeInt(entityID);
-        }
-    }
+	@Override
+	protected void writeToStream(ByteBuf data) {
+		data.writeInt(type.ordinal());
+		data.writeBoolean(blockTarget);
+		if (blockTarget) {
+			data.writeLong(pos.toLong());
+		} else {
+			data.writeInt(entityID);
+		}
+	}
 
-    @Override
-    protected void readFromStream(ByteBuf data) {
-        this.type = CommandType.values()[data.readInt()];
-        blockTarget = data.readBoolean();
-        if (blockTarget) {
-            pos = BlockPos.fromLong(data.readLong());
-        } else {
-            entityID = data.readInt();
-        }
-    }
+	@Override
+	protected void readFromStream(ByteBuf data) {
+		this.type = CommandType.values()[data.readInt()];
+		blockTarget = data.readBoolean();
+		if (blockTarget) {
+			pos = BlockPos.fromLong(data.readLong());
+		} else {
+			entityID = data.readInt();
+		}
+	}
 
-    @Override
-    protected void execute(EntityPlayer player) {
-        NpcCommand.handleServerCommand(player, type, blockTarget, pos, entityID);
-    }
+	@Override
+	protected void execute(EntityPlayer player) {
+		NpcCommand.handleServerCommand(player, type, blockTarget, pos, entityID);
+	}
 
 }

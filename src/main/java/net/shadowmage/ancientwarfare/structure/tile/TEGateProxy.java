@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.structure.tile;
 
 import net.minecraft.entity.Entity;
@@ -34,86 +35,86 @@ import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import java.util.List;
 import java.util.UUID;
 
-public class TEGateProxy extends TileEntity implements ITickable{
+public class TEGateProxy extends TileEntity implements ITickable {
 
-    private EntityGate owner = null;
-    private UUID entityID = null;
-    private int noParentTicks = 0;
+	private EntityGate owner = null;
+	private UUID entityID = null;
+	private int noParentTicks = 0;
 
-    public void setOwner(EntityGate gate) {
-        this.owner = gate;
-        this.entityID = owner.getPersistentID();
-        markDirty();
-    }
+	public void setOwner(EntityGate gate) {
+		this.owner = gate;
+		this.entityID = owner.getPersistentID();
+		markDirty();
+	}
 
-    @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        super.readFromNBT(tag);
-        if (tag.hasKey("msb") && tag.hasKey("lsb")) {
-            long msb = tag.getLong("msb");
-            long lsb = tag.getLong("lsb");
-            entityID = new UUID(msb, lsb);
-        }
-    }
+	@Override
+	public void readFromNBT(NBTTagCompound tag) {
+		super.readFromNBT(tag);
+		if (tag.hasKey("msb") && tag.hasKey("lsb")) {
+			long msb = tag.getLong("msb");
+			long lsb = tag.getLong("lsb");
+			entityID = new UUID(msb, lsb);
+		}
+	}
 
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        super.writeToNBT(tag);
-        if (this.entityID != null) {
-            tag.setLong("msb", entityID.getMostSignificantBits());
-            tag.setLong("lsb", entityID.getLeastSignificantBits());
-        }
-        return tag;
-    }
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+		super.writeToNBT(tag);
+		if (this.entityID != null) {
+			tag.setLong("msb", entityID.getMostSignificantBits());
+			tag.setLong("lsb", entityID.getLeastSignificantBits());
+		}
+		return tag;
+	}
 
-    public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
-        return this.getOwner() == null || this.getOwner().processInitialInteract(player, hand);
-    }
+	public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
+		return this.getOwner() == null || this.getOwner().processInitialInteract(player, hand);
+	}
 
-    public void onBlockAttacked(EntityPlayer player) {
-        if (this.getOwner() != null) {
-            DamageSource source = player!=null ? DamageSource.causePlayerDamage(player) : DamageSource.GENERIC;
-            this.getOwner().attackEntityFrom(source, 1);
-        }
-    }
+	public void onBlockAttacked(EntityPlayer player) {
+		if (this.getOwner() != null) {
+			DamageSource source = player != null ? DamageSource.causePlayerDamage(player) : DamageSource.GENERIC;
+			this.getOwner().attackEntityFrom(source, 1);
+		}
+	}
 
-    public ItemStack onBlockPicked(RayTraceResult target) {
-        if (this.getOwner() != null) {
-            return getOwner().getPickedResult(target);
-        }
-        return ItemStack.EMPTY;
-    }
+	public ItemStack onBlockPicked(RayTraceResult target) {
+		if (this.getOwner() != null) {
+			return getOwner().getPickedResult(target);
+		}
+		return ItemStack.EMPTY;
+	}
 
-    @Override
-    public void update() {
-        if (!hasWorld() || this.world.isRemote) {
-            return;
-        }
-        if (this.entityID == null) {
-            this.noParentTicks++;
-        } else if (this.getOwner() == null) {
-            this.noParentTicks++;
+	@Override
+	public void update() {
+		if (!hasWorld() || this.world.isRemote) {
+			return;
+		}
+		if (this.entityID == null) {
+			this.noParentTicks++;
+		} else if (this.getOwner() == null) {
+			this.noParentTicks++;
 
-            List<Entity> entities = this.world.loadedEntityList;
-            for (Entity ent : entities) {
-                if (ent instanceof EntityGate && ent.getPersistentID() != null && ent.getPersistentID().equals(entityID)) {
-                    this.owner = (EntityGate) ent;
-                    this.noParentTicks = 0;
-                    break;
-                }
-            }
-        }
-        if (this.noParentTicks >= 100 || (getOwner() != null && getOwner().isDead)) {
-            owner = null;
-            this.world.setBlockToAir(pos);
-        }
-    }
+			List<Entity> entities = this.world.loadedEntityList;
+			for (Entity ent : entities) {
+				if (ent instanceof EntityGate && ent.getPersistentID() != null && ent.getPersistentID().equals(entityID)) {
+					this.owner = (EntityGate) ent;
+					this.noParentTicks = 0;
+					break;
+				}
+			}
+		}
+		if (this.noParentTicks >= 100 || (getOwner() != null && getOwner().isDead)) {
+			owner = null;
+			this.world.setBlockToAir(pos);
+		}
+	}
 
-    public boolean isGateClosed() {
-        return getOwner() != null && getOwner().isClosed();
-    }
+	public boolean isGateClosed() {
+		return getOwner() != null && getOwner().isClosed();
+	}
 
-    public EntityGate getOwner() {
-        return owner;
-    }
+	public EntityGate getOwner() {
+		return owner;
+	}
 }

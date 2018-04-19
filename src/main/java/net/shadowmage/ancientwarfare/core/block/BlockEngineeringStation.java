@@ -36,112 +36,113 @@ import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
 public class BlockEngineeringStation extends BlockBaseCore implements IClientRegistrar, IBakeryProvider, IRotatableBlock {
 
-    protected BlockEngineeringStation() {
-        super(Material.ROCK, "engineering_station");
-        setHardness(2.f);
+	protected BlockEngineeringStation() {
+		super(Material.ROCK, "engineering_station");
+		setHardness(2.f);
 
-        AncientWarfareCore.proxy.addClientRegistrar(this);
-    }
+		AncientWarfareCore.proxy.addClientRegistrar(this);
+	}
 
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer.Builder(this).add(CoreProperties.UNLISTED_HORIZONTAL_FACING).build();
-    }
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer.Builder(this).add(CoreProperties.UNLISTED_HORIZONTAL_FACING).build();
+	}
 
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        return 0;
-    }
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return 0;
+	}
 
-    @Override
-    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        EnumFacing facing = EnumFacing.NORTH;
-        TileEntity tileentity = world.getTileEntity(pos);
+	@Override
+	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+		EnumFacing facing = EnumFacing.NORTH;
+		TileEntity tileentity = world.getTileEntity(pos);
 
-        if (tileentity instanceof TileEngineeringStation) {
-            facing = ((TileEngineeringStation) tileentity).getPrimaryFacing();
-        }
+		if (tileentity instanceof TileEngineeringStation) {
+			facing = ((TileEngineeringStation) tileentity).getPrimaryFacing();
+		}
 
-        return ((IExtendedBlockState) super.getExtendedState(state, world, pos)).withProperty(CoreProperties.UNLISTED_HORIZONTAL_FACING, facing);
-    }
+		return ((IExtendedBlockState) super.getExtendedState(state, world, pos)).withProperty(CoreProperties.UNLISTED_HORIZONTAL_FACING, facing);
+	}
 
-    @Override
-    public boolean hasTileEntity(IBlockState state) {
-        return true;
-    }
+	@Override
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
 
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileEngineeringStation();
-    }
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		return new TileEngineeringStation();
+	}
 
-    @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if (!world.isRemote) {
-            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_CRAFTING, pos);
-        }
-        return true;
-    }
+	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if (!world.isRemote) {
+			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_CRAFTING, pos);
+		}
+		return true;
+	}
 
-    @Override
-    public void breakBlock(World world, BlockPos pos, IBlockState state) {
-        TileEngineeringStation tile = (TileEngineeringStation) world.getTileEntity(pos);
-        if (tile != null) {
-            tile.onBlockBreak();
-        }
-        super.breakBlock(world, pos, state);
-    }
+	@Override
+	public void breakBlock(World world, BlockPos pos, IBlockState state) {
+		TileEngineeringStation tile = (TileEngineeringStation) world.getTileEntity(pos);
+		if (tile != null) {
+			tile.onBlockBreak();
+		}
+		super.breakBlock(world, pos, state);
+	}
 
-    @Override
-    public RotationType getRotationType() {
-        return RotationType.FOUR_WAY;
-    }
+	@Override
+	public RotationType getRotationType() {
+		return RotationType.FOUR_WAY;
+	}
 
-    @Override
-    public boolean invertFacing() {
-        return true;
-    }
+	@Override
+	public boolean invertFacing() {
+		return true;
+	}
 
-    @Override
-    public boolean isOpaqueCube(IBlockState state) {
-        return false;
-    }
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    public boolean isNormalCube(IBlockState state) {
-        return false;
-    }
+	@Override
+	public boolean isNormalCube(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    public boolean isFullCube(IBlockState state) {
-        return false;
-    }
+	@Override
+	public boolean isFullCube(IBlockState state) {
+		return false;
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerClient() {
-        NetworkHandler.registerGui(NetworkHandler.GUI_CRAFTING, GuiEngineeringStation.class);
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerClient() {
+		NetworkHandler.registerGui(NetworkHandler.GUI_CRAFTING, GuiEngineeringStation.class);
 
-        ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
-            @Override protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                return EngineeringStationRenderer.MODEL_LOCATION;
-            }
-        });
+		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
+			@Override
+			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+				return EngineeringStationRenderer.MODEL_LOCATION;
+			}
+		});
 
-        ModelRegistryHelper.register(EngineeringStationRenderer.MODEL_LOCATION, new CCBakeryModel() {
-            @Override
-            public TextureAtlasSprite getParticleTexture() {
-                return EngineeringStationRenderer.INSTANCE.sprite;
-            }
-        });
+		ModelRegistryHelper.register(EngineeringStationRenderer.MODEL_LOCATION, new CCBakeryModel() {
+			@Override
+			public TextureAtlasSprite getParticleTexture() {
+				return EngineeringStationRenderer.INSTANCE.sprite;
+			}
+		});
 
-        ModelLoaderHelper.registerItem(this, EngineeringStationRenderer.MODEL_LOCATION);
+		ModelLoaderHelper.registerItem(this, EngineeringStationRenderer.MODEL_LOCATION);
 
-        ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder().addKeyProperties(CoreProperties.UNLISTED_HORIZONTAL_FACING).build());
-    }
+		ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder().addKeyProperties(CoreProperties.UNLISTED_HORIZONTAL_FACING).build());
+	}
 
-    @Override
-    public IBakery getBakery() {
-        return EngineeringStationRenderer.INSTANCE;
-    }
+	@Override
+	public IBakery getBakery() {
+		return EngineeringStationRenderer.INSTANCE;
+	}
 }

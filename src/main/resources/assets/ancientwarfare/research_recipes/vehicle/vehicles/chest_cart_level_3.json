@@ -1,0 +1,25 @@
+{
+    "type": "ancientwarfare:shapeless_research_recipe",
+    "research": "trade",
+    "ingredients": [
+        {
+            "type": "ancientwarfare:item_count",
+            "item": "ancientwarfarevehicle:iron_core_wood",
+            "count": 3
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "chest",
+            "count": 8
+        },
+        {
+            "item": "ancientwarfarevehicle:equipment_bay"
+        }
+    ],
+    "result": {
+        "type": "minecraft:item_nbt",
+        "item": "ancientwarfarevehicle:spawner",
+        "data": 17,
+        "nbt": "{spawnData:{level:3}}"
+    }
+}

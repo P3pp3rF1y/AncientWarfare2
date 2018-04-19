@@ -17,7 +17,7 @@ public class TileOreProcessor extends TileWorksiteBase {
 
 	private final ItemStackHandler inventory;
 
-    public TileOreProcessor() {
+	public TileOreProcessor() {
 		inventory = new ItemStackHandler(2) {
 			@Override
 			protected void onContentsChanged(int slot) {
@@ -25,65 +25,64 @@ public class TileOreProcessor extends TileWorksiteBase {
 			}
 		};
 
-    }
+	}
 
-    @Override
-    public boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
-        // TODO implement GUI
-        return true;
-    }
+	@Override
+	public boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
+		// TODO implement GUI
+		return true;
+	}
 
-    @Override
-    public void onBlockBroken() {
-        super.onBlockBroken();
-        if (!world.isRemote) {
+	@Override
+	public void onBlockBroken() {
+		super.onBlockBroken();
+		if (!world.isRemote) {
 			InventoryTools.dropItemsInWorld(world, inventory, pos);
 		}
-    }
+	}
 
-    @Override
-    protected boolean processWork() {
-        // TODO Auto-generated method stub
-        return false;
-    }
+	@Override
+	protected boolean processWork() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-    @Override
-    protected boolean hasWorksiteWork() {
-        // TODO Auto-generated method stub
-        return false;
-    }
+	@Override
+	protected boolean hasWorksiteWork() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-    @Override
-    protected void updateWorksite() {
-        // TODO Auto-generated method stub
-    }
+	@Override
+	protected void updateWorksite() {
+		// TODO Auto-generated method stub
+	}
 
-    @Override
-    public WorkType getWorkType() {
-        return WorkType.CRAFTING;
-    }
+	@Override
+	public WorkType getWorkType() {
+		return WorkType.CRAFTING;
+	}
 
-//************************************* BRIDGE/TEMPLATE/ACCESSOR METHODS ****************************************//
+	//************************************* BRIDGE/TEMPLATE/ACCESSOR METHODS ****************************************//
 
-    @Override
-    public EnumSet<WorksiteUpgrade> getValidUpgrades() {
-        return EnumSet.noneOf(WorksiteUpgrade.class);
-    }//NOOP
+	@Override
+	public EnumSet<WorksiteUpgrade> getValidUpgrades() {
+		return EnumSet.noneOf(WorksiteUpgrade.class);
+	}//NOOP
 
+	//************************************* STANDARD NBT / DATA PACKET METHODS ****************************************//
+	@Override
+	public void readFromNBT(NBTTagCompound tag) {
+		super.readFromNBT(tag);
+		inventory.deserializeNBT(tag.getCompoundTag("inventory"));
+	}
 
-    //************************************* STANDARD NBT / DATA PACKET METHODS ****************************************//
-    @Override
-    public void readFromNBT(NBTTagCompound tag) {
-        super.readFromNBT(tag);
-        inventory.deserializeNBT(tag.getCompoundTag("inventory"));
-    }
-
-    @Override
-    public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-        super.writeToNBT(tag);
-        tag.setTag("inventory", inventory.serializeNBT());
-        return tag;
-    }
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
+		super.writeToNBT(tag);
+		tag.setTag("inventory", inventory.serializeNBT());
+		return tag;
+	}
 
 	@Override
 	public boolean hasCapability(Capability<?> capability, @Nullable EnumFacing facing) {
@@ -93,7 +92,7 @@ public class TileOreProcessor extends TileWorksiteBase {
 	@Nullable
 	@Override
 	public <T> T getCapability(Capability<T> capability, @Nullable EnumFacing facing) {
-		if(capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
 			return (T) inventory;
 		}
 		return super.getCapability(capability, facing);

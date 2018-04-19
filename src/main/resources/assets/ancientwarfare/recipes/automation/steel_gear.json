@@ -1,17 +1,17 @@
 {
-  "type": "forge:ore_shaped",
-  "pattern": [
-    "I I",
-    " I ",
-    "I I"
-  ],
-  "key": {
-    "I": {
-      "item": "#INGOTSTEEL"
+    "type": "forge:ore_shaped",
+    "pattern": [
+        "I I",
+        " I ",
+        "I I"
+    ],
+    "key": {
+        "I": {
+            "item": "#INGOTSTEEL"
+        }
+    },
+    "result": {
+        "item": "ancientwarfare:component",
+        "data": 2
     }
-  },
-  "result": {
-    "item": "ancientwarfare:component",
-    "data": 2
-  }
 }

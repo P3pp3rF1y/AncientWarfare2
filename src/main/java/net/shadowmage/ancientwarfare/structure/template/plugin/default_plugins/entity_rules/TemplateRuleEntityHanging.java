@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.entity_rules;
 
 import net.minecraft.entity.Entity;
@@ -34,60 +35,60 @@ import net.shadowmage.ancientwarfare.structure.template.build.StructureBuildingE
 
 public class TemplateRuleEntityHanging extends TemplateRuleVanillaEntity {
 
-    public NBTTagCompound tag = new NBTTagCompound();
-    public EnumFacing direction;
+	public NBTTagCompound tag = new NBTTagCompound();
+	public EnumFacing direction;
 
-    BlockPos hangTarget = BlockPos.ORIGIN;//cached location for use during placement
+	BlockPos hangTarget = BlockPos.ORIGIN;//cached location for use during placement
 
-    public TemplateRuleEntityHanging(World world, Entity entity, int turns, int x, int y, int z) {
-        super(world, entity, turns, x, y, z);
-        EntityHanging hanging = (EntityHanging) entity;
-        entity.writeToNBT(tag);
-        this.direction = EnumFacing.HORIZONTALS[(hanging.facingDirection.ordinal() + turns) % 4];
-        tag.removeTag("UUIDMost");
-        tag.removeTag("UUIDLeast");
-    }
+	public TemplateRuleEntityHanging(World world, Entity entity, int turns, int x, int y, int z) {
+		super(world, entity, turns, x, y, z);
+		EntityHanging hanging = (EntityHanging) entity;
+		entity.writeToNBT(tag);
+		this.direction = EnumFacing.HORIZONTALS[(hanging.facingDirection.ordinal() + turns) % 4];
+		tag.removeTag("UUIDMost");
+		tag.removeTag("UUIDLeast");
+	}
 
-    public TemplateRuleEntityHanging() {
+	public TemplateRuleEntityHanging() {
 
-    }
+	}
 
-    @Override
-    public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) throws EntityPlacementException {
-        Entity e = EntityList.createEntityByIDFromName(registryName, world);
-        if (e == null) {
-            throw new EntityPlacementException("Could not create entity for type: " + registryName.toString());
-        }
-        hangTarget = pos;
-        EnumFacing direction = EnumFacing.HORIZONTALS[(this.direction.ordinal() + turns) % 4];
+	@Override
+	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) throws EntityPlacementException {
+		Entity e = EntityList.createEntityByIDFromName(registryName, world);
+		if (e == null) {
+			throw new EntityPlacementException("Could not create entity for type: " + registryName.toString());
+		}
+		hangTarget = pos;
+		EnumFacing direction = EnumFacing.HORIZONTALS[(this.direction.ordinal() + turns) % 4];
 /*
-        hangTarget = pos.offset(direction);
+		hangTarget = pos.offset(direction);
 */
-        tag.setByte("Facing", (byte)direction.getHorizontalIndex());
-        NBTTagList posList = new NBTTagList();
-        posList.appendTag(new NBTTagDouble(hangTarget.getX()));
-        posList.appendTag(new NBTTagDouble(hangTarget.getY()));
-        posList.appendTag(new NBTTagDouble(hangTarget.getZ()));
-        tag.setTag("Pos", posList);
-        tag.setInteger("TileX", hangTarget.getX());
-        tag.setInteger("TileY", hangTarget.getY());
-        tag.setInteger("TileZ", hangTarget.getZ());
-        e.readFromNBT(tag);
-        world.spawnEntity(e);
-    }
+		tag.setByte("Facing", (byte) direction.getHorizontalIndex());
+		NBTTagList posList = new NBTTagList();
+		posList.appendTag(new NBTTagDouble(hangTarget.getX()));
+		posList.appendTag(new NBTTagDouble(hangTarget.getY()));
+		posList.appendTag(new NBTTagDouble(hangTarget.getZ()));
+		tag.setTag("Pos", posList);
+		tag.setInteger("TileX", hangTarget.getX());
+		tag.setInteger("TileY", hangTarget.getY());
+		tag.setInteger("TileZ", hangTarget.getZ());
+		e.readFromNBT(tag);
+		world.spawnEntity(e);
+	}
 
-    @Override
-    public void writeRuleData(NBTTagCompound tag) {
-        super.writeRuleData(tag);
-        tag.setByte("direction", (byte) direction.ordinal());
-        tag.setTag("entityData", this.tag);
-    }
+	@Override
+	public void writeRuleData(NBTTagCompound tag) {
+		super.writeRuleData(tag);
+		tag.setByte("direction", (byte) direction.ordinal());
+		tag.setTag("entityData", this.tag);
+	}
 
-    @Override
-    public void parseRuleData(NBTTagCompound tag) {
-        super.parseRuleData(tag);
-        this.tag = tag.getCompoundTag("entityData");
-        this.direction = EnumFacing.VALUES[tag.getByte("direction")];
-    }
+	@Override
+	public void parseRuleData(NBTTagCompound tag) {
+		super.parseRuleData(tag);
+		this.tag = tag.getCompoundTag("entityData");
+		this.direction = EnumFacing.VALUES[tag.getByte("direction")];
+	}
 
 }

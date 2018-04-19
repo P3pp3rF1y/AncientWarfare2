@@ -4,14 +4,14 @@ import net.minecraft.world.World;
 
 public class NpcDesertMountedArcher extends NpcFactionMountedArcher {
 
-    public NpcDesertMountedArcher(World par1World) {
-        super(par1World);
-        // TODO Auto-generated constructor stub
-    }
+	public NpcDesertMountedArcher(World par1World) {
+		super(par1World);
+		// TODO Auto-generated constructor stub
+	}
 
-    @Override
-    public String getNpcType() {
-        return "desert.mounted_archer";
-    }
+	@Override
+	public String getNpcType() {
+		return "desert.mounted_archer";
+	}
 
 }

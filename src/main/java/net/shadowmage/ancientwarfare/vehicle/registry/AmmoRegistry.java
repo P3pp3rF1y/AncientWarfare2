@@ -129,7 +129,6 @@ public class AmmoRegistry {
 	public static IAmmo ammoTorpedo30;
 	public static IAmmo ammoTorpedo45;
 
-
 	private AmmoRegistry() {
 	}
 

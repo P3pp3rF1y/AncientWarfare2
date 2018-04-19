@@ -12,25 +12,25 @@ import net.shadowmage.ancientwarfare.core.gui.Listener;
  */
 public abstract class ClickableArea extends GuiElement {
 
-    public ClickableArea(int topLeftX, int topLeftY, int width, int height) {
-        super(topLeftX, topLeftY, width, height);
-        Listener listener = new Listener(Listener.MOUSE_DOWN) {
-            @Override
-            public boolean onEvent(GuiElement widget, ActivationEvent evt) {
-                if (ClickableArea.this.isMouseOverElement(evt.mx, evt.my)) {
-                    onClicked();
-                }
-                return true;
-            }
-        };
-        addNewListener(listener);
-    }
+	public ClickableArea(int topLeftX, int topLeftY, int width, int height) {
+		super(topLeftX, topLeftY, width, height);
+		Listener listener = new Listener(Listener.MOUSE_DOWN) {
+			@Override
+			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
+				if (ClickableArea.this.isMouseOverElement(evt.mx, evt.my)) {
+					onClicked();
+				}
+				return true;
+			}
+		};
+		addNewListener(listener);
+	}
 
-    protected abstract void onClicked();
+	protected abstract void onClicked();
 
-    @Override
-    public void render(int mouseX, int mouseY, float partialTick) {
-        //NOOP
-    }
+	@Override
+	public void render(int mouseX, int mouseY, float partialTick) {
+		//NOOP
+	}
 
 }

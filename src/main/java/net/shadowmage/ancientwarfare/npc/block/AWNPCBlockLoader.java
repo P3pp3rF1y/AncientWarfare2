@@ -14,18 +14,18 @@ import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 @Mod.EventBusSubscriber(modid = AncientWarfareNPC.modID)
 public class AWNPCBlockLoader {
 
-    @SubscribeEvent
-    public static void registerItemBlocks(RegistryEvent.Register<Item> event) {
-        IForgeRegistry<Item> registry = event.getRegistry();
+	@SubscribeEvent
+	public static void registerItemBlocks(RegistryEvent.Register<Item> event) {
+		IForgeRegistry<Item> registry = event.getRegistry();
 
-        registry.register(new ItemBlockOwned(AWNPCBlocks.townHall));
-    }
+		registry.register(new ItemBlockOwned(AWNPCBlocks.townHall));
+	}
 
-    @SubscribeEvent
-    public static void register(RegistryEvent.Register<Block> event) {
-        IForgeRegistry<Block> registry = event.getRegistry();
+	@SubscribeEvent
+	public static void register(RegistryEvent.Register<Block> event) {
+		IForgeRegistry<Block> registry = event.getRegistry();
 
-        registry.register(new BlockTownHall());
-        GameRegistry.registerTileEntity(TileTownHall.class, "town_hall_tile");
-    }
+		registry.register(new BlockTownHall());
+		GameRegistry.registerTileEntity(TileTownHall.class, "town_hall_tile");
+	}
 }

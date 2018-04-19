@@ -6,13 +6,13 @@ import net.minecraft.world.World;
 
 public class TemplateRuleAutomationLogic extends TemplateRuleBlockLogic {
 
-    public TemplateRuleAutomationLogic(World world, BlockPos pos, Block block, int meta, int turns) {
-        super(world, pos, block, meta, turns);
-        // TODO Auto-generated constructor stub
-    }
+	public TemplateRuleAutomationLogic(World world, BlockPos pos, Block block, int meta, int turns) {
+		super(world, pos, block, meta, turns);
+		// TODO Auto-generated constructor stub
+	}
 
-    public TemplateRuleAutomationLogic() {
-        // TODO Auto-generated constructor stub
-    }
+	public TemplateRuleAutomationLogic() {
+		// TODO Auto-generated constructor stub
+	}
 
 }

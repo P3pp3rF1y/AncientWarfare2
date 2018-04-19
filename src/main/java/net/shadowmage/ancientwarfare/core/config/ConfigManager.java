@@ -7,16 +7,14 @@ import java.util.List;
 
 public class ConfigManager {
 
+	private static List<IConfigElement> configElements = new ArrayList<>();
 
-    private static List<IConfigElement> configElements = new ArrayList<>();
+	public static void registerConfigCategory(IConfigElement c) {
+		configElements.add(c);
+	}
 
-    public static void registerConfigCategory(IConfigElement c) {
-        configElements.add(c);
-    }
-
-
-    public static List<IConfigElement> getConfigElements() {
-        return configElements;
-    }
+	public static List<IConfigElement> getConfigElements() {
+		return configElements;
+	}
 
 }

@@ -45,7 +45,7 @@ public class TorqueShaftRenderer extends TorqueTieredRenderer<TileTorqueShaft> {
 	@Override
 	protected Collection<CCModel> applyModelTransforms(Collection<CCModel> modelGroups, EnumFacing face, IExtendedBlockState state) {
 		modelGroups = super.applyModelTransforms(modelGroups, face, state);
-		if(!state.getValue(AutomationProperties.DYNAMIC) && !state.getValue(BlockTorqueTransportShaft.HAS_PREVIOUS)) {
+		if (!state.getValue(AutomationProperties.DYNAMIC) && !state.getValue(BlockTorqueTransportShaft.HAS_PREVIOUS)) {
 			modelGroups.addAll(rotateFacing(gearbox, state.getValue(CoreProperties.UNLISTED_FACING)));
 		}
 
@@ -56,19 +56,19 @@ public class TorqueShaftRenderer extends TorqueTieredRenderer<TileTorqueShaft> {
 	protected void transformMovingParts(Collection<CCModel> transformedGroups, EnumFacing frontFacing, float[] rotations, @Nullable IExtendedBlockState state) {
 		float rotation = rotations[frontFacing.ordinal()];
 
-		transformedGroups.addAll(rotateModels(shaft, frontFacing, new Rotation(rotation, 0, 0, 1).at(new Vector3(8d/16d, 8d/16d, 8d/16d))));
+		transformedGroups.addAll(rotateModels(shaft, frontFacing, new Rotation(rotation, 0, 0, 1).at(new Vector3(8d / 16d, 8d / 16d, 8d / 16d))));
 		boolean hasPrevious = state != null && state.getValue(BlockTorqueTransportShaft.HAS_PREVIOUS);
 		boolean useInput = state != null && state.getValue(AutomationProperties.USE_INPUT);
-		boolean hasNext = state!= null && state.getValue(BlockTorqueTransportShaft.HAS_NEXT);
-		if(!hasNext) {
-			transformedGroups.addAll(rotateModels(outputHead, frontFacing, new Rotation(rotation, 0, 0, 1).at(new Vector3(8d/16d, 8d/16d, 8d/16d))));
+		boolean hasNext = state != null && state.getValue(BlockTorqueTransportShaft.HAS_NEXT);
+		if (!hasNext) {
+			transformedGroups.addAll(rotateModels(outputHead, frontFacing, new Rotation(rotation, 0, 0, 1).at(new Vector3(8d / 16d, 8d / 16d, 8d / 16d))));
 		}
 
-		if(!hasPrevious) {
-			if(useInput) {
+		if (!hasPrevious) {
+			if (useInput) {
 				rotation = state.getValue(AutomationProperties.INPUT_ROTATION);
 			}
-			transformedGroups.addAll(rotateModels(inputHead, frontFacing, new Rotation(rotation, 0, 0, 1).at(new Vector3(8d/16d, 8d/16d, 8d/16d))));
+			transformedGroups.addAll(rotateModels(inputHead, frontFacing, new Rotation(rotation, 0, 0, 1).at(new Vector3(8d / 16d, 8d / 16d, 8d / 16d))));
 		}
 	}
 

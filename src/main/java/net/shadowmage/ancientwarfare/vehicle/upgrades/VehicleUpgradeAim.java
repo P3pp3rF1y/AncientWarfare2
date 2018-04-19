@@ -27,11 +27,6 @@ public class VehicleUpgradeAim extends VehicleUpgradeBase {
 
 	public VehicleUpgradeAim() {
 		super("vehicle_upgrade_aim");
-/* TODO recipe
-		this.neededResearch.add(ResearchGoalNumbers.ballistics2);
-		this.resources.add(new ItemStackWrapperCrafting(Item.paper, 3));
-		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Block.planks, 1), true, false));
-*/
 	}
 
 	@Override

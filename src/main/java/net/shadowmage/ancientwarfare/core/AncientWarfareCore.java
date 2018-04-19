@@ -34,107 +34,96 @@ import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 
 import java.util.UUID;
 
-@Mod
-        (
-                name = "Ancient Warfare Core",
-                modid = AncientWarfareCore.modID,
-                version = "@VERSION@",
-                guiFactory = "net.shadowmage.ancientwarfare.core.gui.options.OptionsGuiFactory",
-                dependencies = CodeChickenLib.MOD_VERSION_DEP
-        )
+@Mod(name = "Ancient Warfare Core", modid = AncientWarfareCore.modID, version = "@VERSION@", guiFactory = "net.shadowmage.ancientwarfare.core.gui.options.OptionsGuiFactory", dependencies = CodeChickenLib.MOD_VERSION_DEP)
 public class AncientWarfareCore {
 
-    public static final String modID = "ancientwarfare";
+	public static final String modID = "ancientwarfare";
 
-    @Instance(value = AncientWarfareCore.modID)
-    public static AncientWarfareCore instance;
+	@Instance(value = AncientWarfareCore.modID)
+	public static AncientWarfareCore instance;
 
-    @SidedProxy
-            (
-                    clientSide = "net.shadowmage.ancientwarfare.core.proxy.ClientProxy",
-                    serverSide = "net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase"
-            )
-    public static CommonProxyBase proxy;
+	@SidedProxy(clientSide = "net.shadowmage.ancientwarfare.core.proxy.ClientProxy", serverSide = "net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase")
+	public static CommonProxyBase proxy;
 
-    public static org.apache.logging.log4j.Logger log;
+	public static org.apache.logging.log4j.Logger log;
 
-    public static AWCoreStatics statics;
-    
-    // Used by FakePlayerFactory
-    public static GameProfile gameProfile = new GameProfile(UUID.nameUUIDFromBytes("AncientWarfareMod".getBytes()), "[AncientWarfareMod]");
+	public static AWCoreStatics statics;
 
-    @EventHandler
-    public void preInit(FMLPreInitializationEvent evt) {
-        /*
-         * setup config file and logger
+	// Used by FakePlayerFactory
+	public static GameProfile gameProfile = new GameProfile(UUID.nameUUIDFromBytes("AncientWarfareMod".getBytes()), "[AncientWarfareMod]");
+
+	@EventHandler
+	public void preInit(FMLPreInitializationEvent evt) {
+		/*
+		 * setup config file and logger
          */
-        log = evt.getModLog();
-        statics = new AWCoreStatics("AncientWarfare");
+		log = evt.getModLog();
+		statics = new AWCoreStatics("AncientWarfare");
 
         /*
          * register server-side network handler and anything that needs loaded on the event busses
          */
-        NetworkHandler.INSTANCE.registerNetwork();//register network handler, server side
+		NetworkHandler.INSTANCE.registerNetwork();//register network handler, server side
 
-        MinecraftForge.EVENT_BUS.register(ResearchTracker.INSTANCE);
-        MinecraftForge.EVENT_BUS.register(this);
-        MinecraftForge.EVENT_BUS.register(this);
+		MinecraftForge.EVENT_BUS.register(ResearchTracker.INSTANCE);
+		MinecraftForge.EVENT_BUS.register(this);
+		MinecraftForge.EVENT_BUS.register(this);
 
 
         /*
          * register GUIs, containers, client-side network handler, renderers
          */
-        NetworkHandler.registerContainer(NetworkHandler.GUI_CRAFTING, ContainerEngineeringStation.class);
-        NetworkHandler.registerContainer(NetworkHandler.GUI_RESEARCH_STATION, ContainerResearchStation.class);
-        NetworkHandler.registerContainer(NetworkHandler.GUI_BACKPACK, ContainerBackpack.class);
-        NetworkHandler.registerContainer(NetworkHandler.GUI_RESEARCH_BOOK, ContainerResearchBook.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_CRAFTING, ContainerEngineeringStation.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_RESEARCH_STATION, ContainerResearchStation.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_BACKPACK, ContainerBackpack.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_RESEARCH_BOOK, ContainerResearchBook.class);
 
-        proxy.preInit();
-    }
+		proxy.preInit();
+	}
 
-    @EventHandler
-    public void init(FMLInitializationEvent evt) {
+	@EventHandler
+	public void init(FMLInitializationEvent evt) {
 
-        proxy.init();
+		proxy.init();
 
-        AWCoreItemLoader.INSTANCE.load();
+		AWCoreItemLoader.INSTANCE.load();
 
-        ResearchGoal.initializeResearch();
+		ResearchGoal.initializeResearch();
 
-        AWCraftingManager.loadRecipes();
+		AWCraftingManager.loadRecipes();
 
         /*
          * Setup compats
          */
-        ModAccessors.init();
-    }
+		ModAccessors.init();
+	}
 
-    @EventHandler
-    public void postinit(FMLPostInitializationEvent evt) {
-        statics.save();
-    }
+	@EventHandler
+	public void postinit(FMLPostInitializationEvent evt) {
+		statics.save();
+	}
 
-    @EventHandler
-    public void serverStartingEvent(FMLServerStartingEvent evt) {
-        evt.registerServerCommand(new CommandResearch());
-    }
-    
-    @SubscribeEvent
-    public void configChangedEvent(OnConfigChangedEvent evt) {
-        if (modID.equals(evt.getModID())) {
-            statics.save();
-            proxy.onConfigChanged();
-        }
-    }
+	@EventHandler
+	public void serverStartingEvent(FMLServerStartingEvent evt) {
+		evt.registerServerCommand(new CommandResearch());
+	}
 
-    @SubscribeEvent
-    public void createResearchRecipeRegistry(RegistryEvent.NewRegistry evt) {
-        AWCraftingManager.init();
-    }
+	@SubscribeEvent
+	public void configChangedEvent(OnConfigChangedEvent evt) {
+		if (modID.equals(evt.getModID())) {
+			statics.save();
+			proxy.onConfigChanged();
+		}
+	}
 
-    @SubscribeEvent(priority = EventPriority.HIGHEST)
-    public void onDimensionUnload(WorldEvent.Unload event) {
-        if (event.getWorld() instanceof WorldServer)
-            AWFakePlayer.onWorldUnload();
-    }
+	@SubscribeEvent
+	public void createResearchRecipeRegistry(RegistryEvent.NewRegistry evt) {
+		AWCraftingManager.init();
+	}
+
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	public void onDimensionUnload(WorldEvent.Unload event) {
+		if (event.getWorld() instanceof WorldServer)
+			AWFakePlayer.onWorldUnload();
+	}
 }

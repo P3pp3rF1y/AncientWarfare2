@@ -1,0 +1,25 @@
+{
+    "type": "ancientwarfare:shapeless_research_recipe",
+    "research": "engineering",
+    "ingredients": [
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "ingotIron",
+            "count": 6
+        },
+        {
+            "type": "ancientwarfare:item_count",
+            "item": "minecraft:wool",
+            "data": 32767,
+            "count": 2
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "plankWood",
+            "count": 2
+        }
+    ],
+    "result": {
+        "item": "ancientwarfarevehicle:equipment_bay"
+    }
+}

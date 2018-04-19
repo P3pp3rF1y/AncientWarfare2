@@ -26,7 +26,6 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelCatapultStandTurret;
 
-
 public class RenderCatapultStandTurret extends RenderVehicleBase {
 
 	ModelCatapultStandTurret model = new ModelCatapultStandTurret();

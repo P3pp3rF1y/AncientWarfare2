@@ -15,34 +15,34 @@ import java.util.Set;
 
 public class ItemConstructionToolLakes extends ItemBaseStructure {
 
-    public ItemConstructionToolLakes(String name) {
-        super(name);
-    }
+	public ItemConstructionToolLakes(String name) {
+		super(name);
+	}
 
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
-        ItemStack stack = player.getHeldItem(hand);
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
+		ItemStack stack = player.getHeldItem(hand);
 
-        if(world.isRemote){
-            return new ActionResult<>(EnumActionResult.SUCCESS, stack);
-        }
-        BlockPos pos = BlockTools.getBlockClickedOn(player, world, true);
-        if (pos == null) {
-            return new ActionResult<>(EnumActionResult.PASS, stack);
-        }
-        if (!world.isAirBlock(pos)) {
-            return new ActionResult<>(EnumActionResult.PASS, stack);
-        }
-        IBlockState state = world.getBlockState(pos);
-        FloodFillPathfinder pf = new FloodFillPathfinder(player.world, pos, state.getBlock(), state, false, true);
-        Set<BlockPos> blocks = pf.doFloodFill();
-        for (BlockPos p : blocks) {
-            player.world.setBlockState(p, Blocks.FLOWING_WATER.getDefaultState());
-        }
-        if (!player.capabilities.isCreativeMode) {
-            stack.shrink(1);
-        }
-        return new ActionResult<>(EnumActionResult.SUCCESS, stack);
-    }
+		if (world.isRemote) {
+			return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+		}
+		BlockPos pos = BlockTools.getBlockClickedOn(player, world, true);
+		if (pos == null) {
+			return new ActionResult<>(EnumActionResult.PASS, stack);
+		}
+		if (!world.isAirBlock(pos)) {
+			return new ActionResult<>(EnumActionResult.PASS, stack);
+		}
+		IBlockState state = world.getBlockState(pos);
+		FloodFillPathfinder pf = new FloodFillPathfinder(player.world, pos, state.getBlock(), state, false, true);
+		Set<BlockPos> blocks = pf.doFloodFill();
+		for (BlockPos p : blocks) {
+			player.world.setBlockState(p, Blocks.FLOWING_WATER.getDefaultState());
+		}
+		if (!player.capabilities.isCreativeMode) {
+			stack.shrink(1);
+		}
+		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+	}
 
 }

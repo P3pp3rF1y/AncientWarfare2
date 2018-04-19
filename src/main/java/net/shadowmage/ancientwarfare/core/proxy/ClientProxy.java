@@ -32,63 +32,60 @@ import java.util.List;
  */
 public class ClientProxy extends ClientProxyBase {
 
-    @Override
-    public void preInit() {
-        super.preInit();
+	@Override
+	public void preInit() {
+		super.preInit();
 
-        MinecraftForge.EVENT_BUS.register(InputHandler.instance);
-        MinecraftForge.EVENT_BUS.register(this);
-        InputHandler.instance.loadConfig();
+		MinecraftForge.EVENT_BUS.register(InputHandler.instance);
+		MinecraftForge.EVENT_BUS.register(this);
+		InputHandler.instance.loadConfig();
 
-        ConfigManager.registerConfigCategory(new DummyCategoryElement("awconfig.core_keybinds", "awconfig.core_keybinds", KeybindCategoryEntry.class));
+		ConfigManager.registerConfigCategory(new DummyCategoryElement("awconfig.core_keybinds", "awconfig.core_keybinds", KeybindCategoryEntry.class));
 
-        if (AWCoreStatics.DEBUG) {
-            setDebugResolution();
-        }
-    }
+		if (AWCoreStatics.DEBUG) {
+			setDebugResolution();
+		}
+	}
 
-    public void setDebugResolution() {
-        org.lwjgl.opengl.DisplayMode mode = new DisplayMode(512, 288);
-        try {
-            Display.setDisplayMode(mode);
-        } catch (LWJGLException e) {
-            e.printStackTrace();
-        }
-    }
+	public void setDebugResolution() {
+		org.lwjgl.opengl.DisplayMode mode = new DisplayMode(512, 288);
+		try {
+			Display.setDisplayMode(mode);
+		}
+		catch (LWJGLException e) {
+			e.printStackTrace();
+		}
+	}
 
-    public void onConfigChanged() {
-        InputHandler.instance.updateFromConfig();
-    }
+	public void onConfigChanged() {
+		InputHandler.instance.updateFromConfig();
+	}
 
-    public static final class KeybindCategoryEntry extends CategoryEntry {
+	public static final class KeybindCategoryEntry extends CategoryEntry {
 
+		public KeybindCategoryEntry(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement configElement) {
+			super(owningScreen, owningEntryList, configElement);
+		}
 
-        public KeybindCategoryEntry(GuiConfig owningScreen, GuiConfigEntries owningEntryList, IConfigElement configElement) {
-            super(owningScreen, owningEntryList, configElement);
-        }
+		@Override
+		protected GuiScreen buildChildScreen() {
+			return new GuiConfig(this.owningScreen, getKeybindElements(), this.owningScreen.modID, owningScreen.allRequireWorldRestart || this.configElement.requiresWorldRestart(), owningScreen.allRequireMcRestart || this.configElement.requiresMcRestart(), this.owningScreen.title, ((this.owningScreen.titleLine2 == null ? "" : this.owningScreen.titleLine2) + " > " + this.name));
+		}
 
-        @Override
-        protected GuiScreen buildChildScreen() {
-            return new GuiConfig(this.owningScreen, getKeybindElements(), this.owningScreen.modID,
-                    owningScreen.allRequireWorldRestart || this.configElement.requiresWorldRestart(),
-                    owningScreen.allRequireMcRestart || this.configElement.requiresMcRestart(), this.owningScreen.title,
-                    ((this.owningScreen.titleLine2 == null ? "" : this.owningScreen.titleLine2) + " > " + this.name));
-        }
+		private static List<IConfigElement> getKeybindElements() {
+			List<Property> props = InputHandler.instance.getKeyConfig("item_use");
+			List<IConfigElement> list = new ArrayList<>();
+			for (Property property : props) {
+				list.add(new ConfigElement(property));
+			}
+			return list;
+		}
 
-        private static List<IConfigElement> getKeybindElements() {
-            List<Property> props = InputHandler.instance.getKeyConfig("item_use");
-            List<IConfigElement> list = new ArrayList<>();
-            for(Property property : props) {
-                list.add(new ConfigElement(property));
-            }
-            return list;
-        }
+	}
 
-    }
-
-    @SubscribeEvent
-    public void onPreTextureStitch(TextureStitchEvent.Pre evt) {
-        EngineeringStationRenderer.INSTANCE.setSprite(evt.getMap().registerSprite(new ResourceLocation(AncientWarfareCore.modID + ":model/core/tile_engineering_station")));
-        ResearchStationRenderer.INSTANCE.setSprite(evt.getMap().registerSprite(new ResourceLocation(AncientWarfareCore.modID + ":model/core/tile_research_station")));
-    }
+	@SubscribeEvent
+	public void onPreTextureStitch(TextureStitchEvent.Pre evt) {
+		EngineeringStationRenderer.INSTANCE.setSprite(evt.getMap().registerSprite(new ResourceLocation(AncientWarfareCore.modID + ":model/core/tile_engineering_station")));
+		ResearchStationRenderer.INSTANCE.setSprite(evt.getMap().registerSprite(new ResourceLocation(AncientWarfareCore.modID + ":model/core/tile_research_station")));
+	}
 }

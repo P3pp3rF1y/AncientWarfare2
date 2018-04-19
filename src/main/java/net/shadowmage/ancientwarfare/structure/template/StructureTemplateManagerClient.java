@@ -21,99 +21,100 @@ import java.util.List;
 
 public class StructureTemplateManagerClient {
 
-    private HashMap<String, ResourceLocation> clientTemplateImages = new HashMap<>();
-    private HashMap<String, StructureTemplateClient> clientTemplates = new HashMap<>();
-    private StructureTemplateManagerClient() {
-    }
+	private HashMap<String, ResourceLocation> clientTemplateImages = new HashMap<>();
+	private HashMap<String, StructureTemplateClient> clientTemplates = new HashMap<>();
 
-    private static final StructureTemplateManagerClient instance = new StructureTemplateManagerClient();
+	private StructureTemplateManagerClient() {
+	}
 
-    public static StructureTemplateManagerClient instance() {
-        return instance;
-    }
+	private static final StructureTemplateManagerClient instance = new StructureTemplateManagerClient();
 
-    public void onTemplateData(NBTTagCompound tag) {
-        if (tag.hasKey("singleStructure")) {
-            NBTTagCompound structureTag = tag.getCompoundTag("singleStructure");
-            readClientStructure(structureTag);
-        } else {
-            clientTemplateImages.clear();
-            clientTemplates.clear();
-            NBTTagList list = tag.getTagList("structureList", Constants.NBT.TAG_COMPOUND);
-            NBTTagCompound structureTag;
-            for (int i = 0; i < list.tagCount(); i++) {
-                structureTag = list.getCompoundTagAt(i);
-                readClientStructure(structureTag);
-            }
-        }
-    }
+	public static StructureTemplateManagerClient instance() {
+		return instance;
+	}
 
-    private void readClientStructure(NBTTagCompound tag) {
-        StructureTemplateClient template = StructureTemplateClient.readFromNBT(tag);
-        addTemplate(template);
-    }
+	public void onTemplateData(NBTTagCompound tag) {
+		if (tag.hasKey("singleStructure")) {
+			NBTTagCompound structureTag = tag.getCompoundTag("singleStructure");
+			readClientStructure(structureTag);
+		} else {
+			clientTemplateImages.clear();
+			clientTemplates.clear();
+			NBTTagList list = tag.getTagList("structureList", Constants.NBT.TAG_COMPOUND);
+			NBTTagCompound structureTag;
+			for (int i = 0; i < list.tagCount(); i++) {
+				structureTag = list.getCompoundTagAt(i);
+				readClientStructure(structureTag);
+			}
+		}
+	}
 
-    public void removeTemplate(String name) {
-        this.clientTemplates.remove(name);
-        this.clientTemplateImages.remove(name);
-    }
+	private void readClientStructure(NBTTagCompound tag) {
+		StructureTemplateClient template = StructureTemplateClient.readFromNBT(tag);
+		addTemplate(template);
+	}
 
-    public Collection<StructureTemplateClient> getClientStructures() {
-        return clientTemplates.values();
-    }
+	public void removeTemplate(String name) {
+		this.clientTemplates.remove(name);
+		this.clientTemplateImages.remove(name);
+	}
 
-    public List<StructureTemplateClient> getSurvivalStructures() {
-        List<StructureTemplateClient> clientStructures = new ArrayList<>();
-        for (StructureTemplateClient t : this.clientTemplates.values()) {
-            if (t.survival) {
-                clientStructures.add(t);
-            }
-        }
-        return clientStructures;
-    }
+	public Collection<StructureTemplateClient> getClientStructures() {
+		return clientTemplates.values();
+	}
 
-    public StructureTemplateClient getClientTemplate(String name) {
-        return clientTemplates.get(name);
-    }
+	public List<StructureTemplateClient> getSurvivalStructures() {
+		List<StructureTemplateClient> clientStructures = new ArrayList<>();
+		for (StructureTemplateClient t : this.clientTemplates.values()) {
+			if (t.survival) {
+				clientStructures.add(t);
+			}
+		}
+		return clientStructures;
+	}
 
-    public void addTemplate(StructureTemplateClient template) {
-        clientTemplates.put(template.name, template);
-        loadTemplateImage(template.name + ".jpg");
-    }
+	public StructureTemplateClient getClientTemplate(String name) {
+		return clientTemplates.get(name);
+	}
 
-    public ResourceLocation getImageFor(String templateName) {
-        return clientTemplateImages.get(templateName + ".jpg");
-    }
+	public void addTemplate(StructureTemplateClient template) {
+		clientTemplates.put(template.name, template);
+		loadTemplateImage(template.name + ".jpg");
+	}
 
+	public ResourceLocation getImageFor(String templateName) {
+		return clientTemplateImages.get(templateName + ".jpg");
+	}
 
-    private void loadTemplateImage(String imageName) {
-        String pathBase = AWCoreStatics.configPathForFiles + "structures/image_cache/";
-        File file = new File(pathBase + imageName);
-        ResourceLocation loc = new ResourceLocation("ancientwarfare", pathBase + imageName);
+	private void loadTemplateImage(String imageName) {
+		String pathBase = AWCoreStatics.configPathForFiles + "structures/image_cache/";
+		File file = new File(pathBase + imageName);
+		ResourceLocation loc = new ResourceLocation("ancientwarfare", pathBase + imageName);
 
-        if (!file.exists()) {
-            BufferedImage image = StructureTemplateManager.INSTANCE.getTemplateImage(imageName);
-            if (image != null) {
-                Minecraft.getMinecraft().renderEngine.loadTexture(loc, new TextureImageBased(loc, image));
-                clientTemplateImages.put(imageName, loc);
-            }
-        } else {
-            try {
-                BufferedImage image = ImageIO.read(file);
-                if (image.getWidth() == AWStructureStatics.structureImageWidth && image.getHeight() == AWStructureStatics.structureImageHeight) {
-                    Minecraft.getMinecraft().renderEngine.loadTexture(loc, new TextureImageBased(loc, image));
-                    clientTemplateImages.put(imageName, loc);
-                } else {
-                    AWLog.logError("Error parsing image: " + file.getName() + " image was not of correct size. Found: " + image.getWidth() + "x" + image.getHeight() + "  Needed: " + AWStructureStatics.structureImageWidth + "x" + AWStructureStatics.structureImageHeight);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+		if (!file.exists()) {
+			BufferedImage image = StructureTemplateManager.INSTANCE.getTemplateImage(imageName);
+			if (image != null) {
+				Minecraft.getMinecraft().renderEngine.loadTexture(loc, new TextureImageBased(loc, image));
+				clientTemplateImages.put(imageName, loc);
+			}
+		} else {
+			try {
+				BufferedImage image = ImageIO.read(file);
+				if (image.getWidth() == AWStructureStatics.structureImageWidth && image.getHeight() == AWStructureStatics.structureImageHeight) {
+					Minecraft.getMinecraft().renderEngine.loadTexture(loc, new TextureImageBased(loc, image));
+					clientTemplateImages.put(imageName, loc);
+				} else {
+					AWLog.logError("Error parsing image: " + file.getName() + " image was not of correct size. Found: " + image.getWidth() + "x" + image.getHeight() + "  Needed: " + AWStructureStatics.structureImageWidth + "x" + AWStructureStatics.structureImageHeight);
+				}
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
     /*
-    private String getMD5(File file) throws IOException {
+	private String getMD5(File file) throws IOException {
         MessageDigest md;
         try {
             md = MessageDigest.getInstance("MD5");
@@ -139,16 +140,17 @@ public class StructureTemplateManagerClient {
     }
     */
 
-    public void addStructureImage(String imageName, BufferedImage image) {
-        String pathBase = AWCoreStatics.configPathForFiles + "structures/image_cache/";
-        File file;
-        try {
-            file = new File(pathBase + imageName);
-            ImageIO.write(image, "jpg", file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        loadTemplateImage(imageName);
-    }
+	public void addStructureImage(String imageName, BufferedImage image) {
+		String pathBase = AWCoreStatics.configPathForFiles + "structures/image_cache/";
+		File file;
+		try {
+			file = new File(pathBase + imageName);
+			ImageIO.write(image, "jpg", file);
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		loadTemplateImage(imageName);
+	}
 
 }

@@ -29,10 +29,4 @@ public class VehicleArmorStone extends VehicleArmorBase {
 		this.explosive = 2.5f;
 		this.fire = 7;
 	}
-
-/* TODO research recipe
-  this.neededResearch.add(ResearchGoalNumbers.iron3);
-  this.addNeededResource(new ItemStack(Blocks.STONE, 3), false);
-  this.addNeededResource(new ItemStack(Items.IRON_INGOT, 2), false);
-*/
 }

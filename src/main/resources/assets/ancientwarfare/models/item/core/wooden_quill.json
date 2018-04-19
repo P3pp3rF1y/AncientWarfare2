@@ -1,6 +1,6 @@
 {
-  "parent": "item/handheld",
-  "textures": {
-    "layer0": "ancientwarfare:items/core/wooden_quill"
-  }
+    "parent": "item/handheld",
+    "textures": {
+        "layer0": "ancientwarfare:items/core/wooden_quill"
+    }
 }

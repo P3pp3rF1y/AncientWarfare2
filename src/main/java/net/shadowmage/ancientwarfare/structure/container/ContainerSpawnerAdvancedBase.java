@@ -9,23 +9,23 @@ import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 
 public abstract class ContainerSpawnerAdvancedBase extends ContainerBase {
 
-    public SpawnerSettings settings;
+	public SpawnerSettings settings;
 
-    public ContainerSpawnerAdvancedBase(EntityPlayer player) {
-        super(player);
-    }
+	public ContainerSpawnerAdvancedBase(EntityPlayer player) {
+		super(player);
+	}
 
-    public void sendSettingsToServer() {
-        NetworkHandler.sendToServer(getSettingPacket());
-    }
+	public void sendSettingsToServer() {
+		NetworkHandler.sendToServer(getSettingPacket());
+	}
 
-    public PacketGui getSettingPacket(){
-        NBTTagCompound tag = new NBTTagCompound();
-        settings.writeToNBT(tag);
+	public PacketGui getSettingPacket() {
+		NBTTagCompound tag = new NBTTagCompound();
+		settings.writeToNBT(tag);
 
-        PacketGui pkt = new PacketGui();
-        pkt.setTag("spawnerSettings", tag);
-        return pkt;
-    }
+		PacketGui pkt = new PacketGui();
+		pkt.setTag("spawnerSettings", tag);
+		return pkt;
+	}
 
 }

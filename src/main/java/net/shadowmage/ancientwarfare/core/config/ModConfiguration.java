@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.core.config;
 
 import net.minecraftforge.common.config.Configuration;
@@ -31,54 +32,54 @@ import java.io.File;
  * @author Shadowmage
  */
 public abstract class ModConfiguration {
-    /*
-     * category names
-     */
-    public static final String generalOptions = "01_shared_settings";
-    public static final String serverOptions = "02_server_settings";
-    public static final String clientOptions = "03_client_settings";
-    public static final String configPathForFiles = "config/ancientwarfare/";
-    protected final Configuration config;
-    public boolean updatedVersion = false;
-    public boolean autoExportOnUpdate = false;
+	/*
+	 * category names
+	 */
+	public static final String generalOptions = "01_shared_settings";
+	public static final String serverOptions = "02_server_settings";
+	public static final String clientOptions = "03_client_settings";
+	public static final String configPathForFiles = "config/ancientwarfare/";
+	protected final Configuration config;
+	public boolean updatedVersion = false;
+	public boolean autoExportOnUpdate = false;
 
-    public ModConfiguration(Configuration config) {
-        this.config = config;
-        load();
-    }
+	public ModConfiguration(Configuration config) {
+		this.config = config;
+		load();
+	}
 
-    public ModConfiguration(String modid){
-        this(getConfigFor(modid));
-    }
+	public ModConfiguration(String modid) {
+		this(getConfigFor(modid));
+	}
 
-    private void load() {
-        initializeCategories();
-        initializeValues();
-        save();
-    }
+	private void load() {
+		initializeCategories();
+		initializeValues();
+		save();
+	}
 
-    protected abstract void initializeCategories();
+	protected abstract void initializeCategories();
 
-    protected abstract void initializeValues();
+	protected abstract void initializeValues();
 
-    public Configuration getConfig() {
-        return this.config;
-    }
+	public Configuration getConfig() {
+		return this.config;
+	}
 
-    public void save() {
-        if(config.hasChanged())
-            config.save();
-    }
+	public void save() {
+		if (config.hasChanged())
+			config.save();
+	}
 
-    public boolean updatedVersion() {
-        return updatedVersion;
-    }
+	public boolean updatedVersion() {
+		return updatedVersion;
+	}
 
-    public boolean autoExportOnUpdate() {
-        return autoExportOnUpdate;
-    }
+	public boolean autoExportOnUpdate() {
+		return autoExportOnUpdate;
+	}
 
-    public static Configuration getConfigFor(String modID) {
-        return new Configuration(new File(configPathForFiles, modID + ".cfg"));
-    }
+	public static Configuration getConfigFor(String modID) {
+		return new Configuration(new File(configPathForFiles, modID + ".cfg"));
+	}
 }

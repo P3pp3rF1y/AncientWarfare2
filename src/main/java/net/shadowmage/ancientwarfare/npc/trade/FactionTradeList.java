@@ -7,59 +7,59 @@ import java.util.Iterator;
 
 public final class FactionTradeList extends TradeList {
 
-    private int ticks = 0;
+	private int ticks = 0;
 
-    @Override
-    protected Trade getNewTrade() {
-        return new FactionTrade();
-    }
+	@Override
+	protected Trade getNewTrade() {
+		return new FactionTrade();
+	}
 
-    /*
-     * MUST be called from owning entity once per update tick.
-     */
-    public void tick() {
-        ticks++;
-    }
+	/*
+	 * MUST be called from owning entity once per update tick.
+	 */
+	public void tick() {
+		ticks++;
+	}
 
-    /*
-     * Should be called on server PRIOR to opening the trades GUI/container.<br>
-     * Will use the internal stored tick number value for updating the trades list.<br>
-     */
-    public void updateTradesForView() {
-        for (Trade aTrade : points) {
-            ((FactionTrade) aTrade).updateTrade(ticks);
-        }
-        ticks = 0;
-    }
+	/*
+	 * Should be called on server PRIOR to opening the trades GUI/container.<br>
+	 * Will use the internal stored tick number value for updating the trades list.<br>
+	 */
+	public void updateTradesForView() {
+		for (Trade aTrade : points) {
+			((FactionTrade) aTrade).updateTrade(ticks);
+		}
+		ticks = 0;
+	}
 
-    /*
-     * removes any trades that have no input or output items.<br>
-     * should be called before the changed list is sent from client->server from setup GUI.
-     */
-    public void removeEmptyTrades() {
-        Iterator<Trade> it = points.iterator();
-        Trade t;
-        while (it.hasNext() && (t = it.next()) != null) {
-            if (!((FactionTrade) t).hasItems()) {
-                it.remove();
-            }
-        }
-    }
+	/*
+	 * removes any trades that have no input or output items.<br>
+	 * should be called before the changed list is sent from client->server from setup GUI.
+	 */
+	public void removeEmptyTrades() {
+		Iterator<Trade> it = points.iterator();
+		Trade t;
+		while (it.hasNext() && (t = it.next()) != null) {
+			if (!((FactionTrade) t).hasItems()) {
+				it.remove();
+			}
+		}
+	}
 
-    public void performTrade(EntityPlayer player, int tradeNum) {
-        get(tradeNum).performTrade(player, null);
-    }
+	public void performTrade(EntityPlayer player, int tradeNum) {
+		get(tradeNum).performTrade(player, null);
+	}
 
-    @Override
-    public NBTTagCompound serializeNBT() {
-        NBTTagCompound tag = super.serializeNBT();
-        tag.setInteger("ticks", ticks);
-        return tag;
-    }
+	@Override
+	public NBTTagCompound serializeNBT() {
+		NBTTagCompound tag = super.serializeNBT();
+		tag.setInteger("ticks", ticks);
+		return tag;
+	}
 
-    @Override
-    public void deserializeNBT(NBTTagCompound tag) {
-        ticks = tag.getInteger("ticks");
-        super.deserializeNBT(tag);
-    }
+	@Override
+	public void deserializeNBT(NBTTagCompound tag) {
+		ticks = tag.getInteger("ticks");
+		super.deserializeNBT(tag);
+	}
 }

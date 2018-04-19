@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins;
 
 import net.minecraft.entity.Entity;
@@ -33,23 +34,23 @@ import net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.e
 
 public class StructurePluginNpcs implements StructureContentPlugin {
 
-    public StructurePluginNpcs() {
+	public StructurePluginNpcs() {
 
-    }
+	}
 
-    @Override
-    public void addHandledBlocks(IStructurePluginManager manager) {
-        manager.registerBlockHandler("awTownHall", AWNPCBlocks.townHall, TemplateRuleBlockLogic.class);
-    }
+	@Override
+	public void addHandledBlocks(IStructurePluginManager manager) {
+		manager.registerBlockHandler("awTownHall", AWNPCBlocks.townHall, TemplateRuleBlockLogic.class);
+	}
 
-    @Override
-    public void addHandledEntities(IStructurePluginManager manager) {
-        for (ResourceLocation registryName : ForgeRegistries.ENTITIES.getKeys()) {
-            Class<? extends Entity> clazz = EntityList.getClass(registryName);
-            if (NpcBase.class.isAssignableFrom(clazz)) {
-                manager.registerEntityHandler("AWNpc", clazz, TemplateRuleEntityNpc.class);
-            }
-        }
-    }
+	@Override
+	public void addHandledEntities(IStructurePluginManager manager) {
+		for (ResourceLocation registryName : ForgeRegistries.ENTITIES.getKeys()) {
+			Class<? extends Entity> clazz = EntityList.getClass(registryName);
+			if (NpcBase.class.isAssignableFrom(clazz)) {
+				manager.registerEntityHandler("AWNpc", clazz, TemplateRuleEntityNpc.class);
+			}
+		}
+	}
 
 }

@@ -77,21 +77,8 @@ public class VehicleMaterial implements IVehicleMaterial {
 		return getLevel(level).misfireChance;
 	}
 
-/* TODO vehicle recipe
-	@Override
-	public ItemStack getItem(int level) {
-		return getLevel(level).filter;
-	}
-
-	@Override
-	public IResearchGoal getResearchForLevel(int level) {
-		return ResearchGoal.getGoalByID(getLevel(level).neededResearch);
-	}
-*/
-
 	@Override
 	public String getDisplayName(int level) {
 		return getLevel(level).displayName;
 	}
-
 }

@@ -1,24 +1,24 @@
 {
-  "type": "ancientwarfare:research_recipe",
-  "research": "leadership",
-  "pattern": [
-    "  S",
-    "PI ",
-    "PP "
-  ],
-  "key": {
-    "P": {
-      "item": "#PLANKWOOD"
+    "type": "ancientwarfare:research_recipe",
+    "research": "leadership",
+    "pattern": [
+        "  S",
+        "PI ",
+        "PP "
+    ],
+    "key": {
+        "P": {
+            "item": "#PLANKWOOD"
+        },
+        "S": {
+            "item": "#STICKWOOD"
+        },
+        "I": {
+            "item": "#INGOTIRON"
+        }
     },
-    "S": {
-      "item": "#STICKWOOD"
-    },
-    "I": {
-      "item": "#INGOTIRON"
+    "result": {
+        "item": "ancientwarfarenpc:bard_instrument",
+        "data": 0
     }
-  },
-  "result": {
-    "item": "ancientwarfarenpc:bard_instrument",
-    "data": 0
-  }
 }

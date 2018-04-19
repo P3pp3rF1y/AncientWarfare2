@@ -5,12 +5,12 @@ import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteTreeFarm;
 
 public class ContainerWorksiteTreeFarm extends ContainerWorksiteBase<WorkSiteTreeFarm> {
 
-    public ContainerWorksiteTreeFarm(EntityPlayer player, int x, int y, int z) {
-        super(player, x, y, z);
+	public ContainerWorksiteTreeFarm(EntityPlayer player, int x, int y, int z) {
+		super(player, x, y, z);
 
 		int layerY = 78;
 
-        frontLabel = layerY;
+		frontLabel = layerY;
 		layerY += LABEL_GAP;
 		layerY = addSlots(tileEntity.plantableInventory, 8, layerY) + 4;
 		bottomLabel = layerY;
@@ -20,7 +20,6 @@ public class ContainerWorksiteTreeFarm extends ContainerWorksiteBase<WorkSiteTre
 		layerY += LABEL_GAP;
 		guiHeight = addPlayerSlots(layerY) + 8;
 
-    }
-
+	}
 
 }

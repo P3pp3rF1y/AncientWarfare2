@@ -7,36 +7,36 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 public class ContainerNpcBase<T extends NpcBase> extends ContainerEntityBase<T> {
 
-    public ContainerNpcBase(EntityPlayer player, int x) {
-        super(player, x);
-    }
+	public ContainerNpcBase(EntityPlayer player, int x) {
+		super(player, x);
+	}
 
-    @Override
-    public boolean canInteractWith(EntityPlayer var1) {
-        return super.canInteractWith(var1) && var1.getDistanceSqToEntity(entity) < 64;
-    }
+	@Override
+	public boolean canInteractWith(EntityPlayer var1) {
+		return super.canInteractWith(var1) && var1.getDistanceSqToEntity(entity) < 64;
+	}
 
-    public void repack() {
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setBoolean("repack", true);
-        sendDataToServer(tag);
-    }
+	public void repack() {
+		NBTTagCompound tag = new NBTTagCompound();
+		tag.setBoolean("repack", true);
+		sendDataToServer(tag);
+	}
 
-    public void setHome() {
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setBoolean("setHome", true);
-        sendDataToServer(tag);
-    }
+	public void setHome() {
+		NBTTagCompound tag = new NBTTagCompound();
+		tag.setBoolean("setHome", true);
+		sendDataToServer(tag);
+	}
 
-    public void clearHome() {
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setBoolean("clearHome", true);
-        sendDataToServer(tag);
-    }
-    
-    public void togglefollow() {
-        NBTTagCompound tag = new NBTTagCompound();
-        tag.setBoolean("togglefollow", true);
-        sendDataToServer(tag);
-    }
+	public void clearHome() {
+		NBTTagCompound tag = new NBTTagCompound();
+		tag.setBoolean("clearHome", true);
+		sendDataToServer(tag);
+	}
+
+	public void togglefollow() {
+		NBTTagCompound tag = new NBTTagCompound();
+		tag.setBoolean("togglefollow", true);
+		sendDataToServer(tag);
+	}
 }

@@ -1,23 +1,23 @@
 {
-  "type": "ancientwarfare:research_recipe",
-  "research": "leadership",
-  "pattern": [
-    "D",
-    "P",
-    "W"
-  ],
-  "key": {
-    "P": {
-      "item": "minecraft:paper"
+    "type": "ancientwarfare:research_recipe",
+    "research": "leadership",
+    "pattern": [
+        "D",
+        "P",
+        "W"
+    ],
+    "key": {
+        "P": {
+            "item": "minecraft:paper"
+        },
+        "D": {
+            "item": "#DYERED"
+        },
+        "W": {
+            "item": "#PLANKWOOD"
+        }
     },
-    "D": {
-      "item": "#DYERED"
-    },
-    "W": {
-      "item": "#PLANKWOOD"
+    "result": {
+        "item": "ancientwarfarenpc:combat_order"
     }
-  },
-  "result": {
-    "item": "ancientwarfarenpc:combat_order"
-  }
 }

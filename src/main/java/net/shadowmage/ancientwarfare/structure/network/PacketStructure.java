@@ -12,46 +12,50 @@ import java.io.IOException;
 
 public class PacketStructure extends PacketBase {
 
-    public NBTTagCompound packetData = new NBTTagCompound();
+	public NBTTagCompound packetData = new NBTTagCompound();
 
-    public PacketStructure() {
-    }
+	public PacketStructure() {
+	}
 
-    @Override
-    protected void writeToStream(ByteBuf data) {
-        if (packetData != null) {
-            ByteBufOutputStream bbos = new ByteBufOutputStream(data);
-            try {
-                CompressedStreamTools.writeCompressed(packetData, bbos);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            try {
-                bbos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+	@Override
+	protected void writeToStream(ByteBuf data) {
+		if (packetData != null) {
+			ByteBufOutputStream bbos = new ByteBufOutputStream(data);
+			try {
+				CompressedStreamTools.writeCompressed(packetData, bbos);
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+			try {
+				bbos.close();
+			}
+			catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 
-    @Override
-    protected void readFromStream(ByteBuf data) {
-        ByteBufInputStream bbis = new ByteBufInputStream(data);
-        try {
-            packetData = CompressedStreamTools.readCompressed(bbis);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            bbis.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+	@Override
+	protected void readFromStream(ByteBuf data) {
+		ByteBufInputStream bbis = new ByteBufInputStream(data);
+		try {
+			packetData = CompressedStreamTools.readCompressed(bbis);
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+		try {
+			bbis.close();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-    @Override
-    protected void execute() {
-        StructureTemplateManagerClient.instance().onTemplateData(packetData);
-    }
+	@Override
+	protected void execute() {
+		StructureTemplateManagerClient.instance().onTemplateData(packetData);
+	}
 
 }

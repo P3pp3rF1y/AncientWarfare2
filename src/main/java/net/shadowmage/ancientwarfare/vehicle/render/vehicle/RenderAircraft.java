@@ -26,7 +26,6 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelAirplane;
 
-
 public class RenderAircraft extends RenderVehicleBase {
 
 	ModelAirplane model = new ModelAirplane();

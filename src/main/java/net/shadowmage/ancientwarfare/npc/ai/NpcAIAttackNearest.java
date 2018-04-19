@@ -11,13 +11,13 @@ import javax.annotation.Nullable;
 /*
  * Created by Olivier on 22/05/2015.
  */
-public class NpcAIAttackNearest extends EntityAINearestAttackableTarget{
-    public NpcAIAttackNearest(NpcBase npc, @Nullable final Predicate<Entity> targetSelector) {
-        super(npc, EntityLivingBase.class, 0, true, false, targetSelector);
-    }
+public class NpcAIAttackNearest extends EntityAINearestAttackableTarget {
+	public NpcAIAttackNearest(NpcBase npc, @Nullable final Predicate<Entity> targetSelector) {
+		super(npc, EntityLivingBase.class, 0, true, false, targetSelector);
+	}
 
-    @Override
-    protected boolean isSuitableTarget(EntityLivingBase target, boolean unused){
-        return AIHelper.isTarget((NpcBase)this.taskOwner, target, shouldCheckSight);
-    }
+	@Override
+	protected boolean isSuitableTarget(EntityLivingBase target, boolean unused) {
+		return AIHelper.isTarget((NpcBase) this.taskOwner, target, shouldCheckSight);
+	}
 }

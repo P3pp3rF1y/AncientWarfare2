@@ -7,22 +7,22 @@ import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.common.property.Properties;
 
 public abstract class BlockTorqueTransportSided extends BlockTorqueTransport {
-    public static final IUnlistedProperty<Boolean>[] CONNECTIONS = new IUnlistedProperty[6];
+	public static final IUnlistedProperty<Boolean>[] CONNECTIONS = new IUnlistedProperty[6];
 
-    static {
-        for(EnumFacing facing : EnumFacing.VALUES) {
-            CONNECTIONS[facing.ordinal()] = Properties.toUnlisted(PropertyBool.create("connection_" + facing.name()));
-        }
-    }
+	static {
+		for (EnumFacing facing : EnumFacing.VALUES) {
+			CONNECTIONS[facing.ordinal()] = Properties.toUnlisted(PropertyBool.create("connection_" + facing.name()));
+		}
+	}
 
-    protected BlockTorqueTransportSided(String regName) {
-        super(regName);
-    }
+	protected BlockTorqueTransportSided(String regName) {
+		super(regName);
+	}
 
-    @Override
-    protected void addProperties(BlockStateContainer.Builder builder) {
-        super.addProperties(builder);
-        builder.add(CONNECTIONS);
-    }
+	@Override
+	protected void addProperties(BlockStateContainer.Builder builder) {
+		super.addProperties(builder);
+		builder.add(CONNECTIONS);
+	}
 
 }

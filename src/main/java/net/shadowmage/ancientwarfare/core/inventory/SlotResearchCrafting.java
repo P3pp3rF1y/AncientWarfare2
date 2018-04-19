@@ -7,13 +7,13 @@ import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
-import net.shadowmage.ancientwarfare.core.crafting.ResearchRecipeBase;
+import net.shadowmage.ancientwarfare.automation.tile.CraftingRecipeMemory;
+import net.shadowmage.ancientwarfare.core.crafting.ICraftingRecipe;
+import net.shadowmage.ancientwarfare.core.crafting.IIngredientCount;
 
 /**
  * This needs to be used instead of vanilla SlotCrafting because vanilla one can only work with ingredients of IRecipes, but has no clue what to do
@@ -33,13 +33,13 @@ public class SlotResearchCrafting extends Slot {
 	 */
 	private int amountCrafted;
 
-	private String crafterName;
+	private CraftingRecipeMemory craftingRecipeMemory;
 
-	public SlotResearchCrafting(EntityPlayer player, String crafterName, InventoryCrafting craftingInventory, IInventory inventory, int slotIndex, int xPosition, int yPosition) {
+	public SlotResearchCrafting(EntityPlayer player, CraftingRecipeMemory craftingRecipeMemory, InventoryCrafting craftingInventory, IInventory inventory, int slotIndex, int xPosition, int yPosition) {
 		super(inventory, slotIndex, xPosition, yPosition);
 		this.player = player;
 		this.craftMatrix = craftingInventory;
-		this.crafterName = crafterName;
+		this.craftingRecipeMemory = craftingRecipeMemory;
 	}
 
 	/**
@@ -93,23 +93,20 @@ public class SlotResearchCrafting extends Slot {
 	@Override
 	public ItemStack onTake(EntityPlayer thePlayer, ItemStack stack) {
 		onCrafting(stack);
-		InventoryCraftResult inventorycraftresult = (InventoryCraftResult) inventory;
-		NonNullList<ItemStack> nonnulllist;
 
-		ResearchRecipeBase researchRecipe = AWCraftingManager.findMatchingResearchRecipe(craftMatrix, thePlayer.world, crafterName);
+		ICraftingRecipe recipe = craftingRecipeMemory.getRecipe();
 
-		if (researchRecipe == null && inventorycraftresult.getRecipeUsed() != null) {
-			net.minecraftforge.common.ForgeHooks.setCraftingPlayer(thePlayer);
-			nonnulllist = CraftingManager.getRemainingItems(craftMatrix, thePlayer.world);
-			net.minecraftforge.common.ForgeHooks.setCraftingPlayer(null);
-		} else {
-			nonnulllist = ForgeHooks.defaultRecipeGetRemainingItems(craftMatrix);
-		}
+		net.minecraftforge.common.ForgeHooks.setCraftingPlayer(thePlayer);
+		NonNullList<ItemStack> nonnulllist = recipe.getRemainingItems(craftMatrix);
+		net.minecraftforge.common.ForgeHooks.setCraftingPlayer(null);
+
 		for (int i = 0; i < nonnulllist.size(); ++i) {
 			ItemStack itemstack = this.craftMatrix.getStackInSlot(i);
 			ItemStack itemstack1 = nonnulllist.get(i);
 			if (!itemstack.isEmpty()) {
-				this.craftMatrix.decrStackSize(i, AWCraftingManager.getMatchingIngredientCount(researchRecipe, itemstack));
+				int ingredientIndex = (i / 3) * recipe.getRecipeWidth() + i % 3;
+				Ingredient ingredient = recipe.getIngredients().get(ingredientIndex);
+				craftMatrix.decrStackSize(i, ingredient instanceof IIngredientCount ? ((IIngredientCount) ingredient).getCount() : 1);
 				itemstack = this.craftMatrix.getStackInSlot(i);
 			}
 			if (!itemstack1.isEmpty()) {

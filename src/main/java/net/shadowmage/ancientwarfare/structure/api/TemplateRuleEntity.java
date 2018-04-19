@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.structure.api;
 
 import net.minecraft.entity.Entity;
@@ -33,52 +34,53 @@ import java.util.Locale;
 
 public abstract class TemplateRuleEntity extends TemplateRule {
 
-    private BlockPos pos;
+	private BlockPos pos;
 
-    /*
-     * Called by reflection
-     * @param world
-     * @param entity
-     * @param turns
-     * @param x
-     * @param y
-     * @param z
-     */
-    public TemplateRuleEntity(World world, Entity entity, int turns, int x, int y, int z) {
+	/*
+	 * Called by reflection
+	 * @param world
+	 * @param entity
+	 * @param turns
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
+	public TemplateRuleEntity(World world, Entity entity, int turns, int x, int y, int z) {
 
-    }
-    /*
-     * Called by reflection
-     */
-    public TemplateRuleEntity() {
+	}
 
-    }
+	/*
+	 * Called by reflection
+	 */
+	public TemplateRuleEntity() {
 
-    public final void writeRule(BufferedWriter out) throws IOException {
-        out.write("position=" + NBTTools.getCSVStringForArray(new int[]{pos.getX(), pos.getY(), pos.getZ()}));
-        out.newLine();
-        super.writeRule(out);
-    }
+	}
 
-    public final void parseRule(int ruleNumber, List<String> lines) throws TemplateRuleParsingException {
-        this.ruleNumber = ruleNumber;
-        for (String line : lines) {
-            if (line.toLowerCase(Locale.ENGLISH).startsWith("position=")) {
-                int[] posArray = NBTTools.safeParseIntArray("=", line);
-                pos = new BlockPos(posArray[0], posArray[1], posArray[2]);
-                break;
-            }
-        }
-        NBTTagCompound tag = readTag(lines);
-        parseRuleData(tag);
-    }
+	public final void writeRule(BufferedWriter out) throws IOException {
+		out.write("position=" + NBTTools.getCSVStringForArray(new int[] {pos.getX(), pos.getY(), pos.getZ()}));
+		out.newLine();
+		super.writeRule(out);
+	}
 
-    public final void setPosition(BlockPos pos){
-        this.pos = pos;
-    }
+	public final void parseRule(int ruleNumber, List<String> lines) throws TemplateRuleParsingException {
+		this.ruleNumber = ruleNumber;
+		for (String line : lines) {
+			if (line.toLowerCase(Locale.ENGLISH).startsWith("position=")) {
+				int[] posArray = NBTTools.safeParseIntArray("=", line);
+				pos = new BlockPos(posArray[0], posArray[1], posArray[2]);
+				break;
+			}
+		}
+		NBTTagCompound tag = readTag(lines);
+		parseRuleData(tag);
+	}
 
-    public final BlockPos getPosition(){
-        return pos;
-    }
+	public final void setPosition(BlockPos pos) {
+		this.pos = pos;
+	}
+
+	public final BlockPos getPosition() {
+		return pos;
+	}
 
 }

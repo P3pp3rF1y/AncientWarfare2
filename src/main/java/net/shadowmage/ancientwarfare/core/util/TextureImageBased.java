@@ -9,20 +9,20 @@ import java.awt.image.BufferedImage;
 
 public class TextureImageBased extends SimpleTexture {
 
-    BufferedImage image;
+	BufferedImage image;
 
-    public TextureImageBased(ResourceLocation par1ResourceLocation, BufferedImage image) {
-        super(par1ResourceLocation);
-        this.image = image;
-    }
+	public TextureImageBased(ResourceLocation par1ResourceLocation, BufferedImage image) {
+		super(par1ResourceLocation);
+		this.image = image;
+	}
 
-    @Override
-    public void loadTexture(IResourceManager par1ResourceManager) {
-        TextureUtil.uploadTextureImage(getGlTextureId(), image);
-    }
+	@Override
+	public void loadTexture(IResourceManager par1ResourceManager) {
+		TextureUtil.uploadTextureImage(getGlTextureId(), image);
+	}
 
-    public void reUploadImage() {
-        TextureUtil.uploadTextureImage(getGlTextureId(), image);
-    }
+	public void reUploadImage() {
+		TextureUtil.uploadTextureImage(getGlTextureId(), image);
+	}
 
 }

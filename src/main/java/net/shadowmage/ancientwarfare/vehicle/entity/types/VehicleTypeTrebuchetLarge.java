@@ -115,18 +115,6 @@ public class VehicleTypeTrebuchetLarge extends VehicleType {
 
 		this.basePitchMax = 70.f;
 		this.basePitchMin = 70.f;
-/* TODO vehicle recipe
-		this.addNeededResearchForMaterials();
-		this.addNeededResearch(0, ResearchGoal.vehicleCounterweights3);
-		this.addNeededResearch(1, ResearchGoal.vehicleCounterweights3);
-		this.addNeededResearch(2, ResearchGoal.vehicleCounterweights4);
-		this.addNeededResearch(3, ResearchGoal.vehicleCounterweights4);
-		this.addNeededResearch(4, ResearchGoal.vehicleCounterweights5);
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(Item.silk, 24, false, false));
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(Item.leather, 12, false, false));
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.counterWeightUnit, 12, false, false));
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.equipmentBay, 1, false, false));
-*/
 	}
 
 	@Override

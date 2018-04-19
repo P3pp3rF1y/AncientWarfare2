@@ -1,0 +1,18 @@
+{
+    "type": "ancientwarfare:shapeless_research_recipe",
+    "research": "ballistics",
+    "ingredients": [
+        {
+            "type": "forge:ore_dict",
+            "ore": "ingotIron"
+        },
+        {
+            "item": "minecraft:wool",
+            "data": 32767
+        }
+    ],
+    "result": {
+        "item": "ancientwarfarevehicle:cluster_charge",
+        "count": 8
+    }
+}

@@ -50,242 +50,239 @@ import java.util.stream.Collectors;
 import static net.shadowmage.ancientwarfare.automation.render.property.AutomationProperties.IS_CONTROL;
 
 public class FlywheelStorageRenderer implements ILayeredBlockBakery, ITESRRenderer {
-    public static final ModelResourceLocation LIGHT_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/flywheel_storage", "small_light");
-    public static final ModelResourceLocation MEDIUM_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/flywheel_storage", "small_medium");
-    public static final ModelResourceLocation HEAVY_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/flywheel_storage", "small_heavy");
+	public static final ModelResourceLocation LIGHT_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/flywheel_storage", "small_light");
+	public static final ModelResourceLocation MEDIUM_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/flywheel_storage", "small_medium");
+	public static final ModelResourceLocation HEAVY_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/flywheel_storage", "small_heavy");
 
-    public static FlywheelStorageRenderer INSTANCE = new FlywheelStorageRenderer();
+	public static FlywheelStorageRenderer INSTANCE = new FlywheelStorageRenderer();
 
-    Collection<CCModel> spindleSmall;
-    Collection<CCModel> upperShroudSmall;
-    Collection<CCModel> lowerShroudSmall;
-    Collection<CCModel> flywheelExtensionSmall;
-    Collection<CCModel> lowerWindowSmall;
-    Collection<CCModel> upperWindowSmall;
-    Collection<CCModel> caseBarsSmall;
-    Collection<CCModel> spindleLarge;
-    Collection<CCModel> upperShroudLarge;
-    Collection<CCModel> lowerShroudLarge;
-    Collection<CCModel> flywheelExtensionLarge;
-    Collection<CCModel> lowerWindowLarge;
-    Collection<CCModel> upperWindowLarge;
-    Collection<CCModel> caseBarsLarge;
+	Collection<CCModel> spindleSmall;
+	Collection<CCModel> upperShroudSmall;
+	Collection<CCModel> lowerShroudSmall;
+	Collection<CCModel> flywheelExtensionSmall;
+	Collection<CCModel> lowerWindowSmall;
+	Collection<CCModel> upperWindowSmall;
+	Collection<CCModel> caseBarsSmall;
+	Collection<CCModel> spindleLarge;
+	Collection<CCModel> upperShroudLarge;
+	Collection<CCModel> lowerShroudLarge;
+	Collection<CCModel> flywheelExtensionLarge;
+	Collection<CCModel> lowerWindowLarge;
+	Collection<CCModel> upperWindowLarge;
+	Collection<CCModel> caseBarsLarge;
 
-    private Map<Pair<Boolean, TorqueTier>, IconTransformation> iconTransformations = Maps.newHashMap();
-    private Map<Pair<Boolean, TorqueTier>, TextureAtlasSprite> sprites = Maps.newHashMap();
+	private Map<Pair<Boolean, TorqueTier>, IconTransformation> iconTransformations = Maps.newHashMap();
+	private Map<Pair<Boolean, TorqueTier>, TextureAtlasSprite> sprites = Maps.newHashMap();
 
-    public void setSprite(boolean large, TorqueTier tier, TextureAtlasSprite sprite) {
-        sprites.put(new ImmutablePair<>(large, tier), sprite);
-        iconTransformations.put(new ImmutablePair<>(large, tier), new IconTransformation(sprite));
-    }
+	public void setSprite(boolean large, TorqueTier tier, TextureAtlasSprite sprite) {
+		sprites.put(new ImmutablePair<>(large, tier), sprite);
+		iconTransformations.put(new ImmutablePair<>(large, tier), new IconTransformation(sprite));
+	}
 
-    public TextureAtlasSprite getSprite(boolean large, TorqueTier tier) {
-        return sprites.get(new ImmutablePair<>(large, tier));
-    }
+	public TextureAtlasSprite getSprite(boolean large, TorqueTier tier) {
+		return sprites.get(new ImmutablePair<>(large, tier));
+	}
 
-    private IconTransformation getIconTransformation(boolean large, TorqueTier tier) {
-        return iconTransformations.get(new ImmutablePair<>(large, tier));
-    }
+	private IconTransformation getIconTransformation(boolean large, TorqueTier tier) {
+		return iconTransformations.get(new ImmutablePair<>(large, tier));
+	}
 
-    private FlywheelStorageRenderer() {
-        Map<String, CCModel> smallModel = loadModel("flywheel_small.obj");
-        flywheelExtensionSmall = removeGroups(smallModel, s -> s.startsWith("spindle.flywheelExtension."));
-        spindleSmall = removeGroups(smallModel, s -> s.startsWith("spindle."));
-        upperShroudSmall = removeGroups(smallModel, s -> s.startsWith("shroudUpper."));
-        lowerShroudSmall = removeGroups(smallModel, s -> s.startsWith("shroudLower."));
-        lowerWindowSmall = setAlpha(removeGroups(smallModel, s -> s.startsWith("windowLower.")), 0.25d);
-        upperWindowSmall = setAlpha(removeGroups(smallModel, s -> s.startsWith("windowUpper.")), 0.25d);
-        caseBarsSmall = removeGroups(smallModel, s -> s.startsWith("caseBars."));
+	private FlywheelStorageRenderer() {
+		Map<String, CCModel> smallModel = loadModel("flywheel_small.obj");
+		flywheelExtensionSmall = removeGroups(smallModel, s -> s.startsWith("spindle.flywheelExtension."));
+		spindleSmall = removeGroups(smallModel, s -> s.startsWith("spindle."));
+		upperShroudSmall = removeGroups(smallModel, s -> s.startsWith("shroudUpper."));
+		lowerShroudSmall = removeGroups(smallModel, s -> s.startsWith("shroudLower."));
+		lowerWindowSmall = setAlpha(removeGroups(smallModel, s -> s.startsWith("windowLower.")), 0.25d);
+		upperWindowSmall = setAlpha(removeGroups(smallModel, s -> s.startsWith("windowUpper.")), 0.25d);
+		caseBarsSmall = removeGroups(smallModel, s -> s.startsWith("caseBars."));
 
+		Map<String, CCModel> largeModel = loadModel("flywheel_large.obj");
+		flywheelExtensionLarge = removeGroups(largeModel, s -> s.startsWith("spindle.flywheelExtension."));
+		spindleLarge = removeGroups(largeModel, s -> s.startsWith("spindle."));
+		upperShroudLarge = removeGroups(largeModel, s -> s.startsWith("shroudUpper."));
+		lowerShroudLarge = removeGroups(largeModel, s -> s.startsWith("shroudLower."));
+		lowerWindowLarge = setAlpha(removeGroups(largeModel, s -> s.startsWith("windowLower.")), 0.25d);
+		upperWindowLarge = setAlpha(removeGroups(largeModel, s -> s.startsWith("windowUpper.")), 0.25d);
+		caseBarsLarge = removeGroups(largeModel, s -> s.startsWith("caseBars."));
+	}
 
-        Map<String, CCModel> largeModel = loadModel("flywheel_large.obj");
-        flywheelExtensionLarge = removeGroups(largeModel, s -> s.startsWith("spindle.flywheelExtension."));
-        spindleLarge = removeGroups(largeModel, s -> s.startsWith("spindle."));
-        upperShroudLarge = removeGroups(largeModel, s -> s.startsWith("shroudUpper."));
-        lowerShroudLarge = removeGroups(largeModel, s -> s.startsWith("shroudLower."));
-        lowerWindowLarge = setAlpha(removeGroups(largeModel, s -> s.startsWith("windowLower.")), 0.25d);
-        upperWindowLarge = setAlpha(removeGroups(largeModel, s -> s.startsWith("windowUpper.")), 0.25d);
-        caseBarsLarge = removeGroups(largeModel, s -> s.startsWith("caseBars."));
-    }
+	private Map<String, CCModel> loadModel(String modelName) {
+		Map<String, CCModel> ret = OBJParser.parseModels(new ResourceLocation(AncientWarfareCore.modID, "models/block/automation/" + modelName), 7, new RedundantTransformation());
 
-    private Map<String, CCModel> loadModel(String modelName) {
-        Map<String, CCModel> ret = OBJParser.parseModels(new ResourceLocation(AncientWarfareCore.modID, "models/block/automation/" + modelName), 7, new RedundantTransformation());
+		for (Map.Entry<String, CCModel> group : ret.entrySet()) {
+			group.setValue(group.getValue().backfacedCopy().computeNormals());
+		}
 
-        for(Map.Entry<String, CCModel> group : ret.entrySet()) {
-            group.setValue(group.getValue().backfacedCopy().computeNormals());
-        }
+		return ret;
+	}
 
-        return ret;
-    }
+	private Collection<CCModel> removeGroups(Map<String, CCModel> objGroups, Function<String, Boolean> filter) {
+		Set<CCModel> ret = Sets.newHashSet();
 
-    private Collection<CCModel> removeGroups(Map<String, CCModel> objGroups, Function<String, Boolean> filter) {
-        Set<CCModel> ret = Sets.newHashSet();
+		Iterator<Map.Entry<String, CCModel>> iterator = objGroups.entrySet().iterator();
+		while (iterator.hasNext()) {
+			Map.Entry<String, CCModel> entry = iterator.next();
 
-        Iterator<Map.Entry<String, CCModel>> iterator = objGroups.entrySet().iterator();
-        while(iterator.hasNext()) {
-            Map.Entry<String, CCModel> entry = iterator.next();
+			if (filter.apply(entry.getKey())) {
+				ret.add(entry.getValue());
+				iterator.remove();
+			}
+		}
 
-            if(filter.apply(entry.getKey())) {
-                ret.add(entry.getValue());
-                iterator.remove();
-            }
-        }
+		return ret;
+	}
 
-        return ret;
-    }
+	private Collection<CCModel> transformModels(Collection<CCModel> groups, Transformation transform) {
+		return groups.stream().map(e -> e.copy().apply(transform)).collect(Collectors.toSet());
+	}
 
-    private Collection<CCModel> transformModels(Collection<CCModel> groups, Transformation transform) {
-        return groups.stream().map(e -> e.copy().apply(transform)).collect(Collectors.toSet());
-    }
+	@Nonnull
+	@Override
+	public List<BakedQuad> bakeItemQuads(@Nullable EnumFacing face, ItemStack stack) {
+		BakingVertexBuffer buffer = BakingVertexBuffer.create();
+		buffer.begin(7, DefaultVertexFormats.ITEM);
+		CCRenderState ccrs = CCRenderState.instance();
+		ccrs.reset();
+		ccrs.bind(buffer);
 
+		TorqueTier tier = TorqueTier.byMetadata(stack.getMetadata());
 
-    @Nonnull
-    @Override
-    public List<BakedQuad> bakeItemQuads(@Nullable EnumFacing face, ItemStack stack) {
-        BakingVertexBuffer buffer = BakingVertexBuffer.create();
-        buffer.begin(7, DefaultVertexFormats.ITEM);
-        CCRenderState ccrs = CCRenderState.instance();
-        ccrs.reset();
-        ccrs.bind(buffer);
+		HashSet<CCModel> transformedModels = Sets.newHashSet();
+		transformedModels.addAll(getTransformedModels(BlockRenderLayer.SOLID, false, true, 0f, 1));
+		transformedModels.addAll(getTransformedModels(BlockRenderLayer.SOLID, false, false, 0f, 1));
+		transformedModels.addAll(getTransformedModels(BlockRenderLayer.TRANSLUCENT, false, false, 0f, 1));
+		renderModels(transformedModels, ccrs, false, tier);
 
-        TorqueTier tier = TorqueTier.byMetadata(stack.getMetadata());
+		buffer.finishDrawing();
+		return buffer.bake();
+	}
 
-        HashSet<CCModel> transformedModels = Sets.newHashSet();
-        transformedModels.addAll(getTransformedModels(BlockRenderLayer.SOLID, false, true, 0f, 1));
-        transformedModels.addAll(getTransformedModels(BlockRenderLayer.SOLID, false, false, 0f, 1));
-        transformedModels.addAll(getTransformedModels(BlockRenderLayer.TRANSLUCENT, false, false, 0f, 1));
-        renderModels(transformedModels, ccrs, false, tier);
+	@Nonnull
+	@Override
+	public List<BakedQuad> bakeLayerFace(@Nullable EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state) {
+		if (face != null || !state.getValue(AutomationProperties.IS_CONTROL)) {
+			return Collections.emptyList();
+		}
 
-        buffer.finishDrawing();
-        return buffer.bake();
-    }
+		BakingVertexBuffer buffer = BakingVertexBuffer.create();
+		buffer.begin(7, DefaultVertexFormats.ITEM);
+		CCRenderState ccrs = CCRenderState.instance();
+		ccrs.reset();
+		ccrs.bind(buffer);
 
-    @Nonnull
-    @Override
-    public List<BakedQuad> bakeLayerFace(@Nullable EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state) {
-        if (face != null || !state.getValue(AutomationProperties.IS_CONTROL)) {
-            return Collections.emptyList();
-        }
+		boolean largeModel = state.getValue(AutomationProperties.WIDTH) > 1;
+		TorqueTier tier = state.getValue(AutomationProperties.TIER);
 
-        BakingVertexBuffer buffer = BakingVertexBuffer.create();
-        buffer.begin(7, DefaultVertexFormats.ITEM);
-        CCRenderState ccrs = CCRenderState.instance();
-        ccrs.reset();
-        ccrs.bind(buffer);
+		renderModels(getTransformedModels(layer, state), ccrs, largeModel, tier);
 
-        boolean largeModel = state.getValue(AutomationProperties.WIDTH) > 1;
-        TorqueTier tier = state.getValue(AutomationProperties.TIER);
+		buffer.finishDrawing();
+		return buffer.bake();
+	}
 
-        renderModels(getTransformedModels(layer, state), ccrs, largeModel, tier);
+	private Set<CCModel> getTransformedModels(BlockRenderLayer layer, IExtendedBlockState state) {
+		if (!state.getValue(IS_CONTROL)) {
+			return Collections.emptySet();
+		}
 
-        buffer.finishDrawing();
-        return buffer.bake();
-    }
+		boolean largeModel = state.getValue(AutomationProperties.WIDTH) > 1;
+		boolean displayDynamicParts = state.getValue(AutomationProperties.DYNAMIC);
+		float rotation = state.getValue(AutomationProperties.ROTATION);
+		int height = state.getValue(AutomationProperties.HEIGHT);
 
-    private Set<CCModel> getTransformedModels(BlockRenderLayer layer, IExtendedBlockState state) {
-        if(!state.getValue(IS_CONTROL)) {
-            return Collections.emptySet();
-        }
+		return getTransformedModels(layer, largeModel, displayDynamicParts, rotation, height);
+	}
 
-        boolean largeModel = state.getValue(AutomationProperties.WIDTH) > 1;
-        boolean displayDynamicParts = state.getValue(AutomationProperties.DYNAMIC);
-        float rotation = state.getValue(AutomationProperties.ROTATION);
-        int height = state.getValue(AutomationProperties.HEIGHT);
+	private Set<CCModel> getTransformedModels(BlockRenderLayer layer, boolean largeModel, boolean displayDynamicParts, float rotation, int height) {
+		Set<CCModel> transformedGroups = Sets.newHashSet();
+		Collection<CCModel> spindle = largeModel ? spindleLarge : spindleSmall;
+		Collection<CCModel> flywheelExtension = largeModel ? flywheelExtensionLarge : flywheelExtensionSmall;
+		Collection<CCModel> caseBars = largeModel ? caseBarsLarge : caseBarsSmall;
+		Collection<CCModel> lowerWindow = largeModel ? lowerWindowLarge : lowerWindowSmall;
+		Collection<CCModel> upperShroud = largeModel ? upperShroudLarge : upperShroudSmall;
+		Collection<CCModel> lowerShroud = largeModel ? lowerShroudLarge : lowerShroudSmall;
+		Collection<CCModel> upperWindow = largeModel ? upperWindowLarge : upperWindowSmall;
 
-        return getTransformedModels(layer, largeModel, displayDynamicParts, rotation, height);
-    }
+		if (displayDynamicParts) {
+			if (layer == BlockRenderLayer.SOLID) {
+				Transformation rotationTransform = new Rotation(rotation, 0, 1, 0).at(Vector3.center);
+				for (int i = 0; i < height; i++) {
+					Translation translation = new Translation(0, i, 0);
+					transformedGroups.addAll(transformModels(spindle, translation.with(rotationTransform)));
+					if (i < height - 1) {
+						transformedGroups.addAll(transformModels(flywheelExtension, translation.with(rotationTransform)));//at every level less than highest
+					}
+				}
+			}
+		} else {
+			for (int i = 0; i < height; i++) {
+				Translation translation = new Translation(0, i, 0);
+				if (layer == BlockRenderLayer.SOLID) {
+					transformedGroups.addAll(transformModels(caseBars, translation));
+					if (i == height - 1) {
+						transformedGroups.addAll(transformModels(upperShroud, translation));//at highest level
+					}
+					if (i == 0) {
+						transformedGroups.addAll(transformModels(lowerShroud, translation));//at ground level
+					}
+				} else {
+					transformedGroups.addAll(transformModels(lowerWindow, translation));
+					if (i < height - 1) {
+						transformedGroups.addAll(transformModels(upperWindow, translation));
+					}
+				}
+			}
+		}
 
-    private Set<CCModel> getTransformedModels(BlockRenderLayer layer, boolean largeModel, boolean displayDynamicParts, float rotation, int height) {
-        Set<CCModel> transformedGroups = Sets.newHashSet();
-        Collection<CCModel> spindle = largeModel ? spindleLarge : spindleSmall;
-        Collection<CCModel> flywheelExtension = largeModel ? flywheelExtensionLarge : flywheelExtensionSmall;
-        Collection<CCModel> caseBars = largeModel ? caseBarsLarge : caseBarsSmall;
-        Collection<CCModel> lowerWindow = largeModel ? lowerWindowLarge : lowerWindowSmall;
-        Collection<CCModel> upperShroud = largeModel ? upperShroudLarge : upperShroudSmall;
-        Collection<CCModel> lowerShroud = largeModel ? lowerShroudLarge : lowerShroudSmall;
-        Collection<CCModel> upperWindow = largeModel ? upperWindowLarge : upperWindowSmall;
+		return transformedGroups;
+	}
 
-        if (displayDynamicParts) {
-            if (layer == BlockRenderLayer.SOLID) {
-                Transformation rotationTransform = new Rotation(rotation, 0, 1, 0).at(Vector3.center);
-                for (int i = 0; i < height; i++) {
-                    Translation translation = new Translation(0, i, 0);
-                    transformedGroups.addAll(transformModels(spindle, translation.with(rotationTransform)));
-                    if(i < height - 1) {
-                        transformedGroups.addAll(transformModels(flywheelExtension, translation.with(rotationTransform)));//at every level less than highest
-                    }
-                }
-            }
-        } else {
-            for (int i = 0; i < height; i++) {
-                Translation translation = new Translation(0, i, 0);
-                if (layer == BlockRenderLayer.SOLID) {
-                    transformedGroups.addAll(transformModels(caseBars, translation));
-                    if(i == height - 1) {
-                        transformedGroups.addAll(transformModels(upperShroud, translation));//at highest level
-                    }
-                    if(i == 0) {
-                        transformedGroups.addAll(transformModels(lowerShroud, translation));//at ground level
-                    }
-                } else {
-                    transformedGroups.addAll(transformModels(lowerWindow, translation));
-                    if (i < height - 1) {
-                        transformedGroups.addAll(transformModels(upperWindow, translation));
-                    }
-                }
-            }
-        }
+	private Collection<CCModel> setAlpha(Collection<CCModel> models, double alpha) {
+		models.forEach(m -> m.setColour(new ColourRGBA(1, 1, 1, alpha).pack()));
+		return models;
+	}
 
-        return transformedGroups;
-    }
+	@Override
+	public IExtendedBlockState handleState(IExtendedBlockState state, IBlockAccess access, BlockPos pos) {
+		TileEntity te = access.getTileEntity(pos);
+		boolean isControl = true;
+		int height = 1;
+		int width = 1;
 
-    private Collection<CCModel> setAlpha(Collection<CCModel> models, double alpha) {
-        models.forEach(m -> m.setColour(new ColourRGBA(1, 1, 1, alpha).pack()));
-        return models;
-    }
+		if (te instanceof TileFlywheelStorage) {
+			TileFlywheelStorage storage = (TileFlywheelStorage) te;
 
-    @Override
-    public IExtendedBlockState handleState(IExtendedBlockState state, IBlockAccess access, BlockPos pos) {
-        TileEntity te = access.getTileEntity(pos);
-        boolean isControl = true;
-        int height = 1;
-        int width = 1;
+			isControl = storage.isControl;
+			width = storage.setWidth;
+			height = storage.setHeight;
+		}
 
-        if (te instanceof TileFlywheelStorage) {
-            TileFlywheelStorage storage = (TileFlywheelStorage) te;
+		state = state.withProperty(AutomationProperties.DYNAMIC, false);
+		state = state.withProperty(AutomationProperties.IS_CONTROL, isControl);
+		state = state.withProperty(AutomationProperties.HEIGHT, height);
+		state = state.withProperty(AutomationProperties.WIDTH, width);
+		state = state.withProperty(AutomationProperties.ROTATION, 0f);
 
-            isControl = storage.isControl;
-            width = storage.setWidth;
-            height = storage.setHeight;
-        }
+		return state;
+	}
 
+	private void renderModels(Collection<CCModel> modelGroups, CCRenderState ccrs, boolean large, TorqueTier tier) {
+		for (CCModel group : modelGroups) {
+			group.render(ccrs, getIconTransformation(large, tier));
+		}
+	}
 
-        state = state.withProperty(AutomationProperties.DYNAMIC, false);
-        state = state.withProperty(AutomationProperties.IS_CONTROL,  isControl);
-        state = state.withProperty(AutomationProperties.HEIGHT, height);
-        state = state.withProperty(AutomationProperties.WIDTH, width);
-        state = state.withProperty(AutomationProperties.ROTATION, 0f);
+	@Override
+	public void renderTransformedBlockModels(CCRenderState ccrs, IExtendedBlockState state) {
+		TextureUtils.bindBlockTexture();
 
-        return state;
-    }
+		boolean largeModel = state.getValue(AutomationProperties.WIDTH) > 1;
+		TorqueTier tier = state.getValue(AutomationProperties.TIER);
 
-    private void renderModels(Collection<CCModel> modelGroups, CCRenderState ccrs, boolean large, TorqueTier tier) {
-        for(CCModel group : modelGroups) {
-            group.render(ccrs, getIconTransformation(large, tier));
-        }
-    }
+		Set<CCModel> modelGroups = getTransformedModels(BlockRenderLayer.SOLID, state);
 
-    @Override
-    public void renderTransformedBlockModels(CCRenderState ccrs, IExtendedBlockState state) {
-        TextureUtils.bindBlockTexture();
-
-        boolean largeModel = state.getValue(AutomationProperties.WIDTH) > 1;
-        TorqueTier tier = state.getValue(AutomationProperties.TIER);
-
-        Set<CCModel> modelGroups = getTransformedModels(BlockRenderLayer.SOLID, state);
-
-        for(CCModel group : modelGroups) {
-            group.render(ccrs, LightModel.standardLightModel, getIconTransformation(largeModel, tier));
-        }
-    }
+		for (CCModel group : modelGroups) {
+			group.render(ccrs, LightModel.standardLightModel, getIconTransformation(largeModel, tier));
+		}
+	}
 }

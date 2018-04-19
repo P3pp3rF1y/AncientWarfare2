@@ -1,23 +1,23 @@
 {
-  "type": "ancientwarfare:research_recipe",
-  "research": "engineering",
-  "pattern": [
-    "  F",
-    " S ",
-    "M  "
-  ],
-  "key": {
-    "S": {
-      "item": "#STICKWOOD"
+    "type": "ancientwarfare:research_recipe",
+    "research": "engineering",
+    "pattern": [
+        "  F",
+        " S ",
+        "M  "
+    ],
+    "key": {
+        "S": {
+            "item": "#STICKWOOD"
+        },
+        "F": {
+            "item": "minecraft:feather"
+        },
+        "M": {
+            "item": "#INGOTGOLD"
+        }
     },
-    "F": {
-      "item": "minecraft:feather"
-    },
-    "M": {
-      "item": "#INGOTGOLD"
+    "result": {
+        "item": "ancientwarfare:gold_quill"
     }
-  },
-  "result": {
-    "item": "ancientwarfare:gold_quill"
-  }
 }

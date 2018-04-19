@@ -85,21 +85,21 @@ public class SpawnerSettings {
 	}
 
 	public void onUpdate() {
-		if(!respondToRedstone) {
+		if (!respondToRedstone) {
 			updateNormalMode();
-		} else if(redstoneMode) {
+		} else if (redstoneMode) {
 			updateRedstoneModePulse();
 		} else {
 			updateRedstoneModeToggle();
 		}
-		if(spawnGroups.isEmpty()) {
+		if (spawnGroups.isEmpty()) {
 			world.setBlockToAir(pos);
 		}
 	}
 
 	private void updateRedstoneModeToggle() {
 		prevRedstoneState = world.isBlockIndirectlyGettingPowered(pos) > 0 || world.getStrongPower(pos) > 0;
-		if(respondToRedstone && !redstoneMode && !prevRedstoneState) {
+		if (respondToRedstone && !redstoneMode && !prevRedstoneState) {
 			//noop
 			return;
 		}
@@ -108,17 +108,17 @@ public class SpawnerSettings {
 
 	private void updateRedstoneModePulse() {
 		boolean powered = world.isBlockIndirectlyGettingPowered(pos) > 0 || world.getStrongPower(pos) > 0;
-		if(!prevRedstoneState && powered) {
+		if (!prevRedstoneState && powered) {
 			spawnEntities();
 		}
 		prevRedstoneState = powered;
 	}
 
 	private void updateNormalMode() {
-		if(spawnDelay > 0) {
+		if (spawnDelay > 0) {
 			spawnDelay--;
 		}
-		if(spawnDelay <= 0) {
+		if (spawnDelay <= 0) {
 			int range = maxDelay - minDelay;
 			spawnDelay = minDelay + (range <= 0 ? 0 : world.rand.nextInt(range));
 			spawnEntities();
@@ -126,42 +126,42 @@ public class SpawnerSettings {
 	}
 
 	private void spawnEntities() {
-		if(lightSensitive) {
+		if (lightSensitive) {
 			int light = world.getBlockState(pos).getLightValue(world, pos);
 
 			//TODO check this light calculation stuff...
-			if(light >= 8) {
+			if (light >= 8) {
 				return;
 			}
 		}
-		if(playerRange > 0) {
+		if (playerRange > 0) {
 			List<EntityPlayer> nearbyPlayers = world.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos, pos.add(1, 1, 1)).grow(playerRange, playerRange, playerRange));
-			if(nearbyPlayers.isEmpty()) {
+			if (nearbyPlayers.isEmpty()) {
 				return;
 			}
 			boolean doSpawn = false;
-			for(EntityPlayer player : nearbyPlayers) {
-				if(!debugMode && player.capabilities.isCreativeMode) {
+			for (EntityPlayer player : nearbyPlayers) {
+				if (!debugMode && player.capabilities.isCreativeMode) {
 					continue;
 				}//iterate until a single non-creative mode player is found
 				doSpawn = true;
 				break;
 			}
-			if(!doSpawn) {
+			if (!doSpawn) {
 				return;
 			}
 		}
 
-		if(maxNearbyMonsters > 0 && mobRange > 0) {
+		if (maxNearbyMonsters > 0 && mobRange > 0) {
 			int nearbyCount = world.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(pos, pos.add(1, 1, 1)).grow(mobRange, mobRange, mobRange)).size();
-			if(nearbyCount >= maxNearbyMonsters) {
+			if (nearbyCount >= maxNearbyMonsters) {
 				AWLog.logDebug("skipping spawning because of too many nearby entities");
 				return;
 			}
 		}
 
 		int totalWeight = 0;
-		for(EntitySpawnGroup group : this.spawnGroups)//count total weights
+		for (EntitySpawnGroup group : this.spawnGroups)//count total weights
 		{
 			totalWeight += group.groupWeight;
 		}
@@ -169,10 +169,10 @@ public class SpawnerSettings {
 		int check = 0;
 		EntitySpawnGroup toSpawn = null;
 		int index = 0;
-		for(EntitySpawnGroup group : this.spawnGroups)//iterate to find selected object
+		for (EntitySpawnGroup group : this.spawnGroups)//iterate to find selected object
 		{
 			check += group.groupWeight;
-			if(rand < check)//object found, break
+			if (rand < check)//object found, break
 			{
 				toSpawn = group;
 				break;
@@ -180,9 +180,9 @@ public class SpawnerSettings {
 			index++;
 		}
 
-		if(toSpawn != null) {
+		if (toSpawn != null) {
 			toSpawn.spawnEntities(world, pos, index, range);
-			if(toSpawn.shouldRemove()) {
+			if (toSpawn.shouldRemove()) {
 				spawnGroups.remove(toSpawn);
 			}
 		}
@@ -190,7 +190,7 @@ public class SpawnerSettings {
 
 	public void writeToNBT(NBTTagCompound tag) {
 		tag.setBoolean("respondToRedstone", respondToRedstone);
-		if(respondToRedstone) {
+		if (respondToRedstone) {
 			tag.setBoolean("redstoneMode", redstoneMode);
 			tag.setBoolean("prevRedstoneState", prevRedstoneState);
 		}
@@ -207,7 +207,7 @@ public class SpawnerSettings {
 		tag.setBoolean("debugMode", debugMode);
 		NBTTagList groupList = new NBTTagList();
 		NBTTagCompound groupTag;
-		for(EntitySpawnGroup group : this.spawnGroups) {
+		for (EntitySpawnGroup group : this.spawnGroups) {
 			groupTag = new NBTTagCompound();
 			group.writeToNBT(groupTag);
 			groupList.appendTag(groupTag);
@@ -221,7 +221,7 @@ public class SpawnerSettings {
 	public void readFromNBT(NBTTagCompound tag) {
 		spawnGroups.clear();
 		respondToRedstone = tag.getBoolean("respondToRedstone");
-		if(respondToRedstone) {
+		if (respondToRedstone) {
 			redstoneMode = tag.getBoolean("redstoneMode");
 			prevRedstoneState = tag.getBoolean("prevRedstoneState");
 		}
@@ -238,12 +238,12 @@ public class SpawnerSettings {
 		debugMode = tag.getBoolean("debugMode");
 		NBTTagList groupList = tag.getTagList("spawnGroups", Constants.NBT.TAG_COMPOUND);
 		EntitySpawnGroup group;
-		for(int i = 0; i < groupList.tagCount(); i++) {
+		for (int i = 0; i < groupList.tagCount(); i++) {
 			group = new EntitySpawnGroup();
 			group.readFromNBT(groupList.getCompoundTagAt(i));
 			spawnGroups.add(group);
 		}
-		if(tag.hasKey("inventory")) {
+		if (tag.hasKey("inventory")) {
 			inventory.deserializeNBT(tag.getCompoundTag("inventory"));
 		}
 	}
@@ -309,7 +309,7 @@ public class SpawnerSettings {
 	}
 
 	public final void setMaxDelay(int maxDelay) {
-		if(minDelay > maxDelay)
+		if (minDelay > maxDelay)
 			minDelay = maxDelay;
 		this.maxDelay = maxDelay;
 	}
@@ -319,7 +319,7 @@ public class SpawnerSettings {
 	}
 
 	public final void setMinDelay(int minDelay) {
-		if(minDelay > maxDelay)
+		if (minDelay > maxDelay)
 			maxDelay = minDelay;
 		this.minDelay = minDelay;
 	}
@@ -329,9 +329,9 @@ public class SpawnerSettings {
 	}
 
 	public final void setSpawnDelay(int spawnDelay) {
-		if(spawnDelay > maxDelay)
+		if (spawnDelay > maxDelay)
 			maxDelay = spawnDelay;
-		if(spawnDelay < minDelay)
+		if (spawnDelay < minDelay)
 			minDelay = spawnDelay;
 		this.spawnDelay = spawnDelay;
 	}
@@ -389,7 +389,7 @@ public class SpawnerSettings {
 		}
 
 		public void setWeight(int weight) {
-			if(weight <= 0) {
+			if (weight <= 0) {
 				weight = 1;
 			}
 			this.groupWeight = weight;
@@ -403,9 +403,9 @@ public class SpawnerSettings {
 			EntitySpawnSettings settings;
 			Iterator<EntitySpawnSettings> it = entitiesToSpawn.iterator();
 			int index = 0;
-			while(it.hasNext() && (settings = it.next()) != null) {
+			while (it.hasNext() && (settings = it.next()) != null) {
 				settings.spawnEntities(world, spawnPos, range);
-				if(settings.shouldRemove()) {
+				if (settings.shouldRemove()) {
 					it.remove();
 				}
 
@@ -435,7 +435,7 @@ public class SpawnerSettings {
 			NBTTagList settingsList = new NBTTagList();
 
 			NBTTagCompound settingTag;
-			for(EntitySpawnSettings setting : this.entitiesToSpawn) {
+			for (EntitySpawnSettings setting : this.entitiesToSpawn) {
 				settingTag = new NBTTagCompound();
 				setting.writeToNBT(settingTag);
 				settingsList.appendTag(settingTag);
@@ -447,7 +447,7 @@ public class SpawnerSettings {
 			groupWeight = tag.getInteger("groupWeight");
 			NBTTagList settingsList = tag.getTagList("settingsList", Constants.NBT.TAG_COMPOUND);
 			EntitySpawnSettings setting;
-			for(int i = 0; i < settingsList.tagCount(); i++) {
+			for (int i = 0; i < settingsList.tagCount(); i++) {
 				setting = new EntitySpawnSettings();
 				setting.readFromNBT(settingsList.getCompoundTagAt(i));
 				this.entitiesToSpawn.add(setting);
@@ -473,7 +473,7 @@ public class SpawnerSettings {
 
 		public final void writeToNBT(NBTTagCompound tag) {
 			tag.setString("entityId", entityId.toString());
-			if(customTag != null) {
+			if (customTag != null) {
 				tag.setTag("customTag", customTag);
 			}
 			tag.setBoolean("forced", forced);
@@ -484,7 +484,7 @@ public class SpawnerSettings {
 
 		public final void readFromNBT(NBTTagCompound tag) {
 			setEntityToSpawn(new ResourceLocation(tag.getString("entityId")));
-			if(tag.hasKey("customTag")) {
+			if (tag.hasKey("customTag")) {
 				customTag = tag.getCompoundTag("customTag");
 			}
 			forced = tag.getBoolean("forced");
@@ -495,11 +495,11 @@ public class SpawnerSettings {
 
 		public final void setEntityToSpawn(ResourceLocation entityId) {
 			this.entityId = entityId;
-			if(!ForgeRegistries.ENTITIES.containsKey(this.entityId)) {
+			if (!ForgeRegistries.ENTITIES.containsKey(this.entityId)) {
 				AWLog.logError(entityId + " is not a valid entityId.  Spawner default to Zombie.");
 				this.entityId = new ResourceLocation("zombie");
 			}
-			if(AWStructureStatics.excludedSpawnerEntities.contains(this.entityId)) {
+			if (AWStructureStatics.excludedSpawnerEntities.contains(this.entityId)) {
 				AWLog.logError(entityId + " has been set as an invalid entity for spawners!  Spawner default to Zombie.");
 				this.entityId = new ResourceLocation("zombie");
 			}
@@ -514,7 +514,7 @@ public class SpawnerSettings {
 		}
 
 		public final void setSpawnCountMax(int max) {
-			if(minToSpawn < max)
+			if (minToSpawn < max)
 				this.maxToSpawn = max;
 			else
 				this.maxToSpawn = this.minToSpawn;
@@ -563,12 +563,12 @@ public class SpawnerSettings {
 		private int getNumToSpawn(Random rand) {
 			int randRange = maxToSpawn - minToSpawn;
 			int toSpawn = 0;
-			if(randRange <= 0) {
+			if (randRange <= 0) {
 				toSpawn = minToSpawn;
 			} else {
 				toSpawn = minToSpawn + rand.nextInt(randRange);
 			}
-			if(remainingSpawnCount >= 0 && toSpawn > remainingSpawnCount) {
+			if (remainingSpawnCount >= 0 && toSpawn > remainingSpawnCount) {
 				toSpawn = remainingSpawnCount;
 			}
 			return toSpawn;
@@ -577,20 +577,20 @@ public class SpawnerSettings {
 		private void spawnEntities(World world, BlockPos spawnPos, int range) {
 			int toSpawn = getNumToSpawn(world.rand);
 
-			for(int i = 0; i < toSpawn; i++) {
+			for (int i = 0; i < toSpawn; i++) {
 				Entity e = EntityList.createEntityByIDFromName(entityId, world);
-				if(e == null)
+				if (e == null)
 					return;
 				boolean doSpawn = false;
 				int spawnTry = 0;
-				while(!doSpawn && spawnTry < range + 5) {
+				while (!doSpawn && spawnTry < range + 5) {
 					int x = spawnPos.getX() - range + world.rand.nextInt(range * 2 + 1);
 					int z = spawnPos.getZ() - range + world.rand.nextInt(range * 2 + 1);
-					for(int y = spawnPos.getY() - range; y <= y + range; y++) {
+					for (int y = spawnPos.getY() - range; y <= y + range; y++) {
 						e.setLocationAndAngles(x + 0.5d, y, z + 0.5d, world.rand.nextFloat() * 360, 0);
-						if(!forced && e instanceof EntityLiving) {
+						if (!forced && e instanceof EntityLiving) {
 							doSpawn = ((EntityLiving) e).getCanSpawnHere() && ((EntityLiving) e).isNotColliding();
-							if(doSpawn)
+							if (doSpawn)
 								break;
 						} else {
 							doSpawn = true;
@@ -599,9 +599,9 @@ public class SpawnerSettings {
 					}
 					spawnTry++;
 				}
-				if(doSpawn) {
+				if (doSpawn) {
 					spawnEntityAt(e, world);
-					if(remainingSpawnCount > 0) {
+					if (remainingSpawnCount > 0) {
 						remainingSpawnCount--;
 					}
 				}
@@ -610,15 +610,15 @@ public class SpawnerSettings {
 
 		//TODO  sendSoundPacket(world, pos);
 		private void spawnEntityAt(Entity e, World world) {
-			if(e instanceof EntityLiving) {
+			if (e instanceof EntityLiving) {
 				((EntityLiving) e).onInitialSpawn(world.getDifficultyForLocation(e.getPosition()), null);
 				((EntityLiving) e).spawnExplosionParticle();
 			}
-			if(customTag != null) {
+			if (customTag != null) {
 				NBTTagCompound temp = new NBTTagCompound();
 				e.writeToNBT(temp);
 				Set<String> keys = customTag.getKeySet();
-				for(String key : keys) {
+				for (String key : keys) {
 					temp.setTag(key, customTag.getTag(key));
 				}
 				e.readFromNBT(temp);

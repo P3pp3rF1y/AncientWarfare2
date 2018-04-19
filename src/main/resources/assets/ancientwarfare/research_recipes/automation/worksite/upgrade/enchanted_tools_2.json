@@ -1,22 +1,22 @@
 {
-  "type": "ancientwarfare:research_recipe",
-  "research": "mass_production",
-  "pattern": [
-    "B B",
-    "III"
-  ],
-  "key": {
-    "B": {
-      "type": "minecraft:item_nbt",
-      "item": "minecraft:enchanted_book",
-      "nbt": "{ench:[{lvl:2s,id:35s}]}"
+    "type": "ancientwarfare:research_recipe",
+    "research": "mass_production",
+    "pattern": [
+        "B B",
+        "III"
+    ],
+    "key": {
+        "B": {
+            "type": "minecraft:item_nbt",
+            "item": "minecraft:enchanted_book",
+            "nbt": "{ench:[{lvl:2s,id:35s}]}"
+        },
+        "I": {
+            "item": "#INGOTIRON"
+        }
     },
-    "I": {
-      "item": "#INGOTIRON"
+    "result": {
+        "item": "ancientwarfareautomation:worksite_upgrade",
+        "data": 5
     }
-  },
-  "result": {
-    "item": "ancientwarfareautomation:worksite_upgrade",
-    "data": 5
-  }
 }

@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins;
 
 import net.minecraft.block.Block;
@@ -62,99 +63,99 @@ import java.util.HashSet;
 
 public class StructurePluginVanillaHandler implements StructureContentPlugin {
 
-    public StructurePluginVanillaHandler() {
+	public StructurePluginVanillaHandler() {
 
-    }
+	}
 
-    @Override
-    public void addHandledBlocks(IStructurePluginManager manager) {
-        HashSet<Block> specialHandledBlocks = new HashSet<>();
-        specialHandledBlocks.add(Blocks.IRON_DOOR);
-        specialHandledBlocks.add(Blocks.SPRUCE_DOOR);
-        specialHandledBlocks.add(Blocks.OAK_DOOR);
-        specialHandledBlocks.add(Blocks.JUNGLE_DOOR);
-        specialHandledBlocks.add(Blocks.BIRCH_DOOR);
-        specialHandledBlocks.add(Blocks.ACACIA_DOOR);
-        specialHandledBlocks.add(Blocks.DARK_OAK_DOOR);
-        specialHandledBlocks.add(Blocks.STANDING_SIGN);
-        specialHandledBlocks.add(Blocks.WALL_SIGN);
-        specialHandledBlocks.add(Blocks.MOB_SPAWNER);
-        specialHandledBlocks.add(Blocks.COMMAND_BLOCK);
-        specialHandledBlocks.add(Blocks.BREWING_STAND);
-        specialHandledBlocks.add(Blocks.BEACON);
-        specialHandledBlocks.add(Blocks.DISPENSER);
-        specialHandledBlocks.add(Blocks.LIT_FURNACE);
-        specialHandledBlocks.add(Blocks.FURNACE);
-        specialHandledBlocks.add(Blocks.CHEST);
-        specialHandledBlocks.add(Blocks.DROPPER);
-        specialHandledBlocks.add(Blocks.HOPPER);
-        specialHandledBlocks.add(Blocks.BEACON);
-        specialHandledBlocks.add(Blocks.TRAPPED_CHEST);
-        specialHandledBlocks.add(Blocks.FLOWER_POT);
-        specialHandledBlocks.add(Blocks.SKULL);
+	@Override
+	public void addHandledBlocks(IStructurePluginManager manager) {
+		HashSet<Block> specialHandledBlocks = new HashSet<>();
+		specialHandledBlocks.add(Blocks.IRON_DOOR);
+		specialHandledBlocks.add(Blocks.SPRUCE_DOOR);
+		specialHandledBlocks.add(Blocks.OAK_DOOR);
+		specialHandledBlocks.add(Blocks.JUNGLE_DOOR);
+		specialHandledBlocks.add(Blocks.BIRCH_DOOR);
+		specialHandledBlocks.add(Blocks.ACACIA_DOOR);
+		specialHandledBlocks.add(Blocks.DARK_OAK_DOOR);
+		specialHandledBlocks.add(Blocks.STANDING_SIGN);
+		specialHandledBlocks.add(Blocks.WALL_SIGN);
+		specialHandledBlocks.add(Blocks.MOB_SPAWNER);
+		specialHandledBlocks.add(Blocks.COMMAND_BLOCK);
+		specialHandledBlocks.add(Blocks.BREWING_STAND);
+		specialHandledBlocks.add(Blocks.BEACON);
+		specialHandledBlocks.add(Blocks.DISPENSER);
+		specialHandledBlocks.add(Blocks.LIT_FURNACE);
+		specialHandledBlocks.add(Blocks.FURNACE);
+		specialHandledBlocks.add(Blocks.CHEST);
+		specialHandledBlocks.add(Blocks.DROPPER);
+		specialHandledBlocks.add(Blocks.HOPPER);
+		specialHandledBlocks.add(Blocks.BEACON);
+		specialHandledBlocks.add(Blocks.TRAPPED_CHEST);
+		specialHandledBlocks.add(Blocks.FLOWER_POT);
+		specialHandledBlocks.add(Blocks.SKULL);
 
-        for (Block block : Block.REGISTRY) {
-            if (block != null && block.getRegistryName().getResourceDomain().equals("minecraft") && !specialHandledBlocks.contains(block)) {
-                manager.registerBlockHandler("vanillaBlocks", block, TemplateRuleVanillaBlocks.class);
-            }
-        }
+		for (Block block : Block.REGISTRY) {
+			if (block != null && block.getRegistryName().getResourceDomain().equals("minecraft") && !specialHandledBlocks.contains(block)) {
+				manager.registerBlockHandler("vanillaBlocks", block, TemplateRuleVanillaBlocks.class);
+			}
+		}
 
-        manager.registerBlockHandler("vanillaDoors", Blocks.IRON_DOOR, TemplateRuleBlockDoors.class);
-        manager.registerBlockHandler("vanillaDoors", Blocks.SPRUCE_DOOR, TemplateRuleBlockDoors.class);
-        manager.registerBlockHandler("vanillaDoors", Blocks.OAK_DOOR, TemplateRuleBlockDoors.class);
-        manager.registerBlockHandler("vanillaDoors", Blocks.JUNGLE_DOOR, TemplateRuleBlockDoors.class);
-        manager.registerBlockHandler("vanillaDoors", Blocks.BIRCH_DOOR, TemplateRuleBlockDoors.class);
-        manager.registerBlockHandler("vanillaDoors", Blocks.ACACIA_DOOR, TemplateRuleBlockDoors.class);
-        manager.registerBlockHandler("vanillaDoors", Blocks.DARK_OAK_DOOR, TemplateRuleBlockDoors.class);
-        manager.registerBlockHandler("vanillaSign", Blocks.WALL_SIGN, TemplateRuleBlockSign.class);
-        manager.registerBlockHandler("vanillaSign", Blocks.STANDING_SIGN, TemplateRuleBlockSign.class);
-        manager.registerBlockHandler("vanillaLogic", Blocks.MOB_SPAWNER, TemplateRuleBlockLogic.class);
-        manager.registerBlockHandler("vanillaLogic", Blocks.COMMAND_BLOCK, TemplateRuleBlockLogic.class);
-        manager.registerBlockHandler("vanillaLogic", Blocks.BREWING_STAND, TemplateRuleBlockLogic.class);
-        manager.registerBlockHandler("vanillaLogic", Blocks.BEACON, TemplateRuleBlockLogic.class);
-        manager.registerBlockHandler("vanillaLogic", Blocks.LIT_FURNACE, TemplateRuleBlockLogic.class);
-        manager.registerBlockHandler("vanillaLogic", Blocks.FURNACE, TemplateRuleBlockLogic.class);
-        manager.registerBlockHandler("vanillaLogic", Blocks.BEACON, TemplateRuleBlockLogic.class);
-        manager.registerBlockHandler("vanillaInventory", Blocks.DISPENSER, TemplateRuleBlockInventory.class);
-        manager.registerBlockHandler("vanillaInventory", Blocks.CHEST, TemplateRuleBlockInventory.class);
-        manager.registerBlockHandler("vanillaInventory", Blocks.DROPPER, TemplateRuleBlockInventory.class);
-        manager.registerBlockHandler("vanillaInventory", Blocks.HOPPER, TemplateRuleBlockInventory.class);
-        manager.registerBlockHandler("vanillaInventory", Blocks.TRAPPED_CHEST, TemplateRuleBlockInventory.class);
-        manager.registerBlockHandler("vanillaFlowerPot", Blocks.FLOWER_POT, TemplateRuleFlowerPot.class);
-        manager.registerBlockHandler("vanillaSkull", Blocks.SKULL, TemplateRuleVanillaSkull.class);
+		manager.registerBlockHandler("vanillaDoors", Blocks.IRON_DOOR, TemplateRuleBlockDoors.class);
+		manager.registerBlockHandler("vanillaDoors", Blocks.SPRUCE_DOOR, TemplateRuleBlockDoors.class);
+		manager.registerBlockHandler("vanillaDoors", Blocks.OAK_DOOR, TemplateRuleBlockDoors.class);
+		manager.registerBlockHandler("vanillaDoors", Blocks.JUNGLE_DOOR, TemplateRuleBlockDoors.class);
+		manager.registerBlockHandler("vanillaDoors", Blocks.BIRCH_DOOR, TemplateRuleBlockDoors.class);
+		manager.registerBlockHandler("vanillaDoors", Blocks.ACACIA_DOOR, TemplateRuleBlockDoors.class);
+		manager.registerBlockHandler("vanillaDoors", Blocks.DARK_OAK_DOOR, TemplateRuleBlockDoors.class);
+		manager.registerBlockHandler("vanillaSign", Blocks.WALL_SIGN, TemplateRuleBlockSign.class);
+		manager.registerBlockHandler("vanillaSign", Blocks.STANDING_SIGN, TemplateRuleBlockSign.class);
+		manager.registerBlockHandler("vanillaLogic", Blocks.MOB_SPAWNER, TemplateRuleBlockLogic.class);
+		manager.registerBlockHandler("vanillaLogic", Blocks.COMMAND_BLOCK, TemplateRuleBlockLogic.class);
+		manager.registerBlockHandler("vanillaLogic", Blocks.BREWING_STAND, TemplateRuleBlockLogic.class);
+		manager.registerBlockHandler("vanillaLogic", Blocks.BEACON, TemplateRuleBlockLogic.class);
+		manager.registerBlockHandler("vanillaLogic", Blocks.LIT_FURNACE, TemplateRuleBlockLogic.class);
+		manager.registerBlockHandler("vanillaLogic", Blocks.FURNACE, TemplateRuleBlockLogic.class);
+		manager.registerBlockHandler("vanillaLogic", Blocks.BEACON, TemplateRuleBlockLogic.class);
+		manager.registerBlockHandler("vanillaInventory", Blocks.DISPENSER, TemplateRuleBlockInventory.class);
+		manager.registerBlockHandler("vanillaInventory", Blocks.CHEST, TemplateRuleBlockInventory.class);
+		manager.registerBlockHandler("vanillaInventory", Blocks.DROPPER, TemplateRuleBlockInventory.class);
+		manager.registerBlockHandler("vanillaInventory", Blocks.HOPPER, TemplateRuleBlockInventory.class);
+		manager.registerBlockHandler("vanillaInventory", Blocks.TRAPPED_CHEST, TemplateRuleBlockInventory.class);
+		manager.registerBlockHandler("vanillaFlowerPot", Blocks.FLOWER_POT, TemplateRuleFlowerPot.class);
+		manager.registerBlockHandler("vanillaSkull", Blocks.SKULL, TemplateRuleVanillaSkull.class);
 
-        manager.registerBlockHandler("awAdvancedSpawner", AWStructuresBlocks.advancedSpawner, TemplateRuleBlockLogic.class);
-        manager.registerBlockHandler("awCoreLogic", AWBlocks.engineeringStation, TemplateRuleBlockLogic.class);
-        manager.registerBlockHandler("awCoreLogic", AWBlocks.researchStation, TemplateRuleBlockLogic.class);
-        manager.registerBlockHandler("awStructureLogic", AWStructuresBlocks.draftingStation, TemplateRuleBlockLogic.class);
-        manager.registerBlockHandler("awStructureLogic", AWStructuresBlocks.builderBlock, TemplateRuleBlockLogic.class);
-        manager.registerBlockHandler("awStructureLogic", AWStructuresBlocks.soundBlock, TemplateRuleBlockLogic.class);
-    }
+		manager.registerBlockHandler("awAdvancedSpawner", AWStructuresBlocks.advancedSpawner, TemplateRuleBlockLogic.class);
+		manager.registerBlockHandler("awCoreLogic", AWBlocks.engineeringStation, TemplateRuleBlockLogic.class);
+		manager.registerBlockHandler("awCoreLogic", AWBlocks.researchStation, TemplateRuleBlockLogic.class);
+		manager.registerBlockHandler("awStructureLogic", AWStructuresBlocks.draftingStation, TemplateRuleBlockLogic.class);
+		manager.registerBlockHandler("awStructureLogic", AWStructuresBlocks.builderBlock, TemplateRuleBlockLogic.class);
+		manager.registerBlockHandler("awStructureLogic", AWStructuresBlocks.soundBlock, TemplateRuleBlockLogic.class);
+	}
 
-    @Override
-    public void addHandledEntities(IStructurePluginManager manager) {
-        manager.registerEntityHandler("vanillaEntities", EntityPig.class, TemplateRuleVanillaEntity.class);
-        manager.registerEntityHandler("vanillaEntities", EntitySheep.class, TemplateRuleVanillaEntity.class);
-        manager.registerEntityHandler("vanillaEntities", EntityCow.class, TemplateRuleVanillaEntity.class);
-        manager.registerEntityHandler("vanillaEntities", EntityChicken.class, TemplateRuleVanillaEntity.class);
-        manager.registerEntityHandler("vanillaEntities", EntityBoat.class, TemplateRuleVanillaEntity.class);
-        manager.registerEntityHandler("vanillaEntities", EntityIronGolem.class, TemplateRuleVanillaEntity.class);
-        manager.registerEntityHandler("vanillaEntities", EntityWolf.class, TemplateRuleVanillaEntity.class);
-        manager.registerEntityHandler("vanillaEntities", EntityOcelot.class, TemplateRuleVanillaEntity.class);
-        manager.registerEntityHandler("vanillaEntities", EntityWither.class, TemplateRuleVanillaEntity.class);
-        manager.registerEntityHandler("vanillaEntities", EntitySnowman.class, TemplateRuleVanillaEntity.class);
+	@Override
+	public void addHandledEntities(IStructurePluginManager manager) {
+		manager.registerEntityHandler("vanillaEntities", EntityPig.class, TemplateRuleVanillaEntity.class);
+		manager.registerEntityHandler("vanillaEntities", EntitySheep.class, TemplateRuleVanillaEntity.class);
+		manager.registerEntityHandler("vanillaEntities", EntityCow.class, TemplateRuleVanillaEntity.class);
+		manager.registerEntityHandler("vanillaEntities", EntityChicken.class, TemplateRuleVanillaEntity.class);
+		manager.registerEntityHandler("vanillaEntities", EntityBoat.class, TemplateRuleVanillaEntity.class);
+		manager.registerEntityHandler("vanillaEntities", EntityIronGolem.class, TemplateRuleVanillaEntity.class);
+		manager.registerEntityHandler("vanillaEntities", EntityWolf.class, TemplateRuleVanillaEntity.class);
+		manager.registerEntityHandler("vanillaEntities", EntityOcelot.class, TemplateRuleVanillaEntity.class);
+		manager.registerEntityHandler("vanillaEntities", EntityWither.class, TemplateRuleVanillaEntity.class);
+		manager.registerEntityHandler("vanillaEntities", EntitySnowman.class, TemplateRuleVanillaEntity.class);
 
-        manager.registerEntityHandler("vanillaHangingEntity", EntityPainting.class, TemplateRuleEntityHanging.class);
-        manager.registerEntityHandler("vanillaHangingEntity", EntityItemFrame.class, TemplateRuleEntityHanging.class);
+		manager.registerEntityHandler("vanillaHangingEntity", EntityPainting.class, TemplateRuleEntityHanging.class);
+		manager.registerEntityHandler("vanillaHangingEntity", EntityItemFrame.class, TemplateRuleEntityHanging.class);
 
-        manager.registerEntityHandler("vanillaLogicEntity", EntityHorse.class, TemplateRuleEntityLogic.class);
-        manager.registerEntityHandler("vanillaLogicEntity", EntityVillager.class, TemplateRuleEntityLogic.class);
-        manager.registerEntityHandler("vanillaLogicEntity", EntityMinecartHopper.class, TemplateRuleEntityLogic.class);
-        manager.registerEntityHandler("vanillaLogicEntity", EntityMinecartChest.class, TemplateRuleEntityLogic.class);
-        manager.registerEntityHandler("vanillaLogicEntity", EntityMinecartEmpty.class, TemplateRuleEntityLogic.class);
-        manager.registerEntityHandler("vanillaLogicEntity", EntityMinecartFurnace.class, TemplateRuleEntityLogic.class);
-        manager.registerEntityHandler("vanillaLogicEntity", EntityMinecartTNT.class, TemplateRuleEntityLogic.class);
+		manager.registerEntityHandler("vanillaLogicEntity", EntityHorse.class, TemplateRuleEntityLogic.class);
+		manager.registerEntityHandler("vanillaLogicEntity", EntityVillager.class, TemplateRuleEntityLogic.class);
+		manager.registerEntityHandler("vanillaLogicEntity", EntityMinecartHopper.class, TemplateRuleEntityLogic.class);
+		manager.registerEntityHandler("vanillaLogicEntity", EntityMinecartChest.class, TemplateRuleEntityLogic.class);
+		manager.registerEntityHandler("vanillaLogicEntity", EntityMinecartEmpty.class, TemplateRuleEntityLogic.class);
+		manager.registerEntityHandler("vanillaLogicEntity", EntityMinecartFurnace.class, TemplateRuleEntityLogic.class);
+		manager.registerEntityHandler("vanillaLogicEntity", EntityMinecartTNT.class, TemplateRuleEntityLogic.class);
 
-        manager.registerEntityHandler("awGate", EntityGate.class, TemplateRuleGates.class);
-    }
+		manager.registerEntityHandler("awGate", EntityGate.class, TemplateRuleGates.class);
+	}
 }

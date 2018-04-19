@@ -18,10 +18,11 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.structure.api;
 
 public interface IStructurePluginRegister {
 
-    void registerPlugin(StructureContentPlugin plugin);
+	void registerPlugin(StructureContentPlugin plugin);
 
 }

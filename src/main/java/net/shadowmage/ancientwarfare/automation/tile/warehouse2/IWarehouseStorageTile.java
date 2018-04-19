@@ -9,30 +9,30 @@ import java.util.List;
 
 public interface IWarehouseStorageTile {
 
-    public int getStorageAdditionSize();
+	public int getStorageAdditionSize();
 
-    public void onWarehouseInventoryUpdated(TileWarehouseBase warehouse);
+	public void onWarehouseInventoryUpdated(TileWarehouseBase warehouse);
 
-    public List<WarehouseStorageFilter> getFilters();
+	public List<WarehouseStorageFilter> getFilters();
 
-    public void setFilters(List<WarehouseStorageFilter> filters);
+	public void setFilters(List<WarehouseStorageFilter> filters);
 
-    public void addItems(ItemQuantityMap map);
+	public void addItems(ItemQuantityMap map);
 
-    int getQuantityStored(ItemStack filter);
+	int getQuantityStored(ItemStack filter);
 
-    int getAvailableSpaceFor(ItemStack filter);
+	int getAvailableSpaceFor(ItemStack filter);
 
-    int extractItem(ItemStack filter, int amount);
+	int extractItem(ItemStack filter, int amount);
 
-    int insertItem(ItemStack filter, int amount);
+	int insertItem(ItemStack filter, int amount);
 
-    public void addViewer(ContainerWarehouseStorage containerWarehouseStorage);
+	public void addViewer(ContainerWarehouseStorage containerWarehouseStorage);
 
-    public void removeViewer(ContainerWarehouseStorage containerWarehouseStorage);
+	public void removeViewer(ContainerWarehouseStorage containerWarehouseStorage);
 
 	public void handleSlotClick(EntityPlayer player, ItemStack item, boolean isShiftClick, boolean isRightClick);
 
-    public ItemStack tryAdd(ItemStack stack);
+	public ItemStack tryAdd(ItemStack stack);
 
 }

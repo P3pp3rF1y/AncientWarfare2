@@ -7,29 +7,29 @@ import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager
 
 public class PacketStructureRemove extends PacketBase {
 
-    String structureName;
+	String structureName;
 
-    public PacketStructureRemove() {
-        // receive side constructor
-    }
+	public PacketStructureRemove() {
+		// receive side constructor
+	}
 
-    public PacketStructureRemove(String name) {
-        structureName = name;
-    }
+	public PacketStructureRemove(String name) {
+		structureName = name;
+	}
 
-    @Override
-    protected void writeToStream(ByteBuf data) {
-        StringTools.writeString(data, structureName);
-    }
+	@Override
+	protected void writeToStream(ByteBuf data) {
+		StringTools.writeString(data, structureName);
+	}
 
-    @Override
-    protected void readFromStream(ByteBuf data) {
-        structureName = StringTools.readString(data);
-    }
+	@Override
+	protected void readFromStream(ByteBuf data) {
+		structureName = StringTools.readString(data);
+	}
 
-    @Override
-    protected void execute() {
-        StructureTemplateManagerClient.instance().removeTemplate(structureName);
-    }
+	@Override
+	protected void execute() {
+		StructureTemplateManagerClient.instance().removeTemplate(structureName);
+	}
 
 }

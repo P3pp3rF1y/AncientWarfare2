@@ -43,21 +43,7 @@ public class AmmoHwachaRocketAirburst extends Ammo {
 		this.ammoWeight = 1.4f;
 		this.renderScale = 0.2f;
 		this.configName = "hwacha_rocket_airburst";
-		//		this.iconTexture = "ammoRocketAirburst1"; TODO rendering
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/arrow_wood.png");
-
-/* TODO recipe
-		this.numCrafted = 6;
-		this.neededResearch.add(ResearchGoalNumbers.rockets3);
-		this.neededResearch.add(ResearchGoalNumbers.ballistics3);
-		this.neededResearch.add(ResearchGoalNumbers.explosives2);
-		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.rocketCharge, 1, false, false));
-		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.stick), 6, false, false));
-		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.feather), 1, false, false));
-		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.ingotIron), 1, false, false));
-		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.clusterCharge, 1, false, false));
-		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.explosiveCharge, 1, false, false));
-*/
 	}
 
 	@Override

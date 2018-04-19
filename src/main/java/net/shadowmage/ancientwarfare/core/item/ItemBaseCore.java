@@ -8,16 +8,16 @@ import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
 
 public abstract class ItemBaseCore extends ItemBase implements IClientRegistrar {
-    public ItemBaseCore(String regName) {
-        super(AncientWarfareCore.modID, regName);
-        setCreativeTab(AWCoreBlockLoader.coreTab);
+	public ItemBaseCore(String regName) {
+		super(AncientWarfareCore.modID, regName);
+		setCreativeTab(AWCoreBlockLoader.coreTab);
 
-        AncientWarfareCore.proxy.addClientRegistrar(this);
-    }
+		AncientWarfareCore.proxy.addClientRegistrar(this);
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerClient() {
-        ModelLoaderHelper.registerItem(this, "core");
-    }
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerClient() {
+		ModelLoaderHelper.registerItem(this, "core");
+	}
 }

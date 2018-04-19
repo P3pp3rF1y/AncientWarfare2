@@ -35,7 +35,7 @@ public class BlockTorqueTransportDistributor extends BlockTorqueTransportSided i
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return TorqueDistributorRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
 	}
-	
+
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		switch (state.getValue(AutomationProperties.TIER)) {
@@ -54,15 +54,12 @@ public class BlockTorqueTransportDistributor extends BlockTorqueTransportSided i
 	public void registerClient() {
 		ModelLoaderHelper.registerItem(this, "automation", "light", false); //the actual switch for itemstack types is processed by renderer
 
-		ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder()
-				.addKeyProperties(AutomationProperties.TIER)
-				.addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC)
-				.addKeyProperties(BlockTorqueTransportSided.CONNECTIONS)
-				.addKeyProperties(o -> String.format("%.6f",o), AutomationProperties.ROTATIONS).build());
+		ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder().addKeyProperties(AutomationProperties.TIER).addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC).addKeyProperties(BlockTorqueTransportSided.CONNECTIONS).addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.ROTATIONS).build());
 
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
-			@Override protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-				switch(state.getValue(AutomationProperties.TIER)) {
+			@Override
+			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+				switch (state.getValue(AutomationProperties.TIER)) {
 					case LIGHT:
 						return TorqueDistributorRenderer.LIGHT_MODEL_LOCATION;
 					case MEDIUM:

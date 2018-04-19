@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.structure.template.plugin.default_plugins.block_rules;
 
 import net.minecraft.block.Block;
@@ -30,52 +31,52 @@ import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
 public class TemplateRuleBlockLogic extends TemplateRuleVanillaBlocks {
 
-    public NBTTagCompound tag = new NBTTagCompound();
+	public NBTTagCompound tag = new NBTTagCompound();
 
-    public TemplateRuleBlockLogic(World world, BlockPos pos, Block block, int meta, int turns) {
-        super(world, pos, block, meta, turns);
-        TileEntity te = world.getTileEntity(pos);
-        if(te!=null) {
-            te.writeToNBT(tag);
-            tag.removeTag("x");
-            tag.removeTag("y");
-            tag.removeTag("z");
-        }
-    }
+	public TemplateRuleBlockLogic(World world, BlockPos pos, Block block, int meta, int turns) {
+		super(world, pos, block, meta, turns);
+		TileEntity te = world.getTileEntity(pos);
+		if (te != null) {
+			te.writeToNBT(tag);
+			tag.removeTag("x");
+			tag.removeTag("y");
+			tag.removeTag("z");
+		}
+	}
 
-    public TemplateRuleBlockLogic() {
-    }
+	public TemplateRuleBlockLogic() {
+	}
 
-    @Override
-    public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
-        super.handlePlacement(world, turns, pos, builder);
-        int localMeta = BlockDataManager.INSTANCE.getRotatedMeta(block, this.meta, turns);
-        world.setBlockState(pos, block.getStateFromMeta(localMeta), 3);
-        TileEntity te = world.getTileEntity(pos);
-        if (te != null) {
-            //TODO look into changing this so that the whole TE doesn't need reloading from custom NBT
-            tag.setString("id", block.getRegistryName().toString());
-            tag.setInteger("x", pos.getX());
-            tag.setInteger("y", pos.getY());
-            tag.setInteger("z", pos.getZ());
-            te.readFromNBT(tag);
-        }
-    }
+	@Override
+	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
+		super.handlePlacement(world, turns, pos, builder);
+		int localMeta = BlockDataManager.INSTANCE.getRotatedMeta(block, this.meta, turns);
+		world.setBlockState(pos, block.getStateFromMeta(localMeta), 3);
+		TileEntity te = world.getTileEntity(pos);
+		if (te != null) {
+			//TODO look into changing this so that the whole TE doesn't need reloading from custom NBT
+			tag.setString("id", block.getRegistryName().toString());
+			tag.setInteger("x", pos.getX());
+			tag.setInteger("y", pos.getY());
+			tag.setInteger("z", pos.getZ());
+			te.readFromNBT(tag);
+		}
+	}
 
-    @Override
-    public boolean shouldReuseRule(World world, Block block, int meta, int turns, BlockPos pos) {
-        return false;
-    }
+	@Override
+	public boolean shouldReuseRule(World world, Block block, int meta, int turns, BlockPos pos) {
+		return false;
+	}
 
-    @Override
-    public void writeRuleData(NBTTagCompound tag) {
-        super.writeRuleData(tag);
-        tag.setTag("teData", this.tag);
-    }
+	@Override
+	public void writeRuleData(NBTTagCompound tag) {
+		super.writeRuleData(tag);
+		tag.setTag("teData", this.tag);
+	}
 
-    @Override
-    public void parseRuleData(NBTTagCompound tag) {
-        super.parseRuleData(tag);
-        this.tag = tag.getCompoundTag("teData");
-    }
+	@Override
+	public void parseRuleData(NBTTagCompound tag) {
+		super.parseRuleData(tag);
+		this.tag = tag.getCompoundTag("teData");
+	}
 }

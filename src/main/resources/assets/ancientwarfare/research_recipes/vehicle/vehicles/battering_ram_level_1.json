@@ -1,0 +1,29 @@
+{
+    "type": "ancientwarfare:shapeless_research_recipe",
+    "research": "siege_warfare",
+    "ingredients": [
+        {
+            "item": "ancientwarfarevehicle:treated_wood"
+        },
+        {
+            "item": "ancientwarfarevehicle:mobility_unit"
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "string",
+            "count": 8
+        },
+        {
+            "item": "ancientwarfarevehicle:counter_weight_unit"
+        },
+        {
+            "item": "ancientwarfarevehicle:equipment_bay"
+        }
+    ],
+    "result": {
+        "type": "minecraft:item_nbt",
+        "item": "ancientwarfarevehicle:spawner",
+        "data": 8,
+        "nbt": "{spawnData:{level:1}}"
+    }
+}

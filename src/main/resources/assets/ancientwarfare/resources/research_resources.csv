@@ -115,3 +115,12 @@ advanced_siege_warfare,ingotSteel,8
 advanced_siege_warfare,paper,0,12
 advanced_siege_warfare,plankWood,16
 advanced_siege_warfare,string,0,12
+ballistics,string,0,6
+ballistics,dye,0,6
+ballistics,paper,0,12
+ballistics,torch,0,6
+rocketry,gunpowder,0,12
+rocketry,ingotIron,0,6
+rocketry,stickWood,0,18
+rocketry,paper,0,12
+rocketry,torch,0,6

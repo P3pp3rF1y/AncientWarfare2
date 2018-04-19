@@ -70,34 +70,6 @@ public class VehicleTypeHelicopter extends VehicleType {
 		this.ammoBaySize = 2;
 		this.storageBaySize = 0;
 
-/* TODO vehicle recipe
-		this.addNeededResearchForMaterials();
-
-		this.addNeededResearch(0, ResearchGoal.vehicleMobility5);
-		this.addNeededResearch(1, ResearchGoal.vehicleMobility5);
-		this.addNeededResearch(2, ResearchGoal.vehicleMobility5);
-		this.addNeededResearch(3, ResearchGoal.vehicleMobility5);
-		this.addNeededResearch(4, ResearchGoal.vehicleMobility5);
-
-		this.addNeededResearch(0, ResearchGoal.vehicleGunpowderWeapons5);
-		this.addNeededResearch(1, ResearchGoal.vehicleGunpowderWeapons5);
-		this.addNeededResearch(2, ResearchGoal.vehicleGunpowderWeapons5);
-		this.addNeededResearch(3, ResearchGoal.vehicleGunpowderWeapons5);
-		this.addNeededResearch(4, ResearchGoal.vehicleGunpowderWeapons5);
-
-		this.addNeededResearch(1, ResearchGoal.upgradeMechanics5);
-		this.addNeededResearch(2, ResearchGoal.upgradeMechanics5);
-		this.addNeededResearch(3, ResearchGoal.upgradeMechanics5);
-		this.addNeededResearch(4, ResearchGoal.upgradeMechanics5);
-		this.addNeededResearch(5, ResearchGoal.upgradeMechanics5);
-
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(Item.silk, 8, false, false));
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.powderCase, 2, false, false));
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.equipmentBay, 1, false, false));
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(ItemLoader.mobilityUnit, 2, false, false));
-		this.additionalMaterials.add(new ItemStackWrapperCrafting(Block.cloth, 10, true, false));
-*/
-
 		this.baseHealth = 50;
 
 		this.width = 2.7f;

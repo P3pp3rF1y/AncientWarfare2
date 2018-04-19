@@ -42,10 +42,8 @@ public class AmmoSoldierArrow extends Ammo {
 		this.isCraftable = false;
 
 		if (flaming) {
-			//			this.iconTexture = "ammoArrowFlame1"; TODO rendering
 			this.configName = "soldier_arrow_flame_" + damage;
 		} else {
-			//			this.iconTexture = "ammoArrow1"; TODO rendering
 			this.configName = "soldier_arrow_" + damage;
 		}
 		if (damage <= 5) {
@@ -66,11 +64,4 @@ public class AmmoSoldierArrow extends Ammo {
 			ent.attackEntityFrom(DamageType.causeEntityMissileDamage(missile.shooterLiving, isFlaming, false), this.getEntityDamage());
 		}
 	}
-
-/* TODO recipe - define new one?
-	@Override
-	public ResourceListRecipe constructRecipe() {
-		return null;
-	}
-*/
 }

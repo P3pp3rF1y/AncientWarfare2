@@ -11,20 +11,20 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
 public class BlockChunkLoaderDeluxe extends BlockChunkLoaderSimple {
 
-    protected BlockChunkLoaderDeluxe(String regName) {
-        super(regName);
-    }
+	protected BlockChunkLoaderDeluxe(String regName) {
+		super(regName);
+	}
 
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileChunkLoaderDeluxe();
-    }
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		return new TileChunkLoaderDeluxe();
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerClient() {
-        super.registerClient();
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerClient() {
+		super.registerClient();
 
-        NetworkHandler.registerGui(NetworkHandler.GUI_CHUNK_LOADER_DELUXE, GuiChunkLoaderDeluxe.class);
-    }
+		NetworkHandler.registerGui(NetworkHandler.GUI_CHUNK_LOADER_DELUXE, GuiChunkLoaderDeluxe.class);
+	}
 }

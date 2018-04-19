@@ -1,24 +1,24 @@
 {
-  "type": "ancientwarfare:research_recipe",
-  "research": "construction",
-  "pattern": [
-    "SSS",
-    "PPP",
-    "PRP"
-  ],
-  "key": {
-    "P": {
-      "item": "#INGOTIRON"
+    "type": "ancientwarfare:research_recipe",
+    "research": "construction",
+    "pattern": [
+        "SSS",
+        "PPP",
+        "PRP"
+    ],
+    "key": {
+        "P": {
+            "item": "#INGOTIRON"
+        },
+        "R": {
+            "item": "#DUSTREDSTONE"
+        },
+        "S": {
+            "item": "#STONE"
+        }
     },
-    "R": {
-      "item": "#DUSTREDSTONE"
-    },
-    "S": {
-      "item": "#STONE"
+    "result": {
+        "item": "ancientwarfarestructure:gate_spawner",
+        "data": 9
     }
-  },
-  "result": {
-    "item": "ancientwarfarestructure:gate_spawner",
-    "data": 9
-  }
 }

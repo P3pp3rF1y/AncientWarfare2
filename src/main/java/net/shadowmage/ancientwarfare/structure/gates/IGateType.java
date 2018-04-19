@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.structure.gates;
 
 import net.minecraft.item.ItemStack;
@@ -27,73 +28,73 @@ import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 
 public interface IGateType {
 
-    /*
-     * return global ID -- used to link gate type to item
-     * determines render type and model used
-     */
-    int getGlobalID();
+	/*
+	 * return global ID -- used to link gate type to item
+	 * determines render type and model used
+	 */
+	int getGlobalID();
 
-    /*
-     * return the name to register for the spawning item
-     */
-    String getDisplayName();
+	/*
+	 * return the name to register for the spawning item
+	 */
+	String getDisplayName();
 
-    /*
-     * return the tooltip to register for the spawning item
-     */
-    String getTooltip();
+	/*
+	 * return the tooltip to register for the spawning item
+	 */
+	String getTooltip();
 
-    /*
-     * return the texture that should be used for rendering
-     */
-    ResourceLocation getTexture();
+	/*
+	 * return the texture that should be used for rendering
+	 */
+	ResourceLocation getTexture();
 
-    /*
-     * return the speed at which the gate opens/closes when activated
-     */
-    float getMoveSpeed();
+	/*
+	 * return the speed at which the gate opens/closes when activated
+	 */
+	float getMoveSpeed();
 
-    /*
-     * return the max health of this gate
-     */
-    int getMaxHealth();
+	/*
+	 * return the max health of this gate
+	 */
+	int getMaxHealth();
 
-    /*
-     * a callback from the entity to the gate-type to allow for
-     * gate-type specific checks during updates
-     */
-    void onUpdate(EntityGate ent);
+	/*
+	 * a callback from the entity to the gate-type to allow for
+	 * gate-type specific checks during updates
+	 */
+	void onUpdate(EntityGate ent);
 
-    /*
-     * called from setPosition to update gates bounding box
-     */
-    void setCollisionBoundingBox(EntityGate gate);
+	/*
+	 * called from setPosition to update gates bounding box
+	 */
+	void setCollisionBoundingBox(EntityGate gate);
 
-    void onGateStartOpen(EntityGate gate);
+	void onGateStartOpen(EntityGate gate);
 
-    void onGateFinishOpen(EntityGate gate);
+	void onGateFinishOpen(EntityGate gate);
 
-    void onGateStartClose(EntityGate gate);
+	void onGateStartClose(EntityGate gate);
 
-    void onGateFinishClose(EntityGate gate);
+	void onGateFinishClose(EntityGate gate);
 
-    void setInitialBounds(EntityGate gate, BlockPos pos1, BlockPos pos2);
+	void setInitialBounds(EntityGate gate, BlockPos pos1, BlockPos pos2);
 
-    /*
-     * a callback from the spawning item for validation of a chosen
-     * pair of spawning points.  This is where the gate can reject
-     * a starting position/setup if the points are not placed correctly.
-     */
-    boolean arePointsValidPair(BlockPos pos1, BlockPos pos2);
+	/*
+	 * a callback from the spawning item for validation of a chosen
+	 * pair of spawning points.  This is where the gate can reject
+	 * a starting position/setup if the points are not placed correctly.
+	 */
+	boolean arePointsValidPair(BlockPos pos1, BlockPos pos2);
 
-    boolean canActivate(EntityGate gate, boolean open);
+	boolean canActivate(EntityGate gate, boolean open);
 
-    boolean canSoldierActivate();
+	boolean canSoldierActivate();
 
-    int getModelType();
+	int getModelType();
 
-    ItemStack getConstructingItem();
+	ItemStack getConstructingItem();
 
-    ItemStack getDisplayStack();
+	ItemStack getDisplayStack();
 
 }

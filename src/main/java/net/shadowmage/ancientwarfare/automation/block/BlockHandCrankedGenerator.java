@@ -23,51 +23,52 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationTyp
 
 public class BlockHandCrankedGenerator extends BlockTorqueBase implements IBakeryProvider {
 
-    protected BlockHandCrankedGenerator(String regName) {
-        super(Material.ROCK, regName);
-    }
+	protected BlockHandCrankedGenerator(String regName) {
+		super(Material.ROCK, regName);
+	}
 
-    @Override
-    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return HandCrankedGeneratorRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
-    }
+	@Override
+	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return HandCrankedGeneratorRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
+	}
 
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileHandCrankedGenerator();
-    }
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		return new TileHandCrankedGenerator();
+	}
 
-    @Override
-    public RotationType getRotationType() {
-        return RotationType.FOUR_WAY;
-    }
+	@Override
+	public RotationType getRotationType() {
+		return RotationType.FOUR_WAY;
+	}
 
-    @Override
-    public boolean invertFacing() {
-        return false;
-    }
+	@Override
+	public boolean invertFacing() {
+		return false;
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerClient() {
-        super.registerClient();
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerClient() {
+		super.registerClient();
 
-        ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
-            @Override protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                return HandCrankedGeneratorRenderer.MODEL_LOCATION;
-            }
-        });
+		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
+			@Override
+			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+				return HandCrankedGeneratorRenderer.MODEL_LOCATION;
+			}
+		});
 
-        ModelRegistryHelper.register(HandCrankedGeneratorRenderer.MODEL_LOCATION, new CCBakeryModel() {
-            @Override
-            public TextureAtlasSprite getParticleTexture() {
-                return HandCrankedGeneratorRenderer.INSTANCE.sprite;
-            }
-        });
-    }
+		ModelRegistryHelper.register(HandCrankedGeneratorRenderer.MODEL_LOCATION, new CCBakeryModel() {
+			@Override
+			public TextureAtlasSprite getParticleTexture() {
+				return HandCrankedGeneratorRenderer.INSTANCE.sprite;
+			}
+		});
+	}
 
-    @Override
-    public IBakery getBakery() {
-        return HandCrankedGeneratorRenderer.INSTANCE;
-    }
+	@Override
+	public IBakery getBakery() {
+		return HandCrankedGeneratorRenderer.INSTANCE;
+	}
 }

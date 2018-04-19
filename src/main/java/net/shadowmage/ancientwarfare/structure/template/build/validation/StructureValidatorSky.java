@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
 import net.minecraft.util.EnumFacing;
@@ -33,62 +34,62 @@ import java.util.List;
 
 public class StructureValidatorSky extends StructureValidator {
 
-    int minGenerationHeight;
-    int maxGenerationHeight;
-    int minFlyingHeight;
+	int minGenerationHeight;
+	int maxGenerationHeight;
+	int minFlyingHeight;
 
-    public StructureValidatorSky() {
-        super(StructureValidationType.SKY);
-    }
+	public StructureValidatorSky() {
+		super(StructureValidationType.SKY);
+	}
 
-    @Override
-    protected void readFromLines(List<String> lines) {
-        for (String line : lines) {
-            if (startLow(line, "mingenerationheight=")) {
-                minGenerationHeight = StringTools.safeParseInt("=", line);
-            } else if (startLow(line, "maxgenerationheight=")) {
-                maxGenerationHeight = StringTools.safeParseInt("=", line);
-            } else if (startLow(line, "minflyingheight=")) {
-                minFlyingHeight = StringTools.safeParseInt("=", line);
-            }
-        }
-    }
+	@Override
+	protected void readFromLines(List<String> lines) {
+		for (String line : lines) {
+			if (startLow(line, "mingenerationheight=")) {
+				minGenerationHeight = StringTools.safeParseInt("=", line);
+			} else if (startLow(line, "maxgenerationheight=")) {
+				maxGenerationHeight = StringTools.safeParseInt("=", line);
+			} else if (startLow(line, "minflyingheight=")) {
+				minFlyingHeight = StringTools.safeParseInt("=", line);
+			}
+		}
+	}
 
-    @Override
-    protected void write(BufferedWriter out) throws IOException {
-        out.write("minGenerationHeight=" + minGenerationHeight);
-        out.newLine();
-        out.write("maxGenerationHeight=" + maxGenerationHeight);
-        out.newLine();
-        out.write("minFlyingHeight=" + minFlyingHeight);
-        out.newLine();
-    }
+	@Override
+	protected void write(BufferedWriter out) throws IOException {
+		out.write("minGenerationHeight=" + minGenerationHeight);
+		out.newLine();
+		out.write("maxGenerationHeight=" + maxGenerationHeight);
+		out.newLine();
+		out.write("minFlyingHeight=" + minFlyingHeight);
+		out.newLine();
+	}
 
-    @Override
-    protected void setDefaultSettings(StructureTemplate template) {
+	@Override
+	protected void setDefaultSettings(StructureTemplate template) {
 
-    }
+	}
 
-    @Override
-    public boolean shouldIncludeForSelection(World world, int x, int y, int z, EnumFacing face, StructureTemplate template) {
-        int remainingHeight = world.getActualHeight() - minFlyingHeight - (template.ySize - template.yOffset);
-        return y < remainingHeight;
-    }
+	@Override
+	public boolean shouldIncludeForSelection(World world, int x, int y, int z, EnumFacing face, StructureTemplate template) {
+		int remainingHeight = world.getActualHeight() - minFlyingHeight - (template.ySize - template.yOffset);
+		return y < remainingHeight;
+	}
 
-    @Override
-    public int getAdjustedSpawnY(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
-        int range = maxGenerationHeight - minGenerationHeight + 1;
-        return y + minFlyingHeight + world.rand.nextInt(range);
-    }
+	@Override
+	public int getAdjustedSpawnY(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
+		int range = maxGenerationHeight - minGenerationHeight + 1;
+		return y + minFlyingHeight + world.rand.nextInt(range);
+	}
 
-    @Override
-    public boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
-        int maxY = minGenerationHeight - minFlyingHeight;
-        return validateBorderBlocks(world, template, bb, 0, maxY, false);
-    }
+	@Override
+	public boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
+		int maxY = minGenerationHeight - minFlyingHeight;
+		return validateBorderBlocks(world, template, bb, 0, maxY, false);
+	}
 
-    @Override
-    public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb) {
+	@Override
+	public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb) {
 
-    }
+	}
 }

@@ -26,7 +26,6 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelCatapultMobileFixed;
 
-
 public class RenderCatapultMobileFixed extends RenderVehicleBase {
 
 	ModelCatapultMobileFixed model = new ModelCatapultMobileFixed();

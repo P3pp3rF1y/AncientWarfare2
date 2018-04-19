@@ -1,0 +1,25 @@
+{
+    "type": "ancientwarfare:shapeless_research_recipe",
+    "research": "ballistics",
+    "ingredients": [
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "stickWood",
+            "count": 5
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "ingotIron",
+            "count": 2
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "feather",
+            "count": 5
+        }
+    ],
+    "result": {
+        "item": "ancientwarfarevehicle:ammo_ballista_bolt",
+        "count": 8
+    }
+}

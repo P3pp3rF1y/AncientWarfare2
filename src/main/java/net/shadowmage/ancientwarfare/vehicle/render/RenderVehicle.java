@@ -100,8 +100,7 @@ public class RenderVehicle extends Render<VehicleBase> {
 	@Override
 	public void doRender(VehicleBase vehicle, double x, double y, double z, float renderYaw, float partialTicks) {
 		boolean useAlpha = false;
-		if (!AWVehicleStatics.renderVehiclesInFirstPerson && vehicle.getControllingPassenger() == Minecraft.getMinecraft().player && Minecraft
-				.getMinecraft().gameSettings.thirdPersonView == 0) {
+		if (!AWVehicleStatics.renderVehiclesInFirstPerson && vehicle.getControllingPassenger() == Minecraft.getMinecraft().player && Minecraft.getMinecraft().gameSettings.thirdPersonView == 0) {
 			useAlpha = true;
 			GlStateManager.color(1.f, 1.f, 1.f, 0.2f);
 			GlStateManager.enableBlend();

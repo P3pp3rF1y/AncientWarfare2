@@ -431,8 +431,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		} else {
 			angle = currentTurretPitchMin;//else get the lowest
 		}
-		return getEffectiveRange(verticalOffset, angle, firingHelper.getAdjustedMaxMissileVelocity(), 0,
-				ammoHelper.getCurrentAmmoType() != null && ammoHelper.getCurrentAmmoType().isRocket());
+		return getEffectiveRange(verticalOffset, angle, firingHelper.getAdjustedMaxMissileVelocity(), 0, ammoHelper.getCurrentAmmoType() != null && ammoHelper.getCurrentAmmoType().isRocket());
 	}
 
 	private float getEffectiveRange(float y, float angle, float velocity, int maxIterations, boolean rocket) {
@@ -585,8 +584,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 			}
 		}
 		if (this.assignedRider != null) {
-			if (assignedRider.isDead || assignedRider.getRidingEntity() != this || !assignedRider.isRiding() || assignedRider.getRidingEntity() != this || (this
-					.getDistanceToEntity(assignedRider) > (AWNPCStatics.npcActionRange * AWNPCStatics.npcActionRange))) {
+			if (assignedRider.isDead || assignedRider.getRidingEntity() != this || !assignedRider.isRiding() || assignedRider.getRidingEntity() != this || (this.getDistanceToEntity(assignedRider) > (AWNPCStatics.npcActionRange * AWNPCStatics.npcActionRange))) {
 				//TODO config setting for vehicle search range
 				this.assignedRider = null;
 			}
@@ -849,9 +847,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 
 	@Override
 	public String toString() {
-		return String
-				.format("%s::%s @ %.2f, %.2f, %.2f  -- y:%.2f p:%.2f -- m: %.2f, %.2f, %.2f", this.vehicleType.getDisplayName(), this.getEntityId(), this.posX,
-				this.posY, this.posZ, this.rotationYaw, this.rotationPitch, this.motionX, this.motionY, this.motionZ);
+		return String.format("%s::%s @ %.2f, %.2f, %.2f  -- y:%.2f p:%.2f -- m: %.2f, %.2f, %.2f", this.vehicleType.getDisplayName(), this.getEntityId(), this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch, this.motionX, this.motionY, this.motionZ);
 	}
 
 	@Override

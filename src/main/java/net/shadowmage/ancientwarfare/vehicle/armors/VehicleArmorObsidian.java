@@ -28,9 +28,5 @@ public class VehicleArmorObsidian extends VehicleArmorBase {
 		this.general = 2.5f;
 		this.explosive = 7.f;
 		this.fire = 2.5f;
-/* TODO research recipe
-		this.neededResearch.add(ResearchGoalNumbers.iron3);
-		this.addNeededResource(new ItemStack(Block.obsidian, 5), false);
-*/
 	}
 }

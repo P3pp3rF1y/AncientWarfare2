@@ -1,21 +1,21 @@
 {
-  "type": "ancientwarfare:research_recipe",
-  "research": "engineering",
-  "pattern": [
-    " S ",
-    "FFF",
-    " S "
-  ],
-  "key": {
-    "S": {
-      "item": "minecraft:string"
+    "type": "ancientwarfare:research_recipe",
+    "research": "engineering",
+    "pattern": [
+        " S ",
+        "FFF",
+        " S "
+    ],
+    "key": {
+        "S": {
+            "item": "minecraft:string"
+        },
+        "F": {
+            "item": "minecraft:fence"
+        }
     },
-    "F": {
-      "item": "minecraft:fence"
+    "result": {
+        "item": "ancientwarfareautomation:worksite_upgrade",
+        "data": 0
     }
-  },
-  "result": {
-    "item": "ancientwarfareautomation:worksite_upgrade",
-    "data": 0
-  }
 }

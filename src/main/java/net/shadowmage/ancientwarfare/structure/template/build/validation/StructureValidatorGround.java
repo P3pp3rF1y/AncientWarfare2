@@ -18,6 +18,7 @@
  You should have received a copy of the GNU General Public License
  along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
 import net.minecraft.block.Block;
@@ -38,83 +39,83 @@ import java.util.Set;
 
 public class StructureValidatorGround extends StructureValidator {
 
-    public StructureValidatorGround() {
-        super(StructureValidationType.GROUND);
-    }
+	public StructureValidatorGround() {
+		super(StructureValidationType.GROUND);
+	}
 
-    @Override
-    public boolean shouldIncludeForSelection(World world, int x, int y, int z, EnumFacing face, StructureTemplate template) {
-        Block block = world.getBlockState(new BlockPos(x, y - 1, z)).getBlock();
-        Set<String> validTargetBlocks = getTargetBlocks();
-        String name = BlockDataManager.INSTANCE.getNameForBlock(block);
-        if (block == null || !validTargetBlocks.contains(name)) {
-            AWLog.logDebug("Rejecting due to target block mismatch of: " + name + " at: " + x + "," + y + "," + z + " Valid blocks are: " + validTargetBlocks);
-            return false;
-        }
-        return true;
-    }
+	@Override
+	public boolean shouldIncludeForSelection(World world, int x, int y, int z, EnumFacing face, StructureTemplate template) {
+		Block block = world.getBlockState(new BlockPos(x, y - 1, z)).getBlock();
+		Set<String> validTargetBlocks = getTargetBlocks();
+		String name = BlockDataManager.INSTANCE.getNameForBlock(block);
+		if (block == null || !validTargetBlocks.contains(name)) {
+			AWLog.logDebug("Rejecting due to target block mismatch of: " + name + " at: " + x + "," + y + "," + z + " Valid blocks are: " + validTargetBlocks);
+			return false;
+		}
+		return true;
+	}
 
-    @Override
-    public boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
-        int minY = getMinY(template, bb);
-        int maxY = getMaxY(template, bb);
-        return validateBorderBlocks(world, template, bb, minY, maxY, false);
-    }
+	@Override
+	public boolean validatePlacement(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
+		int minY = getMinY(template, bb);
+		int maxY = getMaxY(template, bb);
+		return validateBorderBlocks(world, template, bb, minY, maxY, false);
+	}
 
-    @Override
-    public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb) {
-        prePlacementBorder(world, template, bb);
-        prePlacementUnderfill(world, template, bb);
-    }
+	@Override
+	public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb) {
+		prePlacementBorder(world, template, bb);
+		prePlacementUnderfill(world, template, bb);
+	}
 
-    @Override
-    public void postGeneration(World world, BlockPos origin, StructureBB bb) {
-        Biome biome = world.getBiome(origin);
-        if (biome != null && biome.getEnableSnow()) {
-            WorldStructureGenerator.sprinkleSnow(world, bb, getBorderSize());
-        }
-    }
+	@Override
+	public void postGeneration(World world, BlockPos origin, StructureBB bb) {
+		Biome biome = world.getBiome(origin);
+		if (biome != null && biome.getEnableSnow()) {
+			WorldStructureGenerator.sprinkleSnow(world, bb, getBorderSize());
+		}
+	}
 
-    @Override
-    protected void borderLeveling(World world, int x, int z, StructureTemplate template, StructureBB bb) {
-        if (getMaxLeveling() <= 0) {
-            return;
-        }
-        int topFilledY = WorldStructureGenerator.getTargetY(world, x, z, true);
-        int step = WorldStructureGenerator.getStepNumber(x, z, bb.min.getX(), bb.max.getX(), bb.min.getZ(), bb.max.getZ());
-        for (int y = bb.min.getY() + template.yOffset + step; y <= topFilledY; y++) {
-            handleClearAction(world, new BlockPos(x, y, z), template, bb);
-        }
-        Biome biome = world.getBiome(new BlockPos(x, 1, z));
-        IBlockState fillBlock = Blocks.GRASS.getDefaultState();
-        if (biome != null && biome.topBlock != null) {
-            fillBlock = biome.topBlock;
-        }
-        int y = bb.min.getY() + template.yOffset + step - 1;
-        BlockPos pos = new BlockPos(x, y, z);
-        Block block = world.getBlockState(pos).getBlock();
-        if (block != null && block != Blocks.AIR && block != Blocks.FLOWING_WATER && block != Blocks.WATER && !AWStructureStatics.skippableBlocksContains(block)) {
-            world.setBlockState(pos, fillBlock);
-        }
+	@Override
+	protected void borderLeveling(World world, int x, int z, StructureTemplate template, StructureBB bb) {
+		if (getMaxLeveling() <= 0) {
+			return;
+		}
+		int topFilledY = WorldStructureGenerator.getTargetY(world, x, z, true);
+		int step = WorldStructureGenerator.getStepNumber(x, z, bb.min.getX(), bb.max.getX(), bb.min.getZ(), bb.max.getZ());
+		for (int y = bb.min.getY() + template.yOffset + step; y <= topFilledY; y++) {
+			handleClearAction(world, new BlockPos(x, y, z), template, bb);
+		}
+		Biome biome = world.getBiome(new BlockPos(x, 1, z));
+		IBlockState fillBlock = Blocks.GRASS.getDefaultState();
+		if (biome != null && biome.topBlock != null) {
+			fillBlock = biome.topBlock;
+		}
+		int y = bb.min.getY() + template.yOffset + step - 1;
+		BlockPos pos = new BlockPos(x, y, z);
+		Block block = world.getBlockState(pos).getBlock();
+		if (block != null && block != Blocks.AIR && block != Blocks.FLOWING_WATER && block != Blocks.WATER && !AWStructureStatics.skippableBlocksContains(block)) {
+			world.setBlockState(pos, fillBlock);
+		}
 
-        int skipCount = 0;
-        for (int y1 = y + 1; y1 < world.getHeight(); y1++)//lazy clear block handling
-        {
-            pos =  new BlockPos(x, y1, z);
-            block = world.getBlockState(pos).getBlock();
-            if (block == Blocks.AIR) {
-                skipCount++;
-                if (skipCount >= 10)//exit out if 10 blocks are found that are not clearable
-                {
-                    break;
-                }
-                continue;
-            }
-            skipCount = 0;//if we didn't skip this block, reset skipped count
-            if (AWStructureStatics.skippableBlocksContains(block)) {
-                world.setBlockToAir(pos);
-            }
-        }
-    }
+		int skipCount = 0;
+		for (int y1 = y + 1; y1 < world.getHeight(); y1++)//lazy clear block handling
+		{
+			pos = new BlockPos(x, y1, z);
+			block = world.getBlockState(pos).getBlock();
+			if (block == Blocks.AIR) {
+				skipCount++;
+				if (skipCount >= 10)//exit out if 10 blocks are found that are not clearable
+				{
+					break;
+				}
+				continue;
+			}
+			skipCount = 0;//if we didn't skip this block, reset skipped count
+			if (AWStructureStatics.skippableBlocksContains(block)) {
+				world.setBlockToAir(pos);
+			}
+		}
+	}
 
 }

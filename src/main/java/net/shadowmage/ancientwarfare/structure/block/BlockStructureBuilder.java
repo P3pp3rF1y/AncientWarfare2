@@ -27,65 +27,65 @@ import java.util.stream.Collectors;
 
 public class BlockStructureBuilder extends BlockBaseStructure {
 
-    NonNullList<ItemStack> displayCache = null;
+	NonNullList<ItemStack> displayCache = null;
 
-    public BlockStructureBuilder() {
-        super(Material.ROCK, "structure_builder_ticked");
-        setHardness(2.f);
-    }
+	public BlockStructureBuilder() {
+		super(Material.ROCK, "structure_builder_ticked");
+		setHardness(2.f);
+	}
 
-    @Override
-    public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
-        if (displayCache == null || displayCache.isEmpty()) {
-            displayCache = NonNullList.create();
+	@Override
+	public void getSubBlocks(CreativeTabs tab, NonNullList<ItemStack> items) {
+		if (displayCache == null || displayCache.isEmpty()) {
+			displayCache = NonNullList.create();
 
-            //TODO rework structure template manager so that it keeps only one central repository that either is already filled on server or gets updated on client.
-            Set<String> templateNames;
-            if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
-                templateNames = StructureTemplateManager.INSTANCE.getSurvivalStructures().keySet();
-            } else {
-                templateNames = StructureTemplateManagerClient.instance().getSurvivalStructures().stream().map(t -> t.name).collect(Collectors.toSet());
-            }
-            @Nonnull ItemStack item;
-            for (String templateName : templateNames) {
-                item = new ItemStack(this);
-                item.setTagInfo("structureName", new NBTTagString(templateName));
-                displayCache.add(item);
-            }
+			//TODO rework structure template manager so that it keeps only one central repository that either is already filled on server or gets updated on client.
+			Set<String> templateNames;
+			if (FMLCommonHandler.instance().getEffectiveSide() == Side.SERVER) {
+				templateNames = StructureTemplateManager.INSTANCE.getSurvivalStructures().keySet();
+			} else {
+				templateNames = StructureTemplateManagerClient.instance().getSurvivalStructures().stream().map(t -> t.name).collect(Collectors.toSet());
+			}
+			@Nonnull ItemStack item;
+			for (String templateName : templateNames) {
+				item = new ItemStack(this);
+				item.setTagInfo("structureName", new NBTTagString(templateName));
+				displayCache.add(item);
+			}
 
-        }
-        if (!displayCache.isEmpty()) {
-            items.addAll(displayCache);
-        }
-    }
+		}
+		if (!displayCache.isEmpty()) {
+			items.addAll(displayCache);
+		}
+	}
 
-    @Override
-    public boolean hasTileEntity(IBlockState state) {
-        return true;
-    }
+	@Override
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
 
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileStructureBuilder();
-    }
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		return new TileStructureBuilder();
+	}
 
-    @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        if (!world.isRemote) {
-            TileEntity te = world.getTileEntity(pos);
-            if (te instanceof TileStructureBuilder) {
-                TileStructureBuilder builder = (TileStructureBuilder) te;
-                builder.onBlockClicked(player);
-            }
-        }
-        return true;
-    }
+	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		if (!world.isRemote) {
+			TileEntity te = world.getTileEntity(pos);
+			if (te instanceof TileStructureBuilder) {
+				TileStructureBuilder builder = (TileStructureBuilder) te;
+				builder.onBlockClicked(player);
+			}
+		}
+		return true;
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerClient() {
-        super.registerClient();
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerClient() {
+		super.registerClient();
 
-        ClientRegistry.bindTileEntitySpecialRenderer(TileStructureBuilder.class, new RenderStructureBuilder());
-    }
+		ClientRegistry.bindTileEntitySpecialRenderer(TileStructureBuilder.class, new RenderStructureBuilder());
+	}
 }

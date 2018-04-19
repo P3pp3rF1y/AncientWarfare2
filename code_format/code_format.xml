@@ -1,15 +1,10 @@
-<code_scheme name="P3pp3rF1y">
+<code_scheme name="P3pp3rF1y copy1">
   <option name="CLASS_COUNT_TO_USE_IMPORT_ON_DEMAND" value="100" />
   <option name="RIGHT_MARGIN" value="160" />
-  <JSON>
-    <option name="OBJECT_WRAPPING" value="0" />
-    <option name="ARRAY_WRAPPING" value="0" />
-  </JSON>
   <XML>
     <option name="XML_LEGACY_SETTINGS_IMPORTED" value="true" />
   </XML>
   <codeStyleSettings language="JAVA">
-    <option name="KEEP_LINE_BREAKS" value="false" />
     <option name="KEEP_FIRST_COLUMN_COMMENT" value="false" />
     <option name="KEEP_CONTROL_STATEMENT_IN_ONE_LINE" value="false" />
     <option name="KEEP_BLANK_LINES_IN_DECLARATIONS" value="1" />
@@ -21,16 +16,16 @@
     <option name="ALIGN_MULTILINE_PARAMETERS" value="false" />
     <option name="ALIGN_MULTILINE_RESOURCES" value="false" />
     <option name="SPACE_BEFORE_ARRAY_INITIALIZER_LBRACE" value="true" />
-    <option name="CALL_PARAMETERS_WRAP" value="1"/>
-    <option name="METHOD_PARAMETERS_WRAP" value="1"/>
     <option name="EXTENDS_KEYWORD_WRAP" value="1" />
     <option name="THROWS_KEYWORD_WRAP" value="1" />
-    <option name="METHOD_CALL_CHAIN_WRAP" value="1"/>
     <option name="BINARY_OPERATION_SIGN_ON_NEXT_LINE" value="true" />
+      <option name="KEEP_SIMPLE_BLOCKS_IN_ONE_LINE" value="true"/>
+      <option name="KEEP_SIMPLE_METHODS_IN_ONE_LINE" value="true"/>
+      <option name="KEEP_SIMPLE_LAMBDAS_IN_ONE_LINE" value="true"/>
+      <option name="KEEP_SIMPLE_CLASSES_IN_ONE_LINE" value="true"/>
     <option name="ARRAY_INITIALIZER_WRAP" value="5" />
     <option name="PARAMETER_ANNOTATION_WRAP" value="1" />
     <option name="VARIABLE_ANNOTATION_WRAP" value="1" />
-    <option name="ENUM_CONSTANTS_WRAP" value="2"/>
     <indentOptions>
       <option name="USE_TAB_CHARACTER" value="true" />
     </indentOptions>

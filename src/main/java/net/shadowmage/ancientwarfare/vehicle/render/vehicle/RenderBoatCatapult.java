@@ -26,7 +26,6 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
 import net.shadowmage.ancientwarfare.vehicle.model.ModelBoatCatapult;
 
-
 public class RenderBoatCatapult extends RenderVehicleBase {
 
 	ModelBoatCatapult model = new ModelBoatCatapult();

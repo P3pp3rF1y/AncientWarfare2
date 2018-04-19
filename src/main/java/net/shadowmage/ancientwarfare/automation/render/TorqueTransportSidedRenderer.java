@@ -36,8 +36,8 @@ public class TorqueTransportSidedRenderer extends TorqueTieredRenderer<TileTorqu
 
 	@Override
 	protected void transformMovingParts(Collection<CCModel> transformedGroups, EnumFacing frontFacing, float[] rotations, @Nullable IExtendedBlockState state) {
-		for(EnumFacing facing : EnumFacing.VALUES) {
-			if(state.getValue(BlockTorqueTransportSided.CONNECTIONS[facing.ordinal()])) {
+		for (EnumFacing facing : EnumFacing.VALUES) {
+			if (state.getValue(BlockTorqueTransportSided.CONNECTIONS[facing.ordinal()])) {
 				transformedGroups.addAll(rotateShaft(gearHeads[facing.ordinal()], facing, state.getValue(AutomationProperties.ROTATIONS[facing.ordinal()])));
 			}
 		}
@@ -48,18 +48,14 @@ public class TorqueTransportSidedRenderer extends TorqueTieredRenderer<TileTorqu
 	}
 
 	private CCModel rotateShaftPart(CCModel part, EnumFacing facing, float rotation) {
-		return part.copy().apply(new Rotation((facing.ordinal() % 2 == 0) ? rotation : -rotation,
-				facing.getAxis() == EnumFacing.Axis.X ? 1 : 0,
-				facing.getAxis() == EnumFacing.Axis.Y ? 1 : 0,
-				facing.getAxis() == EnumFacing.Axis.Z ? 1 : 0
-		).at(Vector3.center));
+		return part.copy().apply(new Rotation((facing.ordinal() % 2 == 0) ? rotation : -rotation, facing.getAxis() == EnumFacing.Axis.X ? 1 : 0, facing.getAxis() == EnumFacing.Axis.Y ? 1 : 0, facing.getAxis() == EnumFacing.Axis.Z ? 1 : 0).at(Vector3.center));
 	}
 
 	@Override
 	protected IExtendedBlockState handleAdditionalProperties(IExtendedBlockState state, TileTorqueSidedCell cell) {
 		state = super.handleAdditionalProperties(state, cell);
 
-		for(EnumFacing facing: EnumFacing.VALUES) {
+		for (EnumFacing facing : EnumFacing.VALUES) {
 			state = state.withProperty(BlockTorqueTransportSided.CONNECTIONS[facing.ordinal()], false);
 		}
 

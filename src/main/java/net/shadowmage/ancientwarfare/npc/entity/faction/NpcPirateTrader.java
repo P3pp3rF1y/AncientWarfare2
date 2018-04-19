@@ -4,13 +4,13 @@ import net.minecraft.world.World;
 
 public class NpcPirateTrader extends NpcFactionTrader {
 
-    public NpcPirateTrader(World par1World) {
-        super(par1World);
-    }
+	public NpcPirateTrader(World par1World) {
+		super(par1World);
+	}
 
-    @Override
-    public String getNpcType() {
-        return "pirate.trader";
-    }
+	@Override
+	public String getNpcType() {
+		return "pirate.trader";
+	}
 
 }

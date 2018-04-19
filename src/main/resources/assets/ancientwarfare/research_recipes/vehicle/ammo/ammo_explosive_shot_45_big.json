@@ -1,0 +1,20 @@
+{
+    "type": "ancientwarfare:shapeless_research_recipe",
+    "research": "ballistics",
+    "ingredients": [
+        {
+            "type": "ancientwarfare:item_count",
+            "item": "ancientwarfarevehicle:explosive_charge",
+            "count": 12
+        },
+        {
+            "type": "ancientwarfare:item_count",
+            "item": "ancientwarfarevehicle:clay_casing",
+            "count": 6
+        }
+    ],
+    "result": {
+        "item": "ancientwarfarevehicle:ammo_explosive_shot_45_big",
+        "count": 2
+    }
+}

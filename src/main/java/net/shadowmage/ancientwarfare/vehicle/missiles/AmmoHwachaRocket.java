@@ -42,18 +42,7 @@ public class AmmoHwachaRocket extends Ammo {
 		this.ammoWeight = 1.f;
 		this.renderScale = 0.2f;
 		this.configName = "hwacha_rocket";
-		//		this.iconTexture = "ammoRocket1"; TODO rendering
 		this.modelTexture = new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/ammo/arrow_wood.png");
-
-/* TODO recipe
-		this.numCrafted = 12;
-		this.neededResearch.add(ResearchGoalNumbers.rockets1);
-		this.neededResearch.add(ResearchGoalNumbers.ballistics1);
-		this.resources.add(new ItemStackWrapperCrafting(ItemLoader.rocketCharge, 1, false, false));
-		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.stick), 12, false, false));
-		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.feather), 2, false, false));
-		this.resources.add(new ItemStackWrapperCrafting(new ItemStack(Item.ingotIron), 1, false, false));
-*/
 	}
 
 	@Override

@@ -1,30 +1,30 @@
 {
-  "type": "ancientwarfare:research_recipe",
-  "research": "refining",
-  "pattern": [
-    "OTO",
-    "PSA",
-    "OTO"
-  ],
-  "key": {
-    "P": {
-      "item": "minecraft:diamond_pickaxe"
+    "type": "ancientwarfare:research_recipe",
+    "research": "refining",
+    "pattern": [
+        "OTO",
+        "PSA",
+        "OTO"
+    ],
+    "key": {
+        "P": {
+            "item": "minecraft:diamond_pickaxe"
+        },
+        "A": {
+            "item": "minecraft:diamond_axe"
+        },
+        "S": {
+            "item": "minecraft:diamond_shovel"
+        },
+        "T": {
+            "item": "#INGOTSTEEL"
+        },
+        "O": {
+            "item": "minecraft:obsidian"
+        }
     },
-    "A": {
-      "item": "minecraft:diamond_axe"
-    },
-    "S": {
-      "item": "minecraft:diamond_shovel"
-    },
-    "T": {
-      "item": "#INGOTSTEEL"
-    },
-    "O": {
-      "item": "minecraft:obsidian"
+    "result": {
+        "item": "ancientwarfareautomation:worksite_upgrade",
+        "data": 8
     }
-  },
-  "result": {
-    "item": "ancientwarfareautomation:worksite_upgrade",
-    "data": 8
-  }
 }

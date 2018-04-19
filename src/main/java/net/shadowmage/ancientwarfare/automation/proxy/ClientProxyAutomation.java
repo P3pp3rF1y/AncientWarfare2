@@ -70,117 +70,117 @@ import java.util.List;
 
 public class ClientProxyAutomation extends ClientProxyBase {
 
-    public ClientProxyAutomation() {
-        MinecraftForge.EVENT_BUS.register(this);
-    }
+	public ClientProxyAutomation() {
+		MinecraftForge.EVENT_BUS.register(this);
+	}
 
-    @Override
-    public void preInit() {
-        super.preInit();
+	@Override
+	public void preInit() {
+		super.preInit();
 
-        registerClientOptions();
-        MinecraftForge.EVENT_BUS.register(new KeyHandler(Minecraft.getMinecraft()));
+		registerClientOptions();
+		MinecraftForge.EVENT_BUS.register(new KeyHandler(Minecraft.getMinecraft()));
 
-        NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_INVENTORY_SIDE_ADJUST, GuiWorksiteInventorySideSelection.class);
-        NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_ANIMAL_CONTROL, GuiWorksiteAnimalControl.class);
-        NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_FISH_CONTROL, GuiWorksiteFishControl.class);
-        NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_CONTROL, GuiWarehouseControl.class);
-        NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_QUARRY, GuiWorksiteQuarry.class);
-        NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_TREE_FARM, GuiWorksiteTreeFarm.class);
-        NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_CROP_FARM, GuiWorksiteCropFarm.class);
-        NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_MUSHROOM_FARM, GuiWorksiteMushroomFarm.class);
-        NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_ANIMAL_FARM, GuiWorksiteAnimalFarm.class);
-        NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_REED_FARM, GuiWorksiteReedFarm.class);
-        NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_FISH_FARM, GuiWorksiteFishFarm.class);
-        NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_BOUNDS, GuiWorksiteBoundsAdjust.class);
+		NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_INVENTORY_SIDE_ADJUST, GuiWorksiteInventorySideSelection.class);
+		NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_ANIMAL_CONTROL, GuiWorksiteAnimalControl.class);
+		NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_FISH_CONTROL, GuiWorksiteFishControl.class);
+		NetworkHandler.registerGui(NetworkHandler.GUI_WAREHOUSE_CONTROL, GuiWarehouseControl.class);
+		NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_QUARRY, GuiWorksiteQuarry.class);
+		NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_TREE_FARM, GuiWorksiteTreeFarm.class);
+		NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_CROP_FARM, GuiWorksiteCropFarm.class);
+		NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_MUSHROOM_FARM, GuiWorksiteMushroomFarm.class);
+		NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_ANIMAL_FARM, GuiWorksiteAnimalFarm.class);
+		NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_REED_FARM, GuiWorksiteReedFarm.class);
+		NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_FISH_FARM, GuiWorksiteFishFarm.class);
+		NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_BOUNDS, GuiWorksiteBoundsAdjust.class);
 
-        ClientRegistry.bindTileEntitySpecialRenderer(TileWorksiteBase.class, new WorksiteRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseBase.class, new WorksiteRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseStockViewer.class, new WarehouseStockViewerRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileWorksiteBase.class, new WorksiteRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseBase.class, new WorksiteRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileWarehouseStockViewer.class, new WarehouseStockViewerRenderer());
 
-        //********************************************CONDUIT / TRANSPORT RENDERS***************************************************************//
+		//********************************************CONDUIT / TRANSPORT RENDERS***************************************************************//
 
-        ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueSidedCell.class, new TorqueTransportAnimationRenderer(TorqueJunctionRenderer.INSTANCE));
-        ClientRegistry.bindTileEntitySpecialRenderer(TileDistributor.class, new TorqueTransportAnimationRenderer(TorqueDistributorRenderer.INSTANCE));
-        ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueShaft.class, new TorqueShaftAnimationRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueSidedCell.class, new TorqueTransportAnimationRenderer(TorqueJunctionRenderer.INSTANCE));
+		ClientRegistry.bindTileEntitySpecialRenderer(TileDistributor.class, new TorqueTransportAnimationRenderer(TorqueDistributorRenderer.INSTANCE));
+		ClientRegistry.bindTileEntitySpecialRenderer(TileTorqueShaft.class, new TorqueShaftAnimationRenderer());
 
-        //********************************************STORAGE RENDERS***************************************************************//
-        ClientRegistry.bindTileEntitySpecialRenderer(TileFlywheelController.class, new FlywheelControllerAnimationRenderer());
-        ClientRegistry.bindTileEntitySpecialRenderer(TileFlywheelStorage.class, new FlywheelStorageAnimationRenderer());
+		//********************************************STORAGE RENDERS***************************************************************//
+		ClientRegistry.bindTileEntitySpecialRenderer(TileFlywheelController.class, new FlywheelControllerAnimationRenderer());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileFlywheelStorage.class, new FlywheelStorageAnimationRenderer());
 
-        //********************************************GENERATOR RENDERS***************************************************************//
-        ClientRegistry.bindTileEntitySpecialRenderer(TileStirlingGenerator.class, new TorqueAnimationRenderer<>(StirlingGeneratorRenderer.INSTANCE));
-        ClientRegistry.bindTileEntitySpecialRenderer(TileWaterwheelGenerator.class, new TorqueAnimationRenderer<TileWaterwheelGenerator>(WaterwheelGeneratorRenderer.INSTANCE) {
-            @Override
-            protected IExtendedBlockState updateAdditionalProperties(IExtendedBlockState state, TileTorqueBase te) {
-                if (te instanceof TileWaterwheelGenerator) {
-                    return (IExtendedBlockState) state.withProperty(BlockWaterwheelGenerator.VALID_SETUP, ((TileWaterwheelGenerator) te).validSetup);
-                }
-                return state;
-            }
-        });
-        ClientRegistry.bindTileEntitySpecialRenderer(TileHandCrankedGenerator.class, new TorqueAnimationRenderer<>(HandCrankedGeneratorRenderer.INSTANCE));
-        ClientRegistry.bindTileEntitySpecialRenderer(TileWindmillController.class, new TorqueAnimationRenderer<>(WindmillGeneratorRenderer.INSTANCE));
-        ClientRegistry.bindTileEntitySpecialRenderer(TileWindmillBlade.class, new WindmillBladeAnimationRenderer());
-    }
+		//********************************************GENERATOR RENDERS***************************************************************//
+		ClientRegistry.bindTileEntitySpecialRenderer(TileStirlingGenerator.class, new TorqueAnimationRenderer<>(StirlingGeneratorRenderer.INSTANCE));
+		ClientRegistry.bindTileEntitySpecialRenderer(TileWaterwheelGenerator.class, new TorqueAnimationRenderer<TileWaterwheelGenerator>(WaterwheelGeneratorRenderer.INSTANCE) {
+			@Override
+			protected IExtendedBlockState updateAdditionalProperties(IExtendedBlockState state, TileTorqueBase te) {
+				if (te instanceof TileWaterwheelGenerator) {
+					return (IExtendedBlockState) state.withProperty(BlockWaterwheelGenerator.VALID_SETUP, ((TileWaterwheelGenerator) te).validSetup);
+				}
+				return state;
+			}
+		});
+		ClientRegistry.bindTileEntitySpecialRenderer(TileHandCrankedGenerator.class, new TorqueAnimationRenderer<>(HandCrankedGeneratorRenderer.INSTANCE));
+		ClientRegistry.bindTileEntitySpecialRenderer(TileWindmillController.class, new TorqueAnimationRenderer<>(WindmillGeneratorRenderer.INSTANCE));
+		ClientRegistry.bindTileEntitySpecialRenderer(TileWindmillBlade.class, new WindmillBladeAnimationRenderer());
+	}
 
-    private void registerClientOptions() {
-        ConfigManager.registerConfigCategory(new AutomationCategory("awconfig.automation_config"));
-    }
+	private void registerClientOptions() {
+		ConfigManager.registerConfigCategory(new AutomationCategory("awconfig.automation_config"));
+	}
 
-    public static final class AutomationCategory extends DummyCategoryElement {
-        public static final ConfigElement renderWorkBounds = new ConfigElement(AWAutomationStatics.renderWorkBounds);
+	public static final class AutomationCategory extends DummyCategoryElement {
+		public static final ConfigElement renderWorkBounds = new ConfigElement(AWAutomationStatics.renderWorkBounds);
 
-        public AutomationCategory(String name) {
-            super(name, name, getElementList());
-        }
+		public AutomationCategory(String name) {
+			super(name, name, getElementList());
+		}
 
-        private static List<IConfigElement> getElementList() {
-            ArrayList<IConfigElement> list = new ArrayList<>();
-            list.add(renderWorkBounds);
-            return list;
-        }
-    }
+		private static List<IConfigElement> getElementList() {
+			ArrayList<IConfigElement> list = new ArrayList<>();
+			list.add(renderWorkBounds);
+			return list;
+		}
+	}
 
-    @SubscribeEvent
-    public void onPreTextureStitch(TextureStitchEvent.Pre evt) {
-        AutoCraftingRenderer.INSTANCE.setSprite(registerSprite(evt, "tile_auto_crafting"));
+	@SubscribeEvent
+	public void onPreTextureStitch(TextureStitchEvent.Pre evt) {
+		AutoCraftingRenderer.INSTANCE.setSprite(registerSprite(evt, "tile_auto_crafting"));
 
-        StirlingGeneratorRenderer.INSTANCE.setSprite(registerSprite(evt, "stirling_generator"));
+		StirlingGeneratorRenderer.INSTANCE.setSprite(registerSprite(evt, "stirling_generator"));
 
-        HandCrankedGeneratorRenderer.INSTANCE.setSprite(registerSprite(evt, "hand_cranked_generator"));
+		HandCrankedGeneratorRenderer.INSTANCE.setSprite(registerSprite(evt, "hand_cranked_generator"));
 
-        WaterwheelGeneratorRenderer.INSTANCE.setSprite(registerSprite(evt, "waterwheel_generator"));
+		WaterwheelGeneratorRenderer.INSTANCE.setSprite(registerSprite(evt, "waterwheel_generator"));
 
-        WindmillGeneratorRenderer.INSTANCE.setSprite(registerSprite(evt, "windmill_generator"));
-        WindmillBladeRenderer.INSTANCE.setSprite(registerSprite(evt, "windmill_blade"));
-        WindmillBladeRenderer.INSTANCE.setCubeSprite(registerSprite(evt, "windmill_blade_cube"));
+		WindmillGeneratorRenderer.INSTANCE.setSprite(registerSprite(evt, "windmill_generator"));
+		WindmillBladeRenderer.INSTANCE.setSprite(registerSprite(evt, "windmill_blade"));
+		WindmillBladeRenderer.INSTANCE.setCubeSprite(registerSprite(evt, "windmill_blade_cube"));
 
-        TorqueShaftRenderer.INSTANCE.setSprite(TorqueTier.HEAVY, registerSprite(evt, "torque_shaft_heavy"));
-        TorqueShaftRenderer.INSTANCE.setSprite(TorqueTier.MEDIUM, registerSprite(evt, "torque_shaft_medium"));
-        TorqueShaftRenderer.INSTANCE.setSprite(TorqueTier.LIGHT, registerSprite(evt, "torque_shaft_light"));
+		TorqueShaftRenderer.INSTANCE.setSprite(TorqueTier.HEAVY, registerSprite(evt, "torque_shaft_heavy"));
+		TorqueShaftRenderer.INSTANCE.setSprite(TorqueTier.MEDIUM, registerSprite(evt, "torque_shaft_medium"));
+		TorqueShaftRenderer.INSTANCE.setSprite(TorqueTier.LIGHT, registerSprite(evt, "torque_shaft_light"));
 
-        TorqueJunctionRenderer.INSTANCE.setSprite(TorqueTier.HEAVY, registerSprite(evt, "torque_junction_heavy"));
-        TorqueJunctionRenderer.INSTANCE.setSprite(TorqueTier.MEDIUM, registerSprite(evt, "torque_junction_medium"));
-        TorqueJunctionRenderer.INSTANCE.setSprite(TorqueTier.LIGHT, registerSprite(evt, "torque_junction_light"));
+		TorqueJunctionRenderer.INSTANCE.setSprite(TorqueTier.HEAVY, registerSprite(evt, "torque_junction_heavy"));
+		TorqueJunctionRenderer.INSTANCE.setSprite(TorqueTier.MEDIUM, registerSprite(evt, "torque_junction_medium"));
+		TorqueJunctionRenderer.INSTANCE.setSprite(TorqueTier.LIGHT, registerSprite(evt, "torque_junction_light"));
 
-        TorqueDistributorRenderer.INSTANCE.setSprite(TorqueTier.HEAVY, registerSprite(evt, "torque_distributor_heavy"));
-        TorqueDistributorRenderer.INSTANCE.setSprite(TorqueTier.MEDIUM, registerSprite(evt, "torque_distributor_medium"));
-        TorqueDistributorRenderer.INSTANCE.setSprite(TorqueTier.LIGHT, registerSprite(evt, "torque_distributor_light"));
+		TorqueDistributorRenderer.INSTANCE.setSprite(TorqueTier.HEAVY, registerSprite(evt, "torque_distributor_heavy"));
+		TorqueDistributorRenderer.INSTANCE.setSprite(TorqueTier.MEDIUM, registerSprite(evt, "torque_distributor_medium"));
+		TorqueDistributorRenderer.INSTANCE.setSprite(TorqueTier.LIGHT, registerSprite(evt, "torque_distributor_light"));
 
-        FlywheelControllerRenderer.INSTANCE.setSprite(TorqueTier.HEAVY, registerSprite(evt, "flywheel_controller_heavy"));
-        FlywheelControllerRenderer.INSTANCE.setSprite(TorqueTier.MEDIUM, registerSprite(evt, "flywheel_controller_medium"));
-        FlywheelControllerRenderer.INSTANCE.setSprite(TorqueTier.LIGHT, registerSprite(evt, "flywheel_controller_light"));
+		FlywheelControllerRenderer.INSTANCE.setSprite(TorqueTier.HEAVY, registerSprite(evt, "flywheel_controller_heavy"));
+		FlywheelControllerRenderer.INSTANCE.setSprite(TorqueTier.MEDIUM, registerSprite(evt, "flywheel_controller_medium"));
+		FlywheelControllerRenderer.INSTANCE.setSprite(TorqueTier.LIGHT, registerSprite(evt, "flywheel_controller_light"));
 
-        FlywheelStorageRenderer.INSTANCE.setSprite(false, TorqueTier.HEAVY, registerSprite(evt, "flywheel_small_heavy"));
-        FlywheelStorageRenderer.INSTANCE.setSprite(false, TorqueTier.MEDIUM, registerSprite(evt, "flywheel_small_medium"));
-        FlywheelStorageRenderer.INSTANCE.setSprite(false, TorqueTier.LIGHT, registerSprite(evt, "flywheel_small_light"));
-        FlywheelStorageRenderer.INSTANCE.setSprite(true, TorqueTier.HEAVY, registerSprite(evt, "flywheel_large_heavy"));
-        FlywheelStorageRenderer.INSTANCE.setSprite(true, TorqueTier.MEDIUM, registerSprite(evt, "flywheel_large_medium"));
-        FlywheelStorageRenderer.INSTANCE.setSprite(true, TorqueTier.LIGHT, registerSprite(evt, "flywheel_large_light"));
-    }
+		FlywheelStorageRenderer.INSTANCE.setSprite(false, TorqueTier.HEAVY, registerSprite(evt, "flywheel_small_heavy"));
+		FlywheelStorageRenderer.INSTANCE.setSprite(false, TorqueTier.MEDIUM, registerSprite(evt, "flywheel_small_medium"));
+		FlywheelStorageRenderer.INSTANCE.setSprite(false, TorqueTier.LIGHT, registerSprite(evt, "flywheel_small_light"));
+		FlywheelStorageRenderer.INSTANCE.setSprite(true, TorqueTier.HEAVY, registerSprite(evt, "flywheel_large_heavy"));
+		FlywheelStorageRenderer.INSTANCE.setSprite(true, TorqueTier.MEDIUM, registerSprite(evt, "flywheel_large_medium"));
+		FlywheelStorageRenderer.INSTANCE.setSprite(true, TorqueTier.LIGHT, registerSprite(evt, "flywheel_large_light"));
+	}
 
-    private TextureAtlasSprite registerSprite(TextureStitchEvent.Pre evt, String spriteName) {
-        return evt.getMap().registerSprite(new ResourceLocation(AncientWarfareCore.modID + ":model/automation/" + spriteName));
-    }
+	private TextureAtlasSprite registerSprite(TextureStitchEvent.Pre evt, String spriteName) {
+		return evt.getMap().registerSprite(new ResourceLocation(AncientWarfareCore.modID + ":model/automation/" + spriteName));
+	}
 }

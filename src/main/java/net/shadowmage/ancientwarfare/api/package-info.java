@@ -1,6 +1,4 @@
-@API(owner = "AncientWarfare", provides = "AncientWarfareAPI", apiVersion = "1.0")
-@ParametersAreNonnullByDefault
-@MethodsReturnNonnullByDefault
+@API(owner = "AncientWarfare", provides = "AncientWarfareAPI", apiVersion = "1.0") @ParametersAreNonnullByDefault @MethodsReturnNonnullByDefault
 package net.shadowmage.ancientwarfare.api;
 
 import mcp.MethodsReturnNonnullByDefault;

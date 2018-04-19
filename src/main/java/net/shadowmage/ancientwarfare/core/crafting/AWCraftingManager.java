@@ -4,13 +4,18 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.JsonUtils;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.CraftingHelper;
@@ -20,14 +25,20 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.compat.jei.AWJEIPlugin;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
+import net.shadowmage.ancientwarfare.core.crafting.wrappers.NoRecipeWrapper;
+import net.shadowmage.ancientwarfare.core.crafting.wrappers.RegularCraftingWrapper;
+import net.shadowmage.ancientwarfare.core.crafting.wrappers.ResearchCraftingWrapper;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.util.TriConsumer;
 
 import javax.annotation.Nullable;
 import java.io.BufferedReader;
@@ -39,10 +50,13 @@ import java.nio.file.FileSystem;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 public class AWCraftingManager {
 	public static final IForgeRegistry<ResearchRecipeBase> RESEARCH_RECIPES = (new RegistryBuilder<ResearchRecipeBase>()).setName(new ResourceLocation(AncientWarfareCore.modID, "research_recipes")).setType(ResearchRecipeBase.class).setMaxID(Integer.MAX_VALUE >> 5).disableSaving().allowModification().create();
@@ -51,48 +65,61 @@ public class AWCraftingManager {
 		//noop - just call this so that the static final gets initialized at proper time
 	}
 
-	/*
-	 * First search within research recipes, then delegates to CraftingManager.findMatchingRecipe
-	 */
-	public static ItemStack findMatchingRecipe(InventoryCrafting inventory, World world, String playerName) {
-		if (world == null)
-			return ItemStack.EMPTY;
-		if (playerName != null && !playerName.isEmpty()) {
-			for (ResearchRecipeBase recipe : RESEARCH_RECIPES) {
-				if (recipe.matches(inventory, world) && canPlayerCraft(recipe, world, playerName)) {
-					return recipe.getCraftingResult(inventory);
-				}
-			}
-		}
-		IRecipe recipe = CraftingManager.findMatchingRecipe(inventory, world);
-		return recipe != null ? recipe.getCraftingResult(inventory) : ItemStack.EMPTY;
+	private static List<ICraftingRecipe> findMatchingResearchRecipes(InventoryCrafting inventory, World world, String playerName) {
+		return findMatchingResearchRecipes(inventory, world, playerName, true);
 	}
 
-	@Nullable
-	public static ResearchRecipeBase findMatchingResearchRecipe(InventoryCrafting inventory, World world, String playerName) {
-		if (world != null && playerName != null && !playerName.isEmpty()) {
-			for (ResearchRecipeBase recipe : RESEARCH_RECIPES) {
-				if (recipe.matches(inventory, world) && canPlayerCraft(recipe, world, playerName)) {
-					return recipe;
-				}
+	private static List<ICraftingRecipe> findMatchingResearchRecipes(InventoryCrafting inventory, World world, String playerName, boolean checkPlayerResearch) {
+		List<ICraftingRecipe> ret = new ArrayList<>();
+		if (world == null)
+			return ret;
+		for (ResearchRecipeBase recipe : RESEARCH_RECIPES) {
+			if (recipe.matches(inventory, world) && (!checkPlayerResearch || canPlayerCraft(recipe, world, playerName))) {
+				ret.add(new ResearchCraftingWrapper(recipe));
 			}
 		}
-		return null;
+		return ret;
+	}
+
+	private static List<ICraftingRecipe> findMatchingRegularRecipes(InventoryCrafting inventory, World world) {
+		List<ICraftingRecipe> ret = new ArrayList<>();
+		if (world == null) {
+			return ret;
+		}
+		for (IRecipe recipe : CraftingManager.REGISTRY) {
+			if (recipe.matches(inventory, world)) {
+				ret.add(new RegularCraftingWrapper(recipe));
+			}
+		}
+		return ret;
+	}
+
+	private static List<ICraftingRecipe> findMatchingRecipesNoResearchCheck(InventoryCrafting inventory, World world) {
+		List<ICraftingRecipe> recipes = findMatchingResearchRecipes(inventory, world, "", false);
+		recipes.addAll(findMatchingRegularRecipes(inventory, world));
+
+		return recipes;
+	}
+
+	public static List<ICraftingRecipe> findMatchingRecipes(InventoryCrafting inventory, World world, String playerName) {
+		List<ICraftingRecipe> recipes = findMatchingResearchRecipes(inventory, world, playerName);
+		recipes.addAll(findMatchingRegularRecipes(inventory, world));
+
+		return recipes;
+	}
+
+	public static boolean canPlayerCraft(World world, String playerName, int research) {
+		return research == -1 || ResearchTracker.INSTANCE.hasPlayerCompleted(world, playerName, research);
 	}
 
 	private static boolean canPlayerCraft(ResearchRecipeBase recipe, World world, String playerName) {
-		if (AWCoreStatics.useResearchSystem) {
-			if (!ResearchTracker.INSTANCE.hasPlayerCompleted(world, playerName, recipe.getNeededResearch())) {
-				return false;
-			}
-		}
-		return true;
+		return !AWCoreStatics.useResearchSystem || canPlayerCraft(world, playerName, recipe.getNeededResearch());
 	}
 
 	public static void addRecipe(ResearchRecipeBase recipe, boolean checkForExistence) {
 		Item item = recipe.getRecipeOutput().getItem();
 		if (AWCoreStatics.isItemCraftable(item)) {
-			if (recipe.getNeededResearch() != -1 && AWCoreStatics.isItemResearcheable(item) && AWCoreStatics.useResearchSystem) {
+			if ((recipe.getNeededResearch() != -1 && AWCoreStatics.isItemResearcheable(item) && AWCoreStatics.useResearchSystem) || hasCountIngredient(recipe)) {
 				if (!checkForExistence || !RESEARCH_RECIPES.containsKey(recipe.getRegistryName())) {
 					RESEARCH_RECIPES.register(recipe);
 				}
@@ -104,6 +131,10 @@ public class AWCraftingManager {
 				}
 			}
 		}
+	}
+
+	private static boolean hasCountIngredient(ResearchRecipeBase recipe) {
+		return recipe.getIngredients().stream().anyMatch(i -> i instanceof IIngredientCount);
 	}
 
 	public static List<ResearchRecipeBase> getRecipes() {
@@ -239,5 +270,122 @@ public class AWCraftingManager {
 			}
 		}
 		return 1;
+	}
+
+	public static ICraftingRecipe getRecipe(RecipeResourceLocation recipe) {
+		switch (recipe.getRecipeType()) {
+			case REGULAR:
+				IRecipe regRecipe = CraftingManager.REGISTRY.getObject(recipe.getResourceLocation());
+				return regRecipe != null ? new RegularCraftingWrapper(regRecipe) : NoRecipeWrapper.INSTANCE;
+			case RESEARCH:
+				ResearchRecipeBase resRecipe = RESEARCH_RECIPES.getValue(recipe.getResourceLocation());
+				return resRecipe != null ? new ResearchCraftingWrapper(resRecipe) : NoRecipeWrapper.INSTANCE;
+			default:
+				return NoRecipeWrapper.INSTANCE;
+		}
+	}
+
+	public static InventoryCrafting fillCraftingMatrixFromInventory(List<ItemStack> resources) {
+		InventoryCrafting invCrafting = new InventoryCrafting(new Container() {
+			@Override
+			public boolean canInteractWith(EntityPlayer playerIn) {
+				return true;
+			}
+
+			@Override
+			public void onCraftMatrixChanged(IInventory inventoryIn) {
+			}
+		}, 3, 3);
+
+		for (int i = 0; i < resources.size(); i++) {
+			invCrafting.setInventorySlotContents(i, resources.get(i));
+		}
+
+		return invCrafting;
+	}
+
+	public static ICraftingRecipe findMatchingRecipe(World world, NonNullList<ItemStack> inputs, ItemStack result) {
+		InventoryCrafting inv = fillCraftingMatrixFromInventory(inputs);
+		List<ICraftingRecipe> recipes = findMatchingRecipesNoResearchCheck(inv, world);
+		return recipes.stream().filter(r -> r.getRecipeOutput().isItemEqual(result)).findFirst().orElse(NoRecipeWrapper.INSTANCE);
+	}
+
+	public static boolean canCraftFromInventory(ICraftingRecipe recipe, IItemHandler inventory) {
+		return getRecipeInventoryMatch(recipe, inventory, () -> true, (b, i, s) -> b, (b, in) -> false, true);
+	}
+
+	public static NonNullList<ItemStack> getRecipeInventoryMatch(ICraftingRecipe recipe, IItemHandler inventory) {
+		return getRecipeInventoryMatch(recipe, inventory, () -> NonNullList.withSize(9, ItemStack.EMPTY), (TriConsumer<NonNullList<ItemStack>, Integer, ItemStack>) NonNullList::set, (a, in) -> a.clear(), true);
+	}
+
+	public static <T> T getRecipeInventoryMatch(ICraftingRecipe recipe, IItemHandler inventory, Supplier<T> initialize, TriConsumer<T, Integer, ItemStack> onMatch, BiConsumer<T, Ingredient> onFail, boolean stopOnFail) {
+		return getRecipeInventoryMatch(recipe, inventory, initialize, (t, i, s) -> {
+			onMatch.accept(t, i, s);
+			return t;
+		}, (t, in) -> {
+			onFail.accept(t, in);
+			return t;
+		}, stopOnFail);
+	}
+
+	public static <T> T getRecipeInventoryMatch(ICraftingRecipe recipe, IItemHandler inventory, Supplier<T> initialize, TriFunction<T, Integer, ItemStack, T> onMatch, BiFunction<T, Ingredient, T> onFail, boolean stopOnFail) {
+		T ret = initialize.get();
+
+		if (!recipe.isValid()) {
+			return ret;
+		}
+
+		List<Ingredient> ingredients = recipe.getIngredients();
+
+		IItemHandler clonedResourceInventory = InventoryTools.cloneItemHandler(inventory);
+		for (int i = 0; i < ingredients.size(); i++) {
+			Ingredient ingredient = ingredients.get(i);
+			if (ingredient.apply(ItemStack.EMPTY)) { //skip empty ingredients
+				continue;
+			}
+
+			ItemStack stackFound = getIngredientInventoryMatch(clonedResourceInventory, ingredient);
+
+			if (stackFound.isEmpty()) {
+				ret = onFail.apply(ret, ingredient);
+				if (stopOnFail) {
+					return ret;
+				}
+			} else {
+				ret = onMatch.apply(ret, i, stackFound);
+			}
+		}
+
+		return ret;
+	}
+
+	private static ItemStack getIngredientInventoryMatch(IItemHandler clonedResourceInventory, Ingredient ingredient) {
+		ItemStack stackFound = ItemStack.EMPTY;
+		int count = ingredient instanceof IIngredientCount ? ((IIngredientCount) ingredient).getCount() : 1;
+		for (int slot = 0; slot < clonedResourceInventory.getSlots(); slot++) {
+			ItemStack resourceStack = clonedResourceInventory.getStackInSlot(slot);
+
+			if (!resourceStack.isEmpty()) {
+				//required for ingredient to actually see proper count and say it's a good item
+				//e.g. ingredient requires stack of 3 but inventory only has 3 stacks of 1 of the item - that's still a match for the recipe
+				ItemStack properCountStack = new ItemStack(resourceStack.writeToNBT(new NBTTagCompound()));
+				properCountStack.setCount(count);
+
+				if (ingredient.apply(properCountStack)) {
+					ItemStack removedStack = InventoryTools.removeItems(clonedResourceInventory, resourceStack, count, true);
+
+					if (removedStack.getCount() == count) {
+						InventoryTools.removeItems(clonedResourceInventory, resourceStack, count, false);
+						stackFound = removedStack;
+						break;
+					}
+				}
+			}
+		}
+		return stackFound;
+	}
+
+	private interface TriFunction<K, V, S, R> {
+		R apply(K k, V v, S s);
 	}
 }

@@ -13,78 +13,76 @@ import java.util.List;
  * Created by Olivier on 15/06/2015.
  */
 public class NpcAIRideHorse extends NpcAI<NpcBase> {
-    private final AttributeModifier followRangeModifier;
-    private final AttributeModifier moveSpeedModifier;
+	private final AttributeModifier followRangeModifier;
+	private final AttributeModifier moveSpeedModifier;
 
-    protected EntityHorse horse;
-    private List<EntityAITasks.EntityAITaskEntry> horseAI = new ArrayList<>();
+	protected EntityHorse horse;
+	private List<EntityAITasks.EntityAITaskEntry> horseAI = new ArrayList<>();
 
-    public NpcAIRideHorse(NpcBase npc, double speedFactor) {
-        super(npc);
-        this.moveSpeedModifier = new AttributeModifier("modifier.npc_ride_speed", speedFactor, 1);
-        this.moveSpeedModifier.setSaved(false);
-        this.followRangeModifier = new AttributeModifier("modifier.npc_horse_path_extension", 24.d, 0);
-        this.followRangeModifier.setSaved(false);
-    }
+	public NpcAIRideHorse(NpcBase npc, double speedFactor) {
+		super(npc);
+		this.moveSpeedModifier = new AttributeModifier("modifier.npc_ride_speed", speedFactor, 1);
+		this.moveSpeedModifier.setSaved(false);
+		this.followRangeModifier = new AttributeModifier("modifier.npc_horse_path_extension", 24.d, 0);
+		this.followRangeModifier.setSaved(false);
+	}
 
-    @Override
-    public boolean shouldExecute() {
-        if (horse == null) {
-            if (npc.getRidingEntity() instanceof EntityHorse) {
-                horse = (EntityHorse) npc.getRidingEntity();
-                onMountHorse();
-                return true;
-            }
-        }
-        return false;
-    }
+	@Override
+	public boolean shouldExecute() {
+		if (horse == null) {
+			if (npc.getRidingEntity() instanceof EntityHorse) {
+				horse = (EntityHorse) npc.getRidingEntity();
+				onMountHorse();
+				return true;
+			}
+		}
+		return false;
+	}
 
-    protected void onMountHorse() {
-        removeHorseAI();
-        horse.setHorseSaddled(true);
-        horse.setEatingHaystack(false);
-        horse.setRearing(false);
-        applyModifiers();
-    }
+	protected void onMountHorse() {
+		removeHorseAI();
+		horse.setHorseSaddled(true);
+		horse.setEatingHaystack(false);
+		horse.setRearing(false);
+		applyModifiers();
+	}
 
-    public void onKilled() {
-        if (horse != null) {
-            onDismountHorse();
-            horse = null;
-        }
-    }
+	public void onKilled() {
+		if (horse != null) {
+			onDismountHorse();
+			horse = null;
+		}
+	}
 
-    protected void onDismountHorse() {
-        addHorseAI();
-        horse.setHorseSaddled(true);
-        removeModifiers();
-    }
+	protected void onDismountHorse() {
+		addHorseAI();
+		horse.setHorseSaddled(true);
+		removeModifiers();
+	}
 
-    private void applyModifiers() {
-        removeModifiers();
-        horse.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(moveSpeedModifier);
-        horse.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(followRangeModifier);
-    }
+	private void applyModifiers() {
+		removeModifiers();
+		horse.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(moveSpeedModifier);
+		horse.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).applyModifier(followRangeModifier);
+	}
 
-    private void removeModifiers() {
-        horse.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(moveSpeedModifier);
-        horse.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).removeModifier(followRangeModifier);
-    }
+	private void removeModifiers() {
+		horse.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).removeModifier(moveSpeedModifier);
+		horse.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).removeModifier(followRangeModifier);
+	}
 
+	private void removeHorseAI() {
+		horseAI.clear();
+		horseAI.addAll(horse.tasks.taskEntries);
+		for (EntityAITasks.EntityAITaskEntry task : horseAI) {
+			horse.tasks.removeTask(task.action);
+		}
+	}
 
-    private void removeHorseAI() {
-        horseAI.clear();
-        horseAI.addAll(horse.tasks.taskEntries);
-        for (EntityAITasks.EntityAITaskEntry task : horseAI) {
-            horse.tasks.removeTask(task.action);
-        }
-    }
-
-
-    private void addHorseAI() {
-        if (horse.tasks.taskEntries.isEmpty()) {
-            horse.tasks.taskEntries.addAll(horseAI);
-        }
-        horseAI.clear();
-    }
+	private void addHorseAI() {
+		if (horse.tasks.taskEntries.isEmpty()) {
+			horse.tasks.taskEntries.addAll(horseAI);
+		}
+		horseAI.clear();
+	}
 }

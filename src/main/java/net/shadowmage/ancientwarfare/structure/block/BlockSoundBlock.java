@@ -39,78 +39,77 @@ import javax.annotation.Nonnull;
 
 public class BlockSoundBlock extends BlockBaseStructure implements IBakeryProvider {
 
-    public static final IUnlistedProperty<String> DISGUISE_BLOCK = new UnlistedStringProperty("disguise");
+	public static final IUnlistedProperty<String> DISGUISE_BLOCK = new UnlistedStringProperty("disguise");
 
-    public BlockSoundBlock() {
-        super(Material.ROCK, "sound_block");
-    }
+	public BlockSoundBlock() {
+		super(Material.ROCK, "sound_block");
+	}
 
-    @Override
-    public BlockRenderLayer getBlockLayer() {
-        return BlockRenderLayer.CUTOUT;
-    }
+	@Override
+	public BlockRenderLayer getBlockLayer() {
+		return BlockRenderLayer.CUTOUT;
+	}
 
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer.Builder(this).add(DISGUISE_BLOCK).build();
-    }
+	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer.Builder(this).add(DISGUISE_BLOCK).build();
+	}
 
-    @Override
-    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return SoundBlockRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
-    }
+	@Override
+	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return SoundBlockRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
+	}
 
-    @Override
-    public boolean hasTileEntity(IBlockState state) {
-        return true;
-    }
+	@Override
+	public boolean hasTileEntity(IBlockState state) {
+		return true;
+	}
 
-    @Override
-    public TileEntity createTileEntity(World world, IBlockState state) {
-        return new TileSoundBlock();
-    }
+	@Override
+	public TileEntity createTileEntity(World world, IBlockState state) {
+		return new TileSoundBlock();
+	}
 
-    @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        @Nonnull ItemStack itemStack = player.getHeldItem(hand);
-        if(!itemStack.isEmpty() && itemStack.getItem() instanceof ItemBlock){
-            TileEntity tileEntity = world.getTileEntity(pos);
-            if(tileEntity instanceof TileSoundBlock) {
-                ((TileSoundBlock)tileEntity).setDisguiseState(itemStack);
-            }
-        }
-        if (!world.isRemote) {
-            NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SOUND_BLOCK, pos);
-        }
-        return true;
-    }
+	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		@Nonnull ItemStack itemStack = player.getHeldItem(hand);
+		if (!itemStack.isEmpty() && itemStack.getItem() instanceof ItemBlock) {
+			TileEntity tileEntity = world.getTileEntity(pos);
+			if (tileEntity instanceof TileSoundBlock) {
+				((TileSoundBlock) tileEntity).setDisguiseState(itemStack);
+			}
+		}
+		if (!world.isRemote) {
+			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SOUND_BLOCK, pos);
+		}
+		return true;
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerClient() {
-        ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
-            @Override
-            protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                return SoundBlockRenderer.MODEL_LOCATION;
-            }
-        });
-        ModelRegistryHelper.register(SoundBlockRenderer.MODEL_LOCATION, new CCBakeryModel() {
-            @Override
-            public TextureAtlasSprite getParticleTexture() {
-                return TextureUtils.getTexture("minecraft:blocks/jukebox_side");
-            }
-        });
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerClient() {
+		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
+			@Override
+			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+				return SoundBlockRenderer.MODEL_LOCATION;
+			}
+		});
+		ModelRegistryHelper.register(SoundBlockRenderer.MODEL_LOCATION, new CCBakeryModel() {
+			@Override
+			public TextureAtlasSprite getParticleTexture() {
+				return TextureUtils.getTexture("minecraft:blocks/jukebox_side");
+			}
+		});
 
-        ModelLoaderHelper.registerItem(this, SoundBlockRenderer.MODEL_LOCATION);
+		ModelLoaderHelper.registerItem(this, SoundBlockRenderer.MODEL_LOCATION);
 
-        ModelBakery.registerBlockKeyGenerator(this,
-                new BlockStateKeyGenerator.Builder().addKeyProperties(DISGUISE_BLOCK).build());
+		ModelBakery.registerBlockKeyGenerator(this, new BlockStateKeyGenerator.Builder().addKeyProperties(DISGUISE_BLOCK).build());
 
-        NetworkHandler.registerGui(NetworkHandler.GUI_SOUND_BLOCK, GuiSoundBlock.class);
-    }
+		NetworkHandler.registerGui(NetworkHandler.GUI_SOUND_BLOCK, GuiSoundBlock.class);
+	}
 
-    @Override
-    public IBakery getBakery() {
-        return SoundBlockRenderer.INSTANCE;
-    }
+	@Override
+	public IBakery getBakery() {
+		return SoundBlockRenderer.INSTANCE;
+	}
 }

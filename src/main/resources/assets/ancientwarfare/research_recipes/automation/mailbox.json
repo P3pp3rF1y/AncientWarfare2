@@ -1,20 +1,20 @@
 {
-  "type": "ancientwarfare:research_recipe",
-  "research": "navigation",
-  "pattern": [
-    "ICI",
-    "I I",
-    "ICI"
-  ],
-  "key": {
-    "C": {
-      "item": "minecraft:chest"
+    "type": "ancientwarfare:research_recipe",
+    "research": "navigation",
+    "pattern": [
+        "ICI",
+        "I I",
+        "ICI"
+    ],
+    "key": {
+        "C": {
+            "item": "minecraft:chest"
+        },
+        "I": {
+            "item": "#INGOTIRON"
+        }
     },
-    "I": {
-      "item": "#INGOTIRON"
+    "result": {
+        "item": "ancientwarfareautomation:mailbox"
     }
-  },
-  "result": {
-    "item": "ancientwarfareautomation:mailbox"
-  }
 }

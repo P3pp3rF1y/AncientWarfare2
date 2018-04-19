@@ -14,32 +14,32 @@ import java.util.stream.Collectors;
 
 public abstract class RotatableBlockRenderer extends BaseBakery {
 
-    protected RotatableBlockRenderer(String modelPath) {
-        super(modelPath);
-    }
+	protected RotatableBlockRenderer(String modelPath) {
+		super(modelPath);
+	}
 
-    @Override
-    protected Collection<CCModel> applyModelTransforms(Collection<CCModel> modelGroups, EnumFacing face, IExtendedBlockState state) {
-        Set<CCModel> transformedGroups = Sets.newHashSet();
+	@Override
+	protected Collection<CCModel> applyModelTransforms(Collection<CCModel> modelGroups, EnumFacing face, IExtendedBlockState state) {
+		Set<CCModel> transformedGroups = Sets.newHashSet();
 
-        for(CCModel group : modelGroups) {
-            transformedGroups.add(rotateFacing(group.copy(), getFacing(state)));
-        }
+		for (CCModel group : modelGroups) {
+			transformedGroups.add(rotateFacing(group.copy(), getFacing(state)));
+		}
 
-        return transformedGroups;
-    }
+		return transformedGroups;
+	}
 
-    protected EnumFacing getFacing(IExtendedBlockState state) {
-        return state.getValue(CoreProperties.UNLISTED_HORIZONTAL_FACING);
-    }
+	protected EnumFacing getFacing(IExtendedBlockState state) {
+		return state.getValue(CoreProperties.UNLISTED_HORIZONTAL_FACING);
+	}
 
-    protected Collection<CCModel> rotateFacing(Collection<CCModel> groups, EnumFacing frontFacing) {
-        return groups.stream().map(e -> rotateFacing(e.copy(), frontFacing)).collect(Collectors.toSet());
-    }
+	protected Collection<CCModel> rotateFacing(Collection<CCModel> groups, EnumFacing frontFacing) {
+		return groups.stream().map(e -> rotateFacing(e.copy(), frontFacing)).collect(Collectors.toSet());
+	}
 
-    protected CCModel rotateFacing(CCModel group, EnumFacing frontFacing) {
-        double angle = Math.PI/2d * (frontFacing.getAxis() == EnumFacing.Axis.Y ? frontFacing.getFrontOffsetY() : -((frontFacing.getHorizontalIndex() + 2) & 3));
+	protected CCModel rotateFacing(CCModel group, EnumFacing frontFacing) {
+		double angle = Math.PI / 2d * (frontFacing.getAxis() == EnumFacing.Axis.Y ? frontFacing.getFrontOffsetY() : -((frontFacing.getHorizontalIndex() + 2) & 3));
 
-        return group.apply(new Rotation(angle, frontFacing.getAxis() == EnumFacing.Axis.Y ? 1 : 0, frontFacing.getAxis() != EnumFacing.Axis.Y ? 1 : 0, 0).at(Vector3.center));
-    }
+		return group.apply(new Rotation(angle, frontFacing.getAxis() == EnumFacing.Axis.Y ? 1 : 0, frontFacing.getAxis() != EnumFacing.Axis.Y ? 1 : 0, 0).at(Vector3.center));
+	}
 }

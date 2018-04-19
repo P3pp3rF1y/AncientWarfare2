@@ -1,21 +1,21 @@
 {
-  "type": "ancientwarfare:research_recipe",
-  "research": "construction",
-  "pattern": [
-    "PPP",
-    "PPP",
-    "PRP"
-  ],
-  "key": {
-    "P": {
-      "item": "#PLANKWOOD"
+    "type": "ancientwarfare:research_recipe",
+    "research": "construction",
+    "pattern": [
+        "PPP",
+        "PPP",
+        "PRP"
+    ],
+    "key": {
+        "P": {
+            "item": "#PLANKWOOD"
+        },
+        "R": {
+            "item": "#DUSTREDSTONE"
+        }
     },
-    "R": {
-      "item": "#DUSTREDSTONE"
+    "result": {
+        "item": "ancientwarfarestructure:gate_spawner",
+        "data": 12
     }
-  },
-  "result": {
-    "item": "ancientwarfarestructure:gate_spawner",
-    "data": 12
-  }
 }

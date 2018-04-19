@@ -1,22 +1,22 @@
 {
-  "type": "ancientwarfare:research_recipe",
-  "research": "trade",
-  "pattern": [
-    "LWL",
-    "WWW",
-    "LWL"
-  ],
-  "key": {
-    "W": {
-      "item": "minecraft:wool",
-      "data": 0
+    "type": "ancientwarfare:research_recipe",
+    "research": "trade",
+    "pattern": [
+        "LWL",
+        "WWW",
+        "LWL"
+    ],
+    "key": {
+        "W": {
+            "item": "minecraft:wool",
+            "data": 0
+        },
+        "L": {
+            "item": "minecraft:leather"
+        }
     },
-    "L": {
-      "item": "minecraft:leather"
+    "result": {
+        "item": "ancientwarfare:backpack",
+        "data": 0
     }
-  },
-  "result": {
-    "item": "ancientwarfare:backpack",
-    "data": 0
-  }
 }
