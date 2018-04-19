@@ -1,6 +1,5 @@
 language: java
 install: true
-
 addons:
   sonarcloud:
     organization: "p3pp3rf1y-github"
@@ -12,14 +11,14 @@ jdk:
 jobs:
   include:
     -stage: Build
-      script:
-      - "./gradlew clean"
-      - "./gradlew setupCIWorkspace"
-      - "./gradlew build"
+    script:
+    - "./gradlew clean"
+    - "./gradlew setupCIWorkspace"
+    - "./gradlew build"
     -stage: Upload
-      script: "./gradlew bintrayUpload"
+    script: "./gradlew bintrayUpload"
     -stage: Code Quality
-      script: "./gradlew sonarqube"
+    script: "./gradlew sonarqube"
 
 cache:
   directories:
