@@ -19,4 +19,8 @@ public interface ICraftingRecipe {
 	RecipeResourceLocation getRegistryName();
 
 	int getNeededResearch();
+
+	int getRecipeWidth();
+
+	int getRecipeHeight();
 }

@@ -47,4 +47,14 @@ public class NoRecipeWrapper implements ICraftingRecipe {
 	public int getNeededResearch() {
 		return -1;
 	}
+
+	@Override
+	public int getRecipeWidth() {
+		return 0;
+	}
+
+	@Override
+	public int getRecipeHeight() {
+		return 0;
+	}
 }

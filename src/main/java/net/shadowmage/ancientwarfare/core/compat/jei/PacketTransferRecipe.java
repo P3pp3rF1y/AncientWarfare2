@@ -52,9 +52,16 @@ public class PacketTransferRecipe extends PacketBase {
 				NonNullList<ItemStack> resources = AWCraftingManager.getRecipeInventoryMatch(recipe, handler);
 
 				List<Slot> slots = craftingContainer.getCraftingMemoryContainer().getCraftingMatrixSlots();
+
+				for (int x = 0; x < recipe.getRecipeWidth(); x++) {
+					for (int y = 0; y < recipe.getRecipeHeight(); y++) {
+						int slotIndex = y * 3 + x;
+						int ingredientIndex = y * recipe.getRecipeWidth() + x;
+						Slot slot = slots.get(slotIndex);
+						slot.putStack(resources.get(ingredientIndex));
+					}
+				}
 				for (int i = 0; i < slots.size(); i++) {
-					Slot slot = slots.get(i);
-					slot.putStack(resources.get(i));
 				}
 				craftingContainer.getCraftingMemoryContainer().setRecipe(recipe, true);
 				craftingContainer.getCraftingMemoryContainer().setUpdatePending();

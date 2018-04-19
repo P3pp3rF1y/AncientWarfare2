@@ -7,6 +7,7 @@ import net.minecraft.util.NonNullList;
 import net.shadowmage.ancientwarfare.core.crafting.ICraftingRecipe;
 import net.shadowmage.ancientwarfare.core.crafting.RecipeResourceLocation;
 import net.shadowmage.ancientwarfare.core.crafting.ResearchRecipeBase;
+import net.shadowmage.ancientwarfare.core.crafting.ShapedResearchRecipe;
 
 public class ResearchCraftingWrapper implements ICraftingRecipe {
 	private static final NonNullList<ItemStack> EMPTY_STACK_LIST = NonNullList.withSize(9, ItemStack.EMPTY);
@@ -54,5 +55,15 @@ public class ResearchCraftingWrapper implements ICraftingRecipe {
 	@Override
 	public int getNeededResearch() {
 		return recipe.getNeededResearch();
+	}
+
+	@Override
+	public int getRecipeWidth() {
+		return recipe instanceof ShapedResearchRecipe ? ((ShapedResearchRecipe) recipe).getRecipeWidth() : 3;
+	}
+
+	@Override
+	public int getRecipeHeight() {
+		return recipe instanceof ShapedResearchRecipe ? ((ShapedResearchRecipe) recipe).getRecipeHeight() : 3;
 	}
 }

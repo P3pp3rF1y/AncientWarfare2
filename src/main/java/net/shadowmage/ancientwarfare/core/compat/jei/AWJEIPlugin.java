@@ -55,7 +55,7 @@ public class AWJEIPlugin implements IModPlugin {
 
 	@Override
 	public void register(IModRegistry registry) {
-		List<ResearchRecipeWrapper> shapedResearchRecipes = AWCraftingManager.getRecipes().stream().filter(r -> r instanceof ShapedResearchRecipe).map(r -> new ResearchRecipeWrapper(registry.getJeiHelpers().getStackHelper(), r)).collect(Collectors.toList());
+		List<ResearchRecipeWrapper> shapedResearchRecipes = AWCraftingManager.getRecipes().stream().filter(r -> r instanceof ShapedResearchRecipe).map(r -> new ShapedResearchRecipeWrapper(registry.getJeiHelpers(), (ShapedResearchRecipe) r)).collect(Collectors.toList());
 		registry.addRecipes(shapedResearchRecipes, ShapedResearchRecipeCategory.UID);
 
 		List<ResearchRecipeWrapper> shapelessResearchRecipes = AWCraftingManager.getRecipes().stream().filter(r -> r instanceof ShapelessResearchRecipe).map(r -> new ResearchRecipeWrapper(registry.getJeiHelpers().getStackHelper(), r)).collect(Collectors.toList());

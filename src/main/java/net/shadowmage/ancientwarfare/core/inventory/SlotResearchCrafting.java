@@ -104,7 +104,8 @@ public class SlotResearchCrafting extends Slot {
 			ItemStack itemstack = this.craftMatrix.getStackInSlot(i);
 			ItemStack itemstack1 = nonnulllist.get(i);
 			if (!itemstack.isEmpty()) {
-				Ingredient ingredient = recipe.getIngredients().get(i);
+				int ingredientIndex = (i / 3) * recipe.getRecipeWidth() + i % 3;
+				Ingredient ingredient = recipe.getIngredients().get(ingredientIndex);
 				craftMatrix.decrStackSize(i, ingredient instanceof IIngredientCount ? ((IIngredientCount) ingredient).getCount() : 1);
 				itemstack = this.craftMatrix.getStackInSlot(i);
 			}

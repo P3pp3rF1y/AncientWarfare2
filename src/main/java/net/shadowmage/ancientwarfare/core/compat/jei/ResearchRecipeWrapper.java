@@ -10,11 +10,12 @@ import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.crafting.ResearchRecipeBase;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 
-public class ResearchRecipeWrapper implements IRecipeWrapper {
+public class ResearchRecipeWrapper<T extends ResearchRecipeBase> implements IRecipeWrapper {
 	private final IStackHelper stackHelper;
-	private ResearchRecipeBase recipe;
+	protected T recipe;
+	private Object width;
 
-	ResearchRecipeWrapper(IStackHelper stackHelper, ResearchRecipeBase recipe) {
+	ResearchRecipeWrapper(IStackHelper stackHelper, T recipe) {
 		this.stackHelper = stackHelper;
 		this.recipe = recipe;
 
@@ -26,17 +27,17 @@ public class ResearchRecipeWrapper implements IRecipeWrapper {
 		ingredients.setOutput(ItemStack.class, recipe.getRecipeOutput());
 	}
 
+	@Override
+	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
+		String research = AWCoreStatics.useResearchSystem ? I18n.format(ResearchGoal.getGoal(recipe.getNeededResearch()).getName()) : "Research disabled";
+		minecraft.fontRenderer.drawString(research, 60, 0, 0x444444, false);
+	}
+
 	public int getWidth() {
 		return 3;
 	}
 
 	public int getHeight() {
 		return 3;
-	}
-
-	@Override
-	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-		String research = AWCoreStatics.useResearchSystem ? I18n.format(ResearchGoal.getGoal(recipe.getNeededResearch()).getName()) : "Research disabled";
-		minecraft.fontRenderer.drawString(research, 60, 0, 0x444444, false);
 	}
 }

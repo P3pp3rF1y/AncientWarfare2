@@ -5,6 +5,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.common.crafting.IShapedRecipe;
 import net.shadowmage.ancientwarfare.core.crafting.ICraftingRecipe;
 import net.shadowmage.ancientwarfare.core.crafting.RecipeResourceLocation;
 
@@ -54,5 +55,15 @@ public class RegularCraftingWrapper implements ICraftingRecipe {
 	@Override
 	public int getNeededResearch() {
 		return -1;
+	}
+
+	@Override
+	public int getRecipeWidth() {
+		return recipe instanceof IShapedRecipe ? ((IShapedRecipe) recipe).getRecipeWidth() : 3;
+	}
+
+	@Override
+	public int getRecipeHeight() {
+		return recipe instanceof IShapedRecipe ? ((IShapedRecipe) recipe).getRecipeHeight() : 3;
 	}
 }
