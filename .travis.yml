@@ -9,11 +9,17 @@ addons:
 jdk:
 - oraclejdk8
 
-script:
-- "./gradlew clean"
-- "./gradlew setupCIWorkspace"
-- "./gradlew build"
-- "./gradlew bintrayUpload"
+jobs:
+  include:
+    -stage: Build
+      script:
+      - "./gradlew clean"
+      - "./gradlew setupCIWorkspace"
+      - "./gradlew build"
+    -stage: Upload
+      script: "./gradlew bintrayUpload"
+    -stage: Code Quality
+      script: "./gradlew sonarqube"
 
 cache:
   directories:
