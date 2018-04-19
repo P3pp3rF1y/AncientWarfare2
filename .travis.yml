@@ -3,7 +3,7 @@ install: true
 addons:
   sonarcloud:
     organization: "p3pp3rf1y-github"
-    token: SONAR_TOKEN
+    token: $SONAR_TOKEN
 
 jdk:
 - oraclejdk8
