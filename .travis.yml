@@ -10,15 +10,14 @@ jdk:
 
 jobs:
   include:
-    -stage: Build
-    script:
-    - "./gradlew clean"
-    - "./gradlew setupCIWorkspace"
-    - "./gradlew build"
-    -stage: Upload
-    script: "./gradlew bintrayUpload"
-    -stage: Code Quality
-    script: "./gradlew sonarqube"
+    - stage: Build
+      script: ./gradlew clean
+      script: ./gradlew setupCIWorkspace
+      script: ./gradlew build
+    - stage: Upload
+      script: ./gradlew bintrayUpload
+    - stage: Code Quality
+      script: ./gradlew sonarqube
 
 cache:
   directories:
