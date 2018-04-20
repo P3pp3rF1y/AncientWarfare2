@@ -11,11 +11,11 @@ jdk:
 jobs:
   include:
     - stage: Build
-      script: ./gradlew clean
-      script: ./gradlew setupCIWorkspace
-      script: ./gradlew build
-    - stage: Upload
-      script: ./gradlew bintrayUpload
+      script:
+        - "./gradlew clean"
+        - "./gradlew setupCIWorkspace"
+        - "./gradlew build"
+        - "./gradlew bintrayUpload"
     - stage: Code Quality
       script: ./gradlew sonarqube
 
