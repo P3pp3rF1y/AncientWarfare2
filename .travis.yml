@@ -15,8 +15,7 @@ jobs:
         - "./gradlew clean"
         - "./gradlew setupCIWorkspace"
         - "./gradlew build"
-    - stage: Upload
-      script: ./gradlew bintrayUpload
+        - "./gradlew bintrayUpload"
     - stage: Code Quality
       script: ./gradlew sonarqube
 
