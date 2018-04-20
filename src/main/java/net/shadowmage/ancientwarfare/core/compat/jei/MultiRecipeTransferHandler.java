@@ -18,6 +18,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
+import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.container.ICraftingContainer;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.crafting.ICraftingRecipe;
@@ -61,7 +62,7 @@ public class MultiRecipeTransferHandler<C extends Container & ICraftingContainer
 		}
 		ICraftingRecipe recipe = AWCraftingManager.findMatchingRecipe(Minecraft.getMinecraft().world, inputs, result);
 
-		if (recipe.getNeededResearch() > -1) {
+		if (AWCoreStatics.useResearchSystem && recipe.getNeededResearch() > -1) {
 			if (container.getCraftingMemoryContainer().getCrafterName() == null) {
 				String tooltipMessage = Translator.translateToLocal("jei.tooltip.error.recipe.transfer.no.research_book");
 				return handlerHelper.createUserErrorWithTooltip(tooltipMessage);
