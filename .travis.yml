@@ -14,7 +14,6 @@ jobs:
       script: ./gradlew clean
       script: ./gradlew setupCIWorkspace
       script: ./gradlew build
-    - stage: Upload
       script: ./gradlew bintrayUpload
     - stage: Code Quality
       script: ./gradlew sonarqube
