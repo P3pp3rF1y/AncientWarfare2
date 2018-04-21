@@ -15,6 +15,9 @@ import net.shadowmage.ancientwarfare.automation.tile.CraftingRecipeMemory;
 import net.shadowmage.ancientwarfare.core.crafting.ICraftingRecipe;
 import net.shadowmage.ancientwarfare.core.crafting.IIngredientCount;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * This needs to be used instead of vanilla SlotCrafting because vanilla one can only work with ingredients of IRecipes, but has no clue what to do
  * with other recipe ingredients and thus returns everything in CraftingMatrix in the getRemainingItems call and thus there's item dupe in that case.
@@ -100,12 +103,18 @@ public class SlotResearchCrafting extends Slot {
 		NonNullList<ItemStack> nonnulllist = recipe.getRemainingItems(craftMatrix);
 		net.minecraftforge.common.ForgeHooks.setCraftingPlayer(null);
 
+		List<Integer> usedIngredients = new ArrayList<>();
 		for (int i = 0; i < nonnulllist.size(); ++i) {
 			ItemStack itemstack = this.craftMatrix.getStackInSlot(i);
 			ItemStack itemstack1 = nonnulllist.get(i);
 			if (!itemstack.isEmpty()) {
-				int ingredientIndex = (i / 3) * recipe.getRecipeWidth() + i % 3;
-				Ingredient ingredient = recipe.getIngredients().get(ingredientIndex);
+				NonNullList<Ingredient> ingredients = recipe.getIngredients();
+				ItemStack finalStack = itemstack;
+				//TODO this potentially has an issue if two ingredients use the same item just with different counts.
+				// May match the lower count one first and then not have another ingredient that would mach the higher count one.
+				// Would need more logic to order ingredients by what amount they're able to match and always try to use lowest one first.
+				Ingredient ingredient = ingredients.stream().filter(in -> !usedIngredients.contains(ingredients.indexOf(in)) && in.apply(finalStack)).findFirst().orElse(Ingredient.EMPTY);
+				usedIngredients.add(ingredients.indexOf(ingredient));
 				craftMatrix.decrStackSize(i, ingredient instanceof IIngredientCount ? ((IIngredientCount) ingredient).getCount() : 1);
 				itemstack = this.craftMatrix.getStackInSlot(i);
 			}
