@@ -23,7 +23,10 @@
 
 package net.shadowmage.ancientwarfare.core.util;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.minecraft.block.Block;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,6 +42,7 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 
 import java.util.List;
+import java.util.Map;
 
 public class BlockTools {
 
@@ -248,5 +252,19 @@ public class BlockTools {
 
 	public static void notifyBlockUpdate(TileEntity tile) {
 		notifyBlockUpdate(tile.getWorld(), tile.getPos());
+	}
+
+	public static JsonElement serializeToJson(IBlockState state) {
+		JsonObject serializedState = new JsonObject();
+		serializedState.addProperty("name", state.getBlock().getRegistryName().toString());
+
+		JsonObject serializedProps = new JsonObject();
+		for (Map.Entry<IProperty<?>, Comparable<?>> prop : state.getProperties().entrySet()) {
+			serializedProps.addProperty(prop.getKey().getName(), prop.getValue().toString());
+		}
+		if (!serializedProps.entrySet().isEmpty()) {
+			serializedState.add("properties", serializedProps);
+		}
+		return serializedState;
 	}
 }

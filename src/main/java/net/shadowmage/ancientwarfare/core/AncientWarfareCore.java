@@ -17,6 +17,7 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.shadowmage.ancientwarfare.automation.registry.RegistryLoader;
 import net.shadowmage.ancientwarfare.core.command.CommandResearch;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.container.ContainerBackpack;
@@ -91,6 +92,8 @@ public class AncientWarfareCore {
 		ResearchGoal.initializeResearch();
 
 		AWCraftingManager.loadRecipes();
+
+		RegistryLoader.load();
 
         /*
          * Setup compats

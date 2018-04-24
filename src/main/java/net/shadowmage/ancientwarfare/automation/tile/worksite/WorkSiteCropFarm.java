@@ -7,30 +7,24 @@ import net.minecraft.block.IGrowable;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.api.IAncientWarfareFarmable;
 import net.shadowmage.ancientwarfare.api.IAncientWarfarePlantable;
-import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.automation.registry.CropFarmRegistry;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
 
 public class WorkSiteCropFarm extends TileWorksiteFarm {
@@ -39,44 +33,12 @@ public class WorkSiteCropFarm extends TileWorksiteFarm {
 	private final Set<BlockPos> blocksToPlant;
 	private final Set<BlockPos> blocksToFertilize;
 
-	private final static List<Block[]> blocksTillableAndTilled = new ArrayList<>();
-
 	public WorkSiteCropFarm() {
 		super();
 		blocksToTill = new HashSet<>();
 		blocksToHarvest = new HashSet<>();
 		blocksToPlant = new HashSet<>();
 		blocksToFertilize = new HashSet<>();
-
-		if (blocksTillableAndTilled.size() == 0) {
-			AncientWarfareCore.log.info("Building crop farmable block list...");
-			for (String entry : AWAutomationStatics.crop_farm_blocks) {
-				String[] farmablePair = entry.split("\\|");
-				if (farmablePair.length != 2) {
-					AncientWarfareCore.log.error("Invalid entry: " + entry);
-					continue;
-				}
-				Block[] farmablePairBlocks = new Block[2];
-				for (int i = 0; i < 2; i++) {
-					if (!farmablePair[i].trim().equals("")) {
-						Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(farmablePair[i]));
-						if (block != null) {
-							farmablePairBlocks[i] = block;
-						} else {
-							// just dummy the block entry so we can silently ignore this missing block
-							farmablePairBlocks[i] = Blocks.AIR;
-						}
-					}
-				}
-				if (farmablePairBlocks[0] == null || farmablePairBlocks[1] == null) {
-					AncientWarfareCore.log.error("Invalid entry: " + entry);
-					continue;
-				} else if (farmablePairBlocks[0] != Blocks.AIR && farmablePairBlocks[1] != Blocks.AIR) {
-					blocksTillableAndTilled.add(farmablePairBlocks);
-					AncientWarfareCore.log.info("...added " + farmablePair[0] + " > " + farmablePair[1] + " as " + farmablePairBlocks[0].getLocalizedName() + " > " + farmablePairBlocks[1].getLocalizedName());
-				}
-			}
-		}
 	}
 
 	@Override
@@ -99,14 +61,6 @@ public class WorkSiteCropFarm extends TileWorksiteFarm {
 		return block instanceof BlockCrops || block instanceof BlockStem;
 	}
 
-	private boolean isTillable(Block block) {
-		for (Block farmableBlockPair[] : blocksTillableAndTilled) {
-			if (block == farmableBlockPair[0])
-				return true;
-		}
-		return false;
-	}
-
 	@Override
 	public void onBoundsAdjusted() {
 		validateCollection(blocksToFertilize);
@@ -120,13 +74,12 @@ public class WorkSiteCropFarm extends TileWorksiteFarm {
 		IBlockState state = world.getBlockState(position);
 		Block block = world.getBlockState(position).getBlock();
 		if (block.isReplaceable(world, position)) {
-			block = world.getBlockState(position.down()).getBlock();
-			if (isTillable(block)) {
+			IBlockState stateDown = world.getBlockState(position.down());
+			if (CropFarmRegistry.isTillable(stateDown)) {
 				blocksToTill.add(position.down());
 			} else {
-				for (Block farmableBlockPair[] : blocksTillableAndTilled) {
-					if (block == farmableBlockPair[1])
-						blocksToPlant.add(position);
+				if (CropFarmRegistry.isPlantable(stateDown)) {
+					blocksToPlant.add(position);
 				}
 			}
 		} else if (block instanceof BlockStem) {
@@ -171,14 +124,9 @@ public class WorkSiteCropFarm extends TileWorksiteFarm {
 			it = blocksToTill.iterator();
 			while (it.hasNext() && (position = it.next()) != null) {
 				it.remove();
-				block = world.getBlockState(position).getBlock();
-				if (isTillable(block) && canReplace(position.up())) {
-					//for (Block farmableBlockPair[] : blocksTillableAndTilled) {
-					for (int i = 0; i < blocksTillableAndTilled.size(); i++) {
-						if (block == blocksTillableAndTilled.get(i)[0]) {
-							world.setBlockState(position, blocksTillableAndTilled.get(i)[1].getDefaultState());
-						}
-					}
+				IBlockState state = world.getBlockState(position);
+				if (CropFarmRegistry.isTillable(state) && canReplace(position.up())) {
+					world.setBlockState(position, CropFarmRegistry.getTilledState(state));
 					return true;
 				}
 			}
@@ -198,7 +146,8 @@ public class WorkSiteCropFarm extends TileWorksiteFarm {
 								//TODO refactor this out
 								if ("com.InfinityRaider.AgriCraft.blocks.BlockCrop".equals(c.getName())) {//A crop from AgriCraft
 									try {//Use the harvest method, hopefully dropping stuff
-										c.getDeclaredMethod("harvest", World.class, int.class, int.class, int.class, EntityPlayer.class).invoke(block, world, position, null);
+										c.getDeclaredMethod("harvest", World.class, int.class, int.class, int.class, EntityPlayer.class)
+												.invoke(block, world, position, null);
 										return true;
 									}
 									catch (Throwable ignored) {

@@ -1,0 +1,10 @@
+[
+    {
+        "tillable": "minecraft:grass",
+        "tilled": "minecraft:farmland"
+    },
+    {
+        "tillable": "minecraft:dirt",
+        "tilled": "minecraft:farmland"
+    }
+]

@@ -152,6 +152,8 @@ public class AWCraftingManager {
 
 		loadRecipes(awModContainer, new File(AWCoreStatics.configPathForFiles + "research_recipes"), "");
 		Loader.instance().getActiveModList().forEach(m -> AWCraftingManager.loadRecipes(m, m.getSource(), "assets/" + m.getModId() + "/research_recipes"));
+
+		Loader.instance().setActiveModContainer(awModContainer);
 	}
 
 	private static void loadRecipes(ModContainer mod, File source, String base) {
