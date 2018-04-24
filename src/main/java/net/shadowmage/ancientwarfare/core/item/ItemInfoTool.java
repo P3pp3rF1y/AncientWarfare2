@@ -32,7 +32,7 @@ public class ItemInfoTool extends ItemBaseCore {
 	}
 
 	@Override
-	public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public EnumActionResult onItemUseFirst(EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
 		if (!world.isRemote) {
 			IBlockState state = world.getBlockState(pos);
 			if (getMode(player.getHeldItem(hand)) == Mode.INFO) {
@@ -40,9 +40,10 @@ public class ItemInfoTool extends ItemBaseCore {
 			} else {
 				printJSON(player, state);
 			}
+			return EnumActionResult.SUCCESS;
 		}
 
-		return super.onItemUse(player, world, pos, hand, facing, hitX, hitY, hitZ);
+		return super.onItemUseFirst(player, world, pos, side, hitX, hitY, hitZ, hand);
 	}
 
 	private void printSimpleMessage(EntityPlayer player, IBlockState state) {
