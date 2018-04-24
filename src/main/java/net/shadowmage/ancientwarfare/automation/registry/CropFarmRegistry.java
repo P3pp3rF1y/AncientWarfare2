@@ -91,7 +91,7 @@ public class CropFarmRegistry {
 			for (Map.Entry<String, String> prop : properties.entrySet()) {
 				IProperty<?> property = stateContainer.getProperty(prop.getKey());
 				//noinspection ConstantConditions
-				Comparable<?> value = prop.getValue();
+				Comparable<?> value = getValueHelper(property, prop.getValue());
 				//noinspection ConstantConditions
 				ret = addProperty.apply(ret, property, value);
 			}
