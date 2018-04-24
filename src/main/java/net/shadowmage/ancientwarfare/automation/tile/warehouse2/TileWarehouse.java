@@ -45,7 +45,7 @@ public class TileWarehouse extends TileWarehouseBase {
 	public void handleSlotClick(EntityPlayer player, ItemStack filter, boolean shiftClick, boolean rightClick) {
 		if (!shiftClick && !player.inventory.getItemStack().isEmpty()) {
 			tryAddItem(player, player.inventory.getItemStack());
-		} else {
+		} else if (!filter.isEmpty()) {
 			tryGetItem(player, filter, shiftClick, rightClick);
 		}
 	}
@@ -117,10 +117,10 @@ public class TileWarehouse extends TileWarehouseBase {
 		for (IWarehouseStorageTile tile : storageMap.getDestinations()) {
 			int count = tile.getQuantityStored(filter);
 			int removeFromTile = Math.min(toRemove - removed, count);
-			if (toRemove > 0) {
+			if (removeFromTile > 0) {
 				removed += removeFromTile;
-				tile.extractItem(filter, toRemove);
-				changeCachedQuantity(filter, -toRemove);
+				tile.extractItem(filter, removeFromTile);
+				changeCachedQuantity(filter, -removeFromTile);
 				updateViewers();
 			}
 			if (removed >= toRemove) {
