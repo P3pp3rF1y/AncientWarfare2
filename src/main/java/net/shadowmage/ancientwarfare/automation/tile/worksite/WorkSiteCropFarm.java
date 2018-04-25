@@ -7,18 +7,13 @@ import net.minecraft.block.IGrowable;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
-import net.minecraftforge.fml.common.Loader;
-import net.shadowmage.ancientwarfare.api.IAncientWarfareFarmable;
-import net.shadowmage.ancientwarfare.api.IAncientWarfarePlantable;
 import net.shadowmage.ancientwarfare.automation.registry.CropFarmRegistry;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
@@ -43,18 +38,11 @@ public class WorkSiteCropFarm extends TileWorksiteFarm {
 
 	@Override
 	protected boolean isPlantable(ItemStack stack) {
-		Item item = stack.getItem();
-		if (item instanceof IAncientWarfarePlantable) {
-			return ((IAncientWarfarePlantable) item).isPlantable(stack);
-		}
-		return item instanceof IPlantable;
+		return stack.getItem() instanceof IPlantable;
 	}
 
 	@Override
 	protected boolean isFarmable(Block block, BlockPos farmablePos) {
-		if (block instanceof IAncientWarfareFarmable && ((IAncientWarfareFarmable) block).isMature(world, farmablePos)) {
-			return true;
-		}
 		if (super.isFarmable(block, farmablePos)) {
 			return ((IPlantable) block).getPlantType(world, farmablePos) == EnumPlantType.Crop;
 		}
@@ -140,22 +128,22 @@ public class WorkSiteCropFarm extends TileWorksiteFarm {
 					return harvestBlock(position);
 				} else if (block instanceof IGrowable) {
 					if (!((IGrowable) block).canGrow(world, position, state, world.isRemote) && !(block instanceof BlockStem)) {
+/* TODO refactor agricraft logic
 						if (Loader.isModLoaded("AgriCraft")) {
-							if (!(block instanceof IAncientWarfareFarmable)) {//Not using the API
-								Class<? extends Block> c = block.getClass();
-								//TODO refactor this out
-								if ("com.InfinityRaider.AgriCraft.blocks.BlockCrop".equals(c.getName())) {//A crop from AgriCraft
-									try {//Use the harvest method, hopefully dropping stuff
-										c.getDeclaredMethod("harvest", World.class, int.class, int.class, int.class, EntityPlayer.class)
-												.invoke(block, world, position, null);
-										return true;
-									}
-									catch (Throwable ignored) {
-										return false;
-									}
+							Class<? extends Block> c = block.getClass();
+							//TODO refactor this out
+							if ("com.InfinityRaider.AgriCraft.blocks.BlockCrop".equals(c.getName())) {//A crop from AgriCraft
+								try {//Use the harvest method, hopefully dropping stuff
+									c.getDeclaredMethod("harvest", World.class, int.class, int.class, int.class, EntityPlayer.class)
+											.invoke(block, world, position, null);
+									return true;
+								}
+								catch (Throwable ignored) {
+									return false;
 								}
 							}
 						}
+*/
 						return harvestBlock(position);
 					}
 				} else if (isFarmable(block, position)) {
@@ -203,14 +191,7 @@ public class WorkSiteCropFarm extends TileWorksiteFarm {
 								miscInventory.extractItem(slot, 1, false);
 							}
 							block = world.getBlockState(position).getBlock();
-							if (block instanceof IAncientWarfareFarmable) {
-								IAncientWarfareFarmable farmable = (IAncientWarfareFarmable) block;
-								if (farmable.isMature(world, position)) {
-									blocksToHarvest.add(position);
-								} else if (farmable.canGrow(world, position, state, world.isRemote)) {
-									blocksToFertilize.add(position);
-								}
-							} else if (block instanceof IGrowable) {
+							if (block instanceof IGrowable) {
 								if (((IGrowable) block).canGrow(world, position, state, world.isRemote)) {
 									blocksToFertilize.add(position);
 								} else if (isFarmable(block, position)) {
