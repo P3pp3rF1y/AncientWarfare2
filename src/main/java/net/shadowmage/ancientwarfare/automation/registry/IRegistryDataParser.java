@@ -1,9 +1,9 @@
 package net.shadowmage.ancientwarfare.automation.registry;
 
-import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 public interface IRegistryDataParser {
 	String getName();
 
-	void parse(JsonElement json);
+	void parse(JsonObject json);
 }

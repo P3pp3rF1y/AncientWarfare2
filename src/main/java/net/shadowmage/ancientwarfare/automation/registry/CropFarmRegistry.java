@@ -47,9 +47,9 @@ public class CropFarmRegistry {
 		}
 
 		@Override
-		public void parse(JsonElement json) {
+		public void parse(JsonObject json) {
 			try {
-				JsonArray tillables = JsonUtils.getJsonArray(json, "");
+				JsonArray tillables = JsonUtils.getJsonArray(json, "tillable_mapping");
 
 				for (JsonElement t : tillables) {
 					JsonObject tillableMapping = JsonUtils.getJsonObject(t, "");

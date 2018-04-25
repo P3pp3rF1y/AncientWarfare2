@@ -2,7 +2,7 @@ package net.shadowmage.ancientwarfare.automation.registry;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
@@ -46,7 +46,8 @@ public class RegistryLoader {
 		ModContainer awModContainer = Loader.instance().activeModContainer();
 
 		Path registryOverridesFolder = new File(AWCoreStatics.configPathForFiles + "registry").toPath();
-		if (Files.exists(registryOverridesFolder)) {
+		if (registryOverridesFolder.toFile().exists()) {
+			//noinspection ConstantConditions
 			loadRegistries(awModContainer, registryOverridesFolder);
 		}
 		Loader.instance().getActiveModList().forEach(m -> loadRegistries(m, m.getSource(), "assets/" + m.getModId() + "/registry"));
@@ -122,8 +123,8 @@ public class RegistryLoader {
 		BufferedReader reader = null;
 		try {
 			reader = Files.newBufferedReader(file);
-			JsonElement json = JsonUtils.fromJson(GSON, reader, JsonElement.class);
-			if (json != null) {
+			JsonObject json = JsonUtils.fromJson(GSON, reader, JsonObject.class);
+			if (json != null && (!JsonUtils.hasField(json, "mod") || Loader.isModLoaded(JsonUtils.getString(json, "mod")))) {
 				parser.parse(json);
 			}
 		}
