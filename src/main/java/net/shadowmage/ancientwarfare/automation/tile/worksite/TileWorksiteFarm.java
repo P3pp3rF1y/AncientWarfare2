@@ -17,18 +17,19 @@ import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Queue;
 
 public abstract class TileWorksiteFarm extends TileWorksiteBoundedInventory {
 	private static final int PLANTABLE_INVENTORY_SIZE = 3;
 	private static final int SIZE = 16;
 	public static final int DEFAULT_MISC_INVENTORY_SIZE = 3;
 	private byte[] targetMap = new byte[SIZE * SIZE];
-	private final List<BlockPos> blocksToUpdate = new ArrayList<>();
+	private final Queue<BlockPos> blocksToUpdate = new LinkedList<>();
 	public final ItemStackHandler plantableInventory;
 	public final ItemStackHandler miscInventory;
 	protected int plantableCount;
@@ -90,8 +91,7 @@ public abstract class TileWorksiteFarm extends TileWorksiteBoundedInventory {
 			fillBlocksToProcess(blocksToUpdate);
 		}
 		if (!blocksToUpdate.isEmpty()) {
-			int rand = world.rand.nextInt(blocksToUpdate.size());
-			BlockPos pos = blocksToUpdate.remove(rand);
+			BlockPos pos = blocksToUpdate.poll();
 			scanBlockPosition(pos);
 		}
 		world.profiler.endSection();

@@ -20,22 +20,18 @@ import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteFarm;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
 import javax.annotation.Nonnull;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.List;
 
 public class WorkSiteCropFarm extends TileWorksiteFarm {
-	private final Set<BlockPos> blocksToTill;
-	private final Set<BlockPos> blocksToHarvest;
-	private final Set<BlockPos> blocksToPlant;
-	private final Set<BlockPos> blocksToFertilize;
+	private final List<BlockPos> blocksToTill = new ArrayList<>();
+	private final List<BlockPos> blocksToHarvest = new ArrayList<>();
+	private final List<BlockPos> blocksToPlant = new ArrayList<>();
+	private final List<BlockPos> blocksToFertilize = new ArrayList<>();
 
 	public WorkSiteCropFarm() {
 		super();
-		blocksToTill = new HashSet<>();
-		blocksToHarvest = new HashSet<>();
-		blocksToPlant = new HashSet<>();
-		blocksToFertilize = new HashSet<>();
 	}
 
 	@Override
