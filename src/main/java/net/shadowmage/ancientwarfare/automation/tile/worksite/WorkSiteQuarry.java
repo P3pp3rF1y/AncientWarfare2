@@ -129,10 +129,9 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 			return false;
 		}
 
-		if (!BlockTools.canBreakBlock(world, getOwnerAsPlayer(), current, state) || !world.setBlockToAir(current)) {
+		if (!BlockTools.breakBlockNoDrops(world, getOwnerAsPlayer(), current, state)) {
 			return false;
 		}
-		world.playEvent(2001, current, Block.getStateId(state));
 
 		InventoryTools.insertOrDropItems(mainInventory, stacks, world, current);
 

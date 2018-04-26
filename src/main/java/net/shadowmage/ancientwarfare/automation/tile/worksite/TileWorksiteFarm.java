@@ -3,19 +3,15 @@ package net.shadowmage.ancientwarfare.automation.tile.worksite;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
-import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
@@ -121,19 +117,8 @@ public abstract class TileWorksiteFarm extends TileWorksiteBoundedInventory {
 			return false;
 		}
 
-		if (!BlockTools.canBreakBlock(world, getOwnerAsPlayer(), pos, state) || !world.setBlockToAir(pos)) {
+		if (!BlockTools.breakBlockNoDrops(world, getOwnerAsPlayer(), pos, state)) {
 			return false;
-		}
-		world.playEvent(2001, pos, Block.getStateId(state));
-
-		if (ModAccessors.TREECAPITATOR_LOADED) {
-			//TODO implement integration with the new treecapitator port ??
-			//ModAccessors.TREECAPITATOR.doTreecapitate(world, block, meta, x, y, z);
-		}
-
-		if (ModAccessors.ENVIROMINE_LOADED) {
-			//TODO enviromine support
-			//ModAccessors.ENVIROMINE.schedulePhysUpdate(world, pos, true, "Normal");
 		}
 
 		insertOrDropCrops(pos, stacks);
@@ -188,11 +173,7 @@ public abstract class TileWorksiteFarm extends TileWorksiteBoundedInventory {
 	}
 
 	protected boolean tryPlace(ItemStack stack, BlockPos pos, EnumFacing face) {
-		EnumFacing direction = face.getOpposite();
-
-		EntityPlayer owner = getFakePlayer();
-		owner.setHeldItem(EnumHand.MAIN_HAND, stack);
-		return stack.onItemUse(owner, world, pos.offset(direction), EnumHand.MAIN_HAND, face, 0.25F, 0.25F, 0.25F) == EnumActionResult.SUCCESS;
+		return BlockTools.placeItemBlock(stack, world, pos, face);
 	}
 
 	protected final void pickupItems() {

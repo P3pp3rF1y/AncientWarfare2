@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.container;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteCropFarm;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.WorkSiteCropFarm;
 
 public class ContainerWorksiteCropFarm extends ContainerWorksiteBase<WorkSiteCropFarm> {
 

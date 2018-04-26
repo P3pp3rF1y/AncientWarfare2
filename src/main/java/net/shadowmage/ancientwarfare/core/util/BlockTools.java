@@ -30,7 +30,11 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -39,6 +43,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 
 import java.util.List;
@@ -242,6 +247,23 @@ public class BlockTools {
 
 	public static boolean canBreakBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state) {
 		return !AWCoreStatics.fireBlockBreakEvents || !MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, player));
+	}
+
+	public static boolean breakBlockNoDrops(World world, EntityPlayer player, BlockPos pos, IBlockState state) {
+		if (!BlockTools.canBreakBlock(world, player, pos, state) || !world.setBlockToAir(pos)) {
+			return false;
+		}
+		world.playEvent(2001, pos, Block.getStateId(state));
+
+		return true;
+	}
+
+	public static boolean placeItemBlock(ItemStack stack, World world, BlockPos pos, EnumFacing face) {
+		EnumFacing direction = face.getOpposite();
+
+		EntityPlayer owner = AncientWarfareCore.proxy.getFakePlayer(world, null, null);
+		owner.setHeldItem(EnumHand.MAIN_HAND, stack);
+		return stack.onItemUse(owner, world, pos.offset(direction), EnumHand.MAIN_HAND, face, 0.25F, 0.25F, 0.25F) == EnumActionResult.SUCCESS;
 	}
 
 	public static void notifyBlockUpdate(World world, BlockPos pos) {

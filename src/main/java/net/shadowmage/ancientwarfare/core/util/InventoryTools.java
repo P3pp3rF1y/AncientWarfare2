@@ -24,6 +24,7 @@ import org.apache.commons.lang3.Validate;
 import javax.annotation.Nonnull;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Function;
@@ -450,6 +451,39 @@ public class InventoryTools {
 			}
 		}
 		return extracted;
+	}
+
+	public static ItemStack removeItem(NonNullList<ItemStack> stacks, Predicate<ItemStack> filter, int quantity) {
+		Iterator<ItemStack> it = stacks.iterator();
+		ItemStack stackToReturn = ItemStack.EMPTY;
+		int removed = 0;
+		while (it.hasNext()) {
+			ItemStack stack = it.next();
+
+			if (filter.test(stack)) {
+				if (stack.getMaxStackSize() < quantity) {
+					throw new UnsupportedOperationException("Not supported for quantity greater than max stack size");
+				}
+
+				int toRemove = Math.min(quantity - removed, stack.getCount());
+				removed += toRemove;
+
+				if (stackToReturn.isEmpty()) {
+					stackToReturn = stack.copy();
+				}
+				stack.shrink(toRemove);
+				stackToReturn.setCount(removed);
+
+				if (stack.isEmpty()) {
+					it.remove();
+				}
+
+				if (quantity - removed <= 0) {
+					return stackToReturn;
+				}
+			}
+		}
+		return stackToReturn;
 	}
 
 	/*
