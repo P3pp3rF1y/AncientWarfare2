@@ -35,11 +35,13 @@ import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteQuarr
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteReedFarm;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteTreeFarm;
 import net.shadowmage.ancientwarfare.automation.proxy.RFProxy;
+import net.shadowmage.ancientwarfare.automation.registry.CropFarmRegistry;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
+import net.shadowmage.ancientwarfare.core.registry.RegistryLoader;
 
 @Mod(name = "Ancient Warfare Automation", modid = AncientWarfareAutomation.modID, version = "@VERSION@", dependencies = "required-after:ancientwarfare;after:redstoneflux;after:buildcraftcore")
 public class AncientWarfareAutomation {
@@ -106,6 +108,8 @@ public class AncientWarfareAutomation {
 		MinecraftForge.EVENT_BUS.register(this);
 
 		ForgeChunkManager.setForcedChunkLoadingCallback(this, AWChunkLoader.INSTANCE);
+
+		RegistryLoader.registerParser(new CropFarmRegistry.Parser());
 	}
 
 	@EventHandler

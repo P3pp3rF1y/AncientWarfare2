@@ -12,6 +12,7 @@ import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.items.wrapper.PlayerInvWrapper;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileAutoCrafting;
+import net.shadowmage.ancientwarfare.core.container.ContainerCraftingRecipeMemory;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.core.container.ICraftingContainer;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;

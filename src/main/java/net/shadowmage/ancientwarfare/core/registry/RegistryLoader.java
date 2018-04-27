@@ -1,4 +1,4 @@
-package net.shadowmage.ancientwarfare.automation.registry;
+package net.shadowmage.ancientwarfare.core.registry;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -31,15 +31,11 @@ public class RegistryLoader {
 
 	private static final Map<String, IRegistryDataParser> parsers = new HashMap<>();
 
-	private static void registerParser(IRegistryDataParser parser) {
+	public static void registerParser(IRegistryDataParser parser) {
 		parsers.put(parser.getName(), parser);
 	}
 
 	private static final List<ResourceLocation> loadedRegistries = new ArrayList<>();
-
-	static {
-		registerParser(new CropFarmRegistry.Parser());
-	}
 
 	public static void load() {
 		//noinspection ConstantConditions

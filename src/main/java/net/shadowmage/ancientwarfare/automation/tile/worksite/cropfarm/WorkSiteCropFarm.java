@@ -4,7 +4,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
 import net.minecraft.block.BlockStem;
 import net.minecraft.block.IGrowable;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -80,10 +79,6 @@ public class WorkSiteCropFarm extends TileWorksiteFarm {
 		if (harvestable.canBeFertilized(state, world, position)) {
 			blocksToFertilize.add(position);
 		}
-	}
-
-	private boolean melonOrPumpkin(IBlockState state) {
-		return state.getMaterial() == Material.GOURD;
 	}
 
 	@Override

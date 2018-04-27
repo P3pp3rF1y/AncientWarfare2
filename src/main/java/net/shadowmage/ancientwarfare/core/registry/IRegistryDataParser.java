@@ -1,4 +1,4 @@
-package net.shadowmage.ancientwarfare.automation.registry;
+package net.shadowmage.ancientwarfare.core.registry;
 
 import com.google.gson.JsonObject;
 
