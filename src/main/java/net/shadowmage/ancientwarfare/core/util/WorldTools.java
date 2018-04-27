@@ -2,12 +2,14 @@ package net.shadowmage.ancientwarfare.core.util;
 
 import com.google.common.collect.Lists;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class WorldTools {
 
@@ -35,5 +37,15 @@ public class WorldTools {
 			return tileEntities;
 		}
 		return Collections.emptyList();
+	}
+
+	public static <T extends TileEntity> Optional<T> getTile(World world, BlockPos pos, Class<T> teClass) {
+		TileEntity te = world.getTileEntity(pos);
+
+		if (teClass.isInstance(te)) {
+			return Optional.of(teClass.cast(te));
+		}
+
+		return Optional.empty();
 	}
 }

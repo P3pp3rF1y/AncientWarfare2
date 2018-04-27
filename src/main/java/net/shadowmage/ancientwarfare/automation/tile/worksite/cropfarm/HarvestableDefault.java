@@ -19,9 +19,9 @@ import java.util.List;
 
 public class HarvestableDefault implements IHarvestable {
 	@Override
-	public List<BlockPos> getPositionsToHarvest(World world, BlockPos origin, IBlockState state) {
-		if (state.getBlock() instanceof IGrowable && !((IGrowable) state.getBlock()).canGrow(world, origin, state, world.isRemote)) {
-			return Collections.singletonList(origin);
+	public List<BlockPos> getPositionsToHarvest(World world, BlockPos pos, IBlockState state) {
+		if (state.getBlock() instanceof IGrowable && !((IGrowable) state.getBlock()).canGrow(world, pos, state, world.isRemote)) {
+			return Collections.singletonList(pos);
 		}
 		return Collections.emptyList();
 	}
@@ -32,27 +32,32 @@ public class HarvestableDefault implements IHarvestable {
 	}
 
 	@Override
-	public boolean harvest(World world, IBlockState state, BlockPos posToHarvest, EntityPlayer player, int fortune, IItemHandler inventory) {
+	public boolean harvest(World world, IBlockState state, BlockPos pos, EntityPlayer player, int fortune, IItemHandler inventory) {
 		Block block = state.getBlock();
 		NonNullList<ItemStack> stacks = NonNullList.create();
 
-		block.getDrops(stacks, world, posToHarvest, state, fortune);
+		block.getDrops(stacks, world, pos, state, fortune);
 
 		if (!InventoryTools.canInventoryHold(inventory, stacks)) {
 			return false;
 		}
 
-		if (!BlockTools.breakBlockNoDrops(world, player, posToHarvest, state)) {
+		if (!BlockTools.breakBlockNoDrops(world, player, pos, state)) {
 			return false;
 		}
 
 		ItemStack plantable = InventoryTools.removeItem(stacks, i -> i.getItem() instanceof IPlantable, 1);
 
 		if (!plantable.isEmpty()) {
-			BlockTools.placeItemBlock(plantable, world, posToHarvest, EnumFacing.UP);
+			BlockTools.placeItemBlock(plantable, world, pos, EnumFacing.UP);
 		}
 
-		InventoryTools.insertOrDropItems(inventory, stacks, world, posToHarvest);
+		InventoryTools.insertOrDropItems(inventory, stacks, world, pos);
+		return true;
+	}
+
+	@Override
+	public boolean matches(IBlockState state) {
 		return true;
 	}
 }

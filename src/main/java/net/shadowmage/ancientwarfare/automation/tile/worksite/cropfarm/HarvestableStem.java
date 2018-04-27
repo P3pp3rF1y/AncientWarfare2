@@ -13,13 +13,13 @@ import java.util.List;
 
 public class HarvestableStem implements IHarvestable {
 	@Override
-	public List<BlockPos> getPositionsToHarvest(World world, BlockPos origin, IBlockState state) {
+	public List<BlockPos> getPositionsToHarvest(World world, BlockPos pos, IBlockState state) {
 		List<BlockPos> ret = new ArrayList<>();
 
-		addPositionIfGourd(ret, world, origin.north());
-		addPositionIfGourd(ret, world, origin.west());
-		addPositionIfGourd(ret, world, origin.south());
-		addPositionIfGourd(ret, world, origin.east());
+		addPositionIfGourd(ret, world, pos.north());
+		addPositionIfGourd(ret, world, pos.west());
+		addPositionIfGourd(ret, world, pos.south());
+		addPositionIfGourd(ret, world, pos.east());
 		return ret;
 	}
 
@@ -35,7 +35,12 @@ public class HarvestableStem implements IHarvestable {
 	}
 
 	@Override
-	public boolean harvest(World world, IBlockState state, BlockPos posToHarvest, EntityPlayer player, int fortune, IItemHandler inventory) {
+	public boolean harvest(World world, IBlockState state, BlockPos pos, EntityPlayer player, int fortune, IItemHandler inventory) {
 		return false;
+	}
+
+	@Override
+	public boolean matches(IBlockState state) {
+		return state.getBlock() instanceof BlockStem;
 	}
 }

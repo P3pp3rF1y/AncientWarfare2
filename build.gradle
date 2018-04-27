@@ -42,6 +42,14 @@ repositories {
     maven { 
         url "http://dvs1.progwml6.com/files/maven" 
     }
+    maven {
+        url "http://tehnut.info/maven"
+    }
+    ivy {
+        name "infinitylib"
+        ivyPattern 'http://www.google.com/FAKE_URL/ugly_workaround_because_curseforge_403.txt'
+        artifactPattern "http://media.forgecdn.net/files/${infinitylib_cf}/[module]-[revision].[ext]"
+    }
 }
 
 minecraft{
@@ -67,6 +75,8 @@ dependencies {
     deobfCompile "mezz.jei:jei_${minecraft_version}:${jei_version}"
     deobfCompile "codechicken:CodeChickenLib:${ccl_version}:deobf"
     deobfCompile "com.feed_the_beast.mods:FTBLib:${ftblib_version}"
+    deobfCompile name: 'infinitylib', version: infinitylib_version, ext: 'jar'
+    deobfCompile "com.infinityraider.agricraft:AgriCraft:${agricraft_version}"
 }
 
 processResources{

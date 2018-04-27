@@ -9,9 +9,11 @@ import net.minecraftforge.items.IItemHandler;
 import java.util.List;
 
 public interface IHarvestable {
-	List<BlockPos> getPositionsToHarvest(World world, BlockPos origin, IBlockState state);
+	List<BlockPos> getPositionsToHarvest(World world, BlockPos pos, IBlockState state);
 
 	boolean canBeFertilized(IBlockState state, World world, BlockPos pos);
 
-	boolean harvest(World world, IBlockState state, BlockPos posToHarvest, EntityPlayer player, int fortune, IItemHandler inventory);
+	boolean harvest(World world, IBlockState state, BlockPos pos, EntityPlayer player, int fortune, IItemHandler inventory);
+
+	boolean matches(IBlockState state);
 }
