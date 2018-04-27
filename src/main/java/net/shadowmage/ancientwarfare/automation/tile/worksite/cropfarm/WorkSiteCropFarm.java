@@ -7,10 +7,12 @@ import net.minecraft.block.IGrowable;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
@@ -97,6 +99,7 @@ public class WorkSiteCropFarm extends TileWorksiteFarm {
 				IBlockState state = world.getBlockState(position);
 				if (CropFarmRegistry.isTillable(state) && canReplace(position.up())) {
 					world.setBlockState(position, CropFarmRegistry.getTilledState(state));
+					world.playSound(null, pos, SoundEvents.ITEM_HOE_TILL, SoundCategory.BLOCKS, 1.0F, 1.0F);
 					return true;
 				}
 			}
