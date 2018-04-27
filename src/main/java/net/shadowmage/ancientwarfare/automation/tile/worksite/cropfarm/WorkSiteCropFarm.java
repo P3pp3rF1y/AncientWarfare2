@@ -14,24 +14,28 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.shadowmage.ancientwarfare.automation.registry.CropFarmRegistry;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteFarm;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class WorkSiteCropFarm extends TileWorksiteFarm {
-	private final List<BlockPos> blocksToTill = new ArrayList<>();
-	private final List<BlockPos> blocksToHarvest = new ArrayList<>();
-	private final List<BlockPos> blocksToPlant = new ArrayList<>();
-	private final List<BlockPos> blocksToFertilize = new ArrayList<>();
+	private final Set<BlockPos> blocksToTill = new LinkedHashSet<>();
+	private final Set<BlockPos> blocksToHarvest = new LinkedHashSet<>();
+	private final Set<BlockPos> blocksToPlant = new LinkedHashSet<>();
+	private final Set<BlockPos> blocksToFertilize = new LinkedHashSet<>();
+
+	private final IItemHandler inventoryForDrops;
 
 	public WorkSiteCropFarm() {
 		super();
+		inventoryForDrops = new CombinedInvWrapper(plantableInventory, mainInventory);
 	}
 
 	@Override
@@ -63,36 +67,16 @@ public class WorkSiteCropFarm extends TileWorksiteFarm {
 			IBlockState stateDown = world.getBlockState(position.down());
 			if (CropFarmRegistry.isTillable(stateDown)) {
 				blocksToTill.add(position.down());
-			} else {
-				if (CropFarmRegistry.isPlantable(stateDown)) {
-					blocksToPlant.add(position);
-				}
+			} else if (CropFarmRegistry.isPlantable(stateDown)) {
+				blocksToPlant.add(position);
 			}
-		} else if (block instanceof BlockStem) {
-			if (!((IGrowable) block).canGrow(world, position, state, world.isRemote)) {
-				state = world.getBlockState(position.west());
-				if (melonOrPumpkin(state)) {
-					blocksToHarvest.add(position.west());
-				}
-				state = world.getBlockState(position.east());
-				if (melonOrPumpkin(state)) {
-					blocksToHarvest.add(position.east());
-				}
-				state = world.getBlockState(position.north());
-				if (melonOrPumpkin(state)) {
-					blocksToHarvest.add(position.north());
-				}
-				state = world.getBlockState(position.south());
-				if (melonOrPumpkin(state)) {
-					blocksToHarvest.add(position.south());
-				}
-			} else {
-				blocksToFertilize.add(position);
-			}
-		} else if (block instanceof IGrowable && ((IGrowable) block).canGrow(world, position, state, world.isRemote)) {
+		}
+
+		IHarvestable harvestable = HarvestableFactory.getHarvestable(state);
+		blocksToHarvest.addAll(harvestable.getPositionsToHarvest(world, position, state));
+
+		if (harvestable.canBeFertilized(state, world, position)) {
 			blocksToFertilize.add(position);
-		} else if (isFarmable(block, position)) {
-			blocksToHarvest.add(position);
 		}
 	}
 
@@ -122,10 +106,7 @@ public class WorkSiteCropFarm extends TileWorksiteFarm {
 				it.remove();
 				IBlockState state = world.getBlockState(position);
 				IHarvestable harvestable = HarvestableFactory.getHarvestable(state);
-				if (harvestable.readyToHarvest(world, state, position)) {
-					return harvestable
-							.harvest(world, state, position, getOwnerAsPlayer(), getFortune(), new CombinedInvWrapper(plantableInventory, mainInventory));
-				}
+				return harvestable.harvest(world, state, position, getOwnerAsPlayer(), getFortune(), inventoryForDrops);
 			}
 		} else if (hasToPlant()) {
 			it = blocksToPlant.iterator();

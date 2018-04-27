@@ -11,10 +11,18 @@ import net.minecraftforge.items.IItemHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
+import java.util.Collections;
+import java.util.List;
+
 public class HarvestableGourd implements IHarvestable {
 	@Override
-	public boolean readyToHarvest(World world, IBlockState state, BlockPos pos) {
-		return true;
+	public List<BlockPos> getPositionsToHarvest(World world, BlockPos origin, IBlockState state) {
+		return Collections.singletonList(origin);
+	}
+
+	@Override
+	public boolean canBeFertilized(IBlockState state, World world, BlockPos pos) {
+		return false;
 	}
 
 	@Override

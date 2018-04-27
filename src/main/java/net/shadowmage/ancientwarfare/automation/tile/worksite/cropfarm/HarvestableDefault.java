@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockStem;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,10 +14,21 @@ import net.minecraftforge.items.IItemHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
+import java.util.Collections;
+import java.util.List;
+
 public class HarvestableDefault implements IHarvestable {
-	public boolean readyToHarvest(World world, IBlockState state, BlockPos pos) {
-		return state.getBlock() instanceof IGrowable && !((IGrowable) state.getBlock()).canGrow(world, pos, state, world.isRemote) && !(state
-				.getBlock() instanceof BlockStem);
+	@Override
+	public List<BlockPos> getPositionsToHarvest(World world, BlockPos origin, IBlockState state) {
+		if (state.getBlock() instanceof IGrowable && !((IGrowable) state.getBlock()).canGrow(world, origin, state, world.isRemote)) {
+			return Collections.singletonList(origin);
+		}
+		return Collections.emptyList();
+	}
+
+	@Override
+	public boolean canBeFertilized(IBlockState state, World world, BlockPos pos) {
+		return state.getBlock() instanceof IGrowable && ((IGrowable) state.getBlock()).canGrow(world, pos, state, world.isRemote);
 	}
 
 	@Override
