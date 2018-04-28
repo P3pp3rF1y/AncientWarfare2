@@ -145,6 +145,7 @@ public class WorkSiteCropFarm extends TileWorksiteFarm {
 							ItemStack clone = stack.copy();
 							if (ItemDye.applyBonemeal(clone, world, position, getOwnerAsPlayer(), EnumHand.MAIN_HAND)) {
 								miscInventory.extractItem(slot, 1, false);
+								world.playEvent(2005, position, 0);
 							}
 							block = world.getBlockState(position).getBlock();
 							if (block instanceof IGrowable) {
