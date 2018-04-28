@@ -28,7 +28,13 @@ public class HarvestableDefault implements IHarvestable {
 
 	@Override
 	public boolean canBeFertilized(IBlockState state, World world, BlockPos pos) {
-		return state.getBlock() instanceof IGrowable && ((IGrowable) state.getBlock()).canGrow(world, pos, state, world.isRemote);
+		if (!(state.getBlock() instanceof IGrowable)) {
+			return false;
+		}
+
+		IGrowable growable = (IGrowable) state.getBlock();
+
+		return growable.canGrow(world, pos, state, world.isRemote) && growable.canUseBonemeal(world, world.rand, pos, state);
 	}
 
 	@Override

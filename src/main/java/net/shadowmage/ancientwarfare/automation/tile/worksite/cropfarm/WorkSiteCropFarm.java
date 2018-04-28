@@ -6,6 +6,7 @@ import net.minecraft.block.BlockStem;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
@@ -71,6 +72,10 @@ public class WorkSiteCropFarm extends TileWorksiteFarm {
 			} else if (CropFarmRegistry.isPlantable(stateDown)) {
 				blocksToPlant.add(position);
 			}
+		}
+
+		if (state.getBlock() == Blocks.AIR) {
+			return;
 		}
 
 		IHarvestable harvestable = HarvestableFactory.getHarvestable(state);
