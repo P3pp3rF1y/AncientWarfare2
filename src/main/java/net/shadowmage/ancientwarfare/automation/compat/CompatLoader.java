@@ -6,7 +6,7 @@ import net.shadowmage.ancientwarfare.automation.compat.agricraft.AgricraftCompat
 import java.util.HashSet;
 import java.util.Set;
 
-public class ComnpatLoader {
+public class CompatLoader {
 	private static Set<ICompat> compats = new HashSet<>();
 
 	static {

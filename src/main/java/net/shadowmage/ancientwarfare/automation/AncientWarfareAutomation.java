@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.shadowmage.ancientwarfare.automation.chunkloader.AWChunkLoader;
-import net.shadowmage.ancientwarfare.automation.compat.ComnpatLoader;
+import net.shadowmage.ancientwarfare.automation.compat.CompatLoader;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.container.ContainerChunkLoaderDeluxe;
 import net.shadowmage.ancientwarfare.automation.container.ContainerMailbox;
@@ -119,7 +119,7 @@ public class AncientWarfareAutomation {
          */
 		proxy.init();
 
-		ComnpatLoader.init();
+		CompatLoader.init();
 
 		statics.save();
 	}
