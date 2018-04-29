@@ -3,38 +3,33 @@ package net.shadowmage.ancientwarfare.automation.tile.worksite;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.items.ItemStackHandler;
-import net.shadowmage.ancientwarfare.api.IAncientWarfareFarmable;
-import net.shadowmage.ancientwarfare.api.IAncientWarfarePlantable;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
-import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Queue;
 
 public abstract class TileWorksiteFarm extends TileWorksiteBoundedInventory {
 	private static final int PLANTABLE_INVENTORY_SIZE = 3;
 	private static final int SIZE = 16;
 	public static final int DEFAULT_MISC_INVENTORY_SIZE = 3;
 	private byte[] targetMap = new byte[SIZE * SIZE];
-	private final List<BlockPos> blocksToUpdate = new ArrayList<>();
+	private final Queue<BlockPos> blocksToUpdate = new LinkedList<>();
 	public final ItemStackHandler plantableInventory;
 	public final ItemStackHandler miscInventory;
 	protected int plantableCount;
@@ -96,8 +91,7 @@ public abstract class TileWorksiteFarm extends TileWorksiteBoundedInventory {
 			fillBlocksToProcess(blocksToUpdate);
 		}
 		if (!blocksToUpdate.isEmpty()) {
-			int rand = world.rand.nextInt(blocksToUpdate.size());
-			BlockPos pos = blocksToUpdate.remove(rand);
+			BlockPos pos = blocksToUpdate.poll();
 			scanBlockPosition(pos);
 		}
 		world.profiler.endSection();
@@ -116,33 +110,15 @@ public abstract class TileWorksiteFarm extends TileWorksiteBoundedInventory {
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
 		NonNullList<ItemStack> stacks = NonNullList.create();
-		if (block instanceof IAncientWarfareFarmable) {
-			stacks = ((IAncientWarfareFarmable) block).getDrops(world, pos, getFortune());
-		} else {
-			block.getDrops(stacks, world, pos, state, getFortune());
-		}
+
+		block.getDrops(stacks, world, pos, state, getFortune());
 
 		if (!inventoryCanHold(stacks)) {
 			return false;
 		}
 
-		if (block instanceof IAncientWarfareFarmable) {
-			((IAncientWarfareFarmable) block).harvest(world, pos);
-		} else {
-			if (!BlockTools.canBreakBlock(world, getOwnerAsPlayer(), pos, state) || !world.setBlockToAir(pos)) {
-				return false;
-			}
-			world.playEvent(2001, pos, Block.getStateId(state));
-
-			if (ModAccessors.TREECAPITATOR_LOADED) {
-				//TODO implement integration with the new treecapitator port ??
-				//ModAccessors.TREECAPITATOR.doTreecapitate(world, block, meta, x, y, z);
-			}
-
-			if (ModAccessors.ENVIROMINE_LOADED) {
-				//TODO enviromine support
-				//ModAccessors.ENVIROMINE.schedulePhysUpdate(world, pos, true, "Normal");
-			}
+		if (!BlockTools.breakBlockNoDrops(world, getOwnerAsPlayer(), pos, state)) {
+			return false;
 		}
 
 		insertOrDropCrops(pos, stacks);
@@ -197,13 +173,7 @@ public abstract class TileWorksiteFarm extends TileWorksiteBoundedInventory {
 	}
 
 	protected boolean tryPlace(ItemStack stack, BlockPos pos, EnumFacing face) {
-		EnumFacing direction = face.getOpposite();
-		if (stack.getItem() instanceof IAncientWarfarePlantable) {
-			return ((IAncientWarfarePlantable) stack.getItem()).tryPlant(world, pos.offset(direction), stack.copy());
-		}
-		EntityPlayer owner = getFakePlayer();
-		owner.setHeldItem(EnumHand.MAIN_HAND, stack);
-		return stack.onItemUse(owner, world, pos.offset(direction), EnumHand.MAIN_HAND, face, 0.25F, 0.25F, 0.25F) == EnumActionResult.SUCCESS;
+		return BlockTools.placeItemBlock(stack, world, pos, face);
 	}
 
 	protected final void pickupItems() {

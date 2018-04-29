@@ -29,6 +29,7 @@ public class AWCoreItemLoader {
 	public static void register(RegistryEvent.Register<Item> event) {
 		IForgeRegistry<Item> registry = event.getRegistry();
 
+		registry.register(new ItemInfoTool());
 		registry.register(new ItemResearchBook());
 
 		registry.register(new ItemResearchNotes());

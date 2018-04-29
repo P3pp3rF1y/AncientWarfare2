@@ -23,11 +23,18 @@
 
 package net.shadowmage.ancientwarfare.core.util;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.minecraft.block.Block;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -36,9 +43,11 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 
 import java.util.List;
+import java.util.Map;
 
 public class BlockTools {
 
@@ -240,6 +249,23 @@ public class BlockTools {
 		return !AWCoreStatics.fireBlockBreakEvents || !MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, player));
 	}
 
+	public static boolean breakBlockNoDrops(World world, EntityPlayer player, BlockPos pos, IBlockState state) {
+		if (!BlockTools.canBreakBlock(world, player, pos, state) || !world.setBlockToAir(pos)) {
+			return false;
+		}
+		world.playEvent(2001, pos, Block.getStateId(state));
+
+		return true;
+	}
+
+	public static boolean placeItemBlock(ItemStack stack, World world, BlockPos pos, EnumFacing face) {
+		EnumFacing direction = face.getOpposite();
+
+		EntityPlayer owner = AncientWarfareCore.proxy.getFakePlayer(world, null, null);
+		owner.setHeldItem(EnumHand.MAIN_HAND, stack);
+		return stack.onItemUse(owner, world, pos.offset(direction), EnumHand.MAIN_HAND, face, 0.25F, 0.25F, 0.25F) == EnumActionResult.SUCCESS;
+	}
+
 	public static void notifyBlockUpdate(World world, BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
 		world.notifyBlockUpdate(pos, state, state, 3);
@@ -248,5 +274,19 @@ public class BlockTools {
 
 	public static void notifyBlockUpdate(TileEntity tile) {
 		notifyBlockUpdate(tile.getWorld(), tile.getPos());
+	}
+
+	public static JsonElement serializeToJson(IBlockState state) {
+		JsonObject serializedState = new JsonObject();
+		serializedState.addProperty("name", state.getBlock().getRegistryName().toString());
+
+		JsonObject serializedProps = new JsonObject();
+		for (Map.Entry<IProperty<?>, Comparable<?>> prop : state.getProperties().entrySet()) {
+			serializedProps.addProperty(prop.getKey().getName(), prop.getValue().toString());
+		}
+		if (!serializedProps.entrySet().isEmpty()) {
+			serializedState.add("properties", serializedProps);
+		}
+		return serializedState;
 	}
 }

@@ -1,8 +1,8 @@
 package net.shadowmage.ancientwarfare.core.gui.crafting;
 
 import net.minecraft.item.ItemStack;
-import net.shadowmage.ancientwarfare.automation.container.ContainerCraftingRecipeMemory;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
+import net.shadowmage.ancientwarfare.core.container.ContainerCraftingRecipeMemory;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Composite;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;

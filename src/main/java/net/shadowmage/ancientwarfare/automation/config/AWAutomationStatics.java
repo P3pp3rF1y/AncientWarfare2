@@ -83,17 +83,6 @@ public class AWAutomationStatics extends ModConfiguration {
 
 	public static Property renderWorkBounds;
 
-	public static String[] crop_farm_blocks = new String[] {"minecraft:grass|minecraft:farmland",
-			"minecraft:dirt|minecraft:farmland",
-			"gardencore:garden_soil|gardencore:garden_farmland",
-			"biomesoplenty:grass_origin|minecraft:farmland",
-			"biomesoplenty:grass_daisy|minecraft:farmland",
-			"biomesoplenty:grass_loamy|biomesoplenty:farmland_moist_loamy",
-			"biomesoplenty:dirt_loamy|biomesoplenty:farmland_moist_loamy",
-			"biomesoplenty:grass_sandy|biomesoplenty:farmland_moist_sandy",
-			"biomesoplenty:dirt_sandy|biomesoplenty:farmland_moist_sandy",
-			"biomesoplenty:grass_silty|biomesoplenty:farmland_moist_silty",
-			"biomesoplenty:dirt_silty|biomesoplenty:farmland_moist_silty",};
 	public static String[] animal_farm_pickups = new String[] {"minecraft:leather",
 			"minecraft:beef",
 			"minecraft:cooked_beef",
@@ -172,8 +161,6 @@ public class AWAutomationStatics extends ModConfiguration {
 
 		enable_energy_client_updates = config.getBoolean("enable_client_energy_animations", clientOptions, enable_energy_client_updates, "Enable client-side animation of power tiles.\nDisabling may improve rendering performance on low-end machines");
 		renderWorkBounds = config.get(clientOptions, "render_work_bounds", true);
-
-		crop_farm_blocks = config.get(serverOptions, "crop_farm_blocks", crop_farm_blocks, "List of farmable blocks\n" + "List of blocks pairs - untilled and tilled version - that the crop farm should use for farming.\nUse the format:\n" + "modid:farmableBlock|modid.tilledFarmableBlock").getStringList();
 
 		animal_farm_pickups = config.get(serverOptions, "animal_farm_pickups", animal_farm_pickups, "List of items that Animal Farms can pickup\n" + "Animal farms will periodically pickup any of these items detected (if they're not caught on-demand by the farmer culling animals).\n" + "Use the format modid:itemid[:itemDamage]").getStringList();
 	}

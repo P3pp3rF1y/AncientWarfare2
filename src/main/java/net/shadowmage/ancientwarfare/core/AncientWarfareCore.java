@@ -29,6 +29,7 @@ import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.item.AWCoreItemLoader;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
+import net.shadowmage.ancientwarfare.core.registry.RegistryLoader;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 
@@ -91,6 +92,8 @@ public class AncientWarfareCore {
 		ResearchGoal.initializeResearch();
 
 		AWCraftingManager.loadRecipes();
+
+		RegistryLoader.load();
 
         /*
          * Setup compats

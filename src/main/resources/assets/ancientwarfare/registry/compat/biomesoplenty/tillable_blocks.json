@@ -1,0 +1,199 @@
+{
+    "mod": "biomesoplenty",
+    "tillable_mapping": [
+        {
+            "tillable": {
+                "name": "biomesoplenty:grass",
+                "properties": {
+                    "variant": "loamy"
+                }
+            },
+            "tilled": {
+                "name": "biomesoplenty:farmland_0",
+                "properties": {
+                    "variant": "loamy"
+                }
+            }
+        },
+        {
+            "tillable": {
+                "name": "biomesoplenty:grass",
+                "properties": {
+                    "variant": "sandy"
+                }
+            },
+            "tilled": {
+                "name": "biomesoplenty:farmland_0",
+                "properties": {
+                    "variant": "sandy"
+                }
+            }
+        },
+        {
+            "tillable": {
+                "name": "biomesoplenty:grass",
+                "properties": {
+                    "variant": "silty"
+                }
+            },
+            "tilled": {
+                "name": "biomesoplenty:farmland_1",
+                "properties": {
+                    "variant": "silty"
+                }
+            }
+        },
+        {
+            "tillable": {
+                "name": "biomesoplenty:grass",
+                "properties": {
+                    "variant": "origin"
+                }
+            },
+            "tilled": "minecraft:farmland"
+        },
+        {
+            "tillable": {
+                "name": "biomesoplenty:grass",
+                "properties": {
+                    "variant": "daisy"
+                }
+            },
+            "tilled": "minecraft:farmland"
+        },
+        {
+            "tillable": {
+                "name": "biomesoplenty:grass",
+                "properties": {
+                    "variant": "spectral_moss"
+                }
+            },
+            "tilled": "minecraft:end_stone"
+        },
+        {
+            "tillable": {
+                "name": "biomesoplenty:grass",
+                "properties": {
+                    "variant": "overgrown_stone"
+                }
+            },
+            "tilled": {
+                "name": "minecraft:stone",
+                "properties": {
+                    "variant": "stone"
+                }
+            }
+        },
+        {
+            "tillable": {
+                "name": "biomesoplenty:grass",
+                "properties": {
+                    "variant": "overgrown_netherrack"
+                }
+            },
+            "tilled": "minecraft:netherrack"
+        },
+        {
+            "tillable": {
+                "name": "biomesoplenty:grass",
+                "properties": {
+                    "variant": "mycelial_netherrack"
+                }
+            },
+            "tilled": "minecraft:netherrack"
+        },
+        {
+            "tillable": {
+                "name": "biomesoplenty:dirt",
+                "properties": {
+                    "coarse": "true",
+                    "variant": "loamy"
+                }
+            },
+            "tilled": {
+                "name": "biomesoplenty:dirt",
+                "properties": {
+                    "coarse": "false",
+                    "variant": "loamy"
+                }
+            }
+        },
+        {
+            "tillable": {
+                "name": "biomesoplenty:dirt",
+                "properties": {
+                    "coarse": "false",
+                    "variant": "loamy"
+                }
+            },
+            "tilled": {
+                "name": "biomesoplenty:farmland_0",
+                "properties": {
+                    "variant": "loamy"
+                }
+            }
+        },
+        {
+            "tillable": {
+                "name": "biomesoplenty:dirt",
+                "properties": {
+                    "coarse": "true",
+                    "variant": "sandy"
+                }
+            },
+            "tilled": {
+                "name": "biomesoplenty:dirt",
+                "properties": {
+                    "coarse": "false",
+                    "variant": "sandy"
+                }
+            }
+        },
+        {
+            "tillable": {
+                "name": "biomesoplenty:dirt",
+                "properties": {
+                    "coarse": "false",
+                    "variant": "sandy"
+                }
+            },
+            "tilled": {
+                "name": "biomesoplenty:farmland_0",
+                "properties": {
+                    "variant": "sandy"
+                }
+            }
+        },
+        {
+            "tillable": {
+                "name": "biomesoplenty:dirt",
+                "properties": {
+                    "coarse": "true",
+                    "variant": "silty"
+                }
+            },
+            "tilled": {
+                "name": "biomesoplenty:dirt",
+                "properties": {
+                    "coarse": "false",
+                    "variant": "silty"
+                }
+            }
+        },
+        {
+            "tillable": {
+                "name": "biomesoplenty:dirt",
+                "properties": {
+                    "coarse": "false",
+                    "variant": "silty"
+                }
+            },
+            "tilled": {
+                "name": "biomesoplenty:farmland_1",
+                "properties": {
+                    "variant": "silty"
+                }
+            }
+        }
+    ]
+}
