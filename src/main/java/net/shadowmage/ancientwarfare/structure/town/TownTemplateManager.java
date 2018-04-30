@@ -40,7 +40,7 @@ public class TownTemplateManager {
 		int totalWeight = 0;
 		for (TownTemplate t : templates.values()) {
 			templateMinimumSize = t.getMinSize();
-			if (min >= templateMinimumSize && isBiomeValid(biomeName, t)) {
+			if (min >= templateMinimumSize && isDimensionValid(world.provider.getDimension(), t) && isBiomeValid(biomeName, t)) {
 				searchCache.add(t);
 				totalWeight += t.getSelectionWeight();
 			}
@@ -65,4 +65,7 @@ public class TownTemplateManager {
 		return (wl && contains) || (!wl && !contains);
 	}
 
+	private boolean isDimensionValid(int dimension, TownTemplate t) {
+		return t.getDimensionList().contains(dimension) == t.isDimensionWhiteList();
+	}
 }
