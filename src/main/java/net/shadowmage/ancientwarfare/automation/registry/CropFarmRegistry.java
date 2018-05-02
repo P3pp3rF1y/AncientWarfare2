@@ -7,6 +7,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.JsonUtils;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.HarvestableDefault;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.HarvestableGourd;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.HarvestableStem;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.HarvestableTall;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.IHarvestable;
 import net.shadowmage.ancientwarfare.core.registry.IRegistryDataParser;
@@ -30,6 +31,7 @@ public class CropFarmRegistry {
 	static {
 		registerHarvestable(new HarvestableDefault());
 		registerHarvestable(new HarvestableGourd());
+		registerHarvestable(new HarvestableStem());
 	}
 
 	public static boolean isTillable(IBlockState state) {
