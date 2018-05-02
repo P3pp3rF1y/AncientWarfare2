@@ -1,0 +1,12 @@
+{
+    "harvestable": [
+        {
+            "block": "minecraft:reeds",
+            "type": "keep_bottom"
+        },
+        {
+            "block": "minecraft:cactus",
+            "type": "keep_bottom"
+        }
+    ]
+}

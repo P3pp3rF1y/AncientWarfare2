@@ -7,6 +7,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.JsonUtils;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.HarvestableDefault;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.HarvestableGourd;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.HarvestableKeepBottom;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.HarvestableStem;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.HarvestableTall;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.IHarvestable;
@@ -100,6 +101,8 @@ public class CropFarmRegistry {
 			switch (type) {
 				case "tall":
 					return TallParser.parse(stateMatcher, properties);
+				case "keep_bottom":
+					return KeepBottomParser.parse(stateMatcher, properties);
 				default:
 					return DEFAULT_HARVESTABLE;
 			}
@@ -109,6 +112,12 @@ public class CropFarmRegistry {
 
 			public static IHarvestable parse(BlockStateMatcher stateMatcher, JsonObject properties) {
 				return new HarvestableTall(stateMatcher, JsonUtils.getInt(properties, "height"));
+			}
+		}
+
+		private static class KeepBottomParser {
+			public static IHarvestable parse(BlockStateMatcher stateMatcher, JsonObject properties) {
+				return new HarvestableKeepBottom(stateMatcher);
 			}
 		}
 	}
