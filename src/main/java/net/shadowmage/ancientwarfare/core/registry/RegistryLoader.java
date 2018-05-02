@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.MissingResourceException;
 
 public class RegistryLoader {
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -126,6 +127,9 @@ public class RegistryLoader {
 		}
 		catch (JsonParseException e) {
 			AncientWarfareCore.log.error("Parsing error loading registry {}", key, e);
+		}
+		catch (MissingResourceException e) {
+			AncientWarfareCore.log.error(e.getMessage());
 		}
 		catch (IOException e) {
 			AncientWarfareCore.log.error("Couldn't read registry {} from {}", key, file, e);

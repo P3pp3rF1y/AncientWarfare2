@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.compat.agricraft;
 
 import net.shadowmage.ancientwarfare.automation.compat.ICompat;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.HarvestableFactory;
+import net.shadowmage.ancientwarfare.automation.registry.CropFarmRegistry;
 
 public class AgricraftCompat implements ICompat {
 	@Override
@@ -11,6 +11,6 @@ public class AgricraftCompat implements ICompat {
 
 	@Override
 	public void init() {
-		HarvestableFactory.registerHarvestable(new HarvestableAgricraftCrop());
+		CropFarmRegistry.registerHarvestable(new HarvestableAgricraftCrop());
 	}
 }

@@ -78,7 +78,7 @@ public class WorkSiteCropFarm extends TileWorksiteFarm {
 			return;
 		}
 
-		IHarvestable harvestable = HarvestableFactory.getHarvestable(state);
+		IHarvestable harvestable = CropFarmRegistry.getHarvestable(state);
 		blocksToHarvest.addAll(harvestable.getPositionsToHarvest(world, position, state));
 
 		if (harvestable.canBeFertilized(state, world, position)) {
@@ -108,7 +108,7 @@ public class WorkSiteCropFarm extends TileWorksiteFarm {
 			while (it.hasNext() && (position = it.next()) != null) {
 				it.remove();
 				IBlockState state = world.getBlockState(position);
-				IHarvestable harvestable = HarvestableFactory.getHarvestable(state);
+				IHarvestable harvestable = CropFarmRegistry.getHarvestable(state);
 				return harvestable.harvest(world, state, position, getOwnerAsPlayer(), getFortune(), inventoryForDrops);
 			}
 		} else if (hasToPlant()) {

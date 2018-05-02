@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,16 +38,15 @@ public class HarvestableDefault implements IHarvestable {
 
 	@Override
 	public boolean harvest(World world, IBlockState state, BlockPos pos, EntityPlayer player, int fortune, IItemHandler inventory) {
-		Block block = state.getBlock();
 		NonNullList<ItemStack> stacks = NonNullList.create();
 
-		block.getDrops(stacks, world, pos, state, fortune);
+		getDrops(stacks, world, pos, state, fortune);
 
 		if (!InventoryTools.canInventoryHold(inventory, stacks)) {
 			return false;
 		}
 
-		if (!BlockTools.breakBlockNoDrops(world, player, pos, state)) {
+		if (!breakCrop(world, player, pos, state)) {
 			return false;
 		}
 
@@ -60,6 +58,14 @@ public class HarvestableDefault implements IHarvestable {
 
 		InventoryTools.insertOrDropItems(inventory, stacks, world, pos);
 		return true;
+	}
+
+	protected boolean breakCrop(World world, EntityPlayer player, BlockPos pos, IBlockState state) {
+		return BlockTools.breakBlockNoDrops(world, player, pos, state);
+	}
+
+	protected void getDrops(NonNullList<ItemStack> stacks, World world, BlockPos pos, IBlockState state, int fortune) {
+		state.getBlock().getDrops(stacks, world, pos, state, fortune);
 	}
 
 	@Override
