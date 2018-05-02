@@ -454,7 +454,12 @@ public class InventoryTools {
 	}
 
 	public static ItemStack removeItem(NonNullList<ItemStack> stacks, Predicate<ItemStack> filter, int quantity) {
-		Iterator<ItemStack> it = stacks.iterator();
+		return removeItem(stacks, filter, quantity, false);
+	}
+
+	public static ItemStack removeItem(NonNullList<ItemStack> stacks, Predicate<ItemStack> filter, int quantity, boolean simulate) {
+		Iterator<ItemStack> it = simulate ? copyStacks(stacks).iterator() : stacks.iterator();
+
 		ItemStack stackToReturn = ItemStack.EMPTY;
 		int removed = 0;
 		while (it.hasNext()) {
@@ -484,6 +489,10 @@ public class InventoryTools {
 			}
 		}
 		return stackToReturn;
+	}
+
+	private static NonNullList<ItemStack> copyStacks(NonNullList<ItemStack> stacks) {
+		return stacks.stream().map(ItemStack::copy).collect(Collectors.toCollection(NonNullList::create));
 	}
 
 	/*
