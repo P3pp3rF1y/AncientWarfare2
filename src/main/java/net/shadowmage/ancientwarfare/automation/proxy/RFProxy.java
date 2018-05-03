@@ -7,7 +7,7 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 
 public class RFProxy {
-
+	//TODO  look into simplifying this implementation / I don't think this proxy stuff is even needed.
 	public static RFProxy instance;
 
 	public static void loadInstance() {
