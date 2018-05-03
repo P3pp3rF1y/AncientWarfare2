@@ -8,6 +8,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemBlockSpecial;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -42,7 +44,9 @@ public class WorkSiteCropFarm extends TileWorksiteFarm {
 
 	@Override
 	protected boolean isPlantable(ItemStack stack) {
-		return stack.getItem() instanceof IPlantable;
+		return stack.getItem() instanceof IPlantable
+				|| (stack.getItem() instanceof ItemBlock && ((ItemBlock) stack.getItem()).getBlock() instanceof IPlantable)
+				|| (stack.getItem() instanceof ItemBlockSpecial && ((ItemBlockSpecial) stack.getItem()).getBlock() instanceof IPlantable);
 	}
 
 	@Override

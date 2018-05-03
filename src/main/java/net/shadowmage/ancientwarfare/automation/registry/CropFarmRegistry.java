@@ -86,9 +86,9 @@ public class CropFarmRegistry {
 
 		@Override
 		public void parse(JsonObject json) {
-			JsonArray tillables = JsonUtils.getJsonArray(json, "harvestable");
+			JsonArray harvestables = JsonUtils.getJsonArray(json, "harvestable");
 
-			for (JsonElement t : tillables) {
+			for (JsonElement t : harvestables) {
 				JsonObject harvestable = JsonUtils.getJsonObject(t, "");
 				registerHarvestable(getHarvestable(harvestable));
 			}
@@ -118,6 +118,24 @@ public class CropFarmRegistry {
 		private static class KeepBottomParser {
 			public static IHarvestable parse(BlockStateMatcher stateMatcher, JsonObject properties) {
 				return new HarvestableKeepBottom(stateMatcher);
+			}
+		}
+	}
+
+	public static class PlantableParser implements IRegistryDataParser {
+
+		@Override
+		public String getName() {
+			return "plantable_blocks";
+		}
+
+		@Override
+		public void parse(JsonObject json) {
+			JsonArray plantables = JsonUtils.getJsonArray(json, "plantable");
+
+			for (JsonElement t : plantables) {
+				JsonObject plantable = JsonUtils.getJsonObject(t, "");
+				plantableBlocks.add(JsonHelper.getBlockStateMatcher(plantable, "block"));
 			}
 		}
 	}
