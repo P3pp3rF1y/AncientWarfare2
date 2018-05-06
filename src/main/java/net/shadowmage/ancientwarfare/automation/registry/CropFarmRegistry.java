@@ -104,7 +104,7 @@ public class CropFarmRegistry {
 				case "keep_bottom":
 					return KeepBottomParser.parse(stateMatcher);
 				case "nongrowable":
-					return NongrowableParser.parse(stateMatcher, JsonHelper.getBlockState(crop, "block"), crop);
+					return NongrowableParser.parse(stateMatcher, JsonHelper.getBlockState(crop, "crop"), crop);
 				default:
 					return DEFAULT_CROP;
 			}
