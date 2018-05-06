@@ -29,6 +29,7 @@ import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteBound
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteCropFarm;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteFishControl;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteFishFarm;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteFruitFarm;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteInventorySideSelection;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteMushroomFarm;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteQuarry;
@@ -36,6 +37,7 @@ import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteReedF
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteTreeFarm;
 import net.shadowmage.ancientwarfare.automation.proxy.RFProxy;
 import net.shadowmage.ancientwarfare.automation.registry.CropFarmRegistry;
+import net.shadowmage.ancientwarfare.automation.registry.FruitFarmRegistry;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
@@ -93,6 +95,7 @@ public class AncientWarfareAutomation {
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_QUARRY, ContainerWorksiteQuarry.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_TREE_FARM, ContainerWorksiteTreeFarm.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_CROP_FARM, ContainerWorksiteCropFarm.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_FRUIT_FARM, ContainerWorksiteFruitFarm.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_MUSHROOM_FARM, ContainerWorksiteMushroomFarm.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_ANIMAL_FARM, ContainerWorksiteAnimalFarm.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_REED_FARM, ContainerWorksiteReedFarm.class);
@@ -112,6 +115,7 @@ public class AncientWarfareAutomation {
 		RegistryLoader.registerParser(new CropFarmRegistry.TillableParser());
 		RegistryLoader.registerParser(new CropFarmRegistry.HarvestableParser());
 		RegistryLoader.registerParser(new CropFarmRegistry.PlantableParser());
+		RegistryLoader.registerParser(new FruitFarmRegistry.PickableParser());
 	}
 
 	@EventHandler

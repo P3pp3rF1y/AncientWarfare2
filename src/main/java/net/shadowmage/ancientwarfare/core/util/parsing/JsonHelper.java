@@ -7,10 +7,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.Item;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.registries.IForgeRegistry;
+import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -26,6 +29,28 @@ public class JsonHelper {
 
 	public static BlockStateMatcher getBlockStateMatcher(JsonObject parent, String elementName) {
 		return getBlockState(parent, elementName, block -> new BlockStateMatcher(block.getRegistryName()), BlockStateMatcher::addProperty);
+	}
+
+	public static ItemStackMatcher getItemStackMatcher(JsonObject parent, String elementName) {
+		if (!JsonUtils.hasField(parent, elementName)) {
+			throw new JsonParseException("Expected " + elementName + " member in " + parent.toString());
+		}
+
+		String registryName;
+		int meta = 0;
+
+		if (JsonUtils.isJsonPrimitive(parent, elementName)) {
+			registryName = JsonUtils.getString(parent, elementName);
+		} else {
+			JsonObject obj = JsonUtils.getJsonObject(parent, elementName);
+			registryName = JsonUtils.getString(obj, "name");
+
+			if (JsonUtils.hasField(obj, "meta")) {
+				meta = JsonUtils.getInt(obj, "meta");
+			}
+		}
+
+		return new ItemStackMatcher(getItem(registryName), meta);
 	}
 
 	private static <T> T getBlockState(JsonObject parent, String elementName, Function<Block, T> init, AddPropertyFunction<T> addProperty) {
@@ -51,11 +76,21 @@ public class JsonHelper {
 	}
 
 	private static Block getBlock(String registryName) {
-		Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(registryName));
-		if (block == null) {
-			throw new MissingResourceException("Unable to find block with registry name \"" + registryName + "\"", Block.class.getName(), registryName);
+		return getRegistryEntry(registryName, ForgeRegistries.BLOCKS);
+	}
+
+	private static Item getItem(String registryName) {
+		return getRegistryEntry(registryName, ForgeRegistries.ITEMS);
+	}
+
+	private static <T extends IForgeRegistryEntry<T>> T getRegistryEntry(String registryName, IForgeRegistry<T> registry) {
+		ResourceLocation key = new ResourceLocation(registryName);
+		if (!registry.containsKey(key)) {
+			throw new MissingResourceException("Unable to find entry with registry name \"" + registryName + "\"",
+					registry.getRegistrySuperType().getName(), registryName);
 		}
-		return block;
+		//noinspection ConstantConditions
+		return registry.getValue(key);
 	}
 
 	private static Tuple<String, Map<String, String>> getBlockNameAndProperties(JsonObject parent, String elementName) {

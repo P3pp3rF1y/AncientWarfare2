@@ -48,6 +48,7 @@ import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteQuarry;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteReedFarm;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.WorkSiteTreeFarm;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.WorkSiteCropFarm;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.fruitfarm.WorkSiteFruitFarm;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockMeta;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockOwnedRotatable;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockRotatableMetaTile;
@@ -63,6 +64,7 @@ public class AWAutomationBlockLoader {
 		registry.register(new ItemBlockWorksiteStatic(AWAutomationBlocks.worksiteQuarry));
 		registry.register(new ItemBlockWorksiteStatic(AWAutomationBlocks.worksiteForestry));
 		registry.register(new ItemBlockWorksiteStatic(AWAutomationBlocks.worksiteCropFarm));
+		registry.register(new ItemBlockWorksiteStatic(AWAutomationBlocks.worksiteFruitFarm));
 		registry.register(new ItemBlockWorksiteStatic(AWAutomationBlocks.worksiteMushroomFarm));
 		registry.register(new ItemBlockWorksiteStatic(AWAutomationBlocks.worksiteAnimalFarm));
 		registry.register(new ItemBlockWorksiteStatic(AWAutomationBlocks.worksiteFishFarm));
@@ -102,6 +104,9 @@ public class AWAutomationBlockLoader {
 
 		registry.register(new BlockWorksiteBase("crop_farm").setTileFactory(WorkSiteCropFarm::new));
 		GameRegistry.registerTileEntity(WorkSiteCropFarm.class, "crop_farm_tile");
+
+		registry.register(new BlockWorksiteBase("fruit_farm").setTileFactory(WorkSiteFruitFarm::new));
+		GameRegistry.registerTileEntity(WorkSiteFruitFarm.class, "fruit_farm_tile");
 
 		registry.register(new BlockWorksiteBase("mushroom_farm").setTileFactory(WorkSiteMushroomFarm::new));
 		GameRegistry.registerTileEntity(WorkSiteMushroomFarm.class, "mushroom_farm_tile");

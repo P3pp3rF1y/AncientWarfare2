@@ -22,6 +22,7 @@ import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteBoundsAdjust;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteCropFarm;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteFishControl;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteFishFarm;
+import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteFruitFarm;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteInventorySideSelection;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteMushroomFarm;
 import net.shadowmage.ancientwarfare.automation.gui.GuiWorksiteQuarry;
@@ -64,6 +65,7 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.ConfigManager;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.ClientProxyBase;
+import net.shadowmage.ancientwarfare.vehicle.gui.GuiVehicleStats;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,6 +90,8 @@ public class ClientProxyAutomation extends ClientProxyBase {
 		NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_QUARRY, GuiWorksiteQuarry.class);
 		NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_TREE_FARM, GuiWorksiteTreeFarm.class);
 		NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_CROP_FARM, GuiWorksiteCropFarm.class);
+		NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_FRUIT_FARM, GuiWorksiteFruitFarm.class);
+		NetworkHandler.registerGui(NetworkHandler.GUI_VEHICLE_STATS, GuiVehicleStats.class);
 		NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_MUSHROOM_FARM, GuiWorksiteMushroomFarm.class);
 		NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_ANIMAL_FARM, GuiWorksiteAnimalFarm.class);
 		NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_REED_FARM, GuiWorksiteReedFarm.class);

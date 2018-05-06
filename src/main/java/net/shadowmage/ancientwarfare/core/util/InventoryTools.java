@@ -26,10 +26,13 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public class InventoryTools {
 	public static boolean canInventoryHold(IItemHandler handler, ItemStack stack) {
@@ -663,5 +666,29 @@ public class InventoryTools {
 		}
 
 		return ret;
+	}
+
+	public static Stream<ItemStack> toStream(IItemHandler handler) {
+		return StreamSupport.stream(getIterator(handler).spliterator(), false);
+	}
+
+	public static Iterable<ItemStack> getIterator(IItemHandler handler) {
+		return () -> new Iterator<ItemStack>() {
+			private int currentSlot = 0;
+
+			@Override
+			public boolean hasNext() {
+				return currentSlot < handler.getSlots();
+			}
+
+			@Override
+			public ItemStack next() {
+				if (currentSlot < 0 || currentSlot >= handler.getSlots()) {
+					throw new NoSuchElementException();
+				}
+
+				return handler.getStackInSlot(currentSlot++);
+			}
+		};
 	}
 }

@@ -119,6 +119,7 @@ tile.auto_crafting.0.name=Auto Crafting Station
 tile.quarry.name=Quarry
 tile.tree_farm.name=Tree Farm
 tile.crop_farm.name=Crop Farm
+tile.fruit_farm.name=Fruit Farm
 tile.mushroom_farm.name=Mushroom Farm
 tile.animal_farm.name=Animal Farm
 tile.fish_farm.name=Fish Farm
