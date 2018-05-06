@@ -166,7 +166,7 @@ public class TileSoundBlock extends TileUpdatable implements ISinger, ITickable 
 
 	public void setDisguiseState(ItemStack itemStack) {
 		Block block = Block.getBlockFromItem(itemStack.getItem());
-		if (block != AWStructuresBlocks.soundBlock) {
+		if (block != AWStructuresBlocks.soundBlock && block.isFullCube(null) && block.isOpaqueCube(null)) {
 			disguiseState = block.getStateFromMeta(itemStack.getMetadata());
 			BlockTools.notifyBlockUpdate(this);
 			world.notifyNeighborsRespectDebug(pos, this.blockType, true);
