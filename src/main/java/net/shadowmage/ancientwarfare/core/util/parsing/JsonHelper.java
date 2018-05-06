@@ -28,6 +28,7 @@ public class JsonHelper {
 	}
 
 	public static BlockStateMatcher getBlockStateMatcher(JsonObject parent, String elementName) {
+		//noinspection ConstantConditions
 		return getBlockState(parent, elementName, block -> new BlockStateMatcher(block.getRegistryName()), BlockStateMatcher::addProperty);
 	}
 
@@ -129,5 +130,37 @@ public class JsonHelper {
 
 	private interface AddPropertyFunction<T> {
 		T apply(T obj, IProperty<?> property, Comparable<?> value);
+	}
+
+	public static PropertyState getPropertyState(IBlockState state, JsonObject parent, String elementName) {
+		JsonObject jsonProperty = JsonUtils.getJsonObject(parent, elementName);
+
+		if (jsonProperty.entrySet().isEmpty()) {
+			throw new JsonParseException("Expected at least one property defined for " + elementName + " in " + parent.toString());
+		}
+
+		Map.Entry<String, JsonElement> propJson = jsonProperty.entrySet().iterator().next();
+		String propName = propJson.getKey();
+		String propValue = propJson.getValue().toString();
+
+		BlockStateContainer stateContainer = state.getBlock().getBlockState();
+
+		IProperty<?> property = stateContainer.getProperty(propName);
+		if (property == null) {
+			//noinspection ConstantConditions
+			throw new MissingResourceException("Block \"" + state.getBlock().getRegistryName().toString() + "\" doesn't have \"" + propName + "\" property",
+					IProperty.class.getName(), propName);
+		}
+		Comparable<?> value = getValueHelper(property, propValue);
+		if (value == null) {
+			throw new MissingResourceException("Invalid value \"" + propValue + "\" for property \"" + propName + "\"", IProperty.class.getName(), propName);
+		}
+
+		//noinspection unchecked
+		return new PropertyState(property, value);
+	}
+
+	public static PropertyStateMatcher getPropertyStateMatcher(IBlockState state, JsonObject parent, String elementName) {
+		return new PropertyStateMatcher(getPropertyState(state, parent, elementName));
 	}
 }

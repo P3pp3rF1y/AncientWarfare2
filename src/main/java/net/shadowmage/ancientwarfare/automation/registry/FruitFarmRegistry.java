@@ -1,16 +1,24 @@
 package net.shadowmage.ancientwarfare.automation.registry;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.JsonUtils;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.fruitfarm.FruitCocoa;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.fruitfarm.FruitPickedRemoveOne;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.fruitfarm.IFruit;
 import net.shadowmage.ancientwarfare.core.registry.IRegistryDataParser;
+import net.shadowmage.ancientwarfare.core.util.parsing.BlockStateMatcher;
+import net.shadowmage.ancientwarfare.core.util.parsing.JsonHelper;
+import net.shadowmage.ancientwarfare.core.util.parsing.PropertyState;
+import net.shadowmage.ancientwarfare.core.util.parsing.PropertyStateMatcher;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -38,16 +46,38 @@ public class FruitFarmRegistry {
 		return stack.isEmpty() ? NO_FRUIT : fruits.stream().filter(p -> p.isPlantable() && p.matches(stack)).findFirst().orElse(NO_FRUIT);
 	}
 
-	public static class PickableParser implements IRegistryDataParser {
+	public static class FruitParser implements IRegistryDataParser {
 
 		@Override
 		public String getName() {
-			return "pickable_blocks";
+			return "fruit_blocks";
 		}
 
 		@Override
 		public void parse(JsonObject json) {
+			JsonArray fruits = JsonUtils.getJsonArray(json, "fruits");
+			for (JsonElement e : fruits) {
+				JsonObject fruit = JsonUtils.getJsonObject(e, "");
+				parseFruit(fruit);
+			}
+		}
 
+		private void parseFruit(JsonObject json) {
+			String type = JsonUtils.getString(json, "type");
+			if (type.equals("picked_remove_one")) {
+				PickedRemoveOne.parse(json);
+			}
+		}
+
+		private static class PickedRemoveOne {
+			public static void parse(JsonObject json) {
+				IBlockState fruitState = JsonHelper.getBlockState(json, "fruit");
+				BlockStateMatcher stateMatcher = JsonHelper.getBlockStateMatcher(json, "fruit");
+				PropertyStateMatcher ripeStateMatcher = JsonHelper.getPropertyStateMatcher(fruitState, json, "ripe");
+				PropertyState newState = JsonHelper.getPropertyState(fruitState, json, "new");
+
+				registerFruit(new FruitPickedRemoveOne(stateMatcher, ripeStateMatcher, newState));
+			}
 		}
 	}
 
