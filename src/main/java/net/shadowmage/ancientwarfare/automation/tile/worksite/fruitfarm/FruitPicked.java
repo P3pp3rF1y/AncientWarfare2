@@ -36,7 +36,7 @@ public class FruitPicked implements IFruit {
 	@Override
 	public boolean pick(World world, IBlockState state, BlockPos pos, EntityPlayer player, int fortune, IItemHandler inventory) {
 		//TODO using deprecated getDrops here just because of pam's harvestcraft, change to proper one in the future
-		NonNullList<ItemStack> drops = InventoryTools.toNonNullList(state.getBlock().getDrops(world, pos, state, fortune));
+		NonNullList<ItemStack> drops = getDrops(world, state, pos, fortune);
 
 		if (drops.isEmpty() || !InventoryTools.canInventoryHold(inventory, drops)) {
 			return false;
@@ -47,6 +47,10 @@ public class FruitPicked implements IFruit {
 		putInInventory(world, pos, inventory, drops);
 
 		return true;
+	}
+
+	protected NonNullList<ItemStack> getDrops(World world, IBlockState state, BlockPos pos, int fortune) {
+		return InventoryTools.toNonNullList(state.getBlock().getDrops(world, pos, state, fortune));
 	}
 
 	protected void putInInventory(World world, BlockPos pos, IItemHandler inventory, NonNullList<ItemStack> drops) {

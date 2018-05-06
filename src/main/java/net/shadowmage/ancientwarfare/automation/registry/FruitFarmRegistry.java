@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.registry;
 
-import com.feed_the_beast.ftblib.lib.util.misc.TriFunction;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -14,9 +13,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.fruitfarm.FruitCocoa;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.fruitfarm.FruitPicked;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.fruitfarm.FruitPickedDrop;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.fruitfarm.FruitPickedRemoveOne;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.fruitfarm.IFruit;
 import net.shadowmage.ancientwarfare.core.registry.IRegistryDataParser;
+import net.shadowmage.ancientwarfare.core.util.TriFunction;
 import net.shadowmage.ancientwarfare.core.util.parsing.BlockStateMatcher;
 import net.shadowmage.ancientwarfare.core.util.parsing.JsonHelper;
 import net.shadowmage.ancientwarfare.core.util.parsing.PropertyState;
@@ -66,10 +67,23 @@ public class FruitFarmRegistry {
 
 		private void parseFruit(JsonObject json) {
 			String type = JsonUtils.getString(json, "type");
-			if (type.equals("picked_remove_one")) {
-				PickedRemoveOne.parse(json);
-			} else if (type.equals("picked")) {
-				Picked.parse(json);
+			switch (type) {
+				case "picked_remove_one":
+					PickedRemoveOne.parse(json);
+					return;
+				case "picked":
+					Picked.parse(json);
+					return;
+				case "picked_drop":
+					PickedDrop.parse(json);
+					return;
+				default:
+			}
+		}
+
+		private static class PickedDrop {
+			public static void parse(JsonObject json) {
+				registerFruit(Picked.parsePicked(json, (f, r, n) -> new FruitPickedDrop(f, r, n, JsonHelper.getItemStack(json, "drop"))));
 			}
 		}
 
@@ -84,7 +98,7 @@ public class FruitFarmRegistry {
 				registerFruit(parsePicked(json, FruitPicked::new));
 			}
 
-			private static IFruit parsePicked(JsonObject json, TriFunction<IFruit, BlockStateMatcher, PropertyStateMatcher, PropertyState> instantiate) {
+			private static IFruit parsePicked(JsonObject json, TriFunction<BlockStateMatcher, PropertyStateMatcher, PropertyState, IFruit> instantiate) {
 				IBlockState fruitState = JsonHelper.getBlockState(json, "fruit");
 				BlockStateMatcher stateMatcher = JsonHelper.getBlockStateMatcher(json, "fruit");
 				PropertyStateMatcher ripeStateMatcher = JsonHelper.getPropertyStateMatcher(fruitState, json, "ripe");

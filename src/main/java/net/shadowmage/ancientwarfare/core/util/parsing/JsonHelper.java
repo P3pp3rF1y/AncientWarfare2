@@ -8,6 +8,7 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
@@ -19,6 +20,7 @@ import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.MissingResourceException;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class JsonHelper {
@@ -32,7 +34,11 @@ public class JsonHelper {
 		return getBlockState(parent, elementName, block -> new BlockStateMatcher(block.getRegistryName()), BlockStateMatcher::addProperty);
 	}
 
-	public static ItemStackMatcher getItemStackMatcher(JsonObject parent, String elementName) {
+	public static ItemStack getItemStack(JsonObject json, String elementName) {
+		return getItemStack(json, elementName, (i, m) -> new ItemStack(i, 1, m));
+	}
+
+	private static <T> T getItemStack(JsonObject parent, String elementName, BiFunction<Item, Integer, T> instantiate) {
 		if (!JsonUtils.hasField(parent, elementName)) {
 			throw new JsonParseException("Expected " + elementName + " member in " + parent.toString());
 		}
@@ -51,7 +57,11 @@ public class JsonHelper {
 			}
 		}
 
-		return new ItemStackMatcher(getItem(registryName), meta);
+		return instantiate.apply(getItem(registryName), meta);
+	}
+
+	public static ItemStackMatcher getItemStackMatcher(JsonObject parent, String elementName) {
+		return getItemStack(parent, elementName, ItemStackMatcher::new);
 	}
 
 	private static <T> T getBlockState(JsonObject parent, String elementName, Function<Block, T> init, AddPropertyFunction<T> addProperty) {
