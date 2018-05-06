@@ -24,7 +24,6 @@ import java.util.Set;
 
 public class CropFarmRegistry {
 	private static final Map<BlockStateMatcher, IBlockState> tillableBlocks = new HashMap<>();
-	//TODO add likely additional registry to keep a list of plantable blocks in addition to just those that can be tilled
 	private static final Set<BlockStateMatcher> plantableBlocks = new HashSet<>();
 	private static final IHarvestable DEFAULT_HARVESTABLE = new HarvestableDefault();
 	private static List<IHarvestable> harvestables = new ArrayList<>();
