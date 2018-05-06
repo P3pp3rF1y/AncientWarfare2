@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.shadowmage.ancientwarfare.automation.chunkloader.AWChunkLoader;
-import net.shadowmage.ancientwarfare.automation.compat.CompatLoader;
+import net.shadowmage.ancientwarfare.automation.compat.agricraft.AgricraftCompat;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.container.ContainerChunkLoaderDeluxe;
 import net.shadowmage.ancientwarfare.automation.container.ContainerMailbox;
@@ -40,6 +40,7 @@ import net.shadowmage.ancientwarfare.automation.registry.CropFarmRegistry;
 import net.shadowmage.ancientwarfare.automation.registry.FruitFarmRegistry;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
+import net.shadowmage.ancientwarfare.core.compat.CompatLoader;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
@@ -116,6 +117,8 @@ public class AncientWarfareAutomation {
 		RegistryLoader.registerParser(new CropFarmRegistry.HarvestableParser());
 		RegistryLoader.registerParser(new CropFarmRegistry.PlantableParser());
 		RegistryLoader.registerParser(new FruitFarmRegistry.FruitParser());
+
+		CompatLoader.registerCompat(new AgricraftCompat());
 	}
 
 	@EventHandler
@@ -124,8 +127,6 @@ public class AncientWarfareAutomation {
 		 * construct recipes, load plugins
          */
 		proxy.init();
-
-		CompatLoader.init();
 
 		statics.save();
 	}

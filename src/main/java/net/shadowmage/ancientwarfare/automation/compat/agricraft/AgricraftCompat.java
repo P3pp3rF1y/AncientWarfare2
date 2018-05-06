@@ -1,7 +1,7 @@
 package net.shadowmage.ancientwarfare.automation.compat.agricraft;
 
-import net.shadowmage.ancientwarfare.automation.compat.ICompat;
 import net.shadowmage.ancientwarfare.automation.registry.CropFarmRegistry;
+import net.shadowmage.ancientwarfare.core.compat.ICompat;
 
 public class AgricraftCompat implements ICompat {
 	@Override

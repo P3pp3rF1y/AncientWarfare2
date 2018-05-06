@@ -1,4 +1,4 @@
-package net.shadowmage.ancientwarfare.automation.compat;
+package net.shadowmage.ancientwarfare.core.compat;
 
 public interface ICompat {
 	String getModId();

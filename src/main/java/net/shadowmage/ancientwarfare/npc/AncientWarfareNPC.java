@@ -14,12 +14,14 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
+import net.shadowmage.ancientwarfare.core.compat.CompatLoader;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.gamedata.WorldData;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.npc.command.CommandDebugAI;
 import net.shadowmage.ancientwarfare.npc.command.CommandFaction;
+import net.shadowmage.ancientwarfare.npc.compat.EpicSiegeCompat;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.container.ContainerCombatOrder;
 import net.shadowmage.ancientwarfare.npc.container.ContainerNpcBard;
@@ -84,6 +86,8 @@ public class AncientWarfareNPC {
 		NetworkHandler.registerContainer(NetworkHandler.GUI_NPC_FACTION_BARD, ContainerNpcFactionBard.class);
 		PacketBase.registerPacketType(NetworkHandler.PACKET_NPC_COMMAND, PacketNpcCommand.class);
 		PacketBase.registerPacketType(NetworkHandler.PACKET_FACTION_UPDATE, PacketFactionUpdate.class);
+
+		CompatLoader.registerCompat(new EpicSiegeCompat());
 	}
 
 	@EventHandler
