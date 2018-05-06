@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.registry;
 
+import com.feed_the_beast.ftblib.lib.util.misc.TriFunction;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -12,6 +13,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.fruitfarm.FruitCocoa;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.fruitfarm.FruitPicked;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.fruitfarm.FruitPickedRemoveOne;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.fruitfarm.IFruit;
 import net.shadowmage.ancientwarfare.core.registry.IRegistryDataParser;
@@ -66,17 +68,29 @@ public class FruitFarmRegistry {
 			String type = JsonUtils.getString(json, "type");
 			if (type.equals("picked_remove_one")) {
 				PickedRemoveOne.parse(json);
+			} else if (type.equals("picked")) {
+				Picked.parse(json);
 			}
 		}
 
 		private static class PickedRemoveOne {
 			public static void parse(JsonObject json) {
+				registerFruit(Picked.parsePicked(json, FruitPickedRemoveOne::new));
+			}
+		}
+
+		private static class Picked {
+			public static void parse(JsonObject json) {
+				registerFruit(parsePicked(json, FruitPicked::new));
+			}
+
+			private static IFruit parsePicked(JsonObject json, TriFunction<IFruit, BlockStateMatcher, PropertyStateMatcher, PropertyState> instantiate) {
 				IBlockState fruitState = JsonHelper.getBlockState(json, "fruit");
 				BlockStateMatcher stateMatcher = JsonHelper.getBlockStateMatcher(json, "fruit");
 				PropertyStateMatcher ripeStateMatcher = JsonHelper.getPropertyStateMatcher(fruitState, json, "ripe");
 				PropertyState newState = JsonHelper.getPropertyState(fruitState, json, "new");
 
-				registerFruit(new FruitPickedRemoveOne(stateMatcher, ripeStateMatcher, newState));
+				return instantiate.apply(stateMatcher, ripeStateMatcher, newState);
 			}
 		}
 	}

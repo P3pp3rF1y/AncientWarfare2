@@ -141,7 +141,7 @@ public class JsonHelper {
 
 		Map.Entry<String, JsonElement> propJson = jsonProperty.entrySet().iterator().next();
 		String propName = propJson.getKey();
-		String propValue = propJson.getValue().toString();
+		String propValue = propJson.getValue().getAsString();
 
 		BlockStateContainer stateContainer = state.getBlock().getBlockState();
 
