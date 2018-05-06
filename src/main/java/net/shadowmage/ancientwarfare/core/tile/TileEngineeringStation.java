@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.core.tile;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.ItemStackHandler;
-import net.shadowmage.ancientwarfare.automation.tile.CraftingRecipeMemory;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;

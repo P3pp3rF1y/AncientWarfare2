@@ -8,7 +8,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.world.World;
 import net.minecraftforge.items.SlotItemHandler;
-import net.shadowmage.ancientwarfare.automation.tile.CraftingRecipeMemory;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.crafting.ICraftingRecipe;
 import net.shadowmage.ancientwarfare.core.crafting.RecipeResourceLocation;
@@ -17,6 +16,7 @@ import net.shadowmage.ancientwarfare.core.inventory.SlotResearchCrafting;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketGui;
+import net.shadowmage.ancientwarfare.core.tile.CraftingRecipeMemory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

@@ -9,9 +9,9 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import net.shadowmage.ancientwarfare.automation.tile.CraftingRecipeMemory;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.tile.CraftingRecipeMemory;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nonnull;

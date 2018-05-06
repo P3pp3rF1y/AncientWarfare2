@@ -1,4 +1,4 @@
-package net.shadowmage.ancientwarfare.automation.tile;
+package net.shadowmage.ancientwarfare.core.tile;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
