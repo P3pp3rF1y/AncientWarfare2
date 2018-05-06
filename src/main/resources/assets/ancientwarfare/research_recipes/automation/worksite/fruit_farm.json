@@ -1,0 +1,26 @@
+{
+    "type": "ancientwarfare:research_recipe",
+    "research": "agriculture",
+    "pattern": [
+        "___",
+        "GAG",
+        "_C_"
+    ],
+    "key": {
+        "C": {
+            "item": "minecraft:chest"
+        },
+        "A": {
+            "item": "minecraft:apple"
+        },
+        "G": {
+            "item": "#GEARWOOD"
+        },
+        "_": {
+            "item": "#PLANKWOOD"
+        }
+    },
+    "result": {
+        "item": "ancientwarfareautomation:fruit_farm"
+    }
+}
