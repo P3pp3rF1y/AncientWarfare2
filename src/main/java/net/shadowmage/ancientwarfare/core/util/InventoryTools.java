@@ -7,6 +7,7 @@ import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -496,6 +497,10 @@ public class InventoryTools {
 
 	private static NonNullList<ItemStack> copyStacks(NonNullList<ItemStack> stacks) {
 		return stacks.stream().map(ItemStack::copy).collect(Collectors.toCollection(NonNullList::create));
+	}
+
+	public static boolean isInventory(TileEntity tileEntity) {
+		return tileEntity.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 	}
 
 	/*

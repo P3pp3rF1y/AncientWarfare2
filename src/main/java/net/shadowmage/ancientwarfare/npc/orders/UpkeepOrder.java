@@ -1,12 +1,12 @@
 package net.shadowmage.ancientwarfare.npc.orders;
 
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.npc.block.BlockTownHall;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.item.ItemUpkeepOrder;
@@ -58,7 +58,7 @@ public class UpkeepOrder implements INBTSerializable<NBTTagCompound> {
 	}
 
 	public boolean addUpkeepPosition(World world, BlockPos pos) {
-		if (pos != null && world.getTileEntity(pos) instanceof IInventory) {
+		if (pos != null && InventoryTools.isInventory(world.getTileEntity(pos))) {
 			if (!AWNPCStatics.npcAllowUpkeepAnyInventory && (!(world.getBlockState(pos).getBlock() instanceof BlockTownHall)))
 				return false;
 			upkeepPosition = pos;
