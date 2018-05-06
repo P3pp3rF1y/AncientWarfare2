@@ -2,6 +2,9 @@
     "plantable": [
         {
             "block": "minecraft:sand"
+        },
+        {
+            "block": "minecraft:soul_sand"
         }
     ]
 }

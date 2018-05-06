@@ -8,6 +8,7 @@ import net.minecraft.util.JsonUtils;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.HarvestableDefault;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.HarvestableGourd;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.HarvestableKeepBottom;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.HarvestableNongrowable;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.HarvestableStem;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.HarvestableTall;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.IHarvestable;
@@ -101,22 +102,29 @@ public class CropFarmRegistry {
 				case "tall":
 					return TallParser.parse(stateMatcher, properties);
 				case "keep_bottom":
-					return KeepBottomParser.parse(stateMatcher, properties);
+					return KeepBottomParser.parse(stateMatcher);
+				case "nongrowable":
+					return NongrowableParser.parse(stateMatcher, JsonHelper.getBlockState(harvestable, "block"), harvestable);
 				default:
 					return DEFAULT_HARVESTABLE;
 			}
 		}
 
 		private static class TallParser {
-
 			public static IHarvestable parse(BlockStateMatcher stateMatcher, JsonObject properties) {
 				return new HarvestableTall(stateMatcher, JsonUtils.getInt(properties, "height"));
 			}
 		}
 
 		private static class KeepBottomParser {
-			public static IHarvestable parse(BlockStateMatcher stateMatcher, JsonObject properties) {
+			public static IHarvestable parse(BlockStateMatcher stateMatcher) {
 				return new HarvestableKeepBottom(stateMatcher);
+			}
+		}
+
+		private static class NongrowableParser {
+			public static IHarvestable parse(BlockStateMatcher stateMatcher, IBlockState state, JsonObject harvestable) {
+				return new HarvestableNongrowable(stateMatcher, JsonHelper.getPropertyStateMatcher(state, harvestable, "mature"));
 			}
 		}
 	}
