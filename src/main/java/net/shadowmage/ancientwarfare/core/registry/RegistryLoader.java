@@ -47,9 +47,7 @@ public class RegistryLoader {
 			//noinspection ConstantConditions
 			loadRegistries(awModContainer, registryOverridesFolder);
 		}
-		Loader.instance().getActiveModList().forEach(m -> loadRegistries(m, m.getSource(), "assets/" + m.getModId() + "/registry"));
-
-		Loader.instance().setActiveModContainer(awModContainer);
+		loadRegistries(awModContainer, awModContainer.getSource(), "assets/" + awModContainer.getModId() + "/registry");
 	}
 
 	private static void loadRegistries(ModContainer mod, File source, String base) {
