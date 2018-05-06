@@ -23,11 +23,11 @@ import net.shadowmage.ancientwarfare.core.util.parsing.ItemStackMatcher;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-public class CocoaFruit implements IFruit {
+public class FruitCocoa implements IFruit {
 	private BlockStateMatcher stateMatcher;
 	private ItemStackMatcher stackMatcher;
 
-	public CocoaFruit() {
+	public FruitCocoa() {
 		this.stateMatcher = new BlockStateMatcher(new ResourceLocation("minecraft:cocoa"));
 		this.stackMatcher = new ItemStackMatcher(Items.DYE, EnumDyeColor.BROWN.getDyeDamage());
 	}

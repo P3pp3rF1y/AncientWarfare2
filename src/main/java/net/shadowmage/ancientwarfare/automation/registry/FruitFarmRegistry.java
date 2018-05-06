@@ -8,7 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.fruitfarm.CocoaFruit;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.fruitfarm.FruitCocoa;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.fruitfarm.IFruit;
 import net.shadowmage.ancientwarfare.core.registry.IRegistryDataParser;
 
@@ -19,7 +19,7 @@ public class FruitFarmRegistry {
 	private static final Set<IFruit> fruits = new HashSet<>();
 
 	static {
-		registerFruit(new CocoaFruit());
+		registerFruit(new FruitCocoa());
 	}
 
 	public static void registerFruit(IFruit pickable) {
