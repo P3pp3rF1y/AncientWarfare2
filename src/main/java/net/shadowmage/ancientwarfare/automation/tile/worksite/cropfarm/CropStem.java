@@ -11,7 +11,7 @@ import net.minecraftforge.items.IItemHandler;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HarvestableStem implements IHarvestable {
+public class CropStem implements ICrop {
 	@Override
 	public List<BlockPos> getPositionsToHarvest(World world, BlockPos pos, IBlockState state) {
 		List<BlockPos> ret = new ArrayList<>();

@@ -16,7 +16,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import java.util.Collections;
 import java.util.List;
 
-public class HarvestableDefault implements IHarvestable {
+public class CropDefault implements ICrop {
 	@Override
 	public List<BlockPos> getPositionsToHarvest(World world, BlockPos pos, IBlockState state) {
 		if (state.getBlock() instanceof IGrowable && !((IGrowable) state.getBlock()).canGrow(world, pos, state, world.isRemote)) {

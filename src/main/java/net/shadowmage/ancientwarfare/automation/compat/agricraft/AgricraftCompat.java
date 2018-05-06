@@ -11,6 +11,6 @@ public class AgricraftCompat implements ICompat {
 
 	@Override
 	public void init() {
-		CropFarmRegistry.registerHarvestable(new HarvestableAgricraftCrop());
+		CropFarmRegistry.registerCrop(new CropAgricraftCrop());
 	}
 }

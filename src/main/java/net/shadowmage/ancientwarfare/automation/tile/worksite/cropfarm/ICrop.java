@@ -8,7 +8,7 @@ import net.minecraftforge.items.IItemHandler;
 
 import java.util.List;
 
-public interface IHarvestable {
+public interface ICrop {
 	List<BlockPos> getPositionsToHarvest(World world, BlockPos pos, IBlockState state);
 
 	boolean canBeFertilized(IBlockState state, World world, BlockPos pos);

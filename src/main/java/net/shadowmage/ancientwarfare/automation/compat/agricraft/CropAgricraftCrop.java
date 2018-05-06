@@ -10,7 +10,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.IHarvestable;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.ICrop;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
@@ -18,7 +18,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class HarvestableAgricraftCrop implements IHarvestable {
+public class CropAgricraftCrop implements ICrop {
 	@Override
 	public boolean matches(IBlockState state) {
 		return state.getBlock() == AgriBlocks.getInstance().CROP;

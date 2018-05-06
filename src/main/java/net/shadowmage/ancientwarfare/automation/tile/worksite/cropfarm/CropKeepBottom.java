@@ -15,11 +15,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class HarvestableKeepBottom extends HarvestableDefault {
+public class CropKeepBottom extends CropDefault {
 	private static final int MAX_HEIGHT = 10;
 	private BlockStateMatcher stateMatcher;
 
-	public HarvestableKeepBottom(BlockStateMatcher stateMatcher) {
+	public CropKeepBottom(BlockStateMatcher stateMatcher) {
 		this.stateMatcher = stateMatcher;
 	}
 

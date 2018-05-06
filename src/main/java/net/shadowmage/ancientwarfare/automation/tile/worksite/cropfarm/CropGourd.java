@@ -15,7 +15,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import java.util.Collections;
 import java.util.List;
 
-public class HarvestableGourd implements IHarvestable {
+public class CropGourd implements ICrop {
 	@Override
 	public List<BlockPos> getPositionsToHarvest(World world, BlockPos pos, IBlockState state) {
 		return Collections.singletonList(pos);

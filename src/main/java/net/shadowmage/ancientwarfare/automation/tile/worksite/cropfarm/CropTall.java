@@ -13,11 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiFunction;
 
-public class HarvestableTall extends HarvestableDefault {
+public class CropTall extends CropDefault {
 	private int height = 1;
 	private BlockStateMatcher stateMatcher;
 
-	public HarvestableTall(BlockStateMatcher stateMatcher, int height) {
+	public CropTall(BlockStateMatcher stateMatcher, int height) {
 		this.stateMatcher = stateMatcher;
 		this.height = height;
 	}

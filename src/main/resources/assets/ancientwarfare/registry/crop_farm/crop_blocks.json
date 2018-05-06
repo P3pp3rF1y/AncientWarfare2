@@ -1,15 +1,15 @@
 {
-    "harvestable": [
+    "crops": [
         {
-            "block": "minecraft:reeds",
+            "crop": "minecraft:reeds",
             "type": "keep_bottom"
         },
         {
-            "block": "minecraft:cactus",
+            "crop": "minecraft:cactus",
             "type": "keep_bottom"
         },
         {
-            "block": "minecraft:nether_wart",
+            "crop": "minecraft:nether_wart",
             "type": "nongrowable",
             "mature": {
                 "age": 3

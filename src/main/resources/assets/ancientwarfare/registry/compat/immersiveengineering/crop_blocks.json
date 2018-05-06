@@ -1,8 +1,8 @@
 {
     "mod": "immersiveengineering",
-    "harvestable": [
+    "crops": [
         {
-            "block": "immersiveengineering:hemp",
+            "crop": "immersiveengineering:hemp",
             "type": "tall",
             "properties": {
                 "height": 2

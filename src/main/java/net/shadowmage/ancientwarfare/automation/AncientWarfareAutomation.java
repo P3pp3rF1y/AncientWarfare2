@@ -114,7 +114,7 @@ public class AncientWarfareAutomation {
 		ForgeChunkManager.setForcedChunkLoadingCallback(this, AWChunkLoader.INSTANCE);
 
 		RegistryLoader.registerParser(new CropFarmRegistry.TillableParser());
-		RegistryLoader.registerParser(new CropFarmRegistry.HarvestableParser());
+		RegistryLoader.registerParser(new CropFarmRegistry.CropParser());
 		RegistryLoader.registerParser(new CropFarmRegistry.PlantableParser());
 		RegistryLoader.registerParser(new FruitFarmRegistry.FruitParser());
 

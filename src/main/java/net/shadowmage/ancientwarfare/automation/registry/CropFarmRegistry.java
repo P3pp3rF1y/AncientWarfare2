@@ -5,13 +5,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.JsonUtils;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.HarvestableDefault;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.HarvestableGourd;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.HarvestableKeepBottom;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.HarvestableNongrowable;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.HarvestableStem;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.HarvestableTall;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.IHarvestable;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.CropDefault;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.CropGourd;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.CropKeepBottom;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.CropNongrowable;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.CropStem;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.CropTall;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.ICrop;
 import net.shadowmage.ancientwarfare.core.registry.IRegistryDataParser;
 import net.shadowmage.ancientwarfare.core.util.parsing.BlockStateMatcher;
 import net.shadowmage.ancientwarfare.core.util.parsing.JsonHelper;
@@ -26,13 +26,13 @@ import java.util.Set;
 public class CropFarmRegistry {
 	private static final Map<BlockStateMatcher, IBlockState> tillableBlocks = new HashMap<>();
 	private static final Set<BlockStateMatcher> plantableBlocks = new HashSet<>();
-	private static final IHarvestable DEFAULT_HARVESTABLE = new HarvestableDefault();
-	private static List<IHarvestable> harvestables = new ArrayList<>();
+	private static final ICrop DEFAULT_CROP = new CropDefault();
+	private static List<ICrop> crops = new ArrayList<>();
 
 	static {
-		registerHarvestable(new HarvestableDefault());
-		registerHarvestable(new HarvestableGourd());
-		registerHarvestable(new HarvestableStem());
+		registerCrop(new CropDefault());
+		registerCrop(new CropGourd());
+		registerCrop(new CropStem());
 	}
 
 	public static boolean isTillable(IBlockState state) {
@@ -47,13 +47,13 @@ public class CropFarmRegistry {
 		return plantableBlocks.stream().anyMatch(matcher -> matcher.test(state));
 	}
 
-	public static void registerHarvestable(IHarvestable harvestable) {
-		//adding to start of the list so that the last registered is always the first one processed, allowing for compatibility harvestables to be processed before default one
-		harvestables.add(0, harvestable);
+	public static void registerCrop(ICrop crop) {
+		//adding to start of the list so that the last registered is always the first one processed, allowing for compatibility crops to be processed before default one
+		crops.add(0, crop);
 	}
 
-	public static IHarvestable getHarvestable(IBlockState state) {
-		return harvestables.stream().filter(h -> h.matches(state)).findFirst().orElse(DEFAULT_HARVESTABLE);
+	public static ICrop getCrop(IBlockState state) {
+		return crops.stream().filter(h -> h.matches(state)).findFirst().orElse(DEFAULT_CROP);
 	}
 
 	public static class TillableParser implements IRegistryDataParser {
@@ -78,53 +78,53 @@ public class CropFarmRegistry {
 		}
 	}
 
-	public static class HarvestableParser implements IRegistryDataParser {
+	public static class CropParser implements IRegistryDataParser {
 		@Override
 		public String getName() {
-			return "harvestable_blocks";
+			return "crop_blocks";
 		}
 
 		@Override
 		public void parse(JsonObject json) {
-			JsonArray harvestables = JsonUtils.getJsonArray(json, "harvestable");
+			JsonArray crops = JsonUtils.getJsonArray(json, "crops");
 
-			for (JsonElement t : harvestables) {
-				JsonObject harvestable = JsonUtils.getJsonObject(t, "");
-				registerHarvestable(getHarvestable(harvestable));
+			for (JsonElement t : crops) {
+				JsonObject crop = JsonUtils.getJsonObject(t, "");
+				registerCrop(getCrop(crop));
 			}
 		}
 
-		private static IHarvestable getHarvestable(JsonObject harvestable) {
-			BlockStateMatcher stateMatcher = JsonHelper.getBlockStateMatcher(harvestable, "block");
-			String type = JsonUtils.getString(harvestable, "type");
-			JsonObject properties = harvestable.has("properties") ? JsonUtils.getJsonObject(harvestable, "properties") : new JsonObject();
+		private static ICrop getCrop(JsonObject crop) {
+			BlockStateMatcher stateMatcher = JsonHelper.getBlockStateMatcher(crop, "crop");
+			String type = JsonUtils.getString(crop, "type");
+			JsonObject properties = crop.has("properties") ? JsonUtils.getJsonObject(crop, "properties") : new JsonObject();
 			switch (type) {
 				case "tall":
 					return TallParser.parse(stateMatcher, properties);
 				case "keep_bottom":
 					return KeepBottomParser.parse(stateMatcher);
 				case "nongrowable":
-					return NongrowableParser.parse(stateMatcher, JsonHelper.getBlockState(harvestable, "block"), harvestable);
+					return NongrowableParser.parse(stateMatcher, JsonHelper.getBlockState(crop, "block"), crop);
 				default:
-					return DEFAULT_HARVESTABLE;
+					return DEFAULT_CROP;
 			}
 		}
 
 		private static class TallParser {
-			public static IHarvestable parse(BlockStateMatcher stateMatcher, JsonObject properties) {
-				return new HarvestableTall(stateMatcher, JsonUtils.getInt(properties, "height"));
+			public static ICrop parse(BlockStateMatcher stateMatcher, JsonObject properties) {
+				return new CropTall(stateMatcher, JsonUtils.getInt(properties, "height"));
 			}
 		}
 
 		private static class KeepBottomParser {
-			public static IHarvestable parse(BlockStateMatcher stateMatcher) {
-				return new HarvestableKeepBottom(stateMatcher);
+			public static ICrop parse(BlockStateMatcher stateMatcher) {
+				return new CropKeepBottom(stateMatcher);
 			}
 		}
 
 		private static class NongrowableParser {
-			public static IHarvestable parse(BlockStateMatcher stateMatcher, IBlockState state, JsonObject harvestable) {
-				return new HarvestableNongrowable(stateMatcher, JsonHelper.getPropertyStateMatcher(state, harvestable, "mature"));
+			public static ICrop parse(BlockStateMatcher stateMatcher, IBlockState state, JsonObject crop) {
+				return new CropNongrowable(stateMatcher, JsonHelper.getPropertyStateMatcher(state, crop, "mature"));
 			}
 		}
 	}
