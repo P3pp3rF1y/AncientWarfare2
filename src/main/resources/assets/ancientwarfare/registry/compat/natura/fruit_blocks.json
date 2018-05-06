@@ -112,6 +112,10 @@
                 "name": "natura:edibles",
                 "meta": 9
             }
+        },
+        {
+            "type": "broken",
+            "fruit": "natura:saguaro_fruit"
         }
     ]
 }

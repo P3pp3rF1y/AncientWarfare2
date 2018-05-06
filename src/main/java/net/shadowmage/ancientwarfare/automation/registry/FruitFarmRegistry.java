@@ -11,6 +11,7 @@ import net.minecraft.util.JsonUtils;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.fruitfarm.FruitBroken;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.fruitfarm.FruitCocoa;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.fruitfarm.FruitPicked;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.fruitfarm.FruitPickedDrop;
@@ -77,7 +78,16 @@ public class FruitFarmRegistry {
 				case "picked_drop":
 					PickedDrop.parse(json);
 					return;
+				case "broken":
+					Broken.parse(json);
+					return;
 				default:
+			}
+		}
+
+		private static class Broken {
+			public static void parse(JsonObject json) {
+				registerFruit(new FruitBroken(JsonHelper.getBlockStateMatcher(json, "fruit")));
 			}
 		}
 
