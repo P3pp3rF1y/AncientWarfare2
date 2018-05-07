@@ -985,7 +985,7 @@ item.armor_obsidian.name=Obsidian Armor
 item.armor_obsidian.tooltip=Reduce Blast Damage by 7%
 
 # vehicle input keybinds
-keybind.category.awVehicle=Ancient Warfare Vehicles
+keybind.category.awVehicles=Ancient Warfare Vehicles
 keybind.vehicle.forward=Forward / Accelerate
 keybind.vehicle.reverse=Reverse / Decelerate
 keybind.vehicle.left=Turn/Strafe Left
