@@ -73,7 +73,7 @@ public class WorkSiteCropFarm extends TileWorksiteFarm {
 			IBlockState stateDown = world.getBlockState(position.down());
 			if (CropFarmRegistry.isTillable(stateDown)) {
 				blocksToTill.add(position.down());
-			} else if (CropFarmRegistry.isPlantable(stateDown)) {
+			} else if (CropFarmRegistry.isSoil(stateDown)) {
 				blocksToPlant.add(position);
 			}
 		}

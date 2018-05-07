@@ -9,11 +9,11 @@ import net.shadowmage.ancientwarfare.core.util.parsing.PropertyStateMatcher;
 import java.util.Collections;
 import java.util.List;
 
-public class CropNongrowable extends CropDefault {
+public class CropMatureDefined extends CropDefault {
 	private BlockStateMatcher stateMatcher;
 	private PropertyStateMatcher matureStateMatcher;
 
-	public CropNongrowable(BlockStateMatcher stateMatcher, PropertyStateMatcher matureStateMatcher) {
+	public CropMatureDefined(BlockStateMatcher stateMatcher, PropertyStateMatcher matureStateMatcher) {
 		this.stateMatcher = stateMatcher;
 		this.matureStateMatcher = matureStateMatcher;
 	}

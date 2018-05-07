@@ -115,7 +115,7 @@ public class AncientWarfareAutomation {
 
 		RegistryLoader.registerParser(new CropFarmRegistry.TillableParser());
 		RegistryLoader.registerParser(new CropFarmRegistry.CropParser());
-		RegistryLoader.registerParser(new CropFarmRegistry.PlantableParser());
+		RegistryLoader.registerParser(new CropFarmRegistry.SoilParser());
 		RegistryLoader.registerParser(new FruitFarmRegistry.FruitParser());
 
 		CompatLoader.registerCompat(new AgricraftCompat());

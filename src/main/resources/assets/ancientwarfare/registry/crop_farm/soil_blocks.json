@@ -1,0 +1,10 @@
+{
+    "soils": [
+        {
+            "soil": "minecraft:sand"
+        },
+        {
+            "soil": "minecraft:soul_sand"
+        }
+    ]
+}

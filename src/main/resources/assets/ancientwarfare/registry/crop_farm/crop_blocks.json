@@ -10,7 +10,7 @@
         },
         {
             "crop": "minecraft:nether_wart",
-            "type": "nongrowable",
+            "type": "mature_defined",
             "mature": {
                 "age": 3
             }

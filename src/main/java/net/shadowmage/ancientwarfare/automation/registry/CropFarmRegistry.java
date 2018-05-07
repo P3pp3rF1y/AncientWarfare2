@@ -9,7 +9,7 @@ import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.CropBreak
 import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.CropDefault;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.CropGourd;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.CropKeepBottom;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.CropNongrowable;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.CropMatureDefined;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.CropStem;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.CropTall;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.ICrop;
@@ -26,7 +26,7 @@ import java.util.Set;
 
 public class CropFarmRegistry {
 	private static final Map<BlockStateMatcher, IBlockState> tillableBlocks = new HashMap<>();
-	private static final Set<BlockStateMatcher> plantableBlocks = new HashSet<>();
+	private static final Set<BlockStateMatcher> soilBlocks = new HashSet<>();
 	private static final ICrop DEFAULT_CROP = new CropDefault();
 	private static List<ICrop> crops = new ArrayList<>();
 
@@ -44,8 +44,8 @@ public class CropFarmRegistry {
 		return tillableBlocks.entrySet().stream().filter(e -> e.getKey().test(tillable)).map(Map.Entry::getValue).findFirst().orElse(tillable);
 	}
 
-	public static boolean isPlantable(IBlockState state) {
-		return plantableBlocks.stream().anyMatch(matcher -> matcher.test(state));
+	public static boolean isSoil(IBlockState state) {
+		return soilBlocks.stream().anyMatch(matcher -> matcher.test(state));
 	}
 
 	public static void registerCrop(ICrop crop) {
@@ -74,7 +74,7 @@ public class CropFarmRegistry {
 				IBlockState tilledState = JsonHelper.getBlockState(tillableMapping, "tilled");
 
 				tillableBlocks.put(tillableState, tilledState);
-				plantableBlocks.add(JsonHelper.getBlockStateMatcher(tillableMapping, "tilled"));
+				soilBlocks.add(JsonHelper.getBlockStateMatcher(tillableMapping, "tilled"));
 			}
 		}
 	}
@@ -104,8 +104,8 @@ public class CropFarmRegistry {
 					return TallParser.parse(stateMatcher, properties);
 				case "keep_bottom":
 					return KeepBottomParser.parse(stateMatcher);
-				case "nongrowable":
-					return NongrowableParser.parse(stateMatcher, JsonHelper.getBlockState(crop, "crop"), crop);
+				case "mature_defined":
+					return MatureDefinedParser.parse(stateMatcher, JsonHelper.getBlockState(crop, "crop"), crop);
 				case "break_only":
 					return BreakOnlyParser.parse(stateMatcher);
 				default:
@@ -125,9 +125,9 @@ public class CropFarmRegistry {
 			}
 		}
 
-		private static class NongrowableParser {
+		private static class MatureDefinedParser {
 			public static ICrop parse(BlockStateMatcher stateMatcher, IBlockState state, JsonObject crop) {
-				return new CropNongrowable(stateMatcher, JsonHelper.getPropertyStateMatcher(state, crop, "mature"));
+				return new CropMatureDefined(stateMatcher, JsonHelper.getPropertyStateMatcher(state, crop, "mature"));
 			}
 		}
 
@@ -138,20 +138,20 @@ public class CropFarmRegistry {
 		}
 	}
 
-	public static class PlantableParser implements IRegistryDataParser {
+	public static class SoilParser implements IRegistryDataParser {
 
 		@Override
 		public String getName() {
-			return "plantable_blocks";
+			return "soil_blocks";
 		}
 
 		@Override
 		public void parse(JsonObject json) {
-			JsonArray plantables = JsonUtils.getJsonArray(json, "plantable");
+			JsonArray plantables = JsonUtils.getJsonArray(json, "soils");
 
 			for (JsonElement t : plantables) {
-				JsonObject plantable = JsonUtils.getJsonObject(t, "");
-				plantableBlocks.add(JsonHelper.getBlockStateMatcher(plantable, "block"));
+				JsonObject soil = JsonUtils.getJsonObject(t, "");
+				soilBlocks.add(JsonHelper.getBlockStateMatcher(soil, "soil"));
 			}
 		}
 	}
