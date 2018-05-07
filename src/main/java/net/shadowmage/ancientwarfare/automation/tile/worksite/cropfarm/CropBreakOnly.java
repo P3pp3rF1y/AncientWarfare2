@@ -11,6 +11,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.parsing.BlockStateMatcher;
+import net.shadowmage.ancientwarfare.core.util.parsing.ItemStackMatcher;
 
 import java.util.Collections;
 import java.util.List;
@@ -18,11 +19,13 @@ import java.util.List;
 public class CropBreakOnly implements ICrop {
 
 	private BlockStateMatcher stateMatcher;
+	private ItemStackMatcher stackMatcher;
 
 	protected CropBreakOnly() {}
 
-	public CropBreakOnly(BlockStateMatcher stateMatcher) {
+	public CropBreakOnly(BlockStateMatcher stateMatcher, ItemStackMatcher stackMatcher) {
 		this.stateMatcher = stateMatcher;
+		this.stackMatcher = stackMatcher;
 	}
 
 	@Override
@@ -57,5 +60,15 @@ public class CropBreakOnly implements ICrop {
 	@Override
 	public boolean matches(IBlockState state) {
 		return stateMatcher.test(state);
+	}
+
+	@Override
+	public boolean matches(ItemStack stack) {
+		return stackMatcher.test(stack);
+	}
+
+	@Override
+	public boolean isPlantable(ItemStack stack) {
+		return false;
 	}
 }
