@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.JsonUtils;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.CropBreakOnly;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.CropDefault;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.CropGourd;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.CropKeepBottom;
@@ -105,6 +106,8 @@ public class CropFarmRegistry {
 					return KeepBottomParser.parse(stateMatcher);
 				case "nongrowable":
 					return NongrowableParser.parse(stateMatcher, JsonHelper.getBlockState(crop, "crop"), crop);
+				case "break_only":
+					return BreakOnlyParser.parse(stateMatcher);
 				default:
 					return DEFAULT_CROP;
 			}
@@ -125,6 +128,12 @@ public class CropFarmRegistry {
 		private static class NongrowableParser {
 			public static ICrop parse(BlockStateMatcher stateMatcher, IBlockState state, JsonObject crop) {
 				return new CropNongrowable(stateMatcher, JsonHelper.getPropertyStateMatcher(state, crop, "mature"));
+			}
+		}
+
+		private static class BreakOnlyParser {
+			public static ICrop parse(BlockStateMatcher stateMatcher) {
+				return new CropBreakOnly(stateMatcher);
 			}
 		}
 	}

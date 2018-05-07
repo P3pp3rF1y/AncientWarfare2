@@ -11,10 +11,10 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.parsing.BlockStateMatcher;
 
-public class FruitBroken implements IFruit {
+public class FruitBreakOnly implements IFruit {
 	private BlockStateMatcher stateMatcher;
 
-	public FruitBroken(BlockStateMatcher stateMatcher) {
+	public FruitBreakOnly(BlockStateMatcher stateMatcher) {
 		this.stateMatcher = stateMatcher;
 	}
 

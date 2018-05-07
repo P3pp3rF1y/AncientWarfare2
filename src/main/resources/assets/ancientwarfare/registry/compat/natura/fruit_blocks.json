@@ -114,7 +114,7 @@
             }
         },
         {
-            "type": "broken",
+            "type": "break_only",
             "fruit": "natura:saguaro_fruit"
         }
     ]
