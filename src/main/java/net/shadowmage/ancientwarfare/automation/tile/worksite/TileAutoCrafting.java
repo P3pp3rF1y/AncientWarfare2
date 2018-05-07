@@ -9,9 +9,9 @@ import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
-import net.shadowmage.ancientwarfare.automation.tile.CraftingRecipeMemory;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.tile.CraftingRecipeMemory;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nonnull;
@@ -60,17 +60,25 @@ public class TileAutoCrafting extends TileWorksiteBase {
 	}
 
 	private void craftItem() {
-		List<ItemStack> resources = AWCraftingManager.getRecipeInventoryMatch(craftingRecipeMemory.getRecipe(), resourceInventory);
-		@Nonnull ItemStack stack = craftingRecipeMemory.getCraftingResult();
+		NonNullList<ItemStack> resources = AWCraftingManager.getRecipeInventoryMatch(craftingRecipeMemory.getRecipe(), resourceInventory);
+		@Nonnull ItemStack result = craftingRecipeMemory.getCraftingResult();
 		useResources(resources);
 		//TODO add setting / unsetting player similar to SlotCrafting
 		NonNullList<ItemStack> remainingItems = craftingRecipeMemory.getRemainingItems();
-		InventoryTools.insertOrDropItems(outputInventory, remainingItems, world, pos);
 
-		stack = InventoryTools.mergeItemStack(outputInventory, stack);
-		if (!stack.isEmpty()) {
-			InventoryTools.dropItemInWorld(world, stack, pos);
+		for (ItemStack stack : remainingItems) {
+			if (stack.isEmpty()) {
+				continue;
+			}
+
+			if (!InventoryTools.removeItem(resources, is -> ItemStack.areItemStacksEqual(stack, is), stack.getCount(), true).isEmpty()) {
+				InventoryTools.insertOrDropItem(resourceInventory, stack, world, pos);
+			} else {
+				InventoryTools.insertOrDropItem(outputInventory, stack, world, pos);
+			}
 		}
+
+		InventoryTools.insertOrDropItem(outputInventory, result, world, pos);
 	}
 
 	private void useResources(List<ItemStack> resources) {

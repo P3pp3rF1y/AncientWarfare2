@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.core.container;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 
@@ -21,8 +20,6 @@ public class ContainerTileBase<T extends TileEntity> extends ContainerBase {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
-		if (tileEntity instanceof IInventory && !((IInventory) tileEntity).isUsableByPlayer(player))
-			return false;
 		return tileEntity.getDistanceSq(player.posX, player.posY, player.posZ) <= 64D;
 	}
 

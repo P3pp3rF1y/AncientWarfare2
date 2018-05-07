@@ -1,0 +1,9 @@
+{
+    "mod": "natura",
+    "crops": [
+        {
+            "crop": "natura:nether_glowshroom",
+            "type": "break_only"
+        }
+    ]
+}

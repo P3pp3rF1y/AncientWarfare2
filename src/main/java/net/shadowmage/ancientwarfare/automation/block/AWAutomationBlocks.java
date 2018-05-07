@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.block;
 
+import net.minecraft.block.Block;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
 
@@ -11,6 +12,8 @@ public class AWAutomationBlocks {
 	public static BlockWorksiteBase worksiteForestry;
 	@ObjectHolder("crop_farm")
 	public static BlockWorksiteBase worksiteCropFarm;
+	@ObjectHolder("fruit_farm")
+	public static Block worksiteFruitFarm;
 	@ObjectHolder("mushroom_farm")
 	public static BlockWorksiteBase worksiteMushroomFarm;
 	@ObjectHolder("animal_farm")

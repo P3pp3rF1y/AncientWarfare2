@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.shadowmage.ancientwarfare.automation.chunkloader.AWChunkLoader;
-import net.shadowmage.ancientwarfare.automation.compat.CompatLoader;
+import net.shadowmage.ancientwarfare.automation.compat.agricraft.AgricraftCompat;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.container.ContainerChunkLoaderDeluxe;
 import net.shadowmage.ancientwarfare.automation.container.ContainerMailbox;
@@ -29,6 +29,7 @@ import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteBound
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteCropFarm;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteFishControl;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteFishFarm;
+import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteFruitFarm;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteInventorySideSelection;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteMushroomFarm;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteQuarry;
@@ -36,8 +37,10 @@ import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteReedF
 import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteTreeFarm;
 import net.shadowmage.ancientwarfare.automation.proxy.RFProxy;
 import net.shadowmage.ancientwarfare.automation.registry.CropFarmRegistry;
+import net.shadowmage.ancientwarfare.automation.registry.FruitFarmRegistry;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
+import net.shadowmage.ancientwarfare.core.compat.CompatLoader;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
@@ -93,6 +96,7 @@ public class AncientWarfareAutomation {
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_QUARRY, ContainerWorksiteQuarry.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_TREE_FARM, ContainerWorksiteTreeFarm.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_CROP_FARM, ContainerWorksiteCropFarm.class);
+		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_FRUIT_FARM, ContainerWorksiteFruitFarm.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_MUSHROOM_FARM, ContainerWorksiteMushroomFarm.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_ANIMAL_FARM, ContainerWorksiteAnimalFarm.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_WORKSITE_REED_FARM, ContainerWorksiteReedFarm.class);
@@ -109,7 +113,12 @@ public class AncientWarfareAutomation {
 
 		ForgeChunkManager.setForcedChunkLoadingCallback(this, AWChunkLoader.INSTANCE);
 
-		RegistryLoader.registerParser(new CropFarmRegistry.Parser());
+		RegistryLoader.registerParser(new CropFarmRegistry.TillableParser());
+		RegistryLoader.registerParser(new CropFarmRegistry.CropParser());
+		RegistryLoader.registerParser(new CropFarmRegistry.SoilParser());
+		RegistryLoader.registerParser(new FruitFarmRegistry.FruitParser());
+
+		CompatLoader.registerCompat(new AgricraftCompat());
 	}
 
 	@EventHandler
@@ -118,8 +127,6 @@ public class AncientWarfareAutomation {
 		 * construct recipes, load plugins
          */
 		proxy.init();
-
-		CompatLoader.init();
 
 		statics.save();
 	}

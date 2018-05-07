@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -11,11 +10,21 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.core.util.parsing.BlockStateMatcher;
 
 import java.util.Collections;
 import java.util.List;
 
-public class HarvestableGourd implements IHarvestable {
+public class CropBreakOnly implements ICrop {
+
+	private BlockStateMatcher stateMatcher;
+
+	protected CropBreakOnly() {}
+
+	public CropBreakOnly(BlockStateMatcher stateMatcher) {
+		this.stateMatcher = stateMatcher;
+	}
+
 	@Override
 	public List<BlockPos> getPositionsToHarvest(World world, BlockPos pos, IBlockState state) {
 		return Collections.singletonList(pos);
@@ -47,6 +56,6 @@ public class HarvestableGourd implements IHarvestable {
 
 	@Override
 	public boolean matches(IBlockState state) {
-		return state.getMaterial() == Material.GOURD;
+		return stateMatcher.test(state);
 	}
 }

@@ -1,0 +1,121 @@
+{
+    "mod": "natura",
+    "fruits": [
+        {
+            "type": "picked_drop",
+            "fruit": "natura:overworld_berrybush_raspberry",
+            "ripe": {
+                "age": 3
+            },
+            "new": {
+                "age": 2
+            },
+            "drop": {
+                "name": "natura:edibles",
+                "meta": 2
+            }
+        },
+        {
+            "type": "picked_drop",
+            "fruit": "natura:overworld_berrybush_blueberry",
+            "ripe": {
+                "age": 3
+            },
+            "new": {
+                "age": 2
+            },
+            "drop": {
+                "name": "natura:edibles",
+                "meta": 3
+            }
+        },
+        {
+            "type": "picked_drop",
+            "fruit": "natura:overworld_berrybush_blackberry",
+            "ripe": {
+                "age": 3
+            },
+            "new": {
+                "age": 2
+            },
+            "drop": {
+                "name": "natura:edibles",
+                "meta": 4
+            }
+        },
+        {
+            "type": "picked_drop",
+            "fruit": "natura:overworld_berrybush_maloberry",
+            "ripe": {
+                "age": 3
+            },
+            "new": {
+                "age": 2
+            },
+            "drop": {
+                "name": "natura:edibles",
+                "meta": 5
+            }
+        },
+        {
+            "type": "picked_drop",
+            "fruit": "natura:nether_berrybush_blightberry",
+            "ripe": {
+                "age": 3
+            },
+            "new": {
+                "age": 2
+            },
+            "drop": {
+                "name": "natura:edibles",
+                "meta": 6
+            }
+        },
+        {
+            "type": "picked_drop",
+            "fruit": "natura:nether_berrybush_duskberry",
+            "ripe": {
+                "age": 3
+            },
+            "new": {
+                "age": 2
+            },
+            "drop": {
+                "name": "natura:edibles",
+                "meta": 7
+            }
+        },
+        {
+            "type": "picked_drop",
+            "fruit": "natura:nether_berrybush_skyberry",
+            "ripe": {
+                "age": 3
+            },
+            "new": {
+                "age": 2
+            },
+            "drop": {
+                "name": "natura:edibles",
+                "meta": 8
+            }
+        },
+        {
+            "type": "picked_drop",
+            "fruit": "natura:nether_berrybush_stingberry",
+            "ripe": {
+                "age": 3
+            },
+            "new": {
+                "age": 2
+            },
+            "drop": {
+                "name": "natura:edibles",
+                "meta": 9
+            }
+        },
+        {
+            "type": "break_only",
+            "fruit": "natura:saguaro_fruit"
+        }
+    ]
+}

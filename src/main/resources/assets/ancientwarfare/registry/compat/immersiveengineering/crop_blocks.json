@@ -1,0 +1,12 @@
+{
+    "mod": "immersiveengineering",
+    "crops": [
+        {
+            "crop": "immersiveengineering:hemp",
+            "type": "tall",
+            "properties": {
+                "height": 2
+            }
+        }
+    ]
+}

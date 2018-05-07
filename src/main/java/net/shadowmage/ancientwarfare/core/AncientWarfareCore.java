@@ -18,6 +18,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.shadowmage.ancientwarfare.core.command.CommandResearch;
+import net.shadowmage.ancientwarfare.core.compat.CompatLoader;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.container.ContainerBackpack;
 import net.shadowmage.ancientwarfare.core.container.ContainerEngineeringStation;
@@ -94,6 +95,8 @@ public class AncientWarfareCore {
 		AWCraftingManager.loadRecipes();
 
 		RegistryLoader.load();
+
+		CompatLoader.init();
 
         /*
          * Setup compats

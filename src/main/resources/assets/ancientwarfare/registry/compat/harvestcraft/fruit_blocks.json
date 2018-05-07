@@ -1,0 +1,365 @@
+{
+    "mod": "harvestcraft",
+    "fruits": [
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pamapple",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pamalmond",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pamapricot",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pamavocado",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pambanana",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pamcashew",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pamcherry",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pamchestnut",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pamcoconut",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pamdate",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pamdragonfruit",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pamdurian",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pamgooseberry",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pamgrapefruit",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pamlemon",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pamlime",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pammango",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pamnutmeg",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pamolive",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pamorange",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pampapaya",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pampeach",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pampear",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pampecan",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pampeppercorn",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pampersimmon",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pampistachio",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pamplum",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pampomegranate",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pamstarfruit",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pamvanillabean",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pamwalnut",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pamspiderweb",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pamcinnamon",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pammaple",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        },
+        {
+            "type": "picked_remove_one",
+            "fruit": "harvestcraft:pampaperbark",
+            "ripe": {
+                "age": 2
+            },
+            "new": {
+                "age": 0
+            }
+        }
+    ]
+}

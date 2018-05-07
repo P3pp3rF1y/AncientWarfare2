@@ -1,7 +1,6 @@
-package net.shadowmage.ancientwarfare.automation.compat;
+package net.shadowmage.ancientwarfare.core.compat;
 
 import net.minecraftforge.fml.common.Loader;
-import net.shadowmage.ancientwarfare.automation.compat.agricraft.AgricraftCompat;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -9,8 +8,8 @@ import java.util.Set;
 public class CompatLoader {
 	private static Set<ICompat> compats = new HashSet<>();
 
-	static {
-		compats.add(new AgricraftCompat());
+	public static void registerCompat(ICompat compat) {
+		compats.add(compat);
 	}
 
 	public static void init() {
@@ -21,3 +20,4 @@ public class CompatLoader {
 		}
 	}
 }
+

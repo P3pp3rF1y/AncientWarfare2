@@ -11,9 +11,9 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.shadowmage.ancientwarfare.automation.tile.CraftingRecipeMemory;
 import net.shadowmage.ancientwarfare.core.crafting.ICraftingRecipe;
 import net.shadowmage.ancientwarfare.core.crafting.IIngredientCount;
+import net.shadowmage.ancientwarfare.core.tile.CraftingRecipeMemory;
 
 import java.util.ArrayList;
 import java.util.List;

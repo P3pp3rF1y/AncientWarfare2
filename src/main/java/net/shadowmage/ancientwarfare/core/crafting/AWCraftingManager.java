@@ -36,6 +36,7 @@ import net.shadowmage.ancientwarfare.core.crafting.wrappers.RegularCraftingWrapp
 import net.shadowmage.ancientwarfare.core.crafting.wrappers.ResearchCraftingWrapper;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.core.util.TriFunction;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.util.TriConsumer;
@@ -387,7 +388,4 @@ public class AWCraftingManager {
 		return stackFound;
 	}
 
-	private interface TriFunction<K, V, S, R> {
-		R apply(K k, V v, S s);
-	}
 }

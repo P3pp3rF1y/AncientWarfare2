@@ -1,0 +1,15 @@
+{
+    "mod": "biomesoplenty",
+    "fruits": [
+        {
+            "type": "picked",
+            "fruit": "biomesoplenty:plant_0",
+            "ripe": {
+                "variant": "berrybush"
+            },
+            "new": {
+                "variant": "bush"
+            }
+        }
+    ]
+}

@@ -119,6 +119,7 @@ tile.auto_crafting.0.name=Auto Crafting Station
 tile.quarry.name=Quarry
 tile.tree_farm.name=Tree Farm
 tile.crop_farm.name=Crop Farm
+tile.fruit_farm.name=Fruit Farm
 tile.mushroom_farm.name=Mushroom Farm
 tile.animal_farm.name=Animal Farm
 tile.fish_farm.name=Fish Farm
@@ -984,7 +985,7 @@ item.armor_obsidian.name=Obsidian Armor
 item.armor_obsidian.tooltip=Reduce Blast Damage by 7%
 
 # vehicle input keybinds
-keybind.category.awVehicle=Ancient Warfare Vehicles
+keybind.category.awVehicles=Ancient Warfare Vehicles
 keybind.vehicle.forward=Forward / Accelerate
 keybind.vehicle.reverse=Reverse / Decelerate
 keybind.vehicle.left=Turn/Strafe Left

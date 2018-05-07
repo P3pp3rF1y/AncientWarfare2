@@ -8,6 +8,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemBlockSpecial;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -42,7 +44,9 @@ public class WorkSiteCropFarm extends TileWorksiteFarm {
 
 	@Override
 	protected boolean isPlantable(ItemStack stack) {
-		return stack.getItem() instanceof IPlantable;
+		return stack.getItem() instanceof IPlantable
+				|| (stack.getItem() instanceof ItemBlock && ((ItemBlock) stack.getItem()).getBlock() instanceof IPlantable)
+				|| (stack.getItem() instanceof ItemBlockSpecial && ((ItemBlockSpecial) stack.getItem()).getBlock() instanceof IPlantable);
 	}
 
 	@Override
@@ -69,7 +73,7 @@ public class WorkSiteCropFarm extends TileWorksiteFarm {
 			IBlockState stateDown = world.getBlockState(position.down());
 			if (CropFarmRegistry.isTillable(stateDown)) {
 				blocksToTill.add(position.down());
-			} else if (CropFarmRegistry.isPlantable(stateDown)) {
+			} else if (CropFarmRegistry.isSoil(stateDown)) {
 				blocksToPlant.add(position);
 			}
 		}
@@ -78,10 +82,10 @@ public class WorkSiteCropFarm extends TileWorksiteFarm {
 			return;
 		}
 
-		IHarvestable harvestable = HarvestableFactory.getHarvestable(state);
-		blocksToHarvest.addAll(harvestable.getPositionsToHarvest(world, position, state));
+		ICrop crop = CropFarmRegistry.getCrop(state);
+		blocksToHarvest.addAll(crop.getPositionsToHarvest(world, position, state));
 
-		if (harvestable.canBeFertilized(state, world, position)) {
+		if (crop.canBeFertilized(state, world, position)) {
 			blocksToFertilize.add(position);
 		}
 	}
@@ -108,8 +112,8 @@ public class WorkSiteCropFarm extends TileWorksiteFarm {
 			while (it.hasNext() && (position = it.next()) != null) {
 				it.remove();
 				IBlockState state = world.getBlockState(position);
-				IHarvestable harvestable = HarvestableFactory.getHarvestable(state);
-				return harvestable.harvest(world, state, position, getOwnerAsPlayer(), getFortune(), inventoryForDrops);
+				ICrop crop = CropFarmRegistry.getCrop(state);
+				return crop.harvest(world, state, position, getOwnerAsPlayer(), getFortune(), inventoryForDrops);
 			}
 		} else if (hasToPlant()) {
 			it = blocksToPlant.iterator();
