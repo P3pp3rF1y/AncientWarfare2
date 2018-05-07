@@ -90,13 +90,13 @@ public class ItemResearchNotes extends ItemBaseCore {
 			if (goal != null) {
 				boolean known = ResearchTracker.INSTANCE.hasPlayerCompleted(player.world, player.getName(), goal.getId());
 				if (!known) {
-					if (ResearchTracker.INSTANCE.addResearchFromNotes(player.world, player.getName(), goal.getId()) && !player.capabilities.isCreativeMode) {
-						player.sendMessage(new TextComponentTranslation("guistrings.research.learned_from_item"));
+					if (ResearchTracker.INSTANCE.addResearchFromNotes(player.world, player.getName(), goal.getId())) {
+						player.sendMessage(new TextComponentTranslation("guistrings.research.learned_from_item", I18n.format(name)));
 						stack.shrink(1);
 					}
 				} else {
-					if (ResearchTracker.INSTANCE.addProgressFromNotes(player.world, player.getName(), goal.getId()) && !player.capabilities.isCreativeMode) {
-						player.sendMessage(new TextComponentTranslation("guistrings.research.added_progress"));
+					if (ResearchTracker.INSTANCE.addProgressFromNotes(player.world, player.getName(), goal.getId())) {
+						player.sendMessage(new TextComponentTranslation("guistrings.research.added_progress", I18n.format(name)));
 						stack.shrink(1);
 					}
 				}
