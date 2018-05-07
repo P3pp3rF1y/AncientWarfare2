@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.JsonUtils;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.CropBreakOnly;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.CropDefault;
@@ -15,6 +16,7 @@ import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.CropTall;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm.ICrop;
 import net.shadowmage.ancientwarfare.core.registry.IRegistryDataParser;
 import net.shadowmage.ancientwarfare.core.util.parsing.BlockStateMatcher;
+import net.shadowmage.ancientwarfare.core.util.parsing.ItemStackMatcher;
 import net.shadowmage.ancientwarfare.core.util.parsing.JsonHelper;
 
 import java.util.ArrayList;
@@ -55,6 +57,10 @@ public class CropFarmRegistry {
 
 	public static ICrop getCrop(IBlockState state) {
 		return crops.stream().filter(h -> h.matches(state)).findFirst().orElse(DEFAULT_CROP);
+	}
+
+	public static ICrop getCrop(ItemStack stack) {
+		return crops.stream().filter(h -> h.matches(stack)).findFirst().orElse(DEFAULT_CROP);
 	}
 
 	public static class TillableParser implements IRegistryDataParser {
@@ -107,7 +113,7 @@ public class CropFarmRegistry {
 				case "mature_defined":
 					return MatureDefinedParser.parse(stateMatcher, JsonHelper.getBlockState(crop, "crop"), crop);
 				case "break_only":
-					return BreakOnlyParser.parse(stateMatcher);
+					return BreakOnlyParser.parse(stateMatcher, JsonHelper.getItemStackMatcher(crop, "item"));
 				default:
 					return DEFAULT_CROP;
 			}
@@ -132,8 +138,8 @@ public class CropFarmRegistry {
 		}
 
 		private static class BreakOnlyParser {
-			public static ICrop parse(BlockStateMatcher stateMatcher) {
-				return new CropBreakOnly(stateMatcher);
+			public static ICrop parse(BlockStateMatcher stateMatcher, ItemStackMatcher stackMatcher) {
+				return new CropBreakOnly(stateMatcher, stackMatcher);
 			}
 		}
 	}

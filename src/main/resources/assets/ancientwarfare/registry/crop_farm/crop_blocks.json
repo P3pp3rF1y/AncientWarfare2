@@ -17,11 +17,13 @@
         },
         {
             "crop": "minecraft:red_mushroom",
-            "type": "break_only"
+            "type": "break_only",
+            "item": "minecraft:red_mushroom"
         },
         {
             "crop": "minecraft:brown_mushroom",
-            "type": "break_only"
+            "type": "break_only",
+            "item": "minecraft:brown_mushroom"
         }
     ]
 }
