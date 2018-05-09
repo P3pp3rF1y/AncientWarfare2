@@ -142,7 +142,7 @@ public abstract class TileWorksiteBase extends TileUpdatable
 
 	@Override
 	public final void update() {
-		if (!hasWorld() || world.isRemote) {
+		if (!hasWorld() || world.isRemote || world.getStrongPower(pos) != 0) {
 			return;
 		}
 		if (workRetryDelay > 0) {
