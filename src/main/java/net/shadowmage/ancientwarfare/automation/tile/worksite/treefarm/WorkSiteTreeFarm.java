@@ -2,14 +2,12 @@ package net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBush;
-import net.minecraft.block.BlockFlower;
-import net.minecraft.block.BlockSapling;
+import net.minecraft.block.IGrowable;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,8 +17,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.common.EnumPlantType;
-import net.minecraftforge.common.IPlantable;
+import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.automation.registry.TreeFarmRegistry;
@@ -34,6 +31,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class WorkSiteTreeFarm extends TileWorksiteFarm {
@@ -53,25 +51,12 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 
 	@Override
 	protected boolean isPlantable(ItemStack stack) {
-		return isFarmable(Block.getBlockFromItem(stack.getItem()));
+		return TreeFarmRegistry.isPlantable(stack);
 	}
 
 	@Override
 	protected boolean isMiscItem(ItemStack stack) {
 		return stack.getItem() == Items.SHEARS || super.isMiscItem(stack);
-	}
-
-	@Override
-	protected boolean isFarmable(Block block, BlockPos farmablePos) {
-		if (super.isFarmable(block, farmablePos)) {
-			if (block instanceof BlockSapling) {
-				return true;
-			}
-			if (!(block instanceof IShearable) && !(block instanceof BlockFlower)) {
-				return ((IPlantable) block).getPlantType(world, pos) == EnumPlantType.Plains;
-			}
-		}
-		return false;
 	}
 
 	@Override
@@ -94,97 +79,103 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 	@Override
 	protected boolean processWork() {
 		BlockPos position;
-		if (hasShears && !blocksToShear.isEmpty()) {
-			Iterator<BlockPos> it = blocksToShear.iterator();
-			while (it.hasNext() && (position = it.next()) != null) {
-				it.remove();
-				Block block = world.getBlockState(position).getBlock();
-				if (block instanceof IShearable) {
-					@Nonnull ItemStack stack;
-					for (int slot = 0; slot < miscInventory.getSlots(); slot++) {
-						stack = miscInventory.getStackInSlot(slot);
-						if (!stack.isEmpty() && stack.getItem() instanceof ItemShears) {
-							if (((IShearable) block).isShearable(stack, world, position)) {
-								ItemStack clone = stack.copy();
-								NonNullList<ItemStack> drops = InventoryTools.toNonNullList(((IShearable) block).onSheared(clone, world, position, getFortune()));
-								miscInventory.setStackInSlot(slot, clone);
-								drops = InventoryTools.insertItems(plantableInventory, drops, false);
-								InventoryTools.insertOrDropItems(mainInventory, drops, world, pos);
-								world.setBlockToAir(position);
-/* TODO enviromine integration
-								ModAccessors.ENVIROMINE.schedulePhysUpdate(world, position, true, "Normal");
-*/
-								return true;
-							}
-						}
-					}
-				}
+		if (shearBlock()) {
+			return true;
+		}
+
+		if (chopBlock()) {
+			return true;
+		}
+
+		if (plant()) {
+			return true;
+		}
+
+		if (bonemealBlock()) {
+			return true;
+		}
+
+		return false;
+	}
+
+	private boolean bonemealBlock() {
+		if (bonemealCount <= 0 || blocksToFertilize.isEmpty()) {
+			return false;
+		}
+
+		Iterator<BlockPos> it = blocksToFertilize.iterator();
+		BlockPos position = it.next();
+		it.remove();
+
+		IBlockState state = world.getBlockState(position);
+		if (canFertilize(world, position, state)) {
+			@Nonnull ItemStack stack;
+			return fertilize(position);
+		}
+
+		return false;
+	}
+
+	private boolean plant() {
+		if (plantableCount <= 0 || blocksToPlant.isEmpty()) {
+			return false;
+		}
+
+		Optional<ItemStack> plantable = InventoryTools.stream(plantableInventory).filter(this::isPlantable).findFirst();
+		if (plantable.isPresent()) {
+			Iterator<BlockPos> it = blocksToPlant.iterator();
+			BlockPos position = it.next();
+			it.remove();
+			if (isUnwantedPlant(world.getBlockState(position).getBlock())) {
+				world.setBlockToAir(position);
 			}
-		} else if (!blocksToChop.isEmpty()) {
-			Iterator<BlockPos> it = blocksToChop.iterator();
-			while (it.hasNext() && (position = it.next()) != null) {
-				it.remove();
-				if (harvestBlock(position)) {
-					return true;
-				}
+			if (canReplace(position) && tryPlace(plantable.get().copy(), position, EnumFacing.UP)) {
+				InventoryTools.removeItems(plantableInventory, plantable.get(), 1);
+				return true;
 			}
-		} else if (plantableCount > 0 && !blocksToPlant.isEmpty()) {
-			@Nonnull ItemStack stack = ItemStack.EMPTY;
-			int slot = 0;
-			for (; slot < plantableInventory.getSlots(); slot++) {
-				stack = plantableInventory.getStackInSlot(slot);
-				if (!stack.isEmpty() && isPlantable(stack)) {
-					break;
-				} else {
-					stack = ItemStack.EMPTY;
-				}
+		}
+
+		return false;
+	}
+
+	private boolean chopBlock() {
+		if (blocksToChop.isEmpty()) {
+			return false;
+		}
+
+		Iterator<BlockPos> it = blocksToChop.iterator();
+		BlockPos position = it.next();
+		it.remove();
+		return harvestBlock(position);
+	}
+
+	private boolean shearBlock() {
+		if (!hasShears || blocksToShear.isEmpty()) {
+			return false;
+		}
+
+		Iterator<BlockPos> it = blocksToShear.iterator();
+		BlockPos position = it.next();
+		it.remove();
+		Block block = world.getBlockState(position).getBlock();
+		if (block instanceof IShearable) {
+			Optional<ItemStack> shears = InventoryTools.stream(miscInventory).filter(s -> s.getItem() instanceof ItemShears).findFirst();
+
+			if (shears.isPresent() && shear(position, (IShearable) block, shears.get())) {
+				return true;
 			}
-			if (!stack.isEmpty())//e.g. a sapling stack is present
-			{
-				Iterator<BlockPos> it = blocksToPlant.iterator();
-				while (it.hasNext() && (position = it.next()) != null) {
-					it.remove();
-					if (isUnwantedPlant(world.getBlockState(position).getBlock())) {
-						world.setBlockToAir(position);
-/* TODO enviromine integration
-						ModAccessors.ENVIROMINE.schedulePhysUpdate(world, position, true, "Normal");
-*/
-					}
-					if (canReplace(position) && tryPlace(stack.copy(), position, EnumFacing.UP)) {
-						plantableInventory.extractItem(slot, 1, false);
-						return true;
-					}
-				}
-			}
-		} else if (bonemealCount > 0 && !blocksToFertilize.isEmpty()) {
-			Iterator<BlockPos> it = blocksToFertilize.iterator();
-			while (it.hasNext() && (position = it.next()) != null) {
-				it.remove();
-				Block block = world.getBlockState(position).getBlock();
-				if (isFarmable(block, position)) {
-					@Nonnull ItemStack stack;
-					for (int slot = 0; slot < miscInventory.getSlots(); slot++) {
-						stack = miscInventory.getStackInSlot(slot);
-						if (!stack.isEmpty() && isBonemeal(stack)) {
-							if (ItemDye.applyBonemeal(stack.copy(), world, position, getOwnerAsPlayer(), EnumHand.MAIN_HAND)) {
-								miscInventory.extractItem(slot, 1, false);
-							}
-							IBlockState state = world.getBlockState(position);
-							block = state.getBlock();
-							if (isFarmable(block, position)) {
-								blocksToFertilize.add(position);//possible concurrent access exception?
-								//technically, it would be, except by the time it hits this inner block, it is already
-								//done iterating, as it will immediately hit the following break statement, and break
-								//out of the iterating loop before the next element would have been iterated over
-							} else if (state.getMaterial() == Material.WOOD) {
-								addTreeBlocks(state, position);
-							}
-							return true;
-						}
-					}
-					return false;
-				}
-			}
+		}
+
+		return false;
+	}
+
+	private boolean shear(BlockPos position, IShearable block, ItemStack shears) {
+		if (block.isShearable(shears, world, position)) {
+			NonNullList<ItemStack> drops = InventoryTools.toNonNullList(block.onSheared(shears, world, position, getFortune()));
+			drops = InventoryTools.insertItems(plantableInventory, drops, false);
+			InventoryTools.insertOrDropItems(mainInventory, drops, world, pos);
+			world.setBlockToAir(position);
+			return true;
 		}
 		return false;
 	}
@@ -256,7 +247,7 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 		} else {
 			IBlockState state = world.getBlockState(scanPos);
 			block = state.getBlock();
-			if (isFarmable(block, scanPos)) {
+			if (canFertilize(world, scanPos, state)) {
 				blocksToFertilize.add(scanPos);
 			} else if (state.getMaterial() == Material.WOOD && !blocksToChop.contains(scanPos)) {
 				addTreeBlocks(state, scanPos);
@@ -266,12 +257,17 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 		}
 	}
 
+	private boolean canFertilize(World world, BlockPos pos, IBlockState state) {
+		return state.getBlock() instanceof IGrowable && ((IGrowable) state.getBlock()).canGrow(world, pos, state, world.isRemote);
+	}
+
 	private boolean isUnwantedPlant(Block block) {
-		return block instanceof BlockBush && !(block instanceof BlockSapling);
+		return block instanceof BlockBush && !TreeFarmRegistry.isPlantable(block);
 	}
 
 	@Override
 	protected boolean hasWorksiteWork() {
-		return (hasShears && !blocksToShear.isEmpty()) || !blocksToChop.isEmpty() || (bonemealCount > 0 && !blocksToFertilize.isEmpty()) || (plantableCount > 0 && !blocksToPlant.isEmpty());
+		return (hasShears && !blocksToShear.isEmpty()) || !blocksToChop.isEmpty() || (bonemealCount > 0 && !blocksToFertilize
+				.isEmpty()) || (plantableCount > 0 && !blocksToPlant.isEmpty());
 	}
 }

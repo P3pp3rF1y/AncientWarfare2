@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.automation.tile.worksite.fruitfarm;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -70,7 +69,7 @@ public class WorkSiteFruitFarm extends TileWorksiteFarm {
 			}
 
 			BlockPos curPos = currentPos; // because streams need effectively final vars
-			InventoryTools.toStream(plantableInventory).filter(s -> FruitFarmRegistry.getPlantable(s).canPlant(world, curPos, state))
+			InventoryTools.stream(plantableInventory).filter(s -> FruitFarmRegistry.getPlantable(s).canPlant(world, curPos, state))
 					.forEach(s -> blocksToPlant.add(curPos));
 
 			if (canBoneMeal(world, currentPos, state)) {
@@ -107,17 +106,10 @@ public class WorkSiteFruitFarm extends TileWorksiteFarm {
 
 		IBlockState state = world.getBlockState(pos);
 		if (state.getBlock() instanceof IGrowable) {
-			boneMeal(pos);
+			return fertilize(pos);
 		}
 
-		return true;
-	}
-
-	private void boneMeal(BlockPos pos) {
-		Optional<ItemStack> stack = InventoryTools.toStream(miscInventory).filter(this::isBonemeal).findFirst();
-		if (stack.isPresent() && ItemDye.applyBonemeal(stack.get(), world, pos, getOwnerAsPlayer(), EnumHand.MAIN_HAND)) {
-			world.playEvent(2005, pos, 0);
-		}
+		return false;
 	}
 
 	private boolean plantFruits() {
@@ -128,7 +120,7 @@ public class WorkSiteFruitFarm extends TileWorksiteFarm {
 		Iterator<BlockPos> it = blocksToPlant.iterator();
 		BlockPos plantPos = it.next();
 		it.remove();
-		Optional<IFruit> plantableFruit = InventoryTools.toStream(plantableInventory).map(FruitFarmRegistry::getPlantable)
+		Optional<IFruit> plantableFruit = InventoryTools.stream(plantableInventory).map(FruitFarmRegistry::getPlantable)
 				.filter(p -> p.canPlant(world, plantPos, world.getBlockState(plantPos))).findFirst();
 
 		return plantableFruit.isPresent() && plantableFruit.get().plant(world, plantPos);

@@ -677,7 +677,7 @@ public class InventoryTools {
 		return ret;
 	}
 
-	public static Stream<ItemStack> toStream(IItemHandler handler) {
+	public static Stream<ItemStack> stream(IItemHandler handler) {
 		return StreamSupport.stream(getIterator(handler).spliterator(), false);
 	}
 
