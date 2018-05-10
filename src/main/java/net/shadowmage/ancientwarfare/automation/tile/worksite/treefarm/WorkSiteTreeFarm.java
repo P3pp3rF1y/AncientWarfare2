@@ -6,7 +6,6 @@ import net.minecraft.block.IGrowable;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemShears;
 import net.minecraft.item.ItemStack;
@@ -25,7 +24,6 @@ import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteFarm;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -78,24 +76,7 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 
 	@Override
 	protected boolean processWork() {
-		BlockPos position;
-		if (shearBlock()) {
-			return true;
-		}
-
-		if (chopBlock()) {
-			return true;
-		}
-
-		if (plant()) {
-			return true;
-		}
-
-		if (bonemealBlock()) {
-			return true;
-		}
-
-		return false;
+		return shearBlock() || chopBlock() || plant() || bonemealBlock();
 	}
 
 	private boolean bonemealBlock() {
@@ -108,12 +89,9 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 		it.remove();
 
 		IBlockState state = world.getBlockState(position);
-		if (canFertilize(world, position, state)) {
-			@Nonnull ItemStack stack;
-			return fertilize(position);
-		}
 
-		return false;
+		return canFertilize(world, position, state) && fertilize(position);
+
 	}
 
 	private boolean plant() {
@@ -238,15 +216,14 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 
 	@Override
 	protected void scanBlockPosition(BlockPos scanPos) {
-		Block block;
 		if (canReplace(scanPos)) {
-			block = world.getBlockState(scanPos.down()).getBlock();
-			if (block == Blocks.DIRT || block == Blocks.GRASS) {
+			IBlockState state = world.getBlockState(scanPos.down());
+			if (TreeFarmRegistry.isSoil(state)) {
 				blocksToPlant.add(scanPos);
 			}
 		} else {
 			IBlockState state = world.getBlockState(scanPos);
-			block = state.getBlock();
+			Block block = state.getBlock();
 			if (canFertilize(world, scanPos, state)) {
 				blocksToFertilize.add(scanPos);
 			} else if (state.getMaterial() == Material.WOOD && !blocksToChop.contains(scanPos)) {

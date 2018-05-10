@@ -38,6 +38,7 @@ import net.shadowmage.ancientwarfare.automation.container.ContainerWorksiteTreeF
 import net.shadowmage.ancientwarfare.automation.proxy.RFProxy;
 import net.shadowmage.ancientwarfare.automation.registry.CropFarmRegistry;
 import net.shadowmage.ancientwarfare.automation.registry.FruitFarmRegistry;
+import net.shadowmage.ancientwarfare.automation.registry.TreeFarmRegistry;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.compat.CompatLoader;
@@ -117,6 +118,7 @@ public class AncientWarfareAutomation {
 		RegistryLoader.registerParser(new CropFarmRegistry.CropParser());
 		RegistryLoader.registerParser(new CropFarmRegistry.SoilParser());
 		RegistryLoader.registerParser(new FruitFarmRegistry.FruitParser());
+		RegistryLoader.registerParser(new TreeFarmRegistry.SoilParser());
 
 		CompatLoader.registerCompat(new AgricraftCompat());
 	}
