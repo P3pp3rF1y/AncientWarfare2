@@ -113,6 +113,10 @@ public abstract class TileWorksiteFarm extends TileWorksiteBoundedInventory {
 	protected boolean harvestBlock(BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
+		if (block.isAir(state, world, pos)) {
+			return false;
+		}
+
 		NonNullList<ItemStack> stacks = NonNullList.create();
 
 		block.getDrops(stacks, world, pos, state, getFortune());

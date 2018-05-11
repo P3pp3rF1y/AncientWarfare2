@@ -147,7 +147,7 @@ public class DefaultTreeScanner implements ITreeScanner {
 	};
 
 	public static final INextPositionGetter ALL_UP_OR_LEVEL = currentPos -> {
-		Iterable<BlockPos> blocksInBox = getPositionsInBoxOrderedByY(currentPos, currentPos.add(1, 1, 1));
+		Iterable<BlockPos> blocksInBox = getPositionsInBoxOrderedByY(currentPos.add(-1, 0, -1), currentPos.add(1, 1, 1));
 		return StreamSupport.stream(blocksInBox.spliterator(), false);
 	};
 }
