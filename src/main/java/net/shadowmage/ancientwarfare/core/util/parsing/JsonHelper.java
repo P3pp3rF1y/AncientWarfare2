@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.core.util.parsing;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
@@ -22,11 +23,18 @@ import java.util.Map;
 import java.util.MissingResourceException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.StreamSupport;
 
 public class JsonHelper {
 
 	public static IBlockState getBlockState(JsonObject parent, String elementName) {
 		return getBlockState(parent, elementName, Block::getDefaultState, JsonHelper::getBlockState);
+	}
+
+	public static BlockStateMatcher getBlockStateMatcher(JsonObject stateJson) {
+		//noinspection ConstantConditions
+		return getBlockState(stateJson, block -> new BlockStateMatcher(block.getRegistryName()), BlockStateMatcher::addProperty);
 	}
 
 	public static BlockStateMatcher getBlockStateMatcher(JsonObject parent, String elementName) {
@@ -64,8 +72,15 @@ public class JsonHelper {
 		return getItemStack(parent, elementName, ItemStackMatcher::new);
 	}
 
+	private static <T> T getBlockState(JsonObject stateJson, Function<Block, T> init, AddPropertyFunction<T> addProperty) {
+		return getBlockState(getBlockNameAndProperties(stateJson), init, addProperty);
+	}
+
 	private static <T> T getBlockState(JsonObject parent, String elementName, Function<Block, T> init, AddPropertyFunction<T> addProperty) {
-		Tuple<String, Map<String, String>> blockProps = getBlockNameAndProperties(parent, elementName);
+		return getBlockState(getBlockNameAndProperties(parent, elementName), init, addProperty);
+	}
+
+	private static <T> T getBlockState(Tuple<String, Map<String, String>> blockProps, Function<Block, T> init, AddPropertyFunction<T> addProperty) {
 
 		String registryName = blockProps.getFirst();
 		Map<String, String> properties = blockProps.getSecond();
@@ -104,28 +119,26 @@ public class JsonHelper {
 		return registry.getValue(key);
 	}
 
+	private static Tuple<String, Map<String, String>> getBlockNameAndProperties(JsonObject stateJson) {
+		Map<String, String> properties = new HashMap<>();
+
+		if (JsonUtils.hasField(stateJson, "properties")) {
+			JsonUtils.getJsonObject(stateJson, "properties").entrySet().forEach(p -> properties.put(p.getKey(), p.getValue().getAsString()));
+		}
+
+		return new Tuple<>(JsonUtils.getString(stateJson, "name"), properties);
+	}
+
 	private static Tuple<String, Map<String, String>> getBlockNameAndProperties(JsonObject parent, String elementName) {
 		if (!JsonUtils.hasField(parent, elementName)) {
 			throw new JsonParseException("Expected " + elementName + " member in " + parent.toString());
 		}
 
-		String registryName;
-		Map<String, String> properties = new HashMap<>();
-
 		if (JsonUtils.isJsonPrimitive(parent, elementName)) {
-			registryName = JsonUtils.getString(parent, elementName);
-		} else {
-			JsonObject obj = JsonUtils.getJsonObject(parent, elementName);
-			registryName = JsonUtils.getString(obj, "name");
-
-			if (JsonUtils.hasField(obj, "properties")) {
-				JsonObject props = JsonUtils.getJsonObject(obj, "properties");
-				for (Map.Entry<String, JsonElement> prop : props.entrySet()) {
-					properties.put(prop.getKey(), prop.getValue().getAsString());
-				}
-			}
+			return new Tuple<>(JsonUtils.getString(parent, elementName), new HashMap<>());
 		}
-		return new Tuple<>(registryName, properties);
+
+		return getBlockNameAndProperties(JsonUtils.getJsonObject(parent, elementName));
 	}
 
 	@Nullable
@@ -136,6 +149,16 @@ public class JsonHelper {
 	private static <T extends Comparable<T>> IBlockState getBlockState(IBlockState state, IProperty<T> property, Comparable<?> value) {
 		//noinspection unchecked
 		return state.withProperty(property, (T) value);
+	}
+
+	public static Predicate<IBlockState> getBlockStateMatcher(JsonObject json, String arrayElement, String individualElement) {
+		if (json.has(arrayElement)) {
+			JsonArray stateMatchers = JsonUtils.getJsonArray(json, arrayElement);
+			return new MultiBlockStateMatcher(StreamSupport.stream(stateMatchers.spliterator(), false)
+					.map(e -> getBlockStateMatcher(JsonUtils.getJsonObject(e, individualElement)))
+					.toArray(BlockStateMatcher[]::new));
+		}
+		return getBlockStateMatcher(json, individualElement);
 	}
 
 	private interface AddPropertyFunction<T> {

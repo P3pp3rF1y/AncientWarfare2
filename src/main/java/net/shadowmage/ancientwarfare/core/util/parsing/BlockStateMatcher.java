@@ -13,6 +13,12 @@ public class BlockStateMatcher implements Predicate<IBlockState> {
 	private final RegistryNameMatcher nameMatcher;
 	private final PropertyMapMatcher propertyMatcher = new PropertyMapMatcher();
 
+	@SuppressWarnings("ConstantConditions")
+	public BlockStateMatcher(IBlockState fullState) {
+		this(fullState.getBlock().getRegistryName());
+		fullState.getProperties().forEach(this::addProperty);
+	}
+
 	public BlockStateMatcher(ResourceLocation registryName) {
 		nameMatcher = new RegistryNameMatcher(registryName);
 	}

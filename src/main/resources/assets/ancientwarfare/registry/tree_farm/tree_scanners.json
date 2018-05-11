@@ -1,0 +1,106 @@
+{
+    "tree_scanners": [
+        {
+            "type": "default",
+            "trunk": {
+                "name": "minecraft:log",
+                "properties": {
+                    "variant": "oak"
+                }
+            },
+            "leaf": {
+                "name": "minecraft:leaves",
+                "properties": {
+                    "variant": "oak"
+                }
+            },
+            "max_leaf_distance": 3,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "minecraft:log",
+                "properties": {
+                    "variant": "spruce"
+                }
+            },
+            "leaf": {
+                "name": "minecraft:leaves",
+                "properties": {
+                    "variant": "spruce"
+                }
+            },
+            "max_leaf_distance": 5,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "minecraft:log",
+                "properties": {
+                    "variant": "birch"
+                }
+            },
+            "leaf": {
+                "name": "minecraft:leaves",
+                "properties": {
+                    "variant": "birch"
+                }
+            },
+            "max_leaf_distance": 3,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "minecraft:log",
+                "properties": {
+                    "variant": "jungle"
+                }
+            },
+            "leaf": {
+                "name": "minecraft:leaves",
+                "properties": {
+                    "variant": "jungle"
+                }
+            },
+            "max_leaf_distance": 6,
+            "next_block_search": "all_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "minecraft:log2",
+                "properties": {
+                    "variant": "acacia"
+                }
+            },
+            "leaf": {
+                "name": "minecraft:leaves2",
+                "properties": {
+                    "variant": "acacia"
+                }
+            },
+            "max_leaf_distance": 4,
+            "next_block_search": "all_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "minecraft:log2",
+                "properties": {
+                    "variant": "dark_oak"
+                }
+            },
+            "leaf": {
+                "name": "minecraft:leaves2",
+                "properties": {
+                    "variant": "dark_oak"
+                }
+            },
+            "max_leaf_distance": 4,
+            "next_block_search": "all_up_or_level"
+        }
+    ]
+}

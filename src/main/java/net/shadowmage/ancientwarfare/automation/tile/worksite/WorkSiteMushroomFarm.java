@@ -13,7 +13,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.EnumPlantType;
 import net.minecraftforge.common.IPlantable;
-import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.TreeDefault;
+import net.shadowmage.ancientwarfare.automation.registry.TreeFarmRegistry;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
@@ -161,10 +161,10 @@ public class WorkSiteMushroomFarm extends TileWorksiteFarm {
 				if (state.getValue(BlockNetherWart.AGE) >= 3)
 					blocksToHarvest.add(scanPos);
 			} else if (block instanceof BlockHugeMushroom && !blocksToHarvest.contains(scanPos)) {
-				blocksToHarvest.addAll(new TreeDefault().getTrunkBlocks(state, world, scanPos));
+				blocksToHarvest.addAll(TreeFarmRegistry.DEFAULT_TREE_SCANNER.scanTree(world, scanPos).getTrunkPositions());
 			} else if (isFarmable(block, scanPos)) {
 				Set<BlockPos> harvestSet = new HashSet<>();
-				harvestSet.addAll(new TreeDefault().getTrunkBlocks(state, world, scanPos));
+				harvestSet.addAll(TreeFarmRegistry.DEFAULT_TREE_SCANNER.scanTree(world, scanPos).getTrunkPositions());
 				for (BlockPos tp : harvestSet) {
 					if (!isTarget(tp) && !blocksToHarvest.contains(tp))//don't harvest user-set planting blocks...
 					{
