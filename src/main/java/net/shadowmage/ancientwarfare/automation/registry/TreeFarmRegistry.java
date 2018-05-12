@@ -118,6 +118,8 @@ public class TreeFarmRegistry {
 						return DefaultTreeScanner.CONNECTED_UP_OR_LEVEL;
 					case "all_up_or_level":
 						return DefaultTreeScanner.ALL_UP_OR_LEVEL;
+					case "all_around":
+						return DefaultTreeScanner.ALL_AROUND;
 					default:
 						return DefaultTreeScanner.CONNECTED_UP_OR_LEVEL;
 				}
