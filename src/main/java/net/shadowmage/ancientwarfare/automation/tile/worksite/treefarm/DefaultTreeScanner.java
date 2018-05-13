@@ -20,10 +20,17 @@ import java.util.stream.StreamSupport;
 
 public class DefaultTreeScanner implements ITreeScanner {
 	private final Predicate<IBlockState> trunkMatcher;
-	private final Predicate<IBlockState> leafMatcher;
-
+	private final Set<Predicate<IBlockState>> leafMatchers = new HashSet<>();
 	private int maxLeafDistance;
 	private INextPositionGetter nextPositionGetter;
+
+	public Predicate<IBlockState> getTrunkMatcher() {
+		return trunkMatcher;
+	}
+
+	public void addLeafMatcher(Predicate<IBlockState> leafMatcher) {
+		leafMatchers.add(leafMatcher);
+	}
 
 	public DefaultTreeScanner(Predicate<IBlockState> trunkMatcher, Predicate<IBlockState> leafMatcher) {
 		this(trunkMatcher, leafMatcher, CONNECTED_UP_OR_LEVEL, 5);
@@ -31,7 +38,7 @@ public class DefaultTreeScanner implements ITreeScanner {
 
 	public DefaultTreeScanner(Predicate<IBlockState> trunkMatcher, Predicate<IBlockState> leafMatcher, INextPositionGetter nextPosGetter, int maxLeafDistance) {
 		this.trunkMatcher = trunkMatcher;
-		this.leafMatcher = leafMatcher;
+		leafMatchers.add(leafMatcher);
 		this.maxLeafDistance = maxLeafDistance;
 		nextPositionGetter = nextPosGetter;
 	}
@@ -76,7 +83,7 @@ public class DefaultTreeScanner implements ITreeScanner {
 	}
 
 	private boolean isLeaf(IBlockState state) {
-		return leafMatcher.test(state);
+		return leafMatchers.stream().anyMatch(m -> m.test(state));
 	}
 
 	private boolean isTrunk(IBlockState state) {
@@ -136,6 +143,8 @@ public class DefaultTreeScanner implements ITreeScanner {
 		Iterable<BlockPos> blocksInBox = getPositionsInBoxOrderedByY(currentPos.add(-1, -1, -1), currentPos.add(1, 1, 1));
 		return StreamSupport.stream(blocksInBox.spliterator(), false);
 	};
+
+	public static final INextPositionGetter CONNECTED_AROUND = currentPos -> Arrays.stream(EnumFacing.VALUES).map(currentPos::offset);
 
 	public static final INextPositionGetter CONNECTED_UP_OR_LEVEL = new INextPositionGetter() {
 		private final EnumFacing[] OFFSETS = new EnumFacing[] {EnumFacing.NORTH, EnumFacing.EAST, EnumFacing.SOUTH, EnumFacing.WEST, EnumFacing.UP};

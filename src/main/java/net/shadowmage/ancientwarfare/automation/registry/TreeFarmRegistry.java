@@ -21,10 +21,13 @@ import net.shadowmage.ancientwarfare.core.util.parsing.JsonHelper;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 
 public class TreeFarmRegistry {
+	private TreeFarmRegistry() {}
+
 	public static final ITreeScanner DEFAULT_TREE_SCANNER =
 			new DefaultTreeScanner(st -> st.getMaterial() == Material.WOOD && st.getBlock() != AWAutomationBlocks.worksiteTreeFarm
 					, sl -> sl.getMaterial() == Material.LEAVES);
@@ -101,6 +104,8 @@ public class TreeFarmRegistry {
 		}
 
 		private static class DefaultSearchParser {
+			private DefaultSearchParser() {}
+
 			public static void parse(JsonObject treeScanner) {
 				Predicate<IBlockState> trunkMatcher = JsonHelper.getBlockStateMatcher(treeScanner, "trunks", "trunk");
 				Predicate<IBlockState> leafMatcher = JsonHelper.getBlockStateMatcher(treeScanner, "leaves", "leaf");
@@ -109,7 +114,13 @@ public class TreeFarmRegistry {
 
 				DefaultTreeScanner.INextPositionGetter nextPosGetter = parseNextPositionGetter(treeScanner);
 
-				registerTreeScanner(new DefaultTreeScanner(trunkMatcher, leafMatcher, nextPosGetter, maxLeafDistance));
+				Optional<DefaultTreeScanner> currentScanner = treeScanners.stream().filter(m -> m instanceof DefaultTreeScanner && ((DefaultTreeScanner) m).getTrunkMatcher().hashCode() == trunkMatcher.hashCode()).map(m -> (DefaultTreeScanner) m).findFirst();
+
+				if (currentScanner.isPresent()) {
+					currentScanner.get().addLeafMatcher(leafMatcher);
+				} else {
+					registerTreeScanner(new DefaultTreeScanner(trunkMatcher, leafMatcher, nextPosGetter, maxLeafDistance));
+				}
 			}
 
 			private static DefaultTreeScanner.INextPositionGetter parseNextPositionGetter(JsonObject treeScanner) {
@@ -120,6 +131,8 @@ public class TreeFarmRegistry {
 						return DefaultTreeScanner.ALL_UP_OR_LEVEL;
 					case "all_around":
 						return DefaultTreeScanner.ALL_AROUND;
+					case "connected_around":
+						return DefaultTreeScanner.CONNECTED_AROUND;
 					case "connected_down_or_level":
 						return DefaultTreeScanner.CONNECTED_DOWN_OR_LEVEL;
 					default:
