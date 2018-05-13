@@ -103,7 +103,7 @@ public class TreeFarmRegistry {
 		private static class DefaultSearchParser {
 			public static void parse(JsonObject treeScanner) {
 				Predicate<IBlockState> trunkMatcher = JsonHelper.getBlockStateMatcher(treeScanner, "trunks", "trunk");
-				Predicate<IBlockState> leafMatcher = JsonHelper.getBlockStateMatcher(treeScanner, "leafs", "leaf");
+				Predicate<IBlockState> leafMatcher = JsonHelper.getBlockStateMatcher(treeScanner, "leaves", "leaf");
 
 				int maxLeafDistance = JsonUtils.getInt(treeScanner, "max_leaf_distance");
 
@@ -120,6 +120,8 @@ public class TreeFarmRegistry {
 						return DefaultTreeScanner.ALL_UP_OR_LEVEL;
 					case "all_around":
 						return DefaultTreeScanner.ALL_AROUND;
+					case "connected_down_or_level":
+						return DefaultTreeScanner.CONNECTED_DOWN_OR_LEVEL;
 					default:
 						return DefaultTreeScanner.CONNECTED_UP_OR_LEVEL;
 				}

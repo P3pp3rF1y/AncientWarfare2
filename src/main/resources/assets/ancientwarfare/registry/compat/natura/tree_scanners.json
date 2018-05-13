@@ -14,13 +14,13 @@
                 "name": "natura:overworld_logs2",
                 "properties": {
                     "axis": "y",
-                    "type": "WILLOW"
+                    "type": "willow"
                 }
             },
             "leaf": {
                 "name": "natura:overworld_leaves2",
                 "properties": {
-                    "type": "WILLOW"
+                    "type": "willow"
                 }
             },
             "max_leaf_distance": 5,
@@ -31,13 +31,13 @@
             "trunk": {
                 "name": "natura:overworld_logs2",
                 "properties": {
-                    "type": "SAKURA"
+                    "type": "sakura"
                 }
             },
             "leaf": {
                 "name": "natura:overworld_leaves2",
                 "properties": {
-                    "type": "SAKURA"
+                    "type": "sakura"
                 }
             },
             "max_leaf_distance": 4,
@@ -48,13 +48,13 @@
             "trunk": {
                 "name": "natura:overworld_logs2",
                 "properties": {
-                    "type": "EUCALYPTUS"
+                    "type": "eucalyptus"
                 }
             },
             "leaf": {
                 "name": "natura:overworld_leaves2",
                 "properties": {
-                    "type": "EUCALYPTUS"
+                    "type": "eucalyptus"
                 }
             },
             "max_leaf_distance": 3,
@@ -72,13 +72,13 @@
             "trunk": {
                 "name": "natura:nether_logs",
                 "properties": {
-                    "type": "GHOSTWOOD"
+                    "type": "ghostwood"
                 }
             },
             "leaf": {
                 "name": "natura:nether_leaves",
                 "properties": {
-                    "type": "GHOSTWOOD"
+                    "type": "ghostwood"
                 }
             },
             "max_leaf_distance": 6,
@@ -89,13 +89,13 @@
             "trunk": {
                 "name": "natura:nether_logs",
                 "properties": {
-                    "type": "FUSEWOOD"
+                    "type": "fusewood"
                 }
             },
             "leaf": {
                 "name": "natura:nether_leaves",
                 "properties": {
-                    "type": "FUSEWOOD"
+                    "type": "fusewood"
                 }
             },
             "max_leaf_distance": 3,
@@ -106,17 +106,26 @@
             "trunk": {
                 "name": "natura:nether_logs",
                 "properties": {
-                    "type": "DARKWOOD"
+                    "type": "darkwood"
                 }
             },
             "leaf": {
-                "name": "natura:nether_leaves2",
-                "properties": {
-                    "type": "DARKWOOD"
-                }
+                "name": "natura:nether_leaves2"
             },
             "max_leaf_distance": 3,
             "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": "natura:nether_logs2",
+            "leaf": {
+                "name": "natura:nether_leaves",
+                "properties": {
+                    "type": "bloodwood"
+                }
+            },
+            "max_leaf_distance": 3,
+            "next_block_search": "connected_down_or_level"
         }
     ]
 }

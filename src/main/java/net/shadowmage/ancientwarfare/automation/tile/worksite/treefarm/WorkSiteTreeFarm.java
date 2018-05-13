@@ -107,7 +107,7 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 			if (isUnwantedPlant(world.getBlockState(position).getBlock())) {
 				world.setBlockToAir(position);
 			}
-			if (canReplace(position) && tryPlace(plantable.get().copy(), position, EnumFacing.UP)) {
+			if (canReplace(position) && (tryPlace(plantable.get().copy(), position, EnumFacing.UP) || tryPlace(plantable.get().copy(), position, EnumFacing.DOWN))) {
 				InventoryTools.removeItems(plantableInventory, plantable.get(), 1);
 				return true;
 			}
@@ -218,7 +218,7 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 	protected void scanBlockPosition(BlockPos scanPos) {
 		if (canReplace(scanPos)) {
 			IBlockState state = world.getBlockState(scanPos.down());
-			if (TreeFarmRegistry.isSoil(state)) {
+			if (TreeFarmRegistry.isSoil(state) || (state.getMaterial() == Material.AIR && TreeFarmRegistry.isSoil(world.getBlockState(scanPos.up())))) {
 				blocksToPlant.add(scanPos);
 			}
 		} else {

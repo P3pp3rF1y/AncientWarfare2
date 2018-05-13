@@ -146,6 +146,15 @@ public class DefaultTreeScanner implements ITreeScanner {
 		}
 	};
 
+	public static final INextPositionGetter CONNECTED_DOWN_OR_LEVEL = new INextPositionGetter() {
+		private final EnumFacing[] OFFSETS = new EnumFacing[] {EnumFacing.NORTH, EnumFacing.EAST, EnumFacing.SOUTH, EnumFacing.WEST, EnumFacing.DOWN};
+
+		@Override
+		public Stream<BlockPos> getPositionsToScan(BlockPos currentPos) {
+			return Arrays.stream(OFFSETS).map(currentPos::offset);
+		}
+	};
+
 	public static final INextPositionGetter ALL_UP_OR_LEVEL = currentPos -> {
 		Iterable<BlockPos> blocksInBox = getPositionsInBoxOrderedByY(currentPos.add(-1, 0, -1), currentPos.add(1, 1, 1));
 		return StreamSupport.stream(blocksInBox.spliterator(), false);

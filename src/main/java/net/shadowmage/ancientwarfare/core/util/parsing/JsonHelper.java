@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.core.util.parsing;
 
+import com.google.common.base.Optional;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -17,7 +18,6 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.IForgeRegistryEntry;
 
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.MissingResourceException;
@@ -93,9 +93,13 @@ public class JsonHelper {
 		for (Map.Entry<String, String> prop : properties.entrySet()) {
 			IProperty<?> property = stateContainer.getProperty(prop.getKey());
 			//noinspection ConstantConditions
-			Comparable<?> value = getValueHelper(property, prop.getValue());
+			Optional<?> value = getValueHelper(property, prop.getValue());
+
+			if (!value.isPresent()) {
+				throw new MissingResourceException("Invalid value \"" + prop.getValue() + "\" for property \"" + prop.getKey() + "\"", IProperty.class.getName(), prop.getKey());
+			}
 			//noinspection ConstantConditions
-			ret = addProperty.apply(ret, property, value);
+			ret = addProperty.apply(ret, property, (Comparable<?>) value.get());
 		}
 
 		return ret;
@@ -141,9 +145,8 @@ public class JsonHelper {
 		return getBlockNameAndProperties(JsonUtils.getJsonObject(parent, elementName));
 	}
 
-	@Nullable
-	private static <T extends Comparable<T>> T getValueHelper(IProperty<T> property, String valueString) {
-		return property.parseValue(valueString).orNull();
+	private static <T extends Comparable<T>> Optional<T> getValueHelper(IProperty<T> property, String valueString) {
+		return property.parseValue(valueString);
 	}
 
 	private static <T extends Comparable<T>> IBlockState getBlockState(IBlockState state, IProperty<T> property, Comparable<?> value) {
@@ -184,13 +187,13 @@ public class JsonHelper {
 			throw new MissingResourceException("Block \"" + state.getBlock().getRegistryName().toString() + "\" doesn't have \"" + propName + "\" property",
 					IProperty.class.getName(), propName);
 		}
-		Comparable<?> value = getValueHelper(property, propValue);
-		if (value == null) {
+		Optional<?> value = getValueHelper(property, propValue);
+		if (!value.isPresent()) {
 			throw new MissingResourceException("Invalid value \"" + propValue + "\" for property \"" + propName + "\"", IProperty.class.getName(), propName);
 		}
 
 		//noinspection unchecked
-		return new PropertyState(property, value);
+		return new PropertyState(property, (Comparable) value.get());
 	}
 
 	public static PropertyStateMatcher getPropertyStateMatcher(IBlockState state, JsonObject parent, String elementName) {
