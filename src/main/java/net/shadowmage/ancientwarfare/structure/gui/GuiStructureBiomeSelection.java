@@ -11,7 +11,6 @@ import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
-import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 
 import java.util.Set;
 
@@ -95,9 +94,10 @@ public class GuiStructureBiomeSelection extends GuiContainerBase {
 			if (biome == null) {
 				continue;
 			}
-			name = AWStructureStatics.getBiomeName(biome);
-			if (name.contains(searchBox.getText())) {
-				box = new BiomeCheck(totalHeight, name);
+			//noinspection ConstantConditions
+			name = biome.getRegistryName().toString();
+			if (name.contains(searchBox.getText()) || biome.getBiomeName().contains(searchBox.getText())) {
+				box = new BiomeCheck(totalHeight, biome);
 				area.addGuiElement(box);
 				totalHeight += 16;
 				if (biomeNames.contains(name)) {
@@ -123,9 +123,10 @@ public class GuiStructureBiomeSelection extends GuiContainerBase {
 		 * @param topLeftY height of display
 		 * @param label text displayed
 		 */
-		public BiomeCheck(int topLeftY, String label) {
-			super(8, topLeftY, 16, 16, label);
-			this.name = label;
+		public BiomeCheck(int topLeftY, Biome biome) {
+			super(8, topLeftY, 16, 16, String.format("%s (%s)", biome.getBiomeName(), biome.getRegistryName().toString()));
+			//noinspection ConstantConditions
+			this.name = biome.getRegistryName().toString();
 		}
 	}
 }

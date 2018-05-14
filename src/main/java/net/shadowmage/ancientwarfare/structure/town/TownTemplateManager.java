@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.structure.town;
 
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,7 +35,8 @@ public class TownTemplateManager {
 		int min = Math.min(width, length);
 		int templateMinimumSize;
 
-		String biomeName = AWStructureStatics.getBiomeName(world.getBiome(new BlockPos(x, 1, z)));
+		//noinspection ConstantConditions
+		String biomeName = world.getBiome(new BlockPos(x, 1, z)).getRegistryName().toString();
 		int totalWeight = 0;
 		for (TownTemplate t : templates.values()) {
 			templateMinimumSize = t.getMinSize();

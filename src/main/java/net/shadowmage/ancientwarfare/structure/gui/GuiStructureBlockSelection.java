@@ -151,7 +151,8 @@ public class GuiStructureBlockSelection extends GuiContainerBase {
 			if (biome == null) {
 				continue;
 			}
-			if (whitelist && selectedBiomes.contains(biome.getBiomeName()) || !whitelist && !selectedBiomes.contains(biome.getBiomeName())) {
+			//noinspection ConstantConditions
+			if (whitelist && selectedBiomes.contains(biome.getRegistryName().toString()) || !whitelist && !selectedBiomes.contains(biome.getRegistryName().toString())) {
 				biomesToSearch.add(biome);
 			}
 		}

@@ -62,8 +62,7 @@ public class WorldGenStructureManager {
 			if (biome == null) {
 				continue;
 			}
-			String name = AWStructureStatics.getBiomeName(biome);
-			templatesByBiome.put(name, new HashSet<>());
+			templatesByBiome.put(biome.getRegistryName().toString(), new HashSet<>());
 		}
 	}
 
@@ -72,8 +71,8 @@ public class WorldGenStructureManager {
 		Set<String> biomes = validation.getBiomeList();
 		if (validation.isBiomeWhiteList()) {
 			for (String biome : biomes) {
-				if (templatesByBiome.containsKey(biome.toLowerCase(Locale.ENGLISH))) {
-					templatesByBiome.get(biome.toLowerCase(Locale.ENGLISH)).add(template);
+				if (templatesByBiome.containsKey(biome)) {
+					templatesByBiome.get(biome).add(template);
 				} else {
 					AWLog.logError("Could not locate biome: " + biome + " while registering template: " + template.name + " for world generation.");
 				}
@@ -101,7 +100,7 @@ public class WorldGenStructureManager {
 		float foundDistance, mx, mz;
 
 		Biome biome = world.getBiome(new BlockPos(x, 1, z));
-		String biomeName = AWStructureStatics.getBiomeName(biome);
+		String biomeName = biome.getRegistryName().toString();
 		Collection<StructureEntry> duplicateSearchEntries = map.getEntriesNear(world, x, z, AWStructureStatics.duplicateStructureSearchRange, false, searchCache);
 		for (StructureEntry entry : duplicateSearchEntries) {
 			mx = entry.getBB().getCenterX() - x;
@@ -122,7 +121,7 @@ public class WorldGenStructureManager {
 		for (StructureEntry entry : clusterValueSearchEntries) {
 			foundValue += entry.getValue();
 		}
-		Set<StructureTemplate> potentialStructures = templatesByBiome.get(biomeName.toLowerCase(Locale.ENGLISH));
+		Set<StructureTemplate> potentialStructures = templatesByBiome.get(biomeName);
 		if (potentialStructures == null || potentialStructures.isEmpty()) {
 			return null;
 		}
