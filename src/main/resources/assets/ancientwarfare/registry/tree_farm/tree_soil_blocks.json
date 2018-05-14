@@ -1,13 +1,13 @@
 {
     "soils": [
         {
-            "soil": "minecraft:dirt"
+            "name": "minecraft:dirt"
         },
         {
-            "soil": "minecraft:grass"
+            "name": "minecraft:grass"
         },
         {
-            "soil": "minecraft:mycelium"
+            "name": "minecraft:mycelium"
         }
     ]
 }

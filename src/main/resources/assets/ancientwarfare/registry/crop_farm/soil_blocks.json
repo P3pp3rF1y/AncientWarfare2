@@ -1,10 +1,10 @@
 {
     "soils": [
         {
-            "soil": "minecraft:sand"
+            "name": "minecraft:sand"
         },
         {
-            "soil": "minecraft:soul_sand"
+            "name": "minecraft:soul_sand"
         }
     ]
 }

@@ -2,7 +2,7 @@
     "mod": "natura",
     "soils": [
         {
-            "soil": "minecraft:netherrack"
+            "name": "minecraft:netherrack"
         }
     ]
 }

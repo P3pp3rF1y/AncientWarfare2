@@ -90,8 +90,7 @@ public class TreeFarmRegistry {
 			JsonArray soils = JsonUtils.getJsonArray(json, "soils");
 
 			for (JsonElement t : soils) {
-				JsonObject soil = JsonUtils.getJsonObject(t, "");
-				soilBlocks.add(JsonHelper.getBlockStateMatcher(soil, "soil"));
+				soilBlocks.add(JsonHelper.getBlockStateMatcher(JsonUtils.getJsonObject(t, "")));
 			}
 		}
 	}
