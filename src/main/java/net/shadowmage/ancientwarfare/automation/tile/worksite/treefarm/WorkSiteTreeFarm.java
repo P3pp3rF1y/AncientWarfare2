@@ -18,6 +18,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.shadowmage.ancientwarfare.automation.registry.TreeFarmRegistry;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteFarm;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -33,19 +35,16 @@ import java.util.Set;
 
 public class WorkSiteTreeFarm extends TileWorksiteFarm {
 	private boolean hasShears;
-	private final Set<BlockPos> blocksToShear;
-	private final Set<BlockPos> blocksToChop;
-	private final Set<BlockPos> blocksToPlant;
-	private final Set<BlockPos> blocksToFertilize;
+	private final Set<BlockPos> blocksToShear = new LinkedHashSet<>();
+	private final Set<BlockPos> blocksToChop = new LinkedHashSet<>();
+	private final Set<BlockPos> blocksToPlant = new HashSet<>();
+	private final Set<BlockPos> blocksToFertilize = new HashSet<>();
 
-	private BlockPos lastNoChopsPosition = BlockPos.ORIGIN;
+	private final IItemHandler inventoryForDrops;
 
 	public WorkSiteTreeFarm() {
 		super();
-		blocksToChop = new LinkedHashSet<>();
-		blocksToPlant = new HashSet<>();
-		blocksToFertilize = new HashSet<>();
-		blocksToShear = new LinkedHashSet<>();
+		inventoryForDrops = new CombinedInvWrapper(plantableInventory, mainInventory);
 	}
 
 	@Override
@@ -122,7 +121,14 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 		Iterator<BlockPos> it = blocksToChop.iterator();
 		BlockPos position = it.next();
 		it.remove();
-		return harvestBlock(position);
+		IBlockState state = world.getBlockState(position);
+		IBlockExtraDrop extraDrop = TreeFarmRegistry.getBlockExtraDrop(state);
+		NonNullList<ItemStack> extraDrops = extraDrop.getDrops(world, position, state, getFortune());
+		if (!harvestBlock(position)) {
+			return false;
+		}
+		InventoryTools.insertOrDropItems(inventoryForDrops, extraDrops, world, position);
+		return true;
 	}
 
 	private boolean shearBlock() {
@@ -158,10 +164,6 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 
 	private void addTreeBlocks(IBlockState state, BlockPos basePos) {
 		world.profiler.startSection("TreeFinder");
-		if (lastNoChopsPosition.equals(basePos)) {
-			setWorkRetryDelay(100);
-			return;
-		}
 
 		ITree tree = TreeFarmRegistry.getTreeScanner(state).scanTree(world, basePos);
 		List<BlockPos> leafBlocks = tree.getLeafPositions();
@@ -173,11 +175,8 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 		List<BlockPos> trunkBlocks = tree.getTrunkPositions();
 		blocksToChop.addAll(trunkBlocks);
 
-		if (leafBlocks.isEmpty() && trunkBlocks.isEmpty()) {
-			lastNoChopsPosition = basePos;
-		} else {
+		if (!leafBlocks.isEmpty() || !trunkBlocks.isEmpty()) {
 			markDirty();
-			lastNoChopsPosition = BlockPos.ORIGIN;
 		}
 		world.profiler.endSection();
 	}

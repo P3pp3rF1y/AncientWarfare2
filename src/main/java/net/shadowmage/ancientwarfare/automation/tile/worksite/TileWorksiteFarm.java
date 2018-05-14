@@ -109,7 +109,6 @@ public abstract class TileWorksiteFarm extends TileWorksiteBoundedInventory {
 		InventoryTools.dropItemsInWorld(world, miscInventory, pos);
 	}
 
-	//TODO refactor this to break into getdrops / check for space / actual harvest / insert into inventories
 	protected boolean harvestBlock(BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();

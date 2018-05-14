@@ -10,9 +10,14 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.JsonUtils;
+import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlocks;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ChorusFlowerDrop;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ChorusScanner;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.DefaultTreeScanner;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.IBlockExtraDrop;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ITreeScanner;
 import net.shadowmage.ancientwarfare.core.registry.IRegistryDataParser;
 import net.shadowmage.ancientwarfare.core.util.parsing.BlockStateMatcher;
@@ -34,11 +39,14 @@ public class TreeFarmRegistry {
 
 	private static Set<Predicate<ItemStack>> plantables = new HashSet<>();
 	private static Set<BlockStateMatcher> soilBlocks = new HashSet<>();
+	private static Set<IBlockExtraDrop> extraBlockDrops = new HashSet<>();
 	private static List<ITreeScanner> treeScanners = new ArrayList<>();
 
 	static {
 		plantables.add(s -> s.getItem() instanceof ItemBlock && ((ItemBlock) s.getItem()).getBlock() instanceof BlockSapling);
 		plantables.add(s -> s.getItem() instanceof ItemBlock && ((ItemBlock) s.getItem()).getBlock() instanceof BlockMushroom);
+
+		extraBlockDrops.add(new ChorusFlowerDrop());
 	}
 
 	private static void registerTreeScanner(ITreeScanner treeScanner) {
@@ -60,6 +68,10 @@ public class TreeFarmRegistry {
 
 	public static boolean isSoil(IBlockState state) {
 		return soilBlocks.stream().anyMatch(m -> m.test(state));
+	}
+
+	public static IBlockExtraDrop getBlockExtraDrop(IBlockState state) {
+		return extraBlockDrops.stream().filter(b -> b.matches(state)).findFirst().orElse(EMPTY_EXTRA_DROP);
 	}
 
 	public static class PlantableParser implements IRegistryDataParser {
@@ -154,4 +166,16 @@ public class TreeFarmRegistry {
 			}
 		}
 	}
+
+	public static final IBlockExtraDrop EMPTY_EXTRA_DROP = new IBlockExtraDrop() {
+		@Override
+		public boolean matches(IBlockState state) {
+			return true;
+		}
+
+		@Override
+		public NonNullList<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
+			return NonNullList.create();
+		}
+	};
 }

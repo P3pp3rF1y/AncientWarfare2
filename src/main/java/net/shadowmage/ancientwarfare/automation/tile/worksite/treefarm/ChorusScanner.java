@@ -9,9 +9,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class ChorusScanner implements ITreeScanner {
 	@Override
@@ -24,37 +22,31 @@ public class ChorusScanner implements ITreeScanner {
 	private void scanBranchHarvestableBlocks(Branch parentBranch, World world, BlockPos startPos, EnumFacing avoidDirection) {
 		boolean continueSearch;
 		BlockPos currentPos = startPos;
+		EnumFacing avoidNext = avoidDirection;
 
 		Branch childBranch = new Branch();
-		Set<BlockPos> alreadyScanned = new HashSet<>();
 		parentBranch.addChildBranch(childBranch);
 
 		do {
 			continueSearch = false;
 
+			childBranch.addTrunkPos(currentPos);
+
 			IBlockState state = world.getBlockState(currentPos);
 			if (state.getBlock() == Blocks.CHORUS_FLOWER) {
-				childBranch.addTrunkPos(currentPos);
 				if (state.getValue(BlockChorusFlower.AGE) == 5) {
 					childBranch.setMature();
 				}
 				return;
 			}
 
-			//
-			if (alreadyScanned.contains(currentPos)) {
-				childBranch.setMature();
-				return;
-			}
-
-			childBranch.addTrunkPos(currentPos);
-			alreadyScanned.add(currentPos);
-
-			List<EnumFacing> connectedSides = getConnectedSides(avoidDirection, world, currentPos);
+			List<EnumFacing> connectedSides = getConnectedSides(avoidNext, world, currentPos);
 
 			if (connectedSides.size() == 1) {
 				continueSearch = true;
-				currentPos = currentPos.offset(connectedSides.get(0));
+				EnumFacing nextFacing = connectedSides.get(0);
+				currentPos = currentPos.offset(nextFacing);
+				avoidNext = nextFacing.getOpposite();
 			} else if (connectedSides.size() > 1) {
 				//multiple branches attached
 				scanConnectedBranchsBlocks(childBranch, world, currentPos, connectedSides);
@@ -62,6 +54,9 @@ public class ChorusScanner implements ITreeScanner {
 				return;
 			}
 		} while (continueSearch);
+
+		//there's no chorus flower at the end of this branch so let's harvest it
+		childBranch.setMature();
 	}
 
 	private void scanConnectedBranchsBlocks(Branch parentBranch, World world, BlockPos currentPos, List<EnumFacing> connectedSides) {
