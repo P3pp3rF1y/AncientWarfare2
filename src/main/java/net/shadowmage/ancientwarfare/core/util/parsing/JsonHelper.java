@@ -34,12 +34,12 @@ public class JsonHelper {
 
 	public static BlockStateMatcher getBlockStateMatcher(JsonObject stateJson) {
 		//noinspection ConstantConditions
-		return getBlockState(stateJson, block -> new BlockStateMatcher(block.getRegistryName()), BlockStateMatcher::addProperty);
+		return getBlockState(stateJson, BlockStateMatcher::new, BlockStateMatcher::addProperty);
 	}
 
 	public static BlockStateMatcher getBlockStateMatcher(JsonObject parent, String elementName) {
 		//noinspection ConstantConditions
-		return getBlockState(parent, elementName, block -> new BlockStateMatcher(block.getRegistryName()), BlockStateMatcher::addProperty);
+		return getBlockState(parent, elementName, BlockStateMatcher::new, BlockStateMatcher::addProperty);
 	}
 
 	public static ItemStack getItemStack(JsonObject json, String elementName) {
