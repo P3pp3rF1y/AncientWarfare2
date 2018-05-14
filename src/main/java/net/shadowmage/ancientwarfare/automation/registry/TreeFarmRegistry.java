@@ -3,7 +3,6 @@ package net.shadowmage.ancientwarfare.automation.registry;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockMushroom;
 import net.minecraft.block.BlockSapling;
 import net.minecraft.block.material.Material;
@@ -32,13 +31,13 @@ public class TreeFarmRegistry {
 			new DefaultTreeScanner(st -> st.getMaterial() == Material.WOOD && st.getBlock() != AWAutomationBlocks.worksiteTreeFarm
 					, sl -> sl.getMaterial() == Material.LEAVES);
 
-	private static Set<Predicate<Block>> plantables = new HashSet<>();
+	private static Set<Predicate<ItemStack>> plantables = new HashSet<>();
 	private static Set<BlockStateMatcher> soilBlocks = new HashSet<>();
 	private static List<ITreeScanner> treeScanners = new ArrayList<>();
 
 	static {
-		plantables.add(b -> b instanceof BlockSapling);
-		plantables.add(b -> b instanceof BlockMushroom);
+		plantables.add(s -> s.getItem() instanceof ItemBlock && ((ItemBlock) s.getItem()).getBlock() instanceof BlockSapling);
+		plantables.add(s -> s.getItem() instanceof ItemBlock && ((ItemBlock) s.getItem()).getBlock() instanceof BlockMushroom);
 	}
 
 	private static void registerTreeScanner(ITreeScanner treeScanner) {
@@ -54,16 +53,30 @@ public class TreeFarmRegistry {
 	}
 
 	public static boolean isPlantable(ItemStack stack) {
-		return stack.getItem() instanceof ItemBlock && plantables.stream().anyMatch(p -> p.test(((ItemBlock) stack.getItem()).getBlock()));
-	}
-
-	public static boolean isPlantable(Block block) {
-		return plantables.stream().anyMatch(p -> p.test(block));
+		return stack.getItem() instanceof ItemBlock && plantables.stream().anyMatch(p -> p.test(stack));
 	}
 
 	public static boolean isSoil(IBlockState state) {
 		return soilBlocks.stream().anyMatch(m -> m.test(state));
 	}
+
+	public static class PlantableParser implements IRegistryDataParser {
+
+		@Override
+		public String getName() {
+			return "saplings";
+		}
+
+		@Override
+		public void parse(JsonObject json) {
+			JsonArray saplings = JsonUtils.getJsonArray(json, "saplings");
+
+			for (JsonElement sapling : saplings) {
+				plantables.add(JsonHelper.getItemStackMatcher(JsonUtils.getJsonObject(sapling, "")));
+			}
+		}
+	}
+
 
 	public static class SoilParser implements IRegistryDataParser {
 
@@ -74,9 +87,9 @@ public class TreeFarmRegistry {
 
 		@Override
 		public void parse(JsonObject json) {
-			JsonArray plantables = JsonUtils.getJsonArray(json, "soils");
+			JsonArray soils = JsonUtils.getJsonArray(json, "soils");
 
-			for (JsonElement t : plantables) {
+			for (JsonElement t : soils) {
 				JsonObject soil = JsonUtils.getJsonObject(t, "");
 				soilBlocks.add(JsonHelper.getBlockStateMatcher(soil, "soil"));
 			}
@@ -125,8 +138,6 @@ public class TreeFarmRegistry {
 
 			private static DefaultTreeScanner.INextPositionGetter parseNextPositionGetter(JsonObject treeScanner) {
 				switch (JsonUtils.getString(treeScanner, "next_block_search")) {
-					case "connected_up_or_level":
-						return DefaultTreeScanner.CONNECTED_UP_OR_LEVEL;
 					case "all_up_or_level":
 						return DefaultTreeScanner.ALL_UP_OR_LEVEL;
 					case "all_around":
@@ -135,6 +146,7 @@ public class TreeFarmRegistry {
 						return DefaultTreeScanner.CONNECTED_AROUND;
 					case "connected_down_or_level":
 						return DefaultTreeScanner.CONNECTED_DOWN_OR_LEVEL;
+					case "connected_up_or_level":
 					default:
 						return DefaultTreeScanner.CONNECTED_UP_OR_LEVEL;
 				}

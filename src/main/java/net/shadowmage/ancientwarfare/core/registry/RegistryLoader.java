@@ -111,10 +111,12 @@ public class RegistryLoader {
 
 		String shortName = name.substring(name.lastIndexOf('/') + 1);
 		if (!parsers.containsKey(shortName)) {
-			AncientWarfareCore.log.error("No parser defined for file name ", shortName);
+			AncientWarfareCore.log.error("No parser defined for file name {}", shortName);
+			return;
 		}
 
 		IRegistryDataParser parser = parsers.get(shortName);
+
 		BufferedReader reader = null;
 		try {
 			reader = Files.newBufferedReader(file);

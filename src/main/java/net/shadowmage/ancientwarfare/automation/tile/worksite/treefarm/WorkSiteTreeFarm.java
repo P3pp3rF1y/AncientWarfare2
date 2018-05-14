@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockBush;
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -104,9 +103,6 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 			Iterator<BlockPos> it = blocksToPlant.iterator();
 			BlockPos position = it.next();
 			it.remove();
-			if (isUnwantedPlant(world.getBlockState(position).getBlock())) {
-				world.setBlockToAir(position);
-			}
 			if (canReplace(position) && (tryPlace(plantable.get().copy(), position, EnumFacing.UP) || tryPlace(plantable.get().copy(), position, EnumFacing.DOWN))) {
 				InventoryTools.removeItems(plantableInventory, plantable.get(), 1);
 				return true;
@@ -218,28 +214,22 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 	protected void scanBlockPosition(BlockPos scanPos) {
 		if (canReplace(scanPos)) {
 			IBlockState state = world.getBlockState(scanPos.down());
-			if (TreeFarmRegistry.isSoil(state) || (state.getMaterial() == Material.AIR && TreeFarmRegistry.isSoil(world.getBlockState(scanPos.up())))) {
+			if (TreeFarmRegistry.isSoil(state) || (state.getBlock().isReplaceable(world, scanPos.down()) && TreeFarmRegistry
+					.isSoil(world.getBlockState(scanPos.up())))) {
 				blocksToPlant.add(scanPos);
 			}
 		} else {
 			IBlockState state = world.getBlockState(scanPos);
-			Block block = state.getBlock();
 			if (canFertilize(world, scanPos, state)) {
 				blocksToFertilize.add(scanPos);
 			} else if (state.getMaterial() == Material.WOOD && !blocksToChop.contains(scanPos)) {
 				addTreeBlocks(state, scanPos);
-			} else if (isUnwantedPlant(block)) {
-				blocksToPlant.add(scanPos);
 			}
 		}
 	}
 
 	private boolean canFertilize(World world, BlockPos pos, IBlockState state) {
 		return state.getBlock() instanceof IGrowable && ((IGrowable) state.getBlock()).canGrow(world, pos, state, world.isRemote);
-	}
-
-	private boolean isUnwantedPlant(Block block) {
-		return block instanceof BlockBush && !TreeFarmRegistry.isPlantable(block);
 	}
 
 	@Override

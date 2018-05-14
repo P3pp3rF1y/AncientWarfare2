@@ -43,33 +43,40 @@ public class JsonHelper {
 	}
 
 	public static ItemStack getItemStack(JsonObject json, String elementName) {
-		return getItemStack(json, elementName, (i, m) -> new ItemStack(i, 1, m));
+		return getItemStack(json, elementName, (i, m) -> new ItemStack(i, 1, m), ItemStack::new);
 	}
 
-	private static <T> T getItemStack(JsonObject parent, String elementName, BiFunction<Item, Integer, T> instantiate) {
+	private static <T> T getItemStack(JsonObject parent, String elementName, BiFunction<Item, Integer, T> instantiate, Function<Item, T> instantiateNoMeta) {
 		if (!JsonUtils.hasField(parent, elementName)) {
 			throw new JsonParseException("Expected " + elementName + " member in " + parent.toString());
 		}
 
-		String registryName;
-		int meta = 0;
+		return getItemStack(parent.get(elementName), instantiate, instantiateNoMeta);
+	}
 
-		if (JsonUtils.isJsonPrimitive(parent, elementName)) {
-			registryName = JsonUtils.getString(parent, elementName);
-		} else {
-			JsonObject obj = JsonUtils.getJsonObject(parent, elementName);
-			registryName = JsonUtils.getString(obj, "name");
+	private static <T> T getItemStack(JsonElement element, BiFunction<Item, Integer, T> instantiate, Function<Item, T> instantiateNoMeta) {
 
-			if (JsonUtils.hasField(obj, "meta")) {
-				meta = JsonUtils.getInt(obj, "meta");
-			}
+		if (element.isJsonPrimitive()) {
+			return instantiateNoMeta.apply(getItem(element.getAsString()));
 		}
 
-		return instantiate.apply(getItem(registryName), meta);
+		JsonObject obj = element.getAsJsonObject();
+		String registryName = JsonUtils.getString(obj, "name");
+		Item item = getItem(registryName);
+
+		if (JsonUtils.hasField(obj, "meta")) {
+			return instantiate.apply(item, JsonUtils.getInt(obj, "meta"));
+		}
+
+		return instantiateNoMeta.apply(getItem(registryName));
+	}
+
+	public static ItemStackMatcher getItemStackMatcher(JsonObject element) {
+		return getItemStack(element, ItemStackMatcher::new, ItemStackMatcher::new);
 	}
 
 	public static ItemStackMatcher getItemStackMatcher(JsonObject parent, String elementName) {
-		return getItemStack(parent, elementName, ItemStackMatcher::new);
+		return getItemStack(parent, elementName, ItemStackMatcher::new, ItemStackMatcher::new);
 	}
 
 	private static <T> T getBlockState(JsonObject stateJson, Function<Block, T> init, AddPropertyFunction<T> addProperty) {
