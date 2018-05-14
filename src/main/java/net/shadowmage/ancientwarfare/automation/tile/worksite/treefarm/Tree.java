@@ -6,8 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Tree implements ITree {
+	public static final Tree EMPTY = new Tree();
 	private final List<BlockPos> trunkPositions = new ArrayList<>();
 	private final List<BlockPos> leafPositions = new ArrayList<>();
+
+	private Tree() {
+	}
 
 	public Tree(BlockPos initialTrunkPos) {
 		trunkPositions.add(initialTrunkPos);

@@ -171,6 +171,10 @@ public abstract class TileWorksiteBase extends TileUpdatable
 		efficiencyBonusFactor = IWorkSite.WorksiteImplementation.getEfficiencyFactor(upgrades);
 	}
 
+	protected void setWorkRetryDelay(int workRetryDelay) {
+		this.workRetryDelay = workRetryDelay;
+	}
+
 	//************************************** TILE INTERACTION METHODS ***************************************//
 
 	@Override

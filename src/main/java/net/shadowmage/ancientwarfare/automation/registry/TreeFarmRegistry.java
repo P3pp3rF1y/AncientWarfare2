@@ -11,6 +11,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.JsonUtils;
 import net.shadowmage.ancientwarfare.automation.block.AWAutomationBlocks;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ChorusScanner;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.DefaultTreeScanner;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ITreeScanner;
 import net.shadowmage.ancientwarfare.core.registry.IRegistryDataParser;
@@ -46,6 +47,7 @@ public class TreeFarmRegistry {
 
 	static {
 		registerTreeScanner(DEFAULT_TREE_SCANNER);
+		registerTreeScanner(new ChorusScanner());
 	}
 
 	public static ITreeScanner getTreeScanner(IBlockState state) {

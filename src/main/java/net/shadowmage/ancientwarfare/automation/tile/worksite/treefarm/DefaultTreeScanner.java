@@ -47,6 +47,10 @@ public class DefaultTreeScanner implements ITreeScanner {
 	public ITree scanTree(World world, BlockPos pos) {
 		HorizontalAABB trunkBounds = new HorizontalAABB(pos);
 
+		if (!isTrunk(world.getBlockState(pos))) {
+			return Tree.EMPTY;
+		}
+
 		List<BlockPos> openList = new ArrayList<>();
 		Set<BlockPos> alreadyScanned = new HashSet<>();
 		openList.add(pos);

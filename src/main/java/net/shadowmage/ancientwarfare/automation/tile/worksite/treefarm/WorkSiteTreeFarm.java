@@ -38,6 +38,8 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 	private final Set<BlockPos> blocksToPlant;
 	private final Set<BlockPos> blocksToFertilize;
 
+	private BlockPos lastNoChopsPosition = BlockPos.ORIGIN;
+
 	public WorkSiteTreeFarm() {
 		super();
 		blocksToChop = new LinkedHashSet<>();
@@ -156,7 +158,11 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 
 	private void addTreeBlocks(IBlockState state, BlockPos basePos) {
 		world.profiler.startSection("TreeFinder");
-		int chops = blocksToChop.size();
+		if (lastNoChopsPosition.equals(basePos)) {
+			setWorkRetryDelay(100);
+			return;
+		}
+
 		ITree tree = TreeFarmRegistry.getTreeScanner(state).scanTree(world, basePos);
 		List<BlockPos> leafBlocks = tree.getLeafPositions();
 		if (hasShears) {
@@ -164,10 +170,14 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 		} else {
 			blocksToChop.addAll(leafBlocks);
 		}
-		blocksToChop.addAll(tree.getTrunkPositions());
+		List<BlockPos> trunkBlocks = tree.getTrunkPositions();
+		blocksToChop.addAll(trunkBlocks);
 
-		if (blocksToChop.size() != chops) {
+		if (leafBlocks.isEmpty() && trunkBlocks.isEmpty()) {
+			lastNoChopsPosition = basePos;
+		} else {
 			markDirty();
+			lastNoChopsPosition = BlockPos.ORIGIN;
 		}
 		world.profiler.endSection();
 	}
@@ -222,7 +232,7 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 			IBlockState state = world.getBlockState(scanPos);
 			if (canFertilize(world, scanPos, state)) {
 				blocksToFertilize.add(scanPos);
-			} else if (state.getMaterial() == Material.WOOD && !blocksToChop.contains(scanPos)) {
+			} else if (state.getMaterial() != Material.AIR && blocksToChop.isEmpty()) {
 				addTreeBlocks(state, scanPos);
 			}
 		}
