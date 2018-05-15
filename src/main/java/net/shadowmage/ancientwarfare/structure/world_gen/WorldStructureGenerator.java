@@ -118,8 +118,9 @@ public class WorldStructureGenerator implements IWorldGenerator {
 	public static int getTargetY(World world, int x, int z, boolean skipWater) {
 		Block block;
 		for (int y = world.getActualHeight(); y > 0; y--) {
-			block = world.getBlockState(new BlockPos(x, y, z)).getBlock();
-			if (AWStructureStatics.skippableBlocksContains(block)) {
+			IBlockState state = world.getBlockState(new BlockPos(x, y, z));
+			block = state.getBlock();
+			if (AWStructureStatics.isSkippable(state)) {
 				continue;
 			}
 			if (skipWater && (block == Blocks.WATER || block == Blocks.FLOWING_WATER)) {

@@ -93,8 +93,9 @@ public class StructureValidatorGround extends StructureValidator {
 		}
 		int y = bb.min.getY() + template.yOffset + step - 1;
 		BlockPos pos = new BlockPos(x, y, z);
-		Block block = world.getBlockState(pos).getBlock();
-		if (block != null && block != Blocks.AIR && block != Blocks.FLOWING_WATER && block != Blocks.WATER && !AWStructureStatics.skippableBlocksContains(block)) {
+		IBlockState state = world.getBlockState(pos);
+		Block block = state.getBlock();
+		if (block != Blocks.FLOWING_WATER && block != Blocks.WATER && !AWStructureStatics.isSkippable(state)) {
 			world.setBlockState(pos, fillBlock);
 		}
 
@@ -102,7 +103,8 @@ public class StructureValidatorGround extends StructureValidator {
 		for (int y1 = y + 1; y1 < world.getHeight(); y1++)//lazy clear block handling
 		{
 			pos = new BlockPos(x, y1, z);
-			block = world.getBlockState(pos).getBlock();
+			state = world.getBlockState(pos);
+			block = state.getBlock();
 			if (block == Blocks.AIR) {
 				skipCount++;
 				if (skipCount >= 10)//exit out if 10 blocks are found that are not clearable
@@ -112,7 +114,7 @@ public class StructureValidatorGround extends StructureValidator {
 				continue;
 			}
 			skipCount = 0;//if we didn't skip this block, reset skipped count
-			if (AWStructureStatics.skippableBlocksContains(block)) {
+			if (AWStructureStatics.isSkippable(state)) {
 				world.setBlockToAir(pos);
 			}
 		}

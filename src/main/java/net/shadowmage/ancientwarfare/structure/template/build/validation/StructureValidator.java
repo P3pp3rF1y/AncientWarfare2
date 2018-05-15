@@ -535,7 +535,7 @@ public abstract class StructureValidator {
 		BlockPos pos = new BlockPos(x, y, z);
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-		if (block != null && block != Blocks.AIR && state.getMaterial() != Material.WATER && !AWStructureStatics.skippableBlocksContains(block)) {
+		if (block != null && block != Blocks.AIR && state.getMaterial() != Material.WATER && !AWStructureStatics.isSkippable(state)) {
 			world.setBlockState(pos, fillBlock);
 		}
 	}
@@ -547,7 +547,6 @@ public abstract class StructureValidator {
 		int maxFillY = getMaxFillY(template, bb);
 		int step = WorldStructureGenerator.getStepNumber(x, z, bb.min.getX(), bb.max.getX(), bb.min.getZ(), bb.max.getZ());
 		maxFillY -= step;
-		Block block;
 		Biome biome = world.getBiome(new BlockPos(x, 1, z));
 		IBlockState fillBlock = Blocks.GRASS.getDefaultState();
 		if (biome != null && biome.topBlock != null) {
@@ -555,8 +554,9 @@ public abstract class StructureValidator {
 		}
 		for (int y = maxFillY; y > 1; y--) {
 			BlockPos pos = new BlockPos(x, y, z);
-			block = world.getBlockState(pos).getBlock();
-			if (AWStructureStatics.skippableBlocksContains(block) || block == Blocks.WATER || block == Blocks.FLOWING_WATER) {
+			IBlockState state = world.getBlockState(pos);
+			Block block = state.getBlock();
+			if (AWStructureStatics.isSkippable(state) || block == Blocks.WATER || block == Blocks.FLOWING_WATER) {
 				world.setBlockState(pos, fillBlock);
 			}
 		}

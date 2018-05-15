@@ -22,7 +22,8 @@
 package net.shadowmage.ancientwarfare.structure.config;
 
 import net.minecraft.block.Block;
-import net.minecraft.init.Blocks;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
@@ -854,12 +855,22 @@ public class AWStructureStatics extends ModConfiguration {
 		Collections.addAll(worldGenTargetBlocks, targetBlocks);
 	}
 
-	public static boolean isValidTownTargetBlock(Block block) {
-		return !(block == null || block == Blocks.AIR) && townValidTargetBlocks.contains(BlockDataManager.INSTANCE.getNameForBlock(block));
+	public static boolean isValidTownTargetBlock(IBlockState state) {
+		return isValidTargetMaterial(state.getMaterial()) || townValidTargetBlocks.contains(BlockDataManager.INSTANCE.getNameForBlock(state.getBlock()));
 	}
 
-	public static boolean skippableBlocksContains(Block block) {
-		return block == null || block == Blocks.AIR || skippableWorldGenBlocks.contains(BlockDataManager.INSTANCE.getNameForBlock(block));
+	private static boolean isValidTargetMaterial(Material material) {
+		return material == Material.GRASS || material == Material.GROUND || material == Material.ROCK || material == Material.SNOW || material == Material.ICE
+				|| material == Material.PACKED_ICE || material == Material.SAND || material == Material.WATER;
+	}
+
+	public static boolean isSkippable(IBlockState state) {
+		return isSkippableMaterial(state.getMaterial()) || skippableWorldGenBlocks.contains(BlockDataManager.INSTANCE.getNameForBlock(state.getBlock()));
+	}
+
+	private static boolean isSkippableMaterial(Material material) {
+		return material == Material.AIR || material == Material.PLANTS || material == Material.VINE || material == Material.LEAVES || material == Material.WOOD
+				|| material == Material.GOURD || material == Material.CACTUS;
 	}
 
 	public static Set<String> getUserDefinedTargetBlocks() {
