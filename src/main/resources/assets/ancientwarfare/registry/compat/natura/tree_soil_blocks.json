@@ -1,0 +1,8 @@
+{
+    "mod": "natura",
+    "soils": [
+        {
+            "name": "minecraft:netherrack"
+        }
+    ]
+}

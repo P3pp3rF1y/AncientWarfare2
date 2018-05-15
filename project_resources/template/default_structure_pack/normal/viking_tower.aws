@@ -22,11 +22,10 @@ minDuplicateDistance=300
 dimensionWhiteList=true
 dimensionList=0
 biomeWhiteList=true
-biomeList=cold beach,cold taiga hills,taiga m,ice mountains,taiga,cold taiga m,mega spruce taiga,ice plains,cold taiga,taigahills
+biomeList=minecraft:cold_beach,minecraft:taiga_cold_hills,minecraft:mutated_taiga,minecraft:ice_mountains,minecraft:taiga,minecraft:mutated_taiga_cold,minecraft:mutated_redwood_taiga,minecraft:ice_flats,minecraft:taiga_cold,minecraft:taiga_hills,biomesoplenty:cold_desert,biomesoplenty:snowy_forest,biomesoplenty:steppe,biomesoplenty:tundra
 leveling=3
 fill=3
 border=3
-validTargetBlocks=minecraft:sand,minecraft:stone,minecraft:gravel,minecraft:lapis_ore,minecraft:redstone_ore,minecraft:stained_hardened_clay,minecraft:gold_ore,minecraft:clay,minecraft:iron_ore,minecraft:grass,minecraft:dirt,minecraft:diamond_ore,minecraft:coal_ore
 blockSwap=false
 data:
 :enddata

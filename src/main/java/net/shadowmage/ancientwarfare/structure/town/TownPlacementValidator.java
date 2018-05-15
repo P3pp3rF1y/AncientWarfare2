@@ -51,7 +51,7 @@ public class TownPlacementValidator {
 			return null;
 		}
 
-		int minY = (int) Math.min(0, world.provider.getHorizon() - 7);
+		int minY = (int) Math.max(0, world.provider.getHorizon() - 7);
 
 		TownBoundingArea area = new TownBoundingArea();
 		area.minY = Math.max(minY, height - 2);
@@ -211,7 +211,7 @@ public class TownPlacementValidator {
 		for (int y = maxY; y > 0; y--) {
 			IBlockState state = chunk.getBlockState(new BlockPos(x, y, z));
 			block = state.getBlock();
-			if (AWStructureStatics.skippableBlocksContains(block)) {
+			if (AWStructureStatics.isSkippable(state)) {
 				continue;
 			}
 			if (state.getMaterial().isLiquid()) {
@@ -220,7 +220,7 @@ public class TownPlacementValidator {
 				}// >=56 is fillable through underfill/border settings.  below that is too deep for a proper gradient on the border.
 				return -1;//return invalid Y if liquid block is too low
 			}
-			if (!AWStructureStatics.isValidTownTargetBlock(block)) {
+			if (!AWStructureStatics.isValidTargetBlock(state)) {
 				AWLog.logDebug("rejecting town chunk for non-target block: " + block + " :: " + chunk.x + ":" + chunk.z);
 				return -1;
 			}
@@ -228,5 +228,4 @@ public class TownPlacementValidator {
 		}
 		return -1;
 	}
-
 }

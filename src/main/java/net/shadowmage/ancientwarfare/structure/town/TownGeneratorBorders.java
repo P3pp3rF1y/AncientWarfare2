@@ -98,7 +98,7 @@ public class TownGeneratorBorders {
 		for (int y = maxY; y > 0; y--) {
 			IBlockState state = chunk.getBlockState(new BlockPos(x, y, z));
 			block = state.getBlock();
-			if (block == null || block == Blocks.AIR || (skippables && AWStructureStatics.skippableBlocksContains(block)) || state.getMaterial() == Material.WATER) {
+			if (block == null || block == Blocks.AIR || (skippables && AWStructureStatics.isSkippable(state)) || state.getMaterial() == Material.WATER) {
 				continue;
 			}
 			return y;

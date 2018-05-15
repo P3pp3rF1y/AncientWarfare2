@@ -49,6 +49,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.function.Predicate;
 
 public abstract class StructureValidator {
 
@@ -296,8 +297,6 @@ public abstract class StructureValidator {
 		out.newLine();
 		out.write("border=" + validator.getBorderSize());
 		out.newLine();
-		out.write("validTargetBlocks=" + StringTools.getCSVfor(validator.getTargetBlocks()));
-		out.newLine();
 		out.write(StructureValidator.PROP_BLOCK_SWAP + "=" + validator.isBlockSwap());
 		out.newLine();
 		out.write("data:");
@@ -394,10 +393,6 @@ public abstract class StructureValidator {
 		properties.get(PROP_BIOME_LIST).setValue(blocks);
 	}
 
-	public Set<String> getTargetBlocks() {
-		return properties.get(PROP_BLOCK_LIST).getDataStringSet();
-	}
-
 	public Set<String> getBiomeList() {
 		return properties.get(PROP_BIOME_LIST).getDataStringSet();
 	}
@@ -416,26 +411,26 @@ public abstract class StructureValidator {
 
 	//*********************************************** UTILITY METHODS *************************************************//
 	protected boolean validateBorderBlocks(World world, StructureTemplate template, StructureBB bb, int minY, int maxY, boolean skipWater) {
-		Set<String> validTargetBlocks = getTargetBlocks();
 		int bx, bz;
 		int borderSize = getBorderSize();
+		Biome biome = world.getBiome(new BlockPos(bb.min.getX(), 1, bb.min.getZ()));
 		for (bx = bb.min.getX() - borderSize; bx <= bb.max.getX() + borderSize; bx++) {
 			bz = bb.min.getZ() - borderSize;
-			if (!validateBlockHeightAndType(world, bx, bz, minY, maxY, skipWater, validTargetBlocks)) {
+			if (!validateBlockHeightTypeAndBiome(world, bx, bz, minY, maxY, skipWater, biome)) {
 				return false;
 			}
 			bz = bb.max.getZ() + borderSize;
-			if (!validateBlockHeightAndType(world, bx, bz, minY, maxY, skipWater, validTargetBlocks)) {
+			if (!validateBlockHeightTypeAndBiome(world, bx, bz, minY, maxY, skipWater, biome)) {
 				return false;
 			}
 		}
 		for (bz = bb.min.getZ() - borderSize + 1; bz <= bb.max.getZ() + borderSize - 1; bz++) {
 			bx = bb.min.getX() - borderSize;
-			if (!validateBlockHeightAndType(world, bx, bz, minY, maxY, skipWater, validTargetBlocks)) {
+			if (!validateBlockHeightTypeAndBiome(world, bx, bz, minY, maxY, skipWater, biome)) {
 				return false;
 			}
 			bx = bb.max.getX() + borderSize;
-			if (!validateBlockHeightAndType(world, bx, bz, minY, maxY, skipWater, validTargetBlocks)) {
+			if (!validateBlockHeightTypeAndBiome(world, bx, bz, minY, maxY, skipWater, biome)) {
 				return false;
 			}
 		}
@@ -445,8 +440,12 @@ public abstract class StructureValidator {
 	/*
 	 * validates both top block height and block type for the input position and settings
 	 */
-	protected boolean validateBlockHeightAndType(World world, int x, int z, int min, int max, boolean skipWater, Set<String> validBlocks) {
-		return validateBlockType(world, x, validateBlockHeight(world, x, z, min, max, skipWater), z, validBlocks);
+	protected boolean validateBlockHeightTypeAndBiome(World world, int x, int z, int min, int max, boolean skipWater, Biome validBiome, Predicate<IBlockState> isValidState) {
+		return world.getBiome(new BlockPos(x, 1, z)) == validBiome && validateBlockType(world, x, validateBlockHeight(world, x, z, min, max, skipWater), z, isValidState);
+	}
+
+	protected boolean validateBlockHeightTypeAndBiome(World world, int x, int z, int min, int max, boolean skipWater, Biome validBiome) {
+		return validateBlockHeightTypeAndBiome(world, x, z, min, max, skipWater, validBiome, state -> AWStructureStatics.isValidTargetBlock(state));
 	}
 
 	/*
@@ -465,17 +464,18 @@ public abstract class StructureValidator {
 	/*
 	 * validates the target block at x,y,z is one of the input valid blocks
 	 */
-	protected boolean validateBlockType(World world, int x, int y, int z, Set<String> validBlocks) {
+	protected boolean validateBlockType(World world, int x, int y, int z, Predicate<IBlockState> isValidState) {
 		if (y < 0 || y >= world.getHeight()) {
 			return false;
 		}
-		Block block = world.getBlockState(new BlockPos(x, y, z)).getBlock();
-		if (block == null) {
+		IBlockState state = world.getBlockState(new BlockPos(x, y, z));
+		Block block = state.getBlock();
+		if (block == Blocks.AIR) {
 			AWLog.logDebug("rejected for non-matching block: air" + " at: " + x + "," + y + "," + z);
 			return false;
 		}
-		if (!validBlocks.contains(BlockDataManager.INSTANCE.getNameForBlock(block))) {
-			AWLog.logDebug("Rejected for non-matching block: " + BlockDataManager.INSTANCE.getNameForBlock(block) + " at: " + x + "," + y + "," + z + " Valid blocks: " + validBlocks);
+		if (!isValidState.test(state)) {
+			AWLog.logDebug("Rejected for non-matching block: " + BlockDataManager.INSTANCE.getNameForBlock(block) + " at: " + x + "," + y + "," + z);
 			return false;
 		}
 		return true;
@@ -535,7 +535,7 @@ public abstract class StructureValidator {
 		BlockPos pos = new BlockPos(x, y, z);
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
-		if (block != null && block != Blocks.AIR && state.getMaterial() != Material.WATER && !AWStructureStatics.skippableBlocksContains(block)) {
+		if (block != null && block != Blocks.AIR && state.getMaterial() != Material.WATER && !AWStructureStatics.isSkippable(state)) {
 			world.setBlockState(pos, fillBlock);
 		}
 	}
@@ -547,7 +547,6 @@ public abstract class StructureValidator {
 		int maxFillY = getMaxFillY(template, bb);
 		int step = WorldStructureGenerator.getStepNumber(x, z, bb.min.getX(), bb.max.getX(), bb.min.getZ(), bb.max.getZ());
 		maxFillY -= step;
-		Block block;
 		Biome biome = world.getBiome(new BlockPos(x, 1, z));
 		IBlockState fillBlock = Blocks.GRASS.getDefaultState();
 		if (biome != null && biome.topBlock != null) {
@@ -555,8 +554,9 @@ public abstract class StructureValidator {
 		}
 		for (int y = maxFillY; y > 1; y--) {
 			BlockPos pos = new BlockPos(x, y, z);
-			block = world.getBlockState(pos).getBlock();
-			if (AWStructureStatics.skippableBlocksContains(block) || block == Blocks.WATER || block == Blocks.FLOWING_WATER) {
+			IBlockState state = world.getBlockState(pos);
+			Block block = state.getBlock();
+			if (AWStructureStatics.isSkippable(state) || block == Blocks.WATER || block == Blocks.FLOWING_WATER) {
 				world.setBlockState(pos, fillBlock);
 			}
 		}

@@ -263,7 +263,13 @@ public class BlockTools {
 
 		EntityPlayer owner = AncientWarfareCore.proxy.getFakePlayer(world, null, null);
 		owner.setHeldItem(EnumHand.MAIN_HAND, stack);
-		return stack.onItemUse(owner, world, pos.offset(direction), EnumHand.MAIN_HAND, face, 0.25F, 0.25F, 0.25F) == EnumActionResult.SUCCESS;
+		if (stack.onItemUse(owner, world, pos.offset(direction), EnumHand.MAIN_HAND, face, 0.25F, 0.25F, 0.25F) == EnumActionResult.SUCCESS) {
+			return true;
+		}
+		owner.setPosition(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D);
+		owner.rotationPitch = 90F % 360F;
+
+		return stack.useItemRightClick(world, owner, EnumHand.MAIN_HAND).getType() == EnumActionResult.SUCCESS;
 	}
 
 	public static void notifyBlockUpdate(World world, BlockPos pos) {

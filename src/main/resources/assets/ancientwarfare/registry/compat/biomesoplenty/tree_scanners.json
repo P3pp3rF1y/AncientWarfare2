@@ -1,0 +1,365 @@
+{
+    "mod": "biomesoplenty",
+    "tree_scanners": [
+        {
+            "type": "default",
+            "trunk": "biomesoplenty:bamboo",
+            "leaf": {
+                "name": "biomesoplenty:leaves_0",
+                "properties": {
+                    "variant": "bamboo"
+                }
+            },
+            "max_leaf_distance": 3,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "minecraft:log",
+                "properties": {
+                    "variant": "birch"
+                }
+            },
+            "leaf": {
+                "name": "biomesoplenty:leaves_0",
+                "properties": {
+                    "variant": "yellow_autumn"
+                }
+            },
+            "max_leaf_distance": 3,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "minecraft:log2",
+                "properties": {
+                    "variant": "dark_oak"
+                }
+            },
+            "leaf": {
+                "name": "biomesoplenty:leaves_0",
+                "properties": {
+                    "variant": "orange_autumn"
+                }
+            },
+            "max_leaf_distance": 3,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "biomesoplenty:log_1",
+                "properties": {
+                    "variant": "magic"
+                }
+            },
+            "leaf": {
+                "name": "biomesoplenty:leaves_0",
+                "properties": {
+                    "variant": "magic"
+                }
+            },
+            "max_leaf_distance": 3,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "biomesoplenty:log_0",
+                "properties": {
+                    "variant": "umbran"
+                }
+            },
+            "leaf": {
+                "name": "biomesoplenty:leaves_1",
+                "properties": {
+                    "variant": "umbran"
+                }
+            },
+            "max_leaf_distance": 4,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "minecraft:log",
+                "properties": {
+                    "variant": "oak"
+                }
+            },
+            "leaf": {
+                "name": "biomesoplenty:leaves_1",
+                "properties": {
+                    "variant": "dead"
+                }
+            },
+            "max_leaf_distance": 3,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "biomesoplenty:log_0",
+                "properties": {
+                    "variant": "fir"
+                }
+            },
+            "leaf": {
+                "name": "biomesoplenty:leaves_1",
+                "properties": {
+                    "variant": "fir"
+                }
+            },
+            "max_leaf_distance": 4,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "minecraft:log",
+                "properties": {
+                    "variant": "oak"
+                }
+            },
+            "leaf": {
+                "name": "biomesoplenty:leaves_2",
+                "properties": {
+                    "variant": "origin"
+                }
+            },
+            "max_leaf_distance": 3,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "biomesoplenty:log_0",
+                "properties": {
+                    "variant": "cherry"
+                }
+            },
+            "leaves": [
+                {
+                    "name": "biomesoplenty:leaves_2",
+                    "properties": {
+                        "variant": "pink_cherry"
+                    }
+                },
+                {
+                    "name": "biomesoplenty:leaves_2",
+                    "properties": {
+                        "variant": "white_cherry"
+                    }
+                }
+            ],
+            "max_leaf_distance": 3,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "minecraft:log",
+                "properties": {
+                    "variant": "oak"
+                }
+            },
+            "leaf": {
+                "name": "biomesoplenty:leaves_2",
+                "properties": {
+                    "variant": "maple"
+                }
+            },
+            "max_leaf_distance": 3,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "biomesoplenty:log_2",
+                "properties": {
+                    "variant": "hellbark"
+                }
+            },
+            "leaf": {
+                "name": "biomesoplenty:leaves_3",
+                "properties": {
+                    "variant": "hellbark"
+                }
+            },
+            "max_leaf_distance": 2,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "minecraft:log",
+                "properties": {
+                    "variant": "oak"
+                }
+            },
+            "leaf": {
+                "name": "biomesoplenty:leaves_3",
+                "properties": {
+                    "variant": "flowering"
+                }
+            },
+            "max_leaf_distance": 3,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "biomesoplenty:log_3",
+                "properties": {
+                    "variant": "jacaranda"
+                }
+            },
+            "leaf": {
+                "name": "biomesoplenty:leaves_3",
+                "properties": {
+                    "variant": "jacaranda"
+                }
+            },
+            "max_leaf_distance": 3,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "biomesoplenty:log_0",
+                "properties": {
+                    "variant": "sacred_oak"
+                }
+            },
+            "leaf": {
+                "name": "biomesoplenty:leaves_3",
+                "properties": {
+                    "variant": "sacred_oak"
+                }
+            },
+            "max_leaf_distance": 4,
+            "next_block_search": "all_around"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "biomesoplenty:log_1",
+                "properties": {
+                    "variant": "mangrove"
+                }
+            },
+            "leaf": {
+                "name": "biomesoplenty:leaves_4",
+                "properties": {
+                    "variant": "mangrove"
+                }
+            },
+            "max_leaf_distance": 3,
+            "next_block_search": "all_around"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "biomesoplenty:log_1",
+                "properties": {
+                    "variant": "palm"
+                }
+            },
+            "leaf": {
+                "name": "biomesoplenty:leaves_4",
+                "properties": {
+                    "variant": "palm"
+                }
+            },
+            "max_leaf_distance": 3,
+            "next_block_search": "all_around"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "biomesoplenty:log_2",
+                "properties": {
+                    "variant": "willow"
+                }
+            },
+            "leaf": {
+                "name": "biomesoplenty:leaves_4",
+                "properties": {
+                    "variant": "willow"
+                }
+            },
+            "max_leaf_distance": 4,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "biomesoplenty:log_2",
+                "properties": {
+                    "variant": "pine"
+                }
+            },
+            "leaf": {
+                "name": "biomesoplenty:leaves_5",
+                "properties": {
+                    "variant": "pine"
+                }
+            },
+            "max_leaf_distance": 3,
+            "next_block_search": "connected_around"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "biomesoplenty:log_3",
+                "properties": {
+                    "variant": "mahogany"
+                }
+            },
+            "leaf": {
+                "name": "biomesoplenty:leaves_5",
+                "properties": {
+                    "variant": "mahogany"
+                }
+            },
+            "max_leaf_distance": 2,
+            "next_block_search": "all_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "biomesoplenty:log_3",
+                "properties": {
+                    "variant": "ebony"
+                }
+            },
+            "leaf": {
+                "name": "biomesoplenty:leaves_5",
+                "properties": {
+                    "variant": "ebony"
+                }
+            },
+            "max_leaf_distance": 2,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "biomesoplenty:log_3",
+                "properties": {
+                    "variant": "eucalyptus"
+                }
+            },
+            "leaf": {
+                "name": "biomesoplenty:leaves_5",
+                "properties": {
+                    "variant": "eucalyptus"
+                }
+            },
+            "max_leaf_distance": 3,
+            "next_block_search": "connected_up_or_level"
+        }
+    ]
+}

@@ -118,8 +118,9 @@ public class WorldStructureGenerator implements IWorldGenerator {
 	public static int getTargetY(World world, int x, int z, boolean skipWater) {
 		Block block;
 		for (int y = world.getActualHeight(); y > 0; y--) {
-			block = world.getBlockState(new BlockPos(x, y, z)).getBlock();
-			if (AWStructureStatics.skippableBlocksContains(block)) {
+			IBlockState state = world.getBlockState(new BlockPos(x, y, z));
+			block = state.getBlock();
+			if (AWStructureStatics.isSkippable(state)) {
 				continue;
 			}
 			if (skipWater && (block == Blocks.WATER || block == Blocks.FLOWING_WATER)) {
@@ -145,6 +146,16 @@ public class WorldStructureGenerator implements IWorldGenerator {
 					}
 				}
 			}
+		}
+	}
+
+	private static final int CLEARANCE_HEIGHT = 40;
+
+	public static void clearAbove(World world, StructureBB bb, int border) {
+		BlockPos minCorner = new BlockPos(bb.min.getX() - border, bb.max.getY() + 1, bb.min.getZ() - border);
+		BlockPos maxCorner = new BlockPos(bb.max.getX() + border, bb.max.getY() + 1 + CLEARANCE_HEIGHT, bb.max.getZ() + border);
+		for (BlockPos pos : BlockPos.getAllInBox(minCorner, maxCorner)) {
+			world.setBlockToAir(pos);
 		}
 	}
 

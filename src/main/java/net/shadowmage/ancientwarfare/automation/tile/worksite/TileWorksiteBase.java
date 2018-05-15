@@ -142,7 +142,7 @@ public abstract class TileWorksiteBase extends TileUpdatable
 
 	@Override
 	public final void update() {
-		if (!hasWorld() || world.isRemote) {
+		if (!hasWorld() || world.isRemote || world.getStrongPower(pos) != 0) {
 			return;
 		}
 		if (workRetryDelay > 0) {
@@ -169,6 +169,10 @@ public abstract class TileWorksiteBase extends TileUpdatable
 
 	protected final void updateEfficiency() {
 		efficiencyBonusFactor = IWorkSite.WorksiteImplementation.getEfficiencyFactor(upgrades);
+	}
+
+	protected void setWorkRetryDelay(int workRetryDelay) {
+		this.workRetryDelay = workRetryDelay;
 	}
 
 	//************************************** TILE INTERACTION METHODS ***************************************//

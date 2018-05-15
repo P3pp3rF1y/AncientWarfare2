@@ -22,11 +22,10 @@ minDuplicateDistance=40
 dimensionWhiteList=true
 dimensionList=0
 biomeWhiteList=true
-biomeList=desert,plains,forest
+biomeList=minecraft:desert,minecraft:plains,minecraft:forest,biomesoplenty:dead_swamp,biomesoplenty:flower_field,biomesoplenty:grassland,biomesoplenty:lavender_fields,biomesoplenty:outback,biomesoplenty:prairie,biomesoplenty:shrubland
 leveling=8
 fill=8
 border=8
-validTargetBlocks=minecraft:sand,minecraft:stone,minecraft:gravel,minecraft:redstone_ore,minecraft:lapis_ore,minecraft:stained_hardened_clay,minecraft:gold_ore,minecraft:clay,minecraft:iron_ore,minecraft:grass,minecraft:mycelium,minecraft:dirt,minecraft:diamond_ore,minecraft:snow,minecraft:coal_ore
 blockSwap=false
 data:
 :enddata

@@ -1,0 +1,131 @@
+{
+    "mod": "natura",
+    "tree_scanners": [
+        {
+            "type": "default",
+            "trunk": "natura:overworld_logs",
+            "leaf": "natura:overworld_leaves",
+            "max_leaf_distance": 3,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "natura:overworld_logs2",
+                "properties": {
+                    "axis": "y",
+                    "type": "willow"
+                }
+            },
+            "leaf": {
+                "name": "natura:overworld_leaves2",
+                "properties": {
+                    "type": "willow"
+                }
+            },
+            "max_leaf_distance": 5,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "natura:overworld_logs2",
+                "properties": {
+                    "type": "sakura"
+                }
+            },
+            "leaf": {
+                "name": "natura:overworld_leaves2",
+                "properties": {
+                    "type": "sakura"
+                }
+            },
+            "max_leaf_distance": 4,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "natura:overworld_logs2",
+                "properties": {
+                    "type": "eucalyptus"
+                }
+            },
+            "leaf": {
+                "name": "natura:overworld_leaves2",
+                "properties": {
+                    "type": "eucalyptus"
+                }
+            },
+            "max_leaf_distance": 3,
+            "next_block_search": "all_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": "natura:redwood_logs",
+            "leaf": "natura:redwood_leaves",
+            "max_leaf_distance": 7,
+            "next_block_search": "all_around"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "natura:nether_logs",
+                "properties": {
+                    "type": "ghostwood"
+                }
+            },
+            "leaf": {
+                "name": "natura:nether_leaves",
+                "properties": {
+                    "type": "ghostwood"
+                }
+            },
+            "max_leaf_distance": 6,
+            "next_block_search": "all_around"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "natura:nether_logs",
+                "properties": {
+                    "type": "fusewood"
+                }
+            },
+            "leaf": {
+                "name": "natura:nether_leaves",
+                "properties": {
+                    "type": "fusewood"
+                }
+            },
+            "max_leaf_distance": 3,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "natura:nether_logs",
+                "properties": {
+                    "type": "darkwood"
+                }
+            },
+            "leaf": {
+                "name": "natura:nether_leaves2"
+            },
+            "max_leaf_distance": 3,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": "natura:nether_logs2",
+            "leaf": {
+                "name": "natura:nether_leaves",
+                "properties": {
+                    "type": "bloodwood"
+                }
+            },
+            "max_leaf_distance": 3,
+            "next_block_search": "connected_down_or_level"
+        }
+    ]
+}

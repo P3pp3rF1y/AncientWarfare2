@@ -67,6 +67,10 @@ public class InventoryTools {
 		return copy;
 	}
 
+	public static ItemStack insertItem(IItemHandler handler, ItemStack stack) {
+		return insertItem(handler, stack, false);
+	}
+
 	public static ItemStack insertItem(IItemHandler handler, ItemStack stack, boolean simulate) {
 		ItemStack remaining = stack.copy();
 		for (int slot = 0; slot < handler.getSlots(); slot++) {
@@ -673,7 +677,7 @@ public class InventoryTools {
 		return ret;
 	}
 
-	public static Stream<ItemStack> toStream(IItemHandler handler) {
+	public static Stream<ItemStack> stream(IItemHandler handler) {
 		return StreamSupport.stream(getIterator(handler).spliterator(), false);
 	}
 

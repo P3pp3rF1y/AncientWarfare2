@@ -12,7 +12,6 @@ import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
@@ -28,7 +27,7 @@ public class FruitCocoa implements IFruit {
 	private ItemStackMatcher stackMatcher;
 
 	public FruitCocoa() {
-		this.stateMatcher = new BlockStateMatcher(new ResourceLocation("minecraft:cocoa"));
+		this.stateMatcher = new BlockStateMatcher(Blocks.COCOA);
 		this.stackMatcher = new ItemStackMatcher(Items.DYE, EnumDyeColor.BROWN.getDyeDamage());
 	}
 

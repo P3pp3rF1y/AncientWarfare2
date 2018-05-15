@@ -224,10 +224,7 @@ public class BlockDataManager {
 	public String getNameForBlock(Block block) {
 		String name = block.getRegistryName() == null ? null : block.getRegistryName().toString();
 		if (name == null) {
-			name = blockToName.get(block);
-			if (name == null) {
-				throw new RuntimeException("Could not locate block name for: " + block.getUnlocalizedName());
-			}
+			throw new RuntimeException("Could not locate block name for: " + block.getUnlocalizedName());
 		}
 		return name;
 	}

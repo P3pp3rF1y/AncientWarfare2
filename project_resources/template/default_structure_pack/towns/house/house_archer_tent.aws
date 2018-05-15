@@ -26,7 +26,6 @@ biomeList=
 leveling=0
 fill=0
 border=0
-validTargetBlocks=
 blockSwap=false
 data:
 :enddata

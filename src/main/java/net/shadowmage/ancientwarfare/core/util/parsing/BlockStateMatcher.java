@@ -1,30 +1,34 @@
 package net.shadowmage.ancientwarfare.core.util.parsing;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.ResourceLocation;
 
-import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Predicate;
 
 public class BlockStateMatcher implements Predicate<IBlockState> {
-	private final RegistryNameMatcher nameMatcher;
+	private final Block block;
 	private final PropertyMapMatcher propertyMatcher = new PropertyMapMatcher();
 
-	public BlockStateMatcher(ResourceLocation registryName) {
-		nameMatcher = new RegistryNameMatcher(registryName);
+	public BlockStateMatcher(IBlockState fullState) {
+		this(fullState.getBlock());
+		fullState.getProperties().forEach(this::addProperty);
 	}
 
-	public BlockStateMatcher addProperty(IProperty<?> property, Comparable<?> value) {
+	public BlockStateMatcher(Block block) {
+		this.block = block;
+	}
+
+	BlockStateMatcher addProperty(IProperty<?> property, Comparable<?> value) {
 		propertyMatcher.addProperty(property, value);
 		return this;
 	}
 
 	@Override
 	public boolean test(IBlockState state) {
-		return nameMatcher.test(state.getBlock().getRegistryName()) && propertyMatcher.test(state.getProperties());
+		return block == state.getBlock() && propertyMatcher.test(state.getProperties());
 	}
 
 	@Override
@@ -36,47 +40,14 @@ public class BlockStateMatcher implements Predicate<IBlockState> {
 
 		BlockStateMatcher that = (BlockStateMatcher) o;
 
-		if (!nameMatcher.equals(that.nameMatcher))
-			return false;
-		return propertyMatcher.equals(that.propertyMatcher);
+		return block.equals(that.block) && propertyMatcher.equals(that.propertyMatcher);
 	}
 
 	@Override
 	public int hashCode() {
-		int result = nameMatcher.hashCode();
+		int result = block.hashCode();
 		result = 31 * result + propertyMatcher.hashCode();
 		return result;
-	}
-
-	public static class RegistryNameMatcher implements Predicate<ResourceLocation> {
-		private final ResourceLocation registryName;
-
-		RegistryNameMatcher(@Nullable ResourceLocation registryName) {
-			this.registryName = registryName;
-		}
-
-		@Override
-
-		public boolean test(ResourceLocation resourceLocation) {
-			return registryName != null && registryName.equals(resourceLocation);
-		}
-
-		@Override
-		public boolean equals(Object o) {
-			if (this == o)
-				return true;
-			if (o == null || getClass() != o.getClass())
-				return false;
-
-			RegistryNameMatcher that = (RegistryNameMatcher) o;
-
-			return registryName != null ? registryName.equals(that.registryName) : that.registryName == null;
-		}
-
-		@Override
-		public int hashCode() {
-			return registryName != null ? registryName.hashCode() : 0;
-		}
 	}
 
 	public static class PropertyMapMatcher implements Predicate<Map<IProperty<?>, Comparable<?>>> {

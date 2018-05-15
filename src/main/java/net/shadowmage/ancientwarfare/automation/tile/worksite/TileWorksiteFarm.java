@@ -4,9 +4,12 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.IPlantable;
@@ -22,6 +25,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Queue;
 
 public abstract class TileWorksiteFarm extends TileWorksiteBoundedInventory {
@@ -105,10 +109,13 @@ public abstract class TileWorksiteFarm extends TileWorksiteBoundedInventory {
 		InventoryTools.dropItemsInWorld(world, miscInventory, pos);
 	}
 
-	//TODO refactor this to break into getdrops / check for space / actual harvest / insert into inventories
 	protected boolean harvestBlock(BlockPos pos) {
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
+		if (block.isAir(state, world, pos)) {
+			return false;
+		}
+
 		NonNullList<ItemStack> stacks = NonNullList.create();
 
 		block.getDrops(stacks, world, pos, state, getFortune());
@@ -151,7 +158,7 @@ public abstract class TileWorksiteFarm extends TileWorksiteBoundedInventory {
 	}
 
 	protected boolean isBonemeal(ItemStack stack) {
-		return stack.getItem() == Items.DYE && stack.getItemDamage() == 15;
+		return stack.getItem() == Items.DYE && stack.getItemDamage() == EnumDyeColor.WHITE.getDyeDamage();
 	}
 
 	protected boolean isFarmable(Block block) {
@@ -284,7 +291,16 @@ public abstract class TileWorksiteFarm extends TileWorksiteBoundedInventory {
 	}
 
 	protected void countResources() {
-		plantableCount = InventoryTools.getCountOf(plantableInventory, s -> isPlantable(s));
-		bonemealCount = InventoryTools.getCountOf(miscInventory, s -> isBonemeal(s));
+		plantableCount = InventoryTools.getCountOf(plantableInventory, this::isPlantable);
+		bonemealCount = InventoryTools.getCountOf(miscInventory, this::isBonemeal);
+	}
+
+	protected boolean fertilize(BlockPos pos) {
+		Optional<ItemStack> stack = InventoryTools.stream(miscInventory).filter(this::isBonemeal).findFirst();
+		if (stack.isPresent() && ItemDye.applyBonemeal(stack.get(), world, pos, getOwnerAsPlayer(), EnumHand.MAIN_HAND)) {
+			world.playEvent(2005, pos, 0);
+			return true;
+		}
+		return false;
 	}
 }

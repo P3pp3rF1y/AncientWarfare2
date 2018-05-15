@@ -22,11 +22,10 @@ minDuplicateDistance=40
 dimensionWhiteList=true
 dimensionList=0
 biomeWhiteList=true
-biomeList=foresthills,taiga m,desert,taiga,deserthills,plains,desert m
+biomeList=minecraft:forest_hills,minecraft:mutated_taiga,minecraft:desert,minecraft:taiga,minecraft:desert_hills,minecraft:plains,minecraft:mutated_desert,biomesoplenty:lush_desert,biomesoplenty:chaparral,biomesoplenty:grassland,biomesoplenty:maple_woods,biomesoplenty:mountain,biomesoplenty:ominous_woods,biomesoplenty:outback,biomesoplenty:seasonal_forest,biomesoplenty:steppe,biomesoplenty:wasteland
 leveling=5
 fill=5
 border=5
-validTargetBlocks=minecraft:sand,minecraft:stone,minecraft:gravel,minecraft:redstone_ore,minecraft:lapis_ore,minecraft:stained_hardened_clay,minecraft:gold_ore,minecraft:clay,minecraft:iron_ore,minecraft:grass,minecraft:mycelium,minecraft:dirt,minecraft:diamond_ore,minecraft:snow,minecraft:coal_ore
 blockSwap=false
 data:
 :enddata

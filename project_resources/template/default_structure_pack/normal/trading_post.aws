@@ -22,11 +22,10 @@ minDuplicateDistance=40
 dimensionWhiteList=true
 dimensionList=0
 biomeWhiteList=true
-biomeList=taiga,stone beach,birch forest,savanna,plains,savanna plateau m,savanna m,cold taiga
+biomeList=minecraft:taiga,minecraft:stone_beach,minecraft:birch_forest,minecraft:savanna,minecraft:plains,minecraft:mutated_savanna_rock,minecraft:mutated_savanna,minecraft:taiga_cold,biomesoplenty:grassland,biomesoplenty:lavender_fields,biomesoplenty:meadow,biomesoplenty:shrubland,biomesoplenty:steppe
 leveling=4
 fill=4
 border=4
-validTargetBlocks=minecraft:sand,minecraft:stone,minecraft:gravel,minecraft:redstone_ore,minecraft:lapis_ore,minecraft:stained_hardened_clay,minecraft:gold_ore,minecraft:clay,minecraft:iron_ore,minecraft:grass,minecraft:dirt,minecraft:diamond_ore,minecraft:coal_ore
 blockSwap=false
 data:
 :enddata

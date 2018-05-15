@@ -156,8 +156,7 @@ public class CropFarmRegistry {
 			JsonArray plantables = JsonUtils.getJsonArray(json, "soils");
 
 			for (JsonElement t : plantables) {
-				JsonObject soil = JsonUtils.getJsonObject(t, "");
-				soilBlocks.add(JsonHelper.getBlockStateMatcher(soil, "soil"));
+				soilBlocks.add(JsonHelper.getBlockStateMatcher(JsonUtils.getJsonObject(t, "")));
 			}
 		}
 	}

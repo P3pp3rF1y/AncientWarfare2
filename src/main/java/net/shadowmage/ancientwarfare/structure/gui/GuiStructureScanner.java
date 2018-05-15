@@ -91,15 +91,6 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 		this.addGuiElement(button);
 		totalHeight += 16;
 
-		button = new Button(8, totalHeight, 120, 16, "guistrings.select_blocks") {
-			@Override
-			protected void onPressed() {
-				Minecraft.getMinecraft().displayGuiScreen(new GuiStructureBlockSelection(GuiStructureScanner.this));
-			}
-		};
-		this.addGuiElement(button);
-		totalHeight += 16;
-
 		button = new Button(8, totalHeight, 120, 16, "guistrings.select_dimensions") {
 			@Override
 			protected void onPressed() {

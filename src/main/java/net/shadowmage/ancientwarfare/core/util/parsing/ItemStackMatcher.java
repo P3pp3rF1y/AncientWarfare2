@@ -7,15 +7,19 @@ import java.util.function.Predicate;
 
 public class ItemStackMatcher implements Predicate<ItemStack> {
 	private Item item;
-	private int meta;
+	private Predicate<Integer> metaMatches;
 
+	public ItemStackMatcher(Item item) {
+		this.item = item;
+		metaMatches = i -> true;
+	}
 	public ItemStackMatcher(Item item, int meta) {
 		this.item = item;
-		this.meta = meta;
+		this.metaMatches = i -> i == meta;
 	}
 
 	@Override
 	public boolean test(ItemStack input) {
-		return input != null && input.getItem() == item && input.getMetadata() == meta;
+		return input != null && input.getItem() == item && metaMatches.test(input.getMetadata());
 	}
 }

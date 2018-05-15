@@ -1,0 +1,413 @@
+{
+    "mod": "forestry",
+    "tree_scanners": [
+        {
+            "type": "default",
+            "trunk": {
+                "name": "minecraft:log",
+                "properties": {
+                    "variant": "oak"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 3,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "minecraft:log2",
+                "properties": {
+                    "variant": "dark_oak"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 3,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "minecraft:log",
+                "properties": {
+                    "variant": "birch"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 3,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "forestry:logs.0",
+                "properties": {
+                    "variant": "lime"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 3,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "forestry:logs.1",
+                "properties": {
+                    "variant": "chestnut"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 5,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "forestry:logs.3",
+                "properties": {
+                    "variant": "cherry"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 5,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "forestry:logs.5",
+                "properties": {
+                    "variant": "citrus"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 2,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "forestry:logs.5",
+                "properties": {
+                    "variant": "plum"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 2,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "forestry:logs.5",
+                "properties": {
+                    "variant": "maple"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 4,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "minecraft:log",
+                "properties": {
+                    "variant": "spruce"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 5,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "forestry:logs.0",
+                "properties": {
+                    "variant": "larch"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 4,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "forestry:logs.5",
+                "properties": {
+                    "variant": "pine"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 4,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "forestry:logs.fireproof.1",
+                "properties": {
+                    "variant": "sequoia"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 5,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "forestry:logs.fireproof.6",
+                "properties": {
+                    "variant": "giganteum"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 6,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "minecraft:log",
+                "properties": {
+                    "variant": "jungle"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 4,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "forestry:logs.0",
+                "properties": {
+                    "variant": "teak"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 3,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "forestry:logs.6",
+                "properties": {
+                    "variant": "ipe"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 5,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "forestry:logs.2",
+                "properties": {
+                    "variant": "kapok"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 4,
+            "next_block_search": "all_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "forestry:logs.2",
+                "properties": {
+                    "variant": "ebony"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 4,
+            "next_block_search": "all_around"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "forestry:logs.7",
+                "properties": {
+                    "variant": "zebrawood"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 4,
+            "next_block_search": "all_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "forestry:logs.2",
+                "properties": {
+                    "variant": "mahogany"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 6,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "minecraft:log2",
+                "properties": {
+                    "variant": "acacia"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 4,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "forestry:logs.0",
+                "properties": {
+                    "variant": "acacia"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 4,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "forestry:logs.6",
+                "properties": {
+                    "variant": "padauk"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 6,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "forestry:logs.2",
+                "properties": {
+                    "variant": "balsa"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 2,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "forestry:logs.6",
+                "properties": {
+                    "variant": "cocobolo"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 2,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "forestry:logs.1",
+                "properties": {
+                    "variant": "wenge"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 5,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "forestry:logs.1",
+                "properties": {
+                    "variant": "baobab"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 4,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "forestry:logs.4",
+                "properties": {
+                    "variant": "mahoe"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 4,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "forestry:logs.3",
+                "properties": {
+                    "variant": "willow"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 5,
+            "next_block_search": "connected_around"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "forestry:logs.3",
+                "properties": {
+                    "variant": "greenheart"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 3,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "forestry:logs.4",
+                "properties": {
+                    "variant": "papaya"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 3,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "forestry:logs.4",
+                "properties": {
+                    "variant": "palm"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 4,
+            "next_block_search": "connected_up_or_level"
+        },
+        {
+            "type": "default",
+            "trunk": {
+                "name": "forestry:logs.4",
+                "properties": {
+                    "variant": "poplar"
+                }
+            },
+            "leaf": "forestry:leaves",
+            "max_leaf_distance": 2,
+            "next_block_search": "connected_up_or_level"
+        }
+    ]
+}

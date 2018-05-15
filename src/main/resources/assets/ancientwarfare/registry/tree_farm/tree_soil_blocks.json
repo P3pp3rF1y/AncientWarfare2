@@ -1,0 +1,16 @@
+{
+    "soils": [
+        {
+            "name": "minecraft:dirt"
+        },
+        {
+            "name": "minecraft:grass"
+        },
+        {
+            "name": "minecraft:mycelium"
+        },
+        {
+            "name": "minecraft:end_stone"
+        }
+    ]
+}
