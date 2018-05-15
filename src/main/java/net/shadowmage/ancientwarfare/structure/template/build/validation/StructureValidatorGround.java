@@ -70,6 +70,7 @@ public class StructureValidatorGround extends StructureValidator {
 		if (biome != null && biome.getEnableSnow()) {
 			WorldStructureGenerator.sprinkleSnow(world, bb, getBorderSize());
 		}
+		WorldStructureGenerator.clearAbove(world, bb, getBorderSize());
 	}
 
 	@Override

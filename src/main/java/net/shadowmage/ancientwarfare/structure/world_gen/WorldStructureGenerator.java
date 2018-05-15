@@ -149,6 +149,16 @@ public class WorldStructureGenerator implements IWorldGenerator {
 		}
 	}
 
+	private static final int CLEARANCE_HEIGHT = 40;
+
+	public static void clearAbove(World world, StructureBB bb, int border) {
+		BlockPos minCorner = new BlockPos(bb.min.getX() - border, bb.max.getY() + 1, bb.min.getZ() - border);
+		BlockPos maxCorner = new BlockPos(bb.max.getX() + border, bb.max.getY() + 1 + CLEARANCE_HEIGHT, bb.max.getZ() + border);
+		for (BlockPos pos : BlockPos.getAllInBox(minCorner, maxCorner)) {
+			world.setBlockToAir(pos);
+		}
+	}
+
 	public static int getStepNumber(int x, int z, int minX, int maxX, int minZ, int maxZ) {
 		int steps = 0;
 		if (x < minX - 1) {
