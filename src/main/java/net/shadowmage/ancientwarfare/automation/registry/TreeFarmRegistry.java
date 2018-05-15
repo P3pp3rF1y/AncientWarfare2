@@ -63,7 +63,7 @@ public class TreeFarmRegistry {
 	}
 
 	public static boolean isPlantable(ItemStack stack) {
-		return stack.getItem() instanceof ItemBlock && plantables.stream().anyMatch(p -> p.test(stack));
+		return plantables.stream().anyMatch(p -> p.test(stack));
 	}
 
 	public static boolean isSoil(IBlockState state) {
