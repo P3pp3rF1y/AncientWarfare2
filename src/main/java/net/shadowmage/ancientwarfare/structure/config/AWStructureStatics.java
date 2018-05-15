@@ -60,7 +60,6 @@ public class AWStructureStatics extends ModConfiguration {
 	private static HashSet<String> skippableWorldGenBlocks = new HashSet<>();
 	private static HashSet<String> worldGenTargetBlocks = new HashSet<>();
 	private static HashSet<String> scannerSkippedBlocks = new HashSet<>();
-	private static HashSet<String> townValidTargetBlocks = new HashSet<>();
 
 	private static final String worldGenCategory = "a_world-gen_settings";
 	private static final String villageGenCategory = "b_village-gen_settings";
@@ -68,7 +67,6 @@ public class AWStructureStatics extends ModConfiguration {
 	private static final String worldGenBlocks = "d_world_gen_skippable_blocks";
 	private static final String targetBlocks = "e_world_gen_target_blocks";
 	private static final String scanSkippedBlocks = "f_scanner_skipped_blocks";
-	private static final String townValidTargetBlocksCategory = "g_town_target_blocks";
 
 	@Override
 	public void initializeCategories() {
@@ -76,9 +74,8 @@ public class AWStructureStatics extends ModConfiguration {
 		this.config.addCustomCategoryComment(villageGenCategory, "Settings that effect the generation of vanilla villages.\nCurrently there are no village-generation options, and no structures will generate in villages.");
 		this.config.addCustomCategoryComment(excludedEntitiesCategory, "Entities that will not show up in the Mob Spawner Placer entity selection list.\nAdd any mobs here that will crash if spawned via the vanilla mob-spawner (usually complex NBT-defined entities).");
 		this.config.addCustomCategoryComment(worldGenBlocks, "Blocks that should be skipped/ignored during world gen -- should list all plant blocks/logs/foliage");
-		this.config.addCustomCategoryComment(targetBlocks, "List of target blocks to add to the target-block selection GUI.\nVanilla block names should be listed as the 1.7 registered name. \nMod blocks should be listed as their registered name");
+		this.config.addCustomCategoryComment(targetBlocks, "List of target blocks that structures and towns can spawn on in addition to materials that are automatically whitelisted.");
 		this.config.addCustomCategoryComment(scanSkippedBlocks, "List of blocks that the structure scanner will completely ignore.\nWhenever these blocks are encountered the template will instead fill that block position with a hard-air rule.\nAdd any blocks to this list that may cause crashes when scanned or duplicated.\nVanilla blocks should not need to be added, but some mod-blocks may.\nBlock names must be specified by fully-qualified name (e.g. \"minecraft:stone\")");
-		this.config.addCustomCategoryComment(townValidTargetBlocksCategory, "List of blocks that are valid target blocks for town creation.\nAny solid block found that is not on this list will prevent a town from spawning in a given chunk");
 	}
 
 	@Override
@@ -100,8 +97,7 @@ public class AWStructureStatics extends ModConfiguration {
 
 		initializeDefaultSkippableBlocks();
 		initializeDefaultSkippedEntities();
-		initializeDefaultAdditionalTargetBlocks();
-		initializeDefaultTownTargetBlocks();
+		initializeDefaultTargetBlocks();
 		initializeScannerSkippedBlocks();
 	}
 
@@ -781,8 +777,8 @@ public class AWStructureStatics extends ModConfiguration {
 		Collections.addAll(excludedSpawnerEntities, defaultExcludedEntities);
 	}
 
-	private void initializeDefaultTownTargetBlocks() {
-		String[] targetBlocks = new String[] {"minecraft:snow",
+	private void initializeDefaultTargetBlocks() {
+		String[] defaultTargetBlocks = new String[] {"minecraft:snow",
 				"minecraft:snow_layer",
 				"minecraft:ice",
 				"minecraft:water",
@@ -811,52 +807,12 @@ public class AWStructureStatics extends ModConfiguration {
 				"mam:mam_depthquartzchiseled",
 				"mam:mam_depthquartzlines",
 				"mam:mam_depthcrystalblock",};
-		targetBlocks = config.get("town_target_blocks", townValidTargetBlocksCategory, targetBlocks, "List of blocks that are valid").getStringList();
-		Collections.addAll(townValidTargetBlocks, targetBlocks);
+		defaultTargetBlocks = config.get("target_blocks", targetBlocks, defaultTargetBlocks, "List of blocks that are valid").getStringList();
+		Collections.addAll(worldGenTargetBlocks, defaultTargetBlocks);
 	}
 
-	private void initializeDefaultAdditionalTargetBlocks() {
-		/*
-		 * TODO add initial default values for target blocks to this list...
-         */
-		String[] targetBlocks = new String[] {"minecraft:snow",
-				"minecraft:snow_layer",
-				"minecraft:ice",
-				"minecraft:water",
-				"minecraft:clay",
-				"minecraft:mycelium",
-				"minecraft:stone",
-				"minecraft:grass",
-				"minecraft:dirt",
-				"minecraft:sand",
-				"minecraft:gravel",
-				"minecraft:cobblestone",
-				"minecraft:mossy_cobblestone",
-				"minecraft:sandstone",
-				"BiomesOPlenty:mud",
-				"BiomesOPlenty:driedDirt",
-				"BiomesOPlenty:rocks",
-				"BiomesOPlenty:ash",
-				"BiomesOPlenty:ashStone",
-				"BiomesOPlenty:hardSand",
-				"BiomesOPlenty:hardDirt",
-				"BiomesOPlenty:biomeBlock",
-				"BiomesOPlenty:crystal",
-				"BiomesOPlenty:gemOre",
-				"BiomesOPlenty:cragRock",
-				"mam:mam_mamgravel",
-				"mam:mam_depthquartz",
-				"mam:mam_depthquartzchiseled",
-				"mam:mam_depthquartzlines",
-				"mam:mam_depthcrystalblock",
-
-		};
-		targetBlocks = config.get(AWStructureStatics.targetBlocks, "target_blocks", targetBlocks).getStringList();
-		Collections.addAll(worldGenTargetBlocks, targetBlocks);
-	}
-
-	public static boolean isValidTownTargetBlock(IBlockState state) {
-		return isValidTargetMaterial(state.getMaterial()) || townValidTargetBlocks.contains(BlockDataManager.INSTANCE.getNameForBlock(state.getBlock()));
+	public static boolean isValidTargetBlock(IBlockState state) {
+		return isValidTargetMaterial(state.getMaterial()) || worldGenTargetBlocks.contains(BlockDataManager.INSTANCE.getNameForBlock(state.getBlock()));
 	}
 
 	private static boolean isValidTargetMaterial(Material material) {

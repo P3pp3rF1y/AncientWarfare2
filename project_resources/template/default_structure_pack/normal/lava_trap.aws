@@ -22,11 +22,10 @@ minDuplicateDistance=40
 dimensionWhiteList=true
 dimensionList=0
 biomeWhiteList=true
-biomeList=minecraft:jungle_hills,minecraft:forest_hills,minecraft:jungle,minecraft:birch_forest,minecraft:forest,minecraft:birch_forest_hills,minecraft:roofed_forest
+biomeList=minecraft:jungle_hills,minecraft:forest_hills,minecraft:jungle,minecraft:birch_forest,minecraft:forest,minecraft:birch_forest_hills,minecraft:roofed_forest,biomesoplenty:bamboo_forest,biomesoplenty:eucalyptus_forest,biomesoplenty:lush_swamp,biomesoplenty:rainforest,biomesoplenty:sacred_springs,biomesoplenty:snowy_coniferous_forest,biomesoplenty:tropical_rainforest,biomesoplenty:coniferous_forest
 leveling=2
 fill=2
 border=2
-validTargetBlocks=minecraft:sand,minecraft:stone,minecraft:gravel,minecraft:redstone_ore,minecraft:lapis_ore,minecraft:stained_hardened_clay,minecraft:gold_ore,minecraft:clay,minecraft:iron_ore,minecraft:grass,minecraft:mycelium,minecraft:dirt,minecraft:diamond_ore,minecraft:snow,minecraft:coal_ore
 blockSwap=false
 data:
 :enddata

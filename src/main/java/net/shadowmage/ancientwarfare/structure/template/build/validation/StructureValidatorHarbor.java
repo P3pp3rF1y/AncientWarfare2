@@ -22,11 +22,14 @@
 package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
+import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator;
@@ -98,9 +101,10 @@ public class StructureValidatorHarbor extends StructureValidator {
 		StructureBB temp = bb.getFrontCorners(face, testMin, testMax);
 		testMin = temp.min;
 		testMax = temp.max;
+		Biome validBiome = world.getBiome(new BlockPos(testMin.getX(), 1, testMin.getZ()));
 		for (bx = testMin.getX(); bx <= testMax.getX(); bx++) {
 			for (bz = testMin.getZ(); bz <= testMax.getZ(); bz++) {
-				if (!validateBlockHeightAndType(world, bx, bz, minY, maxY, false, validTargetBlocks)) {
+				if (!validateBlockHeightTypeAndBiome(world, bx, bz, minY, maxY, false, validBiome)) {
 					return false;
 				}
 			}
@@ -111,7 +115,7 @@ public class StructureValidatorHarbor extends StructureValidator {
 		testMax = temp.max;
 		for (bx = testMin.getX(); bx <= testMax.getX(); bx++) {
 			for (bz = testMin.getZ(); bz <= testMax.getZ(); bz++) {
-				if (!validateBlockHeightAndType(world, bx, bz, minY, maxY, false, validTargetBlocksRear)) {
+				if (!validateBlockHeightTypeAndBiome(world, bx, bz, minY, maxY, false, validBiome, state -> state.getMaterial() == Material.WATER)) {
 					return false;
 				}
 			}
@@ -122,7 +126,8 @@ public class StructureValidatorHarbor extends StructureValidator {
 		testMax = temp.max;
 		for (bx = testMin.getX(); bx <= testMax.getX(); bx++) {
 			for (bz = testMin.getZ(); bz <= testMax.getZ(); bz++) {
-				if (!validateBlockHeightAndType(world, bx, bz, minY, maxY, false, validTargetBlocksSide)) {
+				if (!validateBlockHeightTypeAndBiome(world, bx, bz, minY, maxY, false, validBiome,
+						state -> AWStructureStatics.isValidTargetBlock(state) || state.getMaterial() == Material.WATER)) {
 					return false;
 				}
 			}
@@ -133,7 +138,8 @@ public class StructureValidatorHarbor extends StructureValidator {
 		testMax = temp.max;
 		for (bx = testMin.getX(); bx <= testMax.getX(); bx++) {
 			for (bz = testMin.getZ(); bz <= testMax.getZ(); bz++) {
-				if (!validateBlockHeightAndType(world, bx, bz, minY, maxY, false, validTargetBlocksSide)) {
+				if (!validateBlockHeightTypeAndBiome(world, bx, bz, minY, maxY, false, validBiome,
+						state -> AWStructureStatics.isValidTargetBlock(state) || state.getMaterial() == Material.WATER)) {
 					return false;
 				}
 			}

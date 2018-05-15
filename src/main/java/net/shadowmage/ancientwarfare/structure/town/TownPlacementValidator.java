@@ -220,7 +220,7 @@ public class TownPlacementValidator {
 				}// >=56 is fillable through underfill/border settings.  below that is too deep for a proper gradient on the border.
 				return -1;//return invalid Y if liquid block is too low
 			}
-			if (!AWStructureStatics.isValidTownTargetBlock(state)) {
+			if (!AWStructureStatics.isValidTargetBlock(state)) {
 				AWLog.logDebug("rejecting town chunk for non-target block: " + block + " :: " + chunk.x + ":" + chunk.z);
 				return -1;
 			}

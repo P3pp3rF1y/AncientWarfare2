@@ -22,11 +22,10 @@ minDuplicateDistance=40
 dimensionWhiteList=true
 dimensionList=0
 biomeWhiteList=true
-biomeList=minecraft:desert,minecraft:desert_hills,minecraft:savanna,minecraft:mutated_savanna_rock,minecraft:savanna_rock,minecraft:mutated_desert,minecraft:mutated_savanna
+biomeList=minecraft:desert,minecraft:desert_hills,minecraft:savanna,minecraft:mutated_savanna_rock,minecraft:savanna_rock,minecraft:mutated_desert,minecraft:mutated_savanna,biomesoplenty:lush_desert
 leveling=3
 fill=3
 border=3
-validTargetBlocks=minecraft:sand,minecraft:dirt,minecraft:stone,minecraft:diamond_ore,minecraft:gravel,minecraft:redstone_ore,minecraft:lapis_ore,minecraft:snow,minecraft:stained_hardened_clay,minecraft:gold_ore,minecraft:clay,minecraft:coal_ore,minecraft:iron_ore,minecraft:grass,minecraft:mycelium
 blockSwap=false
 data:
 :enddata

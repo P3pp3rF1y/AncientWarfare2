@@ -21,13 +21,12 @@
 
 package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
-import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
+import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator;
@@ -35,7 +34,6 @@ import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 
 public class StructureValidatorIsland extends StructureValidator {
 
@@ -90,14 +88,11 @@ public class StructureValidatorIsland extends StructureValidator {
 
 	@Override
 	public void preGeneration(World world, BlockPos pos, EnumFacing face, StructureTemplate template, StructureBB bb) {
-		Block block;
-		Set<String> validTargetBlocks = getTargetBlocks();
 		for (int bx = bb.min.getX(); bx <= bb.max.getX(); bx++) {
 			for (int bz = bb.min.getZ(); bz <= bb.max.getZ(); bz++) {
 				for (int by = bb.min.getY() - 1; by > 0; by--) {
 					BlockPos currentPos = new BlockPos(bx, by, bz);
-					block = world.getBlockState(currentPos).getBlock();
-					if (block != null && validTargetBlocks.contains(BlockDataManager.INSTANCE.getNameForBlock(block))) {
+					if (AWStructureStatics.isValidTargetBlock(world.getBlockState(currentPos))) {
 						break;
 					} else {
 						world.setBlockState(currentPos, Blocks.DIRT.getDefaultState());

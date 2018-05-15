@@ -29,13 +29,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
-import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator;
-
-import java.util.Set;
 
 public class StructureValidatorGround extends StructureValidator {
 
@@ -45,11 +42,10 @@ public class StructureValidatorGround extends StructureValidator {
 
 	@Override
 	public boolean shouldIncludeForSelection(World world, int x, int y, int z, EnumFacing face, StructureTemplate template) {
-		Block block = world.getBlockState(new BlockPos(x, y - 1, z)).getBlock();
-		Set<String> validTargetBlocks = getTargetBlocks();
-		String name = BlockDataManager.INSTANCE.getNameForBlock(block);
-		if (block == null || !validTargetBlocks.contains(name)) {
-			AWLog.logDebug("Rejecting due to target block mismatch of: " + name + " at: " + x + "," + y + "," + z + " Valid blocks are: " + validTargetBlocks);
+		IBlockState state = world.getBlockState(new BlockPos(x, y - 1, z));
+		Block block = state.getBlock();
+		if (!AWStructureStatics.isValidTargetBlock(state)) {
+			AWLog.logDebug("Rejecting due to target block mismatch of: " + block.getRegistryName().toString() + " at: " + x + "," + y + "," + z);
 			return false;
 		}
 		return true;
