@@ -10,6 +10,7 @@ public class AWCoreStatics extends ModConfiguration {
 
 	public static boolean DEBUG = true;
 	public static final String resourcePath = "/assets/ancientwarfare/resources/";
+	public static final String utilsExportPath = AWCoreStatics.configPathForFiles + "/export/";
 	public static int timekeeperRefreshRate = 10;
 
 	/*

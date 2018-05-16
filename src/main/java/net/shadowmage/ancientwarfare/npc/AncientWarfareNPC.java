@@ -100,7 +100,6 @@ public class AncientWarfareNPC {
 		/*
 		 * save config for any changes that were made during loading stages
          */
-		statics.postInitCallback();
 		proxy.loadSkins();
 		AWNPCEntityLoader.loadNpcSubtypeEquipment();
 		statics.save();

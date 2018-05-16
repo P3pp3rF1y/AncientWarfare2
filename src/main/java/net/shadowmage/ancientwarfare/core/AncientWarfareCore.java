@@ -18,6 +18,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.shadowmage.ancientwarfare.core.command.CommandResearch;
+import net.shadowmage.ancientwarfare.core.command.CommandUtils;
 import net.shadowmage.ancientwarfare.core.compat.CompatLoader;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.container.ContainerBackpack;
@@ -112,6 +113,7 @@ public class AncientWarfareCore {
 	@EventHandler
 	public void serverStartingEvent(FMLServerStartingEvent evt) {
 		evt.registerServerCommand(new CommandResearch());
+		evt.registerServerCommand(new CommandUtils());
 	}
 
 	@SubscribeEvent

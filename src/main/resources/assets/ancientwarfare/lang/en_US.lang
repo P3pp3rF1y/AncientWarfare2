@@ -656,6 +656,7 @@ command.aw.faction.get.usage=/awfaction get (playername)
 command.aw.faction.status.player=Faction Standing For Player: %s
 command.aw.faction.status.value=Faction %s  Standing: %s
 command.aw.faction.set=Set faction standing for %s with %s to %s
+command.aw.utils.usage=/awutils exportentities [fileName - defaults to "entitylist.csv"] OR /awutils exportbiomes [fileName - defaults to "biomelist.csv"] OR /awutils exportblocks [fileName - defaults to "blocklist.csv"]
 
 #research
 research.invention=Invention

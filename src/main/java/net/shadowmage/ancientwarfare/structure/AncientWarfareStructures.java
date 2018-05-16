@@ -104,7 +104,6 @@ public class AncientWarfareStructures {
 
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent evt) {
-		statics.loadPostInitValues();//needs to be called prior to worldgen biome loading, as biome aliases are loaded in this stage
 		StructurePluginManager.INSTANCE.loadPlugins();
 		WorldGenStructureManager.INSTANCE.loadBiomeList();
 		TemplateLoader.INSTANCE.loadTemplates();
