@@ -441,11 +441,18 @@ public abstract class StructureValidator {
 	 * validates both top block height and block type for the input position and settings
 	 */
 	protected boolean validateBlockHeightTypeAndBiome(World world, int x, int z, int min, int max, boolean skipWater, Biome validBiome, Predicate<IBlockState> isValidState) {
-		return world.getBiome(new BlockPos(x, 1, z)) == validBiome && validateBlockType(world, x, validateBlockHeight(world, x, z, min, max, skipWater), z, isValidState);
+/*
+		BlockPos pos = new BlockPos(x, 1, z);
+		if (world.getBiome(pos) != validBiome) {
+			AncientWarfareCore.log.debug("Rejected for not matching biome {} at {} was supposed to be {}", world.getBiome(pos).getBiomeName(), pos.toString(), validBiome.getBiomeName());
+			return false;
+		}
+*/
+		return validateBlockType(world, x, validateBlockHeight(world, x, z, min, max, skipWater), z, isValidState);
 	}
 
 	protected boolean validateBlockHeightTypeAndBiome(World world, int x, int z, int min, int max, boolean skipWater, Biome validBiome) {
-		return validateBlockHeightTypeAndBiome(world, x, z, min, max, skipWater, validBiome, state -> AWStructureStatics.isValidTargetBlock(state));
+		return validateBlockHeightTypeAndBiome(world, x, z, min, max, skipWater, validBiome, AWStructureStatics::isValidTargetBlock);
 	}
 
 	/*
