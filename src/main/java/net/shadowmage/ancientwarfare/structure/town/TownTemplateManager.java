@@ -4,8 +4,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 public class TownTemplateManager {
 
@@ -23,8 +25,12 @@ public class TownTemplateManager {
 		templates.put(template.getTownTypeName(), template);
 	}
 
-	public TownTemplate getTemplate(String name) {
-		return templates.get(name);
+	public Optional<TownTemplate> getTemplate(String name) {
+		return Optional.ofNullable(templates.get(name));
+	}
+
+	public Collection<TownTemplate> getTemplates() {
+		return templates.values();
 	}
 
 	public TownTemplate selectTemplateForGeneration(World world, int x, int z, TownBoundingArea area) {

@@ -55,10 +55,22 @@ public class WorldTownGenerator implements IWorldGenerator {
 		if (!TownPlacementValidator.validateAreaForPlacement(world, area)) {
 			return;
 		}//cannot validate the area until bounds are possibly shrunk by selected template
+		generate(world, area, template);
 
-        /*
-		 * add the town to the generated structure map, as a -really- large structure entry
-         */
+	}
+
+	public void generate(World world, int blockX, int blockZ, TownTemplate template) {
+		TownBoundingArea area = TownPlacementValidator.findGenerationPosition(world, blockX, blockZ, false);
+		if (area == null) {
+			return;
+		}
+		generate(world, area, template);
+	}
+
+	private void generate(World world, TownBoundingArea area, TownTemplate template) {
+	/*
+	 * add the town to the generated structure map, as a -really- large structure entry
+	 */
 		StructureMap map = AWGameData.INSTANCE.getData(world, StructureMap.class);
 		StructureBB bb = new StructureBB(new BlockPos(area.getBlockMinX(), area.getMinY(), area.getBlockMinZ()), new BlockPos(area.getBlockMaxX(), area.getMaxY(), area.getBlockMaxZ()));
 		StructureEntry entry = new StructureEntry(bb, template.getTownTypeName(), template.getClusterValue());

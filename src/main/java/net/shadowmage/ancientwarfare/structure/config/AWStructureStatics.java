@@ -824,10 +824,6 @@ public class AWStructureStatics extends ModConfiguration {
 				|| material == Material.GOURD || material == Material.CACTUS;
 	}
 
-	public static Set<String> getUserDefinedTargetBlocks() {
-		return worldGenTargetBlocks;
-	}
-
 	public static boolean shouldSkipScan(Block block) {
 		return scannerSkippedBlocks.contains(Block.REGISTRY.getNameForObject(block).toString());
 	} //TODO are there blocks that would have registry name set to null (C&B perhaps)?
