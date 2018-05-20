@@ -121,7 +121,7 @@ public class TownBoundingArea {
 	}
 
 	public int getSurfaceY() {
-		return minY + 7;
+		return minY + 3;
 	}
 
 	public int getCenterX() {
