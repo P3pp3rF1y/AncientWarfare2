@@ -59,15 +59,7 @@ public class WorldTownGenerator implements IWorldGenerator {
 
 	}
 
-	public void generate(World world, int blockX, int blockZ, TownTemplate template) {
-		TownBoundingArea area = TownPlacementValidator.findGenerationPosition(world, blockX, blockZ, false);
-		if (area == null) {
-			return;
-		}
-		generate(world, area, template);
-	}
-
-	private void generate(World world, TownBoundingArea area, TownTemplate template) {
+	public void generate(World world, TownBoundingArea area, TownTemplate template) {
 	/*
 	 * add the town to the generated structure map, as a -really- large structure entry
 	 */

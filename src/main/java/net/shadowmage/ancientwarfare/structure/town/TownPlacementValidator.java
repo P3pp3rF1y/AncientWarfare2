@@ -30,10 +30,6 @@ public class TownPlacementValidator {
 	 * @return maximal bounding area for a town, or null if no acceptable area was found starting in the specified chunk
 	 */
 	public static TownBoundingArea findGenerationPosition(World world, int x, int z) {
-		return findGenerationPosition(world, x, z, true);
-	}
-
-	public static TownBoundingArea findGenerationPosition(World world, int x, int z, boolean doDistanceCheck) {
 		if (world == null) {
 			return null;
 		}
@@ -42,12 +38,10 @@ public class TownPlacementValidator {
 		if (tm == null) {
 			return null;
 		}
-		if (doDistanceCheck) {
-			int minDist = AWStructureStatics.townClosestDistance * 16;
-			float dist = tm.getClosestTown(x, z, minDist * 2);
-			if (dist < minDist) {
-				return null;
-			}
+		int minDist = AWStructureStatics.townClosestDistance * 16;
+		float dist = tm.getClosestTown(x, z, minDist * 2);
+		if (dist < minDist) {
+			return null;
 		}
 		int cx = x >> 4;
 		int cz = z >> 4;

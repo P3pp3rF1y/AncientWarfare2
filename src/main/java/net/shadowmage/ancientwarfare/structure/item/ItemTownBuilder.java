@@ -5,9 +5,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -15,6 +16,7 @@ import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.structure.gui.GuiTownSelection;
+import net.shadowmage.ancientwarfare.structure.town.TownBoundingArea;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplateManager;
 import net.shadowmage.ancientwarfare.structure.town.WorldTownGenerator;
@@ -44,15 +46,41 @@ public class ItemTownBuilder extends ItemBaseStructure implements IItemKeyInterf
 		if (player == null || player.world.isRemote) {
 			return;
 		}
+
+		RayTraceResult rayTraceResult = rayTrace(player.world, player, false);
+		if (rayTraceResult.typeOfHit != RayTraceResult.Type.BLOCK) {
+			return;
+		}
+
 		Optional<TownTemplate> template = TownTemplateManager.INSTANCE.getTemplate(getTownName(stack));
 		if (!template.isPresent()) {
 			player.sendMessage(new TextComponentString("No town template set"));
 			return;
 		}
+
 		long t1 = System.nanoTime();
-		WorldTownGenerator.INSTANCE.generate(player.world, MathHelper.floor(player.posX), MathHelper.floor(player.posZ), template.get());
+		WorldTownGenerator.INSTANCE.generate(player.world, getTownArea(rayTraceResult.getBlockPos(), player.getHorizontalFacing(), 3, 3), template.get());
 		long t2 = System.nanoTime();
 		AWLog.logDebug("Total Town gen nanos (incl. validation): " + (t2 - t1));
+	}
+
+	private TownBoundingArea getTownArea(BlockPos pos, EnumFacing horizontalFacing, int chunkLength, int chunkWidth) {
+		int minY = pos.getY() - 3;
+		int maxY = Math.min(pos.getY() + 14, 255);
+
+		if (horizontalFacing.getAxis() == EnumFacing.Axis.X) {
+			int chunkMinX = (pos.getX() >> 4) - (horizontalFacing.getFrontOffsetX() < 0 ? chunkLength : 0);
+			int chunkMaxX = (pos.getX() >> 4) + (horizontalFacing.getFrontOffsetX() > 0 ? chunkLength : 0);
+			int chunkMinZ = (pos.getZ() >> 4) - (chunkWidth / 2);
+			int chunkMaxZ = chunkMinZ + chunkWidth;
+			return new TownBoundingArea(chunkMinX, chunkMinZ, chunkMaxX, chunkMaxZ, minY, maxY);
+		}
+
+		int chunkMinX = (pos.getX() >> 4) - (chunkWidth / 2);
+		int chunkMaxX = chunkMinX + chunkWidth;
+		int chunkMinZ = (pos.getZ() >> 4) - (horizontalFacing.getFrontOffsetZ() < 0 ? chunkLength : 0);
+		int chunkMaxZ = (pos.getZ() >> 4) + (horizontalFacing.getFrontOffsetZ() > 0 ? chunkLength : 0);
+		return new TownBoundingArea(chunkMinX, chunkMinZ, chunkMaxX, chunkMaxZ, minY, maxY);
 	}
 
 	@Override
