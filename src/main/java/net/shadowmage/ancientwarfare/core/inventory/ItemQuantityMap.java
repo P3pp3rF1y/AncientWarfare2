@@ -5,6 +5,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 import javax.annotation.Nonnull;
 import java.util.Collection;
@@ -189,14 +190,17 @@ public class ItemQuantityMap {
 	}
 
 	public void putEntryFromNBT(NBTTagCompound entryTag) {
-		ItemHashEntry entry = ItemHashEntry.readFromNBT(entryTag.getCompoundTag("item"));
-		if (entry != null) {
+		NBTTagCompound itemTag = entryTag.getCompoundTag("item");
+		ItemHashEntry entry = ItemHashEntry.readFromNBT(itemTag);
+		if (!entry.getItemStack().isEmpty()) {
 			int qty = entryTag.getInteger("quantity");
 			if (qty == 0) { // when deserializing from NBT just remove all entries with 0
 				map.remove(entry);
 			} else {
 				map.put(entry, qty);
 			}
+		} else {
+			AncientWarfareCore.log.warn("Unable to read item from NBT into quantity map, probably no longer exists. {}", itemTag.toString());
 		}
 	}
 
