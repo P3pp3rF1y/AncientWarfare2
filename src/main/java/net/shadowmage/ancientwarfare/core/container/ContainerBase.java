@@ -5,6 +5,7 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.items.CapabilityItemHandler;
@@ -83,6 +84,12 @@ public class ContainerBase extends Container {
 	/*
 	 * send data from client-container to server container
 	 */
+	protected void sendDataToServer(String tagName, NBTBase tag) {
+		NBTTagCompound compoundTag = new NBTTagCompound();
+		compoundTag.setTag(tagName, tag);
+		sendDataToServer(compoundTag);
+	}
+
 	protected void sendDataToServer(NBTTagCompound data) {
 		if (player.world.isRemote) {
 			PacketGui pkt = new PacketGui();

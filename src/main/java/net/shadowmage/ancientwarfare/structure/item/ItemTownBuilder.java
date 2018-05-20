@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.structure.item;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
@@ -59,7 +60,7 @@ public class ItemTownBuilder extends ItemBaseStructure implements IItemKeyInterf
 		}
 
 		long t1 = System.nanoTime();
-		WorldTownGenerator.INSTANCE.generate(player.world, getTownArea(rayTraceResult.getBlockPos(), player.getHorizontalFacing(), 3, 3), template.get());
+		WorldTownGenerator.INSTANCE.generate(player.world, getTownArea(rayTraceResult.getBlockPos(), player.getHorizontalFacing(), getLength(stack), getWidth(stack)), template.get());
 		long t2 = System.nanoTime();
 		AWLog.logDebug("Total Town gen nanos (incl. validation): " + (t2 - t1));
 	}
@@ -99,10 +100,28 @@ public class ItemTownBuilder extends ItemBaseStructure implements IItemKeyInterf
 		townBuilder.setTagInfo("townName", new NBTTagString(structName));
 	}
 
+	public static void setWidth(ItemStack townBuilder, int width) {
+		townBuilder.setTagInfo("width", new NBTTagInt(width));
+	}
+
+	public static void setLength(ItemStack townBuilder, int length) {
+		townBuilder.setTagInfo("length", new NBTTagInt(length));
+	}
+
 	@Override
 	public void registerClient() {
 		super.registerClient();
 
 		NetworkHandler.registerGui(NetworkHandler.GUI_TOWN_BUILDER, GuiTownSelection.class);
+	}
+
+	public static int getWidth(ItemStack townBuilder) {
+		//noinspection ConstantConditions
+		return townBuilder.hasTagCompound() ? townBuilder.getTagCompound().getInteger("width") : 0;
+	}
+
+	public static int getLength(ItemStack townBuilder) {
+		//noinspection ConstantConditions
+		return townBuilder.hasTagCompound() ? townBuilder.getTagCompound().getInteger("length") : 0;
 	}
 }

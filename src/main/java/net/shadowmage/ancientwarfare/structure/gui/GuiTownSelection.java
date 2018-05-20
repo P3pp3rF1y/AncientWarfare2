@@ -5,6 +5,7 @@ import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
+import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
 import net.shadowmage.ancientwarfare.structure.container.ContainerTownSelection;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplateManager;
@@ -45,7 +46,27 @@ public class GuiTownSelection extends GuiContainerBase<ContainerTownSelection> {
 		selection = new Label(8, 20, "");
 		addGuiElement(selection);
 
-		selectionArea = new CompositeScrolled(this, 0, 30, 256, 240 - 30);
+		addGuiElement(new Label(8, 34, "Width"));
+		NumberInput chunkWidth = new NumberInput(40, 33, 10, getContainer().getWidth(), this) {
+			@Override
+			public void onValueUpdated(float value) {
+				getContainer().handleWidthUpdate((int) value);
+			}
+		};
+		chunkWidth.setIntegerValue();
+		addGuiElement(chunkWidth);
+
+		addGuiElement(new Label(56, 34, "Length"));
+		NumberInput chunkLength = new NumberInput(94, 33, 10, getContainer().getLength(), this) {
+			@Override
+			public void onValueUpdated(float value) {
+				getContainer().handleLengthUpdate((int) value);
+			}
+		};
+		chunkLength.setIntegerValue();
+		addGuiElement(chunkLength);
+
+		selectionArea = new CompositeScrolled(this, 0, 50, 256, 240 - 50);
 		addGuiElement(selectionArea);
 
 		TownTemplateManager.INSTANCE.getTemplate(getContainer().townName).ifPresent(this::setSelection);
