@@ -32,6 +32,7 @@ import net.shadowmage.ancientwarfare.structure.network.PacketStructure;
 import net.shadowmage.ancientwarfare.structure.network.PacketStructureRemove;
 
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -88,6 +89,11 @@ public class StructureTemplateManager {
 			return true;
 		}
 		return false;
+	}
+
+	public void removeAll() {
+		//creating a new list because otherwise we run into concurrent modification exception as the collection is both queried and modified
+		new ArrayList<>(loadedTemplates.keySet()).forEach(this::removeTemplate);
 	}
 
 	public StructureTemplate getTemplate(String name) {

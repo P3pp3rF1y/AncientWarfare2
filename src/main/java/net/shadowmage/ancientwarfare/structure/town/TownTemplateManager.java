@@ -74,4 +74,8 @@ public class TownTemplateManager {
 	private boolean isDimensionValid(int dimension, TownTemplate t) {
 		return t.getDimensionList().contains(dimension) == t.isDimensionWhiteList();
 	}
+
+	public void removeAll() {
+		templates.clear();
+	}
 }
