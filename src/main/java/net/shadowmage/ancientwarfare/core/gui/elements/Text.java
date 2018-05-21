@@ -293,7 +293,8 @@ public class Text extends GuiElement {
 			'.',
 			'>',
 			'/',
-			'?'};
+			'?',
+			'@'};
 
 	protected static char[] allowedNums = new char[] {'1', '2', '3', '4', '5', '6', '7', '8', '9', '0'};
 	protected static char[] allowedNumSymbols = new char[] {'.', '-'};
