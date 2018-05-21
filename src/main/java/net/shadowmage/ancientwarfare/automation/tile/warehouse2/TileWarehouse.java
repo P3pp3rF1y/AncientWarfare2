@@ -114,6 +114,10 @@ public class TileWarehouse extends TileWarehouseBase {
 	}
 
 	private ItemStack tryGetItem(ItemStack filter, int toRemove) {
+		if (world.isRemote) {
+			return tryGetItemClient(filter, toRemove);
+		}
+
 		int removed = 0;
 		for (IWarehouseStorageTile tile : storageMap.getDestinations()) {
 			int count = tile.getQuantityStored(filter);
@@ -128,10 +132,19 @@ public class TileWarehouse extends TileWarehouseBase {
 				break;
 			}
 		}
+
 		if (removed == 0) {
 			return ItemStack.EMPTY;
 		}
+		ItemStack result = filter.copy();
+		result.setCount(removed);
+		return result;
+	}
 
+	private ItemStack tryGetItemClient(ItemStack filter, int toRemove) {
+		int maxRemove = cachedItemMap.getCount(filter);
+		int removed = Math.min(toRemove, maxRemove);
+		cachedItemMap.decreaseCount(filter, removed);
 		ItemStack result = filter.copy();
 		result.setCount(removed);
 		return result;
