@@ -8,7 +8,6 @@ import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 import javax.annotation.Nonnull;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -16,15 +15,6 @@ import java.util.Set;
 public class ItemQuantityMap {
 
 	private final Map<ItemHashEntry, Integer> map = new HashMap<>();
-
-	/*
-	 * puts all key/value pairs from the incoming map.  Overwrites existing counts.
-	 */
-	public void putAll(ItemQuantityMap incoming) {
-		for (ItemHashEntry entry : incoming.map.keySet()) {
-			map.put(entry, incoming.map.get(entry));
-		}
-	}
 
 	/*
 	 * is not a PUT operation -- merges quantities (values) instead of overwriting
@@ -55,28 +45,6 @@ public class ItemQuantityMap {
 		}
 	}
 
-	/*
-	 * @param entries must not be the exact key-set or concurrentModificationException will be thrown
-	 */
-	public void removeAll(Collection<ItemHashEntry> entries) {
-		for (ItemHashEntry entry : entries) {
-			remove(entry);
-		}
-	}
-
-	/*
-	 * decreases quantities by those contained in toRemove<br>
-	 * if toRemove contains a key that this. does not, it is silently ignored, and removal continues
-	 * at the next key
-	 */
-	public void decreaseQuantitiesFor(ItemQuantityMap toRemove) {
-		for (ItemHashEntry entry : toRemove.map.keySet()) {
-			if (contains(entry)) {
-				decreaseCount(entry, toRemove.getCount(entry));
-			}
-		}
-	}
-
 	public int getCount(ItemHashEntry entry) {
 		if (map.containsKey(entry)) {
 			return map.get(entry);
@@ -92,7 +60,7 @@ public class ItemQuantityMap {
 		addCount(new ItemHashEntry(item), count);
 	}
 
-	public void addCount(ItemHashEntry entry, int count) {
+	private void addCount(ItemHashEntry entry, int count) {
 		if (!map.containsKey(entry)) {
 			map.put(entry, count);
 		} else
@@ -103,7 +71,7 @@ public class ItemQuantityMap {
 		decreaseCount(new ItemHashEntry(item), count);
 	}
 
-	public void decreaseCount(ItemHashEntry entry, int count) {
+	private void decreaseCount(ItemHashEntry entry, int count) {
 		if (map.containsKey(entry)) {
 			int itemCount = map.get(entry) - count;
 			if (itemCount <= 0) {
@@ -112,10 +80,6 @@ public class ItemQuantityMap {
 				map.put(entry, itemCount);
 			}
 		}
-	}
-
-	public void remove(ItemStack item) {
-		remove(new ItemHashEntry(item));
 	}
 
 	public void remove(ItemHashEntry entry) {
@@ -154,31 +118,16 @@ public class ItemQuantityMap {
 		NonNullList<ItemStack> items = NonNullList.create();
 		@Nonnull ItemStack outStack;
 		int qty;
-		for (ItemHashEntry wrap1 : map.keySet()) {
-			qty = map.get(wrap1);
+		for (Map.Entry<ItemHashEntry, Integer> entry : map.entrySet()) {
+			qty = entry.getValue();
 			while (qty > 0) {
-				outStack = wrap1.getItemStack().copy();
+				outStack = entry.getKey().getItemStack().copy();
 				outStack.setCount(qty > outStack.getMaxStackSize() ? outStack.getMaxStackSize() : qty);
 				qty -= outStack.getCount();
 				items.add(outStack);
 			}
 		}
 		return items;
-	}
-
-	/*
-	 * Return a list of the most compact item-stacks as possible.<br>
-	 * Stack max size for a given item is ignored -- stack size may be >64 (and may actually be up to Integer.MAX_VALUE)
-	 *
-	 * @param items will be filled with the item-stacks from this map, must not be NULL
-	 */
-	public void getCompactItems(NonNullList<ItemStack> items) {
-		@Nonnull ItemStack outStack;
-		for (ItemHashEntry wrap1 : map.keySet()) {
-			outStack = wrap1.getItemStack().copy();
-			outStack.setCount(map.get(wrap1));
-			items.add(outStack);
-		}
 	}
 
 	public void readFromNBT(NBTTagCompound tag) {
@@ -220,28 +169,8 @@ public class ItemQuantityMap {
 		return entryTag;
 	}
 
-	/*
-	 * return the total number of inventory slots this quantity map would use if placed into slotted inventory
-	 */
-	public int getSlotUseCount() {
-		int count = 0;
-		int c1, c2, c3, c4;
-		for (ItemHashEntry entry : this.map.keySet()) {
-			c1 = entry.getItemStack().getMaxStackSize();
-			c2 = this.getCount(entry);
-			c3 = c2 / c1;
-			c4 = c2 % c1;
-			count += c3 + (c4 > 0 ? 1 : 0);
-		}
-		return count;
-	}
-
 	public int getTotalItemCount() {
-		int count = 0;
-		for (ItemHashEntry entry : this.map.keySet()) {
-			count += map.get(entry);
-		}
-		return count;
+		return map.values().stream().mapToInt(i -> i).sum();
 	}
 
 	/*
@@ -254,7 +183,6 @@ public class ItemQuantityMap {
 	 */
 	public static final class ItemHashEntry {
 		private final NBTTagCompound itemTag;
-		@Nonnull
 		private ItemStack cacheStack = ItemStack.EMPTY;
 
 		/*
@@ -276,6 +204,7 @@ public class ItemQuantityMap {
 			if (obj == this) {
 				return true;
 			}
+			//noinspection SimplifiableIfStatement
 			if (!(obj instanceof ItemHashEntry)) {
 				return false;
 			}
