@@ -63,18 +63,19 @@ public class TileWarehouse extends TileWarehouseBase {
 
 	private ItemStack tryAddItem(ItemStack stack, int count) {
 		List<IWarehouseStorageTile> destinations = storageMap.getDestinations(stack);
-		int moved = 0;
+		int addedTotal = 0;
 		for (IWarehouseStorageTile tile : destinations) {
-			moved = tile.insertItem(stack, count);
+			int moved = tile.insertItem(stack, count - addedTotal);
+			addedTotal += moved;
 			changeCachedQuantity(stack, moved);
 			updateViewers();
-			if (moved >= count) {
+			if (addedTotal >= count) {
 				return ItemStack.EMPTY;
 			}
 		}
 
 		ItemStack result = stack.copy();
-		result.shrink(moved);
+		result.shrink(addedTotal);
 		return result;
 	}
 
