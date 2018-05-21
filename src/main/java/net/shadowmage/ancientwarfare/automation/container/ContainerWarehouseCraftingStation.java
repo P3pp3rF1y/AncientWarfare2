@@ -7,10 +7,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.items.wrapper.PlayerInvWrapper;
@@ -47,14 +47,14 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 			@Override
 			protected OnTakeResult handleOnTake(EntityPlayer player, ItemStack stack) {
 				ICraftingRecipe recipe = tileEntity.craftingRecipeMemory.getRecipe();
-				IItemHandler handler = tileEntity.getWarehouse().getItemHandler();
-				if (AWCraftingManager.canCraftFromInventory(recipe, handler)) {
-					NonNullList<ItemStack> resources = AWCraftingManager.getRecipeInventoryMatch(recipe, handler);
+				IItemHandlerModifiable handler = tileEntity.getWarehouse().getItemHandler();
+				NonNullList<ItemStack> reusableStacks = AWCraftingManager.getReusableStacks(recipe, tileEntity.craftingRecipeMemory.craftMatrix);
+				CombinedInvWrapper combinedHandler = new CombinedInvWrapper(new ItemStackHandler(reusableStacks), handler);
+				if (AWCraftingManager.canCraftFromInventory(recipe, combinedHandler)) {
+					NonNullList<ItemStack> resources = InventoryTools.removeItems(AWCraftingManager.getRecipeInventoryMatch(recipe, combinedHandler), reusableStacks);
 					InventoryTools.removeItems(handler, resources);
 
-					ForgeHooks.setCraftingPlayer(player);
-					NonNullList<ItemStack> remainingItems = tileEntity.craftingRecipeMemory.getRemainingItems();
-					ForgeHooks.setCraftingPlayer(null);
+					NonNullList<ItemStack> remainingItems = InventoryTools.removeItems(recipe.getRemainingItems(tileEntity.craftingRecipeMemory.craftMatrix), reusableStacks);
 					InventoryTools.insertOrDropItems(handler, remainingItems, tileEntity.getWorld(), tileEntity.getPos());
 
 					return new OnTakeResult(SUCCESS, stack);
