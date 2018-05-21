@@ -27,9 +27,6 @@ import net.minecraft.block.state.IBlockState;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -46,7 +43,6 @@ public class AWStructureStatics extends ModConfiguration {
 	public static boolean enableTownGeneration = true;
 	public static boolean enableStructureGeneration = true;
 	public static boolean loadDefaultPack = true;
-	private static boolean exportBlockNames = false;
 	public static int clusterValueSearchRange = 16;
 	public static int duplicateStructureSearchRange = 40;
 	public static int maxClusterValue = 500;
@@ -89,7 +85,6 @@ public class AWStructureStatics extends ModConfiguration {
 		maxClusterValue = config.get(worldGenCategory, "max_cluster_value", maxClusterValue, "Default=" + maxClusterValue + "\n" + "The maximum allowed cluster value that may be present inside of 'validation_chunk_radius'.\n" + "").getInt(maxClusterValue);
 		randomGenerationChance = (float) config.get(worldGenCategory, "random_generation_chance", randomGenerationChance, "Default=" + randomGenerationChance + "\n" + "Accepts values between 0 and 1.\n" + "Determines the chance that a structure will attempt to be generated in any given chunk.\n" + "Number is specified as a percentage -- e.g. 0.75 == 75% chance to attempt generation.\n" + "Higher values will result in more attempts to generate structures.  Actual number\n" + "generated will depend upon your specific templates and their validation settings.\n" + "Values of 0 or lower will result in no structures generating.  Values higher than 1\n" + "will result in a generation attempt in every chunk.").getDouble(randomGenerationChance);
 		spawnProtectionRange = config.get(worldGenCategory, "spawn_protection_chunk_radius", spawnProtectionRange, "Default=" + spawnProtectionRange + "\n" + "Determines the area around the central spawn coordinate that will be excluded from random structure generation.\n" + "Larger values will see a larger area around spawn that is devoid of structures.").getInt(spawnProtectionRange);
-		exportBlockNames = config.getBoolean("export_block_name_list", serverOptions, exportBlockNames, "If true, will export a list of all registered block names on startup.\n" + "Will toggle itself back to false after exporting the list a single time.\n" + "Block names be used to populate skippable and target blocks lists.\n" + "If false, no action will be taken.");
 		enableWorldGen = config.get(serverOptions, "enable_world_generation", enableWorldGen, "Default=" + enableWorldGen + "\n" + "Enable or disable world generation entirely. If disabled, all other options will have no effect.").getBoolean(enableWorldGen);
 
 		townClosestDistance = config.get(worldGenCategory, "town_min_distance", townClosestDistance, "Default=" + townClosestDistance + "\n" + "Minimum distance between towns.  This should be set to a value quite a bit larger than the largest town" + "that you have configured for generation.  E.G.  Max town size=16, this value should be >= 40.").getInt(townClosestDistance);
@@ -829,49 +824,11 @@ public class AWStructureStatics extends ModConfiguration {
 				|| material == Material.GOURD || material == Material.CACTUS;
 	}
 
-	public static Set<String> getUserDefinedTargetBlocks() {
-		return worldGenTargetBlocks;
-	}
-
 	public static boolean shouldSkipScan(Block block) {
 		return scannerSkippedBlocks.contains(Block.REGISTRY.getNameForObject(block).toString());
 	} //TODO are there blocks that would have registry name set to null (C&B perhaps)?
 
 	public static boolean withinProtectionRange(double dist) {
 		return dist < spawnProtectionRange * spawnProtectionRange * 16 * 16;
-	}
-
-	public void loadPostInitValues() {
-		if (exportBlockNames) {
-			config.get(serverOptions, "export_block_name_list", false).set(false);
-			exportBlockNames = false;
-			doBlockNameDump();
-		}
-	}
-
-	private void doBlockNameDump() {
-		File file = new File(configPathForFiles);
-		file.mkdirs();
-		file = new File(file, "block_names.txt");
-		FileWriter fw = null;
-		try {
-			fw = new FileWriter(file);
-			for (Object key : Block.REGISTRY.getKeys()) {
-				fw.write(String.valueOf(key) + "\n");
-			}
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-		finally {
-			if (fw != null) {
-				try {
-					fw.close();
-				}
-				catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
 	}
 }

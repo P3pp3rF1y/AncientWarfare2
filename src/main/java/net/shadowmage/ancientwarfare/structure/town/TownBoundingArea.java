@@ -16,6 +16,17 @@ public class TownBoundingArea {
 	int wallSize = 3;//should be >0 if walls are desired (must be set by generator prior to generating, not used in validation)
 	int exteriorSize = 0;//exterior buffer size, in chunks.  used to inset the walls by this amount, to allow generation of slums/farms on the exterior of the towns
 
+	public TownBoundingArea() {}
+
+	public TownBoundingArea(int chunkMinX, int chunkMinZ, int chunkMaxX, int chunkMaxZ, int minY, int maxY) {
+		this.chunkMinX = chunkMinX;
+		this.chunkMinZ = chunkMinZ;
+		this.chunkMaxX = chunkMaxX;
+		this.chunkMaxZ = chunkMaxZ;
+		this.minY = minY;
+		this.maxY = maxY;
+	}
+
 	public int getChunkWidth() {
 		return (chunkMaxX - chunkMinX) + 1;
 	}
@@ -121,7 +132,7 @@ public class TownBoundingArea {
 	}
 
 	public int getSurfaceY() {
-		return minY + 7;
+		return minY + 3;
 	}
 
 	public int getCenterX() {

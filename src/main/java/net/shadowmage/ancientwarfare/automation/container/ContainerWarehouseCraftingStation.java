@@ -1,15 +1,16 @@
 package net.shadowmage.ancientwarfare.automation.container;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.NonNullList;
-import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.IItemHandlerModifiable;
+import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.items.wrapper.PlayerInvWrapper;
@@ -37,6 +38,7 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 	private ItemQuantityMap itemMap = new ItemQuantityMap();
 	private final ItemQuantityMap cache = new ItemQuantityMap();
 	private boolean shouldUpdate = true;
+	private int currentCraftTotalSize = 0;
 
 	public ContainerWarehouseCraftingStation(final EntityPlayer player, int x, int y, int z) {
 		super(player, x, y, z);
@@ -45,14 +47,14 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 			@Override
 			protected OnTakeResult handleOnTake(EntityPlayer player, ItemStack stack) {
 				ICraftingRecipe recipe = tileEntity.craftingRecipeMemory.getRecipe();
-				IItemHandler handler = tileEntity.getWarehouse().getItemHandler();
-				if (AWCraftingManager.canCraftFromInventory(recipe, handler)) {
-					NonNullList<ItemStack> resources = AWCraftingManager.getRecipeInventoryMatch(recipe, handler);
+				IItemHandlerModifiable handler = tileEntity.getWarehouse().getItemHandler();
+				NonNullList<ItemStack> reusableStacks = AWCraftingManager.getReusableStacks(recipe, tileEntity.craftingRecipeMemory.craftMatrix);
+				CombinedInvWrapper combinedHandler = new CombinedInvWrapper(new ItemStackHandler(reusableStacks), handler);
+				if (AWCraftingManager.canCraftFromInventory(recipe, combinedHandler)) {
+					NonNullList<ItemStack> resources = InventoryTools.removeItems(AWCraftingManager.getRecipeInventoryMatch(recipe, combinedHandler), reusableStacks);
 					InventoryTools.removeItems(handler, resources);
 
-					ForgeHooks.setCraftingPlayer(player);
-					NonNullList<ItemStack> remainingItems = tileEntity.craftingRecipeMemory.getRemainingItems();
-					ForgeHooks.setCraftingPlayer(null);
+					NonNullList<ItemStack> remainingItems = InventoryTools.removeItems(recipe.getRemainingItems(tileEntity.craftingRecipeMemory.craftMatrix), reusableStacks);
 					InventoryTools.insertOrDropItems(handler, remainingItems, tileEntity.getWorld(), tileEntity.getPos());
 
 					return new OnTakeResult(SUCCESS, stack);
@@ -78,6 +80,13 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 	}
 
 	@Override
+	public ItemStack slotClick(int slotId, int dragType, ClickType clickTypeIn, EntityPlayer player) {
+		ItemStack result = super.slotClick(slotId, dragType, clickTypeIn, player);
+		currentCraftTotalSize = 0;
+		return result;
+	}
+
+	@Override
 	public void onContainerClosed(EntityPlayer par1EntityPlayer) {
 		TileWarehouseBase warehouse = tileEntity.getWarehouse();
 		if (warehouse != null) {
@@ -88,6 +97,10 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int slotClickedIndex) {
+		if (slotClickedIndex == 0 && !updateAndCheckCraftStackOrLessInTotal(tileEntity.craftingRecipeMemory.getRecipe())) {
+			return ItemStack.EMPTY;
+		}
+
 		@Nonnull ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot theSlot = this.getSlot(slotClickedIndex);
 		if (theSlot != null && theSlot.getHasStack()) {
@@ -116,6 +129,11 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 			theSlot.onTake(par1EntityPlayer, slotStack);
 		}
 		return slotStackCopy;
+	}
+
+	private boolean updateAndCheckCraftStackOrLessInTotal(ICraftingRecipe recipe) {
+		currentCraftTotalSize += recipe.getRecipeOutput().getCount();
+		return currentCraftTotalSize <= recipe.getRecipeOutput().getMaxStackSize();
 	}
 
 	@Override

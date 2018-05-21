@@ -15,10 +15,9 @@ import net.shadowmage.ancientwarfare.structure.container.ContainerStructureSelec
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateClient;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManagerClient;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.Comparator;
+import java.util.stream.Collectors;
 
 public class GuiStructureSelectionBase extends GuiContainerBase<ContainerStructureSelectionBase> {
 
@@ -86,16 +85,12 @@ public class GuiStructureSelectionBase extends GuiContainerBase<ContainerStructu
 		selectionArea.clearElements();
 		setSelectionName((currentSelection == null ? "guistrings.none" : currentSelection.name));
 
-		Collection<StructureTemplateClient> templatesC = getTemplatesForDisplay();
-		List<StructureTemplateClient> templates = new ArrayList<>();
-		templates.addAll(templatesC);
-		sorter.setFilterText(filterInput.getText());
-		Collections.sort(templates, sorter);
-
 		TemplateButton button;
 		int totalHeight = 8;
 
-		for (StructureTemplateClient template : templates) {
+		for (StructureTemplateClient template : getTemplatesForDisplay().stream()
+				.filter(t -> t.name.toLowerCase().contains(filterInput.getText().toLowerCase()))
+				.sorted(Comparator.comparing(t -> t.name.toLowerCase())).collect(Collectors.toList())) {
 			button = new TemplateButton(8, totalHeight, template);
 			selectionArea.addGuiElement(button);
 			totalHeight += 12;

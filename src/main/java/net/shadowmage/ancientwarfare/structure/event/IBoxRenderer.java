@@ -6,6 +6,8 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
+import java.awt.*;
+
 /*
  * Created by Olivier on 05/02/2015.
  */
@@ -14,6 +16,18 @@ public interface IBoxRenderer {
 
 	final class Util {
 		private Util() {
+		}
+
+		public static void renderBoundingBoxTopSide(EntityPlayer player, BlockPos min, BlockPos max, float delta, Color color) {
+			AxisAlignedBB bb = new AxisAlignedBB(min.getX(), min.getY(), min.getZ(), max.getX() + 1, max.getY() + 1, max.getZ() + 1);
+			bb = RenderTools.adjustBBForPlayerPos(bb, player, delta);
+			RenderTools.drawTopSideOverlay(bb, color);
+		}
+
+		public static void renderBoundingBox(EntityPlayer player, BlockPos min, BlockPos max, float delta, Color color) {
+			AxisAlignedBB bb = new AxisAlignedBB(min.getX(), min.getY(), min.getZ(), max.getX() + 1, max.getY() + 1, max.getZ() + 1);
+			bb = RenderTools.adjustBBForPlayerPos(bb, player, delta);
+			RenderTools.drawOutlinedBoundingBox(bb, color);
 		}
 
 		public static void renderBoundingBox(EntityPlayer player, BlockPos min, BlockPos max, float delta) {

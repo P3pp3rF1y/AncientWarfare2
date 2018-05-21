@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.automation.gui;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseControl;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
@@ -67,11 +68,12 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 					refreshGui();
 				}
 			}
+
 		};
 		Listener l = new Listener(Listener.MOUSE_UP) {
 			@Override
 			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
-				if (evt.mButton == 1) {
+				if (evt.mButton == 1 && widget.isMouseOverElement(evt.mx, evt.my)) {
 					((Text) widget).setText("");
 					refreshGui();
 				}
@@ -118,12 +120,11 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 	private void addInventoryViewElements() {
 		@Nonnull ItemStack stack;
 		NonNullList<ItemStack> displayStacks = NonNullList.create();
-		String searchInput = input.getText().toLowerCase(Locale.ENGLISH);
 
 		for (ItemHashEntry entry : getContainer().itemMap.keySet()) {
 			stack = entry.getItemStack();
 
-			if (searchInput.isEmpty() || stack.getDisplayName().toLowerCase().contains(searchInput)) {
+			if (matchesSearch(stack)) {
 				stack.setCount(getContainer().itemMap.getCount(entry));
 				displayStacks.add(stack);
 			}
@@ -132,7 +133,7 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 		sortItems(displayStacks);
 
 		int x = 0, y = 0;
-		int totalSize = 8;
+		int totalSize = 21;
 		ItemSlot slot;
 		for (ItemStack displayStack : displayStacks) {
 			slot = new ItemSlot(4 + x * 18, 3 + y * 18, displayStack, this) {
@@ -149,7 +150,22 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 				totalSize += 18;
 			}
 		}
-		area.setAreaSize(totalSize + 8);
+		area.setAreaSize(totalSize);
+	}
+
+	private boolean matchesSearch(ItemStack stack) {
+		String searchInput = input.getText().toLowerCase(Locale.ENGLISH);
+		if (searchInput.isEmpty()) {
+			return true;
+		}
+
+		if (searchInput.startsWith("@")) {
+			String modName = searchInput.substring(1);
+			ResourceLocation registryName = stack.getItem().getRegistryName();
+			return registryName != null && registryName.getResourceDomain().contains(modName);
+		}
+
+		return stack.getDisplayName().toLowerCase().contains(searchInput);
 	}
 
 	private void sortItems(NonNullList<ItemStack> items) {

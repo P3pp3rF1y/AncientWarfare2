@@ -110,6 +110,8 @@ public final class NetworkHandler implements IGuiHandler {
 
 	public static final int GUI_WORKSITE_FRUIT_FARM = 53;
 
+	public static final int GUI_TOWN_BUILDER = 54;
+
 	private FMLEventChannel channel;
 
 	private HashMap<Integer, Class<? extends ContainerBase>> containerClasses = new HashMap<>();

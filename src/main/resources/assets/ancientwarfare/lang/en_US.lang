@@ -640,7 +640,7 @@ entity.AncientWarfareNpc.custom_3.civilian.female.name=Imperial Woman
 entity.AncientWarfareNpc.custom_3.bard.name=Imperial Bard
 
 #commands
-command.aw.structure.usage=/awstructure save [templateName] OR /awstructure delete <templateName> [true to remove the config file] OR /awstructure build <templateName> <x> <y> <z> [north:east:south:west]
+command.aw.structure.usage=/awstructure save [templateName] OR /awstructure delete <templateName> [true to remove the config file] OR /awstructure build <templateName> <x> <y> <z> [north:east:south:west] OR /awstructure reload
 command.aw.structure.not_found=Template could not be located: %s
 command.aw.structure.file_not_found=File could not be located: %s
 command.aw.structure.template_removed=Template was removed: %s
@@ -648,6 +648,7 @@ command.aw.structure.file_deleted=File was deleted: %s
 command.aw.structure.built=Structure built: %s at: %s,%s,%s
 command.aw.structure.exported=Structure scanned and saved: %s
 command.aw.structure.incomplete_data=Not enough data in held item
+command.aw.structure.reloaded=Structure and Town templates reloaded
 command.aw.research.usage=/awresearch (add:remove:fill:clear) playerName [goalname for add/remove]
 command.aw.faction.usage=/awfaction (set | setall | get) (playername)
 command.aw.faction.set.usage=/awfaction set (playername) (faction) (amount)
@@ -656,6 +657,7 @@ command.aw.faction.get.usage=/awfaction get (playername)
 command.aw.faction.status.player=Faction Standing For Player: %s
 command.aw.faction.status.value=Faction %s  Standing: %s
 command.aw.faction.set=Set faction standing for %s with %s to %s
+command.aw.utils.usage=/awutils exportentities [fileName - defaults to "entitylist.csv"] OR /awutils exportbiomes [fileName - defaults to "biomelist.csv"] OR /awutils exportblocks [fileName - defaults to "blocklist.csv"]
 
 #research
 research.invention=Invention

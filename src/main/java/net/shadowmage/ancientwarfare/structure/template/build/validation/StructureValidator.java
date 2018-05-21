@@ -30,6 +30,8 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.common.BiomeDictionary;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
@@ -413,24 +415,24 @@ public abstract class StructureValidator {
 	protected boolean validateBorderBlocks(World world, StructureTemplate template, StructureBB bb, int minY, int maxY, boolean skipWater) {
 		int bx, bz;
 		int borderSize = getBorderSize();
-		Biome biome = world.getBiome(new BlockPos(bb.min.getX(), 1, bb.min.getZ()));
+		boolean riverBiomeValid = BiomeDictionary.hasType(world.getBiome(new BlockPos(bb.min.getX(), 1, bb.min.getZ())), BiomeDictionary.Type.RIVER);
 		for (bx = bb.min.getX() - borderSize; bx <= bb.max.getX() + borderSize; bx++) {
 			bz = bb.min.getZ() - borderSize;
-			if (!validateBlockHeightTypeAndBiome(world, bx, bz, minY, maxY, skipWater, biome)) {
+			if (!validateBlockHeightTypeAndBiome(world, bx, bz, minY, maxY, skipWater, riverBiomeValid)) {
 				return false;
 			}
 			bz = bb.max.getZ() + borderSize;
-			if (!validateBlockHeightTypeAndBiome(world, bx, bz, minY, maxY, skipWater, biome)) {
+			if (!validateBlockHeightTypeAndBiome(world, bx, bz, minY, maxY, skipWater, riverBiomeValid)) {
 				return false;
 			}
 		}
 		for (bz = bb.min.getZ() - borderSize + 1; bz <= bb.max.getZ() + borderSize - 1; bz++) {
 			bx = bb.min.getX() - borderSize;
-			if (!validateBlockHeightTypeAndBiome(world, bx, bz, minY, maxY, skipWater, biome)) {
+			if (!validateBlockHeightTypeAndBiome(world, bx, bz, minY, maxY, skipWater, riverBiomeValid)) {
 				return false;
 			}
 			bx = bb.max.getX() + borderSize;
-			if (!validateBlockHeightTypeAndBiome(world, bx, bz, minY, maxY, skipWater, biome)) {
+			if (!validateBlockHeightTypeAndBiome(world, bx, bz, minY, maxY, skipWater, riverBiomeValid)) {
 				return false;
 			}
 		}
@@ -440,12 +442,22 @@ public abstract class StructureValidator {
 	/*
 	 * validates both top block height and block type for the input position and settings
 	 */
-	protected boolean validateBlockHeightTypeAndBiome(World world, int x, int z, int min, int max, boolean skipWater, Biome validBiome, Predicate<IBlockState> isValidState) {
-		return world.getBiome(new BlockPos(x, 1, z)) == validBiome && validateBlockType(world, x, validateBlockHeight(world, x, z, min, max, skipWater), z, isValidState);
+	protected boolean validateBlockHeightAndType(World world, int x, int z, int min, int max, boolean skipWater, Predicate<IBlockState> isValidState) {
+		return validateBlockType(world, x, validateBlockHeight(world, x, z, min, max, skipWater), z, isValidState);
 	}
 
-	protected boolean validateBlockHeightTypeAndBiome(World world, int x, int z, int min, int max, boolean skipWater, Biome validBiome) {
-		return validateBlockHeightTypeAndBiome(world, x, z, min, max, skipWater, validBiome, state -> AWStructureStatics.isValidTargetBlock(state));
+	protected boolean validateBlockHeightTypeAndBiome(World world, int x, int z, int min, int max, boolean skipWater, boolean riverBiomeValid, Predicate<IBlockState> isValidState) {
+		BlockPos pos = new BlockPos(x, 1, z);
+		if (!riverBiomeValid && BiomeDictionary.hasType(world.getBiome(pos), BiomeDictionary.Type.RIVER)) {
+			AncientWarfareCore.log.debug("Rejected for placement into river biome at {}", pos.toString());
+			return false;
+		}
+
+		return validateBlockHeightAndType(world, x, z, min, max, skipWater, isValidState);
+	}
+
+	protected boolean validateBlockHeightTypeAndBiome(World world, int x, int z, int min, int max, boolean skipWater, boolean riverBiomeValid) {
+		return validateBlockHeightTypeAndBiome(world, x, z, min, max, skipWater, riverBiomeValid, AWStructureStatics::isValidTargetBlock);
 	}
 
 	/*

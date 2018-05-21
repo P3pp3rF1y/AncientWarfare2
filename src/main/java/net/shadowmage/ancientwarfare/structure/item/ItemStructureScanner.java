@@ -29,8 +29,11 @@ import net.shadowmage.ancientwarfare.structure.template.save.TemplateExporter;
 import net.shadowmage.ancientwarfare.structure.template.scan.TemplateScanner;
 
 import javax.annotation.Nullable;
+import java.awt.*;
 import java.io.File;
 import java.util.List;
+
+import static java.awt.Color.GREEN;
 
 public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyInterface, IBoxRenderer {
 
@@ -132,21 +135,36 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
 	@Override
 	public void renderBox(EntityPlayer player, ItemStack stack, float delta) {
 		ItemStructureSettings settings = ItemStructureSettings.getSettingsFor(stack);
-		BlockPos pos1, pos2, min, max;
+		BlockPos firstCorner, secondCorner, min, max;
 		if (settings.hasPos1()) {
-			pos1 = settings.pos1();
+			firstCorner = settings.pos1();
 		} else {
-			pos1 = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
+			firstCorner = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
 		}
 		if (settings.hasPos2()) {
-			pos2 = settings.pos2();
+			secondCorner = settings.pos2();
 		} else {
-			pos2 = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
+			secondCorner = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
 		}
-		if (pos1 != null && pos2 != null) {
-			min = BlockTools.getMin(pos1, pos2);
-			max = BlockTools.getMax(pos1, pos2);
-			Util.renderBoundingBox(player, min, max, delta);
+		if (firstCorner == null || secondCorner == null) {
+			return;
+		}
+		min = BlockTools.getMin(firstCorner, secondCorner);
+		max = BlockTools.getMax(firstCorner, secondCorner);
+		Util.renderBoundingBox(player, min, max, delta);
+
+		if (settings.hasPos2()) {
+			BlockPos buildKey = settings.buildKey();
+			if (!settings.hasBuildKey()) {
+				buildKey = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
+			}
+
+			if (buildKey != null) {
+				Util.renderBoundingBox(player, buildKey, buildKey, delta, GREEN);
+				BlockPos outerFirst = new BlockPos(min.getX() - 1, buildKey.getY(), min.getZ() - 1);
+				BlockPos outerSecond = new BlockPos(max.getX() + 1, buildKey.getY(), max.getZ() + 1);
+				Util.renderBoundingBoxTopSide(player, outerFirst, outerSecond, delta, new Color(GREEN.getRed(), GREEN.getGreen(), GREEN.getBlue(), 80));
+			}
 		}
 	}
 

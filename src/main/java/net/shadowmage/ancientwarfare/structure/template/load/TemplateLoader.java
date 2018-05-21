@@ -140,6 +140,13 @@ public class TemplateLoader {
 		}
 	}
 
+	public void reloadAll() {
+		StructureTemplateManager.INSTANCE.removeAll();
+		TownTemplateManager.INSTANCE.removeAll();
+
+		loadTemplates();
+	}
+
 	private void validateAndLoadImages() {
 		String name;
 		Iterator<String> it = images.keySet().iterator();

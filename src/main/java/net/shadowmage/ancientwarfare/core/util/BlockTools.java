@@ -46,6 +46,7 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
 
@@ -102,6 +103,7 @@ public class BlockTools {
 	/*
 	 * will return null if nothing is in range
 	 */
+	@Nullable
 	public static BlockPos getBlockClickedOn(EntityPlayer player, World world, boolean offset) {
 		//TODO can this be replaced with regular rayTrace?
 		float rotPitch = player.rotationPitch;

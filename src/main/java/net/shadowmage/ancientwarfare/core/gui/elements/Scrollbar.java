@@ -9,8 +9,8 @@ import net.shadowmage.ancientwarfare.core.interfaces.IScrollableCallback;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
 public class Scrollbar extends GuiElement {
-
-	static final int borderSize = 4;//the border around the scroll bar and handle
+	private static final int MIN_HANDLE_HEIGHT = 10;
+	static final int borderSize = 1;//the border around the scroll bar and handle
 
 	int totalAreaSize;
 	int viewSize;
@@ -132,9 +132,8 @@ public class Scrollbar extends GuiElement {
 	}
 
 	protected void updateHandlePosition() {
-		this.handleHeight = (int) ((float) viewSize * (float) viewPercent);
+		this.handleHeight = Math.max(MIN_HANDLE_HEIGHT, (int) ((float) viewSize * viewPercent));
 		this.handleTopMax = viewSize - handleHeight;
-		;
 		if (this.handleTop > this.handleTopMax) {
 			this.handleTop = this.handleTopMax;
 		}

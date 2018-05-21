@@ -58,7 +58,7 @@ public final class TemplateScanner {
 			xOutSize = zOutSize;
 			zOutSize = swap;
 		}
-		key = BlockTools.rotateInArea(key.subtract(min), xSize, zSize, turns);
+		key = BlockTools.rotateInArea(key.subtract(min.add(0, -1, 0)), xSize, zSize, turns);
 
 		short[] templateRuleData = new short[xSize * ySize * zSize];
 

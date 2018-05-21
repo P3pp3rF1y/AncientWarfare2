@@ -149,7 +149,7 @@ public class WorldStructureGenerator implements IWorldGenerator {
 		}
 	}
 
-	private static final int CLEARANCE_HEIGHT = 40;
+	private static final int CLEARANCE_HEIGHT = 60;
 
 	public static void clearAbove(World world, StructureBB bb, int border) {
 		BlockPos minCorner = new BlockPos(bb.min.getX() - border, bb.max.getY() + 1, bb.min.getZ() - border);

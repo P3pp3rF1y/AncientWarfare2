@@ -51,7 +51,7 @@ public class TownPlacementValidator {
 			return null;
 		}
 
-		int minY = (int) Math.max(0, world.provider.getHorizon() - 7);
+		int minY = Math.max(0, world.getSeaLevel() - 3);
 
 		TownBoundingArea area = new TownBoundingArea();
 		area.minY = Math.max(minY, height - 2);

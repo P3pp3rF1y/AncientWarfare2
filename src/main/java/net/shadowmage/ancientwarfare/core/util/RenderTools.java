@@ -9,6 +9,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import org.lwjgl.opengl.GL11;
 
+import java.awt.*;
+
 public class RenderTools {
 
 	public static void setFullColorLightmap() {
@@ -194,6 +196,32 @@ public class RenderTools {
 	/*
 	 * draw a player-position-normalized bounding box (can only be called during worldRender)
 	 */
+	public static void drawTopSideOverlay(AxisAlignedBB bb, Color color) {
+		GlStateManager.disableTexture2D();
+		GlStateManager.enableBlend();
+		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+		GlStateManager.pushMatrix();
+		GlStateManager.color(color.getRed(), color.getGreen(), color.getBlue(), color.getAlpha() / 255f);
+		Tessellator tess = Tessellator.getInstance();
+		BufferBuilder bufferBuilder = tess.getBuffer();
+		bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+		float yOffset = 0.01f; //offset to prevent z fighting
+		bufferBuilder.pos(bb.minX, bb.maxY + yOffset, bb.maxZ).tex(0, 0).endVertex();
+		bufferBuilder.pos(bb.maxX, bb.maxY + yOffset, bb.maxZ).tex(0, 1).endVertex();
+		bufferBuilder.pos(bb.maxX, bb.maxY + yOffset, bb.minZ).tex(1, 1).endVertex();
+		bufferBuilder.pos(bb.minX, bb.maxY + yOffset, bb.minZ).tex(1, 0).endVertex();
+		tess.draw();
+		GlStateManager.popMatrix();
+
+		GlStateManager.enableTexture2D();
+		GlStateManager.disableBlend();
+	}
+
+	public static void drawOutlinedBoundingBox(AxisAlignedBB bb, Color color) {
+		drawOutlinedBoundingBox(bb, color.getRed(), color.getGreen(), color.getBlue());
+	}
+
 	public static void drawOutlinedBoundingBox(AxisAlignedBB bb, float r, float g, float b) {
 		GlStateManager.enableBlend();
 		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
@@ -204,19 +232,9 @@ public class RenderTools {
 
 		Tessellator tess = Tessellator.getInstance();
 		BufferBuilder bufferBuilder = tess.getBuffer();
-		bufferBuilder.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION);
-		bufferBuilder.pos(bb.minX, bb.minY, bb.minZ).endVertex();
-		bufferBuilder.pos(bb.maxX, bb.minY, bb.minZ).endVertex();
-		bufferBuilder.pos(bb.maxX, bb.minY, bb.maxZ).endVertex();
-		bufferBuilder.pos(bb.minX, bb.minY, bb.maxZ).endVertex();
-		bufferBuilder.pos(bb.minX, bb.minY, bb.minZ).endVertex();
+		drawBottomOutline(bb, bufferBuilder);
 		tess.draw();
-		bufferBuilder.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION);
-		bufferBuilder.pos(bb.minX, bb.maxY, bb.minZ).endVertex();
-		bufferBuilder.pos(bb.maxX, bb.maxY, bb.minZ).endVertex();
-		bufferBuilder.pos(bb.maxX, bb.maxY, bb.maxZ).endVertex();
-		bufferBuilder.pos(bb.minX, bb.maxY, bb.maxZ).endVertex();
-		bufferBuilder.pos(bb.minX, bb.maxY, bb.minZ).endVertex();
+		drawTopOutline(bb, bufferBuilder);
 		tess.draw();
 		bufferBuilder.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION);
 		bufferBuilder.pos(bb.minX, bb.minY, bb.minZ).endVertex();
@@ -232,6 +250,24 @@ public class RenderTools {
 		GlStateManager.depthMask(true);
 		GlStateManager.enableTexture2D();
 		GlStateManager.disableBlend();
+	}
+
+	private static void drawTopOutline(AxisAlignedBB bb, BufferBuilder bufferBuilder) {
+		bufferBuilder.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION);
+		bufferBuilder.pos(bb.minX, bb.maxY, bb.minZ).endVertex();
+		bufferBuilder.pos(bb.maxX, bb.maxY, bb.minZ).endVertex();
+		bufferBuilder.pos(bb.maxX, bb.maxY, bb.maxZ).endVertex();
+		bufferBuilder.pos(bb.minX, bb.maxY, bb.maxZ).endVertex();
+		bufferBuilder.pos(bb.minX, bb.maxY, bb.minZ).endVertex();
+	}
+
+	private static void drawBottomOutline(AxisAlignedBB bb, BufferBuilder bufferBuilder) {
+		bufferBuilder.begin(GL11.GL_LINE_STRIP, DefaultVertexFormats.POSITION);
+		bufferBuilder.pos(bb.minX, bb.minY, bb.minZ).endVertex();
+		bufferBuilder.pos(bb.maxX, bb.minY, bb.minZ).endVertex();
+		bufferBuilder.pos(bb.maxX, bb.minY, bb.maxZ).endVertex();
+		bufferBuilder.pos(bb.minX, bb.minY, bb.maxZ).endVertex();
+		bufferBuilder.pos(bb.minX, bb.minY, bb.minZ).endVertex();
 	}
 
 	/*

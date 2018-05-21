@@ -33,14 +33,10 @@ import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
-import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
 import net.shadowmage.ancientwarfare.core.util.BlockAndMeta;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -66,7 +62,6 @@ public class AWNPCStatics extends ModConfiguration {
 	public static boolean npcAllowUpkeepAnyInventory = true;
 	public static int townMaxRange = 100;
 	public static int townUpdateFreq = 100; //5 second broadcast frequency
-	public static boolean exportEntityNames = false;
 	public static boolean npcAIDebugMode = false;
 	public static double archerRange = 16.0;
 
@@ -232,8 +227,6 @@ public class AWNPCStatics extends ModConfiguration {
 
 		loadDefaultSkinPack = config.get(clientOptions, "load_default_skin_pack", loadDefaultSkinPack, "Load Default Skin Pack\nDefault=true\n" + "If true, default skin pack will be loaded.\n" + "If false, default skin pack will NOT be loaded -- you will need to supply your own\n" + "skin packs or all npcs will use the default skin.").getBoolean();
 
-		exportEntityNames = config.get(serverOptions, "export_entity_names", exportEntityNames, "Export entity name list\nDefault=" + exportEntityNames + "\n" + "If true, a text file will be created in the main ancientwarfare config directory containing a list of all registered in-game entity names.\n" + "These names may be used to populate the NPC target lists.").getBoolean();
-
 		archerRange = config.get(serverOptions, "archer_attack_range", archerRange, "Archer attack range\nDefault=" + archerRange + "\n" + "Attack range of all archers, except mounted archers who are half of this value.").getDouble();
 
 		renderAI = config.get(clientOptions, "render_npc_ai", true);
@@ -255,34 +248,6 @@ public class AWNPCStatics extends ModConfiguration {
 		pathfinderAvoidChests = config.get(pathfinderSettings, "pathfinder_avoid_chests", pathfinderAvoidChests, "Avoid Chests\nDefault=" + pathfinderAvoidChests + "\n" + "Avoid vanilla chests, including anything that uses the same rendertype or extends BlockChest, which may include\n" + "mod-added chests.").getBoolean();
 
 		PATHFINDER_AVOID_CUSTOM_RAW = config.get(pathfinderSettings, "pathfinder_avoid_others", PATHFINDER_AVOID_CUSTOM_RAW, "Avoid Other blocks\nDefault=" + PATHFINDER_AVOID_CUSTOM_RAW + "\n" + "List of custom blocks you also want NPC's to avoid.\n" + "Put each block on a new line. Use the format modId:blockName[:meta]").getStringList();
-	}
-
-	public void postInitCallback() {
-		if (exportEntityNames) {
-			File file = new File("config/ancientwarfare");
-			file.mkdirs();
-			file = new File(file, "entity_names.txt");
-			FileWriter wr = null;
-			try {
-				wr = new FileWriter(file);
-				for (Object obj : ForgeRegistries.ENTITIES.getKeys()) {
-					wr.write(String.valueOf(obj) + "\n");
-				}
-			}
-			catch (IOException e) {
-				e.printStackTrace();
-			}
-			finally {
-				if (wr != null) {
-					try {
-						wr.close();
-					}
-					catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}
 	}
 
 	private void loadTargetValues() {

@@ -314,6 +314,9 @@ public class InventoryTools {
 	}
 
 	public static void dropItemInWorld(World world, ItemStack item, double x, double y, double z) {
+		if (world.isRemote) {
+			return;
+		}
 		InventoryHelper.spawnItemStack(world, x, y, z, item);
 	}
 
@@ -427,6 +430,11 @@ public class InventoryTools {
 			}
 		}
 		return ret;
+	}
+
+	public static NonNullList<ItemStack> removeItems(NonNullList<ItemStack> stacks, NonNullList<ItemStack> stacksToRemove) {
+		return stacks.stream().filter(s -> stacksToRemove.stream().noneMatch(r -> doItemStacksMatch(s, r)))
+				.collect(Collectors.toCollection(NonNullList::create));
 	}
 
 	public static NonNullList<ItemStack> removeItems(IItemHandler handler, NonNullList<ItemStack> stacks) {

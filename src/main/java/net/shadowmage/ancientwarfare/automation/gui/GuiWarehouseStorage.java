@@ -96,8 +96,8 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
 		ItemSlot slot;
 		int qty;
 		@Nonnull ItemStack stack;
-		int x = 0, y = 0;
-		int totalSize = 8;
+		int x = 0;
+		int y = 0;
 		NonNullList<ItemStack> displayStacks = NonNullList.create();
 		for (ItemHashEntry entry : getContainer().itemMap.keySet()) {
 			qty = getContainer().itemMap.getCount(entry);
@@ -106,8 +106,9 @@ public class GuiWarehouseStorage extends GuiContainerBase<ContainerWarehouseStor
 			displayStacks.add(stack);
 		}
 
+		int totalSize = 21;
 		for (ItemStack displayStack : displayStacks) {
-			slot = new ItemSlot(4 + x * 18, 8 + y * 18, displayStack, this) {
+			slot = new ItemSlot(4 + x * 18, 3 + y * 18, displayStack, this) {
 				@Override
 				public void onSlotClicked(ItemStack stack, boolean rightClicked) {
 					@Nonnull ItemStack reqStack = getStack();

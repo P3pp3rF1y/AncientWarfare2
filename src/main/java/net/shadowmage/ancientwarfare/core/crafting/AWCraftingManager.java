@@ -58,6 +58,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class AWCraftingManager {
 	public static final IForgeRegistry<ResearchRecipeBase> RESEARCH_RECIPES = (new RegistryBuilder<ResearchRecipeBase>()).setName(new ResourceLocation(AncientWarfareCore.modID, "research_recipes")).setType(ResearchRecipeBase.class).setMaxID(Integer.MAX_VALUE >> 5).disableSaving().allowModification().create();
@@ -388,4 +389,8 @@ public class AWCraftingManager {
 		return stackFound;
 	}
 
+	public static NonNullList<ItemStack> getReusableStacks(ICraftingRecipe recipe, InventoryCrafting craftMatrix) {
+		return recipe.getRemainingItems(craftMatrix).stream().filter(s -> !s.isEmpty() && recipe.getIngredients().stream().anyMatch(i -> i.apply(s)))
+				.collect(Collectors.toCollection(NonNullList::create));
+	}
 }
