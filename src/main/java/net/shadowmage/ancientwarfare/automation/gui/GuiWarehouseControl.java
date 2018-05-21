@@ -132,7 +132,7 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 		sortItems(displayStacks);
 
 		int x = 0, y = 0;
-		int totalSize = 8;
+		int totalSize = 21;
 		ItemSlot slot;
 		for (ItemStack displayStack : displayStacks) {
 			slot = new ItemSlot(4 + x * 18, 3 + y * 18, displayStack, this) {
@@ -149,7 +149,7 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 				totalSize += 18;
 			}
 		}
-		area.setAreaSize(totalSize + 8);
+		area.setAreaSize(totalSize);
 	}
 
 	private void sortItems(NonNullList<ItemStack> items) {
