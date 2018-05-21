@@ -67,11 +67,12 @@ public class GuiWarehouseControl extends GuiContainerBase<ContainerWarehouseCont
 					refreshGui();
 				}
 			}
+
 		};
 		Listener l = new Listener(Listener.MOUSE_UP) {
 			@Override
 			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
-				if (evt.mButton == 1) {
+				if (evt.mButton == 1 && widget.isMouseOverElement(evt.mx, evt.my)) {
 					((Text) widget).setText("");
 					refreshGui();
 				}
