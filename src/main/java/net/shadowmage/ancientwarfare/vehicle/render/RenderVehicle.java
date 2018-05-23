@@ -127,10 +127,14 @@ public class RenderVehicle extends Render<VehicleBase> {
 		/**
 		 * dont' render nameplate for the vehicle that thePlayer is on
 		 */
-		if (AWVehicleStatics.renderVehicleNameplates && vehicle.getControllingPassenger() != Minecraft.getMinecraft().player) {
+		if (isInWorld(vehicle) && AWVehicleStatics.renderVehicleNameplates && vehicle.getControllingPassenger() != Minecraft.getMinecraft().player) {
 			renderNamePlate(vehicle, x, y, z, renderYaw, partialTicks);
 		}
 
+	}
+
+	private boolean isInWorld(VehicleBase vehicle) {
+		return vehicle.posY > 0;
 	}
 
 	private DecimalFormat formatter1d = new DecimalFormat("#.#");
