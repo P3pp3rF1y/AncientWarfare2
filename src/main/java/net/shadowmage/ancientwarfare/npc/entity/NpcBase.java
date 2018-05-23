@@ -294,7 +294,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	@Override
 	public final double getYOffset() {
-		return isRiding() ? -0.5D : 0.0D;//fixes mounted offset for horses, probably minecarts
+		return -0.35D;
 	}
 
 	@Override

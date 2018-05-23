@@ -40,7 +40,7 @@ public class VehicleTypeCatapultMobileFixed extends VehicleTypeCatapult {
 		this.baseMissileVelocityMax = 32.f;
 		this.turretVerticalOffset = 0.9375f;
 		this.riderForwardsOffset = 1.2f;
-		this.riderVerticalOffset = 0.7f;
+		this.riderVerticalOffset = 0.55f;
 		this.displayName = "item.vehicleSpawner.2";
 		this.displayTooltip.add("item.vehicleSpawner.tooltip.torsion");
 		this.displayTooltip.add("item.vehicleSpawner.tooltip.mobile");

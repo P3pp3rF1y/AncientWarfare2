@@ -16,6 +16,7 @@ import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry;
 import net.shadowmage.ancientwarfare.core.entity.AWEntityRegistry.EntityDeclaration;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.entity.faction.*;
+import net.shadowmage.ancientwarfare.npc.entity.vehicle.NpcSiegeEngineer;
 import net.shadowmage.ancientwarfare.npc.item.AWNPCItems;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 
@@ -76,6 +77,9 @@ public class AWNPCEntityLoader {
 		addNpcRegistration(reg);
 
 		reg = new NpcDeclaration(NpcBard.class, AWEntityRegistry.NPC_BARD, "bard");
+		addNpcRegistration(reg);
+
+		reg = new NpcDeclaration(NpcSiegeEngineer.class, AWEntityRegistry.NPC_SIEGE_ENGINEER, "siege.engineer");
 		addNpcRegistration(reg);
 	}
 

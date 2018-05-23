@@ -88,7 +88,7 @@ public class VehicleTypeAirInterceptor extends VehicleType {
 		this.baseMissileVelocityMax = 50.f;
 
 		this.riderForwardsOffset = -0.0625f * 7;
-		this.riderVerticalOffset = 0.0625f * 12;
+		this.riderVerticalOffset = 0.0625f * 12 - 0.15f;
 		this.riderSits = true;
 
 		this.mountable = true;

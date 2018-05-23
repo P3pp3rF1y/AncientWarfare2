@@ -101,7 +101,7 @@ public class VehicleTypeTrebuchetLarge extends VehicleType {
 		this.width = 2 * 2.5f;
 		this.height = 2 * 2.5f;
 		this.riderForwardsOffset = 1.425f * 2.5f;
-		this.riderVerticalOffset = 0.5f;
+		this.riderVerticalOffset = 0.35f;
 		this.baseMissileVelocityMax = 50.f;
 		this.turretVerticalOffset = (34.f + 67.5f + 24.0f) * 0.0625f * 2.5f;
 

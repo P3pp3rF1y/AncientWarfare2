@@ -38,7 +38,7 @@ public class VehicleTypeCatapultStandTurret extends VehicleTypeCatapult {
 		this.turretVerticalOffset = 13 * 0.0625f;
 		this.turretVerticalOffset = 0.4f;
 		this.riderForwardsOffset = 1.2f;
-		this.riderVerticalOffset = 0.7f;
+		this.riderVerticalOffset = 0.55f;
 		this.displayName = "item.vehicleSpawner.1";
 		this.displayTooltip.add("item.vehicleSpawner.tooltip.torsion");
 		this.displayTooltip.add("item.vehicleSpawner.tooltip.fixed");

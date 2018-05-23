@@ -41,7 +41,7 @@ public class VehicleTypeBallistaStand extends VehicleTypeBallista {
 		//20 units vertical, 0 forwards
 		this.turretVerticalOffset = 18.f * 0.0625f;
 		this.riderForwardsOffset = -1.8f;
-		this.riderVerticalOffset = 0.5f;
+		this.riderVerticalOffset = 0.35f;
 		this.riderSits = false;
 		this.drivable = true;//adjust based on isMobile or not
 		this.baseForwardSpeed = 0.f;

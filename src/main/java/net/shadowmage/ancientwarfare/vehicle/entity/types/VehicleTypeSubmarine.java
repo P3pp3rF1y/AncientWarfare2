@@ -84,7 +84,7 @@ public class VehicleTypeSubmarine extends VehicleType {
 		this.baseMissileVelocityMax = 42.f;//stand versions should have higher velocity, as should fixed version--i.e. mobile turret should have the worst of all versions
 
 		this.riderForwardsOffset = 0.75f;
-		this.riderVerticalOffset = 0.1f;
+		this.riderVerticalOffset = -0.05f;
 		this.riderSits = true;
 
 		this.mountable = true;

@@ -41,7 +41,7 @@ public class VehicleTypeTrebuchetMobileFixed extends VehicleTypeTrebuchet {
 		this.baseStrafeSpeed = 1.0f;
 		this.riderSits = true;
 		this.riderForwardsOffset = 1.275f;
-		this.riderVerticalOffset = 0.8f;
+		this.riderVerticalOffset = 0.65f;
 		this.turretVerticalOffset = (34.f + 67.5f + 24.0f + 12.f) * 0.0625f;
 		this.validUpgrades.add(UpgradeRegistry.speedUpgrade);
 	}

@@ -53,7 +53,7 @@ public class VehicleTypeChestCart extends VehicleType {
 		this.combatEngine = false;
 		this.riderSits = false;
 		this.pilotableBySoldiers = false;
-		this.riderVerticalOffset = 0.5f;
+		this.riderVerticalOffset = 0.35f;
 		this.riderForwardsOffset = 2.85f;
 		this.baseForwardSpeed = 3.7f * 0.05f;
 		this.baseStrafeSpeed = 1.75f;

@@ -818,13 +818,10 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 
 	@Override
 	public void updatePassenger(Entity passenger) {
-
 		double posX = this.posX;
 		double posY = this.posY + this.getRiderVerticalOffset();
 		double posZ = this.posZ;
-		if (passenger instanceof NpcBase) {
-			posY -= 0.5f;
-		}
+
 		float yaw = this.vehicleType.moveRiderWithTurret() ? localTurretRotation : rotationYaw;
 		posX += Trig.sinDegrees(yaw) * -this.getRiderForwardOffset();
 		posX += Trig.sinDegrees(yaw + 90) * this.getRiderHorizontalOffset();

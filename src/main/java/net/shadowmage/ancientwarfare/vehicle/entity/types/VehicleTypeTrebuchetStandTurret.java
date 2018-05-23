@@ -43,7 +43,7 @@ public class VehicleTypeTrebuchetStandTurret extends VehicleTypeTrebuchet {
 		this.riderSits = true;
 		this.turretRotationMax = 45;
 		this.riderForwardsOffset = 1.275f;
-		this.riderVerticalOffset = 0.7f;
+		this.riderVerticalOffset = 0.55f;
 		this.turretVerticalOffset = (34.f + 67.5f + 24.0f + 9.5f) * 0.0625f;
 	}
 

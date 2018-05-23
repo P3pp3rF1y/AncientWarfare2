@@ -39,7 +39,7 @@ public class VehicleTypeCannonStandFixed extends VehicleTypeCannon {
 		this.baseStrafeSpeed = 0.5f;
 		this.baseForwardSpeed = 0.f;
 		this.riderSits = false;
-		this.riderVerticalOffset = 0.5f;
+		this.riderVerticalOffset = 0.35f;
 		this.riderForwardsOffset = -1.5f;
 		this.armorBaySize = 4;
 		this.upgradeBaySize = 4;

@@ -41,7 +41,7 @@ public class VehicleTypeCannonMobileFixed extends VehicleTypeCannon {
 		this.baseStrafeSpeed = 1.5f;
 		this.turretVerticalOffset = 14.5f * 0.0625f;
 		this.riderSits = false;
-		this.riderVerticalOffset = 0.5f;
+		this.riderVerticalOffset = 0.35f;
 		this.riderForwardsOffset = -2.45f;
 		this.baseMissileVelocityMax = 38.f;
 		this.validUpgrades.add(UpgradeRegistry.speedUpgrade);

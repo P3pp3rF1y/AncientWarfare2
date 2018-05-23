@@ -37,7 +37,6 @@ public class NpcNavigator extends PathNavigateGround {
 		this.world = entity.world;
 	}
 
-	// TODO does this pathing work without overriding this final method?
 	@Override
 	public Path getPathToPos(BlockPos pos) {
 		return !this.canNavigate() ? null : pathToXYZ(pos);

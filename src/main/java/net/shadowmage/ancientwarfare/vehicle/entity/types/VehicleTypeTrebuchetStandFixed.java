@@ -34,7 +34,7 @@ public class VehicleTypeTrebuchetStandFixed extends VehicleTypeTrebuchet {
 		this.displayTooltip.add("item.vehicleSpawner.tooltip.fixed");
 		this.displayTooltip.add("item.vehicleSpawner.tooltip.noturret");
 		this.riderForwardsOffset = 1.425f;
-		this.riderVerticalOffset = 0.5f;
+		this.riderVerticalOffset = 0.35f;
 		this.armorBaySize = 4;
 		this.upgradeBaySize = 4;
 	}
