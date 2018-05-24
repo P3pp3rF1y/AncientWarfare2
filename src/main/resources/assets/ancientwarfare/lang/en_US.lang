@@ -107,6 +107,7 @@ entity.AncientWarfareNpc.combat.archer.name=Archer
 entity.AncientWarfareNpc.combat.medic.name=Medic
 entity.AncientWarfareNpc.combat.engineer.name=Engineer
 entity.AncientWarfareNpc.combat.commander.name=Commander
+entity.AncientWarfareNpc.siege.engineer.name=Siege Engineer
 
 #vehicle
 

@@ -6,6 +6,11 @@
     },
     "variants": {
         "variant": {
+            "siege_engineer": {
+                "textures": {
+                    "layer0": "ancientwarfare:items/npc/spawner_siege_engineer"
+                }
+            },
             "archer": {
                 "textures": {
                     "layer0": "ancientwarfare:items/npc/spawner_archer"
