@@ -827,8 +827,13 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		posX += Trig.sinDegrees(yaw + 90) * this.getRiderHorizontalOffset();
 		posZ += Trig.cosDegrees(yaw) * -this.getRiderForwardOffset();
 		posZ += Trig.cosDegrees(yaw + 90) * this.getRiderHorizontalOffset();
-		passenger.setPosition(posX, posY + passenger.getYOffset(), posZ);
-		passenger.rotationYaw -= this.moveHelper.getRotationSpeed();
+		if (passenger instanceof NpcBase) {
+			passenger.setPositionAndRotation(posX, posY + passenger.getYOffset(), posZ, 180 - localTurretRotation, passenger.rotationPitch);
+			passenger.setRenderYawOffset(180 - localTurretRotation);
+		} else {
+			passenger.setPosition(posX, posY + passenger.getYOffset(), posZ);
+			passenger.rotationYaw -= this.moveHelper.getRotationSpeed();
+		}
 	}
 
 	@Override
