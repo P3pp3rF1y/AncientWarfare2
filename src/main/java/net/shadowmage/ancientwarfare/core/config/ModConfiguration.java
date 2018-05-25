@@ -67,6 +67,7 @@ public abstract class ModConfiguration {
 	}
 
 	public void save() {
+		//TODO remove when statics moved to config annotations
 		if (config.hasChanged())
 			config.save();
 	}

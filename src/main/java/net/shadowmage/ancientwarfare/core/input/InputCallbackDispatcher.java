@@ -5,24 +5,24 @@ import net.minecraft.client.settings.KeyBinding;
 
 import java.util.Set;
 
-public class InputCallbackDispatcher {
+class InputCallbackDispatcher {
 	private Set<IInputCallback> inputCallbacks = Sets.newHashSet();
 	private KeyBinding keyBinding;
 
-	public KeyBinding getKeyBinding() {
+	KeyBinding getKeyBinding() {
 		return keyBinding;
 	}
 
-	public InputCallbackDispatcher(KeyBinding keyBinding, IInputCallback initialCallback) {
+	InputCallbackDispatcher(KeyBinding keyBinding, IInputCallback initialCallback) {
 		this.keyBinding = keyBinding;
 		inputCallbacks.add(initialCallback);
 	}
 
-	public void addInputCallback(IInputCallback inputCallback) {
+	void addInputCallback(IInputCallback inputCallback) {
 		inputCallbacks.add(inputCallback);
 	}
 
-	public void onKeyPressed() {
+	void onKeyPressed() {
 		inputCallbacks.forEach(IInputCallback::onKeyPressed);
 	}
 }

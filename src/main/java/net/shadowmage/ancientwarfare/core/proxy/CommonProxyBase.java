@@ -42,12 +42,4 @@ public class CommonProxyBase {
 		}
 		return AWFakePlayer.get(world);
 	}
-
-	public boolean isKeyPressed(String keyName) {
-		return false;
-	}
-
-	public void onConfigChanged() {
-
-	}
 }

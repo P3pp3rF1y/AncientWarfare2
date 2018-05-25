@@ -22,13 +22,13 @@ public abstract class ItemOrders extends ItemBaseNPC implements IItemKeyInterfac
 	@Override
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(I18n.format("guistrings.npc.orders.open_gui"));
-		String key = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
+		String key = InputHandler.ALT_ITEM_USE_1.getDisplayName();
 		tooltip.add(I18n.format("guistrings.npc.orders.add_position", key));
 	}
 
 	@Override
-	public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key) {
-		return key == ItemKey.KEY_0;
+	public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemAltFunction altFunction) {
+		return altFunction == ItemAltFunction.ALT_FUNCTION_1;
 	}
 
 	public abstract List<BlockPos> getPositionsForRender(ItemStack stack);

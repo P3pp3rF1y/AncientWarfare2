@@ -120,7 +120,6 @@ public class AncientWarfareCore {
 	public void configChangedEvent(OnConfigChangedEvent evt) {
 		if (modID.equals(evt.getModID())) {
 			statics.save();
-			proxy.onConfigChanged();
 		}
 	}
 

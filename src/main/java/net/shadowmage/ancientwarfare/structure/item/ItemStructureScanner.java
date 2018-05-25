@@ -46,7 +46,7 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		if (!stack.isEmpty()) {
 			ItemStructureSettings viewSettings = ItemStructureSettings.getSettingsFor(stack);
-			String key = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
+			String key = InputHandler.ALT_ITEM_USE_1.getDisplayName();
 			if (!viewSettings.hasPos1()) {
 				tooltip.add(I18n.format("guistrings.structure.scanner.select_first_pos", key));
 				tooltip.add("(1/4)");
@@ -106,12 +106,12 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
 	}
 
 	@Override
-	public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key) {
-		return key == ItemKey.KEY_0;
+	public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemAltFunction altFunction) {
+		return altFunction == ItemAltFunction.ALT_FUNCTION_1;
 	}
 
 	@Override
-	public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
+	public void onKeyAction(EntityPlayer player, ItemStack stack, ItemAltFunction altFunction) {
 		BlockPos hit = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
 		if (hit == null) {
 			return;

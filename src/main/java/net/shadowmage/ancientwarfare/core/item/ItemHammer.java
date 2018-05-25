@@ -104,7 +104,7 @@ public class ItemHammer extends ItemBaseCore implements IItemKeyInterface {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
-		String key = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
+		String key = InputHandler.ALT_ITEM_USE_1.getDisplayName();
 		tooltip.add(I18n.format("guistrings.core.hammer.use_primary_item_key", key));
 		//noinspection ConstantConditions
 		if (stack.hasTagCompound() && stack.getTagCompound().getBoolean("workMode")) {
@@ -115,12 +115,12 @@ public class ItemHammer extends ItemBaseCore implements IItemKeyInterface {
 	}
 
 	@Override
-	public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key) {
-		return key == ItemKey.KEY_0;
+	public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemAltFunction altFunction) {
+		return altFunction == ItemAltFunction.ALT_FUNCTION_1;
 	}
 
 	@Override
-	public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
+	public void onKeyAction(EntityPlayer player, ItemStack stack, ItemAltFunction altFunction) {
 		if (player.world.isRemote) {
 			return;
 		}
