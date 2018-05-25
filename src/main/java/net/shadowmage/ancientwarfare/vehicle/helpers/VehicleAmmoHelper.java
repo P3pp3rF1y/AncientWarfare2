@@ -40,6 +40,7 @@ import net.shadowmage.ancientwarfare.vehicle.network.PacketSingleAmmoUpdate;
 import net.shadowmage.ancientwarfare.vehicle.registry.AmmoRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleAmmoEntry;
 
+import javax.annotation.Nullable;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -213,6 +214,7 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 		NetworkHandler.sendToAllTracking(vehicle, pkt);
 	}
 
+	@Nullable //TODO replace with optional
 	public IAmmo getCurrentAmmoType() {
 		if (!AWVehicleStatics.soldiersUseAmmo && vehicle.getControllingPassenger() instanceof NpcBase) {
 			NpcBase npc = (NpcBase) vehicle.getControllingPassenger();

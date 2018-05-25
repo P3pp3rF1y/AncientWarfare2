@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.input;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumHand;
@@ -22,6 +23,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 
 public class InputHandler {
 
@@ -32,6 +34,7 @@ public class InputHandler {
 	public static final String KEY_ALT_ITEM_USE_4 = "keybind.alt_item_use_5";
 
 	public static final InputHandler instance = new InputHandler();
+	public static final Set<InputCallbackDispatcher> keybindingCallbacks = new HashSet<>();
 	/*
 	 * map of keys by their registry-name
 	 */
@@ -45,6 +48,16 @@ public class InputHandler {
 	private InputHandler() {
 		keybindMap = new HashMap<>();
 		bindsByKey = new HashMap<>();
+	}
+
+	//TODO refactor the core keybinds to use this
+	public static void registerCallBack(KeyBinding keyBinding, IInputCallback callback) {
+		Predicate<InputCallbackDispatcher> matchingKeyBinding = d -> d.getKeyBinding().equals(keyBinding);
+		if (keybindingCallbacks.stream().anyMatch(matchingKeyBinding)) {
+			keybindingCallbacks.stream().filter(matchingKeyBinding).findFirst().ifPresent(d -> d.addInputCallback(callback));
+		} else {
+			keybindingCallbacks.add(new InputCallbackDispatcher(keyBinding, callback));
+		}
 	}
 
 	public void loadConfig() {
@@ -103,13 +116,12 @@ public class InputHandler {
 		int key = Keyboard.getEventKey();
 		boolean state = Keyboard.getEventKeyState();
 
-		if (bindsByKey.containsKey(key)) {
-			Set<Keybind> keys = bindsByKey.get(key);
-			for (Keybind k : keys) {
-				if (state) {
-					k.onKeyPressed();
-				}
+		if (state) {
+			if (bindsByKey.containsKey(key)) {
+				bindsByKey.get(key).forEach(Keybind::onKeyPressed);
 			}
+
+			keybindingCallbacks.stream().filter(k -> k.getKeyBinding().isKeyDown()).forEach(InputCallbackDispatcher::onKeyPressed);
 		}
 	}
 
@@ -214,10 +226,6 @@ public class InputHandler {
 		public int hashCode() {
 			return getName().hashCode();
 		}
-	}
-
-	public interface IInputCallback {
-		void onKeyPressed();
 	}
 
 	private static final class ItemInputCallback implements IInputCallback {

@@ -340,23 +340,12 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 		}
 	}
 
-	/**
-	 * CLIENT SIDE--handle fire-button input from riding client.  Relay to server.  Include target vector if appropriate.
-	 *
-	 * @param target
-	 */
-	public void handleFireInput(Vec3d target) { //TODO is this target parameter supposed to have any purpose?
+	public void handleFireInput() {
 		if (!this.isFiring && (vehicle.ammoHelper.getCurrentAmmoCount() > 0 || vehicle.ammoHelper.getCurrentAmmoType() == null)) {
 			NetworkHandler.sendToServer(new PacketFireUpdate(vehicle));
 		}
 	}
 
-	/**
-	 * params are in change DELTAS
-	 *
-	 * @param pitch
-	 * @param yaw
-	 */
 	public void handleAimKeyInput(float pitch, float yaw) {
 		boolean pitchUpdated = false;
 		boolean powerUpdated = false;

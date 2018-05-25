@@ -1,12 +1,12 @@
 package net.shadowmage.ancientwarfare.vehicle.input;
 
 import net.minecraft.client.Minecraft;
-import net.shadowmage.ancientwarfare.core.input.InputHandler;
+import net.shadowmage.ancientwarfare.core.input.IInputCallback;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
 import java.util.function.Consumer;
 
-public class VehicleCallback implements InputHandler.IInputCallback {
+public class VehicleCallback implements IInputCallback {
 	private final Consumer<VehicleBase> callback;
 
 	public VehicleCallback(Consumer<VehicleBase> callback) {
