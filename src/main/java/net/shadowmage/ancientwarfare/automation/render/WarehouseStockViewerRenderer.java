@@ -5,7 +5,6 @@ import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseStockViewer.WarehouseStockFilter;
@@ -14,16 +13,15 @@ import net.shadowmage.ancientwarfare.core.util.RenderTools;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class WarehouseStockViewerRenderer extends TileEntitySpecialRenderer {
+public class WarehouseStockViewerRenderer extends TileEntitySpecialRenderer<TileWarehouseStockViewer> {
 
 	public WarehouseStockViewerRenderer() {
 
 	}
 
 	@Override
-	public void render(TileEntity te, double x, double y, double z, float partialTick, int destroyStage, float alpha) {
-		TileWarehouseStockViewer tile = (TileWarehouseStockViewer) te;
-		EnumFacing d = EnumFacing.VALUES[te.getBlockMetadata()].getOpposite();
+	public void render(TileWarehouseStockViewer tile, double x, double y, double z, float partialTick, int destroyStage, float alpha) {
+		EnumFacing d = EnumFacing.VALUES[tile.getBlockMetadata()].getOpposite();
 		float r = getRotationFromDirection(d);
 
 		GlStateManager.enableRescaleNormal();

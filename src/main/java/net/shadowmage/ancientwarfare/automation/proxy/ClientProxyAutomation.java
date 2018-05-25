@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.automation.proxy;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -11,7 +10,7 @@ import net.minecraftforge.fml.client.config.DummyConfigElement.DummyCategoryElem
 import net.minecraftforge.fml.client.config.IConfigElement;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.shadowmage.ancientwarfare.automation.KeyHandler;
+import net.shadowmage.ancientwarfare.automation.AutomationInputHandler;
 import net.shadowmage.ancientwarfare.automation.block.BlockWaterwheelGenerator;
 import net.shadowmage.ancientwarfare.automation.block.TorqueTier;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
@@ -81,7 +80,6 @@ public class ClientProxyAutomation extends ClientProxyBase {
 		super.preInit();
 
 		registerClientOptions();
-		MinecraftForge.EVENT_BUS.register(new KeyHandler(Minecraft.getMinecraft()));
 
 		NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_INVENTORY_SIDE_ADJUST, GuiWorksiteInventorySideSelection.class);
 		NetworkHandler.registerGui(NetworkHandler.GUI_WORKSITE_ANIMAL_CONTROL, GuiWorksiteAnimalControl.class);
@@ -128,6 +126,13 @@ public class ClientProxyAutomation extends ClientProxyBase {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileWindmillBlade.class, new WindmillBladeAnimationRenderer());
 	}
 
+	@Override
+	public void init() {
+		super.init();
+
+		AutomationInputHandler.initKeyBindings();
+	}
+
 	private void registerClientOptions() {
 		ConfigManager.registerConfigCategory(new AutomationCategory("awconfig.automation_config"));
 	}
@@ -135,7 +140,7 @@ public class ClientProxyAutomation extends ClientProxyBase {
 	public static final class AutomationCategory extends DummyCategoryElement {
 		public static final ConfigElement renderWorkBounds = new ConfigElement(AWAutomationStatics.renderWorkBounds);
 
-		public AutomationCategory(String name) {
+		AutomationCategory(String name) {
 			super(name, name, getElementList());
 		}
 

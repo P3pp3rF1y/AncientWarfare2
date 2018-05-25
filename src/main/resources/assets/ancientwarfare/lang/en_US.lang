@@ -9,7 +9,6 @@ awconfig.automation_config=Automation Module Config
 awconfig.automation_config.tooltip=Client side options for Automation Module
 awconfig.npc_config=Npc Module Config
 awconfig.npc_config.tooltip=Client side options for Npc Module
-awconfig.keybind.toggle_workbounds_render=Toggle Workbounds Render
 
 #items
 itemGroup.tabs.awcore=Ancient Warfare Core
@@ -994,6 +993,9 @@ keybind.awCore.alt.item.use.2=Alt. Item Function 2
 keybind.awCore.alt.item.use.3=Alt. Item Function 3
 keybind.awCore.alt.item.use.4=Alt. Item Function 4
 keybind.awCore.alt.item.use.5=Alt. Item Function 5
+
+#automation input keybinds
+keybind.awAutomation.toggle_workbounds_render=Toggle Workbounds Render
 
 # vehicle input keybinds
 keybind.category.awVehicles=Ancient Warfare Vehicles
