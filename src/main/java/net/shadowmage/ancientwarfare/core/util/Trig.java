@@ -133,8 +133,8 @@ public class Trig {
 		float l = v2 - sqRtVal;
 		h /= GRAVITY * x;
 		l /= GRAVITY * x;
-		h = toDegrees((float) Math.atan(h));
-		l = toDegrees((float) Math.atan(l));
+		h = wrapTo360(toDegrees((float) Math.atan(h)));
+		l = wrapTo360(toDegrees((float) Math.atan(l)));
 		return new Tuple<>(h, l);
 	}
 

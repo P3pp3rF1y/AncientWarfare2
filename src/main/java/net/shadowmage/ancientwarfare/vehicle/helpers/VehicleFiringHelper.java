@@ -21,6 +21,7 @@
 
 package net.shadowmage.ancientwarfare.vehicle.helpers;
 
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.math.MathHelper;
@@ -452,47 +453,19 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 		}
 	}
 
-	/**
-	 * used by soldiers to see if turret has lined up with input params
-	 *
-	 * @return
-	 */
 	public boolean isAtTarget() {
-		float yaw = this.vehicle.localTurretRotation;
-		float dest = this.vehicle.localTurretDestRot;
-		while (yaw < 0) {
-			yaw += 360.f;
-		}
-		while (yaw >= 360.f) {
-			yaw -= 360.f;
-		}
-		while (dest < 0) {
-			dest += 360.f;
-		}
-		while (dest >= 360.f) {
-			dest -= 360.f;
-		}
-		//  Config.logDebug("y: "+yaw+" d: "+dest);
-		return vehicle.localTurretDestPitch == vehicle.localTurretPitch && Math.abs(yaw - dest) < 0.35f;
+		return isAtTarget(0.35f);
+	}
+
+	public boolean isAtTarget(float range) {
+		float yaw = Trig.wrapTo360(vehicle.localTurretRotation);
+		float dest = Trig.wrapTo360(vehicle.localTurretDestRot);
+
+		return MathHelper.epsilonEquals(vehicle.localTurretDestPitch, vehicle.localTurretPitch) && Math.abs(yaw - dest) < range;
 	}
 
 	public boolean isNearTarget() {
-		float yaw = this.vehicle.localTurretRotation;
-		float dest = this.vehicle.localTurretDestRot;
-		while (yaw < 0) {
-			yaw += 360.f;
-		}
-		while (yaw >= 360.f) {
-			yaw -= 360.f;
-		}
-		while (dest < 0) {
-			dest += 360.f;
-		}
-		while (dest >= 360.f) {
-			dest -= 360.f;
-		}
-		//  Config.logDebug("y: "+yaw+" d: "+dest);
-		return Math.abs(vehicle.localTurretDestPitch - vehicle.localTurretPitch) < 5 && vehicle.localTurretDestPitch == vehicle.localTurretPitch && Math.abs(yaw - dest) < 5f;
+		return isAtTarget(5f);
 	}
 
 	public void handleSoldierTargetInput(double targetX, double targetY, double targetZ) {
@@ -572,4 +545,45 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 
 	}
 
+	private static final float NEGLIGIBLE_ANGLE_DIFFERENCE = 0.35f;
+
+	public boolean isAimedAt(EntityLivingBase target) {
+		return isPitchPointedAt(target) && isYawPointedAt(target) && isPowerSetToPointAt(target);
+	}
+
+	private boolean isYawPointedAt(EntityLivingBase target) {
+		if (!vehicle.canAimRotate()) {
+			return true;
+		}
+
+		Vec3d offset = vehicle.getMissileOffset();
+		float vecX = (float) (vehicle.posX + offset.x - target.posX);
+		float vecZ = (float) (vehicle.posZ + offset.z - target.posZ);
+		//noinspection SuspiciousNameCombination
+		float yaw = Trig.toDegrees((float) Math.atan2(vecX, vecZ));
+
+		return Math.abs(yaw - vehicle.localTurretRotation) < NEGLIGIBLE_ANGLE_DIFFERENCE;
+	}
+
+	private boolean isPitchPointedAt(EntityLivingBase target) {
+		if (!vehicle.canAimPitch()) {
+			return true;
+		}
+
+		Tuple<Float, Float> angles = Trig.getLaunchAngleToHit((float) target.posX, (float) target.posY, (float) target.posZ, vehicle.localLaunchPower);
+		//noinspection SimplifiableIfStatement
+		if (angles.getFirst().isNaN() || angles.getSecond().isNaN()) {
+			return false;
+		}
+		return Math.abs(angles.getSecond() - vehicle.localTurretPitch) < NEGLIGIBLE_ANGLE_DIFFERENCE || Math.abs(angles.getFirst() - vehicle.localTurretPitch) < NEGLIGIBLE_ANGLE_DIFFERENCE;
+	}
+
+	private boolean isPowerSetToPointAt(EntityLivingBase target) {
+		if (!vehicle.canAimPower()) {
+			return true;
+		}
+
+		float power = Trig.iterativeSpeedFinder((float) target.posX, (float) target.posY, (float) target.posZ, vehicle.localTurretPitch + vehicle.rotationPitch, TRAJECTORY_ITERATIONS_CLIENT, (vehicle.ammoHelper.getCurrentAmmoType() != null && vehicle.ammoHelper.getCurrentAmmoType().isRocket()));
+		return vehicle.localLaunchPower != power;
+	}
 }

@@ -6,8 +6,12 @@ import net.minecraft.entity.ai.EntityAIRestrictOpenDoor;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackNearest;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIDoor;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIHurt;
+import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedCommander;
+import net.shadowmage.ancientwarfare.npc.ai.vehicle.NpcAIAimVehicle;
 import net.shadowmage.ancientwarfare.npc.ai.vehicle.NpcAIFindVehicle;
 import net.shadowmage.ancientwarfare.npc.ai.vehicle.NpcAIMountVehicle;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -29,6 +33,11 @@ public class NpcSiegeEngineer extends NpcBase {
 		this.tasks.addTask(2, new NpcAIFollowPlayer(this));
 		this.tasks.addTask(6, new NpcAIFindVehicle(this));
 		this.tasks.addTask(7, new NpcAIMountVehicle(this));
+		this.tasks.addTask(8, new NpcAIAimVehicle(this));
+
+		this.targetTasks.addTask(0, new NpcAIPlayerOwnedCommander(this));
+		this.targetTasks.addTask(1, new NpcAIHurt(this));
+		this.targetTasks.addTask(2, new NpcAIAttackNearest(this, this::isHostileTowards));
 	}
 
 	@Override

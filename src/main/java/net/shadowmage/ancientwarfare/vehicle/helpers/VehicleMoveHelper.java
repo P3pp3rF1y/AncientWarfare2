@@ -93,6 +93,7 @@ public class VehicleMoveHelper implements INBTSerializable<NBTTagCompound> {
 		return this.rotationSpeed;
 	}
 
+	//TODO refactor this set inputs to something like forwardStop, left, right, rotationStop, ... so that clients don't need to pass in values
 	public void setForwardInput(byte in) {
 		this.forwardInput = in;
 	}
