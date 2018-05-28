@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.npc.entity.vehicle;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIRestrictOpenDoor;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,6 +41,12 @@ public class NpcSiegeEngineer extends NpcBase {
 		this.targetTasks.addTask(0, new NpcAIPlayerOwnedCommander(this));
 		this.targetTasks.addTask(1, new NpcAIHurt(this));
 		this.targetTasks.addTask(2, new NpcAIAttackNearest(this, this::isHostileTowards));
+	}
+
+	@Override
+	protected void applyEntityAttributes() {
+		super.applyEntityAttributes();
+		getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(60D);
 	}
 
 	@Override
