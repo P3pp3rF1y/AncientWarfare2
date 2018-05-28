@@ -13,6 +13,7 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIHurt;
 import net.shadowmage.ancientwarfare.npc.ai.owned.NpcAIPlayerOwnedCommander;
 import net.shadowmage.ancientwarfare.npc.ai.vehicle.NpcAIAimVehicle;
 import net.shadowmage.ancientwarfare.npc.ai.vehicle.NpcAIFindVehicle;
+import net.shadowmage.ancientwarfare.npc.ai.vehicle.NpcAIFireVehicle;
 import net.shadowmage.ancientwarfare.npc.ai.vehicle.NpcAIMountVehicle;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
@@ -34,6 +35,7 @@ public class NpcSiegeEngineer extends NpcBase {
 		this.tasks.addTask(6, new NpcAIFindVehicle(this));
 		this.tasks.addTask(7, new NpcAIMountVehicle(this));
 		this.tasks.addTask(8, new NpcAIAimVehicle(this));
+		this.tasks.addTask(9, new NpcAIFireVehicle(this));
 
 		this.targetTasks.addTask(0, new NpcAIPlayerOwnedCommander(this));
 		this.targetTasks.addTask(1, new NpcAIHurt(this));
@@ -66,7 +68,10 @@ public class NpcSiegeEngineer extends NpcBase {
 	}
 
 	public Optional<VehicleBase> getVehicle() {
-		return Optional.ofNullable(vehicle);
+		if (vehicle == null || vehicle.isDead) {
+			return Optional.empty();
+		}
+		return Optional.of(vehicle);
 	}
 
 	public void setVehicle(VehicleBase vehicle) {

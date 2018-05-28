@@ -342,9 +342,13 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 	}
 
 	public void handleFireInput() {
-		if (!this.isFiring && (vehicle.ammoHelper.getCurrentAmmoCount() > 0 || vehicle.ammoHelper.getCurrentAmmoType() == null)) {
+		if (isReadyToFire()) {
 			NetworkHandler.sendToServer(new PacketFireUpdate(vehicle));
 		}
+	}
+
+	public boolean isReadyToFire() {
+		return !this.isFiring && vehicle.ammoHelper.getCurrentAmmoCount() > 0 && vehicle.ammoHelper.getCurrentAmmoType() != null;
 	}
 
 	public void handleAimKeyInput(float pitch, float yaw) {
@@ -555,7 +559,7 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 	}
 
 	private boolean isYawPointedAt(EntityLivingBase target) {
-		return !vehicle.canAimRotate() || Math.abs(getAimYaw(target) - vehicle.localTurretRotation) < NEGLIGIBLE_ANGLE_DIFFERENCE;
+		return !vehicle.canAimRotate() && (Math.abs(getAimYaw(target) - Trig.wrapTo360(vehicle.rotationYaw)) < NEGLIGIBLE_ANGLE_DIFFERENCE) || (Math.abs(getAimYaw(target) - vehicle.localTurretRotation) < NEGLIGIBLE_ANGLE_DIFFERENCE);
 	}
 
 	private boolean isPitchPointedAt(EntityLivingBase target) {
@@ -563,7 +567,12 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 			return true;
 		}
 
-		Tuple<Float, Float> angles = Trig.getLaunchAngleToHit((float) target.posX, (float) target.posY, (float) target.posZ, vehicle.localLaunchPower);
+		Vec3d offset = vehicle.getMissileOffset();
+		float targetX = (float) target.posX - (float) (vehicle.posX + offset.x);
+		float targetY = ((float) target.posY + target.getEyeHeight()) - (float) (vehicle.posY + offset.y);
+		float targetZ = (float) target.posZ - (float) (vehicle.posZ + offset.z);
+
+		Tuple<Float, Float> angles = Trig.getLaunchAngleToHit(targetX, targetY, targetZ, vehicle.localLaunchPower);
 		//noinspection SimplifiableIfStatement
 		if (angles.getFirst().isNaN() || angles.getSecond().isNaN()) {
 			return false;
