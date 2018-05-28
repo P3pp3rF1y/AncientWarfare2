@@ -76,4 +76,8 @@ public class NpcSiegeEngineer extends NpcBase {
 	public void resetVehicle() {
 		vehicle = null;
 	}
+
+	public boolean isRidingVehicle() {
+		return getVehicle().isPresent() && isRiding();
+	}
 }

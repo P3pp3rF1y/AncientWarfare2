@@ -74,9 +74,11 @@ public class Trig {
 		return Math.abs(getVelocity(x1 - x, y1 - y, z1 - z));
 	}
 
-	public static float getAngleDiff(float alpha, float beta) {
+	public static float getAngleDiffSigned(float alpha, float beta) {
 		float phi = Math.abs(beta - alpha) % 360;
-		return phi > 180 ? 360 - phi : phi;
+		float diff = wrapTo360(beta) - wrapTo360(alpha);
+		int sign = (diff >= 0 && diff <= 180) || (diff <= -180 && diff >= -360) ? 1 : -1;
+		return sign * (phi > 180 ? 360 - phi : phi);
 	}
 
 	public static double min(double... vals) {
@@ -308,10 +310,10 @@ public class Trig {
 		test = wrapTo360(test);
 		min = wrapTo360(min);
 		max = wrapTo360(max);
-		if (min > max) {
-			return test >= min || test <= max;
+		if (min < max) {
+			return test >= min && test <= max;
 		}
-		return test >= min && test <= max;
+		return test >= min || test <= max;
 	}
 
 	public static float getYawTowardsTarget(double xStart, double zStart, double x, double z, float originYaw) {

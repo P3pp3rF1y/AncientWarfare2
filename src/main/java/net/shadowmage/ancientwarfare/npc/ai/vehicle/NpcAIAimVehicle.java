@@ -12,22 +12,21 @@ public class NpcAIAimVehicle extends NpcAI<NpcSiegeEngineer> {
 	}
 
 	@Override
+	@SuppressWarnings("squid:S3655")
 	public boolean shouldExecute() {
-		return npc.getAttackTarget() != null && npc.getVehicle().isPresent() && !npc.getVehicle().get().firingHelper.isAimedAt(npc.getAttackTarget());
+		//noinspection ConstantConditions
+		return npc.getAttackTarget() != null && npc.isRidingVehicle() && !npc.getVehicle().get().firingHelper.isAimedAt(npc.getAttackTarget());
 	}
 
 	@Override
-	public boolean shouldContinueExecuting() {
-		return super.shouldContinueExecuting();
-	}
-
-	@Override
+	@SuppressWarnings("squid:S3655")
 	public void updateTask() {
 		//noinspection ConstantConditions
 		VehicleBase vehicle = npc.getVehicle().get();
 
 		EntityLivingBase target = npc.getAttackTarget();
 
+		//noinspection ConstantConditions
 		if (turnVehicleIfYawDifferenceGreat(vehicle, target)) {
 			return;
 		}
@@ -37,13 +36,13 @@ public class NpcAIAimVehicle extends NpcAI<NpcSiegeEngineer> {
 	}
 
 	private boolean turnVehicleIfYawDifferenceGreat(VehicleBase vehicle, EntityLivingBase target) {
-		float yaw = vehicle.firingHelper.getAimYaw(target);
+		float yawDiff = Trig.getAngleDiffSigned(vehicle.rotationYaw, vehicle.firingHelper.getAimYaw(target));
 
 		//if turret cannot rotate fully around, or if it can but yaw diff is great, turn towards target
-		if (vehicle.vehicleType.getBaseTurretRotationAmount() < 180 || Trig.getAngleDiff(vehicle.localTurretRotation, yaw) > 120) {
-			if (!Trig.isAngleBetween(vehicle.rotationYaw + yaw, vehicle.localTurretRotationHome - vehicle.currentTurretRotationMax - 1.5f,
-					vehicle.localTurretRotationHome + vehicle.currentTurretRotationMax + 1.5f)) {
-				if (yaw < 0) {
+		if (vehicle.vehicleType.getBaseTurretRotationAmount() < 180 || Math.abs(yawDiff) > 120) {
+			if (!Trig.isAngleBetween(vehicle.rotationYaw + yawDiff, vehicle.localTurretRotationHome - getMaxRotDifference(vehicle),
+					vehicle.localTurretRotationHome + getMaxRotDifference(vehicle))) {
+				if (yawDiff < 0) {
 					vehicle.moveHelper.setStrafeInput((byte) 1); //left
 				} else {
 					vehicle.moveHelper.setStrafeInput((byte) -1); //right
@@ -54,5 +53,9 @@ public class NpcAIAimVehicle extends NpcAI<NpcSiegeEngineer> {
 			}
 		}
 		return false;
+	}
+
+	private float getMaxRotDifference(VehicleBase vehicle) {
+		return Math.min(vehicle.currentTurretRotationMax + 1.5f, 180f);
 	}
 }
