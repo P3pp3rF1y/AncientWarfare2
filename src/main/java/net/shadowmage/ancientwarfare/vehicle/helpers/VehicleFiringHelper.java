@@ -432,9 +432,7 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 			}
 		}
 		if (vehicle.canAimRotate()) {
-			float xAO = (float) (vehicle.posX + offset.x - target.x);
-			float zAO = (float) (vehicle.posZ + offset.z - target.z);
-			float yaw = Trig.toDegrees((float) Math.atan2(xAO, zAO));
+			float yaw = getAimYaw(target.x, target.z);
 			if (yaw != this.clientTurretYaw && (vehicle.currentTurretRotationMax >= 180 || Trig.isAngleBetween(yaw, vehicle.localTurretRotationHome - vehicle.currentTurretRotationMax, vehicle.localTurretRotationHome + vehicle.currentTurretRotationMax))) {
 				if (Math.abs(yaw - clientTurretYaw) > 0.25f) {
 					this.clientTurretYaw = yaw;
@@ -506,9 +504,7 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 			}
 		}
 		if (vehicle.canAimRotate()) {
-			float xAO = (float) (vehicle.posX + offset.x - targetX);
-			float zAO = (float) (vehicle.posZ + offset.z - targetZ);
-			float yaw = Trig.toDegrees((float) Math.atan2(xAO, zAO));
+			float yaw = getAimYaw(targetX, targetZ);
 			if (yaw != this.vehicle.localTurretDestRot && (vehicle.currentTurretRotationMax >= 180 || Trig.isAngleBetween(yaw, vehicle.localTurretRotationHome - vehicle.currentTurretRotationMax, vehicle.localTurretRotationHome + vehicle.currentTurretRotationMax))) {
 				this.vehicle.localTurretDestRot = yaw;
 				updated = true;
@@ -521,6 +517,13 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 			Optional<Float> power = updatePower ? Optional.of(vehicle.localLaunchPower) : Optional.empty();
 			NetworkHandler.sendToAllTracking(vehicle, new PacketAimUpdate(vehicle, turretPitch, turretYaw, power));
 		}
+	}
+
+	public float getAimYaw(double targetX, double targetZ) {
+		float vecX = (float) (vehicle.posX + vehicle.getMissileOffset().x - targetX);
+		float vecZ = (float) (vehicle.posZ + vehicle.getMissileOffset().z - targetZ);
+		//noinspection SuspiciousNameCombination
+		return Trig.wrapTo360(Trig.toDegrees((float) Math.atan2(vecX, vecZ)));
 	}
 
 	@Override
@@ -552,17 +555,7 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 	}
 
 	private boolean isYawPointedAt(EntityLivingBase target) {
-		if (!vehicle.canAimRotate()) {
-			return true;
-		}
-
-		Vec3d offset = vehicle.getMissileOffset();
-		float vecX = (float) (vehicle.posX + offset.x - target.posX);
-		float vecZ = (float) (vehicle.posZ + offset.z - target.posZ);
-		//noinspection SuspiciousNameCombination
-		float yaw = Trig.toDegrees((float) Math.atan2(vecX, vecZ));
-
-		return Math.abs(yaw - vehicle.localTurretRotation) < NEGLIGIBLE_ANGLE_DIFFERENCE;
+		return !vehicle.canAimRotate() || Math.abs(getAimYaw(target) - vehicle.localTurretRotation) < NEGLIGIBLE_ANGLE_DIFFERENCE;
 	}
 
 	private boolean isPitchPointedAt(EntityLivingBase target) {
@@ -585,5 +578,9 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 
 		float power = Trig.iterativeSpeedFinder((float) target.posX, (float) target.posY, (float) target.posZ, vehicle.localTurretPitch + vehicle.rotationPitch, TRAJECTORY_ITERATIONS_CLIENT, (vehicle.ammoHelper.getCurrentAmmoType() != null && vehicle.ammoHelper.getCurrentAmmoType().isRocket()));
 		return vehicle.localLaunchPower != power;
+	}
+
+	public float getAimYaw(EntityLivingBase target) {
+		return getAimYaw(target.posX, target.posZ);
 	}
 }

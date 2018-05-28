@@ -28,31 +28,21 @@ public class NpcAIAimVehicle extends NpcAI<NpcSiegeEngineer> {
 
 		EntityLivingBase target = npc.getAttackTarget();
 
-		//check to see if yaw to target is within the range reachable by just turret rotation
-
-		//noinspection ConstantConditions
-		float yaw = Trig.getYawTowardsTarget(vehicle.posX, vehicle.posZ, target.posX, target.posZ, vehicle.rotationYaw);
-
-		if (turnTurret(vehicle, target, yaw)) {
+		if (turnVehicleIfYawDifferenceGreat(vehicle, target)) {
 			return;
 		}
 		vehicle.moveHelper.setStrafeInput((byte) 0);
 		vehicle.moveHelper.setForwardInput((byte) 0);
 		vehicle.firingHelper.handleSoldierTargetInput(target.posX, target.posY, target.posZ);
-
-		if (yaw <= 2 && vehicle.vehicleType.getBaseTurretRotationAmount() <= 0) {
-			vehicle.rotationYaw = vehicle.rotationYaw + yaw;
-			vehicle.moveHelper.stopMotion();
-		}
 	}
 
-	private boolean turnTurret(VehicleBase vehicle, EntityLivingBase target, float yaw) {
-		if (vehicle.vehicleType.getBaseTurretRotationAmount() < 180 || Math
-				.abs(yaw) > 120)//if turret cannot rotate fully around, or if it can but yaw diff is great, turn towards target
-		{
+	private boolean turnVehicleIfYawDifferenceGreat(VehicleBase vehicle, EntityLivingBase target) {
+		float yaw = vehicle.firingHelper.getAimYaw(target);
+
+		//if turret cannot rotate fully around, or if it can but yaw diff is great, turn towards target
+		if (vehicle.vehicleType.getBaseTurretRotationAmount() < 180 || Trig.getAngleDiff(vehicle.localTurretRotation, yaw) > 120) {
 			if (!Trig.isAngleBetween(vehicle.rotationYaw + yaw, vehicle.localTurretRotationHome - vehicle.currentTurretRotationMax - 1.5f,
-					vehicle.localTurretRotationHome + vehicle.currentTurretRotationMax + 1.5f))//expand the bounds a bit
-			{
+					vehicle.localTurretRotationHome + vehicle.currentTurretRotationMax + 1.5f)) {
 				if (yaw < 0) {
 					vehicle.moveHelper.setStrafeInput((byte) 1); //left
 				} else {

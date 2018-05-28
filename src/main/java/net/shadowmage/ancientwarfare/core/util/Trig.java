@@ -74,6 +74,11 @@ public class Trig {
 		return Math.abs(getVelocity(x1 - x, y1 - y, z1 - z));
 	}
 
+	public static float getAngleDiff(float alpha, float beta) {
+		float phi = Math.abs(beta - alpha) % 360;
+		return phi > 180 ? 360 - phi : phi;
+	}
+
 	public static double min(double... vals) {
 		double min = vals[0];
 		for (int i = 1; i < vals.length; i++) {
