@@ -31,7 +31,7 @@ public class NpcAIFireVehicle<T extends NpcBase & IVehicleUser> extends NpcAI<T>
 			//noinspection ConstantConditions
 			VehicleBase vehicle = npc.getVehicle().get();
 			vehicle.firingHelper.handleFireUpdate();
-			actionTick = (vehicle.currentReloadTicks + 20);
+			actionTick = 20;
 		} else {
 			actionTick--;
 		}

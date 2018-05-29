@@ -348,7 +348,7 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 	}
 
 	public boolean isReadyToFire() {
-		return !this.isFiring && vehicle.ammoHelper.getCurrentAmmoCount() > 0 && vehicle.ammoHelper.getCurrentAmmoType() != null;
+		return !isFiring && !isLaunching && !isReloading && vehicle.ammoHelper.getCurrentAmmoCount() > 0 && vehicle.ammoHelper.getCurrentAmmoType() != null;
 	}
 
 	public void handleAimKeyInput(float pitch, float yaw) {
