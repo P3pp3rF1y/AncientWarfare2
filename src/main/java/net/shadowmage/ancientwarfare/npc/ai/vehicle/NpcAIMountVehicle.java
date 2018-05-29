@@ -1,19 +1,20 @@
 package net.shadowmage.ancientwarfare.npc.ai.vehicle;
 
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
-import net.shadowmage.ancientwarfare.npc.entity.vehicle.NpcSiegeEngineer;
+import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.npc.entity.vehicle.IVehicleUser;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
-public class NpcAIMountVehicle extends NpcAI<NpcSiegeEngineer> {
+public class NpcAIMountVehicle<T extends NpcBase & IVehicleUser> extends NpcAI<T> {
 	private static final double MOUNT_REACH = 5.0D;
 
-	public NpcAIMountVehicle(NpcSiegeEngineer npc) {
+	public NpcAIMountVehicle(T npc) {
 		super(npc);
 	}
 
 	@Override
 	public boolean shouldExecute() {
-		return !npc.isRiding() && npc.getVehicle().isPresent() && !npc.getVehicle().get().isBeingRidden();
+		return !npc.isRiding() && npc.canContinueRidingVehicle() && npc.getVehicle().isPresent() && !npc.getVehicle().get().isBeingRidden();
 	}
 
 	@Override

@@ -3,11 +3,12 @@ package net.shadowmage.ancientwarfare.npc.ai.vehicle;
 import net.minecraft.entity.EntityLivingBase;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
-import net.shadowmage.ancientwarfare.npc.entity.vehicle.NpcSiegeEngineer;
+import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.npc.entity.vehicle.IVehicleUser;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
-public class NpcAIAimVehicle extends NpcAI<NpcSiegeEngineer> {
-	public NpcAIAimVehicle(NpcSiegeEngineer npc) {
+public class NpcAIAimVehicle<T extends NpcBase & IVehicleUser> extends NpcAI<T> {
+	public NpcAIAimVehicle(T npc) {
 		super(npc);
 	}
 
@@ -15,7 +16,7 @@ public class NpcAIAimVehicle extends NpcAI<NpcSiegeEngineer> {
 	@SuppressWarnings("squid:S3655")
 	public boolean shouldExecute() {
 		//noinspection ConstantConditions
-		return npc.getAttackTarget() != null && npc.isRidingVehicle() && !npc.getVehicle().get().firingHelper.isAimedAt(npc.getAttackTarget());
+		return npc.getAttackTarget() != null && npc.canContinueRidingVehicle() && npc.isRidingVehicle() && !npc.getVehicle().get().firingHelper.isAimedAt(npc.getAttackTarget());
 	}
 
 	@Override
@@ -35,6 +36,7 @@ public class NpcAIAimVehicle extends NpcAI<NpcSiegeEngineer> {
 		vehicle.firingHelper.handleSoldierTargetInput(target.posX, target.posY + target.getEyeHeight(), target.posZ);
 	}
 
+	@SuppressWarnings("squid:S1066")
 	private boolean turnVehicleIfYawDifferenceGreat(VehicleBase vehicle, EntityLivingBase target) {
 		float yawDiff = Trig.getAngleDiffSigned(vehicle.rotationYaw, vehicle.firingHelper.getAimYaw(target));
 
