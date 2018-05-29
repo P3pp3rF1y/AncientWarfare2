@@ -48,8 +48,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.owner.IOwnable;
+import net.shadowmage.ancientwarfare.core.owner.Owner;
+import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
@@ -181,8 +183,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	public PathWorldAccessEntity worldAccess;
 	public IVehicleType vehicleType = VehicleRegistry.CATAPULT_STAND_FIXED;//set to dummy vehicle so it is never null...
 	public int vehicleMaterialLevel = 0;//the current material level of this vehicle. should be read/set prior to calling updateBaseStats
-	private String ownerName = "";
-	private UUID ownerUuid = new UUID(0, 0);
+	private Owner owner = Owner.EMPTY;
 
 	public VehicleBase(World par1World) {
 		super(par1World);
@@ -899,8 +900,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		pb.writeFloat(localTurretRotation);
 		pb.writeFloat(localTurretDestPitch);
 		pb.writeFloat(localTurretDestRot);
-		pb.writeString(ownerName);
-		pb.writeUniqueId(ownerUuid);
+		owner.serializeToBuffer(buffer);
 		pb.writeFloat(localTurretRotationHome);
 		pb.writeBoolean(this.isSettingUp);
 		if (this.isSettingUp) {
@@ -933,8 +933,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		this.firingHelper.clientTurretPitch = localTurretPitch;
 		this.firingHelper.clientTurretYaw = localTurretRotation;
 		this.upgradeHelper.updateUpgradeStats();
-		this.ownerName = pb.readString(16);
-		this.ownerUuid = pb.readUniqueId();
+		owner = new Owner(additionalData);
 		this.localTurretRotationHome = pb.readFloat();
 		this.isSettingUp = pb.readBoolean();
 		if (this.isSettingUp) {
@@ -963,8 +962,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		this.localTurretDestRot = tag.getFloat("trd");
 		this.upgradeHelper.updateUpgrades();
 		this.ammoHelper.updateAmmoCounts();
-		this.ownerName = tag.getString("ownerName");
-		this.ownerUuid = tag.getUniqueId("ownerUuid");
+		owner = Owner.deserializeFromNBT(tag);
 		this.isSettingUp = tag.getBoolean("setup");
 		if (this.isSettingUp) {
 			this.setupTicks = tag.getInteger("sTick");
@@ -989,8 +987,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		tag.setFloat("tpd", localTurretDestPitch);
 		tag.setFloat("tr", localTurretRotation);
 		tag.setFloat("trd", localTurretDestRot);
-		tag.setString("ownerName", ownerName);
-		tag.setUniqueId("ownerUuid", ownerUuid);
+		owner.serializeToNBT(tag);
 		tag.setBoolean("setup", this.isSettingUp);
 		if (this.isSettingUp) {
 			tag.setInteger("sTick", this.setupTicks);
@@ -1084,30 +1081,33 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 
 	@Override
 	public void setOwner(EntityPlayer player) {
-		ownerName = player.getName();
-		ownerUuid = player.getUniqueID();
+		owner = new Owner(player);
 	}
 
 	@Override
-	public void setOwner(String ownerName, UUID ownerUuid) {
-		this.ownerName = ownerName;
-		this.ownerUuid = ownerUuid;
+	public void setOwner(Owner owner) {
+		this.owner = owner;
 	}
 
 	@Nullable
 	@Override
 	public String getOwnerName() {
-		return ownerName;
+		return owner.getName();
 	}
 
 	@Nullable
 	@Override
 	public UUID getOwnerUuid() {
-		return ownerUuid;
+		return owner.getUUID();
+	}
+
+	@Override
+	public Owner getOwner() {
+		return owner;
 	}
 
 	@Override
 	public boolean isOwner(EntityPlayer player) {
-		return player.getUniqueID().equals(ownerUuid);
+		return EntityTools.isOwnerOrSameTeam(player, owner);
 	}
 }

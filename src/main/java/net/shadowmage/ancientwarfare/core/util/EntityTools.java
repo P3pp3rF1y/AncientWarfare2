@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
+import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 
 import javax.annotation.Nullable;
@@ -96,14 +97,12 @@ public class EntityTools {
 		return "entity." + (registryName.getResourceDomain().equals(AncientWarfareNPC.modID) ? "AncientWarfareNpc." : "") + e.getName() + ".name";
 	}
 
-	public static boolean isOwnerOrSameTeam(@Nullable EntityPlayer player, @Nullable UUID ownerId, String ownerName) {
-		return player != null && isOwnerOrSameTeam(player.getUniqueID(), player.getName(), ownerId, ownerName);
+	public static boolean isOwnerOrSameTeam(@Nullable EntityPlayer player, Owner owner) {
+		return player != null && isOwnerOrSameTeam(player.getUniqueID(), player.getName(), owner);
 	}
 
-	public static boolean isOwnerOrSameTeam(@Nullable UUID playerId, @Nullable String playerName, @Nullable UUID ownerId, String ownerName) {
-		if (ownerId != null)
-			return ModAccessors.FTBU.areFriendly(playerId, ownerId);
-		return playerName != null && playerName.equals(ownerName);
+	public static boolean isOwnerOrSameTeam(@Nullable UUID playerId, @Nullable String playerName, Owner owner) {
+		return ModAccessors.FTBU.areFriendly(playerId, owner.getUUID()) || (playerName != null && playerName.equals(owner.getName()));
 	}
 
 	public static <T extends Entity> List<T> getEntitiesWithinBounds(World world, Class<? extends T> clazz, BlockPos p1, BlockPos p2) {

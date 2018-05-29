@@ -3,9 +3,7 @@ package net.shadowmage.ancientwarfare.core.proxy;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
-
-import javax.annotation.Nullable;
-import java.util.UUID;
+import net.shadowmage.ancientwarfare.core.owner.Owner;
 
 public class CommonProxyBase {
 
@@ -26,19 +24,19 @@ public class CommonProxyBase {
 		return null;
 	}
 
-	public EntityPlayer getFakePlayer(World world, @Nullable String name, @Nullable UUID id) {
+	public EntityPlayer getFakePlayer(World world) {
+		return AWFakePlayer.get(world);
+	}
+
+	public EntityPlayer getFakePlayer(World world, Owner owner) {
 		EntityPlayer player;
-		if (id != null) {
-			player = world.getPlayerEntityByUUID(id);
-			if (player != null)
-				return player;
+		player = world.getPlayerEntityByUUID(owner.getUUID());
+		if (player != null) {
+			return player;
 		}
-		if (name != null) {
-			player = world.getPlayerEntityByName(name);
-			if (player != null) {
-				return player;
-			}
-			return AWFakePlayer.get(world);
+		player = world.getPlayerEntityByName(owner.getName());
+		if (player != null) {
+			return player;
 		}
 		return AWFakePlayer.get(world);
 	}

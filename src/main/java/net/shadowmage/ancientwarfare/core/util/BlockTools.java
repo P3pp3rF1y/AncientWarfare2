@@ -263,7 +263,7 @@ public class BlockTools {
 	public static boolean placeItemBlock(ItemStack stack, World world, BlockPos pos, EnumFacing face) {
 		EnumFacing direction = face.getOpposite();
 
-		EntityPlayer owner = AncientWarfareCore.proxy.getFakePlayer(world, null, null);
+		EntityPlayer owner = AncientWarfareCore.proxy.getFakePlayer(world);
 		owner.setHeldItem(EnumHand.MAIN_HAND, stack);
 		if (stack.onItemUse(owner, world, pos.offset(direction), EnumHand.MAIN_HAND, face, 0.25F, 0.25F, 0.25F) == EnumActionResult.SUCCESS) {
 			return true;

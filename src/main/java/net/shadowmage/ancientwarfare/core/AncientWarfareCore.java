@@ -2,11 +2,14 @@ package net.shadowmage.ancientwarfare.core;
 
 import codechicken.lib.CodeChickenLib;
 import com.mojang.authlib.GameProfile;
+import net.minecraft.util.datafix.FixTypes;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ModFixs;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -26,6 +29,8 @@ import net.shadowmage.ancientwarfare.core.container.ContainerEngineeringStation;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchBook;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchStation;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
+import net.shadowmage.ancientwarfare.core.datafixes.TileOwnerFixer;
+import net.shadowmage.ancientwarfare.core.datafixes.VehicleOwnerFixer;
 import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.item.AWCoreItemLoader;
@@ -41,6 +46,7 @@ import java.util.UUID;
 public class AncientWarfareCore {
 
 	public static final String modID = "ancientwarfare";
+	public static final int DATA_FIXER_VERSION = 1;
 
 	@Instance(value = AncientWarfareCore.modID)
 	public static AncientWarfareCore instance;
@@ -98,6 +104,10 @@ public class AncientWarfareCore {
 		RegistryLoader.load();
 
 		CompatLoader.init();
+
+		ModFixs fixes = FMLCommonHandler.instance().getDataFixer().init(modID, DATA_FIXER_VERSION);
+		fixes.registerFix(FixTypes.ENTITY, new VehicleOwnerFixer());
+		fixes.registerFix(FixTypes.BLOCK_ENTITY, new TileOwnerFixer());
 
         /*
          * Setup compats

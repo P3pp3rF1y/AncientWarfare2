@@ -57,7 +57,7 @@ public class TileTownHall extends TileOwned implements IInteractableTile, ITicka
 	private ForgeChunkManager.Ticket ticket;
 
 	public TileTownHall() {
-		super("owner");
+		super();
 	}
 
 	@Override

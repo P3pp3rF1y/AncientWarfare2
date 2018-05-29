@@ -85,7 +85,7 @@ public class NpcAIPlayerOwnedPriest extends NpcAI<NpcPlayerOwned> {
 				resdNpc.setItemStackToSlot(slot, ItemStack.EMPTY);
 			}
 			resdNpc.setShieldStack(ItemStack.EMPTY);
-			resdNpc.setOwner(npc.getOwnerName(), npc.getOwnerUuid());
+			resdNpc.setOwner(npc.getOwner());
 			resdNpc.setHealth(resdNpc.getMaxHealth() / 2);
 			resdNpc.setPositionAndRotation(npc.posX, npc.posY, npc.posZ, npc.rotationYaw, npc.rotationPitch);
 			resdNpc.knockBack(npc, 0, 2 * npc.getRNG().nextDouble() - 1, 2 * npc.getRNG().nextDouble() - 1);

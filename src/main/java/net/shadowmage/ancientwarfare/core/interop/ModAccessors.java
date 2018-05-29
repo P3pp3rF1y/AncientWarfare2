@@ -17,6 +17,7 @@ public class ModAccessors {
 
 	public static void init() {
 		try {
+			//TODO move to compatloader
 			if (Loader.isModLoaded("ftbu")) {
 				AncientWarfareCore.log.info("FTB utils found!");
 				FTBU = new FTBUCompat();

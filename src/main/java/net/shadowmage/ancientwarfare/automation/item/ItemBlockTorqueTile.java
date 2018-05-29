@@ -11,8 +11,8 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueBase;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
-import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockBase;
+import net.shadowmage.ancientwarfare.core.owner.IOwnable;
 
 public class ItemBlockTorqueTile extends ItemBlockBase {
 

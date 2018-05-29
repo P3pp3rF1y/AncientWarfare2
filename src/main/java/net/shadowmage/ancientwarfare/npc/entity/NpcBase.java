@@ -48,10 +48,11 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IEntityPacketHandler;
-import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketEntity;
+import net.shadowmage.ancientwarfare.core.owner.IOwnable;
+import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
@@ -80,8 +81,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	private static final DataParameter<Boolean> IS_SLEEPING = EntityDataManager.createKey(NpcBase.class, DataSerializers.BOOLEAN);
 	private static final DataParameter<Boolean> SWINGING_ARMS = EntityDataManager.createKey(NpcBase.class, DataSerializers.BOOLEAN);
 
-	private String ownerName = "";//the owner of this NPC, used for checking teams
-	private UUID ownerUuid = new UUID(0, 0);//uuid of the owner of this NPC, used for checking teams
+	private Owner owner = Owner.EMPTY;
 	protected String followingPlayerName;//set/cleared onInteract from player if player.team==this.team
 
 	private NpcLevelingStats levelingStats;
@@ -790,9 +790,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	public void writeSpawnData(ByteBuf buffer) {
 		buffer.writeLong(getUniqueID().getMostSignificantBits());
 		buffer.writeLong(getUniqueID().getLeastSignificantBits());
-		ByteBufUtils.writeUTF8String(buffer, ownerName);
-		buffer.writeLong(ownerUuid.getMostSignificantBits());
-		buffer.writeLong(ownerUuid.getLeastSignificantBits());
+		owner.serializeToBuffer(buffer);
 		ByteBufUtils.writeUTF8String(buffer, customTexRef);
 	}
 
@@ -801,8 +799,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		long l1 = buffer.readLong();
 		long l2 = buffer.readLong();
 		this.entityUniqueID = new UUID(l1, l2);
-		ownerName = ByteBufUtils.readUTF8String(buffer);
-		ownerUuid = new UUID(buffer.readLong(), buffer.readLong());
+		owner = new Owner(buffer);
 		customTexRef = ByteBufUtils.readUTF8String(buffer);
 		this.updateTexture();
 	}
@@ -856,64 +853,55 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	@Override
 	public void setOwner(EntityPlayer player) {
-		ownerUuid = player.getUniqueID();
-		ownerName = player.getName();
+		owner = new Owner(player);
 	}
 
 	@Override
-	public void setOwner(String ownerName, UUID ownerUuid) {
-		this.ownerName = ownerName;
-		this.ownerUuid = ownerUuid;
+	public void setOwner(Owner owner) {
+		this.owner = owner;
 	}
 
 	@Nullable
 	@Override
 	public UUID getOwnerUuid() {
-		return ownerUuid;
+		return owner.getUUID();
 	}
 
 	public void setOwnerName(String name) {
 		if (name == null) {
 			name = "";
 		}
-		if (!world.isRemote && !name.equals(ownerName)) {
+		owner = new Owner(world, name);
+		if (!world.isRemote && !name.equals(owner.getName())) {
 			PacketEntity pkt = new PacketEntity(this);
-			NBTTagCompound tag = new NBTTagCompound();
-			tag.setString("ownerName", name);
-			EntityPlayer player = world.getPlayerEntityByName(name);
-			if (player != null) {
-				ownerUuid = player.getUniqueID();
-			}
-			if (getOwnerUuid() != null)
-				tag.setString("ownerId", getOwnerUuid().toString());
-			pkt.packetData = tag;
+			pkt.packetData = owner.serializeToNBT(new NBTTagCompound());
 			NetworkHandler.sendToAllTracking(this, pkt);
 		}
-		ownerName = name;
 	}
 
 	@Override
 	public boolean isOwner(EntityPlayer player) {
-		if (player == null || player.getGameProfile() == null)
-			return false;
-		if (getOwnerUuid() != null)
-			return player.getUniqueID().equals(getOwnerUuid());
-		return player.getName().equals(ownerName);
+		return EntityTools.isOwnerOrSameTeam(player, owner);
 	}
 
 	@Override
 	public String getOwnerName() {
-		return ownerName;
+		return owner.getName();
+	}
+
+	@Override
+	public Owner getOwner() {
+		return owner;
 	}
 
 	@Override
 	public Team getTeam() {
-		return world.getScoreboard().getPlayersTeam(ownerName);
+		return world.getScoreboard().getPlayersTeam(owner.getName());
 	}
 
 	public boolean hasCommandPermissions(@Nullable UUID playerId, String playerName) {
 		// ensure the NPC is actually owned
-		if (ownerName == null || ownerName.isEmpty())
+		if (owner == Owner.EMPTY)
 			return false;
 		if (playerId == null)
 			return false;
@@ -1096,7 +1084,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		if (tag.hasKey("aiEnabled")) {
 			setIsAIEnabled(tag.getBoolean("aiEnabled"));
 		}
-		setOwner(tag.getString("ownerName"), tag.getUniqueId("ownerId"));
+		owner = Owner.deserializeFromNBT(tag);
 	}
 
 	private void writeBaseTags(NBTTagCompound tag) {
@@ -1117,10 +1105,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		tag.setInteger("armorValueOverride", armorValue);
 		tag.setString("customTex", customTexRef);
 		tag.setBoolean("aiEnabled", aiEnabled);
-		tag.setString("ownerName", ownerName);
-		if (getOwnerUuid() != null) {
-			tag.setUniqueId("ownerId", getOwnerUuid());
-		}
+		owner.serializeToNBT(tag);
 	}
 
 	public final ResourceLocation getTexture() {
@@ -1147,10 +1132,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	@Override
 	public void handlePacketData(NBTTagCompound tag) {
 		if (tag.hasKey("ownerName")) {
-			this.ownerName = tag.getString("ownerName");
-			if (tag.hasKey("ownerId")) {
-				ownerUuid = UUID.fromString(tag.getString("ownerId"));
-			}
+			owner = Owner.deserializeFromNBT(tag);
 		} else if (tag.hasKey("profileTex") && tag.hasKey("customTex")) {
 			customTexRef = tag.getString("customTex");
 			NBTTagCompound tah = tag.getCompoundTag("profileTex");

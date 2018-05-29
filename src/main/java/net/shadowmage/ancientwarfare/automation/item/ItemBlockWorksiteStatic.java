@@ -12,8 +12,8 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IBoundedSite;
-import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockBase;
+import net.shadowmage.ancientwarfare.core.owner.IOwnable;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
 public class ItemBlockWorksiteStatic extends ItemBlockBase {

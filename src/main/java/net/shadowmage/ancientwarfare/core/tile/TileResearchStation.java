@@ -65,7 +65,7 @@ public class TileResearchStation extends TileOwned implements IWorkSite, ITorque
 	private double storedEnergy;
 
 	public TileResearchStation() {
-		super("owningPlayer");
+		super();
 	}
 
 	@Override

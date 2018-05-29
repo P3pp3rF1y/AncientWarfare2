@@ -18,10 +18,11 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
-import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.core.owner.IOwnable;
+import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -37,9 +38,9 @@ import java.util.UUID;
 public abstract class TileWorksiteBase extends TileUpdatable
 		implements ITickable, IWorkSite, IInteractableTile, IOwnable, IRotatableTile, IEnergyProvider, IEnergyReceiver {
 
-	private String ownerName = "";
-	private UUID ownerId;
-	private EntityPlayer owner;
+	private Owner owner = Owner.EMPTY;
+	//TODO see if there's really any use in machines acting as a real player
+	private EntityPlayer ownerPlayer;
 
 	private double efficiencyBonusFactor = 0.f;
 
@@ -179,60 +180,55 @@ public abstract class TileWorksiteBase extends TileUpdatable
 
 	@Override
 	public final Team getTeam() {
-		if (ownerName != null) {
-			return world.getScoreboard().getPlayersTeam(ownerName);
-		}
-		return null;
+		return world.getScoreboard().getPlayersTeam(owner.getName());
 	}
 
 	@Override
 	public final String getOwnerName() {
-		return ownerName;
+		return owner.getName();
 	}
 
 	@Override
 	public final UUID getOwnerUuid() {
-		return ownerId;
+		return owner.getUUID();
 	}
 
 	public final EntityPlayer getOwnerAsPlayer() {
 		if (!isOwnerReal()) {
-			owner = AncientWarfareCore.proxy.getFakePlayer(getWorld(), ownerName, ownerId);
+			ownerPlayer = AncientWarfareCore.proxy.getFakePlayer(getWorld(), owner);
 		}
+		return ownerPlayer;
+	}
+
+	@Override
+	public Owner getOwner() {
 		return owner;
 	}
 
-	public final EntityPlayer getFakePlayer() {
-		return AncientWarfareCore.proxy.getFakePlayer(getWorld(), null, null);
-	}
-
 	private boolean isOwnerReal() {
-		return owner != null && owner.isEntityAlive() && !(owner instanceof FakePlayer);
+		return ownerPlayer != null && ownerPlayer.isEntityAlive() && !(ownerPlayer instanceof FakePlayer);
 	}
 
 	@Override
 	public final boolean isOwner(EntityPlayer player) {
-		return EntityTools.isOwnerOrSameTeam(player, ownerId, ownerName);
+		return EntityTools.isOwnerOrSameTeam(player, owner);
 	}
 
 	@Override
 	public final void setOwner(EntityPlayer player) {
 		if (player == null) {
-			this.ownerName = "";
-			this.owner = null;
-			this.ownerId = null;
+			owner = Owner.EMPTY;
+			ownerPlayer = null;
 		} else {
-			this.owner = player;
-			this.ownerName = player.getName();
-			this.ownerId = player.getUniqueID();
+			ownerPlayer = player;
+			owner = new Owner(player);
 		}
 	}
 
 	@Override
-	public final void setOwner(String ownerName, UUID ownerUuid) {
-		this.ownerName = ownerName;
-		ownerId = ownerUuid;
-		owner = AncientWarfareCore.proxy.getFakePlayer(getWorld(), ownerName, ownerUuid);
+	public final void setOwner(Owner owner) {
+		this.owner = owner;
+		ownerPlayer = AncientWarfareCore.proxy.getFakePlayer(getWorld(), owner);
 	}
 
 	//************************************** TORQUE INTERACTION METHODS ***************************************//
@@ -331,18 +327,7 @@ public abstract class TileWorksiteBase extends TileUpdatable
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 		tag.setDouble("storedEnergy", torqueCell.getEnergy());
-		if (ownerName != null) {
-			tag.setString("owner", ownerName);
-			if (ownerId == null && hasWorld()) {
-				getOwnerAsPlayer();
-				if (isOwnerReal()) {
-					ownerId = owner.getUniqueID();
-				}
-			}
-		}
-		if (ownerId != null) {
-			tag.setString("ownerId", ownerId.toString());
-		}
+		owner.serializeToNBT(tag);
 		if (!getUpgrades().isEmpty()) {
 			int[] ug = new int[getUpgrades().size()];
 			int i = 0;
@@ -361,12 +346,7 @@ public abstract class TileWorksiteBase extends TileUpdatable
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		torqueCell.setEnergy(tag.getDouble("storedEnergy"));
-		if (tag.hasKey("owner")) {
-			ownerName = tag.getString("owner");
-		}
-		if (tag.hasKey("ownerId")) {
-			ownerId = UUID.fromString(tag.getString("ownerId"));
-		}
+		owner = Owner.deserializeFromNBT(tag);
 		if (tag.hasKey("upgrades")) {
 			NBTBase upgradeTag = tag.getTag("upgrades");
 			if (upgradeTag instanceof NBTTagIntArray) {
@@ -404,18 +384,7 @@ public abstract class TileWorksiteBase extends TileUpdatable
 		}
 		tag.setIntArray("upgrades", ugs);
 		tag.setInteger("orientation", orientation.ordinal());
-		if (ownerName != null) {
-			tag.setString("owner", ownerName);
-			if (ownerId == null && hasWorld()) {
-				getOwnerAsPlayer();
-				if (isOwnerReal()) {
-					ownerId = owner.getUniqueID();
-				}
-			}
-		}
-		if (ownerId != null) {
-			tag.setString("ownerId", ownerId.toString());
-		}
+		owner.serializeToNBT(tag);
 	}
 
 	@Override
@@ -430,12 +399,7 @@ public abstract class TileWorksiteBase extends TileUpdatable
 		}
 		updateEfficiency();
 		orientation = EnumFacing.values()[tag.getInteger("orientation")];
-		if (tag.hasKey("owner")) {
-			ownerName = tag.getString("owner");
-		}
-		if (tag.hasKey("ownerId")) {
-			ownerId = UUID.fromString(tag.getString("ownerId"));
-		}
+		owner = Owner.deserializeFromNBT(tag);
 		markDirty();
 	}
 }

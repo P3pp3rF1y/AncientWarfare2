@@ -253,7 +253,7 @@ public abstract class Ammo implements IAmmo {
 				otherId = entity.getUniqueID();
 				otherName = entity.getName();
 			}
-			return !EntityTools.isOwnerOrSameTeam(npc.getOwnerUuid(), npc.getOwnerName(), otherId, otherName);
+			return !EntityTools.isOwnerOrSameTeam(otherId, otherName, npc.getOwner());
 		}
 		return true;
 	}

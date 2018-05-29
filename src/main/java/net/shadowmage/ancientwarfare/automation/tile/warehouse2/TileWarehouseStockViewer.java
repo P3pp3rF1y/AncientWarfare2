@@ -7,9 +7,9 @@ import net.minecraft.util.EnumHand;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
-import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
-import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.owner.IOwnable;
+import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.NBTSerializableUtils;
@@ -25,8 +25,7 @@ import java.util.UUID;
 public class TileWarehouseStockViewer extends TileControlled implements IOwnable, IInteractableTile {
 
 	private final List<WarehouseStockFilter> filters = new ArrayList<>();
-	private UUID ownerId;
-	private String ownerName = "";
+	private Owner owner = Owner.EMPTY;
 	private boolean shouldUpdate = false;
 
 	private final Set<ContainerWarehouseStockViewer> viewers = new HashSet<>();
@@ -104,29 +103,32 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
 
 	@Override
 	public boolean isOwner(EntityPlayer player) {
-		return EntityTools.isOwnerOrSameTeam(player, ownerId, ownerName);
+		return EntityTools.isOwnerOrSameTeam(player, owner);
 	}
 
 	@Override
 	public void setOwner(EntityPlayer player) {
-		this.ownerId = player.getUniqueID();
-		this.ownerName = player.getName();
+		owner = new Owner(player);
 	}
 
 	@Override
-	public void setOwner(String ownerName, UUID ownerUuid) {
-		this.ownerName = ownerName;
-		this.ownerId = ownerUuid;
+	public void setOwner(Owner owner) {
+		this.owner = owner;
 	}
 
 	@Override
 	public String getOwnerName() {
-		return ownerName;
+		return owner.getName();
 	}
 
 	@Override
 	public UUID getOwnerUuid() {
-		return ownerId;
+		return owner.getUUID();
+	}
+
+	@Override
+	public Owner getOwner() {
+		return owner;
 	}
 
 	@Override
@@ -168,11 +170,9 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
 
 	@Override
 	public boolean receiveClientEvent(int a, int b) {
-		if (world.isRemote) {
-			if (a >= 0 && a < filters.size()) {
-				filters.get(a).setQuantity(b);
-				updateViewers();
-			}
+		if (world.isRemote && a >= 0 && a < filters.size()) {
+			filters.get(a).setQuantity(b);
+			updateViewers();
 		}
 		return true;
 	}
@@ -181,18 +181,14 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
 		filters.addAll(NBTSerializableUtils.read(tag, "filterList", WarehouseStockFilter.class));
-		ownerName = tag.getString("ownerName");
-		if (tag.hasKey("ownerId"))
-			ownerId = UUID.fromString(tag.getString("ownerId"));
+		owner = Owner.deserializeFromNBT(tag);
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 		NBTSerializableUtils.write(tag, "filterList", filters);
-		tag.setString("ownerName", ownerName);
-		if (ownerId != null)
-			tag.setString("ownerId", ownerId.toString());
+		owner.serializeToNBT(tag);
 
 		return tag;
 	}
@@ -200,7 +196,6 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
 	public static class WarehouseStockFilter implements INBTSerializable<NBTTagCompound> {
 		@Nonnull
 		private ItemStack item = ItemStack.EMPTY;
-		ItemHashEntry hashKey;
 		private int quantity;
 
 		public WarehouseStockFilter() {
@@ -213,7 +208,6 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
 
 		public void setItem(ItemStack item) {
 			this.item = item;
-			this.hashKey = item.isEmpty() ? null : new ItemHashEntry(item);
 		}
 
 		public void setQuantity(int quantity) {

@@ -7,6 +7,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
 import net.shadowmage.ancientwarfare.core.tile.IBlockBreakHandler;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 
+import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.UUID;
 
@@ -31,6 +32,7 @@ public interface IWorkSite extends ITorqueTile, IBlockBreakHandler {
 	 */
 	WorkType getWorkType();
 
+	@Nullable
 	Team getTeam();
 
 	String getOwnerName();

@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
-import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
+import net.shadowmage.ancientwarfare.core.owner.IOwnable;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
 public class ItemBlockRotatableMetaTile extends ItemBlockBase {
