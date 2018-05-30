@@ -76,7 +76,7 @@ public class BlockWorksiteBase extends BlockBaseAutomation implements IRotatable
 			boolean canClick = false;
 			if (te instanceof IOwnable && ((IOwnable) te).isOwner(player))
 				canClick = true;
-			else if (te instanceof IWorkSite && ((IWorkSite) te).getOwner().isOwnerOrSameTeam(player)) {
+			else if (te instanceof IWorkSite && ((IWorkSite) te).getOwner().isOwnerOrSameTeamOrFriend(player)) {
 				canClick = true;
 			}
 			if (canClick) {

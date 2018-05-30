@@ -1094,6 +1094,6 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 
 	@Override
 	public boolean isOwner(EntityPlayer player) {
-		return owner.isOwnerOrSameTeam(player);
+		return owner.isOwnerOrSameTeamOrFriend(player);
 	}
 }

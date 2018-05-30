@@ -172,7 +172,7 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 
 	@Override
 	public boolean isOwner(EntityPlayer player) {
-		return owner.isOwnerOrSameTeam(player);
+		return owner.isOwnerOrSameTeamOrFriend(player);
 	}
 
 	@Override

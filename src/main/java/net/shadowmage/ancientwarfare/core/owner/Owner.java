@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.owner;
 
 import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
@@ -43,11 +44,11 @@ public class Owner {
 		this.name = name;
 	}
 
-	public boolean isOwnerOrSameTeam(@Nullable EntityPlayer player) {
-		return player != null && isOwnerOrSameTeam(player.world, player.getUniqueID(), player.getName());
+	public boolean isOwnerOrSameTeamOrFriend(@Nullable Entity entity) {
+		return entity != null && isOwnerOrSameTeamOrFriend(entity.world, entity.getUniqueID(), entity.getName());
 	}
 
-	public boolean isOwnerOrSameTeam(World world, @Nullable UUID playerId, String playerName) {
+	public boolean isOwnerOrSameTeamOrFriend(World world, @Nullable UUID playerId, String playerName) {
 		return name.equals(playerName) || uuid.equals(playerId) || isSameTeam(world, playerName) || ModAccessors.FTBU.areFriendly(playerId, uuid);
 	}
 

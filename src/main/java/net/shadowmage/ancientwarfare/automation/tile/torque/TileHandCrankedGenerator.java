@@ -165,7 +165,7 @@ public class TileHandCrankedGenerator extends TileTorqueSingleCell implements IW
 
 	@Override
 	public boolean isOwner(EntityPlayer player) {
-		return owner.isOwnerOrSameTeam(player);
+		return owner.isOwnerOrSameTeamOrFriend(player);
 	}
 
 	@Override

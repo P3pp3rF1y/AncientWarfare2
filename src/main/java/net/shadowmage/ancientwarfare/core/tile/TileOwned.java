@@ -25,7 +25,7 @@ public class TileOwned extends TileUpdatable implements IOwnable {
 
 	@Override
 	public final boolean isOwner(EntityPlayer player) {
-		return owner.isOwnerOrSameTeam(player);
+		return owner.isOwnerOrSameTeamOrFriend(player);
 	}
 
 	@Override

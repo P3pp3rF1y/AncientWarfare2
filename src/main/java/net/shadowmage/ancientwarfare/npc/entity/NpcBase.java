@@ -48,7 +48,6 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IEntityPacketHandler;
-import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketEntity;
 import net.shadowmage.ancientwarfare.core.owner.IOwnable;
@@ -875,7 +874,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	@Override
 	public boolean isOwner(EntityPlayer player) {
-		return owner.isOwnerOrSameTeam(player);
+		return owner.isOwnerOrSameTeamOrFriend(player);
 	}
 
 	@Override
@@ -913,25 +912,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	public abstract boolean canTarget(Entity e);
 
 	public abstract boolean canBeAttackedBy(Entity e);
-
-	public boolean isEntitySameTeamOrFriends(Entity entityTarget) {
-		Team targetTeam;
-		UUID targetOwnerOrId;
-		if (entityTarget instanceof NpcPlayerOwned) {
-			targetTeam = entityTarget.getTeam();
-			targetOwnerOrId = ((NpcPlayerOwned) entityTarget).getOwner().getUUID();
-		} else if (entityTarget instanceof EntityPlayer) {
-			targetTeam = entityTarget.getTeam();
-			targetOwnerOrId = entityTarget.getUniqueID();
-		} else
-			return false;
-
-		if (targetTeam != null)
-			if (targetTeam.isSameTeam(getTeam()))
-				return true;
-
-		return ModAccessors.FTBU.areFriendly(targetOwnerOrId, getOwner().getUUID());
-	}
 
 	public final EntityLivingBase getFollowingEntity() {
 		if (followingPlayerName == null) {

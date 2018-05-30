@@ -99,7 +99,7 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
 
 	@Override
 	public boolean isOwner(EntityPlayer player) {
-		return owner.isOwnerOrSameTeam(player);
+		return owner.isOwnerOrSameTeamOrFriend(player);
 	}
 
 	@Override

@@ -189,7 +189,7 @@ public abstract class TileWorksiteBase extends TileUpdatable
 
 	@Override
 	public final boolean isOwner(EntityPlayer player) {
-		return owner.isOwnerOrSameTeam(player);
+		return owner.isOwnerOrSameTeamOrFriend(player);
 	}
 
 	@Override
