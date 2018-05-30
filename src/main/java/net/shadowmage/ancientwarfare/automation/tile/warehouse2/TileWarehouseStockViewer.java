@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 public class TileWarehouseStockViewer extends TileControlled implements IOwnable, IInteractableTile {
 
@@ -111,16 +110,6 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
 	@Override
 	public void setOwner(Owner owner) {
 		this.owner = owner;
-	}
-
-	@Override
-	public String getOwnerName() {
-		return owner.getName();
-	}
-
-	@Override
-	public UUID getOwnerUuid() {
-		return owner.getUUID();
 	}
 
 	@Override

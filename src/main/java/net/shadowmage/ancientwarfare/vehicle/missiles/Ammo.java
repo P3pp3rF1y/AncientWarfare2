@@ -245,13 +245,13 @@ public abstract class Ammo implements IAmmo {
 			UUID otherId = null;
 			String otherName = "";
 			if (entity instanceof NpcBase) {
-				otherId = ((NpcBase) entity).getOwnerUuid();
-				otherName = ((NpcBase) entity).getOwnerName();
+				otherId = ((NpcBase) entity).getOwner().getUUID();
+				otherName = ((NpcBase) entity).getOwner().getName();
 			} else if (entity instanceof EntityPlayer) {
 				otherId = entity.getUniqueID();
 				otherName = entity.getName();
 			}
-			return !npc.getOwner().isOwnerOrSameTeam(otherId, otherName);
+			return !npc.getOwner().isOwnerOrSameTeam(world, otherId, otherName);
 		}
 		return true;
 	}

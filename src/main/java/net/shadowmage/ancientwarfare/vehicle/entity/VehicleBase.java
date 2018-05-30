@@ -79,7 +79,6 @@ import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
 public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, IMissileHitCallback, IEntityContainerSynch, IPathableEntity, IOwnable {
 
@@ -1086,18 +1085,6 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	@Override
 	public void setOwner(Owner owner) {
 		this.owner = owner;
-	}
-
-	@Nullable
-	@Override
-	public String getOwnerName() {
-		return owner.getName();
-	}
-
-	@Nullable
-	@Override
-	public UUID getOwnerUuid() {
-		return owner.getUUID();
 	}
 
 	@Override

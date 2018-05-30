@@ -5,8 +5,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.owner.IOwnable;
 import net.shadowmage.ancientwarfare.core.owner.Owner;
 
-import java.util.UUID;
-
 public class TileOwned extends TileUpdatable implements IOwnable {
 	private Owner owner = Owner.EMPTY;
 
@@ -18,16 +16,6 @@ public class TileOwned extends TileUpdatable implements IOwnable {
 	@Override
 	public final void setOwner(Owner owner) {
 		this.owner = owner;
-	}
-
-	@Override
-	public final String getOwnerName() {
-		return owner.getName();
-	}
-
-	@Override
-	public final UUID getOwnerUuid() {
-		return owner.getUUID();
 	}
 
 	@Override

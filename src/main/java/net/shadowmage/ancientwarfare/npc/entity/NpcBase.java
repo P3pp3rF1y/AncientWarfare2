@@ -861,12 +861,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		this.owner = owner;
 	}
 
-	@Nullable
-	@Override
-	public UUID getOwnerUuid() {
-		return owner.getUUID();
-	}
-
 	public void setOwnerName(String name) {
 		if (name == null) {
 			name = "";
@@ -885,11 +879,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	}
 
 	@Override
-	public String getOwnerName() {
-		return owner.getName();
-	}
-
-	@Override
 	public Owner getOwner() {
 		return owner;
 	}
@@ -899,24 +888,12 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		return world.getScoreboard().getPlayersTeam(owner.getName());
 	}
 
-	public boolean hasCommandPermissions(@Nullable UUID playerId, String playerName) {
-		// ensure the NPC is actually owned
-		if (owner == Owner.EMPTY)
-			return false;
-		if (playerId == null)
-			return false;
-		// check if same player
-		if (playerId.equals(getOwnerUuid()))
-			return true;
-		// check if same team
-		Team npcTeam = getTeam();
-		if (npcTeam != null)
-			if (npcTeam.isSameTeam(world.getScoreboard().getPlayersTeam(playerName)))
-				return true;
-		// check if friends in FTBUtils
-		if (ModAccessors.FTBU.areTeamMates(getOwnerUuid(), playerId))
-			return true;
-		return false;
+	public boolean hasCommandPermissions(Owner owner) {
+		return hasCommandPermissions(owner.getUUID(), owner.getName());
+	}
+
+	public boolean hasCommandPermissions(UUID playerId, String playerName) {
+		return owner.playerHasCommandPermissions(world, playerId, playerName);
 	}
 
 	@Override
@@ -942,7 +919,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		UUID targetOwnerOrId;
 		if (entityTarget instanceof NpcPlayerOwned) {
 			targetTeam = entityTarget.getTeam();
-			targetOwnerOrId = ((NpcPlayerOwned) entityTarget).getOwnerUuid();
+			targetOwnerOrId = ((NpcPlayerOwned) entityTarget).getOwner().getUUID();
 		} else if (entityTarget instanceof EntityPlayer) {
 			targetTeam = entityTarget.getTeam();
 			targetOwnerOrId = entityTarget.getUniqueID();
@@ -953,7 +930,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 			if (targetTeam.isSameTeam(getTeam()))
 				return true;
 
-		return ModAccessors.FTBU.areFriendly(targetOwnerOrId, getOwnerUuid());
+		return ModAccessors.FTBU.areFriendly(targetOwnerOrId, getOwner().getUUID());
 	}
 
 	public final EntityLivingBase getFollowingEntity() {

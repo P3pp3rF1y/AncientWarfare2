@@ -30,7 +30,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Set;
-import java.util.UUID;
 
 @Optional.Interface(iface = "cofh.redstoneflux.api.IEnergyProvider", modid = "redstoneflux", striprefs = true)
 @Optional.Interface(iface = "cofh.redstoneflux.api.IEnergyReceiver", modid = "redstoneflux", striprefs = true)
@@ -181,16 +180,6 @@ public abstract class TileWorksiteBase extends TileUpdatable
 	@Override
 	public final Team getTeam() {
 		return world.getScoreboard().getPlayersTeam(owner.getName());
-	}
-
-	@Override
-	public final String getOwnerName() {
-		return owner.getName();
-	}
-
-	@Override
-	public final UUID getOwnerUuid() {
-		return owner.getUUID();
 	}
 
 	@Override

@@ -83,26 +83,26 @@ public class MailboxData extends WorldSavedData {
 		}
 	}
 
-	public boolean addMailbox(String owner, String name) {
+	public boolean addMailbox(@Nullable String owner, String name) {
 		MailboxSet set = owner == null ? publicMailboxes : getOrCreatePrivateMailbox(owner);
 		markDirty();
 		return set.addMailbox(name);
 	}
 
-	public boolean deleteMailbox(String owner, String name) {
+	public boolean deleteMailbox(@Nullable String owner, String name) {
 		MailboxSet set = owner == null ? publicMailboxes : getOrCreatePrivateMailbox(owner);
 		markDirty();
 		return set.deleteMailbox(name);
 	}
 
-	public void addDeliverableItem(String owner, String name, ItemStack item, int dim, BlockPos pos) {
+	public void addDeliverableItem(@Nullable String owner, String name, ItemStack item, int dim, BlockPos pos) {
 		MailboxSet set = owner == null ? publicMailboxes : getOrCreatePrivateMailbox(owner);
 		MailboxEntry entry = set.getOrCreateMailbox(name);
 		entry.addDeliverableItem(item, dim, pos);
 		markDirty();
 	}
 
-	private MailboxSet getOrCreatePrivateMailbox(String owner) {
+	private MailboxSet getOrCreatePrivateMailbox(@Nullable String owner) {
 		if (owner == null) {
 			owner = "";
 		}
@@ -133,13 +133,13 @@ public class MailboxData extends WorldSavedData {
 		return set.getDeliverableItems(name, items, world, x, y, z);
 	}
 
-	public void removeDeliverableItem(String owner, String name, DeliverableItem item) {
+	public void removeDeliverableItem(@Nullable String owner, String name, DeliverableItem item) {
 		MailboxSet set = owner == null ? publicMailboxes : getOrCreatePrivateMailbox(owner);
 		set.removeDeliverableItem(name, item);
 		markDirty();
 	}
 
-	public void addMailboxReceiver(String owner, String name, TileMailbox box) {
+	public void addMailboxReceiver(@Nullable String owner, String name, TileMailbox box) {
 		MailboxSet set = owner == null ? publicMailboxes : getOrCreatePrivateMailbox(owner);
 		set.addReceiver(name, box);
 		markDirty();

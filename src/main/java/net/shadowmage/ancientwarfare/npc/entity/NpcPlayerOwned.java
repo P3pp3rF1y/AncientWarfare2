@@ -134,7 +134,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 		TileEntity te = world.getTileEntity(pos);
 		if (te instanceof TileTownHall) {
 			TileTownHall townHall = (TileTownHall) te;
-			if (hasCommandPermissions(townHall.getOwnerUuid(), townHall.getOwnerName()))
+			if (hasCommandPermissions(townHall.getOwner()))
 				return true;
 		}
 		setTownHallPosition(null);

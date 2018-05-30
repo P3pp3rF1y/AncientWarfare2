@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.core.owner;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.scoreboard.Team;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
@@ -14,8 +15,8 @@ import java.util.UUID;
 @Immutable
 public class Owner {
 	public static final Owner EMPTY = new Owner();
-	public static final String OWNER_NAME_TAG = "ownerName";
-	public static final String OWNER_ID_TAG = "ownerId";
+	private static final String OWNER_NAME_TAG = "ownerName";
+	private static final String OWNER_ID_TAG = "ownerId";
 	private final UUID uuid;
 	private final String name;
 
@@ -43,11 +44,11 @@ public class Owner {
 	}
 
 	public boolean isOwnerOrSameTeam(@Nullable EntityPlayer player) {
-		return player != null && isOwnerOrSameTeam(player.getUniqueID(), player.getName());
+		return player != null && isOwnerOrSameTeam(player.world, player.getUniqueID(), player.getName());
 	}
 
-	public boolean isOwnerOrSameTeam(@Nullable UUID playerId, @Nullable String playerName) {
-		return ModAccessors.FTBU.areFriendly(playerId, uuid) || (playerName != null && playerName.equals(name));
+	public boolean isOwnerOrSameTeam(World world, @Nullable UUID playerId, String playerName) {
+		return name.equals(playerName) || uuid.equals(playerId) || isSameTeam(world, playerName) || ModAccessors.FTBU.areFriendly(playerId, uuid);
 	}
 
 	public String getName() {
@@ -80,5 +81,17 @@ public class Owner {
 			return new Owner(tag.getUniqueId(OWNER_ID_TAG), tag.getString(OWNER_NAME_TAG));
 		}
 		return Owner.EMPTY;
+	}
+
+	public boolean playerHasCommandPermissions(World world, UUID playerId, String playerName) {
+		//noinspection SimplifiableIfStatement
+		if (this == Owner.EMPTY)
+			return false;
+		return playerId.equals(uuid) || isSameTeam(world, playerName) || ModAccessors.FTBU.areTeamMates(uuid, playerId);
+	}
+
+	private boolean isSameTeam(World world, String playerName) {
+		Team team = world.getScoreboard().getPlayersTeam(name);
+		return team != null && team.isSameTeam(world.getScoreboard().getPlayersTeam(playerName));
 	}
 }

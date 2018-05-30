@@ -29,7 +29,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Set;
-import java.util.UUID;
 
 public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IOwnable, ITickable {
 
@@ -174,16 +173,6 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 	@Override
 	public boolean isOwner(EntityPlayer player) {
 		return owner.isOwnerOrSameTeam(player);
-	}
-
-	@Override
-	public String getOwnerName() {
-		return owner.getName();
-	}
-
-	@Override
-	public UUID getOwnerUuid() {
-		return owner.getUUID();
 	}
 
 	@Override

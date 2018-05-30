@@ -265,7 +265,7 @@ public class TileResearchStation extends TileOwned implements IWorkSite, ITorque
 
 	@Override
 	public final Team getTeam() {
-		return world.getScoreboard().getPlayersTeam(getOwnerName());
+		return world.getScoreboard().getPlayersTeam(getOwner().getName());
 	}
 
 	@Override

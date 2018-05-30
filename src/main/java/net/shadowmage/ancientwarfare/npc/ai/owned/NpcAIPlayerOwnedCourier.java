@@ -121,7 +121,7 @@ public class NpcAIPlayerOwnedCourier extends NpcAI<NpcCourier> {
 		if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, point.getBlockSide())) {
 			if (te instanceof IOwnable) {
 				IOwnable ownableTE = (IOwnable) te;
-				if (ownableTE.getOwnerName() != null && !npc.hasCommandPermissions(ownableTE.getOwnerUuid(), ownableTE.getOwnerName())) {
+				if (!npc.hasCommandPermissions(ownableTE.getOwner())) {
 					return null;
 				}
 			}

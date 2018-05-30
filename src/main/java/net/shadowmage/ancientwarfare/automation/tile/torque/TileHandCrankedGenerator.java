@@ -18,7 +18,6 @@ import net.shadowmage.ancientwarfare.core.util.Trig;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.Set;
-import java.util.UUID;
 
 public class TileHandCrankedGenerator extends TileTorqueSingleCell implements IWorkSite, IOwnable {
 
@@ -177,16 +176,6 @@ public class TileHandCrankedGenerator extends TileTorqueSingleCell implements IW
 	@Override
 	public void setOwner(Owner owner) {
 		this.owner = owner;
-	}
-
-	@Override
-	public String getOwnerName() {
-		return owner.getName();
-	}
-
-	@Override
-	public UUID getOwnerUuid() {
-		return owner.getUUID();
 	}
 
 	@Override

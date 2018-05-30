@@ -17,7 +17,6 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableT
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
-import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.owner.IOwnable;
 
 import java.util.function.Supplier;
@@ -70,18 +69,15 @@ public class BlockWorksiteBase extends BlockBaseAutomation implements IRotatable
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY,
+			float hitZ) {
 		TileEntity te = world.getTileEntity(pos);
 		if (te instanceof IInteractableTile) {
 			boolean canClick = false;
 			if (te instanceof IOwnable && ((IOwnable) te).isOwner(player))
 				canClick = true;
-			else if (te instanceof IWorkSite) {
-				IWorkSite site = ((IWorkSite) te);
-				if ((player.getTeam() != null) && (player.getTeam() == site.getTeam()))
-					canClick = true;
-				if (ModAccessors.FTBU.areTeamMates(player.getUniqueID(), site.getOwnerUuid()))
-					canClick = true;
+			else if (te instanceof IWorkSite && ((IWorkSite) te).getOwner().isOwnerOrSameTeam(player)) {
+				canClick = true;
 			}
 			if (canClick) {
 				return ((IInteractableTile) te).onBlockClicked(player, hand);
