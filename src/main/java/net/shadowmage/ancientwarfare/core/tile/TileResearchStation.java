@@ -29,6 +29,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 
 public class TileResearchStation extends TileOwned implements IWorkSite, ITorqueTile, IInteractableTile, IRotatableTile, ITickable {
 
@@ -75,22 +76,24 @@ public class TileResearchStation extends TileOwned implements IWorkSite, ITorque
 	}
 
 	@Override
-	public EnumSet<WorksiteUpgrade> getUpgrades() {
+	public Set<WorksiteUpgrade> getUpgrades() {
 		return EnumSet.noneOf(WorksiteUpgrade.class);
-	}//NOOP
+	}
 
 	@Override
-	public EnumSet<WorksiteUpgrade> getValidUpgrades() {
+	public Set<WorksiteUpgrade> getValidUpgrades() {
 		return EnumSet.noneOf(WorksiteUpgrade.class);
 	}//NOOP
 
 	@Override
 	public void addUpgrade(WorksiteUpgrade upgrade) {
-	}//NOOP
+		//NOOP
+	}
 
 	@Override
 	public void removeUpgrade(WorksiteUpgrade upgrade) {
-	}//NOOP
+		//NOOP
+	}
 
 	@Override
 	public float getClientOutputRotation(EnumFacing from, float delta) {
@@ -98,7 +101,7 @@ public class TileResearchStation extends TileOwned implements IWorkSite, ITorque
 	}
 
 	@Override
-	public boolean useOutputRotation(EnumFacing from) {
+	public boolean useOutputRotation(@Nullable EnumFacing from) {
 		return false;
 	}
 
@@ -113,7 +116,7 @@ public class TileResearchStation extends TileOwned implements IWorkSite, ITorque
 	}
 
 	@Override
-	public double addTorque(EnumFacing from, double energy) {
+	public double addTorque(@Nullable EnumFacing from, double energy) {
 		if (canInputTorque(from)) {
 			if (energy + getTorqueStored(from) > getMaxTorque(from)) {
 				energy = getMaxTorque(from) - getTorqueStored(from);
@@ -128,17 +131,17 @@ public class TileResearchStation extends TileOwned implements IWorkSite, ITorque
 	}
 
 	@Override
-	public double getMaxTorque(EnumFacing from) {
+	public double getMaxTorque(@Nullable EnumFacing from) {
 		return maxEnergyStored;
 	}
 
 	@Override
-	public double getTorqueStored(EnumFacing from) {
+	public double getTorqueStored(@Nullable EnumFacing from) {
 		return storedEnergy;
 	}
 
 	@Override
-	public double getMaxTorqueInput(EnumFacing from) {
+	public double getMaxTorqueInput(@Nullable EnumFacing from) {
 		return maxInput;
 	}
 

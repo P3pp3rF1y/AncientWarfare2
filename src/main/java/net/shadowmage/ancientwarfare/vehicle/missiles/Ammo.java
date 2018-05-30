@@ -29,7 +29,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -218,7 +217,7 @@ public abstract class Ammo implements IAmmo {
 		if (!AWVehicleStatics.blockDestruction /*|| !WarzoneManager.instance().shouldBreakBlock(world, x, y, z) TODO warzone implementation?*/) {
 			return;
 		}
-		BlockTools.breakBlockAndDrop(world, AWFakePlayer.get(world), new BlockPos(x, y, z));
+		BlockTools.breakBlockAndDrop(world, new BlockPos(x, y, z));
 	}
 
 	/**

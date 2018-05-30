@@ -10,12 +10,11 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
+import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.owner.IOwnable;
@@ -28,13 +27,14 @@ import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilderTicked;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.EnumSet;
+import java.util.Set;
 import java.util.UUID;
 
 public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IOwnable, ITickable {
 
 	private Owner owner;
-	private EntityPlayer ownerPlayer;
 
 	StructureBuilderTicked builder;
 	private boolean shouldRemove = false;
@@ -63,22 +63,24 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 	}
 
 	@Override
-	public EnumSet<WorksiteUpgrade> getUpgrades() {
+	public Set<WorksiteUpgrade> getUpgrades() {
 		return EnumSet.noneOf(WorksiteUpgrade.class);
-	}//NOOP
+	}
 
 	@Override
-	public EnumSet<WorksiteUpgrade> getValidUpgrades() {
+	public Set<WorksiteUpgrade> getValidUpgrades() {
 		return EnumSet.noneOf(WorksiteUpgrade.class);
 	}//NOOP
 
 	@Override
 	public void addUpgrade(WorksiteUpgrade upgrade) {
-	}//NOOP
+		//NOOP
+	}
 
 	@Override
 	public void removeUpgrade(WorksiteUpgrade upgrade) {
-	}//NOOP
+		//NOOP
+	}
 
 	@Override
 	public float getClientOutputRotation(EnumFacing from, float delta) {
@@ -86,12 +88,12 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 	}
 
 	@Override
-	public boolean useOutputRotation(EnumFacing from) {
+	public boolean useOutputRotation(@Nullable EnumFacing from) {
 		return false;
 	}
 
 	@Override
-	public double addTorque(EnumFacing from, double energy) {
+	public double addTorque(@Nullable EnumFacing from, double energy) {
 		if (canInputTorque(from)) {
 			if (energy + getTorqueStored(null) > getMaxTorque(null)) {
 				energy = getMaxTorque(null) - getTorqueStored(null);
@@ -106,17 +108,17 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 	}
 
 	@Override
-	public double getMaxTorque(EnumFacing from) {
+	public double getMaxTorque(@Nullable EnumFacing from) {
 		return maxEnergyStored;
 	}
 
 	@Override
-	public double getTorqueStored(EnumFacing from) {
+	public double getTorqueStored(@Nullable EnumFacing from) {
 		return storedEnergy;
 	}
 
 	@Override
-	public double getMaxTorqueInput(EnumFacing from) {
+	public double getMaxTorqueInput(@Nullable EnumFacing from) {
 		return maxInput;
 	}
 
@@ -153,7 +155,7 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 
 	public void processWork() {
 		isStarted = true;
-		builder.tick(getOwnerAsPlayer());
+		builder.tick(AWFakePlayer.get(world));
 	}
 
 	/*
@@ -177,7 +179,7 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 
 	@Override
 	public String getOwnerName() {
-		return getOwnerAsPlayer().getName();
+		return owner.getName();
 	}
 
 	@Override
@@ -188,13 +190,6 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 	@Override
 	public Owner getOwner() {
 		return owner;
-	}
-
-	public final EntityPlayer getOwnerAsPlayer() {
-		if (ownerPlayer == null || !ownerPlayer.isEntityAlive() || (ownerPlayer instanceof FakePlayer)) { //TODO this condition needs looking into - no idea why ownerPlayer needs to be set everytime
-			ownerPlayer = AncientWarfareCore.proxy.getFakePlayer(this.getWorld(), owner);
-		}
-		return ownerPlayer;
 	}
 
 	/*

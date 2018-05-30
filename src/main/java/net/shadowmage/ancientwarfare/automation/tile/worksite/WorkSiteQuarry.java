@@ -13,6 +13,7 @@ import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
+import javax.annotation.Nullable;
 import java.util.EnumSet;
 
 public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
@@ -129,7 +130,7 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 			return false;
 		}
 
-		if (!BlockTools.breakBlockNoDrops(world, getOwnerAsPlayer(), current, state)) {
+		if (!BlockTools.breakBlockNoDrops(world, current, state)) {
 			return false;
 		}
 
@@ -231,7 +232,7 @@ public final class WorkSiteQuarry extends TileWorksiteBoundedInventory {
 	}
 
 	@Override
-	public boolean onBlockClicked(EntityPlayer player, EnumHand hand) {
+	public boolean onBlockClicked(EntityPlayer player, @Nullable EnumHand hand) {
 		if (!player.world.isRemote) {
 			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_WORKSITE_QUARRY, pos);
 		}

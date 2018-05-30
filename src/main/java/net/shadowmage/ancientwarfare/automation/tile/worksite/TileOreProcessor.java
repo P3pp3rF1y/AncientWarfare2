@@ -12,6 +12,7 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
+import java.util.Set;
 
 public class TileOreProcessor extends TileWorksiteBase {
 
@@ -66,7 +67,7 @@ public class TileOreProcessor extends TileWorksiteBase {
 	//************************************* BRIDGE/TEMPLATE/ACCESSOR METHODS ****************************************//
 
 	@Override
-	public EnumSet<WorksiteUpgrade> getValidUpgrades() {
+	public Set<WorksiteUpgrade> getValidUpgrades() {
 		return EnumSet.noneOf(WorksiteUpgrade.class);
 	}//NOOP
 

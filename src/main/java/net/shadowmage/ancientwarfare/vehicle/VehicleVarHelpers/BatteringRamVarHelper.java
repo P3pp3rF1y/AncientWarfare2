@@ -25,7 +25,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleTypeBatteringRam;
@@ -115,7 +114,7 @@ public class BatteringRamVarHelper extends VehicleFiringVarsHelper {
 /* TODO warzone implementation?
 			if (WarzoneManager.instance().shouldBreakBlock(vehicle.world, pos.x, pos.y, pos.z)) {
 */
-			BlockTools.breakBlockAndDrop(vehicle.world, AWFakePlayer.get(vehicle.world), pos);
+			BlockTools.breakBlockAndDrop(vehicle.world, pos);
 		}
 	}
 

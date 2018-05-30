@@ -43,8 +43,8 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.world.BlockEvent;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
+import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -160,7 +160,7 @@ public class BlockTools {
 	/*
 	 * rotate a position around its origin (0,0,0), in 90' clockwise steps
 	 */
-	public static BlockPos rotateAroundOrigin(BlockPos pos) {
+	private static BlockPos rotateAroundOrigin(BlockPos pos) {
 		return new BlockPos(-pos.getZ(), pos.getY(), pos.getX());
 	}
 
@@ -225,11 +225,11 @@ public class BlockTools {
 		return new BlockPos(x, pos.getY(), z);
 	}
 
-	public static boolean breakBlockAndDrop(World world, EntityPlayer player, BlockPos pos) {
-		return breakBlock(world, player, pos, 0, true);
+	public static boolean breakBlockAndDrop(World world, BlockPos pos) {
+		return breakBlock(world, pos, 0, true);
 	}
 
-	public static boolean breakBlock(World world, EntityPlayer player, BlockPos pos, int fortune, boolean doDrop) {
+	public static boolean breakBlock(World world, BlockPos pos, int fortune, boolean doDrop) {
 		if (world.isRemote) {
 			return false;
 		}
@@ -239,7 +239,7 @@ public class BlockTools {
 			return false;
 		}
 		if (doDrop) {
-			if (!canBreakBlock(world, player, pos, state)) {
+			if (!canBreakBlock(world, pos, state)) {
 				return false;
 			}
 			block.dropBlockAsItem(world, pos, state, fortune);
@@ -247,12 +247,12 @@ public class BlockTools {
 		return world.setBlockToAir(pos);
 	}
 
-	public static boolean canBreakBlock(World world, EntityPlayer player, BlockPos pos, IBlockState state) {
-		return !AWCoreStatics.fireBlockBreakEvents || !MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, player));
+	private static boolean canBreakBlock(World world, BlockPos pos, IBlockState state) {
+		return !AWCoreStatics.fireBlockBreakEvents || !MinecraftForge.EVENT_BUS.post(new BlockEvent.BreakEvent(world, pos, state, AWFakePlayer.get(world)));
 	}
 
-	public static boolean breakBlockNoDrops(World world, EntityPlayer player, BlockPos pos, IBlockState state) {
-		if (!BlockTools.canBreakBlock(world, player, pos, state) || !world.setBlockToAir(pos)) {
+	public static boolean breakBlockNoDrops(World world, BlockPos pos, IBlockState state) {
+		if (!BlockTools.canBreakBlock(world, pos, state) || !world.setBlockToAir(pos)) {
 			return false;
 		}
 		world.playEvent(2001, pos, Block.getStateId(state));
@@ -263,7 +263,7 @@ public class BlockTools {
 	public static boolean placeItemBlock(ItemStack stack, World world, BlockPos pos, EnumFacing face) {
 		EnumFacing direction = face.getOpposite();
 
-		EntityPlayer owner = AncientWarfareCore.proxy.getFakePlayer(world);
+		EntityPlayer owner = AWFakePlayer.get(world);
 		owner.setHeldItem(EnumHand.MAIN_HAND, stack);
 		if (stack.onItemUse(owner, world, pos.offset(direction), EnumHand.MAIN_HAND, face, 0.25F, 0.25F, 0.25F) == EnumActionResult.SUCCESS) {
 			return true;
@@ -286,6 +286,7 @@ public class BlockTools {
 
 	public static JsonElement serializeToJson(IBlockState state) {
 		JsonObject serializedState = new JsonObject();
+		//noinspection ConstantConditions
 		serializedState.addProperty("name", state.getBlock().getRegistryName().toString());
 
 		JsonObject serializedProps = new JsonObject();

@@ -10,11 +10,9 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
-import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.common.Optional;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.automation.item.ItemWorksiteUpgrade;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
@@ -30,17 +28,19 @@ import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import org.apache.commons.lang3.math.NumberUtils;
 
+import javax.annotation.Nullable;
 import java.util.EnumSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Optional.Interface(iface = "cofh.redstoneflux.api.IEnergyProvider", modid = "redstoneflux", striprefs = true)
 @Optional.Interface(iface = "cofh.redstoneflux.api.IEnergyReceiver", modid = "redstoneflux", striprefs = true)
 public abstract class TileWorksiteBase extends TileUpdatable
 		implements ITickable, IWorkSite, IInteractableTile, IOwnable, IRotatableTile, IEnergyProvider, IEnergyReceiver {
+	private static final String UPGRADES_TAG = "upgrades";
+	private static final String ORIENTATION_TAG = "orientation";
 
 	private Owner owner = Owner.EMPTY;
-	//TODO see if there's really any use in machines acting as a real player
-	private EntityPlayer ownerPlayer;
 
 	private double efficiencyBonusFactor = 0.f;
 
@@ -95,14 +95,15 @@ public abstract class TileWorksiteBase extends TileUpdatable
 	//************************************** UPGRADE HANDLING METHODS ***************************************//
 
 	@Override
-	public final EnumSet<WorksiteUpgrade> getUpgrades() {
+	public final Set<WorksiteUpgrade> getUpgrades() {
 		return upgrades;
 	}
 
 	@Override
-	public EnumSet<WorksiteUpgrade> getValidUpgrades() {
-        return EnumSet.of(WorksiteUpgrade.ENCHANTED_TOOLS_1, WorksiteUpgrade.ENCHANTED_TOOLS_2, WorksiteUpgrade.TOOL_QUALITY_1, WorksiteUpgrade.TOOL_QUALITY_2, WorksiteUpgrade.TOOL_QUALITY_3);
-    }
+	public Set<WorksiteUpgrade> getValidUpgrades() {
+		return EnumSet.of(WorksiteUpgrade.ENCHANTED_TOOLS_1, WorksiteUpgrade.ENCHANTED_TOOLS_2, WorksiteUpgrade.TOOL_QUALITY_1, WorksiteUpgrade.TOOL_QUALITY_2,
+				WorksiteUpgrade.TOOL_QUALITY_3);
+	}
 
 	@Override
 	public void onBlockBroken() {
@@ -168,7 +169,7 @@ public abstract class TileWorksiteBase extends TileUpdatable
 		world.profiler.endSection();
 	}
 
-	protected final void updateEfficiency() {
+	private void updateEfficiency() {
 		efficiencyBonusFactor = IWorkSite.WorksiteImplementation.getEfficiencyFactor(upgrades);
 	}
 
@@ -193,20 +194,9 @@ public abstract class TileWorksiteBase extends TileUpdatable
 		return owner.getUUID();
 	}
 
-	public final EntityPlayer getOwnerAsPlayer() {
-		if (!isOwnerReal()) {
-			ownerPlayer = AncientWarfareCore.proxy.getFakePlayer(getWorld(), owner);
-		}
-		return ownerPlayer;
-	}
-
 	@Override
 	public Owner getOwner() {
 		return owner;
-	}
-
-	private boolean isOwnerReal() {
-		return ownerPlayer != null && ownerPlayer.isEntityAlive() && !(ownerPlayer instanceof FakePlayer);
 	}
 
 	@Override
@@ -216,19 +206,12 @@ public abstract class TileWorksiteBase extends TileUpdatable
 
 	@Override
 	public final void setOwner(EntityPlayer player) {
-		if (player == null) {
-			owner = Owner.EMPTY;
-			ownerPlayer = null;
-		} else {
-			ownerPlayer = player;
-			owner = new Owner(player);
-		}
+		owner = new Owner(player);
 	}
 
 	@Override
 	public final void setOwner(Owner owner) {
 		this.owner = owner;
-		ownerPlayer = AncientWarfareCore.proxy.getFakePlayer(getWorld(), owner);
 	}
 
 	//************************************** TORQUE INTERACTION METHODS ***************************************//
@@ -239,7 +222,7 @@ public abstract class TileWorksiteBase extends TileUpdatable
 	}
 
 	@Override
-	public final boolean useOutputRotation(EnumFacing from) {
+	public final boolean useOutputRotation(@Nullable EnumFacing from) {
 		return false;
 	}
 
@@ -269,22 +252,22 @@ public abstract class TileWorksiteBase extends TileUpdatable
 	}
 
 	@Override
-	public final double addTorque(EnumFacing from, double energy) {
+	public final double addTorque(@Nullable EnumFacing from, double energy) {
 		return torqueCell.addEnergy(energy);
 	}
 
 	@Override
-	public final double getMaxTorque(EnumFacing from) {
+	public final double getMaxTorque(@Nullable EnumFacing from) {
 		return torqueCell.getMaxEnergy();
 	}
 
 	@Override
-	public final double getTorqueStored(EnumFacing from) {
+	public final double getTorqueStored(@Nullable EnumFacing from) {
 		return torqueCell.getEnergy();
 	}
 
 	@Override
-	public final double getMaxTorqueInput(EnumFacing from) {
+	public final double getMaxTorqueInput(@Nullable EnumFacing from) {
 		return torqueCell.getMaxTickInput();
 	}
 
@@ -335,9 +318,9 @@ public abstract class TileWorksiteBase extends TileUpdatable
 				ug[i] = u.ordinal();
 				i++;
 			}
-			tag.setIntArray("upgrades", ug);
+			tag.setIntArray(UPGRADES_TAG, ug);
 		}
-		tag.setInteger("orientation", orientation.ordinal());
+		tag.setInteger(ORIENTATION_TAG, orientation.ordinal());
 
 		return tag;
 	}
@@ -347,10 +330,10 @@ public abstract class TileWorksiteBase extends TileUpdatable
 		super.readFromNBT(tag);
 		torqueCell.setEnergy(tag.getDouble("storedEnergy"));
 		owner = Owner.deserializeFromNBT(tag);
-		if (tag.hasKey("upgrades")) {
-			NBTBase upgradeTag = tag.getTag("upgrades");
+		if (tag.hasKey(UPGRADES_TAG)) {
+			NBTBase upgradeTag = tag.getTag(UPGRADES_TAG);
 			if (upgradeTag instanceof NBTTagIntArray) {
-				int[] ug = tag.getIntArray("upgrades");
+				int[] ug = tag.getIntArray(UPGRADES_TAG);
 				for (int anUg : ug) {
 					upgrades.add(WorksiteUpgrade.values()[anUg]);
 				}
@@ -367,8 +350,8 @@ public abstract class TileWorksiteBase extends TileUpdatable
 			}
 		}
 
-		if (tag.hasKey("orientation")) {
-			orientation = EnumFacing.values()[tag.getInteger("orientation")];
+		if (tag.hasKey(ORIENTATION_TAG)) {
+			orientation = EnumFacing.values()[tag.getInteger(ORIENTATION_TAG)];
 		}
 		updateEfficiency();
 	}
@@ -382,8 +365,8 @@ public abstract class TileWorksiteBase extends TileUpdatable
 			ugs[i] = ug.ordinal();
 			i++;
 		}
-		tag.setIntArray("upgrades", ugs);
-		tag.setInteger("orientation", orientation.ordinal());
+		tag.setIntArray(UPGRADES_TAG, ugs);
+		tag.setInteger(ORIENTATION_TAG, orientation.ordinal());
 		owner.serializeToNBT(tag);
 	}
 
@@ -391,14 +374,14 @@ public abstract class TileWorksiteBase extends TileUpdatable
 	protected void handleUpdateNBT(NBTTagCompound tag) {
 		super.handleUpdateNBT(tag);
 		upgrades.clear();
-		if (tag.hasKey("upgrades")) {
-			int[] ugs = tag.getIntArray("upgrades");
+		if (tag.hasKey(UPGRADES_TAG)) {
+			int[] ugs = tag.getIntArray(UPGRADES_TAG);
 			for (int ug : ugs) {
 				upgrades.add(WorksiteUpgrade.values()[ug]);
 			}
 		}
 		updateEfficiency();
-		orientation = EnumFacing.values()[tag.getInteger("orientation")];
+		orientation = EnumFacing.values()[tag.getInteger(ORIENTATION_TAG)];
 		owner = Owner.deserializeFromNBT(tag);
 		markDirty();
 	}

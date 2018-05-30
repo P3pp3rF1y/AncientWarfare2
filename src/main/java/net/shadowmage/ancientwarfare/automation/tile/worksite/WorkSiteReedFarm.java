@@ -18,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
@@ -131,7 +132,7 @@ public class WorkSiteReedFarm extends TileWorksiteFarm {
 					continue;
 				}
 				if (isBonemeal(stack)) {
-					if (ItemDye.applyBonemeal(stack.copy(), world, p, getOwnerAsPlayer(), EnumHand.MAIN_HAND)) {
+					if (ItemDye.applyBonemeal(stack.copy(), world, p, AWFakePlayer.get(world), EnumHand.MAIN_HAND)) {
 						miscInventory.extractItem(slot, 1, false);
 					}
 					if (((BlockCocoa) block).canGrow(world, p, state, world.isRemote)) {

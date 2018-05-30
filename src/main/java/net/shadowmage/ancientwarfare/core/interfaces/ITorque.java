@@ -3,23 +3,11 @@ package net.shadowmage.ancientwarfare.core.interfaces;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 
+import javax.annotation.Nullable;
+
 public final class ITorque {
 	private ITorque() {
 	}//noop the class, it is just a container for the interfaces and static methods
-
-	/*
-	 * Used for rendering of, well, anything that has a default north-oriented model
-	 */
-	public static final float[][] forgeDiretctionToRotationMatrix = new float[6][];
-
-	static {
-		forgeDiretctionToRotationMatrix[0] = new float[] {-90, 0};//d
-		forgeDiretctionToRotationMatrix[1] = new float[] {90, 0};//u
-		forgeDiretctionToRotationMatrix[2] = new float[] {0, 0};//n
-		forgeDiretctionToRotationMatrix[3] = new float[] {0, 180};//s
-		forgeDiretctionToRotationMatrix[4] = new float[] {0, 90};//w
-		forgeDiretctionToRotationMatrix[5] = new float[] {0, 270};//e
-	}
 
 	/*
 	 * Interface for implementation by torque tiles.  Tiles may handle their power internally by any means.<br>
@@ -33,18 +21,18 @@ public final class ITorque {
 		/*
 		 * Return the maximum amount of energy store-able in the passed in block side
 		 */
-		double getMaxTorque(EnumFacing from);
+		double getMaxTorque(@Nullable EnumFacing from);
 
 		/*
 		 * Return the value of energy accessible from the passed in block side
 		 */
-		double getTorqueStored(EnumFacing from);
+		double getTorqueStored(@Nullable EnumFacing from);
 
 		/*
 		 * Add energy to the specified block side, up to the specified amount.<br>
 		 * Return the value of energy actually added, or 0 for none.
 		 */
-		double addTorque(EnumFacing from, double energy);
+		double addTorque(@Nullable EnumFacing from, double energy);
 
 		/*
 		 * Remove energy from the specified block side, up to the specified amount.<br>
@@ -62,7 +50,7 @@ public final class ITorque {
 		 * Return the maximum amount of torque that the given side may accept AT THIS TIME.<br>
 		 * Analogous to the 'simulate' actions from other energy frameworks
 		 */
-		double getMaxTorqueInput(EnumFacing from);
+		double getMaxTorqueInput(@Nullable EnumFacing from);
 
 		/*
 		 * Return true if this tile can output torque from the given block side.<br>
@@ -84,7 +72,7 @@ public final class ITorque {
 		 * Used by client for rendering of torque tiles.  If TRUE this tiles neighbor will
 		 * use this tiles output rotation values for rendering of the corresponding input side on the neighbor.
 		 */
-		boolean useOutputRotation(EnumFacing from);
+		boolean useOutputRotation(@Nullable EnumFacing from);
 
 		/*
 		 * Return output shaft rotation for the given side.  Will only be called if useOutputRotation(from) returns true.
@@ -100,7 +88,10 @@ public final class ITorque {
 	 * @author Shadowmage
 	 */
 	public static class TorqueCell {
-		protected double maxInput, maxOutput, maxEnergy, efficiency;
+		double maxInput;
+		double maxOutput;
+		double maxEnergy;
+		double efficiency;
 		protected double energy;
 
 		public TorqueCell(double in, double out, double max, double eff) {

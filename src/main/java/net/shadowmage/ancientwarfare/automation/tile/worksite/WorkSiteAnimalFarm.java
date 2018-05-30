@@ -20,6 +20,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
+import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
@@ -308,8 +309,9 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 				return false;
 			}
 			if (animalA.isEntityAlive() && animalB.isEntityAlive()) {
-				((EntityAnimal) animalA).setInLove(getOwnerAsPlayer());
-				((EntityAnimal) animalB).setInLove(getOwnerAsPlayer());
+				EntityPlayer fakePlayer = AWFakePlayer.get(world);
+				((EntityAnimal) animalA).setInLove(fakePlayer);
+				((EntityAnimal) animalB).setInLove(fakePlayer);
 				return true;
 			}
 		}

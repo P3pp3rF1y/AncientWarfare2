@@ -9,6 +9,7 @@ import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
+import java.util.Set;
 import java.util.UUID;
 
 public interface IWorkSite extends ITorqueTile, IBlockBreakHandler {
@@ -39,9 +40,9 @@ public interface IWorkSite extends ITorqueTile, IBlockBreakHandler {
 
 	UUID getOwnerUuid();
 
-	EnumSet<WorksiteUpgrade> getUpgrades();
+	Set<WorksiteUpgrade> getUpgrades();
 
-	EnumSet<WorksiteUpgrade> getValidUpgrades();
+	Set<WorksiteUpgrade> getValidUpgrades();
 
 	/*
 	 * Add the input upgrade to the present upgrade set.  Apply any necessary bonuses at this time.<br>

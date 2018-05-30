@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm;
 
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -35,8 +34,8 @@ public class CropTall extends CropDefault {
 	}
 
 	@Override
-	protected boolean breakCrop(World world, EntityPlayer player, BlockPos pos, IBlockState state) {
-		return applyToCrop(world, pos, (p, s) -> super.breakCrop(world, player, p, s));
+	protected boolean breakCrop(World world, BlockPos pos, IBlockState state) {
+		return applyToCrop(world, pos, (p, s) -> super.breakCrop(world, p, s));
 	}
 
 	@Override

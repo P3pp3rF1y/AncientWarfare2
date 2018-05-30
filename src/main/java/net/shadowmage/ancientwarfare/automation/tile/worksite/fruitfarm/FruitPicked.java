@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite.fruitfarm;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -34,8 +33,7 @@ public class FruitPicked implements IFruit {
 	}
 
 	@Override
-	public boolean pick(World world, IBlockState state, BlockPos pos, EntityPlayer player, int fortune, IItemHandler inventory) {
-		//TODO using deprecated getDrops here just because of pam's harvestcraft, change to proper one in the future
+	public boolean pick(World world, IBlockState state, BlockPos pos, int fortune, IItemHandler inventory) {
 		NonNullList<ItemStack> drops = getDrops(world, state, pos, fortune);
 
 		if (drops.isEmpty() || !InventoryTools.canInventoryHold(inventory, drops)) {
@@ -50,6 +48,7 @@ public class FruitPicked implements IFruit {
 	}
 
 	protected NonNullList<ItemStack> getDrops(World world, IBlockState state, BlockPos pos, int fortune) {
+		//using deprecated getDrops here just because of pam's harvestcraft, change to proper one in the future
 		return InventoryTools.toNonNullList(state.getBlock().getDrops(world, pos, state, fortune));
 	}
 

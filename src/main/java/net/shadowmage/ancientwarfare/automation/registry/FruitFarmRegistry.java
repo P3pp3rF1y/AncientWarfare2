@@ -5,7 +5,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.math.BlockPos;
@@ -28,13 +27,18 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class FruitFarmRegistry {
+	private FruitFarmRegistry() {
+	}
+
+	private static final String FRUIT_ELEMENT = "fruit";
+
 	private static final Set<IFruit> fruits = new HashSet<>();
 
 	static {
 		registerFruit(new FruitCocoa());
 	}
 
-	public static void registerFruit(IFruit pickable) {
+	private static void registerFruit(IFruit pickable) {
 		fruits.add(pickable);
 	}
 
@@ -86,31 +90,39 @@ public class FruitFarmRegistry {
 		}
 
 		private static class BreakOnly {
+			private BreakOnly() {
+			}
 			public static void parse(JsonObject json) {
-				registerFruit(new FruitBreakOnly(JsonHelper.getBlockStateMatcher(json, "fruit")));
+				registerFruit(new FruitBreakOnly(JsonHelper.getBlockStateMatcher(json, FRUIT_ELEMENT)));
 			}
 		}
 
 		private static class PickedDrop {
+			private PickedDrop() {
+			}
 			public static void parse(JsonObject json) {
 				registerFruit(Picked.parsePicked(json, (f, r, n) -> new FruitPickedDrop(f, r, n, JsonHelper.getItemStack(json, "drop"))));
 			}
 		}
 
 		private static class PickedRemoveOne {
+			private PickedRemoveOne() {
+			}
 			public static void parse(JsonObject json) {
 				registerFruit(Picked.parsePicked(json, FruitPickedRemoveOne::new));
 			}
 		}
 
 		private static class Picked {
+			private Picked() {
+			}
 			public static void parse(JsonObject json) {
 				registerFruit(parsePicked(json, FruitPicked::new));
 			}
 
 			private static IFruit parsePicked(JsonObject json, TriFunction<BlockStateMatcher, PropertyStateMatcher, PropertyState, IFruit> instantiate) {
-				IBlockState fruitState = JsonHelper.getBlockState(json, "fruit");
-				BlockStateMatcher stateMatcher = JsonHelper.getBlockStateMatcher(json, "fruit");
+				IBlockState fruitState = JsonHelper.getBlockState(json, FRUIT_ELEMENT);
+				BlockStateMatcher stateMatcher = JsonHelper.getBlockStateMatcher(json, FRUIT_ELEMENT);
 				PropertyStateMatcher ripeStateMatcher = JsonHelper.getPropertyStateMatcher(fruitState, json, "ripe");
 				PropertyState newState = JsonHelper.getPropertyState(fruitState, json, "new");
 
@@ -131,7 +143,7 @@ public class FruitFarmRegistry {
 		}
 
 		@Override
-		public boolean pick(World world, IBlockState state, BlockPos pos, EntityPlayer player, int fortune, IItemHandler inventory) {
+		public boolean pick(World world, IBlockState state, BlockPos pos, int fortune, IItemHandler inventory) {
 			return false;
 		}
 

@@ -17,6 +17,7 @@ import net.shadowmage.ancientwarfare.core.util.Trig;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
+import java.util.Set;
 import java.util.UUID;
 
 public class TileHandCrankedGenerator extends TileTorqueSingleCell implements IWorkSite, IOwnable {
@@ -117,12 +118,12 @@ public class TileHandCrankedGenerator extends TileTorqueSingleCell implements IW
 	}
 
 	@Override
-	public EnumSet<WorksiteUpgrade> getUpgrades() {
+	public Set<WorksiteUpgrade> getUpgrades() {
 		return EnumSet.noneOf(WorksiteUpgrade.class);
 	}
 
 	@Override
-	public EnumSet<WorksiteUpgrade> getValidUpgrades() {
+	public Set<WorksiteUpgrade> getValidUpgrades() {
 		return EnumSet.noneOf(WorksiteUpgrade.class);
 	}
 

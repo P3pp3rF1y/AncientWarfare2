@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -21,7 +20,8 @@ public class CropBreakOnly implements ICrop {
 	private BlockStateMatcher stateMatcher;
 	private ItemStackMatcher stackMatcher;
 
-	protected CropBreakOnly() {}
+	CropBreakOnly() {
+	}
 
 	public CropBreakOnly(BlockStateMatcher stateMatcher, ItemStackMatcher stackMatcher) {
 		this.stateMatcher = stateMatcher;
@@ -39,7 +39,7 @@ public class CropBreakOnly implements ICrop {
 	}
 
 	@Override
-	public boolean harvest(World world, IBlockState state, BlockPos pos, EntityPlayer player, int fortune, IItemHandler inventory) {
+	public boolean harvest(World world, IBlockState state, BlockPos pos, int fortune, IItemHandler inventory) {
 		Block block = state.getBlock();
 		NonNullList<ItemStack> stacks = NonNullList.create();
 
@@ -49,7 +49,7 @@ public class CropBreakOnly implements ICrop {
 			return false;
 		}
 
-		if (!BlockTools.breakBlockNoDrops(world, player, pos, state)) {
+		if (!BlockTools.breakBlockNoDrops(world, pos, state)) {
 			return false;
 		}
 

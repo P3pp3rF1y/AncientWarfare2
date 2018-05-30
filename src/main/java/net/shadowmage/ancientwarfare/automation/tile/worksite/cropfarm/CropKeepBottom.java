@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -24,7 +23,7 @@ public class CropKeepBottom extends CropDefault {
 	}
 
 	@Override
-	public boolean harvest(World world, IBlockState state, BlockPos pos, EntityPlayer player, int fortune, IItemHandler inventory) {
+	public boolean harvest(World world, IBlockState state, BlockPos pos, int fortune, IItemHandler inventory) {
 		NonNullList<ItemStack> stacks = NonNullList.create();
 
 		//figuring out positions here instead of in getPositionsToHarvest because if growing quickly we could be harvesting block that's not the top one.
@@ -37,7 +36,7 @@ public class CropKeepBottom extends CropDefault {
 			return false;
 		}
 
-		if (!breakCrop(harvestPositions, world, player)) {
+		if (!breakCrop(harvestPositions, world)) {
 			return false;
 		}
 
@@ -51,9 +50,9 @@ public class CropKeepBottom extends CropDefault {
 		}
 	}
 
-	private boolean breakCrop(Map<BlockPos, IBlockState> harvestPositions, World world, EntityPlayer player) {
+	private boolean breakCrop(Map<BlockPos, IBlockState> harvestPositions, World world) {
 		for (Map.Entry<BlockPos, IBlockState> entry : harvestPositions.entrySet()) {
-			if (!breakCrop(world, player, entry.getKey(), entry.getValue())) {
+			if (!breakCrop(world, entry.getKey(), entry.getValue())) {
 				return false;
 			}
 		}

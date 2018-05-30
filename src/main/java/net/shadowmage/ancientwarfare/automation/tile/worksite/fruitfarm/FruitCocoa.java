@@ -5,7 +5,6 @@ import net.minecraft.block.BlockCocoa;
 import net.minecraft.block.BlockOldLog;
 import net.minecraft.block.BlockPlanks;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
@@ -71,7 +70,7 @@ public class FruitCocoa implements IFruit {
 	}
 
 	@Override
-	public boolean pick(World world, IBlockState state, BlockPos pos, EntityPlayer player, int fortune, IItemHandler inventory) {
+	public boolean pick(World world, IBlockState state, BlockPos pos, int fortune, IItemHandler inventory) {
 		NonNullList<ItemStack> drops = NonNullList.create();
 		Blocks.COCOA.getDrops(drops, world, pos, state, fortune);
 

@@ -52,7 +52,7 @@ public class WorkSiteFruitFarm extends TileWorksiteFarm {
 
 	@Override
 	public WorkType getWorkType() {
-		return WorkType.FARMING; //TODO add new work type and get a fruit basket for NPCs?
+		return WorkType.FARMING;
 	}
 
 	@Override
@@ -84,15 +84,7 @@ public class WorkSiteFruitFarm extends TileWorksiteFarm {
 
 	@Override
 	protected boolean processWork() {
-		if (pickFruits()) {
-			return true;
-		}
-
-		if (plantFruits()) {
-			return true;
-		}
-
-		return boneMeal();
+		return pickFruits() || plantFruits() || boneMeal();
 	}
 
 	private boolean boneMeal() {
@@ -105,11 +97,7 @@ public class WorkSiteFruitFarm extends TileWorksiteFarm {
 		it.remove();
 
 		IBlockState state = world.getBlockState(pos);
-		if (state.getBlock() instanceof IGrowable) {
-			return fertilize(pos);
-		}
-
-		return false;
+		return state.getBlock() instanceof IGrowable && fertilize(pos);
 	}
 
 	private boolean plantFruits() {
@@ -137,7 +125,7 @@ public class WorkSiteFruitFarm extends TileWorksiteFarm {
 		IBlockState state = world.getBlockState(pickPos);
 		IFruit pickable = FruitFarmRegistry.getPickable(state);
 
-		return pickable.pick(world, state, pickPos, getOwnerAsPlayer(), getFortune(), inventoryForDrops);
+		return pickable.pick(world, state, pickPos, getFortune(), inventoryForDrops);
 	}
 
 	@Override

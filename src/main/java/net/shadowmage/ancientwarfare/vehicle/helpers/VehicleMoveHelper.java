@@ -35,7 +35,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.INBTSerializable;
-import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.Trig;
@@ -558,7 +557,7 @@ public class VehicleMoveHelper implements INBTSerializable<NBTTagCompound> {
 			BlockPos breakPos = new BlockPos(x, y, z);
 			IBlockState state = vehicle.world.getBlockState(breakPos);
 			if (isTrampable(state)) {
-				BlockTools.breakBlockAndDrop(vehicle.world, AWFakePlayer.get(vehicle.world), breakPos);
+				BlockTools.breakBlockAndDrop(vehicle.world, breakPos);
 			}
 			//check lower blocks (riding on)
 			if (vehicle.world.getBlockState(breakPos.down()).getBlock() == Blocks.GRASS) {
