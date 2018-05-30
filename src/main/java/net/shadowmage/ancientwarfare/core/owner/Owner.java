@@ -45,6 +45,11 @@ public class Owner {
 	}
 
 	public boolean isOwnerOrSameTeamOrFriend(@Nullable Entity entity) {
+		if (entity instanceof IOwnable) {
+			Owner owner = ((IOwnable) entity).getOwner();
+			return isOwnerOrSameTeamOrFriend(entity.world, owner.getUUID(), owner.getName());
+		}
+
 		return entity != null && isOwnerOrSameTeamOrFriend(entity.world, entity.getUniqueID(), entity.getName());
 	}
 
