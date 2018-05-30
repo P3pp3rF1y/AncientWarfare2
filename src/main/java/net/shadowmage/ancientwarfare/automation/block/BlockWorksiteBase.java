@@ -25,10 +25,7 @@ import java.util.function.Supplier;
 import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.FACING;
 
 public class BlockWorksiteBase extends BlockBaseAutomation implements IRotatableBlock {
-
-	public int maxWorkSize = 16;
-	public int maxWorkSizeVertical = 1;
-	private Supplier<TileEntity> renderFactory;
+	private Supplier<TileEntity> tileFactory;
 
 	public BlockWorksiteBase(String regName) {
 		super(Material.WOOD, regName);
@@ -51,18 +48,8 @@ public class BlockWorksiteBase extends BlockBaseAutomation implements IRotatable
 		return te != null && te instanceof IRotatableTile ? state.withProperty(FACING, ((IRotatableTile) te).getPrimaryFacing()) : state;
 	}
 
-	public BlockWorksiteBase setWorkSize(int size) {
-		this.maxWorkSize = size;
-		return this;
-	}
-
-	public BlockWorksiteBase setWorkVerticalSize(int size) {
-		this.maxWorkSizeVertical = size;
-		return this;
-	}
-
-	public BlockWorksiteBase setTileFactory(Supplier<TileEntity> renderFactory) {
-		this.renderFactory = renderFactory;
+	BlockWorksiteBase setTileFactory(Supplier<TileEntity> renderFactory) {
+		this.tileFactory = renderFactory;
 		return this;
 	}
 
@@ -74,12 +61,12 @@ public class BlockWorksiteBase extends BlockBaseAutomation implements IRotatable
 	 */
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		return renderFactory.get();
+		return tileFactory.get();
 	}
 
 	@Override
 	public boolean hasTileEntity(IBlockState state) {
-		return renderFactory != null;
+		return tileFactory != null;
 	}
 
 	@Override

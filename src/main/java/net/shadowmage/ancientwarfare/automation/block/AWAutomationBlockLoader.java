@@ -96,7 +96,7 @@ public class AWAutomationBlockLoader {
 	public static void register(RegistryEvent.Register<Block> event) {
 		IForgeRegistry<Block> registry = event.getRegistry();
 
-		registry.register(new BlockWorksiteBase("quarry").setTileFactory(WorkSiteQuarry::new).setWorkSize(64));
+		registry.register(new BlockWorksiteBase("quarry").setTileFactory(WorkSiteQuarry::new));
 		GameRegistry.registerTileEntity(WorkSiteQuarry.class, "quarry_tile");
 
 		registry.register(new BlockWorksiteBase("tree_farm").setTileFactory(WorkSiteTreeFarm::new));
@@ -120,7 +120,7 @@ public class AWAutomationBlockLoader {
 		registry.register(new BlockWorksiteBase("reed_farm").setTileFactory(WorkSiteReedFarm::new));
 		GameRegistry.registerTileEntity(WorkSiteReedFarm.class, "reed_farm_tile");
 
-		registry.register(new BlockWorksiteBase("warehouse_control").setTileFactory(TileWarehouse::new).setWorkVerticalSize(4));
+		registry.register(new BlockWorksiteBase("warehouse_control").setTileFactory(TileWarehouse::new));
 		GameRegistry.registerTileEntity(TileWarehouse.class, "warehouse_control_tile");
 
 		registry.register(new BlockWarehouseStorage("warehouse_storage"));
