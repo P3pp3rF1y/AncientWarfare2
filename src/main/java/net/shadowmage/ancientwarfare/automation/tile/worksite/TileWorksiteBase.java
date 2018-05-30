@@ -24,7 +24,6 @@ import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
-import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import org.apache.commons.lang3.math.NumberUtils;
 
@@ -201,7 +200,7 @@ public abstract class TileWorksiteBase extends TileUpdatable
 
 	@Override
 	public final boolean isOwner(EntityPlayer player) {
-		return EntityTools.isOwnerOrSameTeam(player, owner);
+		return owner.isOwnerOrSameTeam(player);
 	}
 
 	@Override

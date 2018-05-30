@@ -30,7 +30,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
-import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.vehicle.AncientWarfareVehicles;
 import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
@@ -252,7 +251,7 @@ public abstract class Ammo implements IAmmo {
 				otherId = entity.getUniqueID();
 				otherName = entity.getName();
 			}
-			return !EntityTools.isOwnerOrSameTeam(otherId, otherName, npc.getOwner());
+			return !npc.getOwner().isOwnerOrSameTeam(otherId, otherName);
 		}
 		return true;
 	}

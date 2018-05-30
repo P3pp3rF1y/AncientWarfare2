@@ -4,14 +4,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.owner.IOwnable;
 import net.shadowmage.ancientwarfare.core.owner.Owner;
-import net.shadowmage.ancientwarfare.core.util.EntityTools;
 
 import java.util.UUID;
 
 public class TileOwned extends TileUpdatable implements IOwnable {
 	private Owner owner = Owner.EMPTY;
-
-	public TileOwned() {}
 
 	@Override
 	public final void setOwner(EntityPlayer player) {
@@ -40,7 +37,7 @@ public class TileOwned extends TileUpdatable implements IOwnable {
 
 	@Override
 	public final boolean isOwner(EntityPlayer player) {
-		return EntityTools.isOwnerOrSameTeam(player, owner);
+		return owner.isOwnerOrSameTeam(player);
 	}
 
 	@Override

@@ -2,10 +2,13 @@ package net.shadowmage.ancientwarfare.automation.tile.torque;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.MathHelper;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 import net.shadowmage.ancientwarfare.core.util.Trig;
+
+import javax.annotation.Nullable;
 
 /*
  * base template class that includes a single torque cell and rotation synching
@@ -14,6 +17,8 @@ import net.shadowmage.ancientwarfare.core.util.Trig;
  */
 public abstract class TileTorqueSingleCell extends TileTorqueBase {
 
+	private static final String CLIENT_ENERGY_TAG = "clientEnergy";
+	private static final String TORQUE_ENERGY_TAG = "torqueEnergy";
 	TorqueCell torqueCell;
 
 	/*
@@ -29,10 +34,6 @@ public abstract class TileTorqueSingleCell extends TileTorqueBase {
 	 * used client side for rendering
 	 */ double rotation;
 	double lastRotationDiff;
-
-	public TileTorqueSingleCell() {
-
-	}
 
 	@Override
 	public void update() {
@@ -74,7 +75,7 @@ public abstract class TileTorqueSingleCell extends TileTorqueBase {
 
 	@Override
 	protected void clientNetworkUpdate() {
-		if (clientEnergyState != clientDestEnergyState) {
+		if (!MathHelper.epsilonEquals((float) clientEnergyState, clientDestEnergyState)) {
 			if (networkUpdateTicks > 0) {
 				clientEnergyState += (clientDestEnergyState - clientEnergyState) / ((double) networkUpdateTicks);
 				networkUpdateTicks--;
@@ -94,17 +95,17 @@ public abstract class TileTorqueSingleCell extends TileTorqueBase {
 	}
 
 	@Override
-	public double getMaxTorque(EnumFacing from) {
+	public double getMaxTorque(@Nullable EnumFacing from) {
 		return torqueCell.getMaxEnergy();
 	}
 
 	@Override
-	public double getTorqueStored(EnumFacing from) {
+	public double getTorqueStored(@Nullable EnumFacing from) {
 		return torqueCell.getEnergy();
 	}
 
 	@Override
-	public double addTorque(EnumFacing from, double energy) {
+	public double addTorque(@Nullable EnumFacing from, double energy) {
 		return torqueCell.addEnergy(energy);
 	}
 
@@ -119,12 +120,12 @@ public abstract class TileTorqueSingleCell extends TileTorqueBase {
 	}
 
 	@Override
-	public double getMaxTorqueInput(EnumFacing from) {
+	public double getMaxTorqueInput(@Nullable EnumFacing from) {
 		return canInputTorque(from) ? torqueCell.getMaxTickInput() : 0;
 	}
 
 	@Override
-	public boolean useOutputRotation(EnumFacing from) {
+	public boolean useOutputRotation(@Nullable EnumFacing from) {
 		return true;
 	}
 
@@ -139,7 +140,7 @@ public abstract class TileTorqueSingleCell extends TileTorqueBase {
 	}
 
 	@Override
-	public boolean canInputTorque(EnumFacing from) {
+	public boolean canInputTorque(@Nullable EnumFacing from) {
 		return from == orientation.getOpposite();
 	}
 
@@ -151,27 +152,27 @@ public abstract class TileTorqueSingleCell extends TileTorqueBase {
 	@Override
 	protected void handleUpdateNBT(NBTTagCompound tag) {
 		super.handleUpdateNBT(tag);
-		clientDestEnergyState = tag.getInteger("clientEnergy");
+		clientDestEnergyState = tag.getInteger(CLIENT_ENERGY_TAG);
 	}
 
 	@Override
 	protected void writeUpdateNBT(NBTTagCompound tag) {
 		super.writeUpdateNBT(tag);
-		tag.setInteger("clientEnergy", clientDestEnergyState);
+		tag.setInteger(CLIENT_ENERGY_TAG, clientDestEnergyState);
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
-		torqueCell.setEnergy(tag.getDouble("torqueEnergy"));
-		clientDestEnergyState = tag.getInteger("clientEnergy");
+		torqueCell.setEnergy(tag.getDouble(TORQUE_ENERGY_TAG));
+		clientDestEnergyState = tag.getInteger(CLIENT_ENERGY_TAG);
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
-		tag.setDouble("torqueEnergy", torqueCell.getEnergy());
-		tag.setInteger("clientEnergy", clientDestEnergyState);
+		tag.setDouble(TORQUE_ENERGY_TAG, torqueCell.getEnergy());
+		tag.setInteger(CLIENT_ENERGY_TAG, clientDestEnergyState);
 		return tag;
 	}
 }

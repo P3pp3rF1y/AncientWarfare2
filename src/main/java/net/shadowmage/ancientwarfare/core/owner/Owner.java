@@ -5,7 +5,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.network.ByteBufUtils;
+import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 
+import javax.annotation.Nullable;
 import javax.annotation.concurrent.Immutable;
 import java.util.UUID;
 
@@ -38,6 +40,14 @@ public class Owner {
 		EntityPlayer player = world.getPlayerEntityByName(name);
 		uuid = player != null ? player.getUniqueID() : new UUID(0, 0);
 		this.name = name;
+	}
+
+	public boolean isOwnerOrSameTeam(@Nullable EntityPlayer player) {
+		return player != null && isOwnerOrSameTeam(player.getUniqueID(), player.getName());
+	}
+
+	public boolean isOwnerOrSameTeam(@Nullable UUID playerId, @Nullable String playerName) {
+		return ModAccessors.FTBU.areFriendly(playerId, uuid) || (playerName != null && playerName.equals(name));
 	}
 
 	public String getName() {

@@ -881,7 +881,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	@Override
 	public boolean isOwner(EntityPlayer player) {
-		return EntityTools.isOwnerOrSameTeam(player, owner);
+		return owner.isOwnerOrSameTeam(player);
 	}
 
 	@Override
