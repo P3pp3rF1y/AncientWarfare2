@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.structure.block;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -17,17 +18,24 @@ import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 
+import static net.shadowmage.ancientwarfare.structure.AncientWarfareStructures.MOD_PREFIX;
+
 @Mod.EventBusSubscriber(modid = AncientWarfareStructures.modID)
 public class AWStructuresBlockLoader {
+	private AWStructuresBlockLoader() {
+	}
 
 	@SubscribeEvent
 	public static void registerItemBlocks(RegistryEvent.Register<Item> event) {
 		IForgeRegistry<Item> registry = event.getRegistry();
 
 		registry.register(new ItemBlockAdvancedSpawner(AWStructuresBlocks.advancedSpawner));
+		//noinspection ConstantConditions
 		registry.register(new ItemBlock(AWStructuresBlocks.gateProxy).setRegistryName(AWStructuresBlocks.gateProxy.getRegistryName()));
+		//noinspection ConstantConditions
 		registry.register(new ItemBlock(AWStructuresBlocks.draftingStation).setRegistryName(AWStructuresBlocks.draftingStation.getRegistryName()));
 		registry.register(new ItemBlockStructureBuilder(AWStructuresBlocks.builderBlock));
+		//noinspection ConstantConditions
 		registry.register(new ItemBlock(AWStructuresBlocks.soundBlock).setRegistryName(AWStructuresBlocks.soundBlock.getRegistryName()));
 	}
 
@@ -36,18 +44,22 @@ public class AWStructuresBlockLoader {
 		IForgeRegistry<Block> registry = event.getRegistry();
 
 		registry.register(new BlockAdvancedSpawner());
-		GameRegistry.registerTileEntity(TileAdvancedSpawner.class, "advanced_spawner_tile");
+		registerTile(TileAdvancedSpawner.class, "advanced_spawner_tile");
 
 		registry.register(new BlockGateProxy());
-		GameRegistry.registerTileEntity(TEGateProxy.class, "gate_proxy_tile");
+		registerTile(TEGateProxy.class, "gate_proxy_tile");
 
 		registry.register(new BlockDraftingStation());
-		GameRegistry.registerTileEntity(TileDraftingStation.class, "drafting_station_tile");
+		registerTile(TileDraftingStation.class, "drafting_station_tile");
 
 		registry.register(new BlockStructureBuilder());
-		GameRegistry.registerTileEntity(TileStructureBuilder.class, "structure_builder_ticked_tile");
+		registerTile(TileStructureBuilder.class, "structure_builder_ticked_tile");
 
 		registry.register(new BlockSoundBlock());
-		GameRegistry.registerTileEntity(TileSoundBlock.class, "sound_block_tile");
+		registerTile(TileSoundBlock.class, "sound_block_tile");
+	}
+
+	private static void registerTile(Class<? extends TileEntity> teClass, String teId) {
+		GameRegistry.registerTileEntity(teClass, MOD_PREFIX + teId);
 	}
 }

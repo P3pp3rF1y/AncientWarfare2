@@ -46,6 +46,7 @@ import net.shadowmage.ancientwarfare.npc.proxy.NpcCommonProxy;
 
 public class AncientWarfareNPC {
 	public static final String modID = "ancientwarfarenpc";
+	public static final String MOD_PREFIX = modID + ":";
 
 	@Instance(value = modID)
 	public static AncientWarfareNPC instance;

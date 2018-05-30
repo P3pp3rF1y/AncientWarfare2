@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.automation.block;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -53,8 +54,12 @@ import net.shadowmage.ancientwarfare.core.item.ItemBlockMeta;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockOwnedRotatable;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockRotatableMetaTile;
 
+import static net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation.MOD_PREFIX;
+
 @Mod.EventBusSubscriber(modid = AncientWarfareAutomation.modID)
 public class AWAutomationBlockLoader {
+	private AWAutomationBlockLoader() {
+	}
 
 	@SuppressWarnings("ConstantConditions")
 	@SubscribeEvent
@@ -97,94 +102,98 @@ public class AWAutomationBlockLoader {
 		IForgeRegistry<Block> registry = event.getRegistry();
 
 		registry.register(new BlockWorksiteBase("quarry").setTileFactory(WorkSiteQuarry::new));
-		GameRegistry.registerTileEntity(WorkSiteQuarry.class, "quarry_tile");
+		registerTile(WorkSiteQuarry.class, "quarry_tile");
 
 		registry.register(new BlockWorksiteBase("tree_farm").setTileFactory(WorkSiteTreeFarm::new));
-		GameRegistry.registerTileEntity(WorkSiteTreeFarm.class, "forestry_tile");
+		registerTile(WorkSiteTreeFarm.class, "forestry_tile");
 
 		registry.register(new BlockWorksiteBase("crop_farm").setTileFactory(WorkSiteCropFarm::new));
-		GameRegistry.registerTileEntity(WorkSiteCropFarm.class, "crop_farm_tile");
+		registerTile(WorkSiteCropFarm.class, "crop_farm_tile");
 
 		registry.register(new BlockWorksiteBase("fruit_farm").setTileFactory(WorkSiteFruitFarm::new));
-		GameRegistry.registerTileEntity(WorkSiteFruitFarm.class, "fruit_farm_tile");
+		registerTile(WorkSiteFruitFarm.class, "fruit_farm_tile");
 
 		registry.register(new BlockWorksiteBase("mushroom_farm").setTileFactory(WorkSiteMushroomFarm::new));
-		GameRegistry.registerTileEntity(WorkSiteMushroomFarm.class, "mushroom_farm_tile");
+		registerTile(WorkSiteMushroomFarm.class, "mushroom_farm_tile");
 
 		registry.register(new BlockWorksiteBase("animal_farm").setTileFactory(WorkSiteAnimalFarm::new));
-		GameRegistry.registerTileEntity(WorkSiteAnimalFarm.class, "animal_farm_tile");
+		registerTile(WorkSiteAnimalFarm.class, "animal_farm_tile");
 
 		registry.register(new BlockWorksiteBase("fish_farm").setTileFactory(WorkSiteFishFarm::new));
-		GameRegistry.registerTileEntity(WorkSiteFishFarm.class, "fish_farm_tile");
+		registerTile(WorkSiteFishFarm.class, "fish_farm_tile");
 
 		registry.register(new BlockWorksiteBase("reed_farm").setTileFactory(WorkSiteReedFarm::new));
-		GameRegistry.registerTileEntity(WorkSiteReedFarm.class, "reed_farm_tile");
+		registerTile(WorkSiteReedFarm.class, "reed_farm_tile");
 
 		registry.register(new BlockWorksiteBase("warehouse_control").setTileFactory(TileWarehouse::new));
-		GameRegistry.registerTileEntity(TileWarehouse.class, "warehouse_control_tile");
+		registerTile(TileWarehouse.class, "warehouse_control_tile");
 
 		registry.register(new BlockWarehouseStorage("warehouse_storage"));
-		GameRegistry.registerTileEntity(TileWarehouseStorageMedium.class, "warehouse_storage_medium_tile");
-		GameRegistry.registerTileEntity(TileWarehouseStorage.class, "warehouse_storage_small_tile");
-		GameRegistry.registerTileEntity(TileWarehouseStorageLarge.class, "warehouse_storage_large_tile");
+		registerTile(TileWarehouseStorageMedium.class, "warehouse_storage_medium_tile");
+		registerTile(TileWarehouseStorage.class, "warehouse_storage_small_tile");
+		registerTile(TileWarehouseStorageLarge.class, "warehouse_storage_large_tile");
 
 		registry.register(new BlockWarehouseInterface("warehouse_interface"));
-		GameRegistry.registerTileEntity(TileWarehouseInterface.class, "warehouse_interface_tile");
+		registerTile(TileWarehouseInterface.class, "warehouse_interface_tile");
 
 		registry.register(new BlockWarehouseCraftingStation("warehouse_crafting"));
-		GameRegistry.registerTileEntity(TileWarehouseCraftingStation.class, "warehouse_crafting_tile");
+		registerTile(TileWarehouseCraftingStation.class, "warehouse_crafting_tile");
 
 		registry.register(new BlockWarehouseStockViewer("warehouse_stock_viewer"));
-		GameRegistry.registerTileEntity(TileWarehouseStockViewer.class, "warehouse_stock_viewer_tile");
+		registerTile(TileWarehouseStockViewer.class, "warehouse_stock_viewer_tile");
 
 		registry.register(new BlockAutoCrafting("auto_crafting"));
-		GameRegistry.registerTileEntity(TileAutoCrafting.class, "auto_crafting_tile");
+		registerTile(TileAutoCrafting.class, "auto_crafting_tile");
 
 		registry.register(new BlockMailbox("mailbox"));
-		GameRegistry.registerTileEntity(TileMailbox.class, "mailbox_tile");
+		registerTile(TileMailbox.class, "mailbox_tile");
 
 		registry.register(new BlockFlywheelController("flywheel_controller"));
-		GameRegistry.registerTileEntity(TileFlywheelControllerLight.class, "flywheel_light_tile");
-		GameRegistry.registerTileEntity(TileFlywheelControllerMedium.class, "flywheel_medium_tile");
-		GameRegistry.registerTileEntity(TileFlywheelControllerHeavy.class, "flywheel_large_tile");
+		registerTile(TileFlywheelControllerLight.class, "flywheel_light_tile");
+		registerTile(TileFlywheelControllerMedium.class, "flywheel_medium_tile");
+		registerTile(TileFlywheelControllerHeavy.class, "flywheel_large_tile");
 
 		registry.register(new BlockFlywheelStorage("flywheel_storage"));
-		GameRegistry.registerTileEntity(TileFlywheelStorage.class, "flywheel_storage_tile");
+		registerTile(TileFlywheelStorage.class, "flywheel_storage_tile");
 
 		registry.register(new BlockTorqueJunction("torque_junction"));
-		GameRegistry.registerTileEntity(TileConduitLight.class, "torque_junction_light_tile");
-		GameRegistry.registerTileEntity(TileConduitMedium.class, "torque_junction_medium_tile");
-		GameRegistry.registerTileEntity(TileConduitHeavy.class, "torque_junction_heavy_tile");
+		registerTile(TileConduitLight.class, "torque_junction_light_tile");
+		registerTile(TileConduitMedium.class, "torque_junction_medium_tile");
+		registerTile(TileConduitHeavy.class, "torque_junction_heavy_tile");
 
 		registry.register(new BlockTorqueTransportShaft("torque_shaft"));
-		GameRegistry.registerTileEntity(TileTorqueShaftLight.class, "torque_shaft_light_tile");
-		GameRegistry.registerTileEntity(TileTorqueShaftMedium.class, "torque_shaft_medium_tile");
-		GameRegistry.registerTileEntity(TileTorqueShaftHeavy.class, "torque_shaft_heavy_tile");
+		registerTile(TileTorqueShaftLight.class, "torque_shaft_light_tile");
+		registerTile(TileTorqueShaftMedium.class, "torque_shaft_medium_tile");
+		registerTile(TileTorqueShaftHeavy.class, "torque_shaft_heavy_tile");
 
 		registry.register(new BlockTorqueDistributor("torque_distributor"));
-		GameRegistry.registerTileEntity(TileDistributorLight.class, "torque_distributor_light_tile");
-		GameRegistry.registerTileEntity(TileDistributorMedium.class, "torque_distributor_medium_tile");
-		GameRegistry.registerTileEntity(TileDistributorHeavy.class, "torque_distributor_heavy_tile");
+		registerTile(TileDistributorLight.class, "torque_distributor_light_tile");
+		registerTile(TileDistributorMedium.class, "torque_distributor_medium_tile");
+		registerTile(TileDistributorHeavy.class, "torque_distributor_heavy_tile");
 
 		registry.register(new BlockStirlingGenerator("stirling_generator"));
-		GameRegistry.registerTileEntity(TileStirlingGenerator.class, "stirling_generator_tile");
+		registerTile(TileStirlingGenerator.class, "stirling_generator_tile");
 
 		registry.register(new BlockWaterwheelGenerator("waterwheel_generator"));
-		GameRegistry.registerTileEntity(TileWaterwheelGenerator.class, "waterwheel_generator_tile");
+		registerTile(TileWaterwheelGenerator.class, "waterwheel_generator_tile");
 
 		registry.register(new BlockHandCrankedGenerator("hand_cranked_generator"));
-		GameRegistry.registerTileEntity(TileHandCrankedGenerator.class, "hand_cranked_generator_tile");
+		registerTile(TileHandCrankedGenerator.class, "hand_cranked_generator_tile");
 
 		registry.register(new BlockWindmillBlade("windmill_blade"));
-		GameRegistry.registerTileEntity(TileWindmillBlade.class, "windmill_blade_tile");
+		registerTile(TileWindmillBlade.class, "windmill_blade_tile");
 
 		registry.register(new BlockWindmillGenerator("windmill_generator"));
-		GameRegistry.registerTileEntity(TileWindmillController.class, "windmill_generator_tile");
+		registerTile(TileWindmillController.class, "windmill_generator_tile");
 
 		registry.register(new BlockChunkLoaderSimple("chunk_loader_simple"));
-		GameRegistry.registerTileEntity(TileChunkLoaderSimple.class, "chunk_loader_simple_tile");
+		registerTile(TileChunkLoaderSimple.class, "chunk_loader_simple_tile");
 
 		registry.register(new BlockChunkLoaderDeluxe("chunk_loader_deluxe"));
-		GameRegistry.registerTileEntity(TileChunkLoaderDeluxe.class, "chunk_loader_deluxe_tile");
+		registerTile(TileChunkLoaderDeluxe.class, "chunk_loader_deluxe_tile");
+	}
+
+	private static void registerTile(Class<? extends TileEntity> teClass, String teId) {
+		GameRegistry.registerTileEntity(teClass, MOD_PREFIX + teId);
 	}
 }
