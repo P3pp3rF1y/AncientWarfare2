@@ -32,6 +32,6 @@ public class NpcAIFindVehicle<T extends NpcBase & IVehicleUser> extends NpcAI<T>
 		}
 
 		List<VehicleBase> vehicles = npc.world.getEntitiesWithinAABB(VehicleBase.class, npc.getEntityBoundingBox().grow(SEARCH_DISTANCE), selector);
-		vehicles.stream().filter(v -> !v.isBeingRidden()).sorted(Comparator.comparing(v -> v.getDistanceSqToEntity(npc))).findFirst().ifPresent(v -> npc.setVehicle(v));
+		vehicles.stream().filter(v -> !v.isBeingRidden() && v.vehicleType.canSoldiersPilot()).sorted(Comparator.comparing(v -> v.getDistanceSqToEntity(npc))).findFirst().ifPresent(v -> npc.setVehicle(v));
 	}
 }
