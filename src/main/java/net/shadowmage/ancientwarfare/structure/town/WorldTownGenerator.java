@@ -14,6 +14,7 @@ import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.world_gen.StructureEntry;
 import net.shadowmage.ancientwarfare.structure.world_gen.WorldGenTickHandler;
 
+import java.util.List;
 import java.util.Random;
 
 public class WorldTownGenerator implements IWorldGenerator {
@@ -36,11 +37,17 @@ public class WorldTownGenerator implements IWorldGenerator {
 	}
 
 	public void attemptGeneration(World world, int blockX, int blockZ) {
+		List<TownTemplate> templates = TownTemplateManager.INSTANCE.getTemplatesValidAtPosition(world, blockX, blockZ);
+		if (templates.isEmpty()) {
+			return;
+		}
+
 		TownBoundingArea area = TownPlacementValidator.findGenerationPosition(world, blockX, blockZ);
 		if (area == null) {
 			return;
 		}
-		TownTemplate template = TownTemplateManager.INSTANCE.selectTemplateForGeneration(world, blockX, blockZ, area);
+
+		TownTemplate template = TownTemplateManager.INSTANCE.selectTemplateFittingArea(world, area, templates);
 		if (template == null) {
 			return;
 		}
