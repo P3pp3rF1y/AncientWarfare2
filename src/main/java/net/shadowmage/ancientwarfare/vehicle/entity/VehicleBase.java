@@ -527,7 +527,6 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	 * reset all upgradeable stats back to the base for this vehicle
 	 */
 	public void resetCurrentStats() {
-		this.firingHelper.resetUpgradeStats();
 		this.currentForwardSpeedMax = this.baseForwardSpeed;
 		this.currentStrafeSpeedMax = this.baseStrafeSpeed;
 		this.currentTurretPitchMin = this.basePitchMin;
