@@ -1095,4 +1095,11 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	public boolean isOwner(EntityPlayer player) {
 		return owner.isOwnerOrSameTeamOrFriend(player);
 	}
+
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+		//moving passengers to the same position as vehicle on save otherwise they can end up in a different chunk and MC will kill them on load
+		getPassengers().forEach(e -> e.setPosition(posX, posY, posZ));
+		return super.writeToNBT(compound);
+	}
 }
