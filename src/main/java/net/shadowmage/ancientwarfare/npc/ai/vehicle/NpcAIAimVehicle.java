@@ -42,9 +42,10 @@ public class NpcAIAimVehicle<T extends NpcBase & IVehicleUser> extends NpcAI<T> 
 	private boolean turnVehicleIfYawDifferenceGreat(VehicleBase vehicle, ITarget target) {
 		float yawDiff = Trig.getAngleDiffSigned(vehicle.rotationYaw, vehicle.firingHelper.getAimYaw(target));
 
-		if (!vehicle.vehicleType.canAdjustYaw() && yawDiff < 2) {
+		if (!vehicle.vehicleType.canAdjustYaw() && Math.abs(yawDiff) < 2) {
 			//if there's a minor difference in the rotation just set the rotation to it instead of continues steps to one side and back
 			vehicle.rotationYaw += yawDiff;
+			vehicle.moveHelper.stopMotion();
 		} else if (vehicle.vehicleType.getBaseTurretRotationAmount() < 180 || Math.abs(yawDiff) > 120) {
 			//if turret cannot rotate fully around, or if it can but yaw diff is great, turn towards target
 			if (!Trig.isAngleBetween(vehicle.rotationYaw + yawDiff, vehicle.localTurretRotationHome - getMaxRotDifference(vehicle),

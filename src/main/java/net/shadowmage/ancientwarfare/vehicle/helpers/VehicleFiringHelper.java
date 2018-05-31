@@ -332,7 +332,7 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 	}
 
 	private boolean hasAmmo() {
-		return vehicle.ammoHelper.getCurrentAmmoCount() > 0 && vehicle.ammoHelper.getCurrentAmmoType() != null;
+		return vehicle.ammoHelper.hasNoAmmo() || (vehicle.ammoHelper.getCurrentAmmoCount() > 0 && vehicle.ammoHelper.getCurrentAmmoType() != null);
 	}
 
 	public void handleAimKeyInput(float pitch, float yaw) {
@@ -510,8 +510,9 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 	}
 
 	private float getAimYaw(double targetX, double targetZ) {
-		float vecX = (float) (vehicle.posX + vehicle.getMissileOffset().x - targetX);
-		float vecZ = (float) (vehicle.posZ + vehicle.getMissileOffset().z - targetZ);
+		Vec3d offset = vehicle.getMissileOffset();
+		float vecX = (float) (vehicle.posX + (vehicle.canTurretTurn() ? offset.x : 0) - targetX);
+		float vecZ = (float) (vehicle.posZ + (vehicle.canTurretTurn() ? offset.z : 0) - targetZ);
 		//noinspection SuspiciousNameCombination
 		return Trig.wrapTo360(Trig.toDegrees((float) Math.atan2(vecX, vecZ)));
 	}

@@ -10,5 +10,4 @@ public interface ITarget {
 	double getZ();
 
 	boolean exists(World world);
-
 }

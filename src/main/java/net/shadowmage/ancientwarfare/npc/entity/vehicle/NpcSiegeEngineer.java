@@ -8,6 +8,7 @@ import net.minecraft.entity.ai.EntityAIRestrictOpenDoor;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackNearest;
@@ -37,11 +38,11 @@ import java.util.Optional;
 public class NpcSiegeEngineer extends NpcPlayerOwned implements IVehicleUser {
 	@Nullable
 	private VehicleBase vehicle = null;
-	private ITarget target = NONE;
+	private ITarget target = TargetFactory.NONE;
 
 	@Override
 	public Optional<ITarget> getTarget() {
-		return target == NONE ? Optional.empty() : Optional.of(target);
+		return target == TargetFactory.NONE ? Optional.empty() : Optional.of(target);
 	}
 
 	private void setTarget(BlockPos pos) {
@@ -50,7 +51,7 @@ public class NpcSiegeEngineer extends NpcPlayerOwned implements IVehicleUser {
 
 	@Override
 	public void resetTarget() {
-		target = NONE;
+		target = TargetFactory.NONE;
 	}
 
 	@Override
@@ -161,30 +162,20 @@ public class NpcSiegeEngineer extends NpcPlayerOwned implements IVehicleUser {
 	}
 
 	private void checkTargetExistence() {
-		if (target != NONE && !target.exists(world)) {
-			target = NONE;
+		if (target != TargetFactory.NONE && !target.exists(world)) {
+			target = TargetFactory.NONE;
 		}
 	}
 
-	private static final ITarget NONE = new ITarget() {
-		@Override
-		public double getX() {
-			return 0;
-		}
+	@Override
+	public void writeEntityToNBT(NBTTagCompound tag) {
+		super.writeEntityToNBT(tag);
+		TargetFactory.serializeNBT(target, tag);
+	}
 
-		@Override
-		public double getY() {
-			return 0;
-		}
-
-		@Override
-		public double getZ() {
-			return 0;
-		}
-
-		@Override
-		public boolean exists(World entityWorld) {
-			return false;
-		}
-	};
+	@Override
+	public void readEntityFromNBT(NBTTagCompound tag) {
+		super.readEntityFromNBT(tag);
+		target = TargetFactory.deserializeFromNBT(tag);
+	}
 }

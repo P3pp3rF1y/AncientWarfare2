@@ -597,6 +597,7 @@ public class VehicleMoveHelper implements INBTSerializable<NBTTagCompound> {
 		vehicle.motionX = 0;
 		vehicle.motionY = 0;
 		vehicle.motionZ = 0;
+		turnMotion = 0;
 	}
 
 	public void clearInputFromDismount() {
@@ -627,4 +628,7 @@ public class VehicleMoveHelper implements INBTSerializable<NBTTagCompound> {
 		this.throttle = tag.getFloat("tr");
 	}
 
+	public byte getTurnInput() {
+		return turnInput;
+	}
 }

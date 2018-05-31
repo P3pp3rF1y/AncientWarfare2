@@ -230,6 +230,10 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		dataManager.set(VEHICLE_HEALTH, health);
 	}
 
+	public boolean canTurretTurn() {
+		return !MathHelper.epsilonEquals(baseTurretRotationMax, 0);
+	}
+
 	public float getHealth() {
 		return dataManager.get(VEHICLE_HEALTH);
 	}
