@@ -422,7 +422,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	public float getEffectiveRange(float verticalOffset) {
 		if (vehicleType == VehicleRegistry.BATTERING_RAM)//TODO ugly hack...
 		{
-			return 5;
+			return 1.5f;
 		}
 		float angle;
 		if (currentTurretPitchMin < 45 && currentTurretPitchMax > 45)//if the angle stradles 45, return 45

@@ -1,7 +1,9 @@
 package net.shadowmage.ancientwarfare.npc.ai.vehicle;
 
+import net.minecraft.util.math.Vec3d;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.npc.entity.vehicle.ITarget;
 import net.shadowmage.ancientwarfare.npc.entity.vehicle.IVehicleUser;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
@@ -14,7 +16,7 @@ public class NpcAIFireVehicle<T extends NpcBase & IVehicleUser> extends NpcAI<T>
 
 	@Override
 	public boolean shouldExecute() {
-		return npc.getTarget().isPresent() && npc.canContinueRidingVehicle() && npc.isRidingVehicle() && canFire();
+		return npc.getTarget().isPresent() && npc.canContinueRidingVehicle() && npc.isRidingVehicle() && isInRange() && canFire();
 	}
 
 	@SuppressWarnings("squid:S3655")
@@ -22,6 +24,13 @@ public class NpcAIFireVehicle<T extends NpcBase & IVehicleUser> extends NpcAI<T>
 		//noinspection ConstantConditions
 		return npc.getVehicle().get().firingHelper.isAimedAt(npc.getTarget().get())
 				&& npc.getVehicle().get().firingHelper.isReadyToFire();
+	}
+
+	private boolean isInRange() {
+		VehicleBase vehicle = npc.getVehicle().get();
+		ITarget target = npc.getTarget().get();
+		return vehicle.getEffectiveRange((float) (target.getY() - vehicle.posY)) >= vehicle.getMissileOffset().add(vehicle.getPositionVector())
+				.distanceTo(new Vec3d(target.getX(), target.getY(), target.getZ()));
 	}
 
 	@Override
