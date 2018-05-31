@@ -147,6 +147,8 @@ public class NpcSiegeEngineer extends NpcPlayerOwned implements IVehicleUser {
 	public void handlePlayerCommand(NpcCommand.Command cmd) {
 		if (cmd.type == NpcCommand.CommandType.ATTACK_AREA) {
 			setTarget(cmd.pos);
+		} else if (cmd.type == NpcCommand.CommandType.CLEAR_COMMAND) {
+			resetTarget();
 		} else {
 			super.handlePlayerCommand(cmd);
 		}
