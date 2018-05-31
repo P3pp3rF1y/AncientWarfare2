@@ -5,6 +5,8 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import java.util.Optional;
 
 public interface IVehicleUser {
+	void resetTarget();
+
 	Optional<VehicleBase> getVehicle();
 
 	void setVehicle(VehicleBase vehicle);
@@ -14,4 +16,6 @@ public interface IVehicleUser {
 	boolean isRidingVehicle();
 
 	boolean canContinueRidingVehicle();
+
+	Optional<ITarget> getTarget();
 }

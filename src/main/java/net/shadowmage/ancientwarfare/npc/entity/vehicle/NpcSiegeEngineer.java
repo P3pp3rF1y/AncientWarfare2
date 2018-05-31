@@ -2,11 +2,13 @@ package net.shadowmage.ancientwarfare.npc.entity.vehicle;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAIRestrictOpenDoor;
 import net.minecraft.entity.ai.EntityAISwimming;
 import net.minecraft.entity.ai.EntityAIWatchClosest2;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackNearest;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIDoor;
@@ -25,14 +27,40 @@ import net.shadowmage.ancientwarfare.npc.ai.vehicle.NpcAIFindVehicle;
 import net.shadowmage.ancientwarfare.npc.ai.vehicle.NpcAIFireVehicle;
 import net.shadowmage.ancientwarfare.npc.ai.vehicle.NpcAIMountVehicle;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
+import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
 
+@SuppressWarnings("squid:S2160")
 public class NpcSiegeEngineer extends NpcPlayerOwned implements IVehicleUser {
 	@Nullable
 	private VehicleBase vehicle = null;
+	private ITarget target = NONE;
+
+	@Override
+	public Optional<ITarget> getTarget() {
+		return target == NONE ? Optional.empty() : Optional.of(target);
+	}
+
+	private void setTarget(BlockPos pos) {
+		target = new BlockPosTarget(pos);
+	}
+
+	@Override
+	public void resetTarget() {
+		target = NONE;
+	}
+
+	@Override
+
+	public void setAttackTarget(@Nullable EntityLivingBase entity) {
+		super.setAttackTarget(entity);
+		if (entity != null) {
+			target = new EntityTarget(entity);
+		}
+	}
 
 	public NpcSiegeEngineer(World world) {
 		super(world);
@@ -113,4 +141,50 @@ public class NpcSiegeEngineer extends NpcPlayerOwned implements IVehicleUser {
 	public boolean canContinueRidingVehicle() {
 		return getFoodRemaining() > 0;
 	}
+
+	@Override
+	public void handlePlayerCommand(NpcCommand.Command cmd) {
+		if (cmd.type == NpcCommand.CommandType.ATTACK_AREA) {
+			setTarget(cmd.pos);
+		} else {
+			super.handlePlayerCommand(cmd);
+		}
+	}
+
+	@Override
+	public void onUpdate() {
+		super.onUpdate();
+
+		if (ticksExisted % 20 == 0) {
+			checkTargetExistence();
+		}
+	}
+
+	private void checkTargetExistence() {
+		if (target != NONE && !target.exists(world)) {
+			target = NONE;
+		}
+	}
+
+	private static final ITarget NONE = new ITarget() {
+		@Override
+		public double getX() {
+			return 0;
+		}
+
+		@Override
+		public double getY() {
+			return 0;
+		}
+
+		@Override
+		public double getZ() {
+			return 0;
+		}
+
+		@Override
+		public boolean exists(World entityWorld) {
+			return false;
+		}
+	};
 }

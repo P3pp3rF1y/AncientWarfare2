@@ -24,11 +24,6 @@ public class AWFakePlayer extends FakePlayer {
 	}
 
 	@Override
-	public GameProfile getGameProfile() {
-		return super.getGameProfile();
-	}
-
-	@Override
 	protected void onInsideBlock(IBlockState p_191955_1_) {
 		//noop
 	}

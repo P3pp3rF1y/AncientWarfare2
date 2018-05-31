@@ -14,13 +14,13 @@ public class NpcAIFireVehicle<T extends NpcBase & IVehicleUser> extends NpcAI<T>
 
 	@Override
 	public boolean shouldExecute() {
-		return npc.getAttackTarget() != null && npc.canContinueRidingVehicle() && npc.isRidingVehicle() && canFire();
+		return npc.getTarget().isPresent() && npc.canContinueRidingVehicle() && npc.isRidingVehicle() && canFire();
 	}
 
 	@SuppressWarnings("squid:S3655")
 	private boolean canFire() {
 		//noinspection ConstantConditions
-		return npc.getVehicle().get().firingHelper.isAimedAt(npc.getAttackTarget())
+		return npc.getVehicle().get().firingHelper.isAimedAt(npc.getTarget().get())
 				&& npc.getVehicle().get().firingHelper.isReadyToFire();
 	}
 
