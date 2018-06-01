@@ -2,7 +2,10 @@
     "mod": "forestry",
     "saplings": [
         {
-            "name": "forestry:sapling"
+            "sapling": {
+                "name": "forestry:sapling"
+            },
+            "right_click": true
         }
     ]
 }

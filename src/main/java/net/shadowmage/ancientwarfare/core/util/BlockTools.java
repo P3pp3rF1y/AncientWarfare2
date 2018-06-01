@@ -260,18 +260,21 @@ public class BlockTools {
 		return true;
 	}
 
+	public static boolean placeItemBlockRightClick(ItemStack stack, World world, BlockPos pos) {
+		EntityPlayer owner = AWFakePlayer.get(world);
+		owner.setPosition(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D);
+		owner.setHeldItem(EnumHand.MAIN_HAND, stack);
+		owner.rotationPitch = 90F % 360F;
+
+		return stack.useItemRightClick(world, owner, EnumHand.MAIN_HAND).getType() == EnumActionResult.SUCCESS;
+	}
+
 	public static boolean placeItemBlock(ItemStack stack, World world, BlockPos pos, EnumFacing face) {
 		EnumFacing direction = face.getOpposite();
 
 		EntityPlayer owner = AWFakePlayer.get(world);
 		owner.setHeldItem(EnumHand.MAIN_HAND, stack);
-		if (stack.onItemUse(owner, world, pos.offset(direction), EnumHand.MAIN_HAND, face, 0.25F, 0.25F, 0.25F) == EnumActionResult.SUCCESS) {
-			return true;
-		}
-		owner.setPosition(pos.getX() + 0.5D, pos.getY(), pos.getZ() + 0.5D);
-		owner.rotationPitch = 90F % 360F;
-
-		return stack.useItemRightClick(world, owner, EnumHand.MAIN_HAND).getType() == EnumActionResult.SUCCESS;
+		return stack.onItemUse(owner, world, pos.offset(direction), EnumHand.MAIN_HAND, face, 0.25F, 0.25F, 0.25F) == EnumActionResult.SUCCESS;
 	}
 
 	public static void notifyBlockUpdate(World world, BlockPos pos) {

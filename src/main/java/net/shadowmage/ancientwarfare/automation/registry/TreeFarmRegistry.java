@@ -18,7 +18,9 @@ import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ChorusFlo
 import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ChorusScanner;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.DefaultTreeScanner;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.IBlockExtraDrop;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ISapling;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ITreeScanner;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.Sapling;
 import net.shadowmage.ancientwarfare.core.registry.IRegistryDataParser;
 import net.shadowmage.ancientwarfare.core.util.parsing.BlockStateMatcher;
 import net.shadowmage.ancientwarfare.core.util.parsing.JsonHelper;
@@ -37,14 +39,14 @@ public class TreeFarmRegistry {
 			new DefaultTreeScanner(st -> st.getMaterial() == Material.WOOD && st.getBlock() != AWAutomationBlocks.worksiteTreeFarm
 					, sl -> sl.getMaterial() == Material.LEAVES);
 
-	private static Set<Predicate<ItemStack>> plantables = new HashSet<>();
+	private static Set<ISapling> saplings = new HashSet<>();
 	private static Set<BlockStateMatcher> soilBlocks = new HashSet<>();
 	private static Set<IBlockExtraDrop> extraBlockDrops = new HashSet<>();
 	private static List<ITreeScanner> treeScanners = new ArrayList<>();
 
 	static {
-		plantables.add(s -> s.getItem() instanceof ItemBlock && ((ItemBlock) s.getItem()).getBlock() instanceof BlockSapling);
-		plantables.add(s -> s.getItem() instanceof ItemBlock && ((ItemBlock) s.getItem()).getBlock() instanceof BlockMushroom);
+		saplings.add(new Sapling(s -> s.getItem() instanceof ItemBlock && ((ItemBlock) s.getItem()).getBlock() instanceof BlockSapling, false));
+		saplings.add(new Sapling(s -> s.getItem() instanceof ItemBlock && ((ItemBlock) s.getItem()).getBlock() instanceof BlockMushroom, false));
 
 		extraBlockDrops.add(new ChorusFlowerDrop());
 	}
@@ -62,8 +64,12 @@ public class TreeFarmRegistry {
 		return treeScanners.stream().filter(ts -> ts.matches(state)).findFirst().orElse(DEFAULT_TREE_SCANNER);
 	}
 
+	public static Optional<ISapling> getSapling(ItemStack stack) {
+		return saplings.stream().filter(s -> s.matches(stack)).findFirst();
+	}
+
 	public static boolean isPlantable(ItemStack stack) {
-		return plantables.stream().anyMatch(p -> p.test(stack));
+		return saplings.stream().anyMatch(s -> s.matches(stack));
 	}
 
 	public static boolean isSoil(IBlockState state) {
@@ -85,12 +91,13 @@ public class TreeFarmRegistry {
 		public void parse(JsonObject json) {
 			JsonArray saplings = JsonUtils.getJsonArray(json, "saplings");
 
-			for (JsonElement sapling : saplings) {
-				plantables.add(JsonHelper.getItemStackMatcher(JsonUtils.getJsonObject(sapling, "")));
+			for (JsonElement e : saplings) {
+				JsonObject saplingDefinition = JsonUtils.getJsonObject(e, "");
+				TreeFarmRegistry.saplings.add(new Sapling(JsonHelper.getItemStackMatcher(JsonUtils.getJsonObject(saplingDefinition, "sapling")),
+						saplingDefinition.has("right_click") && JsonUtils.getBoolean(saplingDefinition, "right_click")));
 			}
 		}
 	}
-
 
 	public static class SoilParser implements IRegistryDataParser {
 
@@ -167,7 +174,7 @@ public class TreeFarmRegistry {
 		}
 	}
 
-	public static final IBlockExtraDrop EMPTY_EXTRA_DROP = new IBlockExtraDrop() {
+	private static final IBlockExtraDrop EMPTY_EXTRA_DROP = new IBlockExtraDrop() {
 		@Override
 		public boolean matches(IBlockState state) {
 			return true;
