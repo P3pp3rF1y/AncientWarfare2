@@ -117,7 +117,7 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 				return;
 			}
 			if (vehicle.ammoHelper.getCurrentAmmoCount() > 0) {
-				vehicle.ammoHelper.decreaseCurrentAmmo(1);
+				vehicle.ammoHelper.decreaseCurrentAmmo();
 
 				Vec3d off = vehicle.getMissileOffset();
 				float x = (float) (vehicle.posX + off.x + ox);
@@ -152,7 +152,7 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 							pitch += (rng.nextFloat() * 2.f - 1.f) * (1.f - accuracy) * 50.f;
 						}
 					}
-					missile = vehicle.ammoHelper.getMissile2(x, y, z, yaw, pitch, power);
+					missile = getMissile2(x, y, z, yaw, pitch, power);
 					if (vehicle.vehicleType.getMovementType() == VehicleMovementType.AIR1 || vehicle.vehicleType
 							.getMovementType() == VehicleMovementType.AIR2) {
 						missile.motionX += vehicle.motionX;
@@ -165,6 +165,22 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 				}
 			}
 		}
+	}
+
+	MissileBase getMissile2(float x, float y, float z, float yaw, float pitch, float velocity) {
+		IAmmo ammo = vehicle.ammoHelper.getCurrentAmmoType();
+		if (ammo != null) {
+			MissileBase missile = new MissileBase(vehicle.world);
+			if (ammo.hasSecondaryAmmo()) {
+				ammo = ammo.getSecondaryAmmoType();
+			}
+			missile.setMissileParams2(ammo, x, y, z, yaw, pitch, velocity);
+			missile.setMissileCallback(vehicle);
+			missile.setLaunchingEntity(vehicle);
+			missile.setShooter(vehicle.getControllingPassenger());
+			return missile;
+		}
+		return null;
 	}
 
 	public void onTick() {
@@ -290,7 +306,7 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 	public void handleFireUpdate() {
 		if (reloadingTicks <= 0 || vehicle.world.isRemote) {
 
-			boolean shouldFire = vehicle.ammoHelper.getCurrentAmmoCount() > 0 || vehicle.ammoHelper.hasNoAmmo();
+			boolean shouldFire = vehicle.ammoHelper.getCurrentAmmoCount() > 0 || vehicle.ammoHelper.doesntUseAmmo();
 			if (shouldFire) {
 
 				if (!vehicle.world.isRemote) {
@@ -332,7 +348,7 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 	}
 
 	private boolean hasAmmo() {
-		return vehicle.ammoHelper.hasNoAmmo() || (vehicle.ammoHelper.getCurrentAmmoCount() > 0 && vehicle.ammoHelper.getCurrentAmmoType() != null);
+		return vehicle.ammoHelper.doesntUseAmmo() || (vehicle.ammoHelper.getCurrentAmmoCount() > 0 && vehicle.ammoHelper.getCurrentAmmoType() != null);
 	}
 
 	public void handleAimKeyInput(float pitch, float yaw) {
