@@ -197,7 +197,7 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 		if (vehicle.world.isRemote) {
 			return;
 		}
-		//  Config.logDebug("counting ammos!!");
+
 		for (VehicleAmmoEntry ent : this.ammoEntries.values()) {
 			ent.ammoCount = 0;
 		}
@@ -207,6 +207,9 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 			for (VehicleAmmoEntry ent : this.ammoEntries.values()) {
 				if (ent.baseAmmoType == count.baseAmmoType) {
 					ent.ammoCount = count.ammoCount;
+					if (currentAmmoType == null && ent.ammoCount > 0) {
+						updateSelectedAmmo(ent.baseAmmoType.getRegistryName().toString());
+					}
 				}
 			}
 		}
