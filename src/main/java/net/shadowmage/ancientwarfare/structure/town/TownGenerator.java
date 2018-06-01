@@ -12,7 +12,6 @@ import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownStructureEntry;
 import net.shadowmage.ancientwarfare.structure.world_gen.WorldGenTickHandler;
-import net.shadowmage.ancientwarfare.structure.world_gen.WorldGenTickHandler.StructureGenerationCallbackTicket;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +45,7 @@ public class TownGenerator {
 	public TownGenerator(World world, TownBoundingArea area, TownTemplate template) {
 		this.world = world;
 		this.template = template;
-		long seed = (area.townCenterX << 32) | area.townCenterZ;
+		long seed = (area.getCenterX() << 32) | area.getCenterZ();
 		this.rng = new Random(seed);
 
 		int y1 = area.getSurfaceY() + 1;
@@ -75,12 +74,9 @@ public class TownGenerator {
 
 		generateGrid();
 		TownGeneratorWalls.generateWalls(world, this, template, rng);
-		WorldGenTickHandler.INSTANCE.addStructureGenCallback(new StructureGenerationCallbackTicket() {
-			@Override
-			public void call() {
-				generateRoads();
-				TownGeneratorStructures.generateStructures(TownGenerator.this);
-			}
+		WorldGenTickHandler.INSTANCE.addStructureGenCallback(() -> {
+			generateRoads();
+			TownGeneratorStructures.generateStructures(TownGenerator.this);
 		});
 	}
 
