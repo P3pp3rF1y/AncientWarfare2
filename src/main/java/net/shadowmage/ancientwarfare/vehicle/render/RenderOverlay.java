@@ -1,24 +1,3 @@
-/**
- * Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
- * This software is distributed under the terms of the GNU General Public License.
- * Please see COPYING for precise license information.
- * <p>
- * This file is part of Ancient Warfare.
- * <p>
- * Ancient Warfare is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * Ancient Warfare is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.vehicle.render;
 
 import net.minecraft.client.Minecraft;
@@ -34,18 +13,17 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleMovementType;
 import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 import net.shadowmage.ancientwarfare.vehicle.registry.AmmoRegistry;
 
+import java.awt.*;
+
 public class RenderOverlay extends Gui {
-
-	public void renderOverlay() {
-
-	}
-
-	public void renderVehicleOverlay() {
+	private void renderVehicleOverlay() {
 		Minecraft mc = Minecraft.getMinecraft();
 		FontRenderer fontRenderer = mc.fontRenderer;
 
 		VehicleBase vehicle = (VehicleBase) mc.player.getRidingEntity();
-		int white = 0xffffffff;
+		int white = Color.WHITE.getRGB();
+		int red = Color.RED.getRGB();
+		//noinspection ConstantConditions
 		if (vehicle.vehicleType.getMovementType() == VehicleMovementType.AIR1 || vehicle.vehicleType.getMovementType() == VehicleMovementType.AIR2) {
 			this.drawString(fontRenderer, "Throttle: " + vehicle.moveHelper.throttle, 10, 10, white);
 			this.drawString(fontRenderer, "Pitch: " + vehicle.rotationPitch, 10, 20, white);
@@ -60,10 +38,11 @@ public class RenderOverlay extends Gui {
 		IAmmo ammo = vehicle.ammoHelper.getCurrentAmmoType();
 		if (ammo != null) {
 			int count = vehicle.ammoHelper.getCurrentAmmoCount();
-			this.drawString(fontRenderer, "Ammo: " + I18n.format(AmmoRegistry.getItemForAmmo(ammo).getUnlocalizedName() + ".name"), 10, 50, white);
-			this.drawString(fontRenderer, "Count: " + count, 10, 60, white);
+			this.drawString(fontRenderer, "Ammo: " + I18n.format(AmmoRegistry.getItemForAmmo(ammo).getUnlocalizedName() + ".name"), 10, 50,
+					count > 0 ? white : red);
+			this.drawString(fontRenderer, "Count: " + count, 10, 60, count > 0 ? white : red);
 		} else {
-			this.drawString(fontRenderer, "No Ammo Selected", 10, 50, white);
+			this.drawString(fontRenderer, "No Ammo Selected", 10, 50, red);
 		}
 		if (AWVehicleStatics.renderAdvOverlay) {
 			float velocity = Trig.getVelocity(vehicle.motionX, 0, vehicle.motionZ);
@@ -74,11 +53,12 @@ public class RenderOverlay extends Gui {
 
 	@SubscribeEvent
 	public void tickEnd(TickEvent.RenderTickEvent event) {
+		if (!AWVehicleStatics.renderOverlay) {
+			return;
+		}
 		Minecraft mc = Minecraft.getMinecraft();
-		if (event.phase == TickEvent.Phase.END && AWVehicleStatics.renderOverlay && mc.currentScreen == null && mc.player != null) {
-			if (mc.player.getRidingEntity() instanceof VehicleBase) {
-				this.renderVehicleOverlay();
-			}
+		if (event.phase == TickEvent.Phase.END && mc.currentScreen == null && mc.player != null && mc.player.getRidingEntity() instanceof VehicleBase) {
+			this.renderVehicleOverlay();
 		}
 	}
 }
