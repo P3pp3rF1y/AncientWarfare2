@@ -26,7 +26,7 @@ biomeList=
 leveling=0
 fill=0
 border=0
-blockSwap=false
+blockSwap=true
 data:
 :enddata
 :endvalidation

@@ -220,7 +220,7 @@ public abstract class StructureValidator {
 				borderSize = StringTools.safeParseInt("=", line);
 			} else if (startLow(line, "validtargetblocks=")) {
 				StringTools.safeParseStringsToSet(validTargetBlocks, "=", line, false);
-			} else if (startLow(line, StructureValidator.PROP_BLOCK_SWAP + "=")) {
+			} else if (startLow(line, "blockswap=")) {
 				swap = StringTools.safeParseBoolean("=", line);
 			} else if (startLow(line, "data:")) {
 				tagLines.add(line);
