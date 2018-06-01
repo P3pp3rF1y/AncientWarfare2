@@ -30,6 +30,7 @@ import net.shadowmage.ancientwarfare.vehicle.gui.elements.ButtonAmmo;
 import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GuiVehicleAmmoSelection extends GuiContainerBase<ContainerVehicle> {
 
@@ -67,7 +68,8 @@ public class GuiVehicleAmmoSelection extends GuiContainerBase<ContainerVehicle> 
 
 	@Override
 	public void setupElements() {
-		List<IAmmo> ammos = getContainer().vehicle.vehicleType.getValidAmmoTypes();
+		List<IAmmo> ammos = getContainer().vehicle.vehicleType.getValidAmmoTypes().stream().filter(a -> getContainer().vehicle.ammoHelper.getCountOf(a) > 0)
+				.collect(Collectors.toList());
 
 		area.clearElements();
 
