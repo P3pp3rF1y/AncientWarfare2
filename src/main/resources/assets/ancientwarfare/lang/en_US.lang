@@ -726,7 +726,7 @@ item.gateDoubleWood.name=Wooden Gate (split open)
 item.gateSingleIron.name=Iron Gate (slide open)
 item.gateSingleWood.name=Wooden Gate (slide open)
 item.gateDrawbridge.name=Drawbridge (rotate open)
-entity.AncientWarfareStructure.aw_gate.name=Gate
+entity.aw_gate.name=Gate
 
 #ftbu_interop_notifications
 ftbu_aw2.notification.townhall_lost=Town Hall lost!
