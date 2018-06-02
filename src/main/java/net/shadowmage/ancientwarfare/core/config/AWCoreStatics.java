@@ -1,12 +1,16 @@
 package net.shadowmage.ancientwarfare.core.config;
 
 import net.minecraft.item.Item;
-import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.common.config.Property;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 public class AWCoreStatics extends ModConfiguration {
+
+	public static final String KEY_ALT_ITEM_USE_1 = "keybind.awCore.alt.item.use.1";
+	public static final String KEY_ALT_ITEM_USE_2 = "keybind.awCore.alt.item.use.2";
+	public static final String KEY_ALT_ITEM_USE_3 = "keybind.awCore.alt.item.use.3";
+	public static final String KEY_ALT_ITEM_USE_4 = "keybind.awCore.alt.item.use.4";
+	public static final String KEY_ALT_ITEM_USE_5 = "keybind.awCore.alt.item.use.5";
 
 	public static boolean DEBUG = true;
 	public static final String resourcePath = "/assets/ancientwarfare/resources/";
@@ -17,7 +21,6 @@ public class AWCoreStatics extends ModConfiguration {
 	 * category names
 	 */
 	private static final String worldGenSettings = "04_world_gen_settings";
-	private static final String keybinds = "05_keybinds";
 	private static final String researchSettings = "06_research";
 	private static final String researchDetailSettings = "07_research_details";
 	private static final String recipeDetailSettings = "08_recipe_details";
@@ -86,8 +89,6 @@ public class AWCoreStatics extends ModConfiguration {
 
 		config.addCustomCategoryComment(worldGenSettings, "AW Core World Generation Settings\n" + "Server-side only settings.  These settings affect world generation settings for AWCore.");
 
-		config.addCustomCategoryComment(keybinds, "Custom Keybinds Selection\n" + "Client-side only.  These are keybinds used by Ancient Warfare only.\n" + "These keybinds need-not be unique -- you may bind the same key to multiple\n" + "functions, or to keys used by other mods or vanilla functions.  Resolution of\n" + "key conflicts is left up to the user.");
-
 		config.addCustomCategoryComment(researchSettings, "Research Settings Section\n" + "Affect both client and server.  These configs must match for client and server, or\n" + "strange and probably BAD things WILL happen.");
 
 		config.addCustomCategoryComment(researchDetailSettings, "Research Detail Settings Section\n" + "Configure research times per research goal.\n" + "Affect both client and server.  These configs must match for client and server, or\n" + "strange and probably BAD things WILL happen.");
@@ -117,12 +118,5 @@ public class AWCoreStatics extends ModConfiguration {
 
 	public static Configuration get() {
 		return AncientWarfareCore.statics.getConfig();
-	}
-
-	public Property getKeyBindID(String name, int defaultID) {
-		ConfigCategory cat = config.getCategory(keybinds);
-		if (cat.containsKey(name))
-			return cat.get(name);
-		return config.get(keybinds, name, defaultID);
 	}
 }

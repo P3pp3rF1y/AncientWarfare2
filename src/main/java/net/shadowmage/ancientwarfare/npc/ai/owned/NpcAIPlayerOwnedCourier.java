@@ -7,7 +7,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
-import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
+import net.shadowmage.ancientwarfare.core.owner.IOwnable;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcCourier;
@@ -121,7 +121,7 @@ public class NpcAIPlayerOwnedCourier extends NpcAI<NpcCourier> {
 		if (te != null && te.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, point.getBlockSide())) {
 			if (te instanceof IOwnable) {
 				IOwnable ownableTE = (IOwnable) te;
-				if (ownableTE.getOwnerName() != null && !npc.hasCommandPermissions(ownableTE.getOwnerUuid(), ownableTE.getOwnerName())) {
+				if (!npc.hasCommandPermissions(ownableTE.getOwner())) {
 					return null;
 				}
 			}

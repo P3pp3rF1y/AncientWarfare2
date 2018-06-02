@@ -4,13 +4,15 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.scoreboard.Team;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.ITorqueTile;
+import net.shadowmage.ancientwarfare.core.owner.IOwnable;
 import net.shadowmage.ancientwarfare.core.tile.IBlockBreakHandler;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
 
+import javax.annotation.Nullable;
 import java.util.EnumSet;
-import java.util.UUID;
+import java.util.Set;
 
-public interface IWorkSite extends ITorqueTile, IBlockBreakHandler {
+public interface IWorkSite extends ITorqueTile, IBlockBreakHandler, IOwnable {
 
 	/*
 	 * workers should call this before calling doWork() to make sure that the site
@@ -31,15 +33,12 @@ public interface IWorkSite extends ITorqueTile, IBlockBreakHandler {
 	 */
 	WorkType getWorkType();
 
+	@Nullable
 	Team getTeam();
 
-	String getOwnerName();
+	Set<WorksiteUpgrade> getUpgrades();
 
-	UUID getOwnerUuid();
-
-	EnumSet<WorksiteUpgrade> getUpgrades();
-
-	EnumSet<WorksiteUpgrade> getValidUpgrades();
+	Set<WorksiteUpgrade> getValidUpgrades();
 
 	/*
 	 * Add the input upgrade to the present upgrade set.  Apply any necessary bonuses at this time.<br>

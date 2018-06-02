@@ -14,6 +14,7 @@ import net.minecraft.nbt.NBTTagLong;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IShearable;
@@ -23,6 +24,7 @@ import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.shadowmage.ancientwarfare.automation.registry.TreeFarmRegistry;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteFarm;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 
 import javax.annotation.Nullable;
@@ -99,18 +101,28 @@ public class WorkSiteTreeFarm extends TileWorksiteFarm {
 			return false;
 		}
 
-		Optional<ItemStack> plantable = InventoryTools.stream(plantableInventory).filter(this::isPlantable).findFirst();
+		//noinspection ConstantConditions
+		Optional<Tuple<ItemStack, ISapling>> plantable = InventoryTools.stream(plantableInventory).map(p -> new Tuple<>(p, TreeFarmRegistry.getSapling(p)))
+				.filter(t -> t.getSecond().isPresent()).map(t -> new Tuple<>(t.getFirst(), t.getSecond().get())).findFirst();
 		if (plantable.isPresent()) {
 			Iterator<BlockPos> it = blocksToPlant.iterator();
 			BlockPos position = it.next();
 			it.remove();
-			if (canReplace(position) && (tryPlace(plantable.get().copy(), position, EnumFacing.UP) || tryPlace(plantable.get().copy(), position, EnumFacing.DOWN))) {
-				InventoryTools.removeItems(plantableInventory, plantable.get(), 1);
+
+			ItemStack stack = plantable.get().getFirst();
+			ISapling sapling = plantable.get().getSecond();
+			if (canReplace(position) && tryPlantingSapling(position, stack, sapling)) {
+				InventoryTools.removeItems(plantableInventory, stack, 1);
 				return true;
 			}
 		}
 
 		return false;
+	}
+
+	private boolean tryPlantingSapling(BlockPos position, ItemStack stack, ISapling sapling) {
+		return sapling.isRightClick() ? BlockTools.placeItemBlockRightClick(stack.copy(), world, position) :
+				tryPlace(stack.copy(), position, EnumFacing.UP) || tryPlace(stack.copy(), position, EnumFacing.DOWN);
 	}
 
 	private boolean chopBlock() {

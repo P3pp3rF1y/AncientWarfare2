@@ -44,7 +44,7 @@ public class VehicleTypeBallistaMobileTurret extends VehicleTypeBallista {
 		this.turretForwardsOffset = 1.f;
 		this.turretVerticalOffset = 1.2f;
 		this.riderForwardsOffset = -1.2f;
-		this.riderVerticalOffset = 0.7f;
+		this.riderVerticalOffset = 0.55f;
 		this.riderSits = true;
 
 		this.drivable = true;//adjust based on isMobile or not

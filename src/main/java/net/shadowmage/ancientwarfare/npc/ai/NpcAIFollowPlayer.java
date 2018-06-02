@@ -24,7 +24,7 @@ public class NpcAIFollowPlayer extends NpcAI<NpcBase> {
 			return false;
 		}
 		if (npc.getAttackTarget() != null) {
-			if (npc.getDistanceSqToEntity(target) < attackIgnoreDistance && npc.getDistanceSqToEntity(npc.getAttackTarget()) < attackIgnoreDistance) {
+			if (npc.getDistanceSq(target) < attackIgnoreDistance && npc.getDistanceSq(npc.getAttackTarget()) < attackIgnoreDistance) {
 				return false;
 			}
 		}
@@ -56,7 +56,7 @@ public class NpcAIFollowPlayer extends NpcAI<NpcBase> {
 	@Override
 	public void updateTask() {
 		this.npc.getLookHelper().setLookPositionWithEntity(this.target, 10.0F, (float) this.npc.getVerticalFaceSpeed());
-		double distance = npc.getDistanceSqToEntity(target);
+		double distance = npc.getDistanceSq(target);
 		if (distance > followStopDistance) {
 			this.npc.addAITask(TASK_MOVE);
 			moveToEntity(target, distance);

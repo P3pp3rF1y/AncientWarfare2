@@ -42,23 +42,23 @@ public class ItemConstructionTool extends ItemBaseStructure implements IItemKeyI
 		text = "RMB" + " = " + I18n.format("guistrings.construction.do_action");
 		tooltip.add(text);
 
-		keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
+		keyText = InputHandler.ALT_ITEM_USE_1.getDisplayName();
 		text = keyText + " = " + I18n.format("guistrings.construction.toggle_mode");
 		tooltip.add(text);
 
-		keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_1);
+		keyText = InputHandler.ALT_ITEM_USE_2.getDisplayName();
 		text = keyText + " = " + I18n.format("guistrings.construction.set_fill_block");
 		tooltip.add(text);
 
-		keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_2);
+		keyText = InputHandler.ALT_ITEM_USE_3.getDisplayName();
 		text = keyText + " = " + I18n.format("guistrings.construction.set_pos_1");
 		tooltip.add(text);
 
-		keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_3);
+		keyText = InputHandler.ALT_ITEM_USE_4.getDisplayName();
 		text = keyText + " = " + I18n.format("guistrings.construction.set_pos_2");
 		tooltip.add(text);
 
-		keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_4);
+		keyText = InputHandler.ALT_ITEM_USE_5.getDisplayName();
 		text = keyText + " = " + I18n.format("guistrings.construction.clear_positions");
 		tooltip.add(text);
 	}
@@ -165,23 +165,23 @@ public class ItemConstructionTool extends ItemBaseStructure implements IItemKeyI
 	}
 
 	@Override
-	public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key) {
+	public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemAltFunction altFunction) {
 		return true;
 	}
 
 	@Override
-	public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
+	public void onKeyAction(EntityPlayer player, ItemStack stack, ItemAltFunction altFunction) {
 		ConstructionSettings settings = getSettings(stack);
 		if (settings == null) {
 			return;
 		}
-		switch (key) {
-			case KEY_0://toggle mode
+		switch (altFunction) {
+			case ALT_FUNCTION_1://toggle mode
 			{
 				settings.type = settings.type.next();
 			}
 			break;
-			case KEY_1://source block
+			case ALT_FUNCTION_2://source block
 			{
 				BlockPos pos = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
 				if (pos != null) {
@@ -192,7 +192,7 @@ public class ItemConstructionTool extends ItemBaseStructure implements IItemKeyI
 				}
 			}
 			return;
-			case KEY_2://pos1
+			case ALT_FUNCTION_3://pos1
 			{
 				BlockPos pos = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
 				if (pos != null) {
@@ -201,7 +201,7 @@ public class ItemConstructionTool extends ItemBaseStructure implements IItemKeyI
 				}
 			}
 			return;
-			case KEY_3://pos2
+			case ALT_FUNCTION_4://pos2
 			{
 				BlockPos pos = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
 				if (pos != null) {
@@ -210,7 +210,7 @@ public class ItemConstructionTool extends ItemBaseStructure implements IItemKeyI
 				}
 			}
 			return;
-			case KEY_4://clear pos
+			case ALT_FUNCTION_5://clear pos
 			{
 				settings.pos1 = null;
 				settings.pos2 = null;

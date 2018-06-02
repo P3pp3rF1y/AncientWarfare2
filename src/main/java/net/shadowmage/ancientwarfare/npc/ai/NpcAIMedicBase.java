@@ -88,7 +88,7 @@ public class NpcAIMedicBase extends NpcAI<NpcBase> {
 
 	@Override
 	public void updateTask() {
-		double dist = npc.getDistanceSqToEntity(targetToHeal);
+		double dist = npc.getDistanceSq(targetToHeal);
 		double attackDistance = (double) ((this.npc.width * this.npc.width * 2.0F * 2.0F) + (targetToHeal.width * targetToHeal.width * 2.0F * 2.0F));
 		if (dist > attackDistance) {
 			npc.addAITask(TASK_MOVE);

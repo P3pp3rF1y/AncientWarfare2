@@ -40,7 +40,7 @@ public class ItemCombatOrder extends ItemOrders {
 	}
 
 	@Override
-	public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
+	public void onKeyAction(EntityPlayer player, ItemStack stack, ItemAltFunction altFunction) {
 		CombatOrder order = CombatOrder.getCombatOrder(stack);
 		if (order == null) {
 			return;

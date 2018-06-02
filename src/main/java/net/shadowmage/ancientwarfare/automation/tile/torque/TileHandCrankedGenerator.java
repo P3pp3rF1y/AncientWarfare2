@@ -4,37 +4,41 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.MathHelper;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
-import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.core.owner.IOwnable;
+import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
-import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 
+import javax.annotation.Nullable;
 import java.util.EnumSet;
-import java.util.UUID;
+import java.util.Set;
 
 public class TileHandCrankedGenerator extends TileTorqueSingleCell implements IWorkSite, IOwnable {
 
-	String ownerName = "";
-	UUID ownerId = null;
+	private Owner owner = Owner.EMPTY;
 	private final TorqueCell inputCell;
 
 	/*
 	 * client side this == 0.0 -> 100.0 (integer percent)
-	 */ double clientInputEnergy;
+	 */
+	private double clientInputEnergy;
 
 	/*
 	 * client side this == 0 -> 100.0 (integer percent)
-	 */ int clientInputDestEnergy;
+	 */
+	private int clientInputDestEnergy;
 
 	/*
 	 * used client side for rendering
-	 */ double inputRotation;
-	double lastInputRotationDiff;
+	 */
+	private double inputRotation;
+	private double lastInputRotationDiff;
 
 	public TileHandCrankedGenerator() {
 		double eff = AWAutomationStatics.low_efficiency_factor;
@@ -58,7 +62,7 @@ public class TileHandCrankedGenerator extends TileTorqueSingleCell implements IW
 		}
 	}
 
-	protected void balancePower() {
+	private void balancePower() {
 		double trans = Math.min(2.d, torqueCell.getMaxEnergy() - torqueCell.getEnergy());
 		trans = Math.min(trans, inputCell.getEnergy());
 		inputCell.setEnergy(inputCell.getEnergy() - trans);
@@ -87,7 +91,8 @@ public class TileHandCrankedGenerator extends TileTorqueSingleCell implements IW
 
 	@Override
 	protected void clientNetworkUpdate() {
-		if (clientEnergyState != clientDestEnergyState || clientInputEnergy != clientInputDestEnergy) {
+		if (!MathHelper.epsilonEquals((float) clientEnergyState, clientDestEnergyState) || !MathHelper
+				.epsilonEquals((float) clientInputEnergy, clientInputDestEnergy)) {
 			if (networkUpdateTicks >= 0) {
 				clientEnergyState += (clientDestEnergyState - clientEnergyState) / ((double) networkUpdateTicks + 1.d);
 				clientInputEnergy += (clientInputDestEnergy - clientInputEnergy) / ((double) networkUpdateTicks + 1.d);
@@ -109,25 +114,28 @@ public class TileHandCrankedGenerator extends TileTorqueSingleCell implements IW
 
 	@Override
 	public void onBlockBroken() {
-	}//NOOP
+		//NOOP
+	}
 
 	@Override
-	public EnumSet<WorksiteUpgrade> getUpgrades() {
+	public Set<WorksiteUpgrade> getUpgrades() {
 		return EnumSet.noneOf(WorksiteUpgrade.class);
-	}// NOOP
+	}
 
 	@Override
-	public EnumSet<WorksiteUpgrade> getValidUpgrades() {
+	public Set<WorksiteUpgrade> getValidUpgrades() {
 		return EnumSet.noneOf(WorksiteUpgrade.class);
-	}// NOOP
+	}
 
 	@Override
 	public void addUpgrade(WorksiteUpgrade upgrade) {
-	}// NOOP
+		// NOOP
+	}
 
 	@Override
 	public void removeUpgrade(WorksiteUpgrade upgrade) {
-	}// NOOP
+		// NOOP
+	}
 
 	@Override
 	public boolean hasWork() {
@@ -150,35 +158,29 @@ public class TileHandCrankedGenerator extends TileTorqueSingleCell implements IW
 	}
 
 	@Override
+	@Nullable
 	public Team getTeam() {
-		return world.getScoreboard().getPlayersTeam(ownerName);
+		return world.getScoreboard().getPlayersTeam(owner.getName());
 	}
 
 	@Override
 	public boolean isOwner(EntityPlayer player) {
-		return EntityTools.isOwnerOrSameTeam(player, ownerId, ownerName);
+		return owner.isOwnerOrSameTeamOrFriend(player);
 	}
 
 	@Override
 	public void setOwner(EntityPlayer player) {
-		this.ownerName = player.getName();
-		this.ownerId = player.getUniqueID();
+		owner = new Owner(player);
 	}
 
 	@Override
-	public void setOwner(String ownerName, UUID ownerUuid) {
-		this.ownerName = ownerName;
-		this.ownerId = ownerUuid;
+	public void setOwner(Owner owner) {
+		this.owner = owner;
 	}
 
 	@Override
-	public String getOwnerName() {
-		return ownerName;
-	}
-
-	@Override
-	public UUID getOwnerUuid() {
-		return ownerId;
+	public Owner getOwner() {
+		return owner;
 	}
 
 	@Override
@@ -196,9 +198,7 @@ public class TileHandCrankedGenerator extends TileTorqueSingleCell implements IW
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
-		if (tag.hasKey("owner")) {
-			ownerName = tag.getString("owner");
-		}
+		owner = Owner.deserializeFromNBT(tag);
 		inputCell.setEnergy(tag.getDouble("inputEnergy"));
 		clientInputDestEnergy = tag.getInteger("clientInputEnergy");
 	}
@@ -206,26 +206,24 @@ public class TileHandCrankedGenerator extends TileTorqueSingleCell implements IW
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
-		if (ownerName != null) {
-			tag.setString("owner", ownerName);
-		}
+		owner.serializeToNBT(tag);
 		tag.setDouble("inputEnergy", inputCell.getEnergy());
 		tag.setInteger("clientInputEnergy", clientInputDestEnergy);
 		return tag;
 	}
 
 	@Override
-	public double getMaxTorque(EnumFacing from) {
+	public double getMaxTorque(@Nullable EnumFacing from) {
 		return inputCell.getMaxEnergy() + torqueCell.getMaxEnergy();
 	}
 
 	@Override
-	public double getTorqueStored(EnumFacing from) {
+	public double getTorqueStored(@Nullable EnumFacing from) {
 		return inputCell.getEnergy() + torqueCell.getEnergy();
 	}
 
 	@Override
-	public double addTorque(EnumFacing from, double energy) {
+	public double addTorque(@Nullable EnumFacing from, double energy) {
 		if (from == getPrimaryFacing()) {
 			return 0;
 		} else if (from == EnumFacing.UP || from == null) {
@@ -251,7 +249,7 @@ public class TileHandCrankedGenerator extends TileTorqueSingleCell implements IW
 	}
 
 	@Override
-	public double getMaxTorqueInput(EnumFacing from) {
+	public double getMaxTorqueInput(@Nullable EnumFacing from) {
 		return 0;
 	}
 
@@ -272,7 +270,7 @@ public class TileHandCrankedGenerator extends TileTorqueSingleCell implements IW
 	}
 
 	@Override
-	public boolean useOutputRotation(EnumFacing from) {
+	public boolean useOutputRotation(@Nullable EnumFacing from) {
 		return true;
 	}
 

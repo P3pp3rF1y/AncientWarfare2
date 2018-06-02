@@ -214,7 +214,7 @@ public class ContainerVehicleInventory extends ContainerVehicle {
 
 	@Override
 	public boolean canInteractWith(EntityPlayer var1) {
-		return super.canInteractWith(var1) && var1 != null && var1.getDistanceToEntity(vehicle) < 8.d;
+		return super.canInteractWith(var1) && var1 != null && var1.getDistance(vehicle) < 8.d;
 	}
 
 }

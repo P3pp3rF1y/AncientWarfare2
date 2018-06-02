@@ -1,0 +1,24 @@
+{
+    "type": "ancientwarfare:research_recipe",
+    "research": "siege_warfare",
+    "pattern": [
+        "GF",
+        "GT"
+    ],
+    "key": {
+        "T": {
+            "item": "ancientwarfarevehicle:torsion_unit"
+        },
+        "F": {
+            "item": "#FOODBUNDLE"
+        },
+        "G": {
+            "item": "#INGOTGOLD"
+        }
+    },
+    "result": {
+        "type": "minecraft:item_nbt",
+        "item": "ancientwarfarenpc:npc_spawner",
+        "nbt": "{npcSubtype:\"\",npcType:\"siege.engineer\"}"
+    }
+}

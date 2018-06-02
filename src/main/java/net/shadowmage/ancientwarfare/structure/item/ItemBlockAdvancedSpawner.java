@@ -52,12 +52,12 @@ public class ItemBlockAdvancedSpawner extends ItemBlockBase implements IItemKeyI
 	}
 
 	@Override
-	public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key) {
-		return key == ItemKey.KEY_0;
+	public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemAltFunction altFunction) {
+		return altFunction == ItemAltFunction.ALT_FUNCTION_1;
 	}
 
 	@Override
-	public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
+	public void onKeyAction(EntityPlayer player, ItemStack stack, ItemAltFunction altFunction) {
 		if (player.isSneaking()) {
 			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SPAWNER_ADVANCED_INVENTORY, 0, 0, 0);
 		} else {

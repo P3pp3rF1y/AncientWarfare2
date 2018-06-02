@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class TownTemplateManager {
 
@@ -33,7 +34,13 @@ public class TownTemplateManager {
 		return templates.values();
 	}
 
-	public TownTemplate selectTemplateForGeneration(World world, int x, int z, TownBoundingArea area) {
+	public List<TownTemplate> getTemplatesValidAtPosition(World world, int x, int z) {
+		//noinspection ConstantConditions
+		String biomeName = world.getBiome(new BlockPos(x, 1, z)).getRegistryName().toString();
+		return templates.values().stream().filter(t -> isDimensionValid(world.provider.getDimension(), t) && isBiomeValid(biomeName, t)).collect(Collectors.toList());
+	}
+
+	public TownTemplate selectTemplateFittingArea(World world, TownBoundingArea area, List<TownTemplate> templates) {
 		TownTemplate selection = null;
 		int width = area.getChunkWidth();
 		int length = area.getChunkLength();
@@ -41,12 +48,10 @@ public class TownTemplateManager {
 		int min = Math.min(width, length);
 		int templateMinimumSize;
 
-		//noinspection ConstantConditions
-		String biomeName = world.getBiome(new BlockPos(x, 1, z)).getRegistryName().toString();
 		int totalWeight = 0;
-		for (TownTemplate t : templates.values()) {
+		for (TownTemplate t : templates) {
 			templateMinimumSize = t.getMinSize();
-			if (min >= templateMinimumSize && isDimensionValid(world.provider.getDimension(), t) && isBiomeValid(biomeName, t)) {
+			if (min >= templateMinimumSize) {
 				searchCache.add(t);
 				totalWeight += t.getSelectionWeight();
 			}

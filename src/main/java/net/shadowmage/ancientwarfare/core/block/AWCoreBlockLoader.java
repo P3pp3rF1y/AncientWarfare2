@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -17,6 +18,8 @@ import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockRotatableMetaTile;
 import net.shadowmage.ancientwarfare.core.tile.TileEngineeringStation;
 import net.shadowmage.ancientwarfare.core.tile.TileResearchStation;
+
+import static net.shadowmage.ancientwarfare.core.AncientWarfareCore.MOD_PREFIX;
 
 @Mod.EventBusSubscriber(modid = AncientWarfareCore.modID)
 public class AWCoreBlockLoader {
@@ -47,8 +50,12 @@ public class AWCoreBlockLoader {
 		IForgeRegistry<Block> registry = event.getRegistry();
 
 		registry.register(new BlockEngineeringStation());
-		GameRegistry.registerTileEntity(TileEngineeringStation.class, "engineering_station_tile");
+		registerTile(TileEngineeringStation.class, "engineering_station_tile");
 		registry.register(new BlockResearchStation());
-		GameRegistry.registerTileEntity(TileResearchStation.class, "research_station_tile");
+		registerTile(TileResearchStation.class, "research_station_tile");
+	}
+
+	private static void registerTile(Class<? extends TileEntity> teClass, String teId) {
+		GameRegistry.registerTileEntity(teClass, MOD_PREFIX + teId);
 	}
 }

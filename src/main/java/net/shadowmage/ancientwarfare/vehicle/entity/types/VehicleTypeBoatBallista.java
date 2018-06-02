@@ -86,7 +86,7 @@ public class VehicleTypeBoatBallista extends VehicleType {
 		this.baseMissileVelocityMax = 42.f;//stand versions should have higher velocity, as should fixed version--i.e. mobile turret should have the worst of all versions
 
 		this.riderForwardsOffset = -1.0f;
-		this.riderVerticalOffset = 0.7f;
+		this.riderVerticalOffset = 0.55f;
 		this.riderSits = true;
 
 		this.mountable = true;

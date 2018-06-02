@@ -7,11 +7,10 @@ import net.minecraft.util.EnumHand;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseStockViewer;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
-import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
-import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap.ItemHashEntry;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.owner.IOwnable;
+import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
-import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.NBTSerializableUtils;
 
 import javax.annotation.Nonnull;
@@ -20,21 +19,17 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 public class TileWarehouseStockViewer extends TileControlled implements IOwnable, IInteractableTile {
 
+	private static final String FILTER_LIST_TAG = "filterList";
 	private final List<WarehouseStockFilter> filters = new ArrayList<>();
-	private UUID ownerId;
-	private String ownerName = "";
+	private Owner owner = Owner.EMPTY;
 	private boolean shouldUpdate = false;
 
 	private final Set<ContainerWarehouseStockViewer> viewers = new HashSet<>();
 
-	public TileWarehouseStockViewer() {
-	}
-
-	public void updateViewers() {
+	private void updateViewers() {
 		for (ContainerWarehouseStockViewer viewer : viewers) {
 			viewer.onFiltersChanged();
 		}
@@ -104,29 +99,22 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
 
 	@Override
 	public boolean isOwner(EntityPlayer player) {
-		return EntityTools.isOwnerOrSameTeam(player, ownerId, ownerName);
+		return owner.isOwnerOrSameTeamOrFriend(player);
 	}
 
 	@Override
 	public void setOwner(EntityPlayer player) {
-		this.ownerId = player.getUniqueID();
-		this.ownerName = player.getName();
+		owner = new Owner(player);
 	}
 
 	@Override
-	public void setOwner(String ownerName, UUID ownerUuid) {
-		this.ownerName = ownerName;
-		this.ownerId = ownerUuid;
+	public void setOwner(Owner owner) {
+		this.owner = owner;
 	}
 
 	@Override
-	public String getOwnerName() {
-		return ownerName;
-	}
-
-	@Override
-	public UUID getOwnerUuid() {
-		return ownerId;
+	public Owner getOwner() {
+		return owner;
 	}
 
 	@Override
@@ -148,31 +136,29 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
 	/*
 	 * should be called on SERVER whenever warehouse inventory changes
 	 */
-	public void onWarehouseInventoryUpdated() {
+	void onWarehouseInventoryUpdated() {
 		shouldUpdate = true;
 	}
 
 	@Override
 	protected void writeUpdateNBT(NBTTagCompound tag) {
 		super.writeUpdateNBT(tag);
-		NBTSerializableUtils.write(tag, "filterList", filters);
+		NBTSerializableUtils.write(tag, FILTER_LIST_TAG, filters);
 	}
 
 	@Override
 	protected void handleUpdateNBT(NBTTagCompound tag) {
 		super.handleUpdateNBT(tag);
 		this.filters.clear();
-		this.filters.addAll(NBTSerializableUtils.read(tag, "filterList", WarehouseStockFilter.class));
+		this.filters.addAll(NBTSerializableUtils.read(tag, TileWarehouseStockViewer.FILTER_LIST_TAG, WarehouseStockFilter.class));
 		updateViewers();
 	}
 
 	@Override
 	public boolean receiveClientEvent(int a, int b) {
-		if (world.isRemote) {
-			if (a >= 0 && a < filters.size()) {
-				filters.get(a).setQuantity(b);
-				updateViewers();
-			}
+		if (world.isRemote && a >= 0 && a < filters.size()) {
+			filters.get(a).setQuantity(b);
+			updateViewers();
 		}
 		return true;
 	}
@@ -180,29 +166,27 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
-		filters.addAll(NBTSerializableUtils.read(tag, "filterList", WarehouseStockFilter.class));
-		ownerName = tag.getString("ownerName");
-		if (tag.hasKey("ownerId"))
-			ownerId = UUID.fromString(tag.getString("ownerId"));
+		filters.addAll(NBTSerializableUtils.read(tag, TileWarehouseStockViewer.FILTER_LIST_TAG, WarehouseStockFilter.class));
+		owner = Owner.deserializeFromNBT(tag);
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
-		NBTSerializableUtils.write(tag, "filterList", filters);
-		tag.setString("ownerName", ownerName);
-		if (ownerId != null)
-			tag.setString("ownerId", ownerId.toString());
+		NBTSerializableUtils.write(tag, TileWarehouseStockViewer.FILTER_LIST_TAG, filters);
+		owner.serializeToNBT(tag);
 
 		return tag;
 	}
 
 	public static class WarehouseStockFilter implements INBTSerializable<NBTTagCompound> {
+		private static final String ITEM_TAG = "item";
+		private static final String QUANTITY_TAG = "quantity";
 		@Nonnull
 		private ItemStack item = ItemStack.EMPTY;
-		ItemHashEntry hashKey;
 		private int quantity;
 
+		//TODO see if reflection above that uses this constructor can be replaced
 		public WarehouseStockFilter() {
 		}
 
@@ -213,7 +197,6 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
 
 		public void setItem(ItemStack item) {
 			this.item = item;
-			this.hashKey = item.isEmpty() ? null : new ItemHashEntry(item);
 		}
 
 		public void setQuantity(int quantity) {
@@ -232,16 +215,16 @@ public class TileWarehouseStockViewer extends TileControlled implements IOwnable
 		public NBTTagCompound serializeNBT() {
 			NBTTagCompound tag = new NBTTagCompound();
 			if (!item.isEmpty()) {
-				tag.setTag("item", item.writeToNBT(new NBTTagCompound()));
+				tag.setTag(ITEM_TAG, item.writeToNBT(new NBTTagCompound()));
 			}
-			tag.setInteger("quantity", quantity);
+			tag.setInteger(QUANTITY_TAG, quantity);
 			return tag;
 		}
 
 		@Override
 		public void deserializeNBT(NBTTagCompound tag) {
-			setItem(tag.hasKey("item") ? new ItemStack(tag.getCompoundTag("item")) : ItemStack.EMPTY);
-			setQuantity(tag.getInteger("quantity"));
+			setItem(tag.hasKey(ITEM_TAG) ? new ItemStack(tag.getCompoundTag(ITEM_TAG)) : ItemStack.EMPTY);
+			setQuantity(tag.getInteger(QUANTITY_TAG));
 		}
 	}
 }

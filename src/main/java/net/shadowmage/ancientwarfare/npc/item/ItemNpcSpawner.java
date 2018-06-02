@@ -23,6 +23,7 @@ import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.npc.entity.AWNPCEntityLoader;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -65,7 +66,9 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 		}
 		NpcBase npc = createNpcFromItem(player.world, stack);
 		if (npc != null) {
-			npc.setOwner(player);
+			if (npc instanceof NpcPlayerOwned) {
+				npc.setOwner(player);
+			}
 			npc.setPosition(hit.getX() + 0.5d, hit.getY(), hit.getZ() + 0.5d);
 			npc.setHomeAreaAtCurrentPosition();
 			player.world.spawnEntity(npc);

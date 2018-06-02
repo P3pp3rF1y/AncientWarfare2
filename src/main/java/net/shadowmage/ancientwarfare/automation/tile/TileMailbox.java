@@ -52,8 +52,8 @@ public class TileMailbox extends TileOwned implements IRotatableTile, ITickable,
 			MailboxData data = AWGameData.INSTANCE.getData(world, MailboxData.class);
 
 			List<DeliverableItem> items = new ArrayList<>();
-			data.getDeliverableItems(privateBox ? getOwnerName() : null, mailboxName, items, world, pos.getX(), pos.getY(), pos.getZ());
-			data.addMailboxReceiver(privateBox ? getOwnerName() : null, mailboxName, this);
+			data.getDeliverableItems(privateBox ? getOwner().getName() : null, mailboxName, items, world, pos.getX(), pos.getY(), pos.getZ());
+			data.addMailboxReceiver(privateBox ? getOwner().getName() : null, mailboxName, this);
 
 			if (destinationName != null)//try to send mail
 			{
@@ -64,7 +64,7 @@ public class TileMailbox extends TileOwned implements IRotatableTile, ITickable,
 
 	private void trySendItems(MailboxData data) {
 		@Nonnull ItemStack item;
-		String owner = privateBox ? getOwnerName() : null;
+		String owner = privateBox ? getOwner().getName() : null;
 		int dim = world.provider.getDimension();
 		for (int slot = 0; slot < sendInventory.getSlots(); slot++) {
 			item = sendInventory.getStackInSlot(slot);

@@ -34,8 +34,8 @@ public class ItemTradeOrder extends ItemOrders {
 	}
 
 	@Override
-	public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key) {
-		return key == ItemKey.KEY_0 || key == ItemKey.KEY_1 || key == ItemKey.KEY_2;
+	public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemAltFunction altFunction) {
+		return altFunction == ItemAltFunction.ALT_FUNCTION_1 || altFunction == ItemAltFunction.ALT_FUNCTION_2 || altFunction == ItemAltFunction.ALT_FUNCTION_3;
 	}
 
 	@Override
@@ -46,19 +46,19 @@ public class ItemTradeOrder extends ItemOrders {
 	}
 
 	@Override
-	public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
+	public void onKeyAction(EntityPlayer player, ItemStack stack, ItemAltFunction altFunction) {
 		RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, 5, 0);
 		if (hit == null || hit.typeOfHit != RayTraceResult.Type.BLOCK) {
 			return;
 		}
 		TradeOrder order = TradeOrder.getTradeOrder(stack);
-		if (key == ItemKey.KEY_0) {
+		if (altFunction == ItemAltFunction.ALT_FUNCTION_1) {
 			order.getRoute().addRoutePoint(hit.getBlockPos());
 			order.write(stack);
-		} else if (key == ItemKey.KEY_1) {
+		} else if (altFunction == ItemAltFunction.ALT_FUNCTION_2) {
 			order.getRestockData().setDepositPoint(hit.getBlockPos(), hit.sideHit);
 			order.write(stack);
-		} else if (key == ItemKey.KEY_2) {
+		} else if (altFunction == ItemAltFunction.ALT_FUNCTION_3) {
 			order.getRestockData().setWithdrawPoint(hit.getBlockPos(), hit.sideHit);
 			order.write(stack);
 		}

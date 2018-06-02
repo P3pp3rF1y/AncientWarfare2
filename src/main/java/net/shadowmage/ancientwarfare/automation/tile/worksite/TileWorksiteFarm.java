@@ -15,6 +15,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RelativeSide;
+import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
@@ -124,7 +125,7 @@ public abstract class TileWorksiteFarm extends TileWorksiteBoundedInventory {
 			return false;
 		}
 
-		if (!BlockTools.breakBlockNoDrops(world, getOwnerAsPlayer(), pos, state)) {
+		if (!BlockTools.breakBlockNoDrops(world, pos, state)) {
 			return false;
 		}
 
@@ -139,8 +140,8 @@ public abstract class TileWorksiteFarm extends TileWorksiteBoundedInventory {
 	}
 
 	private void insertOrDropCrops(BlockPos pos, NonNullList<ItemStack> stacks) {
-		stacks = InventoryTools.insertItems(plantableInventory, stacks, false);
-		InventoryTools.insertOrDropItems(mainInventory, stacks, world, pos);
+		NonNullList<ItemStack> remainingItems = InventoryTools.insertItems(plantableInventory, stacks, false);
+		InventoryTools.insertOrDropItems(mainInventory, remainingItems, world, pos);
 	}
 
 	@Override
@@ -148,11 +149,11 @@ public abstract class TileWorksiteFarm extends TileWorksiteBoundedInventory {
 		return true;
 	}
 
-	protected boolean isTarget(BlockPos p) {
+	boolean isTarget(BlockPos p) {
 		return isTarget(p.getX(), p.getZ());
 	}
 
-	protected boolean isTarget(int x1, int y1) {
+	private boolean isTarget(int x1, int y1) {
 		int z = (y1 - getWorkBoundsMin().getZ()) * SIZE + x1 - getWorkBoundsMin().getX();
 		return z >= 0 && z < targetMap.length && targetMap[z] == 1;
 	}
@@ -161,13 +162,8 @@ public abstract class TileWorksiteFarm extends TileWorksiteBoundedInventory {
 		return stack.getItem() == Items.DYE && stack.getItemDamage() == EnumDyeColor.WHITE.getDyeDamage();
 	}
 
-	protected boolean isFarmable(Block block) {
-		try {
-			return isFarmable(block, new BlockPos(0, 0, 0));
-		}
-		catch (Exception e) {
-			return false;
-		}
+	boolean isFarmable(Block block) {
+		return isFarmable(block, new BlockPos(0, 0, 0));
 	}
 
 	protected boolean isFarmable(Block block, BlockPos farmablePos) {
@@ -183,7 +179,7 @@ public abstract class TileWorksiteFarm extends TileWorksiteBoundedInventory {
 		return BlockTools.placeItemBlock(stack, world, pos, face);
 	}
 
-	protected final void pickupItems() {
+	private void pickupItems() {
 		List<EntityItem> items = EntityTools.getEntitiesWithinBounds(world, EntityItem.class, getWorkBoundsMin(), getWorkBoundsMax());
 		if (items.isEmpty())
 			return;
@@ -297,7 +293,7 @@ public abstract class TileWorksiteFarm extends TileWorksiteBoundedInventory {
 
 	protected boolean fertilize(BlockPos pos) {
 		Optional<ItemStack> stack = InventoryTools.stream(miscInventory).filter(this::isBonemeal).findFirst();
-		if (stack.isPresent() && ItemDye.applyBonemeal(stack.get(), world, pos, getOwnerAsPlayer(), EnumHand.MAIN_HAND)) {
+		if (stack.isPresent() && ItemDye.applyBonemeal(stack.get(), world, pos, AWFakePlayer.get(world), EnumHand.MAIN_HAND)) {
 			world.playEvent(2005, pos, 0);
 			return true;
 		}

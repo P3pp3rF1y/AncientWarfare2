@@ -79,7 +79,7 @@ public class NpcAIMoveHome extends NpcAI<NpcBase> {
 			// NPC is home
 			npc.removeAITask(TASK_MOVE);
 			goneHome = true;
-			if (npc.getOwnerName().isEmpty())
+			if (npc.getOwner().getName().isEmpty())
 				stopMovement();
 			else {
 				if ((ticker >= TICKER_MAX) && (npc.shouldSleep())) {

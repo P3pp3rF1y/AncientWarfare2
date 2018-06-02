@@ -35,7 +35,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.common.util.INBTSerializable;
-import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.Trig;
@@ -93,6 +92,7 @@ public class VehicleMoveHelper implements INBTSerializable<NBTTagCompound> {
 		return this.rotationSpeed;
 	}
 
+	//TODO refactor this set inputs to something like forwardStop, left, right, rotationStop, ... so that clients don't need to pass in values
 	public void setForwardInput(byte in) {
 		this.forwardInput = in;
 	}
@@ -207,7 +207,7 @@ public class VehicleMoveHelper implements INBTSerializable<NBTTagCompound> {
 		vehicle.motionZ = Trig.cosDegrees(vehicle.rotationYaw) * -forwardMotion;
 		this.vehicle.move(MoverType.SELF, vehicle.motionX, vehicle.motionY, vehicle.motionZ);
 		this.wasOnGround = vehicle.onGround;
-		if (vehicle.isCollidedHorizontally) {
+		if (vehicle.collidedHorizontally) {
 			forwardMotion *= 0.65f;
 		}
 		this.tearUpGrass();
@@ -491,7 +491,7 @@ public class VehicleMoveHelper implements INBTSerializable<NBTTagCompound> {
 		if (vehicle.motionY < -0.25f || vehicle.motionY > 0.25f) {
 			vertCrashSpeed = true;
 		}
-		if (vehicle.isCollidedHorizontally) {
+		if (vehicle.collidedHorizontally) {
 			if (!wasOnGround || crashSpeed) {
 				if (!vehicle.world.isRemote && vehicle.getControllingPassenger() instanceof EntityPlayer) {
 					EntityPlayer player = (EntityPlayer) vehicle.getControllingPassenger();
@@ -502,7 +502,7 @@ public class VehicleMoveHelper implements INBTSerializable<NBTTagCompound> {
 				}
 			}
 		}
-		if (vehicle.isCollidedVertically) {
+		if (vehicle.collidedVertically) {
 			if (vertCrashSpeed && !wasOnGround) {
 				if (!vehicle.world.isRemote && vehicle.getControllingPassenger() instanceof EntityPlayer) {
 					EntityPlayer player = (EntityPlayer) vehicle.getControllingPassenger();
@@ -557,7 +557,7 @@ public class VehicleMoveHelper implements INBTSerializable<NBTTagCompound> {
 			BlockPos breakPos = new BlockPos(x, y, z);
 			IBlockState state = vehicle.world.getBlockState(breakPos);
 			if (isTrampable(state)) {
-				BlockTools.breakBlockAndDrop(vehicle.world, AWFakePlayer.get(vehicle.world), breakPos);
+				BlockTools.breakBlockAndDrop(vehicle.world, breakPos);
 			}
 			//check lower blocks (riding on)
 			if (vehicle.world.getBlockState(breakPos.down()).getBlock() == Blocks.GRASS) {
@@ -597,6 +597,7 @@ public class VehicleMoveHelper implements INBTSerializable<NBTTagCompound> {
 		vehicle.motionX = 0;
 		vehicle.motionY = 0;
 		vehicle.motionZ = 0;
+		turnMotion = 0;
 	}
 
 	public void clearInputFromDismount() {
@@ -627,4 +628,7 @@ public class VehicleMoveHelper implements INBTSerializable<NBTTagCompound> {
 		this.throttle = tag.getFloat("tr");
 	}
 
+	public byte getTurnInput() {
+		return turnInput;
+	}
 }

@@ -57,7 +57,7 @@ public class TileTownHall extends TileOwned implements IInteractableTile, ITicka
 	private ForgeChunkManager.Ticket ticket;
 
 	public TileTownHall() {
-		super("owner");
+		super();
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class TileTownHall extends TileOwned implements IInteractableTile, ITicka
 		List<NpcPlayerOwned> entities = world.getEntitiesWithinAABB(NpcPlayerOwned.class, bb);
 		if (entities.size() > 0) {
 			for (Entity entity : entities) {
-				if (((NpcPlayerOwned) entity).hasCommandPermissions(getOwnerUuid(), getOwnerName())) {
+				if (((NpcPlayerOwned) entity).hasCommandPermissions(getOwner())) {
 					((NpcPlayerOwned) entity).handleTownHallBroadcast(this, pos);
 				}
 			}

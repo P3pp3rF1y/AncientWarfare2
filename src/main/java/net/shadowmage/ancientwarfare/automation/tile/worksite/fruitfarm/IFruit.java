@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite.fruitfarm;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -16,7 +15,7 @@ public interface IFruit {
 
 	boolean isRipe(IBlockState state);
 
-	boolean pick(World world, IBlockState state, BlockPos pos, EntityPlayer player, int fortune, IItemHandler inventory);
+	boolean pick(World world, IBlockState state, BlockPos pos, int fortune, IItemHandler inventory);
 
 	boolean isPlantable();
 

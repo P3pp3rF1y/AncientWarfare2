@@ -108,7 +108,7 @@ public class VehicleTypeCatapult extends VehicleType {
 		this.missileVerticalOffset = 0;
 		this.missileForwardsOffset = -2.0f;
 		this.riderForwardsOffset = 1.2f;
-		this.riderVerticalOffset = 0.7f;
+		this.riderVerticalOffset = 0.55f;
 		this.displayName = "Catapult";
 		this.storageBaySize = 0;
 		this.armorBaySize = 3;

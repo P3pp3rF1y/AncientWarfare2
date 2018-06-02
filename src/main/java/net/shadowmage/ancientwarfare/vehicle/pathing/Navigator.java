@@ -227,7 +227,7 @@ public class Navigator implements IPathableCallback {
 	protected void doorInteraction() {
 		if (this.doorCheckTicks <= 0) {
 			this.doorCheckTicks = this.doorCheckTicksMax;
-			if (this.entity.isCollidedHorizontally && checkForDoors(entity.getPosition())) {
+			if (this.entity.collidedHorizontally && checkForDoors(entity.getPosition())) {
 				if (this.hasDoor) {
 					this.interactWithDoor(doorPos, true);
 					this.doorOpenTicks = this.doorOpenMax;

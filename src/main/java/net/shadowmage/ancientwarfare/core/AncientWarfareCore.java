@@ -1,12 +1,14 @@
 package net.shadowmage.ancientwarfare.core;
 
 import codechicken.lib.CodeChickenLib;
-import com.mojang.authlib.GameProfile;
+import net.minecraft.util.datafix.FixTypes;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ModFixs;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
@@ -26,6 +28,9 @@ import net.shadowmage.ancientwarfare.core.container.ContainerEngineeringStation;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchBook;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchStation;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
+import net.shadowmage.ancientwarfare.core.datafixes.TileIdFixer;
+import net.shadowmage.ancientwarfare.core.datafixes.TileOwnerFixer;
+import net.shadowmage.ancientwarfare.core.datafixes.VehicleOwnerFixer;
 import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
 import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.item.AWCoreItemLoader;
@@ -35,12 +40,12 @@ import net.shadowmage.ancientwarfare.core.registry.RegistryLoader;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 
-import java.util.UUID;
-
 @Mod(name = "Ancient Warfare Core", modid = AncientWarfareCore.modID, version = "@VERSION@", guiFactory = "net.shadowmage.ancientwarfare.core.gui.options.OptionsGuiFactory", dependencies = CodeChickenLib.MOD_VERSION_DEP)
 public class AncientWarfareCore {
 
 	public static final String modID = "ancientwarfare";
+	public static final String MOD_PREFIX = modID + ":";
+	private static final int DATA_FIXER_VERSION = 2;
 
 	@Instance(value = AncientWarfareCore.modID)
 	public static AncientWarfareCore instance;
@@ -51,9 +56,6 @@ public class AncientWarfareCore {
 	public static org.apache.logging.log4j.Logger log;
 
 	public static AWCoreStatics statics;
-
-	// Used by FakePlayerFactory
-	public static GameProfile gameProfile = new GameProfile(UUID.nameUUIDFromBytes("AncientWarfareMod".getBytes()), "[AncientWarfareMod]");
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent evt) {
@@ -99,6 +101,11 @@ public class AncientWarfareCore {
 
 		CompatLoader.init();
 
+		ModFixs fixes = FMLCommonHandler.instance().getDataFixer().init(modID, DATA_FIXER_VERSION);
+		fixes.registerFix(FixTypes.ENTITY, new VehicleOwnerFixer());
+		fixes.registerFix(FixTypes.BLOCK_ENTITY, new TileOwnerFixer());
+		fixes.registerFix(FixTypes.BLOCK_ENTITY, new TileIdFixer());
+
         /*
          * Setup compats
          */
@@ -120,7 +127,6 @@ public class AncientWarfareCore {
 	public void configChangedEvent(OnConfigChangedEvent evt) {
 		if (modID.equals(evt.getModID())) {
 			statics.save();
-			proxy.onConfigChanged();
 		}
 	}
 

@@ -115,7 +115,7 @@ public class NpcAIPlayerOwnedFollowCommand extends NpcAI<NpcPlayerOwned> {
 			npc.setPlayerCommand(null);//clear the command if the target entity cannot be found
 			return;
 		}
-		double sqDist = npc.getDistanceSqToEntity(e);
+		double sqDist = npc.getDistanceSq(e);
 		if (sqDist > MIN_RANGE) {
 			moveToEntity(e, sqDist);//move to entity...
 		} else {

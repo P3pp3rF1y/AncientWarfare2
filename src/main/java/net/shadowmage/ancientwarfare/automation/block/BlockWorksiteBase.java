@@ -16,19 +16,15 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableB
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableTile;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
-import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
-import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
+import net.shadowmage.ancientwarfare.core.owner.IOwnable;
 
 import java.util.function.Supplier;
 
 import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.FACING;
 
 public class BlockWorksiteBase extends BlockBaseAutomation implements IRotatableBlock {
-
-	public int maxWorkSize = 16;
-	public int maxWorkSizeVertical = 1;
-	private Supplier<TileEntity> renderFactory;
+	private Supplier<TileEntity> tileFactory;
 
 	public BlockWorksiteBase(String regName) {
 		super(Material.WOOD, regName);
@@ -51,18 +47,8 @@ public class BlockWorksiteBase extends BlockBaseAutomation implements IRotatable
 		return te != null && te instanceof IRotatableTile ? state.withProperty(FACING, ((IRotatableTile) te).getPrimaryFacing()) : state;
 	}
 
-	public BlockWorksiteBase setWorkSize(int size) {
-		this.maxWorkSize = size;
-		return this;
-	}
-
-	public BlockWorksiteBase setWorkVerticalSize(int size) {
-		this.maxWorkSizeVertical = size;
-		return this;
-	}
-
-	public BlockWorksiteBase setTileFactory(Supplier<TileEntity> renderFactory) {
-		this.renderFactory = renderFactory;
+	BlockWorksiteBase setTileFactory(Supplier<TileEntity> renderFactory) {
+		this.tileFactory = renderFactory;
 		return this;
 	}
 
@@ -74,27 +60,24 @@ public class BlockWorksiteBase extends BlockBaseAutomation implements IRotatable
 	 */
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
-		return renderFactory.get();
+		return tileFactory.get();
 	}
 
 	@Override
 	public boolean hasTileEntity(IBlockState state) {
-		return renderFactory != null;
+		return tileFactory != null;
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY,
+			float hitZ) {
 		TileEntity te = world.getTileEntity(pos);
 		if (te instanceof IInteractableTile) {
 			boolean canClick = false;
 			if (te instanceof IOwnable && ((IOwnable) te).isOwner(player))
 				canClick = true;
-			else if (te instanceof IWorkSite) {
-				IWorkSite site = ((IWorkSite) te);
-				if ((player.getTeam() != null) && (player.getTeam() == site.getTeam()))
-					canClick = true;
-				if (ModAccessors.FTBU.areTeamMates(player.getUniqueID(), site.getOwnerUuid()))
-					canClick = true;
+			else if (te instanceof IWorkSite && ((IWorkSite) te).getOwner().isOwnerOrSameTeamOrFriend(player)) {
+				canClick = true;
 			}
 			if (canClick) {
 				return ((IInteractableTile) te).onBlockClicked(player, hand);

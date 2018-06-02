@@ -74,7 +74,7 @@ public class StructureBuilderTicked extends StructureBuilder {
 	}
 
 	protected boolean breakClearTargetBlock(EntityPlayer player) {
-		return BlockTools.breakBlockAndDrop(world, player, clearPos);
+		return BlockTools.breakBlockAndDrop(world, clearPos);
 	}
 
 	protected boolean incrementClear() {

@@ -1,36 +1,36 @@
-/*
- Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.template.build;
 
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableSet;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockLog;
+import net.minecraft.block.BlockNewLog;
+import net.minecraft.block.BlockOldLog;
+import net.minecraft.block.BlockPlanks;
+import net.minecraft.block.BlockSandStone;
+import net.minecraft.block.BlockStairs;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BiomeDesert;
+import net.minecraft.world.biome.BiomeSavanna;
+import net.minecraft.world.biome.BiomeTaiga;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.terraingen.BiomeEvent;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
+
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class StructureBuilder implements IStructureBuilder {
 
@@ -48,6 +48,7 @@ public class StructureBuilder implements IStructureBuilder {
 	protected StructureBB bb;
 
 	private boolean isFinished = false;
+	private Biome biome;
 
 	public StructureBuilder(World world, StructureTemplate template, EnumFacing face, BlockPos pos) {
 		this(world, template, face, pos, new StructureBB(pos, face, template));
@@ -55,6 +56,7 @@ public class StructureBuilder implements IStructureBuilder {
 
 	public StructureBuilder(World world, StructureTemplate template, EnumFacing face, BlockPos buildKey, StructureBB bb) {
 		this.world = world;
+		biome = world.getBiome(buildKey);
 		this.template = template;
 		this.buildFace = face;
 		this.bb = bb;
@@ -129,36 +131,18 @@ public class StructureBuilder implements IStructureBuilder {
 	 * with priority > 0
 	 */
 	@Override
-	public void placeBlock(BlockPos pos, Block block, int meta, int priority) {
+	public void placeBlock(BlockPos pos, IBlockState state, int priority) {
 		if (pos.getY() <= 0 || pos.getY() >= world.getHeight()) {
 			return;
 		}
-		IBlockState state = block.getStateFromMeta(meta);
+
+		IBlockState adjustedState = state;
+		if (template.getValidationSettings().isBlockSwap()) {
+			adjustedState = getBiomeSpecificBlockState(biome, state);
+		}
+
 		int updateFlag = state.canProvidePower() ? 3 : 2;
-		world.setBlockState(pos, state, updateFlag);
-		//TODO this used to be more complicated for perf reasons - look into whether needs to be recreated
-		//        Chunk chunk = world.getChunkFromBlockCoords(x, z);
-		//        ExtendedBlockStorage stc = chunk.getBlockStorageArray()[y >> 4];
-		//        if (stc == null)//A block in a void subchunk
-		//        {
-		//            if(block != Blocks.AIR)//Not changing anything
-		//                world.setBlockState(pos, block.getStateFromMeta(meta), 2);//using flag=2 -- no block update, but still send to clients (should help with issues of things popping off)
-		//        } else {//unsurprisingly, direct chunk access is 2X faster than going through the world =\
-		//            int cx = x & 15; //bitwise-and to scrub all bits above 15
-		//            int cz = z & 15; //bitwise-and to scrub all bits above 15
-		//            chunk.removeTileEntity(cx, y, cz);
-		//            stc.func_150818_a(cx, y & 15, cz, block);
-		//            stc.setExtBlockMetadata(cx, y & 15, cz, meta);
-		//            if (block.hasTileEntity(block.getStateFromMeta(meta))) {
-		//                TileEntity te = block.createTileEntity(world, meta);
-		//                if(te != null) {
-		//                    chunk.func_150812_a(cx, y, cz, te);//set TE in chunk data
-		//                    world.addTileEntity(te);//add TE to world added/loaded TE list
-		//                }
-		//            }
-		//            BlockTools.notifyBlockUpdate(world, pos);
-		//            //TODO clean this up to send own list of block-changes, not rely upon vanilla to send changes. (as the client-side of this lags to all hell)
-		//        }
+		world.setBlockState(pos, adjustedState, updateFlag);
 	}
 
 	protected void placeCurrentPosition(TemplateRule rule) {
@@ -250,4 +234,85 @@ public class StructureBuilder implements IStructureBuilder {
 		return maxPriority;
 	}
 
+	private IBlockState getBiomeSpecificBlockState(Biome biome, IBlockState originalBlockState) {
+		BiomeEvent.GetVillageBlockID event = new BiomeEvent.GetVillageBlockID(biome, originalBlockState);
+		MinecraftForge.TERRAIN_GEN_BUS.post(event);
+
+		if (event.getResult() == Event.Result.DENY)
+			return event.getReplacement();
+
+		for (Map.Entry<Class, Set<IBlockSwapMapping>> entry : BIOME_SWAP_STATES.entrySet()) {
+			if (entry.getKey().isInstance(biome)) {
+				for (IBlockSwapMapping mapping : entry.getValue()) {
+					if (mapping.matches(originalBlockState.getBlock())) {
+						return mapping.swap(originalBlockState);
+					}
+				}
+			}
+		}
+
+		return originalBlockState;
+	}
+
+	// @formatter:off
+	private static final Map<Class, Set<IBlockSwapMapping>> BIOME_SWAP_STATES = ImmutableMap.of(
+			BiomeDesert.class, ImmutableSet.of(
+					new BlockSwapMapping(b -> b == Blocks.LOG || b == Blocks.LOG2, s -> Blocks.SANDSTONE.getDefaultState()),
+					new BlockSwapMapping(b -> b == Blocks.COBBLESTONE, s -> Blocks.SANDSTONE.getDefaultState()),
+					new BlockSwapMapping(b -> b == Blocks.PLANKS,
+							s -> Blocks.SANDSTONE.getDefaultState().withProperty(BlockSandStone.TYPE, BlockSandStone.EnumType.SMOOTH)),
+					new BlockSwapMapping(b -> b == Blocks.OAK_STAIRS,
+							s -> Blocks.SANDSTONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, s.getValue(BlockStairs.FACING))),
+					new BlockSwapMapping(b -> b == Blocks.STONE_STAIRS,
+							s -> Blocks.SANDSTONE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, s.getValue(BlockStairs.FACING))),
+					new BlockSwapMapping(b -> b == Blocks.GRAVEL, s -> Blocks.SANDSTONE.getDefaultState())),
+			BiomeTaiga.class, ImmutableSet.of(
+					new BlockSwapMapping(b -> b == Blocks.LOG || b == Blocks.LOG2,
+							s -> Blocks.LOG.getDefaultState().withProperty(BlockOldLog.VARIANT, BlockPlanks.EnumType.SPRUCE)
+									.withProperty(BlockLog.LOG_AXIS, s.getValue(BlockLog.LOG_AXIS))),
+					new BlockSwapMapping(b -> b == Blocks.PLANKS,
+							s -> Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.SPRUCE)),
+					new BlockSwapMapping(b -> b == Blocks.OAK_STAIRS,
+							s -> Blocks.SPRUCE_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, s.getValue(BlockStairs.FACING))),
+					new BlockSwapMapping(b -> b == Blocks.OAK_FENCE, s -> Blocks.SPRUCE_FENCE.getDefaultState())),
+			BiomeSavanna.class, ImmutableSet.of(
+					new BlockSwapMapping(b -> b == Blocks.LOG || b == Blocks.LOG2,
+							s -> Blocks.LOG2.getDefaultState().withProperty(BlockNewLog.VARIANT, BlockPlanks.EnumType.ACACIA)
+									.withProperty(BlockLog.LOG_AXIS, s.getValue(BlockLog.LOG_AXIS))),
+					new BlockSwapMapping(b -> b == Blocks.PLANKS,
+							s -> Blocks.PLANKS.getDefaultState().withProperty(BlockPlanks.VARIANT, BlockPlanks.EnumType.ACACIA)),
+					new BlockSwapMapping(b -> b == Blocks.OAK_STAIRS,
+							s -> Blocks.ACACIA_STAIRS.getDefaultState().withProperty(BlockStairs.FACING, s.getValue(BlockStairs.FACING))),
+					new BlockSwapMapping(b -> b == Blocks.COBBLESTONE, s -> Blocks.LOG2.getDefaultState().withProperty(BlockNewLog.VARIANT, BlockPlanks.EnumType.ACACIA)
+							.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Y)),
+					new BlockSwapMapping(b -> b == Blocks.OAK_FENCE, s -> Blocks.ACACIA_FENCE.getDefaultState()))
+	);
+
+	// @formatter:on
+
+	private interface IBlockSwapMapping {
+		boolean matches(Block block);
+
+		IBlockState swap(IBlockState state);
+	}
+
+	private static class BlockSwapMapping implements IBlockSwapMapping {
+		private final Predicate<Block> blockMatcher;
+		private final Function<IBlockState, IBlockState> doSwap;
+
+		public BlockSwapMapping(Predicate<Block> blockMatcher, Function<IBlockState, IBlockState> doSwap) {
+			this.blockMatcher = blockMatcher;
+			this.doSwap = doSwap;
+		}
+
+		@Override
+		public boolean matches(Block block) {
+			return blockMatcher.test(block);
+		}
+
+		@Override
+		public IBlockState swap(IBlockState state) {
+			return doSwap.apply(state);
+		}
+	}
 }

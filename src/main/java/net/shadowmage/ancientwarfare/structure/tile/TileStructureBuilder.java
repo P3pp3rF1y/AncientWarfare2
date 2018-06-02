@@ -10,31 +10,29 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
-import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
+import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.core.owner.IOwnable;
+import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
-import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilderTicked;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.EnumSet;
-import java.util.UUID;
+import java.util.Set;
 
 public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IOwnable, ITickable {
 
-	protected UUID ownerId;
-	private EntityPlayer owner;
-	private String ownerName;
+	private Owner owner;
 
 	StructureBuilderTicked builder;
 	private boolean shouldRemove = false;
@@ -63,22 +61,24 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 	}
 
 	@Override
-	public EnumSet<WorksiteUpgrade> getUpgrades() {
+	public Set<WorksiteUpgrade> getUpgrades() {
 		return EnumSet.noneOf(WorksiteUpgrade.class);
-	}//NOOP
+	}
 
 	@Override
-	public EnumSet<WorksiteUpgrade> getValidUpgrades() {
+	public Set<WorksiteUpgrade> getValidUpgrades() {
 		return EnumSet.noneOf(WorksiteUpgrade.class);
 	}//NOOP
 
 	@Override
 	public void addUpgrade(WorksiteUpgrade upgrade) {
-	}//NOOP
+		//NOOP
+	}
 
 	@Override
 	public void removeUpgrade(WorksiteUpgrade upgrade) {
-	}//NOOP
+		//NOOP
+	}
 
 	@Override
 	public float getClientOutputRotation(EnumFacing from, float delta) {
@@ -86,12 +86,12 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 	}
 
 	@Override
-	public boolean useOutputRotation(EnumFacing from) {
+	public boolean useOutputRotation(@Nullable EnumFacing from) {
 		return false;
 	}
 
 	@Override
-	public double addTorque(EnumFacing from, double energy) {
+	public double addTorque(@Nullable EnumFacing from, double energy) {
 		if (canInputTorque(from)) {
 			if (energy + getTorqueStored(null) > getMaxTorque(null)) {
 				energy = getMaxTorque(null) - getTorqueStored(null);
@@ -106,17 +106,17 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 	}
 
 	@Override
-	public double getMaxTorque(EnumFacing from) {
+	public double getMaxTorque(@Nullable EnumFacing from) {
 		return maxEnergyStored;
 	}
 
 	@Override
-	public double getTorqueStored(EnumFacing from) {
+	public double getTorqueStored(@Nullable EnumFacing from) {
 		return storedEnergy;
 	}
 
 	@Override
-	public double getMaxTorqueInput(EnumFacing from) {
+	public double getMaxTorqueInput(@Nullable EnumFacing from) {
 		return maxInput;
 	}
 
@@ -153,7 +153,7 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 
 	public void processWork() {
 		isStarted = true;
-		builder.tick(getOwnerAsPlayer());
+		builder.tick(AWFakePlayer.get(world));
 	}
 
 	/*
@@ -162,34 +162,21 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 	 */
 	@Override
 	public void setOwner(EntityPlayer player) {
-		this.ownerId = player.getUniqueID();
+		this.owner = new Owner(player);
 	}
 
 	@Override
-	public void setOwner(String ownerName, UUID ownerUuid) {
-		this.ownerName = ownerName;
-		this.ownerId = ownerUuid;
+	public void setOwner(Owner owner) {
+		this.owner = owner;
 	}
 
 	@Override
 	public boolean isOwner(EntityPlayer player) {
-		return EntityTools.isOwnerOrSameTeam(player, ownerId, ownerName);
+		return owner.isOwnerOrSameTeamOrFriend(player);
 	}
 
 	@Override
-	public String getOwnerName() {
-		return getOwnerAsPlayer().getName();
-	}
-
-	@Override
-	public UUID getOwnerUuid() {
-		return ownerId;
-	}
-
-	public final EntityPlayer getOwnerAsPlayer() {
-		if (owner == null || !owner.isEntityAlive() || (owner instanceof FakePlayer)) { //TODO this condition needs looking into - no idea why owner needs to be set everytime
-			owner = AncientWarfareCore.proxy.getFakePlayer(this.getWorld(), null, ownerId);
-		}
+	public Owner getOwner() {
 		return owner;
 	}
 
@@ -248,9 +235,7 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 		}
 		this.isStarted = tag.getBoolean("started");
 		this.storedEnergy = tag.getDouble("storedEnergy");
-		if (tag.hasKey("ownerId")) {
-			this.ownerId = UUID.fromString(tag.getString("ownerId"));
-		}
+		owner = Owner.deserializeFromNBT(tag);
 	}
 
 	@Override
@@ -263,9 +248,7 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 		}
 		tag.setBoolean("started", isStarted);
 		tag.setDouble("storedEnergy", storedEnergy);
-		if (ownerId != null) {
-			tag.setString("ownerId", ownerId.toString());
-		}
+		owner.serializeToNBT(tag);
 		return tag;
 	}
 
@@ -282,10 +265,7 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 
 	@Override
 	public final Team getTeam() {
-		if (ownerId != null) {
-			world.getScoreboard().getPlayersTeam(getOwnerName());
-		}
-		return null;
+		return world.getScoreboard().getPlayersTeam(owner.getName());
 	}
 
 	@Override

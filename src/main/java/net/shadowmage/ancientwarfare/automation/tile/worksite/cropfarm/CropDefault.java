@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.automation.tile.worksite.cropfarm;
 
 import net.minecraft.block.IGrowable;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemBlockSpecial;
 import net.minecraft.item.ItemStack;
@@ -39,7 +38,7 @@ public class CropDefault implements ICrop {
 	}
 
 	@Override
-	public boolean harvest(World world, IBlockState state, BlockPos pos, EntityPlayer player, int fortune, IItemHandler inventory) {
+	public boolean harvest(World world, IBlockState state, BlockPos pos, int fortune, IItemHandler inventory) {
 		NonNullList<ItemStack> stacks = NonNullList.create();
 
 		getDrops(stacks, world, pos, state, fortune);
@@ -48,7 +47,7 @@ public class CropDefault implements ICrop {
 			return false;
 		}
 
-		if (!breakCrop(world, player, pos, state)) {
+		if (!breakCrop(world, pos, state)) {
 			return false;
 		}
 
@@ -62,8 +61,8 @@ public class CropDefault implements ICrop {
 		return true;
 	}
 
-	protected boolean breakCrop(World world, EntityPlayer player, BlockPos pos, IBlockState state) {
-		return BlockTools.breakBlockNoDrops(world, player, pos, state);
+	protected boolean breakCrop(World world, BlockPos pos, IBlockState state) {
+		return BlockTools.breakBlockNoDrops(world, pos, state);
 	}
 
 	protected void getDrops(NonNullList<ItemStack> stacks, World world, BlockPos pos, IBlockState state, int fortune) {
@@ -82,8 +81,14 @@ public class CropDefault implements ICrop {
 
 	@Override
 	public boolean isPlantable(ItemStack stack) {
-		return stack.getItem() instanceof IPlantable
-				|| (stack.getItem() instanceof ItemBlock && ((ItemBlock) stack.getItem()).getBlock() instanceof IPlantable)
-				|| (stack.getItem() instanceof ItemBlockSpecial && ((ItemBlockSpecial) stack.getItem()).getBlock() instanceof IPlantable);
+		return stack.getItem() instanceof IPlantable || isPlantableItemBlock(stack) || isPlantableSpecialItemBlock(stack);
+	}
+
+	private boolean isPlantableSpecialItemBlock(ItemStack stack) {
+		return stack.getItem() instanceof ItemBlockSpecial && ((ItemBlockSpecial) stack.getItem()).getBlock() instanceof IPlantable;
+	}
+
+	private boolean isPlantableItemBlock(ItemStack stack) {
+		return stack.getItem() instanceof ItemBlock && ((ItemBlock) stack.getItem()).getBlock() instanceof IPlantable;
 	}
 }

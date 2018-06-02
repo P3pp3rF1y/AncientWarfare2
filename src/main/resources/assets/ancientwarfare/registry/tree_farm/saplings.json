@@ -1,7 +1,9 @@
 {
     "saplings": [
         {
-            "name": "minecraft:chorus_flower"
+            "sapling": {
+                "name": "minecraft:chorus_flower"
+            }
         }
     ]
 }

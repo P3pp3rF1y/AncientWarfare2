@@ -61,9 +61,9 @@ minecraft{
     replaceIn "npc/AncientWarfareNPC.java"
     replaceIn "structure/AncientWarfareStructures.java"
     replaceIn "vehicle/AncientWarfareVehicles.java"
-    replace "@VERSION@", "${project.minecraft.version}-${project.major}.${project.minor}." + getBuildNumber() + getStable()
+    replace "@VERSION@", "${project.minecraft.version}-${project.major}.${project.minor}.${project.patch}." + getBuildNumber() + getStable()
 }
-version = minecraft.version + "-" + project.major +"."+ project.minor +"."+ getBuildNumber() + getStable()
+version = minecraft.version + "-" + project.major +"."+ project.minor +"."+ project.patch +"."+ getBuildNumber() + getStable()
 group = "shadowmage"
 archivesBaseName = "ancientwarfare"
 

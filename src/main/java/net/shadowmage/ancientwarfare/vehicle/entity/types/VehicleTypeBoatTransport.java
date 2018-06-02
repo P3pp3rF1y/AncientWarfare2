@@ -52,7 +52,7 @@ public class VehicleTypeBoatTransport extends VehicleType {
 		this.combatEngine = false;
 		this.riderSits = true;
 		this.riderForwardsOffset = 1.4f;
-		this.riderVerticalOffset = 0.7f;
+		this.riderVerticalOffset = 0.55f;
 		this.baseStrafeSpeed = 2.f;
 		this.baseForwardSpeed = 6.2f * 0.05f;
 		this.ammoBaySize = 0;

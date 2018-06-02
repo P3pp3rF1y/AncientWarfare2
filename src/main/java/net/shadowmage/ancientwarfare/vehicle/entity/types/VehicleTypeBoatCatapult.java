@@ -129,7 +129,7 @@ public class VehicleTypeBoatCatapult extends VehicleType {
 		this.turretVerticalOffset = 18 * 0.0625f;
 
 		this.riderForwardsOffset = 1.10f;
-		this.riderVerticalOffset = 0.7f;
+		this.riderVerticalOffset = 0.55f;
 
 		this.displayName = "item.vehicleSpawner.19";
 		this.displayTooltip.add("item.vehicleSpawner.tooltip.torsion");

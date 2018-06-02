@@ -71,7 +71,7 @@ public class ItemGateSpawner extends ItemBaseStructure implements IItemKeyInterf
 		if (tag.hasKey("pos1") && tag.hasKey("pos2")) {
 			tooltip.add(I18n.format("guistrings.gate.construct"));
 		} else {
-			String key = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
+			String key = InputHandler.ALT_ITEM_USE_1.getDisplayName();
 			tooltip.add(I18n.format("guistrings.gate.use_primary_item_key", key));
 		}
 		tooltip.add(I18n.format("guistrings.gate.clear_item"));
@@ -170,12 +170,12 @@ public class ItemGateSpawner extends ItemBaseStructure implements IItemKeyInterf
 	}
 
 	@Override
-	public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key) {
-		return key == ItemKey.KEY_0;
+	public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemAltFunction altFunction) {
+		return altFunction == ItemAltFunction.ALT_FUNCTION_1;
 	}
 
 	@Override
-	public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
+	public void onKeyAction(EntityPlayer player, ItemStack stack, ItemAltFunction altFunction) {
 		BlockPos hit = BlockTools.getBlockClickedOn(player, player.world, true);
 		if (hit == null) {
 			return;

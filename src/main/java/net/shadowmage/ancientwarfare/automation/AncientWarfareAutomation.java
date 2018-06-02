@@ -50,6 +50,7 @@ import net.shadowmage.ancientwarfare.core.registry.RegistryLoader;
 @Mod(name = "Ancient Warfare Automation", modid = AncientWarfareAutomation.modID, version = "@VERSION@", dependencies = "required-after:ancientwarfare;after:redstoneflux;after:buildcraftcore")
 public class AncientWarfareAutomation {
 	public static final String modID = "ancientwarfareautomation";
+	public static final String MOD_PREFIX = modID + ":";
 
 	@Instance(value = modID)
 	public static AncientWarfareAutomation instance;

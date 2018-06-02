@@ -2,7 +2,7 @@ package net.shadowmage.ancientwarfare.structure.town;
 
 public class TownBoundingArea {
 
-	private final static int borderSize = 8;//MUST be >0 or will cause weirdness when doing...everything...
+	private static final int borderSize = 8;//MUST be >0 or will cause weirdness when doing...everything...
 
 	int chunkMinX;
 	int chunkMaxX;
@@ -10,8 +10,6 @@ public class TownBoundingArea {
 	int chunkMaxZ;
 	int minY;
 	int maxY;
-	int townCenterX;//calculated center of the town area, to be used for main road positioning and generation start
-	int townCenterZ;//calculated center of the town area, to be used for main road positioning and generation start
 
 	int wallSize = 3;//should be >0 if walls are desired (must be set by generator prior to generating, not used in validation)
 	int exteriorSize = 0;//exterior buffer size, in chunks.  used to inset the walls by this amount, to allow generation of slums/farms on the exterior of the towns
@@ -136,11 +134,11 @@ public class TownBoundingArea {
 	}
 
 	public int getCenterX() {
-		return townCenterX;
+		return (getBlockMinX() + getBlockMaxX()) / 2;
 	}
 
 	public int getCenterZ() {
-		return townCenterZ;
+		return (getBlockMinZ() + getBlockMaxZ()) / 2;
 	}
 
 	public int getTownWidth() {

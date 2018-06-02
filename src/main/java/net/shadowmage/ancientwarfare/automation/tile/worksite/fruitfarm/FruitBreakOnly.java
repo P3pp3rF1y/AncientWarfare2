@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.worksite.fruitfarm;
 
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -29,7 +28,7 @@ public class FruitBreakOnly implements IFruit {
 	}
 
 	@Override
-	public boolean pick(World world, IBlockState state, BlockPos pos, EntityPlayer player, int fortune, IItemHandler inventory) {
+	public boolean pick(World world, IBlockState state, BlockPos pos, int fortune, IItemHandler inventory) {
 		NonNullList<ItemStack> drops = NonNullList.create();
 		state.getBlock().getDrops(drops, world, pos, state, fortune);
 
@@ -37,7 +36,7 @@ public class FruitBreakOnly implements IFruit {
 			return false;
 		}
 
-		BlockTools.breakBlock(world, player, pos, fortune, false);
+		BlockTools.breakBlock(world, pos, fortune, false);
 
 		InventoryTools.insertOrDropItems(inventory, drops, world, pos);
 

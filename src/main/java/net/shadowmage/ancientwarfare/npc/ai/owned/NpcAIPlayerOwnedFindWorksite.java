@@ -44,7 +44,7 @@ public class NpcAIPlayerOwnedFindWorksite extends NpcAI<NpcWorker> {
 				IWorkSite site = (IWorkSite) te;
 				if (!npc.canWorkAt(site.getWorkType()))
 					npc.autoWorkTarget = null;
-				if (npc.hasCommandPermissions(site.getOwnerUuid(), site.getOwnerName()))
+				if (npc.hasCommandPermissions(site.getOwner()))
 					npc.autoWorkTarget = null;
 				if (!site.hasWork())
 					npc.autoWorkTarget = null;
@@ -69,7 +69,7 @@ public class NpcAIPlayerOwnedFindWorksite extends NpcAI<NpcWorker> {
 		for (TileEntity te : tiles) {
 			if (te instanceof IWorkSite) {
 				site = (IWorkSite) te;
-				if (!npc.hasCommandPermissions(site.getOwnerUuid(), site.getOwnerName()))
+				if (!npc.hasCommandPermissions(site.getOwner()))
 					continue;
 				if (npc.canWorkAt(site.getWorkType()) && site.hasWork()) {
 					dist = npc.getDistanceSq(te.getPos().getX() + 0.5d, te.getPos().getY(), te.getPos().getZ() + 0.5d);

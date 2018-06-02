@@ -92,7 +92,7 @@ public class VehicleTypeHwacha extends VehicleType {
 		this.missileForwardsOffset = -0.9375f - 0.0625f;
 
 		this.riderForwardsOffset = -1.4f;
-		this.riderVerticalOffset = 0.5f;
+		this.riderVerticalOffset = 0.35f;
 		this.displayName = "item.vehicleSpawner.12";
 		this.displayTooltip.add("item.vehicleSpawner.tooltip.gunpowder");
 		this.displayTooltip.add("item.vehicleSpawner.tooltip.mobile");

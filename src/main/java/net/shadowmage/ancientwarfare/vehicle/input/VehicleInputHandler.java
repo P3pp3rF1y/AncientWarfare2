@@ -1,11 +1,11 @@
 package net.shadowmage.ancientwarfare.vehicle.input;
 
 import codechicken.lib.raytracer.RayTracer;
-import com.google.common.collect.Maps;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.Tuple;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
@@ -21,30 +21,41 @@ import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.network.PacketVehicleInput;
 import org.lwjgl.input.Keyboard;
 
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 public class VehicleInputHandler {
-	public static final String CATEGORY = "keybind.category.awVehicles";
-	public static final KeyBinding FORWARD = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_FORWARD, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_W, CATEGORY);
-	public static final KeyBinding REVERSE = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_REVERSE, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_S, CATEGORY);
-	public static final KeyBinding LEFT = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_LEFT, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_A, CATEGORY);
-	public static final KeyBinding RIGHT = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_RIGHT, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_D, CATEGORY);
-	public static final KeyBinding ASCEND_AIM_UP = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_ASCEND_AIM_UP, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_R, CATEGORY);
-	public static final KeyBinding DESCEND_AIM_DOWN = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_DESCEND_AIM_DOWN, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_F, CATEGORY);
-	public static final KeyBinding FIRE = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_FIRE, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_SPACE, CATEGORY);
-	public static final KeyBinding AMMO_PREV = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_AMMO_PREV, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_T, CATEGORY);
-	public static final KeyBinding AMMO_NEXT = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_AMMO_NEXT, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_G, CATEGORY);
-	public static final KeyBinding TURRET_LEFT = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_TURRET_LEFT, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_Z, CATEGORY);
-	public static final KeyBinding TURRET_RIGHT = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_TURRET_RIGHT, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_X, CATEGORY);
-	public static final KeyBinding MOUSE_AIM = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_MOUSE_AIM, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_C, CATEGORY);
-	public static final KeyBinding AMMO_SELECT = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_AMMO_SELECT, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_V, CATEGORY);
+	private static final String CATEGORY = "keybind.category.awVehicles";
+	private static final KeyBinding FORWARD = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_FORWARD, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_W,
+			CATEGORY);
+	private static final KeyBinding REVERSE = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_REVERSE, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_S,
+			CATEGORY);
+	private static final KeyBinding LEFT = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_LEFT, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_A, CATEGORY);
+	private static final KeyBinding RIGHT = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_RIGHT, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_D, CATEGORY);
+	private static final KeyBinding ASCEND_AIM_UP = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_ASCEND_AIM_UP, VehicleKeyConflictContext.INSTANCE,
+			Keyboard.KEY_R, CATEGORY);
+	private static final KeyBinding DESCEND_AIM_DOWN = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_DESCEND_AIM_DOWN, VehicleKeyConflictContext.INSTANCE,
+			Keyboard.KEY_F, CATEGORY);
+	private static final KeyBinding FIRE = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_FIRE, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_SPACE, CATEGORY);
+	private static final KeyBinding AMMO_PREV = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_AMMO_PREV, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_T,
+			CATEGORY);
+	private static final KeyBinding AMMO_NEXT = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_AMMO_NEXT, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_G,
+			CATEGORY);
+	private static final KeyBinding TURRET_LEFT = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_TURRET_LEFT, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_Z,
+			CATEGORY);
+	private static final KeyBinding TURRET_RIGHT = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_TURRET_RIGHT, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_X,
+			CATEGORY);
+	private static final KeyBinding MOUSE_AIM = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_MOUSE_AIM, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_C,
+			CATEGORY);
+	private static final KeyBinding AMMO_SELECT = new KeyBinding(AWVehicleStatics.KEY_VEHICLE_AMMO_SELECT, VehicleKeyConflictContext.INSTANCE, Keyboard.KEY_V,
+			CATEGORY);
 
-	private static final Map<KeyBinding, InputCallbackDispatcher> keybindingCallbacks = Maps.newHashMap();
 	private static final Set<Integer> releaseableKeys = new HashSet<>();
 	private static boolean trackedKeyReleased = false;
+	private static final Set<IVehicleMovementHandler> vehicleMovementHandlers = new HashSet<>();
 
 	static {
 		MinecraftForge.EVENT_BUS.register(new VehicleInputHandler());
@@ -73,6 +84,15 @@ public class VehicleInputHandler {
 	}
 
 	private static void initReleaseableKeys() {
+		vehicleMovementHandlers.add(new IVehicleMovementHandler.Impl(FORWARD, REVERSE, p -> p.setForwardInput((byte) 1)));
+		vehicleMovementHandlers.add(new IVehicleMovementHandler.Impl(REVERSE, FORWARD, p -> p.setForwardInput((byte) -1)));
+		vehicleMovementHandlers.add(new IVehicleMovementHandler.Impl(RIGHT, LEFT, p -> p.setTurnInput((byte) 1)));
+		vehicleMovementHandlers.add(new IVehicleMovementHandler.Impl(LEFT, RIGHT, p -> p.setTurnInput((byte) -1)));
+		vehicleMovementHandlers.add(new IVehicleMovementHandler.Impl(ASCEND_AIM_UP, DESCEND_AIM_DOWN, p -> p.setPowerInput((byte) 1)));
+		vehicleMovementHandlers.add(new IVehicleMovementHandler.Impl(DESCEND_AIM_DOWN, ASCEND_AIM_UP, p -> p.setPowerInput((byte) -1)));
+		vehicleMovementHandlers.add(new IVehicleMovementHandler.Impl(TURRET_RIGHT, TURRET_LEFT, p -> p.setRotationInput((byte) 1)));
+		vehicleMovementHandlers.add(new IVehicleMovementHandler.Impl(TURRET_LEFT, TURRET_RIGHT, p -> p.setRotationInput((byte) -1)));
+
 		releaseableKeys.add(FORWARD.getKeyCode());
 		releaseableKeys.add(REVERSE.getKeyCode());
 		releaseableKeys.add(LEFT.getKeyCode());
@@ -83,31 +103,14 @@ public class VehicleInputHandler {
 		releaseableKeys.add(TURRET_RIGHT.getKeyCode());
 	}
 
-	//TODO move this logic to core
-	private static void registerCallBack(KeyBinding keyBinding, InputHandler.IInputCallback callback) {
-		if (keybindingCallbacks.containsKey(keyBinding)) {
-			keybindingCallbacks.get(keyBinding).addInputCallback(callback);
-		} else {
-			keybindingCallbacks.put(keyBinding, new InputCallbackDispatcher(callback));
-		}
-	}
-
 	@SubscribeEvent
 	public void onKeyInput(InputEvent.KeyInputEvent evt) {
-		boolean state = Keyboard.getEventKeyState();
-
-		if (state) {
-			for (Map.Entry<KeyBinding, InputCallbackDispatcher> keybindingCallback : keybindingCallbacks.entrySet()) {
-				if (keybindingCallback.getKey().isKeyDown()) {
-					keybindingCallback.getValue().onKeyPressed();
-				}
-			}
-		} else {
-			trackReleasedKeys(evt);
+		if (!Keyboard.getEventKeyState()) {
+			trackReleasedKeys();
 		}
 	}
 
-	private static void trackReleasedKeys(InputEvent.KeyInputEvent evt) {
+	private static void trackReleasedKeys() {
 		int key = Keyboard.getEventKey();
 		if (releaseableKeys.contains(key)) {
 			trackedKeyReleased = true;
@@ -115,15 +118,16 @@ public class VehicleInputHandler {
 	}
 
 	private static void initCallbacks() {
-		registerCallBack(MOUSE_AIM, () -> AWVehicleStatics.enableMouseAim = !AWVehicleStatics.enableMouseAim); //TODO add code to update config once mouseAim is made into config setting
-		registerCallBack(FIRE, new VehicleCallback(VehicleInputHandler::handleFireAction));
-		registerCallBack(ASCEND_AIM_UP, new VehicleCallback(v -> v.firingHelper.handleAimKeyInput(-1, 0)));
-		registerCallBack(DESCEND_AIM_DOWN, new VehicleCallback(v -> v.firingHelper.handleAimKeyInput(1, 0)));
-		registerCallBack(TURRET_LEFT, new VehicleCallback(v -> v.firingHelper.handleAimKeyInput(0, -1)));
-		registerCallBack(TURRET_RIGHT, new VehicleCallback(v -> v.firingHelper.handleAimKeyInput(0, 1)));
-		registerCallBack(AMMO_NEXT, new VehicleCallback(v -> v.ammoHelper.setNextAmmo()));
-		registerCallBack(AMMO_PREV, new VehicleCallback(v -> v.ammoHelper.setPreviousAmmo()));
-		registerCallBack(AMMO_SELECT, new VehicleCallback(vehicle -> {
+		InputHandler.registerCallBack(MOUSE_AIM,
+				() -> AWVehicleStatics.enableMouseAim = !AWVehicleStatics.enableMouseAim); //TODO add code to update config once mouseAim is made into config setting
+		InputHandler.registerCallBack(FIRE, new VehicleCallback(VehicleInputHandler::handleFireAction));
+		InputHandler.registerCallBack(ASCEND_AIM_UP, new VehicleCallback(v -> v.firingHelper.handleAimKeyInput(-1, 0)));
+		InputHandler.registerCallBack(DESCEND_AIM_DOWN, new VehicleCallback(v -> v.firingHelper.handleAimKeyInput(1, 0)));
+		InputHandler.registerCallBack(TURRET_LEFT, new VehicleCallback(v -> v.firingHelper.handleAimKeyInput(0, -1)));
+		InputHandler.registerCallBack(TURRET_RIGHT, new VehicleCallback(v -> v.firingHelper.handleAimKeyInput(0, 1)));
+		InputHandler.registerCallBack(AMMO_NEXT, new VehicleCallback(v -> v.ammoHelper.setNextAmmo()));
+		InputHandler.registerCallBack(AMMO_PREV, new VehicleCallback(v -> v.ammoHelper.setPreviousAmmo()));
+		InputHandler.registerCallBack(AMMO_SELECT, new VehicleCallback(vehicle -> {
 			if (!vehicle.vehicleType.getValidAmmoTypes().isEmpty()) {
 				NetworkHandler.INSTANCE.openGui(Minecraft.getMinecraft().player, NetworkHandler.GUI_VEHICLE_AMMO_SELECTION, vehicle.getEntityId());
 			}
@@ -131,60 +135,46 @@ public class VehicleInputHandler {
 	}
 
 	private static void handleFireAction(VehicleBase vehicle) {
-		Minecraft mc = Minecraft.getMinecraft();
 		if (vehicle.isAimable()) {
-			RayTraceResult pos = getPlayerLookTargetClient(mc.player, 140, vehicle);
-			if (pos != null) {
-				vehicle.firingHelper.handleFireInput(pos.hitVec);
-			} else {
-				vehicle.firingHelper.handleFireInput(null);
-			}
+			vehicle.firingHelper.handleFireInput();
 		}
 	}
 
-	private static RayTraceResult getPlayerLookTargetClient(EntityPlayer player, float range, Entity excludedEntity) {
-		Vec3d playerPos = RayTracer.getCorrectedHeadVec(player);
+	private static final float MAX_RANGE = 140;
+
+	private static RayTraceResult getPlayerLookTargetClient(EntityPlayer player, Entity excludedEntity) {
+		Vec3d playerEyesPos = RayTracer.getCorrectedHeadVec(player);
 		Vec3d lookVector = player.getLook(0);
-		Vec3d endVector = playerPos.addVector(lookVector.x * range, lookVector.y * range, lookVector.z * range);
-		RayTraceResult blockHit = player.world.rayTraceBlocks(playerPos, endVector);
+		Vec3d endVector = playerEyesPos.addVector(lookVector.x * MAX_RANGE, lookVector.y * MAX_RANGE, lookVector.z * MAX_RANGE);
+		RayTraceResult blockHit = player.world.rayTraceBlocks(playerEyesPos, endVector);
 
-		double var9 = 1.f;
+		Optional<Tuple<Double, Entity>> closestEntityFound = getClosestCollidedEntity(excludedEntity, playerEyesPos, lookVector, endVector);
 
-		float closestFound = 0.f;
-		if (blockHit != null) {
-			closestFound = (float) blockHit.hitVec.distanceTo(playerPos);
-		}
-		Minecraft mc = Minecraft.getMinecraft();
-		List<Entity> possibleHitEntities = mc.world.getEntitiesWithinAABBExcludingEntity(mc.getRenderViewEntity(), mc.getRenderViewEntity().getEntityBoundingBox().expand(lookVector.x * range, lookVector.y * range, lookVector.z * range).grow(var9, var9, var9));
-		Entity hitEntity = null;
-		for (Entity currentExaminingEntity : possibleHitEntities) {
-			if (currentExaminingEntity == excludedEntity) {
-				continue;
-			}
-			if (currentExaminingEntity.canBeCollidedWith()) {
-				float borderSize = currentExaminingEntity.getCollisionBorderSize();
-				AxisAlignedBB entBB = currentExaminingEntity.getEntityBoundingBox().grow((double) borderSize, (double) borderSize, (double) borderSize);
-				RayTraceResult var17 = entBB.calculateIntercept(playerPos, endVector);
-
-				if (entBB.contains(playerPos)) {
-					if (0.0D < closestFound || closestFound == 0.0D) {
-						hitEntity = currentExaminingEntity;
-						closestFound = 0.0f;
-					}
-				} else if (var17 != null) {
-					double var18 = playerPos.distanceTo(var17.hitVec);
-
-					if (var18 < closestFound || closestFound == 0.0D) {
-						hitEntity = currentExaminingEntity;
-						closestFound = (float) var18;
-					}
-				}
-			}
-		}
-		if (hitEntity != null) {
+		if (closestEntityFound.isPresent() && (blockHit == null || closestEntityFound.get().getFirst() < blockHit.hitVec.distanceTo(playerEyesPos))) {
+			Entity hitEntity = closestEntityFound.get().getSecond();
 			blockHit = new RayTraceResult(hitEntity, new Vec3d(hitEntity.posX, hitEntity.posY + hitEntity.height * 0.65d, hitEntity.posZ));
 		}
 		return blockHit;
+	}
+
+	private static Optional<Tuple<Double, Entity>> getClosestCollidedEntity(Entity excludedEntity, Vec3d playerEyesPos, Vec3d lookVector, Vec3d endVector) {
+		Minecraft mc = Minecraft.getMinecraft();
+
+		//noinspection ConstantConditions
+		List<Entity> possibleHitEntities = mc.world.getEntitiesWithinAABBExcludingEntity(mc.getRenderViewEntity(),
+				mc.getRenderViewEntity().getEntityBoundingBox().expand(lookVector.x * MAX_RANGE, lookVector.y * MAX_RANGE, lookVector.z * MAX_RANGE)
+						.grow(1, 1, 1));
+		return possibleHitEntities.stream().filter(e -> e != excludedEntity && e.canBeCollidedWith())
+				.map(e -> new Tuple<>(getDistanceToCollidedEntity(e, playerEyesPos, endVector), e)).filter(t -> t.getFirst() < Double.MAX_VALUE)
+				.sorted(Comparator.comparing(Tuple::getFirst)).findFirst();
+	}
+
+	private static double getDistanceToCollidedEntity(Entity entity, Vec3d startVector, Vec3d endVector) {
+		float borderSize = entity.getCollisionBorderSize();
+		AxisAlignedBB entBB = entity.getEntityBoundingBox().grow((double) borderSize, (double) borderSize, (double) borderSize);
+		RayTraceResult rayTraceResult = entBB.calculateIntercept(startVector, endVector);
+
+		return rayTraceResult != null ? startVector.distanceTo(rayTraceResult.hitVec) : Double.MAX_VALUE;
 	}
 
 	@SubscribeEvent
@@ -203,16 +193,12 @@ public class VehicleInputHandler {
 		}
 	}
 
-	private int inputUpdateTicks = 0;
-
 	private void handleMouseAimUpdate(VehicleBase vehicle) {
-		inputUpdateTicks--; //TODO can this be replaced with vehicle.ticksExisted % 5?
-		if (inputUpdateTicks > 0) {
+		if (vehicle.ticksExisted % 5 == 0) {
 			return;
 		}
-		inputUpdateTicks = 5;
 		Minecraft mc = Minecraft.getMinecraft();
-		RayTraceResult pos = getPlayerLookTargetClient(mc.player, 140, vehicle);
+		RayTraceResult pos = getPlayerLookTargetClient(mc.player, vehicle);
 		if (pos != null) {
 			vehicle.firingHelper.handleAimInput(pos.hitVec);
 		}
@@ -223,31 +209,12 @@ public class VehicleInputHandler {
 			trackedKeyReleased = false;
 
 			PacketVehicleInput pkt = new PacketVehicleInput(vehicle);
-			if (FORWARD.isKeyDown() && !REVERSE.isKeyDown()) {
-				pkt.setForwardInput((byte) 1);
-			} else if (REVERSE.isKeyDown() && !FORWARD.isKeyDown()) {
-				pkt.setForwardInput((byte) -1);
-			}
 
-			if (LEFT.isKeyDown() && !RIGHT.isKeyDown()) {
-				pkt.setTurnInput((byte) -1);
-			} else if (RIGHT.isKeyDown() && !LEFT.isKeyDown()) {
-				pkt.setTurnInput((byte) 1);
-			}
-
-			if (ASCEND_AIM_UP.isKeyDown() && !DESCEND_AIM_DOWN.isKeyDown()) {
-				pkt.setPowerInput((byte) 1);
-			} else if (DESCEND_AIM_DOWN.isKeyDown() && !ASCEND_AIM_UP.isKeyDown()) {
-				pkt.setPowerInput((byte) -1);
-			}
-
-			if (TURRET_LEFT.isKeyDown() && !TURRET_RIGHT.isKeyDown()) {
-				pkt.setRotationInput((byte) -1);
-			} else if (TURRET_RIGHT.isKeyDown() && !TURRET_LEFT.isKeyDown()) {
-				pkt.setRotationInput((byte) 1);
-			}
+			vehicleMovementHandlers.stream().filter(h -> h.getKeyBinding().isKeyDown() && !h.getReverseKeyBinding().isKeyDown())
+					.forEach(h -> h.updatePacket(pkt));
 
 			NetworkHandler.sendToServer(pkt);
 		}
 	}
+
 }

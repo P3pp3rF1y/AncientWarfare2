@@ -2,13 +2,19 @@
     "mod": "biomesoplenty",
     "saplings": [
         {
-            "name": "biomesoplenty:sapling_0"
+            "sapling": {
+                "name": "biomesoplenty:sapling_0"
+            }
         },
         {
-            "name": "biomesoplenty:sapling_1"
+            "sapling": {
+                "name": "biomesoplenty:sapling_1"
+            }
         },
         {
-            "name": "biomesoplenty:sapling_2"
+            "sapling": {
+                "name": "biomesoplenty:sapling_2"
+            }
         }
     ]
 }

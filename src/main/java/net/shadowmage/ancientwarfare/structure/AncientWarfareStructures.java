@@ -49,6 +49,7 @@ import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator
 
 public class AncientWarfareStructures {
 	public static final String modID = "ancientwarfarestructure";
+	public static final String MOD_PREFIX = modID + ":";
 
 	@Instance(value = modID)
 	public static AncientWarfareStructures instance;

@@ -87,7 +87,7 @@ public class SlotResearchCrafting extends Slot {
 			}
 		}
 		amountCrafted = 0;
-		if (irecipe != null && !irecipe.isHidden()) {
+		if (irecipe != null && !irecipe.isDynamic()) {
 			player.unlockRecipes(Lists.newArrayList(irecipe));
 			inventorycraftresult.setRecipeUsed(null);
 		}

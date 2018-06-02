@@ -70,7 +70,7 @@ public abstract class NpcFaction extends NpcBase {
 			return standing < 0;
 		} else if (e instanceof NpcPlayerOwned) {
 			NpcBase npc = (NpcBase) e;
-			int standing = FactionTracker.INSTANCE.getStandingFor(world, npc.getOwnerName(), getFaction());
+			int standing = FactionTracker.INSTANCE.getStandingFor(world, npc.getOwner().getName(), getFaction());
 			if (getNpcFullType().endsWith("elite")) {
 				standing -= 50;
 			}
@@ -117,7 +117,7 @@ public abstract class NpcFaction extends NpcBase {
 			EntityPlayer player = (EntityPlayer) damageSource.getTrueSource();
 			FactionTracker.INSTANCE.adjustStandingFor(world, player.getName(), getFaction(), -AWNPCStatics.factionLossOnDeath);
 		} else if (damageSource.getTrueSource() instanceof NpcPlayerOwned) {
-			String playerName = ((NpcBase) damageSource.getTrueSource()).getOwnerName();
+			String playerName = ((NpcBase) damageSource.getTrueSource()).getOwner().getName();
 			if (playerName != null) {
 				FactionTracker.INSTANCE.adjustStandingFor(world, playerName, getFaction(), -AWNPCStatics.factionLossOnDeath);
 			}

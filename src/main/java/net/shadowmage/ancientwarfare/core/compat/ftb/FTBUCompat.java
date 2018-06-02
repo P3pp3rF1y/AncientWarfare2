@@ -4,6 +4,7 @@ import com.feed_the_beast.ftblib.lib.data.ForgePlayer;
 import com.feed_the_beast.ftblib.lib.data.Universe;
 import net.minecraft.util.Tuple;
 
+import javax.annotation.Nullable;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -17,7 +18,7 @@ public class FTBUCompat extends FTBUCompatDummy {
 		return checkFTBPlayers(playerUUID1, playerUUID2, t -> t.getFirst().team != null && t.getFirst().team.isMember(t.getSecond()));
 	}
 
-	private boolean checkFTBPlayers(UUID playerUUID1, UUID playerUUID2, Function<Tuple<ForgePlayer, ForgePlayer>, Boolean> playerCheck) {
+	private boolean checkFTBPlayers(@Nullable UUID playerUUID1, UUID playerUUID2, Function<Tuple<ForgePlayer, ForgePlayer>, Boolean> playerCheck) {
 		if (!Universe.loaded()) {
 			return false;
 		}
@@ -30,7 +31,7 @@ public class FTBUCompat extends FTBUCompatDummy {
 	}
 
 	@Override
-	public boolean areFriendly(UUID player1, UUID player2) {
+	public boolean areFriendly(@Nullable UUID player1, UUID player2) {
 		return checkFTBPlayers(player1, player2, t -> t.getFirst().team != null && (t.getFirst().team.isMember(t.getSecond()) || t.getFirst().team.isAlly(t.getSecond()))) || super.areFriendly(player1, player2);
 	}
 }

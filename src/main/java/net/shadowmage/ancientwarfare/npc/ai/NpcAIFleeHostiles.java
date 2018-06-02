@@ -40,7 +40,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 			if (selectedEntity.isEntityAlive()) {
 				if (selectedEntity instanceof NpcBase) {
 					if (((NpcBase) selectedEntity).getNpcSubType().equals("soldier"))
-						if (((NpcBase) selectedEntity).hasCommandPermissions(npc.getOwnerUuid(), npc.getOwnerName()))
+						if (((NpcBase) selectedEntity).hasCommandPermissions(npc.getOwner()))
 							return true; // is a friendly soldier
 					return ((NpcBase) selectedEntity).isHostileTowards(NpcAIFleeHostiles.this.npc);
 				} else
@@ -74,7 +74,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 				flee = true;
 			else {
 				fleeVector = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.npc, MAX_FLEE_RANGE, HEIGHT_CHECK, new Vec3d(nearestHostile.posX, nearestHostile.posY, nearestHostile.posZ));
-				if (fleeVector == null || nearestHostile.getDistanceSq(fleeVector.x, fleeVector.y, fleeVector.z) < nearestHostile.getDistanceSqToEntity(this.npc))
+				if (fleeVector == null || nearestHostile.getDistanceSq(fleeVector.x, fleeVector.y, fleeVector.z) < nearestHostile.getDistanceSq(this.npc))
 					flee = false; //did not find random flee-towards target, perhaps retry next tick
 				else
 					flee = true;
@@ -101,7 +101,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 			if (npc.canEntityBeSeen((Entity) entity)) {
 				if (entity instanceof NpcBase) {
 					if (((NpcBase) entity).getNpcSubType().equals("soldier"))
-						if (((NpcBase) entity).hasCommandPermissions(npc.getOwnerUuid(), npc.getOwnerName()))
+						if (((NpcBase) entity).hasCommandPermissions(npc.getOwner()))
 							nearbySoldiers.add((NpcCombat) entity);
 				} else
 					npc.nearbyHostiles.add((Entity) entity);
@@ -177,7 +177,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 			if (distSq > MIN_RANGE)
 				moveToPosition(fleeVector.x, fleeVector.y, fleeVector.z, distSq);
 			else {
-				if (npc.getDistanceSqToEntity(npc.getAttackTarget()) < PURSUE_RANGE) {//entity still chasing, find a new flee vector
+				if (npc.getDistanceSq(npc.getAttackTarget()) < PURSUE_RANGE) {//entity still chasing, find a new flee vector
 					fleeVector = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.npc, MAX_FLEE_RANGE, HEIGHT_CHECK, new Vec3d(npc.getAttackTarget().posX, npc.getAttackTarget().posY, npc.getAttackTarget().posZ));
 					if (fleeVector == null)
 						npc.setAttackTarget(null);//retry next tick..perhaps...

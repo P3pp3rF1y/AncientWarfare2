@@ -38,7 +38,7 @@ public class ItemUpkeepOrder extends ItemOrders {
 	}
 
 	@Override
-	public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
+	public void onKeyAction(EntityPlayer player, ItemStack stack, ItemAltFunction altFunction) {
 		UpkeepOrder upkeepOrder = UpkeepOrder.getUpkeepOrder(stack);
 		if (upkeepOrder != null) {
 			BlockPos hit = BlockTools.getBlockClickedOn(player, player.world, false);

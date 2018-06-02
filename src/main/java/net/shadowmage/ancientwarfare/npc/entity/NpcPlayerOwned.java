@@ -134,7 +134,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 		TileEntity te = world.getTileEntity(pos);
 		if (te instanceof TileTownHall) {
 			TileTownHall townHall = (TileTownHall) te;
-			if (hasCommandPermissions(townHall.getOwnerUuid(), townHall.getOwnerName()))
+			if (hasCommandPermissions(townHall.getOwner()))
 				return true;
 		}
 		setTownHallPosition(null);
@@ -176,7 +176,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 		if (NpcAI.isAlwaysHostileToNpcs(entityTarget))
 			return true;
 		else if ((entityTarget instanceof NpcPlayerOwned) || (entityTarget instanceof EntityPlayer)) {
-			return !isEntitySameTeamOrFriends(entityTarget);
+			return !getOwner().isOwnerOrSameTeamOrFriend(entityTarget);
 		} else if (entityTarget instanceof NpcFaction) {
 			return ((NpcFaction) entityTarget).isHostileTowards(this); // hostility is based on faction standing
 		} else {
@@ -197,16 +197,13 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 
 	@Override
 	public boolean canTarget(Entity e) {
-		if (isEntitySameTeamOrFriends(e))
-			return false; // don't let npcs target their own teams npcs/players
-		return e instanceof EntityLivingBase;
+		// don't let npcs target their own teams npcs/players
+		return !getOwner().isOwnerOrSameTeamOrFriend(e) && e instanceof EntityLivingBase;
 	}
 
 	@Override
 	public boolean canBeAttackedBy(Entity e) {
-		if (isEntitySameTeamOrFriends(e))
-			return false; // can only be attacked by different team - prevent friendly fire and neutral infighting
-		return true;
+		return !getOwner().isOwnerOrSameTeamOrFriend(e);
 	}
 
 	@Override

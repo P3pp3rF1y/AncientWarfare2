@@ -1,0 +1,9 @@
+{
+    "mod": "randomthings",
+    "tillable_mapping": [
+        {
+            "tillable": "randomthings:fertilizeddirt",
+            "tilled": "randomthings:fertilizeddirttilled"
+        }
+    ]
+}

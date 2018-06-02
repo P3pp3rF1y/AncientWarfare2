@@ -62,7 +62,7 @@ public class NpcAIDistressResponse extends NpcAI<NpcBase> {
 			return;
 		}
 		this.npc.getLookHelper().setLookPositionWithEntity(this.target, 10.0F, (float) this.npc.getVerticalFaceSpeed());
-		double distance = npc.getDistanceSqToEntity(target);
+		double distance = npc.getDistanceSq(target);
 		if (distance > followStopDistance) {
 			this.npc.addAITask(TASK_MOVE + TASK_ATTACK);
 			moveToEntity(target, distance);

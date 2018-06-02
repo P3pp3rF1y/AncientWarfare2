@@ -29,9 +29,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
-import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.vehicle.AncientWarfareVehicles;
 import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
@@ -218,7 +216,7 @@ public abstract class Ammo implements IAmmo {
 		if (!AWVehicleStatics.blockDestruction /*|| !WarzoneManager.instance().shouldBreakBlock(world, x, y, z) TODO warzone implementation?*/) {
 			return;
 		}
-		BlockTools.breakBlockAndDrop(world, AWFakePlayer.get(world), new BlockPos(x, y, z));
+		BlockTools.breakBlockAndDrop(world, new BlockPos(x, y, z));
 	}
 
 	/**
@@ -247,13 +245,13 @@ public abstract class Ammo implements IAmmo {
 			UUID otherId = null;
 			String otherName = "";
 			if (entity instanceof NpcBase) {
-				otherId = ((NpcBase) entity).getOwnerUuid();
-				otherName = ((NpcBase) entity).getOwnerName();
+				otherId = ((NpcBase) entity).getOwner().getUUID();
+				otherName = ((NpcBase) entity).getOwner().getName();
 			} else if (entity instanceof EntityPlayer) {
 				otherId = entity.getUniqueID();
 				otherName = entity.getName();
 			}
-			return !EntityTools.isOwnerOrSameTeam(npc.getOwnerUuid(), npc.getOwnerName(), otherId, otherName);
+			return !npc.getOwner().isOwnerOrSameTeamOrFriend(world, otherId, otherName);
 		}
 		return true;
 	}

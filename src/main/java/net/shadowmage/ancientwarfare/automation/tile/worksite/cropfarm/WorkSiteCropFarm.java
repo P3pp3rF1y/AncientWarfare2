@@ -20,6 +20,7 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.shadowmage.ancientwarfare.automation.registry.CropFarmRegistry;
 import net.shadowmage.ancientwarfare.automation.tile.worksite.TileWorksiteFarm;
+import net.shadowmage.ancientwarfare.core.entity.AWFakePlayer;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 
 import javax.annotation.Nonnull;
@@ -109,7 +110,7 @@ public class WorkSiteCropFarm extends TileWorksiteFarm {
 				it.remove();
 				IBlockState state = world.getBlockState(position);
 				ICrop crop = CropFarmRegistry.getCrop(state);
-				return crop.harvest(world, state, position, getOwnerAsPlayer(), getFortune(), inventoryForDrops);
+				return crop.harvest(world, state, position, getFortune(), inventoryForDrops);
 			}
 		} else if (hasToPlant()) {
 			it = blocksToPlant.iterator();
@@ -148,7 +149,7 @@ public class WorkSiteCropFarm extends TileWorksiteFarm {
 						}
 						if (isBonemeal(stack)) {
 							ItemStack clone = stack.copy();
-							if (ItemDye.applyBonemeal(clone, world, position, getOwnerAsPlayer(), EnumHand.MAIN_HAND)) {
+							if (ItemDye.applyBonemeal(clone, world, position, AWFakePlayer.get(world), EnumHand.MAIN_HAND)) {
 								miscInventory.extractItem(slot, 1, false);
 								world.playEvent(2005, position, 0);
 							}

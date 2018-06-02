@@ -4,7 +4,6 @@ import com.infinityraider.agricraft.api.v1.crop.IAgriCrop;
 import com.infinityraider.agricraft.init.AgriBlocks;
 import com.infinityraider.agricraft.tiles.TileEntityCrop;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
@@ -37,7 +36,7 @@ public class CropAgricraftCrop implements ICrop {
 	}
 
 	@Override
-	public boolean harvest(World world, IBlockState state, BlockPos pos, EntityPlayer player, int fortune, IItemHandler inventory) {
+	public boolean harvest(World world, IBlockState state, BlockPos pos, int fortune, IItemHandler inventory) {
 		Optional<TileEntityCrop> te = WorldTools.getTile(world, pos, TileEntityCrop.class);
 
 		if (!te.isPresent()) {

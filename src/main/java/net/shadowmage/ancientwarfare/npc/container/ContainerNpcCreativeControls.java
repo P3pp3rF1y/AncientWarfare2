@@ -17,7 +17,7 @@ public class ContainerNpcCreativeControls extends ContainerNpcBase<NpcBase> {
 
 	public ContainerNpcCreativeControls(EntityPlayer player, int x, int y, int z) {
 		super(player, x);
-		ownerName = entity.getOwnerName();
+		ownerName = entity.getOwner().getName();
 		customTexRef = entity.getCustomTex();
 		wander = entity.getIsAIEnabled();
 		maxHealth = entity.getMaxHealthOverride();

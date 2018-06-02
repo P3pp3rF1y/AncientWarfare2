@@ -16,13 +16,16 @@ import javax.annotation.Nullable;
 import java.util.Collection;
 import java.util.EnumSet;
 import java.util.Iterator;
+import java.util.Set;
 
 public abstract class TileWorksiteBounded extends TileWorksiteBase implements IBoundedSite, IChunkLoaderTile {
 
+	private static final String BB_MIN_TAG = "bbMin";
+	private static final String BB_MAX_TAG = "bbMax";
 	/*
-	 * minimum position of the work area bounding box, or a single block position if bbMax is not set
-	 * must not be null if this block has a work-area
-	 */
+			 * minimum position of the work area bounding box, or a single block position if bbMax is not set
+			 * must not be null if this block has a work-area
+			 */
 	private BlockPos bbMin;
 
 	/*
@@ -33,8 +36,9 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
 	private ForgeChunkManager.Ticket chunkTicket = null;
 
 	@Override
-	public EnumSet<WorksiteUpgrade> getValidUpgrades() {
-		return EnumSet.of(WorksiteUpgrade.ENCHANTED_TOOLS_1, WorksiteUpgrade.ENCHANTED_TOOLS_2, WorksiteUpgrade.SIZE_MEDIUM, WorksiteUpgrade.SIZE_LARGE, WorksiteUpgrade.TOOL_QUALITY_1, WorksiteUpgrade.TOOL_QUALITY_2, WorksiteUpgrade.TOOL_QUALITY_3, WorksiteUpgrade.BASIC_CHUNK_LOADER);
+	public Set<WorksiteUpgrade> getValidUpgrades() {
+		return EnumSet.of(WorksiteUpgrade.ENCHANTED_TOOLS_1, WorksiteUpgrade.ENCHANTED_TOOLS_2, WorksiteUpgrade.SIZE_MEDIUM, WorksiteUpgrade.SIZE_LARGE,
+				WorksiteUpgrade.TOOL_QUALITY_1, WorksiteUpgrade.TOOL_QUALITY_2, WorksiteUpgrade.TOOL_QUALITY_3, WorksiteUpgrade.BASIC_CHUNK_LOADER);
 	}
 
 	@Override
@@ -64,16 +68,14 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
 
 	@Override
 	public final boolean hasWorkBounds() {
-		return getWorkBoundsMin() != null && getWorkBoundsMax() != null;
+		return !bbMin.equals(BlockPos.ORIGIN) && !bbMax.equals(BlockPos.ORIGIN);
 	}
 
-	@Nullable
 	@Override
 	public final BlockPos getWorkBoundsMin() {
 		return bbMin;
 	}
 
-	@Nullable
 	@Override
 	public final BlockPos getWorkBoundsMax() {
 		return bbMax;
@@ -97,7 +99,7 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
 	}
 
 	@Override
-	public final void setTicket(ForgeChunkManager.Ticket tk) {
+	public final void setTicket(@Nullable ForgeChunkManager.Ticket tk) {
 		if (chunkTicket != null) {
 			ForgeChunkManager.releaseTicket(chunkTicket);
 			chunkTicket = null;
@@ -123,7 +125,7 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
 		}
 	}
 
-	public final void setupInitialTicket() {
+	private void setupInitialTicket() {
 		if (chunkTicket != null) {
 			ForgeChunkManager.releaseTicket(chunkTicket);
 		}
@@ -149,7 +151,7 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
 		setupInitialTicket();
 	}
 
-	public boolean isInBounds(BlockPos pos) {
+	boolean isInBounds(BlockPos pos) {
 		return pos.getX() >= bbMin.getX() && pos.getX() <= bbMax.getX() && pos.getZ() >= bbMin.getZ() && pos.getZ() <= bbMax.getZ();
 	}
 
@@ -203,11 +205,11 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
-		if (tag.hasKey("bbMin")) {
-			bbMin = BlockPos.fromLong(tag.getLong("bbMin"));
+		if (tag.hasKey(BB_MIN_TAG)) {
+			bbMin = BlockPos.fromLong(tag.getLong(BB_MIN_TAG));
 		}
-		if (tag.hasKey("bbMax")) {
-			bbMax = BlockPos.fromLong(tag.getLong("bbMax"));
+		if (tag.hasKey(BB_MAX_TAG)) {
+			bbMax = BlockPos.fromLong(tag.getLong(BB_MAX_TAG));
 		}
 		if (bbMax == null) {
 			setWorkBoundsMax(pos.add(0, 0, 1));
@@ -221,10 +223,10 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 		if (bbMin != null) {
-			tag.setLong("bbMin", bbMin.toLong());
+			tag.setLong(BB_MIN_TAG, bbMin.toLong());
 		}
 		if (bbMax != null) {
-			tag.setLong("bbMax", bbMax.toLong());
+			tag.setLong(BB_MAX_TAG, bbMax.toLong());
 		}
 
 		return tag;
@@ -234,21 +236,21 @@ public abstract class TileWorksiteBounded extends TileWorksiteBase implements IB
 	protected void writeUpdateNBT(NBTTagCompound tag) {
 		super.writeUpdateNBT(tag);
 		if (bbMin != null) {
-			tag.setLong("bbMin", bbMin.toLong());
+			tag.setLong(BB_MIN_TAG, bbMin.toLong());
 		}
 		if (bbMax != null) {
-			tag.setLong("bbMax", bbMax.toLong());
+			tag.setLong(BB_MAX_TAG, bbMax.toLong());
 		}
 	}
 
 	@Override
 	protected void handleUpdateNBT(NBTTagCompound tag) {
 		super.handleUpdateNBT(tag);
-		if (tag.hasKey("bbMin")) {
-			bbMin = BlockPos.fromLong(tag.getLong("bbMin"));
+		if (tag.hasKey(BB_MIN_TAG)) {
+			bbMin = BlockPos.fromLong(tag.getLong(BB_MIN_TAG));
 		}
-		if (tag.hasKey("bbMax")) {
-			bbMax = BlockPos.fromLong(tag.getLong("bbMax"));
+		if (tag.hasKey(BB_MAX_TAG)) {
+			bbMax = BlockPos.fromLong(tag.getLong(BB_MAX_TAG));
 		}
 	}
 }

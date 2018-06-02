@@ -48,8 +48,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.shadowmage.ancientwarfare.core.interfaces.IOwnable;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.owner.IOwnable;
+import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
@@ -78,7 +79,6 @@ import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
-import java.util.UUID;
 
 public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, IMissileHitCallback, IEntityContainerSynch, IPathableEntity, IOwnable {
 
@@ -181,8 +181,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	public PathWorldAccessEntity worldAccess;
 	public IVehicleType vehicleType = VehicleRegistry.CATAPULT_STAND_FIXED;//set to dummy vehicle so it is never null...
 	public int vehicleMaterialLevel = 0;//the current material level of this vehicle. should be read/set prior to calling updateBaseStats
-	private String ownerName = "";
-	private UUID ownerUuid = new UUID(0, 0);
+	private Owner owner = Owner.EMPTY;
 
 	public VehicleBase(World par1World) {
 		super(par1World);
@@ -229,6 +228,10 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 			health = this.baseHealth;
 		}
 		dataManager.set(VEHICLE_HEALTH, health);
+	}
+
+	public boolean canTurretTurn() {
+		return !MathHelper.epsilonEquals(baseTurretRotationMax, 0);
 	}
 
 	public float getHealth() {
@@ -325,7 +328,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	@Override
 	public void onCollideWithPlayer(EntityPlayer par1EntityPlayer) {
 		super.onCollideWithPlayer(par1EntityPlayer);
-		if (!world.isRemote && par1EntityPlayer instanceof EntityPlayerMP && par1EntityPlayer.posY > posY && par1EntityPlayer.isCollidedVertically) {
+		if (!world.isRemote && par1EntityPlayer instanceof EntityPlayerMP && par1EntityPlayer.posY > posY && ((EntityPlayerMP) par1EntityPlayer).collidedVertically) {
 			EntityPlayerMP player = (EntityPlayerMP) par1EntityPlayer;
 /*			TODO handle collision with players to allow them flying and disallow once they stop colliding
 			probably a collection of players in collision with this entity, on update check if they have collided in the last 10? ticks and if not disallow flying
@@ -419,7 +422,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	public float getEffectiveRange(float verticalOffset) {
 		if (vehicleType == VehicleRegistry.BATTERING_RAM)//TODO ugly hack...
 		{
-			return 5;
+			return 1.5f;
 		}
 		float angle;
 		if (currentTurretPitchMin < 45 && currentTurretPitchMax > 45)//if the angle stradles 45, return 45
@@ -528,7 +531,6 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	 * reset all upgradeable stats back to the base for this vehicle
 	 */
 	public void resetCurrentStats() {
-		this.firingHelper.resetUpgradeStats();
 		this.currentForwardSpeedMax = this.baseForwardSpeed;
 		this.currentStrafeSpeedMax = this.baseStrafeSpeed;
 		this.currentTurretPitchMin = this.basePitchMin;
@@ -584,7 +586,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 			}
 		}
 		if (this.assignedRider != null) {
-			if (assignedRider.isDead || assignedRider.getRidingEntity() != this || !assignedRider.isRiding() || assignedRider.getRidingEntity() != this || (this.getDistanceToEntity(assignedRider) > (AWNPCStatics.npcActionRange * AWNPCStatics.npcActionRange))) {
+			if (assignedRider.isDead || assignedRider.getRidingEntity() != this || !assignedRider.isRiding() || assignedRider.getRidingEntity() != this || (this.getDistanceSq(assignedRider) > (AWNPCStatics.npcActionRange * AWNPCStatics.npcActionRange))) {
 				//TODO config setting for vehicle search range
 				this.assignedRider = null;
 			}
@@ -818,20 +820,22 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 
 	@Override
 	public void updatePassenger(Entity passenger) {
-
 		double posX = this.posX;
 		double posY = this.posY + this.getRiderVerticalOffset();
 		double posZ = this.posZ;
-		if (passenger instanceof NpcBase) {
-			posY -= 0.5f;
-		}
+
 		float yaw = this.vehicleType.moveRiderWithTurret() ? localTurretRotation : rotationYaw;
 		posX += Trig.sinDegrees(yaw) * -this.getRiderForwardOffset();
 		posX += Trig.sinDegrees(yaw + 90) * this.getRiderHorizontalOffset();
 		posZ += Trig.cosDegrees(yaw) * -this.getRiderForwardOffset();
 		posZ += Trig.cosDegrees(yaw + 90) * this.getRiderHorizontalOffset();
-		passenger.setPosition(posX, posY + passenger.getYOffset(), posZ);
-		passenger.rotationYaw -= this.moveHelper.getRotationSpeed();
+		if (passenger instanceof NpcBase) {
+			passenger.setPositionAndRotation(posX, posY + passenger.getYOffset(), posZ, 180 - localTurretRotation, passenger.rotationPitch);
+			passenger.setRenderYawOffset(180 - localTurretRotation);
+		} else {
+			passenger.setPosition(posX, posY + passenger.getYOffset(), posZ);
+			passenger.rotationYaw -= this.moveHelper.getRotationSpeed();
+		}
 	}
 
 	@Override
@@ -897,8 +901,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		pb.writeFloat(localTurretRotation);
 		pb.writeFloat(localTurretDestPitch);
 		pb.writeFloat(localTurretDestRot);
-		pb.writeString(ownerName);
-		pb.writeUniqueId(ownerUuid);
+		owner.serializeToBuffer(buffer);
 		pb.writeFloat(localTurretRotationHome);
 		pb.writeBoolean(this.isSettingUp);
 		if (this.isSettingUp) {
@@ -931,8 +934,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		this.firingHelper.clientTurretPitch = localTurretPitch;
 		this.firingHelper.clientTurretYaw = localTurretRotation;
 		this.upgradeHelper.updateUpgradeStats();
-		this.ownerName = pb.readString(16);
-		this.ownerUuid = pb.readUniqueId();
+		owner = new Owner(additionalData);
 		this.localTurretRotationHome = pb.readFloat();
 		this.isSettingUp = pb.readBoolean();
 		if (this.isSettingUp) {
@@ -961,8 +963,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		this.localTurretDestRot = tag.getFloat("trd");
 		this.upgradeHelper.updateUpgrades();
 		this.ammoHelper.updateAmmoCounts();
-		this.ownerName = tag.getString("ownerName");
-		this.ownerUuid = tag.getUniqueId("ownerUuid");
+		owner = Owner.deserializeFromNBT(tag);
 		this.isSettingUp = tag.getBoolean("setup");
 		if (this.isSettingUp) {
 			this.setupTicks = tag.getInteger("sTick");
@@ -987,8 +988,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		tag.setFloat("tpd", localTurretDestPitch);
 		tag.setFloat("tr", localTurretRotation);
 		tag.setFloat("trd", localTurretDestRot);
-		tag.setString("ownerName", ownerName);
-		tag.setUniqueId("ownerUuid", ownerUuid);
+		owner.serializeToNBT(tag);
 		tag.setBoolean("setup", this.isSettingUp);
 		if (this.isSettingUp) {
 			tag.setInteger("sTick", this.setupTicks);
@@ -1082,30 +1082,28 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 
 	@Override
 	public void setOwner(EntityPlayer player) {
-		ownerName = player.getName();
-		ownerUuid = player.getUniqueID();
+		owner = new Owner(player);
 	}
 
 	@Override
-	public void setOwner(String ownerName, UUID ownerUuid) {
-		this.ownerName = ownerName;
-		this.ownerUuid = ownerUuid;
+	public void setOwner(Owner owner) {
+		this.owner = owner;
 	}
 
-	@Nullable
 	@Override
-	public String getOwnerName() {
-		return ownerName;
-	}
-
-	@Nullable
-	@Override
-	public UUID getOwnerUuid() {
-		return ownerUuid;
+	public Owner getOwner() {
+		return owner;
 	}
 
 	@Override
 	public boolean isOwner(EntityPlayer player) {
-		return player.getUniqueID().equals(ownerUuid);
+		return owner.isOwnerOrSameTeamOrFriend(player);
+	}
+
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound compound) {
+		//moving passengers to the same position as vehicle on save otherwise they can end up in a different chunk and MC will kill them on load
+		getPassengers().forEach(e -> e.setPosition(posX, posY, posZ));
+		return super.writeToNBT(compound);
 	}
 }

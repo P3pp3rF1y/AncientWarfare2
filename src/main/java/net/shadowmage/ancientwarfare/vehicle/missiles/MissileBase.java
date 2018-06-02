@@ -236,7 +236,7 @@ public class MissileBase extends Entity implements IEntityAdditionalSpawnData {
 					ent = (Entity) it.next();
 					if (ent != null && ent.getClass() != MissileBase.class)//don't collide with missiles
 					{
-						foundDist = this.getDistanceToEntity(ent);
+						foundDist = this.getDistance(ent);
 						if (foundDist < entProx) {
 							this.onImpactEntity(ent, (float) posX, (float) posY, (float) posZ);
 							break;

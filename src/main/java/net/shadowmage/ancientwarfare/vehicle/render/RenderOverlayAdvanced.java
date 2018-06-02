@@ -1,27 +1,7 @@
-/**
- * Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
- * This software is distributed under the terms of the GNU General Public License.
- * Please see COPYING for precise license information.
- * <p>
- * This file is part of Ancient Warfare.
- * <p>
- * Ancient Warfare is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * Ancient Warfare is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.vehicle.render;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -47,49 +27,52 @@ public class RenderOverlayAdvanced {
 		}
 	}
 
-	public static void renderAdvancedVehicleOverlay(VehicleBase vehicle, EntityPlayer player, float partialTick) {
+	private static void renderAdvancedVehicleOverlay(VehicleBase vehicle, EntityPlayer player, float partialTick) {
 		if (vehicle.vehicleType == VehicleRegistry.BATTERING_RAM) {
 			renderBatteringRamOverlay(vehicle, player, partialTick);
 		} else if (vehicle.ammoHelper.getCurrentAmmoType() != null && vehicle.ammoHelper.getCurrentAmmoType().isRocket()) {
-			renderRocketFlightPath(vehicle, player, partialTick);
+			renderOverlay(vehicle, player, partialTick,
+					(rOffset, speed, accVec, gravity) -> drawRocketFlightPath(vehicle, player, rOffset, speed, accVec, gravity));
 		} else if (vehicle.ammoHelper.getCurrentAmmoType() != null && vehicle.ammoHelper.getCurrentAmmoType().isTorpedo()) {
-			renderTorpedoPath(vehicle, player, partialTick);
+			renderOverlay(vehicle, player, partialTick, (rOffset, speed, accVec, gravity) -> drawTorpedoPath(vehicle, rOffset, speed, accVec));
 		} else {
-			renderNormalVehicleOverlay(vehicle, player, partialTick);
+			renderOverlay(vehicle, player, partialTick, (rOffset, speed, accVec, gravity) -> drawNormalTrajectory(vehicle, player, rOffset, gravity, accVec));
 		}
 	}
 
-	public static void renderTorpedoPath(VehicleBase vehicle, EntityPlayer player, float partialTick) {
-		GL11.glPushMatrix();
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glColor4d(1, 1, 1, 0.6d);
+	private static void renderOverlay(VehicleBase vehicle, EntityPlayer player, float partialTick, IDynamicOverlayPartRenderer dynamicRenderer) {
+		GlStateManager.pushMatrix();
+		GlStateManager.enableBlend();
+		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GlStateManager.disableTexture2D();
+		GlStateManager.color(1, 1, 1, 0.6f);
 
-		double x1 = vehicle.posX - player.posX;
-		double y1 = vehicle.posY - player.posY;
-		double z1 = vehicle.posZ - player.posZ;
+		Vec3d renderOffset = new Vec3d(vehicle.posX - player.posX, vehicle.posY - player.posY, vehicle.posZ - player.posZ);
 
-		/**
-		 * vectors for a straight line
-		 */
-		double x2 = x1 - 20 * Trig.sinDegrees(vehicle.rotationYaw + partialTick * vehicle.moveHelper.getRotationSpeed());
-		double y2 = y1;
-		double z2 = z1 - 20 * Trig.cosDegrees(vehicle.rotationYaw + partialTick * vehicle.moveHelper.getRotationSpeed());
-		GL11.glLineWidth(3f);
-		GL11.glBegin(GL11.GL_LINES);
-		GL11.glVertex3d(x1, y1 + 0.12d, z1);
-		GL11.glVertex3d(x2, y2 + 0.12d, z2);
-		GL11.glEnd();
+		drawStraightLine(vehicle, partialTick, renderOffset);
 
-		GL11.glLineWidth(4f);
-		GL11.glColor4f(1.f, 0.4f, 0.4f, 0.4f);
-		GL11.glBegin(GL11.GL_LINES);
+		drawDynamicPart(vehicle, partialTick, renderOffset, dynamicRenderer);
 
-		Vec3d offset = vehicle.getMissileOffset();
-		x2 = x1 + offset.x;
-		y2 = y1 + offset.y;
-		z2 = z1 + offset.z;
+		GlStateManager.popMatrix();
+		GlStateManager.depthMask(true);
+		GlStateManager.disableBlend();
+		GlStateManager.enableTexture2D();
+	}
+
+	private static void drawStraightLine(VehicleBase vehicle, float partialTick, Vec3d renderOffset) {
+		double x2 = renderOffset.x - 20 * Trig.sinDegrees(vehicle.rotationYaw + partialTick * vehicle.moveHelper.getRotationSpeed());
+		double z2 = renderOffset.z - 20 * Trig.cosDegrees(vehicle.rotationYaw + partialTick * vehicle.moveHelper.getRotationSpeed());
+		GlStateManager.glLineWidth(3f);
+		GlStateManager.glBegin(GL11.GL_LINES);
+		GL11.glVertex3d(renderOffset.x, renderOffset.y + 0.12d, renderOffset.z);
+		GL11.glVertex3d(x2, renderOffset.y + 0.12d, z2);
+		GlStateManager.glEnd();
+	}
+
+	private static void drawDynamicPart(VehicleBase vehicle, float partialTick, Vec3d renderOffset, IDynamicOverlayPartRenderer dynamicRenderer) {
+		GlStateManager.glLineWidth(4f);
+		GlStateManager.color(1.f, 0.4f, 0.4f, 0.4f);
+		GlStateManager.glBegin(GL11.GL_LINES);
 
 		double gravity = 9.81d * 0.05d * 0.05d;
 		double speed = vehicle.localLaunchPower * 0.05d;
@@ -97,153 +80,126 @@ public class RenderOverlayAdvanced {
 		double yaw = vehicle.localTurretRotation + partialTick * vehicle.moveHelper.getRotationSpeed();
 
 		double vH = -Trig.sinDegrees((float) angle) * speed;
-		double vY = Trig.cosDegrees((float) angle) * speed;
-		double vX = Trig.sinDegrees((float) yaw) * vH;
-		double vZ = Trig.cosDegrees((float) yaw) * vH;
+		Vec3d accelerationVector = new Vec3d(Trig.sinDegrees((float) yaw) * vH, Trig.cosDegrees((float) angle) * speed, Trig.cosDegrees((float) yaw) * vH);
+
+		dynamicRenderer.render(renderOffset, speed, accelerationVector, gravity);
+		GlStateManager.glEnd();
+	}
+
+	private static void drawTorpedoPath(VehicleBase vehicle, Vec3d renderOffset, double speed, Vec3d accelerationVector) {
 		int rocketBurnTime = (int) (speed * 20.f * AmmoHwachaRocket.burnTimeFactor);
 
-		float xAcc = (float) (vX / speed) * AmmoHwachaRocket.accelerationFactor;
-		float yAcc = (float) (vY / speed) * AmmoHwachaRocket.accelerationFactor;
-		float zAcc = (float) (vZ / speed) * AmmoHwachaRocket.accelerationFactor;
-		vX = xAcc;
-		vY = yAcc;
-		vZ = zAcc;
+		float xAcc = (float) (accelerationVector.x / speed) * AmmoHwachaRocket.accelerationFactor;
+		float yAcc = (float) (accelerationVector.y / speed) * AmmoHwachaRocket.accelerationFactor;
+		float zAcc = (float) (accelerationVector.z / speed) * AmmoHwachaRocket.accelerationFactor;
+		Vec3d adjustedAccelerationVector = new Vec3d(xAcc, yAcc, zAcc);
 		float dist = 0;
+
+		Vec3d offset = vehicle.getMissileOffset();
+		double x2 = renderOffset.x + offset.x;
+		double y2 = renderOffset.y + offset.y;
+		double z2 = renderOffset.z + offset.z;
 
 		while (dist < 100 * 100) {
 			GL11.glVertex3d(x2, y2, z2);
-			x2 += vX;
-			z2 += vZ;
-			y2 += vY;
+			x2 += adjustedAccelerationVector.x;
+			z2 += adjustedAccelerationVector.z;
+			y2 += adjustedAccelerationVector.y;
 			dist += x2 * x2 + z2 * z2 + y2 * y2;
 			GL11.glVertex3d(x2, y2, z2);
 		}
-		GL11.glEnd();
-
-		GL11.glPopMatrix();
-		GL11.glDepthMask(true);
-		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
 
-	public static void renderRocketFlightPath(VehicleBase vehicle, EntityPlayer player, float partialTick) {
-		GL11.glPushMatrix();
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		GL11.glColor4d(1, 1, 1, 0.6d);
-
-		double x1 = vehicle.posX - player.posX;
-		double y1 = vehicle.posY - player.posY;
-		double z1 = vehicle.posZ - player.posZ;
-
-		/**
-		 * vectors for a straight line
-		 */
-		double x2 = x1 - 20 * Trig.sinDegrees(vehicle.rotationYaw + partialTick * vehicle.moveHelper.getRotationSpeed());
-		double y2 = y1;
-		double z2 = z1 - 20 * Trig.cosDegrees(vehicle.rotationYaw + partialTick * vehicle.moveHelper.getRotationSpeed());
-		GL11.glLineWidth(3f);
-		GL11.glBegin(GL11.GL_LINES);
-		GL11.glVertex3d(x1, y1 + 0.12d, z1);
-		GL11.glVertex3d(x2, y2 + 0.12d, z2);
-		GL11.glEnd();
-
-		GL11.glLineWidth(4f);
-		GL11.glColor4f(1.f, 0.4f, 0.4f, 0.4f);
-		GL11.glBegin(GL11.GL_LINES);
-
-		Vec3d offset = vehicle.getMissileOffset();
-		x2 = x1 + offset.x;
-		y2 = y1 + offset.y;
-		z2 = z1 + offset.z;
-
-		double gravity = 9.81d * 0.05d * 0.05d;
-		double speed = vehicle.localLaunchPower * 0.05d;
-		double angle = 90 - vehicle.localTurretPitch - vehicle.rotationPitch;
-		double yaw = vehicle.localTurretRotation + partialTick * vehicle.moveHelper.getRotationSpeed();
-
-		double vH = -Trig.sinDegrees((float) angle) * speed;
-		double vY = Trig.cosDegrees((float) angle) * speed;
-		double vX = Trig.sinDegrees((float) yaw) * vH;
-		double vZ = Trig.cosDegrees((float) yaw) * vH;
+	private static void drawRocketFlightPath(VehicleBase vehicle, EntityPlayer player, Vec3d renderOffset, double speed, Vec3d accelerationVector,
+			double gravity) {
 		int rocketBurnTime = (int) (speed * 20.f * AmmoHwachaRocket.burnTimeFactor);
 
+		Vec3d offset = vehicle.getMissileOffset();
+		double x2 = renderOffset.x + offset.x;
+		double y2 = renderOffset.y + offset.y;
+		double z2 = renderOffset.z + offset.z;
+
+		double floorY = renderOffset.y;
+
+		Vec3d adjustedAccelerationVector = accelerationVector;
 		if (vehicle.vehicleType.getMovementType() == VehicleMovementType.AIR1 || vehicle.vehicleType.getMovementType() == VehicleMovementType.AIR2) {
-			vY += vehicle.motionY;
-			vX += vehicle.motionX;
-			vZ += vehicle.motionZ;
-			y1 = -player.posY;
+			adjustedAccelerationVector = adjustedAccelerationVector.addVector(vehicle.motionX, vehicle.motionY, vehicle.motionZ);
+			floorY = -player.posY;
 		}
 
-		float xAcc = (float) (vX / speed) * AmmoHwachaRocket.accelerationFactor;
-		;
-		float yAcc = (float) (vY / speed) * AmmoHwachaRocket.accelerationFactor;
-		;
-		float zAcc = (float) (vZ / speed) * AmmoHwachaRocket.accelerationFactor;
-		;
-		vX = xAcc;
-		vY = yAcc;
-		vZ = zAcc;
+		float xAcc = (float) (adjustedAccelerationVector.x / speed) * AmmoHwachaRocket.accelerationFactor;
+		float yAcc = (float) (adjustedAccelerationVector.y / speed) * AmmoHwachaRocket.accelerationFactor;
+		float zAcc = (float) (adjustedAccelerationVector.z / speed) * AmmoHwachaRocket.accelerationFactor;
+		adjustedAccelerationVector = new Vec3d(xAcc, yAcc, zAcc);
 
-		while (y2 >= y1) {
+		while (y2 >= floorY) {
 			GL11.glVertex3d(x2, y2, z2);
-			x2 += vX;
-			z2 += vZ;
-			y2 += vY;
+			x2 += adjustedAccelerationVector.x;
+			z2 += adjustedAccelerationVector.z;
+			y2 += adjustedAccelerationVector.y;
 			if (rocketBurnTime > 0) {
 				rocketBurnTime--;
-				vX += xAcc;
-				vY += yAcc;
-				vZ += zAcc;
+				adjustedAccelerationVector = adjustedAccelerationVector.addVector(xAcc, yAcc, zAcc);
 			} else {
-				vY -= gravity;
+				adjustedAccelerationVector = adjustedAccelerationVector.addVector(0, -gravity, 0);
 			}
 			GL11.glVertex3d(x2, y2, z2);
 		}
-		GL11.glEnd();
-
-		GL11.glPopMatrix();
-		GL11.glDepthMask(true);
-		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
 
-	public static void renderBatteringRamOverlay(VehicleBase vehicle, EntityPlayer player, float partialTick) {
-		GL11.glPushMatrix();
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		//  GL11.glDisable(GL11.GL_LIGHTING);
-		//  GL11.glDisable(GL11.GL_DEPTH_TEST);
-		//GL11.glDepthMask(false);
-		GL11.glColor4d(1, 1, 1, 0.6d);
+	private static void drawNormalTrajectory(VehicleBase vehicle, EntityPlayer player, Vec3d renderOffset, double gravity, Vec3d accelerationVector) {
+		Vec3d offset = vehicle.getMissileOffset();
+		double x2 = renderOffset.x + offset.x;
+		double y2 = renderOffset.y + offset.y;
+		double z2 = renderOffset.z + offset.z;
+
+		double floorY = renderOffset.y;
+
+		Vec3d adjustedAccelerationVector = accelerationVector;
+		if (vehicle.vehicleType.getMovementType() == VehicleMovementType.AIR1 || vehicle.vehicleType.getMovementType() == VehicleMovementType.AIR2) {
+			adjustedAccelerationVector = adjustedAccelerationVector.addVector(vehicle.motionX, vehicle.motionY, vehicle.motionZ);
+			floorY = -player.posY;
+		}
+
+		while (y2 >= floorY) {
+			GL11.glVertex3d(x2, y2, z2);
+			x2 += adjustedAccelerationVector.x;
+			z2 += adjustedAccelerationVector.z;
+			y2 += adjustedAccelerationVector.y;
+			adjustedAccelerationVector = adjustedAccelerationVector.addVector(0, -gravity, 0);
+			GL11.glVertex3d(x2, y2, z2);
+		}
+	}
+
+	private static void renderBatteringRamOverlay(VehicleBase vehicle, EntityPlayer player, float partialTick) {
+		GlStateManager.pushMatrix();
+		GlStateManager.enableBlend();
+		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GlStateManager.disableTexture2D();
+		GlStateManager.color(1, 1, 1, 0.6f);
 
 		double x1 = vehicle.posX - player.posX;
 		double y1 = vehicle.posY - player.posY;
 		double z1 = vehicle.posZ - player.posZ;
 
-		/**
+		/*
 		 * vectors for a straight line
 		 */
 		double x2 = x1 - 20 * Trig.sinDegrees(vehicle.rotationYaw);
-		double y2 = y1;
 		double z2 = z1 - 20 * Trig.cosDegrees(vehicle.rotationYaw);
-		GL11.glLineWidth(3f);
-		GL11.glBegin(GL11.GL_LINES);
+		GlStateManager.glLineWidth(3f);
+		GlStateManager.glBegin(GL11.GL_LINES);
 		GL11.glVertex3d(x1, y1 + 0.12d, z1);
-		GL11.glVertex3d(x2, y2 + 0.12d, z2);
-		GL11.glEnd();
+		GL11.glVertex3d(x2, y1 + 0.12d, z2);
+		GlStateManager.glEnd();
 
 		Vec3d offset = vehicle.getMissileOffset();
-		x2 = x1 + offset.x;
-		y2 = y1 + offset.y;
-		z2 = z1 + offset.z;
 		float bx = (float) (vehicle.posX + offset.x);
 		float by = (float) (vehicle.posY + offset.y);
 		float bz = (float) (vehicle.posZ + offset.z);
 		BlockPos blockHit = new BlockPos(bx, by, bz);
-		AxisAlignedBB bb = new AxisAlignedBB(blockHit.getX() - 1, blockHit.getY(), blockHit.getZ(), blockHit.getX() + 2, blockHit.getY() + 1, blockHit.getZ() + 1);
+		AxisAlignedBB bb = new AxisAlignedBB(blockHit.getX() - 1, blockHit.getY(), blockHit.getZ(), blockHit.getX() + 2, blockHit.getY() + 1,
+				blockHit.getZ() + 1);
 		bb = adjustBBForPlayerPos(bb, player, partialTick);
 		RenderTools.drawOutlinedBoundingBox(bb, 1.f, 0.2f, 0.2f);
 		bb = new AxisAlignedBB(blockHit.getX(), blockHit.getY(), blockHit.getZ() - 1, blockHit.getX() + 1, blockHit.getY() + 1, blockHit.getZ() + 2);
@@ -252,88 +208,22 @@ public class RenderOverlayAdvanced {
 		bb = new AxisAlignedBB(blockHit.getX(), blockHit.getY() - 1, blockHit.getZ(), blockHit.getX() + 1, blockHit.getY() + 2, blockHit.getZ() + 1);
 		bb = adjustBBForPlayerPos(bb, player, partialTick);
 		RenderTools.drawOutlinedBoundingBox(bb, 1.f, 0.2f, 0.2f);
-		GL11.glPopMatrix();
+		GlStateManager.popMatrix();
 
-		GL11.glDepthMask(true);
+		GlStateManager.depthMask(true);
 
-		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GlStateManager.disableBlend();
+		GlStateManager.enableTexture2D();
 	}
 
-	public static AxisAlignedBB adjustBBForPlayerPos(AxisAlignedBB bb, EntityPlayer player, float partialTick) {
+	private static AxisAlignedBB adjustBBForPlayerPos(AxisAlignedBB bb, EntityPlayer player, float partialTick) {
 		double x = player.lastTickPosX + (player.posX - player.lastTickPosX) * partialTick;
 		double y = player.lastTickPosY + (player.posY - player.lastTickPosY) * partialTick;
 		double z = player.lastTickPosZ + (player.posZ - player.lastTickPosZ) * partialTick;
 		return bb.offset(-x, -y, -z);
 	}
 
-	public static void renderNormalVehicleOverlay(VehicleBase vehicle, EntityPlayer player, float partialTick) {
-		GL11.glPushMatrix();
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		//  GL11.glDisable(GL11.GL_LIGHTING);
-		//  GL11.glDisable(GL11.GL_DEPTH_TEST);
-		//GL11.glDepthMask(false);
-		GL11.glColor4d(1, 1, 1, 0.6d);
-
-		double x1 = vehicle.posX - player.posX;
-		double y1 = vehicle.posY - player.posY;
-		double z1 = vehicle.posZ - player.posZ;
-
-		/**
-		 * vectors for a straight line
-		 */
-		double x2 = x1 - 20 * Trig.sinDegrees(vehicle.rotationYaw + partialTick * vehicle.moveHelper.getRotationSpeed());
-		double y2 = y1;
-		double z2 = z1 - 20 * Trig.cosDegrees(vehicle.rotationYaw + partialTick * vehicle.moveHelper.getRotationSpeed());
-		GL11.glLineWidth(3f);
-		GL11.glBegin(GL11.GL_LINES);
-		GL11.glVertex3d(x1, y1 + 0.12d, z1);
-		GL11.glVertex3d(x2, y2 + 0.12d, z2);
-		GL11.glEnd();
-
-		GL11.glLineWidth(4f);
-		GL11.glColor4f(1.f, 0.4f, 0.4f, 0.4f);
-		GL11.glBegin(GL11.GL_LINES);
-
-		Vec3d offset = vehicle.getMissileOffset();
-		x2 = x1 + offset.x;
-		y2 = y1 + offset.y;
-		z2 = z1 + offset.z;
-
-		double gravity = 9.81d * 0.05d * 0.05d;
-		double speed = vehicle.localLaunchPower * 0.05d;
-		double angle = 90 - vehicle.localTurretPitch - vehicle.rotationPitch;
-		;
-		double yaw = vehicle.localTurretRotation + partialTick * vehicle.moveHelper.getRotationSpeed();
-
-		double vH = -Trig.sinDegrees((float) angle) * speed;
-		double vY = Trig.cosDegrees((float) angle) * speed;
-		double vX = Trig.sinDegrees((float) yaw) * vH;
-		double vZ = Trig.cosDegrees((float) yaw) * vH;
-
-		if (vehicle.vehicleType.getMovementType() == VehicleMovementType.AIR1 || vehicle.vehicleType.getMovementType() == VehicleMovementType.AIR2) {
-			vY += vehicle.motionY;
-			vX += vehicle.motionX;
-			vZ += vehicle.motionZ;
-			y1 = -player.posY;
-		}
-		while (y2 >= y1) {
-			GL11.glVertex3d(x2, y2, z2);
-			x2 += vX;
-			z2 += vZ;
-			y2 += vY;
-			vY -= gravity;
-			GL11.glVertex3d(x2, y2, z2);
-		}
-		GL11.glEnd();
-
-		GL11.glPopMatrix();
-
-		GL11.glDepthMask(true);
-
-		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
+	private interface IDynamicOverlayPartRenderer {
+		void render(Vec3d renderOffset, double speed, Vec3d accelerationVector, double gravity);
 	}
 }

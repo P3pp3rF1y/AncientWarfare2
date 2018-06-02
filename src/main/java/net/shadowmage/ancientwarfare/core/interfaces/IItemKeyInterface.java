@@ -12,8 +12,12 @@ import net.minecraft.item.ItemStack;
  */
 public interface IItemKeyInterface {
 
-	public static enum ItemKey {
-		KEY_0, KEY_1, KEY_2, KEY_3, KEY_4;
+	enum ItemAltFunction {
+		ALT_FUNCTION_1,
+		ALT_FUNCTION_2,
+		ALT_FUNCTION_3,
+		ALT_FUNCTION_4,
+		ALT_FUNCTION_5
 	}
 
 	/*
@@ -23,7 +27,7 @@ public interface IItemKeyInterface {
 	 * @param key the number of alt-use key that is being pressed
 	 * @return true to send activation packet to client
 	 */
-	public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key);
+	boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemAltFunction altFunction);
 
 	/*
 	 * called server-side when a client presses the key that is bound to alternate item-use function
@@ -32,6 +36,6 @@ public interface IItemKeyInterface {
 	 * @param stack  the item stack that is in-use
 	 * @param key    the number of alt-use key that is being pressed
 	 */
-	public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key);
+	void onKeyAction(EntityPlayer player, ItemStack stack, ItemAltFunction altFunction);
 
 }

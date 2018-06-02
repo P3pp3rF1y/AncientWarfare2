@@ -9,7 +9,6 @@ awconfig.automation_config=Automation Module Config
 awconfig.automation_config.tooltip=Client side options for Automation Module
 awconfig.npc_config=Npc Module Config
 awconfig.npc_config.tooltip=Client side options for Npc Module
-awconfig.keybind.toggle_workbounds_render=Toggle Workbounds Render
 
 #items
 itemGroup.tabs.awcore=Ancient Warfare Core
@@ -107,6 +106,7 @@ entity.AncientWarfareNpc.combat.archer.name=Archer
 entity.AncientWarfareNpc.combat.medic.name=Medic
 entity.AncientWarfareNpc.combat.engineer.name=Engineer
 entity.AncientWarfareNpc.combat.commander.name=Commander
+entity.AncientWarfareNpc.siege.engineer.name=Siege Engineer
 
 #vehicle
 
@@ -726,7 +726,7 @@ item.gateDoubleWood.name=Wooden Gate (split open)
 item.gateSingleIron.name=Iron Gate (slide open)
 item.gateSingleWood.name=Wooden Gate (slide open)
 item.gateDrawbridge.name=Drawbridge (rotate open)
-entity.AncientWarfareStructure.aw_gate.name=Gate
+entity.aw_gate.name=Gate
 
 #ftbu_interop_notifications
 ftbu_aw2.notification.townhall_lost=Town Hall lost!
@@ -985,6 +985,17 @@ item.armor_stone.name=Stone Armor
 item.armor_stone.tooltip=Reduce Fire Damage by 7%
 item.armor_obsidian.name=Obsidian Armor
 item.armor_obsidian.tooltip=Reduce Blast Damage by 7%
+
+#core input keybinds
+keybind.category.awCore=Ancient Warfare
+keybind.awCore.alt.item.use.1=Alt. Item Function 1
+keybind.awCore.alt.item.use.2=Alt. Item Function 2
+keybind.awCore.alt.item.use.3=Alt. Item Function 3
+keybind.awCore.alt.item.use.4=Alt. Item Function 4
+keybind.awCore.alt.item.use.5=Alt. Item Function 5
+
+#automation input keybinds
+keybind.awAutomation.toggle_workbounds_render=Toggle Workbounds Render
 
 # vehicle input keybinds
 keybind.category.awVehicles=Ancient Warfare Vehicles

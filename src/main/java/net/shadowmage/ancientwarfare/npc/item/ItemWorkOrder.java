@@ -39,7 +39,7 @@ public class ItemWorkOrder extends ItemOrders {
 	}
 
 	@Override
-	public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
+	public void onKeyAction(EntityPlayer player, ItemStack stack, ItemAltFunction altFunction) {
 		WorkOrder wo = WorkOrder.getWorkOrder(stack);
 		if (wo != null) {
 			BlockPos hit = BlockTools.getBlockClickedOn(player, player.world, false);

@@ -41,7 +41,7 @@ public class ItemRoutingOrder extends ItemOrders {
 	}
 
 	@Override
-	public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
+	public void onKeyAction(EntityPlayer player, ItemStack stack, ItemAltFunction altFunction) {
 		RoutingOrder order = RoutingOrder.getRoutingOrder(stack);
 		if (order != null) {
 			RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, 5, 0);

@@ -452,12 +452,14 @@ public class AWNPCStatics extends ModConfiguration {
 		attributes.put("trader", getDefault("trader"));
 		attributes.put("priest", getDefault("priest"));
 		attributes.put("bard", getDefault("bard"));
+		attributes.put("siege.engineer", getDefault("siege.engineer"));
 		pathValues.put("combat", getDefaultPath("combat"));
 		pathValues.put("worker", getDefaultPath("worker"));
 		pathValues.put("courier", getDefaultPath("courier"));
 		pathValues.put("trader", getDefaultPath("trader"));
 		pathValues.put("priest", getDefaultPath("priest"));
 		pathValues.put("bard", getDefaultPath("bard"));
+		pathValues.put("siege.engineer", getDefaultPath("siege.engineer"));
 	}
 
 	//TODO check what entity speed is needed / feels right. perhaps vary depending upon level or type

@@ -60,23 +60,23 @@ public class ItemCommandBaton extends ItemBaseNPC implements IItemKeyInterface {
 		text = "RMB" + " = " + I18n.format("guistrings.npc.baton.add_remove");
 		tooltip.add(text);
 
-		keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_0);
+		keyText = InputHandler.ALT_ITEM_USE_1.getDisplayName();
 		text = keyText + " = " + I18n.format("guistrings.npc.baton.clear");
 		tooltip.add(text);
 
-		keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_1);
+		keyText = InputHandler.ALT_ITEM_USE_2.getDisplayName();
 		text = keyText + " = " + I18n.format("guistrings.npc.baton.attack");
 		tooltip.add(text);
 
-		keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_2);
+		keyText = InputHandler.ALT_ITEM_USE_3.getDisplayName();
 		text = keyText + " = " + I18n.format("guistrings.npc.baton.move");
 		tooltip.add(text);
 
-		keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_3);
+		keyText = InputHandler.ALT_ITEM_USE_4.getDisplayName();
 		text = keyText + " = " + I18n.format("guistrings.npc.baton.home");
 		tooltip.add(text);
 
-		keyText = InputHandler.instance.getKeybindBinding(InputHandler.KEY_ALT_ITEM_USE_4);
+		keyText = InputHandler.ALT_ITEM_USE_5.getDisplayName();
 		text = keyText + " = " + I18n.format("guistrings.npc.baton.upkeep");
 		tooltip.add(text);
 	}
@@ -154,19 +154,19 @@ public class ItemCommandBaton extends ItemBaseNPC implements IItemKeyInterface {
 	}
 
 	@Override
-	public void onKeyAction(EntityPlayer player, ItemStack stack, ItemKey key) {
+	public void onKeyAction(EntityPlayer player, ItemStack stack, ItemAltFunction altFunction) {
 		//noop ...or...??
 	}
 
 	@Override
-	public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemKey key) {
-		switch (key) {
-			case KEY_0: {
+	public boolean onKeyActionClient(EntityPlayer player, ItemStack stack, ItemAltFunction altFunction) {
+		switch (altFunction) {
+			case ALT_FUNCTION_1: {
 				RayTraceResult hit = new RayTraceResult(player);
 				NpcCommand.handleCommandClient(CommandType.CLEAR_COMMAND, hit);
 			}
 			break;
-			case KEY_1://attack
+			case ALT_FUNCTION_2://attack
 			{
 				RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, range, 0);
 				if (hit != null) {
@@ -175,7 +175,7 @@ public class ItemCommandBaton extends ItemBaseNPC implements IItemKeyInterface {
 				}
 			}
 			break;
-			case KEY_2://move/guard
+			case ALT_FUNCTION_3://move/guard
 			{
 				RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, range, 0);
 				if (hit != null) {
@@ -184,7 +184,7 @@ public class ItemCommandBaton extends ItemBaseNPC implements IItemKeyInterface {
 				}
 			}
 			break;
-			case KEY_3: {
+			case ALT_FUNCTION_4: {
 				RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, range, 0);
 				if (hit != null && hit.typeOfHit == Type.BLOCK) {
 					CommandType c = player.isSneaking() ? CommandType.CLEAR_HOME : CommandType.SET_HOME;
@@ -192,7 +192,7 @@ public class ItemCommandBaton extends ItemBaseNPC implements IItemKeyInterface {
 				}
 			}
 			break;
-			case KEY_4: {
+			case ALT_FUNCTION_5: {
 				RayTraceResult hit = RayTraceUtils.getPlayerTarget(player, range, 0);
 				if (hit != null && hit.typeOfHit == Type.BLOCK) {
 					CommandType c = player.isSneaking() ? CommandType.CLEAR_UPKEEP : CommandType.SET_UPKEEP;
