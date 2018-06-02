@@ -53,7 +53,7 @@ public class NpcAIDoor extends EntityAIBase {
 			}
 		}
 
-		if (!this.theEntity.isCollidedHorizontally)
+		if (!this.theEntity.collidedHorizontally)
 			return false;
 		this.doorPos = new BlockPos(MathHelper.floor(this.theEntity.posX), MathHelper.floor(this.theEntity.posY), MathHelper.floor(this.theEntity.posZ));
 		if (findDoor()) {

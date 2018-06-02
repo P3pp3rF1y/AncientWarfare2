@@ -131,7 +131,7 @@ public class RenderNpcBase extends RenderBiped<NpcBase> {
 	}
 
 	private void renderNpcAITasks(NpcBase entity, double x, double y, double z, int renderDistance) {
-		double d3 = entity.getDistanceSqToEntity(this.renderManager.renderViewEntity);
+		double d3 = entity.getDistanceSq(this.renderManager.renderViewEntity);
 
 		if (d3 <= (double) (renderDistance * renderDistance) && entity.canEntityBeSeen(renderManager.renderViewEntity)) {
 			float f = 1.6F;
@@ -168,7 +168,7 @@ public class RenderNpcBase extends RenderBiped<NpcBase> {
 	}
 
 	private void renderColoredLabel(NpcBase entity, String string, double x, double y, double z, int renderDistance, int color1, int color2) {
-		double d3 = entity.getDistanceSqToEntity(this.renderManager.renderViewEntity);
+		double d3 = entity.getDistanceSq(this.renderManager.renderViewEntity);
 
 		if (d3 <= (double) (renderDistance * renderDistance) && entity.canEntityBeSeen(renderManager.renderViewEntity)) {
 			FontRenderer fontrenderer = this.getFontRendererFromRenderManager();

@@ -328,7 +328,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	@Override
 	public void onCollideWithPlayer(EntityPlayer par1EntityPlayer) {
 		super.onCollideWithPlayer(par1EntityPlayer);
-		if (!world.isRemote && par1EntityPlayer instanceof EntityPlayerMP && par1EntityPlayer.posY > posY && par1EntityPlayer.isCollidedVertically) {
+		if (!world.isRemote && par1EntityPlayer instanceof EntityPlayerMP && par1EntityPlayer.posY > posY && ((EntityPlayerMP) par1EntityPlayer).collidedVertically) {
 			EntityPlayerMP player = (EntityPlayerMP) par1EntityPlayer;
 /*			TODO handle collision with players to allow them flying and disallow once they stop colliding
 			probably a collection of players in collision with this entity, on update check if they have collided in the last 10? ticks and if not disallow flying
@@ -586,7 +586,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 			}
 		}
 		if (this.assignedRider != null) {
-			if (assignedRider.isDead || assignedRider.getRidingEntity() != this || !assignedRider.isRiding() || assignedRider.getRidingEntity() != this || (this.getDistanceToEntity(assignedRider) > (AWNPCStatics.npcActionRange * AWNPCStatics.npcActionRange))) {
+			if (assignedRider.isDead || assignedRider.getRidingEntity() != this || !assignedRider.isRiding() || assignedRider.getRidingEntity() != this || (this.getDistanceSq(assignedRider) > (AWNPCStatics.npcActionRange * AWNPCStatics.npcActionRange))) {
 				//TODO config setting for vehicle search range
 				this.assignedRider = null;
 			}

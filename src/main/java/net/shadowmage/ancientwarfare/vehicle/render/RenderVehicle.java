@@ -140,7 +140,7 @@ public class RenderVehicle extends Render<VehicleBase> {
 	private DecimalFormat formatter1d = new DecimalFormat("#.#");
 
 	private void renderNamePlate(VehicleBase vehicle, double x, double y, double z, float yaw, float tick) {
-		double var10 = vehicle.getDistanceSqToEntity(this.renderManager.renderViewEntity);
+		double var10 = vehicle.getDistanceSq(this.renderManager.renderViewEntity);
 		int par9 = 64;
 		String par2Str = vehicle.vehicleType.getLocalizedName() + " " + formatter1d.format(vehicle.getHealth()) + "/" + formatter1d.format(vehicle.baseHealth);
 		if (var10 <= (double) (par9 * par9)) {

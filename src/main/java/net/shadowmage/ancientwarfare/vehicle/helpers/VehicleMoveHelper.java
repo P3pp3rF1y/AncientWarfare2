@@ -207,7 +207,7 @@ public class VehicleMoveHelper implements INBTSerializable<NBTTagCompound> {
 		vehicle.motionZ = Trig.cosDegrees(vehicle.rotationYaw) * -forwardMotion;
 		this.vehicle.move(MoverType.SELF, vehicle.motionX, vehicle.motionY, vehicle.motionZ);
 		this.wasOnGround = vehicle.onGround;
-		if (vehicle.isCollidedHorizontally) {
+		if (vehicle.collidedHorizontally) {
 			forwardMotion *= 0.65f;
 		}
 		this.tearUpGrass();
@@ -491,7 +491,7 @@ public class VehicleMoveHelper implements INBTSerializable<NBTTagCompound> {
 		if (vehicle.motionY < -0.25f || vehicle.motionY > 0.25f) {
 			vertCrashSpeed = true;
 		}
-		if (vehicle.isCollidedHorizontally) {
+		if (vehicle.collidedHorizontally) {
 			if (!wasOnGround || crashSpeed) {
 				if (!vehicle.world.isRemote && vehicle.getControllingPassenger() instanceof EntityPlayer) {
 					EntityPlayer player = (EntityPlayer) vehicle.getControllingPassenger();
@@ -502,7 +502,7 @@ public class VehicleMoveHelper implements INBTSerializable<NBTTagCompound> {
 				}
 			}
 		}
-		if (vehicle.isCollidedVertically) {
+		if (vehicle.collidedVertically) {
 			if (vertCrashSpeed && !wasOnGround) {
 				if (!vehicle.world.isRemote && vehicle.getControllingPassenger() instanceof EntityPlayer) {
 					EntityPlayer player = (EntityPlayer) vehicle.getControllingPassenger();
