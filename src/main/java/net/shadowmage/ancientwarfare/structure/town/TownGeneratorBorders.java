@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -98,7 +97,7 @@ public class TownGeneratorBorders {
 		for (int y = maxY; y > 0; y--) {
 			IBlockState state = chunk.getBlockState(new BlockPos(x, y, z));
 			block = state.getBlock();
-			if (block == null || block == Blocks.AIR || (skippables && AWStructureStatics.isSkippable(state)) || state.getMaterial() == Material.WATER) {
+			if (block == null || block == Blocks.AIR || (skippables && AWStructureStatics.isSkippable(state))) {
 				continue;
 			}
 			return y;
