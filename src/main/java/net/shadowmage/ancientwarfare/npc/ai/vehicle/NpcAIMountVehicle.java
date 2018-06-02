@@ -13,11 +13,13 @@ public class NpcAIMountVehicle<T extends NpcBase & IVehicleUser> extends NpcAI<T
 	}
 
 	@Override
+	@SuppressWarnings("squid:S3655")
 	public boolean shouldExecute() {
 		return !npc.isRiding() && npc.canContinueRidingVehicle() && npc.getVehicle().isPresent() && !npc.getVehicle().get().isBeingRidden();
 	}
 
 	@Override
+	@SuppressWarnings("squid:S3655")
 	public void updateTask() {
 		//noinspection ConstantConditions
 		VehicleBase vehicle = npc.getVehicle().get();
