@@ -13,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.JsonUtils;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
@@ -372,7 +371,7 @@ public class AWCraftingManager {
 			if (!resourceStack.isEmpty()) {
 				//required for ingredient to actually see proper count and say it's a good item
 				//e.g. ingredient requires stack of 3 but inventory only has 3 stacks of 1 of the item - that's still a match for the recipe
-				ItemStack properCountStack = new ItemStack(resourceStack.writeToNBT(new NBTTagCompound()));
+				ItemStack properCountStack = resourceStack.copy();
 				properCountStack.setCount(count);
 
 				if (ingredient.apply(properCountStack)) {
