@@ -82,7 +82,7 @@ public class TemplateRuleGates extends TemplateRuleEntity {
 			}
 		}
 
-		EntityGate gate = Gate.constructGate(world, p1, p2, Gate.getGateByName(gateType), EnumFacing.VALUES[((orientation.ordinal() + turns) % 4)]);
+		EntityGate gate = Gate.constructGate(world, p1, p2, Gate.getGateByName(gateType), EnumFacing.HORIZONTALS[((orientation.ordinal() + turns) % 4)]);
 		if (gate == null) {
 			throw new StructureBuildingException.EntityPlacementException("Could not create gate for type: " + gateType);
 		}
