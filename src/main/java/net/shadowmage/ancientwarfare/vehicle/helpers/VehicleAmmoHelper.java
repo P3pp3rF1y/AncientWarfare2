@@ -51,7 +51,7 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 		if (vehicle.world.isRemote) {
 			return;
 		}
-		if (ammoEntries.containsKey(currentAmmoType)) {
+		if (currentAmmoType != null && ammoEntries.containsKey(currentAmmoType)) {
 			int removed = InventoryTools.removeItems(vehicle.inventory.ammoInventory, new ItemStack(AmmoRegistry.getItem(currentAmmoType)), 1).getCount();
 			VehicleAmmoEntry entry = this.ammoEntries.get(this.currentAmmoType);
 			int origCount = entry.ammoCount;
@@ -73,7 +73,7 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 		if (!AWVehicleStatics.soldiersUseAmmo && vehicle.getControllingPassenger() instanceof NpcBase) {
 			return 64;
 		}
-		if (ammoEntries.containsKey(currentAmmoType)) {
+		if (currentAmmoType != null && ammoEntries.containsKey(currentAmmoType)) {
 			return this.ammoEntries.get(currentAmmoType).ammoCount;
 		}
 		return 0;
