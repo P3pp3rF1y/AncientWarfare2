@@ -66,4 +66,11 @@ public class NpcAIAimVehicle<T extends NpcBase & IVehicleUser> extends NpcAI<T> 
 	private float getMaxRotDifference(VehicleBase vehicle) {
 		return Math.min(vehicle.currentTurretRotationMax + 1.5f, 180f);
 	}
+
+	@Override
+	@SuppressWarnings("squid:S3655")
+	public void resetTask() {
+		//noinspection ConstantConditions
+		npc.getVehicle().get().moveHelper.setStrafeInput((byte) 0);
+	}
 }
