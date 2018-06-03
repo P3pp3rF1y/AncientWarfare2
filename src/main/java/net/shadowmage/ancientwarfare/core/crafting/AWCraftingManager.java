@@ -25,6 +25,7 @@ import net.minecraftforge.fml.common.ModContainer;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
@@ -58,6 +59,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class AWCraftingManager {
 	public static final IForgeRegistry<ResearchRecipeBase> RESEARCH_RECIPES = (new RegistryBuilder<ResearchRecipeBase>()).setName(new ResourceLocation(AncientWarfareCore.modID, "research_recipes")).setType(ResearchRecipeBase.class).setMaxID(Integer.MAX_VALUE >> 5).disableSaving().allowModification().create();
@@ -87,7 +89,7 @@ public class AWCraftingManager {
 		if (world == null) {
 			return ret;
 		}
-		for (IRecipe recipe : CraftingManager.REGISTRY) {
+		for (IRecipe recipe : ForgeRegistries.RECIPES) {
 			if (recipe.matches(inventory, world)) {
 				ret.add(new RegularCraftingWrapper(recipe));
 			}
@@ -310,7 +312,16 @@ public class AWCraftingManager {
 	public static ICraftingRecipe findMatchingRecipe(World world, NonNullList<ItemStack> inputs, ItemStack result) {
 		InventoryCrafting inv = fillCraftingMatrixFromInventory(inputs);
 		List<ICraftingRecipe> recipes = findMatchingRecipesNoResearchCheck(inv, world);
-		return recipes.stream().filter(r -> r.getRecipeOutput().isItemEqual(result)).findFirst().orElse(NoRecipeWrapper.INSTANCE);
+		return recipes.stream().filter(r -> recipeResultsEqual(result, r)).findFirst().orElse(NoRecipeWrapper.INSTANCE);
+	}
+
+	private static boolean recipeResultsEqual(ItemStack result, ICraftingRecipe r) {
+		int[] oreIDs = OreDictionary.getOreIDs(result);
+		if (oreIDs.length > 0) {
+			int[] foundRecipeOreIDs = OreDictionary.getOreIDs(r.getRecipeOutput());
+			return oreIDs.length == foundRecipeOreIDs.length && IntStream.of(oreIDs).allMatch(o -> IntStream.of(foundRecipeOreIDs).anyMatch(of -> o == of));
+		}
+		return r.getRecipeOutput().isItemEqual(result);
 	}
 
 	public static boolean canCraftFromInventory(ICraftingRecipe recipe, IItemHandler inventory) {
