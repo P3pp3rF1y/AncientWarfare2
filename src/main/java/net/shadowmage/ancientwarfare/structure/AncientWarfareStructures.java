@@ -44,6 +44,7 @@ import net.shadowmage.ancientwarfare.structure.template.load.TemplateLoader;
 import net.shadowmage.ancientwarfare.structure.town.WorldTownGenerator;
 import net.shadowmage.ancientwarfare.structure.world_gen.WorldGenTickHandler;
 import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator;
+import org.apache.logging.log4j.Logger;
 
 @Mod(name = "Ancient Warfare Structures", modid = AncientWarfareStructures.modID, version = "@VERSION@", dependencies = "required-after:ancientwarfare")
 
@@ -54,6 +55,8 @@ public class AncientWarfareStructures {
 	@Instance(value = modID)
 	public static AncientWarfareStructures instance;
 
+	public static Logger log;
+
 	@SidedProxy(clientSide = "net.shadowmage.ancientwarfare.structure.proxy.ClientProxyStructures", serverSide = "net.shadowmage.ancientwarfare.core.proxy.CommonProxy")
 	public static CommonProxyBase proxy;
 
@@ -62,9 +65,11 @@ public class AncientWarfareStructures {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent evt) {
 		ModuleStatus.structuresLoaded = true;
+		log = evt.getModLog();
+
 		statics = new AWStructureStatics("AncientWarfareStructures");
 
-        /*
+		/*
 		 * Forge/FML registry
          */
 		MinecraftForge.EVENT_BUS.register(this);
@@ -111,6 +116,7 @@ public class AncientWarfareStructures {
 		WorldGenStructureManager.INSTANCE.loadBiomeList();
 		TemplateLoader.INSTANCE.loadTemplates();
 		statics.save();
+		AWStructureStatics.logSkippableBlocksCoveredByMaterial();
 	}
 
 	@SubscribeEvent

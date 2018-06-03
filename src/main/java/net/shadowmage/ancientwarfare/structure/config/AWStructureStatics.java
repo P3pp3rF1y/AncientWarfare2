@@ -24,11 +24,16 @@ package net.shadowmage.ancientwarfare.structure.config;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 public class AWStructureStatics extends ModConfiguration {
@@ -538,6 +543,16 @@ public class AWStructureStatics extends ModConfiguration {
 
 		defaultSkippableBlocks = config.get(worldGenBlocks, "skippable_blocks", defaultSkippableBlocks).getStringList();
 		Collections.addAll(skippableWorldGenBlocks, defaultSkippableBlocks);
+	}
+
+	public static void logSkippableBlocksCoveredByMaterial() {
+		skippableWorldGenBlocks.stream().filter(b -> getBlock(b).isPresent() && isSkippableMaterial(getBlock(b).get().getDefaultState().getMaterial()))
+				.forEach(b -> AncientWarfareStructures.log.info("Block {} defined as skippable is redundant as its material is already skipped by default", b));
+	}
+
+	private static Optional<Block> getBlock(String registryName) {
+		Block block = ForgeRegistries.BLOCKS.getValue(new ResourceLocation(registryName));
+		return block == Blocks.AIR ? Optional.empty() : Optional.ofNullable(block);
 	}
 
 	private void initializeDefaultSkippedEntities() {
