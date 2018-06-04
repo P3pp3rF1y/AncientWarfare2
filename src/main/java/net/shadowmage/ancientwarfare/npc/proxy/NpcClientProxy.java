@@ -17,6 +17,7 @@ import net.shadowmage.ancientwarfare.core.config.ConfigManager;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
 import net.shadowmage.ancientwarfare.core.util.TextureImageBased;
+import net.shadowmage.ancientwarfare.npc.client.NPCItemColors;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.gui.GuiCombatOrder;
@@ -91,6 +92,13 @@ public class NpcClientProxy extends NpcCommonProxy {
 		MinecraftForge.EVENT_BUS.register(RenderCommandOverlay.INSTANCE);//register block/entity highlight renderer
 
 		registerClientOptions();
+	}
+
+	@Override
+	public void init() {
+		super.init();
+
+		NPCItemColors.init();
 	}
 
 	private void registerClientOptions() {

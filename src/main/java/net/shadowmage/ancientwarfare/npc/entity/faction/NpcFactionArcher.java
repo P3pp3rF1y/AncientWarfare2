@@ -21,10 +21,13 @@ import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionArcherStayAtHome
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRangedAttack;
 import net.shadowmage.ancientwarfare.npc.entity.RangeAttackHelper;
 
-public abstract class NpcFactionArcher extends NpcFaction implements IRangedAttackMob {
+public class NpcFactionArcher extends NpcFaction implements IRangedAttackMob {
+	public NpcFactionArcher(World world) {
+		super(world);
+	}
 
-	public NpcFactionArcher(World par1World) {
-		super(par1World);
+	public NpcFactionArcher(World world, String factionName) {
+		super(world, factionName);
 		Predicate<Entity> selector = entity -> {
 			if (!isHostileTowards(entity)) {
 				return false;
@@ -73,6 +76,11 @@ public abstract class NpcFactionArcher extends NpcFaction implements IRangedAtta
 	@Override
 	public boolean isPassive() {
 		return false;
+	}
+
+	@Override
+	public String getNpcType() {
+		return factionName + ".archer";
 	}
 
 	@Override

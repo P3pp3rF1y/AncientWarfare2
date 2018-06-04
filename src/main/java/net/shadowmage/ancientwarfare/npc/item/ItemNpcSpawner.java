@@ -29,6 +29,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class ItemNpcSpawner extends ItemBaseNPC {
 
@@ -42,16 +43,16 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack par1ItemStack) {
-		String npcName = getNpcType(par1ItemStack);
+	public String getUnlocalizedName(ItemStack stack) {
+		String npcName = getNpcType(stack);
 		if (npcName != null) {
-			String npcSub = getNpcSubtype(par1ItemStack);
+			String npcSub = getNpcSubtype(stack);
 			if (!npcSub.isEmpty()) {
 				npcName = npcName + "." + npcSub;
 			}
-			return "entity.AncientWarfareNpc." + npcName;
+			return "entity.AncientWarfareNpc." + (getFaction(stack).map(s -> s + ".").orElse("")) + npcName;
 		}
-		return super.getUnlocalizedName(par1ItemStack);
+		return super.getUnlocalizedName(stack);
 	}
 
 	@Override
@@ -89,7 +90,8 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 			return null;
 		}
 		String subType = getNpcSubtype(stack);
-		NpcBase npc = AWNPCEntityLoader.createNpc(world, type, subType);
+		Optional<String> faction = getFaction(stack);
+		NpcBase npc = AWNPCEntityLoader.createNpc(world, type, subType, faction.orElse(""));
 		if (npc == null) {
 			return null;
 		}
@@ -125,9 +127,16 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 	}
 
 	public static ItemStack getStackForNpcType(String type, String npcSubtype) {
+		return getStackForNpcType(type, npcSubtype, "");
+	}
+
+	public static ItemStack getStackForNpcType(String type, String npcSubtype, String faction) {
 		@Nonnull ItemStack stack = new ItemStack(AWNPCItems.npcSpawner);
 		stack.setTagInfo("npcType", new NBTTagString(type));
 		stack.setTagInfo("npcSubtype", new NBTTagString(npcSubtype));
+		if (!faction.isEmpty()) {
+			stack.setTagInfo("faction", new NBTTagString(faction));
+		}
 		return stack;
 	}
 
@@ -139,11 +148,18 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 		return null;
 	}
 
-	public static String getNpcSubtype(ItemStack stack) {
+	private static String getNpcSubtype(ItemStack stack) {
 		if (stack.hasTagCompound() && stack.getTagCompound().hasKey("npcSubtype")) {
 			return stack.getTagCompound().getString("npcSubtype");
 		}
 		return "";
+	}
+
+	public static Optional<String> getFaction(ItemStack stack) {
+		if (stack.hasTagCompound() && stack.getTagCompound().hasKey("faction")) {
+			return Optional.of(stack.getTagCompound().getString("faction"));
+		}
+		return Optional.empty();
 	}
 
 	@Override
@@ -152,31 +168,22 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 
 		final Map<String, ModelResourceLocation> modelLocations = Maps.newHashMap();
 
-		for (AWNPCEntityLoader.NpcDeclaration dec : AWNPCEntityLoader.getAllNpcDeclarations()) {
-			if (dec.getCanSpawnBaseType()) {
-				modelLocations.put(dec.getType(), getModelLocation(dec.getType(), ""));
-				ModelLoader.registerItemVariants(this, modelLocations.get(dec.getType()));
-			}
-
-			for (Map.Entry<String, String> subType : dec.getSubTypeModelVariants().entrySet()) {
-				modelLocations.put(dec.getType() + "." + subType.getKey(), getModelLocation(dec.getType(), subType.getKey()));
-				ModelLoader.registerItemVariants(this, modelLocations.get(dec.getType() + "." + subType.getKey()));
-			}
-		}
+		AWNPCEntityLoader.getNPCItemModelVariants().forEach(v -> {
+			modelLocations.put(v, getModelLocation(v));
+			ModelLoader.registerItemVariants(this, modelLocations.get(v));
+		});
 
 		ModelLoader.setCustomMeshDefinition(this, stack -> {
 			String npcType = getNpcType(stack);
 			if (npcType == null) {
-				npcType = "worker.miner";
+				npcType = "miner";
 			}
 			String npcSubType = getNpcSubtype(stack);
-			return modelLocations.get(npcSubType.isEmpty() ? npcType : npcType + "." + npcSubType);
+			return modelLocations.get(AWNPCEntityLoader.remapToModelVariant(npcSubType.isEmpty() ? npcType : npcSubType));
 		});
 	}
 
-	private ModelResourceLocation getModelLocation(String npcType, String npcSubType) {
-		AWNPCEntityLoader.NpcDeclaration npc = AWNPCEntityLoader.getNpcDeclaration(npcType);
-		String modelVariant = npcSubType.isEmpty() ? npc.getItemModelVariant() : npc.getSubTypeModelVariant(npcSubType);
+	private ModelResourceLocation getModelLocation(String modelVariant) {
 		return new ModelResourceLocation(AncientWarfareCore.modID + ":npc/npc_spawner", "variant=" + modelVariant);
 	}
 }

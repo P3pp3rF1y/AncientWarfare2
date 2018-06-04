@@ -1,11 +1,14 @@
 package net.shadowmage.ancientwarfare.npc.entity.faction;
 
 import com.google.common.base.Predicate;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
@@ -21,13 +24,17 @@ import java.util.List;
 import java.util.UUID;
 
 public abstract class NpcFaction extends NpcBase {
+	protected String factionName;
 
-	protected final Predicate<Entity> selector = entity -> isHostileTowards(entity);
+	protected final Predicate<Entity> selector = this::isHostileTowards;
 
-	private String faction = "";
+	public NpcFaction(World world) {
+		super(world);
+	}
 
-	public NpcFaction(World par1World) {
-		super(par1World);
+	public NpcFaction(World world, String factionName) {
+		super(world);
+		this.factionName = factionName;
 		String type = this.getNpcFullType();
 		@Nonnull ItemStack eqs;
 		for (int i = 0; i < 8; i++) {
@@ -129,18 +136,36 @@ public abstract class NpcFaction extends NpcBase {
 		return "";
 	}
 
-	//TODO refactor this so that faction is filled in on instance creation, perhaps it could even be Enum to be even faster
 	public String getFaction() {
-		if (faction.isEmpty()) {
-			String type = getNpcType();
-			faction = type.substring(0, type.indexOf("."));
-		}
-
-		return faction;
+		return factionName;
 	}
 
 	@Override
 	public Team getTeam() {
 		return null;
+	}
+
+	@Override
+	public void writeSpawnData(ByteBuf buffer) {
+		super.writeSpawnData(buffer);
+		new PacketBuffer(buffer).writeString(factionName);
+	}
+
+	@Override
+	public void readSpawnData(ByteBuf buffer) {
+		super.readSpawnData(buffer);
+		factionName = new PacketBuffer(buffer).readString(20);
+	}
+
+	@Override
+	public void readEntityFromNBT(NBTTagCompound tag) {
+		super.readEntityFromNBT(tag);
+		factionName = tag.getString("factionName");
+	}
+
+	@Override
+	public void writeEntityToNBT(NBTTagCompound tag) {
+		super.writeEntityToNBT(tag);
+		tag.setString("factionName", factionName);
 	}
 }

@@ -18,12 +18,16 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAISing;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 
-public abstract class NpcFactionBard extends NpcFaction implements ISinger {
+public class NpcFactionBard extends NpcFaction implements ISinger {
 
-	SongPlayData tuneData = new SongPlayData();
+	private SongPlayData tuneData = new SongPlayData();
 
-	public NpcFactionBard(World par1World) {
-		super(par1World);
+	public NpcFactionBard(World world) {
+		super(world);
+	}
+
+	public NpcFactionBard(World world, String factionName) {
+		super(world, factionName);
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
 		this.tasks.addTask(0, new NpcAIDoor(this, true));
@@ -54,6 +58,11 @@ public abstract class NpcFactionBard extends NpcFaction implements ISinger {
 	@Override
 	public boolean hasAltGui() {
 		return true;
+	}
+
+	@Override
+	public String getNpcType() {
+		return factionName + ".bard";
 	}
 
 	@Override

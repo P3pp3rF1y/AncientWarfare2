@@ -22,10 +22,13 @@ import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRangedAttack;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRideHorse;
 import net.shadowmage.ancientwarfare.npc.entity.RangeAttackHelper;
 
-public abstract class NpcFactionMountedArcher extends NpcFactionMounted implements IRangedAttackMob {
+public class NpcFactionMountedArcher extends NpcFactionMounted implements IRangedAttackMob {
+	public NpcFactionMountedArcher(World world) {
+		super(world);
+	}
 
-	public NpcFactionMountedArcher(World par1World) {
-		super(par1World);
+	public NpcFactionMountedArcher(World world, String factionName) {
+		super(world, factionName);
 		//  this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.BOW)); TODO figure out if we need this code back
 		Predicate<Entity> selector = entity -> {
 			//      if(!canEntityBeSeen(entity)){return false;}
@@ -58,6 +61,11 @@ public abstract class NpcFactionMountedArcher extends NpcFactionMounted implemen
 
 		this.targetTasks.addTask(1, new NpcAIHurt(this));
 		this.targetTasks.addTask(2, new NpcAIAttackNearest(this, selector));
+	}
+
+	@Override
+	public String getNpcType() {
+		return factionName + ".mounted_archer";
 	}
 
 	@Override

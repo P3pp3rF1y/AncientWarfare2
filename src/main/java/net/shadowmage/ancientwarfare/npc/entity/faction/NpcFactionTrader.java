@@ -18,13 +18,17 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.trade.FactionTradeList;
 
-public abstract class NpcFactionTrader extends NpcFaction {
+public class NpcFactionTrader extends NpcFaction {
 
 	private FactionTradeList tradeList = new FactionTradeList();
 	private EntityPlayer trader;
 
-	public NpcFactionTrader(World par1World) {
-		super(par1World);
+	public NpcFactionTrader(World world) {
+		super(world);
+	}
+
+	public NpcFactionTrader(World world, String factionName) {
+		super(world, factionName);
 
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
@@ -68,6 +72,11 @@ public abstract class NpcFactionTrader extends NpcFaction {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public String getNpcType() {
+		return factionName + ".trader";
 	}
 
 	@Override

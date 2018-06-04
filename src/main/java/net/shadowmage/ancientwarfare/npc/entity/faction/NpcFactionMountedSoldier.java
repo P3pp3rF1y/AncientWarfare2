@@ -16,10 +16,13 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWatchClosest;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRideHorse;
 
-public abstract class NpcFactionMountedSoldier extends NpcFactionMounted {
+public class NpcFactionMountedSoldier extends NpcFactionMounted {
+	public NpcFactionMountedSoldier(World world) {
+		super(world);
+	}
 
-	public NpcFactionMountedSoldier(World par1World) {
-		super(par1World);
+	public NpcFactionMountedSoldier(World world, String factionName) {
+		super(world, factionName);
 		//  this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SWORD)); TODO uncomment?
 
 		this.tasks.addTask(0, new EntityAISwimming(this));
@@ -36,6 +39,11 @@ public abstract class NpcFactionMountedSoldier extends NpcFactionMounted {
 
 		this.targetTasks.addTask(1, new NpcAIHurt(this));
 		this.targetTasks.addTask(2, new NpcAIAttackNearest(this, selector));
+	}
+
+	@Override
+	public String getNpcType() {
+		return factionName + ".cavalry";
 	}
 
 }

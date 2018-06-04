@@ -15,10 +15,13 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWatchClosest;
 
-public abstract class NpcFactionSoldier extends NpcFaction {
+public class NpcFactionSoldier extends NpcFaction {
+	public NpcFactionSoldier(World world) {
+		super(world);
+	}
 
-	public NpcFactionSoldier(World par1World) {
-		super(par1World);
+	public NpcFactionSoldier(World world, String factionName) {
+		super(world, factionName);
 
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
@@ -43,6 +46,11 @@ public abstract class NpcFactionSoldier extends NpcFaction {
 	@Override
 	public boolean isPassive() {
 		return false;
+	}
+
+	@Override
+	public String getNpcType() {
+		return factionName + ".soldier";
 	}
 
 	@Override

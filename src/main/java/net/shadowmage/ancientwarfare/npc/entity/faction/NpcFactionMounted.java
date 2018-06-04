@@ -10,8 +10,12 @@ public abstract class NpcFactionMounted extends NpcFaction {
 
 	protected NpcAIFactionRideHorse horseAI;
 
-	public NpcFactionMounted(World par1World) {
-		super(par1World);
+	public NpcFactionMounted(World world) {
+		super(world);
+	}
+
+	public NpcFactionMounted(World world, String factionName) {
+		super(world, factionName);
 	}
 
 	@Override

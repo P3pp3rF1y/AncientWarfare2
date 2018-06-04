@@ -16,10 +16,13 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWatchClosest;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionCommander;
 
-public abstract class NpcFactionLeader extends NpcFaction {
+public class NpcFactionLeader extends NpcFaction {
+	public NpcFactionLeader(World world) {
+		super(world);
+	}
 
-	public NpcFactionLeader(World par1World) {
-		super(par1World);
+	public NpcFactionLeader(World world, String factionName) {
+		super(world, factionName);
 		//  this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.DIAMOND_SWORD));
 
 		this.tasks.addTask(0, new EntityAISwimming(this));
@@ -46,6 +49,11 @@ public abstract class NpcFactionLeader extends NpcFaction {
 	@Override
 	public boolean isPassive() {
 		return false;
+	}
+
+	@Override
+	public String getNpcType() {
+		return factionName + ".leader";
 	}
 
 	@Override
