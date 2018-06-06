@@ -1,33 +1,30 @@
 package net.shadowmage.ancientwarfare.npc.ai.faction;
 
 import net.minecraft.entity.passive.EntityHorse;
-import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIRideHorse;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
+import net.shadowmage.ancientwarfare.npc.entity.faction.IHorseMountedNpc;
 
-public class NpcAIFactionRideHorse extends NpcAIRideHorse {
-
-	private boolean wasHorseKilled = false;
-
-	public NpcAIFactionRideHorse(NpcBase npc) {
+public class NpcAIFactionRideHorse<T extends NpcBase & IHorseMountedNpc> extends NpcAIRideHorse<T> {
+	public NpcAIFactionRideHorse(T npc) {
 		super(npc, 1.5);
 	}
 
 	@Override
 	public boolean shouldExecute() {
-		return !wasHorseKilled && (npc.getRidingEntity() == null || horse != npc.getRidingEntity());
+		return npc.isHorseAlive() && npc.isRiding() || horse != npc.getRidingEntity();
 	}
 
 	@Override
 	public void startExecuting() {
-		if (horse == null && !wasHorseKilled) {
+		if (horse == null && npc.isHorseAlive()) {
 			if (npc.getRidingEntity() instanceof EntityHorse) {
 				horse = (EntityHorse) npc.getRidingEntity();
 			} else {
 				spawnHorse();
 			}
 		} else if (horse != null && horse.isDead) {
-			wasHorseKilled = true;
+			npc.setHorseKilled();
 			horse = null;
 		}
 	}
@@ -43,14 +40,4 @@ public class NpcAIFactionRideHorse extends NpcAIRideHorse {
 		npc.startRiding(horse);
 		onMountHorse();
 	}
-
-	public void readFromNBT(NBTTagCompound tag) {
-		wasHorseKilled = tag.getBoolean("wasHorseKilled");
-	}
-
-	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-		tag.setBoolean("wasHorseKilled", wasHorseKilled);
-		return tag;
-	}
-
 }

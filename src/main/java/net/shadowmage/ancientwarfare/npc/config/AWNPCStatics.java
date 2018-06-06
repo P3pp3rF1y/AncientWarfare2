@@ -589,7 +589,7 @@ public class AWNPCStatics extends ModConfiguration {
 				return new ItemStack(item);
 			}
 		}
-		return null;
+		return ItemStack.EMPTY;
 	}
 
 	@Override

@@ -23,7 +23,6 @@ public class NpcFactionLeader extends NpcFaction {
 
 	public NpcFactionLeader(World world, String factionName) {
 		super(world, factionName);
-		//  this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.DIAMOND_SWORD));
 
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
@@ -38,7 +37,7 @@ public class NpcFactionLeader extends NpcFaction {
 		this.tasks.addTask(103, new NpcAIWatchClosest(this, EntityLiving.class, 8.0F));
 
 		this.targetTasks.addTask(1, new NpcAIHurt(this));
-		this.targetTasks.addTask(2, new NpcAIAttackNearest(this, selector));
+		this.targetTasks.addTask(2, new NpcAIAttackNearest(this, this::isHostileTowards));
 	}
 
 	@Override

@@ -1,12 +1,10 @@
 package net.shadowmage.ancientwarfare.npc.entity.faction;
 
-import com.google.common.base.Predicate;
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.scoreboard.Team;
@@ -19,14 +17,11 @@ import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
 
-import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.UUID;
 
 public abstract class NpcFaction extends NpcBase {
 	protected String factionName;
-
-	protected final Predicate<Entity> selector = this::isHostileTowards;
 
 	public NpcFaction(World world) {
 		super(world);
@@ -36,12 +31,8 @@ public abstract class NpcFaction extends NpcBase {
 		super(world);
 		this.factionName = factionName;
 		String type = this.getNpcFullType();
-		@Nonnull ItemStack eqs;
 		for (int i = 0; i < 8; i++) {
-			eqs = AncientWarfareNPC.statics.getStartingEquipmentForSlot(type, i);
-			if (eqs != null) {
-				setItemStackToSlot(i, eqs);
-			}
+			setItemStackToSlot(i, AncientWarfareNPC.statics.getStartingEquipmentForSlot(type, i));
 		}
 	}
 
@@ -111,10 +102,8 @@ public abstract class NpcFaction extends NpcBase {
 
 	@Override
 	public boolean canBeAttackedBy(Entity e) {
-		if (e instanceof NpcFaction) {
-			return !getFaction().equals(((NpcFaction) e).getFaction());//can only be attacked by other factions, not your own...disable friendly fire
-		}
-		return true;
+		//can only be attacked by other factions, not your own...disable friendly fire
+		return !(e instanceof NpcFaction) || !getFaction().equals(((NpcFaction) e).getFaction());
 	}
 
 	@Override

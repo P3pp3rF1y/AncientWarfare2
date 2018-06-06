@@ -2,13 +2,21 @@ package net.shadowmage.ancientwarfare.npc.entity.faction;
 
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRideHorse;
 
-public abstract class NpcFactionMounted extends NpcFaction {
+public abstract class NpcFactionMounted extends NpcFaction implements IHorseMountedNpc {
 
-	protected NpcAIFactionRideHorse horseAI;
+	private boolean horseLives = true;
+
+	@Override
+	public boolean isHorseAlive() {
+		return horseLives;
+	}
+
+	@Override
+	public void setHorseKilled() {
+		horseLives = false;
+	}
 
 	public NpcFactionMounted(World world) {
 		super(world);
@@ -16,32 +24,6 @@ public abstract class NpcFactionMounted extends NpcFaction {
 
 	public NpcFactionMounted(World world, String factionName) {
 		super(world, factionName);
-	}
-
-	@Override
-	public void onDeath(DamageSource source) {
-		if (!world.isRemote) {
-			if (horseAI != null) {
-				horseAI.onKilled();
-			}
-		}
-		super.onDeath(source);
-	}
-
-	@Override
-	public void readEntityFromNBT(NBTTagCompound tag) {
-		super.readEntityFromNBT(tag);
-		if (tag.hasKey("horseAI")) {
-			horseAI.readFromNBT(tag.getCompoundTag("horseAI"));
-		}
-	}
-
-	@Override
-	public void writeEntityToNBT(NBTTagCompound tag) {
-		super.writeEntityToNBT(tag);
-		if (horseAI != null) {
-			tag.setTag("horseAI", horseAI.writeToNBT(new NBTTagCompound()));
-		}
 	}
 
 	@Override
@@ -65,5 +47,17 @@ public abstract class NpcFactionMounted extends NpcFaction {
 	@Override
 	public boolean shouldSleep() {
 		return false;
+	}
+
+	@Override
+	public void readEntityFromNBT(NBTTagCompound tag) {
+		super.readEntityFromNBT(tag);
+		horseLives = tag.getBoolean("horseLives");
+	}
+
+	@Override
+	public void writeEntityToNBT(NBTTagCompound tag) {
+		super.writeEntityToNBT(tag);
+		tag.setBoolean("horseLives", horseLives);
 	}
 }
