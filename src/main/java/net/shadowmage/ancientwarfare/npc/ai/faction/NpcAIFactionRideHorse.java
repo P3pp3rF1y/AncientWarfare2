@@ -12,7 +12,7 @@ public class NpcAIFactionRideHorse<T extends NpcBase & IHorseMountedNpc> extends
 
 	@Override
 	public boolean shouldExecute() {
-		return npc.isHorseAlive() && npc.isRiding() || horse != npc.getRidingEntity();
+		return npc.isHorseAlive() && (npc.getRidingEntity() == null || horse != npc.getRidingEntity());
 	}
 
 	@Override
@@ -32,8 +32,8 @@ public class NpcAIFactionRideHorse<T extends NpcBase & IHorseMountedNpc> extends
 	private void spawnHorse() {
 		EntityHorse horse = new EntityHorse(npc.world);
 		horse.setLocationAndAngles(npc.posX, npc.posY, npc.posZ, npc.rotationYaw, npc.rotationPitch);
-		horse.setGrowingAge(0); //TODO there used to be loop here to make sure horse is grown - test that child horses don't get spawned
 		horse.onInitialSpawn(npc.world.getDifficultyForLocation(npc.getPosition()), null);
+		horse.setGrowingAge(0);
 		horse.setHorseTamed(true);
 		this.horse = horse;
 		npc.world.spawnEntity(horse);
