@@ -4,6 +4,10 @@ import com.google.common.collect.ImmutableMap;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.datafix.IFixableData;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegistryEvent.MissingMappings;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 
 import java.util.Map;
@@ -118,6 +122,10 @@ public class FactionEntityFixer implements IFixableData {
 			.put("ancientwarfarenpc:viking.trader", new Tuple<>(AncientWarfareNPC.modID + ":" + NPC_FACTION_TRADER, "viking"))
 			.build();
 
+	public FactionEntityFixer() {
+		MinecraftForge.EVENT_BUS.register(this);
+	}
+
 	@Override
 	public int getFixVersion() {
 		return 3;
@@ -136,5 +144,14 @@ public class FactionEntityFixer implements IFixableData {
 		}
 
 		return compound;
+	}
+
+	@SubscribeEvent
+	public void missingMapping(MissingMappings<EntityEntry> event) {
+		for (MissingMappings.Mapping<EntityEntry> entry : event.getAllMappings()) {
+			if (factionFixes.keySet().contains(entry.key.toString())) {
+				entry.ignore();
+			}
+		}
 	}
 }
