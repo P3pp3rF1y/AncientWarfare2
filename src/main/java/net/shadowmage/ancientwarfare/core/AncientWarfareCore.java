@@ -40,6 +40,7 @@ import net.shadowmage.ancientwarfare.core.registry.RegistryLoader;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 import net.shadowmage.ancientwarfare.npc.datafixes.FactionEntityFixer;
+import net.shadowmage.ancientwarfare.npc.datafixes.FactionSpawnerItemFixer;
 
 @Mod(name = "Ancient Warfare Core", modid = AncientWarfareCore.modID, version = "@VERSION@", guiFactory = "net.shadowmage.ancientwarfare.core.gui.options.OptionsGuiFactory", dependencies = CodeChickenLib.MOD_VERSION_DEP)
 public class AncientWarfareCore {
@@ -107,6 +108,7 @@ public class AncientWarfareCore {
 		fixes.registerFix(FixTypes.BLOCK_ENTITY, new TileOwnerFixer());
 		fixes.registerFix(FixTypes.BLOCK_ENTITY, new TileIdFixer());
 		fixes.registerFix(FixTypes.ENTITY, new FactionEntityFixer());
+		fixes.registerFix(FixTypes.ITEM_INSTANCE, new FactionSpawnerItemFixer());
 
         /*
          * Setup compats
