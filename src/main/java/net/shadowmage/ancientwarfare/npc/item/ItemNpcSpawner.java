@@ -94,7 +94,7 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 		}
 		String subType = getNpcSubtype(stack);
 		Optional<String> faction = getFaction(stack);
-		NpcBase npc = AWNPCEntityLoader.createNpc(world, (faction.isPresent() ? "faction." : "") + type, subType, faction.orElse(""));
+		NpcBase npc = AWNPCEntityLoader.createNpc(world, type, subType, faction.orElse(""));
 		if (npc == null) {
 			return null;
 		}
@@ -132,9 +132,9 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 	public static void getSpawnerSubItems(NonNullList<ItemStack> list) {
 		for (AWNPCEntityLoader.NpcDeclaration dec : AWNPCEntityLoader.getNpcMap().values()) {
 			if (dec.canSpawnBaseEntity()) {
-				if (dec.getNpcType().contains("faction.")) {
+				if (dec.getNpcType().startsWith("faction.")) {
 					for (FactionDefinition faction : FactionRegistry.getFactions())
-						list.add(getStackForNpcType(dec.getNpcType().replace("faction.", ""), "", faction.getName()));
+						list.add(getStackForNpcType(dec.getNpcType(), "", faction.getName()));
 				} else {
 					list.add(getStackForNpcType(dec.getNpcType(), "", ""));
 				}
@@ -195,16 +195,11 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 
 		ModelLoader.setCustomMeshDefinition(this, stack -> {
 			String npcType = getNpcType(stack);
-			AWNPCEntityLoader.NpcDeclaration dec;
 			if (npcType == null) {
-				dec = AWNPCEntityLoader.getNpcDeclaration("worker");
-			} else {
-				Optional<String> faction = getFaction(stack);
-				String key = (faction.isPresent() ? "faction." : "") + npcType;
-				dec = AWNPCEntityLoader.getNpcDeclaration(key);
+				npcType = "worker";
 			}
-			String npcSubType = getNpcSubtype(stack);
-			return modelLocations.get(dec.getItemModelVariant(npcSubType));
+			AWNPCEntityLoader.NpcDeclaration dec = AWNPCEntityLoader.getNpcDeclaration(npcType);
+			return dec == null ? null : modelLocations.get(dec.getItemModelVariant(getNpcSubtype(stack)));
 		});
 	}
 
