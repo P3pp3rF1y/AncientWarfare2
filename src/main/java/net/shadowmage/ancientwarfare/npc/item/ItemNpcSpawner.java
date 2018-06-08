@@ -24,9 +24,12 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.npc.entity.AWNPCEntityLoader;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
+import net.shadowmage.ancientwarfare.npc.registry.FactionDefinition;
+import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -91,7 +94,7 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 		}
 		String subType = getNpcSubtype(stack);
 		Optional<String> faction = getFaction(stack);
-		NpcBase npc = AWNPCEntityLoader.createNpc(world, type, subType, faction.orElse(""));
+		NpcBase npc = AWNPCEntityLoader.createNpc(world, (faction.isPresent() ? "faction." : "") + type, subType, faction.orElse(""));
 		if (npc == null) {
 			return null;
 		}
@@ -123,7 +126,23 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 		if (!isInCreativeTab(tab)) {
 			return;
 		}
-		AWNPCEntityLoader.getSpawnerSubItems(items);
+		getSpawnerSubItems(items);
+	}
+
+	public static void getSpawnerSubItems(NonNullList<ItemStack> list) {
+		for (AWNPCEntityLoader.NpcDeclaration dec : AWNPCEntityLoader.getNpcMap().values()) {
+			if (dec.canSpawnBaseEntity()) {
+				if (dec.getNpcType().contains("faction.")) {
+					for (FactionDefinition faction : FactionRegistry.getFactions())
+						list.add(getStackForNpcType(dec.getNpcType().replace("faction.", ""), "", faction.getName()));
+				} else {
+					list.add(getStackForNpcType(dec.getNpcType(), "", ""));
+				}
+			}
+			for (String sub : dec.getSubTypes()) {
+				list.add(getStackForNpcType(dec.getNpcType(), sub));
+			}
+		}
 	}
 
 	public static ItemStack getStackForNpcType(String type, String npcSubtype) {
@@ -168,18 +187,24 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 
 		final Map<String, ModelResourceLocation> modelLocations = Maps.newHashMap();
 
-		AWNPCEntityLoader.getNPCItemModelVariants().forEach(v -> {
+		AWNPCEntityLoader.getNpcMap().values().stream().map(AWNPCEntityLoader.NpcDeclaration::getItemModelVariants).flatMap(Collection::stream).distinct()
+				.forEach(v -> {
 			modelLocations.put(v, getModelLocation(v));
 			ModelLoader.registerItemVariants(this, modelLocations.get(v));
 		});
 
 		ModelLoader.setCustomMeshDefinition(this, stack -> {
 			String npcType = getNpcType(stack);
+			AWNPCEntityLoader.NpcDeclaration dec;
 			if (npcType == null) {
-				npcType = "miner";
+				dec = AWNPCEntityLoader.getNpcDeclaration("worker");
+			} else {
+				Optional<String> faction = getFaction(stack);
+				String key = (faction.isPresent() ? "faction." : "") + npcType;
+				dec = AWNPCEntityLoader.getNpcDeclaration(key);
 			}
 			String npcSubType = getNpcSubtype(stack);
-			return modelLocations.get(AWNPCEntityLoader.remapToModelVariant(npcSubType.isEmpty() ? npcType : npcSubType));
+			return modelLocations.get(dec.getItemModelVariant(npcSubType));
 		});
 	}
 

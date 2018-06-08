@@ -1,12 +1,10 @@
 package net.shadowmage.ancientwarfare.npc.entity;
 
 import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Maps;
 import net.minecraft.entity.Entity;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -33,51 +31,39 @@ import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionSoldierElite;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionTrader;
 import net.shadowmage.ancientwarfare.npc.entity.vehicle.NpcSiegeEngineer;
 import net.shadowmage.ancientwarfare.npc.item.AWNPCItems;
-import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
-import net.shadowmage.ancientwarfare.npc.registry.FactionDefinition;
-import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 
 import javax.annotation.Nonnull;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @Mod.EventBusSubscriber(modid = AncientWarfareNPC.modID)
 public class AWNPCEntityLoader {
 	private static int nextID = 0;
-	private static Map<String, String> modelVariants = Maps.newHashMap();
 
 	/*
 	 * Npc base type -> NpcDeclaration<br>
 	 * Used to retrieve declaration for creating entities<br>
 	 * NpcDeclaration also stores information pertaining to npc-sub-type basic setup
 	 */
-	private static HashMap<String, NpcDeclaration> npcMap = new HashMap<>();
+	private static final HashMap<String, NpcDeclaration> npcMap = new HashMap<>();
 
 	@SubscribeEvent
 	public static void register(RegistryEvent.Register<EntityEntry> event) {
 		addPlayerOwnedNpcs();
-		for (FactionDefinition faction : FactionRegistry.getFactions()) {
-			addFaction(faction);
-		}
+		addFaction();
 	}
 
 	private static void addPlayerOwnedNpcs() {
 		NpcDeclaration reg = new NpcDeclaration(NpcCombat.class, AWEntityRegistry.NPC_COMBAT, "combat", "soldier");
+		reg.addSubTypes("commander", "soldier", "archer", "medic", "engineer");
 		addNpcRegistration(reg);
-		addNpcSubtypeEntry("combat", "commander", "commander");
-		addNpcSubtypeEntry("combat", "soldier", "combat");
-		addNpcSubtypeEntry("combat", "archer", "archer");
-		addNpcSubtypeEntry("combat", "medic", "medic");
-		addNpcSubtypeEntry("combat", "engineer", "engineer");
 
 		reg = new NpcDeclaration(NpcWorker.class, AWEntityRegistry.NPC_WORKER, "worker", "miner");
+		reg.addSubTypes("miner", "farmer", "lumberjack", "researcher", "craftsman");
 		addNpcRegistration(reg);
-		addNpcSubtypeEntry("worker", "miner", "miner");
-		addNpcSubtypeEntry("worker", "farmer", "farmer");
-		addNpcSubtypeEntry("worker", "lumberjack", "lumberjack");
-		addNpcSubtypeEntry("worker", "researcher", "researcher");
-		addNpcSubtypeEntry("worker", "craftsman", "craftsman");
 
 		reg = new NpcDeclaration(NpcCourier.class, AWEntityRegistry.NPC_COURIER, "courier");
 		addNpcRegistration(reg);
@@ -95,48 +81,48 @@ public class AWNPCEntityLoader {
 		addNpcRegistration(reg);
 	}
 
-	private static void addFaction(FactionDefinition faction) {
+	private static void addFaction() {
 		NpcFactionDeclaration reg;
 		/*
 		 * BANDITS
          */
-		reg = new NpcFactionDeclaration(NpcFactionArcher.class, faction.getName(), AWEntityRegistry.NPC_FACTION_ARCHER, "archer");
+		reg = new NpcFactionDeclaration(NpcFactionArcher.class, AWEntityRegistry.NPC_FACTION_ARCHER, "archer");
 		addNpcRegistration(reg);
 
-		reg = new NpcFactionDeclaration(NpcFactionSoldier.class, faction.getName(), AWEntityRegistry.NPC_FACTION_SOLDIER, "soldier");
+		reg = new NpcFactionDeclaration(NpcFactionSoldier.class, AWEntityRegistry.NPC_FACTION_SOLDIER, "soldier");
 		addNpcRegistration(reg);
 
-		reg = new NpcFactionDeclaration(NpcFactionLeader.class, faction.getName(), AWEntityRegistry.NPC_FACTION_COMMANDER, "commander");
+		reg = new NpcFactionDeclaration(NpcFactionLeader.class, AWEntityRegistry.NPC_FACTION_COMMANDER, "commander");
 		addNpcRegistration(reg);
 
-		reg = new NpcFactionDeclaration(NpcFactionPriest.class, faction.getName(), AWEntityRegistry.NPC_FACTION_PRIEST, "priest");
+		reg = new NpcFactionDeclaration(NpcFactionPriest.class, AWEntityRegistry.NPC_FACTION_PRIEST, "priest");
 		addNpcRegistration(reg);
 
-		reg = new NpcFactionDeclaration(NpcFactionTrader.class, faction.getName(), AWEntityRegistry.NPC_FACTION_TRADER, "trader");
+		reg = new NpcFactionDeclaration(NpcFactionTrader.class, AWEntityRegistry.NPC_FACTION_TRADER, "trader");
 		addNpcRegistration(reg);
 
-		reg = new NpcFactionDeclaration(NpcFactionMountedSoldier.class, faction.getName(), AWEntityRegistry.NPC_FACTION_CAVALRY, "soldier");
+		reg = new NpcFactionDeclaration(NpcFactionMountedSoldier.class, AWEntityRegistry.NPC_FACTION_CAVALRY, "soldier");
 		addNpcRegistration(reg);
 
-		reg = new NpcFactionDeclaration(NpcFactionMountedArcher.class, faction.getName(), AWEntityRegistry.NPC_FACTION_MOUNTED_ARCHER, "archer");
+		reg = new NpcFactionDeclaration(NpcFactionMountedArcher.class, AWEntityRegistry.NPC_FACTION_MOUNTED_ARCHER, "archer");
 		addNpcRegistration(reg);
 
-		reg = new NpcFactionDeclaration(NpcFactionCivilianMale.class, faction.getName(), AWEntityRegistry.NPC_FACTION_CIVILIAN_MALE, "civilian_male");
+		reg = new NpcFactionDeclaration(NpcFactionCivilianMale.class, AWEntityRegistry.NPC_FACTION_CIVILIAN_MALE, "civilian_male");
 		addNpcRegistration(reg);
 
-		reg = new NpcFactionDeclaration(NpcFactionCivilianFemale.class, faction.getName(), AWEntityRegistry.NPC_FACTION_CIVILIAN_FEMALE, "civilian_female");
+		reg = new NpcFactionDeclaration(NpcFactionCivilianFemale.class, AWEntityRegistry.NPC_FACTION_CIVILIAN_FEMALE, "civilian_female");
 		addNpcRegistration(reg);
 
-		reg = new NpcFactionDeclaration(NpcFactionArcherElite.class, faction.getName(), AWEntityRegistry.NPC_FACTION_ARCHER_ELITE, "archer");
+		reg = new NpcFactionDeclaration(NpcFactionArcherElite.class, AWEntityRegistry.NPC_FACTION_ARCHER_ELITE, "archer");
 		addNpcRegistration(reg);
 
-		reg = new NpcFactionDeclaration(NpcFactionSoldierElite.class, faction.getName(), AWEntityRegistry.NPC_FACTION_SOLDIER_ELITE, "soldier");
+		reg = new NpcFactionDeclaration(NpcFactionSoldierElite.class, AWEntityRegistry.NPC_FACTION_SOLDIER_ELITE, "soldier");
 		addNpcRegistration(reg);
 
-		reg = new NpcFactionDeclaration(NpcFactionLeaderElite.class, faction.getName(), AWEntityRegistry.NPC_FACTION_LEADER_ELITE, "commander");
+		reg = new NpcFactionDeclaration(NpcFactionLeaderElite.class, AWEntityRegistry.NPC_FACTION_LEADER_ELITE, "commander");
 		addNpcRegistration(reg);
 
-		reg = new NpcFactionDeclaration(NpcFactionBard.class, faction.getName(), AWEntityRegistry.NPC_FACTION_BARD, "bard");
+		reg = new NpcFactionDeclaration(NpcFactionBard.class, AWEntityRegistry.NPC_FACTION_BARD, "bard");
 		addNpcRegistration(reg);
 	}
 
@@ -159,104 +145,38 @@ public class AWNPCEntityLoader {
 
 	private static void addNpcRegistration(NpcDeclaration reg) {
 		AWEntityRegistry.registerEntity(reg);
-		npcMap.put((reg.getFaction().isEmpty() ? "" : reg.getFaction() + ".") + reg.getType(), reg);
+		getNpcMap().put(reg.getType(), reg);
 	}
 
 	public static NpcBase createNpc(World world, String npcType, String npcSubtype, String faction) {
-		String key = (faction.isEmpty() ? "" : faction + ".faction.") + npcType;
-		if (!npcMap.containsKey(key)) {
+		if (!getNpcMap().containsKey(npcType)) {
 			return null;
 		}
-		NpcDeclaration reg = npcMap.get(key);
-		return reg.createEntity(world, npcSubtype);
-	}
-
-	private static void addNpcSubtypeEntry(String npcType, String npcSubtype, String modelVariant) {
-		if (!npcMap.containsKey(npcType)) {
-			throw new IllegalArgumentException("npc type must first be mapped");
-		}
-		npcMap.get(npcType).addSubtype(npcSubtype, modelVariant);
+		NpcDeclaration reg = getNpcMap().get(npcType);
+		return reg.createEntity(world, npcSubtype, faction);
 	}
 
 	private static void addNpcSubtypeEquipment(String npcType, String npcSubtype, ItemStack equipment) {
-		if (!npcMap.containsKey(npcType)) {
+		if (!getNpcMap().containsKey(npcType)) {
 			throw new IllegalArgumentException("npc type must first be mapped");
 		}
-		NpcDeclaration reg = npcMap.get(npcType);
-		if (!reg.subTypeModelVariants.containsKey(npcSubtype)) {
-			throw new IllegalArgumentException("npc subtype must first be mapped");
-		}
-		reg.spawnEquipment.put(npcSubtype, equipment);
+		NpcDeclaration reg = getNpcMap().get(npcType);
+		reg.addSubtypeEquipment(npcSubtype, equipment);
 	}
 
-    /*
-	 * used by npc spawner item to get the sub-items
-     */
-
-	public static void getSpawnerSubItems(NonNullList<ItemStack> list) {
-		for (NpcDeclaration dec : npcMap.values()) {
-			if (dec.canSpawnBaseEntity) {
-				list.add(ItemNpcSpawner.getStackForNpcType(dec.npcType.replace("faction.", ""), "", dec.getFaction()));
-			}
-			for (String sub : dec.subTypeModelVariants.keySet()) {
-				list.add(ItemNpcSpawner.getStackForNpcType(dec.npcType, sub));
-			}
-		}
+	public static Map<String, NpcDeclaration> getNpcMap() {
+		return npcMap;
 	}
 
-	public static List<String> getNPCItemModelVariants() {
-		return ImmutableList.of(
-				"siege_engineer",
-				"archer",
-				"bard",
-				"commander",
-				"courier",
-				"craftsman",
-				"engineer",
-				"farmer",
-				"lumberjack",
-				"medic",
-				"miner",
-				"priest",
-				"researcher",
-				"trader",
-				"soldier",
-				"civilian_female",
-				"civilian_male"
-		);
-	}
-
-	public static String remapToModelVariant(String npcType) {
-		switch (npcType) {
-			case "leader":
-			case "leader.elite":
-				return "commander";
-			case "civilian.female":
-				return "civilian_female";
-			case "civilian.male":
-				return "civilian_male";
-			case "worker":
-				return "miner";
-			case "combat":
-			case "cavalry":
-			case "soldier.elite":
-				return "soldier";
-			case "siege.engineer":
-				return "siege_engineer";
-			case "mounted_archer":
-			case "archer.elite":
-				return "archer";
-			default:
-				return npcType;
-		}
+	public static NpcDeclaration getNpcDeclaration(String npcType) {
+		return npcMap.get(npcType);
 	}
 
 	public static class NpcDeclaration extends EntityDeclaration {
 
 		private final String itemModelVariant;
-		private boolean canSpawnBaseEntity = true;
+		private boolean spawnBaseEntity = true;
 		private final String npcType;
-		private final HashMap<String, String> subTypeModelVariants = new HashMap<>();
 		private final HashMap<String, ItemStack> spawnEquipment = new HashMap<>();
 
 		public NpcDeclaration(Class<? extends Entity> entityClass, String entityName, String npcType) {
@@ -277,11 +197,15 @@ public class AWNPCEntityLoader {
 			return npcType;
 		}
 
-		public void addSubtype(String type, String itemModelVariant) {
-			subTypeModelVariants.put(type, itemModelVariant);
+		private void addSubTypes(String... subTypes) {
+			Arrays.stream(subTypes).forEach(s -> addSubtypeEquipment(s, ItemStack.EMPTY));
 		}
 
-		public NpcBase createEntity(World world, String subType) {
+		private void addSubtypeEquipment(String type, ItemStack equipment) {
+			spawnEquipment.put(type, equipment);
+		}
+
+		public NpcBase createEntity(World world, String subType, String factionName) {
 			NpcBase npc = (NpcBase) createEntity(world);
 			if (!subType.isEmpty()) {
 				@Nonnull ItemStack stack = spawnEquipment.get(subType);
@@ -312,34 +236,37 @@ public class AWNPCEntityLoader {
 			return true;
 		}
 
-		public String getItemModelVariant() {
-			return itemModelVariant;
+		public List<String> getItemModelVariants() {
+			return new ImmutableList.Builder<String>().addAll(spawnEquipment.keySet()).add(itemModelVariant).build();
 		}
 
-		public String getSubTypeModelVariant(String subType) {
-			return subTypeModelVariants.get(subType);
+		public String getItemModelVariant(String npcSubType) {
+			if (npcSubType.isEmpty()) {
+				return itemModelVariant;
+			}
+			return npcSubType;
 		}
 
-		public boolean getCanSpawnBaseType() {
-			return canSpawnBaseEntity;
+		public Set<String> getSubTypes() {
+			return spawnEquipment.keySet();
 		}
 
-		public Map<String, String> getSubTypeModelVariants() {
-			return subTypeModelVariants;
+		public boolean canSpawnBaseEntity() {
+			return spawnBaseEntity;
+		}
+
+		public String getNpcType() {
+			return npcType;
 		}
 	}
 
 	public static class NpcFactionDeclaration extends NpcDeclaration {
-
-		private final String factionName;
-
-		public NpcFactionDeclaration(Class<? extends NpcFaction> entityClass, String factionName, String entityName, String itemModelVariant) {
+		public NpcFactionDeclaration(Class<? extends NpcFaction> entityClass, String entityName, String itemModelVariant) {
 			super(entityClass, entityName, entityName, itemModelVariant);
-			this.factionName = factionName;
 		}
 
 		@Override
-		public NpcFaction createEntity(World world, String subType) {
+		public NpcFaction createEntity(World world, String subType, String factionName) {
 			try {
 				return (NpcFaction) entityClass.getConstructor(World.class, String.class).newInstance(world, factionName);
 			}
@@ -349,10 +276,6 @@ public class AWNPCEntityLoader {
 			return null;
 		}
 
-		@Override
-		public String getFaction() {
-			return factionName;
-		}
 	}
 
 }
