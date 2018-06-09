@@ -33,6 +33,7 @@ public class AWEntityRegistry {
 	public static final String NPC_FACTION_LEADER_ELITE = "faction.leader.elite";
 	public static final String NPC_FACTION_CIVILIAN_FEMALE = "faction.civilian.female";
 	public static final String NPC_FACTION_BARD = "faction.bard";
+	public static final String NPC_FACTION_SIEGE_ENGINEER = "faction.siege_engineer";
 
     /*
 	 * Vehicle Module Entity Registrations

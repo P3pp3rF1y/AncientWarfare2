@@ -26,6 +26,7 @@ import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionLeaderElite;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionMountedArcher;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionMountedSoldier;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionPriest;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionSiegeEngineer;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionSoldier;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionSoldierElite;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFactionTrader;
@@ -123,6 +124,9 @@ public class AWNPCEntityLoader {
 		addNpcRegistration(reg);
 
 		reg = new NpcFactionDeclaration(NpcFactionBard.class, AWEntityRegistry.NPC_FACTION_BARD, "bard");
+		addNpcRegistration(reg);
+
+		reg = new NpcFactionDeclaration(NpcFactionSiegeEngineer.class, AWEntityRegistry.NPC_FACTION_SIEGE_ENGINEER, "siege_engineer");
 		addNpcRegistration(reg);
 	}
 

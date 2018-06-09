@@ -511,7 +511,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	}
 
 	@Override
-	public void setAttackTarget(EntityLivingBase entity) {
+	public void setAttackTarget(@Nullable EntityLivingBase entity) {
 		if (entity != null && !canTarget(entity))
 			return;
 		super.setAttackTarget(entity);

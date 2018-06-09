@@ -27,7 +27,7 @@ public class TargetFactory {
 		return NONE;
 	}
 
-	static final ITarget NONE = new ITarget() {
+	public static final ITarget NONE = new ITarget() {
 		@Override
 		public double getX() {
 			return 0;
