@@ -1,0 +1,36 @@
+{
+    "factions": [
+        {
+            "name": "bandit",
+            "color": "e01313"
+        },
+        {
+            "name": "pirate",
+            "color": "43c0c0"
+        },
+        {
+            "name": "desert",
+            "color": "d7d788"
+        },
+        {
+            "name": "native",
+            "color": "4fc458"
+        },
+        {
+            "name": "viking",
+            "color": "3d3d3d"
+        },
+        {
+            "name": "custom_1",
+            "color": "451d58"
+        },
+        {
+            "name": "custom_2",
+            "color": "1d4658"
+        },
+        {
+            "name": "custom_3",
+            "color": "58351d"
+        }
+    ]
+}

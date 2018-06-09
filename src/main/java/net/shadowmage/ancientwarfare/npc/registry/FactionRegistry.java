@@ -1,24 +1,37 @@
 package net.shadowmage.ancientwarfare.npc.registry;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import net.minecraft.util.JsonUtils;
+import net.shadowmage.ancientwarfare.core.registry.IRegistryDataParser;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class FactionRegistry {
 	private FactionRegistry() {}
 
-	private static Set<FactionDefinition> factions = ImmutableSet.of(
-			new FactionDefinition("bandit", Integer.parseInt("e01313", 16)),
-			new FactionDefinition("pirate", Integer.parseInt("43c0c0", 16)),
-			new FactionDefinition("desert", Integer.parseInt("d7d788", 16)),
-			new FactionDefinition("native", Integer.parseInt("4fc458", 16)),
-			new FactionDefinition("viking", Integer.parseInt("3d3d3d", 16)),
-			new FactionDefinition("custom_1", Integer.parseInt("451d58", 16)),
-			new FactionDefinition("custom_2", Integer.parseInt("1d4658", 16)),
-			new FactionDefinition("custom_3", Integer.parseInt("58351d", 16))
-	);
+	private static Set<FactionDefinition> factions = new HashSet<>();
 
 	public static Set<FactionDefinition> getFactions() {
 		return factions;
+	}
+
+	public static class FactionParser implements IRegistryDataParser {
+		@Override
+		public String getName() {
+			return "factions";
+		}
+
+		@Override
+		public void parse(JsonObject json) {
+			JsonArray factionsArray = JsonUtils.getJsonArray(json, "factions");
+
+			for (JsonElement e : factionsArray) {
+				JsonObject faction = JsonUtils.getJsonObject(e, "faction");
+				factions.add(new FactionDefinition(JsonUtils.getString(faction, "name"), Integer.parseInt(JsonUtils.getString(faction, "color"), 16)));
+			}
+		}
 	}
 }

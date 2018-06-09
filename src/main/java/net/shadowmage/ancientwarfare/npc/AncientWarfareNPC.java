@@ -19,6 +19,7 @@ import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.gamedata.WorldData;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
+import net.shadowmage.ancientwarfare.core.registry.RegistryLoader;
 import net.shadowmage.ancientwarfare.npc.command.CommandDebugAI;
 import net.shadowmage.ancientwarfare.npc.command.CommandFaction;
 import net.shadowmage.ancientwarfare.npc.compat.EpicSiegeCompat;
@@ -41,6 +42,7 @@ import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
 import net.shadowmage.ancientwarfare.npc.network.PacketFactionUpdate;
 import net.shadowmage.ancientwarfare.npc.network.PacketNpcCommand;
 import net.shadowmage.ancientwarfare.npc.proxy.NpcCommonProxy;
+import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 
 @Mod(name = "Ancient Warfare NPCs", modid = AncientWarfareNPC.modID, version = "@VERSION@", dependencies = "required-after:ancientwarfare")
 
@@ -89,6 +91,8 @@ public class AncientWarfareNPC {
 		PacketBase.registerPacketType(NetworkHandler.PACKET_FACTION_UPDATE, PacketFactionUpdate.class);
 
 		CompatLoader.registerCompat(new EpicSiegeCompat());
+
+		RegistryLoader.registerParser(new FactionRegistry.FactionParser());
 	}
 
 	@EventHandler
