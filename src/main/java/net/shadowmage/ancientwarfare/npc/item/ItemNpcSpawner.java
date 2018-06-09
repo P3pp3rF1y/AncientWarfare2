@@ -47,8 +47,9 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
-		String npcName = getNpcType(stack).replace("faction.", "");
+		String npcName = getNpcType(stack);
 		if (npcName != null) {
+			npcName = npcName.replace("faction.", "");
 			String npcSub = getNpcSubtype(stack);
 			if (!npcSub.isEmpty()) {
 				npcName = npcName + "." + npcSub;
