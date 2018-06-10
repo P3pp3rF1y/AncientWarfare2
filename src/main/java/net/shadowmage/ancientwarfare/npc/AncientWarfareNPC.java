@@ -67,7 +67,6 @@ public class AncientWarfareNPC {
          */
 		statics = new AWNPCStatics("AncientWarfareNpc");
 		proxy.preInit();//must be loaded after configs
-		MinecraftForge.EVENT_BUS.register(FactionTracker.INSTANCE);
 		MinecraftForge.EVENT_BUS.register(this);
 		MinecraftForge.EVENT_BUS.register(net.shadowmage.ancientwarfare.npc.event.EventHandler.INSTANCE);
 
@@ -107,6 +106,8 @@ public class AncientWarfareNPC {
          */
 		proxy.loadSkins();
 		AWNPCEntityLoader.loadNpcSubtypeEquipment();
+		MinecraftForge.EVENT_BUS.register(FactionTracker.INSTANCE);
+
 		statics.save();
 	}
 

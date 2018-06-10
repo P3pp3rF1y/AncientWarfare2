@@ -35,11 +35,17 @@ public class NpcFactionSiegeEngineer extends NpcFaction implements IVehicleUser 
 
 	public NpcFactionSiegeEngineer(World world) {
 		super(world);
+
+		addAI();
 	}
 
 	public NpcFactionSiegeEngineer(World world, String factionName) {
 		super(world, factionName);
 
+		addAI();
+	}
+
+	private void addAI() {
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
 		this.tasks.addTask(0, new NpcAIDoor(this, true));
@@ -56,7 +62,6 @@ public class NpcFactionSiegeEngineer extends NpcFaction implements IVehicleUser 
 
 		this.targetTasks.addTask(1, new NpcAIHurt(this));
 		this.targetTasks.addTask(2, new NpcAIAttackNearest(this, this::isHostileTowards));
-
 	}
 
 	@Override

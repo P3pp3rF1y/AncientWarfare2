@@ -111,8 +111,6 @@ public class AWNPCStatics extends ModConfiguration {
 	private static final String factionSettings = "01_faction_settings";
 	public static int factionLossOnDeath = 10;//how much faction standing is lost when you (or one of your npcs) kills an enemy faction-based npc
 	public static int factionGainOnTrade = 2;//how much faction standing is gained when you complete a trade with a faction-based trader-npc
-	private HashMap<String, Integer> defaultFactionStandings;
-	private HashMap<String, HashMap<String, Boolean>> factionVsFactionStandings;
 
 	/***********************************************FACTION NAMES*************************************************/
 
@@ -129,7 +127,8 @@ public class AWNPCStatics extends ModConfiguration {
 			"trader",
 			"civilian.male",
 			"civilian.female",
-			"bard"};
+			"bard",
+			"siege_engineer"};
 
 	/***********************************************NPC CONFIG*************************************************/
 	/* ********************************************NPC VALUES SETTINGS************************************************ */
@@ -197,7 +196,6 @@ public class AWNPCStatics extends ModConfiguration {
 	public void initializeValues() {
 		loadFoodValues();
 		loadTargetValues();
-		loadDefaultFactionStandings();
 		initializeCustomValues();
 		initializeNpcEquipmentConfigs();
 
@@ -389,27 +387,6 @@ public class AWNPCStatics extends ModConfiguration {
 		}
 	}
 
-	private void loadDefaultFactionStandings() {
-		defaultFactionStandings = new HashMap<>();
-		factionVsFactionStandings = new HashMap<>();
-		String key;
-		boolean val;
-		for (String name : factionNames) {
-			if (!this.factionVsFactionStandings.containsKey(name)) {
-				this.factionVsFactionStandings.put(name, new HashMap<>());
-			}
-			this.defaultFactionStandings.put(name, factionConfig.get(factionSettings, name + ".starting_faction_standing", -50, "Default faction standing for: [" + name + "] for new players joining a game." + " Less than 0 will be hostile, greater than or equal to zero will be neutral/friendly." + " Default value is -50 for all factions, starting all players with a minor hostile standing." + " Players will need to trade with faction-owned traders to improve their standing to become friendly.").getInt());
-			for (String name2 : factionNames) {
-				if (name.equals(name2)) {
-					continue;
-				}
-				key = name + ":" + name2;
-				val = factionConfig.get(factionSettings, key, false, "How does: " + name + " faction view: " + name2 + " faction?\n" + "If true, " + name + "s will be hostile towards " + name2 + "s").getBoolean();
-				this.factionVsFactionStandings.get(name).put(name2, val);
-			}
-		}
-	}
-
 	/*
 	 * returns the food value for a single size stack of the input item stack
 	 */
@@ -422,13 +399,6 @@ public class AWNPCStatics extends ModConfiguration {
 			return foodValues.get(name);
 		} else if (stack.getItem() instanceof ItemFood) {
 			return ((ItemFood) stack.getItem()).getHealAmount(stack) * foodMultiplier;
-		}
-		return 0;
-	}
-
-	public int getDefaultFaction(String factionName) {
-		if (defaultFactionStandings.containsKey(factionName)) {
-			return defaultFactionStandings.get(factionName);
 		}
 		return 0;
 	}
@@ -502,13 +472,6 @@ public class AWNPCStatics extends ModConfiguration {
 		if (path != null) {
 			path.applyTo((PathNavigateGround) npc.getNavigator());
 		}
-	}
-
-	public boolean shouldFactionBeHostileTowards(String faction1, String faction2) {
-		if (factionVsFactionStandings.containsKey(faction1) && factionVsFactionStandings.get(faction1).containsKey(faction2)) {
-			return factionVsFactionStandings.get(faction1).get(faction2);
-		}
-		return false;
 	}
 
 	public void initializeNpcEquipmentConfigs() {

@@ -1,8 +1,42 @@
 {
+    "defaults": {
+        "player_default_standing": -50,
+        "hostile_towards_factions": [
+            {
+                "bandit": false
+            },
+            {
+                "pirate": false
+            },
+            {
+                "desert": false
+            },
+            {
+                "native": false
+            },
+            {
+                "viking": false
+            },
+            {
+                "custom_1": false
+            },
+            {
+                "custom_2": false
+            },
+            {
+                "custom_3": false
+            }
+        ]
+    },
     "factions": [
         {
             "name": "bandit",
-            "color": "e01313"
+            "color": "e01313",
+            "hostile_towards_factions": [
+                {
+                    "pirate": false
+                }
+            ]
         },
         {
             "name": "pirate",

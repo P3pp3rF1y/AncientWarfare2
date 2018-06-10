@@ -8,14 +8,14 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
+import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 
 import javax.annotation.Nullable;
 import java.util.List;
-import java.util.Locale;
 
 public class CommandFaction extends CommandBase {
+	private static final String COMMAND_AW_FACTION_SET_USAGE_UNLOC = "command.aw.faction.set.usage";
 
 	@Override
 	public int getRequiredPermissionLevel() {
@@ -39,13 +39,13 @@ public class CommandFaction extends CommandBase {
 		}
 		String cmd = var2[0];
 		String playerName = var2[1];
-		if (cmd.toLowerCase(Locale.ENGLISH).equals("set")) {
+		if (cmd.equalsIgnoreCase("set")) {
 			if (var2.length < 4) {
-				throw new WrongUsageException("command.aw.faction.set.usage");
+				throw new WrongUsageException(COMMAND_AW_FACTION_SET_USAGE_UNLOC);
 			}
 			String faction = var2[2];
-			if (!isFactionNameValid(faction)) {
-				throw new WrongUsageException("command.aw.faction.set.usage");
+			if (FactionRegistry.getFactionNames().stream().noneMatch(f -> f.equalsIgnoreCase(faction))) {
+				throw new WrongUsageException(COMMAND_AW_FACTION_SET_USAGE_UNLOC);
 			}
 			String amount = var2[3];
 			int amt = 0;
@@ -53,43 +53,34 @@ public class CommandFaction extends CommandBase {
 				amt = Integer.parseInt(amount);
 			}
 			catch (NumberFormatException e) {
-				throw new WrongUsageException("command.aw.faction.set.usage");
+				throw new WrongUsageException(COMMAND_AW_FACTION_SET_USAGE_UNLOC);
 			}
 			FactionTracker.INSTANCE.setStandingFor(var1.getEntityWorld(), playerName, faction, amt);
 			var1.sendMessage(new TextComponentTranslation("command.aw.faction.set", playerName, faction, amt));
-		} else if (cmd.toLowerCase(Locale.ENGLISH).equals("setall")) {
+		} else if (cmd.equalsIgnoreCase("setall")) {
 			if (var2.length < 3) {
 				throw new WrongUsageException("command.aw.faction.setall.usage");
 			}
 			String amount = var2[2];
-			int amt = 0;
+			int amt;
 			try {
 				amt = Integer.parseInt(amount);
 			}
 			catch (NumberFormatException e) {
 				throw new WrongUsageException("command.aw.faction.setall.usage");
 			}
-			for (String faction : AWNPCStatics.factionNames) {
+			for (String faction : FactionRegistry.getFactionNames()) {
 				FactionTracker.INSTANCE.setStandingFor(var1.getEntityWorld(), playerName, faction, amt);
 				var1.sendMessage(new TextComponentTranslation("command.aw.faction.set", playerName, faction, amt));
 			}
-		} else if (cmd.toLowerCase(Locale.ENGLISH).equals("get")) {
+		} else if (cmd.equalsIgnoreCase("get")) {
 			World world = var1.getEntityWorld();
 			var1.sendMessage(new TextComponentTranslation("command.aw.faction.status.player", playerName));
-			for (String faction : AWNPCStatics.factionNames) {
+			for (String faction : FactionRegistry.getFactionNames()) {
 				int standing = FactionTracker.INSTANCE.getStandingFor(world, playerName, faction);
 				var1.sendMessage(new TextComponentTranslation("command.aw.faction.status.value", faction, standing));
 			}
 		}
-	}
-
-	private boolean isFactionNameValid(String factionName) {
-		for (String name : AWNPCStatics.factionNames) {
-			if (name.equalsIgnoreCase(factionName)) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	@Override
@@ -102,8 +93,8 @@ public class CommandFaction extends CommandBase {
 			return CommandBase.getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames());
 		} else if (args.length == 3)//would be a faction name for the set command
 		{
-			if (args[0].toLowerCase(Locale.ENGLISH).equals("set")) {
-				return CommandBase.getListOfStringsMatchingLastWord(args, AWNPCStatics.factionNames);
+			if (args[0].equalsIgnoreCase("set")) {
+				return CommandBase.getListOfStringsMatchingLastWord(args, FactionRegistry.getFactionNames());
 			}
 		} else if (args.length == 4)//would be a number for the set command value
 		{

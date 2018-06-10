@@ -16,6 +16,7 @@ import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
+import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 
 import java.util.List;
 import java.util.UUID;
@@ -75,7 +76,7 @@ public abstract class NpcFaction extends NpcBase {
 			return standing < 0;
 		} else if (e instanceof NpcFaction) {
 			NpcFaction npc = (NpcFaction) e;
-			return AncientWarfareNPC.statics.shouldFactionBeHostileTowards(getFaction(), npc.getFaction());
+			return FactionRegistry.getFaction(getFaction()).isHostileTowards(npc.getFaction());
 		} else {
 			// TODO
 			// This is for forced inclusions, which we don't currently support in new auto-targeting. This
