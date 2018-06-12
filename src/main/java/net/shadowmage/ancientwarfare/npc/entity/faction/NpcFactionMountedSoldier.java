@@ -44,7 +44,7 @@ public class NpcFactionMountedSoldier extends NpcFactionMounted {
 
 	@Override
 	public String getNpcType() {
-		return factionName + ".cavalry";
+		return "cavalry";
 	}
 
 }

@@ -37,6 +37,6 @@ public class NpcFactionPriest extends NpcFaction {
 
 	@Override
 	public String getNpcType() {
-		return factionName + ".priest";
+		return "priest";
 	}
 }

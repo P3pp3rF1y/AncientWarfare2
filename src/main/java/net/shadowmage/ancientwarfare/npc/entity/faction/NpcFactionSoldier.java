@@ -50,7 +50,7 @@ public class NpcFactionSoldier extends NpcFaction {
 
 	@Override
 	public String getNpcType() {
-		return factionName + ".soldier";
+		return "soldier";
 	}
 
 	@Override

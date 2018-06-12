@@ -62,7 +62,7 @@ public class NpcFactionBard extends NpcFaction implements ISinger {
 
 	@Override
 	public String getNpcType() {
-		return factionName + ".bard";
+		return "bard";
 	}
 
 	@Override

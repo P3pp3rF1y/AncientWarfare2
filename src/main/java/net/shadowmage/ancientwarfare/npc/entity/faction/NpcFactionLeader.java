@@ -52,7 +52,7 @@ public class NpcFactionLeader extends NpcFaction {
 
 	@Override
 	public String getNpcType() {
-		return factionName + ".leader";
+		return "leader";
 	}
 
 	@Override

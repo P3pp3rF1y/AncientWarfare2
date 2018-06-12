@@ -261,31 +261,6 @@ public class AWNPCStatics extends ModConfiguration {
 		autoTargettingMobExclude = new ArrayList<>();
 		Collections.addAll(autoTargettingMobExclude, targets);
 
-        /*
-		 * TODO
-         * Problem:
-         * No straightforward way to detect if a mob is ranged or melee, or can attack at all.
-         * Is the presence of vanilla AI tasks good enough for this? Need to look at other mod-added mobs. 
-         *  
-        targets = targetConfig.get(targetSettings, "auto_targetting.include", new String[]{}, "Include entities for auto-injection, i.e. 'force hostile'. Use this to attempt a forced-injection of NPC-attack AI on mobs.\n" + 
-                                                                                              "This does NOT guarantee that the mob will successfully target NPC's and in some cases could cause compatibility issues and AI bugs on the entity.\n" + 
-                                                                                              "One probably-safe use of this list is for entites which can attack but don't target the player by default e.g. neutral mobs.\n" + 
-                                                                                              "NOTE that adding entities here will not preserve the 'neutrality' towards NPC's though - they will still attack NPC's on sight.\n" + 
-                                                                                              "If an entity listed here does not have any attack capability, it will be silently skipped.").getStringList();
-        autoTargettingMobInclude = new ArrayList<>();
-        Collections.addAll(autoTargettingMobInclude, targets);
-        
-        targets = targetConfig.get(targetSettings, "auto_targetting.force", new String[]{}, "Force entities for AI target injection, i.e. 'force combat capability'.\n" + 
-                                                                                            "This is an absolute last resort. Combat AI against NPC's will be injected even if the entity has no\n" + 
-                                                                                            "recognizable attack logic. Things will probably go horribly wrong if you use this, you have been warned!\n" +
-                                                                                            "Anything in this list will override the other include and exclude lists.").getStringList();
-        autoTargettingMobForce = new ArrayList<>();
-        Collections.addAll(autoTargettingMobForce, targets);
-        
-        autoTargettingMobForcePriority = targetConfig.get(targetSettings, "auto_targetting.force.priority", autoTargettingMobForcePriority, "Task priority for forced attack AI injections\n" + 
-                                                                                                                                            "Should always be 1 or higher.").getInt(); 
-        */
-
 		// old stuff from here on
 		if (!autoTargetting) {
 			entityTargetSettings = new HashMap<>();
@@ -350,13 +325,6 @@ public class AWNPCStatics extends ModConfiguration {
 	public boolean shouldEntityTargetNpcs(String entityName) {
 		if (!autoTargetting) // old targetting in use
 			return entitiesToTargetNpcs.contains(entityName);
-		// check forced first
-		//if (autoTargettingMobForce.contains(entityName))
-		//    return true;
-		// check include next
-		//if (autoTargettingMobInclude.contains(entityName))
-		//    return true;
-		// finally check if it's excluded
 		return (!autoTargettingMobExclude.contains(entityName));
 	}
 
@@ -432,7 +400,6 @@ public class AWNPCStatics extends ModConfiguration {
 		pathValues.put("siege.engineer", getDefaultPath("siege.engineer"));
 	}
 
-	//TODO check what entity speed is needed / feels right. perhaps vary depending upon level or type
 	private Attribute getDefault(String type) {
 		return new Attribute(valuesConfig.get("01_npc_base_health", type, 20).getDouble(), valuesConfig.get("02_npc_base_attack", type, 1).getDouble(), valuesConfig.get("03_npc_base_speed", type, 0.325D).getDouble(), valuesConfig.get("05_npc_base_range", type, 60).getDouble(), valuesConfig.get("04_npc_exp_drop", type, 0).getInt());
 	}
@@ -441,15 +408,9 @@ public class AWNPCStatics extends ModConfiguration {
 		return attributes.get(type).baseHealth();
 	}
 
-	public double getAttack(NpcBase npcBase) {
+	public double getBaseAttack(NpcBase npcBase) {
 		String type = npcBase.getNpcType();
-		Attribute attribute = attributes.get(type);
-		if (attribute != null) {
-			double dmg = attribute.baseAttack();
-			int level = npcBase.getLevelingStats().getLevel();
-			return dmg * (1 + level * npcLevelDamageMultiplier);
-		}
-		return 0;
+		return attributes.get(type).baseAttack();
 	}
 
 	private Path getDefaultPath(String key) {

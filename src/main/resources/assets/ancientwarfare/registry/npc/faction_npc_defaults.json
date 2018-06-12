@@ -1,0 +1,164 @@
+{
+    "defaults": {
+        "entities_to_target": [
+            "minecraft:zombie",
+            "minecraft:skeleton",
+            "minecraft:slime"
+        ],
+        "attributes": [
+            {
+                "generic.maxHealth": 20
+            },
+            {
+                "generic.movementSpeed": 0.325
+            },
+            {
+                "generic.followRange": 60
+            },
+            {
+                "generic.attackDamage": 1
+            }
+        ],
+        "experience_drop": 0,
+        "can_swim": true,
+        "can_break_doors": true
+    },
+    "npc_subtypes": [
+        {
+            "soldier": {
+                "entities_to_target": [
+                    "minecraft:zombie"
+                ],
+                "equipment": [
+                    {
+                        "mainhand": "minecraft:iron_sword"
+                    },
+                    {
+                        "offhand": "minecraft:air"
+                    },
+                    {
+                        "feet": "minecraft:air"
+                    },
+                    {
+                        "legs": "minecraft:air"
+                    },
+                    {
+                        "chest": "minecraft:air"
+                    },
+                    {
+                        "head": "minecraft:air"
+                    },
+                    {
+                        "work": "minecraft:air"
+                    },
+                    {
+                        "upkeep": "minecraft:air"
+                    }
+                ]
+            }
+        },
+        {
+            "soldier.elite": {
+                "equipment": [
+                    {
+                        "mainhand": "minecraft:iron_sword"
+                    }
+                ]
+            }
+        },
+        {
+            "cavalry": {
+                "equipment": [
+                    {
+                        "mainhand": "minecraft:iron_sword"
+                    }
+                ]
+            }
+        },
+        {
+            "archer": {
+                "equipment": [
+                    {
+                        "mainhand": "minecraft:bow"
+                    }
+                ]
+            }
+        },
+        {
+            "archer.elite": {
+                "equipment": [
+                    {
+                        "mainhand": "minecraft:bow"
+                    }
+                ]
+            }
+        },
+        {
+            "mounted_archer": {
+                "equipment": [
+                    {
+                        "mainhand": "minecraft:bow"
+                    }
+                ]
+            }
+        },
+        {
+            "leader": {
+                "equipment": [
+                    {
+                        "mainhand": "minecraft:diamond_sword"
+                    }
+                ]
+            }
+        },
+        {
+            "leader.elite": {
+                "equipment": [
+                    {
+                        "mainhand": "minecraft:diamond_sword"
+                    }
+                ]
+            }
+        },
+        {
+            "trader": {
+                "equipment": [
+                    {
+                        "mainhand": "minecraft:book"
+                    }
+                ]
+            }
+        },
+        {
+            "priest": {
+                "equipment": [
+                    {
+                        "mainhand": "minecraft:book"
+                    }
+                ]
+            }
+        },
+        {
+            "bard": {
+                "equipment": [
+                    {
+                        "mainhand": "ancientwarfarenpc:bard_instrument"
+                    }
+                ]
+            }
+        }
+    ],
+    "factions": [
+        {
+            "bandit": [
+                {
+                    "archer": {
+                        "entities_to_target": [
+                            "minecraft:zombie"
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}

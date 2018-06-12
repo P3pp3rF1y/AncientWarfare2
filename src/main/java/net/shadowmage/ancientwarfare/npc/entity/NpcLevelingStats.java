@@ -6,6 +6,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
+import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 
 import java.util.HashMap;
 
@@ -70,7 +72,13 @@ public class NpcLevelingStats {
 		level = newLevel;
 		if (newLevel <= AWNPCStatics.maxNpcLevel) {
 			if (npc.getMaxHealthOverride() <= 0) {
-				double health = AncientWarfareNPC.statics.getMaxHealthFor(npc.getNpcType()) + newLevel;
+				//TODO get rid of instanceof check once player owned attributes are migrated to similar structure to faction npcs
+				double health;
+				if (npc instanceof NpcFaction) {
+					health = FactionRegistry.getFactionNpcDefault((NpcFaction) npc).getBaseHealth();
+				} else {
+					health = AncientWarfareNPC.statics.getMaxHealthFor(npc.getNpcType()) + newLevel;
+				}
 				npc.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(health);
 			}
 			npc.updateDamageFromLevel();

@@ -92,6 +92,7 @@ public class AncientWarfareNPC {
 		CompatLoader.registerCompat(new EpicSiegeCompat());
 
 		RegistryLoader.registerParser(new FactionRegistry.FactionParser());
+		RegistryLoader.registerParser(new FactionRegistry.FactionNpcDefaultsParser());
 	}
 
 	@EventHandler

@@ -76,7 +76,7 @@ public class NpcFactionTrader extends NpcFaction {
 
 	@Override
 	public String getNpcType() {
-		return factionName + ".trader";
+		return "trader";
 	}
 
 	@Override

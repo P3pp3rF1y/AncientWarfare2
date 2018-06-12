@@ -65,7 +65,7 @@ public class NpcFactionMountedArcher extends NpcFactionMounted implements IRange
 
 	@Override
 	public String getNpcType() {
-		return factionName + ".mounted_archer";
+		return "mounted_archer";
 	}
 
 	@Override

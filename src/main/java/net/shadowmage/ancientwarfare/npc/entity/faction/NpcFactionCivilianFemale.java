@@ -13,6 +13,6 @@ public class NpcFactionCivilianFemale extends NpcFactionCivilian {
 
 	@Override
 	public String getNpcType() {
-		return factionName + ".civilian.female";
+		return "civilian.female";
 	}
 }

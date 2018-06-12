@@ -80,7 +80,7 @@ public class NpcFactionArcher extends NpcFaction implements IRangedAttackMob {
 
 	@Override
 	public String getNpcType() {
-		return factionName + ".archer";
+		return "archer";
 	}
 
 	@Override

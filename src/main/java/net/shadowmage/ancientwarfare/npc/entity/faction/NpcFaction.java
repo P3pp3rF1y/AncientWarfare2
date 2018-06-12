@@ -2,11 +2,11 @@ package net.shadowmage.ancientwarfare.npc.entity.faction;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.PacketBuffer;
+import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
@@ -16,9 +16,9 @@ import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
+import net.shadowmage.ancientwarfare.npc.registry.FactionNpcDefault;
 import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 
-import java.util.List;
 import java.util.UUID;
 
 public abstract class NpcFaction extends NpcBase {
@@ -31,10 +31,15 @@ public abstract class NpcFaction extends NpcBase {
 	public NpcFaction(World world, String factionName) {
 		super(world);
 		this.factionName = factionName;
-		String type = this.getNpcFullType();
-		for (int i = 0; i < 8; i++) {
-			setItemStackToSlot(i, AncientWarfareNPC.statics.getStartingEquipmentForSlot(type, i));
-		}
+		applyFactionNpcSettings();
+	}
+
+	private void applyFactionNpcSettings() {
+		FactionNpcDefault npcDefault = FactionRegistry.getFactionNpcDefault(this);
+		npcDefault.applyAttributes(this);
+		experienceValue = npcDefault.getExperienceDrop();
+		npcDefault.applyPathSettings((PathNavigateGround) getNavigator());
+		npcDefault.applyEquipment(this);
 	}
 
 	@Override
@@ -83,11 +88,7 @@ public abstract class NpcFaction extends NpcBase {
 			// is complicated because reasons. See comments in the AWNPCStatics class for details.
 
 			if (!AncientWarfareNPC.statics.autoTargetting) {
-				List<String> targets = AncientWarfareNPC.statics.getValidTargetsFor(getNpcFullType(), "");
-				String t = EntityList.getEntityString(e);
-				if (targets.contains(t)) {
-					return true;
-				}
+				return FactionRegistry.getFactionNpcDefault(this).isTarget(e);
 			}
 		}
 		return false;

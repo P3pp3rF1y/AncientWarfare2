@@ -66,7 +66,7 @@ public class NpcFactionSiegeEngineer extends NpcFaction implements IVehicleUser 
 
 	@Override
 	public String getNpcType() {
-		return factionName + ".siege_engineer";
+		return "siege_engineer";
 	}
 
 	@Override
