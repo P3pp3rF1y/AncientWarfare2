@@ -35,6 +35,7 @@ public class ItemBackpack extends ItemBaseCore {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(I18n.format("guistrings.core.backpack.size", ((stack.getItemDamage() + 1) * 9)));
 		tooltip.add(I18n.format("guistrings.core.backpack.click_to_open"));
@@ -83,7 +84,11 @@ public class ItemBackpack extends ItemBaseCore {
 			@Nullable
 			@Override
 			public <T> T getCapability(@Nonnull Capability<T> capability, @Nullable EnumFacing facing) {
-				return (T) new ItemHandlerBackpack(stack);
+				if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+					//noinspection unchecked
+					return (T) new ItemHandlerBackpack(stack);
+				}
+				return null;
 			}
 		};
 	}
