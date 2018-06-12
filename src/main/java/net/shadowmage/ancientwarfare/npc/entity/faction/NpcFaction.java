@@ -16,8 +16,9 @@ import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
-import net.shadowmage.ancientwarfare.npc.registry.FactionNpcDefault;
 import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
+import net.shadowmage.ancientwarfare.npc.registry.NpcDefault;
+import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
 
 import java.util.UUID;
 
@@ -35,7 +36,7 @@ public abstract class NpcFaction extends NpcBase {
 	}
 
 	private void applyFactionNpcSettings() {
-		FactionNpcDefault npcDefault = FactionRegistry.getFactionNpcDefault(this);
+		NpcDefault npcDefault = NpcDefaultsRegistry.getFactionNpcDefault(this);
 		npcDefault.applyAttributes(this);
 		experienceValue = npcDefault.getExperienceDrop();
 		npcDefault.applyPathSettings((PathNavigateGround) getNavigator());
@@ -88,7 +89,7 @@ public abstract class NpcFaction extends NpcBase {
 			// is complicated because reasons. See comments in the AWNPCStatics class for details.
 
 			if (!AncientWarfareNPC.statics.autoTargetting) {
-				return FactionRegistry.getFactionNpcDefault(this).isTarget(e);
+				return NpcDefaultsRegistry.getFactionNpcDefault(this).isTarget(e);
 			}
 		}
 		return false;

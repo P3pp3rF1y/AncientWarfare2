@@ -78,7 +78,7 @@ public class AWNPCEntityLoader {
 		reg = new NpcDeclaration(NpcBard.class, AWEntityRegistry.NPC_BARD, "bard");
 		addNpcRegistration(reg);
 
-		reg = new NpcDeclaration(NpcSiegeEngineer.class, AWEntityRegistry.NPC_SIEGE_ENGINEER, "siege.engineer");
+		reg = new NpcDeclaration(NpcSiegeEngineer.class, AWEntityRegistry.NPC_SIEGE_ENGINEER, "siege_engineer");
 		addNpcRegistration(reg);
 	}
 

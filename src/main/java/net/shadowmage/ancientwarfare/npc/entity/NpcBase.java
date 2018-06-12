@@ -58,7 +58,7 @@ import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 import net.shadowmage.ancientwarfare.npc.item.ItemShield;
-import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
+import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
 import net.shadowmage.ancientwarfare.npc.skin.NpcSkinManager;
 import net.shadowmage.ancientwarfare.vehicle.entity.IPathableEntity;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
@@ -123,9 +123,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		this.inventoryArmorDropChances = new float[] {1.f, 1.f, 1.f, 1.f};
 		this.inventoryHandsDropChances = new float[] {1.f, 1.f};
 		this.navigator = new NpcNavigator(this);
-		if (!(this instanceof NpcFaction)) {
-			AncientWarfareNPC.statics.applyPathConfig(this);
-		}
 		setPathPriority(PathNodeType.DOOR_WOOD_CLOSED, 0);
 	}
 
@@ -143,9 +140,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
 		this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-		if (!(this instanceof NpcFaction)) {
-			AncientWarfareNPC.statics.applyAttributes(this);
-		}
 	}
 
 	public ItemStack getShieldStack() {
@@ -845,8 +839,8 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	private double getBaseAttack() {
 		//TODO get rid of this instanceof check once player owned attribs migrated ot the same way
-		return this instanceof NpcFaction ? FactionRegistry.getFactionNpcDefault((NpcFaction) this).getBaseAttack() :
-				AncientWarfareNPC.statics.getBaseAttack(this);
+		return this instanceof NpcFaction ? NpcDefaultsRegistry.getFactionNpcDefault((NpcFaction) this).getBaseAttack() :
+				NpcDefaultsRegistry.getOwnedNpcDefault((NpcPlayerOwned) this).getBaseAttack();
 	}
 
 	public int getFoodRemaining() {

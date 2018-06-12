@@ -21,21 +21,14 @@
 
 package net.shadowmage.ancientwarfare.npc.config;
 
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
-import net.minecraft.pathfinding.PathNavigateGround;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.shadowmage.ancientwarfare.core.config.ModConfiguration;
-import net.shadowmage.ancientwarfare.core.util.BlockAndMeta;
-import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -69,23 +62,10 @@ public class AWNPCStatics extends ModConfiguration {
 	 * TODO add these to config
 	 */
 	public static double npcLevelDamageMultiplier = 0.05;//damage bonus per npc level.  @ level 10 they do 2x the damage as at lvl 0
-	public static int npcArcherAttackDamage = 3;//damage for npc archers...can be increased via enchanted weapons
 	/* ********************************************CLIENT SETTINGS************************************************ */
 	public static boolean loadDefaultSkinPack = true;
 
 	public static Property renderAI, renderWorkPoints, renderFriendlyNames, renderHostileNames, renderFriendlyHealth, renderHostileHealth, renderTeamColors;
-
-	/* ********************************************RECIPE SETTINGS************************************************ */
-	private static final String recipeSettings = "04_recipe_settings";
-
-	/* ********************************************PATHFINDER SETTINGS************************************************ */
-	private static final String pathfinderSettings = "05_pathfinder_settings";
-	public static boolean pathfinderAvoidFences = true;
-	public static boolean pathfinderAvoidChests = true;
-	// use getPathfinderAvoidCustomBlocks getter for these
-	private static IBlockState[] PATHFINDER_AVOID_CUSTOM;
-	private static boolean PATHFINDER_AVOID_CUSTOM_BUILT = false;
-	private static String[] PATHFINDER_AVOID_CUSTOM_RAW = {""};
 
 	/* ********************************************FOOD SETTINGS************************************************ */
 	private Configuration foodConfig;
@@ -102,57 +82,12 @@ public class AWNPCStatics extends ModConfiguration {
 	public static boolean autoTargetting = true;
 	public static boolean autoTargettingConfigLos = true;
 	private ArrayList<String> autoTargettingMobExclude;
-	private ArrayList<String> autoTargettingMobInclude;
-	private ArrayList<String> autoTargettingMobForce;
-	public static int autoTargettingMobForcePriority = 2;
 
 	/* ********************************************FACTION STARTING VALUE SETTINGS************************************************ */
 	private Configuration factionConfig;
 	private static final String factionSettings = "01_faction_settings";
 	public static int factionLossOnDeath = 10;//how much faction standing is lost when you (or one of your npcs) kills an enemy faction-based npc
 	public static int factionGainOnTrade = 2;//how much faction standing is gained when you complete a trade with a faction-based trader-npc
-
-	/***********************************************FACTION NAMES*************************************************/
-
-	public static final String[] factionNames = new String[] {"bandit", "viking", "pirate", "desert", "native", "custom_1", "custom_2", "custom_3"};
-	public static final String[] factionNpcSubtypes = new String[] {"soldier",
-			"soldier.elite",
-			"cavalry",
-			"archer",
-			"archer.elite",
-			"mounted_archer",
-			"leader",
-			"leader.elite",
-			"priest",
-			"trader",
-			"civilian.male",
-			"civilian.female",
-			"bard",
-			"siege_engineer"};
-
-	/***********************************************NPC CONFIG*************************************************/
-	/* ********************************************NPC VALUES SETTINGS************************************************ */
-	private Configuration valuesConfig;
-	private HashMap<String, Attribute> attributes;
-
-	/* ********************************************NPC PATH SETTINGS************************************************ */
-	private Configuration pathConfig;
-	private HashMap<String, Path> pathValues;
-
-	/***********************************************EQUIPMENT CONFIG*************************************************/
-	/* ********************************************NPC WEAPON SETTINGS************************************************ */
-
-	private static final String npcDefaultWeapons = "01_npc_weapons";
-	private static final String npcOffhandItems = "02_npc_offhand";
-	private static final String npcArmorHead = "03_npc_helmet";
-	private static final String npcArmorChest = "04_npc_chest";
-	private static final String npcArmorLegs = "05_npc_legs";
-	private static final String npcArmorBoots = "06_npc_boots";
-	private static final String npcWorkItem = "07_npc_work_slot";
-	private static final String npcUpkeepItem = "08_npc_upkeep_slot";
-
-	private Configuration equipmentConfig;
-	private HashMap<String, String[]> eqmp;
 
 	public AWNPCStatics(String mod) {
 		super(mod);
@@ -166,10 +101,6 @@ public class AWNPCStatics extends ModConfiguration {
 
 		config.addCustomCategoryComment(clientOptions, "Client Options\n" + "Affect only client-side operations.  Many of these options can be set from the in-game Options GUI.\n" + "Server admins can ignore these settings.");
 
-		config.addCustomCategoryComment(recipeSettings, "Recipe Options\n" + "Enable / Disable specific recipes, or remove the research requirements from specific recipes.\n" + "Affect only server-side operations.  Will need to be set for dedicated servers, and single\n" + "player (or LAN worlds).  Clients playing on remote servers can ignore these settings.");
-
-		config.addCustomCategoryComment(pathfinderSettings, "Pathfinder Blacklisting\n" + "This section is for specifying blocks that the NPC's pathfinding will avoid pathing OVER or THROUGH.\n" + "Unless you like NPC's jumping on chests and getting stuck on fences, you should leave these all.\n" + "You can also add custom mod blocks here.");
-
 		foodConfig = getConfigFor("AncientWarfareNpcFood");
 		foodConfig.addCustomCategoryComment(foodSettings, "Food Value Options\n" + "The value specified is the number of ticks that the item will feed the NPC for.\n" + "Add a new line for each item. The item type is not checked, and the default multiplier is not applied.\n" + "0 or under will make the item unusable as a food.\n" + "Affect only server-side operations.  Will need to be set for dedicated servers, and single\n" + "player (or LAN worlds).  Clients playing on remote servers can ignore these settings.");
 
@@ -180,24 +111,12 @@ public class AWNPCStatics extends ModConfiguration {
 
 		factionConfig = getConfigFor("AncientWarfareNpcFactionStandings");
 		factionConfig.addCustomCategoryComment(factionSettings, "Faction Options\n" + "Set starting faction values, and alter the amount of standing gained/lost from player actions.\n" + "Affect only server-side operations.  Will need to be set for dedicated servers, and single\n" + "player (or LAN worlds).  Clients playing on remote servers can ignore these settings.");
-
-		equipmentConfig = getConfigFor("AncientWarfareNpcEquipment");
-		equipmentConfig.addCustomCategoryComment(npcDefaultWeapons, "Default Equipped Weapons\n");//TODO comment
-		equipmentConfig.addCustomCategoryComment(npcOffhandItems, "Default Equipped Offhand Items\n");//TODO comment
-		equipmentConfig.addCustomCategoryComment(npcArmorHead, "Default Equipped Helmets\n");//TODO comment
-		equipmentConfig.addCustomCategoryComment(npcArmorChest, "Default Equipped Chest Armor\n");//TODO comment
-		equipmentConfig.addCustomCategoryComment(npcArmorLegs, "Default Equipped Leg Armor\n");//TODO comment
-		equipmentConfig.addCustomCategoryComment(npcArmorBoots, "Default Equipped Foot Armor\n");//TODO comment
-		equipmentConfig.addCustomCategoryComment(npcWorkItem, "Default Equipped Order Item (drop-on-death only)\n");//TODO comment
-		equipmentConfig.addCustomCategoryComment(npcUpkeepItem, "Default Equipped Upkeep Item (drop-on-death only)\n");//TODO comment
 	}
 
 	@Override
 	public void initializeValues() {
 		loadFoodValues();
 		loadTargetValues();
-		initializeCustomValues();
-		initializeNpcEquipmentConfigs();
 
 		maxNpcLevel = config.get(serverOptions, "npc_max_level", maxNpcLevel, "Max NPC Level\nDefault=" + maxNpcLevel + "\n" + "How high can NPCs level up?  Npcs gain more health, attack damage, and overall\n" + "improved stats with each level.  Levels can go very high, but higher values may\n" + "result in overpowered NPCs once leveled up.").getInt();
 
@@ -240,12 +159,6 @@ public class AWNPCStatics extends ModConfiguration {
 		repackCreativeOnly = config.get(generalOptions, "npc_repack_creative_only", repackCreativeOnly, "Repack only available for Creative players?\nDefault=" + repackCreativeOnly + "\n" + "If true, the 'Repack' option for NPC's will be unavailable outside of Creative mode.").getBoolean();
 
 		persistOrdersOnDeath = config.get(generalOptions, "npc_death_keep_orders_items", persistOrdersOnDeath, "NPC's will keep orders items on death?\nDefault=" + persistOrdersOnDeath + "\n" + "If true, an NPC who dies and manages to notify a nearby town hall will keep their orders items on their body. So if/when a priest resurrects them, they will have the orders items on them still. If there is no Town Hall nearby to catch the death however, the will drop on the ground as normal.").getBoolean();
-
-		pathfinderAvoidFences = config.get(pathfinderSettings, "pathfinder_avoid_fences", pathfinderAvoidFences, "Avoid Fences/Walls\nDefault=" + pathfinderAvoidFences + "\n" + "Avoid vanilla fences and walls, including anything that uses the same rendertype or extends BlockFence/BlockWall,\n" + "which may include mod-added fences and walls.").getBoolean();
-
-		pathfinderAvoidChests = config.get(pathfinderSettings, "pathfinder_avoid_chests", pathfinderAvoidChests, "Avoid Chests\nDefault=" + pathfinderAvoidChests + "\n" + "Avoid vanilla chests, including anything that uses the same rendertype or extends BlockChest, which may include\n" + "mod-added chests.").getBoolean();
-
-		PATHFINDER_AVOID_CUSTOM_RAW = config.get(pathfinderSettings, "pathfinder_avoid_others", PATHFINDER_AVOID_CUSTOM_RAW, "Avoid Other blocks\nDefault=" + PATHFINDER_AVOID_CUSTOM_RAW + "\n" + "List of custom blocks you also want NPC's to avoid.\n" + "Put each block on a new line. Use the format modId:blockName[:meta]").getStringList();
 	}
 
 	private void loadTargetValues() {
@@ -269,53 +182,7 @@ public class AWNPCStatics extends ModConfiguration {
 			targets = targetConfig.get(targetSettingsLegacy, "enemies_to_target_npcs", defaultTargets, "What mob types should have AI inserted to enable them to target NPCs?\n" + "Should work with any new-ai enabled mob type; vanilla or mod-added (but might not work with mod-added entities with custom AI).\n" + "NOTE! This is a LEGACY option! This option ONLY works if the 'auto_inject_mobs' option at the top is changed to false.").getStringList();
 			entitiesToTargetNpcs = new ArrayList<>();
 			Collections.addAll(entitiesToTargetNpcs, targets);
-
-			targets = targetConfig.get(targetSettingsLegacy, "combat.targets", defaultTargets, "Default targets for: unassigned combat npc").getStringList();
-			addTargetMapping("combat", "", targets);
-
-			targets = targetConfig.get(targetSettingsLegacy, "combat.archer.targets", defaultTargets, "Default targets for: player-owned archer").getStringList();
-			addTargetMapping("combat", "archer", targets);
-
-			targets = targetConfig.get(targetSettingsLegacy, "combat.soldier.targets", defaultTargets, "Default targets for: player-owned soldier").getStringList();
-			addTargetMapping("combat", "soldier", targets);
-
-			targets = targetConfig.get(targetSettingsLegacy, "combat.leader.targets", defaultTargets, "Default targets for: player-owned leader npc").getStringList();
-			addTargetMapping("combat", "leader", targets);
-
-			targets = targetConfig.get(targetSettingsLegacy, "combat.medic.targets", defaultTargets, "Default targets for: player-owned medic npc").getStringList();
-			addTargetMapping("combat", "medic", targets);
-
-			targets = targetConfig.get(targetSettingsLegacy, "combat.engineer.targets", defaultTargets, "Default targets for: player-owned engineer npc").getStringList();
-			addTargetMapping("combat", "engineer", targets);
-
-			for (String name : factionNames) {
-				for (String sub : factionNpcSubtypes) {
-					targets = targetConfig.get(targetSettingsLegacy, name + "." + sub + ".targets", defaultTargets, "Default targets for: " + name + " " + asName(sub)).getStringList();
-					addTargetMapping(name, sub, targets);
-				}
-			}
 		}
-	}
-
-	private String asName(String npcSubtype) {
-		String[] txt = npcSubtype.split("\\.");
-		StringBuilder build = new StringBuilder();
-		for (int i = txt.length - 1; i >= 0; i--) {
-			build.append(txt[i]).append(" ");
-		}
-		return build.replace(build.length() - 1, build.length(), "s").toString().replace("_", " ");
-	}
-
-	private void addTargetMapping(String npcType, String npcSubtype, String[] targets) {
-		String type = npcType + (npcSubtype.isEmpty() ? "" : "." + npcSubtype);
-		List<String> collection;
-		if (!entityTargetSettings.containsKey(type)) {
-			collection = new ArrayList<>();
-		} else {
-			collection = entityTargetSettings.get(type);
-		}
-		Collections.addAll(collection, targets);
-		entityTargetSettings.put(type, collection);
 	}
 
 	/*
@@ -326,14 +193,6 @@ public class AWNPCStatics extends ModConfiguration {
 		if (!autoTargetting) // old targetting in use
 			return entitiesToTargetNpcs.contains(entityName);
 		return (!autoTargettingMobExclude.contains(entityName));
-	}
-
-	public List<String> getValidTargetsFor(String npcType, String npcSubtype) {
-		String type = npcType + (npcSubtype.isEmpty() ? "" : "." + npcSubtype);
-		if (entityTargetSettings.containsKey(type)) {
-			return entityTargetSettings.get(type);
-		}
-		return Collections.emptyList();
 	}
 
 	private void loadFoodValues() {
@@ -371,218 +230,11 @@ public class AWNPCStatics extends ModConfiguration {
 		return 0;
 	}
 
-	private void initializeCustomValues() {
-		valuesConfig = getConfigFor("AncientWarfareNpcValues");
-		pathConfig = getConfigFor("AncientWarfareNpcPath");
-		attributes = new HashMap<>();
-		pathValues = new HashMap<>();
-		String key;
-		for (String name : factionNames) {
-			for (String type : factionNpcSubtypes) {
-				key = name + "." + type;
-				attributes.put(key, getDefault(key));
-				pathValues.put(key, getDefaultPath(key));
-			}
-		}
-		attributes.put("combat", getDefault("combat"));
-		attributes.put("worker", getDefault("worker"));
-		attributes.put("courier", getDefault("courier"));
-		attributes.put("trader", getDefault("trader"));
-		attributes.put("priest", getDefault("priest"));
-		attributes.put("bard", getDefault("bard"));
-		attributes.put("siege.engineer", getDefault("siege.engineer"));
-		pathValues.put("combat", getDefaultPath("combat"));
-		pathValues.put("worker", getDefaultPath("worker"));
-		pathValues.put("courier", getDefaultPath("courier"));
-		pathValues.put("trader", getDefaultPath("trader"));
-		pathValues.put("priest", getDefaultPath("priest"));
-		pathValues.put("bard", getDefaultPath("bard"));
-		pathValues.put("siege.engineer", getDefaultPath("siege.engineer"));
-	}
-
-	private Attribute getDefault(String type) {
-		return new Attribute(valuesConfig.get("01_npc_base_health", type, 20).getDouble(), valuesConfig.get("02_npc_base_attack", type, 1).getDouble(), valuesConfig.get("03_npc_base_speed", type, 0.325D).getDouble(), valuesConfig.get("05_npc_base_range", type, 60).getDouble(), valuesConfig.get("04_npc_exp_drop", type, 0).getInt());
-	}
-
-	public double getMaxHealthFor(String type) {
-		return attributes.get(type).baseHealth();
-	}
-
-	public double getBaseAttack(NpcBase npcBase) {
-		String type = npcBase.getNpcType();
-		return attributes.get(type).baseAttack();
-	}
-
-	private Path getDefaultPath(String key) {
-		return new Path(pathConfig.get("01_npc_path_canSwim", key, true).getBoolean(), pathConfig.get("02_npc_path_breakDoors", key, true).getBoolean());
-	}
-
-	public void applyAttributes(NpcBase npc) {
-		Attribute type = attributes.get(npc.getNpcType());
-		if (type != null) {
-			npc.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(type.baseHealth());
-			npc.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(type.baseSpeed());
-			npc.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(type.baseAttack());
-			npc.getEntityAttribute(SharedMonsterAttributes.FOLLOW_RANGE).setBaseValue(type.baseRange());
-			npc.setExperienceDrop(type.expDrop());
-		}
-	}
-
-	public void applyPathConfig(NpcBase npc) {
-		Path path = pathValues.get(npc.getNpcType());
-		if (path != null) {
-			path.applyTo((PathNavigateGround) npc.getNavigator());
-		}
-	}
-
-	public void initializeNpcEquipmentConfigs() {
-		eqmp = new HashMap<>();
-		String fullType;
-		for (String faction : factionNames) {
-			for (String type : factionNpcSubtypes) {
-				fullType = faction + "." + type;
-				eqmp.put(fullType, new String[8]);//allocate empty string array for each npc type to hold item names for their equipment
-			}
-			eqmp.get(faction + ".soldier")[0] = "minecraft:iron_sword";
-			eqmp.get(faction + ".soldier.elite")[0] = "minecraft:iron_sword";
-			eqmp.get(faction + ".cavalry")[0] = "minecraft:iron_sword";
-			eqmp.get(faction + ".archer")[0] = "minecraft:bow";
-			eqmp.get(faction + ".archer.elite")[0] = "minecraft:bow";
-			eqmp.get(faction + ".mounted_archer")[0] = "minecraft:bow";
-			eqmp.get(faction + ".leader")[0] = "minecraft:diamond_sword";
-			eqmp.get(faction + ".leader.elite")[0] = "minecraft:diamond_sword";
-			eqmp.get(faction + ".trader")[0] = "minecraft:book";
-			eqmp.get(faction + ".priest")[0] = "minecraft:book";
-			eqmp.get(faction + ".bard")[0] = "ancientwarfarenpc:bard_instrument";
-		}
-
-		String[] array;
-		String item;
-		for (String key : eqmp.keySet()) {
-			array = eqmp.get(key);
-			item = array[0];
-			item = item == null ? "null" : item;
-			item = equipmentConfig.get(npcDefaultWeapons, key, item).getString();
-			array[0] = item;
-
-			item = array[5];
-			item = item == null ? "null" : item;
-			item = equipmentConfig.get(npcArmorHead, key, item).getString();
-			array[5] = item;
-
-			item = array[4];
-			item = item == null ? "null" : item;
-			item = equipmentConfig.get(npcArmorChest, key, item).getString();
-			array[4] = item;
-
-			item = array[3];
-			item = item == null ? "null" : item;
-			item = equipmentConfig.get(npcArmorLegs, key, item).getString();
-			array[3] = item;
-
-			item = array[2];
-			item = item == null ? "null" : item;
-			item = equipmentConfig.get(npcArmorBoots, key, item).getString();
-			array[2] = item;
-
-			item = array[6];
-			item = item == null ? "null" : item;
-			item = equipmentConfig.get(npcWorkItem, key, item).getString();
-			array[6] = item;
-
-			item = array[7];
-			item = item == null ? "null" : item;
-			item = equipmentConfig.get(npcUpkeepItem, key, item).getString();
-			array[7] = item;
-
-			item = array[1];
-			item = item == null ? "null" : item;
-			item = equipmentConfig.get(npcOffhandItems, key, item).getString();
-			array[1] = item;
-		}
-	}
-
-	public ItemStack getStartingEquipmentForSlot(String type, int slot) {
-		String itemName = null;
-		if (eqmp.containsKey(type)) {
-			itemName = eqmp.get(type)[slot];
-		}
-		if (itemName != null && !itemName.isEmpty() && !itemName.equals("null")) {
-			Item item = Item.REGISTRY.getObject(new ResourceLocation(itemName));
-			if (item != null) {
-				return new ItemStack(item);
-			}
-		}
-		return ItemStack.EMPTY;
-	}
-
 	@Override
 	public void save() {
 		super.save();
-		equipmentConfig.save();
 		targetConfig.save();
-		valuesConfig.save();
-		pathConfig.save();
 		foodConfig.save();
 		factionConfig.save();
 	}
-
-	public static IBlockState[] getPathfinderAvoidCustomBlocks() {
-		if (!PATHFINDER_AVOID_CUSTOM_BUILT) {
-			PATHFINDER_AVOID_CUSTOM = BlockAndMeta.buildList("Pathfinder custom avoidances", PATHFINDER_AVOID_CUSTOM_RAW);
-			PATHFINDER_AVOID_CUSTOM_BUILT = true;
-			if (PATHFINDER_AVOID_CUSTOM != null && PATHFINDER_AVOID_CUSTOM.length == 0)
-				PATHFINDER_AVOID_CUSTOM = null;
-		}
-		return PATHFINDER_AVOID_CUSTOM;
-	}
-
-	private static class Path {
-		private final boolean canSwim, breakDoor;
-
-		private Path(boolean swim, boolean door) {
-			canSwim = swim;
-			breakDoor = door;
-		}
-
-		public void applyTo(PathNavigateGround navigate) {
-			navigate.setCanSwim(canSwim);
-			navigate.setBreakDoors(breakDoor);
-		}
-	}
-
-	private static class Attribute {
-		private final double health, attack, speed, range;
-		private final int exp;
-
-		private Attribute(double hp, double ap, double sp, double rg, int xp) {
-			health = hp;
-			attack = ap;
-			speed = sp;
-			range = rg;
-			exp = xp;
-		}
-
-		public double baseHealth() {
-			return health;
-		}
-
-		//base attack damage for npcs--further multiplied by their equipped weapon
-		public double baseAttack() {
-			return attack;
-		}
-
-		public double baseRange() {
-			return range;
-		}
-
-		public double baseSpeed() {
-			return speed;
-		}
-
-		public int expDrop() {
-			return exp;
-		}
-	}
-
 }

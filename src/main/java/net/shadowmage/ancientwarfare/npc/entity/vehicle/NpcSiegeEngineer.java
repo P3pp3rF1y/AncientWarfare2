@@ -108,7 +108,7 @@ public class NpcSiegeEngineer extends NpcPlayerOwned implements IVehicleUser {
 
 	@Override
 	public String getNpcType() {
-		return "siege.engineer";
+		return "siege_engineer";
 	}
 
 	@Override

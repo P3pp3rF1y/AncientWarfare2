@@ -1,12 +1,12 @@
 package net.shadowmage.ancientwarfare.npc.entity;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.INpc;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumFacing;
@@ -23,11 +23,12 @@ import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.Command;
 import net.shadowmage.ancientwarfare.npc.npc_command.NpcCommand.CommandType;
 import net.shadowmage.ancientwarfare.npc.orders.UpkeepOrder;
+import net.shadowmage.ancientwarfare.npc.registry.NpcDefault;
+import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.List;
 
 public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc {
 
@@ -44,6 +45,9 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 
 	public NpcPlayerOwned(World par1World) {
 		super(par1World);
+		NpcDefault npcDefault = NpcDefaultsRegistry.getOwnedNpcDefault(this);
+		npcDefault.applyPathSettings((PathNavigateGround) getNavigator());
+		npcDefault.applyAttributes(this);
 	}
 
 	@Override
@@ -180,16 +184,8 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 		} else if (entityTarget instanceof NpcFaction) {
 			return ((NpcFaction) entityTarget).isHostileTowards(this); // hostility is based on faction standing
 		} else {
-			// TODO
-			// This is for forced inclusions, which we don't currently support in new auto-targeting. This
-			// is complicated because reasons. See comments in the AWNPCStatics class for details.
-
-			if (!AncientWarfareNPC.statics.autoTargetting) {
-				String n = EntityList.getEntityString(entityTarget);
-				List<String> targets = AncientWarfareNPC.statics.getValidTargetsFor(getNpcType(), getNpcSubType());
-				if (targets.contains(n)) {
-					return true;
-				}
+			if (!AWNPCStatics.autoTargetting) {
+				return NpcDefaultsRegistry.getOwnedNpcDefault(this).isTarget(entityTarget);
 			}
 		}
 		return false;
