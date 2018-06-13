@@ -9,6 +9,7 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
@@ -60,6 +61,15 @@ public abstract class NpcFaction extends NpcBase {
 	@Override
 	public boolean hasCommandPermissions(UUID playerUuid, String playerName) {
 		return false;
+	}
+
+	@Override
+	public String getName() {
+		String name = I18n.translateToLocal("entity.ancientwarfarenpc." + getFaction() + "." + getNpcFullType() + ".name");
+		if (hasCustomName()) {
+			name = name + " : " + getCustomNameTag();
+		}
+		return name;
 	}
 
 	@Override

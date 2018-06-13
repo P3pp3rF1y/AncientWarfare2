@@ -750,7 +750,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	@Override
 	public String getName() {
-		String name = I18n.translateToLocal("entity.AncientWarfareNpc." + getNpcFullType() + ".name");
+		String name = I18n.translateToLocal("entity.ancientwarfarenpc." + getNpcFullType() + ".name");
 		if (hasCustomName()) {
 			name = name + " : " + getCustomNameTag();
 		}
