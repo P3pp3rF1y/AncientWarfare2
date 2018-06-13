@@ -927,6 +927,8 @@ item.ammo_torpedo_10.tooltip=Used by Submarines
 item.ammo_torpedo_15.tooltip=Used by Submarines
 item.ammo_torpedo_30.tooltip=Used by Submarines
 item.ammo_torpedo_45.tooltip=Used by Submarines
+death.attack.AWMissile=%1$s was killed by missile damage
+death.attack.AWMissile.player=%1$s was killed by missile damage by %2$s
 
 # tooltips used for vehicle items
 item.vehicleSpawner.tooltip.torsion=Torsion Weapon
