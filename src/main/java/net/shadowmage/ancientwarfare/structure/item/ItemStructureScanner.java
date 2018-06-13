@@ -43,6 +43,7 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		if (!stack.isEmpty()) {
 			ItemStructureSettings viewSettings = ItemStructureSettings.getSettingsFor(stack);
@@ -133,6 +134,7 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void renderBox(EntityPlayer player, ItemStack stack, float delta) {
 		ItemStructureSettings settings = ItemStructureSettings.getSettingsFor(stack);
 		BlockPos firstCorner, secondCorner, min, max;

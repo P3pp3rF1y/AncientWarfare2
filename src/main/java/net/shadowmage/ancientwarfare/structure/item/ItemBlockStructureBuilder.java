@@ -66,6 +66,7 @@ public class ItemBlockStructureBuilder extends ItemBlockBase implements IBoxRend
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void renderBox(EntityPlayer player, ItemStack stack, float delta) {
 		if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey("structureName")) {
 			return;

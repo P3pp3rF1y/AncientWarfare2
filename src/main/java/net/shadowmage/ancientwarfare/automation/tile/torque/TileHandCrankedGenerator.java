@@ -5,6 +5,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
@@ -90,6 +92,7 @@ public class TileHandCrankedGenerator extends TileTorqueSingleCell implements IW
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	protected void clientNetworkUpdate() {
 		if (!MathHelper.epsilonEquals((float) clientEnergyState, clientDestEnergyState) || !MathHelper
 				.epsilonEquals((float) clientInputEnergy, clientInputDestEnergy)) {

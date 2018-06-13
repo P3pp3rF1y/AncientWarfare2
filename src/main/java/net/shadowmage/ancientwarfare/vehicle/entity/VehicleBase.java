@@ -52,6 +52,7 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.owner.IOwnable;
 import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
+import net.shadowmage.ancientwarfare.core.util.MathUtils;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -231,7 +232,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	}
 
 	public boolean canTurretTurn() {
-		return !MathHelper.epsilonEquals(baseTurretRotationMax, 0);
+		return !MathUtils.epsilonEquals(baseTurretRotationMax, 0);
 	}
 
 	public float getHealth() {

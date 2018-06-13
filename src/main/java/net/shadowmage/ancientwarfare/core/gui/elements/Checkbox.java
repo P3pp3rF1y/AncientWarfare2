@@ -4,6 +4,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.init.SoundEvents;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
@@ -24,6 +26,7 @@ import net.shadowmage.ancientwarfare.core.util.RenderTools;
  *
  * @author Shadowmage
  */
+@SideOnly(Side.CLIENT)
 public class Checkbox extends GuiElement {
 
 	private boolean pressed = false;

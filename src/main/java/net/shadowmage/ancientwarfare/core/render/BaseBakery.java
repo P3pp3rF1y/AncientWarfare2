@@ -23,6 +23,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 import javax.annotation.Nonnull;
@@ -32,6 +34,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+@SideOnly(Side.CLIENT)
 public abstract class BaseBakery implements ISimpleBlockBakery {
 	public IExtendedBlockState handleState(IExtendedBlockState state, IBlockAccess access, BlockPos pos) {
 		return state;

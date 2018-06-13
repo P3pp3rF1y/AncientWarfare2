@@ -28,6 +28,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.automation.block.TorqueTier;
 import net.shadowmage.ancientwarfare.automation.render.property.AutomationProperties;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileFlywheelStorage;
@@ -49,6 +51,7 @@ import java.util.stream.Collectors;
 
 import static net.shadowmage.ancientwarfare.automation.render.property.AutomationProperties.IS_CONTROL;
 
+@SideOnly(Side.CLIENT)
 public class FlywheelStorageRenderer implements ILayeredBlockBakery, ITESRRenderer {
 	public static final ModelResourceLocation LIGHT_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/flywheel_storage", "small_light");
 	public static final ModelResourceLocation MEDIUM_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/flywheel_storage", "small_medium");

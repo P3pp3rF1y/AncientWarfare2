@@ -85,6 +85,7 @@ public class BlockDraftingStation extends BlockBaseStructure implements IBakeryP
 
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
 			@Override
+			@SideOnly(Side.CLIENT)
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
 				return DraftingStationRenderer.MODEL_LOCATION;
 			}
@@ -92,6 +93,7 @@ public class BlockDraftingStation extends BlockBaseStructure implements IBakeryP
 
 		ModelRegistryHelper.register(DraftingStationRenderer.MODEL_LOCATION, new CCBakeryModel() {
 			@Override
+			@SideOnly(Side.CLIENT)
 			public TextureAtlasSprite getParticleTexture() {
 				return DraftingStationRenderer.INSTANCE.sprite;
 			}
@@ -101,6 +103,7 @@ public class BlockDraftingStation extends BlockBaseStructure implements IBakeryP
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IBakery getBakery() {
 		return DraftingStationRenderer.INSTANCE;
 	}

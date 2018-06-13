@@ -23,6 +23,8 @@ package net.shadowmage.ancientwarfare.vehicle.entity;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.vehicle.armors.IVehicleArmor;
 import net.shadowmage.ancientwarfare.vehicle.entity.materials.IVehicleMaterial;
 import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleFiringVarsHelper;
@@ -78,6 +80,7 @@ public interface IVehicleType {
 
 	String getDisplayName();
 
+	@SideOnly(Side.CLIENT)
 	String getLocalizedName();
 
 	List<String> getDisplayTooltip();

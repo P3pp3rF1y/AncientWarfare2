@@ -60,6 +60,7 @@ public class BlockFlywheelController extends BlockTorqueBase implements IBakeryP
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return FlywheelControllerRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
 	}
@@ -113,6 +114,7 @@ public class BlockFlywheelController extends BlockTorqueBase implements IBakeryP
 
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
 			@Override
+			@SideOnly(Side.CLIENT)
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
 				switch (state.getValue(AutomationProperties.TIER)) {
 					case LIGHT:
@@ -127,6 +129,7 @@ public class BlockFlywheelController extends BlockTorqueBase implements IBakeryP
 
 		ModelRegistryHelper.register(FlywheelControllerRenderer.LIGHT_MODEL_LOCATION, new CCBakeryModel() {
 			@Override
+			@SideOnly(Side.CLIENT)
 			public TextureAtlasSprite getParticleTexture() {
 				return FlywheelControllerRenderer.INSTANCE.getSprite(TorqueTier.LIGHT);
 			}
@@ -134,6 +137,7 @@ public class BlockFlywheelController extends BlockTorqueBase implements IBakeryP
 
 		ModelRegistryHelper.register(FlywheelControllerRenderer.MEDIUM_MODEL_LOCATION, new CCBakeryModel() {
 			@Override
+			@SideOnly(Side.CLIENT)
 			public TextureAtlasSprite getParticleTexture() {
 				return FlywheelControllerRenderer.INSTANCE.getSprite(TorqueTier.MEDIUM);
 			}
@@ -141,6 +145,7 @@ public class BlockFlywheelController extends BlockTorqueBase implements IBakeryP
 
 		ModelRegistryHelper.register(FlywheelControllerRenderer.HEAVY_MODEL_LOCATION, new CCBakeryModel() {
 			@Override
+			@SideOnly(Side.CLIENT)
 			public TextureAtlasSprite getParticleTexture() {
 				return FlywheelControllerRenderer.INSTANCE.getSprite(TorqueTier.HEAVY);
 			}
@@ -149,6 +154,7 @@ public class BlockFlywheelController extends BlockTorqueBase implements IBakeryP
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IBakery getBakery() {
 		return FlywheelControllerRenderer.INSTANCE;
 	}

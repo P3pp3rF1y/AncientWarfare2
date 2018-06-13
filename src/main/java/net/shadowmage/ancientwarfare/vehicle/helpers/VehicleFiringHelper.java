@@ -27,6 +27,7 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.util.MathUtils;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.npc.entity.vehicle.ITarget;
 import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
@@ -362,7 +363,7 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 			} else if (pitchTest > vehicle.currentTurretPitchMax) {
 				pitchTest = vehicle.currentTurretPitchMax;
 			}
-			if (!MathHelper.epsilonEquals(pitchTest, this.clientTurretPitch)) {
+			if (!MathUtils.epsilonEquals(pitchTest, this.clientTurretPitch)) {
 				pitchUpdated = true;
 				this.clientTurretPitch = pitchTest;
 			}
@@ -373,7 +374,7 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 			} else if (powerTest > getAdjustedMaxMissileVelocity()) {
 				powerTest = getAdjustedMaxMissileVelocity();
 			}
-			if (!MathHelper.epsilonEquals(clientLaunchSpeed, powerTest)) {
+			if (!MathUtils.epsilonEquals(clientLaunchSpeed, powerTest)) {
 				powerUpdated = true;
 				this.clientLaunchSpeed = powerTest;
 			}
@@ -412,13 +413,13 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 			Tuple<Float, Float> angles = Trig.getLaunchAngleToHit(tx, ty, tz, vehicle.localLaunchPower);
 			if (angles.getFirst().isNaN() || angles.getSecond().isNaN()) {
 			} else if (angles.getSecond() >= vehicle.currentTurretPitchMin && angles.getSecond() <= vehicle.currentTurretPitchMax) {
-				if (!MathHelper.epsilonEquals(this.clientTurretPitch, angles.getSecond())) {
+				if (!MathUtils.epsilonEquals(this.clientTurretPitch, angles.getSecond())) {
 					this.clientTurretPitch = angles.getSecond();
 					updated = true;
 					updatePitch = true;
 				}
 			} else if (angles.getFirst() >= vehicle.currentTurretPitchMin && angles.getFirst() <= vehicle.currentTurretPitchMax) {
-				if (!MathHelper.epsilonEquals(clientTurretPitch, angles.getFirst())) {
+				if (!MathUtils.epsilonEquals(clientTurretPitch, angles.getFirst())) {
 					this.clientTurretPitch = angles.getFirst();
 					updated = true;
 					updatePitch = true;
@@ -427,7 +428,7 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 		} else if (vehicle.canAimPower()) {
 			float power = Trig.iterativeSpeedFinder(tx, ty, tz, vehicle.localTurretPitch + vehicle.rotationPitch, TRAJECTORY_ITERATIONS_CLIENT,
 					(vehicle.ammoHelper.getCurrentAmmoType() != null && vehicle.ammoHelper.getCurrentAmmoType().isRocket()));
-			if (!MathHelper.epsilonEquals(clientLaunchSpeed, power) && power < getAdjustedMaxMissileVelocity()) {
+			if (!MathUtils.epsilonEquals(clientLaunchSpeed, power) && power < getAdjustedMaxMissileVelocity()) {
 				this.clientLaunchSpeed = power;
 				updated = true;
 				updatePower = true;
@@ -435,7 +436,7 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 		}
 		if (vehicle.canAimRotate()) {
 			float yaw = getAimYaw(target.x, target.z);
-			if (!MathHelper.epsilonEquals(yaw, clientTurretYaw) && (vehicle.currentTurretRotationMax >= 180 || Trig
+			if (!MathUtils.epsilonEquals(yaw, clientTurretYaw) && (vehicle.currentTurretRotationMax >= 180 || Trig
 					.isAngleBetween(yaw, vehicle.localTurretRotationHome - vehicle.currentTurretRotationMax,
 							vehicle.localTurretRotationHome + vehicle.currentTurretRotationMax))) {
 				if (Math.abs(yaw - clientTurretYaw) > 0.25f) {
@@ -463,7 +464,7 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 		float yaw = Trig.wrapTo360(vehicle.localTurretRotation);
 		float dest = Trig.wrapTo360(vehicle.localTurretDestRot);
 
-		return MathHelper.epsilonEquals(vehicle.localTurretDestPitch, vehicle.localTurretPitch) && Math.abs(yaw - dest) < range;
+		return MathUtils.epsilonEquals(vehicle.localTurretDestPitch, vehicle.localTurretPitch) && Math.abs(yaw - dest) < range;
 	}
 
 	public boolean isNearTarget() {
@@ -486,13 +487,13 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 			Tuple<Float, Float> angles = Trig.getLaunchAngleToHit(tx, ty, tz, vehicle.localLaunchPower);
 			if (angles.getFirst().isNaN() || angles.getSecond().isNaN()) {
 			} else if (angles.getSecond() >= vehicle.currentTurretPitchMin && angles.getSecond() <= vehicle.currentTurretPitchMax) {
-				if (!MathHelper.epsilonEquals(vehicle.localTurretDestPitch, angles.getSecond())) {
+				if (!MathUtils.epsilonEquals(vehicle.localTurretDestPitch, angles.getSecond())) {
 					vehicle.localTurretDestPitch = angles.getSecond();
 					updated = true;
 					updatePitch = true;
 				}
 			} else if (angles.getFirst() >= vehicle.currentTurretPitchMin && angles.getFirst() <= vehicle.currentTurretPitchMax) {
-				if (!MathHelper.epsilonEquals(vehicle.localTurretDestPitch, angles.getFirst())) {
+				if (!MathUtils.epsilonEquals(vehicle.localTurretDestPitch, angles.getFirst())) {
 					vehicle.localTurretDestPitch = angles.getFirst();
 					updated = true;
 					updatePitch = true;
@@ -501,7 +502,7 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 		} else if (vehicle.canAimPower()) {
 			float power = Trig.iterativeSpeedFinder(tx, ty, tz, vehicle.localTurretPitch + vehicle.rotationPitch, TRAJECTORY_ITERATIONS_CLIENT,
 					(vehicle.ammoHelper.getCurrentAmmoType() != null && vehicle.ammoHelper.getCurrentAmmoType().isRocket()));
-			if (!MathHelper.epsilonEquals(vehicle.localLaunchPower, power) && power < getAdjustedMaxMissileVelocity()) {
+			if (!MathUtils.epsilonEquals(vehicle.localLaunchPower, power) && power < getAdjustedMaxMissileVelocity()) {
 				this.vehicle.localLaunchPower = power;
 				updated = true;
 				updatePower = true;
@@ -509,7 +510,7 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 		}
 		if (vehicle.canAimRotate()) {
 			float yaw = getAimYaw(targetX, targetZ);
-			if (!MathHelper.epsilonEquals(yaw, vehicle.localTurretDestRot) && (vehicle.currentTurretRotationMax >= 180 || Trig
+			if (!MathUtils.epsilonEquals(yaw, vehicle.localTurretDestRot) && (vehicle.currentTurretRotationMax >= 180 || Trig
 					.isAngleBetween(yaw, vehicle.localTurretRotationHome - vehicle.currentTurretRotationMax,
 							vehicle.localTurretRotationHome + vehicle.currentTurretRotationMax))) {
 				this.vehicle.localTurretDestRot = yaw;
@@ -589,7 +590,7 @@ public class VehicleFiringHelper implements INBTSerializable<NBTTagCompound> {
 		float power = Trig
 				.iterativeSpeedFinder((float) target.getX(), (float) target.getY(), (float) target.getZ(), vehicle.localTurretPitch + vehicle.rotationPitch,
 						TRAJECTORY_ITERATIONS_CLIENT, (vehicle.ammoHelper.getCurrentAmmoType() != null && vehicle.ammoHelper.getCurrentAmmoType().isRocket()));
-		return !MathHelper.epsilonEquals(vehicle.localLaunchPower, power);
+		return !MathUtils.epsilonEquals(vehicle.localLaunchPower, power);
 	}
 
 	public float getAimYaw(ITarget target) {

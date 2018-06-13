@@ -10,6 +10,8 @@ import net.minecraftforge.fml.client.config.DummyConfigElement.DummyCategoryElem
 import net.minecraftforge.fml.client.config.IConfigElement;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.automation.AutomationInputHandler;
 import net.shadowmage.ancientwarfare.automation.block.BlockWaterwheelGenerator;
 import net.shadowmage.ancientwarfare.automation.block.TorqueTier;
@@ -69,6 +71,7 @@ import net.shadowmage.ancientwarfare.vehicle.gui.GuiVehicleStats;
 import java.util.ArrayList;
 import java.util.List;
 
+@SideOnly(Side.CLIENT)
 public class ClientProxyAutomation extends ClientProxyBase {
 
 	public ClientProxyAutomation() {
@@ -140,7 +143,7 @@ public class ClientProxyAutomation extends ClientProxyBase {
 	public static final class AutomationCategory extends DummyCategoryElement {
 		public static final ConfigElement renderWorkBounds = new ConfigElement(AWAutomationStatics.renderWorkBounds);
 
-		AutomationCategory(String name) {
+		private AutomationCategory(String name) {
 			super(name, name, getElementList());
 		}
 

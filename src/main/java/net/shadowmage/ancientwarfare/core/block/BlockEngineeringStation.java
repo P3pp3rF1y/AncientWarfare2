@@ -124,6 +124,7 @@ public class BlockEngineeringStation extends BlockBaseCore implements IClientReg
 
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
 			@Override
+			@SideOnly(Side.CLIENT)
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
 				return EngineeringStationRenderer.MODEL_LOCATION;
 			}
@@ -131,6 +132,7 @@ public class BlockEngineeringStation extends BlockBaseCore implements IClientReg
 
 		ModelRegistryHelper.register(EngineeringStationRenderer.MODEL_LOCATION, new CCBakeryModel() {
 			@Override
+			@SideOnly(Side.CLIENT)
 			public TextureAtlasSprite getParticleTexture() {
 				return EngineeringStationRenderer.INSTANCE.sprite;
 			}
@@ -142,6 +144,7 @@ public class BlockEngineeringStation extends BlockBaseCore implements IClientReg
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IBakery getBakery() {
 		return EngineeringStationRenderer.INSTANCE;
 	}

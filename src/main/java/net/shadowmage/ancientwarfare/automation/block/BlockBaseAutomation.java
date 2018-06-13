@@ -31,6 +31,7 @@ public abstract class BlockBaseAutomation extends BlockBase implements IClientRe
 
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
 			@Override
+			@SideOnly(Side.CLIENT)
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
 				return new ModelResourceLocation(assetLocation, getPropertyString(state.getProperties()));
 			}

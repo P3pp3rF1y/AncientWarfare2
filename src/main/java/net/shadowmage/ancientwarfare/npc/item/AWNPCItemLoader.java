@@ -28,6 +28,7 @@ public class AWNPCItemLoader {
 		}
 
 		@Override
+		@SideOnly(Side.CLIENT)
 		public void displayAllRelevantItems(NonNullList<ItemStack> items) {
 			super.displayAllRelevantItems(items);
 			items.sort(sorter);

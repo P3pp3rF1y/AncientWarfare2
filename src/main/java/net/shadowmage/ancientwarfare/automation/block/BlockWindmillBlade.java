@@ -46,6 +46,7 @@ public class BlockWindmillBlade extends BlockBaseAutomation implements IBakeryPr
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return WindmillBladeRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
 	}
@@ -119,6 +120,7 @@ public class BlockWindmillBlade extends BlockBaseAutomation implements IBakeryPr
 
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
 			@Override
+			@SideOnly(Side.CLIENT)
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
 				return WindmillBladeRenderer.MODEL_LOCATION;
 			}
@@ -126,6 +128,7 @@ public class BlockWindmillBlade extends BlockBaseAutomation implements IBakeryPr
 
 		ModelRegistryHelper.register(WindmillBladeRenderer.MODEL_LOCATION, new CCBakeryModel() {
 			@Override
+			@SideOnly(Side.CLIENT)
 			public TextureAtlasSprite getParticleTexture() {
 				return WindmillBladeRenderer.INSTANCE.cubeSprite;
 			}
@@ -134,6 +137,7 @@ public class BlockWindmillBlade extends BlockBaseAutomation implements IBakeryPr
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IBakery getBakery() {
 		return WindmillBladeRenderer.INSTANCE;
 	}

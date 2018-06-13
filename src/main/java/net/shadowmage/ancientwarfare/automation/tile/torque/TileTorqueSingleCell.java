@@ -3,6 +3,8 @@ package net.shadowmage.ancientwarfare.automation.tile.torque;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.MathHelper;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.automation.config.AWAutomationStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
@@ -74,6 +76,7 @@ public abstract class TileTorqueSingleCell extends TileTorqueBase {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	protected void clientNetworkUpdate() {
 		if (!MathHelper.epsilonEquals((float) clientEnergyState, clientDestEnergyState)) {
 			if (networkUpdateTicks > 0) {

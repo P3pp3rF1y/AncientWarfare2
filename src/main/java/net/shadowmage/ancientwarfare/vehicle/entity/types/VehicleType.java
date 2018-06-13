@@ -26,6 +26,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.vehicle.AncientWarfareVehicles;
 import net.shadowmage.ancientwarfare.vehicle.armors.IVehicleArmor;
 import net.shadowmage.ancientwarfare.vehicle.entity.IVehicleType;
@@ -270,6 +272,7 @@ public abstract class VehicleType implements IVehicleType {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public String getLocalizedName() {
 		return I18n.format(this.getDisplayName() + ".name");
 	}

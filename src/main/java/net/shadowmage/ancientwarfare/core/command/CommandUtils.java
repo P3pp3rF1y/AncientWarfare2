@@ -6,8 +6,10 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 
@@ -15,6 +17,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -126,6 +129,8 @@ public class CommandUtils extends CommandBase {
 		}
 	}
 
+	private static final Field BIOME_NAME = ReflectionHelper.findField(Biome.class, "biomeName", "field_76791_y");
+
 	private class BiomeListCommand extends ExportCommand {
 		@Override
 		protected String getHeader() {
@@ -141,11 +146,21 @@ public class CommandUtils extends CommandBase {
 		protected ArrayList<String> getLines() {
 			//noinspection ConstantConditions
 			return ForgeRegistries.BIOMES.getValuesCollection().stream()
-					.map(b -> String.join(",", b.getRegistryName().toString(), b.getBiomeName(), b.getTempCategory().name()
+					.map(b -> String.join(",", b.getRegistryName().toString(), getBiomeName(b), b.getTempCategory().name()
 							, Boolean.toString(b.isHighHumidity()), Float.toString(b.getHeightVariation()), b.topBlock.getBlock().getRegistryName().toString()
 							, BiomeDictionary.getTypes(b).stream().map(BiomeDictionary.Type::getName).collect(Collectors.joining("|")),
 							b.getBiomeClass().toString()))
 					.sorted(Comparator.naturalOrder()).collect(Collectors.toCollection(ArrayList::new));
+		}
+
+		private String getBiomeName(Biome b) {
+			try {
+				return (String) BIOME_NAME.get(b);
+			}
+			catch (IllegalAccessException e) {
+				AncientWarfareCore.log.error(e);
+			}
+			return "";
 		}
 	}
 

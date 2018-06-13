@@ -57,6 +57,7 @@ public class ItemStructureBuilder extends ItemBaseStructure implements IItemKeyI
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
 		String structure = "guistrings.structure.no_selection";
 		ItemStructureSettings viewSettings = ItemStructureSettings.getSettingsFor(stack);
@@ -111,6 +112,7 @@ public class ItemStructureBuilder extends ItemBaseStructure implements IItemKeyI
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void renderBox(EntityPlayer player, ItemStack stack, float delta) {
 		ItemStructureSettings settings = ItemStructureSettings.getSettingsFor(stack);
 		if (!settings.hasName()) {

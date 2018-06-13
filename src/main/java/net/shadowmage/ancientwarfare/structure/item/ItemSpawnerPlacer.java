@@ -51,6 +51,7 @@ public class ItemSpawnerPlacer extends ItemBaseStructure {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
 		tooltip.add(I18n.format("guistrings.selected_mob") + ":");
 		if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnerData")) {

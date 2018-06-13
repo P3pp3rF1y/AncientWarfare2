@@ -38,6 +38,8 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.interfaces.IEntityPacketHandler;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketEntity;
@@ -145,6 +147,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public int getBrightnessForRender() {
 		int i = MathHelper.floor(this.posX);
 		int j = MathHelper.floor(this.posZ);
@@ -157,11 +160,10 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void handleStatusUpdate(byte par1) {
-		if (world.isRemote) {
-			if (par1 == -1 || par1 == 0 || par1 == 1) {
-				this.setOpeningStatus(par1);
-			}
+		if (par1 == -1 || par1 == 0 || par1 == 1) {
+			this.setOpeningStatus(par1);
 		}
 		super.handleStatusUpdate(par1);
 	}

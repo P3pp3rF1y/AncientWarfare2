@@ -1,6 +1,8 @@
 package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
@@ -15,6 +17,7 @@ import java.util.List;
  *
  * @author John
  */
+@SideOnly(Side.CLIENT)
 public class Composite extends GuiElement {
 
 	protected List<GuiElement> elements = new ArrayList<>();

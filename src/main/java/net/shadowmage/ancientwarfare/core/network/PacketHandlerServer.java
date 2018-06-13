@@ -6,6 +6,8 @@ import net.minecraft.network.NetHandlerPlayServer;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 import java.io.IOException;
@@ -21,6 +23,7 @@ public class PacketHandlerServer {
 	}
 
 	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
 	public void onClientPacket(FMLNetworkEvent.ClientCustomPacketEvent evt) throws IOException {
 		PacketBase packet = PacketBase.readPacket(evt.getPacket().payload());
 

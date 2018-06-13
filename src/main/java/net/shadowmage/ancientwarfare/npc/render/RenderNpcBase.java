@@ -15,7 +15,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.scoreboard.ScorePlayerTeam;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextFormatting;
-import net.shadowmage.ancientwarfare.core.util.AWTextureManager;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -215,7 +214,7 @@ public class RenderNpcBase extends RenderBiped<NpcBase> {
 
 	private void renderIcon(String tex, int width, int height, int x, int y) {
 		Tessellator tess = Tessellator.getInstance();
-		AWTextureManager.instance().bindLocationTexture(tex);
+		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(tex));
 		int halfW = width / 2;
 		int halfH = height / 2;
 		BufferBuilder bufferBuilder = tess.getBuffer();

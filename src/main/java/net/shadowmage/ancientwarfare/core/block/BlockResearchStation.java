@@ -114,6 +114,7 @@ public class BlockResearchStation extends BlockBaseCore implements IRotatableBlo
 
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
 			@Override
+			@SideOnly(Side.CLIENT)
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
 				return ResearchStationRenderer.MODEL_LOCATION;
 			}
@@ -121,6 +122,7 @@ public class BlockResearchStation extends BlockBaseCore implements IRotatableBlo
 
 		ModelRegistryHelper.register(ResearchStationRenderer.MODEL_LOCATION, new CCBakeryModel() {
 			@Override
+			@SideOnly(Side.CLIENT)
 			public TextureAtlasSprite getParticleTexture() {
 				return ResearchStationRenderer.INSTANCE.sprite;
 			}
@@ -132,6 +134,7 @@ public class BlockResearchStation extends BlockBaseCore implements IRotatableBlo
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IBakery getBakery() {
 		return ResearchStationRenderer.INSTANCE;
 	}
