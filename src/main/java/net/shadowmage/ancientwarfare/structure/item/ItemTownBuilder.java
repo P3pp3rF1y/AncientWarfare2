@@ -13,6 +13,8 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
@@ -109,6 +111,7 @@ public class ItemTownBuilder extends ItemBaseStructure implements IItemKeyInterf
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void registerClient() {
 		super.registerClient();
 

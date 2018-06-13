@@ -10,6 +10,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -136,6 +138,7 @@ public class SongPlayData {
 			this.length = length;
 		}
 
+		@SideOnly(Side.CLIENT)
 		public void setSound(@Nullable SoundEvent sound) {
 			this.sound = sound;
 			if (sound != null) {
@@ -153,6 +156,7 @@ public class SongPlayData {
 			return volume;
 		}
 
+		@SideOnly(Side.CLIENT)
 		public String name() {
 			return sound != null ? sound.getSoundName().toString() : "";
 		}

@@ -38,16 +38,17 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.interfaces.IEntityPacketHandler;
-import net.shadowmage.ancientwarfare.core.interop.ModAccessors;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketEntity;
+import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.gates.types.Gate;
 import net.shadowmage.ancientwarfare.structure.gates.types.GateRotatingBridge;
 
 import javax.annotation.Nonnull;
-import java.util.UUID;
 
 /*
  * an class to represent ALL gate types
@@ -66,17 +67,16 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 
 	private Gate gateType = Gate.getGateByID(0);
 
-	private String ownerName;
+	private Owner owner = Owner.EMPTY;
 	private int health = 0;
 	public int hurtAnimationTicks = 0;
 	private byte gateStatus = 0;
 	public EnumFacing gateOrientation = EnumFacing.SOUTH;
-	public int hurtInvulTicks = 0;
+	private int hurtInvulTicks = 0;
 
 	private boolean hasSetWorldEntityRadius = false;
-	public boolean wasPoweredA = false;
-	public boolean wasPoweredB = false;
-	private UUID ownerId;
+	private boolean wasPoweredA = false;
+	private boolean wasPoweredB = false;
 
 	public EntityGate(World par1World) {
 		super(par1World);
@@ -85,12 +85,12 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 	}
 
 	public void setOwner(EntityPlayer player) {
-		this.ownerName = player.getName();
-		this.ownerId = player.getUniqueID();
+		owner = new Owner(player);
 	}
 
+	@Override
 	public Team getTeam() {
-		return world.getScoreboard().getPlayersTeam(ownerName);
+		return world.getScoreboard().getPlayersTeam(owner.getName());
 	}
 
 	public Gate getGateType() {
@@ -104,7 +104,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 
 	@Override
 	protected void entityInit() {
-
+		//NOOP
 	}
 
 	@Override
@@ -134,7 +134,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 		}
 	}
 
-	protected void setOpeningStatus(byte op) {
+	private void setOpeningStatus(byte op) {
 		this.gateStatus = op;
 		if (!this.world.isRemote) {
 			this.world.setEntityState(this, op);
@@ -147,6 +147,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public int getBrightnessForRender() {
 		int i = MathHelper.floor(this.posX);
 		int j = MathHelper.floor(this.posZ);
@@ -159,11 +160,10 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void handleStatusUpdate(byte par1) {
-		if (world.isRemote) {
-			if (par1 == -1 || par1 == 0 || par1 == 1) {
-				this.setOpeningStatus(par1);
-			}
+		if (par1 == -1 || par1 == 0 || par1 == 1) {
+			this.setOpeningStatus(par1);
 		}
 		super.handleStatusUpdate(par1);
 	}
@@ -217,16 +217,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 			return true;
 		}
 
-		boolean canInteract = false;
-		if (ownerId == null)
-			canInteract = true; // neutral/worldgen gates
-		if (player.getUniqueID().equals(ownerId))
-			canInteract = true; // owned gates
-		if (player.getTeam() != null && player.getTeam().isSameTeam(getTeam()))
-			canInteract = true; // same team gates
-		if (ModAccessors.FTBU.areTeamMates(player.getUniqueID(), ownerId))
-			canInteract = true; // friend gates
-		if (canInteract) {
+		if (owner.isOwnerOrSameTeamOrFriend(player) || player.capabilities.isCreativeMode) {
 			if (player.isSneaking()) {
 				NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_GATE_CONTROL, getEntityId(), 0, 0);
 			} else {
@@ -331,18 +322,6 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 		if (this.world.isRemote) {
 			return true;
 		}
-		//  if(Config.gatesOnlyDamageByRams)
-		//    {
-		//    if(par1DamageSource.getEntity()==null || !(par1DamageSource.getEntity() instanceof VehicleBase))
-		//      {
-		//      return !this.isDead;
-		//      }
-		//    VehicleBase vehicle = (VehicleBase) par1DamageSource.getEntity();
-		//    if(vehicle.vehicleType.getGlobalVehicleType()!=VehicleRegistry.BATTERING_RAM.getGlobalVehicleType())
-		//      {
-		//      return !this.isDead;
-		//      }
-		//    }
 		if (!par1DamageSource.isExplosion()) {
 			if (this.hurtInvulTicks > 0) {
 				return false;
@@ -359,8 +338,6 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 		return !this.isDead;
 	}
 
-	//Prevent moving from external means
-
 	@Override
 	public Entity changeDimension(int dimension) {
 		return this;
@@ -373,15 +350,13 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 
 	@Override
 	public void moveRelative(float strafe, float up, float forward, float friction) {
-
+		//NOOP
 	}
 
 	@Override
 	public void addVelocity(double moveX, double moveY, double moveZ) {
-
+		//NOOP
 	}
-
-	//Interaction, collision handling
 
 	@Override
 	public AxisAlignedBB getCollisionBoundingBox() {
@@ -436,8 +411,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 		this.pos1 = BlockPos.fromLong(tag.getLong("pos1"));
 		this.pos2 = BlockPos.fromLong(tag.getLong("pos2"));
 		this.setGateType(Gate.getGateByID(tag.getInteger("type")));
-		this.ownerName = tag.getString("owner");
-		this.ownerId = tag.getUniqueId("ownerId");
+		owner = Owner.deserializeFromNBT(tag);
 		this.edgePosition = tag.getFloat("edge");
 		this.edgeMax = tag.getFloat("edgeMax");
 		this.setHealth(tag.getInteger("health"));
@@ -452,12 +426,7 @@ public class EntityGate extends Entity implements IEntityAdditionalSpawnData, IE
 		tag.setLong("pos1", pos1.toLong());
 		tag.setLong("pos2", pos2.toLong());
 		tag.setInteger("type", this.gateType.getGlobalID());
-		if (ownerName != null && !ownerName.isEmpty()) {
-			tag.setString("owner", ownerName);
-		}
-		if (ownerId != null) {
-			tag.setUniqueId("ownerId", ownerId);
-		}
+		owner.serializeToNBT(tag);
 		tag.setFloat("edge", this.edgePosition);
 		tag.setFloat("edgeMax", this.edgeMax);
 		tag.setInteger("health", this.getHealth());

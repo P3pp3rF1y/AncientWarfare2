@@ -1,41 +1,46 @@
 package net.shadowmage.ancientwarfare.npc.entity.faction;
 
-import com.google.common.base.Predicate;
+import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityList;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.PacketBuffer;
+import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
 import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
+import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
+import net.shadowmage.ancientwarfare.npc.registry.NpcDefault;
+import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
 
-import javax.annotation.Nonnull;
-import java.util.List;
 import java.util.UUID;
 
 public abstract class NpcFaction extends NpcBase {
+	protected String factionName;
 
-	protected final Predicate<Entity> selector = entity -> isHostileTowards(entity);
+	public NpcFaction(World world) {
+		super(world);
+	}
 
-	private String faction = "";
+	public NpcFaction(World world, String factionName) {
+		super(world);
+		this.factionName = factionName;
+		applyFactionNpcSettings();
+	}
 
-	public NpcFaction(World par1World) {
-		super(par1World);
-		String type = this.getNpcFullType();
-		@Nonnull ItemStack eqs;
-		for (int i = 0; i < 8; i++) {
-			eqs = AncientWarfareNPC.statics.getStartingEquipmentForSlot(type, i);
-			if (eqs != null) {
-				setItemStackToSlot(i, eqs);
-			}
-		}
+	private void applyFactionNpcSettings() {
+		NpcDefault npcDefault = NpcDefaultsRegistry.getFactionNpcDefault(this);
+		npcDefault.applyAttributes(this);
+		experienceValue = npcDefault.getExperienceDrop();
+		npcDefault.applyPathSettings((PathNavigateGround) getNavigator());
+		npcDefault.applyEquipment(this);
 	}
 
 	@Override
@@ -59,6 +64,20 @@ public abstract class NpcFaction extends NpcBase {
 	}
 
 	@Override
+	public String getName() {
+		String name = I18n.translateToLocal("entity.ancientwarfarenpc." + getNpcFullType() + ".name");
+		if (hasCustomName()) {
+			name = name + " : " + getCustomNameTag();
+		}
+		return name;
+	}
+
+	@Override
+	public String getNpcFullType() {
+		return factionName + "." + super.getNpcFullType();
+	}
+
+	@Override
 	public boolean isHostileTowards(Entity e) {
 		if (NpcAI.isAlwaysHostileToNpcs(e))
 			return true;
@@ -77,18 +96,10 @@ public abstract class NpcFaction extends NpcBase {
 			return standing < 0;
 		} else if (e instanceof NpcFaction) {
 			NpcFaction npc = (NpcFaction) e;
-			return AncientWarfareNPC.statics.shouldFactionBeHostileTowards(getFaction(), npc.getFaction());
+			return FactionRegistry.getFaction(getFaction()).isHostileTowards(npc.getFaction());
 		} else {
-			// TODO
-			// This is for forced inclusions, which we don't currently support in new auto-targeting. This
-			// is complicated because reasons. See comments in the AWNPCStatics class for details.
-
-			if (!AncientWarfareNPC.statics.autoTargetting) {
-				List<String> targets = AncientWarfareNPC.statics.getValidTargetsFor(getNpcFullType(), "");
-				String t = EntityList.getEntityString(e);
-				if (targets.contains(t)) {
-					return true;
-				}
+			if (!AWNPCStatics.autoTargetting) {
+				return NpcDefaultsRegistry.getFactionNpcDefault(this).isTarget(e);
 			}
 		}
 		return false;
@@ -104,10 +115,8 @@ public abstract class NpcFaction extends NpcBase {
 
 	@Override
 	public boolean canBeAttackedBy(Entity e) {
-		if (e instanceof NpcFaction) {
-			return !getFaction().equals(((NpcFaction) e).getFaction());//can only be attacked by other factions, not your own...disable friendly fire
-		}
-		return true;
+		//can only be attacked by other factions, not your own...disable friendly fire
+		return !(e instanceof NpcFaction) || !getFaction().equals(((NpcFaction) e).getFaction());
 	}
 
 	@Override
@@ -118,9 +127,7 @@ public abstract class NpcFaction extends NpcBase {
 			FactionTracker.INSTANCE.adjustStandingFor(world, player.getName(), getFaction(), -AWNPCStatics.factionLossOnDeath);
 		} else if (damageSource.getTrueSource() instanceof NpcPlayerOwned) {
 			String playerName = ((NpcBase) damageSource.getTrueSource()).getOwner().getName();
-			if (playerName != null) {
-				FactionTracker.INSTANCE.adjustStandingFor(world, playerName, getFaction(), -AWNPCStatics.factionLossOnDeath);
-			}
+			FactionTracker.INSTANCE.adjustStandingFor(world, playerName, getFaction(), -AWNPCStatics.factionLossOnDeath);
 		}
 	}
 
@@ -129,18 +136,36 @@ public abstract class NpcFaction extends NpcBase {
 		return "";
 	}
 
-	//TODO refactor this so that faction is filled in on instance creation, perhaps it could even be Enum to be even faster
 	public String getFaction() {
-		if (faction.isEmpty()) {
-			String type = getNpcType();
-			faction = type.substring(0, type.indexOf("."));
-		}
-
-		return faction;
+		return factionName;
 	}
 
 	@Override
 	public Team getTeam() {
 		return null;
+	}
+
+	@Override
+	public void writeSpawnData(ByteBuf buffer) {
+		super.writeSpawnData(buffer);
+		new PacketBuffer(buffer).writeString(factionName);
+	}
+
+	@Override
+	public void readSpawnData(ByteBuf buffer) {
+		super.readSpawnData(buffer);
+		factionName = new PacketBuffer(buffer).readString(20);
+	}
+
+	@Override
+	public void readEntityFromNBT(NBTTagCompound tag) {
+		super.readEntityFromNBT(tag);
+		factionName = tag.getString("factionName");
+	}
+
+	@Override
+	public void writeEntityToNBT(NBTTagCompound tag) {
+		super.writeEntityToNBT(tag);
+		tag.setString("factionName", factionName);
 	}
 }

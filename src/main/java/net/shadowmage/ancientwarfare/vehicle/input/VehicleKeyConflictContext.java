@@ -2,8 +2,11 @@ package net.shadowmage.ancientwarfare.vehicle.input;
 
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.settings.IKeyConflictContext;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
+@SideOnly(Side.CLIENT)
 public class VehicleKeyConflictContext implements IKeyConflictContext {
 	public static final VehicleKeyConflictContext INSTANCE = new VehicleKeyConflictContext();
 

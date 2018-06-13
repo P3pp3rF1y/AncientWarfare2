@@ -68,9 +68,7 @@ public class NpcAIAimVehicle<T extends NpcBase & IVehicleUser> extends NpcAI<T> 
 	}
 
 	@Override
-	@SuppressWarnings("squid:S3655")
 	public void resetTask() {
-		//noinspection ConstantConditions
-		npc.getVehicle().get().moveHelper.setStrafeInput((byte) 0);
+		npc.getVehicle().ifPresent(v -> v.moveHelper.setStrafeInput((byte) 0));
 	}
 }

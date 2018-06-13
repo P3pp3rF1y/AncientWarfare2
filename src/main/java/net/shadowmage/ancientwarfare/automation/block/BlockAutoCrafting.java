@@ -93,6 +93,7 @@ public class BlockAutoCrafting extends BlockWorksiteBase implements IBakeryProvi
 
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
 			@Override
+			@SideOnly(Side.CLIENT)
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
 				return AutoCraftingRenderer.MODEL_LOCATION;
 			}
@@ -100,6 +101,7 @@ public class BlockAutoCrafting extends BlockWorksiteBase implements IBakeryProvi
 
 		ModelRegistryHelper.register(AutoCraftingRenderer.MODEL_LOCATION, new CCBakeryModel() {
 			@Override
+			@SideOnly(Side.CLIENT)
 			public TextureAtlasSprite getParticleTexture() {
 				return AutoCraftingRenderer.INSTANCE.sprite;
 			}
@@ -112,6 +114,7 @@ public class BlockAutoCrafting extends BlockWorksiteBase implements IBakeryProvi
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IBakery getBakery() {
 		return AutoCraftingRenderer.INSTANCE;
 	}

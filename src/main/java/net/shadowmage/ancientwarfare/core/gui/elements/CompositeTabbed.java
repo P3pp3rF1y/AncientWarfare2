@@ -1,6 +1,8 @@
 package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
@@ -20,6 +22,7 @@ import java.util.List;
  *
  * @author Shadowmage
  */
+@SideOnly(Side.CLIENT)
 public class CompositeTabbed extends Composite implements ITabCallback {
 
 	protected HashMap<Tab, List<GuiElement>> tabElements = new HashMap<>();

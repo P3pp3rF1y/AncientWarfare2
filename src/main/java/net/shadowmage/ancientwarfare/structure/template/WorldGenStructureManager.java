@@ -99,7 +99,7 @@ public class WorldGenStructureManager {
 		int foundValue = 0, chunkDistance;
 		float foundDistance, mx, mz;
 
-		Biome biome = world.getBiome(new BlockPos(x, 1, z));
+		Biome biome = world.provider.getBiomeForCoords(new BlockPos(x, 1, z));
 		String biomeName = biome.getRegistryName().toString();
 		Collection<StructureEntry> duplicateSearchEntries = map.getEntriesNear(world, x, z, AWStructureStatics.duplicateStructureSearchRange, false, searchCache);
 		for (StructureEntry entry : duplicateSearchEntries) {

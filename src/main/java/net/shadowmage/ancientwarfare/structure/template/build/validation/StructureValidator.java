@@ -415,7 +415,7 @@ public abstract class StructureValidator {
 	protected boolean validateBorderBlocks(World world, StructureTemplate template, StructureBB bb, int minY, int maxY, boolean skipWater) {
 		int bx, bz;
 		int borderSize = getBorderSize();
-		boolean riverBiomeValid = BiomeDictionary.hasType(world.getBiome(new BlockPos(bb.min.getX(), 1, bb.min.getZ())), BiomeDictionary.Type.RIVER);
+		boolean riverBiomeValid = BiomeDictionary.hasType(world.provider.getBiomeForCoords(new BlockPos(bb.min.getX(), 1, bb.min.getZ())), BiomeDictionary.Type.RIVER);
 		for (bx = bb.min.getX() - borderSize; bx <= bb.max.getX() + borderSize; bx++) {
 			bz = bb.min.getZ() - borderSize;
 			if (!validateBlockHeightTypeAndBiome(world, bx, bz, minY, maxY, skipWater, riverBiomeValid)) {
@@ -448,7 +448,7 @@ public abstract class StructureValidator {
 
 	protected boolean validateBlockHeightTypeAndBiome(World world, int x, int z, int min, int max, boolean skipWater, boolean riverBiomeValid, Predicate<IBlockState> isValidState) {
 		BlockPos pos = new BlockPos(x, 1, z);
-		if (!riverBiomeValid && BiomeDictionary.hasType(world.getBiome(pos), BiomeDictionary.Type.RIVER)) {
+		if (!riverBiomeValid && BiomeDictionary.hasType(world.provider.getBiomeForCoords(pos), BiomeDictionary.Type.RIVER)) {
 			AncientWarfareCore.log.debug("Rejected for placement into river biome at {}", pos.toString());
 			return false;
 		}
@@ -538,7 +538,7 @@ public abstract class StructureValidator {
 		for (int y = bb.min.getY() + template.yOffset + step; y <= topFilledY; y++) {
 			handleClearAction(world, new BlockPos(x, y, z), template, bb);
 		}
-		Biome biome = world.getBiome(new BlockPos(x, 1, z));
+		Biome biome = world.provider.getBiomeForCoords(new BlockPos(x, 1, z));
 		IBlockState fillBlock = Blocks.GRASS.getDefaultState();
 		if (biome != null && biome.topBlock != null) {
 			fillBlock = biome.topBlock;
@@ -559,7 +559,7 @@ public abstract class StructureValidator {
 		int maxFillY = getMaxFillY(template, bb);
 		int step = WorldStructureGenerator.getStepNumber(x, z, bb.min.getX(), bb.max.getX(), bb.min.getZ(), bb.max.getZ());
 		maxFillY -= step;
-		Biome biome = world.getBiome(new BlockPos(x, 1, z));
+		Biome biome = world.provider.getBiomeForCoords(new BlockPos(x, 1, z));
 		IBlockState fillBlock = Blocks.GRASS.getDefaultState();
 		if (biome != null && biome.topBlock != null) {
 			fillBlock = biome.topBlock;
@@ -576,7 +576,7 @@ public abstract class StructureValidator {
 
 	protected void underFill(World world, int x, int z, StructureTemplate template, StructureBB bb) {
 		int topFilledY = WorldStructureGenerator.getTargetY(world, x, z, true);
-		Biome biome = world.getBiome(new BlockPos(x, 1, z));
+		Biome biome = world.provider.getBiomeForCoords(new BlockPos(x, 1, z));
 		IBlockState fillBlockID = Blocks.GRASS.getDefaultState();
 		if (biome != null && biome.topBlock != null) {
 			fillBlockID = biome.topBlock;

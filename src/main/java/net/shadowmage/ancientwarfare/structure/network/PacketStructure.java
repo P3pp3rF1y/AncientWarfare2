@@ -5,6 +5,8 @@ import io.netty.buffer.ByteBufInputStream;
 import io.netty.buffer.ByteBufOutputStream;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManagerClient;
 
@@ -54,8 +56,8 @@ public class PacketStructure extends PacketBase {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	protected void execute() {
 		StructureTemplateManagerClient.instance().onTemplateData(packetData);
 	}
-
 }

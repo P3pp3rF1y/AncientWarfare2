@@ -20,6 +20,7 @@ import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.MissingResourceException;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -97,7 +98,7 @@ public class JsonHelper {
 		T ret = init.apply(block);
 		BlockStateContainer stateContainer = block.getBlockState();
 
-		for (Map.Entry<String, String> prop : properties.entrySet()) {
+		for (Entry<String, String> prop : properties.entrySet()) {
 			IProperty<?> property = stateContainer.getProperty(prop.getKey());
 			//noinspection ConstantConditions
 			Optional<?> value = getValueHelper(property, prop.getValue());
@@ -116,7 +117,7 @@ public class JsonHelper {
 		return getRegistryEntry(registryName, ForgeRegistries.BLOCKS);
 	}
 
-	private static Item getItem(String registryName) {
+	public static Item getItem(String registryName) {
 		return getRegistryEntry(registryName, ForgeRegistries.ITEMS);
 	}
 
@@ -182,7 +183,7 @@ public class JsonHelper {
 			throw new JsonParseException("Expected at least one property defined for " + elementName + " in " + parent.toString());
 		}
 
-		Map.Entry<String, JsonElement> propJson = jsonProperty.entrySet().iterator().next();
+		Entry<String, JsonElement> propJson = jsonProperty.entrySet().iterator().next();
 		String propName = propJson.getKey();
 		String propValue = propJson.getValue().getAsString();
 
@@ -205,5 +206,31 @@ public class JsonHelper {
 
 	public static PropertyStateMatcher getPropertyStateMatcher(IBlockState state, JsonObject parent, String elementName) {
 		return new PropertyStateMatcher(getPropertyState(state, parent, elementName));
+	}
+
+	public static <K, V> Map<K, V> mapFromJson(JsonObject json, String propertyName, Function<Entry<String, JsonElement>, K> parseKey,
+			Function<Entry<String, JsonElement>, V> parseValue) {
+		return mapFromJsonArray(JsonUtils.getJsonArray(json, propertyName), new HashMap<>(), parseKey, parseValue);
+	}
+
+	public static <K, V> Map<K, V> mapFromJson(JsonElement json, Function<Entry<String, JsonElement>, K> parseKey,
+			Function<Entry<String, JsonElement>, V> parseValue) {
+		return mapFromJsonArray(JsonUtils.getJsonArray(json, ""), new HashMap<>(), parseKey, parseValue);
+	}
+
+	public static <K, V> void mapFromJson(JsonObject json, String propertyName, Map<K, V> ret, Function<Entry<String, JsonElement>, K> parseKey,
+			Function<Entry<String, JsonElement>, V> parseValue) {
+		mapFromJsonArray(JsonUtils.getJsonArray(json, propertyName), ret, parseKey, parseValue);
+	}
+
+	private static <K, V> Map<K, V> mapFromJsonArray(JsonArray arr, Map<K, V> ret, Function<Entry<String, JsonElement>, K> parseKey,
+			Function<Entry<String, JsonElement>, V> parseValue) {
+
+		for (JsonElement e : arr) {
+			Entry<String, JsonElement> pair = JsonUtils.getJsonObject(e, "").entrySet().iterator().next();
+			ret.put(parseKey.apply(pair), parseValue.apply(pair));
+		}
+
+		return ret;
 	}
 }

@@ -2,8 +2,11 @@ package net.shadowmage.ancientwarfare.core.input;
 
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.settings.IKeyConflictContext;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 
+@SideOnly(Side.CLIENT)
 public class ItemKeyConflictContext implements IKeyConflictContext {
 	public static final ItemKeyConflictContext INSTANCE = new ItemKeyConflictContext();
 

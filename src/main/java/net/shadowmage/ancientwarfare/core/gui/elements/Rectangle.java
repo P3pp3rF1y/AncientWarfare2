@@ -1,8 +1,11 @@
 package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
+@SideOnly(Side.CLIENT)
 public class Rectangle extends GuiElement {
 
 	private final int color, hoverColor;

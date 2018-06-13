@@ -1,8 +1,11 @@
 package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
+@SideOnly(Side.CLIENT)
 public class ProgressBar extends GuiElement {
 
 	private float progress;

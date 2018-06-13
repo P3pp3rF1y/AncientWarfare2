@@ -2,8 +2,11 @@ package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
+@SideOnly(Side.CLIENT)
 public class TexturedRectangleLive extends GuiElement {
 
 	ResourceLocation tex;

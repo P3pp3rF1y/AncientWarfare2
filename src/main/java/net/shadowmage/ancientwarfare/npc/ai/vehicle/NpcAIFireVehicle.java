@@ -26,8 +26,11 @@ public class NpcAIFireVehicle<T extends NpcBase & IVehicleUser> extends NpcAI<T>
 				&& npc.getVehicle().get().firingHelper.isReadyToFire();
 	}
 
+	@SuppressWarnings("squid:S3655")
 	private boolean isInRange() {
+		//noinspection ConstantConditions
 		VehicleBase vehicle = npc.getVehicle().get();
+		//noinspection ConstantConditions
 		ITarget target = npc.getTarget().get();
 		return vehicle.getEffectiveRange((float) (target.getY() - vehicle.posY)) >= vehicle.getMissileOffset().add(vehicle.getPositionVector())
 				.distanceTo(new Vec3d(target.getX(), target.getY(), target.getZ()));

@@ -7,6 +7,8 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface.ItemAltFunction;
 import org.lwjgl.input.Keyboard;
@@ -15,6 +17,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
 
+@SideOnly(Side.CLIENT)
 public class InputHandler {
 
 	private static final String CATEGORY = "keybind.category.awCore";

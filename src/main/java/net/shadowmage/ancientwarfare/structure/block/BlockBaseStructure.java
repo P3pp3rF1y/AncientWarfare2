@@ -30,6 +30,7 @@ public class BlockBaseStructure extends BlockBase implements IClientRegistrar {
 
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
 			@Override
+			@SideOnly(Side.CLIENT)
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
 				return new ModelResourceLocation(assetLocation, getPropertyString(state.getProperties()));
 			}

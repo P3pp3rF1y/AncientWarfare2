@@ -15,6 +15,8 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
@@ -46,6 +48,7 @@ public class MultiRecipeTransferHandler<C extends Container & ICraftingContainer
 
 	@Nullable
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IRecipeTransferError transferRecipe(C container, IRecipeLayout recipeLayout, EntityPlayer player, boolean maxTransfer, boolean doTransfer) {
 		IGuiItemStackGroup stacks = recipeLayout.getItemStacks();
 		ItemStack result = stacks.getGuiIngredients().get(0).getDisplayedIngredient();

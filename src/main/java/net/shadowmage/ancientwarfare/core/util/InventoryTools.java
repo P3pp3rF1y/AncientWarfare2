@@ -271,21 +271,10 @@ public class InventoryTools {
 		if (stack1 == stack2) {
 			return true;
 		}
-		return OreDictionary.itemMatches(stack1, stack2, !stack1.isEmpty() && (stack1.isItemStackDamageable() || stack1.getItemDamage() != OreDictionary.WILDCARD_VALUE)) && ItemStack.areItemsEqualIgnoreDurability(stack1, stack2) && stack1.areCapsCompatible(stack2);
-	}
-
-	public static boolean areItemStackTagsEqual(ItemStack stackA, ItemStack stackB) {
-		if (stackA.isEmpty() && stackB.isEmpty()) {
-			return true;
-		} else if (!stackA.isEmpty() && !stackB.isEmpty()) {
-			if ((stackA.getTagCompound() == null || stackA.getTagCompound().hasNoTags()) && (stackB.getTagCompound() != null && !stackB.getTagCompound().hasNoTags())) {
-				return false;
-			} else {
-				return (stackA.getTagCompound() == null || stackA.getTagCompound().equals(stackB.getTagCompound())) && stackA.areCapsCompatible(stackB);
-			}
-		} else {
-			return false;
-		}
+		return OreDictionary.itemMatches(stack1, stack2, !stack1.isEmpty() && (stack1.isItemStackDamageable() || stack1.getItemDamage() != OreDictionary.WILDCARD_VALUE))
+				&& ItemStack.areItemsEqualIgnoreDurability(stack1, stack2)
+				&& ItemStack.areItemStackTagsEqual(stack1, stack2)
+				&& stack1.areCapsCompatible(stack2);
 	}
 
 	public static boolean doItemStacksMatch(ItemStack stackA, ItemStack stackB) {

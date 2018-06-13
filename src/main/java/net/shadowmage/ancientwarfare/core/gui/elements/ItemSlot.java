@@ -6,6 +6,8 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
@@ -14,16 +16,7 @@ import org.lwjgl.opengl.GL11;
 
 import javax.annotation.Nonnull;
 
-/*
- * basic item-slot gui element
- * renders a single item-stack and slot background
- * includes basic highlighting when mouse-is over
- * sub-classes should add listeners to handle mouse interaction for the slot
- * <p/>
- * the ItooltipRenderer passed during construction should be the base GUI that will handle rendering
- *
- * @author Shadowmage
- */
+@SideOnly(Side.CLIENT)
 public class ItemSlot extends GuiElement {
 	private static final RenderItem itemRender = Minecraft.getMinecraft().getRenderItem();
 	@Nonnull

@@ -18,22 +18,33 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAISing;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 
-public abstract class NpcFactionBard extends NpcFaction implements ISinger {
+public class NpcFactionBard extends NpcFaction implements ISinger {
 
-	SongPlayData tuneData = new SongPlayData();
+	private SongPlayData tuneData = new SongPlayData();
 
-	public NpcFactionBard(World par1World) {
-		super(par1World);
-		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
-		this.tasks.addTask(0, new NpcAIDoor(this, true));
-		this.tasks.addTask(1, new NpcAIFollowPlayer(this));
-		this.tasks.addTask(2, new NpcAIMoveHome(this, 50F, 3F, 30F, 3F));
-		this.tasks.addTask(3, new NpcAISing(this));
+	@SuppressWarnings("unused")
+	public NpcFactionBard(World world) {
+		super(world);
+		addAI();
+	}
 
-		this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
-		this.tasks.addTask(102, new NpcAIWander(this));
-		this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
+	@SuppressWarnings("unused")
+	public NpcFactionBard(World world, String factionName) {
+		super(world, factionName);
+		addAI();
+	}
+
+	private void addAI() {
+		tasks.addTask(0, new EntityAISwimming(this));
+		tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
+		tasks.addTask(0, new NpcAIDoor(this, true));
+		tasks.addTask(1, new NpcAIFollowPlayer(this));
+		tasks.addTask(2, new NpcAIMoveHome(this, 50F, 3F, 30F, 3F));
+		tasks.addTask(3, new NpcAISing(this));
+
+		tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
+		tasks.addTask(102, new NpcAIWander(this));
+		tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 	}
 
 	@Override
@@ -54,6 +65,11 @@ public abstract class NpcFactionBard extends NpcFaction implements ISinger {
 	@Override
 	public boolean hasAltGui() {
 		return true;
+	}
+
+	@Override
+	public String getNpcType() {
+		return "bard";
 	}
 
 	@Override

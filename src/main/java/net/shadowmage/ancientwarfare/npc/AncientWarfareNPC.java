@@ -19,6 +19,7 @@ import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.core.gamedata.WorldData;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
+import net.shadowmage.ancientwarfare.core.registry.RegistryLoader;
 import net.shadowmage.ancientwarfare.npc.command.CommandDebugAI;
 import net.shadowmage.ancientwarfare.npc.command.CommandFaction;
 import net.shadowmage.ancientwarfare.npc.compat.EpicSiegeCompat;
@@ -41,6 +42,8 @@ import net.shadowmage.ancientwarfare.npc.faction.FactionTracker;
 import net.shadowmage.ancientwarfare.npc.network.PacketFactionUpdate;
 import net.shadowmage.ancientwarfare.npc.network.PacketNpcCommand;
 import net.shadowmage.ancientwarfare.npc.proxy.NpcCommonProxy;
+import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
+import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
 
 @Mod(name = "Ancient Warfare NPCs", modid = AncientWarfareNPC.modID, version = "@VERSION@", dependencies = "required-after:ancientwarfare")
 
@@ -65,7 +68,6 @@ public class AncientWarfareNPC {
          */
 		statics = new AWNPCStatics("AncientWarfareNpc");
 		proxy.preInit();//must be loaded after configs
-		MinecraftForge.EVENT_BUS.register(FactionTracker.INSTANCE);
 		MinecraftForge.EVENT_BUS.register(this);
 		MinecraftForge.EVENT_BUS.register(net.shadowmage.ancientwarfare.npc.event.EventHandler.INSTANCE);
 
@@ -89,6 +91,10 @@ public class AncientWarfareNPC {
 		PacketBase.registerPacketType(NetworkHandler.PACKET_FACTION_UPDATE, PacketFactionUpdate.class);
 
 		CompatLoader.registerCompat(new EpicSiegeCompat());
+
+		RegistryLoader.registerParser(new FactionRegistry.FactionParser());
+		RegistryLoader.registerParser(new NpcDefaultsRegistry.FactionNpcDefaultsParser());
+		RegistryLoader.registerParser(new NpcDefaultsRegistry.OwnedNpcDefaultsParser());
 	}
 
 	@EventHandler
@@ -103,6 +109,8 @@ public class AncientWarfareNPC {
          */
 		proxy.loadSkins();
 		AWNPCEntityLoader.loadNpcSubtypeEquipment();
+		MinecraftForge.EVENT_BUS.register(FactionTracker.INSTANCE);
+
 		statics.save();
 	}
 

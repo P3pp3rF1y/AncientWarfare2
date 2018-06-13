@@ -3,6 +3,8 @@ package net.shadowmage.ancientwarfare.core.gui.elements;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
@@ -20,6 +22,7 @@ import java.util.List;
  *
  * @author Shadowmage
  */
+@SideOnly(Side.CLIENT)
 public abstract class GuiElement {
 
 	private List<Listener> actionListeners = new ArrayList<>();

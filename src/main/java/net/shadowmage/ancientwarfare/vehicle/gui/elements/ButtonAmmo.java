@@ -25,11 +25,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderItem;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 import net.shadowmage.ancientwarfare.vehicle.registry.AmmoRegistry;
 
+@SideOnly(Side.CLIENT)
 public class ButtonAmmo extends Button {
 
 	IAmmo ammo;

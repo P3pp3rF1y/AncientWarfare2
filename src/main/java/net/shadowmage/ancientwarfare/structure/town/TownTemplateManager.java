@@ -1,10 +1,14 @@
 package net.shadowmage.ancientwarfare.structure.town;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +40,13 @@ public class TownTemplateManager {
 
 	public List<TownTemplate> getTemplatesValidAtPosition(World world, int x, int z) {
 		//noinspection ConstantConditions
-		String biomeName = world.getBiome(new BlockPos(x, 1, z)).getRegistryName().toString();
+		Biome biome = world.provider.getBiomeForCoords(new BlockPos(x, 1, z));
+		ResourceLocation rl = biome.getRegistryName();
+		if (rl == null) {
+			AncientWarfareStructures.log.info("Biome based on class {} isn't registered and because of that Ancient Warfare can't process biome validation. This may be an error which may need to be fixed by the mod that added the biome.", biome.getClass());
+			return Collections.emptyList();
+		}
+		String biomeName = rl.toString();
 		return templates.values().stream().filter(t -> isDimensionValid(world.provider.getDimension(), t) && isBiomeValid(biomeName, t)).collect(Collectors.toList());
 	}
 

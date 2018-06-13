@@ -3,11 +3,14 @@ package net.shadowmage.ancientwarfare.core.gui.elements;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.init.SoundEvents;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.interfaces.IScrollableCallback;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 
+@SideOnly(Side.CLIENT)
 public class Scrollbar extends GuiElement {
 	private static final int MIN_HANDLE_HEIGHT = 10;
 	static final int borderSize = 1;//the border around the scroll bar and handle

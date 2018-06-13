@@ -62,6 +62,7 @@ public class BlockTorqueTransportShaft extends BlockTorqueTransport implements I
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return TorqueShaftRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
 	}
@@ -106,6 +107,7 @@ public class BlockTorqueTransportShaft extends BlockTorqueTransport implements I
 
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
 			@Override
+			@SideOnly(Side.CLIENT)
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
 				switch (state.getValue(AutomationProperties.TIER)) {
 					case LIGHT:
@@ -120,6 +122,7 @@ public class BlockTorqueTransportShaft extends BlockTorqueTransport implements I
 
 		ModelRegistryHelper.register(TorqueShaftRenderer.LIGHT_MODEL_LOCATION, new CCBakeryModel() {
 			@Override
+			@SideOnly(Side.CLIENT)
 			public TextureAtlasSprite getParticleTexture() {
 				return TorqueShaftRenderer.INSTANCE.getSprite(TorqueTier.LIGHT);
 			}
@@ -127,6 +130,7 @@ public class BlockTorqueTransportShaft extends BlockTorqueTransport implements I
 
 		ModelRegistryHelper.register(TorqueShaftRenderer.MEDIUM_MODEL_LOCATION, new CCBakeryModel() {
 			@Override
+			@SideOnly(Side.CLIENT)
 			public TextureAtlasSprite getParticleTexture() {
 				return TorqueShaftRenderer.INSTANCE.getSprite(TorqueTier.MEDIUM);
 			}
@@ -134,6 +138,7 @@ public class BlockTorqueTransportShaft extends BlockTorqueTransport implements I
 
 		ModelRegistryHelper.register(TorqueShaftRenderer.HEAVY_MODEL_LOCATION, new CCBakeryModel() {
 			@Override
+			@SideOnly(Side.CLIENT)
 			public TextureAtlasSprite getParticleTexture() {
 				return TorqueShaftRenderer.INSTANCE.getSprite(TorqueTier.HEAVY);
 			}
@@ -141,6 +146,7 @@ public class BlockTorqueTransportShaft extends BlockTorqueTransport implements I
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IBakery getBakery() {
 		return TorqueShaftRenderer.INSTANCE;
 	}

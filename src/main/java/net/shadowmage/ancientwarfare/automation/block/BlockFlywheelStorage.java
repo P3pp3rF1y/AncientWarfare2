@@ -61,6 +61,7 @@ public class BlockFlywheelStorage extends BlockBaseAutomation implements IBakery
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return FlywheelStorageRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
 	}
@@ -130,6 +131,7 @@ public class BlockFlywheelStorage extends BlockBaseAutomation implements IBakery
 
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
 			@Override
+			@SideOnly(Side.CLIENT)
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
 				switch (state.getValue(AutomationProperties.TIER)) {
 					case LIGHT:
@@ -144,6 +146,7 @@ public class BlockFlywheelStorage extends BlockBaseAutomation implements IBakery
 
 		ModelRegistryHelper.register(FlywheelStorageRenderer.LIGHT_MODEL_LOCATION, new CCBakeryModel() {
 			@Override
+			@SideOnly(Side.CLIENT)
 			public TextureAtlasSprite getParticleTexture() {
 				return FlywheelStorageRenderer.INSTANCE.getSprite(false, TorqueTier.LIGHT);
 			}
@@ -151,6 +154,7 @@ public class BlockFlywheelStorage extends BlockBaseAutomation implements IBakery
 
 		ModelRegistryHelper.register(FlywheelStorageRenderer.MEDIUM_MODEL_LOCATION, new CCBakeryModel() {
 			@Override
+			@SideOnly(Side.CLIENT)
 			public TextureAtlasSprite getParticleTexture() {
 				return FlywheelStorageRenderer.INSTANCE.getSprite(false, TorqueTier.MEDIUM);
 			}
@@ -158,6 +162,7 @@ public class BlockFlywheelStorage extends BlockBaseAutomation implements IBakery
 
 		ModelRegistryHelper.register(FlywheelStorageRenderer.HEAVY_MODEL_LOCATION, new CCBakeryModel() {
 			@Override
+			@SideOnly(Side.CLIENT)
 			public TextureAtlasSprite getParticleTexture() {
 				return FlywheelStorageRenderer.INSTANCE.getSprite(false, TorqueTier.HEAVY);
 			}
@@ -166,6 +171,7 @@ public class BlockFlywheelStorage extends BlockBaseAutomation implements IBakery
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IBakery getBakery() {
 		return FlywheelStorageRenderer.INSTANCE;
 	}

@@ -13,13 +13,18 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionPriest;
 
-public abstract class NpcFactionPriest extends NpcFaction {
+public class NpcFactionPriest extends NpcFaction {
+	public NpcFactionPriest(World world) {
+		super(world);
+		addAI();
+	}
 
-	public NpcFactionPriest(World par1World) {
-		super(par1World);
-		//  setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.BOOK));
-		//TODO set in-hand item to...a cross? (or other holy symbol...an ankh?)
+	public NpcFactionPriest(World world, String factionName) {
+		super(world, factionName);
+		addAI();
+	}
 
+	private void addAI() {
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
 		this.tasks.addTask(0, new NpcAIDoor(this, true));
@@ -32,4 +37,8 @@ public abstract class NpcFactionPriest extends NpcFaction {
 		this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 	}
 
+	@Override
+	public String getNpcType() {
+		return "priest";
+	}
 }

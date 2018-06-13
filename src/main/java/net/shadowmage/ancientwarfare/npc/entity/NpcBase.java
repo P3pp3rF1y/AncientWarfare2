@@ -16,10 +16,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTUtil;
@@ -57,9 +54,11 @@ import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.ai.NpcNavigator;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.item.ItemCommandBaton;
 import net.shadowmage.ancientwarfare.npc.item.ItemNpcSpawner;
 import net.shadowmage.ancientwarfare.npc.item.ItemShield;
+import net.shadowmage.ancientwarfare.npc.registry.NpcDefaultsRegistry;
 import net.shadowmage.ancientwarfare.npc.skin.NpcSkinManager;
 import net.shadowmage.ancientwarfare.vehicle.entity.IPathableEntity;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
@@ -71,6 +70,8 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.UUID;
+
+import static net.shadowmage.ancientwarfare.npc.config.AWNPCStatics.npcLevelDamageMultiplier;
 
 public abstract class NpcBase extends EntityCreature implements IEntityAdditionalSpawnData, IOwnable, IEntityPacketHandler, IPathableEntity, INpc {
 
@@ -122,7 +123,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		this.inventoryArmorDropChances = new float[] {1.f, 1.f, 1.f, 1.f};
 		this.inventoryHandsDropChances = new float[] {1.f, 1.f};
 		this.navigator = new NpcNavigator(this);
-		AncientWarfareNPC.statics.applyPathConfig(this);
 		setPathPriority(PathNodeType.DOOR_WOOD_CLOSED, 0);
 	}
 
@@ -140,7 +140,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	protected void applyEntityAttributes() {
 		super.applyEntityAttributes();
 		this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
-		AncientWarfareNPC.statics.applyAttributes(this);
 	}
 
 	public ItemStack getShieldStack() {
@@ -514,7 +513,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	}
 
 	@Override
-	public void setAttackTarget(EntityLivingBase entity) {
+	public void setAttackTarget(@Nullable EntityLivingBase entity) {
 		if (entity != null && !canTarget(entity))
 			return;
 		super.setAttackTarget(entity);
@@ -583,12 +582,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		if (slot == EntityEquipmentSlot.MAINHAND) {
 			onWeaponInventoryChanged();
 		}
-	}
-
-	@Override
-	protected boolean canEquipItem(ItemStack stack) {
-		Item item = stack.getItem();
-		return item instanceof ItemArmor || (item instanceof ItemSword && getItemStackFromSlot(EntityEquipmentSlot.MAINHAND).getItem() instanceof ItemSword);
 	}
 
 	public final void setItemStackToSlot(int slot, ItemStack stack) {
@@ -740,7 +733,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	 * return the full NPC type for this npc<br>
 	 * returns npcType if subtype is empty, else npcType.npcSubtype
 	 */
-	public final String getNpcFullType() {
+	public String getNpcFullType() {
 		String type = getNpcType();
 		if (type == null || type.isEmpty()) {
 			throw new RuntimeException("Type must not be null or empty:");
@@ -757,7 +750,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 
 	@Override
 	public String getName() {
-		String name = I18n.translateToLocal("entity.AncientWarfareNpc." + getNpcFullType() + ".name");
+		String name = I18n.translateToLocal("entity.ancientwarfarenpc." + getNpcFullType() + ".name");
 		if (hasCustomName()) {
 			name = name + " : " + getCustomNameTag();
 		}
@@ -835,7 +828,19 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	 * called whenever level changes, to update the damage-done stat for the entity
 	 */
 	public final void updateDamageFromLevel() {
-		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(AncientWarfareNPC.statics.getAttack(this));
+		this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(getLeveledAttack());
+	}
+
+	private double getLeveledAttack() {
+		double dmg = getBaseAttack();
+		int level = getLevelingStats().getLevel();
+		return dmg * (1 + level * npcLevelDamageMultiplier);
+	}
+
+	private double getBaseAttack() {
+		//TODO get rid of this instanceof check once player owned attribs migrated ot the same way
+		return this instanceof NpcFaction ? NpcDefaultsRegistry.getFactionNpcDefault((NpcFaction) this).getBaseAttack() :
+				NpcDefaultsRegistry.getOwnedNpcDefault((NpcPlayerOwned) this).getBaseAttack();
 	}
 
 	public int getFoodRemaining() {
@@ -903,10 +908,6 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 		return 0;
 	}
 
-	public void setExperienceDrop(int exp) {
-		this.experienceValue = exp;
-	}
-
 	public abstract boolean isHostileTowards(Entity e);
 
 	public abstract boolean canTarget(Entity e);
@@ -918,6 +919,10 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 			return null;
 		}
 		return world.getPlayerEntityByName(followingPlayerName);
+	}
+
+	public void setExperienceDrop(int exp) {
+		this.experienceValue = exp;
 	}
 
 	public final void setFollowingEntity(EntityLivingBase entity) {

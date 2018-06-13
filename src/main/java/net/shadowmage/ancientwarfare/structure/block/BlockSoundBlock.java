@@ -56,6 +56,7 @@ public class BlockSoundBlock extends BlockBaseStructure implements IBakeryProvid
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return SoundBlockRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
 	}
@@ -90,6 +91,7 @@ public class BlockSoundBlock extends BlockBaseStructure implements IBakeryProvid
 	public void registerClient() {
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
 			@Override
+			@SideOnly(Side.CLIENT)
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
 				return SoundBlockRenderer.MODEL_LOCATION;
 			}
@@ -109,6 +111,7 @@ public class BlockSoundBlock extends BlockBaseStructure implements IBakeryProvid
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IBakery getBakery() {
 		return SoundBlockRenderer.INSTANCE;
 	}

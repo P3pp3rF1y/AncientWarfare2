@@ -8,7 +8,7 @@ import java.lang.ref.WeakReference;
 public class EntityTarget implements ITarget {
 	private WeakReference<EntityLivingBase> entity;
 
-	EntityTarget(EntityLivingBase entity) {
+	public EntityTarget(EntityLivingBase entity) {
 		this.entity = new WeakReference<>(entity);
 	}
 

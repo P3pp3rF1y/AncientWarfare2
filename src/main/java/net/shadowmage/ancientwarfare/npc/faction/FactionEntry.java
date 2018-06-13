@@ -3,8 +3,7 @@ package net.shadowmage.ancientwarfare.npc.faction;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.common.util.Constants;
-import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
-import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
+import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 
 import java.util.HashMap;
 
@@ -15,16 +14,16 @@ public final class FactionEntry {
 
 	public FactionEntry(NBTTagCompound tag) {
 		playerName = tag.getString("playerName");
-		for (String name : AWNPCStatics.factionNames) {
-			factionStandings.put(name, new FactionStanding(AncientWarfareNPC.statics.getDefaultFaction(name)));
+		for (String name : FactionRegistry.getFactionNames()) {
+			factionStandings.put(name, new FactionStanding(FactionRegistry.getFaction(name).getPlayerDefaultStanding()));
 		}
 		readFromNBT(tag);
 	}
 
 	public FactionEntry(String playerName) {
 		this.playerName = playerName;
-		for (String name : AWNPCStatics.factionNames) {
-			factionStandings.put(name, new FactionStanding(AncientWarfareNPC.statics.getDefaultFaction(name)));
+		for (String name : FactionRegistry.getFactionNames()) {
+			factionStandings.put(name, new FactionStanding(FactionRegistry.getFaction(name).getPlayerDefaultStanding()));
 		}
 	}
 
@@ -57,7 +56,7 @@ public final class FactionEntry {
 			entryTag = entryList.getCompoundTagAt(i);
 			name = entryTag.getString("name");
 			if (!factionStandings.containsKey(name)) {
-				factionStandings.put(name, new FactionStanding(AncientWarfareNPC.statics.getDefaultFaction(name)));
+				factionStandings.put(name, new FactionStanding(FactionRegistry.getFaction(name).getPlayerDefaultStanding()));
 			}
 			factionStandings.get(name).standing = entryTag.getInteger("standing");
 		}

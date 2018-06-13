@@ -12,6 +12,8 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -28,6 +30,7 @@ public class ItemConstructionTool extends ItemBaseStructure implements IItemKeyI
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flagIn) {
 		ConstructionSettings settings = getSettings(stack);
 		if (settings == null) {
@@ -238,6 +241,7 @@ public class ItemConstructionTool extends ItemBaseStructure implements IItemKeyI
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void renderBox(EntityPlayer player, ItemStack stack, float delta) {
 		ConstructionSettings settings = getSettings(stack);
 		if (settings == null) {

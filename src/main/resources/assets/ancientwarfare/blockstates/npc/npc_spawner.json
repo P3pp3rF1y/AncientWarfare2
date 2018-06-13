@@ -2,428 +2,98 @@
     "forge_marker": 1,
     "defaults": {
         "model": "builtin/generated",
-        "transform": "forge:default-item"
+        "transform": "forge:default-item",
+        "textures": {
+            "layer0": "ancientwarfare:items/npc/spawner_base",
+            "layer1": "ancientwarfare:items/npc/spawner_overlay_bottom",
+            "layer2": "ancientwarfare:items/npc/spawner_overlay_top"
+        }
     },
     "variants": {
         "variant": {
             "siege_engineer": {
                 "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_siege_engineer"
+                    "layer3": "ancientwarfare:items/npc/spawner_siege_engineer"
                 }
             },
             "archer": {
                 "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_archer"
-                }
-            },
-            "bandit_archer": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_bandit_archer"
-                }
-            },
-            "bandit_bard": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_bandit_bard"
-                }
-            },
-            "bandit_civilian_female": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_bandit_civilian_female"
-                }
-            },
-            "bandit_civilian_male": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_bandit_civilian_male"
-                }
-            },
-            "bandit_leader": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_bandit_leader"
-                }
-            },
-            "bandit_priest": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_bandit_priest"
-                }
-            },
-            "bandit_soldier": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_bandit_soldier"
-                }
-            },
-            "bandit_trader": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_bandit_trader"
+                    "layer3": "ancientwarfare:items/npc/spawner_archer"
                 }
             },
             "bard": {
                 "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_bard"
-                }
-            },
-            "combat": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_combat"
+                    "layer3": "ancientwarfare:items/npc/spawner_bard"
                 }
             },
             "commander": {
                 "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_commander"
+                    "layer3": "ancientwarfare:items/npc/spawner_commander"
                 }
             },
             "courier": {
                 "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_courier"
+                    "layer3": "ancientwarfare:items/npc/spawner_courier"
                 }
             },
             "craftsman": {
                 "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_craftsman"
-                }
-            },
-            "custom_1_archer": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_custom_1_archer"
-                }
-            },
-            "custom_1_bard": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_custom_1_bard"
-                }
-            },
-            "custom_1_civilian_female": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_custom_1_civilian_female"
-                }
-            },
-            "custom_1_civilian_male": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_custom_1_civilian_male"
-                }
-            },
-            "custom_1_leader": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_custom_1_leader"
-                }
-            },
-            "custom_1_priest": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_custom_1_priest"
-                }
-            },
-            "custom_1_soldier": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_custom_1_soldier"
-                }
-            },
-            "custom_1_trader": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_custom_1_trader"
-                }
-            },
-            "custom_2_archer": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_custom_2_archer"
-                }
-            },
-            "custom_2_bard": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_custom_2_bard"
-                }
-            },
-            "custom_2_civilian_female": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_custom_2_civilian_female"
-                }
-            },
-            "custom_2_civilian_male": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_custom_2_civilian_male"
-                }
-            },
-            "custom_2_leader": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_custom_2_leader"
-                }
-            },
-            "custom_2_priest": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_custom_2_priest"
-                }
-            },
-            "custom_2_soldier": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_custom_2_soldier"
-                }
-            },
-            "custom_2_trader": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_custom_2_trader"
-                }
-            },
-            "custom_3_archer": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_custom_3_archer"
-                }
-            },
-            "custom_3_bard": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_custom_3_bard"
-                }
-            },
-            "custom_3_civilian_female": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_custom_3_civilian_female"
-                }
-            },
-            "custom_3_civilian_male": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_custom_3_civilian_male"
-                }
-            },
-            "custom_3_leader": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_custom_3_leader"
-                }
-            },
-            "custom_3_priest": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_custom_3_priest"
-                }
-            },
-            "custom_3_soldier": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_custom_3_soldier"
-                }
-            },
-            "custom_3_trader": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_custom_3_trader"
-                }
-            },
-            "desert_archer": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_desert_archer"
-                }
-            },
-            "desert_bard": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_desert_bard"
-                }
-            },
-            "desert_civilian_female": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_desert_civilian_female"
-                }
-            },
-            "desert_civilian_male": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_desert_civilian_male"
-                }
-            },
-            "desert_leader": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_desert_leader"
-                }
-            },
-            "desert_priest": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_desert_priest"
-                }
-            },
-            "desert_soldier": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_desert_soldier"
-                }
-            },
-            "desert_trader": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_desert_trader"
+                    "layer3": "ancientwarfare:items/npc/spawner_craftsman"
                 }
             },
             "engineer": {
                 "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_engineer"
+                    "layer3": "ancientwarfare:items/npc/spawner_engineer"
                 }
             },
             "farmer": {
                 "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_farmer"
-                }
-            },
-            "hostile_archer": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_hostile_archer"
-                }
-            },
-            "hostile_commander": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_hostile_commander"
-                }
-            },
-            "hostile_priest": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_hostile_priest"
-                }
-            },
-            "hostile_soldier": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_hostile_soldier"
-                }
-            },
-            "hostile_trader": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_hostile_trader"
+                    "layer3": "ancientwarfare:items/npc/spawner_farmer"
                 }
             },
             "lumberjack": {
                 "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_lumberjack"
+                    "layer3": "ancientwarfare:items/npc/spawner_lumberjack"
                 }
             },
             "medic": {
                 "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_medic"
+                    "layer3": "ancientwarfare:items/npc/spawner_medic"
                 }
             },
             "miner": {
                 "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_miner"
-                }
-            },
-            "native_archer": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_native_archer"
-                }
-            },
-            "native_bard": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_native_bard"
-                }
-            },
-            "native_civilian_female": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_native_civilian_female"
-                }
-            },
-            "native_civilian_male": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_native_civilian_male"
-                }
-            },
-            "native_leader": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_native_leader"
-                }
-            },
-            "native_priest": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_native_priest"
-                }
-            },
-            "native_soldier": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_native_soldier"
-                }
-            },
-            "native_trader": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_native_trader"
-                }
-            },
-            "pirate_archer": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_pirate_archer"
-                }
-            },
-            "pirate_bard": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_pirate_bard"
-                }
-            },
-            "pirate_civilian_female": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_pirate_civilian_female"
-                }
-            },
-            "pirate_civilian_male": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_pirate_civilian_male"
-                }
-            },
-            "pirate_leader": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_pirate_leader"
-                }
-            },
-            "pirate_priest": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_pirate_priest"
-                }
-            },
-            "pirate_soldier": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_pirate_soldier"
-                }
-            },
-            "pirate_trader": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_pirate_trader"
+                    "layer3": "ancientwarfare:items/npc/spawner_miner"
                 }
             },
             "priest": {
                 "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_priest"
+                    "layer3": "ancientwarfare:items/npc/spawner_priest"
                 }
             },
             "researcher": {
                 "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_researcher"
+                    "layer3": "ancientwarfare:items/npc/spawner_researcher"
                 }
             },
             "trader": {
                 "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_trader"
+                    "layer3": "ancientwarfare:items/npc/spawner_trader"
                 }
             },
-            "viking_archer": {
+            "soldier": {
                 "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_viking_archer"
+                    "layer3": "ancientwarfare:items/npc/spawner_soldier"
                 }
             },
-            "viking_bard": {
+            "civilian_female": {
                 "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_viking_bard"
+                    "layer3": "ancientwarfare:items/npc/spawner_civilian_female"
                 }
             },
-            "viking_civilian_female": {
+            "civilian_male": {
                 "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_viking_civilian_female"
-                }
-            },
-            "viking_civilian_male": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_viking_civilian_male"
-                }
-            },
-            "viking_leader": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_viking_leader"
-                }
-            },
-            "viking_priest": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_viking_priest"
-                }
-            },
-            "viking_soldier": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_viking_soldier"
-                }
-            },
-            "viking_trader": {
-                "textures": {
-                    "layer0": "ancientwarfare:items/npc/spawner_viking_trader"
+                    "layer3": "ancientwarfare:items/npc/spawner_civilian_male"
                 }
             }
         }

@@ -10,9 +10,12 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.model.IModelState;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleType;
 
+@SideOnly(Side.CLIENT)
 public class RenderItemSpawner implements IItemRenderer {
 	@Override
 	public void renderItem(ItemStack stack, ItemCameraTransforms.TransformType transformType) {

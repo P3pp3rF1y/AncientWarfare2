@@ -9,6 +9,8 @@ import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.ClientProxyBase;
@@ -20,6 +22,7 @@ import net.shadowmage.ancientwarfare.structure.render.DraftingStationRenderer;
 import net.shadowmage.ancientwarfare.structure.render.RenderGateHelper;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
 
+@SideOnly(Side.CLIENT)
 public class ClientProxyStructures extends ClientProxyBase {
 
 	@Override

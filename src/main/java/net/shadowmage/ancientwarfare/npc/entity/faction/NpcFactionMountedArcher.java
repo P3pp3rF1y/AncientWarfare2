@@ -22,13 +22,23 @@ import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRangedAttack;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionRideHorse;
 import net.shadowmage.ancientwarfare.npc.entity.RangeAttackHelper;
 
-public abstract class NpcFactionMountedArcher extends NpcFactionMounted implements IRangedAttackMob {
+public class NpcFactionMountedArcher extends NpcFactionMounted implements IRangedAttackMob {
+	@SuppressWarnings("unused") //used when deserializing
+	public NpcFactionMountedArcher(World world) {
+		super(world);
+		addAI();
+	}
 
-	public NpcFactionMountedArcher(World par1World) {
-		super(par1World);
-		//  this.setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.BOW)); TODO figure out if we need this code back
+	@SuppressWarnings("unused") //used in reflection
+	public NpcFactionMountedArcher(World world, String factionName) {
+		super(world, factionName);
+		addAI();
+	}
+
+	private void addAI() {
+		//noinspection Guava - because dependency on what vanilla does
 		Predicate<Entity> selector = entity -> {
-			//      if(!canEntityBeSeen(entity)){return false;}
+			//noinspection ConstantConditions
 			if (!isHostileTowards(entity)) {
 				return false;
 			}
@@ -42,22 +52,25 @@ public abstract class NpcFactionMountedArcher extends NpcFactionMounted implemen
 			return true;
 		};
 
-		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
-		this.tasks.addTask(0, new NpcAIDoor(this, true));
-		this.tasks.addTask(0, (horseAI = new NpcAIFactionRideHorse(this)));
-		this.tasks.addTask(1, new NpcAIFollowPlayer(this));
-		this.tasks.addTask(2, new NpcAIFactionArcherStayAtHome(this));
-		this.tasks.addTask(3, new NpcAIFactionRangedAttack(this));
-		//  this.tasks.addTask(2, new NpcAIMoveHome(this, 50.f, 5.f, 30.f, 5.f)); TODO figure out if this needs to be uncommented
-		//  this.tasks.addTask(3, new EntityAIArrowAttack(this, 1.0D, 20, 60, 15.0F));
+		tasks.addTask(0, new EntityAISwimming(this));
+		tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
+		tasks.addTask(0, new NpcAIDoor(this, true));
+		tasks.addTask(0, new NpcAIFactionRideHorse<>(this));
+		tasks.addTask(1, new NpcAIFollowPlayer(this));
+		tasks.addTask(2, new NpcAIFactionArcherStayAtHome(this));
+		tasks.addTask(3, new NpcAIFactionRangedAttack(this));
 
-		this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
-		this.tasks.addTask(102, new NpcAIWander(this));
-		this.tasks.addTask(103, new NpcAIWatchClosest(this, EntityLiving.class, 8.0F));
+		tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
+		tasks.addTask(102, new NpcAIWander(this));
+		tasks.addTask(103, new NpcAIWatchClosest(this, EntityLiving.class, 8.0F));
 
-		this.targetTasks.addTask(1, new NpcAIHurt(this));
-		this.targetTasks.addTask(2, new NpcAIAttackNearest(this, selector));
+		targetTasks.addTask(1, new NpcAIHurt(this));
+		targetTasks.addTask(2, new NpcAIAttackNearest(this, selector));
+	}
+
+	@Override
+	public String getNpcType() {
+		return "mounted_archer";
 	}
 
 	@Override

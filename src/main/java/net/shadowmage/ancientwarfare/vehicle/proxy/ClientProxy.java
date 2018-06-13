@@ -2,6 +2,8 @@ package net.shadowmage.ancientwarfare.vehicle.proxy;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.gui.GuiVehicleAmmoSelection;
@@ -14,6 +16,8 @@ import net.shadowmage.ancientwarfare.vehicle.render.RenderOverlay;
 import net.shadowmage.ancientwarfare.vehicle.render.RenderOverlayAdvanced;
 import net.shadowmage.ancientwarfare.vehicle.render.RenderVehicle;
 
+@SuppressWarnings("unused")
+@SideOnly(Side.CLIENT)
 public class ClientProxy extends CommonProxy {
 
 	@Override

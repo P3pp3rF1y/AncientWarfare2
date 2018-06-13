@@ -56,7 +56,7 @@ public class StructureBuilder implements IStructureBuilder {
 
 	public StructureBuilder(World world, StructureTemplate template, EnumFacing face, BlockPos buildKey, StructureBB bb) {
 		this.world = world;
-		biome = world.getBiome(buildKey);
+		biome = world.provider.getBiomeForCoords(buildKey);
 		this.template = template;
 		this.buildFace = face;
 		this.bb = bb;

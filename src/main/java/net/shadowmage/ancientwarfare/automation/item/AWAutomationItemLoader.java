@@ -40,6 +40,7 @@ public class AWAutomationItemLoader {
 		}
 
 		@Override
+		@SideOnly(Side.CLIENT)
 		public void displayAllRelevantItems(NonNullList<ItemStack> list) {
 			super.displayAllRelevantItems(list);
 			Collections.sort(list, sorter);

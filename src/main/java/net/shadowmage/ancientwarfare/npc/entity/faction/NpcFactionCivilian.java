@@ -15,9 +15,17 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 
 public abstract class NpcFactionCivilian extends NpcFaction {
 
-	public NpcFactionCivilian(World par1World) {
-		super(par1World);
+	public NpcFactionCivilian(World world) {
+		super(world);
+		addAI();
+	}
 
+	public NpcFactionCivilian(World world, String factionName) {
+		super(world, factionName);
+		addAI();
+	}
+
+	private void addAI() {
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
 		this.tasks.addTask(0, new NpcAIDoor(this, true));

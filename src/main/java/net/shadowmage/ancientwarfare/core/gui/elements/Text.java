@@ -2,6 +2,8 @@ package net.shadowmage.ancientwarfare.core.gui.elements;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase.ActivationEvent;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.interfaces.IWidgetSelection;
@@ -17,6 +19,7 @@ import java.util.Set;
  *
  * @author Shadowmage
  */
+@SideOnly(Side.CLIENT)
 public class Text extends GuiElement {
 
 	TextValidator textValidator = new TextValidator();

@@ -66,7 +66,7 @@ public class StructureValidatorGround extends StructureValidator {
 
 	@Override
 	public void postGeneration(World world, BlockPos origin, StructureBB bb) {
-		Biome biome = world.getBiome(origin);
+		Biome biome = world.provider.getBiomeForCoords(origin);
 		if (biome != null && biome.getEnableSnow()) {
 			WorldStructureGenerator.sprinkleSnow(world, bb, getBorderSize());
 		}
@@ -83,7 +83,7 @@ public class StructureValidatorGround extends StructureValidator {
 		for (int y = bb.min.getY() + template.yOffset + step; y <= topFilledY; y++) {
 			handleClearAction(world, new BlockPos(x, y, z), template, bb);
 		}
-		Biome biome = world.getBiome(new BlockPos(x, 1, z));
+		Biome biome = world.provider.getBiomeForCoords(new BlockPos(x, 1, z));
 		IBlockState fillBlock = Blocks.GRASS.getDefaultState();
 		if (biome != null && biome.topBlock != null) {
 			fillBlock = biome.topBlock;

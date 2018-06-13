@@ -28,6 +28,7 @@ public class BlockHandCrankedGenerator extends BlockTorqueBase implements IBaker
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return HandCrankedGeneratorRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
 	}
@@ -54,6 +55,7 @@ public class BlockHandCrankedGenerator extends BlockTorqueBase implements IBaker
 
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
 			@Override
+			@SideOnly(Side.CLIENT)
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
 				return HandCrankedGeneratorRenderer.MODEL_LOCATION;
 			}
@@ -61,6 +63,7 @@ public class BlockHandCrankedGenerator extends BlockTorqueBase implements IBaker
 
 		ModelRegistryHelper.register(HandCrankedGeneratorRenderer.MODEL_LOCATION, new CCBakeryModel() {
 			@Override
+			@SideOnly(Side.CLIENT)
 			public TextureAtlasSprite getParticleTexture() {
 				return HandCrankedGeneratorRenderer.INSTANCE.sprite;
 			}
@@ -68,6 +71,7 @@ public class BlockHandCrankedGenerator extends BlockTorqueBase implements IBaker
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IBakery getBakery() {
 		return HandCrankedGeneratorRenderer.INSTANCE;
 	}

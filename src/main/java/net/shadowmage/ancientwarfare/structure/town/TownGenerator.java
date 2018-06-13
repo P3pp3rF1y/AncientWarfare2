@@ -115,6 +115,7 @@ public class TownGenerator {
 		for (int i = 0; i < 10; i++) {
 			int x = minX + rng.nextInt(16);
 			int z = minZ + rng.nextInt(16);
+			pos = new BlockPos(x, y, z);
 			if (world.isAirBlock(pos) && world.isAirBlock(pos.up()) && world.isSideSolid(pos.down(), EnumFacing.UP)) {
 				villager.setPosition(x + 0.5d, y, z + 0.5d);
 				world.spawnEntity(villager);

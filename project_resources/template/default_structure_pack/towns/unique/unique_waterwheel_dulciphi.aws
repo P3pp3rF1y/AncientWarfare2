@@ -540,7 +540,7 @@ rule:
 plugin=awTorqueTile
 number=30
 data:
-JSON:{{"val":{"orientation":{"val":"2","id":"pi"},"teData":{"val":{"id":{"val":"waterwheel_generator_tile","id":"ss"},"orientation":{"val":"3","id":"pi"},"clientEnergy":{"val":"100","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"-7","id":"pi"},"y":{"val":"85","id":"pi"},"x":{"val":"56","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:waterwheel_generator","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
+JSON:{{"val":{"orientation":{"val":"2","id":"pi"},"teData":{"val":{"id":{"val":"ancientwarfareautomation:waterwheel_generator_tile","id":"ss"},"orientation":{"val":"3","id":"pi"},"clientEnergy":{"val":"100","id":"pi"},"torqueEnergy":{"val":"32.0","id":"pd"},"z":{"val":"-7","id":"pi"},"y":{"val":"85","id":"pi"},"x":{"val":"56","id":"pi"}},"id":"ct"},"blockId":{"val":"AncientWarfareAutomation:waterwheel_generator","id":"ss"},"meta":{"val":"0","id":"pi"}},"id":"ct"}}
 :enddata
 :endrule
 

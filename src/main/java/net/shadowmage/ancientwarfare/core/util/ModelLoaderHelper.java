@@ -6,10 +6,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 import java.util.function.Function;
 
+@SideOnly(Side.CLIENT)
 public class ModelLoaderHelper {
 
 	private ModelLoaderHelper() {

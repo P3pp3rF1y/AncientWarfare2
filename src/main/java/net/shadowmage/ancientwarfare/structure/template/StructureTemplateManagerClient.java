@@ -5,6 +5,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.Constants;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.TextureImageBased;
@@ -19,6 +21,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
+@SideOnly(Side.CLIENT)
 public class StructureTemplateManagerClient {
 
 	private HashMap<String, ResourceLocation> clientTemplateImages = new HashMap<>();

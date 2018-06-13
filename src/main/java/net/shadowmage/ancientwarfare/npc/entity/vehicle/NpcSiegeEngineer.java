@@ -55,11 +55,12 @@ public class NpcSiegeEngineer extends NpcPlayerOwned implements IVehicleUser {
 	}
 
 	@Override
-
 	public void setAttackTarget(@Nullable EntityLivingBase entity) {
 		super.setAttackTarget(entity);
 		if (entity != null) {
 			target = new EntityTarget(entity);
+		} else {
+			resetTarget();
 		}
 	}
 
@@ -107,7 +108,7 @@ public class NpcSiegeEngineer extends NpcPlayerOwned implements IVehicleUser {
 
 	@Override
 	public String getNpcType() {
-		return "siege.engineer";
+		return "siege_engineer";
 	}
 
 	@Override

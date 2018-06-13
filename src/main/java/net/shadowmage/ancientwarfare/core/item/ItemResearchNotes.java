@@ -14,6 +14,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 
@@ -31,6 +33,7 @@ public class ItemResearchNotes extends ItemBaseCore {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flagIn) {
 		NBTTagCompound tag = stack.getTagCompound();
 		String researchName = "corrupt_item";
@@ -91,12 +94,12 @@ public class ItemResearchNotes extends ItemBaseCore {
 				boolean known = ResearchTracker.INSTANCE.hasPlayerCompleted(player.world, player.getName(), goal.getId());
 				if (!known) {
 					if (ResearchTracker.INSTANCE.addResearchFromNotes(player.world, player.getName(), goal.getId())) {
-						player.sendMessage(new TextComponentTranslation("guistrings.research.learned_from_item", I18n.format(name)));
+						player.sendMessage(new TextComponentTranslation("guistrings.research.learned_from_item", net.minecraft.util.text.translation.I18n.translateToLocal(name)));
 						stack.shrink(1);
 					}
 				} else {
 					if (ResearchTracker.INSTANCE.addProgressFromNotes(player.world, player.getName(), goal.getId())) {
-						player.sendMessage(new TextComponentTranslation("guistrings.research.added_progress", I18n.format(name)));
+						player.sendMessage(new TextComponentTranslation("guistrings.research.added_progress", net.minecraft.util.text.translation.I18n.translateToLocal(name)));
 						stack.shrink(1);
 					}
 				}

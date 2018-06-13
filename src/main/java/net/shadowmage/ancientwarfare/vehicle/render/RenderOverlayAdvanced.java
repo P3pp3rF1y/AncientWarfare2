@@ -8,6 +8,8 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.RenderTools;
 import net.shadowmage.ancientwarfare.core.util.Trig;
 import net.shadowmage.ancientwarfare.vehicle.config.AWVehicleStatics;
@@ -17,6 +19,7 @@ import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoHwachaRocket;
 import net.shadowmage.ancientwarfare.vehicle.registry.VehicleRegistry;
 import org.lwjgl.opengl.GL11;
 
+@SideOnly(Side.CLIENT)
 public class RenderOverlayAdvanced {
 
 	@SubscribeEvent

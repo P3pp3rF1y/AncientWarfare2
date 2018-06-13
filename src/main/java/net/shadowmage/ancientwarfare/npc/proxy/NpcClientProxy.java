@@ -13,10 +13,13 @@ import net.minecraftforge.fml.client.config.DummyConfigElement.DummyCategoryElem
 import net.minecraftforge.fml.client.config.IConfigElement;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.config.ConfigManager;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
 import net.shadowmage.ancientwarfare.core.util.TextureImageBased;
+import net.shadowmage.ancientwarfare.npc.client.NPCItemColors;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.gui.GuiCombatOrder;
@@ -46,6 +49,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+@SideOnly(Side.CLIENT)
 public class NpcClientProxy extends NpcCommonProxy {
 
 	private Set<IClientRegistrar> clientRegistrars = Sets.newHashSet();
@@ -91,6 +95,13 @@ public class NpcClientProxy extends NpcCommonProxy {
 		MinecraftForge.EVENT_BUS.register(RenderCommandOverlay.INSTANCE);//register block/entity highlight renderer
 
 		registerClientOptions();
+	}
+
+	@Override
+	public void init() {
+		super.init();
+
+		NPCItemColors.init();
 	}
 
 	private void registerClientOptions() {

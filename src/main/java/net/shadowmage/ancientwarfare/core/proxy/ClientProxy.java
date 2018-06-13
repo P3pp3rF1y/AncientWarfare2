@@ -4,6 +4,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.input.InputHandler;
@@ -18,6 +20,7 @@ import org.lwjgl.opengl.DisplayMode;
  *
  * @author Shadowmage
  */
+@SideOnly(Side.CLIENT)
 public class ClientProxy extends ClientProxyBase {
 
 	@Override

@@ -28,6 +28,7 @@ public class BlockStirlingGenerator extends BlockTorqueGenerator implements IBak
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return StirlingGeneratorRenderer.INSTANCE.handleState((IExtendedBlockState) state, world, pos);
 	}
@@ -38,6 +39,7 @@ public class BlockStirlingGenerator extends BlockTorqueGenerator implements IBak
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public IBakery getBakery() {
 		return StirlingGeneratorRenderer.INSTANCE;
 	}
@@ -51,6 +53,7 @@ public class BlockStirlingGenerator extends BlockTorqueGenerator implements IBak
 
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
 			@Override
+			@SideOnly(Side.CLIENT)
 			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
 				return StirlingGeneratorRenderer.MODEL_LOCATION;
 			}
@@ -58,6 +61,7 @@ public class BlockStirlingGenerator extends BlockTorqueGenerator implements IBak
 
 		ModelRegistryHelper.register(StirlingGeneratorRenderer.MODEL_LOCATION, new CCBakeryModel() {
 			@Override
+			@SideOnly(Side.CLIENT)
 			public TextureAtlasSprite getParticleTexture() {
 				return StirlingGeneratorRenderer.INSTANCE.sprite;
 			}
