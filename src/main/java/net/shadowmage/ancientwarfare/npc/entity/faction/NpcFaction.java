@@ -65,11 +65,16 @@ public abstract class NpcFaction extends NpcBase {
 
 	@Override
 	public String getName() {
-		String name = I18n.translateToLocal("entity.ancientwarfarenpc." + getFaction() + "." + getNpcFullType() + ".name");
+		String name = I18n.translateToLocal("entity.ancientwarfarenpc." + getNpcFullType() + ".name");
 		if (hasCustomName()) {
 			name = name + " : " + getCustomNameTag();
 		}
 		return name;
+	}
+
+	@Override
+	public String getNpcFullType() {
+		return factionName + "." + super.getNpcFullType();
 	}
 
 	@Override

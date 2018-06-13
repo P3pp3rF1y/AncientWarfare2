@@ -733,7 +733,7 @@ public abstract class NpcBase extends EntityCreature implements IEntityAdditiona
 	 * return the full NPC type for this npc<br>
 	 * returns npcType if subtype is empty, else npcType.npcSubtype
 	 */
-	public final String getNpcFullType() {
+	public String getNpcFullType() {
 		String type = getNpcType();
 		if (type == null || type.isEmpty()) {
 			throw new RuntimeException("Type must not be null or empty:");
