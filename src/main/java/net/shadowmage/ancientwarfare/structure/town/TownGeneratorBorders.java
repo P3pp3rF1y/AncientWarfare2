@@ -106,7 +106,7 @@ public class TownGeneratorBorders {
 	}
 
 	private static IBlockState getFillBlock(World world, int x, int z, boolean surface, IBlockState defaultBlock) {
-		Biome biome = world.getBiome(new BlockPos(x, 1, z));
+		Biome biome = world.provider.getBiomeForCoords(new BlockPos(x, 1, z));
 		if (biome != null) {
 			if (surface && biome.topBlock != null) {
 				return biome.topBlock;
