@@ -33,15 +33,15 @@ public class NpcFactionSiegeEngineer extends NpcFaction implements IVehicleUser 
 	private VehicleBase vehicle = null;
 	private ITarget target = TargetFactory.NONE;
 
+	@SuppressWarnings("unused")
 	public NpcFactionSiegeEngineer(World world) {
 		super(world);
-
 		addAI();
 	}
 
+	@SuppressWarnings("unused")
 	public NpcFactionSiegeEngineer(World world, String factionName) {
 		super(world, factionName);
-
 		addAI();
 	}
 

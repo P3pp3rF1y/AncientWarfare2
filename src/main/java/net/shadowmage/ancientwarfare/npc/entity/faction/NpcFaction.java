@@ -10,7 +10,6 @@ import net.minecraft.pathfinding.PathNavigateGround;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -84,11 +83,7 @@ public abstract class NpcFaction extends NpcBase {
 			NpcFaction npc = (NpcFaction) e;
 			return FactionRegistry.getFaction(getFaction()).isHostileTowards(npc.getFaction());
 		} else {
-			// TODO
-			// This is for forced inclusions, which we don't currently support in new auto-targeting. This
-			// is complicated because reasons. See comments in the AWNPCStatics class for details.
-
-			if (!AncientWarfareNPC.statics.autoTargetting) {
+			if (!AWNPCStatics.autoTargetting) {
 				return NpcDefaultsRegistry.getFactionNpcDefault(this).isTarget(e);
 			}
 		}
@@ -117,9 +112,7 @@ public abstract class NpcFaction extends NpcBase {
 			FactionTracker.INSTANCE.adjustStandingFor(world, player.getName(), getFaction(), -AWNPCStatics.factionLossOnDeath);
 		} else if (damageSource.getTrueSource() instanceof NpcPlayerOwned) {
 			String playerName = ((NpcBase) damageSource.getTrueSource()).getOwner().getName();
-			if (playerName != null) {
-				FactionTracker.INSTANCE.adjustStandingFor(world, playerName, getFaction(), -AWNPCStatics.factionLossOnDeath);
-			}
+			FactionTracker.INSTANCE.adjustStandingFor(world, playerName, getFaction(), -AWNPCStatics.factionLossOnDeath);
 		}
 	}
 

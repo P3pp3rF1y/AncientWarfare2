@@ -23,22 +23,28 @@ public class NpcFactionTrader extends NpcFaction {
 	private FactionTradeList tradeList = new FactionTradeList();
 	private EntityPlayer trader;
 
+	@SuppressWarnings("unused")
 	public NpcFactionTrader(World world) {
 		super(world);
+		addAI();
 	}
 
+	@SuppressWarnings("unused")
 	public NpcFactionTrader(World world, String factionName) {
 		super(world, factionName);
+		addAI();
+	}
 
-		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
-		this.tasks.addTask(0, new NpcAIDoor(this, true));
-		this.tasks.addTask(1, new NpcAIFollowPlayer(this));
-		this.tasks.addTask(2, new NpcAIMoveHome(this, 50F, 5F, 30F, 5F));
+	private void addAI() {
+		tasks.addTask(0, new EntityAISwimming(this));
+		tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
+		tasks.addTask(0, new NpcAIDoor(this, true));
+		tasks.addTask(1, new NpcAIFollowPlayer(this));
+		tasks.addTask(2, new NpcAIMoveHome(this, 50F, 5F, 30F, 5F));
 
-		this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
-		this.tasks.addTask(102, new NpcAIWander(this));
-		this.tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
+		tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
+		tasks.addTask(102, new NpcAIWander(this));
+		tasks.addTask(103, new EntityAIWatchClosest(this, EntityLiving.class, 8.0F));
 	}
 
 	public FactionTradeList getTradeList() {

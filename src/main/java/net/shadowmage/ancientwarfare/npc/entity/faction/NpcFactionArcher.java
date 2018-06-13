@@ -15,6 +15,7 @@ import net.shadowmage.ancientwarfare.npc.ai.NpcAIAttackNearest;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIDoor;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIFollowPlayer;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIHurt;
+import net.shadowmage.ancientwarfare.npc.ai.NpcAIMoveHome;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWander;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAIWatchClosest;
 import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionArcherStayAtHome;
@@ -24,11 +25,18 @@ import net.shadowmage.ancientwarfare.npc.entity.RangeAttackHelper;
 public class NpcFactionArcher extends NpcFaction implements IRangedAttackMob {
 	public NpcFactionArcher(World world) {
 		super(world);
+		addAI();
 	}
 
 	public NpcFactionArcher(World world, String factionName) {
 		super(world, factionName);
+		addAI();
+	}
+
+	private void addAI() {
+		//noinspection Guava
 		Predicate<Entity> selector = entity -> {
+			//noinspection ConstantConditions
 			if (!isHostileTowards(entity)) {
 				return false;
 			}
@@ -42,20 +50,20 @@ public class NpcFactionArcher extends NpcFaction implements IRangedAttackMob {
 			return true;
 		};
 
-		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
-		this.tasks.addTask(0, new NpcAIDoor(this, true));
-		this.tasks.addTask(1, new NpcAIFollowPlayer(this));
-		//  this.tasks.addTask(2, new NpcAIMoveHome(this, 50.f, 5.f, 30.f, 5.f)); TODO why the archer doesn't have move home?
-		this.tasks.addTask(2, new NpcAIFactionArcherStayAtHome(this));
-		this.tasks.addTask(3, new NpcAIFactionRangedAttack(this));
+		tasks.addTask(0, new EntityAISwimming(this));
+		tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
+		tasks.addTask(0, new NpcAIDoor(this, true));
+		tasks.addTask(1, new NpcAIFollowPlayer(this));
+		tasks.addTask(2, new NpcAIMoveHome(this, 50.f, 5.f, 30.f, 5.f));
+		tasks.addTask(2, new NpcAIFactionArcherStayAtHome(this));
+		tasks.addTask(3, new NpcAIFactionRangedAttack(this));
 
-		this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
-		this.tasks.addTask(102, new NpcAIWander(this));
-		this.tasks.addTask(103, new NpcAIWatchClosest(this, EntityLiving.class, 8.0F));
+		tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
+		tasks.addTask(102, new NpcAIWander(this));
+		tasks.addTask(103, new NpcAIWatchClosest(this, EntityLiving.class, 8.0F));
 
-		this.targetTasks.addTask(1, new NpcAIHurt(this));
-		this.targetTasks.addTask(2, new NpcAIAttackNearest(this, selector));
+		targetTasks.addTask(1, new NpcAIHurt(this));
+		targetTasks.addTask(2, new NpcAIAttackNearest(this, selector));
 	}
 
 	@Override

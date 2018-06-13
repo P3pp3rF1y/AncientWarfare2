@@ -16,13 +16,15 @@ import net.shadowmage.ancientwarfare.npc.ai.faction.NpcAIFactionPriest;
 public class NpcFactionPriest extends NpcFaction {
 	public NpcFactionPriest(World world) {
 		super(world);
+		addAI();
 	}
 
 	public NpcFactionPriest(World world, String factionName) {
 		super(world, factionName);
-		//  setItemStackToSlot(EntityEquipmentSlot.MAINHAND, new ItemStack(Items.BOOK));
-		//TODO set in-hand item to...a cross? (or other holy symbol...an ankh?)
+		addAI();
+	}
 
+	private void addAI() {
 		this.tasks.addTask(0, new EntityAISwimming(this));
 		this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
 		this.tasks.addTask(0, new NpcAIDoor(this, true));

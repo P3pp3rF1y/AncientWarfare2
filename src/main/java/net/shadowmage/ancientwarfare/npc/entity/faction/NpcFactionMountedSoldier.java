@@ -20,26 +20,30 @@ public class NpcFactionMountedSoldier extends NpcFactionMounted {
 	@SuppressWarnings("unused") //required for deserialization
 	public NpcFactionMountedSoldier(World world) {
 		super(world);
+		addAI();
 	}
 
 	@SuppressWarnings("unused") //used in reflection
 	public NpcFactionMountedSoldier(World world, String factionName) {
 		super(world, factionName);
+		addAI();
+	}
 
-		this.tasks.addTask(0, new EntityAISwimming(this));
-		this.tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
-		this.tasks.addTask(0, new NpcAIDoor(this, true));
-		this.tasks.addTask(0, new NpcAIFactionRideHorse<>(this));
-		this.tasks.addTask(1, new NpcAIFollowPlayer(this));
-		this.tasks.addTask(2, new NpcAIMoveHome(this, 50F, 5F, 30F, 5F));
-		this.tasks.addTask(3, new NpcAIAttackMeleeLongRange(this));
+	private void addAI() {
+		tasks.addTask(0, new EntityAISwimming(this));
+		tasks.addTask(0, new EntityAIRestrictOpenDoor(this));
+		tasks.addTask(0, new NpcAIDoor(this, true));
+		tasks.addTask(0, new NpcAIFactionRideHorse<>(this));
+		tasks.addTask(1, new NpcAIFollowPlayer(this));
+		tasks.addTask(2, new NpcAIMoveHome(this, 50F, 5F, 30F, 5F));
+		tasks.addTask(3, new NpcAIAttackMeleeLongRange(this));
 
-		this.tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
-		this.tasks.addTask(102, new NpcAIWander(this));
-		this.tasks.addTask(103, new NpcAIWatchClosest(this, EntityLiving.class, 8.0F));
+		tasks.addTask(101, new EntityAIWatchClosest2(this, EntityPlayer.class, 3.0F, 1.0F));
+		tasks.addTask(102, new NpcAIWander(this));
+		tasks.addTask(103, new NpcAIWatchClosest(this, EntityLiving.class, 8.0F));
 
-		this.targetTasks.addTask(1, new NpcAIHurt(this));
-		this.targetTasks.addTask(2, new NpcAIAttackNearest(this, this::isHostileTowards));
+		targetTasks.addTask(1, new NpcAIHurt(this));
+		targetTasks.addTask(2, new NpcAIAttackNearest(this, this::isHostileTowards));
 	}
 
 	@Override
