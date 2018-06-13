@@ -24,6 +24,7 @@ import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.npc.entity.AWNPCEntityLoader;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.npc.registry.FactionDefinition;
 import net.shadowmage.ancientwarfare.npc.registry.FactionRegistry;
 
@@ -41,6 +42,7 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World worldIn, List<String> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(I18n.format("guistrings.npc.spawner.right_click_to_place"));
 	}
@@ -54,7 +56,7 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 			if (!npcSub.isEmpty()) {
 				npcName = npcName + "." + npcSub;
 			}
-			return "entity.AncientWarfareNpc." + (getFaction(stack).map(s -> s + ".").orElse("")) + npcName;
+			return "entity.ancientwarfarenpc." + (getFaction(stack).map(s -> s + ".").orElse("")) + npcName;
 		}
 		return super.getUnlocalizedName(stack);
 	}
@@ -115,7 +117,7 @@ public class ItemNpcSpawner extends ItemBaseNPC {
 	public static ItemStack getSpawnerItemForNpc(NpcBase npc) {
 		String type = npc.getNpcType();
 		String sub = npc.getNpcSubType();
-		@Nonnull ItemStack stack = getStackForNpcType(type, sub);
+		ItemStack stack = npc instanceof NpcFaction ? getStackForNpcType("faction." + type, sub, ((NpcFaction) npc).getFaction()) : getStackForNpcType(type, sub);
 		NBTTagCompound tag = new NBTTagCompound();
 		npc.writeAdditionalItemData(tag);
 		stack.setTagInfo("npcStoredData", tag);
