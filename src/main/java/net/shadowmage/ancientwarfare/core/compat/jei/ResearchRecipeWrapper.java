@@ -31,15 +31,8 @@ public class ResearchRecipeWrapper<T extends ResearchRecipeBase> implements IRec
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-		String research = AWCoreStatics.useResearchSystem ? I18n.format(ResearchRegistry.getResearch(recipe.getNeededResearch()).getName()) : "Research disabled";
+		//noinspection ConstantConditions
+		String research = AWCoreStatics.useResearchSystem ? I18n.format(ResearchRegistry.getResearch(recipe.getNeededResearch()).getUnlocalizedName()) : "Research disabled";
 		minecraft.fontRenderer.drawString(research, 60, 0, 0x444444, false);
-	}
-
-	public int getWidth() {
-		return 3;
-	}
-
-	public int getHeight() {
-		return 3;
 	}
 }

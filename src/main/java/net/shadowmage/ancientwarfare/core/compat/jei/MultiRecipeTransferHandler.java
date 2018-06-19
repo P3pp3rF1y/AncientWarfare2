@@ -6,9 +6,8 @@ import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.recipe.transfer.IRecipeTransferError;
 import mezz.jei.api.recipe.transfer.IRecipeTransferHandler;
 import mezz.jei.api.recipe.transfer.IRecipeTransferHandlerHelper;
-import mezz.jei.config.SessionData;
-import mezz.jei.util.Translator;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
@@ -67,19 +66,14 @@ public class MultiRecipeTransferHandler<C extends Container & ICraftingContainer
 
 		if (AWCoreStatics.useResearchSystem && recipe.getNeededResearch().isPresent()) {
 			if (container.getCraftingMemoryContainer().getCrafterName() == null) {
-				String tooltipMessage = Translator.translateToLocal("jei.tooltip.error.recipe.transfer.no.research_book");
+				String tooltipMessage = I18n.format("jei.tooltip.error.recipe.transfer.no.research_book");
 				return handlerHelper.createUserErrorWithTooltip(tooltipMessage);
 			}
 
 			if (!AWCraftingManager.canPlayerCraft(Minecraft.getMinecraft().world, container.getCraftingMemoryContainer().getCrafterName(), recipe.getNeededResearch().get())) {
-				String tooltipMessage = Translator.translateToLocal("jei.tooltip.error.recipe.transfer.missing.research");
+				String tooltipMessage = I18n.format("jei.tooltip.error.recipe.transfer.missing.research");
 				return handlerHelper.createUserErrorWithTooltip(tooltipMessage);
 			}
-		}
-
-		if (!SessionData.isJeiOnServer()) {
-			String tooltipMessage = Translator.translateToLocal("jei.tooltip.error.recipe.transfer.no.server");
-			return handlerHelper.createUserErrorWithTooltip(tooltipMessage);
 		}
 
 		List<Slot> craftingSlots = container.getCraftingMemoryContainer().getCraftingMatrixSlots();
@@ -97,7 +91,7 @@ public class MultiRecipeTransferHandler<C extends Container & ICraftingContainer
 
 		// check if we have enough inventory space to put crafting slots into inventories
 		if (!InventoryTools.insertItems(inventories, craftingMatrixStacks, true).isEmpty()) {
-			String message = Translator.translateToLocal("jei.tooltip.error.recipe.transfer.inventory.full");
+			String message = I18n.format("jei.tooltip.error.recipe.transfer.inventory.full");
 			return handlerHelper.createUserErrorWithTooltip(message);
 		}
 
@@ -106,7 +100,7 @@ public class MultiRecipeTransferHandler<C extends Container & ICraftingContainer
 		}, (a, in) -> addMissingItem(a, in, inputs), false);
 
 		if (!missingItems.isEmpty()) {
-			String message = Translator.translateToLocal("jei.tooltip.error.recipe.transfer.missing");
+			String message = I18n.format("jei.tooltip.error.recipe.transfer.missing");
 			return handlerHelper.createUserErrorForSlots(message, missingItems);
 		}
 
