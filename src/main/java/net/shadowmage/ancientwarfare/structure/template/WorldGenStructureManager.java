@@ -22,10 +22,12 @@
 package net.shadowmage.ancientwarfare.structure.template;
 
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.fml.common.Loader;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.gamedata.AWGameData;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
@@ -73,7 +75,7 @@ public class WorldGenStructureManager {
 			for (String biome : biomes) {
 				if (templatesByBiome.containsKey(biome)) {
 					templatesByBiome.get(biome).add(template);
-				} else {
+				} else if (Loader.isModLoaded((new ResourceLocation(biome)).getResourceDomain())) {
 					AWLog.logError("Could not locate biome: " + biome + " while registering template: " + template.name + " for world generation.");
 				}
 			}
