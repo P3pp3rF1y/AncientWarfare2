@@ -299,4 +299,7 @@ public class TileStructureBuilder extends TileUpdatable implements IWorkSite, IO
 		return 0;
 	}
 
+	public StructureBuilderTicked getBuilder() {
+		return builder;
+	}
 }
