@@ -242,16 +242,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 		scanForAnimals(animals, cowsToBreed, maxCowCount);
 		for (EntityAnimal animal : animals) {
 			if (animal.getGrowingAge() >= 0) {
-				//TODO harder wild life integration
-				// try to get HarderWildlife extended entity properties
-				//                if (ModAccessors.HARDER_WILDLIFE.getMilkable(animal)) {
-				//                    ModAccessors.HARDER_WILDLIFE.doMilking(animal);
-				//                    cowsToMilk++;
-				//                    if (cowsToMilk > maxCowCount) {
-				//                        cowsToMilk = maxCowCount;
-				//                        break;
-				//                    }
-				//                }
+				cowsToMilk++;
 			}
 		}
 	}
@@ -322,7 +313,7 @@ public class WorkSiteAnimalFarm extends TileWorksiteBoundedInventory {
 		if (cowsToMilk > 0) {
 			if (ModAccessors.HARDER_WILDLIFE_LOADED)
 				return true;
-			return world.rand.nextInt(cowsToMilk + getFortune()) > maxCowCount / 2;
+			return world.rand.nextInt(cowsToMilk * 4) > (cowsToMilk * 3);
 		}
 		return false;
 	}
