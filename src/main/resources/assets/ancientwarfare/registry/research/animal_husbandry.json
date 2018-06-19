@@ -1,0 +1,30 @@
+{
+    "type": "research",
+    "name": "animal_husbandry",
+    "time": 200,
+    "dependencies": [
+        "agriculture"
+    ],
+    "resources": [
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "cropWheat",
+            "count": 12
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "leather",
+            "count": 4
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "string",
+            "count": 12
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "torch",
+            "count": 4
+        }
+    ]
+}

@@ -19,6 +19,7 @@ import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.registry.ResearchRegistry;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 import net.shadowmage.ancientwarfare.core.upgrade.WorksiteUpgrade;
@@ -29,6 +30,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class TileResearchStation extends TileOwned implements IWorkSite, ITorqueTile, IInteractableTile, IRotatableTile, ITickable {
@@ -163,10 +165,10 @@ public class TileResearchStation extends TileOwned implements IWorkSite, ITorque
 		if (name == null) {
 			return;
 		}
-		int goal = ResearchTracker.INSTANCE.getCurrentGoal(world, name);
-		boolean started = goal >= 0;
+		Optional<String> goal = ResearchTracker.INSTANCE.getCurrentGoal(world, name);
+		boolean started = goal.isPresent();
 		if (started && storedEnergy >= AWCoreStatics.energyPerResearchUnit) {
-			workTick(name, goal, 1);
+			workTick(name, goal.get(), 1);
 		} else if (!started) {
 			startCheckDelay--;
 			if (startCheckDelay <= 0) {
@@ -221,10 +223,11 @@ public class TileResearchStation extends TileOwned implements IWorkSite, ITorque
 		return storedEnergy < maxEnergyStored;
 	}
 
-	private void workTick(String name, int goal, int tickCount) {
-		ResearchGoal g1 = ResearchGoal.getGoal(goal);
+	private void workTick(String name, String goal, int tickCount) {
+		ResearchGoal g1 = ResearchRegistry.getResearch(goal);
 		int progress = ResearchTracker.INSTANCE.getProgress(world, name);
 		progress += tickCount;
+		//noinspection ConstantConditions
 		if (progress >= g1.getTotalResearchTime()) {
 			ResearchTracker.INSTANCE.finishResearch(world, getCrafterName(), goal);
 			tryStartNextResearch(name);
@@ -235,23 +238,24 @@ public class TileResearchStation extends TileOwned implements IWorkSite, ITorque
 	}
 
 	private void tryStartNextResearch(String name) {
-		List<Integer> queue = ResearchTracker.INSTANCE.getResearchQueueFor(world, name);
+		List<String> queue = ResearchTracker.INSTANCE.getResearchQueueFor(world, name);
 		if (!queue.isEmpty()) {
-			int goalId = queue.get(0);
-			ResearchGoal goalInstance = ResearchGoal.getGoal(goalId);
+			String goalName = queue.get(0);
+			ResearchGoal goalInstance = ResearchRegistry.getResearch(goalName);
 			if (goalInstance == null) {
 				return;
 			}
 			if (goalInstance.tryStart(resourceInventory)) {
-				ResearchTracker.INSTANCE.startResearch(world, name, goalId);
+				ResearchTracker.INSTANCE.startResearch(world, name, goalName);
 			} else if (useAdjacentInventory) {
 				TileEntity t = world.getTileEntity(pos.offset(inventoryDirection));
 				boolean started = false;
 				if (t != null && t.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, inventorySide)) {
+					//noinspection ConstantConditions
 					started = goalInstance.tryStart(t.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, inventorySide));
 				}
 				if (started) {
-					ResearchTracker.INSTANCE.startResearch(world, name, goalId);
+					ResearchTracker.INSTANCE.startResearch(world, name, goalName);
 				}
 			}
 		}

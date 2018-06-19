@@ -16,6 +16,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.shadowmage.ancientwarfare.core.registry.ResearchRegistry;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 
@@ -40,10 +41,9 @@ public class ItemResearchNotes extends ItemBaseCore {
 		boolean known = false;
 		if (tag != null && tag.hasKey("researchName")) {
 			String name = tag.getString("researchName");
-			ResearchGoal goal = ResearchGoal.getGoal(name);
-			if (goal != null && Minecraft.getMinecraft().player != null && world != null) {
-				researchName = I18n.format(name);
-				known = ResearchTracker.INSTANCE.hasPlayerCompleted(world, Minecraft.getMinecraft().player.getName(), goal.getId());
+			if (ResearchRegistry.researchExists(name) && Minecraft.getMinecraft().player != null && world != null) {
+				researchName = I18n.format(ResearchGoal.getUnlocalizedName(name));
+				known = ResearchTracker.INSTANCE.hasPlayerCompleted(world, Minecraft.getMinecraft().player.getName(), name);
 			} else {
 				researchName = "missing_goal_for_id_" + researchName;
 			}
@@ -70,7 +70,7 @@ public class ItemResearchNotes extends ItemBaseCore {
 		}
 		displayCache = NonNullList.create();
 		List<ResearchGoal> goals = new ArrayList<>();
-		goals.addAll(ResearchGoal.getResearchGoals());
+		goals.addAll(ResearchRegistry.getAllResearchGoals());
 		/*
 		 * TODO sort list by ??
          */
@@ -89,16 +89,15 @@ public class ItemResearchNotes extends ItemBaseCore {
 		NBTTagCompound tag = stack.getTagCompound();
 		if (!world.isRemote && tag != null && tag.hasKey("researchName")) {
 			String name = tag.getString("researchName");
-			ResearchGoal goal = ResearchGoal.getGoal(name);
-			if (goal != null) {
-				boolean known = ResearchTracker.INSTANCE.hasPlayerCompleted(player.world, player.getName(), goal.getId());
+			if (ResearchRegistry.researchExists(name)) {
+				boolean known = ResearchTracker.INSTANCE.hasPlayerCompleted(player.world, player.getName(), name);
 				if (!known) {
-					if (ResearchTracker.INSTANCE.addResearchFromNotes(player.world, player.getName(), goal.getId())) {
+					if (ResearchTracker.INSTANCE.addResearchFromNotes(player.world, player.getName(), name)) {
 						player.sendMessage(new TextComponentTranslation("guistrings.research.learned_from_item", net.minecraft.util.text.translation.I18n.translateToLocal(name)));
 						stack.shrink(1);
 					}
 				} else {
-					if (ResearchTracker.INSTANCE.addProgressFromNotes(player.world, player.getName(), goal.getId())) {
+					if (ResearchTracker.INSTANCE.addProgressFromNotes(player.world, player.getName(), name)) {
 						player.sendMessage(new TextComponentTranslation("guistrings.research.added_progress", net.minecraft.util.text.translation.I18n.translateToLocal(name)));
 						stack.shrink(1);
 					}

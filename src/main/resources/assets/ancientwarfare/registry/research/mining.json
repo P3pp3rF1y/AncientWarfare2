@@ -1,0 +1,24 @@
+{
+    "type": "research",
+    "name": "mining",
+    "time": 200,
+    "dependencies": [
+        "engineering"
+    ],
+    "resources": [
+        {
+            "item": "minecraft:iron_pickaxe"
+        },
+        {
+            "item": "minecraft:furnace_minecart"
+        },
+        {
+            "type": "ancientwarfare:item_count",
+            "item": "minecraft:golden_rail",
+            "count": 6
+        },
+        {
+            "item": "minecraft:bucket"
+        }
+    ]
+}

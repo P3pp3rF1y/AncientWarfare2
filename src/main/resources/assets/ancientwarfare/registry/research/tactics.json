@@ -1,0 +1,30 @@
+{
+    "type": "research",
+    "name": "tactics",
+    "time": 200,
+    "dependencies": [
+        "conscription",
+        "command"
+    ],
+    "resources": [
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "paper",
+            "count": 8
+        },
+        {
+            "type": "ancientwarfare:item_count",
+            "item": "minecraft:coal",
+            "data": 1,
+            "count": 4
+        },
+        {
+            "item": "minecraft:book"
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "string",
+            "count": 4
+        }
+    ]
+}

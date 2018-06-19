@@ -4,12 +4,15 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.item.ItemResearchBook;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 import net.shadowmage.ancientwarfare.core.tile.TileResearchStation;
+import net.shadowmage.ancientwarfare.core.util.StreamUtils;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -19,9 +22,9 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
 
 	public boolean useAdjacentInventory;
 	public String researcherName;
-	public int currentGoal = -1;
+	public String currentGoal = "";
 	public int progress = 0;
-	public List<Integer> queuedResearch = new ArrayList<>();
+	public List<String> queuedResearch = new ArrayList<>();
 
 	public ContainerResearchStation(EntityPlayer player, int x, int y, int z) {
 		super(player, x, y, z);
@@ -29,7 +32,7 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
 		useAdjacentInventory = tileEntity.useAdjacentInventory;
 		if (!player.world.isRemote) {
 			if (researcherName != null) {
-				currentGoal = ResearchTracker.INSTANCE.getCurrentGoal(player.world, researcherName);
+				currentGoal = ResearchTracker.INSTANCE.getCurrentGoal(player.world, researcherName).orElse("");
 				progress = ResearchTracker.INSTANCE.getProgress(player.world, researcherName);
 				queuedResearch.addAll(ResearchTracker.INSTANCE.getResearchQueueFor(player.world, researcherName));
 			}
@@ -43,12 +46,12 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
 		};
 		addSlotToContainer(slot);
 
-		int x2, y2, yBase = 8 + 3 * 18 + 10 + 12 + 4 + 10;
+		int yBase = 8 + 3 * 18 + 10 + 12 + 4 + 10;
 		int slotNum = 0;
 		for (int y1 = 0; y1 < 3; y1++) {
-			y2 = y1 * 18 + yBase;
+			int y2 = y1 * 18 + yBase;
 			for (int x1 = 0; x1 < 3; x1++) {
-				x2 = x1 * 18 + 8 + 18;//x1*18 + 8 + 3*18;
+				int x2 = x1 * 18 + 8 + 18;
 				slot = new SlotItemHandler(tileEntity.resourceInventory, slotNum, x2, y2);
 				addSlotToContainer(slot);
 				slotNum++;
@@ -102,14 +105,11 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
 		} else {
 			tag.setBoolean("clearResearcher", true);
 		}
-		tag.setInteger("currentGoal", currentGoal);
+		tag.setString("currentGoal", currentGoal);
+
 		tag.setInteger("progress", progress);
 		if (!queuedResearch.isEmpty()) {
-			int[] queueData = new int[queuedResearch.size()];
-			for (int i = 0; i < queuedResearch.size(); i++) {
-				queueData[i] = queuedResearch.get(i);
-			}
-			tag.setIntArray("queuedResearch", queueData);
+			tag.setTag("queuedResearch", queuedResearch.stream().map(NBTTagString::new).collect(StreamUtils.toNBTTagList));
 		}
 		tag.setBoolean("useAdjacentInventory", useAdjacentInventory);
 		tag.setInteger("inventoryDirection", tileEntity.inventoryDirection.ordinal());
@@ -125,22 +125,19 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
 			researcherName = null;
 		}
 		if (tag.hasKey("currentGoal")) {
-			currentGoal = tag.getInteger("currentGoal");
+			currentGoal = tag.getString("currentGoal");
 		}
 		if (tag.hasKey("progress")) {
 			progress = tag.getInteger("progress");
 		}
 		if (tag.hasKey("queuedResearch")) {
 			queuedResearch.clear();
-			int[] data = tag.getIntArray("queuedResearch");
-			for (int i : data) {
-				queuedResearch.add(i);
-			}
+			tag.getTagList("queuedResearch", Constants.NBT.TAG_STRING).forEach(t -> queuedResearch.add(((NBTTagString) t).getString()));
 		}
 		if (this.researcherName == null) {
 			this.queuedResearch.clear();
 			this.progress = 0;
-			this.currentGoal = -1;
+			this.currentGoal = "";
 		}
 		if (tag.hasKey("useAdjacentInventory")) {
 			this.useAdjacentInventory = tag.getBoolean("useAdjacentInventory");
@@ -171,7 +168,7 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
 		String name = tileEntity.getCrafterName();
 		/*
 		 * synch researcher name
-         */
+		 */
 		if (name == null && researcherName == null) {
 
 		} else if (name == null) {
@@ -184,16 +181,16 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
 			tag = new NBTTagCompound();
 			researcherName = name;
 			tag.setString("researcherName", name);
-			currentGoal = ResearchTracker.INSTANCE.getCurrentGoal(player.world, researcherName);
-			tag.setInteger("currentGoal", currentGoal);
+			currentGoal = ResearchTracker.INSTANCE.getCurrentGoal(player.world, researcherName).orElse("");
+			tag.setString("currentGoal", currentGoal);
 			progress = ResearchTracker.INSTANCE.getProgress(player.world, researcherName);
 			tag.setInteger("progress", progress);
 		} else {
-			int g = ResearchTracker.INSTANCE.getCurrentGoal(player.world, researcherName);
-			if (g != currentGoal) {
+			String g = ResearchTracker.INSTANCE.getCurrentGoal(player.world, researcherName).orElse("");
+			if (!g.equals(currentGoal)) {
 				tag = new NBTTagCompound();
 				currentGoal = g;
-				tag.setInteger("currentGoal", currentGoal);
+				tag.setString("currentGoal", currentGoal);
 			}
 			int p = ResearchTracker.INSTANCE.getProgress(player.world, researcherName);
 			if (p != progress) {
@@ -205,30 +202,26 @@ public class ContainerResearchStation extends ContainerTileBase<TileResearchStat
 			}
 		}
 
-        /*
+		/*
 		 * synch queued research
-         */
+		 */
 		if (researcherName != null) {
-			List<Integer> queue = ResearchTracker.INSTANCE.getResearchQueueFor(player.world, researcherName);
+			List<String> queue = ResearchTracker.INSTANCE.getResearchQueueFor(player.world, researcherName);
 			if (!queue.equals(queuedResearch)) {
 				if (tag == null) {
 					tag = new NBTTagCompound();
 				}
 				queuedResearch.clear();
 				queuedResearch.addAll(queue);
-				int[] queueData = new int[queue.size()];
-				for (int i = 0; i < queue.size(); i++) {
-					queueData[i] = queue.get(i);
-				}
-				tag.setIntArray("queuedResearch", queueData);
+				tag.setTag("queuedResearch", queuedResearch.stream().map(NBTTagString::new).collect(StreamUtils.toNBTTagList));
 			}
 		} else {
 			queuedResearch.clear();
 		}
 
-        /*
+		/*
 		 * synch use-adjacent inventory status
-         */
+		 */
 		if (tileEntity.useAdjacentInventory != useAdjacentInventory) {
 			if (tag == null) {
 				tag = new NBTTagCompound();

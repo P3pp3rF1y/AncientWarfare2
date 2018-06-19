@@ -7,26 +7,26 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 import net.minecraft.world.World;
 import net.minecraftforge.registries.IForgeRegistryEntry;
-import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
+import net.shadowmage.ancientwarfare.core.registry.ResearchRegistry;
 
 import javax.annotation.Nonnull;
 
 public abstract class ResearchRecipeBase extends IForgeRegistryEntry.Impl<ResearchRecipeBase> {
-	private int neededResearch = -1;
-	private ItemStack output = ItemStack.EMPTY;
-	private NonNullList<Ingredient> input = null;
+	private String neededResearch;
+	private ItemStack output;
+	private NonNullList<Ingredient> input;
 
-	public ResearchRecipeBase(String research, NonNullList<Ingredient> input, ItemStack output) {
+	ResearchRecipeBase(String research, NonNullList<Ingredient> input, ItemStack output) {
 		addResearch(research);
 		this.input = input;
 		this.output = output;
 	}
 
-	public int getNeededResearch() {
+	public String getNeededResearch() {
 		return neededResearch;
 	}
 
-	public ItemStack getCraftingResult(InventoryCrafting inv) {
+	public ItemStack getCraftingResult() {
 		return output.copy();
 	}
 
@@ -39,14 +39,11 @@ public abstract class ResearchRecipeBase extends IForgeRegistryEntry.Impl<Resear
 	}
 
 	private void addResearch(String name) {
-		ResearchGoal g;
-		name = name.startsWith("research.") ? name : "research." + name;
-		g = ResearchGoal.getGoal(name);
-		if (g != null) {
-			neededResearch = g.getId();
-		} else {
+		if (!ResearchRegistry.researchExists(name)) {
 			throw new IllegalArgumentException("COULD NOT LOCATE RESEARCH GOAL FOR NAME: " + name);
 		}
+
+		neededResearch = name;
 	}
 
 	abstract boolean matches(@Nonnull InventoryCrafting inv, @Nonnull World world);

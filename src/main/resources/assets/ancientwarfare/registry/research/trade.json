@@ -1,0 +1,31 @@
+{
+    "type": "research",
+    "name": "trade",
+    "time": 200,
+    "dependencies": [
+        "fishing",
+        "command"
+    ],
+    "resources": [
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "ingotGold",
+            "count": 8
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "gemDiamond",
+            "count": 3
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "gemEmerald",
+            "count": 1
+        },
+        {
+            "type": "ancientwarfare:item_count",
+            "item": "minecraft:book",
+            "count": 4
+        }
+    ]
+}

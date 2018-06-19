@@ -1,0 +1,30 @@
+{
+    "type": "research",
+    "name": "machinery",
+    "time": 200,
+    "dependencies": [
+        "theory_of_gravity"
+    ],
+    "resources": [
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "ingotSteel",
+            "count": 10
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "ingotIron",
+            "count": 8
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "gearIron",
+            "count": 3
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "bearingIron",
+            "count": 2
+        }
+    ]
+}

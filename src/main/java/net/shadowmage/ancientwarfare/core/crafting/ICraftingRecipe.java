@@ -5,6 +5,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
 
+import java.util.Optional;
+
 public interface ICraftingRecipe {
 	boolean isValid();
 
@@ -18,7 +20,7 @@ public interface ICraftingRecipe {
 
 	RecipeResourceLocation getRegistryName();
 
-	int getNeededResearch();
+	Optional<String> getNeededResearch();
 
 	int getRecipeWidth();
 

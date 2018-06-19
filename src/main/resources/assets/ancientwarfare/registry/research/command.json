@@ -1,0 +1,22 @@
+{
+    "type": "research",
+    "name": "command",
+    "time": 200,
+    "dependencies": [
+        "leadership"
+    ],
+    "resources": [
+        {
+            "item": "minecraft:iron_helmet"
+        },
+        {
+            "item": "minecraft:iron_chestplate"
+        },
+        {
+            "item": "minecraft:iron_leggings"
+        },
+        {
+            "item": "minecraft:iron_boots"
+        }
+    ]
+}

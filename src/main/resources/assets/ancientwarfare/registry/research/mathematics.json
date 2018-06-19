@@ -1,0 +1,29 @@
+{
+    "type": "research",
+    "name": "mathematics",
+    "time": 200,
+    "dependencies": [
+        "engineering"
+    ],
+    "resources": [
+        {
+            "type": "ancientwarfare:item_count",
+            "item": "minecraft:book",
+            "count": 3
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "dustRedstone",
+            "count": 5
+        },
+        {
+            "item": "minecraft:noteblock"
+        },
+        {
+            "type": "ancientwarfare:item_count",
+            "item": "minecraft:coal",
+            "data": 1,
+            "count": 4
+        }
+    ]
+}

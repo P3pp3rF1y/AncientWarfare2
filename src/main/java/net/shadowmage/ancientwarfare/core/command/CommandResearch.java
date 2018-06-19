@@ -6,13 +6,17 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
+import net.shadowmage.ancientwarfare.core.registry.ResearchRegistry;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 
 import javax.annotation.Nullable;
+import java.util.Collections;
 import java.util.List;
 
 public class CommandResearch extends CommandBase {
+
+	private static final String COMMAND_AW_RESEARCH_USAGE = "command.aw.research.usage";
 
 	@Override
 	public int getRequiredPermissionLevel() {
@@ -26,52 +30,52 @@ public class CommandResearch extends CommandBase {
 
 	@Override
 	public String getUsage(ICommandSender sender) {
-		return "command.aw.research.usage";
+		return COMMAND_AW_RESEARCH_USAGE;
 	}
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] commandParts) throws CommandException {
-		if (commandParts == null || commandParts.length < 2) {
-			throw new WrongUsageException("command.aw.research.usage");
+		if (commandParts.length < 2) {
+			throw new WrongUsageException(COMMAND_AW_RESEARCH_USAGE);
 		}
 		if ("add".equals(commandParts[0])) {
 			if (commandParts.length < 3) {
-				throw new WrongUsageException("command.aw.research.usage");
+				throw new WrongUsageException(COMMAND_AW_RESEARCH_USAGE);
 			}
 			String goal = commandParts[2];
-			if (!goal.startsWith("research.")) {
-				goal = "research." + goal;
+			if (!ResearchRegistry.researchExists(goal)) {
+				throw new WrongUsageException(COMMAND_AW_RESEARCH_USAGE);
 			}
-			ResearchGoal rGoal = ResearchGoal.getGoal(goal);
-			if (rGoal == null) {
-				throw new WrongUsageException("command.aw.research.usage");
-			}
-			ResearchTracker.INSTANCE.addResearchFromNotes(sender.getEntityWorld(), commandParts[1], rGoal.getId());
+			ResearchTracker.INSTANCE.addResearchFromNotes(sender.getEntityWorld(), commandParts[1], goal);
 		} else if ("remove".equals(commandParts[0])) {
 			if (commandParts.length < 3) {
-				throw new WrongUsageException("command.aw.research.usage");
+				throw new WrongUsageException(COMMAND_AW_RESEARCH_USAGE);
 			}
 			String goal = commandParts[2];
-			if (!goal.startsWith("research.")) {
-				goal = "research." + goal;
+			if (!ResearchRegistry.researchExists(goal)) {
+				throw new WrongUsageException(COMMAND_AW_RESEARCH_USAGE);
 			}
-			ResearchGoal rGoal = ResearchGoal.getGoal(goal);
-			if (rGoal == null) {
-				throw new WrongUsageException("command.aw.research.usage");
-			}
-			ResearchTracker.INSTANCE.removeResearch(sender.getEntityWorld(), commandParts[1], rGoal.getId());
+			ResearchTracker.INSTANCE.removeResearch(sender.getEntityWorld(), commandParts[1], goal);
 		} else if ("fill".equals(commandParts[0])) {
 			ResearchTracker.INSTANCE.fillResearch(sender.getEntityWorld(), commandParts[1]);
 		} else if ("clear".equals(commandParts[0])) {
 			ResearchTracker.INSTANCE.clearResearch(sender.getEntityWorld(), commandParts[1]);
 		} else {
-			throw new WrongUsageException("command.aw.research.usage");
+			throw new WrongUsageException(COMMAND_AW_RESEARCH_USAGE);
 		}
 	}
 
 	@Override
 	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] text, @Nullable BlockPos targetPos) {
-		return text.length == 1 ? getListOfStringsMatchingLastWord(text, "add", "remove", "fill", "clear") : text.length == 2 ? getListOfStringsMatchingLastWord(text, server.getOnlinePlayerNames()) : null;
+		if (text.length == 1) {
+			return getListOfStringsMatchingLastWord(text, "add", "remove", "fill", "clear");
+		} else if (text.length == 2) {
+			return getListOfStringsMatchingLastWord(text, server.getOnlinePlayerNames());
+		} else if (text.length == 3 && (text[0].equals("add") || text[0].equals("remove"))) {
+			return getListOfStringsMatchingLastWord(text, ResearchRegistry.getAllResearchGoals().stream().map(ResearchGoal::getName).toArray(String[]::new));
+		}
+
+		return Collections.emptyList();
 	}
 
 	@Override

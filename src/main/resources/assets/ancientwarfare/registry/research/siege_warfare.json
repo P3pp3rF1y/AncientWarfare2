@@ -1,0 +1,30 @@
+{
+    "type": "research",
+    "name": "siege_warfare",
+    "time": 200,
+    "dependencies": [
+        "tactics"
+    ],
+    "resources": [
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "plankWood",
+            "count": 12
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "ingotIron",
+            "count": 10
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "string",
+            "count": 12
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "paper",
+            "count": 6
+        }
+    ]
+}

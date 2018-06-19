@@ -2,37 +2,40 @@ package net.shadowmage.ancientwarfare.core.network;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.PacketBuffer;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
-import net.shadowmage.ancientwarfare.core.util.StringTools;
 
 public class PacketResearchStart extends PacketBase {
 
-	String playerName;
-	int toAdd;
-	boolean start;
+	private String playerName;
+	private String toAdd;
+	private boolean start;
 
-	public PacketResearchStart(String playerName, int toAdd, boolean start) {
+	public PacketResearchStart(String playerName, String toAdd, boolean start) {
 		this.playerName = playerName;
 		this.toAdd = toAdd;
 		this.start = start;
 	}
 
+	@SuppressWarnings("unused")
 	public PacketResearchStart() {
 
 	}
 
 	@Override
 	protected void writeToStream(ByteBuf data) {
-		data.writeInt(toAdd);
-		StringTools.writeString(data, playerName);
-		data.writeBoolean(start);
+		PacketBuffer buffer = new PacketBuffer(data);
+		buffer.writeString(toAdd);
+		buffer.writeString(playerName);
+		buffer.writeBoolean(start);
 	}
 
 	@Override
 	protected void readFromStream(ByteBuf data) {
-		toAdd = data.readInt();
-		playerName = StringTools.readString(data);
-		start = data.readBoolean();
+		PacketBuffer buffer = new PacketBuffer(data);
+		toAdd = buffer.readString(40);
+		playerName = buffer.readString(16);
+		start = buffer.readBoolean();
 	}
 
 	@Override

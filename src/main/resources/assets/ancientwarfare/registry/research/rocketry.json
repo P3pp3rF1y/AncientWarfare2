@@ -1,0 +1,35 @@
+{
+    "type": "research",
+    "name": "rocketry",
+    "time": 200,
+    "dependencies": [
+        "theory_of_gravity"
+    ],
+    "resources": [
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "gunpowder",
+            "count": 12
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "ingotIron",
+            "count": 6
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "stickWood",
+            "count": 18
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "paper",
+            "count": 12
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "torch",
+            "count": 6
+        }
+    ]
+}

@@ -3,8 +3,13 @@ package net.shadowmage.ancientwarfare.core.research;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.StringUtils;
 import net.minecraft.world.storage.WorldSavedData;
 import net.minecraftforge.common.util.Constants;
+import net.shadowmage.ancientwarfare.core.datafixes.ResearchEntryIdNameFixer;
+import net.shadowmage.ancientwarfare.core.registry.ResearchRegistry;
+import net.shadowmage.ancientwarfare.core.util.StreamUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,6 +17,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public class ResearchData extends WorldSavedData {
@@ -64,7 +70,7 @@ public class ResearchData extends WorldSavedData {
 		return tag;
 	}
 
-	public void removeResearchFrom(String playerName, int research) {
+	public void removeResearchFrom(String playerName, String research) {
 		if (playerResearchEntries.containsKey(playerName)) {
 			playerResearchEntries.get(playerName).removeResearch(research);
 			markDirty();
@@ -85,22 +91,41 @@ public class ResearchData extends WorldSavedData {
 		}
 	}
 
-	public Set<Integer> getResearchableGoals(String playerName) {
+	public Set<String> getResearchableGoals(String playerName) {
 		if (playerResearchEntries.containsKey(playerName)) {
 			ResearchEntry entry = playerResearchEntries.get(playerName);
-			return ResearchGoal.getResearchableGoalsFor(entry.completedResearch, entry.queuedResearch, entry.currentResearch);
+			return getResearchableGoalsFor(entry);
 		}
 		return Collections.emptySet();
 	}
 
-	public Set<Integer> getResearchFor(String playerName) {
+	private static Set<String> getResearchableGoalsFor(ResearchEntry researchEntry) {
+		Set<String> totalKnowledge = new HashSet<>();
+		totalKnowledge.addAll(researchEntry.getCompletedResearch());
+		totalKnowledge.addAll(researchEntry.getQueuedResearch());
+		Optional<String> inProgress = researchEntry.getCurrentResearch();
+		inProgress.ifPresent(totalKnowledge::add);
+		Set<String> researchableGoals = new HashSet<>();
+		for (ResearchGoal goal : ResearchRegistry.getAllResearchGoals()) {
+			if (totalKnowledge.contains(goal.getName())) {
+				continue;
+			}
+
+			if (goal.canResearch(totalKnowledge)) {
+				researchableGoals.add(goal.getName());
+			}
+		}
+		return researchableGoals;
+	}
+
+	public Set<String> getResearchFor(String playerName) {
 		if (playerResearchEntries.containsKey(playerName)) {
-			return playerResearchEntries.get(playerName).completedResearch;
+			return playerResearchEntries.get(playerName).getCompletedResearch();
 		}
 		return Collections.emptySet();
 	}
 
-	public void addResearchTo(String playerName, int research) {
+	public void addResearchTo(String playerName, String research) {
 		if (!playerResearchEntries.containsKey(playerName)) {
 			playerResearchEntries.put(playerName, new ResearchEntry());
 		}
@@ -108,15 +133,15 @@ public class ResearchData extends WorldSavedData {
 		markDirty();
 	}
 
-	public boolean hasPlayerCompletedResearch(String playerName, int research) {
+	public boolean hasPlayerCompletedResearch(String playerName, String research) {
 		return playerResearchEntries.containsKey(playerName) && playerResearchEntries.get(playerName).knowsResearch(research);
 	}
 
-	public int getInProgressResearch(String playerName) {
+	public Optional<String> getInProgressResearch(String playerName) {
 		if (playerResearchEntries.containsKey(playerName)) {
-			return playerResearchEntries.get(playerName).getInProgressResearch();
+			return playerResearchEntries.get(playerName).getCurrentResearch();
 		}
-		return -1;
+		return Optional.empty();
 	}
 
 	public int getResearchProgress(String playerName) {
@@ -126,14 +151,14 @@ public class ResearchData extends WorldSavedData {
 		return 0;
 	}
 
-	public void startResearch(String playerName, int goal) {
+	public void startResearch(String playerName, String goal) {
 		if (playerResearchEntries.containsKey(playerName)) {
 			playerResearchEntries.get(playerName).startResearch(goal);
 			markDirty();
 		}
 	}
 
-	public void finishResearch(String playerName, int goal) {
+	public void finishResearch(String playerName, String goal) {
 		if (playerResearchEntries.containsKey(playerName)) {
 			playerResearchEntries.get(playerName).finishResearch(goal);
 			markDirty();
@@ -147,21 +172,21 @@ public class ResearchData extends WorldSavedData {
 		}
 	}
 
-	public void addQueuedResearch(String playerName, int goal) {
+	public void addQueuedResearch(String playerName, String goal) {
 		if (playerResearchEntries.containsKey(playerName)) {
 			playerResearchEntries.get(playerName).addQueuedResearch(goal);
 			markDirty();
 		}
 	}
 
-	public void removeQueuedResearch(String playerName, int goal) {
+	public void removeQueuedResearch(String playerName, String goal) {
 		if (playerResearchEntries.containsKey(playerName)) {
 			playerResearchEntries.get(playerName).removeQueuedResearch(goal);
 			markDirty();
 		}
 	}
 
-	public List<Integer> getQueuedResearch(String playerName) {
+	public List<String> getQueuedResearch(String playerName) {
 		if (playerResearchEntries.containsKey(playerName)) {
 			return playerResearchEntries.get(playerName).getResearchQueue();
 		}
@@ -182,49 +207,65 @@ public class ResearchData extends WorldSavedData {
 		return playerResearchEntries.containsKey(playerName) && playerResearchEntries.get(playerName).hasResearchStarted();
 	}
 
-	private static final class ResearchEntry {
-		private int currentResearch = -1;
+	public static final class ResearchEntry {
+		private String currentResearch = null;
 		private int currentProgress = -1;
-		private Set<Integer> completedResearch = new HashSet<>();
-		private List<Integer> queuedResearch = new ArrayList<>();
+		private Set<String> completedResearch = new HashSet<>();
+		private List<String> queuedResearch = new ArrayList<>();
 
-		private boolean knowsResearch(int num) {
-			return completedResearch.contains(num);
+		private boolean knowsResearch(String researchName) {
+			return getCompletedResearch().contains(researchName);
+		}
+
+		public Optional<String> getCurrentResearch() {
+			return Optional.ofNullable(currentResearch);
+		}
+
+		private void resetCurrentResearch() {
+			currentResearch = null;
+		}
+
+		public void setCurrentResearch(String currentResearch) {
+			if (StringUtils.isNullOrEmpty(currentResearch)) {
+				return;
+			}
+			this.currentResearch = currentResearch;
 		}
 
 		public boolean addProgress(int amount) {
-			if (currentResearch >= 0) {
+			Optional<String> curResearch = getCurrentResearch();
+			if (curResearch.isPresent()) {
 				currentProgress += amount;
-				if (currentProgress >= ResearchGoal.getGoal(currentResearch).getTotalResearchTime()) {
-					finishResearch(currentResearch);
+				if (currentProgress >= ResearchRegistry.getResearch(curResearch.get()).getTotalResearchTime()) {
+					finishResearch(curResearch.get());
 				}
 				return true;
 			}
 			return false;
 		}
 
-		public void finishResearch(int goal) {
-			if (goal == currentResearch) {
-				completedResearch.add(goal);
+		public void finishResearch(String researchName) {
+			if (getCurrentResearch().map(r -> r.equals(researchName)).orElse(false)) {
+				getCompletedResearch().add(researchName);
 				currentProgress = -1;
-				currentResearch = -1;
+				resetCurrentResearch();
 			}
 		}
 
 		/*
 		 * should only be called after a goal from the queue has sucessfully been started -- items used/etc
 		 */
-		public void startResearch(int goal) {
-			if (currentResearch >= 0 || !queuedResearch.contains(Integer.valueOf(goal))) {
+		public void startResearch(String goal) {
+			if (getCurrentResearch().isPresent() || !queuedResearch.contains(goal)) {
 				return;
 			}
-			queuedResearch.remove(Integer.valueOf(goal));
-			currentResearch = goal;
+			queuedResearch.remove(goal);
+			setCurrentResearch(goal);
 			currentProgress = 0;
 		}
 
 		public boolean hasResearchStarted() {
-			return currentProgress >= 0 && currentResearch >= 0;
+			return currentProgress >= 0 && getCurrentResearch().isPresent();
 		}
 
 		private void setResearchProgress(int progress) {
@@ -235,93 +276,76 @@ public class ResearchData extends WorldSavedData {
 			return currentProgress;
 		}
 
-		private int getInProgressResearch() {
-			return this.currentResearch;
-		}
-
-		private void addResearch(int num) {
-			this.completedResearch.add(num);
-			if (this.queuedResearch.contains(Integer.valueOf(num))) {
-				this.queuedResearch.remove(Integer.valueOf(num));
+		private void addResearch(String researchName) {
+			getCompletedResearch().add(researchName);
+			if (queuedResearch.contains(researchName)) {
+				queuedResearch.remove(researchName);
 			}
-			if (this.currentResearch == num) {
-				this.currentResearch = -1;
-				this.currentProgress = -1;
+			if (getCurrentResearch().map(r -> r.equals(researchName)).orElse(false)) {
+				resetCurrentResearch();
+				currentProgress = -1;
 			}
 		}
 
-		private void removeResearch(int num) {
-			this.completedResearch.remove(Integer.valueOf(num));
+		private void removeResearch(String researchName) {
+			this.getCompletedResearch().remove(researchName);
 		}
 
 		private void clearResearch() {
-			this.completedResearch.clear();
-			this.currentProgress = -1;
-			this.currentResearch = -1;
-			this.queuedResearch.clear();
+			getCompletedResearch().clear();
+			currentProgress = -1;
+			resetCurrentResearch();
+			queuedResearch.clear();
 		}
 
 		private void fillResearch() {
-			this.completedResearch.clear();
-			this.currentProgress = -1;
-			this.currentResearch = -1;
-			this.queuedResearch.clear();
-			for (ResearchGoal g : ResearchGoal.getResearchGoals()) {
-				completedResearch.add(g.getId());
+			getCompletedResearch().clear();
+			currentProgress = -1;
+			resetCurrentResearch();
+			queuedResearch.clear();
+			for (ResearchGoal g : ResearchRegistry.getAllResearchGoals()) {
+				getCompletedResearch().add(g.getName());
 			}
 		}
 
-		private void addQueuedResearch(int num) {
-			if (!queuedResearch.contains(Integer.valueOf(num))) {
-				this.queuedResearch.add(num);
+		private void addQueuedResearch(String researchName) {
+			if (!queuedResearch.contains(researchName)) {
+				queuedResearch.add(researchName);
 			}
 		}
 
-		private List<Integer> getResearchQueue() {
+		private List<String> getResearchQueue() {
 			return queuedResearch;
 		}
 
 		private void writeToNBT(NBTTagCompound tag) {
-			tag.setInteger("currentResearch", currentResearch);
+			if (currentResearch != null) {
+				tag.setString("currentResearch", currentResearch);
+			}
 			tag.setInteger("currentProgress", currentProgress);
-			int[] completedGoals = new int[completedResearch.size()];
-			int index = 0;
-			for (Integer i : completedResearch) {
-				completedGoals[index] = i;
-				index++;
-			}
-			tag.setIntArray("completedResearch", completedGoals);
-			int[] queuedGoals = new int[queuedResearch.size()];
-			index = 0;
-			for (Integer i : queuedResearch) {
-				queuedGoals[index] = i;
-				index++;
-			}
-			tag.setIntArray("queuedResearch", queuedGoals);
+			tag.setTag("completedResearch", getCompletedResearch().stream().map(NBTTagString::new).collect(StreamUtils.toNBTTagList));
+			tag.setTag("queuedResearch", queuedResearch.stream().map(NBTTagString::new).collect(StreamUtils.toNBTTagList));
 		}
 
 		private void readFromNBT(NBTTagCompound tag) {
-			currentResearch = tag.getInteger("currentResearch");
-			currentProgress = tag.getInteger("currentProgress");
-			int[] in = tag.getIntArray("completedResearch");
-			for (int k : in) {
-				completedResearch.add(k);
+			NBTTagCompound fixedTag = ResearchEntryIdNameFixer.fix(tag);
+			if (fixedTag.hasKey("currentResearch")) {
+				currentResearch = fixedTag.getString("currentResearch");
 			}
-			in = tag.getIntArray("queuedResearch");
-			for (int k : in) {
-				queuedResearch.add(k);
-			}
+			currentProgress = fixedTag.getInteger("currentProgress");
+			fixedTag.getTagList("completedResearch", Constants.NBT.TAG_STRING).forEach(t -> getCompletedResearch().add(((NBTTagString) t).getString()));
+			fixedTag.getTagList("queuedResearch", Constants.NBT.TAG_STRING).forEach(t -> queuedResearch.add(((NBTTagString) t).getString()));
 		}
 
-		private void removeQueuedResearch(Integer goal) {
+		private void removeQueuedResearch(String goal) {
 			if (!queuedResearch.contains(goal)) {
 				return;
 			}
 
-			List<Integer> goalsToValidate = new ArrayList<>();
+			List<String> goalsToValidate = new ArrayList<>();
 
-			Iterator<Integer> it = queuedResearch.iterator();
-			Integer exam;
+			Iterator<String> it = queuedResearch.iterator();
+			String exam;
 			boolean found = false;
 			while (it.hasNext() && (exam = it.next()) != null) {
 				if (found) {
@@ -333,16 +357,15 @@ public class ResearchData extends WorldSavedData {
 				}
 			}
 
-			Set<Integer> totalResearch = new HashSet<>();
-			totalResearch.addAll(completedResearch);
+			Set<String> totalResearch = new HashSet<>();
+			totalResearch.addAll(getCompletedResearch());
 			totalResearch.addAll(queuedResearch);
-			if (currentResearch >= 0) {
-				totalResearch.add(currentResearch);
-			}
+			Optional<String> currentResearch = getCurrentResearch();
+			currentResearch.ifPresent(totalResearch::add);
 
 			ResearchGoal g;
-			for (Integer g1 : goalsToValidate) {
-				g = ResearchGoal.getGoal(g1);
+			for (String g1 : goalsToValidate) {
+				g = ResearchRegistry.getResearch(g1);
 				if (g != null && g.canResearch(totalResearch)) {
 					totalResearch.add(g1);
 					queuedResearch.add(g1);
@@ -350,6 +373,13 @@ public class ResearchData extends WorldSavedData {
 			}
 		}
 
+		public Set<String> getCompletedResearch() {
+			return completedResearch;
+		}
+
+		public List<String> getQueuedResearch() {
+			return queuedResearch;
+		}
 	}
 
 }

@@ -97,7 +97,7 @@ public class ShapedResearchRecipe extends ResearchRecipeBase {
 
 		@Override
 		public ItemStack getCraftingResult(InventoryCrafting inv) {
-			return recipe.getCraftingResult(inv);
+			return recipe.getCraftingResult();
 		}
 
 		@Override

@@ -9,6 +9,8 @@ import net.shadowmage.ancientwarfare.core.crafting.RecipeResourceLocation;
 import net.shadowmage.ancientwarfare.core.crafting.ResearchRecipeBase;
 import net.shadowmage.ancientwarfare.core.crafting.ShapedResearchRecipe;
 
+import java.util.Optional;
+
 public class ResearchCraftingWrapper implements ICraftingRecipe {
 	private static final NonNullList<ItemStack> EMPTY_STACK_LIST = NonNullList.withSize(9, ItemStack.EMPTY);
 	private final ResearchRecipeBase recipe;
@@ -34,7 +36,7 @@ public class ResearchCraftingWrapper implements ICraftingRecipe {
 
 	@Override
 	public ItemStack getCraftingResult(InventoryCrafting inv) {
-		return recipe.getCraftingResult(inv);
+		return recipe.getCraftingResult();
 	}
 
 	@Override
@@ -53,8 +55,8 @@ public class ResearchCraftingWrapper implements ICraftingRecipe {
 	}
 
 	@Override
-	public int getNeededResearch() {
-		return recipe.getNeededResearch();
+	public Optional<String> getNeededResearch() {
+		return Optional.of(recipe.getNeededResearch());
 	}
 
 	@Override

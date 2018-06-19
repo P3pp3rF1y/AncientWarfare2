@@ -1,0 +1,31 @@
+{
+    "type": "research",
+    "name": "engineering",
+    "time": 200,
+    "dependencies": [
+        "invention"
+    ],
+    "resources": [
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "paper",
+            "count": 20
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "stickWood",
+            "count": 12
+        },
+        {
+            "type": "ancientwarfare:item_count",
+            "item": "minecraft:coal",
+            "data": 1,
+            "count": 4
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "torch",
+            "count": 4
+        }
+    ]
+}

@@ -7,6 +7,8 @@ import net.minecraft.util.NonNullList;
 import net.shadowmage.ancientwarfare.core.crafting.ICraftingRecipe;
 import net.shadowmage.ancientwarfare.core.crafting.RecipeResourceLocation;
 
+import java.util.Optional;
+
 public class NoRecipeWrapper implements ICraftingRecipe {
 	public static final NoRecipeWrapper INSTANCE = new NoRecipeWrapper();
 
@@ -44,8 +46,8 @@ public class NoRecipeWrapper implements ICraftingRecipe {
 	}
 
 	@Override
-	public int getNeededResearch() {
-		return -1;
+	public Optional<String> getNeededResearch() {
+		return Optional.empty();
 	}
 
 	@Override

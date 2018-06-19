@@ -1,0 +1,30 @@
+{
+    "type": "research",
+    "name": "chemistry",
+    "time": 200,
+    "dependencies": [
+        "mining"
+    ],
+    "resources": [
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "dustRedstone",
+            "count": 32
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "dyeBlue",
+            "count": 16
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "ingotGold",
+            "count": 2
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "netherrack",
+            "count": 8
+        }
+    ]
+}

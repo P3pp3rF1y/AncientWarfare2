@@ -1,0 +1,31 @@
+{
+    "type": "research",
+    "name": "advanced_siege_warfare",
+    "time": 200,
+    "dependencies": [
+        "siege_warfare",
+        "machinery"
+    ],
+    "resources": [
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "ingotSteel",
+            "count": 8
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "paper",
+            "count": 12
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "plankWood",
+            "count": 16
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "string",
+            "count": 12
+        }
+    ]
+}

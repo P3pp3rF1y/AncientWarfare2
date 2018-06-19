@@ -16,6 +16,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.ProgressBar;
 import net.shadowmage.ancientwarfare.core.gui.elements.Tooltip;
+import net.shadowmage.ancientwarfare.core.registry.ResearchRegistry;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import org.lwjgl.input.Mouse;
@@ -44,9 +45,9 @@ public class GuiResearchStation extends GuiContainerBase<ContainerResearchStatio
 		addGuiElement(researcherLabel);
 
 		name = "guistrings.research.no_research";
-		final int goalNumber = getContainer().currentGoal;
-		if (goalNumber >= 0) {
-			ResearchGoal g = ResearchGoal.getGoal(goalNumber);
+		String researchName = getContainer().currentGoal;
+		if (!researchName.equals("")) {
+			ResearchGoal g = ResearchRegistry.getResearch(researchName);
 			if (g != null) {
 				name = g.getName();
 			}
@@ -137,12 +138,12 @@ public class GuiResearchStation extends GuiContainerBase<ContainerResearchStatio
 		}
 
 		name = "guistrings.research.no_research";
-		int goalNumber = getContainer().currentGoal;
+		String researchName = getContainer().currentGoal;
 		float progress = 0.f;
-		if (goalNumber >= 0) {
-			ResearchGoal g = ResearchGoal.getGoal(goalNumber);
+		if (!researchName.equals("")) {
+			ResearchGoal g = ResearchRegistry.getResearch(researchName);
 			if (g != null) {
-				name = g.getName();
+				name = g.getUnlocalizedName();
 
 				float total = g.getTotalResearchTime();
 				float time = getContainer().progress;
@@ -153,13 +154,13 @@ public class GuiResearchStation extends GuiContainerBase<ContainerResearchStatio
 			}
 			cleanLayout();
 		} else {
-			List<Integer> queue = getContainer().queuedResearch;
+			List<String> queue = getContainer().queuedResearch;
 			if (!queue.isEmpty()) {
-				int g1 = queue.get(0);
-				ResearchGoal g = ResearchGoal.getGoal(g1);
+				String g1 = queue.get(0);
+				ResearchGoal g = ResearchRegistry.getResearch(g1);
 				if (g != null) {
-					name = g.getName();
-					NonNullList<ItemStack> resources = g.getResources();
+					name = g.getUnlocalizedName();
+					NonNullList<ItemStack> resources = g.getResourcesForDisplay();
 					for (int i = 0; i < layoutSlots.length; i++) {
 						if (i >= resources.size()) {
 							layoutSlots[i].setItem(ItemStack.EMPTY);

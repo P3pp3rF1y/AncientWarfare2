@@ -111,8 +111,8 @@ public class AWCraftingManager {
 		return recipes;
 	}
 
-	public static boolean canPlayerCraft(World world, String playerName, int research) {
-		return research == -1 || ResearchTracker.INSTANCE.hasPlayerCompleted(world, playerName, research);
+	public static boolean canPlayerCraft(World world, String playerName, String research) {
+		return ResearchTracker.INSTANCE.hasPlayerCompleted(world, playerName, research);
 	}
 
 	private static boolean canPlayerCraft(ResearchRecipeBase recipe, World world, String playerName) {
@@ -122,7 +122,7 @@ public class AWCraftingManager {
 	public static void addRecipe(ResearchRecipeBase recipe, boolean checkForExistence) {
 		Item item = recipe.getRecipeOutput().getItem();
 		if (AWCoreStatics.isItemCraftable(item)) {
-			if ((recipe.getNeededResearch() != -1 && AWCoreStatics.isItemResearcheable(item) && AWCoreStatics.useResearchSystem) || hasCountIngredient(recipe)) {
+			if ((AWCoreStatics.isItemResearcheable(item) && AWCoreStatics.useResearchSystem) || hasCountIngredient(recipe)) {
 				if (!checkForExistence || !RESEARCH_RECIPES.containsKey(recipe.getRegistryName())) {
 					RESEARCH_RECIPES.register(recipe);
 				}
@@ -150,13 +150,16 @@ public class AWCraftingManager {
 
 	public static void loadRecipes() {
 		ModContainer awModContainer = Loader.instance().activeModContainer();
-		CraftingHelper.register(new ResourceLocation(AncientWarfareCore.modID, "item_count"), (IIngredientFactory) (c, j) -> new IngredientCount(CraftingHelper.getItemStack(j, c)));
-		CraftingHelper.register(new ResourceLocation(AncientWarfareCore.modID, "ore_dict_count"), (IIngredientFactory) (c, j) -> new IngredientOreCount(JsonUtils.getString(j, "ore"), JsonUtils.getInt(j, "count", 1)));
 
 		loadRecipes(awModContainer, new File(AWCoreStatics.configPathForFiles + "research_recipes"), "");
 		Loader.instance().getActiveModList().forEach(m -> AWCraftingManager.loadRecipes(m, m.getSource(), "assets/" + m.getModId() + "/research_recipes"));
 
 		Loader.instance().setActiveModContainer(awModContainer);
+	}
+
+	public static void registerIngredients() {
+		CraftingHelper.register(new ResourceLocation(AncientWarfareCore.modID, "item_count"), (IIngredientFactory) (c, j) -> new IngredientCount(CraftingHelper.getItemStack(j, c)));
+		CraftingHelper.register(new ResourceLocation(AncientWarfareCore.modID, "ore_dict_count"), (IIngredientFactory) (c, j) -> new IngredientOreCount(JsonUtils.getString(j, "ore"), JsonUtils.getInt(j, "count", 1)));
 	}
 
 	private static void loadRecipes(ModContainer mod, File source, String base) {
@@ -373,7 +376,7 @@ public class AWCraftingManager {
 		return ret;
 	}
 
-	private static ItemStack getIngredientInventoryMatch(IItemHandler clonedResourceInventory, Ingredient ingredient) {
+	public static ItemStack getIngredientInventoryMatch(IItemHandler clonedResourceInventory, Ingredient ingredient) {
 		ItemStack stackFound = ItemStack.EMPTY;
 		int count = ingredient instanceof IIngredientCount ? ((IIngredientCount) ingredient).getCount() : 1;
 		for (int slot = 0; slot < clonedResourceInventory.getSlots(); slot++) {

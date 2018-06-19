@@ -21,7 +21,6 @@ public class AWCoreStatics extends ModConfiguration {
 	 */
 	private static final String worldGenSettings = "04_world_gen_settings";
 	private static final String researchSettings = "06_research";
-	private static final String researchDetailSettings = "07_research_details";
 	private static final String recipeDetailSettings = "08_recipe_details";
 	private static final String recipeResearchDetails = "09_recipe_research_details";
 
@@ -88,15 +87,9 @@ public class AWCoreStatics extends ModConfiguration {
 
 		config.addCustomCategoryComment(researchSettings, "Research Settings Section\n" + "Affect both client and server.  These configs must match for client and server, or\n" + "strange and probably BAD things WILL happen.");
 
-		config.addCustomCategoryComment(researchDetailSettings, "Research Detail Settings Section\n" + "Configure research times per research goal.\n" + "Affect both client and server.  These configs must match for client and server, or\n" + "strange and probably BAD things WILL happen.");
-
 		config.addCustomCategoryComment(recipeDetailSettings, "Recipe Detail Settings Section\n" + "Configure recipe enable/disable per item.\n" + "Disabling the recipe effectively disables that item.\n" + "Affect both client and server.  These configs must match for client and server, or\n" + "strange and probably BAD things WILL happen.");
 
 		config.addCustomCategoryComment(recipeResearchDetails, "Recipe Research Detail Settings Section\n" + "Configure enable/disable research for specific recipes.\n" + "Disabling the research removes all research requirements for that item.\n" + "Affect both client and server.  These configs must match for client and server, or\n" + "strange and probably BAD things WILL happen.");
-	}
-
-	public static int getResearchTimeFor(String goalName, int defaultTime) {
-		return get().get(researchDetailSettings, goalName, defaultTime).getInt();
 	}
 
 	public static boolean isItemCraftable(Item item) {

@@ -26,8 +26,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
+import java.util.Optional;
 
 public class RegistryLoader {
+	private RegistryLoader() {}
+
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
 	private static final Map<String, IRegistryDataParser> parsers = new HashMap<>();
@@ -110,20 +113,23 @@ public class RegistryLoader {
 		loadedRegistries.add(key);
 
 		String shortName = name.substring(name.lastIndexOf('/') + 1);
-		if (!parsers.containsKey(shortName)) {
-			AncientWarfareCore.log.error("No parser defined for file name {}", shortName);
-			return;
-		}
-
-		IRegistryDataParser parser = parsers.get(shortName);
 
 		BufferedReader reader = null;
 		try {
 			reader = Files.newBufferedReader(file);
 			JsonObject json = JsonUtils.fromJson(GSON, reader, JsonObject.class);
-			if (json != null && (!JsonUtils.hasField(json, "mod") || Loader.isModLoaded(JsonUtils.getString(json, "mod")))) {
-				parser.parse(json);
+			Optional<IRegistryDataParser> parser = getParser(shortName, json);
+
+			if (!parser.isPresent()) {
+				AncientWarfareCore.log.error("No parser defined for file name {}", shortName);
+				return;
 			}
+
+			if (json == null || isDisabled(json) || !isModLoaded(json)) {
+				return;
+			}
+
+			parser.get().parse(json);
 		}
 		catch (JsonParseException e) {
 			AncientWarfareCore.log.error("Parsing error loading registry {}", key, e);
@@ -137,5 +143,21 @@ public class RegistryLoader {
 		finally {
 			IOUtils.closeQuietly(reader);
 		}
+	}
+
+	private static boolean isModLoaded(JsonObject json) {
+		return !JsonUtils.hasField(json, "mod") || Loader.isModLoaded(JsonUtils.getString(json, "mod"));
+	}
+
+	private static boolean isDisabled(JsonObject json) {
+		return json.has("disabled") && JsonUtils.getBoolean(json, "disabled");
+	}
+
+	private static Optional<IRegistryDataParser> getParser(String fileName, JsonObject json) {
+		String parserName = fileName;
+		if (json.has("type")) {
+			parserName = JsonUtils.getString(json, "type");
+		}
+		return parsers.containsKey(parserName) ? Optional.of(parsers.get(parserName)) : Optional.empty();
 	}
 }

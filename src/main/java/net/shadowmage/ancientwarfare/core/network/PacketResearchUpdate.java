@@ -2,40 +2,44 @@ package net.shadowmage.ancientwarfare.core.network;
 
 import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.network.PacketBuffer;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
-import net.shadowmage.ancientwarfare.core.util.StringTools;
 
 public class PacketResearchUpdate extends PacketBase {
 
-	String playerName;
-	int toAdd;
-	boolean add, live;
+	private String playerName;
+	private String toAdd;
+	private boolean add;
+	private boolean live;
 
-	public PacketResearchUpdate(String playerName, int toAdd, boolean add, boolean live) {
+	public PacketResearchUpdate(String playerName, String toAdd, boolean add, boolean live) {
 		this.playerName = playerName;
 		this.toAdd = toAdd;
 		this.add = add;
 		this.live = live;
 	}
 
+	@SuppressWarnings("unused")
 	public PacketResearchUpdate() {
 
 	}
 
 	@Override
 	protected void writeToStream(ByteBuf data) {
-		data.writeInt(toAdd);
-		data.writeBoolean(add);
-		data.writeBoolean(live);
-		StringTools.writeString(data, playerName);
+		PacketBuffer buffer = new PacketBuffer(data);
+		buffer.writeString(toAdd);
+		buffer.writeBoolean(add);
+		buffer.writeBoolean(live);
+		buffer.writeString(playerName);
 	}
 
 	@Override
 	protected void readFromStream(ByteBuf data) {
-		toAdd = data.readInt();
-		add = data.readBoolean();
-		live = data.readBoolean();
-		playerName = StringTools.readString(data);
+		PacketBuffer buffer = new PacketBuffer(data);
+		toAdd = buffer.readString(40);
+		add = buffer.readBoolean();
+		live = buffer.readBoolean();
+		playerName = buffer.readString(16);
 	}
 
 	@Override

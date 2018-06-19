@@ -65,13 +65,13 @@ public class MultiRecipeTransferHandler<C extends Container & ICraftingContainer
 		}
 		ICraftingRecipe recipe = AWCraftingManager.findMatchingRecipe(Minecraft.getMinecraft().world, inputs, result);
 
-		if (AWCoreStatics.useResearchSystem && recipe.getNeededResearch() > -1) {
+		if (AWCoreStatics.useResearchSystem && recipe.getNeededResearch().isPresent()) {
 			if (container.getCraftingMemoryContainer().getCrafterName() == null) {
 				String tooltipMessage = Translator.translateToLocal("jei.tooltip.error.recipe.transfer.no.research_book");
 				return handlerHelper.createUserErrorWithTooltip(tooltipMessage);
 			}
 
-			if (!AWCraftingManager.canPlayerCraft(Minecraft.getMinecraft().world, container.getCraftingMemoryContainer().getCrafterName(), recipe.getNeededResearch())) {
+			if (!AWCraftingManager.canPlayerCraft(Minecraft.getMinecraft().world, container.getCraftingMemoryContainer().getCrafterName(), recipe.getNeededResearch().get())) {
 				String tooltipMessage = Translator.translateToLocal("jei.tooltip.error.recipe.transfer.missing.research");
 				return handlerHelper.createUserErrorWithTooltip(tooltipMessage);
 			}
@@ -101,6 +101,7 @@ public class MultiRecipeTransferHandler<C extends Container & ICraftingContainer
 			return handlerHelper.createUserErrorWithTooltip(message);
 		}
 
+		@SuppressWarnings("squid:S00108")
 		List<Integer> missingItems = AWCraftingManager.getRecipeInventoryMatch(recipe, allInventories, ArrayList::new, (a, i, s) -> {
 		}, (a, in) -> addMissingItem(a, in, inputs), false);
 
