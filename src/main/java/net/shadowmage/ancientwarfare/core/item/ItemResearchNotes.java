@@ -20,13 +20,15 @@ import net.shadowmage.ancientwarfare.core.registry.ResearchRegistry;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ItemResearchNotes extends ItemBaseCore {
 
+	private static final String RESEARCH_NAME_TAG = "researchName";
 	private NonNullList<ItemStack> displayCache = null;
 
 	public ItemResearchNotes() {
@@ -39,8 +41,8 @@ public class ItemResearchNotes extends ItemBaseCore {
 		NBTTagCompound tag = stack.getTagCompound();
 		String researchName = "corrupt_item";
 		boolean known = false;
-		if (tag != null && tag.hasKey("researchName")) {
-			String name = tag.getString("researchName");
+		if (tag != null && tag.hasKey(RESEARCH_NAME_TAG)) {
+			String name = tag.getString(RESEARCH_NAME_TAG);
 			if (ResearchRegistry.researchExists(name) && Minecraft.getMinecraft().player != null && world != null) {
 				researchName = I18n.format(ResearchGoal.getUnlocalizedName(name));
 				known = ResearchTracker.INSTANCE.hasPlayerCompleted(world, Minecraft.getMinecraft().player.getName(), name);
@@ -64,20 +66,16 @@ public class ItemResearchNotes extends ItemBaseCore {
 			return;
 		}
 
-		if (displayCache != null && displayCache.size() > 0) {
+		if (displayCache != null && !displayCache.isEmpty()) {
 			items.addAll(displayCache);
 			return;
 		}
 		displayCache = NonNullList.create();
-		List<ResearchGoal> goals = new ArrayList<>();
-		goals.addAll(ResearchRegistry.getAllResearchGoals());
-		/*
-		 * TODO sort list by ??
-         */
-		@Nonnull ItemStack stack;
-		for (ResearchGoal goal : goals) {
-			stack = new ItemStack(this);
-			stack.setTagInfo("researchName", new NBTTagString(goal.getName()));
+
+		for (ResearchGoal goal : ResearchRegistry.getAllResearchGoals().stream().sorted(Comparator.comparing(ResearchGoal::getName))
+				.collect(Collectors.toCollection(LinkedHashSet::new))) {
+			ItemStack stack = new ItemStack(this);
+			stack.setTagInfo(RESEARCH_NAME_TAG, new NBTTagString(goal.getName()));
 			displayCache.add(stack);
 			items.add(stack);
 		}
@@ -87,8 +85,8 @@ public class ItemResearchNotes extends ItemBaseCore {
 	public ActionResult<ItemStack> onItemRightClick(World world, EntityPlayer player, EnumHand hand) {
 		ItemStack stack = player.getHeldItem(hand);
 		NBTTagCompound tag = stack.getTagCompound();
-		if (!world.isRemote && tag != null && tag.hasKey("researchName")) {
-			String name = tag.getString("researchName");
+		if (!world.isRemote && tag != null && tag.hasKey(RESEARCH_NAME_TAG)) {
+			String name = tag.getString(RESEARCH_NAME_TAG);
 			if (ResearchRegistry.researchExists(name)) {
 				boolean known = ResearchTracker.INSTANCE.hasPlayerCompleted(player.world, player.getName(), name);
 				if (!known) {
@@ -106,5 +104,4 @@ public class ItemResearchNotes extends ItemBaseCore {
 		}
 		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
 	}
-
 }
