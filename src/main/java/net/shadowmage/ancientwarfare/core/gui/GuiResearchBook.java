@@ -19,9 +19,12 @@ import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class GuiResearchBook extends GuiContainerBase {
 
@@ -72,7 +75,8 @@ public class GuiResearchBook extends GuiContainerBase {
 	private void addRecipeModeControls() {
 		int totalHeight = 8;
 
-		for (ResearchRecipeBase recipe : AWCraftingManager.getRecipes()) {
+		for (ResearchRecipeBase recipe : AWCraftingManager.getRecipes().stream().sorted(Comparator.comparing(r -> r.getRecipeOutput().getDisplayName()))
+				.collect(Collectors.toCollection(LinkedHashSet::new))) {
 			area.addGuiElement(new RecipeButton(8, totalHeight, recipe));
 			totalHeight += 12;
 		}
@@ -94,8 +98,8 @@ public class GuiResearchBook extends GuiContainerBase {
 			}
 
 			if (canShow) {
-				NonNullList<ItemStack> ingredients = NonNullList.withSize(selectedRecipe.getIngredients().size(), ItemStack.EMPTY);
-				for (int i = 0; i < ingredients.size(); i++) {
+				NonNullList<ItemStack> ingredients = NonNullList.withSize(recipeWidth * recipeHeight, ItemStack.EMPTY);
+				for (int i = 0; i < selectedRecipe.getIngredients().size(); i++) {
 					Ingredient ingredient = selectedRecipe.getIngredients().get(i);
 					if (ingredient.getMatchingStacks().length > 0) {
 						ingredients.set(i, ingredient.getMatchingStacks()[0]);
@@ -141,7 +145,7 @@ public class GuiResearchBook extends GuiContainerBase {
 		totalHeight += 16;
 
 		if (selectedGoal != null) {
-			List<ResearchRecipeBase> recipes = AWCraftingManager.getRecipes();
+			Collection<ResearchRecipeBase> recipes = AWCraftingManager.getRecipes();
 			List<ResearchRecipeBase> list = new ArrayList<>();
 			for (ResearchRecipeBase recipe : recipes) {
 				if (recipe.getNeededResearch().equals(selectedGoal.getName())) {
