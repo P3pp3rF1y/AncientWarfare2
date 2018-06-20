@@ -14,12 +14,13 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
 public class NpcAIDoor extends EntityAIBase {
-	protected final EntityLiving theEntity;
+	private final EntityLiving theEntity;
 	private final boolean close;
-	protected BlockPos doorPos = new BlockPos(0, 0, 0);
-	protected IBlockState doorState;
+	private BlockPos doorPos = new BlockPos(0, 0, 0);
+	private IBlockState doorState;
 	private int timer;
-	private float interactionPosX, interactionPosZ;
+	private float interactionPosX;
+	private float interactionPosZ;
 	private boolean allDoors;
 
 	public NpcAIDoor(EntityLiving living, boolean closeBehind) {
@@ -94,7 +95,7 @@ public class NpcAIDoor extends EntityAIBase {
 		}
 	}
 
-	protected boolean findDoor() {
+	private boolean findDoor() {
 		this.doorState = this.theEntity.world.getBlockState(this.doorPos);
 		if (doorState.getBlock() instanceof BlockDoor) {
 			return allDoors || doorState.getMaterial() == Material.WOOD;
@@ -105,7 +106,7 @@ public class NpcAIDoor extends EntityAIBase {
 		return false;
 	}
 
-	protected void doDoorInteraction(boolean isOpening) {
+	private void doDoorInteraction(boolean isOpening) {
 		if (doorState.getBlock() instanceof BlockDoor) {
 			((BlockDoor) doorState.getBlock()).toggleDoor(this.theEntity.world, this.doorPos, isOpening);
 		} else if (doorState.getBlock() instanceof BlockFenceGate) {
@@ -133,11 +134,12 @@ public class NpcAIDoor extends EntityAIBase {
 	}
 
 	private void openFenceGate(IBlockState state, BlockPos pos, EnumFacing entityFacing) {
-		if (state.getValue(BlockFenceGate.FACING) == entityFacing.getOpposite()) {
-			state = state.withProperty(BlockFenceGate.FACING, entityFacing);
+		IBlockState updatedState = state;
+		if (updatedState.getValue(BlockFenceGate.FACING) == entityFacing.getOpposite()) {
+			updatedState = updatedState.withProperty(BlockFenceGate.FACING, entityFacing);
 		}
 
-		state = state.withProperty(BlockFenceGate.OPEN, true);
-		this.theEntity.world.setBlockState(pos, state, 10);
+		updatedState = updatedState.withProperty(BlockFenceGate.OPEN, true);
+		this.theEntity.world.setBlockState(pos, updatedState, 10);
 	}
 }

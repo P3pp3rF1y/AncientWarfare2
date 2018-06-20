@@ -1,5 +1,8 @@
 package net.shadowmage.ancientwarfare.npc.ai;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockFenceGate;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.pathfinding.PathNodeType;
 import net.minecraft.pathfinding.PathPoint;
@@ -8,6 +11,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.world.IBlockAccess;
 
 import javax.annotation.Nullable;
 
@@ -183,5 +187,18 @@ public class NpcWalkNodeProcessor extends WalkNodeProcessor {
 
 	private PathNodeType getPathNodeType(EntityLiving entitylivingIn, int x, int y, int z) {
 		return this.getPathNodeType(this.blockaccess, x, y, z, entitylivingIn, this.entitySizeX, this.entitySizeY, this.entitySizeZ, this.getCanOpenDoors(), this.getCanEnterDoors());
+	}
+
+	@Override
+	protected PathNodeType getPathNodeTypeRaw(IBlockAccess world, int x, int y, int z) {
+		BlockPos blockpos = new BlockPos(x, y, z);
+		IBlockState iblockstate = world.getBlockState(blockpos);
+		Block block = iblockstate.getBlock();
+
+		if (block instanceof BlockFenceGate) {
+			return iblockstate.getValue(BlockFenceGate.OPEN) ? PathNodeType.DOOR_OPEN : PathNodeType.DOOR_WOOD_CLOSED;
+		}
+
+		return super.getPathNodeTypeRaw(world, x, y, z);
 	}
 }
