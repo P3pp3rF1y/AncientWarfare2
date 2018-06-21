@@ -53,6 +53,8 @@ public class ResearchEntryIdNameFixer {
 			String researchName = research.get(tag.getInteger("currentResearch"));
 			if (researchName != null) {
 				tag.setString("currentResearch", researchName);
+			} else {
+				tag.removeTag("currentResearch");
 			}
 		}
 		if (tag.hasKey("completedResearch", Constants.NBT.TAG_INT_ARRAY)) {
