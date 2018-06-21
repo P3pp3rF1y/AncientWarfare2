@@ -1,0 +1,33 @@
+{
+    "type": "research",
+    "name": "seafaring",
+    "time": 200,
+    "dependencies": [
+        "the_wheel",
+        "mathematics",
+        "trade"
+    ],
+    "resources": [
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "plankWood",
+            "count": 12
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "ingotIron",
+            "count": 8
+        },
+        {
+            "type": "ancientwarfare:item_count",
+            "item": "minecraft:wool",
+            "data": 0,
+            "count": 10
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "string",
+            "count": 12
+        }
+    ]
+}

@@ -1,0 +1,28 @@
+{
+    "type": "research",
+    "name": "construction",
+    "time": 200,
+    "dependencies": [
+        "engineering"
+    ],
+    "resources": [
+        {
+            "item": "minecraft:iron_pickaxe"
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "string",
+            "count": 4
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "stickWood",
+            "count": 12
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "ingotIron",
+            "count": 4
+        }
+    ]
+}

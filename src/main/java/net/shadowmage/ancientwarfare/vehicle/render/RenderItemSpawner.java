@@ -15,21 +15,24 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 import net.shadowmage.ancientwarfare.vehicle.entity.types.VehicleType;
 
+import java.util.Optional;
+
 @SideOnly(Side.CLIENT)
 public class RenderItemSpawner implements IItemRenderer {
 	@Override
 	public void renderItem(ItemStack stack, ItemCameraTransforms.TransformType transformType) {
 		int level = 1;
+		//noinspection ConstantConditions
 		if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnData")) {
 			NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnData");
 			level = tag.getInteger("level");
 		}
 
-		VehicleBase vehicle = VehicleType.getVehicleForType(Minecraft.getMinecraft().world, stack.getItemDamage(), level);
-
-		if (vehicle == null) {
+		Optional<VehicleBase> v = VehicleType.getVehicleForType(Minecraft.getMinecraft().world, stack.getItemDamage(), level);
+		if (!v.isPresent()) {
 			return;
 		}
+		VehicleBase vehicle = v.get();
 
 		GlStateManager.pushMatrix();
 

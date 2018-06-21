@@ -1,0 +1,32 @@
+{
+    "type": "research",
+    "name": "gunpowder",
+    "time": 200,
+    "dependencies": [
+        "explosives",
+        "refining"
+    ],
+    "resources": [
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "gunpowder",
+            "count": 16
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "sand",
+            "count": 12
+        },
+        {
+            "type": "ancientwarfare:item_count",
+            "item": "minecraft:coal",
+            "data": 1,
+            "count": 12
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "paper",
+            "count": 8
+        }
+    ]
+}

@@ -10,6 +10,8 @@ public class Label extends GuiElement {
 
 	private String text;
 	private boolean renderCentered = false;
+	private int color = 0xffffffff;
+	private boolean renderShadow;
 
 	public Label(int topLeftX, int topLeftY, String text) {
 		super(topLeftX, topLeftY);
@@ -18,6 +20,16 @@ public class Label extends GuiElement {
 
 	public Label setRenderCentered() {
 		this.renderCentered = true;
+		return this;
+	}
+
+	public Label setColor(int color) {
+		this.color = color;
+		return this;
+	}
+
+	public Label setShadow(boolean renderShadow) {
+		this.renderShadow = renderShadow;
 		return this;
 	}
 
@@ -36,7 +48,11 @@ public class Label extends GuiElement {
 		if (width < Minecraft.getMinecraft().fontRenderer.getStringWidth(text)) {
 			Minecraft.getMinecraft().fontRenderer.drawSplitString(text, renderX - offset, renderY, width, 0xDDDDDD);
 		} else {
-			Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(text, renderX - offset, renderY, 0xffffffff);
+			if (renderShadow) {
+				Minecraft.getMinecraft().fontRenderer.drawStringWithShadow(text, renderX - offset, renderY, color);
+			} else {
+				Minecraft.getMinecraft().fontRenderer.drawString(text, renderX - offset, renderY, color);
+			}
 		}
 	}
 

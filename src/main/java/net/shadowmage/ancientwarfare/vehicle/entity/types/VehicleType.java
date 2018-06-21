@@ -38,12 +38,12 @@ import net.shadowmage.ancientwarfare.vehicle.item.AWVehicleItems;
 import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
 import net.shadowmage.ancientwarfare.vehicle.upgrades.IVehicleUpgradeType;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * basically, a first-tier data construct class describing a vehicle.  Each vehicle will
@@ -405,21 +405,20 @@ public abstract class VehicleType implements IVehicleType {
 		return null;
 	}
 
-	@Nullable
-	public static VehicleBase getVehicleForType(World world, int type, int level) {
+	public static Optional<VehicleBase> getVehicleForType(World world, int type, int level) {
 		if (type >= 0 && type < vehicleTypes.length && vehicleTypes[type] != null && vehicleTypes[type].isEnabled()) {
 			IVehicleType vehType = getVehicleType(type);
 			VehicleBase vehicle = new VehicleBase(world);
 			vehicle.setVehicleType(vehType, level);
 			vehicle.setInitialHealth();
-			return vehicle;
+			return Optional.of(vehicle);
 		}
-		return null;
+		return Optional.empty();
 	}
 
 	private static List<ItemStack> displayItemCache = null;
 
-	public static List getCreativeDisplayItems() {
+	public static List<ItemStack> getCreativeDisplayItems() {
 		if (displayItemCache != null) {
 			return displayItemCache;
 		}

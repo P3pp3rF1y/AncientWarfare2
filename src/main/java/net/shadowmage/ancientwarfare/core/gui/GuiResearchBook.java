@@ -14,13 +14,17 @@ import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.ItemSlot;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.interfaces.ITooltipRenderer;
+import net.shadowmage.ancientwarfare.core.registry.ResearchRegistry;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class GuiResearchBook extends GuiContainerBase {
 
@@ -71,7 +75,8 @@ public class GuiResearchBook extends GuiContainerBase {
 	private void addRecipeModeControls() {
 		int totalHeight = 8;
 
-		for (ResearchRecipeBase recipe : AWCraftingManager.getRecipes()) {
+		for (ResearchRecipeBase recipe : AWCraftingManager.getRecipes().stream().sorted(Comparator.comparing(r -> r.getRecipeOutput().getDisplayName()))
+				.collect(Collectors.toCollection(LinkedHashSet::new))) {
 			area.addGuiElement(new RecipeButton(8, totalHeight, recipe));
 			totalHeight += 12;
 		}
@@ -82,8 +87,8 @@ public class GuiResearchBook extends GuiContainerBase {
 		totalHeight += 14;
 
 		if (selectedRecipe != null) {
-			int depId = selectedRecipe.getNeededResearch();
-			boolean canShow = ResearchTracker.INSTANCE.hasPlayerCompleted(mc.world, mc.player.getName(), depId);
+			String depResearch = selectedRecipe.getNeededResearch();
+			boolean canShow = ResearchTracker.INSTANCE.hasPlayerCompleted(mc.world, mc.player.getName(), depResearch);
 			int recipeWidth = 3;
 			int recipeHeight = 3;
 
@@ -93,8 +98,8 @@ public class GuiResearchBook extends GuiContainerBase {
 			}
 
 			if (canShow) {
-				NonNullList<ItemStack> ingredients = NonNullList.withSize(selectedRecipe.getIngredients().size(), ItemStack.EMPTY);
-				for (int i = 0; i < ingredients.size(); i++) {
+				NonNullList<ItemStack> ingredients = NonNullList.withSize(recipeWidth * recipeHeight, ItemStack.EMPTY);
+				for (int i = 0; i < selectedRecipe.getIngredients().size(); i++) {
 					Ingredient ingredient = selectedRecipe.getIngredients().get(i);
 					if (ingredient.getMatchingStacks().length > 0) {
 						ingredients.set(i, ingredient.getMatchingStacks()[0]);
@@ -117,7 +122,7 @@ public class GuiResearchBook extends GuiContainerBase {
 			totalHeight += 14;
 			GoalButton button;
 			ResearchGoal goal;
-			goal = ResearchGoal.getGoal(depId);
+			goal = ResearchRegistry.getResearch(depResearch);
 			if (goal != null) {
 				button = new GoalButton(8, totalHeight, goal);
 				detailsArea.addGuiElement(button);
@@ -126,8 +131,7 @@ public class GuiResearchBook extends GuiContainerBase {
 	}
 
 	private void addResearchModeControls() {
-		List<ResearchGoal> goals = new ArrayList<>();
-		goals.addAll(ResearchGoal.getResearchGoals());
+		List<ResearchGoal> goals = new ArrayList<>(ResearchRegistry.getAllResearchGoals());
 		goals.sort(new ResearchSorter());
 		int totalHeight = 8;
 		for (ResearchGoal goal : goals) {
@@ -141,10 +145,10 @@ public class GuiResearchBook extends GuiContainerBase {
 		totalHeight += 16;
 
 		if (selectedGoal != null) {
-			List<ResearchRecipeBase> recipes = AWCraftingManager.getRecipes();
+			Collection<ResearchRecipeBase> recipes = AWCraftingManager.getRecipes();
 			List<ResearchRecipeBase> list = new ArrayList<>();
 			for (ResearchRecipeBase recipe : recipes) {
-				if (recipe.getNeededResearch() == selectedGoal.getId()) {
+				if (recipe.getNeededResearch().equals(selectedGoal.getName())) {
 					list.add(recipe);
 				}
 			}
@@ -210,14 +214,14 @@ public class GuiResearchBook extends GuiContainerBase {
 	}
 
 	private Button getResearchButton(int topLeftX, int topLeftY, ResearchGoal goal) {
-		return new Button(topLeftX, topLeftY, 160, 10, goal == null ? "guistrings.no_selection" : goal.getName());
+		return new Button(topLeftX, topLeftY, 160, 10, goal == null ? "guistrings.no_selection" : goal.getUnlocalizedName());
 	}
 
 	private class GoalButton extends Button {
 		final ResearchGoal goal;
 
 		public GoalButton(int topLeftX, int topLeftY, ResearchGoal goal) {
-			super(topLeftX, topLeftY, 160, 10, goal == null ? "guistrings.no_selection" : goal.getName());
+			super(topLeftX, topLeftY, 160, 10, goal == null ? "guistrings.no_selection" : goal.getUnlocalizedName());
 			this.goal = goal;
 		}
 

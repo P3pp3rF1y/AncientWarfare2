@@ -10,9 +10,11 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketResearchInit;
 import net.shadowmage.ancientwarfare.core.network.PacketResearchStart;
 import net.shadowmage.ancientwarfare.core.network.PacketResearchUpdate;
+import net.shadowmage.ancientwarfare.core.registry.ResearchRegistry;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public final class ResearchTracker {
@@ -44,7 +46,7 @@ public final class ResearchTracker {
 		}
 	}
 
-	public void removeResearch(World world, String playerName, int research) {
+	public void removeResearch(World world, String playerName, String research) {
 		if (world.isRemote) {
 			clientData.removeResearchFrom(playerName, research);
 		} else {
@@ -64,7 +66,7 @@ public final class ResearchTracker {
 		}
 	}
 
-	public void addResearch(World world, String playerName, int research) {
+	public void addResearch(World world, String playerName, String research) {
 		if (world.isRemote) {
 			clientData.addResearchTo(playerName, research);
 		} else {
@@ -80,14 +82,14 @@ public final class ResearchTracker {
 	 * @param research
 	 * @return
 	 */
-	public boolean hasPlayerCompleted(World world, String player, int research) {
+	public boolean hasPlayerCompleted(World world, String player, String research) {
 		if (world.isRemote) {
 			return clientData.hasPlayerCompletedResearch(player, research);
 		}
 		return getResearchData(world).hasPlayerCompletedResearch(player, research);
 	}
 
-	public boolean addResearchFromNotes(World world, String player, int research) {
+	public boolean addResearchFromNotes(World world, String player, String research) {
 		if (hasPlayerCompleted(world, player, research)) {
 			return false;
 		}
@@ -95,11 +97,11 @@ public final class ResearchTracker {
 		return true;
 	}
 
-	public boolean addProgressFromNotes(World world, String player, int research) {
+	public boolean addProgressFromNotes(World world, String player, String research) {
 		if (world.isRemote) {
 			return false;
 		}
-		ResearchGoal goal = ResearchGoal.getGoal(research);
+		ResearchGoal goal = ResearchRegistry.getResearch(research);
 		return getResearchData(world).addProgress(player, goal.getTotalResearchTime() / 4);
 	}
 
@@ -108,21 +110,21 @@ public final class ResearchTracker {
 	 * @param playerName
 	 * @return
 	 */
-	public Set<Integer> getCompletedResearchFor(World world, String playerName) {
+	public Set<String> getCompletedResearchFor(World world, String playerName) {
 		if (world.isRemote) {
 			return clientData.getResearchFor(playerName);
 		}
 		return getResearchData(world).getResearchFor(playerName);
 	}
 
-	public List<Integer> getResearchQueueFor(World world, String playerName) {
+	public List<String> getResearchQueueFor(World world, String playerName) {
 		if (world.isRemote) {
 			return Collections.emptyList();
 		}
 		return getResearchData(world).getQueuedResearch(playerName);
 	}
 
-	public Set<Integer> getResearchableGoals(World world, String playerName) {
+	public Set<String> getResearchableGoals(World world, String playerName) {
 		if (world.isRemote) {
 			return clientData.getResearchableGoals(playerName);
 		} else {
@@ -148,7 +150,7 @@ public final class ResearchTracker {
 		this.clientData.readFromNBT(researchDataTag);
 	}
 
-	public int getCurrentGoal(World world, String playerName) {
+	public Optional<String> getCurrentGoal(World world, String playerName) {
 		if (world.isRemote) {
 			return clientData.getInProgressResearch(playerName);
 		}
@@ -170,7 +172,7 @@ public final class ResearchTracker {
 		}
 	}
 
-	public void removeQueuedGoal(World world, String playerName, int goal) {
+	public void removeQueuedGoal(World world, String playerName, String goal) {
 		if (world.isRemote) {
 			clientData.removeQueuedResearch(playerName, goal);
 		} else {
@@ -180,7 +182,7 @@ public final class ResearchTracker {
 		}
 	}
 
-	public void addQueuedGoal(World world, String playerName, int goal) {
+	public void addQueuedGoal(World world, String playerName, String goal) {
 		if (world.isRemote) {
 			clientData.addQueuedResearch(playerName, goal);
 		} else {
@@ -190,7 +192,7 @@ public final class ResearchTracker {
 		}
 	}
 
-	public void startResearch(World world, String playerName, int goal) {
+	public void startResearch(World world, String playerName, String goal) {
 		if (world.isRemote) {
 			clientData.startResearch(playerName, goal);
 		} else {
@@ -200,7 +202,7 @@ public final class ResearchTracker {
 		}
 	}
 
-	public void finishResearch(World world, String playerName, int goal) {
+	public void finishResearch(World world, String playerName, String goal) {
 		if (world.isRemote) {
 			clientData.finishResearch(playerName, goal);
 		} else {

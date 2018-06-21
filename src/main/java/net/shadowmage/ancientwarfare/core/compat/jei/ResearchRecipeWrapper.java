@@ -10,7 +10,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.crafting.ResearchRecipeBase;
-import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
+import net.shadowmage.ancientwarfare.core.registry.ResearchRegistry;
 
 public class ResearchRecipeWrapper<T extends ResearchRecipeBase> implements IRecipeWrapper {
 	private final IStackHelper stackHelper;
@@ -31,15 +31,8 @@ public class ResearchRecipeWrapper<T extends ResearchRecipeBase> implements IRec
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
-		String research = AWCoreStatics.useResearchSystem ? I18n.format(ResearchGoal.getGoal(recipe.getNeededResearch()).getName()) : "Research disabled";
+		//noinspection ConstantConditions
+		String research = AWCoreStatics.useResearchSystem ? I18n.format(ResearchRegistry.getResearch(recipe.getNeededResearch()).getUnlocalizedName()) : "Research disabled";
 		minecraft.fontRenderer.drawString(research, 60, 0, 0x444444, false);
-	}
-
-	public int getWidth() {
-		return 3;
-	}
-
-	public int getHeight() {
-		return 3;
 	}
 }

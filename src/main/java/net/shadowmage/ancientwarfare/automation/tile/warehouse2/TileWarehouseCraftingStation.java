@@ -10,10 +10,13 @@ import net.shadowmage.ancientwarfare.core.tile.CraftingRecipeMemory;
 import net.shadowmage.ancientwarfare.core.tile.IBlockBreakHandler;
 import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 
+import javax.annotation.Nullable;
+
 public class TileWarehouseCraftingStation extends TileUpdatable implements IInteractableTile, IBlockBreakHandler {
 
 	public CraftingRecipeMemory craftingRecipeMemory = new CraftingRecipeMemory(this);
 
+	@Nullable
 	public final TileWarehouse getWarehouse() {
 		if (pos.getY() <= 1)//could not possibly be a warehouse below...
 		{

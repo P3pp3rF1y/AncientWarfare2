@@ -1,0 +1,33 @@
+{
+    "type": "research",
+    "name": "combustion",
+    "time": 200,
+    "dependencies": [
+        "mining",
+        "the_wheel"
+    ],
+    "resources": [
+        {
+            "type": "ancientwarfare:item_count",
+            "item": "minecraft:coal",
+            "data": 0,
+            "count": 10
+        },
+        {
+            "type": "ancientwarfare:item_count",
+            "item": "minecraft:coal",
+            "data": 1,
+            "count": 8
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "ingotIron",
+            "count": 5
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "netherrack",
+            "count": 12
+        }
+    ]
+}

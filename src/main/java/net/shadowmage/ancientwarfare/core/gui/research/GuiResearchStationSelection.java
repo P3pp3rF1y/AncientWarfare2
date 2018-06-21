@@ -12,6 +12,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Tooltip;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketResearchUpdate;
+import net.shadowmage.ancientwarfare.core.registry.ResearchRegistry;
 import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 import org.lwjgl.input.Mouse;
@@ -48,15 +49,15 @@ public class GuiResearchStationSelection extends GuiContainerBase<ContainerResea
 	public void setupElements() {
 		selectionArea.clearElements();
 		queueArea.clearElements();
-		int goal = getContainer().currentGoal;
+		String research = getContainer().currentGoal;
 
 		int totalHeight = 8;
 
-		if (goal >= 0) {
-			totalHeight = addQueuedGoal(totalHeight, goal, false);
+		if (!research.equals("")) {
+			totalHeight = addQueuedGoal(totalHeight, research, false);
 		}
 
-		for (Integer g : getContainer().queuedResearch) {
+		for (String g : getContainer().queuedResearch) {
 			totalHeight = addQueuedGoal(totalHeight, g, true);
 		}
 
@@ -65,20 +66,20 @@ public class GuiResearchStationSelection extends GuiContainerBase<ContainerResea
 		totalHeight = 8;
 
 		if (getContainer().researcherName != null) {
-			for (Integer g : ResearchTracker.INSTANCE.getResearchableGoals(player.world, getContainer().researcherName)) {
-				totalHeight = addSelectableGoal(totalHeight, g);
+			for (String researchName : ResearchTracker.INSTANCE.getResearchableGoals(player.world, getContainer().researcherName)) {
+				totalHeight = addSelectableGoal(totalHeight, researchName);
 			}
 		}
 
 		selectionArea.setAreaSize(totalHeight + 8);
 	}
 
-	private int addQueuedGoal(int totalHeight, int goalNumber, boolean removeButton) {
-		ResearchGoal g = ResearchGoal.getGoal(goalNumber);
+	private int addQueuedGoal(int totalHeight, String researchName, boolean removeButton) {
+		ResearchGoal g = ResearchRegistry.getResearch(researchName);
 		if (g == null) {
 			return totalHeight;
 		}
-		String name = I18n.format(g.getName());
+		String name = I18n.format(g.getUnlocalizedName());
 		if (!removeButton) {
 			name = name + " (" + I18n.format("guistrings.research.current_goal") + ")";
 		}
@@ -96,13 +97,13 @@ public class GuiResearchStationSelection extends GuiContainerBase<ContainerResea
 		return totalHeight + 12;
 	}
 
-	private int addSelectableGoal(int totalHeight, int goalNumber) {
-		ResearchGoal g = ResearchGoal.getGoal(goalNumber);
+	private int addSelectableGoal(int totalHeight, String researchName) {
+		ResearchGoal g = ResearchRegistry.getResearch(researchName);
 		if (g == null) {
 			return totalHeight;
 		}
 
-		Label label = new Label(8, totalHeight + 1, g.getName());
+		Label label = new Label(8, totalHeight + 1, g.getUnlocalizedName());
 		selectionArea.addGuiElement(label);
 
 		GoalButton button = new GoalButton(200 - 8 - 12 - 12, totalHeight, 12, 12, g, true);
@@ -116,7 +117,7 @@ public class GuiResearchStationSelection extends GuiContainerBase<ContainerResea
 		selectableGoalTooltip.addTooltipElement(new Label(0, 0, I18n.format("guistrings.research.research_time", g.getTotalResearchTime())));
 		selectableGoalTooltip.addTooltipElement(new Label(0, 10, "guistrings.research.resources_needed"));
 		int x = 0, y = 0;
-		for (ItemStack stack : g.getResources()) {
+		for (ItemStack stack : g.getResourcesForDisplay()) {
 			selectableGoalTooltip.addTooltipElement(new ItemSlot(x * 18, y * 18 + 20, stack, this));
 			x++;
 			if (x > 2) {
@@ -149,7 +150,7 @@ public class GuiResearchStationSelection extends GuiContainerBase<ContainerResea
 
 		@Override
 		protected void onPressed() {
-			PacketResearchUpdate pkt = new PacketResearchUpdate(getContainer().researcherName, goal.getId(), add, false);
+			PacketResearchUpdate pkt = new PacketResearchUpdate(getContainer().researcherName, goal.getName(), add, false);
 			NetworkHandler.sendToServer(pkt);
 		}
 	}

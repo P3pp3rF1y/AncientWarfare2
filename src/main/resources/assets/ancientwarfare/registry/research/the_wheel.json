@@ -1,0 +1,26 @@
+{
+    "type": "research",
+    "name": "the_wheel",
+    "time": 200,
+    "dependencies": [
+        "engineering"
+    ],
+    "resources": [
+        {
+            "item": "minecraft:hopper"
+        },
+        {
+            "item": "minecraft:dropper"
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "stone",
+            "count": 4
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "plankWood",
+            "count": 4
+        }
+    ]
+}

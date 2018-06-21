@@ -1,0 +1,30 @@
+{
+    "type": "research",
+    "name": "ballistics",
+    "time": 200,
+    "dependencies": [
+        "theory_of_gravity"
+    ],
+    "resources": [
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "string",
+            "count": 6
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "dyeBlack",
+            "count": 6
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "paper",
+            "count": 12
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "torch",
+            "count": 6
+        }
+    ]
+}

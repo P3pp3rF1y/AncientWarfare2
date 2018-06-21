@@ -28,6 +28,7 @@ import net.shadowmage.ancientwarfare.core.container.ContainerEngineeringStation;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchBook;
 import net.shadowmage.ancientwarfare.core.container.ContainerResearchStation;
 import net.shadowmage.ancientwarfare.core.crafting.AWCraftingManager;
+import net.shadowmage.ancientwarfare.core.datafixes.ResearchNoteFixer;
 import net.shadowmage.ancientwarfare.core.datafixes.TileIdFixer;
 import net.shadowmage.ancientwarfare.core.datafixes.TileOwnerFixer;
 import net.shadowmage.ancientwarfare.core.datafixes.VehicleOwnerFixer;
@@ -37,7 +38,7 @@ import net.shadowmage.ancientwarfare.core.item.AWCoreItemLoader;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
 import net.shadowmage.ancientwarfare.core.registry.RegistryLoader;
-import net.shadowmage.ancientwarfare.core.research.ResearchGoal;
+import net.shadowmage.ancientwarfare.core.registry.ResearchRegistry;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 import net.shadowmage.ancientwarfare.npc.datafixes.FactionEntityFixer;
 import net.shadowmage.ancientwarfare.npc.datafixes.FactionSpawnerItemFixer;
@@ -47,7 +48,7 @@ public class AncientWarfareCore {
 
 	public static final String modID = "ancientwarfare";
 	public static final String MOD_PREFIX = modID + ":";
-	private static final int DATA_FIXER_VERSION = 3;
+	private static final int DATA_FIXER_VERSION = 4;
 
 	@Instance(value = AncientWarfareCore.modID)
 	public static AncientWarfareCore instance;
@@ -85,6 +86,8 @@ public class AncientWarfareCore {
 		NetworkHandler.registerContainer(NetworkHandler.GUI_BACKPACK, ContainerBackpack.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_RESEARCH_BOOK, ContainerResearchBook.class);
 
+		RegistryLoader.registerParser(new ResearchRegistry.ResearchParser());
+
 		proxy.preInit();
 	}
 
@@ -95,11 +98,11 @@ public class AncientWarfareCore {
 
 		AWCoreItemLoader.INSTANCE.load();
 
-		ResearchGoal.initializeResearch();
-
-		AWCraftingManager.loadRecipes();
+		AWCraftingManager.registerIngredients();
 
 		RegistryLoader.load();
+
+		AWCraftingManager.loadRecipes();
 
 		CompatLoader.init();
 
@@ -109,6 +112,7 @@ public class AncientWarfareCore {
 		fixes.registerFix(FixTypes.BLOCK_ENTITY, new TileIdFixer());
 		fixes.registerFix(FixTypes.ENTITY, new FactionEntityFixer());
 		fixes.registerFix(FixTypes.ITEM_INSTANCE, new FactionSpawnerItemFixer());
+		fixes.registerFix(FixTypes.ITEM_INSTANCE, new ResearchNoteFixer());
 
         /*
          * Setup compats

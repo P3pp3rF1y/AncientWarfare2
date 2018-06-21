@@ -1,0 +1,31 @@
+{
+    "type": "research",
+    "name": "mass_production",
+    "time": 200,
+    "dependencies": [
+        "refining",
+        "machinery"
+    ],
+    "resources": [
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "ingotSteel",
+            "count": 12
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "gearSteel",
+            "count": 6
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "bearingSteel",
+            "count": 3
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "shaftSteel",
+            "count": 3
+        }
+    ]
+}

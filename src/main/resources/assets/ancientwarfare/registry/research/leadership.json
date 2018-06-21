@@ -1,0 +1,28 @@
+{
+    "type": "research",
+    "name": "leadership",
+    "time": 200,
+    "dependencies": [],
+    "resources": [
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "paper",
+            "count": 10
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "stickWood",
+            "count": 24
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "string",
+            "count": 3
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "torch",
+            "count": 4
+        }
+    ]
+}

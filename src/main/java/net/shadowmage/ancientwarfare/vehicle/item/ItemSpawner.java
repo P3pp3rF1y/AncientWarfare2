@@ -45,11 +45,17 @@ import net.shadowmage.ancientwarfare.vehicle.render.RenderItemSpawner;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ItemSpawner extends ItemBaseVehicle {
+	private static final String LEVEL_TAG = "level";
+	private static final String HEALTH_TAG = "health";
+	private static final String SPAWN_DATA_TAG = "spawnData";
+
 	public ItemSpawner() {
 		super("spawner");
+		setHasSubtypes(true);
 	}
 
 	@Override
@@ -62,13 +68,18 @@ public class ItemSpawner extends ItemBaseVehicle {
 			return EnumActionResult.SUCCESS;
 		}
 
-		if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnData")) {
-			NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnData");
-			int level = tag.getInteger("level");
+		//noinspection ConstantConditions
+		if (stack.hasTagCompound() && stack.getTagCompound().hasKey(SPAWN_DATA_TAG)) {
+			NBTTagCompound tag = stack.getTagCompound().getCompoundTag(SPAWN_DATA_TAG);
+			int level = tag.getInteger(LEVEL_TAG);
 			BlockPos offsetPos = pos.offset(facing);
-			VehicleBase vehicle = VehicleType.getVehicleForType(world, stack.getItemDamage(), level);
-			if (tag.hasKey("health")) {
-				vehicle.setHealth(tag.getFloat("health"));
+			Optional<VehicleBase> v = VehicleType.getVehicleForType(world, stack.getItemDamage(), level);
+			if (!v.isPresent()) {
+				return EnumActionResult.FAIL;
+			}
+			VehicleBase vehicle = v.get();
+			if (tag.hasKey(HEALTH_TAG)) {
+				vehicle.setHealth(tag.getFloat(HEALTH_TAG));
 			}
 			vehicle.setPosition(offsetPos.getX() + 0.5d, offsetPos.getY(), offsetPos.getZ() + 0.5d);
 			vehicle.prevRotationYaw = vehicle.rotationYaw = -player.rotationYaw + 180;
@@ -93,33 +104,27 @@ public class ItemSpawner extends ItemBaseVehicle {
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flagIn) {
 		super.addInformation(stack, world, tooltip, flagIn);
-		if (stack != null) {
-			if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnData")) {
-				NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnData");
-				int level = tag.getInteger("level");
-				tooltip.add("Material Level: " + level);//TODO additional translations
-				if (tag.hasKey("health")) {
-					tooltip.add("Vehicle Health: " + tag.getFloat("health"));
-				}
-
-				VehicleBase vehicle = VehicleType.getVehicleForType(world, stack.getItemDamage(), level);
-				if (vehicle == null) {
-					return;
-				}
-				tooltip.addAll(vehicle.vehicleType.getDisplayTooltip().stream().map(I18n::format).collect(Collectors.toSet()));
+		//noinspection ConstantConditions
+		if (stack.hasTagCompound() && stack.getTagCompound().hasKey(SPAWN_DATA_TAG)) {
+			NBTTagCompound tag = stack.getTagCompound().getCompoundTag(SPAWN_DATA_TAG);
+			int level = tag.getInteger(LEVEL_TAG);
+			tooltip.add("Material Level: " + level);//TODO additional translations
+			if (tag.hasKey(HEALTH_TAG)) {
+				tooltip.add("Vehicle Health: " + tag.getFloat(HEALTH_TAG));
 			}
+
+			Optional<VehicleBase> v = VehicleType.getVehicleForType(world, stack.getItemDamage(), level);
+			if (!v.isPresent()) {
+				return;
+			}
+			tooltip.addAll(v.get().vehicleType.getDisplayTooltip().stream().map(I18n::format).collect(Collectors.toSet()));
 		}
 	}
 
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
-		if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnData")) {
-			NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnData");
-			IVehicleType vehicle = VehicleType.vehicleTypes[stack.getItemDamage()];
-			return vehicle == null ? "" : vehicle.getDisplayName();
-		}
-
-		return "item.vehicleSpawner";
+		IVehicleType vehicle = VehicleType.vehicleTypes[stack.getItemDamage()];
+		return vehicle == null ? "" : vehicle.getDisplayName();
 	}
 
 	@Override
@@ -127,16 +132,7 @@ public class ItemSpawner extends ItemBaseVehicle {
 		if (!isInCreativeTab(tab)) {
 			return;
 		}
-
-		List displayStacks = VehicleType.getCreativeDisplayItems();
-		items.addAll(displayStacks);
-	}
-
-	public static int getVehicleLevelForStack(ItemStack stack) {
-		if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnData")) {
-			return stack.getTagCompound().getCompoundTag("spawnData").getInteger("level");
-		}
-		return 0;
+		items.addAll(VehicleType.getCreativeDisplayItems());
 	}
 
 	@Override

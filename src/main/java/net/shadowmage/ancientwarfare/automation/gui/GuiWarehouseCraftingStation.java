@@ -4,6 +4,9 @@ import net.shadowmage.ancientwarfare.automation.container.ContainerWarehouseCraf
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.crafting.ResearchCraftingElement;
+import net.shadowmage.ancientwarfare.core.gui.elements.Label;
+
+import java.awt.*;
 
 public class GuiWarehouseCraftingStation extends GuiContainerBase<ContainerWarehouseCraftingStation> {
 
@@ -15,6 +18,11 @@ public class GuiWarehouseCraftingStation extends GuiContainerBase<ContainerWareh
 	public void initElements() {
 		ResearchCraftingElement research = new ResearchCraftingElement(this, getContainer().containerCrafting, 0, 0);
 		addGuiElement(research);
+
+		if (getContainer().tileEntity.getWarehouse() == null) {
+			Label missingWarehouse = new Label(30, 61, "Missing Warehouse below").setColor(Color.RED.getRGB()).setShadow(false);
+			addGuiElement(missingWarehouse);
+		}
 	}
 
 	@Override

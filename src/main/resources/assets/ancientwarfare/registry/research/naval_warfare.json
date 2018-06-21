@@ -1,0 +1,32 @@
+{
+    "type": "research",
+    "name": "naval_warfare",
+    "time": 200,
+    "dependencies": [
+        "machinery",
+        "navigation",
+        "tactics"
+    ],
+    "resources": [
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "gunpowder",
+            "count": 16
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "plankWood",
+            "count": 12
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "ingotIron",
+            "count": 16
+        },
+        {
+            "type": "ancientwarfare:ore_dict_count",
+            "ore": "paper",
+            "count": 8
+        }
+    ]
+}

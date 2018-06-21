@@ -9,6 +9,8 @@ import net.minecraftforge.common.crafting.IShapedRecipe;
 import net.shadowmage.ancientwarfare.core.crafting.ICraftingRecipe;
 import net.shadowmage.ancientwarfare.core.crafting.RecipeResourceLocation;
 
+import java.util.Optional;
+
 public class RegularCraftingWrapper implements ICraftingRecipe {
 	private final IRecipe recipe;
 	private final RecipeResourceLocation registryName;
@@ -53,8 +55,8 @@ public class RegularCraftingWrapper implements ICraftingRecipe {
 	}
 
 	@Override
-	public int getNeededResearch() {
-		return -1;
+	public Optional<String> getNeededResearch() {
+		return Optional.empty();
 	}
 
 	@Override

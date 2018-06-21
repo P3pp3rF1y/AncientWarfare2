@@ -46,6 +46,9 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 		containerCrafting = new ContainerCraftingRecipeMemory(tileEntity.craftingRecipeMemory, player) {
 			@Override
 			protected OnTakeResult handleOnTake(EntityPlayer player, ItemStack stack) {
+				if (tileEntity.getWarehouse() == null) {
+					return new OnTakeResult(PASS, stack);
+				}
 				ICraftingRecipe recipe = tileEntity.craftingRecipeMemory.getRecipe();
 				IItemHandlerModifiable handler = tileEntity.getWarehouse().getItemHandler();
 				NonNullList<ItemStack> reusableStacks = AWCraftingManager.getReusableStacks(recipe, tileEntity.craftingRecipeMemory.craftMatrix);
@@ -103,7 +106,7 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 
 		@Nonnull ItemStack slotStackCopy = ItemStack.EMPTY;
 		Slot theSlot = this.getSlot(slotClickedIndex);
-		if (theSlot != null && theSlot.getHasStack()) {
+		if (theSlot.getHasStack()) {
 			@Nonnull ItemStack slotStack = theSlot.getStack();
 			slotStackCopy = slotStack.copy();
 			int playerSlotStart = 2 + tileEntity.craftingRecipeMemory.craftMatrix.getSizeInventory();
@@ -220,6 +223,10 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 
 	@Override
 	public IItemHandlerModifiable[] getInventories() {
+		if (tileEntity.getWarehouse() == null) {
+			return new IItemHandlerModifiable[] {new PlayerInvWrapper(player.inventory)};
+		}
+
 		return new IItemHandlerModifiable[] {tileEntity.getWarehouse().getItemHandler(), new PlayerInvWrapper(player.inventory)};
 	}
 
@@ -228,7 +235,12 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 		IItemHandler craftMatrixWrapper = new InvWrapper(tileEntity.craftingRecipeMemory.craftMatrix);
 		NonNullList<ItemStack> craftingItems = InventoryTools.getItems(craftMatrixWrapper);
 
-		IItemHandler inventories = new CombinedInvWrapper(tileEntity.getWarehouse().getItemHandler(), new PlayerInvWrapper(player.inventory));
+		IItemHandler inventories;
+		if (tileEntity.getWarehouse() == null) {
+			inventories = new PlayerInvWrapper(player.inventory);
+		} else {
+			inventories = new CombinedInvWrapper(tileEntity.getWarehouse().getItemHandler(), new PlayerInvWrapper(player.inventory));
+		}
 
 		if (InventoryTools.insertItems(inventories, craftingItems, true).isEmpty()) {
 			InventoryTools.insertItems(inventories, craftingItems, false);
