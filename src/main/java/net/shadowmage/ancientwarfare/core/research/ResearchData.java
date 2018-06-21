@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.research;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
@@ -329,12 +330,34 @@ public class ResearchData extends WorldSavedData {
 
 		private void readFromNBT(NBTTagCompound tag) {
 			NBTTagCompound fixedTag = ResearchEntryIdNameFixer.fix(tag);
+			removeInvalidEntries(fixedTag);
 			if (fixedTag.hasKey("currentResearch")) {
 				currentResearch = fixedTag.getString("currentResearch");
 			}
 			currentProgress = fixedTag.getInteger("currentProgress");
 			fixedTag.getTagList("completedResearch", Constants.NBT.TAG_STRING).forEach(t -> getCompletedResearch().add(((NBTTagString) t).getString()));
 			fixedTag.getTagList("queuedResearch", Constants.NBT.TAG_STRING).forEach(t -> queuedResearch.add(((NBTTagString) t).getString()));
+		}
+
+		private void removeInvalidEntries(NBTTagCompound tag) {
+			if (tag.hasKey("currentResearch") && !ResearchRegistry.researchExists(tag.getString("currentResearch"))) {
+				tag.removeTag("currentResearch");
+			}
+			removeInvalidEntriesFromList(tag, "completedResearch");
+			removeInvalidEntriesFromList(tag, "queuedResearch");
+		}
+
+		private void removeInvalidEntriesFromList(NBTTagCompound tag, String listName) {
+			NBTTagList researchList = tag.getTagList(listName, Constants.NBT.TAG_STRING);
+			Iterator<NBTBase> it = researchList.iterator();
+
+			while (it.hasNext()) {
+				String name = ((NBTTagString)it.next()).getString();
+				if (!ResearchRegistry.researchExists(name)) {
+					it.remove();
+				}
+			}
+			tag.setTag(listName, researchList);
 		}
 
 		private void removeQueuedResearch(String goal) {
