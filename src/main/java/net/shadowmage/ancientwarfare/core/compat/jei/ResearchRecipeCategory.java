@@ -59,7 +59,8 @@ public abstract class ResearchRecipeCategory {
 		List<List<ItemStack>> outputs = ingredients.getOutputs(ItemStack.class);
 
 		if (recipeWrapper instanceof ShapedResearchRecipeWrapper) {
-			craftingGridHelper.setInputs(guiItemStacks, inputs, ((ShapedResearchRecipeWrapper) recipeWrapper).getWidth(), ((ShapedResearchRecipeWrapper) recipeWrapper).getHeight());
+			ShapedResearchRecipeWrapper shapedWrapper = (ShapedResearchRecipeWrapper) recipeWrapper;
+			craftingGridHelper.setInputs(guiItemStacks, inputs, shapedWrapper.getWidth(), shapedWrapper.getHeight());
 		} else {
 			craftingGridHelper.setInputs(guiItemStacks, inputs);
 		}
