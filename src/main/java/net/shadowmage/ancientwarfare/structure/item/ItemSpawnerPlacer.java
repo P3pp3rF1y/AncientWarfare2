@@ -14,7 +14,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -45,18 +44,12 @@ public class ItemSpawnerPlacer extends ItemBaseStructure {
 		tooltip.add(I18n.format("guistrings.selected_mob") + ":");
 		//noinspection ConstantConditions
 		if (stack.hasTagCompound() && stack.getTagCompound().hasKey(SPAWNER_DATA_TAG)) {
-			NBTTagCompound tag = stack.getTagCompound().getCompoundTag(SPAWNER_DATA_TAG);
-			String mobID = tag.getString("EntityId");
-			if (mobID.isEmpty()) {
-				tooltip.add(I18n.format("guistrings.no_selection"));
-			} else {
-				tooltip.add(I18n.format("entity." + mobID + ".name"));
-			}
+			SpawnerSettings settings = new SpawnerSettings();
+			settings.readFromNBT(stack.getTagCompound().getCompoundTag(SPAWNER_DATA_TAG));
+			tooltip.add(I18n.format(settings.getSpawnGroups().get(0).getEntitiesToSpawn().get(0).getEntityName()));
 		} else {
 			tooltip.add(I18n.format("guistrings.no_selection"));
 		}
-		tooltip.add(TextFormatting.RED + I18n.format("guistrings.spawner.warning_1"));
-		tooltip.add(TextFormatting.RED + I18n.format("guistrings.spawner.warning_2"));
 	}
 
 	@Override
@@ -99,6 +92,10 @@ public class ItemSpawnerPlacer extends ItemBaseStructure {
 			event.setCanceled(true);
 			event.setCancellationResult(EnumActionResult.SUCCESS);
 
+			if (player.world.isRemote) {
+				return;
+			}
+
 			Entity entity = event.getTarget();
 
 			//noinspection ConstantConditions
@@ -110,6 +107,7 @@ public class ItemSpawnerPlacer extends ItemBaseStructure {
 			spawnSettings.setSpawnCountMin(1);
 			spawnSettings.setSpawnCountMax(1);
 			spawnSettings.setCustomSpawnTag(getCustomSpawnTag(entity));
+			spawnSettings.toggleForce();
 			SpawnerSettings.EntitySpawnGroup group = new SpawnerSettings.EntitySpawnGroup();
 			group.addSpawnSetting(spawnSettings);
 			SpawnerSettings settings = new SpawnerSettings();
@@ -120,6 +118,8 @@ public class ItemSpawnerPlacer extends ItemBaseStructure {
 			settings.setPlayerRange(16);
 
 			spawnerPlacer.setTagInfo(SPAWNER_DATA_TAG, settings.writeToNBT(new NBTTagCompound()));
+
+			event.getEntityPlayer().sendMessage(new TextComponentTranslation("guistrings.spawner.entity_set", entity.getName()));
 		}
 	}
 

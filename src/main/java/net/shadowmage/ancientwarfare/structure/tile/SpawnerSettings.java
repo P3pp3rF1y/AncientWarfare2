@@ -20,6 +20,7 @@ import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -28,30 +29,30 @@ import java.util.Set;
 
 public class SpawnerSettings {
 
-	List<EntitySpawnGroup> spawnGroups = new ArrayList<>();
+	private List<EntitySpawnGroup> spawnGroups = new ArrayList<>();
 
 	private ItemStackHandler inventory = new ItemStackHandler(9);
 
-	boolean debugMode;
-	boolean transparent;
-	boolean respondToRedstone;//should this spawner respond to redstone impulses
-	boolean redstoneMode;//false==toggle, true==pulse/tick to spawn
-	boolean prevRedstoneState;//used to cache the powered status from last tick, to compare to this tick
+	private boolean debugMode;
+	private boolean transparent;
+	private boolean respondToRedstone;//should this spawner respond to redstone impulses
+	private boolean redstoneMode;//false==toggle, true==pulse/tick to spawn
+	private boolean prevRedstoneState;//used to cache the powered status from last tick, to compare to this tick
 
-	int playerRange;
-	int mobRange;
-	int range = 4;
+	private int playerRange;
+	private int mobRange;
+	private int range = 4;
 
-	int maxDelay = 20 * 20;
-	int minDelay = 20 * 10;
+	private int maxDelay = 20 * 20;
+	private int minDelay = 20 * 10;
 
-	int spawnDelay = maxDelay;
+	private int spawnDelay = maxDelay;
 
-	int maxNearbyMonsters;
+	private int maxNearbyMonsters;
 
-	boolean lightSensitive;
+	private boolean lightSensitive;
 
-	int xpToDrop;
+	private int xpToDrop;
 
 	float blockHardness = 2.f;
 
@@ -60,11 +61,7 @@ public class SpawnerSettings {
 	 * world set (which is before first updateEntity() is called)
 	 */
 	public World world;
-	BlockPos pos;
-
-	public SpawnerSettings() {
-
-	}
+	private BlockPos pos;
 
 	public static SpawnerSettings getDefaultSettings() {
 		SpawnerSettings settings = new SpawnerSettings();
@@ -119,8 +116,8 @@ public class SpawnerSettings {
 			spawnDelay--;
 		}
 		if (spawnDelay <= 0) {
-			int range = maxDelay - minDelay;
-			spawnDelay = minDelay + (range <= 0 ? 0 : world.rand.nextInt(range));
+			int delayRange = maxDelay - minDelay;
+			spawnDelay = minDelay + (delayRange <= 0 ? 0 : world.rand.nextInt(delayRange));
 			spawnEntities();
 		}
 	}
@@ -141,11 +138,10 @@ public class SpawnerSettings {
 			}
 			boolean doSpawn = false;
 			for (EntityPlayer player : nearbyPlayers) {
-				if (!debugMode && player.capabilities.isCreativeMode) {
-					continue;
-				}//iterate until a single non-creative mode player is found
-				doSpawn = true;
-				break;
+				if (debugMode || !player.capabilities.isCreativeMode) {
+					doSpawn = true;
+					break;
+				}
 			}
 			if (!doSpawn) {
 				return;
@@ -383,24 +379,17 @@ public class SpawnerSettings {
 
 	public static final class EntitySpawnGroup {
 		private int groupWeight = 1;
-		List<EntitySpawnSettings> entitiesToSpawn = new ArrayList<>();
-
-		public EntitySpawnGroup() {
-
-		}
+		private List<EntitySpawnSettings> entitiesToSpawn = new ArrayList<>();
 
 		public void setWeight(int weight) {
-			if (weight <= 0) {
-				weight = 1;
-			}
-			this.groupWeight = weight;
+			this.groupWeight = weight <= 0 ? 1 : weight;
 		}
 
 		public void addSpawnSetting(EntitySpawnSettings setting) {
 			entitiesToSpawn.add(setting);
 		}
 
-		public void spawnEntities(World world, BlockPos spawnPos, int grpIndex, int range) {
+		private void spawnEntities(World world, BlockPos spawnPos, int grpIndex, int range) {
 			EntitySpawnSettings settings;
 			Iterator<EntitySpawnSettings> it = entitiesToSpawn.iterator();
 			int index = 0;
@@ -419,7 +408,7 @@ public class SpawnerSettings {
 			}
 		}
 
-		public boolean shouldRemove() {
+		private boolean shouldRemove() {
 			return entitiesToSpawn.isEmpty();
 		}
 
@@ -457,12 +446,12 @@ public class SpawnerSettings {
 	}
 
 	public static final class EntitySpawnSettings {
-		ResourceLocation entityId = new ResourceLocation("pig");
-		NBTTagCompound customTag;
-		int minToSpawn = 2;
-		int maxToSpawn = 4;
+		private ResourceLocation entityId = new ResourceLocation("pig");
+		private NBTTagCompound customTag;
+		private int minToSpawn = 2;
+		private int maxToSpawn = 4;
 		int remainingSpawnCount = -1;
-		boolean forced;
+		private boolean forced;
 
 		public EntitySpawnSettings() {
 
@@ -500,13 +489,13 @@ public class SpawnerSettings {
 				AWLog.logError(entityId + " is not a valid entityId.  Spawner default to Zombie.");
 				this.entityId = new ResourceLocation("zombie");
 			}
-			if (AWStructureStatics.excludedSpawnerEntities.contains(this.entityId)) {
+			if (AWStructureStatics.excludedSpawnerEntities.contains(this.entityId.toString())) {
 				AWLog.logError(entityId + " has been set as an invalid entity for spawners!  Spawner default to Zombie.");
 				this.entityId = new ResourceLocation("zombie");
 			}
 		}
 
-		public final void setCustomSpawnTag(NBTTagCompound tag) {
+		public final void setCustomSpawnTag(@Nullable NBTTagCompound tag) {
 			this.customTag = tag;
 		}
 
@@ -538,6 +527,9 @@ public class SpawnerSettings {
 		}
 
 		public final String getEntityName() {
+			if (customTag != null && customTag.hasKey("factionName")) {
+				return EntityTools.getUnlocName(entityId).replace("faction", getCustomTag().getString("factionName"));
+			}
 			return EntityTools.getUnlocName(entityId);
 		}
 
@@ -563,7 +555,7 @@ public class SpawnerSettings {
 
 		private int getNumToSpawn(Random rand) {
 			int randRange = maxToSpawn - minToSpawn;
-			int toSpawn = 0;
+			int toSpawn;
 			if (randRange <= 0) {
 				toSpawn = minToSpawn;
 			} else {
@@ -587,7 +579,7 @@ public class SpawnerSettings {
 				while (!doSpawn && spawnTry < range + 5) {
 					int x = spawnPos.getX() - range + world.rand.nextInt(range * 2 + 1);
 					int z = spawnPos.getZ() - range + world.rand.nextInt(range * 2 + 1);
-					for (int y = spawnPos.getY() - range; y <= y + range; y++) {
+					for (int y = spawnPos.getY() - range; y <= spawnPos.getY() + range; y++) {
 						e.setLocationAndAngles(x + 0.5d, y, z + 0.5d, world.rand.nextFloat() * 360, 0);
 						if (!forced && e instanceof EntityLiving) {
 							doSpawn = ((EntityLiving) e).getCanSpawnHere() && ((EntityLiving) e).isNotColliding();

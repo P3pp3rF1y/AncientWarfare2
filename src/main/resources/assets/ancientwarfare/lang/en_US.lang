@@ -263,6 +263,7 @@ guistrings.required_player_range=Req. Player Range
 guistrings.spawner.spawn_range=Spawn Range
 guistrings.spawner.warning_1=WARNING!! SOME MOD-MOBS MAY CRASH WHEN PLACED IN SPAWNER
 guistrings.spawner.warning_2=TEST ALL MOBS / SETTINGS ON AN UNCARED FOR WORLD FIRST
+guistrings.spawner.entity_set=Saved settings to spawn %1$s entity
 guistrings.spawner.noblock=Spawner couldn't find a block to set
 guistrings.spawner.nodata=Spawner doesn't contain a mob
 guistrings.spawner.group_count=Total Spawn Groups
