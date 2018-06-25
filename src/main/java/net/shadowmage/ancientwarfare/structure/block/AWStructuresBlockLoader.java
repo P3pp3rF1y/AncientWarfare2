@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -20,7 +21,7 @@ import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
 
 import static net.shadowmage.ancientwarfare.structure.AncientWarfareStructures.MOD_PREFIX;
 
-@Mod.EventBusSubscriber(modid = AncientWarfareStructures.modID)
+@Mod.EventBusSubscriber(modid = AncientWarfareStructures.MOD_ID)
 public class AWStructuresBlockLoader {
 	private AWStructuresBlockLoader() {
 	}
@@ -60,6 +61,6 @@ public class AWStructuresBlockLoader {
 	}
 
 	private static void registerTile(Class<? extends TileEntity> teClass, String teId) {
-		GameRegistry.registerTileEntity(teClass, MOD_PREFIX + teId);
+		GameRegistry.registerTileEntity(teClass, new ResourceLocation(MOD_PREFIX, teId));
 	}
 }

@@ -188,7 +188,7 @@ public class SpawnerSettings {
 		}
 	}
 
-	public void writeToNBT(NBTTagCompound tag) {
+	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		tag.setBoolean("respondToRedstone", respondToRedstone);
 		if (respondToRedstone) {
 			tag.setBoolean("redstoneMode", redstoneMode);
@@ -214,8 +214,9 @@ public class SpawnerSettings {
 		}
 		tag.setTag("spawnGroups", groupList);
 
-		NBTTagCompound invTag = new NBTTagCompound();
 		tag.setTag("inventory", inventory.serializeNBT());
+
+		return tag;
 	}
 
 	public void readFromNBT(NBTTagCompound tag) {

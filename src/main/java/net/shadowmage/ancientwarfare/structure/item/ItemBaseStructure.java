@@ -9,7 +9,7 @@ import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 
 public class ItemBaseStructure extends ItemBase implements IClientRegistrar {
 	public ItemBaseStructure(String regName) {
-		super(AncientWarfareStructures.modID, regName);
+		super(AncientWarfareStructures.MOD_ID, regName);
 		setCreativeTab(AWStructuresItemLoader.structureTab);
 
 		AncientWarfareStructures.proxy.addClientRegistrar(this);

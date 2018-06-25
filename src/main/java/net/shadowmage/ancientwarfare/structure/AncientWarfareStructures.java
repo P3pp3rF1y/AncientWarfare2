@@ -16,7 +16,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBase;
 import net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase;
@@ -30,7 +29,6 @@ import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvance
 import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvancedBlock;
 import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvancedInventoryBlock;
 import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvancedInventoryItem;
-import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerPlacer;
 import net.shadowmage.ancientwarfare.structure.container.ContainerStructureScanner;
 import net.shadowmage.ancientwarfare.structure.container.ContainerStructureSelection;
 import net.shadowmage.ancientwarfare.structure.container.ContainerTownSelection;
@@ -44,29 +42,28 @@ import net.shadowmage.ancientwarfare.structure.template.load.TemplateLoader;
 import net.shadowmage.ancientwarfare.structure.town.WorldTownGenerator;
 import net.shadowmage.ancientwarfare.structure.world_gen.WorldGenTickHandler;
 import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod(name = "Ancient Warfare Structures", modid = AncientWarfareStructures.modID, version = "@VERSION@", dependencies = "required-after:ancientwarfare")
+@Mod(name = "Ancient Warfare Structures", modid = AncientWarfareStructures.MOD_ID, version = "@VERSION@", dependencies = "required-after:ancientwarfare")
 
 public class AncientWarfareStructures {
-	public static final String modID = "ancientwarfarestructure";
-	public static final String MOD_PREFIX = modID + ":";
+	public static final String MOD_ID = "ancientwarfarestructure";
+	public static final String MOD_PREFIX = MOD_ID + ":";
 
-	@Instance(value = modID)
+	@Instance(value = MOD_ID)
 	public static AncientWarfareStructures instance;
 
-	public static Logger log;
+	public static final Logger LOG = LogManager.getLogger(MOD_ID);
 
 	@SidedProxy(clientSide = "net.shadowmage.ancientwarfare.structure.proxy.ClientProxyStructures", serverSide = "net.shadowmage.ancientwarfare.core.proxy.CommonProxy")
+	@SuppressWarnings("squid:S1444")
 	public static CommonProxyBase proxy;
 
-	public static AWStructureStatics statics;
+	private AWStructureStatics statics;
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent evt) {
-		ModuleStatus.structuresLoaded = true;
-		log = evt.getModLog();
-
 		statics = new AWStructureStatics("AncientWarfareStructures");
 
 		/*
@@ -80,7 +77,7 @@ public class AncientWarfareStructures {
 			if (AWStructureStatics.enableTownGeneration)
 				GameRegistry.registerWorldGenerator(WorldTownGenerator.INSTANCE, 2);
 		}
-		EntityRegistry.registerModEntity(new ResourceLocation(AncientWarfareStructures.modID, "aw_gate"), EntityGate.class, "aw_gate", 0, this, 250, 200, false);
+		EntityRegistry.registerModEntity(new ResourceLocation(AncientWarfareStructures.MOD_ID, "aw_gate"), EntityGate.class, "aw_gate", 0, this, 250, 200, false);
 		/*
 		 * internal registry
          */
@@ -89,7 +86,6 @@ public class AncientWarfareStructures {
 		NetworkHandler.registerContainer(NetworkHandler.GUI_SCANNER, ContainerStructureScanner.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_BUILDER, ContainerStructureSelection.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_TOWN_BUILDER, ContainerTownSelection.class);
-		NetworkHandler.registerContainer(NetworkHandler.GUI_SPAWNER, ContainerSpawnerPlacer.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_SPAWNER_ADVANCED, ContainerSpawnerAdvanced.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_SPAWNER_ADVANCED_BLOCK, ContainerSpawnerAdvancedBlock.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_SPAWNER_ADVANCED_INVENTORY, ContainerSpawnerAdvancedInventoryItem.class);

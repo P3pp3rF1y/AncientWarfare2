@@ -1,61 +1,51 @@
-/*
- Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.item;
 
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
-import net.shadowmage.ancientwarfare.structure.gui.GuiSpawnerPlacer;
+import net.shadowmage.ancientwarfare.core.util.EntityTools;
+import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
+import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
+import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
+import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemSpawnerPlacer extends ItemBaseStructure {
+	private static final String SPAWNER_DATA_TAG = "spawnerData";
 
 	public ItemSpawnerPlacer(String name) {
 		super(name);
+		MinecraftForge.EVENT_BUS.register(this);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, @Nullable World world, List<String> tooltip, ITooltipFlag flag) {
 		tooltip.add(I18n.format("guistrings.selected_mob") + ":");
-		if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnerData")) {
-			NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData");
+		//noinspection ConstantConditions
+		if (stack.hasTagCompound() && stack.getTagCompound().hasKey(SPAWNER_DATA_TAG)) {
+			NBTTagCompound tag = stack.getTagCompound().getCompoundTag(SPAWNER_DATA_TAG);
 			String mobID = tag.getString("EntityId");
 			if (mobID.isEmpty()) {
 				tooltip.add(I18n.format("guistrings.no_selection"));
@@ -79,23 +69,18 @@ public class ItemSpawnerPlacer extends ItemBaseStructure {
 			return new ActionResult<>(EnumActionResult.PASS, stack);
 		}
 		RayTraceResult traceResult = rayTrace(player.world, player, false);
-		if (player.capabilities.isCreativeMode && player.isSneaking()) {
-			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SPAWNER, 0, 0, 0);
-		} else if (traceResult != null && traceResult.typeOfHit == RayTraceResult.Type.BLOCK) {
-			if (stack.hasTagCompound() && stack.getTagCompound().hasKey("spawnerData")) {
+		//noinspection ConstantConditions
+		if (traceResult != null && traceResult.typeOfHit == RayTraceResult.Type.BLOCK) {
+			//noinspection ConstantConditions
+			if (stack.hasTagCompound() && stack.getTagCompound().hasKey(SPAWNER_DATA_TAG)) {
 				BlockPos placePos = traceResult.getBlockPos().offset(traceResult.sideHit);
-				if (player.world.setBlockState(placePos, Blocks.MOB_SPAWNER.getDefaultState())) {
-					NBTTagCompound tag = stack.getTagCompound().getCompoundTag("spawnerData");
-					tag.setString("id", Blocks.MOB_SPAWNER.getRegistryName().toString());
-					tag.setInteger("x", placePos.getX());
-					tag.setInteger("y", placePos.getY());
-					tag.setInteger("z", placePos.getZ());
+				if (player.world.setBlockState(placePos, AWStructuresBlocks.advancedSpawner.getDefaultState())) {
 					TileEntity te = player.world.getTileEntity(placePos);
-					te.readFromNBT(tag);
-
-					if (!player.capabilities.isCreativeMode) {
-						stack.shrink(1);
-					}
+					TileAdvancedSpawner spawnerTe = (TileAdvancedSpawner) te;
+					SpawnerSettings settings = new SpawnerSettings();
+					settings.readFromNBT(stack.getTagCompound().getCompoundTag(SPAWNER_DATA_TAG));
+					//noinspection ConstantConditions
+					spawnerTe.setSettings(settings);
 				}
 			} else {
 				player.sendMessage(new TextComponentTranslation("guistrings.spawner.nodata"));
@@ -106,11 +91,56 @@ public class ItemSpawnerPlacer extends ItemBaseStructure {
 		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
 	}
 
+	@SubscribeEvent
+	public void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
+		EntityPlayer player = event.getEntityPlayer();
+		ItemStack spawnerPlacer = EntityTools.getItemFromEitherHand(player, ItemSpawnerPlacer.class);
+		if (!spawnerPlacer.isEmpty()) {
+			event.setCanceled(true);
+			event.setCancellationResult(EnumActionResult.SUCCESS);
+
+			Entity entity = event.getTarget();
+
+			//noinspection ConstantConditions
+			ResourceLocation registryName = EntityRegistry.getEntry(entity.getClass()).getRegistryName();
+			SpawnerSettings.EntitySpawnSettings spawnSettings = new SpawnerSettings.EntitySpawnSettings();
+			//noinspection ConstantConditions
+			spawnSettings.setEntityToSpawn(registryName);
+			spawnSettings.setSpawnLimitTotal(1);
+			spawnSettings.setSpawnCountMin(1);
+			spawnSettings.setSpawnCountMax(1);
+			spawnSettings.setCustomSpawnTag(getCustomSpawnTag(entity));
+			SpawnerSettings.EntitySpawnGroup group = new SpawnerSettings.EntitySpawnGroup();
+			group.addSpawnSetting(spawnSettings);
+			SpawnerSettings settings = new SpawnerSettings();
+			settings.addSpawnGroup(group);
+			settings.setSpawnDelay(0);
+			settings.setMaxDelay(0);
+			settings.setSpawnRange(0);
+			settings.setPlayerRange(16);
+
+			spawnerPlacer.setTagInfo(SPAWNER_DATA_TAG, settings.writeToNBT(new NBTTagCompound()));
+		}
+	}
+
+	private NBTTagCompound getCustomSpawnTag(Entity entity) {
+		NBTTagCompound entityTag = new NBTTagCompound();
+		entity.writeToNBT(entityTag);
+
+		NBTTagCompound ret = new NBTTagCompound();
+
+		if (entity instanceof NpcFaction) {
+			ret.setString("factionName", entityTag.getString("factionName"));
+		}
+		ret.setTag("HandItems", entityTag.getTag("HandItems"));
+		ret.setTag("ArmorItems", entityTag.getTag("ArmorItems"));
+		ret.setTag("ArmorDropChances", entityTag.getTag("ArmorDropChances"));
+		return ret;
+	}
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerClient() {
 		super.registerClient();
-
-		NetworkHandler.registerGui(NetworkHandler.GUI_SPAWNER, GuiSpawnerPlacer.class);
 	}
 }

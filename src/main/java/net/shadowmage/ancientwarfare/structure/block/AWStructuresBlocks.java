@@ -4,7 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 
-@ObjectHolder(AncientWarfareStructures.modID)
+@ObjectHolder(AncientWarfareStructures.MOD_ID)
 public class AWStructuresBlocks {
 	@ObjectHolder("advanced_spawner")
 	public static Block advancedSpawner;

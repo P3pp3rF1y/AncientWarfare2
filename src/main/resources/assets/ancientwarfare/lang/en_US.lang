@@ -646,6 +646,20 @@ entity.ancientwarfarenpc.custom_3.civilian.male.name=Imperial Man
 entity.ancientwarfarenpc.custom_3.civilian.female.name=Imperial Woman
 entity.ancientwarfarenpc.custom_3.bard.name=Imperial Bard
 entity.ancientwarfarenpc.custom_3.siege_engineer.name=Custom 3 Siege Engineer
+entity.ancientwarfarenpc.faction.archer.name=Faction Archer
+entity.ancientwarfarenpc.faction.archer.elite.name=Elite Faction Archer
+entity.ancientwarfarenpc.faction.soldier.name=Faction Soldier
+entity.ancientwarfarenpc.faction.soldier.elite.name=Elite Faction Soldier
+entity.ancientwarfarenpc.faction.cavalry.name=Faction Cavalry
+entity.ancientwarfarenpc.faction.mounted_archer.name=Faction Mounted Archer
+entity.ancientwarfarenpc.faction.trader.name=Faction Trader
+entity.ancientwarfarenpc.faction.priest.name=Faction Priest
+entity.ancientwarfarenpc.faction.leader.name=Faction Leader
+entity.ancientwarfarenpc.faction.leader.elite.name=Elite Faction Leader
+entity.ancientwarfarenpc.faction.civilian.male.name=Faction Civilian Male
+entity.ancientwarfarenpc.faction.civilian.female.name=Faction Civilian Female
+entity.ancientwarfarenpc.faction.bard.name=Faction Bard
+entity.ancientwarfarenpc.faction.siege_engineer.name=Faction Siege Engineer
 
 #commands
 command.aw.structure.usage=/awstructure save [templateName] OR /awstructure delete <templateName> [true to remove the config file] OR /awstructure build <templateName> <x> <y> <z> [north:east:south:west] OR /awstructure reload

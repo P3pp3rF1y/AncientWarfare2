@@ -56,7 +56,6 @@ public final class NetworkHandler implements IGuiHandler {
 	public static final int GUI_CRAFTING = 0;
 	public static final int GUI_SCANNER = 1;
 	public static final int GUI_BUILDER = 2;
-	public static final int GUI_SPAWNER = 3;
 	public static final int GUI_NPC_INVENTORY = 4;
 	public static final int GUI_WORKSITE_INVENTORY_SIDE_ADJUST = 5;
 	public static final int GUI_NPC_TRADE_ORDER = 6;

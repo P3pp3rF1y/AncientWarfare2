@@ -12,7 +12,7 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 
-@Mod.EventBusSubscriber(modid = AncientWarfareStructures.modID)
+@Mod.EventBusSubscriber(modid = AncientWarfareStructures.MOD_ID)
 public class AWStructuresItemLoader {
 
 	public static final CreativeTabs structureTab = new CreativeTabs("tabs.structures") {

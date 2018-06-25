@@ -166,6 +166,8 @@ public abstract class NpcFaction extends NpcBase {
 	@Override
 	public void writeEntityToNBT(NBTTagCompound tag) {
 		super.writeEntityToNBT(tag);
-		tag.setString("factionName", factionName);
+		if (factionName != null) {
+			tag.setString("factionName", factionName);
+		}
 	}
 }
