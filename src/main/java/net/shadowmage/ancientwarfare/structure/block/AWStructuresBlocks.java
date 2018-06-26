@@ -16,4 +16,6 @@ public class AWStructuresBlocks {
 	public static Block builderBlock;
 	@ObjectHolder("sound_block")
 	public static Block soundBlock;
+	@ObjectHolder("structure_scanner_block")
+	public static Block structureScanner;
 }

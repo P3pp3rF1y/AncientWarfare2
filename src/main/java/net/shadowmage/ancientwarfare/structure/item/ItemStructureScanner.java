@@ -74,7 +74,7 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
 		if (player.isSneaking()) {
 			scanSettings.clearSettings();
 			ItemStructureSettings.setSettingsFor(stack, scanSettings);
-		} else if (scanSettings.hasPos1() && scanSettings.hasPos2() && scanSettings.hasBuildKey()) {
+		} else if (readyToExport(scanSettings)) {
 			BlockPos key = scanSettings.key;
 			if (player.getDistance(key.getX() + 0.5d, key.getY(), key.getZ() + 0.5d) > 10) {
 				player.sendMessage(new TextComponentTranslation("guistrings.structure.scanner.too_far"));
@@ -84,6 +84,10 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
 			NetworkHandler.INSTANCE.openGui(player, NetworkHandler.GUI_SCANNER, 0, 0, 0);
 		}
 		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+	}
+
+	public static boolean readyToExport(ItemStructureSettings scanSettings) {
+		return scanSettings.hasPos1() && scanSettings.hasPos2() && scanSettings.hasBuildKey();
 	}
 
 	public static boolean scanStructure(World world, BlockPos pos1, BlockPos pos2, BlockPos key, EnumFacing face, String name, boolean include, NBTTagCompound tag) {

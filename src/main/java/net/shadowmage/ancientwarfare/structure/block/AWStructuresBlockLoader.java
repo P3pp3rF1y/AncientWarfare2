@@ -18,8 +18,9 @@ import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureBuilder;
+import net.shadowmage.ancientwarfare.structure.tile.TileStructureScanner;
 
-import static net.shadowmage.ancientwarfare.structure.AncientWarfareStructures.MOD_PREFIX;
+import static net.shadowmage.ancientwarfare.structure.AncientWarfareStructures.MOD_ID;
 
 @Mod.EventBusSubscriber(modid = AncientWarfareStructures.MOD_ID)
 public class AWStructuresBlockLoader {
@@ -38,6 +39,8 @@ public class AWStructuresBlockLoader {
 		registry.register(new ItemBlockStructureBuilder(AWStructuresBlocks.builderBlock));
 		//noinspection ConstantConditions
 		registry.register(new ItemBlock(AWStructuresBlocks.soundBlock).setRegistryName(AWStructuresBlocks.soundBlock.getRegistryName()));
+
+		registry.register(new ItemBlock(AWStructuresBlocks.structureScanner).setRegistryName(AWStructuresBlocks.structureScanner.getRegistryName()));
 	}
 
 	@SubscribeEvent
@@ -58,9 +61,12 @@ public class AWStructuresBlockLoader {
 
 		registry.register(new BlockSoundBlock());
 		registerTile(TileSoundBlock.class, "sound_block_tile");
+
+		registry.register(new BlockStructureScanner());
+		registerTile(TileStructureScanner.class, "structure_scanner_block_tile");
 	}
 
 	private static void registerTile(Class<? extends TileEntity> teClass, String teId) {
-		GameRegistry.registerTileEntity(teClass, new ResourceLocation(MOD_PREFIX, teId));
+		GameRegistry.registerTileEntity(teClass, new ResourceLocation(MOD_ID, teId));
 	}
 }
