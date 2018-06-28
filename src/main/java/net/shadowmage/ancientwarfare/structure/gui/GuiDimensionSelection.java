@@ -8,7 +8,6 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
-import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,7 +18,6 @@ public class GuiDimensionSelection extends GuiContainerBase {
 
 	private CompositeScrolled area;
 	private Checkbox whiteList;
-	private StructureValidator validator;
 
 	private NumberInput dimensionSelection;
 
@@ -29,8 +27,7 @@ public class GuiDimensionSelection extends GuiContainerBase {
 		super(parent.getContainer());
 		this.parent = parent;
 		this.shouldCloseOnVanillaKeys = false;
-		this.validator = parent.validator;
-		for (int dim : validator.getAcceptedDimensions()) {
+		for (int dim : parent.getContainer().getValidator().getAcceptedDimensions()) {
 			dims.add(dim);
 		}
 	}
@@ -54,11 +51,11 @@ public class GuiDimensionSelection extends GuiContainerBase {
 		whiteList = new Checkbox(8, 20, 16, 16, "guistrings.dimension_whitelist") {
 			@Override
 			public void onToggled() {
-				parent.validator.setDimensionWhiteList(checked());
+				parent.getContainer().updateValidator(v -> v.setDimensionWhiteList(checked()));
 			}
 		};
 		addGuiElement(whiteList);
-		whiteList.setChecked(parent.validator.isDimensionWhiteList());
+		whiteList.setChecked(parent.getContainer().getValidator().isDimensionWhiteList());
 
 		dimensionSelection = new NumberInput(140, 22, 35, 0, this);
 		dimensionSelection.setIntegerValue();
@@ -68,7 +65,7 @@ public class GuiDimensionSelection extends GuiContainerBase {
 			protected void onPressed() {
 				int num = dimensionSelection.getIntegerValue();
 				dims.add(num);
-				validator.setValidDimension(dims);
+				parent.getContainer().updateValidator(v -> v.setValidDimension(dims));
 				refreshGui();
 			}
 		};
@@ -80,7 +77,7 @@ public class GuiDimensionSelection extends GuiContainerBase {
 	@Override
 	public void setupElements() {
 		area.clearElements();
-		whiteList.setChecked(parent.validator.isDimensionWhiteList());
+		whiteList.setChecked(parent.getContainer().getValidator().isDimensionWhiteList());
 
 		int totalHeight = 8;
 		for (Integer dim : dims) {
@@ -107,7 +104,7 @@ public class GuiDimensionSelection extends GuiContainerBase {
 		@Override
 		protected void onPressed() {
 			dims.remove(dim);
-			validator.setValidDimension(dims);
+			parent.getContainer().updateValidator(v -> v.setValidDimension(dims));
 			refreshGui();
 		}
 	}

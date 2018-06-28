@@ -21,6 +21,7 @@
 
 package net.shadowmage.ancientwarfare.structure.template.build.validation;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -82,10 +83,8 @@ public enum StructureValidationType {
 		return null;
 	}
 
+	@Nullable
 	public static StructureValidationType getTypeFromName(String name) {
-		if (name == null) {
-			return null;
-		}
 		try {
 			return StructureValidationType.valueOf(name.toUpperCase(Locale.ENGLISH));
 		}

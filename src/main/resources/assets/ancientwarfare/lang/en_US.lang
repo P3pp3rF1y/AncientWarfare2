@@ -160,6 +160,7 @@ tile.drafting_station.name=Drafting Station
 tile.structure_builder_ticked.name=Survival Structure Builder
 tile.sound_block.name=Sound Block
 tile.gate_proxy.name=Gate Proxy Block
+tile.structure_scanner_block.name=Structure Scanner
 #npc
 tile.town_hall.name=Town Hall
 tile.recruiting_station.name=Recruiting Station

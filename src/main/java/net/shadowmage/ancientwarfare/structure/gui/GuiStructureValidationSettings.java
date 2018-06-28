@@ -107,15 +107,14 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
 			return;
 		}//should never happen
 		StructureValidator newValidator = type.getValidator();
-		newValidator.inheritPropertiesFrom(parent.validator);
-		parent.validationType = type;
-		parent.validator = newValidator;
+		newValidator.inheritPropertiesFrom(parent.getContainer().getValidator());
+		parent.getContainer().setValidator(newValidator);
 		this.refreshGui();
 	}
 
 	@Override
 	public void setupElements() {
-		typeLabel.setText(I18n.format("guistrings.validation_type") + ": " + parent.validationType.getName());
+		typeLabel.setText(I18n.format("guistrings.validation_type") + ": " + parent.getContainer().getValidationTypeName());
 
 		int totalHeight = 0;
 		area.clearElements();
@@ -128,7 +127,7 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
 		String propName;
 		Checkbox box;
 		NumberInput input;
-		for (StructureValidationProperty property : parent.validator.getProperties()) {
+		for (StructureValidationProperty property : parent.getContainer().getValidator().getProperties()) {
 			propName = property.getRegName();
 			if (propName.equals(StructureValidator.PROP_BIOME_LIST) || propName.equals(StructureValidator.PROP_BIOME_WHITE_LIST) || propName.equals(StructureValidator.PROP_DIMENSION_LIST) || propName.equals(StructureValidator.PROP_DIMENSION_WHITE_LIST) || propName.equals(StructureValidator.PROP_BLOCK_LIST)) {
 				continue;//skip the properties handled by blocks, biome, or dimensions setup guis

@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.nbt.NBTTagCompound;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
@@ -12,8 +11,6 @@ import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.structure.container.ContainerStructureScanner;
-import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidationType;
-import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidator;
 
 import java.io.File;
 
@@ -21,27 +18,19 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 
 	private Text nameInput;
 	private Label validationTypeLabel;
-	private Checkbox includeOnExport;
-
-	protected StructureValidationType validationType = StructureValidationType.GROUND;
-	protected StructureValidator validator;
 
 	public GuiStructureScanner(ContainerBase par1Container) {
 		super(par1Container);
-		validator = validationType.getValidator();
-		this.shouldCloseOnVanillaKeys = false;
 	}
 
 	@Override
 	public void initElements() {
-		Label label = new Label(8, 8, I18n.format("guistrings.input_name") + ":");
+		int totalHeight = 8;
+
+		Label label = new Label(8, totalHeight, I18n.format("guistrings.input_name") + ":");
 		this.addGuiElement(label);
 
-		nameInput = new Text(8, 8 + 12, 160, "", this);
-		nameInput.removeAllowedChars('/', '\\', '$', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', ':', ';', '"', '\'', '+', '=', '<', '>', '?', '.', ',', '[', ']', '{', '}', '|');
-		this.addGuiElement(nameInput);
-
-		Button button = new Button(256 - 55 - 8, 8, 55, 16, "guistrings.export");
+		Button button = new Button(256 - 55 - 8, totalHeight, 55, 16, "guistrings.export");
 		button.addNewListener(new Listener(Listener.MOUSE_UP) {
 			@Override
 			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
@@ -53,23 +42,40 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 		});
 		this.addGuiElement(button);
 
-		button = new Button(256 - 55 - 8, 8 + 16, 55, 16, "guistrings.cancel") {
+		totalHeight += 12;
+
+		nameInput = new Text(8, totalHeight, 160, getContainer().getName(), this) {
+			@Override
+			public void onTextUpdated(String oldText, String newText) {
+				if (!oldText.equals(newText)) {
+					getContainer().updateName(newText);
+				}
+			}
+		};
+		nameInput.removeAllowedChars('/', '\\', '$', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', ':', ';', '"', '\'', '+', '=', '<', '>', '?', '.', ',', '[', ']', '{', '}', '|');
+		this.addGuiElement(nameInput);
+		totalHeight += 4;
+
+		button = new Button(256 - 55 - 8, totalHeight, 55, 16, "guistrings.cancel") {
 			@Override
 			protected void onPressed() {
 				closeGui();
 			}
 		};
 		this.addGuiElement(button);
+		totalHeight += 8;
 
-		int totalHeight = 36;
-
-		Checkbox box = new Checkbox(8, totalHeight, 16, 16, "guistrings.include_immediately");
-		box.setChecked(true);
+		Checkbox box = new Checkbox(8, totalHeight, 16, 16, "guistrings.include_immediately") {
+			@Override
+			public void onToggled() {
+				getContainer().setIncludeImmediately(checked());
+			}
+		};
+		box.setChecked(getContainer().getIncludeImmediately());
 		this.addGuiElement(box);
-		includeOnExport = box;
 		totalHeight += 16 + 8;
 
-		validationTypeLabel = new Label(8, totalHeight, I18n.format("guistrings.validation_type") + " " + validationType.getName());
+		validationTypeLabel = new Label(8, totalHeight, I18n.format("guistrings.validation_type") + " " + getContainer().getValidationTypeName());
 		this.addGuiElement(validationTypeLabel);
 		totalHeight += 10;
 
@@ -98,12 +104,11 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 			}
 		};
 		this.addGuiElement(button);
-		totalHeight += 16;
 	}
 
 	@Override
 	public void setupElements() {
-		validationTypeLabel.setText(I18n.format("guistrings.validation_type") + " " + validationType.getName());
+		validationTypeLabel.setText(I18n.format("guistrings.validation_type") + " " + getContainer().getValidationTypeName());
 	}
 
 	private void export() {
@@ -111,9 +116,7 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 		if (!validateName(name)) {
 			Minecraft.getMinecraft().displayGuiScreen(new GuiStructureIncorrectName(this));
 		} else {
-			NBTTagCompound val = new NBTTagCompound();
-			validator.writeToNBT(val);
-			getContainer().export(name, includeOnExport.checked(), val);
+			getContainer().export();
 			this.closeGui();
 		}
 	}
