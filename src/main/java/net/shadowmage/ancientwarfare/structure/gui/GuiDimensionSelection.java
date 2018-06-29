@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
+import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.Checkbox;
@@ -24,7 +25,7 @@ public class GuiDimensionSelection extends GuiContainerBase {
 	private Set<Integer> dims = new HashSet<>();
 
 	public GuiDimensionSelection(GuiStructureScanner parent) {
-		super(parent.getContainer());
+		super(new ContainerBase(parent.getContainer().player));
 		this.parent = parent;
 		this.shouldCloseOnVanillaKeys = false;
 		for (int dim : parent.getContainer().getValidator().getAcceptedDimensions()) {

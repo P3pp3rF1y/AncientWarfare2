@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.structure.gui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.world.biome.Biome;
+import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -24,7 +25,7 @@ public class GuiStructureBiomeSelection extends GuiContainerBase {
 	private Listener listener;
 
 	public GuiStructureBiomeSelection(GuiStructureScanner parent) {
-		super(parent.getContainer());
+		super(new ContainerBase(parent.getContainer().player));
 		this.parent = parent;
 		this.shouldCloseOnVanillaKeys = false;
 	}

@@ -2,6 +2,11 @@ package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IContainerListener;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
@@ -14,33 +19,32 @@ import net.shadowmage.ancientwarfare.structure.container.ContainerStructureScann
 
 import java.io.File;
 
-public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScanner> {
+public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScanner> implements IContainerListener {
 
 	private Text nameInput;
 	private Label validationTypeLabel;
+	private Button exportButton;
+	private Checkbox includeImmediately;
+	private Button setupValidationButton;
+	private Button selectBiomesButton;
+	private Button selectDimensionsButton;
 
 	public GuiStructureScanner(ContainerBase par1Container) {
 		super(par1Container);
+
+		par1Container.addListener(this);
 	}
 
 	@Override
 	public void initElements() {
 		int totalHeight = 8;
 
+		if (getContainer().getScannerTile().isPresent()) {
+			totalHeight += 20;
+		}
+
 		Label label = new Label(8, totalHeight, I18n.format("guistrings.input_name") + ":");
 		this.addGuiElement(label);
-
-		Button button = new Button(256 - 55 - 8, totalHeight, 55, 16, "guistrings.export");
-		button.addNewListener(new Listener(Listener.MOUSE_UP) {
-			@Override
-			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
-				if (widget.isMouseOverElement(evt.mx, evt.my)) {
-					export();
-				}
-				return true;
-			}
-		});
-		this.addGuiElement(button);
 
 		totalHeight += 12;
 
@@ -54,60 +58,90 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 		};
 		nameInput.removeAllowedChars('/', '\\', '$', '!', '@', '#', '$', '%', '^', '&', '*', '(', ')', ':', ';', '"', '\'', '+', '=', '<', '>', '?', '.', ',', '[', ']', '{', '}', '|');
 		this.addGuiElement(nameInput);
-		totalHeight += 4;
+		totalHeight += 12;
 
-		button = new Button(256 - 55 - 8, totalHeight, 55, 16, "guistrings.cancel") {
-			@Override
-			protected void onPressed() {
-				closeGui();
-			}
-		};
-		this.addGuiElement(button);
-		totalHeight += 8;
-
-		Checkbox box = new Checkbox(8, totalHeight, 16, 16, "guistrings.include_immediately") {
+		includeImmediately = new Checkbox(8, totalHeight, 16, 16, "guistrings.include_immediately") {
 			@Override
 			public void onToggled() {
 				getContainer().setIncludeImmediately(checked());
 			}
 		};
-		box.setChecked(getContainer().getIncludeImmediately());
-		this.addGuiElement(box);
+		this.addGuiElement(includeImmediately);
 		totalHeight += 16 + 8;
 
 		validationTypeLabel = new Label(8, totalHeight, I18n.format("guistrings.validation_type") + " " + getContainer().getValidationTypeName());
 		this.addGuiElement(validationTypeLabel);
 		totalHeight += 10;
 
-		button = new Button(8, totalHeight, 120, 16, "guistrings.setup_validation") {
+		setupValidationButton = new Button(8, totalHeight, 120, 16, "guistrings.setup_validation") {
 			@Override
 			protected void onPressed() {
 				Minecraft.getMinecraft().displayGuiScreen(new GuiStructureValidationSettings(GuiStructureScanner.this));
 			}
 		};
-		this.addGuiElement(button);
+		this.addGuiElement(setupValidationButton);
 		totalHeight += 16;
 
-		button = new Button(8, totalHeight, 120, 16, "guistrings.select_biomes") {
+		selectBiomesButton = new Button(8, totalHeight, 120, 16, "guistrings.select_biomes") {
 			@Override
 			protected void onPressed() {
 				Minecraft.getMinecraft().displayGuiScreen(new GuiStructureBiomeSelection(GuiStructureScanner.this));
 			}
 		};
-		this.addGuiElement(button);
+		this.addGuiElement(selectBiomesButton);
 		totalHeight += 16;
 
-		button = new Button(8, totalHeight, 120, 16, "guistrings.select_dimensions") {
+		selectDimensionsButton = new Button(8, totalHeight, 120, 16, "guistrings.select_dimensions") {
 			@Override
 			protected void onPressed() {
 				Minecraft.getMinecraft().displayGuiScreen(new GuiDimensionSelection(GuiStructureScanner.this));
 			}
 		};
-		this.addGuiElement(button);
+		this.addGuiElement(selectDimensionsButton);
+
+		addButtons();
+		updateElements();
+	}
+
+	private void addButtons() {
+		int totalHeight = 8;
+		exportButton = new Button(256 - 55 - 8, totalHeight, 55, 16, "guistrings.export");
+		exportButton.addNewListener(new Listener(Listener.MOUSE_UP) {
+			@Override
+			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
+				if (widget.isMouseOverElement(evt.mx, evt.my)) {
+					export();
+				}
+				return true;
+			}
+		});
+		this.addGuiElement(exportButton);
+	}
+
+	private void updateElements() {
+		if (exportButton == null) {
+			return;
+		}
+		boolean enabled = getContainer().hasScanner();
+		exportButton.setEnabled(enabled);
+
+		nameInput.setText(getContainer().getName());
+		nameInput.setEnabled(enabled);
+
+		includeImmediately.setChecked(getContainer().getIncludeImmediately());
+		includeImmediately.setEnabled(enabled);
+
+		setupValidationButton.setEnabled(enabled);
+		selectBiomesButton.setEnabled(enabled);
+		selectDimensionsButton.setEnabled(enabled);
 	}
 
 	@Override
 	public void setupElements() {
+		if (!getContainer().hasScanner()) {
+			return;
+		}
+
 		validationTypeLabel.setText(I18n.format("guistrings.validation_type") + " " + getContainer().getValidationTypeName());
 	}
 
@@ -137,4 +171,25 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 		return ch != File.separatorChar;//TODO validate chars
 	}
 
+	@Override
+	public void sendAllContents(Container containerToSend, NonNullList<ItemStack> itemsList) {
+
+	}
+
+	@Override
+	public void sendSlotContents(Container containerToSend, int slotInd, ItemStack stack) {
+		if (slotInd == 0) {
+			updateElements();
+		}
+	}
+
+	@Override
+	public void sendWindowProperty(Container containerIn, int varToUpdate, int newValue) {
+
+	}
+
+	@Override
+	public void sendAllWindowProperties(Container containerIn, IInventory inventory) {
+
+	}
 }

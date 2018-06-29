@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.structure.container;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagByte;
@@ -8,6 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItems;
@@ -20,7 +22,7 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 public class ContainerStructureScanner extends ContainerBase {
-	private final ItemStack scanner;
+	private ItemStack scanner;
 	private final EnumHand hand;
 	private final TileStructureScanner scannerTile;
 
@@ -34,18 +36,27 @@ public class ContainerStructureScanner extends ContainerBase {
 			scannerTile = (TileStructureScanner) player.world.getTileEntity(new BlockPos(x, y, z));
 			//noinspection ConstantConditions
 			scanner = scannerTile.getScannerInventory().getStackInSlot(0);
+			Slot slot = new SlotItemHandler(scannerTile.getScannerInventory(), 0, 8, 8) {
+				@Override
+				public void onSlotChanged() {
+					super.onSlotChanged();
+
+					Optional<TileStructureScanner> te = getScannerTile();
+					scanner = te.map(tileStructureScanner -> tileStructureScanner.getScannerInventory().getStackInSlot(0)).orElse(ItemStack.EMPTY);
+					if (player.world.isRemote) {
+						listeners.forEach(l -> l.sendSlotContents(ContainerStructureScanner.this, 0, scanner));
+					}
+				}
+			};
+
+			addSlotToContainer(slot);
+			addPlayerSlots();
 			hand = null;
 		} else {
 			scannerTile = null;
 			scanner = EntityTools.getItemFromEitherHand(player, ItemStructureScanner.class);
 			hand = EntityTools.getHandHoldingItem(player, AWStructuresItems.structureScanner);
 		}
-
-		if (scanner.isEmpty()) {
-			throw new IllegalArgumentException("No scanner in hand");
-		}
-		addPlayerSlots();
-		removeSlots();
 	}
 
 	@Override
@@ -70,6 +81,10 @@ public class ContainerStructureScanner extends ContainerBase {
 				setValidator(validator);
 			}
 		}
+	}
+
+	public boolean hasScanner() {
+		return !scanner.isEmpty();
 	}
 
 	private void sendUpdateData(String name, NBTBase data) {

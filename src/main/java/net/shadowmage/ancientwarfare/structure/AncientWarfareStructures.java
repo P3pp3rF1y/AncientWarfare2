@@ -30,7 +30,6 @@ import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvance
 import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvancedInventoryBlock;
 import net.shadowmage.ancientwarfare.structure.container.ContainerSpawnerAdvancedInventoryItem;
 import net.shadowmage.ancientwarfare.structure.container.ContainerStructureScanner;
-import net.shadowmage.ancientwarfare.structure.container.ContainerStructureScannerBlock;
 import net.shadowmage.ancientwarfare.structure.container.ContainerStructureSelection;
 import net.shadowmage.ancientwarfare.structure.container.ContainerTownSelection;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
@@ -94,7 +93,6 @@ public class AncientWarfareStructures {
 		NetworkHandler.registerContainer(NetworkHandler.GUI_GATE_CONTROL, ContainerGateControl.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_DRAFTING_STATION, ContainerDraftingStation.class);
 		NetworkHandler.registerContainer(NetworkHandler.GUI_SOUND_BLOCK, ContainerSoundBlock.class);
-		NetworkHandler.registerContainer(NetworkHandler.GUI_STRUCTURE_SCANNER_BLOCK, ContainerStructureScannerBlock.class);
 		proxy.preInit();
 
 		String path = evt.getModConfigurationDirectory().getAbsolutePath();
