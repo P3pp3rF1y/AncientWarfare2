@@ -65,7 +65,7 @@ public class ContainerStructureScanner extends ContainerBase {
 			return;
 		}
 		String mode = tag.getString("mode");
-		if (mode.equals("export") && ItemStructureScanner.scanStructure(player.world, scanner)) {
+		if (mode.equals("export") && ItemStructureScanner.scanStructure(player.world, scanner) && !getScannerTile().isPresent()) {
 			ItemStructureScanner.clearSettings(scanner);
 			saveScannerData(player);
 		} else if (mode.equals("update")) {

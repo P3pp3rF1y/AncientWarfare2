@@ -28,6 +28,8 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 	private Button setupValidationButton;
 	private Button selectBiomesButton;
 	private Button selectDimensionsButton;
+	private Label statusMessage;
+	private int statusTicks = 0;
 
 	public GuiStructureScanner(ContainerBase par1Container) {
 		super(par1Container);
@@ -38,6 +40,9 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 	@Override
 	public void initElements() {
 		int totalHeight = 8;
+
+		statusMessage = new Label(80, 10, "");
+		addGuiElement(statusMessage);
 
 		if (getContainer().getScannerTile().isPresent()) {
 			totalHeight += 20;
@@ -145,13 +150,27 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 		validationTypeLabel.setText(I18n.format("guistrings.validation_type") + " " + getContainer().getValidationTypeName());
 	}
 
+	@Override
+	public void updateScreen() {
+		super.updateScreen();
+		if (statusTicks > 0) {
+			statusTicks--;
+		}
+		statusMessage.setVisible(statusTicks > 0);
+	}
+
 	private void export() {
 		String name = nameInput.getText();
 		if (!validateName(name)) {
 			Minecraft.getMinecraft().displayGuiScreen(new GuiStructureIncorrectName(this));
 		} else {
 			getContainer().export();
-			this.closeGui();
+			if (!getContainer().getScannerTile().isPresent()) {
+				this.closeGui();
+			} else {
+				statusMessage.setText("Exported");
+				statusTicks = 60;
+			}
 		}
 	}
 
