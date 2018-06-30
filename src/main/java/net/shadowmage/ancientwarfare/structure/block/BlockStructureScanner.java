@@ -8,7 +8,11 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.structure.render.StructureScannerRenderer;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureScanner;
 
 import javax.annotation.Nullable;
@@ -35,5 +39,13 @@ public class BlockStructureScanner extends BlockBaseStructure {
 	@Override
 	public TileEntity createTileEntity(World world, IBlockState state) {
 		return new TileStructureScanner();
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerClient() {
+		super.registerClient();
+
+		ClientRegistry.bindTileEntitySpecialRenderer(TileStructureScanner.class, new StructureScannerRenderer());
 	}
 }
