@@ -79,6 +79,8 @@ public class ContainerStructureScanner extends ContainerBase {
 				StructureValidator validator = type.getValidator();
 				validator.readFromNBT(validatorNBT);
 				setValidator(validator);
+			} else if (tag.hasKey("toggleBounds")) {
+				toggleBounds();
 			}
 		}
 	}
@@ -153,5 +155,16 @@ public class ContainerStructureScanner extends ContainerBase {
 		StructureValidator validator = getValidator();
 		doUpdate.accept(validator);
 		setValidator(validator);
+	}
+
+	public void toggleBounds() {
+		if (player.world.isRemote) {
+			sendUpdateData("toggleBounds", new NBTTagByte((byte) 1));
+		}
+		getScannerTile().ifPresent(TileStructureScanner::toggleBounds);
+	}
+
+	public boolean getBoundsActive() {
+		return getScannerTile().map(TileStructureScanner::getBoundsActive).orElse(false);
 	}
 }

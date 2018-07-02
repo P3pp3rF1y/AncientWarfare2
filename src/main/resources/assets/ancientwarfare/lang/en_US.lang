@@ -172,6 +172,8 @@ tile.teleport_hub.tooltip.3=between player HQ's and this.
 #vehicle
 
 #guistrings
+guistrings.bounds_on=Bounds ON
+guistrings.bounds_off=Bounds OFF
 guistrings.volume=Volume
 guistrings.length=Length
 guistrings.random=Random

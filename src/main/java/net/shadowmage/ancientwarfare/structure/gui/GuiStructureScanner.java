@@ -30,6 +30,7 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 	private Button selectDimensionsButton;
 	private Label statusMessage;
 	private int statusTicks = 0;
+	private Button boundsButton;
 
 	public GuiStructureScanner(ContainerBase par1Container) {
 		super(par1Container);
@@ -120,7 +121,24 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 				return true;
 			}
 		});
-		this.addGuiElement(exportButton);
+		addGuiElement(exportButton);
+
+		boundsButton = new Button(256 - 65 -8, -20, 65, 16, "guistrings.bounds_on");
+		boundsButton.addNewListener(new Listener(Listener.MOUSE_UP) {
+			@Override
+			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
+				if (widget.isMouseOverElement(evt.mx, evt.my)) {
+					toggleBounds();
+				}
+				return true;
+			}
+		});
+		addGuiElement(boundsButton);
+	}
+
+	private void toggleBounds() {
+		getContainer().toggleBounds();
+		boundsButton.setText(getContainer().getBoundsActive() ? "guistrings.bounds_off" : "guistrings.bounds_on");
 	}
 
 	private void updateElements() {
@@ -129,6 +147,7 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 		}
 		boolean enabled = getContainer().hasScanner();
 		exportButton.setEnabled(enabled);
+		boundsButton.setEnabled(enabled);
 
 		nameInput.setText(getContainer().getName());
 		nameInput.setEnabled(enabled);

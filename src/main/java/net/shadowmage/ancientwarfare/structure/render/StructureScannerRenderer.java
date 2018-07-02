@@ -14,7 +14,7 @@ public class StructureScannerRenderer extends TileEntitySpecialRenderer<TileStru
 		Minecraft mc = Minecraft.getMinecraft();
 		mc.entityRenderer.disableLightmap();
 		ItemStack scanner = te.getScannerInventory().getStackInSlot(0);
-		if (!scanner.isEmpty()) {
+		if (te.getBoundsActive() && !scanner.isEmpty()) {
 			((IBoxRenderer) scanner.getItem()).renderBox(mc.player, scanner, partialTicks);
 		}
 		mc.entityRenderer.enableLightmap();
