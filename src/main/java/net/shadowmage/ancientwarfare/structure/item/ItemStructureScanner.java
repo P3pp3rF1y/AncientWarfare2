@@ -137,8 +137,8 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
 	public static boolean scanStructure(World world, ItemStack scanner) {
 		ItemStructureSettings settings = ItemStructureSettings.getSettingsFor(scanner);
 
-		BlockPos min = BlockTools.getMin(settings.pos1, settings.pos2);
-		BlockPos max = BlockTools.getMax(settings.pos1, settings.pos2);
+		BlockPos min = BlockTools.getMin(settings.getPos1(), settings.getPos2());
+		BlockPos max = BlockTools.getMax(settings.getPos1(), settings.getPos2());
 		int turns = (6 - settings.buildFace.getHorizontalIndex()) % 4;
 		StructureTemplate template = TemplateScanner.scan(world, min, max, settings.key, turns, getStructureName(scanner));
 

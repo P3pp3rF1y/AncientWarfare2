@@ -4,8 +4,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.items.ItemStackHandler;
 import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.structure.block.BlockStructureScanner;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItems;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureScanner;
@@ -85,5 +88,19 @@ public class TileStructureScanner extends TileUpdatable {
 
 	public void setFacing(EnumFacing facing) {
 		this.facing = facing;
+	}
+
+	@Override
+	public AxisAlignedBB getRenderBoundingBox() {
+		ItemStack scanner = scannerInventory.getStackInSlot(0);
+		if (scanner.getItem() != AWStructuresItems.structureScanner) {
+			return super.getRenderBoundingBox();
+		}
+
+		ItemStructureSettings settings = ItemStructureSettings.getSettingsFor(scanner);
+
+		BlockPos min = BlockTools.getMin(settings.getPos1(), settings.getPos2());
+		BlockPos max = BlockTools.getMax(settings.getPos1(), settings.getPos2());
+		return new AxisAlignedBB(min, max);
 	}
 }

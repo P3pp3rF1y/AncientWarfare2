@@ -29,8 +29,8 @@ import net.minecraft.util.math.BlockPos;
 public class ItemStructureSettings {
 
 	boolean[] setKeys = new boolean[4];
-	BlockPos pos1;
-	BlockPos pos2;
+	private BlockPos pos1;
+	private BlockPos pos2;
 	BlockPos key;
 	EnumFacing buildFace;
 	String name;
@@ -76,10 +76,10 @@ public class ItemStructureSettings {
 	public static void setSettingsFor(ItemStack item, ItemStructureSettings settings) {
 		NBTTagCompound tag = new NBTTagCompound();
 		if (settings.setKeys[0]) {
-			tag.setLong("pos1", settings.pos1.toLong());
+			tag.setLong("pos1", settings.getPos1().toLong());
 		}
 		if (settings.setKeys[1]) {
-			tag.setLong("pos2", settings.pos2.toLong());
+			tag.setLong("pos2", settings.getPos2().toLong());
 		}
 		if (settings.setKeys[2]) {
 			NBTTagCompound tag1 = new NBTTagCompound();
@@ -131,11 +131,11 @@ public class ItemStructureSettings {
 	}
 
 	public BlockPos pos1() {
-		return pos1;
+		return getPos1();
 	}
 
 	public BlockPos pos2() {
-		return pos2;
+		return getPos2();
 	}
 
 	public BlockPos buildKey() {
@@ -156,4 +156,11 @@ public class ItemStructureSettings {
 		}
 	}
 
+	public BlockPos getPos1() {
+		return pos1;
+	}
+
+	public BlockPos getPos2() {
+		return pos2;
+	}
 }
