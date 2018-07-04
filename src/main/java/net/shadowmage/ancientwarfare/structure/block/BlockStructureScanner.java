@@ -1,8 +1,13 @@
 package net.shadowmage.ancientwarfare.structure.block;
 
+import net.minecraft.block.BlockDirectional;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
@@ -18,7 +23,9 @@ import net.shadowmage.ancientwarfare.structure.tile.TileStructureScanner;
 import javax.annotation.Nullable;
 
 public class BlockStructureScanner extends BlockBaseStructure {
-	public BlockStructureScanner() {
+	public static final PropertyDirection FACING = BlockDirectional.FACING;
+
+	BlockStructureScanner() {
 		super(Material.WOOD, "structure_scanner_block");
 	}
 
