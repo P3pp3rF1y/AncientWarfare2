@@ -38,6 +38,29 @@ public class BlockStructureScanner extends BlockBaseStructure {
 	}
 
 	@Override
+	protected BlockStateContainer createBlockState() {
+		return new BlockStateContainer(this, FACING);
+	}
+
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+		return getDefaultState().withProperty(FACING, EnumFacing.VALUES[meta]);
+	}
+
+	@Override
+	public int getMetaFromState(IBlockState state) {
+		return state.getValue(FACING).ordinal();
+	}
+
+	@Override
+	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
+		TileStructureScanner te = (TileStructureScanner) worldIn.getTileEntity(pos);
+		//noinspection ConstantConditions
+		te.setFacing(placer.getHorizontalFacing());
+		worldIn.setBlockState(pos, getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()));
+	}
+
+	@Override
 	public boolean hasTileEntity(IBlockState state) {
 		return true;
 	}

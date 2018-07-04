@@ -8,7 +8,7 @@
         "transform": "forge:default-block"
     },
     "variants": {
-        "inventory": [{}],
+        "normal": [{}],
         "transparent": {
             "false": {},
             "true": {
