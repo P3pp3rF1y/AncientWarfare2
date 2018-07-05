@@ -114,8 +114,8 @@ public class TileStructureScanner extends TileUpdatable {
 			return super.getRenderBoundingBox();
 		}
 
-		BlockPos min = BlockTools.getMin(settings.getPos1(), settings.getPos2());
-		BlockPos max = BlockTools.getMax(settings.getPos1(), settings.getPos2());
+		BlockPos min = BlockTools.getMin(settings.getPos1(), settings.getPos2()).add(-1, 0, -1);
+		BlockPos max = BlockTools.getMax(settings.getPos1(), settings.getPos2()).add(2, 1, 2); //1 for full block length and 1 for ground level overlay
 		return new AxisAlignedBB(min, max);
 	}
 
