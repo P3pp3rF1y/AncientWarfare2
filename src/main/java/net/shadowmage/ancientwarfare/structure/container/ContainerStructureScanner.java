@@ -22,6 +22,9 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 public class ContainerStructureScanner extends ContainerBase {
+	private static final String INCLUDE_TAG = "include";
+	private static final String VALIDATOR_TAG = "validator";
+	private static final String BOUNDS_ACTIVE_TAG = "boundsActive";
 	private ItemStack scanner;
 	private final EnumHand hand;
 	private final TileStructureScanner scannerTile;
@@ -71,16 +74,17 @@ public class ContainerStructureScanner extends ContainerBase {
 		} else if (mode.equals("update")) {
 			if (tag.hasKey("name")) {
 				updateName(tag.getString("name"));
-			} else if (tag.hasKey("include")) {
-				setIncludeImmediately(tag.getBoolean("include"));
-			} else if (tag.hasKey("validator")) {
-				NBTTagCompound validatorNBT = tag.getCompoundTag("validator");
+			} else if (tag.hasKey(INCLUDE_TAG)) {
+				setIncludeImmediately(tag.getBoolean(INCLUDE_TAG));
+			} else if (tag.hasKey(VALIDATOR_TAG)) {
+				NBTTagCompound validatorNBT = tag.getCompoundTag(VALIDATOR_TAG);
 				StructureValidationType type = StructureValidationType.getTypeFromName(validatorNBT.getString("validationType"));
+				//noinspection ConstantConditions
 				StructureValidator validator = type.getValidator();
 				validator.readFromNBT(validatorNBT);
 				setValidator(validator);
-			} else if (tag.hasKey("toggleBounds")) {
-				toggleBounds();
+			} else if (tag.hasKey(BOUNDS_ACTIVE_TAG)) {
+				setBoundsActive(tag.getBoolean(BOUNDS_ACTIVE_TAG));
 			}
 		}
 	}
@@ -128,7 +132,7 @@ public class ContainerStructureScanner extends ContainerBase {
 
 	public void setIncludeImmediately(boolean checked) {
 		if (player.world.isRemote) {
-			sendUpdateData("include", new NBTTagByte((byte) (checked ? 1 : 0)));
+			sendUpdateData(INCLUDE_TAG, new NBTTagByte((byte) (checked ? 1 : 0)));
 			return;
 		}
 		ItemStructureScanner.setIncludeImmediately(scanner, checked);
@@ -145,7 +149,7 @@ public class ContainerStructureScanner extends ContainerBase {
 
 	public void setValidator(StructureValidator validator) {
 		if (player.world.isRemote) {
-			sendUpdateData("validator", validator.serializeToNBT());
+			sendUpdateData(VALIDATOR_TAG, validator.serializeToNBT());
 		}
 		ItemStructureScanner.setValidator(scanner, validator);
 		saveScannerData(player);
@@ -158,13 +162,21 @@ public class ContainerStructureScanner extends ContainerBase {
 	}
 
 	public void toggleBounds() {
+		setBoundsActive(!getBoundsActive());
+	}
+
+	private void setBoundsActive(boolean boundsActive) {
 		if (player.world.isRemote) {
-			sendUpdateData("toggleBounds", new NBTTagByte((byte) 1));
+			sendUpdateData(BOUNDS_ACTIVE_TAG, new NBTTagByte((byte) (boundsActive ? 1 : 0)));
 		}
-		getScannerTile().ifPresent(TileStructureScanner::toggleBounds);
+		getScannerTile().ifPresent(t -> t.setBoundsActive(boundsActive));
 	}
 
 	public boolean getBoundsActive() {
 		return getScannerTile().map(TileStructureScanner::getBoundsActive).orElse(false);
+	}
+
+	public boolean getReadyToExport() {
+		return ItemStructureScanner.readyToExport(scanner);
 	}
 }

@@ -12,15 +12,18 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.render.StructureScannerRenderer;
 import net.shadowmage.ancientwarfare.structure.tile.TileStructureScanner;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 public class BlockStructureScanner extends BlockBaseStructure {
 	public static final PropertyDirection FACING = BlockDirectional.FACING;
@@ -43,21 +46,21 @@ public class BlockStructureScanner extends BlockBaseStructure {
 	}
 
 	@Override
-	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(FACING, EnumFacing.VALUES[meta]);
+	public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+		Optional<TileStructureScanner> tile = WorldTools.getTile(worldIn, pos, TileStructureScanner.class);
+		return tile.map(tileStructureScanner -> state.withProperty(FACING, tileStructureScanner.getRenderFacing())).orElse(state);
 	}
 
 	@Override
 	public int getMetaFromState(IBlockState state) {
-		return state.getValue(FACING).ordinal();
+		return 0;
 	}
 
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		TileStructureScanner te = (TileStructureScanner) worldIn.getTileEntity(pos);
 		//noinspection ConstantConditions
-		te.setFacing(placer.getHorizontalFacing());
-		worldIn.setBlockState(pos, getDefaultState().withProperty(FACING, placer.getHorizontalFacing().getOpposite()));
+		te.setFacing(placer.getHorizontalFacing().getOpposite());
 	}
 
 	@Override

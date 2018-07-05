@@ -41,7 +41,7 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
 	private static final String STRUCTURE_NAME_TAG = "structureName";
 	private static final String INCLUDE_TAG = "include";
 
-	public ItemStructureScanner(String name) {
+	ItemStructureScanner(String name) {
 		super(name);
 		setMaxStackSize(1);
 	}
@@ -90,7 +90,11 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
 		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
 	}
 
-	public static boolean readyToExport(ItemStructureSettings scanSettings) {
+	public static boolean readyToExport(ItemStack scanner) {
+		return readyToExport(ItemStructureSettings.getSettingsFor(scanner));
+	}
+
+	private static boolean readyToExport(ItemStructureSettings scanSettings) {
 		return scanSettings.hasPos1() && scanSettings.hasPos2() && scanSettings.hasBuildKey();
 	}
 

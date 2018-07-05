@@ -123,7 +123,8 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 		});
 		addGuiElement(exportButton);
 
-		boundsButton = new Button(256 - 65 -8, -20, 65, 16, "guistrings.bounds_on");
+		boundsButton = new Button(256 - 65 -8, -20, 65, 16,
+				getContainer().getBoundsActive() ? "guistrings.bounds_off" : "guistrings.bounds_on");
 		boundsButton.addNewListener(new Listener(Listener.MOUSE_UP) {
 			@Override
 			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
@@ -145,19 +146,20 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 		if (exportButton == null) {
 			return;
 		}
-		boolean enabled = getContainer().hasScanner();
-		exportButton.setEnabled(enabled);
-		boundsButton.setEnabled(enabled);
+		boolean hasScanner = getContainer().hasScanner();
+		boolean readyToExport = getContainer().getReadyToExport();
+		exportButton.setEnabled(readyToExport);
+		boundsButton.setEnabled(readyToExport);
 
 		nameInput.setText(getContainer().getName());
-		nameInput.setEnabled(enabled);
+		nameInput.setEnabled(hasScanner);
 
 		includeImmediately.setChecked(getContainer().getIncludeImmediately());
-		includeImmediately.setEnabled(enabled);
+		includeImmediately.setEnabled(readyToExport);
 
-		setupValidationButton.setEnabled(enabled);
-		selectBiomesButton.setEnabled(enabled);
-		selectDimensionsButton.setEnabled(enabled);
+		setupValidationButton.setEnabled(readyToExport);
+		selectBiomesButton.setEnabled(readyToExport);
+		selectDimensionsButton.setEnabled(readyToExport);
 	}
 
 	@Override
@@ -211,7 +213,7 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 
 	@Override
 	public void sendAllContents(Container containerToSend, NonNullList<ItemStack> itemsList) {
-
+		//noop
 	}
 
 	@Override
@@ -223,11 +225,11 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 
 	@Override
 	public void sendWindowProperty(Container containerIn, int varToUpdate, int newValue) {
-
+		//noop
 	}
 
 	@Override
 	public void sendAllWindowProperties(Container containerIn, IInventory inventory) {
-
+		//noop
 	}
 }
