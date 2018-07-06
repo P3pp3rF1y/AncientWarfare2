@@ -141,10 +141,8 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
 	public static boolean scanStructure(World world, ItemStack scanner) {
 		ItemStructureSettings settings = ItemStructureSettings.getSettingsFor(scanner);
 
-		BlockPos min = BlockTools.getMin(settings.getPos1(), settings.getPos2());
-		BlockPos max = BlockTools.getMax(settings.getPos1(), settings.getPos2());
 		int turns = (6 - settings.buildFace.getHorizontalIndex()) % 4;
-		StructureTemplate template = TemplateScanner.scan(world, min, max, settings.key, turns, getStructureName(scanner));
+		StructureTemplate template = TemplateScanner.scan(world, settings.getMin(), settings.getMax(), settings.key, turns, getStructureName(scanner));
 
 		StructureValidator validator = getValidator(scanner);
 		template.setValidationSettings(validator);
@@ -192,12 +190,12 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
 		BlockPos max;
 
 		if (settings.hasPos1()) {
-			firstCorner = settings.pos1();
+			firstCorner = settings.getPos1();
 		} else {
 			firstCorner = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
 		}
 		if (settings.hasPos2()) {
-			secondCorner = settings.pos2();
+			secondCorner = settings.getPos2();
 		} else {
 			secondCorner = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
 		}

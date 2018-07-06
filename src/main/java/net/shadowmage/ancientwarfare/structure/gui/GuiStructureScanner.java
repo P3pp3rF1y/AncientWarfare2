@@ -16,6 +16,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.structure.container.ContainerStructureScanner;
+import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManagerClient;
 
 import java.io.File;
 
@@ -31,6 +32,7 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 	private Label statusMessage;
 	private int statusTicks = 0;
 	private Button boundsButton;
+	private Button restoreButton;
 
 	public GuiStructureScanner(ContainerBase par1Container) {
 		super(par1Container);
@@ -122,6 +124,7 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 			}
 		});
 		addGuiElement(exportButton);
+		totalHeight += 20;
 
 		boundsButton = new Button(256 - 65 -8, -20, 65, 16,
 				getContainer().getBoundsActive() ? "guistrings.bounds_off" : "guistrings.bounds_on");
@@ -135,6 +138,18 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 			}
 		});
 		addGuiElement(boundsButton);
+
+		restoreButton = new Button(256 - 55 -8, totalHeight, 55, 16,"guistrings.restore");
+		restoreButton.addNewListener(new Listener(Listener.MOUSE_UP) {
+			@Override
+			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
+				if (widget.isMouseOverElement(evt.mx, evt.my)) {
+					restore();
+				}
+				return true;
+			}
+		});
+		addGuiElement(restoreButton);
 	}
 
 	private void toggleBounds() {
@@ -150,6 +165,7 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 		boolean readyToExport = getContainer().getReadyToExport();
 		exportButton.setEnabled(readyToExport);
 		boundsButton.setEnabled(readyToExport);
+		restoreButton.setEnabled(hasScanner);
 
 		nameInput.setText(getContainer().getName());
 		nameInput.setEnabled(hasScanner);
@@ -195,6 +211,16 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 		}
 	}
 
+	private void restore() {
+		String name = nameInput.getText();
+		if (StructureTemplateManagerClient.instance().templateExists(name)) {
+			getContainer().restoreTemplate(name);
+		} else {
+			statusMessage.setText("Template Name doesn't exist");
+			statusTicks = 60;
+		}
+	}
+
 	private boolean validateName(String name) {
 		if (name.equals("")) {
 			return false;
@@ -208,7 +234,7 @@ public class GuiStructureScanner extends GuiContainerBase<ContainerStructureScan
 	}
 
 	private boolean validateChar(char ch) {
-		return ch != File.separatorChar;//TODO validate chars
+		return ch != File.separatorChar;
 	}
 
 	@Override

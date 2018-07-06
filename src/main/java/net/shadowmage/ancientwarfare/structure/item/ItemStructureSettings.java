@@ -1,34 +1,16 @@
-/*
- Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.item;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
 public class ItemStructureSettings {
-
-	boolean[] setKeys = new boolean[4];
+	private static final String STRUCT_DATA_TAG = "structData";
+	private static final String BUILD_KEY_TAG = "buildKey";
+	private boolean[] setKeys = new boolean[4];
 	private BlockPos pos1;
 	private BlockPos pos2;
 	BlockPos key;
@@ -45,8 +27,9 @@ public class ItemStructureSettings {
 	public static ItemStructureSettings getSettingsFor(ItemStack stack) {
 		ItemStructureSettings settings = new ItemStructureSettings();
 		NBTTagCompound tag;
-		if (stack.hasTagCompound() && stack.getTagCompound().hasKey("structData")) {
-			tag = stack.getTagCompound().getCompoundTag("structData");
+		//noinspection ConstantConditions
+		if (stack.hasTagCompound() && stack.getTagCompound().hasKey(STRUCT_DATA_TAG)) {
+			tag = stack.getTagCompound().getCompoundTag(STRUCT_DATA_TAG);
 		} else {
 			tag = new NBTTagCompound();
 		}
@@ -61,10 +44,10 @@ public class ItemStructureSettings {
 			settings.pos2 = BlockPos.fromLong(tag.getLong("pos2"));
 			settings.setKeys[1] = true;
 		}
-		if (tag.hasKey("buildKey")) {
-			settings.key = BlockPos.fromLong(tag.getCompoundTag("buildKey").getLong("key"));
+		if (tag.hasKey(BUILD_KEY_TAG)) {
+			settings.key = BlockPos.fromLong(tag.getCompoundTag(BUILD_KEY_TAG).getLong("key"));
 			settings.setKeys[2] = true;
-			settings.buildFace = EnumFacing.VALUES[tag.getCompoundTag("buildKey").getByte("face")];
+			settings.buildFace = EnumFacing.VALUES[tag.getCompoundTag(BUILD_KEY_TAG).getByte("face")];
 		}
 		if (tag.hasKey("name")) {
 			settings.name = tag.getString("name");
@@ -85,12 +68,12 @@ public class ItemStructureSettings {
 			NBTTagCompound tag1 = new NBTTagCompound();
 			tag1.setByte("face", (byte) settings.buildFace.ordinal());
 			tag1.setLong("key", settings.key.toLong());
-			tag.setTag("buildKey", tag1);
+			tag.setTag(BUILD_KEY_TAG, tag1);
 		}
 		if (settings.setKeys[3]) {
 			tag.setString("name", settings.name);
 		}
-		item.setTagInfo("structData", tag);
+		item.setTagInfo(STRUCT_DATA_TAG, tag);
 	}
 
 	public void setPos1(BlockPos pos) {
@@ -130,14 +113,6 @@ public class ItemStructureSettings {
 		return setKeys[3];
 	}
 
-	public BlockPos pos1() {
-		return getPos1();
-	}
-
-	public BlockPos pos2() {
-		return getPos2();
-	}
-
 	public BlockPos buildKey() {
 		return key;
 	}
@@ -150,7 +125,7 @@ public class ItemStructureSettings {
 		return name;
 	}
 
-	public void clearSettings() {
+	void clearSettings() {
 		for (int i = 0; i < 3; i++) {
 			this.setKeys[i] = false;
 		}
@@ -162,5 +137,17 @@ public class ItemStructureSettings {
 
 	public BlockPos getPos2() {
 		return pos2;
+	}
+
+	public BlockPos getMin() {
+		return BlockTools.getMin(pos1, pos2);
+	}
+
+	public BlockPos getMax() {
+		return BlockTools.getMax(pos1, pos2);
+	}
+
+	public AxisAlignedBB getBoundingBox() {
+		return new AxisAlignedBB(getMin(), getMax());
 	}
 }

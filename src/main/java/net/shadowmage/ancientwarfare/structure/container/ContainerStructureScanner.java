@@ -71,6 +71,8 @@ public class ContainerStructureScanner extends ContainerBase {
 		if (mode.equals("export") && ItemStructureScanner.scanStructure(player.world, scanner) && !getScannerTile().isPresent()) {
 			ItemStructureScanner.clearSettings(scanner);
 			saveScannerData(player);
+		} else if (mode.equals("restore")) {
+			getScannerTile().ifPresent(t -> t.restoreTemplate(tag.getString("templateName")));
 		} else if (mode.equals("update")) {
 			if (tag.hasKey("name")) {
 				updateName(tag.getString("name"));
@@ -178,5 +180,12 @@ public class ContainerStructureScanner extends ContainerBase {
 
 	public boolean getReadyToExport() {
 		return ItemStructureScanner.readyToExport(scanner);
+	}
+
+	public void restoreTemplate(String name) {
+		NBTTagCompound tag = new NBTTagCompound();
+		tag.setString("mode", "restore");
+		tag.setString("templateName", name);
+		sendDataToServer(tag);
 	}
 }
