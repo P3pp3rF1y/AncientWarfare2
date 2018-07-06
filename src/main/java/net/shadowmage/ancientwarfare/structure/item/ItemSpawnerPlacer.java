@@ -33,7 +33,7 @@ import java.util.List;
 public class ItemSpawnerPlacer extends ItemBaseStructure {
 	private static final String SPAWNER_DATA_TAG = "spawnerData";
 
-	public ItemSpawnerPlacer(String name) {
+	ItemSpawnerPlacer(String name) {
 		super(name);
 		MinecraftForge.EVENT_BUS.register(this);
 	}
@@ -118,6 +118,7 @@ public class ItemSpawnerPlacer extends ItemBaseStructure {
 			settings.setPlayerRange(16);
 
 			spawnerPlacer.setTagInfo(SPAWNER_DATA_TAG, settings.writeToNBT(new NBTTagCompound()));
+			entity.setDead();
 
 			event.getEntityPlayer().sendMessage(new TextComponentTranslation("guistrings.spawner.entity_set", entity.getName()));
 		}
