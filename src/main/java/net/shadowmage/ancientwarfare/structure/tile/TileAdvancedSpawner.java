@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.structure.tile;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
@@ -12,10 +13,6 @@ public class TileAdvancedSpawner extends TileUpdatable implements ITickable {
 
 	private SpawnerSettings settings = new SpawnerSettings();
 
-	public TileAdvancedSpawner() {
-
-	}
-
 	@Override
 	public void setWorld(World world) {
 		super.setWorld(world);
@@ -23,11 +20,17 @@ public class TileAdvancedSpawner extends TileUpdatable implements ITickable {
 	}
 
 	@Override
+	public void setPos(BlockPos posIn) {
+		super.setPos(posIn);
+		settings.setPos(posIn);
+	}
+
+	@Override
 	public void update() {
 		if (!hasWorld() || world.isRemote) {
 			return;
 		}
-		if (settings.world == null) {
+		if (!settings.hasWorld()) {
 			settings.setWorld(world, pos);
 		}
 		settings.onUpdate();

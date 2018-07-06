@@ -27,8 +27,24 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+@SuppressWarnings("SpellCheckingInspection")
 public class SpawnerSettings {
-
+	private static final String RESPOND_TO_REDSTONE_TAG = "respondToRedstone";
+	private static final String REDSTONE_MODE_TAG = "redstoneMode";
+	private static final String PREV_REDSTONE_STATE_TAG = "prevRedstoneState";
+	private static final String MIN_DELAY_TAG = "minDelay";
+	private static final String MAX_DELAY_TAG = "maxDelay";
+	private static final String SPAWN_DELAY_TAG = "spawnDelay";
+	private static final String PLAYER_RANGE_TAG = "playerRange";
+	private static final String MOB_RANGE_TAG = "mobRange";
+	private static final String SPAWN_RANGE_TAG = "spawnRange";
+	private static final String MAX_NEARBY_MONSTERS_TAG = "maxNearbyMonsters";
+	private static final String XP_TO_DROP_TAG = "xpToDrop";
+	private static final String LIGHT_SENSITIVE_TAG = "lightSensitive";
+	private static final String TRANSPARENT_TAG = "transparent";
+	private static final String DEBUG_MODE_TAG = "debugMode";
+	private static final String SPAWN_GROUPS_TAG = "spawnGroups";
+	private static final String INVENTORY_TAG = "inventory";
 	private List<EntitySpawnGroup> spawnGroups = new ArrayList<>();
 
 	private ItemStackHandler inventory = new ItemStackHandler(9);
@@ -60,8 +76,12 @@ public class SpawnerSettings {
 	 * fields for a 'fake' tile-entity...set from the real tile-entity when it has its
 	 * world set (which is before first updateEntity() is called)
 	 */
-	public World world;
+	private World world;
 	private BlockPos pos;
+
+	public boolean hasWorld() {
+		return world != null;
+	}
 
 	public static SpawnerSettings getDefaultSettings() {
 		SpawnerSettings settings = new SpawnerSettings();
@@ -76,7 +96,7 @@ public class SpawnerSettings {
 		return settings;
 	}
 
-	public void setWorld(World world, BlockPos pos) {
+	void setWorld(World world, BlockPos pos) {
 		this.world = world;
 		this.pos = pos;
 	}
@@ -185,22 +205,22 @@ public class SpawnerSettings {
 	}
 
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
-		tag.setBoolean("respondToRedstone", respondToRedstone);
+		tag.setBoolean(RESPOND_TO_REDSTONE_TAG, respondToRedstone);
 		if (respondToRedstone) {
-			tag.setBoolean("redstoneMode", redstoneMode);
-			tag.setBoolean("prevRedstoneState", prevRedstoneState);
+			tag.setBoolean(REDSTONE_MODE_TAG, redstoneMode);
+			tag.setBoolean(PREV_REDSTONE_STATE_TAG, prevRedstoneState);
 		}
-		tag.setInteger("minDelay", minDelay);
-		tag.setInteger("maxDelay", maxDelay);
-		tag.setInteger("spawnDelay", spawnDelay);
-		tag.setInteger("playerRange", playerRange);
-		tag.setInteger("mobRange", mobRange);
-		tag.setInteger("spawnRange", range);
-		tag.setInteger("maxNearbyMonsters", maxNearbyMonsters);
-		tag.setInteger("xpToDrop", xpToDrop);
-		tag.setBoolean("lightSensitive", lightSensitive);
-		tag.setBoolean("transparent", transparent);
-		tag.setBoolean("debugMode", debugMode);
+		tag.setInteger(MIN_DELAY_TAG, minDelay);
+		tag.setInteger(MAX_DELAY_TAG, maxDelay);
+		tag.setInteger(SPAWN_DELAY_TAG, spawnDelay);
+		tag.setInteger(PLAYER_RANGE_TAG, playerRange);
+		tag.setInteger(MOB_RANGE_TAG, mobRange);
+		tag.setInteger(SPAWN_RANGE_TAG, range);
+		tag.setInteger(MAX_NEARBY_MONSTERS_TAG, maxNearbyMonsters);
+		tag.setInteger(XP_TO_DROP_TAG, xpToDrop);
+		tag.setBoolean(LIGHT_SENSITIVE_TAG, lightSensitive);
+		tag.setBoolean(TRANSPARENT_TAG, transparent);
+		tag.setBoolean(DEBUG_MODE_TAG, debugMode);
 		NBTTagList groupList = new NBTTagList();
 		NBTTagCompound groupTag;
 		for (EntitySpawnGroup group : this.spawnGroups) {
@@ -208,40 +228,40 @@ public class SpawnerSettings {
 			group.writeToNBT(groupTag);
 			groupList.appendTag(groupTag);
 		}
-		tag.setTag("spawnGroups", groupList);
+		tag.setTag(SPAWN_GROUPS_TAG, groupList);
 
-		tag.setTag("inventory", inventory.serializeNBT());
+		tag.setTag(INVENTORY_TAG, inventory.serializeNBT());
 
 		return tag;
 	}
 
 	public void readFromNBT(NBTTagCompound tag) {
 		spawnGroups.clear();
-		respondToRedstone = tag.getBoolean("respondToRedstone");
+		respondToRedstone = tag.getBoolean(RESPOND_TO_REDSTONE_TAG);
 		if (respondToRedstone) {
-			redstoneMode = tag.getBoolean("redstoneMode");
-			prevRedstoneState = tag.getBoolean("prevRedstoneState");
+			redstoneMode = tag.getBoolean(REDSTONE_MODE_TAG);
+			prevRedstoneState = tag.getBoolean(PREV_REDSTONE_STATE_TAG);
 		}
-		minDelay = tag.getInteger("minDelay");
-		maxDelay = tag.getInteger("maxDelay");
-		spawnDelay = tag.getInteger("spawnDelay");
-		playerRange = tag.getInteger("playerRange");
-		mobRange = tag.getInteger("mobRange");
-		range = tag.getInteger("spawnRange");
-		maxNearbyMonsters = tag.getInteger("maxNearbyMonsters");
-		xpToDrop = tag.getInteger("xpToDrop");
-		lightSensitive = tag.getBoolean("lightSensitive");
-		transparent = tag.getBoolean("transparent");
-		debugMode = tag.getBoolean("debugMode");
-		NBTTagList groupList = tag.getTagList("spawnGroups", Constants.NBT.TAG_COMPOUND);
+		minDelay = tag.getInteger(MIN_DELAY_TAG);
+		maxDelay = tag.getInteger(MAX_DELAY_TAG);
+		spawnDelay = tag.getInteger(SPAWN_DELAY_TAG);
+		playerRange = tag.getInteger(PLAYER_RANGE_TAG);
+		mobRange = tag.getInteger(MOB_RANGE_TAG);
+		range = tag.getInteger(SPAWN_RANGE_TAG);
+		maxNearbyMonsters = tag.getInteger(MAX_NEARBY_MONSTERS_TAG);
+		xpToDrop = tag.getInteger(XP_TO_DROP_TAG);
+		lightSensitive = tag.getBoolean(LIGHT_SENSITIVE_TAG);
+		transparent = tag.getBoolean(TRANSPARENT_TAG);
+		debugMode = tag.getBoolean(DEBUG_MODE_TAG);
+		NBTTagList groupList = tag.getTagList(SPAWN_GROUPS_TAG, Constants.NBT.TAG_COMPOUND);
 		EntitySpawnGroup group;
 		for (int i = 0; i < groupList.tagCount(); i++) {
 			group = new EntitySpawnGroup();
 			group.readFromNBT(groupList.getCompoundTagAt(i));
 			spawnGroups.add(group);
 		}
-		if (tag.hasKey("inventory")) {
-			inventory.deserializeNBT(tag.getCompoundTag("inventory"));
+		if (tag.hasKey(INVENTORY_TAG)) {
+			inventory.deserializeNBT(tag.getCompoundTag(INVENTORY_TAG));
 		}
 	}
 
@@ -377,6 +397,10 @@ public class SpawnerSettings {
 		this.transparent = !transparent;
 	}
 
+	public void setPos(BlockPos posIn) {
+		this.pos = posIn;
+	}
+
 	public static final class EntitySpawnGroup {
 		private int groupWeight = 1;
 		private List<EntitySpawnSettings> entitiesToSpawn = new ArrayList<>();
@@ -446,6 +470,13 @@ public class SpawnerSettings {
 	}
 
 	public static final class EntitySpawnSettings {
+		static final String ENTITY_ID_TAG = "entityId";
+		static final String CUSTOM_TAG = "customTag";
+		static final String FORCED_TAG = "forced";
+		static final String MIN_TO_SPAWN_TAG = "minToSpawn";
+		static final String MAX_TO_SPAWN_TAG = "maxToSpawn";
+		static final String REMAINING_SPAWN_COUNT_TAG = "remainingSpawnCount";
+		static final String FACTION_NAME_TAG = "factionName";
 		private ResourceLocation entityId = new ResourceLocation("pig");
 		private NBTTagCompound customTag;
 		private int minToSpawn = 2;
@@ -453,34 +484,26 @@ public class SpawnerSettings {
 		int remainingSpawnCount = -1;
 		private boolean forced;
 
-		public EntitySpawnSettings() {
-
-		}
-
-		public EntitySpawnSettings(ResourceLocation entityId) {
-			setEntityToSpawn(entityId);
-		}
-
 		public final void writeToNBT(NBTTagCompound tag) {
-			tag.setString("entityId", entityId.toString());
+			tag.setString(ENTITY_ID_TAG, entityId.toString());
 			if (customTag != null) {
-				tag.setTag("customTag", customTag);
+				tag.setTag(CUSTOM_TAG, customTag);
 			}
-			tag.setBoolean("forced", forced);
-			tag.setInteger("minToSpawn", minToSpawn);
-			tag.setInteger("maxToSpawn", maxToSpawn);
-			tag.setInteger("remainingSpawnCount", remainingSpawnCount);
+			tag.setBoolean(FORCED_TAG, forced);
+			tag.setInteger(MIN_TO_SPAWN_TAG, minToSpawn);
+			tag.setInteger(MAX_TO_SPAWN_TAG, maxToSpawn);
+			tag.setInteger(REMAINING_SPAWN_COUNT_TAG, remainingSpawnCount);
 		}
 
 		public final void readFromNBT(NBTTagCompound tag) {
-			setEntityToSpawn(new ResourceLocation(tag.getString("entityId")));
-			if (tag.hasKey("customTag")) {
-				customTag = tag.getCompoundTag("customTag");
+			setEntityToSpawn(new ResourceLocation(tag.getString(ENTITY_ID_TAG)));
+			if (tag.hasKey(CUSTOM_TAG)) {
+				customTag = tag.getCompoundTag(CUSTOM_TAG);
 			}
-			forced = tag.getBoolean("forced");
-			minToSpawn = tag.getInteger("minToSpawn");
-			maxToSpawn = tag.getInteger("maxToSpawn");
-			remainingSpawnCount = tag.getInteger("remainingSpawnCount");
+			forced = tag.getBoolean(FORCED_TAG);
+			minToSpawn = tag.getInteger(MIN_TO_SPAWN_TAG);
+			maxToSpawn = tag.getInteger(MAX_TO_SPAWN_TAG);
+			remainingSpawnCount = tag.getInteger(REMAINING_SPAWN_COUNT_TAG);
 		}
 
 		public final void setEntityToSpawn(ResourceLocation entityId) {
@@ -527,8 +550,8 @@ public class SpawnerSettings {
 		}
 
 		public final String getEntityName() {
-			if (customTag != null && customTag.hasKey("factionName")) {
-				return EntityTools.getUnlocName(entityId).replace("faction", getCustomTag().getString("factionName"));
+			if (customTag != null && customTag.hasKey(FACTION_NAME_TAG)) {
+				return EntityTools.getUnlocName(entityId).replace("faction", getCustomTag().getString(FACTION_NAME_TAG));
 			}
 			return EntityTools.getUnlocName(entityId);
 		}
@@ -601,7 +624,6 @@ public class SpawnerSettings {
 			}
 		}
 
-		//TODO  sendSoundPacket(world, pos);
 		private void spawnEntityAt(Entity e, World world) {
 			if (e instanceof EntityLiving) {
 				((EntityLiving) e).onInitialSpawn(world.getDifficultyForLocation(e.getPosition()), null);
