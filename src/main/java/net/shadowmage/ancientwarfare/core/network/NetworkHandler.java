@@ -109,6 +109,7 @@ public final class NetworkHandler implements IGuiHandler {
 	public static final int GUI_WORKSITE_FRUIT_FARM = 53;
 
 	public static final int GUI_TOWN_BUILDER = 54;
+	public static final int GUI_LOOT_CHEST_PLACER = 55;
 
 	private FMLEventChannel channel;
 

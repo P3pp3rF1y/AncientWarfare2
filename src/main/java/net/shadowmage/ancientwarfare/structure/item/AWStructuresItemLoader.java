@@ -35,5 +35,6 @@ public class AWStructuresItemLoader {
 		registry.register(new ItemConstructionTool("construction_tool"));
 		registry.register(new ItemConstructionToolLakes("construction_tool_lakes"));
 		registry.register(new ItemBlockInfo("block_info_clicker"));
+		registry.register(new ItemLootChestPlacer());
 	}
 }

@@ -138,10 +138,4 @@ public class ItemSpawnerPlacer extends ItemBaseStructure {
 		ret.setTag("ArmorDropChances", entityTag.getTag("ArmorDropChances"));
 		return ret;
 	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerClient() {
-		super.registerClient();
-	}
 }
