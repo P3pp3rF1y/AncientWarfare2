@@ -14,6 +14,7 @@ import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockAdvancedSpawner;
 import net.shadowmage.ancientwarfare.structure.item.ItemBlockStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
+import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedLootChest;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 import net.shadowmage.ancientwarfare.structure.tile.TileDraftingStation;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
@@ -27,20 +28,18 @@ public class AWStructuresBlockLoader {
 	private AWStructuresBlockLoader() {
 	}
 
+	@SuppressWarnings("ConstantConditions")
 	@SubscribeEvent
 	public static void registerItemBlocks(RegistryEvent.Register<Item> event) {
 		IForgeRegistry<Item> registry = event.getRegistry();
 
 		registry.register(new ItemBlockAdvancedSpawner(AWStructuresBlocks.advancedSpawner));
-		//noinspection ConstantConditions
 		registry.register(new ItemBlock(AWStructuresBlocks.gateProxy).setRegistryName(AWStructuresBlocks.gateProxy.getRegistryName()));
-		//noinspection ConstantConditions
 		registry.register(new ItemBlock(AWStructuresBlocks.draftingStation).setRegistryName(AWStructuresBlocks.draftingStation.getRegistryName()));
 		registry.register(new ItemBlockStructureBuilder(AWStructuresBlocks.builderBlock));
-		//noinspection ConstantConditions
 		registry.register(new ItemBlock(AWStructuresBlocks.soundBlock).setRegistryName(AWStructuresBlocks.soundBlock.getRegistryName()));
-
 		registry.register(new ItemBlock(AWStructuresBlocks.structureScanner).setRegistryName(AWStructuresBlocks.structureScanner.getRegistryName()));
+		registry.register(new ItemBlock(AWStructuresBlocks.advancedLootChest).setRegistryName(AWStructuresBlocks.advancedLootChest.getRegistryName()));
 	}
 
 	@SubscribeEvent
@@ -64,6 +63,9 @@ public class AWStructuresBlockLoader {
 
 		registry.register(new BlockStructureScanner());
 		registerTile(TileStructureScanner.class, "structure_scanner_block_tile");
+
+		registry.register(new BlockAdvancedLootChest());
+		registerTile(TileAdvancedLootChest.class, "advanced_loot_chest_tile");
 	}
 
 	private static void registerTile(Class<? extends TileEntity> teClass, String teId) {

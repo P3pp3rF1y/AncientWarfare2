@@ -1,6 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.gui;
 
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Tuple;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
@@ -8,6 +8,7 @@ import net.shadowmage.ancientwarfare.core.gui.elements.Button;
 import net.shadowmage.ancientwarfare.core.gui.elements.CompositeScrolled;
 import net.shadowmage.ancientwarfare.core.gui.elements.GuiElement;
 import net.shadowmage.ancientwarfare.core.gui.elements.Label;
+import net.shadowmage.ancientwarfare.core.gui.elements.NumberInput;
 import net.shadowmage.ancientwarfare.core.gui.elements.Text;
 import net.shadowmage.ancientwarfare.structure.container.ContainerLootChestPlacer;
 
@@ -22,6 +23,7 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 	private CompositeScrolled selectionArea;
 	private Label selection;
 	private Text filterInput;
+	private NumberInput lootRolls;
 
 	public GuiLootChestPlacer(ContainerBase container) {
 		super(container, FORM_WIDTH, FORM_HEIGHT);
@@ -30,9 +32,19 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 	@Override
 	public void initElements() {
 		addGuiElement(new Label(8, 8, "guistrings.current_selection"));
+		addGuiElement(new Label(180, 8, "guistrings.loot_rolls"));
 
 		selection = new Label(8, 20, getSelectedLootTable());
 		addGuiElement(selection);
+
+		lootRolls = new NumberInput(240, 6, 15, getLootRolls(), this) {
+			@Override
+			public void onValueUpdated(float value) {
+				getContainer().setLootParameters(selection.getText(), (byte) getIntegerValue());
+			}
+		};
+		lootRolls.setIntegerValue();
+		addGuiElement(lootRolls);
 
 		filterInput = new Text(8, 18 + 12, FORM_WIDTH - 16, "", this) {
 			//kind of dirty...should possibly implement a real onCharEntered callback for when input actually changes
@@ -49,7 +61,11 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 	}
 
 	private String getSelectedLootTable() {
-		return getContainer().getLootTable().map(ResourceLocation::toString).orElse("guistrings.none");
+		return getContainer().getLootParameters().map(t -> t.getFirst().toString()).orElse("guistrings.none");
+	}
+
+	private Byte getLootRolls() {
+		return getContainer().getLootParameters().map(Tuple::getSecond).orElse((byte) 0);
 	}
 
 	@Override
@@ -65,7 +81,7 @@ public class GuiLootChestPlacer extends GuiContainerBase<ContainerLootChestPlace
 				public boolean onEvent(GuiElement widget, ActivationEvent evt) {
 					if (evt.mButton == 0 && widget.isMouseOverElement(evt.mx, evt.my)) {
 						selection.setText(lootTableName);
-						getContainer().setLootTableName(lootTableName);
+						getContainer().setLootParameters(lootTableName, (byte) lootRolls.getIntegerValue());
 					}
 					return true;
 				}

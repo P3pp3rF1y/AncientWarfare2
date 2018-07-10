@@ -4,26 +4,30 @@ import net.minecraft.block.BlockChest;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagString;
-import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
+import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
 import net.shadowmage.ancientwarfare.structure.gui.GuiLootChestPlacer;
+import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedLootChest;
 
 import java.util.Optional;
 import java.util.Random;
 
 public class ItemLootChestPlacer extends ItemBaseStructure {
 	private static final String LOOT_TABLE_NAME_TAG = "lootTableName";
+	private static final String LOOT_ROLLS_TAG = "lootRolls";
 
 	public ItemLootChestPlacer() {
 		super("loot_chest_placer");
@@ -43,16 +47,20 @@ public class ItemLootChestPlacer extends ItemBaseStructure {
 			return EnumActionResult.SUCCESS;
 		}
 
-		Optional<ResourceLocation> lt = getLootTableName(player.getHeldItem(hand));
-		if (!lt.isPresent() || !lootTableExists(world, lt.get())) {
+		ItemStack placer = player.getHeldItem(hand);
+		Optional<Tuple<ResourceLocation, Byte>> lt = getLootParameters(placer);
+		if (!lt.isPresent() || !lootTableExists(world, lt.get().getFirst())) {
 			return EnumActionResult.PASS;
 		}
 
 		BlockPos placePos = pos.offset(facing);
 		if (Blocks.CHEST.canPlaceBlockAt(world, placePos)) {
-			world.setBlockState(placePos, Blocks.CHEST.getDefaultState().withProperty(BlockChest.FACING, player.getHorizontalFacing().getOpposite()));
-			WorldTools.getTile(world, placePos, TileEntityChest.class)
-					.ifPresent(t -> t.setLootTable(lt.get(), new Random(placePos.toLong()).nextLong()));
+			world.setBlockState(placePos, AWStructuresBlocks.advancedLootChest.getDefaultState().withProperty(BlockChest.FACING, player.getHorizontalFacing().getOpposite()));
+			WorldTools.getTile(world, placePos, TileAdvancedLootChest.class)
+					.ifPresent(t -> {
+						t.setLootTable(lt.get().getFirst(), new Random(placePos.toLong()).nextLong());
+						t.setLootRolls(lt.get().getSecond());
+					});
 
 			return EnumActionResult.SUCCESS;
 		}
@@ -63,14 +71,15 @@ public class ItemLootChestPlacer extends ItemBaseStructure {
 		return world.getLootTableManager().getLootTableFromLocation(lootTableName) != null;
 	}
 
-	public static Optional<ResourceLocation> getLootTableName(ItemStack placer) {
+	public static Optional<Tuple<ResourceLocation, Byte>> getLootParameters(ItemStack placer) {
 		//noinspection ConstantConditions
 		return placer.hasTagCompound() && placer.getTagCompound().hasKey(LOOT_TABLE_NAME_TAG) ?
-				Optional.of(new ResourceLocation(placer.getTagCompound().getString(LOOT_TABLE_NAME_TAG))) : Optional.empty();
+				Optional.of(new Tuple<>(new ResourceLocation(placer.getTagCompound().getString(LOOT_TABLE_NAME_TAG)), placer.getTagCompound().getByte(LOOT_ROLLS_TAG))) : Optional.empty();
 	}
 
-	public static void setLootTableName(ItemStack placer, String lootTableName) {
+	public static void setLootParameters(ItemStack placer, String lootTableName, byte rolls) {
 		placer.setTagInfo(LOOT_TABLE_NAME_TAG, new NBTTagString(lootTableName));
+		placer.setTagInfo(LOOT_ROLLS_TAG, new NBTTagByte(rolls));
 	}
 
 	@Override

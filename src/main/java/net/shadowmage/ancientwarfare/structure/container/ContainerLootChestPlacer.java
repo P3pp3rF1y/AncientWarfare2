@@ -3,13 +3,11 @@ package net.shadowmage.ancientwarfare.structure.container;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagString;
-import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.Tuple;
 import net.minecraft.world.storage.loot.LootTableList;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
-import net.shadowmage.ancientwarfare.structure.item.AWStructuresItems;
 import net.shadowmage.ancientwarfare.structure.item.ItemLootChestPlacer;
 
 import java.util.List;
@@ -18,12 +16,10 @@ import java.util.stream.Collectors;
 
 public class ContainerLootChestPlacer extends ContainerBase {
 	private final ItemStack placer;
-	private final EnumHand hand;
 
 	public ContainerLootChestPlacer(EntityPlayer player, int x, int y, int z) {
 		super(player);
 		placer = EntityTools.getItemFromEitherHand(player, ItemLootChestPlacer.class);
-		hand = EntityTools.getHandHoldingItem(player, AWStructuresItems.lootChestPlacer);
 	}
 
 	public List<String> getLootTableNames() {
@@ -32,19 +28,26 @@ public class ContainerLootChestPlacer extends ContainerBase {
 
 	@Override
 	public void handlePacketData(NBTTagCompound tag) {
-		setLootTableName(tag.getString("setTable"));
+		setLootParameters(tag.getString("setTable"), tag.getByte("rolls"));
 	}
 
-	public void setLootTableName(String lootTableName) {
+	public void setLootParameters(String lootTableName, byte rolls) {
 		if (player.world.isRemote) {
-			sendDataToServer("setTable", new NBTTagString(lootTableName));
+			NBTTagCompound tag = new NBTTagCompound();
+			tag.setString("setTable", lootTableName);
+			tag.setByte("rolls", rolls);
+			sendDataToServer(tag);
 			return;
 		}
 
-		ItemLootChestPlacer.setLootTableName(placer, lootTableName);
+		ItemLootChestPlacer.setLootParameters(placer, lootTableName, rolls);
 	}
 
-	public Optional<ResourceLocation> getLootTable() {
-		return ItemLootChestPlacer.getLootTableName(placer);
+	public Optional<Tuple<ResourceLocation, Byte>> getLootParameters() {
+		return ItemLootChestPlacer.getLootParameters(placer);
+	}
+
+	public void setLootTable(String lootTableName) {
+
 	}
 }

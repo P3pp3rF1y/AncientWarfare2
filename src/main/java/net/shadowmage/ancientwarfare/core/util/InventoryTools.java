@@ -1,6 +1,7 @@
 package net.shadowmage.ancientwarfare.core.util;
 
 import com.google.common.collect.Lists;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryHelper;
@@ -9,9 +10,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.storage.loot.LootTable;
+import net.minecraft.world.storage.loot.LootTableList;
 import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
@@ -19,10 +25,12 @@ import net.minecraftforge.items.IItemHandlerModifiable;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.oredict.OreDictionary;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.inventory.ItemQuantityMap;
 import org.apache.commons.lang3.Validate;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -504,6 +512,40 @@ public class InventoryTools {
 		return tileEntity.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, null);
 	}
 
+	public static void generateLootFor(World world, IInventory inventory, Random rng, int rolls) {
+		generateLootFor(world, null, inventory, rng, LootTableList.CHESTS_SIMPLE_DUNGEON, rolls);
+	}
+
+	public static void generateLootFor(World world,
+			@Nullable EntityPlayer player, IInventory inventory, Random rng, ResourceLocation lootTableName, int rolls) {
+		LootContext.Builder builder = new LootContext.Builder((WorldServer) world);
+		LootTable lootTable = world.getLootTableManager().getLootTableFromLocation(lootTableName);
+		if (player != null) {
+			builder.withLuck(player.getLuck()).withPlayer(player);
+		}
+		LootContext lootContext = builder.build();
+		NonNullList<ItemStack> loot = NonNullList.create();
+		for (int i = 0; i < rolls; i++) {
+			mergeItemStacks(loot, toNonNullList(lootTable.generateLootForPools(rng, lootContext)));
+		}
+
+		List<Integer> randomSlots = getEmptySlotsRandomized(inventory, rng);
+		shuffleItems(loot, randomSlots.size(), rng);
+
+		for (ItemStack itemstack : loot) {
+			if (randomSlots.isEmpty()) {
+				AncientWarfareCore.log.warn("Tried to over-fill a container");
+				return;
+			}
+
+			if (itemstack.isEmpty()) {
+				inventory.setInventorySlotContents(randomSlots.remove(randomSlots.size() - 1), ItemStack.EMPTY);
+			} else {
+				inventory.setInventorySlotContents(randomSlots.remove(randomSlots.size() - 1), itemstack);
+			}
+		}
+	}
+
 	/*
 	 * Item-stack comparator.  Configurable in constructor to sort by localized or unlocalized name, as well as
 	 * sort-order (regular or reverse).
@@ -619,7 +661,7 @@ public class InventoryTools {
 		return list;
 	}
 
-	public static void shuffleItems(NonNullList<ItemStack> stacks, int numberOfSlots, Random rand) {
+	private static void shuffleItems(NonNullList<ItemStack> stacks, int numberOfSlots, Random rand) {
 		numberOfSlots = numberOfSlots - stacks.size();
 
 		int MIN_SIZE_TO_SPLIT = 3;

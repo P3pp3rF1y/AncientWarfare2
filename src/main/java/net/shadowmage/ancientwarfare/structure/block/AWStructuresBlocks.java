@@ -5,7 +5,10 @@ import net.minecraftforge.fml.common.registry.GameRegistry.ObjectHolder;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 
 @ObjectHolder(AncientWarfareStructures.MOD_ID)
+@SuppressWarnings("squid:S1444")
 public class AWStructuresBlocks {
+	private AWStructuresBlocks() {}
+
 	@ObjectHolder("advanced_spawner")
 	public static Block advancedSpawner;
 	@ObjectHolder("gate_proxy")
@@ -18,4 +21,6 @@ public class AWStructuresBlocks {
 	public static Block soundBlock;
 	@ObjectHolder("structure_scanner_block")
 	public static Block structureScanner;
+	@ObjectHolder("advanced_loot_chest")
+	public static Block advancedLootChest;
 }

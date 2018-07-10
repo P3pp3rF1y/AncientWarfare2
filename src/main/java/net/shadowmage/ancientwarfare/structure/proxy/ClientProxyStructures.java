@@ -1,5 +1,6 @@
 package net.shadowmage.ancientwarfare.structure.proxy;
 
+import codechicken.lib.util.ResourceUtils;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.init.Blocks;
@@ -19,6 +20,7 @@ import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.event.StructureBoundingBoxRenderer;
 import net.shadowmage.ancientwarfare.structure.gui.GuiGateControl;
 import net.shadowmage.ancientwarfare.structure.render.DraftingStationRenderer;
+import net.shadowmage.ancientwarfare.structure.render.ParticleDummyModel;
 import net.shadowmage.ancientwarfare.structure.render.RenderGateHelper;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
 
@@ -34,6 +36,8 @@ public class ClientProxyStructures extends ClientProxyBase {
 		MinecraftForge.EVENT_BUS.register(this);
 
 		RenderingRegistry.registerEntityRenderingHandler(EntityGate.class, RenderGateHelper::new);
+
+		ResourceUtils.registerReloadListener(ParticleDummyModel.INSTANCE);
 	}
 
 	@Override

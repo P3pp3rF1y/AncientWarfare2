@@ -162,6 +162,7 @@ tile.structure_builder_ticked.name=Survival Structure Builder
 tile.sound_block.name=Sound Block
 tile.gate_proxy.name=Gate Proxy Block
 tile.structure_scanner_block.name=Structure Scanner
+tile.advanced_loot_chest.name=Advanced Loot Chest
 #npc
 tile.town_hall.name=Town Hall
 tile.recruiting_station.name=Recruiting Station
@@ -228,6 +229,7 @@ guistrings.select_dimensions=Select Dimensions
 guistrings.current_selection=Current Selection:
 guistrings.none=None
 guistrings.corrupt_item=CORRUPT ITEM, MISSING NBT DATA
+guistrings.loot_rolls=Loot Rolls
 guistrings.selected_mob=Selected Mob
 guistrings.next=Next
 guistrings.previous=Previous
