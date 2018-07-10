@@ -11,12 +11,14 @@ import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 import net.shadowmage.ancientwarfare.structure.render.ParticleDummyModel;
+import net.shadowmage.ancientwarfare.structure.render.RenderAdvancedLootChest;
 import net.shadowmage.ancientwarfare.structure.render.RenderItemAdvancedLootChest;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedLootChest;
 
@@ -49,6 +51,8 @@ public class BlockAdvancedLootChest extends BlockChest implements IClientRegistr
 				return modelLocation;
 			}
 		});
+
+		ClientRegistry.bindTileEntitySpecialRenderer(TileAdvancedLootChest.class, new RenderAdvancedLootChest());
 	}
 
 	@Override

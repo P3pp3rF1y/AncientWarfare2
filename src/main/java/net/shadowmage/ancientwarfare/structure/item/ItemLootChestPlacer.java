@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.structure.item;
 
 import net.minecraft.block.BlockChest;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagString;
@@ -54,7 +53,7 @@ public class ItemLootChestPlacer extends ItemBaseStructure {
 		}
 
 		BlockPos placePos = pos.offset(facing);
-		if (Blocks.CHEST.canPlaceBlockAt(world, placePos)) {
+		if (AWStructuresBlocks.advancedLootChest.canPlaceBlockAt(world, placePos)) {
 			world.setBlockState(placePos, AWStructuresBlocks.advancedLootChest.getDefaultState().withProperty(BlockChest.FACING, player.getHorizontalFacing().getOpposite()));
 			WorldTools.getTile(world, placePos, TileAdvancedLootChest.class)
 					.ifPresent(t -> {
