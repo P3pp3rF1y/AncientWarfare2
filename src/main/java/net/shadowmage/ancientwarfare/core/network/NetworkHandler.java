@@ -56,7 +56,6 @@ public final class NetworkHandler implements IGuiHandler {
 	public static final int GUI_CRAFTING = 0;
 	public static final int GUI_SCANNER = 1;
 	public static final int GUI_BUILDER = 2;
-	public static final int GUI_SPAWNER = 3;
 	public static final int GUI_NPC_INVENTORY = 4;
 	public static final int GUI_WORKSITE_INVENTORY_SIDE_ADJUST = 5;
 	public static final int GUI_NPC_TRADE_ORDER = 6;
@@ -85,7 +84,6 @@ public final class NetworkHandler implements IGuiHandler {
 	public static final int GUI_WORKSITE_FISH_FARM = 29;
 	public static final int GUI_WORKSITE_REED_FARM = 30;
 	public static final int GUI_STIRLING_GENERATOR = 31;
-	public static final int GUI_TORQUE_GENERATOR_WATERWHEEL = 32;
 	public static final int GUI_TORQUE_STORAGE_FLYWHEEL = 33;
 	public static final int GUI_NPC_WORK_ORDER = 34;
 	public static final int GUI_NPC_UPKEEP_ORDER = 35;
@@ -111,6 +109,7 @@ public final class NetworkHandler implements IGuiHandler {
 	public static final int GUI_WORKSITE_FRUIT_FARM = 53;
 
 	public static final int GUI_TOWN_BUILDER = 54;
+	public static final int GUI_LOOT_CHEST_PLACER = 55;
 
 	private FMLEventChannel channel;
 

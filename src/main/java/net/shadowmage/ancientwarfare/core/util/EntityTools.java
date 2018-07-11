@@ -48,7 +48,7 @@ public class EntityTools {
 
 	public static String getUnlocName(ResourceLocation registryName) {
 		EntityEntry e = ForgeRegistries.ENTITIES.getValue(registryName);
-		return "entity." + (registryName.getResourceDomain().equals(AncientWarfareNPC.modID) ? "AncientWarfareNpc." : "") + e.getName() + ".name";
+		return "entity." + (registryName.getResourceDomain().equals(AncientWarfareNPC.modID) ? AncientWarfareNPC.modID + "." : "") + e.getName() + ".name";
 	}
 
 	public static <T extends Entity> List<T> getEntitiesWithinBounds(World world, Class<? extends T> clazz, BlockPos p1, BlockPos p2) {

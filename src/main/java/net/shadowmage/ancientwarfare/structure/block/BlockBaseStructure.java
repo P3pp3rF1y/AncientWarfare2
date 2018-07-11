@@ -16,8 +16,8 @@ import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItemLoader;
 
 public class BlockBaseStructure extends BlockBase implements IClientRegistrar {
-	public BlockBaseStructure(Material material, String regName) {
-		super(material, AncientWarfareStructures.modID, regName);
+	BlockBaseStructure(Material material, String regName) {
+		super(material, AncientWarfareStructures.MOD_ID, regName);
 		setCreativeTab(AWStructuresItemLoader.structureTab);
 
 		AncientWarfareStructures.proxy.addClientRegistrar(this);
@@ -36,6 +36,6 @@ public class BlockBaseStructure extends BlockBase implements IClientRegistrar {
 			}
 		});
 
-		ModelLoaderHelper.registerItem(this, "structure", "inventory");
+		ModelLoaderHelper.registerItem(this, "structure", "normal");
 	}
 }

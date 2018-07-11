@@ -76,11 +76,15 @@ public class StructureTemplateManagerClient {
 		return clientStructures;
 	}
 
+	public boolean templateExists(String name) {
+		return clientTemplates.containsKey(name);
+	}
+
 	public StructureTemplateClient getClientTemplate(String name) {
 		return clientTemplates.get(name);
 	}
 
-	public void addTemplate(StructureTemplateClient template) {
+	private void addTemplate(StructureTemplateClient template) {
 		clientTemplates.put(template.name, template);
 		loadTemplateImage(template.name + ".jpg");
 	}
@@ -111,49 +115,8 @@ public class StructureTemplateManagerClient {
 				}
 			}
 			catch (IOException e) {
-				e.printStackTrace();
+				//noop
 			}
 		}
 	}
-
-    /*
-	private String getMD5(File file) throws IOException {
-        MessageDigest md;
-        try {
-            md = MessageDigest.getInstance("MD5");
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-            return null;
-        }
-        FileInputStream fis = new FileInputStream(file);
-        byte[] buffer = new byte[1024];
-        int read;
-        while ((read = fis.read(buffer)) >= 0) {
-            md.update(buffer, 0, read);
-        }
-        byte[] data = md.digest();
-        String md5 = "";
-        StringBuilder sb = new StringBuilder(2 * data.length);
-        for (byte b : data) {
-            sb.append(String.format("%02x", b & 0xff));
-        }
-        md5 = sb.toString();
-        fis.close();
-        return md5;
-    }
-    */
-
-	public void addStructureImage(String imageName, BufferedImage image) {
-		String pathBase = AWCoreStatics.configPathForFiles + "structures/image_cache/";
-		File file;
-		try {
-			file = new File(pathBase + imageName);
-			ImageIO.write(image, "jpg", file);
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-		loadTemplateImage(imageName);
-	}
-
 }

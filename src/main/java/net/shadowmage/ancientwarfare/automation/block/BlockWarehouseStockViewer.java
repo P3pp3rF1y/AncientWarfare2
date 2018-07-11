@@ -21,6 +21,7 @@ import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableB
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
 import javax.annotation.Nullable;
 import java.util.Map;
@@ -50,7 +51,7 @@ public class BlockWarehouseStockViewer extends BlockBaseAutomation implements IR
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(FACING, EnumFacing.VALUES[meta]);
+		return getDefaultState().withProperty(FACING, BlockTools.getHorizontalFacingFromMeta(meta));
 	}
 
 	@Override

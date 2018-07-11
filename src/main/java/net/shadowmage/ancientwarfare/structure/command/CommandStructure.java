@@ -7,7 +7,6 @@ import net.minecraft.command.NumberInvalidException;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -68,8 +67,8 @@ public class CommandStructure extends CommandBase {
 				ItemStructureSettings settings = ItemStructureSettings.getSettingsFor(stack);
 				if (settings.hasPos1() && settings.hasPos2() && settings.hasBuildKey() && (settings.hasName() || var2.length > 1)) {
 					String name = settings.hasName() ? settings.name() : var2[1];
-					NBTTagCompound tagCompound = new NBTTagCompound();
-					if (ItemStructureScanner.scanStructure(sender.getEntityWorld(), settings.pos1(), settings.pos2(), settings.buildKey(), settings.face(), name, true, tagCompound)) {
+					ItemStructureScanner.setStructureName(stack, name);
+					if (ItemStructureScanner.scanStructure(sender.getEntityWorld(), stack)) {
 						sender.sendMessage(new TextComponentTranslation("command.aw.structure.exported", var2[1]));
 					}
 				} else {

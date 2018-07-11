@@ -1,17 +1,14 @@
 package net.shadowmage.ancientwarfare.core.crafting;
 
-import com.google.common.reflect.TypeToken;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.minecraftforge.registries.IForgeRegistryEntry;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -50,60 +47,7 @@ public class ShapelessResearchRecipe extends ResearchRecipeBase {
 
 	@Override
 	public IRecipe getCraftingRecipe() {
-		return new ShapelessWrapper(this);
-	}
-
-	public static class ShapelessWrapper implements IRecipe, IForgeRegistryEntry<IRecipe> {
-
-		private TypeToken<IRecipe> token = new TypeToken<IRecipe>(getClass()) {
-		};
-		private final ShapelessResearchRecipe recipe;
-
-		ShapelessWrapper(ShapelessResearchRecipe recipe) {
-			this.recipe = recipe;
-		}
-
-		@Override
-		public boolean matches(InventoryCrafting inv, World worldIn) {
-			return recipe.matches(inv, worldIn);
-		}
-
-		@Override
-		public ItemStack getCraftingResult(InventoryCrafting inv) {
-			return recipe.getCraftingResult();
-		}
-
-		@Override
-		public boolean canFit(int width, int height) {
-			return recipe.getIngredients().size() >= width * height;
-		}
-
-		@Override
-		public ItemStack getRecipeOutput() {
-			return recipe.getRecipeOutput();
-		}
-
-		@Override
-		public NonNullList<Ingredient> getIngredients() {
-			return recipe.getIngredients();
-		}
-
-		@Override
-		public IRecipe setRegistryName(ResourceLocation name) {
-			recipe.setRegistryName(name);
-			return this;
-		}
-
-		@Nullable
-		@Override
-		public ResourceLocation getRegistryName() {
-			return recipe.getRegistryName();
-		}
-
-		@Override
-		@SuppressWarnings("unchecked")
-		public Class<IRecipe> getRegistryType() {
-			return (Class<IRecipe>) token.getRawType();
-		}
+		//noinspection ConstantConditions
+		return new ShapelessOreRecipe(null, getRecipeOutput(), getIngredients().toArray(new Ingredient[getIngredients().size()])).setRegistryName(getRegistryName());
 	}
 }

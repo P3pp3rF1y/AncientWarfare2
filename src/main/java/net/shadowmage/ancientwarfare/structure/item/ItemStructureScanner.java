@@ -4,10 +4,11 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagByte;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -36,8 +37,11 @@ import java.util.List;
 import static java.awt.Color.GREEN;
 
 public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyInterface, IBoxRenderer {
+	private static final String VALIDATOR_TAG = "validator";
+	private static final String STRUCTURE_NAME_TAG = "structureName";
+	private static final String INCLUDE_TAG = "include";
 
-	public ItemStructureScanner(String name) {
+	ItemStructureScanner(String name) {
 		super(name);
 		setMaxStackSize(1);
 	}
@@ -74,7 +78,7 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
 		if (player.isSneaking()) {
 			scanSettings.clearSettings();
 			ItemStructureSettings.setSettingsFor(stack, scanSettings);
-		} else if (scanSettings.hasPos1() && scanSettings.hasPos2() && scanSettings.hasBuildKey()) {
+		} else if (readyToExport(scanSettings)) {
 			BlockPos key = scanSettings.key;
 			if (player.getDistance(key.getX() + 0.5d, key.getY(), key.getZ() + 0.5d) > 10) {
 				player.sendMessage(new TextComponentTranslation("guistrings.structure.scanner.too_far"));
@@ -86,20 +90,63 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
 		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
 	}
 
-	public static boolean scanStructure(World world, BlockPos pos1, BlockPos pos2, BlockPos key, EnumFacing face, String name, boolean include, NBTTagCompound tag) {
-		BlockPos min = BlockTools.getMin(pos1, pos2);
-		BlockPos max = BlockTools.getMax(pos1, pos2);
-		int turns = (6 - face.getHorizontalIndex()) % 4;
-		StructureTemplate template = TemplateScanner.scan(world, min, max, key, turns, name);
+	public static boolean readyToExport(ItemStack scanner) {
+		return readyToExport(ItemStructureSettings.getSettingsFor(scanner));
+	}
 
-		StructureValidationType type = StructureValidationType.getTypeFromName(tag.getString("validationType"));
-		if (type == null)
-			return false;
+	private static boolean readyToExport(ItemStructureSettings scanSettings) {
+		return scanSettings.hasPos1() && scanSettings.hasPos2() && scanSettings.hasBuildKey();
+	}
+
+	public static void setStructureName(ItemStack stack, String name) {
+		stack.setTagInfo(STRUCTURE_NAME_TAG, new NBTTagString(name));
+	}
+
+	public static String getStructureName(ItemStack stack) {
+		//noinspection ConstantConditions
+		return stack.hasTagCompound() ? stack.getTagCompound().getString(STRUCTURE_NAME_TAG) : "";
+	}
+
+	public static void setValidator(ItemStack stack, StructureValidator validator) {
+		stack.setTagInfo(VALIDATOR_TAG, validator.serializeToNBT());
+	}
+
+	public static StructureValidator getValidator(ItemStack stack) {
+		//noinspection ConstantConditions
+		if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey(VALIDATOR_TAG)) {
+			return StructureValidationType.GROUND.getValidator();
+		}
+
+		NBTTagCompound validatorTag = stack.getTagCompound().getCompoundTag(VALIDATOR_TAG);
+
+		StructureValidationType type = StructureValidationType.getTypeFromName(validatorTag.getString("validationType"));
+		if (type == null) {
+			return StructureValidationType.GROUND.getValidator();
+		}
+
 		StructureValidator validator = type.getValidator();
-		if (validator == null)
-			return false;
-		validator.readFromNBT(tag);
+		validator.readFromNBT(validatorTag);
+		return validator;
+	}
+
+	public static void setIncludeImmediately(ItemStack stack, boolean include) {
+		stack.setTagInfo(INCLUDE_TAG, new NBTTagByte((byte) (include ? 1 : 0)));
+	}
+
+	public static boolean getIncludeImmediately(ItemStack stack) {
+		//noinspection ConstantConditions
+		return stack.hasTagCompound() && stack.getTagCompound().getBoolean(INCLUDE_TAG);
+	}
+
+	public static boolean scanStructure(World world, ItemStack scanner) {
+		ItemStructureSettings settings = ItemStructureSettings.getSettingsFor(scanner);
+
+		int turns = (6 - settings.buildFace.getHorizontalIndex()) % 4;
+		StructureTemplate template = TemplateScanner.scan(world, settings.getMin(), settings.getMax(), settings.key, turns, getStructureName(scanner));
+
+		StructureValidator validator = getValidator(scanner);
 		template.setValidationSettings(validator);
+		boolean include = getIncludeImmediately(scanner);
 		if (include) {
 			StructureTemplateManager.INSTANCE.addTemplate(template);
 		}
@@ -137,14 +184,18 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
 	@SideOnly(Side.CLIENT)
 	public void renderBox(EntityPlayer player, ItemStack stack, float delta) {
 		ItemStructureSettings settings = ItemStructureSettings.getSettingsFor(stack);
-		BlockPos firstCorner, secondCorner, min, max;
+		BlockPos firstCorner;
+		BlockPos secondCorner;
+		BlockPos min;
+		BlockPos max;
+
 		if (settings.hasPos1()) {
-			firstCorner = settings.pos1();
+			firstCorner = settings.getPos1();
 		} else {
 			firstCorner = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
 		}
 		if (settings.hasPos2()) {
-			secondCorner = settings.pos2();
+			secondCorner = settings.getPos2();
 		} else {
 			secondCorner = BlockTools.getBlockClickedOn(player, player.world, player.isSneaking());
 		}
@@ -176,5 +227,15 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
 		super.registerClient();
 
 		NetworkHandler.registerGui(NetworkHandler.GUI_SCANNER, GuiStructureScanner.class);
+	}
+
+	@SuppressWarnings("ConstantConditions")
+	public static void clearSettings(ItemStack scanner) {
+		ItemStructureSettings settings = ItemStructureSettings.getSettingsFor(scanner);
+		settings.clearSettings();
+		ItemStructureSettings.setSettingsFor(scanner, settings);
+		scanner.getTagCompound().removeTag(STRUCTURE_NAME_TAG);
+		scanner.getTagCompound().removeTag((INCLUDE_TAG));
+		scanner.removeSubCompound(VALIDATOR_TAG);
 	}
 }

@@ -1,0 +1,39 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "cube",
+        "textures": {
+            "particle": "ancientwarfare:blocks/structure/scanner_front",
+            "down": "ancientwarfare:blocks/structure/scanner_top",
+            "up": "ancientwarfare:blocks/structure/scanner_top",
+            "north": "ancientwarfare:blocks/structure/scanner_front",
+            "west": "ancientwarfare:blocks/structure/scanner_right",
+            "south": "ancientwarfare:blocks/structure/scanner_rear",
+            "east": "ancientwarfare:blocks/structure/scanner_left"
+        },
+        "transform": "forge:default-block"
+    },
+    "variants": {
+        "normal": [{}],
+        "facing": {
+            "north": {},
+            "south": {"y": 180},
+            "west": {"y": 270},
+            "east": {"y": 90},
+            "up": {
+                "textures": {
+                    "east": "ancientwarfare:blocks/structure/scanner_front",
+                    "south": "ancientwarfare:blocks/structure/scanner_front",
+                    "west": "ancientwarfare:blocks/structure/scanner_front"
+                }
+            },
+            "down": {
+                "textures": {
+                    "east": "ancientwarfare:blocks/structure/scanner_front",
+                    "south": "ancientwarfare:blocks/structure/scanner_front",
+                    "west": "ancientwarfare:blocks/structure/scanner_front"
+                }
+            }
+        }
+    }
+}

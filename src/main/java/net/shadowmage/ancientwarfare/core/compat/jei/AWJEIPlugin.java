@@ -1,6 +1,5 @@
 package net.shadowmage.ancientwarfare.core.compat.jei;
 
-import com.google.common.collect.Lists;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModPlugin;
@@ -33,12 +32,6 @@ import java.util.stream.Collectors;
 
 @JEIPlugin
 public class AWJEIPlugin implements IModPlugin {
-	private static List<IRecipe> wrappedRecipes = Lists.newArrayList();
-
-	public static void addWrappedRecipe(IRecipe recipe) {
-		wrappedRecipes.add(recipe);
-	}
-
 	@Override
 	public void registerItemSubtypes(@Nonnull ISubtypeRegistry subtypeRegistry) {
 		subtypeRegistry.useNbtForSubtypes(AWNPCItems.npcSpawner);
@@ -60,8 +53,6 @@ public class AWJEIPlugin implements IModPlugin {
 
 		List<ResearchRecipeWrapper> shapelessResearchRecipes = AWCraftingManager.getRecipes().stream().filter(r -> r instanceof ShapelessResearchRecipe).map(r -> new ResearchRecipeWrapper(registry.getJeiHelpers().getStackHelper(), r)).collect(Collectors.toList());
 		registry.addRecipes(shapelessResearchRecipes, ShapelessResearchRecipeCategory.UID);
-
-		registry.addRecipes(wrappedRecipes.stream().map(r -> wrapRecipe(registry.getJeiHelpers(), r)).collect(Collectors.toList()), VanillaRecipeCategoryUid.CRAFTING);
 
 		IRecipeTransferRegistry transferRegistry = registry.getRecipeTransferRegistry();
 

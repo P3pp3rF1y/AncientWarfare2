@@ -1,20 +1,14 @@
 package net.shadowmage.ancientwarfare.core.crafting;
 
-import com.google.common.reflect.TypeToken;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.common.crafting.IShapedRecipe;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.registries.IForgeRegistryEntry;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 public class ShapedResearchRecipe extends ResearchRecipeBase {
 
@@ -77,69 +71,11 @@ public class ShapedResearchRecipe extends ResearchRecipeBase {
 
 	@Override
 	public IRecipe getCraftingRecipe() {
-		return new ShapedWrapper(this);
-	}
-
-	public static class ShapedWrapper implements IShapedRecipe, IForgeRegistryEntry<IRecipe> {
-
-		private TypeToken<IRecipe> token = new TypeToken<IRecipe>(getClass()) {
-		};
-		private ShapedResearchRecipe recipe;
-
-		public ShapedWrapper(ShapedResearchRecipe recipe) {
-			this.recipe = recipe;
-		}
-
-		@Override
-		public boolean matches(InventoryCrafting inv, World worldIn) {
-			return recipe.matches(inv, worldIn);
-		}
-
-		@Override
-		public ItemStack getCraftingResult(InventoryCrafting inv) {
-			return recipe.getCraftingResult();
-		}
-
-		@Override
-		public boolean canFit(int width, int height) {
-			return width >= this.getRecipeWidth() && height >= this.getRecipeHeight();
-		}
-
-		@Override
-		public ItemStack getRecipeOutput() {
-			return recipe.getRecipeOutput();
-		}
-
-		@Override
-		public int getRecipeWidth() {
-			return recipe.getRecipeWidth();
-		}
-
-		@Override
-		public int getRecipeHeight() {
-			return recipe.getRecipeHeight();
-		}
-
-		@Override
-		public IRecipe setRegistryName(ResourceLocation name) {
-			recipe.setRegistryName(name);
-			return this;
-		}
-
-		@Nullable
-		@Override
-		public ResourceLocation getRegistryName() {
-			return recipe.getRegistryName();
-		}
-
-		@Override
-		public Class<IRecipe> getRegistryType() {
-			return (Class<IRecipe>) token.getRawType();
-		}
-
-		@Override
-		public NonNullList<Ingredient> getIngredients() {
-			return recipe.getIngredients();
-		}
+		CraftingHelper.ShapedPrimer primer = new CraftingHelper.ShapedPrimer();
+		primer.height = height;
+		primer.width = width;
+		primer.input = getIngredients();
+		//noinspection ConstantConditions
+		return new ShapedOreRecipe(null, getRecipeOutput(), primer).setRegistryName(getRegistryName());
 	}
 }

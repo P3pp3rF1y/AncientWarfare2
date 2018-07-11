@@ -57,7 +57,8 @@ item.construction_tool.name=Construction Tool
 item.construction_tool_lakes.name=Lake Construction Tool
 item.block_info_clicker.name=Block Info Tool
 item.town_builder.name=Instant Town Building Tool
-item.structure_builder_world_gen.name=WorldGen Structure Builder 
+item.structure_builder_world_gen.name=WorldGen Structure Builder
+item.loot_chest_placer.name=Loot Chest Placer
 #automation
 item.worksite_upgrade.0.name=Medium Bounds Upgrade
 item.worksite_upgrade.1.name=Large Bounds Upgrade
@@ -160,6 +161,8 @@ tile.drafting_station.name=Drafting Station
 tile.structure_builder_ticked.name=Survival Structure Builder
 tile.sound_block.name=Sound Block
 tile.gate_proxy.name=Gate Proxy Block
+tile.structure_scanner_block.name=Structure Scanner
+tile.advanced_loot_chest.name=Advanced Loot Chest
 #npc
 tile.town_hall.name=Town Hall
 tile.recruiting_station.name=Recruiting Station
@@ -171,6 +174,8 @@ tile.teleport_hub.tooltip.3=between player HQ's and this.
 #vehicle
 
 #guistrings
+guistrings.bounds_on=Bounds ON
+guistrings.bounds_off=Bounds OFF
 guistrings.volume=Volume
 guistrings.length=Length
 guistrings.random=Random
@@ -216,6 +221,7 @@ guistrings.invalid_name=Invalid name chosen
 guistrings.please_select_valid_name=Please select a valid name
 guistrings.input_name=Input Name
 guistrings.export=Export
+guistrings.restore=Restore
 guistrings.include_immediately=Include in game Immediately ?
 guistrings.validation_type=Current Validation Type
 guistrings.setup_validation=Setup Validation
@@ -223,11 +229,11 @@ guistrings.select_dimensions=Select Dimensions
 guistrings.current_selection=Current Selection:
 guistrings.none=None
 guistrings.corrupt_item=CORRUPT ITEM, MISSING NBT DATA
+guistrings.loot_rolls=Loot Rolls
 guistrings.selected_mob=Selected Mob
 guistrings.next=Next
 guistrings.previous=Previous
 guistrings.remove=Remove
-guistrings.delete=Delete
 guistrings.add=Add
 guistrings.for=For
 guistrings.min=Min
@@ -263,6 +269,7 @@ guistrings.required_player_range=Req. Player Range
 guistrings.spawner.spawn_range=Spawn Range
 guistrings.spawner.warning_1=WARNING!! SOME MOD-MOBS MAY CRASH WHEN PLACED IN SPAWNER
 guistrings.spawner.warning_2=TEST ALL MOBS / SETTINGS ON AN UNCARED FOR WORLD FIRST
+guistrings.spawner.entity_set=Saved settings to spawn %1$s entity
 guistrings.spawner.noblock=Spawner couldn't find a block to set
 guistrings.spawner.nodata=Spawner doesn't contain a mob
 guistrings.spawner.group_count=Total Spawn Groups
@@ -646,6 +653,20 @@ entity.ancientwarfarenpc.custom_3.civilian.male.name=Imperial Man
 entity.ancientwarfarenpc.custom_3.civilian.female.name=Imperial Woman
 entity.ancientwarfarenpc.custom_3.bard.name=Imperial Bard
 entity.ancientwarfarenpc.custom_3.siege_engineer.name=Custom 3 Siege Engineer
+entity.ancientwarfarenpc.faction.archer.name=Faction Archer
+entity.ancientwarfarenpc.faction.archer.elite.name=Elite Faction Archer
+entity.ancientwarfarenpc.faction.soldier.name=Faction Soldier
+entity.ancientwarfarenpc.faction.soldier.elite.name=Elite Faction Soldier
+entity.ancientwarfarenpc.faction.cavalry.name=Faction Cavalry
+entity.ancientwarfarenpc.faction.mounted_archer.name=Faction Mounted Archer
+entity.ancientwarfarenpc.faction.trader.name=Faction Trader
+entity.ancientwarfarenpc.faction.priest.name=Faction Priest
+entity.ancientwarfarenpc.faction.leader.name=Faction Leader
+entity.ancientwarfarenpc.faction.leader.elite.name=Elite Faction Leader
+entity.ancientwarfarenpc.faction.civilian.male.name=Faction Civilian Male
+entity.ancientwarfarenpc.faction.civilian.female.name=Faction Civilian Female
+entity.ancientwarfarenpc.faction.bard.name=Faction Bard
+entity.ancientwarfarenpc.faction.siege_engineer.name=Faction Siege Engineer
 
 #commands
 command.aw.structure.usage=/awstructure save [templateName] OR /awstructure delete <templateName> [true to remove the config file] OR /awstructure build <templateName> <x> <y> <z> [north:east:south:west] OR /awstructure reload

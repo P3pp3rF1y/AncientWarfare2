@@ -2,6 +2,7 @@ package net.shadowmage.ancientwarfare.structure.gui;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
+import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -29,8 +30,11 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
 	private final Set<Button> typeButtons = new HashSet<>();
 	private final HashMap<Button, StructureValidationType> buttonToValidationType = new HashMap<>();
 
+	private StructureValidator validator;
+
 	public GuiStructureValidationSettings(GuiStructureScanner parent) {
-		super(parent.getContainer());
+		super(new ContainerBase(parent.getContainer().player));
+
 		this.parent = parent;
 		this.shouldCloseOnVanillaKeys = false;
 	}
@@ -107,15 +111,15 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
 			return;
 		}//should never happen
 		StructureValidator newValidator = type.getValidator();
-		newValidator.inheritPropertiesFrom(parent.validator);
-		parent.validationType = type;
-		parent.validator = newValidator;
+		newValidator.inheritPropertiesFrom(parent.getContainer().getValidator());
+		parent.getContainer().setValidator(newValidator);
+		validator = newValidator;
 		this.refreshGui();
 	}
 
 	@Override
 	public void setupElements() {
-		typeLabel.setText(I18n.format("guistrings.validation_type") + ": " + parent.validationType.getName());
+		typeLabel.setText(I18n.format("guistrings.validation_type") + ": " + parent.getContainer().getValidationTypeName());
 
 		int totalHeight = 0;
 		area.clearElements();
@@ -128,7 +132,8 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
 		String propName;
 		Checkbox box;
 		NumberInput input;
-		for (StructureValidationProperty property : parent.validator.getProperties()) {
+		validator = parent.getContainer().getValidator();
+		for (StructureValidationProperty property : validator.getProperties()) {
 			propName = property.getRegName();
 			if (propName.equals(StructureValidator.PROP_BIOME_LIST) || propName.equals(StructureValidator.PROP_BIOME_WHITE_LIST) || propName.equals(StructureValidator.PROP_DIMENSION_LIST) || propName.equals(StructureValidator.PROP_DIMENSION_WHITE_LIST) || propName.equals(StructureValidator.PROP_BLOCK_LIST)) {
 				continue;//skip the properties handled by blocks, biome, or dimensions setup guis
@@ -156,6 +161,7 @@ public class GuiStructureValidationSettings extends GuiContainerBase {
 
 	@Override
 	protected boolean onGuiCloseRequested() {
+		parent.getContainer().setValidator(validator);
 		Minecraft.getMinecraft().displayGuiScreen(parent);
 		return false;
 	}

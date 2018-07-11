@@ -3,6 +3,7 @@ package net.shadowmage.ancientwarfare.structure.gui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.world.biome.Biome;
+import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.GuiContainerBase;
 import net.shadowmage.ancientwarfare.core.gui.Listener;
 import net.shadowmage.ancientwarfare.core.gui.elements.Button;
@@ -24,7 +25,7 @@ public class GuiStructureBiomeSelection extends GuiContainerBase {
 	private Listener listener;
 
 	public GuiStructureBiomeSelection(GuiStructureScanner parent) {
-		super(parent.getContainer());
+		super(new ContainerBase(parent.getContainer().player));
 		this.parent = parent;
 		this.shouldCloseOnVanillaKeys = false;
 	}
@@ -37,10 +38,10 @@ public class GuiStructureBiomeSelection extends GuiContainerBase {
 		whiteList = new Checkbox(8, 20, 16, 16, "guistrings.biome_whitelist") {
 			@Override
 			public void onToggled() {
-				parent.validator.setBiomeWhiteList(checked());
+				parent.getContainer().updateValidator(v -> v.setBiomeWhiteList(checked()));
 			}
 		};
-		whiteList.setChecked(parent.validator.isBiomeWhiteList());
+		whiteList.setChecked(parent.getContainer().getValidator().isBiomeWhiteList());
 		addGuiElement(whiteList);
 
 		searchBox = new Text(80, 8, 170, "", this) {
@@ -70,13 +71,13 @@ public class GuiStructureBiomeSelection extends GuiContainerBase {
 			@Override
 			public boolean onEvent(GuiElement widget, ActivationEvent evt) {
 				if (widget.isMouseOverElement(evt.mx, evt.my)) {
-					Set<String> biomeNames = parent.validator.getBiomeList();
+					Set<String> biomeNames = parent.getContainer().getValidator().getBiomeList();
 					if (((BiomeCheck) widget).checked()) {
 						biomeNames.add(((BiomeCheck) widget).name);
 					} else {
 						biomeNames.remove(((BiomeCheck) widget).name);
 					}
-					parent.validator.setBiomeList(biomeNames);
+					parent.getContainer().updateValidator(v -> v.setBiomeList(biomeNames));
 				}
 				return true;
 			}
@@ -86,7 +87,7 @@ public class GuiStructureBiomeSelection extends GuiContainerBase {
 
 	private void refreshBiomeList() {
 		int totalHeight = 3;
-		Set<String> biomeNames = parent.validator.getBiomeList();
+		Set<String> biomeNames = parent.getContainer().getValidator().getBiomeList();
 		area.clearElements();
 		String name;
 		Checkbox box;
@@ -111,7 +112,7 @@ public class GuiStructureBiomeSelection extends GuiContainerBase {
 
 	@Override
 	public void setupElements() {
-		whiteList.setChecked(parent.validator.isBiomeWhiteList());
+		whiteList.setChecked(parent.getContainer().getValidator().isBiomeWhiteList());
 		refreshBiomeList();
 	}
 

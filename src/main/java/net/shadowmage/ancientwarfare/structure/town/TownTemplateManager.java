@@ -43,7 +43,7 @@ public class TownTemplateManager {
 		Biome biome = world.provider.getBiomeForCoords(new BlockPos(x, 1, z));
 		ResourceLocation rl = biome.getRegistryName();
 		if (rl == null) {
-			AncientWarfareStructures.log.info("Biome based on class {} isn't registered and because of that Ancient Warfare can't process biome validation. This may be an error which may need to be fixed by the mod that added the biome.", biome.getClass());
+			AncientWarfareStructures.LOG.info("Biome based on class {} isn't registered and because of that Ancient Warfare can't process biome validation. This may be an error which may need to be fixed by the mod that added the biome.", biome.getClass());
 			return Collections.emptyList();
 		}
 		String biomeName = rl.toString();

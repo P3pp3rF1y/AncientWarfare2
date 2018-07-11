@@ -21,11 +21,13 @@ import net.minecraft.world.ChunkCache;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.structure.gui.GuiSpawnerAdvanced;
 import net.shadowmage.ancientwarfare.structure.gui.GuiSpawnerAdvancedInventory;
+import net.shadowmage.ancientwarfare.structure.render.RenderAdvancedSpawner;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
 import net.shadowmage.ancientwarfare.structure.tile.TileAdvancedSpawner;
 
@@ -156,5 +158,7 @@ public class BlockAdvancedSpawner extends BlockBaseStructure {
 		NetworkHandler.registerGui(NetworkHandler.GUI_SPAWNER_ADVANCED_BLOCK, GuiSpawnerAdvanced.class);
 		NetworkHandler.registerGui(NetworkHandler.GUI_SPAWNER_ADVANCED_INVENTORY, GuiSpawnerAdvancedInventory.class);
 		NetworkHandler.registerGui(NetworkHandler.GUI_SPAWNER_ADVANCED_BLOCK_INVENTORY, GuiSpawnerAdvancedInventory.class);
+
+		ClientRegistry.bindTileEntitySpecialRenderer(TileAdvancedSpawner.class, new RenderAdvancedSpawner());
 	}
 }

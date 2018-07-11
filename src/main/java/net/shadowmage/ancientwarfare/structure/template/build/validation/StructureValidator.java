@@ -115,11 +115,13 @@ public abstract class StructureValidator {
 		}
 	}
 
-	public final void writeToNBT(NBTTagCompound tag) {
+	public final NBTTagCompound serializeToNBT() {
+		NBTTagCompound tag = new NBTTagCompound();
 		tag.setString("validationType", this.validationType.getName());
 		for (StructureValidationProperty prop : this.properties.values()) {
 			prop.writeToNBT(tag);
 		}
+		return tag;
 	}
 
 	protected void setDefaultSettings(StructureTemplate template) {
