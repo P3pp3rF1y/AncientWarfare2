@@ -130,6 +130,7 @@ public class StructurePluginVanillaHandler implements StructureContentPlugin {
 		manager.registerBlockHandler("awStructureLogic", AWStructuresBlocks.draftingStation, TemplateRuleBlockLogic.class);
 		manager.registerBlockHandler("awStructureLogic", AWStructuresBlocks.builderBlock, TemplateRuleBlockLogic.class);
 		manager.registerBlockHandler("awStructureLogic", AWStructuresBlocks.soundBlock, TemplateRuleBlockLogic.class);
+		manager.registerBlockHandler("awStructureLogic", AWStructuresBlocks.advancedLootChest, TemplateRuleBlockLogic.class);
 	}
 
 	@Override
