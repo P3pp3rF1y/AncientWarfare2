@@ -29,7 +29,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
-import net.shadowmage.ancientwarfare.core.compat.jei.AWJEIPlugin;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
 import net.shadowmage.ancientwarfare.core.crafting.wrappers.NoRecipeWrapper;
 import net.shadowmage.ancientwarfare.core.crafting.wrappers.RegularCraftingWrapper;
@@ -135,11 +134,7 @@ public class AWCraftingManager {
 					RESEARCH_RECIPES.register(recipe);
 				}
 			} else {
-				IRecipe r = recipe.getCraftingRecipe();
-				ForgeRegistries.RECIPES.register(r);
-				if (Loader.isModLoaded("jei")) {
-					AWJEIPlugin.addWrappedRecipe(r);
-				}
+				ForgeRegistries.RECIPES.register(recipe.getCraftingRecipe());
 			}
 		}
 	}
