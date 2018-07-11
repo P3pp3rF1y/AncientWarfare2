@@ -194,7 +194,8 @@ public class TileStructureScanner extends TileUpdatable {
 	}
 
 	private void clearEntities(AxisAlignedBB boundingBox) {
-		world.getEntitiesWithinAABB(Entity.class, boundingBox).forEach(Entity::setDead);
+		AxisAlignedBB expandedBoundingBox = new AxisAlignedBB(boundingBox.minX, boundingBox.minY, boundingBox.minZ, boundingBox.maxX + 1, boundingBox.maxY + 1, boundingBox.maxZ + 1);
+		world.getEntitiesWithinAABB(Entity.class, expandedBoundingBox).forEach(Entity::setDead);
 	}
 
 	private boolean isSameTemplateSizeAndOffset(StructureTemplate template, StructureTemplate dummyTemplate) {
