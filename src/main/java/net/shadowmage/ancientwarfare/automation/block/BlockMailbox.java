@@ -17,6 +17,7 @@ import net.shadowmage.ancientwarfare.automation.tile.TileMailbox;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.IRotatableBlock;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.core.util.BlockTools;
 
 import static net.shadowmage.ancientwarfare.core.render.property.CoreProperties.FACING;
 
@@ -34,7 +35,7 @@ public class BlockMailbox extends BlockBaseAutomation implements IRotatableBlock
 
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
-		return getDefaultState().withProperty(FACING, EnumFacing.VALUES[meta]);
+		return getDefaultState().withProperty(FACING, BlockTools.getHorizontalFacingFromMeta(meta));
 	}
 
 	@Override
