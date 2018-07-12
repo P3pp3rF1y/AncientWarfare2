@@ -1,0 +1,89 @@
+{
+    "mod": "oreberries",
+    "fruits": [
+        {
+            "type": "picked_drop",
+            "fruit": "oreberries:tin_oreberry_bush",
+            "ripe": {
+                "age": 3
+            },
+            "new": {
+                "age": 2
+            },
+            "drop": {
+                "count": 2,
+                "name": "oreberries:tin_oreberry"
+            }
+        },
+        {
+            "type": "picked_drop",
+            "fruit": "oreberries:iron_oreberry_bush",
+            "ripe": {
+                "age": 3
+            },
+            "new": {
+                "age": 2
+            },
+            "drop": {
+                "count": 2,
+                "name": "oreberries:iron_oreberry"
+            }
+        },
+        {
+            "type": "picked_drop",
+            "fruit": "oreberries:copper_oreberry_bush",
+            "ripe": {
+                "age": 3
+            },
+            "new": {
+                "age": 2
+            },
+            "drop": {
+                "count": 2,
+                "name": "oreberries:copper_oreberry"
+            }
+        },
+        {
+            "type": "picked_drop",
+            "fruit": "oreberries:gold_oreberry_bush",
+            "ripe": {
+                "age": 3
+            },
+            "new": {
+                "age": 2
+            },
+            "drop": {
+                "count": 2,
+                "name": "oreberries:gold_oreberry"
+            }
+        },
+        {
+            "type": "picked_drop",
+            "fruit": "oreberries:aluminum_oreberry_bush",
+            "ripe": {
+                "age": 3
+            },
+            "new": {
+                "age": 2
+            },
+            "drop": {
+                "count": 2,
+                "name": "oreberries:aluminum_oreberry"
+            }
+        },
+        {
+            "type": "picked_drop",
+            "fruit": "oreberries:essence_oreberry_bush",
+            "ripe": {
+                "age": 3
+            },
+            "new": {
+                "age": 2
+            },
+            "drop": {
+                "count": 2,
+                "name": "oreberries:essence_oreberry"
+            }
+        }
+    ]
+}
