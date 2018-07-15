@@ -4,29 +4,28 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFlowerPot;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 
 public class TemplateRuleFlowerPot extends TemplateRuleVanillaBlocks {
-
-	String itemName;
-	int itemMeta;
+	private static final String ITEM_NAME_TAG = "itemName";
+	private String itemName;
+	private int itemMeta;
 
 	public TemplateRuleFlowerPot(World world, BlockPos pos, Block block, int meta, int turns) {
 		super(world, pos, block, meta, turns);
-		TileEntity te = world.getTileEntity(pos);
-		if (te instanceof TileEntityFlowerPot) {
-			TileEntityFlowerPot tefp = (TileEntityFlowerPot) te;
-			Item item = tefp.getFlowerPotItem();
-			itemMeta = tefp.getFlowerPotData();
+		WorldTools.getTile(world, pos, TileEntityFlowerPot.class).ifPresent(t -> {
+			Item item = t.getFlowerPotItem();
+			itemMeta = t.getFlowerPotData();
 			if (item != null) {
 				itemName = item.getRegistryName().toString();
 			}
-		}
+		});
 	}
 
 	public TemplateRuleFlowerPot() {
@@ -41,12 +40,9 @@ public class TemplateRuleFlowerPot extends TemplateRuleVanillaBlocks {
 	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
 		super.handlePlacement(world, turns, pos, builder);
 		if (itemName != null) {
-			Item item = Item.REGISTRY.getObject(new ResourceLocation(itemName));
-			TileEntity te = world.getTileEntity(pos);
-			if (item != null && te instanceof TileEntityFlowerPot) {
-				TileEntityFlowerPot tefp = (TileEntityFlowerPot) te;
-				tefp.setItemStack(new ItemStack(item, 1, itemMeta));
-			}
+			Item item = ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemName));
+			//noinspection ConstantConditions
+			WorldTools.getTile(world, pos, TileEntityFlowerPot.class).ifPresent(t -> t.setItemStack(new ItemStack(item, 1, itemMeta)));
 		}
 	}
 
@@ -54,7 +50,7 @@ public class TemplateRuleFlowerPot extends TemplateRuleVanillaBlocks {
 	public void writeRuleData(NBTTagCompound tag) {
 		super.writeRuleData(tag);
 		if (itemName != null) {
-			tag.setString("itemName", itemName);
+			tag.setString(ITEM_NAME_TAG, itemName);
 		}
 		tag.setInteger("itemMeta", itemMeta);
 	}
@@ -62,8 +58,8 @@ public class TemplateRuleFlowerPot extends TemplateRuleVanillaBlocks {
 	@Override
 	public void parseRuleData(NBTTagCompound tag) {
 		super.parseRuleData(tag);
-		if (tag.hasKey("itemName")) {
-			itemName = tag.getString("itemName");
+		if (tag.hasKey(ITEM_NAME_TAG)) {
+			itemName = tag.getString(ITEM_NAME_TAG);
 		}
 		itemMeta = tag.getInteger("itemMeta");
 	}

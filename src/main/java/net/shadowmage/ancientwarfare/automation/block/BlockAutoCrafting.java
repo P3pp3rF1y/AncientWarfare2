@@ -27,6 +27,7 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.render.BlockStateKeyGenerator;
 import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 public class BlockAutoCrafting extends BlockWorksiteBase implements IBakeryProvider {
 
@@ -51,12 +52,8 @@ public class BlockAutoCrafting extends BlockWorksiteBase implements IBakeryProvi
 
 	@Override
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-		EnumFacing facing = EnumFacing.NORTH;
-		TileEntity tileentity = world.getTileEntity(pos);
-
-		if (tileentity instanceof BlockRotationHandler.IRotatableTile) {
-			facing = ((BlockRotationHandler.IRotatableTile) tileentity).getPrimaryFacing();
-		}
+		EnumFacing facing = WorldTools.getTile(world, pos, BlockRotationHandler.IRotatableTile.class).map(BlockRotationHandler.IRotatableTile::getPrimaryFacing)
+				.orElse(EnumFacing.NORTH);
 
 		return ((IExtendedBlockState) super.getExtendedState(state, world, pos)).withProperty(CoreProperties.UNLISTED_HORIZONTAL_FACING, facing);
 	}

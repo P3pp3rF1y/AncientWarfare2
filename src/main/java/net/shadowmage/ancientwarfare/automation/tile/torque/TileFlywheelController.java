@@ -1,16 +1,16 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileFlywheelStorage;
 import net.shadowmage.ancientwarfare.core.interfaces.ITorque.TorqueCell;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 import javax.annotation.Nullable;
 
 public abstract class TileFlywheelController extends TileTorqueSingleCell {
-
+	private static final String POWERED_TAG = "powered";
 	private boolean powered;
 
 	private final TorqueCell inputCell;
@@ -43,7 +43,7 @@ public abstract class TileFlywheelController extends TileTorqueSingleCell {
 		}
 	}
 
-	protected double applyDrainToStorage() {
+	private double applyDrainToStorage() {
 		TileFlywheelStorage storage = getControlledFlywheel();
 		if (storage == null) {
 			return 0;
@@ -56,7 +56,7 @@ public abstract class TileFlywheelController extends TileTorqueSingleCell {
 	 * fill output from storage
 	 * fill storage from input
 	 */
-	protected void balancePower() {
+	private void balancePower() {
 		TileFlywheelStorage storage = getControlledFlywheel();
 		double in = inputCell.getEnergy();
 		double out = torqueCell.getEnergy();
@@ -88,20 +88,16 @@ public abstract class TileFlywheelController extends TileTorqueSingleCell {
 	}
 
 	@Nullable
-	public TileFlywheelStorage getControlledFlywheel() {
+	private TileFlywheelStorage getControlledFlywheel() {
 		BlockPos controllerPos = pos.offset(EnumFacing.DOWN);
-		TileEntity te = world.getTileEntity(controllerPos);
-		if (te instanceof TileFlywheelStorage) {
-			TileFlywheelStorage fs = (TileFlywheelStorage) te;
-			if (fs.controllerPos != null) {
-				controllerPos = fs.controllerPos;
-				te = world.getTileEntity(controllerPos);
-				if (te instanceof TileFlywheelStorage) {
-					return (TileFlywheelStorage) te;
+		return WorldTools.getTile(world, controllerPos, TileFlywheelStorage.class).map(t -> {
+					if (t.controllerPos != null) {
+						BlockPos nextControllerPos = t.controllerPos;
+						return WorldTools.getTile(world, nextControllerPos, TileFlywheelStorage.class).orElse(null);
+					}
+					return null;
 				}
-			}
-		}
-		return null;
+		).orElse(null);
 	}
 
 	public float getFlywheelRotation(float delta) {
@@ -109,9 +105,9 @@ public abstract class TileFlywheelController extends TileTorqueSingleCell {
 		return storage == null ? 0 : getRenderRotation(storage.rotation, storage.lastRotationDiff, delta);
 	}
 
-	protected double getFlywheelEnergy() {
+	private double getFlywheelEnergy() {
 		TileFlywheelStorage storage = getControlledFlywheel();
-		return storage == null ? 0 : storage.storedEnergy;//TODO
+		return storage == null ? 0 : storage.storedEnergy;
 	}
 
 	@Override
@@ -133,10 +129,8 @@ public abstract class TileFlywheelController extends TileTorqueSingleCell {
 
 	@Override
 	public boolean receiveClientEvent(int a, int b) {
-		if (world.isRemote) {
-			if (a == 7) {
-				powered = b == 1;
-			}
+		if (world.isRemote && a == 7) {
+			powered = b == 1;
 		}
 		return super.receiveClientEvent(a, b);
 	}
@@ -150,37 +144,37 @@ public abstract class TileFlywheelController extends TileTorqueSingleCell {
 	}
 
 	@Override
-	public double getMaxTorque(EnumFacing from) {
+	public double getMaxTorque(@Nullable EnumFacing from) {
 		TorqueCell cell = getCell(from);
 		return cell == null ? 0 : cell.getMaxEnergy();
 	}
 
 	@Override
-	public double getTorqueStored(EnumFacing from) {
+	public double getTorqueStored(@Nullable EnumFacing from) {
 		TorqueCell cell = getCell(from);
 		return cell == null ? 0 : cell.getEnergy();
 	}
 
 	@Override
-	public double addTorque(EnumFacing from, double energy) {
+	public double addTorque(@Nullable EnumFacing from, double energy) {
 		TorqueCell cell = getCell(from);
 		return cell == null ? 0 : cell.addEnergy(energy);
 	}
 
 	@Override
-	public double drainTorque(EnumFacing from, double energy) {
+	public double drainTorque(@Nullable EnumFacing from, double energy) {
 		TorqueCell cell = getCell(from);
 		return cell == null ? 0 : cell.drainEnergy(energy);
 	}
 
 	@Override
-	public double getMaxTorqueInput(EnumFacing from) {
+	public double getMaxTorqueInput(@Nullable EnumFacing from) {
 		TorqueCell cell = getCell(from);
 		return cell == null ? 0 : cell.getMaxTickInput();
 	}
 
 	@Nullable
-	private TorqueCell getCell(EnumFacing from) {
+	private TorqueCell getCell(@Nullable EnumFacing from) {
 		if (from == orientation) {
 			return torqueCell;
 		} else if (from == orientation.getOpposite()) {
@@ -194,19 +188,19 @@ public abstract class TileFlywheelController extends TileTorqueSingleCell {
 	@Override
 	protected void handleUpdateNBT(NBTTagCompound tag) {
 		super.handleUpdateNBT(tag);
-		powered = tag.getBoolean("powered");
+		powered = tag.getBoolean(POWERED_TAG);
 	}
 
 	@Override
 	protected void writeUpdateNBT(NBTTagCompound tag) {
 		super.writeUpdateNBT(tag);
-		tag.setBoolean("powered", powered);
+		tag.setBoolean(POWERED_TAG, powered);
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
-		tag.setBoolean("powered", powered);
+		tag.setBoolean(POWERED_TAG, powered);
 		tag.setDouble("torqueEnergyIn", inputCell.getEnergy());
 		return tag;
 	}
@@ -214,7 +208,7 @@ public abstract class TileFlywheelController extends TileTorqueSingleCell {
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
-		powered = tag.getBoolean("powered");
+		powered = tag.getBoolean(POWERED_TAG);
 		inputCell.setEnergy(tag.getDouble("torqueEnergyIn"));
 	}
 

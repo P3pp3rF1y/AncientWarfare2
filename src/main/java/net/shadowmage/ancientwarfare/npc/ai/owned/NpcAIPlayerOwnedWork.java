@@ -1,21 +1,22 @@
 package net.shadowmage.ancientwarfare.npc.ai.owned;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.orders.WorkOrder;
 import net.shadowmage.ancientwarfare.npc.orders.WorkOrder.WorkEntry;
 
-public class NpcAIPlayerOwnedWork extends NpcAI<NpcBase> {
+import java.util.Optional;
 
-	public int ticksAtSite;
-	public int workIndex;
+public class NpcAIPlayerOwnedWork extends NpcAI<NpcBase> {
+	private int ticksAtSite;
+	private int workIndex;
 	public WorkOrder order;
 	private boolean init = false;
 
@@ -42,13 +43,7 @@ public class NpcAIPlayerOwnedWork extends NpcAI<NpcBase> {
 
 	@Override
 	public boolean shouldContinueExecuting() {
-		if (!npc.getIsAIEnabled()) {
-			return false;
-		}
-		if (npc.getFoodRemaining() <= 0 || npc.shouldBeAtHome()) {
-			return false;
-		}
-		return order != null && !order.isEmpty();
+		return npc.getIsAIEnabled() && !(npc.getFoodRemaining() <= 0 || npc.shouldBeAtHome()) && order != null && !order.isEmpty();
 	}
 
 	@Override
@@ -61,7 +56,7 @@ public class NpcAIPlayerOwnedWork extends NpcAI<NpcBase> {
 			ticksAtSite = 0;
 			moveToPosition(pos, dist);
 		} else {
-			if (dist < 10 || shouldMoveFromTimeAtSite(entry) || shouldMoveFromNoWork(entry)) {
+			if (dist < 10 || shouldMoveFromTimeAtSite(entry) || shouldMoveFromNoWork()) {
 				npc.getNavigator().clearPath();
 				npc.removeAITask(TASK_MOVE);
 			}
@@ -74,12 +69,11 @@ public class NpcAIPlayerOwnedWork extends NpcAI<NpcBase> {
 		npc.addAITask(TASK_WORK);
 	}
 
-	protected void workAtSite(WorkEntry entry) {
+	private void workAtSite(WorkEntry entry) {
 		ticksAtSite++;
 		if (ticksAtSite == 1) {
 			BlockPos pos = entry.getPosition();
-			TileEntity te = npc.world.getTileEntity(pos);
-			if (!(te instanceof IWorkSite) || !((IWorker) npc).canWorkAt(((IWorkSite) te).getWorkType()) || !((IWorkSite) te).hasWork()) {
+			if (WorldTools.getTile(npc.world, pos, IWorkSite.class).map(t -> !((IWorker) npc).canWorkAt(t.getWorkType()) || !t.hasWork()).orElse(false)) {
 				setMoveToNextSite();
 				return;
 			}
@@ -89,38 +83,37 @@ public class NpcAIPlayerOwnedWork extends NpcAI<NpcBase> {
 		}
 		if (ticksAtSite >= AWNPCStatics.npcWorkTicks) {
 			ticksAtSite = 0;
-			BlockPos pos = entry.getPosition();
-			TileEntity te = npc.world.getTileEntity(pos);
-			if (te instanceof IWorkSite) {
-				IWorkSite site = (IWorkSite) te;
-				if (((IWorker) npc).canWorkAt(site.getWorkType())) {
-					if (site.hasWork()) {
-						npc.addExperience(AWNPCStatics.npcXpFromWork);
-						site.addEnergyFromWorker((IWorker) npc);
-					} else {
-						if (shouldMoveFromNoWork(entry)) {
-							setMoveToNextSite();
-						}
-					}
-					if (shouldMoveFromTimeAtSite(entry)) {
+
+			Optional<IWorkSite> workSite = WorldTools.getTile(npc.world, entry.getPosition(), IWorkSite.class)
+					.filter(s -> ((IWorker) npc).canWorkAt(s.getWorkType()));
+			if (workSite.isPresent()) {
+				IWorkSite site = workSite.get();
+				if (site.hasWork()) {
+					npc.addExperience(AWNPCStatics.npcXpFromWork);
+					site.addEnergyFromWorker((IWorker) npc);
+				} else {
+					if (shouldMoveFromNoWork()) {
 						setMoveToNextSite();
 					}
-					return;
 				}
+				if (shouldMoveFromTimeAtSite(entry)) {
+					setMoveToNextSite();
+				}
+				return;
 			}
 			setMoveToNextSite();
 		}
 	}
 
-	protected boolean shouldMoveFromNoWork(WorkEntry entry) {
+	private boolean shouldMoveFromNoWork() {
 		return !order.getPriorityType().isTimed() && order.size() > 1;
 	}
 
-	protected boolean shouldMoveFromTimeAtSite(WorkEntry entry) {
+	private boolean shouldMoveFromTimeAtSite(WorkEntry entry) {
 		return order.getPriorityType().isTimed() && ticksAtSite > entry.getWorkLength();
 	}
 
-	protected void setMoveToNextSite() {
+	private void setMoveToNextSite() {
 		ticksAtSite = 0;
 		moveRetryDelay = 0;
 		workIndex = order.getPriorityType().getNextWorkIndex(workIndex, order.getEntries(), npc);

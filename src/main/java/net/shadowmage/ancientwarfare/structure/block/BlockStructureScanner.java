@@ -58,9 +58,7 @@ public class BlockStructureScanner extends BlockBaseStructure {
 
 	@Override
 	public void onBlockPlacedBy(World worldIn, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
-		TileStructureScanner te = (TileStructureScanner) worldIn.getTileEntity(pos);
-		//noinspection ConstantConditions
-		te.setFacing(placer.getHorizontalFacing().getOpposite());
+		WorldTools.getTile(worldIn, pos, TileStructureScanner.class).ifPresent(t -> t.setFacing(placer.getHorizontalFacing().getOpposite()));
 	}
 
 	@Override

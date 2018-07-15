@@ -1,7 +1,6 @@
 package net.shadowmage.ancientwarfare.automation.tile.torque.multiblock;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -13,20 +12,32 @@ import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.util.BlockFinder;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.Trig;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import org.apache.commons.lang3.tuple.Pair;
 
+import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Optional;
 
 public class TileFlywheelStorage extends TileUpdatable implements ITickable {
 
+	private static final String CONTROLLER_POS_TAG = "controllerPos";
+	private static final String IS_CONTROL_TAG = "isControl";
+	private static final String SET_WIDTH_TAG = "setWidth";
+	private static final String SET_HEIGHT_TAG = "setHeight";
 	public BlockPos controllerPos;
 	public boolean isControl = false;//set to true if this is the control block for a setup
-	public int setWidth, setHeight, setCube;//validation params, only 'valid' in the control block.  used by rendering
-	public double storedEnergy, maxEnergyStored, maxRpm = 100;
+	public int setWidth;
+	public int setHeight;
+	private int setCube;//validation params, only 'valid' in the control block.  used by rendering
+	public double storedEnergy;
+	public double maxEnergyStored;
+	private double maxRpm = 100;
 	public double torqueLoss;
 	public double rotation;//used in rendering
 	public double lastRotationDiff;
-	private int clientEnergy, clientDestEnergy;
+	private int clientEnergy;
+	private int clientDestEnergy;
 	private int networkUpdateTicks = 0;
 
 	@Override
@@ -71,7 +82,7 @@ public class TileFlywheelStorage extends TileUpdatable implements ITickable {
 		}
 	}
 
-	protected void serverNetworkUpdate() {
+	private void serverNetworkUpdate() {
 		if (!AWAutomationStatics.enable_energy_network_updates) {
 			return;
 		}
@@ -99,16 +110,14 @@ public class TileFlywheelStorage extends TileUpdatable implements ITickable {
 
 	@Override
 	public boolean receiveClientEvent(int a, int b) {
-		if (world.isRemote) {
-			if (a == 1) {
-				clientDestEnergy = b;
-				networkUpdateTicks = AWAutomationStatics.energyMinNetworkUpdateFrequency;
-			}
+		if (world.isRemote && a == 1) {
+			clientDestEnergy = b;
+			networkUpdateTicks = AWAutomationStatics.energyMinNetworkUpdateFrequency;
 		}
 		return true;
 	}
 
-	protected void updateRotation() {
+	private void updateRotation() {
 		double rpm = (double) clientEnergy * 0.01d * this.maxRpm;
 		lastRotationDiff = -(rpm * AWAutomationStatics.rpmToRpt) * Trig.TORADIANS;
 		rotation += lastRotationDiff;
@@ -123,7 +132,7 @@ public class TileFlywheelStorage extends TileUpdatable implements ITickable {
 		validateSetup();
 	}
 
-	public final void setController(BlockPos controllerPos) {
+	private void setController(@Nullable BlockPos controllerPos) {
 		this.controllerPos = controllerPos;
 		isControl = (controllerPos == null || controllerPos.equals(pos));
 		if (controllerPos == null) {
@@ -136,7 +145,7 @@ public class TileFlywheelStorage extends TileUpdatable implements ITickable {
 		BlockTools.notifyBlockUpdate(this);
 	}
 
-	protected boolean validateSetup() {
+	private boolean validateSetup() {
 		BlockFinder finder = new BlockFinder(world, getBlockType(), getBlockMetadata(), 30);
 		Pair<BlockPos, BlockPos> corners = finder.cross(pos);
 		int minX = corners.getLeft().getX();
@@ -158,14 +167,11 @@ public class TileFlywheelStorage extends TileUpdatable implements ITickable {
 
 	private void setValidSetup(List<BlockPos> set, int cx, int cy, int cz, int size, int height, int type) {
 		controllerPos = new BlockPos(cx, cy, cz);
-		TileEntity te = world.getTileEntity(controllerPos);
-		if (te instanceof TileFlywheelStorage) {
-			((TileFlywheelStorage) te).setAsController(size, height, type);
+		Optional<TileFlywheelStorage> te = WorldTools.getTile(world, controllerPos, TileFlywheelStorage.class);
+		if (te.isPresent()) {
+			te.get().setAsController(size, height, type);
 			for (BlockPos pos : set) {
-				te = world.getTileEntity(pos);
-				if (te instanceof TileFlywheelStorage) {
-					((TileFlywheelStorage) te).setController(controllerPos);
-				}
+				WorldTools.getTile(world, pos, TileFlywheelStorage.class).ifPresent(t -> t.setController(controllerPos));
 			}
 		} else {
 			controllerPos = null;
@@ -179,18 +185,15 @@ public class TileFlywheelStorage extends TileUpdatable implements ITickable {
 		this.setCube = size * size * height;
 		double energyPerBlockForType = 1600;
 		switch (type) {
-			case 0: {
+			case 0:
 				energyPerBlockForType = AWAutomationStatics.low_storage_energy_max;
 				break;
-			}
-			case 1: {
+			case 1:
 				energyPerBlockForType = AWAutomationStatics.med_storage_energy_max;
 				break;
-			}
-			case 2: {
+			case 2:
 				energyPerBlockForType = AWAutomationStatics.high_storage_energy_max;
 				break;
-			}
 		}
 		this.maxEnergyStored = (double) setCube * energyPerBlockForType;
 		markDirty();
@@ -198,44 +201,28 @@ public class TileFlywheelStorage extends TileUpdatable implements ITickable {
 	}
 
 	private void setInvalidSetup(List<BlockPos> set) {
-		TileEntity te;
 		setController(null);
 		for (BlockPos pos : set) {
-			te = world.getTileEntity(pos);
-			if (te instanceof TileFlywheelStorage) {
-				((TileFlywheelStorage) te).setController(null);
-			}
+			WorldTools.getTile(world, pos, TileFlywheelStorage.class).ifPresent(t -> t.setController(null));
 		}
 	}
 
 	private void informNeighborsToValidate() {
-		TileEntity te;
 		for (EnumFacing d : EnumFacing.VALUES) {
-			te = world.getTileEntity(pos.offset(d));
-			if (te instanceof TileFlywheelStorage) {
-				((TileFlywheelStorage) te).validateSetup();
-			}
+			WorldTools.getTile(world, pos.offset(d), TileFlywheelStorage.class).ifPresent(TileFlywheelStorage::validateSetup);
 		}
-	}
-
-	public TileFlywheelStorage getController() {
-		if (controllerPos != null) {
-			TileEntity te = world.getTileEntity(controllerPos);
-			return te instanceof TileFlywheelStorage ? (TileFlywheelStorage) te : null;
-		}
-		return null;
 	}
 
 	@Override
 	protected void writeUpdateNBT(NBTTagCompound tag) {
 		super.writeUpdateNBT(tag);
 		if (controllerPos != null) {
-			tag.setLong("controllerPos", controllerPos.toLong());
+			tag.setLong(CONTROLLER_POS_TAG, controllerPos.toLong());
 		}
 		if (isControl) {
-			tag.setBoolean("isControl", true);
-			tag.setInteger("setWidth", setWidth);
-			tag.setInteger("setHeight", setHeight);
+			tag.setBoolean(IS_CONTROL_TAG, true);
+			tag.setInteger(SET_WIDTH_TAG, setWidth);
+			tag.setInteger(SET_HEIGHT_TAG, setHeight);
 			tag.setInteger("clientEnergy", clientEnergy);
 		}
 	}
@@ -243,11 +230,11 @@ public class TileFlywheelStorage extends TileUpdatable implements ITickable {
 	@Override
 	protected void handleUpdateNBT(NBTTagCompound tag) {
 		super.handleUpdateNBT(tag);
-		controllerPos = tag.hasKey("controllerPos") ? BlockPos.fromLong(tag.getLong("controllerPos")) : null;
-		isControl = tag.getBoolean("isControl");
+		controllerPos = tag.hasKey(CONTROLLER_POS_TAG) ? BlockPos.fromLong(tag.getLong(CONTROLLER_POS_TAG)) : null;
+		isControl = tag.getBoolean(IS_CONTROL_TAG);
 		if (isControl) {
-			setHeight = tag.getInteger("setHeight");
-			setWidth = tag.getInteger("setWidth");
+			setHeight = tag.getInteger(SET_HEIGHT_TAG);
+			setWidth = tag.getInteger(SET_WIDTH_TAG);
 			setCube = setWidth * setWidth * setHeight;
 			clientEnergy = tag.getInteger("clientEnergy");
 		}
@@ -257,12 +244,12 @@ public class TileFlywheelStorage extends TileUpdatable implements ITickable {
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
-		controllerPos = tag.hasKey("controllerPos") ? BlockPos.fromLong(tag.getLong("controllerPos")) : null;
-		isControl = tag.getBoolean("isControl");
+		controllerPos = tag.hasKey(CONTROLLER_POS_TAG) ? BlockPos.fromLong(tag.getLong(CONTROLLER_POS_TAG)) : null;
+		isControl = tag.getBoolean(IS_CONTROL_TAG);
 		if (isControl) {
 			maxEnergyStored = tag.getDouble("maxEnergy");
-			setHeight = tag.getInteger("setHeight");
-			setWidth = tag.getInteger("setWidth");
+			setHeight = tag.getInteger(SET_HEIGHT_TAG);
+			setWidth = tag.getInteger(SET_WIDTH_TAG);
 			setCube = setWidth * setWidth * setHeight;
 		}
 		storedEnergy = tag.getDouble("storedEnergy");
@@ -272,13 +259,13 @@ public class TileFlywheelStorage extends TileUpdatable implements ITickable {
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
 		if (controllerPos != null) {
-			tag.setLong("controllerPos", controllerPos.toLong());
+			tag.setLong(CONTROLLER_POS_TAG, controllerPos.toLong());
 		}
 		if (isControl) {
-			tag.setBoolean("isControl", true);
+			tag.setBoolean(IS_CONTROL_TAG, true);
 			tag.setDouble("maxEnergy", maxEnergyStored);
-			tag.setInteger("setWidth", setWidth);
-			tag.setInteger("setHeight", setHeight);
+			tag.setInteger(SET_WIDTH_TAG, setWidth);
+			tag.setInteger(SET_HEIGHT_TAG, setHeight);
 		}
 		tag.setDouble("storedEnergy", storedEnergy);
 		return tag;

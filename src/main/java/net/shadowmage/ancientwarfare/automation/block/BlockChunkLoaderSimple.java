@@ -11,7 +11,7 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.tile.TileChunkLoaderSimple;
-import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 public class BlockChunkLoaderSimple extends BlockBaseAutomation {
 	protected BlockChunkLoaderSimple(String regName) {
@@ -31,27 +31,20 @@ public class BlockChunkLoaderSimple extends BlockBaseAutomation {
 
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		TileEntity te = world.getTileEntity(pos);
-		if (te instanceof TileChunkLoaderSimple) {
-			((TileChunkLoaderSimple) te).releaseTicket();
-		}
+		WorldTools.getTile(world, pos, TileChunkLoaderSimple.class).ifPresent(TileChunkLoaderSimple::releaseTicket);
 		super.breakBlock(world, pos, state);
 	}
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		TileEntity te = world.getTileEntity(pos);
-		return te instanceof IInteractableTile && ((IInteractableTile) te).onBlockClicked(player, hand);
+		return WorldTools.clickInteractableTileWithHand(world, pos, player, hand);
 	}
 
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		super.onBlockPlacedBy(world, pos, state, placer, stack);
 		if (!world.isRemote) {
-			TileEntity te = world.getTileEntity(pos);
-			if (te instanceof TileChunkLoaderSimple) {
-				((TileChunkLoaderSimple) te).setupInitialTicket();
-			}
+			WorldTools.getTile(world, pos, TileChunkLoaderSimple.class).ifPresent(TileChunkLoaderSimple::setupInitialTicket);
 		}
 	}
 }

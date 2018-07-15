@@ -22,6 +22,7 @@ import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.network.PacketBlockEvent;
 import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -30,6 +31,7 @@ import javax.annotation.Nullable;
 public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTile, IInteractableTile, IRotatableTile, IEnergyReceiver, ITickable {
 
 	public static final int DIRECTION_LENGTH = EnumFacing.VALUES.length;
+	private static final String ORIENTATION_TAG = "orientation";
 	/*
 	 * The primary facing direction for this tile.  Default to north for uninitialized tiles (null is not a valid value)
 	 */
@@ -53,7 +55,10 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
 	 * Any directly output energy should be counted as 'out'<br>
 	 * Only direct power loss from transmission efficiency or per-tick loss should be counted for 'loss'
 	 */
-	protected double torqueIn, torqueOut, torqueLoss, prevEnergy;
+	protected double torqueIn;
+	protected double torqueOut;
+	protected double torqueLoss;
+	protected double prevEnergy;
 
 	//************************************** COFH RF METHODS ***************************************//
 	@Optional.Method(modid = "redstoneflux")
@@ -108,7 +113,6 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
 		}
 		ITorqueTile[] torqueCache = new ITorqueTile[DIRECTION_LENGTH];
 		EnumFacing dir;
-		TileEntity te;
 		for (int i = 0; i < torqueCache.length; i++) {
 			dir = EnumFacing.values()[i];
 			if (!canOutputTorque(dir) && !canInputTorque(dir)) {
@@ -118,10 +122,8 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
 			if (!world.isBlockLoaded(offsetPos)) {
 				continue;
 			}
-			te = world.getTileEntity(offsetPos);
-			if (te instanceof ITorqueTile) {
-				torqueCache[i] = (ITorqueTile) te;
-			}
+			final int index = i;
+			WorldTools.getTile(world, offsetPos, ITorqueTile.class).ifPresent(t -> torqueCache[index] = t);
 		}
 		this.torqueCache = torqueCache;
 	}
@@ -129,7 +131,6 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
 	private void buildRFCache() {
 		TileEntity[] rfCache = new TileEntity[DIRECTION_LENGTH];
 		EnumFacing dir;
-		TileEntity te;
 		for (int i = 0; i < rfCache.length; i++) {
 			dir = EnumFacing.values()[i];
 			if (!canOutputTorque(dir) && !canInputTorque(dir)) {
@@ -139,10 +140,8 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
 			if (!world.isBlockLoaded(offsetPos)) {
 				continue;
 			}
-			te = world.getTileEntity(offsetPos);
-			if (RFProxy.instance.isRFTile(te)) {
-				rfCache[dir.ordinal()] = te;
-			}
+			final EnumFacing direction = dir;
+			WorldTools.getTile(world, offsetPos).filter(t -> RFProxy.instance.isRFTile(t)).ifPresent(t -> rfCache[direction.ordinal()] = t);
 		}
 		this.rfCache = rfCache;
 	}
@@ -163,7 +162,7 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
 		invalidateTorqueCache();
 	}
 
-	protected final void invalidateTorqueCache() {
+	private void invalidateTorqueCache() {
 		torqueCache = null;
 		rfCache = null;
 		onNeighborCacheInvalidated();
@@ -229,21 +228,21 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
 	/*
 	 * @return the total output of torque for the tick
 	 */
-	protected double getTorqueOut() {
+	private double getTorqueOut() {
 		return torqueOut;
 	}
 
 	/*
 	 * @return the total input of torque for the tick
 	 */
-	protected double getTorqueIn() {
+	private double getTorqueIn() {
 		return torqueIn;
 	}
 
 	/*
 	 * @return the total torque lost (destroyed, gone completely) for the tick
 	 */
-	protected double getTorqueLoss() {
+	private double getTorqueLoss() {
 		return torqueLoss;
 	}
 
@@ -295,11 +294,9 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
 
 	@Override
 	public boolean receiveClientEvent(int a, int b) {
-		if (world.isRemote) {
-			if (a < DIRECTION_LENGTH) {
-				networkUpdateTicks = AWAutomationStatics.energyMinNetworkUpdateFrequency;
-				handleClientRotationData(EnumFacing.values()[a], b);
-			}
+		if (world.isRemote && a < DIRECTION_LENGTH) {
+			networkUpdateTicks = AWAutomationStatics.energyMinNetworkUpdateFrequency;
+			handleClientRotationData(EnumFacing.values()[a], b);
 		}
 		return true;
 	}
@@ -309,25 +306,27 @@ public abstract class TileTorqueBase extends TileUpdatable implements ITorqueTil
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
 		super.readFromNBT(tag);
-		orientation = EnumFacing.VALUES[tag.getInteger("orientation")];
+		orientation = EnumFacing.VALUES[tag.getInteger(ORIENTATION_TAG)];
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound tag) {
 		super.writeToNBT(tag);
-		tag.setInteger("orientation", orientation.ordinal());
+		tag.setInteger(ORIENTATION_TAG, orientation.ordinal());
 
 		return tag;
 	}
 
+	@Override
 	protected void writeUpdateNBT(NBTTagCompound tag) {
 		super.writeUpdateNBT(tag);
-		tag.setInteger("orientation", orientation.ordinal());
+		tag.setInteger(ORIENTATION_TAG, orientation.ordinal());
 	}
 
+	@Override
 	protected void handleUpdateNBT(NBTTagCompound tag) {
 		super.handleUpdateNBT(tag);
-		orientation = EnumFacing.VALUES[tag.getInteger("orientation")];
+		orientation = EnumFacing.VALUES[tag.getInteger(ORIENTATION_TAG)];
 		this.invalidateTorqueCache(); //TODO is this needed on client??
 		BlockTools.notifyBlockUpdate(this);
 	}

@@ -12,6 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.items.SlotItemHandler;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.item.AWStructuresItems;
 import net.shadowmage.ancientwarfare.structure.item.ItemStructureScanner;
 import net.shadowmage.ancientwarfare.structure.template.build.validation.StructureValidationType;
@@ -36,7 +37,7 @@ public class ContainerStructureScanner extends ContainerBase {
 	public ContainerStructureScanner(EntityPlayer player, int x, int y, int z) {
 		super(player);
 		if (y > 0) {
-			scannerTile = (TileStructureScanner) player.world.getTileEntity(new BlockPos(x, y, z));
+			scannerTile = WorldTools.getTile(player.world, new BlockPos(x, y, z), TileStructureScanner.class).orElse(null);
 			//noinspection ConstantConditions
 			scanner = scannerTile.getScannerInventory().getStackInSlot(0);
 			Slot slot = new SlotItemHandler(scannerTile.getScannerInventory(), 0, 8, 8) {

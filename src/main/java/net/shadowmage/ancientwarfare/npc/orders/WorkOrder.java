@@ -4,7 +4,6 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
@@ -12,13 +11,14 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorker;
 import net.shadowmage.ancientwarfare.core.util.OrderingList;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.item.ItemWorkOrder;
 
 import java.util.List;
 
 public class WorkOrder extends OrderingList<WorkOrder.WorkEntry> implements INBTSerializable<NBTTagCompound> {
-	public static final int MAX_SIZE = 8;
+	private static final int MAX_SIZE = 8;
 	private WorkPriorityType priorityType = WorkPriorityType.ROUTE;
 	private boolean nightShift;
 
@@ -55,6 +55,7 @@ public class WorkOrder extends OrderingList<WorkOrder.WorkEntry> implements INBT
 	public static WorkOrder getWorkOrder(ItemStack stack) {
 		if (!stack.isEmpty() && stack.getItem() instanceof ItemWorkOrder) {
 			WorkOrder order = new WorkOrder();
+			//noinspection ConstantConditions
 			if (stack.hasTagCompound() && stack.getTagCompound().hasKey("orders")) {
 				order.deserializeNBT(stack.getTagCompound().getCompoundTag("orders"));
 			}
@@ -101,14 +102,14 @@ public class WorkOrder extends OrderingList<WorkOrder.WorkEntry> implements INBT
 	public static final class WorkEntry {
 
 		private BlockPos position;
-		int dimension;
+		private int dimension;
 		private int workLength;
 
 		private WorkEntry(NBTTagCompound tag) {
 			readFromNBT(tag);
 		}//nbt constructor
 
-		public WorkEntry(BlockPos position, int dimension, int workLength) {
+		private WorkEntry(BlockPos position, int dimension, int workLength) {
 			this.setPosition(position);
 			this.dimension = dimension;
 			this.setWorkLength(workLength);
@@ -168,13 +169,9 @@ public class WorkOrder extends OrderingList<WorkOrder.WorkEntry> implements INBT
 			@Override
 			public int getNextWorkIndex(int current, List<WorkEntry> orders, NpcBase npc) {
 				for (int i = 0; i < orders.size(); i++) {
-					BlockPos pos = orders.get(i).getPosition();
-					TileEntity te = npc.world.getTileEntity(pos);
-					if (te instanceof IWorkSite) {
-						IWorkSite site = (IWorkSite) te;
-						if (((IWorker) npc).canWorkAt(site.getWorkType()) && site.hasWork()) {
-							return i;
-						}
+					if (WorldTools.getTile(npc.world, orders.get(i).getPosition(), IWorkSite.class)
+							.filter(site -> ((IWorker) npc).canWorkAt(site.getWorkType()) && site.hasWork()).isPresent()) {
+						return i;
 					}
 				}
 				return 0;

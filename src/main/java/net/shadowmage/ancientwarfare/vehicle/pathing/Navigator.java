@@ -1,24 +1,3 @@
-/**
- * Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
- * This software is distributed under the terms of the GNU General Public License.
- * Please see COPYING for precise license information.
- * <p>
- * This file is part of Ancient Warfare.
- * <p>
- * Ancient Warfare is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * Ancient Warfare is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.vehicle.pathing;
 
 import net.minecraft.block.Block;
@@ -31,6 +10,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.shadowmage.ancientwarfare.core.util.Trig;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
 import net.shadowmage.ancientwarfare.structure.tile.TEGateProxy;
@@ -41,27 +21,26 @@ import java.util.List;
 import java.util.Random;
 
 public class Navigator implements IPathableCallback {
-
-	PathFinderThetaStar pathFinder = new PathFinderThetaStar();
+	private PathFinderThetaStar pathFinder = new PathFinderThetaStar();
 
 	protected IPathableEntity owner;
 	protected Entity entity;
 	protected PathWorldAccess world;
 	protected EntityPath path;
-	protected final Node finalTarget = new Node(0, 0, 0);
-	public Node currentTarget;
+	private final Node finalTarget = new Node(0, 0, 0);
+	private Node currentTarget;
 	protected Random rng = new Random();
 
 	protected EntityGate gate = null;
-	protected boolean hasDoor = false;
-	protected BlockPos doorPos = BlockPos.ORIGIN;
-	protected int doorOpenTicks = 0;
-	protected int doorCheckTicks = 0;
-	protected int doorOpenMax = 15;
-	protected int doorCheckTicksMax = 5;
-	protected Vec3d stuckCheckPosition = Vec3d.ZERO;
-	protected int stuckCheckTicks = 40;
-	protected int stuckCheckTicksMax = 40;
+	private boolean hasDoor = false;
+	private BlockPos doorPos = BlockPos.ORIGIN;
+	private int doorOpenTicks = 0;
+	private int doorCheckTicks = 0;
+	private int doorOpenMax = 15;
+	private int doorCheckTicksMax = 5;
+	private Vec3d stuckCheckPosition = Vec3d.ZERO;
+	private int stuckCheckTicks = 40;
+	private int stuckCheckTicksMax = 40;
 
 	private PathFinderCrawler testCrawler;
 
@@ -123,7 +102,7 @@ public class Navigator implements IPathableCallback {
 		}
 	}
 
-	protected void handleLadderMovement() {
+	private void handleLadderMovement() {
 		if (owner.isPathableEntityOnLadder()) {
 			if (currentTarget.y < (int) entity.posY) {
 				entity.motionY = -0.125f;
@@ -133,7 +112,7 @@ public class Navigator implements IPathableCallback {
 		}
 	}
 
-	protected void updateMoveHelper() {
+	private void updateMoveHelper() {
 		this.pathFinder.doSearchIterations(10);
 		if (this.doorOpenTicks > 0) {
 			this.doorOpenTicks--;
@@ -150,7 +129,7 @@ public class Navigator implements IPathableCallback {
 		}
 	}
 
-	protected void detectStuck() {
+	private void detectStuck() {
 		if (this.stuckCheckTicks <= 0) {
 			this.stuckCheckTicks = this.stuckCheckTicksMax;
 			if (this.currentTarget != null) {
@@ -167,7 +146,7 @@ public class Navigator implements IPathableCallback {
 		}
 	}
 
-	protected boolean isNewTargetClose(BlockPos target) {
+	private boolean isNewTargetClose(BlockPos target) {
 		float dist = (float) entity.getDistance(finalTarget.x, finalTarget.y, finalTarget.z);
 		float tDist = Trig.getDistance(finalTarget.x, finalTarget.y, finalTarget.z, target.getX(), target.getY(), target.getZ());
 		if (tDist < dist * 0.1f) {
@@ -177,19 +156,19 @@ public class Navigator implements IPathableCallback {
 		return false;
 	}
 
-	protected boolean isNewTarget(BlockPos target) {//
+	private boolean isNewTarget(BlockPos target) {//
 		return !isNewTargetClose(target) && !this.finalTarget.equals(target.getX(), target.getY(), target.getZ());
 	}
 
-	protected boolean isAtTarget(BlockPos pos) {
+	private boolean isAtTarget(BlockPos pos) {
 		return entity.getDistance(pos.getX() + 0.5d, pos.getY(), pos.getZ() + 0.5d) < entity.width;
 	}
 
-	protected boolean isPathEmpty() {
+	private boolean isPathEmpty() {
 		return this.path.getActivePathSize() <= 0;
 	}
 
-	protected boolean shouldCalculatePath(int ex, int ey, int ez, BlockPos target) {
+	private boolean shouldCalculatePath(int ex, int ey, int ez, BlockPos target) {
 		//  Config.logDebug("new target: "+isNewTarget(tx, ty, tz));
 		//  Config.logDebug("path empty: "+isPathEmpty());
 		//  Config.logDebug("current target: " + (currentTarget==null));
@@ -198,7 +177,7 @@ public class Navigator implements IPathableCallback {
 		return isNewTarget(target) || (isPathEmpty() && !isAtTarget(target) && currentTarget == null && !pathFinder.isSearching);
 	}
 
-	protected void calculatePath(int ex, int ey, int ez, BlockPos target) {
+	private void calculatePath(int ex, int ey, int ez, BlockPos target) {
 		//  Config.logDebug("calculating path..");
 		//  Config.logDebug("checking path from: "+ex+","+ey+","+ez+" to: "+tx+","+ty+","+tz);
 		this.path.clearPath();
@@ -224,7 +203,7 @@ public class Navigator implements IPathableCallback {
 		this.claimNode();
 	}
 
-	protected void doorInteraction() {
+	private void doorInteraction() {
 		if (this.doorCheckTicks <= 0) {
 			this.doorCheckTicks = this.doorCheckTicksMax;
 			if (this.entity.collidedHorizontally && checkForDoors(entity.getPosition())) {
@@ -241,7 +220,7 @@ public class Navigator implements IPathableCallback {
 		}
 	}
 
-	protected boolean checkForDoors(BlockPos entityPos) {
+	private boolean checkForDoors(BlockPos entityPos) {
 		IBlockState state = entity.world.getBlockState(entityPos);
 		Block block = state.getBlock();
 		if ((block instanceof BlockDoor && state.getMaterial() == Material.WOOD) || block instanceof BlockFenceGate) {
@@ -253,11 +232,10 @@ public class Navigator implements IPathableCallback {
 			return true;
 		}
 		if (block == AWStructuresBlocks.gateProxy) {
-			TEGateProxy proxy = (TEGateProxy) entity.world.getTileEntity(entityPos);
-			if (this.gate != null) {
-				this.interactWithGate(false);
-			}
-			this.gate = proxy.getOwner();
+			WorldTools.getTile(entity.world, entityPos, TEGateProxy.class).ifPresent(proxy -> {
+				interactWithGate(false);
+				gate = proxy.getOwner();
+			});
 			return true;
 		}
 		float yaw = entity.rotationYaw;
@@ -294,17 +272,16 @@ public class Navigator implements IPathableCallback {
 			return true;
 		}
 		if (block == AWStructuresBlocks.gateProxy) {
-			TEGateProxy proxy = (TEGateProxy) entity.world.getTileEntity(new BlockPos(x, y, z));
-			if (this.gate != null) {
-				this.interactWithGate(false);
-			}
-			this.gate = proxy.getOwner();
+			WorldTools.getTile(entity.world, new BlockPos(x, y, z), TEGateProxy.class).ifPresent(proxy -> {
+				interactWithGate(false);
+				gate = proxy.getOwner();
+			});
 			return true;
 		}
 		return false;
 	}
 
-	protected void interactWithGate(boolean open) {
+	private void interactWithGate(boolean open) {
 		if (gate.edgePosition > 0 && !open) {
 			gate.activateGate();
 		} else if (gate.edgePosition == 0 && open) {
@@ -315,7 +292,7 @@ public class Navigator implements IPathableCallback {
 		}
 	}
 
-	protected void interactWithDoor(BlockPos doorPos, boolean open) {
+	private void interactWithDoor(BlockPos doorPos, boolean open) {
 		IBlockState state = entity.world.getBlockState(doorPos);
 		Block block = state.getBlock();
 		if (block == null) {
@@ -335,7 +312,7 @@ public class Navigator implements IPathableCallback {
 		}
 	}
 
-	protected void claimNode() {
+	private void claimNode() {
 		if (this.currentTarget == null || this.getEntityDistance(currentTarget) < entity.width) {
 			//    Config.logDebug("attempting to claim node..");
 			this.currentTarget = this.path.claimNode();
@@ -361,11 +338,11 @@ public class Navigator implements IPathableCallback {
 		return MathHelper.floor(entity.posZ);
 	}
 
-	protected float getEntityDistance(Node n) {
+	private float getEntityDistance(Node n) {
 		return entity == null ? 0.f : n == null ? 0.f : (float) entity.getDistance(n.x + 0.5d, n.y, n.z + 0.5d);
 	}
 
-	protected void sendToClients(BlockPos pos) {
+	private void sendToClients(BlockPos pos) {
 		//  if(Config.DEBUG && !world.isRemote() && owner.getEntity() instanceof NpcBase)//relay to client, force client-side to find path as well (debug rendering of path)
 		//    {
 		//    NBTTagCompound tag = new NBTTagCompound();

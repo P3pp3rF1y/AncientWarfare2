@@ -8,7 +8,6 @@ import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -17,6 +16,7 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.block.BlockSoundBlock;
 import net.shadowmage.ancientwarfare.structure.tile.TileSoundBlock;
 
@@ -50,14 +50,10 @@ public class SoundBlockRenderer implements ISimpleBlockBakery {
 
 	@Override
 	public IExtendedBlockState handleState(IExtendedBlockState state, IBlockAccess access, BlockPos pos) {
-
-		TileEntity tileEntity = access.getTileEntity(pos);
+		IBlockState disguiseState = WorldTools.getTile(access, pos, TileSoundBlock.class).map(TileSoundBlock::getDisguiseState).orElse(null);
 		String registryName = String.join("|", Blocks.JUKEBOX.getRegistryName().toString(), "0");
-		if (tileEntity instanceof TileSoundBlock) {
-			IBlockState disguiseState = ((TileSoundBlock) tileEntity).getDisguiseState();
-			if (disguiseState != null) {
-				registryName = String.join("|", disguiseState.getBlock().getRegistryName().toString(), Integer.toString(disguiseState.getBlock().getMetaFromState(disguiseState)));
-			}
+		if (disguiseState != null) {
+			registryName = String.join("|", disguiseState.getBlock().getRegistryName().toString(), Integer.toString(disguiseState.getBlock().getMetaFromState(disguiseState)));
 		}
 		return state.withProperty(BlockSoundBlock.DISGUISE_BLOCK, registryName);
 	}

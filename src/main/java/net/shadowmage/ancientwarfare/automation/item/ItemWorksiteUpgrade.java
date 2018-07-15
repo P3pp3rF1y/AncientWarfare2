@@ -26,7 +26,7 @@ public class ItemWorksiteUpgrade extends ItemMulti {
 		this.setCreativeTab(AWAutomationItemLoader.automationTab);
 	}
 
-	public static WorksiteUpgrade getUpgrade(ItemStack stack) {
+	private static WorksiteUpgrade getUpgrade(ItemStack stack) {
 		if (stack.isEmpty() || stack.getItem() != AWItems.worksiteUpgrade) {
 			throw new RuntimeException("Cannot retrieve worksite upgrade type for: " + stack + ".  Null stack, or item, or mismatched item!");
 		}

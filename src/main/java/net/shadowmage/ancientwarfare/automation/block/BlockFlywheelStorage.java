@@ -30,6 +30,9 @@ import net.shadowmage.ancientwarfare.automation.render.property.AutomationProper
 import net.shadowmage.ancientwarfare.automation.tile.torque.multiblock.TileFlywheelStorage;
 import net.shadowmage.ancientwarfare.core.render.BlockStateKeyGenerator;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
+
+import java.util.Optional;
 
 import static net.shadowmage.ancientwarfare.automation.render.property.AutomationProperties.*;
 
@@ -41,8 +44,7 @@ public class BlockFlywheelStorage extends BlockBaseAutomation implements IBakery
 
 	@Override
 	public boolean eventReceived(IBlockState state, World world, BlockPos pos, int id, int param) {
-		TileEntity tileentity = world.getTileEntity(pos);
-		return tileentity != null && tileentity.receiveClientEvent(id, param);
+		return WorldTools.sendClientEventToTile(world, pos, id, param);
 	}
 
 	@Override
@@ -69,8 +71,7 @@ public class BlockFlywheelStorage extends BlockBaseAutomation implements IBakery
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase placer, ItemStack stack) {
 		super.onBlockPlacedBy(world, pos, state, placer, stack);
-		TileFlywheelStorage te = (TileFlywheelStorage) world.getTileEntity(pos);
-		te.blockPlaced();
+		WorldTools.getTile(world, pos, TileFlywheelStorage.class).ifPresent(TileFlywheelStorage::blockPlaced);
 	}
 
 	@Override
@@ -90,9 +91,9 @@ public class BlockFlywheelStorage extends BlockBaseAutomation implements IBakery
 
 	@Override
 	public void breakBlock(World world, BlockPos pos, IBlockState state) {
-		TileFlywheelStorage te = (TileFlywheelStorage) world.getTileEntity(pos);
+		Optional<TileFlywheelStorage> te = WorldTools.getTile(world, pos, TileFlywheelStorage.class);
 		super.breakBlock(world, pos, state);
-		te.blockBroken();//have to call post block-break so that the controller properly sees the block as gone //TODO this should probably be invalidate
+		te.ifPresent(TileFlywheelStorage::blockBroken); //have to call post block-break so that the controller properly sees the block as gone
 	}
 
 	@Override
@@ -148,7 +149,7 @@ public class BlockFlywheelStorage extends BlockBaseAutomation implements IBakery
 			@Override
 			@SideOnly(Side.CLIENT)
 			public TextureAtlasSprite getParticleTexture() {
-				return FlywheelStorageRenderer.INSTANCE.getSprite(false, TorqueTier.LIGHT);
+				return FlywheelStorageRenderer.INSTANCE.getSprite(TorqueTier.LIGHT);
 			}
 		});
 
@@ -156,7 +157,7 @@ public class BlockFlywheelStorage extends BlockBaseAutomation implements IBakery
 			@Override
 			@SideOnly(Side.CLIENT)
 			public TextureAtlasSprite getParticleTexture() {
-				return FlywheelStorageRenderer.INSTANCE.getSprite(false, TorqueTier.MEDIUM);
+				return FlywheelStorageRenderer.INSTANCE.getSprite(TorqueTier.MEDIUM);
 			}
 		});
 
@@ -164,7 +165,7 @@ public class BlockFlywheelStorage extends BlockBaseAutomation implements IBakery
 			@Override
 			@SideOnly(Side.CLIENT)
 			public TextureAtlasSprite getParticleTexture() {
-				return FlywheelStorageRenderer.INSTANCE.getSprite(false, TorqueTier.HEAVY);
+				return FlywheelStorageRenderer.INSTANCE.getSprite(TorqueTier.HEAVY);
 			}
 		});
 

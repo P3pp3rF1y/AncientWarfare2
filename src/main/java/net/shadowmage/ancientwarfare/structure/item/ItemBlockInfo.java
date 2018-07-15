@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 
 public class ItemBlockInfo extends ItemBaseStructure {
@@ -28,7 +29,7 @@ public class ItemBlockInfo extends ItemBaseStructure {
 				Block block = state.getBlock();
 				AWLog.logDebug("block: " + BlockDataManager.INSTANCE.getNameForBlock(block) + ", meta: " + block.getMetaFromState(state)); //TODO print property values?
 				if (block.hasTileEntity(state)) {
-					AWLog.logDebug("tile: " + world.getTileEntity(pos).getClass());
+					AWLog.logDebug("tile: " + WorldTools.getTile(world, pos).map(t -> t.getClass().toString()).orElse(""));
 				}
 			}
 		}

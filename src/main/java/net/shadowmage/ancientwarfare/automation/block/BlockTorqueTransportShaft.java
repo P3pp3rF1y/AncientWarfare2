@@ -5,7 +5,6 @@ import codechicken.lib.model.bakery.CCBakeryModel;
 import codechicken.lib.model.bakery.IBakeryProvider;
 import codechicken.lib.model.bakery.ModelBakery;
 import codechicken.lib.model.bakery.generation.IBakery;
-import codechicken.lib.model.bakery.key.IBlockStateKeyGenerator;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -33,6 +32,9 @@ import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueShaftMediu
 import net.shadowmage.ancientwarfare.core.render.BlockStateKeyGenerator;
 import net.shadowmage.ancientwarfare.core.render.property.CoreProperties;
 import net.shadowmage.ancientwarfare.core.util.ModelLoaderHelper;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
+
+import java.util.Optional;
 
 public class BlockTorqueTransportShaft extends BlockTorqueTransport implements IBakeryProvider {
 	public static final IUnlistedProperty<Boolean> HAS_PREVIOUS = Properties.toUnlisted(PropertyBool.create("has_previous"));
@@ -71,13 +73,18 @@ public class BlockTorqueTransportShaft extends BlockTorqueTransport implements I
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
 		//TODO static AABBs that are used to put together the total
 
-		float min = 0.1875f, max = 0.8125f;
-		float x1 = min, y1 = min, z1 = min, x2 = max, y2 = max, z2 = max;
-		TileEntity te = world.getTileEntity(pos);
-		if (te instanceof TileTorqueShaft) {
-			TileTorqueShaft tile = (TileTorqueShaft) world.getTileEntity(pos);
+		float min = 0.1875f;
+		float max = 0.8125f;
+		float x1 = min;
+		float y1 = min;
+		float z1 = min;
+		float x2 = max;
+		float y2 = max;
+		float z2 = max;
+		Optional<TileTorqueShaft> te = WorldTools.getTile(world, pos, TileTorqueShaft.class);
+		if (te.isPresent()) {
+			TileTorqueShaft tile = te.get();
 			EnumFacing facing = tile.getPrimaryFacing();
-			int s1 = facing.ordinal();
 			switch (facing.getAxis()) {
 				case X:
 					x1 = 0;
@@ -95,8 +102,6 @@ public class BlockTorqueTransportShaft extends BlockTorqueTransport implements I
 		}
 		return new AxisAlignedBB(x1, y1, z1, x2, y2, z2);
 	}
-
-	private static final IBlockStateKeyGenerator KEY_GENERATOR = new BlockStateKeyGenerator.Builder().addKeyProperties(AutomationProperties.TIER).addKeyProperties(CoreProperties.UNLISTED_FACING, AutomationProperties.DYNAMIC, HAS_PREVIOUS, HAS_NEXT).addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.INPUT_ROTATION).addKeyProperties(o -> String.format("%.6f", o), AutomationProperties.ROTATIONS).build();
 
 	@Override
 	@SideOnly(Side.CLIENT)

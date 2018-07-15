@@ -1,13 +1,20 @@
 package net.shadowmage.ancientwarfare.core.util;
 
 import com.google.common.collect.Lists;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 
+import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -45,8 +52,25 @@ public class WorldTools {
 		return tile.getPos().getX() >= x1 && tile.getPos().getY() >= y1 && tile.getPos().getZ() >= z1 && tile.getPos().getX() <= x2 && tile.getPos().getY() <= y2 && tile.getPos().getZ() <= z2;
 	}
 
+	public static Optional<IItemHandler> getItemHandlerFromTile(IBlockAccess world, BlockPos pos, EnumFacing side) {
+		return getTile(world, pos, TileEntity.class)
+				.filter(t -> t.hasCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side))
+				.map(t -> Optional.ofNullable(t.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side))).orElse(Optional.empty());
+	}
 
-	public static <T extends TileEntity> Optional<T> getTile(IBlockAccess world, BlockPos pos, Class<T> teClass) {
+	public static boolean sendClientEventToTile(IBlockAccess world, BlockPos pos, int id, int param) {
+		return getTile(world, pos).map(t -> t.receiveClientEvent(id, param)).orElse(false);
+	}
+
+	public static Optional<TileEntity> getTile(IBlockAccess world, BlockPos pos) {
+		return getTile(world, pos, TileEntity.class);
+	}
+
+	public static <T> Optional<T> getTile(@Nullable IBlockAccess world, @Nullable BlockPos pos, Class<T> teClass) {
+		if (world == null || pos == null) {
+			return Optional.empty();
+		}
+
 		TileEntity te = world.getTileEntity(pos);
 
 		if (teClass.isInstance(te)) {
@@ -54,5 +78,9 @@ public class WorldTools {
 		}
 
 		return Optional.empty();
+	}
+
+	public static boolean clickInteractableTileWithHand(World world, BlockPos pos, EntityPlayer player, EnumHand hand) {
+		return getTile(world, pos, IInteractableTile.class).map(t -> t.onBlockClicked(player, hand)).orElse(false);
 	}
 }

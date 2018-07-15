@@ -9,17 +9,13 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.npc.tile.TileTownHall;
 
 public class BlockTownHall extends BlockBaseNPC {
 
 	public BlockTownHall() {
-		this("town_hall");
-	}
-
-	protected BlockTownHall(String regName) {
-		super(Material.ROCK, regName);
+		super(Material.ROCK, "town_hall");
 		setHardness(2.f);
 	}
 
@@ -35,11 +31,10 @@ public class BlockTownHall extends BlockBaseNPC {
 
 	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-		TileEntity te = world.getTileEntity(pos);
-		return te instanceof IInteractableTile && ((IInteractableTile) te).onBlockClicked(player, hand);
+		return WorldTools.clickInteractableTileWithHand(world, pos, player, hand);
 	}
 
-    /*
+	/*
 	 * Lets the block know when one of its neighbor changes. Doesn't know which neighbor changed (coordinates passed are
      * their own) Args: x, y, z, neighbor Block
      */
@@ -47,11 +42,7 @@ public class BlockTownHall extends BlockBaseNPC {
 	@Override
 	public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
 		if (!world.isRemote) {
-			TileTownHall tileTownHall = (TileTownHall) world.getTileEntity(pos);
-			if (world.isBlockIndirectlyGettingPowered(pos) > 0)
-				tileTownHall.alarmActive = true;
-			else
-				tileTownHall.alarmActive = false;
+			WorldTools.getTile(world, pos, TileTownHall.class).ifPresent(t -> t.alarmActive = world.isBlockIndirectlyGettingPowered(pos) > 0);
 		}
 	}
 }

@@ -6,7 +6,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -22,6 +21,7 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import net.shadowmage.ancientwarfare.core.util.EntityTools;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.npc.entity.faction.NpcFaction;
 import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
 import net.shadowmage.ancientwarfare.structure.tile.SpawnerSettings;
@@ -68,12 +68,12 @@ public class ItemSpawnerPlacer extends ItemBaseStructure {
 			if (stack.hasTagCompound() && stack.getTagCompound().hasKey(SPAWNER_DATA_TAG)) {
 				BlockPos placePos = traceResult.getBlockPos().offset(traceResult.sideHit);
 				if (player.world.setBlockState(placePos, AWStructuresBlocks.advancedSpawner.getDefaultState())) {
-					TileEntity te = player.world.getTileEntity(placePos);
-					TileAdvancedSpawner spawnerTe = (TileAdvancedSpawner) te;
-					SpawnerSettings settings = new SpawnerSettings();
-					settings.readFromNBT(stack.getTagCompound().getCompoundTag(SPAWNER_DATA_TAG));
-					//noinspection ConstantConditions
-					spawnerTe.setSettings(settings);
+					WorldTools.getTile(player.world, placePos, TileAdvancedSpawner.class)
+							.ifPresent(t -> {
+								SpawnerSettings settings = new SpawnerSettings();
+								settings.readFromNBT(stack.getTagCompound().getCompoundTag(SPAWNER_DATA_TAG));
+								t.setSettings(settings);
+							});
 				}
 			} else {
 				player.sendMessage(new TextComponentTranslation("guistrings.spawner.nodata"));

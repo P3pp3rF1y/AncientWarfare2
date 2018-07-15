@@ -10,7 +10,6 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
@@ -21,14 +20,14 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 import net.shadowmage.ancientwarfare.core.interfaces.IWorkSite;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemQuill extends ItemBaseCore {
-
-	double attackDamage = 5.d;
-	ToolMaterial material;
+	private double attackDamage = 5.d;
+	private ToolMaterial material;
 
 	public ItemQuill(String regName, ToolMaterial material) {
 		super(regName);
@@ -109,17 +108,16 @@ public class ItemQuill extends ItemBaseCore {
 		}
 		BlockPos pos = BlockTools.getBlockClickedOn(player, world, false);
 		if (pos != null) {
-			TileEntity te = player.world.getTileEntity(pos);
-			if (te instanceof IWorkSite && ((IWorkSite) te).getWorkType() == IWorkSite.WorkType.RESEARCH) {
-				IWorkSite teResearchStation = (IWorkSite) te;
-				if (teResearchStation.hasWork()) {
-					teResearchStation.addEnergyFromPlayer(player);
-					stack.damageItem(1, player);
-					//TODO add chat message
-				}
-			}
+			WorldTools.getTile(world, pos, IWorkSite.class).filter(t -> t.getWorkType() == IWorkSite.WorkType.RESEARCH).ifPresent(t -> addResearchEnergy(player, stack, t));
 		}
 		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
+	}
+
+	private void addResearchEnergy(EntityPlayer player, ItemStack stack, IWorkSite teResearchStation) {
+		if (teResearchStation.hasWork()) {
+			teResearchStation.addEnergyFromPlayer(player);
+			stack.damageItem(1, player);
+		}
 	}
 
 }

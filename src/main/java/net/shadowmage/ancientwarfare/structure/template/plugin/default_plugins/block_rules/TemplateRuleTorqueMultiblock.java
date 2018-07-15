@@ -4,11 +4,11 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.structure.api.IStructureBuilder;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleBlock;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
@@ -16,7 +16,7 @@ import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
 public class TemplateRuleTorqueMultiblock extends TemplateRuleBlock {
 
 	int meta;
-	String blockName;
+	private String blockName;
 	NBTTagCompound tag;
 
 	public TemplateRuleTorqueMultiblock(World world, BlockPos pos, Block block, int meta, int turns) {
@@ -24,8 +24,7 @@ public class TemplateRuleTorqueMultiblock extends TemplateRuleBlock {
 		this.blockName = BlockDataManager.INSTANCE.getNameForBlock(block);
 		this.meta = meta;
 		this.tag = new NBTTagCompound();
-		TileEntity tile = world.getTileEntity(pos);
-		tile.writeToNBT(tag);
+		WorldTools.getTile(world, pos).ifPresent(t -> t.writeToNBT(tag));
 	}
 
 	public TemplateRuleTorqueMultiblock() {
@@ -40,15 +39,14 @@ public class TemplateRuleTorqueMultiblock extends TemplateRuleBlock {
 	public void handlePlacement(World world, int turns, BlockPos pos, IStructureBuilder builder) {
 		Block block = BlockDataManager.INSTANCE.getBlockForName(blockName);
 		if (world.setBlockState(pos, block.getStateFromMeta(meta), 3)) {
-			TileEntity tile = world.getTileEntity(pos);
-			if (tile != null) {
+			WorldTools.getTile(world, pos).ifPresent(t -> {
 				//TODO look into changing this so that the whole TE doesn't need reloading from custom NBT
 				tag.setString("id", block.getRegistryName().toString());
 				tag.setInteger("x", pos.getX());
 				tag.setInteger("y", pos.getY());
 				tag.setInteger("z", pos.getZ());
-				tile.readFromNBT(tag);
-			}
+				t.readFromNBT(tag);
+			});
 			BlockTools.notifyBlockUpdate(world, pos);
 			block.onBlockPlacedBy(world, pos, block.getStateFromMeta(meta), null, null);
 		}

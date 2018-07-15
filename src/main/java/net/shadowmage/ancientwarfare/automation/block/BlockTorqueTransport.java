@@ -6,7 +6,6 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.NonNullList;
@@ -17,6 +16,9 @@ import net.minecraft.world.World;
 import net.shadowmage.ancientwarfare.automation.render.property.AutomationProperties;
 import net.shadowmage.ancientwarfare.automation.tile.torque.TileTorqueSidedCell;
 import net.shadowmage.ancientwarfare.core.block.BlockRotationHandler.RotationType;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
+
+import java.util.Optional;
 
 public abstract class BlockTorqueTransport extends BlockTorqueBase {
 
@@ -66,11 +68,17 @@ public abstract class BlockTorqueTransport extends BlockTorqueBase {
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess world, BlockPos pos) {
 		//TODO static AABBs and combination created based on the boolean array
 
-		float min = 0.1875f, max = 0.8125f;
-		float x1 = min, y1 = min, z1 = min, x2 = max, y2 = max, z2 = max;
-		TileEntity te = world.getTileEntity(pos);
-		if (te instanceof TileTorqueSidedCell) {
-			TileTorqueSidedCell tile = (TileTorqueSidedCell) world.getTileEntity(pos);
+		float min = 0.1875f;
+		float max = 0.8125f;
+		float x1 = min;
+		float y1 = min;
+		float z1 = min;
+		float x2 = max;
+		float y2 = max;
+		float z2 = max;
+		Optional<TileTorqueSidedCell> te = WorldTools.getTile(world, pos, TileTorqueSidedCell.class);
+		if (te.isPresent()) {
+			TileTorqueSidedCell tile = te.get();
 			boolean[] sides = tile.getConnections();
 			if (sides[0]) {
 				y1 = 0.f;

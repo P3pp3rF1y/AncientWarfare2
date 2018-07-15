@@ -2,13 +2,13 @@ package net.shadowmage.ancientwarfare.automation.tile.warehouse2;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumHand;
 import net.shadowmage.ancientwarfare.core.interfaces.IInteractableTile;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.tile.CraftingRecipeMemory;
 import net.shadowmage.ancientwarfare.core.tile.IBlockBreakHandler;
 import net.shadowmage.ancientwarfare.core.tile.TileUpdatable;
+import net.shadowmage.ancientwarfare.core.util.WorldTools;
 
 import javax.annotation.Nullable;
 
@@ -22,11 +22,7 @@ public class TileWarehouseCraftingStation extends TileUpdatable implements IInte
 		{
 			return null;
 		}
-		TileEntity te = world.getTileEntity(pos.down());
-		if (te instanceof TileWarehouseBase) {
-			return (TileWarehouse) te;
-		}
-		return null;
+		return WorldTools.getTile(world, pos.down(), TileWarehouse.class).orElse(null);
 	}
 
 	@Override
