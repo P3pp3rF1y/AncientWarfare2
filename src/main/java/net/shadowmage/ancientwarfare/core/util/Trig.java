@@ -1,26 +1,3 @@
-/*
- Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
-
-
- */
-
 package net.shadowmage.ancientwarfare.core.util;
 
 import net.minecraft.util.Tuple;
@@ -35,9 +12,8 @@ import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoHwachaRocket;
 public class Trig {
 	public static final float PI = 3.141592653589793f;
 	public static final float TORADIANS = PI / 180.f;
-	public static final float TODEGREES = 180.f / PI;
-	public static final float GRAVITY = 9.81f;
-	public static final double gravityTick = GRAVITY * 0.05D * 0.05D;
+	private static final float TODEGREES = 180.f / PI;
+	private static final float GRAVITY = 9.81f;
 
 	private Trig() {
 	}//static utility class, no public facing constructor
@@ -160,25 +136,23 @@ public class Trig {
 		return bruteForceSpeedFinder(MathHelper.sqrt(x * x + z * z), y, angle, maxIterations, rocket);
 	}
 
-	public static float bruteForceRocketFinder(float x, float y, float angle, int maxIterations) {
+	private static float bruteForceRocketFinder(float x, float y, float angle, int maxIterations) {
 		float bestVelocity = 0.f;
 		float velocityIncrement = 5.29f;
 		float testVelocity = 1.f;
 		float gravityTick = 9.81f * 0.05f * 0.05f;
-		int rocketBurnTime = 0;
-		float posX = 0;
-		float posY = 0;
-		float motX = 0;
-		float motY = 0;
-		float motX0 = 0;
-		float motY0 = 0;
+		int rocketBurnTime;
+		float posX;
+		float posY;
+		float motX;
+		float motY;
+		float motX0;
+		float motY0;
 		float hitX = 0;
-		float hitY = 0;
 		boolean hitGround = true;
 		float hitDiffX;
 		float hitDiffY;
 		float hitPercent;
-		//  maxIterations *= 4;
 		for (int iter = 0; iter < maxIterations; iter++) {
 			//reset pos
 			//calc initial motion from input angle and current testVelocity
@@ -188,9 +162,9 @@ public class Trig {
 			motX = Trig.sinDegrees(angle) * testVelocity * 0.05f;
 			motY = Trig.cosDegrees(angle) * testVelocity * 0.05f;
 
-			rocketBurnTime = (int) (testVelocity * AmmoHwachaRocket.burnTimeFactor);
-			motX0 = (motX / (testVelocity * 0.05f)) * AmmoHwachaRocket.accelerationFactor;
-			motY0 = (motY / (testVelocity * 0.05f)) * AmmoHwachaRocket.accelerationFactor;
+			rocketBurnTime = (int) (testVelocity * AmmoHwachaRocket.BURN_TIME_FACTOR);
+			motX0 = (motX / (testVelocity * 0.05f)) * AmmoHwachaRocket.ACCELERATION_FACTOR;
+			motY0 = (motY / (testVelocity * 0.05f)) * AmmoHwachaRocket.ACCELERATION_FACTOR;
 			motX = motX0;
 			motY = motY0;
 			while (motY >= 0 || posY >= y) {
@@ -219,7 +193,6 @@ public class Trig {
 				hitDiffY = motY - posY;
 				hitPercent = (y - posY) / hitDiffY;
 				hitX = posX + hitDiffX * hitPercent;
-				hitY = posY + +hitDiffY * hitPercent;
 			}
 			if (hitGround && hitX < x)// hit was not far enough, increase power
 			{
@@ -241,7 +214,7 @@ public class Trig {
 		return bestVelocity;
 	}
 
-	public static float bruteForceSpeedFinder(float x, float y, float angle, int maxIterations, boolean rocket) {
+	private static float bruteForceSpeedFinder(float x, float y, float angle, int maxIterations, boolean rocket) {
 		angle = 90 - angle;
 		if (rocket) {
 			return bruteForceRocketFinder(x, y, angle, maxIterations);
@@ -250,15 +223,12 @@ public class Trig {
 		float velocityIncrement = 10.f;
 		float testVelocity = 10.f;
 		float gravityTick = 9.81f * 0.05f * 0.05f;
-		float posX = 0;
-		float posY = 0;
-		float motX = 0;
-		float motY = 0;
-		float motX0 = 0;
-		float motY0 = 0;
+		float posX;
+		float posY;
+		float motX;
+		float motY;
 		float hitX = 0;
-		float hitY = 0;
-		boolean hitGround = true;
+		boolean hitGround;
 		float hitDiffX;
 		float hitDiffY;
 		float hitPercent;
@@ -289,7 +259,6 @@ public class Trig {
 				hitDiffY = motY - posY;
 				hitPercent = (y - posY) / hitDiffY;
 				hitX = posX + hitDiffX * hitPercent;
-				hitY = posY + +hitDiffY * hitPercent;
 			}
 			if (hitGround && hitX < x)// hit was not far enough, increase power
 			{

@@ -27,7 +27,7 @@ import java.util.List;
 @SideOnly(Side.CLIENT)
 public class SoundBlockRenderer implements ISimpleBlockBakery {
 
-	public static ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(new ResourceLocation(AncientWarfareCore.modID, "structure/sound_block"), "normal");
+	public static ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(new ResourceLocation(AncientWarfareCore.MOD_ID, "structure/sound_block"), "normal");
 
 	public static SoundBlockRenderer INSTANCE = new SoundBlockRenderer();
 

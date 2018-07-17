@@ -42,21 +42,22 @@ import net.shadowmage.ancientwarfare.core.registry.ResearchRegistry;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
 import net.shadowmage.ancientwarfare.npc.datafixes.FactionEntityFixer;
 import net.shadowmage.ancientwarfare.npc.datafixes.FactionSpawnerItemFixer;
+import org.apache.logging.log4j.Logger;
 
-@Mod(name = "Ancient Warfare Core", modid = AncientWarfareCore.modID, version = "@VERSION@", guiFactory = "net.shadowmage.ancientwarfare.core.gui.options.OptionsGuiFactory", dependencies = CodeChickenLib.MOD_VERSION_DEP)
+@Mod(name = "Ancient Warfare Core", modid = AncientWarfareCore.MOD_ID, version = "@VERSION@", guiFactory = "net.shadowmage.ancientwarfare.core.gui.options.OptionsGuiFactory", dependencies = CodeChickenLib.MOD_VERSION_DEP)
 public class AncientWarfareCore {
 
-	public static final String modID = "ancientwarfare";
-	public static final String MOD_PREFIX = modID + ":";
+	public static final String MOD_ID = "ancientwarfare";
+	public static final String MOD_PREFIX = MOD_ID + ":";
 	private static final int DATA_FIXER_VERSION = 4;
 
-	@Instance(value = AncientWarfareCore.modID)
+	@Instance(value = AncientWarfareCore.MOD_ID)
 	public static AncientWarfareCore instance;
 
 	@SidedProxy(clientSide = "net.shadowmage.ancientwarfare.core.proxy.ClientProxy", serverSide = "net.shadowmage.ancientwarfare.core.proxy.CommonProxyBase")
 	public static CommonProxyBase proxy;
 
-	public static org.apache.logging.log4j.Logger log;
+	public static Logger log;
 
 	public static AWCoreStatics statics;
 
@@ -106,7 +107,7 @@ public class AncientWarfareCore {
 
 		CompatLoader.init();
 
-		ModFixs fixes = FMLCommonHandler.instance().getDataFixer().init(modID, DATA_FIXER_VERSION);
+		ModFixs fixes = FMLCommonHandler.instance().getDataFixer().init(MOD_ID, DATA_FIXER_VERSION);
 		fixes.registerFix(FixTypes.ENTITY, new VehicleOwnerFixer());
 		fixes.registerFix(FixTypes.BLOCK_ENTITY, new TileOwnerFixer());
 		fixes.registerFix(FixTypes.BLOCK_ENTITY, new TileIdFixer());
@@ -133,7 +134,7 @@ public class AncientWarfareCore {
 
 	@SubscribeEvent
 	public void configChangedEvent(OnConfigChangedEvent evt) {
-		if (modID.equals(evt.getModID())) {
+		if (MOD_ID.equals(evt.getModID())) {
 			statics.save();
 		}
 	}

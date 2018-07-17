@@ -17,6 +17,7 @@ public class OptionsGuiFactory implements IModGuiFactory {
 
 	@Override
 	public void initialize(Minecraft minecraftInstance) {
+		//NOOP
 	}
 
 	@Override
@@ -34,9 +35,9 @@ public class OptionsGuiFactory implements IModGuiFactory {
 		return Collections.emptySet();
 	}
 
-	public static final class OptionsGui extends GuiConfig {
-		public OptionsGui(GuiScreen parentScreen) {
-			super(parentScreen, ConfigManager.getConfigElements(), AncientWarfareCore.modID, "AWConfig", false, false, "awconfig.mod_name", "awconfig.config_name");
+	private static final class OptionsGui extends GuiConfig {
+		private OptionsGui(GuiScreen parentScreen) {
+			super(parentScreen, ConfigManager.getConfigElements(), AncientWarfareCore.MOD_ID, "AWConfig", false, false, "awconfig.mod_name", "awconfig.config_name");
 		}
 	}
 

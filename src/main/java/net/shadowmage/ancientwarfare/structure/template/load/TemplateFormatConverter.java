@@ -1,24 +1,3 @@
-/*
- Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.template.load;
 
 import net.minecraft.block.Block;
@@ -35,8 +14,8 @@ import net.minecraft.tileentity.TileEntityHopper;
 import net.minecraft.tileentity.TileEntitySkull;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRule;
 import net.shadowmage.ancientwarfare.structure.api.TemplateRuleEntity;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
@@ -105,8 +84,12 @@ public class TemplateFormatConverter {
 		List<TemplateRule> parsedRules = new ArrayList<>();
 		List<TemplateRuleEntity> parsedEntityRules = new ArrayList<>();
 		short[] templateData = null;
-		int xSize = 0, ySize = 0, zSize = 0;
-		int xOffset = 0, yOffset = 0, zOffset = 0;
+		int xSize = 0;
+		int ySize = 0;
+		int zSize = 0;
+		int xOffset = 0;
+		int yOffset = 0;
+		int zOffset = 0;
 
 		String name = fileName;
 		if (name.length() >= 4) {
@@ -114,7 +97,8 @@ public class TemplateFormatConverter {
 		}
 		Iterator<String> it = templateLines.iterator();
 		List<String> groupedLines = new ArrayList<>();
-		String line, lower;
+		String line;
+		String lower;
 		int parsedLayers = 0;
 		int readSizeParams = 0;
 		int highestRuleNumber = 0;
@@ -188,7 +172,7 @@ public class TemplateFormatConverter {
 			if (rule.ruleNumber >= 1 && rules[rule.ruleNumber] == null) {
 				rules[rule.ruleNumber] = rule;
 			} else {
-				AWLog.logError("error parsing template rules, duplicate rule number detected for: " + rule.ruleNumber);
+				AncientWarfareStructures.log.error("error parsing template rules, duplicate rule number detected for: " + rule.ruleNumber);
 			}
 		}
 

@@ -13,7 +13,6 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.items.IItemHandler;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.ai.NpcAI;
@@ -154,7 +153,7 @@ public abstract class NpcPlayerOwned extends NpcBase implements IKeepFood, INpc 
 
 	private void handleAttackCommand(Command cmd) {
 		Entity e = cmd.getEntityTarget(world);
-		AWLog.logDebug("Handling attack command : " + e);
+		AncientWarfareNPC.log.info("Handling attack command : " + e);
 		if (e instanceof EntityLivingBase) {
 			EntityLivingBase elb = (EntityLivingBase) e;
 			if (canTarget(elb))//only attacked allowed targets

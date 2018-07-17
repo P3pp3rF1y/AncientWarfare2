@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -54,9 +55,7 @@ import net.shadowmage.ancientwarfare.core.item.ItemBlockMeta;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockOwnedRotatable;
 import net.shadowmage.ancientwarfare.core.item.ItemBlockRotatableMetaTile;
 
-import static net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation.MOD_PREFIX;
-
-@Mod.EventBusSubscriber(modid = AncientWarfareAutomation.modID)
+@Mod.EventBusSubscriber(modid = AncientWarfareAutomation.MOD_ID)
 public class AWAutomationBlockLoader {
 	private AWAutomationBlockLoader() {
 	}
@@ -194,6 +193,6 @@ public class AWAutomationBlockLoader {
 	}
 
 	private static void registerTile(Class<? extends TileEntity> teClass, String teId) {
-		GameRegistry.registerTileEntity(teClass, MOD_PREFIX + teId);
+		GameRegistry.registerTileEntity(teClass, new ResourceLocation(AncientWarfareAutomation.MOD_ID, teId));
 	}
 }

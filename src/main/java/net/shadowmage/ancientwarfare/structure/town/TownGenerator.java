@@ -6,12 +6,12 @@ import net.minecraft.init.Blocks;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplate;
 import net.shadowmage.ancientwarfare.structure.template.StructureTemplateManager;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate.TownStructureEntry;
-import net.shadowmage.ancientwarfare.structure.world_gen.WorldGenTickHandler;
+import net.shadowmage.ancientwarfare.structure.worldgen.WorldGenTickHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +27,8 @@ public class TownGenerator {
 	public final TownTemplate template;
 	public final World world;
 	public final Random rng;
-	public final int blockSize;
-	public final int plotSize;
+	private final int blockSize;
+	private final int plotSize;
 	public final StructureBB maximalBounds;
 	public final StructureBB exteriorBounds;//maximal, shrunk by borderSize (16 blocks), maximal area encompassing extents of exterior buffer zone
 	public final StructureBB wallsBounds;//exterior shrunk by exteriorSize (configurable), maximal area encompassing extents of walls
@@ -67,7 +67,7 @@ public class TownGenerator {
 	 * Call this to initialize and start the generation of the town
 	 */
 	public void generate() {
-		AWLog.logDebug("Generating town at: " + townBounds.getCenterX() + " : " + townBounds.getCenterZ());
+		AncientWarfareStructures.log.info("Generating town at: " + townBounds.getCenterX() + " : " + townBounds.getCenterZ());
 		determineStructuresToGenerate();
 		TownGeneratorBorders.generateBorders(world, exteriorBounds, wallsBounds, maximalBounds);
 		TownGeneratorBorders.levelTownArea(world, wallsBounds);
@@ -232,7 +232,12 @@ public class TownGenerator {
 		int centerX = maximalBounds.getCenterX();
 		int centerZ = maximalBounds.getCenterZ();
 
-		int minX, minY, minZ, maxX, maxY, maxZ;
+		int minX;
+		int minY;
+		int minZ;
+		int maxX;
+		int maxY;
+		int maxZ;
 
 		int eSize = template.getExteriorSize() * 16;
 		int pSize = template.getTownPlotSize();
@@ -400,7 +405,11 @@ public class TownGenerator {
 	 * generates roads running from the edges of the 'townBounds' to the edges of the 'wallBounds'
 	 */
 	private void generateAdditionalRoads() {
-		int minX, minZ, maxX, maxZ, y;
+		int minX;
+		int minZ;
+		int maxX;
+		int maxZ;
+		int y;
 		y = maximalBounds.min.getY() - 1;
 
 		//northern road

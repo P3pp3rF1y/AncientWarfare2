@@ -6,7 +6,7 @@ import net.shadowmage.ancientwarfare.core.render.BaseBakery;
 
 public class DraftingStationRenderer extends BaseBakery {
 
-	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":structure/drafting_station", "normal");
+	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.MOD_ID + ":structure/drafting_station", "normal");
 	public static final DraftingStationRenderer INSTANCE = new DraftingStationRenderer();
 
 	private DraftingStationRenderer() {

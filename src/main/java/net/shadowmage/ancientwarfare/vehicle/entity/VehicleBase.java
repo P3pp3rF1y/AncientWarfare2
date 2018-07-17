@@ -1,24 +1,3 @@
-/**
- * Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
- * This software is distributed under the terms of the GNU General Public License.
- * Please see COPYING for precise license information.
- * <p>
- * This file is part of Ancient Warfare.
- * <p>
- * Ancient Warfare is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * Ancient Warfare is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.vehicle.entity;
 
 import io.netty.buffer.ByteBuf;
@@ -48,7 +27,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.common.registry.IEntityAdditionalSpawnData;
 import net.minecraftforge.items.CapabilityItemHandler;
-import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.owner.IOwnable;
 import net.shadowmage.ancientwarfare.core.owner.Owner;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
@@ -69,7 +47,6 @@ import net.shadowmage.ancientwarfare.vehicle.helpers.VehicleUpgradeHelper;
 import net.shadowmage.ancientwarfare.vehicle.inventory.VehicleInventory;
 import net.shadowmage.ancientwarfare.vehicle.missiles.AmmoHwachaRocket;
 import net.shadowmage.ancientwarfare.vehicle.missiles.IAmmo;
-import net.shadowmage.ancientwarfare.vehicle.network.PacketTurretAnglesUpdate;
 import net.shadowmage.ancientwarfare.vehicle.pathing.Navigator;
 import net.shadowmage.ancientwarfare.vehicle.pathing.Node;
 import net.shadowmage.ancientwarfare.vehicle.pathing.PathWorldAccessEntity;
@@ -96,15 +73,15 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	public float baseStrafeSpeed;
 	public float basePitchMin;
 	public float basePitchMax;
-	public float baseTurretRotationMax;
-	public float baseLaunchSpeedMax;
+	private float baseTurretRotationMax;
+	private float baseLaunchSpeedMax;
 	public float baseHealth = 100;
-	public float baseAccuracy = 1.f;
+	private float baseAccuracy = 1.f;
 	public float baseWeight = 1000;//kg
-	public int baseReloadTicks = 100;
-	public float baseGenericResist = 0.f;
-	public float baseFireResist = 0.f;
-	public float baseExplosionResist = 0.f;
+	private int baseReloadTicks = 100;
+	private float baseGenericResist = 0.f;
+	private float baseFireResist = 0.f;
+	private float baseExplosionResist = 0.f;
 
 	/**
 	 * local current stats, fully updated and modified from upgrades/etc. should not be altered aside from
@@ -137,10 +114,10 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	public float localTurretRotationHome = 0.f;
 	public float localTurretRotation = 0.f;
 	public float localTurretDestRot = 0.f;
-	public float localTurretRotInc = 1.f;
+	private float localTurretRotInc = 1.f;
 	public float localTurretPitch = 45.f;
 	public float localTurretDestPitch = 45.f;
-	public float localTurretPitchInc = 1.f;
+	private float localTurretPitchInc = 1.f;
 	public float localLaunchPower = 31.321f;
 
 	/**
@@ -166,7 +143,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	 */
 	public int moveUpdateTicks = 0;
 
-	public NpcBase assignedRider = null;
+	private NpcBase assignedRider = null;
 
 	/**
 	 * complex stat tracking helpers, move, ammo, upgrades, general stats
@@ -305,8 +282,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		this.setHealth(this.baseHealth);
 	}
 
-	public void updateBaseStats() {
-		//  Config.logDebug("updating base stats. server"+!world.isRemote);
+	private void updateBaseStats() {
 		IVehicleMaterial material = vehicleType.getMaterialType();
 		int level = this.vehicleMaterialLevel;
 		baseForwardSpeed = vehicleType.getBaseForwardSpeed() * material.getSpeedForwardFactor(level);
@@ -343,7 +319,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	 *
 	 * @return
 	 */
-	public ItemStack getItemForVehicle() {
+	private ItemStack getItemForVehicle() {
 		ItemStack stack = this.vehicleType.getStackForLevel(vehicleMaterialLevel);
 		stack.getTagCompound().getCompoundTag("spawnData").setFloat("health", getHealth());
 		return stack;
@@ -359,15 +335,15 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		return !this.isSettingUp && this.isDrivable() && this.currentForwardSpeedMax > 0;
 	}
 
-	public float getHorizontalMissileOffset() {
+	private float getHorizontalMissileOffset() {
 		return this.vehicleType.getMissileHorizontalOffset();
 	}
 
-	public float getVerticalMissileOffset() {
+	private float getVerticalMissileOffset() {
 		return this.vehicleType.getMissileVerticalOffset();
 	}
 
-	public float getForwardsMissileOffset() {
+	private float getForwardsMissileOffset() {
 		return this.vehicleType.getMissileForwardsOffset();
 	}
 
@@ -400,7 +376,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		return !this.isSettingUp && vehicleType.isMountable();
 	}
 
-	public float getRiderForwardOffset() {
+	private float getRiderForwardOffset() {
 		return vehicleType.getRiderForwardsOffset();
 	}
 
@@ -408,7 +384,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		return vehicleType.getRiderVerticalOffest();
 	}
 
-	public float getRiderHorizontalOffset() {
+	private float getRiderHorizontalOffset() {
 		return vehicleType.getRiderHorizontalOffset();
 	}
 
@@ -444,9 +420,9 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		float rocketX = 0;
 		float rocketY = 0;
 		if (rocket) {
-			int rocketBurnTime = (int) (velocity * AmmoHwachaRocket.burnTimeFactor);
-			float motX0 = (motX / (velocity * 0.05f)) * AmmoHwachaRocket.accelerationFactor;
-			float motY0 = (motY / (velocity * 0.05f)) * AmmoHwachaRocket.accelerationFactor;
+			int rocketBurnTime = (int) (velocity * AmmoHwachaRocket.BURN_TIME_FACTOR);
+			float motX0 = (motX / (velocity * 0.05f)) * AmmoHwachaRocket.ACCELERATION_FACTOR;
+			float motY0 = (motY / (velocity * 0.05f)) * AmmoHwachaRocket.ACCELERATION_FACTOR;
 			motX = motX0;
 			motY = motY0;
 			while (rocketBurnTime > 0) {
@@ -502,8 +478,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		x += x1;
 		z += z1;
 		y += y1;
-		Vec3d off = new Vec3d(x, y, z);
-		return off;
+		return new Vec3d(x, y, z);
 	}
 
 	/**
@@ -565,7 +540,6 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 
 	@Override
 	public void onUpdate() {
-		long t1 = System.nanoTime();
 		super.onUpdate();
 		if (this.world.isRemote) {
 			this.onUpdateClient();
@@ -600,7 +574,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	/**
 	 * client-side updates
 	 */
-	public void onUpdateClient() {
+	private void onUpdateClient() {
 		if (getControllingPassenger() instanceof NpcBase) {
 			this.updatePassenger(getControllingPassenger());
 		}
@@ -621,7 +595,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 	/**
 	 * server-side updates...
 	 */
-	public void onUpdateServer() {
+	private void onUpdateServer() {
 		if (this.getControllingPassenger() instanceof EntityPlayerMP) {
 			EntityPlayerMP player = (EntityPlayerMP) this.getControllingPassenger();
 			if (player.isSneaking()) {
@@ -631,11 +605,10 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		}
 	}
 
-	public void handleDismount(EntityLivingBase rider) {
+	private void handleDismount(EntityLivingBase rider) {
 		int xMin = MathHelper.floor(this.posX - this.width / 2);
 		int zMin = MathHelper.floor(this.posZ - this.width / 2);
 		int yMin = MathHelper.floor(posY) - 2;
-		boolean foundTarget = false;
 
 		if (rider instanceof EntityPlayerMP) {
 			((EntityPlayerMP) rider).capabilities.allowFlying = false;
@@ -651,7 +624,6 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 					if (state.isSideSolid(world, pos, EnumFacing.UP) || state.getMaterial() == Material.WATER) {
 						if (world.isAirBlock(pos.up()) && world.isAirBlock(pos.up().up())) {
 							rider.setPositionAndUpdate(x + 0.5d, y + 1, z + 0.5d);
-							foundTarget = true; //TODO what is this supposed to do?
 							break searchLabel;
 						}
 					}
@@ -660,7 +632,7 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		}
 	}
 
-	public void updateTurretPitch() {
+	private void updateTurretPitch() {
 		float prevPitch = this.localTurretPitch;
 		if (localTurretPitch < currentTurretPitchMin) {
 			localTurretPitch = currentTurretPitchMin;
@@ -688,14 +660,12 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		this.currentTurretPitchSpeed = prevPitch - this.localTurretPitch;
 	}
 
-	public void updateTurretRotation() {
+	private void updateTurretRotation() {
 		float prevYaw = this.localTurretRotation;
 		this.localTurretRotationHome = Trig.wrapTo360(this.rotationYaw);
 		if (!canAimRotate()) {
 			localTurretRotation = Trig.wrapTo360(this.rotationYaw);
 			localTurretDestRot = localTurretRotation;
-		} else {
-			//    localTurretRotation += moveHelper.strafeMotion;
 		}
 		if (Math.abs(localTurretDestRot - localTurretRotation) > localTurretRotInc) {
 			while (localTurretRotation < 0) {
@@ -707,7 +677,6 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 				prevYaw -= 360;
 			}
 			localTurretDestRot = Trig.wrapTo360(localTurretDestRot);
-			byte turnDirection = 0;
 			float curMod = localTurretRotation;
 			float destMod = localTurretDestRot;
 			float diff = curMod > destMod ? curMod - destMod : destMod - curMod;
@@ -739,13 +708,6 @@ public class VehicleBase extends Entity implements IEntityAdditionalSpawnData, I
 		if (this.currentTurretYawSpeed < -180) {
 			this.currentTurretYawSpeed += 360.f;
 		}
-	}
-
-	public void sendCompleteTurretPacket() {
-		if (this.world.isRemote) {
-			return;
-		}
-		NetworkHandler.sendToAllTracking(this, new PacketTurretAnglesUpdate(this, localTurretPitch, localTurretRotation));
 	}
 
 	public void updateTurretAngles(float pitch, float rotation) {

@@ -26,7 +26,7 @@ public class BlockBaseStructure extends BlockBase implements IClientRegistrar {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerClient() {
-		final ResourceLocation assetLocation = new ResourceLocation(AncientWarfareCore.modID, "structure/" + getRegistryName().getResourcePath());
+		final ResourceLocation assetLocation = new ResourceLocation(AncientWarfareCore.MOD_ID, "structure/" + getRegistryName().getResourcePath());
 
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
 			@Override

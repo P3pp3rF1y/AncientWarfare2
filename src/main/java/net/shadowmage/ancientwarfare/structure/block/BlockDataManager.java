@@ -7,8 +7,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 
 import java.util.HashMap;
 import java.util.List;
@@ -76,7 +76,7 @@ public class BlockDataManager {
 			id = StringTools.safeParseInt(bits[1]);
 			block = Block.getBlockFromName(name);
 			if (block == null) {
-				AWLog.logError("ERROR parsing block name from name mapping: " + name + " id: " + id + " found: " + block);
+				AncientWarfareStructures.log.error("ERROR parsing block name from name mapping: " + name + " id: " + id + " found: " + block);
 				continue;
 			}
 			blockNameToBlock.put(name, block);

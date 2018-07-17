@@ -14,9 +14,9 @@ import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.CombinedInvWrapper;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.items.wrapper.PlayerInvWrapper;
+import net.shadowmage.ancientwarfare.automation.AncientWarfareAutomation;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseBase;
 import net.shadowmage.ancientwarfare.automation.tile.warehouse2.TileWarehouseCraftingStation;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.container.ContainerCraftingRecipeMemory;
 import net.shadowmage.ancientwarfare.core.container.ContainerTileBase;
 import net.shadowmage.ancientwarfare.core.container.ICraftingContainer;
@@ -142,7 +142,7 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 	@Override
 	public void handlePacketData(NBTTagCompound tag) {
 		if (tag.hasKey("changeList")) {
-			AWLog.logDebug("rec. warehouse item map..");
+			AncientWarfareAutomation.log.info("rec. warehouse item map..");
 			handleChangeList(tag.getTagList("changeList", Constants.NBT.TAG_COMPOUND));
 		} else if (tag.hasKey("recipe")) {
 			containerCrafting.handleRecipeUpdate(tag);
@@ -212,7 +212,7 @@ public class ContainerWarehouseCraftingStation extends ContainerTileBase<TileWar
 	}
 
 	public void onWarehouseInventoryUpdated() {
-		AWLog.logDebug("update callback from warehouse...");
+		AncientWarfareAutomation.log.info("update callback from warehouse...");
 		shouldUpdate = true;
 	}
 

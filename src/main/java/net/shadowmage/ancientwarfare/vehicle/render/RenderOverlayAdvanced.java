@@ -90,11 +90,9 @@ public class RenderOverlayAdvanced {
 	}
 
 	private static void drawTorpedoPath(VehicleBase vehicle, Vec3d renderOffset, double speed, Vec3d accelerationVector) {
-		int rocketBurnTime = (int) (speed * 20.f * AmmoHwachaRocket.burnTimeFactor);
-
-		float xAcc = (float) (accelerationVector.x / speed) * AmmoHwachaRocket.accelerationFactor;
-		float yAcc = (float) (accelerationVector.y / speed) * AmmoHwachaRocket.accelerationFactor;
-		float zAcc = (float) (accelerationVector.z / speed) * AmmoHwachaRocket.accelerationFactor;
+		float xAcc = (float) (accelerationVector.x / speed) * AmmoHwachaRocket.ACCELERATION_FACTOR;
+		float yAcc = (float) (accelerationVector.y / speed) * AmmoHwachaRocket.ACCELERATION_FACTOR;
+		float zAcc = (float) (accelerationVector.z / speed) * AmmoHwachaRocket.ACCELERATION_FACTOR;
 		Vec3d adjustedAccelerationVector = new Vec3d(xAcc, yAcc, zAcc);
 		float dist = 0;
 
@@ -115,7 +113,7 @@ public class RenderOverlayAdvanced {
 
 	private static void drawRocketFlightPath(VehicleBase vehicle, EntityPlayer player, Vec3d renderOffset, double speed, Vec3d accelerationVector,
 			double gravity) {
-		int rocketBurnTime = (int) (speed * 20.f * AmmoHwachaRocket.burnTimeFactor);
+		int rocketBurnTime = (int) (speed * 20.f * AmmoHwachaRocket.BURN_TIME_FACTOR);
 
 		Vec3d offset = vehicle.getMissileOffset();
 		double x2 = renderOffset.x + offset.x;
@@ -130,9 +128,9 @@ public class RenderOverlayAdvanced {
 			floorY = -player.posY;
 		}
 
-		float xAcc = (float) (adjustedAccelerationVector.x / speed) * AmmoHwachaRocket.accelerationFactor;
-		float yAcc = (float) (adjustedAccelerationVector.y / speed) * AmmoHwachaRocket.accelerationFactor;
-		float zAcc = (float) (adjustedAccelerationVector.z / speed) * AmmoHwachaRocket.accelerationFactor;
+		float xAcc = (float) (adjustedAccelerationVector.x / speed) * AmmoHwachaRocket.ACCELERATION_FACTOR;
+		float yAcc = (float) (adjustedAccelerationVector.y / speed) * AmmoHwachaRocket.ACCELERATION_FACTOR;
+		float zAcc = (float) (adjustedAccelerationVector.z / speed) * AmmoHwachaRocket.ACCELERATION_FACTOR;
 		adjustedAccelerationVector = new Vec3d(xAcc, yAcc, zAcc);
 
 		while (y2 >= floorY) {

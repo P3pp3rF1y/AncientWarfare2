@@ -10,14 +10,9 @@ import net.minecraftforge.registries.IForgeRegistry;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 
 //TODO move this class to NPC module on split
-@ObjectHolder(AncientWarfareCore.modID)
-@Mod.EventBusSubscriber(modid = AncientWarfareCore.modID)
+@ObjectHolder(AncientWarfareCore.MOD_ID)
+@Mod.EventBusSubscriber(modid = AncientWarfareCore.MOD_ID)
 public class AWSounds {
-
-	@ObjectHolder("teleport_out")
-	public static SoundEvent TOWN_HALL_TELEPORT_OUT;
-	@ObjectHolder("teleport_in")
-	public static SoundEvent TOWN_HALL_TELEPORT_IN;
 
 	@SubscribeEvent
 	public static void register(RegistryEvent.Register<SoundEvent> event) {
@@ -34,7 +29,7 @@ public class AWSounds {
 	}
 
 	private static SoundEvent createSoundEvent(String soundName) {
-		ResourceLocation registryName = new ResourceLocation(AncientWarfareCore.modID, soundName);
+		ResourceLocation registryName = new ResourceLocation(AncientWarfareCore.MOD_ID, soundName);
 		return new SoundEvent(registryName).setRegistryName(registryName);
 	}
 }

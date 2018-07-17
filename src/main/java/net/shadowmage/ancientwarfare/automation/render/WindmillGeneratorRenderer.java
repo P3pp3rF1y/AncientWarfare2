@@ -13,7 +13,7 @@ import java.util.Collection;
 
 public class WindmillGeneratorRenderer extends BaseTorqueRenderer<TileWindmillController> {
 
-	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/windmill_generator", "normal");
+	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.MOD_ID + ":automation/windmill_generator", "normal");
 	public static final WindmillGeneratorRenderer INSTANCE = new WindmillGeneratorRenderer();
 
 	private final Collection<CCModel> outputGear;

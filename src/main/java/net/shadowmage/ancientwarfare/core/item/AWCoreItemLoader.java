@@ -12,17 +12,16 @@ import net.shadowmage.ancientwarfare.core.api.AWItems;
 
 import java.util.Locale;
 
-@Mod.EventBusSubscriber(modid = AncientWarfareCore.modID)
+@Mod.EventBusSubscriber(modid = AncientWarfareCore.MOD_ID)
 public class AWCoreItemLoader {
 
-	public static final String PREFIX = "ancientwarfare:core/";
 	public static final AWCoreItemLoader INSTANCE = new AWCoreItemLoader();
 
 	private AWCoreItemLoader() {
 	}
 
 	public void load() {
-		OreDictionary.registerOre("ingotSteel", AWItems.steel_ingot);
+		OreDictionary.registerOre("ingotSteel", AWItems.steelIngot);
 	}
 
 	@SubscribeEvent

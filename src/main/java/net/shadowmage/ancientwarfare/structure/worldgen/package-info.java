@@ -1,7 +1,7 @@
 // Auto generated package-info by MCP
 
 @ParametersAreNonnullByDefault @MethodsReturnNonnullByDefault
-package net.shadowmage.ancientwarfare.structure.world_gen;
+package net.shadowmage.ancientwarfare.structure.worldgen;
 
 import mcp.MethodsReturnNonnullByDefault;
 

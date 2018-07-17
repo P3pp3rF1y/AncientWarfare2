@@ -11,9 +11,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
 import net.shadowmage.ancientwarfare.core.api.AWItems;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.BlockTools;
 import net.shadowmage.ancientwarfare.core.util.WorldTools;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.block.AWStructuresBlocks;
 import net.shadowmage.ancientwarfare.structure.entity.DualBoundingBox;
 import net.shadowmage.ancientwarfare.structure.entity.EntityGate;
@@ -304,7 +304,7 @@ public class Gate implements IGateType {
 				for (int z = min.getZ(); z <= max.getZ(); z++) {
 					BlockPos pos = new BlockPos(x, y, z);
 					if (!world.isAirBlock(pos)) {
-						AWLog.logDebug("could not create gate for non-air block at: " + x + "," + y + "," + z + " block: " + world.getBlockState(pos).getBlock());
+						AncientWarfareStructures.log.info("could not create gate for non-air block at: " + x + "," + y + "," + z + " block: " + world.getBlockState(pos).getBlock());
 						return null;
 					}
 				}

@@ -15,9 +15,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.interfaces.IItemKeyInterface;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.gui.GuiTownSelection;
 import net.shadowmage.ancientwarfare.structure.town.TownBoundingArea;
 import net.shadowmage.ancientwarfare.structure.town.TownTemplate;
@@ -64,7 +64,7 @@ public class ItemTownBuilder extends ItemBaseStructure implements IItemKeyInterf
 		long t1 = System.nanoTime();
 		WorldTownGenerator.INSTANCE.generate(player.world, getTownArea(rayTraceResult.getBlockPos(), player.getHorizontalFacing(), getLength(stack), getWidth(stack)), template.get());
 		long t2 = System.nanoTime();
-		AWLog.logDebug("Total Town gen nanos (incl. validation): " + (t2 - t1));
+		AncientWarfareStructures.log.info("Total Town gen nanos (incl. validation): " + (t2 - t1));
 	}
 
 	private TownBoundingArea getTownArea(BlockPos pos, EnumFacing horizontalFacing, int chunkLength, int chunkWidth) {

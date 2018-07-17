@@ -61,7 +61,7 @@ import java.util.stream.IntStream;
 public class AWCraftingManager {
 	private AWCraftingManager() {}
 
-	private static final IForgeRegistry<ResearchRecipeBase> RESEARCH_RECIPES = (new RegistryBuilder<ResearchRecipeBase>()).setName(new ResourceLocation(AncientWarfareCore.modID, "research_recipes")).setType(ResearchRecipeBase.class).setMaxID(Integer.MAX_VALUE >> 5).disableSaving().allowModification().create();
+	private static final IForgeRegistry<ResearchRecipeBase> RESEARCH_RECIPES = (new RegistryBuilder<ResearchRecipeBase>()).setName(new ResourceLocation(AncientWarfareCore.MOD_ID, "research_recipes")).setType(ResearchRecipeBase.class).setMaxID(Integer.MAX_VALUE >> 5).disableSaving().allowModification().create();
 
 	public static void init() {
 		//noop - just call this so that the static final gets initialized at proper time
@@ -159,8 +159,8 @@ public class AWCraftingManager {
 	}
 
 	public static void registerIngredients() {
-		CraftingHelper.register(new ResourceLocation(AncientWarfareCore.modID, "item_count"), (IIngredientFactory) (c, j) -> new IngredientCount(CraftingHelper.getItemStack(j, c)));
-		CraftingHelper.register(new ResourceLocation(AncientWarfareCore.modID, "ore_dict_count"), (IIngredientFactory) (c, j) -> new IngredientOreCount(JsonUtils.getString(j, "ore"), JsonUtils.getInt(j, "count", 1)));
+		CraftingHelper.register(new ResourceLocation(AncientWarfareCore.MOD_ID, "item_count"), (IIngredientFactory) (c, j) -> new IngredientCount(CraftingHelper.getItemStack(j, c)));
+		CraftingHelper.register(new ResourceLocation(AncientWarfareCore.MOD_ID, "ore_dict_count"), (IIngredientFactory) (c, j) -> new IngredientOreCount(JsonUtils.getString(j, "ore"), JsonUtils.getInt(j, "count", 1)));
 	}
 
 	private static void loadRecipes(ModContainer mod, File source, String base) {
@@ -200,10 +200,10 @@ public class AWCraftingManager {
 				JsonObject json = JsonUtils.fromJson(GSON, reader, JsonObject.class);
 				//noinspection ConstantConditions
 				String type = ctx.appendModId(JsonUtils.getString(json, "type"));
-				if (type.equals(AncientWarfareCore.modID + ":research_recipe") || type.equals(AncientWarfareCore.modID + ":shapeless_research_recipe")) {
+				if (type.equals(AncientWarfareCore.MOD_ID + ":research_recipe") || type.equals(AncientWarfareCore.MOD_ID + ":shapeless_research_recipe")) {
 					ResearchRecipeBase recipe = factory.parse(ctx, json);
 					recipe.setRegistryName(key);
-					addRecipe(recipe, mod.getModId().equals(AncientWarfareCore.modID));
+					addRecipe(recipe, mod.getModId().equals(AncientWarfareCore.MOD_ID));
 				} else {
 					AncientWarfareCore.log.info("Skipping recipe {} of type {} because it's not AW research recipe", key, type);
 				}

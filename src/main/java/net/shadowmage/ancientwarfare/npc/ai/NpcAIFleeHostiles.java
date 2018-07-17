@@ -9,7 +9,7 @@ import net.minecraft.entity.ai.EntityAINearestAttackableTarget;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
+import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
 import net.shadowmage.ancientwarfare.npc.entity.NpcCombat;
 import net.shadowmage.ancientwarfare.npc.entity.NpcPlayerOwned;
@@ -21,10 +21,13 @@ import java.util.List;
 
 public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 
-	private static int MAX_STAY_AWAY = 50, MAX_FLEE_RANGE = 16, HEIGHT_CHECK = 7, PURSUE_RANGE = 16 * 16;
+	private static final int MAX_STAY_AWAY = 50;
+	private static final int MAX_FLEE_RANGE = 16;
+	private static final int HEIGHT_CHECK = 7;
+	private static final int PURSUE_RANGE = 16 * 16;
 	private final Predicate<EntityLiving> hostileOrFriendlyCombatNpcSelector;
 	private final Comparator sorter;
-	double distanceFromEntity = 16;
+	private double distanceFromEntity = 16;
 	private Vec3d fleeVector;
 	private int stayOutOfSightTimer = 0;
 	private int fearLevel = 0; // fear makes NPC's wait/flee for progressively longer periods
@@ -83,7 +86,7 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 				if (nearestHostile instanceof EntityLivingBase)
 					npc.setAttackTarget((EntityLivingBase) nearestHostile);
 				else
-					AncientWarfareCore.log.error("Attempted to flee an entity that isn't EntityLiving: '" + EntityList.getEntityString(nearestHostile) + "', ignoring! Please report this error.");
+					AncientWarfareNPC.log.error("Attempted to flee an entity that isn't EntityLiving: '" + EntityList.getEntityString(nearestHostile) + "', ignoring! Please report this error.");
 			}
 		}
 		return flee;
@@ -209,14 +212,5 @@ public class NpcAIFleeHostiles extends NpcAI<NpcPlayerOwned> {
 		for (NpcCombat soldier : nearbySoldiers) {
 			soldier.respondToDistress(npc);
 		}
-		/*
-		List nearbyFriendlyCombatNpcs = this.npc.world.selectEntitiesWithinAABB(EntityLiving.class, this.npc.getEntityBoundingBox().expand(this.distanceFromEntity, 3.0D, this.distanceFromEntity), friendlyCombatNpcSelector);
-        if (nearbyFriendlyCombatNpcs.isEmpty())
-            return;
-        for (Object defender : nearbyFriendlyCombatNpcs) {
-            ((NpcCombat)defender).respondToDistress(npc);
-        }
-        */
 	}
-
 }

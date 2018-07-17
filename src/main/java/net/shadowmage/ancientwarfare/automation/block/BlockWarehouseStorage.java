@@ -119,7 +119,7 @@ public class BlockWarehouseStorage extends BlockBaseAutomation {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerClient() {
-		final ResourceLocation assetLocation = new ResourceLocation(AncientWarfareCore.modID, "automation/" + getRegistryName().getResourcePath());
+		final ResourceLocation assetLocation = new ResourceLocation(AncientWarfareCore.MOD_ID, "automation/" + getRegistryName().getResourcePath());
 
 		ModelLoader.setCustomStateMapper(this, new StateMapperBase() {
 			@Override

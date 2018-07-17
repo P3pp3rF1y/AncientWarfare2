@@ -9,12 +9,16 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
-import net.shadowmage.ancientwarfare.structure.world_gen.WorldStructureGenerator;
+import net.shadowmage.ancientwarfare.structure.worldgen.WorldStructureGenerator;
 
 public class TownGeneratorBorders {
+	private TownGeneratorBorders() {}
 
 	public static void generateBorders(World world, StructureBB exterior, StructureBB walls, StructureBB max) {
-		int minX, maxX, minZ, maxZ;
+		int minX;
+		int maxX;
+		int minZ;
+		int maxZ;
 		int step;
 		int fillBase = max.min.getY() - 1;
 		int levelBase = fillBase;

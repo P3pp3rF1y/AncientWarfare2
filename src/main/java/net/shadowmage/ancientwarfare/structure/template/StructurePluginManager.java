@@ -1,24 +1,3 @@
-/*
- Copyright 2012-2013 John Cummens (aka Shadowmage, Shadowmage4513)
- This software is distributed under the terms of the GNU General Public License.
- Please see COPYING for precise license information.
-
- This file is part of Ancient Warfare.
-
- Ancient Warfare is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- Ancient Warfare is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.structure.template;
 
 import net.minecraft.block.Block;
@@ -31,8 +10,8 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.ModContainer;
 import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.api.ModuleStatus;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
+import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginLookup;
 import net.shadowmage.ancientwarfare.structure.api.IStructurePluginManager;
 import net.shadowmage.ancientwarfare.structure.api.StructureContentPlugin;
@@ -99,25 +78,25 @@ public class StructurePluginManager implements IStructurePluginManager, IStructu
 	}
 
 	private boolean isDefaultMods(String modid) {
-		return modid.equals("minecraft") || modid.equals("mcp") || modid.equals("FML") || modid.equals("forge") || modid.startsWith(AncientWarfareCore.modID);
+		return modid.equals("minecraft") || modid.equals("mcp") || modid.equals("FML") || modid.equals("forge") || modid.startsWith(AncientWarfareCore.MOD_ID);
 	}
 
 	private void loadNpcPlugin() {
 		addPlugin(new StructurePluginNpcs());
-		AWLog.log("Loaded NPC Module Structure Plugin");
+		AncientWarfareStructures.log.info("Loaded NPC Module Structure Plugin");
 	}
 
 	private void loadVehiclePlugin() {
 		addPlugin(new StructurePluginVehicles());
-		AWLog.log("Loaded Vehicle Module Structure Plugin");
+		AncientWarfareStructures.log.info("Loaded Vehicle Module Structure Plugin");
 	}
 
 	private void loadAutomationPlugin() {
 		addPlugin(new StructurePluginAutomation());
-		AWLog.log("Loaded Automation Module Structure Plugin");
+		AncientWarfareStructures.log.info("Loaded Automation Module Structure Plugin");
 	}
 
-	public void addPlugin(StructureContentPlugin plugin) {
+	private void addPlugin(StructureContentPlugin plugin) {
 		loadedContentPlugins.add(plugin);
 	}
 
@@ -129,7 +108,7 @@ public class StructurePluginManager implements IStructurePluginManager, IStructu
 		return this.idByRuleClass.get(ruleClass);
 	}
 
-	public Class<? extends TemplateRule> getRuleByName(String name) {
+	private Class<? extends TemplateRule> getRuleByName(String name) {
 		return this.ruleByID.get(name);
 	}
 
@@ -201,7 +180,7 @@ public class StructurePluginManager implements IStructurePluginManager, IStructu
 		addPlugin(plugin);
 	}
 
-	public static final TemplateRule getRule(List<String> ruleData, String ruleType) throws TemplateRuleParsingException {
+	public static TemplateRule getRule(List<String> ruleData, String ruleType) throws TemplateRuleParsingException {
 		Iterator<String> it = ruleData.iterator();
 		String name = null;
 		int ruleNumber = -1;
@@ -249,7 +228,7 @@ public class StructurePluginManager implements IStructurePluginManager, IStructu
 		return null;
 	}
 
-	public final static void writeRuleLines(TemplateRule rule, BufferedWriter out, String ruleType) throws IOException {
+	public static void writeRuleLines(TemplateRule rule, BufferedWriter out, String ruleType) throws IOException {
 		if (rule == null) {
 			return;
 		}

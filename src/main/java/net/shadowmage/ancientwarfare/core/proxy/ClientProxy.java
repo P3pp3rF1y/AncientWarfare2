@@ -39,7 +39,7 @@ public class ClientProxy extends ClientProxyBase {
 		InputHandler.initKeyBindings();
 	}
 
-	public void setDebugResolution() {
+	private void setDebugResolution() {
 		org.lwjgl.opengl.DisplayMode mode = new DisplayMode(512, 288);
 		try {
 			Display.setDisplayMode(mode);
@@ -51,7 +51,7 @@ public class ClientProxy extends ClientProxyBase {
 
 	@SubscribeEvent
 	public void onPreTextureStitch(TextureStitchEvent.Pre evt) {
-		EngineeringStationRenderer.INSTANCE.setSprite(evt.getMap().registerSprite(new ResourceLocation(AncientWarfareCore.modID + ":model/core/tile_engineering_station")));
-		ResearchStationRenderer.INSTANCE.setSprite(evt.getMap().registerSprite(new ResourceLocation(AncientWarfareCore.modID + ":model/core/tile_research_station")));
+		EngineeringStationRenderer.INSTANCE.setSprite(evt.getMap().registerSprite(new ResourceLocation(AncientWarfareCore.MOD_ID + ":model/core/tile_engineering_station")));
+		ResearchStationRenderer.INSTANCE.setSprite(evt.getMap().registerSprite(new ResourceLocation(AncientWarfareCore.MOD_ID + ":model/core/tile_research_station")));
 	}
 }

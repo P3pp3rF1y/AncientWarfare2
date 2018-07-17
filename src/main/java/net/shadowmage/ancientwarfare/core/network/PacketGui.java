@@ -6,7 +6,7 @@ import io.netty.buffer.ByteBufOutputStream;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTTagCompound;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
+import net.shadowmage.ancientwarfare.core.AncientWarfareCore;
 import net.shadowmage.ancientwarfare.core.container.ContainerBase;
 
 import java.io.IOException;
@@ -69,7 +69,7 @@ public class PacketGui extends PacketBase {
 		} else if (player.openContainer instanceof ContainerBase) {
 			((ContainerBase) player.openContainer).onPacketData(packetData);
 		} else {
-			AWLog.logError("Invalid target found when processing GUI/Container packet : " + player.openContainer + " packet: " + packetData);
+			AncientWarfareCore.log.error("Invalid target found when processing GUI/Container packet : " + player.openContainer + " packet: " + packetData);
 		}
 	}
 

@@ -11,8 +11,8 @@ import net.shadowmage.ancientwarfare.structure.config.AWStructureStatics;
 import net.shadowmage.ancientwarfare.structure.gamedata.StructureMap;
 import net.shadowmage.ancientwarfare.structure.gamedata.TownMap;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBB;
-import net.shadowmage.ancientwarfare.structure.world_gen.StructureEntry;
-import net.shadowmage.ancientwarfare.structure.world_gen.WorldGenTickHandler;
+import net.shadowmage.ancientwarfare.structure.worldgen.StructureEntry;
+import net.shadowmage.ancientwarfare.structure.worldgen.WorldGenTickHandler;
 
 import java.util.List;
 import java.util.Random;

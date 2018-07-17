@@ -55,9 +55,9 @@ import static net.shadowmage.ancientwarfare.automation.render.property.Automatio
 @SideOnly(Side.CLIENT)
 public class FlywheelStorageRenderer implements ILayeredBlockBakery, ITESRRenderer {
 	private static final String FLYWHEEL_STORAGE_REGISTRY_PATH = ":automation/flywheel_storage";
-	public static final ModelResourceLocation LIGHT_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + FLYWHEEL_STORAGE_REGISTRY_PATH, "small_light");
-	public static final ModelResourceLocation MEDIUM_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + FLYWHEEL_STORAGE_REGISTRY_PATH, "small_medium");
-	public static final ModelResourceLocation HEAVY_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + FLYWHEEL_STORAGE_REGISTRY_PATH, "small_heavy");
+	public static final ModelResourceLocation LIGHT_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.MOD_ID + FLYWHEEL_STORAGE_REGISTRY_PATH, "small_light");
+	public static final ModelResourceLocation MEDIUM_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.MOD_ID + FLYWHEEL_STORAGE_REGISTRY_PATH, "small_medium");
+	public static final ModelResourceLocation HEAVY_MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.MOD_ID + FLYWHEEL_STORAGE_REGISTRY_PATH, "small_heavy");
 
 	public static final FlywheelStorageRenderer INSTANCE = new FlywheelStorageRenderer();
 
@@ -113,7 +113,7 @@ public class FlywheelStorageRenderer implements ILayeredBlockBakery, ITESRRender
 	}
 
 	private Map<String, CCModel> loadModel(String modelName) {
-		Map<String, CCModel> ret = OBJParser.parseModels(new ResourceLocation(AncientWarfareCore.modID, "models/block/automation/" + modelName), 7, new RedundantTransformation());
+		Map<String, CCModel> ret = OBJParser.parseModels(new ResourceLocation(AncientWarfareCore.MOD_ID, "models/block/automation/" + modelName), 7, new RedundantTransformation());
 
 		for (Map.Entry<String, CCModel> group : ret.entrySet()) {
 			group.setValue(group.getValue().backfacedCopy().computeNormals());

@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
 
 public class WindmillBladeRenderer extends AnimatedBlockRenderer {
 
-	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/windmill_blade", "normal");
+	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.MOD_ID + ":automation/windmill_blade", "normal");
 	public static final WindmillBladeRenderer INSTANCE = new WindmillBladeRenderer();
 
 	private static final PerspectiveProperties MODEL_PROPERTIES;
@@ -71,7 +71,7 @@ public class WindmillBladeRenderer extends AnimatedBlockRenderer {
 
 	private WindmillBladeRenderer() {
 		super("automation/windmill_blade.obj");
-		cube = OBJParser.parseModels(new ResourceLocation(AncientWarfareCore.modID, "models/block/automation/windmill_blade_cube.obj"), 7, new RedundantTransformation()).values().iterator().next().backfacedCopy();
+		cube = OBJParser.parseModels(new ResourceLocation(AncientWarfareCore.MOD_ID, "models/block/automation/windmill_blade_cube.obj"), 7, new RedundantTransformation()).values().iterator().next().backfacedCopy();
 		bladeShaft = removeGroups(s -> s.startsWith("bladeShaft."));
 		windmillShaft = transformModels(removeGroups(s -> s.startsWith("windmillShaft.")), new Translation(0d, 0.5d, 0d));
 		blade = removeGroups(s -> s.startsWith("blade."));

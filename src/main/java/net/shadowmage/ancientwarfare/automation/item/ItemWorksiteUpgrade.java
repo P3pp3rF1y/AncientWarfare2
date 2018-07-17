@@ -22,7 +22,7 @@ import java.util.HashSet;
 public class ItemWorksiteUpgrade extends ItemMulti {
 
 	public ItemWorksiteUpgrade() {
-		super(AncientWarfareAutomation.modID, "worksite_upgrade");
+		super(AncientWarfareAutomation.MOD_ID, "worksite_upgrade");
 		this.setCreativeTab(AWAutomationItemLoader.automationTab);
 	}
 

@@ -8,8 +8,5 @@ public class ModuleStatus {
 	public static boolean vehiclesLoaded;
 
 	//checked in automation module pre-init
-	public static boolean buildCraftLoaded;
-
-	//checked in automation module pre-init
 	public static boolean redstoneFluxEnabled;
 }

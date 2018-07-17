@@ -22,7 +22,7 @@ public final class AWChunkLoader implements LoadingCallback {
 	@Override
 	public void ticketsLoaded(List<Ticket> tickets, World world) {
 		for (Ticket tk : tickets) {
-			if (!tk.isPlayerTicket() && tk.getModId().startsWith(AncientWarfareCore.modID) && tk.getModData().hasKey(TILE_POSITION_TAG)) {
+			if (!tk.isPlayerTicket() && tk.getModId().startsWith(AncientWarfareCore.MOD_ID) && tk.getModData().hasKey(TILE_POSITION_TAG)) {
 				WorldTools.getTile(world, BlockPos.fromLong(tk.getModData().getLong(TILE_POSITION_TAG)), IChunkLoaderTile.class).ifPresent(t -> t.setTicket(tk));
 			}
 		}

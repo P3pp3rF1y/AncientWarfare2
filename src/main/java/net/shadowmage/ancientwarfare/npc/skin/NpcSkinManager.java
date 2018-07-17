@@ -2,7 +2,6 @@ package net.shadowmage.ancientwarfare.npc.skin;
 
 import net.minecraft.util.ResourceLocation;
 import net.shadowmage.ancientwarfare.core.config.AWCoreStatics;
-import net.shadowmage.ancientwarfare.core.config.AWLog;
 import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -110,7 +109,7 @@ public class NpcSkinManager {
 			}
 			if (metaFile != null) {
 				pack = new SkinPack(metaFile, parsedImages);
-				AWLog.log("Loaded Skin pack: " + fileName + " containing: " + parsedImages.size() + " skins.");
+				AncientWarfareNPC.log.info("Loaded Skin pack: " + fileName + " containing: " + parsedImages.size() + " skins.");
 			}
 		}
 		catch (IOException e1) {
@@ -127,12 +126,12 @@ public class NpcSkinManager {
 
 	private void recursiveScan(File directory, List<File> zipFileList) {
 		if (directory == null) {
-			AWLog.logError("Could not locate directory to load structures!");
+			AncientWarfareNPC.log.error("Could not locate directory to load structures!");
 			return;
 		}
 		File[] allFiles = directory.listFiles();
 		if (allFiles == null) {
-			AWLog.logError("Could not locate " + directory + " directory to load skin packs!--no files in directory file list!");
+			AncientWarfareNPC.log.error("Could not locate " + directory + " directory to load skin packs!--no files in directory file list!");
 			return;
 		}
 		for (File currentFile : allFiles) {

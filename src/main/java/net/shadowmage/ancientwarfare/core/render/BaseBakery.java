@@ -45,7 +45,7 @@ public abstract class BaseBakery implements ISimpleBlockBakery {
 	protected IconTransformation iconTransform;
 
 	protected BaseBakery(String modelPath) {
-		groups = OBJParser.parseModels(new ResourceLocation(AncientWarfareCore.modID, "models/block/" + modelPath), 7, getBaseTransformation());
+		groups = OBJParser.parseModels(new ResourceLocation(AncientWarfareCore.MOD_ID, "models/block/" + modelPath), 7, getBaseTransformation());
 
 		for (Map.Entry<String, CCModel> group : groups.entrySet()) {
 			group.setValue(group.getValue().backfacedCopy().computeNormals());

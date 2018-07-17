@@ -1,24 +1,3 @@
-/**
- * Copyright 2012 John Cummens (aka Shadowmage, Shadowmage4513)
- * This software is distributed under the terms of the GNU General Public License.
- * Please see COPYING for precise license information.
- * <p>
- * This file is part of Ancient Warfare.
- * <p>
- * Ancient Warfare is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * <p>
- * Ancient Warfare is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * <p>
- * You should have received a copy of the GNU General Public License
- * along with Ancient Warfare.  If not, see <http://www.gnu.org/licenses/>.
- */
-
 package net.shadowmage.ancientwarfare.vehicle.entity.types;
 
 import net.minecraft.init.SoundEvents;
@@ -35,10 +14,6 @@ import net.shadowmage.ancientwarfare.vehicle.registry.ArmorRegistry;
 import net.shadowmage.ancientwarfare.vehicle.registry.UpgradeRegistry;
 
 public class VehicleTypeCannon extends VehicleType {
-
-	/**
-	 * @param typeNum
-	 */
 	public VehicleTypeCannon(int typeNum) {
 		super(typeNum);
 		this.configName = "cannon_base";
@@ -104,17 +79,17 @@ public class VehicleTypeCannon extends VehicleType {
 	public ResourceLocation getTextureForMaterialLevel(int level) {
 		switch (level) {
 			case 0:
-				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/cannon_1.png");
+				return new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/vehicle/cannon_1.png");
 			case 1:
-				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/cannon_2.png");
+				return new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/vehicle/cannon_2.png");
 			case 2:
-				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/cannon_3.png");
+				return new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/vehicle/cannon_3.png");
 			case 3:
-				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/cannon_4.png");
+				return new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/vehicle/cannon_4.png");
 			case 4:
-				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/cannon_5.png");
+				return new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/vehicle/cannon_5.png");
 			default:
-				return new ResourceLocation(AncientWarfareCore.modID, "textures/model/vehicle/cannon_1.png");
+				return new ResourceLocation(AncientWarfareCore.MOD_ID, "textures/model/vehicle/cannon_1.png");
 		}
 	}
 
@@ -125,12 +100,9 @@ public class VehicleTypeCannon extends VehicleType {
 
 	public class CannonVarHelper extends VehicleFiringVarsHelper {
 
-		int firingTicks = 0;
+		private int firingTicks = 0;
 
-		/**
-		 * @param vehicle
-		 */
-		public CannonVarHelper(VehicleBase vehicle) {
+		private CannonVarHelper(VehicleBase vehicle) {
 			super(vehicle);
 		}
 
@@ -143,7 +115,7 @@ public class VehicleTypeCannon extends VehicleType {
 
 		@Override
 		public void deserializeNBT(NBTTagCompound tag) {
-
+			//noop
 		}
 
 		@Override
@@ -168,7 +140,7 @@ public class VehicleTypeCannon extends VehicleType {
 
 		@Override
 		public void onReloadUpdate() {
-
+			//noop
 		}
 
 		@Override

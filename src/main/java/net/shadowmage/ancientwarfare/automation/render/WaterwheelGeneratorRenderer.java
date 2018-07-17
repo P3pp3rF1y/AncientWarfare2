@@ -15,7 +15,7 @@ import java.util.Collection;
 
 public class WaterwheelGeneratorRenderer extends BaseTorqueRenderer<TileWaterwheelGenerator> {
 
-	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.modID + ":automation/waterwheel_generator", "normal");
+	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation(AncientWarfareCore.MOD_ID + ":automation/waterwheel_generator", "normal");
 	public static final WaterwheelGeneratorRenderer INSTANCE = new WaterwheelGeneratorRenderer();
 
 	private final Collection<CCModel> waterwheel;
