@@ -206,7 +206,7 @@ public class TemplateFormatConverter {
 		template.setEntityRules(entityRules);
 		template.setTemplateData(templateData);
 		template.setValidationSettings(StructureValidationType.GROUND.getValidator().setDefaults(template));
-		TemplateExporter.exportTo(template, new File(TemplateLoader.outputDirectory));
+		TemplateExporter.exportTo(template, new File(TemplateLoader.OUTPUT_DIRECTORY));
 		return template;
 	}
 

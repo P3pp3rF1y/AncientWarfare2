@@ -150,7 +150,7 @@ public class ItemStructureScanner extends ItemBaseStructure implements IItemKeyI
 		if (include) {
 			StructureTemplateManager.INSTANCE.addTemplate(template);
 		}
-		return TemplateExporter.exportTo(template, new File(include ? TemplateLoader.includeDirectory : TemplateLoader.outputDirectory));
+		return TemplateExporter.exportTo(template, new File(include ? TemplateLoader.INCLUDE_DIRECTORY : TemplateLoader.OUTPUT_DIRECTORY));
 	}
 
 	@Override

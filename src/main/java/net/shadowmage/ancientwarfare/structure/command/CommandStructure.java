@@ -24,7 +24,6 @@ import javax.annotation.Nullable;
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 public class CommandStructure extends CommandBase {
 
@@ -88,16 +87,7 @@ public class CommandStructure extends CommandBase {
 		int z = CommandBase.parseInt(var2[4]);
 		EnumFacing face = EnumFacing.SOUTH;
 		if (var2.length > 5) {
-			String dl = var2[5].toLowerCase(Locale.ENGLISH);
-			if (dl.equals("north")) {
-				face = EnumFacing.NORTH;
-			} else if (dl.equals("east")) {
-				face = EnumFacing.EAST;
-			} else if (dl.equals("south")) {
-				face = EnumFacing.SOUTH;
-			} else if (dl.equals("west")) {
-				face = EnumFacing.WEST;
-			}
+			face = EnumFacing.byName(var2[5]);
 		}
 		StructureTemplate template = StructureTemplateManager.INSTANCE.getTemplate(var2[1]);
 		TextComponentTranslation txt;
@@ -122,7 +112,7 @@ public class CommandStructure extends CommandBase {
 			TextComponentTranslation txt = new TextComponentTranslation("command.aw.structure.template_removed", name);
 			sender.sendMessage(txt);
 			if (var2.length >= 3) {
-				boolean shouldDelete = var2[2].toLowerCase(Locale.ENGLISH).equals("true");
+				boolean shouldDelete = var2[2].equalsIgnoreCase("true");
 				if (shouldDelete) {
 					if (deleteTemplateFile(name)) {
 						txt = new TextComponentTranslation("command.aw.structure.file_deleted", name);
@@ -139,7 +129,7 @@ public class CommandStructure extends CommandBase {
 	}
 
 	private boolean deleteTemplateFile(String name) {
-		String path = TemplateLoader.includeDirectory + name + "." + AWStructureStatics.templateExtension;
+		String path = TemplateLoader.INCLUDE_DIRECTORY + name + "." + AWStructureStatics.templateExtension;
 		File file = new File(path);
 		if (file.exists()) {
 			file.delete();
@@ -157,7 +147,7 @@ public class CommandStructure extends CommandBase {
 	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
 		if (args.length == 1) {
 			return CommandBase.getListOfStringsMatchingLastWord(args, "build", "delete", "save");
-		} else if (args.length > 5 && args[0].toLowerCase(Locale.ENGLISH).equals("build")) {
+		} else if (args.length > 5 && args[0].equalsIgnoreCase("build")) {
 			return CommandBase.getListOfStringsMatchingLastWord(args, "north", "east", "south", "west");
 		}
 		return Collections.emptyList();

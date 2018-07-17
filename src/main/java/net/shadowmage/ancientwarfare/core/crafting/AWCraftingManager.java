@@ -34,6 +34,7 @@ import net.shadowmage.ancientwarfare.core.crafting.wrappers.NoRecipeWrapper;
 import net.shadowmage.ancientwarfare.core.crafting.wrappers.RegularCraftingWrapper;
 import net.shadowmage.ancientwarfare.core.crafting.wrappers.ResearchCraftingWrapper;
 import net.shadowmage.ancientwarfare.core.research.ResearchTracker;
+import net.shadowmage.ancientwarfare.core.util.FileUtils;
 import net.shadowmage.ancientwarfare.core.util.InventoryTools;
 import net.shadowmage.ancientwarfare.core.util.TriFunction;
 import org.apache.commons.io.FilenameUtils;
@@ -46,17 +47,13 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -169,7 +166,7 @@ public class AWCraftingManager {
 	private static void loadRecipes(ModContainer mod, File source, String base) {
 		JsonContext ctx = new JsonContext(mod.getModId());
 
-		findFiles(source, base, root -> {
+		FileUtils.findFiles(source, base, root -> {
 			Path fPath = root.resolve("_constants.json");
 			if (fPath != null && Files.exists(fPath)) {
 				BufferedReader reader = null;
@@ -178,12 +175,9 @@ public class AWCraftingManager {
 					JsonObject[] json = JsonUtils.fromJson(GSON, reader, JsonObject[].class);
 					LOAD_CONSTANTS.invoke(ctx, new Object[] {json});
 				}
-				catch (IOException e) {
+				catch (IOException | IllegalAccessException | InvocationTargetException e) {
 					AncientWarfareCore.log.error("Error loading _constants.json: ", e);
 					return false;
-				}
-				catch (IllegalAccessException | InvocationTargetException e) {
-					e.printStackTrace();
 				}
 				finally {
 					IOUtils.closeQuietly(reader);
@@ -224,50 +218,6 @@ public class AWCraftingManager {
 				IOUtils.closeQuietly(reader);
 			}
 		});
-	}
-
-	private static void findFiles(File source, String base, Function<Path, Boolean> preprocessor, @Nullable BiConsumer<Path, Path> processor) {
-		FileSystem fs = null;
-		try {
-			@Nullable Path root = null;
-			if (source.isFile()) {
-				try {
-					fs = FileSystems.newFileSystem(source.toPath(), null);
-					root = fs.getPath("/" + base);
-				}
-				catch (IOException e) {
-					AncientWarfareCore.log.error("Error loading FileSystem from jar: ", e);
-					return;
-				}
-			} else if (source.isDirectory()) {
-				root = source.toPath().resolve(base);
-			}
-
-			if (root == null || !Files.exists(root))
-				return;
-
-			Boolean cont = preprocessor.apply(root);
-			if (cont == null || !cont)
-				return;
-
-			if (processor != null) {
-				Iterator<Path> itr;
-				try {
-					itr = Files.walk(root).iterator();
-				}
-				catch (IOException e) {
-					AncientWarfareCore.log.error("Error iterating filesystem for: {}", root, e);
-					return;
-				}
-
-				while (itr != null && itr.hasNext()) {
-					processor.accept(root, itr.next());
-				}
-			}
-		}
-		finally {
-			IOUtils.closeQuietly(fs);
-		}
 	}
 
 	public static ICraftingRecipe getRecipe(RecipeResourceLocation recipe) {

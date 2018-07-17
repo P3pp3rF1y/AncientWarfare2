@@ -97,8 +97,7 @@ public class AncientWarfareStructures {
 		NetworkHandler.registerContainer(NetworkHandler.GUI_LOOT_CHEST_PLACER, ContainerLootChestPlacer.class);
 		proxy.preInit();
 
-		String path = evt.getModConfigurationDirectory().getAbsolutePath();
-		TemplateLoader.INSTANCE.initializeAndExportDefaults(path);
+		TemplateLoader.INSTANCE.initializeAndExportDefaults();
 	}
 
 	@EventHandler
