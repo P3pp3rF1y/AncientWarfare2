@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent.ServerTickEvent;
 import net.shadowmage.ancientwarfare.structure.template.build.StructureBuilder;
 import net.shadowmage.ancientwarfare.structure.town.WorldTownGenerator;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,7 +71,10 @@ public final class WorldGenTickHandler {
 	private void genChunks() {
 		if (!chunksToGen.isEmpty()) {
 			ChunkGenerationTicket tk = chunksToGen.remove(0);
-			WorldStructureGenerator.INSTANCE.generateAt(tk.chunkX, tk.chunkZ, tk.getWorld());
+			World world = tk.getWorld();
+			if (world != null) {
+				WorldStructureGenerator.INSTANCE.generateAt(tk.chunkX, tk.chunkZ, world);
+			}
 		}
 		if (!newWorldGenTickets.isEmpty()) {
 			chunksToGen.addAll(newWorldGenTickets);
@@ -81,7 +85,10 @@ public final class WorldGenTickHandler {
 	private void genTowns() {
 		if (!townChunksToGen.isEmpty()) {
 			ChunkGenerationTicket tk = townChunksToGen.remove(0);
-			WorldTownGenerator.INSTANCE.attemptGeneration(tk.getWorld(), tk.chunkX * 16, tk.chunkZ * 16);
+			World world = tk.getWorld();
+			if (world != null) {
+				WorldTownGenerator.INSTANCE.attemptGeneration(world, tk.chunkX * 16, tk.chunkZ * 16);
+			}
 		}
 		if (!newTownGenTickets.isEmpty()) {
 			townChunksToGen.addAll(newTownGenTickets);
@@ -110,6 +117,7 @@ public final class WorldGenTickHandler {
 			this.chunkZ = z;
 		}
 
+		@Nullable
 		public World getWorld() {
 			return DimensionManager.getWorld(world);
 		}

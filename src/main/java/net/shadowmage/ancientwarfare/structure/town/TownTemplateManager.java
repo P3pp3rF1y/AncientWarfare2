@@ -39,7 +39,10 @@ public class TownTemplateManager {
 	}
 
 	public List<TownTemplate> getTemplatesValidAtPosition(World world, int x, int z) {
-		//noinspection ConstantConditions
+		if (world.provider == null) {
+			AncientWarfareStructures.log.info("World provider was null when trying to generate town");
+			return Collections.emptyList();
+		}
 		Biome biome = world.provider.getBiomeForCoords(new BlockPos(x, 1, z));
 		ResourceLocation rl = biome.getRegistryName();
 		if (rl == null) {
@@ -50,7 +53,7 @@ public class TownTemplateManager {
 		return templates.values().stream().filter(t -> isDimensionValid(world.provider.getDimension(), t) && isBiomeValid(biomeName, t)).collect(Collectors.toList());
 	}
 
-	public TownTemplate selectTemplateFittingArea(World world, TownBoundingArea area, List<TownTemplate> templates) {
+	public Optional<TownTemplate> selectTemplateFittingArea(World world, TownBoundingArea area, List<TownTemplate> templates) {
 		TownTemplate selection = null;
 		int width = area.getChunkWidth();
 		int length = area.getChunkLength();
@@ -77,7 +80,7 @@ public class TownTemplateManager {
 			}
 		}
 		searchCache.clear();
-		return selection;
+		return Optional.ofNullable(selection);
 	}
 
 	private boolean isBiomeValid(String biome, TownTemplate t) {

@@ -15,6 +15,7 @@ import net.shadowmage.ancientwarfare.structure.worldgen.StructureEntry;
 import net.shadowmage.ancientwarfare.structure.worldgen.WorldGenTickHandler;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 public class WorldTownGenerator implements IWorldGenerator {
@@ -25,6 +26,7 @@ public class WorldTownGenerator implements IWorldGenerator {
 	}
 
 	@Override
+	@SuppressWarnings("squid:S2184") //coordinates are capped by int so they are not going to overflow max int before converted to double
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
 		BlockPos cc = world.getSpawnPoint();
 		double distSq = cc.distanceSq(chunkX * 16, cc.getY(), chunkZ * 16);
@@ -47,10 +49,11 @@ public class WorldTownGenerator implements IWorldGenerator {
 			return;
 		}
 
-		TownTemplate template = TownTemplateManager.INSTANCE.selectTemplateFittingArea(world, area, templates);
-		if (template == null) {
+		Optional<TownTemplate> t = TownTemplateManager.INSTANCE.selectTemplateFittingArea(world, area, templates);
+		if (!t.isPresent()) {
 			return;
 		}
+		TownTemplate template = t.get();
 		if (area.getChunkWidth() - 1 > template.getMaxSize())//shrink width down to town max size
 		{
 			area.chunkMaxX = area.chunkMinX + template.getMaxSize();
