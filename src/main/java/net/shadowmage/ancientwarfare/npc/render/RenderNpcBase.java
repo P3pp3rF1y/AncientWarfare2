@@ -27,7 +27,7 @@ public class RenderNpcBase extends RenderBiped<NpcBase> {
 
 	private boolean isSleeping;
 
-	List<Integer> renderTasks = new ArrayList<>();
+	private List<Integer> renderTasks = new ArrayList<>();
 
 	public RenderNpcBase(RenderManager renderManager) {
 		super(renderManager, new ModelNpc(), 0.6f);
@@ -77,7 +77,7 @@ public class RenderNpcBase extends RenderBiped<NpcBase> {
 						name = npcTeam.getPrefix() + name + npcTeam.getSuffix();
 					}
 				}
-				renderColoredLabel(npc, name, x, y, z, 64, 0x20ff0000, 0xffff0000);
+				renderColoredLabel(npc, name, x, y, z, 0x20ff0000, 0xffff0000);
 			}
 		} else {
 			boolean canBeCommandedBy = npc.hasCommandPermissions(player.getUniqueID(), player.getName());
@@ -92,12 +92,10 @@ public class RenderNpcBase extends RenderBiped<NpcBase> {
 				} else if (!canBeCommandedBy) {
 					name = TextFormatting.DARK_GRAY.toString() + name;
 				}
-				renderColoredLabel(npc, name, x, y, z, 64, 0x20ffffff, 0xffffffff);
+				renderColoredLabel(npc, name, x, y, z, 0x20ffffff, 0xffffffff);
 			}
-			if (canBeCommandedBy) {
-				if (AWNPCStatics.renderAI.getBoolean()) {
-					renderNpcAITasks(npc, x, y, z, 64);
-				}
+			if (canBeCommandedBy && AWNPCStatics.renderAI.getBoolean()) {
+				renderNpcAITasks(npc, x, y, z);
 			}
 		}
 	}
@@ -107,6 +105,7 @@ public class RenderNpcBase extends RenderBiped<NpcBase> {
 		GlStateManager.translate(0.09375F, 0.1875F, 0.0F);
 	}
 
+	@Override
 	protected boolean canRenderName(NpcBase par1EntityLivingBase) {
 		return false;
 	}
@@ -129,10 +128,10 @@ public class RenderNpcBase extends RenderBiped<NpcBase> {
 		return String.format("%.1f", npc.getHealth());
 	}
 
-	private void renderNpcAITasks(NpcBase entity, double x, double y, double z, int renderDistance) {
+	private void renderNpcAITasks(NpcBase entity, double x, double y, double z) {
 		double d3 = entity.getDistanceSq(this.renderManager.renderViewEntity);
 
-		if (d3 <= (double) (renderDistance * renderDistance) && entity.canEntityBeSeen(renderManager.renderViewEntity)) {
+		if (d3 <= (double) (64 * 64) && entity.canEntityBeSeen(renderManager.renderViewEntity)) {
 			float f = 1.6F;
 			float f1 = 0.016666668F * f;
 			GlStateManager.pushMatrix();
@@ -158,7 +157,7 @@ public class RenderNpcBase extends RenderBiped<NpcBase> {
 
 			for (int i = 0; i < renderTasks.size(); i++) {
 				icon = getIconFor(renderTasks.get(i));
-				renderIcon(icon, 16, 16, startX + i * 20, -16);
+				renderIcon(icon, startX + i * 20, -16);
 			}
 			GlStateManager.enableLighting();
 			GlStateManager.popMatrix();
@@ -166,10 +165,10 @@ public class RenderNpcBase extends RenderBiped<NpcBase> {
 		}
 	}
 
-	private void renderColoredLabel(NpcBase entity, String string, double x, double y, double z, int renderDistance, int color1, int color2) {
+	private void renderColoredLabel(NpcBase entity, String string, double x, double y, double z, int color1, int color2) {
 		double d3 = entity.getDistanceSq(this.renderManager.renderViewEntity);
 
-		if (d3 <= (double) (renderDistance * renderDistance) && entity.canEntityBeSeen(renderManager.renderViewEntity)) {
+		if (d3 <= (double) (64 * 64) && entity.canEntityBeSeen(renderManager.renderViewEntity)) {
 			FontRenderer fontrenderer = this.getFontRendererFromRenderManager();
 			float f = 1.6F;
 			float f1 = 0.016666668F * f;
@@ -212,11 +211,12 @@ public class RenderNpcBase extends RenderBiped<NpcBase> {
 		return npc.getTexture();
 	}
 
-	private void renderIcon(String tex, int width, int height, int x, int y) {
+	@SuppressWarnings("squid:S2184") // the addition / subtraction here only works with small values so no need to cast to double before operation is done
+	private void renderIcon(String tex, int x, int y) {
 		Tessellator tess = Tessellator.getInstance();
 		Minecraft.getMinecraft().renderEngine.bindTexture(new ResourceLocation(tex));
-		int halfW = width / 2;
-		int halfH = height / 2;
+		int halfW = 16 / 2;
+		int halfH = 16 / 2;
 		BufferBuilder bufferBuilder = tess.getBuffer();
 		bufferBuilder.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
 		bufferBuilder.pos(x - halfW, y - halfH, 0).tex(0, 0).endVertex();
