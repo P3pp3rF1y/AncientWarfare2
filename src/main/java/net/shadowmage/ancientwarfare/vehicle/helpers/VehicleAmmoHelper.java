@@ -89,7 +89,7 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 	}
 
 	public void setNextAmmo() {
-		setCurrentAmmo(getAvailable(this::getLowerWrapped).orElse(null));
+		getAvailable(this::getHigherWrapped).ifPresent(this::setCurrentAmmo);
 	}
 
 	private <K, V> Map.Entry<K, V> getHigherWrapped(NavigableMap<K, V> map, K key) {
@@ -120,7 +120,7 @@ public class VehicleAmmoHelper implements INBTSerializable<NBTTagCompound> {
 	}
 
 	public void setPreviousAmmo() {
-		setCurrentAmmo(getAvailable(this::getLowerWrapped).orElse(null));
+		getAvailable(this::getLowerWrapped).ifPresent(this::setCurrentAmmo);
 	}
 
 	public void handleClientAmmoSelection(ResourceLocation ammoRegistryName) {
