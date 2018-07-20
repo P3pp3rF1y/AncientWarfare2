@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -106,12 +107,7 @@ public class TemplateLoader {
 			String extension = FilenameUtils.getExtension(file.toString());
 
 			if (extension.equals("png") || extension.equals("jpg")) {
-				try (InputStream stream = Files.newInputStream(file)) {
-					loadStructureImage(name, stream);
-				}
-				catch (IOException e) {
-					AncientWarfareStructures.log.error("Couldn't read image data {} from {}", name, file, e);
-				}
+				loadImageFromPath(file, name);
 			} else if (extension.equals(AWStructureStatics.townTemplateExtension) || extension.equals(AWStructureStatics.templateExtension)) {
 				List<String> lines;
 				try (BufferedReader reader = Files.newBufferedReader(file)) {
@@ -131,6 +127,15 @@ public class TemplateLoader {
 			}
 		});
 		return loaded.get();
+	}
+
+	private void loadImageFromPath(Path file, String name) {
+		try (InputStream stream = Files.newInputStream(file)) {
+			loadStructureImage(name, stream);
+		}
+		catch (IOException e) {
+			AncientWarfareStructures.log.error("Couldn't read image data {} from {}", name, file, e);
+		}
 	}
 
 	private int loadTemplate(String fileName, List<String> lines) {

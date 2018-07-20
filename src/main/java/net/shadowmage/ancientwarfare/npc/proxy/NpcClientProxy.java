@@ -19,6 +19,7 @@ import net.shadowmage.ancientwarfare.core.config.ConfigManager;
 import net.shadowmage.ancientwarfare.core.network.NetworkHandler;
 import net.shadowmage.ancientwarfare.core.proxy.IClientRegistrar;
 import net.shadowmage.ancientwarfare.core.util.TextureImageBased;
+import net.shadowmage.ancientwarfare.npc.AncientWarfareNPC;
 import net.shadowmage.ancientwarfare.npc.client.NPCItemColors;
 import net.shadowmage.ancientwarfare.npc.config.AWNPCStatics;
 import net.shadowmage.ancientwarfare.npc.entity.NpcBase;
@@ -47,6 +48,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 @SideOnly(Side.CLIENT)
@@ -110,39 +112,40 @@ public class NpcClientProxy extends NpcCommonProxy {
 
 	@Override
 	public void loadSkins() {
-		NpcSkinManager.INSTANCE.loadSkinPacks();
-	}
-
-	public ResourceLocation loadSkinPackImage(String packName, String imageName, InputStream is) {
-		try {
-			BufferedImage image = ImageIO.read(is);
-			ResourceLocation loc = new ResourceLocation("ancientwarfare:skinpack/" + packName + "/" + imageName);
-			TextureImageBased tex = new TextureImageBased(loc, image);
-			Minecraft.getMinecraft().renderEngine.loadTexture(loc, tex);
-			return loc;
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
+		NpcSkinManager.INSTANCE.loadSkins();
 	}
 
 	@Override
-	public ResourceLocation getPlayerSkin(String name) {
-		GameProfile profile = getProfile(name);
-		if (profile != null) {
-			SkinManager manager = Minecraft.getMinecraft().getSkinManager();
-			Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> map = manager.loadSkinFromCache(profile);
-			if (map.containsKey(MinecraftProfileTexture.Type.SKIN)) {
-				return manager.loadSkin(map.get(MinecraftProfileTexture.Type.SKIN), MinecraftProfileTexture.Type.SKIN);
-			}
+	public Optional<ResourceLocation> loadSkinPackImage(String imageName, InputStream is) {
+		try {
+			BufferedImage image = ImageIO.read(is);
+			ResourceLocation loc = new ResourceLocation("ancientwarfare:skinpack/" + imageName);
+			TextureImageBased tex = new TextureImageBased(loc, image);
+			Minecraft.getMinecraft().renderEngine.loadTexture(loc, tex);
+			return Optional.of(loc);
 		}
-		return null;
+		catch (IOException e) {
+			AncientWarfareNPC.log.error("Error reading image {}", imageName);
+		}
+		return Optional.empty();
 	}
 
-	public static final class NpcCategory extends DummyCategoryElement {
+	@Override
+	public Optional<ResourceLocation> getPlayerSkin(String name) {
+		Optional<GameProfile> gp = getProfile(name);
+		if (gp.isPresent()) {
+			SkinManager manager = Minecraft.getMinecraft().getSkinManager();
+			Map<MinecraftProfileTexture.Type, MinecraftProfileTexture> map = manager.loadSkinFromCache(gp.get());
+			if (map.containsKey(MinecraftProfileTexture.Type.SKIN)) {
+				return Optional.of(manager.loadSkin(map.get(MinecraftProfileTexture.Type.SKIN), MinecraftProfileTexture.Type.SKIN));
+			}
+		}
+		return Optional.empty();
+	}
 
-		public NpcCategory(String arg0) {
+	private static final class NpcCategory extends DummyCategoryElement {
+
+		private NpcCategory(String arg0) {
 			super(arg0, arg0, getElementList());
 		}
 
