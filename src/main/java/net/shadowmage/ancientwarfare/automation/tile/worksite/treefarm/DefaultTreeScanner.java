@@ -24,6 +24,8 @@ public class DefaultTreeScanner implements ITreeScanner {
 	private int maxLeafDistance;
 	private INextPositionGetter nextPositionGetter;
 
+	private static final int MAX_TRUNK_DISTANCE = 1;
+
 	public Predicate<IBlockState> getTrunkMatcher() {
 		return trunkMatcher;
 	}
@@ -75,8 +77,10 @@ public class DefaultTreeScanner implements ITreeScanner {
 			IBlockState state = world.getBlockState(pos);
 			if (isTrunk(state)) {
 				tree.addTrunkPosition(pos);
-				trunkBounds.include(pos);
 				treeBlocks.add(pos);
+				if (trunkBounds.distanceTo(pos) <= MAX_TRUNK_DISTANCE) {
+					trunkBounds.include(pos);
+				}
 			} else if (isLeaf(state) && trunkBounds.distanceTo(pos) <= maxLeafDistance) {
 				tree.addLeafPosition(pos);
 				treeBlocks.add(pos);
@@ -151,20 +155,20 @@ public class DefaultTreeScanner implements ITreeScanner {
 	public static final INextPositionGetter CONNECTED_AROUND = currentPos -> Arrays.stream(EnumFacing.VALUES).map(currentPos::offset);
 
 	public static final INextPositionGetter CONNECTED_UP_OR_LEVEL = new INextPositionGetter() {
-		private final EnumFacing[] OFFSETS = new EnumFacing[] {EnumFacing.NORTH, EnumFacing.EAST, EnumFacing.SOUTH, EnumFacing.WEST, EnumFacing.UP};
+		private final EnumFacing[] offsets = new EnumFacing[] {EnumFacing.NORTH, EnumFacing.EAST, EnumFacing.SOUTH, EnumFacing.WEST, EnumFacing.UP};
 
 		@Override
 		public Stream<BlockPos> getPositionsToScan(BlockPos currentPos) {
-			return Arrays.stream(OFFSETS).map(currentPos::offset);
+			return Arrays.stream(offsets).map(currentPos::offset);
 		}
 	};
 
 	public static final INextPositionGetter CONNECTED_DOWN_OR_LEVEL = new INextPositionGetter() {
-		private final EnumFacing[] OFFSETS = new EnumFacing[] {EnumFacing.NORTH, EnumFacing.EAST, EnumFacing.SOUTH, EnumFacing.WEST, EnumFacing.DOWN};
+		private final EnumFacing[] offsets = new EnumFacing[] {EnumFacing.NORTH, EnumFacing.EAST, EnumFacing.SOUTH, EnumFacing.WEST, EnumFacing.DOWN};
 
 		@Override
 		public Stream<BlockPos> getPositionsToScan(BlockPos currentPos) {
-			return Arrays.stream(OFFSETS).map(currentPos::offset);
+			return Arrays.stream(offsets).map(currentPos::offset);
 		}
 	};
 

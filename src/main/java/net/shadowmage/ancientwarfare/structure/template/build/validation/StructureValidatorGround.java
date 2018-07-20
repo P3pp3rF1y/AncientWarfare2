@@ -24,6 +24,7 @@ public class StructureValidatorGround extends StructureValidator {
 		IBlockState state = world.getBlockState(new BlockPos(x, y - 1, z));
 		Block block = state.getBlock();
 		if (!AWStructureStatics.isValidTargetBlock(state)) {
+			//noinspection ConstantConditions
 			AncientWarfareStructures.log.info("Rejecting due to target block mismatch of: " + block.getRegistryName().toString() + " at: " + x + "," + y + "," + z);
 			return false;
 		}
@@ -49,7 +50,6 @@ public class StructureValidatorGround extends StructureValidator {
 		if (biome != null && biome.getEnableSnow()) {
 			WorldStructureGenerator.sprinkleSnow(world, bb, getBorderSize());
 		}
-		WorldStructureGenerator.clearAbove(world, bb, getBorderSize());
 	}
 
 	@Override
@@ -58,8 +58,10 @@ public class StructureValidatorGround extends StructureValidator {
 			return;
 		}
 		int topFilledY = WorldStructureGenerator.getTargetY(world, x, z, true);
+		int topNonAirBlock = world.getTopSolidOrLiquidBlock(new BlockPos(x, 1, z)).getY();
 		int step = WorldStructureGenerator.getStepNumber(x, z, bb.min.getX(), bb.max.getX(), bb.min.getZ(), bb.max.getZ());
-		for (int y = bb.min.getY() + template.yOffset + step; y <= topFilledY; y++) {
+		int startY = Math.min(bb.min.getY() + template.yOffset + step, topFilledY + 1);
+		for (int y = startY; y <= topNonAirBlock; y++) {
 			handleClearAction(world, new BlockPos(x, y, z), template, bb);
 		}
 		Biome biome = world.provider.getBiomeForCoords(new BlockPos(x, 1, z));
@@ -74,26 +76,5 @@ public class StructureValidatorGround extends StructureValidator {
 		if (block != Blocks.FLOWING_WATER && block != Blocks.WATER && !AWStructureStatics.isSkippable(state)) {
 			world.setBlockState(pos, fillBlock);
 		}
-
-		int skipCount = 0;
-		for (int y1 = y + 1; y1 < world.getHeight(); y1++)//lazy clear block handling
-		{
-			pos = new BlockPos(x, y1, z);
-			state = world.getBlockState(pos);
-			block = state.getBlock();
-			if (block == Blocks.AIR) {
-				skipCount++;
-				if (skipCount >= 10)//exit out if 10 blocks are found that are not clearable
-				{
-					break;
-				}
-				continue;
-			}
-			skipCount = 0;//if we didn't skip this block, reset skipped count
-			if (AWStructureStatics.isSkippable(state)) {
-				world.setBlockToAir(pos);
-			}
-		}
 	}
-
 }

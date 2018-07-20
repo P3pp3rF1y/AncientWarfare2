@@ -10,6 +10,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.BiomeDictionary;
+import net.shadowmage.ancientwarfare.automation.registry.TreeFarmRegistry;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ITree;
+import net.shadowmage.ancientwarfare.automation.tile.worksite.treefarm.ITreeScanner;
 import net.shadowmage.ancientwarfare.core.util.StringTools;
 import net.shadowmage.ancientwarfare.structure.AncientWarfareStructures;
 import net.shadowmage.ancientwarfare.structure.block.BlockDataManager;
@@ -111,6 +114,7 @@ public abstract class StructureValidator {
 	/*
 	 * if template should be included for selection, get the adjusted spawn Y level from the input block position.  this adjustedY will be used for validation and generation if template is selected and validated
 	 */
+	@SuppressWarnings("squid:S1172")
 	public int getAdjustedSpawnY(World world, int x, int y, int z, EnumFacing face, StructureTemplate template, StructureBB bb) {
 		return y;
 	}
@@ -135,8 +139,19 @@ public abstract class StructureValidator {
 	 * implementations should fill the input x,y,z with whatever block is an appropriate 'fill' for that
 	 * validation type -- e.g. air or water
 	 */
+	@SuppressWarnings("squid:S1172")
 	public void handleClearAction(World world, BlockPos pos, StructureTemplate template, StructureBB bb) {
-		world.setBlockToAir(pos);
+		IBlockState state = world.getBlockState(pos);
+		if (state.getMaterial() != Material.AIR) {
+			ITreeScanner treeScanner = TreeFarmRegistry.getTreeScanner(state);
+			if (!treeScanner.matches(state)) {
+				world.setBlockToAir(pos);
+				return;
+			}
+			ITree tree = treeScanner.scanTree(world, pos);
+			tree.getLeafPositions().forEach(world::setBlockToAir);
+			tree.getTrunkPositions().forEach(world::setBlockToAir);
+		}
 	}
 
 	public static boolean startLow(String text, String test) {
@@ -534,7 +549,7 @@ public abstract class StructureValidator {
 		}
 	}
 
-	private void underFill(World world, int x, int z, StructureTemplate template, StructureBB bb) {
+	private void underFill(World world, int x, int z, StructureBB bb) {
 		int topFilledY = WorldStructureGenerator.getTargetY(world, x, z, true);
 		Biome biome = world.provider.getBiomeForCoords(new BlockPos(x, 1, z));
 		IBlockState fillBlockID = Blocks.GRASS.getDefaultState();
@@ -554,7 +569,7 @@ public abstract class StructureValidator {
 		int bz;
 		for (bx = bb.min.getX(); bx <= bb.max.getX(); bx++) {
 			for (bz = bb.min.getZ(); bz <= bb.max.getZ(); bz++) {
-				underFill(world, bx, bz, template, bb);
+				underFill(world, bx, bz, bb);
 			}
 		}
 	}
