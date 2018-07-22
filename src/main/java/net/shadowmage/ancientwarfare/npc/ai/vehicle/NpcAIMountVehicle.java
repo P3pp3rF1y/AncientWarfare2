@@ -6,7 +6,7 @@ import net.shadowmage.ancientwarfare.npc.entity.vehicle.IVehicleUser;
 import net.shadowmage.ancientwarfare.vehicle.entity.VehicleBase;
 
 public class NpcAIMountVehicle<T extends NpcBase & IVehicleUser> extends NpcAI<T> {
-	private static final double MOUNT_REACH = 5.0D;
+	private static final double MOUNT_REACH = 1.0D;
 
 	public NpcAIMountVehicle(T npc) {
 		super(npc);
@@ -25,7 +25,7 @@ public class NpcAIMountVehicle<T extends NpcBase & IVehicleUser> extends NpcAI<T
 		VehicleBase vehicle = npc.getVehicle().get();
 		double distance = npc.getDistanceSq(vehicle.getPosition());
 
-		if (distance < MOUNT_REACH) {
+		if (npc.getEntityBoundingBox().grow(MOUNT_REACH).intersects(vehicle.getEntityBoundingBox())) {
 			npc.startRiding(vehicle);
 		} else {
 			moveToPosition(vehicle.getPosition(), distance);
